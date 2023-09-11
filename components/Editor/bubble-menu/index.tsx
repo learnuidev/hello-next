@@ -5,6 +5,9 @@ import {
   ItalicIcon,
   UnderlineIcon,
   StrikethroughIcon,
+  AlignCenter,
+  AlignRight,
+  AlignLeft,
   CodeIcon,
 } from "lucide-react";
 import { NodeSelector } from "./node-selector";
@@ -47,6 +50,24 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
       isActive: () => props.editor.isActive("strike"),
       command: () => props.editor.chain().focus().toggleStrike().run(),
       icon: StrikethroughIcon,
+    },
+    {
+      name: "align-left",
+      isActive: () => props.editor.isActive({ textAlign: 'left' }),
+      command: () => props.editor.chain().focus().setTextAlign('left').run(),
+      icon: AlignLeft,
+    },
+    {
+      name: "align-center",
+      isActive: () => props.editor.isActive({ textAlign: 'center' }),
+      command: () => props.editor.chain().focus().setTextAlign('center').run(),
+      icon: AlignCenter,
+    },
+    {
+      name: "align-right",
+      isActive: () => props.editor.isActive({ textAlign: 'right' }),
+      command: () => props.editor.chain().focus().setTextAlign('right').run(),
+      icon: AlignRight,
     },
     {
       name: "code",

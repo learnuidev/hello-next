@@ -12,6 +12,7 @@ import { Markdown } from "tiptap-markdown";
 import Highlight from "@tiptap/extension-highlight";
 import SlashCommand from "./slash-command";
 import { InputRule } from "@tiptap/core";
+import { TextAlign } from '@tiptap/extension-text-align'
 // import UploadImagesPlugin from "@/ui/editor/plugins/upload-images";
 // import UpdatedImage from "./updated-image";
 // import CustomKeymap from "./custom-keymap";
@@ -114,6 +115,10 @@ export const defaultExtensions = [
       return "Press '/' for commands...";
     },
     includeChildren: true,
+  }),
+  // TextAlign,
+  TextAlign.configure({
+    types: ['heading', 'paragraph'],
   }),
   SlashCommand,
   TiptapUnderline,

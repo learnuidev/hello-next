@@ -11,6 +11,25 @@ hello is an open-source notion-style based AI-powered language learning app.
 - Accessibility: radix UI
 - Editor: tiptap
 
+## Installation
+
+
+1. Signup for Tiptap Account [ONE TIME]
+
+2. Create `npmrc` and add the pro token [ONE TIME]
+
+```
+@tiptap-pro:registry=https://registry.tiptap.dev/
+//registry.tiptap.dev/:_authToken=YOUR_TOKEN_GOES_HERE
+```
+
+
+3. Install dependencies [ONE TIME]
+
+```
+npm install
+```
+
 ## Developing
 
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:

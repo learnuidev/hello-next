@@ -109,3 +109,63 @@ ul[data-type="taskList"] li[data-checked="true"] > div > p {
   text-decoration: line-through;
   text-decoration-thickness: 2px;
 }
+
+/* Math */
+
+/* Decoration containing the actual text */
+.Tiptap-mathematics-editor {
+}
+
+/* Container of the KaTeX rendering */
+.Tiptap-mathematics-render {
+}
+
+/* TOC */
+
+.table-of-content {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  z-index: 2;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+  width: 20rem;
+  max-height: 50vh;
+  overflow: auto;
+}
+
+.toc {
+  &--empty_state {
+    color: #777;
+    user-select: none;
+  }
+
+  &--list {
+    gap: 0.5rem;
+  }
+
+  &--list,
+  &--item--children {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &--list a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  &--item {
+    padding-left: calc(1rem * (var(--level) - 1));
+  }
+}
+
+.ProseMirror {
+  padding-right: 24rem;
+
+  > * + * {
+    margin-top: 0.75em;
+  }
+}

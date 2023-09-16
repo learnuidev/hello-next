@@ -129,12 +129,12 @@ export const defaultExtensions = [
   }),
   TaskList.configure({
     HTMLAttributes: {
-      class: "not-prose pl-2",
+      class: "not-prose",
     },
   }),
   TaskItem.configure({
     HTMLAttributes: {
-      class: "flex items-start my-4",
+      class: "flex items-start my-2",
     },
     nested: true,
   }),

@@ -6,7 +6,7 @@ import { EditorBubbleMenu } from "./bubble-menu";
 import Mathematics from '@tiptap-pro/extension-mathematics'
 import UniqueID from '@tiptap-pro/extension-unique-id'
 import TableOfContent from '@tiptap-pro/extension-table-of-content';
-import { ToC } from './TOC'
+import { ToC } from './ToC'
 import React from 'react';
 
 import 'katex/dist/katex.min.css'
@@ -16,7 +16,8 @@ import 'katex/dist/katex.min.css'
 const MemorizedToC = React.memo(ToC)
 // const MemorizedToC = ToC
 
-export const Editor = ({ content, id }: { 
+export const Editor = ({ content, id, className }: { 
+  className?: string
   content: string
   id: string
 }) => {
@@ -37,7 +38,7 @@ export const Editor = ({ content, id }: {
       TableOfContent
     ],
     // content: content,
-    content: JSON.parse(localStorage.getItem(id) || "") || content,
+    content: localStorage.getItem(id) ? JSON.parse(localStorage.getItem(id) || "") : content,
     onUpdate: ({ editor }) => {
       if (id) {
         localStorage.setItem(id, JSON.stringify(editor.getJSON()))
@@ -54,7 +55,7 @@ export const Editor = ({ content, id }: {
         <MemorizedToC editor={editor} items={editor?.storage?.tableOfContent?.content} />
       </div>
        {editor && <EditorBubbleMenu editor={editor} />}
-       <EditorContent editor={editor} />
+       <EditorContent className={className} editor={editor} />
     </>
 
   )

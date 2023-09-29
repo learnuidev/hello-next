@@ -38,10 +38,10 @@ export const Editor = ({ content, id, className }: {
       TableOfContent
     ],
     // content: content,
-    content: localStorage.getItem(id) ? JSON.parse(localStorage.getItem(id) || "") : content,
+    content: localStorage && localStorage.getItem(id) ? JSON.parse(localStorage.getItem(id) || "") : content,
     onUpdate: ({ editor }) => {
       if (id) {
-        localStorage.setItem(id, JSON.stringify(editor.getJSON()))
+        localStorage && localStorage.setItem(id, JSON.stringify(editor.getJSON()))
       }
     }
   })

@@ -1,4 +1,5 @@
 // import Image from 'next/image'
+'use client'
 
 import { Editor } from "@/components/Editor";
 

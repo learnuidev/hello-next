@@ -1,12 +1,15 @@
 import { TextSelection } from '@tiptap/pm/state'
 
-export const ToCItem = ({ item, onItemClick }) => {
+/* eslint-disable */
+export const ToCItem = ({ item, onItemClick }: any) => {
 
   console.log("LEVEL", item)
   return (
-    <div className={`toc--item toc--item--level_${item.level}`} style={{
-      '--level': item.level,
-    }}>
+    <div className={`toc--item toc--item--level_${item.level}`} 
+    // style={{
+    //   '--level': item.level, 
+    // }}
+    >
       <a style={{
         display: 'block',
         backgroundColor: item.isActive ? 'rgba(0, 0, 0, .05)' : 'transparent',
@@ -28,12 +31,12 @@ export const ToCEmptyState = () => {
 export const ToC = ({
   items = [],
   editor,
-}) => {
+}: any) => {
   if (items.length === 0) {
     return <ToCEmptyState />
   }
 
-  const onItemClick = (e, id) => {
+  const onItemClick = (e: any, id: any) => {
     e.preventDefault()
 
     if (editor) {
@@ -49,9 +52,9 @@ export const ToC = ({
 
       editor.view.focus()
 
-      if (history.pushState) { // eslint-disable-line
-        history.pushState(null, null, `#${id}`) // eslint-disable-line
-      }
+      // if (history.pushState) { // eslint-disable-line
+      //   history.pushState(null, null, `#${id}`) // eslint-disable-line
+      // }
 
       window.scrollTo({
         top: element.getBoundingClientRect().top + window.scrollY,
@@ -62,7 +65,7 @@ export const ToC = ({
 
   return (
     <div className="toc--list">
-      {items.map((item, i) => (
+      {items.map((item: any, i: any) => (
         <ToCItem onItemClick={onItemClick} key={item.id} item={item} index={i + 1} />
       ))}
     </div>

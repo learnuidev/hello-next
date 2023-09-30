@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
-import { NavBar } from "@/components/NavBar";
+import { NavBar } from "@/components/navbar";
 
 export default function Home() {
   const [isTocHidden, setIsTocHidden] = useState(false);

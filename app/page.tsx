@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
 import { useRouter } from "next/navigation";
-import { NavBar } from "@/components/NavBar";
+import { NavBar } from "@/components/navbar";
 import { Link } from "@/components/link";
 
 export default function Home() {

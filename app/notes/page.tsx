@@ -2,7 +2,7 @@
 "use client";
 
 import { Editor } from "@/components/Editor";
-import { NavBar } from "@/components/NavBar";
+import { NavBar } from "@/components/navbar";
 import { useState } from "react";
 
 export default function Home() {

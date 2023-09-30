@@ -53,20 +53,20 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
     },
     {
       name: "align-left",
-      isActive: () => props.editor.isActive({ textAlign: 'left' }),
-      command: () => props.editor.chain().focus().setTextAlign('left').run(),
+      isActive: () => props.editor.isActive({ textAlign: "left" }),
+      command: () => props.editor.chain().focus().setTextAlign("left").run(),
       icon: AlignLeft,
     },
     {
       name: "align-center",
-      isActive: () => props.editor.isActive({ textAlign: 'center' }),
-      command: () => props.editor.chain().focus().setTextAlign('center').run(),
+      isActive: () => props.editor.isActive({ textAlign: "center" }),
+      command: () => props.editor.chain().focus().setTextAlign("center").run(),
       icon: AlignCenter,
     },
     {
       name: "align-right",
-      isActive: () => props.editor.isActive({ textAlign: 'right' }),
-      command: () => props.editor.chain().focus().setTextAlign('right').run(),
+      isActive: () => props.editor.isActive({ textAlign: "right" }),
+      command: () => props.editor.chain().focus().setTextAlign("right").run(),
       icon: AlignRight,
     },
     {

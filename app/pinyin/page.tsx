@@ -552,9 +552,6 @@ function ChartPageVP({
   children?: any;
   lesson?: any;
 }) {
-
-
-  
   const [data, setData] = React.useState(() => [...defaultData]);
   const rerender = React.useReducer(() => ({}), {})[1];
 
@@ -690,7 +687,6 @@ function ChartPageVP({
   };
 
   const calcRowColor = (val: any, lesson?: any) => {
-    console.log("LESSON YO", lesson);
     if (lesson) {
       // SIMPLE FINALS ===
       if (
@@ -1328,8 +1324,7 @@ function ChartPageVP({
 }
 
 function ChartPage(props: any) {
-  return <ChartPageVP />
+  return <ChartPageVP />;
 }
 
-
-export default ChartPage
+export default ChartPage;

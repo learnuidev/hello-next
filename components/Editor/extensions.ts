@@ -12,7 +12,7 @@ import { Markdown } from "tiptap-markdown";
 import Highlight from "@tiptap/extension-highlight";
 import SlashCommand from "./slash-command";
 import { InputRule } from "@tiptap/core";
-import { TextAlign } from '@tiptap/extension-text-align'
+import { TextAlign } from "@tiptap/extension-text-align";
 // import UploadImagesPlugin from "@/ui/editor/plugins/upload-images";
 // import UpdatedImage from "./updated-image";
 // import CustomKeymap from "./custom-keymap";
@@ -92,21 +92,21 @@ export const defaultExtensions = [
         "text-stone-400 underline underline-offset-[3px] hover:text-stone-600 transition-colors cursor-pointer",
     },
   }),
-//   TiptapImage.extend({
-//     addProseMirrorPlugins() {
-//       return [UploadImagesPlugin()];
-//     },
-//   }).configure({
-//     allowBase64: true,
-//     HTMLAttributes: {
-//       class: "rounded-lg border border-stone-200",
-//     },
-//   }),
-//   UpdatedImage.configure({
-//     HTMLAttributes: {
-//       class: "rounded-lg border border-stone-200",
-//     },
-//   }),
+  //   TiptapImage.extend({
+  //     addProseMirrorPlugins() {
+  //       return [UploadImagesPlugin()];
+  //     },
+  //   }).configure({
+  //     allowBase64: true,
+  //     HTMLAttributes: {
+  //       class: "rounded-lg border border-stone-200",
+  //     },
+  //   }),
+  //   UpdatedImage.configure({
+  //     HTMLAttributes: {
+  //       class: "rounded-lg border border-stone-200",
+  //     },
+  //   }),
   Placeholder.configure({
     placeholder: ({ node }) => {
       if (node.type.name === "heading") {
@@ -118,7 +118,7 @@ export const defaultExtensions = [
   }),
   // TextAlign,
   TextAlign.configure({
-    types: ['heading', 'paragraph'],
+    types: ["heading", "paragraph"],
   }),
   SlashCommand,
   TiptapUnderline,
@@ -142,6 +142,6 @@ export const defaultExtensions = [
     html: false,
     transformCopiedText: true,
   }),
-//   CustomKeymap,
+  //   CustomKeymap,
   DragAndDrop,
 ];

@@ -1,25 +1,30 @@
-'use client'
+"use client";
 
-import { useEditor, EditorContent } from '@tiptap/react'
-import { defaultExtensions } from './extensions'
+import { useEditor, EditorContent } from "@tiptap/react";
+import { defaultExtensions } from "./extensions";
 import { EditorBubbleMenu } from "./bubble-menu";
-import Mathematics from '@tiptap-pro/extension-mathematics'
-import UniqueID from '@tiptap-pro/extension-unique-id'
-import TableOfContent from '@tiptap-pro/extension-table-of-content';
-import { ToC } from './ToC'
-import React from 'react';
+import Mathematics from "@tiptap-pro/extension-mathematics";
+import UniqueID from "@tiptap-pro/extension-unique-id";
+import TableOfContent from "@tiptap-pro/extension-table-of-content";
+import { ToC } from "./ToC";
+import React from "react";
 
-import 'katex/dist/katex.min.css'
+import "katex/dist/katex.min.css";
 
-
-
-const MemorizedToC = React.memo(ToC)
+const MemorizedToC = React.memo(ToC);
 // const MemorizedToC = ToC
 
-export const Editor = ({ content, id, className }: { 
-  className?: string
-  content: string
-  id: string
+export const Editor = ({
+  content,
+  id,
+  className,
+  isTocHidden,
+}: {
+  className?: string;
+  content: string;
+  id: string;
+  isTocHidden: boolean;
+  setIsTocHidden: (ishidden: boolean) => void;
 }) => {
   const editor = useEditor({
     autofocus: true,
@@ -32,32 +37,36 @@ export const Editor = ({ content, id, className }: {
       // }),
       Mathematics,
       UniqueID.configure({
-        attributeName: 'uid',
-        types: ['heading', 'paragraph'],
+        attributeName: "uid",
+        types: ["heading", "paragraph"],
       }),
-      TableOfContent
+      TableOfContent,
     ],
     // content: content,
-    content: localStorage && localStorage.getItem(id) ? JSON.parse(localStorage.getItem(id) || "") : content,
+    content:
+      typeof window !== "undefined" && localStorage?.getItem(id)
+        ? JSON.parse(localStorage?.getItem(id) || "")
+        : content,
     onUpdate: ({ editor }) => {
       if (id) {
-        localStorage && localStorage.setItem(id, JSON.stringify(editor.getJSON()))
+        localStorage &&
+          localStorage.setItem(id, JSON.stringify(editor.getJSON()));
       }
-    }
-  })
-
-  console.log("LOGGED", editor?.storage?.tableOfContent?.content)
+    },
+  });
 
   return (
-
     <>
-      <div className="table-of-content">
-        <MemorizedToC editor={editor} items={editor?.storage?.tableOfContent?.content} />
+      {/* <div className="hidden sm:block table-of-content">
+        <MemorizedToC
+          editor={editor}
+          items={editor?.storage?.tableOfContent?.content}
+        />
+      </div> */}
+      {editor && <EditorBubbleMenu editor={editor} />}
+      <div>
+        <EditorContent className={className} editor={editor} />
       </div>
-       {editor && <EditorBubbleMenu editor={editor} />}
-       <EditorContent className={className} editor={editor} />
     </>
-
-  )
-}
-
+  );
+};

@@ -1,12 +1,29 @@
 // import Image from 'next/image'
-'use client'
+"use client";
 
-// import { Editor } from "@/components/Editor";
+import { Editor } from "@/components/Editor";
+import { useState } from "react";
 
 export default function Home() {
+  const [isTocHidden, setIsTocHidden] = useState(false);
+
+  const toggleIsHidden = () => {
+    if (isTocHidden) {
+    }
+  };
   return (
-    <main className=''>
-      {/* <Editor content="" id="test" /> */}
+    <main className="">
+      <div>
+        <h1 className="text-gray-300 my-4 font-bold text-xl lowercase text-center">
+          Nomad Method
+        </h1>
+      </div>
+      <Editor
+        isTocHidden={isTocHidden}
+        setIsTocHidden={setIsTocHidden}
+        content="Hello"
+        id="test"
+      />
     </main>
-  )
+  );
 }

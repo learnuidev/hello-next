@@ -4,11 +4,10 @@
 import { Editor } from "@/components/Editor";
 import { useState } from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faMountain, faMountainSun } from "@fortawesome/sharp-solid-svg-icons";
-import {faMountainSun } from '@fortawesome/pro-duotone-svg-icons/faMountainSun'
+import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
 
 export default function Home() {
   const [isTocHidden, setIsTocHidden] = useState(false);
@@ -19,7 +18,7 @@ export default function Home() {
   };
   return (
     <main className="">
-      <div className="flex justify-between items-center w-full px-4 md:px-48 md:my-4">
+      <div className="flex justify-between items-center w-full px-4 md:px-32 lg:px-48 md:my-4">
         <Link href="/">
           <FontAwesomeIcon icon={faMountainSun} />
         </Link>
@@ -44,24 +43,23 @@ export default function Home() {
           </Link>
         </div>
       </div>
-
       <div className="text-center">
         <h1 className="mt-32 font-bold text-4xl md:text-6xl lowercase text-center">
-          Nomad Method
+          Courses
         </h1>
 
         <p className="text-xl font-extralight my-2 text-gray-400">
-          Learn chinese at the speed of light
+          coming soon
         </p>
-        <div className="flex justify-center my-8">
+        {/* <div className="flex justify-center my-8">
           <Button
             variant="ghost"
             className="bg-black text-gray-200 font-extralight"
           >
-            {" "}
+  
             Start Learning
           </Button>
-        </div>
+        </div> */}
       </div>
     </main>
   );

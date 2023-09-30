@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/icons";
 import { useState, useEffect } from "react";
 import { dictionary } from "@/data/hmm/data/dictionary";
-import { Music } from "@/components/music2";
+import { Music } from "@/components/music";
 import { HanziMovieMethod as HanziMovieMethodPlay } from "./hanzi-movie-method";
 
 import {

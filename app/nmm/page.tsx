@@ -8,6 +8,7 @@ import {
   SentenceIcon,
   MessageIcon,
   PlayIcon,
+  NomadIcon,
 } from "@/components/ui/icons";
 import { useState, useEffect } from "react";
 import { dictionary } from "@/data/hmm/data/dictionary";
@@ -470,8 +471,8 @@ export default function HanziMovieMethod(props: any) {
               : "dark:text-gray-800 text-gray-200"
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
-          <ActorIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Actors</p>
+          <NomadIcon className="text-2xl" />
+          <p className="text-[8px] p-0 m-0">Nomads</p>
         </button>
         <button
           onClick={() => {
@@ -485,7 +486,7 @@ export default function HanziMovieMethod(props: any) {
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
           <PlaceIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Sets</p>
+          <p className="text-[8px] p-0 m-0">Destinations</p>
         </button>
 
         <button
@@ -500,7 +501,7 @@ export default function HanziMovieMethod(props: any) {
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
           <SceneIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Scripts</p>
+          <p className="text-[8px] p-0 m-0">Stories</p>
         </button>
         <button
           onClick={() => {
@@ -514,7 +515,7 @@ export default function HanziMovieMethod(props: any) {
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
           <PropsIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Props</p>
+          <p className="text-[8px] p-0 m-0">Components</p>
         </button>
         <button
           onClick={() => {

@@ -9,6 +9,7 @@ import {
   MessageIcon,
   PlayIcon,
   NomadIcon,
+  StoryIcon,
 } from "@/components/ui/icons";
 import { useState, useEffect } from "react";
 import { dictionary } from "@/data/hmm/data/dictionary";
@@ -73,7 +74,7 @@ const PageView = ({ view, setSelectedId }: any) => {
             // return <p className='p-4'>{prop?.hanzi}</p>
             return (
               <button
-                key={JSON.stringify(prop)}
+              key={`${JSON.stringify(prop)}-nomads`}
                 onClick={() => {
                   setSelectedId(prop.id);
                 }}
@@ -111,7 +112,7 @@ const PageView = ({ view, setSelectedId }: any) => {
             // return <p className='p-4'>{prop?.hanzi}</p>
             return (
               <button
-                key={JSON.stringify(prop)}
+                key={`${JSON.stringify(prop)}-props`}
                 onClick={() => {
                   setSelectedId(prop.hanzi);
                 }}
@@ -135,7 +136,7 @@ const PageView = ({ view, setSelectedId }: any) => {
             // return <p className='p-4'>{prop?.hanzi}</p>
             return (
               <button
-                key={JSON.stringify(prop)}
+                key={`${JSON.stringify(prop)}-chars`}
                 onClick={() => {
                   setSelectedId(prop.hanzi);
                 }}
@@ -158,7 +159,7 @@ const PageView = ({ view, setSelectedId }: any) => {
             // return <p className='p-4'>{prop?.hanzi}</p>
             return (
               <button
-                key={JSON.stringify(prop)}
+              key={`${JSON.stringify(prop)}-words`}
                 onClick={() => {
                   setSelectedId(prop.hanzi);
                 }}
@@ -182,7 +183,7 @@ const PageView = ({ view, setSelectedId }: any) => {
             // return <p className='p-4'>{prop?.hanzi}</p>
             return (
               <button
-                key={JSON.stringify(prop)}
+              key={`${JSON.stringify(prop)}-stories`}
                 onClick={() => {
                   setSelectedId(prop.hanzi);
                 }}
@@ -492,20 +493,6 @@ export default function HanziMovieMethod(props: any) {
         <button
           onClick={() => {
             setSelectedId(null);
-            setView("scenes");
-          }}
-          className={`${
-            view === "scenes"
-              ? "dark:text-white text-gray-800"
-              : "dark:text-gray-800 text-gray-200"
-          } my-4 flex flex-col items-center hover:dark:text-white transition`}
-        >
-          <SceneIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Stories</p>
-        </button>
-        <button
-          onClick={() => {
-            setSelectedId(null);
             setView("props");
           }}
           className={`${
@@ -517,7 +504,23 @@ export default function HanziMovieMethod(props: any) {
           <PropsIcon className="text-2xl" />
           <p className="text-[8px] p-0 m-0">Components</p>
         </button>
+
         <button
+          onClick={() => {
+            setSelectedId(null);
+            setView("scenes");
+          }}
+          className={`${
+            view === "scenes"
+              ? "dark:text-white text-gray-800"
+              : "dark:text-gray-800 text-gray-200"
+          } my-4 flex flex-col items-center hover:dark:text-white transition`}
+        >
+          <StoryIcon className="text-2xl" />
+          <p className="text-[8px] p-0 m-0">Stories</p>
+        </button>
+
+        {/* <button
           onClick={() => {
             setSelectedId(null);
             setView("characters");
@@ -530,7 +533,7 @@ export default function HanziMovieMethod(props: any) {
         >
           <CharacterIcon className="text-2xl" />
           <p className="text-[8px] p-0 m-0">Characters</p>
-        </button>
+        </button> */}
         <button
           onClick={() => {
             setSelectedId(null);
@@ -545,7 +548,7 @@ export default function HanziMovieMethod(props: any) {
           <WordIcon className="text-2xl" />
           <p className="text-[8px] p-0 m-0">Words</p>
         </button>
-        <button
+        {/* <button
           onClick={() => {
             setSelectedId(null);
             setView("sentences");
@@ -558,7 +561,7 @@ export default function HanziMovieMethod(props: any) {
         >
           <SentenceIcon className="text-2xl" />
           <p className="text-[8px] p-0 m-0">Sentences</p>
-        </button>
+        </button> */}
       </div>
 
       {selectedId ? (

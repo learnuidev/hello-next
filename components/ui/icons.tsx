@@ -55,7 +55,8 @@ import {
   faBlog,
   faAtomSimple,
   faTicketAirline,
-  faPersonHiking
+  faPersonHiking,
+  faWatermelonSlice
 } from '@fortawesome/sharp-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -123,6 +124,10 @@ export const TravellerIcon = (props: any) => {
 }
 export const SceneIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faClapperboardPlay} />
+}
+
+export const StoryIcon = (props: any) => {
+  return <FontAwesomeIcon {...props} icon={faWatermelonSlice} />
 }
 
 export const AnalyticsIcon = (props: any) => {

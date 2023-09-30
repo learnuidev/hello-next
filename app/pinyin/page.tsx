@@ -13,7 +13,7 @@ import {
 } from "@tanstack/react-table";
 
 import { characterDictionary, defaultData } from "./data";
-import { dictionary } from "@/hmm/dict";
+import { dictionary } from "@/data/hmm/data/dictionary";
 
 const columnHelper = createColumnHelper<any>();
 

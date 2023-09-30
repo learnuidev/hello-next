@@ -24,17 +24,23 @@ export const NavBar = () => {
         >
           pinyin
         </Link>
-        <Link
+        {/* <Link
           href="/features"
           className="text-gray-400 hover:text-gray-700 transition"
         >
           features
-        </Link>
-        <Link
+        </Link> */}
+        {/* <Link
           href="/notes"
           className="text-gray-400 hover:text-gray-700 transition"
         >
           notes
+        </Link> */}
+        <Link
+          href="/nmm"
+          className="text-gray-400 hover:text-gray-700 transition"
+        >
+          nmm
         </Link>
       </div>
     </div>

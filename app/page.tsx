@@ -18,12 +18,7 @@ export default function Home() {
           Nomad Method
         </h1>
       </div>
-      <Editor
-        isTocHidden={isTocHidden}
-        setIsTocHidden={setIsTocHidden}
-        content="Hello"
-        id="test"
-      />
+      <Editor content="Hello" id="test" />
     </main>
   );
 }

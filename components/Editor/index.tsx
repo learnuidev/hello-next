@@ -18,13 +18,10 @@ export const Editor = ({
   content,
   id,
   className,
-  isTocHidden,
 }: {
   className?: string;
   content: string;
   id: string;
-  isTocHidden: boolean;
-  setIsTocHidden: (ishidden: boolean) => void;
 }) => {
   const editor = useEditor({
     autofocus: true,

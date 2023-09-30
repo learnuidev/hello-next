@@ -14,7 +14,7 @@ import {
 
 import { characterDictionary, defaultData } from "./data";
 import { dictionary } from "@/data/hmm/data/dictionary";
-import { NavBar } from "@/components/navbar";
+import { NavBar } from "@/components/NavBar";
 
 const columnHelper = createColumnHelper<any>();
 

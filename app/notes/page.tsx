@@ -1,8 +1,8 @@
 // import Image from 'next/image'
 "use client";
 
-import { Editor } from "@/components/editor";
-import { NavBar } from "@/components/navbar";
+import { Editor } from "@/components/Editor";
+import { NavBar } from "@/components/NavBar";
 import { useState } from "react";
 
 export default function Home() {

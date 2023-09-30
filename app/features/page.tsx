@@ -1,14 +1,14 @@
 // import Image from 'next/image'
 "use client";
 
-import { Editor } from "@/components/editor";
+import { Editor } from "@/components/Editor";
 import { useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
-import { NavBar } from "@/components/navbar";
+import { NavBar } from "@/components/NavBar";
 
 export default function Home() {
   const [isTocHidden, setIsTocHidden] = useState(false);

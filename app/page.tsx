@@ -4,17 +4,18 @@
 import { Editor } from "@/components/editor";
 import { useState } from "react";
 
-import Link from "next/link";
+// import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faMountainSun } from '@fortawesome/pro-duotone-svg-icons/faMountainSun'
+import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
 import { useRouter } from "next/navigation";
 import { NavBar } from "@/components/navbar";
+import { Link } from "@/components/link";
 
 export default function Home() {
   const [isTocHidden, setIsTocHidden] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
   const toggleIsHidden = () => {
     if (isTocHidden) {
@@ -30,19 +31,16 @@ export default function Home() {
         </h1>
 
         <p className="text-xl font-extralight my-2 text-gray-400">
-          an interactive platform designed to help you learn mandarin by exploring the world
+          an interactive platform designed to help you learn mandarin by
+          exploring the world
         </p>
         <div className="flex justify-center my-8">
-          <Button
-          onClick={() => {
-            router.push("/learn")
-          }}
-            variant="ghost"
-            className="bg-black text-gray-200 font-extralight"
+          <Link
+            href="https://purple-earl-6c3.notion.site/Nomad-Mandarin-Method-32b6668b8bff47a8b0f48eaca63f0988"
+            target={"_blank"}
           >
-            {" "}
-            Learn More 
-          </Button>
+            Learn More
+          </Link>
         </div>
       </div>
     </main>

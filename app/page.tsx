@@ -1,17 +1,20 @@
 // import Image from 'next/image'
 "use client";
 
-import { Editor } from "@/components/Editor";
+import { Editor } from "@/components/editor";
 import { useState } from "react";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faMountain, faMountainSun } from "@fortawesome/sharp-solid-svg-icons";
 import {faMountainSun } from '@fortawesome/pro-duotone-svg-icons/faMountainSun'
+import { useRouter } from "next/navigation";
+import { NavBar } from "@/components/navbar";
 
 export default function Home() {
   const [isTocHidden, setIsTocHidden] = useState(false);
+
+  const router = useRouter()
 
   const toggleIsHidden = () => {
     if (isTocHidden) {
@@ -19,31 +22,7 @@ export default function Home() {
   };
   return (
     <main className="">
-      <div className="flex justify-between items-center w-full px-4 md:px-48 md:my-4">
-        <Link href="/">
-          <FontAwesomeIcon icon={faMountainSun} />
-        </Link>
-        <div className="my-4 flex justify-center items-center space-x-4 text-xs md:text-md">
-          <Link
-            href="/courses"
-            className="text-gray-400 hover:text-gray-700 transition"
-          >
-            courses
-          </Link>
-          <Link
-            href="/pinyin"
-            className="text-gray-400 hover:text-gray-700 transition"
-          >
-            pinyin
-          </Link>
-          <Link
-            href="/notes"
-            className="text-gray-400 hover:text-gray-700 transition"
-          >
-            notes
-          </Link>
-        </div>
-      </div>
+      <NavBar />
 
       <div className="text-center">
         <h1 className="mt-32 font-bold text-4xl md:text-6xl lowercase text-center">
@@ -51,15 +30,18 @@ export default function Home() {
         </h1>
 
         <p className="text-xl font-extralight my-2 text-gray-400">
-          Learn chinese at the speed of light
+          an interactive platform designed to help you learn mandarin by exploring the world
         </p>
         <div className="flex justify-center my-8">
           <Button
+          onClick={() => {
+            router.push("/learn")
+          }}
             variant="ghost"
             className="bg-black text-gray-200 font-extralight"
           >
             {" "}
-            Start Learning
+            Learn More 
           </Button>
         </div>
       </div>

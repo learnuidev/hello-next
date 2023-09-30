@@ -3,7 +3,7 @@ import { NextIcon, ActorIcon as Header } from "@/components/ui/icons";
 
 import { useSearchQuery } from "@/domain/search/search.queries";
 // import ReactPlayer from 'react-player'
-import { useViewModeStore } from "./useViewModeStore";
+import { useViewModeStore } from "./use-view-mode-store";
 
 const firstLesson = {
   title: "Characters #1-3: 一 yī, 二 èr, 三 sān",

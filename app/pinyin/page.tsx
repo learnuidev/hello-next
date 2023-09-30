@@ -14,6 +14,7 @@ import {
 
 import { characterDictionary, defaultData } from "./data";
 import { dictionary } from "@/data/hmm/data/dictionary";
+import { NavBar } from "@/components/navbar";
 
 const columnHelper = createColumnHelper<any>();
 
@@ -1324,7 +1325,12 @@ function ChartPageVP({
 }
 
 function ChartPage(props: any) {
-  return <ChartPageVP />;
+  return (
+    <div>
+      <NavBar />
+      <ChartPageVP />
+    </div>
+  );
 }
 
 export default ChartPage;

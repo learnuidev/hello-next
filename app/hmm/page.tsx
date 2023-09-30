@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/icons";
 import { useState, useEffect } from "react";
 import { dictionary } from "@/data/hmm/data/dictionary";
-import { Music } from "@/components/Music";
-import { HanziMovieMethod as HanziMovieMethodPlay } from "./HanziMovieMethod";
+import { Music } from "@/components/music";
+import { HanziMovieMethod as HanziMovieMethodPlay } from "./hanzi-movie-method";
 
 import {
   places,
@@ -34,6 +34,7 @@ import {
   WordIcon,
   CloseIcon,
 } from "@/components/ui/icons";
+import { NavBar } from "@/components/navbar";
 
 const PageView = ({ view, setSelectedId }: any) => {
   switch (view) {
@@ -224,6 +225,7 @@ function ComponentEditor({ selectedId, setSelectedId }: any) {
   const actor = learnedActors.find((actor) => actor.id === selectedId);
   return (
     <div>
+      <NavBar />
       <div className="my-4 mx-8 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
         <div></div>
         <h1 className="space-x-2 flex flex-col items-center">

@@ -1,7 +1,8 @@
 // import Image from 'next/image'
 "use client";
 
-import { Editor } from "@/components/Editor";
+import { Editor } from "@/components/editor";
+import { NavBar } from "@/components/navbar";
 import { useState } from "react";
 
 export default function Home() {
@@ -13,7 +14,11 @@ export default function Home() {
   };
   return (
     <main className="">
-      <Editor content="Hello" id="test" />
+      <NavBar />
+
+      <div className="px-4 md:px-32 md:my-4">
+        <Editor content="Hello" id="test" />
+      </div>
     </main>
   );
 }

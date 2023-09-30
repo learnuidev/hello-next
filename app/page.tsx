@@ -30,9 +30,8 @@ export default function Home() {
           Nomad Method
         </h1>
 
-        <p className="text-xl font-extralight my-2 text-gray-400">
-          an interactive platform designed to help you learn mandarin by
-          exploring the world
+        <p className="text-xl font-extralight my-2 text-gray-400 px-8">
+          an interactive and immersive platform designed to help you learn mandarin by creatively exploring the world
         </p>
         <div className="flex justify-center my-8">
           <Link

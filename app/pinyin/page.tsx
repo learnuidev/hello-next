@@ -607,86 +607,6 @@ function ChartPageVP({
     return [];
   }, [totalCharacters, filters]);
 
-  const char = characterDictionary[selectedPinyin?.value || selectedPinyin];
-
-  const dict = dictionary;
-
-  const toggle = true;
-
-  const calcRowColorLegacy = (val: any) => {
-    return char?.examples.length
-      ? "bg-gray-200 dark:bg-gray-800 dark:text-white text-gray-800"
-      : toggle && val?.levels?.includes("aa")
-      ? val?.problemInitial
-        ? "text-blue-300 border-[1px] dark:border-yellow-300 border-dotted"
-        : "text-blue-300 border-[1px] dark:border-blue-300"
-      : toggle && val?.levels?.includes("oo")
-      ? // ? 'text-green-300 border-[1px] dark:border-green-300'
-        val?.tonguePos === "roof"
-        ? "text-violet-300 border-[1px] dark:border-red-300 border-dotted"
-        : val?.tonguePos === "middle"
-        ? val?.hiss
-          ? "text-violet-300 italic border-[1px] dark:border-orange-300 border-dotted"
-          : "text-violet-300 border-[1px] dark:border-orange-300 border-dotted"
-        : // : 'text-violet-300 border-[1px] dark:border-violet-300'
-        val?.tonguePos === "bottom"
-        ? val?.hiss
-          ? "text-violet-300 italic border-[1px] dark:border-orange-300 border-dotted"
-          : "text-violet-300 border-[1px] dark:border-orange-300 border-dotted"
-        : "text-violet-300 border-[1px] dark:border-violet-300"
-      : toggle &&
-        (val?.levels?.includes("a:compound-final") ||
-          val?.levels?.includes("a:nasal-final"))
-      ? val?.tonguePos === "roof"
-        ? "text-indigo-300 border-[1px] dark:border-red-300 border-dotted"
-        : val?.tonguePos === "middle"
-        ? val?.hiss
-          ? "text-indigo-300 italic border-[1px] dark:border-orange-300 border-dotted"
-          : "text-indigo-300 border-[1px] dark:border-orange-300 border-dotted"
-        : val?.tonguePos === "bottom"
-        ? val?.hiss
-          ? "text-indigo-300 italic border-[1px] dark:border-orange-300 border-dotted"
-          : "text-indigo-300 border-[1px] dark:border-orange-300 border-dotted"
-        : "text-indigo-300 border-[1px] dark:border-indigo-300"
-      : toggle &&
-        (val?.levels?.includes("e:compound-final") ||
-          val?.levels?.includes("e:nasal-final"))
-      ? val?.tonguePos === "roof"
-        ? "text-emerald-300 border-[1px] dark:border-red-300 border-dotted"
-        : val?.tonguePos === "middle"
-        ? val?.hiss
-          ? "text-emerald-300 italic border-[1px] dark:border-orange-300 border-dotted"
-          : "text-emerald-300 border-[1px] dark:border-orange-300 border-dotted"
-        : val?.tonguePos === "bottom"
-        ? val?.hiss
-          ? "text-emerald-300 italic border-[1px] dark:border-orange-300 border-dotted"
-          : "text-emerald-300 border-[1px] dark:border-orange-300 border-dotted"
-        : "text-emerald-300 border-[1px] dark:border-emerald-300"
-      : toggle &&
-        (val?.levels?.includes("o:compound-final") ||
-          val?.levels?.includes("o:nasal-final"))
-      ? val?.tonguePos === "roof"
-        ? "text-violet-400 border-[1px] dark:border-red-300 border-dotted"
-        : val?.tonguePos === "middle"
-        ? val?.hiss
-          ? "text-violet-400 italic border-[1px] dark:border-orange-300 border-dotted"
-          : "text-violet-400 border-[1px] dark:border-orange-300 border-dotted"
-        : val?.tonguePos === "bottom"
-        ? val?.hiss
-          ? "text-violet-400 italic border-[1px] dark:border-orange-300 border-dotted"
-          : "text-violet-400 border-[1px] dark:border-orange-300 border-dotted"
-        : "text-violet-400 border-[1px] dark:border-violet-400"
-      : toggle && val?.problemInitial
-      ? val?.tonguePos === "roof"
-        ? "text-red-300 border-[1px] dark:border-red-300 border-dotted"
-        : val?.tonguePos === "middle"
-        ? val?.hiss
-          ? "text-orange-300 italic border-[1px] dark:border-orange-300 border-dotted"
-          : "text-orange-300 border-[1px] dark:border-orange-300 border-dotted"
-        : "text-yellow-300 border-[1px] dark:border-yellow-300 border-dotted"
-      : "text-gray-600 dark:text-gray-400";
-  };
-
   const calcRowColor = (val: any, lesson?: any) => {
     if (lesson) {
       // SIMPLE FINALS ===
@@ -875,22 +795,22 @@ function ChartPageVP({
         val?.tonguePos === "roof" &&
         !filters.includes("problem-initial:roof")
       ) {
-        return "text-red-300 border-[1px] dark:border-red-300";
+        return "text-red-500  dark:border-red-300";
       }
       if (
         val?.tonguePos === "middle" &&
         !filters.includes("problem-initial:middle")
       ) {
         if (val.hiss) {
-          return "text-orange-300 border-[1px] dark:border-orange-300 italic";
+          return "text-orange-500 dark:border-orange-300 italic";
         }
-        return "text-orange-300 border-[1px] dark:border-orange-300";
+        return "text-orange-500  dark:border-orange-300";
       }
       if (
         val?.tonguePos === "bottom" &&
         !filters.includes("problem-initial:bottom")
       ) {
-        return "text-yellow-300 border-[1px] dark:border-yellow-300";
+        return "text-yellow-500  dark:border-yellow-300";
       }
     }
     // ======= SIMPLE FINAL STYLING =======
@@ -900,20 +820,20 @@ function ChartPageVP({
       filters.includes("a:simple-final")
     ) {
       // return 'text-cyan-200 border-[1px] dark:border-cyan-200 border-dotted'
-      return "text-cyan-200";
+      return "text-cyan-500";
     }
     if (
       val?.levels?.includes("a:compound-final") &&
       val?.levels?.includes("a:nasal-final") &&
       filters.includes("a:simple-final")
     ) {
-      return "text-cyan-200 border-[1px] dark:border-cyan-200 underline decoration-dotted";
+      return "text-cyan-500 dark:border-cyan-200 underline decoration-dotted";
     }
     if (
       val?.levels?.includes("a:compound-final") &&
       filters.includes("a:simple-final")
     ) {
-      return "text-cyan-200 border-[1px] dark:border-cyan-200";
+      return "text-cyan-500  dark:border-cyan-200";
     }
 
     // A ==== END
@@ -924,7 +844,7 @@ function ChartPageVP({
       filters.includes("e:simple-final")
     ) {
       // return 'text-emerald-300  border-[1px] dark:border-emerald-300 border-dotted'
-      return "text-emerald-300";
+      return "text-emerald-500";
     }
 
     if (
@@ -932,13 +852,13 @@ function ChartPageVP({
       val?.levels?.includes("e:nasal-final") &&
       filters.includes("e:simple-final")
     ) {
-      return "text-emerald-300 border-[1px] dark:border-emerald-300 underline decoration-dotted";
+      return "text-emerald-500 dark:border-emerald-300 underline decoration-dotted";
     }
     if (
       val?.levels?.includes("e:compound-final") &&
       filters.includes("e:simple-final")
     ) {
-      return "text-emerald-300 border-[1px] dark:border-emerald-300";
+      return "text-emerald-500 dark:border-emerald-300";
     }
 
     // E ==== END
@@ -948,7 +868,7 @@ function ChartPageVP({
       val?.levels?.includes("o:simple-final") &&
       filters.includes("o:simple-final")
     ) {
-      return "text-violet-400";
+      return "text-violet-500";
     }
 
     if (
@@ -956,14 +876,14 @@ function ChartPageVP({
       val?.levels?.includes("o:nasal-final") &&
       filters.includes("o:simple-final")
     ) {
-      return "text-violet-400 border-[1px] dark:border-violet-400 underline decoration-dotted";
+      return "text-violet-500 dark:border-violet-400 underline decoration-dotted";
     }
 
     if (
       val?.levels?.includes("o:compound-final") &&
       filters.includes("o:simple-final")
     ) {
-      return "text-violet-400 border-[1px] dark:border-violet-400";
+      return "text-violet-500 dark:border-violet-400";
     }
     // O ==== END
 
@@ -973,7 +893,7 @@ function ChartPageVP({
       filters.includes("i:simple-final")
     ) {
       // return 'text-indigo-300 border-[1px] dark:border-indigo-300 border-dotted'
-      return "text-lime-400";
+      return "text-lime-500";
     }
 
     if (
@@ -981,14 +901,14 @@ function ChartPageVP({
       val?.levels?.includes("i:nasal-final") &&
       filters.includes("i:simple-final")
     ) {
-      return "text-lime-400 border-[1px] dark:border-lime-400 underline decoration-dotted";
+      return "text-lime-500  dark:border-lime-400 underline decoration-dotted";
     }
 
     if (
       val?.levels?.includes("i:compound-final") &&
       filters.includes("i:simple-final")
     ) {
-      return "text-lime-400 border-[1px] dark:border-lime-400";
+      return "text-lime-500 dark:border-lime-400";
     }
     // I === END
 
@@ -997,7 +917,7 @@ function ChartPageVP({
       val?.levels?.includes("u:simple-final") &&
       filters.includes("u:simple-final")
     ) {
-      return "text-neutral-300";
+      return "text-neutral-500";
     }
 
     if (
@@ -1005,14 +925,14 @@ function ChartPageVP({
       val?.levels?.includes("u:nasal-final") &&
       filters.includes("u:simple-final")
     ) {
-      return "text-neutral-300 border-[1px] dark:border-neutral-300 underline decoration-dotted";
+      return "text-neutral-500 dark:border-neutral-300 underline decoration-dotted";
     }
 
     if (
       val?.levels?.includes("u:compound-final") &&
       filters.includes("u:simple-final")
     ) {
-      return "text-neutral-300 border-[1px] dark:border-neutral-300";
+      return "text-neutral-500 dark:border-neutral-300";
     }
     // U ==== END
     // Ü
@@ -1020,7 +940,7 @@ function ChartPageVP({
       val?.levels?.includes("ü:simple-final") &&
       filters.includes("ü:simple-final")
     ) {
-      return "text-fuchsia-300";
+      return "text-fuchsia-500";
     }
 
     if (
@@ -1028,26 +948,25 @@ function ChartPageVP({
       val?.levels?.includes("ü:nasal-final") &&
       filters.includes("ü:simple-final")
     ) {
-      return "text-fuchsia-300 border-[1px] dark:border-fuchsia-300 underline decoration-dotted";
+      return "text-fuchsia-500 dark:border-fuchsia-300 underline decoration-dotted";
     }
 
     if (
       val?.levels?.includes("ü:compound-final") &&
       filters.includes("ü:simple-final")
     ) {
-      return "text-fuchsia-300 border-[1px] dark:border-fuchsia-300";
+      return "text-fuchsia-500 dark:border-fuchsia-300";
     }
     // Ü ==== END
     // ======= SIMPLE FINAL STYLING END =======
     // return ''
     // return calcRowColorLegacy(val)
-    return !filters.length ? "dark:text-slate-400" : "dark:text-slate-500";
+    return !filters.length ? "dark:text-slate-400" : "dark:text-slate-500 text-slate-200";
   };
 
   return (
     <div className="dark:bg-black margin-auto w-full my-2 text-center flex flex-col items-center justify-center">
-      <div className="flex justify-between items-center w-full md:px-8 md:pl-16 my-4">
-        {children ? children : <div></div>}
+      <div className="flex justify-between items-center w-full md:px-20 mt-4 mb-8">
         {/* {filters?.includes('problem-initial') ? (
           <div className='text-3xl font-extralight text-slate-400 flex space-x-4'>
             <span>
@@ -1062,8 +981,8 @@ function ChartPageVP({
             <button
               className={`${
                 filters.includes("a:simple-final")
-                  ? "dark:text-slate-200"
-                  : "dark:text-slate-500"
+                  ? "dark:text-slate-200 text-slate-700"
+                  : "dark:text-slate-500 text-slate-200"
               } transition`}
               onClick={() => {
                 setFilter("a:simple-final");
@@ -1076,8 +995,8 @@ function ChartPageVP({
             <button
               className={`${
                 filters.includes("e:simple-final")
-                  ? "dark:text-slate-200"
-                  : "dark:text-slate-500"
+                  ? "dark:text-slate-200 text-slate-700"
+                  : "dark:text-slate-500 text-slate-200"
               } transition`}
               onClick={() => {
                 setFilter("e:simple-final");
@@ -1089,8 +1008,8 @@ function ChartPageVP({
             <button
               className={`${
                 filters.includes("o:simple-final")
-                  ? "dark:text-slate-200"
-                  : "dark:text-slate-500"
+                  ? "dark:text-slate-200 text-slate-700"
+                  : "dark:text-slate-500 text-slate-200"
               } transition`}
               onClick={() => {
                 setFilter("o:simple-final");
@@ -1102,8 +1021,8 @@ function ChartPageVP({
             <button
               className={`${
                 filters.includes("i:simple-final")
-                  ? "dark:text-slate-200"
-                  : "dark:text-slate-500"
+                  ? "dark:text-slate-200 text-slate-700"
+                  : "dark:text-slate-500 text-slate-200"
               } transition`}
               onClick={() => {
                 setFilter("i:simple-final");
@@ -1115,8 +1034,8 @@ function ChartPageVP({
             <button
               className={`${
                 filters.includes("u:simple-final")
-                  ? "dark:text-slate-200"
-                  : "dark:text-slate-500"
+                  ? "dark:text-slate-200 text-slate-700"
+                  : "dark:text-slate-500 text-slate-200"
               } transition`}
               onClick={() => {
                 setFilter("u:simple-final");
@@ -1128,8 +1047,8 @@ function ChartPageVP({
             <button
               className={`${
                 filters.includes("ü:simple-final")
-                  ? "dark:text-slate-200"
-                  : "dark:text-slate-500"
+                  ? "dark:text-slate-200 text-slate-700"
+                  : "dark:text-slate-500 text-slate-200"
               } transition`}
               onClick={() => {
                 setFilter("ü:simple-final");
@@ -1141,8 +1060,8 @@ function ChartPageVP({
             <button
               className={`${
                 filters.includes("problem-initial")
-                  ? "dark:text-slate-200"
-                  : "dark:text-slate-500"
+                  ? "dark:text-slate-200 text-slate-700"
+                  : "dark:text-slate-500 text-slate-200"
               } transition`}
               onClick={() => {
                 setFilter("problem-initial");

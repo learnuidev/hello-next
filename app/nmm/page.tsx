@@ -28,7 +28,10 @@ import {
 } from "@/data/hmm/data";
 
 // import { allWords as wordsArr, } from "@/data/hmm/data/v2";
-import { allWords as wordsArr, allChars as charsArr } from "@/data/hmm/data/v1000";
+import {
+  allWords as wordsArr,
+  allChars as charsArr,
+} from "@/data/hmm/data/v1000";
 import { actors } from "@/data/hmm/actors";
 
 import {
@@ -113,7 +116,7 @@ const PageView = ({ view, setSelectedId }: any) => {
             // return <p className='p-4'>{prop?.hanzi}</p>
             return (
               <button
-              key={`${prop.hanzi}-components-${idx}`}
+                key={`${prop.hanzi}-components-${idx}`}
                 onClick={() => {
                   setSelectedId(prop.hanzi);
                 }}
@@ -180,7 +183,7 @@ const PageView = ({ view, setSelectedId }: any) => {
     case "scenes":
       return (
         <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-         TODO
+          TODO
         </div>
       );
     default:
@@ -212,31 +215,37 @@ function ComponentEditor({ selectedId, setSelectedId }: any) {
     <div>
       <div className="my-4 mx-8 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
         <div></div>
-        <h1 className="space-x-2 flex flex-col items-center">
-          {dict?.pinyin ? (
-            <span
-              className={`items-center flex space-x-4 text-2xl font-bold ${calculateColor(
-                dict
-              )}`}
-            >
-              {" "}
-              <span>{dict?.sound ? <Music url={dict?.sound} /> : null} </span>
-              <span>
+
+        <div className="flex items-center justify-center flex-col">
+          <h1 className="space-x-2 flex flex-col items-center">
+            {dict?.pinyin ? (
+              <span
+                className={`items-center flex space-x-4 text-2xl font-bold ${calculateColor(
+                  dict
+                )}`}
+              >
                 {" "}
-                {dict?.pinyin} ({dict?.hanzi})
+                <span>{dict?.sound ? <Music url={dict?.sound} /> : null} </span>
+                <span>
+                  {" "}
+                  {dict?.pinyin} ({dict?.hanzi})
+                </span>
               </span>
-              <span>| </span>
-              <span className={`text-2xl dark:text-gray-400 font-light`}>
-                {dict?.en || actor?.actor}
+            ) : (
+              <span className={`text-3xl font-bold ${calculateColor(dict)}`}>
+                {" "}
+                {selectedId}
               </span>
+            )}
+          </h1>
+
+          <h2>
+            <span className={`text-xl text-gray-500 font-light`}>
+              {dict?.en || actor?.actor}
             </span>
-          ) : (
-            <span className={`text-3xl font-bold ${calculateColor(dict)}`}>
-              {" "}
-              {selectedId}
-            </span>
-          )}
-        </h1>
+          </h2>
+        </div>
+
         <button
           onClick={() => {
             setSelectedId(null);

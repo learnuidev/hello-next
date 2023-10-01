@@ -27,7 +27,8 @@ import {
   learnedPlaces,
 } from "@/data/hmm/data";
 
-import { allWords as wordsArr, allChars as charsArr } from "@/data/hmm/data/v2";
+// import { allWords as wordsArr, } from "@/data/hmm/data/v2";
+import { allWords as wordsArr, allChars as charsArr } from "@/data/hmm/data/v1000";
 import { actors } from "@/data/hmm/actors";
 
 import {
@@ -74,7 +75,7 @@ const PageView = ({ view, setSelectedId }: any) => {
             // return <p className='p-4'>{prop?.hanzi}</p>
             return (
               <button
-              key={`${JSON.stringify(prop)}-nomads`}
+                key={`${prop.id}-nomads`}
                 onClick={() => {
                   setSelectedId(prop.id);
                 }}
@@ -108,11 +109,11 @@ const PageView = ({ view, setSelectedId }: any) => {
     case "props":
       return (
         <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {propsArr.map((prop) => {
+          {propsArr.map((prop, idx) => {
             // return <p className='p-4'>{prop?.hanzi}</p>
             return (
               <button
-                key={`${JSON.stringify(prop)}-props`}
+              key={`${prop.hanzi}-components-${idx}`}
                 onClick={() => {
                   setSelectedId(prop.hanzi);
                 }}
@@ -132,11 +133,11 @@ const PageView = ({ view, setSelectedId }: any) => {
     case "characters":
       return (
         <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {charsArr.map((prop) => {
+          {charsArr.map((prop, idx) => {
             // return <p className='p-4'>{prop?.hanzi}</p>
             return (
               <button
-                key={`${JSON.stringify(prop)}-chars`}
+                key={`${prop.hanzi}-chars-${idx}`}
                 onClick={() => {
                   setSelectedId(prop.hanzi);
                 }}
@@ -155,11 +156,11 @@ const PageView = ({ view, setSelectedId }: any) => {
     case "words":
       return (
         <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {wordsArr.map((prop) => {
+          {wordsArr.map((prop, idx) => {
             // return <p className='p-4'>{prop?.hanzi}</p>
             return (
               <button
-              key={`${JSON.stringify(prop)}-words`}
+                key={`${prop.hanzi}-words-${idx}`}
                 onClick={() => {
                   setSelectedId(prop.hanzi);
                 }}
@@ -179,25 +180,7 @@ const PageView = ({ view, setSelectedId }: any) => {
     case "scenes":
       return (
         <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {wordsArr.map((prop) => {
-            // return <p className='p-4'>{prop?.hanzi}</p>
-            return (
-              <button
-              key={`${JSON.stringify(prop)}-stories`}
-                onClick={() => {
-                  setSelectedId(prop.hanzi);
-                }}
-                className={`${
-                  learnedWords.includes(prop?.hanzi)
-                    ? "dark:text-white text-gray-700"
-                    : "dark:text-gray-500 text-gray-200"
-                } dark:hover:text-white p-6 text-4xl transition`}
-                // className='dark:hover:text-white dark:text-gray-500 p-6 text-4xl'
-              >
-                {prop?.hanzi}
-              </button>
-            );
-          })}
+         TODO
         </div>
       );
     default:
@@ -288,7 +271,7 @@ function ComponentEditor({ selectedId, setSelectedId }: any) {
             </p>
           </div>
 
-          <div className="px-60 my-16 leading-[60px] tracking-wider">
+          <div className="md:px-60 my-16 leading-[60px] tracking-wider">
             {" "}
             {dict?.movie?.scene.split(" ").map((word: string) => {
               const first = word.slice(0, 3);
@@ -520,7 +503,7 @@ export default function HanziMovieMethod(props: any) {
           <p className="text-[8px] p-0 m-0">Stories</p>
         </button>
 
-        {/* <button
+        <button
           onClick={() => {
             setSelectedId(null);
             setView("characters");
@@ -533,7 +516,7 @@ export default function HanziMovieMethod(props: any) {
         >
           <CharacterIcon className="text-2xl" />
           <p className="text-[8px] p-0 m-0">Characters</p>
-        </button> */}
+        </button>
         <button
           onClick={() => {
             setSelectedId(null);

@@ -480,13 +480,13 @@ export function SearchPage() {
         </button>
       </div>
 
-      {addSuggestions?.length ? (
+      {/* {addSuggestions?.length ? (
         <div>
           <code>
             <pre>{JSON.stringify(addSuggestions, null, 2)}</pre>
           </code>
         </div>
-      ) : null}
+      ) : null} */}
 
       {nepaliQueryResult?.length ? (
         <div className="w-[740px] m-auto justify-center flex-col space-y-4">

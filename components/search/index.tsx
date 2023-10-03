@@ -2,26 +2,13 @@
 import React, { useMemo } from "react";
 import {
   CloudyIcon,
-  CloudyIcon as Header,
-  MandarinoIcon,
   MoonIcon,
   SearchIcon,
   SunRiseIcon,
 } from "@/components/ui/icons";
+import { Header } from "@/components/Header";
 import { useState, useEffect } from "react";
-// import { useLessonHistoryStore } from 'ui/pages/speak/useLessonHistory'
 
-import Link from "next/link";
-
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
 import { useQuery } from "@tanstack/react-query";
 import { pronounciationLessons } from "./pronuncation_data";
 
@@ -43,56 +30,9 @@ const indexOfAll = (str: any, w: any, res = [] as any): any => {
   return indexOfAll(str.slice(idx + 1), w, updatedRes);
 };
 
-const mockData = [
-  {
-    name: "Page A",
-    correct: 4000,
-    average: 2400,
-    incorrect: 2400,
-  },
-  {
-    name: "Page B",
-    correct: 3000,
-    average: 1398,
-    incorrect: 2210,
-  },
-  {
-    name: "Page C",
-    correct: 2000,
-    average: 9800,
-    incorrect: 2290,
-  },
-  {
-    name: "Page D",
-    correct: 2780,
-    average: 3908,
-    incorrect: 2000,
-  },
-  {
-    name: "Page E",
-    correct: 1890,
-    average: 4800,
-    incorrect: 2181,
-  },
-  {
-    name: "Page F",
-    correct: 2390,
-    average: 3800,
-    incorrect: 2500,
-  },
-  {
-    name: "Page G",
-    correct: 3490,
-    average: 4300,
-    incorrect: 2100,
-  },
-];
-
 const calcOutcome = (props: any) => {
   const { lesson, confidence, answer, expectedAnswer } = props;
 
-  // console.log('EXP', props?.expectedAnswer.replace(', ', '').replace('?', ''))
-  // console.log('PROPS', props)
   const expAns = expectedAnswer
     ?.replace(", ", "")
     ?.replace("?", "")
@@ -115,7 +55,6 @@ const calcOutcome = (props: any) => {
 };
 
 // palette used for chart: https://flatuicolors.com/palette/cn
-
 const useGetHistory = () => {
   const hist = [] as any;
   return useQuery(
@@ -232,111 +171,6 @@ const useGetHistory = () => {
   );
 };
 
-const PronuncationAnalyticsHeader = ({ children }: any) => {
-  return (
-    <Header className="dark:text-gray-300 text-center my-4 font-extrabold text-2xl">
-      {children}
-    </Header>
-  );
-};
-
-function PronunciationAnalytics({ children, data }: any) {
-  // const hist = useLessonHistoryStore((state: any) => state.history)
-
-  console.log("DATA", data);
-
-  if (!data) {
-    return <div>Loading</div>;
-  }
-
-  return (
-    <div className="mt-8">
-      {children}
-      <div className="flex flex-wrap">
-        <div className="block">
-          <Header className="ml-44 dark:text-gray-400 text-left my-4 font-bold text-sm">
-            Response Tally
-          </Header>
-          <BarChart
-            width={450}
-            height={200}
-            data={data}
-            margin={{
-              top: 0,
-              // right: 30,
-              // left: 20,
-              bottom: 0,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-
-            {/* <Bar dataKey='correct' stackId='a' fill='#ffffff' />
-            <Bar dataKey='incorrect' stackId='a' fill='#747d8c' /> */}
-            <Bar dataKey="correct" stackId="a" fill="#1e90ff" />
-            <Bar dataKey="incorrect" stackId="a" fill="#ff6b81" />
-          </BarChart>
-
-          {/* <div>{`${Array.isArray(data)}`}</div>
-      <div>{JSON.stringify(data)}</div> */}
-        </div>
-        <div className="block">
-          <Header className="ml-44 dark:text-gray-400 text-left my-4 font-bold text-sm">
-            Accuracy Rate
-          </Header>
-          <BarChart
-            width={450}
-            height={200}
-            data={data}
-            margin={{
-              top: 0,
-              // right: 30,
-              // left: 20,
-              bottom: 0,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-
-            <Bar dataKey="accuracy" stackId="a" fill="#2ed573" />
-          </BarChart>
-        </div>
-        <div className="block">
-          <Header className="ml-32 dark:text-gray-400 text-left my-4 font-bold text-sm">
-            Average Success Confidence
-          </Header>
-          <BarChart
-            width={450}
-            height={200}
-            data={data}
-            margin={{
-              top: 0,
-
-              bottom: 0,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="confidence" stackId="a" fill="#5352ed" />
-          </BarChart>
-
-          {/* <div>{`${Array.isArray(data)}`}</div>
-      <div>{JSON.stringify(data)}</div> */}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 const options = [
   { id: "chinese", value: "ordering food" },
   { id: "ai", value: "list flashcards" },
@@ -374,9 +208,6 @@ const options = [
   // 'butter chicken recipe'
 ];
 
-const giphySearchUrl =
-  "https://api.giphy.com/v1/gifs/search?api_key=ZjgduhBL2Am4ISt8WMJUEeKOiF7A4Rid&limit=20&offset=0&q=";
-
 export function SearchPage() {
   const [queryStatus, setQueryStatus] = useState("idle");
   const query = useSearchQueryStore((state) => state.query);
@@ -392,13 +223,6 @@ export function SearchPage() {
   const setNepaliQueryResult = useSearchQueryStore(
     (state) => state.setNepaliQueryResult
   );
-  // const [queryResult, setQueryResult] = useState<any>(null)
-  //   let installedApps = useAppsStore(state => state.apps)
-  //   let clearApps = useAppsStore(state => state.clearApps)
-
-  //   const nepaliWords203 = useWordsStore((s) => s?.words);
-
-  console.log("test");
 
   const option = options?.[index % options.length];
 
@@ -511,32 +335,18 @@ export function SearchPage() {
   };
 
   const handleSearch = () => {
-    console.log("SEARCH TYPE", determineSearch(query));
     if (query.match(regex)) {
       alert("Its a url");
     } else {
       search(query);
     }
-
-    // if (!query) {
-    //   alert(JSON.stringify(option))
-    // } else {
-    //   alert(query)
-    // }
   };
   const handleSearch2 = (context: any, query: any) => {
-    console.log("SEARCH TYPE", determineSearch(query));
     if (query.match(regex)) {
       alert("Its a url");
     } else {
       search2(context, query);
     }
-
-    // if (!query) {
-    //   alert(JSON.stringify(option))
-    // } else {
-    //   alert(query)
-    // }
   };
 
   const provideAddingLinks = (query: string) => {
@@ -591,8 +401,6 @@ export function SearchPage() {
     ];
   };
 
-  // const filteredNepaliWords = _filteredNepaliWords(nepaliWords203)
-
   const addSuggestions = useMemo(() => {
     if (query) {
       if (query.includes("ad")) {
@@ -612,8 +420,6 @@ export function SearchPage() {
   }, [query]);
 
   const { data } = useGetHistory();
-
-  // clearApps()
 
   return (
     <div className="grow mx-4 md:mx-24 flex flex-col">
@@ -636,7 +442,7 @@ export function SearchPage() {
 
       {queryResult?.length || nepaliQueryResult?.length ? null : (
         <div>
-          <Header className="text-black text-center dark:text-white text-6xl md:text-9xl mt-32 font-extrabold">
+          <Header className="text-black text-center dark:text-white text-6xl mt-32 font-extrabold">
             mandarin<span className="">o</span>
           </Header>
           <p className="text-gray-500 dark:text-gray-400 mb-12 leading-snug text-center text-md sm:text-2xl font-extralight tracking-wide">
@@ -659,8 +465,6 @@ export function SearchPage() {
               if (event?.keyCode === 13) {
                 if (option.value) {
                   handleSearch();
-                  // setStep('level')
-                  // console.log('NEXT STEP 2', event)
                 }
               }
             }}
@@ -684,43 +488,15 @@ export function SearchPage() {
         </div>
       ) : null}
 
-      {/* {queryStatus === 'success' ? (
-        nepaliQueryResult?.find(res => res?.resultScore === 1) ? null : (
-          <div className='w-[740px] m-auto justify-center flex-col space-y-4'>
-            <div className='mb-8'>
-              <p className='dark:text-gray-300 text-lg font-extralight'>
-                You dont have this word in the db. Would you like to add it?
-              </p>
-
-              <div className='flex flex-row space-x-4 my-4'>
-                <button className='flex space-x-2 items-center text-[14px] tracking-widest font-light uppercase bg-black text-white dark:text-gray-500 dark:hover:text-white hover:shadow-gray-300 hover:shadow-green-500 hover:border-green-500 shadow-2 shadow-md border-[1px] border-gray-400 dark:border-gray-800 px-4 py-2 rounded-full transition'>
-                  yes
-                </button>
-                <button className='flex space-x-2 items-center text-[14px] tracking-widest font-light uppercase bg-black text-white dark:text-gray-500 dark:hover:text-white hover:shadow-gray-300 hover:shadow-green-500 hover:border-green-500 shadow-2 shadow-md border-[1px] border-gray-400 dark:border-gray-800 px-4 py-2 rounded-full transition'>
-                  no
-                </button>
-              </div>
-            </div>
-          </div>
-        )
-      ) : null} */}
       {nepaliQueryResult?.length ? (
         <div className="w-[740px] m-auto justify-center flex-col space-y-4">
           {nepaliQueryResult
-            // ?.filter(item => {
-            //   return item?.dictionary
-            // })
-            // ?.filter((item: any) => {
-            //   return item?.types
-            // })
             ?.filter((item: any) => {
-              // return item?.types || item?.dictionary
-              // return item?.dictionary
               return true;
             })
-            ?.map((result: any) => {
+            ?.map((result: any, idx: number) => {
               return (
-                <div>
+                <div key={`${result?.nepali}-${idx}`}>
                   <div className="flex flex-col items-start justify-start">
                     <div className="flex justify-between w-full items-end">
                       <div
@@ -736,21 +512,23 @@ export function SearchPage() {
                               handleSearch2(result?.nepali, result?.nepali);
                             }}
                           >
-                            {result?.nepali.split("")?.map((item: string, idx: number) => {
-                              return (
-                                <span
-                                  key={`${item}-${idx}`}
-                                  className={`${
-                                    query?.includes(item)
-                                      ? // item?.includes(query)
-                                        "dark:text-white"
-                                      : ""
-                                  }`}
-                                >
-                                  {item}
-                                </span>
-                              );
-                            })}
+                            {result?.nepali
+                              .split("")
+                              ?.map((item: string, idx: number) => {
+                                return (
+                                  <span
+                                    key={`${item}-${idx}`}
+                                    className={`${
+                                      query?.includes(item)
+                                        ? // item?.includes(query)
+                                          "dark:text-white"
+                                        : ""
+                                    }`}
+                                  >
+                                    {item}
+                                  </span>
+                                );
+                              })}
                           </span>{" "}
                           <span className="text-gray-400">
                             {result?.nepaliRoman || result?.en}
@@ -760,9 +538,10 @@ export function SearchPage() {
 
                       <div className="flex flex-col items-end">
                         <div className="dark:text-gray-400 text-[12px] font-extralight space-x-4">
-                          {result?.types?.map((type: any) => {
+                          {result?.types?.map((type: any, idx: number) => {
                             return (
                               <span
+                                key={`${type?.hanzi}-${idx}`}
                                 role="a"
                                 onClick={() => {
                                   // alert(type.type)
@@ -795,40 +574,33 @@ export function SearchPage() {
                         </div>
                       </div>
                     </div>
-                    {/* <span>{result?.dictionary?.pinyin}</span> */}
+
                     <div className="text-md dark:text-gray-400 font-extralight">
                       {result?.en}
                     </div>
 
-                    {/* <div className='dark:text-gray-400 text-[12px] font-extralight space-x-4'>
-                   {result.types.map(type => {
-                     return <span> {type.type}</span>
-                   })}
-                 </div> */}
-
                     <div className="m-4 dark:text-gray-400 font-extralight grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
-                      {result?.dictionary?.examples?.map((example: any) => {
-                        return (
-                          <div>
-                            <span
-                              role="button"
-                              onClick={() => {
-                                setQuery(() => example?.hanzi);
-                                handleSearch2(example?.hanzi, example?.hanzi);
-                              }}
-                            >
-                              {example?.hanzi}
-                            </span>
-                            <p>{example?.pinyin}</p>
-                            <p>{example?.lit}</p>
-                            <p>{example?.en}</p>
-                          </div>
-                        );
-                      })}
+                      {result?.dictionary?.examples?.map(
+                        (example: any, idx: number) => {
+                          return (
+                            <div key={`${example?.hanzi}-${idx}`}>
+                              <span
+                                role="button"
+                                onClick={() => {
+                                  setQuery(() => example?.hanzi);
+                                  handleSearch2(example?.hanzi, example?.hanzi);
+                                }}
+                              >
+                                {example?.hanzi}
+                              </span>
+                              <p>{example?.pinyin}</p>
+                              <p>{example?.lit}</p>
+                              <p>{example?.en}</p>
+                            </div>
+                          );
+                        }
+                      )}
                     </div>
-                    {/* <div className='dark:text-gray-400 text-[12px] font-extralight'>
-                   {JSON.stringify(result)}
-                 </div> */}
                   </div>
 
                   <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
@@ -841,26 +613,17 @@ export function SearchPage() {
       {queryResult ? (
         <div className="w-[740px] m-auto justify-center flex-col space-y-4">
           {queryResult
-            // ?.filter(item => {
-            //   return item?.dictionary
-            // })
-            // ?.filter((item: any) => {
-            //   return item?.types
-            // })
             ?.filter((item: any) => {
-              // return item?.types || item?.dictionary
-              // return item?.dictionary
               return true;
             })
-            ?.map((result: any) => {
+            ?.map((result: any, idx: number) => {
               return (
-                <div>
+                <div key={`${result?.hanzi}-${idx}`}>
                   <div className="flex flex-col items-start justify-start">
                     <div className="flex justify-between w-full items-end">
                       <div
                         className="flex justify-between items-center space-x-[8px]"
                         w-full
-                        // mb-4
                       >
                         <div className="text-2xl font-extralight space-x-2 dark:text-gray-500">
                           <span
@@ -880,9 +643,10 @@ export function SearchPage() {
 
                       <div className="flex flex-col items-end">
                         <div className="dark:text-gray-400 text-[12px] font-extralight space-x-4">
-                          {result?.types?.map((type: any) => {
+                          {result?.types?.map((type: any, idx: number) => {
                             return (
                               <span
+                                key={`${type?.hanzi}-${idx}`}
                                 role="a"
                                 onClick={() => {
                                   // alert(type.type)
@@ -915,40 +679,33 @@ export function SearchPage() {
                         </div>
                       </div>
                     </div>
-                    {/* <span>{result?.dictionary?.pinyin}</span> */}
+
                     <div className="text-md dark:text-gray-400 font-extralight">
                       {result?.dictionary?.en}
                     </div>
 
-                    {/* <div className='dark:text-gray-400 text-[12px] font-extralight space-x-4'>
-                    {result.types.map(type => {
-                      return <span> {type.type}</span>
-                    })}
-                  </div> */}
-
                     <div className="m-4 dark:text-gray-400 font-extralight grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
-                      {result?.dictionary?.examples?.map((example: any) => {
-                        return (
-                          <div>
-                            <span
-                              role="button"
-                              onClick={() => {
-                                setQuery(() => example?.hanzi);
-                                handleSearch2(example?.hanzi, example?.hanzi);
-                              }}
-                            >
-                              {example?.hanzi}
-                            </span>
-                            <p>{example?.pinyin}</p>
-                            <p>{example?.lit}</p>
-                            <p>{example?.en}</p>
-                          </div>
-                        );
-                      })}
+                      {result?.dictionary?.examples?.map(
+                        (example: any, idx: number) => {
+                          return (
+                            <div key={`${example?.hanzi}-${idx}`}>
+                              <span
+                                role="button"
+                                onClick={() => {
+                                  setQuery(() => example?.hanzi);
+                                  handleSearch2(example?.hanzi, example?.hanzi);
+                                }}
+                              >
+                                {example?.hanzi}
+                              </span>
+                              <p>{example?.pinyin}</p>
+                              <p>{example?.lit}</p>
+                              <p>{example?.en}</p>
+                            </div>
+                          );
+                        }
+                      )}
                     </div>
-                    {/* <div className='dark:text-gray-400 text-[12px] font-extralight'>
-                    {JSON.stringify(result)}
-                  </div> */}
                   </div>
 
                   <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
@@ -957,33 +714,6 @@ export function SearchPage() {
             })}
         </div>
       ) : null}
-
-      {/* 
-      {!installedApps.length ? (
-        <div>
-          <h1 className='dark:text-gray-400 text-center my-8 text-xl font-extralight'>
-            you dont have any apps installed
-          </h1>
-
-          <Link
-            href={'/apps'}
-            className={`dark:text-gray-400 my-4 flex flex-col justify-center items-center hover:dark:text-white transition`}
-          >
-            <p className='p-0 m-0'>view apps</p>
-          </Link>
-        </div>
-      ) : null} */}
-      {/* 
-      <IsInstalled appId={'pronunciation'}>
-        <PronunciationAnalytics data={data}>
-          <PronuncationAnalyticsHeader>speak</PronuncationAnalyticsHeader>
-        </PronunciationAnalytics>
-      </IsInstalled>
-      <IsInstalled appId={'convos'}>
-        <PronunciationAnalytics data={data}>
-          <PronuncationAnalyticsHeader>convos</PronuncationAnalyticsHeader>
-        </PronunciationAnalytics>
-      </IsInstalled> */}
     </div>
   );
 }

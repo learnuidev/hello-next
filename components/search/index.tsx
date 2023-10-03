@@ -285,19 +285,19 @@ export function SearchPage() {
       ["word", "character", "pronoun", "conjunction", "verb"].includes(query)
     ) {
       // alert(query)
-      const resp = filterHmm(query)?.filter((item) =>
+      const resp = filterHmm(query)?.filter((item: any) =>
         item?.hanzi?.includes(context)
       );
       // const resp = filterHmm(query)
       // alert(JSON.stringify(resp))
-      setQueryResult(resp);
+      // setQueryResult(resp);
       setQueryStatus("success");
     } else {
       //  我爸爸在看电视
       // const res = await fetch(`${giphySearchUrl}${query}`)
       // const resp = await res.json()
-      const resp = parse(query);
-      setQueryResult(resp);
+      // const resp = parse(query);
+      // setQueryResult(resp);
       setQueryStatus("success");
     }
   };

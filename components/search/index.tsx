@@ -423,7 +423,7 @@ export function SearchPage() {
 
   return (
     <div className="grow mx-4 md:mx-24 flex flex-col">
-      <Header className="my-2 md:hidden text-center md:text-left text-black dark:text-gray-400 text-xl font-extralight">
+      {/* <Header className="my-2 md:hidden text-center md:text-left text-black dark:text-gray-400 text-xl font-extralight">
         good {getTimeOfDay}, vishal
       </Header>
 
@@ -438,7 +438,7 @@ export function SearchPage() {
             <DayIcon />
           </div>
         </div>
-      </div>
+      </div> */}
 
       {queryResult?.length || nepaliQueryResult?.length ? null : (
         <div>

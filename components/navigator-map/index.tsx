@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCatSpace } from "@fortawesome/sharp-solid-svg-icons/faCatSpace";
 
 export function NavigatorMap() {
-  if (config.mapboxApiKey) {
+  if (!config.mapboxApiKey) {
     return (
       <div className="flex items-center justify-center flex-col my-32">
         <FontAwesomeIcon className="text-8xl text-gray-200" icon={faCatSpace} />

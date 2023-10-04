@@ -42,11 +42,11 @@ export const Editor = ({
       TableOfContent,
     ],
     // content: content,
-    // content: JSON.parse(defaultContent),
-    content:
-      typeof window !== "undefined" && localStorage?.getItem(id)
-        ? JSON.parse(localStorage?.getItem(id) || defaultContent)
-        : content,
+    content: JSON.parse(defaultContent),
+    // content:
+    //   typeof window !== "undefined" && JSON.parse(localStorage?.getItem(id) || '')?.content?.length < 10
+    //     ? JSON.parse(defaultContent)
+    //     : JSON.parse(defaultContent),
     onUpdate: ({ editor }) => {
       if (id) {
         localStorage &&

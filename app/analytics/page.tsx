@@ -27,7 +27,7 @@ export default function Analytics() {
     <main className="">
       <NavBar />
 
-      <div>TODO</div>
+      <div className="flex justify-between items-center w-full px-4 md:px-40 md:my-4">TODO</div>
     </main>
   );
 }

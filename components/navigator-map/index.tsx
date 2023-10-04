@@ -4,8 +4,20 @@ import Map from "react-map-gl";
 
 import GeocoderControl from "./geocoder-control";
 import { config } from "@/lib/config";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCatSpace } from "@fortawesome/sharp-solid-svg-icons/faCatSpace";
 
 export function NavigatorMap() {
+  if (config.mapboxApiKey) {
+    return (
+      <div className="flex items-center justify-center flex-col my-32">
+        <FontAwesomeIcon className="text-8xl text-gray-200" icon={faCatSpace} />
+        <h1 className="text-center text-gray-300 my-4">
+          Map Box API Key Not Provided
+        </h1>
+      </div>
+    );
+  }
   return (
     <div id="map" className="relative">
       <Map

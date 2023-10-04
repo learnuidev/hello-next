@@ -26,7 +26,7 @@ export const NavBar = () => {
         <Link
           href="/courses"
           className={`transition ${
-            route === "/courses" ? "text-gray-800" : "text-gray-400"
+            route === "/courses" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faGraduationCap} />
@@ -34,7 +34,7 @@ export const NavBar = () => {
         <Link
           href="/pinyin"
           className={`transition ${
-            route === "/pinyin" ? "text-gray-800" : "text-gray-400"
+            route === "/pinyin" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faTableTree} />
@@ -42,7 +42,7 @@ export const NavBar = () => {
         <Link
           href="/analytics"
           className={`transition ${
-            route === "/analytics" ? "text-gray-800" : "text-gray-400"
+            route === "/analytics" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faChartColumn} />
@@ -62,7 +62,7 @@ export const NavBar = () => {
         <Link
           href="/nmm"
           className={`transition ${
-            route === "/nmm" ? "text-gray-800" : "text-gray-400"
+            route === "/nmm" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
           // className="text-gray-400 hover:text-gray-700 transition text-xl"
         >
@@ -71,7 +71,7 @@ export const NavBar = () => {
         <Link
           href="/map"
           className={`transition ${
-            route === "/map" ? "text-gray-800" : "text-gray-400"
+            route === "/map" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
           // className="text-gray-400 hover:text-gray-700 transition text-xl"
         >

@@ -422,7 +422,7 @@ function ComponentEditor({ selectedId, setSelectedId }: any) {
 
 export default function HanziMovieMethod(props: any) {
   const [selectedId, setSelectedId] = useState<any>("");
-  const [view, setView] = useState("words");
+  const [view, setView] = useState("characters");
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState(0);
 

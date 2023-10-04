@@ -24,11 +24,19 @@ export default function Home() {
     }
   };
   return (
+    // <main className="">
+    //   <NavBar />
+    //   {/* <NavigatorMap /> */}
+
+    //   <SearchPage />
+    // </main>
+
     <main className="">
       <NavBar />
-      {/* <NavigatorMap /> */}
 
-      <SearchPage />
+      <div className="px-4 md:px-32 md:my-4">
+        <Editor content="Hello" id="home page" />
+      </div>
     </main>
   );
 }

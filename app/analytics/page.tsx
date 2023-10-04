@@ -14,7 +14,7 @@ import { Link } from "@/components/link";
 import { SearchPage } from "@/components/search";
 import { NavigatorMap } from "@/components/navigator-map";
 
-export default function Home() {
+export default function Analytics() {
   const [isTocHidden, setIsTocHidden] = useState(false);
 
   const router = useRouter();
@@ -26,9 +26,8 @@ export default function Home() {
   return (
     <main className="">
       <NavBar />
-      {/* <NavigatorMap /> */}
 
-      <SearchPage />
+      <div>TODO</div>
     </main>
   );
 }

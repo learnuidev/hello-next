@@ -4,6 +4,15 @@ import Link from "next/link";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
+import {
+  faChartColumn,
+  faGraduationCap,
+  faMap,
+  faMapLocation,
+  faTable,
+  faTableTree,
+} from "@fortawesome/sharp-solid-svg-icons";
+import { NomadIcon } from "./ui/icons";
 
 export const NavBar = () => {
   return (
@@ -11,18 +20,24 @@ export const NavBar = () => {
       <Link href="/">
         <FontAwesomeIcon icon={faMountainSun} />
       </Link>
-      <div className="my-4 flex justify-center items-center space-x-4 text-xs md:text-md">
+      <div className="my-4 flex justify-center items-center space-x-8 text-xs md:text-md">
         <Link
           href="/courses"
-          className="text-gray-400 hover:text-gray-700 transition"
+          className="text-gray-400 hover:text-gray-700 transition text-xl"
         >
-          courses
+          <FontAwesomeIcon icon={faGraduationCap} />
         </Link>
         <Link
           href="/pinyin"
-          className="text-gray-400 hover:text-gray-700 transition"
+          className="text-gray-400 hover:text-gray-700 transition text-xl"
         >
-          pinyin
+          <FontAwesomeIcon icon={faTableTree} />
+        </Link>
+        <Link
+          href="/analytics"
+          className="text-gray-400 hover:text-gray-700 transition text-xl"
+        >
+          <FontAwesomeIcon icon={faChartColumn} />
         </Link>
         {/* <Link
           href="/features"
@@ -38,9 +53,15 @@ export const NavBar = () => {
         </Link> */}
         <Link
           href="/nmm"
-          className="text-gray-400 hover:text-gray-700 transition"
+          className="text-gray-400 hover:text-gray-700 transition text-xl"
         >
-          nmm
+          <NomadIcon />
+        </Link>
+        <Link
+          href="/map"
+          className="text-gray-400 hover:text-gray-700 transition text-xl"
+        >
+          <FontAwesomeIcon icon={faMapLocation} />
         </Link>
       </div>
     </div>

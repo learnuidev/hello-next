@@ -8,12 +8,14 @@ import {
 } from "@/components/ui/icons";
 import { Header } from "@/components/Header";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 import { useQuery } from "@tanstack/react-query";
 import { pronounciationLessons } from "./pronuncation_data";
 
 import { filterHmm, parse } from "@/data/hsk";
 import { useSearchQueryStore } from "./state";
+import { useRouter } from "next/navigation";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -421,6 +423,8 @@ export function SearchPage() {
 
   const { data } = useGetHistory();
 
+  const router = useRouter()
+
   return (
     <div className="grow mx-4 md:mx-24 flex flex-col">
       {/* <Header className="my-2 md:hidden text-center md:text-left text-black dark:text-gray-400 text-xl font-extralight">
@@ -626,15 +630,20 @@ export function SearchPage() {
                         w-full
                       >
                         <div className="text-2xl font-extralight space-x-2 dark:text-gray-500">
-                          <span
-                            role="button"
-                            onClick={() => {
-                              setQuery(() => result?.hanzi);
-                              handleSearch2(result?.hanzi, result?.hanzi);
-                            }}
+                          <Link
+                            // role="button"
+                            href={`/character/${result?.hanzi}`}
+                            target="_blank"
+
+                            // onClick={() => {
+                            //   setQuery(() => result?.hanzi);
+                            //   handleSearch2(result?.hanzi, result?.hanzi);
+
+                            //   router.push(`/character/${result?.hanzi}`)
+                            // }}
                           >
                             {result?.hanzi}
-                          </span>{" "}
+                          </Link>{" "}
                           <span className="text-gray-400">
                             {result?.dictionary?.pinyin}
                           </span>

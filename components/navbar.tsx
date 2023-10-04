@@ -9,6 +9,7 @@ import {
   faGraduationCap,
   faMap,
   faMapLocation,
+  faSearch,
   faTable,
   faTableTree,
 } from "@fortawesome/sharp-solid-svg-icons";
@@ -23,6 +24,14 @@ export const NavBar = () => {
         <FontAwesomeIcon icon={faMountainSun} />
       </Link>
       <div className="my-4 flex justify-center items-center space-x-8 text-xs md:text-md">
+        <Link
+          href="/search"
+          className={`transition ${
+            route === "/search" ? "text-gray-800" : "text-gray-200"
+          } hover:text-gray-700 transition text-xl`}
+        >
+          <FontAwesomeIcon icon={faSearch} />
+        </Link>
         <Link
           href="/courses"
           className={`transition ${

@@ -27,7 +27,7 @@ hello is an open-source notion-style based AI-powered language learning app.
 //npm.fontawesome.com/:_authToken=FONT_AWESOME_GOES_HERE
 ```
 
-3. Create `env.local` and add map box api
+3. Copy the template from `env.template` and save it in `env.local` and add map box api key
 
 ```sh
 NEXT_PUBLIC_MAPBOX_TOKEN=TOKEN_GOES_HERE

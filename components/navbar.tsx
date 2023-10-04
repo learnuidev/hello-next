@@ -17,8 +17,6 @@ import { usePathname, useRouter } from "next/navigation";
 
 export const NavBar = () => {
   const route = usePathname();
-
-  console.log("ROUTER", route);
   return (
     <div className="flex justify-between items-center w-full px-4 md:px-48 md:my-4">
       <Link href="/">

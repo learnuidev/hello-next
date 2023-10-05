@@ -42,8 +42,8 @@ export default function RootLayout({
         font-family: Helvetica, Arial, sans-serif;
       }
       #map {
-        width: 100vw;
-        height:100vh;
+        // width: 100vw;
+        // height:650px;
       }
       .control-panel {
         position: absolute;
@@ -60,6 +60,10 @@ export default function RootLayout({
         text-transform: uppercase;
         outline: none;
       }
+
+      .mapboxgl-ctrl-attrib-inner {
+        display: none;
+    }
       
       `}
     </style>

@@ -3,13 +3,14 @@
 hello is an open-source notion-style based AI-powered language learning app.
 
 
-## Key Stack
+## Tech Stack
 
 - UI Framework: NextJS
 - Styling: tailwindcss
 - UI Components: chadcn
 - Accessibility: radix UI
 - Editor: tiptap
+- Maps: Map Box
 
 ## Installation
 

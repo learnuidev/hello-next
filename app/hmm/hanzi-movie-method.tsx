@@ -124,7 +124,7 @@ export function HanziMovieMethod() {
     setLessonIndex(0);
   };
 
-  console.log("player ref", playerRef);
+
 
   if (!lesson) {
     return (

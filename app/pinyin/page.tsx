@@ -961,7 +961,9 @@ function ChartPageVP({
     // ======= SIMPLE FINAL STYLING END =======
     // return ''
     // return calcRowColorLegacy(val)
-    return !filters.length ? "dark:text-slate-400" : "dark:text-slate-500 text-slate-200";
+    return !filters.length
+      ? "dark:text-slate-400"
+      : "dark:text-slate-500 text-slate-200";
   };
 
   return (
@@ -1173,7 +1175,6 @@ function ChartPageVP({
                           <td
                             onClick={() => {
                               setSelectedPinyin(cell.getValue());
-                              console.log(cell.getValue());
                             }}
                             role="button"
                             key={cell.id}

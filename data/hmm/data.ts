@@ -471,5 +471,3 @@ export const wordsArr = wordsL1
   .map((item) => ({
     hanzi: item,
   }));
-
-// console.log('PROPS', propsArr)

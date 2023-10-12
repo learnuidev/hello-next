@@ -70,8 +70,6 @@ const useGetHistory = () => {
           .map((item: any) => {
             const lessonIndex = item.lessonId.split("")[0];
 
-            // console.log('LESSON INDEX', lessonIndex)
-
             return {
               ...item,
               lessonIndex,
@@ -83,8 +81,6 @@ const useGetHistory = () => {
                 pronounciationLesson?.id === res?.lessonId
             );
 
-            // console.log('LESSON', lesson)
-            // // const lesson = {}
             const resp = {
               // ...res,
               name: `Lesson ${res?.lessonIndex}`,
@@ -103,7 +99,6 @@ const useGetHistory = () => {
             return resp;
           })
           .reduce((acc: any, curr: any) => {
-            // console.log('CURR', curr)
             if (acc?.[curr?.lessonIndex]) {
               if (curr?.outcome === "success") {
                 return {
@@ -148,7 +143,6 @@ const useGetHistory = () => {
             }
           }, {});
 
-        // console.log('HIST 2', hist2)
         return Object.values(hist2)
           .sort((a: any, b: any) => a?.lessonIndex - b?.lessonIndex)
           .map((item: any) => {
@@ -423,7 +417,7 @@ export function SearchPage() {
 
   const { data } = useGetHistory();
 
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <div className="grow mx-4 md:mx-24 flex flex-col">

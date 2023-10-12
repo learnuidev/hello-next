@@ -2,7 +2,6 @@ import { TextSelection } from "@tiptap/pm/state";
 
 /* eslint-disable */
 export const ToCItem = ({ item, onItemClick }: any) => {
-  console.log("LEVEL", item);
   return (
     <div
       className={`toc--item toc--item--level_${item.level}`}

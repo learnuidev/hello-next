@@ -5165,18 +5165,7 @@ export const parse = (str: string) => {
           types: [],
         } as any;
 
-        // console.log('RES', res)
-
         if (hmm.length) {
-          // console.log('HMM', hmm)
-          // res.hmm = hmm
-          // res.types.push({
-          //   type: 'hmm',
-          //   // hanzi: hmm[0]?.item?.hanzi,
-          //   // hskLevel: hmm[0]?.item?.hskLevels,
-          //   hmmIndex: hmm[0]?.idx
-          // })
-
           res.hmmCharacterLevel = hmm[0]?.idx;
         }
 
@@ -5185,11 +5174,8 @@ export const parse = (str: string) => {
           .filter(Boolean);
 
         if (isVerb.length) {
-          // return res
           res.types.push({
             type: "verb",
-            // hanzi: isVerb[0]?.item?.hanzi,
-            // verbIndex: isVerb[0]?.idx
           });
         }
 
@@ -5371,8 +5357,6 @@ export const parse = (str: string) => {
         if (isMeasure.length) {
           res.types.push({
             type: "measure",
-            // hanzi: isMeasure[0]?.item?.hanzi,
-            // measureIndex: isMeasure[0]?.idx
           });
         }
 
@@ -5382,10 +5366,7 @@ export const parse = (str: string) => {
 
         return res;
       } else {
-        console.log("DICTIONARY", dictionary);
         const isInDictionary = props.en?.includes(str?.toLocaleLowerCase());
-
-        console.log("IS IN", isInDictionary);
 
         if (isInDictionary) {
           return props;
@@ -5402,8 +5383,6 @@ export const parse = (str: string) => {
     .filter(
       (word, idx, ctx) => ctx.findIndex((v) => v.hanzi === word?.hanzi) === idx
     );
-
-  console.log("PARSED", allCharsyo);
 
   return allCharsyo;
 };
@@ -5422,5 +5401,4 @@ export const filterHmm = (str: any) => {
     default:
       return allNouns;
   }
-  // return allNouns
 };

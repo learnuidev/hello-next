@@ -5382,13 +5382,10 @@ export const parse = (str: string) => {
 
         return res;
       } else {
+        console.log("DICTIONARY", dictionary);
+        const isInDictionary = props.en?.includes(str?.toLocaleLowerCase());
 
-        console.log("DICTIONARY", dictionary)
-        const isInDictionary = props.en?.includes(
-          str?.toLocaleLowerCase()
-        );
-
-        console.log("IS IN", isInDictionary)
+        console.log("IS IN", isInDictionary);
 
         if (isInDictionary) {
           return props;
@@ -5401,6 +5398,7 @@ export const parse = (str: string) => {
     .filter((word, idx, ctx) => Boolean(word?.hanzi))
     // .filter((word, idx, ctx) => Boolean(word?.hanzi))
     .sort((a, b) => a.startingIndex - b.startingIndex)
+    ?.sort((a, b) => a?.hmmCharacterLevel - b?.hmmCharacterLevel)
     .filter(
       (word, idx, ctx) => ctx.findIndex((v) => v.hanzi === word?.hanzi) === idx
     );

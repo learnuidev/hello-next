@@ -2,9178 +2,12236 @@
 // 3050
 export const allChars = [
   {
-    hanzi: '一'
+      "hanzi": "一",
+      "count": 2812
   },
   {
-    hanzi: '二'
+      "hanzi": "二",
+      "count": 95
   },
   {
-    hanzi: '三'
+      "hanzi": "三",
+      "count": 181
   },
   {
-    hanzi: '十'
+      "hanzi": "十",
+      "count": 291
   },
   {
-    hanzi: '干'
+      "hanzi": "干",
+      "count": 98
   },
   {
-    hanzi: '半'
+      "hanzi": "半",
+      "count": 72
   },
   {
-    hanzi: '人'
+      "hanzi": "人",
+      "count": 1671
   },
   {
-    hanzi: '从'
+      "hanzi": "从",
+      "count": 229
   },
   {
-    hanzi: '个'
+      "hanzi": "个",
+      "count": 1820
   },
   {
-    hanzi: '入'
+      "hanzi": "入",
+      "count": 106
   },
   {
-    hanzi: '什'
+      "hanzi": "什",
+      "count": 390
   },
   {
-    hanzi: '午'
+      "hanzi": "午",
+      "count": 96
   },
   {
-    hanzi: '年'
+      "hanzi": "年",
+      "count": 564
   },
   {
-    hanzi: '口'
+      "hanzi": "口",
+      "count": 159
   },
   {
-    hanzi: '中'
+      "hanzi": "中",
+      "count": 663
   },
   {
-    hanzi: '叫'
+      "hanzi": "叫",
+      "count": 88
   },
   {
-    hanzi: '八'
+      "hanzi": "八",
+      "count": 40
   },
   {
-    hanzi: '只'
+      "hanzi": "只",
+      "count": 332
   },
   {
-    hanzi: '介'
+      "hanzi": "介",
+      "count": 31
   },
   {
-    hanzi: '儿'
+      "hanzi": "儿",
+      "count": 476
   },
   {
-    hanzi: '四'
+      "hanzi": "四",
+      "count": 85
   },
   {
-    hanzi: '兄'
+      "hanzi": "兄",
+      "count": 15
   },
   {
-    hanzi: '兑'
+      "hanzi": "兑",
+      "count": 4
   },
   {
-    hanzi: '说'
+      "hanzi": "说",
+      "count": 616
   },
   {
-    hanzi: '计'
+      "hanzi": "计",
+      "count": 101
   },
   {
-    hanzi: '认'
+      "hanzi": "认",
+      "count": 194
   },
   {
-    hanzi: '识'
+      "hanzi": "识",
+      "count": 88
   },
   {
-    hanzi: '马'
+      "hanzi": "马",
+      "count": 137
   },
   {
-    hanzi: '吗'
+      "hanzi": "吗",
+      "count": 430
   },
   {
-    hanzi: '骂'
+      "hanzi": "骂",
+      "count": 16
   },
   {
-    hanzi: '乙'
+      "hanzi": "乙",
+      "count": 2
   },
   {
-    hanzi: '乞'
+      "hanzi": "乞",
+      "count": 2
   },
   {
-    hanzi: '吃'
+      "hanzi": "吃",
+      "count": 532
   },
   {
-    hanzi: '气'
+      "hanzi": "气",
+      "count": 212
   },
   {
-    hanzi: '飞'
+      "hanzi": "飞",
+      "count": 105
   },
   {
-    hanzi: '况'
+      "hanzi": "况",
+      "count": 46
   },
   {
-    hanzi: '日'
+      "hanzi": "日",
+      "count": 150
   },
   {
-    hanzi: '旧'
+      "hanzi": "旧",
+      "count": 24
   },
   {
-    hanzi: '旦'
+      "hanzi": "旦",
+      "count": 8
   },
   {
-    hanzi: '但'
+      "hanzi": "但",
+      "count": 245
   },
   {
-    hanzi: '早'
+      "hanzi": "早",
+      "count": 183
   },
   {
-    hanzi: '唱'
+      "hanzi": "唱",
+      "count": 60
   },
   {
-    hanzi: '电'
+      "hanzi": "电",
+      "count": 291
   },
   {
-    hanzi: '七'
+      "hanzi": "七",
+      "count": 38
   },
   {
-    hanzi: '化'
+      "hanzi": "化",
+      "count": 85
   },
   {
-    hanzi: '白'
+      "hanzi": "白",
+      "count": 109
   },
   {
-    hanzi: '百'
+      "hanzi": "百",
+      "count": 73
   },
   {
-    hanzi: '今'
+      "hanzi": "今",
+      "count": 450
   },
   {
-    hanzi: '千'
+      "hanzi": "千",
+      "count": 61
   },
   {
-    hanzi: '舌'
+      "hanzi": "舌",
+      "count": 7
   },
   {
-    hanzi: '话'
+      "hanzi": "话",
+      "count": 332
   },
   {
-    hanzi: '活'
+      "hanzi": "活",
+      "count": 162
   },
   {
-    hanzi: '乱'
+      "hanzi": "乱",
+      "count": 23
   },
   {
-    hanzi: '汽'
+      "hanzi": "汽",
+      "count": 33
   },
   {
-    hanzi: '月'
+      "hanzi": "月",
+      "count": 154
   },
   {
-    hanzi: '用'
+      "hanzi": "用",
+      "count": 266
   },
   {
-    hanzi: '胖'
+      "hanzi": "胖",
+      "count": 21
   },
   {
-    hanzi: '朋'
+      "hanzi": "朋",
+      "count": 184
   },
   {
-    hanzi: '明'
+      "hanzi": "明",
+      "count": 246
   },
   {
-    hanzi: '习'
+      "hanzi": "习",
+      "count": 169
   },
   {
-    hanzi: '句'
+      "hanzi": "句",
+      "count": 39
   },
   {
-    hanzi: '勺'
+      "hanzi": "勺",
+      "count": 11
   },
   {
-    hanzi: '的'
+      "hanzi": "的",
+      "count": 4253
   },
   {
-    hanzi: '了'
+      "hanzi": "了",
+      "count": 2552
   },
   {
-    hanzi: '子'
+      "hanzi": "子",
+      "count": 725
   },
   {
-    hanzi: '寸'
+      "hanzi": "寸",
+      "count": 6
   },
   {
-    hanzi: '时'
+      "hanzi": "时",
+      "count": 530
   },
   {
-    hanzi: '过'
+      "hanzi": "过",
+      "count": 383
   },
   {
-    hanzi: '付'
+      "hanzi": "付",
+      "count": 21
   },
   {
-    hanzi: '讨'
+      "hanzi": "讨",
+      "count": 25
   },
   {
-    hanzi: '才'
+      "hanzi": "才",
+      "count": 174
   },
   {
-    hanzi: '牙'
+      "hanzi": "牙",
+      "count": 10
   },
   {
-    hanzi: '卜'
+      "hanzi": "卜",
+      "count": 0
   },
   {
-    hanzi: '上'
+      "hanzi": "上",
+      "count": 872
   },
   {
-    hanzi: '下'
+      "hanzi": "下",
+      "count": 547
   },
   {
-    hanzi: '卡'
+      "hanzi": "卡",
+      "count": 13
   },
   {
-    hanzi: '吓'
+      "hanzi": "吓",
+      "count": 24
   },
   {
-    hanzi: '占'
+      "hanzi": "占",
+      "count": 6
   },
   {
-    hanzi: '点'
+      "hanzi": "点",
+      "count": 366
   },
   {
-    hanzi: '让'
+      "hanzi": "让",
+      "count": 168
   },
   {
-    hanzi: '止'
+      "hanzi": "止",
+      "count": 14
   },
   {
-    hanzi: '正'
+      "hanzi": "正",
+      "count": 109
   },
   {
-    hanzi: '是'
+      "hanzi": "是",
+      "count": 1749
   },
   {
-    hanzi: '目'
+      "hanzi": "目",
+      "count": 61
   },
   {
-    hanzi: '自'
+      "hanzi": "自",
+      "count": 326
   },
   {
-    hanzi: '面'
+      "hanzi": "面",
+      "count": 328
   },
   {
-    hanzi: '身'
+      "hanzi": "身",
+      "count": 121
   },
   {
-    hanzi: '谢'
+      "hanzi": "谢",
+      "count": 25
   },
   {
-    hanzi: '弋'
+      "hanzi": "弋",
+      "count": 0
   },
   {
-    hanzi: '代'
+      "hanzi": "代",
+      "count": 55
   },
   {
-    hanzi: '戈'
+      "hanzi": "戈",
+      "count": 0
   },
   {
-    hanzi: '手'
+      "hanzi": "手",
+      "count": 217
   },
   {
-    hanzi: '我'
+      "hanzi": "我",
+      "count": 2596
   },
   {
-    hanzi: '或'
+      "hanzi": "或",
+      "count": 20
   },
   {
-    hanzi: '看'
+      "hanzi": "看",
+      "count": 461
   },
   {
-    hanzi: '担'
+      "hanzi": "担",
+      "count": 44
   },
   {
-    hanzi: '拍'
+      "hanzi": "拍",
+      "count": 39
   },
   {
-    hanzi: '提'
+      "hanzi": "提",
+      "count": 64
   },
   {
-    hanzi: '找'
+      "hanzi": "找",
+      "count": 103
   },
   {
-    hanzi: '木'
+      "hanzi": "木",
+      "count": 19
   },
   {
-    hanzi: '本'
+      "hanzi": "本",
+      "count": 144
   },
   {
-    hanzi: '体'
+      "hanzi": "体",
+      "count": 113
   },
   {
-    hanzi: '末'
+      "hanzi": "末",
+      "count": 23
   },
   {
-    hanzi: '米'
+      "hanzi": "米",
+      "count": 47
   },
   {
-    hanzi: '来'
+      "hanzi": "来",
+      "count": 899
   },
   {
-    hanzi: '呆'
+      "hanzi": "呆",
+      "count": 8
   },
   {
-    hanzi: '休'
+      "hanzi": "休",
+      "count": 53
   },
   {
-    hanzi: '桌'
+      "hanzi": "桌",
+      "count": 68
   },
   {
-    hanzi: '相'
+      "hanzi": "相",
+      "count": 121
   },
   {
-    hanzi: '禾'
+      "hanzi": "禾",
+      "count": 0
   },
   {
-    hanzi: '和'
+      "hanzi": "和",
+      "count": 443
   },
   {
-    hanzi: '种'
+      "hanzi": "种",
+      "count": 162
   },
   {
-    hanzi: '香'
+      "hanzi": "香",
+      "count": 22
   },
   {
-    hanzi: '几'
+      "hanzi": "几",
+      "count": 224
   },
   {
-    hanzi: '机'
+      "hanzi": "机",
+      "count": 264
   },
   {
-    hanzi: '心'
+      "hanzi": "心",
+      "count": 280
   },
   {
-    hanzi: '想'
+      "hanzi": "想",
+      "count": 479
   },
   {
-    hanzi: '息'
+      "hanzi": "息",
+      "count": 87
   },
   {
-    hanzi: '总'
+      "hanzi": "总",
+      "count": 126
   },
   {
-    hanzi: '怕'
+      "hanzi": "怕",
+      "count": 42
   },
   {
-    hanzi: '己'
+      "hanzi": "己",
+      "count": 234
   },
   {
-    hanzi: '记'
+      "hanzi": "记",
+      "count": 74
   },
   {
-    hanzi: '已'
+      "hanzi": "已",
+      "count": 171
   },
   {
-    hanzi: '包'
+      "hanzi": "包",
+      "count": 159
   },
   {
-    hanzi: '土'
+      "hanzi": "土",
+      "count": 29
   },
   {
-    hanzi: '坐'
+      "hanzi": "坐",
+      "count": 96
   },
   {
-    hanzi: '吐'
+      "hanzi": "吐",
+      "count": 6
   },
   {
-    hanzi: '肚'
+      "hanzi": "肚",
+      "count": 10
   },
   {
-    hanzi: '在'
+      "hanzi": "在",
+      "count": 1225
   },
   {
-    hanzi: '走'
+      "hanzi": "走",
+      "count": 181
   },
   {
-    hanzi: '起'
+      "hanzi": "起",
+      "count": 379
   },
   {
-    hanzi: '不'
+      "hanzi": "不",
+      "count": 1602
   },
   {
-    hanzi: '还'
+      "hanzi": "还",
+      "count": 392
   },
   {
-    hanzi: '坏'
+      "hanzi": "坏",
+      "count": 67
   },
   {
-    hanzi: '杯'
+      "hanzi": "杯",
+      "count": 43
   },
   {
-    hanzi: '么'
+      "hanzi": "么",
+      "count": 548
   },
   {
-    hanzi: '公'
+      "hanzi": "公",
+      "count": 366
   },
   {
-    hanzi: '台'
+      "hanzi": "台",
+      "count": 62
   },
   {
-    hanzi: '去'
+      "hanzi": "去",
+      "count": 696
   },
   {
-    hanzi: '丢'
+      "hanzi": "丢",
+      "count": 29
   },
   {
-    hanzi: '法'
+      "hanzi": "法",
+      "count": 204
   },
   {
-    hanzi: '寺'
+      "hanzi": "寺",
+      "count": 0
   },
   {
-    hanzi: '等'
+      "hanzi": "等",
+      "count": 101
   },
   {
-    hanzi: '门'
+      "hanzi": "门",
+      "count": 158
   },
   {
-    hanzi: '们'
+      "hanzi": "们",
+      "count": 1138
   },
   {
-    hanzi: '问'
+      "hanzi": "问",
+      "count": 174
   },
   {
-    hanzi: '间'
+      "hanzi": "间",
+      "count": 201
   },
   {
-    hanzi: '简'
+      "hanzi": "简",
+      "count": 40
   },
   {
-    hanzi: '司'
+      "hanzi": "司",
+      "count": 233
   },
   {
-    hanzi: '词'
+      "hanzi": "词",
+      "count": 23
   },
   {
-    hanzi: '母'
+      "hanzi": "母",
+      "count": 93
   },
   {
-    hanzi: '每'
+      "hanzi": "每",
+      "count": 307
   },
   {
-    hanzi: '也'
+      "hanzi": "也",
+      "count": 265
   },
   {
-    hanzi: '他'
+      "hanzi": "他",
+      "count": 1341
   },
   {
-    hanzi: '地'
+      "hanzi": "地",
+      "count": 347
   },
   {
-    hanzi: '小'
+      "hanzi": "小",
+      "count": 569
   },
   {
-    hanzi: '东'
+      "hanzi": "东",
+      "count": 144
   },
   {
-    hanzi: '尔'
+      "hanzi": "尔",
+      "count": 5
   },
   {
-    hanzi: '你'
+      "hanzi": "你",
+      "count": 1421
   },
   {
-    hanzi: '您'
+      "hanzi": "您",
+      "count": 33
   },
   {
-    hanzi: '大'
+      "hanzi": "大",
+      "count": 701
   },
   {
-    hanzi: '太'
+      "hanzi": "太",
+      "count": 279
   },
   {
-    hanzi: '犬'
+      "hanzi": "犬",
+      "count": 0
   },
   {
-    hanzi: '哭'
+      "hanzi": "哭",
+      "count": 26
   },
   {
-    hanzi: '臭'
+      "hanzi": "臭",
+      "count": 12
   },
   {
-    hanzi: '然'
+      "hanzi": "然",
+      "count": 214
   },
   {
-    hanzi: '狗'
+      "hanzi": "狗",
+      "count": 71
   },
   {
-    hanzi: '决'
+      "hanzi": "决",
+      "count": 71
   },
   {
-    hanzi: '快'
+      "hanzi": "快",
+      "count": 160
   },
   {
-    hanzi: '块'
+      "hanzi": "块",
+      "count": 49
   },
   {
-    hanzi: '羊'
+      "hanzi": "羊",
+      "count": 20
   },
   {
-    hanzi: '着'
+      "hanzi": "着",
+      "count": 219
   },
   {
-    hanzi: '样'
+      "hanzi": "样",
+      "count": 246
   },
   {
-    hanzi: '美'
+      "hanzi": "美",
+      "count": 143
   },
   {
-    hanzi: '力'
+      "hanzi": "力",
+      "count": 135
   },
   {
-    hanzi: '加'
+      "hanzi": "加",
+      "count": 108
   },
   {
-    hanzi: '边'
+      "hanzi": "边",
+      "count": 129
   },
   {
-    hanzi: '办'
+      "hanzi": "办",
+      "count": 90
   },
   {
-    hanzi: '为'
+      "hanzi": "为",
+      "count": 446
   },
   {
-    hanzi: '另'
+      "hanzi": "另",
+      "count": 31
   },
   {
-    hanzi: '云'
+      "hanzi": "云",
+      "count": 16
   },
   {
-    hanzi: '运'
+      "hanzi": "运",
+      "count": 95
   },
   {
-    hanzi: '动'
+      "hanzi": "动",
+      "count": 264
   },
   {
-    hanzi: '会'
+      "hanzi": "会",
+      "count": 666
   },
   {
-    hanzi: '丁'
+      "hanzi": "丁",
+      "count": 0
   },
   {
-    hanzi: '打'
+      "hanzi": "打",
+      "count": 219
   },
   {
-    hanzi: '可'
+      "hanzi": "可",
+      "count": 452
   },
   {
-    hanzi: '哥'
+      "hanzi": "哥",
+      "count": 70
   },
   {
-    hanzi: '河'
+      "hanzi": "河",
+      "count": 27
   },
   {
-    hanzi: '奇'
+      "hanzi": "奇",
+      "count": 18
   },
   {
-    hanzi: '骑'
+      "hanzi": "骑",
+      "count": 20
   },
   {
-    hanzi: '椅'
+      "hanzi": "椅",
+      "count": 8
   },
   {
-    hanzi: '以'
+      "hanzi": "以",
+      "count": 584
   },
   {
-    hanzi: '内'
+      "hanzi": "内",
+      "count": 57
   },
   {
-    hanzi: '肉'
+      "hanzi": "肉",
+      "count": 54
   },
   {
-    hanzi: '两'
+      "hanzi": "两",
+      "count": 171
   },
   {
-    hanzi: '再'
+      "hanzi": "再",
+      "count": 120
   },
   {
-    hanzi: '同'
+      "hanzi": "同",
+      "count": 182
   },
   {
-    hanzi: '周'
+      "hanzi": "周",
+      "count": 65
   },
   {
-    hanzi: '王'
+      "hanzi": "王",
+      "count": 34
   },
   {
-    hanzi: '全'
+      "hanzi": "全",
+      "count": 122
   },
   {
-    hanzi: '主'
+      "hanzi": "主",
+      "count": 93
   },
   {
-    hanzi: '住'
+      "hanzi": "住",
+      "count": 97
   },
   {
-    hanzi: '注'
+      "hanzi": "注",
+      "count": 48
   },
   {
-    hanzi: '玉'
+      "hanzi": "玉",
+      "count": 7
   },
   {
-    hanzi: '国'
+      "hanzi": "国",
+      "count": 598
   },
   {
-    hanzi: '回'
+      "hanzi": "回",
+      "count": 211
   },
   {
-    hanzi: '因'
+      "hanzi": "因",
+      "count": 157
   },
   {
-    hanzi: '嗯'
+      "hanzi": "嗯",
+      "count": 10
   },
   {
-    hanzi: '行'
+      "hanzi": "行",
+      "count": 250
   },
   {
-    hanzi: '得'
+      "hanzi": "得",
+      "count": 535
   },
   {
-    hanzi: '往'
+      "hanzi": "往",
+      "count": 74
   },
   {
-    hanzi: '金'
+      "hanzi": "金",
+      "count": 39
   },
   {
-    hanzi: '钟'
+      "hanzi": "钟",
+      "count": 54
   },
   {
-    hanzi: '天'
+      "hanzi": "天",
+      "count": 860
   },
   {
-    hanzi: '关'
+      "hanzi": "关",
+      "count": 116
   },
   {
-    hanzi: '送'
+      "hanzi": "送",
+      "count": 51
   },
   {
-    hanzi: '开'
+      "hanzi": "开",
+      "count": 353
   },
   {
-    hanzi: '算'
+      "hanzi": "算",
+      "count": 78
   },
   {
-    hanzi: '并'
+      "hanzi": "并",
+      "count": 27
   },
   {
-    hanzi: '耳'
+      "hanzi": "耳",
+      "count": 5
   },
   {
-    hanzi: '闻'
+      "hanzi": "闻",
+      "count": 20
   },
   {
-    hanzi: '联'
+      "hanzi": "联",
+      "count": 41
   },
   {
-    hanzi: '系'
+      "hanzi": "系",
+      "count": 55
   },
   {
-    hanzi: '女'
+      "hanzi": "女",
+      "count": 229
   },
   {
-    hanzi: '妈'
+      "hanzi": "妈",
+      "count": 158
   },
   {
-    hanzi: '好'
+      "hanzi": "好",
+      "count": 777
   },
   {
-    hanzi: '始'
+      "hanzi": "始",
+      "count": 85
   },
   {
-    hanzi: '西'
+      "hanzi": "西",
+      "count": 157
   },
   {
-    hanzi: '要'
+      "hanzi": "要",
+      "count": 920
   },
   {
-    hanzi: '如'
+      "hanzi": "如",
+      "count": 168
   },
   {
-    hanzi: '她'
+      "hanzi": "她",
+      "count": 375
   },
   {
-    hanzi: '楼'
+      "hanzi": "楼",
+      "count": 53
   },
   {
-    hanzi: '又'
+      "hanzi": "又",
+      "count": 121
   },
   {
-    hanzi: '汉'
+      "hanzi": "汉",
+      "count": 66
   },
   {
-    hanzi: '对'
+      "hanzi": "对",
+      "count": 309
   },
   {
-    hanzi: '没'
+      "hanzi": "没",
+      "count": 477
   },
   {
-    hanzi: '取'
+      "hanzi": "取",
+      "count": 45
   },
   {
-    hanzi: '最'
+      "hanzi": "最",
+      "count": 270
   },
   {
-    hanzi: '曼'
+      "hanzi": "曼",
+      "count": 0
   },
   {
-    hanzi: '慢'
+      "hanzi": "慢",
+      "count": 28
   },
   {
-    hanzi: '支'
+      "hanzi": "支",
+      "count": 37
   },
   {
-    hanzi: '皮'
+      "hanzi": "皮",
+      "count": 14
   },
   {
-    hanzi: '书'
+      "hanzi": "书",
+      "count": 146
   },
   {
-    hanzi: '有'
+      "hanzi": "有",
+      "count": 1366
   },
   {
-    hanzi: '随'
+      "hanzi": "随",
+      "count": 51
   },
   {
-    hanzi: '友'
+      "hanzi": "友",
+      "count": 202
   },
   {
-    hanzi: '发'
+      "hanzi": "发",
+      "count": 279
   },
   {
-    hanzi: '六'
+      "hanzi": "六",
+      "count": 27
   },
   {
-    hanzi: '言'
+      "hanzi": "言",
+      "count": 40
   },
   {
-    hanzi: '信'
+      "hanzi": "信",
+      "count": 121
   },
   {
-    hanzi: '文'
+      "hanzi": "文",
+      "count": 131
   },
   {
-    hanzi: '这'
+      "hanzi": "这",
+      "count": 1632
   },
   {
-    hanzi: '父'
+      "hanzi": "父",
+      "count": 88
   },
   {
-    hanzi: '交'
+      "hanzi": "交",
+      "count": 86
   },
   {
-    hanzi: '校'
+      "hanzi": "校",
+      "count": 102
   },
   {
-    hanzi: '风'
+      "hanzi": "风",
+      "count": 49
   },
   {
-    hanzi: '网'
+      "hanzi": "网",
+      "count": 38
   },
   {
-    hanzi: '那'
+      "hanzi": "那",
+      "count": 355
   },
   {
-    hanzi: '哪'
+      "hanzi": "哪",
+      "count": 93
   },
   {
-    hanzi: '衣'
+      "hanzi": "衣",
+      "count": 106
   },
   {
-    hanzi: '袋'
+      "hanzi": "袋",
+      "count": 20
   },
   {
-    hanzi: '被'
+      "hanzi": "被",
+      "count": 139
   },
   {
-    hanzi: '艮'
+      "hanzi": "艮",
+      "count": 0
   },
   {
-    hanzi: '很'
+      "hanzi": "很",
+      "count": 1016
   },
   {
-    hanzi: '银'
+      "hanzi": "银",
+      "count": 36
   },
   {
-    hanzi: '长'
+      "hanzi": "长",
+      "count": 204
   },
   {
-    hanzi: '报'
+      "hanzi": "报",
+      "count": 43
   },
   {
-    hanzi: '服'
+      "hanzi": "服",
+      "count": 139
   },
   {
-    hanzi: '元'
+      "hanzi": "元",
+      "count": 49
   },
   {
-    hanzi: '远'
+      "hanzi": "远",
+      "count": 39
   },
   {
-    hanzi: '玩'
+      "hanzi": "玩",
+      "count": 96
   },
   {
-    hanzi: '园'
+      "hanzi": "园",
+      "count": 82
   },
   {
-    hanzi: '完'
+      "hanzi": "完",
+      "count": 159
   },
   {
-    hanzi: '院'
+      "hanzi": "院",
+      "count": 64
   },
   {
-    hanzi: '字'
+      "hanzi": "字",
+      "count": 84
   },
   {
-    hanzi: '定'
+      "hanzi": "定",
+      "count": 251
   },
   {
-    hanzi: '安'
+      "hanzi": "安",
+      "count": 65
   },
   {
-    hanzi: '寄'
+      "hanzi": "寄",
+      "count": 10
   },
   {
-    hanzi: '宝'
+      "hanzi": "宝",
+      "count": 46
   },
   {
-    hanzi: '匕'
+      "hanzi": "匕",
+      "count": 0
   },
   {
-    hanzi: '比'
+      "hanzi": "比",
+      "count": 200
   },
   {
-    hanzi: '它'
+      "hanzi": "它",
+      "count": 79
   },
   {
-    hanzi: '此'
+      "hanzi": "此",
+      "count": 23
   },
   {
-    hanzi: '些'
+      "hanzi": "些",
+      "count": 220
   },
   {
-    hanzi: '能'
+      "hanzi": "能",
+      "count": 475
   },
   {
-    hanzi: '夕'
+      "hanzi": "夕",
+      "count": 2
   },
   {
-    hanzi: '多'
+      "hanzi": "多",
+      "count": 653
   },
   {
-    hanzi: '名'
+      "hanzi": "名",
+      "count": 137
   },
   {
-    hanzi: '够'
+      "hanzi": "够",
+      "count": 50
   },
   {
-    hanzi: '外'
+      "hanzi": "外",
+      "count": 240
   },
   {
-    hanzi: '歹'
+      "hanzi": "歹",
+      "count": 0
   },
   {
-    hanzi: '死'
+      "hanzi": "死",
+      "count": 46
   },
   {
-    hanzi: '少'
+      "hanzi": "少",
+      "count": 129
   },
   {
-    hanzi: '吵'
+      "hanzi": "吵",
+      "count": 14
   },
   {
-    hanzi: '步'
+      "hanzi": "步",
+      "count": 53
   },
   {
-    hanzi: '贝'
+      "hanzi": "贝",
+      "count": 11
   },
   {
-    hanzi: '员'
+      "hanzi": "员",
+      "count": 130
   },
   {
-    hanzi: '贵'
+      "hanzi": "贵",
+      "count": 36
   },
   {
-    hanzi: '页'
+      "hanzi": "页",
+      "count": 6
   },
   {
-    hanzi: '题'
+      "hanzi": "题",
+      "count": 128
   },
   {
-    hanzi: '见'
+      "hanzi": "见",
+      "count": 148
   },
   {
-    hanzi: '现'
+      "hanzi": "现",
+      "count": 288
   },
   {
-    hanzi: '首'
+      "hanzi": "首",
+      "count": 28
   },
   {
-    hanzi: '道'
+      "hanzi": "道",
+      "count": 230
   },
   {
-    hanzi: '直'
+      "hanzi": "直",
+      "count": 118
   },
   {
-    hanzi: '真'
+      "hanzi": "真",
+      "count": 201
   },
   {
-    hanzi: '廿'
+      "hanzi": "廿",
+      "count": 0
   },
   {
-    hanzi: '甘'
+      "hanzi": "甘",
+      "count": 1
   },
   {
-    hanzi: '某'
+      "hanzi": "某",
+      "count": 8
   },
   {
-    hanzi: '其'
+      "hanzi": "其",
+      "count": 47
   },
   {
-    hanzi: '期'
+      "hanzi": "期",
+      "count": 86
   },
   {
-    hanzi: '厂'
+      "hanzi": "厂",
+      "count": 9
   },
   {
-    hanzi: '厌'
+      "hanzi": "厌",
+      "count": 14
   },
   {
-    hanzi: '斤'
+      "hanzi": "斤",
+      "count": 12
   },
   {
-    hanzi: '听'
+      "hanzi": "听",
+      "count": 184
   },
   {
-    hanzi: '近'
+      "hanzi": "近",
+      "count": 102
   },
   {
-    hanzi: '诉'
+      "hanzi": "诉",
+      "count": 36
   },
   {
-    hanzi: '后'
+      "hanzi": "后",
+      "count": 334
   },
   {
-    hanzi: '厚'
+      "hanzi": "厚",
+      "count": 9
   },
   {
-    hanzi: '反'
+      "hanzi": "反",
+      "count": 33
   },
   {
-    hanzi: '饭'
+      "hanzi": "饭",
+      "count": 238
   },
   {
-    hanzi: '饱'
+      "hanzi": "饱",
+      "count": 10
   },
   {
-    hanzi: '饿'
+      "hanzi": "饿",
+      "count": 21
   },
   {
-    hanzi: '工'
+      "hanzi": "工",
+      "count": 386
   },
   {
-    hanzi: '江'
+      "hanzi": "江",
+      "count": 16
   },
   {
-    hanzi: '左'
+      "hanzi": "左",
+      "count": 23
   },
   {
-    hanzi: '右'
+      "hanzi": "右",
+      "count": 29
   },
   {
-    hanzi: '差'
+      "hanzi": "差",
+      "count": 68
   },
   {
-    hanzi: '红'
+      "hanzi": "红",
+      "count": 86
   },
   {
-    hanzi: '约'
+      "hanzi": "约",
+      "count": 51
   },
   {
-    hanzi: '合'
+      "hanzi": "合",
+      "count": 67
   },
   {
-    hanzi: '给'
+      "hanzi": "给",
+      "count": 291
   },
   {
-    hanzi: '拿'
+      "hanzi": "拿",
+      "count": 63
   },
   {
-    hanzi: '穴'
+      "hanzi": "穴",
+      "count": 1
   },
   {
-    hanzi: '穿'
+      "hanzi": "穿",
+      "count": 61
   },
   {
-    hanzi: '空'
+      "hanzi": "空",
+      "count": 75
   },
   {
-    hanzi: '深'
+      "hanzi": "深",
+      "count": 30
   },
   {
-    hanzi: '式'
+      "hanzi": "式",
+      "count": 26
   },
   {
-    hanzi: '试'
+      "hanzi": "试",
+      "count": 67
   },
   {
-    hanzi: '刀'
+      "hanzi": "刀",
+      "count": 17
   },
   {
-    hanzi: '分'
+      "hanzi": "分",
+      "count": 221
   },
   {
-    hanzi: '份'
+      "hanzi": "份",
+      "count": 51
   },
   {
-    hanzi: '切'
+      "hanzi": "切",
+      "count": 33
   },
   {
-    hanzi: '划'
+      "hanzi": "划",
+      "count": 67
   },
   {
-    hanzi: '别'
+      "hanzi": "别",
+      "count": 298
   },
   {
-    hanzi: '刚'
+      "hanzi": "刚",
+      "count": 70
   },
   {
-    hanzi: '班'
+      "hanzi": "班",
+      "count": 98
   },
   {
-    hanzi: '前'
+      "hanzi": "前",
+      "count": 234
   },
   {
-    hanzi: '召'
+      "hanzi": "召",
+      "count": 6
   },
   {
-    hanzi: '绍'
+      "hanzi": "绍",
+      "count": 15
   },
   {
-    hanzi: '照'
+      "hanzi": "照",
+      "count": 83
   },
   {
-    hanzi: '片'
+      "hanzi": "片",
+      "count": 53
   },
   {
-    hanzi: '至'
+      "hanzi": "至",
+      "count": 12
   },
   {
-    hanzi: '到'
+      "hanzi": "到",
+      "count": 632
   },
   {
-    hanzi: '井'
+      "hanzi": "井",
+      "count": 1
   },
   {
-    hanzi: '进'
+      "hanzi": "进",
+      "count": 157
   },
   {
-    hanzi: '山'
+      "hanzi": "山",
+      "count": 59
   },
   {
-    hanzi: '出'
+      "hanzi": "出",
+      "count": 460
   },
   {
-    hanzi: '岁'
+      "hanzi": "岁",
+      "count": 70
   },
   {
-    hanzi: '亦'
+      "hanzi": "亦",
+      "count": 0
   },
   {
-    hanzi: '变'
+      "hanzi": "变",
+      "count": 121
   },
   {
-    hanzi: '田'
+      "hanzi": "田",
+      "count": 4
   },
   {
-    hanzi: '果'
+      "hanzi": "果",
+      "count": 171
   },
   {
-    hanzi: '课'
+      "hanzi": "课",
+      "count": 89
   },
   {
-    hanzi: '思'
+      "hanzi": "思",
+      "count": 86
   },
   {
-    hanzi: '单'
+      "hanzi": "单",
+      "count": 72
   },
   {
-    hanzi: '鱼'
+      "hanzi": "鱼",
+      "count": 40
   },
   {
-    hanzi: '男'
+      "hanzi": "男",
+      "count": 93
   },
   {
-    hanzi: '累'
+      "hanzi": "累",
+      "count": 26
   },
   {
-    hanzi: '花'
+      "hanzi": "花",
+      "count": 128
   },
   {
-    hanzi: '草'
+      "hanzi": "草",
+      "count": 30
   },
   {
-    hanzi: '猫'
+      "hanzi": "猫",
+      "count": 40
   },
   {
-    hanzi: '药'
+      "hanzi": "药",
+      "count": 42
   },
   {
-    hanzi: '宽'
+      "hanzi": "宽",
+      "count": 11
   },
   {
-    hanzi: '采'
+      "hanzi": "采",
+      "count": 7
   },
   {
-    hanzi: '菜'
+      "hanzi": "菜",
+      "count": 87
   },
   {
-    hanzi: '受'
+      "hanzi": "受",
+      "count": 68
   },
   {
-    hanzi: '爱'
+      "hanzi": "爱",
+      "count": 136
   },
   {
-    hanzi: '共'
+      "hanzi": "共",
+      "count": 50
   },
   {
-    hanzi: '借'
+      "hanzi": "借",
+      "count": 26
   },
   {
-    hanzi: '错'
+      "hanzi": "错",
+      "count": 85
   },
   {
-    hanzi: '收'
+      "hanzi": "收",
+      "count": 80
   },
   {
-    hanzi: '改'
+      "hanzi": "改",
+      "count": 53
   },
   {
-    hanzi: '数'
+      "hanzi": "数",
+      "count": 59
   },
   {
-    hanzi: '古'
+      "hanzi": "古",
+      "count": 29
   },
   {
-    hanzi: '苦'
+      "hanzi": "苦",
+      "count": 32
   },
   {
-    hanzi: '做'
+      "hanzi": "做",
+      "count": 343
   },
   {
-    hanzi: '者'
+      "hanzi": "者",
+      "count": 34
   },
   {
-    hanzi: '猪'
+      "hanzi": "猪",
+      "count": 25
   },
   {
-    hanzi: '都'
+      "hanzi": "都",
+      "count": 790
   },
   {
-    hanzi: '老'
+      "hanzi": "老",
+      "count": 335
   },
   {
-    hanzi: '孝'
+      "hanzi": "孝",
+      "count": 1
   },
   {
-    hanzi: '教'
+      "hanzi": "教",
+      "count": 69
   },
   {
-    hanzi: '五'
+      "hanzi": "五",
+      "count": 75
   },
   {
-    hanzi: '语'
+      "hanzi": "语",
+      "count": 126
   },
   {
-    hanzi: '广'
+      "hanzi": "广",
+      "count": 48
   },
   {
-    hanzi: '床'
+      "hanzi": "床",
+      "count": 37
   },
   {
-    hanzi: '店'
+      "hanzi": "店",
+      "count": 86
   },
   {
-    hanzi: '应'
+      "hanzi": "应",
+      "count": 146
   },
   {
-    hanzi: '兴'
+      "hanzi": "兴",
+      "count": 36
   },
   {
-    hanzi: '学'
+      "hanzi": "学",
+      "count": 528
   },
   {
-    hanzi: '觉'
+      "hanzi": "觉",
+      "count": 164
   },
   {
-    hanzi: '亥'
+      "hanzi": "亥",
+      "count": 0
   },
   {
-    hanzi: '该'
+      "hanzi": "该",
+      "count": 127
   },
   {
-    hanzi: '孩'
+      "hanzi": "孩",
+      "count": 215
   },
   {
-    hanzi: '水'
+      "hanzi": "水",
+      "count": 156
   },
   {
-    hanzi: '冰'
+      "hanzi": "冰",
+      "count": 21
   },
   {
-    hanzi: '求'
+      "hanzi": "求",
+      "count": 44
   },
   {
-    hanzi: '球'
+      "hanzi": "球",
+      "count": 96
   },
   {
-    hanzi: '救'
+      "hanzi": "救",
+      "count": 25
   },
   {
-    hanzi: '火'
+      "hanzi": "火",
+      "count": 78
   },
   {
-    hanzi: '灯'
+      "hanzi": "灯",
+      "count": 12
   },
   {
-    hanzi: '烦'
+      "hanzi": "烦",
+      "count": 33
   },
   {
-    hanzi: '里'
+      "hanzi": "里",
+      "count": 511
   },
   {
-    hanzi: '重'
+      "hanzi": "重",
+      "count": 174
   },
   {
-    hanzi: '懂'
+      "hanzi": "懂",
+      "count": 35
   },
   {
-    hanzi: '黑'
+      "hanzi": "黑",
+      "count": 30
   },
   {
-    hanzi: '乍'
+      "hanzi": "乍",
+      "count": 0
   },
   {
-    hanzi: '作'
+      "hanzi": "作",
+      "count": 380
   },
   {
-    hanzi: '昨'
+      "hanzi": "昨",
+      "count": 58
   },
   {
-    hanzi: '怎'
+      "hanzi": "怎",
+      "count": 102
   },
   {
-    hanzi: '窄'
+      "hanzi": "窄",
+      "count": 2
   },
   {
-    hanzi: '丰'
+      "hanzi": "丰",
+      "count": 16
   },
   {
-    hanzi: '青'
+      "hanzi": "青",
+      "count": 11
   },
   {
-    hanzi: '请'
+      "hanzi": "请",
+      "count": 171
   },
   {
-    hanzi: '情'
+      "hanzi": "情",
+      "count": 221
   },
   {
-    hanzi: '表'
+      "hanzi": "表",
+      "count": 67
   },
   {
-    hanzi: '生'
+      "hanzi": "生",
+      "count": 478
   },
   {
-    hanzi: '星'
+      "hanzi": "星",
+      "count": 46
   },
   {
-    hanzi: '姓'
+      "hanzi": "姓",
+      "count": 8
   },
   {
-    hanzi: '免'
+      "hanzi": "免",
+      "count": 17
   },
   {
-    hanzi: '晚'
+      "hanzi": "晚",
+      "count": 151
   },
   {
-    hanzi: '家'
+      "hanzi": "家",
+      "count": 650
   },
   {
-    hanzi: '象'
+      "hanzi": "象",
+      "count": 46
   },
   {
-    hanzi: '像'
+      "hanzi": "像",
+      "count": 66
   },
   {
-    hanzi: '头'
+      "hanzi": "头",
+      "count": 105
   },
   {
-    hanzi: '实'
+      "hanzi": "实",
+      "count": 104
   },
   {
-    hanzi: '买'
+      "hanzi": "买",
+      "count": 185
   },
   {
-    hanzi: '卖'
+      "hanzi": "卖",
+      "count": 33
   },
   {
-    hanzi: '读'
+      "hanzi": "读",
+      "count": 54
   },
   {
-    hanzi: '牛'
+      "hanzi": "牛",
+      "count": 39
   },
   {
-    hanzi: '特'
+      "hanzi": "特",
+      "count": 105
   },
   {
-    hanzi: '件'
+      "hanzi": "件",
+      "count": 157
   },
   {
-    hanzi: '告'
+      "hanzi": "告",
+      "count": 55
   },
   {
-    hanzi: '先'
+      "hanzi": "先",
+      "count": 84
   },
   {
-    hanzi: '洗'
+      "hanzi": "洗",
+      "count": 23
   },
   {
-    hanzi: '角'
+      "hanzi": "角",
+      "count": 11
   },
   {
-    hanzi: '解'
+      "hanzi": "解",
+      "count": 74
   },
   {
-    hanzi: '当'
+      "hanzi": "当",
+      "count": 101
   },
   {
-    hanzi: '扫'
+      "hanzi": "扫",
+      "count": 10
   },
   {
-    hanzi: '事'
+      "hanzi": "事",
+      "count": 375
   },
   {
-    hanzi: '史'
+      "hanzi": "史",
+      "count": 19
   },
   {
-    hanzi: '使'
+      "hanzi": "使",
+      "count": 46
   },
   {
-    hanzi: '更'
+      "hanzi": "更",
+      "count": 99
   },
   {
-    hanzi: '便'
+      "hanzi": "便",
+      "count": 66
   },
   {
-    hanzi: '石'
+      "hanzi": "石",
+      "count": 29
   },
   {
-    hanzi: '硬'
+      "hanzi": "硬",
+      "count": 5
   },
   {
-    hanzi: '车'
+      "hanzi": "车",
+      "count": 215
   },
   {
-    hanzi: '连'
+      "hanzi": "连",
+      "count": 32
   },
   {
-    hanzi: '辆'
+      "hanzi": "辆",
+      "count": 38
   },
   {
-    hanzi: '较'
+      "hanzi": "较",
+      "count": 35
   },
   {
-    hanzi: '轻'
+      "hanzi": "轻",
+      "count": 81
   },
   {
-    hanzi: '经'
+      "hanzi": "经",
+      "count": 306
   },
   {
-    hanzi: '与'
+      "hanzi": "与",
+      "count": 24
   },
   {
-    hanzi: '写'
+      "hanzi": "写",
+      "count": 81
   },
   {
-    hanzi: '士'
+      "hanzi": "士",
+      "count": 24
   },
   {
-    hanzi: '任'
+      "hanzi": "任",
+      "count": 63
   },
   {
-    hanzi: '豆'
+      "hanzi": "豆",
+      "count": 11
   },
   {
-    hanzi: '喜'
+      "hanzi": "喜",
+      "count": 266
   },
   {
-    hanzi: '高'
+      "hanzi": "高",
+      "count": 171
   },
   {
-    hanzi: '搞'
+      "hanzi": "搞",
+      "count": 7
   },
   {
-    hanzi: '亭'
+      "hanzi": "亭",
+      "count": 1
   },
   {
-    hanzi: '停'
+      "hanzi": "停",
+      "count": 35
   },
   {
-    hanzi: '九'
+      "hanzi": "九",
+      "count": 17
   },
   {
-    hanzi: '丸'
+      "hanzi": "丸",
+      "count": 0
   },
   {
-    hanzi: '执'
+      "hanzi": "执",
+      "count": 3
   },
   {
-    hanzi: '热'
+      "hanzi": "热",
+      "count": 71
   },
   {
-    hanzi: '京'
+      "hanzi": "京",
+      "count": 27
   },
   {
-    hanzi: '景'
+      "hanzi": "景",
+      "count": 35
   },
   {
-    hanzi: '影'
+      "hanzi": "影",
+      "count": 116
   },
   {
-    hanzi: '尤'
+      "hanzi": "尤",
+      "count": 2
   },
   {
-    hanzi: '就'
+      "hanzi": "就",
+      "count": 638
   },
   {
-    hanzi: '成'
+      "hanzi": "成",
+      "count": 256
   },
   {
-    hanzi: '城'
+      "hanzi": "城",
+      "count": 74
   },
   {
-    hanzi: '越'
+      "hanzi": "越",
+      "count": 55
   },
   {
-    hanzi: '咸'
+      "hanzi": "咸",
+      "count": 4
   },
   {
-    hanzi: '感'
+      "hanzi": "感",
+      "count": 94
   },
   {
-    hanzi: '钱'
+      "hanzi": "钱",
+      "count": 155
   },
   {
-    hanzi: '浅'
+      "hanzi": "浅",
+      "count": 4
   },
   {
-    hanzi: '巾'
+      "hanzi": "巾",
+      "count": 3
   },
   {
-    hanzi: '帅'
+      "hanzi": "帅",
+      "count": 17
   },
   {
-    hanzi: '师'
+      "hanzi": "师",
+      "count": 154
   },
   {
-    hanzi: '市'
+      "hanzi": "市",
+      "count": 129
   },
   {
-    hanzi: '带'
+      "hanzi": "带",
+      "count": 79
   },
   {
-    hanzi: '邦'
+      "hanzi": "邦",
+      "count": 1
   },
   {
-    hanzi: '帮'
+      "hanzi": "帮",
+      "count": 118
   },
   {
-    hanzi: '常'
+      "hanzi": "常",
+      "count": 221
   },
   {
-    hanzi: '非'
+      "hanzi": "非",
+      "count": 127
   },
   {
-    hanzi: '雨'
+      "hanzi": "雨",
+      "count": 55
   },
   {
-    hanzi: '雪'
+      "hanzi": "雪",
+      "count": 25
   },
   {
-    hanzi: '冬'
+      "hanzi": "冬",
+      "count": 28
   },
   {
-    hanzi: '图'
+      "hanzi": "图",
+      "count": 29
   },
   {
-    hanzi: '各'
+      "hanzi": "各",
+      "count": 47
   },
   {
-    hanzi: '客'
+      "hanzi": "客",
+      "count": 56
   },
   {
-    hanzi: '务'
+      "hanzi": "务",
+      "count": 51
   },
   {
-    hanzi: '备'
+      "hanzi": "备",
+      "count": 57
   },
   {
-    hanzi: '夏'
+      "hanzi": "夏",
+      "count": 26
   },
   {
-    hanzi: '令'
+      "hanzi": "令",
+      "count": 10
   },
   {
-    hanzi: '冷'
+      "hanzi": "冷",
+      "count": 43
   },
   {
-    hanzi: '足'
+      "hanzi": "足",
+      "count": 36
   },
   {
-    hanzi: '跑'
+      "hanzi": "跑",
+      "count": 56
   },
   {
-    hanzi: '路'
+      "hanzi": "路",
+      "count": 138
   },
   {
-    hanzi: '跟'
+      "hanzi": "跟",
+      "count": 69
   },
   {
-    hanzi: '示'
+      "hanzi": "示",
+      "count": 20
   },
   {
-    hanzi: '票'
+      "hanzi": "票",
+      "count": 37
   },
   {
-    hanzi: '视'
+      "hanzi": "视",
+      "count": 59
   },
   {
-    hanzi: '知'
+      "hanzi": "知",
+      "count": 185
   },
   {
-    hanzi: '短'
+      "hanzi": "短",
+      "count": 23
   },
   {
-    hanzi: '医'
+      "hanzi": "医",
+      "count": 76
   },
   {
-    hanzi: '矮'
+      "hanzi": "矮",
+      "count": 5
   },
   {
-    hanzi: '侯'
+      "hanzi": "侯",
+      "count": 1
   },
   {
-    hanzi: '候'
+      "hanzi": "候",
+      "count": 234
   },
   {
-    hanzi: '弓'
+      "hanzi": "弓",
+      "count": 1
   },
   {
-    hanzi: '张'
+      "hanzi": "张",
+      "count": 74
   },
   {
-    hanzi: '虫'
+      "hanzi": "虫",
+      "count": 8
   },
   {
-    hanzi: '虽'
+      "hanzi": "虽",
+      "count": 77
   },
   {
-    hanzi: '强'
+      "hanzi": "强",
+      "count": 33
   },
   {
-    hanzi: '弱'
+      "hanzi": "弱",
+      "count": 3
   },
   {
-    hanzi: '弟'
+      "hanzi": "弟",
+      "count": 33
   },
   {
-    hanzi: '第'
+      "hanzi": "第",
+      "count": 84
   },
   {
-    hanzi: '隹'
+      "hanzi": "隹",
+      "count": 1
   },
   {
-    hanzi: '谁'
+      "hanzi": "谁",
+      "count": 40
   },
   {
-    hanzi: '推'
+      "hanzi": "推",
+      "count": 34
   },
   {
-    hanzi: '难'
+      "hanzi": "难",
+      "count": 125
   },
   {
-    hanzi: '准'
+      "hanzi": "准",
+      "count": 58
   },
   {
-    hanzi: '夭'
+      "hanzi": "夭",
+      "count": 0
   },
   {
-    hanzi: '笑'
+      "hanzi": "笑",
+      "count": 31
   },
   {
-    hanzi: '立'
+      "hanzi": "立",
+      "count": 33
   },
   {
-    hanzi: '位'
+      "hanzi": "位",
+      "count": 139
   },
   {
-    hanzi: '音'
+      "hanzi": "音",
+      "count": 58
   },
   {
-    hanzi: '意'
+      "hanzi": "意",
+      "count": 217
   },
   {
-    hanzi: '站'
+      "hanzi": "站",
+      "count": 57
   },
   {
-    hanzi: '拉'
+      "hanzi": "拉",
+      "count": 18
   },
   {
-    hanzi: '接'
+      "hanzi": "接",
+      "count": 57
   },
   {
-    hanzi: '亲'
+      "hanzi": "亲",
+      "count": 61
   },
   {
-    hanzi: '新'
+      "hanzi": "新",
+      "count": 198
   },
   {
-    hanzi: '杀'
+      "hanzi": "杀",
+      "count": 11
   },
   {
-    hanzi: '条'
+      "hanzi": "条",
+      "count": 93
   },
   {
-    hanzi: '乐'
+      "hanzi": "乐",
+      "count": 67
   },
   {
-    hanzi: '茶'
+      "hanzi": "茶",
+      "count": 16
   },
   {
-    hanzi: '乃'
+      "hanzi": "乃",
+      "count": 0
   },
   {
-    hanzi: '扔'
+      "hanzi": "扔",
+      "count": 8
   },
   {
-    hanzi: '奶'
+      "hanzi": "奶",
+      "count": 84
   },
   {
-    hanzi: '及'
+      "hanzi": "及",
+      "count": 31
   },
   {
-    hanzi: '尸'
+      "hanzi": "尸",
+      "count": 1
   },
   {
-    hanzi: '呢'
+      "hanzi": "呢",
+      "count": 106
   },
   {
-    hanzi: '户'
+      "hanzi": "户",
+      "count": 17
   },
   {
-    hanzi: '所'
+      "hanzi": "所",
+      "count": 177
   },
   {
-    hanzi: '声'
+      "hanzi": "声",
+      "count": 67
   },
   {
-    hanzi: '欠'
+      "hanzi": "欠",
+      "count": 2
   },
   {
-    hanzi: '吹'
+      "hanzi": "吹",
+      "count": 7
   },
   {
-    hanzi: '歌'
+      "hanzi": "歌",
+      "count": 82
   },
   {
-    hanzi: '软'
+      "hanzi": "软",
+      "count": 6
   },
   {
-    hanzi: '次'
+      "hanzi": "次",
+      "count": 226
   },
   {
-    hanzi: '欢'
+      "hanzi": "欢",
+      "count": 275
   },
   {
-    hanzi: '亡'
+      "hanzi": "亡",
+      "count": 6
   },
   {
-    hanzi: '忘'
+      "hanzi": "忘",
+      "count": 24
   },
   {
-    hanzi: '忙'
+      "hanzi": "忙",
+      "count": 41
   },
   {
-    hanzi: '万'
+      "hanzi": "万",
+      "count": 56
   },
   {
-    hanzi: '方'
+      "hanzi": "方",
+      "count": 223
   },
   {
-    hanzi: '放'
+      "hanzi": "放",
+      "count": 98
   },
   {
-    hanzi: '房'
+      "hanzi": "房",
+      "count": 134
   },
   {
-    hanzi: '巴'
+      "hanzi": "巴",
+      "count": 10
   },
   {
-    hanzi: '吧'
+      "hanzi": "吧",
+      "count": 196
   },
   {
-    hanzi: '把'
+      "hanzi": "把",
+      "count": 286
   },
   {
-    hanzi: '色'
+      "hanzi": "色",
+      "count": 88
   },
   {
-    hanzi: '而'
+      "hanzi": "而",
+      "count": 81
   },
   {
-    hanzi: '需'
+      "hanzi": "需",
+      "count": 125
   },
   {
-    hanzi: '且'
+      "hanzi": "且",
+      "count": 26
   },
   {
-    hanzi: '姐'
+      "hanzi": "姐",
+      "count": 29
   },
   {
-    hanzi: '宜'
+      "hanzi": "宜",
+      "count": 12
   },
   {
-    hanzi: '丙'
+      "hanzi": "丙",
+      "count": 0
   },
   {
-    hanzi: '病'
+      "hanzi": "病",
+      "count": 94
   },
   {
-    hanzi: '疼'
+      "hanzi": "疼",
+      "count": 11
   },
   {
-    hanzi: '氏'
+      "hanzi": "氏",
+      "count": 0
   },
   {
-    hanzi: '纸'
+      "hanzi": "纸",
+      "count": 14
   },
   {
-    hanzi: '低'
+      "hanzi": "低",
+      "count": 19
   },
   {
-    hanzi: '北'
+      "hanzi": "北",
+      "count": 56
   },
   {
-    hanzi: '南'
+      "hanzi": "南",
+      "count": 29
   },
   {
-    hanzi: '垂'
+      "hanzi": "垂",
+      "count": 0
   },
   {
-    hanzi: '睡'
+      "hanzi": "睡",
+      "count": 53
   },
   {
-    hanzi: '海'
+      "hanzi": "海",
+      "count": 66
   },
   {
-    hanzi: '毒'
+      "hanzi": "毒",
+      "count": 16
   },
   {
-    hanzi: '洋'
+      "hanzi": "洋",
+      "count": 7
   },
   {
-    hanzi: '鲜'
+      "hanzi": "鲜",
+      "count": 12
   },
   {
-    hanzi: '原'
+      "hanzi": "原",
+      "count": 45
   },
   {
-    hanzi: '源'
+      "hanzi": "源",
+      "count": 16
   },
   {
-    hanzi: '愿'
+      "hanzi": "愿",
+      "count": 26
   },
   {
-    hanzi: '川'
+      "hanzi": "川",
+      "count": 32
   },
   {
-    hanzi: '州'
+      "hanzi": "州",
+      "count": 20
   },
   {
-    hanzi: '洲'
+      "hanzi": "洲",
+      "count": 21
   },
   {
-    hanzi: '弃'
+      "hanzi": "弃",
+      "count": 12
   },
   {
-    hanzi: '育'
+      "hanzi": "育",
+      "count": 30
   },
   {
-    hanzi: '充'
+      "hanzi": "充",
+      "count": 18
   },
   {
-    hanzi: '流'
+      "hanzi": "流",
+      "count": 53
   },
   {
-    hanzi: '统'
+      "hanzi": "统",
+      "count": 35
   },
   {
-    hanzi: '齐'
+      "hanzi": "齐",
+      "count": 9
   },
   {
-    hanzi: '济'
+      "hanzi": "济",
+      "count": 42
   },
   {
-    hanzi: '剂'
+      "hanzi": "剂",
+      "count": 1
   },
   {
-    hanzi: '清'
+      "hanzi": "清",
+      "count": 37
   },
   {
-    hanzi: '精'
+      "hanzi": "精",
+      "count": 27
   },
   {
-    hanzi: '消'
+      "hanzi": "消",
+      "count": 54
   },
   {
-    hanzi: '治'
+      "hanzi": "治",
+      "count": 12
   },
   {
-    hanzi: '落'
+      "hanzi": "落",
+      "count": 14
   },
   {
-    hanzi: '露'
+      "hanzi": "露",
+      "count": 10
   },
   {
-    hanzi: '满'
+      "hanzi": "满",
+      "count": 34
   },
   {
-    hanzi: '酒'
+      "hanzi": "酒",
+      "count": 47
   },
   {
-    hanzi: '配'
+      "hanzi": "配",
+      "count": 13
   },
   {
-    hanzi: '醒'
+      "hanzi": "醒",
+      "count": 19
   },
   {
-    hanzi: '尊'
+      "hanzi": "尊",
+      "count": 16
   },
   {
-    hanzi: '酷'
+      "hanzi": "酷",
+      "count": 4
   },
   {
-    hanzi: '酸'
+      "hanzi": "酸",
+      "count": 6
   },
   {
-    hanzi: '波'
+      "hanzi": "波",
+      "count": 1
   },
   {
-    hanzi: '胡'
+      "hanzi": "胡",
+      "count": 9
   },
   {
-    hanzi: '湖'
+      "hanzi": "湖",
+      "count": 8
   },
   {
-    hanzi: '永'
+      "hanzi": "永",
+      "count": 10
   },
   {
-    hanzi: '泳'
+      "hanzi": "泳",
+      "count": 12
   },
   {
-    hanzi: '脉'
+      "hanzi": "脉",
+      "count": 2
   },
   {
-    hanzi: '承'
+      "hanzi": "承",
+      "count": 11
   },
   {
-    hanzi: '兰'
+      "hanzi": "兰",
+      "count": 1
   },
   {
-    hanzi: '之'
+      "hanzi": "之",
+      "count": 90
   },
   {
-    hanzi: '乏'
+      "hanzi": "乏",
+      "count": 4
   },
   {
-    hanzi: '派'
+      "hanzi": "派",
+      "count": 13
   },
   {
-    hanzi: '游'
+      "hanzi": "游",
+      "count": 82
   },
   {
-    hanzi: '施'
+      "hanzi": "施",
+      "count": 6
   },
   {
-    hanzi: '族'
+      "hanzi": "族",
+      "count": 10
   },
   {
-    hanzi: '旅'
+      "hanzi": "旅",
+      "count": 55
   },
   {
-    hanzi: '良'
+      "hanzi": "良",
+      "count": 13
   },
   {
-    hanzi: '浪'
+      "hanzi": "浪",
+      "count": 8
   },
   {
-    hanzi: '郎'
+      "hanzi": "郎",
+      "count": 2
   },
   {
-    hanzi: '娘'
+      "hanzi": "娘",
+      "count": 11
   },
   {
-    hanzi: '姑'
+      "hanzi": "姑",
+      "count": 8
   },
   {
-    hanzi: '沙'
+      "hanzi": "沙",
+      "count": 19
   },
   {
-    hanzi: '省'
+      "hanzi": "省",
+      "count": 14
   },
   {
-    hanzi: '眼'
+      "hanzi": "眼",
+      "count": 44
   },
   {
-    hanzi: '睛'
+      "hanzi": "睛",
+      "count": 7
   },
   {
-    hanzi: '沉'
+      "hanzi": "沉",
+      "count": 9
   },
   {
-    hanzi: '染'
+      "hanzi": "染",
+      "count": 17
   },
   {
-    hanzi: '究'
+      "hanzi": "究",
+      "count": 15
   },
   {
-    hanzi: '杂'
+      "hanzi": "杂",
+      "count": 11
   },
   {
-    hanzi: '余'
+      "hanzi": "余",
+      "count": 4
   },
   {
-    hanzi: '除'
+      "hanzi": "除",
+      "count": 31
   },
   {
-    hanzi: '途'
+      "hanzi": "途",
+      "count": 9
   },
   {
-    hanzi: '汇'
+      "hanzi": "汇",
+      "count": 11
   },
   {
-    hanzi: '巨'
+      "hanzi": "巨",
+      "count": 7
   },
   {
-    hanzi: '距'
+      "hanzi": "距",
+      "count": 6
   },
   {
-    hanzi: '涨'
+      "hanzi": "涨",
+      "count": 15
   },
   {
-    hanzi: '湾'
+      "hanzi": "湾",
+      "count": 7
   },
   {
-    hanzi: '引'
+      "hanzi": "引",
+      "count": 22
   },
   {
-    hanzi: '弹'
+      "hanzi": "弹",
+      "count": 11
   },
   {
-    hanzi: '淡'
+      "hanzi": "淡",
+      "count": 7
   },
   {
-    hanzi: '润'
+      "hanzi": "润",
+      "count": 1
   },
   {
-    hanzi: '渐'
+      "hanzi": "渐",
+      "count": 8
   },
   {
-    hanzi: '汗'
+      "hanzi": "汗",
+      "count": 3
   },
   {
-    hanzi: '平'
+      "hanzi": "平",
+      "count": 74
   },
   {
-    hanzi: '幸'
+      "hanzi": "幸",
+      "count": 23
   },
   {
-    hanzi: '赶'
+      "hanzi": "赶",
+      "count": 29
   },
   {
-    hanzi: '超'
+      "hanzi": "超",
+      "count": 37
   },
   {
-    hanzi: '趣'
+      "hanzi": "趣",
+      "count": 23
   },
   {
-    hanzi: '聚'
+      "hanzi": "聚",
+      "count": 20
   },
   {
-    hanzi: '汁'
+      "hanzi": "汁",
+      "count": 4
   },
   {
-    hanzi: '泼'
+      "hanzi": "泼",
+      "count": 3
   },
   {
-    hanzi: '演'
+      "hanzi": "演",
+      "count": 48
   },
   {
-    hanzi: '勿'
+      "hanzi": "勿",
+      "count": 1
   },
   {
-    hanzi: '物'
+      "hanzi": "物",
+      "count": 104
   },
   {
-    hanzi: '易'
+      "hanzi": "易",
+      "count": 51
   },
   {
-    hanzi: '踢'
+      "hanzi": "踢",
+      "count": 9
   },
   {
-    hanzi: '汤'
+      "hanzi": "汤",
+      "count": 5
   },
   {
-    hanzi: '场'
+      "hanzi": "场",
+      "count": 131
   },
   {
-    hanzi: '杨'
+      "hanzi": "杨",
+      "count": 1
   },
   {
-    hanzi: '扬'
+      "hanzi": "扬",
+      "count": 4
   },
   {
-    hanzi: '持'
+      "hanzi": "持",
+      "count": 44
   },
   {
-    hanzi: '待'
+      "hanzi": "待",
+      "count": 30
   },
   {
-    hanzi: '征'
+      "hanzi": "征",
+      "count": 8
   },
   {
-    hanzi: '微'
+      "hanzi": "微",
+      "count": 12
   },
   {
-    hanzi: '据'
+      "hanzi": "据",
+      "count": 26
   },
   {
-    hanzi: '投'
+      "hanzi": "投",
+      "count": 24
   },
   {
-    hanzi: '指'
+      "hanzi": "指",
+      "count": 16
   },
   {
-    hanzi: '龙'
+      "hanzi": "龙",
+      "count": 12
   },
   {
-    hanzi: '技'
+      "hanzi": "技",
+      "count": 25
   },
   {
-    hanzi: '鼓'
+      "hanzi": "鼓",
+      "count": 6
   },
   {
-    hanzi: '护'
+      "hanzi": "护",
+      "count": 29
   },
   {
-    hanzi: '扁'
+      "hanzi": "扁",
+      "count": 3
   },
   {
-    hanzi: '编'
+      "hanzi": "编",
+      "count": 6
   },
   {
-    hanzi: '偏'
+      "hanzi": "偏",
+      "count": 4
   },
   {
-    hanzi: '遍'
+      "hanzi": "遍",
+      "count": 12
   },
   {
-    hanzi: '篇'
+      "hanzi": "篇",
+      "count": 19
   },
   {
-    hanzi: '骗'
+      "hanzi": "骗",
+      "count": 19
   },
   {
-    hanzi: '控'
+      "hanzi": "控",
+      "count": 10
   },
   {
-    hanzi: '按'
+      "hanzi": "按",
+      "count": 27
   },
   {
-    hanzi: '招'
+      "hanzi": "招",
+      "count": 12
   },
   {
-    hanzi: '括'
+      "hanzi": "括",
+      "count": 5
   },
   {
-    hanzi: '掉'
+      "hanzi": "掉",
+      "count": 27
   },
   {
-    hanzi: '托'
+      "hanzi": "托",
+      "count": 7
   },
   {
-    hanzi: '挥'
+      "hanzi": "挥",
+      "count": 4
   },
   {
-    hanzi: '损'
+      "hanzi": "损",
+      "count": 7
   },
   {
-    hanzi: '折'
+      "hanzi": "折",
+      "count": 10
   },
   {
-    hanzi: '爪'
+      "hanzi": "爪",
+      "count": 1
   },
   {
-    hanzi: '抓'
+      "hanzi": "抓",
+      "count": 14
   },
   {
-    hanzi: '瓜'
+      "hanzi": "瓜",
+      "count": 15
   },
   {
-    hanzi: '孤'
+      "hanzi": "孤",
+      "count": 5
   },
   {
-    hanzi: '爬'
+      "hanzi": "爬",
+      "count": 13
   },
   {
-    hanzi: '拥'
+      "hanzi": "拥",
+      "count": 10
   },
   {
-    hanzi: '抢'
+      "hanzi": "抢",
+      "count": 7
   },
   {
-    hanzi: '探'
+      "hanzi": "探",
+      "count": 5
   },
   {
-    hanzi: '兆'
+      "hanzi": "兆",
+      "count": 1
   },
   {
-    hanzi: '挑'
+      "hanzi": "挑",
+      "count": 4
   },
   {
-    hanzi: '跳'
+      "hanzi": "跳",
+      "count": 21
   },
   {
-    hanzi: '逃'
+      "hanzi": "逃",
+      "count": 10
   },
   {
-    hanzi: '扩'
+      "hanzi": "扩",
+      "count": 5
   },
   {
-    hanzi: '批'
+      "hanzi": "批",
+      "count": 11
   },
   {
-    hanzi: '混'
+      "hanzi": "混",
+      "count": 3
   },
   {
-    hanzi: '毕'
+      "hanzi": "毕",
+      "count": 14
   },
   {
-    hanzi: '措'
+      "hanzi": "措",
+      "count": 5
   },
   {
-    hanzi: '展'
+      "hanzi": "展",
+      "count": 54
   },
   {
-    hanzi: '授'
+      "hanzi": "授",
+      "count": 7
   },
   {
-    hanzi: '延'
+      "hanzi": "延",
+      "count": 7
   },
   {
-    hanzi: '挺'
+      "hanzi": "挺",
+      "count": 10
   },
   {
-    hanzi: '庭'
+      "hanzi": "庭",
+      "count": 20
   },
   {
-    hanzi: '抱'
+      "hanzi": "抱",
+      "count": 6
   },
   {
-    hanzi: '扰'
+      "hanzi": "扰",
+      "count": 12
   },
   {
-    hanzi: '抬'
+      "hanzi": "抬",
+      "count": 4
   },
   {
-    hanzi: '扮'
+      "hanzi": "扮",
+      "count": 10
   },
   {
-    hanzi: '粉'
+      "hanzi": "粉",
+      "count": 9
   },
   {
-    hanzi: '拾'
+      "hanzi": "拾",
+      "count": 6
   },
   {
-    hanzi: '术'
+      "hanzi": "术",
+      "count": 28
   },
   {
-    hanzi: '格'
+      "hanzi": "格",
+      "count": 35
   },
   {
-    hanzi: '标'
+      "hanzi": "标",
+      "count": 23
   },
   {
-    hanzi: '林'
+      "hanzi": "林",
+      "count": 13
   },
   {
-    hanzi: '禁'
+      "hanzi": "禁",
+      "count": 4
   },
   {
-    hanzi: '际'
+      "hanzi": "际",
+      "count": 11
   },
   {
-    hanzi: '梦'
+      "hanzi": "梦",
+      "count": 21
   },
   {
-    hanzi: '麻'
+      "hanzi": "麻",
+      "count": 28
   },
   {
-    hanzi: '摩'
+      "hanzi": "摩",
+      "count": 6
   },
   {
-    hanzi: '楚'
+      "hanzi": "楚",
+      "count": 16
   },
   {
-    hanzi: '蛋'
+      "hanzi": "蛋",
+      "count": 22
   },
   {
-    hanzi: '森'
+      "hanzi": "森",
+      "count": 9
   },
   {
-    hanzi: '查'
+      "hanzi": "查",
+      "count": 23
   },
   {
-    hanzi: '集'
+      "hanzi": "集",
+      "count": 16
   },
   {
-    hanzi: '案'
+      "hanzi": "案",
+      "count": 18
   },
   {
-    hanzi: '未'
+      "hanzi": "未",
+      "count": 18
   },
   {
-    hanzi: '味'
+      "hanzi": "味",
+      "count": 32
   },
   {
-    hanzi: '妹'
+      "hanzi": "妹",
+      "count": 15
   },
   {
-    hanzi: '根'
+      "hanzi": "根",
+      "count": 32
   },
   {
-    hanzi: '极'
+      "hanzi": "极",
+      "count": 22
   },
   {
-    hanzi: '勾'
+      "hanzi": "勾",
+      "count": 0
   },
   {
-    hanzi: '构'
+      "hanzi": "构",
+      "count": 9
   },
   {
-    hanzi: '购'
+      "hanzi": "购",
+      "count": 8
   },
   {
-    hanzi: '沟'
+      "hanzi": "沟",
+      "count": 7
   },
   {
-    hanzi: '村'
+      "hanzi": "村",
+      "count": 22
   },
   {
-    hanzi: '树'
+      "hanzi": "树",
+      "count": 24
   },
   {
-    hanzi: '板'
+      "hanzi": "板",
+      "count": 45
   },
   {
-    hanzi: '版'
+      "hanzi": "版",
+      "count": 11
   },
   {
-    hanzi: '材'
+      "hanzi": "材",
+      "count": 9
   },
   {
-    hanzi: '析'
+      "hanzi": "析",
+      "count": 1
   },
   {
-    hanzi: '束'
+      "hanzi": "束",
+      "count": 12
   },
   {
-    hanzi: '整'
+      "hanzi": "整",
+      "count": 46
   },
   {
-    hanzi: '辛'
+      "hanzi": "辛",
+      "count": 11
   },
   {
-    hanzi: '辣'
+      "hanzi": "辣",
+      "count": 13
   },
   {
-    hanzi: '核'
+      "hanzi": "核",
+      "count": 2
   },
   {
-    hanzi: '刻'
+      "hanzi": "刻",
+      "count": 21
   },
   {
-    hanzi: '咳'
+      "hanzi": "咳",
+      "count": 2
   },
   {
-    hanzi: '嗽'
+      "hanzi": "嗽",
+      "count": 1
   },
   {
-    hanzi: '松'
+      "hanzi": "松",
+      "count": 19
   },
   {
-    hanzi: '架'
+      "hanzi": "架",
+      "count": 20
   },
   {
-    hanzi: '枪'
+      "hanzi": "枪",
+      "count": 6
   },
   {
-    hanzi: '档'
+      "hanzi": "档",
+      "count": 8
   },
   {
-    hanzi: '光'
+      "hanzi": "光",
+      "count": 41
   },
   {
-    hanzi: '梯'
+      "hanzi": "梯",
+      "count": 6
   },
   {
-    hanzi: '朵'
+      "hanzi": "朵",
+      "count": 14
   },
   {
-    hanzi: '棵'
+      "hanzi": "棵",
+      "count": 5
   },
   {
-    hanzi: '柿'
+      "hanzi": "柿",
+      "count": 3
   },
   {
-    hanzi: '橡'
+      "hanzi": "橡",
+      "count": 1
   },
   {
-    hanzi: '植'
+      "hanzi": "植",
+      "count": 5
   },
   {
-    hanzi: '置'
+      "hanzi": "置",
+      "count": 12
   },
   {
-    hanzi: '值'
+      "hanzi": "值",
+      "count": 21
   },
   {
-    hanzi: '罗'
+      "hanzi": "罗",
+      "count": 5
   },
   {
-    hanzi: '保'
+      "hanzi": "保",
+      "count": 54
   },
   {
-    hanzi: '价'
+      "hanzi": "价",
+      "count": 41
   },
   {
-    hanzi: '界'
+      "hanzi": "界",
+      "count": 46
   },
   {
-    hanzi: '养'
+      "hanzi": "养",
+      "count": 37
   },
   {
-    hanzi: '阶'
+      "hanzi": "阶",
+      "count": 1
   },
   {
-    hanzi: '专'
+      "hanzi": "专",
+      "count": 21
   },
   {
-    hanzi: '传'
+      "hanzi": "传",
+      "count": 44
   },
   {
-    hanzi: '转'
+      "hanzi": "转",
+      "count": 22
   },
   {
-    hanzi: '何'
+      "hanzi": "何",
+      "count": 29
   },
   {
-    hanzi: '供'
+      "hanzi": "供",
+      "count": 9
   },
   {
-    hanzi: '港'
+      "hanzi": "港",
+      "count": 9
   },
   {
-    hanzi: '暴'
+      "hanzi": "暴",
+      "count": 15
   },
   {
-    hanzi: '爆'
+      "hanzi": "爆",
+      "count": 7
   },
   {
-    hanzi: '伤'
+      "hanzi": "伤",
+      "count": 35
   },
   {
-    hanzi: '优'
+      "hanzi": "优",
+      "count": 25
   },
   {
-    hanzi: '仅'
+      "hanzi": "仅",
+      "count": 15
   },
   {
-    hanzi: '夜'
+      "hanzi": "夜",
+      "count": 32
   },
   {
-    hanzi: '液'
+      "hanzi": "液",
+      "count": 4
   },
   {
-    hanzi: '依'
+      "hanzi": "依",
+      "count": 15
   },
   {
-    hanzi: '假'
+      "hanzi": "假",
+      "count": 42
   },
   {
-    hanzi: '倒'
+      "hanzi": "倒",
+      "count": 30
   },
   {
-    hanzi: '致'
+      "hanzi": "致",
+      "count": 13
   },
   {
-    hanzi: '室'
+      "hanzi": "室",
+      "count": 29
   },
   {
-    hanzi: '屋'
+      "hanzi": "屋",
+      "count": 14
   },
   {
-    hanzi: '似'
+      "hanzi": "似",
+      "count": 10
   },
   {
-    hanzi: '仍'
+      "hanzi": "仍",
+      "count": 15
   },
   {
-    hanzi: '促'
+      "hanzi": "促",
+      "count": 3
   },
   {
-    hanzi: '伙'
+      "hanzi": "伙",
+      "count": 15
   },
   {
-    hanzi: '伴'
+      "hanzi": "伴",
+      "count": 6
   },
   {
-    hanzi: '估'
+      "hanzi": "估",
+      "count": 7
   },
   {
-    hanzi: '倍'
+      "hanzi": "倍",
+      "count": 8
   },
   {
-    hanzi: '俩'
+      "hanzi": "俩",
+      "count": 22
   },
   {
-    hanzi: '伪'
+      "hanzi": "伪",
+      "count": 3
   },
   {
-    hanzi: '尹'
+      "hanzi": "尹",
+      "count": 0
   },
   {
-    hanzi: '伊'
+      "hanzi": "伊",
+      "count": 2
   },
   {
-    hanzi: '康'
+      "hanzi": "康",
+      "count": 31
   },
   {
-    hanzi: '争'
+      "hanzi": "争",
+      "count": 26
   },
   {
-    hanzi: '静'
+      "hanzi": "静",
+      "count": 15
   },
   {
-    hanzi: '净'
+      "hanzi": "净",
+      "count": 23
   },
   {
-    hanzi: '减'
+      "hanzi": "减",
+      "count": 21
   },
   {
-    hanzi: '律'
+      "hanzi": "律",
+      "count": 20
   },
   {
-    hanzi: '建'
+      "hanzi": "建",
+      "count": 38
   },
   {
-    hanzi: '健'
+      "hanzi": "健",
+      "count": 31
   },
   {
-    hanzi: '君'
+      "hanzi": "君",
+      "count": 1
   },
   {
-    hanzi: '群'
+      "hanzi": "群",
+      "count": 21
   },
   {
-    hanzi: '向'
+      "hanzi": "向",
+      "count": 49
   },
   {
-    hanzi: '响'
+      "hanzi": "响",
+      "count": 25
   },
   {
-    hanzi: '尚'
+      "hanzi": "尚",
+      "count": 7
   },
   {
-    hanzi: '躺'
+      "hanzi": "躺",
+      "count": 2
   },
   {
-    hanzi: '趟'
+      "hanzi": "趟",
+      "count": 8
   },
   {
-    hanzi: '品'
+      "hanzi": "品",
+      "count": 70
   },
   {
-    hanzi: '噪'
+      "hanzi": "噪",
+      "count": 0
   },
   {
-    hanzi: '操'
+      "hanzi": "操",
+      "count": 10
   },
   {
-    hanzi: '澡'
+      "hanzi": "澡",
+      "count": 7
   },
   {
-    hanzi: '器'
+      "hanzi": "器",
+      "count": 26
   },
   {
-    hanzi: '突'
+      "hanzi": "突",
+      "count": 20
   },
   {
-    hanzi: '曾'
+      "hanzi": "曾",
+      "count": 7
   },
   {
-    hanzi: '增'
+      "hanzi": "增",
+      "count": 21
   },
   {
-    hanzi: '号'
+      "hanzi": "号",
+      "count": 24
   },
   {
-    hanzi: '亏'
+      "hanzi": "亏",
+      "count": 11
   },
   {
-    hanzi: '污'
+      "hanzi": "污",
+      "count": 11
   },
   {
-    hanzi: '考'
+      "hanzi": "考",
+      "count": 74
   },
   {
-    hanzi: '巧'
+      "hanzi": "巧",
+      "count": 20
   },
   {
-    hanzi: '由'
+      "hanzi": "由",
+      "count": 40
   },
   {
-    hanzi: '油'
+      "hanzi": "油",
+      "count": 17
   },
   {
-    hanzi: '聘'
+      "hanzi": "聘",
+      "count": 6
   },
   {
-    hanzi: '抽'
+      "hanzi": "抽",
+      "count": 5
   },
   {
-    hanzi: '黄'
+      "hanzi": "黄",
+      "count": 16
   },
   {
-    hanzi: '害'
+      "hanzi": "害",
+      "count": 35
   },
   {
-    hanzi: '拜'
+      "hanzi": "拜",
+      "count": 11
   },
   {
-    hanzi: '峰'
+      "hanzi": "峰",
+      "count": 3
   },
   {
-    hanzi: '否'
+      "hanzi": "否",
+      "count": 13
   },
   {
-    hanzi: '舍'
+      "hanzi": "舍",
+      "count": 4
   },
   {
-    hanzi: '哈'
+      "hanzi": "哈",
+      "count": 4
   },
   {
-    hanzi: '命'
+      "hanzi": "命",
+      "count": 18
   },
   {
-    hanzi: '善'
+      "hanzi": "善",
+      "count": 18
   },
   {
-    hanzi: '吉'
+      "hanzi": "吉",
+      "count": 7
   },
   {
-    hanzi: '叶'
+      "hanzi": "叶",
+      "count": 8
   },
   {
-    hanzi: '吸'
+      "hanzi": "吸",
+      "count": 14
   },
   {
-    hanzi: '于'
+      "hanzi": "于",
+      "count": 165
   },
   {
-    hanzi: '乎'
+      "hanzi": "乎",
+      "count": 11
   },
   {
-    hanzi: '呼'
+      "hanzi": "呼",
+      "count": 12
   },
   {
-    hanzi: '呀'
+      "hanzi": "呀",
+      "count": 12
   },
   {
-    hanzi: '含'
+      "hanzi": "含",
+      "count": 7
   },
   {
-    hanzi: '嘴'
+      "hanzi": "嘴",
+      "count": 5
   },
   {
-    hanzi: '确'
+      "hanzi": "确",
+      "count": 22
   },
   {
-    hanzi: '售'
+      "hanzi": "售",
+      "count": 10
   },
   {
-    hanzi: '啦'
+      "hanzi": "啦",
+      "count": 1
   },
   {
-    hanzi: '咱'
+      "hanzi": "咱",
+      "count": 8
   },
   {
-    hanzi: '哦'
+      "hanzi": "哦",
+      "count": 4
   },
   {
-    hanzi: '咖'
+      "hanzi": "咖",
+      "count": 8
   },
   {
-    hanzi: '啡'
+      "hanzi": "啡",
+      "count": 8
   },
   {
-    hanzi: '排'
+      "hanzi": "排",
+      "count": 21
   },
   {
-    hanzi: '罪'
+      "hanzi": "罪",
+      "count": 5
   },
   {
-    hanzi: '靠'
+      "hanzi": "靠",
+      "count": 19
   },
   {
-    hanzi: '喝'
+      "hanzi": "喝",
+      "count": 64
   },
   {
-    hanzi: '渴'
+      "hanzi": "渴",
+      "count": 9
   },
   {
-    hanzi: '歇'
+      "hanzi": "歇",
+      "count": 1
   },
   {
-    hanzi: '结'
+      "hanzi": "结",
+      "count": 73
   },
   {
-    hanzi: '组'
+      "hanzi": "组",
+      "count": 23
   },
   {
-    hanzi: '具'
+      "hanzi": "具",
+      "count": 30
   },
   {
-    hanzi: '惧'
+      "hanzi": "惧",
+      "count": 2
   },
   {
-    hanzi: '线'
+      "hanzi": "线",
+      "count": 14
   },
   {
-    hanzi: '级'
+      "hanzi": "级",
+      "count": 43
   },
   {
-    hanzi: '续'
+      "hanzi": "续",
+      "count": 24
   },
   {
-    hanzi: '织'
+      "hanzi": "织",
+      "count": 5
   },
   {
-    hanzi: '职'
+      "hanzi": "职",
+      "count": 18
   },
   {
-    hanzi: '终'
+      "hanzi": "终",
+      "count": 68
   },
   {
-    hanzi: '细'
+      "hanzi": "细",
+      "count": 21
   },
   {
-    hanzi: '维'
+      "hanzi": "维",
+      "count": 15
   },
   {
-    hanzi: '焦'
+      "hanzi": "焦",
+      "count": 6
   },
   {
-    hanzi: '蕉'
+      "hanzi": "蕉",
+      "count": 4
   },
   {
-    hanzi: '熊'
+      "hanzi": "熊",
+      "count": 10
   },
   {
-    hanzi: '继'
+      "hanzi": "继",
+      "count": 8
   },
   {
-    hanzi: '世'
+      "hanzi": "世",
+      "count": 51
   },
   {
-    hanzi: '绝'
+      "hanzi": "绝",
+      "count": 18
   },
   {
-    hanzi: '负'
+      "hanzi": "负",
+      "count": 25
   },
   {
-    hanzi: '赖'
+      "hanzi": "赖",
+      "count": 3
   },
   {
-    hanzi: '懒'
+      "hanzi": "懒",
+      "count": 3
   },
   {
-    hanzi: '纪'
+      "hanzi": "纪",
+      "count": 12
   },
   {
-    hanzi: '练'
+      "hanzi": "练",
+      "count": 22
   },
   {
-    hanzi: '纳'
+      "hanzi": "纳",
+      "count": 5
   },
   {
-    hanzi: '络'
+      "hanzi": "络",
+      "count": 9
   },
   {
-    hanzi: '丝'
+      "hanzi": "丝",
+      "count": 7
   },
   {
-    hanzi: '纯'
+      "hanzi": "纯",
+      "count": 4
   },
   {
-    hanzi: '顿'
+      "hanzi": "顿",
+      "count": 11
   },
   {
-    hanzi: '吨'
+      "hanzi": "吨",
+      "count": 2
   },
   {
-    hanzi: '绩'
+      "hanzi": "绩",
+      "count": 15
   },
   {
-    hanzi: '综'
+      "hanzi": "综",
+      "count": 0
   },
   {
-    hanzi: '缓'
+      "hanzi": "缓",
+      "count": 3
   },
   {
-    hanzi: '暖'
+      "hanzi": "暖",
+      "count": 11
   },
   {
-    hanzi: '纷'
+      "hanzi": "纷",
+      "count": 4
   },
   {
-    hanzi: '纠'
+      "hanzi": "纠",
+      "count": 5
   },
   {
-    hanzi: '宿'
+      "hanzi": "宿",
+      "count": 1
   },
   {
-    hanzi: '缩'
+      "hanzi": "缩",
+      "count": 4
   },
   {
-    hanzi: '互'
+      "hanzi": "互",
+      "count": 18
   },
   {
-    hanzi: '缘'
+      "hanzi": "缘",
+      "count": 5
   },
   {
-    hanzi: '制'
+      "hanzi": "制",
+      "count": 40
   },
   {
-    hanzi: '刑'
+      "hanzi": "刑",
+      "count": 2
   },
   {
-    hanzi: '型'
+      "hanzi": "型",
+      "count": 10
   },
   {
-    hanzi: '形'
+      "hanzi": "形",
+      "count": 14
   },
   {
-    hanzi: '研'
+      "hanzi": "研",
+      "count": 13
   },
   {
-    hanzi: '则'
+      "hanzi": "则",
+      "count": 11
   },
   {
-    hanzi: '厕'
+      "hanzi": "厕",
+      "count": 3
   },
   {
-    hanzi: '测'
+      "hanzi": "测",
+      "count": 14
   },
   {
-    hanzi: '创'
+      "hanzi": "创",
+      "count": 18
   },
   {
-    hanzi: '列'
+      "hanzi": "列",
+      "count": 14
   },
   {
-    hanzi: '例'
+      "hanzi": "例",
+      "count": 8
   },
   {
-    hanzi: '残'
+      "hanzi": "残",
+      "count": 10
   },
   {
-    hanzi: '烈'
+      "hanzi": "烈",
+      "count": 9
   },
   {
-    hanzi: '副'
+      "hanzi": "副",
+      "count": 4
   },
   {
-    hanzi: '福'
+      "hanzi": "福",
+      "count": 16
   },
   {
-    hanzi: '富'
+      "hanzi": "富",
+      "count": 17
   },
   {
-    hanzi: '幅'
+      "hanzi": "幅",
+      "count": 6
   },
   {
-    hanzi: '剧'
+      "hanzi": "剧",
+      "count": 14
   },
   {
-    hanzi: '刘'
+      "hanzi": "刘",
+      "count": 3
   },
   {
-    hanzi: '判'
+      "hanzi": "判",
+      "count": 8
   },
   {
-    hanzi: '归'
+      "hanzi": "归",
+      "count": 7
   },
   {
-    hanzi: '刺'
+      "hanzi": "刺",
+      "count": 4
   },
   {
-    hanzi: '刷'
+      "hanzi": "刷",
+      "count": 8
   },
   {
-    hanzi: '刮'
+      "hanzi": "刮",
+      "count": 3
   },
   {
-    hanzi: '俞'
+      "hanzi": "俞",
+      "count": 0
   },
   {
-    hanzi: '偷'
+      "hanzi": "偷",
+      "count": 22
   },
   {
-    hanzi: '输'
+      "hanzi": "输",
+      "count": 6
   },
   {
-    hanzi: '愉'
+      "hanzi": "愉",
+      "count": 3
   },
   {
-    hanzi: '紧'
+      "hanzi": "紧",
+      "count": 32
   },
   {
-    hanzi: '索'
+      "hanzi": "索",
+      "count": 5
   },
   {
-    hanzi: '素'
+      "hanzi": "素",
+      "count": 6
   },
   {
-    hanzi: '责'
+      "hanzi": "责",
+      "count": 25
   },
   {
-    hanzi: '达'
+      "hanzi": "达",
+      "count": 35
   },
   {
-    hanzi: '选'
+      "hanzi": "选",
+      "count": 44
   },
   {
-    hanzi: '造'
+      "hanzi": "造",
+      "count": 21
   },
   {
-    hanzi: '适'
+      "hanzi": "适",
+      "count": 22
   },
   {
-    hanzi: '退'
+      "hanzi": "退",
+      "count": 14
   },
   {
-    hanzi: '遇'
+      "hanzi": "遇",
+      "count": 28
   },
   {
-    hanzi: '偶'
+      "hanzi": "偶",
+      "count": 7
   },
   {
-    hanzi: '寓'
+      "hanzi": "寓",
+      "count": 2
   },
   {
-    hanzi: '追'
+      "hanzi": "追",
+      "count": 9
   },
   {
-    hanzi: '官'
+      "hanzi": "官",
+      "count": 16
   },
   {
-    hanzi: '管'
+      "hanzi": "管",
+      "count": 48
   },
   {
-    hanzi: '馆'
+      "hanzi": "馆",
+      "count": 27
   },
   {
-    hanzi: '饺'
+      "hanzi": "饺",
+      "count": 4
   },
   {
-    hanzi: '饮'
+      "hanzi": "饮",
+      "count": 5
   },
   {
-    hanzi: '迷'
+      "hanzi": "迷",
+      "count": 15
   },
   {
-    hanzi: '透'
+      "hanzi": "透",
+      "count": 7
   },
   {
-    hanzi: '述'
+      "hanzi": "述",
+      "count": 4
   },
   {
-    hanzi: '迎'
+      "hanzi": "迎",
+      "count": 16
   },
   {
-    hanzi: '印'
+      "hanzi": "印",
+      "count": 15
   },
   {
-    hanzi: '即'
+      "hanzi": "即",
+      "count": 18
   },
   {
-    hanzi: '却'
+      "hanzi": "却",
+      "count": 30
   },
   {
-    hanzi: '脚'
+      "hanzi": "脚",
+      "count": 15
   },
   {
-    hanzi: '遗'
+      "hanzi": "遗",
+      "count": 5
   },
   {
-    hanzi: '逐'
+      "hanzi": "逐",
+      "count": 8
   },
   {
-    hanzi: '逛'
+      "hanzi": "逛",
+      "count": 4
   },
   {
-    hanzi: '违'
+      "hanzi": "违",
+      "count": 8
   },
   {
-    hanzi: '避'
+      "hanzi": "避",
+      "count": 8
   },
   {
-    hanzi: '邀'
+      "hanzi": "邀",
+      "count": 1
   },
   {
-    hanzi: '激'
+      "hanzi": "激",
+      "count": 5
   },
   {
-    hanzi: '疑'
+      "hanzi": "疑",
+      "count": 7
   },
   {
-    hanzi: '予'
+      "hanzi": "予",
+      "count": 4
   },
   {
-    hanzi: '预'
+      "hanzi": "预",
+      "count": 29
   },
   {
-    hanzi: '序'
+      "hanzi": "序",
+      "count": 2
   },
   {
-    hanzi: '野'
+      "hanzi": "野",
+      "count": 7
   },
   {
-    hanzi: '舒'
+      "hanzi": "舒",
+      "count": 18
   },
   {
-    hanzi: '无'
+      "hanzi": "无",
+      "count": 53
   },
   {
-    hanzi: '既'
+      "hanzi": "既",
+      "count": 7
   },
   {
-    hanzi: '概'
+      "hanzi": "概",
+      "count": 4
   },
   {
-    hanzi: '击'
+      "hanzi": "击",
+      "count": 11
   },
   {
-    hanzi: '毛'
+      "hanzi": "毛",
+      "count": 19
   },
   {
-    hanzi: '丈'
+      "hanzi": "丈",
+      "count": 3
   },
   {
-    hanzi: '夫'
+      "hanzi": "夫",
+      "count": 15
   },
   {
-    hanzi: '规'
+      "hanzi": "规",
+      "count": 25
   },
   {
-    hanzi: '肤'
+      "hanzi": "肤",
+      "count": 7
   },
   {
-    hanzi: '失'
+      "hanzi": "失",
+      "count": 36
   },
   {
-    hanzi: '跌'
+      "hanzi": "跌",
+      "count": 2
   },
   {
-    hanzi: '铁'
+      "hanzi": "铁",
+      "count": 26
   },
   {
-    hanzi: '升'
+      "hanzi": "升",
+      "count": 15
   },
   {
-    hanzi: '久'
+      "hanzi": "久",
+      "count": 33
   },
   {
-    hanzi: '乡'
+      "hanzi": "乡",
+      "count": 30
   },
   {
-    hanzi: '玄'
+      "hanzi": "玄",
+      "count": 0
   },
   {
-    hanzi: '幽'
+      "hanzi": "幽",
+      "count": 1
   },
   {
-    hanzi: '率'
+      "hanzi": "率",
+      "count": 11
   },
   {
-    hanzi: '利'
+      "hanzi": "利",
+      "count": 59
   },
   {
-    hanzi: '程'
+      "hanzi": "程",
+      "count": 42
   },
   {
-    hanzi: '斗'
+      "hanzi": "斗",
+      "count": 8
   },
   {
-    hanzi: '科'
+      "hanzi": "科",
+      "count": 35
   },
   {
-    hanzi: '料'
+      "hanzi": "料",
+      "count": 27
   },
   {
-    hanzi: '称'
+      "hanzi": "称",
+      "count": 13
   },
   {
-    hanzi: '积'
+      "hanzi": "积",
+      "count": 12
   },
   {
-    hanzi: '税'
+      "hanzi": "税",
+      "count": 5
   },
   {
-    hanzi: '季'
+      "hanzi": "季",
+      "count": 18
   },
   {
-    hanzi: '移'
+      "hanzi": "移",
+      "count": 13
   },
   {
-    hanzi: '私'
+      "hanzi": "私",
+      "count": 9
   },
   {
-    hanzi: '秀'
+      "hanzi": "秀",
+      "count": 9
   },
   {
-    hanzi: '必'
+      "hanzi": "必",
+      "count": 30
   },
   {
-    hanzi: '秘'
+      "hanzi": "秘",
+      "count": 10
   },
   {
-    hanzi: '密'
+      "hanzi": "密",
+      "count": 12
   },
   {
-    hanzi: '租'
+      "hanzi": "租",
+      "count": 13
   },
   {
-    hanzi: '粗'
+      "hanzi": "粗",
+      "count": 4
   },
   {
-    hanzi: '秋'
+      "hanzi": "秋",
+      "count": 25
   },
   {
-    hanzi: '秒'
+      "hanzi": "秒",
+      "count": 2
   },
   {
-    hanzi: '稍'
+      "hanzi": "稍",
+      "count": 2
   },
   {
-    hanzi: '队'
+      "hanzi": "队",
+      "count": 41
   },
   {
-    hanzi: '防'
+      "hanzi": "防",
+      "count": 15
   },
   {
-    hanzi: '阿'
+      "hanzi": "阿",
+      "count": 6
   },
   {
-    hanzi: '啊'
+      "hanzi": "啊",
+      "count": 36
   },
   {
-    hanzi: '限'
+      "hanzi": "限",
+      "count": 8
   },
   {
-    hanzi: '降'
+      "hanzi": "降",
+      "count": 8
   },
   {
-    hanzi: '舞'
+      "hanzi": "舞",
+      "count": 9
   },
   {
-    hanzi: '处'
+      "hanzi": "处",
+      "count": 57
   },
   {
-    hanzi: '陈'
+      "hanzi": "陈",
+      "count": 1
   },
   {
-    hanzi: '阵'
+      "hanzi": "阵",
+      "count": 8
   },
   {
-    hanzi: '陆'
+      "hanzi": "陆",
+      "count": 7
   },
   {
-    hanzi: '附'
+      "hanzi": "附",
+      "count": 22
   },
   {
-    hanzi: '障'
+      "hanzi": "障",
+      "count": 5
   },
   {
-    hanzi: '阻'
+      "hanzi": "阻",
+      "count": 7
   },
   {
-    hanzi: '陪'
+      "hanzi": "陪",
+      "count": 13
   },
   {
-    hanzi: '邮'
+      "hanzi": "邮",
+      "count": 11
   },
   {
-    hanzi: '邻'
+      "hanzi": "邻",
+      "count": 7
   },
   {
-    hanzi: '郊'
+      "hanzi": "郊",
+      "count": 3
   },
   {
-    hanzi: '理'
+      "hanzi": "理",
+      "count": 87
   },
   {
-    hanzi: '量'
+      "hanzi": "量",
+      "count": 49
   },
   {
-    hanzi: '望'
+      "hanzi": "望",
+      "count": 51
   },
   {
-    hanzi: '环'
+      "hanzi": "环",
+      "count": 19
   },
   {
-    hanzi: '弄'
+      "hanzi": "弄",
+      "count": 22
   },
   {
-    hanzi: '皇'
+      "hanzi": "皇",
+      "count": 2
   },
   {
-    hanzi: '泉'
+      "hanzi": "泉",
+      "count": 4
   },
   {
-    hanzi: '貌'
+      "hanzi": "貌",
+      "count": 11
   },
   {
-    hanzi: '卑'
+      "hanzi": "卑",
+      "count": 1
   },
   {
-    hanzi: '牌'
+      "hanzi": "牌",
+      "count": 20
   },
   {
-    hanzi: '啤'
+      "hanzi": "啤",
+      "count": 3
   },
   {
-    hanzi: '脾'
+      "hanzi": "脾",
+      "count": 5
   },
   {
-    hanzi: '基'
+      "hanzi": "基",
+      "count": 22
   },
   {
-    hanzi: '社'
+      "hanzi": "社",
+      "count": 28
   },
   {
-    hanzi: '礼'
+      "hanzi": "礼",
+      "count": 43
   },
   {
-    hanzi: '祝'
+      "hanzi": "祝",
+      "count": 24
   },
   {
-    hanzi: '竟'
+      "hanzi": "竟",
+      "count": 17
   },
   {
-    hanzi: '境'
+      "hanzi": "境",
+      "count": 17
   },
   {
-    hanzi: '镜'
+      "hanzi": "镜",
+      "count": 7
   },
   {
-    hanzi: '压'
+      "hanzi": "压",
+      "count": 12
   },
   {
-    hanzi: '均'
+      "hanzi": "均",
+      "count": 7
   },
   {
-    hanzi: '坚'
+      "hanzi": "坚",
+      "count": 14
   },
   {
-    hanzi: '域'
+      "hanzi": "域",
+      "count": 3
   },
   {
-    hanzi: '培'
+      "hanzi": "培",
+      "count": 8
   },
   {
-    hanzi: '圣'
+      "hanzi": "圣",
+      "count": 4
   },
   {
-    hanzi: '址'
+      "hanzi": "址",
+      "count": 5
   },
   {
-    hanzi: '填'
+      "hanzi": "填",
+      "count": 6
   },
   {
-    hanzi: '堵'
+      "hanzi": "堵",
+      "count": 6
   },
   {
-    hanzi: '垃'
+      "hanzi": "垃",
+      "count": 10
   },
   {
-    hanzi: '圾'
+      "hanzi": "圾",
+      "count": 10
   },
   {
-    hanzi: '丑'
+      "hanzi": "丑",
+      "count": 6
   },
   {
-    hanzi: '羞'
+      "hanzi": "羞",
+      "count": 2
   },
   {
-    hanzi: '塑'
+      "hanzi": "塑",
+      "count": 6
   },
   {
-    hanzi: '逆'
+      "hanzi": "逆",
+      "count": 1
   },
   {
-    hanzi: '股'
+      "hanzi": "股",
+      "count": 11
   },
   {
-    hanzi: '胜'
+      "hanzi": "胜",
+      "count": 17
   },
   {
-    hanzi: '胞'
+      "hanzi": "胞",
+      "count": 6
   },
   {
-    hanzi: '腿'
+      "hanzi": "腿",
+      "count": 10
   },
   {
-    hanzi: '脱'
+      "hanzi": "脱",
+      "count": 5
   },
   {
-    hanzi: '阅'
+      "hanzi": "阅",
+      "count": 4
   },
   {
-    hanzi: '肥'
+      "hanzi": "肥",
+      "count": 14
   },
   {
-    hanzi: '爸'
+      "hanzi": "爸",
+      "count": 72
   },
   {
-    hanzi: '肯'
+      "hanzi": "肯",
+      "count": 17
   },
   {
-    hanzi: '阴'
+      "hanzi": "阴",
+      "count": 8
   },
   {
-    hanzi: '肿'
+      "hanzi": "肿",
+      "count": 3
   },
   {
-    hanzi: '冲'
+      "hanzi": "冲",
+      "count": 17
   },
   {
-    hanzi: '膏'
+      "hanzi": "膏",
+      "count": 2
   },
   {
-    hanzi: '胳'
+      "hanzi": "胳",
+      "count": 0
   },
   {
-    hanzi: '朝'
+      "hanzi": "朝",
+      "count": 6
   },
   {
-    hanzi: '潮'
+      "hanzi": "潮",
+      "count": 5
   },
   {
-    hanzi: '韩'
+      "hanzi": "韩",
+      "count": 7
   },
   {
-    hanzi: '赢'
+      "hanzi": "赢",
+      "count": 13
   },
   {
-    hanzi: '背'
+      "hanzi": "背",
+      "count": 20
   },
   {
-    hanzi: '肌'
+      "hanzi": "肌",
+      "count": 2
   },
   {
-    hanzi: '胶'
+      "hanzi": "胶",
+      "count": 2
   },
   {
-    hanzi: '乘'
+      "hanzi": "乘",
+      "count": 7
   },
   {
-    hanzi: '剩'
+      "hanzi": "剩",
+      "count": 6
   },
   {
-    hanzi: '骨'
+      "hanzi": "骨",
+      "count": 3
   },
   {
-    hanzi: '滑'
+      "hanzi": "滑",
+      "count": 7
   },
   {
-    hanzi: '区'
+      "hanzi": "区",
+      "count": 52
   },
   {
-    hanzi: '欧'
+      "hanzi": "欧",
+      "count": 4
   },
   {
-    hanzi: '义'
+      "hanzi": "义",
+      "count": 23
   },
   {
-    hanzi: '议'
+      "hanzi": "议",
+      "count": 33
   },
   {
-    hanzi: '希'
+      "hanzi": "希",
+      "count": 38
   },
   {
-    hanzi: '凶'
+      "hanzi": "凶",
+      "count": 9
   },
   {
-    hanzi: '曲'
+      "hanzi": "曲",
+      "count": 12
   },
   {
-    hanzi: '典'
+      "hanzi": "典",
+      "count": 18
   },
   {
-    hanzi: '胸'
+      "hanzi": "胸",
+      "count": 5
   },
   {
-    hanzi: '齿'
+      "hanzi": "齿",
+      "count": 4
   },
   {
-    hanzi: '龄'
+      "hanzi": "龄",
+      "count": 8
   },
   {
-    hanzi: '离'
+      "hanzi": "离",
+      "count": 49
   },
   {
-    hanzi: '脑'
+      "hanzi": "脑",
+      "count": 43
   },
   {
-    hanzi: '恼'
+      "hanzi": "恼",
+      "count": 3
   },
   {
-    hanzi: '功'
+      "hanzi": "功",
+      "count": 40
   },
   {
-    hanzi: '势'
+      "hanzi": "势",
+      "count": 9
   },
   {
-    hanzi: '助'
+      "hanzi": "助",
+      "count": 42
   },
   {
-    hanzi: '历'
+      "hanzi": "历",
+      "count": 36
   },
   {
-    hanzi: '努'
+      "hanzi": "努",
+      "count": 39
   },
   {
-    hanzi: '劲'
+      "hanzi": "劲",
+      "count": 7
   },
   {
-    hanzi: '穷'
+      "hanzi": "穷",
+      "count": 7
   },
   {
-    hanzi: '勇'
+      "hanzi": "勇",
+      "count": 7
   },
   {
-    hanzi: '通'
+      "hanzi": "通",
+      "count": 70
   },
   {
-    hanzi: '桶'
+      "hanzi": "桶",
+      "count": 6
   },
   {
-    hanzi: '痛'
+      "hanzi": "痛",
+      "count": 19
   },
   {
-    hanzi: '疗'
+      "hanzi": "疗",
+      "count": 7
   },
   {
-    hanzi: '症'
+      "hanzi": "症",
+      "count": 7
   },
   {
-    hanzi: '瘦'
+      "hanzi": "瘦",
+      "count": 9
   },
   {
-    hanzi: '搜'
+      "hanzi": "搜",
+      "count": 4
   },
   {
-    hanzi: '疯'
+      "hanzi": "疯",
+      "count": 5
   },
   {
-    hanzi: '疾'
+      "hanzi": "疾",
+      "count": 6
   },
   {
-    hanzi: '业'
+      "hanzi": "业",
+      "count": 99
   },
   {
-    hanzi: '亚'
+      "hanzi": "亚",
+      "count": 8
   },
   {
-    hanzi: '显'
+      "hanzi": "显",
+      "count": 22
   },
   {
-    hanzi: '普'
+      "hanzi": "普",
+      "count": 13
   },
   {
-    hanzi: '严'
+      "hanzi": "严",
+      "count": 15
   },
   {
-    hanzi: '恶'
+      "hanzi": "恶",
+      "count": 7
   },
   {
-    hanzi: '卫'
+      "hanzi": "卫",
+      "count": 12
   },
   {
-    hanzi: '武'
+      "hanzi": "武",
+      "count": 6
   },
   {
-    hanzi: '丽'
+      "hanzi": "丽",
+      "count": 11
   },
   {
-    hanzi: '导'
+      "hanzi": "导",
+      "count": 53
   },
   {
-    hanzi: '民'
+      "hanzi": "民",
+      "count": 72
   },
   {
-    hanzi: '异'
+      "hanzi": "异",
+      "count": 5
   },
   {
-    hanzi: '将'
+      "hanzi": "将",
+      "count": 54
   },
   {
-    hanzi: '装'
+      "hanzi": "装",
+      "count": 33
   },
   {
-    hanzi: '奖'
+      "hanzi": "奖",
+      "count": 20
   },
   {
-    hanzi: '状'
+      "hanzi": "状",
+      "count": 11
   },
   {
-    hanzi: '射'
+      "hanzi": "射",
+      "count": 7
   },
   {
-    hanzi: '寻'
+      "hanzi": "寻",
+      "count": 5
   },
   {
-    hanzi: '耐'
+      "hanzi": "耐",
+      "count": 16
   },
   {
-    hanzi: '冠'
+      "hanzi": "冠",
+      "count": 10
   },
   {
-    hanzi: '节'
+      "hanzi": "节",
+      "count": 75
   },
   {
-    hanzi: '爷'
+      "hanzi": "爷",
+      "count": 35
   },
   {
-    hanzi: '范'
+      "hanzi": "范",
+      "count": 9
   },
   {
-    hanzi: '艺'
+      "hanzi": "艺",
+      "count": 10
   },
   {
-    hanzi: '瓦'
+      "hanzi": "瓦",
+      "count": 1
   },
   {
-    hanzi: '瓶'
+      "hanzi": "瓶",
+      "count": 14
   },
   {
-    hanzi: '饼'
+      "hanzi": "饼",
+      "count": 7
   },
   {
-    hanzi: '著'
+      "hanzi": "著",
+      "count": 6
   },
   {
-    hanzi: '若'
+      "hanzi": "若",
+      "count": 4
   },
   {
-    hanzi: '苹'
+      "hanzi": "苹",
+      "count": 16
   },
   {
-    hanzi: '苏'
+      "hanzi": "苏",
+      "count": 3
   },
   {
-    hanzi: '协'
+      "hanzi": "协",
+      "count": 7
   },
   {
-    hanzi: '胁'
+      "hanzi": "胁",
+      "count": 1
   },
   {
-    hanzi: '藏'
+      "hanzi": "藏",
+      "count": 24
   },
   {
-    hanzi: '吕'
+      "hanzi": "吕",
+      "count": 0
   },
   {
-    hanzi: '宫'
+      "hanzi": "宫",
+      "count": 1
   },
   {
-    hanzi: '营'
+      "hanzi": "营",
+      "count": 13
   },
   {
-    hanzi: '劳'
+      "hanzi": "劳",
+      "count": 13
   },
   {
-    hanzi: '荣'
+      "hanzi": "荣",
+      "count": 6
   },
   {
-    hanzi: '论'
+      "hanzi": "论",
+      "count": 35
   },
   {
-    hanzi: '评'
+      "hanzi": "评",
+      "count": 13
   },
   {
-    hanzi: '讯'
+      "hanzi": "讯",
+      "count": 4
   },
   {
-    hanzi: '讲'
+      "hanzi": "讲",
+      "count": 39
   },
   {
-    hanzi: '证'
+      "hanzi": "证",
+      "count": 21
   },
   {
-    hanzi: '谈'
+      "hanzi": "谈",
+      "count": 17
   },
   {
-    hanzi: '训'
+      "hanzi": "训",
+      "count": 12
   },
   {
-    hanzi: '访'
+      "hanzi": "访",
+      "count": 6
   },
   {
-    hanzi: '误'
+      "hanzi": "误",
+      "count": 18
   },
   {
-    hanzi: '订'
+      "hanzi": "订",
+      "count": 11
   },
   {
-    hanzi: '诊'
+      "hanzi": "诊",
+      "count": 3
   },
   {
-    hanzi: '诺'
+      "hanzi": "诺",
+      "count": 7
   },
   {
-    hanzi: '诚'
+      "hanzi": "诚",
+      "count": 10
   },
   {
-    hanzi: '详'
+      "hanzi": "详",
+      "count": 6
   },
   {
-    hanzi: '谊'
+      "hanzi": "谊",
+      "count": 6
   },
   {
-    hanzi: '县'
+      "hanzi": "县",
+      "count": 4
   },
   {
-    hanzi: '谅'
+      "hanzi": "谅",
+      "count": 4
   },
   {
-    hanzi: '凉'
+      "hanzi": "凉",
+      "count": 13
   },
   {
-    hanzi: '度'
+      "hanzi": "度",
+      "count": 58
   },
   {
-    hanzi: '席'
+      "hanzi": "席",
+      "count": 12
   },
   {
-    hanzi: '府'
+      "hanzi": "府",
+      "count": 24
   },
   {
-    hanzi: '底'
+      "hanzi": "底",
+      "count": 21
   },
   {
-    hanzi: '座'
+      "hanzi": "座",
+      "count": 35
   },
   {
-    hanzi: '庆'
+      "hanzi": "庆",
+      "count": 9
   },
   {
-    hanzi: '矿'
+      "hanzi": "矿",
+      "count": 3
   },
   {
-    hanzi: '破'
+      "hanzi": "破",
+      "count": 21
   },
   {
-    hanzi: '础'
+      "hanzi": "础",
+      "count": 4
   },
   {
-    hanzi: '碍'
+      "hanzi": "碍",
+      "count": 5
   },
   {
-    hanzi: '码'
+      "hanzi": "码",
+      "count": 9
   },
   {
-    hanzi: '库'
+      "hanzi": "库",
+      "count": 1
   },
   {
-    hanzi: '庄'
+      "hanzi": "庄",
+      "count": 8
   },
   {
-    hanzi: '脏'
+      "hanzi": "脏",
+      "count": 12
   },
   {
-    hanzi: '唐'
+      "hanzi": "唐",
+      "count": 0
   },
   {
-    hanzi: '糖'
+      "hanzi": "糖",
+      "count": 10
   },
   {
-    hanzi: '领'
+      "hanzi": "领",
+      "count": 54
   },
   {
-    hanzi: '零'
+      "hanzi": "零",
+      "count": 8
   },
   {
-    hanzi: '项'
+      "hanzi": "项",
+      "count": 29
   },
   {
-    hanzi: '须'
+      "hanzi": "须",
+      "count": 21
   },
   {
-    hanzi: '修'
+      "hanzi": "修",
+      "count": 29
   },
   {
-    hanzi: '彩'
+      "hanzi": "彩",
+      "count": 15
   },
   {
-    hanzi: '额'
+      "hanzi": "额",
+      "count": 9
   },
   {
-    hanzi: '彦'
+      "hanzi": "彦",
+      "count": 0
   },
   {
-    hanzi: '颜'
+      "hanzi": "颜",
+      "count": 11
   },
   {
-    hanzi: '顺'
+      "hanzi": "顺",
+      "count": 12
   },
   {
-    hanzi: '顾'
+      "hanzi": "顾",
+      "count": 36
   },
   {
-    hanzi: '频'
+      "hanzi": "频",
+      "count": 3
   },
   {
-    hanzi: '顶'
+      "hanzi": "顶",
+      "count": 11
   },
   {
-    hanzi: '硕'
+      "hanzi": "硕",
+      "count": 2
   },
   {
-    hanzi: '态'
+      "hanzi": "态",
+      "count": 14
   },
   {
-    hanzi: '志'
+      "hanzi": "志",
+      "count": 11
   },
   {
-    hanzi: '念'
+      "hanzi": "念",
+      "count": 13
   },
   {
-    hanzi: '恋'
+      "hanzi": "恋",
+      "count": 3
   },
   {
-    hanzi: '蛮'
+      "hanzi": "蛮",
+      "count": 1
   },
   {
-    hanzi: '恩'
+      "hanzi": "恩",
+      "count": 5
   },
   {
-    hanzi: '怨'
+      "hanzi": "怨",
+      "count": 3
   },
   {
-    hanzi: '宛'
+      "hanzi": "宛",
+      "count": 1
   },
   {
-    hanzi: '腕'
+      "hanzi": "腕",
+      "count": 1
   },
   {
-    hanzi: '碗'
+      "hanzi": "碗",
+      "count": 12
   },
   {
-    hanzi: '德'
+      "hanzi": "德",
+      "count": 14
   },
   {
-    hanzi: '急'
+      "hanzi": "急",
+      "count": 24
   },
   {
-    hanzi: '隐'
+      "hanzi": "隐",
+      "count": 9
   },
   {
-    hanzi: '稳'
+      "hanzi": "稳",
+      "count": 2
   },
   {
-    hanzi: '悲'
+      "hanzi": "悲",
+      "count": 6
   },
   {
-    hanzi: '串'
+      "hanzi": "串",
+      "count": 2
   },
   {
-    hanzi: '患'
+      "hanzi": "患",
+      "count": 3
   },
   {
-    hanzi: '虑'
+      "hanzi": "虑",
+      "count": 8
   },
   {
-    hanzi: '虚'
+      "hanzi": "虚",
+      "count": 7
   },
   {
-    hanzi: '虎'
+      "hanzi": "虎",
+      "count": 12
   },
   {
-    hanzi: '忍'
+      "hanzi": "忍",
+      "count": 7
   },
   {
-    hanzi: '企'
+      "hanzi": "企",
+      "count": 13
   },
   {
-    hanzi: '众'
+      "hanzi": "众",
+      "count": 21
   },
   {
-    hanzi: '食'
+      "hanzi": "食",
+      "count": 22
   },
   {
-    hanzi: '餐'
+      "hanzi": "餐",
+      "count": 31
   },
   {
-    hanzi: '伞'
+      "hanzi": "伞",
+      "count": 11
   },
   {
-    hanzi: '谷'
+      "hanzi": "谷",
+      "count": 3
   },
   {
-    hanzi: '容'
+      "hanzi": "容",
+      "count": 56
   },
   {
-    hanzi: '欲'
+      "hanzi": "欲",
+      "count": 4
   },
   {
-    hanzi: '复'
+      "hanzi": "复",
+      "count": 27
   },
   {
-    hanzi: '阳'
+      "hanzi": "阳",
+      "count": 22
   },
   {
-    hanzi: '申'
+      "hanzi": "申",
+      "count": 9
   },
   {
-    hanzi: '审'
+      "hanzi": "审",
+      "count": 4
   },
   {
-    hanzi: '神'
+      "hanzi": "神",
+      "count": 23
   },
   {
-    hanzi: '智'
+      "hanzi": "智",
+      "count": 8
   },
   {
-    hanzi: '暗'
+      "hanzi": "暗",
+      "count": 6
   },
   {
-    hanzi: '辰'
+      "hanzi": "辰",
+      "count": 1
   },
   {
-    hanzi: '晨'
+      "hanzi": "晨",
+      "count": 6
   },
   {
-    hanzi: '震'
+      "hanzi": "震",
+      "count": 8
   },
   {
-    hanzi: '晴'
+      "hanzi": "晴",
+      "count": 2
   },
   {
-    hanzi: '暑'
+      "hanzi": "暑",
+      "count": 4
   },
   {
-    hanzi: '怪'
+      "hanzi": "怪",
+      "count": 19
   },
   {
-    hanzi: '性'
+      "hanzi": "性",
+      "count": 37
   },
   {
-    hanzi: '怀'
+      "hanzi": "怀",
+      "count": 8
   },
   {
-    hanzi: '惊'
+      "hanzi": "惊",
+      "count": 5
   },
   {
-    hanzi: '惜'
+      "hanzi": "惜",
+      "count": 8
   },
   {
-    hanzi: '忆'
+      "hanzi": "忆",
+      "count": 9
   },
   {
-    hanzi: '悔'
+      "hanzi": "悔",
+      "count": 3
   },
   {
-    hanzi: '憾'
+      "hanzi": "憾",
+      "count": 2
   },
   {
-    hanzi: '怖'
+      "hanzi": "怖",
+      "count": 3
   },
   {
-    hanzi: '怜'
+      "hanzi": "怜",
+      "count": 1
   },
   {
-    hanzi: '贯'
+      "hanzi": "贯",
+      "count": 2
   },
   {
-    hanzi: '惯'
+      "hanzi": "惯",
+      "count": 18
   },
   {
-    hanzi: '华'
+      "hanzi": "华",
+      "count": 14
   },
   {
-    hanzi: '克'
+      "hanzi": "克",
+      "count": 13
   },
   {
-    hanzi: '党'
+      "hanzi": "党",
+      "count": 4
   },
   {
-    hanzi: '掌'
+      "hanzi": "掌",
+      "count": 11
   },
   {
-    hanzi: '堂'
+      "hanzi": "堂",
+      "count": 9
   },
   {
-    hanzi: '甫'
+      "hanzi": "甫",
+      "count": 0
   },
   {
-    hanzi: '葡'
+      "hanzi": "葡",
+      "count": 9
   },
   {
-    hanzi: '萄'
+      "hanzi": "萄",
+      "count": 9
   },
   {
-    hanzi: '缺'
+      "hanzi": "缺",
+      "count": 8
   },
   {
-    hanzi: '筷'
+      "hanzi": "筷",
+      "count": 6
   },
   {
-    hanzi: '傅'
+      "hanzi": "傅",
+      "count": 4
   },
   {
-    hanzi: '博'
+      "hanzi": "博",
+      "count": 8
   },
   {
-    hanzi: '膊'
+      "hanzi": "膊",
+      "count": 0
   },
   {
-    hanzi: '薄'
+      "hanzi": "薄",
+      "count": 4
   },
   {
-    hanzi: '产'
+      "hanzi": "产",
+      "count": 48
   },
   {
-    hanzi: '质'
+      "hanzi": "质",
+      "count": 27
   },
   {
-    hanzi: '厅'
+      "hanzi": "厅",
+      "count": 11
   },
   {
-    hanzi: '厉'
+      "hanzi": "厉",
+      "count": 9
   },
   {
-    hanzi: '励'
+      "hanzi": "励",
+      "count": 5
   },
   {
-    hanzi: '危'
+      "hanzi": "危",
+      "count": 9
   },
   {
-    hanzi: '厨'
+      "hanzi": "厨",
+      "count": 5
   },
   {
-    hanzi: '登'
+      "hanzi": "登",
+      "count": 6
   },
   {
-    hanzi: '段'
+      "hanzi": "段",
+      "count": 22
   },
   {
-    hanzi: '锻'
+      "hanzi": "锻",
+      "count": 3
   },
   {
-    hanzi: '政'
+      "hanzi": "政",
+      "count": 37
   },
   {
-    hanzi: '效'
+      "hanzi": "效",
+      "count": 13
   },
   {
-    hanzi: '故'
+      "hanzi": "故",
+      "count": 47
   },
   {
-    hanzi: '散'
+      "hanzi": "散",
+      "count": 16
   },
   {
-    hanzi: '攻'
+      "hanzi": "攻",
+      "count": 5
   },
   {
-    hanzi: '败'
+      "hanzi": "败",
+      "count": 11
   },
   {
-    hanzi: '敢'
+      "hanzi": "敢",
+      "count": 8
   },
   {
-    hanzi: '聪'
+      "hanzi": "聪",
+      "count": 10
   },
   {
-    hanzi: '敌'
+      "hanzi": "敌",
+      "count": 27
   },
   {
-    hanzi: '敬'
+      "hanzi": "敬",
+      "count": 10
   },
   {
-    hanzi: '警'
+      "hanzi": "警",
+      "count": 29
   },
   {
-    hanzi: '傲'
+      "hanzi": "傲",
+      "count": 2
   },
   {
-    hanzi: '熬'
+      "hanzi": "熬",
+      "count": 1
   },
   {
-    hanzi: '局'
+      "hanzi": "局",
+      "count": 12
   },
   {
-    hanzi: '居'
+      "hanzi": "居",
+      "count": 19
   },
   {
-    hanzi: '层'
+      "hanzi": "层",
+      "count": 10
   },
   {
-    hanzi: '尝'
+      "hanzi": "尝",
+      "count": 7
   },
   {
-    hanzi: '偿'
+      "hanzi": "偿",
+      "count": 2
   },
   {
-    hanzi: '属'
+      "hanzi": "属",
+      "count": 16
   },
   {
-    hanzi: '尼'
+      "hanzi": "尼",
+      "count": 1
   },
   {
-    hanzi: '届'
+      "hanzi": "届",
+      "count": 3
   },
   {
-    hanzi: '尺'
+      "hanzi": "尺",
+      "count": 3
   },
   {
-    hanzi: '尽'
+      "hanzi": "尽",
+      "count": 24
   },
   {
-    hanzi: '迟'
+      "hanzi": "迟",
+      "count": 14
   },
   {
-    hanzi: '屏'
+      "hanzi": "屏",
+      "count": 2
   },
   {
-    hanzi: '权'
+      "hanzi": "权",
+      "count": 16
   },
   {
-    hanzi: '观'
+      "hanzi": "观",
+      "count": 43
   },
   {
-    hanzi: '双'
+      "hanzi": "双",
+      "count": 18
   },
   {
-    hanzi: '摄'
+      "hanzi": "摄",
+      "count": 5
   },
   {
-    hanzi: '戏'
+      "hanzi": "戏",
+      "count": 17
   },
   {
-    hanzi: '敲'
+      "hanzi": "敲",
+      "count": 5
   },
   {
-    hanzi: '叔'
+      "hanzi": "叔",
+      "count": 2
   },
   {
-    hanzi: '督'
+      "hanzi": "督",
+      "count": 1
   },
   {
-    hanzi: '戚'
+      "hanzi": "戚",
+      "count": 0
   },
   {
-    hanzi: '椒'
+      "hanzi": "椒",
+      "count": 4
   },
   {
-    hanzi: '血'
+      "hanzi": "血",
+      "count": 8
   },
   {
-    hanzi: '益'
+      "hanzi": "益",
+      "count": 14
   },
   {
-    hanzi: '温'
+      "hanzi": "温",
+      "count": 24
   },
   {
-    hanzi: '监'
+      "hanzi": "监",
+      "count": 2
   },
   {
-    hanzi: '临'
+      "hanzi": "临",
+      "count": 10
   },
   {
-    hanzi: '篮'
+      "hanzi": "篮",
+      "count": 9
   },
   {
-    hanzi: '蓝'
+      "hanzi": "蓝",
+      "count": 17
   },
   {
-    hanzi: '盛'
+      "hanzi": "盛",
+      "count": 8
   },
   {
-    hanzi: '盖'
+      "hanzi": "盖",
+      "count": 7
   },
   {
-    hanzi: '盟'
+      "hanzi": "盟",
+      "count": 3
   },
   {
-    hanzi: '盐'
+      "hanzi": "盐",
+      "count": 5
   },
   {
-    hanzi: '盒'
+      "hanzi": "盒",
+      "count": 8
   },
   {
-    hanzi: '宣'
+      "hanzi": "宣",
+      "count": 4
   },
   {
-    hanzi: '宁'
+      "hanzi": "宁",
+      "count": 3
   },
   {
-    hanzi: '守'
+      "hanzi": "守",
+      "count": 8
   },
   {
-    hanzi: '灾'
+      "hanzi": "灾",
+      "count": 15
   },
   {
-    hanzi: '宗'
+      "hanzi": "宗",
+      "count": 5
   },
   {
-    hanzi: '奥'
+      "hanzi": "奥",
+      "count": 9
   },
   {
-    hanzi: '祭'
+      "hanzi": "祭",
+      "count": 2
   },
   {
-    hanzi: '察'
+      "hanzi": "察",
+      "count": 33
   },
   {
-    hanzi: '擦'
+      "hanzi": "擦",
+      "count": 6
   },
   {
-    hanzi: '赛'
+      "hanzi": "赛",
+      "count": 55
   },
   {
-    hanzi: '寒'
+      "hanzi": "寒",
+      "count": 8
   },
   {
-    hanzi: '塞'
+      "hanzi": "塞",
+      "count": 4
   },
   {
-    hanzi: '春'
+      "hanzi": "春",
+      "count": 36
   },
   {
-    hanzi: '奉'
+      "hanzi": "奉",
+      "count": 1
   },
   {
-    hanzi: '棒'
+      "hanzi": "棒",
+      "count": 7
   },
   {
-    hanzi: '举'
+      "hanzi": "举",
+      "count": 27
   },
   {
-    hanzi: '择'
+      "hanzi": "择",
+      "count": 12
   },
   {
-    hanzi: '播'
+      "hanzi": "播",
+      "count": 14
   },
   {
-    hanzi: '释'
+      "hanzi": "释",
+      "count": 10
   },
   {
-    hanzi: '译'
+      "hanzi": "译",
+      "count": 5
   },
   {
-    hanzi: '悉'
+      "hanzi": "悉",
+      "count": 3
   },
   {
-    hanzi: '羽'
+      "hanzi": "羽",
+      "count": 6
   },
   {
-    hanzi: '翻'
+      "hanzi": "翻",
+      "count": 13
   },
   {
-    hanzi: '扇'
+      "hanzi": "扇",
+      "count": 4
   },
   {
-    hanzi: '旁'
+      "hanzi": "旁",
+      "count": 13
   },
   {
-    hanzi: '童'
+      "hanzi": "童",
+      "count": 18
   },
   {
-    hanzi: '竞'
+      "hanzi": "竞",
+      "count": 2
   },
   {
-    hanzi: '章'
+      "hanzi": "章",
+      "count": 17
   },
   {
-    hanzi: '端'
+      "hanzi": "端",
+      "count": 4
   },
   {
-    hanzi: '帝'
+      "hanzi": "帝",
+      "count": 4
   },
   {
-    hanzi: '商'
+      "hanzi": "商",
+      "count": 46
   },
   {
-    hanzi: '橘'
+      "hanzi": "橘",
+      "count": 1
   },
   {
-    hanzi: '费'
+      "hanzi": "费",
+      "count": 32
   },
   {
-    hanzi: '佛'
+      "hanzi": "佛",
+      "count": 4
   },
   {
-    hanzi: '聊'
+      "hanzi": "聊",
+      "count": 19
   },
   {
-    hanzi: '贸'
+      "hanzi": "贸",
+      "count": 0
   },
   {
-    hanzi: '留'
+      "hanzi": "留",
+      "count": 30
   },
   {
-    hanzi: '债'
+      "hanzi": "债",
+      "count": 2
   },
   {
-    hanzi: '贴'
+      "hanzi": "贴",
+      "count": 6
   },
   {
-    hanzi: '战'
+      "hanzi": "战",
+      "count": 28
   },
   {
-    hanzi: '赔'
+      "hanzi": "赔",
+      "count": 4
   },
   {
-    hanzi: '财'
+      "hanzi": "财",
+      "count": 7
   },
   {
-    hanzi: '贫'
+      "hanzi": "贫",
+      "count": 3
   },
   {
-    hanzi: '贷'
+      "hanzi": "贷",
+      "count": 5
   },
   {
-    hanzi: '贡'
+      "hanzi": "贡",
+      "count": 2
   },
   {
-    hanzi: '参'
+      "hanzi": "参",
+      "count": 38
   },
   {
-    hanzi: '类'
+      "hanzi": "类",
+      "count": 21
   },
   {
-    hanzi: '央'
+      "hanzi": "央",
+      "count": 4
   },
   {
-    hanzi: '英'
+      "hanzi": "英",
+      "count": 24
   },
   {
-    hanzi: '映'
+      "hanzi": "映",
+      "count": 4
   },
   {
-    hanzi: '换'
+      "hanzi": "换",
+      "count": 25
   },
   {
-    hanzi: '奋'
+      "hanzi": "奋",
+      "count": 9
   },
   {
-    hanzi: '夺'
+      "hanzi": "夺",
+      "count": 6
   },
   {
-    hanzi: '莫'
+      "hanzi": "莫",
+      "count": 6
   },
   {
-    hanzi: '模'
+      "hanzi": "模",
+      "count": 20
   },
   {
-    hanzi: '幕'
+      "hanzi": "幕",
+      "count": 5
   },
   {
-    hanzi: '膜'
+      "hanzi": "膜",
+      "count": 1
   },
   {
-    hanzi: '羡'
+      "hanzi": "羡",
+      "count": 5
   },
   {
-    hanzi: '慕'
+      "hanzi": "慕",
+      "count": 6
   },
   {
-    hanzi: '存'
+      "hanzi": "存",
+      "count": 9
   },
   {
-    hanzi: '李'
+      "hanzi": "李",
+      "count": 17
   },
   {
-    hanzi: '享'
+      "hanzi": "享",
+      "count": 5
   },
   {
-    hanzi: '亮'
+      "hanzi": "亮",
+      "count": 32
   },
   {
-    hanzi: '漂'
+      "hanzi": "漂",
+      "count": 19
   },
   {
-    hanzi: '熟'
+      "hanzi": "熟",
+      "count": 7
   },
   {
-    hanzi: '孙'
+      "hanzi": "孙",
+      "count": 2
   },
   {
-    hanzi: '获'
+      "hanzi": "获",
+      "count": 16
   },
   {
-    hanzi: '献'
+      "hanzi": "献",
+      "count": 4
   },
   {
-    hanzi: '默'
+      "hanzi": "默",
+      "count": 8
   },
   {
-    hanzi: '独'
+      "hanzi": "独",
+      "count": 12
   },
   {
-    hanzi: '融'
+      "hanzi": "融",
+      "count": 6
   },
   {
-    hanzi: '犯'
+      "hanzi": "犯",
+      "count": 10
   },
   {
-    hanzi: '狂'
+      "hanzi": "狂",
+      "count": 2
   },
   {
-    hanzi: '猜'
+      "hanzi": "猜",
+      "count": 6
   },
   {
-    hanzi: '检'
+      "hanzi": "检",
+      "count": 6
   },
   {
-    hanzi: '验'
+      "hanzi": "验",
+      "count": 15
   },
   {
-    hanzi: '险'
+      "hanzi": "险",
+      "count": 6
   },
   {
-    hanzi: '脸'
+      "hanzi": "脸",
+      "count": 18
   },
   {
-    hanzi: '签'
+      "hanzi": "签",
+      "count": 14
   },
   {
-    hanzi: '斯'
+      "hanzi": "斯",
+      "count": 4
   },
   {
-    hanzi: '甚'
+      "hanzi": "甚",
+      "count": 1
   },
   {
-    hanzi: '断'
+      "hanzi": "断",
+      "count": 19
   },
   {
-    hanzi: '斩'
+      "hanzi": "斩",
+      "count": 1
   },
   {
-    hanzi: '暂'
+      "hanzi": "暂",
+      "count": 8
   },
   {
-    hanzi: '丘'
+      "hanzi": "丘",
+      "count": 1
   },
   {
-    hanzi: '乒'
+      "hanzi": "乒",
+      "count": 3
   },
   {
-    hanzi: '乓'
+      "hanzi": "乓",
+      "count": 3
   },
   {
-    hanzi: '兵'
+      "hanzi": "兵",
+      "count": 4
   },
   {
-    hanzi: '宾'
+      "hanzi": "宾",
+      "count": 5
   },
   {
-    hanzi: '军'
+      "hanzi": "军",
+      "count": 26
   },
   {
-    hanzi: '农'
+      "hanzi": "农",
+      "count": 14
   },
   {
-    hanzi: '辑'
+      "hanzi": "辑",
+      "count": 2
   },
   {
-    hanzi: '载'
+      "hanzi": "载",
+      "count": 2
   },
   {
-    hanzi: '裁'
+      "hanzi": "裁",
+      "count": 2
   },
   {
-    hanzi: '戴'
+      "hanzi": "戴",
+      "count": 11
   },
   {
-    hanzi: '舟'
+      "hanzi": "舟",
+      "count": 0
   },
   {
-    hanzi: '船'
+      "hanzi": "船",
+      "count": 13
   },
   {
-    hanzi: '般'
+      "hanzi": "般",
+      "count": 21
   },
   {
-    hanzi: '搬'
+      "hanzi": "搬",
+      "count": 13
   },
   {
-    hanzi: '抗'
+      "hanzi": "抗",
+      "count": 7
   },
   {
-    hanzi: '航'
+      "hanzi": "航",
+      "count": 4
   },
   {
-    hanzi: '盘'
+      "hanzi": "盘",
+      "count": 11
   },
   {
-    hanzi: '封'
+      "hanzi": "封",
+      "count": 11
   },
   {
-    hanzi: '佳'
+      "hanzi": "佳",
+      "count": 4
   },
   {
-    hanzi: '挂'
+      "hanzi": "挂",
+      "count": 7
   },
   {
-    hanzi: '革'
+      "hanzi": "革",
+      "count": 9
   },
   {
-    hanzi: '鞋'
+      "hanzi": "鞋",
+      "count": 14
   },
   {
-    hanzi: '街'
+      "hanzi": "街",
+      "count": 17
   },
   {
-    hanzi: '策'
+      "hanzi": "策",
+      "count": 11
   },
   {
-    hanzi: '符'
+      "hanzi": "符",
+      "count": 6
   },
   {
-    hanzi: '箱'
+      "hanzi": "箱",
+      "count": 11
   },
   {
-    hanzi: '笨'
+      "hanzi": "笨",
+      "count": 3
   },
   {
-    hanzi: '笔'
+      "hanzi": "笔",
+      "count": 26
   },
   {
-    hanzi: '答'
+      "hanzi": "答",
+      "count": 28
   },
   {
-    hanzi: '巩'
+      "hanzi": "巩",
+      "count": 2
   },
   {
-    hanzi: '筑'
+      "hanzi": "筑",
+      "count": 4
   },
   {
-    hanzi: '恐'
+      "hanzi": "恐",
+      "count": 8
   },
   {
-    hanzi: '委'
+      "hanzi": "委",
+      "count": 7
   },
   {
-    hanzi: '威'
+      "hanzi": "威",
+      "count": 2
   },
   {
-    hanzi: '婚'
+      "hanzi": "婚",
+      "count": 30
   },
   {
-    hanzi: '媒'
+      "hanzi": "媒",
+      "count": 5
   },
   {
-    hanzi: '妇'
+      "hanzi": "妇",
+      "count": 4
   },
   {
-    hanzi: '妻'
+      "hanzi": "妻",
+      "count": 6
   },
   {
-    hanzi: '妨'
+      "hanzi": "妨",
+      "count": 4
   },
   {
-    hanzi: '围'
+      "hanzi": "围",
+      "count": 18
   },
   {
-    hanzi: '困'
+      "hanzi": "困",
+      "count": 23
   },
   {
-    hanzi: '固'
+      "hanzi": "固",
+      "count": 8
   },
   {
-    hanzi: '圆'
+      "hanzi": "圆",
+      "count": 6
   },
   {
-    hanzi: '卷'
+      "hanzi": "卷",
+      "count": 3
   },
   {
-    hanzi: '券'
+      "hanzi": "券",
+      "count": 1
   },
   {
-    hanzi: '圈'
+      "hanzi": "圈",
+      "count": 6
   },
   {
-    hanzi: '窗'
+      "hanzi": "窗",
+      "count": 12
   },
   {
-    hanzi: '帘'
+      "hanzi": "帘",
+      "count": 2
   },
   {
-    hanzi: '布'
+      "hanzi": "布",
+      "count": 19
   },
   {
-    hanzi: '币'
+      "hanzi": "币",
+      "count": 7
   },
   {
-    hanzi: '闹'
+      "hanzi": "闹",
+      "count": 15
   },
   {
-    hanzi: '冒'
+      "hanzi": "冒",
+      "count": 15
   },
   {
-    hanzi: '帽'
+      "hanzi": "帽",
+      "count": 26
   },
   {
-    hanzi: '套'
+      "hanzi": "套",
+      "count": 16
   },
   {
-    hanzi: '录'
+      "hanzi": "录",
+      "count": 7
   },
   {
-    hanzi: '绿'
+      "hanzi": "绿",
+      "count": 10
   },
   {
-    hanzi: '兼'
+      "hanzi": "兼",
+      "count": 6
   },
   {
-    hanzi: '赚'
+      "hanzi": "赚",
+      "count": 9
   },
   {
-    hanzi: '歉'
+      "hanzi": "歉",
+      "count": 0
   },
   {
-    hanzi: '谦'
+      "hanzi": "谦",
+      "count": 0
   },
   {
-    hanzi: '初'
+      "hanzi": "初",
+      "count": 9
   },
   {
-    hanzi: '彻'
+      "hanzi": "彻",
+      "count": 1
   },
   {
-    hanzi: '补'
+      "hanzi": "补",
+      "count": 11
   },
   {
-    hanzi: '裤'
+      "hanzi": "裤",
+      "count": 7
   },
   {
-    hanzi: '裙'
+      "hanzi": "裙",
+      "count": 4
   },
   {
-    hanzi: '衫'
+      "hanzi": "衫",
+      "count": 3
   },
   {
-    hanzi: '衬'
+      "hanzi": "衬",
+      "count": 4
   },
   {
-    hanzi: '袜'
+      "hanzi": "袜",
+      "count": 1
   },
   {
-    hanzi: '略'
+      "hanzi": "略",
+      "count": 4
   },
   {
-    hanzi: '画'
+      "hanzi": "画",
+      "count": 26
   },
   {
-    hanzi: '雷'
+      "hanzi": "雷",
+      "count": 6
   },
   {
-    hanzi: '甲'
+      "hanzi": "甲",
+      "count": 3
   },
   {
-    hanzi: '鼻'
+      "hanzi": "鼻",
+      "count": 3
   },
   {
-    hanzi: '畏'
+      "hanzi": "畏",
+      "count": 2
   },
   {
-    hanzi: '喂'
+      "hanzi": "喂",
+      "count": 4
   },
   {
-    hanzi: '针'
+      "hanzi": "针",
+      "count": 8
   },
   {
-    hanzi: '镇'
+      "hanzi": "镇",
+      "count": 2
   },
   {
-    hanzi: '钢'
+      "hanzi": "钢",
+      "count": 5
   },
   {
-    hanzi: '键'
+      "hanzi": "键",
+      "count": 3
   },
   {
-    hanzi: '铅'
+      "hanzi": "铅",
+      "count": 1
   },
   {
-    hanzi: '钥'
+      "hanzi": "钥",
+      "count": 1
   },
   {
-    hanzi: '匙'
+      "hanzi": "匙",
+      "count": 1
   },
   {
-    hanzi: '乔'
+      "hanzi": "乔",
+      "count": 0
   },
   {
-    hanzi: '骄'
+      "hanzi": "骄",
+      "count": 0
   },
   {
-    hanzi: '桥'
+      "hanzi": "桥",
+      "count": 9
   },
   {
-    hanzi: '鸟'
+      "hanzi": "鸟",
+      "count": 17
   },
   {
-    hanzi: '鸡'
+      "hanzi": "鸡",
+      "count": 15
   },
   {
-    hanzi: '岛'
+      "hanzi": "岛",
+      "count": 4
   },
   {
-    hanzi: '鸭'
+      "hanzi": "鸭",
+      "count": 6
   },
   {
-    hanzi: '灵'
+      "hanzi": "灵",
+      "count": 8
   },
   {
-    hanzi: '烟'
+      "hanzi": "烟",
+      "count": 10
   },
   {
-    hanzi: '炎'
+      "hanzi": "炎",
+      "count": 6
   },
   {
-    hanzi: '炼'
+      "hanzi": "炼",
+      "count": 5
   },
   {
-    hanzi: '烧'
+      "hanzi": "烧",
+      "count": 11
   },
   {
-    hanzi: '绕'
+      "hanzi": "绕",
+      "count": 3
   },
   {
-    hanzi: '浇'
+      "hanzi": "浇",
+      "count": 5
   },
   {
-    hanzi: '部'
+      "hanzi": "部",
+      "count": 78
   },
   {
-    hanzi: '隔'
+      "hanzi": "隔",
+      "count": 10
   },
   {
-    hanzi: '款'
+      "hanzi": "款",
+      "count": 27
   },
   {
-    hanzi: '资'
+      "hanzi": "资",
+      "count": 54
   },
   {
-    hanzi: '货'
+      "hanzi": "货",
+      "count": 13
   },
   {
-    hanzi: '赞'
+      "hanzi": "赞",
+      "count": 11
   },
   {
-    hanzi: '雕'
+      "hanzi": "雕",
+      "count": 2
   },
   {
-    hanzi: '调'
+      "hanzi": "调",
+      "count": 45
   },
   {
-    hanzi: '设'
+      "hanzi": "设",
+      "count": 33
   },
   {
-    hanzi: '罚'
+      "hanzi": "罚",
+      "count": 9
   },
   {
-    hanzi: '剑'
+      "hanzi": "剑",
+      "count": 1
   },
   {
-    hanzi: '允'
+      "hanzi": "允",
+      "count": 0
   },
   {
-    hanzi: '许'
+      "hanzi": "许",
+      "count": 25
   },
   {
-    hanzi: '谋'
+      "hanzi": "谋",
+      "count": 10
   },
   {
-    hanzi: '煤'
+      "hanzi": "煤",
+      "count": 6
   },
   {
-    hanzi: '灭'
+      "hanzi": "灭",
+      "count": 13
   },
   {
-    hanzi: '炸'
+      "hanzi": "炸",
+      "count": 9
   },
   {
-    hanzi: '储'
+      "hanzi": "储",
+      "count": 5
   },
   {
-    hanzi: '伟'
+      "hanzi": "伟",
+      "count": 9
   },
   {
-    hanzi: '侧'
+      "hanzi": "侧",
+      "count": 8
   },
   {
-    hanzi: '侵'
+      "hanzi": "侵",
+      "count": 5
   },
   {
-    hanzi: '伦'
+      "hanzi": "伦",
+      "count": 1
   },
   {
-    hanzi: '轮'
+      "hanzi": "轮",
+      "count": 12
   },
   {
-    hanzi: '亿'
+      "hanzi": "亿",
+      "count": 4
   },
   {
-    hanzi: '迅'
+      "hanzi": "迅",
+      "count": 1
   },
   {
-    hanzi: '速'
+      "hanzi": "速",
+      "count": 20
   },
   {
-    hanzi: '迫'
+      "hanzi": "迫",
+      "count": 6
   },
   {
-    hanzi: '荐'
+      "hanzi": "荐",
+      "count": 1
   },
   {
-    hanzi: '菌'
+      "hanzi": "菌",
+      "count": 3
   },
   {
-    hanzi: '团'
+      "hanzi": "团",
+      "count": 21
   },
   {
-    hanzi: '闭'
+      "hanzi": "闭",
+      "count": 10
   },
   {
-    hanzi: '闪'
+      "hanzi": "闪",
+      "count": 7
   },
   {
-    hanzi: '喊'
+      "hanzi": "喊",
+      "count": 2
   },
   {
-    hanzi: '启'
+      "hanzi": "启",
+      "count": 12
   },
   {
-    hanzi: '罢'
+      "hanzi": "罢",
+      "count": 6
   },
   {
-    hanzi: '摆'
+      "hanzi": "摆",
+      "count": 11
   },
   {
-    hanzi: '握'
+      "hanzi": "握",
+      "count": 15
   },
   {
-    hanzi: '摇'
+      "hanzi": "摇",
+      "count": 8
   },
   {
-    hanzi: '抵'
+      "hanzi": "抵",
+      "count": 6
   },
   {
-    hanzi: '援'
+      "hanzi": "援",
+      "count": 5
   },
   {
-    hanzi: '搭'
+      "hanzi": "搭",
+      "count": 15
   },
   {
-    hanzi: '忽'
+      "hanzi": "忽",
+      "count": 4
   },
   {
-    hanzi: '惠'
+      "hanzi": "惠",
+      "count": 9
   },
   {
-    hanzi: '甜'
+      "hanzi": "甜",
+      "count": 9
   },
   {
-    hanzi: '墙'
+      "hanzi": "墙",
+      "count": 9
   },
   {
-    hanzi: '碰'
+      "hanzi": "碰",
+      "count": 9
   },
   {
-    hanzi: '坦'
+      "hanzi": "坦",
+      "count": 5
   },
   {
-    hanzi: '胆'
+      "hanzi": "胆",
+      "count": 8
   },
   {
-    hanzi: '朗'
+      "hanzi": "朗",
+      "count": 7
   },
   {
-    hanzi: '肠'
+      "hanzi": "肠",
+      "count": 4
   },
   {
-    hanzi: '销'
+      "hanzi": "销",
+      "count": 12
   },
   {
-    hanzi: '锋'
+      "hanzi": "锋",
+      "count": 4
   },
   {
-    hanzi: '雄'
+      "hanzi": "雄",
+      "count": 6
   },
   {
-    hanzi: '截'
+      "hanzi": "截",
+      "count": 9
   },
   {
-    hanzi: '替'
+      "hanzi": "替",
+      "count": 11
   },
   {
-    hanzi: '潜'
+      "hanzi": "潜",
+      "count": 5
   },
   {
-    hanzi: '泪'
+      "hanzi": "泪",
+      "count": 4
   },
   {
-    hanzi: '涉'
+      "hanzi": "涉",
+      "count": 5
   },
   {
-    hanzi: '漫'
+      "hanzi": "漫",
+      "count": 2
   },
   {
-    hanzi: '婆'
+      "hanzi": "婆",
+      "count": 12
   },
   {
-    hanzi: '洁'
+      "hanzi": "洁",
+      "count": 5
   },
   {
-    hanzi: '浓'
+      "hanzi": "浓",
+      "count": 11
   },
   {
-    hanzi: '岸'
+      "hanzi": "岸",
+      "count": 3
   },
   {
-    hanzi: '废'
+      "hanzi": "废",
+      "count": 13
   },
   {
-    hanzi: '触'
+      "hanzi": "触",
+      "count": 8
   },
   {
-    hanzi: '麦'
+      "hanzi": "麦",
+      "count": 2
   },
   {
-    hanzi: '珍'
+      "hanzi": "珍",
+      "count": 12
   },
   {
-    hanzi: '珠'
+      "hanzi": "珠",
+      "count": 3
   },
   {
-    hanzi: '旗'
+      "hanzi": "旗",
+      "count": 3
   },
   {
-    hanzi: '祖'
+      "hanzi": "祖",
+      "count": 3
   },
   {
-    hanzi: '敏'
+      "hanzi": "敏",
+      "count": 5
   },
   {
-    hanzi: '繁'
+      "hanzi": "繁",
+      "count": 2
   },
   {
-    hanzi: '紫'
+      "hanzi": "紫",
+      "count": 3
   },
   {
-    hanzi: '梅'
+      "hanzi": "梅",
+      "count": 1
   },
   {
-    hanzi: '闲'
+      "hanzi": "闲",
+      "count": 3
   },
   {
-    hanzi: '杰'
+      "hanzi": "杰",
+      "count": 1
   },
   {
-    hanzi: '棉'
+      "hanzi": "棉",
+      "count": 3
   },
   {
-    hanzi: '横'
+      "hanzi": "横",
+      "count": 3
   },
   {
-    hanzi: '纵'
+      "hanzi": "纵",
+      "count": 3
   },
   {
-    hanzi: '杆'
+      "hanzi": "杆",
+      "count": 4
   },
   {
-    hanzi: '刊'
+      "hanzi": "刊",
+      "count": 2
   },
   {
-    hanzi: '肝'
+      "hanzi": "肝",
+      "count": 3
   },
   {
-    hanzi: '腰'
+      "hanzi": "腰",
+      "count": 2
   },
   {
-    hanzi: '肺'
+      "hanzi": "肺",
+      "count": 2
   },
   {
-    hanzi: '胃'
+      "hanzi": "胃",
+      "count": 4
   },
   {
-    hanzi: '谓'
+      "hanzi": "谓",
+      "count": 4
   },
   {
-    hanzi: '诗'
+      "hanzi": "诗",
+      "count": 5
   },
   {
-    hanzi: '询'
+      "hanzi": "询",
+      "count": 5
   },
   {
-    hanzi: '诞'
+      "hanzi": "诞",
+      "count": 3
   },
   {
-    hanzi: '诸'
+      "hanzi": "诸",
+      "count": 1
   },
   {
-    hanzi: '奔'
+      "hanzi": "奔",
+      "count": 1
   },
   {
-    hanzi: '尖'
+      "hanzi": "尖",
+      "count": 4
   },
   {
-    hanzi: '夸'
+      "hanzi": "夸",
+      "count": 6
   },
   {
-    hanzi: '跨'
+      "hanzi": "跨",
+      "count": 2
   },
   {
-    hanzi: '垮'
+      "hanzi": "垮",
+      "count": 1
   },
   {
-    hanzi: '挎'
+      "hanzi": "挎",
+      "count": 1
   },
   {
-    hanzi: '扣'
+      "hanzi": "扣",
+      "count": 8
   },
   {
-    hanzi: '撞'
+      "hanzi": "撞",
+      "count": 3
   },
   {
-    hanzi: '摸'
+      "hanzi": "摸",
+      "count": 4
   },
   {
-    hanzi: '拔'
+      "hanzi": "拔",
+      "count": 7
   },
   {
-    hanzi: '振'
+      "hanzi": "振",
+      "count": 2
   },
   {
-    hanzi: '拖'
+      "hanzi": "拖",
+      "count": 5
   },
   {
-    hanzi: '拼'
+      "hanzi": "拼",
+      "count": 5
   },
   {
-    hanzi: '拆'
+      "hanzi": "拆",
+      "count": 2
   },
   {
-    hanzi: '扎'
+      "hanzi": "扎",
+      "count": 11
   },
   {
-    hanzi: '乳'
+      "hanzi": "乳",
+      "count": 2
   },
   {
-    hanzi: '浮'
+      "hanzi": "浮",
+      "count": 6
   },
   {
-    hanzi: '泥'
+      "hanzi": "泥",
+      "count": 2
   },
   {
-    hanzi: '湿'
+      "hanzi": "湿",
+      "count": 1
   },
   {
-    hanzi: '沿'
+      "hanzi": "沿",
+      "count": 6
   },
   {
-    hanzi: '泡'
+      "hanzi": "泡",
+      "count": 10
   },
   {
-    hanzi: '炮'
+      "hanzi": "炮",
+      "count": 2
   },
   {
-    hanzi: '灰'
+      "hanzi": "灰",
+      "count": 20
   },
   {
-    hanzi: '晓'
+      "hanzi": "晓",
+      "count": 1
   },
   {
-    hanzi: '曹'
+      "hanzi": "曹",
+      "count": 5
   },
   {
-    hanzi: '遭'
+      "hanzi": "遭",
+      "count": 7
   },
   {
-    hanzi: '糟'
+      "hanzi": "糟",
+      "count": 1
   },
   {
-    hanzi: '糕'
+      "hanzi": "糕",
+      "count": 8
   },
   {
-    hanzi: '粮'
+      "hanzi": "粮",
+      "count": 1
   },
   {
-    hanzi: '凡'
+      "hanzi": "凡",
+      "count": 3
   },
   {
-    hanzi: '洞'
+      "hanzi": "洞",
+      "count": 6
   },
   {
-    hanzi: '铜'
+      "hanzi": "铜",
+      "count": 2
   },
   {
-    hanzi: '铺'
+      "hanzi": "铺",
+      "count": 5
   },
   {
-    hanzi: '锁'
+      "hanzi": "锁",
+      "count": 0
   },
   {
-    hanzi: '赏'
+      "hanzi": "赏",
+      "count": 6
   },
   {
-    hanzi: '账'
+      "hanzi": "账",
+      "count": 1
   },
   {
-    hanzi: '贺'
+      "hanzi": "贺",
+      "count": 2
   },
   {
-    hanzi: '茄'
+      "hanzi": "茄",
+      "count": 3
   },
   {
-    hanzi: '驾'
+      "hanzi": "驾",
+      "count": 4
   },
   {
-    hanzi: '驶'
+      "hanzi": "驶",
+      "count": 2
   },
   {
-    hanzi: '驻'
+      "hanzi": "驻",
+      "count": 1
   },
   {
-    hanzi: '乌'
+      "hanzi": "乌",
+      "count": 6
   },
   {
-    hanzi: '塔'
+      "hanzi": "塔",
+      "count": 1
   },
   {
-    hanzi: '坡'
+      "hanzi": "坡",
+      "count": 4
   },
   {
-    hanzi: '壁'
+      "hanzi": "壁",
+      "count": 1
   },
   {
-    hanzi: '勤'
+      "hanzi": "勤",
+      "count": 4
   },
   {
-    hanzi: '幼'
+      "hanzi": "幼",
+      "count": 5
   },
   {
-    hanzi: '蒙'
+      "hanzi": "蒙",
+      "count": 8
   },
   {
-    hanzi: '豪'
+      "hanzi": "豪",
+      "count": 0
   },
   {
-    hanzi: '毫'
+      "hanzi": "毫",
+      "count": 3
   },
   {
-    hanzi: '尾'
+      "hanzi": "尾",
+      "count": 5
   },
   {
-    hanzi: '耗'
+      "hanzi": "耗",
+      "count": 1
   },
   {
-    hanzi: '径'
+      "hanzi": "径",
+      "count": 2
   },
   {
-    hanzi: '衡'
+      "hanzi": "衡",
+      "count": 2
   },
   {
-    hanzi: '徒'
+      "hanzi": "徒",
+      "count": 0
   },
   {
-    hanzi: '趋'
+      "hanzi": "趋",
+      "count": 1
   },
   {
-    hanzi: '逼'
+      "hanzi": "逼",
+      "count": 4
   },
   {
-    hanzi: '返'
+      "hanzi": "返",
+      "count": 0
   },
   {
-    hanzi: '迁'
+      "hanzi": "迁",
+      "count": 2
   },
   {
-    hanzi: '猛'
+      "hanzi": "猛",
+      "count": 5
   },
   {
-    hanzi: '仔'
+      "hanzi": "仔",
+      "count": 7
   },
   {
-    hanzi: '仪'
+      "hanzi": "仪",
+      "count": 2
   },
   {
-    hanzi: '俗'
+      "hanzi": "俗",
+      "count": 4
   },
   {
-    hanzi: '俱'
+      "hanzi": "俱",
+      "count": 1
   },
   {
-    hanzi: '傻'
+      "hanzi": "傻",
+      "count": 1
   },
   {
-    hanzi: '妙'
+      "hanzi": "妙",
+      "count": 5
   },
   {
-    hanzi: '奴'
+      "hanzi": "奴",
+      "count": 0
   },
   {
-    hanzi: '怒'
+      "hanzi": "怒",
+      "count": 2
   },
   {
-    hanzi: '愤'
+      "hanzi": "愤",
+      "count": 2
   },
   {
-    hanzi: '磨'
+      "hanzi": "磨",
+      "count": 5
   },
   {
-    hanzi: '鬼'
+      "hanzi": "鬼",
+      "count": 5
   },
   {
-    hanzi: '魔'
+      "hanzi": "魔",
+      "count": 1
   },
   {
-    hanzi: '嘛'
+      "hanzi": "嘛",
+      "count": 1
   },
   {
-    hanzi: '唯'
+      "hanzi": "唯",
+      "count": 5
   },
   {
-    hanzi: '滴'
+      "hanzi": "滴",
+      "count": 1
   },
   {
-    hanzi: '摘'
+      "hanzi": "摘",
+      "count": 2
   },
   {
-    hanzi: '燃'
+      "hanzi": "燃",
+      "count": 5
   },
   {
-    hanzi: '腐'
+      "hanzi": "腐",
+      "count": 2
   },
   {
-    hanzi: '宏'
+      "hanzi": "宏",
+      "count": 0
   },
   {
-    hanzi: '辈'
+      "hanzi": "辈",
+      "count": 6
   },
   {
-    hanzi: '插'
+      "hanzi": "插",
+      "count": 4
   },
   {
-    hanzi: '毁'
+      "hanzi": "毁",
+      "count": 4
   },
   {
-    hanzi: '鼠'
+      "hanzi": "鼠",
+      "count": 5
   },
   {
-    hanzi: '舆'
+      "hanzi": "舆",
+      "count": 1
   },
   {
-    hanzi: '舅'
+      "hanzi": "舅",
+      "count": 3
   },
   {
-    hanzi: '番'
+      "hanzi": "番",
+      "count": 6
   },
   {
-    hanzi: '滔'
+      "hanzi": "滔",
+      "count": 1
   },
   {
-    hanzi: '稻'
+      "hanzi": "稻",
+      "count": 3
   },
   {
-    hanzi: '稿'
+      "hanzi": "稿",
+      "count": 3
   },
   {
-    hanzi: '蹈'
+      "hanzi": "蹈",
+      "count": 2
   },
   {
-    hanzi: '跃'
+      "hanzi": "跃",
+      "count": 5
   },
   {
-    hanzi: '陷'
+      "hanzi": "陷",
+      "count": 2
   },
   {
-    hanzi: '焰'
+      "hanzi": "焰",
+      "count": 1
   },
   {
-    hanzi: '阎'
+      "hanzi": "阎",
+      "count": 1
   },
   {
-    hanzi: '掐'
+      "hanzi": "掐",
+      "count": 1
   },
   {
-    hanzi: '馅'
+      "hanzi": "馅",
+      "count": 2
   },
   {
-    hanzi: '饰'
+      "hanzi": "饰",
+      "count": 6
   },
   {
-    hanzi: '册'
+      "hanzi": "册",
+      "count": 3
   },
   {
-    hanzi: '岗'
+      "hanzi": "岗",
+      "count": 1
   },
   {
-    hanzi: '卒'
+      "hanzi": "卒",
+      "count": 1
   },
   {
-    hanzi: '碎'
+      "hanzi": "碎",
+      "count": 5
   },
   {
-    hanzi: '醉'
+      "hanzi": "醉",
+      "count": 1
   },
   {
-    hanzi: '翠'
+      "hanzi": "翠",
+      "count": 0
   },
   {
-    hanzi: '粹'
+      "hanzi": "粹",
+      "count": 2
   },
   {
-    hanzi: '糊'
+      "hanzi": "糊",
+      "count": 2
   },
   {
-    hanzi: '览'
+      "hanzi": "览",
+      "count": 2
   },
   {
-    hanzi: '鉴'
+      "hanzi": "鉴",
+      "count": 3
   },
   {
-    hanzi: '锅'
+      "hanzi": "锅",
+      "count": 8
   },
   {
-    hanzi: '窝'
+      "hanzi": "窝",
+      "count": 7
   },
   {
-    hanzi: '祸'
+      "hanzi": "祸",
+      "count": 7
   },
   {
-    hanzi: '涡'
+      "hanzi": "涡",
+      "count": 0
   },
   {
-    hanzi: '殊'
+      "hanzi": "殊",
+      "count": 2
   },
   {
-    hanzi: '殖'
+      "hanzi": "殖",
+      "count": 1
   },
   {
-    hanzi: '裂'
+      "hanzi": "裂",
+      "count": 1
   },
   {
-    hanzi: '滚'
+      "hanzi": "滚",
+      "count": 3
   },
   {
-    hanzi: '讼'
+      "hanzi": "讼",
+      "count": 1
   },
   {
-    hanzi: '颂'
+      "hanzi": "颂",
+      "count": 2
   },
   {
-    hanzi: '翁'
+      "hanzi": "翁",
+      "count": 1
   },
   {
-    hanzi: '嗡'
+      "hanzi": "嗡",
+      "count": 1
   },
   {
-    hanzi: '叹'
+      "hanzi": "叹",
+      "count": 1
   },
   {
-    hanzi: '喷'
+      "hanzi": "喷",
+      "count": 3
   },
   {
-    hanzi: '哇'
+      "hanzi": "哇",
+      "count": 1
   },
   {
-    hanzi: '娃'
+      "hanzi": "娃",
+      "count": 3
   },
   {
-    hanzi: '嫌'
+      "hanzi": "嫌",
+      "count": 1
   },
   {
-    hanzi: '娱'
+      "hanzi": "娱",
+      "count": 2
   },
   {
-    hanzi: '奏'
+      "hanzi": "奏",
+      "count": 4
   },
   {
-    hanzi: '壮'
+      "hanzi": "壮",
+      "count": 2
   },
   {
-    hanzi: '嘉'
+      "hanzi": "嘉",
+      "count": 1
   },
   {
-    hanzi: '牵'
+      "hanzi": "牵",
+      "count": 1
   },
   {
-    hanzi: '倾'
+      "hanzi": "倾",
+      "count": 2
   },
   {
-    hanzi: '宇'
+      "hanzi": "宇",
+      "count": 3
   },
   {
-    hanzi: '宙'
+      "hanzi": "宙",
+      "count": 2
   },
   {
-    hanzi: '宅'
+      "hanzi": "宅",
+      "count": 4
   },
   {
-    hanzi: '诧'
+      "hanzi": "诧",
+      "count": 1
   },
   {
-    hanzi: '畅'
+      "hanzi": "畅",
+      "count": 2
   },
   {
-    hanzi: '伸'
+      "hanzi": "伸",
+      "count": 1
   },
   {
-    hanzi: '凭'
+      "hanzi": "凭",
+      "count": 2
   },
   {
-    hanzi: '伍'
+      "hanzi": "伍",
+      "count": 6
   },
   {
-    hanzi: '仿'
+      "hanzi": "仿",
+      "count": 4
   },
   {
-    hanzi: '旋'
+      "hanzi": "旋",
+      "count": 1
   },
   {
-    hanzi: '狠'
+      "hanzi": "狠",
+      "count": 2
   },
   {
-    hanzi: '艰'
+      "hanzi": "艰",
+      "count": 6
   },
   {
-    hanzi: '恨'
+      "hanzi": "恨",
+      "count": 2
   },
   {
-    hanzi: '忧'
+      "hanzi": "忧",
+      "count": 3
   },
   {
-    hanzi: '恢'
+      "hanzi": "恢",
+      "count": 1
   },
   {
-    hanzi: '惨'
+      "hanzi": "惨",
+      "count": 5
   },
   {
-    hanzi: '渗'
+      "hanzi": "渗",
+      "count": 3
   },
   {
-    hanzi: '泛'
+      "hanzi": "泛",
+      "count": 0
   },
   {
-    hanzi: '洪'
+      "hanzi": "洪",
+      "count": 2
   },
   {
-    hanzi: '池'
+      "hanzi": "池",
+      "count": 4
   },
   {
-    hanzi: '漏'
+      "hanzi": "漏",
+      "count": 3
   },
   {
-    hanzi: '渡'
+      "hanzi": "渡",
+      "count": 3
   },
   {
-    hanzi: '踱'
+      "hanzi": "踱",
+      "count": 1
   },
   {
-    hanzi: '粱'
+      "hanzi": "粱",
+      "count": 0
   },
   {
-    hanzi: '梁'
+      "hanzi": "梁",
+      "count": 1
   },
   {
-    hanzi: '桃'
+      "hanzi": "桃",
+      "count": 1
   },
   {
-    hanzi: '榜'
+      "hanzi": "榜",
+      "count": 1
   },
   {
-    hanzi: '镑'
+      "hanzi": "镑",
+      "count": 0
   },
   {
-    hanzi: '傍'
+      "hanzi": "傍",
+      "count": 0
   },
   {
-    hanzi: '磅'
+      "hanzi": "磅",
+      "count": 1
   },
   {
-    hanzi: '膀'
+      "hanzi": "膀",
+      "count": 2
   },
   {
-    hanzi: '肩'
+      "hanzi": "肩",
+      "count": 4
   },
   {
-    hanzi: '捐'
+      "hanzi": "捐",
+      "count": 7
   },
   {
-    hanzi: '柜'
+      "hanzi": "柜",
+      "count": 6
   },
   {
-    hanzi: '矩'
+      "hanzi": "矩",
+      "count": 2
   },
   {
-    hanzi: '炬'
+      "hanzi": "炬",
+      "count": 0
   },
   {
-    hanzi: '拒'
+      "hanzi": "拒",
+      "count": 7
   },
   {
-    hanzi: '捕'
+      "hanzi": "捕",
+      "count": 3
   },
   {
-    hanzi: '揭'
+      "hanzi": "揭",
+      "count": 3
   },
   {
-    hanzi: '撤'
+      "hanzi": "撤",
+      "count": 2
   },
   {
-    hanzi: '扶'
+      "hanzi": "扶",
+      "count": 4
   },
   {
-    hanzi: '夹'
+      "hanzi": "夹",
+      "count": 3
   },
   {
-    hanzi: '侠'
+      "hanzi": "侠",
+      "count": 2
   },
   {
-    hanzi: '峡'
+      "hanzi": "峡",
+      "count": 3
   },
   {
-    hanzi: '\b狭'
+      "hanzi": "\b狭",
+      "count": 0
   },
   {
-    hanzi: '挟'
+      "hanzi": "挟",
+      "count": 1
   },
   {
-    hanzi: '栋'
+      "hanzi": "栋",
+      "count": 8
   },
   {
-    hanzi: '冻'
+      "hanzi": "冻",
+      "count": 3
   },
   {
-    hanzi: '盗'
+      "hanzi": "盗",
+      "count": 5
   },
   {
-    hanzi: '欣'
+      "hanzi": "欣",
+      "count": 2
   },
   {
-    hanzi: '祥'
+      "hanzi": "祥",
+      "count": 2
   },
   {
-    hanzi: '氧'
+      "hanzi": "氧",
+      "count": 5
   },
   {
-    hanzi: '氛'
+      "hanzi": "氛",
+      "count": 5
   },
   {
-    hanzi: '盆'
+      "hanzi": "盆",
+      "count": 7
   },
   {
-    hanzi: '忠'
+      "hanzi": "忠",
+      "count": 3
   },
   {
-    hanzi: '尉'
+      "hanzi": "尉",
+      "count": 0
   },
   {
-    hanzi: '慰'
+      "hanzi": "慰",
+      "count": 3
   },
   {
-    hanzi: '悬'
+      "hanzi": "悬",
+      "count": 1
   },
   {
-    hanzi: '轨'
+      "hanzi": "轨",
+      "count": 4
   },
   {
-    hanzi: '辅'
+      "hanzi": "辅",
+      "count": 1
   },
   {
-    hanzi: '耀'
+      "hanzi": "耀",
+      "count": 1
   },
   {
-    hanzi: '恍'
+      "hanzi": "恍",
+      "count": 0
   },
   {
-    hanzi: '晃'
+      "hanzi": "晃",
+      "count": 3
   },
   {
-    hanzi: '辉'
+      "hanzi": "辉",
+      "count": 0
   },
   {
-    hanzi: '晕'
+      "hanzi": "晕",
+      "count": 8
   },
   {
-    hanzi: '昌'
+      "hanzi": "昌",
+      "count": 1
   },
   {
-    hanzi: '昏'
+      "hanzi": "昏",
+      "count": 2
   },
   {
-    hanzi: '晒'
+      "hanzi": "晒",
+      "count": 7
   },
   {
-    hanzi: '旺'
+      "hanzi": "旺",
+      "count": 2
   },
   {
-    hanzi: '宴'
+      "hanzi": "宴",
+      "count": 4
   },
   {
-    hanzi: '牢'
+      "hanzi": "牢",
+      "count": 3
   },
   {
-    hanzi: '踏'
+      "hanzi": "踏",
+      "count": 4
   },
   {
-    hanzi: '践'
+      "hanzi": "践",
+      "count": 5
   },
   {
-    hanzi: '堆'
+      "hanzi": "堆",
+      "count": 6
   },
   {
-    hanzi: '墨'
+      "hanzi": "墨",
+      "count": 4
   },
   {
-    hanzi: '埋'
+      "hanzi": "埋",
+      "count": 2
   },
   {
-    hanzi: '墓'
+      "hanzi": "墓",
+      "count": 1
   },
   {
-    hanzi: '戒'
+      "hanzi": "戒",
+      "count": 5
   },
   {
-    hanzi: '械'
+      "hanzi": "械",
+      "count": 1
   },
   {
-    hanzi: '渠'
+      "hanzi": "渠",
+      "count": 2
   },
   {
-    hanzi: '柱'
+      "hanzi": "柱",
+      "count": 3
   },
   {
-    hanzi: '栏'
+      "hanzi": "栏",
+      "count": 2
   },
   {
-    hanzi: '烂'
+      "hanzi": "烂",
+      "count": 7
   },
   {
-    hanzi: '炒'
+      "hanzi": "炒",
+      "count": 5
   },
   {
-    hanzi: '炉'
+      "hanzi": "炉",
+      "count": 5
   },
   {
-    hanzi: '烤'
+      "hanzi": "烤",
+      "count": 6
   },
   {
-    hanzi: '阔'
+      "hanzi": "阔",
+      "count": 8
   },
   {
-    hanzi: '辞'
+      "hanzi": "辞",
+      "count": 4
   },
   {
-    hanzi: '宰'
+      "hanzi": "宰",
+      "count": 2
   },
   {
-    hanzi: '辜'
+      "hanzi": "辜",
+      "count": 2
   },
   {
-    hanzi: '辨'
+      "hanzi": "辨",
+      "count": 5
   },
   {
-    hanzi: '辩'
+      "hanzi": "辩",
+      "count": 2
   },
   {
-    hanzi: '辫'
+      "hanzi": "辫",
+      "count": 0
   },
   {
-    hanzi: '纲'
+      "hanzi": "纲",
+      "count": 2
   },
   {
-    hanzi: '绪'
+      "hanzi": "绪",
+      "count": 5
   },
   {
-    hanzi: '赌'
+      "hanzi": "赌",
+      "count": 3
   },
   {
-    hanzi: '赠'
+      "hanzi": "赠",
+      "count": 3
   },
   {
-    hanzi: '皆'
+      "hanzi": "皆",
+      "count": 1
   },
   {
-    hanzi: '谐'
+      "hanzi": "谐",
+      "count": 2
   },
   {
-    hanzi: '楷'
+      "hanzi": "楷",
+      "count": 0
   },
   {
-    hanzi: '矛'
+      "hanzi": "矛",
+      "count": 4
   },
   {
-    hanzi: '盾'
+      "hanzi": "盾",
+      "count": 4
   },
   {
-    hanzi: '循'
+      "hanzi": "循",
+      "count": 1
   },
   {
-    hanzi: '眠'
+      "hanzi": "眠",
+      "count": 2
   },
   {
-    hanzi: '氓'
+      "hanzi": "氓",
+      "count": 3
   },
   {
-    hanzi: '盲'
+      "hanzi": "盲",
+      "count": 1
   },
   {
-    hanzi: '丧'
+      "hanzi": "丧",
+      "count": 1
   },
   {
-    hanzi: '酋'
+      "hanzi": "酋",
+      "count": 1
   },
   {
-    hanzi: '奠'
+      "hanzi": "奠",
+      "count": 2
   },
   {
-    hanzi: '蹲'
+      "hanzi": "蹲",
+      "count": 1
   },
   {
-    hanzi: '遵'
+      "hanzi": "遵",
+      "count": 2
   },
   {
-    hanzi: '递'
+      "hanzi": "递",
+      "count": 5
   },
   {
-    hanzi: '仓'
+      "hanzi": "仓",
+      "count": 0
   },
   {
-    hanzi: '苍'
+      "hanzi": "苍",
+      "count": 1
   },
   {
-    hanzi: '沧'
+      "hanzi": "沧",
+      "count": 1
   },
   {
-    hanzi: '舱'
+      "hanzi": "舱",
+      "count": 1
   },
   {
-    hanzi: '舰'
+      "hanzi": "舰",
+      "count": 4
   },
   {
-    hanzi: '欺'
+      "hanzi": "欺",
+      "count": 2
   },
   {
-    hanzi: '咨'
+      "hanzi": "咨",
+      "count": 3
   },
   {
-    hanzi: '呛'
+      "hanzi": "呛",
+      "count": 2
   },
   {
-    hanzi: '咬'
+      "hanzi": "咬",
+      "count": 1
   },
   {
-    hanzi: '哲'
+      "hanzi": "哲",
+      "count": 1
   },
   {
-    hanzi: '吊'
+      "hanzi": "吊",
+      "count": 1
   },
   {
-    hanzi: '吞'
+      "hanzi": "吞",
+      "count": 1
   },
   {
-    hanzi: '忝'
+      "hanzi": "忝",
+      "count": 0
   },
   {
-    hanzi: '舔'
+      "hanzi": "舔",
+      "count": 1
   },
   {
-    hanzi: '添'
+      "hanzi": "添",
+      "count": 2
   },
   {
-    hanzi: '爽'
+      "hanzi": "爽",
+      "count": 5
   },
   {
-    hanzi: '奈'
+      "hanzi": "奈",
+      "count": 1
   },
   {
-    hanzi: '崇'
+      "hanzi": "崇",
+      "count": 1
   },
   {
-    hanzi: '卧'
+      "hanzi": "卧",
+      "count": 4
   },
   {
-    hanzi: '扑'
+      "hanzi": "扑",
+      "count": 7
   },
   {
-    hanzi: '撑'
+      "hanzi": "撑",
+      "count": 6
   },
   {
-    hanzi: '拨'
+      "hanzi": "拨",
+      "count": 5
   },
   {
-    hanzi: '挤'
+      "hanzi": "挤",
+      "count": 4
   },
   {
-    hanzi: '挡'
+      "hanzi": "挡",
+      "count": 4
   },
   {
-    hanzi: '扭'
+      "hanzi": "扭",
+      "count": 3
   },
   {
-    hanzi: '描'
+      "hanzi": "描",
+      "count": 3
   },
   {
-    hanzi: '挖'
+      "hanzi": "挖",
+      "count": 2
   },
   {
-    hanzi: '押'
+      "hanzi": "押",
+      "count": 1
   },
   {
-    hanzi: '披'
+      "hanzi": "披",
+      "count": 4
   },
   {
-    hanzi: '彼'
+      "hanzi": "彼",
+      "count": 1
   },
   {
-    hanzi: '玻'
+      "hanzi": "玻",
+      "count": 1
   },
   {
-    hanzi: '璃'
+      "hanzi": "璃",
+      "count": 1
   },
   {
-    hanzi: '禽'
+      "hanzi": "禽",
+      "count": 1
   },
   {
-    hanzi: '恰'
+      "hanzi": "恰",
+      "count": 2
   },
   {
-    hanzi: '悄'
+      "hanzi": "悄",
+      "count": 3
   },
   {
-    hanzi: '悟'
+      "hanzi": "悟",
+      "count": 1
   },
   {
-    hanzi: '籍'
+      "hanzi": "籍",
+      "count": 2
   },
   {
-    hanzi: '藉'
+      "hanzi": "藉",
+      "count": 2
   },
   {
-    hanzi: '荒'
+      "hanzi": "荒",
+      "count": 6
   },
   {
-    hanzi: '慌'
+      "hanzi": "慌",
+      "count": 2
   },
   {
-    hanzi: '谎'
+      "hanzi": "谎",
+      "count": 4
   },
   {
-    hanzi: '薪'
+      "hanzi": "薪",
+      "count": 2
   },
   {
-    hanzi: '疏'
+      "hanzi": "疏",
+      "count": 5
   },
   {
-    hanzi: '蔬'
+      "hanzi": "蔬",
+      "count": 3
   },
   {
-    hanzi: '薯'
+      "hanzi": "薯",
+      "count": 4
   },
   {
-    hanzi: '逻'
+      "hanzi": "逻",
+      "count": 0
   },
   {
-    hanzi: '酱'
+      "hanzi": "酱",
+      "count": 3
   },
   {
-    hanzi: '昔'
+      "hanzi": "昔",
+      "count": 1
   },
   {
-    hanzi: '醋'
+      "hanzi": "醋",
+      "count": 2
   },
   {
-    hanzi: '腊'
+      "hanzi": "腊",
+      "count": 2
   },
   {
-    hanzi: '猎'
+      "hanzi": "猎",
+      "count": 6
   },
   {
-    hanzi: '蜡'
+      "hanzi": "蜡",
+      "count": 6
   },
   {
-    hanzi: '烛'
+      "hanzi": "烛",
+      "count": 6
   },
   {
-    hanzi: '蛇'
+      "hanzi": "蛇",
+      "count": 2
   },
   {
-    hanzi: '猴'
+      "hanzi": "猴",
+      "count": 3
   },
   {
-    hanzi: '犹'
+      "hanzi": "犹",
+      "count": 5
   },
   {
-    hanzi: '剪'
+      "hanzi": "剪",
+      "count": 3
   },
   {
-    hanzi: '箭'
+      "hanzi": "箭",
+      "count": 4
   },
   {
-    hanzi: '竹'
+      "hanzi": "竹",
+      "count": 6
   },
   {
-    hanzi: '煎'
+      "hanzi": "煎",
+      "count": 3
   },
   {
-    hanzi: '煮'
+      "hanzi": "煮",
+      "count": 4
   },
   {
-    hanzi: '瞧'
+      "hanzi": "瞧",
+      "count": 1
   },
   {
-    hanzi: '盼'
+      "hanzi": "盼",
+      "count": 1
   },
   {
-    hanzi: '瞅'
+      "hanzi": "瞅",
+      "count": 1
   },
   {
-    hanzi: '揪'
+      "hanzi": "揪",
+      "count": 1
   },
   {
-    hanzi: '愁'
+      "hanzi": "愁",
+      "count": 2
   },
   {
-    hanzi: '慧'
+      "hanzi": "慧",
+      "count": 2
   },
   {
-    hanzi: '肃'
+      "hanzi": "肃",
+      "count": 0
   },
   {
-    hanzi: '寿'
+      "hanzi": "寿",
+      "count": 2
   },
   {
-    hanzi: '艳'
+      "hanzi": "艳",
+      "count": 0
   },
   {
-    hanzi: '钻'
+      "hanzi": "钻",
+      "count": 6
   },
   {
-    hanzi: '铃'
+      "hanzi": "铃",
+      "count": 1
   },
   {
-    hanzi: '琴'
+      "hanzi": "琴",
+      "count": 6
   },
   {
-    hanzi: '顽'
+      "hanzi": "顽",
+      "count": 2
   },
   {
-    hanzi: '颗'
+      "hanzi": "颗",
+      "count": 11
   },
   {
-    hanzi: '裹'
+      "hanzi": "裹",
+      "count": 6
   },
   {
-    hanzi: '倡'
+      "hanzi": "倡",
+      "count": 1
   },
   {
-    hanzi: '仰'
+      "hanzi": "仰",
+      "count": 4
   },
   {
-    hanzi: '匹'
+      "hanzi": "匹",
+      "count": 7
   },
   {
-    hanzi: '劝'
+      "hanzi": "劝",
+      "count": 2
   },
   {
-    hanzi: '叉'
+      "hanzi": "叉",
+      "count": 6
   },
   {
-    hanzi: '兔'
+      "hanzi": "兔",
+      "count": 3
   },
   {
-    hanzi: '斜'
+      "hanzi": "斜",
+      "count": 1
   },
   {
-    hanzi: '枝'
+      "hanzi": "枝",
+      "count": 1
   },
   {
-    hanzi: '柴'
+      "hanzi": "柴",
+      "count": 2
   },
   {
-    hanzi: '梨'
+      "hanzi": "梨",
+      "count": 1
   },
   {
-    hanzi: '躲'
+      "hanzi": "躲",
+      "count": 1
   },
   {
-    hanzi: '豫'
+      "hanzi": "豫",
+      "count": 3
   },
   {
-    hanzi: '漠'
+      "hanzi": "漠",
+      "count": 5
   },
   {
-    hanzi: '洒'
+      "hanzi": "洒",
+      "count": 1
   },
   {
-    hanzi: '牺'
+      "hanzi": "牺",
+      "count": 1
   },
   {
-    hanzi: '牲'
+      "hanzi": "牲",
+      "count": 1
   },
   {
-    hanzi: '厘'
+      "hanzi": "厘",
+      "count": 0
   },
   {
-    hanzi: '厄'
+      "hanzi": "厄",
+      "count": 1
   },
   {
-    hanzi: '脆'
+      "hanzi": "脆",
+      "count": 6
   },
   {
-    hanzi: '跪'
+      "hanzi": "跪",
+      "count": 0
   },
   {
-    hanzi: '踩'
+      "hanzi": "踩",
+      "count": 1
   },
   {
-    hanzi: '扼'
+      "hanzi": "扼",
+      "count": 0
   },
   {
-    hanzi: '挣'
+      "hanzi": "挣",
+      "count": 5
   },
   {
-    hanzi: '抄'
+      "hanzi": "抄",
+      "count": 5
   },
   {
-    hanzi: '捉'
+      "hanzi": "捉",
+      "count": 3
   },
   {
-    hanzi: '摔'
+      "hanzi": "摔",
+      "count": 10
   },
   {
-    hanzi: '拐'
+      "hanzi": "拐",
+      "count": 6
   },
   {
-    hanzi: '掏'
+      "hanzi": "掏",
+      "count": 1
   },
   {
-    hanzi: '捡'
+      "hanzi": "捡",
+      "count": 3
   },
   {
-    hanzi: '矣'
+      "hanzi": "矣",
+      "count": 0
   },
   {
-    hanzi: '挨'
+      "hanzi": "挨",
+      "count": 2
   },
   {
-    hanzi: '唉'
+      "hanzi": "唉",
+      "count": 0
   },
   {
-    hanzi: '诶'
+      "hanzi": "诶",
+      "count": 3
   },
   {
-    hanzi: '埃'
+      "hanzi": "埃",
+      "count": 0
   },
   {
-    hanzi: '垄'
+      "hanzi": "垄",
+      "count": 0
   },
   {
-    hanzi: '宠'
+      "hanzi": "宠",
+      "count": 2
   },
   {
-    hanzi: '袭'
+      "hanzi": "袭",
+      "count": 2
   },
   {
-    hanzi: '拢'
+      "hanzi": "拢",
+      "count": 1
   },
   {
-    hanzi: '聋'
+      "hanzi": "聋",
+      "count": 2
   },
   {
-    hanzi: '庞'
+      "hanzi": "庞",
+      "count": 1
   },
   {
-    hanzi: '笼'
+      "hanzi": "笼",
+      "count": 2
   },
   {
-    hanzi: '绒'
+      "hanzi": "绒",
+      "count": 1
   },
   {
-    hanzi: '绘'
+      "hanzi": "绘",
+      "count": 0
   },
   {
-    hanzi: '姨'
+      "hanzi": "姨",
+      "count": 10
   },
   {
-    hanzi: '粥'
+      "hanzi": "粥",
+      "count": 2
   },
   {
-    hanzi: '弯'
+      "hanzi": "弯",
+      "count": 6
   },
   {
-    hanzi: '闷'
+      "hanzi": "闷",
+      "count": 6
   },
   {
-    hanzi: '阁'
+      "hanzi": "阁",
+      "count": 1
   },
   {
-    hanzi: '闯'
+      "hanzi": "闯",
+      "count": 5
   },
   {
-    hanzi: '腾'
+      "hanzi": "腾",
+      "count": 3
   },
   {
-    hanzi: '壶'
+      "hanzi": "壶",
+      "count": 3
   },
   {
-    hanzi: '壳'
+      "hanzi": "壳",
+      "count": 5
   },
   {
-    hanzi: '馒'
+      "hanzi": "馒",
+      "count": 1
   },
   {
-    hanzi: '饲'
+      "hanzi": "饲",
+      "count": 2
   },
   {
-    hanzi: '幻'
+      "hanzi": "幻",
+      "count": 0
   },
   {
-    hanzi: '畜'
+      "hanzi": "畜",
+      "count": 2
   },
   {
-    hanzi: '搐'
+      "hanzi": "搐",
+      "count": 1
   },
   {
-    hanzi: '蓄'
+      "hanzi": "蓄",
+      "count": 2
   },
   {
-    hanzi: '誉'
+      "hanzi": "誉",
+      "count": 2
   },
   {
-    hanzi: '譬'
+      "hanzi": "譬",
+      "count": 1
   },
   {
-    hanzi: '袖'
+      "hanzi": "袖",
+      "count": 4
   },
   {
-    hanzi: '裸'
+      "hanzi": "裸",
+      "count": 2
   },
   {
-    hanzi: '萨'
+      "hanzi": "萨",
+      "count": 4
   },
   {
-    hanzi: '铲'
+      "hanzi": "铲",
+      "count": 1
   },
   {
-    hanzi: '锦'
+      "hanzi": "锦",
+      "count": 0
   },
   {
-    hanzi: '链'
+      "hanzi": "链",
+      "count": 4
   },
   {
-    hanzi: '轰'
+      "hanzi": "轰",
+      "count": 6
   },
   {
-    hanzi: '桑'
+      "hanzi": "桑",
+      "count": 2
   },
   {
-    hanzi: '嗓'
+      "hanzi": "嗓",
+      "count": 1
   },
   {
-    hanzi: '叠'
+      "hanzi": "叠",
+      "count": 7
   },
   {
-    hanzi: '缀'
+      "hanzi": "缀",
+      "count": 1
   },
   {
-    hanzi: '纤'
+      "hanzi": "纤",
+      "count": 2
   },
   {
-    hanzi: '纽'
+      "hanzi": "纽",
+      "count": 3
   },
   {
-    hanzi: '纹'
+      "hanzi": "纹",
+      "count": 2
   },
   {
-    hanzi: '缴'
+      "hanzi": "缴",
+      "count": 4
   },
   {
-    hanzi: '迹'
+      "hanzi": "迹",
+      "count": 10
   },
   {
-    hanzi: '迪'
+      "hanzi": "迪",
+      "count": 2
   },
   {
-    hanzi: '巡'
+      "hanzi": "巡",
+      "count": 2
   },
   {
-    hanzi: '辽'
+      "hanzi": "辽",
+      "count": 2
   },
   {
-    hanzi: '遥'
+      "hanzi": "遥",
+      "count": 1
   },
   {
-    hanzi: '淘'
+      "hanzi": "淘",
+      "count": 5
   },
   {
-    hanzi: '汰'
+      "hanzi": "汰",
+      "count": 1
   },
   {
-    hanzi: '津'
+      "hanzi": "津",
+      "count": 2
   },
   {
-    hanzi: '荡'
+      "hanzi": "荡",
+      "count": 6
   },
   {
-    hanzi: '漾'
+      "hanzi": "漾",
+      "count": 0
   },
   {
-    hanzi: '泽'
+      "hanzi": "泽",
+      "count": 3
   },
   {
-    hanzi: '沼'
+      "hanzi": "沼",
+      "count": 1
   },
   {
-    hanzi: '涂'
+      "hanzi": "涂",
+      "count": 3
   },
   {
-    hanzi: '淋'
+      "hanzi": "淋",
+      "count": 2
   },
   {
-    hanzi: '涌'
+      "hanzi": "涌",
+      "count": 2
   },
   {
-    hanzi: '汹'
+      "hanzi": "汹",
+      "count": 0
   },
   {
-    hanzi: '兹'
+      "hanzi": "兹",
+      "count": 1
   },
   {
-    hanzi: '滋'
+      "hanzi": "滋",
+      "count": 1
   },
   {
-    hanzi: '磁'
+      "hanzi": "磁",
+      "count": 1
   },
   {
-    hanzi: '慈'
+      "hanzi": "慈",
+      "count": 1
   },
   {
-    hanzi: '岩'
+      "hanzi": "岩",
+      "count": 1
   },
   {
-    hanzi: '癌'
+      "hanzi": "癌",
+      "count": 6
   },
   {
-    hanzi: '董'
+      "hanzi": "董",
+      "count": 3
   },
   {
-    hanzi: '荷'
+      "hanzi": "荷",
+      "count": 1
   },
   {
-    hanzi: '艾'
+      "hanzi": "艾",
+      "count": 1
   },
   {
-    hanzi: '哎'
+      "hanzi": "哎",
+      "count": 1
   },
   {
-    hanzi: '萌'
+      "hanzi": "萌",
+      "count": 4
   },
   {
-    hanzi: '芽'
+      "hanzi": "芽",
+      "count": 2
   },
   {
-    hanzi: '萧'
+      "hanzi": "萧",
+      "count": 3
   },
   {
-    hanzi: '潇'
+      "hanzi": "潇",
+      "count": 0
   },
   {
-    hanzi: '鲁'
+      "hanzi": "鲁",
+      "count": 2
   },
   {
-    hanzi: '莽'
+      "hanzi": "莽",
+      "count": 1
   },
   {
-    hanzi: '晶'
+      "hanzi": "晶",
+      "count": 6
   },
   {
-    hanzi: '莹'
+      "hanzi": "莹",
+      "count": 0
   },
   {
-    hanzi: '隆'
+      "hanzi": "隆",
+      "count": 5
   },
   {
-    hanzi: '郑'
+      "hanzi": "郑",
+      "count": 1
   },
   {
-    hanzi: '郁'
+      "hanzi": "郁",
+      "count": 5
   },
   {
-    hanzi: '疫'
+      "hanzi": "疫",
+      "count": 8
   },
   {
-    hanzi: '瘟'
+      "hanzi": "瘟",
+      "count": 1
   },
   {
-    hanzi: '苗'
+      "hanzi": "苗",
+      "count": 3
   },
   {
-    hanzi: '瘤'
+      "hanzi": "瘤",
+      "count": 1
   },
   {
-    hanzi: '溜'
+      "hanzi": "溜",
+      "count": 4
   },
   {
-    hanzi: '遛'
+      "hanzi": "遛",
+      "count": 1
   },
   {
-    hanzi: '涛'
+      "hanzi": "涛",
+      "count": 1
   },
   {
-    hanzi: '铸'
+      "hanzi": "铸",
+      "count": 1
   },
   {
-    hanzi: '畴'
+      "hanzi": "畴",
+      "count": 1
   },
   {
-    hanzi: '祷'
+      "hanzi": "祷",
+      "count": 0
   },
   {
-    hanzi: '祈'
+      "hanzi": "祈",
+      "count": 0
   },
   {
-    hanzi: '筹'
+      "hanzi": "筹",
+      "count": 12
   },
   {
-    hanzi: '筛'
+      "hanzi": "筛",
+      "count": 1
   },
   {
-    hanzi: '狮'
+      "hanzi": "狮",
+      "count": 2
   },
   {
-    hanzi: '屈'
+      "hanzi": "屈",
+      "count": 1
   },
   {
-    hanzi: '眉'
+      "hanzi": "眉",
+      "count": 3
   },
   {
-    hanzi: '尿'
+      "hanzi": "尿",
+      "count": 2
   },
   {
-    hanzi: '履'
+      "hanzi": "履",
+      "count": 4
   },
   {
-    hanzi: '覆'
+      "hanzi": "覆",
+      "count": 4
   },
   {
-    hanzi: '腹'
+      "hanzi": "腹",
+      "count": 2
   },
   {
-    hanzi: '腺'
+      "hanzi": "腺",
+      "count": 2
   },
   {
-    hanzi: '胎'
+      "hanzi": "胎",
+      "count": 8
   },
   {
-    hanzi: '胚'
+      "hanzi": "胚",
+      "count": 1
   },
   {
-    hanzi: '腔'
+      "hanzi": "腔",
+      "count": 3
   },
   {
-    hanzi: '肾'
+      "hanzi": "肾",
+      "count": 2
   },
   {
-    hanzi: '旨'
+      "hanzi": "旨",
+      "count": 1
   },
   {
-    hanzi: '脂'
+      "hanzi": "脂",
+      "count": 0
   },
   {
-    hanzi: '肪'
+      "hanzi": "肪",
+      "count": 0
   },
   {
-    hanzi: '稽'
+      "hanzi": "稽",
+      "count": 1
   },
   {
-    hanzi: '黎'
+      "hanzi": "黎",
+      "count": 1
   },
   {
-    hanzi: '稀'
+      "hanzi": "稀",
+      "count": 4
   },
   {
-    hanzi: '诱'
+      "hanzi": "诱",
+      "count": 7
   },
   {
-    hanzi: '饵'
+      "hanzi": "饵",
+      "count": 1
   },
   {
-    hanzi: '盈'
+      "hanzi": "盈",
+      "count": 1
   },
   {
-    hanzi: '孕'
+      "hanzi": "孕",
+      "count": 3
   },
   {
-    hanzi: '魂'
+      "hanzi": "魂",
+      "count": 2
   },
   {
-    hanzi: '坛'
+      "hanzi": "坛",
+      "count": 0
   },
   {
-    hanzi: '尘'
+      "hanzi": "尘",
+      "count": 2
   },
   {
-    hanzi: '堡'
+      "hanzi": "堡",
+      "count": 5
   },
   {
-    hanzi: '垒'
+      "hanzi": "垒",
+      "count": 2
   },
   {
-    hanzi: '杜'
+      "hanzi": "杜",
+      "count": 1
   },
   {
-    hanzi: '驱'
+      "hanzi": "驱",
+      "count": 6
   },
   {
-    hanzi: '呕'
+      "hanzi": "呕",
+      "count": 0
   },
   {
-    hanzi: '殴'
+      "hanzi": "殴",
+      "count": 2
   },
   {
-    hanzi: '躯'
+      "hanzi": "躯",
+      "count": 1
   },
   {
-    hanzi: '枢'
+      "hanzi": "枢",
+      "count": 1
   },
   {
-    hanzi: '抠'
+      "hanzi": "抠",
+      "count": 5
   },
   {
-    hanzi: '抑'
+      "hanzi": "抑",
+      "count": 6
   },
   {
-    hanzi: '拟'
+      "hanzi": "拟",
+      "count": 6
   },
   {
-    hanzi: '捷'
+      "hanzi": "捷",
+      "count": 2
   },
   {
-    hanzi: '仙'
+      "hanzi": "仙",
+      "count": 20
   },
   {
-    hanzi: '仁'
+      "hanzi": "仁",
+      "count": 0
   },
   {
-    hanzi: '俄'
+      "hanzi": "俄",
+      "count": 2
   },
   {
-    hanzi: '伯'
+      "hanzi": "伯",
+      "count": 0
   },
   {
-    hanzi: '伏'
+      "hanzi": "伏",
+      "count": 1
   },
   {
-    hanzi: '佩'
+      "hanzi": "佩",
+      "count": 0
   },
   {
-    hanzi: '伐'
+      "hanzi": "伐",
+      "count": 0
   },
   {
-    hanzi: '侦'
+      "hanzi": "侦",
+      "count": 0
   },
   {
-    hanzi: '赴'
+      "hanzi": "赴",
+      "count": 0
   },
   {
-    hanzi: '贪'
+      "hanzi": "贪",
+      "count": 2
   },
   {
-    hanzi: '俊'
+      "hanzi": "俊",
+      "count": 0
   },
   {
-    hanzi: '峻'
+      "hanzi": "峻",
+      "count": 0
   },
   {
-    hanzi: '骏'
+      "hanzi": "骏",
+      "count": 0
   },
   {
-    hanzi: '竣'
+      "hanzi": "竣",
+      "count": 0
   },
   {
-    hanzi: '毅'
+      "hanzi": "毅",
+      "count": 0
   },
   {
-    hanzi: '粒'
+      "hanzi": "粒",
+      "count": 0
   },
   {
-    hanzi: '粘'
+      "hanzi": "粘",
+      "count": 0
   },
   {
-    hanzi: '役'
+      "hanzi": "役",
+      "count": 0
   },
   {
-    hanzi: '徐'
+      "hanzi": "徐",
+      "count": 0
   },
   {
-    hanzi: '瑞'
+      "hanzi": "瑞",
+      "count": 0
   },
   {
-    hanzi: '斑'
+      "hanzi": "斑",
+      "count": 0
   },
   {
-    hanzi: '呈'
+      "hanzi": "呈",
+      "count": 0
   },
   {
-    hanzi: '呵'
+      "hanzi": "呵",
+      "count": 0
   },
   {
-    hanzi: '嘿'
+      "hanzi": "嘿",
+      "count": 0
   },
   {
-    hanzi: '衰'
+      "hanzi": "衰",
+      "count": 0
   },
   {
-    hanzi: '囊'
+      "hanzi": "囊",
+      "count": 0
   },
   {
-    hanzi: '堪'
+      "hanzi": "堪",
+      "count": 0
   },
   {
-    hanzi: '夌'
+      "hanzi": "夌",
+      "count": 0
   },
   {
-    hanzi: '凌'
+      "hanzi": "凌",
+      "count": 0
   },
   {
-    hanzi: '陵'
+      "hanzi": "陵",
+      "count": 0
   },
   {
-    hanzi: '棱'
+      "hanzi": "棱",
+      "count": 0
   },
   {
-    hanzi: '柔'
+      "hanzi": "柔",
+      "count": 1
   },
   {
-    hanzi: '棋'
+      "hanzi": "棋",
+      "count": 2
   },
   {
-    hanzi: '棍'
+      "hanzi": "棍",
+      "count": 1
   },
   {
-    hanzi: '浆'
+      "hanzi": "浆",
+      "count": 1
   },
   {
-    hanzi: '舛'
+      "hanzi": "舛",
+      "count": 0
   },
   {
-    hanzi: '鳞'
+      "hanzi": "鳞",
+      "count": 0
   },
   {
-    hanzi: '磷'
+      "hanzi": "磷",
+      "count": 0
   },
   {
-    hanzi: '舜'
+      "hanzi": "舜",
+      "count": 0
   },
   {
-    hanzi: '瞬'
+      "hanzi": "瞬",
+      "count": 0
   },
   {
-    hanzi: '赤'
+      "hanzi": "赤",
+      "count": 0
   },
   {
-    hanzi: '赫'
+      "hanzi": "赫",
+      "count": 0
   },
   {
-    hanzi: '岂'
+      "hanzi": "岂",
+      "count": 0
   },
   {
-    hanzi: '凯'
+      "hanzi": "凯",
+      "count": 0
   },
   {
-    hanzi: '凤'
+      "hanzi": "凤",
+      "count": 0
   },
   {
-    hanzi: '凰'
+      "hanzi": "凰",
+      "count": 0
   },
   {
-    hanzi: '讽'
+      "hanzi": "讽",
+      "count": 0
   },
   {
-    hanzi: '飙'
+      "hanzi": "飙",
+      "count": 0
   },
   {
-    hanzi: '飓'
+      "hanzi": "飓",
+      "count": 0
   },
   {
-    hanzi: '飘'
+      "hanzi": "飘",
+      "count": 2
   },
   {
-    hanzi: '凝'
+      "hanzi": "凝",
+      "count": 0
   },
   {
-    hanzi: '姿'
+      "hanzi": "姿",
+      "count": 1
   },
   {
-    hanzi: '钦'
+      "hanzi": "钦",
+      "count": 0
   },
   {
-    hanzi: '锐'
+      "hanzi": "锐",
+      "count": 0
   },
   {
-    hanzi: '姆'
+      "hanzi": "姆",
+      "count": 0
   },
   {
-    hanzi: '妆'
+      "hanzi": "妆",
+      "count": 2
   },
   {
-    hanzi: '嫩'
+      "hanzi": "嫩",
+      "count": 0
   },
   {
-    hanzi: '牧'
+      "hanzi": "牧",
+      "count": 1
   },
   {
-    hanzi: '迈'
+      "hanzi": "迈",
+      "count": 0
   },
   {
-    hanzi: '逢'
+      "hanzi": "逢",
+      "count": 0
   },
   {
-    hanzi: '缝'
+      "hanzi": "缝",
+      "count": 0
   },
   {
-    hanzi: '蓬'
+      "hanzi": "蓬",
+      "count": 0
   },
   {
-    hanzi: '缤'
+      "hanzi": "缤",
+      "count": 0
   },
   {
-    hanzi: '滨'
+      "hanzi": "滨",
+      "count": 0
   },
   {
-    hanzi: '泄'
+      "hanzi": "泄",
+      "count": 0
   },
   {
-    hanzi: '屉'
+      "hanzi": "屉",
+      "count": 0
   },
   {
-    hanzi: '浴'
+      "hanzi": "浴",
+      "count": 0
   },
   {
-    hanzi: '溶'
+      "hanzi": "溶",
+      "count": 0
   },
   {
-    hanzi: '浩'
+      "hanzi": "浩",
+      "count": 0
   },
   {
-    hanzi: '糙'
+      "hanzi": "糙",
+      "count": 0
   },
   {
-    hanzi: '雅'
+      "hanzi": "雅",
+      "count": 2
   },
   {
-    hanzi: '雚'
+      "hanzi": "雚",
+      "count": 0
   },
   {
-    hanzi: '灌'
+      "hanzi": "灌",
+      "count": 0
   },
   {
-    hanzi: '罐'
+      "hanzi": "罐",
+      "count": 0
   },
   {
-    hanzi: '拓'
+      "hanzi": "拓",
+      "count": 0
   },
   {
-    hanzi: '抚'
+      "hanzi": "抚",
+      "count": 0
   },
   {
-    hanzi: '撒'
+      "hanzi": "撒",
+      "count": 0
   },
   {
-    hanzi: '携'
+      "hanzi": "携",
+      "count": 0
   },
   {
-    hanzi: '摊'
+      "hanzi": "摊",
+      "count": 1
   },
   {
-    hanzi: '抛'
+      "hanzi": "抛",
+      "count": 1
   },
   {
-    hanzi: '劫'
+      "hanzi": "劫",
+      "count": 0
   },
   {
-    hanzi: '劣'
+      "hanzi": "劣",
+      "count": 1
   },
   {
-    hanzi: '勒'
+      "hanzi": "勒",
+      "count": 0
   },
   {
-    hanzi: '霸'
+      "hanzi": "霸",
+      "count": 0
   },
   {
-    hanzi: '孛'
+      "hanzi": "孛",
+      "count": 0
   },
   {
-    hanzi: '勃'
+      "hanzi": "勃",
+      "count": 0
   },
   {
-    hanzi: '脖'
+      "hanzi": "脖",
+      "count": 0
   },
   {
-    hanzi: '鹏'
+      "hanzi": "鹏",
+      "count": 0
   },
   {
-    hanzi: '鸣'
+      "hanzi": "鸣",
+      "count": 0
   },
   {
-    hanzi: '割'
+      "hanzi": "割",
+      "count": 1
   },
   {
-    hanzi: '辖'
+      "hanzi": "辖",
+      "count": 0
   },
   {
-    hanzi: '豁'
+      "hanzi": "豁",
+      "count": 0
   },
   {
-    hanzi: '瞎'
+      "hanzi": "瞎",
+      "count": 0
   },
   {
-    hanzi: '愈'
+      "hanzi": "愈",
+      "count": 1
   },
   {
-    hanzi: '悠'
+      "hanzi": "悠",
+      "count": 2
   },
   {
-    hanzi: '惑'
+      "hanzi": "惑",
+      "count": 0
   },
   {
-    hanzi: '翔'
+      "hanzi": "翔",
+      "count": 0
   },
   {
-    hanzi: '翼'
+      "hanzi": "翼",
+      "count": 0
   },
   {
-    hanzi: '恭'
+      "hanzi": "恭",
+      "count": 2
   },
   {
-    hanzi: '谱'
+      "hanzi": "谱",
+      "count": 0
   },
   {
-    hanzi: '疆'
+      "hanzi": "疆",
+      "count": 0
   },
   {
-    hanzi: '僵'
+      "hanzi": "僵",
+      "count": 0
   },
   {
-    hanzi: '仇'
+      "hanzi": "仇",
+      "count": 0
   },
   {
-    hanzi: '催'
+      "hanzi": "催",
+      "count": 0
   },
   {
-    hanzi: '霍'
+      "hanzi": "霍",
+      "count": 0
   },
   {
-    hanzi: '霉'
+      "hanzi": "霉",
+      "count": 0
   },
   {
-    hanzi: '雾'
+      "hanzi": "雾",
+      "count": 1
   },
   {
-    hanzi: '勋'
+      "hanzi": "勋",
+      "count": 0
   },
   {
-    hanzi: '筋'
+      "hanzi": "筋",
+      "count": 0
   },
   {
-    hanzi: '胀'
+      "hanzi": "胀",
+      "count": 0
   },
   {
-    hanzi: '臂'
+      "hanzi": "臂",
+      "count": 0
   },
   {
-    hanzi: '慎'
+      "hanzi": "慎",
+      "count": 0
   },
   {
-    hanzi: '悦'
+      "hanzi": "悦",
+      "count": 0
   },
   {
-    hanzi: '恒'
+      "hanzi": "恒",
+      "count": 0
   },
   {
-    hanzi: '昆'
+      "hanzi": "昆",
+      "count": 0
   },
   {
-    hanzi: '晋'
+      "hanzi": "晋",
+      "count": 0
   },
   {
-    hanzi: '昂'
+      "hanzi": "昂",
+      "count": 0
   },
   {
-    hanzi: '旬'
+      "hanzi": "旬",
+      "count": 0
   },
   {
-    hanzi: '陶'
+      "hanzi": "陶",
+      "count": 0
   },
   {
-    hanzi: '邪'
+      "hanzi": "邪",
+      "count": 0
   },
   {
-    hanzi: '贩'
+      "hanzi": "贩",
+      "count": 0
   },
   {
-    hanzi: '贤'
+      "hanzi": "贤",
+      "count": 0
   },
   {
-    hanzi: '贼'
+      "hanzi": "贼",
+      "count": 0
   },
   {
-    hanzi: '婴'
+      "hanzi": "婴",
+      "count": 0
   },
   {
-    hanzi: '嫁'
+      "hanzi": "嫁",
+      "count": 0
   },
   {
-    hanzi: '妥'
+      "hanzi": "妥",
+      "count": 0
   },
   {
-    hanzi: '娇'
+      "hanzi": "娇",
+      "count": 0
   },
   {
-    hanzi: '妖'
+      "hanzi": "妖",
+      "count": 0
   },
   {
-    hanzi: '沃'
+      "hanzi": "沃",
+      "count": 1
   },
   {
-    hanzi: '渔'
+      "hanzi": "渔",
+      "count": 0
   },
   {
-    hanzi: '滞'
+      "hanzi": "滞",
+      "count": 0
   },
   {
-    hanzi: '浸'
+      "hanzi": "浸",
+      "count": 2
   },
   {
-    hanzi: '浑'
+      "hanzi": "浑",
+      "count": 0
   },
   {
-    hanzi: '丞'
+      "hanzi": "丞",
+      "count": 0
   },
   {
-    hanzi: '蒸'
+      "hanzi": "蒸",
+      "count": 1
   },
   {
-    hanzi: '函'
+      "hanzi": "函",
+      "count": 0
   },
   {
-    hanzi: '涵'
+      "hanzi": "涵",
+      "count": 1
   },
   {
-    hanzi: '茫'
+      "hanzi": "茫",
+      "count": 0
   },
   {
-    hanzi: '莲'
+      "hanzi": "莲",
+      "count": 0
   },
   {
-    hanzi: '蒂'
+      "hanzi": "蒂",
+      "count": 0
   },
   {
-    hanzi: '缔'
+      "hanzi": "缔",
+      "count": 0
   },
   {
-    hanzi: '芬'
+      "hanzi": "芬",
+      "count": 0
   },
   {
-    hanzi: '芳'
+      "hanzi": "芳",
+      "count": 0
   },
   {
-    hanzi: '纺'
+      "hanzi": "纺",
+      "count": 0
   },
   {
-    hanzi: '绵'
+      "hanzi": "绵",
+      "count": 0
   },
   {
-    hanzi: '攀'
+      "hanzi": "攀",
+      "count": 0
   },
   {
-    hanzi: '拳'
+      "hanzi": "拳",
+      "count": 2
   },
   {
-    hanzi: '泰'
+      "hanzi": "泰",
+      "count": 0
   },
   {
-    hanzi: '寨'
+      "hanzi": "寨",
+      "count": 1
   },
   {
-    hanzi: '鼎'
+      "hanzi": "鼎",
+      "count": 0
   },
   {
-    hanzi: '痕'
+      "hanzi": "痕",
+      "count": 1
   },
   {
-    hanzi: '痴'
+      "hanzi": "痴",
+      "count": 0
   },
   {
-    hanzi: '疲'
+      "hanzi": "疲",
+      "count": 1
   },
   {
-    hanzi: '颇'
+      "hanzi": "颇",
+      "count": 0
   },
   {
-    hanzi: '颁'
+      "hanzi": "颁",
+      "count": 0
   },
   {
-    hanzi: '颈'
+      "hanzi": "颈",
+      "count": 0
   },
   {
-    hanzi: '兽'
+      "hanzi": "兽",
+      "count": 1
   },
   {
-    hanzi: '唤'
+      "hanzi": "唤",
+      "count": 1
   },
   {
-    hanzi: '呜'
+      "hanzi": "呜",
+      "count": 0
   },
   {
-    hanzi: '哀'
+      "hanzi": "哀",
+      "count": 0
   },
   {
-    hanzi: '衷'
+      "hanzi": "衷",
+      "count": 0
   },
   {
-    hanzi: '吻'
+      "hanzi": "吻",
+      "count": 1
   },
   {
-    hanzi: '匆'
+      "hanzi": "匆",
+      "count": 0
   },
   {
-    hanzi: '逸'
+      "hanzi": "逸",
+      "count": 1
   },
   {
-    hanzi: '斥'
+      "hanzi": "斥",
+      "count": 0
   },
   {
-    hanzi: '卵'
+      "hanzi": "卵",
+      "count": 0
   },
   {
-    hanzi: '卸'
+      "hanzi": "卸",
+      "count": 0
   },
   {
-    hanzi: '御'
+      "hanzi": "御",
+      "count": 0
   },
   {
-    hanzi: '徽'
+      "hanzi": "徽",
+      "count": 0
   },
   {
-    hanzi: '螺'
+      "hanzi": "螺",
+      "count": 0
   },
   {
-    hanzi: '亩'
+      "hanzi": "亩",
+      "count": 0
   },
   {
-    hanzi: '虹'
+      "hanzi": "虹",
+      "count": 2
   },
   {
-    hanzi: '蜜'
+      "hanzi": "蜜",
+      "count": 2
   },
   {
-    hanzi: '蜂'
+      "hanzi": "蜂",
+      "count": 1
   },
   {
-    hanzi: '寂'
+      "hanzi": "寂",
+      "count": 1
   },
   {
-    hanzi: '寞'
+      "hanzi": "寞",
+      "count": 1
   },
   {
-    hanzi: '骚'
+      "hanzi": "骚",
+      "count": 0
   },
   {
-    hanzi: '驰'
+      "hanzi": "驰",
+      "count": 0
   },
   {
-    hanzi: '狼'
+      "hanzi": "狼",
+      "count": 21
   },
   {
-    hanzi: '狈'
+      "hanzi": "狈",
+      "count": 0
   },
   {
-    hanzi: '狱'
+      "hanzi": "狱",
+      "count": 0
   },
   {
-    hanzi: '谨'
+      "hanzi": "谨",
+      "count": 0
   },
   {
-    hanzi: '坑'
+      "hanzi": "坑",
+      "count": 0
   },
   {
-    hanzi: '绳'
+      "hanzi": "绳",
+      "count": 0
   },
   {
-    hanzi: '蝇'
+      "hanzi": "蝇",
+      "count": 0
   },
   {
-    hanzi: '龟'
+      "hanzi": "龟",
+      "count": 2
   },
   {
-    hanzi: '奄'
+      "hanzi": "奄",
+      "count": 0
   },
   {
-    hanzi: '淹'
+      "hanzi": "淹",
+      "count": 0
   },
   {
-    hanzi: '俺'
+      "hanzi": "俺",
+      "count": 0
   },
   {
-    hanzi: '掩'
+      "hanzi": "掩",
+      "count": 0
   },
   {
-    hanzi: '拘'
+      "hanzi": "拘",
+      "count": 0
   },
   {
-    hanzi: '拦'
+      "hanzi": "拦",
+      "count": 2
   },
   {
-    hanzi: '抹'
+      "hanzi": "抹",
+      "count": 0
   },
   {
-    hanzi: '朱'
+      "hanzi": "朱",
+      "count": 0
   },
   {
-    hanzi: '株'
+      "hanzi": "株",
+      "count": 0
   },
   {
-    hanzi: '框'
+      "hanzi": "框",
+      "count": 0
   },
   {
-    hanzi: '朴'
+      "hanzi": "朴",
+      "count": 0
   },
   {
-    hanzi: '卓'
+      "hanzi": "卓",
+      "count": 0
   },
   {
-    hanzi: '炭'
+      "hanzi": "炭",
+      "count": 0
   },
   {
-    hanzi: '碳'
+      "hanzi": "碳",
+      "count": 0
   },
   {
-    hanzi: '桂'
+      "hanzi": "桂",
+      "count": 0
   },
   {
-    hanzi: '槽'
+      "hanzi": "槽",
+      "count": 0
   },
   {
-    hanzi: '枚'
+      "hanzi": "枚",
+      "count": 0
   },
   {
-    hanzi: '柳'
+      "hanzi": "柳",
+      "count": 0
   },
   {
-    hanzi: '晰'
+      "hanzi": "晰",
+      "count": 0
   },
   {
-    hanzi: '柏'
+      "hanzi": "柏",
+      "count": 0
   },
   {
-    hanzi: '泊'
+      "hanzi": "泊",
+      "count": 0
   },
   {
-    hanzi: '崩'
+      "hanzi": "崩",
+      "count": 0
   },
   {
-    hanzi: '溃'
+      "hanzi": "溃",
+      "count": 0
   },
   {
-    hanzi: '溪'
+      "hanzi": "溪",
+      "count": 0
   },
   {
-    hanzi: '滩'
+      "hanzi": "滩",
+      "count": 1
   },
   {
-    hanzi: '雇'
+      "hanzi": "雇",
+      "count": 0
   },
   {
-    hanzi: '溢'
+      "hanzi": "溢",
+      "count": 0
   },
   {
-    hanzi: '隘'
+      "hanzi": "隘",
+      "count": 0
   },
   {
-    hanzi: '淀'
+      "hanzi": "淀",
+      "count": 1
   },
   {
-    hanzi: '宪'
+      "hanzi": "宪",
+      "count": 1
   },
   {
-    hanzi: '踪'
+      "hanzi": "踪",
+      "count": 0
   },
   {
-    hanzi: '辟'
+      "hanzi": "辟",
+      "count": 0
   },
   {
-    hanzi: '殿'
+      "hanzi": "殿",
+      "count": 0
   },
   {
-    hanzi: '屡'
+      "hanzi": "屡",
+      "count": 0
   },
   {
-    hanzi: '掘'
+      "hanzi": "掘",
+      "count": 0
   },
   {
-    hanzi: '搏'
+      "hanzi": "搏",
+      "count": 0
   },
   {
-    hanzi: '抖'
+      "hanzi": "抖",
+      "count": 1
   },
   {
-    hanzi: '扯'
+      "hanzi": "扯",
+      "count": 0
   },
   {
-    hanzi: '耻'
+      "hanzi": "耻",
+      "count": 0
   },
   {
-    hanzi: '歧'
+      "hanzi": "歧",
+      "count": 0
   },
   {
-    hanzi: '肢'
+      "hanzi": "肢",
+      "count": 1
   },
   {
-    hanzi: '肖'
+      "hanzi": "肖",
+      "count": 0
   },
   {
-    hanzi: '削'
+      "hanzi": "削",
+      "count": 0
   },
   {
-    hanzi: '俏'
+      "hanzi": "俏",
+      "count": 0
   },
   {
-    hanzi: '屑'
+      "hanzi": "屑",
+      "count": 0
   },
   {
-    hanzi: '梢'
+      "hanzi": "梢",
+      "count": 0
   },
   {
-    hanzi: '捎'
+      "hanzi": "捎",
+      "count": 0
   },
   {
-    hanzi: '宵'
+      "hanzi": "宵",
+      "count": 0
   },
   {
-    hanzi: '哨'
+      "hanzi": "哨",
+      "count": 0
   },
   {
-    hanzi: '哼'
+      "hanzi": "哼",
+      "count": 0
   },
   {
-    hanzi: '燕'
+      "hanzi": "燕",
+      "count": 1
   },
   {
-    hanzi: '咽'
+      "hanzi": "咽",
+      "count": 0
   },
   {
-    hanzi: '姻'
+      "hanzi": "姻",
+      "count": 2
   },
   {
-    hanzi: '姜'
+      "hanzi": "姜",
+      "count": 0
   },
   {
-    hanzi: '奸'
+      "hanzi": "奸",
+      "count": 0
   },
   {
-    hanzi: '旱'
+      "hanzi": "旱",
+      "count": 3
   },
   {
-    hanzi: '塌'
+      "hanzi": "塌",
+      "count": 1
   },
   {
-    hanzi: '垫'
+      "hanzi": "垫",
+      "count": 0
   },
   {
-    hanzi: '颖'
+      "hanzi": "颖",
+      "count": 0
   },
   {
-    hanzi: '穆'
+      "hanzi": "穆",
+      "count": 0
   },
   {
-    hanzi: '逊'
+      "hanzi": "逊",
+      "count": 0
   },
   {
-    hanzi: '逝'
+      "hanzi": "逝",
+      "count": 0
   },
   {
-    hanzi: '誓'
+      "hanzi": "誓",
+      "count": 0
   },
   {
-    hanzi: '掀'
+      "hanzi": "掀",
+      "count": 1
   },
   {
-    hanzi: '毙'
+      "hanzi": "毙",
+      "count": 0
   },
   {
-    hanzi: '葬'
+      "hanzi": "葬",
+      "count": 0
   },
   {
-    hanzi: '芝'
+      "hanzi": "芝",
+      "count": 0
   },
   {
-    hanzi: '萝'
+      "hanzi": "萝",
+      "count": 0
   },
   {
-    hanzi: '罩'
+      "hanzi": "罩",
+      "count": 3
   },
   {
-    hanzi: '署'
+      "hanzi": "署",
+      "count": 0
   },
   {
-    hanzi: '芯'
+      "hanzi": "芯",
+      "count": 0
   },
   {
-    hanzi: '葱'
+      "hanzi": "葱",
+      "count": 0
   },
   {
-    hanzi: '惩'
+      "hanzi": "惩",
+      "count": 2
   },
   {
-    hanzi: '忌'
+      "hanzi": "忌",
+      "count": 0
   },
   {
-    hanzi: '惹'
+      "hanzi": "惹",
+      "count": 2
   },
   {
-    hanzi: '匿'
+      "hanzi": "匿",
+      "count": 0
   },
   {
-    hanzi: '匪'
+      "hanzi": "匪",
+      "count": 1
   },
   {
-    hanzi: '砸'
+      "hanzi": "砸",
+      "count": 0
   },
   {
-    hanzi: '砖'
+      "hanzi": "砖",
+      "count": 0
   },
   {
-    hanzi: '碑'
+      "hanzi": "碑",
+      "count": 0
   },
   {
-    hanzi: '砍'
+      "hanzi": "砍",
+      "count": 0
   },
   {
-    hanzi: '砂'
+      "hanzi": "砂",
+      "count": 0
   },
   {
-    hanzi: '纱'
+      "hanzi": "纱",
+      "count": 0
   },
   {
-    hanzi: '绑'
+      "hanzi": "绑",
+      "count": 0
   },
   {
-    hanzi: '缠'
+      "hanzi": "缠",
+      "count": 0
   },
   {
-    hanzi: '廉'
+      "hanzi": "廉",
+      "count": 0
   },
   {
-    hanzi: '帆'
+      "hanzi": "帆",
+      "count": 1
   },
   {
-    hanzi: '帐'
+      "hanzi": "帐",
+      "count": 0
   },
   {
-    hanzi: '贱'
+      "hanzi": "贱",
+      "count": 0
   },
   {
-    hanzi: '贾'
+      "hanzi": "贾",
+      "count": 0
   },
   {
-    hanzi: '贿'
+      "hanzi": "贿",
+      "count": 1
   },
   {
-    hanzi: '赂'
+      "hanzi": "赂",
+      "count": 1
   },
   {
-    hanzi: '匀'
+      "hanzi": "匀",
+      "count": 0
   },
   {
-    hanzi: '凑'
+      "hanzi": "凑",
+      "count": 0
   },
   {
-    hanzi: '奢'
+      "hanzi": "奢",
+      "count": 0
   },
   {
-    hanzi: '契'
+      "hanzi": "契",
+      "count": 0
   },
   {
-    hanzi: '窃'
+      "hanzi": "窃",
+      "count": 0
   },
   {
-    hanzi: '侈'
+      "hanzi": "侈",
+      "count": 0
   },
   {
-    hanzi: '仲'
+      "hanzi": "仲",
+      "count": 0
   },
   {
-    hanzi: '辱'
+      "hanzi": "辱",
+      "count": 0
   },
   {
-    hanzi: '侮'
+      "hanzi": "侮",
+      "count": 0
   },
   {
-    hanzi: '侨'
+      "hanzi": "侨",
+      "count": 0
   },
   {
-    hanzi: '轿'
+      "hanzi": "轿",
+      "count": 1
   },
   {
-    hanzi: '轴'
+      "hanzi": "轴",
+      "count": 0
   },
   {
-    hanzi: '敦'
+      "hanzi": "敦",
+      "count": 0
   },
   {
-    hanzi: '醇'
+      "hanzi": "醇",
+      "count": 0
   },
   {
-    hanzi: '酬'
+      "hanzi": "酬",
+      "count": 0
   },
   {
-    hanzi: '廷'
+      "hanzi": "廷",
+      "count": 0
   },
   {
-    hanzi: '艇'
+      "hanzi": "艇",
+      "count": 0
   },
   {
-    hanzi: '剥'
+      "hanzi": "剥",
+      "count": 0
   },
   {
-    hanzi: '刹'
+      "hanzi": "刹",
+      "count": 0
   },
   {
-    hanzi: '乖'
+      "hanzi": "乖",
+      "count": 0
   },
   {
-    hanzi: '竭'
+      "hanzi": "竭",
+      "count": 0
   },
   {
-    hanzi: '爹'
+      "hanzi": "爹",
+      "count": 0
   },
   {
-    hanzi: '栽'
+      "hanzi": "栽",
+      "count": 0
   },
   {
-    hanzi: '枯'
+      "hanzi": "枯",
+      "count": 0
   },
   {
-    hanzi: '棚'
+      "hanzi": "棚",
+      "count": 0
   },
   {
-    hanzi: '棘'
+      "hanzi": "棘",
+      "count": 0
   },
   {
-    hanzi: '杖'
+      "hanzi": "杖",
+      "count": 0
   },
   {
-    hanzi: '吏'
+      "hanzi": "吏",
+      "count": 0
   },
   {
-    hanzi: '仗'
+      "hanzi": "仗",
+      "count": 1
   },
   {
-    hanzi: '侣'
+      "hanzi": "侣",
+      "count": 1
   },
   {
-    hanzi: '侍'
+      "hanzi": "侍",
+      "count": 0
   },
   {
-    hanzi: '鞭'
+      "hanzi": "鞭",
+      "count": 0
   },
   {
-    hanzi: '佐'
+      "hanzi": "佐",
+      "count": 0
   },
   {
-    hanzi: '髓'
+      "hanzi": "髓",
+      "count": 0
   },
   {
-    hanzi: '惰'
+      "hanzi": "惰",
+      "count": 0
   },
   {
-    hanzi: '愧'
+      "hanzi": "愧",
+      "count": 0
   },
   {
-    hanzi: '慨'
+      "hanzi": "慨",
+      "count": 0
   },
   {
-    hanzi: '溉'
+      "hanzi": "溉",
+      "count": 0
   },
   {
-    hanzi: '滥'
+      "hanzi": "滥",
+      "count": 0
   },
   {
-    hanzi: '沸'
+      "hanzi": "沸",
+      "count": 0
   },
   {
-    hanzi: '涯'
+      "hanzi": "涯",
+      "count": 0
   },
   {
-    hanzi: '泌'
+      "hanzi": "泌",
+      "count": 0
   },
   {
-    hanzi: '渣'
+      "hanzi": "渣",
+      "count": 1
   },
   {
-    hanzi: '滤'
+      "hanzi": "滤",
+      "count": 0
   },
   {
-    hanzi: '沫'
+      "hanzi": "沫",
+      "count": 0
   },
   {
-    hanzi: '汪'
+      "hanzi": "汪",
+      "count": 0
   },
   {
-    hanzi: '漆'
+      "hanzi": "漆",
+      "count": 0
   },
   {
-    hanzi: '膝'
+      "hanzi": "膝",
+      "count": 0
   },
   {
-    hanzi: '脊'
+      "hanzi": "脊",
+      "count": 0
   },
   {
-    hanzi: '腻'
+      "hanzi": "腻",
+      "count": 0
   },
   {
-    hanzi: '赋'
+      "hanzi": "赋",
+      "count": 1
   },
   {
-    hanzi: '芒'
+      "hanzi": "芒",
+      "count": 0
   },
   {
-    hanzi: '茅'
+      "hanzi": "茅",
+      "count": 1
   },
   {
-    hanzi: '荆'
+      "hanzi": "荆",
+      "count": 0
   },
   {
-    hanzi: '蔽'
+      "hanzi": "蔽",
+      "count": 1
   },
   {
-    hanzi: '弊'
+      "hanzi": "弊",
+      "count": 1
   },
   {
-    hanzi: '憋'
+      "hanzi": "憋",
+      "count": 0
   },
   {
-    hanzi: '撇'
+      "hanzi": "撇",
+      "count": 0
   },
   {
-    hanzi: '撕'
+      "hanzi": "撕",
+      "count": 1
   },
   {
-    hanzi: '挫'
+      "hanzi": "挫",
+      "count": 0
   },
   {
-    hanzi: '挽'
+      "hanzi": "挽",
+      "count": 0
   },
   {
-    hanzi: '捧'
+      "hanzi": "捧",
+      "count": 0
   },
   {
-    hanzi: '挪'
+      "hanzi": "挪",
+      "count": 0
   },
   {
-    hanzi: '搅'
+      "hanzi": "搅",
+      "count": 0
   },
   {
-    hanzi: '抨'
+      "hanzi": "抨",
+      "count": 0
   },
   {
-    hanzi: '秤'
+      "hanzi": "秤",
+      "count": 0
   },
   {
-    hanzi: '萍'
+      "hanzi": "萍",
+      "count": 0
   },
   {
-    hanzi: '坪'
+      "hanzi": "坪",
+      "count": 0
   },
   {
-    hanzi: '塘'
+      "hanzi": "塘",
+      "count": 0
   },
   {
-    hanzi: '坠'
+      "hanzi": "坠",
+      "count": 0
   },
   {
-    hanzi: '陌'
+      "hanzi": "陌",
+      "count": 4
   },
   {
-    hanzi: '廊'
+      "hanzi": "廊",
+      "count": 0
   },
   {
-    hanzi: '雀'
+      "hanzi": "雀",
+      "count": 0
   },
   {
-    hanzi: '鸦'
+      "hanzi": "鸦",
+      "count": 1
   },
   {
-    hanzi: '鹰'
+      "hanzi": "鹰",
+      "count": 0
   },
   {
-    hanzi: '庙'
+      "hanzi": "庙",
+      "count": 0
   },
   {
-    hanzi: '鹿'
+      "hanzi": "鹿",
+      "count": 0
   },
   {
-    hanzi: '庸'
+      "hanzi": "庸",
+      "count": 0
   },
   {
-    hanzi: '庶'
+      "hanzi": "庶",
+      "count": 0
   },
   {
-    hanzi: '蔗'
+      "hanzi": "蔗",
+      "count": 0
   },
   {
-    hanzi: '遮'
+      "hanzi": "遮",
+      "count": 0
   },
   {
-    hanzi: '遣'
+      "hanzi": "遣",
+      "count": 0
   },
   {
-    hanzi: '谴'
+      "hanzi": "谴",
+      "count": 0
   },
   {
-    hanzi: '擅'
+      "hanzi": "擅",
+      "count": 0
   },
   {
-    hanzi: '颤'
+      "hanzi": "颤",
+      "count": 0
   },
   {
-    hanzi: '颠'
+      "hanzi": "颠",
+      "count": 0
   },
   {
-    hanzi: '巅'
+      "hanzi": "巅",
+      "count": 0
   },
   {
-    hanzi: '喘'
+      "hanzi": "喘",
+      "count": 0
   },
   {
-    hanzi: '唇'
+      "hanzi": "唇",
+      "count": 0
   },
   {
-    hanzi: '喉'
+      "hanzi": "喉",
+      "count": 1
   },
   {
-    hanzi: '咙'
+      "hanzi": "咙",
+      "count": 1
   },
   {
-    hanzi: '吼'
+      "hanzi": "吼",
+      "count": 1
   },
   {
-    hanzi: '剖'
+      "hanzi": "剖",
+      "count": 0
   },
   {
-    hanzi: '吁'
+      "hanzi": "吁",
+      "count": 0
   },
   {
-    hanzi: '臊'
+      "hanzi": "臊",
+      "count": 0
   },
   {
-    hanzi: '躁'
+      "hanzi": "躁",
+      "count": 0
   },
   {
-    hanzi: '藻'
+      "hanzi": "藻",
+      "count": 0
   },
   {
-    hanzi: '燥'
+      "hanzi": "燥",
+      "count": 0
   },
   {
-    hanzi: '灿'
+      "hanzi": "灿",
+      "count": 0
   },
   {
-    hanzi: '岭'
+      "hanzi": "岭",
+      "count": 0
   },
   {
-    hanzi: '煌'
+      "hanzi": "煌",
+      "count": 0
   },
   {
-    hanzi: '碧'
+      "hanzi": "碧",
+      "count": 0
   },
   {
-    hanzi: '魄'
+      "hanzi": "魄",
+      "count": 0
   },
   {
-    hanzi: '魅'
+      "hanzi": "魅",
+      "count": 1
   },
   {
-    hanzi: '铝'
+      "hanzi": "铝",
+      "count": 0
   },
   {
-    hanzi: '铭'
+      "hanzi": "铭",
+      "count": 0
   },
   {
-    hanzi: '钉'
+      "hanzi": "钉",
+      "count": 0
   },
   {
-    hanzi: '锡'
+      "hanzi": "锡",
+      "count": 0
   },
   {
-    hanzi: '曝'
+      "hanzi": "曝",
+      "count": 0
   },
   {
-    hanzi: '瓣'
+      "hanzi": "瓣",
+      "count": 0
   },
   {
-    hanzi: '弧'
+      "hanzi": "弧",
+      "count": 0
   },
   {
-    hanzi: '弥'
+      "hanzi": "弥",
+      "count": 0
   },
   {
-    hanzi: '霞'
+      "hanzi": "霞",
+      "count": 0
   },
   {
-    hanzi: '霜'
+      "hanzi": "霜",
+      "count": 1
   },
   {
-    hanzi: '厢'
+      "hanzi": "厢",
+      "count": 0
   },
   {
-    hanzi: '媳'
+      "hanzi": "媳",
+      "count": 0
   },
   {
-    hanzi: '媚'
+      "hanzi": "媚",
+      "count": 0
   },
   {
-    hanzi: '屠'
+      "hanzi": "屠",
+      "count": 0
   },
   {
-    hanzi: '诈'
+      "hanzi": "诈",
+      "count": 0
   },
   {
-    hanzi: '谣'
+      "hanzi": "谣",
+      "count": 0
   },
   {
-    hanzi: '肆'
+      "hanzi": "肆",
+      "count": 0
   },
   {
-    hanzi: '髦'
+      "hanzi": "髦",
+      "count": 0
   },
   {
-    hanzi: '碟'
+      "hanzi": "碟",
+      "count": 0
   },
   {
-    hanzi: '碌'
+      "hanzi": "碌",
+      "count": 0
   },
   {
-    hanzi: '磊'
+      "hanzi": "磊",
+      "count": 0
   },
   {
-    hanzi: '蘑'
+      "hanzi": "蘑",
+      "count": 0
   },
   {
-    hanzi: '菇'
+      "hanzi": "菇",
+      "count": 0
   },
   {
-    hanzi: '芦'
+      "hanzi": "芦",
+      "count": 0
   },
   {
-    hanzi: '菊'
+      "hanzi": "菊",
+      "count": 0
   },
   {
-    hanzi: '芭'
+      "hanzi": "芭",
+      "count": 0
   },
   {
-    hanzi: '蕾'
+      "hanzi": "蕾",
+      "count": 0
   },
   {
-    hanzi: '蕴'
+      "hanzi": "蕴",
+      "count": 0
   },
   {
-    hanzi: '缆'
+      "hanzi": "缆",
+      "count": 0
   },
   {
-    hanzi: '揽'
+      "hanzi": "揽",
+      "count": 0
   },
   {
-    hanzi: '拌'
+      "hanzi": "拌",
+      "count": 0
   },
   {
-    hanzi: '叛'
+      "hanzi": "叛",
+      "count": 0
   },
   {
-    hanzi: '捏'
+      "hanzi": "捏",
+      "count": 0
   },
   {
-    hanzi: '撰'
+      "hanzi": "撰",
+      "count": 0
   },
   {
-    hanzi: '熙'
+      "hanzi": "熙",
+      "count": 0
   },
   {
-    hanzi: '攘'
+      "hanzi": "攘",
+      "count": 0
   },
   {
-    hanzi: '壤'
+      "hanzi": "壤",
+      "count": 0
   },
   {
-    hanzi: '镶'
+      "hanzi": "镶",
+      "count": 0
   },
   {
-    hanzi: '嚷'
+      "hanzi": "嚷",
+      "count": 0
   },
   {
-    hanzi: '曰'
+      "hanzi": "曰",
+      "count": 0
   },
   {
-    hanzi: '啸'
+      "hanzi": "啸",
+      "count": 0
   },
   {
-    hanzi: '呐'
+      "hanzi": "呐",
+      "count": 0
   },
   {
-    hanzi: '嘲'
+      "hanzi": "嘲",
+      "count": 1
   },
   {
-    hanzi: '喻'
+      "hanzi": "喻",
+      "count": 0
   },
   {
-    hanzi: '哗'
+      "hanzi": "哗",
+      "count": 0
   },
   {
-    hanzi: '哑'
+      "hanzi": "哑",
+      "count": 0
   },
   {
-    hanzi: '哄'
+      "hanzi": "哄",
+      "count": 1
   },
   {
-    hanzi: '瞩'
+      "hanzi": "瞩",
+      "count": 0
   },
   {
-    hanzi: '嘱'
+      "hanzi": "嘱",
+      "count": 0
   },
   {
-    hanzi: '叮'
+      "hanzi": "叮",
+      "count": 0
   },
   {
-    hanzi: '柬'
+      "hanzi": "柬",
+      "count": 0
   },
   {
-    hanzi: '澜'
+      "hanzi": "澜",
+      "count": 0
   },
   {
-    hanzi: '烫'
+      "hanzi": "烫",
+      "count": 1
   },
   {
-    hanzi: '洽'
+      "hanzi": "洽",
+      "count": 0
   },
   {
-    hanzi: '衍'
+      "hanzi": "衍",
+      "count": 0
   },
   {
-    hanzi: '澄'
+      "hanzi": "澄",
+      "count": 0
   },
   {
-    hanzi: '橙'
+      "hanzi": "橙",
+      "count": 1
   },
   {
-    hanzi: '凳'
+      "hanzi": "凳",
+      "count": 1
   },
   {
-    hanzi: '蹬'
+      "hanzi": "蹬",
+      "count": 0
   },
   {
-    hanzi: '瞪'
+      "hanzi": "瞪",
+      "count": 0
   },
   {
-    hanzi: '睁'
+      "hanzi": "睁",
+      "count": 0
   },
   {
-    hanzi: '盯'
+      "hanzi": "盯",
+      "count": 1
   },
   {
-    hanzi: '趁'
+      "hanzi": "趁",
+      "count": 0
   },
   {
-    hanzi: '膨'
+      "hanzi": "膨",
+      "count": 0
   },
   {
-    hanzi: '彰'
+      "hanzi": "彰",
+      "count": 0
   },
   {
-    hanzi: '皱'
+      "hanzi": "皱",
+      "count": 1
   },
   {
-    hanzi: '虐'
+      "hanzi": "虐",
+      "count": 1
   },
   {
-    hanzi: '秩'
+      "hanzi": "秩",
+      "count": 0
   },
   {
-    hanzi: '募'
+      "hanzi": "募",
+      "count": 0
   },
   {
-    hanzi: '勉'
+      "hanzi": "勉",
+      "count": 2
   },
   {
-    hanzi: '勘'
+      "hanzi": "勘",
+      "count": 1
   },
   {
-    hanzi: '涝'
+      "hanzi": "涝",
+      "count": 0
   },
   {
-    hanzi: '捞'
+      "hanzi": "捞",
+      "count": 0
   },
   {
-    hanzi: '唠'
+      "hanzi": "唠",
+      "count": 0
   },
   {
-    hanzi: '叨'
+      "hanzi": "叨",
+      "count": 0
   },
   {
-    hanzi: '韵'
+      "hanzi": "韵",
+      "count": 0
   },
   {
-    hanzi: '瓷'
+      "hanzi": "瓷",
+      "count": 0
   },
   {
-    hanzi: '嵌'
+      "hanzi": "嵌",
+      "count": 0
   },
   {
-    hanzi: '岳'
+      "hanzi": "岳",
+      "count": 0
   },
   {
-    hanzi: '虾'
+      "hanzi": "虾",
+      "count": 1
   },
   {
-    hanzi: '蚊'
+      "hanzi": "蚊",
+      "count": 1
   },
   {
-    hanzi: '愚'
+      "hanzi": "愚",
+      "count": 0
   },
   {
-    hanzi: '蠢'
+      "hanzi": "蠢",
+      "count": 0
   },
   {
-    hanzi: '旭'
+      "hanzi": "旭",
+      "count": 0
   },
   {
-    hanzi: '隙'
+      "hanzi": "隙",
+      "count": 0
   },
   {
-    hanzi: '赐'
+      "hanzi": "赐",
+      "count": 0
   },
   {
-    hanzi: '坝'
+      "hanzi": "坝",
+      "count": 0
   },
   {
-    hanzi: '堤'
+      "hanzi": "堤",
+      "count": 0
   },
   {
-    hanzi: '灶'
+      "hanzi": "灶",
+      "count": 0
   },
   {
-    hanzi: '删'
+      "hanzi": "删",
+      "count": 1
   },
   {
-    hanzi: '丛'
+      "hanzi": "丛",
+      "count": 0
   },
   {
-    hanzi: '巫'
+      "hanzi": "巫",
+      "count": 0
   },
   {
-    hanzi: '耸'
+      "hanzi": "耸",
+      "count": 0
   },
   {
-    hanzi: '叙'
+      "hanzi": "叙",
+      "count": 0
   },
   {
-    hanzi: '驭'
+      "hanzi": "驭",
+      "count": 0
   },
   {
-    hanzi: '骤'
+      "hanzi": "骤",
+      "count": 0
   },
   {
-    hanzi: '驳'
+      "hanzi": "驳",
+      "count": 0
   },
   {
-    hanzi: '骇'
+      "hanzi": "骇",
+      "count": 0
   },
   {
-    hanzi: '驮'
+      "hanzi": "驮",
+      "count": 0
   },
   {
-    hanzi: '驯'
+      "hanzi": "驯",
+      "count": 0
   },
   {
-    hanzi: '巢'
+      "hanzi": "巢",
+      "count": 0
   },
   {
-    hanzi: '辐'
+      "hanzi": "辐",
+      "count": 0
   },
   {
-    hanzi: '辙'
+      "hanzi": "辙",
+      "count": 0
   },
   {
-    hanzi: '敷'
+      "hanzi": "敷",
+      "count": 1
   },
   {
-    hanzi: '敞'
+      "hanzi": "敞",
+      "count": 0
   },
   {
-    hanzi: '敛'
+      "hanzi": "敛",
+      "count": 0
   },
   {
-    hanzi: '肇'
+      "hanzi": "肇",
+      "count": 0
   },
   {
-    hanzi: '玫'
+      "hanzi": "玫",
+      "count": 2
   },
   {
-    hanzi: '瑰'
+      "hanzi": "瑰",
+      "count": 2
   },
   {
-    hanzi: '槐'
+      "hanzi": "槐",
+      "count": 0
   },
   {
-    hanzi: '栓'
+      "hanzi": "栓",
+      "count": 0
   },
   {
-    hanzi: '耍'
+      "hanzi": "耍",
+      "count": 1
   },
   {
-    hanzi: '儒'
+      "hanzi": "儒",
+      "count": 0
   },
   {
-    hanzi: '仆'
+      "hanzi": "仆",
+      "count": 0
   },
   {
-    hanzi: '僧'
+      "hanzi": "僧",
+      "count": 0
   },
   {
-    hanzi: '蹭'
+      "hanzi": "蹭",
+      "count": 0
   },
   {
-    hanzi: '愣'
+      "hanzi": "愣",
+      "count": 0
   },
   {
-    hanzi: '懈'
+      "hanzi": "懈",
+      "count": 0
   },
   {
-    hanzi: '闸'
+      "hanzi": "闸",
+      "count": 0
   },
   {
-    hanzi: '阐'
+      "hanzi": "阐",
+      "count": 0
   },
   {
-    hanzi: '禅'
+      "hanzi": "禅",
+      "count": 0
   },
   {
-    hanzi: '隶'
+      "hanzi": "隶",
+      "count": 0
   },
   {
-    hanzi: '逮'
+      "hanzi": "逮",
+      "count": 0
   },
   {
-    hanzi: '逗'
+      "hanzi": "逗",
+      "count": 2
   },
   {
-    hanzi: '逾'
+      "hanzi": "逾",
+      "count": 0
   },
   {
-    hanzi: '遂'
+      "hanzi": "遂",
+      "count": 0
   },
   {
-    hanzi: '谜'
+      "hanzi": "谜",
+      "count": 0
   },
   {
-    hanzi: '讶'
+      "hanzi": "讶",
+      "count": 1
   },
   {
-    hanzi: '渊'
+      "hanzi": "渊",
+      "count": 0
   },
   {
-    hanzi: '泣'
+      "hanzi": "泣",
+      "count": 0
   },
   {
-    hanzi: '潭'
+      "hanzi": "潭",
+      "count": 0
   },
   {
-    hanzi: '沾'
+      "hanzi": "沾",
+      "count": 0
   },
   {
-    hanzi: '泻'
+      "hanzi": "泻",
+      "count": 0
   },
   {
-    hanzi: '冤'
+      "hanzi": "冤",
+      "count": 0
   },
   {
-    hanzi: '枉'
+      "hanzi": "枉",
+      "count": 0
   },
   {
-    hanzi: '枣'
+      "hanzi": "枣",
+      "count": 0
   },
   {
-    hanzi: '梳'
+      "hanzi": "梳",
+      "count": 0
   },
   {
-    hanzi: '枕'
+      "hanzi": "枕",
+      "count": 0
   },
   {
-    hanzi: '耽'
+      "hanzi": "耽",
+      "count": 0
   },
   {
-    hanzi: '缉'
+      "hanzi": "缉",
+      "count": 0
   },
   {
-    hanzi: '咧'
+      "hanzi": "咧",
+      "count": 0
   },
   {
-    hanzi: '鄙'
+      "hanzi": "鄙",
+      "count": 0
   },
   {
-    hanzi: '恕'
+      "hanzi": "恕",
+      "count": 0
   },
   {
-    hanzi: '饶'
+      "hanzi": "饶",
+      "count": 0
   },
   {
-    hanzi: '爵'
+      "hanzi": "爵",
+      "count": 0
   },
   {
-    hanzi: '嚼'
+      "hanzi": "嚼",
+      "count": 0
   },
   {
-    hanzi: '喇'
+      "hanzi": "喇",
+      "count": 0
   },
   {
-    hanzi: '叭'
+      "hanzi": "叭",
+      "count": 0
   },
   {
-    hanzi: '扒'
+      "hanzi": "扒",
+      "count": 0
   },
   {
-    hanzi: '撼'
+      "hanzi": "撼",
+      "count": 0
   },
   {
-    hanzi: '挠'
+      "hanzi": "挠",
+      "count": 0
   },
   {
-    hanzi: '掠'
+      "hanzi": "掠",
+      "count": 0
   },
   {
-    hanzi: '摧'
+      "hanzi": "摧",
+      "count": 0
   },
   {
-    hanzi: '瘫'
+      "hanzi": "瘫",
+      "count": 0
   },
   {
-    hanzi: '痪'
+      "hanzi": "痪",
+      "count": 0
   },
   {
-    hanzi: '稚'
+      "hanzi": "稚",
+      "count": 0
   },
   {
-    hanzi: '秧'
+      "hanzi": "秧",
+      "count": 0
   },
   {
-    hanzi: '绣'
+      "hanzi": "绣",
+      "count": 0
   },
   {
-    hanzi: '萎'
+      "hanzi": "萎",
+      "count": 0
   },
   {
-    hanzi: '妄'
+      "hanzi": "妄",
+      "count": 0
   },
   {
-    hanzi: '娶'
+      "hanzi": "娶",
+      "count": 1
   },
   {
-    hanzi: '嫂'
+      "hanzi": "嫂",
+      "count": 0
   },
   {
-    hanzi: '艘'
+      "hanzi": "艘",
+      "count": 0
   },
   {
-    hanzi: '妒'
+      "hanzi": "妒",
+      "count": 1
   },
   {
-    hanzi: '嫉'
+      "hanzi": "嫉",
+      "count": 1
   },
   {
-    hanzi: '矫'
+      "hanzi": "矫",
+      "count": 0
   },
   {
-    hanzi: '厦'
+      "hanzi": "厦",
+      "count": 0
   },
   {
-    hanzi: '丹'
+      "hanzi": "丹",
+      "count": 0
   },
   {
-    hanzi: '婉'
+      "hanzi": "婉",
+      "count": 0
   },
   {
-    hanzi: '惋'
+      "hanzi": "惋",
+      "count": 0
   },
   {
-    hanzi: '怡'
+      "hanzi": "怡",
+      "count": 0
   },
   {
-    hanzi: '冶'
+      "hanzi": "冶",
+      "count": 0
   },
   {
-    hanzi: '怠'
+      "hanzi": "怠",
+      "count": 0
   },
   {
-    hanzi: '恳'
+      "hanzi": "恳",
+      "count": 0
   },
   {
-    hanzi: '甩'
+      "hanzi": "甩",
+      "count": 0
   },
   {
-    hanzi: '佣'
+      "hanzi": "佣",
+      "count": 0
   },
   {
-    hanzi: '倦'
+      "hanzi": "倦",
+      "count": 0
   },
   {
-    hanzi: '巷'
+      "hanzi": "巷",
+      "count": 2
   },
   {
-    hanzi: '佑'
+      "hanzi": "佑",
+      "count": 0
   },
   {
-    hanzi: '赁'
+      "hanzi": "赁",
+      "count": 0
   },
   {
-    hanzi: '俯'
+      "hanzi": "俯",
+      "count": 1
   },
   {
-    hanzi: '俘'
+      "hanzi": "俘",
+      "count": 0
   },
   {
-    hanzi: '虏'
+      "hanzi": "虏",
+      "count": 0
   },
   {
-    hanzi: '丐'
+      "hanzi": "丐",
+      "count": 0
   },
   {
-    hanzi: '钙'
+      "hanzi": "钙",
+      "count": 0
   },
   {
-    hanzi: '衔'
+      "hanzi": "衔",
+      "count": 0
   },
   {
-    hanzi: '钩'
+      "hanzi": "钩",
+      "count": 0
   },
   {
-    hanzi: '弘'
+      "hanzi": "弘",
+      "count": 0
   },
   {
-    hanzi: '夷'
+      "hanzi": "夷",
+      "count": 0
   },
   {
-    hanzi: '帖'
+      "hanzi": "帖",
+      "count": 0
   },
   {
-    hanzi: '帕'
+      "hanzi": "帕",
+      "count": 0
   },
   {
-    hanzi: '兜'
+      "hanzi": "兜",
+      "count": 0
   },
   {
-    hanzi: '丫'
+      "hanzi": "丫",
+      "count": 0
   },
   {
-    hanzi: '凸'
+      "hanzi": "凸",
+      "count": 0
   },
   {
-    hanzi: '凹'
+      "hanzi": "凹",
+      "count": 0
   },
   {
-    hanzi: '裕'
+      "hanzi": "裕",
+      "count": 0
   },
   {
-    hanzi: '袍'
+      "hanzi": "袍",
+      "count": 0
   },
   {
-    hanzi: '痒'
+      "hanzi": "痒",
+      "count": 0
   },
   {
-    hanzi: '瘾'
+      "hanzi": "瘾",
+      "count": 0
   },
   {
-    hanzi: '馈'
+      "hanzi": "馈",
+      "count": 0
   },
   {
-    hanzi: '蚀'
+      "hanzi": "蚀",
+      "count": 0
   },
   {
-    hanzi: '韧'
+      "hanzi": "韧",
+      "count": 0
   },
   {
-    hanzi: '寡'
+      "hanzi": "寡",
+      "count": 0
   },
   {
-    hanzi: '酿'
+      "hanzi": "酿",
+      "count": 0
   },
   {
-    hanzi: '酝'
+      "hanzi": "酝",
+      "count": 0
   },
   {
-    hanzi: '墅'
+      "hanzi": "墅",
+      "count": 0
   },
   {
-    hanzi: '牡'
+      "hanzi": "牡",
+      "count": 0
   },
   {
-    hanzi: '馨'
+      "hanzi": "馨",
+      "count": 0
   },
   {
-    hanzi: '殷'
+      "hanzi": "殷",
+      "count": 0
   },
   {
-    hanzi: '尴'
+      "hanzi": "尴",
+      "count": 0
   },
   {
-    hanzi: '尬'
+      "hanzi": "尬",
+      "count": 0
   },
   {
-    hanzi: '炫'
+      "hanzi": "炫",
+      "count": 1
   },
   {
-    hanzi: '毯'
+      "hanzi": "毯",
+      "count": 0
   },
   {
-    hanzi: '昧'
+      "hanzi": "昧",
+      "count": 0
   },
   {
-    hanzi: '猩'
+      "hanzi": "猩",
+      "count": 0
   },
   {
-    hanzi: '臣'
+      "hanzi": "臣",
+      "count": 0
   },
   {
-    hanzi: '耕'
+      "hanzi": "耕",
+      "count": 0
   },
   {
-    hanzi: '歪'
+      "hanzi": "歪",
+      "count": 0
   },
   {
-    hanzi: '缸'
+      "hanzi": "缸",
+      "count": 1
   },
   {
-    hanzi: '窑'
+      "hanzi": "窑",
+      "count": 0
   },
   {
-    hanzi: '窍'
+      "hanzi": "窍",
+      "count": 0
   },
   {
-    hanzi: '窜'
+      "hanzi": "窜",
+      "count": 0
   },
   {
-    hanzi: '窥'
+      "hanzi": "窥",
+      "count": 0
   },
   {
-    hanzi: '窟'
+      "hanzi": "窟",
+      "count": 0
   },
   {
-    hanzi: '窿'
+      "hanzi": "窿",
+      "count": 0
   },
   {
-    hanzi: '窒'
+      "hanzi": "窒",
+      "count": 0
   },
   {
-    hanzi: '窘'
+      "hanzi": "窘",
+      "count": 0
   },
   {
-    hanzi: '榨'
+      "hanzi": "榨",
+      "count": 0
   },
   {
-    hanzi: '柄'
+      "hanzi": "柄",
+      "count": 1
   },
   {
-    hanzi: '杠'
+      "hanzi": "杠",
+      "count": 0
   },
   {
-    hanzi: '桩'
+      "hanzi": "桩",
+      "count": 0
   },
   {
-    hanzi: '栖'
+      "hanzi": "栖",
+      "count": 0
   },
   {
-    hanzi: '朽'
+      "hanzi": "朽",
+      "count": 1
   },
   {
-    hanzi: '橱'
+      "hanzi": "橱",
+      "count": 0
   },
   {
-    hanzi: '槛'
+      "hanzi": "槛",
+      "count": 0
   },
   {
-    hanzi: '棺'
+      "hanzi": "棺",
+      "count": 0
   },
   {
-    hanzi: '椰'
+      "hanzi": "椰",
+      "count": 0
   },
   {
-    hanzi: '桨'
+      "hanzi": "桨",
+      "count": 0
   },
   {
-    hanzi: '揉'
+      "hanzi": "揉",
+      "count": 0
   },
   {
-    hanzi: '抒'
+      "hanzi": "抒",
+      "count": 1
   },
   {
-    hanzi: '捣'
+      "hanzi": "捣",
+      "count": 0
   },
   {
-    hanzi: '拱'
+      "hanzi": "拱",
+      "count": 0
   },
   {
-    hanzi: '扳'
+      "hanzi": "扳",
+      "count": 0
   },
   {
-    hanzi: '搁'
+      "hanzi": "搁",
+      "count": 0
   },
   {
-    hanzi: '捂'
+      "hanzi": "捂",
+      "count": 0
   },
   {
-    hanzi: '攒'
+      "hanzi": "攒",
+      "count": 0
   },
   {
-    hanzi: '搓'
+      "hanzi": "搓",
+      "count": 0
   },
   {
-    hanzi: '揣'
+      "hanzi": "揣",
+      "count": 0
   },
   {
-    hanzi: '捆'
+      "hanzi": "捆",
+      "count": 0
   },
   {
-    hanzi: '沐'
+      "hanzi": "沐",
+      "count": 0
   },
   {
-    hanzi: '浏'
+      "hanzi": "浏",
+      "count": 0
   },
   {
-    hanzi: '涤'
+      "hanzi": "涤",
+      "count": 0
   },
   {
-    hanzi: '沽'
+      "hanzi": "沽",
+      "count": 0
   },
   {
-    hanzi: '浊'
+      "hanzi": "浊",
+      "count": 0
   },
   {
-    hanzi: '渺'
+      "hanzi": "渺",
+      "count": 1
   },
   {
-    hanzi: '汛'
+      "hanzi": "汛",
+      "count": 0
   },
   {
-    hanzi: '涕'
+      "hanzi": "涕",
+      "count": 0
   },
   {
-    hanzi: '沛'
+      "hanzi": "沛",
+      "count": 0
   },
   {
-    hanzi: '瀑'
+      "hanzi": "瀑",
+      "count": 0
   },
   {
-    hanzi: '溅'
+      "hanzi": "溅",
+      "count": 0
   },
   {
-    hanzi: '淌'
+      "hanzi": "淌",
+      "count": 0
   },
   {
-    hanzi: '沮'
+      "hanzi": "沮",
+      "count": 0
   },
   {
-    hanzi: '溯'
+      "hanzi": "溯",
+      "count": 0
   },
   {
-    hanzi: '鲨'
+      "hanzi": "鲨",
+      "count": 0
   },
   {
-    hanzi: '涮'
+      "hanzi": "涮",
+      "count": 0
   },
   {
-    hanzi: '淆'
+      "hanzi": "淆",
+      "count": 0
   },
   {
-    hanzi: '沏'
+      "hanzi": "沏",
+      "count": 0
   },
   {
-    hanzi: '潦'
+      "hanzi": "潦",
+      "count": 0
   },
   {
-    hanzi: '僚'
+      "hanzi": "僚",
+      "count": 0
   },
   {
-    hanzi: '俭'
+      "hanzi": "俭",
+      "count": 0
   },
   {
-    hanzi: '阀'
+      "hanzi": "阀",
+      "count": 0
   },
   {
-    hanzi: '侃'
+      "hanzi": "侃",
+      "count": 0
   },
   {
-    hanzi: '伺'
+      "hanzi": "伺",
+      "count": 0
   },
   {
-    hanzi: '倚'
+      "hanzi": "倚",
+      "count": 0
   },
   {
-    hanzi: '僻'
+      "hanzi": "僻",
+      "count": 0
   },
   {
-    hanzi: '劈'
+      "hanzi": "劈",
+      "count": 0
   },
   {
-    hanzi: '倘'
+      "hanzi": "倘",
+      "count": 0
   },
   {
-    hanzi: '倔'
+      "hanzi": "倔",
+      "count": 0
   },
   {
-    hanzi: '咐'
+      "hanzi": "咐",
+      "count": 0
   },
   {
-    hanzi: '吩'
+      "hanzi": "吩",
+      "count": 0
   },
   {
-    hanzi: '哺'
+      "hanzi": "哺",
+      "count": 0
   },
   {
-    hanzi: '喧'
+      "hanzi": "喧",
+      "count": 0
   },
   {
-    hanzi: '咏'
+      "hanzi": "咏",
+      "count": 0
   },
   {
-    hanzi: '嗜'
+      "hanzi": "嗜",
+      "count": 0
   },
   {
-    hanzi: '哆'
+      "hanzi": "哆",
+      "count": 0
   },
   {
-    hanzi: '嗦'
+      "hanzi": "嗦",
+      "count": 0
   },
   {
-    hanzi: '嗅'
+      "hanzi": "嗅",
+      "count": 0
   },
   {
-    hanzi: '鳄'
+      "hanzi": "鳄",
+      "count": 0
   },
   {
-    hanzi: '刁'
+      "hanzi": "刁",
+      "count": 0
   },
   {
-    hanzi: '叼'
+      "hanzi": "叼",
+      "count": 0
   },
   {
-    hanzi: '啃'
+      "hanzi": "啃",
+      "count": 0
   },
   {
-    hanzi: '吭'
+      "hanzi": "吭",
+      "count": 0
   },
   {
-    hanzi: '唾'
+      "hanzi": "唾",
+      "count": 0
   },
   {
-    hanzi: '唬'
+      "hanzi": "唬",
+      "count": 0
   },
   {
-    hanzi: '菩'
+      "hanzi": "菩",
+      "count": 0
   },
   {
-    hanzi: '茂'
+      "hanzi": "茂",
+      "count": 0
   },
   {
-    hanzi: '蒜'
+      "hanzi": "蒜",
+      "count": 0
   },
   {
-    hanzi: '荧'
+      "hanzi": "荧",
+      "count": 0
   },
   {
-    hanzi: '藤'
+      "hanzi": "藤",
+      "count": 0
   },
   {
-    hanzi: '蔓'
+      "hanzi": "蔓",
+      "count": 0
   },
   {
-    hanzi: '蔑'
+      "hanzi": "蔑",
+      "count": 0
   },
   {
-    hanzi: '苛'
+      "hanzi": "苛",
+      "count": 0
   },
   {
-    hanzi: '暮'
+      "hanzi": "暮",
+      "count": 0
   },
   {
-    hanzi: '矢'
+      "hanzi": "矢",
+      "count": 0
   },
   {
-    hanzi: '荫'
+      "hanzi": "荫",
+      "count": 0
   },
   {
-    hanzi: '茎'
+      "hanzi": "茎",
+      "count": 0
   },
   {
-    hanzi: '蔼'
+      "hanzi": "蔼",
+      "count": 0
   },
   {
-    hanzi: '蘸'
+      "hanzi": "蘸",
+      "count": 0
   },
   {
-    hanzi: '礁'
+      "hanzi": "礁",
+      "count": 0
   },
   {
-    hanzi: '磋'
+      "hanzi": "磋",
+      "count": 0
   },
   {
-    hanzi: '砌'
+      "hanzi": "砌",
+      "count": 0
   },
   {
-    hanzi: '磕'
+      "hanzi": "磕",
+      "count": 0
   },
   {
-    hanzi: '怯'
+      "hanzi": "怯",
+      "count": 0
   },
   {
-    hanzi: '恤'
+      "hanzi": "恤",
+      "count": 0
   },
   {
-    hanzi: '惕'
+      "hanzi": "惕",
+      "count": 1
   },
   {
-    hanzi: '慑'
+      "hanzi": "慑",
+      "count": 0
   },
   {
-    hanzi: '慷'
+      "hanzi": "慷",
+      "count": 0
   },
   {
-    hanzi: '惭'
+      "hanzi": "惭",
+      "count": 0
   },
   {
-    hanzi: '惦'
+      "hanzi": "惦",
+      "count": 0
   },
   {
-    hanzi: '悼'
+      "hanzi": "悼",
+      "count": 0
   },
   {
-    hanzi: '绰'
+      "hanzi": "绰",
+      "count": 0
   },
   {
-    hanzi: '绎'
+      "hanzi": "绎",
+      "count": 0
   },
   {
-    hanzi: '绸'
+      "hanzi": "绸",
+      "count": 0
   },
   {
-    hanzi: '绞'
+      "hanzi": "绞",
+      "count": 0
   },
   {
-    hanzi: '缅'
+      "hanzi": "缅",
+      "count": 0
   },
   {
-    hanzi: '绽'
+      "hanzi": "绽",
+      "count": 0
   },
   {
-    hanzi: '纬'
+      "hanzi": "纬",
+      "count": 0
   },
   {
-    hanzi: '缚'
+      "hanzi": "缚",
+      "count": 1
   },
   {
-    hanzi: '绷'
+      "hanzi": "绷",
+      "count": 1
   },
   {
-    hanzi: '绯'
+      "hanzi": "绯",
+      "count": 1
   },
   {
-    hanzi: '绅'
+      "hanzi": "绅",
+      "count": 0
   },
   {
-    hanzi: '缕'
+      "hanzi": "缕",
+      "count": 0
   },
   {
-    hanzi: '搂'
+      "hanzi": "搂",
+      "count": 0
   },
   {
-    hanzi: '掺'
+      "hanzi": "掺",
+      "count": 0
   },
   {
-    hanzi: '拧'
+      "hanzi": "拧",
+      "count": 1
   },
   {
-    hanzi: '拯'
+      "hanzi": "拯",
+      "count": 0
   },
   {
-    hanzi: '扛'
+      "hanzi": "扛",
+      "count": 0
   },
   {
-    hanzi: '拎'
+      "hanzi": "拎",
+      "count": 0
   },
   {
-    hanzi: '拙'
+      "hanzi": "拙",
+      "count": 0
   },
   {
-    hanzi: '拽'
+      "hanzi": "拽",
+      "count": 0
   },
   {
-    hanzi: '撬'
+      "hanzi": "撬",
+      "count": 0
   },
   {
-    hanzi: '捅'
+      "hanzi": "捅",
+      "count": 0
   },
   {
-    hanzi: '拣'
+      "hanzi": "拣",
+      "count": 0
   },
   {
-    hanzi: '揍'
+      "hanzi": "揍",
+      "count": 0
   },
   {
-    hanzi: '搀'
+      "hanzi": "搀",
+      "count": 0
   },
   {
-    hanzi: '捶'
+      "hanzi": "捶",
+      "count": 0
   },
   {
-    hanzi: '拴'
+      "hanzi": "拴",
+      "count": 0
   },
   {
-    hanzi: '拄'
+      "hanzi": "拄",
+      "count": 0
   },
   {
-    hanzi: '抡'
+      "hanzi": "抡",
+      "count": 0
   },
   {
-    hanzi: '捍'
+      "hanzi": "捍",
+      "count": 0
   },
   {
-    hanzi: '晤'
+      "hanzi": "晤",
+      "count": 0
   },
   {
-    hanzi: '旷'
+      "hanzi": "旷",
+      "count": 0
   },
   {
-    hanzi: '曙'
+      "hanzi": "曙",
+      "count": 0
   },
   {
-    hanzi: '腥'
+      "hanzi": "腥",
+      "count": 0
   },
   {
-    hanzi: '膳'
+      "hanzi": "膳",
+      "count": 0
   },
   {
-    hanzi: '膛'
+      "hanzi": "膛",
+      "count": 0
   },
   {
-    hanzi: '朦'
+      "hanzi": "朦",
+      "count": 0
   },
   {
-    hanzi: '胧'
+      "hanzi": "胧",
+      "count": 0
   },
   {
-    hanzi: '婿'
+      "hanzi": "婿",
+      "count": 0
   },
   {
-    hanzi: '姥'
+      "hanzi": "姥",
+      "count": 1
   },
   {
-    hanzi: '絮'
+      "hanzi": "絮",
+      "count": 0
   },
   {
-    hanzi: '嬉'
+      "hanzi": "嬉",
+      "count": 0
   },
   {
-    hanzi: '嫦'
+      "hanzi": "嫦",
+      "count": 0
   },
   {
-    hanzi: '娥'
+      "hanzi": "娥",
+      "count": 0
   },
   {
-    hanzi: '媲'
+      "hanzi": "媲",
+      "count": 0
   },
   {
-    hanzi: '凄'
+      "hanzi": "凄",
+      "count": 0
   },
   {
-    hanzi: '婪'
+      "hanzi": "婪",
+      "count": 0
   },
   {
-    hanzi: '彬'
+      "hanzi": "彬",
+      "count": 0
   },
   {
-    hanzi: '焚'
+      "hanzi": "焚",
+      "count": 0
   },
   {
-    hanzi: '灼'
+      "hanzi": "灼",
+      "count": 0
   },
   {
-    hanzi: '焕'
+      "hanzi": "焕",
+      "count": 2
   },
   {
-    hanzi: '烘'
+      "hanzi": "烘",
+      "count": 0
   },
   {
-    hanzi: '焊'
+      "hanzi": "焊",
+      "count": 0
   },
   {
-    hanzi: '熄'
+      "hanzi": "熄",
+      "count": 0
   },
   {
-    hanzi: '烁'
+      "hanzi": "烁",
+      "count": 0
   },
   {
-    hanzi: '炖'
+      "hanzi": "炖",
+      "count": 2
   },
   {
-    hanzi: '炊'
+      "hanzi": "炊",
+      "count": 0
   },
   {
-    hanzi: '灸'
+      "hanzi": "灸",
+      "count": 0
   },
   {
-    hanzi: '煲'
+      "hanzi": "煲",
+      "count": 2
   },
   {
-    hanzi: '耿'
+      "hanzi": "耿",
+      "count": 0
   },
   {
-    hanzi: '痰'
+      "hanzi": "痰",
+      "count": 0
   },
   {
-    hanzi: '痹'
+      "hanzi": "痹",
+      "count": 0
   },
   {
-    hanzi: '煽'
+      "hanzi": "煽",
+      "count": 0
   },
   {
-    hanzi: '翅'
+      "hanzi": "翅",
+      "count": 1
   },
   {
-    hanzi: '翘'
+      "hanzi": "翘",
+      "count": 0
   },
   {
-    hanzi: '戳'
+      "hanzi": "戳",
+      "count": 0
   },
   {
-    hanzi: '雁'
+      "hanzi": "雁",
+      "count": 0
   },
   {
-    hanzi: '鹤'
+      "hanzi": "鹤",
+      "count": 0
   },
   {
-    hanzi: '寝'
+      "hanzi": "寝",
+      "count": 0
   },
   {
-    hanzi: '寥'
+      "hanzi": "寥",
+      "count": 0
   },
   {
-    hanzi: '谬'
+      "hanzi": "谬",
+      "count": 2
   },
   {
-    hanzi: '诀'
+      "hanzi": "诀",
+      "count": 0
   },
   {
-    hanzi: '诵'
+      "hanzi": "诵",
+      "count": 0
   },
   {
-    hanzi: '讳'
+      "hanzi": "讳",
+      "count": 0
   },
   {
-    hanzi: '诫'
+      "hanzi": "诫",
+      "count": 0
   },
   {
-    hanzi: '诽'
+      "hanzi": "诽",
+      "count": 0
   },
   {
-    hanzi: '谤'
+      "hanzi": "谤",
+      "count": 0
   },
   {
-    hanzi: '讹'
+      "hanzi": "讹",
+      "count": 0
   },
   {
-    hanzi: '谍'
+      "hanzi": "谍",
+      "count": 0
   },
   {
-    hanzi: '讥'
+      "hanzi": "讥",
+      "count": 0
   },
   {
-    hanzi: '秃'
+      "hanzi": "秃",
+      "count": 0
   },
   {
-    hanzi: '颓'
+      "hanzi": "颓",
+      "count": 0
   },
   {
-    hanzi: '秉'
+      "hanzi": "秉",
+      "count": 0
   },
   {
-    hanzi: '黏'
+      "hanzi": "黏",
+      "count": 0
   },
   {
-    hanzi: '秽'
+      "hanzi": "秽",
+      "count": 0
   },
   {
-    hanzi: '稠'
+      "hanzi": "稠",
+      "count": 0
   },
   {
-    hanzi: '稼'
+      "hanzi": "稼",
+      "count": 0
   },
   {
-    hanzi: '锈'
+      "hanzi": "锈",
+      "count": 1
   },
   {
-    hanzi: '锤'
+      "hanzi": "锤",
+      "count": 0
   },
   {
-    hanzi: '钞'
+      "hanzi": "钞",
+      "count": 0
   },
   {
-    hanzi: '锯'
+      "hanzi": "锯",
+      "count": 0
   },
   {
-    hanzi: '钳'
+      "hanzi": "钳",
+      "count": 0
   },
   {
-    hanzi: '钧'
+      "hanzi": "钧",
+      "count": 0
   },
   {
-    hanzi: '钓'
+      "hanzi": "钓",
+      "count": 2
   },
   {
-    hanzi: '豹'
+      "hanzi": "豹",
+      "count": 0
   },
   {
-    hanzi: '酌'
+      "hanzi": "酌",
+      "count": 0
   },
   {
-    hanzi: '酣'
+      "hanzi": "酣",
+      "count": 0
   },
   {
-    hanzi: '酥'
+      "hanzi": "酥",
+      "count": 0
   },
   {
-    hanzi: '酗'
+      "hanzi": "酗",
+      "count": 0
   },
   {
-    hanzi: '酵'
+      "hanzi": "酵",
+      "count": 0
   },
   {
-    hanzi: '烹'
+      "hanzi": "烹",
+      "count": 0
   },
   {
-    hanzi: '孪'
+      "hanzi": "孪",
+      "count": 0
   },
   {
-    hanzi: '弈'
+      "hanzi": "弈",
+      "count": 0
   },
   {
-    hanzi: '卉'
+      "hanzi": "卉",
+      "count": 0
   },
   {
-    hanzi: '甸'
+      "hanzi": "甸",
+      "count": 0
   },
   {
-    hanzi: '畔'
+      "hanzi": "畔",
+      "count": 0
   },
   {
-    hanzi: '畸'
+      "hanzi": "畸",
+      "count": 0
   },
   {
-    hanzi: '瞄'
+      "hanzi": "瞄",
+      "count": 0
   },
   {
-    hanzi: '睹'
+      "hanzi": "睹",
+      "count": 1
   },
   {
-    hanzi: '瞒'
+      "hanzi": "瞒",
+      "count": 1
   },
   {
-    hanzi: '眨'
+      "hanzi": "眨",
+      "count": 0
   },
   {
-    hanzi: '睦'
+      "hanzi": "睦",
+      "count": 0
   },
   {
-    hanzi: '睬'
+      "hanzi": "睬",
+      "count": 0
   },
   {
-    hanzi: '盹'
+      "hanzi": "盹",
+      "count": 0
   },
   {
-    hanzi: '瞻'
+      "hanzi": "瞻",
+      "count": 0
   },
   {
-    hanzi: '赡'
+      "hanzi": "赡",
+      "count": 0
   },
   {
-    hanzi: '赎'
+      "hanzi": "赎",
+      "count": 0
   },
   {
-    hanzi: '贞'
+      "hanzi": "贞",
+      "count": 0
   },
   {
-    hanzi: '贬'
+      "hanzi": "贬",
+      "count": 0
   },
   {
-    hanzi: '贮'
+      "hanzi": "贮",
+      "count": 0
   },
   {
-    hanzi: '屯'
+      "hanzi": "屯",
+      "count": 0
   },
   {
-    hanzi: '赃'
+      "hanzi": "赃",
+      "count": 0
   },
   {
-    hanzi: '陨'
+      "hanzi": "陨",
+      "count": 0
   },
   {
-    hanzi: '阱'
+      "hanzi": "阱",
+      "count": 1
   },
   {
-    hanzi: '陡'
+      "hanzi": "陡",
+      "count": 0
   },
   {
-    hanzi: '陋'
+      "hanzi": "陋",
+      "count": 0
   },
   {
-    hanzi: '堕'
+      "hanzi": "堕",
+      "count": 0
   },
   {
-    hanzi: '廓'
+      "hanzi": "廓",
+      "count": 0
   },
   {
-    hanzi: '隧'
+      "hanzi": "隧",
+      "count": 0
   },
   {
-    hanzi: '遏'
+      "hanzi": "遏",
+      "count": 0
   },
   {
-    hanzi: '迭'
+      "hanzi": "迭",
+      "count": 0
   },
   {
-    hanzi: '迄'
+      "hanzi": "迄",
+      "count": 0
   },
   {
-    hanzi: '逞'
+      "hanzi": "逞",
+      "count": 0
   },
   {
-    hanzi: '琢'
+      "hanzi": "琢",
+      "count": 0
   },
   {
-    hanzi: '筐'
+      "hanzi": "筐",
+      "count": 0
   },
   {
-    hanzi: '筒'
+      "hanzi": "筒",
+      "count": 2
   },
   {
-    hanzi: '篷'
+      "hanzi": "篷",
+      "count": 0
   },
   {
-    hanzi: '笛'
+      "hanzi": "笛",
+      "count": 0
   },
   {
-    hanzi: '筝'
+      "hanzi": "筝",
+      "count": 0
   },
   {
-    hanzi: '簇'
+      "hanzi": "簇",
+      "count": 0
   },
   {
-    hanzi: '竿'
+      "hanzi": "竿",
+      "count": 0
   },
   {
-    hanzi: '罕'
+      "hanzi": "罕",
+      "count": 1
   },
   {
-    hanzi: '凿'
+      "hanzi": "凿",
+      "count": 0
   },
   {
-    hanzi: '墟'
+      "hanzi": "墟",
+      "count": 0
   },
   {
-    hanzi: '垦'
+      "hanzi": "垦",
+      "count": 0
   },
   {
-    hanzi: '坟'
+      "hanzi": "坟",
+      "count": 0
   },
   {
-    hanzi: '紊'
+      "hanzi": "紊",
+      "count": 0
   },
   {
-    hanzi: '虔'
+      "hanzi": "虔",
+      "count": 0
   },
   {
-    hanzi: '剃'
+      "hanzi": "剃",
+      "count": 0
   },
   {
-    hanzi: '刨'
+      "hanzi": "刨",
+      "count": 0
   },
   {
-    hanzi: '剔'
+      "hanzi": "剔",
+      "count": 0
   },
   {
-    hanzi: '竖'
+      "hanzi": "竖",
+      "count": 0
   },
   {
-    hanzi: '幢'
+      "hanzi": "幢",
+      "count": 0
   },
   {
-    hanzi: '帜'
+      "hanzi": "帜",
+      "count": 0
   },
   {
-    hanzi: '觅'
+      "hanzi": "觅",
+      "count": 0
   },
   {
-    hanzi: '孵'
+      "hanzi": "孵",
+      "count": 0
   },
   {
-    hanzi: '馁'
+      "hanzi": "馁",
+      "count": 0
   },
   {
-    hanzi: '馋'
+      "hanzi": "馋",
+      "count": 0
   },
   {
-    hanzi: '饥'
+      "hanzi": "饥",
+      "count": 0
   },
   {
-    hanzi: '冗'
+      "hanzi": "冗",
+      "count": 0
   },
   {
-    hanzi: '弦'
+      "hanzi": "弦",
+      "count": 0
   },
   {
-    hanzi: '弛'
+      "hanzi": "弛",
+      "count": 0
   },
   {
-    hanzi: '躬'
+      "hanzi": "躬",
+      "count": 0
   },
   {
-    hanzi: '靶'
+      "hanzi": "靶",
+      "count": 0
   },
   {
-    hanzi: '靴'
+      "hanzi": "靴",
+      "count": 0
   },
   {
-    hanzi: '鞠'
+      "hanzi": "鞠",
+      "count": 0
   },
   {
-    hanzi: '粪'
+      "hanzi": "粪",
+      "count": 0
   },
   {
-    hanzi: '粽'
+      "hanzi": "粽",
+      "count": 3
   },
   {
-    hanzi: '舵'
+      "hanzi": "舵",
+      "count": 0
   },
   {
-    hanzi: '舶'
+      "hanzi": "舶",
+      "count": 1
   },
   {
-    hanzi: '皂'
+      "hanzi": "皂",
+      "count": 0
   },
   {
-    hanzi: '挚'
+      "hanzi": "挚",
+      "count": 0
   },
   {
-    hanzi: '擎'
+      "hanzi": "擎",
+      "count": 0
   },
   {
-    hanzi: '掰'
+      "hanzi": "掰",
+      "count": 0
   },
   {
-    hanzi: '岔'
+      "hanzi": "岔",
+      "count": 0
   },
   {
-    hanzi: '崛'
+      "hanzi": "崛",
+      "count": 0
   },
   {
-    hanzi: '崭'
+      "hanzi": "崭",
+      "count": 0
   },
   {
-    hanzi: '峙'
+      "hanzi": "峙",
+      "count": 0
   },
   {
-    hanzi: '屿'
+      "hanzi": "屿",
+      "count": 0
   },
   {
-    hanzi: '屹'
+      "hanzi": "屹",
+      "count": 0
   },
   {
-    hanzi: '崖'
+      "hanzi": "崖",
+      "count": 0
   },
   {
-    hanzi: '蛙'
+      "hanzi": "蛙",
+      "count": 0
   },
   {
-    hanzi: '卦'
+      "hanzi": "卦",
+      "count": 0
   },
   {
-    hanzi: '卤'
+      "hanzi": "卤",
+      "count": 0
   },
   {
-    hanzi: '闺'
+      "hanzi": "闺",
+      "count": 0
   },
   {
-    hanzi: '阂'
+      "hanzi": "阂",
+      "count": 0
   },
   {
-    hanzi: '蹦'
+      "hanzi": "蹦",
+      "count": 0
   },
   {
-    hanzi: '踹'
+      "hanzi": "踹",
+      "count": 0
   },
   {
-    hanzi: '趴'
+      "hanzi": "趴",
+      "count": 2
   },
   {
-    hanzi: '踊'
+      "hanzi": "踊",
+      "count": 0
   },
   {
-    hanzi: '跤'
+      "hanzi": "跤",
+      "count": 0
   },
   {
-    hanzi: '狡'
+      "hanzi": "狡",
+      "count": 0
   },
   {
-    hanzi: '猾'
+      "hanzi": "猾",
+      "count": 0
   },
   {
-    hanzi: '猖'
+      "hanzi": "猖",
+      "count": 0
   },
   {
-    hanzi: '惫'
+      "hanzi": "惫",
+      "count": 1
   },
   {
-    hanzi: '囱'
+      "hanzi": "囱",
+      "count": 0
   },
   {
-    hanzi: '囚'
+      "hanzi": "囚",
+      "count": 0
   },
   {
-    hanzi: '熏'
+      "hanzi": "熏",
+      "count": 0
   },
   {
-    hanzi: '歼'
+      "hanzi": "歼",
+      "count": 0
   },
   {
-    hanzi: '殃'
+      "hanzi": "殃",
+      "count": 0
   },
   {
-    hanzi: '顷'
+      "hanzi": "顷",
+      "count": 0
   },
   {
-    hanzi: '颊'
+      "hanzi": "颊",
+      "count": 0
   },
   {
-    hanzi: '匠'
+      "hanzi": "匠",
+      "count": 0
   },
   {
-    hanzi: '斧'
+      "hanzi": "斧",
+      "count": 0
   },
   {
-    hanzi: '鹅'
+      "hanzi": "鹅",
+      "count": 1
   },
   {
-    hanzi: '鸽'
+      "hanzi": "鸽",
+      "count": 1
   },
   {
-    hanzi: '徘'
+      "hanzi": "徘",
+      "count": 0
   },
   {
-    hanzi: '徊'
+      "hanzi": "徊",
+      "count": 0
   },
   {
-    hanzi: '衅'
+      "hanzi": "衅",
+      "count": 0
   },
   {
-    hanzi: '盏'
+      "hanzi": "盏",
+      "count": 0
   },
   {
-    hanzi: '祀'
+      "hanzi": "祀",
+      "count": 0
   },
   {
-    hanzi: '袱'
+      "hanzi": "袱",
+      "count": 0
   },
   {
-    hanzi: '兢'
+      "hanzi": "兢",
+      "count": 0
   },
   {
-    hanzi: '魁'
+      "hanzi": "魁",
+      "count": 0
   },
   {
-    hanzi: '冈'
+      "hanzi": "冈",
+      "count": 0
   },
   {
-    hanzi: '裔'
+      "hanzi": "裔",
+      "count": 0
   },
   {
-    hanzi: '昼'
+      "hanzi": "昼",
+      "count": 0
   },
   {
-    hanzi: '孔'
+      "hanzi": "孔",
+      "count": 2
   },
   {
-    hanzi: '啥'
+      "hanzi": "啥",
+      "count": 1
   },
   {
-    hanzi: '咋'
+      "hanzi": "咋",
+      "count": 0
   },
   {
-    hanzi: '呻'
+      "hanzi": "呻",
+      "count": 0
   },
   {
-    hanzi: '吟'
+      "hanzi": "吟",
+      "count": 0
   },
   {
-    hanzi: '吴'
+      "hanzi": "吴",
+      "count": 0
   },
   {
-    hanzi: '嗨'
+      "hanzi": "嗨",
+      "count": 0
   },
   {
-    hanzi: '噢'
+      "hanzi": "噢",
+      "count": 0
   },
   {
-    hanzi: '澳'
+      "hanzi": "澳",
+      "count": 0
   },
   {
-    hanzi: '涩'
+      "hanzi": "涩",
+      "count": 0
   },
   {
-    hanzi: '洛'
+      "hanzi": "洛",
+      "count": 0
   },
   {
-    hanzi: '浙'
+      "hanzi": "浙",
+      "count": 0
   },
   {
-    hanzi: '沈'
+      "hanzi": "沈",
+      "count": 0
   },
   {
-    hanzi: '浦'
+      "hanzi": "浦",
+      "count": 0
   },
   {
-    hanzi: '屁'
+      "hanzi": "屁",
+      "count": 0
   },
   {
-    hanzi: '棕'
+      "hanzi": "棕",
+      "count": 0
   },
   {
-    hanzi: '杭'
+      "hanzi": "杭",
+      "count": 1
   },
   {
-    hanzi: '宋'
+      "hanzi": "宋",
+      "count": 0
   },
   {
-    hanzi: '椎'
+      "hanzi": "椎",
+      "count": 0
   },
   {
-    hanzi: '雌'
+      "hanzi": "雌",
+      "count": 0
   },
   {
-    hanzi: '蝴'
+      "hanzi": "蝴",
+      "count": 0
   },
   {
-    hanzi: '蝶'
+      "hanzi": "蝶",
+      "count": 0
   },
   {
-    hanzi: '眯'
+      "hanzi": "眯",
+      "count": 0
   },
   {
-    hanzi: '眶'
+      "hanzi": "眶",
+      "count": 0
   },
   {
-    hanzi: '玛'
+      "hanzi": "玛",
+      "count": 0
   },
   {
-    hanzi: '菲'
+      "hanzi": "菲",
+      "count": 0
   },
   {
-    hanzi: '莱'
+      "hanzi": "莱",
+      "count": 0
   },
   {
-    hanzi: '疤'
+      "hanzi": "疤",
+      "count": 0
   },
   {
-    hanzi: '圳'
+      "hanzi": "圳",
+      "count": 2
   },
   {
-    hanzi: '侄'
+      "hanzi": "侄",
+      "count": 0
   },
   {
-    hanzi: '掷'
+      "hanzi": "掷",
+      "count": 0
   },
   {
-    hanzi: '嗎'
+      "hanzi": "嗎",
+      "count": 0
   },
   {
-    hanzi: '請問'
+      "hanzi": "請問",
+      "count": 0
   },
   {
-    hanzi: '哪裡'
+      "hanzi": "哪裡",
+      "count": 0
   },
   {
-    hanzi: '美國人'
+      "hanzi": "美國人",
+      "count": 0
   },
   {
-    hanzi: '中國人'
+      "hanzi": "中國人",
+      "count": 0
   },
   {
-    hanzi: '你呢'
+      "hanzi": "你呢",
+      "count": 3
   },
   {
-    hanzi: '喜歡'
+      "hanzi": "喜歡",
+      "count": 0
   },
   {
-    hanzi: '漢堡'
+      "hanzi": "漢堡",
+      "count": 0
   }
 ]
 // 11826

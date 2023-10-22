@@ -31,12 +31,12 @@ Promise.all(
 //   console.log("ALL HITS", allHits);
   const uniqueIds = [...new Set(ids.flat()?.flat())];
 
-  // const uniqueItems = uniqueIds?.map((id) => {
-  //   return allHits?.find((hit) => hit?._id === id);
-  // });
+  const uniqueItems = uniqueIds?.map((id) => {
+    return allHits?.find((hit) => hit?._id === id);
+  });
 
 
-  fs.writeFile(`traverse/ids.json`, JSON.stringify(ids), () => {
+  fs.writeFile(`traverse/unique.json`, JSON.stringify(uniqueItems), () => {
     console.log("SUCCESS");
     // return items;
   });

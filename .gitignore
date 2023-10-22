@@ -36,3 +36,10 @@ next-env.d.ts
 
 
 .npmrc
+
+level-1.json
+level-2.json
+level-16.json
+level-300.json
+
+traverse/*

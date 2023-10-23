@@ -148,7 +148,7 @@ const PageView = ({ view, setSelectedId }: any) => {
                   learnedCharacters.includes(prop?.hanzi)
                     ? "dark:text-white text-gray-700"
                     : "dark:text-gray-500 text-gray-200"
-                } dark:hover:text-white p-6 text-4xl transition`}
+                } dark:hover:text-white p-6 text-4xl transition lowercase`}
               >
                 {prop?.hanzi}
               </button>

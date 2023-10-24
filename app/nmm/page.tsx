@@ -206,9 +206,13 @@ const calculateColor = (dict: any) => {
   }
 };
 
-function ComponentEditor({ selectedId, setSelectedId }: any) {
+function SelectedComponent({ selectedId, setSelectedId }: any) {
   // @ts-ignore
   const dict = dictionary?.[selectedId];
+
+  const [query, setQuery] = useState("");
+  const [index, setIndex] = useState(0);
+  const [view, setView] = useState("sentences");
 
   const actor = learnedActors.find((actor) => actor.id === selectedId);
   return (
@@ -216,34 +220,121 @@ function ComponentEditor({ selectedId, setSelectedId }: any) {
       <div className="my-4 mx-8 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
         <div></div>
 
-        <div className="flex items-center justify-center flex-col">
-          <h1 className="space-x-2 flex flex-col items-center">
-            {dict?.pinyin ? (
-              <span
-                className={`items-center flex space-x-4 text-2xl font-bold ${calculateColor(
-                  dict
-                )}`}
-              >
-                {" "}
-                <span>{dict?.sound ? <Music url={dict?.sound} /> : null} </span>
-                <span>
-                  {" "}
-                  {dict?.pinyin} ({dict?.hanzi})
-                </span>
-              </span>
-            ) : (
-              <span className={`text-3xl font-bold ${calculateColor(dict)}`}>
-                {" "}
-                {selectedId}
-              </span>
-            )}
-          </h1>
+        <div className="dark:text-gray-500 my-4 space-x-8 flex justify-center items-center">
+          <button
+            onClick={() => {
+              setView("play");
+            }}
+            className={`${
+              view === "play"
+                ? "dark:text-white text-gray-800"
+                : "dark:text-gray-800 text-gray-200"
+            } my-4 flex flex-col items-center hover:dark:text-white transition`}
+          >
+            <PlayIcon className="text-2xl" />
+            <p className="text-[8px] p-0 m-0">Play</p>
+          </button>
+          <button
+            onClick={() => {
+              // setSelectedId(null);
+              setView("actors");
+            }}
+            className={`${
+              view === "actors"
+                ? "dark:text-white text-gray-800"
+                : "dark:text-gray-800 text-gray-200"
+            } my-4 flex flex-col items-center hover:dark:text-white transition`}
+          >
+            <NomadIcon className="text-2xl" />
+            <p className="text-[8px] p-0 m-0">Nomads</p>
+          </button>
+          <button
+            onClick={() => {
+              // setSelectedId(null);
+              setView("places");
+            }}
+            className={`${
+              view === "places"
+                ? "dark:text-white text-gray-800"
+                : "dark:text-gray-800 text-gray-200"
+            } my-4 flex flex-col items-center hover:dark:text-white transition`}
+          >
+            <PlaceIcon className="text-2xl" />
+            <p className="text-[8px] p-0 m-0">Destinations</p>
+          </button>
 
-          <h2>
-            <span className={`text-xl text-gray-500 font-light`}>
-              {dict?.en || actor?.actor}
-            </span>
-          </h2>
+          <button
+            onClick={() => {
+              // setSelectedId(null);
+              setView("props");
+            }}
+            className={`${
+              view === "props"
+                ? "dark:text-white text-gray-800"
+                : "dark:text-gray-800 text-gray-200"
+            } my-4 flex flex-col items-center hover:dark:text-white transition`}
+          >
+            <PropsIcon className="text-2xl" />
+            <p className="text-[8px] p-0 m-0">Components</p>
+          </button>
+
+          <button
+            onClick={() => {
+              // setSelectedId(null);
+              setView("scenes");
+            }}
+            className={`${
+              view === "scenes"
+                ? "dark:text-white text-gray-800"
+                : "dark:text-gray-800 text-gray-200"
+            } my-4 flex flex-col items-center hover:dark:text-white transition`}
+          >
+            <StoryIcon className="text-2xl" />
+            <p className="text-[8px] p-0 m-0">Stories</p>
+          </button>
+
+          <button
+            onClick={() => {
+              // setSelectedId(null);
+              setView("characters");
+            }}
+            className={`${
+              view === "characters"
+                ? "dark:text-white text-gray-800"
+                : "dark:text-gray-800 text-gray-200"
+            } my-4 flex flex-col items-center hover:dark:text-white transition`}
+          >
+            <CharacterIcon className="text-2xl" />
+            <p className="text-[8px] p-0 m-0">Characters</p>
+          </button>
+          <button
+            onClick={() => {
+              // setSelectedId(null);
+              setView("words");
+            }}
+            className={`${
+              view === "words"
+                ? "dark:text-white text-gray-800"
+                : "dark:text-gray-800 text-gray-200"
+            } my-4 flex flex-col items-center hover:dark:text-white transition`}
+          >
+            <WordIcon className="text-2xl" />
+            <p className="text-[8px] p-0 m-0">Words</p>
+          </button>
+          <button
+            onClick={() => {
+              // setSelectedId(null);
+              setView("sentences");
+            }}
+            className={`${
+              view === "sentences"
+                ? "dark:text-white text-gray-800"
+                : "dark:text-gray-800 text-gray-200"
+            } my-4 flex flex-col items-center hover:dark:text-white transition`}
+          >
+            <SentenceIcon className="text-2xl" />
+            <p className="text-[8px] p-0 m-0">Sentences</p>
+          </button>
         </div>
 
         <button
@@ -255,13 +346,43 @@ function ComponentEditor({ selectedId, setSelectedId }: any) {
           <CloseIcon className="text-4xl" />
         </button>
       </div>
-      {/* 
-      <div className='flex space-x-2 justify-center'>
+
+      <div className="flex items-center justify-center flex-col">
+        <h1 className="space-x-2 flex flex-col items-center">
+          {dict?.pinyin ? (
+            <span
+              className={`items-center flex space-x-4 text-2xl font-bold ${calculateColor(
+                dict
+              )}`}
+            >
+              {" "}
+              <span>{dict?.sound ? <Music url={dict?.sound} /> : null} </span>
+              <span>
+                {" "}
+                {dict?.pinyin} ({dict?.hanzi})
+              </span>
+            </span>
+          ) : (
+            <span className={`text-3xl font-bold ${calculateColor(dict)}`}>
+              {" "}
+              {selectedId}
+            </span>
+          )}
+        </h1>
+
+        <h2>
+          <span className={`text-xl text-gray-500 font-light`}>
+            {dict?.en || actor?.actor}
+          </span>
+        </h2>
+      </div>
+
+      <div className="flex space-x-2 justify-center">
         {dict?.sound ? <Music url={dict?.sound} /> : null}
         <p className={`my-4 text-2xl dark:text-gray-300 text-gray-600`}>
           {dict?.en || actor?.actor}
         </p>
-      </div> */}
+      </div>
 
       {dict?.movie ? (
         <div className="my-4 mx-8 md:mx-16 dark:text-gray-300 text-gray-800 flex flex-col items-center justify-center">
@@ -420,7 +541,7 @@ function ComponentEditor({ selectedId, setSelectedId }: any) {
   );
 }
 
-export default function HanziMovieMethod(props: any) {
+export default function NomadMethod(props: any) {
   const [selectedId, setSelectedId] = useState<any>("");
   const [view, setView] = useState("characters");
   const [query, setQuery] = useState("");
@@ -438,126 +559,9 @@ export default function HanziMovieMethod(props: any) {
   return (
     <div className="grow">
       <NavBar />
-      <div className="dark:text-gray-500 my-4 space-x-8 flex justify-center items-center">
-        <button
-          onClick={() => {
-            setSelectedId(null);
-            setView("play");
-          }}
-          className={`${
-            view === "play"
-              ? "dark:text-white text-gray-800"
-              : "dark:text-gray-800 text-gray-200"
-          } my-4 flex flex-col items-center hover:dark:text-white transition`}
-        >
-          <PlayIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Play</p>
-        </button>
-        <button
-          onClick={() => {
-            setSelectedId(null);
-            setView("actors");
-          }}
-          className={`${
-            view === "actors"
-              ? "dark:text-white text-gray-800"
-              : "dark:text-gray-800 text-gray-200"
-          } my-4 flex flex-col items-center hover:dark:text-white transition`}
-        >
-          <NomadIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Nomads</p>
-        </button>
-        <button
-          onClick={() => {
-            setSelectedId(null);
-            setView("places");
-          }}
-          className={`${
-            view === "places"
-              ? "dark:text-white text-gray-800"
-              : "dark:text-gray-800 text-gray-200"
-          } my-4 flex flex-col items-center hover:dark:text-white transition`}
-        >
-          <PlaceIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Destinations</p>
-        </button>
-
-        <button
-          onClick={() => {
-            setSelectedId(null);
-            setView("props");
-          }}
-          className={`${
-            view === "props"
-              ? "dark:text-white text-gray-800"
-              : "dark:text-gray-800 text-gray-200"
-          } my-4 flex flex-col items-center hover:dark:text-white transition`}
-        >
-          <PropsIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Components</p>
-        </button>
-
-        <button
-          onClick={() => {
-            setSelectedId(null);
-            setView("scenes");
-          }}
-          className={`${
-            view === "scenes"
-              ? "dark:text-white text-gray-800"
-              : "dark:text-gray-800 text-gray-200"
-          } my-4 flex flex-col items-center hover:dark:text-white transition`}
-        >
-          <StoryIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Stories</p>
-        </button>
-
-        <button
-          onClick={() => {
-            setSelectedId(null);
-            setView("characters");
-          }}
-          className={`${
-            view === "characters"
-              ? "dark:text-white text-gray-800"
-              : "dark:text-gray-800 text-gray-200"
-          } my-4 flex flex-col items-center hover:dark:text-white transition`}
-        >
-          <CharacterIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Characters</p>
-        </button>
-        <button
-          onClick={() => {
-            setSelectedId(null);
-            setView("words");
-          }}
-          className={`${
-            view === "words"
-              ? "dark:text-white text-gray-800"
-              : "dark:text-gray-800 text-gray-200"
-          } my-4 flex flex-col items-center hover:dark:text-white transition`}
-        >
-          <WordIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Words</p>
-        </button>
-        {/* <button
-          onClick={() => {
-            setSelectedId(null);
-            setView("sentences");
-          }}
-          className={`${
-            view === "sentences"
-              ? "dark:text-white text-gray-800"
-              : "dark:text-gray-800 text-gray-200"
-          } my-4 flex flex-col items-center hover:dark:text-white transition`}
-        >
-          <SentenceIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Sentences</p>
-        </button> */}
-      </div>
 
       {selectedId ? (
-        <ComponentEditor
+        <SelectedComponent
           selectedId={selectedId}
           setSelectedId={setSelectedId}
         />

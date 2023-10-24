@@ -19,7 +19,7 @@ import { usePathname, useRouter } from "next/navigation";
 export const NavBar = () => {
   const route = usePathname();
   return (
-    <div className="flex justify-between items-center w-full px-4 md:px-40 md:my-4">
+    <div className="flex justify-between items-center w-full px-4 md:px-40 md:mt-2">
       <Link href="/">
         <FontAwesomeIcon icon={faMountainSun} />
       </Link>

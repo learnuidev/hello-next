@@ -5,6 +5,17 @@ import { useEffect, useRef, useState } from "react";
 import { usePinyinChartState, usePinyinChartStore } from "./state";
 
 import {
+  places,
+  learnedActors,
+  propsArr,
+  learnedCharacters,
+  learnedWords,
+  hanziToPinyin,
+  learnedProps,
+  learnedPlaces,
+} from "@/data/hmm/data";
+
+import {
   ColumnDef,
   createColumnHelper,
   flexRender,
@@ -416,30 +427,9 @@ const CharacterDetail = () => {
       <div className="md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between text-md">
         <div></div>
         <h1 className="flex flex-col items-center">
-          {/* {dict?.pinyin ? (
-              <span className={`text-3xl font-bold ${calculateColor(dict)}`}>
-                {' '}
-                {dict?.pinyin} ({dict?.hanzi})
-              </span>
-            ) : (
-              <span className={`text-3xl font-bold ${calculateColor(dict)}`}>
-                {' '}
-                {selectedId}
-              </span>
-            )} */}
           <span className={`text-3xl font-bold dark:text-gray-200`}>
             {selectedPinyin?.value || selectedPinyin}
           </span>
-          {/* {hanziToPinyin?.[selectedId] ? (
-            <div className='text-md'>
-              <span className='text-gray-500 font-light'>pinyin: </span>
-              <span className='text-gray-500 font-light'>
-                {hanziToPinyin?.[selectedId]}
-              </span>
-            </div>
-          ) : (
-            ''
-          )} */}
         </h1>
         <button
           onClick={() => {
@@ -450,7 +440,32 @@ const CharacterDetail = () => {
           <CloseIcon className="text-4xl" />
         </button>
       </div>
-      {/* {JSON.stringify(char)} */}
+
+      {/* <p className="text-slate-200 text-xs">{char?.graph}</p> */}
+
+      <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
+        {(char?.graph?.split("") || []).map((prop: string, idx: number) => {
+          // return <p className='p-4'>{prop?.hanzi}</p>
+          return (
+            <button
+              key={`${prop}-chars-${idx}`}
+              onClick={() => {
+                console.log("TODO");
+                // setSelectedId(prop);
+              }}
+              className={`${
+                learnedCharacters.includes(prop)
+                  ? "dark:text-white text-gray-700"
+                  : "dark:text-gray-500 text-gray-200"
+              } dark:hover:text-white p-6 text-4xl transition lowercase`}
+            >
+              {prop}
+            </button>
+          );
+        })}
+      </div>
+
+  
 
       <div className="flex justify-center">
         {char?.variants
@@ -468,32 +483,11 @@ const CharacterDetail = () => {
 
                   {variant?.examples ? (
                     <div className="flex flex-col items-center">
-                      {/* <div>
-                <MessageIcon />
-              </div> */}
-
                       <div className="space-y-8 my-4">
                         {variant?.examples.map((example: any) => {
                           return (
                             <div key={JSON.stringify(example)}>
-                              <div>
-                                {/* {example?.hanzi.split('').map((item: any) => {
-                                  return (
-                                    <span className={calculateColor(example)}>
-                                      {item}
-                                    </span>
-                                  )
-                                })} */}
-                                {/* <p className='dark:text-gray-600 text-gray-300'>
-                                {example?.hanzi}
-                              </p> */}
-                                {/* <p className='dark:text-gray-500 text-gray-400'>
-                                  {example?.pinyin}
-                                </p>
-                                <p className='dark:text-gray-400 text-gray-500'>
-                                  {example?.en}
-                                </p> */}
-                              </div>
+                              <div></div>
                               {example?.examples ? (
                                 <div className="space-y-4">
                                   {example?.examples?.map((ex: any) => {
@@ -556,6 +550,8 @@ function ChartPageVP({
   const [data, setData] = React.useState(() => [...defaultData]);
   const rerender = React.useReducer(() => ({}), {})[1];
 
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
   const [selectedPinyin, setSelectedPinyin] = usePinyinChartState();
 
   const table = useReactTable({
@@ -577,19 +573,6 @@ function ChartPageVP({
         return filters?.includes("problem-initial");
       }
 
-      // if (filters?.length === 1 && filters?.includes('problem-initial')) {
-      //   return filters?.includes('problem-initial')
-      // }
-      // if (
-      //   item.problemInitial &&
-      //   filters?.length === 1 &&
-      //   filters?.includes('problem-initial')
-      // ) {
-      //   return filters?.includes('problem-initial')
-      // }
-      // if (item.problemInitial) {
-      //   return filters?.includes('problem-initial')
-      // }
       return item?.levels?.some((level: any) => filters?.includes(level));
     });
   }, [totalCharacters, filters]);
@@ -963,281 +946,230 @@ function ChartPageVP({
     // return calcRowColorLegacy(val)
     return !filters.length
       ? "dark:text-slate-400"
-      : "dark:text-slate-500 text-slate-200";
+      : "dark:text-slate-500 text-slate-700 font-bold";
   };
 
   return (
     <div className="dark:bg-black margin-auto w-full my-2 text-center flex flex-col items-center justify-center">
-      <div className="flex justify-between items-center w-full md:px-20 mt-4 mb-8">
-        {/* {filters?.includes('problem-initial') ? (
-          <div className='text-3xl font-extralight text-slate-400 flex space-x-4'>
-            <span>
-              {totalProblemInitials?.length || 0} / {totalCharacters?.length}
-            </span>
-          </div>
-        ) : (
-          <div></div>
-        )} */}
-        {!lesson ? (
-          <div className="mr-[-180px] text-4xl flex space-x-8 font-extralight">
-            <button
-              className={`${
-                filters.includes("a:simple-final")
-                  ? "dark:text-slate-200 text-slate-700"
-                  : "dark:text-slate-500 text-slate-200"
-              } transition`}
-              onClick={() => {
-                setFilter("a:simple-final");
-                setFilter("a:compound-final");
-                // setFilter('a:nasal-final')
-              }}
-            >
-              a
-            </button>
-            <button
-              className={`${
-                filters.includes("e:simple-final")
-                  ? "dark:text-slate-200 text-slate-700"
-                  : "dark:text-slate-500 text-slate-200"
-              } transition`}
-              onClick={() => {
-                setFilter("e:simple-final");
-                setFilter("e:compound-final");
-              }}
-            >
-              e
-            </button>
-            <button
-              className={`${
-                filters.includes("o:simple-final")
-                  ? "dark:text-slate-200 text-slate-700"
-                  : "dark:text-slate-500 text-slate-200"
-              } transition`}
-              onClick={() => {
-                setFilter("o:simple-final");
-                setFilter("o:compound-final");
-              }}
-            >
-              o
-            </button>
-            <button
-              className={`${
-                filters.includes("i:simple-final")
-                  ? "dark:text-slate-200 text-slate-700"
-                  : "dark:text-slate-500 text-slate-200"
-              } transition`}
-              onClick={() => {
-                setFilter("i:simple-final");
-                setFilter("i:compound-final");
-              }}
-            >
-              i
-            </button>
-            <button
-              className={`${
-                filters.includes("u:simple-final")
-                  ? "dark:text-slate-200 text-slate-700"
-                  : "dark:text-slate-500 text-slate-200"
-              } transition`}
-              onClick={() => {
-                setFilter("u:simple-final");
-                setFilter("u:compound-final");
-              }}
-            >
-              u
-            </button>
-            <button
-              className={`${
-                filters.includes("ü:simple-final")
-                  ? "dark:text-slate-200 text-slate-700"
-                  : "dark:text-slate-500 text-slate-200"
-              } transition`}
-              onClick={() => {
-                setFilter("ü:simple-final");
-                setFilter("ü:compound-final");
-              }}
-            >
-              ü
-            </button>
-            <button
-              className={`${
-                filters.includes("problem-initial")
-                  ? "dark:text-slate-200 text-slate-700"
-                  : "dark:text-slate-500 text-slate-200"
-              } transition`}
-              onClick={() => {
-                setFilter("problem-initial");
-              }}
-            >
-              pi
-            </button>
-          </div>
-        ) : controls ? (
-          controls
-        ) : (
-          <div></div>
-        )}
-        <div className="text-3xl font-extralight text-slate-400 flex space-x-8">
-          {/* {filters?.includes('problem-initial') ? ( */}
-          <div className="flex flex-col items-center justify-center">
-            {/* <span>{totalProblemInitials?.length}</span> */}
-            <span>
-              {problemInitials?.length} / {totalProblemInitials?.length}
-            </span>
-            <span className="text-xs">problem initials</span>
-          </div>
-          {/* ) : null} */}
-          <div className="flex flex-col items-center justify-center">
-            <span>
-              {selectedCharacters?.length} / {totalCharacters?.length}
-            </span>
-            <span className="text-xs">characters</span>
-          </div>
-        </div>
-      </div>
-
-      {/* {filters.includes('problem-initial') ? ( */}
-      {false ? (
-        <div className="flex space-x-8 items-center">
-          <div className="flex space-x-4">
-            <span
-              className={`${
-                filters.includes("problem-initial:roof")
-                  ? "dark:text-white"
-                  : "dark:text-slate-500"
-              } transition`}
-              onClick={() => {
-                setFilter("problem-initial:roof");
-              }}
-            >
-              roof
-            </span>
-            <span
-              className={`${
-                filters.includes("problem-initial:middle")
-                  ? "dark:text-white"
-                  : "dark:text-slate-500"
-              } transition`}
-              onClick={() => {
-                setFilter("problem-initial:middle");
-              }}
-            >
-              middle
-            </span>
-            <span
-              className={`${
-                filters.includes("problem-initial:bottom")
-                  ? "dark:text-white"
-                  : "dark:text-slate-500"
-              } transition`}
-              onClick={() => {
-                setFilter("problem-initial:bottom");
-              }}
-            >
-              bottom
-            </span>
-          </div>
-        </div>
-      ) : null}
       <div className="p-2 w-full">
         {selectedPinyin ? (
           <CharacterDetail />
         ) : (
-          <div className="md:px-16 text-xs">
-            <table>
-              <thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr
-                    key={headerGroup.id}
-                    className="text-gray-700 dark:text-gray-400"
+          <>
+            <div className="flex justify-between items-center w-full md:px-12">
+              {!lesson ? (
+                <div className="mr-[-180px] text-2xl flex space-x-8 font-extralight">
+                  <button
+                    className={`${
+                      filters.includes("a:simple-final")
+                        ? "dark:text-slate-200 text-slate-700"
+                        : "dark:text-slate-500 text-slate-400"
+                    } transition`}
+                    onClick={() => {
+                      setFilter("a:simple-final");
+                      setFilter("a:compound-final");
+                    }}
                   >
-                    {headerGroup.headers.map((header) => (
-                      <th key={header.id} colSpan={header.colSpan}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map((row) => {
-                  return (
-                    <tr key={row.id}>
-                      {row.getVisibleCells().map((cell) => {
-                        const val = cell.getValue() as any;
-                        const char = characterDictionary[val?.value || val];
-                        return (
-                          <td
-                            onClick={() => {
-                              setSelectedPinyin(cell.getValue());
-                            }}
-                            role="button"
-                            key={cell.id}
-                            className={`py-1 px-1 ${
-                              val?.levels?.includes("a:compound-final") ||
-                              val?.levels?.includes("a:nasal-final")
-                                ? "font-light"
-                                : "font-extralight"
-                            } hover:bg-gray-200 dark:hover:bg-gray-800 dark:hover:text-white hover:text-gray-800 ${calcRowColor(
-                              val,
-                              lesson
-                            )} transition`}
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
+                    a
+                  </button>
+                  <button
+                    className={`${
+                      filters.includes("e:simple-final")
+                        ? "dark:text-slate-200 text-slate-700"
+                        : "dark:text-slate-500 text-slate-400"
+                    } transition`}
+                    onClick={() => {
+                      setFilter("e:simple-final");
+                      setFilter("e:compound-final");
+                    }}
+                  >
+                    e
+                  </button>
+                  <button
+                    className={`${
+                      filters.includes("o:simple-final")
+                        ? "dark:text-slate-200 text-slate-700"
+                        : "dark:text-slate-500 text-slate-400"
+                    } transition`}
+                    onClick={() => {
+                      setFilter("o:simple-final");
+                      setFilter("o:compound-final");
+                    }}
+                  >
+                    o
+                  </button>
+                  <button
+                    className={`${
+                      filters.includes("i:simple-final")
+                        ? "dark:text-slate-200 text-slate-700"
+                        : "dark:text-slate-500 text-slate-400"
+                    } transition`}
+                    onClick={() => {
+                      setFilter("i:simple-final");
+                      setFilter("i:compound-final");
+                    }}
+                  >
+                    i
+                  </button>
+                  <button
+                    className={`${
+                      filters.includes("u:simple-final")
+                        ? "dark:text-slate-200 text-slate-700"
+                        : "dark:text-slate-500 text-slate-400"
+                    } transition`}
+                    onClick={() => {
+                      setFilter("u:simple-final");
+                      setFilter("u:compound-final");
+                    }}
+                  >
+                    u
+                  </button>
+                  <button
+                    className={`${
+                      filters.includes("ü:simple-final")
+                        ? "dark:text-slate-200 text-slate-700"
+                        : "dark:text-slate-500 text-slate-400"
+                    } transition`}
+                    onClick={() => {
+                      setFilter("ü:simple-final");
+                      setFilter("ü:compound-final");
+                    }}
+                  >
+                    ü
+                  </button>
+                  <button
+                    className={`${
+                      filters.includes("problem-initial")
+                        ? "dark:text-slate-200 text-slate-700"
+                        : "dark:text-slate-500 text-slate-400"
+                    } transition`}
+                    onClick={() => {
+                      setFilter("problem-initial");
+                    }}
+                  >
+                    pi
+                  </button>
+                </div>
+              ) : controls ? (
+                controls
+              ) : (
+                <div></div>
+              )}
+              <div className="font-extralight text-slate-800 flex space-x-8 text-md">
+                <div className="flex flex-col items-center justify-center">
+                  <span>
+                    {problemInitials?.length} / {totalProblemInitials?.length}
+                  </span>
+                  <span className="text-xs">problem initials</span>
+                </div>
 
-                            {char?.examples.length ? (
-                              <div className="flex mt-1 space-x-1 items-center justify-center">
-                                {char?.examples?.map((example: any) => {
-                                  return (
-                                    <svg
-                                      key={JSON.stringify(example)}
-                                      className={`h-1 w-1 ${calculateColor2(
-                                        example
-                                      )}`}
-                                      viewBox="0 0 6 6"
-                                      aria-hidden="true"
-                                    >
-                                      <circle cx={3} cy={3} r={3} />
-                                    </svg>
-                                  );
-                                })}
-                              </div>
-                            ) : (
-                              <div className="my-2"></div>
-                            )}
-                          </td>
-                        );
-                      })}
+                <div className="flex flex-col items-center justify-center">
+                  <span>
+                    {selectedCharacters?.length} / {totalCharacters?.length}
+                  </span>
+                  <span className="text-xs">characters</span>
+                </div>
+              </div>
+            </div>
+            <div className="md:px-16 text-xs">
+              <table>
+                <thead>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr
+                      key={headerGroup.id}
+                      className="text-gray-700 dark:text-gray-400"
+                    >
+                      {headerGroup.headers.map((header) => (
+                        <th key={header.id} colSpan={header.colSpan}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </th>
+                      ))}
                     </tr>
-                  );
-                })}
-              </tbody>
-              <tfoot>
-                {table.getFooterGroups().map((footerGroup) => (
-                  <tr key={footerGroup.id}>
-                    {footerGroup.headers.map((header) => (
-                      <th key={header.id} colSpan={header.colSpan}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.footer,
-                              header.getContext()
-                            )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </tfoot>
-            </table>
-          </div>
+                  ))}
+                </thead>
+                <tbody>
+                  {table.getRowModel().rows.map((row) => {
+                    return (
+                      <tr key={row.id}>
+                        {row.getVisibleCells().map((cell) => {
+                          const val = cell.getValue() as any;
+                          const char = characterDictionary[val?.value || val];
+
+                          return (
+                            <td
+                              onClick={() => {
+                                setSelectedPinyin(cell.getValue());
+                              }}
+                              role="button"
+                              key={cell.id}
+                              className={`py-1 px-1 ${
+                                val?.levels?.includes("a:compound-final") ||
+                                val?.levels?.includes("a:nasal-final") ||
+                                val?.levels?.includes("e:nasal-final") ||
+                                val?.levels?.includes("i:nasal-final")
+                                  ? "font-light"
+                                  : "font-light"
+                              } hover:bg-gray-200 dark:hover:bg-gray-800 dark:hover:text-white hover:text-gray-800 ${calcRowColor(
+                                val,
+                                lesson
+                              )} transition`}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+
+                              {char?.examples.length ? (
+                                <div className="flex mt-1 space-x-1 items-center justify-center">
+                                  {char?.examples?.map((example: any) => {
+                                    return (
+                                      <svg
+                                        key={JSON.stringify(example)}
+                                        className={`h-1 w-1 ${calculateColor2(
+                                          example
+                                        )}`}
+                                        viewBox="0 0 6 6"
+                                        aria-hidden="true"
+                                      >
+                                        <circle cx={3} cy={3} r={3} />
+                                      </svg>
+                                    );
+                                  })}
+                                </div>
+                              ) : (
+                                <div className="my-2"></div>
+                              )}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+                <tfoot>
+                  {table.getFooterGroups().map((footerGroup) => (
+                    <tr key={footerGroup.id}>
+                      {footerGroup.headers.map((header) => (
+                        <th key={header.id} colSpan={header.colSpan}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.footer,
+                                header.getContext()
+                              )}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </tfoot>
+              </table>
+            </div>
+          </>
         )}
       </div>
     </div>

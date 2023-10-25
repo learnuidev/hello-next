@@ -26,6 +26,7 @@ import {
 import { characterDictionary, defaultData } from "./data";
 import { dictionary } from "@/data/hmm/data/dictionary";
 import { NavBar } from "@/components/navbar";
+import { allChars } from "@/data/hmm/data/v1000";
 
 const columnHelper = createColumnHelper<any>();
 
@@ -444,28 +445,32 @@ const CharacterDetail = () => {
       {/* <p className="text-slate-200 text-xs">{char?.graph}</p> */}
 
       <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-        {(char?.graph?.split("") || []).map((prop: string, idx: number) => {
-          // return <p className='p-4'>{prop?.hanzi}</p>
-          return (
-            <button
-              key={`${prop}-chars-${idx}`}
-              onClick={() => {
-                console.log("TODO");
-                // setSelectedId(prop);
-              }}
-              className={`${
-                learnedCharacters.includes(prop)
-                  ? "dark:text-white text-gray-700"
-                  : "dark:text-gray-500 text-gray-200"
-              } dark:hover:text-white p-6 text-4xl transition lowercase`}
-            >
-              {prop}
-            </button>
-          );
-        })}
-      </div>
+        {(char?.graph?.split("") || [])
+          ?.filter((prop: string) => {
+            return allChars?.find((item) => item?.hanzi === prop);
+          })
+          .map((prop: string, idx: number) => {
+            // return <p className='p-4'>{prop?.hanzi}</p>
 
-  
+            const isCore = allChars?.find((item) => item?.hanzi === prop);
+            return (
+              <button
+                key={`${prop}-chars-${idx}`}
+                onClick={() => {
+                  console.log("TODO");
+                  // setSelectedId(prop);
+                }}
+                className={`${
+                  learnedCharacters.includes(prop)
+                    ? "dark:text-white text-gray-700"
+                    : "dark:text-gray-500 text-gray-200"
+                } dark:hover:text-white p-6 text-4xl transition lowercase`}
+              >
+                {prop}
+              </button>
+            );
+          })}
+      </div>
 
       <div className="flex justify-center">
         {char?.variants
@@ -1124,7 +1129,7 @@ function ChartPageVP({
                                 cell.getContext()
                               )}
 
-                              {char?.examples.length ? (
+                              {char?.examples?.length ? (
                                 <div className="flex mt-1 space-x-1 items-center justify-center">
                                   {char?.examples?.map((example: any) => {
                                     return (

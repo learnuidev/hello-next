@@ -2099,7 +2099,7 @@ export const characterDictionary: any = {
         hanzi: '一'
       }
     ],
-    graph: '一以已尾亦易意依亿便衣益移伊疑医訳翌宜异疫艺生怡刈议役乙抑翼壱胰裔大屹彝翳义仪赤翊轶',
+    graph: '一以已尾亦易意依亿衣益移伊疑医訳翌宜异疫艺怡刈议役乙抑翼壱胰裔屹彝翳义仪翊轶',
 
 
     variants: [
@@ -2129,7 +2129,9 @@ export const characterDictionary: any = {
       }
     ]
   },
+
   er: {
+    graph: '二而儿尔耳児尓弐珥迩洱贰尒饵阿栭唲铒塔洏鸸弍佴咡鲕',
     value: 'er',
     initial: 'null',
     final: 'er',
@@ -2170,6 +2172,23 @@ export const characterDictionary: any = {
         ]
       }
     ]
+  },
+
+  san: {
+    graph: '三散伞叁繖潵糁弎鏾叄毵'
+  },
+  shi: {
+    graph: '事是识識时時使十式市室士食認试試实實史石氏视視师師世失始產權施示湿濕势勢幹実诗詩柿饰飾拭虱蝨鰤'
+  },
+
+  gan: {
+    graph: '赣贛感干幹敢赶趕甘苷柑秆稈肝擀杆桿亁竿肅咁淦酐绀紺疳矸橄縣尴尷語坩旰倝泔澉骭玕榦虷灨乹筸馬尲'
+  },
+  ban: {
+    graph: '版板闆半办辦班般伴阪坂搬扮扳瓣绊絆違斑拌魯钣鈑颁頒戰從終瘢罷開舨漁姅攽',
+  },
+  mai: {
+    graph: '买卖埋麦迈脉霾'
   },
   liang: {
     value: 'liang',

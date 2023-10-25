@@ -450,7 +450,7 @@ export function SearchPage() {
         </div>
       )}
 
-      <div className="my-8 flex flex-row justify-center space-x-4 items-center">
+      {/* <div className="my-8 flex flex-row justify-center space-x-4 items-center">
         <div className="flex items-center justify-center">
           <input
             className="dark:placeholder:text-gray-500 border-gray-900 dark:bg-black dark:text-gray-300 placeholder:text-gray-300 opacity-100 transition-opacity ease-in duration-700 border-2 w-[340px] md:w-[600px] px-4 py-2 rounded-full focus:outline-none active:outline-none"
@@ -476,7 +476,7 @@ export function SearchPage() {
           <SearchIcon />
           <span className="hidden sm:block"> Search </span>
         </button>
-      </div>
+      </div> */}
 
       {/* {addSuggestions?.length ? (
         <div>
@@ -609,7 +609,7 @@ export function SearchPage() {
       ) : null}
 
       {queryResult ? (
-        <div className="w-[740px] m-auto justify-center flex-col space-y-4">
+        <div className="w-[740px] m-auto justify-center flex-col space-y-4 my-4 md:my-16">
           {queryResult
             ?.filter((item: any) => {
               return true;

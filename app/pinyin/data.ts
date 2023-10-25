@@ -2174,6 +2174,10 @@ export const characterDictionary: any = {
     ]
   },
 
+  zhong: {
+    graph: '中种重众钟终踵衷忠仲锺盅肿冢狆螽忪伀'
+  },
+
   san: {
     graph: '三散伞叁繖潵糁弎鏾叄毵'
   },

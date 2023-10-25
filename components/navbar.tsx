@@ -19,11 +19,11 @@ import { usePathname, useRouter } from "next/navigation";
 export const NavBar = () => {
   const route = usePathname();
   return (
-    <div className="flex justify-between items-center w-full px-4 md:px-40 md:mt-2">
+    <div className="flex justify-between items-center w-full px-4 md:px-32 md:mt-2">
       <Link href="/">
         <FontAwesomeIcon icon={faMountainSun} />
       </Link>
-      <div className="my-4 flex justify-center items-center space-x-8 text-xs md:text-md">
+      <div className="mt-4 flex justify-center items-center space-x-8 text-xs md:text-md">
         <Link
           href="/search"
           className={`transition ${

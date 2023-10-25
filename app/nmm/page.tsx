@@ -43,6 +43,7 @@ import {
 import { NavBar } from "@/components/navbar";
 import { getGraph } from "../pinyin/utils";
 import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
+import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
 
 const PageView = ({ view, setSelectedId }: any) => {
   switch (view) {
@@ -145,9 +146,9 @@ const PageView = ({ view, setSelectedId }: any) => {
 
             const toneLevel = getCharacterToneLevel(prop as ICharacter);
 
-            const color = calculateColor({tone: toneLevel });
+            const color = calculateColor({ tone: toneLevel });
 
-            const graph = getGraph(prop?.hanzi)?.graph || ''
+            const graph = getGraph(prop?.hanzi)?.graph || "";
 
             // console.log("GRAPH", graph)
             // toneLevel && console.log({ toneLevel })
@@ -569,6 +570,8 @@ export default function NomadMethod(props: any) {
   const [view, setView] = useState("characters");
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState(0);
+
+  const { data } = useListTonePairsQuery({});
 
   useEffect(() => {
     const interval = setInterval(() => {

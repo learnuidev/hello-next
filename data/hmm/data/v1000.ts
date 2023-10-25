@@ -147,110 +147,166 @@ export const allChars = [
   {
     hanzi: "马",
     count: 137,
+    pinyin: 'mǎ',
+    en: 'horse'
   },
   {
     hanzi: "吗",
     count: 430,
+    pinyin: 'ma',
+    en: 'indicates yes or no question'
   },
   {
     hanzi: "骂",
     count: 16,
+    pinyin: 'mà',
+    en: 'to scold'
   },
   {
     hanzi: "乙",
     count: 2,
+    pinyin: 'yǐ',
+    en: 'Second (2nd)'
   },
   {
     hanzi: "乞",
     count: 2,
+    en: 'to beg',
+    pinyin: 'qǐ'
   },
   {
     hanzi: "吃",
     count: 532,
+    pinyin: 'chī',
+    en: 'to eat'
   },
   {
     hanzi: "气",
     count: 212,
+    pinyin: 'qì',
+    en: 'air'
   },
   {
     hanzi: "飞",
     count: 105,
+    pinyin: 'fēi',
+    en: 'to fly'
   },
   {
     hanzi: "况",
     count: 46,
+    pinyin: 'fēi',
+    en: 'to fly'
   },
   {
     hanzi: "日",
     count: 150,
+    pinyin: 'rì',
+    en: 'sun'
   },
   {
     hanzi: "旧",
     count: 24,
+    pinyin: 'rì',
+    en: 'sun'
   },
   {
     hanzi: "旦",
     count: 8,
+    pinyin: 'dàn',
+    en: 'dawn'
   },
   {
     hanzi: "但",
     count: 245,
+    pinyin: 'dàn',
+    en: 'but'
   },
   {
     hanzi: "早",
     count: 183,
+    pinyin: 'zǎo',
+    en: 'early',
   },
   {
     hanzi: "唱",
     count: 60,
+    pinyin: 'chàng',
+    en: 'to sing',
   },
   {
     hanzi: "电",
     count: 291,
+    pinyin: 'diàn',
+    en: 'electric',
   },
   {
     hanzi: "七",
     count: 38,
+    pinyin: 'qī',
+    en: 'seven',
   },
   {
     hanzi: "化",
     count: 85,
+    pinyin: 'huà',
+    en: 'to transform',
   },
   {
     hanzi: "白",
     count: 109,
+    pinyin: 'bái',
+    en: 'white',
   },
   {
     hanzi: "百",
     count: 73,
+    pinyin: 'bǎi',
+    en: 'hundred',
   },
   {
     hanzi: "今",
     count: 450,
+    pinyin: 'jīn',
+    en: 'today',
   },
   {
     hanzi: "千",
     count: 61,
+    pinyin: 'qiān',
+    en: 'thousand',
   },
   {
     hanzi: "舌",
     count: 7,
+    pinyin: 'shé',
+    en: 'tongue',
   },
   {
     hanzi: "话",
     count: 332,
+    pinyin: 'huà',
+    en: 'speech',
+
   },
   {
     hanzi: "活",
     count: 162,
+    pinyin: 'huó',
+    en: 'to live',
+
   },
   {
     hanzi: "乱",
     count: 23,
+    pinyin: 'luàn',
+    en: 'mess',
   },
   {
     hanzi: "汽",
     count: 33,
+    pinyin: 'qì',
+    en: 'steam',
   },
   {
     hanzi: "月",

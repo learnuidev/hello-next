@@ -444,8 +444,8 @@ export function SearchPage() {
             mandarin<span className="">o</span>
           </Header>
           <p className="text-gray-500 dark:text-gray-400 mb-12 leading-snug text-center text-md sm:text-2xl font-extralight tracking-wide">
-            mandarino helps you learn <strong className="">mandarin</strong>{" "}
-            fast and <strong className="text-bold">fun</strong>
+            learn <strong className="">mandarin</strong>{" "}
+            while travelling the <strong className="text-bold">world</strong>
           </p>
         </div>
       )}

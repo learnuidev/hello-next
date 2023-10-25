@@ -36,86 +36,113 @@ export const allChars = [
   {
     hanzi: "人",
     count: 1671,
+    pinyin: "rén",
+
   },
   {
     hanzi: "从",
     count: 229,
+    pinyin: 'cōng'
   },
   {
     hanzi: "个",
     count: 1820,
+    pinyin: 'gè'
   },
   {
     hanzi: "入",
     count: 106,
+    pinyin: 'rù'
   },
   {
     hanzi: "什",
     count: 390,
+    pinyin: 'shén'
   },
   {
     hanzi: "午",
     count: 96,
+    pinyin: 'wǔ'
   },
   {
     hanzi: "年",
     count: 564,
+    pinyin: 'nián'
   },
   {
     hanzi: "口",
     count: 159,
+    pinyin: 'kǒu'
   },
   {
     hanzi: "中",
     count: 663,
+    pinyin: 'zhōng'
   },
   {
     hanzi: "叫",
     count: 88,
+    pinyin: 'jiào'
   },
   {
     hanzi: "八",
     count: 40,
+    pinyin: 'bā'
   },
   {
     hanzi: "只",
     count: 332,
+    pinyin: 'zhǐ'
   },
   {
     hanzi: "介",
     count: 31,
+    pinyin:'jiè'
   },
   {
     hanzi: "儿",
     count: 476,
+    pinyin: 'ér'
   },
   {
     hanzi: "四",
     count: 85,
+    pinyin: 'sì'
   },
   {
     hanzi: "兄",
     count: 15,
+    pinyin: 'xiōng'
   },
   {
     hanzi: "兑",
     count: 4,
+    pinyin: 'duì',
+    en: 'To Exchange'
   },
   {
     hanzi: "说",
     count: 616,
+    pinyin: 'shuō',
+    en: 'to speak, to talk, to say'
   },
   {
     hanzi: "计",
     count: 101,
+    pinyin: 'jì',
+    en: 'plan'
   },
   {
     hanzi: "认",
     count: 194,
+    pinyin: 'rèn',
+    en: 'to recognise, to know'
   },
   {
     hanzi: "识",
     count: 88,
+    pinyin: 'shí',
+    en: 'knowledge'
   },
   {
     hanzi: "马",
@@ -1879,6 +1906,8 @@ export const allChars = [
   },
   {
     hanzi: "任",
+    pinyin: "rèn",
+    en: "to assign; to appoint; to take up a post; office; responsibility; to let; to allow",
     count: 63,
   },
   {

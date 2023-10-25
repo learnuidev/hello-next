@@ -14,7 +14,7 @@ import {
 import { useState, useEffect } from "react";
 import { dictionary } from "@/data/hmm/data/dictionary";
 import { Music } from "@/components/music";
-import { HanziMovieMethod as HanziMovieMethodPlay } from "./hanzi-movie-method";
+import { HanziMovieMethod as HanziMovieMethodPlay } from "./explorer-method";
 
 import {
   places,
@@ -41,6 +41,8 @@ import {
   CloseIcon,
 } from "@/components/ui/icons";
 import { NavBar } from "@/components/navbar";
+import { getGraph } from "../pinyin/utils";
+import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
 
 const PageView = ({ view, setSelectedId }: any) => {
   switch (view) {
@@ -138,6 +140,25 @@ const PageView = ({ view, setSelectedId }: any) => {
         <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
           {charsArr.map((prop, idx) => {
             // return <p className='p-4'>{prop?.hanzi}</p>
+
+            calculateColor;
+
+            const toneLevel = getCharacterToneLevel(prop as ICharacter);
+
+            const color = calculateColor({tone: toneLevel });
+
+            const graph = getGraph(prop?.hanzi)?.graph || ''
+
+            // console.log("GRAPH", graph)
+            // toneLevel && console.log({ toneLevel })
+
+            // color && console.log({ color })
+
+            const showIf = graph
+              ?.split("")
+              ?.find((elem: string) => learnedCharacters?.includes(elem));
+
+            // console.log('graph', graph)
             return (
               <button
                 key={`${prop.hanzi}-chars-${idx}`}
@@ -146,7 +167,9 @@ const PageView = ({ view, setSelectedId }: any) => {
                 }}
                 className={`${
                   learnedCharacters.includes(prop?.hanzi)
-                    ? "dark:text-white text-gray-700"
+                    ? `dark:text-white ${color}`
+                    : Boolean(showIf)
+                    ? "dark:text-white text-yellow-500"
                     : "dark:text-gray-500 text-gray-200"
                 } dark:hover:text-white p-4 text-3xl md:text-2xl transition lowercase`}
               >
@@ -196,13 +219,13 @@ const calculateColor = (dict: any) => {
     case 1:
       return "text-red-400";
     case 2:
-      return "text-green-400";
+      return "text-green-500";
     case 3:
-      return "text-sky-400";
-    case 4:
       return "text-purple-400";
+    case 4:
+      return "text-pink-400";
     default:
-      return "text-black dark:text-white";
+      return "text-gray-600 dark:text-white";
   }
 };
 
@@ -392,7 +415,7 @@ function SelectedComponent({ selectedId, setSelectedId }: any) {
             </p>
             <p>
               <PropsIcon />{" "}
-              {dict?.movie?.props.map((prop: string) => {
+              {dict?.movie?.props?.map((prop: string) => {
                 return <span key={prop}> {prop}</span>;
               })}
             </p>
@@ -403,7 +426,7 @@ function SelectedComponent({ selectedId, setSelectedId }: any) {
 
           <div className="md:px-60 my-16 leading-[60px] tracking-wider">
             {" "}
-            {dict?.movie?.scene.split(" ").map((word: string) => {
+            {dict?.movie?.scene?.split(" ").map((word: string) => {
               const first = word.slice(0, 3);
               const rest = word.slice(3);
 

@@ -386,9 +386,9 @@ const calculateColor = (dict: any) => {
     case 2:
       return "text-green-400";
     case 3:
-      return "text-sky-400";
-    case 4:
       return "text-purple-400";
+    case 4:
+      return "text-pink-400";
     default:
       return "text-black dark:text-white";
   }
@@ -397,15 +397,15 @@ const calculateColor = (dict: any) => {
 const calculateColor2 = (dict: any) => {
   switch (dict?.tone) {
     case 1:
-      return "fill-red-400";
+      return "text-red-400";
     case 2:
-      return "fill-green-400";
+      return "text-green-400";
     case 3:
-      return "fill-sky-400";
+      return "text-purple-400";
     case 4:
-      return "fill-purple-400";
+      return "text-pink-400";
     default:
-      return "fill-black dark:fill-white";
+      return "text-black dark:text-white";
   }
 };
 

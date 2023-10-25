@@ -1,1375 +1,1376 @@
-'use client'
+"use client";
+
 export const defaultData: any = [
   // null
   {
     // A
-    initial: 'null',
+    initial: "null",
     aa: {
-      initial: 'null',
-      final: 'a',
-      value: 'a',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      initial: "null",
+      final: "a",
+      value: "a",
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
     aai: {
-      value: 'ai',
-      levels: ['a:compound-final']
+      value: "ai",
+      levels: ["a:compound-final"],
     },
     aao: {
-      value: 'ao',
-      levels: ['a:compound-final']
+      value: "ao",
+      levels: ["a:compound-final"],
     },
-    aan: { value: 'an', levels: ['a:compound-final', 'a:nasal-final'] },
-    aang: { value: 'ang', levels: ['a:compound-final', 'a:nasal-final'] },
+    aan: { value: "an", levels: ["a:compound-final", "a:nasal-final"] },
+    aang: { value: "ang", levels: ["a:compound-final", "a:nasal-final"] },
     // E
     ee: {
-      value: 'e',
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      value: "e",
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
-    eei: { value: 'ei', levels: ['e:compound-final'] },
-    een: { value: 'en', levels: ['e:compound-final', 'e:nasal-final'] },
-    eeng: { value: 'eng', levels: ['e:compound-final', 'e:nasal-final'] },
+    eei: { value: "ei", levels: ["e:compound-final"] },
+    een: { value: "en", levels: ["e:compound-final", "e:nasal-final"] },
+    eeng: { value: "eng", levels: ["e:compound-final", "e:nasal-final"] },
     enull: {
-      value: 'er',
-      levels: ['e:compound-final', 'e:special-final'],
-      initial: 'null',
-      final: 'er'
+      value: "er",
+      levels: ["e:compound-final", "e:special-final"],
+      initial: "null",
+      final: "er",
     },
     // O
     oo: {
-      initial: 'null',
-      final: 'o',
-      value: 'o',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'o:simple-final']
+      initial: "null",
+      final: "o",
+      value: "o",
+      levels: ["o", "u (wu)", "ü(yu)", "o:simple-final"],
     },
-    oong: { value: 'ong', levels: ['o:compound-final', 'o:nasal-final'] },
-    oou: { value: 'ou', levels: ['o:compound-final'] },
+    oong: { value: "ong", levels: ["o:compound-final", "o:nasal-final"] },
+    oou: { value: "ou", levels: ["o:compound-final"] },
     // I
     inull: {
-      initial: 'null',
-      final: 'yi',
-      value: 'yi',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      initial: "null",
+      final: "yi",
+      value: "yi",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: { value: 'ya', levels: ['i:compound-final'] },
-    iao: { value: 'yao', levels: ['i:compound-final'] },
-    ie: { value: 'ye', levels: ['i:compound-final'] },
-    iou: { value: 'you', levels: ['i:compound-final'] },
-    ian: { value: 'yan', levels: ['i:compound-final', 'i:nasal-final'] },
-    iang: { value: 'yang', levels: ['i:compound-final', 'i:nasal-final'] },
-    ien: { value: 'yin', levels: ['i:compound-final', 'i:nasal-final'] },
-    ieng: { value: 'ying', levels: ['i:compound-final', 'i:nasal-final'] },
-    iong: { value: 'yiong', levels: ['i:compound-final', 'i:nasal-final'] },
+    ia: { value: "ya", levels: ["i:compound-final"] },
+    iao: { value: "yao", levels: ["i:compound-final"] },
+    ie: { value: "ye", levels: ["i:compound-final"] },
+    iou: { value: "you", levels: ["i:compound-final"] },
+    ian: { value: "yan", levels: ["i:compound-final", "i:nasal-final"] },
+    iang: { value: "yang", levels: ["i:compound-final", "i:nasal-final"] },
+    ien: { value: "yin", levels: ["i:compound-final", "i:nasal-final"] },
+    ieng: { value: "ying", levels: ["i:compound-final", "i:nasal-final"] },
+    iong: { value: "yiong", levels: ["i:compound-final", "i:nasal-final"] },
     // U
     unull: {
-      initial: 'null',
-      final: 'wu',
-      value: 'wu',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      initial: "null",
+      final: "wu",
+      value: "wu",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: { value: 'wa', levels: ['u:compound-final'] },
-    uo: { value: 'wo', levels: ['u:compound-final'] },
-    uei: { value: 'wei', levels: ['u:compound-final'] },
-    uai: { value: 'wai', levels: ['u:compound-final'] },
-    uan: { value: 'wan', levels: ['u:compound-final', 'u:nasal-final'] },
-    uen: { value: 'wen', levels: ['u:compound-final', 'u:nasal-final'] },
-    uang: { value: 'wang', levels: ['u:compound-final', 'u:nasal-final'] },
-    ueng: { value: 'weng', levels: ['u:compound-final', 'u:nasal-final'] },
+    ua: { value: "wa", levels: ["u:compound-final"] },
+    uo: { value: "wo", levels: ["u:compound-final"] },
+    uei: { value: "wei", levels: ["u:compound-final"] },
+    uai: { value: "wai", levels: ["u:compound-final"] },
+    uan: { value: "wan", levels: ["u:compound-final", "u:nasal-final"] },
+    uen: { value: "wen", levels: ["u:compound-final", "u:nasal-final"] },
+    uang: { value: "wang", levels: ["u:compound-final", "u:nasal-final"] },
+    ueng: { value: "weng", levels: ["u:compound-final", "u:nasal-final"] },
     // ü
     ünull: {
-      initial: 'null',
-      final: 'yu',
-      value: 'yu',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'ü:simple-final']
+      initial: "null",
+      final: "yu",
+      value: "yu",
+      levels: ["o", "u (wu)", "ü(yu)", "ü:simple-final"],
     },
-    üe: { value: 'yue', levels: ['ü:compound-final'] },
-    üan: { value: 'yuan', levels: ['ü:compound-final', 'ü:nasal-final'] },
-    üen: { value: 'yun', levels: ['ü:compound-final', 'ü:nasal-final'] }
+    üe: { value: "yue", levels: ["ü:compound-final"] },
+    üan: { value: "yuan", levels: ["ü:compound-final", "ü:nasal-final"] },
+    üen: { value: "yun", levels: ["ü:compound-final", "ü:nasal-final"] },
   },
   //   b
   {
     // A
-    initial: 'b',
+    initial: "b",
     aa: {
-      initial: 'b',
-      final: 'a',
-      value: 'ba',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      initial: "b",
+      final: "a",
+      value: "ba",
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
     aai: {
-      initial: 'b',
-      final: 'ai',
-      value: 'bai',
-      levels: ['a:compound-final']
+      initial: "b",
+      final: "ai",
+      value: "bai",
+      levels: ["a:compound-final"],
     },
-    aao: { value: 'bao', levels: ['a:compound-final'] },
-    aan: { value: 'ban', levels: ['a:compound-final', 'a:nasal-final'] },
-    aang: { value: 'bang', levels: ['a:compound-final', 'a:nasal-final'] },
+    aao: { value: "bao", levels: ["a:compound-final"] },
+    aan: { value: "ban", levels: ["a:compound-final", "a:nasal-final"] },
+    aang: { value: "bang", levels: ["a:compound-final", "a:nasal-final"] },
     // E
-    ee: '',
-    eei: { value: 'bei', levels: ['e:compound-final'] },
-    een: { value: 'ben', levels: ['e:compound-final', 'e:nasal-final'] },
-    eeng: { value: 'beng', levels: ['e:compound-final', 'e:nasal-final'] },
-    enull: '',
+    ee: "",
+    eei: { value: "bei", levels: ["e:compound-final"] },
+    een: { value: "ben", levels: ["e:compound-final", "e:nasal-final"] },
+    eeng: { value: "beng", levels: ["e:compound-final", "e:nasal-final"] },
+    enull: "",
     // O
     // oo: 'bo',
-    oo: '',
-    oong: '',
-    oou: '',
+    oo: "",
+    oong: "",
+    oou: "",
     // I
     inull: {
-      value: 'bi',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      value: "bi",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: '',
-    iao: { value: 'biao', levels: ['i:compound-final'] },
-    ie: { value: 'bie', levels: ['i:compound-final'] },
-    iou: '',
-    ian: { value: 'bian', levels: ['i:compound-final', 'i:nasal-final'] },
-    iang: '',
-    ien: { value: 'bin', levels: ['i:compound-final', 'i:nasal-final'] },
-    ieng: { value: 'bing', levels: ['i:compound-final', 'i:nasal-final'] },
-    iong: '',
+    ia: "",
+    iao: { value: "biao", levels: ["i:compound-final"] },
+    ie: { value: "bie", levels: ["i:compound-final"] },
+    iou: "",
+    ian: { value: "bian", levels: ["i:compound-final", "i:nasal-final"] },
+    iang: "",
+    ien: { value: "bin", levels: ["i:compound-final", "i:nasal-final"] },
+    ieng: { value: "bing", levels: ["i:compound-final", "i:nasal-final"] },
+    iong: "",
     // U
     unull: {
-      initial: 'null',
-      final: 'bu',
-      value: 'bu',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      initial: "null",
+      final: "bu",
+      value: "bu",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: '',
+    ua: "",
     uo: {
-      initial: 'null',
-      final: 'bo',
-      value: 'bo',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'o:simple-final']
+      initial: "null",
+      final: "bo",
+      value: "bo",
+      levels: ["o", "u (wu)", "ü(yu)", "o:simple-final"],
     },
     // uo: '',
-    uei: '',
-    uai: '',
-    uan: '',
-    uen: '',
-    uang: '',
-    ueng: '',
+    uei: "",
+    uai: "",
+    uan: "",
+    uen: "",
+    uang: "",
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   //   p
   {
     // A
-    initial: 'p',
+    initial: "p",
     aa: {
-      value: 'pa',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      value: "pa",
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
-    aai: { value: 'pai', levels: ['a:compound-final'] },
-    aao: { value: 'pao', levels: ['a:compound-final'] },
-    aan: { value: 'pan', levels: ['a:compound-final', 'a:nasal-final'] },
-    aang: { value: 'pang', levels: ['a:compound-final', 'a:nasal-final'] },
+    aai: { value: "pai", levels: ["a:compound-final"] },
+    aao: { value: "pao", levels: ["a:compound-final"] },
+    aan: { value: "pan", levels: ["a:compound-final", "a:nasal-final"] },
+    aang: { value: "pang", levels: ["a:compound-final", "a:nasal-final"] },
     // E
-    ee: '',
-    eei: { value: 'pei', levels: ['e:compound-final'] },
-    een: { value: 'pen', levels: ['e:compound-final', 'e:nasal-final'] },
-    eeng: { value: 'peng', levels: ['e:compound-final', 'e:nasal-final'] },
-    enull: '',
+    ee: "",
+    eei: { value: "pei", levels: ["e:compound-final"] },
+    een: { value: "pen", levels: ["e:compound-final", "e:nasal-final"] },
+    eeng: { value: "peng", levels: ["e:compound-final", "e:nasal-final"] },
+    enull: "",
     // O
     // oo: {value:'po',
-    oo: '',
-    oong: '',
-    oou: { value: 'pou', levels: ['o:compound-final', 'o:nasal-final'] },
+    oo: "",
+    oong: "",
+    oou: { value: "pou", levels: ["o:compound-final", "o:nasal-final"] },
     // I
     inull: {
-      value: 'pi',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      value: "pi",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: '',
-    iao: { value: 'piao', levels: ['i:compound-final'] },
-    ie: { value: 'pie', levels: ['i:compound-final'] },
-    iou: '',
-    ian: { value: 'pian', levels: ['i:compound-final', 'i:nasal-final'] },
-    iang: '',
-    ien: { value: 'pin', levels: ['i:compound-final', 'i:nasal-final'] },
-    ieng: { value: 'ping', levels: ['i:compound-final', 'i:nasal-final'] },
-    iong: '',
+    ia: "",
+    iao: { value: "piao", levels: ["i:compound-final"] },
+    ie: { value: "pie", levels: ["i:compound-final"] },
+    iou: "",
+    ian: { value: "pian", levels: ["i:compound-final", "i:nasal-final"] },
+    iang: "",
+    ien: { value: "pin", levels: ["i:compound-final", "i:nasal-final"] },
+    ieng: { value: "ping", levels: ["i:compound-final", "i:nasal-final"] },
+    iong: "",
     // U
     unull: {
-      initial: 'null',
-      final: 'pu',
-      value: 'pu',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      initial: "null",
+      final: "pu",
+      value: "pu",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: '',
+    ua: "",
     uo: {
-      initial: 'null',
-      final: 'po',
-      value: 'po',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'o:simple-final']
+      initial: "null",
+      final: "po",
+      value: "po",
+      levels: ["o", "u (wu)", "ü(yu)", "o:simple-final"],
     },
-    uei: '',
-    uai: '',
-    uan: '',
-    uen: '',
-    uang: '',
-    ueng: '',
+    uei: "",
+    uai: "",
+    uan: "",
+    uen: "",
+    uang: "",
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   //   M
   {
     // A
-    initial: 'm',
+    initial: "m",
     aa: {
-      value: 'ma',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      value: "ma",
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
-    aai: { value: 'mai', levels: ['a:compound-final'] },
-    aao: { value: 'mao', levels: ['a:compound-final'] },
-    aan: { value: 'man', levels: ['a:compound-final', 'a:nasal-final'] },
-    aang: { value: 'mang', levels: ['a:compound-final', 'a:nasal-final'] },
+    aai: { value: "mai", levels: ["a:compound-final"] },
+    aao: { value: "mao", levels: ["a:compound-final"] },
+    aan: { value: "man", levels: ["a:compound-final", "a:nasal-final"] },
+    aang: { value: "mang", levels: ["a:compound-final", "a:nasal-final"] },
     // E
     ee: {
-      value: 'me',
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      value: "me",
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
-    eei: { value: 'mei', levels: ['e:compound-final'] },
-    een: { value: 'men', levels: ['e:compound-final', 'e:nasal-final'] },
-    eeng: { value: 'meng', levels: ['e:compound-final', 'e:nasal-final'] },
-    enull: '',
+    eei: { value: "mei", levels: ["e:compound-final"] },
+    een: { value: "men", levels: ["e:compound-final", "e:nasal-final"] },
+    eeng: { value: "meng", levels: ["e:compound-final", "e:nasal-final"] },
+    enull: "",
     // O
     // oo: 'mo',
-    oo: '',
-    oong: '',
-    oou: { value: 'mou', levels: ['o:compound-final'] },
+    oo: "",
+    oong: "",
+    oou: { value: "mou", levels: ["o:compound-final"] },
     // I
     inull: {
-      value: 'mi',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      value: "mi",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: '',
-    iao: { value: 'miao', levels: ['i:compound-final'] },
-    ie: { value: 'mie', levels: ['i:compound-final'] },
-    iou: { value: 'miu', levels: ['i:compound-final'] },
-    ian: { value: 'mian', levels: ['i:compound-final', 'i:nasal-final'] },
-    iang: '',
-    ien: { value: 'min', levels: ['i:compound-final', 'i:nasal-final'] },
-    ieng: { value: 'ming', levels: ['i:compound-final', 'i:nasal-final'] },
-    iong: '',
+    ia: "",
+    iao: { value: "miao", levels: ["i:compound-final"] },
+    ie: { value: "mie", levels: ["i:compound-final"] },
+    iou: { value: "miu", levels: ["i:compound-final"] },
+    ian: { value: "mian", levels: ["i:compound-final", "i:nasal-final"] },
+    iang: "",
+    ien: { value: "min", levels: ["i:compound-final", "i:nasal-final"] },
+    ieng: { value: "ming", levels: ["i:compound-final", "i:nasal-final"] },
+    iong: "",
     // U
     unull: {
-      initial: 'null',
-      final: 'mu',
-      value: 'mu',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      initial: "null",
+      final: "mu",
+      value: "mu",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: '',
+    ua: "",
     uo: {
-      initial: 'null',
-      final: 'mo',
-      value: 'mo',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'o:simple-final']
+      initial: "null",
+      final: "mo",
+      value: "mo",
+      levels: ["o", "u (wu)", "ü(yu)", "o:simple-final"],
     },
-    uei: '',
-    uai: '',
-    uan: '',
-    uen: '',
-    uang: '',
-    ueng: '',
+    uei: "",
+    uai: "",
+    uan: "",
+    uen: "",
+    uang: "",
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   //   F
   {
     // A
-    initial: 'f',
+    initial: "f",
     aa: {
-      value: 'fa',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      value: "fa",
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
-    aai: '',
-    aao: '',
-    aan: { value: 'fan', levels: ['a:compound-final', 'a:nasal-final'] },
-    aang: { value: 'fang', levels: ['a:compound-final', 'a:nasal-final'] },
+    aai: "",
+    aao: "",
+    aan: { value: "fan", levels: ["a:compound-final", "a:nasal-final"] },
+    aang: { value: "fang", levels: ["a:compound-final", "a:nasal-final"] },
     // E
-    ee: '',
-    eei: { value: 'fei', levels: ['e:compound-final'] },
-    een: { value: 'fen', levels: ['e:compound-final', 'e:nasal-final'] },
-    eeng: { value: 'feng', levels: ['e:compound-final', 'e:nasal-final'] },
-    enull: '',
+    ee: "",
+    eei: { value: "fei", levels: ["e:compound-final"] },
+    een: { value: "fen", levels: ["e:compound-final", "e:nasal-final"] },
+    eeng: { value: "feng", levels: ["e:compound-final", "e:nasal-final"] },
+    enull: "",
     // O
     // oo: 'fo',
-    oo: '',
-    oong: '',
-    oou: { value: 'fou', levels: ['o:compound-final'] },
+    oo: "",
+    oong: "",
+    oou: { value: "fou", levels: ["o:compound-final"] },
     // I
-    inull: '',
-    ia: '',
-    iao: '',
-    ie: '',
-    iou: '',
-    ian: '',
-    iang: '',
-    ien: '',
-    ieng: '',
-    iong: '',
+    inull: "",
+    ia: "",
+    iao: "",
+    ie: "",
+    iou: "",
+    ian: "",
+    iang: "",
+    ien: "",
+    ieng: "",
+    iong: "",
     // U
     unull: {
-      initial: 'null',
-      final: 'fu',
-      value: 'fu',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      initial: "null",
+      final: "fu",
+      value: "fu",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: '',
+    ua: "",
     uo: {
-      initial: 'null',
-      final: 'fo',
-      value: 'fo',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'o:simple-final']
+      initial: "null",
+      final: "fo",
+      value: "fo",
+      levels: ["o", "u (wu)", "ü(yu)", "o:simple-final"],
     },
-    uei: '',
-    uai: '',
-    uan: '',
-    uen: '',
-    uang: '',
-    ueng: '',
+    uei: "",
+    uai: "",
+    uan: "",
+    uen: "",
+    uang: "",
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   //   D
   {
     // A
-    initial: 'd',
+    initial: "d",
     aa: {
-      value: 'da',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      value: "da",
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
-    aai: { value: 'dai', levels: ['a:compound-final'] },
-    aao: { value: 'dao', levels: ['a:compound-final'] },
-    aan: { value: 'dan', levels: ['a:compound-final', 'a:nasal-final'] },
-    aang: { value: 'dang', levels: ['a:compound-final', 'a:nasal-final'] },
+    aai: { value: "dai", levels: ["a:compound-final"] },
+    aao: { value: "dao", levels: ["a:compound-final"] },
+    aan: { value: "dan", levels: ["a:compound-final", "a:nasal-final"] },
+    aang: { value: "dang", levels: ["a:compound-final", "a:nasal-final"] },
     // E
     ee: {
-      value: 'de',
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      value: "de",
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
-    eei: { value: 'dei', levels: ['e:compound-final'] },
-    een: { value: 'den', levels: ['e:compound-final', 'e:nasal-final'] },
-    eeng: { value: 'deng', levels: ['e:compound-final', 'e:nasal-final'] },
-    enull: '',
+    eei: { value: "dei", levels: ["e:compound-final"] },
+    een: { value: "den", levels: ["e:compound-final", "e:nasal-final"] },
+    eeng: { value: "deng", levels: ["e:compound-final", "e:nasal-final"] },
+    enull: "",
     // O
-    oo: '',
-    oong: { value: 'dong', levels: ['o:compound-final', 'o:nasal-final'] },
-    oou: { value: 'dou', levels: ['o:compound-final'] },
+    oo: "",
+    oong: { value: "dong", levels: ["o:compound-final", "o:nasal-final"] },
+    oou: { value: "dou", levels: ["o:compound-final"] },
     // I
     inull: {
-      value: 'di',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      value: "di",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: { value: 'dia', levels: ['i:compound-final'] },
-    iao: { value: 'diao', levels: ['i:compound-final'] },
-    ie: { value: 'die', levels: ['i:compound-final'] },
-    iou: { value: 'diu', levels: ['i:compound-final'] },
-    ian: { value: 'dian', levels: ['i:compound-final', 'i:nasal-final'] },
-    iang: '',
-    ien: '',
-    ieng: { value: 'ding', levels: ['i:compound-final', 'i:nasal-final'] },
-    iong: '',
+    ia: { value: "dia", levels: ["i:compound-final"] },
+    iao: { value: "diao", levels: ["i:compound-final"] },
+    ie: { value: "die", levels: ["i:compound-final"] },
+    iou: { value: "diu", levels: ["i:compound-final"] },
+    ian: { value: "dian", levels: ["i:compound-final", "i:nasal-final"] },
+    iang: "",
+    ien: "",
+    ieng: { value: "ding", levels: ["i:compound-final", "i:nasal-final"] },
+    iong: "",
     // U
     unull: {
-      initial: 'null',
-      final: 'du',
-      value: 'du',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      initial: "null",
+      final: "du",
+      value: "du",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: '',
-    uo: { value: 'duo', levels: ['u:compound-final'] },
-    uei: { value: 'dui', levels: ['u:compound-final'] },
-    uai: '',
-    uan: { value: 'duan', levels: ['u:compound-final', 'u:nasal-final'] },
-    uen: { value: 'dun', levels: ['u:compound-final', 'u:nasal-final'] },
-    uang: '',
-    ueng: '',
+    ua: "",
+    uo: { value: "duo", levels: ["u:compound-final"] },
+    uei: { value: "dui", levels: ["u:compound-final"] },
+    uai: "",
+    uan: { value: "duan", levels: ["u:compound-final", "u:nasal-final"] },
+    uen: { value: "dun", levels: ["u:compound-final", "u:nasal-final"] },
+    uang: "",
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   //   T
   {
     // A
-    initial: 't',
+    initial: "t",
     aa: {
-      value: 'ta',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      value: "ta",
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
-    aai: { value: 'tai', levels: ['a:compound-final'] },
-    aao: { value: 'tao', levels: ['a:compound-final'] },
-    aan: { value: 'tan', levels: ['a:compound-final', 'a:nasal-final'] },
-    aang: { value: 'tang', levels: ['a:compound-final', 'a:nasal-final'] },
+    aai: { value: "tai", levels: ["a:compound-final"] },
+    aao: { value: "tao", levels: ["a:compound-final"] },
+    aan: { value: "tan", levels: ["a:compound-final", "a:nasal-final"] },
+    aang: { value: "tang", levels: ["a:compound-final", "a:nasal-final"] },
     // E
     ee: {
-      value: 'te',
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      value: "te",
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
-    eei: '',
-    een: '',
-    eeng: { value: 'teng', levels: ['e:compound-final', 'e:nasal-final'] },
-    enull: '',
+    eei: "",
+    een: "",
+    eeng: { value: "teng", levels: ["e:compound-final", "e:nasal-final"] },
+    enull: "",
     // O
-    oo: '',
-    oong: { value: 'tong', levels: ['o:compound-final', 'o:nasal-final'] },
-    oou: { value: 'tou', levels: ['o:compound-final'] },
+    oo: "",
+    oong: { value: "tong", levels: ["o:compound-final", "o:nasal-final"] },
+    oou: { value: "tou", levels: ["o:compound-final"] },
     // I
     inull: {
-      value: 'ti',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      value: "ti",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: '',
-    iao: { value: 'tiao', levels: ['i:compound-final'] },
-    ie: { value: 'tie', levels: ['i:compound-final'] },
-    iou: '',
-    ian: { value: 'tian', levels: ['i:compound-final', 'i:nasal-final'] },
-    iang: '',
-    ien: '',
-    ieng: { value: 'ting', levels: ['i:compound-final', 'i:nasal-final'] },
-    iong: '',
+    ia: "",
+    iao: { value: "tiao", levels: ["i:compound-final"] },
+    ie: { value: "tie", levels: ["i:compound-final"] },
+    iou: "",
+    ian: { value: "tian", levels: ["i:compound-final", "i:nasal-final"] },
+    iang: "",
+    ien: "",
+    ieng: { value: "ting", levels: ["i:compound-final", "i:nasal-final"] },
+    iong: "",
     // U
     unull: {
-      initial: 'null',
-      final: 'tu',
-      value: 'tu',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      initial: "null",
+      final: "tu",
+      value: "tu",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: '',
-    uo: { value: 'tuo', levels: ['u:compound-final'] },
-    uei: { value: 'tui', levels: ['u:compound-final'] },
-    uai: '',
-    uan: { value: 'tuan', levels: ['u:compound-final', 'u:nasal-final'] },
-    uen: { value: 'tun', levels: ['u:compound-final', 'u:nasal-final'] },
-    uang: '',
-    ueng: '',
+    ua: "",
+    uo: { value: "tuo", levels: ["u:compound-final"] },
+    uei: { value: "tui", levels: ["u:compound-final"] },
+    uai: "",
+    uan: { value: "tuan", levels: ["u:compound-final", "u:nasal-final"] },
+    uen: { value: "tun", levels: ["u:compound-final", "u:nasal-final"] },
+    uang: "",
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   //   n
   {
     // A
-    initial: 'n',
+    initial: "n",
     aa: {
-      value: 'na',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      value: "na",
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
-    aai: { value: 'nai', levels: ['a:compound-final', 'a:nasal-final'] },
-    aao: { value: 'nao', levels: ['a:compound-final', 'a:nasal-final'] },
-    aan: { value: 'nan', levels: ['a:compound-final', 'a:nasal-final'] },
-    aang: { value: 'nang', levels: ['a:compound-final', 'a:nasal-final'] },
+    aai: { value: "nai", levels: ["a:compound-final", "a:nasal-final"] },
+    aao: { value: "nao", levels: ["a:compound-final", "a:nasal-final"] },
+    aan: { value: "nan", levels: ["a:compound-final", "a:nasal-final"] },
+    aang: { value: "nang", levels: ["a:compound-final", "a:nasal-final"] },
     // E
     ee: {
-      value: 'ne',
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      value: "ne",
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
-    eei: { value: 'nei', levels: ['e:compound-final'] },
-    een: { value: 'nen', levels: ['e:compound-final', 'e:nasal-final'] },
-    eeng: { value: 'neng', levels: ['e:compound-final', 'e:nasal-final'] },
-    enull: '',
+    eei: { value: "nei", levels: ["e:compound-final"] },
+    een: { value: "nen", levels: ["e:compound-final", "e:nasal-final"] },
+    eeng: { value: "neng", levels: ["e:compound-final", "e:nasal-final"] },
+    enull: "",
     // O
-    oo: '',
-    oong: { value: 'nong', levels: ['o:compound-final', 'o:nasal-final'] },
-    oou: '',
+    oo: "",
+    oong: { value: "nong", levels: ["o:compound-final", "o:nasal-final"] },
+    oou: "",
     // I
     inull: {
-      value: 'ni',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      value: "ni",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: '',
-    iao: { value: 'niao', levels: ['i:compound-final'] },
-    ie: { value: 'nie', levels: ['i:compound-final'] },
-    iou: { value: 'niu', levels: ['i:compound-final'] },
-    ian: { value: 'nian', levels: ['i:compound-final', 'i:nasal-final'] },
-    iang: { value: 'niang', levels: ['i:compound-final', 'i:nasal-final'] },
-    ien: { value: 'nin', levels: ['i:compound-final', 'i:nasal-final'] },
-    ieng: { value: 'ning', levels: ['i:compound-final', 'i:nasal-final'] },
-    iong: '',
+    ia: "",
+    iao: { value: "niao", levels: ["i:compound-final"] },
+    ie: { value: "nie", levels: ["i:compound-final"] },
+    iou: { value: "niu", levels: ["i:compound-final"] },
+    ian: { value: "nian", levels: ["i:compound-final", "i:nasal-final"] },
+    iang: { value: "niang", levels: ["i:compound-final", "i:nasal-final"] },
+    ien: { value: "nin", levels: ["i:compound-final", "i:nasal-final"] },
+    ieng: { value: "ning", levels: ["i:compound-final", "i:nasal-final"] },
+    iong: "",
     // U
     unull: {
-      initial: 'null',
-      final: 'nu',
-      value: 'nu',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      initial: "null",
+      final: "nu",
+      value: "nu",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: '',
-    uo: { value: 'nuo', levels: ['u:compound-final'] },
-    uei: '',
-    uai: '',
-    uan: { value: 'nuan', levels: ['u:compound-final', 'u:nasal-final'] },
-    uen: '',
-    uang: '',
-    ueng: '',
+    ua: "",
+    uo: { value: "nuo", levels: ["u:compound-final"] },
+    uei: "",
+    uai: "",
+    uan: { value: "nuan", levels: ["u:compound-final", "u:nasal-final"] },
+    uen: "",
+    uang: "",
+    ueng: "",
     // ü
     // ünull: 'nü',
     ünull: {
-      initial: 'null',
-      final: 'nü',
-      value: 'nü',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'ü:simple-final']
+      initial: "null",
+      final: "nü",
+      value: "nü",
+      levels: ["o", "u (wu)", "ü(yu)", "ü:simple-final"],
     },
-    üe: { value: 'nüe', levels: ['ü:compound-final'] },
-    üan: '',
-    üen: ''
+    üe: { value: "nüe", levels: ["ü:compound-final"] },
+    üan: "",
+    üen: "",
   },
   //   l
   {
     // A
-    initial: 'l',
+    initial: "l",
     aa: {
-      value: 'la',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      value: "la",
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
-    aai: { value: 'lai', levels: ['a:compound-final', 'a:nasal-final'] },
-    aao: { value: 'lao', levels: ['a:compound-final', 'a:nasal-final'] },
-    aan: { value: 'lan', levels: ['a:compound-final', 'a:nasal-final'] },
-    aang: { value: 'lang', levels: ['a:compound-final', 'a:nasal-final'] },
+    aai: { value: "lai", levels: ["a:compound-final", "a:nasal-final"] },
+    aao: { value: "lao", levels: ["a:compound-final", "a:nasal-final"] },
+    aan: { value: "lan", levels: ["a:compound-final", "a:nasal-final"] },
+    aang: { value: "lang", levels: ["a:compound-final", "a:nasal-final"] },
     // E
     ee: {
-      value: 'le',
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      value: "le",
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
-    eei: { value: 'lei', levels: ['e:compound-final'] },
-    een: '',
-    eeng: { value: 'leng', levels: ['e:compound-final', 'e:nasal-final'] },
-    enull: '',
+    eei: { value: "lei", levels: ["e:compound-final"] },
+    een: "",
+    eeng: { value: "leng", levels: ["e:compound-final", "e:nasal-final"] },
+    enull: "",
     // O
     oo: {
-      initial: 'null',
-      final: 'lo',
-      value: 'lo',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'o:simple-final']
+      initial: "null",
+      final: "lo",
+      value: "lo",
+      levels: ["o", "u (wu)", "ü(yu)", "o:simple-final"],
     },
-    oong: { value: 'long', levels: ['o:compound-final', 'o:nasal-final'] },
-    oou: { value: 'lou', levels: ['o:compound-final'] },
+    oong: { value: "long", levels: ["o:compound-final", "o:nasal-final"] },
+    oou: { value: "lou", levels: ["o:compound-final"] },
     // I
     inull: {
-      value: 'li',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      value: "li",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: { value: 'lia', levels: ['i:compound-final'] },
-    iao: { value: 'liao', levels: ['i:compound-final'] },
-    ie: { value: 'lie', levels: ['i:compound-final'] },
-    iou: { value: 'liu', levels: ['i:compound-final'] },
-    ian: { value: 'lian', levels: ['i:compound-final', 'i:nasal-final'] },
-    iang: { value: 'liang', levels: ['i:compound-final', 'i:nasal-final'] },
-    ien: { value: 'lin', levels: ['i:compound-final', 'i:nasal-final'] },
-    ieng: { value: 'ling', levels: ['i:compound-final', 'i:nasal-final'] },
-    iong: '',
+    ia: { value: "lia", levels: ["i:compound-final"] },
+    iao: { value: "liao", levels: ["i:compound-final"] },
+    ie: { value: "lie", levels: ["i:compound-final"] },
+    iou: { value: "liu", levels: ["i:compound-final"] },
+    ian: { value: "lian", levels: ["i:compound-final", "i:nasal-final"] },
+    iang: { value: "liang", levels: ["i:compound-final", "i:nasal-final"] },
+    ien: { value: "lin", levels: ["i:compound-final", "i:nasal-final"] },
+    ieng: { value: "ling", levels: ["i:compound-final", "i:nasal-final"] },
+    iong: "",
     // U
     unull: {
-      initial: 'null',
-      final: 'lu',
-      value: 'lu',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      initial: "null",
+      final: "lu",
+      value: "lu",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: '',
-    uo: { value: 'luo', levels: ['u:compound-final'] },
-    uei: '',
-    uai: '',
-    uan: { value: 'luan', levels: ['u:compound-final', 'u:nasal-final'] },
-    uen: { value: 'lun', levels: ['u:compound-final', 'u:nasal-final'] },
-    uang: '',
-    ueng: '',
+    ua: "",
+    uo: { value: "luo", levels: ["u:compound-final"] },
+    uei: "",
+    uai: "",
+    uan: { value: "luan", levels: ["u:compound-final", "u:nasal-final"] },
+    uen: { value: "lun", levels: ["u:compound-final", "u:nasal-final"] },
+    uang: "",
+    ueng: "",
     // ü
     // ünull: 'lü',
     ünull: {
-      initial: 'null',
-      final: 'lü',
-      value: 'lü',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'ü:simple-final']
+      initial: "null",
+      final: "lü",
+      value: "lü",
+      levels: ["o", "u (wu)", "ü(yu)", "ü:simple-final"],
     },
-    üe: { value: 'lüe', levels: ['ü:compound-final'] },
-    üan: '',
-    üen: ''
+    üe: { value: "lüe", levels: ["ü:compound-final"] },
+    üan: "",
+    üen: "",
   },
   //   z
   {
     // A
-    initial: 'z',
+    initial: "z",
     aa: {
-      value: 'za',
+      value: "za",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      tonguePos: "middle",
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
     aai: {
-      value: 'zai',
+      value: "zai",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['a:compound-final']
+      tonguePos: "middle",
+      levels: ["a:compound-final"],
     },
     aao: {
-      value: 'zao',
+      value: "zao",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['a:compound-final']
+      tonguePos: "middle",
+      levels: ["a:compound-final"],
     },
     aan: {
-      value: 'zan',
+      value: "zan",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "middle",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     aang: {
-      value: 'zang',
+      value: "zang",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "middle",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     // E
     ee: {
-      value: 'ze',
+      value: "ze",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      tonguePos: "middle",
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
     eei: {
-      value: 'zei',
+      value: "zei",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['e:compound-final', 'e:nasal-final']
+      tonguePos: "middle",
+      levels: ["e:compound-final", "e:nasal-final"],
     },
     een: {
-      value: 'zen',
+      value: "zen",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['e:compound-final', 'e:nasal-final']
+      tonguePos: "middle",
+      levels: ["e:compound-final", "e:nasal-final"],
     },
     eeng: {
-      value: 'zeng',
+      value: "zeng",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['e:compound-final', 'e:nasal-final']
+      tonguePos: "middle",
+      levels: ["e:compound-final", "e:nasal-final"],
     },
-    enull: '',
+    enull: "",
     // O
-    oo: '',
+    oo: "",
     oong: {
-      value: 'zong',
+      value: "zong",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['o:compound-final', 'o:nasal-final']
+      tonguePos: "middle",
+      levels: ["o:compound-final", "o:nasal-final"],
     },
     oou: {
-      value: 'zou',
+      value: "zou",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['o:compound-final', 'o:nasal-final']
+      tonguePos: "middle",
+      levels: ["o:compound-final", "o:nasal-final"],
     },
     // I
     inull: {
-      value: 'zi',
+      value: "zi",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      tonguePos: "middle",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: '',
-    iao: '',
-    ie: '',
-    iou: '',
-    ian: '',
-    iang: '',
-    ien: '',
-    ieng: '',
-    iong: '',
+    ia: "",
+    iao: "",
+    ie: "",
+    iou: "",
+    ian: "",
+    iang: "",
+    ien: "",
+    ieng: "",
+    iong: "",
     // U
     unull: {
-      value: 'zu',
+      value: "zu",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      tonguePos: "middle",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: '',
+    ua: "",
     uo: {
-      value: 'zuo',
-      levels: ['u:compound-final'],
+      value: "zuo",
+      levels: ["u:compound-final"],
       problemInitial: true,
-      tonguePos: 'middle'
+      tonguePos: "middle",
     },
     uei: {
-      value: 'zui',
-      levels: ['u:compound-final'],
+      value: "zui",
+      levels: ["u:compound-final"],
       problemInitial: true,
-      tonguePos: 'middle'
+      tonguePos: "middle",
     },
-    uai: '',
+    uai: "",
     uan: {
-      value: 'zuan',
-      levels: ['u:compound-final', 'u:nasal-final'],
+      value: "zuan",
+      levels: ["u:compound-final", "u:nasal-final"],
       problemInitial: true,
-      tonguePos: 'middle'
+      tonguePos: "middle",
     },
     uen: {
-      value: 'zun',
-      levels: ['u:compound-final', 'u:nasal-final'],
+      value: "zun",
+      levels: ["u:compound-final", "u:nasal-final"],
       problemInitial: true,
-      tonguePos: 'middle'
+      tonguePos: "middle",
     },
-    uang: '',
-    ueng: '',
+    uang: "",
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   //   c
   {
     // A
-    initial: 'c',
+    initial: "c",
     aa: {
-      value: 'ca',
+      value: "ca",
       problemInitial: true,
-      tonguePos: 'middle',
+      tonguePos: "middle",
       hiss: true,
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
     aai: {
-      value: 'cai',
+      value: "cai",
       problemInitial: true,
-      tonguePos: 'middle',
+      tonguePos: "middle",
       hiss: true,
-      levels: ['a:compound-final']
+      levels: ["a:compound-final"],
     },
     aao: {
-      value: 'cao',
+      value: "cao",
       problemInitial: true,
-      tonguePos: 'middle',
+      tonguePos: "middle",
       hiss: true,
-      levels: ['a:compound-final']
+      levels: ["a:compound-final"],
     },
     aan: {
-      value: 'can',
+      value: "can",
       problemInitial: true,
-      tonguePos: 'middle',
+      tonguePos: "middle",
       hiss: true,
-      levels: ['a:compound-final', 'a:nasal-final']
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     aang: {
-      value: 'cang',
+      value: "cang",
       problemInitial: true,
-      tonguePos: 'middle',
+      tonguePos: "middle",
       hiss: true,
-      levels: ['a:compound-final', 'a:nasal-final']
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     // E
     ee: {
-      value: 'ce',
+      value: "ce",
       problemInitial: true,
-      tonguePos: 'middle',
+      tonguePos: "middle",
       hiss: true,
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
-    eei: '',
+    eei: "",
     een: {
-      value: 'cen',
-      levels: ['e:compound-final'],
+      value: "cen",
+      levels: ["e:compound-final"],
       problemInitial: true,
-      tonguePos: 'middle',
-      hiss: true
+      tonguePos: "middle",
+      hiss: true,
     },
     eeng: {
-      value: 'ceng',
-      levels: ['e:compound-final', 'e:nasal-final'],
+      value: "ceng",
+      levels: ["e:compound-final", "e:nasal-final"],
       problemInitial: true,
-      tonguePos: 'middle',
-      hiss: true
+      tonguePos: "middle",
+      hiss: true,
     },
-    enull: '',
+    enull: "",
     // O
-    oo: '',
+    oo: "",
     oong: {
-      value: 'cong',
-      levels: ['o:compound-final', 'o:nasal-final'],
+      value: "cong",
+      levels: ["o:compound-final", "o:nasal-final"],
       problemInitial: true,
-      tonguePos: 'middle',
-      hiss: true
+      tonguePos: "middle",
+      hiss: true,
     },
     oou: {
-      value: 'cou',
-      levels: ['o:compound-final', 'o:nasal-final'],
+      value: "cou",
+      levels: ["o:compound-final", "o:nasal-final"],
       problemInitial: true,
-      tonguePos: 'middle',
-      hiss: true
+      tonguePos: "middle",
+      hiss: true,
     },
     // I
     inull: {
-      value: 'ci',
+      value: "ci",
       problemInitial: true,
-      tonguePos: 'middle',
-      levels: ['a', 'e', 'yi', 'i:simple-final'],
-      hiss: true
+      tonguePos: "middle",
+      levels: ["a", "e", "yi", "i:simple-final"],
+      hiss: true,
     },
-    ia: '',
-    iao: '',
-    ie: '',
-    iou: '',
-    ian: '',
-    iang: '',
-    ien: '',
-    ieng: '',
-    iong: '',
+    ia: "",
+    iao: "",
+    ie: "",
+    iou: "",
+    ian: "",
+    iang: "",
+    ien: "",
+    ieng: "",
+    iong: "",
     // U
     unull: {
-      value: 'cu',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final'],
+      value: "cu",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
       problemInitial: true,
-      tonguePos: 'middle',
-      hiss: true
-    },
-    ua: '',
-    uo: {
-      value: 'cuo',
-      problemInitial: true,
-      tonguePos: 'middle',
+      tonguePos: "middle",
       hiss: true,
-      levels: ['u:compound-final']
+    },
+    ua: "",
+    uo: {
+      value: "cuo",
+      problemInitial: true,
+      tonguePos: "middle",
+      hiss: true,
+      levels: ["u:compound-final"],
     },
     uei: {
-      value: 'cui',
-      levels: ['u:compound-final'],
+      value: "cui",
+      levels: ["u:compound-final"],
       problemInitial: true,
-      tonguePos: 'middle',
-      hiss: true
+      tonguePos: "middle",
+      hiss: true,
     },
-    uai: '',
+    uai: "",
     uan: {
-      value: 'cuan',
-      levels: ['u:compound-final', 'u:nasal-final'],
+      value: "cuan",
+      levels: ["u:compound-final", "u:nasal-final"],
       problemInitial: true,
-      tonguePos: 'middle',
-      hiss: true
+      tonguePos: "middle",
+      hiss: true,
     },
     uen: {
-      value: 'cun',
-      levels: ['u:compound-final', 'u:nasal-final'],
+      value: "cun",
+      levels: ["u:compound-final", "u:nasal-final"],
       problemInitial: true,
-      tonguePos: 'middle',
-      hiss: true
+      tonguePos: "middle",
+      hiss: true,
     },
-    uang: '',
-    ueng: '',
+    uang: "",
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   //   s
   {
     // A
-    initial: 's',
+    initial: "s",
     aa: {
-      value: 'sa',
-      levels: ['a', 'e', 'yi', 'a:simple-final'],
+      value: "sa",
+      levels: ["a", "e", "yi", "a:simple-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     aai: {
-      value: 'sai',
-      levels: ['a:compound-final'],
+      value: "sai",
+      levels: ["a:compound-final"],
 
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     aao: {
-      value: 'sao',
-      levels: ['a:compound-final'],
+      value: "sao",
+      levels: ["a:compound-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     aan: {
-      value: 'san',
-      levels: ['a:compound-final', 'a:nasal-final'],
+      value: "san",
+      levels: ["a:compound-final", "a:nasal-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     aang: {
-      value: 'sang',
-      levels: ['a:compound-final', 'a:nasal-final'],
+      value: "sang",
+      levels: ["a:compound-final", "a:nasal-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     // E
     ee: {
-      value: 'se',
-      levels: ['a', 'e', 'yi', 'e:simple-final'],
+      value: "se",
+      levels: ["a", "e", "yi", "e:simple-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
-    eei: '',
+    eei: "",
     een: {
-      value: 'sen',
+      value: "sen",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['e:compound-final', 'e:nasal-final']
+      tonguePos: "bottom",
+      levels: ["e:compound-final", "e:nasal-final"],
     },
     eeng: {
-      value: 'seng',
+      value: "seng",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['e:compound-final', 'e:nasal-final']
+      tonguePos: "bottom",
+      levels: ["e:compound-final", "e:nasal-final"],
     },
-    enull: '',
+    enull: "",
     // O
-    oo: '',
+    oo: "",
     oong: {
-      value: 'song',
+      value: "song",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['o:compound-final', 'o:nasal-final']
+      tonguePos: "bottom",
+      levels: ["o:compound-final", "o:nasal-final"],
     },
     oou: {
-      value: 'sou',
+      value: "sou",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['o:compound-final']
+      tonguePos: "bottom",
+      levels: ["o:compound-final"],
     },
     // I
     inull: {
-      value: 'si',
+      value: "si",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      tonguePos: "bottom",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: '',
-    iao: '',
-    ie: '',
-    iou: '',
-    ian: '',
-    iang: '',
-    ien: '',
-    ieng: '',
-    iong: '',
+    ia: "",
+    iao: "",
+    ie: "",
+    iou: "",
+    ian: "",
+    iang: "",
+    ien: "",
+    ieng: "",
+    iong: "",
     // U
     unull: {
-      value: 'su',
+      value: "su",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      tonguePos: "bottom",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: '',
+    ua: "",
     uo: {
-      value: 'suo',
+      value: "suo",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['u:compound-final']
+      tonguePos: "bottom",
+      levels: ["u:compound-final"],
     },
     uei: {
-      value: 'sui',
+      value: "sui",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['u:compound-final']
+      tonguePos: "bottom",
+      levels: ["u:compound-final"],
     },
-    uai: '',
+    uai: "",
     uan: {
-      value: 'suan',
+      value: "suan",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['u:compound-final', 'u:nasal-final']
+      tonguePos: "bottom",
+      levels: ["u:compound-final", "u:nasal-final"],
     },
     uen: {
-      value: 'sun',
+      value: "sun",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['u:compound-final', 'u:nasal-final']
+      tonguePos: "bottom",
+      levels: ["u:compound-final", "u:nasal-final"],
     },
-    uang: '',
-    ueng: '',
+    uang: "",
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   //   zh
   {
     // A
-    initial: 'zh',
+    initial: "zh",
     aa: {
-      value: 'zha',
+      value: "zha",
       problemInitial: true,
-      levels: ['a', 'e', 'yi', 'a:simple-final'],
-      tonguePos: 'roof'
+      levels: ["a", "e", "yi", "a:simple-final"],
+      tonguePos: "roof",
     },
     aai: {
-      value: 'zhai',
+      value: "zhai",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     aao: {
-      value: 'zhao',
+      value: "zhao",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     aan: {
-      value: 'zhan',
+      value: "zhan",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     aang: {
-      value: 'zhang',
+      value: "zhang",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     // E
     ee: {
-      value: 'zhe',
+      value: "zhe",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      tonguePos: "roof",
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
     eei: {
-      value: 'zhei',
+      value: "zhei",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['e:compound-final']
+      tonguePos: "roof",
+      levels: ["e:compound-final"],
     },
     een: {
-      value: 'zhen',
+      value: "zhen",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['e:compound-final', 'e:nasal-final']
+      tonguePos: "roof",
+      levels: ["e:compound-final", "e:nasal-final"],
     },
     eeng: {
-      value: 'zheng',
+      value: "zheng",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['e:compound-final', 'e:nasal-final']
+      tonguePos: "roof",
+      levels: ["e:compound-final", "e:nasal-final"],
     },
-    enull: '',
+    enull: "",
     // O
-    oo: '',
+    oo: "",
     oong: {
-      value: 'zhong',
+      value: "zhong",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['o:compound-final', 'o:nasal-final']
+      tonguePos: "roof",
+      levels: ["o:compound-final", "o:nasal-final"],
     },
     oou: {
-      value: 'zhou',
+      value: "zhou",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['o:compound-final']
+      tonguePos: "roof",
+      levels: ["o:compound-final"],
     },
     // I
     inull: {
-      value: 'zhi',
+      value: "zhi",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      tonguePos: "roof",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: '',
-    iao: '',
-    ie: '',
-    iou: '',
-    ian: '',
-    iang: '',
-    ien: '',
-    ieng: '',
-    iong: '',
+    ia: "",
+    iao: "",
+    ie: "",
+    iou: "",
+    ian: "",
+    iang: "",
+    ien: "",
+    ieng: "",
+    iong: "",
     // U
     unull: {
-      value: 'zhu',
+      value: "zhu",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      tonguePos: "roof",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
     ua: {
-      levels: ['u:compound-final'],
-      value: 'zhua',
+      levels: ["u:compound-final"],
+      value: "zhua",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uo: {
-      levels: ['u:compound-final'],
-      value: 'zhuo',
+      levels: ["u:compound-final"],
+      value: "zhuo",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uei: {
-      levels: ['u:compound-final'],
-      value: 'zhui',
+      levels: ["u:compound-final"],
+      value: "zhui",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uai: {
-      levels: ['u:compound-final'],
-      value: 'zhuai',
+      levels: ["u:compound-final"],
+      value: "zhuai",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uan: {
-      levels: ['u:compound-final', 'u:nasal-final'],
-      value: 'zhuan',
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "zhuan",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uen: {
-      levels: ['u:compound-final', 'u:nasal-final'],
-      value: 'zhun',
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "zhun",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uang: {
-      levels: ['u:compound-final', 'u:nasal-final'],
-      value: 'zhuang',
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "zhuang",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
-    ueng: '',
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   //   ch
   {
     // A
-    initial: 'ch',
+    initial: "ch",
     aa: {
-      value: 'cha',
-      levels: ['a', 'e', 'yi', 'a:simple-final'],
+      value: "cha",
+      levels: ["a", "e", "yi", "a:simple-final"],
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     aai: {
-      value: 'chai',
+      value: "chai",
 
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     aao: {
-      value: 'chao',
+      value: "chao",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     aan: {
-      value: 'chan',
+      value: "chan",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     aang: {
-      value: 'chang',
+      value: "chang",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     // E
     ee: {
-      value: 'che',
+      value: "che",
       problemInitial: true,
-      levels: ['a', 'e', 'yi', 'e:simple-final'],
-      tonguePos: 'roof'
+      levels: ["a", "e", "yi", "e:simple-final"],
+      tonguePos: "roof",
     },
-    eei: '',
+    eei: "",
     een: {
-      value: 'chen',
-      levels: ['e:compound-final', 'e:nasal-final'],
+      value: "chen",
+      levels: ["e:compound-final", "e:nasal-final"],
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     eeng: {
-      value: 'cheng',
+      value: "cheng",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['e:compound-final', 'e:nasal-final']
+      tonguePos: "roof",
+      levels: ["e:compound-final", "e:nasal-final"],
     },
-    enull: '',
+    enull: "",
     // O
-    oo: '',
+    oo: "",
     oong: {
-      value: 'chong',
+      value: "chong",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['o:compound-final', 'o:nasal-final']
+      tonguePos: "roof",
+      levels: ["o:compound-final", "o:nasal-final"],
     },
     oou: {
-      value: 'chou',
+      value: "chou",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['o:compound-final']
+      tonguePos: "roof",
+      levels: ["o:compound-final"],
     },
     // I
     inull: {
-      value: 'chi',
-      levels: ['a', 'e', 'yi', 'i:simple-final'],
+      value: "chi",
+      levels: ["a", "e", "yi", "i:simple-final"],
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
-    ia: '',
-    iao: '',
-    ie: '',
-    iou: '',
-    ian: '',
-    iang: '',
-    ien: '',
-    ieng: '',
-    iong: '',
+    ia: "",
+    iao: "",
+    ie: "",
+    iou: "",
+    ian: "",
+    iang: "",
+    ien: "",
+    ieng: "",
+    iong: "",
     // U
     unull: {
-      value: 'chu',
+      value: "chu",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      tonguePos: "roof",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: '',
+    ua: "",
     uo: {
-      levels: ['u:compound-final'],
-      value: 'chuo',
+      levels: ["u:compound-final"],
+      value: "chuo",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uei: {
-      levels: ['u:compound-final'],
-      value: 'chui',
+      levels: ["u:compound-final"],
+      value: "chui",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uai: {
-      levels: ['u:compound-final'],
-      value: 'chuai',
+      levels: ["u:compound-final"],
+      value: "chuai",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uan: {
-      levels: ['u:compound-final', 'u:nasal-final'],
-      value: 'chuan',
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "chuan",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uen: {
-      levels: ['u:compound-final', 'u:nasal-final'],
-      value: 'chun',
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "chun",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uang: {
-      levels: ['u:compound-final', 'u:nasal-final'],
-      value: 'chuang',
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "chuang",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
-    ueng: '',
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   //   sh
   {
     // A
-    initial: 'sh',
+    initial: "sh",
     aa: {
-      value: 'sha',
+      value: "sha",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      tonguePos: "roof",
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
     aai: {
-      value: 'shai',
+      value: "shai",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     aao: {
-      value: 'shao',
+      value: "shao",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     aan: {
-      value: 'shan',
+      value: "shan",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     aang: {
-      value: 'shang',
+      value: "shang",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     // E
     ee: {
-      value: 'she',
+      value: "she",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      tonguePos: "roof",
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
     eei: {
-      value: 'shei',
+      value: "shei",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['e:compound-final']
+      tonguePos: "roof",
+      levels: ["e:compound-final"],
     },
     een: {
-      value: 'shen',
+      value: "shen",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['e:compound-final', 'e:nasal-final']
+      tonguePos: "roof",
+      levels: ["e:compound-final", "e:nasal-final"],
     },
     eeng: {
-      value: 'sheng',
+      value: "sheng",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['e:compound-final', 'e:nasal-final']
+      tonguePos: "roof",
+      levels: ["e:compound-final", "e:nasal-final"],
     },
-    enull: '',
+    enull: "",
     // O
-    oo: '',
-    oong: '',
+    oo: "",
+    oong: "",
     oou: {
-      value: 'shou',
+      value: "shou",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['o:compound-final']
+      tonguePos: "roof",
+      levels: ["o:compound-final"],
     },
     // I
     inull: {
-      value: 'shi',
+      value: "shi",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      tonguePos: "roof",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: '',
-    iao: '',
-    ie: '',
-    iou: '',
-    ian: '',
-    iang: '',
-    ien: '',
-    ieng: '',
-    iong: '',
+    ia: "",
+    iao: "",
+    ie: "",
+    iou: "",
+    ian: "",
+    iang: "",
+    ien: "",
+    ieng: "",
+    iong: "",
 
     // {
     //   initial: 'null',
@@ -1379,1003 +1380,1008 @@ export const defaultData: any = [
     // }
     // U
     unull: {
-      value: 'shu',
+      value: "shu",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      tonguePos: "roof",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
     ua: {
-      levels: ['u:compound-final'],
-      value: 'shua',
+      levels: ["u:compound-final"],
+      value: "shua",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uo: {
-      levels: ['u:compound-final'],
-      value: 'shuo',
+      levels: ["u:compound-final"],
+      value: "shuo",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uei: {
-      levels: ['u:compound-final'],
-      value: 'shui',
+      levels: ["u:compound-final"],
+      value: "shui",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uai: {
-      levels: ['u:compound-final'],
-      value: 'shuai',
+      levels: ["u:compound-final"],
+      value: "shuai",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uan: {
-      levels: ['u:compound-final', 'u:nasal-final'],
-      value: 'shuan',
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "shuan",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uen: {
-      levels: ['u:compound-final', 'u:nasal-final'],
-      value: 'shun',
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "shun",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uang: {
-      levels: ['u:compound-final', 'u:nasal-final'],
-      value: 'shuang',
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "shuang",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
-    ueng: '',
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   //   r
   {
     // A
-    initial: 'r',
-    aa: '',
-    aai: '',
+    initial: "r",
+    aa: "",
+    aai: "",
     aao: {
-      value: 'rao',
+      value: "rao",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final"],
     },
     aan: {
-      value: 'ran',
+      value: "ran",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     aang: {
-      value: 'rang',
+      value: "rang",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a:compound-final', 'a:nasal-final']
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
     },
     // E
     ee: {
-      value: 're',
+      value: "re",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      tonguePos: "roof",
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
-    eei: '',
+    eei: "",
     een: {
-      value: 'ren',
+      value: "ren",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['e:compound-final', 'e:nasal-final']
+      tonguePos: "roof",
+      levels: ["e:compound-final", "e:nasal-final"],
     },
     eeng: {
-      value: 'reng',
+      value: "reng",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['e:compound-final', 'e:nasal-final']
+      tonguePos: "roof",
+      levels: ["e:compound-final", "e:nasal-final"],
     },
-    enull: '',
+    enull: "",
     // O
-    oo: '',
+    oo: "",
     oong: {
-      value: 'rong',
+      value: "rong",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['o:compound-final', 'o:nasal-final']
+      tonguePos: "roof",
+      levels: ["o:compound-final", "o:nasal-final"],
     },
     oou: {
-      value: 'rou',
+      value: "rou",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['o:compound-final']
+      tonguePos: "roof",
+      levels: ["o:compound-final"],
     },
     // I
     inull: {
-      value: 'ri',
+      value: "ri",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      tonguePos: "roof",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: '',
-    iao: '',
-    ie: '',
-    iou: '',
-    ian: '',
-    iang: '',
-    ien: '',
-    ieng: '',
-    iong: '',
+    ia: "",
+    iao: "",
+    ie: "",
+    iou: "",
+    ian: "",
+    iang: "",
+    ien: "",
+    ieng: "",
+    iong: "",
     // U
     unull: {
-      value: 'ru',
+      value: "ru",
       problemInitial: true,
-      tonguePos: 'roof',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      tonguePos: "roof",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
     ua: {
-      levels: ['u:compound-final'],
-      value: 'rua',
+      levels: ["u:compound-final"],
+      value: "rua",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uo: {
-      levels: ['u:compound-final'],
-      value: 'ruo',
+      levels: ["u:compound-final"],
+      value: "ruo",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uei: {
-      levels: ['u:compound-final'],
-      value: 'rui',
+      levels: ["u:compound-final"],
+      value: "rui",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
-    uai: '',
+    uai: "",
     uan: {
-      levels: ['u:compound-final', 'u:nasal-final'],
-      value: 'ruan',
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "ruan",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
     uen: {
-      levels: ['u:compound-final', 'u:nasal-final'],
-      value: 'run',
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "run",
       problemInitial: true,
-      tonguePos: 'roof'
+      tonguePos: "roof",
     },
-    uang: '',
-    ueng: '',
+    uang: "",
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   //   j
   {
     // A
-    initial: 'j',
-    aa: '',
-    aai: '',
-    aao: '',
-    aan: '',
-    aang: '',
+    initial: "j",
+    aa: "",
+    aai: "",
+    aao: "",
+    aan: "",
+    aang: "",
     // E
-    ee: '',
-    eei: '',
-    een: '',
-    eeng: '',
-    enull: '',
+    ee: "",
+    eei: "",
+    een: "",
+    eeng: "",
+    enull: "",
     // O
-    oo: '',
-    oong: '',
-    oou: '',
+    oo: "",
+    oong: "",
+    oou: "",
     // I
     inull: {
-      value: 'ji',
+      value: "ji",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      tonguePos: "bottom",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
     ia: {
-      levels: ['i:compound-final'],
-      value: 'jia',
+      levels: ["i:compound-final"],
+      value: "jia",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     iao: {
-      levels: ['i:compound-final'],
-      value: 'jiao',
+      levels: ["i:compound-final"],
+      value: "jiao",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     ie: {
-      levels: ['i:compound-final'],
-      value: 'jie',
+      levels: ["i:compound-final"],
+      value: "jie",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     iou: {
-      levels: ['i:compound-final'],
-      value: 'jiu',
+      levels: ["i:compound-final"],
+      value: "jiu",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     ian: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'jian',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "jian",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     iang: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'jiang',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "jiang",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     ien: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'jien',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "jien",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     ieng: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'jieng',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "jieng",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     iong: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'jiong',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "jiong",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     // U
-    unull: '',
-    ua: '',
-    uo: '',
-    uei: '',
-    uai: '',
-    uan: '',
-    uen: '',
-    uang: '',
-    ueng: '',
+    unull: "",
+    ua: "",
+    uo: "",
+    uei: "",
+    uai: "",
+    uan: "",
+    uen: "",
+    uang: "",
+    ueng: "",
     // ü
     ünull: {
-      initial: 'null',
-      final: 'ju',
-      value: 'ju',
+      initial: "null",
+      final: "ju",
+      value: "ju",
       problemInitial: true,
-      tonguePos: 'bottom',
+      tonguePos: "bottom",
       // levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
-      levels: ['o', 'u (wu)', 'ü(yu)', 'ü:simple-final']
+      levels: ["o", "u (wu)", "ü(yu)", "ü:simple-final"],
     },
     üe: {
-      value: 'jue',
-      levels: ['ü:compound-final'],
+      value: "jue",
+      levels: ["ü:compound-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     üan: {
-      value: 'juan',
-      levels: ['ü:compound-final', 'ü:nasal-final'],
+      value: "juan",
+      levels: ["ü:compound-final", "ü:nasal-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     üen: {
-      value: 'jun',
-      levels: ['ü:compound-final', 'ü:nasal-final'],
+      value: "jun",
+      levels: ["ü:compound-final", "ü:nasal-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
-    }
+      tonguePos: "bottom",
+    },
   },
   //   q
   {
     // A
-    initial: 'q',
-    aa: '',
-    aai: '',
-    aao: '',
-    aan: '',
-    aang: '',
+    initial: "q",
+    aa: "",
+    aai: "",
+    aao: "",
+    aan: "",
+    aang: "",
     // E
-    ee: '',
-    eei: '',
-    een: '',
-    eeng: '',
-    enull: '',
+    ee: "",
+    eei: "",
+    een: "",
+    eeng: "",
+    enull: "",
     // O
-    oo: '',
-    oong: '',
-    oou: '',
+    oo: "",
+    oong: "",
+    oou: "",
     // I
     inull: {
-      value: 'qi',
+      value: "qi",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      tonguePos: "bottom",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
     ia: {
-      levels: ['i:compound-final'],
-      value: 'qia',
+      levels: ["i:compound-final"],
+      value: "qia",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     iao: {
-      levels: ['i:compound-final'],
-      value: 'qiao',
+      levels: ["i:compound-final"],
+      value: "qiao",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     ie: {
-      levels: ['i:compound-final'],
-      value: 'qie',
+      levels: ["i:compound-final"],
+      value: "qie",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     iou: {
-      levels: ['i:compound-final'],
-      value: 'qiu',
+      levels: ["i:compound-final"],
+      value: "qiu",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     ian: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'qian',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "qian",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     iang: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'qiang',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "qiang",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     ien: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'qien',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "qien",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     ieng: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'qieng',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "qieng",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     iong: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'qiong',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "qiong",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     // U
-    unull: '',
-    ua: '',
-    uo: '',
-    uei: '',
-    uai: '',
-    uan: '',
-    uen: '',
-    uang: '',
-    ueng: '',
+    unull: "",
+    ua: "",
+    uo: "",
+    uei: "",
+    uai: "",
+    uan: "",
+    uen: "",
+    uang: "",
+    ueng: "",
     // ü
     ünull: {
-      initial: 'null',
-      final: 'qu',
-      value: 'qu',
+      initial: "null",
+      final: "qu",
+      value: "qu",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'ü:simple-final']
+      tonguePos: "bottom",
+      levels: ["o", "u (wu)", "ü(yu)", "ü:simple-final"],
       // levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
     },
     üe: {
-      value: 'que',
-      levels: ['ü:compound-final'],
+      value: "que",
+      levels: ["ü:compound-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     üan: {
-      value: 'quan',
-      levels: ['ü:compound-final', 'ü:nasal-final'],
+      value: "quan",
+      levels: ["ü:compound-final", "ü:nasal-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     üen: {
-      value: 'qun',
-      levels: ['ü:compound-final', 'ü:nasal-final'],
+      value: "qun",
+      levels: ["ü:compound-final", "ü:nasal-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
-    }
+      tonguePos: "bottom",
+    },
   },
   //   x
   {
     // A
-    initial: 'x',
-    aa: '',
-    aai: '',
-    aao: '',
-    aan: '',
-    aang: '',
+    initial: "x",
+    aa: "",
+    aai: "",
+    aao: "",
+    aan: "",
+    aang: "",
     // E
-    ee: '',
-    eei: '',
-    een: '',
-    eeng: '',
-    enull: '',
+    ee: "",
+    eei: "",
+    een: "",
+    eeng: "",
+    enull: "",
     // O
-    oo: '',
-    oong: '',
-    oou: '',
+    oo: "",
+    oong: "",
+    oou: "",
     // I
     inull: {
-      value: 'xi',
+      value: "xi",
       problemInitial: true,
-      tonguePos: 'bottom',
-      levels: ['a', 'e', 'yi', 'i:simple-final']
+      tonguePos: "bottom",
+      levels: ["a", "e", "yi", "i:simple-final"],
     },
     ia: {
-      levels: ['i:compound-final'],
-      value: 'xia',
+      levels: ["i:compound-final"],
+      value: "xia",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     iao: {
-      levels: ['i:compound-final'],
-      value: 'xiao',
+      levels: ["i:compound-final"],
+      value: "xiao",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     ie: {
-      levels: ['i:compound-final'],
-      value: 'xie',
+      levels: ["i:compound-final"],
+      value: "xie",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     iou: {
-      levels: ['i:compound-final'],
-      value: 'xiu',
+      levels: ["i:compound-final"],
+      value: "xiu",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     ian: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'xian',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "xian",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     iang: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'xiang',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "xiang",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     ien: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'xien',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "xien",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     ieng: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'xieng',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "xieng",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     iong: {
-      levels: ['i:compound-final', 'i:nasal-final'],
-      value: 'xiong',
+      levels: ["i:compound-final", "i:nasal-final"],
+      value: "xiong",
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     // U
-    unull: '',
-    ua: '',
-    uo: '',
-    uei: '',
-    uai: '',
-    uan: '',
-    uen: '',
-    uang: '',
-    ueng: '',
+    unull: "",
+    ua: "",
+    uo: "",
+    uei: "",
+    uai: "",
+    uan: "",
+    uen: "",
+    uang: "",
+    ueng: "",
     // ü
     ünull: {
-      initial: 'null',
-      final: 'xu',
+      initial: "null",
+      final: "xu",
       problemInitial: true,
-      tonguePos: 'bottom',
-      value: 'xu',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'ü:simple-final']
+      tonguePos: "bottom",
+      value: "xu",
+      levels: ["o", "u (wu)", "ü(yu)", "ü:simple-final"],
       // levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
     },
     üe: {
-      value: 'xue',
-      levels: ['ü:compound-final'],
+      value: "xue",
+      levels: ["ü:compound-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     üan: {
-      value: 'xuan',
-      levels: ['ü:compound-final', 'ü:nasal-final'],
+      value: "xuan",
+      levels: ["ü:compound-final", "ü:nasal-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
+      tonguePos: "bottom",
     },
     üen: {
-      value: 'xun',
-      levels: ['ü:compound-final', 'ü:nasal-final'],
+      value: "xun",
+      levels: ["ü:compound-final", "ü:nasal-final"],
       problemInitial: true,
-      tonguePos: 'bottom'
-    }
+      tonguePos: "bottom",
+    },
   },
 
   // g
   {
     // A
-    initial: 'g',
+    initial: "g",
     aa: {
-      value: 'ga',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      value: "ga",
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
-    aai: { value: 'gai', levels: ['a:compound-final', 'a:nasal-final'] },
-    aao: { value: 'gao', levels: ['a:compound-final', 'a:nasal-final'] },
-    aan: { value: 'gan', levels: ['a:compound-final', 'a:nasal-final'] },
-    aang: { value: 'gang', levels: ['a:compound-final', 'a:nasal-final'] },
+    aai: { value: "gai", levels: ["a:compound-final", "a:nasal-final"] },
+    aao: { value: "gao", levels: ["a:compound-final", "a:nasal-final"] },
+    aan: { value: "gan", levels: ["a:compound-final", "a:nasal-final"] },
+    aang: { value: "gang", levels: ["a:compound-final", "a:nasal-final"] },
     // E
     ee: {
-      value: 'ge',
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      value: "ge",
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
-    eei: { value: 'gei', levels: ['e:compound-final'] },
-    een: { value: 'gen', levels: ['e:compound-final', 'e:nasal-final'] },
-    eeng: { value: 'geng', levels: ['e:compound-final', 'e:nasal-final'] },
-    enull: '',
+    eei: { value: "gei", levels: ["e:compound-final"] },
+    een: { value: "gen", levels: ["e:compound-final", "e:nasal-final"] },
+    eeng: { value: "geng", levels: ["e:compound-final", "e:nasal-final"] },
+    enull: "",
     // O
-    oo: '',
-    oong: { value: 'gong', levels: ['o:compound-final', 'o:nasal-final'] },
-    oou: { value: 'gou', levels: ['o:compound-final', 'o:nasal-final'] },
+    oo: "",
+    oong: { value: "gong", levels: ["o:compound-final", "o:nasal-final"] },
+    oou: { value: "gou", levels: ["o:compound-final", "o:nasal-final"] },
     // I
-    inull: '',
-    ia: '',
-    iao: '',
-    ie: '',
-    iou: '',
-    ian: '',
-    iang: '',
-    ien: '',
-    ieng: '',
-    iong: '',
+    inull: "",
+    ia: "",
+    iao: "",
+    ie: "",
+    iou: "",
+    ian: "",
+    iang: "",
+    ien: "",
+    ieng: "",
+    iong: "",
     // U
     unull: {
-      initial: 'null',
-      final: 'gu',
-      value: 'gu',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      initial: "null",
+      final: "gu",
+      value: "gu",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: { value: 'gua', levels: ['u:compound-final'] },
-    uo: { value: 'guo', levels: ['u:compound-final'] },
-    uei: { value: 'gui', levels: ['u:compound-final'] },
-    uai: { value: 'guai', levels: ['u:compound-final'] },
-    uan: { value: 'guan', levels: ['u:compound-final', 'u:nasal-final'] },
-    uen: { value: 'gun', levels: ['u:compound-final', 'u:nasal-final'] },
-    uang: { value: 'guang', levels: ['u:compound-final', 'u:nasal-final'] },
-    ueng: '',
+    ua: { value: "gua", levels: ["u:compound-final"] },
+    uo: { value: "guo", levels: ["u:compound-final"] },
+    uei: { value: "gui", levels: ["u:compound-final"] },
+    uai: { value: "guai", levels: ["u:compound-final"] },
+    uan: { value: "guan", levels: ["u:compound-final", "u:nasal-final"] },
+    uen: { value: "gun", levels: ["u:compound-final", "u:nasal-final"] },
+    uang: { value: "guang", levels: ["u:compound-final", "u:nasal-final"] },
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   // k
   {
     // A
-    initial: 'k',
+    initial: "k",
     aa: {
-      value: 'ka',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      value: "ka",
+      levels: ["a", "e", "yi", "a:simple-final"],
       // levels: ['a', 'e', 'yi']
     },
-    aai: { value: 'kai', levels: ['a:compound-final', 'a:nasal-final'] },
-    aao: { value: 'kao', levels: ['a:compound-final', 'a:nasal-final'] },
-    aan: { value: 'kan', levels: ['a:compound-final', 'a:nasal-final'] },
-    aang: { value: 'kang', levels: ['a:compound-final', 'a:nasal-final'] },
+    aai: { value: "kai", levels: ["a:compound-final", "a:nasal-final"] },
+    aao: { value: "kao", levels: ["a:compound-final", "a:nasal-final"] },
+    aan: { value: "kan", levels: ["a:compound-final", "a:nasal-final"] },
+    aang: { value: "kang", levels: ["a:compound-final", "a:nasal-final"] },
     // E
     ee: {
-      value: 'ke',
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      value: "ke",
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
-    eei: { value: 'kei', levels: ['e:compound-final'] },
-    een: { value: 'ken', levels: ['e:compound-final', 'e:nasal-final'] },
-    eeng: { value: 'keng', levels: ['e:compound-final', 'e:nasal-final'] },
-    enull: '',
+    eei: { value: "kei", levels: ["e:compound-final"] },
+    een: { value: "ken", levels: ["e:compound-final", "e:nasal-final"] },
+    eeng: { value: "keng", levels: ["e:compound-final", "e:nasal-final"] },
+    enull: "",
     // O
-    oo: '',
-    oong: { value: 'kong', levels: ['o:compound-final', 'o:nasal-final'] },
-    oou: { value: 'kou', levels: ['o:compound-final'] },
+    oo: "",
+    oong: { value: "kong", levels: ["o:compound-final", "o:nasal-final"] },
+    oou: { value: "kou", levels: ["o:compound-final"] },
     // I
-    inull: '',
-    ia: '',
-    iao: '',
-    ie: '',
-    iou: '',
-    ian: '',
-    iang: '',
-    ien: '',
-    ieng: '',
-    iong: '',
+    inull: "",
+    ia: "",
+    iao: "",
+    ie: "",
+    iou: "",
+    ian: "",
+    iang: "",
+    ien: "",
+    ieng: "",
+    iong: "",
     // U
     unull: {
-      initial: 'null',
-      final: 'ku',
-      value: 'ku',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      initial: "null",
+      final: "ku",
+      value: "ku",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: { value: 'kua', levels: ['u:compound-final'] },
-    uo: { value: 'kuo', levels: ['u:compound-final'] },
-    uei: { value: 'kui', levels: ['u:compound-final'] },
-    uai: { value: 'kuai', levels: ['u:compound-final'] },
-    uan: { value: 'kuan', levels: ['u:compound-final', 'u:nasal-final'] },
-    uen: { value: 'kun', levels: ['u:compound-final', 'u:nasal-final'] },
-    uang: { value: 'kuang', levels: ['u:compound-final', 'u:nasal-final'] },
-    ueng: '',
+    ua: { value: "kua", levels: ["u:compound-final"] },
+    uo: { value: "kuo", levels: ["u:compound-final"] },
+    uei: { value: "kui", levels: ["u:compound-final"] },
+    uai: { value: "kuai", levels: ["u:compound-final"] },
+    uan: { value: "kuan", levels: ["u:compound-final", "u:nasal-final"] },
+    uen: { value: "kun", levels: ["u:compound-final", "u:nasal-final"] },
+    uang: { value: "kuang", levels: ["u:compound-final", "u:nasal-final"] },
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
   },
   // h
   {
     // A
-    initial: 'h',
+    initial: "h",
     aa: {
-      value: 'ha',
-      levels: ['a', 'e', 'yi', 'a:simple-final']
+      value: "ha",
+      levels: ["a", "e", "yi", "a:simple-final"],
     },
-    aai: { value: 'hai', levels: ['a:compound-final', 'a:nasal-final'] },
-    aao: { value: 'hao', levels: ['a:compound-final', 'a:nasal-final'] },
-    aan: { value: 'han', levels: ['a:compound-final', 'a:nasal-final'] },
-    aang: { value: 'hang', levels: ['a:compound-final', 'a:nasal-final'] },
+    aai: { value: "hai", levels: ["a:compound-final", "a:nasal-final"] },
+    aao: { value: "hao", levels: ["a:compound-final", "a:nasal-final"] },
+    aan: { value: "han", levels: ["a:compound-final", "a:nasal-final"] },
+    aang: { value: "hang", levels: ["a:compound-final", "a:nasal-final"] },
     // E
     ee: {
-      value: 'he',
-      levels: ['a', 'e', 'yi', 'e:simple-final']
+      value: "he",
+      levels: ["a", "e", "yi", "e:simple-final"],
     },
-    eei: { value: 'hei', levels: ['e:compound-final'] },
-    een: { value: 'hen', levels: ['e:compound-final', 'e:nasal-final'] },
-    eeng: { value: 'heng', levels: ['e:compound-final', 'e:nasal-final'] },
-    enull: '',
+    eei: { value: "hei", levels: ["e:compound-final"] },
+    een: { value: "hen", levels: ["e:compound-final", "e:nasal-final"] },
+    eeng: { value: "heng", levels: ["e:compound-final", "e:nasal-final"] },
+    enull: "",
     // O
-    oo: '',
-    oong: { value: 'hong', levels: ['o:compound-final', 'o:nasal-final'] },
-    oou: { value: 'hou', levels: ['o:compound-final'] },
+    oo: "",
+    oong: { value: "hong", levels: ["o:compound-final", "o:nasal-final"] },
+    oou: { value: "hou", levels: ["o:compound-final"] },
     // I
-    inull: '',
-    ia: '',
-    iao: '',
-    ie: '',
-    iou: '',
-    ian: '',
-    iang: '',
-    ien: '',
-    ieng: '',
-    iong: '',
+    inull: "",
+    ia: "",
+    iao: "",
+    ie: "",
+    iou: "",
+    ian: "",
+    iang: "",
+    ien: "",
+    ieng: "",
+    iong: "",
     // U
     unull: {
-      initial: 'null',
-      final: 'hu',
-      value: 'hu',
-      levels: ['o', 'u (wu)', 'ü(yu)', 'u:simple-final']
+      initial: "null",
+      final: "hu",
+      value: "hu",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: { value: 'hua', levels: ['u:compound-final'] },
-    uo: { value: 'huo', levels: ['u:compound-final'] },
-    uei: { value: 'hui', levels: ['u:compound-final'] },
-    uai: { value: 'huai', levels: ['u:compound-final'] },
-    uan: { value: 'huan', levels: ['u:compound-final', 'u:nasal-final'] },
-    uen: { value: 'hun', levels: ['u:compound-final', 'u:nasal-final'] },
-    uang: { value: 'huang', levels: ['u:compound-final', 'u:nasal-final'] },
-    ueng: '',
+    ua: { value: "hua", levels: ["u:compound-final"] },
+    uo: { value: "huo", levels: ["u:compound-final"] },
+    uei: { value: "hui", levels: ["u:compound-final"] },
+    uai: { value: "huai", levels: ["u:compound-final"] },
+    uan: { value: "huan", levels: ["u:compound-final", "u:nasal-final"] },
+    uen: { value: "hun", levels: ["u:compound-final", "u:nasal-final"] },
+    uang: { value: "huang", levels: ["u:compound-final", "u:nasal-final"] },
+    ueng: "",
     // ü
-    ünull: '',
-    üe: '',
-    üan: '',
-    üen: ''
-  }
-]
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
+  },
+];
 
 export const characterDictionary: any = {
   yi: {
-    initial: 'null',
-    final: 'yi',
-    value: 'yi',
-    tones: ['yī', 'yí', 'yǐ', 'yì'],
+    initial: "null",
+    final: "yi",
+    value: "yi",
+    tones: ["yī", "yí", "yǐ", "yì"],
     examples: [
       {
         tone: 1,
-        pinyin: 'yī',
-        hanzi: '一'
-      }
+        pinyin: "yī",
+        hanzi: "一",
+      },
     ],
-    graph: '一以已尾亦易意依亿衣益移伊疑医訳翌宜异疫艺怡刈议役乙抑翼壱胰裔屹彝翳义仪翊轶',
-
+    graph:
+      "一以已尾亦易意依亿衣益移伊疑医訳翌宜异疫艺怡刈议役乙抑翼壱胰裔屹彝翳义仪翊轶",
 
     variants: [
       {
-        en: 'yī',
+        en: "yī",
         examples: [
           {
             discovered: false,
             tone: 1,
-            pinyin: 'yī',
-            hanzi: '一',
-            en: 'one'
-          }
-        ]
+            pinyin: "yī",
+            hanzi: "一",
+            en: "one",
+          },
+        ],
       },
       {
-        en: 'yǐ',
+        en: "yǐ",
         examples: [
           {
             discovered: false,
             tone: 3,
-            pinyin: 'yǐ',
-            hanzi: '以',
-            en: 'to use / by means of'
-          }
-        ]
-      }
-    ]
+            pinyin: "yǐ",
+            hanzi: "以",
+            en: "to use / by means of",
+          },
+        ],
+      },
+    ],
   },
 
   er: {
-    graph: '二而儿尔耳児尓弐珥迩洱贰尒饵阿栭唲铒塔洏鸸弍佴咡鲕',
-    value: 'er',
-    initial: 'null',
-    final: 'er',
+    graph: "二而儿尔耳児尓弐珥迩洱贰尒饵阿栭唲铒塔洏鸸弍佴咡鲕",
+    value: "er",
+    initial: "null",
+    final: "er",
     // levels: ['e:compound-final', 'e:nasal-final'],
-    tones: ['ēr', 'ér', 'ěr', 'èr'],
+    tones: ["ēr", "ér", "ěr", "èr"],
     examples: [
       {
         tone: 4,
-        pinyin: 'èr',
-        hanzi: '一'
-      }
+        pinyin: "èr",
+        hanzi: "一",
+      },
     ],
     variants: [
       {
-        en: 'èr',
+        en: "èr",
         tone: 4,
         examples: [
           {
             discovered: false,
             tone: 4,
-            pinyin: 'èr',
-            hanzi: '二',
-            en: 'two'
-          }
-        ]
+            pinyin: "èr",
+            hanzi: "二",
+            en: "two",
+          },
+        ],
       },
       {
-        en: 'ěr',
+        en: "ěr",
         tone: 3,
         examples: [
           {
             discovered: false,
             tone: 3,
-            pinyin: 'ěr',
-            hanzi: '二',
-            en: 'two'
-          }
-        ]
-      }
-    ]
+            pinyin: "ěr",
+            hanzi: "二",
+            en: "two",
+          },
+        ],
+      },
+    ],
   },
 
   zhong: {
-    graph: '中种重众钟终踵衷忠仲锺盅肿冢狆螽忪伀'
+    graph: "中种重众钟终踵衷忠仲锺盅肿冢狆螽忪伀",
   },
 
   san: {
-    graph: '三散伞叁繖潵糁弎鏾叄毵'
+    graph: "三散伞叁繖潵糁弎鏾叄毵",
   },
   shi: {
-    graph: '事是识識时時使十式市室士食認试試实實史石氏视視师師世失始產權施示湿濕势勢幹実诗詩柿饰飾拭虱蝨鰤'
+    graph:
+      "事是识識时時使十式市室士食認试試实實史石氏视視师師世失始產權施示湿濕势勢幹実诗詩柿饰飾拭虱蝨鰤",
   },
 
   gan: {
-    graph: '赣贛感干幹敢赶趕甘苷柑秆稈肝擀杆桿亁竿肅咁淦酐绀紺疳矸橄縣尴尷語坩旰倝泔澉骭玕榦虷灨乹筸馬尲'
+    graph:
+      "赣贛感干幹敢赶趕甘苷柑秆稈肝擀杆桿亁竿肅咁淦酐绀紺疳矸橄縣尴尷語坩旰倝泔澉骭玕榦虷灨乹筸馬尲",
   },
   ban: {
-    graph: '版板闆半办辦班般伴阪坂搬扮扳瓣绊絆違斑拌魯钣鈑颁頒戰從終瘢罷開舨漁姅攽',
+    graph:
+      "版板闆半办辦班般伴阪坂搬扮扳瓣绊絆違斑拌魯钣鈑颁頒戰從終瘢罷開舨漁姅攽",
   },
   mai: {
-    graph: '买卖埋麦迈脉霾'
+    graph: "买卖埋麦迈脉霾",
   },
   liang: {
-    value: 'liang',
-    initial: 'l',
-    final: 'ang',
-    tones: ['liǎng'],
+    value: "liang",
+    initial: "l",
+    final: "ang",
+    tones: ["liǎng"],
     examples: [
       {
         tone: 3,
-        pinyin: 'liǎng',
-        hanzi: '两'
-      }
+        pinyin: "liǎng",
+        hanzi: "两",
+      },
     ],
     variants: [
       {
-        pinyin: 'liǎng',
-        en: 'liǎng',
-        hanzi: '两',
+        pinyin: "liǎng",
+        en: "liǎng",
+        hanzi: "两",
         tone: 3,
         examples: [
           {
             discovered: false,
             tone: 3,
-            pinyin: 'liǎng',
-            hanzi: '两',
-            en: 'two',
+            pinyin: "liǎng",
+            hanzi: "两",
+            en: "two",
             examples: [
               {
-                hanzi: '两杯水',
-                pinyin: 'liǎng bēi shuǐ',
-                en: 'two glasses of water',
+                hanzi: "两杯水",
+                pinyin: "liǎng bēi shuǐ",
+                en: "two glasses of water",
                 topDownWords: [
                   {
-                    hanzi: '杯／杯子',
-                    pinyin: 'bēi / bēi zi',
-                    en: 'glass / cup'
-                  }
-                ]
+                    hanzi: "杯／杯子",
+                    pinyin: "bēi / bēi zi",
+                    en: "glass / cup",
+                  },
+                ],
               },
               {
-                hanzi: '两杯咖啡',
-                pinyin: 'liǎng bēi kā fēi',
-                en: 'two cups of coffee',
+                hanzi: "两杯咖啡",
+                pinyin: "liǎng bēi kā fēi",
+                en: "two cups of coffee",
                 topDownWords: [
                   {
-                    hanzi: '咖啡',
-                    pinyin: 'kā fēi',
-                    en: 'coffee'
-                  }
-                ]
+                    hanzi: "咖啡",
+                    pinyin: "kā fēi",
+                    en: "coffee",
+                  },
+                ],
               },
               {
-                hanzi: '两杯可乐',
-                pinyin: 'liǎng bēi kě lè',
-                en: 'two glasses of cola',
+                hanzi: "两杯可乐",
+                pinyin: "liǎng bēi kě lè",
+                en: "two glasses of cola",
                 topDownWords: [
                   {
-                    hanzi: '可乐',
-                    pinyin: 'kě lè',
-                    en: 'cola'
-                  }
-                ]
+                    hanzi: "可乐",
+                    pinyin: "kě lè",
+                    en: "cola",
+                  },
+                ],
               },
               {
-                hanzi: '两杯啤酒',
-                pinyin: 'liǎng bēi pí jiǔ',
-                en: 'two glasses of beer',
+                hanzi: "两杯啤酒",
+                pinyin: "liǎng bēi pí jiǔ",
+                en: "two glasses of beer",
                 topDownWords: [
                   {
-                    hanzi: '啤酒',
-                    pinyin: 'pí jiǔ',
-                    en: 'beer'
-                  }
-                ]
+                    hanzi: "啤酒",
+                    pinyin: "pí jiǔ",
+                    en: "beer",
+                  },
+                ],
               },
               {
-                hanzi: '两杯红酒',
-                pinyin: 'liǎng bēi hóng jiǔ',
-                en: 'two glasses of red wine',
+                hanzi: "两杯红酒",
+                pinyin: "liǎng bēi hóng jiǔ",
+                en: "two glasses of red wine",
                 topDownWords: [
                   {
-                    hanzi: '红酒',
-                    pinyin: 'hóng jiǔ',
-                    en: 'red wine'
-                  }
-                ]
+                    hanzi: "红酒",
+                    pinyin: "hóng jiǔ",
+                    en: "red wine",
+                  },
+                ],
               },
               {
-                hanzi: '你喜欢喝咖啡还是茶？',
-                pinyin: 'nǐ xǐ huān hē kā fēi hái shì chá',
-                en: 'Do you like to drink coffee or tea?',
+                hanzi: "你喜欢喝咖啡还是茶？",
+                pinyin: "nǐ xǐ huān hē kā fēi hái shì chá",
+                en: "Do you like to drink coffee or tea?",
                 topDownWords: [
                   {
-                    hanzi: '还是',
+                    hanzi: "还是",
                     tones: [2, 4],
-                    pinyin: 'hái shì',
-                    en: 'or / still / nevertheless'
+                    pinyin: "hái shì",
+                    en: "or / still / nevertheless",
                   },
                   {
-                    hanzi: '喝',
+                    hanzi: "喝",
                     tone: 1,
-                    pinyin: 'hē',
-                    en: 'drink'
-                  }
-                ]
+                    pinyin: "hē",
+                    en: "drink",
+                  },
+                ],
               },
               {
-                hanzi: '两个我都喜欢。',
-                pinyin: 'liǎnɡ ɡè wǒ dōu xǐ huān',
-                en: 'I like both of them.',
+                hanzi: "两个我都喜欢。",
+                pinyin: "liǎnɡ ɡè wǒ dōu xǐ huān",
+                en: "I like both of them.",
                 topDownWords: [
                   {
-                    hanzi: '都',
+                    hanzi: "都",
                     tone: 1,
-                    pinyin: 'dōu',
-                    en: 'both / all'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                    pinyin: "dōu",
+                    en: "both / all",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
   ping: {
-    value: 'ping',
-    initial: 'p',
-    final: 'eng',
-    tones: ['píng'],
+    value: "ping",
+    initial: "p",
+    final: "eng",
+    tones: ["píng"],
     examples: [
       {
         tone: 2,
-        pinyin: 'píng',
-        hanzi: '瓶'
-      }
+        pinyin: "píng",
+        hanzi: "瓶",
+      },
     ],
     variants: [
       {
         tone: 2,
-        pinyin: 'píng',
-        en: 'píng',
-        hanzi: '瓶',
+        pinyin: "píng",
+        en: "píng",
+        hanzi: "瓶",
         examples: [
           {
             discovered: false,
             tone: 2,
-            pinyin: 'píng',
-            hanzi: '瓶',
-            en: 'bottle',
+            pinyin: "píng",
+            hanzi: "瓶",
+            en: "bottle",
             examples: [
               {
-                hanzi: '一瓶水',
-                pinyin: 'yì píng shuǐ',
-                en: 'one bottle of water'
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                hanzi: "一瓶水",
+                pinyin: "yì píng shuǐ",
+                en: "one bottle of water",
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
 
   xi: {
-    graph: '西系繫係消關東细細昔喜洗陝休吸扱席析隙嬉希戏戲咥袭襲溪谿稀晰熄藍徙奚习習膝悉熹潟歇臨犀羲',
+    graph:
+      "西系繫係消關東细細昔喜洗陝休吸扱席析隙嬉希戏戲咥袭襲溪谿稀晰熄藍徙奚习習膝悉熹潟歇臨犀羲",
   },
 
   ren: {
-    graph: '任縣人认認稔忍仁妊韧韌仞愛刃壬恁媒姙裡荏衽爾纫紉轫軔饪飪葚趙荵腍訒牣棯纴紝絍肕祍鵀麥禮讱'
+    graph:
+      "任縣人认認稔忍仁妊韧韌仞愛刃壬恁媒姙裡荏衽爾纫紉轫軔饪飪葚趙荵腍訒牣棯纴紝絍肕祍鵀麥禮讱",
   },
   cong: {
-    graph: '从從丛叢従聪聰枞樅葱蔥璁鍐琮淙匆苁蓯囱囪骢驄悰怱賨熜瑽蠶鏦漎潀騘聡聦悤'
+    graph:
+      "从從丛叢従聪聰枞樅葱蔥璁鍐琮淙匆苁蓯囱囪骢驄悰怱賨熜瑽蠶鏦漎潀騘聡聦悤",
   },
 
   fa: {
-    graph: '法发発筏砝髪乏罚伐阀珐灋沷茷佱鍅橃䂲垡酦'
+    graph: "法发発筏砝髪乏罚伐阀珐灋沷茷佱鍅橃䂲垡酦",
   },
 
   yuan: {
-    graph: '元原远员院源円愿园圆縁缘垣猿沅苑预案媛援圜冤袁怨渊烟爰鸢渕'
+    graph: "元原远员院源円愿园圆縁缘垣猿沅苑预案媛援圜冤袁怨渊烟爰鸢渕",
   },
   ge: {
-    graph: '各个格歌哥隔割蛤膈葛革铬阁咯嗰箇'
-  }
-
-}
+    graph: "各个格歌哥隔割蛤膈葛革铬阁咯嗰箇",
+  },
+};

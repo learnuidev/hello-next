@@ -51,6 +51,7 @@
     "clsx": "^2.0.0",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
+    "kaboom": "^3000.1.13",
     "katex": "^0.16.8",
     "lucide-react": "^0.276.0",
     "mapbox-gl": "^2.15.0",

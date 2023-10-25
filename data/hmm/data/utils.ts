@@ -2,7 +2,7 @@ export const characterTonesMap = {
   1: "āēīōū",
   2: "áéíóú",
   3: "ǎěǐǒǔ",
-  4: "ǎèìòù",
+  4: "àèìòù",
 };
 
 export type ICharacter = {
@@ -11,10 +11,15 @@ export type ICharacter = {
   en?: string;
 };
 
-export const getCharacterToneLevel = (character: ICharacter): number | undefined => {
+export const getCharacterToneLevel = (
+  character: ICharacter
+): number | undefined => {
+  // console.log("CHAR", character);
   const level = Object.entries(characterTonesMap)?.find(([tone, vals]) => {
     return vals?.split("")?.find((v) => character?.pinyin?.includes(v));
   })?.[0];
+
+  // console.log("LEVEL", level)
 
   if (level) {
     return parseInt(level);

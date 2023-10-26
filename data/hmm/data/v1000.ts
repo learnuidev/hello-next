@@ -6,12325 +6,15391 @@ export const allChars = [
     hanzi: "一",
     count: 2812,
     pinyin: "yī",
+    level: 1,
   },
   {
     hanzi: "二",
     count: 95,
     pinyin: "èr",
+    level: 2,
   },
   {
     hanzi: "三",
     count: 181,
     pinyin: "sān",
+    level: 3,
   },
   {
     hanzi: "十",
     count: 291,
     pinyin: "shí",
+    level: 4,
   },
   {
     hanzi: "干",
     count: 98,
     pinyin: "gàn",
     variants: ["gàn", "gān"],
+    level: 5,
   },
   {
     hanzi: "半",
     count: 72,
     pinyin: "bàn",
+    level: 6,
   },
   {
     hanzi: "人",
     count: 1671,
     pinyin: "rén",
-
+    level: 7,
   },
   {
     hanzi: "从",
     count: 229,
-    pinyin: 'cōng'
+    pinyin: "cōng",
+    level: 8,
   },
   {
     hanzi: "个",
     count: 1820,
-    pinyin: 'gè'
+    pinyin: "gè",
+    level: 9,
   },
   {
     hanzi: "入",
     count: 106,
-    pinyin: 'rù'
+    pinyin: "rù",
+    level: 10,
   },
   {
     hanzi: "什",
     count: 390,
-    pinyin: 'shén'
+    pinyin: "shén",
+    level: 11,
   },
   {
     hanzi: "午",
     count: 96,
-    pinyin: 'wǔ'
+    pinyin: "wǔ",
+    level: 12,
   },
   {
     hanzi: "年",
     count: 564,
-    pinyin: 'nián'
+    pinyin: "nián",
+    level: 13,
   },
   {
     hanzi: "口",
     count: 159,
-    pinyin: 'kǒu'
+    pinyin: "kǒu",
+    level: 14,
   },
   {
     hanzi: "中",
     count: 663,
-    pinyin: 'zhōng'
+    pinyin: "zhōng",
+    level: 15,
   },
   {
     hanzi: "叫",
     count: 88,
-    pinyin: 'jiào'
+    pinyin: "jiào",
+    level: 16,
   },
   {
     hanzi: "八",
     count: 40,
-    pinyin: 'bā'
+    pinyin: "bā",
+    level: 17,
   },
   {
     hanzi: "只",
     count: 332,
-    pinyin: 'zhǐ'
+    pinyin: "zhǐ",
+    level: 18,
   },
   {
     hanzi: "介",
     count: 31,
-    pinyin:'jiè'
+    pinyin: "jiè",
+    level: 19,
   },
   {
     hanzi: "儿",
     count: 476,
-    pinyin: 'ér'
+    pinyin: "ér",
+    level: 20,
   },
   {
     hanzi: "四",
     count: 85,
-    pinyin: 'sì'
+    pinyin: "sì",
+    level: 21,
   },
   {
     hanzi: "兄",
     count: 15,
-    pinyin: 'xiōng'
+    pinyin: "xiōng",
+    level: 22,
   },
   {
     hanzi: "兑",
     count: 4,
-    pinyin: 'duì',
-    en: 'To Exchange'
+    pinyin: "duì",
+    en: "To Exchange",
+    level: 23,
   },
   {
     hanzi: "说",
     count: 616,
-    pinyin: 'shuō',
-    en: 'to speak, to talk, to say'
+    pinyin: "shuō",
+    en: "to speak, to talk, to say",
+    level: 24,
   },
   {
     hanzi: "计",
     count: 101,
-    pinyin: 'jì',
-    en: 'plan'
+    pinyin: "jì",
+    en: "plan",
+    level: 25,
   },
   {
     hanzi: "认",
     count: 194,
-    pinyin: 'rèn',
-    en: 'to recognise, to know'
+    pinyin: "rèn",
+    en: "to recognise, to know",
+    level: 26,
   },
   {
     hanzi: "识",
     count: 88,
-    pinyin: 'shí',
-    en: 'knowledge'
+    pinyin: "shí",
+    en: "knowledge",
+    level: 27,
   },
   {
     hanzi: "马",
     count: 137,
-    pinyin: 'mǎ',
-    en: 'horse'
+    pinyin: "mǎ",
+    en: "horse",
+    level: 28,
   },
   {
     hanzi: "吗",
     count: 430,
-    pinyin: 'ma',
-    en: 'indicates yes or no question'
+    pinyin: "ma",
+    en: "indicates yes or no question",
+    level: 29,
   },
   {
     hanzi: "骂",
     count: 16,
-    pinyin: 'mà',
-    en: 'to scold'
+    pinyin: "mà",
+    en: "to scold",
+    level: 30,
   },
   {
     hanzi: "乙",
     count: 2,
-    pinyin: 'yǐ',
-    en: 'Second (2nd)'
+    pinyin: "yǐ",
+    en: "Second (2nd)",
+    level: 31,
   },
   {
     hanzi: "乞",
     count: 2,
-    en: 'to beg',
-    pinyin: 'qǐ'
+    en: "to beg",
+    pinyin: "qǐ",
+    level: 32,
   },
   {
     hanzi: "吃",
     count: 532,
-    pinyin: 'chī',
-    en: 'to eat'
+    pinyin: "chī",
+    en: "to eat",
+    level: 33,
   },
   {
     hanzi: "气",
     count: 212,
-    pinyin: 'qì',
-    en: 'air'
+    pinyin: "qì",
+    en: "air",
+    level: 34,
   },
   {
     hanzi: "飞",
     count: 105,
-    pinyin: 'fēi',
-    en: 'to fly'
+    pinyin: "fēi",
+    en: "to fly",
+    level: 35,
   },
   {
     hanzi: "况",
     count: 46,
-    pinyin: 'fēi',
-    en: 'to fly'
+    pinyin: "fēi",
+    en: "to fly",
+    level: 36,
   },
   {
     hanzi: "日",
     count: 150,
-    pinyin: 'rì',
-    en: 'sun'
+    pinyin: "rì",
+    en: "sun",
+    level: 37,
   },
   {
     hanzi: "旧",
     count: 24,
-    pinyin: 'rì',
-    en: 'sun'
+    pinyin: "rì",
+    en: "sun",
+    level: 38,
   },
   {
     hanzi: "旦",
     count: 8,
-    pinyin: 'dàn',
-    en: 'dawn'
+    pinyin: "dàn",
+    en: "dawn",
+    level: 39,
   },
   {
     hanzi: "但",
     count: 245,
-    pinyin: 'dàn',
-    en: 'but'
+    pinyin: "dàn",
+    en: "but",
+    level: 40,
   },
   {
     hanzi: "早",
     count: 183,
-    pinyin: 'zǎo',
-    en: 'early',
+    pinyin: "zǎo",
+    en: "early",
+    level: 41,
   },
   {
     hanzi: "唱",
     count: 60,
-    pinyin: 'chàng',
-    en: 'to sing',
+    pinyin: "chàng",
+    en: "to sing",
+    level: 42,
   },
   {
     hanzi: "电",
     count: 291,
-    pinyin: 'diàn',
-    en: 'electric',
+    pinyin: "diàn",
+    en: "electric",
+    level: 43,
   },
   {
     hanzi: "七",
     count: 38,
-    pinyin: 'qī',
-    en: 'seven',
+    pinyin: "qī",
+    en: "seven",
+    level: 44,
   },
   {
     hanzi: "化",
     count: 85,
-    pinyin: 'huà',
-    en: 'to transform',
+    pinyin: "huà",
+    en: "to transform",
+    level: 45,
   },
   {
     hanzi: "白",
     count: 109,
-    pinyin: 'bái',
-    en: 'white',
+    pinyin: "bái",
+    en: "white",
+    level: 46,
   },
   {
     hanzi: "百",
     count: 73,
-    pinyin: 'bǎi',
-    en: 'hundred',
+    pinyin: "bǎi",
+    en: "hundred",
+    level: 47,
   },
   {
     hanzi: "今",
     count: 450,
-    pinyin: 'jīn',
-    en: 'today',
+    pinyin: "jīn",
+    en: "today",
+    level: 48,
   },
   {
     hanzi: "千",
     count: 61,
-    pinyin: 'qiān',
-    en: 'thousand',
+    pinyin: "qiān",
+    en: "thousand",
+    level: 49,
   },
   {
     hanzi: "舌",
     count: 7,
-    pinyin: 'shé',
-    en: 'tongue',
+    pinyin: "shé",
+    en: "tongue",
+    level: 50,
   },
   {
     hanzi: "话",
     count: 332,
-    pinyin: 'huà',
-    en: 'speech',
-
+    pinyin: "huà",
+    en: "speech",
+    level: 51,
   },
   {
     hanzi: "活",
     count: 162,
-    pinyin: 'huó',
-    en: 'to live',
-
+    pinyin: "huó",
+    en: "to live",
+    level: 52,
   },
   {
     hanzi: "乱",
     count: 23,
-    pinyin: 'luàn',
-    en: 'mess',
+    pinyin: "luàn",
+    en: "mess",
+    level: 53,
   },
   {
     hanzi: "汽",
     count: 33,
-    pinyin: 'qì',
-    en: 'steam',
+    pinyin: "qì",
+    en: "steam",
+    level: 54,
   },
   {
     hanzi: "月",
     count: 154,
+    level: 55,
   },
   {
     hanzi: "用",
     count: 266,
+    level: 56,
   },
   {
     hanzi: "胖",
     count: 21,
+    level: 57,
   },
   {
     hanzi: "朋",
     count: 184,
+    level: 58,
   },
   {
     hanzi: "明",
     count: 246,
+    level: 59,
   },
   {
     hanzi: "习",
     count: 169,
+    level: 60,
   },
   {
     hanzi: "句",
     count: 39,
+    level: 61,
   },
   {
     hanzi: "勺",
     count: 11,
+    level: 62,
   },
   {
     hanzi: "的",
     count: 4253,
+    level: 63,
   },
   {
     hanzi: "了",
     count: 2552,
+    level: 64,
   },
   {
     hanzi: "子",
     count: 725,
+    level: 65,
   },
   {
     hanzi: "寸",
     count: 6,
+    level: 66,
   },
   {
     hanzi: "时",
     count: 530,
+    level: 67,
   },
   {
     hanzi: "过",
     count: 383,
+    level: 68,
   },
   {
     hanzi: "付",
     count: 21,
+    level: 69,
   },
   {
     hanzi: "讨",
     count: 25,
+    level: 70,
   },
   {
     hanzi: "才",
     count: 174,
+    level: 71,
   },
   {
     hanzi: "牙",
     count: 10,
+    level: 72,
   },
   {
     hanzi: "卜",
     count: 0,
+    level: 73,
   },
   {
     hanzi: "上",
     count: 872,
+    level: 74,
   },
   {
     hanzi: "下",
     count: 547,
+    level: 75,
   },
   {
     hanzi: "卡",
     count: 13,
+    level: 76,
   },
   {
     hanzi: "吓",
     count: 24,
+    level: 77,
   },
   {
     hanzi: "占",
     count: 6,
+    level: 78,
   },
   {
     hanzi: "点",
     count: 366,
+    level: 79,
   },
   {
     hanzi: "让",
     count: 168,
+    level: 80,
   },
   {
     hanzi: "止",
     count: 14,
+    level: 81,
   },
   {
     hanzi: "正",
     count: 109,
+    level: 82,
   },
   {
     hanzi: "是",
     count: 1749,
+    level: 83,
   },
   {
     hanzi: "目",
     count: 61,
+    level: 84,
   },
   {
     hanzi: "自",
     count: 326,
+    level: 85,
   },
   {
     hanzi: "面",
     count: 328,
+    level: 86,
   },
   {
     hanzi: "身",
     count: 121,
+    level: 87,
   },
   {
     hanzi: "谢",
     count: 25,
+    level: 88,
   },
   {
     hanzi: "弋",
     count: 0,
+    level: 89,
   },
   {
     hanzi: "代",
     count: 55,
+    level: 90,
   },
   {
     hanzi: "戈",
     count: 0,
+    level: 91,
   },
   {
     hanzi: "手",
     count: 217,
+    level: 92,
   },
   {
     hanzi: "我",
     count: 2596,
+    level: 93,
   },
   {
     hanzi: "或",
     count: 20,
+    level: 94,
   },
   {
     hanzi: "看",
     count: 461,
+    level: 95,
   },
   {
     hanzi: "担",
     count: 44,
+    level: 96,
   },
   {
     hanzi: "拍",
     count: 39,
+    level: 97,
   },
   {
     hanzi: "提",
     count: 64,
+    level: 98,
   },
   {
     hanzi: "找",
     count: 103,
+    level: 99,
   },
   {
     hanzi: "木",
     count: 19,
+    level: 100,
   },
   {
     hanzi: "本",
     count: 144,
+    level: 101,
   },
   {
     hanzi: "体",
     count: 113,
+    level: 102,
   },
   {
     hanzi: "末",
     count: 23,
+    level: 103,
   },
   {
     hanzi: "米",
     count: 47,
+    level: 104,
   },
   {
     hanzi: "来",
     count: 899,
+    level: 105,
   },
   {
     hanzi: "呆",
     count: 8,
+    level: 106,
   },
   {
     hanzi: "休",
     count: 53,
+    level: 107,
   },
   {
     hanzi: "桌",
     count: 68,
+    level: 108,
   },
   {
     hanzi: "相",
     count: 121,
+    level: 109,
   },
   {
     hanzi: "禾",
     count: 0,
+    level: 110,
   },
   {
     hanzi: "和",
     count: 443,
+    level: 111,
   },
   {
     hanzi: "种",
     count: 162,
+    level: 112,
   },
   {
     hanzi: "香",
     count: 22,
+    level: 113,
   },
   {
     hanzi: "几",
     count: 224,
+    level: 114,
   },
   {
     hanzi: "机",
     count: 264,
+    level: 115,
   },
   {
     hanzi: "心",
     count: 280,
+    level: 116,
   },
   {
     hanzi: "想",
     count: 479,
+    level: 117,
   },
   {
     hanzi: "息",
     count: 87,
+    level: 118,
   },
   {
     hanzi: "总",
     count: 126,
+    level: 119,
   },
   {
     hanzi: "怕",
     count: 42,
+    level: 120,
   },
   {
     hanzi: "己",
     count: 234,
+    level: 121,
   },
   {
     hanzi: "记",
     count: 74,
+    level: 122,
   },
   {
     hanzi: "已",
     count: 171,
+    level: 123,
   },
   {
     hanzi: "包",
     count: 159,
+    level: 124,
   },
   {
     hanzi: "土",
     count: 29,
+    level: 125,
   },
   {
     hanzi: "坐",
     count: 96,
+    level: 126,
   },
   {
     hanzi: "吐",
     count: 6,
+    level: 127,
   },
   {
     hanzi: "肚",
     count: 10,
+    level: 128,
   },
   {
     hanzi: "在",
     count: 1225,
+    level: 129,
   },
   {
     hanzi: "走",
     count: 181,
+    level: 130,
   },
   {
     hanzi: "起",
     count: 379,
+    level: 131,
   },
   {
     hanzi: "不",
     count: 1602,
+    level: 132,
   },
   {
     hanzi: "还",
     count: 392,
+    level: 133,
   },
   {
     hanzi: "坏",
     count: 67,
+    level: 134,
   },
   {
     hanzi: "杯",
     count: 43,
+    level: 135,
   },
   {
     hanzi: "么",
     count: 548,
+    level: 136,
   },
   {
     hanzi: "公",
     count: 366,
+    level: 137,
   },
   {
     hanzi: "台",
     count: 62,
+    level: 138,
   },
   {
     hanzi: "去",
     count: 696,
+    level: 139,
   },
   {
     hanzi: "丢",
     count: 29,
+    level: 140,
   },
   {
     hanzi: "法",
     count: 204,
+    level: 141,
   },
   {
     hanzi: "寺",
     count: 0,
+    level: 142,
   },
   {
     hanzi: "等",
     count: 101,
+    level: 143,
   },
   {
     hanzi: "门",
     count: 158,
+    level: 144,
   },
   {
     hanzi: "们",
     count: 1138,
+    level: 145,
   },
   {
     hanzi: "问",
     count: 174,
+    level: 146,
   },
   {
     hanzi: "间",
     count: 201,
+    level: 147,
   },
   {
     hanzi: "简",
     count: 40,
+    level: 148,
   },
   {
     hanzi: "司",
     count: 233,
+    level: 149,
   },
   {
     hanzi: "词",
     count: 23,
+    level: 150,
   },
   {
     hanzi: "母",
     count: 93,
+    level: 151,
   },
   {
     hanzi: "每",
     count: 307,
+    level: 152,
   },
   {
     hanzi: "也",
     count: 265,
+    level: 153,
   },
   {
     hanzi: "他",
     count: 1341,
+    level: 154,
   },
   {
     hanzi: "地",
     count: 347,
+    level: 155,
   },
   {
     hanzi: "小",
     count: 569,
+    level: 156,
   },
   {
     hanzi: "东",
     count: 144,
+    level: 157,
   },
   {
     hanzi: "尔",
     count: 5,
+    level: 158,
   },
   {
     hanzi: "你",
     count: 1421,
+    level: 159,
   },
   {
     hanzi: "您",
     count: 33,
+    level: 160,
   },
   {
     hanzi: "大",
     count: 701,
+    level: 161,
   },
   {
     hanzi: "太",
     count: 279,
+    level: 162,
   },
   {
     hanzi: "犬",
     count: 0,
+    level: 163,
   },
   {
     hanzi: "哭",
     count: 26,
+    level: 164,
   },
   {
     hanzi: "臭",
     count: 12,
+    level: 165,
   },
   {
     hanzi: "然",
     count: 214,
+    level: 166,
   },
   {
     hanzi: "狗",
     count: 71,
+    level: 167,
   },
   {
     hanzi: "决",
     count: 71,
+    level: 168,
   },
   {
     hanzi: "快",
     count: 160,
+    level: 169,
   },
   {
     hanzi: "块",
     count: 49,
+    level: 170,
   },
   {
     hanzi: "羊",
     count: 20,
+    level: 171,
   },
   {
     hanzi: "着",
     count: 219,
+    level: 172,
   },
   {
     hanzi: "样",
     count: 246,
+    level: 173,
   },
   {
     hanzi: "美",
     count: 143,
+    level: 174,
   },
   {
     hanzi: "力",
     count: 135,
+    level: 175,
   },
   {
     hanzi: "加",
     count: 108,
+    level: 176,
   },
   {
     hanzi: "边",
     count: 129,
+    level: 177,
   },
   {
     hanzi: "办",
     count: 90,
+    level: 178,
   },
   {
     hanzi: "为",
     count: 446,
+    level: 179,
   },
   {
     hanzi: "另",
     count: 31,
+    level: 180,
   },
   {
     hanzi: "云",
     count: 16,
+    level: 181,
   },
   {
     hanzi: "运",
     count: 95,
+    level: 182,
   },
   {
     hanzi: "动",
     count: 264,
+    level: 183,
   },
   {
     hanzi: "会",
     count: 666,
+    level: 184,
   },
   {
     hanzi: "丁",
     count: 0,
+    level: 185,
   },
   {
     hanzi: "打",
     count: 219,
+    level: 186,
   },
   {
     hanzi: "可",
     count: 452,
+    level: 187,
   },
   {
     hanzi: "哥",
     count: 70,
+    level: 188,
   },
   {
     hanzi: "河",
     count: 27,
+    level: 189,
   },
   {
     hanzi: "奇",
     count: 18,
+    level: 190,
   },
   {
     hanzi: "骑",
     count: 20,
+    level: 191,
   },
   {
     hanzi: "椅",
     count: 8,
+    level: 192,
   },
   {
     hanzi: "以",
     count: 584,
+    level: 193,
   },
   {
     hanzi: "内",
     count: 57,
+    level: 194,
   },
   {
     hanzi: "肉",
     count: 54,
+    level: 195,
   },
   {
     hanzi: "两",
     count: 171,
+    level: 196,
   },
   {
     hanzi: "再",
     count: 120,
+    level: 197,
   },
   {
     hanzi: "同",
     count: 182,
+    level: 198,
   },
   {
     hanzi: "周",
     count: 65,
+    level: 199,
   },
   {
     hanzi: "王",
     count: 34,
+    level: 200,
   },
   {
     hanzi: "全",
     count: 122,
+    level: 201,
   },
   {
     hanzi: "主",
     count: 93,
+    level: 202,
   },
   {
     hanzi: "住",
     count: 97,
+    level: 203,
   },
   {
     hanzi: "注",
     count: 48,
+    level: 204,
   },
   {
     hanzi: "玉",
     count: 7,
+    level: 205,
   },
   {
     hanzi: "国",
     count: 598,
+    level: 206,
   },
   {
     hanzi: "回",
     count: 211,
+    level: 207,
   },
   {
     hanzi: "因",
     count: 157,
+    level: 208,
   },
   {
     hanzi: "嗯",
     count: 10,
+    level: 209,
   },
   {
     hanzi: "行",
     count: 250,
+    level: 210,
   },
   {
     hanzi: "得",
     count: 535,
+    level: 211,
   },
   {
     hanzi: "往",
     count: 74,
+    level: 212,
   },
   {
     hanzi: "金",
     count: 39,
+    level: 213,
   },
   {
     hanzi: "钟",
     count: 54,
+    level: 214,
   },
   {
     hanzi: "天",
     count: 860,
+    level: 215,
   },
   {
     hanzi: "关",
     count: 116,
+    level: 216,
   },
   {
     hanzi: "送",
     count: 51,
+    level: 217,
   },
   {
     hanzi: "开",
     count: 353,
+    level: 218,
   },
   {
     hanzi: "算",
     count: 78,
+    level: 219,
   },
   {
     hanzi: "并",
     count: 27,
+    level: 220,
   },
   {
     hanzi: "耳",
     count: 5,
+    level: 221,
   },
   {
     hanzi: "闻",
     count: 20,
+    level: 222,
   },
   {
     hanzi: "联",
     count: 41,
+    level: 223,
   },
   {
     hanzi: "系",
     count: 55,
+    level: 224,
   },
   {
     hanzi: "女",
     count: 229,
+    level: 225,
   },
   {
     hanzi: "妈",
     count: 158,
+    level: 226,
   },
   {
     hanzi: "好",
     count: 777,
+    level: 227,
   },
   {
     hanzi: "始",
     count: 85,
+    level: 228,
   },
   {
     hanzi: "西",
     count: 157,
+    level: 229,
   },
   {
     hanzi: "要",
     count: 920,
+    level: 230,
   },
   {
     hanzi: "如",
     count: 168,
+    level: 231,
   },
   {
     hanzi: "她",
     count: 375,
+    level: 232,
   },
   {
     hanzi: "楼",
     count: 53,
+    level: 233,
   },
   {
     hanzi: "又",
     count: 121,
+    level: 234,
   },
   {
     hanzi: "汉",
     count: 66,
+    level: 235,
   },
   {
     hanzi: "对",
     count: 309,
+    level: 236,
   },
   {
     hanzi: "没",
     count: 477,
+    level: 237,
   },
   {
     hanzi: "取",
     count: 45,
+    level: 238,
   },
   {
     hanzi: "最",
     count: 270,
+    level: 239,
   },
   {
     hanzi: "曼",
     count: 0,
+    level: 240,
   },
   {
     hanzi: "慢",
     count: 28,
+    level: 241,
   },
   {
     hanzi: "支",
     count: 37,
+    level: 242,
   },
   {
     hanzi: "皮",
     count: 14,
+    level: 243,
   },
   {
     hanzi: "书",
     count: 146,
+    level: 244,
   },
   {
     hanzi: "有",
     count: 1366,
+    level: 245,
   },
   {
     hanzi: "随",
     count: 51,
+    level: 246,
   },
   {
     hanzi: "友",
     count: 202,
+    level: 247,
   },
   {
     hanzi: "发",
     count: 279,
+    level: 248,
   },
   {
     hanzi: "六",
     count: 27,
+    level: 249,
   },
   {
     hanzi: "言",
     count: 40,
+    level: 250,
   },
   {
     hanzi: "信",
     count: 121,
+    level: 251,
   },
   {
     hanzi: "文",
     count: 131,
+    level: 252,
   },
   {
     hanzi: "这",
     count: 1632,
+    level: 253,
   },
   {
     hanzi: "父",
     count: 88,
+    level: 254,
   },
   {
     hanzi: "交",
     count: 86,
+    level: 255,
   },
   {
     hanzi: "校",
     count: 102,
+    level: 256,
   },
   {
     hanzi: "风",
     count: 49,
+    level: 257,
   },
   {
     hanzi: "网",
     count: 38,
+    level: 258,
   },
   {
     hanzi: "那",
     count: 355,
+    level: 259,
   },
   {
     hanzi: "哪",
     count: 93,
+    level: 260,
   },
   {
     hanzi: "衣",
     count: 106,
+    level: 261,
   },
   {
     hanzi: "袋",
     count: 20,
+    level: 262,
   },
   {
     hanzi: "被",
     count: 139,
+    level: 263,
   },
   {
     hanzi: "艮",
     count: 0,
+    level: 264,
   },
   {
     hanzi: "很",
     count: 1016,
+    level: 265,
   },
   {
     hanzi: "银",
     count: 36,
+    level: 266,
   },
   {
     hanzi: "长",
     count: 204,
+    level: 267,
   },
   {
     hanzi: "报",
     count: 43,
+    level: 268,
   },
   {
     hanzi: "服",
     count: 139,
+    level: 269,
   },
   {
     hanzi: "元",
     count: 49,
+    level: 270,
   },
   {
     hanzi: "远",
     count: 39,
+    level: 271,
   },
   {
     hanzi: "玩",
     count: 96,
+    level: 272,
   },
   {
     hanzi: "园",
     count: 82,
+    level: 273,
   },
   {
     hanzi: "完",
     count: 159,
+    level: 274,
   },
   {
     hanzi: "院",
     count: 64,
+    level: 275,
   },
   {
     hanzi: "字",
     count: 84,
+    level: 276,
   },
   {
     hanzi: "定",
     count: 251,
+    level: 277,
   },
   {
     hanzi: "安",
     count: 65,
+    level: 278,
   },
   {
     hanzi: "寄",
     count: 10,
+    level: 279,
   },
   {
     hanzi: "宝",
     count: 46,
+    level: 280,
   },
   {
     hanzi: "匕",
     count: 0,
+    level: 281,
   },
   {
     hanzi: "比",
     count: 200,
+    level: 282,
   },
   {
     hanzi: "它",
     count: 79,
+    level: 283,
   },
   {
     hanzi: "此",
     count: 23,
+    level: 284,
   },
   {
     hanzi: "些",
     count: 220,
+    level: 285,
   },
   {
     hanzi: "能",
     count: 475,
+    level: 286,
   },
   {
     hanzi: "夕",
     count: 2,
+    level: 287,
   },
   {
     hanzi: "多",
     count: 653,
+    level: 288,
   },
   {
     hanzi: "名",
     count: 137,
+    level: 289,
   },
   {
     hanzi: "够",
     count: 50,
+    level: 290,
   },
   {
     hanzi: "外",
     count: 240,
+    level: 291,
   },
   {
     hanzi: "歹",
     count: 0,
+    level: 292,
   },
   {
     hanzi: "死",
     count: 46,
+    level: 293,
   },
   {
     hanzi: "少",
     count: 129,
+    level: 294,
   },
   {
     hanzi: "吵",
     count: 14,
+    level: 295,
   },
   {
     hanzi: "步",
     count: 53,
+    level: 296,
   },
   {
     hanzi: "贝",
     count: 11,
+    level: 297,
   },
   {
     hanzi: "员",
     count: 130,
+    level: 298,
   },
   {
     hanzi: "贵",
     count: 36,
+    level: 299,
   },
   {
     hanzi: "页",
     count: 6,
+    level: 300,
   },
   {
     hanzi: "题",
     count: 128,
+    level: 301,
   },
   {
     hanzi: "见",
     count: 148,
+    level: 302,
   },
   {
     hanzi: "现",
     count: 288,
+    level: 303,
   },
   {
     hanzi: "首",
     count: 28,
+    level: 304,
   },
   {
     hanzi: "道",
     count: 230,
+    level: 305,
   },
   {
     hanzi: "直",
     count: 118,
+    level: 306,
   },
   {
     hanzi: "真",
     count: 201,
+    level: 307,
   },
   {
     hanzi: "廿",
     count: 0,
+    level: 308,
   },
   {
     hanzi: "甘",
     count: 1,
+    level: 309,
   },
   {
     hanzi: "某",
     count: 8,
+    level: 310,
   },
   {
     hanzi: "其",
     count: 47,
+    level: 311,
   },
   {
     hanzi: "期",
     count: 86,
+    level: 312,
   },
   {
     hanzi: "厂",
     count: 9,
+    level: 313,
   },
   {
     hanzi: "厌",
     count: 14,
+    level: 314,
   },
   {
     hanzi: "斤",
     count: 12,
+    level: 315,
   },
   {
     hanzi: "听",
     count: 184,
+    level: 316,
   },
   {
     hanzi: "近",
     count: 102,
+    level: 317,
   },
   {
     hanzi: "诉",
     count: 36,
+    level: 318,
   },
   {
     hanzi: "后",
     count: 334,
+    level: 319,
   },
   {
     hanzi: "厚",
     count: 9,
+    level: 320,
   },
   {
     hanzi: "反",
     count: 33,
+    level: 321,
   },
   {
     hanzi: "饭",
     count: 238,
+    level: 322,
   },
   {
     hanzi: "饱",
     count: 10,
+    level: 323,
   },
   {
     hanzi: "饿",
     count: 21,
+    level: 324,
   },
   {
     hanzi: "工",
     count: 386,
+    level: 325,
   },
   {
     hanzi: "江",
     count: 16,
+    level: 326,
   },
   {
     hanzi: "左",
     count: 23,
+    level: 327,
   },
   {
     hanzi: "右",
     count: 29,
+    level: 328,
   },
   {
     hanzi: "差",
     count: 68,
+    level: 329,
   },
   {
     hanzi: "红",
     count: 86,
+    level: 330,
   },
   {
     hanzi: "约",
     count: 51,
+    level: 331,
   },
   {
     hanzi: "合",
     count: 67,
+    level: 332,
   },
   {
     hanzi: "给",
     count: 291,
+    level: 333,
   },
   {
     hanzi: "拿",
     count: 63,
+    level: 334,
   },
   {
     hanzi: "穴",
     count: 1,
+    level: 335,
   },
   {
     hanzi: "穿",
     count: 61,
+    level: 336,
   },
   {
     hanzi: "空",
     count: 75,
+    level: 337,
   },
   {
     hanzi: "深",
     count: 30,
+    level: 338,
   },
   {
     hanzi: "式",
     count: 26,
+    level: 339,
   },
   {
     hanzi: "试",
     count: 67,
+    level: 340,
   },
   {
     hanzi: "刀",
     count: 17,
+    level: 341,
   },
   {
     hanzi: "分",
     count: 221,
+    level: 342,
   },
   {
     hanzi: "份",
     count: 51,
+    level: 343,
   },
   {
     hanzi: "切",
     count: 33,
+    level: 344,
   },
   {
     hanzi: "划",
     count: 67,
+    level: 345,
   },
   {
     hanzi: "别",
     count: 298,
+    level: 346,
   },
   {
     hanzi: "刚",
     count: 70,
+    level: 347,
   },
   {
     hanzi: "班",
     count: 98,
+    level: 348,
   },
   {
     hanzi: "前",
     count: 234,
+    level: 349,
   },
   {
     hanzi: "召",
     count: 6,
+    level: 350,
   },
   {
     hanzi: "绍",
     count: 15,
+    level: 351,
   },
   {
     hanzi: "照",
     count: 83,
+    level: 352,
   },
   {
     hanzi: "片",
     count: 53,
+    level: 353,
   },
   {
     hanzi: "至",
     count: 12,
+    level: 354,
   },
   {
     hanzi: "到",
     count: 632,
+    level: 355,
   },
   {
     hanzi: "井",
     count: 1,
+    level: 356,
   },
   {
     hanzi: "进",
     count: 157,
+    level: 357,
   },
   {
     hanzi: "山",
     count: 59,
+    level: 358,
   },
   {
     hanzi: "出",
     count: 460,
+    level: 359,
   },
   {
     hanzi: "岁",
     count: 70,
+    level: 360,
   },
   {
     hanzi: "亦",
     count: 0,
+    level: 361,
   },
   {
     hanzi: "变",
     count: 121,
+    level: 362,
   },
   {
     hanzi: "田",
     count: 4,
+    level: 363,
   },
   {
     hanzi: "果",
     count: 171,
+    level: 364,
   },
   {
     hanzi: "课",
     count: 89,
+    level: 365,
   },
   {
     hanzi: "思",
     count: 86,
+    level: 366,
   },
   {
     hanzi: "单",
     count: 72,
+    level: 367,
   },
   {
     hanzi: "鱼",
     count: 40,
+    level: 368,
   },
   {
     hanzi: "男",
     count: 93,
+    level: 369,
   },
   {
     hanzi: "累",
     count: 26,
+    level: 370,
   },
   {
     hanzi: "花",
     count: 128,
+    level: 371,
   },
   {
     hanzi: "草",
     count: 30,
+    level: 372,
   },
   {
     hanzi: "猫",
     count: 40,
+    level: 373,
   },
   {
     hanzi: "药",
     count: 42,
+    level: 374,
   },
   {
     hanzi: "宽",
     count: 11,
+    level: 375,
   },
   {
     hanzi: "采",
     count: 7,
+    level: 376,
   },
   {
     hanzi: "菜",
     count: 87,
+    level: 377,
   },
   {
     hanzi: "受",
     count: 68,
+    level: 378,
   },
   {
     hanzi: "爱",
     count: 136,
+    level: 379,
   },
   {
     hanzi: "共",
     count: 50,
+    level: 380,
   },
   {
     hanzi: "借",
     count: 26,
+    level: 381,
   },
   {
     hanzi: "错",
     count: 85,
+    level: 382,
   },
   {
     hanzi: "收",
     count: 80,
+    level: 383,
   },
   {
     hanzi: "改",
     count: 53,
+    level: 384,
   },
   {
     hanzi: "数",
     count: 59,
+    level: 385,
   },
   {
     hanzi: "古",
     count: 29,
+    level: 386,
   },
   {
     hanzi: "苦",
     count: 32,
+    level: 387,
   },
   {
     hanzi: "做",
     count: 343,
+    level: 388,
   },
   {
     hanzi: "者",
     count: 34,
+    level: 389,
   },
   {
     hanzi: "猪",
     count: 25,
+    level: 390,
   },
   {
     hanzi: "都",
     count: 790,
+    level: 391,
   },
   {
     hanzi: "老",
     count: 335,
+    level: 392,
   },
   {
     hanzi: "孝",
     count: 1,
+    level: 393,
   },
   {
     hanzi: "教",
     count: 69,
+    level: 394,
   },
   {
     hanzi: "五",
     count: 75,
+    level: 395,
   },
   {
     hanzi: "语",
     count: 126,
+    level: 396,
   },
   {
     hanzi: "广",
     count: 48,
+    level: 397,
   },
   {
     hanzi: "床",
     count: 37,
+    level: 398,
   },
   {
     hanzi: "店",
     count: 86,
+    level: 399,
   },
   {
     hanzi: "应",
     count: 146,
+    level: 400,
   },
   {
     hanzi: "兴",
     count: 36,
+    level: 401,
   },
   {
     hanzi: "学",
     count: 528,
+    level: 402,
   },
   {
     hanzi: "觉",
     count: 164,
+    level: 403,
   },
   {
     hanzi: "亥",
     count: 0,
+    level: 404,
   },
   {
     hanzi: "该",
     count: 127,
+    level: 405,
   },
   {
     hanzi: "孩",
     count: 215,
+    level: 406,
   },
   {
     hanzi: "水",
     count: 156,
+    level: 407,
   },
   {
     hanzi: "冰",
     count: 21,
+    level: 408,
   },
   {
     hanzi: "求",
     count: 44,
+    level: 409,
   },
   {
     hanzi: "球",
     count: 96,
+    level: 410,
   },
   {
     hanzi: "救",
     count: 25,
+    level: 411,
   },
   {
     hanzi: "火",
     count: 78,
+    level: 412,
   },
   {
     hanzi: "灯",
     count: 12,
+    level: 413,
   },
   {
     hanzi: "烦",
     count: 33,
+    level: 414,
   },
   {
     hanzi: "里",
     count: 511,
+    level: 415,
   },
   {
     hanzi: "重",
     count: 174,
+    level: 416,
   },
   {
     hanzi: "懂",
     count: 35,
+    level: 417,
   },
   {
     hanzi: "黑",
     count: 30,
+    level: 418,
   },
   {
     hanzi: "乍",
     count: 0,
+    level: 419,
   },
   {
     hanzi: "作",
     count: 380,
+    level: 420,
   },
   {
     hanzi: "昨",
     count: 58,
+    level: 421,
   },
   {
     hanzi: "怎",
     count: 102,
+    level: 422,
   },
   {
     hanzi: "窄",
     count: 2,
+    level: 423,
   },
   {
     hanzi: "丰",
     count: 16,
+    level: 424,
   },
   {
     hanzi: "青",
     count: 11,
+    level: 425,
   },
   {
     hanzi: "请",
     count: 171,
+    level: 426,
   },
   {
     hanzi: "情",
     count: 221,
+    level: 427,
   },
   {
     hanzi: "表",
     count: 67,
+    level: 428,
   },
   {
     hanzi: "生",
     count: 478,
+    level: 429,
   },
   {
     hanzi: "星",
     count: 46,
+    level: 430,
   },
   {
     hanzi: "姓",
     count: 8,
+    level: 431,
   },
   {
     hanzi: "免",
     count: 17,
+    level: 432,
   },
   {
     hanzi: "晚",
     count: 151,
+    level: 433,
   },
   {
     hanzi: "家",
     count: 650,
+    level: 434,
   },
   {
     hanzi: "象",
     count: 46,
+    level: 435,
   },
   {
     hanzi: "像",
     count: 66,
+    level: 436,
   },
   {
     hanzi: "头",
     count: 105,
+    level: 437,
   },
   {
     hanzi: "实",
     count: 104,
+    level: 438,
   },
   {
     hanzi: "买",
     count: 185,
+    level: 439,
   },
   {
     hanzi: "卖",
     count: 33,
+    level: 440,
   },
   {
     hanzi: "读",
     count: 54,
+    level: 441,
   },
   {
     hanzi: "牛",
     count: 39,
+    level: 442,
   },
   {
     hanzi: "特",
     count: 105,
+    level: 443,
   },
   {
     hanzi: "件",
     count: 157,
+    level: 444,
   },
   {
     hanzi: "告",
     count: 55,
+    level: 445,
   },
   {
     hanzi: "先",
     count: 84,
+    level: 446,
   },
   {
     hanzi: "洗",
     count: 23,
+    level: 447,
   },
   {
     hanzi: "角",
     count: 11,
+    level: 448,
   },
   {
     hanzi: "解",
     count: 74,
+    level: 449,
   },
   {
     hanzi: "当",
     count: 101,
+    level: 450,
   },
   {
     hanzi: "扫",
     count: 10,
+    level: 451,
   },
   {
     hanzi: "事",
     count: 375,
+    level: 452,
   },
   {
     hanzi: "史",
     count: 19,
+    level: 453,
   },
   {
     hanzi: "使",
     count: 46,
+    level: 454,
   },
   {
     hanzi: "更",
     count: 99,
+    level: 455,
   },
   {
     hanzi: "便",
     count: 66,
+    level: 456,
   },
   {
     hanzi: "石",
     count: 29,
+    level: 457,
   },
   {
     hanzi: "硬",
     count: 5,
+    level: 458,
   },
   {
     hanzi: "车",
     count: 215,
+    level: 459,
   },
   {
     hanzi: "连",
     count: 32,
+    level: 460,
   },
   {
     hanzi: "辆",
     count: 38,
+    level: 461,
   },
   {
     hanzi: "较",
     count: 35,
+    level: 462,
   },
   {
     hanzi: "轻",
     count: 81,
+    level: 463,
   },
   {
     hanzi: "经",
     count: 306,
+    level: 464,
   },
   {
     hanzi: "与",
     count: 24,
+    level: 465,
   },
   {
     hanzi: "写",
     count: 81,
+    level: 466,
   },
   {
     hanzi: "士",
     count: 24,
+    level: 467,
   },
   {
     hanzi: "任",
     pinyin: "rèn",
     en: "to assign; to appoint; to take up a post; office; responsibility; to let; to allow",
     count: 63,
+    level: 468,
   },
   {
     hanzi: "豆",
     count: 11,
+    level: 469,
   },
   {
     hanzi: "喜",
     count: 266,
+    level: 470,
   },
   {
     hanzi: "高",
     count: 171,
+    level: 471,
   },
   {
     hanzi: "搞",
     count: 7,
+    level: 472,
   },
   {
     hanzi: "亭",
     count: 1,
+    level: 473,
   },
   {
     hanzi: "停",
     count: 35,
+    level: 474,
   },
   {
     hanzi: "九",
     count: 17,
+    level: 475,
   },
   {
     hanzi: "丸",
     count: 0,
+    level: 476,
   },
   {
     hanzi: "执",
     count: 3,
+    level: 477,
   },
   {
     hanzi: "热",
     count: 71,
+    level: 478,
   },
   {
     hanzi: "京",
     count: 27,
+    level: 479,
   },
   {
     hanzi: "景",
     count: 35,
+    level: 480,
   },
   {
     hanzi: "影",
     count: 116,
+    level: 481,
   },
   {
     hanzi: "尤",
     count: 2,
+    level: 482,
   },
   {
     hanzi: "就",
     count: 638,
+    level: 483,
   },
   {
     hanzi: "成",
     count: 256,
+    level: 484,
   },
   {
     hanzi: "城",
     count: 74,
+    level: 485,
   },
   {
     hanzi: "越",
     count: 55,
+    level: 486,
   },
   {
     hanzi: "咸",
     count: 4,
+    level: 487,
   },
   {
     hanzi: "感",
     count: 94,
+    level: 488,
   },
   {
     hanzi: "钱",
     count: 155,
+    level: 489,
   },
   {
     hanzi: "浅",
     count: 4,
+    level: 490,
   },
   {
     hanzi: "巾",
     count: 3,
+    level: 491,
   },
   {
     hanzi: "帅",
     count: 17,
+    level: 492,
   },
   {
     hanzi: "师",
     count: 154,
+    level: 493,
   },
   {
     hanzi: "市",
     count: 129,
+    level: 494,
   },
   {
     hanzi: "带",
     count: 79,
+    level: 495,
   },
   {
     hanzi: "邦",
     count: 1,
+    level: 496,
   },
   {
     hanzi: "帮",
     count: 118,
+    level: 497,
   },
   {
     hanzi: "常",
     count: 221,
+    level: 498,
   },
   {
     hanzi: "非",
     count: 127,
+    level: 499,
   },
   {
     hanzi: "雨",
     count: 55,
+    level: 500,
   },
   {
     hanzi: "雪",
     count: 25,
+    level: 501,
   },
   {
     hanzi: "冬",
     count: 28,
+    level: 502,
   },
   {
     hanzi: "图",
     count: 29,
+    level: 503,
   },
   {
     hanzi: "各",
     count: 47,
+    level: 504,
   },
   {
     hanzi: "客",
     count: 56,
+    level: 505,
   },
   {
     hanzi: "务",
     count: 51,
+    level: 506,
   },
   {
     hanzi: "备",
     count: 57,
+    level: 507,
   },
   {
     hanzi: "夏",
     count: 26,
+    level: 508,
   },
   {
     hanzi: "令",
     count: 10,
+    level: 509,
   },
   {
     hanzi: "冷",
     count: 43,
+    level: 510,
   },
   {
     hanzi: "足",
     count: 36,
+    level: 511,
   },
   {
     hanzi: "跑",
     count: 56,
+    level: 512,
   },
   {
     hanzi: "路",
     count: 138,
+    level: 513,
   },
   {
     hanzi: "跟",
     count: 69,
+    level: 514,
   },
   {
     hanzi: "示",
     count: 20,
+    level: 515,
   },
   {
     hanzi: "票",
     count: 37,
+    level: 516,
   },
   {
     hanzi: "视",
     count: 59,
+    level: 517,
   },
   {
     hanzi: "知",
     count: 185,
+    level: 518,
   },
   {
     hanzi: "短",
     count: 23,
+    level: 519,
   },
   {
     hanzi: "医",
     count: 76,
+    level: 520,
   },
   {
     hanzi: "矮",
     count: 5,
+    level: 521,
   },
   {
     hanzi: "侯",
     count: 1,
+    level: 522,
   },
   {
     hanzi: "候",
     count: 234,
+    level: 523,
   },
   {
     hanzi: "弓",
     count: 1,
+    level: 524,
   },
   {
     hanzi: "张",
     count: 74,
+    level: 525,
   },
   {
     hanzi: "虫",
     count: 8,
+    level: 526,
   },
   {
     hanzi: "虽",
     count: 77,
+    level: 527,
   },
   {
     hanzi: "强",
     count: 33,
+    level: 528,
   },
   {
     hanzi: "弱",
     count: 3,
+    level: 529,
   },
   {
     hanzi: "弟",
     count: 33,
+    level: 530,
   },
   {
     hanzi: "第",
     count: 84,
+    level: 531,
   },
   {
     hanzi: "隹",
     count: 1,
+    level: 532,
   },
   {
     hanzi: "谁",
     count: 40,
+    level: 533,
   },
   {
     hanzi: "推",
     count: 34,
+    level: 534,
   },
   {
     hanzi: "难",
     count: 125,
+    level: 535,
   },
   {
     hanzi: "准",
     count: 58,
+    level: 536,
   },
   {
     hanzi: "夭",
     count: 0,
+    level: 537,
   },
   {
     hanzi: "笑",
     count: 31,
+    level: 538,
   },
   {
     hanzi: "立",
     count: 33,
+    level: 539,
   },
   {
     hanzi: "位",
     count: 139,
+    level: 540,
   },
   {
     hanzi: "音",
     count: 58,
+    level: 541,
   },
   {
     hanzi: "意",
     count: 217,
+    level: 542,
   },
   {
     hanzi: "站",
     count: 57,
+    level: 543,
   },
   {
     hanzi: "拉",
     count: 18,
+    level: 544,
   },
   {
     hanzi: "接",
     count: 57,
+    level: 545,
   },
   {
     hanzi: "亲",
     count: 61,
+    level: 546,
   },
   {
     hanzi: "新",
     count: 198,
+    level: 547,
   },
   {
     hanzi: "杀",
     count: 11,
+    level: 548,
   },
   {
     hanzi: "条",
     count: 93,
+    level: 549,
   },
   {
     hanzi: "乐",
     count: 67,
+    level: 550,
   },
   {
     hanzi: "茶",
     count: 16,
+    level: 551,
   },
   {
     hanzi: "乃",
     count: 0,
+    level: 552,
   },
   {
     hanzi: "扔",
     count: 8,
+    level: 553,
   },
   {
     hanzi: "奶",
     count: 84,
+    level: 554,
   },
   {
     hanzi: "及",
     count: 31,
+    level: 555,
   },
   {
     hanzi: "尸",
     count: 1,
+    level: 556,
   },
   {
     hanzi: "呢",
     count: 106,
+    level: 557,
   },
   {
     hanzi: "户",
     count: 17,
+    level: 558,
   },
   {
     hanzi: "所",
     count: 177,
+    level: 559,
   },
   {
     hanzi: "声",
     count: 67,
+    level: 560,
   },
   {
     hanzi: "欠",
     count: 2,
+    level: 561,
   },
   {
     hanzi: "吹",
     count: 7,
+    level: 562,
   },
   {
     hanzi: "歌",
     count: 82,
+    level: 563,
   },
   {
     hanzi: "软",
     count: 6,
+    level: 564,
   },
   {
     hanzi: "次",
     count: 226,
+    level: 565,
   },
   {
     hanzi: "欢",
     count: 275,
+    level: 566,
   },
   {
     hanzi: "亡",
     count: 6,
+    level: 567,
   },
   {
     hanzi: "忘",
     count: 24,
+    level: 568,
   },
   {
     hanzi: "忙",
     count: 41,
+    level: 569,
   },
   {
     hanzi: "万",
     count: 56,
+    level: 570,
   },
   {
     hanzi: "方",
     count: 223,
+    level: 571,
   },
   {
     hanzi: "放",
     count: 98,
+    level: 572,
   },
   {
     hanzi: "房",
     count: 134,
+    level: 573,
   },
   {
     hanzi: "巴",
     count: 10,
+    level: 574,
   },
   {
     hanzi: "吧",
     count: 196,
+    level: 575,
   },
   {
     hanzi: "把",
     count: 286,
+    level: 576,
   },
   {
     hanzi: "色",
     count: 88,
+    level: 577,
   },
   {
     hanzi: "而",
     count: 81,
+    level: 578,
   },
   {
     hanzi: "需",
     count: 125,
+    level: 579,
   },
   {
     hanzi: "且",
     count: 26,
+    level: 580,
   },
   {
     hanzi: "姐",
     count: 29,
+    level: 581,
   },
   {
     hanzi: "宜",
     count: 12,
+    level: 582,
   },
   {
     hanzi: "丙",
     count: 0,
+    level: 583,
   },
   {
     hanzi: "病",
     count: 94,
+    level: 584,
   },
   {
     hanzi: "疼",
     count: 11,
+    level: 585,
   },
   {
     hanzi: "氏",
     count: 0,
+    level: 586,
   },
   {
     hanzi: "纸",
     count: 14,
+    level: 587,
   },
   {
     hanzi: "低",
     count: 19,
+    level: 588,
   },
   {
     hanzi: "北",
     count: 56,
+    level: 589,
   },
   {
     hanzi: "南",
     count: 29,
+    level: 590,
   },
   {
     hanzi: "垂",
     count: 0,
+    level: 591,
   },
   {
     hanzi: "睡",
     count: 53,
+    level: 592,
   },
   {
     hanzi: "海",
     count: 66,
+    level: 593,
   },
   {
     hanzi: "毒",
     count: 16,
+    level: 594,
   },
   {
     hanzi: "洋",
     count: 7,
+    level: 595,
   },
   {
     hanzi: "鲜",
     count: 12,
+    level: 596,
   },
   {
     hanzi: "原",
     count: 45,
+    level: 597,
   },
   {
     hanzi: "源",
     count: 16,
+    level: 598,
   },
   {
     hanzi: "愿",
     count: 26,
+    level: 599,
   },
   {
     hanzi: "川",
     count: 32,
+    level: 600,
   },
   {
     hanzi: "州",
     count: 20,
+    level: 601,
   },
   {
     hanzi: "洲",
     count: 21,
+    level: 602,
   },
   {
     hanzi: "弃",
     count: 12,
+    level: 603,
   },
   {
     hanzi: "育",
     count: 30,
+    level: 604,
   },
   {
     hanzi: "充",
     count: 18,
+    level: 605,
   },
   {
     hanzi: "流",
     count: 53,
+    level: 606,
   },
   {
     hanzi: "统",
     count: 35,
+    level: 607,
   },
   {
     hanzi: "齐",
     count: 9,
+    level: 608,
   },
   {
     hanzi: "济",
     count: 42,
+    level: 609,
   },
   {
     hanzi: "剂",
     count: 1,
+    level: 610,
   },
   {
     hanzi: "清",
     count: 37,
+    level: 611,
   },
   {
     hanzi: "精",
     count: 27,
+    level: 612,
   },
   {
     hanzi: "消",
     count: 54,
+    level: 613,
   },
   {
     hanzi: "治",
     count: 12,
+    level: 614,
   },
   {
     hanzi: "落",
     count: 14,
+    level: 615,
   },
   {
     hanzi: "露",
     count: 10,
+    level: 616,
   },
   {
     hanzi: "满",
     count: 34,
+    level: 617,
   },
   {
     hanzi: "酒",
     count: 47,
+    level: 618,
   },
   {
     hanzi: "配",
     count: 13,
+    level: 619,
   },
   {
     hanzi: "醒",
     count: 19,
+    level: 620,
   },
   {
     hanzi: "尊",
     count: 16,
+    level: 621,
   },
   {
     hanzi: "酷",
     count: 4,
+    level: 622,
   },
   {
     hanzi: "酸",
     count: 6,
+    level: 623,
   },
   {
     hanzi: "波",
     count: 1,
+    level: 624,
   },
   {
     hanzi: "胡",
     count: 9,
+    level: 625,
   },
   {
     hanzi: "湖",
     count: 8,
+    level: 626,
   },
   {
     hanzi: "永",
     count: 10,
+    level: 627,
   },
   {
     hanzi: "泳",
     count: 12,
+    level: 628,
   },
   {
     hanzi: "脉",
     count: 2,
+    level: 629,
   },
   {
     hanzi: "承",
     count: 11,
+    level: 630,
   },
   {
     hanzi: "兰",
     count: 1,
+    level: 631,
   },
   {
     hanzi: "之",
     count: 90,
+    level: 632,
   },
   {
     hanzi: "乏",
     count: 4,
+    level: 633,
   },
   {
     hanzi: "派",
     count: 13,
+    level: 634,
   },
   {
     hanzi: "游",
     count: 82,
+    level: 635,
   },
   {
     hanzi: "施",
     count: 6,
+    level: 636,
   },
   {
     hanzi: "族",
     count: 10,
+    level: 637,
   },
   {
     hanzi: "旅",
     count: 55,
+    level: 638,
   },
   {
     hanzi: "良",
     count: 13,
+    level: 639,
   },
   {
     hanzi: "浪",
     count: 8,
+    level: 640,
   },
   {
     hanzi: "郎",
     count: 2,
+    level: 641,
   },
   {
     hanzi: "娘",
     count: 11,
+    level: 642,
   },
   {
     hanzi: "姑",
     count: 8,
+    level: 643,
   },
   {
     hanzi: "沙",
     count: 19,
+    level: 644,
   },
   {
     hanzi: "省",
     count: 14,
+    level: 645,
   },
   {
     hanzi: "眼",
     count: 44,
+    level: 646,
   },
   {
     hanzi: "睛",
     count: 7,
+    level: 647,
   },
   {
     hanzi: "沉",
     count: 9,
+    level: 648,
   },
   {
     hanzi: "染",
     count: 17,
+    level: 649,
   },
   {
     hanzi: "究",
     count: 15,
+    level: 650,
   },
   {
     hanzi: "杂",
     count: 11,
+    level: 651,
   },
   {
     hanzi: "余",
     count: 4,
+    level: 652,
   },
   {
     hanzi: "除",
     count: 31,
+    level: 653,
   },
   {
     hanzi: "途",
     count: 9,
+    level: 654,
   },
   {
     hanzi: "汇",
     count: 11,
+    level: 655,
   },
   {
     hanzi: "巨",
     count: 7,
+    level: 656,
   },
   {
     hanzi: "距",
     count: 6,
+    level: 657,
   },
   {
     hanzi: "涨",
     count: 15,
+    level: 658,
   },
   {
     hanzi: "湾",
     count: 7,
+    level: 659,
   },
   {
     hanzi: "引",
     count: 22,
+    level: 660,
   },
   {
     hanzi: "弹",
     count: 11,
+    level: 661,
   },
   {
     hanzi: "淡",
     count: 7,
+    level: 662,
   },
   {
     hanzi: "润",
     count: 1,
+    level: 663,
   },
   {
     hanzi: "渐",
     count: 8,
+    level: 664,
   },
   {
     hanzi: "汗",
     count: 3,
+    level: 665,
   },
   {
     hanzi: "平",
     count: 74,
+    level: 666,
   },
   {
     hanzi: "幸",
     count: 23,
+    level: 667,
   },
   {
     hanzi: "赶",
     count: 29,
+    level: 668,
   },
   {
     hanzi: "超",
     count: 37,
+    level: 669,
   },
   {
     hanzi: "趣",
     count: 23,
+    level: 670,
   },
   {
     hanzi: "聚",
     count: 20,
+    level: 671,
   },
   {
     hanzi: "汁",
     count: 4,
+    level: 672,
   },
   {
     hanzi: "泼",
     count: 3,
+    level: 673,
   },
   {
     hanzi: "演",
     count: 48,
+    level: 674,
   },
   {
     hanzi: "勿",
     count: 1,
+    level: 675,
   },
   {
     hanzi: "物",
     count: 104,
+    level: 676,
   },
   {
     hanzi: "易",
     count: 51,
+    level: 677,
   },
   {
     hanzi: "踢",
     count: 9,
+    level: 678,
   },
   {
     hanzi: "汤",
     count: 5,
+    level: 679,
   },
   {
     hanzi: "场",
     count: 131,
+    level: 680,
   },
   {
     hanzi: "杨",
     count: 1,
+    level: 681,
   },
   {
     hanzi: "扬",
     count: 4,
+    level: 682,
   },
   {
     hanzi: "持",
     count: 44,
+    level: 683,
   },
   {
     hanzi: "待",
     count: 30,
+    level: 684,
   },
   {
     hanzi: "征",
     count: 8,
+    level: 685,
   },
   {
     hanzi: "微",
     count: 12,
+    level: 686,
   },
   {
     hanzi: "据",
     count: 26,
+    level: 687,
   },
   {
     hanzi: "投",
     count: 24,
+    level: 688,
   },
   {
     hanzi: "指",
     count: 16,
+    level: 689,
   },
   {
     hanzi: "龙",
     count: 12,
+    level: 690,
   },
   {
     hanzi: "技",
     count: 25,
+    level: 691,
   },
   {
     hanzi: "鼓",
     count: 6,
+    level: 692,
   },
   {
     hanzi: "护",
     count: 29,
+    level: 693,
   },
   {
     hanzi: "扁",
     count: 3,
+    level: 694,
   },
   {
     hanzi: "编",
     count: 6,
+    level: 695,
   },
   {
     hanzi: "偏",
     count: 4,
+    level: 696,
   },
   {
     hanzi: "遍",
     count: 12,
+    level: 697,
   },
   {
     hanzi: "篇",
     count: 19,
+    level: 698,
   },
   {
     hanzi: "骗",
     count: 19,
+    level: 699,
   },
   {
     hanzi: "控",
     count: 10,
+    level: 700,
   },
   {
     hanzi: "按",
     count: 27,
+    level: 701,
   },
   {
     hanzi: "招",
     count: 12,
+    level: 702,
   },
   {
     hanzi: "括",
     count: 5,
+    level: 703,
   },
   {
     hanzi: "掉",
     count: 27,
+    level: 704,
   },
   {
     hanzi: "托",
     count: 7,
+    level: 705,
   },
   {
     hanzi: "挥",
     count: 4,
+    level: 706,
   },
   {
     hanzi: "损",
     count: 7,
+    level: 707,
   },
   {
     hanzi: "折",
     count: 10,
+    level: 708,
   },
   {
     hanzi: "爪",
     count: 1,
+    level: 709,
   },
   {
     hanzi: "抓",
     count: 14,
+    level: 710,
   },
   {
     hanzi: "瓜",
     count: 15,
+    level: 711,
   },
   {
     hanzi: "孤",
     count: 5,
+    level: 712,
   },
   {
     hanzi: "爬",
     count: 13,
+    level: 713,
   },
   {
     hanzi: "拥",
     count: 10,
+    level: 714,
   },
   {
     hanzi: "抢",
     count: 7,
+    level: 715,
   },
   {
     hanzi: "探",
     count: 5,
+    level: 716,
   },
   {
     hanzi: "兆",
     count: 1,
+    level: 717,
   },
   {
     hanzi: "挑",
     count: 4,
+    level: 718,
   },
   {
     hanzi: "跳",
     count: 21,
+    level: 719,
   },
   {
     hanzi: "逃",
     count: 10,
+    level: 720,
   },
   {
     hanzi: "扩",
     count: 5,
+    level: 721,
   },
   {
     hanzi: "批",
     count: 11,
+    level: 722,
   },
   {
     hanzi: "混",
     count: 3,
+    level: 723,
   },
   {
     hanzi: "毕",
     count: 14,
+    level: 724,
   },
   {
     hanzi: "措",
     count: 5,
+    level: 725,
   },
   {
     hanzi: "展",
     count: 54,
+    level: 726,
   },
   {
     hanzi: "授",
     count: 7,
+    level: 727,
   },
   {
     hanzi: "延",
     count: 7,
+    level: 728,
   },
   {
     hanzi: "挺",
     count: 10,
+    level: 729,
   },
   {
     hanzi: "庭",
     count: 20,
+    level: 730,
   },
   {
     hanzi: "抱",
     count: 6,
+    level: 731,
   },
   {
     hanzi: "扰",
     count: 12,
+    level: 732,
   },
   {
     hanzi: "抬",
     count: 4,
+    level: 733,
   },
   {
     hanzi: "扮",
     count: 10,
+    level: 734,
   },
   {
     hanzi: "粉",
     count: 9,
+    level: 735,
   },
   {
     hanzi: "拾",
     count: 6,
+    level: 736,
   },
   {
     hanzi: "术",
     count: 28,
+    level: 737,
   },
   {
     hanzi: "格",
     count: 35,
+    level: 738,
   },
   {
     hanzi: "标",
     count: 23,
+    level: 739,
   },
   {
     hanzi: "林",
     count: 13,
+    level: 740,
   },
   {
     hanzi: "禁",
     count: 4,
+    level: 741,
   },
   {
     hanzi: "际",
     count: 11,
+    level: 742,
   },
   {
     hanzi: "梦",
     count: 21,
+    level: 743,
   },
   {
     hanzi: "麻",
     count: 28,
+    level: 744,
   },
   {
     hanzi: "摩",
     count: 6,
+    level: 745,
   },
   {
     hanzi: "楚",
     count: 16,
+    level: 746,
   },
   {
     hanzi: "蛋",
     count: 22,
+    level: 747,
   },
   {
     hanzi: "森",
     count: 9,
+    level: 748,
   },
   {
     hanzi: "查",
     count: 23,
+    level: 749,
   },
   {
     hanzi: "集",
     count: 16,
+    level: 750,
   },
   {
     hanzi: "案",
     count: 18,
+    level: 751,
+    pinyin: "àn"
   },
   {
     hanzi: "未",
     count: 18,
+    level: 752,
   },
   {
     hanzi: "味",
     count: 32,
+    level: 753,
   },
   {
     hanzi: "妹",
     count: 15,
+    level: 754,
   },
   {
     hanzi: "根",
     count: 32,
+    level: 755,
   },
   {
     hanzi: "极",
     count: 22,
+    level: 756,
   },
   {
     hanzi: "勾",
     count: 0,
+    level: 757,
   },
   {
     hanzi: "构",
     count: 9,
+    level: 758,
   },
   {
     hanzi: "购",
     count: 8,
+    level: 759,
   },
   {
     hanzi: "沟",
     count: 7,
+    level: 760,
   },
   {
     hanzi: "村",
     count: 22,
+    level: 761,
   },
   {
     hanzi: "树",
     count: 24,
+    level: 762,
   },
   {
     hanzi: "板",
     count: 45,
+    level: 763,
   },
   {
     hanzi: "版",
     count: 11,
+    level: 764,
   },
   {
     hanzi: "材",
     count: 9,
+    level: 765,
   },
   {
     hanzi: "析",
     count: 1,
+    level: 766,
   },
   {
     hanzi: "束",
     count: 12,
+    level: 767,
   },
   {
     hanzi: "整",
     count: 46,
+    level: 768,
   },
   {
     hanzi: "辛",
     count: 11,
+    level: 769,
   },
   {
     hanzi: "辣",
     count: 13,
+    level: 770,
   },
   {
     hanzi: "核",
     count: 2,
+    level: 771,
   },
   {
     hanzi: "刻",
     count: 21,
+    level: 772,
   },
   {
     hanzi: "咳",
     count: 2,
+    level: 773,
   },
   {
     hanzi: "嗽",
     count: 1,
+    level: 774,
   },
   {
     hanzi: "松",
     count: 19,
+    level: 775,
   },
   {
     hanzi: "架",
     count: 20,
+    level: 776,
   },
   {
     hanzi: "枪",
     count: 6,
+    level: 777,
   },
   {
     hanzi: "档",
     count: 8,
+    level: 778,
   },
   {
     hanzi: "光",
     count: 41,
+    level: 779,
   },
   {
     hanzi: "梯",
     count: 6,
+    level: 780,
   },
   {
     hanzi: "朵",
     count: 14,
+    level: 781,
   },
   {
     hanzi: "棵",
     count: 5,
+    level: 782,
   },
   {
     hanzi: "柿",
     count: 3,
+    level: 783,
   },
   {
     hanzi: "橡",
     count: 1,
+    level: 784,
   },
   {
     hanzi: "植",
     count: 5,
+    level: 785,
   },
   {
     hanzi: "置",
     count: 12,
+    level: 786,
   },
   {
     hanzi: "值",
     count: 21,
+    level: 787,
   },
   {
     hanzi: "罗",
     count: 5,
+    level: 788,
   },
   {
     hanzi: "保",
     count: 54,
+    level: 789,
   },
   {
     hanzi: "价",
     count: 41,
+    level: 790,
   },
   {
     hanzi: "界",
     count: 46,
+    level: 791,
   },
   {
     hanzi: "养",
     count: 37,
+    level: 792,
   },
   {
     hanzi: "阶",
     count: 1,
+    level: 793,
   },
   {
     hanzi: "专",
     count: 21,
+    level: 794,
   },
   {
     hanzi: "传",
     count: 44,
+    level: 795,
   },
   {
     hanzi: "转",
     count: 22,
+    level: 796,
   },
   {
     hanzi: "何",
     count: 29,
+    level: 797,
   },
   {
     hanzi: "供",
     count: 9,
+    level: 798,
   },
   {
     hanzi: "港",
     count: 9,
+    level: 799,
   },
   {
     hanzi: "暴",
     count: 15,
+    level: 800,
   },
   {
     hanzi: "爆",
     count: 7,
+    level: 801,
   },
   {
     hanzi: "伤",
     count: 35,
+    level: 802,
   },
   {
     hanzi: "优",
     count: 25,
+    level: 803,
   },
   {
     hanzi: "仅",
     count: 15,
+    level: 804,
   },
   {
     hanzi: "夜",
     count: 32,
+    level: 805,
   },
   {
     hanzi: "液",
     count: 4,
+    level: 806,
   },
   {
     hanzi: "依",
     count: 15,
+    level: 807,
   },
   {
     hanzi: "假",
     count: 42,
+    level: 808,
   },
   {
     hanzi: "倒",
     count: 30,
+    level: 809,
   },
   {
     hanzi: "致",
     count: 13,
+    level: 810,
   },
   {
     hanzi: "室",
     count: 29,
+    level: 811,
   },
   {
     hanzi: "屋",
     count: 14,
+    level: 812,
   },
   {
     hanzi: "似",
     count: 10,
+    level: 813,
   },
   {
     hanzi: "仍",
     count: 15,
+    level: 814,
   },
   {
     hanzi: "促",
     count: 3,
+    level: 815,
   },
   {
     hanzi: "伙",
     count: 15,
+    level: 816,
   },
   {
     hanzi: "伴",
     count: 6,
+    level: 817,
   },
   {
     hanzi: "估",
     count: 7,
+    level: 818,
   },
   {
     hanzi: "倍",
     count: 8,
+    level: 819,
   },
   {
     hanzi: "俩",
     count: 22,
+    level: 820,
   },
   {
     hanzi: "伪",
     count: 3,
+    level: 821,
   },
   {
     hanzi: "尹",
     count: 0,
+    level: 822,
   },
   {
     hanzi: "伊",
     count: 2,
+    level: 823,
   },
   {
     hanzi: "康",
     count: 31,
+    level: 824,
   },
   {
     hanzi: "争",
     count: 26,
+    level: 825,
   },
   {
     hanzi: "静",
     count: 15,
+    level: 826,
   },
   {
     hanzi: "净",
     count: 23,
+    level: 827,
   },
   {
     hanzi: "减",
     count: 21,
+    level: 828,
   },
   {
     hanzi: "律",
     count: 20,
+    level: 829,
   },
   {
     hanzi: "建",
     count: 38,
+    level: 830,
   },
   {
     hanzi: "健",
     count: 31,
+    level: 831,
   },
   {
     hanzi: "君",
     count: 1,
+    level: 832,
   },
   {
     hanzi: "群",
     count: 21,
+    level: 833,
   },
   {
     hanzi: "向",
     count: 49,
+    level: 834,
   },
   {
     hanzi: "响",
     count: 25,
+    level: 835,
   },
   {
     hanzi: "尚",
     count: 7,
+    level: 836,
   },
   {
     hanzi: "躺",
     count: 2,
+    level: 837,
   },
   {
     hanzi: "趟",
     count: 8,
+    level: 838,
   },
   {
     hanzi: "品",
     count: 70,
+    level: 839,
   },
   {
     hanzi: "噪",
     count: 0,
+    level: 840,
   },
   {
     hanzi: "操",
     count: 10,
+    level: 841,
   },
   {
     hanzi: "澡",
     count: 7,
+    level: 842,
   },
   {
     hanzi: "器",
     count: 26,
+    level: 843,
   },
   {
     hanzi: "突",
     count: 20,
+    level: 844,
   },
   {
     hanzi: "曾",
     count: 7,
+    level: 845,
   },
   {
     hanzi: "增",
     count: 21,
+    level: 846,
   },
   {
     hanzi: "号",
     count: 24,
+    level: 847,
   },
   {
     hanzi: "亏",
     count: 11,
+    level: 848,
   },
   {
     hanzi: "污",
     count: 11,
+    level: 849,
   },
   {
     hanzi: "考",
     count: 74,
+    level: 850,
   },
   {
     hanzi: "巧",
     count: 20,
+    level: 851,
   },
   {
     hanzi: "由",
     count: 40,
+    level: 852,
   },
   {
     hanzi: "油",
     count: 17,
+    level: 853,
   },
   {
     hanzi: "聘",
     count: 6,
+    level: 854,
   },
   {
     hanzi: "抽",
     count: 5,
+    level: 855,
   },
   {
     hanzi: "黄",
     count: 16,
+    level: 856,
   },
   {
     hanzi: "害",
     count: 35,
+    level: 857,
   },
   {
     hanzi: "拜",
     count: 11,
+    level: 858,
   },
   {
     hanzi: "峰",
     count: 3,
+    level: 859,
   },
   {
     hanzi: "否",
     count: 13,
+    level: 860,
   },
   {
     hanzi: "舍",
     count: 4,
+    level: 861,
   },
   {
     hanzi: "哈",
     count: 4,
+    level: 862,
   },
   {
     hanzi: "命",
     count: 18,
+    level: 863,
   },
   {
     hanzi: "善",
     count: 18,
+    level: 864,
   },
   {
     hanzi: "吉",
     count: 7,
+    level: 865,
   },
   {
     hanzi: "叶",
     count: 8,
+    level: 866,
   },
   {
     hanzi: "吸",
     count: 14,
+    level: 867,
   },
   {
     hanzi: "于",
     count: 165,
+    level: 868,
   },
   {
     hanzi: "乎",
     count: 11,
+    level: 869,
   },
   {
     hanzi: "呼",
     count: 12,
+    level: 870,
   },
   {
     hanzi: "呀",
     count: 12,
+    level: 871,
   },
   {
     hanzi: "含",
     count: 7,
+    level: 872,
   },
   {
     hanzi: "嘴",
     count: 5,
+    level: 873,
   },
   {
     hanzi: "确",
     count: 22,
+    level: 874,
   },
   {
     hanzi: "售",
     count: 10,
+    level: 875,
   },
   {
     hanzi: "啦",
     count: 1,
+    level: 876,
   },
   {
     hanzi: "咱",
     count: 8,
+    level: 877,
   },
   {
     hanzi: "哦",
     count: 4,
+    level: 878,
   },
   {
     hanzi: "咖",
     count: 8,
+    level: 879,
   },
   {
     hanzi: "啡",
     count: 8,
+    level: 880,
   },
   {
     hanzi: "排",
     count: 21,
+    level: 881,
   },
   {
     hanzi: "罪",
     count: 5,
+    level: 882,
   },
   {
     hanzi: "靠",
     count: 19,
+    level: 883,
   },
   {
     hanzi: "喝",
     count: 64,
+    level: 884,
   },
   {
     hanzi: "渴",
     count: 9,
+    level: 885,
   },
   {
     hanzi: "歇",
     count: 1,
+    level: 886,
   },
   {
     hanzi: "结",
     count: 73,
+    level: 887,
   },
   {
     hanzi: "组",
     count: 23,
+    level: 888,
   },
   {
     hanzi: "具",
     count: 30,
+    level: 889,
   },
   {
     hanzi: "惧",
     count: 2,
+    level: 890,
   },
   {
     hanzi: "线",
     count: 14,
+    level: 891,
   },
   {
     hanzi: "级",
     count: 43,
+    level: 892,
   },
   {
     hanzi: "续",
     count: 24,
+    level: 893,
   },
   {
     hanzi: "织",
     count: 5,
+    level: 894,
   },
   {
     hanzi: "职",
     count: 18,
+    level: 895,
   },
   {
     hanzi: "终",
     count: 68,
+    level: 896,
   },
   {
     hanzi: "细",
     count: 21,
+    level: 897,
   },
   {
     hanzi: "维",
     count: 15,
+    level: 898,
   },
   {
     hanzi: "焦",
     count: 6,
+    level: 899,
   },
   {
     hanzi: "蕉",
     count: 4,
+    level: 900,
   },
   {
     hanzi: "熊",
     count: 10,
+    level: 901,
   },
   {
     hanzi: "继",
     count: 8,
+    level: 902,
   },
   {
     hanzi: "世",
     count: 51,
+    level: 903,
   },
   {
     hanzi: "绝",
     count: 18,
+    level: 904,
   },
   {
     hanzi: "负",
     count: 25,
+    level: 905,
   },
   {
     hanzi: "赖",
     count: 3,
+    level: 906,
   },
   {
     hanzi: "懒",
     count: 3,
+    level: 907,
   },
   {
     hanzi: "纪",
     count: 12,
+    level: 908,
   },
   {
     hanzi: "练",
     count: 22,
+    level: 909,
   },
   {
     hanzi: "纳",
     count: 5,
+    level: 910,
   },
   {
     hanzi: "络",
     count: 9,
+    level: 911,
   },
   {
     hanzi: "丝",
     count: 7,
+    level: 912,
   },
   {
     hanzi: "纯",
     count: 4,
+    level: 913,
   },
   {
     hanzi: "顿",
     count: 11,
+    level: 914,
   },
   {
     hanzi: "吨",
     count: 2,
+    level: 915,
   },
   {
     hanzi: "绩",
     count: 15,
+    level: 916,
   },
   {
     hanzi: "综",
     count: 0,
+    level: 917,
   },
   {
     hanzi: "缓",
     count: 3,
+    level: 918,
   },
   {
     hanzi: "暖",
     count: 11,
+    level: 919,
   },
   {
     hanzi: "纷",
     count: 4,
+    level: 920,
   },
   {
     hanzi: "纠",
     count: 5,
+    level: 921,
   },
   {
     hanzi: "宿",
     count: 1,
+    level: 922,
   },
   {
     hanzi: "缩",
     count: 4,
+    level: 923,
   },
   {
     hanzi: "互",
     count: 18,
+    level: 924,
   },
   {
     hanzi: "缘",
     count: 5,
+    level: 925,
   },
   {
     hanzi: "制",
     count: 40,
+    level: 926,
   },
   {
     hanzi: "刑",
     count: 2,
+    level: 927,
   },
   {
     hanzi: "型",
     count: 10,
+    level: 928,
   },
   {
     hanzi: "形",
     count: 14,
+    level: 929,
   },
   {
     hanzi: "研",
     count: 13,
+    level: 930,
   },
   {
     hanzi: "则",
     count: 11,
+    level: 931,
   },
   {
     hanzi: "厕",
     count: 3,
+    level: 932,
   },
   {
     hanzi: "测",
     count: 14,
+    level: 933,
   },
   {
     hanzi: "创",
     count: 18,
+    level: 934,
   },
   {
     hanzi: "列",
     count: 14,
+    level: 935,
   },
   {
     hanzi: "例",
     count: 8,
+    level: 936,
   },
   {
     hanzi: "残",
     count: 10,
+    level: 937,
   },
   {
     hanzi: "烈",
     count: 9,
+    level: 938,
   },
   {
     hanzi: "副",
     count: 4,
+    level: 939,
   },
   {
     hanzi: "福",
     count: 16,
+    level: 940,
   },
   {
     hanzi: "富",
     count: 17,
+    level: 941,
   },
   {
     hanzi: "幅",
     count: 6,
+    level: 942,
   },
   {
     hanzi: "剧",
     count: 14,
+    level: 943,
   },
   {
     hanzi: "刘",
     count: 3,
+    level: 944,
   },
   {
     hanzi: "判",
     count: 8,
+    level: 945,
   },
   {
     hanzi: "归",
     count: 7,
+    level: 946,
   },
   {
     hanzi: "刺",
     count: 4,
+    level: 947,
   },
   {
     hanzi: "刷",
     count: 8,
+    level: 948,
   },
   {
     hanzi: "刮",
     count: 3,
+    level: 949,
   },
   {
     hanzi: "俞",
     count: 0,
+    level: 950,
   },
   {
     hanzi: "偷",
     count: 22,
+    level: 951,
   },
   {
     hanzi: "输",
     count: 6,
+    level: 952,
   },
   {
     hanzi: "愉",
     count: 3,
+    level: 953,
   },
   {
     hanzi: "紧",
     count: 32,
+    level: 954,
   },
   {
     hanzi: "索",
     count: 5,
+    level: 955,
+    pinyin: "suǒ",
   },
   {
     hanzi: "素",
     count: 6,
+    level: 956,
   },
   {
     hanzi: "责",
     count: 25,
+    level: 957,
   },
   {
     hanzi: "达",
     count: 35,
+    level: 958,
   },
   {
     hanzi: "选",
     count: 44,
+    level: 959,
   },
   {
     hanzi: "造",
     count: 21,
+    level: 960,
   },
   {
     hanzi: "适",
     count: 22,
+    level: 961,
   },
   {
     hanzi: "退",
     count: 14,
+    level: 962,
   },
   {
     hanzi: "遇",
     count: 28,
+    level: 963,
   },
   {
     hanzi: "偶",
     count: 7,
+    level: 964,
   },
   {
     hanzi: "寓",
     count: 2,
+    level: 965,
   },
   {
     hanzi: "追",
     count: 9,
+    level: 966,
   },
   {
     hanzi: "官",
     count: 16,
+    level: 967,
   },
   {
     hanzi: "管",
     count: 48,
+    level: 968,
   },
   {
     hanzi: "馆",
     count: 27,
+    level: 969,
   },
   {
     hanzi: "饺",
     count: 4,
+    level: 970,
   },
   {
     hanzi: "饮",
     count: 5,
+    level: 971,
   },
   {
     hanzi: "迷",
     count: 15,
+    level: 972,
   },
   {
     hanzi: "透",
     count: 7,
+    level: 973,
   },
   {
     hanzi: "述",
     count: 4,
+    level: 974,
   },
   {
     hanzi: "迎",
     count: 16,
+    level: 975,
   },
   {
     hanzi: "印",
     count: 15,
+    level: 976,
   },
   {
     hanzi: "即",
     count: 18,
+    level: 977,
   },
   {
     hanzi: "却",
     count: 30,
+    level: 978,
   },
   {
     hanzi: "脚",
     count: 15,
+    level: 979,
   },
   {
     hanzi: "遗",
     count: 5,
+    level: 980,
   },
   {
     hanzi: "逐",
     count: 8,
+    level: 981,
   },
   {
     hanzi: "逛",
     count: 4,
+    level: 982,
   },
   {
     hanzi: "违",
     count: 8,
+    level: 983,
   },
   {
     hanzi: "避",
     count: 8,
+    level: 984,
   },
   {
     hanzi: "邀",
     count: 1,
+    level: 985,
   },
   {
     hanzi: "激",
     count: 5,
+    level: 986,
   },
   {
     hanzi: "疑",
     count: 7,
+    level: 987,
   },
   {
     hanzi: "予",
     count: 4,
+    level: 988,
   },
   {
     hanzi: "预",
     count: 29,
+    level: 989,
   },
   {
     hanzi: "序",
     count: 2,
+    level: 990,
   },
   {
     hanzi: "野",
     count: 7,
+    level: 991,
   },
   {
     hanzi: "舒",
     count: 18,
+    level: 992,
   },
   {
     hanzi: "无",
     count: 53,
+    level: 993,
   },
   {
     hanzi: "既",
     count: 7,
+    level: 994,
   },
   {
     hanzi: "概",
     count: 4,
+    level: 995,
   },
   {
     hanzi: "击",
     count: 11,
+    level: 996,
   },
   {
     hanzi: "毛",
     count: 19,
+    level: 997,
   },
   {
     hanzi: "丈",
     count: 3,
+    level: 998,
   },
   {
     hanzi: "夫",
     count: 15,
+    level: 999,
   },
   {
     hanzi: "规",
     count: 25,
+    level: 1000,
   },
   {
     hanzi: "肤",
     count: 7,
+    level: 1001,
   },
   {
     hanzi: "失",
     count: 36,
+    level: 1002,
   },
   {
     hanzi: "跌",
     count: 2,
+    level: 1003,
   },
   {
     hanzi: "铁",
     count: 26,
+    level: 1004,
   },
   {
     hanzi: "升",
     count: 15,
+    level: 1005,
   },
   {
     hanzi: "久",
     count: 33,
+    level: 1006,
   },
   {
     hanzi: "乡",
     count: 30,
+    level: 1007,
   },
   {
     hanzi: "玄",
     count: 0,
+    level: 1008,
   },
   {
     hanzi: "幽",
     count: 1,
+    level: 1009,
   },
   {
     hanzi: "率",
     count: 11,
+    level: 1010,
   },
   {
     hanzi: "利",
     count: 59,
+    level: 1011,
   },
   {
     hanzi: "程",
     count: 42,
+    level: 1012,
   },
   {
     hanzi: "斗",
     count: 8,
+    level: 1013,
   },
   {
     hanzi: "科",
     count: 35,
+    level: 1014,
   },
   {
     hanzi: "料",
     count: 27,
+    level: 1015,
   },
   {
     hanzi: "称",
     count: 13,
+    level: 1016,
   },
   {
     hanzi: "积",
     count: 12,
+    level: 1017,
   },
   {
     hanzi: "税",
     count: 5,
+    level: 1018,
   },
   {
     hanzi: "季",
     count: 18,
+    level: 1019,
   },
   {
     hanzi: "移",
     count: 13,
+    level: 1020,
   },
   {
     hanzi: "私",
     count: 9,
+    level: 1021,
   },
   {
     hanzi: "秀",
     count: 9,
+    level: 1022,
   },
   {
     hanzi: "必",
     count: 30,
+    level: 1023,
   },
   {
     hanzi: "秘",
     count: 10,
+    level: 1024,
   },
   {
     hanzi: "密",
     count: 12,
+    level: 1025,
   },
   {
     hanzi: "租",
     count: 13,
+    level: 1026,
   },
   {
     hanzi: "粗",
     count: 4,
+    level: 1027,
   },
   {
     hanzi: "秋",
     count: 25,
+    level: 1028,
   },
   {
     hanzi: "秒",
     count: 2,
+    level: 1029,
   },
   {
     hanzi: "稍",
     count: 2,
+    level: 1030,
   },
   {
     hanzi: "队",
     count: 41,
+    level: 1031,
   },
   {
     hanzi: "防",
     count: 15,
+    level: 1032,
   },
   {
     hanzi: "阿",
     count: 6,
+    level: 1033,
   },
   {
     hanzi: "啊",
     count: 36,
+    level: 1034,
   },
   {
     hanzi: "限",
     count: 8,
+    level: 1035,
   },
   {
     hanzi: "降",
     count: 8,
+    level: 1036,
   },
   {
     hanzi: "舞",
     count: 9,
+    level: 1037,
   },
   {
     hanzi: "处",
     count: 57,
+    level: 1038,
   },
   {
     hanzi: "陈",
     count: 1,
+    level: 1039,
   },
   {
     hanzi: "阵",
     count: 8,
+    level: 1040,
   },
   {
     hanzi: "陆",
     count: 7,
+    level: 1041,
   },
   {
     hanzi: "附",
     count: 22,
+    level: 1042,
   },
   {
     hanzi: "障",
     count: 5,
+    level: 1043,
   },
   {
     hanzi: "阻",
     count: 7,
+    level: 1044,
   },
   {
     hanzi: "陪",
     count: 13,
+    level: 1045,
   },
   {
     hanzi: "邮",
     count: 11,
+    level: 1046,
   },
   {
     hanzi: "邻",
     count: 7,
+    level: 1047,
   },
   {
     hanzi: "郊",
     count: 3,
+    level: 1048,
   },
   {
     hanzi: "理",
     count: 87,
+    level: 1049,
   },
   {
     hanzi: "量",
     count: 49,
+    level: 1050,
   },
   {
     hanzi: "望",
     count: 51,
+    level: 1051,
   },
   {
     hanzi: "环",
     count: 19,
+    level: 1052,
   },
   {
     hanzi: "弄",
     count: 22,
+    level: 1053,
   },
   {
     hanzi: "皇",
     count: 2,
+    level: 1054,
   },
   {
     hanzi: "泉",
     count: 4,
+    level: 1055,
   },
   {
     hanzi: "貌",
     count: 11,
+    level: 1056,
   },
   {
     hanzi: "卑",
     count: 1,
+    level: 1057,
   },
   {
     hanzi: "牌",
     count: 20,
+    level: 1058,
   },
   {
     hanzi: "啤",
     count: 3,
+    level: 1059,
   },
   {
     hanzi: "脾",
     count: 5,
+    level: 1060,
   },
   {
     hanzi: "基",
     count: 22,
+    level: 1061,
   },
   {
     hanzi: "社",
     count: 28,
+    level: 1062,
   },
   {
     hanzi: "礼",
     count: 43,
+    level: 1063,
   },
   {
     hanzi: "祝",
     count: 24,
+    level: 1064,
   },
   {
     hanzi: "竟",
     count: 17,
+    level: 1065,
   },
   {
     hanzi: "境",
     count: 17,
+    level: 1066,
   },
   {
     hanzi: "镜",
     count: 7,
+    level: 1067,
   },
   {
     hanzi: "压",
     count: 12,
+    level: 1068,
   },
   {
     hanzi: "均",
     count: 7,
+    level: 1069,
   },
   {
     hanzi: "坚",
     count: 14,
+    level: 1070,
   },
   {
     hanzi: "域",
     count: 3,
+    level: 1071,
   },
   {
     hanzi: "培",
     count: 8,
+    level: 1072,
   },
   {
     hanzi: "圣",
     count: 4,
+    level: 1073,
   },
   {
     hanzi: "址",
     count: 5,
+    level: 1074,
   },
   {
     hanzi: "填",
     count: 6,
+    level: 1075,
   },
   {
     hanzi: "堵",
     count: 6,
+    level: 1076,
   },
   {
     hanzi: "垃",
     count: 10,
+    level: 1077,
   },
   {
     hanzi: "圾",
     count: 10,
+    level: 1078,
   },
   {
     hanzi: "丑",
     count: 6,
+    level: 1079,
   },
   {
     hanzi: "羞",
     count: 2,
+    level: 1080,
   },
   {
     hanzi: "塑",
     count: 6,
+    level: 1081,
   },
   {
     hanzi: "逆",
     count: 1,
+    level: 1082,
   },
   {
     hanzi: "股",
     count: 11,
+    level: 1083,
   },
   {
     hanzi: "胜",
     count: 17,
+    level: 1084,
   },
   {
     hanzi: "胞",
     count: 6,
+    level: 1085,
   },
   {
     hanzi: "腿",
     count: 10,
+    level: 1086,
   },
   {
     hanzi: "脱",
     count: 5,
+    level: 1087,
   },
   {
     hanzi: "阅",
     count: 4,
+    level: 1088,
   },
   {
     hanzi: "肥",
     count: 14,
+    level: 1089,
   },
   {
     hanzi: "爸",
     count: 72,
+    level: 1090,
   },
   {
     hanzi: "肯",
     count: 17,
+    level: 1091,
   },
   {
     hanzi: "阴",
     count: 8,
+    level: 1092,
   },
   {
     hanzi: "肿",
     count: 3,
+    level: 1093,
   },
   {
     hanzi: "冲",
     count: 17,
+    level: 1094,
   },
   {
     hanzi: "膏",
     count: 2,
+    level: 1095,
   },
   {
     hanzi: "胳",
     count: 0,
+    level: 1096,
   },
   {
     hanzi: "朝",
     count: 6,
+    level: 1097,
   },
   {
     hanzi: "潮",
     count: 5,
+    level: 1098,
   },
   {
     hanzi: "韩",
     count: 7,
+    level: 1099,
   },
   {
     hanzi: "赢",
     count: 13,
+    level: 1100,
   },
   {
     hanzi: "背",
     count: 20,
+    level: 1101,
   },
   {
     hanzi: "肌",
     count: 2,
+    level: 1102,
   },
   {
     hanzi: "胶",
     count: 2,
+    level: 1103,
   },
   {
     hanzi: "乘",
     count: 7,
+    level: 1104,
   },
   {
     hanzi: "剩",
     count: 6,
+    level: 1105,
   },
   {
     hanzi: "骨",
     count: 3,
+    level: 1106,
   },
   {
     hanzi: "滑",
     count: 7,
+    level: 1107,
   },
   {
     hanzi: "区",
     count: 52,
+    level: 1108,
   },
   {
     hanzi: "欧",
     count: 4,
+    level: 1109,
   },
   {
     hanzi: "义",
     count: 23,
+    level: 1110,
   },
   {
     hanzi: "议",
     count: 33,
+    level: 1111,
   },
   {
     hanzi: "希",
     count: 38,
+    level: 1112,
   },
   {
     hanzi: "凶",
     count: 9,
+    level: 1113,
   },
   {
     hanzi: "曲",
     count: 12,
+    level: 1114,
   },
   {
     hanzi: "典",
     count: 18,
+    level: 1115,
   },
   {
     hanzi: "胸",
     count: 5,
+    level: 1116,
   },
   {
     hanzi: "齿",
     count: 4,
+    level: 1117,
   },
   {
     hanzi: "龄",
     count: 8,
+    level: 1118,
   },
   {
     hanzi: "离",
     count: 49,
+    level: 1119,
   },
   {
     hanzi: "脑",
     count: 43,
+    level: 1120,
   },
   {
     hanzi: "恼",
     count: 3,
+    level: 1121,
   },
   {
     hanzi: "功",
     count: 40,
+    level: 1122,
   },
   {
     hanzi: "势",
     count: 9,
+    level: 1123,
   },
   {
     hanzi: "助",
     count: 42,
+    level: 1124,
   },
   {
     hanzi: "历",
     count: 36,
+    level: 1125,
   },
   {
     hanzi: "努",
     count: 39,
+    level: 1126,
   },
   {
     hanzi: "劲",
     count: 7,
+    level: 1127,
   },
   {
     hanzi: "穷",
     count: 7,
+    level: 1128,
   },
   {
     hanzi: "勇",
     count: 7,
+    level: 1129,
   },
   {
     hanzi: "通",
     count: 70,
+    level: 1130,
   },
   {
     hanzi: "桶",
     count: 6,
+    level: 1131,
   },
   {
     hanzi: "痛",
     count: 19,
+    level: 1132,
   },
   {
     hanzi: "疗",
     count: 7,
+    level: 1133,
   },
   {
     hanzi: "症",
     count: 7,
+    level: 1134,
   },
   {
     hanzi: "瘦",
     count: 9,
+    level: 1135,
   },
   {
     hanzi: "搜",
     count: 4,
+    level: 1136,
+    pinyin: "sōu"
   },
   {
     hanzi: "疯",
     count: 5,
+    level: 1137,
   },
   {
     hanzi: "疾",
     count: 6,
+    level: 1138,
   },
   {
     hanzi: "业",
     count: 99,
+    level: 1139,
   },
   {
     hanzi: "亚",
     count: 8,
+    level: 1140,
   },
   {
     hanzi: "显",
     count: 22,
+    level: 1141,
   },
   {
     hanzi: "普",
     count: 13,
+    level: 1142,
   },
   {
     hanzi: "严",
     count: 15,
+    level: 1143,
   },
   {
     hanzi: "恶",
     count: 7,
+    level: 1144,
   },
   {
     hanzi: "卫",
     count: 12,
+    level: 1145,
   },
   {
     hanzi: "武",
     count: 6,
+    level: 1146,
   },
   {
     hanzi: "丽",
     count: 11,
+    level: 1147,
   },
   {
     hanzi: "导",
     count: 53,
+    level: 1148,
   },
   {
     hanzi: "民",
     count: 72,
+    level: 1149,
   },
   {
     hanzi: "异",
     count: 5,
+    level: 1150,
   },
   {
     hanzi: "将",
     count: 54,
+    level: 1151,
   },
   {
     hanzi: "装",
     count: 33,
+    level: 1152,
   },
   {
     hanzi: "奖",
     count: 20,
+    level: 1153,
   },
   {
     hanzi: "状",
     count: 11,
+    level: 1154,
   },
   {
     hanzi: "射",
     count: 7,
+    level: 1155,
   },
   {
     hanzi: "寻",
     count: 5,
+    level: 1156,
   },
   {
     hanzi: "耐",
     count: 16,
+    level: 1157,
   },
   {
     hanzi: "冠",
     count: 10,
+    level: 1158,
   },
   {
     hanzi: "节",
     count: 75,
+    level: 1159,
   },
   {
     hanzi: "爷",
     count: 35,
+    level: 1160,
   },
   {
     hanzi: "范",
     count: 9,
+    level: 1161,
   },
   {
     hanzi: "艺",
     count: 10,
+    level: 1162,
   },
   {
     hanzi: "瓦",
     count: 1,
+    level: 1163,
   },
   {
     hanzi: "瓶",
     count: 14,
+    level: 1164,
   },
   {
     hanzi: "饼",
     count: 7,
+    level: 1165,
   },
   {
     hanzi: "著",
     count: 6,
+    level: 1166,
   },
   {
     hanzi: "若",
     count: 4,
+    level: 1167,
   },
   {
     hanzi: "苹",
     count: 16,
+    level: 1168,
   },
   {
     hanzi: "苏",
     count: 3,
+    level: 1169,
   },
   {
     hanzi: "协",
     count: 7,
+    level: 1170,
   },
   {
     hanzi: "胁",
     count: 1,
+    level: 1171,
   },
   {
     hanzi: "藏",
     count: 24,
+    level: 1172,
   },
   {
     hanzi: "吕",
     count: 0,
+    level: 1173,
   },
   {
     hanzi: "宫",
     count: 1,
+    level: 1174,
   },
   {
     hanzi: "营",
     count: 13,
+    level: 1175,
   },
   {
     hanzi: "劳",
     count: 13,
+    level: 1176,
   },
   {
     hanzi: "荣",
     count: 6,
+    level: 1177,
   },
   {
     hanzi: "论",
     count: 35,
+    level: 1178,
   },
   {
     hanzi: "评",
     count: 13,
+    level: 1179,
   },
   {
     hanzi: "讯",
     count: 4,
+    level: 1180,
   },
   {
     hanzi: "讲",
     count: 39,
+    level: 1181,
   },
   {
     hanzi: "证",
     count: 21,
+    level: 1182,
   },
   {
     hanzi: "谈",
     count: 17,
+    level: 1183,
   },
   {
     hanzi: "训",
     count: 12,
+    level: 1184,
   },
   {
     hanzi: "访",
     count: 6,
+    level: 1185,
   },
   {
     hanzi: "误",
     count: 18,
+    level: 1186,
   },
   {
     hanzi: "订",
     count: 11,
+    level: 1187,
   },
   {
     hanzi: "诊",
     count: 3,
+    level: 1188,
   },
   {
     hanzi: "诺",
     count: 7,
+    level: 1189,
   },
   {
     hanzi: "诚",
     count: 10,
+    level: 1190,
   },
   {
     hanzi: "详",
     count: 6,
+    level: 1191,
   },
   {
     hanzi: "谊",
     count: 6,
+    level: 1192,
   },
   {
     hanzi: "县",
     count: 4,
+    level: 1193,
   },
   {
     hanzi: "谅",
     count: 4,
+    level: 1194,
   },
   {
     hanzi: "凉",
     count: 13,
+    level: 1195,
   },
   {
     hanzi: "度",
     count: 58,
+    level: 1196,
   },
   {
     hanzi: "席",
     count: 12,
+    level: 1197,
   },
   {
     hanzi: "府",
     count: 24,
+    level: 1198,
   },
   {
     hanzi: "底",
     count: 21,
+    level: 1199,
   },
   {
     hanzi: "座",
     count: 35,
+    level: 1200,
   },
   {
     hanzi: "庆",
     count: 9,
+    level: 1201,
   },
   {
     hanzi: "矿",
     count: 3,
+    level: 1202,
   },
   {
     hanzi: "破",
     count: 21,
+    level: 1203,
   },
   {
     hanzi: "础",
     count: 4,
+    level: 1204,
   },
   {
     hanzi: "碍",
     count: 5,
+    level: 1205,
   },
   {
     hanzi: "码",
     count: 9,
+    level: 1206,
   },
   {
     hanzi: "库",
     count: 1,
+    level: 1207,
   },
   {
     hanzi: "庄",
     count: 8,
+    level: 1208,
   },
   {
     hanzi: "脏",
     count: 12,
+    level: 1209,
   },
   {
     hanzi: "唐",
     count: 0,
+    level: 1210,
   },
   {
     hanzi: "糖",
     count: 10,
+    level: 1211,
   },
   {
     hanzi: "领",
     count: 54,
+    level: 1212,
   },
   {
     hanzi: "零",
     count: 8,
+    level: 1213,
   },
   {
     hanzi: "项",
     count: 29,
+    level: 1214,
   },
   {
     hanzi: "须",
     count: 21,
+    level: 1215,
   },
   {
     hanzi: "修",
     count: 29,
+    level: 1216,
   },
   {
     hanzi: "彩",
     count: 15,
+    level: 1217,
   },
   {
     hanzi: "额",
     count: 9,
+    level: 1218,
   },
   {
     hanzi: "彦",
     count: 0,
+    level: 1219,
   },
   {
     hanzi: "颜",
     count: 11,
+    level: 1220,
   },
   {
     hanzi: "顺",
     count: 12,
+    level: 1221,
   },
   {
     hanzi: "顾",
     count: 36,
+    level: 1222,
   },
   {
     hanzi: "频",
     count: 3,
+    level: 1223,
   },
   {
     hanzi: "顶",
     count: 11,
+    level: 1224,
   },
   {
     hanzi: "硕",
     count: 2,
+    level: 1225,
   },
   {
     hanzi: "态",
     count: 14,
+    level: 1226,
   },
   {
     hanzi: "志",
     count: 11,
+    level: 1227,
   },
   {
     hanzi: "念",
     count: 13,
+    level: 1228,
   },
   {
     hanzi: "恋",
     count: 3,
+    level: 1229,
   },
   {
     hanzi: "蛮",
     count: 1,
+    level: 1230,
   },
   {
     hanzi: "恩",
     count: 5,
+    level: 1231,
   },
   {
     hanzi: "怨",
     count: 3,
+    level: 1232,
   },
   {
     hanzi: "宛",
     count: 1,
+    level: 1233,
   },
   {
     hanzi: "腕",
     count: 1,
+    level: 1234,
   },
   {
     hanzi: "碗",
     count: 12,
+    level: 1235,
   },
   {
     hanzi: "德",
     count: 14,
+    level: 1236,
   },
   {
     hanzi: "急",
     count: 24,
+    level: 1237,
   },
   {
     hanzi: "隐",
     count: 9,
+    level: 1238,
   },
   {
     hanzi: "稳",
     count: 2,
+    level: 1239,
   },
   {
     hanzi: "悲",
     count: 6,
+    level: 1240,
   },
   {
     hanzi: "串",
     count: 2,
+    level: 1241,
   },
   {
     hanzi: "患",
     count: 3,
+    level: 1242,
   },
   {
     hanzi: "虑",
     count: 8,
+    level: 1243,
   },
   {
     hanzi: "虚",
     count: 7,
+    level: 1244,
   },
   {
     hanzi: "虎",
     count: 12,
+    level: 1245,
   },
   {
     hanzi: "忍",
     count: 7,
+    level: 1246,
   },
   {
     hanzi: "企",
     count: 13,
+    level: 1247,
   },
   {
     hanzi: "众",
     count: 21,
+    level: 1248,
   },
   {
     hanzi: "食",
     count: 22,
+    level: 1249,
   },
   {
     hanzi: "餐",
     count: 31,
+    level: 1250,
   },
   {
     hanzi: "伞",
     count: 11,
+    level: 1251,
   },
   {
     hanzi: "谷",
     count: 3,
+    level: 1252,
   },
   {
     hanzi: "容",
     count: 56,
+    level: 1253,
   },
   {
     hanzi: "欲",
     count: 4,
+    level: 1254,
   },
   {
     hanzi: "复",
     count: 27,
+    level: 1255,
   },
   {
     hanzi: "阳",
     count: 22,
+    level: 1256,
   },
   {
     hanzi: "申",
     count: 9,
+    level: 1257,
   },
   {
     hanzi: "审",
     count: 4,
+    level: 1258,
   },
   {
     hanzi: "神",
     count: 23,
+    level: 1259,
   },
   {
     hanzi: "智",
     count: 8,
+    level: 1260,
   },
   {
     hanzi: "暗",
     count: 6,
+    level: 1261,
   },
   {
     hanzi: "辰",
     count: 1,
+    level: 1262,
   },
   {
     hanzi: "晨",
     count: 6,
+    level: 1263,
   },
   {
     hanzi: "震",
     count: 8,
+    level: 1264,
   },
   {
     hanzi: "晴",
     count: 2,
+    level: 1265,
   },
   {
     hanzi: "暑",
     count: 4,
+    level: 1266,
   },
   {
     hanzi: "怪",
     count: 19,
+    level: 1267,
   },
   {
     hanzi: "性",
     count: 37,
+    level: 1268,
   },
   {
     hanzi: "怀",
     count: 8,
+    level: 1269,
   },
   {
     hanzi: "惊",
     count: 5,
+    level: 1270,
   },
   {
     hanzi: "惜",
     count: 8,
+    level: 1271,
   },
   {
     hanzi: "忆",
     count: 9,
+    level: 1272,
   },
   {
     hanzi: "悔",
     count: 3,
+    level: 1273,
   },
   {
     hanzi: "憾",
     count: 2,
+    level: 1274,
   },
   {
     hanzi: "怖",
     count: 3,
+    level: 1275,
   },
   {
     hanzi: "怜",
     count: 1,
+    level: 1276,
   },
   {
     hanzi: "贯",
     count: 2,
+    level: 1277,
   },
   {
     hanzi: "惯",
     count: 18,
+    level: 1278,
   },
   {
     hanzi: "华",
     count: 14,
+    level: 1279,
   },
   {
     hanzi: "克",
     count: 13,
+    level: 1280,
   },
   {
     hanzi: "党",
     count: 4,
+    level: 1281,
   },
   {
     hanzi: "掌",
     count: 11,
+    level: 1282,
   },
   {
     hanzi: "堂",
     count: 9,
+    level: 1283,
   },
   {
     hanzi: "甫",
     count: 0,
+    level: 1284,
   },
   {
     hanzi: "葡",
     count: 9,
+    level: 1285,
   },
   {
     hanzi: "萄",
     count: 9,
+    level: 1286,
   },
   {
     hanzi: "缺",
     count: 8,
+    level: 1287,
   },
   {
     hanzi: "筷",
     count: 6,
+    level: 1288,
   },
   {
     hanzi: "傅",
     count: 4,
+    level: 1289,
   },
   {
     hanzi: "博",
     count: 8,
+    level: 1290,
   },
   {
     hanzi: "膊",
     count: 0,
+    level: 1291,
   },
   {
     hanzi: "薄",
     count: 4,
+    level: 1292,
   },
   {
     hanzi: "产",
     count: 48,
+    level: 1293,
   },
   {
     hanzi: "质",
     count: 27,
+    level: 1294,
   },
   {
     hanzi: "厅",
     count: 11,
+    level: 1295,
   },
   {
     hanzi: "厉",
     count: 9,
+    level: 1296,
   },
   {
     hanzi: "励",
     count: 5,
+    level: 1297,
   },
   {
     hanzi: "危",
     count: 9,
+    level: 1298,
   },
   {
     hanzi: "厨",
     count: 5,
+    level: 1299,
   },
   {
     hanzi: "登",
     count: 6,
+    level: 1300,
   },
   {
     hanzi: "段",
     count: 22,
+    level: 1301,
   },
   {
     hanzi: "锻",
     count: 3,
+    level: 1302,
   },
   {
     hanzi: "政",
     count: 37,
+    level: 1303,
   },
   {
     hanzi: "效",
     count: 13,
+    level: 1304,
   },
   {
     hanzi: "故",
     count: 47,
+    level: 1305,
   },
   {
     hanzi: "散",
     count: 16,
+    level: 1306,
   },
   {
     hanzi: "攻",
     count: 5,
+    level: 1307,
   },
   {
     hanzi: "败",
     count: 11,
+    level: 1308,
   },
   {
     hanzi: "敢",
     count: 8,
+    level: 1309,
   },
   {
     hanzi: "聪",
     count: 10,
+    level: 1310,
   },
   {
     hanzi: "敌",
     count: 27,
+    level: 1311,
   },
   {
     hanzi: "敬",
     count: 10,
+    level: 1312,
   },
   {
     hanzi: "警",
     count: 29,
+    level: 1313,
   },
   {
     hanzi: "傲",
     count: 2,
+    level: 1314,
   },
   {
     hanzi: "熬",
     count: 1,
+    level: 1315,
   },
   {
     hanzi: "局",
     count: 12,
+    level: 1316,
   },
   {
     hanzi: "居",
     count: 19,
+    level: 1317,
   },
   {
     hanzi: "层",
     count: 10,
+    level: 1318,
   },
   {
     hanzi: "尝",
     count: 7,
+    level: 1319,
   },
   {
     hanzi: "偿",
     count: 2,
+    level: 1320,
   },
   {
     hanzi: "属",
     count: 16,
+    level: 1321,
   },
   {
     hanzi: "尼",
     count: 1,
+    level: 1322,
   },
   {
     hanzi: "届",
     count: 3,
+    level: 1323,
   },
   {
     hanzi: "尺",
     count: 3,
+    level: 1324,
   },
   {
     hanzi: "尽",
     count: 24,
+    level: 1325,
   },
   {
     hanzi: "迟",
     count: 14,
+    level: 1326,
   },
   {
     hanzi: "屏",
     count: 2,
+    level: 1327,
   },
   {
     hanzi: "权",
     count: 16,
+    level: 1328,
   },
   {
     hanzi: "观",
     count: 43,
+    level: 1329,
   },
   {
     hanzi: "双",
     count: 18,
+    level: 1330,
   },
   {
     hanzi: "摄",
     count: 5,
+    level: 1331,
   },
   {
     hanzi: "戏",
     count: 17,
+    level: 1332,
   },
   {
     hanzi: "敲",
     count: 5,
+    level: 1333,
   },
   {
     hanzi: "叔",
     count: 2,
+    level: 1334,
   },
   {
     hanzi: "督",
     count: 1,
+    level: 1335,
   },
   {
     hanzi: "戚",
     count: 0,
+    level: 1336,
   },
   {
     hanzi: "椒",
     count: 4,
+    level: 1337,
   },
   {
     hanzi: "血",
     count: 8,
+    level: 1338,
   },
   {
     hanzi: "益",
     count: 14,
+    level: 1339,
   },
   {
     hanzi: "温",
     count: 24,
+    level: 1340,
   },
   {
     hanzi: "监",
     count: 2,
+    level: 1341,
   },
   {
     hanzi: "临",
     count: 10,
+    level: 1342,
   },
   {
     hanzi: "篮",
     count: 9,
+    level: 1343,
   },
   {
     hanzi: "蓝",
     count: 17,
+    level: 1344,
   },
   {
     hanzi: "盛",
     count: 8,
+    level: 1345,
   },
   {
     hanzi: "盖",
     count: 7,
+    level: 1346,
   },
   {
     hanzi: "盟",
     count: 3,
+    level: 1347,
   },
   {
     hanzi: "盐",
     count: 5,
+    level: 1348,
   },
   {
     hanzi: "盒",
     count: 8,
+    level: 1349,
   },
   {
     hanzi: "宣",
     count: 4,
+    level: 1350,
   },
   {
     hanzi: "宁",
     count: 3,
+    level: 1351,
   },
   {
     hanzi: "守",
     count: 8,
+    level: 1352,
   },
   {
     hanzi: "灾",
     count: 15,
+    level: 1353,
   },
   {
     hanzi: "宗",
     count: 5,
+    level: 1354,
   },
   {
     hanzi: "奥",
     count: 9,
+    level: 1355,
   },
   {
     hanzi: "祭",
     count: 2,
+    level: 1356,
   },
   {
     hanzi: "察",
     count: 33,
+    level: 1357,
   },
   {
     hanzi: "擦",
     count: 6,
+    level: 1358,
   },
   {
     hanzi: "赛",
     count: 55,
+    level: 1359,
   },
   {
     hanzi: "寒",
     count: 8,
+    level: 1360,
   },
   {
     hanzi: "塞",
     count: 4,
+    level: 1361,
   },
   {
     hanzi: "春",
     count: 36,
+    level: 1362,
   },
   {
     hanzi: "奉",
     count: 1,
+    level: 1363,
   },
   {
     hanzi: "棒",
     count: 7,
+    level: 1364,
   },
   {
     hanzi: "举",
     count: 27,
+    level: 1365,
   },
   {
     hanzi: "择",
     count: 12,
+    level: 1366,
   },
   {
     hanzi: "播",
     count: 14,
+    level: 1367,
   },
   {
     hanzi: "释",
     count: 10,
+    level: 1368,
   },
   {
     hanzi: "译",
     count: 5,
+    level: 1369,
   },
   {
     hanzi: "悉",
     count: 3,
+    level: 1370,
   },
   {
     hanzi: "羽",
     count: 6,
+    level: 1371,
   },
   {
     hanzi: "翻",
     count: 13,
+    level: 1372,
   },
   {
     hanzi: "扇",
     count: 4,
+    level: 1373,
   },
   {
     hanzi: "旁",
     count: 13,
+    level: 1374,
   },
   {
     hanzi: "童",
     count: 18,
+    level: 1375,
   },
   {
     hanzi: "竞",
     count: 2,
+    level: 1376,
   },
   {
     hanzi: "章",
     count: 17,
+    level: 1377,
   },
   {
     hanzi: "端",
     count: 4,
+    level: 1378,
   },
   {
     hanzi: "帝",
     count: 4,
+    level: 1379,
   },
   {
     hanzi: "商",
     count: 46,
+    level: 1380,
   },
   {
     hanzi: "橘",
     count: 1,
+    level: 1381,
   },
   {
     hanzi: "费",
     count: 32,
+    level: 1382,
   },
   {
     hanzi: "佛",
     count: 4,
+    level: 1383,
   },
   {
     hanzi: "聊",
     count: 19,
+    level: 1384,
   },
   {
     hanzi: "贸",
     count: 0,
+    level: 1385,
   },
   {
     hanzi: "留",
     count: 30,
+    level: 1386,
   },
   {
     hanzi: "债",
     count: 2,
+    level: 1387,
   },
   {
     hanzi: "贴",
     count: 6,
+    level: 1388,
   },
   {
     hanzi: "战",
     count: 28,
+    level: 1389,
   },
   {
     hanzi: "赔",
     count: 4,
+    level: 1390,
   },
   {
     hanzi: "财",
     count: 7,
+    level: 1391,
   },
   {
     hanzi: "贫",
     count: 3,
+    level: 1392,
   },
   {
     hanzi: "贷",
     count: 5,
+    level: 1393,
   },
   {
     hanzi: "贡",
     count: 2,
+    level: 1394,
   },
   {
     hanzi: "参",
     count: 38,
+    level: 1395,
   },
   {
     hanzi: "类",
     count: 21,
+    level: 1396,
   },
   {
     hanzi: "央",
     count: 4,
+    level: 1397,
   },
   {
     hanzi: "英",
     count: 24,
+    level: 1398,
   },
   {
     hanzi: "映",
     count: 4,
+    level: 1399,
   },
   {
     hanzi: "换",
     count: 25,
+    level: 1400,
   },
   {
     hanzi: "奋",
     count: 9,
+    level: 1401,
   },
   {
     hanzi: "夺",
     count: 6,
+    level: 1402,
   },
   {
     hanzi: "莫",
     count: 6,
+    level: 1403,
   },
   {
     hanzi: "模",
     count: 20,
+    level: 1404,
   },
   {
     hanzi: "幕",
     count: 5,
+    level: 1405,
   },
   {
     hanzi: "膜",
     count: 1,
+    level: 1406,
   },
   {
     hanzi: "羡",
     count: 5,
+    level: 1407,
   },
   {
     hanzi: "慕",
     count: 6,
+    level: 1408,
   },
   {
     hanzi: "存",
     count: 9,
+    level: 1409,
   },
   {
     hanzi: "李",
     count: 17,
+    level: 1410,
   },
   {
     hanzi: "享",
     count: 5,
+    level: 1411,
   },
   {
     hanzi: "亮",
     count: 32,
+    level: 1412,
   },
   {
     hanzi: "漂",
     count: 19,
+    level: 1413,
   },
   {
     hanzi: "熟",
     count: 7,
+    level: 1414,
   },
   {
     hanzi: "孙",
     count: 2,
+    level: 1415,
   },
   {
     hanzi: "获",
     count: 16,
+    level: 1416,
   },
   {
     hanzi: "献",
     count: 4,
+    level: 1417,
   },
   {
     hanzi: "默",
     count: 8,
+    level: 1418,
   },
   {
     hanzi: "独",
     count: 12,
+    level: 1419,
   },
   {
     hanzi: "融",
     count: 6,
+    level: 1420,
   },
   {
     hanzi: "犯",
     count: 10,
+    level: 1421,
   },
   {
     hanzi: "狂",
     count: 2,
+    level: 1422,
   },
   {
     hanzi: "猜",
     count: 6,
+    level: 1423,
   },
   {
     hanzi: "检",
     count: 6,
+    level: 1424,
   },
   {
     hanzi: "验",
     count: 15,
+    level: 1425,
   },
   {
     hanzi: "险",
     count: 6,
+    level: 1426,
   },
   {
     hanzi: "脸",
     count: 18,
+    level: 1427,
   },
   {
     hanzi: "签",
     count: 14,
+    level: 1428,
   },
   {
     hanzi: "斯",
     count: 4,
+    level: 1429,
   },
   {
     hanzi: "甚",
     count: 1,
+    level: 1430,
   },
   {
     hanzi: "断",
     count: 19,
+    level: 1431,
   },
   {
     hanzi: "斩",
     count: 1,
+    level: 1432,
   },
   {
     hanzi: "暂",
     count: 8,
+    level: 1433,
   },
   {
     hanzi: "丘",
     count: 1,
+    level: 1434,
   },
   {
     hanzi: "乒",
     count: 3,
+    level: 1435,
   },
   {
     hanzi: "乓",
     count: 3,
+    level: 1436,
   },
   {
     hanzi: "兵",
     count: 4,
+    level: 1437,
   },
   {
     hanzi: "宾",
     count: 5,
+    level: 1438,
   },
   {
     hanzi: "军",
     count: 26,
+    level: 1439,
   },
   {
     hanzi: "农",
     count: 14,
+    level: 1440,
   },
   {
     hanzi: "辑",
     count: 2,
+    level: 1441,
   },
   {
     hanzi: "载",
     count: 2,
+    level: 1442,
   },
   {
     hanzi: "裁",
     count: 2,
+    level: 1443,
   },
   {
     hanzi: "戴",
     count: 11,
+    level: 1444,
   },
   {
     hanzi: "舟",
     count: 0,
+    level: 1445,
   },
   {
     hanzi: "船",
     count: 13,
+    level: 1446,
   },
   {
     hanzi: "般",
     count: 21,
+    level: 1447,
   },
   {
     hanzi: "搬",
     count: 13,
+    level: 1448,
   },
   {
     hanzi: "抗",
     count: 7,
+    level: 1449,
   },
   {
     hanzi: "航",
     count: 4,
+    level: 1450,
   },
   {
     hanzi: "盘",
     count: 11,
+    level: 1451,
   },
   {
     hanzi: "封",
     count: 11,
+    level: 1452,
   },
   {
     hanzi: "佳",
     count: 4,
+    level: 1453,
   },
   {
     hanzi: "挂",
     count: 7,
+    level: 1454,
   },
   {
     hanzi: "革",
     count: 9,
+    level: 1455,
   },
   {
     hanzi: "鞋",
     count: 14,
+    level: 1456,
   },
   {
     hanzi: "街",
     count: 17,
+    level: 1457,
   },
   {
     hanzi: "策",
     count: 11,
+    level: 1458,
   },
   {
     hanzi: "符",
     count: 6,
+    level: 1459,
   },
   {
     hanzi: "箱",
     count: 11,
+    level: 1460,
   },
   {
     hanzi: "笨",
     count: 3,
+    level: 1461,
   },
   {
     hanzi: "笔",
     count: 26,
+    level: 1462,
   },
   {
     hanzi: "答",
     count: 28,
+    level: 1463,
+    pinyin: "dá",
   },
   {
     hanzi: "巩",
     count: 2,
+    level: 1464,
   },
   {
     hanzi: "筑",
     count: 4,
+    level: 1465,
   },
   {
     hanzi: "恐",
     count: 8,
+    level: 1466,
   },
   {
     hanzi: "委",
     count: 7,
+    level: 1467,
   },
   {
     hanzi: "威",
     count: 2,
+    level: 1468,
   },
   {
     hanzi: "婚",
     count: 30,
+    level: 1469,
   },
   {
     hanzi: "媒",
     count: 5,
+    level: 1470,
   },
   {
     hanzi: "妇",
     count: 4,
+    level: 1471,
   },
   {
     hanzi: "妻",
     count: 6,
+    level: 1472,
   },
   {
     hanzi: "妨",
     count: 4,
+    level: 1473,
   },
   {
     hanzi: "围",
     count: 18,
+    level: 1474,
   },
   {
     hanzi: "困",
     count: 23,
+    level: 1475,
   },
   {
     hanzi: "固",
     count: 8,
+    level: 1476,
   },
   {
     hanzi: "圆",
     count: 6,
+    level: 1477,
   },
   {
     hanzi: "卷",
     count: 3,
+    level: 1478,
   },
   {
     hanzi: "券",
     count: 1,
+    level: 1479,
   },
   {
     hanzi: "圈",
     count: 6,
+    level: 1480,
   },
   {
     hanzi: "窗",
     count: 12,
+    level: 1481,
   },
   {
     hanzi: "帘",
     count: 2,
+    level: 1482,
   },
   {
     hanzi: "布",
     count: 19,
+    level: 1483,
   },
   {
     hanzi: "币",
     count: 7,
+    level: 1484,
   },
   {
     hanzi: "闹",
     count: 15,
+    level: 1485,
   },
   {
     hanzi: "冒",
     count: 15,
+    level: 1486,
   },
   {
     hanzi: "帽",
     count: 26,
+    level: 1487,
   },
   {
     hanzi: "套",
     count: 16,
+    level: 1488,
   },
   {
     hanzi: "录",
     count: 7,
+    level: 1489,
   },
   {
     hanzi: "绿",
     count: 10,
+    level: 1490,
   },
   {
     hanzi: "兼",
     count: 6,
+    level: 1491,
   },
   {
     hanzi: "赚",
     count: 9,
+    level: 1492,
   },
   {
     hanzi: "歉",
     count: 0,
+    level: 1493,
   },
   {
     hanzi: "谦",
     count: 0,
+    level: 1494,
   },
   {
     hanzi: "初",
     count: 9,
+    level: 1495,
   },
   {
     hanzi: "彻",
     count: 1,
+    level: 1496,
   },
   {
     hanzi: "补",
     count: 11,
+    level: 1497,
   },
   {
     hanzi: "裤",
     count: 7,
+    level: 1498,
   },
   {
     hanzi: "裙",
     count: 4,
+    level: 1499,
   },
   {
     hanzi: "衫",
     count: 3,
+    level: 1500,
   },
   {
     hanzi: "衬",
     count: 4,
+    level: 1501,
   },
   {
     hanzi: "袜",
     count: 1,
+    level: 1502,
   },
   {
     hanzi: "略",
     count: 4,
+    level: 1503,
   },
   {
     hanzi: "画",
     count: 26,
+    level: 1504,
   },
   {
     hanzi: "雷",
     count: 6,
+    level: 1505,
   },
   {
     hanzi: "甲",
     count: 3,
+    level: 1506,
   },
   {
     hanzi: "鼻",
     count: 3,
+    level: 1507,
   },
   {
     hanzi: "畏",
     count: 2,
+    level: 1508,
   },
   {
     hanzi: "喂",
     count: 4,
+    level: 1509,
   },
   {
     hanzi: "针",
     count: 8,
+    level: 1510,
   },
   {
     hanzi: "镇",
     count: 2,
+    level: 1511,
   },
   {
     hanzi: "钢",
     count: 5,
+    level: 1512,
   },
   {
     hanzi: "键",
     count: 3,
+    level: 1513,
   },
   {
     hanzi: "铅",
     count: 1,
+    level: 1514,
   },
   {
     hanzi: "钥",
     count: 1,
+    level: 1515,
   },
   {
     hanzi: "匙",
     count: 1,
+    level: 1516,
   },
   {
     hanzi: "乔",
     count: 0,
+    level: 1517,
   },
   {
     hanzi: "骄",
     count: 0,
+    level: 1518,
   },
   {
     hanzi: "桥",
     count: 9,
+    level: 1519,
   },
   {
     hanzi: "鸟",
     count: 17,
+    level: 1520,
   },
   {
     hanzi: "鸡",
     count: 15,
+    level: 1521,
   },
   {
     hanzi: "岛",
     count: 4,
+    level: 1522,
   },
   {
     hanzi: "鸭",
     count: 6,
+    level: 1523,
   },
   {
     hanzi: "灵",
     count: 8,
+    level: 1524,
   },
   {
     hanzi: "烟",
     count: 10,
+    level: 1525,
   },
   {
     hanzi: "炎",
     count: 6,
+    level: 1526,
   },
   {
     hanzi: "炼",
     count: 5,
+    level: 1527,
   },
   {
     hanzi: "烧",
     count: 11,
+    level: 1528,
   },
   {
     hanzi: "绕",
     count: 3,
+    level: 1529,
   },
   {
     hanzi: "浇",
     count: 5,
+    level: 1530,
   },
   {
     hanzi: "部",
     count: 78,
+    level: 1531,
   },
   {
     hanzi: "隔",
     count: 10,
+    level: 1532,
   },
   {
     hanzi: "款",
     count: 27,
+    level: 1533,
   },
   {
     hanzi: "资",
     count: 54,
+    level: 1534,
   },
   {
     hanzi: "货",
     count: 13,
+    level: 1535,
   },
   {
     hanzi: "赞",
     count: 11,
+    level: 1536,
   },
   {
     hanzi: "雕",
     count: 2,
+    level: 1537,
   },
   {
     hanzi: "调",
     count: 45,
+    level: 1538,
   },
   {
     hanzi: "设",
     count: 33,
+    level: 1539,
   },
   {
     hanzi: "罚",
     count: 9,
+    level: 1540,
   },
   {
     hanzi: "剑",
     count: 1,
+    level: 1541,
   },
   {
     hanzi: "允",
     count: 0,
+    level: 1542,
   },
   {
     hanzi: "许",
     count: 25,
+    level: 1543,
   },
   {
     hanzi: "谋",
     count: 10,
+    level: 1544,
   },
   {
     hanzi: "煤",
     count: 6,
+    level: 1545,
   },
   {
     hanzi: "灭",
     count: 13,
+    level: 1546,
   },
   {
     hanzi: "炸",
     count: 9,
+    level: 1547,
   },
   {
     hanzi: "储",
     count: 5,
+    level: 1548,
   },
   {
     hanzi: "伟",
     count: 9,
+    level: 1549,
   },
   {
     hanzi: "侧",
     count: 8,
+    level: 1550,
   },
   {
     hanzi: "侵",
     count: 5,
+    level: 1551,
   },
   {
     hanzi: "伦",
     count: 1,
+    level: 1552,
   },
   {
     hanzi: "轮",
     count: 12,
+    level: 1553,
   },
   {
     hanzi: "亿",
     count: 4,
+    level: 1554,
   },
   {
     hanzi: "迅",
     count: 1,
+    level: 1555,
   },
   {
     hanzi: "速",
     count: 20,
+    level: 1556,
   },
   {
     hanzi: "迫",
     count: 6,
+    level: 1557,
   },
   {
     hanzi: "荐",
     count: 1,
+    level: 1558,
   },
   {
     hanzi: "菌",
     count: 3,
+    level: 1559,
   },
   {
     hanzi: "团",
     count: 21,
+    level: 1560,
   },
   {
     hanzi: "闭",
     count: 10,
+    level: 1561,
   },
   {
     hanzi: "闪",
     count: 7,
+    level: 1562,
   },
   {
     hanzi: "喊",
     count: 2,
+    level: 1563,
   },
   {
     hanzi: "启",
     count: 12,
+    level: 1564,
   },
   {
     hanzi: "罢",
     count: 6,
+    level: 1565,
   },
   {
     hanzi: "摆",
     count: 11,
+    level: 1566,
   },
   {
     hanzi: "握",
     count: 15,
+    level: 1567,
   },
   {
     hanzi: "摇",
     count: 8,
+    level: 1568,
   },
   {
     hanzi: "抵",
     count: 6,
+    level: 1569,
   },
   {
     hanzi: "援",
     count: 5,
+    level: 1570,
   },
   {
     hanzi: "搭",
     count: 15,
+    level: 1571,
   },
   {
     hanzi: "忽",
     count: 4,
+    level: 1572,
   },
   {
     hanzi: "惠",
     count: 9,
+    level: 1573,
   },
   {
     hanzi: "甜",
     count: 9,
+    level: 1574,
   },
   {
     hanzi: "墙",
     count: 9,
+    level: 1575,
   },
   {
     hanzi: "碰",
     count: 9,
+    level: 1576,
   },
   {
     hanzi: "坦",
     count: 5,
+    level: 1577,
   },
   {
     hanzi: "胆",
     count: 8,
+    level: 1578,
   },
   {
     hanzi: "朗",
     count: 7,
+    level: 1579,
   },
   {
     hanzi: "肠",
     count: 4,
+    level: 1580,
   },
   {
     hanzi: "销",
     count: 12,
+    level: 1581,
   },
   {
     hanzi: "锋",
     count: 4,
+    level: 1582,
   },
   {
     hanzi: "雄",
     count: 6,
+    level: 1583,
   },
   {
     hanzi: "截",
     count: 9,
+    level: 1584,
   },
   {
     hanzi: "替",
     count: 11,
+    level: 1585,
   },
   {
     hanzi: "潜",
     count: 5,
+    level: 1586,
   },
   {
     hanzi: "泪",
     count: 4,
+    level: 1587,
   },
   {
     hanzi: "涉",
     count: 5,
+    level: 1588,
   },
   {
     hanzi: "漫",
     count: 2,
+    level: 1589,
   },
   {
     hanzi: "婆",
     count: 12,
+    level: 1590,
   },
   {
     hanzi: "洁",
     count: 5,
+    level: 1591,
   },
   {
     hanzi: "浓",
     count: 11,
+    level: 1592,
   },
   {
     hanzi: "岸",
     count: 3,
+    level: 1593,
   },
   {
     hanzi: "废",
     count: 13,
+    level: 1594,
   },
   {
     hanzi: "触",
     count: 8,
+    level: 1595,
   },
   {
     hanzi: "麦",
     count: 2,
+    level: 1596,
   },
   {
     hanzi: "珍",
     count: 12,
+    level: 1597,
   },
   {
     hanzi: "珠",
     count: 3,
+    level: 1598,
   },
   {
     hanzi: "旗",
     count: 3,
+    level: 1599,
   },
   {
     hanzi: "祖",
     count: 3,
+    level: 1600,
   },
   {
     hanzi: "敏",
     count: 5,
+    level: 1601,
   },
   {
     hanzi: "繁",
     count: 2,
+    level: 1602,
   },
   {
     hanzi: "紫",
     count: 3,
+    level: 1603,
   },
   {
     hanzi: "梅",
     count: 1,
+    level: 1604,
   },
   {
     hanzi: "闲",
     count: 3,
+    level: 1605,
   },
   {
     hanzi: "杰",
     count: 1,
+    level: 1606,
   },
   {
     hanzi: "棉",
     count: 3,
+    level: 1607,
   },
   {
     hanzi: "横",
     count: 3,
+    level: 1608,
   },
   {
     hanzi: "纵",
     count: 3,
+    level: 1609,
   },
   {
     hanzi: "杆",
     count: 4,
+    level: 1610,
   },
   {
     hanzi: "刊",
     count: 2,
+    level: 1611,
   },
   {
     hanzi: "肝",
     count: 3,
+    level: 1612,
   },
   {
     hanzi: "腰",
     count: 2,
+    level: 1613,
   },
   {
     hanzi: "肺",
     count: 2,
+    level: 1614,
   },
   {
     hanzi: "胃",
     count: 4,
+    level: 1615,
   },
   {
     hanzi: "谓",
     count: 4,
+    level: 1616,
   },
   {
     hanzi: "诗",
     count: 5,
+    level: 1617,
   },
   {
     hanzi: "询",
     count: 5,
+    level: 1618,
   },
   {
     hanzi: "诞",
     count: 3,
+    level: 1619,
   },
   {
     hanzi: "诸",
     count: 1,
+    level: 1620,
   },
   {
     hanzi: "奔",
     count: 1,
+    level: 1621,
   },
   {
     hanzi: "尖",
     count: 4,
+    level: 1622,
   },
   {
     hanzi: "夸",
     count: 6,
+    level: 1623,
   },
   {
     hanzi: "跨",
     count: 2,
+    level: 1624,
   },
   {
     hanzi: "垮",
     count: 1,
+    level: 1625,
   },
   {
     hanzi: "挎",
     count: 1,
+    level: 1626,
   },
   {
     hanzi: "扣",
     count: 8,
+    level: 1627,
   },
   {
     hanzi: "撞",
     count: 3,
+    level: 1628,
   },
   {
     hanzi: "摸",
     count: 4,
+    level: 1629,
   },
   {
     hanzi: "拔",
     count: 7,
+    level: 1630,
   },
   {
     hanzi: "振",
     count: 2,
+    level: 1631,
   },
   {
     hanzi: "拖",
     count: 5,
+    level: 1632,
   },
   {
     hanzi: "拼",
     count: 5,
+    level: 1633,
   },
   {
     hanzi: "拆",
     count: 2,
+    level: 1634,
   },
   {
     hanzi: "扎",
     count: 11,
+    level: 1635,
   },
   {
     hanzi: "乳",
     count: 2,
+    level: 1636,
   },
   {
     hanzi: "浮",
     count: 6,
+    level: 1637,
   },
   {
     hanzi: "泥",
     count: 2,
+    level: 1638,
   },
   {
     hanzi: "湿",
     count: 1,
+    level: 1639,
   },
   {
     hanzi: "沿",
     count: 6,
+    level: 1640,
   },
   {
     hanzi: "泡",
     count: 10,
+    level: 1641,
   },
   {
     hanzi: "炮",
     count: 2,
+    level: 1642,
   },
   {
     hanzi: "灰",
     count: 20,
+    level: 1643,
   },
   {
     hanzi: "晓",
     count: 1,
+    level: 1644,
   },
   {
     hanzi: "曹",
     count: 5,
+    level: 1645,
   },
   {
     hanzi: "遭",
     count: 7,
+    level: 1646,
   },
   {
     hanzi: "糟",
     count: 1,
+    level: 1647,
   },
   {
     hanzi: "糕",
     count: 8,
+    level: 1648,
   },
   {
     hanzi: "粮",
     count: 1,
+    level: 1649,
   },
   {
     hanzi: "凡",
     count: 3,
+    level: 1650,
   },
   {
     hanzi: "洞",
     count: 6,
+    level: 1651,
   },
   {
     hanzi: "铜",
     count: 2,
+    level: 1652,
   },
   {
     hanzi: "铺",
     count: 5,
+    level: 1653,
   },
   {
     hanzi: "锁",
     count: 0,
+    level: 1654,
   },
   {
     hanzi: "赏",
     count: 6,
+    level: 1655,
   },
   {
     hanzi: "账",
     count: 1,
+    level: 1656,
   },
   {
     hanzi: "贺",
     count: 2,
+    level: 1657,
   },
   {
     hanzi: "茄",
     count: 3,
+    level: 1658,
   },
   {
     hanzi: "驾",
     count: 4,
+    level: 1659,
   },
   {
     hanzi: "驶",
     count: 2,
+    level: 1660,
   },
   {
     hanzi: "驻",
     count: 1,
+    level: 1661,
   },
   {
     hanzi: "乌",
     count: 6,
+    level: 1662,
   },
   {
     hanzi: "塔",
     count: 1,
+    level: 1663,
   },
   {
     hanzi: "坡",
     count: 4,
+    level: 1664,
   },
   {
     hanzi: "壁",
     count: 1,
+    level: 1665,
   },
   {
     hanzi: "勤",
     count: 4,
+    level: 1666,
   },
   {
     hanzi: "幼",
     count: 5,
+    level: 1667,
   },
   {
     hanzi: "蒙",
     count: 8,
+    level: 1668,
   },
   {
     hanzi: "豪",
     count: 0,
+    level: 1669,
   },
   {
     hanzi: "毫",
     count: 3,
+    level: 1670,
   },
   {
     hanzi: "尾",
     count: 5,
+    level: 1671,
   },
   {
     hanzi: "耗",
     count: 1,
+    level: 1672,
   },
   {
     hanzi: "径",
     count: 2,
+    level: 1673,
   },
   {
     hanzi: "衡",
     count: 2,
+    level: 1674,
   },
   {
     hanzi: "徒",
     count: 0,
+    level: 1675,
   },
   {
     hanzi: "趋",
     count: 1,
+    level: 1676,
   },
   {
     hanzi: "逼",
     count: 4,
+    level: 1677,
   },
   {
     hanzi: "返",
     count: 0,
+    level: 1678,
   },
   {
     hanzi: "迁",
     count: 2,
+    level: 1679,
   },
   {
     hanzi: "猛",
     count: 5,
+    level: 1680,
   },
   {
     hanzi: "仔",
     count: 7,
+    level: 1681,
   },
   {
     hanzi: "仪",
     count: 2,
+    level: 1682,
   },
   {
     hanzi: "俗",
     count: 4,
+    level: 1683,
   },
   {
     hanzi: "俱",
     count: 1,
+    level: 1684,
   },
   {
     hanzi: "傻",
     count: 1,
+    level: 1685,
   },
   {
     hanzi: "妙",
     count: 5,
+    level: 1686,
   },
   {
     hanzi: "奴",
     count: 0,
+    level: 1687,
   },
   {
     hanzi: "怒",
     count: 2,
+    level: 1688,
   },
   {
     hanzi: "愤",
     count: 2,
+    level: 1689,
   },
   {
     hanzi: "磨",
     count: 5,
+    level: 1690,
   },
   {
     hanzi: "鬼",
     count: 5,
+    level: 1691,
   },
   {
     hanzi: "魔",
     count: 1,
+    level: 1692,
   },
   {
     hanzi: "嘛",
     count: 1,
+    level: 1693,
   },
   {
     hanzi: "唯",
     count: 5,
+    level: 1694,
   },
   {
     hanzi: "滴",
     count: 1,
+    level: 1695,
   },
   {
     hanzi: "摘",
     count: 2,
+    level: 1696,
   },
   {
     hanzi: "燃",
     count: 5,
+    level: 1697,
   },
   {
     hanzi: "腐",
     count: 2,
+    level: 1698,
   },
   {
     hanzi: "宏",
     count: 0,
+    level: 1699,
   },
   {
     hanzi: "辈",
     count: 6,
+    level: 1700,
   },
   {
     hanzi: "插",
     count: 4,
+    level: 1701,
   },
   {
     hanzi: "毁",
     count: 4,
+    level: 1702,
   },
   {
     hanzi: "鼠",
     count: 5,
+    level: 1703,
   },
   {
     hanzi: "舆",
     count: 1,
+    level: 1704,
   },
   {
     hanzi: "舅",
     count: 3,
+    level: 1705,
   },
   {
     hanzi: "番",
     count: 6,
+    level: 1706,
   },
   {
     hanzi: "滔",
     count: 1,
+    level: 1707,
   },
   {
     hanzi: "稻",
     count: 3,
+    level: 1708,
   },
   {
     hanzi: "稿",
     count: 3,
+    level: 1709,
   },
   {
     hanzi: "蹈",
     count: 2,
+    level: 1710,
   },
   {
     hanzi: "跃",
     count: 5,
+    level: 1711,
   },
   {
     hanzi: "陷",
     count: 2,
+    level: 1712,
   },
   {
     hanzi: "焰",
     count: 1,
+    level: 1713,
   },
   {
     hanzi: "阎",
     count: 1,
+    level: 1714,
   },
   {
     hanzi: "掐",
     count: 1,
+    level: 1715,
   },
   {
     hanzi: "馅",
     count: 2,
+    level: 1716,
   },
   {
     hanzi: "饰",
     count: 6,
+    level: 1717,
   },
   {
     hanzi: "册",
     count: 3,
+    level: 1718,
   },
   {
     hanzi: "岗",
     count: 1,
+    level: 1719,
   },
   {
     hanzi: "卒",
     count: 1,
+    level: 1720,
   },
   {
     hanzi: "碎",
     count: 5,
+    level: 1721,
   },
   {
     hanzi: "醉",
     count: 1,
+    level: 1722,
   },
   {
     hanzi: "翠",
     count: 0,
+    level: 1723,
   },
   {
     hanzi: "粹",
     count: 2,
+    level: 1724,
   },
   {
     hanzi: "糊",
     count: 2,
+    level: 1725,
   },
   {
     hanzi: "览",
     count: 2,
+    level: 1726,
   },
   {
     hanzi: "鉴",
     count: 3,
+    level: 1727,
   },
   {
     hanzi: "锅",
     count: 8,
+    level: 1728,
   },
   {
     hanzi: "窝",
     count: 7,
+    level: 1729,
   },
   {
     hanzi: "祸",
     count: 7,
+    level: 1730,
   },
   {
     hanzi: "涡",
     count: 0,
+    level: 1731,
   },
   {
     hanzi: "殊",
     count: 2,
+    level: 1732,
   },
   {
     hanzi: "殖",
     count: 1,
+    level: 1733,
   },
   {
     hanzi: "裂",
     count: 1,
+    level: 1734,
   },
   {
     hanzi: "滚",
     count: 3,
+    level: 1735,
   },
   {
     hanzi: "讼",
     count: 1,
+    level: 1736,
   },
   {
     hanzi: "颂",
     count: 2,
+    level: 1737,
   },
   {
     hanzi: "翁",
     count: 1,
+    level: 1738,
   },
   {
     hanzi: "嗡",
     count: 1,
+    level: 1739,
   },
   {
     hanzi: "叹",
     count: 1,
+    level: 1740,
   },
   {
     hanzi: "喷",
     count: 3,
+    level: 1741,
   },
   {
     hanzi: "哇",
     count: 1,
+    level: 1742,
   },
   {
     hanzi: "娃",
     count: 3,
+    level: 1743,
   },
   {
     hanzi: "嫌",
     count: 1,
+    level: 1744,
   },
   {
     hanzi: "娱",
     count: 2,
+    level: 1745,
   },
   {
     hanzi: "奏",
     count: 4,
+    level: 1746,
   },
   {
     hanzi: "壮",
     count: 2,
+    level: 1747,
   },
   {
     hanzi: "嘉",
     count: 1,
+    level: 1748,
   },
   {
     hanzi: "牵",
     count: 1,
+    level: 1749,
   },
   {
     hanzi: "倾",
     count: 2,
+    level: 1750,
   },
   {
     hanzi: "宇",
     count: 3,
+    level: 1751,
   },
   {
     hanzi: "宙",
     count: 2,
+    level: 1752,
   },
   {
     hanzi: "宅",
     count: 4,
+    level: 1753,
   },
   {
     hanzi: "诧",
     count: 1,
+    level: 1754,
   },
   {
     hanzi: "畅",
     count: 2,
+    level: 1755,
   },
   {
     hanzi: "伸",
     count: 1,
+    level: 1756,
   },
   {
     hanzi: "凭",
     count: 2,
+    level: 1757,
   },
   {
     hanzi: "伍",
     count: 6,
+    level: 1758,
   },
   {
     hanzi: "仿",
     count: 4,
+    level: 1759,
   },
   {
     hanzi: "旋",
     count: 1,
+    level: 1760,
   },
   {
     hanzi: "狠",
     count: 2,
+    level: 1761,
   },
   {
     hanzi: "艰",
     count: 6,
+    level: 1762,
   },
   {
     hanzi: "恨",
     count: 2,
+    level: 1763,
   },
   {
     hanzi: "忧",
     count: 3,
+    level: 1764,
   },
   {
     hanzi: "恢",
     count: 1,
+    level: 1765,
   },
   {
     hanzi: "惨",
     count: 5,
+    level: 1766,
   },
   {
     hanzi: "渗",
     count: 3,
+    level: 1767,
   },
   {
     hanzi: "泛",
     count: 0,
+    level: 1768,
   },
   {
     hanzi: "洪",
     count: 2,
+    level: 1769,
   },
   {
     hanzi: "池",
     count: 4,
+    level: 1770,
   },
   {
     hanzi: "漏",
     count: 3,
+    level: 1771,
   },
   {
     hanzi: "渡",
     count: 3,
+    level: 1772,
   },
   {
     hanzi: "踱",
     count: 1,
+    level: 1773,
   },
   {
     hanzi: "粱",
     count: 0,
+    level: 1774,
   },
   {
     hanzi: "梁",
     count: 1,
+    level: 1775,
   },
   {
     hanzi: "桃",
     count: 1,
+    level: 1776,
   },
   {
     hanzi: "榜",
     count: 1,
+    level: 1777,
   },
   {
     hanzi: "镑",
     count: 0,
+    level: 1778,
   },
   {
     hanzi: "傍",
     count: 0,
+    level: 1779,
   },
   {
     hanzi: "磅",
     count: 1,
+    level: 1780,
   },
   {
     hanzi: "膀",
     count: 2,
+    level: 1781,
   },
   {
     hanzi: "肩",
     count: 4,
+    level: 1782,
   },
   {
     hanzi: "捐",
     count: 7,
+    level: 1783,
   },
   {
     hanzi: "柜",
     count: 6,
+    level: 1784,
   },
   {
     hanzi: "矩",
     count: 2,
+    level: 1785,
   },
   {
     hanzi: "炬",
     count: 0,
+    level: 1786,
   },
   {
     hanzi: "拒",
     count: 7,
+    level: 1787,
   },
   {
     hanzi: "捕",
     count: 3,
+    level: 1788,
   },
   {
     hanzi: "揭",
     count: 3,
+    level: 1789,
   },
   {
     hanzi: "撤",
     count: 2,
+    level: 1790,
   },
   {
     hanzi: "扶",
     count: 4,
+    level: 1791,
   },
   {
     hanzi: "夹",
     count: 3,
+    level: 1792,
   },
   {
     hanzi: "侠",
     count: 2,
+    level: 1793,
   },
   {
     hanzi: "峡",
     count: 3,
+    level: 1794,
   },
   {
     hanzi: "\b狭",
     count: 0,
+    level: 1795,
   },
   {
     hanzi: "挟",
     count: 1,
+    level: 1796,
   },
   {
     hanzi: "栋",
     count: 8,
+    level: 1797,
   },
   {
     hanzi: "冻",
     count: 3,
+    level: 1798,
   },
   {
     hanzi: "盗",
     count: 5,
+    level: 1799,
   },
   {
     hanzi: "欣",
     count: 2,
+    level: 1800,
   },
   {
     hanzi: "祥",
     count: 2,
+    level: 1801,
   },
   {
     hanzi: "氧",
     count: 5,
+    level: 1802,
   },
   {
     hanzi: "氛",
     count: 5,
+    level: 1803,
   },
   {
     hanzi: "盆",
     count: 7,
+    level: 1804,
   },
   {
     hanzi: "忠",
     count: 3,
+    level: 1805,
   },
   {
     hanzi: "尉",
     count: 0,
+    level: 1806,
   },
   {
     hanzi: "慰",
     count: 3,
+    level: 1807,
   },
   {
     hanzi: "悬",
     count: 1,
+    level: 1808,
   },
   {
     hanzi: "轨",
     count: 4,
+    level: 1809,
   },
   {
     hanzi: "辅",
     count: 1,
+    level: 1810,
   },
   {
     hanzi: "耀",
     count: 1,
+    level: 1811,
   },
   {
     hanzi: "恍",
     count: 0,
+    level: 1812,
   },
   {
     hanzi: "晃",
     count: 3,
+    level: 1813,
   },
   {
     hanzi: "辉",
     count: 0,
+    level: 1814,
   },
   {
     hanzi: "晕",
     count: 8,
+    level: 1815,
   },
   {
     hanzi: "昌",
     count: 1,
+    level: 1816,
   },
   {
     hanzi: "昏",
     count: 2,
+    level: 1817,
   },
   {
     hanzi: "晒",
     count: 7,
+    level: 1818,
   },
   {
     hanzi: "旺",
     count: 2,
+    level: 1819,
   },
   {
     hanzi: "宴",
     count: 4,
+    level: 1820,
   },
   {
     hanzi: "牢",
     count: 3,
+    level: 1821,
   },
   {
     hanzi: "踏",
     count: 4,
+    level: 1822,
   },
   {
     hanzi: "践",
     count: 5,
+    level: 1823,
   },
   {
     hanzi: "堆",
     count: 6,
+    level: 1824,
   },
   {
     hanzi: "墨",
     count: 4,
+    level: 1825,
   },
   {
     hanzi: "埋",
     count: 2,
+    level: 1826,
   },
   {
     hanzi: "墓",
     count: 1,
+    level: 1827,
   },
   {
     hanzi: "戒",
     count: 5,
+    level: 1828,
   },
   {
     hanzi: "械",
     count: 1,
+    level: 1829,
   },
   {
     hanzi: "渠",
     count: 2,
+    level: 1830,
   },
   {
     hanzi: "柱",
     count: 3,
+    level: 1831,
   },
   {
     hanzi: "栏",
     count: 2,
+    level: 1832,
   },
   {
     hanzi: "烂",
     count: 7,
+    level: 1833,
   },
   {
     hanzi: "炒",
     count: 5,
+    level: 1834,
   },
   {
     hanzi: "炉",
     count: 5,
+    level: 1835,
   },
   {
     hanzi: "烤",
     count: 6,
+    level: 1836,
   },
   {
     hanzi: "阔",
     count: 8,
+    level: 1837,
   },
   {
     hanzi: "辞",
     count: 4,
+    level: 1838,
   },
   {
     hanzi: "宰",
     count: 2,
+    level: 1839,
   },
   {
     hanzi: "辜",
     count: 2,
+    level: 1840,
   },
   {
     hanzi: "辨",
     count: 5,
+    level: 1841,
   },
   {
     hanzi: "辩",
     count: 2,
+    level: 1842,
   },
   {
     hanzi: "辫",
     count: 0,
+    level: 1843,
   },
   {
     hanzi: "纲",
     count: 2,
+    level: 1844,
   },
   {
     hanzi: "绪",
     count: 5,
+    level: 1845,
   },
   {
     hanzi: "赌",
     count: 3,
+    level: 1846,
   },
   {
     hanzi: "赠",
     count: 3,
+    level: 1847,
   },
   {
     hanzi: "皆",
     count: 1,
+    level: 1848,
   },
   {
     hanzi: "谐",
     count: 2,
+    level: 1849,
   },
   {
     hanzi: "楷",
     count: 0,
+    level: 1850,
   },
   {
     hanzi: "矛",
     count: 4,
+    level: 1851,
   },
   {
     hanzi: "盾",
     count: 4,
+    level: 1852,
   },
   {
     hanzi: "循",
     count: 1,
+    level: 1853,
   },
   {
     hanzi: "眠",
     count: 2,
+    level: 1854,
   },
   {
     hanzi: "氓",
     count: 3,
+    level: 1855,
   },
   {
     hanzi: "盲",
     count: 1,
+    level: 1856,
   },
   {
     hanzi: "丧",
     count: 1,
+    level: 1857,
   },
   {
     hanzi: "酋",
     count: 1,
+    level: 1858,
   },
   {
     hanzi: "奠",
     count: 2,
+    level: 1859,
   },
   {
     hanzi: "蹲",
     count: 1,
+    level: 1860,
   },
   {
     hanzi: "遵",
     count: 2,
+    level: 1861,
   },
   {
     hanzi: "递",
     count: 5,
+    level: 1862,
   },
   {
     hanzi: "仓",
     count: 0,
+    level: 1863,
   },
   {
     hanzi: "苍",
     count: 1,
+    level: 1864,
   },
   {
     hanzi: "沧",
     count: 1,
+    level: 1865,
   },
   {
     hanzi: "舱",
     count: 1,
+    level: 1866,
   },
   {
     hanzi: "舰",
     count: 4,
+    level: 1867,
   },
   {
     hanzi: "欺",
     count: 2,
+    level: 1868,
   },
   {
     hanzi: "咨",
     count: 3,
+    level: 1869,
   },
   {
     hanzi: "呛",
     count: 2,
+    level: 1870,
   },
   {
     hanzi: "咬",
     count: 1,
+    level: 1871,
   },
   {
     hanzi: "哲",
     count: 1,
+    level: 1872,
   },
   {
     hanzi: "吊",
     count: 1,
+    level: 1873,
   },
   {
     hanzi: "吞",
     count: 1,
+    level: 1874,
   },
   {
     hanzi: "忝",
     count: 0,
+    level: 1875,
   },
   {
     hanzi: "舔",
     count: 1,
+    level: 1876,
   },
   {
     hanzi: "添",
     count: 2,
+    level: 1877,
   },
   {
     hanzi: "爽",
     count: 5,
+    level: 1878,
   },
   {
     hanzi: "奈",
     count: 1,
+    level: 1879,
   },
   {
     hanzi: "崇",
     count: 1,
+    level: 1880,
   },
   {
     hanzi: "卧",
     count: 4,
+    level: 1881,
   },
   {
     hanzi: "扑",
     count: 7,
+    level: 1882,
   },
   {
     hanzi: "撑",
     count: 6,
+    level: 1883,
   },
   {
     hanzi: "拨",
     count: 5,
+    level: 1884,
   },
   {
     hanzi: "挤",
     count: 4,
+    level: 1885,
   },
   {
     hanzi: "挡",
     count: 4,
+    level: 1886,
   },
   {
     hanzi: "扭",
     count: 3,
+    level: 1887,
   },
   {
     hanzi: "描",
     count: 3,
+    level: 1888,
   },
   {
     hanzi: "挖",
     count: 2,
+    level: 1889,
   },
   {
     hanzi: "押",
     count: 1,
+    level: 1890,
   },
   {
     hanzi: "披",
     count: 4,
+    level: 1891,
   },
   {
     hanzi: "彼",
     count: 1,
+    level: 1892,
   },
   {
     hanzi: "玻",
     count: 1,
+    level: 1893,
   },
   {
     hanzi: "璃",
     count: 1,
+    level: 1894,
   },
   {
     hanzi: "禽",
     count: 1,
+    level: 1895,
   },
   {
     hanzi: "恰",
     count: 2,
+    level: 1896,
   },
   {
     hanzi: "悄",
     count: 3,
+    level: 1897,
   },
   {
     hanzi: "悟",
     count: 1,
+    level: 1898,
   },
   {
     hanzi: "籍",
     count: 2,
+    level: 1899,
   },
   {
     hanzi: "藉",
     count: 2,
+    level: 1900,
   },
   {
     hanzi: "荒",
     count: 6,
+    level: 1901,
   },
   {
     hanzi: "慌",
     count: 2,
+    level: 1902,
   },
   {
     hanzi: "谎",
     count: 4,
+    level: 1903,
   },
   {
     hanzi: "薪",
     count: 2,
+    level: 1904,
   },
   {
     hanzi: "疏",
     count: 5,
+    level: 1905,
   },
   {
     hanzi: "蔬",
     count: 3,
+    level: 1906,
   },
   {
     hanzi: "薯",
     count: 4,
+    level: 1907,
   },
   {
     hanzi: "逻",
     count: 0,
+    level: 1908,
   },
   {
     hanzi: "酱",
     count: 3,
+    level: 1909,
   },
   {
     hanzi: "昔",
     count: 1,
+    level: 1910,
   },
   {
     hanzi: "醋",
     count: 2,
+    level: 1911,
   },
   {
     hanzi: "腊",
     count: 2,
+    level: 1912,
   },
   {
     hanzi: "猎",
     count: 6,
+    level: 1913,
   },
   {
     hanzi: "蜡",
     count: 6,
+    level: 1914,
   },
   {
     hanzi: "烛",
     count: 6,
+    level: 1915,
   },
   {
     hanzi: "蛇",
     count: 2,
+    level: 1916,
   },
   {
     hanzi: "猴",
     count: 3,
+    level: 1917,
   },
   {
     hanzi: "犹",
     count: 5,
+    level: 1918,
   },
   {
     hanzi: "剪",
     count: 3,
+    level: 1919,
   },
   {
     hanzi: "箭",
     count: 4,
+    level: 1920,
   },
   {
     hanzi: "竹",
     count: 6,
+    level: 1921,
   },
   {
     hanzi: "煎",
     count: 3,
+    level: 1922,
   },
   {
     hanzi: "煮",
     count: 4,
+    level: 1923,
   },
   {
     hanzi: "瞧",
     count: 1,
+    level: 1924,
   },
   {
     hanzi: "盼",
     count: 1,
+    level: 1925,
   },
   {
     hanzi: "瞅",
     count: 1,
+    level: 1926,
   },
   {
     hanzi: "揪",
     count: 1,
+    level: 1927,
   },
   {
     hanzi: "愁",
     count: 2,
+    level: 1928,
   },
   {
     hanzi: "慧",
     count: 2,
+    level: 1929,
   },
   {
     hanzi: "肃",
     count: 0,
+    level: 1930,
   },
   {
     hanzi: "寿",
     count: 2,
+    level: 1931,
   },
   {
     hanzi: "艳",
     count: 0,
+    level: 1932,
   },
   {
     hanzi: "钻",
     count: 6,
+    level: 1933,
   },
   {
     hanzi: "铃",
     count: 1,
+    level: 1934,
   },
   {
     hanzi: "琴",
     count: 6,
+    level: 1935,
   },
   {
     hanzi: "顽",
     count: 2,
+    level: 1936,
   },
   {
     hanzi: "颗",
     count: 11,
+    level: 1937,
   },
   {
     hanzi: "裹",
     count: 6,
+    level: 1938,
   },
   {
     hanzi: "倡",
     count: 1,
+    level: 1939,
   },
   {
     hanzi: "仰",
     count: 4,
+    level: 1940,
   },
   {
     hanzi: "匹",
     count: 7,
+    level: 1941,
   },
   {
     hanzi: "劝",
     count: 2,
+    level: 1942,
   },
   {
     hanzi: "叉",
     count: 6,
+    level: 1943,
   },
   {
     hanzi: "兔",
     count: 3,
+    level: 1944,
   },
   {
     hanzi: "斜",
     count: 1,
+    level: 1945,
   },
   {
     hanzi: "枝",
     count: 1,
+    level: 1946,
   },
   {
     hanzi: "柴",
     count: 2,
+    level: 1947,
   },
   {
     hanzi: "梨",
     count: 1,
+    level: 1948,
   },
   {
     hanzi: "躲",
     count: 1,
+    level: 1949,
   },
   {
     hanzi: "豫",
     count: 3,
+    level: 1950,
   },
   {
     hanzi: "漠",
     count: 5,
+    level: 1951,
   },
   {
     hanzi: "洒",
     count: 1,
+    level: 1952,
   },
   {
     hanzi: "牺",
     count: 1,
+    level: 1953,
   },
   {
     hanzi: "牲",
     count: 1,
+    level: 1954,
   },
   {
     hanzi: "厘",
     count: 0,
+    level: 1955,
   },
   {
     hanzi: "厄",
     count: 1,
+    level: 1956,
   },
   {
     hanzi: "脆",
     count: 6,
+    level: 1957,
   },
   {
     hanzi: "跪",
     count: 0,
+    level: 1958,
   },
   {
     hanzi: "踩",
     count: 1,
+    level: 1959,
   },
   {
     hanzi: "扼",
     count: 0,
+    level: 1960,
   },
   {
     hanzi: "挣",
     count: 5,
+    level: 1961,
   },
   {
     hanzi: "抄",
     count: 5,
+    level: 1962,
   },
   {
     hanzi: "捉",
     count: 3,
+    level: 1963,
   },
   {
     hanzi: "摔",
     count: 10,
+    level: 1964,
   },
   {
     hanzi: "拐",
     count: 6,
+    level: 1965,
   },
   {
     hanzi: "掏",
     count: 1,
+    level: 1966,
   },
   {
     hanzi: "捡",
     count: 3,
+    level: 1967,
   },
   {
     hanzi: "矣",
     count: 0,
+    level: 1968,
   },
   {
     hanzi: "挨",
     count: 2,
+    level: 1969,
   },
   {
     hanzi: "唉",
     count: 0,
+    level: 1970,
   },
   {
     hanzi: "诶",
     count: 3,
+    level: 1971,
   },
   {
     hanzi: "埃",
     count: 0,
+    level: 1972,
   },
   {
     hanzi: "垄",
     count: 0,
+    level: 1973,
   },
   {
     hanzi: "宠",
     count: 2,
+    level: 1974,
   },
   {
     hanzi: "袭",
     count: 2,
+    level: 1975,
   },
   {
     hanzi: "拢",
     count: 1,
+    level: 1976,
   },
   {
     hanzi: "聋",
     count: 2,
+    level: 1977,
   },
   {
     hanzi: "庞",
     count: 1,
+    level: 1978,
   },
   {
     hanzi: "笼",
     count: 2,
+    level: 1979,
   },
   {
     hanzi: "绒",
     count: 1,
+    level: 1980,
   },
   {
     hanzi: "绘",
     count: 0,
+    level: 1981,
   },
   {
     hanzi: "姨",
     count: 10,
+    level: 1982,
   },
   {
     hanzi: "粥",
     count: 2,
+    level: 1983,
   },
   {
     hanzi: "弯",
     count: 6,
+    level: 1984,
   },
   {
     hanzi: "闷",
     count: 6,
+    level: 1985,
   },
   {
     hanzi: "阁",
     count: 1,
+    level: 1986,
   },
   {
     hanzi: "闯",
     count: 5,
+    level: 1987,
   },
   {
     hanzi: "腾",
     count: 3,
+    level: 1988,
   },
   {
     hanzi: "壶",
     count: 3,
+    level: 1989,
   },
   {
     hanzi: "壳",
     count: 5,
+    level: 1990,
   },
   {
     hanzi: "馒",
     count: 1,
+    level: 1991,
   },
   {
     hanzi: "饲",
     count: 2,
+    level: 1992,
   },
   {
     hanzi: "幻",
     count: 0,
+    level: 1993,
   },
   {
     hanzi: "畜",
     count: 2,
+    level: 1994,
   },
   {
     hanzi: "搐",
     count: 1,
+    level: 1995,
   },
   {
     hanzi: "蓄",
     count: 2,
+    level: 1996,
   },
   {
     hanzi: "誉",
     count: 2,
+    level: 1997,
   },
   {
     hanzi: "譬",
     count: 1,
+    level: 1998,
   },
   {
     hanzi: "袖",
     count: 4,
+    level: 1999,
   },
   {
     hanzi: "裸",
     count: 2,
+    level: 2000,
   },
   {
     hanzi: "萨",
     count: 4,
+    level: 2001,
   },
   {
     hanzi: "铲",
     count: 1,
+    level: 2002,
   },
   {
     hanzi: "锦",
     count: 0,
+    level: 2003,
   },
   {
     hanzi: "链",
     count: 4,
+    level: 2004,
   },
   {
     hanzi: "轰",
     count: 6,
+    level: 2005,
   },
   {
     hanzi: "桑",
     count: 2,
+    level: 2006,
   },
   {
     hanzi: "嗓",
     count: 1,
+    level: 2007,
   },
   {
     hanzi: "叠",
     count: 7,
+    level: 2008,
   },
   {
     hanzi: "缀",
     count: 1,
+    level: 2009,
   },
   {
     hanzi: "纤",
     count: 2,
+    level: 2010,
   },
   {
     hanzi: "纽",
     count: 3,
+    level: 2011,
   },
   {
     hanzi: "纹",
     count: 2,
+    level: 2012,
   },
   {
     hanzi: "缴",
     count: 4,
+    level: 2013,
   },
   {
     hanzi: "迹",
     count: 10,
+    level: 2014,
   },
   {
     hanzi: "迪",
     count: 2,
+    level: 2015,
   },
   {
     hanzi: "巡",
     count: 2,
+    level: 2016,
   },
   {
     hanzi: "辽",
     count: 2,
+    level: 2017,
   },
   {
     hanzi: "遥",
     count: 1,
+    level: 2018,
   },
   {
     hanzi: "淘",
     count: 5,
+    level: 2019,
   },
   {
     hanzi: "汰",
     count: 1,
+    level: 2020,
   },
   {
     hanzi: "津",
     count: 2,
+    level: 2021,
   },
   {
     hanzi: "荡",
     count: 6,
+    level: 2022,
   },
   {
     hanzi: "漾",
     count: 0,
+    level: 2023,
   },
   {
     hanzi: "泽",
     count: 3,
+    level: 2024,
   },
   {
     hanzi: "沼",
     count: 1,
+    level: 2025,
   },
   {
     hanzi: "涂",
     count: 3,
+    level: 2026,
   },
   {
     hanzi: "淋",
     count: 2,
+    level: 2027,
   },
   {
     hanzi: "涌",
     count: 2,
+    level: 2028,
   },
   {
     hanzi: "汹",
     count: 0,
+    level: 2029,
   },
   {
     hanzi: "兹",
     count: 1,
+    level: 2030,
   },
   {
     hanzi: "滋",
     count: 1,
+    level: 2031,
   },
   {
     hanzi: "磁",
     count: 1,
+    level: 2032,
   },
   {
     hanzi: "慈",
     count: 1,
+    level: 2033,
   },
   {
     hanzi: "岩",
     count: 1,
+    level: 2034,
   },
   {
     hanzi: "癌",
     count: 6,
+    level: 2035,
   },
   {
     hanzi: "董",
     count: 3,
+    level: 2036,
   },
   {
     hanzi: "荷",
     count: 1,
+    level: 2037,
   },
   {
     hanzi: "艾",
     count: 1,
+    level: 2038,
   },
   {
     hanzi: "哎",
     count: 1,
+    level: 2039,
   },
   {
     hanzi: "萌",
     count: 4,
+    level: 2040,
   },
   {
     hanzi: "芽",
     count: 2,
+    level: 2041,
   },
   {
     hanzi: "萧",
     count: 3,
+    level: 2042,
   },
   {
     hanzi: "潇",
     count: 0,
+    level: 2043,
   },
   {
     hanzi: "鲁",
     count: 2,
+    level: 2044,
   },
   {
     hanzi: "莽",
     count: 1,
+    level: 2045,
   },
   {
     hanzi: "晶",
     count: 6,
+    level: 2046,
   },
   {
     hanzi: "莹",
     count: 0,
+    level: 2047,
   },
   {
     hanzi: "隆",
     count: 5,
+    level: 2048,
   },
   {
     hanzi: "郑",
     count: 1,
+    level: 2049,
   },
   {
     hanzi: "郁",
     count: 5,
+    level: 2050,
   },
   {
     hanzi: "疫",
     count: 8,
+    level: 2051,
   },
   {
     hanzi: "瘟",
     count: 1,
+    level: 2052,
   },
   {
     hanzi: "苗",
     count: 3,
+    level: 2053,
   },
   {
     hanzi: "瘤",
     count: 1,
+    level: 2054,
   },
   {
     hanzi: "溜",
     count: 4,
+    level: 2055,
   },
   {
     hanzi: "遛",
     count: 1,
+    level: 2056,
   },
   {
     hanzi: "涛",
     count: 1,
+    level: 2057,
   },
   {
     hanzi: "铸",
     count: 1,
+    level: 2058,
   },
   {
     hanzi: "畴",
     count: 1,
+    level: 2059,
   },
   {
     hanzi: "祷",
     count: 0,
+    level: 2060,
   },
   {
     hanzi: "祈",
     count: 0,
+    level: 2061,
   },
   {
     hanzi: "筹",
     count: 12,
+    level: 2062,
   },
   {
     hanzi: "筛",
     count: 1,
+    level: 2063,
   },
   {
     hanzi: "狮",
     count: 2,
+    level: 2064,
   },
   {
     hanzi: "屈",
     count: 1,
+    level: 2065,
   },
   {
     hanzi: "眉",
     count: 3,
+    level: 2066,
   },
   {
     hanzi: "尿",
     count: 2,
+    level: 2067,
   },
   {
     hanzi: "履",
     count: 4,
+    level: 2068,
   },
   {
     hanzi: "覆",
     count: 4,
+    level: 2069,
   },
   {
     hanzi: "腹",
     count: 2,
+    level: 2070,
   },
   {
     hanzi: "腺",
     count: 2,
+    level: 2071,
   },
   {
     hanzi: "胎",
     count: 8,
+    level: 2072,
   },
   {
     hanzi: "胚",
     count: 1,
+    level: 2073,
   },
   {
     hanzi: "腔",
     count: 3,
+    level: 2074,
   },
   {
     hanzi: "肾",
     count: 2,
+    level: 2075,
   },
   {
     hanzi: "旨",
     count: 1,
+    level: 2076,
   },
   {
     hanzi: "脂",
     count: 0,
+    level: 2077,
   },
   {
     hanzi: "肪",
     count: 0,
+    level: 2078,
   },
   {
     hanzi: "稽",
     count: 1,
+    level: 2079,
   },
   {
     hanzi: "黎",
     count: 1,
+    level: 2080,
   },
   {
     hanzi: "稀",
     count: 4,
+    level: 2081,
   },
   {
     hanzi: "诱",
     count: 7,
+    level: 2082,
   },
   {
     hanzi: "饵",
     count: 1,
+    level: 2083,
   },
   {
     hanzi: "盈",
     count: 1,
+    level: 2084,
   },
   {
     hanzi: "孕",
     count: 3,
+    level: 2085,
   },
   {
     hanzi: "魂",
     count: 2,
+    level: 2086,
   },
   {
     hanzi: "坛",
     count: 0,
+    level: 2087,
   },
   {
     hanzi: "尘",
     count: 2,
+    level: 2088,
   },
   {
     hanzi: "堡",
     count: 5,
+    level: 2089,
   },
   {
     hanzi: "垒",
     count: 2,
+    level: 2090,
   },
   {
     hanzi: "杜",
     count: 1,
+    level: 2091,
   },
   {
     hanzi: "驱",
     count: 6,
+    level: 2092,
   },
   {
     hanzi: "呕",
     count: 0,
+    level: 2093,
   },
   {
     hanzi: "殴",
     count: 2,
+    level: 2094,
   },
   {
     hanzi: "躯",
     count: 1,
+    level: 2095,
   },
   {
     hanzi: "枢",
     count: 1,
+    level: 2096,
   },
   {
     hanzi: "抠",
     count: 5,
+    level: 2097,
   },
   {
     hanzi: "抑",
     count: 6,
+    level: 2098,
   },
   {
     hanzi: "拟",
     count: 6,
+    level: 2099,
   },
   {
     hanzi: "捷",
     count: 2,
+    level: 2100,
   },
   {
     hanzi: "仙",
     count: 20,
+    level: 2101,
   },
   {
     hanzi: "仁",
     count: 0,
+    level: 2102,
   },
   {
     hanzi: "俄",
     count: 2,
+    level: 2103,
   },
   {
     hanzi: "伯",
     count: 0,
+    level: 2104,
   },
   {
     hanzi: "伏",
     count: 1,
+    level: 2105,
   },
   {
     hanzi: "佩",
     count: 0,
+    level: 2106,
   },
   {
     hanzi: "伐",
     count: 0,
+    level: 2107,
   },
   {
     hanzi: "侦",
     count: 0,
+    level: 2108,
   },
   {
     hanzi: "赴",
     count: 0,
+    level: 2109,
   },
   {
     hanzi: "贪",
     count: 2,
+    level: 2110,
   },
   {
     hanzi: "俊",
     count: 0,
+    level: 2111,
   },
   {
     hanzi: "峻",
     count: 0,
+    level: 2112,
   },
   {
     hanzi: "骏",
     count: 0,
+    level: 2113,
   },
   {
     hanzi: "竣",
     count: 0,
+    level: 2114,
   },
   {
     hanzi: "毅",
     count: 0,
+    level: 2115,
   },
   {
     hanzi: "粒",
     count: 0,
+    level: 2116,
   },
   {
     hanzi: "粘",
     count: 0,
+    level: 2117,
   },
   {
     hanzi: "役",
     count: 0,
+    level: 2118,
   },
   {
     hanzi: "徐",
     count: 0,
+    level: 2119,
   },
   {
     hanzi: "瑞",
     count: 0,
+    level: 2120,
   },
   {
     hanzi: "斑",
     count: 0,
+    level: 2121,
   },
   {
     hanzi: "呈",
     count: 0,
+    level: 2122,
   },
   {
     hanzi: "呵",
     count: 0,
+    level: 2123,
   },
   {
     hanzi: "嘿",
     count: 0,
+    level: 2124,
   },
   {
     hanzi: "衰",
     count: 0,
+    level: 2125,
   },
   {
     hanzi: "囊",
     count: 0,
+    level: 2126,
   },
   {
     hanzi: "堪",
     count: 0,
+    level: 2127,
   },
   {
     hanzi: "夌",
     count: 0,
+    level: 2128,
   },
   {
     hanzi: "凌",
     count: 0,
+    level: 2129,
   },
   {
     hanzi: "陵",
     count: 0,
+    level: 2130,
   },
   {
     hanzi: "棱",
     count: 0,
+    level: 2131,
   },
   {
     hanzi: "柔",
     count: 1,
+    level: 2132,
   },
   {
     hanzi: "棋",
     count: 2,
+    level: 2133,
   },
   {
     hanzi: "棍",
     count: 1,
+    level: 2134,
   },
   {
     hanzi: "浆",
     count: 1,
+    level: 2135,
   },
   {
     hanzi: "舛",
     count: 0,
+    level: 2136,
   },
   {
     hanzi: "鳞",
     count: 0,
+    level: 2137,
   },
   {
     hanzi: "磷",
     count: 0,
+    level: 2138,
   },
   {
     hanzi: "舜",
     count: 0,
+    level: 2139,
   },
   {
     hanzi: "瞬",
     count: 0,
+    level: 2140,
   },
   {
     hanzi: "赤",
     count: 0,
+    level: 2141,
   },
   {
     hanzi: "赫",
     count: 0,
+    level: 2142,
   },
   {
     hanzi: "岂",
     count: 0,
+    level: 2143,
   },
   {
     hanzi: "凯",
     count: 0,
+    level: 2144,
   },
   {
     hanzi: "凤",
     count: 0,
+    level: 2145,
   },
   {
     hanzi: "凰",
     count: 0,
+    level: 2146,
   },
   {
     hanzi: "讽",
     count: 0,
+    level: 2147,
   },
   {
     hanzi: "飙",
     count: 0,
+    level: 2148,
   },
   {
     hanzi: "飓",
     count: 0,
+    level: 2149,
   },
   {
     hanzi: "飘",
     count: 2,
+    level: 2150,
   },
   {
     hanzi: "凝",
     count: 0,
+    level: 2151,
   },
   {
     hanzi: "姿",
     count: 1,
+    level: 2152,
   },
   {
     hanzi: "钦",
     count: 0,
+    level: 2153,
   },
   {
     hanzi: "锐",
     count: 0,
+    level: 2154,
   },
   {
     hanzi: "姆",
     count: 0,
+    level: 2155,
   },
   {
     hanzi: "妆",
     count: 2,
+    level: 2156,
   },
   {
     hanzi: "嫩",
     count: 0,
+    level: 2157,
   },
   {
     hanzi: "牧",
     count: 1,
+    level: 2158,
   },
   {
     hanzi: "迈",
     count: 0,
+    level: 2159,
   },
   {
     hanzi: "逢",
     count: 0,
+    level: 2160,
   },
   {
     hanzi: "缝",
     count: 0,
+    level: 2161,
   },
   {
     hanzi: "蓬",
     count: 0,
+    level: 2162,
   },
   {
     hanzi: "缤",
     count: 0,
+    level: 2163,
   },
   {
     hanzi: "滨",
     count: 0,
+    level: 2164,
   },
   {
     hanzi: "泄",
     count: 0,
+    level: 2165,
   },
   {
     hanzi: "屉",
     count: 0,
+    level: 2166,
   },
   {
     hanzi: "浴",
     count: 0,
+    level: 2167,
   },
   {
     hanzi: "溶",
     count: 0,
+    level: 2168,
   },
   {
     hanzi: "浩",
     count: 0,
+    level: 2169,
   },
   {
     hanzi: "糙",
     count: 0,
+    level: 2170,
   },
   {
     hanzi: "雅",
     count: 2,
+    level: 2171,
   },
   {
     hanzi: "雚",
     count: 0,
+    level: 2172,
   },
   {
     hanzi: "灌",
     count: 0,
+    level: 2173,
   },
   {
     hanzi: "罐",
     count: 0,
+    level: 2174,
   },
   {
     hanzi: "拓",
     count: 0,
+    level: 2175,
   },
   {
     hanzi: "抚",
     count: 0,
+    level: 2176,
   },
   {
     hanzi: "撒",
     count: 0,
+    level: 2177,
   },
   {
     hanzi: "携",
     count: 0,
+    level: 2178,
   },
   {
     hanzi: "摊",
     count: 1,
+    level: 2179,
   },
   {
     hanzi: "抛",
     count: 1,
+    level: 2180,
   },
   {
     hanzi: "劫",
     count: 0,
+    level: 2181,
   },
   {
     hanzi: "劣",
     count: 1,
+    level: 2182,
   },
   {
     hanzi: "勒",
     count: 0,
+    level: 2183,
   },
   {
     hanzi: "霸",
     count: 0,
+    level: 2184,
   },
   {
     hanzi: "孛",
     count: 0,
+    level: 2185,
   },
   {
     hanzi: "勃",
     count: 0,
+    level: 2186,
   },
   {
     hanzi: "脖",
     count: 0,
+    level: 2187,
   },
   {
     hanzi: "鹏",
     count: 0,
+    level: 2188,
   },
   {
     hanzi: "鸣",
     count: 0,
+    level: 2189,
   },
   {
     hanzi: "割",
     count: 1,
+    level: 2190,
   },
   {
     hanzi: "辖",
     count: 0,
+    level: 2191,
   },
   {
     hanzi: "豁",
     count: 0,
+    level: 2192,
   },
   {
     hanzi: "瞎",
     count: 0,
+    level: 2193,
   },
   {
     hanzi: "愈",
     count: 1,
+    level: 2194,
   },
   {
     hanzi: "悠",
     count: 2,
+    level: 2195,
   },
   {
     hanzi: "惑",
     count: 0,
+    level: 2196,
   },
   {
     hanzi: "翔",
     count: 0,
+    level: 2197,
   },
   {
     hanzi: "翼",
     count: 0,
+    level: 2198,
   },
   {
     hanzi: "恭",
     count: 2,
+    level: 2199,
   },
   {
     hanzi: "谱",
     count: 0,
+    level: 2200,
   },
   {
     hanzi: "疆",
     count: 0,
+    level: 2201,
   },
   {
     hanzi: "僵",
     count: 0,
+    level: 2202,
   },
   {
     hanzi: "仇",
     count: 0,
+    level: 2203,
   },
   {
     hanzi: "催",
     count: 0,
+    level: 2204,
   },
   {
     hanzi: "霍",
     count: 0,
+    level: 2205,
   },
   {
     hanzi: "霉",
     count: 0,
+    level: 2206,
   },
   {
     hanzi: "雾",
     count: 1,
+    level: 2207,
   },
   {
     hanzi: "勋",
     count: 0,
+    level: 2208,
   },
   {
     hanzi: "筋",
     count: 0,
+    level: 2209,
   },
   {
     hanzi: "胀",
     count: 0,
+    level: 2210,
   },
   {
     hanzi: "臂",
     count: 0,
+    level: 2211,
   },
   {
     hanzi: "慎",
     count: 0,
+    level: 2212,
   },
   {
     hanzi: "悦",
     count: 0,
+    level: 2213,
   },
   {
     hanzi: "恒",
     count: 0,
+    level: 2214,
   },
   {
     hanzi: "昆",
     count: 0,
+    level: 2215,
   },
   {
     hanzi: "晋",
     count: 0,
+    level: 2216,
   },
   {
     hanzi: "昂",
     count: 0,
+    level: 2217,
   },
   {
     hanzi: "旬",
     count: 0,
+    level: 2218,
   },
   {
     hanzi: "陶",
     count: 0,
+    level: 2219,
   },
   {
     hanzi: "邪",
     count: 0,
+    level: 2220,
   },
   {
     hanzi: "贩",
     count: 0,
+    level: 2221,
   },
   {
     hanzi: "贤",
     count: 0,
+    level: 2222,
   },
   {
     hanzi: "贼",
     count: 0,
+    level: 2223,
   },
   {
     hanzi: "婴",
     count: 0,
+    level: 2224,
   },
   {
     hanzi: "嫁",
     count: 0,
+    level: 2225,
   },
   {
     hanzi: "妥",
     count: 0,
+    level: 2226,
   },
   {
     hanzi: "娇",
     count: 0,
+    level: 2227,
   },
   {
     hanzi: "妖",
     count: 0,
+    level: 2228,
   },
   {
     hanzi: "沃",
     count: 1,
+    level: 2229,
   },
   {
     hanzi: "渔",
     count: 0,
+    level: 2230,
   },
   {
     hanzi: "滞",
     count: 0,
+    level: 2231,
   },
   {
     hanzi: "浸",
     count: 2,
+    level: 2232,
   },
   {
     hanzi: "浑",
     count: 0,
+    level: 2233,
   },
   {
     hanzi: "丞",
     count: 0,
+    level: 2234,
   },
   {
     hanzi: "蒸",
     count: 1,
+    level: 2235,
   },
   {
     hanzi: "函",
     count: 0,
+    level: 2236,
   },
   {
     hanzi: "涵",
     count: 1,
+    level: 2237,
   },
   {
     hanzi: "茫",
     count: 0,
+    level: 2238,
   },
   {
     hanzi: "莲",
     count: 0,
+    level: 2239,
   },
   {
     hanzi: "蒂",
     count: 0,
+    level: 2240,
   },
   {
     hanzi: "缔",
     count: 0,
+    level: 2241,
   },
   {
     hanzi: "芬",
     count: 0,
+    level: 2242,
   },
   {
     hanzi: "芳",
     count: 0,
+    level: 2243,
   },
   {
     hanzi: "纺",
     count: 0,
+    level: 2244,
   },
   {
     hanzi: "绵",
     count: 0,
+    level: 2245,
   },
   {
     hanzi: "攀",
     count: 0,
+    level: 2246,
   },
   {
     hanzi: "拳",
     count: 2,
+    level: 2247,
   },
   {
     hanzi: "泰",
     count: 0,
+    level: 2248,
   },
   {
     hanzi: "寨",
     count: 1,
+    level: 2249,
   },
   {
     hanzi: "鼎",
     count: 0,
+    level: 2250,
   },
   {
     hanzi: "痕",
     count: 1,
+    level: 2251,
   },
   {
     hanzi: "痴",
     count: 0,
+    level: 2252,
   },
   {
     hanzi: "疲",
     count: 1,
+    level: 2253,
   },
   {
     hanzi: "颇",
     count: 0,
+    level: 2254,
   },
   {
     hanzi: "颁",
     count: 0,
+    level: 2255,
   },
   {
     hanzi: "颈",
     count: 0,
+    level: 2256,
   },
   {
     hanzi: "兽",
     count: 1,
+    level: 2257,
   },
   {
     hanzi: "唤",
     count: 1,
+    level: 2258,
   },
   {
     hanzi: "呜",
     count: 0,
+    level: 2259,
   },
   {
     hanzi: "哀",
     count: 0,
+    level: 2260,
   },
   {
     hanzi: "衷",
     count: 0,
+    level: 2261,
   },
   {
     hanzi: "吻",
     count: 1,
+    level: 2262,
   },
   {
     hanzi: "匆",
     count: 0,
+    level: 2263,
   },
   {
     hanzi: "逸",
     count: 1,
+    level: 2264,
   },
   {
     hanzi: "斥",
     count: 0,
+    level: 2265,
   },
   {
     hanzi: "卵",
     count: 0,
+    level: 2266,
   },
   {
     hanzi: "卸",
     count: 0,
+    level: 2267,
   },
   {
     hanzi: "御",
     count: 0,
+    level: 2268,
   },
   {
     hanzi: "徽",
     count: 0,
+    level: 2269,
   },
   {
     hanzi: "螺",
     count: 0,
+    level: 2270,
   },
   {
     hanzi: "亩",
     count: 0,
+    level: 2271,
   },
   {
     hanzi: "虹",
     count: 2,
+    level: 2272,
   },
   {
     hanzi: "蜜",
     count: 2,
+    level: 2273,
   },
   {
     hanzi: "蜂",
     count: 1,
+    level: 2274,
   },
   {
     hanzi: "寂",
     count: 1,
+    level: 2275,
   },
   {
     hanzi: "寞",
     count: 1,
+    level: 2276,
   },
   {
     hanzi: "骚",
     count: 0,
+    level: 2277,
   },
   {
     hanzi: "驰",
     count: 0,
+    level: 2278,
   },
   {
     hanzi: "狼",
     count: 21,
+    level: 2279,
   },
   {
     hanzi: "狈",
     count: 0,
+    level: 2280,
   },
   {
     hanzi: "狱",
     count: 0,
+    level: 2281,
   },
   {
     hanzi: "谨",
     count: 0,
+    level: 2282,
   },
   {
     hanzi: "坑",
     count: 0,
+    level: 2283,
   },
   {
     hanzi: "绳",
     count: 0,
+    level: 2284,
   },
   {
     hanzi: "蝇",
     count: 0,
+    level: 2285,
   },
   {
     hanzi: "龟",
     count: 2,
+    level: 2286,
   },
   {
     hanzi: "奄",
     count: 0,
+    level: 2287,
   },
   {
     hanzi: "淹",
     count: 0,
+    level: 2288,
   },
   {
     hanzi: "俺",
     count: 0,
+    level: 2289,
   },
   {
     hanzi: "掩",
     count: 0,
+    level: 2290,
   },
   {
     hanzi: "拘",
     count: 0,
+    level: 2291,
   },
   {
     hanzi: "拦",
     count: 2,
+    level: 2292,
   },
   {
     hanzi: "抹",
     count: 0,
+    level: 2293,
   },
   {
     hanzi: "朱",
     count: 0,
+    level: 2294,
   },
   {
     hanzi: "株",
     count: 0,
+    level: 2295,
   },
   {
     hanzi: "框",
     count: 0,
+    level: 2296,
   },
   {
     hanzi: "朴",
     count: 0,
+    level: 2297,
   },
   {
     hanzi: "卓",
     count: 0,
+    level: 2298,
   },
   {
     hanzi: "炭",
     count: 0,
+    level: 2299,
   },
   {
     hanzi: "碳",
     count: 0,
+    level: 2300,
   },
   {
     hanzi: "桂",
     count: 0,
+    level: 2301,
   },
   {
     hanzi: "槽",
     count: 0,
+    level: 2302,
   },
   {
     hanzi: "枚",
     count: 0,
+    level: 2303,
   },
   {
     hanzi: "柳",
     count: 0,
+    level: 2304,
   },
   {
     hanzi: "晰",
     count: 0,
+    level: 2305,
   },
   {
     hanzi: "柏",
     count: 0,
+    level: 2306,
   },
   {
     hanzi: "泊",
     count: 0,
+    level: 2307,
   },
   {
     hanzi: "崩",
     count: 0,
+    level: 2308,
   },
   {
     hanzi: "溃",
     count: 0,
+    level: 2309,
   },
   {
     hanzi: "溪",
     count: 0,
+    level: 2310,
   },
   {
     hanzi: "滩",
     count: 1,
+    level: 2311,
   },
   {
     hanzi: "雇",
     count: 0,
+    level: 2312,
   },
   {
     hanzi: "溢",
     count: 0,
+    level: 2313,
   },
   {
     hanzi: "隘",
     count: 0,
+    level: 2314,
   },
   {
     hanzi: "淀",
     count: 1,
+    level: 2315,
   },
   {
     hanzi: "宪",
     count: 1,
+    level: 2316,
   },
   {
     hanzi: "踪",
     count: 0,
+    level: 2317,
   },
   {
     hanzi: "辟",
     count: 0,
+    level: 2318,
   },
   {
     hanzi: "殿",
     count: 0,
+    level: 2319,
   },
   {
     hanzi: "屡",
     count: 0,
+    level: 2320,
   },
   {
     hanzi: "掘",
     count: 0,
+    level: 2321,
   },
   {
     hanzi: "搏",
     count: 0,
+    level: 2322,
   },
   {
     hanzi: "抖",
     count: 1,
+    level: 2323,
   },
   {
     hanzi: "扯",
     count: 0,
+    level: 2324,
   },
   {
     hanzi: "耻",
     count: 0,
+    level: 2325,
   },
   {
     hanzi: "歧",
     count: 0,
+    level: 2326,
   },
   {
     hanzi: "肢",
     count: 1,
+    level: 2327,
   },
   {
     hanzi: "肖",
     count: 0,
+    level: 2328,
   },
   {
     hanzi: "削",
     count: 0,
+    level: 2329,
   },
   {
     hanzi: "俏",
     count: 0,
+    level: 2330,
   },
   {
     hanzi: "屑",
     count: 0,
+    level: 2331,
   },
   {
     hanzi: "梢",
     count: 0,
+    level: 2332,
   },
   {
     hanzi: "捎",
     count: 0,
+    level: 2333,
   },
   {
     hanzi: "宵",
     count: 0,
+    level: 2334,
   },
   {
     hanzi: "哨",
     count: 0,
+    level: 2335,
   },
   {
     hanzi: "哼",
     count: 0,
+    level: 2336,
   },
   {
     hanzi: "燕",
     count: 1,
+    level: 2337,
   },
   {
     hanzi: "咽",
     count: 0,
+    level: 2338,
   },
   {
     hanzi: "姻",
     count: 2,
+    level: 2339,
   },
   {
     hanzi: "姜",
     count: 0,
+    level: 2340,
   },
   {
     hanzi: "奸",
     count: 0,
+    level: 2341,
   },
   {
     hanzi: "旱",
     count: 3,
+    level: 2342,
   },
   {
     hanzi: "塌",
     count: 1,
+    level: 2343,
   },
   {
     hanzi: "垫",
     count: 0,
+    level: 2344,
   },
   {
     hanzi: "颖",
     count: 0,
+    level: 2345,
   },
   {
     hanzi: "穆",
     count: 0,
+    level: 2346,
   },
   {
     hanzi: "逊",
     count: 0,
+    level: 2347,
   },
   {
     hanzi: "逝",
     count: 0,
+    level: 2348,
   },
   {
     hanzi: "誓",
     count: 0,
+    level: 2349,
   },
   {
     hanzi: "掀",
     count: 1,
+    level: 2350,
   },
   {
     hanzi: "毙",
     count: 0,
+    level: 2351,
   },
   {
     hanzi: "葬",
     count: 0,
+    level: 2352,
   },
   {
     hanzi: "芝",
     count: 0,
+    level: 2353,
   },
   {
     hanzi: "萝",
     count: 0,
+    level: 2354,
   },
   {
     hanzi: "罩",
     count: 3,
+    level: 2355,
   },
   {
     hanzi: "署",
     count: 0,
+    level: 2356,
   },
   {
     hanzi: "芯",
     count: 0,
+    level: 2357,
   },
   {
     hanzi: "葱",
     count: 0,
+    level: 2358,
   },
   {
     hanzi: "惩",
     count: 2,
+    level: 2359,
   },
   {
     hanzi: "忌",
     count: 0,
+    level: 2360,
   },
   {
     hanzi: "惹",
     count: 2,
+    level: 2361,
   },
   {
     hanzi: "匿",
     count: 0,
+    level: 2362,
   },
   {
     hanzi: "匪",
     count: 1,
+    level: 2363,
   },
   {
     hanzi: "砸",
     count: 0,
+    level: 2364,
   },
   {
     hanzi: "砖",
     count: 0,
+    level: 2365,
   },
   {
     hanzi: "碑",
     count: 0,
+    level: 2366,
   },
   {
     hanzi: "砍",
     count: 0,
+    level: 2367,
   },
   {
     hanzi: "砂",
     count: 0,
+    level: 2368,
   },
   {
     hanzi: "纱",
     count: 0,
+    level: 2369,
   },
   {
     hanzi: "绑",
     count: 0,
+    level: 2370,
   },
   {
     hanzi: "缠",
     count: 0,
+    level: 2371,
   },
   {
     hanzi: "廉",
     count: 0,
+    level: 2372,
   },
   {
     hanzi: "帆",
     count: 1,
+    level: 2373,
   },
   {
     hanzi: "帐",
     count: 0,
+    level: 2374,
   },
   {
     hanzi: "贱",
     count: 0,
+    level: 2375,
   },
   {
     hanzi: "贾",
     count: 0,
+    level: 2376,
   },
   {
     hanzi: "贿",
     count: 1,
+    level: 2377,
   },
   {
     hanzi: "赂",
     count: 1,
+    level: 2378,
   },
   {
     hanzi: "匀",
     count: 0,
+    level: 2379,
   },
   {
     hanzi: "凑",
     count: 0,
+    level: 2380,
   },
   {
     hanzi: "奢",
     count: 0,
+    level: 2381,
   },
   {
     hanzi: "契",
     count: 0,
+    level: 2382,
   },
   {
     hanzi: "窃",
     count: 0,
+    level: 2383,
   },
   {
     hanzi: "侈",
     count: 0,
+    level: 2384,
   },
   {
     hanzi: "仲",
     count: 0,
+    level: 2385,
   },
   {
     hanzi: "辱",
     count: 0,
+    level: 2386,
   },
   {
     hanzi: "侮",
     count: 0,
+    level: 2387,
   },
   {
     hanzi: "侨",
     count: 0,
+    level: 2388,
   },
   {
     hanzi: "轿",
     count: 1,
+    level: 2389,
   },
   {
     hanzi: "轴",
     count: 0,
+    level: 2390,
   },
   {
     hanzi: "敦",
     count: 0,
+    level: 2391,
   },
   {
     hanzi: "醇",
     count: 0,
+    level: 2392,
   },
   {
     hanzi: "酬",
     count: 0,
+    level: 2393,
   },
   {
     hanzi: "廷",
     count: 0,
+    level: 2394,
   },
   {
     hanzi: "艇",
     count: 0,
+    level: 2395,
   },
   {
     hanzi: "剥",
     count: 0,
+    level: 2396,
   },
   {
     hanzi: "刹",
     count: 0,
+    level: 2397,
   },
   {
     hanzi: "乖",
     count: 0,
+    level: 2398,
   },
   {
     hanzi: "竭",
     count: 0,
+    level: 2399,
   },
   {
     hanzi: "爹",
     count: 0,
+    level: 2400,
   },
   {
     hanzi: "栽",
     count: 0,
+    level: 2401,
   },
   {
     hanzi: "枯",
     count: 0,
+    level: 2402,
   },
   {
     hanzi: "棚",
     count: 0,
+    level: 2403,
   },
   {
     hanzi: "棘",
     count: 0,
+    level: 2404,
   },
   {
     hanzi: "杖",
     count: 0,
+    level: 2405,
   },
   {
     hanzi: "吏",
     count: 0,
+    level: 2406,
   },
   {
     hanzi: "仗",
     count: 1,
+    level: 2407,
   },
   {
     hanzi: "侣",
     count: 1,
+    level: 2408,
   },
   {
     hanzi: "侍",
     count: 0,
+    level: 2409,
   },
   {
     hanzi: "鞭",
     count: 0,
+    level: 2410,
   },
   {
     hanzi: "佐",
     count: 0,
+    level: 2411,
   },
   {
     hanzi: "髓",
     count: 0,
+    level: 2412,
   },
   {
     hanzi: "惰",
     count: 0,
+    level: 2413,
   },
   {
     hanzi: "愧",
     count: 0,
+    level: 2414,
   },
   {
     hanzi: "慨",
     count: 0,
+    level: 2415,
   },
   {
     hanzi: "溉",
     count: 0,
+    level: 2416,
   },
   {
     hanzi: "滥",
     count: 0,
+    level: 2417,
   },
   {
     hanzi: "沸",
     count: 0,
+    level: 2418,
   },
   {
     hanzi: "涯",
     count: 0,
+    level: 2419,
   },
   {
     hanzi: "泌",
     count: 0,
+    level: 2420,
   },
   {
     hanzi: "渣",
     count: 1,
+    level: 2421,
   },
   {
     hanzi: "滤",
     count: 0,
+    level: 2422,
   },
   {
     hanzi: "沫",
     count: 0,
+    level: 2423,
   },
   {
     hanzi: "汪",
     count: 0,
+    level: 2424,
   },
   {
     hanzi: "漆",
     count: 0,
+    level: 2425,
   },
   {
     hanzi: "膝",
     count: 0,
+    level: 2426,
   },
   {
     hanzi: "脊",
     count: 0,
+    level: 2427,
   },
   {
     hanzi: "腻",
     count: 0,
+    level: 2428,
   },
   {
     hanzi: "赋",
     count: 1,
+    level: 2429,
   },
   {
     hanzi: "芒",
     count: 0,
+    level: 2430,
   },
   {
     hanzi: "茅",
     count: 1,
+    level: 2431,
   },
   {
     hanzi: "荆",
     count: 0,
+    level: 2432,
   },
   {
     hanzi: "蔽",
     count: 1,
+    level: 2433,
   },
   {
     hanzi: "弊",
     count: 1,
+    level: 2434,
   },
   {
     hanzi: "憋",
     count: 0,
+    level: 2435,
   },
   {
     hanzi: "撇",
     count: 0,
+    level: 2436,
   },
   {
     hanzi: "撕",
     count: 1,
+    level: 2437,
   },
   {
     hanzi: "挫",
     count: 0,
+    level: 2438,
   },
   {
     hanzi: "挽",
     count: 0,
+    level: 2439,
   },
   {
     hanzi: "捧",
     count: 0,
+    level: 2440,
   },
   {
     hanzi: "挪",
     count: 0,
+    level: 2441,
   },
   {
     hanzi: "搅",
     count: 0,
+    level: 2442,
   },
   {
     hanzi: "抨",
     count: 0,
+    level: 2443,
   },
   {
     hanzi: "秤",
     count: 0,
+    level: 2444,
   },
   {
     hanzi: "萍",
     count: 0,
+    level: 2445,
   },
   {
     hanzi: "坪",
     count: 0,
+    level: 2446,
   },
   {
     hanzi: "塘",
     count: 0,
+    level: 2447,
   },
   {
     hanzi: "坠",
     count: 0,
+    level: 2448,
   },
   {
     hanzi: "陌",
     count: 4,
+    level: 2449,
   },
   {
     hanzi: "廊",
     count: 0,
+    level: 2450,
   },
   {
     hanzi: "雀",
     count: 0,
+    level: 2451,
   },
   {
     hanzi: "鸦",
     count: 1,
+    level: 2452,
   },
   {
     hanzi: "鹰",
     count: 0,
+    level: 2453,
   },
   {
     hanzi: "庙",
     count: 0,
+    level: 2454,
   },
   {
     hanzi: "鹿",
     count: 0,
+    level: 2455,
   },
   {
     hanzi: "庸",
     count: 0,
+    level: 2456,
   },
   {
     hanzi: "庶",
     count: 0,
+    level: 2457,
   },
   {
     hanzi: "蔗",
     count: 0,
+    level: 2458,
   },
   {
     hanzi: "遮",
     count: 0,
+    level: 2459,
   },
   {
     hanzi: "遣",
     count: 0,
+    level: 2460,
   },
   {
     hanzi: "谴",
     count: 0,
+    level: 2461,
   },
   {
     hanzi: "擅",
     count: 0,
+    level: 2462,
   },
   {
     hanzi: "颤",
     count: 0,
+    level: 2463,
   },
   {
     hanzi: "颠",
     count: 0,
+    level: 2464,
   },
   {
     hanzi: "巅",
     count: 0,
+    level: 2465,
   },
   {
     hanzi: "喘",
     count: 0,
+    level: 2466,
   },
   {
     hanzi: "唇",
     count: 0,
+    level: 2467,
   },
   {
     hanzi: "喉",
     count: 1,
+    level: 2468,
   },
   {
     hanzi: "咙",
     count: 1,
+    level: 2469,
   },
   {
     hanzi: "吼",
     count: 1,
+    level: 2470,
   },
   {
     hanzi: "剖",
     count: 0,
+    level: 2471,
   },
   {
     hanzi: "吁",
     count: 0,
+    level: 2472,
   },
   {
     hanzi: "臊",
     count: 0,
+    level: 2473,
   },
   {
     hanzi: "躁",
     count: 0,
+    level: 2474,
   },
   {
     hanzi: "藻",
     count: 0,
+    level: 2475,
   },
   {
     hanzi: "燥",
     count: 0,
+    level: 2476,
   },
   {
     hanzi: "灿",
     count: 0,
+    level: 2477,
   },
   {
     hanzi: "岭",
     count: 0,
+    level: 2478,
   },
   {
     hanzi: "煌",
     count: 0,
+    level: 2479,
   },
   {
     hanzi: "碧",
     count: 0,
+    level: 2480,
   },
   {
     hanzi: "魄",
     count: 0,
+    level: 2481,
   },
   {
     hanzi: "魅",
     count: 1,
+    level: 2482,
   },
   {
     hanzi: "铝",
     count: 0,
+    level: 2483,
   },
   {
     hanzi: "铭",
     count: 0,
+    level: 2484,
   },
   {
     hanzi: "钉",
     count: 0,
+    level: 2485,
   },
   {
     hanzi: "锡",
     count: 0,
+    level: 2486,
   },
   {
     hanzi: "曝",
     count: 0,
+    level: 2487,
   },
   {
     hanzi: "瓣",
     count: 0,
+    level: 2488,
   },
   {
     hanzi: "弧",
     count: 0,
+    level: 2489,
   },
   {
     hanzi: "弥",
     count: 0,
+    level: 2490,
   },
   {
     hanzi: "霞",
     count: 0,
+    level: 2491,
   },
   {
     hanzi: "霜",
     count: 1,
+    level: 2492,
   },
   {
     hanzi: "厢",
     count: 0,
+    level: 2493,
   },
   {
     hanzi: "媳",
     count: 0,
+    level: 2494,
   },
   {
     hanzi: "媚",
     count: 0,
+    level: 2495,
   },
   {
     hanzi: "屠",
     count: 0,
+    level: 2496,
   },
   {
     hanzi: "诈",
     count: 0,
+    level: 2497,
   },
   {
     hanzi: "谣",
     count: 0,
+    level: 2498,
   },
   {
     hanzi: "肆",
     count: 0,
+    level: 2499,
   },
   {
     hanzi: "髦",
     count: 0,
+    level: 2500,
   },
   {
     hanzi: "碟",
     count: 0,
+    level: 2501,
   },
   {
     hanzi: "碌",
     count: 0,
+    level: 2502,
   },
   {
     hanzi: "磊",
     count: 0,
+    level: 2503,
   },
   {
     hanzi: "蘑",
     count: 0,
+    level: 2504,
   },
   {
     hanzi: "菇",
     count: 0,
+    level: 2505,
   },
   {
     hanzi: "芦",
     count: 0,
+    level: 2506,
   },
   {
     hanzi: "菊",
     count: 0,
+    level: 2507,
   },
   {
     hanzi: "芭",
     count: 0,
+    level: 2508,
   },
   {
     hanzi: "蕾",
     count: 0,
+    level: 2509,
   },
   {
     hanzi: "蕴",
     count: 0,
+    level: 2510,
   },
   {
     hanzi: "缆",
     count: 0,
+    level: 2511,
   },
   {
     hanzi: "揽",
     count: 0,
+    level: 2512,
   },
   {
     hanzi: "拌",
     count: 0,
+    level: 2513,
   },
   {
     hanzi: "叛",
     count: 0,
+    level: 2514,
   },
   {
     hanzi: "捏",
     count: 0,
+    level: 2515,
   },
   {
     hanzi: "撰",
     count: 0,
+    level: 2516,
   },
   {
     hanzi: "熙",
     count: 0,
+    level: 2517,
   },
   {
     hanzi: "攘",
     count: 0,
+    level: 2518,
   },
   {
     hanzi: "壤",
     count: 0,
+    level: 2519,
   },
   {
     hanzi: "镶",
     count: 0,
+    level: 2520,
   },
   {
     hanzi: "嚷",
     count: 0,
+    level: 2521,
   },
   {
     hanzi: "曰",
     count: 0,
+    level: 2522,
   },
   {
     hanzi: "啸",
     count: 0,
+    level: 2523,
   },
   {
     hanzi: "呐",
     count: 0,
+    level: 2524,
   },
   {
     hanzi: "嘲",
     count: 1,
+    level: 2525,
   },
   {
     hanzi: "喻",
     count: 0,
+    level: 2526,
   },
   {
     hanzi: "哗",
     count: 0,
+    level: 2527,
   },
   {
     hanzi: "哑",
     count: 0,
+    level: 2528,
   },
   {
     hanzi: "哄",
     count: 1,
+    level: 2529,
   },
   {
     hanzi: "瞩",
     count: 0,
+    level: 2530,
   },
   {
     hanzi: "嘱",
     count: 0,
+    level: 2531,
   },
   {
     hanzi: "叮",
     count: 0,
+    level: 2532,
   },
   {
     hanzi: "柬",
     count: 0,
+    level: 2533,
   },
   {
     hanzi: "澜",
     count: 0,
+    level: 2534,
   },
   {
     hanzi: "烫",
     count: 1,
+    level: 2535,
   },
   {
     hanzi: "洽",
     count: 0,
+    level: 2536,
   },
   {
     hanzi: "衍",
     count: 0,
+    level: 2537,
   },
   {
     hanzi: "澄",
     count: 0,
+    level: 2538,
   },
   {
     hanzi: "橙",
     count: 1,
+    level: 2539,
   },
   {
     hanzi: "凳",
     count: 1,
+    level: 2540,
   },
   {
     hanzi: "蹬",
     count: 0,
+    level: 2541,
   },
   {
     hanzi: "瞪",
     count: 0,
+    level: 2542,
   },
   {
     hanzi: "睁",
     count: 0,
+    level: 2543,
   },
   {
     hanzi: "盯",
     count: 1,
+    level: 2544,
   },
   {
     hanzi: "趁",
     count: 0,
+    level: 2545,
   },
   {
     hanzi: "膨",
     count: 0,
+    level: 2546,
   },
   {
     hanzi: "彰",
     count: 0,
+    level: 2547,
   },
   {
     hanzi: "皱",
     count: 1,
+    level: 2548,
   },
   {
     hanzi: "虐",
     count: 1,
+    level: 2549,
   },
   {
     hanzi: "秩",
     count: 0,
+    level: 2550,
   },
   {
     hanzi: "募",
     count: 0,
+    level: 2551,
   },
   {
     hanzi: "勉",
     count: 2,
+    level: 2552,
   },
   {
     hanzi: "勘",
     count: 1,
+    level: 2553,
   },
   {
     hanzi: "涝",
     count: 0,
+    level: 2554,
   },
   {
     hanzi: "捞",
     count: 0,
+    level: 2555,
   },
   {
     hanzi: "唠",
     count: 0,
+    level: 2556,
   },
   {
     hanzi: "叨",
     count: 0,
+    level: 2557,
   },
   {
     hanzi: "韵",
     count: 0,
+    level: 2558,
   },
   {
     hanzi: "瓷",
     count: 0,
+    level: 2559,
   },
   {
     hanzi: "嵌",
     count: 0,
+    level: 2560,
   },
   {
     hanzi: "岳",
     count: 0,
+    level: 2561,
   },
   {
     hanzi: "虾",
     count: 1,
+    level: 2562,
   },
   {
     hanzi: "蚊",
     count: 1,
+    level: 2563,
   },
   {
     hanzi: "愚",
     count: 0,
+    level: 2564,
   },
   {
     hanzi: "蠢",
     count: 0,
+    level: 2565,
   },
   {
     hanzi: "旭",
     count: 0,
+    level: 2566,
   },
   {
     hanzi: "隙",
     count: 0,
+    level: 2567,
   },
   {
     hanzi: "赐",
     count: 0,
+    level: 2568,
   },
   {
     hanzi: "坝",
     count: 0,
+    level: 2569,
   },
   {
     hanzi: "堤",
     count: 0,
+    level: 2570,
   },
   {
     hanzi: "灶",
     count: 0,
+    level: 2571,
   },
   {
     hanzi: "删",
     count: 1,
+    level: 2572,
   },
   {
     hanzi: "丛",
     count: 0,
+    level: 2573,
   },
   {
     hanzi: "巫",
     count: 0,
+    level: 2574,
   },
   {
     hanzi: "耸",
     count: 0,
+    level: 2575,
   },
   {
     hanzi: "叙",
     count: 0,
+    level: 2576,
   },
   {
     hanzi: "驭",
     count: 0,
+    level: 2577,
   },
   {
     hanzi: "骤",
     count: 0,
+    level: 2578,
   },
   {
     hanzi: "驳",
     count: 0,
+    level: 2579,
   },
   {
     hanzi: "骇",
     count: 0,
+    level: 2580,
   },
   {
     hanzi: "驮",
     count: 0,
+    level: 2581,
   },
   {
     hanzi: "驯",
     count: 0,
+    level: 2582,
   },
   {
     hanzi: "巢",
     count: 0,
+    level: 2583,
   },
   {
     hanzi: "辐",
     count: 0,
+    level: 2584,
   },
   {
     hanzi: "辙",
     count: 0,
+    level: 2585,
   },
   {
     hanzi: "敷",
     count: 1,
+    level: 2586,
   },
   {
     hanzi: "敞",
     count: 0,
+    level: 2587,
   },
   {
     hanzi: "敛",
     count: 0,
+    level: 2588,
   },
   {
     hanzi: "肇",
     count: 0,
+    level: 2589,
   },
   {
     hanzi: "玫",
     count: 2,
+    level: 2590,
   },
   {
     hanzi: "瑰",
     count: 2,
+    level: 2591,
   },
   {
     hanzi: "槐",
     count: 0,
+    level: 2592,
   },
   {
     hanzi: "栓",
     count: 0,
+    level: 2593,
   },
   {
     hanzi: "耍",
     count: 1,
+    level: 2594,
   },
   {
     hanzi: "儒",
     count: 0,
+    level: 2595,
   },
   {
     hanzi: "仆",
     count: 0,
+    level: 2596,
   },
   {
     hanzi: "僧",
     count: 0,
+    level: 2597,
   },
   {
     hanzi: "蹭",
     count: 0,
+    level: 2598,
   },
   {
     hanzi: "愣",
     count: 0,
+    level: 2599,
   },
   {
     hanzi: "懈",
     count: 0,
+    level: 2600,
   },
   {
     hanzi: "闸",
     count: 0,
+    level: 2601,
   },
   {
     hanzi: "阐",
     count: 0,
+    level: 2602,
   },
   {
     hanzi: "禅",
     count: 0,
+    level: 2603,
   },
   {
     hanzi: "隶",
     count: 0,
+    level: 2604,
   },
   {
     hanzi: "逮",
     count: 0,
+    level: 2605,
   },
   {
     hanzi: "逗",
     count: 2,
+    level: 2606,
   },
   {
     hanzi: "逾",
     count: 0,
+    level: 2607,
   },
   {
     hanzi: "遂",
     count: 0,
+    level: 2608,
   },
   {
     hanzi: "谜",
     count: 0,
+    level: 2609,
   },
   {
     hanzi: "讶",
     count: 1,
+    level: 2610,
   },
   {
     hanzi: "渊",
     count: 0,
+    level: 2611,
   },
   {
     hanzi: "泣",
     count: 0,
+    level: 2612,
   },
   {
     hanzi: "潭",
     count: 0,
+    level: 2613,
   },
   {
     hanzi: "沾",
     count: 0,
+    level: 2614,
   },
   {
     hanzi: "泻",
     count: 0,
+    level: 2615,
   },
   {
     hanzi: "冤",
     count: 0,
+    level: 2616,
   },
   {
     hanzi: "枉",
     count: 0,
+    level: 2617,
   },
   {
     hanzi: "枣",
     count: 0,
+    level: 2618,
   },
   {
     hanzi: "梳",
     count: 0,
+    level: 2619,
   },
   {
     hanzi: "枕",
     count: 0,
+    level: 2620,
   },
   {
     hanzi: "耽",
     count: 0,
+    level: 2621,
   },
   {
     hanzi: "缉",
     count: 0,
+    level: 2622,
   },
   {
     hanzi: "咧",
     count: 0,
+    level: 2623,
   },
   {
     hanzi: "鄙",
     count: 0,
+    level: 2624,
   },
   {
     hanzi: "恕",
     count: 0,
+    level: 2625,
   },
   {
     hanzi: "饶",
     count: 0,
+    level: 2626,
   },
   {
     hanzi: "爵",
     count: 0,
+    level: 2627,
   },
   {
     hanzi: "嚼",
     count: 0,
+    level: 2628,
   },
   {
     hanzi: "喇",
     count: 0,
+    level: 2629,
   },
   {
     hanzi: "叭",
     count: 0,
+    level: 2630,
   },
   {
     hanzi: "扒",
     count: 0,
+    level: 2631,
   },
   {
     hanzi: "撼",
     count: 0,
+    level: 2632,
   },
   {
     hanzi: "挠",
     count: 0,
+    level: 2633,
   },
   {
     hanzi: "掠",
     count: 0,
+    level: 2634,
   },
   {
     hanzi: "摧",
     count: 0,
+    level: 2635,
   },
   {
     hanzi: "瘫",
     count: 0,
+    level: 2636,
   },
   {
     hanzi: "痪",
     count: 0,
+    level: 2637,
   },
   {
     hanzi: "稚",
     count: 0,
+    level: 2638,
   },
   {
     hanzi: "秧",
     count: 0,
+    level: 2639,
   },
   {
     hanzi: "绣",
     count: 0,
+    level: 2640,
   },
   {
     hanzi: "萎",
     count: 0,
+    level: 2641,
   },
   {
     hanzi: "妄",
     count: 0,
+    level: 2642,
   },
   {
     hanzi: "娶",
     count: 1,
+    level: 2643,
   },
   {
     hanzi: "嫂",
     count: 0,
+    level: 2644,
   },
   {
     hanzi: "艘",
     count: 0,
+    level: 2645,
   },
   {
     hanzi: "妒",
     count: 1,
+    level: 2646,
   },
   {
     hanzi: "嫉",
     count: 1,
+    level: 2647,
   },
   {
     hanzi: "矫",
     count: 0,
+    level: 2648,
   },
   {
     hanzi: "厦",
     count: 0,
+    level: 2649,
   },
   {
     hanzi: "丹",
     count: 0,
+    level: 2650,
   },
   {
     hanzi: "婉",
     count: 0,
+    level: 2651,
   },
   {
     hanzi: "惋",
     count: 0,
+    level: 2652,
   },
   {
     hanzi: "怡",
     count: 0,
+    level: 2653,
   },
   {
     hanzi: "冶",
     count: 0,
+    level: 2654,
   },
   {
     hanzi: "怠",
     count: 0,
+    level: 2655,
   },
   {
     hanzi: "恳",
     count: 0,
+    level: 2656,
   },
   {
     hanzi: "甩",
     count: 0,
+    level: 2657,
   },
   {
     hanzi: "佣",
     count: 0,
+    level: 2658,
   },
   {
     hanzi: "倦",
     count: 0,
+    level: 2659,
   },
   {
     hanzi: "巷",
     count: 2,
+    level: 2660,
   },
   {
     hanzi: "佑",
     count: 0,
+    level: 2661,
   },
   {
     hanzi: "赁",
     count: 0,
+    level: 2662,
   },
   {
     hanzi: "俯",
     count: 1,
+    level: 2663,
   },
   {
     hanzi: "俘",
     count: 0,
+    level: 2664,
   },
   {
     hanzi: "虏",
     count: 0,
+    level: 2665,
   },
   {
     hanzi: "丐",
     count: 0,
+    level: 2666,
   },
   {
     hanzi: "钙",
     count: 0,
+    level: 2667,
   },
   {
     hanzi: "衔",
     count: 0,
+    level: 2668,
   },
   {
     hanzi: "钩",
     count: 0,
+    level: 2669,
   },
   {
     hanzi: "弘",
     count: 0,
+    level: 2670,
   },
   {
     hanzi: "夷",
     count: 0,
+    level: 2671,
   },
   {
     hanzi: "帖",
     count: 0,
+    level: 2672,
   },
   {
     hanzi: "帕",
     count: 0,
+    level: 2673,
   },
   {
     hanzi: "兜",
     count: 0,
+    level: 2674,
   },
   {
     hanzi: "丫",
     count: 0,
+    level: 2675,
   },
   {
     hanzi: "凸",
     count: 0,
+    level: 2676,
   },
   {
     hanzi: "凹",
     count: 0,
+    level: 2677,
   },
   {
     hanzi: "裕",
     count: 0,
+    level: 2678,
   },
   {
     hanzi: "袍",
     count: 0,
+    level: 2679,
   },
   {
     hanzi: "痒",
     count: 0,
+    level: 2680,
   },
   {
     hanzi: "瘾",
     count: 0,
+    level: 2681,
   },
   {
     hanzi: "馈",
     count: 0,
+    level: 2682,
   },
   {
     hanzi: "蚀",
     count: 0,
+    level: 2683,
   },
   {
     hanzi: "韧",
     count: 0,
+    level: 2684,
   },
   {
     hanzi: "寡",
     count: 0,
+    level: 2685,
   },
   {
     hanzi: "酿",
     count: 0,
+    level: 2686,
   },
   {
     hanzi: "酝",
     count: 0,
+    level: 2687,
   },
   {
     hanzi: "墅",
     count: 0,
+    level: 2688,
   },
   {
     hanzi: "牡",
     count: 0,
+    level: 2689,
   },
   {
     hanzi: "馨",
     count: 0,
+    level: 2690,
   },
   {
     hanzi: "殷",
     count: 0,
+    level: 2691,
   },
   {
     hanzi: "尴",
     count: 0,
+    level: 2692,
   },
   {
     hanzi: "尬",
     count: 0,
+    level: 2693,
   },
   {
     hanzi: "炫",
     count: 1,
+    level: 2694,
   },
   {
     hanzi: "毯",
     count: 0,
+    level: 2695,
   },
   {
     hanzi: "昧",
     count: 0,
+    level: 2696,
   },
   {
     hanzi: "猩",
     count: 0,
+    level: 2697,
   },
   {
     hanzi: "臣",
     count: 0,
+    level: 2698,
   },
   {
     hanzi: "耕",
     count: 0,
+    level: 2699,
   },
   {
     hanzi: "歪",
     count: 0,
+    level: 2700,
   },
   {
     hanzi: "缸",
     count: 1,
+    level: 2701,
   },
   {
     hanzi: "窑",
     count: 0,
+    level: 2702,
   },
   {
     hanzi: "窍",
     count: 0,
+    level: 2703,
   },
   {
     hanzi: "窜",
     count: 0,
+    level: 2704,
   },
   {
     hanzi: "窥",
     count: 0,
+    level: 2705,
   },
   {
     hanzi: "窟",
     count: 0,
+    level: 2706,
   },
   {
     hanzi: "窿",
     count: 0,
+    level: 2707,
   },
   {
     hanzi: "窒",
     count: 0,
+    level: 2708,
   },
   {
     hanzi: "窘",
     count: 0,
+    level: 2709,
   },
   {
     hanzi: "榨",
     count: 0,
+    level: 2710,
   },
   {
     hanzi: "柄",
     count: 1,
+    level: 2711,
   },
   {
     hanzi: "杠",
     count: 0,
+    level: 2712,
   },
   {
     hanzi: "桩",
     count: 0,
+    level: 2713,
   },
   {
     hanzi: "栖",
     count: 0,
+    level: 2714,
   },
   {
     hanzi: "朽",
     count: 1,
+    level: 2715,
   },
   {
     hanzi: "橱",
     count: 0,
+    level: 2716,
   },
   {
     hanzi: "槛",
     count: 0,
+    level: 2717,
   },
   {
     hanzi: "棺",
     count: 0,
+    level: 2718,
   },
   {
     hanzi: "椰",
     count: 0,
+    level: 2719,
   },
   {
     hanzi: "桨",
     count: 0,
+    level: 2720,
   },
   {
     hanzi: "揉",
     count: 0,
+    level: 2721,
   },
   {
     hanzi: "抒",
     count: 1,
+    level: 2722,
   },
   {
     hanzi: "捣",
     count: 0,
+    level: 2723,
   },
   {
     hanzi: "拱",
     count: 0,
+    level: 2724,
   },
   {
     hanzi: "扳",
     count: 0,
+    level: 2725,
   },
   {
     hanzi: "搁",
     count: 0,
+    level: 2726,
   },
   {
     hanzi: "捂",
     count: 0,
+    level: 2727,
   },
   {
     hanzi: "攒",
     count: 0,
+    level: 2728,
   },
   {
     hanzi: "搓",
     count: 0,
+    level: 2729,
   },
   {
     hanzi: "揣",
     count: 0,
+    level: 2730,
   },
   {
     hanzi: "捆",
     count: 0,
+    level: 2731,
   },
   {
     hanzi: "沐",
     count: 0,
+    level: 2732,
   },
   {
     hanzi: "浏",
     count: 0,
+    level: 2733,
   },
   {
     hanzi: "涤",
     count: 0,
+    level: 2734,
   },
   {
     hanzi: "沽",
     count: 0,
+    level: 2735,
   },
   {
     hanzi: "浊",
     count: 0,
+    level: 2736,
   },
   {
     hanzi: "渺",
     count: 1,
+    level: 2737,
   },
   {
     hanzi: "汛",
     count: 0,
+    level: 2738,
   },
   {
     hanzi: "涕",
     count: 0,
+    level: 2739,
   },
   {
     hanzi: "沛",
     count: 0,
+    level: 2740,
   },
   {
     hanzi: "瀑",
     count: 0,
+    level: 2741,
   },
   {
     hanzi: "溅",
     count: 0,
+    level: 2742,
   },
   {
     hanzi: "淌",
     count: 0,
+    level: 2743,
   },
   {
     hanzi: "沮",
     count: 0,
+    level: 2744,
   },
   {
     hanzi: "溯",
     count: 0,
+    level: 2745,
   },
   {
     hanzi: "鲨",
     count: 0,
+    level: 2746,
   },
   {
     hanzi: "涮",
     count: 0,
+    level: 2747,
   },
   {
     hanzi: "淆",
     count: 0,
+    level: 2748,
   },
   {
     hanzi: "沏",
     count: 0,
+    level: 2749,
   },
   {
     hanzi: "潦",
     count: 0,
+    level: 2750,
   },
   {
     hanzi: "僚",
     count: 0,
+    level: 2751,
   },
   {
     hanzi: "俭",
     count: 0,
+    level: 2752,
   },
   {
     hanzi: "阀",
     count: 0,
+    level: 2753,
   },
   {
     hanzi: "侃",
     count: 0,
+    level: 2754,
   },
   {
     hanzi: "伺",
     count: 0,
+    level: 2755,
   },
   {
     hanzi: "倚",
     count: 0,
+    level: 2756,
   },
   {
     hanzi: "僻",
     count: 0,
+    level: 2757,
   },
   {
     hanzi: "劈",
     count: 0,
+    level: 2758,
   },
   {
     hanzi: "倘",
     count: 0,
+    level: 2759,
   },
   {
     hanzi: "倔",
     count: 0,
+    level: 2760,
   },
   {
     hanzi: "咐",
     count: 0,
+    level: 2761,
   },
   {
     hanzi: "吩",
     count: 0,
+    level: 2762,
   },
   {
     hanzi: "哺",
     count: 0,
+    level: 2763,
   },
   {
     hanzi: "喧",
     count: 0,
+    level: 2764,
   },
   {
     hanzi: "咏",
     count: 0,
+    level: 2765,
   },
   {
     hanzi: "嗜",
     count: 0,
+    level: 2766,
   },
   {
     hanzi: "哆",
     count: 0,
+    level: 2767,
   },
   {
     hanzi: "嗦",
     count: 0,
+    level: 2768,
   },
   {
     hanzi: "嗅",
     count: 0,
+    level: 2769,
   },
   {
     hanzi: "鳄",
     count: 0,
+    level: 2770,
   },
   {
     hanzi: "刁",
     count: 0,
+    level: 2771,
   },
   {
     hanzi: "叼",
     count: 0,
+    level: 2772,
   },
   {
     hanzi: "啃",
     count: 0,
+    level: 2773,
   },
   {
     hanzi: "吭",
     count: 0,
+    level: 2774,
   },
   {
     hanzi: "唾",
     count: 0,
+    level: 2775,
   },
   {
     hanzi: "唬",
     count: 0,
+    level: 2776,
   },
   {
     hanzi: "菩",
     count: 0,
+    level: 2777,
   },
   {
     hanzi: "茂",
     count: 0,
+    level: 2778,
   },
   {
     hanzi: "蒜",
     count: 0,
+    level: 2779,
   },
   {
     hanzi: "荧",
     count: 0,
+    level: 2780,
   },
   {
     hanzi: "藤",
     count: 0,
+    level: 2781,
   },
   {
     hanzi: "蔓",
     count: 0,
+    level: 2782,
   },
   {
     hanzi: "蔑",
     count: 0,
+    level: 2783,
   },
   {
     hanzi: "苛",
     count: 0,
+    level: 2784,
   },
   {
     hanzi: "暮",
     count: 0,
+    level: 2785,
   },
   {
     hanzi: "矢",
     count: 0,
+    level: 2786,
   },
   {
     hanzi: "荫",
     count: 0,
+    level: 2787,
   },
   {
     hanzi: "茎",
     count: 0,
+    level: 2788,
   },
   {
     hanzi: "蔼",
     count: 0,
+    level: 2789,
   },
   {
     hanzi: "蘸",
     count: 0,
+    level: 2790,
   },
   {
     hanzi: "礁",
     count: 0,
+    level: 2791,
   },
   {
     hanzi: "磋",
     count: 0,
+    level: 2792,
   },
   {
     hanzi: "砌",
     count: 0,
+    level: 2793,
   },
   {
     hanzi: "磕",
     count: 0,
+    level: 2794,
   },
   {
     hanzi: "怯",
     count: 0,
+    level: 2795,
   },
   {
     hanzi: "恤",
     count: 0,
+    level: 2796,
   },
   {
     hanzi: "惕",
     count: 1,
+    level: 2797,
   },
   {
     hanzi: "慑",
     count: 0,
+    level: 2798,
   },
   {
     hanzi: "慷",
     count: 0,
+    level: 2799,
   },
   {
     hanzi: "惭",
     count: 0,
+    level: 2800,
   },
   {
     hanzi: "惦",
     count: 0,
+    level: 2801,
   },
   {
     hanzi: "悼",
     count: 0,
+    level: 2802,
   },
   {
     hanzi: "绰",
     count: 0,
+    level: 2803,
   },
   {
     hanzi: "绎",
     count: 0,
+    level: 2804,
   },
   {
     hanzi: "绸",
     count: 0,
+    level: 2805,
   },
   {
     hanzi: "绞",
     count: 0,
+    level: 2806,
   },
   {
     hanzi: "缅",
     count: 0,
+    level: 2807,
   },
   {
     hanzi: "绽",
     count: 0,
+    level: 2808,
   },
   {
     hanzi: "纬",
     count: 0,
+    level: 2809,
   },
   {
     hanzi: "缚",
     count: 1,
+    level: 2810,
   },
   {
     hanzi: "绷",
     count: 1,
+    level: 2811,
   },
   {
     hanzi: "绯",
     count: 1,
+    level: 2812,
   },
   {
     hanzi: "绅",
     count: 0,
+    level: 2813,
   },
   {
     hanzi: "缕",
     count: 0,
+    level: 2814,
   },
   {
     hanzi: "搂",
     count: 0,
+    level: 2815,
   },
   {
     hanzi: "掺",
     count: 0,
+    level: 2816,
   },
   {
     hanzi: "拧",
     count: 1,
+    level: 2817,
   },
   {
     hanzi: "拯",
     count: 0,
+    level: 2818,
   },
   {
     hanzi: "扛",
     count: 0,
+    level: 2819,
   },
   {
     hanzi: "拎",
     count: 0,
+    level: 2820,
   },
   {
     hanzi: "拙",
     count: 0,
+    level: 2821,
   },
   {
     hanzi: "拽",
     count: 0,
+    level: 2822,
   },
   {
     hanzi: "撬",
     count: 0,
+    level: 2823,
   },
   {
     hanzi: "捅",
     count: 0,
+    level: 2824,
   },
   {
     hanzi: "拣",
     count: 0,
+    level: 2825,
   },
   {
     hanzi: "揍",
     count: 0,
+    level: 2826,
   },
   {
     hanzi: "搀",
     count: 0,
+    level: 2827,
   },
   {
     hanzi: "捶",
     count: 0,
+    level: 2828,
   },
   {
     hanzi: "拴",
     count: 0,
+    level: 2829,
   },
   {
     hanzi: "拄",
     count: 0,
+    level: 2830,
   },
   {
     hanzi: "抡",
     count: 0,
+    level: 2831,
   },
   {
     hanzi: "捍",
     count: 0,
+    level: 2832,
   },
   {
     hanzi: "晤",
     count: 0,
+    level: 2833,
   },
   {
     hanzi: "旷",
     count: 0,
+    level: 2834,
   },
   {
     hanzi: "曙",
     count: 0,
+    level: 2835,
   },
   {
     hanzi: "腥",
     count: 0,
+    level: 2836,
   },
   {
     hanzi: "膳",
     count: 0,
+    level: 2837,
   },
   {
     hanzi: "膛",
     count: 0,
+    level: 2838,
   },
   {
     hanzi: "朦",
     count: 0,
+    level: 2839,
   },
   {
     hanzi: "胧",
     count: 0,
+    level: 2840,
   },
   {
     hanzi: "婿",
     count: 0,
+    level: 2841,
   },
   {
     hanzi: "姥",
     count: 1,
+    level: 2842,
   },
   {
     hanzi: "絮",
     count: 0,
+    level: 2843,
   },
   {
     hanzi: "嬉",
     count: 0,
+    level: 2844,
   },
   {
     hanzi: "嫦",
     count: 0,
+    level: 2845,
   },
   {
     hanzi: "娥",
     count: 0,
+    level: 2846,
   },
   {
     hanzi: "媲",
     count: 0,
+    level: 2847,
   },
   {
     hanzi: "凄",
     count: 0,
+    level: 2848,
   },
   {
     hanzi: "婪",
     count: 0,
+    level: 2849,
   },
   {
     hanzi: "彬",
     count: 0,
+    level: 2850,
   },
   {
     hanzi: "焚",
     count: 0,
+    level: 2851,
   },
   {
     hanzi: "灼",
     count: 0,
+    level: 2852,
   },
   {
     hanzi: "焕",
     count: 2,
+    level: 2853,
   },
   {
     hanzi: "烘",
     count: 0,
+    level: 2854,
   },
   {
     hanzi: "焊",
     count: 0,
+    level: 2855,
   },
   {
     hanzi: "熄",
     count: 0,
+    level: 2856,
   },
   {
     hanzi: "烁",
     count: 0,
+    level: 2857,
   },
   {
     hanzi: "炖",
     count: 2,
+    level: 2858,
   },
   {
     hanzi: "炊",
     count: 0,
+    level: 2859,
   },
   {
     hanzi: "灸",
     count: 0,
+    level: 2860,
   },
   {
     hanzi: "煲",
     count: 2,
+    level: 2861,
   },
   {
     hanzi: "耿",
     count: 0,
+    level: 2862,
   },
   {
     hanzi: "痰",
     count: 0,
+    level: 2863,
   },
   {
     hanzi: "痹",
     count: 0,
+    level: 2864,
   },
   {
     hanzi: "煽",
     count: 0,
+    level: 2865,
   },
   {
     hanzi: "翅",
     count: 1,
+    level: 2866,
   },
   {
     hanzi: "翘",
     count: 0,
+    level: 2867,
   },
   {
     hanzi: "戳",
     count: 0,
+    level: 2868,
   },
   {
     hanzi: "雁",
     count: 0,
+    level: 2869,
   },
   {
     hanzi: "鹤",
     count: 0,
+    level: 2870,
   },
   {
     hanzi: "寝",
     count: 0,
+    level: 2871,
   },
   {
     hanzi: "寥",
     count: 0,
+    level: 2872,
   },
   {
     hanzi: "谬",
     count: 2,
+    level: 2873,
   },
   {
     hanzi: "诀",
     count: 0,
+    level: 2874,
   },
   {
     hanzi: "诵",
     count: 0,
+    level: 2875,
   },
   {
     hanzi: "讳",
     count: 0,
+    level: 2876,
   },
   {
     hanzi: "诫",
     count: 0,
+    level: 2877,
   },
   {
     hanzi: "诽",
     count: 0,
+    level: 2878,
   },
   {
     hanzi: "谤",
     count: 0,
+    level: 2879,
   },
   {
     hanzi: "讹",
     count: 0,
+    level: 2880,
   },
   {
     hanzi: "谍",
     count: 0,
+    level: 2881,
   },
   {
     hanzi: "讥",
     count: 0,
+    level: 2882,
   },
   {
     hanzi: "秃",
     count: 0,
+    level: 2883,
   },
   {
     hanzi: "颓",
     count: 0,
+    level: 2884,
   },
   {
     hanzi: "秉",
     count: 0,
+    level: 2885,
   },
   {
     hanzi: "黏",
     count: 0,
+    level: 2886,
   },
   {
     hanzi: "秽",
     count: 0,
+    level: 2887,
   },
   {
     hanzi: "稠",
     count: 0,
+    level: 2888,
   },
   {
     hanzi: "稼",
     count: 0,
+    level: 2889,
   },
   {
     hanzi: "锈",
     count: 1,
+    level: 2890,
   },
   {
     hanzi: "锤",
     count: 0,
+    level: 2891,
   },
   {
     hanzi: "钞",
     count: 0,
+    level: 2892,
   },
   {
     hanzi: "锯",
     count: 0,
+    level: 2893,
   },
   {
     hanzi: "钳",
     count: 0,
+    level: 2894,
   },
   {
     hanzi: "钧",
     count: 0,
+    level: 2895,
   },
   {
     hanzi: "钓",
     count: 2,
+    level: 2896,
   },
   {
     hanzi: "豹",
     count: 0,
+    level: 2897,
   },
   {
     hanzi: "酌",
     count: 0,
+    level: 2898,
   },
   {
     hanzi: "酣",
     count: 0,
+    level: 2899,
   },
   {
     hanzi: "酥",
     count: 0,
+    level: 2900,
   },
   {
     hanzi: "酗",
     count: 0,
+    level: 2901,
   },
   {
     hanzi: "酵",
     count: 0,
+    level: 2902,
   },
   {
     hanzi: "烹",
     count: 0,
+    level: 2903,
   },
   {
     hanzi: "孪",
     count: 0,
+    level: 2904,
   },
   {
     hanzi: "弈",
     count: 0,
+    level: 2905,
   },
   {
     hanzi: "卉",
     count: 0,
+    level: 2906,
   },
   {
     hanzi: "甸",
     count: 0,
+    level: 2907,
   },
   {
     hanzi: "畔",
     count: 0,
+    level: 2908,
   },
   {
     hanzi: "畸",
     count: 0,
+    level: 2909,
   },
   {
     hanzi: "瞄",
     count: 0,
+    level: 2910,
   },
   {
     hanzi: "睹",
     count: 1,
+    level: 2911,
   },
   {
     hanzi: "瞒",
     count: 1,
+    level: 2912,
   },
   {
     hanzi: "眨",
     count: 0,
+    level: 2913,
   },
   {
     hanzi: "睦",
     count: 0,
+    level: 2914,
   },
   {
     hanzi: "睬",
     count: 0,
+    level: 2915,
   },
   {
     hanzi: "盹",
     count: 0,
+    level: 2916,
   },
   {
     hanzi: "瞻",
     count: 0,
+    level: 2917,
   },
   {
     hanzi: "赡",
     count: 0,
+    level: 2918,
   },
   {
     hanzi: "赎",
     count: 0,
+    level: 2919,
   },
   {
     hanzi: "贞",
     count: 0,
+    level: 2920,
   },
   {
     hanzi: "贬",
     count: 0,
+    level: 2921,
   },
   {
     hanzi: "贮",
     count: 0,
+    level: 2922,
   },
   {
     hanzi: "屯",
     count: 0,
+    level: 2923,
   },
   {
     hanzi: "赃",
     count: 0,
+    level: 2924,
   },
   {
     hanzi: "陨",
     count: 0,
+    level: 2925,
   },
   {
     hanzi: "阱",
     count: 1,
+    level: 2926,
   },
   {
     hanzi: "陡",
     count: 0,
+    level: 2927,
   },
   {
     hanzi: "陋",
     count: 0,
+    level: 2928,
   },
   {
     hanzi: "堕",
     count: 0,
+    level: 2929,
   },
   {
     hanzi: "廓",
     count: 0,
+    level: 2930,
   },
   {
     hanzi: "隧",
     count: 0,
+    level: 2931,
   },
   {
     hanzi: "遏",
     count: 0,
+    level: 2932,
   },
   {
     hanzi: "迭",
     count: 0,
+    level: 2933,
   },
   {
     hanzi: "迄",
     count: 0,
+    level: 2934,
   },
   {
     hanzi: "逞",
     count: 0,
+    level: 2935,
   },
   {
     hanzi: "琢",
     count: 0,
+    level: 2936,
   },
   {
     hanzi: "筐",
     count: 0,
+    level: 2937,
   },
   {
     hanzi: "筒",
     count: 2,
+    level: 2938,
   },
   {
     hanzi: "篷",
     count: 0,
+    level: 2939,
   },
   {
     hanzi: "笛",
     count: 0,
+    level: 2940,
   },
   {
     hanzi: "筝",
     count: 0,
+    level: 2941,
   },
   {
     hanzi: "簇",
     count: 0,
+    level: 2942,
   },
   {
     hanzi: "竿",
     count: 0,
+    level: 2943,
   },
   {
     hanzi: "罕",
     count: 1,
+    level: 2944,
   },
   {
     hanzi: "凿",
     count: 0,
+    level: 2945,
   },
   {
     hanzi: "墟",
     count: 0,
+    level: 2946,
   },
   {
     hanzi: "垦",
     count: 0,
+    level: 2947,
   },
   {
     hanzi: "坟",
     count: 0,
+    level: 2948,
   },
   {
     hanzi: "紊",
     count: 0,
+    level: 2949,
   },
   {
     hanzi: "虔",
     count: 0,
+    level: 2950,
   },
   {
     hanzi: "剃",
     count: 0,
+    level: 2951,
   },
   {
     hanzi: "刨",
     count: 0,
+    level: 2952,
   },
   {
     hanzi: "剔",
     count: 0,
+    level: 2953,
   },
   {
     hanzi: "竖",
     count: 0,
+    level: 2954,
   },
   {
     hanzi: "幢",
     count: 0,
+    level: 2955,
   },
   {
     hanzi: "帜",
     count: 0,
+    level: 2956,
   },
   {
     hanzi: "觅",
     count: 0,
+    level: 2957,
   },
   {
     hanzi: "孵",
     count: 0,
+    level: 2958,
   },
   {
     hanzi: "馁",
     count: 0,
+    level: 2959,
   },
   {
     hanzi: "馋",
     count: 0,
+    level: 2960,
   },
   {
     hanzi: "饥",
     count: 0,
+    level: 2961,
   },
   {
     hanzi: "冗",
     count: 0,
+    level: 2962,
   },
   {
     hanzi: "弦",
     count: 0,
+    level: 2963,
   },
   {
     hanzi: "弛",
     count: 0,
+    level: 2964,
   },
   {
     hanzi: "躬",
     count: 0,
+    level: 2965,
   },
   {
     hanzi: "靶",
     count: 0,
+    level: 2966,
   },
   {
     hanzi: "靴",
     count: 0,
+    level: 2967,
   },
   {
     hanzi: "鞠",
     count: 0,
+    level: 2968,
   },
   {
     hanzi: "粪",
     count: 0,
+    level: 2969,
   },
   {
     hanzi: "粽",
     count: 3,
+    level: 2970,
   },
   {
     hanzi: "舵",
     count: 0,
+    level: 2971,
   },
   {
     hanzi: "舶",
     count: 1,
+    level: 2972,
   },
   {
     hanzi: "皂",
     count: 0,
+    level: 2973,
   },
   {
     hanzi: "挚",
     count: 0,
+    level: 2974,
   },
   {
     hanzi: "擎",
     count: 0,
+    level: 2975,
   },
   {
     hanzi: "掰",
     count: 0,
+    level: 2976,
   },
   {
     hanzi: "岔",
     count: 0,
+    level: 2977,
   },
   {
     hanzi: "崛",
     count: 0,
+    level: 2978,
   },
   {
     hanzi: "崭",
     count: 0,
+    level: 2979,
   },
   {
     hanzi: "峙",
     count: 0,
+    level: 2980,
   },
   {
     hanzi: "屿",
     count: 0,
+    level: 2981,
   },
   {
     hanzi: "屹",
     count: 0,
+    level: 2982,
   },
   {
     hanzi: "崖",
     count: 0,
+    level: 2983,
   },
   {
     hanzi: "蛙",
     count: 0,
+    level: 2984,
   },
   {
     hanzi: "卦",
     count: 0,
+    level: 2985,
   },
   {
     hanzi: "卤",
     count: 0,
+    level: 2986,
   },
   {
     hanzi: "闺",
     count: 0,
+    level: 2987,
   },
   {
     hanzi: "阂",
     count: 0,
+    level: 2988,
   },
   {
     hanzi: "蹦",
     count: 0,
+    level: 2989,
   },
   {
     hanzi: "踹",
     count: 0,
+    level: 2990,
   },
   {
     hanzi: "趴",
     count: 2,
+    level: 2991,
   },
   {
     hanzi: "踊",
     count: 0,
+    level: 2992,
   },
   {
     hanzi: "跤",
     count: 0,
+    level: 2993,
   },
   {
     hanzi: "狡",
     count: 0,
+    level: 2994,
   },
   {
     hanzi: "猾",
     count: 0,
+    level: 2995,
   },
   {
     hanzi: "猖",
     count: 0,
+    level: 2996,
   },
   {
     hanzi: "惫",
     count: 1,
+    level: 2997,
   },
   {
     hanzi: "囱",
     count: 0,
+    level: 2998,
   },
   {
     hanzi: "囚",
     count: 0,
+    level: 2999,
   },
   {
     hanzi: "熏",
     count: 0,
+    level: 3000,
   },
   {
     hanzi: "歼",
     count: 0,
+    level: 3001,
   },
   {
     hanzi: "殃",
     count: 0,
+    level: 3002,
   },
   {
     hanzi: "顷",
     count: 0,
+    level: 3003,
   },
   {
     hanzi: "颊",
     count: 0,
+    level: 3004,
   },
   {
     hanzi: "匠",
     count: 0,
+    level: 3005,
   },
   {
     hanzi: "斧",
     count: 0,
+    level: 3006,
   },
   {
     hanzi: "鹅",
     count: 1,
+    level: 3007,
   },
   {
     hanzi: "鸽",
     count: 1,
+    level: 3008,
   },
   {
     hanzi: "徘",
     count: 0,
+    level: 3009,
   },
   {
     hanzi: "徊",
     count: 0,
+    level: 3010,
   },
   {
     hanzi: "衅",
     count: 0,
+    level: 3011,
   },
   {
     hanzi: "盏",
     count: 0,
+    level: 3012,
   },
   {
     hanzi: "祀",
     count: 0,
+    level: 3013,
   },
   {
     hanzi: "袱",
     count: 0,
+    level: 3014,
   },
   {
     hanzi: "兢",
     count: 0,
+    level: 3015,
   },
   {
     hanzi: "魁",
     count: 0,
+    level: 3016,
   },
   {
     hanzi: "冈",
     count: 0,
+    level: 3017,
   },
   {
     hanzi: "裔",
     count: 0,
+    level: 3018,
   },
   {
     hanzi: "昼",
     count: 0,
+    level: 3019,
   },
   {
     hanzi: "孔",
     count: 2,
+    level: 3020,
   },
   {
     hanzi: "啥",
     count: 1,
+    level: 3021,
   },
   {
     hanzi: "咋",
     count: 0,
+    level: 3022,
   },
   {
     hanzi: "呻",
     count: 0,
+    level: 3023,
   },
   {
     hanzi: "吟",
     count: 0,
+    level: 3024,
   },
   {
     hanzi: "吴",
     count: 0,
+    level: 3025,
   },
   {
     hanzi: "嗨",
     count: 0,
+    level: 3026,
   },
   {
     hanzi: "噢",
     count: 0,
+    level: 3027,
   },
   {
     hanzi: "澳",
     count: 0,
+    level: 3028,
   },
   {
     hanzi: "涩",
     count: 0,
+    level: 3029,
   },
   {
     hanzi: "洛",
     count: 0,
+    level: 3030,
   },
   {
     hanzi: "浙",
     count: 0,
+    level: 3031,
   },
   {
     hanzi: "沈",
     count: 0,
+    level: 3032,
   },
   {
     hanzi: "浦",
     count: 0,
+    level: 3033,
   },
   {
     hanzi: "屁",
     count: 0,
+    level: 3034,
   },
   {
     hanzi: "棕",
     count: 0,
+    level: 3035,
   },
   {
     hanzi: "杭",
     count: 1,
+    level: 3036,
   },
   {
     hanzi: "宋",
     count: 0,
+    level: 3037,
   },
   {
     hanzi: "椎",
     count: 0,
+    level: 3038,
   },
   {
     hanzi: "雌",
     count: 0,
+    level: 3039,
   },
   {
     hanzi: "蝴",
     count: 0,
+    level: 3040,
   },
   {
     hanzi: "蝶",
     count: 0,
+    level: 3041,
   },
   {
     hanzi: "眯",
     count: 0,
+    level: 3042,
   },
   {
     hanzi: "眶",
     count: 0,
+    level: 3043,
   },
   {
     hanzi: "玛",
     count: 0,
+    level: 3044,
   },
   {
     hanzi: "菲",
     count: 0,
+    level: 3045,
   },
   {
     hanzi: "莱",
     count: 0,
+    level: 3046,
   },
   {
     hanzi: "疤",
     count: 0,
+    level: 3047,
   },
   {
     hanzi: "圳",
     count: 2,
+    level: 3048,
   },
   {
     hanzi: "侄",
     count: 0,
+    level: 3049,
   },
   {
     hanzi: "掷",
     count: 0,
+    level: 3050,
   },
   {
     hanzi: "嗎",
     count: 0,
+    level: 3051,
   },
   {
     hanzi: "請問",
     count: 0,
+    level: 3052,
   },
   {
     hanzi: "哪裡",
     count: 0,
+    level: 3053,
   },
   {
     hanzi: "美國人",
     count: 0,
+    level: 3054,
   },
   {
     hanzi: "中國人",
     count: 0,
+    level: 3055,
   },
   {
     hanzi: "你呢",
     count: 3,
+    level: 3056,
   },
   {
     hanzi: "喜歡",
     count: 0,
+    level: 3057,
   },
   {
     hanzi: "漢堡",
     count: 0,
+    level: 3058,
+  },
+  {
+    hanzi: "我要提问",
+    pinyin: "wǒ yào tíwèn",
+    en: "I want to ask a question",
+    count: 0,
+    level: 3059,
   },
 ];
 // 11826

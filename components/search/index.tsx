@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { pronounciationLessons } from "./pronuncation_data";
 
-import { filterHmm, parse } from "@/data/hsk";
+import { filterHmm, parse } from "@/data/utils";
 import { useSearchQueryStore } from "./state";
 import { useRouter } from "next/navigation";
 

@@ -16,31 +16,13 @@ import {
 import { NomadIcon } from "./ui/icons";
 import { usePathname, useRouter } from "next/navigation";
 
-import {
-  CloudyIcon,
-  MoonIcon,
-  SearchIcon,
-  SunRiseIcon,
-} from "@/components/ui/icons";
 import { useState } from "react";
 import { useSearchQueryStore } from "./search/state";
-import React, { useMemo } from "react";
-// import {
-//   CloudyIcon,
-//   MoonIcon,
-//   SearchIcon,
-//   SunRiseIcon,
-// } from "@/components/ui/icons";
-import { Header } from "@/components/Header";
+import React from "react";
+
 import { useEffect } from "react";
-// import Link from "next/link";
 
-import { useQuery } from "@tanstack/react-query";
-// import { pronounciationLessons } from "./pronuncation_data";
-
-import { filterHmm, parse } from "@/data/hsk";
-// import { useSearchQueryStore } from "./state";
-// import { useRouter } from "next/navigation";
+import { filterHmm, parse } from "@/data/utils";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -83,7 +65,6 @@ const calcOutcome = (props: any) => {
 
 // palette used for chart: https://flatuicolors.com/palette/cn
 
-
 const options = [
   { id: "chinese", value: "ordering food" },
   { id: "ai", value: "list flashcards" },
@@ -119,14 +100,14 @@ const options = [
   },
   { id: "architecture", value: "I want to learn frontend architecture" },
   // 'butter chicken recipe'
-]
+];
 
 export const NavBar = () => {
   const route = usePathname();
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const [isSearchOpen, setIsSearchOpen] = useState('')
+  const [isSearchOpen, setIsSearchOpen] = useState("");
 
   const [queryStatus, setQueryStatus] = useState("idle");
   const query = useSearchQueryStore((state) => state.query);
@@ -243,31 +224,29 @@ export const NavBar = () => {
   // const query = useSearchQueryStore((state) => state.query);
   return (
     <div className="flex justify-between items-center w-full px-4 md:px-32 md:mt-2">
-      <Link className='my-2' href="/">
+      <Link className="my-2" href="/">
         <FontAwesomeIcon icon={faMountainSun} />
       </Link>
 
       <div className="hidden sm:block my-2 flex flex-row justify-center space-x-4 items-center">
-        <div className="flex items-center justify-center">
-        
-        </div>
+        <div className="flex items-center justify-center"></div>
 
         <input
-            className="dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300 dark:bg-black dark:text-gray-300 placeholder:text-gray-400 opacity-100 transition-all  duration-400 ease-in border-2 w-[140px] md:w-[500px] focus:w-[600px] px-4 py-2 rounded-full focus:outline-none active:outline-none"
-            placeholder={'Search'}
-            onChange={(event) => {
-              setQuery(() => event?.target?.value);
-            }}
-            value={query}
-            onKeyDown={(event) => {
-              if (event?.keyCode === 13) {
-                if (option.value as any) {
-                  handleSearch();
-                  router.push('/search')
-                }
+          className="dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300 dark:bg-black dark:text-gray-300 placeholder:text-gray-400 opacity-100 transition-all  duration-400 ease-in border-2 w-[140px] md:w-[500px] focus:w-[600px] px-4 py-2 rounded-full focus:outline-none active:outline-none"
+          placeholder={"Search"}
+          onChange={(event) => {
+            setQuery(() => event?.target?.value);
+          }}
+          value={query}
+          onKeyDown={(event) => {
+            if (event?.keyCode === 13) {
+              if (option.value as any) {
+                handleSearch();
+                router.push("/search");
               }
-            }}
-          />
+            }
+          }}
+        />
 
         {/* <button
           // onClick={handleSearch}

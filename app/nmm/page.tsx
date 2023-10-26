@@ -239,6 +239,13 @@ function SelectedComponent({ selectedId, setSelectedId }: any) {
   const [view, setView] = useState("sentences");
 
   const actor = learnedActors.find((actor) => actor.id === selectedId);
+  const { data } = useListTonePairsQuery({});
+
+  const relatedData = data?.filter((item: any) =>
+    item?.hanzi?.includes(dict?.hanzi)
+  );
+
+  console.log("RELATED", relatedData);
   return (
     <div>
       <div className="my-4 mx-8 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
@@ -510,14 +517,68 @@ function SelectedComponent({ selectedId, setSelectedId }: any) {
       </div>
 
       <div className="my-4 mx-8 md:mx-16 text-black dark:text-white">
-        {dict?.examples ? (
+        {relatedData?.length ? (
           <div className="flex flex-col items-center">
             {/* <div>
               <MessageIcon />
             </div> */}
 
+            <div className="my-4 mx-8 md:mx-16 text-black dark:text-white">
+              {relatedData?.length ? (
+                <div className="flex flex-col items-start">
+                  {/* <div>
+              <MessageIcon />
+            </div> */}
+
+                  <div className="space-x-8 my-4 flex flex-row">
+                    {relatedData.map((example: any) => {
+                      return (
+                        <div
+                          key={JSON.stringify(example)}
+                          className="flex space-x-4 items-start"
+                        >
+                          {example?.sound ? (
+                            <Music
+                              className="min-w-[40px] text-2xl dark:text-gray-500 text-gray-700"
+                              url={example?.sound}
+                            />
+                          ) : null}
+                          <div className="">
+                            {/* <p className='dark:text-gray-600 text-gray-300'>
+                      {example?.hanzi}
+                    </p> */}
+                            {example?.hanzi.split("").map((item: any) => {
+                              return (
+                                <span
+                                  key={JSON.stringify(item)}
+                                  className={
+                                    item === selectedId ||
+                                    selectedId.includes(item)
+                                      ? calculateColor(dict)
+                                      : `dark:text-gray-600 text-gray-300`
+                                  }
+                                >
+                                  {item}
+                                </span>
+                              );
+                            })}
+                            <p className="dark:text-gray-500 text-gray-400">
+                              {example?.pinyin}
+                            </p>
+                            <p className="dark:text-gray-400 text-gray-500">
+                              {example?.en}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
             <div className="space-y-8 my-4">
-              {dict?.examples.map((example: any) => {
+              {dict?.examples?.map((example: any) => {
                 return (
                   <div
                     key={JSON.stringify(example)}

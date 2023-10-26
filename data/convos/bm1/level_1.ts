@@ -48,11 +48,15 @@ export const lesson1 = {
   location: "starbucks",
   author: "xiaoma",
   title: "1. 认识小伟 Rènshi Xiǎowěi (Meeting Xiaowei)",
-  audio: "https://cdn.fs.teachablecdn.com/GolrgGjoQ3Cz3fqfGK92",
+
+  audio: {
+    slow: "https://cdn.fs.teachablecdn.com/GolrgGjoQ3Cz3fqfGK92",
+    fast: "https://cdn.fs.teachablecdn.com/RDSIyNCDTraTgFtqPe9v",
+  },
   // audio: 'blob:http://localhost:4000/99be90c5-8eab-4604-8289-c2ba',
   video:
     "https://player.hotmart.com/embed/4qXd5gNPqv?signature=yrCRRwuehZEFuEijzKvnLcqwt-UuzbCPwuEBhSYT17OIsvZ4209eQLpb9xmjJWaGBhJfBA7kZdAh7H8g5y_DQNXeLym30nyFgsxDkVIVZlqULGtVzf9DLXTgYWqQlAxQRq9LRa2wt5kP5rgjkGx65YbNhwkacQtyeB7tV-2f1uI681iAhlZ4XBjSCAhgwoydpHWccDTrqAiodKpdHEoznYBkOHYaNCyk85QQn_Ria-HDcoWSqJTpJovoAmSvIO6dDNhWiWpKSvOyTYNdqXR913Tbs4H5HXVQ_JRnydQFncJQCkrlZLgC_zUBzdV5vUBoKjNU7cqBrpMRR_0DQfa2RQ==&token=aa2d356b-e2f0-45e8-9725-e0efc7b5d29c&user=93500610",
-  audioV2: "https://cdn.fs.teachablecdn.com/RDSIyNCDTraTgFtqPe9v",
+
   lesson: [
     [
       ["time", [[0, 1.8, "你好!"]]],

@@ -1,19 +1,70 @@
-'use client'
-import { persist, createJSONStorage } from 'zustand/middleware'
-import { create } from 'zustand'
+"use client";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { create } from "zustand";
 
-import { lesson1 } from './level_1'
-import { lesson2 } from './level_2'
-import { lesson3 } from './level_3'
-import { lesson4 } from './level_4'
-import { lesson5 } from './level_5'
-import { lesson6 } from './level_6'
+import { lesson1 } from "./level_1";
+import { lesson2 } from "./level_2";
+import { lesson3 } from "./level_3";
+import { lesson4 } from "./level_4";
+import { lesson5 } from "./level_5";
+import { lesson6 } from "./level_6";
 // import { dumplings } from '../../../stories/dumplings'
 
+const lessonAdapter = (lessons: any) =>
+  lessons.map((x: any) => {
+    const [
+      [timeTitle, time],
+      [mandarinName, hanzi],
+      [pinyinName, pinyin],
+      [litName, literal],
+      [enName, en],
+    ] = x;
+
+    return {
+      time,
+      names: {
+        hanzi: mandarinName,
+        pinyin: pinyinName,
+        en: enName,
+      },
+      pinyin,
+      hanzi,
+      en,
+    };
+  });
+
 export const course1 = {
-  title: 'Beginner Mandarin',
-  lessons: [lesson1, lesson2, lesson3, lesson4, lesson5, lesson6]
-} as any
+  title: "Beginner Mandarin",
+  lessons: [lesson1, lesson2, lesson3, lesson4, lesson5, lesson6]?.map(
+    (lesson) => {
+
+      return {
+        ...lesson,
+        lessons: lesson?.lesson.map((x) => {
+          const [
+            [timeTitle, time],
+            [mandarinName, hanzi],
+            [pinyinName, pinyin],
+            [litName, literal],
+            [enName, en],
+          ] = x;
+  
+          return {
+            time,
+            names: {
+              hanzi: mandarinName,
+              pinyin: pinyinName,
+              en: enName,
+            },
+            pinyin: (pinyin as string)?.trim(),
+            hanzi,
+            en: (en as string)?.trim(),
+          };
+        })
+      }
+    }
+  ),
+} as any;
 
 export const useConvosStore = create(
   persist(
@@ -22,12 +73,12 @@ export const useConvosStore = create(
       setConvo: (event: any) => set({ convos: get().convos.concat(event) }),
       removeConvo: (lessonId: any) =>
         set({
-          convos: get().convos.filter((lesson: any) => lesson?.id !== lessonId)
-        })
+          convos: get().convos.filter((lesson: any) => lesson?.id !== lessonId),
+        }),
     }),
     {
-      name: 'mandarino/convos', // name of the item in the storage (must be unique)
-      storage: createJSONStorage(() => localStorage) // (optional) by default, 'localStorage' is used
+      name: "mandarino/convos", // name of the item in the storage (must be unique)
+      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
     }
   )
-)
+);

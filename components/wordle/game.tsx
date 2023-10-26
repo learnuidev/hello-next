@@ -2,6 +2,33 @@
 
 import { useState, useEffect } from "react";
 
+import { course1 } from "@/data/convos/bm1/index";
+
+console.log("COURSE 1", course1);
+
+const lessonAdapter = (lessons: any) =>
+  lessons.map((x: any) => {
+    const [
+      [timeTitle, time],
+      [mandarinName, hanzi],
+      [pinyinName, pinyin],
+      [litName, literal],
+      [enName, en],
+    ] = x;
+
+    return {
+      time,
+      names: {
+        hanzi: mandarinName,
+        pinyin: pinyinName,
+        en: enName,
+      },
+      pinyin,
+      hanzi,
+      en,
+    };
+  });
+
 // Steps:
 // 1. Define game state
 // 2. Define handlers
@@ -44,27 +71,93 @@ function transformForView(currentGuess: any) {
     .join("");
 }
 
-const secret = "我爱中文啊";
+// const secret = "我爱中文啊";
 
 export function Wordle() {
+  const [lessonId, setLessonId] = useState("lesson11");
+  const [lessonIndex, setLessonIndex] = useState(0);
+  // const [secret, setSecret] = useState("我爱中文啊");
+
+  const currentLesson = course1?.lessons?.find(
+    (lesson: any) => lesson?.id === lessonId
+  );
+
+  const currentPhrase = currentLesson?.lessons?.[lessonIndex];
+
+  const cleanString = (str: string) => {
+    return str
+      ?.split("")
+      ?.filter(Boolean)
+      .join("")
+      ?.trim()
+      ?.replaceAll("？", "")
+      ?.replaceAll("！", "")
+      ?.replaceAll("！ ", "")
+      ?.replaceAll(" ", "")
+      ?.replaceAll("，", "")
+      ?.replaceAll("。", "")
+      ?.replaceAll("!", "")
+      ?.replaceAll(" ", "")
+      ?.replaceAll(",", "")
+      ?.replaceAll(".", "")
+      ?.replaceAll("?", "");
+  };
+
+  const secret = cleanString(currentPhrase?.hanzi);
+
+  console.log({ secret: secret?.replaceAll(" ", "") });
+
   // 1. game state
-  const [guessHistory, setGuessHistory] = useState([]);
+  const [guessHistory, setGuessHistory] = useState<any>({
+    0: [],
+    1: [],
+    2: [],
+  });
   const [currentGuess, setCurrentGuess] = useState("");
   const [gameStatus, setGameStatus] = useState("");
 
   // Define event handlers (3)
 
+  console.log("GUESS", guessHistory);
+
+  console.log("CURRENT LESSON", currentPhrase);
+
+  const currentGuessHistory = (
+    guessHistory?.[lessonIndex as number] || []
+  )?.filter((hist: string) => {
+    return cleanString(currentPhrase?.hanzi)?.includes(hist);
+  });
+
   // 3.1 handles submittion
   const handleEnter = () => {
     // check if the currentGuess has 5 chars
-    if (secret === currentGuess) {
-      alert("You win");
+    const guessTrimmed = cleanString(currentGuess);
+
+    const historyTrimmed = [...currentGuessHistory, guessTrimmed]?.reduce(
+      (acc, curr) => `${acc}${curr}`,
+      ""
+    );
+    if (secret === guessTrimmed || secret === historyTrimmed) {
+      // alert("You win");
+
+      setGameStatus("win");
+      setGuessHistory((prevHistory: any) => {
+        return {
+          ...prevHistory,
+          [lessonIndex]: currentGuessHistory.concat(guessTrimmed as any),
+        };
+      });
     } else if (guessHistory.length === 5) {
       alert("You lose");
       setGameStatus("lost");
     } else {
       // 1. add the current guess to guessHistory
-      setGuessHistory(guessHistory.concat(currentGuess as any));
+      setGuessHistory((prevHistory: any) => {
+        return {
+          ...prevHistory,
+          [lessonIndex]: currentGuessHistory.concat(guessTrimmed as any),
+        };
+      });
 
       // 2. reset currentGuess
       setCurrentGuess("");
@@ -80,30 +173,46 @@ export function Wordle() {
     }
   };
 
-  const empties = Array(5 - guessHistory.length).fill("     ");
+  const empties = Array(5 - currentGuessHistory.length).fill("     ");
 
-  console.log("guess history", guessHistory);
+  // console.log("guess history", guessHistory);
+
+  // useEffect(() => {
+  //   const currentLesson = course1?.lessons?.find(
+  //     (lesson: any) => lesson?.id === lessonId
+  //   );
+  //   if (currentLesson) {
+  //     setLessonIndex(0);
+  //   }
+  // }, [lessonId]);
 
   return (
     <div>
       <header className="flex w-80 mx-auto mt-10 mb-8">
-        <h1 className={"grow font-bold text-center"}>
+        {/* <h1 className={"grow font-bold text-center text-sm text-gray-300"}>
           {" "}
           <span>拼音猜成语</span>{" "}
-          <span className="text-gray-400">[worldle]</span>{" "}
-        </h1>
+          <span className="text-gray-200">[worldle]</span>{" "}
+        </h1> */}
       </header>
 
       <main className="pb-6 flex items-center justify-center flex-col">
-        <div className="w-80">
-          {guessHistory.map((guess: any, idx: any) => {
-            return <GameRow key={`${guess}-${idx}`} guess={guess} />;
-          })}
+        <h2 className="text-gray-400 font-extralight text-2xl">
+          Write the following sentence in{" "}
+          <span className="text-yellow-400">汉子</span>
+        </h2>
+
+        <div className="mt-16 text-center space-y-2">
+          <p className="text-xl text-gray-500">{currentPhrase?.en}</p>
+          <p className="text-4xl  text-gray-700 font-extralight">
+            {currentPhrase?.pinyin}
+          </p>
         </div>
 
-        <div className="flex justify-center my-4">
+        <div className="flex justify-center w-full my-16 flex-col items-center">
           <input
-            className="h-14 border-solid border-2 w-[295px] text-2xl px-2"
+            disabled={gameStatus === "win"}
+            className="text-center h-14 border-solid border-b-2 w-[320px] text-2xl px-2 focus:outline-none active:outline-none"
             value={currentGuess}
             onKeyDown={(event: any) => {
               if (event.key === "Enter") {
@@ -116,6 +225,25 @@ export function Wordle() {
               handleKeyup(event);
             }}
           />
+          {gameStatus === "win" && (
+            <div className="text-center transition mt-8">
+              <button
+                onClick={() => {
+                  setLessonIndex((prevIndex) => prevIndex + 1);
+                  setCurrentGuess("");
+                  setGameStatus("");
+                }}
+              >
+                Continue
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="w-80">
+          {currentGuessHistory.map((guess: any, idx: any) => {
+            return <GameRow key={`${guess}-${idx}`} guess={guess} />;
+          })}
         </div>
       </main>
 

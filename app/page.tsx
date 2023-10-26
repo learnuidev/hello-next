@@ -13,6 +13,7 @@ import { NavBar } from "@/components/navbar";
 import { Link } from "@/components/link";
 import { SearchPage } from "@/components/search";
 import { NavigatorMap } from "@/components/navigator-map";
+import { Wordle } from "@/components/wordle/game";
 
 export default function Home() {
   const [isTocHidden, setIsTocHidden] = useState(false);
@@ -34,9 +35,12 @@ export default function Home() {
     <main className="">
       <NavBar />
 
-      <div className="px-4 md:px-32 md:my-4">
+
+      <Wordle />
+
+      {/* <div className="px-4 md:px-32 md:my-4">
         <Editor content="Hello" id="home page" />
-      </div>
+      </div> */}
     </main>
   );
 }

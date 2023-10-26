@@ -277,9 +277,9 @@ export const NavBar = () => {
           <FontAwesomeIcon icon={faSearch} />
         </Link>
         <Link
-          href="/courses"
+          href="/learn"
           className={`transition ${
-            route === "/courses" ? "text-gray-800" : "text-gray-200"
+            route === "/learn" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faGraduationCap} />

@@ -26,7 +26,8 @@ export const cleanString = (str: string) => {
     ?.replaceAll(" ", "")
     ?.replaceAll(",", "")
     ?.replaceAll(".", "")
-    ?.replaceAll("?", "");
+    ?.replaceAll("?", "")
+    ?.replaceAll("…", "");
 };
 
 const lessonAdapter = (lesson: any) => {

@@ -159,14 +159,14 @@ export function Wordle() {
         {/* <h1 className={"grow font-bold text-center text-sm text-gray-300"}>
           {" "}
           <span>拼音猜成语</span>{" "}
-          <span className="text-gray-200">[worldle]</san>{" "}
+          <span className="text-gray-200">[worldle]</span>{" "}
         </h1> */}
       </header>
 
       <main className="pb-6 flex items-center justify-center flex-col">
         <h2 className="text-gray-400 font-extralight text-2xl">
           Write the following sentence in{" "}
-          <span className="text-yellow-400">汉子 yo</span>
+          <span className="text-yellow-400">汉子</span>
         </h2>
 
         <div className="mt-16 text-center space-y-2">

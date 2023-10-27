@@ -28,6 +28,8 @@ function GameRow(props: any) {
 }
 
 export function Wordle() {
+  const [currentGuess, setCurrentGuess] = useState("");
+  const [gameStatus, setGameStatus] = useState("");
   const [lessonId, setLessonId] = useState("lesson11");
   const [lessonIndex, setLessonIndex] = useState("你好");
   // const [secret, setSecret] = useState("我爱中文啊");
@@ -56,13 +58,26 @@ export function Wordle() {
 
         console.log("CORRECT IDS", correctIds);
 
-        const nextId = currentLesson?.lessons?.find((lesson: any) =>
-          !correctIds?.includes(lesson?.id)
+        const nextId = currentLesson?.lessons?.find(
+          (lesson: any) => !correctIds?.includes(lesson?.id)
         );
         console.log("CURRENT LESSON YO", nextId);
 
         if (nextId?.id) {
           setLessonIndex(nextId?.id);
+        } else {
+          setGameStatus("finish");
+
+          // const lesson = course1?.lesson
+          const currentLessonIndex = course1?.lessons?.findIndex(
+            (lesson: any) => lesson?.id === lessonId
+          );
+
+          const nextLesson = course1?.lessons?.[currentLessonIndex + 1];
+
+          if (nextLesson) {
+            setLessonId(nextLesson?.id);
+          }
         }
       },
     }
@@ -105,14 +120,6 @@ export function Wordle() {
     1: [],
     2: [],
   });
-  const [currentGuess, setCurrentGuess] = useState("");
-  const [gameStatus, setGameStatus] = useState("");
-
-  // Define event handlers (3)
-
-  // console.log("GUESS", guessHistory);
-
-  // console.log("CURRENT LESSON", currentPhrase);
 
   const currentGuessHistory = (
     guessHistory?.[lessonIndex as string] || []
@@ -267,6 +274,53 @@ export function Wordle() {
           </div>
 
           <div className="text-center transition mt-8">
+            <button
+              onClick={() => {
+                const guessTrimmed = cleanString(currentGuess);
+                const historyTrimmed = [
+                  ...currentGuessHistory,
+                  guessTrimmed,
+                ]?.reduce((acc, curr) => `${acc}${curr}`, "");
+
+                return addAnswerMutation
+                  .mutateAsync({
+                    hanzi: secret,
+                    answer: historyTrimmed,
+                    lessonId: lessonId,
+                    phraseId: currentPhrase?.id,
+                    status: "incorrect",
+                  })
+                  .then((res) => {
+                    const lessonIdx = course1?.lessons?.findIndex(
+                      (lesson: any) => lesson?.id === lessonIndex
+                    );
+
+                    if (lessonIdx !== -1) {
+                      const nextId = course1?.lessons?.[lessonIdx + 1];
+
+                      nextId?.id && setLessonIndex(nextId?.id);
+                    } else {
+                      setGameStatus("finish");
+                    }
+                    // setLessonIndex((prevIndex) => prevIndex + 1);
+                    setCurrentGuess("");
+                    setGameStatus("");
+                  });
+              }}
+            >
+              Continue
+            </button>
+          </div>
+        </>
+      )}
+
+      {gameStatus === "finish" && (
+        <>
+          {/* <div className="text-center text-2xl">
+            <GameRow guess={secret} />
+          </div> */}
+
+          <div className="text-center transition">
             <button
               onClick={() => {
                 const guessTrimmed = cleanString(currentGuess);

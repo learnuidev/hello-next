@@ -10,7 +10,7 @@ import { lesson5 } from "./level_5";
 import { lesson6 } from "./level_6";
 // import { dumplings } from '../../../stories/dumplings'
 
-const cleanString = (str: string) => {
+export const cleanString = (str: string) => {
   return str
     ?.split("")
     ?.filter(Boolean)

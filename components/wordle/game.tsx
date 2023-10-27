@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-import { course1 } from "@/data/convos/bm1/index";
+import { course1, cleanString } from "@/data/convos/bm1/index";
 import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
@@ -66,8 +66,6 @@ export function Wordle() {
         if (nextId?.id) {
           setLessonIndex(nextId?.id);
         } else {
-          setGameStatus("finish");
-
           // const lesson = course1?.lesson
           const currentLessonIndex = course1?.lessons?.findIndex(
             (lesson: any) => lesson?.id === lessonId
@@ -77,6 +75,8 @@ export function Wordle() {
 
           if (nextLesson) {
             setLessonId(nextLesson?.id);
+          } else {
+            setGameStatus("finish");
           }
         }
       },
@@ -91,28 +91,7 @@ export function Wordle() {
     (lesson: any) => lesson?.id === lessonIndex
   );
 
-  const cleanString = (str: string) => {
-    return str
-      ?.split("")
-      ?.filter(Boolean)
-      .join("")
-      ?.trim()
-      ?.replaceAll("？", "")
-      ?.replaceAll("！", "")
-      ?.replaceAll("！ ", "")
-      ?.replaceAll(" ", "")
-      ?.replaceAll("，", "")
-      ?.replaceAll("。", "")
-      ?.replaceAll("!", "")
-      ?.replaceAll(" ", "")
-      ?.replaceAll(",", "")
-      ?.replaceAll(".", "")
-      ?.replaceAll("?", "");
-  };
-
   const secret = cleanString(currentPhrase?.hanzi);
-
-  console.log({ secret: secret?.replaceAll(" ", "") });
 
   // 1. game state
   const [guessHistory, setGuessHistory] = useState<any>({
@@ -173,17 +152,6 @@ export function Wordle() {
   };
 
   const empties = Array(5 - currentGuessHistory.length).fill("     ");
-
-  // console.log("guess history", guessHistory);
-
-  // useEffect(() => {
-  //   const currentLesson = course1?.lessons?.find(
-  //     (lesson: any) => lesson?.id === lessonId
-  //   );
-  //   if (currentLesson) {
-  //     setLessonIndex(0);
-  //   }
-  // }, [lessonId]);
 
   return (
     <div>

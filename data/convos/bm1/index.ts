@@ -10,58 +10,56 @@ import { lesson5 } from "./level_5";
 import { lesson6 } from "./level_6";
 // import { dumplings } from '../../../stories/dumplings'
 
-const lessonAdapter = (lessons: any) =>
-  lessons.map((x: any) => {
-    const [
-      [timeTitle, time],
-      [mandarinName, hanzi],
-      [pinyinName, pinyin],
-      [litName, literal],
-      [enName, en],
-    ] = x;
+const cleanString = (str: string) => {
+  return str
+    ?.split("")
+    ?.filter(Boolean)
+    .join("")
+    ?.trim()
+    ?.replaceAll("？", "")
+    ?.replaceAll("！", "")
+    ?.replaceAll("！ ", "")
+    ?.replaceAll(" ", "")
+    ?.replaceAll("，", "")
+    ?.replaceAll("。", "")
+    ?.replaceAll("!", "")
+    ?.replaceAll(" ", "")
+    ?.replaceAll(",", "")
+    ?.replaceAll(".", "")
+    ?.replaceAll("?", "");
+};
 
-    return {
-      time,
-      names: {
-        hanzi: mandarinName,
-        pinyin: pinyinName,
-        en: enName,
-      },
-      pinyin,
-      hanzi,
-      en,
-    };
-  });
+const lessonAdapter = (lesson: any) => {
+  const [
+    [timeTitle, time],
+    [mandarinName, hanzi],
+    [pinyinName, pinyin],
+    [litName, literal],
+    [enName, en],
+  ] = lesson;
+
+  return {
+    id: cleanString(hanzi as string),
+    time,
+    names: {
+      hanzi: mandarinName,
+      pinyin: pinyinName,
+      en: enName,
+    },
+    pinyin: (pinyin as string)?.trim(),
+    hanzi,
+    en: (en as string)?.trim(),
+  };
+};
 
 export const course1 = {
   title: "Beginner Mandarin",
   lessons: [lesson1, lesson2, lesson3, lesson4, lesson5, lesson6]?.map(
     (lesson) => {
-
       return {
         ...lesson,
-        lessons: lesson?.lesson.map((x) => {
-          const [
-            [timeTitle, time],
-            [mandarinName, hanzi],
-            [pinyinName, pinyin],
-            [litName, literal],
-            [enName, en],
-          ] = x;
-  
-          return {
-            time,
-            names: {
-              hanzi: mandarinName,
-              pinyin: pinyinName,
-              en: enName,
-            },
-            pinyin: (pinyin as string)?.trim(),
-            hanzi,
-            en: (en as string)?.trim(),
-          };
-        })
-      }
+        lessons: lesson?.lesson.map(lessonAdapter),
+      };
     }
   ),
 } as any;

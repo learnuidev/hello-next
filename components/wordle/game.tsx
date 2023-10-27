@@ -3,39 +3,8 @@
 import { useState, useEffect } from "react";
 
 import { course1 } from "@/data/convos/bm1/index";
-
-console.log("COURSE 1", course1);
-
-const lessonAdapter = (lessons: any) =>
-  lessons.map((x: any) => {
-    const [
-      [timeTitle, time],
-      [mandarinName, hanzi],
-      [pinyinName, pinyin],
-      [litName, literal],
-      [enName, en],
-    ] = x;
-
-    return {
-      time,
-      names: {
-        hanzi: mandarinName,
-        pinyin: pinyinName,
-        en: enName,
-      },
-      pinyin,
-      hanzi,
-      en,
-    };
-  });
-
-// Steps:
-// 1. Define game state
-// 2. Define handlers
-// 3. Custom Components - KeyList
-// 4. Custom Component - GameBoard
-
-// Custom Components
+import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
+import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 function GameTile(props: any) {
   const { letter } = props;
@@ -58,31 +27,54 @@ function GameRow(props: any) {
   );
 }
 
-function transformForView(currentGuess: any) {
-  const guessColl = currentGuess.split("");
-  return Array(5)
-    .fill("")
-    .map((i, idx) => {
-      if (guessColl[idx]) {
-        return guessColl[idx];
-      }
-      return " ";
-    })
-    .join("");
-}
-
-// const secret = "我爱中文啊";
-
 export function Wordle() {
   const [lessonId, setLessonId] = useState("lesson11");
-  const [lessonIndex, setLessonIndex] = useState(0);
+  const [lessonIndex, setLessonIndex] = useState("你好");
   // const [secret, setSecret] = useState("我爱中文啊");
+
+  const addAnswerMutation = useAddAnswerMutation();
+
+  const { data: answers } = useListAnswersQuery(
+    {
+      journeyId: lessonId,
+    },
+    {
+      onSuccess: (data: any) => {
+        console.log("SUCCESS yo", data);
+
+        const correctIds = currentLesson?.lessons
+          // ?.map((item: any) => item)
+          ?.filter((lesson: any) =>
+            Boolean(
+              data?.find(
+                (item: any) =>
+                  item?.phraseId === lesson?.id && item.status === "correct"
+              )
+            )
+          )
+          ?.map((item: any) => item?.id);
+
+        console.log("CORRECT IDS", correctIds);
+
+        const nextId = currentLesson?.lessons?.find((lesson: any) =>
+          !correctIds?.includes(lesson?.id)
+        );
+        console.log("CURRENT LESSON YO", nextId);
+
+        if (nextId?.id) {
+          setLessonIndex(nextId?.id);
+        }
+      },
+    }
+  );
 
   const currentLesson = course1?.lessons?.find(
     (lesson: any) => lesson?.id === lessonId
   );
 
-  const currentPhrase = currentLesson?.lessons?.[lessonIndex];
+  const currentPhrase = currentLesson?.lessons?.find(
+    (lesson: any) => lesson?.id === lessonIndex
+  );
 
   const cleanString = (str: string) => {
     return str
@@ -118,12 +110,12 @@ export function Wordle() {
 
   // Define event handlers (3)
 
-  console.log("GUESS", guessHistory);
+  // console.log("GUESS", guessHistory);
 
-  console.log("CURRENT LESSON", currentPhrase);
+  // console.log("CURRENT LESSON", currentPhrase);
 
   const currentGuessHistory = (
-    guessHistory?.[lessonIndex as number] || []
+    guessHistory?.[lessonIndex as string] || []
   )?.filter((hist: string) => {
     return cleanString(currentPhrase?.hanzi)?.includes(hist);
   });
@@ -229,9 +221,30 @@ export function Wordle() {
             <div className="text-center transition mt-8">
               <button
                 onClick={() => {
-                  setLessonIndex((prevIndex) => prevIndex + 1);
-                  setCurrentGuess("");
-                  setGameStatus("");
+                  return addAnswerMutation
+                    .mutateAsync({
+                      hanzi: secret,
+                      answer: cleanString(currentGuess),
+                      lessonId: lessonId,
+                      phraseId: currentPhrase?.id,
+                      status: "correct",
+                    })
+                    .then((res) => {
+                      const lessonIdx = course1?.lessons?.findIndex(
+                        (lesson: any) => lesson?.id === lessonIndex
+                      );
+
+                      if (lessonIdx !== -1) {
+                        const nextId = course1?.lessons?.[lessonIdx + 1];
+
+                        nextId?.id && setLessonIndex(nextId?.id);
+                      } else {
+                        setGameStatus("finish");
+                      }
+
+                      setCurrentGuess("");
+                      setGameStatus("");
+                    });
                 }}
               >
                 Continue
@@ -248,9 +261,50 @@ export function Wordle() {
       </main>
 
       {gameStatus === "lost" && (
-        <div className="text-center text-2xl">
-          <GameRow guess={secret} />
-        </div>
+        <>
+          <div className="text-center text-2xl">
+            <GameRow guess={secret} />
+          </div>
+
+          <div className="text-center transition mt-8">
+            <button
+              onClick={() => {
+                const guessTrimmed = cleanString(currentGuess);
+                const historyTrimmed = [
+                  ...currentGuessHistory,
+                  guessTrimmed,
+                ]?.reduce((acc, curr) => `${acc}${curr}`, "");
+
+                return addAnswerMutation
+                  .mutateAsync({
+                    hanzi: secret,
+                    answer: historyTrimmed,
+                    lessonId: lessonId,
+                    phraseId: currentPhrase?.id,
+                    status: "incorrect",
+                  })
+                  .then((res) => {
+                    const lessonIdx = course1?.lessons?.findIndex(
+                      (lesson: any) => lesson?.id === lessonIndex
+                    );
+
+                    if (lessonIdx !== -1) {
+                      const nextId = course1?.lessons?.[lessonIdx + 1];
+
+                      nextId?.id && setLessonIndex(nextId?.id);
+                    } else {
+                      setGameStatus("finish");
+                    }
+                    // setLessonIndex((prevIndex) => prevIndex + 1);
+                    setCurrentGuess("");
+                    setGameStatus("");
+                  });
+              }}
+            >
+              Continue
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

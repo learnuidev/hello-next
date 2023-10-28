@@ -1,7 +1,23 @@
 export interface IConfig {
-    mapboxApiKey: string
+  mapboxApiKey: string;
+  awsRegion: string;
+  userPoolId: string;
+  userPoolWebClientId: string;
+  mandatorySignIn: true;
+  graphqlEndpoint: string;
+  authenticationType: "AMAZON_COGNITO_USER_POOLS";
 }
 
 export const config: IConfig = {
-    mapboxApiKey: process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string
-}
+  mapboxApiKey: process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string,
+
+  //   AWS
+  awsRegion: process.env.NEXT_PUBLIC_AWS_REGION as string,
+  userPoolId: process.env.NEXT_PUBLIC_AWS_COGNITO_USERPOOL_ID as string,
+  userPoolWebClientId: process.env
+    .NEXT_PUBLIC_AWS_COGNITO_WEBCLIENT_ID as string,
+  mandatorySignIn: true,
+  graphqlEndpoint: process.env
+    .NEXT_PUBLIC_AWS_APPSYNC_GRAPHQL_ENDPOINT as string,
+  authenticationType: "AMAZON_COGNITO_USER_POOLS",
+};

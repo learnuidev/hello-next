@@ -13,6 +13,7 @@ const addAnswer = async (options: {
   lessonId: string;
   phraseId: string;
   status: string;
+  guessHistory: any
 }) => {
   const res = await fetch(url, {
     method: "POST",
@@ -31,6 +32,7 @@ export function useAddAnswerMutation(options = {} as any) {
       lessonId: string;
       phraseId: string;
       status: string;
+      guessHistory: any
     }) => {
       const response = await addAnswer(params);
       return response;

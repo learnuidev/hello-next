@@ -1,6 +1,8 @@
 // import Image from 'next/image'
 "use client";
 
+import "@/libs/cognito/init";
+
 import { Editor } from "@/components/Editor";
 import { useState } from "react";
 
@@ -34,7 +36,6 @@ export default function Home() {
 
     <main className="">
       <NavBar />
-
 
       <Wordle />
 

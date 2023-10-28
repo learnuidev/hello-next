@@ -36,8 +36,8 @@ export default function RootLayout({
           type="text/css"
         />
 
-<style>
-      {`body {
+        <style>
+          {`body {
         margin: 0;
         font-family: Helvetica, Arial, sans-serif;
       }
@@ -66,7 +66,7 @@ export default function RootLayout({
     }
       
       `}
-    </style>
+        </style>
       </head>
       <body
         className={`${inter.className} bg-bkg text-content flex h-screen flex-col`}

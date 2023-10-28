@@ -90,6 +90,11 @@ export function Wordle() {
   const currentPhrase = currentLesson?.lessons?.find(
     (lesson: any) => lesson?.id === lessonIndex
   );
+  const currentPhraseIndex = currentLesson?.lessons?.findIndex(
+    (lesson: any) => lesson?.id === lessonIndex
+  ) + 1
+
+  const totalLessons = currentLesson?.lessons?.length
 
   const secret = cleanString(currentPhrase?.hanzi);
 
@@ -166,11 +171,16 @@ export function Wordle() {
       </header>
 
       <main className="pb-6 flex items-center justify-center flex-col">
-        <h2 className="text-gray-400 font-extralight text-2xl">
-          Write the following sentence in{" "}
-          <span className="text-yellow-400">汉子</span>
-        </h2>
-
+        <div className="flex justify-between items-center w-full px-32">
+          <div></div>
+          <h2 className="text-gray-400 font-extralight text-2xl">
+            Write the following sentence in{" "}
+            <span className="text-yellow-400">汉子</span>
+          </h2>
+          <div className="text-lg font-extralight text-gray-400">
+            {currentPhraseIndex} / {totalLessons}
+          </div>
+        </div>
         <div className="mt-16 text-center space-y-2">
           <p className="text-xl text-gray-500">{currentPhrase?.en}</p>
           <p className="text-4xl  text-gray-700 font-extralight">
@@ -194,9 +204,8 @@ export function Wordle() {
                   guessHistoryItem?.[guessHistoryItem?.length - 1];
 
                 console.log({ lastGuess });
-                setCurrentGuess(lastGuess
-                  );
-                return null
+                setCurrentGuess(lastGuess);
+                return null;
                 // console.log("event.key", event.key)
               }
 
@@ -227,6 +236,7 @@ export function Wordle() {
                       lessonId: lessonId,
                       phraseId: currentPhrase?.id,
                       status: "correct",
+                      guessHistory: guessHistory?.[lessonIndex as string],
                     })
                     .then((res) => {
                       const lessonIdx = course1?.lessons?.findIndex(
@@ -281,6 +291,7 @@ export function Wordle() {
                     lessonId: lessonId,
                     phraseId: currentPhrase?.id,
                     status: "incorrect",
+                    guessHistory: guessHistory?.[lessonIndex as string],
                   })
                   .then((res) => {
                     const lessonIdx = course1?.lessons?.findIndex(
@@ -297,7 +308,7 @@ export function Wordle() {
                     // setLessonIndex((prevIndex) => prevIndex + 1);
                     setCurrentGuess("");
                     setGameStatus("");
-                    setGuessHistory({})
+                    setGuessHistory({});
                   });
               }}
             >
@@ -329,6 +340,7 @@ export function Wordle() {
                     lessonId: lessonId,
                     phraseId: currentPhrase?.id,
                     status: "incorrect",
+                    guessHistory: guessHistory?.[lessonIndex as string],
                   })
                   .then((res) => {
                     const lessonIdx = course1?.lessons?.findIndex(

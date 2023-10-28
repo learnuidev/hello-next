@@ -14,6 +14,7 @@ import {
 } from "@fortawesome/sharp-solid-svg-icons";
 
 import '@/libs/cognito/init'
+import { Authenticated } from '@/components/Authenticated'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -76,7 +77,14 @@ export default function RootLayout({
         className={`${inter.className} bg-bkg text-content flex h-screen flex-col`}
       >
         <div className="flex-1">
-          <QueryClientProvider>{children}</QueryClientProvider>
+          <QueryClientProvider>
+            <Authenticated>
+
+
+            {children}
+            
+            </Authenticated>
+            </QueryClientProvider>
         </div>
 
         <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300">

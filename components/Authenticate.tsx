@@ -13,9 +13,9 @@ export const Authenticate = () => {
     console.log("TODO");
   };
 
-  if (currentView === "login") {
+  // if (currentView === "login") {
     return <Login />;
-  }
+  // }
 
-  return <Register />;
+  // return <Register />;
 };

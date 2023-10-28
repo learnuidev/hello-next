@@ -4,6 +4,7 @@ import {
   signUpPasswordLess,
   confirmSignUp,
   resendCode,
+  signIn,
   signInPasswordLess,
   confirmSignInPasswordless,
 } from "@/libs/cognito/auth";
@@ -54,17 +55,17 @@ import {
 
 // export const aws = AWS;
 
-// export function useSignUp(options: any) {
-//   return useMutation(signUp, {
-//     ...options,
-//     onSuccess: (data, variables, context): void => {
-//       options?.onSuccess?.(data, variables, context);
-//     },
-//     onError: (data, variables, context): void => {
-//       options?.onError?.(data, variables, context);
-//     },
-//   });
-// }
+export function useSignUp(options: any) {
+  return useMutation(signUp, {
+    ...options,
+    onSuccess: (data, variables, context): void => {
+      options?.onSuccess?.(data, variables, context);
+    },
+    onError: (data, variables, context): void => {
+      options?.onError?.(data, variables, context);
+    },
+  });
+}
 
 export function useSignUpPasswordless(options: any) {
   return useMutation(signUpPasswordLess, {
@@ -80,6 +81,17 @@ export function useSignUpPasswordless(options: any) {
 
 export function useSignInPasswordless(options: any) {
   return useMutation(signInPasswordLess, {
+    ...options,
+    onSuccess: (data, variables, context): void => {
+      options?.onSuccess?.(data, variables, context);
+    },
+    onError: (data, variables, context): void => {
+      options?.onError?.(data, variables, context);
+    },
+  });
+}
+export function useSignIn(options: any) {
+  return useMutation(signIn, {
     ...options,
     onSuccess: (data, variables, context): void => {
       options?.onSuccess?.(data, variables, context);

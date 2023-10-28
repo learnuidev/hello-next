@@ -78,12 +78,12 @@ export default function RootLayout({
       >
         <div className="flex-1">
           <QueryClientProvider>
-            <Authenticated>
+            {/* <Authenticated> */}
 
 
             {children}
             
-            </Authenticated>
+            {/* </Authenticated> */}
             </QueryClientProvider>
         </div>
 

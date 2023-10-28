@@ -2,21 +2,30 @@
 import { queryIds } from "./queryIds";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useCurrentAuthUser } from "../auth/auth.queries";
 
 // TODO: Move this to .env
 const url =
   "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/add-answer";
 
-const addAnswer = async (options: {
-  hanzi: string;
-  answer: string;
-  lessonId: string;
-  phraseId: string;
-  status: string;
-  guessHistory: any
-}) => {
+const addAnswer = async (
+  options: {
+    hanzi: string;
+    answer: string;
+    lessonId: string;
+    phraseId: string;
+    status: string;
+    guessHistory: any;
+  },
+  opts: {
+    Authorization: string;
+  }
+) => {
   const res = await fetch(url, {
     method: "POST",
+    headers: {
+      Authorization: `${opts?.Authorization}`,
+    },
     body: JSON.stringify(options),
   });
   const resp = await res.json();
@@ -24,6 +33,7 @@ const addAnswer = async (options: {
 };
 
 export function useAddAnswerMutation(options = {} as any) {
+  const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
   return useMutation(
     async (params: {
@@ -32,9 +42,11 @@ export function useAddAnswerMutation(options = {} as any) {
       lessonId: string;
       phraseId: string;
       status: string;
-      guessHistory: any
+      guessHistory: any;
     }) => {
-      const response = await addAnswer(params);
+      const response = await addAnswer(params, {
+        Authorization: authUser?.jwt,
+      });
       return response;
     },
     {

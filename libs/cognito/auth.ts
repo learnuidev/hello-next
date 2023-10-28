@@ -26,6 +26,8 @@ export async function signUp({
   }
 }
 export async function signUpPasswordLess({ email }: { email: string }) {
+
+  console.log({ email })
   try {
     const chance = new Chance();
     const password = chance.string({ length: 16 });

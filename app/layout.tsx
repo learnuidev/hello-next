@@ -1,3 +1,5 @@
+'use client'
+
 import { QueryClientProvider } from "@/libs/react-query";
 import "./globals.css";
 import type { Metadata } from "next";
@@ -11,12 +13,14 @@ import {
   faToolbox,
 } from "@fortawesome/sharp-solid-svg-icons";
 
+import '@/libs/cognito/init'
+
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "游牧方法 - nomad method",
-  description: "Learn languages at the speed of light",
-};
+// export const metadata: Metadata = {
+//   title: "游牧方法 - nomad method",
+//   description: "Learn languages at the speed of light",
+// };
 
 export default function RootLayout({
   children,

@@ -106,6 +106,8 @@ export function Wordle() {
     return cleanString(currentPhrase?.hanzi)?.includes(hist);
   });
 
+  console.log({ guessHistory });
+
   // 3.1 handles submittion
   const handleEnter = () => {
     // check if the currentGuess has 5 chars
@@ -125,7 +127,7 @@ export function Wordle() {
           [lessonIndex]: currentGuessHistory.concat(guessTrimmed as any),
         };
       });
-    } else if (guessHistory.length === 5) {
+    } else if (guessHistory?.[lessonIndex as string]?.length >= 5) {
       alert("You lose");
       setGameStatus("lost");
     } else {
@@ -151,7 +153,7 @@ export function Wordle() {
     }
   };
 
-  const empties = Array(5 - currentGuessHistory.length).fill("     ");
+  // const empties = Array(5 - currentGuessHistory.length).fill("     ");
 
   return (
     <div>
@@ -182,6 +184,22 @@ export function Wordle() {
             className="text-center h-14 border-solid border-b-2 w-[320px] text-2xl px-2 focus:outline-none active:outline-none"
             value={currentGuess}
             onKeyDown={(event: any) => {
+              console.log({ key: event.key });
+
+              if (event.key === "ArrowUp") {
+                console.log("YO");
+
+                const guessHistoryItem = guessHistory?.[lessonIndex as string];
+                const lastGuess =
+                  guessHistoryItem?.[guessHistoryItem?.length - 1];
+
+                console.log({ lastGuess });
+                setCurrentGuess(lastGuess
+                  );
+                return null
+                // console.log("event.key", event.key)
+              }
+
               if (event.key === "Enter") {
                 handleEnter();
               } else {
@@ -196,10 +214,16 @@ export function Wordle() {
             <div className="text-center transition mt-8">
               <button
                 onClick={() => {
+                  const guessTrimmed = cleanString(currentGuess);
+                  const historyTrimmed = [
+                    ...currentGuessHistory,
+                    guessTrimmed,
+                  ]?.reduce((acc, curr) => `${acc}${curr}`, "");
+
                   return addAnswerMutation
                     .mutateAsync({
                       hanzi: secret,
-                      answer: cleanString(currentGuess),
+                      answer: historyTrimmed,
                       lessonId: lessonId,
                       phraseId: currentPhrase?.id,
                       status: "correct",
@@ -273,10 +297,11 @@ export function Wordle() {
                     // setLessonIndex((prevIndex) => prevIndex + 1);
                     setCurrentGuess("");
                     setGameStatus("");
+                    setGuessHistory({})
                   });
               }}
             >
-              Continue
+              Retry
             </button>
           </div>
         </>

@@ -2088,6 +2088,10 @@ export const defaultData: any = [
 ];
 
 export const characterDictionary: any = {
+  jiu: {
+    graph:
+      "就九旧酒久救究纠臼赳揪啾韭厩鸠咎舅灸鹫玖柩疚僦乆糺桕阄捄廐鬏乣丩樛轇廏揫㺵倃〩匶",
+  },
   yi: {
     initial: "null",
     final: "yi",

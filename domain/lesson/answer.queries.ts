@@ -30,7 +30,7 @@ const listAnswers = async (
 };
 
 export function useListAnswersQuery(
-  params: { journeyId?: string },
+  params = {} as { journeyId?: string },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
@@ -42,7 +42,7 @@ export function useListAnswersQuery(
       const response = await listAnswers(params, {
         Authorization: authUser?.jwt,
       });
-      return response;
+      return response?.sort((a: any, b: any) => a?.createdAt - b?.createdAt)
       // }
     },
     {
@@ -50,10 +50,10 @@ export function useListAnswersQuery(
       enabled: Boolean(authUser?.jwt),
       // enabled: Boolean(journeyId),
       cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
+      // refetchOnWindowFocus: false,
+      // refetchOnFocus: false,
+      // refetchOnMount: false,
+      // refetchOnReconnect: false,
     }
   );
 }

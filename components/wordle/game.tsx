@@ -285,9 +285,13 @@ export function Wordle() {
 
                         nextId?.id && setLessonIndex(nextId?.id);
 
-                        router.push(
-                          `/convos/${params?.["lesson-id"]}/${nextId?.id}`
-                        );
+                        if (params?.["lesson-id"]) {
+                          router.push(
+                            `/convos/${params?.["lesson-id"] || lessonId}/${
+                              nextId?.id
+                            }`
+                          );
+                        }
                       } else {
                         setGameStatus("finish");
                       }

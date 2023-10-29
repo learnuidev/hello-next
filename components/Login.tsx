@@ -29,7 +29,7 @@ export function Login() {
 
   const queryClient = useQueryClient();
 
-  const router = useRouter()
+  const router = useRouter();
 
   const useSignInMutation = useSignIn({
     onSuccess: (data: any) => {
@@ -37,7 +37,7 @@ export function Login() {
       // setViewtype(RegistrationViewTypes.confirmLogin);
 
       queryClient?.invalidateQueries([authQueryIds?.currentAuthUser]);
-      router.push("/")
+      router.push("/");
     },
     onError: (err: any) => {
       console.log("ERROR YO", err.message);
@@ -81,7 +81,6 @@ export function Login() {
                   value={username}
                   onChange={(event) => {
                     setUserName(() => event.target.value);
-                    console.log("EVENT", event.target.value);
                   }}
                   required
                   className="dark:bg-gray-900 dark:text-gray-200 dark:border-gray-800 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -102,7 +101,6 @@ export function Login() {
                   value={password}
                   onChange={(event) => {
                     setPassword(() => event.target.value);
-                    console.log("EVENT", event.target.value);
                   }}
                   required
                   className="dark:bg-gray-900 dark:text-gray-200 dark:border-gray-800 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"

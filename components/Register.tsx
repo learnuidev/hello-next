@@ -60,9 +60,7 @@ export function Register() {
   //       },
   //   });
 
-  const onSubmit = (event: any) => {
-    console.log("TODO");
-  };
+  const onSubmit = (event: any) => {};
 
   if (viewType === RegistrationViewTypes.register) {
     return (
@@ -105,7 +103,6 @@ export function Register() {
                     value={email}
                     onChange={(event) => {
                       setEmail(() => event.target.value);
-                      console.log("EVENT", event.target.value);
                     }}
                     required
                     className="dark:bg-gray-900 dark:text-gray-200 dark:border-gray-800 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -124,7 +121,6 @@ export function Register() {
                     value={password}
                     onChange={(event) => {
                       setPassword(() => event.target.value);
-                      console.log("EVENT", event.target.value);
                     }}
                     autoComplete="current-password"
                     required
@@ -165,7 +161,6 @@ export function Register() {
                   onClick={(event) => {
                     event.preventDefault();
 
-                    console.log({ password });
                     useSignupMutation.mutate({
                       username: email,
                       password,
@@ -231,7 +226,6 @@ export function Register() {
                     value={email}
                     onChange={(event) => {
                       setEmail(() => event.target.value);
-                      console.log("EVENT", event.target.value);
                     }}
                     required
                     className="dark:bg-gray-900 dark:text-gray-200 dark:border-gray-800 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -250,7 +244,6 @@ export function Register() {
                     value={code}
                     onChange={(event) => {
                       setCode(() => event.target.value);
-                      console.log("EVENT", event.target.value);
                     }}
                     autoComplete="current-password"
                     required
@@ -290,8 +283,6 @@ export function Register() {
                 <button
                   onClick={(event) => {
                     event.preventDefault();
-
-                    console.log({ password });
 
                     useConfirmSignUpMutation.mutate({
                       username: email,
@@ -354,7 +345,6 @@ export function Register() {
                     value={email}
                     onChange={(event) => {
                       setEmail(() => event.target.value);
-                      // console.log("EVENT", event.target.value);
                     }}
                     required
                     className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -372,7 +362,6 @@ export function Register() {
                     value={code}
                     onChange={(event) => {
                       setCode(() => event.target.value);
-                      console.log("EVENT", event.target.value);
                     }}
                     autoComplete="current-code"
                     required
@@ -479,7 +468,6 @@ export function Register() {
                   value={email}
                   onChange={(event) => {
                     setEmail(() => event.target.value);
-                    console.log("EVENT", event.target.value);
                   }}
                   required
                   className="dark:bg-gray-900 dark:text-gray-200 dark:border-gray-800 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"

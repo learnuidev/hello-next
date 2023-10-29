@@ -35,8 +35,6 @@ export function useListAnswersQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-
-  console.log({ authUser })
   return useQuery(
     [queryIds.listAnswers, params?.journeyId],
     async () => {

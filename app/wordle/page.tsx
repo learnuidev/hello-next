@@ -84,14 +84,11 @@ function App(props: any) {
     if (event.key === "Enter") {
       handleEnter();
     } else {
-      // handleChar();
       setCurrentGuess(event.target.value);
     }
   };
 
   const empties = Array(5 - guessHistory.length).fill("     ");
-
-  console.log("guess history", guessHistory);
 
   return (
     <div>

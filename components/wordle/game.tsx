@@ -39,25 +39,21 @@ export function Wordle() {
     ? decodeURIComponent(params?.["phrase-id"])
     : null;
 
-  console.log("PHRASE ID", phraseId);
-
   const router = useRouter();
   const [currentGuess, setCurrentGuess] = useState("");
   const [gameStatus, setGameStatus] = useState("");
   const [lessonId, setLessonId] = useState(params?.["lesson-id"] || "lesson11");
 
   const [lessonIndex, setLessonIndex] = useState(() => {
-
     const currentLesson = course1?.lessons?.find(
       (lesson: any) => lesson?.id === lessonId
     );
 
-    const firstPhraseId = currentLesson?.lessons?.[0]?.id
-
+    const firstPhraseId = currentLesson?.lessons?.[0]?.id;
 
     // 1. first find the phrase id - if found then return
     // 2. if not found then find the first phrase of the current lesson and return it
-    return phraseId || firstPhraseId
+    return phraseId || firstPhraseId;
   });
   // const [secret, setSecret] = useState("我爱中文啊");
 
@@ -73,8 +69,6 @@ export function Wordle() {
   //     setLessonIndex(nextId);
   //   }
   // }, [setLessonIndex, lessonId, phraseId]);
-
-  console.log("PARAMS", params);
 
   const { data: answers } = useListAnswersQuery(
     {
@@ -148,8 +142,6 @@ export function Wordle() {
   )?.filter((hist: string) => {
     return cleanString(currentPhrase?.hanzi)?.includes(hist);
   });
-
-  console.log({ guessHistory });
 
   // 3.1 handles submittion
   const handleEnter = () => {
@@ -232,19 +224,13 @@ export function Wordle() {
             className="text-center h-14 border-solid border-b-2 w-[320px] text-2xl px-2 focus:outline-none active:outline-none"
             value={currentGuess}
             onKeyDown={(event: any) => {
-              console.log({ key: event.key });
-
               if (event.key === "ArrowUp") {
-                console.log("YO");
-
                 const guessHistoryItem = guessHistory?.[lessonIndex as string];
                 const lastGuess =
                   guessHistoryItem?.[guessHistoryItem?.length - 1];
 
-                console.log({ lastGuess });
                 setCurrentGuess(lastGuess);
                 return null;
-                // console.log("event.key", event.key)
               }
 
               if (event.key === "Enter") {
@@ -292,10 +278,6 @@ export function Wordle() {
                       // const lessonIdx = course1?.lessons?.findIndex(
                       //   (lesson: any) => lesson?.id === lessonIndex
                       // );
-
-                      // console.log("LESSON IDX", lessonIdx)
-
-                      // console.log("LESSON IDX", lessonIdx)
 
                       if (currentPhraseIndex !== -1) {
                         const nextId =

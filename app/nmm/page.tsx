@@ -92,19 +92,6 @@ const PageView = ({ view, setSelectedId }: any) => {
                 }
                 
                 dark:hover:text-white p-6 text-4xl transition`}
-
-                // className={`${
-                //   learnedActors.find(place => prop?.id === place.id)
-                //     ? prop?.id?.includes('i')
-                //       ? 'dark:text-pink-500'
-                //       : prop?.id?.includes('u')
-                //       ? 'dark:text-purple-500'
-                //       : 'dark:text-blue-500'
-                //     : 'dark:text-gray-500'
-                // }
-
-                // dark:hover:text-white p-6 text-4xl`}
-                // className='dark:hover:text-white dark:text-gray-500 p-6 text-4xl'
               >
                 {prop?.value}
               </button>
@@ -140,8 +127,6 @@ const PageView = ({ view, setSelectedId }: any) => {
       return (
         <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
           {charsArr.map((prop, idx) => {
-            // return <p className='p-4'>{prop?.hanzi}</p>
-
             calculateColor;
 
             const toneLevel = getCharacterToneLevel(prop as ICharacter);
@@ -150,16 +135,10 @@ const PageView = ({ view, setSelectedId }: any) => {
 
             const graph = getGraph(prop?.hanzi)?.graph || "";
 
-            // console.log("GRAPH", graph)
-            // toneLevel && console.log({ toneLevel })
-
-            // color && console.log({ color })
-
             const showIf = graph
               ?.split("")
               ?.find((elem: string) => learnedCharacters?.includes(elem));
 
-            // console.log('graph', graph)
             return (
               <button
                 key={`${prop.hanzi}-chars-${idx}`}
@@ -184,7 +163,6 @@ const PageView = ({ view, setSelectedId }: any) => {
       return (
         <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
           {wordsArr.map((prop, idx) => {
-            // return <p className='p-4'>{prop?.hanzi}</p>
             return (
               <button
                 key={`${prop.hanzi}-words-${idx}`}
@@ -196,7 +174,6 @@ const PageView = ({ view, setSelectedId }: any) => {
                     ? "dark:text-white text-gray-700"
                     : "dark:text-gray-500 text-gray-200"
                 } dark:hover:text-white p-6 text-4xl transition`}
-                // className='dark:hover:text-white dark:text-gray-500 p-6 text-4xl'
               >
                 {prop?.hanzi}
               </button>
@@ -245,7 +222,6 @@ function SelectedComponent({ selectedId, setSelectedId }: any) {
     item?.hanzi?.includes(dict?.hanzi)
   );
 
-  console.log("RELATED", relatedData);
   return (
     <div>
       <div className="my-4 mx-8 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
@@ -472,10 +448,6 @@ function SelectedComponent({ selectedId, setSelectedId }: any) {
 
                   {variant?.examples ? (
                     <div className="flex flex-col items-center">
-                      {/* <div>
-                <MessageIcon />
-              </div> */}
-
                       <div className="space-y-8 my-4">
                         {variant?.examples.map((example: any) => {
                           return (
@@ -495,9 +467,7 @@ function SelectedComponent({ selectedId, setSelectedId }: any) {
                                   </span>
                                 );
                               })}
-                              {/* <p className='dark:text-gray-600 text-gray-300'>
-                                {example?.hanzi}
-                              </p> */}
+
                               <p className="dark:text-gray-500 text-gray-400">
                                 {example?.pinyin}
                               </p>

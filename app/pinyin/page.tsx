@@ -442,24 +442,17 @@ const CharacterDetail = () => {
         </button>
       </div>
 
-      {/* <p className="text-slate-200 text-xs">{char?.graph}</p> */}
-
       <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
         {(char?.graph?.split("") || [])
           ?.filter((prop: string) => {
             return allChars?.find((item) => item?.hanzi === prop);
           })
           .map((prop: string, idx: number) => {
-            // return <p className='p-4'>{prop?.hanzi}</p>
-
             const isCore = allChars?.find((item) => item?.hanzi === prop);
             return (
               <button
                 key={`${prop}-chars-${idx}`}
-                onClick={() => {
-                  console.log("TODO");
-                  // setSelectedId(prop);
-                }}
+                onClick={() => {}}
                 className={`${
                   learnedCharacters.includes(prop)
                     ? "dark:text-white text-gray-700"

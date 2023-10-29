@@ -14,12 +14,9 @@ export type ICharacter = {
 export const getCharacterToneLevel = (
   character: ICharacter
 ): number | undefined => {
-  // console.log("CHAR", character);
   const level = Object.entries(characterTonesMap)?.find(([tone, vals]) => {
     return vals?.split("")?.find((v) => character?.pinyin?.includes(v));
   })?.[0];
-
-  // console.log("LEVEL", level)
 
   if (level) {
     return parseInt(level);

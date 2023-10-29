@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { QueryClientProvider } from "@/libs/react-query";
 import "./globals.css";
@@ -13,8 +13,8 @@ import {
   faToolbox,
 } from "@fortawesome/sharp-solid-svg-icons";
 
-import '@/libs/cognito/init'
-import { Authenticated } from '@/components/Authenticated'
+import "@/libs/cognito/init";
+import { Authenticated } from "@/components/Authenticated";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -78,13 +78,8 @@ export default function RootLayout({
       >
         <div className="flex-1">
           <QueryClientProvider>
-            {/* <Authenticated> */}
-
-
-            {children}
-            
-            {/* </Authenticated> */}
-            </QueryClientProvider>
+            <Authenticated>{children}</Authenticated>
+          </QueryClientProvider>
         </div>
 
         <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300">

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { course1, cleanString } from "@/data/convos/bm1/index";
 import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
+import { useParams } from "next/navigation";
 
 function GameTile(props: any) {
   const { letter } = props;
@@ -28,13 +29,32 @@ function GameRow(props: any) {
 }
 
 export function Wordle() {
+
+  const params = useParams() as {
+    'lesson-id': string
+  }
   const [currentGuess, setCurrentGuess] = useState("");
   const [gameStatus, setGameStatus] = useState("");
-  const [lessonId, setLessonId] = useState("lesson11");
+  const [lessonId, setLessonId] = useState(params?.['lesson-id'] || "lesson11");
+
+
   const [lessonIndex, setLessonIndex] = useState("你好");
   // const [secret, setSecret] = useState("我爱中文啊");
 
   const addAnswerMutation = useAddAnswerMutation();
+
+
+  useEffect(() => {
+    const currentLesson = course1?.lessons?.find(
+      (lesson: any) => lesson?.id === lessonId
+    );
+
+    if (currentLesson) {
+      const nextId = currentLesson?.lessons?.[0]?.id
+      setLessonIndex(nextId)
+    }
+
+  }, [setLessonIndex, lessonId])
 
   const { data: answers } = useListAnswersQuery(
     {

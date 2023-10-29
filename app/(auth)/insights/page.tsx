@@ -17,7 +17,9 @@ import { Link } from "@/components/link";
 import { SearchPage } from "@/components/search";
 import { NavigatorMap } from "@/components/navigator-map";
 import { parse } from "@/data/utils";
-import { faX } from "@fortawesome/sharp-solid-svg-icons";
+import { faXmark } from "@fortawesome/pro-light-svg-icons";
+
+import { course1, cleanString } from "@/data/convos/bm1/index";
 
 function SelectedCharacter({
   selectedChar,
@@ -42,29 +44,51 @@ function SelectedCharacter({
           <span className="text-sm md:text-xl"> {selectedChar}</span>
         </h2>
         <button
-          className="text-xl"
+          className="text-4xl"
           onClick={() => {
             setSelectedChar("");
           }}
         >
-          <FontAwesomeIcon icon={faX} />
+          <FontAwesomeIcon icon={faXmark} />
         </button>
       </div>
       <div className="my-8">
         {/* <h2>nmm</h2> */}
         <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
           {relevantAnswers?.map((char: any, idx: number) => {
+            const lesson = {};
+
+            const currentLesson = course1?.lessons?.find(
+              (lesson: any) => lesson?.id === char?.journeyId
+            );
+
+            console.log({ currentLesson });
+
+            const currentPhrase = currentLesson?.lessons?.find(
+              (lesson: any) => lesson?.id === char?.hanzi
+            );
+
             return (
               <div
                 role="button"
                 // onClick={() => {
                 //   setSelectedChar(char);
                 // }}
-                className="p-2"
+                className="pb-8 flex flex-col"
                 key={`${idx}-${char?.hanzi}-${idx}`}
               >
                 {" "}
-                {char?.hanzi}
+                <span className="text-sm text-gray-600">
+                  {currentPhrase?.pinyin}
+                </span>
+                <span className="text-gray-700">
+                  {/* {currentPhrase?.hanzi?.split(" ").filter(Boolean)?.join("")} */}
+                  {currentPhrase?.hanzi}
+                </span>
+                <span className="text-sm">{currentPhrase?.en}</span>
+                {/* <span>{char?.hanzi}</span> */}
+                {/* {JSON.stringify(char?.journeyId)} */}
+                {/* {JSON.stringify(char?.hanzi)} */}
               </div>
             );
           })}

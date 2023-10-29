@@ -293,9 +293,9 @@ export const NavBar = () => {
           <FontAwesomeIcon icon={faTableTree} />
         </Link>
         <Link
-          href="/analytics"
+          href="/insights"
           className={`transition ${
-            route === "/analytics" ? "text-gray-800" : "text-gray-200"
+            route === "/insights" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faChartColumn} />

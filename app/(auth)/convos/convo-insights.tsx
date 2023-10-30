@@ -155,6 +155,11 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
   );
   const unlockedCharactersNMMStr = unlockedCharactersNMM?.join(" ");
 
+  const currentLevel = {
+    maxCharacterLevel: 600,
+  };
+
+
   return selectedChar ? (
     <SelectedCharacter
       selectedChar={selectedChar}
@@ -185,18 +190,23 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
 
         <div className="my-8">
           <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
-            {unlockedCharactersHMM?.map((char, idx: number) => {
+            {unlockedNMMCharacters?.map((char, idx: number) => {
               return (
                 <span
                   role="button"
                   onClick={() => {
                     setSelectedChar(char);
                   }}
-                  className="p-2"
-                  key={`${idx}-${char}-${idx}`}
+                  className={`p-2 ${
+                    currentLevel?.maxCharacterLevel >= char?.hmmCharacterLevel
+                      ? "text-gray-700"
+                      : "text-gray-400"
+                  }`}
+                  // className="p-2"
+                  key={`${idx}-${char?.hanzi}-${idx}`}
                 >
                   {" "}
-                  {char}
+                  {char?.hanzi}
                 </span>
               );
             })}

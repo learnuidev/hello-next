@@ -33,6 +33,7 @@ import {
   faPlay,
   faTypewriter,
   faBrainCircuit,
+  faMusicNote,
 } from "@fortawesome/sharp-solid-svg-icons";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
@@ -147,7 +148,7 @@ export const ConvosNavBar = () => {
             viewType === "listen" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
         >
-          <FontAwesomeIcon icon={faPlay} />
+          <FontAwesomeIcon icon={faMusicNote} />
         </button>
         <button
           onClick={() => {

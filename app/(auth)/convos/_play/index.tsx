@@ -390,14 +390,14 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
         </p>
         <div className="space-x-4">
           <button
-            className={`text-xl md:text-3xl ${
+            className={`z-50 text-xl p-2 md:text-3xl ${
               focusMode
                 ? "dark:text-white text-slate-700"
                 : "dark:text-slate-500 text-slate-300"
             } dark:hover:text-slate-100 hover:text-slate-900 transition md:px-4`}
             onClick={toggleMode("focus")}
           >
-            {<FocusIcon />}
+            <FocusIcon />
           </button>
         </div>
       </div>
@@ -467,7 +467,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
               return (
                 <button
-                  key={`${lesson?.id}-${idx}`}
+                  key={`${idx}-${idx}-${lesson?.id}-${idx}`}
                   onClick={() => {
                     seek(earliestTime || 0);
 
@@ -504,7 +504,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
             return (
               <button
-                key={`${lesson?.id}-${idx}`}
+                key={`${lesson?.id}-${idx}-912312912391239casasd`}
                 onClick={() => {
                   seek(earliestTime[0]);
 
@@ -577,7 +577,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                       ?.join(" ");
 
                   return (
-                    <div key={`${lesson?.id}-${idx}`} className="mx-32">
+                    <div key={`${lesson?.id}-${idx}-asdasd`} className="mx-32">
                       <div>
                         <h1
                           role="button"
@@ -682,7 +682,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                   latestTime[1] > currentTime
                 ) {
                   return (
-                    <div key={`${lesson?.id}-${idx}`} ref={scrollRef}>
+                    <div key={`${lesson?.id}-${idx}-23das`} ref={scrollRef}>
                       {focusMode ? (
                         <div>
                           <div className="w-full text-center my-2 md:text-md md:space-y-2">
@@ -741,7 +741,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                             if (idx === 0) {
                               return (
                                 <div
-                                  key={`${lesson?.id}-${idx}`}
+                                  key={`${lesson?.id}-${idx}-212asdasd`}
                                   className={
                                     focusMode
                                       ? "flex items-start md:mb-12"
@@ -766,7 +766,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                                       ?.map((char: any, idx: any) => {
                                         return (
                                           <span
-                                            key={`${lesson?.id}-${idx}`}
+                                            key={`${lesson?.id}-${idx}-asd1212fw12e`}
                                             className={`${
                                               hskLevel1Words.includes(char)
                                                 ? "text-yellow-400"
@@ -811,7 +811,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                             // rest of the translations
                             return (
                               <div
-                                key={`${lesson?.id}-${idx}`}
+                                key={`${lesson?.id}-${idx}-sa12dsasd12cqx`}
                                 className={
                                   focusMode
                                     ? `flex items-start dark:text-slate-100 text-slate-500`
@@ -836,7 +836,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                                     ?.map((char: any, idx: any) => {
                                       return (
                                         <span
-                                          key={`${lesson?.id}-${idx}`}
+                                          key={`${lesson?.id}-${idx}-123cs12casasdasd`}
                                           // className='dark:text-green-500'
                                           onClick={() => {
                                             // alert(char)
@@ -864,7 +864,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                   );
                 }
                 return (
-                  <div key={`${lesson?.id}-${idx}`}>
+                  <div key={`${lesson?.id}-${idx}-asdsd2sd1234dsdc`}>
                     {focusMode ? (
                       <div>
                         <div className="w-full text-center my-2 md:text-md space-y-2">

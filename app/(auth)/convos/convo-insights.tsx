@@ -14,6 +14,7 @@ import { parse } from "@/data/utils";
 import { faXmark } from "@fortawesome/pro-light-svg-icons/faXmark";
 
 import { course1 } from "@/data/convos/bm1/index";
+import Link from "next/link";
 
 function SelectedCharacter({
   selectedChar,
@@ -35,7 +36,15 @@ function SelectedCharacter({
       <div className="flex justify-between items-center">
         <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
           {selectedChar}
-          <span className="text-sm md:text-xl"> {selectedChar}</span>
+
+          <Link
+            target="_blank"
+            className="text-sm md:text-xl"
+            href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(selectedChar)}`}
+          >
+            {" "}
+            {selectedChar}
+          </Link>
         </h2>
         <button
           className="text-4xl"

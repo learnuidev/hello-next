@@ -5,6 +5,8 @@ import "@/libs/cognito/init";
 // import Link from "next/link";
 import Link from "next/link";
 
+// import { useRouter as useRouterUrl } from "next/router";
+
 import { Editor } from "@/components/Editor";
 import { useState } from "react";
 
@@ -12,7 +14,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { NavBar } from "@/components/navbar";
 // import { Link } from "@/components/link";
 import { SearchPage } from "@/components/search";
@@ -22,6 +24,9 @@ import { Wordle } from "@/components/wordle/game";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { course1 } from "@/data/convos/bm1/index";
+import { useConvosStore } from "@/stores/convos-store";
+import { ConvosNavBar } from "./convos-nav-bar";
+import { ConvoDetails } from "./convo-details";
 
 function formatPercentage(number: number) {
   return Intl.NumberFormat("en-GB", {
@@ -31,8 +36,24 @@ function formatPercentage(number: number) {
   }).format(number);
 }
 
+// useConvosStore
+
 function LessonCard({ lesson }: any) {
   const { data: allAnswers, isLoading } = useListAnswersQuery();
+
+  // const { asPath } = useRouterUrl();
+  // const origin =
+  //   typeof window !== "undefined" && window.location.origin
+  //     ? window.location.origin
+  //     : "";
+
+  // const myUrl = `${origin}${asPath}`;
+  // console.log(myUrl);
+
+  const lessonId = useConvosStore((state: any) => state?.convoId);
+  const setLessonId = useConvosStore((state: any) => state?.setConvoId);
+
+  const router = useRouter();
 
   const totalLessonsLength = lesson?.lessons?.length;
 
@@ -56,45 +77,81 @@ function LessonCard({ lesson }: any) {
 
   const percentCompleted = completedLessons?.length / totalLessonsLength || 0;
   return (
-    <Link
-      target="_blank"
-      href={
-        firstUnCompletedLesson
-          ? `/convos/${lesson?.id}/${firstUnCompletedLesson?.id}`
-          : `/convos/${lesson?.id}`
-      }
+    <button
+      // target="_blank"
+      // href={
+      //   firstUnCompletedLesson
+      //     ? `/convos/${lesson?.id}/${firstUnCompletedLesson?.id}`
+      //     : `/convos/${lesson?.id}`
+      // }
+      onClick={() => {
+        setLessonId(lesson?.id);
+
+        // const rootUrl = new URL("/convos");
+        // if (lesson?.id) {
+        //   rootUrl.searchParams?.append("lessonId", lesson?.id);
+        // }
+
+        // const urlString = rootUrl?.href;
+
+        router.push(`/convos?lessonId=${lesson?.id}`);
+      }}
       className="font-light flex justify-between items-center w-full px-4 md:px-32 md:mt-2"
     >
       <h2 className="text-2xl">{lesson?.title}</h2>
       <p className="text-2xl">{formatPercentage(percentCompleted)}</p>
-    </Link>
+    </button>
+
+    // <Link
+    //   target="_blank"
+    //   href={
+    //     firstUnCompletedLesson
+    //       ? `/convos/${lesson?.id}/${firstUnCompletedLesson?.id}`
+    //       : `/convos/${lesson?.id}`
+    //   }
+    //   className="font-light flex justify-between items-center w-full px-4 md:px-32 md:mt-2"
+    // >
+    //   <h2 className="text-2xl">{lesson?.title}</h2>
+    //   <p className="text-2xl">{formatPercentage(percentCompleted)}</p>
+    // </Link>
   );
 }
 export default function Home() {
   const [isTocHidden, setIsTocHidden] = useState(false);
+  const lessonId = useConvosStore((state: any) => state?.convoId);
+
+  const routeName = usePathname();
 
   const router = useRouter();
+
+  // CONVOS
+  // const lessonId = useConvosStore((state: any) => state?.convoId);
+  const setLessonId = useConvosStore((state: any) => state?.setConvoId);
+
+  // const router = useRouter();
 
   const toggleIsHidden = () => {
     if (isTocHidden) {
     }
   };
+
   return (
-    // <main className="">
-    //   <NavBar />
-    //   {/* <NavigatorMap /> */}
-
-    //   <SearchPage />
-    // </main>
-
     <main className="">
-      <NavBar />
+      {lessonId && routeName?.includes("/convos") ? (
+        <ConvosNavBar />
+      ) : (
+        <NavBar />
+      )}
 
-      <div className="my-8 space-y-8">
-        {course1.lessons?.map((lesson: any) => {
-          return <LessonCard key={lesson?.id} lesson={lesson} />;
-        })}
-      </div>
+      {lessonId ? (
+        <ConvoDetails lessonId={lessonId} />
+      ) : (
+        <div className="my-8 space-y-8">
+          {course1.lessons?.map((lesson: any) => {
+            return <LessonCard key={lesson?.id} lesson={lesson} />;
+          })}
+        </div>
+      )}
 
       {/* <Wordle /> */}
     </main>

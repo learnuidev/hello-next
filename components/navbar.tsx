@@ -18,7 +18,7 @@ import React from "react";
 import { useEffect } from "react";
 
 import { filterHmm, parse } from "@/data/utils";
-import { faComment } from "@fortawesome/pro-light-svg-icons";
+import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -99,7 +99,7 @@ const options = [
 ];
 
 export const NavBar = () => {
-  const route = usePathname();
+  const routeName = usePathname();
 
   const router = useRouter();
 
@@ -216,8 +216,6 @@ export const NavBar = () => {
     }
   };
 
-  // const setQuery = useSearchQueryStore((state) => state.setQuery);
-  // const query = useSearchQueryStore((state) => state.query);
   return (
     <div className="flex justify-between items-center w-full px-4 md:px-32 md:mt-2">
       <Link className="my-2" href="/">
@@ -243,28 +241,12 @@ export const NavBar = () => {
             }
           }}
         />
-
-        {/* <button
-          // onClick={handleSearch}
-          className="flex space-x-2 items-center text-[14px] tracking-widest font-light uppercase bg-black text-white dark:text-gray-500 dark:hover:text-white hover:shadow-gray-300 hover:shadow-green-500 hover:border-green-500 shadow-2 shadow-md border-[1px] border-gray-400 dark:border-gray-800 px-4 py-2 rounded-full transition"
-        >
-          <SearchIcon />
-          <span className="hidden sm:block"> Search </span>
-        </button> */}
       </div>
       <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
-        {/* <Link
-          href="/search"
-          className={`transition ${
-            route === "/search" ? "text-gray-800" : "text-gray-200"
-          } hover:text-gray-700 transition text-xl`}
-        >
-          <FontAwesomeIcon icon={faSearch} />
-        </Link> */}
         <Link
           href="/convos"
           className={`transition ${
-            route?.includes("/convos") ? "text-gray-800" : "text-gray-200"
+            routeName?.includes("/convos") ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faComment} />
@@ -272,7 +254,7 @@ export const NavBar = () => {
         <Link
           href="/learn"
           className={`transition ${
-            route === "/learn" ? "text-gray-800" : "text-gray-200"
+            routeName === "/learn" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faGraduationCap} />
@@ -280,7 +262,7 @@ export const NavBar = () => {
         <Link
           href="/pinyin"
           className={`transition ${
-            route === "/pinyin" ? "text-gray-800" : "text-gray-200"
+            routeName === "/pinyin" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faTableTree} />
@@ -288,38 +270,25 @@ export const NavBar = () => {
         <Link
           href="/insights"
           className={`transition ${
-            route === "/insights" ? "text-gray-800" : "text-gray-200"
+            routeName === "/insights" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faChartColumn} />
         </Link>
-        {/* <Link
-          href="/features"
-          className="text-gray-400 hover:text-gray-700 transition"
-        >
-          features
-        </Link> */}
-        {/* <Link
-          href="/notes"
-          className="text-gray-400 hover:text-gray-700 transition"
-        >
-          notes
-        </Link> */}
+
         <Link
           href="/nmm"
           className={`transition ${
-            route === "/nmm" ? "text-gray-800" : "text-gray-200"
+            routeName === "/nmm" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
-          // className="text-gray-400 hover:text-gray-700 transition text-xl"
         >
           <NomadIcon />
         </Link>
         <Link
           href="/map"
           className={`transition ${
-            route === "/map" ? "text-gray-800" : "text-gray-200"
+            routeName === "/map" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
-          // className="text-gray-400 hover:text-gray-700 transition text-xl"
         >
           <FontAwesomeIcon icon={faMapLocation} />
         </Link>

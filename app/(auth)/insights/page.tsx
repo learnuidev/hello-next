@@ -81,7 +81,7 @@ function SelectedCharacter({
   );
 }
 
-export default function Analytics() {
+export default function Insights() {
   const [isTocHidden, setIsTocHidden] = useState(false);
   const [selectedChar, setSelectedChar] = useState("");
 
@@ -131,12 +131,25 @@ export default function Analytics() {
         frequency,
       };
     })
-    ?.sort((a, b) => b?.frequency - a?.frequency);
+    // ?.sort((a, b) => b?.frequency - a?.frequency)
+    ?.map((a) => {
+      const char = unlockedNMMCharacters?.find(
+        (char) => char?.hanzi === a?.hanzi
+      );
+      return {
+        ...char,
+        ...a,
+      };
+    });
 
   const unlockedCharactersNMM = charactersWithFrequencyList?.map(
     (character) => character?.hanzi
   );
   const unlockedCharactersNMMStr = unlockedCharactersNMM?.join(" ");
+
+  const currentLevel = {
+    maxCharacterLevel: 600,
+  };
 
   return (
     <main className="">
@@ -150,25 +163,32 @@ export default function Analytics() {
       ) : (
         <div className="w-full px-4 md:px-32 my-4 md:my-8">
           <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
-            {unlockedCharactersHMM?.length}{" "}
+            {unlockedNMMCharacters?.length}{" "}
             <span className="text-sm md:text-xl">characters discovered </span>
           </h2>
 
           <div className="my-8">
             <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
-              {unlockedCharactersHMM?.map((char, idx: number) => {
+              {unlockedNMMCharacters?.map((char, idx: number) => {
                 return (
-                  <span
+                  
+                  <button
                     role="button"
                     onClick={() => {
-                      setSelectedChar(char);
+                      setSelectedChar(char?.hanzi);
                     }}
-                    className="p-2"
+                    disabled={currentLevel?.maxCharacterLevel < char?.hmmCharacterLevel}
+                    
+                    className={`p-2 ${
+                      currentLevel?.maxCharacterLevel >= char?.hmmCharacterLevel
+                        ? "text-gray-700"
+                        : "text-gray-400"
+                    }`}
                     key={`${idx}-${char}-${idx}`}
                   >
                     {" "}
-                    {char}
-                  </span>
+                    {char?.hanzi}
+                  </button>
                 );
               })}
             </div>

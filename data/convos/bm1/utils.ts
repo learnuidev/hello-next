@@ -21,7 +21,8 @@ export const cleanString = (str: string) => {
     ?.replaceAll("Cindy", "")
     ?.replaceAll("：", "")
     ?.replaceAll(":", "")
-    ?.replaceAll("：", "");
+    ?.replaceAll("：", "")
+    ?.replaceAll('、', "")
 };
 
 export const lessonParser = () => {

@@ -23,6 +23,7 @@ import React from "react";
 import { useEffect } from "react";
 
 import { filterHmm, parse } from "@/data/utils";
+import { faComment } from "@fortawesome/pro-light-svg-icons";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -257,24 +258,21 @@ export const NavBar = () => {
         </button> */}
       </div>
       <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
-        {/* <button
-          // href="/search"
-          onClick={() => {
-            // toggleSearch()
-          }}
-          className={`transition ${
-            route === "/search" ? "text-gray-800" : "text-gray-200"
-          } hover:text-gray-700 transition text-xl`}
-        >
-          <FontAwesomeIcon icon={faSearch} />
-        </button> */}
-        <Link
+        {/* <Link
           href="/search"
           className={`transition ${
             route === "/search" ? "text-gray-800" : "text-gray-200"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faSearch} />
+        </Link> */}
+        <Link
+          href="/convos"
+          className={`transition ${
+            route?.includes("/convos") ? "text-gray-800" : "text-gray-200"
+          } hover:text-gray-700 transition text-xl`}
+        >
+          <FontAwesomeIcon icon={faComment} />
         </Link>
         <Link
           href="/learn"

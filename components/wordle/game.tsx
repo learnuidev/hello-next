@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 
-import { course1, cleanString } from "@/data/convos/bm1/index";
+import { course1 } from "@/data/convos/bm1/index";
+import { cleanString } from "@/data/convos/bm1/utils";
 import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useParams } from "next/navigation";

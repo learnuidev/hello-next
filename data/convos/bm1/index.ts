@@ -8,27 +8,12 @@ import { lesson3 } from "./level_3";
 import { lesson4 } from "./level_4";
 import { lesson5 } from "./level_5";
 import { lesson6 } from "./level_6";
-// import { dumplings } from '../../../stories/dumplings'
+import { lesson7 } from "./level_7";
+import { lesson8 } from "./level_8";
+import { lesson9 } from "./level_9";
+import { lesson10 } from "./level_10";
 
-export const cleanString = (str: string) => {
-  return str
-    ?.split("")
-    ?.filter(Boolean)
-    .join("")
-    ?.trim()
-    ?.replaceAll("？", "")
-    ?.replaceAll("！", "")
-    ?.replaceAll("！ ", "")
-    ?.replaceAll(" ", "")
-    ?.replaceAll("，", "")
-    ?.replaceAll("。", "")
-    ?.replaceAll("!", "")
-    ?.replaceAll(" ", "")
-    ?.replaceAll(",", "")
-    ?.replaceAll(".", "")
-    ?.replaceAll("?", "")
-    ?.replaceAll("…", "");
-};
+import { cleanString } from "./utils";
 
 const lessonAdapter = (lesson: any) => {
   const [
@@ -55,14 +40,27 @@ const lessonAdapter = (lesson: any) => {
 
 export const course1 = {
   title: "Beginner Mandarin",
-  lessons: [lesson1, lesson2, lesson3, lesson4, lesson5, lesson6]?.map(
-    (lesson) => {
-      return {
-        ...lesson,
-        lessons: lesson?.lesson.map(lessonAdapter),
-      };
-    }
-  ),
+  lessons: (
+    [
+      lesson1,
+      lesson2,
+      lesson3,
+      lesson4,
+      lesson5,
+      lesson6,
+      lesson7,
+      lesson8,
+      lesson9,
+      lesson10,
+    ] as any
+  )?.map((lesson: any) => {
+    return {
+      ...lesson,
+      lessons: (lesson?.lessonsV2 as any)
+        ? lesson?.lessonsV2
+        : lesson?.lesson.map(lessonAdapter),
+    };
+  }),
 } as any;
 
 export const useConvosStore = create(

@@ -19,7 +19,7 @@ import { NavigatorMap } from "@/components/navigator-map";
 import { parse } from "@/data/utils";
 import { faXmark } from "@fortawesome/pro-light-svg-icons";
 
-import { course1, cleanString } from "@/data/convos/bm1/index";
+import { course1 } from "@/data/convos/bm1/index";
 
 function SelectedCharacter({
   selectedChar,
@@ -67,6 +67,8 @@ function SelectedCharacter({
             const currentPhrase = currentLesson?.lessons?.find(
               (lesson: any) => lesson?.id === char?.hanzi
             );
+
+            console.log({ currentPhrase });
 
             return (
               <div

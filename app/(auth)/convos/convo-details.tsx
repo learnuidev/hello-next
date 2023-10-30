@@ -4,6 +4,8 @@ import { useConvosStore } from "@/stores/convos-store";
 import { ConvoInsights } from "./convo-insights";
 import { Play } from "./_play";
 
+import { Wordle } from "@/components/wordle/game";
+
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const viewType = useConvosStore((state: any) => state?.viewType);
 
@@ -17,8 +19,9 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
   if (viewType === "write") {
     return (
-      <div className="font-light flex justify-between items-center w-full px-4 md:px-32 md:mt-2">
-        Write
+      <div>
+        {/* Write */}
+        <Wordle lessonId={lessonId} />
       </div>
     );
   }

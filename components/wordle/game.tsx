@@ -30,7 +30,7 @@ function GameRow(props: any) {
   );
 }
 
-export function Wordle() {
+export function Wordle({ lessonId }: { lessonId?: string }) {
   const params = useParams() as {
     "lesson-id": string;
     "phrase-id": string;
@@ -43,11 +43,13 @@ export function Wordle() {
   const router = useRouter();
   const [currentGuess, setCurrentGuess] = useState("");
   const [gameStatus, setGameStatus] = useState("");
-  const [lessonId, setLessonId] = useState(params?.["lesson-id"] || "lesson11");
+  const [_lessonId, setLessonId] = useState(
+    lessonId || params?.["lesson-id"] || "lesson11"
+  );
 
   const [lessonIndex, setLessonIndex] = useState(() => {
     const currentLesson = course1?.lessons?.find(
-      (lesson: any) => lesson?.id === lessonId
+      (lesson: any) => lesson?.id === _lessonId
     );
 
     const firstPhraseId = currentLesson?.lessons?.[0]?.id;
@@ -71,51 +73,52 @@ export function Wordle() {
   //   }
   // }, [setLessonIndex, lessonId, phraseId]);
 
-  const { data: answers } = useListAnswersQuery(
-    {
-      journeyId: lessonId,
-    },
-    {
-      onSuccess: (data: any) => {
-        if (!params?.["lesson-id"] && !phraseId) {
-          const correctIds = currentLesson?.lessons
-            // ?.map((item: any) => item)
-            ?.filter((lesson: any) =>
-              Boolean(
-                data?.find(
-                  (item: any) =>
-                    item?.phraseId === lesson?.id && item.status === "correct"
-                )
-              )
-            )
-            ?.map((item: any) => item?.id);
+  // const { data: answers } = useListAnswersQuery(
+  //   {
+  //     journeyId: lessonId,
+  //   },
+  //   {
+  //     enabled: Boolean(params?.["lesson-id"]),
+  //     onSuccess: (data: any) => {
+  //       if (!params?.["lesson-id"] && !phraseId) {
+  //         const correctIds = currentLesson?.lessons
+  //           // ?.map((item: any) => item)
+  //           ?.filter((lesson: any) =>
+  //             Boolean(
+  //               data?.find(
+  //                 (item: any) =>
+  //                   item?.phraseId === lesson?.id && item.status === "correct"
+  //               )
+  //             )
+  //           )
+  //           ?.map((item: any) => item?.id);
 
-          const nextId = currentLesson?.lessons?.find(
-            (lesson: any) => !correctIds?.includes(lesson?.id)
-          );
+  //         const nextId = currentLesson?.lessons?.find(
+  //           (lesson: any) => !correctIds?.includes(lesson?.id)
+  //         );
 
-          if (nextId?.id) {
-            setLessonIndex(nextId?.id);
-          } else {
-            const currentLessonIndex = course1?.lessons?.findIndex(
-              (lesson: any) => lesson?.id === lessonId
-            );
+  //         if (nextId?.id) {
+  //           setLessonIndex(nextId?.id);
+  //         } else {
+  //           const currentLessonIndex = course1?.lessons?.findIndex(
+  //             (lesson: any) => lesson?.id === lessonId
+  //           );
 
-            const nextLesson = course1?.lessons?.[currentLessonIndex + 1];
+  //           const nextLesson = course1?.lessons?.[currentLessonIndex + 1];
 
-            if (nextLesson) {
-              setLessonId(nextLesson?.id);
-            } else {
-              setGameStatus("finish");
-            }
-          }
-        }
-      },
-    }
-  );
+  //           if (nextLesson) {
+  //             setLessonId(nextLesson?.id);
+  //           } else {
+  //             setGameStatus("finish");
+  //           }
+  //         }
+  //       }
+  //     },
+  //   }
+  // );
 
   const currentLesson = course1?.lessons?.find(
-    (lesson: any) => lesson?.id === lessonId
+    (lesson: any) => lesson?.id === _lessonId
   );
 
   const currentPhrase = currentLesson?.lessons?.find(
@@ -258,14 +261,14 @@ export function Wordle() {
                     .mutateAsync({
                       hanzi: secret,
                       answer: historyTrimmed,
-                      lessonId: lessonId,
+                      lessonId: _lessonId,
                       phraseId: currentPhrase?.id,
                       status: "correct",
                       guessHistory: guessHistory?.[lessonIndex as string],
                     })
                     .then((res) => {
                       const currentLesson = course1?.lessons?.find(
-                        (lesson: any) => lesson?.id === lessonId
+                        (lesson: any) => lesson?.id === _lessonId
                       );
 
                       const currentPhrase = currentLesson?.lessons?.find(
@@ -288,7 +291,7 @@ export function Wordle() {
 
                         if (params?.["lesson-id"]) {
                           router.push(
-                            `/convos/${params?.["lesson-id"] || lessonId}/${
+                            `/convos/${params?.["lesson-id"] || _lessonId}/${
                               nextId?.id
                             }`
                           );
@@ -334,7 +337,7 @@ export function Wordle() {
                   .mutateAsync({
                     hanzi: secret,
                     answer: historyTrimmed,
-                    lessonId: lessonId,
+                    lessonId: _lessonId,
                     phraseId: currentPhrase?.id,
                     status: "incorrect",
                     guessHistory: guessHistory?.[lessonIndex as string],
@@ -383,7 +386,7 @@ export function Wordle() {
                   .mutateAsync({
                     hanzi: secret,
                     answer: historyTrimmed,
-                    lessonId: lessonId,
+                    lessonId: _lessonId,
                     phraseId: currentPhrase?.id,
                     status: "incorrect",
                     guessHistory: guessHistory?.[lessonIndex as string],

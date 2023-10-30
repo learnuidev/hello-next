@@ -162,8 +162,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
           </h2>
 
           <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
-            3 {" "}
-            <span className="text-sm md:text-xl">characters acquired </span>
+            3 <span className="text-sm md:text-xl">characters acquired </span>
           </h2>
           {/* <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
             {unlockedCharactersHMM?.length}{" "}

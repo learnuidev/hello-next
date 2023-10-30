@@ -28,7 +28,7 @@ import { course1, useConvosStore } from "@/data/convos/bm1";
 import { useMusic } from "./use-music";
 
 import { useSpeechRecognition } from "./use-speech-recognition";
-import { SpeechToText } from "./speech-to-text";
+import { PlayButton } from "./play-button";
 import {
   course,
   course2,
@@ -418,550 +418,360 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
         );
       });
 
-  if (browserSupportsSpeechRecognition) {
-    return (
-      <div className="pt-8 grow flex flex-col items-center min-h-screen overflow-y-auto">
-        <div className="fixed flex items-center justify-between min-w-full md:px-32">
-          <p className="font-extralight text-2xl md:text-5xl my-8 text-center dark:text-slate-300 text-slate-600">
-            {formatTime(currentTime)}
-          </p>
-          <div className="space-x-4">
-            {/* <button
-              className={`text-xl md:text-4xl ${
-                mode === 'movie' ? 'dark:text-white' : 'dark:text-slate-500'
-              } dark:hover:text-slate-100 hover:text-slate-900 transition`}
-              onClick={toggleMode('movie')}
-            >
-              {<MovieIcon />}
-            </button> */}
-            {lesson1?.learnings?.length ? (
-              <button
+  return (
+    <div className="pt-8 grow flex flex-col items-center min-h-screen overflow-y-auto">
+      <div className="fixed flex items-center justify-between min-w-full md:px-32">
+        <p className="font-extralight text-2xl md:text-5xl my-8 text-center dark:text-slate-300 text-slate-600">
+          {formatTime(currentTime)}
+        </p>
+        <div className="space-x-4">
+          {/* <button
                 className={`text-xl md:text-4xl ${
-                  mode === "learnings"
-                    ? "dark:text-white"
-                    : "dark:text-slate-500"
+                  mode === 'movie' ? 'dark:text-white' : 'dark:text-slate-500'
                 } dark:hover:text-slate-100 hover:text-slate-900 transition`}
-                onClick={() => {
-                  setViewMode("learnings");
-                }}
+                onClick={toggleMode('movie')}
               >
-                {<LearnIcon />}
-              </button>
-            ) : null}
+                {<MovieIcon />}
+              </button> */}
+          {lesson1?.learnings?.length ? (
             <button
               className={`text-xl md:text-4xl ${
-                focusMode ? "dark:text-white" : "dark:text-slate-500"
-              } dark:hover:text-slate-100 hover:text-slate-900 transition md:px-4`}
-              onClick={toggleMode("focus")}
-            >
-              {<FocusIcon />}
-            </button>
-            {/* <button
-              className={
-                'text-4xl dark:text-slate-500 dark:hover:text-slate-400 hover:text-slate-900'
-              }
-              onClick={togglePlay}
-            >
-              {play ? <PauseIcon /> : <PlayIcon />}
-            </button> */}
-            <button
-              className="text-xl md:text-4xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full"
+                mode === "learnings" ? "dark:text-white" : "dark:text-slate-500"
+              } dark:hover:text-slate-100 hover:text-slate-900 transition`}
               onClick={() => {
-                setViewMode("analytics");
-                //
-                console.log("SHOW ANALYTICS");
+                setViewMode("learnings");
               }}
             >
-              <AnalyticsIcon />
+              {<LearnIcon />}
             </button>
-          </div>
+          ) : null}
+          <button
+            className={`text-xl md:text-4xl ${
+              focusMode ? "dark:text-white" : "dark:text-slate-500"
+            } dark:hover:text-slate-100 hover:text-slate-900 transition md:px-4`}
+            onClick={toggleMode("focus")}
+          >
+            {<FocusIcon />}
+          </button>
+          {/* <button
+                className={
+                  'text-4xl dark:text-slate-500 dark:hover:text-slate-400 hover:text-slate-900'
+                }
+                onClick={togglePlay}
+              >
+                {play ? <PauseIcon /> : <PlayIcon />}
+              </button> */}
+          <button
+            className="text-xl md:text-4xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full"
+            onClick={() => {
+              setViewMode("analytics");
+              //
+              console.log("SHOW ANALYTICS");
+            }}
+          >
+            <AnalyticsIcon />
+          </button>
         </div>
+      </div>
 
-        <div className={"dark:text-white my-4"}>
-          {res?.length &&
-            [res[res.length - 1]]?.map((res: any) => {
+      <div className={"dark:text-white my-4"}>
+        {res?.length &&
+          [res[res.length - 1]]?.map((res: any) => {
+            return (
+              <div className="flex flex-col justify-start md:space-y-2 items-center">
+                <p
+                  className={
+                    "text-5xl md:text-6xl dark:text-slate-200 text-slate-800"
+                  }
+                >
+                  {res.transcript.split("").map((c: any) => {
+                    return (
+                      <span
+                        onClick={() => {
+                          // setSelectedChar({
+                          //   hanziV2: lesson?.hanziV2,
+                          //   selected: c
+                          // })
+                        }}
+                        className={
+                          lesson?.hanziV2.includes(c)
+                            ? "dark:text-slate-300 text-slate-700"
+                            : lesson.alternateAnswers?.includes(c)
+                            ? "text-purple-500"
+                            : "text-orange-500"
+                        }
+                        key={c}
+                      >
+                        {c}{" "}
+                      </span>
+                    );
+                  })}
+                </p>
+                <p
+                  className={`text-2xl ${calcConfidenceColor(
+                    res.confidence * 100,
+                    res.transcript,
+                    lesson?.hanziV2,
+                    lesson?.alternateAnswers as any
+                  )}`}
+                >
+                  {isCorrect() ? (res.confidence * 100).toFixed(2) : 0}%
+                </p>
+              </div>
+            );
+          })}
+      </div>
+
+      {/* timestamps */}
+      <div className="">
+        <div className="pt-24 flex md:mx-60 flex-wrap">
+          {(
+            lesson1?.lesson ||
+            lesson1?.transcriptions?.transcriptions ||
+            lesson1?.lessonsV2
+          ).map((item: any, idx: any) => {
+            if (item?.text) {
+              const earliestTime = item?.start;
+              const latestTime = item?.end;
+
               return (
-                <div className="flex flex-col justify-start md:space-y-2 items-center">
-                  <p
-                    className={
-                      "text-5xl md:text-6xl dark:text-slate-200 text-slate-800"
-                    }
-                  >
-                    {res.transcript.split("").map((c: any) => {
-                      return (
-                        <span
-                          onClick={() => {
-                            // setSelectedChar({
-                            //   hanziV2: lesson?.hanziV2,
-                            //   selected: c
-                            // })
-                          }}
-                          className={
-                            lesson?.hanziV2.includes(c)
-                              ? "dark:text-slate-300 text-slate-700"
-                              : lesson.alternateAnswers?.includes(c)
-                              ? "text-purple-500"
-                              : "text-orange-500"
-                          }
-                          key={c}
-                        >
-                          {c}{" "}
-                        </span>
-                      );
-                    })}
-                  </p>
-                  <p
-                    className={`text-2xl ${calcConfidenceColor(
-                      res.confidence * 100,
-                      res.transcript,
-                      lesson?.hanziV2,
-                      lesson?.alternateAnswers as any
-                    )}`}
-                  >
-                    {isCorrect() ? (res.confidence * 100).toFixed(2) : 0}%
-                  </p>
-                </div>
-              );
-            })}
-        </div>
+                <button
+                  onClick={() => {
+                    seek(earliestTime);
 
-        {/* timestamps */}
-        <div className="">
-          <div className="pt-24 flex md:mx-60 flex-wrap">
-            {(lesson1?.lesson || lesson1?.transcriptions?.transcriptions).map(
-              (item: any, idx: any) => {
-                if (item?.text) {
+                    setRepeatHistories({
+                      lessonId: lesson1.id,
+                      eventType: "speech/repeat",
+                      eventTime: new Date().getTime(),
+                      startTime: earliestTime,
+                      scriptIndex: idx,
+                      // item
+                    });
+                  }}
+                  className={`mx-4 my-2 text-xl dark:hover:text-white font-extralight`}
+                >
+                  {/* {formatTime(earliestTime[0])} */}
+                  <div
+                    className={`${
+                      earliestTime < currentTime && latestTime > currentTime
+                        ? "text-slate-900 bg-slate-200 hover:bg-white"
+                        : "text-slate-900 bg-slate-500 hover:bg-white"
+                    } h-2 w-2 rounded-full transition`}
+                  ></div>
+                  {/* <span>{earliestTime}</span> */}
+                  {/* <span>LAT: {latestTime}</span> */}
+                  {/* <span>LAT: {currentTime}</span> */}
+                </button>
+              );
+            }
+            const [time, ...rest] = item;
+            const earliestTime = time?.start ? time?.start : time[1][0];
+            const latestTime = time?.end
+              ? time?.end
+              : time[1][time[1].length - 1];
+
+            return (
+              <button
+                onClick={() => {
+                  seek(earliestTime[0]);
+
+                  setRepeatHistories({
+                    lessonId: lesson1.id,
+                    eventType: "speech/repeat",
+                    eventTime: new Date().getTime(),
+                    startTime: earliestTime[0],
+                    scriptIndex: idx,
+                    // item
+                  });
+                }}
+                className={`mx-4 my-2 text-xl ${
+                  currentTime > earliestTime
+                    ? "dark:text-slate-600"
+                    : earliestTime[0] < currentTime &&
+                      latestTime[1] > currentTime
+                    ? "dark:text-slate-200"
+                    : "dark:text-slate-500"
+                } dark:hover:text-white font-extralight`}
+              >
+                {/* {formatTime(earliestTime[0])} */}
+                <div
+                  className={` ${
+                    currentTime > earliestTime
+                      ? "dark:text-slate-600"
+                      : earliestTime[0] < currentTime &&
+                        latestTime[1] > currentTime
+                      ? "dark:bg-slate-200"
+                      : "dark:bg-slate-600"
+                  } h-2 w-2 rounded-full text`}
+                ></div>
+                {/* {idx + 1} */}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      {/* timestamps */}
+
+      <div className={`pt-24 space-y-8`}>
+        {!lessons?.length
+          ? null
+          : // <div className='dark:hover:text-slate-100 hover:text-slate-900 font-extralight text-4xl dark:text-slate-500 pt-24'>
+            //   <button
+            //     className={
+            //       'transition text-4xl dark:hover:text-slate-100 dark:text-slate-500'
+            //     }
+            //     onClick={() => {
+            //       togglePlay()
+            //     }}
+            //   >
+            //     {play ? <PauseIcon /> : <PlayIcon />}
+            //   </button>
+
+            //   <span className='ml-2'>Play</span>
+            // </div>
+            lessons
+              ?.filter((item: any, idx: any) => {
+                if (!focusMode) {
+                  return item;
+                }
+
+                return idx === 0;
+              })
+              ?.map((item: any, idx: any, self: any) => {
+                if (item.text) {
                   const earliestTime = item?.start;
                   const latestTime = item?.end;
 
-                  return (
-                    <button
-                      onClick={() => {
-                        seek(earliestTime);
+                  const queryResult = parse(item.text);
 
-                        setRepeatHistories({
-                          lessonId: lesson1.id,
-                          eventType: "speech/repeat",
-                          eventTime: new Date().getTime(),
-                          startTime: earliestTime,
-                          scriptIndex: idx,
-                          // item
-                        });
-                      }}
-                      className={`mx-4 my-2 text-xl dark:hover:text-white font-extralight`}
-                    >
-                      {/* {formatTime(earliestTime[0])} */}
-                      <div
-                        className={`${
-                          earliestTime < currentTime && latestTime > currentTime
-                            ? "text-slate-900 bg-slate-200 hover:bg-white"
-                            : "text-slate-900 bg-slate-500 hover:bg-white"
-                        } h-2 w-2 rounded-full transition`}
-                      ></div>
-                      {/* <span>{earliestTime}</span> */}
-                      {/* <span>LAT: {latestTime}</span> */}
-                      {/* <span>LAT: {currentTime}</span> */}
-                    </button>
+                  const translations =
+                    lesson1?.transcriptions?.translation?.segments
+                      ?.filter(
+                        (segment: any) =>
+                          (segment.start >= item?.start &&
+                            segment.end <= item?.end) ||
+                          (segment.start <= item?.start &&
+                            segment.end >= item?.end) ||
+                          segment.start == item?.start
+                      )
+                      ?.map((item: any) => item?.text)
+                      ?.join(" ");
+
+                  return (
+                    <div className="mx-32">
+                      <div>
+                        <h1
+                          role="button"
+                          onClick={() => {
+                            seek(earliestTime);
+
+                            setRepeatHistories({
+                              lessonId: lesson1.id,
+                              eventType: "speech/repeat",
+                              eventTime: new Date().getTime(),
+                              startTime: earliestTime[0],
+                              hanzi: item.text,
+                              scriptIndex: idx,
+                              // item
+                            });
+
+                            console.log("PARSE: ", parse(item.text));
+                          }}
+                          className={`text-center md:text-4xl font-bold ${
+                            earliestTime < currentTime &&
+                            latestTime > currentTime
+                              ? "text-slate-200"
+                              : "text-slate-500"
+                          }`}
+                        >
+                          {item.text}
+                        </h1>
+
+                        <p
+                          className={`text-center md:text-2xl font-extralight ${
+                            earliestTime < currentTime &&
+                            latestTime > currentTime
+                              ? "text-slate-200"
+                              : "text-slate-500"
+                          }`}
+                        >
+                          {translations}
+                        </p>
+                      </div>
+
+                      <div className="my-16">
+                        {/* <pre>
+                            <code>
+                              {JSON.stringify(parse(item.text), null, 2)}
+                            </code>
+                          </pre> */}
+
+                        {!lesson1?.transcriptions?.result?.language ||
+                        lesson1?.transcriptions?.result?.language === "zh" ? (
+                          <ExplanationChart queryResult={queryResult} />
+                        ) : null}
+
+                        {/* {queryResult ? (
+                            <div className='w-full flex justify-center flex-col space-y-4 my-8'>
+                              {queryResult
+                                // ?.filter(item => {
+                                //   return item?.dictionary
+                                // })
+                                ?.map(result => {
+                                  return (
+                                    <div className='flex flex-col items-start justify-start'>
+                                      <div className='flex justify-start items-center w-full items-end space-x-[12px]'>
+                                        <div className='flex flex-col items-center'>
+                                          <div className='dark:text-gray-400 text-lg mb-[2px]'>
+                                            {result?.dictionary?.pinyin}
+                                          </div>
+                                          <div className='text-4xl font-extralight'>
+                                            {result?.hanzi}
+                                          </div>
+                                          <span className='text-gray-600 mx-4'></span>
+                                        </div>
+                                        <span className='text-gray-600 mx-4'></span>
+                                        <div className='dark:text-gray-400 text-md mb-[2px]'>
+                                          {result?.dictionary?.en}
+                                        </div>
+                                      </div>
+                                      <div className='dark:text-gray-400 text-[12px] font-extralight'>
+                                        {JSON.stringify(
+                                          result?.dictionary?.examples
+                                        )}
+                                      </div>
+                                      <div className='dark:text-gray-400 text-[12px] font-extralight'>
+                                        {JSON.stringify(
+                                          result?.dictionary?.meanings
+                                        )}
+                                      </div>
+                                    </div>
+                                  )
+                                })}
+                            </div>
+                          ) : null} */}
+                      </div>
+                    </div>
                   );
                 }
                 const [time, ...rest] = item;
-                const earliestTime = time?.start ? time?.start : time[1][0];
-                const latestTime = time?.end
-                  ? time?.end
-                  : time[1][time[1].length - 1];
+                const startTime = time[1][0][0];
 
-                return (
-                  <button
-                    onClick={() => {
-                      seek(earliestTime[0]);
+                console.log("time", time[1]);
+                console.log("currentTime");
 
-                      setRepeatHistories({
-                        lessonId: lesson1.id,
-                        eventType: "speech/repeat",
-                        eventTime: new Date().getTime(),
-                        startTime: earliestTime[0],
-                        scriptIndex: idx,
-                        // item
-                      });
-                    }}
-                    className={`mx-4 my-2 text-xl ${
-                      currentTime > earliestTime
-                        ? "dark:text-slate-600"
-                        : earliestTime[0] < currentTime &&
-                          latestTime[1] > currentTime
-                        ? "dark:text-slate-200"
-                        : "dark:text-slate-500"
-                    } dark:hover:text-white font-extralight`}
-                  >
-                    {/* {formatTime(earliestTime[0])} */}
-                    <div
-                      className={` ${
-                        currentTime > earliestTime
-                          ? "dark:text-slate-600"
-                          : earliestTime[0] < currentTime &&
-                            latestTime[1] > currentTime
-                          ? "dark:bg-slate-200"
-                          : "dark:bg-slate-600"
-                      } h-2 w-2 rounded-full text`}
-                    ></div>
-                    {/* {idx + 1} */}
-                  </button>
-                );
-              }
-            )}
-          </div>
-        </div>
-        {/* timestamps */}
+                const earliestTime = time[1][0];
+                const latestTime = time[1][time[1].length - 1];
 
-        <div className={`pt-24 space-y-8`}>
-          {!lessons?.length
-            ? null
-            : // <div className='dark:hover:text-slate-100 hover:text-slate-900 font-extralight text-4xl dark:text-slate-500 pt-24'>
-              //   <button
-              //     className={
-              //       'transition text-4xl dark:hover:text-slate-100 dark:text-slate-500'
-              //     }
-              //     onClick={() => {
-              //       togglePlay()
-              //     }}
-              //   >
-              //     {play ? <PauseIcon /> : <PlayIcon />}
-              //   </button>
-
-              //   <span className='ml-2'>Play</span>
-              // </div>
-              lessons
-                ?.filter((item: any, idx: any) => {
-                  if (!focusMode) {
-                    return item;
-                  }
-
-                  return idx === 0;
-                })
-                ?.map((item: any, idx: any, self: any) => {
-                  if (item.text) {
-                    const earliestTime = item?.start;
-                    const latestTime = item?.end;
-
-                    const queryResult = parse(item.text);
-
-                    const translations =
-                      lesson1?.transcriptions?.translation?.segments
-                        ?.filter(
-                          (segment: any) =>
-                            (segment.start >= item?.start &&
-                              segment.end <= item?.end) ||
-                            (segment.start <= item?.start &&
-                              segment.end >= item?.end) ||
-                            segment.start == item?.start
-                        )
-                        ?.map((item: any) => item?.text)
-                        ?.join(" ");
-
-                    return (
-                      <div className="mx-32">
-                        <div>
-                          <h1
-                            role="button"
-                            onClick={() => {
-                              seek(earliestTime);
-
-                              setRepeatHistories({
-                                lessonId: lesson1.id,
-                                eventType: "speech/repeat",
-                                eventTime: new Date().getTime(),
-                                startTime: earliestTime[0],
-                                hanzi: item.text,
-                                scriptIndex: idx,
-                                // item
-                              });
-
-                              console.log("PARSE: ", parse(item.text));
-                            }}
-                            className={`text-center md:text-4xl font-bold ${
-                              earliestTime < currentTime &&
-                              latestTime > currentTime
-                                ? "text-slate-200"
-                                : "text-slate-500"
-                            }`}
-                          >
-                            {item.text}
-                          </h1>
-
-                          <p
-                            className={`text-center md:text-2xl font-extralight ${
-                              earliestTime < currentTime &&
-                              latestTime > currentTime
-                                ? "text-slate-200"
-                                : "text-slate-500"
-                            }`}
-                          >
-                            {translations}
-                          </p>
-                        </div>
-
-                        <div className="my-16">
-                          {/* <pre>
-                          <code>
-                            {JSON.stringify(parse(item.text), null, 2)}
-                          </code>
-                        </pre> */}
-
-                          {!lesson1?.transcriptions?.result?.language ||
-                          lesson1?.transcriptions?.result?.language === "zh" ? (
-                            <ExplanationChart queryResult={queryResult} />
-                          ) : null}
-
-                          {/* {queryResult ? (
-                          <div className='w-full flex justify-center flex-col space-y-4 my-8'>
-                            {queryResult
-                              // ?.filter(item => {
-                              //   return item?.dictionary
-                              // })
-                              ?.map(result => {
-                                return (
-                                  <div className='flex flex-col items-start justify-start'>
-                                    <div className='flex justify-start items-center w-full items-end space-x-[12px]'>
-                                      <div className='flex flex-col items-center'>
-                                        <div className='dark:text-gray-400 text-lg mb-[2px]'>
-                                          {result?.dictionary?.pinyin}
-                                        </div>
-                                        <div className='text-4xl font-extralight'>
-                                          {result?.hanzi}
-                                        </div>
-                                        <span className='text-gray-600 mx-4'></span>
-                                      </div>
-                                      <span className='text-gray-600 mx-4'></span>
-                                      <div className='dark:text-gray-400 text-md mb-[2px]'>
-                                        {result?.dictionary?.en}
-                                      </div>
-                                    </div>
-                                    <div className='dark:text-gray-400 text-[12px] font-extralight'>
-                                      {JSON.stringify(
-                                        result?.dictionary?.examples
-                                      )}
-                                    </div>
-                                    <div className='dark:text-gray-400 text-[12px] font-extralight'>
-                                      {JSON.stringify(
-                                        result?.dictionary?.meanings
-                                      )}
-                                    </div>
-                                  </div>
-                                )
-                              })}
-                          </div>
-                        ) : null} */}
-                        </div>
-                      </div>
-                    );
-                  }
-                  const [time, ...rest] = item;
-                  const startTime = time[1][0][0];
-
-                  console.log("time", time[1]);
-                  console.log("currentTime");
-
-                  const earliestTime = time[1][0];
-                  const latestTime = time[1][time[1].length - 1];
-
-                  if (
-                    earliestTime[0] < currentTime &&
-                    latestTime[1] > currentTime
-                  ) {
-                    return (
-                      <div ref={scrollRef}>
-                        {focusMode ? (
-                          <div>
-                            <div className="w-full text-center my-2 md:text-md md:space-y-2">
-                              <h1 className="font-extrabold text-2xl mb-4 md:mb-8 dark:text-slate-400 text-slate-700">
-                                {[
-                                  // @ts-ignore
-                                  ...new Set(
-                                    rest.map((item: any) => item && item[0])
-                                  ),
-                                ].join(" / ")}
-                              </h1>
-                            </div>
-                          </div>
-                        ) : null}
-                        <div
-                          className={`transition text-3xl flex justify-center items-start ${
-                            (earliestTime[0] < currentTime &&
-                              latestTime[1] > currentTime) ||
-                            !play
-                              ? "text-slate-100"
-                              : self?.[idx - 1]?.[0]?.[1]?.some(
-                                  (t: any) => t[1] > currentTime
-                                )
-                              ? "text-slate-500 dark:hover:text-slate-400"
-                              : "text-slate-600 dark:hover:text-slate-500"
-                            // : 'text-slate-400'
-                          }`}
-                        >
-                          {focusMode ? null : (
-                            <button
-                              className="hidden md:block mr-4 text-left text-2xl"
-                              onClick={() => {
-                                seek(startTime);
-                                console.log("TODO");
-
-                                setRepeatHistories({
-                                  lessonId: lesson1.id,
-                                  eventType: "speech/repeat",
-                                  eventTime: new Date().getTime(),
-                                  startTime,
-                                  scriptIndex: idx,
-                                  // item
-                                });
-                              }}
-                            >
-                              {formatTime(startTime)}
-                            </button>
-                          )}
-                          <div className="w-full md:text-md md:space-y-2">
-                            {" "}
-                            {rest.map((item: any, idx: any) => {
-                              if (!item) {
-                                return null;
-                              }
-
-                              // hanzi
-                              if (idx === 0) {
-                                return (
-                                  <div
-                                    className={
-                                      focusMode
-                                        ? "flex items-start md:mb-12"
-                                        : "flex items-start"
-                                    }
-                                  >
-                                    {focusMode ? null : (
-                                      <span className="text-[14px] md:text-lg font-bold min-w-[100px] md:min-w-[140px]">
-                                        {item[0]}
-                                      </span>
-                                    )}
-                                    <span
-                                      className={
-                                        focusMode
-                                          ? "text-[14px] md:text-5xl font-light pl-2"
-                                          : "text-[14px] md:text-2xl font-light pl-2"
-                                      }
-                                    >
-                                      {item[1]
-                                        ?.split(" ")
-                                        ?.filter(Boolean)
-                                        ?.map((char: any, idx: any) => {
-                                          return (
-                                            <span
-                                              className={`${
-                                                hskLevel1Words.includes(char)
-                                                  ? "text-yellow-400"
-                                                  : hskLevel2Words.includes(
-                                                      char
-                                                    )
-                                                  ? "text-orange-400"
-                                                  : hskLevel3Words.includes(
-                                                      char
-                                                    )
-                                                  ? "text-green-400"
-                                                  : hskLevel4Words.includes(
-                                                      char
-                                                    )
-                                                  ? "text-purple-400"
-                                                  : hskLevel5Words.includes(
-                                                      char
-                                                    )
-                                                  ? "text-blue-400"
-                                                  : hskLevel6Words.includes(
-                                                      char
-                                                    )
-                                                  ? "text-red-400"
-                                                  : "texe-slate-500"
-                                              } ${
-                                                lesson1?.powerWords?.includes(
-                                                  char
-                                                )
-                                                  ? "font-bold"
-                                                  : ""
-                                              }`}
-                                              onClick={() => {
-                                                // alert(char)
-
-                                                setSelectedChar(
-                                                  char
-                                                    .replace(",", "")
-                                                    .replace("?", "")
-                                                    .replace("？", "")
-                                                );
-                                              }}
-                                            >
-                                              {char}
-                                            </span>
-                                          );
-                                        })}
-                                    </span>
-                                  </div>
-                                );
-                              }
-
-                              // rest of the translations
-                              return (
-                                <div
-                                  className={
-                                    focusMode
-                                      ? `flex items-start dark:text-slate-100`
-                                      : "flex items-start"
-                                  }
-                                >
-                                  {focusMode ? null : (
-                                    <span className="text-[14px] md:text-lg font-bold min-w-[100px] md:min-w-[140px]">
-                                      {item[0]}
-                                    </span>
-                                  )}
-                                  <span
-                                    className={
-                                      focusMode
-                                        ? "text-[14px] text-center md:text-2xl font-light pl-2"
-                                        : "text-[14px] md:text-2xl font-light pl-2"
-                                    }
-                                  >
-                                    {item[1]
-                                      ?.split(" ")
-                                      ?.filter(Boolean)
-                                      ?.map((char: any, idx: any) => {
-                                        return (
-                                          <span
-                                            // className='dark:text-green-500'
-                                            onClick={() => {
-                                              // alert(char)
-
-                                              setSelectedChar(
-                                                char
-                                                  .replace(",", "")
-                                                  .replace("?", "")
-                                                  .replace("？", "")
-                                              );
-                                            }}
-                                          >
-                                            {" "}
-                                            {char}
-                                          </span>
-                                        );
-                                      })}
-                                  </span>
-                                </div>
-                              );
-                            })}{" "}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  }
+                if (
+                  earliestTime[0] < currentTime &&
+                  latestTime[1] > currentTime
+                ) {
                   return (
-                    <div>
+                    <div ref={scrollRef}>
                       {focusMode ? (
                         <div>
-                          <div className="w-full text-center my-2 md:text-md space-y-2">
+                          <div className="w-full text-center my-2 md:text-md md:space-y-2">
                             <h1 className="font-extrabold text-2xl mb-4 md:mb-8 dark:text-slate-400 text-slate-700">
                               {[
                                 // @ts-ignore
@@ -1032,7 +842,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                                   <span
                                     className={
                                       focusMode
-                                        ? "text-[14px] md:text-4xl md:text-5xl font-light pl-2"
+                                        ? "text-[14px] md:text-5xl font-light pl-2"
                                         : "text-[14px] md:text-2xl font-light pl-2"
                                     }
                                   >
@@ -1100,7 +910,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                                 <span
                                   className={
                                     focusMode
-                                      ? "text-center text-[14px] md:text-2xl font-light pl-2"
+                                      ? "text-[14px] text-center md:text-2xl font-light pl-2"
                                       : "text-[14px] md:text-2xl font-light pl-2"
                                   }
                                 >
@@ -1135,51 +945,217 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                       </div>
                     </div>
                   );
-                })}
+                }
+                return (
+                  <div>
+                    {focusMode ? (
+                      <div>
+                        <div className="w-full text-center my-2 md:text-md space-y-2">
+                          <h1 className="font-extrabold text-2xl mb-4 md:mb-8 dark:text-slate-400 text-slate-700">
+                            {[
+                              // @ts-ignore
+                              ...new Set(
+                                rest.map((item: any) => item && item[0])
+                              ),
+                            ].join(" / ")}
+                          </h1>
+                        </div>
+                      </div>
+                    ) : null}
+                    <div
+                      className={`transition text-3xl flex justify-center items-start ${
+                        (earliestTime[0] < currentTime &&
+                          latestTime[1] > currentTime) ||
+                        !play
+                          ? "text-slate-100"
+                          : self?.[idx - 1]?.[0]?.[1]?.some(
+                              (t: any) => t[1] > currentTime
+                            )
+                          ? "text-slate-500 dark:hover:text-slate-400"
+                          : "text-slate-600 dark:hover:text-slate-500"
+                        // : 'text-slate-400'
+                      }`}
+                    >
+                      {focusMode ? null : (
+                        <button
+                          className="hidden md:block mr-4 text-left text-2xl"
+                          onClick={() => {
+                            seek(startTime);
+                            console.log("TODO");
+
+                            setRepeatHistories({
+                              lessonId: lesson1.id,
+                              eventType: "speech/repeat",
+                              eventTime: new Date().getTime(),
+                              startTime,
+                              scriptIndex: idx,
+                              // item
+                            });
+                          }}
+                        >
+                          {formatTime(startTime)}
+                        </button>
+                      )}
+                      <div className="w-full md:text-md md:space-y-2">
+                        {" "}
+                        {rest.map((item: any, idx: any) => {
+                          if (!item) {
+                            return null;
+                          }
+
+                          // hanzi
+                          if (idx === 0) {
+                            return (
+                              <div
+                                className={
+                                  focusMode
+                                    ? "flex items-start md:mb-12"
+                                    : "flex items-start"
+                                }
+                              >
+                                {focusMode ? null : (
+                                  <span className="text-[14px] md:text-lg font-bold min-w-[100px] md:min-w-[140px]">
+                                    {item[0]}
+                                  </span>
+                                )}
+                                <span
+                                  className={
+                                    focusMode
+                                      ? "text-[14px] md:text-4xl md:text-5xl font-light pl-2"
+                                      : "text-[14px] md:text-2xl font-light pl-2"
+                                  }
+                                >
+                                  {item[1]
+                                    ?.split(" ")
+                                    ?.filter(Boolean)
+                                    ?.map((char: any, idx: any) => {
+                                      return (
+                                        <span
+                                          className={`${
+                                            hskLevel1Words.includes(char)
+                                              ? "text-yellow-400"
+                                              : hskLevel2Words.includes(char)
+                                              ? "text-orange-400"
+                                              : hskLevel3Words.includes(char)
+                                              ? "text-green-400"
+                                              : hskLevel4Words.includes(char)
+                                              ? "text-purple-400"
+                                              : hskLevel5Words.includes(char)
+                                              ? "text-blue-400"
+                                              : hskLevel6Words.includes(char)
+                                              ? "text-red-400"
+                                              : "texe-slate-500"
+                                          } ${
+                                            lesson1?.powerWords?.includes(char)
+                                              ? "font-bold"
+                                              : ""
+                                          }`}
+                                          onClick={() => {
+                                            // alert(char)
+
+                                            setSelectedChar(
+                                              char
+                                                .replace(",", "")
+                                                .replace("?", "")
+                                                .replace("？", "")
+                                            );
+                                          }}
+                                        >
+                                          {char}
+                                        </span>
+                                      );
+                                    })}
+                                </span>
+                              </div>
+                            );
+                          }
+
+                          // rest of the translations
+                          return (
+                            <div
+                              className={
+                                focusMode
+                                  ? `flex items-start dark:text-slate-100`
+                                  : "flex items-start"
+                              }
+                            >
+                              {focusMode ? null : (
+                                <span className="text-[14px] md:text-lg font-bold min-w-[100px] md:min-w-[140px]">
+                                  {item[0]}
+                                </span>
+                              )}
+                              <span
+                                className={
+                                  focusMode
+                                    ? "text-center text-[14px] md:text-2xl font-light pl-2"
+                                    : "text-[14px] md:text-2xl font-light pl-2"
+                                }
+                              >
+                                {item[1]
+                                  ?.split(" ")
+                                  ?.filter(Boolean)
+                                  ?.map((char: any, idx: any) => {
+                                    return (
+                                      <span
+                                        // className='dark:text-green-500'
+                                        onClick={() => {
+                                          // alert(char)
+
+                                          setSelectedChar(
+                                            char
+                                              .replace(",", "")
+                                              .replace("?", "")
+                                              .replace("？", "")
+                                          );
+                                        }}
+                                      >
+                                        {" "}
+                                        {char}
+                                      </span>
+                                    );
+                                  })}
+                              </span>
+                            </div>
+                          );
+                        })}{" "}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+      </div>
+
+      <div>
+        <div className="md:my-16 font-bold text-4xl text-center">
+          {selectedChar}{" "}
+          {characterDictionary?.en ? `(${characterDictionary?.en})` : ""}
+        </div>
+        <div>
+          <pre>
+            <code>{JSON.stringify(characterDictionary, null, 2)}</code>
+          </pre>
         </div>
 
-        <div>
-          <div className="md:my-16 font-bold text-4xl text-center">
-            {selectedChar}{" "}
-            {characterDictionary?.en ? `(${characterDictionary?.en})` : ""}
-          </div>
+        {selectedChar ? (
           <div>
             <pre>
-              <code>{JSON.stringify(characterDictionary, null, 2)}</code>
+              <code>{JSON.stringify(parse(selectedChar || ""), null, 2)}</code>
             </pre>
           </div>
-
-          {selectedChar ? (
-            <div>
-              <pre>
-                <code>
-                  {JSON.stringify(parse(selectedChar || ""), null, 2)}
-                </code>
-              </pre>
-            </div>
-          ) : null}
-        </div>
-
-        <SpeechToText
-          lessonId={lesson1?.id}
-          play={play}
-          togglePlay={togglePlay}
-          handleSuggestion={() => {
-            setViewMode("suggestion");
-          }}
-          onClear={() => {
-            setResults({});
-          }}
-        />
+        ) : null}
       </div>
-    );
-  }
 
-  return (
-    <div className="grow ml-4 md:ml-16 flex flex-col items-center min-h-screen overflow-y-auto">
-      <Header className="my-2 md:my-16 text-black dark:text-white text-3xl font-extrabold">
-        xiǎo ma
-      </Header>
+      <PlayButton
+        lessonId={lesson1?.id}
+        play={play}
+        togglePlay={togglePlay}
+        handleSuggestion={() => {
+          setViewMode("suggestion");
+        }}
+        onClear={() => {
+          setResults({});
+        }}
+      />
     </div>
   );
 };

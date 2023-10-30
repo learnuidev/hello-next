@@ -1,23 +1,17 @@
 // import Image from 'next/image'
 "use client";
 
-import { Editor } from "@/components/Editor";
 import { useState } from "react";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import * as R from "ramda";
 
-// import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
+
 import { useRouter } from "next/navigation";
 import { NavBar } from "@/components/navbar";
-import { Link } from "@/components/link";
-import { SearchPage } from "@/components/search";
-import { NavigatorMap } from "@/components/navigator-map";
 import { parse } from "@/data/utils";
-import { faXmark } from "@fortawesome/pro-light-svg-icons";
+import { faXmark } from "@fortawesome/pro-light-svg-icons/faXmark";
 
 import { course1 } from "@/data/convos/bm1/index";
 
@@ -62,20 +56,13 @@ function SelectedCharacter({
               (lesson: any) => lesson?.id === char?.journeyId
             );
 
-            console.log({ currentLesson });
-
             const currentPhrase = currentLesson?.lessons?.find(
               (lesson: any) => lesson?.id === char?.hanzi
             );
 
-            console.log({ currentPhrase });
-
             return (
               <div
                 role="button"
-                // onClick={() => {
-                //   setSelectedChar(char);
-                // }}
                 className="pb-8 flex flex-col"
                 key={`${idx}-${char?.hanzi}-${idx}`}
               >
@@ -83,14 +70,8 @@ function SelectedCharacter({
                 <span className="text-sm text-gray-600">
                   {currentPhrase?.pinyin}
                 </span>
-                <span className="text-gray-700">
-                  {/* {currentPhrase?.hanzi?.split(" ").filter(Boolean)?.join("")} */}
-                  {currentPhrase?.hanzi}
-                </span>
+                <span className="text-gray-700">{currentPhrase?.hanzi}</span>
                 <span className="text-sm">{currentPhrase?.en}</span>
-                {/* <span>{char?.hanzi}</span> */}
-                {/* {JSON.stringify(char?.journeyId)} */}
-                {/* {JSON.stringify(char?.hanzi)} */}
               </div>
             );
           })}
@@ -122,7 +103,6 @@ export default function Analytics() {
     ?.toLocaleLowerCase()
     ?.split("")
     ?.filter((x: string) => !["c", "i", "n", "d", "y"]?.includes(x));
-  // ?.join(" ");
 
   const allWords = [
     // @ts-ignore
@@ -132,7 +112,6 @@ export default function Analytics() {
     ?.toLocaleLowerCase()
     ?.split("")
     ?.filter((x: string) => !["c", "i", "n", "d", "y"]?.includes(x));
-  // ?.join(" ");
 
   const uniqueWordsStr = uniqueWords?.join(" ");
 
@@ -140,13 +119,8 @@ export default function Analytics() {
     (a, b) => a?.hmmCharacterLevel - b?.hmmCharacterLevel
   );
 
-  console.log({ unlockedNMMCharacters });
-
-  // const unlockedNMMCharacters = parsed?.map((x) => x.hanzi);
   const unlockedCharactersHMM = unlockedNMMCharacters?.map((x) => x.hanzi);
   const unlockedCharactersHMMStr = unlockedCharactersHMM?.join(" ");
-
-  // console.log("ALL WORDS", allWords);
 
   const charactersWithFrequencyList = Object.entries(
     R.countBy(R.identity, allWords)
@@ -180,14 +154,7 @@ export default function Analytics() {
             <span className="text-sm md:text-xl">characters discovered </span>
           </h2>
 
-          {/* <div className="my-8">
-          <h2>frequency</h2>
-          <div className="my-2 flex justify-between items-center text-2xl text-gray-700">
-            {unlockedCharactersNMMStr}
-          </div>
-        </div> */}
           <div className="my-8">
-            {/* <h2>nmm</h2> */}
             <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
               {unlockedCharactersHMM?.map((char, idx: number) => {
                 return (

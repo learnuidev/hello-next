@@ -11,7 +11,4 @@ const awsExports = {
   authenticationType: "AMAZON_COGNITO_USER_POOLS",
 };
 
-
-console.log("AWS EXP", awsExports)
-
 Amplify.configure(awsExports);

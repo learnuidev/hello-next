@@ -1,64 +1,58 @@
 "use client";
 
 import * as React from "react";
-// import {
-//   faBowlChopsticksNoodles,
-//   faUserShakespeare
-// } from '@fortawesome/pro-duotone-svg-icons'
-import {
-  faCitrus,
-  faBowlChopsticksNoodles,
-  faUserShakespeare,
-  faSeedling,
-  faXmark,
-  faMapLocationDot,
-  faMapPin,
-  faFarm,
-  faCow,
-  faTheaterMasks,
-  faCameraRetro,
-  faCamcorder,
-  faCameraMovie,
-  faClapperboardPlay,
-  faChartSimple,
-  faPlay,
-  faAbacus,
-  faTrees,
-  faGameConsoleHandheld,
-  faBackpack,
-  faTableTree,
-  faComment,
-  faAngleRight,
-  faPause,
-  faAngleLeft,
-  faMicrophone,
-  faThoughtBubble,
-  faCheck,
-  faFaceLaugh,
-  faMusic,
-  faFaceGrinBeamSweat,
-  faFaceThinking,
-  faHeadphones,
-  faLightbulb,
-  faProjector,
-  faMoonCloud,
-  faSunHaze,
-  faCloudDrizzle,
-  faCloudsSun,
-  faGrid2,
-  faGear,
-  faPlus,
-  faPlusLarge,
-  faBooks,
-  faCauldron,
-  faMapLocation,
-  faBlog,
-  faAtomSimple,
-  faTicketAirline,
-  faPersonHiking,
-  faWatermelonSlice,
-  faLock,
-} from "@fortawesome/sharp-solid-svg-icons";
+
+import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
+import { faBowlChopsticksNoodles } from "@fortawesome/sharp-solid-svg-icons/faBowlChopsticksNoodles";
+import { faUserShakespeare } from "@fortawesome/sharp-solid-svg-icons/faUserShakespeare";
+import { faSeedling } from "@fortawesome/sharp-solid-svg-icons/faSeedling";
+import { faXmark } from "@fortawesome/sharp-solid-svg-icons/faXmark";
+import { faMapLocationDot } from "@fortawesome/sharp-solid-svg-icons/faMapLocationDot";
+import { faMapPin } from "@fortawesome/sharp-solid-svg-icons/faMapPin";
+import { faFarm } from "@fortawesome/sharp-solid-svg-icons/faFarm";
+import { faCow } from "@fortawesome/sharp-solid-svg-icons/faCow";
+import { faTheaterMasks } from "@fortawesome/sharp-solid-svg-icons/faTheaterMasks";
+import { faCameraRetro } from "@fortawesome/sharp-solid-svg-icons/faCameraRetro";
+import { faCamcorder } from "@fortawesome/sharp-solid-svg-icons/faCamcorder";
+import { faCameraMovie } from "@fortawesome/sharp-solid-svg-icons/faCameraMovie";
+import { faClapperboardPlay } from "@fortawesome/sharp-solid-svg-icons/faClapperboardPlay";
+import { faChartSimple } from "@fortawesome/sharp-solid-svg-icons/faChartSimple";
+import { faPlay } from "@fortawesome/sharp-solid-svg-icons/faPlay";
+import { faAbacus } from "@fortawesome/sharp-solid-svg-icons/faAbacus";
+import { faTrees } from "@fortawesome/sharp-solid-svg-icons/faTrees";
+import { faGameConsoleHandheld } from "@fortawesome/sharp-solid-svg-icons/faGameConsoleHandheld";
+import { faBackpack } from "@fortawesome/sharp-solid-svg-icons/faBackpack";
+import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
+import { faComment } from "@fortawesome/sharp-solid-svg-icons/faComment";
+import { faAngleRight } from "@fortawesome/sharp-solid-svg-icons/faAngleRight";
+import { faPause } from "@fortawesome/sharp-solid-svg-icons/faPause";
+import { faAngleLeft } from "@fortawesome/sharp-solid-svg-icons/faAngleLeft";
+import { faMicrophone } from "@fortawesome/sharp-solid-svg-icons/faMicrophone";
+import { faThoughtBubble } from "@fortawesome/sharp-solid-svg-icons/faThoughtBubble";
+import { faCheck } from "@fortawesome/sharp-solid-svg-icons/faCheck";
+import { faFaceLaugh } from "@fortawesome/sharp-solid-svg-icons/faFaceLaugh";
+import { faMusic } from "@fortawesome/sharp-solid-svg-icons/faMusic";
+import { faFaceGrinBeamSweat } from "@fortawesome/sharp-solid-svg-icons/faFaceGrinBeamSweat";
+import { faFaceThinking } from "@fortawesome/sharp-solid-svg-icons/faFaceThinking";
+import { faHeadphones } from "@fortawesome/sharp-solid-svg-icons/faHeadphones";
+import { faLightbulb } from "@fortawesome/sharp-solid-svg-icons/faLightbulb";
+import { faProjector } from "@fortawesome/sharp-solid-svg-icons/faProjector";
+import { faMoonCloud } from "@fortawesome/sharp-solid-svg-icons/faMoonCloud";
+import { faSunHaze } from "@fortawesome/sharp-solid-svg-icons/faSunHaze";
+import { faCloudDrizzle } from "@fortawesome/sharp-solid-svg-icons/faCloudDrizzle";
+import { faCloudsSun } from "@fortawesome/sharp-solid-svg-icons/faCloudsSun";
+import { faGrid2 } from "@fortawesome/sharp-solid-svg-icons/faGrid2";
+import { faGear } from "@fortawesome/sharp-solid-svg-icons/faGear";
+import { faPlus } from "@fortawesome/sharp-solid-svg-icons/faPlus";
+import { faPlusLarge } from "@fortawesome/sharp-solid-svg-icons/faPlusLarge";
+import { faBooks } from "@fortawesome/sharp-solid-svg-icons/faBooks";
+import { faCauldron } from "@fortawesome/sharp-solid-svg-icons/faCauldron";
+import { faAtomSimple } from "@fortawesome/sharp-solid-svg-icons/faAtomSimple";
+import { faTicketAirline } from "@fortawesome/sharp-solid-svg-icons/faTicketAirline";
+import { faPersonHiking } from "@fortawesome/sharp-solid-svg-icons/faPersonHiking";
+import { faWatermelonSlice } from "@fortawesome/sharp-solid-svg-icons/faWatermelonSlice";
+import { faLock } from "@fortawesome/sharp-solid-svg-icons/faLock";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faYoutube } from "@fortawesome/free-brands-svg-icons";
@@ -181,7 +175,6 @@ export const ConvosIcon = (props: any) => {
 
 export const PinyinChartIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faTableTree} />;
-  // return <FontAwesomeIcon {...props} icon={faMapLocation} />
 };
 
 export const MandarinoIcon = (props: any) => {
@@ -223,59 +216,34 @@ export const GradeBIcon = (props: any) => {
 };
 export const GradeFIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faFaceGrinBeamSweat} />;
-  // return <FontAwesomeIcon {...props} icon={faHeadphones} />
 };
 
 export const FocusIcon = (props: any) => {
-  // return <FontAwesomeIcon {...props} icon={faProjector} />
   return <FontAwesomeIcon {...props} icon={faLightbulb} />;
-  // return <FontAwesomeIcon {...props} icon={faHeadphones} />
 };
 export const MovieIcon = (props: any) => {
-  // return <FontAwesomeIcon {...props} icon={faProjector} />
   return <FontAwesomeIcon {...props} icon={faCameraMovie} />;
-  // return <FontAwesomeIcon {...props} icon={faLightbulb} />
-  // return <FontAwesomeIcon {...props} icon={faHeadphones} />
 };
 export const MoonIcon = (props: any) => {
-  // return <FontAwesomeIcon {...props} icon={faProjector} />
   return <FontAwesomeIcon {...props} icon={faMoonCloud} />;
-  // return <FontAwesomeIcon {...props} icon={faLightbulb} />
-  // return <FontAwesomeIcon {...props} icon={faHeadphones} />
 };
 export const SunRiseIcon = (props: any) => {
-  // return <FontAwesomeIcon {...props} icon={faSunHaze} />
   return <FontAwesomeIcon {...props} icon={faCloudsSun} />;
 };
 export const CloudyIcon = (props: any) => {
-  // return <FontAwesomeIcon {...props} icon={faProjector} />
   return <FontAwesomeIcon {...props} icon={faCloudDrizzle} />;
-  // return <FontAwesomeIcon {...props} icon={faLightbulb} />
-  // return <FontAwesomeIcon {...props} icon={faHeadphones} />
 };
 export const AppStoreIcon = (props: any) => {
-  // return <FontAwesomeIcon {...props} icon={faProjector} />
   return <FontAwesomeIcon {...props} icon={faGrid2} />;
-  // return <FontAwesomeIcon {...props} icon={faLightbulb} />
-  // return <FontAwesomeIcon {...props} icon={faHeadphones} />
 };
 export const YoutubeIcon = (props: any) => {
-  // return <FontAwesomeIcon {...props} icon={faProjector} />
   return <FontAwesomeIcon {...props} icon={faYoutube} />;
-  // return <FontAwesomeIcon {...props} icon={faLightbulb} />
-  // return <FontAwesomeIcon {...props} icon={faHeadphones} />
 };
 export const SettingsIcon = (props: any) => {
-  // return <FontAwesomeIcon {...props} icon={faProjector} />
   return <FontAwesomeIcon {...props} icon={faGear} />;
-  // return <FontAwesomeIcon {...props} icon={faLightbulb} />
-  // return <FontAwesomeIcon {...props} icon={faHeadphones} />
 };
 export const PlusIcon = (props: any) => {
-  // return <FontAwesomeIcon {...props} icon={faProjector} />
   return <FontAwesomeIcon {...props} icon={faPlusLarge} />;
-  // return <FontAwesomeIcon {...props} icon={faLightbulb} />
-  // return <FontAwesomeIcon {...props} icon={faHeadphones} />
 };
 export const LearningIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faBooks} />;
@@ -298,7 +266,7 @@ export const Lightning = (props: { className?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={`h-6 w-6 ${props?.className || ''}`}
+      className={`h-6 w-6 ${props?.className || ""}`}
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"

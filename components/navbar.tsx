@@ -4,15 +4,10 @@ import Link from "next/link";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
-import {
-  faChartColumn,
-  faGraduationCap,
-  faMap,
-  faMapLocation,
-  faSearch,
-  faTable,
-  faTableTree,
-} from "@fortawesome/sharp-solid-svg-icons";
+import { faChartColumn } from "@fortawesome/sharp-solid-svg-icons/faChartColumn";
+import { faGraduationCap } from "@fortawesome/sharp-solid-svg-icons/faGraduationCap";
+import { faMapLocation } from "@fortawesome/sharp-solid-svg-icons/faMapLocation";
+import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
 import { NomadIcon } from "./ui/icons";
 import { usePathname, useRouter } from "next/navigation";
 

@@ -6,12 +6,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBuilding,
-  faBuildingUser,
-  faScrewdriverWrench,
-  faToolbox,
-} from "@fortawesome/sharp-solid-svg-icons";
+import { faScrewdriverWrench } from "@fortawesome/sharp-solid-svg-icons/faScrewdriverWrench";
 
 import "@/libs/cognito/init";
 import { Authenticated } from "@/components/Authenticated";

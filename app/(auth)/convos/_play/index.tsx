@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   AnalyticsIcon,
@@ -27,7 +29,7 @@ import { course1, useConvosStore } from "@/data/convos/bm1";
 
 import { useMusic } from "./use-music";
 
-import { useSpeechRecognition } from "./use-speech-recognition";
+// import { useSpeechRecognition } from "./use-speech-recognition";
 import { PlayButton } from "./play-button";
 import {
   course,
@@ -139,8 +141,6 @@ const ExplanationChart = ({ queryResult }: { queryResult: any }) => {
 
   const characterDictionary = dictionary?.[selectedChar];
 
-  console.log("QUERY RESULT", queryResult);
-
   const data = useMemo(() => {
     return queryResult
       .map((item: any) => {
@@ -217,6 +217,7 @@ const ExplanationChart = ({ queryResult }: { queryResult: any }) => {
                                 {char?.examples?.map((example: any) => {
                                   return (
                                     <svg
+                                      key={example}
                                       className={`h-1 w-1 ${calculateColor2(
                                         example
                                       )}`}
@@ -264,6 +265,10 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
   const setRepeatHistories = useRepeatHistoryStore(
     (state: any) => state.setHistory
   );
+  const repeatHistories = useRepeatHistoryStore((state: any) => state.history);
+
+  console.log({ repeatHistories });
+
   const setSpeechHistories = useLessonHistoryStore(
     (state: any) => state.setHistory
   );
@@ -275,39 +280,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   const lesson = course5.lessons[lessonIndex] || null;
 
-  console.log("LESSONS ARR", lessonsArr);
-
   const lesson1 = lessonsArr?.find((lesson: any) => lesson?.id === lessonId);
-  // const lesson1 = course1?.lessons?.find(
-  //   (lesson: any) => lesson?.id === lessonId
-  // )
-
-  const {
-    transcript,
-    transcripts,
-    listening,
-    startListening,
-    stopListening,
-    resetTranscript,
-    browserSupportsSpeechRecognition,
-  } = useSpeechRecognition({
-    lang: "",
-    onTranslated: (resp: any) => {
-      // console.log('TRANSLATIONS', resp)
-      setResults((prevResult: any) => {
-        return {
-          ...prevResult,
-          [lesson1.id]: resp,
-        };
-      });
-
-      setLessonHistories({
-        lessonId: lesson1.id,
-        time: new Date().getTime(),
-        answer: resp,
-      });
-    },
-  });
 
   const isCorrect = () => {
     return lesson?.hanziV2?.replace(", ", "").replace("?", "");
@@ -316,7 +289,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
   const formatNumber = (time: any) => (time > 9 ? `${time}` : `0${time}`);
 
   const toggleMode = (arg: any) => () => {
-    // console.log('logged')
     setMode((prevMode: any) => {
       return prevMode === arg ? "" : arg;
     });
@@ -348,9 +320,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
       .filter((item: any) => ![", ", "？", "，"].includes(item))
       .join("");
 
-    // console.log('ANS', answer)
-
-    // console.log('expAns', expAns)
     if (
       (answer !== expAns.trim() &&
         !lesson?.alternateAnswers?.includes(answer) &&
@@ -380,15 +349,10 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   const scrollRef = useRef(null);
 
-  // console.log('LESSON', lesson1)
-
   const lessons = lesson1.lesson
     ? lesson1.lesson.filter((item: any) => {
         const [time, ...rest] = item;
         const startTime = time[1][0][0];
-
-        console.log("time", time[1]);
-        console.log("currentTime");
 
         const earliestTime = time[1][0];
         const latestTime = time[1][time[1].length - 1];
@@ -421,64 +385,31 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
   return (
     <div className="pt-8 grow flex flex-col items-center min-h-screen overflow-y-auto">
       <div className="fixed flex items-center justify-between min-w-full md:px-32">
-        <p className="font-extralight text-2xl md:text-5xl my-8 text-center dark:text-slate-300 text-slate-600">
+        <p className="font-extralight text-2xl md:text-5xl text-center dark:text-slate-300 text-slate-600">
           {formatTime(currentTime)}
         </p>
         <div className="space-x-4">
-          {/* <button
-                className={`text-xl md:text-4xl ${
-                  mode === 'movie' ? 'dark:text-white' : 'dark:text-slate-500'
-                } dark:hover:text-slate-100 hover:text-slate-900 transition`}
-                onClick={toggleMode('movie')}
-              >
-                {<MovieIcon />}
-              </button> */}
-          {lesson1?.learnings?.length ? (
-            <button
-              className={`text-xl md:text-4xl ${
-                mode === "learnings" ? "dark:text-white" : "dark:text-slate-500"
-              } dark:hover:text-slate-100 hover:text-slate-900 transition`}
-              onClick={() => {
-                setViewMode("learnings");
-              }}
-            >
-              {<LearnIcon />}
-            </button>
-          ) : null}
           <button
-            className={`text-xl md:text-4xl ${
-              focusMode ? "dark:text-white" : "dark:text-slate-500"
+            className={`text-xl md:text-3xl ${
+              focusMode
+                ? "dark:text-white text-slate-700"
+                : "dark:text-slate-500 text-slate-300"
             } dark:hover:text-slate-100 hover:text-slate-900 transition md:px-4`}
             onClick={toggleMode("focus")}
           >
             {<FocusIcon />}
           </button>
-          {/* <button
-                className={
-                  'text-4xl dark:text-slate-500 dark:hover:text-slate-400 hover:text-slate-900'
-                }
-                onClick={togglePlay}
-              >
-                {play ? <PauseIcon /> : <PlayIcon />}
-              </button> */}
-          <button
-            className="text-xl md:text-4xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full"
-            onClick={() => {
-              setViewMode("analytics");
-              //
-              console.log("SHOW ANALYTICS");
-            }}
-          >
-            <AnalyticsIcon />
-          </button>
         </div>
       </div>
 
-      <div className={"dark:text-white my-4"}>
+      <div className={"dark:text-white my-2"}>
         {res?.length &&
           [res[res.length - 1]]?.map((res: any) => {
             return (
-              <div className="flex flex-col justify-start md:space-y-2 items-center">
+              <div
+                key={res?.id}
+                className="flex flex-col justify-start md:space-y-2 items-center"
+              >
                 <p
                   className={
                     "text-5xl md:text-6xl dark:text-slate-200 text-slate-800"
@@ -523,38 +454,39 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
       </div>
 
       {/* timestamps */}
-      <div className="">
-        <div className="pt-24 flex md:mx-60 flex-wrap">
+      <div className="z-50">
+        <div className="flex md:mx-60 flex-wrap ">
           {(
             lesson1?.lesson ||
             lesson1?.transcriptions?.transcriptions ||
             lesson1?.lessonsV2
           ).map((item: any, idx: any) => {
             if (item?.text) {
-              const earliestTime = item?.start;
-              const latestTime = item?.end;
+              const earliestTime = item?.[0]?.[1]?.[0]?.[0] || item?.start;
+              const latestTime = item?.[0]?.[1]?.[0]?.[1] || item?.end;
 
               return (
                 <button
+                  key={`${lesson?.id}-${idx}`}
                   onClick={() => {
-                    seek(earliestTime);
+                    seek(earliestTime || 0);
 
                     setRepeatHistories({
                       lessonId: lesson1.id,
                       eventType: "speech/repeat",
                       eventTime: new Date().getTime(),
-                      startTime: earliestTime,
+                      startTime: earliestTime || 0,
                       scriptIndex: idx,
                       // item
                     });
                   }}
-                  className={`mx-4 my-2 text-xl dark:hover:text-white font-extralight`}
+                  className={`mx-4 my-2 text-xl dark:hover:text-white font-extralight text-black`}
                 >
                   {/* {formatTime(earliestTime[0])} */}
                   <div
                     className={`${
                       earliestTime < currentTime && latestTime > currentTime
-                        ? "text-slate-900 bg-slate-200 hover:bg-white"
+                        ? "text-slate-300 dark:text-slate-900 bg-slate-200 hover:bg-white"
                         : "text-slate-900 bg-slate-500 hover:bg-white"
                     } h-2 w-2 rounded-full transition`}
                   ></div>
@@ -572,6 +504,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
             return (
               <button
+                key={`${lesson?.id}-${idx}`}
                 onClick={() => {
                   seek(earliestTime[0]);
 
@@ -589,8 +522,8 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                     ? "dark:text-slate-600"
                     : earliestTime[0] < currentTime &&
                       latestTime[1] > currentTime
-                    ? "dark:text-slate-200"
-                    : "dark:text-slate-500"
+                    ? "dark:text-slate-500"
+                    : "dark:text-slate-200"
                 } dark:hover:text-white font-extralight`}
               >
                 {/* {formatTime(earliestTime[0])} */}
@@ -615,21 +548,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
       <div className={`pt-24 space-y-8`}>
         {!lessons?.length
           ? null
-          : // <div className='dark:hover:text-slate-100 hover:text-slate-900 font-extralight text-4xl dark:text-slate-500 pt-24'>
-            //   <button
-            //     className={
-            //       'transition text-4xl dark:hover:text-slate-100 dark:text-slate-500'
-            //     }
-            //     onClick={() => {
-            //       togglePlay()
-            //     }}
-            //   >
-            //     {play ? <PauseIcon /> : <PlayIcon />}
-            //   </button>
-
-            //   <span className='ml-2'>Play</span>
-            // </div>
-            lessons
+          : lessons
               ?.filter((item: any, idx: any) => {
                 if (!focusMode) {
                   return item;
@@ -658,7 +577,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                       ?.join(" ");
 
                   return (
-                    <div className="mx-32">
+                    <div key={`${lesson?.id}-${idx}`} className="mx-32">
                       <div>
                         <h1
                           role="button"
@@ -674,14 +593,12 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                               scriptIndex: idx,
                               // item
                             });
-
-                            console.log("PARSE: ", parse(item.text));
                           }}
                           className={`text-center md:text-4xl font-bold ${
                             earliestTime < currentTime &&
                             latestTime > currentTime
-                              ? "text-slate-200"
-                              : "text-slate-500"
+                              ? "text-slate-500"
+                              : "text-slate-200"
                           }`}
                         >
                           {item.text}
@@ -691,8 +608,8 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                           className={`text-center md:text-2xl font-extralight ${
                             earliestTime < currentTime &&
                             latestTime > currentTime
-                              ? "text-slate-200"
-                              : "text-slate-500"
+                              ? "text-slate-500"
+                              : "dark:text-slate-200 text-slate-500"
                           }`}
                         >
                           {translations}
@@ -757,9 +674,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                 const [time, ...rest] = item;
                 const startTime = time[1][0][0];
 
-                console.log("time", time[1]);
-                console.log("currentTime");
-
                 const earliestTime = time[1][0];
                 const latestTime = time[1][time[1].length - 1];
 
@@ -768,7 +682,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                   latestTime[1] > currentTime
                 ) {
                   return (
-                    <div ref={scrollRef}>
+                    <div key={`${lesson?.id}-${idx}`} ref={scrollRef}>
                       {focusMode ? (
                         <div>
                           <div className="w-full text-center my-2 md:text-md md:space-y-2">
@@ -788,12 +702,12 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                           (earliestTime[0] < currentTime &&
                             latestTime[1] > currentTime) ||
                           !play
-                            ? "text-slate-100"
+                            ? "dark:text-slate-100 text-slate-700"
                             : self?.[idx - 1]?.[0]?.[1]?.some(
                                 (t: any) => t[1] > currentTime
                               )
-                            ? "text-slate-500 dark:hover:text-slate-400"
-                            : "text-slate-600 dark:hover:text-slate-500"
+                            ? "text-slate-200 dark:text-slate-500 dark:hover:text-slate-400"
+                            : "text-slate-300 dark:text-slate-600 dark:hover:text-slate-500"
                           // : 'text-slate-400'
                         }`}
                       >
@@ -802,7 +716,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                             className="hidden md:block mr-4 text-left text-2xl"
                             onClick={() => {
                               seek(startTime);
-                              console.log("TODO");
 
                               setRepeatHistories({
                                 lessonId: lesson1.id,
@@ -828,6 +741,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                             if (idx === 0) {
                               return (
                                 <div
+                                  key={`${lesson?.id}-${idx}`}
                                   className={
                                     focusMode
                                       ? "flex items-start md:mb-12"
@@ -852,6 +766,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                                       ?.map((char: any, idx: any) => {
                                         return (
                                           <span
+                                            key={`${lesson?.id}-${idx}`}
                                             className={`${
                                               hskLevel1Words.includes(char)
                                                 ? "text-yellow-400"
@@ -896,9 +811,10 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                             // rest of the translations
                             return (
                               <div
+                                key={`${lesson?.id}-${idx}`}
                                 className={
                                   focusMode
-                                    ? `flex items-start dark:text-slate-100`
+                                    ? `flex items-start dark:text-slate-100 text-slate-500`
                                     : "flex items-start"
                                 }
                               >
@@ -920,6 +836,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                                     ?.map((char: any, idx: any) => {
                                       return (
                                         <span
+                                          key={`${lesson?.id}-${idx}`}
                                           // className='dark:text-green-500'
                                           onClick={() => {
                                             // alert(char)
@@ -947,7 +864,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                   );
                 }
                 return (
-                  <div>
+                  <div key={`${lesson?.id}-${idx}`}>
                     {focusMode ? (
                       <div>
                         <div className="w-full text-center my-2 md:text-md space-y-2">
@@ -967,7 +884,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                         (earliestTime[0] < currentTime &&
                           latestTime[1] > currentTime) ||
                         !play
-                          ? "text-slate-100"
+                          ? "text-slate-800"
                           : self?.[idx - 1]?.[0]?.[1]?.some(
                               (t: any) => t[1] > currentTime
                             )
@@ -981,7 +898,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                           className="hidden md:block mr-4 text-left text-2xl"
                           onClick={() => {
                             seek(startTime);
-                            console.log("TODO");
 
                             setRepeatHistories({
                               lessonId: lesson1.id,
@@ -1007,6 +923,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                           if (idx === 0) {
                             return (
                               <div
+                                key={`${lesson?.id}-${item?.id}-${idx}`}
                                 className={
                                   focusMode
                                     ? "flex items-start md:mb-12"
@@ -1031,6 +948,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                                     ?.map((char: any, idx: any) => {
                                       return (
                                         <span
+                                          key={`${lesson?.id}-${item?.id}-${idx}`}
                                           className={`${
                                             hskLevel1Words.includes(char)
                                               ? "text-yellow-400"
@@ -1073,9 +991,10 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                           // rest of the translations
                           return (
                             <div
+                              key={`${lesson?.id}-${item?.id}-${idx}`}
                               className={
                                 focusMode
-                                  ? `flex items-start dark:text-slate-100`
+                                  ? `flex items-start dark:text-slate-100 text-slate-600`
                                   : "flex items-start"
                               }
                             >
@@ -1097,6 +1016,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                                   ?.map((char: any, idx: any) => {
                                     return (
                                       <span
+                                        key={`${lesson?.id}-${item?.id}-${idx}`}
                                         // className='dark:text-green-500'
                                         onClick={() => {
                                           // alert(char)

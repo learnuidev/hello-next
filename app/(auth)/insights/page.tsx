@@ -159,7 +159,7 @@ export default function Insights() {
 
   // TODO Fix this
   const currentLevel = {
-    maxCharacterLevel: 600,
+    maxCharacterLevel: 300,
   };
 
   function formatPercentage(number: number) {

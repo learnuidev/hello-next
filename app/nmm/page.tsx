@@ -45,7 +45,7 @@ import { getGraph } from "../pinyin/utils";
 import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
 import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
 
-const PageView = ({ view, setSelectedId }: any) => {
+const PageView = ({ view, setSelectedId, belt }: any) => {
   switch (view) {
     case "places":
       return (
@@ -126,37 +126,39 @@ const PageView = ({ view, setSelectedId }: any) => {
     case "characters":
       return (
         <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {charsArr.map((prop, idx) => {
-            calculateColor;
+          {charsArr
+            ?.slice(0, belt?.maxCharacterLevel || 4000)
+            .map((prop, idx) => {
+              calculateColor;
 
-            const toneLevel = getCharacterToneLevel(prop as ICharacter);
+              const toneLevel = getCharacterToneLevel(prop as ICharacter);
 
-            const color = calculateColor({ tone: toneLevel });
+              const color = calculateColor({ tone: toneLevel });
 
-            const graph = getGraph(prop?.hanzi)?.graph || "";
+              const graph = getGraph(prop?.hanzi)?.graph || "";
 
-            const showIf = graph
-              ?.split("")
-              ?.find((elem: string) => learnedCharacters?.includes(elem));
+              const showIf = graph
+                ?.split("")
+                ?.find((elem: string) => learnedCharacters?.includes(elem));
 
-            return (
-              <button
-                key={`${prop.hanzi}-chars-${idx}`}
-                onClick={() => {
-                  setSelectedId(prop.hanzi);
-                }}
-                className={`${
-                  learnedCharacters.includes(prop?.hanzi)
-                    ? `dark:text-white ${color}`
-                    : Boolean(showIf)
-                    ? "dark:text-white text-yellow-500"
-                    : "dark:text-gray-500 text-gray-200"
-                } dark:hover:text-white p-4 text-3xl md:text-2xl transition lowercase`}
-              >
-                {prop?.hanzi}
-              </button>
-            );
-          })}
+              return (
+                <button
+                  key={`${prop.hanzi}-chars-${idx}`}
+                  onClick={() => {
+                    setSelectedId(prop.hanzi);
+                  }}
+                  className={`${
+                    learnedCharacters.includes(prop?.hanzi)
+                      ? `dark:text-white ${color}`
+                      : Boolean(showIf)
+                      ? "dark:text-white text-yellow-500"
+                      : "dark:text-gray-500 text-gray-200"
+                  } dark:hover:text-white p-4 text-3xl md:text-2xl transition lowercase`}
+                >
+                  {prop?.hanzi}
+                </button>
+              );
+            })}
         </div>
       );
     case "words":
@@ -596,7 +598,26 @@ function SelectedComponent({ selectedId, setSelectedId }: any) {
   );
 }
 
+const bgs = [
+  "bg-slate-500",
+  "bg-yellow-500",
+  "bg-green-500",
+  "bg-blue-500",
+  "bg-red-500",
+  "bg-slate-600",
+  "bg-yellow-600",
+  "bg-green-600",
+  "bg-blue-600",
+  "bg-red-600",
+  "bg-slate-700",
+  "bg-yellow-700",
+  "bg-green-700",
+  "bg-blue-700",
+  "bg-red-700",
+];
+
 export default function NomadMethod(props: any) {
+  const [selectedBelt, setBelt] = useState();
   const [selectedId, setSelectedId] = useState<any>("");
   const [view, setView] = useState("characters");
   const [query, setQuery] = useState("");
@@ -613,9 +634,32 @@ export default function NomadMethod(props: any) {
 
   const selectedItem = propsArr.find((item) => item?.hanzi === selectedId);
 
+  const belts = [
+    { fill: "bg-slate-200", maxCharacterLevel: 105, level: "white" },
+    { fill: "bg-yellow-500", maxCharacterLevel: 300, type: "yellow" },
+    { fill: "bg-green-500", maxCharacterLevel: 600, level: "green" },
+    { fill: "bg-blue-500", maxCharacterLevel: 1200, level: "blue" },
+    { fill: "bg-red-500", maxCharacterLevel: 2000, level: "red" },
+    { fill: "bg-black", maxCharacterLevel: 3000, level: "black" },
+  ];
+
   return (
     <div className="grow">
       <NavBar />
+
+      <div className="w-full text-center flex justify-center items-center space-x-4 mt-12 mb-8">
+        {belts?.map?.((belt) => {
+          return (
+            <button
+              key={belt?.fill}
+              onClick={() => {
+                setBelt(belt as any);
+              }}
+              className={`${belt?.fill} h-4 w-4 rounded-full text`}
+            ></button>
+          );
+        })}
+      </div>
 
       {selectedId ? (
         <SelectedComponent
@@ -623,7 +667,11 @@ export default function NomadMethod(props: any) {
           setSelectedId={setSelectedId}
         />
       ) : (
-        <PageView setSelectedId={setSelectedId} view={view} />
+        <PageView
+          setSelectedId={setSelectedId}
+          view={view}
+          belt={selectedBelt}
+        />
       )}
     </div>
   );

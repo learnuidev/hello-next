@@ -22,28 +22,61 @@ function SelectedCharacter({
   unlockedCharactersHMM,
 }: {
   setSelectedChar: any;
-  selectedChar: string;
+  selectedChar: any;
   unlockedCharactersHMM: string[];
 }) {
   const { data: allAnswers, isLoading } = useListAnswersQuery();
 
+  const relevantAnswersHanzi = [
+    // @ts-ignore
+    ...new Set(
+      allAnswers
+        ?.filter((answer: any) => {
+          return answer?.hanzi?.includes(selectedChar?.hanzi || selectedChar);
+        })
+        ?.map((x: any) => x?.hanzi)
+    ),
+  ];
+
   const relevantAnswers = allAnswers?.filter((answer: any) => {
-    return answer?.hanzi?.includes(selectedChar);
+    return answer?.hanzi?.includes(selectedChar?.hanzi || selectedChar);
   });
+
+  console.log({ relevantAnswersHanzi });
+
+  const uniqueAnswers = relevantAnswersHanzi?.map((x: string) => {
+    return relevantAnswers?.find((ans: any) => ans?.hanzi === x);
+  });
+
+  // const relevantAnswers = [
+  //   ...new Set(
+  //     allAnswers
+  //       ?.filter((answer: any) => {
+  //         return answer?.hanzi?.includes(selectedChar?.hanzi || selectedChar);
+  //       })
+  //       ?.map((x) => JSON.stringify(x))
+  //   ),
+  // ]?.map((x) => JSON.parse(x));
+
+  console.log("SELECTED CHAR", selectedChar);
+
+  // return null
 
   return (
     <div className="w-full px-4 md:px-32 my-4 md:my-8">
       <div className="flex justify-between items-center">
         <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
-          {selectedChar}
+          {selectedChar?.hanzi || selectedChar}
 
           <Link
             target="_blank"
             className="text-sm md:text-xl"
-            href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(selectedChar)}`}
+            href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+              selectedChar?.hanzi || selectedChar
+            )}`}
           >
             {" "}
-            {selectedChar}
+            {selectedChar?.hanzi || selectedChar}
           </Link>
         </h2>
         <button
@@ -58,7 +91,7 @@ function SelectedCharacter({
       <div className="my-8">
         {/* <h2>nmm</h2> */}
         <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
-          {relevantAnswers?.map((char: any, idx: number) => {
+          {uniqueAnswers?.map((char: any, idx: number) => {
             const lesson = {};
 
             const currentLesson = course1?.lessons?.find(
@@ -158,7 +191,6 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
   const currentLevel = {
     maxCharacterLevel: 600,
   };
-
 
   return selectedChar ? (
     <SelectedCharacter

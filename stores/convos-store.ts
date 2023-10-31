@@ -6,6 +6,6 @@ export const useConvosStore = create((set) => ({
   removeConvoId: () => set(() => ({ convoId: null })),
 
   //    View Types: Used Display Differnt view types
-  viewType: "listen",
+  viewType: "insights",
   setViewType: (id: string) => set(() => ({ viewType: id })),
 }));

@@ -25,8 +25,73 @@ const listAnswers = async (
       journeyId: options?.journeyId,
     }),
   });
-  const resp = await res.json();
-  return resp;
+  const resp = (await res.json()) as any;
+
+  const engChars = [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+  ];
+
+  const newData = resp
+    // @ts-ignore
+    ?.sort((a, b) => new Date(a?.createdAt) - new Date(b?.createdAt))
+    ?.map((curr: any, idx: number, ctx: any) => {
+      const prevSet = [
+        // @ts-ignore
+        ...new Set(
+          ctx
+            ?.slice(0, idx)
+            .map((x: any) => x?.hanzi)
+            .join("")
+        ),
+      ].filter((x: string) => !engChars?.includes(x?.toLocaleLowerCase()));
+      const currentPhrase = curr?.hanzi
+        ?.split("")
+        ?.filter((x: string) => !engChars?.includes(x?.toLocaleLowerCase()));
+
+      const newCharacters = [
+        // @ts-ignore
+        ...new Set(
+          currentPhrase
+            ?.filter((phrase: any) => !prevSet?.includes(phrase))
+            ?.join("")
+        ),
+      ];
+
+      return {
+        ...curr,
+        newCharacters,
+        new: newCharacters?.length,
+        totalCharacters: prevSet?.concat(newCharacters),
+        total: prevSet?.concat(newCharacters)?.length,
+      };
+    });
+
+  return newData;
 };
 
 export function useListAnswersQuery(
@@ -42,7 +107,7 @@ export function useListAnswersQuery(
       const response = await listAnswers(params, {
         Authorization: authUser?.jwt,
       });
-      return response?.sort((a: any, b: any) => a?.createdAt - b?.createdAt)
+      return response?.sort((a: any, b: any) => a?.createdAt - b?.createdAt);
       // }
     },
     {

@@ -12,6 +12,8 @@ import { lesson7 } from "./level_7";
 import { lesson8 } from "./level_8";
 import { lesson9 } from "./level_9";
 import { lesson10 } from "./level_10";
+import { lesson11 } from "./level_11";
+import { lesson12 } from "./level_12";
 
 import { cleanString } from "./utils";
 
@@ -52,6 +54,8 @@ export const course1 = {
       lesson8,
       lesson9,
       lesson10,
+      lesson11,
+      lesson12,
     ] as any
   )?.map((lesson: any) => {
     return {

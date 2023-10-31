@@ -15,6 +15,10 @@ import { faXmark } from "@fortawesome/pro-light-svg-icons/faXmark";
 
 import { course1 } from "@/data/convos/bm1/index";
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { faChartSimple, faTable } from "@fortawesome/pro-thin-svg-icons";
+import { CharacterDiscoveryAreaChart } from "./CharacterDiscoveryAreaChart";
+
 function SelectedCharacter({
   selectedChar,
   setSelectedChar,
@@ -102,7 +106,10 @@ export default function Insights() {
     .join("")
     ?.toLocaleLowerCase()
     ?.split("")
-    ?.filter((x: string) => !["c", "i", "n", "d", "y"]?.includes(x));
+    ?.filter(
+      (x: string) =>
+        !["c", "i", "n", "d", "y"]?.includes(x?.toLocaleLowerCase())
+    );
 
   const allWords = [
     // @ts-ignore
@@ -111,7 +118,10 @@ export default function Insights() {
     .join("")
     ?.toLocaleLowerCase()
     ?.split("")
-    ?.filter((x: string) => !["c", "i", "n", "d", "y"]?.includes(x));
+    ?.filter(
+      (x: string) =>
+        !["c", "i", "n", "d", "y"]?.includes(x?.toLocaleLowerCase())
+    );
 
   const uniqueWordsStr = uniqueWords?.join(" ");
 
@@ -147,9 +157,26 @@ export default function Insights() {
   );
   const unlockedCharactersNMMStr = unlockedCharactersNMM?.join(" ");
 
+  // TODO Fix this
   const currentLevel = {
     maxCharacterLevel: 600,
   };
+
+  function formatPercentage(number: number) {
+    return Intl.NumberFormat("en-GB", {
+      style: "percent",
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 2,
+    }).format(number);
+  }
+
+  const correctAnswers = allAnswers?.filter(
+    (answer: any) => answer?.status === "correct"
+  );
+
+  const accuracyPercentage = formatPercentage(
+    correctAnswers?.length / allAnswers?.length
+  );
 
   return (
     <main className="">
@@ -161,39 +188,71 @@ export default function Insights() {
           unlockedCharactersHMM={unlockedCharactersHMM}
         />
       ) : (
-        <div className="w-full px-4 md:px-32 my-4 md:my-8">
-          <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
-            {unlockedNMMCharacters?.length}{" "}
-            <span className="text-sm md:text-xl">characters discovered </span>
-          </h2>
+        <Tabs defaultValue="default">
+          <TabsList className="w-full px-4 md:px-32 my-4 md:my-8">
+            <TabsTrigger value="default">
+              <FontAwesomeIcon icon={faTable} className="text-xl" />
+            </TabsTrigger>
+            <TabsTrigger value="charts">
+              <FontAwesomeIcon icon={faChartSimple} className="text-xl" />
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="default">
+            <div className="space-y-16">
+              <div className="w-full px-4 md:px-32">
+                <div className="flex justify-around">
+                  <h2 className="text-4xl md:text-4xl my-4 font-extralight text-gray-500">
+                    {unlockedNMMCharacters?.length}{" "}
+                    <span className="text-sm md:text-xl">
+                      characters discovered{" "}
+                    </span>
+                  </h2>
 
-          <div className="my-8">
-            <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
-              {unlockedNMMCharacters?.map((char, idx: number) => {
-                return (
-                  
-                  <button
-                    role="button"
-                    onClick={() => {
-                      setSelectedChar(char?.hanzi);
-                    }}
-                    disabled={currentLevel?.maxCharacterLevel < char?.hmmCharacterLevel}
-                    
-                    className={`p-2 ${
-                      currentLevel?.maxCharacterLevel >= char?.hmmCharacterLevel
-                        ? "text-gray-700"
-                        : "text-gray-400"
-                    }`}
-                    key={`${idx}-${char}-${idx}`}
-                  >
-                    {" "}
-                    {char?.hanzi}
-                  </button>
-                );
-              })}
+                  <h2 className="text-4xl md:text-4xl my-4 font-extralight text-gray-500">
+                    {accuracyPercentage}{" "}
+                    <span className="text-sm md:text-xl">written accuracy</span>
+                  </h2>
+                </div>
+              </div>
+
+              <div className="w-full px-4 md:px-32 my-4 md:my-8">
+                <div className="my-8">
+                  <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
+                    {unlockedNMMCharacters?.map((char, idx: number) => {
+                      return (
+                        <button
+                          role="button"
+                          onClick={() => {
+                            setSelectedChar(char?.hanzi);
+                          }}
+                          disabled={
+                            currentLevel?.maxCharacterLevel <
+                            char?.hmmCharacterLevel
+                          }
+                          className={`p-2 ${
+                            currentLevel?.maxCharacterLevel >=
+                            char?.hmmCharacterLevel
+                              ? "text-gray-700"
+                              : "text-gray-400"
+                          }`}
+                          key={`${idx}-${char}-${idx}`}
+                        >
+                          {" "}
+                          {char?.hanzi}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </TabsContent>
+          <TabsContent value="charts">
+            <div className="w-full px-4 md:px-32 my-4 md:my-8">
+              <CharacterDiscoveryAreaChart />
+            </div>
+          </TabsContent>
+        </Tabs>
       )}
     </main>
   );

@@ -225,10 +225,10 @@ export default function Insights() {
                           onClick={() => {
                             setSelectedChar(char?.hanzi);
                           }}
-                          disabled={
-                            currentLevel?.maxCharacterLevel <
-                            char?.hmmCharacterLevel
-                          }
+                          // disabled={
+                          //   currentLevel?.maxCharacterLevel <
+                          //   char?.hmmCharacterLevel
+                          // }
                           className={`p-2 ${
                             currentLevel?.maxCharacterLevel >=
                             char?.hmmCharacterLevel

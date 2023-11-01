@@ -3,6 +3,7 @@ export const lesson1 = {
   id: "lesson11",
   language: "zh",
   level: 1,
+  topics: ["starbucks", "latte", "ordering"],
   course: "Beginner Mandarin",
   learnings: [
     {

@@ -5,7 +5,8 @@ export const lesson11 = {
   course: "Real World Mandarin",
   author: "vishal",
   location: "outdoor",
-  title: "11. At Starbucks",
+  topics: ["starbucks", "latte", "ordering", "western"],
+  title: "11. 在星巴克 zài xīngbākè At Starbucks",
   audio: {
     slow: "https://cdn.fs.teachablecdn.com/Aha0gfTkThmVBco4UCtH",
     fast: "https://cdn.fs.teachablecdn.com/iw52BOQKQkS2gcoeSSQJ",
@@ -46,7 +47,5 @@ export const lesson11 = {
       lit: "Have",
       en: "Yes I have.",
     },
-
-
   ],
 };

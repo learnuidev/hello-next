@@ -5,7 +5,7 @@ export const lesson12 = {
   course: "Real World Mandarin",
   author: "vishal",
   location: "outdoor",
-  title: "11. At Mama Dumplings",
+  title: "12. 在妈妈饺子馆 Zài māmā jiǎozi guǎn At Mama Dumplings",
   audio: {
     slow: "https://cdn.fs.teachablecdn.com/Aha0gfTkThmVBco4UCtH",
     fast: "https://cdn.fs.teachablecdn.com/iw52BOQKQkS2gcoeSSQJ",

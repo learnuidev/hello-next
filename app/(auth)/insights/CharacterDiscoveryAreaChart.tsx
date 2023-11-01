@@ -11,6 +11,7 @@ import {
 } from "recharts";
 
 import { course1 } from "@/data/convos/bm1/index";
+import { useSelectedDataStore } from "./use-selected-data";
 
 const data = [
   {
@@ -105,7 +106,14 @@ const NewCharactersTooltip = ({ active, payload, label }: any) => {
 };
 
 export const CharacterDiscoveryAreaChart = () => {
-  const [selectedData, setSelectedData] = useState<any>(null);
+  // const [selectedData, setSelectedData] = useState<any>(null);
+
+  const selectedData = useSelectedDataStore(
+    (state: any) => state?.selectedData
+  );
+  const setSelectedData = useSelectedDataStore(
+    (state: any) => state?.setSelectedData
+  );
   const demoUrl = "https://codesandbox.io/s/simple-area-chart-4ujxw";
 
   const { data: answers } = useListAnswersQuery();
@@ -122,8 +130,12 @@ export const CharacterDiscoveryAreaChart = () => {
   );
 
   const currentPhrase = currentLesson?.lessons?.find(
-    (lesson: any) => lesson?.id === selectedData?.hanzi
+    // BUG:
+    // (lesson: any) => lesson?.id === selectedData?.hanzi
+    (lesson: any) => lesson?.id === selectedData?.phraseId
   );
+
+  console.log("SELECTED DATA", selectedData);
 
   return (
     <div>
@@ -136,6 +148,7 @@ export const CharacterDiscoveryAreaChart = () => {
           <ResponsiveContainer width="100%" height={400}>
             <AreaChart
               onClick={(props: any) => {
+                // setSelectedData(props);
                 setSelectedData(props?.activePayload?.[0]?.payload);
                 console.log("YO", props);
               }}
@@ -179,7 +192,6 @@ export const CharacterDiscoveryAreaChart = () => {
             <AreaChart
               onClick={(props: any) => {
                 setSelectedData(props?.activePayload?.[0]?.payload);
-                console.log("YO", props);
               }}
               width={500}
               height={400}
@@ -233,7 +245,10 @@ export const CharacterDiscoveryAreaChart = () => {
 
           {selectedData?.totalCharacters?.length ? (
             <div className="w-full px-4 md:px-32 my-4 md:my-8 text-sm text-gray-700">
-              <h4 className="font-semibold text-gray-400"> Total Characters Discovered</h4>
+              <h4 className="font-semibold text-gray-400">
+                {" "}
+                Total Characters Discovered
+              </h4>
 
               <div className="my-2 flex justify-center items-center text-2xl text-gray-600 flex-wrap">
                 {selectedData?.totalCharacters?.map(

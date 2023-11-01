@@ -44,8 +44,16 @@ import { NavBar } from "@/components/navbar";
 import { getGraph } from "../pinyin/utils";
 import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
 import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
+import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
+import { course1 } from "@/data/convos/bm1";
 
 const PageView = ({ view, setSelectedId, belt }: any) => {
+  const { data: answers } = useListAnswersQuery();
+
+  const lastAnswer = answers?.[answers?.length - 1];
+
+  console.log("LAST", { lastAnswer });
+
   switch (view) {
     case "places":
       return (
@@ -150,7 +158,8 @@ const PageView = ({ view, setSelectedId, belt }: any) => {
                   className={`${
                     learnedCharacters.includes(prop?.hanzi)
                       ? `dark:text-white ${color}`
-                      : Boolean(showIf)
+                      : // : Boolean(showIf)
+                      lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                       ? "dark:text-white text-yellow-500"
                       : "dark:text-gray-500 text-gray-200"
                   } dark:hover:text-white p-4 text-3xl md:text-2xl transition lowercase`}
@@ -223,6 +232,12 @@ function SelectedComponent({ selectedId, setSelectedId }: any) {
   const relatedData = data?.filter((item: any) =>
     item?.hanzi?.includes(dict?.hanzi)
   );
+
+  const { data: allAnswers, isLoading } = useListAnswersQuery();
+
+  const relevantAnswers = allAnswers?.filter((answer: any) => {
+    return answer?.hanzi?.includes(selectedId);
+  });
 
   return (
     <div>
@@ -594,6 +609,56 @@ function SelectedComponent({ selectedId, setSelectedId }: any) {
           </div>
         ) : null}
       </div>
+
+      <div className="my-8 flex justify-center">
+        {/* <h2>nmm</h2> */}
+        <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
+          {relevantAnswers?.map((char: any, idx: number) => {
+            const lesson = {};
+
+            const currentLesson = course1?.lessons?.find(
+              (lesson: any) => lesson?.id === char?.journeyId
+            );
+
+            const currentPhrase = currentLesson?.lessons?.find(
+              (lesson: any) => lesson?.id === char?.phraseId
+            );
+
+            return (
+              <div
+                role="button"
+                className="pb-8 flex flex-col"
+                key={`${idx}-${char?.hanzi}-${idx}`}
+              >
+                {" "}
+                <span className="text-sm text-gray-500">
+                  {currentPhrase?.pinyin}
+                </span>
+                <span className="text-gray-500">
+                  {currentPhrase?.hanzi?.split("")?.map((val: string) => {
+                    return (
+                      <span
+                        className={`${
+                          selectedId === val ? "text-gray-600" : "text-gray-400"
+                        }`}
+                      >
+                        {val}
+                      </span>
+                    );
+                  })}
+                </span>
+                <span className="text-sm text-gray-500">{currentPhrase?.en}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* <div>
+        <code>
+          <pre>{JSON.stringify(relevantAnswers, null, 2)}</pre>
+        </code>
+      </div> */}
     </div>
   );
 }
@@ -617,13 +682,15 @@ const bgs = [
 ];
 
 export default function NomadMethod(props: any) {
-  const [selectedBelt, setBelt] = useState();
+  const [selectedBelt, setSelectedBelt] = useState<any>();
   const [selectedId, setSelectedId] = useState<any>("");
   const [view, setView] = useState("characters");
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState(0);
 
   const { data } = useListTonePairsQuery({});
+
+  const { data: answers } = useListAnswersQuery();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -635,12 +702,42 @@ export default function NomadMethod(props: any) {
   const selectedItem = propsArr.find((item) => item?.hanzi === selectedId);
 
   const belts = [
-    { fill: "bg-slate-200", maxCharacterLevel: 105, level: "white" },
-    { fill: "bg-yellow-500", maxCharacterLevel: 300, type: "yellow" },
-    { fill: "bg-green-500", maxCharacterLevel: 600, level: "green" },
-    { fill: "bg-blue-500", maxCharacterLevel: 1200, level: "blue" },
-    { fill: "bg-red-500", maxCharacterLevel: 2000, level: "red" },
-    { fill: "bg-black", maxCharacterLevel: 3000, level: "black" },
+    {
+      fill: "bg-slate-200",
+      unselected: "bg-slate-100",
+      maxCharacterLevel: 105,
+      level: "white",
+    },
+    {
+      fill: "bg-yellow-500",
+      unselected: "bg-yellow-200",
+      maxCharacterLevel: 300,
+      type: "yellow",
+    },
+    {
+      fill: "bg-green-500",
+      unselected: "bg-green-200",
+      maxCharacterLevel: 600,
+      level: "green",
+    },
+    {
+      fill: "bg-blue-500",
+      unselected: "bg-blue-200",
+      maxCharacterLevel: 1200,
+      level: "blue",
+    },
+    {
+      fill: "bg-red-500",
+      unselected: "bg-red-200",
+      maxCharacterLevel: 2000,
+      level: "red",
+    },
+    {
+      fill: "bg-black",
+      unselected: "bg-gray-300",
+      maxCharacterLevel: 3000,
+      level: "black",
+    },
   ];
 
   return (
@@ -653,9 +750,13 @@ export default function NomadMethod(props: any) {
             <button
               key={belt?.fill}
               onClick={() => {
-                setBelt(belt as any);
+                setSelectedBelt(belt as any);
               }}
-              className={`${belt?.fill} h-4 w-4 rounded-full text`}
+              className={`${
+                belt?.level === (selectedBelt?.level as any)
+                  ? belt?.fill
+                  : belt?.unselected
+              } h-4 w-4 rounded-full text`}
             ></button>
           );
         })}

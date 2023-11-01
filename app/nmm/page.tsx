@@ -635,19 +635,26 @@ function SelectedComponent({ selectedId, setSelectedId }: any) {
                   {currentPhrase?.pinyin}
                 </span>
                 <span className="text-gray-500">
-                  {currentPhrase?.hanzi?.split("")?.map((val: string) => {
-                    return (
-                      <span
-                        className={`${
-                          selectedId === val ? "text-gray-600" : "text-gray-400"
-                        }`}
-                      >
-                        {val}
-                      </span>
-                    );
-                  })}
+                  {currentPhrase?.hanzi
+                    ?.split("")
+                    ?.map((val: string, idy: number) => {
+                      return (
+                        <span
+                          key={`${idx}-${val}-${idx}-${idy}`}
+                          className={`${
+                            selectedId === val
+                              ? "text-gray-600"
+                              : "text-gray-400"
+                          }`}
+                        >
+                          {val}
+                        </span>
+                      );
+                    })}
                 </span>
-                <span className="text-sm text-gray-500">{currentPhrase?.en}</span>
+                <span className="text-sm text-gray-500">
+                  {currentPhrase?.en}
+                </span>
               </div>
             );
           })}

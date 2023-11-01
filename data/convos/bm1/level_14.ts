@@ -11,6 +11,24 @@ export const lesson14 = {
     slow: "https://cdn.fs.teachablecdn.com/Aha0gfTkThmVBco4UCtH",
     fast: "https://cdn.fs.teachablecdn.com/iw52BOQKQkS2gcoeSSQJ",
   },
+
+  questionsAndAnswers: [
+    {
+      id: "这章节会介绍哪些概念",
+      hanzi: "这章节会介绍哪些 React 概念？",
+      type: "question",
+      pinyin: "Zhè zhāngjié huì jièshào nǎxiē React gàiniàn?",
+      en: "This chapter will introduce which React concepts?",
+    },
+    {
+      id: "本章节将介绍你每天都会使用的的概念",
+      hanzi: "本章节将介绍你每天都会使用的 80% 的 React 概念。",
+      pinyin:
+        "Běn zhāngjié jiāng jièshào nǐ měitiān dōu huì shǐyòng de 80% de React gàiniàn.",
+      en: "This chapter will introduce the 80% of React concepts that you use every day.",
+      questionId: "这章节会介绍哪些概念",
+    },
+  ],
   lessonsV2: [
     {
       id: "快速入门",
@@ -102,7 +120,8 @@ export const lesson14 = {
     {
       id: "一个组件是用户界面的一部分它拥有自己的逻辑和外观",
       hanzi: "一个组件是 UI（用户界面）的一部分，它拥有自己的逻辑和外观。",
-      pinyin: "Yīgè zǔjiàn shì UI(yònghù jièmiàn) de yībùfèn, tā yǒngyǒu zìjǐ de luójí hé wàiguān.",
+      pinyin:
+        "Yīgè zǔjiàn shì UI(yònghù jièmiàn) de yībùfèn, tā yǒngyǒu zìjǐ de luójí hé wàiguān.",
       lit: "",
       en: "A component is a part of a UI (user interface) that has its own logic and appearance.",
     },
@@ -123,7 +142,8 @@ export const lesson14 = {
     {
       id: "至此你已经声明了现在把它嵌套到另一个组件中",
       hanzi: "至此，你已经声明了 MyButton，现在把它嵌套到另一个组件中",
-      pinyin: "Zhìcǐ, nǐ yǐjīng shēngmíngliǎo MyButton, xiànzài bǎ tā qiàn tào dào lìng yīgè zǔjiàn zhōng",
+      pinyin:
+        "Zhìcǐ, nǐ yǐjīng shēngmíngliǎo MyButton, xiànzài bǎ tā qiàn tào dào lìng yīgè zǔjiàn zhōng",
       lit: "",
       en: "At this point, you have declared MyButton, now nest it into another component",
     },

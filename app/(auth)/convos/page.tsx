@@ -27,6 +27,7 @@ import { course1 } from "@/data/convos/bm1/index";
 import { useConvosStore } from "@/stores/convos-store";
 import { ConvosNavBar } from "./convos-nav-bar";
 import { ConvoDetails } from "./convo-details";
+import { useSelectedCharacter } from "./use-selected-character";
 
 function formatPercentage(number: number) {
   return Intl.NumberFormat("en-GB", {
@@ -120,6 +121,11 @@ export default function Home() {
   const [isTocHidden, setIsTocHidden] = useState(false);
   const lessonId = useConvosStore((state: any) => state?.convoId);
 
+  const selectedChar = useSelectedCharacter((state: any) => state?.character);
+  const setSelectedChar = useSelectedCharacter(
+    (state: any) => state?.setCharacter
+  );
+
   const routeName = usePathname();
 
   const router = useRouter();
@@ -137,7 +143,7 @@ export default function Home() {
 
   return (
     <main className="">
-      {lessonId && routeName?.includes("/convos") ? (
+      {selectedChar ? null : lessonId && routeName?.includes("/convos") ? (
         <ConvosNavBar />
       ) : (
         <NavBar />

@@ -19,6 +19,7 @@ import { useEffect } from "react";
 
 import { filterHmm, parse } from "@/data/utils";
 import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
+import { useSelectedCharacter } from "@/app/(auth)/convos/use-selected-character";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -100,6 +101,9 @@ const options = [
 
 export const NavBar = () => {
   const routeName = usePathname();
+
+  const selectedChar = useSelectedCharacter((state: any) => state?.character)
+  const setSelectedChar = useSelectedCharacter((state: any) => state?.setCharacter)
 
   const router = useRouter();
 
@@ -215,6 +219,11 @@ export const NavBar = () => {
       search2(context, query);
     }
   };
+
+
+  if (selectedChar) {
+    return null
+  }
 
   return (
     <div className="flex justify-between items-center w-full px-4 md:px-32 md:mt-2">

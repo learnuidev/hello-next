@@ -15,10 +15,12 @@ import { faXmark } from "@fortawesome/pro-light-svg-icons/faXmark";
 
 import { course1 } from "@/data/convos/bm1/index";
 import Link from "next/link";
+import { useSelectedCharacter } from "./use-selected-character";
+import { learnedCharacters } from "@/data/hmm/data";
 
 function SelectedCharacter({
-  selectedChar,
-  setSelectedChar,
+  // selectedChar,
+  // setSelectedChar,
   unlockedCharactersHMM,
 }: {
   setSelectedChar: any;
@@ -26,6 +28,11 @@ function SelectedCharacter({
   unlockedCharactersHMM: string[];
 }) {
   const { data: allAnswers, isLoading } = useListAnswersQuery();
+
+  const selectedChar = useSelectedCharacter((state: any) => state?.character);
+  const setSelectedChar = useSelectedCharacter(
+    (state: any) => state?.setCharacter
+  );
 
   const relevantAnswersHanzi = [
     // @ts-ignore
@@ -65,6 +72,14 @@ function SelectedCharacter({
   return (
     <div className="w-full px-4 md:px-32 my-4 md:my-8">
       <div className="flex justify-between items-center">
+        <button
+          className="text-4xl"
+          onClick={() => {
+            setSelectedChar("");
+          }}
+        >
+          <FontAwesomeIcon icon={faXmark} />
+        </button>
         <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
           {selectedChar?.hanzi || selectedChar}
 
@@ -79,14 +94,6 @@ function SelectedCharacter({
             {selectedChar?.hanzi || selectedChar}
           </Link>
         </h2>
-        <button
-          className="text-4xl"
-          onClick={() => {
-            setSelectedChar("");
-          }}
-        >
-          <FontAwesomeIcon icon={faXmark} />
-        </button>
       </div>
       <div className="my-8">
         {/* <h2>nmm</h2> */}
@@ -112,7 +119,20 @@ function SelectedCharacter({
                 <span className="text-sm text-gray-600">
                   {currentPhrase?.pinyin}
                 </span>
-                <span className="text-gray-700">{currentPhrase?.hanzi}</span>
+                <span className="text-gray-700">
+                  {currentPhrase?.hanzi?.split("")?.map((x: string) => {
+                    return (
+                      <span
+                      key={`${x}-${Math.random() * 10000}`}
+                        onClick={() => {
+                          setSelectedChar(x);
+                        }}
+                      >
+                        {x}
+                      </span>
+                    );
+                  })}
+                </span>
                 <span className="text-sm">{currentPhrase?.en}</span>
               </div>
             );
@@ -125,13 +145,19 @@ function SelectedCharacter({
 
 export function ConvoInsights({ lessonId }: { lessonId: string }) {
   const [isTocHidden, setIsTocHidden] = useState(false);
-  const [selectedChar, setSelectedChar] = useState("");
+  // const [selectedChar, setSelectedChar] = useState("");
+
+  const selectedChar = useSelectedCharacter((state: any) => state?.character);
+  const setSelectedChar = useSelectedCharacter(
+    (state: any) => state?.setCharacter
+  );
 
   const router = useRouter();
 
-  const { data: allAnswers, isLoading } = useListAnswersQuery({
-    journeyId: lessonId,
-  });
+  // const { data: allAnswers, isLoading } = useListAnswersQuery({
+  //   journeyId: lessonId,
+  // });
+  const { data: allAnswers, isLoading } = useListAnswersQuery();
 
   if (isLoading) {
     return (
@@ -143,10 +169,25 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     );
   }
 
+  const allLessonAnswers = allAnswers?.filter(
+    (answer: any) => answer?.journeyId === lessonId
+  );
+
+  const allNewCharaters = allLessonAnswers
+    .map((curr: any) => curr?.newCharacters)
+    ?.flat();
+
+  const totalNewCharaters = allLessonAnswers.reduce(
+    (acc: number, curr: any) => acc + curr?.newCharacters?.length,
+    0
+  );
+
   const uniqueWords = [
     // @ts-ignore
     ...new Set(
-      allAnswers?.map((answer: { hanzi: string }) => answer?.hanzi)?.join("")
+      allLessonAnswers
+        ?.map((answer: { hanzi: string }) => answer?.hanzi)
+        ?.join("")
     ),
   ]
     .join("")
@@ -156,7 +197,9 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
 
   const allWords = [
     // @ts-ignore
-    ...allAnswers?.map((answer: { hanzi: string }) => answer?.hanzi)?.join(""),
+    ...allLessonAnswers
+      ?.map((answer: { hanzi: string }) => answer?.hanzi)
+      ?.join(""),
   ]
     .join("")
     ?.toLocaleLowerCase()
@@ -203,13 +246,18 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
       <div>
         <div className="flex justify-start space-x-16">
           <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
-            {unlockedCharactersHMM?.length}{" "}
-            <span className="text-sm md:text-xl">characters discovered </span>
+            {uniqueWords?.length}{" "}
+            <span className="text-sm md:text-xl">total characters </span>
+          </h2>
+          <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
+            {totalNewCharaters}{" "}
+            <span className="text-sm md:text-xl">new characters </span>
           </h2>
 
-          <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
-            3 <span className="text-sm md:text-xl">characters acquired </span>
-          </h2>
+          {/* <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
+            {learnedCharacters?.length}{" "}
+            <span className="text-sm md:text-xl">characters acquired </span>
+          </h2> */}
           {/* <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
             {unlockedCharactersHMM?.length}{" "}
             <span className="text-sm md:text-xl">characters learned </span>
@@ -221,6 +269,31 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
         </div>
 
         <div className="my-8">
+          <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
+            {uniqueWords?.map((char, idx: number) => {
+              return (
+                <span
+                  role="button"
+                  onClick={() => {
+                    setSelectedChar(char);
+                  }}
+                  className={`p-2 ${
+                    // ""
+                    allNewCharaters?.includes(char)
+                      ? "text-gray-700"
+                      : "text-gray-400"
+                  }`}
+                  // className="p-2"
+                  key={`${idx}-${char}-${idx}`}
+                >
+                  {" "}
+                  {char}
+                </span>
+              );
+            })}
+          </div>
+        </div>
+        {/* <div className="my-8">
           <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
             {unlockedNMMCharacters?.map((char, idx: number) => {
               return (
@@ -243,7 +316,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
               );
             })}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

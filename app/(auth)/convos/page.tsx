@@ -60,7 +60,7 @@ function LessonCard({ lesson }: any) {
   const completedLessons = lesson?.lessons?.filter((phrase: any) =>
     allAnswers?.find(
       (answer: any) =>
-        answer?.hanzi === phrase?.id && answer?.status === "correct"
+        answer?.phraseId === phrase?.id && answer?.status === "correct"
     )
   );
 

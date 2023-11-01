@@ -23,6 +23,11 @@ export const cleanString = (str: string) => {
     ?.replaceAll(":", "")
     ?.replaceAll("：", "")
     ?.replaceAll('、', "")
+    ?.replaceAll("（", "")
+    ?.replaceAll("）", "")
+    ?.replaceAll("，", "")
+    ?.replaceAll("：", "")
+    
 };
 
 export const lessonParser = () => {

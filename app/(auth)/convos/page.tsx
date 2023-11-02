@@ -28,6 +28,7 @@ import { useConvosStore } from "@/stores/convos-store";
 import { ConvosNavBar } from "./convos-nav-bar";
 import { ConvoDetails } from "./convo-details";
 import { useSelectedCharacter } from "./use-selected-character";
+import { hmmSentences } from "@/data/hmm/sentences";
 
 function formatPercentage(number: number) {
   return Intl.NumberFormat("en-GB", {
@@ -117,7 +118,7 @@ function LessonCard({ lesson }: any) {
     // </Link>
   );
 }
-export default function Home() {
+export default function Convos() {
   const [isTocHidden, setIsTocHidden] = useState(false);
   const lessonId = useConvosStore((state: any) => state?.convoId);
 
@@ -125,6 +126,8 @@ export default function Home() {
   const setSelectedChar = useSelectedCharacter(
     (state: any) => state?.setCharacter
   );
+
+  console.log({ hmmSentences });
 
   const routeName = usePathname();
 

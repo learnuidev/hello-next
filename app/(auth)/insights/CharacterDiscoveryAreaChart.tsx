@@ -139,8 +139,8 @@ export const CharacterDiscoveryAreaChart = () => {
 
   return (
     <div>
-      <div className="flex">
-        <div className="w-full">
+      <div className="flex flex-col md:flex-row">
+        <div className="w-full hidden md:block">
           <h1 className="text-center font-extralight">
             New Characters Discovered{" "}
           </h1>

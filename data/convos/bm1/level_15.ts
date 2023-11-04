@@ -118,8 +118,8 @@ export const lesson15 = {
     },
     {
       id: "你不停地背单词",
-      hanzi: "你不停地背单词",
-      pinyin: "Nǐ bù tíng de bèi dāncí",
+      hanzi: "你 不停地 背 单词",
+      pinyin: "Nǐ bùtíngde bèi dāncí",
       lit: "You keep memorizing words",
       en: "You endlessly memorize words",
     },

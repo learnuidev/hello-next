@@ -8,19 +8,22 @@ import { Music } from "@/components/music";
 
 import { WordIcon } from "@/components/ui/icons";
 
-import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
-
 import { faXmark } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { PageView } from "./page-view";
 
 import { calculateColor } from "./utils";
+import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
 export function SelectedComponent({ selectedId, setSelectedId, belt }: any) {
   // @ts-ignore
   const dict = dictionary?.[selectedId];
 
   const [view, setView] = useState("sentences");
+
+  const toneLevel = getCharacterToneLevel(dict as ICharacter);
+
+  const color = calculateColor({ tone: toneLevel });
 
   return (
     <div>
@@ -37,9 +40,7 @@ export function SelectedComponent({ selectedId, setSelectedId, belt }: any) {
         <h1 className="space-x-2 flex flex-col items-center">
           {dict?.pinyin ? (
             <span
-              className={`items-center flex space-x-4 text-2xl font-bold ${calculateColor(
-                dict
-              )}`}
+              className={`items-center flex space-x-4 text-2xl font-bold ${color}`}
             >
               {" "}
               <span>{dict?.sound ? <Music url={dict?.sound} /> : null} </span>

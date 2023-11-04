@@ -127,17 +127,17 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
               <div className="my-4 mx-8 md:mx-16 text-black dark:text-white">
                 {relatedData?.length ? (
                   <div className="flex flex-col items-start">
-                    <div className="space-x-8 my-4 flex flex-row">
+                    <div className="space-y-8 my-4">
                       {relatedData.map((example: any) => {
                         return (
                           <div
                             key={JSON.stringify(example)}
-                            className="flex space-x-4 items-start"
+                            className="grid grid-cols-2 w-full"
                           >
-                            {example?.sound ? (
+                            {example?.sound || example?.audio ? (
                               <Music
-                                className="min-w-[40px] text-2xl dark:text-gray-500 text-gray-700"
-                                url={example?.sound}
+                                className="text-md dark:text-gray-500 text-gray-700"
+                                url={example?.sound || example?.audio}
                               />
                             ) : null}
                             <div className="">
@@ -156,9 +156,9 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
                                   </span>
                                 );
                               })}
-                              <p className="dark:text-gray-500 text-gray-400">
+                              {/* <p className="dark:text-gray-500 text-gray-400">
                                 {example?.pinyin}
-                              </p>
+                              </p> */}
                               <p className="dark:text-gray-400 text-gray-500">
                                 {example?.en}
                               </p>

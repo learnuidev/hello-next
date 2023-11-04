@@ -235,7 +235,7 @@ export const NavBar = () => {
         <div className="flex items-center justify-center"></div>
 
         <input
-          className="dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300 dark:bg-black dark:text-gray-300 placeholder:text-gray-400 opacity-100 transition-all  duration-400 ease-in border-2 w-[140px] md:w-[500px] focus:w-[600px] px-4 py-2 rounded-full focus:outline-none active:outline-none"
+          className="dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300 dark:bg-black/10 dark:text-gray-300 placeholder:text-gray-400 opacity-100 transition-all  duration-400 ease-in border-2 w-[140px] md:w-[500px] focus:w-[600px] px-4 py-2 rounded-full focus:outline-none active:outline-none dark:border-gray-800"
           placeholder={"Search"}
           onChange={(event) => {
             setQuery(() => event?.target?.value);
@@ -255,7 +255,7 @@ export const NavBar = () => {
         <Link
           href="/convos"
           className={`transition ${
-            routeName?.includes("/convos") ? "text-gray-800" : "text-gray-200"
+            routeName?.includes("/convos") ? "text-gray-800 dark:text-gray-300" : "text-gray-200 dark:text-gray-500"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faComment} />
@@ -263,7 +263,7 @@ export const NavBar = () => {
         <Link
           href="/learn"
           className={`transition ${
-            routeName === "/learn" ? "text-gray-800" : "text-gray-200"
+            routeName === "/learn" ? "text-gray-800 dark:text-gray-300" : "text-gray-200 dark:text-gray-500"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faGraduationCap} />
@@ -271,7 +271,7 @@ export const NavBar = () => {
         <Link
           href="/pinyin"
           className={`transition ${
-            routeName === "/pinyin" ? "text-gray-800" : "text-gray-200"
+            routeName === "/pinyin" ? "text-gray-800 dark:text-gray-300" : "text-gray-200 dark:text-gray-500"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faTableTree} />
@@ -279,7 +279,7 @@ export const NavBar = () => {
         <Link
           href="/insights"
           className={`transition ${
-            routeName === "/insights" ? "text-gray-800" : "text-gray-200"
+            routeName === "/insights" ? "text-gray-800 dark:text-gray-300" : "text-gray-200 dark:text-gray-500"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faChartColumn} />
@@ -288,19 +288,19 @@ export const NavBar = () => {
         <Link
           href="/nmm"
           className={`transition ${
-            routeName === "/nmm" ? "text-gray-800" : "text-gray-200"
+            routeName === "/nmm" ? "text-gray-800 dark:text-gray-300" : "text-gray-200 dark:text-gray-500"
           } hover:text-gray-700 transition text-xl`}
         >
           <NomadIcon />
         </Link>
-        <Link
+        {/* <Link
           href="/map"
           className={`transition ${
-            routeName === "/map" ? "text-gray-800" : "text-gray-200"
+            routeName === "/map" ? "text-gray-800 dark:text-gray-300" : "text-gray-200 dark:text-gray-500"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faMapLocation} />
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

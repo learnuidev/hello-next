@@ -160,7 +160,7 @@ const PageView = ({ view, setSelectedId, belt }: any) => {
                       ? `dark:text-white ${color}`
                       : // : Boolean(showIf)
                       lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                      ? "dark:text-white text-yellow-500"
+                      ? "text-yellow-500"
                       : "dark:text-gray-500 text-gray-200"
                   } dark:hover:text-white p-4 text-3xl md:text-2xl transition lowercase`}
                 >

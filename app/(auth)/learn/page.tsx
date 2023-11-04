@@ -56,7 +56,7 @@ export default function Home() {
         </div>
       </div>
 
-      <Separator className="border-[1px] w-full text-gray-200 fill-gray-200 my-8" />
+      <Separator className="border-[1px] w-full border-gray-300 dark:border-gray-800 my-16" />
 
       <h2 className="text-center uppercase font-bold text-gray-500">
         My Learning Resources

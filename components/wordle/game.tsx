@@ -8,6 +8,9 @@ import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useListGrammarAnalysisQuery } from "@/domain/grammar/grammar.queries";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faArrowRight } from "@fortawesome/pro-thin-svg-icons";
 
 function GameTile(props: any) {
   const { letter } = props;
@@ -125,6 +128,10 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
     (lesson: any) => lesson?.id === lessonIndex
   );
 
+  const { data: analysis } = useListGrammarAnalysisQuery({
+    content: currentPhrase?.id || "",
+  });
+
   const currentPhraseIndex =
     currentLesson?.lessons?.findIndex(
       (lesson: any) => lesson?.id === lessonIndex
@@ -205,110 +212,199 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
       </header>
 
       <main className="pb-6 flex items-center justify-center flex-col">
-        <div className="flex justify-between items-center w-full px-32">
+        <div className="flex flex-col md:flex-row justify-between items-center w-full px-4 md:px-32">
           <div></div>
-          <h2 className="text-gray-400 font-extralight text-2xl">
+          <h2 className="text-gray-400 font-extralight text-lg md:text-2xl">
             Write the following sentence in{" "}
             <span className="text-yellow-400">汉子</span>
           </h2>
-          <div className="text-lg font-extralight text-gray-400">
+          <div className="text-md md:text-2xl font-extralight text-gray-500">
             {currentPhraseIndex} / {totalLessons}
           </div>
         </div>
-        <div className="mt-16 text-center space-y-2">
-          <p className="text-xl text-gray-500">{currentPhrase?.en}</p>
-          <p className="text-4xl  text-gray-700 font-extralight">
-            {currentPhrase?.pinyin}
-          </p>
-        </div>
 
-        <div className="flex justify-center w-full my-16 flex-col items-center">
-          <input
-            disabled={gameStatus === "win"}
-            className="text-center h-14 border-solid border-b-2 w-[320px] text-2xl px-2 focus:outline-none active:outline-none"
-            value={currentGuess}
-            onKeyDown={(event: any) => {
-              if (event.key === "ArrowUp") {
-                const guessHistoryItem = guessHistory?.[lessonIndex as string];
-                const lastGuess =
-                  guessHistoryItem?.[guessHistoryItem?.length - 1];
+        <div className="grid grid-cols-12 w-full px-4 md:px-32 justify-end items-center">
+          <button
+            className="col-span-1 hidden md:block md:text-2xl dark:text-gray-600"
+            onClick={() => {
+              const currentLesson = course1?.lessons?.find(
+                (lesson: any) => lesson?.id === _lessonId
+              );
 
-                setCurrentGuess(lastGuess);
-                return null;
-              }
+              const currentPhrase = currentLesson?.lessons?.find(
+                (lesson: any) => lesson?.id === lessonIndex
+              );
+              const currentPhraseIndex = currentLesson?.lessons?.findIndex(
+                (lesson: any) => lesson?.id === lessonIndex
+              );
 
-              if (event.key === "Enter") {
-                handleEnter();
+              // const lessonIdx = course1?.lessons?.findIndex(
+              //   (lesson: any) => lesson?.id === lessonIndex
+              // );
+
+              if (currentPhraseIndex !== -1) {
+                const nextId = currentLesson?.lessons?.[currentPhraseIndex - 1];
+
+                nextId?.id && setLessonIndex(nextId?.id);
+
+                if (params?.["lesson-id"]) {
+                  router.push(
+                    `/convos/${params?.["lesson-id"] || _lessonId}/${
+                      nextId?.id
+                    }`
+                  );
+                }
               } else {
-                setCurrentGuess(event.target.value);
+                setGameStatus("finish");
               }
+
+              setCurrentGuess("");
+              setGameStatus("");
             }}
-            onChange={(event) => {
-              handleKeyup(event);
-            }}
-          />
-          {gameStatus === "win" && (
-            <div className="text-center transition mt-8">
-              <button
-                onClick={() => {
-                  const guessTrimmed = cleanString(currentGuess);
-                  const historyTrimmed = [
-                    ...currentGuessHistory,
-                    guessTrimmed,
-                  ]?.reduce((acc, curr) => `${acc}${curr}`, "");
-
-                  return addAnswerMutation
-                    .mutateAsync({
-                      hanzi: secret,
-                      answer: historyTrimmed,
-                      lessonId: _lessonId,
-                      phraseId: currentPhrase?.id,
-                      status: "correct",
-                      guessHistory: guessHistory?.[lessonIndex as string],
-                    })
-                    .then((res) => {
-                      const currentLesson = course1?.lessons?.find(
-                        (lesson: any) => lesson?.id === _lessonId
-                      );
-
-                      const currentPhrase = currentLesson?.lessons?.find(
-                        (lesson: any) => lesson?.id === lessonIndex
-                      );
-                      const currentPhraseIndex =
-                        currentLesson?.lessons?.findIndex(
-                          (lesson: any) => lesson?.id === lessonIndex
-                        );
-
-                      // const lessonIdx = course1?.lessons?.findIndex(
-                      //   (lesson: any) => lesson?.id === lessonIndex
-                      // );
-
-                      if (currentPhraseIndex !== -1) {
-                        const nextId =
-                          currentLesson?.lessons?.[currentPhraseIndex + 1];
-
-                        nextId?.id && setLessonIndex(nextId?.id);
-
-                        if (params?.["lesson-id"]) {
-                          router.push(
-                            `/convos/${params?.["lesson-id"] || _lessonId}/${
-                              nextId?.id
-                            }`
-                          );
-                        }
-                      } else {
-                        setGameStatus("finish");
-                      }
-
-                      setCurrentGuess("");
-                      setGameStatus("");
-                    });
-                }}
-              >
-                Continue
-              </button>
+          >
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </button>
+          <div className="col-span-10">
+            <div className="mt-16 text-center space-y-2">
+              <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400">
+                {currentPhrase?.en}
+              </p>
+              <p className="text-2xl md:text-3xl  text-gray-700 font-extralight dark:text-gray-300">
+                {currentPhrase?.pinyin}
+              </p>
             </div>
-          )}
+
+            <div className="flex justify-center w-full my-16 flex-col items-center">
+              <input
+                disabled={gameStatus === "win"}
+                className="text-center h-14 border-solid border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
+                value={currentGuess}
+                onKeyDown={(event: any) => {
+                  if (event.key === "ArrowUp") {
+                    const guessHistoryItem =
+                      guessHistory?.[lessonIndex as string];
+                    const lastGuess =
+                      guessHistoryItem?.[guessHistoryItem?.length - 1];
+
+                    setCurrentGuess(lastGuess);
+                    return null;
+                  }
+
+                  if (event.key === "Enter") {
+                    handleEnter();
+                  } else {
+                    setCurrentGuess(event.target.value);
+                  }
+                }}
+                onChange={(event) => {
+                  handleKeyup(event);
+                }}
+              />
+              {gameStatus === "win" && (
+                <div className="text-center transition mt-8">
+                  <button
+                    onClick={() => {
+                      const guessTrimmed = cleanString(currentGuess);
+                      const historyTrimmed = [
+                        ...currentGuessHistory,
+                        guessTrimmed,
+                      ]?.reduce((acc, curr) => `${acc}${curr}`, "");
+
+                      return addAnswerMutation
+                        .mutateAsync({
+                          hanzi: secret,
+                          answer: historyTrimmed,
+                          lessonId: _lessonId,
+                          phraseId: currentPhrase?.id,
+                          status: "correct",
+                          guessHistory: guessHistory?.[lessonIndex as string],
+                        })
+                        .then((res) => {
+                          const currentLesson = course1?.lessons?.find(
+                            (lesson: any) => lesson?.id === _lessonId
+                          );
+
+                          const currentPhrase = currentLesson?.lessons?.find(
+                            (lesson: any) => lesson?.id === lessonIndex
+                          );
+                          const currentPhraseIndex =
+                            currentLesson?.lessons?.findIndex(
+                              (lesson: any) => lesson?.id === lessonIndex
+                            );
+
+                          // const lessonIdx = course1?.lessons?.findIndex(
+                          //   (lesson: any) => lesson?.id === lessonIndex
+                          // );
+
+                          if (currentPhraseIndex !== -1) {
+                            const nextId =
+                              currentLesson?.lessons?.[currentPhraseIndex + 1];
+
+                            nextId?.id && setLessonIndex(nextId?.id);
+
+                            if (params?.["lesson-id"]) {
+                              router.push(
+                                `/convos/${
+                                  params?.["lesson-id"] || _lessonId
+                                }/${nextId?.id}`
+                              );
+                            }
+                          } else {
+                            setGameStatus("finish");
+                          }
+
+                          setCurrentGuess("");
+                          setGameStatus("");
+                        });
+                    }}
+                  >
+                    Continue
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <button
+            className="col-span-1 hidden md:block md:text-2xl dark:text-gray-600"
+            onClick={() => {
+              const currentLesson = course1?.lessons?.find(
+                (lesson: any) => lesson?.id === _lessonId
+              );
+
+              const currentPhrase = currentLesson?.lessons?.find(
+                (lesson: any) => lesson?.id === lessonIndex
+              );
+              const currentPhraseIndex = currentLesson?.lessons?.findIndex(
+                (lesson: any) => lesson?.id === lessonIndex
+              );
+
+              // const lessonIdx = course1?.lessons?.findIndex(
+              //   (lesson: any) => lesson?.id === lessonIndex
+              // );
+
+              if (currentPhraseIndex !== -1) {
+                const nextId = currentLesson?.lessons?.[currentPhraseIndex + 1];
+
+                nextId?.id && setLessonIndex(nextId?.id);
+
+                if (params?.["lesson-id"]) {
+                  router.push(
+                    `/convos/${params?.["lesson-id"] || _lessonId}/${
+                      nextId?.id
+                    }`
+                  );
+                }
+              } else {
+                setGameStatus("finish");
+              }
+
+              setCurrentGuess("");
+              setGameStatus("");
+            }}
+          >
+            <FontAwesomeIcon icon={faArrowRight} />
+          </button>
         </div>
 
         <div className="w-80">

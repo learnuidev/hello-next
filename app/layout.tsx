@@ -11,6 +11,8 @@ import { faScrewdriverWrench } from "@fortawesome/sharp-solid-svg-icons/faScrewd
 import "@/libs/cognito/init";
 import { Authenticated } from "@/components/Authenticated";
 
+import { ThemeProvider } from "next-themes";
+
 const inter = Inter({ subsets: ["latin"] });
 
 // export const metadata: Metadata = {
@@ -68,24 +70,29 @@ export default function RootLayout({
       `}
         </style>
       </head>
-      <body
-        className={`${inter.className} bg-bkg text-content flex h-screen flex-col`}
-      >
-        <div className="flex-1">
-          <QueryClientProvider>
-            <Authenticated>{children}</Authenticated>
-          </QueryClientProvider>
-        </div>
 
-        <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300">
-          <FontAwesomeIcon icon={faScrewdriverWrench} />
-          <Link
-            target="_blank"
-            href="https://www.linkedin.com/in/vishalgautamm/"
+      <body>
+        <ThemeProvider attribute="class">
+          <div
+            className={`${inter.className} bg-bkg text-content flex h-screen flex-col`}
           >
-            Vishal Gautam
-          </Link>
-        </footer>
+            <div className="flex-1">
+              <QueryClientProvider>
+                <Authenticated>{children}</Authenticated>
+              </QueryClientProvider>
+            </div>
+
+            <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300 dark:text-gray-700">
+              <FontAwesomeIcon icon={faScrewdriverWrench} />
+              <Link
+                target="_blank"
+                href="https://www.linkedin.com/in/vishalgautamm/"
+              >
+                Vishal Gautam
+              </Link>
+            </footer>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

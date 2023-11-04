@@ -948,7 +948,7 @@ function ChartPageVP({
   };
 
   return (
-    <div className="dark:bg-black margin-auto w-full my-2 text-center flex flex-col items-center justify-center">
+    <div className="margin-auto w-full my-2 text-center flex flex-col items-center justify-center">
       <div className="p-2 w-full">
         {selectedPinyin ? (
           <CharacterDetail />
@@ -1069,7 +1069,7 @@ function ChartPageVP({
                 </div>
               </div>
             </div>
-            <div className="md:px-16 text-xs">
+            <div className="md:px-16 md:my-8 text-xs">
               <table>
                 <thead>
                   {table.getHeaderGroups().map((headerGroup) => (

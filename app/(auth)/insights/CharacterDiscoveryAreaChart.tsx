@@ -184,7 +184,7 @@ export const CharacterDiscoveryAreaChart = () => {
         </div>
 
         <div className="w-full">
-          <h1 className="text-center font-semibold text-gray-500">
+          <h1 className="text-center font-extralight">
             Total Characters Discovered
           </h1>
 
@@ -220,57 +220,41 @@ export const CharacterDiscoveryAreaChart = () => {
       </div>
 
       {currentPhrase ? (
-        <div className="w-full text-center text-gray-700 my-12 font-light">
-          <p>{currentPhrase?.pinyin}</p>
-          <p>
-            {currentPhrase?.hanzi
-              ?.split("")
-              ?.map((char: string, idx: number) => {
-                return (
-                  <span
-                    className={`text-2xl ${
-                      selectedData?.newCharacters?.includes(char)
-                        ? "text-gray-600"
-                        : "text-gray-400"
-                    }`}
-                    key={`${char}-${idx}-${idx}`}
-                  >
-                    {char}
-                  </span>
-                );
-              })}
-          </p>
-          <p className="">{currentPhrase?.lit}</p>
-          <p>{currentPhrase?.en}</p>
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 text-center text-gray-700 dark:text-gray-300 font-light mt-24">
+          <div className="w-full">
+            <p>{currentPhrase?.pinyin}</p>
+            <p>
+              {currentPhrase?.hanzi
+                ?.split("")
+                ?.map((char: string, idx: number) => {
+                  return (
+                    <span
+                      className={`text-2xl ${
+                        selectedData?.newCharacters?.includes(char)
+                          ? "text-gray-600"
+                          : "text-gray-400"
+                      }`}
+                      key={`${char}-${idx}-${idx}`}
+                    >
+                      {char}
+                    </span>
+                  );
+                })}
+            </p>
+            <p className="">{currentPhrase?.lit}</p>
+            <p>{currentPhrase?.en}</p>
+          </div>
 
           {selectedData?.totalCharacters?.length ? (
-            <div className="w-full px-4 md:px-32 my-4 md:my-8 text-sm text-gray-700">
-              <h4 className="font-semibold text-gray-400">
+            <div className="w-full text-sm text-gray-700 h-48">
+              <h4 className="text-gray-400 dark:text-gray-600 mb-4 text-xl font-extralight">
                 {" "}
                 Total Characters Discovered
               </h4>
 
-              <div className="my-2 flex justify-center items-center text-2xl text-gray-600 flex-wrap">
-                {selectedData?.totalCharacters?.map(
-                  (char: string, idx: number) => {
-                    return (
-                      <button
-                        className={`p-2 ${
-                          selectedData?.newCharacters?.includes(char)
-                            ? "text-yellow-500"
-                            : "text-gray-600"
-                        }`}
-                        role="button"
-                        onClick={() => {}}
-                        key={`${idx}-${char}-${idx}`}
-                      >
-                        {" "}
-                        {char}
-                      </button>
-                    );
-                  }
-                )}
-              </div>
+              <p className="text-6xl dark:text-gray-200">
+                {selectedData?.totalCharacters?.length}
+              </p>
             </div>
           ) : null}
 
@@ -279,6 +263,26 @@ export const CharacterDiscoveryAreaChart = () => {
           </code> */}
         </div>
       ) : null}
+
+      <div className="flex justify-center items-center text-2xl text-gray-600 dark:text-gray-400 flex-wrap">
+        {selectedData?.totalCharacters?.map((char: string, idx: number) => {
+          return (
+            <button
+              className={`p-2 ${
+                selectedData?.newCharacters?.includes(char)
+                  ? "text-yellow-500"
+                  : "text-gray-600 dark:text-gray-400"
+              }`}
+              role="button"
+              onClick={() => {}}
+              key={`${idx}-${char}-${idx}`}
+            >
+              {" "}
+              {char}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 };

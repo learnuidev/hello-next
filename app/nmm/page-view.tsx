@@ -3,7 +3,7 @@ import React from "react";
 
 import { dictionary } from "@/data/hmm/data/dictionary";
 import { Music } from "@/components/music";
-import { HanziMovieMethod as HanziMovieMethodPlay } from "./explorer-method";
+import { NomadMethod } from "./nomad-method";
 
 import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
@@ -54,7 +54,7 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
 
   switch (view) {
     case "play":
-      return <HanziMovieMethodPlay />;
+      return <NomadMethod />;
     case "sentences":
       return uniqueAnswerIds?.length ? (
         <div className="my-8 flex justify-center">

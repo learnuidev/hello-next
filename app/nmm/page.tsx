@@ -20,7 +20,7 @@ import {
 } from "@/data/hmm/data/v1000";
 import { belts, calculateColor } from "./utils";
 
-export default function NomadMethod(props: any) {
+export default function NomadMethodPage(props: any) {
   const [selectedBelt, setSelectedBelt] = useState<any>();
   // const [selectedId, setSelectedId] = useState<any>("");
 

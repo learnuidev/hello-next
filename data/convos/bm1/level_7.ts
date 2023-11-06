@@ -92,8 +92,8 @@ export const lesson7 = {
       en: "Cindy: A new car? Where did you buy it?",
     },
     {
-      id: "妈妈你认识Mark吗他是卖汽车的",
-      hanzi: "妈妈：你认识Mark吗？他是卖汽车的！",
+      id: "妈妈你认识Mark吗他就是卖汽车的",
+      hanzi: "妈妈：你认识Mark吗？他就是卖汽车的！",
       pinyin: "māma: Nǐ rènshi Mark ma? Tā jiù shì mài qìchē de!",
       lit: "mom: You know Mark question-particle? He just is sell car of!",
       en: "Mom: You know Mark, right? He sells cars!",

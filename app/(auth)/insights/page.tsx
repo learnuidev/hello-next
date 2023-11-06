@@ -19,6 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { faChartSimple, faTable } from "@fortawesome/pro-thin-svg-icons";
 import { CharacterDiscoveryAreaChart } from "./CharacterDiscoveryAreaChart";
 import { useRepeatHistoryStore } from "../convos/_play/use-repeat-history";
+import { useUniqueAnswers } from "@/app/nmm/use-unique-answers";
 
 function SelectedCharacter({
   selectedChar,
@@ -29,32 +30,38 @@ function SelectedCharacter({
   selectedChar: string;
   unlockedCharactersHMM: string[];
 }) {
-  const { data: allAnswers, isLoading } = useListAnswersQuery();
+  const { data: allAnswers, isLoading } = useListAnswersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
 
-  const relevantAnswers = allAnswers?.filter((answer: any) => {
-    return answer?.hanzi?.includes(selectedChar);
-  });
+  const { data: uniqueAnswers } = useUniqueAnswers(selectedChar);
 
   return (
     <div className="w-full px-4 md:px-32 my-4 md:my-8">
       <div className="flex justify-between items-center">
-        <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
-          {selectedChar}
-          <span className="text-sm md:text-xl"> {selectedChar}</span>
-        </h2>
         <button
-          className="text-4xl"
+          className="text-xl md:text-3xl dark:text-gray-600 dark:hover:text-gray-300 transition"
           onClick={() => {
             setSelectedChar("");
           }}
         >
           <FontAwesomeIcon icon={faXmark} />
         </button>
+        <h2 className="text-3xl my-4 font-extralight text-gray-500">
+          {selectedChar}
+          {/* <span className="text-sm md:text-md"> {selectedChar}</span> */}
+        </h2>
       </div>
       <div className="my-8">
         {/* <h2>nmm</h2> */}
-        <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
-          {relevantAnswers?.map((char: any, idx: number) => {
+        <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 dark:text-gray-300 flex-wrap">
+          {uniqueAnswers?.map((char: any, idx: number) => {
             const lesson = {};
 
             const currentLesson = course1?.lessons?.find(
@@ -72,11 +79,28 @@ function SelectedCharacter({
                 key={`${idx}-${char?.hanzi}-${idx}`}
               >
                 {" "}
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-600 dark:text-gray-300">
                   {currentPhrase?.pinyin}
                 </span>
-                <span className="text-gray-700">{currentPhrase?.hanzi}</span>
-                <span className="text-sm">{currentPhrase?.en}</span>
+                <p>
+                  {currentPhrase?.hanzi?.split("")?.map((str: string) => {
+                    return (
+                      <span
+                        key={`${selectedChar}-${str}`}
+                        className={`${
+                          selectedChar === str
+                            ? "text-gray-700 dark:text-yellow-300"
+                            : "text-gray-500 dark:text-gray-300"
+                        }`}
+                      >
+                        {str}
+                      </span>
+                    );
+                  })}
+                </p>
+                <span className="text-sm text-gray-700 dark:text-gray-400">
+                  {currentPhrase?.en}
+                </span>
               </div>
             );
           })}
@@ -94,8 +118,7 @@ export default function Insights() {
 
   const repeatHistories = useRepeatHistoryStore((state: any) => state.history);
 
-
-  console.log("YO", repeatHistories)
+  console.log("YO", repeatHistories);
 
   const { data: allAnswers, isLoading } = useListAnswersQuery();
 
@@ -184,8 +207,6 @@ export default function Insights() {
     correctAnswers?.length / allAnswers?.length
   );
 
-  
-
   return (
     <main className="">
       <NavBar />
@@ -217,17 +238,27 @@ export default function Insights() {
                   </h2>
 
                   <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    <span>{repeatHistories?.length} loops </span>
+                    <span>
+                      {repeatHistories?.length}{" "}
+                      <span className="text-md">loops </span>{" "}
+                    </span>
                     <span className="text-sm md:text-lg">Listening</span>
                   </h2>
 
                   <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    <span>{accuracyPercentage} </span>
+                    {/* <span>{accuracyPercentage} </span> */}
+                    <span>
+                      {allAnswers?.length}{" "}
+                      <span className="text-md">loops </span>
+                    </span>
                     <span className="text-sm md:text-lg">Writing</span>
                   </h2>
 
                   <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    <span>97.8% </span>
+                    {/* <span>97.8% </span> */}
+                    <span>
+                      942 <span className="text-md">loops </span>
+                    </span>
                     <span className="text-sm md:text-lg">Speaking</span>
                   </h2>
                 </div>

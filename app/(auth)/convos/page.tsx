@@ -29,6 +29,9 @@ import { ConvosNavBar } from "./convos-nav-bar";
 import { ConvoDetails } from "./convo-details";
 import { useSelectedCharacter } from "./use-selected-character";
 import { hmmSentences } from "@/data/hmm/sentences";
+import { useViewModeStore } from "./new-convo/use-viewmode-store";
+import { PlusIcon } from "@/components/ui/icons";
+import { NewConvo } from "./new-convo";
 
 function formatPercentage(number: number) {
   return Intl.NumberFormat("en-GB", {
@@ -98,7 +101,7 @@ function LessonCard({ lesson }: any) {
 
         router.push(`/convos?lessonId=${lesson?.id}`);
       }}
-      className="font-light flex justify-between items-center w-full px-4 md:px-32 md:mt-2"
+      className="px-4 md:px-32 font-light flex justify-between items-center w-full md:mt-2"
     >
       <h2 className="text-2xl">{lesson?.title}</h2>
       <p className="text-2xl">{formatPercentage(percentCompleted)}</p>
@@ -122,6 +125,9 @@ export default function Convos() {
   const [isTocHidden, setIsTocHidden] = useState(false);
   const lessonId = useConvosStore((state: any) => state?.convoId);
 
+  const viewMode = useViewModeStore((state: any) => state.viewMode);
+  const setViewMode = useViewModeStore((state: any) => state.setViewMode);
+
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
   const setSelectedChar = useSelectedCharacter(
     (state: any) => state?.setCharacter
@@ -144,13 +150,27 @@ export default function Convos() {
     }
   };
 
-  return (
+  return viewMode === "convo/add" ? (
+    <NewConvo />
+  ) : (
     <main className="">
       {selectedChar ? null : lessonId && routeName?.includes("/convos") ? (
         <ConvosNavBar />
       ) : (
         <NavBar />
       )}
+
+      {selectedChar ? null : lessonId && routeName?.includes("/convos") ? null :<div className="px-4 md:px-28 my-8">
+        <button
+          className="text-xl md:text-4xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full"
+          onClick={() => {
+            setViewMode("convo/add");
+            console.log("SHOW SETTINGS");
+          }}
+        >
+          <PlusIcon />
+        </button>
+      </div>}
 
       {lessonId ? (
         <ConvoDetails lessonId={lessonId} />

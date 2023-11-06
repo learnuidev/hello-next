@@ -15,15 +15,17 @@ import { calculateColor } from "./utils";
 import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
 
 export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
-  const { data: answers } = useListAnswersQuery();
-
-  const lastAnswer = answers?.[answers?.length - 1];
-
   const dict = dictionary?.[selectedId];
 
-  console.log("LAST", { lastAnswer });
-
-  const { data: allAnswers, isLoading } = useListAnswersQuery();
+  const { data: allAnswers, isLoading } = useListAnswersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
 
   const relevantAnswers = allAnswers?.filter((answer: any) => {
     return answer?.hanzi?.includes(selectedId);

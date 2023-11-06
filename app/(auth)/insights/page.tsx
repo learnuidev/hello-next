@@ -201,16 +201,26 @@ export default function Insights() {
             <div className="space-y-16">
               <div className="w-full px-4 md:px-32">
                 <div className="flex justify-around">
-                  <h2 className="text-4xl md:text-4xl my-4 font-extralight text-gray-500">
-                    {unlockedNMMCharacters?.length}{" "}
-                    <span className="text-sm md:text-xl">
-                      characters discovered{" "}
+                  <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                    <span>{unlockedNMMCharacters?.length} </span>
+                    <span className="text-sm md:text-lg">
+                      Characters Discovered{" "}
                     </span>
                   </h2>
 
-                  <h2 className="text-4xl md:text-4xl my-4 font-extralight text-gray-500">
-                    {accuracyPercentage}{" "}
-                    <span className="text-sm md:text-xl">written accuracy</span>
+                  <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                    <span>{accuracyPercentage} </span>
+                    <span className="text-sm md:text-lg">Listening</span>
+                  </h2>
+
+                  <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                    <span>{accuracyPercentage} </span>
+                    <span className="text-sm md:text-lg">Writing</span>
+                  </h2>
+
+                  <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                    <span>{accuracyPercentage} </span>
+                    <span className="text-sm md:text-lg">Speaking</span>
                   </h2>
                 </div>
               </div>
@@ -232,8 +242,8 @@ export default function Insights() {
                           className={`p-2 ${
                             currentLevel?.maxCharacterLevel >=
                             char?.hmmCharacterLevel
-                              ? "text-gray-700"
-                              : "text-gray-400"
+                              ? "text-gray-700 dark:text-gray-300"
+                              : "text-gray-400 dark:text-gray-500"
                           }`}
                           key={`${idx}-${char}-${idx}`}
                         >

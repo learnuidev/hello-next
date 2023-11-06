@@ -191,6 +191,8 @@ const lessonParser = () => {
         pinyin: pinyin?.innerText,
         lit: lit?.innerText,
         en: en?.innerText,
+        start: 0,
+        end: 0
       };
     }),
   };

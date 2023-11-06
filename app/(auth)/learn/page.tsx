@@ -1,14 +1,9 @@
 // import Image from 'next/image'
 "use client";
 
-import { Editor } from "@/components/Editor";
+// import { Editor } from "@/components/Editor";
 import { useState } from "react";
-import { Separator } from "@/components/ui/separator";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
 import { NavBar } from "@/components/navbar";
 import { Link } from "@/components/link";
 
@@ -43,7 +38,7 @@ export default function Home() {
     <main className="">
       <NavBar />
 
-      <div className="px-4 md:px-32 md:my-16">
+      {/* <div className="px-4 md:px-32 md:my-16">
         <Editor content="Hello" id="home page" />
 
         <div className="flex justify-center space-x-4 mt-8">
@@ -54,16 +49,35 @@ export default function Home() {
             Read the book
           </Link>
         </div>
-      </div>
+      </div> */}
 
-      <Separator className="border-[1px] w-full border-gray-300 dark:border-gray-800 my-16" />
+      {/* <Separator className="border-[1px] w-full border-gray-300 dark:border-gray-800 my-16" /> */}
 
-      <h2 className="text-center uppercase font-bold text-gray-500">
-        My Learning Resources
+      <h2 className="text-center uppercase font-bold text-gray-500 md:mt-16 text-xl">
+        Learning Resources
       </h2>
 
       <div className="flex items-center justfy-between w-full">
         <div className="flex-1 space-y-24 my-16">
+          <div className="text-center">
+            <h4 className="font-bold text-4xl md:text-5xl capitalize text-center">
+              Nomad Method
+            </h4>
+
+            <p className="text-xl font-extralight my-2 text-gray-400">
+              Nomad Method is a mnemonic system for learning Mandarin Chinese
+              characters.
+            </p>
+
+            <div className="flex justify-center">
+              <Link
+                target="_blank"
+                href="https://purple-earl-6c3.notion.site/Nomad-Mandarin-Method-32b6668b8bff47a8b0f48eaca63f0988"
+              >
+                Read The Book
+              </Link>
+            </div>
+          </div>
           <div className="text-center">
             <h4 className="font-bold text-4xl md:text-5xl capitalize text-center">
               Mandarin Blueprint

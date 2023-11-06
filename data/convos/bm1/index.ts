@@ -63,14 +63,54 @@ export const course1 = {
       lesson14,
       lesson15,
     ] as any
-  )?.map((lesson: any) => {
-    return {
-      ...lesson,
-      lessons: (lesson?.lessonsV2 as any)
-        ? lesson?.lessonsV2
-        : lesson?.lesson.map(lessonAdapter),
-    };
-  }),
+  )
+    ?.map((lesson: any) => {
+      return {
+        ...lesson,
+        lessons: (lesson?.lessonsV2 as any)
+          ? lesson?.lessonsV2
+          : lesson?.lesson.map(lessonAdapter),
+      };
+    })
+    ?.map((lesson: any) => {
+      return {
+        ...lesson,
+        lesson: lesson?.lessons?.map((v: any) => {
+          const val = [
+            ["time", v?.time || [[0, 1.8, "你好!"]]],
+            ["", v?.hanzi],
+            ["", v?.pinyin],
+            ["", v.literal || ''],
+            ["", v.en],
+          ];
+
+          console.log("VAL:::", val);
+
+          // return {
+          //   id: cleanString(hanzi as string),
+          //   time,
+          //   names: {
+          //     hanzi: mandarinName,
+          //     pinyin: pinyinName,
+          //     en: enName,
+          //   },
+          //   pinyin: (pinyin as string)?.trim(),
+          //   hanzi,
+          //   en: (en as string)?.trim(),
+          // };
+
+          return val
+
+          return [
+            ["time", [[0, 1.8, "你好!"]]],
+            ["Cindy", " 你 好 ！"],
+            ["Cindy", " Nǐhǎo!"],
+            ["Cindy", " You-good!"],
+            ["Cindy", " Hi!"],
+          ];
+        }),
+      };
+    }),
 } as any;
 
 export const useConvosStore = create(

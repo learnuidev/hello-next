@@ -134,10 +134,7 @@ export default function Convos() {
     (state: any) => state?.setCharacter
   );
 
-
-  const { data: contents } = useListContentsQuery()
-
-  console.log({ hmmSentences });
+  const { data: contents } = useListContentsQuery();
 
   const routeName = usePathname();
 
@@ -164,25 +161,28 @@ export default function Convos() {
         <NavBar />
       )}
 
-      {selectedChar ? null : lessonId && routeName?.includes("/convos") ? null :<div className="px-4 md:px-28 my-8">
-        <button
-          className="text-xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full"
-          onClick={() => {
-            setViewMode("convo/add");
-            console.log("SHOW SETTINGS");
-          }}
-        >
-          <PlusIcon />
-        </button>
-      </div>}
+      {selectedChar ? null : lessonId &&
+        routeName?.includes("/convos") ? null : (
+        <div className="px-4 md:px-28 my-8">
+          <button
+            className="text-xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full"
+            onClick={() => {
+              setViewMode("convo/add");
+            }}
+          >
+            <PlusIcon />
+          </button>
+        </div>
+      )}
 
       {lessonId ? (
         <ConvoDetails lessonId={lessonId} />
       ) : (
         <div className="my-8 space-y-8">
-          {contents?.length && contents?.map((lesson: any) => {
-            return <LessonCard key={lesson?.id} lesson={lesson} />;
-          })}
+          {contents?.length &&
+            contents?.map((lesson: any) => {
+              return <LessonCard key={lesson?.id} lesson={lesson} />;
+            })}
         </div>
       )}
 

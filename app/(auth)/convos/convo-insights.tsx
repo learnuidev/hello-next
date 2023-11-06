@@ -28,10 +28,9 @@ function SelectedCharacter({
   selectedChar: any;
   unlockedCharactersHMM: string[];
 }) {
+  const searchParams = useSearchParams();
 
-  const searchParams = useSearchParams()
-
-  const lessonId = searchParams.get('lessonId')
+  const lessonId = searchParams.get("lessonId");
   // const params = useParams() as {
   //   lessonId: string
   // }
@@ -39,8 +38,9 @@ function SelectedCharacter({
 
   const { data: contents } = useListContentsQuery();
 
-
-  const currentContent = contents?.find((content: any) => content?.id === lessonId)
+  const currentContent = contents?.find(
+    (content: any) => content?.id === lessonId
+  );
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
   const setSelectedChar = useSelectedCharacter(
@@ -64,10 +64,6 @@ function SelectedCharacter({
     return answer?.phraseId?.includes(selectedChar?.hanzi || selectedChar);
   });
 
-  console.log({ relevantAnswersHanzi });
-
-  console.log("relevantAnswersHanzi", relevantAnswersHanzi);
-
   const uniqueAnswers = relevantAnswersHanzi?.map((x: string) => {
     return relevantAnswers?.find((ans: any) => ans?.hanzi === x);
   });
@@ -82,10 +78,6 @@ function SelectedCharacter({
     ...new Set(relevantAnswers?.map((answer: any) => answer?.hanzi)),
   ];
 
-  console.log("answerMap", answerMap);
-
-  console.log("uniqueAnswerIds", uniqueAnswerIds);
-
   // const relevantAnswers = [
   //   ...new Set(
   //     allAnswers
@@ -95,8 +87,6 @@ function SelectedCharacter({
   //       ?.map((x) => JSON.stringify(x))
   //   ),
   // ]?.map((x) => JSON.parse(x));
-
-  console.log("SELECTED CHAR", selectedChar);
 
   // return null
 
@@ -132,10 +122,7 @@ function SelectedCharacter({
           {uniqueAnswerIds?.map((id: any, idx: number) => {
             const char = answerMap?.[id] || {};
 
-            console.log("CHAR", char);
             const lesson = {};
-
-            console.log("CURRENT CONTENT", currentContent)
 
             const currentLesson = currentContent?.transcriptions?.find(
               (lesson: any) => lesson?.id === char?.journeyId
@@ -144,8 +131,6 @@ function SelectedCharacter({
             const currentPhrase = currentContent?.transcriptions?.find(
               (lesson: any) => lesson?.id === char?.hanzi
             );
-
-            console.log("CURRENT PHRASE", currentPhrase);
 
             return (
               <div

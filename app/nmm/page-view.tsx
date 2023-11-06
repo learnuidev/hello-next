@@ -13,6 +13,7 @@ import * as R from "ramda";
 
 import { calculateColor } from "./utils";
 import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
+import { useListContentsQuery } from "@/domain/content/content.queries";
 
 export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
   const dict = dictionary?.[selectedId];
@@ -27,6 +28,8 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
     }
   );
 
+  console.log("ALL", allAnswers);
+
   const relevantAnswers = allAnswers?.filter((answer: any) => {
     return answer?.hanzi?.includes(selectedId);
   }) as {
@@ -34,6 +37,8 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
     journeyId: string;
     phraseId: string;
   }[];
+
+  console.log("ALL_relevant", relevantAnswers);
 
   const answerMap = R.indexBy(R.prop("hanzi"), relevantAnswers) as Record<
     string,
@@ -54,6 +59,13 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
     item?.hanzi?.includes(dict?.hanzi)
   );
 
+  const { data: contents } = useListContentsQuery();
+
+  const allTranscriptions = contents?.map((content: any) => content?.transcriptions).flat()
+
+
+  console.log("allTranscriptions", allTranscriptions)
+
   switch (view) {
     case "play":
       return <NomadMethod />;
@@ -65,14 +77,23 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
               const char = answerMap?.[answerId] || {};
               const lesson = {};
 
-              const currentLesson = course1?.lessons?.find(
-                (lesson: any) => lesson?.id === char?.journeyId
+              console.log("---------------------")
+
+              console.log("ANSWER ID", answerId)
+
+              // const currentLesson = allTranscriptions?.find(
+              //   (lesson: any) => lesson?.id === char?.journeyId
+              // );
+
+              console.log("CHAR", char)
+
+              console.log("allTranscriptions", allTranscriptions)
+  
+              const currentPhrase = allTranscriptions?.find(
+                (lesson: any) => lesson?.id === char?.hanzi
               );
 
-              const currentPhrase = currentLesson?.lessons?.find(
-                (lesson: any) => lesson?.id === char?.phraseId
-              );
-
+              console.log("CURRENT PHRASE", currentPhrase)
               return (
                 <div
                   role="button"

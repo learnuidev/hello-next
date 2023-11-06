@@ -25,7 +25,8 @@ import {
   learnedPlaces,
 } from "@/data/hmm/data";
 
-import { allWords as wordsArr, allChars as charsArr } from "@/data/hmm/data/v2";
+import { allWords as wordsArr } from "@/data/hmm/data/v2";
+import { yellowBelt as charsArr } from "@/data/nmm/1200";
 import { actors } from "@/data/hmm/actors";
 
 import {

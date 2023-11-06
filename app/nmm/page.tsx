@@ -16,9 +16,46 @@ import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
 
 import {
   allWords as wordsArr,
-  allChars as charsArr,
+  allChars as charsArr2,
 } from "@/data/hmm/data/v1000";
+//
+// import { yellowBelt as charsArr } from "@/data/nmm/yellow";
 import { belts, calculateColor } from "./utils";
+import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+
+// const yellowHanzis = charsArr2?.map((x) => x?.hanzi);
+
+// const yellowHmm = charsArr?.filter((x) => x?.level < 1200);
+
+// console.log(
+//   "hmm",
+//   yellowHmm
+//     ?.map((x) => x?.level)
+//     ?.filter((l) => !charsArr2?.map((x) => x?.level)?.includes(l))
+//     ?.map(level => yellowHmm?.find(x => x.level === level)?.hanzi)
+//     ?.join(" ")
+// );
+
+// console.log(
+//   "nmm",
+//   charsArr2
+//     ?.map((x) => x?.level)
+//     ?.filter((l) => !charsArr?.map((x) => x?.level)?.includes(l))
+//     ?.map(level => charsArr2?.find(x => x.level === level)?.hanzi)
+//     ?.join(" ")
+// );
+// console.log(
+//   "nmm",
+//   charsArr2?.map((x) => x?.level)
+// );
+
+// console.log("HELLO HMM", yellowHmm?.filter(x => charsArr2?.map(item => item?.hanzi)?.join(" ")?.includes(x?.hanzi)))
+
+// console.log("PINYIN", charsArr2)
+// console.log(
+//   "DIFF YO",
+//   charsArr?.filter((item) => !yellowHanzis?.includes(item?.hanzi) && item?.level < 1171)
+// );
 
 export default function NomadMethodPage(props: any) {
   const [selectedBelt, setSelectedBelt] = useState<any>();
@@ -42,6 +79,8 @@ export default function NomadMethodPage(props: any) {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  const { data: charsArr } = useListComponentsQuery();
 
   const selectedItem = propsArr.find((item) => item?.hanzi === selectedId);
 
@@ -79,37 +118,38 @@ export default function NomadMethodPage(props: any) {
         />
       ) : (
         <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {charsArr
-            ?.slice(0, selectedBelt?.maxCharacterLevel || 4000)
-            .map((prop, idx) => {
-              const toneLevel = getCharacterToneLevel(prop as ICharacter);
+          {charsArr?.length &&
+            charsArr
+              ?.slice(0, selectedBelt?.maxCharacterLevel || 4000)
+              .map((prop: any, idx: number) => {
+                const toneLevel = getCharacterToneLevel(prop as ICharacter);
 
-              const color = calculateColor({ tone: toneLevel });
+                const color = calculateColor({ tone: toneLevel });
 
-              const graph = getGraph(prop?.hanzi)?.graph || "";
+                const graph = getGraph(prop?.hanzi)?.graph || "";
 
-              const showIf = graph
-                ?.split("")
-                ?.find((elem: string) => learnedCharacters?.includes(elem));
+                const showIf = graph
+                  ?.split("")
+                  ?.find((elem: string) => learnedCharacters?.includes(elem));
 
-              return (
-                <button
-                  key={`${prop.hanzi}-chars-${idx}`}
-                  onClick={() => {
-                    setSelectedId(prop.hanzi);
-                  }}
-                  className={`${
-                    learnedCharacters.includes(prop?.hanzi)
-                      ? `dark:text-white ${color}`
-                      : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                      ? "text-yellow-500"
-                      : "dark:text-gray-500 text-gray-200"
-                  } dark:hover:text-white p-4 text-3xl md:text-2xl transition lowercase`}
-                >
-                  {prop?.hanzi}
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={`${prop.hanzi}-chars-${idx}`}
+                    onClick={() => {
+                      setSelectedId(prop.hanzi);
+                    }}
+                    className={`${
+                      learnedCharacters.includes(prop?.hanzi)
+                        ? `dark:text-white ${color}`
+                        : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                        ? "text-yellow-500"
+                        : "dark:text-gray-500 text-gray-200"
+                    } dark:hover:text-white p-4 text-3xl md:text-2xl transition lowercase`}
+                  >
+                    {prop?.hanzi}
+                  </button>
+                );
+              })}
         </div>
       )}
     </div>

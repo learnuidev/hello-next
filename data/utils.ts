@@ -9,11 +9,13 @@ import {
   allNouns,
   allNumbers,
   allParticles,
-  allChars,
+  // allChars,
   allPrepositions,
   allPronouns,
   // allSentences
 } from "@/data/hmm/data/v1000";
+
+import { yellowBelt as allChars } from "@/data/nmm/1200";
 import { dictionary } from "@/data/hmm/data/dictionary";
 import { hskLevel9Words2 } from "./hsk2";
 
@@ -116,37 +118,6 @@ export const parse = (str: string) => {
             (item: { hanzi: string }) => item?.hanzi === word2
           );
         };
-
-        // const isCharacter = getEntity(allChars);
-
-        // if (isCharacter) {
-        //   // return res
-        //   res.types.push({
-        //     type: "character",
-        //   });
-        // }
-
-        // res.verb = isVerb
-
-        //
-        // import {
-        //   allWords,
-        //   allAdjectives,
-        //   allAdverbs,
-        //   allVerbs,
-        //   allConjuctions,
-        //   allMeasures,
-        //   allMoods,
-        //   allNouns,
-        //   allNumbers,
-        //   allParticles,
-        //   allChars,
-        //   allPrepositions,
-        //   allPronouns,
-        //   allSentences
-        // } from 'ui/pages/hmm/data/v1000'
-
-        //
 
         const grammarsAndCharacters = [
           { type: "character", entities: allChars },

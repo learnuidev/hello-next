@@ -26,7 +26,7 @@ import {
 import { characterDictionary, defaultData } from "./data";
 import { dictionary } from "@/data/hmm/data/dictionary";
 import { NavBar } from "@/components/navbar";
-import { allChars } from "@/data/hmm/data/v1000";
+import { yellowBelt as allChars } from "@/data/nmm/1200";
 
 const columnHelper = createColumnHelper<any>();
 

@@ -10,7 +10,7 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useListGrammarAnalysisQuery } from "@/domain/grammar/grammar.queries";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight } from "@fortawesome/pro-thin-svg-icons";
+import { faArrowLeft, faArrowRight, faBadgeCheck, faTick } from "@fortawesome/pro-thin-svg-icons";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 
 function GameTile(props: any) {
@@ -39,6 +39,16 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
     lessonId: string;
     "phrase-id": string;
   };
+
+  const { data: answers } = useListAnswersQuery(
+    { journeyId: lessonId },
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
 
   const { data: contents } = useListContentsQuery();
 
@@ -161,15 +171,25 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
 
       <main className="pb-6 flex items-center justify-center flex-col">
         <div className="flex flex-col md:flex-row justify-between items-center w-full px-4 md:px-32">
-          <div></div>
+          {answers?.find(
+            (answer: any) => answer?.phraseId === currentPhrase?.id
+          ) ? (
+            <span className="text-yellow-400">
+              <FontAwesomeIcon className="text-2xl" icon={faBadgeCheck} />
+            </span>
+          ) : (
+            <div></div>
+          )}
           <h2 className="text-gray-400 font-extralight text-lg md:text-2xl">
             Write the following sentence in{" "}
             <span className="text-yellow-400">汉子</span>
           </h2>
+
           <div className="text-md md:text-2xl font-extralight text-gray-500">
             {currentPhraseIndex} / {totalLessons}
           </div>
         </div>
+        <p></p>
 
         <div className="grid grid-cols-12 w-full px-4 md:px-32 justify-end items-center">
           <button

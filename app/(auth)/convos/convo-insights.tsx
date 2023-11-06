@@ -8,15 +8,16 @@ import * as R from "ramda";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { NavBar } from "@/components/navbar";
 import { parse } from "@/data/utils";
 import { faXmark } from "@fortawesome/pro-light-svg-icons/faXmark";
 
-import { course1 } from "@/data/convos/bm1/index";
+// import { course1 } from "@/data/convos/bm1/index";
 import Link from "next/link";
 import { useSelectedCharacter } from "./use-selected-character";
 import { learnedCharacters } from "@/data/hmm/data";
+import { useListContentsQuery } from "@/domain/content/content.queries";
 
 function SelectedCharacter({
   // selectedChar,
@@ -27,7 +28,19 @@ function SelectedCharacter({
   selectedChar: any;
   unlockedCharactersHMM: string[];
 }) {
+
+  const searchParams = useSearchParams()
+
+  const lessonId = searchParams.get('lessonId')
+  // const params = useParams() as {
+  //   lessonId: string
+  // }
   const { data: allAnswers, isLoading } = useListAnswersQuery();
+
+  const { data: contents } = useListContentsQuery();
+
+
+  const currentContent = contents?.find((content: any) => content?.id === lessonId)
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
   const setSelectedChar = useSelectedCharacter(
@@ -39,21 +52,39 @@ function SelectedCharacter({
     ...new Set(
       allAnswers
         ?.filter((answer: any) => {
-          return answer?.hanzi?.includes(selectedChar?.hanzi || selectedChar);
+          return answer?.phraseId?.includes(
+            selectedChar?.hanzi || selectedChar
+          );
         })
-        ?.map((x: any) => x?.hanzi)
+        ?.map((x: any) => x?.phraseId)
     ),
   ];
 
   const relevantAnswers = allAnswers?.filter((answer: any) => {
-    return answer?.hanzi?.includes(selectedChar?.hanzi || selectedChar);
+    return answer?.phraseId?.includes(selectedChar?.hanzi || selectedChar);
   });
 
   console.log({ relevantAnswersHanzi });
 
+  console.log("relevantAnswersHanzi", relevantAnswersHanzi);
+
   const uniqueAnswers = relevantAnswersHanzi?.map((x: string) => {
     return relevantAnswers?.find((ans: any) => ans?.hanzi === x);
   });
+
+  const answerMap = R.indexBy(R.prop("hanzi"), relevantAnswers) as Record<
+    string,
+    { hanzi: string; journeyId: string; phraseId: string }
+  >;
+
+  const uniqueAnswerIds = [
+    // @ts-ignore
+    ...new Set(relevantAnswers?.map((answer: any) => answer?.hanzi)),
+  ];
+
+  console.log("answerMap", answerMap);
+
+  console.log("uniqueAnswerIds", uniqueAnswerIds);
 
   // const relevantAnswers = [
   //   ...new Set(
@@ -80,12 +111,12 @@ function SelectedCharacter({
         >
           <FontAwesomeIcon icon={faXmark} />
         </button>
-        <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-          {selectedChar?.hanzi || selectedChar}
+        <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+          {/* {selectedChar?.hanzi || selectedChar} */}
 
           <Link
             target="_blank"
-            className="text-sm md:text-xl"
+            // className="text-sm md:text-xl"
             href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
               selectedChar?.hanzi || selectedChar
             )}`}
@@ -98,16 +129,23 @@ function SelectedCharacter({
       <div className="my-8">
         {/* <h2>nmm</h2> */}
         <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
-          {uniqueAnswers?.map((char: any, idx: number) => {
+          {uniqueAnswerIds?.map((id: any, idx: number) => {
+            const char = answerMap?.[id] || {};
+
+            console.log("CHAR", char);
             const lesson = {};
 
-            const currentLesson = course1?.lessons?.find(
+            console.log("CURRENT CONTENT", currentContent)
+
+            const currentLesson = currentContent?.transcriptions?.find(
               (lesson: any) => lesson?.id === char?.journeyId
             );
 
-            const currentPhrase = currentLesson?.lessons?.find(
+            const currentPhrase = currentContent?.transcriptions?.find(
               (lesson: any) => lesson?.id === char?.hanzi
             );
+
+            console.log("CURRENT PHRASE", currentPhrase);
 
             return (
               <div
@@ -116,25 +154,54 @@ function SelectedCharacter({
                 key={`${idx}-${char?.hanzi}-${idx}`}
               >
                 {" "}
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-600 dark:text-gray-300">
                   {currentPhrase?.pinyin}
                 </span>
-                <span className="text-gray-700">
-                  {currentPhrase?.hanzi?.split("")?.map((x: string) => {
+                <p>
+                  {currentPhrase?.hanzi?.split("")?.map((str: string) => {
                     return (
                       <span
-                      key={`${x}-${Math.random() * 10000}`}
-                        onClick={() => {
-                          setSelectedChar(x);
-                        }}
+                        key={`${selectedChar}-${str}`}
+                        className={`${
+                          selectedChar === str
+                            ? "text-gray-700 dark:text-yellow-300"
+                            : "text-gray-500 dark:text-gray-300"
+                        }`}
                       >
-                        {x}
+                        {str}
                       </span>
                     );
                   })}
+                </p>
+                <span className="text-sm text-gray-700 dark:text-gray-400">
+                  {currentPhrase?.en}
                 </span>
-                <span className="text-sm">{currentPhrase?.en}</span>
               </div>
+              // <div
+              //   role="button"
+              //   className="pb-8 flex flex-col"
+              //   key={`${idx}-${char?.hanzi}-${idx}`}
+              // >
+              //   {" "}
+              //   <span className="text-sm text-gray-600">
+              //     {currentPhrase?.pinyin}
+              //   </span>
+              //   <span className="text-gray-700">
+              //     {currentPhrase?.hanzi?.split("")?.map((x: string) => {
+              //       return (
+              //         <span
+              //           key={`${x}-${Math.random() * 10000}`}
+              //           onClick={() => {
+              //             setSelectedChar(x);
+              //           }}
+              //         >
+              //           {x}
+              //         </span>
+              //       );
+              //     })}
+              //   </span>
+              //   <span className="text-sm">{currentPhrase?.en}</span>
+              // </div>
             );
           })}
         </div>
@@ -157,7 +224,17 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
   // const { data: allAnswers, isLoading } = useListAnswersQuery({
   //   journeyId: lessonId,
   // });
-  const { data: allAnswers, isLoading } = useListAnswersQuery();
+  // const { data: allAnswers, isLoading } = useListAnswersQuery();
+
+  const { data: allAnswers, isLoading } = useListAnswersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
 
   if (isLoading) {
     return (
@@ -245,12 +322,12 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     <div className="w-full px-4 md:px-32 my-4 md:my-8">
       <div>
         <div className="flex justify-start space-x-16">
-          <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
+          <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
             {uniqueWords?.length}{" "}
             <span className="text-sm md:text-xl">total characters </span>
           </h2>
-          <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
-            {totalNewCharaters}{" "}
+          <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
+            <span className="text-yellow-500"> {totalNewCharaters}</span>
             <span className="text-sm md:text-xl">new characters </span>
           </h2>
 
@@ -280,8 +357,8 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                   className={`p-2 ${
                     // ""
                     allNewCharaters?.includes(char)
-                      ? "text-gray-700"
-                      : "text-gray-400"
+                      ? "text-gray-700 dark:text-gray-300"
+                      : "text-gray-400 dark:text-gray-500"
                   }`}
                   // className="p-2"
                   key={`${idx}-${char}-${idx}`}

@@ -42,13 +42,17 @@ export function useListComponentsQuery(
       const response = await listComponents(params, {
         Authorization: authUser?.jwt,
       });
-      return response
+      return response;
       // }
     },
     {
       ...options,
       enabled: Boolean(authUser?.jwt),
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
+
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
     }
   );
 }

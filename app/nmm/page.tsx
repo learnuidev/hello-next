@@ -86,6 +86,9 @@ export default function NomadMethodPage(props: any) {
 
   const lastAnswer = answers?.[answers?.length - 1];
 
+
+  
+
   return (
     <div className="grow">
       <NavBar />

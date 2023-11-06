@@ -10,7 +10,12 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useListGrammarAnalysisQuery } from "@/domain/grammar/grammar.queries";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight, faBadgeCheck, faTick } from "@fortawesome/pro-thin-svg-icons";
+import {
+  faArrowLeft,
+  faArrowRight,
+  faBadgeCheck,
+  faTick,
+} from "@fortawesome/pro-thin-svg-icons";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 
 function GameTile(props: any) {
@@ -85,6 +90,43 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
   const currentPhrase = currentLesson?.transcriptions?.find(
     (lesson: any) => lesson?.id === lessonIndex
   );
+
+  useEffect(() => {
+    const currentLesson = contents?.find(
+      (lesson: any) => lesson?.id === _lessonId
+    );
+
+    const isEveryAnswered = currentLesson?.transcriptions?.every(
+      (transcription: any) => {
+        return answers?.find(
+          (answer: any) => answer?.phraseId === transcription?.id
+        );
+      }
+    );
+
+    if (!isEveryAnswered) {
+      // alert("not answered")
+
+      const firstUnanswered = currentLesson?.transcriptions?.find(
+        (transcription: any) => {
+          return !answers?.find(
+            (answer: any) => answer?.phraseId === transcription?.id
+          );
+        }
+      ) as any;
+
+      if (firstUnanswered) {
+        setLessonIndex(firstUnanswered?.id);
+      }
+
+      console.log({ firstUnanswered });
+
+      // find first unanswered
+      // if (firstUnanswered) {
+      //   alert(JSON.stringify(firstUnanswered));
+      // }
+    }
+  }, [contents, _lessonId, answers]);
 
   const { data: analysis } = useListGrammarAnalysisQuery({
     content: currentPhrase?.id || "",
@@ -161,15 +203,15 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
 
   return (
     <div>
-      <header className="flex w-80 mx-auto mt-10 mb-8">
-        {/* <h1 className={"grow font-bold text-center text-sm text-gray-300"}>
+      {/* <header className="flex w-80 mx-auto mt-10 mb-8">
+        <h1 className={"grow font-bold text-center text-sm text-gray-300"}>
           {" "}
           <span>拼音猜成语</span>{" "}
           <span className="text-gray-200">[worldle]</span>{" "}
-        </h1> */}
-      </header>
+        </h1>
+      </header> */}
 
-      <main className="pb-6 flex items-center justify-center flex-col">
+      <main className="py-12 flex items-center justify-center flex-col">
         <div className="flex flex-col md:flex-row justify-between items-center w-full px-4 md:px-32">
           {answers?.find(
             (answer: any) => answer?.phraseId === currentPhrase?.id

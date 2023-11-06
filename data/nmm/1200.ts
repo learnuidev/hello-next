@@ -11333,4 +11333,4 @@ export const yellowBelt = chars?.map((curr, idx) => {
   return curr;
 });
 
-console.log("YELLOW", yellowBelt);
+// console.log("YELLOW", yellowBelt);

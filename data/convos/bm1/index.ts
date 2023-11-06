@@ -84,7 +84,7 @@ export const course1 = {
             ["", v.en],
           ];
 
-          console.log("VAL:::", val);
+          // console.log("VAL:::", val);
 
           // return {
           //   id: cleanString(hanzi as string),

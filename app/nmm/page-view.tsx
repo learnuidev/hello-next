@@ -1,22 +1,22 @@
 "use client";
 import React from "react";
 
-import { dictionary } from "@/data/hmm/data/dictionary";
+// import { dictionary } from "@/data/hmm/data/dictionary";
 import { Music } from "@/components/music";
 import { NomadMethod } from "./nomad-method";
 
 import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import { course1 } from "@/data/convos/bm1";
 
 import * as R from "ramda";
 
 import { calculateColor } from "./utils";
 import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
 import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 
 export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
-  const dict = dictionary?.[selectedId];
+  // const dict = dictionary?.[selectedId];
 
   const { data: allAnswers, isLoading } = useListAnswersQuery(
     {},
@@ -56,15 +56,22 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
   const { data } = useListTonePairsQuery({});
 
   const relatedData = data?.filter((item: any) =>
-    item?.hanzi?.includes(dict?.hanzi)
+    item?.hanzi?.includes(selectedId)
   );
 
   const { data: contents } = useListContentsQuery();
 
-  const allTranscriptions = contents?.map((content: any) => content?.transcriptions).flat()
+  const allTranscriptions = contents
+    ?.map((content: any) => content?.transcriptions)
+    .flat();
 
+  console.log("allTranscriptions", allTranscriptions);
 
-  console.log("allTranscriptions", allTranscriptions)
+  const { data: components } = useListComponentsQuery();
+
+  const selectedComp = components?.find(
+    (component: any) => component?.hanzi === selectedId
+  );
 
   switch (view) {
     case "play":
@@ -77,23 +84,23 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
               const char = answerMap?.[answerId] || {};
               const lesson = {};
 
-              console.log("---------------------")
+              console.log("---------------------");
 
-              console.log("ANSWER ID", answerId)
+              console.log("ANSWER ID", answerId);
 
               // const currentLesson = allTranscriptions?.find(
               //   (lesson: any) => lesson?.id === char?.journeyId
               // );
 
-              console.log("CHAR", char)
+              console.log("CHAR", char);
 
-              console.log("allTranscriptions", allTranscriptions)
-  
+              console.log("allTranscriptions", allTranscriptions);
+
               const currentPhrase = allTranscriptions?.find(
                 (lesson: any) => lesson?.id === char?.hanzi
               );
 
-              console.log("CURRENT PHRASE", currentPhrase)
+              console.log("CURRENT PHRASE", currentPhrase);
               return (
                 <div
                   role="button"
@@ -108,11 +115,15 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
                     {currentPhrase?.hanzi
                       ?.split("")
                       ?.map((val: string, idy: number) => {
-                        const toneLevel = getCharacterToneLevel(
-                          currentPhrase as ICharacter
-                        );
+                        // const toneLevel = getCharacterToneLevel(
+                        //   currentPhrase as ICharacter
+                        // );
 
-                        const color = calculateColor({ tone: toneLevel });
+                        // const color = calculateColor({ tone: toneLevel });
+
+                        const color = calculateColor({
+                          tone: selectedComp?.tone_level,
+                        });
 
                         return (
                           <span
@@ -171,7 +182,9 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
                                     className={
                                       item === selectedId ||
                                       selectedId.includes(item)
-                                        ? calculateColor(dict)
+                                        ? calculateColor({
+                                            tone: selectedComp?.tone_level,
+                                          })
                                         : `dark:text-gray-600 text-gray-300`
                                     }
                                   >
@@ -192,46 +205,6 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
                     </div>
                   </div>
                 ) : null}
-              </div>
-
-              <div className="space-y-8 my-4">
-                {dict?.examples?.map((example: any) => {
-                  return (
-                    <div
-                      key={JSON.stringify(example)}
-                      className="flex space-x-4 items-start"
-                    >
-                      {example?.sound ? (
-                        <Music
-                          className="min-w-[40px] text-2xl dark:text-gray-500 text-gray-700"
-                          url={example?.sound}
-                        />
-                      ) : null}
-                      <div className="">
-                        {example?.hanzi.split("").map((item: any) => {
-                          return (
-                            <span
-                              key={JSON.stringify(item)}
-                              className={
-                                item === selectedId || selectedId.includes(item)
-                                  ? calculateColor(dict)
-                                  : `dark:text-gray-600 text-gray-300`
-                              }
-                            >
-                              {item}
-                            </span>
-                          );
-                        })}
-                        <p className="dark:text-gray-500 text-gray-400">
-                          {example?.pinyin}
-                        </p>
-                        <p className="dark:text-gray-400 text-gray-500">
-                          {example?.en}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
               </div>
             </div>
           ) : (

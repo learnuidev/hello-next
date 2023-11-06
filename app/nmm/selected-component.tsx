@@ -15,15 +15,28 @@ import { PageView } from "./page-view";
 
 import { calculateColor } from "./utils";
 import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
+import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 export function SelectedComponent({ selectedId, setSelectedId, belt }: any) {
   // @ts-ignore
   const dict = dictionary?.[selectedId];
 
   const [view, setView] = useState("sentences");
 
-  const toneLevel = getCharacterToneLevel(dict as ICharacter);
+  // const toneLevel = getCharacterToneLevel(dict as ICharacter);
 
-  const color = calculateColor({ tone: toneLevel });
+  const { data: components } = useListComponentsQuery();
+
+  const selectedComp = components?.find(
+    (component: any) => component?.hanzi === selectedId
+  );
+
+  console.log("SELECTED TONE", selectedComp);
+
+  const color = calculateColor({ tone: selectedComp?.tone_level });
+
+  // const toneLevel = getCharacterToneLevel(prop as ICharacter);
+
+  // const color = calculateColor({ tone: toneLevel });
 
   return (
     <div>
@@ -38,23 +51,15 @@ export function SelectedComponent({ selectedId, setSelectedId, belt }: any) {
         </button>
 
         <h1 className="col-span-9 space-x-2 flex flex-col items-center">
-          {dict?.pinyin ? (
-            <span
-              className={`items-center flex space-x-4 text-2xl font-bold ${color}`}
-            >
+          <div className="flex items-center flex-col items-end">
+            <p className={`text-3xl font-bold ${color}`}>
               {" "}
-              <span>{dict?.sound ? <Music url={dict?.sound} /> : null} </span>
-              <span>
-                {" "}
-                {dict?.pinyin} ({dict?.hanzi})
-              </span>
-            </span>
-          ) : (
-            <span className={`text-3xl font-bold ${calculateColor(dict)}`}>
-              {" "}
-              {selectedId}
-            </span>
-          )}
+              {selectedId} (
+              {(selectedComp?.pinyin as string)?.toLocaleLowerCase()})
+            </p>
+
+            <p>{selectedComp?.en}</p>
+          </div>
         </h1>
 
         <div className="col-span-2 dark:text-gray-500 my-4 md:space-x-12 flex justify-center items-center">

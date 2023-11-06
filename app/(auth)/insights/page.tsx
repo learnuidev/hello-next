@@ -21,55 +21,104 @@ import { CharacterDiscoveryAreaChart } from "./CharacterDiscoveryAreaChart";
 import { useRepeatHistoryStore } from "../convos/_play/use-repeat-history";
 import { useUniqueAnswers } from "@/app/nmm/use-unique-answers";
 
+import { useParams, useSearchParams } from "next/navigation";
+
+import Link from "next/link";
+import { useSelectedCharacter } from "../convos/use-selected-character";
+
+import { useListContentsQuery } from "@/domain/content/content.queries";
+
 function SelectedCharacter({
-  selectedChar,
-  setSelectedChar,
   unlockedCharactersHMM,
 }: {
   setSelectedChar: any;
-  selectedChar: string;
+  selectedChar: any;
   unlockedCharactersHMM: string[];
 }) {
-  const { data: allAnswers, isLoading } = useListAnswersQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
+  const searchParams = useSearchParams();
+
+  const lessonId = searchParams.get("lessonId");
+  // const params = useParams() as {
+  //   lessonId: string
+  // }
+  const { data: allAnswers, isLoading } = useListAnswersQuery();
+
+  const { data: contents } = useListContentsQuery();
+
+  const allContents = contents
+    ?.map((content: any) => content?.transcriptions)
+    ?.flat();
+
+  const selectedChar = useSelectedCharacter((state: any) => state?.character);
+  const setSelectedChar = useSelectedCharacter(
+    (state: any) => state?.setCharacter
   );
 
-  const { data: uniqueAnswers } = useUniqueAnswers(selectedChar);
+  const relevantAnswersHanzi = [
+    // @ts-ignore
+    ...new Set(
+      allAnswers
+        ?.filter((answer: any) => {
+          return answer?.phraseId?.includes(
+            selectedChar?.hanzi || selectedChar
+          );
+        })
+        ?.map((x: any) => x?.phraseId)
+    ),
+  ];
+
+  const relevantAnswers = allAnswers?.filter((answer: any) => {
+    return answer?.phraseId?.includes(selectedChar?.hanzi || selectedChar);
+  });
+
+  const uniqueAnswers = relevantAnswersHanzi?.map((x: string) => {
+    return relevantAnswers?.find((ans: any) => ans?.hanzi === x);
+  });
+
+  const answerMap = R.indexBy(R.prop("hanzi"), relevantAnswers) as Record<
+    string,
+    { hanzi: string; journeyId: string; phraseId: string }
+  >;
+
+  const uniqueAnswerIds = [
+    // @ts-ignore
+    ...new Set(relevantAnswers?.map((answer: any) => answer?.hanzi)),
+  ];
 
   return (
     <div className="w-full px-4 md:px-32 my-4 md:my-8">
       <div className="flex justify-between items-center">
         <button
-          className="text-xl md:text-3xl dark:text-gray-600 dark:hover:text-gray-300 transition"
+          className="text-4xl"
           onClick={() => {
             setSelectedChar("");
           }}
         >
           <FontAwesomeIcon icon={faXmark} />
         </button>
-        <h2 className="text-3xl my-4 font-extralight text-gray-500">
-          {selectedChar}
-          {/* <span className="text-sm md:text-md"> {selectedChar}</span> */}
+        <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+          <Link
+            target="_blank"
+            href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+              selectedChar?.hanzi || selectedChar
+            )}`}
+          >
+            {" "}
+            {selectedChar?.hanzi || selectedChar}
+          </Link>
         </h2>
       </div>
       <div className="my-8">
-        {/* <h2>nmm</h2> */}
-        <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 dark:text-gray-300 flex-wrap">
-          {uniqueAnswers?.map((char: any, idx: number) => {
-            const lesson = {};
+        <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
+          {uniqueAnswerIds?.map((id: any, idx: number) => {
+            const char = answerMap?.[id] || {};
 
-            const currentLesson = course1?.lessons?.find(
-              (lesson: any) => lesson?.id === char?.journeyId
+            const currentLesson = allContents?.find(
+              (lesson: any) => lesson?.id === char?.phraseId
             );
 
-            const currentPhrase = currentLesson?.lessons?.find(
-              (lesson: any) => lesson?.id === char?.hanzi
+            const currentPhrase = allContents?.find(
+              (lesson: any) => lesson?.id === char?.phraseId
             );
 
             return (
@@ -79,7 +128,7 @@ function SelectedCharacter({
                 key={`${idx}-${char?.hanzi}-${idx}`}
               >
                 {" "}
-                <span className="text-sm text-gray-600 dark:text-gray-300">
+                <span className="text-md text-gray-600 dark:text-gray-300">
                   {currentPhrase?.pinyin}
                 </span>
                 <p>
@@ -98,7 +147,7 @@ function SelectedCharacter({
                     );
                   })}
                 </p>
-                <span className="text-sm text-gray-700 dark:text-gray-400">
+                <span className="text-md text-gray-700 dark:text-gray-400">
                   {currentPhrase?.en}
                 </span>
               </div>
@@ -112,8 +161,12 @@ function SelectedCharacter({
 
 export default function Insights() {
   const [isTocHidden, setIsTocHidden] = useState(false);
-  const [selectedChar, setSelectedChar] = useState("");
+  // const [selectedChar, setSelectedChar] = useState("");
 
+  const selectedChar = useSelectedCharacter((state: any) => state?.character);
+  const setSelectedChar = useSelectedCharacter(
+    (state: any) => state?.setCharacter
+  );
   const router = useRouter();
 
   const repeatHistories = useRepeatHistoryStore((state: any) => state.history);

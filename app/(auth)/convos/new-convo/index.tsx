@@ -8,6 +8,7 @@ import { useNewConvoStore, useViewModeStore } from "./use-viewmode-store";
 import Editor from "@monaco-editor/react";
 
 import { useState } from "react";
+import { useAddContentMutation } from "@/domain/content/content.mutations";
 
 export function NewConvo({ type }: { type?: string }) {
   const [resultView, setResultView] = useState("");
@@ -110,6 +111,8 @@ export function NewConvo({ type }: { type?: string }) {
     // console.log('e.target.result', transformRes(res))
     setConvo("audio", s);
   };
+
+  const addContentMutation = useAddContentMutation();
 
   const convos = useConvosStore((state) => state.convos);
   const addNewConvo_ = useConvosStore((state) => state.setConvo);
@@ -380,6 +383,16 @@ export function NewConvo({ type }: { type?: string }) {
                 className="dark:text-gray-300 text-center"
                 onClick={() => {
                   addNewConvo();
+
+                  addContentMutation.mutateAsync({
+                    title: newConvo?.title,
+                    type: newConvo?.type,
+                    author: newConvo?.author,
+                    location: newConvo?.location,
+                    // title: string;
+                    audio: newConvo?.audio,
+                    transcriptions: newConvo?.transcriptions,
+                  });
                 }}
               >
                 add new convo

@@ -32,6 +32,7 @@ import { hmmSentences } from "@/data/hmm/sentences";
 import { useViewModeStore } from "./new-convo/use-viewmode-store";
 import { PlusIcon } from "@/components/ui/icons";
 import { NewConvo } from "./new-convo";
+import { useListContentsQuery } from "@/domain/content/content.queries";
 
 function formatPercentage(number: number) {
   return Intl.NumberFormat("en-GB", {
@@ -60,16 +61,16 @@ function LessonCard({ lesson }: any) {
 
   const router = useRouter();
 
-  const totalLessonsLength = lesson?.lessons?.length;
+  const totalLessonsLength = lesson?.transcriptions?.length;
 
-  const completedLessons = lesson?.lessons?.filter((phrase: any) =>
+  const completedLessons = lesson?.transcriptions?.filter((phrase: any) =>
     allAnswers?.find(
       (answer: any) =>
         answer?.phraseId === phrase?.id && answer?.status === "correct"
     )
   );
 
-  const uncompletedLessons = lesson?.lessons?.filter(
+  const uncompletedLessons = lesson?.transcriptions?.filter(
     (phrase: any) =>
       !completedLessons?.find(
         (completedPhrase: any) => completedPhrase?.id === phrase?.id
@@ -78,7 +79,7 @@ function LessonCard({ lesson }: any) {
 
   const firstUnCompletedLesson = uncompletedLessons?.[0];
 
-  //   const fistCompletedLesson = lesson?.lessons?.filter(lesson => completedLessons?.find(cl => cl?.))
+  //   const fistCompletedLesson = lesson?.transcriptions?.filter(lesson => completedLessons?.find(cl => cl?.))
 
   const percentCompleted = completedLessons?.length / totalLessonsLength || 0;
   return (
@@ -133,6 +134,9 @@ export default function Convos() {
     (state: any) => state?.setCharacter
   );
 
+
+  const { data: contents } = useListContentsQuery()
+
   console.log({ hmmSentences });
 
   const routeName = usePathname();
@@ -162,7 +166,7 @@ export default function Convos() {
 
       {selectedChar ? null : lessonId && routeName?.includes("/convos") ? null :<div className="px-4 md:px-28 my-8">
         <button
-          className="text-xl md:text-4xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full"
+          className="text-xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full"
           onClick={() => {
             setViewMode("convo/add");
             console.log("SHOW SETTINGS");
@@ -176,7 +180,7 @@ export default function Convos() {
         <ConvoDetails lessonId={lessonId} />
       ) : (
         <div className="my-8 space-y-8">
-          {course1.lessons?.map((lesson: any) => {
+          {contents?.length && contents?.map((lesson: any) => {
             return <LessonCard key={lesson?.id} lesson={lesson} />;
           })}
         </div>

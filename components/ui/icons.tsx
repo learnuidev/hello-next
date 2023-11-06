@@ -45,7 +45,7 @@ import { faCloudsSun } from "@fortawesome/sharp-solid-svg-icons/faCloudsSun";
 import { faGrid2 } from "@fortawesome/sharp-solid-svg-icons/faGrid2";
 import { faGear } from "@fortawesome/sharp-solid-svg-icons/faGear";
 import { faPlus } from "@fortawesome/sharp-solid-svg-icons/faPlus";
-import { faPlusLarge } from "@fortawesome/sharp-solid-svg-icons/faPlusLarge";
+import { faPlusLarge } from "@fortawesome/pro-light-svg-icons/faPlusLarge";
 import { faBooks } from "@fortawesome/sharp-solid-svg-icons/faBooks";
 import { faCauldron } from "@fortawesome/sharp-solid-svg-icons/faCauldron";
 import { faAtomSimple } from "@fortawesome/sharp-solid-svg-icons/faAtomSimple";

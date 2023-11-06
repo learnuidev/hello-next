@@ -18,6 +18,7 @@ import { course1 } from "@/data/convos/bm1/index";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { faChartSimple, faTable } from "@fortawesome/pro-thin-svg-icons";
 import { CharacterDiscoveryAreaChart } from "./CharacterDiscoveryAreaChart";
+import { useRepeatHistoryStore } from "../convos/_play/use-repeat-history";
 
 function SelectedCharacter({
   selectedChar,
@@ -90,6 +91,11 @@ export default function Insights() {
   const [selectedChar, setSelectedChar] = useState("");
 
   const router = useRouter();
+
+  const repeatHistories = useRepeatHistoryStore((state: any) => state.history);
+
+
+  console.log("YO", repeatHistories)
 
   const { data: allAnswers, isLoading } = useListAnswersQuery();
 
@@ -178,6 +184,8 @@ export default function Insights() {
     correctAnswers?.length / allAnswers?.length
   );
 
+  
+
   return (
     <main className="">
       <NavBar />
@@ -209,7 +217,7 @@ export default function Insights() {
                   </h2>
 
                   <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    <span>{accuracyPercentage} </span>
+                    <span>{repeatHistories?.length} loops </span>
                     <span className="text-sm md:text-lg">Listening</span>
                   </h2>
 
@@ -219,7 +227,7 @@ export default function Insights() {
                   </h2>
 
                   <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    <span>{accuracyPercentage} </span>
+                    <span>97.8% </span>
                     <span className="text-sm md:text-lg">Speaking</span>
                   </h2>
                 </div>

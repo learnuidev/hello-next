@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-import { course1 } from "@/data/convos/bm1/index";
+// import { course1 } from "@/data/convos/bm1/index";
 import { cleanString } from "@/data/convos/bm1/utils";
 import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useListGrammarAnalysisQuery } from "@/domain/grammar/grammar.queries";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/pro-thin-svg-icons";
+import { useListContentsQuery } from "@/domain/content/content.queries";
 
 function GameTile(props: any) {
   const { letter } = props;
@@ -35,9 +36,11 @@ function GameRow(props: any) {
 
 export function Wordle({ lessonId }: { lessonId?: string }) {
   const params = useParams() as {
-    "lesson-id": string;
+    lessonId: string;
     "phrase-id": string;
   };
+
+  const { data: contents } = useListContentsQuery();
 
   const phraseId = params?.["phrase-id"]
     ? decodeURIComponent(params?.["phrase-id"])
@@ -47,15 +50,15 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
   const [currentGuess, setCurrentGuess] = useState("");
   const [gameStatus, setGameStatus] = useState("");
   const [_lessonId, setLessonId] = useState(
-    lessonId || params?.["lesson-id"] || "lesson11"
+    lessonId || params?.["lessonId"] || "lesson11"
   );
 
   const [lessonIndex, setLessonIndex] = useState(() => {
-    const currentLesson = course1?.lessons?.find(
+    const currentLesson = contents?.find(
       (lesson: any) => lesson?.id === _lessonId
     );
 
-    const firstPhraseId = currentLesson?.lessons?.[0]?.id;
+    const firstPhraseId = currentLesson?.transcriptions?.[0]?.id;
 
     // 1. first find the phrase id - if found then return
     // 2. if not found then find the first phrase of the current lesson and return it
@@ -65,66 +68,11 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
 
   const addAnswerMutation = useAddAnswerMutation();
 
-  // useEffect(() => {
-  //   const currentLesson = course1?.lessons?.find(
-  //     (lesson: any) => lesson?.id === lessonId
-  //   );
-
-  //   if (currentLesson && !phraseId) {
-  //     const nextId = currentLesson?.lessons?.[0]?.id;
-  //     setLessonIndex(nextId);
-  //   }
-  // }, [setLessonIndex, lessonId, phraseId]);
-
-  // const { data: answers } = useListAnswersQuery(
-  //   {
-  //     journeyId: lessonId,
-  //   },
-  //   {
-  //     enabled: Boolean(params?.["lesson-id"]),
-  //     onSuccess: (data: any) => {
-  //       if (!params?.["lesson-id"] && !phraseId) {
-  //         const correctIds = currentLesson?.lessons
-  //           // ?.map((item: any) => item)
-  //           ?.filter((lesson: any) =>
-  //             Boolean(
-  //               data?.find(
-  //                 (item: any) =>
-  //                   item?.phraseId === lesson?.id && item.status === "correct"
-  //               )
-  //             )
-  //           )
-  //           ?.map((item: any) => item?.id);
-
-  //         const nextId = currentLesson?.lessons?.find(
-  //           (lesson: any) => !correctIds?.includes(lesson?.id)
-  //         );
-
-  //         if (nextId?.id) {
-  //           setLessonIndex(nextId?.id);
-  //         } else {
-  //           const currentLessonIndex = course1?.lessons?.findIndex(
-  //             (lesson: any) => lesson?.id === lessonId
-  //           );
-
-  //           const nextLesson = course1?.lessons?.[currentLessonIndex + 1];
-
-  //           if (nextLesson) {
-  //             setLessonId(nextLesson?.id);
-  //           } else {
-  //             setGameStatus("finish");
-  //           }
-  //         }
-  //       }
-  //     },
-  //   }
-  // );
-
-  const currentLesson = course1?.lessons?.find(
+  const currentLesson = contents?.find(
     (lesson: any) => lesson?.id === _lessonId
   );
 
-  const currentPhrase = currentLesson?.lessons?.find(
+  const currentPhrase = currentLesson?.transcriptions?.find(
     (lesson: any) => lesson?.id === lessonIndex
   );
 
@@ -133,11 +81,11 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
   });
 
   const currentPhraseIndex =
-    currentLesson?.lessons?.findIndex(
+    currentLesson?.transcriptions?.findIndex(
       (lesson: any) => lesson?.id === lessonIndex
     ) + 1;
 
-  const totalLessons = currentLesson?.lessons?.length;
+  const totalLessons = currentLesson?.transcriptions?.length;
 
   const secret = cleanString(currentPhrase?.hanzi);
 
@@ -227,31 +175,31 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
           <button
             className="col-span-1 hidden md:block md:text-2xl dark:text-gray-600"
             onClick={() => {
-              const currentLesson = course1?.lessons?.find(
+              const currentLesson = contents?.find(
                 (lesson: any) => lesson?.id === _lessonId
               );
 
-              const currentPhrase = currentLesson?.lessons?.find(
+              const currentPhrase = currentLesson?.transcriptions?.find(
                 (lesson: any) => lesson?.id === lessonIndex
               );
-              const currentPhraseIndex = currentLesson?.lessons?.findIndex(
-                (lesson: any) => lesson?.id === lessonIndex
-              );
+              const currentPhraseIndex =
+                currentLesson?.transcriptions?.findIndex(
+                  (lesson: any) => lesson?.id === lessonIndex
+                );
 
               // const lessonIdx = course1?.lessons?.findIndex(
               //   (lesson: any) => lesson?.id === lessonIndex
               // );
 
               if (currentPhraseIndex !== -1) {
-                const nextId = currentLesson?.lessons?.[currentPhraseIndex - 1];
+                const nextId =
+                  currentLesson?.transcriptions?.[currentPhraseIndex - 1];
 
                 nextId?.id && setLessonIndex(nextId?.id);
 
-                if (params?.["lesson-id"]) {
+                if (params?.["lessonId"]) {
                   router.push(
-                    `/convos/${params?.["lesson-id"] || _lessonId}/${
-                      nextId?.id
-                    }`
+                    `/convos/${params?.["lessonId"] || _lessonId}/${nextId?.id}`
                   );
                 }
               } else {
@@ -320,15 +268,16 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
                           guessHistory: guessHistory?.[lessonIndex as string],
                         })
                         .then((res) => {
-                          const currentLesson = course1?.lessons?.find(
+                          const currentLesson = contents?.find(
                             (lesson: any) => lesson?.id === _lessonId
                           );
 
-                          const currentPhrase = currentLesson?.lessons?.find(
-                            (lesson: any) => lesson?.id === lessonIndex
-                          );
+                          const currentPhrase =
+                            currentLesson?.transcriptions?.find(
+                              (lesson: any) => lesson?.id === lessonIndex
+                            );
                           const currentPhraseIndex =
-                            currentLesson?.lessons?.findIndex(
+                            currentLesson?.transcriptions?.findIndex(
                               (lesson: any) => lesson?.id === lessonIndex
                             );
 
@@ -338,15 +287,17 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
 
                           if (currentPhraseIndex !== -1) {
                             const nextId =
-                              currentLesson?.lessons?.[currentPhraseIndex + 1];
+                              currentLesson?.transcriptions?.[
+                                currentPhraseIndex + 1
+                              ];
 
                             nextId?.id && setLessonIndex(nextId?.id);
 
-                            if (params?.["lesson-id"]) {
+                            if (params?.["lessonId"]) {
                               router.push(
-                                `/convos/${
-                                  params?.["lesson-id"] || _lessonId
-                                }/${nextId?.id}`
+                                `/convos/${params?.["lessonId"] || _lessonId}/${
+                                  nextId?.id
+                                }`
                               );
                             }
                           } else {
@@ -368,31 +319,31 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
           <button
             className="col-span-1 hidden md:block md:text-2xl dark:text-gray-600"
             onClick={() => {
-              const currentLesson = course1?.lessons?.find(
+              const currentLesson = contents?.find(
                 (lesson: any) => lesson?.id === _lessonId
               );
 
-              const currentPhrase = currentLesson?.lessons?.find(
+              const currentPhrase = currentLesson?.transcriptions?.find(
                 (lesson: any) => lesson?.id === lessonIndex
               );
-              const currentPhraseIndex = currentLesson?.lessons?.findIndex(
-                (lesson: any) => lesson?.id === lessonIndex
-              );
+              const currentPhraseIndex =
+                currentLesson?.transcriptions?.findIndex(
+                  (lesson: any) => lesson?.id === lessonIndex
+                );
 
               // const lessonIdx = course1?.lessons?.findIndex(
               //   (lesson: any) => lesson?.id === lessonIndex
               // );
 
               if (currentPhraseIndex !== -1) {
-                const nextId = currentLesson?.lessons?.[currentPhraseIndex + 1];
+                const nextId =
+                  currentLesson?.transcriptions?.[currentPhraseIndex + 1];
 
                 nextId?.id && setLessonIndex(nextId?.id);
 
-                if (params?.["lesson-id"]) {
+                if (params?.["lessonId"]) {
                   router.push(
-                    `/convos/${params?.["lesson-id"] || _lessonId}/${
-                      nextId?.id
-                    }`
+                    `/convos/${params?.["lessonId"] || _lessonId}/${nextId?.id}`
                   );
                 }
               } else {
@@ -439,12 +390,12 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
                     guessHistory: guessHistory?.[lessonIndex as string],
                   })
                   .then((res) => {
-                    const lessonIdx = course1?.lessons?.findIndex(
+                    const lessonIdx = contents?.findIndex(
                       (lesson: any) => lesson?.id === lessonIndex
                     );
 
                     if (lessonIdx !== -1) {
-                      const nextId = course1?.lessons?.[lessonIdx + 1];
+                      const nextId = contents?.[lessonIdx + 1];
 
                       nextId?.id && setLessonIndex(nextId?.id);
                     } else {
@@ -488,12 +439,12 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
                     guessHistory: guessHistory?.[lessonIndex as string],
                   })
                   .then((res) => {
-                    const lessonIdx = course1?.lessons?.findIndex(
+                    const lessonIdx = contents?.findIndex(
                       (lesson: any) => lesson?.id === lessonIndex
                     );
 
                     if (lessonIdx !== -1) {
-                      const nextId = course1?.lessons?.[lessonIdx + 1];
+                      const nextId = contents?.[lessonIdx + 1];
 
                       nextId?.id && setLessonIndex(nextId?.id);
                     } else {

@@ -80,7 +80,7 @@ function SelectedCharacter({
         >
           <FontAwesomeIcon icon={faXmark} />
         </button>
-        <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
+        <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500 dark:text-gray-300">
           {selectedChar?.hanzi || selectedChar}
 
           <Link

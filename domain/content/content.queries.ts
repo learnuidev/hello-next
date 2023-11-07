@@ -23,10 +23,10 @@ export function useListContentsQuery(options = {} as any) {
       enabled: Boolean(authUser?.jwt),
       // enabled: Boolean(journeyId),
       cacheTime: 1000 * 60 * 300, // 30 minutes,
-      // refetchOnWindowFocus: false,
-      // refetchOnFocus: false,
-      // refetchOnMount: false,
-      // refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
     }
   );
 }

@@ -4,7 +4,7 @@
 import "@/libs/cognito/init";
 
 import { Editor } from "@/components/Editor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -16,16 +16,31 @@ import { Link } from "@/components/link";
 import { SearchPage } from "@/components/search";
 import { NavigatorMap } from "@/components/navigator-map";
 import { Wordle } from "@/components/wordle/game";
+import { NomadMethod } from "./nmm/nomad-method";
+import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 export default function Home() {
   const [isTocHidden, setIsTocHidden] = useState(false);
+  const [selectedId, setSelectedId] = useState("");
 
-  const router = useRouter();
+  const { data: components, isLoading } = useListComponentsQuery();
 
-  const toggleIsHidden = () => {
-    if (isTocHidden) {
+  const { data: learnedCharacters, isLoading: isCharactersLoading } =
+    useListCharactersQuery();
+
+  useEffect(() => {
+    const firstUnlearnedCharacter = components?.filter((component: any) => {
+      return !learnedCharacters?.find(
+        (char: any) => char?.hanzi === component?.hanzi
+      );
+    })?.[0];
+
+    if (firstUnlearnedCharacter) {
+      setSelectedId(firstUnlearnedCharacter?.hanzi);
     }
-  };
+  }, [components, learnedCharacters]);
+
   return (
     // <main className="">
     //   <NavBar />
@@ -37,7 +52,11 @@ export default function Home() {
     <main className="">
       <NavBar />
 
-      <Wordle />
+      {isLoading || isCharactersLoading ? null : (
+        <NomadMethod selectedId={selectedId} />
+      )}
+
+      {/* <Wordle /> */}
 
       {/* <div className="px-4 md:px-32 md:my-4">
         <Editor content="Hello" id="home page" />

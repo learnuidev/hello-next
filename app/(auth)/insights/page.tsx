@@ -44,7 +44,15 @@ function SelectedCharacter({
   // const params = useParams() as {
   //   lessonId: string
   // }
-  const { data: allAnswers, isLoading } = useListAnswersQuery();
+  const { data: allAnswers, isLoading } = useListAnswersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
 
   const { data: contents } = useListContentsQuery();
 
@@ -178,7 +186,15 @@ export default function Insights() {
 
   const repeatHistories = useRepeatHistoryStore((state: any) => state.history);
 
-  const { data: allAnswers, isLoading } = useListAnswersQuery();
+  const { data: allAnswers, isLoading } = useListAnswersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
 
   if (isLoading) {
     return <div> is loading ...</div>;

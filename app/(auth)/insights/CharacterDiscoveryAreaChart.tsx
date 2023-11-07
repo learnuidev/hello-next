@@ -116,7 +116,15 @@ export const CharacterDiscoveryAreaChart = () => {
   );
   const demoUrl = "https://codesandbox.io/s/simple-area-chart-4ujxw";
 
-  const { data: answers } = useListAnswersQuery();
+  const { data: answers } = useListAnswersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
 
   const newData = answers.map((curr: any, idx: number, ctx: any) => {
     return {

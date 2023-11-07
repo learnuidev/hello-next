@@ -45,7 +45,15 @@ function formatPercentage(number: number) {
 // useConvosStore
 
 function LessonCard({ lesson }: any) {
-  const { data: allAnswers, isLoading } = useListAnswersQuery();
+  const { data: allAnswers, isLoading } = useListAnswersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
 
   // const { asPath } = useRouterUrl();
   // const origin =

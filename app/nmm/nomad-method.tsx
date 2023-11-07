@@ -16,8 +16,8 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
   const playerRef = useRef() as any;
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
 
-
-  const { data: learnedCharacters } = useListCharactersQuery()
+  const { data: learnedCharacters, isLoading: isCharactersLoading } =
+    useListCharactersQuery();
 
   const addCharacterMutation = useAddCharacterMutation();
 
@@ -41,14 +41,11 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
   // );
   const [answers, setAnswers] = useState({});
 
-  const { data: components } = useListComponentsQuery();
+  const { data: components, isLoading } = useListComponentsQuery();
 
   const firstLesson = components?.find(
     (component: any) => component?.hanzi === selectedId
   );
-  // const firstLesson = components?.[0];
-
-  console.log("SELECTED ID", selectedId);
 
   const lesson = firstLesson?.steps[lessonIndex];
 
@@ -71,9 +68,7 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
     setLessonIndex(0);
   };
 
-  console.log("CHARACTER STATE", characterState);
-
-  if (!lesson) {
+  if (!lesson && !isLoading && !isCharactersLoading) {
     return (
       <div className="relative grow ml-4 md:ml-16 flex flex-col items-center">
         <p className="my-2 text-black dark:text-white text-3xl font-extrabold">
@@ -132,14 +127,10 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
         <input
           autoFocus
           onChange={(event) => {
-            console.log("KEY", lesson.key);
-
             const newState = {
               ...characterState,
               [lesson?.key]: event?.target.value,
             };
-
-            console.log("NEW STA", newState);
 
             setCharacterState(newState);
           }}

@@ -38,7 +38,15 @@ export default function NomadMethodPage(props: any) {
 
   const { data } = useListTonePairsQuery({});
 
-  const { data: answers } = useListAnswersQuery();
+  const { data: answers } = useListAnswersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 

@@ -19,6 +19,7 @@ import { Wordle } from "@/components/wordle/game";
 import { NomadMethod } from "./nmm/nomad-method";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 export default function Home() {
   const [isTocHidden, setIsTocHidden] = useState(false);
@@ -26,20 +27,39 @@ export default function Home() {
 
   const { data: components, isLoading } = useListComponentsQuery();
 
+  const { data: allAnswers } = useListAnswersQuery();
+
   const { data: learnedCharacters, isLoading: isCharactersLoading } =
     useListCharactersQuery();
 
   useEffect(() => {
-    const firstUnlearnedCharacter = components?.filter((component: any) => {
-      return !learnedCharacters?.find(
-        (char: any) => char?.hanzi === component?.hanzi
-      );
-    })?.[0];
+    const firstUnlearnedAndDiscoveredCharacter = components?.filter(
+      (component: any) => {
+        return (
+          !learnedCharacters?.find(
+            (char: any) => char?.hanzi === component?.hanzi
+          ) &&
+          allAnswers?.find((answer: any) =>
+            answer?.hanzi?.includes(component?.hanzi)
+          )
+        );
+      }
+    )?.[0];
 
-    if (firstUnlearnedCharacter) {
-      setSelectedId(firstUnlearnedCharacter?.hanzi);
+    if (firstUnlearnedAndDiscoveredCharacter) {
+      setSelectedId(firstUnlearnedAndDiscoveredCharacter?.hanzi);
+    } else {
+      const firstUnlearnedCharacter = components?.filter((component: any) => {
+        return !learnedCharacters?.find(
+          (char: any) => char?.hanzi === component?.hanzi
+        );
+      })?.[0];
+
+      if (firstUnlearnedCharacter) {
+        setSelectedId(firstUnlearnedCharacter?.hanzi);
+      }
     }
-  }, [components, learnedCharacters]);
+  }, [components, learnedCharacters, allAnswers]);
 
   return (
     // <main className="">

@@ -9,6 +9,8 @@ import {
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
+import { cleanString } from "@/data/convos/bm1/utils";
 
 export function NomadMethod({ selectedId }: { selectedId: string }) {
   const [isPlaying, setIsPlaying] = useState(true);
@@ -68,6 +70,8 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
     setLessonIndex(0);
   };
 
+  const addAnswerMutation = useAddAnswerMutation();
+
   if (!lesson && !isLoading && !isCharactersLoading) {
     return (
       <div className="relative grow ml-4 md:ml-16 flex flex-col items-center">
@@ -119,9 +123,18 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
 
   return (
     <div className="grow ml-4 md:ml-16 flex flex-col items-center">
-      <h1 className="md:mx-48 my-2 md:mt-60 h-32 mb-8 text-black dark:text-white text-3xl">
-        {lesson?.title}
-      </h1>
+      <div className="md:mt-60">
+        <h1 className="md:mx-12 my-2  text-black dark:text-gray-200 text-md md:text-xl">
+          {lesson?.title}
+        </h1>
+
+        <h2 className="md:mx-12 my-2 text-black dark:text-gray-400 text-md md:text-lg">
+          {lesson?.hanzi}
+        </h2>
+        <h2 className="md:mx-12 my-2 text-black dark:text-gray-600 text-md md:text-lg">
+          {lesson?.pinyin}
+        </h2>
+      </div>
 
       {lesson && lesson?.key ? (
         <input
@@ -146,7 +159,22 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
         <button
           className="hover:shadow-blue-600 shadow-md px-6 py-2 uppercase transition"
           onClick={() => {
-            setLessonIndex((idx: number) => idx + 1);
+            if (lesson?.hanzi) {
+              return addAnswerMutation
+                .mutateAsync({
+                  hanzi: cleanString(lesson?.hanzi),
+                  answer: lesson?.hanzi,
+                  lessonId: firstLesson?.id,
+                  phraseId: cleanString(lesson?.hanzi),
+                  status: "correct",
+                  guessHistory: [],
+                })
+                .then(() => {
+                  setLessonIndex((idx: number) => idx + 1);
+                });
+            } else {
+              setLessonIndex((idx: number) => idx + 1);
+            }
           }}
         >
           Next

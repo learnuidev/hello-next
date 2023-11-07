@@ -14,6 +14,7 @@ import { calculateColor } from "./utils";
 import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+import { cleanString } from "@/data/convos/bm1/utils";
 
 export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
   // const dict = dictionary?.[selectedId];
@@ -27,8 +28,6 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
       refetchOnReconnect: false,
     }
   );
-
-  console.log("ALL", allAnswers);
 
   const relevantAnswers = allAnswers?.filter((answer: any) => {
     return answer?.hanzi?.includes(selectedId);
@@ -47,11 +46,8 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
 
   const uniqueAnswerIds = [
     // @ts-ignore
-    ...new Set(relevantAnswers?.map((answer: any) => answer?.hanzi)),
+    ...new Set(relevantAnswers?.map((answer: any) => answer?.phraseId)),
   ];
-
-  console.log("UNIQUE ANSWER IDS", uniqueAnswerIds);
-  console.log("ANSWER MAP", answerMap);
 
   const { data } = useListTonePairsQuery({});
 
@@ -65,9 +61,15 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
     ?.map((content: any) => content?.transcriptions)
     .flat();
 
-  console.log("allTranscriptions", allTranscriptions);
+  // console.log("allTranscriptions", allTranscriptions);
 
   const { data: components } = useListComponentsQuery();
+
+  const allSteps =
+    components
+      ?.map((component: any) => component?.steps)
+      ?.filter(Boolean)
+      ?.flat() || [];
 
   const selectedComp = components?.find(
     (component: any) => component?.hanzi === selectedId
@@ -96,9 +98,13 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
 
               console.log("allTranscriptions", allTranscriptions);
 
-              const currentPhrase = allTranscriptions?.find(
-                (lesson: any) => lesson?.id === char?.hanzi
-              );
+              const currentPhrase =
+                allTranscriptions?.find(
+                  (lesson: any) => lesson?.id === char?.hanzi
+                ) ||
+                allSteps?.find(
+                  (step: any) => cleanString(step?.hanzi) === answerId
+                );
 
               console.log("CURRENT PHRASE", currentPhrase);
               return (
@@ -140,7 +146,7 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
                       })}
                   </span>
                   <span className="text-sm text-gray-500">
-                    {currentPhrase?.en}
+                    {currentPhrase?.en || currentPhrase?.title}
                   </span>
                 </div>
               );

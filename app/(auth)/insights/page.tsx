@@ -27,6 +27,9 @@ import Link from "next/link";
 import { useSelectedCharacter } from "../convos/use-selected-character";
 
 import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+import { calculateColor } from "@/app/nmm/utils";
 
 function SelectedCharacter({
   unlockedCharactersHMM,
@@ -163,6 +166,10 @@ export default function Insights() {
   const [isTocHidden, setIsTocHidden] = useState(false);
   // const [selectedChar, setSelectedChar] = useState("");
 
+  const { data: learnedCharacters } = useListCharactersQuery();
+
+  const { data: components } = useListComponentsQuery();
+
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
   const setSelectedChar = useSelectedCharacter(
     (state: any) => state?.setCharacter
@@ -170,8 +177,6 @@ export default function Insights() {
   const router = useRouter();
 
   const repeatHistories = useRepeatHistoryStore((state: any) => state.history);
-
-  console.log("YO", repeatHistories);
 
   const { data: allAnswers, isLoading } = useListAnswersQuery();
 
@@ -205,11 +210,15 @@ export default function Insights() {
         !["c", "i", "n", "d", "y"]?.includes(x?.toLocaleLowerCase())
     );
 
-  const uniqueWordsStr = uniqueWords?.join(" ");
+  const uniqueWordsStr = uniqueWords
+    ?.join(" ")
+    ?.concat(learnedCharacters?.map((x: any) => x?.hanzi)?.join(" "));
 
   const unlockedNMMCharacters = parse(uniqueWordsStr)?.sort(
     (a, b) => a?.hmmCharacterLevel - b?.hmmCharacterLevel
   );
+
+  console.log("unlockedNMMCharacters", unlockedNMMCharacters);
 
   const unlockedCharactersHMM = unlockedNMMCharacters?.map((x) => x.hanzi);
   const unlockedCharactersHMMStr = unlockedCharactersHMM?.join(" ");
@@ -284,13 +293,6 @@ export default function Insights() {
               <div className="w-full px-4 md:px-32">
                 <div className="flex justify-around">
                   <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    <span>{unlockedNMMCharacters?.length} </span>
-                    <span className="text-sm md:text-lg">
-                      Characters Discovered{" "}
-                    </span>
-                  </h2>
-
-                  <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
                     <span>
                       {repeatHistories?.length}{" "}
                       <span className="text-md">loops </span>{" "}
@@ -317,10 +319,34 @@ export default function Insights() {
                 </div>
               </div>
 
+              <div className="w-full px-4 md:px-32">
+                <div className="flex justify-around">
+                  <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                    <span>{unlockedNMMCharacters?.length} </span>
+                    <span className="text-sm md:text-lg">
+                      Characters Discovered{" "}
+                    </span>
+                  </h2>
+                  <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                    <span>{learnedCharacters?.length} </span>
+                    <span className="text-sm md:text-lg">
+                      Characters Learned
+                    </span>
+                  </h2>
+                </div>
+              </div>
+
               <div className="w-full px-4 md:px-32 my-4 md:my-8">
                 <div className="my-8">
                   <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
                     {unlockedNMMCharacters?.map((char, idx: number) => {
+                      const selectedComp = components?.find(
+                        (component: any) => component?.hanzi === char?.hanzi
+                      );
+
+                      const color = calculateColor({
+                        tone: selectedComp?.tone_level,
+                      });
                       return (
                         <button
                           role="button"
@@ -332,8 +358,12 @@ export default function Insights() {
                           //   char?.hmmCharacterLevel
                           // }
                           className={`p-2 ${
-                            currentLevel?.maxCharacterLevel >=
-                            char?.hmmCharacterLevel
+                            learnedCharacters?.find(
+                              (item: any) => item?.hanzi === char?.hanzi
+                            )
+                              ? `${color}`
+                              : currentLevel?.maxCharacterLevel >=
+                                char?.hmmCharacterLevel
                               ? "text-gray-700 dark:text-gray-300"
                               : "text-gray-400 dark:text-gray-500"
                           }`}

@@ -28,23 +28,24 @@ export const useCurrentStepStore = create(
   )
 );
 
+export const initCharacter = {
+  hanzi: "",
+  pinyin: "",
+  level: "",
+  en: "",
+  nomad: "",
+  destination: "",
+  location: "",
+  journeyId: "",
+  // todo | completed
+  status: "",
+  story: "",
+  sub_components: "",
+};
 export const useCharacterStore = create(
   persist(
     (set, get) => ({
-      character: {
-        hanzi: "",
-        pinyin: "",
-        level: "",
-        en: "",
-        nomad: "",
-        destination: "",
-        location: "",
-        journeyId: "",
-        // todo | completed
-        status: "",
-        story: "",
-        sub_components: "",
-      },
+      character: initCharacter,
       setCharacter: (f: any) =>
         set((state: any) => ({
           character: typeof f === "function" ? f(state) : f,

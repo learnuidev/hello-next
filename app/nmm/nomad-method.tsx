@@ -1,102 +1,25 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useViewModeStore } from "./use-view-mode-store";
-import { useCharacterStore, useCurrentStepStore } from "./nomad-method-store";
+import {
+  initCharacter,
+  useCharacterStore,
+  useCurrentStepStore,
+} from "./nomad-method-store";
+import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
-const firstLesson = {
-  title: "Characters #1-3: 一 yī, 二 èr, 三 sān",
-  lessons: [
-    {
-      id: "0b",
-      type: "info",
-      componentId: "一",
-      title: `一 is the Chinese character for the number "one."`,
-      suggestions: ["flute", "wand"],
-    },
-    {
-      id: "0c",
-      type: "info",
-      componentId: "一",
-      title: `It is used to represent the concept of singularity or the quantity "one" in numerical terms.`,
-      suggestions: ["flute", "wand"],
-    },
-    {
-      id: "0d",
-      type: "info",
-      componentId: "一",
-      title: `Additionally, it can be used in various contexts to indicate unity, simplicity, or as a general symbol of individuality or uniqueness.`,
-      suggestions: ["flute", "wand"],
-    },
-    {
-      id: "0e",
-      type: "info",
-      componentId: "一",
-      title: `In Chinese culture, it also holds symbolic significance, representing beginnings, originality, and the first step in a series of progression.`,
-      suggestions: ["flute", "wand"],
-    },
-    {
-      id: "1",
-      key: "component",
-      type: "component:create",
-      componentId: "一",
-      title: `Enter a Component for 一`,
-      suggestions: ["flute", "wand"],
-    },
-    {
-      id: "2",
-      key: "nomad",
-      type: "nomad:create",
-      componentId: "一",
-      title: `Enter a nomad for for -y`,
-      suggestions: ["Yuvraj Singh", "Yogi Bear"],
-    },
-    {
-      id: "3",
-      key: "destination",
-      type: "destination:create",
-      componentId: "一",
-      title: `Enter a destiantion for for -i`,
-      suggestions: ["Delhi, India", "Goa, India"],
-    },
-    {
-      id: "4",
-      key: "location",
-      type: "location:create",
-      componentId: "一",
-      title: `Enter a location for -i4`,
-      suggestions: ["Airport"],
-    },
-    {
-      id: "5",
-      key: "story",
-      type: "story:create",
-      componentId: "一",
-      title: `Create a story`,
-      suggestions: [""],
-    },
-  ],
-};
-
-export function NomadMethod() {
+export function NomadMethod({ selectedId }: { selectedId: string }) {
   const [isPlaying, setIsPlaying] = useState(true);
   const [mediaIndex, setMediaIndex] = useState(0);
   const playerRef = useRef() as any;
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
 
-  // const [characterState, setCharacterState] = useState<any>({
-  //   hanzi: "",
-  //   pinyin: "",
-  //   level: "",
-  //   en: "",
-  //   nomad: "",
-  //   destination: "",
-  //   location: "",
-  //   journeyId: "",
-  //   // todo | completed
-  //   status: "",
-  //   story: "",
-  //   sub_components: "",
-  // });
+
+  const { data: learnedCharacters } = useListCharactersQuery()
+
+  const addCharacterMutation = useAddCharacterMutation();
 
   const characterState = useCharacterStore(
     (state: any) => state.character
@@ -110,15 +33,24 @@ export function NomadMethod() {
     playerRef.current.seekTo(0, "seconds");
   }, [playerRef.current]);
 
-  // const [lessonIndex, setLessonIndex] = useState(0);
+  const [lessonIndex, setLessonIndex] = useState(0);
 
-  const lessonIndex = useCurrentStepStore((state: any) => state?.currentStepId);
-  const setLessonIndex = useCurrentStepStore(
-    (state: any) => state?.setCurrentStepId
-  );
+  // const lessonIndex = useCurrentStepStore((state: any) => state?.currentStepId);
+  // const setLessonIndex = useCurrentStepStore(
+  //   (state: any) => state?.setCurrentStepId
+  // );
   const [answers, setAnswers] = useState({});
 
-  const lesson = firstLesson?.lessons[lessonIndex];
+  const { data: components } = useListComponentsQuery();
+
+  const firstLesson = components?.find(
+    (component: any) => component?.hanzi === selectedId
+  );
+  // const firstLesson = components?.[0];
+
+  console.log("SELECTED ID", selectedId);
+
+  const lesson = firstLesson?.steps[lessonIndex];
 
   const setResponse = (lessonId: string, value: any) => {
     setAnswers((prev) => {
@@ -133,7 +65,8 @@ export function NomadMethod() {
   // const queryId = uuidv4()
 
   const reset = () => {
-    setAnswers({});
+    // setAnswers({});
+    setCharacterState(initCharacter);
 
     setLessonIndex(0);
   };
@@ -159,7 +92,27 @@ export function NomadMethod() {
 
         <div className="bottom-0 py-4">
           <button
-            onClick={reset}
+            onClick={() => {
+              addCharacterMutation
+                ?.mutateAsync({
+                  hanzi: firstLesson?.hanzi,
+                  pinyin: firstLesson?.pinyin,
+                  en: firstLesson?.en,
+                  level: firstLesson?.level,
+                  nomad: characterState?.nomad,
+                  destination: characterState?.destination,
+                  location: characterState?.location,
+                  journeyId: firstLesson.id,
+                  // todo | completed
+                  status: "completed",
+                  story: characterState?.story,
+                  component: characterState?.component,
+                  sub_components: [],
+                })
+                .then(() => {
+                  reset();
+                });
+            }}
             className="hover:shadow-blue-600 shadow-md py-4 px-8 rounded bg-gray-800 text-2xl font-extralight"
           >
             Complete
@@ -171,12 +124,12 @@ export function NomadMethod() {
 
   return (
     <div className="grow ml-4 md:ml-16 flex flex-col items-center">
-      <h1 className="md:mx-48 my-2 md:my-16 text-black dark:text-white text-3xl">
+      <h1 className="md:mx-48 my-2 md:mt-60 h-32 mb-8 text-black dark:text-white text-3xl">
         {lesson?.title}
       </h1>
 
-      {lesson && lesson?.key && (
-        <textarea
+      {lesson && lesson?.key ? (
+        <input
           autoFocus
           onChange={(event) => {
             console.log("KEY", lesson.key);
@@ -191,14 +144,16 @@ export function NomadMethod() {
             setCharacterState(newState);
           }}
           placeholder={lesson?.suggestions?.join(", ")}
-          className="text-center border-solid border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
+          className="text-center border-solid border-b-2 h-16 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
           value={characterState?.[lesson?.key] as any}
         />
+      ) : (
+        <div className="h-16"></div>
       )}
 
-      <div className="py-32">
+      <div className="py-24">
         <button
-          className="hover:shadow-blue-600 shadow-md px-4 py-1 rounded-full"
+          className="hover:shadow-blue-600 shadow-md px-6 py-2 uppercase transition"
           onClick={() => {
             setLessonIndex((idx: number) => idx + 1);
           }}

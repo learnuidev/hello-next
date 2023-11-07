@@ -75,7 +75,7 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
 
   switch (view) {
     case "play":
-      return <NomadMethod />;
+      return <NomadMethod selectedId={selectedId} />;
     case "sentences":
       return uniqueAnswerIds?.length ? (
         <div className="my-8 flex justify-center">

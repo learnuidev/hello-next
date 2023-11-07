@@ -157,7 +157,7 @@ export const parse = (str: string) => {
     })
     .filter((word, idx, ctx) => Boolean(word?.hanzi))
     // .filter((word, idx, ctx) => Boolean(word?.hanzi))
-    .sort((a, b) => a.startingIndex - b.startingIndex)
+    // .sort((a, b) => a.startingIndex - b.startingIndex)
     ?.sort((a, b) => a?.hmmCharacterLevel - b?.hmmCharacterLevel)
     .filter(
       (word, idx, ctx) => ctx.findIndex((v) => v.hanzi === word?.hanzi) === idx

@@ -11,7 +11,7 @@ const url =
 export type AddCharacterParams = {
   hanzi: string;
   pinyin: string;
-  level?: string;
+  level?: number;
   en: string;
   nomad: string;
   destination: string;
@@ -41,7 +41,7 @@ const addCharacter = async (
   return resp;
 };
 
-export function useAddAnswerMutation(options = {} as any) {
+export function useAddCharacterMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
   return useMutation(

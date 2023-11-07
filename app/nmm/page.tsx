@@ -18,44 +18,11 @@ import {
   allWords as wordsArr,
   allChars as charsArr2,
 } from "@/data/hmm/data/v1000";
-//
+
 // import { yellowBelt as charsArr } from "@/data/nmm/yellow";
 import { belts, calculateColor } from "./utils";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
-
-// const yellowHanzis = charsArr2?.map((x) => x?.hanzi);
-
-// const yellowHmm = charsArr?.filter((x) => x?.level < 1200);
-
-// console.log(
-//   "hmm",
-//   yellowHmm
-//     ?.map((x) => x?.level)
-//     ?.filter((l) => !charsArr2?.map((x) => x?.level)?.includes(l))
-//     ?.map(level => yellowHmm?.find(x => x.level === level)?.hanzi)
-//     ?.join(" ")
-// );
-
-// console.log(
-//   "nmm",
-//   charsArr2
-//     ?.map((x) => x?.level)
-//     ?.filter((l) => !charsArr?.map((x) => x?.level)?.includes(l))
-//     ?.map(level => charsArr2?.find(x => x.level === level)?.hanzi)
-//     ?.join(" ")
-// );
-// console.log(
-//   "nmm",
-//   charsArr2?.map((x) => x?.level)
-// );
-
-// console.log("HELLO HMM", yellowHmm?.filter(x => charsArr2?.map(item => item?.hanzi)?.join(" ")?.includes(x?.hanzi)))
-
-// console.log("PINYIN", charsArr2)
-// console.log(
-//   "DIFF YO",
-//   charsArr?.filter((item) => !yellowHanzis?.includes(item?.hanzi) && item?.level < 1171)
-// );
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 export default function NomadMethodPage(props: any) {
   const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);
@@ -73,6 +40,8 @@ export default function NomadMethodPage(props: any) {
 
   const { data: answers } = useListAnswersQuery();
 
+  const { data: learnedCharacters2 } = useListCharactersQuery();
+
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((seconds) => seconds + 1);
@@ -86,8 +55,7 @@ export default function NomadMethodPage(props: any) {
 
   const lastAnswer = answers?.[answers?.length - 1];
 
-
-  
+  const { data: components } = useListComponentsQuery();
 
   return (
     <div className="grow">
@@ -125,15 +93,13 @@ export default function NomadMethodPage(props: any) {
             charsArr
               ?.slice(0, selectedBelt?.maxCharacterLevel || 4000)
               .map((prop: any, idx: number) => {
-                const toneLevel = getCharacterToneLevel(prop as ICharacter);
+                const selectedComp = components?.find(
+                  (component: any) => component?.hanzi === prop?.hanzi
+                );
 
-                const color = calculateColor({ tone: toneLevel });
-
-                const graph = getGraph(prop?.hanzi)?.graph || "";
-
-                const showIf = graph
-                  ?.split("")
-                  ?.find((elem: string) => learnedCharacters?.includes(elem));
+                const color = calculateColor({
+                  tone: selectedComp?.tone_level,
+                });
 
                 return (
                   <button
@@ -142,8 +108,11 @@ export default function NomadMethodPage(props: any) {
                       setSelectedId(prop.hanzi);
                     }}
                     className={`${
-                      learnedCharacters.includes(prop?.hanzi)
-                        ? `dark:text-white ${color}`
+                      // learnedCharacters.includes(prop?.hanzi)
+                      learnedCharacters2?.find(
+                        (char: any) => char?.hanzi === prop?.hanzi
+                      )
+                        ? `${color}`
                         : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                         ? "text-yellow-500"
                         : "dark:text-gray-500 text-gray-200"

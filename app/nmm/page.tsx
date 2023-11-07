@@ -58,7 +58,7 @@ import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 // );
 
 export default function NomadMethodPage(props: any) {
-  const [selectedBelt, setSelectedBelt] = useState<any>();
+  const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);
   // const [selectedId, setSelectedId] = useState<any>("");
 
   const selectedId = useSelectedCharacter((state: any) => state?.character);

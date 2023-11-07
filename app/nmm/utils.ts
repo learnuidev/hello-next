@@ -15,38 +15,38 @@ export const calculateColor = (dict: any) => {
 
 export const belts = [
   {
-    fill: "bg-slate-200",
-    unselected: "bg-slate-100",
+    fill: "bg-slate-100",
+    unselected: "bg-slate-800",
     maxCharacterLevel: 105,
     level: "white",
   },
   {
     fill: "bg-yellow-500",
-    unselected: "bg-yellow-200",
+    unselected: "bg-yellow-800",
     maxCharacterLevel: 300,
     type: "yellow",
   },
   {
     fill: "bg-green-500",
-    unselected: "bg-green-200",
+    unselected: "bg-green-800",
     maxCharacterLevel: 600,
     level: "green",
   },
   {
     fill: "bg-blue-500",
-    unselected: "bg-blue-200",
+    unselected: "bg-blue-800",
     maxCharacterLevel: 1200,
     level: "blue",
   },
   {
     fill: "bg-red-500",
-    unselected: "bg-red-200",
+    unselected: "bg-red-800",
     maxCharacterLevel: 2000,
     level: "red",
   },
   {
     fill: "bg-black",
-    unselected: "bg-gray-300",
+    unselected: "bg-slate-800",
     maxCharacterLevel: 3000,
     level: "black",
   },

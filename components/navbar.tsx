@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import { filterHmm, parse } from "@/data/utils";
 import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
 import { useSelectedCharacter } from "@/app/(auth)/convos/use-selected-character";
+import { faX } from "@fortawesome/pro-thin-svg-icons";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -102,8 +103,10 @@ const options = [
 export const NavBar = () => {
   const routeName = usePathname();
 
-  const selectedChar = useSelectedCharacter((state: any) => state?.character)
-  const setSelectedChar = useSelectedCharacter((state: any) => state?.setCharacter)
+  const selectedChar = useSelectedCharacter((state: any) => state?.character);
+  const setSelectedChar = useSelectedCharacter(
+    (state: any) => state?.setCharacter
+  );
 
   const router = useRouter();
 
@@ -220,42 +223,53 @@ export const NavBar = () => {
     }
   };
 
-
   if (selectedChar) {
-    return null
+    return null;
   }
 
   return (
-    <div className="flex justify-between items-center w-full px-4 md:px-32 md:mt-2">
-      <Link className="my-2" href="/">
-        <FontAwesomeIcon icon={faMountainSun} />
-      </Link>
+    <div className="flex justify-between items-center w-full px-4 md:px-12">
+      {routeName === "/" ? (
+        <Link className="my-2" href="/insights">
+          <FontAwesomeIcon icon={faX} />
+        </Link>
+      ) : (
+        <Link className="my-2" href="/">
+          <FontAwesomeIcon icon={faMountainSun} />
+        </Link>
+      )}
 
-      <div className="hidden sm:block my-2 flex flex-row justify-center space-x-4 items-center">
-        <div className="flex items-center justify-center"></div>
+      {/* {routeName === "/" ? (
+        <div className="h-12"> </div>
+      ) : (
+        <div className="h-12 hidden sm:block py-2 flex flex-row justify-center space-x-4 items-center">
+          <div className="flex items-center justify-center"></div>
 
-        <input
-          className="dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300 dark:bg-black/10 dark:text-gray-300 placeholder:text-gray-400 opacity-100 transition-all  duration-400 ease-in border-2 w-[140px] md:w-[500px] focus:w-[600px] px-4 py-2 rounded-full focus:outline-none active:outline-none dark:border-gray-800"
-          placeholder={"Search"}
-          onChange={(event) => {
-            setQuery(() => event?.target?.value);
-          }}
-          value={query}
-          onKeyDown={(event) => {
-            if (event?.keyCode === 13) {
-              if (option.value as any) {
-                handleSearch();
-                router.push("/search");
+          <input
+            className="dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300 dark:bg-black/10 dark:text-gray-300 placeholder:text-gray-400 opacity-100 transition-all  duration-400 ease-in border-2 w-[140px] md:w-[500px] focus:w-[600px] px-4 py-2 rounded-full focus:outline-none active:outline-none dark:border-gray-800"
+            placeholder={"Search"}
+            onChange={(event) => {
+              setQuery(() => event?.target?.value);
+            }}
+            value={query}
+            onKeyDown={(event) => {
+              if (event?.keyCode === 13) {
+                if (option.value as any) {
+                  handleSearch();
+                  router.push("/search");
+                }
               }
-            }
-          }}
-        />
-      </div>
+            }}
+          />
+        </div>
+      )} */}
       <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
         <Link
           href="/convos"
           className={`transition ${
-            routeName?.includes("/convos") ? "text-gray-800 dark:text-gray-300" : "text-gray-200 dark:text-gray-500"
+            routeName?.includes("/convos")
+              ? "text-gray-800 dark:text-gray-300"
+              : "text-gray-200 dark:text-gray-500"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faComment} />
@@ -263,7 +277,9 @@ export const NavBar = () => {
         <Link
           href="/learn"
           className={`transition ${
-            routeName === "/learn" ? "text-gray-800 dark:text-gray-300" : "text-gray-200 dark:text-gray-500"
+            routeName === "/learn"
+              ? "text-gray-800 dark:text-gray-300"
+              : "text-gray-200 dark:text-gray-500"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faGraduationCap} />
@@ -271,7 +287,9 @@ export const NavBar = () => {
         <Link
           href="/pinyin"
           className={`transition ${
-            routeName === "/pinyin" ? "text-gray-800 dark:text-gray-300" : "text-gray-200 dark:text-gray-500"
+            routeName === "/pinyin"
+              ? "text-gray-800 dark:text-gray-300"
+              : "text-gray-200 dark:text-gray-500"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faTableTree} />
@@ -279,7 +297,9 @@ export const NavBar = () => {
         <Link
           href="/insights"
           className={`transition ${
-            routeName === "/insights" ? "text-gray-800 dark:text-gray-300" : "text-gray-200 dark:text-gray-500"
+            routeName === "/insights"
+              ? "text-gray-800 dark:text-gray-300"
+              : "text-gray-200 dark:text-gray-500"
           } hover:text-gray-700 transition text-xl`}
         >
           <FontAwesomeIcon icon={faChartColumn} />
@@ -288,7 +308,9 @@ export const NavBar = () => {
         <Link
           href="/nmm"
           className={`transition ${
-            routeName === "/nmm" ? "text-gray-800 dark:text-gray-300" : "text-gray-200 dark:text-gray-500"
+            routeName === "/nmm"
+              ? "text-gray-800 dark:text-gray-300"
+              : "text-gray-200 dark:text-gray-500"
           } hover:text-gray-700 transition text-xl`}
         >
           <NomadIcon />

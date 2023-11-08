@@ -128,7 +128,7 @@ export function HanziMovieMethod() {
 
   if (!lesson) {
     return (
-      <div className="relative grow ml-4 md:ml-16 flex flex-col items-center">
+      <div className="relative grow flex flex-col items-center">
         <Header className="my-2 md:my-16 text-black dark:text-white text-3xl font-extrabold">
           Play
         </Header>
@@ -152,7 +152,7 @@ export function HanziMovieMethod() {
   }
 
   return (
-    <div className="grow ml-4 md:ml-16 flex flex-col items-center">
+    <div className="grow flex flex-col items-center">
       <Header className="my-2 md:my-16 text-black dark:text-white text-3xl font-extrabold">
         {lesson?.title}
       </Header>

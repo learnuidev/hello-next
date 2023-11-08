@@ -30,6 +30,8 @@ import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { calculateColor } from "@/app/nmm/utils";
+import { cleanString } from "@/data/convos/bm1/utils";
+import { faX } from "@fortawesome/pro-light-svg-icons";
 
 function SelectedCharacter({
   unlockedCharactersHMM,
@@ -96,16 +98,28 @@ function SelectedCharacter({
     ...new Set(relevantAnswers?.map((answer: any) => answer?.hanzi)),
   ];
 
+  const { data: components } = useListComponentsQuery();
+
+  const allSteps =
+    components
+      ?.map((component: any) => component?.steps)
+      ?.filter(Boolean)
+      ?.flat() || [];
+
+  const selectedComp = components?.find(
+    (component: any) => component?.hanzi === selectedChar
+  );
+
   return (
-    <div className="w-full px-4 md:px-32 my-4 md:my-8">
+    <div className="w-full px-4 md:px-12">
       <div className="flex justify-between items-center">
         <button
-          className="text-4xl"
+          className="text-xl"
           onClick={() => {
             setSelectedChar("");
           }}
         >
-          <FontAwesomeIcon icon={faXmark} />
+          <FontAwesomeIcon icon={faX} />
         </button>
         <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
           <Link
@@ -128,40 +142,86 @@ function SelectedCharacter({
               (lesson: any) => lesson?.id === char?.phraseId
             );
 
-            const currentPhrase = allContents?.find(
-              (lesson: any) => lesson?.id === char?.phraseId
-            );
+            const currentPhrase =
+              allContents?.find(
+                (lesson: any) => lesson?.id === char?.phraseId
+              ) ||
+              allSteps?.find((step: any) => cleanString(step?.hanzi) === id);
 
             return (
               <div
                 role="button"
                 className="pb-8 flex flex-col"
-                key={`${idx}-${char?.hanzi}-${idx}`}
+                key={`${idx}-${char?.hanzi}-${idx}-${Math.random()}`}
               >
                 {" "}
-                <span className="text-md text-gray-600 dark:text-gray-300">
+                <span className="text-sm text-gray-500 dark:text-gray-400">
                   {currentPhrase?.pinyin}
                 </span>
-                <p>
-                  {currentPhrase?.hanzi?.split("")?.map((str: string) => {
-                    return (
-                      <span
-                        key={`${selectedChar}-${str}`}
-                        className={`${
-                          selectedChar === str
-                            ? "text-gray-700 dark:text-yellow-300"
-                            : "text-gray-500 dark:text-gray-300"
-                        }`}
-                      >
-                        {str}
-                      </span>
-                    );
-                  })}
-                </p>
-                <span className="text-md text-gray-700 dark:text-gray-400">
-                  {currentPhrase?.en}
+                <span className="text-gray-500 dark:text-gray-300">
+                  {currentPhrase?.hanzi
+                    ?.split("")
+                    ?.map((val: string, idy: number) => {
+                      // const toneLevel = getCharacterToneLevel(
+                      //   currentPhrase as ICharacter
+                      // );
+
+                      // const color = calculateColor({ tone: toneLevel });
+
+                      const color = calculateColor({
+                        tone: selectedComp?.tone_level,
+                      });
+
+                      return (
+                        <span
+                          key={`${idx}-${val}-${idx}-${idy}-${idy}-${idx}`}
+                          onClick={() => {
+                            setSelectedChar(val);
+                          }}
+                          className={`${
+                            selectedChar === val
+                              ? color
+                              : "text-gray-400 dark:text-gray-300"
+                          }`}
+                        >
+                          {val}
+                        </span>
+                      );
+                    })}
+                </span>
+                <span className="text-sm text-gray-500">
+                  {currentPhrase?.en || currentPhrase?.title}
                 </span>
               </div>
+              // <div
+              //   role="button"
+              //   className="pb-8 flex flex-col"
+              //   key={`${idx}-${char?.hanzi}-${idx}`}
+              // >
+              //   {" "}
+              //   <span className="text-md text-gray-600 dark:text-gray-300">
+              //     {currentPhrase?.pinyin}
+              //   </span>
+              //   <p>
+              //     {currentPhrase?.hanzi?.split("")?.map((str: string) => {
+              //       return (
+              //         <span
+              //           key={`${selectedChar}-${str}`}
+              //           className={`${
+              //             selectedChar === str
+              //               ? "text-gray-700 dark:text-yellow-300"
+              //               : "text-gray-500 dark:text-gray-300"
+              //           }`}
+              //         >
+              //           {str}
+              //         </span>
+              //       );
+              //     })}
+              //   </p>
+              //   <span className="text-md text-gray-700 dark:text-gray-400">
+              //     {currentPhrase?.en || title}
+              //   </span>
+              // </div>
             );
           })}
         </div>
@@ -296,65 +356,42 @@ export default function Insights() {
         />
       ) : (
         <Tabs defaultValue="default">
-          <TabsList className="w-full px-4 md:px-32 my-4 md:my-8">
-            <TabsTrigger value="default">
-              <FontAwesomeIcon icon={faTable} className="text-xl" />
-            </TabsTrigger>
-            <TabsTrigger value="charts">
-              <FontAwesomeIcon icon={faChartSimple} className="text-xl" />
-            </TabsTrigger>
-          </TabsList>
+          <div className="flex w-full justify-between px-4 md:px-12 md:my-8">
+            <div className="">
+              <div className="flex justify-start flex-row md:space-x-12">
+                <h2 className="flex flex-col-reverse items-center text-2xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                  <span>{unlockedNMMCharacters?.length} </span>
+                  <span className="text-xs md:text-lg">
+                    <span className="hidden md:inline-block">汉语</span>
+                    <span> Discovered </span>
+                  </span>
+                </h2>
+                <h2 className="flex flex-col-reverse items-center text-2xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                  <span>{learnedCharacters?.length} </span>
+
+                  <span className="text-xs md:text-lg">
+                    <span className="hidden md:inline-block">汉语</span>
+                    <span> Learned</span>
+                  </span>
+                </h2>
+              </div>
+            </div>
+
+            <TabsList className="my-4 md:my-8">
+              <TabsTrigger value="default">
+                <FontAwesomeIcon icon={faTable} className="text-xl" />
+              </TabsTrigger>
+              <TabsTrigger value="charts">
+                <FontAwesomeIcon icon={faChartSimple} className="text-xl" />
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
           <TabsContent value="default">
-            <div className="space-y-16">
-              <div className="w-full px-4 md:px-32">
-                <div className="flex justify-around">
-                  <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    <span>
-                      {repeatHistories?.length}{" "}
-                      <span className="text-md">loops </span>{" "}
-                    </span>
-                    <span className="text-sm md:text-lg">Listening</span>
-                  </h2>
-
-                  <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    {/* <span>{accuracyPercentage} </span> */}
-                    <span>
-                      {allAnswers?.length}{" "}
-                      <span className="text-md">loops </span>
-                    </span>
-                    <span className="text-sm md:text-lg">Writing</span>
-                  </h2>
-
-                  <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    {/* <span>97.8% </span> */}
-                    <span>
-                      942 <span className="text-md">loops </span>
-                    </span>
-                    <span className="text-sm md:text-lg">Speaking</span>
-                  </h2>
-                </div>
-              </div>
-
-              <div className="w-full px-4 md:px-32">
-                <div className="flex justify-around">
-                  <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    <span>{unlockedNMMCharacters?.length} </span>
-                    <span className="text-sm md:text-lg">
-                      Characters Discovered{" "}
-                    </span>
-                  </h2>
-                  <h2 className="flex flex-col-reverse items-center text-4xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    <span>{learnedCharacters?.length} </span>
-                    <span className="text-sm md:text-lg">
-                      Characters Learned
-                    </span>
-                  </h2>
-                </div>
-              </div>
-
-              <div className="w-full px-4 md:px-32 my-4 md:my-8">
-                <div className="my-8">
-                  <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
+            <div className="md:space-y-16">
+              <div className="w-full text-center px-4">
+                <div className="text-center">
+                  <div className="text-2xl text-gray-700 grid grid-cols-6 md:grid-cols-12">
                     {unlockedNMMCharacters?.map((char, idx: number) => {
                       const selectedComp = components?.find(
                         (component: any) => component?.hanzi === char?.hanzi
@@ -364,15 +401,11 @@ export default function Insights() {
                         tone: selectedComp?.tone_level,
                       });
                       return (
-                        <button
+                        <span
                           role="button"
                           onClick={() => {
                             setSelectedChar(char?.hanzi);
                           }}
-                          // disabled={
-                          //   currentLevel?.maxCharacterLevel <
-                          //   char?.hmmCharacterLevel
-                          // }
                           className={`p-2 ${
                             learnedCharacters?.find(
                               (item: any) => item?.hanzi === char?.hanzi
@@ -387,16 +420,50 @@ export default function Insights() {
                         >
                           {" "}
                           {char?.hanzi}
-                        </button>
+                        </span>
                       );
                     })}
                   </div>
                 </div>
               </div>
+
+              <div className="w-full px-4">
+                <div className="flex justify-around items-center px-4 md:px-8">
+                  <h2 className="flex flex-col-reverse items-center text-xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                    <span>
+                      {repeatHistories?.length}
+                      <span className="text-md">x </span>{" "}
+                    </span>
+                    <span className="text-sm md:text-md dark:text-gray-400">
+                      Listening
+                    </span>
+                  </h2>
+
+                  <h2 className="flex flex-col-reverse items-center text-xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                    <span>
+                      {allAnswers?.length}
+                      <span className="text-md">x </span>
+                    </span>
+                    <span className="text-sm md:text-md dark:text-gray-400">
+                      Writing
+                    </span>
+                  </h2>
+
+                  <h2 className="flex flex-col-reverse items-center text-xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                    <span>
+                      {42}
+                      <span className="text-md">x </span>
+                    </span>
+                    <span className="text-sm md:text-md dark:text-gray-400">
+                      Speaking
+                    </span>
+                  </h2>
+                </div>
+              </div>
             </div>
           </TabsContent>
           <TabsContent value="charts">
-            <div className="w-full px-4 md:px-32 my-4 md:my-8">
+            <div className="w-full px-4 my-4 md:my-8">
               <CharacterDiscoveryAreaChart />
             </div>
           </TabsContent>

@@ -63,7 +63,7 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
 
   if (!lesson && !isLoading && !isCharactersLoading) {
     return (
-      <div className="relative grow ml-4 md:ml-16 flex flex-col items-center">
+      <div className="relative grow flex flex-col items-center">
         <p className="my-2 text-black dark:text-white text-3xl font-extrabold">
           Review
         </p>
@@ -111,9 +111,9 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
   }
 
   return (
-    <div className="grow ml-4 md:ml-16 flex flex-col items-center">
+    <div className="mx-4 md:mx-0 grow flex flex-col items-center">
       {lesson?.hanzi ? (
-        <div className="md:mt-60">
+        <div className="mt-16 md:mt-60">
           <h1 className="md:mx-12 my-2  text-black dark:text-gray-200 text-md md:text-xl">
             {lesson?.title}
           </h1>
@@ -151,6 +151,37 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
       )}
 
       <div className="py-24">
+        <button
+          className="hover:shadow-blue-600 shadow-md px-6 py-2 uppercase transition"
+          disabled={lessonIndex === 0}
+          onClick={() => {
+            setLessonIndex((idx: number) => idx - 1);
+            // if (
+            //   answersList?.find(
+            //     (answer: any) => answer?.hanzi !== firstLesson?.hanzi
+            //   )
+            // ) {
+            //   setLessonIndex((idx: number) => idx + 1);
+            // } else if (lesson?.hanzi) {
+            //   return addAnswerMutation
+            //     .mutateAsync({
+            //       hanzi: cleanString(lesson?.hanzi),
+            //       answer: lesson?.hanzi,
+            //       lessonId: firstLesson?.id,
+            //       phraseId: cleanString(lesson?.hanzi),
+            //       status: "correct",
+            //       guessHistory: [],
+            //     })
+            //     .then(() => {
+            //       setLessonIndex((idx: number) => idx + 1);
+            //     });
+            // } else {
+            //   setLessonIndex((idx: number) => idx - 1);
+            // }
+          }}
+        >
+          Previous
+        </button>
         <button
           className="hover:shadow-blue-600 shadow-md px-6 py-2 uppercase transition"
           onClick={() => {

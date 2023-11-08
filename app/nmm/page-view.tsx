@@ -63,7 +63,13 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
 
   // console.log("allTranscriptions", allTranscriptions);
 
-  const { data: components } = useListComponentsQuery();
+  const { data: components } = useListComponentsQuery({},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    });
 
   const allSteps =
     components

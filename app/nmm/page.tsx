@@ -57,13 +57,19 @@ export default function NomadMethodPage(props: any) {
     return () => clearInterval(interval);
   }, []);
 
-  const { data: charsArr } = useListComponentsQuery();
-
   const selectedItem = propsArr.find((item) => item?.hanzi === selectedId);
 
   const lastAnswer = answers?.[answers?.length - 1];
 
-  const { data: components } = useListComponentsQuery();
+  const { data: components } = useListComponentsQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
 
   return (
     <div className="grow">
@@ -97,8 +103,8 @@ export default function NomadMethodPage(props: any) {
         />
       ) : (
         <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {charsArr?.length &&
-            charsArr
+          {components?.length &&
+            components
               ?.slice(0, selectedBelt?.maxCharacterLevel || 4000)
               .map((prop: any, idx: number) => {
                 const selectedComp = components?.find(

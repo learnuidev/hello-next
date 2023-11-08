@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useViewModeStore } from "./use-view-mode-store";
 import {
@@ -12,6 +12,8 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
 import { cleanString } from "@/data/convos/bm1/utils";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
+import { useListSubComponentsQuery } from "@/domain/component/component.queries";
+import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 
 export function NomadMethod({ selectedId }: { selectedId: string }) {
   const [isPlaying, setIsPlaying] = useState(true);
@@ -23,6 +25,10 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
     useListCharactersQuery();
 
   const addCharacterMutation = useAddCharacterMutation();
+
+  const { data: sub_components } = useListSubComponentsQuery({
+    componentId: selectedId,
+  });
 
   const characterState = useCharacterStore(
     (state: any) => state.character
@@ -40,11 +46,31 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
 
   const { data: components, isLoading } = useListComponentsQuery();
 
-  const firstLesson = components?.find(
-    (component: any) => component?.hanzi === selectedId
+  const firstLesson = useMemo(
+    () => components?.find((component: any) => component?.hanzi === selectedId),
+    [components, selectedId]
   );
 
-  const lesson = firstLesson?.steps[lessonIndex];
+  const lesson = useMemo(
+    () => firstLesson?.steps[lessonIndex],
+    [firstLesson, lessonIndex]
+  );
+
+  console.log("YOO====");
+
+  const { data: grammarAnalsis } = useListGrammarsQuery(
+    {
+      sentenceId: lesson?.id,
+      content: lesson?.hanzi,
+    },
+    {
+      enabled: Boolean(lesson?.id) && Boolean(lesson?.hanzi),
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
 
   const { data: answersList } = useListAnswersQuery({
     journeyId: firstLesson?.id,
@@ -187,7 +213,7 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
           onClick={() => {
             if (
               answersList?.filter(
-                (answer: any) => answer?.hanzi === firstLesson?.hanzi
+                (answer: any) => answer?.hanzi === cleanString(lesson?.hanzi)
               )[0]
             ) {
               setLessonIndex((idx: number) => idx + 1);

@@ -25,7 +25,15 @@ export default function Home() {
   const [isTocHidden, setIsTocHidden] = useState(false);
   const [selectedId, setSelectedId] = useState("");
 
-  const { data: components, isLoading } = useListComponentsQuery();
+  const { data: components, isLoading } = useListComponentsQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
 
   const { data: allAnswers } = useListAnswersQuery();
 

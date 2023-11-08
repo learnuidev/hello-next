@@ -239,7 +239,7 @@ export const NavBar = () => {
         </Link>
       )}
 
-      {/* {routeName === "/" ? (
+      {routeName === "/" ? (
         <div className="h-12"> </div>
       ) : (
         <div className="h-12 hidden sm:block py-2 flex flex-row justify-center space-x-4 items-center">
@@ -262,7 +262,7 @@ export const NavBar = () => {
             }}
           />
         </div>
-      )} */}
+      )}
       <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
         <Link
           href="/convos"

@@ -186,9 +186,9 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
           className="hover:shadow-blue-600 shadow-md px-6 py-2 uppercase transition"
           onClick={() => {
             if (
-              answersList?.find(
-                (answer: any) => answer?.hanzi !== firstLesson?.hanzi
-              )
+              answersList?.filter(
+                (answer: any) => answer?.hanzi === firstLesson?.hanzi
+              )[0]
             ) {
               setLessonIndex((idx: number) => idx + 1);
             } else if (lesson?.hanzi) {

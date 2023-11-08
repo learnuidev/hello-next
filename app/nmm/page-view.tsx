@@ -30,7 +30,7 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
   );
 
   const relevantAnswers = allAnswers?.filter((answer: any) => {
-    return answer?.hanzi?.includes(selectedId);
+    return answer?.phraseId?.includes(selectedId);
   }) as {
     hanzi: string;
     journeyId: string;

@@ -1,5 +1,5 @@
 export const calculateColor = (dict: any) => {
-  switch (dict?.tone) {
+  switch (parseInt(dict?.tone)) {
     case 1:
       return "text-red-400";
     case 2:

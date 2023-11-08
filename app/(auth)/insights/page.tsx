@@ -16,7 +16,7 @@ import { faXmark } from "@fortawesome/pro-light-svg-icons/faXmark";
 import { course1 } from "@/data/convos/bm1/index";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { faChartSimple, faTable } from "@fortawesome/pro-thin-svg-icons";
+import { faChartSimple, faTable, faX } from "@fortawesome/pro-thin-svg-icons";
 import { CharacterDiscoveryAreaChart } from "./CharacterDiscoveryAreaChart";
 import { useRepeatHistoryStore } from "../convos/_play/use-repeat-history";
 import { useUniqueAnswers } from "@/app/nmm/use-unique-answers";
@@ -31,7 +31,6 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { calculateColor } from "@/app/nmm/utils";
 import { cleanString } from "@/data/convos/bm1/utils";
-import { faX } from "@fortawesome/pro-light-svg-icons";
 
 function SelectedCharacter({
   unlockedCharactersHMM,
@@ -72,9 +71,7 @@ function SelectedCharacter({
     ...new Set(
       allAnswers
         ?.filter((answer: any) => {
-          return answer?.phraseId?.includes(
-            selectedChar?.hanzi || selectedChar
-          );
+          return answer?.phraseId?.includes(selectedChar);
         })
         ?.map((x: any) => x?.phraseId)
     ),
@@ -127,9 +124,11 @@ function SelectedCharacter({
             href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
               selectedChar?.hanzi || selectedChar
             )}`}
+            className="flex items-end space-x-2"
           >
             {" "}
-            {selectedChar?.hanzi || selectedChar}
+            <span>{selectedChar?.hanzi || selectedChar}</span>{" "}
+            <span className="text-xs">{selectedComp?.en}</span>
           </Link>
         </h2>
       </div>
@@ -356,42 +355,84 @@ export default function Insights() {
         />
       ) : (
         <Tabs defaultValue="default">
-          <div className="flex w-full justify-between px-4 md:px-12 md:my-8">
-            <div className="">
-              <div className="flex justify-start flex-row md:space-x-12">
-                <h2 className="flex flex-col-reverse items-center text-2xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                  <span>{unlockedNMMCharacters?.length} </span>
-                  <span className="text-xs md:text-lg">
-                    <span className="hidden md:inline-block">汉语</span>
-                    <span> Discovered </span>
-                  </span>
-                </h2>
-                <h2 className="flex flex-col-reverse items-center text-2xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                  <span>{learnedCharacters?.length} </span>
-
-                  <span className="text-xs md:text-lg">
-                    <span className="hidden md:inline-block">汉语</span>
-                    <span> Learned</span>
-                  </span>
-                </h2>
-              </div>
-            </div>
-
-            <TabsList className="my-4 md:my-8">
-              <TabsTrigger value="default">
-                <FontAwesomeIcon icon={faTable} className="text-xl" />
-              </TabsTrigger>
-              <TabsTrigger value="charts">
-                <FontAwesomeIcon icon={faChartSimple} className="text-xl" />
-              </TabsTrigger>
-            </TabsList>
-          </div>
-
+          {/* <TabsList className="w-full px-4 md:px-32 my-4 md:my-8">
+            <TabsTrigger value="default">
+              <FontAwesomeIcon icon={faTable} className="text-xl" />
+            </TabsTrigger>
+            <TabsTrigger value="charts">
+              <FontAwesomeIcon icon={faChartSimple} className="text-xl" />
+            </TabsTrigger>
+          </TabsList> */}
           <TabsContent value="default">
-            <div className="md:space-y-16">
-              <div className="w-full text-center px-4">
-                <div className="text-center">
-                  <div className="text-2xl text-gray-700 grid grid-cols-6 md:grid-cols-12">
+            <div className="">
+              <div className="flex flex-col md:flex-row justify-between my-4 md:mt-16">
+                <div className="w-full px-4 md:px-32">
+                  <div className="flex justify-start space-x-8">
+                    <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                      <span>
+                        {unlockedNMMCharacters?.length}
+                        <span className="text-md">x </span>{" "}
+                      </span>
+                      <span className="text-sm md:text-md dark:text-gray-400">
+                        Characters Discovered{" "}
+                      </span>
+                    </h2>
+
+                    <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                      <span>
+                        {learnedCharacters?.length}
+                        <span className="text-md">x </span>{" "}
+                      </span>
+                      <span className="text-sm md:text-md dark:text-gray-400">
+                        Characters Learned
+                      </span>
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="w-full px-4 md:px-32">
+                  <div className="flex justify-end space-x-4 md:space-x-8">
+                    <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                      <span>
+                        {repeatHistories?.length}
+                        <span className="text-md">x </span>{" "}
+                      </span>
+                      <span className="text-sm md:text-md dark:text-gray-400">
+                        Listening
+                      </span>
+                    </h2>
+
+                    <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                      {/* <span>{accuracyPercentage} </span> */}
+                      <span>
+                        {allAnswers?.length}
+                        <span className="text-md">x </span>
+                      </span>
+                      <span className="text-sm md:text-md dark:text-gray-400">
+                        Writing
+                      </span>
+                    </h2>
+
+                    <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                      {/* <span>97.8% </span> */}
+                      {/* <span>
+                      {942} <span className="text-md">x </span>
+                    </span> */}
+                      <span>
+                        {42}
+                        <span className="text-md">x </span>
+                      </span>
+                      <span className="text-sm md:text-md dark:text-gray-400">
+                        Speaking
+                      </span>
+                    </h2>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full px-4 md:px-32 my-4 md:my-8 flex items-center justify-center">
+                <div className="my-8">
+                  <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
                     {unlockedNMMCharacters?.map((char, idx: number) => {
                       const selectedComp = components?.find(
                         (component: any) => component?.hanzi === char?.hanzi
@@ -401,11 +442,15 @@ export default function Insights() {
                         tone: selectedComp?.tone_level,
                       });
                       return (
-                        <span
+                        <button
                           role="button"
                           onClick={() => {
                             setSelectedChar(char?.hanzi);
                           }}
+                          // disabled={
+                          //   currentLevel?.maxCharacterLevel <
+                          //   char?.hmmCharacterLevel
+                          // }
                           className={`p-2 ${
                             learnedCharacters?.find(
                               (item: any) => item?.hanzi === char?.hanzi
@@ -420,51 +465,88 @@ export default function Insights() {
                         >
                           {" "}
                           {char?.hanzi}
-                        </span>
+                        </button>
                       );
                     })}
                   </div>
                 </div>
               </div>
 
-              <div className="w-full px-4">
-                <div className="flex justify-around items-center px-4 md:px-8">
-                  <h2 className="flex flex-col-reverse items-center text-xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    <span>
-                      {repeatHistories?.length}
-                      <span className="text-md">x </span>{" "}
-                    </span>
-                    <span className="text-sm md:text-md dark:text-gray-400">
-                      Listening
-                    </span>
-                  </h2>
-
-                  <h2 className="flex flex-col-reverse items-center text-xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    <span>
-                      {allAnswers?.length}
-                      <span className="text-md">x </span>
-                    </span>
-                    <span className="text-sm md:text-md dark:text-gray-400">
-                      Writing
-                    </span>
-                  </h2>
-
-                  <h2 className="flex flex-col-reverse items-center text-xl md:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                    <span>
-                      {42}
-                      <span className="text-md">x </span>
-                    </span>
-                    <span className="text-sm md:text-md dark:text-gray-400">
-                      Speaking
-                    </span>
-                  </h2>
-                </div>
+              <div className="w-full px-4 md:px-32 my-4 md:my-12">
+                <CharacterDiscoveryAreaChart />
               </div>
             </div>
           </TabsContent>
           <TabsContent value="charts">
-            <div className="w-full px-4 my-4 md:my-8">
-              <CharacterDiscoveryAreaChart />
+            <div>
+              <div className="flex justify-between px-12">
+                <div className="w-full">
+                  <div className="flex justify-start space-x-4 md:space-x-8">
+                    <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                      <span>
+                        {unlockedNMMCharacters?.length}
+                        <span className="text-md">x </span>{" "}
+                      </span>
+                      <span className="text-sm md:text-md dark:text-gray-400">
+                        Characters Discovered{" "}
+                      </span>
+                    </h2>
+
+                    <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                      <span>
+                        {learnedCharacters?.length}
+                        <span className="text-md">x </span>{" "}
+                      </span>
+                      <span className="text-sm md:text-md dark:text-gray-400">
+                        Characters Learned
+                      </span>
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="w-full">
+                  <div className="flex justify-end space-x-4 md:space-x-8">
+                    <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                      <span>
+                        {repeatHistories?.length}
+                        <span className="text-md">x </span>{" "}
+                      </span>
+                      <span className="text-sm md:text-md dark:text-gray-400">
+                        Listening
+                      </span>
+                    </h2>
+
+                    <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                      {/* <span>{accuracyPercentage} </span> */}
+                      <span>
+                        {allAnswers?.length}
+                        <span className="text-md">x </span>
+                      </span>
+                      <span className="text-sm md:text-md dark:text-gray-400">
+                        Writing
+                      </span>
+                    </h2>
+
+                    <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                      {/* <span>97.8% </span> */}
+                      {/* <span>
+                      {942} <span className="text-md">x </span>
+                    </span> */}
+                      <span>
+                        {42}
+                        <span className="text-md">x </span>
+                      </span>
+                      <span className="text-sm md:text-md dark:text-gray-400">
+                        Speaking
+                      </span>
+                    </h2>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full px-4 md:px-32 my-4 md:my-12">
+                <CharacterDiscoveryAreaChart />
+              </div>
             </div>
           </TabsContent>
         </Tabs>

@@ -228,7 +228,7 @@ export const NavBar = () => {
   }
 
   return (
-    <div className="flex justify-between items-center w-full px-4 md:px-12">
+    <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
       {routeName === "/" ? (
         <Link className="my-2" href="/insights">
           <FontAwesomeIcon icon={faX} />

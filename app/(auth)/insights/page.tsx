@@ -154,9 +154,17 @@ function SelectedCharacter({
                 key={`${idx}-${char?.hanzi}-${idx}-${Math.random()}`}
               >
                 {" "}
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {currentPhrase?.pinyin}
-                </span>
+                <Link
+                  target="_blank"
+                  href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                    char?.hanzi
+                  )}`}
+                  // className="flex items-end space-x-2"
+                >
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    {currentPhrase?.pinyin}
+                  </span>
+                </Link>
                 <span className="text-gray-500 dark:text-gray-300">
                   {currentPhrase?.hanzi
                     ?.split("")

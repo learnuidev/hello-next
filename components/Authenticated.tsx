@@ -2,10 +2,14 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { Authenticate } from "./Authenticate";
 
 export const Authenticated = (props: any) => {
-  const { data: authUser } = useCurrentAuthUser({});
+  const { data: authUser, isLoading } = useCurrentAuthUser({});
 
   if (authUser) {
     return <>{props.children}</>;
+  }
+
+  if (isLoading) {
+    return <div></div>
   }
 
   return <Authenticate />;

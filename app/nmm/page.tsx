@@ -12,6 +12,8 @@ import { getGraph } from "../pinyin/utils";
 
 import { propsArr, learnedCharacters } from "@/data/hmm/data";
 
+import { useSpring, animated, useTransition, config } from "@react-spring/web";
+
 import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
 
 import {
@@ -71,6 +73,11 @@ export default function NomadMethodPage(props: any) {
     }
   );
 
+  const styles = useSpring({
+    from: { opacity: "0" },
+    to: { opacity: "1" },
+  });
+
   return (
     <div className="grow">
       <NavBar />
@@ -95,7 +102,7 @@ export default function NomadMethodPage(props: any) {
         </div>
       )}
 
-      {selectedId ? (
+      {selectedId && !components?.length ? (
         <SelectedComponent
           selectedId={selectedId}
           setSelectedId={setSelectedId}

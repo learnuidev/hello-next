@@ -135,7 +135,7 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
                           <span
                             key={`${idx}-${val}-${idx}-${idy}`}
                             onClick={() => {
-                              setSelectedId(val)
+                              setSelectedId(val);
                             }}
                             className={`${
                               selectedId === val
@@ -201,9 +201,7 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
                                   </span>
                                 );
                               })}
-                              {/* <p className="dark:text-gray-500 text-gray-400">
-                                {example?.pinyin}
-                              </p> */}
+
                               <p className="dark:text-gray-400 text-gray-500">
                                 {example?.en}
                               </p>

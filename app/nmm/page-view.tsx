@@ -134,6 +134,9 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
                         return (
                           <span
                             key={`${idx}-${val}-${idx}-${idy}`}
+                            onClick={() => {
+                              setSelectedId(val)
+                            }}
                             className={`${
                               selectedId === val
                                 ? color

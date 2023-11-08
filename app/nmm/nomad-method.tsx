@@ -101,54 +101,54 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
 
   // const styles = {} as any;
 
-  // if (!lesson && !isLoading && !isCharactersLoading) {
-  //   return (
-  //     <div className="relative grow flex flex-col items-center">
-  //       <p className="my-2 text-black dark:text-white text-3xl font-extrabold">
-  //         Review
-  //       </p>
+  if (!lesson && characterState?.story) {
+    return (
+      <div className="relative grow flex flex-col items-center">
+        <p className="my-2 text-black dark:text-white text-3xl font-extrabold">
+          Review
+        </p>
 
-  //       <p className="dark:text-gray-400">
-  //         Lets quickly review before submitting
-  //       </p>
+        <p className="dark:text-gray-400">
+          Lets quickly review before submitting
+        </p>
 
-  //       <div className="my-8 py-8 w-full items-center justify-center flex space-x-8 md:space-x-16">
-  //         <code>
-  //           <pre>{JSON.stringify(characterState, null, 2)}</pre>
-  //         </code>
-  //       </div>
+        <div className="my-8 py-8 w-full items-center justify-center flex space-x-8 md:space-x-16">
+          <code>
+            <pre>{JSON.stringify(characterState, null, 2)}</pre>
+          </code>
+        </div>
 
-  //       <div className="bottom-0 py-4">
-  //         <button
-  //           onClick={() => {
-  //             addCharacterMutation
-  //               ?.mutateAsync({
-  //                 hanzi: firstLesson?.hanzi,
-  //                 pinyin: firstLesson?.pinyin,
-  //                 en: firstLesson?.en,
-  //                 level: firstLesson?.level,
-  //                 nomad: characterState?.nomad,
-  //                 destination: characterState?.destination,
-  //                 location: characterState?.location,
-  //                 journeyId: firstLesson.id,
-  //                 // todo | completed
-  //                 status: "completed",
-  //                 story: characterState?.story,
-  //                 component: characterState?.component,
-  //                 sub_components: [],
-  //               })
-  //               .then(() => {
-  //                 reset();
-  //               });
-  //           }}
-  //           className="hover:shadow-blue-600 shadow-md py-4 px-8 rounded bg-gray-800 text-2xl font-extralight"
-  //         >
-  //           Complete
-  //         </button>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+        <div className="bottom-0 py-4">
+          <button
+            onClick={() => {
+              addCharacterMutation
+                ?.mutateAsync({
+                  hanzi: firstLesson?.hanzi,
+                  pinyin: firstLesson?.pinyin,
+                  en: firstLesson?.en,
+                  level: firstLesson?.level,
+                  nomad: characterState?.nomad,
+                  destination: characterState?.destination,
+                  location: characterState?.location,
+                  journeyId: firstLesson.id,
+                  // todo | completed
+                  status: "completed",
+                  story: characterState?.story,
+                  component: characterState?.component,
+                  sub_components: [],
+                })
+                .then(() => {
+                  reset();
+                });
+            }}
+            className="hover:shadow-blue-600 shadow-md py-4 px-8 rounded bg-gray-800 text-2xl font-extralight"
+          >
+            Complete
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // return transitions((style, item) => (
   //   <animated.div style={style} className="text-white">
@@ -161,55 +161,57 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
   return (
     <div>
       <animated.div
-        className="grid test content-center my-8"
+        className="grid test content-center md:my-48 my-8"
         style={styles}
         key={lesson?.id}
       >
-        <div className="mx-4 md:mx-0 grow flex flex-col items-center transition ease-in-out">
-          {lesson?.hanzi ? (
-            <div className="">
-              <h1 className="md:mx-12 my-2  text-black dark:text-gray-200 text-md md:text-xl">
+        <div>
+          <div className="h-32 mx-4 md:mx-0 grow flex flex-col items-center transition ease-in-out">
+            {lesson?.hanzi ? (
+              <div className="">
+                <h1 className="md:mx-12 my-2  text-black dark:text-gray-200 text-md md:text-xl">
+                  {lesson?.title}
+                </h1>
+
+                <h2
+                  onClick={() => {
+                    setShowAnalysis(!showAnalysis);
+                  }}
+                  className="md:mx-12 my-2 text-black dark:text-gray-400 text-md md:text-lg"
+                >
+                  {lesson?.hanzi}
+                </h2>
+                <h2 className="md:mx-12 my-2 text-black dark:text-gray-600 text-md md:text-lg">
+                  {lesson?.pinyin}
+                </h2>
+              </div>
+            ) : (
+              <h1 className="md:mx-48 my-2 mb-8 text-black dark:text-white text-3xl">
                 {lesson?.title}
               </h1>
+            )}
 
-              <h2
-                onClick={() => {
-                  setShowAnalysis(!showAnalysis);
+            {lesson && lesson?.key ? (
+              <input
+                autoFocus
+                onChange={(event) => {
+                  const newState = {
+                    ...characterState,
+                    [lesson?.key]: event?.target.value,
+                  };
+
+                  setCharacterState(newState);
                 }}
-                className="md:mx-12 my-2 text-black dark:text-gray-400 text-md md:text-lg"
-              >
-                {lesson?.hanzi}
-              </h2>
-              <h2 className="md:mx-12 my-2 text-black dark:text-gray-600 text-md md:text-lg">
-                {lesson?.pinyin}
-              </h2>
-            </div>
-          ) : (
-            <h1 className="md:mx-48 my-2 md:mt-60 h-32 mb-8 text-black dark:text-white text-3xl">
-              {lesson?.title}
-            </h1>
-          )}
+                placeholder={lesson?.suggestions?.join(", ")}
+                className="text-center border-solid h-12 border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
+                value={characterState?.[lesson?.key] as any}
+              />
+            ) : (
+              <div className=""></div>
+            )}
+          </div>
 
-          {lesson && lesson?.key ? (
-            <input
-              autoFocus
-              onChange={(event) => {
-                const newState = {
-                  ...characterState,
-                  [lesson?.key]: event?.target.value,
-                };
-
-                setCharacterState(newState);
-              }}
-              placeholder={lesson?.suggestions?.join(", ")}
-              className="text-center border-solid border-b-2 h-16 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
-              value={characterState?.[lesson?.key] as any}
-            />
-          ) : (
-            <div className=""></div>
-          )}
-
-          <div className="pt-48">
+          <div className="pt-48 flex items-center w-full justify-center">
             <button
               className="hover:shadow-blue-600 shadow-md px-6 py-2 uppercase transition dark:text-gray-400"
               disabled={lessonIndex === 0}

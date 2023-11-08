@@ -153,7 +153,7 @@ export const CharacterDiscoveryAreaChart = () => {
             New Characters Discovered{" "}
           </h1>
 
-          <ResponsiveContainer width="100%" height={400}>
+          <ResponsiveContainer width="100%" height={300}>
             <AreaChart
               onClick={(props: any) => {
                 // setSelectedData(props);
@@ -196,7 +196,7 @@ export const CharacterDiscoveryAreaChart = () => {
             Total Characters Discovered
           </h1>
 
-          <ResponsiveContainer width="100%" height={400}>
+          <ResponsiveContainer width="100%" height={300}>
             <AreaChart
               onClick={(props: any) => {
                 setSelectedData(props?.activePayload?.[0]?.payload);

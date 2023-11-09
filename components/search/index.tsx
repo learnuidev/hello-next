@@ -444,8 +444,8 @@ export function SearchPage() {
             mandarin<span className="">o</span>
           </Header>
           <p className="text-gray-500 dark:text-gray-400 mb-12 leading-snug text-center text-md sm:text-2xl font-extralight tracking-wide">
-            learn <strong className="">mandarin</strong>{" "}
-            while travelling the <strong className="text-bold">world</strong>
+            personalized language learning platform at <strong className="">scale </strong>{" "}
+            
           </p>
         </div>
       )}

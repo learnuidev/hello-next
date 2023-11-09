@@ -102,7 +102,7 @@ export default function NomadMethodPage(props: any) {
         </div>
       )}
 
-      {selectedId && !components?.length ? (
+      {selectedId ? (
         <SelectedComponent
           selectedId={selectedId}
           setSelectedId={setSelectedId}

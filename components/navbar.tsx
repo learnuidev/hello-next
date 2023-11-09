@@ -20,7 +20,7 @@ import { useEffect } from "react";
 import { filterHmm, parse } from "@/data/utils";
 import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
 import { useSelectedCharacter } from "@/app/(auth)/convos/use-selected-character";
-import { faX } from "@fortawesome/pro-thin-svg-icons";
+import { faX, faXmark } from "@fortawesome/pro-thin-svg-icons";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -230,8 +230,8 @@ export const NavBar = () => {
   return (
     <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
       {routeName === "/" ? (
-        <Link className="my-2" href="/insights">
-          <FontAwesomeIcon icon={faX} />
+        <Link className="my-2 dark:text-gray-500 dark:hover:text-gray-300 transition" href="/insights">
+          <FontAwesomeIcon className="text-3xl" icon={faXmark} />
         </Link>
       ) : (
         <Link className="my-2" href="/">
@@ -263,59 +263,62 @@ export const NavBar = () => {
           />
         </div>
       )}
-      <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
-        <Link
-          href="/convos"
-          className={`transition ${
-            routeName?.includes("/convos")
-              ? "text-gray-800 dark:text-gray-300"
-              : "text-gray-200 dark:text-gray-500"
-          } hover:text-gray-700 transition text-xl`}
-        >
-          <FontAwesomeIcon icon={faComment} />
-        </Link>
-        <Link
-          href="/learn"
-          className={`transition ${
-            routeName === "/learn"
-              ? "text-gray-800 dark:text-gray-300"
-              : "text-gray-200 dark:text-gray-500"
-          } hover:text-gray-700 transition text-xl`}
-        >
-          <FontAwesomeIcon icon={faGraduationCap} />
-        </Link>
-        <Link
-          href="/pinyin"
-          className={`transition ${
-            routeName === "/pinyin"
-              ? "text-gray-800 dark:text-gray-300"
-              : "text-gray-200 dark:text-gray-500"
-          } hover:text-gray-700 transition text-xl`}
-        >
-          <FontAwesomeIcon icon={faTableTree} />
-        </Link>
-        <Link
-          href="/insights"
-          className={`transition ${
-            routeName === "/insights"
-              ? "text-gray-800 dark:text-gray-300"
-              : "text-gray-200 dark:text-gray-500"
-          } hover:text-gray-700 transition text-xl`}
-        >
-          <FontAwesomeIcon icon={faChartColumn} />
-        </Link>
+      {routeName === "/" ? (
+        <div className="h-12"> </div>
+      ) : (
+        <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
+          <Link
+            href="/convos"
+            className={`transition ${
+              routeName?.includes("/convos")
+                ? "text-gray-800 dark:text-gray-300"
+                : "text-gray-200 dark:text-gray-500"
+            } hover:text-gray-700 transition text-xl`}
+          >
+            <FontAwesomeIcon icon={faComment} />
+          </Link>
+          <Link
+            href="/learn"
+            className={`transition ${
+              routeName === "/learn"
+                ? "text-gray-800 dark:text-gray-300"
+                : "text-gray-200 dark:text-gray-500"
+            } hover:text-gray-700 transition text-xl`}
+          >
+            <FontAwesomeIcon icon={faGraduationCap} />
+          </Link>
+          <Link
+            href="/pinyin"
+            className={`transition ${
+              routeName === "/pinyin"
+                ? "text-gray-800 dark:text-gray-300"
+                : "text-gray-200 dark:text-gray-500"
+            } hover:text-gray-700 transition text-xl`}
+          >
+            <FontAwesomeIcon icon={faTableTree} />
+          </Link>
+          <Link
+            href="/insights"
+            className={`transition ${
+              routeName === "/insights"
+                ? "text-gray-800 dark:text-gray-300"
+                : "text-gray-200 dark:text-gray-500"
+            } hover:text-gray-700 transition text-xl`}
+          >
+            <FontAwesomeIcon icon={faChartColumn} />
+          </Link>
 
-        <Link
-          href="/nmm"
-          className={`transition ${
-            routeName === "/nmm"
-              ? "text-gray-800 dark:text-gray-300"
-              : "text-gray-200 dark:text-gray-500"
-          } hover:text-gray-700 transition text-xl`}
-        >
-          <NomadIcon />
-        </Link>
-        {/* <Link
+          <Link
+            href="/nmm"
+            className={`transition ${
+              routeName === "/nmm"
+                ? "text-gray-800 dark:text-gray-300"
+                : "text-gray-200 dark:text-gray-500"
+            } hover:text-gray-700 transition text-xl`}
+          >
+            <NomadIcon />
+          </Link>
+          {/* <Link
           href="/map"
           className={`transition ${
             routeName === "/map" ? "text-gray-800 dark:text-gray-300" : "text-gray-200 dark:text-gray-500"
@@ -323,7 +326,8 @@ export const NavBar = () => {
         >
           <FontAwesomeIcon icon={faMapLocation} />
         </Link> */}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -28,13 +28,7 @@ import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { calculateColor } from "@/app/nmm/utils";
 import { cleanString } from "@/data/convos/bm1/utils";
 
-export function SelectedCharacter({
-  unlockedCharactersHMM,
-}: {
-  setSelectedChar: any;
-  selectedChar: any;
-  unlockedCharactersHMM: string[];
-}) {
+export function SelectedCharacter() {
   const searchParams = useSearchParams();
 
   const lessonId = searchParams.get("lessonId");
@@ -107,6 +101,10 @@ export function SelectedCharacter({
 
   // const readMode = true;
 
+  const color = calculateColor({ tone: selectedComp?.tone_level });
+
+  console.log("SELECTED CHAR", selectedChar);
+
   return (
     <div className="w-full px-4 md:px-12">
       <div className="flex justify-between items-center">
@@ -129,7 +127,9 @@ export function SelectedCharacter({
             <FontAwesomeIcon icon={faGlassesRound} />
           </button>
         </div>
-        <div className="flex space-x-2 text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+        <div
+          className={`${color} flex space-x-2 text-4xl my-4 font-extralight `}
+        >
           <Link
             target="_blank"
             href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
@@ -139,6 +139,16 @@ export function SelectedCharacter({
           >
             {" "}
             <span>{selectedChar?.hanzi || selectedChar}</span>{" "}
+          </Link>
+          <Link
+            target="_blank"
+            href={`https://hanzicraft.com/character/${encodeURIComponent(
+              selectedChar?.hanzi || selectedChar
+            )}`}
+            className="flex items-end space-x-2"
+          >
+            {" "}
+            <span className="text-xs">{selectedComp?.pinyin}</span>
           </Link>
           <Link
             target="_blank"

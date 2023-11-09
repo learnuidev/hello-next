@@ -1,34 +1,25 @@
 "use client";
 import React from "react";
 import { useState, useEffect } from "react";
-// import { propsArr } from "@/data/hmm/data";
+
 import { NavBar } from "@/components/navbar";
 import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useSelectedCharacter } from "../(auth)/convos/use-selected-character";
-import { PageView } from "./page-view";
+
 import { SelectedComponent } from "./selected-component";
-import { getGraph } from "../pinyin/utils";
 
-import { propsArr, learnedCharacters } from "@/data/hmm/data";
+import { SelectedCharacter } from "@/components/selected-character";
+import { propsArr } from "@/data/hmm/data";
 
-import { useSpring, animated, useTransition, config } from "@react-spring/web";
+import { useSpring } from "@react-spring/web";
 
-import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
-
-import {
-  allWords as wordsArr,
-  allChars as charsArr2,
-} from "@/data/hmm/data/v1000";
-
-// import { yellowBelt as charsArr } from "@/data/nmm/yellow";
 import { belts, calculateColor } from "./utils";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 export default function NomadMethodPage(props: any) {
   const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);
-  // const [selectedId, setSelectedId] = useState<any>("");
 
   const selectedId = useSelectedCharacter((state: any) => state?.character);
   const setSelectedId = useSelectedCharacter(
@@ -103,11 +94,7 @@ export default function NomadMethodPage(props: any) {
       )}
 
       {selectedId ? (
-        <SelectedComponent
-          selectedId={selectedId}
-          setSelectedId={setSelectedId}
-          belt={selectedBelt}
-        />
+        <SelectedCharacter />
       ) : (
         <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
           {components?.length &&

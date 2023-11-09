@@ -21,6 +21,8 @@ import { filterHmm, parse } from "@/data/utils";
 import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
 import { useSelectedCharacter } from "@/app/(auth)/convos/use-selected-character";
 import { faX, faXmark } from "@fortawesome/pro-thin-svg-icons";
+import { belts } from "@/app/nmm/utils";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -99,6 +101,15 @@ const options = [
   { id: "architecture", value: "I want to learn frontend architecture" },
   // 'butter chicken recipe'
 ];
+
+function formatPercentage(number: number) {
+  return Intl.NumberFormat("en-GB", {
+    style: "percent",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 2,
+  }).format(number);
+}
+
 
 export const NavBar = () => {
   const routeName = usePathname();
@@ -208,6 +219,8 @@ export const NavBar = () => {
     }
   };
 
+  const { data: learnedCharacters2 } = useListCharactersQuery();
+
   const handleSearch = () => {
     if (query.match(regex)) {
       alert("Its a url");
@@ -227,16 +240,42 @@ export const NavBar = () => {
     return null;
   }
 
+  const belt = belts?.find((b) => b?.level === "white");
+
   return (
     <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
       {routeName === "/" ? (
-        <Link className="my-2 dark:text-gray-500 dark:hover:text-gray-300 transition" href="/insights">
+        <Link
+          className="my-2 dark:text-gray-500 dark:hover:text-gray-300 transition"
+          href="/insights"
+        >
           <FontAwesomeIcon className="text-3xl" icon={faXmark} />
         </Link>
       ) : (
-        <Link className="my-2" href="/">
-          <FontAwesomeIcon icon={faMountainSun} />
-        </Link>
+        <div className="my-2 flex space-x-8 items-center">
+          <Link className="" href="/">
+            <FontAwesomeIcon icon={faMountainSun} />
+          </Link>
+
+          <div className="space-x-2 flex items-center">
+            <button
+              key={belt?.fill}
+              className={`${belt?.fill} h-4 w-4 rounded-full text`}
+            >
+              {" "}
+            </button>
+
+            {belt ? (
+              <span>
+                {formatPercentage((learnedCharacters2?.length || 0) / belt?.maxCharacterLevel)}
+              </span>
+            ) : null}
+          </div>
+
+          {/* <Link className="my-2" href="/">
+            <FontAwesomeIcon icon={faMountainSun} />
+          </Link> */}
+        </div>
       )}
 
       {routeName === "/" ? (

@@ -24,7 +24,7 @@ export const belts = [
     fill: "bg-yellow-500",
     unselected: "bg-yellow-800",
     maxCharacterLevel: 300,
-    type: "yellow",
+    level: "yellow",
   },
   {
     fill: "bg-green-500",

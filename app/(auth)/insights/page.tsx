@@ -336,11 +336,7 @@ export default function Insights() {
     <main className="">
       <NavBar />
       {selectedChar ? (
-        <SelectedCharacter
-          selectedChar={selectedChar}
-          setSelectedChar={setSelectedChar}
-          unlockedCharactersHMM={unlockedCharactersHMM}
-        />
+        <SelectedCharacter />
       ) : (
         <div className="">
           <InsightsHeader />

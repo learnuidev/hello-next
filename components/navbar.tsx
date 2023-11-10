@@ -240,7 +240,7 @@ export const NavBar = () => {
     return null;
   }
 
-  const belt = belts?.find((b) => b?.level === "white");
+  const belt = belts?.find((b) => b?.level === "yellow");
 
   return (
     <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
@@ -252,18 +252,18 @@ export const NavBar = () => {
           <FontAwesomeIcon className="text-3xl" icon={faXmark} />
         </Link>
       ) : (
-        <div className="my-2 flex space-x-8 items-center">
-          <Link className="" href="/">
+        <div className="my-2 flex space-x-4 items-center">
+          <Link className={belt?.color} href="/">
             <FontAwesomeIcon icon={faMountainSun} />
           </Link>
 
-          <div className="space-x-2 flex items-center">
-            <button
+          <div className="my-2 space-x-2 flex items-center dark:text-gray-500">
+            {/* <button
               key={belt?.fill}
               className={`${belt?.fill} h-4 w-4 rounded-full text`}
             >
               {" "}
-            </button>
+            </button> */}
 
             {belt ? (
               <span>

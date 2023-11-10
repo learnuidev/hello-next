@@ -17,9 +17,13 @@ import { useSpring } from "@react-spring/web";
 import { belts, calculateColor } from "./utils";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useBeltStore } from "@/components/use-belt-store";
 
 export default function NomadMethodPage(props: any) {
-  const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);
+  // const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);
+
+  const selectedBelt = useBeltStore(x => x?.selectedBelt)
+  const setSelectedBelt  = useBeltStore(x => x?.setSelectedBelt)
 
   const selectedId = useSelectedCharacter((state: any) => state?.character);
   const setSelectedId = useSelectedCharacter(
@@ -41,6 +45,8 @@ export default function NomadMethodPage(props: any) {
     }
   );
 
+  const lastAnswer = answers?.[answers?.length - 1];
+
   const { data: learnedCharacters2 } = useListCharactersQuery();
 
   useEffect(() => {
@@ -52,7 +58,7 @@ export default function NomadMethodPage(props: any) {
 
   const selectedItem = propsArr.find((item) => item?.hanzi === selectedId);
 
-  const lastAnswer = answers?.[answers?.length - 1];
+
 
   const { data: components } = useListComponentsQuery(
     {},

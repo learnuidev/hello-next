@@ -23,6 +23,9 @@ import { useSelectedCharacter } from "@/app/(auth)/convos/use-selected-character
 import { faX, faXmark } from "@fortawesome/pro-thin-svg-icons";
 import { belts } from "@/app/nmm/utils";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useBeltStore } from "./use-belt-store";
+import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
+import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -102,17 +105,55 @@ const options = [
   // 'butter chicken recipe'
 ];
 
+function useGoldenCharacters(belt: any) {
+  const { data: components, isLoading } = useListComponentsQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
+
+  const { data: answers } = useListAnswersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
+
+  console.log("ANSWERS", answers);
+
+  const lastAnswer = answers?.[answers?.length - 1];
+
+  return components?.filter((component: any) => {
+    return (
+      lastAnswer?.totalCharacters?.includes(component?.hanzi) &&
+      component?.level <= belt?.maxCharacterLevel
+    );
+  });
+}
+
 function formatPercentage(number: number) {
   return Intl.NumberFormat("en-GB", {
     style: "percent",
-    minimumFractionDigits: 1,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(number);
 }
 
-
 export const NavBar = () => {
   const routeName = usePathname();
+  const belt = useBeltStore((x) => x?.selectedBelt);
+
+  const goldenChars = useGoldenCharacters(belt);
+
+  console.log("GOLDEN", goldenChars);
+  const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
   const setSelectedChar = useSelectedCharacter(
@@ -240,7 +281,8 @@ export const NavBar = () => {
     return null;
   }
 
-  const belt = belts?.find((b) => b?.level === "yellow");
+  // const selectedBelt = "white"
+  // const belt = belts?.find((b) => b?.level === selectedBelt);
 
   return (
     <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
@@ -252,24 +294,52 @@ export const NavBar = () => {
           <FontAwesomeIcon className="text-3xl" icon={faXmark} />
         </Link>
       ) : (
-        <div className="my-2 flex space-x-4 items-center">
+        <div className="my-2 flex space-x-2 md:space-x-8 items-center">
           <Link className={belt?.color} href="/">
             <FontAwesomeIcon icon={faMountainSun} />
           </Link>
 
-          <div className="my-2 space-x-2 flex items-center dark:text-gray-500">
-            {/* <button
-              key={belt?.fill}
-              className={`${belt?.fill} h-4 w-4 rounded-full text`}
-            >
-              {" "}
-            </button> */}
+          <div>
+            <div className="space-x-2 flex items-center">
+              <button
+                onClick={() => {
+                  // 1. find current Index
+                  const currentIndex = belts?.findIndex(
+                    (b) => b?.level === belt?.level
+                  );
 
-            {belt ? (
-              <span>
-                {formatPercentage((learnedCharacters2?.length || 0) / belt?.maxCharacterLevel)}
-              </span>
-            ) : null}
+                  // 2. if it is the last itme, set the belt to first belt
+                  if (currentIndex === belts?.length - 1) {
+                    setSelectedBelt(belts?.[0]);
+                  } else {
+                    // 3. else set the next belt
+                    setSelectedBelt(belts?.[currentIndex + 1]);
+                  }
+
+                  // setSelectedBelt()
+                }}
+                key={belt?.fill}
+                className={`${belt?.fill} h-4 w-4 rounded-full text`}
+              >
+                {" "}
+              </button>
+
+              {belt ? (
+                <span>
+                  {formatPercentage(
+                    (learnedCharacters2?.length || 0) / belt?.maxCharacterLevel
+                  )}
+                </span>
+              ) : null}
+
+              {belt ? (
+                <span className="text-yellow-500">
+                  {formatPercentage(
+                    (goldenChars?.length || 0) / belt?.maxCharacterLevel
+                  )}
+                </span>
+              ) : null}
+            </div>
           </div>
 
           {/* <Link className="my-2" href="/">

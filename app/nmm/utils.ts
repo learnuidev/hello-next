@@ -31,24 +31,28 @@ export const belts = [
   {
     fill: "bg-green-500",
     unselected: "bg-green-800",
+    color: "text-green-500",
     maxCharacterLevel: 600,
     level: "green",
   },
   {
     fill: "bg-blue-500",
     unselected: "bg-blue-800",
+    color: "text-blue-500",
     maxCharacterLevel: 1200,
     level: "blue",
   },
   {
     fill: "bg-red-500",
     unselected: "bg-red-800",
+    color: "text-red-500",
     maxCharacterLevel: 2000,
     level: "red",
   },
   {
     fill: "bg-black",
     unselected: "bg-slate-800",
+    color: "text-black",
     maxCharacterLevel: 3000,
     level: "black",
   },

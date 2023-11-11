@@ -26,8 +26,6 @@ export async function signUp({
   }
 }
 export async function signUpPasswordLess({ email }: { email: string }) {
-
-  console.log({ email })
   try {
     const chance = new Chance();
     const password = chance.string({ length: 16 });
@@ -145,12 +143,14 @@ export async function signOut() {
 
 export async function currentAuthUser() {
   try {
+    console.log("LOGGING");
     const user = await Auth.currentAuthenticatedUser();
 
     // window.authUser = user;
 
     return formatUser(user);
   } catch (err) {
+    console.log("USER 1");
     throw err;
   }
 }

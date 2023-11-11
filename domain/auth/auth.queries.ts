@@ -7,6 +7,7 @@ export function useCurrentAuthUser(options = {}) {
     ...options,
     refetchInterval: 10 * 1000 * 60, // every 10 minutes
     refetchOnWindowFocus: false,
+    retry: false,
     refetchOnFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,

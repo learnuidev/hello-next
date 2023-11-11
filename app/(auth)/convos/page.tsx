@@ -5,25 +5,13 @@ import "@/libs/cognito/init";
 // import Link from "next/link";
 import Link from "next/link";
 
-// import { useRouter as useRouterUrl } from "next/router";
-
-import { Editor } from "@/components/Editor";
 import { useState } from "react";
 
-// import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
 import { usePathname, useRouter } from "next/navigation";
 import { NavBar } from "@/components/navbar";
-// import { Link } from "@/components/link";
-import { SearchPage } from "@/components/search";
-import { NavigatorMap } from "@/components/navigator-map";
-import { Wordle } from "@/components/wordle/game";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
-import { course1 } from "@/data/convos/bm1/index";
 import { useConvosStore } from "@/stores/convos-store";
 import { ConvosNavBar } from "./convos-nav-bar";
 import { ConvoDetails } from "./convo-details";

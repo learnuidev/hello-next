@@ -2,14 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FocusIcon, FocusIcon as Header } from "@/components/ui/icons";
-import {
-  hskLevel1Words,
-  hskLevel2Words,
-  hskLevel3Words,
-  hskLevel4Words,
-  hskLevel5Words,
-  hskLevel6Words,
-} from "@/data/hsk";
 
 import { course1, useConvosStore } from "@/data/convos/bm1";
 
@@ -27,13 +19,8 @@ import {
 import { useLessonHistoryStore } from "./use-lesson-history";
 import { useRepeatHistoryStore } from "./use-repeat-history";
 import { useViewModeStore } from "./use-view-mode";
-// import { PronounciationSuggestions } from "ui/PronunciationSuggestions";
 
-// import { XiaomaAnalytics } from "./XiaomaAnalytics";
-// import { XiaomaLearnings } from "./XiaomaLearnings";
 import { useModeStore } from "./use-mode";
-// import { VideoPlayer } from "../../../../VideoPlayer";
-// import { useCurrentLesson } from "../../useCurrentLesson";
 
 import React from "react";
 
@@ -44,46 +31,9 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 const columnHelper = createColumnHelper<any>();
-
-const calculateColor = (dict: any) => {
-  switch (dict?.tone) {
-    case 1:
-      return "text-red-400";
-    case 2:
-      return "text-green-400";
-    case 3:
-      return "text-sky-400";
-    case 4:
-      return "text-purple-400";
-    default:
-      return "text-black dark:text-white";
-  }
-};
-
-const calculateColor2 = (dict: any) => {
-  switch (dict?.tone) {
-    case 1:
-      return "fill-red-400";
-    case 2:
-      return "fill-green-400";
-    case 3:
-      return "fill-sky-400";
-    case 4:
-      return "fill-purple-400";
-    default:
-      return "fill-black dark:fill-white";
-  }
-};
-
-const InfoRenderer = (info: any) => {
-  const val = info.getValue();
-  if (!Array.isArray(val) && typeof val === "string") {
-    return val;
-  }
-  return val;
-};
 
 const columns = [
   columnHelper.accessor("hanzi", {
@@ -109,6 +59,33 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
   const [lessonIndex, setLessonIndex] = useState(0);
   const [selectedChar, setSelectedChar] = useState<any>("");
   const [results, setResults] = useState<any>({});
+
+  const { data: hskWords } = useListHSKWordsQuery();
+
+  const calculateHskColor = (char: string) => {
+    const hsk = hskWords?.find((hsk: any) => hsk?.hanzi === char);
+
+    switch (hsk?.level) {
+      case 1:
+        return "text-yellow-400";
+      case 2:
+        return "text-orange-400";
+      case 3:
+        return "text-green-400";
+      case 4:
+        return "text-purple-400";
+      case 5:
+        return "text-blue-400";
+      case 6:
+        return "text-red-400";
+      case 9:
+        return "text-gray-600";
+      default:
+        return "texe-slate-500";
+
+        return "text-orange-400";
+    }
+  };
 
   const lessonsArr = useConvosStore((state) => state?.convos);
 
@@ -570,21 +547,9 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                                         return (
                                           <span
                                             key={`${lesson?.id}-${idx}-asd1212fw12e`}
-                                            className={`${
-                                              hskLevel1Words.includes(char)
-                                                ? "text-yellow-400"
-                                                : hskLevel2Words.includes(char)
-                                                ? "text-orange-400"
-                                                : hskLevel3Words.includes(char)
-                                                ? "text-green-400"
-                                                : hskLevel4Words.includes(char)
-                                                ? "text-purple-400"
-                                                : hskLevel5Words.includes(char)
-                                                ? "text-blue-400"
-                                                : hskLevel6Words.includes(char)
-                                                ? "text-red-400"
-                                                : "texe-slate-500"
-                                            } ${
+                                            className={`${calculateHskColor(
+                                              char
+                                            )} ${
                                               lesson1?.powerWords?.includes(
                                                 char
                                               )
@@ -752,21 +717,9 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                                       return (
                                         <span
                                           key={`${lesson?.id}-${item?.id}-${idx}`}
-                                          className={`${
-                                            hskLevel1Words.includes(char)
-                                              ? "text-yellow-400"
-                                              : hskLevel2Words.includes(char)
-                                              ? "text-orange-400"
-                                              : hskLevel3Words.includes(char)
-                                              ? "text-green-400"
-                                              : hskLevel4Words.includes(char)
-                                              ? "text-purple-400"
-                                              : hskLevel5Words.includes(char)
-                                              ? "text-blue-400"
-                                              : hskLevel6Words.includes(char)
-                                              ? "text-red-400"
-                                              : "texe-slate-500"
-                                          } ${
+                                          className={`${calculateHskColor(
+                                            char
+                                          )} ${
                                             lesson1?.powerWords?.includes(char)
                                               ? "font-bold"
                                               : ""

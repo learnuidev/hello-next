@@ -24,9 +24,8 @@ import {
 } from "@tanstack/react-table";
 
 import { characterDictionary, defaultData } from "./data";
-import { dictionary } from "@/data/hmm/data/dictionary";
+
 import { NavBar } from "@/components/navbar";
-import { yellowBelt as allChars } from "@/data/nmm/1200";
 
 const columnHelper = createColumnHelper<any>();
 
@@ -442,7 +441,7 @@ const CharacterDetail = () => {
         </button>
       </div>
 
-      <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
+      {/* <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
         {(char?.graph?.split("") || [])
           ?.filter((prop: string) => {
             return allChars?.find((item) => item?.hanzi === prop);
@@ -463,7 +462,7 @@ const CharacterDetail = () => {
               </button>
             );
           })}
-      </div>
+      </div> */}
 
       <div className="flex justify-center">
         {char?.variants

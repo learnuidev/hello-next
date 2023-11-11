@@ -13,7 +13,6 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { pronounciationLessons } from "./pronuncation_data";
 
-import { filterHmm } from "@/data/utils";
 import { useSearchQueryStore } from "./state";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useListParseQuery } from "@/domain/nmm/nmm.queries";
@@ -95,10 +94,7 @@ export function SearchPage() {
       ["word", "character", "pronoun", "conjunction", "verb"].includes(query)
     ) {
       // alert(query)
-      const resp = filterHmm(query)?.filter((item: any) =>
-        item?.hanzi?.includes(context)
-      );
-      // const resp = filterHmm(query)
+
       // alert(JSON.stringify(resp))
       // setQueryResult(resp);
       setQueryStatus("success");

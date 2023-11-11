@@ -28,7 +28,7 @@ import { useLessonHistoryStore } from "./use-lesson-history";
 import { useRepeatHistoryStore } from "./use-repeat-history";
 import { useViewModeStore } from "./use-view-mode";
 // import { PronounciationSuggestions } from "ui/PronunciationSuggestions";
-import { dictionary } from "@/data/hmm/data/dictionary";
+
 // import { XiaomaAnalytics } from "./XiaomaAnalytics";
 // import { XiaomaLearnings } from "./XiaomaLearnings";
 import { useModeStore } from "./use-mode";
@@ -105,121 +105,6 @@ const columns = [
   }),
 ];
 
-const ExplanationChart = ({ queryResult }: { queryResult: any }) => {
-  const [selectedChar, setSelectedChar] = useState<any>("");
-
-  // const [selectedPinyin, setSelectedPinyin] = usePinyinChartState();
-
-  // const results = useResults(store => store.results)
-
-  const characterDictionary = dictionary?.[selectedChar];
-
-  const data = useMemo(() => {
-    return queryResult
-      .map((item: any) => {
-        return {
-          hanzi: item?.dictionary?.hanzi,
-          pinyin: item?.dictionary?.pinyin || item?.pinyin,
-          en: item?.dictionary?.en,
-        };
-      })
-      .filter((item: any) => item?.en);
-  }, [queryResult]);
-
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  return (
-    <div className="w-full my-2 text-center flex flex-col items-center justify-center">
-      <div className="p-2 w-full">
-        {false ? (
-          <div> TODO </div>
-        ) : (
-          <div className="md:px-16 text-xs">
-            <table>
-              <thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr
-                    key={headerGroup.id}
-                    className="text-gray-700 dark:text-gray-400"
-                  >
-                    {headerGroup.headers.map((header) => (
-                      <th key={header.id} colSpan={header.colSpan}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map((row) => {
-                  return (
-                    <tr key={row.id}>
-                      {row.getVisibleCells().map((cell) => {
-                        const val = cell.getValue() as any;
-                        const char = characterDictionary?.[val?.value || val];
-                        return (
-                          <td
-                            onClick={() => {
-                              // setSelectedPinyin(cell.getValue())
-                              console.log(cell.getValue());
-                            }}
-                            role="button"
-                            key={cell.id}
-                            className={`py-1 px-2 font-extralight hover:bg-gray-200 dark:hover:bg-gray-800 dark:hover:text-white hover:text-gray-800 ${
-                              char?.examples.length
-                                ? "bg-gray-200 dark:bg-gray-800 dark:text-white text-gray-800"
-                                : "text-gray-600 dark:text-gray-400"
-                            } transition`}
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-
-                            {char?.examples.length ? (
-                              <div className="flex mt-1 space-x-1 items-center justify-center">
-                                {char?.examples?.map((example: any) => {
-                                  return (
-                                    <svg
-                                      key={example}
-                                      className={`h-1 w-1 ${calculateColor2(
-                                        example
-                                      )}`}
-                                      viewBox="0 0 6 6"
-                                      aria-hidden="true"
-                                    >
-                                      <circle cx={3} cy={3} r={3} />
-                                    </svg>
-                                  );
-                                })}
-                              </div>
-                            ) : (
-                              <div className="my-2"></div>
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
 export const Play = ({ lessonId }: { lessonId: string }) => {
   const [lessonIndex, setLessonIndex] = useState(0);
   const [selectedChar, setSelectedChar] = useState<any>("");
@@ -229,7 +114,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   // const results = useResults(store => store.results)
 
-  const characterDictionary = dictionary?.[selectedChar];
+  // const characterDictionary = dictionary?.[selectedChar];
 
   const lessonHistories = useLessonHistoryStore((state: any) => state.history);
   const setLessonHistories = useLessonHistoryStore(
@@ -585,59 +470,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                         >
                           {translations}
                         </p>
-                      </div>
-
-                      <div className="my-16">
-                        {/* <pre>
-                            <code>
-                              {JSON.stringify(parse(item.text), null, 2)}
-                            </code>
-                          </pre> */}
-
-                        {/* {!lesson1?.transcriptions?.result?.language ||
-                        lesson1?.transcriptions?.result?.language === "zh" ? (
-                          <ExplanationChart queryResult={queryResult} />
-                        ) : null} */}
-
-                        {/* {queryResult ? (
-                            <div className='w-full flex justify-center flex-col space-y-4 my-8'>
-                              {queryResult
-                                // ?.filter(item => {
-                                //   return item?.dictionary
-                                // })
-                                ?.map(result => {
-                                  return (
-                                    <div className='flex flex-col items-start justify-start'>
-                                      <div className='flex justify-start items-center w-full items-end space-x-[12px]'>
-                                        <div className='flex flex-col items-center'>
-                                          <div className='dark:text-gray-400 text-lg mb-[2px]'>
-                                            {result?.dictionary?.pinyin}
-                                          </div>
-                                          <div className='text-4xl font-extralight'>
-                                            {result?.hanzi}
-                                          </div>
-                                          <span className='text-gray-600 mx-4'></span>
-                                        </div>
-                                        <span className='text-gray-600 mx-4'></span>
-                                        <div className='dark:text-gray-400 text-md mb-[2px]'>
-                                          {result?.dictionary?.en}
-                                        </div>
-                                      </div>
-                                      <div className='dark:text-gray-400 text-[12px] font-extralight'>
-                                        {JSON.stringify(
-                                          result?.dictionary?.examples
-                                        )}
-                                      </div>
-                                      <div className='dark:text-gray-400 text-[12px] font-extralight'>
-                                        {JSON.stringify(
-                                          result?.dictionary?.meanings
-                                        )}
-                                      </div>
-                                    </div>
-                                  )
-                                })}
-                            </div>
-                          ) : null} */}
                       </div>
                     </div>
                   );
@@ -1014,26 +846,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                   </div>
                 );
               })}
-      </div>
-
-      <div>
-        <div className="md:my-16 font-bold text-4xl text-center">
-          {selectedChar}{" "}
-          {characterDictionary?.en ? `(${characterDictionary?.en})` : ""}
-        </div>
-        <div>
-          <pre>
-            <code>{JSON.stringify(characterDictionary, null, 2)}</code>
-          </pre>
-        </div>
-
-        {/* {selectedChar ? (
-          <div>
-            <pre>
-              <code>{JSON.stringify(parse(selectedChar || ""), null, 2)}</code>
-            </pre>
-          </div>
-        ) : null} */}
       </div>
 
       <PlayButton

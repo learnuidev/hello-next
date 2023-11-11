@@ -10,7 +10,7 @@ import {
   PlayIcon,
 } from "@/components/ui/icons";
 import { useState, useEffect } from "react";
-import { dictionary } from "@/data/hmm/data/dictionary";
+
 import { Music } from "@/components/music";
 import { HanziMovieMethod as HanziMovieMethodPlay } from "./hanzi-movie-method";
 
@@ -26,7 +26,7 @@ import {
 } from "@/data/hmm/data";
 
 import { allWords as wordsArr } from "@/data/hmm/data/v2";
-import { yellowBelt as charsArr } from "@/data/nmm/1200";
+
 import { actors } from "@/data/hmm/actors";
 
 import {
@@ -128,29 +128,29 @@ const PageView = ({ view, setSelectedId }: any) => {
           })}
         </div>
       );
-    case "characters":
-      return (
-        <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {charsArr.map((prop) => {
-            // return <p className='p-4'>{prop?.hanzi}</p>
-            return (
-              <button
-                key={JSON.stringify(prop)}
-                onClick={() => {
-                  setSelectedId(prop.hanzi);
-                }}
-                className={`${
-                  learnedCharacters.includes(prop?.hanzi)
-                    ? "dark:text-white text-gray-700"
-                    : "dark:text-gray-500 text-gray-200"
-                } dark:hover:text-white p-6 text-4xl transition`}
-              >
-                {prop?.hanzi}
-              </button>
-            );
-          })}
-        </div>
-      );
+    // case "characters":
+    //   return (
+    //     <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
+    //       {charsArr.map((prop) => {
+    //         // return <p className='p-4'>{prop?.hanzi}</p>
+    //         return (
+    //           <button
+    //             key={JSON.stringify(prop)}
+    //             onClick={() => {
+    //               setSelectedId(prop.hanzi);
+    //             }}
+    //             className={`${
+    //               learnedCharacters.includes(prop?.hanzi)
+    //                 ? "dark:text-white text-gray-700"
+    //                 : "dark:text-gray-500 text-gray-200"
+    //             } dark:hover:text-white p-6 text-4xl transition`}
+    //           >
+    //             {prop?.hanzi}
+    //           </button>
+    //         );
+    //       })}
+    //     </div>
+    //   );
     case "words":
       return (
         <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
@@ -221,7 +221,7 @@ const calculateColor = (dict: any) => {
 
 function ComponentEditor({ selectedId, setSelectedId }: any) {
   // @ts-ignore
-  const dict = dictionary?.[selectedId];
+  // const dict = dictionary?.[selectedId];
 
   const actor = learnedActors.find((actor) => actor.id === selectedId);
   return (
@@ -229,31 +229,7 @@ function ComponentEditor({ selectedId, setSelectedId }: any) {
       <NavBar />
       <div className="my-4 mx-8 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
         <div></div>
-        <h1 className="space-x-2 flex flex-col items-center">
-          {dict?.pinyin ? (
-            <span
-              className={`items-center flex space-x-4 text-2xl font-bold ${calculateColor(
-                dict
-              )}`}
-            >
-              {" "}
-              <span>{dict?.sound ? <Music url={dict?.sound} /> : null} </span>
-              <span>
-                {" "}
-                {dict?.pinyin} ({dict?.hanzi})
-              </span>
-              <span>| </span>
-              <span className={`text-2xl dark:text-gray-400 font-light`}>
-                {dict?.en || actor?.actor}
-              </span>
-            </span>
-          ) : (
-            <span className={`text-3xl font-bold ${calculateColor(dict)}`}>
-              {" "}
-              {selectedId}
-            </span>
-          )}
-        </h1>
+
         <button
           onClick={() => {
             setSelectedId(null);
@@ -270,160 +246,6 @@ function ComponentEditor({ selectedId, setSelectedId }: any) {
           {dict?.en || actor?.actor}
         </p>
       </div> */}
-
-      {dict?.movie ? (
-        <div className="my-4 mx-8 md:mx-16 dark:text-gray-300 text-gray-800 flex flex-col items-center justify-center">
-          <div className="flex space-x-4">
-            <p>
-              <ActorIcon /> {dict?.movie?.actor}
-            </p>
-            <p>
-              <PropsIcon />{" "}
-              {dict?.movie?.props.map((prop: string) => {
-                return <span key={prop}> {prop}</span>;
-              })}
-            </p>
-            <p>
-              <PlaceIcon /> {dict?.movie?.set}, {dict?.movie?.room}
-            </p>
-          </div>
-
-          <div className="px-60 my-16 leading-[60px] tracking-wider">
-            {" "}
-            {dict?.movie?.scene.split(" ").map((word: string) => {
-              const first = word.slice(0, 3);
-              const rest = word.slice(3);
-
-              return (
-                <span
-                  key={JSON.stringify(word)}
-                  className="text-2xl leading-10"
-                >
-                  <span className="dark:text-gray-300 font-semibold">
-                    {first}
-                  </span>
-                  <span className="font-light dark:text-gray-300">{rest} </span>
-                </span>
-              );
-            })}
-          </div>
-        </div>
-      ) : null}
-
-      <div className="flex justify-center">
-        {dict?.variants
-          ? dict.variants.map((variant: any) => {
-              return (
-                <div
-                  key={JSON.stringify(variant)}
-                  className="my-4 mx-8 md:mx-16 text-black dark:text-white"
-                >
-                  <div className="flex justify-center">
-                    <p
-                      className={`my-4 text-2xl dark:text-gray-300 text-gray-600`}
-                    >
-                      {variant?.en}
-                    </p>
-                  </div>
-
-                  {variant?.examples ? (
-                    <div className="flex flex-col items-center">
-                      {/* <div>
-                <MessageIcon />
-              </div> */}
-
-                      <div className="space-y-8 my-4">
-                        {variant?.examples.map((example: any) => {
-                          return (
-                            <div key={JSON.stringify(example)}>
-                              {example?.hanzi.split("").map((item: any) => {
-                                return (
-                                  <span
-                                    key={JSON.stringify(item)}
-                                    className={
-                                      item === selectedId ||
-                                      selectedId.includes(item)
-                                        ? calculateColor(dict)
-                                        : `dark:text-gray-600 text-gray-300`
-                                    }
-                                  >
-                                    {item}
-                                  </span>
-                                );
-                              })}
-                              {/* <p className='dark:text-gray-600 text-gray-300'>
-                                {example?.hanzi}
-                              </p> */}
-                              <p className="dark:text-gray-500 text-gray-400">
-                                {example?.pinyin}
-                              </p>
-                              <p className="dark:text-gray-400 text-gray-500">
-                                {example?.en}
-                              </p>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
-              );
-            })
-          : null}
-      </div>
-
-      <div className="my-4 mx-8 md:mx-16 text-black dark:text-white">
-        {dict?.examples ? (
-          <div className="flex flex-col items-center">
-            {/* <div>
-              <MessageIcon />
-            </div> */}
-
-            <div className="space-y-8 my-4">
-              {dict?.examples.map((example: any) => {
-                return (
-                  <div
-                    key={JSON.stringify(example)}
-                    className="flex space-x-4 items-start"
-                  >
-                    {example?.sound ? (
-                      <Music
-                        className="min-w-[40px] text-2xl dark:text-gray-500 text-gray-700"
-                        url={example?.sound}
-                      />
-                    ) : null}
-                    <div className="">
-                      {/* <p className='dark:text-gray-600 text-gray-300'>
-                      {example?.hanzi}
-                    </p> */}
-                      {example?.hanzi.split("").map((item: any) => {
-                        return (
-                          <span
-                            key={JSON.stringify(item)}
-                            className={
-                              item === selectedId || selectedId.includes(item)
-                                ? calculateColor(dict)
-                                : `dark:text-gray-600 text-gray-300`
-                            }
-                          >
-                            {item}
-                          </span>
-                        );
-                      })}
-                      <p className="dark:text-gray-500 text-gray-400">
-                        {example?.pinyin}
-                      </p>
-                      <p className="dark:text-gray-400 text-gray-500">
-                        {example?.en}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ) : null}
-      </div>
     </div>
   );
 }

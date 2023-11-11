@@ -3,7 +3,7 @@ import React from "react";
 
 import { SentenceIcon, PlayIcon } from "@/components/ui/icons";
 import { useState } from "react";
-import { dictionary } from "@/data/hmm/data/dictionary";
+
 import { Music } from "@/components/music";
 
 import { WordIcon } from "@/components/ui/icons";

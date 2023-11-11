@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-// import { dictionary } from "@/data/hmm/data/dictionary";
+
 import { Music } from "@/components/music";
 import { NomadMethod } from "./nomad-method";
 

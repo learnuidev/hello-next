@@ -28,7 +28,7 @@ import { useConvosStore } from "@/stores/convos-store";
 import { ConvosNavBar } from "./convos-nav-bar";
 import { ConvoDetails } from "./convo-details";
 import { useSelectedCharacter } from "./use-selected-character";
-import { hmmSentences } from "@/data/hmm/sentences";
+
 import { useViewModeStore } from "./new-convo/use-viewmode-store";
 import { PlusIcon } from "@/components/ui/icons";
 import { NewConvo } from "./new-convo";

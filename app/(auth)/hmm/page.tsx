@@ -11,23 +11,7 @@ import {
 } from "@/components/ui/icons";
 import { useState, useEffect } from "react";
 
-import { Music } from "@/components/music";
 import { HanziMovieMethod as HanziMovieMethodPlay } from "./hanzi-movie-method";
-
-import {
-  places,
-  learnedActors,
-  propsArr,
-  learnedCharacters,
-  learnedWords,
-  hanziToPinyin,
-  learnedProps,
-  learnedPlaces,
-} from "@/data/hmm/data";
-
-import { allWords as wordsArr } from "@/data/hmm/data/v2";
-
-import { actors } from "@/data/hmm/actors";
 
 import {
   PropsIcon,
@@ -39,166 +23,11 @@ import { NavBar } from "@/components/navbar";
 
 const PageView = ({ view, setSelectedId }: any) => {
   switch (view) {
-    case "places":
-      return (
-        <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {places.map((prop) => {
-            // return <p className='p-4'>{prop?.hanzi}</p>
-            return (
-              <button
-                key={JSON.stringify(prop)}
-                onClick={() => {
-                  setSelectedId(prop.id);
-                }}
-                className={`${
-                  learnedPlaces.find((place) => prop?.id === place.id)
-                    ? "dark:text-white text-gray-700"
-                    : "dark:text-gray-500 text-gray-200"
-                } dark:hover:text-white p-6 text-4xl transition`}
-                // className='dark:hover:text-white dark:text-gray-500 p-6 text-4xl'
-              >
-                {prop?.component ? <prop.component /> : prop?.id}
-              </button>
-            );
-          })}
-        </div>
-      );
-
     case "play":
       return <HanziMovieMethodPlay />;
-    case "actors":
-      return (
-        <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {actors.map((prop) => {
-            // return <p className='p-4'>{prop?.hanzi}</p>
-            return (
-              <button
-                key={JSON.stringify(prop)}
-                onClick={() => {
-                  setSelectedId(prop.id);
-                }}
-                className={`${
-                  learnedActors.find((place) => prop?.id === place.id)
-                    ? "dark:text-white text-gray-700"
-                    : "dark:text-gray-500 text-gray-200"
-                }
-                
-                dark:hover:text-white p-6 text-4xl transition`}
 
-                // className={`${
-                //   learnedActors.find(place => prop?.id === place.id)
-                //     ? prop?.id?.includes('i')
-                //       ? 'dark:text-pink-500'
-                //       : prop?.id?.includes('u')
-                //       ? 'dark:text-purple-500'
-                //       : 'dark:text-blue-500'
-                //     : 'dark:text-gray-500'
-                // }
-
-                // dark:hover:text-white p-6 text-4xl`}
-                // className='dark:hover:text-white dark:text-gray-500 p-6 text-4xl'
-              >
-                {prop?.value}
-              </button>
-            );
-          })}
-        </div>
-      );
-    case "props":
-      return (
-        <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {propsArr.map((prop) => {
-            // return <p className='p-4'>{prop?.hanzi}</p>
-            return (
-              <button
-                key={JSON.stringify(prop)}
-                onClick={() => {
-                  setSelectedId(prop.hanzi);
-                }}
-                className={`${
-                  learnedProps.includes(prop?.hanzi)
-                    ? "dark:text-white text-gray-700"
-                    : "dark:text-gray-500 text-gray-200"
-                } dark:hover:text-white p-6 text-4xl transition`}
-                // className='dark:hover:text-white dark:text-gray-500 p-6 text-4xl'
-              >
-                {prop?.hanzi}
-              </button>
-            );
-          })}
-        </div>
-      );
-    // case "characters":
-    //   return (
-    //     <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-    //       {charsArr.map((prop) => {
-    //         // return <p className='p-4'>{prop?.hanzi}</p>
-    //         return (
-    //           <button
-    //             key={JSON.stringify(prop)}
-    //             onClick={() => {
-    //               setSelectedId(prop.hanzi);
-    //             }}
-    //             className={`${
-    //               learnedCharacters.includes(prop?.hanzi)
-    //                 ? "dark:text-white text-gray-700"
-    //                 : "dark:text-gray-500 text-gray-200"
-    //             } dark:hover:text-white p-6 text-4xl transition`}
-    //           >
-    //             {prop?.hanzi}
-    //           </button>
-    //         );
-    //       })}
-    //     </div>
-    //   );
     case "words":
-      return (
-        <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {wordsArr.map((prop) => {
-            // return <p className='p-4'>{prop?.hanzi}</p>
-            return (
-              <button
-                key={JSON.stringify(prop)}
-                onClick={() => {
-                  setSelectedId(prop.hanzi);
-                }}
-                className={`${
-                  learnedWords.includes(prop?.hanzi)
-                    ? "dark:text-white text-gray-700"
-                    : "dark:text-gray-500 text-gray-200"
-                } dark:hover:text-white p-6 text-4xl transition`}
-                // className='dark:hover:text-white dark:text-gray-500 p-6 text-4xl'
-              >
-                {prop?.hanzi}
-              </button>
-            );
-          })}
-        </div>
-      );
     case "scenes":
-      return (
-        <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {wordsArr.map((prop) => {
-            // return <p className='p-4'>{prop?.hanzi}</p>
-            return (
-              <button
-                key={JSON.stringify(prop)}
-                onClick={() => {
-                  setSelectedId(prop.hanzi);
-                }}
-                className={`${
-                  learnedWords.includes(prop?.hanzi)
-                    ? "dark:text-white text-gray-700"
-                    : "dark:text-gray-500 text-gray-200"
-                } dark:hover:text-white p-6 text-4xl transition`}
-                // className='dark:hover:text-white dark:text-gray-500 p-6 text-4xl'
-              >
-                {prop?.hanzi}
-              </button>
-            );
-          })}
-        </div>
-      );
     default:
       return null;
   }
@@ -223,7 +52,6 @@ function ComponentEditor({ selectedId, setSelectedId }: any) {
   // @ts-ignore
   // const dict = dictionary?.[selectedId];
 
-  const actor = learnedActors.find((actor) => actor.id === selectedId);
   return (
     <div>
       <NavBar />
@@ -262,8 +90,6 @@ export default function HanziMovieMethod(props: any) {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
-
-  const selectedItem = propsArr.find((item) => item?.hanzi === selectedId);
 
   return (
     <div className="grow">

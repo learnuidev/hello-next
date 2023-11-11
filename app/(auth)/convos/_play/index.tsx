@@ -1,20 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  AnalyticsIcon,
-  CloseIcon,
-  FocusIcon,
-  FocusIcon as Header,
-  LearnIcon,
-  LearningIcon,
-  MovieIcon,
-  NextIcon,
-  PauseIcon,
-  PlayIcon,
-  PrevIcon,
-  SettingsIcon,
-} from "@/components/ui/icons";
+import { FocusIcon, FocusIcon as Header } from "@/components/ui/icons";
 import {
   hskLevel1Words,
   hskLevel2Words,
@@ -22,9 +9,8 @@ import {
   hskLevel4Words,
   hskLevel5Words,
   hskLevel6Words,
-  // parse,
 } from "@/data/hsk";
-import { filterHmm, parse } from "@/data/utils";
+
 import { course1, useConvosStore } from "@/data/convos/bm1";
 
 import { useMusic } from "./use-music";
@@ -50,9 +36,6 @@ import { useModeStore } from "./use-mode";
 // import { useCurrentLesson } from "../../useCurrentLesson";
 
 import React from "react";
-// import { Button, SearchIcon } from "ui";
-// import { useEffect, useRef, useState } from 'react'
-// import { usePinyinChartState } from './state'
 
 import {
   ColumnDef,
@@ -61,18 +44,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-// import { usePinyinChartState } from "../../../chart/state";
-
-// import { characterDictionary, defaultData } from './data'
-// import { dictionary } from '../progress/data/dictionary'
 
 const columnHelper = createColumnHelper<any>();
-
-// aa: 'a',
-// aai: 'ai',
-// aao: 'ao',
-// aan: 'an',
-// aang: 'ang',
 
 const calculateColor = (dict: any) => {
   switch (dict?.tone) {
@@ -561,8 +534,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                   const earliestTime = item?.start;
                   const latestTime = item?.end;
 
-                  const queryResult = parse(item.text);
-
                   const translations =
                     lesson1?.transcriptions?.translation?.segments
                       ?.filter(
@@ -623,10 +594,10 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                             </code>
                           </pre> */}
 
-                        {!lesson1?.transcriptions?.result?.language ||
+                        {/* {!lesson1?.transcriptions?.result?.language ||
                         lesson1?.transcriptions?.result?.language === "zh" ? (
                           <ExplanationChart queryResult={queryResult} />
-                        ) : null}
+                        ) : null} */}
 
                         {/* {queryResult ? (
                             <div className='w-full flex justify-center flex-col space-y-4 my-8'>
@@ -1056,13 +1027,13 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
           </pre>
         </div>
 
-        {selectedChar ? (
+        {/* {selectedChar ? (
           <div>
             <pre>
               <code>{JSON.stringify(parse(selectedChar || ""), null, 2)}</code>
             </pre>
           </div>
-        ) : null}
+        ) : null} */}
       </div>
 
       <PlayButton

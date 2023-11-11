@@ -7,9 +7,9 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 
 // TODO: Move this to .env
 const url =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-grammar-analysis";
+  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/parse";
 
-async function listGrammarAnalysis(
+async function parse(
   params: { content: string },
   opts: { Authorization: string }
 ) {
@@ -20,27 +20,27 @@ async function listGrammarAnalysis(
       Authorization: `Bearer ${opts?.Authorization}`,
     },
     body: JSON.stringify({
-      content: params?.content,
+      hanzi: params?.content,
     }),
   });
   const resp = (await res.json()) as any;
-  return resp
+  return resp;
 }
 
-export function useListGrammarAnalysisQuery(
+export function useListParseQuery(
   params = {} as { content: string },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
-    [queryIds.listGrammarAnalysis, params?.content],
+    [queryIds.parseQuery, params?.content],
     async () => {
       // if (options.query) {
-      const response = await listGrammarAnalysis(params, {
+      const response = await parse(params, {
         Authorization: authUser?.jwt,
       });
-      return response
+      return response;
     },
     {
       ...options,

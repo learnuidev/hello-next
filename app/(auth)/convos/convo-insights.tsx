@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import * as R from "ramda";
 import { useRouter } from "next/navigation";
-import { parse } from "@/data/utils";
+
 import { useSelectedCharacter } from "./use-selected-character";
 import { SelectedCharacter } from "@/components/selected-character";
+import { useListParseQuery } from "@/domain/nmm/nmm.queries";
 
 export function ConvoInsights({ lessonId }: { lessonId: string }) {
   const [isTocHidden, setIsTocHidden] = useState(false);
@@ -34,16 +35,6 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     }
   );
 
-  if (isLoading) {
-    return (
-      <div className=" px-4 md:px-32 my-4 md:my-8">
-        <div className="text-center my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
-          ...
-        </div>
-      </div>
-    );
-  }
-
   const allLessonAnswers = allAnswers?.filter(
     (answer: any) => answer?.journeyId === lessonId
   );
@@ -69,7 +60,12 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     ?.toLocaleLowerCase()
     ?.split("")
     ?.filter((x: string) => !["c", "i", "n", "d", "y"]?.includes(x));
+  const uniqueWordsStr = uniqueWords?.join(" ");
 
+  const { data: unlockedNMMCharacters } =
+    useListParseQuery({
+      content: uniqueWordsStr,
+    }) || [];
   const allWords = [
     // @ts-ignore
     ...allLessonAnswers
@@ -81,13 +77,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     ?.split("")
     ?.filter((x: string) => !["c", "i", "n", "d", "y"]?.includes(x));
 
-  const uniqueWordsStr = uniqueWords?.join(" ");
-
-  const unlockedNMMCharacters = parse(uniqueWordsStr)?.sort(
-    (a, b) => a?.hmmCharacterLevel - b?.hmmCharacterLevel
-  );
-
-  const unlockedCharactersHMM = unlockedNMMCharacters?.map((x) => x.hanzi);
+  const unlockedCharactersHMM = unlockedNMMCharacters?.map((x: any) => x.hanzi);
   const unlockedCharactersHMMStr = unlockedCharactersHMM?.join(" ");
 
   const charactersWithFrequencyList = Object.entries(
@@ -109,6 +99,16 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
   const currentLevel = {
     maxCharacterLevel: 600,
   };
+
+  if (isLoading) {
+    return (
+      <div className=" px-4 md:px-32 my-4 md:my-8">
+        <div className="text-center my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
+          ...
+        </div>
+      </div>
+    );
+  }
 
   return selectedChar ? (
     <SelectedCharacter />

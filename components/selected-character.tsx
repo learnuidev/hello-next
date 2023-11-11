@@ -8,13 +8,6 @@ import * as R from "ramda";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { useRouter } from "next/navigation";
-import { NavBar } from "@/components/navbar";
-import { parse } from "@/data/utils";
-import { faXmark } from "@fortawesome/pro-light-svg-icons/faXmark";
-
-import { course1 } from "@/data/convos/bm1/index";
-
 import { faGlass, faGlassesRound, faX } from "@fortawesome/pro-thin-svg-icons";
 
 import { useParams, useSearchParams } from "next/navigation";

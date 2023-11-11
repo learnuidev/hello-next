@@ -17,7 +17,6 @@ import React from "react";
 
 import { useEffect } from "react";
 
-import { filterHmm, parse } from "@/data/utils";
 import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
 import { useSelectedCharacter } from "@/app/(auth)/convos/use-selected-character";
 import { faX, faXmark } from "@fortawesome/pro-thin-svg-icons";
@@ -181,53 +180,6 @@ export const NavBar = () => {
 
   const option = options?.[index % options.length];
 
-  const search = async (query: string) => {
-    // check for special characters
-    if (["word", "character", "pronoun", "conjunction"].includes(query)) {
-      alert(query);
-      const resp = filterHmm(query);
-
-      // const resp2 = resp?.length ? resp : _filteredNepaliWords(nepaliWords203)
-
-      setQueryResult(resp);
-
-      //   const resp2 = _filteredNepaliWords(nepaliWords203);
-      setQueryStatus("success");
-    } else {
-      //  我爸爸在看电视
-      // const res = await fetch(`${giphySearchUrl}${query}`)
-      // const resp = await res.json()
-      const resp = parse(query);
-      setQueryResult(resp);
-      //   const resp2 = _filteredNepaliWords(nepaliWords203);
-      //   setNepaliQueryResult(resp2);
-      setQueryStatus("success");
-    }
-  };
-
-  const search2 = async (context: string, query: string) => {
-    // check for special characters
-    if (
-      ["word", "character", "pronoun", "conjunction", "verb"].includes(query)
-    ) {
-      // alert(query)
-      const resp = filterHmm(query)?.filter((item: any) =>
-        item?.hanzi?.includes(context)
-      );
-      // const resp = filterHmm(query)
-      // alert(JSON.stringify(resp))
-      // setQueryResult(resp);
-      setQueryStatus("success");
-    } else {
-      //  我爸爸在看电视
-      // const res = await fetch(`${giphySearchUrl}${query}`)
-      // const resp = await res.json()
-      // const resp = parse(query);
-      // setQueryResult(resp);
-      setQueryStatus("success");
-    }
-  };
-
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((seconds) => seconds + 1);
@@ -239,50 +191,11 @@ export const NavBar = () => {
     /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
   var regex = new RegExp(expression);
 
-  const determineSearch = (query: any) => {
-    if (query.match(regex)) {
-      alert("Its a url");
-      return {
-        type: "url",
-        query,
-      };
-    } else if (parse(query)?.length) {
-      return {
-        type: "hanzi",
-        query: query,
-        data: parse(query),
-      };
-    } else {
-      return {
-        type: "en",
-        query,
-      };
-    }
-  };
-
   const { data: learnedCharacters2 } = useListCharactersQuery();
-
-  const handleSearch = () => {
-    if (query.match(regex)) {
-      alert("Its a url");
-    } else {
-      search(query);
-    }
-  };
-  const handleSearch2 = (context: any, query: any) => {
-    if (query.match(regex)) {
-      alert("Its a url");
-    } else {
-      search2(context, query);
-    }
-  };
 
   if (selectedChar) {
     return null;
   }
-
-  // const selectedBelt = "white"
-  // const belt = belts?.find((b) => b?.level === selectedBelt);
 
   return (
     <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
@@ -364,8 +277,8 @@ export const NavBar = () => {
             onKeyDown={(event) => {
               if (event?.keyCode === 13) {
                 if (option.value as any) {
-                  handleSearch();
-                  router.push("/search");
+                  // handleSearch();
+                  router.push(`/search?query=${query}`);
                 }
               }
             }}

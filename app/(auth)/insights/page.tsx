@@ -8,7 +8,6 @@ import * as R from "ramda";
 
 import { useRouter } from "next/navigation";
 import { NavBar } from "@/components/navbar";
-import { parse } from "@/data/utils";
 
 import { CharacterDiscoveryAreaChart } from "./CharacterDiscoveryAreaChart";
 import { useRepeatHistoryStore } from "../convos/_play/use-repeat-history";
@@ -20,12 +19,16 @@ import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { calculateColor } from "@/app/nmm/utils";
 
 import { SelectedCharacter } from "@/components/selected-character";
+import { useListParseQuery } from "@/domain/nmm/nmm.queries";
+import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 function InsightsHeader() {
   const [isTocHidden, setIsTocHidden] = useState(false);
   // const [selectedChar, setSelectedChar] = useState("");
 
   const { data: learnedCharacters } = useListCharactersQuery();
+
+  const { data: hsk } = useListHSKWordsQuery();
 
   const { data: components } = useListComponentsQuery(
     {},
@@ -53,10 +56,6 @@ function InsightsHeader() {
   //   refetchOnMount: false,
   //   refetchOnReconnect: false,
   // }
-
-  if (isLoading) {
-    return <div> is loading ...</div>;
-  }
 
   const uniqueWords = [
     // @ts-ignore
@@ -88,13 +87,18 @@ function InsightsHeader() {
     ?.join(" ")
     ?.concat(learnedCharacters?.map((x: any) => x?.hanzi)?.join(" "));
 
-  const unlockedNMMCharacters = parse(uniqueWordsStr)?.sort(
-    (a, b) => a?.hmmCharacterLevel - b?.hmmCharacterLevel
-  );
+  const { data: unlockedNMMCharacters } =
+    useListParseQuery({
+      content: uniqueWordsStr,
+    }) || [];
+
+  // ?.sort(
+  //   (a, b) => a?.hmmCharacterLevel - b?.hmmCharacterLevel
+  // );
 
   console.log("unlockedNMMCharacters", unlockedNMMCharacters);
 
-  const unlockedCharactersHMM = unlockedNMMCharacters?.map((x) => x.hanzi);
+  const unlockedCharactersHMM = unlockedNMMCharacters?.map((x: any) => x.hanzi);
   const unlockedCharactersHMMStr = unlockedCharactersHMM?.join(" ");
 
   const charactersWithFrequencyList = Object.entries(
@@ -109,7 +113,7 @@ function InsightsHeader() {
     // ?.sort((a, b) => b?.frequency - a?.frequency)
     ?.map((a) => {
       const char = unlockedNMMCharacters?.find(
-        (char) => char?.hanzi === a?.hanzi
+        (char: any) => char?.hanzi === a?.hanzi
       );
       return {
         ...char,
@@ -142,6 +146,10 @@ function InsightsHeader() {
   const accuracyPercentage = formatPercentage(
     correctAnswers?.length / allAnswers?.length
   );
+
+  if (isLoading) {
+    return <div> is loading ...</div>;
+  }
 
   return (
     <div className="flex flex-col md:flex-row justify-between my-4 md:mt-16">
@@ -243,10 +251,6 @@ export default function Insights() {
   //   refetchOnReconnect: false,
   // }
 
-  if (isLoading) {
-    return <div> is loading ...</div>;
-  }
-
   const uniqueWords = [
     // @ts-ignore
     ...new Set(
@@ -263,7 +267,9 @@ export default function Insights() {
 
   const allWords = [
     // @ts-ignore
-    ...allAnswers?.map((answer: { hanzi: string }) => answer?.hanzi)?.join(""),
+    ...(allAnswers || [])
+      ?.map((answer: { hanzi: string }) => answer?.hanzi)
+      ?.join(""),
   ]
     .join("")
     ?.toLocaleLowerCase()
@@ -277,13 +283,14 @@ export default function Insights() {
     ?.join(" ")
     ?.concat(learnedCharacters?.map((x: any) => x?.hanzi)?.join(" "));
 
-  const unlockedNMMCharacters = parse(uniqueWordsStr)?.sort(
-    (a, b) => a?.hmmCharacterLevel - b?.hmmCharacterLevel
-  );
+  const { data: unlockedNMMCharacters } =
+    useListParseQuery({
+      content: uniqueWordsStr,
+    }) || [];
 
   console.log("unlockedNMMCharacters", unlockedNMMCharacters);
 
-  const unlockedCharactersHMM = unlockedNMMCharacters?.map((x) => x.hanzi);
+  const unlockedCharactersHMM = unlockedNMMCharacters?.map((x: any) => x.hanzi);
   const unlockedCharactersHMMStr = unlockedCharactersHMM?.join(" ");
 
   const charactersWithFrequencyList = Object.entries(
@@ -298,7 +305,7 @@ export default function Insights() {
     // ?.sort((a, b) => b?.frequency - a?.frequency)
     ?.map((a) => {
       const char = unlockedNMMCharacters?.find(
-        (char) => char?.hanzi === a?.hanzi
+        (char: any) => char?.hanzi === a?.hanzi
       );
       return {
         ...char,
@@ -332,6 +339,10 @@ export default function Insights() {
     correctAnswers?.length / allAnswers?.length
   );
 
+  if (isLoading) {
+    return <div> is loading ...</div>;
+  }
+
   return (
     <main className="">
       <NavBar />
@@ -344,7 +355,7 @@ export default function Insights() {
           <div className="w-full px-4 md:px-32 my-4 md:my-8 flex items-center justify-center">
             <div className="my-8">
               <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
-                {unlockedNMMCharacters?.map((char, idx: number) => {
+                {unlockedNMMCharacters?.map((char: any, idx: number) => {
                   const selectedComp = components?.find(
                     (component: any) => component?.hanzi === char?.hanzi
                   );

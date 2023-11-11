@@ -11,7 +11,7 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import * as R from "ramda";
 
 import { calculateColor } from "./utils";
-import { ICharacter, getCharacterToneLevel } from "@/data/hmm/data/utils";
+
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { cleanString } from "@/data/convos/bm1/utils";

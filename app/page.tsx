@@ -20,7 +20,7 @@ import { NomadMethod } from "./nmm/nomad-method";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import { youtubeData } from "@/data/youtube";
+
 import { cleanString } from "@/data/convos/bm1/utils";
 
 export default function Home() {
@@ -70,16 +70,6 @@ export default function Home() {
       }
     }
   }, [components, learnedCharacters, allAnswers]);
-
-  const data = youtubeData?.map((x) => {
-    return {
-      ...x,
-      id: cleanString(x?.hanzi?.trim()?.toLocaleLowerCase()),
-    };
-  });
-
-  console.log("MOCK", data)
-
 
   return (
     // <main className="">

@@ -5,17 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { usePinyinChartState, usePinyinChartStore } from "./state";
 
 import {
-  places,
-  learnedActors,
-  propsArr,
-  learnedCharacters,
-  learnedWords,
-  hanziToPinyin,
-  learnedProps,
-  learnedPlaces,
-} from "@/data/hmm/data";
-
-import {
   ColumnDef,
   createColumnHelper,
   flexRender,

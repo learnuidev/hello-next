@@ -10,7 +10,7 @@ import { useSelectedCharacter } from "../(auth)/convos/use-selected-character";
 import { SelectedComponent } from "./selected-component";
 
 import { SelectedCharacter } from "@/components/selected-character";
-import { propsArr } from "@/data/hmm/data";
+
 
 import { useSpring } from "@react-spring/web";
 
@@ -55,8 +55,6 @@ export default function NomadMethodPage(props: any) {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
-
-  const selectedItem = propsArr.find((item) => item?.hanzi === selectedId);
 
 
 

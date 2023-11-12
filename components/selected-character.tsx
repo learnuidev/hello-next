@@ -8,7 +8,12 @@ import * as R from "ramda";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { faGlass, faGlassesRound, faX } from "@fortawesome/pro-thin-svg-icons";
+import {
+  faGlass,
+  faGlassesRound,
+  faX,
+  faXmark,
+} from "@fortawesome/pro-thin-svg-icons";
 
 import { useParams, useSearchParams } from "next/navigation";
 
@@ -102,22 +107,27 @@ export function SelectedCharacter() {
   console.log("SELECTED CHAR", selectedChar);
 
   if (view === "play") {
-    return <NomadMethod selectedId={selectedChar} onClose={() => {
-      setView("")
-    }} />;
+    return (
+      <NomadMethod
+        selectedId={selectedChar}
+        onClose={() => {
+          setView("");
+        }}
+      />
+    );
   }
 
   return (
     <div className="w-full px-4 md:px-12">
       <div className="flex justify-between items-center">
-        <div className="space-x-8">
+        <div className="space-x-8 flex items-center">
           <button
             className="text-xl"
             onClick={() => {
               setSelectedChar("");
             }}
           >
-            <FontAwesomeIcon icon={faX} />
+            <FontAwesomeIcon className="text-2xl" icon={faXmark} />
           </button>
 
           <button

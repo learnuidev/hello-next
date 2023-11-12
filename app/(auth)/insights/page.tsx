@@ -153,7 +153,7 @@ function InsightsHeader() {
 
   return (
     <div className="flex flex-col md:flex-row justify-between my-4 md:mt-16">
-      <div className="w-full px-4 md:px-32">
+      <div className="w-full px-4 md:px-12">
         <div className="flex justify-start space-x-8">
           <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
             <span>
@@ -177,7 +177,7 @@ function InsightsHeader() {
         </div>
       </div>
 
-      <div className="w-full px-4 md:px-32">
+      <div className="w-full px-4 md:px-12">
         <div className="flex justify-end space-x-4 md:space-x-8">
           <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
             <span>
@@ -352,9 +352,13 @@ export default function Insights() {
         <div className="">
           <InsightsHeader />
 
-          <div className="w-full px-4 md:px-32 my-4 md:my-8 flex items-center justify-center">
+          <div className="w-full px-4 md:px-12 my-4 md:my-12">
+            <CharacterDiscoveryAreaChart />
+          </div>
+
+          <div className="w-full px-4 md:px-12 my-4 md:my-8 flex items-center justify-center">
             <div className="my-8">
-              <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
+              <div className="my-2 flex justify-center items-center text-2xl text-gray-700 flex-wrap">
                 {unlockedNMMCharacters?.map((char: any, idx: number) => {
                   const selectedComp = components?.find(
                     (component: any) => component?.hanzi === char?.hanzi
@@ -392,10 +396,6 @@ export default function Insights() {
                 })}
               </div>
             </div>
-          </div>
-
-          <div className="w-full px-4 md:px-32 my-4 md:my-12">
-            <CharacterDiscoveryAreaChart />
           </div>
         </div>
       )}

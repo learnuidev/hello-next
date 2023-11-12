@@ -100,7 +100,7 @@ export default function NomadMethodPage(props: any) {
       {selectedId ? (
         <SelectedCharacter />
       ) : (
-        <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
+        <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
           {components?.length &&
             components
               ?.slice(0, selectedBelt?.maxCharacterLevel || 4000)
@@ -128,7 +128,7 @@ export default function NomadMethodPage(props: any) {
                         : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                         ? "text-yellow-500"
                         : "dark:text-gray-500 text-gray-200"
-                    } dark:hover:text-white p-4 text-3xl md:text-2xl transition lowercase`}
+                    } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                   >
                     {prop?.hanzi}
                   </button>

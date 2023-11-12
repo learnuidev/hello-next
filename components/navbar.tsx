@@ -193,19 +193,20 @@ export const NavBar = () => {
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 
-  if (selectedChar) {
+  if (selectedChar || routeName === "/") {
     return null;
   }
 
   return (
     <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
       {routeName === "/" ? (
-        <Link
-          className="my-2 dark:text-gray-500 dark:hover:text-gray-300 transition"
-          href="/insights"
-        >
-          <FontAwesomeIcon className="text-3xl" icon={faXmark} />
-        </Link>
+        null 
+        // <Link
+        //   className="my-2 dark:text-gray-500 dark:hover:text-gray-300 transition"
+        //   href="/insights"
+        // >
+        //   <FontAwesomeIcon className="text-3xl" icon={faXmark} />
+        // </Link>
       ) : (
         <div className="my-2 flex space-x-2 md:space-x-8 items-center">
           <Link className={belt?.color} href="/">

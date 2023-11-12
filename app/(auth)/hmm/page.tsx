@@ -199,7 +199,7 @@ export default function HanziMovieMethod(props: any) {
           setSelectedId={setSelectedId}
         />
       ) : (
-        <PageView setSelectedId={setSelectedId} view={view} />
+        <PageView setView={setView} setSelectedId={setSelectedId} view={view} />
       )}
     </div>
   );

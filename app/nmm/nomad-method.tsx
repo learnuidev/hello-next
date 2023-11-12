@@ -19,8 +19,17 @@ import { cleanString } from "@/data/convos/bm1/utils";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useListSubComponentsQuery } from "@/domain/component/component.queries";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/pro-thin-svg-icons";
 
-export function NomadMethod({ selectedId }: { selectedId: string }) {
+export function NomadMethod({
+  selectedId,
+  onClose,
+}: {
+  selectedId: string;
+  onClose?: any;
+}) {
   const [showAnalysis, setShowAnalysis] = useState(false);
 
   const [isPlaying, setIsPlaying] = useState(true);
@@ -60,7 +69,7 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
 
   // Current Lesson
   const lesson = useMemo(
-    () => firstLesson?.steps[lessonIndex],
+    () => firstLesson?.steps?.[lessonIndex],
     [firstLesson, lessonIndex]
   );
 
@@ -159,99 +168,121 @@ export function NomadMethod({ selectedId }: { selectedId: string }) {
   console.log("GRAMMAR ANALYSIS", grammarAnalysis);
 
   return (
-    <div>
-      <animated.div
-        className="grid test content-center md:my-48 my-8"
-        style={styles}
-        key={lesson?.id}
-      >
-        <div>
-          <div className="h-32 mx-4 md:mx-0 grow flex flex-col items-center transition ease-in-out">
-            {lesson?.hanzi ? (
-              <div className="">
-                <h1 className="md:mx-12 my-2  text-black dark:text-gray-200 text-md md:text-xl">
+    <>
+      <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
+        {onClose ? (
+          <button
+            className="my-2 dark:text-gray-500 dark:hover:text-gray-300 transition"
+            onClick={() => {
+              onClose();
+            }}
+          >
+            <FontAwesomeIcon className="text-3xl" icon={faXmark} />
+          </button>
+        ) : (
+          <Link
+            className="my-2 dark:text-gray-500 dark:hover:text-gray-300 transition"
+            href="/insights"
+          >
+            <FontAwesomeIcon className="text-3xl" icon={faXmark} />
+          </Link>
+        )}
+      </div>
+
+      <div>
+        <animated.div
+          className="grid test content-center md:my-48 my-8"
+          style={styles}
+          key={lesson?.id}
+        >
+          <div>
+            <div className="h-32 mx-4 md:mx-0 grow flex flex-col items-center transition ease-in-out">
+              {lesson?.hanzi ? (
+                <div className="">
+                  <h1 className="md:mx-12 my-2  text-black dark:text-gray-200 text-md md:text-xl">
+                    {lesson?.title}
+                  </h1>
+
+                  <h2
+                    onClick={() => {
+                      setShowAnalysis(!showAnalysis);
+                    }}
+                    className="md:mx-12 my-2 text-black dark:text-gray-400 text-md md:text-lg"
+                  >
+                    {lesson?.hanzi}
+                  </h2>
+                  <h2 className="md:mx-12 my-2 text-black dark:text-gray-600 text-md md:text-lg">
+                    {lesson?.pinyin}
+                  </h2>
+                </div>
+              ) : (
+                <h1 className="md:mx-48 my-2 mb-8 text-black dark:text-white text-3xl">
                   {lesson?.title}
                 </h1>
+              )}
 
-                <h2
-                  onClick={() => {
-                    setShowAnalysis(!showAnalysis);
+              {lesson && lesson?.key ? (
+                <input
+                  autoFocus
+                  onChange={(event) => {
+                    const newState = {
+                      ...characterState,
+                      [lesson?.key]: event?.target.value,
+                    };
+
+                    setCharacterState(newState);
                   }}
-                  className="md:mx-12 my-2 text-black dark:text-gray-400 text-md md:text-lg"
-                >
-                  {lesson?.hanzi}
-                </h2>
-                <h2 className="md:mx-12 my-2 text-black dark:text-gray-600 text-md md:text-lg">
-                  {lesson?.pinyin}
-                </h2>
-              </div>
-            ) : (
-              <h1 className="md:mx-48 my-2 mb-8 text-black dark:text-white text-3xl">
-                {lesson?.title}
-              </h1>
-            )}
+                  placeholder={lesson?.suggestions?.join(", ")}
+                  className="text-center border-solid h-12 border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
+                  value={characterState?.[lesson?.key] as any}
+                />
+              ) : (
+                <div className=""></div>
+              )}
+            </div>
 
-            {lesson && lesson?.key ? (
-              <input
-                autoFocus
-                onChange={(event) => {
-                  const newState = {
-                    ...characterState,
-                    [lesson?.key]: event?.target.value,
-                  };
-
-                  setCharacterState(newState);
+            <div className="pt-48 flex items-center w-full justify-center">
+              <button
+                className="hover:shadow-blue-600 shadow-md px-6 py-2 uppercase transition dark:text-gray-400"
+                disabled={lessonIndex === 0}
+                onClick={() => {
+                  setLessonIndex((idx: number) => idx - 1);
                 }}
-                placeholder={lesson?.suggestions?.join(", ")}
-                className="text-center border-solid h-12 border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
-                value={characterState?.[lesson?.key] as any}
-              />
-            ) : (
-              <div className=""></div>
-            )}
+              >
+                Previous
+              </button>
+              <button
+                className="hover:shadow-blue-600 shadow-md px-6 py-2 uppercase transition dark:text-gray-400"
+                onClick={() => {
+                  setLessonIndex((idx: number) => idx + 1);
+                }}
+              >
+                Next
+              </button>
+            </div>
           </div>
+        </animated.div>
 
-          <div className="pt-48 flex items-center w-full justify-center">
-            <button
-              className="hover:shadow-blue-600 shadow-md px-6 py-2 uppercase transition dark:text-gray-400"
-              disabled={lessonIndex === 0}
-              onClick={() => {
-                setLessonIndex((idx: number) => idx - 1);
-              }}
-            >
-              Previous
-            </button>
-            <button
-              className="hover:shadow-blue-600 shadow-md px-6 py-2 uppercase transition dark:text-gray-400"
-              onClick={() => {
-                setLessonIndex((idx: number) => idx + 1);
-              }}
-            >
-              Next
-            </button>
+        {showAnalysis ? (
+          <div className="flex text-sm justify-center items-center space-x-2 px-12 text-gray-200 dark:text-gray-700">
+            {(
+              grammarAnalysis?.grammarAnalysis?.words ||
+              grammarAnalysis?.grammarAnalysis ||
+              []
+            )?.map((grammar: any) => {
+              const params = {
+                hanzi: grammar?.hanzi,
+                en: grammar?.english || grammar?.en || grammar?.title,
+              };
+              return (
+                <span key={`${lesson?.id}-${params?.en}-${params?.hanzi}`}>
+                  {params?.en} ({params?.hanzi})
+                </span>
+              );
+            })}
           </div>
-        </div>
-      </animated.div>
-
-      {showAnalysis ? (
-        <div className="flex text-sm justify-center items-center space-x-2 px-12 text-gray-200 dark:text-gray-700">
-          {(
-            grammarAnalysis?.grammarAnalysis?.words ||
-            grammarAnalysis?.grammarAnalysis ||
-            []
-          )?.map((grammar: any) => {
-            const params = {
-              hanzi: grammar?.hanzi,
-              en: grammar?.english || grammar?.en || grammar?.title,
-            };
-            return (
-              <span key={`${lesson?.id}-${params?.en}-${params?.hanzi}`}>
-                {params?.en} ({params?.hanzi})
-              </span>
-            );
-          })}
-        </div>
-      ) : null}
-    </div>
+        ) : null}
+      </div>
+    </>
   );
 }

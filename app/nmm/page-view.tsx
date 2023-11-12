@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 
-
 import { Music } from "@/components/music";
 import { NomadMethod } from "./nomad-method";
 
@@ -16,7 +15,13 @@ import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { cleanString } from "@/data/convos/bm1/utils";
 
-export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
+export const PageView = ({
+  view,
+  setSelectedId,
+  belt,
+  selectedId,
+  setView,
+}: any) => {
   // const dict = dictionary?.[selectedId];
 
   const { data: allAnswers, isLoading } = useListAnswersQuery(
@@ -63,13 +68,15 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
 
   // console.log("allTranscriptions", allTranscriptions);
 
-  const { data: components } = useListComponentsQuery({},
+  const { data: components } = useListComponentsQuery(
+    {},
     {
       refetchOnWindowFocus: false,
       refetchOnFocus: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
-    });
+    }
+  );
 
   const allSteps =
     components
@@ -83,7 +90,14 @@ export const PageView = ({ view, setSelectedId, belt, selectedId }: any) => {
 
   switch (view) {
     case "play":
-      return <NomadMethod selectedId={selectedId} />;
+      return (
+        <NomadMethod
+          onClose={() => {
+            setView("sentences");
+          }}
+          selectedId={selectedId}
+        />
+      );
     case "sentences":
       return uniqueAnswerIds?.length ? (
         <div className="my-8 flex justify-center">

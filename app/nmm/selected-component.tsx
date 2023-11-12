@@ -105,6 +105,7 @@ export function SelectedComponent({ selectedId, setSelectedId, belt }: any) {
       </div>
 
       <PageView
+        setView={setView}
         selectedId={selectedId}
         setSelectedId={setSelectedId}
         view={view}

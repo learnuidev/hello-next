@@ -20,8 +20,11 @@ import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { calculateColor } from "@/app/nmm/utils";
 import { cleanString } from "@/data/convos/bm1/utils";
+import { PlayIcon } from "./ui/icons";
+import { NomadMethod } from "@/app/nmm/nomad-method";
 
 export function SelectedCharacter() {
+  const [view, setView] = useState("sentences");
   const searchParams = useSearchParams();
 
   const lessonId = searchParams.get("lessonId");
@@ -98,6 +101,12 @@ export function SelectedCharacter() {
 
   console.log("SELECTED CHAR", selectedChar);
 
+  if (view === "play") {
+    return <NomadMethod selectedId={selectedChar} onClose={() => {
+      setView("")
+    }} />;
+  }
+
   return (
     <div className="w-full px-4 md:px-12">
       <div className="flex justify-between items-center">
@@ -119,6 +128,32 @@ export function SelectedCharacter() {
           >
             <FontAwesomeIcon icon={faGlassesRound} />
           </button>
+          <button
+            className="text-xl"
+            onClick={() => {
+              setView("play");
+            }}
+            // onClick={() => {
+            //   setReadMode(!readMode);
+            // }}
+          >
+            <PlayIcon className="text-2xl" />
+            {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
+          </button>
+
+          {/* <button
+            onClick={() => {
+              setView("play");
+            }}
+            className={`${
+              view === "play"
+                ? "dark:text-white text-gray-800"
+                : "dark:text-gray-500 text-gray-200"
+            } my-4 flex flex-col items-center hover:dark:text-white transition`}
+          >
+            <PlayIcon className="text-2xl" />
+            <p className="text-[8px] p-0 m-0">Play</p>
+          </button> */}
         </div>
         <div
           className={`${color} flex space-x-2 text-4xl my-4 font-extralight `}

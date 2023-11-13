@@ -1,4 +1,7 @@
 "use client";
+// import 'regenerator-runtime/runtime'
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 import { QueryClientProvider } from "@/libs/react-query";
 import "./globals.css";

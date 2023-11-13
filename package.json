@@ -53,6 +53,7 @@
     "chance": "^1.1.11",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "core-js": "^3.33.2",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
     "kaboom": "^3000.1.13",
@@ -68,8 +69,10 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-map-gl": "^7.1.6",
+    "react-speech-recognition": "^3.10.0",
     "react-spring": "^9.7.3",
     "recharts": "^2.9.1",
+    "regenerator-runtime": "^0.14.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
@@ -81,6 +84,7 @@
     "@types/chance": "^1.1.5",
     "@types/mapbox__mapbox-gl-geocoder": "^4.7.5",
     "@types/ramda": "^0.29.7",
+    "@types/react-speech-recognition": "^3.9.4",
     "postcss-nesting": "^12.0.1"
   }
 }

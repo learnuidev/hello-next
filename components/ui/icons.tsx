@@ -60,6 +60,12 @@ import { faYoutube } from "@fortawesome/free-brands-svg-icons";
 
 // import { faCitrus } from '@fortawesome/pro-duotone-svg-icons'
 
+
+export const Header = ({ children, className }: any) => {
+  return <h1 className={className}>{children}</h1>;
+};
+
+
 export const SearchIcon = (props: any) => {
   const isHeight =
     props.className && props?.className.includes("h-") ? "" : `h-6 w-6`;

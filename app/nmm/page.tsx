@@ -7,10 +7,7 @@ import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useSelectedCharacter } from "../(auth)/convos/use-selected-character";
 
-import { SelectedComponent } from "./selected-component";
-
 import { SelectedCharacter } from "@/components/selected-character";
-
 
 import { useSpring } from "@react-spring/web";
 
@@ -22,8 +19,8 @@ import { useBeltStore } from "@/components/use-belt-store";
 export default function NomadMethodPage(props: any) {
   // const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);
 
-  const selectedBelt = useBeltStore(x => x?.selectedBelt)
-  const setSelectedBelt  = useBeltStore(x => x?.setSelectedBelt)
+  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
+  const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
 
   const selectedId = useSelectedCharacter((state: any) => state?.character);
   const setSelectedId = useSelectedCharacter(
@@ -55,8 +52,6 @@ export default function NomadMethodPage(props: any) {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
-
-
 
   const { data: components } = useListComponentsQuery(
     {},

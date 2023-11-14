@@ -146,8 +146,6 @@ export const Pronounciation = ({ lessonId }: any) => {
     }
   };
 
-  // const browserSupportsSpeechRecognition = true
-
   const res = results?.[lesson?.id];
 
   const viewMode = useViewModeStore((state: any) => state.viewMode);
@@ -161,39 +159,9 @@ export const Pronounciation = ({ lessonId }: any) => {
     );
   }
 
-  // if (viewMode === "suggestion") {
-  //   return <PronounciationSuggestions lessonIndex={lessonIndex} />;
-  // }
-
-  // const setPrevCourse = (lessonId) => {
-  //   const lessonIdx = course1.lessons?.findIndex(
-  //     (lesson) => lesson.id === lessonId
-  //   );
-
-  //   const lesson = course?.lessons?.[lessonIdx - 1];
-
-  //   router.push(`/speak/${lesson?.id}`);
-  // };
-  // const setNextCourse = (lessonId) => {
-  //   const lessonIdx = course1.lessons?.findIndex(
-  //     (lesson) => lesson.id === lessonId
-  //   );
-
-  //   const lesson = course?.lessons?.[lessonIdx + 1];
-
-  //   router.push(`/speak/${lesson?.id}`);
-  // };
-
   const trans = res?.[0]?.transcript;
 
-  // console.log(l;)
-
-  console.log("hanzi", res);
-
-  // const selectedDictionary = dictionary?.[selectedChar?.selected];
-
-  // if (browserSupportsSpeechRecognition && lesson) {
-  if (true && lesson) {
+  if (lesson) {
     return (
       <div className="pt-28 grow flex flex-col items-center min-h-screen overflow-y-auto">
         {/* <Dictaphone /> */}
@@ -438,24 +406,6 @@ export const Pronounciation = ({ lessonId }: any) => {
     );
   }
 
-  // if (browserSupportsSpeechRecognition) {
-  //   return (
-  //     <div className="grow flex flex-col items-center min-h-screen overflow-y-auto">
-  //       <div className="pt-60 text-3xl dark:text-gray-300 font-extralight">
-  //         You have run out of content
-  //       </div>
-
-  //       <button
-  //         className="my-4"
-  //         onClick={() => {
-  //           setLessonIndex(0);
-  //         }}
-  //       >
-  //         Restart
-  //       </button>
-  //     </div>
-  //   );
-  // }
   return (
     <div className="grow ml-4 md:ml-16 flex flex-col items-center min-h-screen overflow-y-auto">
       <Header className="my-2 md:my-16 text-black dark:text-white text-3xl font-extrabold">

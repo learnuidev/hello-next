@@ -21,7 +21,12 @@ import { useListSubComponentsQuery } from "@/domain/component/component.queries"
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/pro-thin-svg-icons";
+import {
+  faArrowLeft,
+  faArrowRight,
+  faXmark,
+} from "@fortawesome/pro-thin-svg-icons";
+import { useAddStepsMutation } from "@/domain/lesson/step.mutations";
 
 export function NomadMethod({
   selectedId,
@@ -67,6 +72,10 @@ export function NomadMethod({
     [components, selectedId]
   );
 
+  const addStepsMutation = useAddStepsMutation();
+
+  console.log("FIRST LESSON", firstLesson);
+
   // Current Lesson
   const lesson = useMemo(
     () => firstLesson?.steps?.[lessonIndex],
@@ -110,9 +119,72 @@ export function NomadMethod({
 
   // const styles = {} as any;
 
+  if (!firstLesson?.steps?.length) {
+    return (
+      <>
+        <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
+          {onClose ? (
+            <button
+              className="my-2 dark:text-gray-500 dark:hover:text-gray-300 transition"
+              onClick={() => {
+                onClose();
+              }}
+            >
+              <FontAwesomeIcon className="text-3xl" icon={faXmark} />
+            </button>
+          ) : (
+            <Link
+              className="my-2 dark:text-gray-500 dark:hover:text-gray-300 transition"
+              href="/insights"
+            >
+              <FontAwesomeIcon className="text-3xl" icon={faXmark} />
+            </Link>
+          )}
+        </div>
+
+        <div>
+          <animated.div
+            className="grid test content-center md:my-48 my-8"
+            style={styles}
+            key={lesson?.id}
+          >
+            <div>
+              <div className="h-32 mx-4 md:mx-0 grow flex flex-col items-center transition ease-in-out">
+                <h1 className="md:mx-48 my-2 mb-8 text-black dark:text-white text-3xl">
+                  No lesson exists for: {selectedId}
+                </h1>
+              </div>
+
+              <div className="flex items-center w-full justify-center">
+                <button
+                  disabled={addStepsMutation?.isLoading}
+                  className={addStepsMutation?.isLoading ? "text-gray-400" : ""}
+                  onClick={() => {
+                    addStepsMutation
+                      ?.mutateAsync({
+                        componentId: firstLesson?.id,
+                      })
+                      // .then((err) => {
+                      //   alert("Success");
+                      // })
+                      .catch((err) => {
+                        alert("Err");
+                      });
+                  }}
+                >
+                  {addStepsMutation?.isLoading ? "Creating" : "Create one"}
+                </button>
+              </div>
+            </div>
+          </animated.div>
+        </div>
+      </>
+    );
+  }
+
   if (!lesson && characterState?.story) {
     return (
-      <div className="relative grow flex flex-col items-center">
+      <div className="relative mt-32 grow flex flex-col items-center">
         <p className="my-2 text-black dark:text-white text-3xl font-extrabold">
           Review
         </p>
@@ -121,11 +193,28 @@ export function NomadMethod({
           Lets quickly review before submitting
         </p>
 
-        <div className="my-8 py-8 w-full items-center justify-center flex space-x-8 md:space-x-16">
+        <div className="mt-16 mx-8 md:mx-72 text-center space-y-2">
+          <p className="text-gray-300">
+            <a
+              role="a"
+              href={`https://www.youtube.com/results?search_query=${characterState?.nomad}`}
+              target="_blank"
+            >
+              {characterState?.nomad} @{" "}
+            </a>
+            <span className="font-bold">
+              {characterState?.destination}, {characterState?.location}
+            </span>
+          </p>
+
+          <p className="pt-4 pb-16 text-gray-300 text-lg font-light">{characterState.story}</p>
+        </div>
+
+        {/* <div className="my-8 py-8 w-full items-center justify-center flex space-x-8 md:space-x-16">
           <code>
             <pre>{JSON.stringify(characterState, null, 2)}</pre>
           </code>
-        </div>
+        </div> */}
 
         <div className="bottom-0 py-4">
           <button
@@ -150,7 +239,7 @@ export function NomadMethod({
                   reset();
                 });
             }}
-            className="hover:shadow-blue-600 shadow-md py-4 px-8 rounded bg-gray-800 text-2xl font-extralight"
+            className="hover:shadow-blue-600 shadow-md py-2 px-8 rounded bg-gray-800 text-md font-extralight"
           >
             Complete
           </button>
@@ -187,6 +276,30 @@ export function NomadMethod({
             <FontAwesomeIcon className="text-3xl" icon={faXmark} />
           </Link>
         )}
+
+        <div></div>
+
+        <div className="flex items-center w-full justify-center">
+          <button
+            className="hover:shadow-blue-600 shadow-md text-xl px-6 py-2 uppercase transition dark:text-gray-400"
+            disabled={lessonIndex === 0}
+            onClick={() => {
+              setLessonIndex((idx: number) => idx - 1);
+            }}
+          >
+            {/* Previous */}
+
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </button>
+          <button
+            className="hover:shadow-blue-600 shadow-md text-xl px-6 py-2 uppercase transition dark:text-gray-400"
+            onClick={() => {
+              setLessonIndex((idx: number) => idx + 1);
+            }}
+          >
+            <FontAwesomeIcon icon={faArrowRight} />
+          </button>
+        </div>
       </div>
 
       <div>
@@ -195,8 +308,8 @@ export function NomadMethod({
           style={styles}
           key={lesson?.id}
         >
-          <div>
-            <div className="h-32 mx-4 md:mx-0 grow flex flex-col items-center transition ease-in-out">
+          <div className="relative">
+            <div className="mx-4 md:mx-0 grow flex flex-col items-center transition ease-in-out">
               {lesson?.hanzi ? (
                 <div className="">
                   <h1 className="md:mx-12 my-2  text-black dark:text-gray-200 text-md md:text-xl">
@@ -222,49 +335,70 @@ export function NomadMethod({
               )}
 
               {lesson && lesson?.key ? (
-                <input
-                  autoFocus
-                  onChange={(event) => {
-                    const newState = {
-                      ...characterState,
-                      [lesson?.key]: event?.target.value,
-                    };
+                lesson?.title === "Create a story" ? (
+                  <textarea
+                    autoFocus
+                    onChange={(event) => {
+                      const newState = {
+                        ...characterState,
+                        [lesson?.key]: event?.target.value,
+                      };
 
-                    setCharacterState(newState);
-                  }}
-                  placeholder={lesson?.suggestions?.join(", ")}
-                  className="text-center border-solid h-12 border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
-                  value={characterState?.[lesson?.key] as any}
-                />
+                      setCharacterState(newState);
+                    }}
+                    placeholder={lesson?.suggestions?.join(", ")}
+                    className="text-center border-solid border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
+                    value={characterState?.[lesson?.key] as any}
+                  />
+                ) : (
+                  <input
+                    autoFocus
+                    onChange={(event) => {
+                      const newState = {
+                        ...characterState,
+                        [lesson?.key]: event?.target.value,
+                      };
+
+                      setCharacterState(newState);
+                    }}
+                    placeholder={lesson?.suggestions?.join(", ")}
+                    className="text-center border-solid h-12 border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
+                    value={characterState?.[lesson?.key] as any}
+                  />
+                )
               ) : (
                 <div className=""></div>
               )}
             </div>
 
-            <div className="pt-48 flex items-center w-full justify-center">
-              <button
-                className="hover:shadow-blue-600 shadow-md px-6 py-2 uppercase transition dark:text-gray-400"
-                disabled={lessonIndex === 0}
-                onClick={() => {
-                  setLessonIndex((idx: number) => idx - 1);
-                }}
-              >
-                Previous
-              </button>
-              <button
-                className="hover:shadow-blue-600 shadow-md px-6 py-2 uppercase transition dark:text-gray-400"
-                onClick={() => {
-                  setLessonIndex((idx: number) => idx + 1);
-                }}
-              >
-                Next
-              </button>
-            </div>
+            {lesson?.title === "Create a story" ? (
+              <div className="mt-8">
+                <h1 className="mb-2 text-center dark:text-gray-600 text-xs font-bold">
+                  Sub Components
+                </h1>
+
+                <div className="flex text-sm justify-center items-center space-x-2 px-12 text-gray-200 dark:text-gray-400">
+                  {sub_components?.map((grammar: any) => {
+                    const params = {
+                      hanzi: grammar?.hanzi,
+                      en: grammar?.english || grammar?.en || grammar?.title,
+                    };
+                    return (
+                      <span
+                        key={`${lesson?.id}-${params?.en}-${params?.hanzi}`}
+                      >
+                        {params?.en} ({params?.hanzi})
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
           </div>
         </animated.div>
 
         {showAnalysis ? (
-          <div className="flex text-sm justify-center items-center space-x-2 px-12 text-gray-200 dark:text-gray-700">
+          <div className="flex text-sm justify-center items-center space-x-2 px-12 text-gray-200 dark:text-gray-400">
             {(
               grammarAnalysis?.grammarAnalysis?.words ||
               grammarAnalysis?.grammarAnalysis ||

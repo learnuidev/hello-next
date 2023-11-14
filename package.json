@@ -69,6 +69,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-map-gl": "^7.1.6",
+    "react-player": "^2.13.0",
     "react-speech-recognition": "^3.10.0",
     "react-spring": "^9.7.3",
     "recharts": "^2.9.1",

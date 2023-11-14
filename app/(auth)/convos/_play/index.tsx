@@ -32,6 +32,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useSearchParams } from "next/navigation";
 
 const columnHelper = createColumnHelper<any>();
 
@@ -178,14 +180,24 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   const viewMode = useViewModeStore((state: any) => state.viewMode);
 
+  console.log("LESSON 1", lesson1);
+
+  const searchParams = useSearchParams();
+
+  const { data: contentsArr } = useListContentsQuery();
+
+  const lesson2 = contentsArr?.find(
+    (content: any) => content?.id === searchParams?.get("lessonId")
+  );
+
   const { play, togglePlay, seek, currentTime, reset } = useMusic({
-    url: lesson1.audio?.slow || lesson1.audio,
+    url: lesson1?.audio?.slow || lesson1?.audio || lesson2?.audio,
   });
 
   const scrollRef = useRef(null);
 
-  const lessons = lesson1.lesson
-    ? lesson1.lesson.filter((item: any) => {
+  const lessons = lesson1?.lesson
+    ? lesson1?.lesson.filter((item: any) => {
         const [time, ...rest] = item;
         const startTime = time[1][0][0];
 
@@ -250,7 +262,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                     "text-5xl md:text-6xl dark:text-slate-200 text-slate-800"
                   }
                 >
-                  {res.transcript.split("").map((c: any) => {
+                  {res.transcript.split("")?.map((c: any) => {
                     return (
                       <span
                         onClick={() => {
@@ -295,7 +307,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
             lesson1?.lesson ||
             lesson1?.transcriptions?.transcriptions ||
             lesson1?.lessonsV2
-          ).map((item: any, idx: any) => {
+          )?.map((item: any, idx: any) => {
             if (item?.text) {
               const earliestTime = item?.[0]?.[1]?.[0]?.[0] || item?.start;
               const latestTime = item?.[0]?.[1]?.[0]?.[1] || item?.end;
@@ -317,7 +329,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                   }}
                   className={`mx-4 my-2 text-xl dark:hover:text-white font-extralight text-black`}
                 >
-                  {/* {formatTime(earliestTime[0])} */}
                   <div
                     className={`${
                       earliestTime < currentTime && latestTime > currentTime
@@ -325,9 +336,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                         : "text-slate-900 bg-slate-500 hover:bg-white"
                     } h-2 w-2 rounded-full transition`}
                   ></div>
-                  {/* <span>{earliestTime}</span> */}
-                  {/* <span>LAT: {latestTime}</span> */}
-                  {/* <span>LAT: {currentTime}</span> */}
                 </button>
               );
             }
@@ -380,7 +388,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
       </div>
       {/* timestamps */}
 
-      <div className={`pt-24 space-y-8`}>
+      {/* <div className={`pt-24 space-y-8`}>
         {!lessons?.length
           ? null
           : lessons
@@ -773,10 +781,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                                     return (
                                       <span
                                         key={`${lesson?.id}-${item?.id}-${idx}`}
-                                        // className='dark:text-green-500'
                                         onClick={() => {
-                                          // alert(char)
-
                                           setSelectedChar(
                                             char
                                               .replace(",", "")
@@ -799,7 +804,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                   </div>
                 );
               })}
-      </div>
+      </div> */}
 
       <PlayButton
         lessonId={lesson1?.id}

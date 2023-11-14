@@ -25,6 +25,7 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useBeltStore } from "./use-belt-store";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+import { faPhotoFilm } from "@fortawesome/sharp-solid-svg-icons";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -298,7 +299,8 @@ export const NavBar = () => {
                 : "text-gray-200 dark:text-gray-500"
             } hover:text-gray-700 transition text-xl`}
           >
-            <FontAwesomeIcon icon={faComment} />
+            {/* <FontAwesomeIcon icon={faComment} /> */}
+            <FontAwesomeIcon icon={faPhotoFilm} />
           </Link>
           <Link
             href="/learn"

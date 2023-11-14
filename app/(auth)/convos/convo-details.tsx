@@ -5,9 +5,35 @@ import { ConvoInsights } from "./convo-insights";
 import { Play } from "./_play";
 
 import { Wordle } from "@/components/wordle/game";
+import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useSearchParams as _useSearchParams } from "next/navigation";
+import { ListenPage } from "@/components/listen/v1";
+
+function useSearchParams() {
+  const searchParams = _useSearchParams();
+  return {
+    lessonId: searchParams?.get("lessonId") as string,
+  };
+}
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const viewType = useConvosStore((state: any) => state?.viewType);
+
+  // const { lessonId } = useSearchParams();
+
+  const { data: contentsArr } = useListContentsQuery();
+
+  const lesson2 = contentsArr?.find((content: any) => content?.id === lessonId);
+
+  console.log("LESSON YO", lesson2);
+
+  if (lesson2?.type === "music") {
+    return (
+      <div>
+        <ListenPage />
+      </div>
+    );
+  }
 
   if (viewType === "listen") {
     return (

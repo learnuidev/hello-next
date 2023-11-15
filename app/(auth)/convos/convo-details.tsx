@@ -27,7 +27,16 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
   console.log("LESSON YO", lesson2);
 
-  if (lesson2?.type === "music") {
+  console.log("LESSON 2", lesson2)
+
+  // if (viewType === "listen" && lesson2?.type === "music") {
+  //   return (
+  //     <div>
+  //       <ListenPage />
+  //     </div>
+  //   );
+  // }
+  if (viewType === "listen" && lesson2?.audio?.includes("https://www.youtube.com")) {
     return (
       <div>
         <ListenPage />

@@ -5,6 +5,10 @@ import { Header, NextIcon } from "@/components/ui/icons";
 import ReactPlayer from "react-player";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useSearchParams } from "@/hooks/use-search-params";
+// import { MediaPlayer, MediaProvider } from "@vidstack/react";
+
+// @ts-ignore
+import { Media, Video } from "@vidstack/player-react";
 
 // import {
 //   hskLevel1Words,
@@ -93,7 +97,7 @@ export function VideoPlayer({
         {title}
       </Header> */}
       <div className="flex-col sm:flex-row flex justify-between w-full sm:space-x-4">
-        <div className={`${isVideoHidden ? "hidden" : ""} sm:h-40 grow w-full`}>
+        <div className={`${isVideoHidden ? "hidden" : ""} ${lesson?.transcriptions?.length ? 'sm:h-40' : 'h-[800px]'} grow w-full`}>
           <ReactPlayer
             ref={playerRef}
             // url='https://www.youtube.com/watch?v=uM2japEXEeU&list=RDuM2japEXEeU&start_radio=1'
@@ -101,9 +105,26 @@ export function VideoPlayer({
             url={finalUrl}
             playing={isPlaying}
             width="100%"
+            height={lesson?.transcriptions?.length ? '700px': '600px'}
             controls={true}
             onReady={onReady}
           />
+
+          {/* <Media>
+            <Video controls poster="https://media-files.vidstack.io/poster.png">
+              <video
+                // src="https://media-files.vidstack.io/720p.mp4"
+                src="blob:https://api.elevenlabs.io/6d72cd16-31d9-41a6-a2a0-ab67737cc172"
+                // src="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/low.mp4"
+                // src={
+                //   "blob:https://courses.mandarinblueprint.com/b9b6415a-00eb-4c5d-bca0-3646e8b53aa9"
+                // }
+                preload="none"
+                data-video="0"
+                controls
+              />
+            </Video>
+          </Media> */}
 
           {/* <iframe src={url} width='100%' height='500px' /> */}
           {/* <video width='750' height='500' controls></video> */}
@@ -118,109 +139,113 @@ export function VideoPlayer({
 
         {/* <div>{currentTime}</div> */}
 
-        <div className={`md:block grow w-full ${isVideoHidden ? "my-8" : ""}`}>
-          <div className="space-y-8 my-4">
-            {(lesson?.transcriptions || scripts)
-              .filter((script: any) => {
-                if (focusMode) {
+        {lesson?.transcriptions?.length ? (
+          <div
+            className={`text-center md:block grow w-full ${
+              isVideoHidden ? "my-8" : ""
+            }`}
+          >
+            <div className="space-y-8 my-4">
+              {(lesson?.transcriptions || scripts)
+                .filter((script: any) => {
+                  if (focusMode) {
+                    return (
+                      (script?.timestamp?.[0] || script?.start) < currentTime &&
+                      (script?.timestamp?.[1] || script?.end) > currentTime
+                    );
+                  }
+
+                  return true;
+                })
+                .map((example: any, idx: any) => {
                   return (
-                    script?.timestamp?.[0] < currentTime &&
-                    script?.timestamp?.[1] > currentTime
-                  );
-                }
-
-                return true;
-              })
-              .map((example: any, idx: any) => {
-                return (
-                  <div
-                    key={`${Math.random()}-${example?.hanzi}-${idx}`}
-                    className={`${
-                      isVideoHidden || focusMode ? "text-2xl" : "md:text-lg"
-                    } text-center w-full font-extralight flex flex-col items-start`}
-                  >
                     <div
-                      role="button"
-                      onClick={() => {
-                        console.log("PLAYER REF", playerRef.current);
-                        playerRef.current.seekTo(
-                          example?.timestamp?.[0] || example?.start,
-                          "seconds"
-                        );
-
-                        try {
-                          playerRef.current?.player?.player?.play();
-                        } catch (err) {
-                          console.error(err);
-                        }
-                      }}
+                      key={`${Math.random()}-${example?.hanzi}-${idx}`}
                       className={`${
-                        focusMode ? "text-center" : "text-left"
-                      } w-full ${focusMode || isVideoHidden ? "my-4" : ""}`}
+                        isVideoHidden || focusMode ? "text-2xl" : "md:text-lg"
+                      } text-center w-full font-extralight flex flex-col justify-center items-center`}
                     >
-                      {(example?.hanzi || example?.nepali)
-                        .split("")
-                        .map((item: any, idx: any) => {
-                          return (
-                            <span
-                              key={`${JSON.stringify(item)}-${idx}`}
-                              className={`${
-                                (example?.timestamp?.[0] || example?.start) <
-                                  currentTime &&
-                                (example?.timestamp?.[1] || example?.end) >
-                                  currentTime
-                                  ? "dark:text-white"
-                                  : "dark:text-gray-400 text-gray-300"
-                              } transition`}
-                            >
-                              {item}
-                            </span>
+                      <div
+                        role="button"
+                        onClick={() => {
+                          console.log("PLAYER REF", playerRef.current);
+                          playerRef.current.seekTo(
+                            example?.timestamp?.[0] || example?.start,
+                            "seconds"
                           );
-                        })}
-                      <p
-                        className={`${
-                          (example?.timestamp?.[0] || example?.start) <
-                            currentTime &&
-                          (example?.timestamp?.[1] || example?.end) >
-                            currentTime
-                            ? "dark:text-gray-300"
-                            : "dark:text-gray-500 text-gray-400"
-                        } transition`}
 
-                        // className='dark:text-gray-500 text-gray-400'
-                      >
-                        {example?.pinyin || example?.nepaliRoman}
-                      </p>
-                      <p
+                          try {
+                            playerRef.current?.player?.player?.play();
+                          } catch (err) {
+                            console.error(err);
+                          }
+                        }}
                         className={`${
-                          (example?.timestamp?.[0] || example?.start) <
-                            currentTime &&
-                          (example?.timestamp?.[1] || example?.end) >
-                            currentTime
-                            ? "dark:text-white"
-                            : "dark:text-gray-400 text-gray-500"
-                        } transition`}
+                          focusMode ? "text-center" : "text-left"
+                        } w-full ${focusMode || isVideoHidden ? "my-4" : ""}`}
                       >
-                        {example?.en}
-                      </p>
-                      <p
-                        className={`${
-                          (example?.timestamp?.[0] || example?.start) <
-                            currentTime &&
-                          (example?.timestamp?.[1] || example?.end) >
-                            currentTime
-                            ? "dark:text-gray-500"
-                            : "dark:text-gray-500 text-gray-500"
-                        } transition`}
-                      >
-                        {example?.lit}
-                      </p>
+                        {(example?.hanzi || example?.nepali)
+                          .split("")
+                          .map((item: any, idx: any) => {
+                            return (
+                              <span
+                                key={`${JSON.stringify(item)}-${idx}`}
+                                className={`${
+                                  (example?.timestamp?.[0] || example?.start) <
+                                    currentTime &&
+                                  (example?.timestamp?.[1] || example?.end) >
+                                    currentTime
+                                    ? "dark:text-white"
+                                    : "dark:text-gray-400 text-gray-300"
+                                } transition`}
+                              >
+                                {item}
+                              </span>
+                            );
+                          })}
+                        <p
+                          className={`${
+                            (example?.timestamp?.[0] || example?.start) <
+                              currentTime &&
+                            (example?.timestamp?.[1] || example?.end) >
+                              currentTime
+                              ? "dark:text-gray-300"
+                              : "dark:text-gray-500 text-gray-400"
+                          } transition`}
+                        >
+                          {example?.pinyin || example?.nepaliRoman}
+                        </p>
+                        <p
+                          className={`${
+                            (example?.timestamp?.[0] || example?.start) <
+                              currentTime &&
+                            (example?.timestamp?.[1] || example?.end) >
+                              currentTime
+                              ? "dark:text-white"
+                              : "dark:text-gray-400 text-gray-500"
+                          } transition`}
+                        >
+                          {example?.en}
+                        </p>
+                        <p
+                          className={`${
+                            (example?.timestamp?.[0] || example?.start) <
+                              currentTime &&
+                            (example?.timestamp?.[1] || example?.end) >
+                              currentTime
+                              ? "dark:text-gray-500"
+                              : "dark:text-gray-500 text-gray-500"
+                          } transition`}
+                        >
+                          {example?.lit}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+            </div>
           </div>
-        </div>
+        ) : null}
 
         <div className="hidden md:block relative">
           <button

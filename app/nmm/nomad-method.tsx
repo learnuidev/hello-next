@@ -476,6 +476,29 @@ export function NomadMethod({
             </div>
           </animated.div>
 
+          <div className="flex items-center w-full justify-center">
+            <button
+              disabled={addStepsMutation?.isLoading}
+              className={addStepsMutation?.isLoading ? "text-gray-400" : ""}
+              onClick={() => {
+                addStepsMutation
+                  ?.mutateAsync({
+                    componentId: firstLesson?.id,
+                  })
+                  .then((err) => {
+                    setShowYay(true);
+                    setViewSuccessBanner(true);
+                    // alert("Success");
+                  })
+                  .catch((err) => {
+                    alert("Err");
+                  });
+              }}
+            >
+              {"Recreate"}
+            </button>
+          </div>
+
           {showAnalysis ? (
             <div className="flex text-sm justify-center items-center space-x-2 px-12 text-gray-200 dark:text-gray-400">
               {(

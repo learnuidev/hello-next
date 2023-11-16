@@ -6,7 +6,7 @@ export const useFocusModeStore = create((set: any, get: any) => ({
   setFocusMode: (mode: any) => set({ focusMode: mode })
 }))
 export const useModeStore = create((set: any, get: any) => ({
-  mode: 'focus',
+  mode: '',
   // setMode: (mode: any) => set({ mode: mode })
   setMode: (f: any) =>
     typeof f === 'function' ? set({ mode: f(get().mode) }) : set({ mode: f })

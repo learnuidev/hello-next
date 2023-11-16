@@ -128,7 +128,7 @@ export const ConvosNavBar = () => {
   const router = useRouter();
 
   return (
-    <div className="flex justify-between items-center w-full px-4 md:px-32 md:mt-2 my-2 py-2">
+    <div className="z-50 flex justify-between items-center w-full px-4 md:px-32 md:mt-2 my-2 py-2">
       <button
         className="text-3xl"
         onClick={() => {

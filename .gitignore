@@ -43,3 +43,8 @@ level-16.json
 level-300.json
 
 traverse/*
+
+
+# Open AI Whisper API
+
+__pycache__

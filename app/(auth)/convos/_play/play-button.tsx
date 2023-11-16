@@ -34,12 +34,12 @@ export const PlayButton = ({
   // console.log("TRANSCRTIPT", transcript);
 
   return (
-    <div className="fixed flex items-center top-4 space-x-8 dark:text-slate-500 font-light">
+    <div className="flex items-center space-x-8 dark:text-slate-500 font-light">
       <button
-        className={`text-3xl bg-white dark:bg-black p-2 w-16 h-16 ring-1 ${
+        className={`text-xl bg-white dark:bg-black p-2 w-12 h-12 ring-1 ${
           play
             ? `dark:text-white ring-slate-900/5 dark:ring-white`
-            : "ring-slate-900/5 dark:ring-slate-600 dark:text-slate-600"
+            : "ring-slate-900/5 dark:ring-slate-300 dark:text-slate-300"
         } shadow-lg rounded-full flex items-center justify-center transition`}
         onClick={() => {
           if (!play) {

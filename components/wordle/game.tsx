@@ -68,12 +68,16 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
     lessonId || params?.["lessonId"] || "lesson11"
   );
 
+  console.log("LESSON ID", _lessonId);
+
   const [lessonIndex, setLessonIndex] = useState(() => {
     const currentLesson = contents?.find(
       (lesson: any) => lesson?.id === _lessonId
     );
 
-    const firstPhraseId = currentLesson?.transcriptions?.[0]?.id;
+    const firstPhraseId =
+      currentLesson?.transcriptions?.[0]?.id ||
+      cleanString(currentLesson?.transcriptions?.[0]?.hanzi);
 
     // 1. first find the phrase id - if found then return
     // 2. if not found then find the first phrase of the current lesson and return it
@@ -87,8 +91,11 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
     (lesson: any) => lesson?.id === _lessonId
   );
 
+  console.log({ lessonIndex });
+
   const currentPhrase = currentLesson?.transcriptions?.find(
-    (lesson: any) => lesson?.id === lessonIndex
+    (lesson: any) =>
+      cleanString(lesson?.id || lesson?.hanzi) === cleanString(lessonIndex)
   );
 
   useEffect(() => {
@@ -110,13 +117,17 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
       const firstUnanswered = currentLesson?.transcriptions?.find(
         (transcription: any) => {
           return !answers?.find(
-            (answer: any) => answer?.phraseId === transcription?.id
+            (answer: any) =>
+              (answer?.phraseId || cleanString(answer?.hanzi)) ===
+              (transcription?.id || cleanString(transcription?.hanzi))
           );
         }
       ) as any;
 
       if (firstUnanswered) {
-        setLessonIndex(firstUnanswered?.id);
+        setLessonIndex(
+          firstUnanswered?.id || cleanString(firstUnanswered?.hanzi)
+        );
       }
 
       console.log({ firstUnanswered });
@@ -242,11 +253,19 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
               );
 
               const currentPhrase = currentLesson?.transcriptions?.find(
-                (lesson: any) => lesson?.id === lessonIndex
+                (lesson: any) =>
+                  cleanString(lesson?.id || lesson?.hanzi) ===
+                  cleanString(lessonIndex)
               );
+
+              // const currentPhrase = currentLesson?.transcriptions?.find(
+              //   (lesson: any) => lesson?.id === lessonIndex
+              // );
               const currentPhraseIndex =
                 currentLesson?.transcriptions?.findIndex(
-                  (lesson: any) => lesson?.id === lessonIndex
+                  (lesson: any) =>
+                    cleanString(lesson?.id || lesson?.hanzi) ===
+                    cleanString(lessonIndex)
                 );
 
               // const lessonIdx = course1?.lessons?.findIndex(
@@ -336,11 +355,15 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
 
                           const currentPhrase =
                             currentLesson?.transcriptions?.find(
-                              (lesson: any) => lesson?.id === lessonIndex
+                              (lesson: any) =>
+                                cleanString(lesson?.id || lesson?.hanzi) ===
+                                cleanString(lessonIndex)
                             );
                           const currentPhraseIndex =
                             currentLesson?.transcriptions?.findIndex(
-                              (lesson: any) => lesson?.id === lessonIndex
+                              (lesson: any) =>
+                                cleanString(lesson?.id || lesson?.hanzi) ===
+                                cleanString(lessonIndex)
                             );
 
                           // const lessonIdx = course1?.lessons?.findIndex(
@@ -386,22 +409,38 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
               );
 
               const currentPhrase = currentLesson?.transcriptions?.find(
-                (lesson: any) => lesson?.id === lessonIndex
+                (lesson: any) =>
+                  cleanString(lesson?.id || lesson?.hanzi) ===
+                  cleanString(lessonIndex)
               );
               const currentPhraseIndex =
                 currentLesson?.transcriptions?.findIndex(
-                  (lesson: any) => lesson?.id === lessonIndex
+                  (lesson: any) =>
+                    cleanString(lesson?.id || lesson?.hanzi) ===
+                    cleanString(lessonIndex)
                 );
+
+              // const currentPhrase = currentLesson?.transcriptions?.find(
+              //   (lesson: any) => lesson?.id === lessonIndex
+              // );
+              // const currentPhraseIndex =
+              //   currentLesson?.transcriptions?.findIndex(
+              //     (lesson: any) => lesson?.id === lessonIndex
+              //   );
 
               // const lessonIdx = course1?.lessons?.findIndex(
               //   (lesson: any) => lesson?.id === lessonIndex
               // );
 
+              console.log("CURRENT PHRASE ID", currentPhraseIndex)
+
               if (currentPhraseIndex !== -1) {
                 const nextId =
                   currentLesson?.transcriptions?.[currentPhraseIndex + 1];
 
-                nextId?.id && setLessonIndex(nextId?.id);
+                console.log('next id', cleanString(nextId.hanzi))
+
+                nextId?.id && setLessonIndex(nextId?.id || cleanString(nextId.hanzi));
 
                 if (params?.["lessonId"]) {
                   router.push(

@@ -1,7 +1,7 @@
 // import Image from 'next/image'
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import * as R from "ramda";
@@ -11,6 +11,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGlass,
   faGlassesRound,
+  faRocketLaunch,
+  faSpaceStationMoon,
   faX,
   faXmark,
 } from "@fortawesome/pro-thin-svg-icons";
@@ -27,6 +29,7 @@ import { calculateColor } from "@/app/nmm/utils";
 import { cleanString } from "@/data/convos/bm1/utils";
 import { PlayIcon } from "./ui/icons";
 import { NomadMethod } from "@/app/nmm/nomad-method";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 export function SelectedCharacter() {
   const [view, setView] = useState("sentences");
@@ -86,6 +89,16 @@ export function SelectedCharacter() {
     ...new Set(relevantAnswers?.map((answer: any) => answer?.hanzi)),
   ];
 
+  const { data: characters } = useListCharactersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
+
   const { data: components } = useListComponentsQuery();
 
   const allSteps =
@@ -100,12 +113,25 @@ export function SelectedCharacter() {
 
   const [readMode, setReadMode] = useState(false);
 
+  const isAlreadyLearned = characters?.find((character: { hanzi: string }) => {
+    return character?.hanzi === selectedChar;
+  });
+
+  const firstLesson = useMemo(
+    () =>
+      components?.find((component: any) => component?.hanzi === selectedChar),
+    [components, selectedChar]
+  );
+
+  console.log(" ALREADY LEARNED", isAlreadyLearned);
+
   // const readMode = true;
 
   const color = calculateColor({ tone: selectedComp?.tone_level });
 
-  console.log("SELECTED CHAR", selectedChar);
-
+  if (view === "review") {
+    return <div> TODO Sentences </div>;
+  }
   if (view === "play") {
     return (
       <NomadMethod
@@ -116,6 +142,303 @@ export function SelectedCharacter() {
       />
     );
   }
+
+  const ReadModeView = () => {
+    return (
+      <div className="my-8">
+        <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
+          {uniqueAnswerIds?.map((id: any, idx: number) => {
+            const char = answerMap?.[id] || {};
+
+            const currentLesson = allContents?.find(
+              (lesson: any) => lesson?.id === char?.phraseId
+            );
+
+            const currentPhrase =
+              allContents?.find(
+                (lesson: any) => lesson?.id === char?.phraseId
+              ) ||
+              allSteps?.find((step: any) => cleanString(step?.hanzi) === id);
+
+            const currentPhrasePinyin = currentPhrase?.hanzi
+              ?.split("")
+              ?.filter((item: any) => {
+                return components?.find(
+                  (component: any) => component?.hanzi === item
+                );
+              })
+              .map((item: any) => {
+                const currComp = components?.find(
+                  (component: any) => component?.hanzi === item
+                );
+                return {
+                  hanzi: currComp?.hanzi,
+                  pinyin: currComp?.pinyin || "??",
+                };
+              });
+
+            console.log("CURRENT PINYIN", currentPhrasePinyin);
+
+            return (
+              <div
+                role="button"
+                className="pb-8 flex flex-col"
+                key={`${idx}-${char?.hanzi}-${idx}-${Math.random()}`}
+              >
+                {/* {" "} */}
+                {/* <Link
+            target="_blank"
+            href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+              char?.hanzi
+            )}`}
+          >
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              {currentPhrase?.pinyin
+                ?.split("")
+                ?.map((val: string, idy: number) => {
+                  const color = calculateColor({
+                    tone: selectedComp?.tone_level,
+                  });
+
+                  return (
+                    <span
+                      key={`${idx}-${val}-${idx}-${idy}-${idy}-${idx}`}
+                      className={`${
+                        selectedChar === val
+                          ? color
+                          : "text-gray-400 dark:text-gray-300"
+                      }`}
+                    >
+                      {val}
+                    </span>
+                  );
+                })}
+            </span>
+          </Link> */}
+
+                <div className="flex flex-row space-x-[1px]">
+                  {currentPhrase?.hanzi
+                    ?.split("")
+                    ?.map((val: string, idy: number) => {
+                      const color = calculateColor({
+                        tone: selectedComp?.tone_level,
+                      });
+
+                      const hanz = currentPhrasePinyin?.find(
+                        (x: any) => x?.hanzi === val
+                      );
+
+                      return (
+                        <div
+                          key={`${val}-${idx}-${idx}-${val}`}
+                          className={`flex items-center flex-col ${
+                            selectedChar === val
+                              ? color
+                              : "text-gray-400 dark:text-gray-300"
+                          }`}
+                        >
+                          {/* <p className="text-sm">{hanz?.pinyin}</p> */}
+
+                          {/* <Link
+                        target="_blank"
+                        href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                          char?.hanzi
+                        )}`}
+                        // className="flex items-end space-x-2"
+                      > */}
+                          <button
+                            onClick={() => {
+                              setSelectedChar(val);
+                            }}
+                            className={`text-sm ${
+                              selectedChar === val
+                                ? color
+                                : "text-gray-500 dark:text-gray-400 "
+                            }`}
+                          >
+                            {hanz?.pinyin?.toLocaleLowerCase()}
+                          </button>
+                          {/* </Link> */}
+                          <button
+                            onClick={() => {
+                              setSelectedChar(val);
+                            }}
+                          >
+                            {hanz?.hanzi}
+                          </button>
+                        </div>
+                      );
+                    })}
+                </div>
+                <span className="text-sm text-gray-500">
+                  {currentPhrase?.en || currentPhrase?.title}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  const HanziViewer = ({ currentPhrase }: any) => {
+    return (
+      <div role="button" className="pb-8 flex flex-col">
+        {" "}
+        <Link
+          target="_blank"
+          href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+            currentPhrase?.hanzi
+          )}`}
+          // className="flex items-end space-x-2"
+        >
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            {currentPhrase?.pinyin}
+          </span>
+        </Link>
+        <span className="text-gray-500 dark:text-gray-300">
+          {currentPhrase?.hanzi?.split("")?.map((val: string, idy: number) => {
+            const color = calculateColor({
+              tone: selectedComp?.tone_level,
+            });
+
+            return (
+              <span
+                key={`${val}-${idy}`}
+                onClick={() => {
+                  setSelectedChar(val);
+                }}
+                className={`${
+                  selectedChar === val
+                    ? color
+                    : "text-gray-400 dark:text-gray-300"
+                }`}
+              >
+                {val}
+              </span>
+            );
+          })}
+        </span>
+        <span className="text-sm text-gray-500">
+          {currentPhrase?.en || currentPhrase?.title}
+        </span>
+      </div>
+    );
+  };
+
+  const NormalView = () => {
+    return (
+      <div className="my-8">
+        <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
+          {firstLesson?.steps?.slice(0, 5)?.map((lesson: any) => {
+            return <HanziViewer key={lesson?.id} currentPhrase={lesson} />;
+          })}
+
+          {uniqueAnswerIds?.map((id: any, idx: number) => {
+            const char = answerMap?.[id] || {};
+
+            const currentLesson = allContents?.find(
+              (lesson: any) => lesson?.id === char?.phraseId
+            );
+
+            const currentPhrase =
+              allContents?.find(
+                (lesson: any) => lesson?.id === char?.phraseId
+              ) ||
+              allSteps?.find((step: any) => cleanString(step?.hanzi) === id);
+
+            return (
+              <div
+                role="button"
+                className="pb-8 flex flex-col"
+                key={`${idx}-${char?.hanzi}-${idx}-${Math.random()}`}
+              >
+                {" "}
+                <Link
+                  target="_blank"
+                  href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                    char?.hanzi
+                  )}`}
+                  // className="flex items-end space-x-2"
+                >
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    {currentPhrase?.pinyin}
+                  </span>
+                </Link>
+                <span className="text-gray-500 dark:text-gray-300">
+                  {currentPhrase?.hanzi
+                    ?.split("")
+                    ?.map((val: string, idy: number) => {
+                      // const toneLevel = getCharacterToneLevel(
+                      //   currentPhrase as ICharacter
+                      // );
+
+                      // const color = calculateColor({ tone: toneLevel });
+
+                      const color = calculateColor({
+                        tone: selectedComp?.tone_level,
+                      });
+
+                      return (
+                        <span
+                          key={`${idx}-${val}-${idx}-${idy}-${idy}-${idx}`}
+                          onClick={() => {
+                            setSelectedChar(val);
+                          }}
+                          className={`${
+                            selectedChar === val
+                              ? color
+                              : "text-gray-400 dark:text-gray-300"
+                          }`}
+                        >
+                          {val}
+                        </span>
+                      );
+                    })}
+                </span>
+                <span className="text-sm text-gray-500">
+                  {currentPhrase?.en || currentPhrase?.title}
+                </span>
+              </div>
+              // <div
+              //   role="button"
+              //   className="pb-8 flex flex-col"
+              //   key={`${idx}-${char?.hanzi}-${idx}`}
+              // >
+              //   {" "}
+              //   <span className="text-md text-gray-600 dark:text-gray-300">
+              //     {currentPhrase?.pinyin}
+              //   </span>
+              //   <p>
+              //     {currentPhrase?.hanzi?.split("")?.map((str: string) => {
+              //       return (
+              //         <span
+              //           key={`${selectedChar}-${str}`}
+              //           className={`${
+              //             selectedChar === str
+              //               ? "text-gray-700 dark:text-yellow-300"
+              //               : "text-gray-500 dark:text-gray-300"
+              //           }`}
+              //         >
+              //           {str}
+              //         </span>
+              //       );
+              //     })}
+              //   </p>
+              //   <span className="text-md text-gray-700 dark:text-gray-400">
+              //     {currentPhrase?.en || title}
+              //   </span>
+              // </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  const SentencesView = () => {
+    return readMode ? <ReadModeView /> : <NormalView />;
+  };
 
   return (
     <div className="w-full px-4 md:px-12">
@@ -141,6 +464,18 @@ export function SelectedCharacter() {
           <button
             className="text-xl"
             onClick={() => {
+              setView("review");
+            }}
+            // onClick={() => {
+            //   setReadMode(!readMode);
+            // }}
+          >
+            <FontAwesomeIcon className="text-2xl" icon={faSpaceStationMoon} />
+            {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
+          </button>
+          <button
+            className="text-xl"
+            onClick={() => {
               setView("play");
             }}
             // onClick={() => {
@@ -150,20 +485,6 @@ export function SelectedCharacter() {
             <PlayIcon className="text-2xl" />
             {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
           </button>
-
-          {/* <button
-            onClick={() => {
-              setView("play");
-            }}
-            className={`${
-              view === "play"
-                ? "dark:text-white text-gray-800"
-                : "dark:text-gray-500 text-gray-200"
-            } my-4 flex flex-col items-center hover:dark:text-white transition`}
-          >
-            <PlayIcon className="text-2xl" />
-            <p className="text-[8px] p-0 m-0">Play</p>
-          </button> */}
         </div>
         <div
           className={`${color} flex space-x-2 text-4xl my-4 font-extralight `}
@@ -200,243 +521,8 @@ export function SelectedCharacter() {
           </Link>
         </div>
       </div>
-      {readMode ? (
-        <div className="my-8">
-          <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
-            {uniqueAnswerIds?.map((id: any, idx: number) => {
-              const char = answerMap?.[id] || {};
 
-              const currentLesson = allContents?.find(
-                (lesson: any) => lesson?.id === char?.phraseId
-              );
-
-              const currentPhrase =
-                allContents?.find(
-                  (lesson: any) => lesson?.id === char?.phraseId
-                ) ||
-                allSteps?.find((step: any) => cleanString(step?.hanzi) === id);
-
-              const currentPhrasePinyin = currentPhrase?.hanzi
-                ?.split("")
-                ?.filter((item: any) => {
-                  return components?.find(
-                    (component: any) => component?.hanzi === item
-                  );
-                })
-                .map((item: any) => {
-                  const currComp = components?.find(
-                    (component: any) => component?.hanzi === item
-                  );
-                  return {
-                    hanzi: currComp?.hanzi,
-                    pinyin: currComp?.pinyin || "??",
-                  };
-                });
-
-              console.log("CURRENT PINYIN", currentPhrasePinyin);
-
-              return (
-                <div
-                  role="button"
-                  className="pb-8 flex flex-col"
-                  key={`${idx}-${char?.hanzi}-${idx}-${Math.random()}`}
-                >
-                  {/* {" "} */}
-                  {/* <Link
-                  target="_blank"
-                  href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                    char?.hanzi
-                  )}`}
-                >
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {currentPhrase?.pinyin
-                      ?.split("")
-                      ?.map((val: string, idy: number) => {
-                        const color = calculateColor({
-                          tone: selectedComp?.tone_level,
-                        });
-
-                        return (
-                          <span
-                            key={`${idx}-${val}-${idx}-${idy}-${idy}-${idx}`}
-                            className={`${
-                              selectedChar === val
-                                ? color
-                                : "text-gray-400 dark:text-gray-300"
-                            }`}
-                          >
-                            {val}
-                          </span>
-                        );
-                      })}
-                  </span>
-                </Link> */}
-
-                  <div className="flex flex-row space-x-[1px]">
-                    {currentPhrase?.hanzi
-                      ?.split("")
-                      ?.map((val: string, idy: number) => {
-                        const color = calculateColor({
-                          tone: selectedComp?.tone_level,
-                        });
-
-                        const hanz = currentPhrasePinyin?.find(
-                          (x: any) => x?.hanzi === val
-                        );
-
-                        return (
-                          <div
-                            key={`${val}-${idx}-${idx}-${val}`}
-                            className={`flex items-center flex-col ${
-                              selectedChar === val
-                                ? color
-                                : "text-gray-400 dark:text-gray-300"
-                            }`}
-                          >
-                            {/* <p className="text-sm">{hanz?.pinyin}</p> */}
-
-                            {/* <Link
-                              target="_blank"
-                              href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                                char?.hanzi
-                              )}`}
-                              // className="flex items-end space-x-2"
-                            > */}
-                            <button
-                              onClick={() => {
-                                setSelectedChar(val);
-                              }}
-                              className={`text-sm ${
-                                selectedChar === val
-                                  ? color
-                                  : "text-gray-500 dark:text-gray-400 "
-                              }`}
-                            >
-                              {hanz?.pinyin?.toLocaleLowerCase()}
-                            </button>
-                            {/* </Link> */}
-                            <button
-                              onClick={() => {
-                                setSelectedChar(val);
-                              }}
-                            >
-                              {hanz?.hanzi}
-                            </button>
-                          </div>
-                        );
-                      })}
-                  </div>
-                  <span className="text-sm text-gray-500">
-                    {currentPhrase?.en || currentPhrase?.title}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      ) : (
-        <div className="my-8">
-          <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
-            {uniqueAnswerIds?.map((id: any, idx: number) => {
-              const char = answerMap?.[id] || {};
-
-              const currentLesson = allContents?.find(
-                (lesson: any) => lesson?.id === char?.phraseId
-              );
-
-              const currentPhrase =
-                allContents?.find(
-                  (lesson: any) => lesson?.id === char?.phraseId
-                ) ||
-                allSteps?.find((step: any) => cleanString(step?.hanzi) === id);
-
-              return (
-                <div
-                  role="button"
-                  className="pb-8 flex flex-col"
-                  key={`${idx}-${char?.hanzi}-${idx}-${Math.random()}`}
-                >
-                  {" "}
-                  <Link
-                    target="_blank"
-                    href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                      char?.hanzi
-                    )}`}
-                    // className="flex items-end space-x-2"
-                  >
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      {currentPhrase?.pinyin}
-                    </span>
-                  </Link>
-                  <span className="text-gray-500 dark:text-gray-300">
-                    {currentPhrase?.hanzi
-                      ?.split("")
-                      ?.map((val: string, idy: number) => {
-                        // const toneLevel = getCharacterToneLevel(
-                        //   currentPhrase as ICharacter
-                        // );
-
-                        // const color = calculateColor({ tone: toneLevel });
-
-                        const color = calculateColor({
-                          tone: selectedComp?.tone_level,
-                        });
-
-                        return (
-                          <span
-                            key={`${idx}-${val}-${idx}-${idy}-${idy}-${idx}`}
-                            onClick={() => {
-                              setSelectedChar(val);
-                            }}
-                            className={`${
-                              selectedChar === val
-                                ? color
-                                : "text-gray-400 dark:text-gray-300"
-                            }`}
-                          >
-                            {val}
-                          </span>
-                        );
-                      })}
-                  </span>
-                  <span className="text-sm text-gray-500">
-                    {currentPhrase?.en || currentPhrase?.title}
-                  </span>
-                </div>
-                // <div
-                //   role="button"
-                //   className="pb-8 flex flex-col"
-                //   key={`${idx}-${char?.hanzi}-${idx}`}
-                // >
-                //   {" "}
-                //   <span className="text-md text-gray-600 dark:text-gray-300">
-                //     {currentPhrase?.pinyin}
-                //   </span>
-                //   <p>
-                //     {currentPhrase?.hanzi?.split("")?.map((str: string) => {
-                //       return (
-                //         <span
-                //           key={`${selectedChar}-${str}`}
-                //           className={`${
-                //             selectedChar === str
-                //               ? "text-gray-700 dark:text-yellow-300"
-                //               : "text-gray-500 dark:text-gray-300"
-                //           }`}
-                //         >
-                //           {str}
-                //         </span>
-                //       );
-                //     })}
-                //   </p>
-                //   <span className="text-md text-gray-700 dark:text-gray-400">
-                //     {currentPhrase?.en || title}
-                //   </span>
-                // </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      <SentencesView />
     </div>
   );
 }

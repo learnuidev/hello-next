@@ -126,8 +126,6 @@ function useGoldenCharacters(belt: any) {
     }
   );
 
-  console.log("ANSWERS", answers);
-
   const lastAnswer = answers?.[answers?.length - 1];
 
   return components?.filter((component: any) => {
@@ -152,7 +150,6 @@ export const NavBar = () => {
 
   const goldenChars = useGoldenCharacters(belt);
 
-  console.log("GOLDEN", goldenChars);
   const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
@@ -200,15 +197,13 @@ export const NavBar = () => {
 
   return (
     <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
-      {routeName === "/" ? (
-        null 
+      {routeName === "/" ? null : (
         // <Link
         //   className="my-2 dark:text-gray-500 dark:hover:text-gray-300 transition"
         //   href="/insights"
         // >
         //   <FontAwesomeIcon className="text-3xl" icon={faXmark} />
         // </Link>
-      ) : (
         <div className="my-2 flex space-x-2 md:space-x-8 items-center">
           <Link className={belt?.color} href="/">
             <FontAwesomeIcon icon={faMountainSun} />

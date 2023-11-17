@@ -34,6 +34,7 @@ export function NomadMethod({
   const [showAnalysis, setShowAnalysis] = useState(false);
 
   const [showYay, setShowYay] = useState(false);
+  const [showMsg, setShowMsg] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [viewSucessBanner, setViewSuccessBanner] = useState(false);
   const [mediaIndex, setMediaIndex] = useState(0);
@@ -130,36 +131,40 @@ export function NomadMethod({
             loop={false}
             onComplete={() => {
               setShowYay(false);
+              setShowMsg(true);
             }}
           />
         )}
 
-        <div>
-          <animated.div
-            className="grid test content-center"
-            style={styles}
-            key={lesson?.id}
-          >
-            <div>
-              <div className="h-32 mx-4 md:mx-0 grow flex flex-col items-center transition ease-in-out">
-                <h1 className="z-50 md:mx-48 my-2 mb-8 text-black dark:text-white text-3xl">
-                  Lesson successfully created for: {selectedId}
-                </h1>
-              </div>
+        {showMsg && (
+          <div>
+            <animated.div
+              className="grid test content-center"
+              style={styles}
+              key={lesson?.id}
+            >
+              <div>
+                <div className="h-32 mx-4 md:mx-0 grow flex flex-col items-center transition ease-in-out">
+                  <h1 className="z-50 md:mx-48 my-2 mb-8 text-black dark:text-white text-3xl">
+                    Lesson successfully created for: {selectedId}
+                  </h1>
+                </div>
 
-              <div className="flex items-center w-full justify-center">
-                <button
-                  className="z-50"
-                  onClick={() => {
-                    setViewSuccessBanner(false);
-                  }}
-                >
-                  View Lesson
-                </button>
+                <div className="flex items-center w-full justify-center">
+                  <button
+                    className="z-50"
+                    onClick={() => {
+                      setViewSuccessBanner(false);
+                      setShowMsg(false)
+                    }}
+                  >
+                    View Lesson
+                  </button>
+                </div>
               </div>
-            </div>
-          </animated.div>
-        </div>
+            </animated.div>
+          </div>
+        )}
       </div>
     );
   };

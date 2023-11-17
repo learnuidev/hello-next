@@ -6,6 +6,15 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import * as R from "ramda";
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
 import { useRouter } from "next/navigation";
 import { NavBar } from "@/components/navbar";
 
@@ -21,41 +30,24 @@ import { calculateColor } from "@/app/nmm/utils";
 import { SelectedCharacter } from "@/components/selected-character";
 import { useListParseQuery } from "@/domain/nmm/nmm.queries";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faLightbulb,
+  faMapLocation,
+  faMusic,
+  faPenLine,
+} from "@fortawesome/pro-thin-svg-icons";
+import { faConnectdevelop } from "@fortawesome/free-brands-svg-icons";
+import { CharacterDiscoveryBarChart } from "./CharacterDiscoveryBarChart";
+import { CharacterLearnedBarChart } from "./CharacterLearnedBarChart";
 
-function InsightsHeader() {
+function useCharactersDiscovered() {
   const [isTocHidden, setIsTocHidden] = useState(false);
   // const [selectedChar, setSelectedChar] = useState("");
 
   const { data: learnedCharacters } = useListCharactersQuery();
 
-  const { data: hsk } = useListHSKWordsQuery();
-
-  const { data: components } = useListComponentsQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
-
-  const selectedChar = useSelectedCharacter((state: any) => state?.character);
-  const setSelectedChar = useSelectedCharacter(
-    (state: any) => state?.setCharacter
-  );
-  const router = useRouter();
-
-  const repeatHistories = useRepeatHistoryStore((state: any) => state.history);
-
   const { data: allAnswers, isLoading } = useListAnswersQuery();
-  // {},
-  // {
-  //   refetchOnWindowFocus: false,
-  //   refetchOnFocus: false,
-  //   refetchOnMount: false,
-  //   refetchOnReconnect: false,
-  // }
 
   const uniqueWords = [
     // @ts-ignore
@@ -71,156 +63,23 @@ function InsightsHeader() {
         !["c", "i", "n", "d", "y"]?.includes(x?.toLocaleLowerCase())
     );
 
-  const allWords = [
-    // @ts-ignore
-    ...allAnswers?.map((answer: { hanzi: string }) => answer?.hanzi)?.join(""),
-  ]
-    .join("")
-    ?.toLocaleLowerCase()
-    ?.split("")
-    ?.filter(
-      (x: string) =>
-        !["c", "i", "n", "d", "y"]?.includes(x?.toLocaleLowerCase())
-    );
-
   const uniqueWordsStr = uniqueWords
     ?.join(" ")
     ?.concat(learnedCharacters?.map((x: any) => x?.hanzi)?.join(" "));
 
-  const { data: unlockedNMMCharacters } =
+  const { data: unlockedNMMCharacters, isLoading: isCharactersLoading } =
     useListParseQuery({
       content: uniqueWordsStr,
     }) || [];
 
-  // ?.sort(
-  //   (a, b) => a?.hmmCharacterLevel - b?.hmmCharacterLevel
-  // );
-
-  console.log("unlockedNMMCharacters", unlockedNMMCharacters);
-
-  const unlockedCharactersHMM = unlockedNMMCharacters?.map((x: any) => x.hanzi);
-  const unlockedCharactersHMMStr = unlockedCharactersHMM?.join(" ");
-
-  const charactersWithFrequencyList = Object.entries(
-    R.countBy(R.identity, allWords)
-  )
-    .map(([hanzi, frequency]) => {
-      return {
-        hanzi,
-        frequency,
-      };
-    })
-    // ?.sort((a, b) => b?.frequency - a?.frequency)
-    ?.map((a) => {
-      const char = unlockedNMMCharacters?.find(
-        (char: any) => char?.hanzi === a?.hanzi
-      );
-      return {
-        ...char,
-        ...a,
-      };
-    });
-
-  const unlockedCharactersNMM = charactersWithFrequencyList?.map(
-    (character) => character?.hanzi
-  );
-  const unlockedCharactersNMMStr = unlockedCharactersNMM?.join(" ");
-
-  // TODO Fix this
-  const currentLevel = {
-    maxCharacterLevel: 300,
+  return {
+    data: unlockedNMMCharacters,
+    isLoading: isCharactersLoading,
   };
-
-  function formatPercentage(number: number) {
-    return Intl.NumberFormat("en-GB", {
-      style: "percent",
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 2,
-    }).format(number);
-  }
-
-  const correctAnswers = allAnswers?.filter(
-    (answer: any) => answer?.status === "correct"
-  );
-
-  const accuracyPercentage = formatPercentage(
-    correctAnswers?.length / allAnswers?.length
-  );
-
-  if (isLoading) {
-    return <div> is loading ...</div>;
-  }
-
-  return (
-    <div className="flex flex-col md:flex-row justify-between my-4 md:mt-16">
-      <div className="w-full px-4 md:px-12">
-        <div className="flex justify-start space-x-8">
-          <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-            <span>
-              {unlockedNMMCharacters?.length}
-              <span className="text-md">x </span>{" "}
-            </span>
-            <span className="text-sm md:text-md dark:text-gray-400">
-              Characters Discovered{" "}
-            </span>
-          </h2>
-
-          <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-            <span>
-              {learnedCharacters?.length}
-              <span className="text-md">x </span>{" "}
-            </span>
-            <span className="text-sm md:text-md dark:text-gray-400">
-              Characters Learned
-            </span>
-          </h2>
-        </div>
-      </div>
-
-      <div className="w-full px-4 md:px-12">
-        <div className="flex justify-end space-x-4 md:space-x-8">
-          <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-            <span>
-              {repeatHistories?.length}
-              <span className="text-md">x </span>{" "}
-            </span>
-            <span className="text-sm md:text-md dark:text-gray-400">
-              Listening
-            </span>
-          </h2>
-
-          <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-            {/* <span>{accuracyPercentage} </span> */}
-            <span>
-              {allAnswers?.length}
-              <span className="text-md">x </span>
-            </span>
-            <span className="text-sm md:text-md dark:text-gray-400">
-              Writing
-            </span>
-          </h2>
-
-          <h2 className="flex flex-col-reverse items-center text-2xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-            {/* <span>97.8% </span> */}
-            {/* <span>
-          {942} <span className="text-md">x </span>
-        </span> */}
-            <span>
-              {42}
-              <span className="text-md">x </span>
-            </span>
-            <span className="text-sm md:text-md dark:text-gray-400">
-              Speaking
-            </span>
-          </h2>
-        </div>
-      </div>
-    </div>
-  );
 }
+
 export default function Insights() {
-  const [isTocHidden, setIsTocHidden] = useState(false);
-  // const [selectedChar, setSelectedChar] = useState("");
+  const { data: charactersDiscovered } = useCharactersDiscovered();
 
   const { data: learnedCharacters } = useListCharactersQuery();
 
@@ -235,21 +94,10 @@ export default function Insights() {
   );
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
-  const setSelectedChar = useSelectedCharacter(
-    (state: any) => state?.setCharacter
-  );
-  const router = useRouter();
 
   const repeatHistories = useRepeatHistoryStore((state: any) => state.history);
 
   const { data: allAnswers, isLoading } = useListAnswersQuery();
-  // {},
-  // {
-  //   refetchOnWindowFocus: false,
-  //   refetchOnFocus: false,
-  //   refetchOnMount: false,
-  //   refetchOnReconnect: false,
-  // }
 
   const uniqueWords = [
     // @ts-ignore
@@ -287,11 +135,6 @@ export default function Insights() {
     useListParseQuery({
       content: uniqueWordsStr,
     }) || [];
-
-  console.log("unlockedNMMCharacters", unlockedNMMCharacters);
-
-  const unlockedCharactersHMM = unlockedNMMCharacters?.map((x: any) => x.hanzi);
-  const unlockedCharactersHMMStr = unlockedCharactersHMM?.join(" ");
 
   const charactersWithFrequencyList = Object.entries(
     R.countBy(R.identity, allWords)
@@ -349,53 +192,132 @@ export default function Insights() {
       {selectedChar ? (
         <SelectedCharacter />
       ) : (
-        <div className="">
-          <InsightsHeader />
+        <div className="w-full grid gap-4 px-4 md:px-12 my-4 md:my-12">
+          <div className="flex items-center justify-between space-y-2 mb-2">
+            <h1 className="text-3xl font-bold tracking-tight"> Insights</h1>
 
-          <div className="w-full px-4 md:px-12 my-4 md:my-12">
-            <CharacterDiscoveryAreaChart />
-          </div>
-
-          <div className="w-full px-4 md:px-12 my-4 md:my-8 flex items-center justify-center">
-            <div className="my-8">
-              <div className="my-2 flex justify-center items-center text-2xl text-gray-700 flex-wrap">
-                {unlockedNMMCharacters?.map((char: any, idx: number) => {
-                  const selectedComp = components?.find(
-                    (component: any) => component?.hanzi === char?.hanzi
-                  );
-
-                  const color = calculateColor({
-                    tone: selectedComp?.tone_level,
-                  });
-                  return (
-                    <button
-                      role="button"
-                      onClick={() => {
-                        setSelectedChar(char?.hanzi);
-                      }}
-                      // disabled={
-                      //   currentLevel?.maxCharacterLevel <
-                      //   char?.hmmCharacterLevel
-                      // }
-                      className={`p-2 ${
-                        learnedCharacters?.find(
-                          (item: any) => item?.hanzi === char?.hanzi
-                        )
-                          ? `${color}`
-                          : currentLevel?.maxCharacterLevel >=
-                            char?.hmmCharacterLevel
-                          ? "text-gray-700 dark:text-gray-300"
-                          : "text-gray-400 dark:text-gray-500"
-                      }`}
-                      key={`${idx}-${char}-${idx}`}
-                    >
-                      {" "}
-                      {char?.hanzi}
-                    </button>
-                  );
-                })}
-              </div>
+            <div className="space-x-4 dark:text-gray-400">
+              <button className="dark:hover:text-gray-100">1w</button>
+              <button className="dark:hover:text-gray-100">1m</button>
+              <button className="dark:hover:text-gray-100">3m</button>
+              <button className="dark:hover:text-gray-100">All</button>
             </div>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card className="dark:border-gray-600">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Listening</CardTitle>
+                {/* <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="h-4 w-4 text-muted-foreground"
+                >
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg> */}
+                <FontAwesomeIcon icon={faMusic} />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  1577{" "}
+                  <span className="text-xs">
+                    +{repeatHistories?.length || 0}
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  +20.1% from last month
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="dark:border-gray-600">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Writing</CardTitle>
+
+                <FontAwesomeIcon icon={faPenLine} />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  433{" "}
+                  <span className="text-xs">
+                    +{repeatHistories?.length || 0}
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  +180.1% from last month
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="dark:border-gray-600">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Characters Discovered{" "}
+                </CardTitle>
+                <FontAwesomeIcon icon={faLightbulb} />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {charactersDiscovered?.length}{" "}
+                  <span className="text-xs">
+                    +{repeatHistories?.length || 0}
+                  </span>
+                </div>
+                {/* <div className="text-2xl font-bold">+12,234</div> */}
+                <p className="text-xs text-muted-foreground">
+                  +19% from last month
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="dark:border-gray-600">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Characters Learned
+                </CardTitle>
+
+                <FontAwesomeIcon icon={faMapLocation} />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {learnedCharacters?.length || 0}{" "}
+                  <span className="text-xs">+12</span>
+                </div>
+
+                <p className="text-xs text-muted-foreground">
+                  +201 since last week
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
+            <Card className="col-span-4 dark:border-gray-600">
+              <CardHeader>
+                <CardTitle>Characters Discovered</CardTitle>
+                <CardDescription>
+                  You discovered 425 characters this week.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pl-2">
+                {/* <Overview /> */}
+                <CharacterDiscoveryBarChart />
+                {/* <div>TODO</div> */}
+              </CardContent>
+            </Card>
+            <Card className="col-span-4 dark:border-gray-600">
+              <CardHeader>
+                <CardTitle>Chracters Learned</CardTitle>
+                <CardDescription>
+                  You learned 42 characters this week.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* <RecentSales /> */}
+                <CharacterLearnedBarChart />
+                {/* <div> TODO</div> */}
+              </CardContent>
+            </Card>
           </div>
         </div>
       )}

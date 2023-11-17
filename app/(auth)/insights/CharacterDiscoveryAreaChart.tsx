@@ -146,6 +146,46 @@ export const CharacterDiscoveryAreaChart = () => {
   console.log("SELECTED DATA", selectedData);
 
   return (
+    <div className="w-full hidden md:block">
+      {/* <h1 className="text-center font-extralight">
+        New Characters Discovered{" "}
+      </h1> */}
+
+      <ResponsiveContainer width="100%" height={300}>
+        <AreaChart
+          onClick={(props: any) => {
+            // setSelectedData(props);
+            setSelectedData(props?.activePayload?.[0]?.payload);
+            console.log("YO", props);
+          }}
+          width={500}
+          height={400}
+          data={newData}
+          margin={{
+            top: 10,
+            right: 30,
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          {/* <CartesianGrid /> */}
+          <XAxis hide />
+          <YAxis />
+
+          <Tooltip
+            content={
+              //  @ts-ignore
+              <NewCharactersTooltip />
+            }
+          />
+          {/* <Area type="monotone" dataKey="total" stroke="#8884d8" fill="#8884d8" /> */}
+          <Area type="monotone" dataKey="new" stroke="#ffbe76" fill="#ffbe76" />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+
+  return (
     <div>
       <div className="flex flex-col md:flex-row">
         <div className="w-full hidden md:block">

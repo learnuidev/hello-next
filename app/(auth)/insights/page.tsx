@@ -294,9 +294,9 @@ export default function Insights() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
             <Card className="col-span-4 dark:border-gray-600">
               <CardHeader>
-                <CardTitle>Characters Discovered</CardTitle>
+                <CardTitle>Chracters Learned</CardTitle>
                 <CardDescription>
-                  You discovered 425 characters this week.
+                  You learned 42 characters this week.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pl-2">
@@ -307,9 +307,9 @@ export default function Insights() {
             </Card>
             <Card className="col-span-4 dark:border-gray-600">
               <CardHeader>
-                <CardTitle>Chracters Learned</CardTitle>
+                <CardTitle>Characters Discovered</CardTitle>
                 <CardDescription>
-                  You learned 42 characters this week.
+                  You discovered 425 characters this week.
                 </CardDescription>
               </CardHeader>
               <CardContent>

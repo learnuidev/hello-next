@@ -17,6 +17,7 @@ import sub from "date-fns/sub";
 import isBefore from "date-fns/isBefore";
 import isAfter from "date-fns/isAfter";
 import getDay from "date-fns/getDay";
+import isThisWeek from "date-fns/isThisWeek";
 import * as R from "ramda";
 
 import { course1 } from "@/data/convos/bm1/index";
@@ -148,7 +149,7 @@ export const CharacterDiscoveryBarChart = () => {
         ?.filter((item: any) => {
           const createdAt = new Date(item?.createdAt);
 
-          return isAfter(createdAt, fromDate);
+          return isAfter(createdAt, fromDate) && isThisWeek(createdAt)
         })
         ?.map((item: any) => {
           const createdAt = new Date(item?.createdAt);

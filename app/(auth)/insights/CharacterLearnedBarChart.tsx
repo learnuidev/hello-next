@@ -1,14 +1,13 @@
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import React, { PureComponent, useState } from "react";
-// import {
-//   AreaChart,
-//   Area,
-//   XAxis,
-//   YAxis,
-//   CartesianGrid,
-//   Tooltip,
-//   ResponsiveContainer,
-// } from "recharts";
+
+import sub from "date-fns/sub";
+import isBefore from "date-fns/isBefore";
+import isAfter from "date-fns/isAfter";
+import getDay from "date-fns/getDay";
+import isThisWeek from "date-fns/isThisWeek";
+// import isLastWeek from 'date-fns/is'
+import * as R from "ramda";
 
 import {
   BarChart,
@@ -24,6 +23,7 @@ import {
 
 import { course1 } from "@/data/convos/bm1/index";
 import { useSelectedDataStore } from "./use-selected-data";
+import { isThisMonth } from "date-fns";
 
 const NewCharactersTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -71,12 +71,19 @@ export const CharacterLearnedBarChart = () => {
     }
   );
 
-  const newData = answers.map((curr: any, idx: number, ctx: any) => {
-    return {
-      ...curr,
-      name: curr?.createdAt,
-    };
-  });
+  const newData = answers
+    ?.filter((answer: any) => {
+      const createdAt = new Date(answer?.createdAt);
+
+      return isThisMonth(createdAt);
+      // return false;
+    })
+    .map((curr: any, idx: number, ctx: any) => {
+      return {
+        ...curr,
+        name: curr?.createdAt,
+      };
+    });
 
   const currentLesson = course1?.lessons?.find(
     (lesson: any) => lesson?.id === selectedData?.journeyId

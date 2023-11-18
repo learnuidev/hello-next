@@ -83,6 +83,7 @@
     "tailwindcss-animate": "^1.0.7",
     "tiptap-markdown": "^0.8.2",
     "typescript": "5.2.2",
+    "use-debounce": "^10.0.0",
     "zustand": "^4.4.1"
   },
   "devDependencies": {

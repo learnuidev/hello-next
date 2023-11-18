@@ -46,12 +46,12 @@ export default function NomadMethodPage(props: any) {
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((seconds) => seconds + 1);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setIndex((seconds) => seconds + 1);
+  //   }, 3000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const { data: components } = useListComponentsQuery(
     {},

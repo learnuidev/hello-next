@@ -52,43 +52,54 @@ export function SelectedCharacter() {
 
   const { data: contents } = useListContentsQuery();
 
-  const allContents = contents
-    ?.map((content: any) => content?.transcriptions)
-    ?.flat();
+  const allContents = useMemo(
+    () => contents?.map((content: any) => content?.transcriptions)?.flat(),
+    [contents]
+  );
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
   const setSelectedChar = useSelectedCharacter(
     (state: any) => state?.setCharacter
   );
 
-  const relevantAnswersHanzi = [
-    // @ts-ignore
-    ...new Set(
-      allAnswers
-        ?.filter((answer: any) => {
-          return answer?.phraseId?.includes(selectedChar);
-        })
-        ?.map((x: any) => x?.phraseId)
-    ),
-  ];
+  const relevantAnswersHanzi = useMemo(
+    () => [
+      // @ts-ignore
+      ...new Set(
+        allAnswers
+          ?.filter((answer: any) => {
+            return answer?.phraseId?.includes(selectedChar);
+          })
+          ?.map((x: any) => x?.phraseId)
+      ),
+    ],
+    []
+  );
 
-  const relevantAnswers = allAnswers?.filter((answer: any) => {
-    return answer?.phraseId?.includes(selectedChar?.hanzi || selectedChar);
-  });
+  const relevantAnswers = useMemo(
+    () =>
+      allAnswers?.filter((answer: any) => {
+        return answer?.phraseId?.includes(selectedChar?.hanzi || selectedChar);
+      }),
+    [allAnswers, selectedChar]
+  );
 
-  const uniqueAnswers = relevantAnswersHanzi?.map((x: string) => {
-    return relevantAnswers?.find((ans: any) => ans?.hanzi === x);
-  });
+  // const uniqueAnswers = relevantAnswersHanzi?.map((x: string) => {
+  //   return relevantAnswers?.find((ans: any) => ans?.hanzi === x);
+  // });
 
-  const answerMap = R.indexBy(R.prop("hanzi"), relevantAnswers) as Record<
-    string,
-    { hanzi: string; journeyId: string; phraseId: string }
-  >;
+  const answerMap = useMemo(
+    () => R.indexBy(R.prop("hanzi"), relevantAnswers),
+    [R, relevantAnswers]
+  ) as Record<string, { hanzi: string; journeyId: string; phraseId: string }>;
 
-  const uniqueAnswerIds = [
-    // @ts-ignore
-    ...new Set(relevantAnswers?.map((answer: any) => answer?.hanzi)),
-  ];
+  const uniqueAnswerIds = useMemo(
+    () => [
+      // @ts-ignore
+      ...new Set(relevantAnswers?.map((answer: any) => answer?.hanzi)),
+    ],
+    [relevantAnswers]
+  );
 
   const { data: characters } = useListCharactersQuery(
     {},
@@ -102,21 +113,30 @@ export function SelectedCharacter() {
 
   const { data: components } = useListComponentsQuery();
 
-  const allSteps =
-    components
-      ?.map((component: any) => component?.steps)
-      ?.filter(Boolean)
-      ?.flat() || [];
+  const allSteps = useMemo(
+    () =>
+      components
+        ?.map((component: any) => component?.steps)
+        ?.filter(Boolean)
+        ?.flat() || [],
+    [components]
+  );
 
-  const selectedComp = components?.find(
-    (component: any) => component?.hanzi === selectedChar
+  const selectedComp = useMemo(
+    () =>
+      components?.find((component: any) => component?.hanzi === selectedChar),
+    [components, selectedChar]
   );
 
   const [readMode, setReadMode] = useState(false);
 
-  const isAlreadyLearned = characters?.find((character: { hanzi: string }) => {
-    return character?.hanzi === selectedChar;
-  });
+  const isAlreadyLearned = useMemo(
+    () =>
+      characters?.find((character: { hanzi: string }) => {
+        return character?.hanzi === selectedChar;
+      }),
+    [characters, selectedChar]
+  );
 
   const discoverMutation = useDiscoverMutation();
 

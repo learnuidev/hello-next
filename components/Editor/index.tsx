@@ -2,6 +2,7 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import { defaultExtensions } from "./extensions";
+import { useDebouncedCallback } from 'use-debounce';
 import { EditorBubbleMenu } from "./bubble-menu";
 import Mathematics from "@tiptap-pro/extension-mathematics";
 import UniqueID from "@tiptap-pro/extension-unique-id";
@@ -20,11 +21,23 @@ export const Editor = ({
   content,
   id,
   className,
+  onUpdate
 }: {
   className?: string;
   content: string;
+  onUpdate?: any
   id: string;
 }) => {
+
+  const debounced = useDebouncedCallback(
+    // function
+    (value) => {
+      onUpdate?.(value)
+    },
+    // delay in ms
+    1000
+  );
+
   const editor = useEditor({
     autofocus: true,
     extensions: [
@@ -35,25 +48,32 @@ export const Editor = ({
       //   }
       // }),
       Mathematics,
-      UniqueID.configure({
-        attributeName: "uid",
-        types: ["heading", "paragraph"],
-      }),
+      // UniqueID.configure({
+      //   attributeName: "uid",
+      //   types: ["heading", "paragraph"],
+      // }),
       TableOfContent,
     ],
     // content: content,
-    content: JSON.parse(defaultContent),
+    content: content,
     // content:
     //   typeof window !== "undefined" && JSON.parse(localStorage?.getItem(id) || '')?.content?.length < 10
     //     ? JSON.parse(defaultContent)
     //     : JSON.parse(defaultContent),
     onUpdate: ({ editor }) => {
-      if (id) {
-        localStorage &&
-          localStorage.setItem(id, JSON.stringify(editor.getJSON()));
-      }
+      // if (id) {
+      //   localStorage &&
+      //     localStorage.setItem(id, JSON.stringify(editor.getJSON()));
+      // }
+
+      debounced(editor.getJSON())
+
+      onUpdate?.(editor?.getJSON())
     },
   });
+
+
+
 
   return (
     <>

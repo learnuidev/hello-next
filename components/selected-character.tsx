@@ -324,7 +324,7 @@ export function SelectedCharacter() {
       );
     }
     return (
-      <div className="flex justify-between space-x-4 space-y-8 items-center w-full">
+      <div className="flex justify-between space-x-4 py-4 items-center w-full hover:bg-gray-900 px-4">
         <div role="button" className="flex flex-col">
           {" "}
           <Link
@@ -531,14 +531,7 @@ export function SelectedCharacter() {
     return (
       <div className="my-8">
         <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
-          <div className="space-y-4 w-full">
-            {sentences?.slice(0, 10)?.map((sentence: any) => {
-              return (
-                <HanziViewer key={sentence?.id} currentPhrase={sentence} />
-              );
-            })}
-          </div>
-
+      
           {uniqueAnswerIds?.map((id: any, idx: number) => {
             const char = answerMap?.[id] || {};
 

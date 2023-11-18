@@ -30,6 +30,7 @@ import { cleanString } from "@/data/convos/bm1/utils";
 import { PlayIcon } from "./ui/icons";
 import { NomadMethod } from "@/app/nmm/nomad-method";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
 
 export function SelectedCharacter() {
   const [view, setView] = useState("sentences");
@@ -117,6 +118,8 @@ export function SelectedCharacter() {
     return character?.hanzi === selectedChar;
   });
 
+  const discoverMutation = useDiscoverMutation();
+
   const firstLesson = useMemo(
     () =>
       components?.find((component: any) => component?.hanzi === selectedChar),
@@ -159,6 +162,7 @@ export function SelectedCharacter() {
           return {
             hanzi: currComp?.hanzi,
             pinyin: currComp?.pinyin || "??",
+            unknown: true,
           };
         });
 
@@ -201,6 +205,17 @@ export function SelectedCharacter() {
                     <button
                       onClick={() => {
                         setSelectedChar(val);
+                        console.log("YO");
+
+                        if (hanz?.pinyin === "??") {
+                          return discoverMutation
+                            .mutateAsync({
+                              hanzi: hanz?.hanzi,
+                            })
+                            .then((resp) => {
+                              console.log("Discovered!!");
+                            });
+                        }
                       }}
                       className={`text-sm ${
                         selectedChar === val
@@ -214,6 +229,18 @@ export function SelectedCharacter() {
                     <button
                       onClick={() => {
                         setSelectedChar(val);
+
+                        console.log("HANZ", hanz);
+
+                        if (hanz?.pinyin === "??") {
+                          return discoverMutation
+                            .mutateAsync({
+                              hanzi: hanz?.hanzi,
+                            })
+                            .then((resp) => {
+                              console.log("Discovered!!");
+                            });
+                        }
                       }}
                     >
                       {hanz?.hanzi}
@@ -273,6 +300,7 @@ export function SelectedCharacter() {
   };
 
   const ReadModeView = () => {
+    const discoverMutation = useDiscoverMutation();
     return (
       <div className="my-8">
         <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
@@ -349,6 +377,16 @@ export function SelectedCharacter() {
                           <button
                             onClick={() => {
                               setSelectedChar(val);
+
+                              if (hanz?.pinyin === "??") {
+                                return discoverMutation
+                                  .mutateAsync({
+                                    hanzi: hanz?.hanzi,
+                                  })
+                                  .then((resp) => {
+                                    console.log("Discovered!!");
+                                  });
+                              }
                             }}
                             className={`text-sm ${
                               selectedChar === val
@@ -362,6 +400,16 @@ export function SelectedCharacter() {
                           <button
                             onClick={() => {
                               setSelectedChar(val);
+
+                              if (hanz?.pinyin === "??") {
+                                return discoverMutation
+                                  .mutateAsync({
+                                    hanzi: hanz?.hanzi,
+                                  })
+                                  .then((resp) => {
+                                    console.log("Discovered!!");
+                                  });
+                              }
                             }}
                           >
                             {hanz?.hanzi}

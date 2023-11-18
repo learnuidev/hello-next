@@ -10,26 +10,22 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 
-import { useRouter } from "next/navigation";
 import { NavBar } from "@/components/navbar";
 
-import { CharacterDiscoveryAreaChart } from "./CharacterDiscoveryAreaChart";
 import { useRepeatHistoryStore } from "../convos/_play/use-repeat-history";
 
 import { useSelectedCharacter } from "../convos/use-selected-character";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
-import { calculateColor } from "@/app/nmm/utils";
 
 import { SelectedCharacter } from "@/components/selected-character";
 import { useListParseQuery } from "@/domain/nmm/nmm.queries";
-import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLightbulb,
@@ -160,11 +156,6 @@ export default function Insights() {
     (character) => character?.hanzi
   );
   const unlockedCharactersNMMStr = unlockedCharactersNMM?.join(" ");
-
-  // TODO Fix this
-  const currentLevel = {
-    maxCharacterLevel: 300,
-  };
 
   function formatPercentage(number: number) {
     return Intl.NumberFormat("en-GB", {

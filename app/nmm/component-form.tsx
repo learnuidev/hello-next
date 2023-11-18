@@ -164,9 +164,23 @@ export const ComponentForm = ({
 
               {lesson && lesson?.key ? (
                 lesson?.title === "Create a story" ? (
-                  <div className="w-[600px]">
+                  <div className="w-full items-center flex flex-col">
+                    <p className="text-gray-300">
+                      <a
+                        role="a"
+                        href={`https://www.youtube.com/results?search_query=${characterState?.nomad}`}
+                        target="_blank"
+                      >
+                        {characterState?.nomad} @{" "}
+                      </a>
+                      <span className="font-bold">
+                        {characterState?.destination},{" "}
+                        {characterState?.location}
+                      </span>
+                    </p>
+
                     <Editor
-                      className="text-start"
+                      className="text-start my-8"
                       id="story"
                       content={characterState?.[lesson?.key] as any}
                       onUpdate={(val: any) => {
@@ -244,7 +258,7 @@ export const ComponentForm = ({
 
         <div className="flex items-center w-full justify-center">
           <button
-            className="hover:shadow-blue-600 shadow-md text-xl px-6 py-2 uppercase transition dark:text-gray-400"
+            className="hover:shadow-blue-600 z-50 shadow-md text-xl px-6 py-2 uppercase transition dark:text-gray-400"
             disabled={lessonIndex === 0}
             onClick={() => {
               setLessonIndex((idx: number) => idx - 1);
@@ -255,7 +269,7 @@ export const ComponentForm = ({
             <FontAwesomeIcon icon={faArrowLeft} />
           </button>
           <button
-            className="hover:shadow-blue-600 shadow-md text-xl px-6 py-2 uppercase transition dark:text-gray-400"
+            className="hover:shadow-blue-600 z-50 shadow-md text-xl px-6 py-2 uppercase transition dark:text-gray-400"
             onClick={() => {
               setLessonIndex((idx: number) => idx + 1);
             }}
@@ -265,22 +279,52 @@ export const ComponentForm = ({
         </div>
 
         {showAnalysis ? (
-          <div className="flex text-sm justify-center items-center space-x-2 px-12 text-gray-200 dark:text-gray-400">
+          <div
+            className={`mx-4 justify-center items-center md:mx-64 my-8 grid   ${
+              (
+                grammarAnalysis?.grammarAnalysis?.words ||
+                grammarAnalysis?.grammarAnalysis
+              )?.length  < 5
+                ? "grid-cols-3"
+                : "grid-cols-5"
+            } gap-y-8 text-sm px-12 text-gray-200 dark:text-gray-400`}
+          >
             {(
               grammarAnalysis?.grammarAnalysis?.words ||
               grammarAnalysis?.grammarAnalysis ||
               []
-            )?.map((grammar: any) => {
-              const params = {
-                hanzi: grammar?.hanzi,
-                en: grammar?.english || grammar?.en || grammar?.title,
-              };
-              return (
-                <span key={`${lesson?.id}-${params?.en}-${params?.hanzi}`}>
-                  {params?.en} ({params?.hanzi})
-                </span>
-              );
-            })}
+            )
+              ?.filter((grammar: any) => grammar?.hanzi?.length < 10)
+              ?.map((grammar: any) => {
+                const params = {
+                  hanzi: grammar?.hanzi,
+                  en: grammar?.english || grammar?.en || grammar?.title,
+                  pinyin: grammar?.pinyin,
+                };
+                return (
+                  <div
+                    className="w-full flex flex-row space-x-2"
+                    key={`${lesson?.id}-${params?.en}-${params?.hanzi}`}
+                  >
+                    {/* {JSON.stringify(params, null, 2)} */}
+
+                    <div className="w-full flex flex-col items-center justify-start">
+                      <div className="flex flex-row space-x-2">
+                        <a
+                          href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                            params?.hanzi
+                          )}`}
+                          target="_blank"
+                        >
+                          {params?.hanzi}
+                        </a>
+                        <p>{params?.pinyin}</p>
+                      </div>
+                      <p className="text-xs">{params?.en}</p>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
         ) : null}
       </div>

@@ -14,6 +14,7 @@ import { calculateColor } from "./utils";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { cleanString } from "@/data/convos/bm1/utils";
+import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 
 export const PageView = ({
   view,
@@ -87,6 +88,10 @@ export const PageView = ({
   const selectedComp = components?.find(
     (component: any) => component?.hanzi === selectedId
   );
+
+  const { data: sentences } = useListSentencesQuery({
+    component: selectedId,
+  });
 
   switch (view) {
     case "play":

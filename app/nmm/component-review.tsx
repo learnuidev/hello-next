@@ -28,6 +28,8 @@ import { LessonAddSuccessView } from "./lesson-add-success-view";
 import { Editor } from "@/components/Editor";
 
 export const ComponentReview = ({
+  lessonIndex,
+  setLessonIndex,
   characterState,
   addCharacterMutation,
   firstLesson,
@@ -57,7 +59,7 @@ export const ComponentReview = ({
           </span>
         </p>
 
-        <div className="pt-4 pb-16 text-gray-300 text-lg font-light">
+        <div className="pt-4 pb-16 text-gray-300">
           {/* {characterState.story} */}
           <Editor id="story" content={characterState.story} />
         </div>
@@ -95,6 +97,28 @@ export const ComponentReview = ({
           className="hover:shadow-blue-600 shadow-md py-2 px-8 rounded bg-gray-800 text-md font-extralight"
         >
           Complete
+        </button>
+      </div>
+
+      <div className="flex items-center w-full justify-center">
+        <button
+          className="hover:shadow-blue-600 shadow-md text-xl px-6 py-2 uppercase transition dark:text-gray-400"
+          disabled={lessonIndex === 0}
+          onClick={() => {
+            setLessonIndex((idx: number) => idx - 1);
+          }}
+        >
+          {/* Previous */}
+
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </button>
+        <button
+          className="hover:shadow-blue-600 shadow-md text-xl px-6 py-2 uppercase transition dark:text-gray-400"
+          onClick={() => {
+            setLessonIndex((idx: number) => idx + 1);
+          }}
+        >
+          <FontAwesomeIcon icon={faArrowRight} />
         </button>
       </div>
     </div>

@@ -23,11 +23,15 @@ export const ComponentForm = ({
   onClose,
   setShowYay,
   setViewSuccessBanner,
+  lessonIndex,
+  setLessonIndex,
 }: {
   selectedId: string;
   onClose: any;
   setShowYay: any;
   setViewSuccessBanner: any;
+  lessonIndex: number;
+  setLessonIndex: any;
 }) => {
   const [showAnalysis, setShowAnalysis] = useState(false);
 
@@ -41,8 +45,6 @@ export const ComponentForm = ({
   const setCharacterState = useCharacterStore(
     (state: any) => state.setCharacter
   ) as any;
-
-  const [lessonIndex, setLessonIndex] = useState(0);
 
   const { data: components, isLoading, isFetching } = useListComponentsQuery();
 
@@ -160,32 +162,6 @@ export const ComponentForm = ({
                 </h1>
               )}
 
-              {lesson?.title === "Create a story" ? (
-                <div className="h-20">
-                  <h1 className="mb-2 text-center dark:text-gray-600 text-xs font-bold">
-                    Sub Components
-                  </h1>
-
-                  <div className="flex text-sm justify-center items-center space-x-2 px-12 text-gray-200 dark:text-gray-400">
-                    {sub_components?.map((grammar: any) => {
-                      const params = {
-                        hanzi: grammar?.hanzi,
-                        en: grammar?.english || grammar?.en || grammar?.title,
-                      };
-                      return (
-                        <span
-                          key={`${lesson?.id}-${params?.en}-${params?.hanzi}`}
-                        >
-                          {params?.en} ({params?.hanzi})
-                        </span>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : (
-                <div className="h-20"></div>
-              )}
-
               {lesson && lesson?.key ? (
                 lesson?.title === "Create a story" ? (
                   <div className="w-[600px]">
@@ -237,6 +213,32 @@ export const ComponentForm = ({
                 <div className=""></div>
               )}
             </div>
+
+            {lesson?.title === "Create a story" ? (
+              <div className="h-20 my-8">
+                <h1 className="mb-2 text-center dark:text-gray-600 text-xs font-bold">
+                  Sub Components
+                </h1>
+
+                <div className="flex text-sm justify-center items-center space-x-2 px-12 text-gray-200 dark:text-gray-400">
+                  {sub_components?.map((grammar: any) => {
+                    const params = {
+                      hanzi: grammar?.hanzi,
+                      en: grammar?.english || grammar?.en || grammar?.title,
+                    };
+                    return (
+                      <span
+                        key={`${lesson?.id}-${params?.en}-${params?.hanzi}`}
+                      >
+                        {params?.en} ({params?.hanzi})
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <div className="h-20"></div>
+            )}
           </div>
         </animated.div>
 

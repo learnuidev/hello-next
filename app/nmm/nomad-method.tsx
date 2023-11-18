@@ -20,6 +20,8 @@ export function NomadMethod({
   selectedId: string;
   onClose?: any;
 }) {
+  // const [lessonIndex, setLessonIndex] = useState(0);
+
   const [showYay, setShowYay] = useState(false);
   const [showMsg, setShowMsg] = useState(false);
 
@@ -113,6 +115,8 @@ export function NomadMethod({
         addCharacterMutation={addCharacterMutation}
         firstLesson={firstLesson}
         reset={reset}
+        lessonIndex={lessonIndex}
+        setLessonIndex={setLessonIndex}
       />
     );
   }
@@ -123,6 +127,8 @@ export function NomadMethod({
       setShowYay={setShowYay}
       selectedId={selectedId}
       onClose={onClose}
+      lessonIndex={lessonIndex}
+      setLessonIndex={setLessonIndex}
     />
   );
 }

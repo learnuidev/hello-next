@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGlass,
   faGlassesRound,
+  faMale,
   faRocketLaunch,
   faSpaceStationMoon,
   faX,
@@ -177,7 +178,7 @@ export function SelectedCharacter() {
 
   const AudioComponent = ({ currentPhrase }: any) => {
     const { play, togglePlay, seek, currentTime, reset } = useMusic({
-      url: currentPhrase?.audio?.male || currentPhrase?.audio?.female,
+      url: currentPhrase?.audio?.female || currentPhrase?.audio?.female,
     });
 
     const setRepeatHistories = useRepeatHistoryStore(
@@ -317,9 +318,30 @@ export function SelectedCharacter() {
             </span>
           </div>
 
-          {currentPhrase?.audio ? (
+          {/* {currentPhrase?.audio ? (
             <AudioComponent currentPhrase={currentPhrase} />
-          ) : null}
+          ) : null} */}
+
+          <div className="flex space-x-4 items-center">
+            {currentPhrase?.audio ? (
+              <AudioComponent currentPhrase={currentPhrase} />
+            ) : null}
+
+            <Link
+              target="_blank"
+              // href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+              //   currentPhrase?.hanzi
+              // )}`}
+
+              href={`https://www.google.com/search?q=google+translate&query=${encodeURIComponent(
+                currentPhrase?.hanzi
+              )}in%20english`}
+              className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
+              // className="text-gray-500 dark:text-gray-300 text-xs"
+            >
+              <FontAwesomeIcon icon={faGoogle} />
+            </Link>
+          </div>
         </div>
       );
     }
@@ -522,6 +544,10 @@ export function SelectedCharacter() {
               </div>
             );
           })}
+
+          {sentences?.slice(0, 10)?.map((sentence: any) => {
+            return <HanziViewer key={sentence?.id} currentPhrase={sentence} />;
+          })}
         </div>
       </div>
     );
@@ -531,7 +557,6 @@ export function SelectedCharacter() {
     return (
       <div className="my-8">
         <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
-      
           {uniqueAnswerIds?.map((id: any, idx: number) => {
             const char = answerMap?.[id] || {};
 
@@ -650,6 +675,18 @@ export function SelectedCharacter() {
             // }}
           >
             <FontAwesomeIcon className="text-2xl" icon={faSpaceStationMoon} />
+            {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
+          </button>
+          <button
+            className="text-xl"
+            onClick={() => {
+              setView("review");
+            }}
+            // onClick={() => {
+            //   setReadMode(!readMode);
+            // }}
+          >
+            <FontAwesomeIcon className="text-2xl" icon={faMale} />
             {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
           </button>
           <button

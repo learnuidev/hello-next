@@ -68,7 +68,7 @@ export const Editor = ({
 
       debounced(editor.getJSON())
 
-      onUpdate?.(editor?.getJSON())
+      onUpdate && onUpdate?.(editor?.getJSON())
     },
   });
 

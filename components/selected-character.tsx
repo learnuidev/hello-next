@@ -37,6 +37,7 @@ import { useMusic } from "@/app/(auth)/convos/_play/use-music";
 import { PauseIcon } from "lucide-react";
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { Editor } from "./Editor";
 
 export function SelectedCharacter() {
   const [view, setView] = useState("sentences");
@@ -162,9 +163,9 @@ export function SelectedCharacter() {
     component: selectedChar,
   });
 
-  if (view === "review") {
-    return <div> TODO Sentences </div>;
-  }
+  // if (view === "review") {
+  //   return <div> TODO Sentences </div>;
+  // }
   if (view === "play") {
     return (
       <NomadMethod
@@ -333,9 +334,12 @@ export function SelectedCharacter() {
               //   currentPhrase?.hanzi
               // )}`}
 
-              href={`https://www.google.com/search?q=google+translate&query=${encodeURIComponent(
+              href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
                 currentPhrase?.hanzi
-              )}in%20english`}
+              )}&op=translate`}
+              // href={`https://www.google.com/search?q=google+translate&query=${encodeURIComponent(
+              //   currentPhrase?.hanzi
+              // )}in%20english`}
               className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
               // className="text-gray-500 dark:text-gray-300 text-xs"
             >
@@ -401,9 +405,12 @@ export function SelectedCharacter() {
             //   currentPhrase?.hanzi
             // )}`}
 
-            href={`https://www.google.com/search?q=google+translate&query=${encodeURIComponent(
+            href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
               currentPhrase?.hanzi
-            )}in%20english`}
+            )}&op=translate`}
+            // href={`https://www.google.com/search?q=google+translate&query=${encodeURIComponent(
+            //   currentPhrase?.hanzi
+            // )}in%20english`}
             className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
             // className="text-gray-500 dark:text-gray-300 text-xs"
           >
@@ -644,8 +651,8 @@ export function SelectedCharacter() {
     return readMode ? <ReadModeView /> : <NormalView />;
   };
 
-  return (
-    <div className="w-full px-4 md:px-12">
+  const HeaderView = () => {
+    return (
       <div className="flex justify-between items-center">
         <div className="space-x-8 flex items-center">
           <button
@@ -668,7 +675,7 @@ export function SelectedCharacter() {
           <button
             className="text-xl"
             onClick={() => {
-              setView("review");
+              setView("sentences");
             }}
             // onClick={() => {
             //   setReadMode(!readMode);
@@ -737,8 +744,47 @@ export function SelectedCharacter() {
           </Link>
         </div>
       </div>
+    );
+  };
 
-      <SentencesView />
+  return (
+    <div className="w-full px-4 md:px-12">
+      <HeaderView />
+
+      {view === "review" ? (
+        // <p dangerouslySetInnerHTML={{ __html: isAlreadyLearned?.story }}></p>
+
+        <div className="my-8">
+          <p className="text-gray-300 text-center">
+            <a
+              role="a"
+              href={`https://www.youtube.com/results?search_query=${isAlreadyLearned?.nomad}`}
+              target="_blank"
+            >
+              {isAlreadyLearned?.nomad} @{" "}
+            </a>
+            <span className="font-bold">
+              {isAlreadyLearned?.destination}, {isAlreadyLearned?.location}
+            </span>
+          </p>
+
+          <Editor
+            id="story-123"
+            // className="text-center border-solid h-12 border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
+            content={isAlreadyLearned?.story || ""}
+          />
+        </div>
+      ) : null}
+
+      {/* {isAlreadyLearned?.story && (
+        <Editor
+          id="story-123"
+          className="text-center border-solid h-12 border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
+          content={isAlreadyLearned?.story || ""}
+        />
+      )} */}
+
+      {view === "sentences" ? <SentencesView /> : null}
     </div>
   );
 }

@@ -3,13 +3,28 @@ export const calculateColor = (dict: any) => {
     case 1:
       return "text-red-400";
     case 2:
-      return "text-green-500";
+      return "text-teal-500";
     case 3:
       return "text-purple-400";
     case 4:
       return "text-pink-400";
     default:
       return "text-gray-600 dark:text-white";
+  }
+};
+
+export const calculateBorderColor = (dict: any) => {
+  switch (parseInt(dict?.tone)) {
+    case 1:
+      return "border-red-400";
+    case 2:
+      return "border-teal-500";
+    case 3:
+      return "border-purple-400";
+    case 4:
+      return "border-pink-300";
+    default:
+      return "dark:text-white";
   }
 };
 

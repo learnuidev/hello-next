@@ -12,6 +12,7 @@ import {
   faGlass,
   faGlassesRound,
   faLanguage,
+  faLightbulb,
   faMale,
   faRocketLaunch,
   faSpaceStationMoon,
@@ -39,12 +40,15 @@ import { PauseIcon } from "lucide-react";
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Editor } from "./Editor";
+import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
 
 export function SelectedCharacter() {
   const [view, setView] = useState("sentences");
   const searchParams = useSearchParams();
 
   const lessonId = searchParams.get("lessonId");
+
+  const addCharacterMutation = useAddCharacterMutation();
   // const params = useParams() as {
   //   lessonId: string
   // }
@@ -709,6 +713,41 @@ export function SelectedCharacter() {
             <PlayIcon className="text-2xl" />
             {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
           </button>
+          {isAlreadyLearned ? null : (
+            <button
+              className="text-xl"
+              onClick={() => {
+                addCharacterMutation?.mutateAsync({
+                  hanzi: firstLesson?.hanzi,
+                  pinyin: firstLesson?.pinyin,
+                  en: firstLesson?.en,
+                  level: firstLesson?.level,
+                  nomad: "na",
+                  destination: "na",
+                  location: "na",
+                  journeyId: firstLesson.id,
+                  // todo | completed
+                  status: "completed",
+                  story: "na",
+                  component: "na",
+                  sub_components: [],
+                });
+                // .then(() => {
+                //   reset();
+                // });
+              }}
+
+              // onClick={() => {
+              //   setView("play");
+              // }}
+              // onClick={() => {
+              //   setReadMode(!readMode);
+              // }}
+            >
+              <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
+              {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
+            </button>
+          )}
           {selectedComp?.pinyin ? null : (
             <button
               className="text-xl"

@@ -748,7 +748,7 @@ export function SelectedCharacter() {
               {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
             </button>
           )}
-          {selectedComp?.pinyin ? null : (
+          {selectedComp?.group ? null : (
             <button
               className="text-xl"
               onClick={() => {
@@ -759,7 +759,7 @@ export function SelectedCharacter() {
                     hanzi: selectedComp?.hanzi,
                   })
                   .then((resp) => {
-                    console.log("Discovered!!");
+                    console.log("Discovered!!", resp);
                   });
               }}
               // onClick={() => {

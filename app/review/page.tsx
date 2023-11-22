@@ -22,6 +22,7 @@ import { faCheck, faXmark } from "@fortawesome/pro-thin-svg-icons";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import Link from "next/link";
 import { isBefore } from "date-fns";
+import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 
 export default function NomadMethodPage(props: any) {
   // const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);
@@ -55,22 +56,7 @@ export default function NomadMethodPage(props: any) {
 
   const lastAnswer = answers?.[answers?.length - 1];
 
-  const useListCharacterReviewList = () => {
-    const { data: learnedCharacters, ...rest } = useListCharactersQuery();
 
-    const reviewCharacters = learnedCharacters?.filter((character: any) =>
-      character?.status === "learned"
-        ? false
-        : character?.next_review_date
-        ? isBefore(new Date(character?.next_review_date), new Date())
-        : true
-    );
-
-    return {
-      ...rest,
-      data: reviewCharacters,
-    };
-  };
 
   // const { data: learnedCharacters } = useListCharactersQuery();
 
@@ -83,8 +69,7 @@ export default function NomadMethodPage(props: any) {
 
   const { data: components } = useListComponentsQuery();
 
-
-  const { data: learnedCharacters } = useListCharacterReviewList()
+  const { data: learnedCharacters } = useListCharacterReviewList();
 
   const currentCharacter = learnedCharacters?.[index];
 

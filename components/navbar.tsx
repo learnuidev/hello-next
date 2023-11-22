@@ -26,6 +26,7 @@ import { useBeltStore } from "./use-belt-store";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { faPhotoFilm } from "@fortawesome/sharp-solid-svg-icons";
+import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -191,7 +192,7 @@ export const NavBar = () => {
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 
-
+  const { data: reviewList } = useListCharacterReviewList();
 
   if (selectedChar || routeName === "/") {
     return null;
@@ -288,17 +289,19 @@ export const NavBar = () => {
         <div className="h-12"> </div>
       ) : (
         <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
-          <Link
-            href="/review"
-            className={`transition ${
-              routeName?.includes("/review")
-                ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-200 dark:text-gray-500"
-            } hover:text-gray-700 transition text-xl`}
-          >
-            {/* <FontAwesomeIcon icon={faComment} /> */}
-            <FontAwesomeIcon icon={faPlayCircle} />
-          </Link>
+          {reviewList?.length > 1 ? (
+            <Link
+              href="/review"
+              className={`transition ${
+                routeName?.includes("/review")
+                  ? "text-gray-800 dark:text-gray-300"
+                  : "text-gray-200 dark:text-gray-500"
+              } hover:text-gray-700 transition text-xl`}
+            >
+              {/* <FontAwesomeIcon icon={faComment} /> */}
+              <FontAwesomeIcon icon={faPlayCircle} />
+            </Link>
+          ) : null}
           <Link
             href="/convos"
             className={`transition ${

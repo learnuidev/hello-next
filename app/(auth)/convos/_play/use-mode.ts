@@ -1,9 +1,9 @@
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { create } from 'zustand'
 
-export const useFocusModeStore = create((set: any, get: any) => ({
-  focusMode: false,
-  setFocusMode: (mode: any) => set({ focusMode: mode })
+export const usePinyinModeStore = create((set: any, get: any) => ({
+  pinyinMode: false,
+  setPinyinMode: (mode: any) => set({ pinyinMode: mode })
 }))
 export const useModeStore = create((set: any, get: any) => ({
   mode: '',
@@ -18,3 +18,7 @@ export const useResultsStore = create((set: any, get: any) => ({
       ? set({ results: f(get().results) })
       : set({ results: f })
 }))
+
+
+
+

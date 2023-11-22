@@ -6,5 +6,6 @@ export type Transcription = {
   end: number;
   step: number;
   pinyn_added_at: number;
+  lit?: string;
   seek: number;
 };

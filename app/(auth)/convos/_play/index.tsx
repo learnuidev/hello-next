@@ -20,7 +20,7 @@ import { useLessonHistoryStore } from "./use-lesson-history";
 import { useRepeatHistoryStore } from "./use-repeat-history";
 import { useViewModeStore } from "./use-view-mode";
 
-import { useModeStore } from "./use-mode";
+import { useModeStore, usePinyinModeStore } from "./use-mode";
 
 import React from "react";
 
@@ -35,6 +35,10 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useSearchParams } from "next/navigation";
 import { Transcription } from "@/domain/transcription/transcription.types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLanguage } from "@fortawesome/pro-thin-svg-icons";
+import Link from "next/link";
+import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
 
 const columnHelper = createColumnHelper<any>();
 
@@ -111,6 +115,11 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
     (state: any) => state.setHistory
   );
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
+
+  const pinyinMode = usePinyinModeStore((state: any) => state?.pinyinMode);
+  const setPinyinMode = usePinyinModeStore(
+    (state: any) => state?.setPinyinMode
+  );
 
   const mode = useModeStore((state: any) => state.mode);
   const focusMode = mode === "focus";
@@ -272,6 +281,28 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
               } dark:hover:text-slate-100 hover:text-slate-900 transition md:px-4`}
             />
           </button>
+          <button
+            onClick={() => {
+              setPinyinMode(!pinyinMode);
+            }}
+          >
+            <FontAwesomeIcon
+              className={`z-50 text-xl p-2 md:text-3xl ${
+                pinyinMode
+                  ? "dark:text-white text-slate-700"
+                  : "dark:text-slate-400 text-slate-300"
+              } dark:hover:text-slate-100 hover:text-slate-900 transition md:px-4`}
+              icon={faLanguage}
+            />
+
+            {/* <FocusIcon
+              className={`z-50 text-xl p-2 md:text-3xl ${
+                focusMode
+                  ? "dark:text-white text-slate-700"
+                  : "dark:text-slate-400 text-slate-300"
+              } dark:hover:text-slate-100 hover:text-slate-900 transition md:px-4`}
+            /> */}
+          </button>
         </div>
       </div>
 
@@ -370,28 +401,62 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
             .map((transcription: Transcription) => {
               return (
                 <div
-                  role="button"
+                  className={`text-center`}
                   key={`${transcription?.hanzi}-${transcription?.pinyin}`}
-                  onClick={() => {
-                    seek(transcription?.start);
-
-                    setRepeatHistories({
-                      lessonId: lesson1?.id || lesson2.id,
-                      eventType: "speech/repeat",
-                      eventTime: new Date().getTime(),
-                      startTime: transcription.start,
-                      hanzi: transcription.hanzi,
-                      pinyin: transcription.pinyin,
-                      en: transcription.en,
-                      step: transcription.step,
-                      // item
-                    });
-                  }}
-                  className="text-center"
                 >
-                  <p>{transcription?.hanzi}</p>
-                  <p className="dark:text-gray-400">{transcription?.pinyin}</p>
-                  <p className="dark:text-gray-300">{transcription?.en}</p>
+                  <div
+                    role="button"
+                    onClick={() => {
+                      seek(transcription?.start);
+
+                      setRepeatHistories({
+                        lessonId: lesson1?.id || lesson2.id,
+                        eventType: "speech/repeat",
+                        eventTime: new Date().getTime(),
+                        startTime: transcription.start,
+                        hanzi: transcription.hanzi,
+                        pinyin: transcription.pinyin,
+                        en: transcription.en,
+                        step: transcription.step,
+                        // item
+                      });
+                    }}
+                  >
+                    <p className={`${pinyinMode ? "text-3xl" : "text-3xl"}`}>
+                      {transcription?.hanzi}
+                    </p>
+
+                    {pinyinMode ? (
+                      <>
+                        <p className="dark:text-gray-400 text-md">
+                          {transcription?.pinyin}
+                        </p>
+                        <p className="dark:text-gray-300 text-md">
+                          {transcription?.en}
+                        </p>
+                      </>
+                    ) : null}
+                  </div>
+
+                  <div className="my-8 space-x-8">
+                    <Link
+                      href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                        transcription?.hanzi
+                      )}`}
+                      target="_blank"
+                    >
+                      <FontAwesomeIcon icon={faSkyatlas} />
+                    </Link>
+
+                    <Link
+                      target="_blank"
+                      href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                        transcription?.hanzi
+                      )}&op=translate`}
+                    >
+                      <FontAwesomeIcon icon={faGoogle} />
+                    </Link>
+                  </div>
                 </div>
               );
             })}
@@ -404,6 +469,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
             return (
               <div
                 role="button"
+                className={`text-center`}
                 key={`${transcription?.hanzi}-${transcription?.pinyin}`}
                 onClick={() => {
                   seek(transcription?.start);
@@ -420,11 +486,20 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                     // item
                   });
                 }}
-                className="text-center"
               >
-                <p>{transcription?.hanzi}</p>
-                <p className="dark:text-gray-400">{transcription?.pinyin}</p>
-                <p className="dark:text-gray-300">{transcription?.en}</p>
+                <p className={`${pinyinMode ? "text-3xl" : "text-3xl"}`}>
+                  {transcription?.hanzi}
+                </p>
+                {pinyinMode ? (
+                  <>
+                    <p className="dark:text-gray-400 text-md">
+                      {transcription?.pinyin}
+                    </p>
+                    <p className="dark:text-gray-300 text-md">
+                      {transcription?.en}
+                    </p>
+                  </>
+                ) : null}
               </div>
             );
           })}

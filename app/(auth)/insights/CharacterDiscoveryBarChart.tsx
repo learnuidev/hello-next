@@ -140,6 +140,8 @@ export const CharacterDiscoveryBarChart = () => {
   });
   // const [selectedData, setSelectedData] = useState<any>(null);
 
+  console.log("SUB", sub)
+
   const { data: learnedCharacters } = useListCharactersQuery();
 
   const filteredChatacters = Object.entries(

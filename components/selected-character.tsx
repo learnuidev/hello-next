@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGlass,
   faGlassesRound,
+  faLanguage,
   faMale,
   faRocketLaunch,
   faSpaceStationMoon,
@@ -708,6 +709,28 @@ export function SelectedCharacter() {
             <PlayIcon className="text-2xl" />
             {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
           </button>
+          {selectedComp?.pinyin ? null : (
+            <button
+              className="text-xl"
+              onClick={() => {
+                // setView("play");
+
+                discoverMutation
+                  .mutateAsync({
+                    hanzi: selectedComp?.hanzi,
+                  })
+                  .then((resp) => {
+                    console.log("Discovered!!");
+                  });
+              }}
+              // onClick={() => {
+              //   setReadMode(!readMode);
+              // }}
+            >
+              <FontAwesomeIcon icon={faLanguage} />
+              {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
+            </button>
+          )}
         </div>
         <div
           className={`${color} flex space-x-2 text-4xl my-4 font-extralight `}

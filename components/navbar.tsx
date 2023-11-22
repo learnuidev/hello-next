@@ -19,7 +19,7 @@ import { useEffect } from "react";
 
 import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
 import { useSelectedCharacter } from "@/app/(auth)/convos/use-selected-character";
-import { faX, faXmark } from "@fortawesome/pro-thin-svg-icons";
+import { faPlayCircle, faX, faXmark } from "@fortawesome/pro-thin-svg-icons";
 import { belts } from "@/app/nmm/utils";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useBeltStore } from "./use-belt-store";
@@ -191,6 +191,8 @@ export const NavBar = () => {
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 
+
+
   if (selectedChar || routeName === "/") {
     return null;
   }
@@ -287,6 +289,17 @@ export const NavBar = () => {
       ) : (
         <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
           <Link
+            href="/review"
+            className={`transition ${
+              routeName?.includes("/review")
+                ? "text-gray-800 dark:text-gray-300"
+                : "text-gray-200 dark:text-gray-500"
+            } hover:text-gray-700 transition text-xl`}
+          >
+            {/* <FontAwesomeIcon icon={faComment} /> */}
+            <FontAwesomeIcon icon={faPlayCircle} />
+          </Link>
+          <Link
             href="/convos"
             className={`transition ${
               routeName?.includes("/convos")
@@ -303,7 +316,7 @@ export const NavBar = () => {
               routeName === "/learn"
                 ? "text-gray-800 dark:text-gray-300"
                 : "text-gray-200 dark:text-gray-500"
-            } hover:text-gray-700 transition text-xl`}
+            } hover:text-gray-700 transition text-xl hidden md:block`}
           >
             <FontAwesomeIcon icon={faGraduationCap} />
           </Link>
@@ -313,7 +326,7 @@ export const NavBar = () => {
               routeName === "/pinyin"
                 ? "text-gray-800 dark:text-gray-300"
                 : "text-gray-200 dark:text-gray-500"
-            } hover:text-gray-700 transition text-xl`}
+            } hover:text-gray-700 transition text-xl hidden md:block`}
           >
             <FontAwesomeIcon icon={faTableTree} />
           </Link>

@@ -9,12 +9,17 @@ import { useSelectedCharacter } from "../(auth)/convos/use-selected-character";
 
 import { SelectedCharacter } from "@/components/selected-character";
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { useSpring } from "@react-spring/web";
 
 import { belts, calculateColor } from "./utils";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useBeltStore } from "@/components/use-belt-store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGlobeAsia } from "@fortawesome/pro-light-svg-icons";
+import { faGraduationCap, faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 
 export default function NomadMethodPage(props: any) {
   // const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);
@@ -68,38 +73,110 @@ export default function NomadMethodPage(props: any) {
     to: { opacity: "1" },
   });
 
+  if (selectedId) {
+    return <SelectedCharacter />;
+  }
+
   return (
     <div className="grow">
       <NavBar />
 
-      {selectedId ? null : (
-        <div className="w-full text-center flex justify-center items-center space-x-4 mt-12 mb-8">
-          {belts?.map?.((belt) => {
-            return (
-              <button
-                key={belt?.fill}
-                onClick={() => {
-                  setSelectedBelt(belt as any);
-                }}
-                className={`${
-                  belt?.level === (selectedBelt?.level as any)
-                    ? belt?.fill
-                    : belt?.unselected
-                } h-4 w-4 rounded-full text`}
-              ></button>
-            );
-          })}
-        </div>
-      )}
+      <Tabs defaultValue="learned" className="p-0">
+        <div className="my-8 flex justify-between items-center md:mx-12">
+          <TabsList className="space-x-8">
+            <TabsTrigger value="all" className="p-0">
+              <FontAwesomeIcon icon={faGlobeAsia} className="text-2xl" />
+            </TabsTrigger>
+            <TabsTrigger value="needs_review" className="p-0">
+              <FontAwesomeIcon icon={faGraduationCap} className="text-2xl" />
+            </TabsTrigger>
+            <TabsTrigger value="learned" className="p-0">
+              <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
+            </TabsTrigger>
+          </TabsList>
 
-      {selectedId ? (
-        <SelectedCharacter />
-      ) : (
-        <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {components?.length &&
-            components
-              ?.slice(0, selectedBelt?.maxCharacterLevel || 4000)
-              .map((prop: any, idx: number) => {
+          <div className="space-x-4">
+            {belts?.map?.((belt) => {
+              return (
+                <button
+                  key={belt?.fill}
+                  onClick={() => {
+                    setSelectedBelt(belt as any);
+                  }}
+                  className={`${
+                    belt?.level === (selectedBelt?.level as any)
+                      ? belt?.fill
+                      : belt?.unselected
+                  } h-4 w-4 rounded-full text`}
+                ></button>
+              );
+            })}
+          </div>
+        </div>
+
+        <TabsContent value="all" className="my-8">
+          {/* {selectedId ? null : (
+            <div className="w-full text-center flex justify-center items-center space-x-4 mt-12 mb-8">
+              {belts?.map?.((belt) => {
+                return (
+                  <button
+                    key={belt?.fill}
+                    onClick={() => {
+                      setSelectedBelt(belt as any);
+                    }}
+                    className={`${
+                      belt?.level === (selectedBelt?.level as any)
+                        ? belt?.fill
+                        : belt?.unselected
+                    } h-4 w-4 rounded-full text`}
+                  ></button>
+                );
+              })}
+            </div>
+          )} */}
+
+          <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
+            {components?.length &&
+              components
+                ?.slice(0, selectedBelt?.maxCharacterLevel || 4000)
+                .map((prop: any, idx: number) => {
+                  const selectedComp = components?.find(
+                    (component: any) => component?.hanzi === prop?.hanzi
+                  );
+
+                  const color = calculateColor({
+                    tone: selectedComp?.tone_level,
+                  });
+
+                  return (
+                    <button
+                      key={`${prop.hanzi}-chars-${idx}`}
+                      onClick={() => {
+                        setSelectedId(prop.hanzi);
+                      }}
+                      className={`${
+                        // learnedCharacters.includes(prop?.hanzi)
+                        learnedCharacters2?.find(
+                          (char: any) => char?.hanzi === prop?.hanzi
+                        )
+                          ? `${color}`
+                          : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                          ? "text-yellow-500"
+                          : "dark:text-gray-500 text-gray-200"
+                      } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+                    >
+                      {prop?.hanzi}
+                    </button>
+                  );
+                })}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="learned" className="my-8">
+          <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
+            {learnedCharacters2
+              ?.filter((character: any) => character?.status === "learned")
+              ?.map((prop: any, idx: number) => {
                 const selectedComp = components?.find(
                   (component: any) => component?.hanzi === prop?.hanzi
                 );
@@ -129,8 +206,45 @@ export default function NomadMethodPage(props: any) {
                   </button>
                 );
               })}
-        </div>
-      )}
+          </div>
+        </TabsContent>
+        <TabsContent value="needs_review" className="my-8">
+          <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
+            {learnedCharacters2
+              ?.filter((character: any) => character?.status !== "learned")
+              ?.map((prop: any, idx: number) => {
+                const selectedComp = components?.find(
+                  (component: any) => component?.hanzi === prop?.hanzi
+                );
+
+                const color = calculateColor({
+                  tone: selectedComp?.tone_level,
+                });
+
+                return (
+                  <button
+                    key={`${prop.hanzi}-chars-${idx}`}
+                    onClick={() => {
+                      setSelectedId(prop.hanzi);
+                    }}
+                    className={`${
+                      // learnedCharacters.includes(prop?.hanzi)
+                      learnedCharacters2?.find(
+                        (char: any) => char?.hanzi === prop?.hanzi
+                      )
+                        ? `${color}`
+                        : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                        ? "text-yellow-500"
+                        : "dark:text-gray-500 text-gray-200"
+                    } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+                  >
+                    {prop?.hanzi}
+                  </button>
+                );
+              })}
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

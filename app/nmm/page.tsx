@@ -81,7 +81,7 @@ export default function NomadMethodPage(props: any) {
     <div className="grow">
       <NavBar />
 
-      <Tabs defaultValue="all" className="p-0">
+      <Tabs defaultValue="needs_review" className="p-0">
         <div className="my-8 flex justify-between items-center md:mx-12">
           <TabsList className="space-x-8">
             <TabsTrigger value="all" className="px-0 data-[state=active]:text-yellow-500">

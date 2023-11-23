@@ -34,6 +34,7 @@ export const belts = [
     color: "text-white",
     unselected: "bg-slate-800",
     maxCharacterLevel: 105,
+    minCharacterLevel: 0,
     level: "white",
   },
   {
@@ -41,6 +42,7 @@ export const belts = [
     unselected: "bg-yellow-800",
     color: "text-yellow-500",
     maxCharacterLevel: 300,
+    minCharacterLevel: 105,
     level: "yellow",
   },
   {
@@ -48,6 +50,7 @@ export const belts = [
     unselected: "bg-green-800",
     color: "text-green-500",
     maxCharacterLevel: 600,
+    minCharacterLevel: 300,
     level: "green",
   },
   {
@@ -55,6 +58,7 @@ export const belts = [
     unselected: "bg-blue-800",
     color: "text-blue-500",
     maxCharacterLevel: 1200,
+    minCharacterLevel: 600,
     level: "blue",
   },
   {
@@ -62,13 +66,15 @@ export const belts = [
     unselected: "bg-red-800",
     color: "text-red-500",
     maxCharacterLevel: 2000,
+    minCharacterLevel: 1200,
     level: "red",
   },
   {
     fill: "bg-black",
     unselected: "bg-slate-800",
     color: "text-black",
-    maxCharacterLevel: 3000,
+    maxCharacterLevel: 50000,
+    minCharacterLevel: 2000,
     level: "black",
   },
 ];

@@ -84,13 +84,13 @@ export default function NomadMethodPage(props: any) {
       <Tabs defaultValue="all" className="p-0">
         <div className="my-8 flex justify-between items-center md:mx-12">
           <TabsList className="space-x-8">
-            <TabsTrigger value="all" className="p-0">
+            <TabsTrigger value="all" className="px-0 data-[state=active]:text-yellow-500">
               <FontAwesomeIcon icon={faGlobeAsia} className="text-2xl" />
             </TabsTrigger>
-            <TabsTrigger value="needs_review" className="p-0">
+            <TabsTrigger value="needs_review" className="px-0 data-[state=active]:text-yellow-500">
               <FontAwesomeIcon icon={faGraduationCap} className="text-2xl" />
             </TabsTrigger>
-            <TabsTrigger value="learned" className="p-0">
+            <TabsTrigger value="learned" className="px-0 data-[state=active]:text-yellow-500">
               <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
             </TabsTrigger>
           </TabsList>
@@ -115,30 +115,13 @@ export default function NomadMethodPage(props: any) {
         </div>
 
         <TabsContent value="all" className="my-8">
-          {/* {selectedId ? null : (
-            <div className="w-full text-center flex justify-center items-center space-x-4 mt-12 mb-8">
-              {belts?.map?.((belt) => {
-                return (
-                  <button
-                    key={belt?.fill}
-                    onClick={() => {
-                      setSelectedBelt(belt as any);
-                    }}
-                    className={`${
-                      belt?.level === (selectedBelt?.level as any)
-                        ? belt?.fill
-                        : belt?.unselected
-                    } h-4 w-4 rounded-full text`}
-                  ></button>
-                );
-              })}
-            </div>
-          )} */}
-
           <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
             {components?.length &&
               components
-                ?.slice(0, selectedBelt?.maxCharacterLevel || 4000)
+                ?.slice(
+                  selectedBelt?.minCharacterLevel,
+                  selectedBelt?.maxCharacterLevel
+                )
                 .map((prop: any, idx: number) => {
                   const selectedComp = components?.find(
                     (component: any) => component?.hanzi === prop?.hanzi
@@ -172,10 +155,17 @@ export default function NomadMethodPage(props: any) {
           </div>
         </TabsContent>
 
+        {/* ?.slice(selectedBelt?.minCharacterLevel, selectedBelt?.maxCharacterLevel) */}
+
         <TabsContent value="learned" className="my-8">
           <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
             {learnedCharacters2
-              ?.filter((character: any) => character?.status === "learned")
+              ?.filter(
+                (character: any) =>
+                  character?.status === "learned" &&
+                  character?.level >= selectedBelt?.minCharacterLevel &&
+                  character?.level <= selectedBelt?.maxCharacterLevel
+              )
               ?.map((prop: any, idx: number) => {
                 const selectedComp = components?.find(
                   (component: any) => component?.hanzi === prop?.hanzi
@@ -211,7 +201,12 @@ export default function NomadMethodPage(props: any) {
         <TabsContent value="needs_review" className="my-8">
           <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
             {learnedCharacters2
-              ?.filter((character: any) => character?.status !== "learned")
+              ?.filter(
+                (character: any) =>
+                  character?.status !== "learned" &&
+                  character?.level >= selectedBelt?.minCharacterLevel &&
+                  character?.level <= selectedBelt?.maxCharacterLevel
+              )
               ?.map((prop: any, idx: number) => {
                 const selectedComp = components?.find(
                   (component: any) => component?.hanzi === prop?.hanzi

@@ -63,6 +63,7 @@ const columns = [
 ];
 
 export const Play = ({ lessonId }: { lessonId: string }) => {
+  const [displayOptions, setDisplayOptions] = useState(false);
   const [lessonIndex, setLessonIndex] = useState(0);
   const [selectedChar, setSelectedChar] = useState<any>("");
   const [results, setResults] = useState<any>({});
@@ -395,8 +396,8 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
       {focusMode ? (
         <div className="pt-24 space-y-8">
           {lesson2?.transcriptions
-            ?.filter((item: Transcription) => {
-              return item.start < currentTime && item.end > currentTime;
+            ?.filter((transcription: Transcription) => {
+              return transcription.start < currentTime && transcription.end > currentTime;
             })
             .map((transcription: Transcription) => {
               return (
@@ -438,38 +439,50 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                     ) : null}
                   </div>
 
-                  <div className="my-8 space-x-8">
-                    <Link
-                      href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                        transcription?.hanzi
-                      )}`}
-                      target="_blank"
-                    >
-                      <FontAwesomeIcon icon={faSkyatlas} />
-                    </Link>
+                  <div
+                    onMouseEnter={() => {
+                      setDisplayOptions(true);
+                    }}
+                    onMouseLeave={() => {
+                      setDisplayOptions(false);
+                    }}
+                    className="h-12"
+                  >
+                    {displayOptions ? (
+                      <div className="my-8 space-x-8">
+                        <Link
+                          href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                            transcription?.hanzi
+                          )}`}
+                          target="_blank"
+                        >
+                          <FontAwesomeIcon icon={faSkyatlas} />
+                        </Link>
 
-                    <Link
-                      target="_blank"
-                      href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                        transcription?.hanzi
-                      )}&op=translate`}
-                    >
-                      <FontAwesomeIcon icon={faGoogle} />
-                    </Link>
+                        <Link
+                          target="_blank"
+                          href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                            transcription?.hanzi
+                          )}&op=translate`}
+                        >
+                          <FontAwesomeIcon icon={faGoogle} />
+                        </Link>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               );
             })}
         </div>
       ) : (
-        <div className="pt-12 space-y-8">
+        <div className="pt-12 space-y-8 mb-12">
           {/* {JSON.stringify(lesson2?.transcriptions)} */}
 
           {lesson2?.transcriptions?.map((transcription: Transcription) => {
             return (
               <div
                 role="button"
-                className={`text-center`}
+                className={`text-center ${transcription.start < currentTime && transcription.end > currentTime ? 'text-yellow-500' : ''}`}
                 key={`${transcription?.hanzi}-${transcription?.pinyin}`}
                 onClick={() => {
                   seek(transcription?.start);

@@ -48,7 +48,7 @@ export function useListSubComponentsQuery(
     },
     {
       ...options,
-      enabled: Boolean(authUser?.jwt),
+      // enabled: Boolean(authUser?.jwt),
       // enabled: Boolean(journeyId),
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,

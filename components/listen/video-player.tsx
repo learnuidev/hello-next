@@ -1,36 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Header, NextIcon } from "@/components/ui/icons";
 
-// import { useSearchQuery } from 'ui/react-query/search/search.queries'
 import ReactPlayer from "react-player";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useSearchParams } from "@/hooks/use-search-params";
-// import { MediaPlayer, MediaProvider } from "@vidstack/react";
-
-// @ts-ignore
-import { Media, Video } from "@vidstack/player-react";
-
-// import {
-//   hskLevel1Words,
-//   hskLevel2Words,
-//   hskLevel3Words,
-//   hskLevel4Words,
-//   hskLevel5Words,
-//   hskLevel6Words
-// } from 'ui/data/hsk'
-
-const formatNumber = (time: any) => (time > 9 ? `${time}` : `0${time}`);
-
-const formatTime = (example: any) => {
-  if (example?.timestamp[0] > 60) {
-    const minutes = Math.floor(example?.timestamp[0] / 60);
-    const seconds = Math.floor(example?.timestamp[0] % 60);
-    return `00:${formatNumber(minutes)}:${formatNumber(seconds)}`;
-  }
-  return example?.timestamp[0] > 9
-    ? `00:00:${Math.floor(example?.timestamp[0])}`
-    : `00:00:0${Math.floor(example?.timestamp[0])}`;
-};
+import Link from "next/link";
 
 export function VideoPlayer({
   media: { url, scripts, title },
@@ -49,13 +23,6 @@ export function VideoPlayer({
   }, [playerRef.current]);
 
   const [lessonIndex, setLessonIndex] = useState(0);
-  const [answers, setAnswers] = useState({});
-
-  const reset = () => {
-    setAnswers({});
-
-    setLessonIndex(0);
-  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -72,8 +39,6 @@ export function VideoPlayer({
   const lesson = contentsArr?.find((content: any) => content?.id === lessonId);
 
   const finalUrl = lesson?.audio || url;
-
-  // alert(url)
 
   return (
     <div className="grow ml-4 md:ml-16 flex flex-col items-center">
@@ -93,51 +58,27 @@ export function VideoPlayer({
           {isVideoHidden ? "show video" : "hide video"}
         </button>
       </div>
-      {/* <Header className='ml-4 my-2 md:my-4 text-black dark:text-gray-500 font-extrabold'>
-        {title}
-      </Header> */}
+
       <div className="flex-col sm:flex-row flex justify-between w-full sm:space-x-4">
-        <div className={`${isVideoHidden ? "hidden" : ""} ${lesson?.transcriptions?.length ? 'sm:h-40' : 'h-[800px]'} grow w-full`}>
+        <div
+          className={`${isVideoHidden ? "hidden" : ""} ${
+            lesson?.transcriptions?.length ? "sm:h-40" : "h-[800px]"
+          } grow w-full`}
+        >
           <ReactPlayer
             ref={playerRef}
-            // url='https://www.youtube.com/watch?v=uM2japEXEeU&list=RDuM2japEXEeU&start_radio=1'
-            // url='https://www.youtube.com/watch?v=uM2japEXEeU'
             url={finalUrl}
             playing={isPlaying}
             width="100%"
-            height={lesson?.transcriptions?.length ? '700px': '600px'}
+            height={lesson?.transcriptions?.length ? "700px" : "600px"}
             controls={true}
             onReady={onReady}
           />
 
-          {/* <Media>
-            <Video controls poster="https://media-files.vidstack.io/poster.png">
-              <video
-                // src="https://media-files.vidstack.io/720p.mp4"
-                src="blob:https://api.elevenlabs.io/6d72cd16-31d9-41a6-a2a0-ab67737cc172"
-                // src="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/low.mp4"
-                // src={
-                //   "blob:https://courses.mandarinblueprint.com/b9b6415a-00eb-4c5d-bca0-3646e8b53aa9"
-                // }
-                preload="none"
-                data-video="0"
-                controls
-              />
-            </Video>
-          </Media> */}
-
-          {/* <iframe src={url} width='100%' height='500px' /> */}
-          {/* <video width='750' height='500' controls></video> */}
-          {/* <source url={url}></source> */}
-
           <Header className="my-4 text-black text-center dark:text-gray-300 font-extralight">
             {lesson?.title || title}
           </Header>
-
-          {/* <div>{currentTime}</div> */}
         </div>
-
-        {/* <div>{currentTime}</div> */}
 
         {lesson?.transcriptions?.length ? (
           <div
@@ -145,7 +86,7 @@ export function VideoPlayer({
               isVideoHidden ? "my-8" : ""
             }`}
           >
-            <div className="space-y-8 my-4">
+            <div className="">
               {(lesson?.transcriptions || scripts)
                 .filter((script: any) => {
                   if (focusMode) {
@@ -166,6 +107,9 @@ export function VideoPlayer({
                       } text-center w-full font-extralight flex flex-col justify-center items-center`}
                     >
                       <div
+                        className={`${
+                          focusMode ? "text-center" : "text-left"
+                        } w-full ${focusMode || isVideoHidden ? "" : ""}`}
                         role="button"
                         onClick={() => {
                           console.log("PLAYER REF", playerRef.current);
@@ -180,9 +124,6 @@ export function VideoPlayer({
                             console.error(err);
                           }
                         }}
-                        className={`${
-                          focusMode ? "text-center" : "text-left"
-                        } w-full ${focusMode || isVideoHidden ? "my-4" : ""}`}
                       >
                         {(example?.hanzi || example?.nepali)
                           .split("")
@@ -240,6 +181,15 @@ export function VideoPlayer({
                           {example?.lit}
                         </p>
                       </div>
+
+                      <Link
+                        href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                          example?.hanzi
+                        )}`}
+                        target="_blank"
+                      >
+                        Yabla
+                      </Link>
                     </div>
                   );
                 })}

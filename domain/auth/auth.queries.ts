@@ -5,5 +5,6 @@ import { queryIds } from "./queryIds";
 export function useCurrentAuthUser(options = {}) {
   return useQuery([queryIds.currentAuthUser], currentAuthUser, {
     ...options,
+    retry: false
   });
 }

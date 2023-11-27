@@ -9,6 +9,7 @@ import Editor from "@monaco-editor/react";
 
 import { useState } from "react";
 import { useAddContentMutation } from "@/domain/content/content.mutations";
+import { useTranscribeQuery } from "@/domain/transcribe/transcribe.queries";
 
 export function NewConvo({ type }: { type?: string }) {
   const [resultView, setResultView] = useState("");
@@ -19,6 +20,24 @@ export function NewConvo({ type }: { type?: string }) {
   const setConvo2 = useNewConvoStore((state) => state.setConvo2);
   const step = useNewConvoStore((state) => state.step);
   const setStep = useNewConvoStore((state) => state.setStep);
+
+
+  console.log("NEW CONVO", newConvo)
+
+  const { data: transcription } = useTranscribeQuery(
+    {
+      mediaUrl: newConvo?.audio,
+    },
+    {
+      enabled: Boolean(newConvo?.audio),
+      onSuccess: (data: any) => {
+        if (data) {
+          setConvo("transcriptions", data);
+        }
+      },
+    }
+  );
+
 
   function handleEditorChange(value: any, event: any) {
     try {

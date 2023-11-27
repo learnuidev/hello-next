@@ -7,7 +7,7 @@ from tempfile import NamedTemporaryFile
 model = whisper.load_model('base')
 
 app = Flask(__name__)
-cors = CORS(app, resources={r'/*': {'origins': "http://localhost:4000"}})
+cors = CORS(app, resources={r'/*': {'origins': "http://localhost:3001,http://localhost:3000"}})
 
 
 @app.route('/', methods=['POST'])

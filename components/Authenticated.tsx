@@ -3,8 +3,10 @@ import { Authenticate } from "./Authenticate";
 
 export const Authenticated = (props: any) => {
   const { data: authUser, isLoading } = useCurrentAuthUser({});
+  // const route
+  const isHomePage = true
 
-  if (authUser) {
+  if (authUser || isHomePage) {
     return <>{props.children}</>;
   }
 

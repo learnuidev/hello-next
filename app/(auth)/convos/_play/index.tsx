@@ -34,7 +34,7 @@ import {
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useSearchParams } from "next/navigation";
-import { Transcription } from "@/domain/transcription/transcription.types";
+import { Transcription } from "@/domain/transcribe/transcribe.types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLanguage } from "@fortawesome/pro-thin-svg-icons";
 import Link from "next/link";

@@ -113,6 +113,8 @@ export async function signIn({
   username: string;
   password: string;
 }) {
+
+  console.log("yo")
   try {
     const user = await Auth.signIn(username, password);
     return formatUser(user);

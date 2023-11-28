@@ -8,6 +8,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLanguage, faRepeat } from "@fortawesome/pro-thin-svg-icons";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 export function VideoPlayer({
   media: { url, scripts, title },
@@ -21,6 +22,8 @@ export function VideoPlayer({
   const [focusMode, setFocusMode] = useState(false);
   const [currentTime, setTime] = useState(0);
   const playerRef = useRef() as any;
+
+  const { data: learnedCharacters } = useListCharactersQuery();
 
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;
@@ -167,6 +170,10 @@ export function VideoPlayer({
                                     (example?.timestamp?.[1] || example?.end) >
                                       currentTime
                                       ? "dark:text-white"
+                                      : learnedCharacters?.find(
+                                          (char: any) => char?.hanzi === item
+                                        )
+                                      ? "dark:text-gray-200"
                                       : "dark:text-gray-400 text-gray-300"
                                   } transition`}
                                 >

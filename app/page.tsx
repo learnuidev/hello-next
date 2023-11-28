@@ -22,8 +22,9 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { cleanString } from "@/data/convos/bm1/utils";
+import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 
-export default function Home() {
+function HomeAuth() {
   const [isTocHidden, setIsTocHidden] = useState(false);
   const [selectedId, setSelectedId] = useState("");
 
@@ -91,6 +92,39 @@ export default function Home() {
       {/* <div className="px-4 md:px-32 md:my-4">
         <Editor content="Hello" id="home page" />
       </div> */}
+    </main>
+  );
+}
+export default function Home() {
+  const { data: authUser, isLoading } = useCurrentAuthUser({});
+
+  console.log("YO", authUser);
+
+  if (authUser) {
+    return <HomeAuth />;
+  }
+
+  return (
+    <main className="">
+      <NavBar />
+
+      <div className="text-center my-16">
+        <h1 className="my-16 text-5xl">学习语言的新方法</h1>
+
+        <h3 className="text-xl">通过沉浸感、创造力和想象力来学习中文</h3>
+      </div>
+
+      <div></div>
+
+      {/* {isLoading || isCharactersLoading ? null : (
+        <NomadMethod selectedId={selectedId} />
+      )} */}
+
+      {/* <Wordle /> */}
+
+      {/* <div className="px-4 md:px-32 md:my-4">
+      <Editor content="Hello" id="home page" />
+    </div> */}
     </main>
   );
 }

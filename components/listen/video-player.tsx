@@ -1,42 +1,21 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Header, NextIcon } from "@/components/ui/icons";
 
-// import { useSearchQuery } from 'ui/react-query/search/search.queries'
 import ReactPlayer from "react-player";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useSearchParams } from "@/hooks/use-search-params";
-// import { MediaPlayer, MediaProvider } from "@vidstack/react";
-
-// @ts-ignore
-import { Media, Video } from "@vidstack/player-react";
-
-// import {
-//   hskLevel1Words,
-//   hskLevel2Words,
-//   hskLevel3Words,
-//   hskLevel4Words,
-//   hskLevel5Words,
-//   hskLevel6Words
-// } from 'ui/data/hsk'
-
-const formatNumber = (time: any) => (time > 9 ? `${time}` : `0${time}`);
-
-const formatTime = (example: any) => {
-  if (example?.timestamp[0] > 60) {
-    const minutes = Math.floor(example?.timestamp[0] / 60);
-    const seconds = Math.floor(example?.timestamp[0] % 60);
-    return `00:${formatNumber(minutes)}:${formatNumber(seconds)}`;
-  }
-  return example?.timestamp[0] > 9
-    ? `00:00:${Math.floor(example?.timestamp[0])}`
-    : `00:00:0${Math.floor(example?.timestamp[0])}`;
-};
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLanguage, faRepeat } from "@fortawesome/pro-thin-svg-icons";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 export function VideoPlayer({
   media: { url, scripts, title },
   mediaIndex,
   setMediaIndex,
 }: any) {
+  const [toggleLoop, setToggleLoop] = useState<any>(null);
+  const [toggleLoops, setToggleLoops] = useState<any>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isVideoHidden, setIsVideoHidden] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
@@ -49,13 +28,6 @@ export function VideoPlayer({
   }, [playerRef.current]);
 
   const [lessonIndex, setLessonIndex] = useState(0);
-  const [answers, setAnswers] = useState({});
-
-  const reset = () => {
-    setAnswers({});
-
-    setLessonIndex(0);
-  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -63,6 +35,29 @@ export function VideoPlayer({
     }, 500);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (toggleLoops?.length) {
+      const interval = setInterval(() => {
+        const currentTime = playerRef?.current?.getCurrentTime();
+
+        const lastEnd = Math.max(...toggleLoops?.map((x: any) => x?.end));
+        const firstStart = Math.min(...toggleLoops?.map((x: any) => x?.start));
+
+        if (currentTime > lastEnd) {
+          playerRef.current.seekTo(firstStart, "seconds");
+
+          try {
+            playerRef.current?.player?.player?.play();
+          } catch (err) {
+            console.error(err);
+          }
+        }
+        // setTime((seconds) => playerRef?.current?.getCurrentTime());
+      }, 5);
+      return () => clearInterval(interval);
+    }
+  }, [toggleLoops]);
 
   console.log("player ref", playerRef);
 
@@ -72,8 +67,6 @@ export function VideoPlayer({
   const lesson = contentsArr?.find((content: any) => content?.id === lessonId);
 
   const finalUrl = lesson?.audio || url;
-
-  // alert(url)
 
   return (
     <div className="grow ml-4 md:ml-16 flex flex-col items-center">
@@ -93,51 +86,27 @@ export function VideoPlayer({
           {isVideoHidden ? "show video" : "hide video"}
         </button>
       </div>
-      {/* <Header className='ml-4 my-2 md:my-4 text-black dark:text-gray-500 font-extrabold'>
-        {title}
-      </Header> */}
+
       <div className="flex-col sm:flex-row flex justify-between w-full sm:space-x-4">
-        <div className={`${isVideoHidden ? "hidden" : ""} ${lesson?.transcriptions?.length ? 'sm:h-40' : 'h-[800px]'} grow w-full`}>
+        <div
+          className={`${isVideoHidden ? "hidden" : ""} ${
+            lesson?.transcriptions?.length ? "sm:h-40" : "h-[800px]"
+          } grow w-full`}
+        >
           <ReactPlayer
             ref={playerRef}
-            // url='https://www.youtube.com/watch?v=uM2japEXEeU&list=RDuM2japEXEeU&start_radio=1'
-            // url='https://www.youtube.com/watch?v=uM2japEXEeU'
             url={finalUrl}
             playing={isPlaying}
             width="100%"
-            height={lesson?.transcriptions?.length ? '700px': '600px'}
+            height={lesson?.transcriptions?.length ? "700px" : "600px"}
             controls={true}
             onReady={onReady}
           />
 
-          {/* <Media>
-            <Video controls poster="https://media-files.vidstack.io/poster.png">
-              <video
-                // src="https://media-files.vidstack.io/720p.mp4"
-                src="blob:https://api.elevenlabs.io/6d72cd16-31d9-41a6-a2a0-ab67737cc172"
-                // src="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/low.mp4"
-                // src={
-                //   "blob:https://courses.mandarinblueprint.com/b9b6415a-00eb-4c5d-bca0-3646e8b53aa9"
-                // }
-                preload="none"
-                data-video="0"
-                controls
-              />
-            </Video>
-          </Media> */}
-
-          {/* <iframe src={url} width='100%' height='500px' /> */}
-          {/* <video width='750' height='500' controls></video> */}
-          {/* <source url={url}></source> */}
-
           <Header className="my-4 text-black text-center dark:text-gray-300 font-extralight">
             {lesson?.title || title}
           </Header>
-
-          {/* <div>{currentTime}</div> */}
         </div>
-
-        {/* <div>{currentTime}</div> */}
 
         {lesson?.transcriptions?.length ? (
           <div
@@ -145,7 +114,7 @@ export function VideoPlayer({
               isVideoHidden ? "my-8" : ""
             }`}
           >
-            <div className="space-y-8 my-4">
+            <div className="space-y-4">
               {(lesson?.transcriptions || scripts)
                 .filter((script: any) => {
                   if (focusMode) {
@@ -161,11 +130,15 @@ export function VideoPlayer({
                   return (
                     <div
                       key={`${Math.random()}-${example?.hanzi}-${idx}`}
-                      className={`${
-                        isVideoHidden || focusMode ? "text-2xl" : "md:text-lg"
-                      } text-center w-full font-extralight flex flex-col justify-center items-center`}
+                      className="flex mx-4"
+                      // className={`${
+                      //   isVideoHidden || focusMode ? "text-2xl" : "md:text-lg"
+                      // } text-center w-full font-extralight flex flex-col justify-center items-center`}
                     >
                       <div
+                        className={`${
+                          focusMode ? "text-center" : "text-left"
+                        } w-full ${focusMode || isVideoHidden ? "" : ""}`}
                         role="button"
                         onClick={() => {
                           console.log("PLAYER REF", playerRef.current);
@@ -180,65 +153,124 @@ export function VideoPlayer({
                             console.error(err);
                           }
                         }}
-                        className={`${
-                          focusMode ? "text-center" : "text-left"
-                        } w-full ${focusMode || isVideoHidden ? "my-4" : ""}`}
                       >
-                        {(example?.hanzi || example?.nepali)
-                          .split("")
-                          .map((item: any, idx: any) => {
-                            return (
-                              <span
-                                key={`${JSON.stringify(item)}-${idx}`}
-                                className={`${
-                                  (example?.timestamp?.[0] || example?.start) <
-                                    currentTime &&
-                                  (example?.timestamp?.[1] || example?.end) >
-                                    currentTime
-                                    ? "dark:text-white"
-                                    : "dark:text-gray-400 text-gray-300"
-                                } transition`}
-                              >
-                                {item}
-                              </span>
-                            );
-                          })}
-                        <p
-                          className={`${
-                            (example?.timestamp?.[0] || example?.start) <
-                              currentTime &&
-                            (example?.timestamp?.[1] || example?.end) >
-                              currentTime
-                              ? "dark:text-gray-300"
-                              : "dark:text-gray-500 text-gray-400"
-                          } transition`}
+                        <div>
+                          {(example?.hanzi || example?.nepali)
+                            .split("")
+                            .map((item: any, idx: any) => {
+                              return (
+                                <span
+                                  key={`${JSON.stringify(item)}-${idx}`}
+                                  className={`${
+                                    (example?.timestamp?.[0] ||
+                                      example?.start) < currentTime &&
+                                    (example?.timestamp?.[1] || example?.end) >
+                                      currentTime
+                                      ? "dark:text-white"
+                                      : "dark:text-gray-400 text-gray-300"
+                                  } transition`}
+                                >
+                                  {item}
+                                </span>
+                              );
+                            })}
+                        </div>
+                        {example?.pinyin && (
+                          <p
+                            className={`${
+                              (example?.timestamp?.[0] || example?.start) <
+                                currentTime &&
+                              (example?.timestamp?.[1] || example?.end) >
+                                currentTime
+                                ? "dark:text-gray-300"
+                                : "dark:text-gray-500 text-gray-400"
+                            } transition`}
+                          >
+                            {example?.pinyin || example?.nepaliRoman}
+                          </p>
+                        )}
+                        {example?.en && (
+                          <p
+                            className={`${
+                              (example?.timestamp?.[0] || example?.start) <
+                                currentTime &&
+                              (example?.timestamp?.[1] || example?.end) >
+                                currentTime
+                                ? "dark:text-white"
+                                : "dark:text-gray-400 text-gray-500"
+                            } transition`}
+                          >
+                            {example?.en}
+                          </p>
+                        )}
+                        {example?.lit && (
+                          <p
+                            className={`${
+                              (example?.timestamp?.[0] || example?.start) <
+                                currentTime &&
+                              (example?.timestamp?.[1] || example?.end) >
+                                currentTime
+                                ? "dark:text-gray-500"
+                                : "dark:text-gray-500 text-gray-500"
+                            } transition`}
+                          >
+                            {example?.lit}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="space-x-4 flex flex-row items-center">
+                        <Link
+                          target="_blank"
+                          href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                            example?.hanzi
+                          )}&op=translate`}
+                          className="text-gray-500 hover:text-white"
+
+                          // className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
                         >
-                          {example?.pinyin || example?.nepaliRoman}
-                        </p>
-                        <p
-                          className={`${
-                            (example?.timestamp?.[0] || example?.start) <
-                              currentTime &&
-                            (example?.timestamp?.[1] || example?.end) >
-                              currentTime
-                              ? "dark:text-white"
-                              : "dark:text-gray-400 text-gray-500"
-                          } transition`}
+                          <FontAwesomeIcon icon={faGoogle} />
+                        </Link>
+
+                        <Link
+                          href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                            example?.hanzi
+                          )}`}
+                          className="text-gray-500 hover:text-white"
+                          target="_blank"
                         >
-                          {example?.en}
-                        </p>
-                        <p
-                          className={`${
-                            (example?.timestamp?.[0] || example?.start) <
-                              currentTime &&
-                            (example?.timestamp?.[1] || example?.end) >
-                              currentTime
-                              ? "dark:text-gray-500"
-                              : "dark:text-gray-500 text-gray-500"
-                          } transition`}
+                          <FontAwesomeIcon icon={faLanguage} />
+                        </Link>
+                        <button
+                          onClick={() => {
+                            // setToggleLoop((val: any) =>
+                            //   val === example ? null : example
+                            // );
+
+                            setToggleLoops((val: any) => {
+                              const exist = val?.find(
+                                (item: any) => item?.end === example?.end
+                              );
+                              if (exist) {
+                                return val?.filter((item: any) => {
+                                  return item?.end !== example?.end;
+                                });
+                              }
+                              return val.concat(example);
+                            });
+                          }}
                         >
-                          {example?.lit}
-                        </p>
+                          <FontAwesomeIcon
+                            className={
+                              toggleLoops?.find(
+                                (item: any) => item?.end === example?.end
+                              )
+                                ? "text-white"
+                                : "text-gray-500"
+                            }
+                            icon={faRepeat}
+                          />
+                        </button>
                       </div>
                     </div>
                   );

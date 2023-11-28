@@ -113,6 +113,8 @@ export function Login() {
               <button
                 onClick={(event) => {
                   event.preventDefault();
+
+                  console.log('sign in')
                   useSignInMutation.mutate({
                     username,
                     password,

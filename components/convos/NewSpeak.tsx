@@ -13,6 +13,7 @@ import { useNewConvoStore, useViewModeStore } from "./useViewModeStore";
 import { useState } from "react";
 // import { lesson1 } from "ui/data/convos/bm1/level_1";
 import { useSpeakStore } from "../speak/useSpeakStore";
+import { useTranscribeQuery } from "@/domain/transcribe/transcribe.queries";
 
 export function NewSpeak({ type }: { type?: string }) {
   const [resultView, setResultView] = useState("");
@@ -24,19 +25,21 @@ export function NewSpeak({ type }: { type?: string }) {
   const step = useNewConvoStore((state) => state.step);
   const setStep = useNewConvoStore((state) => state.setStep);
 
-  //   const { data: transcription } = useTranscribeQuery(
-  //     {
-  //       mediaUrl: newConvo?.mediaUrl
-  //     },
-  //     {
-  //       enabled: Boolean(newConvo?.mediaUrl),
-  //       onSuccess: (data: any) => {
-  //         if (data) {
-  //           setConvo('transcriptions', data)
-  //         }
-  //       }
-  //     }
-  //   )
+  console.log({ newConvo });
+
+  const { data: transcription } = useTranscribeQuery(
+    {
+      mediaUrl: newConvo?.mediaUrl,
+    },
+    {
+      enabled: Boolean(newConvo?.mediaUrl),
+      onSuccess: (data: any) => {
+        if (data) {
+          setConvo("transcriptions", data);
+        }
+      },
+    }
+  );
 
   const transformRes = (res: any) => {
     const transcriptions = res?.result?.segments.map(

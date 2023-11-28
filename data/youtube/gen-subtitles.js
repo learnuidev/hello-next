@@ -10,7 +10,7 @@ const updateRes = () => {
     time: document.getElementById("movie_player").getCurrentTime(),
   });
 };
-setInterval(updateRes, 50);
+setInterval(updateRes, 5);
 
 // 3. Function to Format Res
 const formatRes = (res) => {

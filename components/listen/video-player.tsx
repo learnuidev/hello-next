@@ -230,7 +230,12 @@ export function VideoPlayer({
                         <Link
                           target="_blank"
                           href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                            example?.hanzi
+                            toggleLoops.length
+                              ? toggleLoops
+                                  ?.sort((a: any, b: any) => a?.end - b?.end)
+                                  ?.map((x: any) => x?.hanzi)
+                                  ?.join("")
+                              : example?.hanzi
                           )}&op=translate`}
                           className="text-gray-500 hover:text-white"
 
@@ -241,7 +246,12 @@ export function VideoPlayer({
 
                         <Link
                           href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                            example?.hanzi
+                            toggleLoops.length
+                              ? toggleLoops
+                                  ?.sort((a: any, b: any) => a?.end - b?.end)
+                                  ?.map((x: any) => x?.hanzi)
+                                  ?.join("")
+                              : example?.hanzi
                           )}`}
                           className="text-gray-500 hover:text-white"
                           target="_blank"

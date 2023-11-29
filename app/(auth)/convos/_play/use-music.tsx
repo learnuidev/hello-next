@@ -82,8 +82,6 @@ export const useMusic = (props: {
       props?.onAudioEnd && props?.onAudioEnd();
       // setPlay(false)
       setPlay(() => false);
-
-      console.log("Audio stopped");
     };
 
     return () => {

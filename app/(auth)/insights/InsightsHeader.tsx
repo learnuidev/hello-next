@@ -1,4 +1,3 @@
-// import Image from 'next/image'
 "use client";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
@@ -13,8 +12,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { NavBar } from "@/components/navbar";
-
 import { useRepeatHistoryStore } from "../convos/_play/use-repeat-history";
 
 import { useSelectedCharacter } from "../convos/use-selected-character";
@@ -22,16 +19,18 @@ import { useSelectedCharacter } from "../convos/use-selected-character";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 
-import { SelectedCharacter } from "@/components/selected-character";
 import { useListParseQuery } from "@/domain/nmm/nmm.queries";
 
-import { CharacterDiscoveryBarChart } from "./CharacterDiscoveryBarChart";
-import { CharacterLearnedBarChart } from "./CharacterLearnedBarChart";
-import { InsightsFilters } from "./InsightsFilters";
-import { InsightsHeader } from "./InsightsHeader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faLightbulb,
+  faMapLocation,
+  faMusic,
+  faPenLine,
+} from "@fortawesome/pro-thin-svg-icons";
 import { useCharactersDiscovered } from "./use-characters-discovered";
 
-export default function Insights() {
+export function InsightsHeader() {
   const { data: charactersDiscovered } = useCharactersDiscovered();
 
   const { data: learnedCharacters } = useListCharactersQuery();
@@ -135,44 +134,82 @@ export default function Insights() {
   }
 
   return (
-    <main className="">
-      <NavBar />
-      {selectedChar ? (
-        <SelectedCharacter />
-      ) : (
-        <div className="w-full grid gap-4 px-4 md:px-12 my-4 md:my-12">
-          <InsightsFilters />
-          <InsightsHeader />
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
-            <Card className="col-span-4 dark:border-gray-600">
-              <CardHeader>
-                <CardTitle>Characters Learned</CardTitle>
-                <CardDescription>
-                  You learned 42 characters this week.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pl-2">
-                {/* <Overview /> */}
-                <CharacterDiscoveryBarChart />
-                {/* <div>TODO</div> */}
-              </CardContent>
-            </Card>
-            <Card className="col-span-4 dark:border-gray-600">
-              <CardHeader>
-                <CardTitle>Characters Discovered</CardTitle>
-                <CardDescription>
-                  You discovered 425 characters this week.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {/* <RecentSales /> */}
-                <CharacterLearnedBarChart />
-                {/* <div> TODO</div> */}
-              </CardContent>
-            </Card>
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <Card className="dark:border-gray-600">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Listening</CardTitle>
+          {/* <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          className="h-4 w-4 text-muted-foreground"
+        >
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+        </svg> */}
+          <FontAwesomeIcon icon={faMusic} />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">
+            1577{" "}
+            <span className="text-xs">+{repeatHistories?.length || 0}</span>
           </div>
-        </div>
-      )}
-    </main>
+          <p className="text-xs text-muted-foreground">
+            +20.1% from last month
+          </p>
+        </CardContent>
+      </Card>
+      <Card className="dark:border-gray-600">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Writing</CardTitle>
+
+          <FontAwesomeIcon icon={faPenLine} />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">
+            433 <span className="text-xs">+{repeatHistories?.length || 0}</span>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            +180.1% from last month
+          </p>
+        </CardContent>
+      </Card>
+      <Card className="dark:border-gray-600">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">
+            Characters Discovered{" "}
+          </CardTitle>
+          <FontAwesomeIcon icon={faLightbulb} />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">
+            {charactersDiscovered?.length}{" "}
+            <span className="text-xs">+{repeatHistories?.length || 0}</span>
+          </div>
+          {/* <div className="text-2xl font-bold">+12,234</div> */}
+          <p className="text-xs text-muted-foreground">+19% from last month</p>
+        </CardContent>
+      </Card>
+      <Card className="dark:border-gray-600">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">
+            Characters Learned
+          </CardTitle>
+
+          <FontAwesomeIcon icon={faMapLocation} />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">
+            {learnedCharacters?.length || 0}{" "}
+            <span className="text-xs">+12</span>
+          </div>
+
+          <p className="text-xs text-muted-foreground">+201 since last week</p>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

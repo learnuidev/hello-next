@@ -9,6 +9,98 @@ import { useSelectedCharacter } from "./use-selected-character";
 import { SelectedCharacter } from "@/components/selected-character";
 import { useListParseQuery } from "@/domain/nmm/nmm.queries";
 
+function useCurrentCharas(lessonId: string) {
+  const [isTocHidden, setIsTocHidden] = useState(false);
+  // const [selectedChar, setSelectedChar] = useState("");
+
+  const selectedChar = useSelectedCharacter((state: any) => state?.character);
+  const setSelectedChar = useSelectedCharacter(
+    (state: any) => state?.setCharacter
+  );
+
+  const router = useRouter();
+
+  // const { data: allAnswers, isLoading } = useListAnswersQuery({
+  //   journeyId: lessonId,
+  // });
+  // const { data: allAnswers, isLoading } = useListAnswersQuery();
+
+  const { data: allAnswers, isLoading } = useListAnswersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
+
+  const allLessonAnswers = allAnswers?.filter(
+    (answer: any) => answer?.journeyId === lessonId
+  );
+
+  const allNewCharaters = allLessonAnswers
+    .map((curr: any) => curr?.newCharacters)
+    ?.flat();
+
+  const totalNewCharaters = allLessonAnswers.reduce(
+    (acc: number, curr: any) => acc + curr?.newCharacters?.length,
+    0
+  );
+
+  const uniqueWords = [
+    // @ts-ignore
+    ...new Set(
+      allLessonAnswers
+        ?.map((answer: { hanzi: string }) => answer?.hanzi)
+        ?.join("")
+    ),
+  ]
+    .join("")
+    ?.toLocaleLowerCase()
+    ?.split("")
+    ?.filter((x: string) => !["c", "i", "n", "d", "y"]?.includes(x));
+  const uniqueWordsStr = uniqueWords?.join(" ");
+
+  const { data: unlockedNMMCharacters } =
+    useListParseQuery({
+      content: uniqueWordsStr,
+    }) || [];
+  const allWords = [
+    // @ts-ignore
+    ...allLessonAnswers
+      ?.map((answer: { hanzi: string }) => answer?.hanzi)
+      ?.join(""),
+  ]
+    .join("")
+    ?.toLocaleLowerCase()
+    ?.split("")
+    ?.filter((x: string) => !["c", "i", "n", "d", "y"]?.includes(x));
+
+  const unlockedCharactersHMM = unlockedNMMCharacters?.map((x: any) => x.hanzi);
+  const unlockedCharactersHMMStr = unlockedCharactersHMM?.join(" ");
+
+  const charactersWithFrequencyList = Object.entries(
+    R.countBy(R.identity, allWords)
+  )
+    .map(([hanzi, frequency]) => {
+      return {
+        hanzi,
+        frequency,
+      };
+    })
+    ?.sort((a, b) => b?.frequency - a?.frequency);
+
+  const unlockedCharactersNMM = charactersWithFrequencyList?.map(
+    (character) => character?.hanzi
+  );
+  const unlockedCharactersNMMStr = unlockedCharactersNMM?.join(" ");
+
+  const currentLevel = {
+    maxCharacterLevel: 600,
+  };
+}
+
 export function ConvoInsights({ lessonId }: { lessonId: string }) {
   const [isTocHidden, setIsTocHidden] = useState(false);
   // const [selectedChar, setSelectedChar] = useState("");

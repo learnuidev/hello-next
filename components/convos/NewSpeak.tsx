@@ -25,8 +25,6 @@ export function NewSpeak({ type }: { type?: string }) {
   const step = useNewConvoStore((state) => state.step);
   const setStep = useNewConvoStore((state) => state.setStep);
 
-  console.log({ newConvo });
-
   const { data: transcription } = useTranscribeQuery(
     {
       mediaUrl: newConvo?.mediaUrl,
@@ -77,18 +75,14 @@ export function NewSpeak({ type }: { type?: string }) {
   };
 
   const onFileChange = (e: any) => {
-    // console.log('TODO', event.target.files[0])
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0], "UTF-8");
     fileReader.onload = (e) => {
       const res = transformRes(
         JSON.parse(e?.target?.result as any)?.results[0]
       );
-      // console.log('e.target.result', transformRes(res))
 
       const { language, translations, transcriptions } = res;
-
-      console.log("e.target.result");
 
       setConvo("language", language);
 
@@ -119,7 +113,7 @@ export function NewSpeak({ type }: { type?: string }) {
   };
   const onAudioFileChange = (e: any) => {
     const s = URL.createObjectURL(e.target.files[0]);
-    // console.log('e.target.result', transformRes(res))
+
     setConvo("audio", s);
   };
 
@@ -135,26 +129,12 @@ export function NewSpeak({ type }: { type?: string }) {
   return (
     <div className="w-full">
       <div className="z-10 fixed flex items-center justify-between min-w-full md:px-32 my-[64px]">
-        <div>
-          {/* <button
-            className='text-xl md:text-4xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full'
-            onClick={() => {
-              setViewMode('')
-              console.log('SHOW ANALYTICS')
-            }}
-          >
-            <CloseIcon />
-          </button> */}
-        </div>
+        <div></div>
 
         <div className="space-x-4">
           <Link
             href="/speak"
             className="text-xl md:text-4xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full"
-            // onClick={() => {
-            //   setViewMode('')
-            //   console.log('SHOW ANALYTICS')
-            // }}
           >
             <CloseIcon />
           </Link>
@@ -242,7 +222,6 @@ export function NewSpeak({ type }: { type?: string }) {
               if (event?.keyCode === 13) {
                 if (newConvo.type) {
                   setStep("title");
-                  console.log("NEXT STEP 2", event);
                 }
               }
             }}
@@ -281,7 +260,6 @@ export function NewSpeak({ type }: { type?: string }) {
               if (event?.keyCode === 13) {
                 if (newConvo.title) {
                   setStep("level");
-                  console.log("NEXT STEP 2", event);
                 }
               }
             }}
@@ -320,23 +298,6 @@ export function NewSpeak({ type }: { type?: string }) {
               );
             })}
           </div>
-          {/* <input
-            value={newConvo?.level}
-            onChange={event => {
-              setConvo('level', event?.target?.value)
-            }}
-            onKeyDown={event => {
-              if (event?.keyCode === 13) {
-                if (newConvo.level) {
-                  setStep('author')
-                  console.log('NEXT STEP 2', event)
-                }
-              }
-            }}
-            autoFocus
-            placeholder=''
-            className='w-full text-center text-3xl font-extralight focus:outline-0 dark:bg-black  p-2 border-0 border-none dark:text-gray-300'
-          /> */}
         </div>
       ) : step === "author" ? (
         <div className="md:mx-32 md:mt-32 flex flex-wrap">
@@ -352,7 +313,6 @@ export function NewSpeak({ type }: { type?: string }) {
               if (event?.keyCode === 13) {
                 if (newConvo.author) {
                   setStep("summary");
-                  console.log("NEXT STEP 2", event);
                 }
               }
             }}
@@ -394,7 +354,6 @@ export function NewSpeak({ type }: { type?: string }) {
                     if (newConvo.audio) {
                       setConvo("mediaUrl", newConvo?.audio);
                       setStep("title");
-                      // console.log('NEXT STEP 2', event)
                     }
                   }
                 }}

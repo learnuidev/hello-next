@@ -150,8 +150,6 @@ export const CharacterDiscoveryAreaChart = () => {
     (lesson: any) => lesson?.id === selectedData?.phraseId
   );
 
-  console.log("SELECTED DATA", selectedData);
-
   return (
     <div className="w-full hidden md:block">
       {/* <h1 className="text-center font-extralight">
@@ -163,7 +161,6 @@ export const CharacterDiscoveryAreaChart = () => {
           onClick={(props: any) => {
             // setSelectedData(props);
             setSelectedData(props?.activePayload?.[0]?.payload);
-            console.log("YO", props);
           }}
           width={500}
           height={400}
@@ -189,155 +186,6 @@ export const CharacterDiscoveryAreaChart = () => {
           <Area type="monotone" dataKey="new" stroke="#ffbe76" fill="#ffbe76" />
         </AreaChart>
       </ResponsiveContainer>
-    </div>
-  );
-
-  return (
-    <div>
-      <div className="flex flex-col md:flex-row">
-        <div className="w-full hidden md:block">
-          <h1 className="text-center font-extralight">
-            New Characters Discovered{" "}
-          </h1>
-
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart
-              onClick={(props: any) => {
-                // setSelectedData(props);
-                setSelectedData(props?.activePayload?.[0]?.payload);
-                console.log("YO", props);
-              }}
-              width={500}
-              height={400}
-              data={newData}
-              margin={{
-                top: 10,
-                right: 30,
-                left: 0,
-                bottom: 0,
-              }}
-            >
-              {/* <CartesianGrid /> */}
-              <XAxis hide />
-              <YAxis />
-
-              <Tooltip
-                content={
-                  //  @ts-ignore
-                  <NewCharactersTooltip />
-                }
-              />
-              {/* <Area type="monotone" dataKey="total" stroke="#8884d8" fill="#8884d8" /> */}
-              <Area
-                type="monotone"
-                dataKey="new"
-                stroke="#ffbe76"
-                fill="#ffbe76"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="w-full">
-          <h1 className="text-center font-extralight">
-            Total Characters Discovered
-          </h1>
-
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart
-              onClick={(props: any) => {
-                setSelectedData(props?.activePayload?.[0]?.payload);
-              }}
-              width={500}
-              height={400}
-              data={newData}
-              margin={{
-                top: 10,
-                right: 30,
-                left: 0,
-                bottom: 0,
-              }}
-            >
-              {/* <CartesianGrid /> */}
-              <XAxis hide />
-              <YAxis />
-              <Tooltip />
-              <Area
-                type="monotone"
-                dataKey="total"
-                stroke="#8884d8"
-                fill="#8884d8"
-              />
-              {/* <Area type="monotone" dataKey="new" stroke="#ffbe76" fill="#ffbe76" /> */}
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      {currentPhrase ? (
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 text-center text-gray-700 dark:text-gray-300 font-light mt-24">
-          <div className="w-full">
-            <p>{currentPhrase?.pinyin}</p>
-            <p>
-              {currentPhrase?.hanzi
-                ?.split("")
-                ?.map((char: string, idx: number) => {
-                  return (
-                    <span
-                      className={`text-2xl ${
-                        selectedData?.newCharacters?.includes(char)
-                          ? "text-gray-600"
-                          : "text-gray-400"
-                      }`}
-                      key={`${char}-${idx}-${idx}`}
-                    >
-                      {char}
-                    </span>
-                  );
-                })}
-            </p>
-            <p className="">{currentPhrase?.lit}</p>
-            <p>{currentPhrase?.en}</p>
-          </div>
-
-          {selectedData?.totalCharacters?.length ? (
-            <div className="w-full text-sm text-gray-700 h-48">
-              <h4 className="text-gray-400 dark:text-gray-600 mb-4 text-xl font-extralight">
-                {" "}
-                Total Characters Discovered
-              </h4>
-
-              <p className="text-6xl dark:text-gray-200">
-                {selectedData?.totalCharacters?.length}
-              </p>
-            </div>
-          ) : null}
-
-          {/* <code>
-            <pre>{JSON.stringify(selectedData, null, 2)}</pre>
-          </code> */}
-        </div>
-      ) : null}
-
-      <div className="flex justify-center items-center text-2xl text-gray-600 dark:text-gray-400 flex-wrap">
-        {selectedData?.totalCharacters?.map((char: string, idx: number) => {
-          return (
-            <button
-              className={`p-2 ${
-                selectedData?.newCharacters?.includes(char)
-                  ? "text-yellow-500"
-                  : "text-gray-600 dark:text-gray-400"
-              }`}
-              role="button"
-              onClick={() => {}}
-              key={`${idx}-${char}-${idx}`}
-            >
-              {" "}
-              {char}
-            </button>
-          );
-        })}
-      </div>
     </div>
   );
 };

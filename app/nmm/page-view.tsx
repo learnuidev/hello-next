@@ -43,8 +43,6 @@ export const PageView = ({
     phraseId: string;
   }[];
 
-  console.log("ALL_relevant", relevantAnswers);
-
   const answerMap = R.indexBy(R.prop("hanzi"), relevantAnswers) as Record<
     string,
     { hanzi: string; journeyId: string; phraseId: string }
@@ -66,8 +64,6 @@ export const PageView = ({
   const allTranscriptions = contents
     ?.map((content: any) => content?.transcriptions)
     .flat();
-
-  // console.log("allTranscriptions", allTranscriptions);
 
   const { data: components } = useListComponentsQuery(
     {},
@@ -111,18 +107,6 @@ export const PageView = ({
               const char = answerMap?.[answerId] || {};
               const lesson = {};
 
-              console.log("---------------------");
-
-              console.log("ANSWER ID", answerId);
-
-              // const currentLesson = allTranscriptions?.find(
-              //   (lesson: any) => lesson?.id === char?.journeyId
-              // );
-
-              console.log("CHAR", char);
-
-              console.log("allTranscriptions", allTranscriptions);
-
               const currentPhrase =
                 allTranscriptions?.find(
                   (lesson: any) => lesson?.id === char?.hanzi
@@ -131,7 +115,6 @@ export const PageView = ({
                   (step: any) => cleanString(step?.hanzi) === answerId
                 );
 
-              console.log("CURRENT PHRASE", currentPhrase);
               return (
                 <div
                   role="button"

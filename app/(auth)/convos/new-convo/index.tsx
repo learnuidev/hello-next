@@ -21,9 +21,6 @@ export function NewConvo({ type }: { type?: string }) {
   const step = useNewConvoStore((state) => state.step);
   const setStep = useNewConvoStore((state) => state.setStep);
 
-
-  console.log("NEW CONVO", newConvo)
-
   const { data: transcription } = useTranscribeQuery(
     {
       mediaUrl: newConvo?.audio,
@@ -38,14 +35,12 @@ export function NewConvo({ type }: { type?: string }) {
     }
   );
 
-
   function handleEditorChange(value: any, event: any) {
     try {
       const val = JSON.parse(value);
       setConvo2(val);
-      console.log("here is the current model value:", val);
     } catch (err) {
-      // console.log("Err", err);
+      console.error("Err", err);
     }
   }
 
@@ -85,49 +80,15 @@ export function NewConvo({ type }: { type?: string }) {
   };
 
   const onFileChange = (e: any) => {
-    // console.log('TODO', event.target.files[0])
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0], "UTF-8");
     fileReader.onload = (e) => {
-      // const res = transformRes(JSON.parse(e?.target?.result as any));
-      // console.log('e.target.result', transformRes(res))
-
-      // const { language, translations, transcriptions } = res;
-
-      console.log("e.target.result");
-
-      // setConvo("language", language);
-
       setConvo("transcriptions", JSON.parse(e?.target?.result as any));
-
-      // const newLesson = transcriptions?.map((transcription: any) => {
-      //   const { id, start, end, text } = transcription;
-
-      //   if (language === "en") {
-      //     return [
-      //       ["time", [[start, end]]],
-      //       ["", ""],
-      //       ["", ""],
-      //       ["", ""],
-      //       ["", text],
-      //     ];
-      //   } else if (language === "zh") {
-      //     return [
-      //       ["time", [[start, end]]],
-      //       ["", text],
-      //       ["", ""],
-      //       ["", ""],
-      //       ["", ""],
-      //     ];
-      //   }
-      // });
-
-      // setConvo("lesson", newLesson);
     };
   };
   const onAudioFileChange = (e: any) => {
     const s = URL.createObjectURL(e.target.files[0]);
-    // console.log('e.target.result', transformRes(res))
+
     setConvo("audio", s);
   };
 
@@ -228,7 +189,6 @@ export function NewConvo({ type }: { type?: string }) {
               if (event?.keyCode === 13) {
                 if (newConvo.type) {
                   setStep("title");
-                  console.log("NEXT STEP 2", event);
                 }
               }
             }}
@@ -268,7 +228,6 @@ export function NewConvo({ type }: { type?: string }) {
               if (event?.keyCode === 13) {
                 if (newConvo.title) {
                   setStep("level");
-                  console.log("NEXT STEP 2", event);
                 }
               }
             }}
@@ -291,7 +250,6 @@ export function NewConvo({ type }: { type?: string }) {
               if (event?.keyCode === 13) {
                 if (newConvo.author) {
                   setStep("location");
-                  console.log("NEXT STEP 2", event);
                 }
               }
             }}
@@ -331,7 +289,6 @@ export function NewConvo({ type }: { type?: string }) {
                 if (newConvo.audio) {
                   setConvo("mediaUrl", newConvo?.audio);
                   setStep("title");
-                  // console.log('NEXT STEP 2', event)
                 }
               }
             }}

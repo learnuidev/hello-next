@@ -158,8 +158,6 @@ export function SelectedCharacter() {
     [components, selectedChar]
   );
 
-  console.log(" ALREADY LEARNED", isAlreadyLearned);
-
   // const readMode = true;
 
   const color = calculateColor({ tone: selectedComp?.tone_level });
@@ -200,7 +198,7 @@ export function SelectedCharacter() {
         } shadow-lg rounded-full flex items-center justify-center transition`}
         onClick={() => {
           if (!play) {
-            console.log("YOO");
+   
             setRepeatHistories({
               ...currentPhrase,
               eventType: "sentence/repeat",
@@ -275,7 +273,7 @@ export function SelectedCharacter() {
                       <button
                         onClick={() => {
                           setSelectedChar(val);
-                          console.log("YO");
+                       
 
                           if (hanz?.pinyin === "??") {
                             return discoverMutation

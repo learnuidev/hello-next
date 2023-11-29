@@ -43,15 +43,6 @@ function LessonCard({ lesson }: any) {
     }
   );
 
-  // const { asPath } = useRouterUrl();
-  // const origin =
-  //   typeof window !== "undefined" && window.location.origin
-  //     ? window.location.origin
-  //     : "";
-
-  // const myUrl = `${origin}${asPath}`;
-  // console.log(myUrl);
-
   const lessonId = useConvosStore((state: any) => state?.convoId);
   const setLessonId = useConvosStore((state: any) => state?.setConvoId);
 

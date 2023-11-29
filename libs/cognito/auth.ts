@@ -113,13 +113,11 @@ export async function signIn({
   username: string;
   password: string;
 }) {
-
-  console.log("yo")
   try {
     const user = await Auth.signIn(username, password);
     return formatUser(user);
   } catch (error) {
-    console.log("error signing in", error);
+    console.error("error signing in", error);
     throw error;
   }
 }
@@ -127,10 +125,10 @@ export async function signIn({
 export async function resendCode(username: string) {
   try {
     const resp = await Auth.resendSignUp(username);
-    console.log("code resent successfully");
+
     return resp;
   } catch (err) {
-    console.log("error resending code: ", err);
+    console.error("error resending code: ", err);
   }
 }
 
@@ -139,20 +137,18 @@ export async function signOut() {
     const resp = await Auth.signOut({ global: true });
     return resp;
   } catch (error) {
-    console.log("error signing out: ", error);
+    console.error("error signing out: ", error);
   }
 }
 
 export async function currentAuthUser() {
   try {
-    console.log("LOGGING");
     const user = await Auth.currentAuthenticatedUser();
 
     // window.authUser = user;
 
     return formatUser(user);
   } catch (err) {
-    console.log("USER 1");
     throw err;
   }
 }

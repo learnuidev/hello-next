@@ -1,21 +1,11 @@
-// import Image from 'next/image'
 "use client";
 
 import "@/libs/cognito/init";
 
-import { Editor } from "@/components/Editor";
 import { useEffect, useState } from "react";
 
-// import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
-import { useRouter } from "next/navigation";
 import { NavBar } from "@/components/navbar";
-import { Link } from "@/components/link";
-import { SearchPage } from "@/components/search";
-import { NavigatorMap } from "@/components/navigator-map";
-import { Wordle } from "@/components/wordle/game";
+
 import { NomadMethod } from "./nmm/nomad-method";
 import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
@@ -73,32 +63,17 @@ function HomeAuth() {
   }, [components, learnedCharacters, allAnswers]);
 
   return (
-    // <main className="">
-    //   <NavBar />
-    //   {/* <NavigatorMap /> */}
-
-    //   <SearchPage />
-    // </main>
-
     <main className="">
       <NavBar />
 
       {isLoading || isCharactersLoading ? null : (
         <NomadMethod selectedId={selectedId} />
       )}
-
-      {/* <Wordle /> */}
-
-      {/* <div className="px-4 md:px-32 md:my-4">
-        <Editor content="Hello" id="home page" />
-      </div> */}
     </main>
   );
 }
 export default function Home() {
   const { data: authUser, isLoading } = useCurrentAuthUser({});
-
-  console.log("YO", authUser);
 
   if (authUser) {
     return <HomeAuth />;
@@ -115,16 +90,6 @@ export default function Home() {
       </div>
 
       <div></div>
-
-      {/* {isLoading || isCharactersLoading ? null : (
-        <NomadMethod selectedId={selectedId} />
-      )} */}
-
-      {/* <Wordle /> */}
-
-      {/* <div className="px-4 md:px-32 md:my-4">
-      <Editor content="Hello" id="home page" />
-    </div> */}
     </main>
   );
 }

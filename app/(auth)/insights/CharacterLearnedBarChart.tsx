@@ -95,8 +95,6 @@ export const CharacterLearnedBarChart = () => {
     (lesson: any) => lesson?.id === selectedData?.phraseId
   );
 
-  console.log("SELECTED DATA", selectedData);
-
   return (
     <div className="w-full hidden md:block">
       {/* <h1 className="text-center font-extralight">
@@ -108,7 +106,6 @@ export const CharacterLearnedBarChart = () => {
           onClick={(props: any) => {
             // setSelectedData(props);
             setSelectedData(props?.activePayload?.[0]?.payload);
-            console.log("YO", props);
           }}
           width={500}
           height={400}

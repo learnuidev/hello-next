@@ -60,8 +60,6 @@ export const ComponentForm = ({
     },
   });
 
-  console.log("FIRST LESSON", firstLesson);
-
   // Current Lesson
   const lesson = useMemo(
     () => firstLesson?.steps?.[lessonIndex],
@@ -284,7 +282,7 @@ export const ComponentForm = ({
               (
                 grammarAnalysis?.grammarAnalysis?.words ||
                 grammarAnalysis?.grammarAnalysis
-              )?.length  < 5
+              )?.length < 5
                 ? "grid-cols-3"
                 : "grid-cols-5"
             } gap-y-8 text-sm px-12 text-gray-200 dark:text-gray-400`}

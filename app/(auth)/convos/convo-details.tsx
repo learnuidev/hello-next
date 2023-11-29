@@ -25,18 +25,10 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
   const lesson2 = contentsArr?.find((content: any) => content?.id === lessonId);
 
-  console.log("LESSON YO", lesson2);
-
-  console.log("LESSON 2", lesson2)
-
-  // if (viewType === "listen" && lesson2?.type === "music") {
-  //   return (
-  //     <div>
-  //       <ListenPage />
-  //     </div>
-  //   );
-  // }
-  if (viewType === "listen" && lesson2?.audio?.includes("https://www.youtube.com")) {
+  if (
+    viewType === "listen" &&
+    lesson2?.audio?.includes("https://www.youtube.com")
+  ) {
     return (
       <div>
         <ListenPage />

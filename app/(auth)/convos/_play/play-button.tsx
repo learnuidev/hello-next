@@ -20,8 +20,6 @@ export const PlayButton = ({
   lessonId: any;
   togglePlay: any;
 }) => {
-
-
   const history = useHistoryStore((state: any) => state.history);
   const clearHistory = useHistoryStore((state: any) => state.clearHistory);
 
@@ -30,8 +28,6 @@ export const PlayButton = ({
   );
 
   const setLesson = useCurrentLesson((state: any) => state.setCurrentLesson);
-
-  // console.log("TRANSCRTIPT", transcript);
 
   return (
     <div className="flex items-center space-x-8 dark:text-slate-500 font-light">
@@ -43,8 +39,6 @@ export const PlayButton = ({
         } shadow-lg rounded-full flex items-center justify-center transition`}
         onClick={() => {
           if (!play) {
-
-            console.log("YOO")
             setRepeatHistories({
               lessonId: lessonId,
               eventType: "speech/repeat",

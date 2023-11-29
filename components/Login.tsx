@@ -40,7 +40,7 @@ export function Login() {
       router.push("/");
     },
     onError: (err: any) => {
-      console.log("ERROR YO", err.message);
+      console.error("ERROR YO", err.message);
       if (err.message === "User already exists") {
         // useResendCodeMutation.mutate(username)
       }
@@ -114,7 +114,6 @@ export function Login() {
                 onClick={(event) => {
                   event.preventDefault();
 
-                  console.log('sign in')
                   useSignInMutation.mutate({
                     username,
                     password,

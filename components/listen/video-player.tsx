@@ -6,7 +6,12 @@ import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useSearchParams } from "@/hooks/use-search-params";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLanguage, faRepeat } from "@fortawesome/pro-thin-svg-icons";
+import {
+  faGlass,
+  faGlasses,
+  faLanguage,
+  faRepeat,
+} from "@fortawesome/pro-thin-svg-icons";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
@@ -15,6 +20,7 @@ export function VideoPlayer({
   mediaIndex,
   setMediaIndex,
 }: any) {
+  const [viewMode, setViewMode] = useState<any>(null);
   const [toggleLoop, setToggleLoop] = useState<any>(null);
   const [toggleLoops, setToggleLoops] = useState<any>([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -62,8 +68,6 @@ export function VideoPlayer({
     }
   }, [toggleLoops]);
 
-  console.log("player ref", playerRef);
-
   const { data: contentsArr } = useListContentsQuery();
 
   const { lessonId } = useSearchParams();
@@ -80,6 +84,13 @@ export function VideoPlayer({
           }}
         >
           {focusMode ? "show all" : "focus"}
+        </button>
+        <button
+          onClick={() => {
+            setViewMode((prev: any) => (prev === "para" ? null : "para"));
+          }}
+        >
+          <FontAwesomeIcon icon={faGlasses} />
         </button>
         <button
           onClick={() => {
@@ -111,7 +122,47 @@ export function VideoPlayer({
           </Header>
         </div>
 
-        {lesson?.transcriptions?.length ? (
+        {viewMode === "para" ? (
+          <div
+            className={`text-center md:block grow w-full ${
+              isVideoHidden ? "my-8" : ""
+            }`}
+          >
+            <div className="flex flex-wrap">
+              {lesson?.transcriptions
+                // ?.slice(0, 100)
+                .map((transcription: any) => {
+                  return (
+                    <span
+                      role="button"
+                      className={`${
+                        transcription?.start < currentTime &&
+                        transcription?.end > currentTime
+                          ? "dark:text-white"
+                          : "dark:text-gray-400 text-gray-300"
+                      } transition block py-2 px-1 text-sm`}
+                      key={transcription?.hanzi}
+                      onClick={() => {
+                        playerRef.current.seekTo(
+                          transcription?.start,
+                          "seconds"
+                        );
+
+                        try {
+                          playerRef.current?.player?.player?.play();
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      }}
+                    >
+                      {" "}
+                      {transcription?.hanzi}
+                    </span>
+                  );
+                })}
+            </div>
+          </div>
+        ) : lesson?.transcriptions?.length ? (
           <div
             className={`text-center md:block grow w-full ${
               isVideoHidden ? "my-8" : ""
@@ -144,7 +195,6 @@ export function VideoPlayer({
                         } w-full ${focusMode || isVideoHidden ? "" : ""}`}
                         role="button"
                         onClick={() => {
-                          console.log("PLAYER REF", playerRef.current);
                           playerRef.current.seekTo(
                             example?.timestamp?.[0] || example?.start,
                             "seconds"
@@ -296,7 +346,7 @@ export function VideoPlayer({
           </div>
         ) : null}
 
-        <div className="hidden md:block relative">
+        {/* <div className="hidden md:block relative">
           <button
             className="absolute right-0 top-1/2 dark:hover:text-white shadow-md px-4 py-1 rounded-full dark:text-gray-600"
             onClick={() => {
@@ -307,7 +357,7 @@ export function VideoPlayer({
           >
             <NextIcon className="text-4xl" />
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

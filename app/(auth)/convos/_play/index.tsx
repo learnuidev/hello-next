@@ -110,8 +110,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
   );
   const repeatHistories = useRepeatHistoryStore((state: any) => state.history);
 
-  console.log({ repeatHistories });
-
   const setSpeechHistories = useLessonHistoryStore(
     (state: any) => state.setHistory
   );
@@ -190,8 +188,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
   const res = results?.[lesson?.id];
 
   const viewMode = useViewModeStore((state: any) => state.viewMode);
-
-  console.log("LESSON 1", lesson1);
 
   const searchParams = useSearchParams();
 
@@ -397,7 +393,10 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
         <div className="pt-24 space-y-8">
           {lesson2?.transcriptions
             ?.filter((transcription: Transcription) => {
-              return transcription.start < currentTime && transcription.end > currentTime;
+              return (
+                transcription.start < currentTime &&
+                transcription.end > currentTime
+              );
             })
             .map((transcription: Transcription) => {
               return (
@@ -482,7 +481,12 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
             return (
               <div
                 role="button"
-                className={`text-center ${transcription.start < currentTime && transcription.end > currentTime ? 'text-yellow-500' : ''}`}
+                className={`text-center ${
+                  transcription.start < currentTime &&
+                  transcription.end > currentTime
+                    ? "text-yellow-500"
+                    : ""
+                }`}
                 key={`${transcription?.hanzi}-${transcription?.pinyin}`}
                 onClick={() => {
                   seek(transcription?.start);

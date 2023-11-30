@@ -1,184 +1,287 @@
 [
-  { "hanzi": "对话一,别做白日梦。", "start": 0, "emd": 3.66, "seek": 0 },
+  {
+    "hanzi": "对话一,别做白日梦。",
+    "pinyin": "Duìhuà yī, bié zuò bái rì mèng.",
+    "en": "Episode 1: Stop Daydreaming",
+    "start": 0,
+    "seek": 0,
+    "end": 3.66
+  },
   {
     "hanzi": "Conversation one, stop day dreaming。",
     "start": 3.66,
-    "emd": 6.6000000000000005,
-    "seek": 0
+    "seek": 0,
+    "end": 6.6000000000000005
   },
   {
-    "hanzi": "现在几点呢?",
+    "hanzi": "现在几点了?",
+    "pinyin": "Xiànzài jǐ diǎnle?",
+    "en": "What time is it now?",
     "start": 6.6000000000000005,
-    "emd": 9.16,
-    "seek": 0
+    "seek": 0,
+    "end": 9.16
   },
-  { "hanzi": "我看看,差不多十点半。", "start": 9.16, "emd": 12.88, "seek": 0 },
+  {
+    "hanzi": "我看看,差不多十点半。",
+    "pinyin": "Wǒ kàn kàn, chàbùduō shí diǎn bàn.",
+    "en": "Let me see, it's almost half past ten.",
+    "start": 9.16,
+    "seek": 0,
+    "end": 12.88
+  },
   {
     "hanzi": "这么说,我们已经等了快半个小时了。",
+    "pinyin": "Zhème shuō, wǒmen yǐjīng děngle kuài bàn gè xiǎoshíliǎo.",
+    "en": "So, we've been waiting for almost half an hour.",
     "start": 12.88,
-    "emd": 18.400000000000002,
-    "seek": 0
+    "seek": 0,
+    "end": 18.400000000000002
   },
   {
     "hanzi": "对啊,刚才广播说这趟飞机会晚点。",
+    "pinyin": "Duì a, gāngcái guǎngbò shuō zhè tàng fēijī huì wǎndiǎn.",
+    "en": "Yes, the announcement just now said that the flight will be delayed.",
     "start": 18.400000000000002,
-    "emd": 23.48,
-    "seek": 0
+    "seek": 0,
+    "end": 23.48
   },
-  { "hanzi": "怎么,你没有耐心的吗?", "start": 23.48, "emd": 26.44, "seek": 0 },
-  { "hanzi": "早就没耐心了。", "start": 26.44, "emd": 29.04, "seek": 0 },
+  {
+    "hanzi": "怎么,你没有耐心了吗?",
+    "pinyin": "Zěnme, nǐ méiyǒu nàixīnle ma?",
+    "en": "Are you running out of patience",
+    "start": 23.48,
+    "seek": 0,
+    "end": 26.44
+  },
+  {
+    "hanzi": "早就没耐心了。",
+    "en": "I have long run out of patience.",
+    "pinyin": "Zǎo jiù méi nàixīnle.",
+    "start": 26.44,
+    "seek": 0,
+    "end": 29.04
+  },
   {
     "hanzi": "在这里坐着,一边等飞机,一边玩手机,真是无聊。",
+    "pinyin": "Zài zhèlǐ zuòzhe, yībiān děng fēijī, yībiān wán shǒujī, zhēnshi wúliáo.",
+    "en": "It's really boring to sit here, waiting for the flight, and playing with my mobile phone.",
     "start": 29.24,
-    "emd": 36.68,
-    "seek": 2904
+    "seek": 2904,
+    "end": 36.68
   },
   {
     "hanzi": "你看,开始登机了,快拿好行李箱,我们去排队吧。",
+    "pinyin": "Nǐ kàn, kāishǐ dēng jīle, kuài ná hǎo xínglǐ xiāng, wǒmen qù páiduì ba.",
+    "en": "Look, boarding has started. Get your suitcases quickly and let's go queue up.",
     "start": 36.68,
-    "emd": 43.6,
-    "seek": 2904
+    "seek": 2904,
+    "end": 43.6
   },
   {
-    "hanzi": "太好了,对了,我的登机排在哪儿?",
+    "hanzi": "太好了,对了,我的登机牌在哪儿?",
+    "pinyin": "Tài hǎole, duìle, wǒ de dēng jī pái zài nǎ'er?",
+    "en": "Great, by the way, where is my boarding pass?",
     "start": 43.6,
-    "emd": 48.64,
-    "seek": 2904
+    "seek": 2904,
+    "end": 48.64
   },
   {
     "hanzi": "别担心,在我的包里。",
+    "pinyin": "Bié dānxīn, zài wǒ de bāo lǐ.",
+    "en": "Don't worry, it's in my bag.",
     "start": 48.64,
-    "emd": 52.08,
-    "seek": 2904
+    "seek": 2904,
+    "end": 52.08
   },
   {
-    "hanzi": "好多人啊,我觉得这趟航班会有点急。",
+    "hanzi": "好多人啊！ 我觉得这趟航班会有点挤。",
+    "pinyin": "Hǎoduō rén a! Wǒ juédé zhè tàng hángbān huì yǒudiǎn jǐ.",
+    "en": "So many people! I think this flight will be a bit crowded.",
     "start": 52.08,
-    "emd": 58.72,
-    "seek": 2904
+    "seek": 2904,
+    "end": 58.72
   },
   {
-    "hanzi": "今天是星星六,当然很几。",
+    "hanzi": "今天是星期六，当然很几。",
+    "pinyin": "Jīntiān shì xīngqíliù, dāngrán hěn jǐ.",
+    "en": "Today is Saturday, of course.",
     "start": 58.72,
-    "emd": 62.08,
-    "seek": 5872
+    "seek": 5872,
+    "end": 62.08
   },
   {
-    "hanzi": "只是,如果我们的飞机票是商务倉,或者头等倉,该有多好啊?",
+    "hanzi": "只是，如果我们的飞机票是商务舱，或者头等舱，该有多好啊?",
+    "pinyin": "Zhǐshì, rúguǒ wǒmen de fēijī piào shì shāngwù cāng, huòzhě tóuděng cāng, gāi yǒu duō hǎo a?",
+    "en": "But, how great would it be if our plane tickets were business class or first class?",
     "start": 62.08,
-    "emd": 69.48,
-    "seek": 5872
+    "seek": 5872,
+    "end": 69.48
   },
-  { "hanzi": "别做白日梦了。", "start": 69.48, "emd": 71.48, "seek": 5872 },
   {
-    "hanzi": "商务倉和头等倉是有钱人做的。",
+    "hanzi": "别做白日梦了。",
+    "pinyin": "Bié zuò bái rì mèngle.",
+    "en": "Stop daydreaming.",
+    "start": 69.48,
+    "seek": 5872,
+    "end": 71.48
+  },
+  {
+    "hanzi": "商务舱和头等舱是有钱人坐的。",
+    "pinyin": "Shāngwù cāng hé tóuděng cāng shì yǒu qián rén zuò de.",
+    "en": "Business class and first class are for rich people.",
     "start": 71.48,
-    "emd": 75.8,
-    "seek": 5872
+    "seek": 5872,
+    "end": 75.8
   },
   {
-    "hanzi": "我们就好好做经济倉吧。",
+    "hanzi": "我们就好好坐经济舱吧。",
+    "pinyin": "Wǒmen jiù hǎohǎo zuò jīngjì cāng ba.",
+    "en": "Let's just take economy class.",
     "start": 75.8,
-    "emd": 80.03999999999999,
-    "seek": 5872
+    "seek": 5872,
+    "end": 80.03999999999999
   },
   {
     "hanzi": "白日梦是暂时的,因为我相信,",
+    "pinyin": "Bái rì mèng shì zhànshí de, yīnwèi wǒ xiāngxìn,",
+    "en": "Daydreams are temporary because I believe,",
     "start": 80.03999999999999,
-    "emd": 83.88,
-    "seek": 5872
+    "seek": 5872,
+    "end": 83.88
   },
   {
-    "hanzi": "将来我们一定会有钱做商务倉和头等倉。",
+    "hanzi": "将来我们一定会有钱坐商务舱和头等舱。",
+    "pinyin": "Jiānglái wǒmen yīdìng huì yǒu qián zuò shāngwù cāng hé tóuděng cāng.",
+    "en": "We will definitely have the money to fly business class and first class in the future.",
     "start": 83.88,
-    "emd": 89.16,
-    "seek": 8388
+    "seek": 8388,
+    "end": 89.16
   },
   {
-    "hanzi": "好的,那你就努力振钱吧。",
+    "hanzi": "好的,那你就努力挣钱吧。",
+    "pinyin": "Hǎo de, nà nǐ jiù nǔlì zhèng qián ba.",
+    "en": "Okay, then you can work hard to make money.",
     "start": 89.16,
-    "emd": 92.75999999999999,
-    "seek": 8388
+    "seek": 8388,
+    "end": 92.75999999999999
   },
   {
     "hanzi": "把白日梦变成现实。",
+    "pinyin": "Bǎ bái rì mèng biàn chéng xiànshí.",
+    "en": "Turn your daydreams into reality.",
     "start": 92.75999999999999,
-    "emd": 96.39999999999999,
-    "seek": 8388
+    "seek": 8388,
+    "end": 96.39999999999999
   },
-  { "hanzi": "当然。", "start": 96.39999999999999, "emd": 98.08, "seek": 8388 },
+  { "hanzi": "当然。", "start": 96.39999999999999, "seek": 8388, "end": 98.08 },
   {
-    "hanzi": "哎,我真后悔没有脱运这个行李箱。",
+    "hanzi": "哎,我真后悔没有托运这个行李箱",
+    "pinyin": "Āi, wǒ zhēn hòuhuǐ méiyǒu tuōyùn zhège xínglǐ xiāng.",
+    "en": "Oh, I really regret not checking in this suitcase.",
     "start": 98.08,
-    "emd": 103.47999999999999,
-    "seek": 8388
+    "seek": 8388,
+    "end": 103.47999999999999
   },
   {
     "hanzi": "为什么?",
     "start": 103.47999999999999,
-    "emd": 105.47999999999999,
-    "seek": 8388
+    "seek": 8388,
+    "end": 105.47999999999999
   },
   {
     "hanzi": "我担心飞机上行李架的空间不够大。",
+    "pinyin": "Wǒ dānxīn fēijī shàng xínglǐ jià de kōngjiān bùgòu dà.",
+    "en": "I'm worried that there isn't enough space in the overhead bins on the plane.",
     "start": 105.47999999999999,
-    "emd": 110.84,
-    "seek": 8388
+    "seek": 8388,
+    "end": 110.84
   },
   {
     "hanzi": "这是一架大飞机,我觉得不会有问题。",
+    "pinyin": "Zhè shì yī jià dà fēijī, wǒ juédé bù huì yǒu wèntí.",
+    "en": "It's a big plane, I don't think it will be a problem.",
     "start": 110.84,
-    "emd": 114.92,
-    "seek": 11084
+    "seek": 11084,
+    "end": 114.92
   },
-  { "hanzi": "你别担心。", "start": 114.92, "emd": 116.92, "seek": 11084 },
+  {
+    "hanzi": "你别担心。",
+    "pinyin": "Nǐ bié dānxīn.",
+    "en": "Don't worry",
+    "start": 114.92,
+    "seek": 11084,
+    "end": 116.92
+  },
   {
     "hanzi": "对了,你看看,我们的座位在哪里?",
+    "pinyin": "Duìle, nǐ kàn kàn, wǒmen de zuòwèi zài nǎlǐ?",
+    "en": "By the way, look, where are our seats?",
     "start": 116.92,
-    "emd": 122.2,
-    "seek": 11084
+    "seek": 11084,
+    "end": 122.2
   },
   {
-    "hanzi": "我的座位号是58a,靠窗户,你的座位号是58c,靠走狼。",
+    "hanzi": "我的座位号是58A,靠窗户,你的座位号是58C,靠走廊。",
+    "pinyin": "Wǒ de zuòwèi hào shì 58A, kào chuānghù, nǐ de zuòwèi hào shì 58C, kào zǒuláng.",
+    "en": "My seat number is 58A, by the window, and your seat number is 58C, by the corridor.",
     "start": 122.2,
-    "emd": 130.68,
-    "seek": 11084
+    "seek": 11084,
+    "end": 130.68
   },
   {
-    "hanzi": "真倒霉,我最讨厌靠走狼的座位。",
+    "hanzi": "真倒霉,我最讨厌靠走廊的座位。",
+    "pinyin": "Zhēn dǎoméi, wǒ zuì tǎoyàn kào zǒuláng de zuòwèi.",
+    "en": "What a shame, I hate aisle seats.",
     "start": 130.68,
-    "emd": 135.72,
-    "seek": 11084
+    "seek": 11084,
+    "end": 135.72
   },
   {
-    "hanzi": "你建议跟我换一下吗?",
+    "hanzi": "你介意跟我换一下吗?",
+    "pinyin": "Nǐ jièyì gēn wǒ huàn yīxià ma?",
+    "en": "Would you mind switching with me?",
     "start": 135.72,
-    "emd": 139.04,
-    "seek": 11084
+    "seek": 11084,
+    "end": 139.04
   },
   {
-    "hanzi": "当然不介意,你想做哪里就做哪里?",
+    "hanzi": "当然不介意,你想坐哪里就坐哪里。",
+    "pinyin": "Dāngrán bù jièyì, nǐ xiǎng zuò nǎlǐ jiùzuò nǎlǐ.",
+    "en": "Of course I don't mind, you can sit wherever you want.",
     "start": 139.04,
-    "emd": 143.84,
-    "seek": 13904
+    "seek": 13904,
+    "end": 143.84
   },
   {
-    "hanzi": "果然是英国生事,多谢。",
+    "hanzi": "果然是英国绅士，多谢！",
+    "pinyin": "Guǒrán shì yīngguó shēnshì, duōxiè!",
+    "en": "He is indeed a British gentleman, thank you very much!",
     "start": 143.84,
-    "emd": 148,
-    "seek": 13904
+    "seek": 13904,
+    "end": 148
   },
-  { "hanzi": "哪里哪里?", "start": 148, "emd": 149.64, "seek": 13904 },
   {
-    "hanzi": "其实我更喜欢做靠走狼的座位,因为我的腿长可以伸腿。",
+    "hanzi": "哪里哪里?",
+    "pinyin": "Nǎlǐ nǎlǐ",
+    "en": "Thank you",
+    "start": 148,
+    "seek": 13904,
+    "end": 149.64
+  },
+  {
+    "hanzi": "其实，我更喜欢坐靠走廊的座位，因为我的腿长可以伸腿。",
+    "pinyin": "Qíshí, wǒ gèng xǐhuān zuò kào zǒuláng de zuòwèi, yīnwèi wǒ de tuǐ cháng kěyǐ shēntuǐ.",
+    "en": "Actually, I prefer the aisle seats because I have long legs and can stretch my legs.",
     "start": 149.64,
-    "emd": 156.51999999999998,
-    "seek": 13904
+    "seek": 13904,
+    "end": 156.51999999999998
   },
   {
-    "hanzi": "反正我没有你的支珠长腿,我只想坐在窗边看风景。",
+    "hanzi": "反正我没有你的蜘蛛长腿，我只想坐在窗边看风景。",
+    "pinyin": "Fǎnzhèng wǒ méiyǒu nǐ de zhīzhū zhǎng tuǐ, wǒ zhǐ xiǎng zuò zài chuāng biān kàn fēngjǐng.",
+    "en": "Anyway, I don't have your spider legs. I just want to sit by the window and watch the scenery.",
     "start": 156.51999999999998,
-    "emd": 164.64,
-    "seek": 13904
+    "seek": 13904,
+    "end": 164.64
   }
 ]

@@ -12,7 +12,7 @@ export function groupBy(timestamps: any, res = { 0: [] } as any, idx = 0) {
     } else {
       // check the time difference
       const timeDifference = nextTimestamp.start - firstTimeStamp.end;
-      if (timeDifference > 3) {
+      if (timeDifference > 2) {
         return groupBy(
           timestamps?.slice(1),
           { ...res, [idx]: (res?.[idx] || [])?.concat(firstTimeStamp) },

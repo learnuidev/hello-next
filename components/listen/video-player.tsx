@@ -10,8 +10,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   faGlass,
   faGlasses,
+  faHandMiddleFinger,
   faLanguage,
   faRepeat,
+  faVideo,
+  faVideoSlash,
 } from "@fortawesome/pro-thin-svg-icons";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
@@ -82,15 +85,15 @@ export function VideoPlayer({
   console.log({ groupedTranscriptions });
 
   return (
-    <div className="grow ml-4 md:ml-16 flex flex-col items-center">
+    <div className="grow flex flex-col items-center">
       <div className="space-x-4 my-4">
-        <button
+        {/* <button
           onClick={() => {
             setFocusMode((isHidden) => !isHidden);
           }}
         >
           {focusMode ? "show all" : "focus"}
-        </button>
+        </button> */}
         <button
           onClick={() => {
             setViewMode((prev: any) => (prev === "para" ? null : "para"));
@@ -103,22 +106,24 @@ export function VideoPlayer({
             setIsVideoHidden((isHidden) => !isHidden);
           }}
         >
-          {isVideoHidden ? "show video" : "hide video"}
+          {/* {isVideoHidden ? "show video" : "hide video"} */}
+
+          {isVideoHidden ? (
+            <FontAwesomeIcon icon={faVideo} />
+          ) : (
+            <FontAwesomeIcon icon={faVideoSlash} />
+          )}
         </button>
       </div>
 
-      <div className="flex-col sm:flex-row flex justify-between w-full sm:space-x-4">
-        <div
-          className={`${isVideoHidden ? "hidden" : ""} ${
-            lesson?.transcriptions?.length ? "sm:h-40" : "h-[800px]"
-          } grow w-full`}
-        >
+      <div className="grid grid-cols-12">
+        <div className={` ${isVideoHidden ? "hidden" : ""} col-span-8`}>
           <ReactPlayer
             ref={playerRef}
             url={finalUrl}
             playing={isPlaying}
             width="100%"
-            height={lesson?.transcriptions?.length ? "700px" : "600px"}
+            height={"700px"}
             controls={true}
             onReady={onReady}
           />
@@ -134,14 +139,37 @@ export function VideoPlayer({
             //   isVideoHidden ? "my-8" : ""
             // }`}
 
-            className="w-full grow"
+            // className="w-full"
+            className={`${isVideoHidden ? "col-span-12" : "col-span-4"} w-full`}
           >
-            <ScrollArea className="space-y-4 h-[800px] rounded-md border border-gray-800 p-4">
+            <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-800 p-4">
               <div className="space-y-8">
-                {Object.values(groupedTranscriptions)?.map(
-                  (transcriptions: any) => {
+                {Object.values(groupedTranscriptions)
+                  // ?.filter((transcriptions: any) => {
+                  //   if (!focusMode) {
+                  //     return true;
+                  //   } else {
+                  //     const maxEnd = Math.max(
+                  //       ...transcriptions?.map(
+                  //         (transcription: any) => transcription?.end
+                  //       )
+                  //     );
+
+                  //     const minStart = Math.min(
+                  //       ...transcriptions?.map(
+                  //         (transcription: any) => transcription?.start
+                  //       )
+                  //     );
+
+                  //     return minStart < currentTime && currentTime < maxEnd;
+                  //   }
+                  // })
+                  ?.map((transcriptions: any) => {
                     return (
-                      <div className="flex flex-wrap" key={JSON.stringify(transcriptions)}>
+                      <div
+                        className="flex flex-wrap"
+                        key={JSON.stringify(transcriptions)}
+                      >
                         {transcriptions
                           // ?.slice(0, 100)
                           .map((transcription: any) => {
@@ -176,18 +204,19 @@ export function VideoPlayer({
                           })}
                       </div>
                     );
-                  }
-                )}
+                  })}
               </div>
             </ScrollArea>
           </div>
         ) : lesson?.transcriptions?.length ? (
           <div
-            className={`text-center md:block grow w-full ${
-              isVideoHidden ? "my-8" : ""
-            }`}
+            // className={`text-center md:block grow w-full ${
+            //   isVideoHidden ? "my-8" : ""
+            // }`}
+            className={`${isVideoHidden ? "col-span-12" : "col-span-4"} w-full`}
+            // className={"col-span-4 w-full"}
           >
-            <ScrollArea className="space-y-4 h-[800px] rounded-md border border-gray-800 p-4">
+            <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-800 p-4">
               <div className="space-y-8">
                 {(lesson?.transcriptions || scripts)
                   .filter((script: any) => {
@@ -234,7 +263,9 @@ export function VideoPlayer({
                               .map((item: any, idx: any) => {
                                 return (
                                   <span
-                                    key={`${JSON.stringify(item)}-${idx}-${Math.random()}`}
+                                    key={`${JSON.stringify(
+                                      item
+                                    )}-${idx}-${Math.random()}`}
                                     className={`text-2xl ${
                                       (example?.timestamp?.[0] ||
                                         example?.start) < currentTime &&

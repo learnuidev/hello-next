@@ -1,6 +1,34 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+export function groupBy(timestamps: any, res = { 0: [] } as any, idx = 0) {
+  const firstTimeStamp = timestamps?.[0];
+  if (!firstTimeStamp) {
+    return res;
+  } else {
+    const nextTimestamp = timestamps?.[1];
+    if (!nextTimestamp) {
+      return { ...res, [idx]: (res?.[idx] || [])?.concat(firstTimeStamp) };
+    } else {
+      // check the time difference
+      const timeDifference = nextTimestamp.start - firstTimeStamp.end;
+      if (timeDifference > 3) {
+        return groupBy(
+          timestamps?.slice(1),
+          { ...res, [idx]: (res?.[idx] || [])?.concat(firstTimeStamp) },
+          idx + 1
+        );
+      } else {
+        return groupBy(
+          timestamps?.slice(1),
+          { ...res, [idx]: (res?.[idx] || [])?.concat(firstTimeStamp) },
+          idx
+        );
+      }
+    }
+  }
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

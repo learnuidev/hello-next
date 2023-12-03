@@ -165,43 +165,87 @@ export function VideoPlayer({
                   //   }
                   // })
                   ?.map((transcriptions: any) => {
+                    const hanzis = transcriptions
+                      ?.map((t: any) => t?.hanzi)
+                      ?.join("");
                     return (
-                      <div
-                        className="flex flex-wrap"
-                        key={JSON.stringify(transcriptions)}
-                      >
-                        {transcriptions
-                          // ?.slice(0, 100)
-                          .map((transcription: any) => {
-                            return (
-                              <span
-                                role="button"
-                                className={`${
-                                  transcription?.start < currentTime &&
-                                  transcription?.end > currentTime
-                                    ? "dark:text-white"
-                                    : "dark:text-gray-400 text-gray-300"
-                                } transition block py-1 px-1 text-2xl`}
-                                key={transcription?.hanzi}
-                                onClick={() => {
-                                  playerRef.current.seekTo(
-                                    transcription?.start,
-                                    "seconds"
-                                  );
+                      <div key={JSON.stringify(transcriptions)}>
+                        <div className="flex flex-wrap">
+                          {transcriptions
+                            // ?.slice(0, 100)
+                            .map((transcription: any) => {
+                              return (
+                                <span
+                                  role="button"
+                                  className={`${
+                                    transcription?.start < currentTime &&
+                                    transcription?.end > currentTime
+                                      ? "dark:text-white"
+                                      : "dark:text-gray-400 text-gray-300"
+                                  } transition block py-1 px-1 text-2xl`}
+                                  key={transcription?.hanzi}
+                                  onClick={() => {
+                                    playerRef.current.seekTo(
+                                      transcription?.start,
+                                      "seconds"
+                                    );
 
-                                  try {
-                                    playerRef.current?.player?.player?.play();
-                                  } catch (err) {
-                                    console.error(err);
-                                  }
-                                }}
-                              >
-                                {" "}
-                                {transcription?.hanzi}
-                                {"  "}
-                              </span>
-                            );
-                          })}
+                                    try {
+                                      playerRef.current?.player?.player?.play();
+                                    } catch (err) {
+                                      console.error(err);
+                                    }
+                                  }}
+                                >
+                                  {" "}
+                                  {transcription?.hanzi}
+                                  {"  "}
+                                </span>
+                              );
+                            })}
+                        </div>
+
+                        <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
+                          <Link
+                            // href=""
+                            target="_blank"
+                            href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                              hanzis
+                            )}&op=translate`}
+                            className="text-gray-500 hover:text-white"
+                          >
+                            <FontAwesomeIcon icon={faGoogle} />
+                          </Link>
+
+                          <Link
+                            // href=""
+                            href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                              hanzis
+                            )}`}
+                            className="text-gray-500 hover:text-white"
+                            target="_blank"
+                          >
+                            <FontAwesomeIcon icon={faLanguage} />
+                          </Link>
+                          <button
+                            onClick={() => {
+                              setToggleLoops(transcriptions);
+                            }}
+                          >
+                            <FontAwesomeIcon
+                              className={
+                                toggleLoops?.find((item: any) =>
+                                  transcriptions?.find(
+                                    (x: any) => x.end === item?.end
+                                  )
+                                )
+                                  ? "text-white"
+                                  : "text-gray-500"
+                              }
+                              icon={faRepeat}
+                            />
+                          </button>
+                        </div>
                       </div>
                     );
                   })}
@@ -210,11 +254,7 @@ export function VideoPlayer({
           </div>
         ) : lesson?.transcriptions?.length ? (
           <div
-            // className={`text-center md:block grow w-full ${
-            //   isVideoHidden ? "my-8" : ""
-            // }`}
             className={`${isVideoHidden ? "col-span-12" : "col-span-4"} w-full`}
-            // className={"col-span-4 w-full"}
           >
             <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-800 p-4">
               <div className="space-y-8">
@@ -235,9 +275,6 @@ export function VideoPlayer({
                       <div
                         key={`${example?.hanzi}-${idx}`}
                         className="flex mx-4"
-                        // className={`${
-                        //   isVideoHidden || focusMode ? "text-2xl" : "md:text-lg"
-                        // } text-center w-full font-extralight flex flex-col justify-center items-center`}
                       >
                         <div
                           className={`${
@@ -340,8 +377,6 @@ export function VideoPlayer({
                                 : example?.hanzi
                             )}&op=translate`}
                             className="text-gray-500 hover:text-white"
-
-                            // className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
                           >
                             <FontAwesomeIcon icon={faGoogle} />
                           </Link>
@@ -362,10 +397,6 @@ export function VideoPlayer({
                           </Link>
                           <button
                             onClick={() => {
-                              // setToggleLoop((val: any) =>
-                              //   val === example ? null : example
-                              // );
-
                               setToggleLoops((val: any) => {
                                 const exist = val?.find(
                                   (item: any) => item?.end === example?.end
@@ -398,19 +429,6 @@ export function VideoPlayer({
             </ScrollArea>
           </div>
         ) : null}
-
-        {/* <div className="hidden md:block relative">
-          <button
-            className="absolute right-0 top-1/2 dark:hover:text-white shadow-md px-4 py-1 rounded-full dark:text-gray-600"
-            onClick={() => {
-              setMediaIndex((idx: any) => idx + 1);
-
-              setLessonIndex((idx) => idx + 1);
-            }}
-          >
-            <NextIcon className="text-4xl" />
-          </button>
-        </div> */}
       </div>
     </div>
   );

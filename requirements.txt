@@ -1,0 +1,10 @@
+# Dependencies
+
+# Date Added: 25th December, 2023
+# Open AI Whisper
+openai-whisper
+setuptools-rust
+
+# Web App
+flask
+flask_cors

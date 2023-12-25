@@ -45,6 +45,7 @@ level-300.json
 traverse/*
 
 
-# Open AI Whisper API
+# Open AI Whisper API (Python)
 
+venv
 __pycache__

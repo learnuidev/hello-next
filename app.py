@@ -57,7 +57,7 @@ def handler_json():
         abort(400)
 
     if request_data["translation"]:
-        translation = model.transcribe(media_url, task="translate")
+        translation = model.transcribe(media_url, task="translate", fp16=False)
         result = model.transcribe(media_url)
         return {'result': result,
                 'media_url': media_url,

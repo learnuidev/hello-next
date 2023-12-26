@@ -10,7 +10,7 @@ const url =
   "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-grammars";
 
 const listGrammars = async (
-  options: { sentenceId: string; content: string },
+  options: { sentenceId?: string; content: string },
   opts: {
     Authorization: string;
   }
@@ -28,29 +28,30 @@ const listGrammars = async (
 };
 
 export function useListGrammarsQuery(
-  params = {} as { sentenceId: string; content: string },
+  params = {} as { sentenceId?: string; content: string },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
-    [queryIds.listGrammars, params?.sentenceId],
+    [queryIds.listGrammars, params?.content],
     async () => {
-      if (params?.sentenceId && params?.content) {
+      if (params?.sentenceId || params?.content) {
         const response = await listGrammars(params, {
           Authorization: authUser?.jwt,
         });
-        return response
+        return response;
       }
     },
     {
       ...options,
+      retry: false,
       enabled: options?.enabled && Boolean(authUser?.jwt),
       // cacheTime: 1000 * 60 * 300, // 30 minutes,
-      // refetchOnWindowFocus: false,
-      // refetchOnFocus: false,
-      // refetchOnMount: false,
-      // refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
     }
   );
 }

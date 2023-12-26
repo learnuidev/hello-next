@@ -1,22 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useState } from "react";
 import { FocusIcon, FocusIcon as Header } from "@/components/ui/icons";
 
-import { course1, useConvosStore } from "@/data/convos/bm1";
+import { useConvosStore } from "@/data/convos/bm1";
 
 import { useMusic } from "./use-music";
 
-// import { useSpeechRecognition } from "./use-speech-recognition";
 import { PlayButton } from "./play-button";
-import {
-  course,
-  course2,
-  course3,
-  course4,
-  course5,
-} from "@/data/pronunciation_data";
-import { useLessonHistoryStore } from "./use-lesson-history";
+import { course5 } from "@/data/pronunciation_data";
+
 import { useRepeatHistoryStore } from "./use-repeat-history";
 import { useViewModeStore } from "./use-view-mode";
 
@@ -24,76 +17,23 @@ import { useModeStore, usePinyinModeStore } from "./use-mode";
 
 import React from "react";
 
-import {
-  ColumnDef,
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useSearchParams } from "next/navigation";
 import { Transcription } from "@/domain/transcribe/transcribe.types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLanguage } from "@fortawesome/pro-thin-svg-icons";
+import { faAtom, faLanguage } from "@fortawesome/pro-thin-svg-icons";
 import Link from "next/link";
 import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
-
-const columnHelper = createColumnHelper<any>();
-
-const columns = [
-  columnHelper.accessor("hanzi", {
-    cell: (info) => info.getValue(),
-    footer: (info) => info.column.id,
-    header: () => <span className="mx-4">hanzi</span>,
-  }),
-  columnHelper.accessor("pinyin", {
-    id: "pinyin",
-    cell: (info) => <i>{info.getValue()}</i>,
-    header: () => <span className="mx-4">pinyin</span>,
-    // footer: info => info.column.id
-  }),
-  columnHelper.accessor("en", {
-    id: "en",
-    cell: (info) => <i>{info.getValue() || "n / a"}</i>,
-    header: () => <span className="mx-12">english</span>,
-    // footer: info => info.column.id
-  }),
-];
+import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 
 export const Play = ({ lessonId }: { lessonId: string }) => {
   const [displayOptions, setDisplayOptions] = useState(false);
   const [lessonIndex, setLessonIndex] = useState(0);
-  const [selectedChar, setSelectedChar] = useState<any>("");
+
   const [results, setResults] = useState<any>({});
 
   const { data: hskWords } = useListHSKWordsQuery();
-
-  const calculateHskColor = (char: string) => {
-    const hsk = hskWords?.find((hsk: any) => hsk?.hanzi === char);
-
-    switch (hsk?.level) {
-      case 1:
-        return "text-yellow-400";
-      case 2:
-        return "text-orange-400";
-      case 3:
-        return "text-green-400";
-      case 4:
-        return "text-purple-400";
-      case 5:
-        return "text-blue-400";
-      case 6:
-        return "text-red-400";
-      case 9:
-        return "text-gray-600";
-      default:
-        return "texe-slate-500";
-
-        return "text-orange-400";
-    }
-  };
 
   const lessonsArr = useConvosStore((state) => state?.convos);
 
@@ -101,18 +41,10 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   // const characterDictionary = dictionary?.[selectedChar];
 
-  const lessonHistories = useLessonHistoryStore((state: any) => state.history);
-  const setLessonHistories = useLessonHistoryStore(
-    (state: any) => state.setHistory
-  );
   const setRepeatHistories = useRepeatHistoryStore(
     (state: any) => state.setHistory
   );
-  const repeatHistories = useRepeatHistoryStore((state: any) => state.history);
 
-  const setSpeechHistories = useLessonHistoryStore(
-    (state: any) => state.setHistory
-  );
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
 
   const pinyinMode = usePinyinModeStore((state: any) => state?.pinyinMode);
@@ -127,10 +59,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
   const lesson = course5.lessons[lessonIndex] || null;
 
   const lesson1 = lessonsArr?.find((lesson: any) => lesson?.id === lessonId);
-
-  const isCorrect = () => {
-    return lesson?.hanziV2?.replace(", ", "").replace("?", "");
-  };
 
   const formatNumber = (time: any) => (time > 9 ? `${time}` : `0${time}`);
 
@@ -150,45 +78,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
     return example > 9 ? `00:00:${example}` : `00:00:0${example}`;
   };
 
-  const calcConfidenceColor = (
-    val: any,
-    answer: any,
-    expectedAnswer: any,
-    alternateAnswers = []
-  ) => {
-    const expAns = expectedAnswer
-      .replace(", ", "")
-      .replace("?", "")
-      .split("")
-      .filter(Boolean)
-      .join("")
-      .split(" ")
-      .filter((item: any) => ![", ", "？", "，"].includes(item))
-      .join("");
-
-    if (
-      (answer !== expAns.trim() &&
-        !lesson?.alternateAnswers?.includes(answer) &&
-        !expAns.includes(answer)) ||
-      !expectedAnswer.includes(expAns)
-    ) {
-      return "text-red-500";
-    }
-    if (val > 70) {
-      return "text-green-500";
-    }
-    if (val < 70) {
-      return "text-yellow-500";
-    }
-    if (val < 60) {
-      return "text-orange-500";
-    }
-  };
-
-  const res = results?.[lesson?.id];
-
-  const viewMode = useViewModeStore((state: any) => state.viewMode);
-
   const searchParams = useSearchParams();
 
   const { data: contentsArr } = useListContentsQuery();
@@ -200,41 +89,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
   const { play, togglePlay, seek, currentTime, reset } = useMusic({
     url: lesson1?.audio?.slow || lesson1?.audio || lesson2?.audio,
   });
-
-  const scrollRef = useRef(null);
-
-  const lessons = lesson1?.lesson
-    ? lesson1?.lesson.filter((item: any) => {
-        const [time, ...rest] = item;
-        const startTime = time[1][0][0];
-
-        const earliestTime = time[1][0];
-        const latestTime = time[1][time[1].length - 1];
-
-        return (
-          // !play ||
-          !focusMode ||
-          (earliestTime[0] < currentTime && latestTime[1] > currentTime)
-        );
-
-        // return item[0][1].some(
-        //   (t: any) => t[1] > currentTime && t[0] < currentTime
-        // )
-      })
-    : lesson1?.transcriptions?.transcriptions?.filter((transcription: any) => {
-        // const time = [null, [[transcription?.start]]]
-
-        const earliestTime = transcription.start;
-        const latestTime = transcription.end;
-
-        // const item = []
-        // return transcription
-
-        return (
-          // !play ||
-          !focusMode || (earliestTime < currentTime && latestTime > currentTime)
-        );
-      });
 
   const lessonItems = lesson2?.transcriptions?.map(
     (transcription: Transcription) => {
@@ -250,8 +104,8 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
     }
   );
 
-  return (
-    <div className="pt-8 grow flex flex-col items-center">
+  const LessonNavBar = () => {
+    return (
       <div className="bg-black fixed bottom-0 pt-4 flex items-center justify-between min-w-full md:px-32 bg-opacity-80">
         <p className="w-16 font-extralight text-2xl text-center dark:text-slate-300 text-slate-600">
           {formatTime(currentTime)}
@@ -291,19 +145,126 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
               } dark:hover:text-slate-100 hover:text-slate-900 transition md:px-4`}
               icon={faLanguage}
             />
-
-            {/* <FocusIcon
-              className={`z-50 text-xl p-2 md:text-3xl ${
-                focusMode
-                  ? "dark:text-white text-slate-700"
-                  : "dark:text-slate-400 text-slate-300"
-              } dark:hover:text-slate-100 hover:text-slate-900 transition md:px-4`}
-            /> */}
           </button>
         </div>
       </div>
+    );
+  };
 
-      {/* timestamps */}
+  const FocusModeTranscriptItem = ({
+    transcription,
+  }: {
+    transcription: Transcription;
+  }) => {
+    const [showGrammarAnalysis, setShowGrammarAnalysis] = useState(false);
+    const { data } = useListGrammarsQuery({ content: transcription?.hanzi });
+    return (
+      <div className={`text-center`}>
+        <div
+          role="button"
+          onClick={() => {
+            seek(transcription?.start);
+
+            setRepeatHistories({
+              lessonId: lesson1?.id || lesson2.id,
+              eventType: "speech/repeat",
+              eventTime: new Date().getTime(),
+              startTime: transcription.start,
+              hanzi: transcription.hanzi,
+              pinyin: transcription.pinyin,
+              en: transcription.en,
+              step: transcription.step,
+              // item
+            });
+          }}
+        >
+          <p className={`${pinyinMode ? "text-3xl" : "text-3xl"}`}>
+            {transcription?.hanzi}
+          </p>
+
+          {pinyinMode ? (
+            <>
+              <p className="dark:text-gray-400 text-md">
+                {transcription?.pinyin}
+              </p>
+              <p className="dark:text-gray-300 text-md">{transcription?.en}</p>
+            </>
+          ) : null}
+        </div>
+
+        <div
+          // onMouseEnter={() => {
+          //   setDisplayOptions(true);
+          // }}
+          // onMouseLeave={() => {
+          //   setDisplayOptions(false);
+          // }}
+          className="h-12"
+        >
+          {/* {displayOptions ? ( */}
+          {true ? (
+            <div className="my-8 space-x-8">
+              <Link
+                href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                  transcription?.hanzi
+                )}`}
+                target="_blank"
+              >
+                <FontAwesomeIcon icon={faSkyatlas} />
+              </Link>
+
+              <Link
+                target="_blank"
+                href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                  transcription?.hanzi
+                )}&op=translate`}
+              >
+                <FontAwesomeIcon icon={faGoogle} />
+              </Link>
+              <button
+                onClick={() => {
+                  setShowGrammarAnalysis((prev) => !prev);
+                }}
+              >
+                <FontAwesomeIcon icon={faAtom} />
+              </button>
+            </div>
+          ) : null}
+        </div>
+
+        {!play && (
+          <code className="text-[10px] flex w-full text-start">
+            <pre>{JSON.stringify(data, null, 2)}</pre>
+          </code>
+        )}
+      </div>
+    );
+  };
+
+  const FocusMode = () => {
+    return (
+      <div className="pt-24 space-y-8">
+        {lesson2?.transcriptions
+          ?.filter((transcription: Transcription) => {
+            return (
+              transcription.start < currentTime &&
+              transcription.end > currentTime
+            );
+          })
+          .map((transcription: Transcription) => {
+            return (
+              <FocusModeTranscriptItem
+                key={`${transcription?.hanzi}-${transcription?.pinyin}`}
+                transcription={transcription}
+              />
+            );
+          })}
+      </div>
+    );
+  };
+
+  const Timestamps = () => {
+    return (
       <div className="flex flex-wrap">
         {(
           lesson1?.lesson ||
@@ -387,141 +348,83 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
           );
         })}
       </div>
+    );
+  };
+
+  const TranscriptItem = ({
+    transcription,
+  }: {
+    transcription: Transcription;
+  }) => {
+    const { data } = useListGrammarsQuery({ content: transcription?.hanzi });
+    return (
+      <div
+        role="button"
+        className={`text-center ${
+          transcription.start < currentTime && transcription.end > currentTime
+            ? "text-yellow-500"
+            : ""
+        }`}
+        key={`${transcription?.hanzi}-${transcription?.pinyin}`}
+        onClick={() => {
+          seek(transcription?.start);
+
+          setRepeatHistories({
+            lessonId: lesson1?.id || lesson2.id,
+            eventType: "speech/repeat",
+            eventTime: new Date().getTime(),
+            startTime: transcription.start,
+            hanzi: transcription.hanzi,
+            pinyin: transcription.pinyin,
+            en: transcription.en,
+            step: transcription.step,
+            // item
+          });
+        }}
+      >
+        <p className={`${pinyinMode ? "text-3xl" : "text-3xl"}`}>
+          {transcription?.hanzi}
+        </p>
+        {pinyinMode ? (
+          <>
+            <p className="dark:text-gray-400 text-md">
+              {transcription?.pinyin}
+            </p>
+            <p className="dark:text-gray-300 text-md">{transcription?.en}</p>
+
+            {/* <code>
+              <pre>{JSON.stringify(data, null, 2)}</pre>
+            </code> */}
+          </>
+        ) : null}
+      </div>
+    );
+  };
+
+  const Transcripts = () => {
+    return (
+      <div className="pt-12 space-y-8 mb-12">
+        {lesson2?.transcriptions?.map((transcription: Transcription) => {
+          return (
+            <TranscriptItem
+              key={`${transcription?.hanzi}-${transcription?.pinyin}`}
+              transcription={transcription}
+            />
+          );
+        })}
+      </div>
+    );
+  };
+
+  return (
+    <div className="pt-8 grow flex flex-col items-center">
+      <LessonNavBar />
+
+      {/* timestamps */}
+      <Timestamps />
       {/* timestamps */}
 
-      {focusMode ? (
-        <div className="pt-24 space-y-8">
-          {lesson2?.transcriptions
-            ?.filter((transcription: Transcription) => {
-              return (
-                transcription.start < currentTime &&
-                transcription.end > currentTime
-              );
-            })
-            .map((transcription: Transcription) => {
-              return (
-                <div
-                  className={`text-center`}
-                  key={`${transcription?.hanzi}-${transcription?.pinyin}`}
-                >
-                  <div
-                    role="button"
-                    onClick={() => {
-                      seek(transcription?.start);
-
-                      setRepeatHistories({
-                        lessonId: lesson1?.id || lesson2.id,
-                        eventType: "speech/repeat",
-                        eventTime: new Date().getTime(),
-                        startTime: transcription.start,
-                        hanzi: transcription.hanzi,
-                        pinyin: transcription.pinyin,
-                        en: transcription.en,
-                        step: transcription.step,
-                        // item
-                      });
-                    }}
-                  >
-                    <p className={`${pinyinMode ? "text-3xl" : "text-3xl"}`}>
-                      {transcription?.hanzi}
-                    </p>
-
-                    {pinyinMode ? (
-                      <>
-                        <p className="dark:text-gray-400 text-md">
-                          {transcription?.pinyin}
-                        </p>
-                        <p className="dark:text-gray-300 text-md">
-                          {transcription?.en}
-                        </p>
-                      </>
-                    ) : null}
-                  </div>
-
-                  <div
-                    onMouseEnter={() => {
-                      setDisplayOptions(true);
-                    }}
-                    onMouseLeave={() => {
-                      setDisplayOptions(false);
-                    }}
-                    className="h-12"
-                  >
-                    {displayOptions ? (
-                      <div className="my-8 space-x-8">
-                        <Link
-                          href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                            transcription?.hanzi
-                          )}`}
-                          target="_blank"
-                        >
-                          <FontAwesomeIcon icon={faSkyatlas} />
-                        </Link>
-
-                        <Link
-                          target="_blank"
-                          href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                            transcription?.hanzi
-                          )}&op=translate`}
-                        >
-                          <FontAwesomeIcon icon={faGoogle} />
-                        </Link>
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
-              );
-            })}
-        </div>
-      ) : (
-        <div className="pt-12 space-y-8 mb-12">
-          {/* {JSON.stringify(lesson2?.transcriptions)} */}
-
-          {lesson2?.transcriptions?.map((transcription: Transcription) => {
-            return (
-              <div
-                role="button"
-                className={`text-center ${
-                  transcription.start < currentTime &&
-                  transcription.end > currentTime
-                    ? "text-yellow-500"
-                    : ""
-                }`}
-                key={`${transcription?.hanzi}-${transcription?.pinyin}`}
-                onClick={() => {
-                  seek(transcription?.start);
-
-                  setRepeatHistories({
-                    lessonId: lesson1?.id || lesson2.id,
-                    eventType: "speech/repeat",
-                    eventTime: new Date().getTime(),
-                    startTime: transcription.start,
-                    hanzi: transcription.hanzi,
-                    pinyin: transcription.pinyin,
-                    en: transcription.en,
-                    step: transcription.step,
-                    // item
-                  });
-                }}
-              >
-                <p className={`${pinyinMode ? "text-3xl" : "text-3xl"}`}>
-                  {transcription?.hanzi}
-                </p>
-                {pinyinMode ? (
-                  <>
-                    <p className="dark:text-gray-400 text-md">
-                      {transcription?.pinyin}
-                    </p>
-                    <p className="dark:text-gray-300 text-md">
-                      {transcription?.en}
-                    </p>
-                  </>
-                ) : null}
-              </div>
-            );
-          })}
-        </div>
-      )}
+      {focusMode ? <FocusMode /> : <Transcripts />}
     </div>
   );
 };

@@ -25,6 +25,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
   const lesson2 = contentsArr?.find((content: any) => content?.id === lessonId);
 
+  // If the link contains yotube - then show youtube page
   if (
     viewType === "listen" &&
     lesson2?.audio?.includes("https://www.youtube.com")

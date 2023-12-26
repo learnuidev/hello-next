@@ -8,102 +8,11 @@ import { useRouter } from "next/navigation";
 import { useSelectedCharacter } from "./use-selected-character";
 import { SelectedCharacter } from "@/components/selected-character";
 import { useListParseQuery } from "@/domain/nmm/nmm.queries";
-
-function useCurrentCharas(lessonId: string) {
-  const [isTocHidden, setIsTocHidden] = useState(false);
-  // const [selectedChar, setSelectedChar] = useState("");
-
-  const selectedChar = useSelectedCharacter((state: any) => state?.character);
-  const setSelectedChar = useSelectedCharacter(
-    (state: any) => state?.setCharacter
-  );
-
-  const router = useRouter();
-
-  // const { data: allAnswers, isLoading } = useListAnswersQuery({
-  //   journeyId: lessonId,
-  // });
-  // const { data: allAnswers, isLoading } = useListAnswersQuery();
-
-  const { data: allAnswers, isLoading } = useListAnswersQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
-
-  const allLessonAnswers = allAnswers?.filter(
-    (answer: any) => answer?.journeyId === lessonId
-  );
-
-  const allNewCharaters = allLessonAnswers
-    .map((curr: any) => curr?.newCharacters)
-    ?.flat();
-
-  const totalNewCharaters = allLessonAnswers.reduce(
-    (acc: number, curr: any) => acc + curr?.newCharacters?.length,
-    0
-  );
-
-  const uniqueWords = [
-    // @ts-ignore
-    ...new Set(
-      allLessonAnswers
-        ?.map((answer: { hanzi: string }) => answer?.hanzi)
-        ?.join("")
-    ),
-  ]
-    .join("")
-    ?.toLocaleLowerCase()
-    ?.split("")
-    ?.filter((x: string) => !["c", "i", "n", "d", "y"]?.includes(x));
-  const uniqueWordsStr = uniqueWords?.join(" ");
-
-  const { data: unlockedNMMCharacters } =
-    useListParseQuery({
-      content: uniqueWordsStr,
-    }) || [];
-  const allWords = [
-    // @ts-ignore
-    ...allLessonAnswers
-      ?.map((answer: { hanzi: string }) => answer?.hanzi)
-      ?.join(""),
-  ]
-    .join("")
-    ?.toLocaleLowerCase()
-    ?.split("")
-    ?.filter((x: string) => !["c", "i", "n", "d", "y"]?.includes(x));
-
-  const unlockedCharactersHMM = unlockedNMMCharacters?.map((x: any) => x.hanzi);
-  const unlockedCharactersHMMStr = unlockedCharactersHMM?.join(" ");
-
-  const charactersWithFrequencyList = Object.entries(
-    R.countBy(R.identity, allWords)
-  )
-    .map(([hanzi, frequency]) => {
-      return {
-        hanzi,
-        frequency,
-      };
-    })
-    ?.sort((a, b) => b?.frequency - a?.frequency);
-
-  const unlockedCharactersNMM = charactersWithFrequencyList?.map(
-    (character) => character?.hanzi
-  );
-  const unlockedCharactersNMMStr = unlockedCharactersNMM?.join(" ");
-
-  const currentLevel = {
-    maxCharacterLevel: 600,
-  };
-}
+import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 export function ConvoInsights({ lessonId }: { lessonId: string }) {
   const [isTocHidden, setIsTocHidden] = useState(false);
-  // const [selectedChar, setSelectedChar] = useState("");
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
   const setSelectedChar = useSelectedCharacter(
@@ -112,10 +21,11 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
 
   const router = useRouter();
 
-  // const { data: allAnswers, isLoading } = useListAnswersQuery({
-  //   journeyId: lessonId,
-  // });
-  // const { data: allAnswers, isLoading } = useListAnswersQuery();
+  const { data: contentsArr } = useListContentsQuery();
+
+  const lesson = contentsArr?.find((content: any) => content?.id === lessonId);
+
+  const { data: learnedCharacters } = useListCharactersQuery();
 
   const { data: allAnswers, isLoading } = useListAnswersQuery(
     {},
@@ -135,15 +45,11 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     .map((curr: any) => curr?.newCharacters)
     ?.flat();
 
-  const totalNewCharaters = allLessonAnswers.reduce(
-    (acc: number, curr: any) => acc + curr?.newCharacters?.length,
-    0
-  );
-
   const uniqueWords = [
     // @ts-ignore
     ...new Set(
-      allLessonAnswers
+      lesson?.transcriptions
+        // allLessonAnswers
         ?.map((answer: { hanzi: string }) => answer?.hanzi)
         ?.join("")
     ),
@@ -151,46 +57,61 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     .join("")
     ?.toLocaleLowerCase()
     ?.split("")
-    ?.filter((x: string) => !["c", "i", "n", "d", "y"]?.includes(x));
-  const uniqueWordsStr = uniqueWords?.join(" ");
+    ?.filter(
+      (x: string) =>
+        ![
+          "c",
+          "i",
+          "n",
+          "d",
+          "y",
+          "1",
+          "2",
+          "？",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "0",
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "h",
+          "i",
+          "j",
+          "k",
+          "l",
+          "m",
+          "n",
+          "p",
+          "q",
+          "r",
+          "t",
+          "u",
+          "v",
+        ]?.includes(x)
+    );
 
-  const { data: unlockedNMMCharacters } =
-    useListParseQuery({
-      content: uniqueWordsStr,
-    }) || [];
-  const allWords = [
-    // @ts-ignore
-    ...allLessonAnswers
-      ?.map((answer: { hanzi: string }) => answer?.hanzi)
-      ?.join(""),
-  ]
-    .join("")
-    ?.toLocaleLowerCase()
-    ?.split("")
-    ?.filter((x: string) => !["c", "i", "n", "d", "y"]?.includes(x));
+  const totalNewCharaters = uniqueWords?.filter((char) => {
+    const isLearned = learnedCharacters?.find(
+      (item: any) => item?.hanzi === char
+    );
 
-  const unlockedCharactersHMM = unlockedNMMCharacters?.map((x: any) => x.hanzi);
-  const unlockedCharactersHMMStr = unlockedCharactersHMM?.join(" ");
+    return !!isLearned;
+  })?.length;
 
-  const charactersWithFrequencyList = Object.entries(
-    R.countBy(R.identity, allWords)
-  )
-    .map(([hanzi, frequency]) => {
-      return {
-        hanzi,
-        frequency,
-      };
-    })
-    ?.sort((a, b) => b?.frequency - a?.frequency);
-
-  const unlockedCharactersNMM = charactersWithFrequencyList?.map(
-    (character) => character?.hanzi
-  );
-  const unlockedCharactersNMMStr = unlockedCharactersNMM?.join(" ");
-
-  const currentLevel = {
-    maxCharacterLevel: 600,
-  };
+  const understandingRate = Intl.NumberFormat("en-GB", {
+    style: "percent",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 2,
+  }).format(totalNewCharaters / uniqueWords?.length);
 
   if (isLoading) {
     return (
@@ -207,33 +128,29 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
   ) : (
     <div className="w-full px-4 md:px-32 my-4 md:my-8">
       <div>
-        <div className="flex justify-start space-x-16">
-          <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-            {uniqueWords?.length}{" "}
-            <span className="text-sm md:text-xl">total characters </span>
-          </h2>
-          <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
-            <span className="text-yellow-500"> {totalNewCharaters}</span>
-            <span className="text-sm md:text-xl">new characters </span>
-          </h2>
+        <div className="flex justify-between w-full">
+          <div className="flex justify-start space-x-16">
+            <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+              {uniqueWords?.length}{" "}
+              <span className="text-sm md:text-xl">total characters </span>
+            </h2>
+            <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
+              <span className="text-yellow-500"> {totalNewCharaters}</span>
+              <span className="text-sm md:text-xl">new characters </span>
+            </h2>
+          </div>
 
-          {/* <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
-            {learnedCharacters?.length}{" "}
-            <span className="text-sm md:text-xl">characters acquired </span>
-          </h2> */}
-          {/* <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
-            {unlockedCharactersHMM?.length}{" "}
-            <span className="text-sm md:text-xl">characters learned </span>
-          </h2> */}
-          {/* <h2 className="text-4xl md:text-6xl my-4 font-extralight text-gray-500">
-            {unlockedCharactersHMM?.length}{" "}
-            <span className="text-sm md:text-xl">characters learned </span>
-          </h2> */}
+          <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
+            <span className="text-gray-300"> {understandingRate}</span>
+          </h2>
         </div>
 
         <div className="my-8">
           <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
             {uniqueWords?.map((char, idx: number) => {
+              const isLearned = learnedCharacters?.find(
+                (item: any) => item?.hanzi === char
+              );
               return (
                 <span
                   role="button"
@@ -242,7 +159,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                   }}
                   className={`p-2 ${
                     // ""
-                    allNewCharaters?.includes(char)
+                    isLearned
                       ? "text-gray-700 dark:text-gray-300"
                       : "text-gray-400 dark:text-gray-500"
                   }`}

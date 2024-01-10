@@ -82,8 +82,6 @@ export function VideoPlayer({
 
   const groupedTranscriptions = groupBy(lesson?.transcriptions || []);
 
-  console.log({ groupedTranscriptions });
-
   return (
     <div className="grow flex flex-col items-center">
       <div className="space-x-4 my-4">

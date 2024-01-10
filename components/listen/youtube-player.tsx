@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Header, NextIcon } from "@/components/ui/icons";
+import { Header } from "@/components/ui/icons";
 
 import ReactPlayer from "react-player";
 import { useListContentsQuery } from "@/domain/content/content.queries";
@@ -8,9 +8,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  faGlass,
   faGlasses,
-  faHandMiddleFinger,
   faLanguage,
   faRepeat,
   faVideo,
@@ -20,11 +18,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { groupBy } from "@/lib/utils";
 
-export function VideoPlayer({
-  media: { url, scripts, title },
-  mediaIndex,
-  setMediaIndex,
-}: any) {
+export function VideoPlayer({ media: { url, scripts, title } }: any) {
   const [viewMode, setViewMode] = useState<any>(null);
   const [toggleLoop, setToggleLoop] = useState<any>(null);
   const [toggleLoops, setToggleLoops] = useState<any>([]);
@@ -85,13 +79,6 @@ export function VideoPlayer({
   return (
     <div className="grow flex flex-col items-center">
       <div className="space-x-4 my-4">
-        {/* <button
-          onClick={() => {
-            setFocusMode((isHidden) => !isHidden);
-          }}
-        >
-          {focusMode ? "show all" : "focus"}
-        </button> */}
         <button
           onClick={() => {
             setViewMode((prev: any) => (prev === "para" ? null : "para"));
@@ -104,8 +91,6 @@ export function VideoPlayer({
             setIsVideoHidden((isHidden) => !isHidden);
           }}
         >
-          {/* {isVideoHidden ? "show video" : "hide video"} */}
-
           {isVideoHidden ? (
             <FontAwesomeIcon icon={faVideo} />
           ) : (
@@ -132,129 +117,110 @@ export function VideoPlayer({
         </div>
 
         {viewMode === "para" ? (
-          <div
-            // className={`text-center md:block grow w-full ${
-            //   isVideoHidden ? "my-8" : ""
-            // }`}
+          <div className={isVideoHidden ? "col-span-12 mx-32" : "col-span-4"}>
+            <div
+              className={`${
+                isVideoHidden ? "col-span-8" : "col-span-4"
+              } w-full text-center`}
+            >
+              <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-900 p-4">
+                <div className="space-y-8">
+                  {Object.values(groupedTranscriptions)?.map(
+                    (transcriptions: any) => {
+                      const hanzis = transcriptions
+                        ?.map((t: any) => t?.hanzi)
+                        ?.join("");
+                      return (
+                        <div key={JSON.stringify(transcriptions)}>
+                          <div className="flex flex-wrap">
+                            {transcriptions
+                              // ?.slice(0, 100)
+                              .map((transcription: any) => {
+                                return (
+                                  <span
+                                    role="button"
+                                    className={`${
+                                      transcription?.start < currentTime &&
+                                      transcription?.end > currentTime
+                                        ? "dark:text-white"
+                                        : "dark:text-gray-400 text-gray-300"
+                                    } transition block py-1 px-1`}
+                                    key={transcription?.hanzi}
+                                    onClick={() => {
+                                      playerRef.current.seekTo(
+                                        transcription?.start,
+                                        "seconds"
+                                      );
 
-            // className="w-full"
-            className={`${isVideoHidden ? "col-span-12" : "col-span-4"} w-full`}
-          >
-            <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-800 p-4">
-              <div className="space-y-8">
-                {Object.values(groupedTranscriptions)
-                  // ?.filter((transcriptions: any) => {
-                  //   if (!focusMode) {
-                  //     return true;
-                  //   } else {
-                  //     const maxEnd = Math.max(
-                  //       ...transcriptions?.map(
-                  //         (transcription: any) => transcription?.end
-                  //       )
-                  //     );
+                                      try {
+                                        playerRef.current?.player?.player?.play();
+                                      } catch (err) {
+                                        console.error(err);
+                                      }
+                                    }}
+                                  >
+                                    {" "}
+                                    {transcription?.hanzi}
+                                    {"  "}
+                                  </span>
+                                );
+                              })}
+                          </div>
 
-                  //     const minStart = Math.min(
-                  //       ...transcriptions?.map(
-                  //         (transcription: any) => transcription?.start
-                  //       )
-                  //     );
+                          <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
+                            <Link
+                              // href=""
+                              target="_blank"
+                              href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                                hanzis
+                              )}&op=translate`}
+                              className="text-gray-500 hover:text-white"
+                            >
+                              <FontAwesomeIcon icon={faGoogle} />
+                            </Link>
 
-                  //     return minStart < currentTime && currentTime < maxEnd;
-                  //   }
-                  // })
-                  ?.map((transcriptions: any) => {
-                    const hanzis = transcriptions
-                      ?.map((t: any) => t?.hanzi)
-                      ?.join("");
-                    return (
-                      <div key={JSON.stringify(transcriptions)}>
-                        <div className="flex flex-wrap">
-                          {transcriptions
-                            // ?.slice(0, 100)
-                            .map((transcription: any) => {
-                              return (
-                                <span
-                                  role="button"
-                                  className={`${
-                                    transcription?.start < currentTime &&
-                                    transcription?.end > currentTime
-                                      ? "dark:text-white"
-                                      : "dark:text-gray-400 text-gray-300"
-                                  } transition block py-1 px-1 text-2xl`}
-                                  key={transcription?.hanzi}
-                                  onClick={() => {
-                                    playerRef.current.seekTo(
-                                      transcription?.start,
-                                      "seconds"
-                                    );
-
-                                    try {
-                                      playerRef.current?.player?.player?.play();
-                                    } catch (err) {
-                                      console.error(err);
-                                    }
-                                  }}
-                                >
-                                  {" "}
-                                  {transcription?.hanzi}
-                                  {"  "}
-                                </span>
-                              );
-                            })}
-                        </div>
-
-                        <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
-                          <Link
-                            // href=""
-                            target="_blank"
-                            href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                              hanzis
-                            )}&op=translate`}
-                            className="text-gray-500 hover:text-white"
-                          >
-                            <FontAwesomeIcon icon={faGoogle} />
-                          </Link>
-
-                          <Link
-                            // href=""
-                            href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                              hanzis
-                            )}`}
-                            className="text-gray-500 hover:text-white"
-                            target="_blank"
-                          >
-                            <FontAwesomeIcon icon={faLanguage} />
-                          </Link>
-                          <button
-                            onClick={() => {
-                              setToggleLoops(transcriptions);
-                            }}
-                          >
-                            <FontAwesomeIcon
-                              className={
-                                toggleLoops?.find((item: any) =>
-                                  transcriptions?.find(
-                                    (x: any) => x.end === item?.end
+                            <Link
+                              // href=""
+                              href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                                hanzis
+                              )}`}
+                              className="text-gray-500 hover:text-white"
+                              target="_blank"
+                            >
+                              <FontAwesomeIcon icon={faLanguage} />
+                            </Link>
+                            <button
+                              onClick={() => {
+                                setToggleLoops(transcriptions);
+                              }}
+                            >
+                              <FontAwesomeIcon
+                                className={
+                                  toggleLoops?.find((item: any) =>
+                                    transcriptions?.find(
+                                      (x: any) => x.end === item?.end
+                                    )
                                   )
-                                )
-                                  ? "text-white"
-                                  : "text-gray-500"
-                              }
-                              icon={faRepeat}
-                            />
-                          </button>
+                                    ? "text-white"
+                                    : "text-gray-500"
+                                }
+                                icon={faRepeat}
+                              />
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-              </div>
-            </ScrollArea>
+                      );
+                    }
+                  )}
+                </div>
+              </ScrollArea>
+            </div>
           </div>
         ) : lesson?.transcriptions?.length ? (
           <div
             className={`${isVideoHidden ? "col-span-12" : "col-span-4"} w-full`}
           >
-            <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-800 p-4">
+            <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-900 p-4">
               <div className="space-y-8">
                 {(lesson?.transcriptions || scripts)
                   .filter((script: any) => {
@@ -301,7 +267,7 @@ export function VideoPlayer({
                                     key={`${JSON.stringify(
                                       item
                                     )}-${idx}-${Math.random()}`}
-                                    className={`text-2xl ${
+                                    className={`${
                                       (example?.timestamp?.[0] ||
                                         example?.start) < currentTime &&
                                       (example?.timestamp?.[1] ||

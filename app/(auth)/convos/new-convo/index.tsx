@@ -29,7 +29,21 @@ export function NewConvo({ type }: { type?: string }) {
       enabled: Boolean(newConvo?.audio),
       onSuccess: (data: any) => {
         if (data) {
-          setConvo("transcriptions", data);
+          const transcriptions = data?.result?.segments.map(
+            ({ id, start, end, text, temperature, ...rest }: any) => {
+              return {
+                id,
+                start,
+                end,
+                hanzi: text,
+                pinyin: text,
+                en: text,
+                // temperature
+              };
+            }
+          );
+
+          setConvo("transcriptions", transcriptions);
         }
       },
     }
@@ -102,6 +116,8 @@ export function NewConvo({ type }: { type?: string }) {
 
     // alert(JSON.stringify(newConvo))
   };
+
+  console.log("NEW CONVO", newConvo);
 
   return (
     <div className="w-full">

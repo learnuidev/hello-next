@@ -7,7 +7,7 @@ from tempfile import NamedTemporaryFile
 model = whisper.load_model('base')
 
 app = Flask(__name__)
-cors = CORS(app, resources={r'/*': {'origins': "http://localhost:3000"}})
+cors = CORS(app, resources={r'/*': {'origins': "http://localhost:3001"}})
 
 
 @app.route('/', methods=['POST'])
@@ -52,17 +52,14 @@ def handler():
 def handler_json():
     request_data = request.get_json()
     media_url = request_data["mediaUrl"]
+
     if not media_url:
         # If the user didn't provide mediaUrl, return a 400 (Bad Request) error.
         abort(400)
 
-    if request_data["translation"]:
-        translation = model.transcribe(media_url, task="translate", fp16=False)
-        result = model.transcribe(media_url)
-        return {'result': result,
-                'media_url': media_url,
-                'translation': translation}
-
+    translation = model.transcribe(media_url, task="translate", fp16=False)
     result = model.transcribe(media_url)
 
-    return {'result': result, 'media_url': media_url}
+    return {'result': result,
+            'media_url': media_url,
+            'translation': translation}

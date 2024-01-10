@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { FocusIcon, FocusIcon as Header } from "@/components/ui/icons";
 
+import Editor from "@monaco-editor/react";
 import { useConvosStore } from "@/data/convos/bm1";
 
 import { useMusic } from "./use-music";
@@ -160,82 +161,97 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
     const { data } = useListGrammarsQuery({ content: transcription?.hanzi });
     return (
       <div className={`text-center`}>
-        <div
-          role="button"
-          onClick={() => {
-            seek(transcription?.start);
+        {play && (
+          <div
+            role="button"
+            onClick={() => {
+              seek(transcription?.start);
 
-            setRepeatHistories({
-              lessonId: lesson1?.id || lesson2.id,
-              eventType: "speech/repeat",
-              eventTime: new Date().getTime(),
-              startTime: transcription.start,
-              hanzi: transcription.hanzi,
-              pinyin: transcription.pinyin,
-              en: transcription.en,
-              step: transcription.step,
-              // item
-            });
-          }}
-        >
-          <p className={`${pinyinMode ? "text-3xl" : "text-3xl"}`}>
-            {transcription?.hanzi}
-          </p>
+              setRepeatHistories({
+                lessonId: lesson1?.id || lesson2.id,
+                eventType: "speech/repeat",
+                eventTime: new Date().getTime(),
+                startTime: transcription.start,
+                hanzi: transcription.hanzi,
+                pinyin: transcription.pinyin,
+                en: transcription.en,
+                step: transcription.step,
+                // item
+              });
+            }}
+          >
+            <p className={`${pinyinMode ? "text-3xl" : "text-3xl"}`}>
+              {transcription?.hanzi}
+            </p>
 
-          {pinyinMode ? (
-            <>
-              <p className="dark:text-gray-400 text-md">
-                {transcription?.pinyin}
-              </p>
-              <p className="dark:text-gray-300 text-md">{transcription?.en}</p>
-            </>
-          ) : null}
-        </div>
+            {pinyinMode ? (
+              <>
+                <p className="dark:text-gray-400 text-md">
+                  {transcription?.pinyin}
+                </p>
+                <p className="dark:text-gray-300 text-md">
+                  {transcription?.en}
+                </p>
+              </>
+            ) : null}
+          </div>
+        )}
 
-        <div
-          // onMouseEnter={() => {
-          //   setDisplayOptions(true);
-          // }}
-          // onMouseLeave={() => {
-          //   setDisplayOptions(false);
-          // }}
-          className="h-12"
-        >
-          {/* {displayOptions ? ( */}
-          {true ? (
-            <div className="my-8 space-x-8">
-              <Link
-                href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                  transcription?.hanzi
-                )}`}
-                target="_blank"
-              >
-                <FontAwesomeIcon icon={faSkyatlas} />
-              </Link>
+        {play && (
+          <div
+            // onMouseEnter={() => {
+            //   setDisplayOptions(true);
+            // }}
+            // onMouseLeave={() => {
+            //   setDisplayOptions(false);
+            // }}
+            className="h-12"
+          >
+            {/* {displayOptions ? ( */}
+            {play && true ? (
+              <div className="my-8 space-x-8">
+                <Link
+                  href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                    transcription?.hanzi
+                  )}`}
+                  target="_blank"
+                >
+                  <FontAwesomeIcon icon={faSkyatlas} />
+                </Link>
 
-              <Link
-                target="_blank"
-                href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                  transcription?.hanzi
-                )}&op=translate`}
-              >
-                <FontAwesomeIcon icon={faGoogle} />
-              </Link>
-              <button
-                onClick={() => {
-                  setShowGrammarAnalysis((prev) => !prev);
-                }}
-              >
-                <FontAwesomeIcon icon={faAtom} />
-              </button>
-            </div>
-          ) : null}
-        </div>
+                <Link
+                  target="_blank"
+                  href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                    transcription?.hanzi
+                  )}&op=translate`}
+                >
+                  <FontAwesomeIcon icon={faGoogle} />
+                </Link>
+                <button
+                  onClick={() => {
+                    setShowGrammarAnalysis((prev) => !prev);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faAtom} />
+                </button>
+              </div>
+            ) : null}
+          </div>
+        )}
 
         {!play && (
-          <code className="text-[10px] flex w-full text-start">
-            <pre>{JSON.stringify(data, null, 2)}</pre>
-          </code>
+          <Editor
+            width={"800px"}
+            height="400px"
+            language="json"
+            theme="vs-dark"
+            value={JSON.stringify(data, null, 2)}
+            // onChange={handleEditorChange}
+          />
+
+          // <code className="text-[10px] flex w-full text-start">
+          //   <pre>{JSON.stringify(data, null, 2)}</pre>
+          // </code>
         )}
       </div>
     );

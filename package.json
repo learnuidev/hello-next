@@ -20,6 +20,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@fortawesome/sharp-solid-svg-icons": "^6.4.0",
     "@mapbox/mapbox-gl-geocoder": "^5.0.1",
+    "@mistralai/mistralai": "^0.0.8",
     "@monaco-editor/react": "^4.6.0",
     "@radix-ui/react-popover": "^1.0.6",
     "@radix-ui/react-scroll-area": "^1.0.5",
@@ -52,6 +53,7 @@
     "@types/react-dom": "18.2.7",
     "@vidstack/player-react": "^1.6.0",
     "@vidstack/react": "^1.5.6",
+    "ai": "^2.2.31",
     "autoprefixer": "10.4.15",
     "aws-amplify": "^5.3.11",
     "chance": "^1.1.11",
@@ -70,6 +72,7 @@
     "next-absolute-url": "^1.2.2",
     "next-themes": "^0.2.1",
     "node-fetch": "^3.3.2",
+    "openai": "^4.24.7",
     "postcss": "8.4.29",
     "ramda": "^0.29.1",
     "react": "18.2.0",
@@ -86,6 +89,7 @@
     "tiptap-markdown": "^0.8.2",
     "typescript": "5.2.2",
     "use-debounce": "^10.0.0",
+    "ytdl-core": "^4.11.5",
     "zustand": "^4.4.1"
   },
   "devDependencies": {

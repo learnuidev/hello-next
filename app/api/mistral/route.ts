@@ -1,0 +1,43 @@
+import { OpenAIStream, StreamingTextResponse } from "ai";
+
+// Note: There are no types for the Mistral API client yet.
+// @ts-ignore
+import MistralClient from "@mistralai/mistralai";
+
+const client = new MistralClient(process.env.MISTRAL_API_KEY || "");
+
+// IMPORTANT! Set the runtime to edge
+
+export const runtime = "edge";
+export async function POST(req: Request) {
+  // Extract the `messages` from the body of the request
+  //   const { messages } = await req.json();
+
+  const { messages, context } = await req.json();
+
+  const firstMessage = messages[0];
+
+  firstMessage.content = `
+    You are an expert at Chinese Language. Please try to answer users question based on the following context.
+    If you don't know the answer, please dont try to make up facts. Just say that you don't know
+    Context: 
+    ${context?.slice(0, 2000)}
+    ${firstMessage.content}
+    `;
+
+  const response = await client.chatStream({
+    model: "mistral-tiny",
+    stream: true,
+    max_tokens: 1000,
+    messages,
+  });
+
+  console.log("RESP", response);
+
+  // Convert the response into a friendly text-stream. The Mistral client responses are
+  // compatible with the Vercel AI SDK OpenAIStream adapter.
+  const stream = OpenAIStream(response);
+
+  // Respond with the stream
+  return new StreamingTextResponse(stream);
+}

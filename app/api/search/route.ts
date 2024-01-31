@@ -19,9 +19,7 @@ export async function POST(req: Request) {
     You are an expert at Chinese Language. Please try to answer users question based on the following context.
     If you don't know the answer, please dont try to make up facts. Just say that you don't know
     Context: 
-    ${context?.slice(0, 2000)}
-    ${firstMessage.content}
-    `;
+    ${context?.slice(0, 2000)}`;
 
   // Ask OpenAI for a streaming chat completion given the prompt
   const response = await openai.chat.completions.create({

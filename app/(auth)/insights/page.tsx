@@ -30,6 +30,7 @@ import { CharacterLearnedBarChart } from "./CharacterLearnedBarChart";
 import { InsightsFilters } from "./InsightsFilters";
 import { InsightsHeader } from "./InsightsHeader";
 import { useCharactersDiscovered } from "./use-characters-discovered";
+import { VideosPage } from "../videos/VideoUploadV2";
 
 export default function Insights() {
   const { data: charactersDiscovered } = useCharactersDiscovered();
@@ -136,6 +137,7 @@ export default function Insights() {
 
   return (
     <main className="">
+      <VideosPage />
       <NavBar />
       {selectedChar ? (
         <SelectedCharacter />

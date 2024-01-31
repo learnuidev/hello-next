@@ -6,6 +6,8 @@ export interface IConfig {
   mandatorySignIn: true;
   graphqlEndpoint: string;
   authenticationType: "AMAZON_COGNITO_USER_POOLS";
+  identityPoolId: string;
+  uploadBucketName: string;
 }
 
 export const config: IConfig = {
@@ -20,4 +22,7 @@ export const config: IConfig = {
   graphqlEndpoint: process.env
     .NEXT_PUBLIC_AWS_APPSYNC_GRAPHQL_ENDPOINT as string,
   authenticationType: "AMAZON_COGNITO_USER_POOLS",
+
+  identityPoolId: process.env.NEXT_PUBLIC_IDENTITY_POOL_ID as string,
+  uploadBucketName: process.env.NEXT_PUBLIC_UPLOAD_BUCKET_NAME as string,
 };

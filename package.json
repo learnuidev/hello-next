@@ -56,7 +56,6 @@
     "ai": "^2.2.31",
     "autoprefixer": "10.4.15",
     "aws-amplify": "^5.3.11",
-    "aws-sdk": "^2.1547.0",
     "axios": "^1.6.5",
     "chance": "^1.1.11",
     "class-variance-authority": "^0.7.0",

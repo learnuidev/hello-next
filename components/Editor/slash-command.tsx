@@ -301,7 +301,7 @@ const CommandList = ({
       }
     },
     // [complete, isLoading, command, editor, items]
-    [command, editor, items]
+    [command, items]
   );
 
   useEffect(() => {

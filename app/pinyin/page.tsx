@@ -1,7 +1,7 @@
 "use client";
 import React, { useMemo } from "react";
-import { CloseIcon, SearchIcon, FocusIcon } from "@/components/ui/icons";
-import { useEffect, useRef, useState } from "react";
+import { CloseIcon } from "@/components/ui/icons";
+
 import { usePinyinChartState, usePinyinChartStore } from "./state";
 
 import {
@@ -561,7 +561,7 @@ function ChartPageVP({
 
       return item?.levels?.some((level: any) => filters?.includes(level));
     });
-  }, [totalCharacters, filters]);
+  }, [filters]);
 
   const problemInitials = useMemo(() => {
     if (!filters.length) {
@@ -574,7 +574,7 @@ function ChartPageVP({
       });
     }
     return [];
-  }, [totalCharacters, filters]);
+  }, [filters]);
 
   const calcRowColor = (val: any, lesson?: any) => {
     if (lesson) {

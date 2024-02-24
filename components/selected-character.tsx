@@ -85,7 +85,7 @@ export function SelectedCharacter() {
           ?.map((x: any) => x?.phraseId)
       ),
     ],
-    []
+    [allAnswers, selectedChar]
   );
 
   const relevantAnswers = useMemo(
@@ -102,7 +102,7 @@ export function SelectedCharacter() {
 
   const answerMap = useMemo(
     () => R.indexBy(R.prop("hanzi"), relevantAnswers),
-    [R, relevantAnswers]
+    [relevantAnswers]
   ) as Record<string, { hanzi: string; journeyId: string; phraseId: string }>;
 
   const uniqueAnswerIds = useMemo(
@@ -198,7 +198,6 @@ export function SelectedCharacter() {
         } shadow-lg rounded-full flex items-center justify-center transition`}
         onClick={() => {
           if (!play) {
-   
             setRepeatHistories({
               ...currentPhrase,
               eventType: "sentence/repeat",
@@ -273,7 +272,6 @@ export function SelectedCharacter() {
                       <button
                         onClick={() => {
                           setSelectedChar(val);
-                       
 
                           if (hanz?.pinyin === "??") {
                             return discoverMutation

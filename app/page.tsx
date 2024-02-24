@@ -13,6 +13,7 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { cleanString } from "@/data/convos/bm1/utils";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
+import { Login } from "@/components/Login";
 
 function HomeAuth() {
   const [isTocHidden, setIsTocHidden] = useState(false);
@@ -78,6 +79,8 @@ export default function Home() {
   if (authUser) {
     return <HomeAuth />;
   }
+
+  return <Login />;
 
   return (
     <main className="">

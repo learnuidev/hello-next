@@ -33,7 +33,7 @@ export function VideoPlayer({ media: { url, scripts, title } }: any) {
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;
     // playerRef.current.seekTo(0, 'seconds')
-  }, [playerRef.current]);
+  }, []);
 
   const [lessonIndex, setLessonIndex] = useState(0);
 
@@ -274,10 +274,11 @@ export function VideoPlayer({ media: { url, scripts, title } }: any) {
                                         example?.end) > currentTime
                                         ? "dark:text-white"
                                         : learnedCharacters?.find(
-                                            (char: any) => char?.hanzi === item
-                                          )
-                                        ? "dark:text-gray-200"
-                                        : "dark:text-gray-400 text-gray-300"
+                                              (char: any) =>
+                                                char?.hanzi === item
+                                            )
+                                          ? "dark:text-gray-200"
+                                          : "dark:text-gray-400 text-gray-300"
                                     } transition`}
                                   >
                                     {item}

@@ -79,6 +79,45 @@ function timeSince(date: any) {
   return Math.floor(seconds) + " seconds ago";
 }
 
+const calcOutcome = (
+  lesson: any,
+  confidence: any,
+  answer: any,
+  expectedAnswer: any
+) => {
+  const expAns = expectedAnswer
+    .replace(", ", "")
+    .replace("?", "")
+    .split("")
+    .filter(Boolean)
+    .join("")
+    .split(" ")
+    .filter((item: any) => ![", ", "？", "，"].includes(item))
+    .join("");
+
+  console.log("ANS", answer);
+
+  // if (
+  //   answer !== expAns.trim() &&
+  //   !lesson?.alternateAnswers?.includes(answer) &&
+  //   !expAns.includes(answer)
+  // ) {
+  //   return <GradeFIcon />
+  // }
+
+  // return <GradeAIcon />
+
+  if (
+    answer !== expAns.trim() &&
+    !lesson?.alternateAnswers?.includes(answer) &&
+    !expAns.includes(answer)
+  ) {
+    return "fail";
+  }
+
+  return "success";
+};
+
 export const PronounciationAnalytics = ({
   lessonIndex,
 }: // lessonId
@@ -135,39 +174,6 @@ export const PronounciationAnalytics = ({
       return "dark:text-orange-300 text-orange-600";
     }
   };
-  const calcOutcome = (confidence: any, answer: any, expectedAnswer: any) => {
-    const expAns = expectedAnswer
-      .replace(", ", "")
-      .replace("?", "")
-      .split("")
-      .filter(Boolean)
-      .join("")
-      .split(" ")
-      .filter((item: any) => ![", ", "？", "，"].includes(item))
-      .join("");
-
-    console.log("ANS", answer);
-
-    // if (
-    //   answer !== expAns.trim() &&
-    //   !lesson?.alternateAnswers?.includes(answer) &&
-    //   !expAns.includes(answer)
-    // ) {
-    //   return <GradeFIcon />
-    // }
-
-    // return <GradeAIcon />
-
-    if (
-      answer !== expAns.trim() &&
-      !lesson?.alternateAnswers?.includes(answer) &&
-      !expAns.includes(answer)
-    ) {
-      return "fail";
-    }
-
-    return "success";
-  };
 
   console.log("LESSON HISTORIES", lessonHistories);
 
@@ -184,6 +190,7 @@ export const PronounciationAnalytics = ({
           transcript: res?.answer?.[0]?.transcript,
           confidence: res?.answer?.[0]?.confidence,
           outcome: calcOutcome(
+            lesson,
             res?.answer?.[0]?.confidence * 100,
             res?.answer?.[0]?.transcript,
             lesson?.hanziV2
@@ -192,7 +199,7 @@ export const PronounciationAnalytics = ({
         return resp;
         // return res?.answer
       });
-  }, [lesson?.id, lessonHistories]);
+  }, [lesson, lessonHistories]);
 
   const viewMode = useViewModeStore((state: any) => state.viewMode);
 
@@ -298,7 +305,7 @@ export const PronounciationAnalytics = ({
                 viewMode === "analytics"
                   ? "dark:text-gray-200 text-gray-800"
                   : "dark:text-gray-600 text-gray-600"
-              } text-4xl dark:hover:text-white shadow-md px-4 py-1 rounded-full shadow-md px-4 py-1 rounded-full`}
+              } text-4xl dark:hover:text-white shadow-md px-4 py-1 rounded-full`}
               onClick={() => {
                 setViewMode("lesson");
                 //
@@ -389,7 +396,7 @@ export const PronounciationAnalytics = ({
                         className={`px-8 py-4 md:px-12 font-extralight hover:bg-gray-200 dark:hover:bg-gray-800 dark:hover:text-white hover:text-gray-800 ${
                           true
                             ? "bg-gray-200 dark:bg-gray-900 dark:text-white text-gray-800"
-                            : "text-gray-600 dark:text-gray-400 text-white"
+                            : "dark:text-gray-400 text-white"
                         } transition`}
                       >
                         {flexRender(

@@ -271,8 +271,8 @@ export const Pronounciation = ({ lessonId }: any) => {
                             lesson?.hanziV2.includes(c)
                               ? "dark:text-gray-300 text-gray-700"
                               : lesson.alternateAnswers?.includes(c)
-                              ? "text-purple-500"
-                              : "text-orange-500"
+                                ? "text-purple-500"
+                                : "text-orange-500"
                           }
                         >
                           {c}{" "}

@@ -83,7 +83,7 @@ export const useMusic = (props: any) => {
     return () => {
       audio.current?.pause();
     };
-  }, [props.url]);
+  }, [props]);
 
   return {
     seek,

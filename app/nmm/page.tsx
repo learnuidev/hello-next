@@ -84,13 +84,22 @@ export default function NomadMethodPage(props: any) {
       <Tabs defaultValue="needs_review" className="p-0">
         <div className="my-8 flex justify-between items-center md:mx-12">
           <TabsList className="space-x-8">
-            <TabsTrigger value="all" className="px-0 data-[state=active]:text-yellow-500">
+            <TabsTrigger
+              value="all"
+              className="px-0 data-[state=active]:text-yellow-500"
+            >
               <FontAwesomeIcon icon={faGlobeAsia} className="text-2xl" />
             </TabsTrigger>
-            <TabsTrigger value="needs_review" className="px-0 data-[state=active]:text-yellow-500">
+            <TabsTrigger
+              value="needs_review"
+              className="px-0 data-[state=active]:text-yellow-500"
+            >
               <FontAwesomeIcon icon={faGraduationCap} className="text-2xl" />
             </TabsTrigger>
-            <TabsTrigger value="learned" className="px-0 data-[state=active]:text-yellow-500">
+            <TabsTrigger
+              value="learned"
+              className="px-0 data-[state=active]:text-yellow-500"
+            >
               <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
             </TabsTrigger>
           </TabsList>
@@ -131,6 +140,8 @@ export default function NomadMethodPage(props: any) {
                     tone: selectedComp?.tone_level,
                   });
 
+                  console.log("SELECTED COMP", selectedComp);
+
                   return (
                     <button
                       key={`${prop.hanzi}-chars-${idx}`}
@@ -144,8 +155,10 @@ export default function NomadMethodPage(props: any) {
                         )
                           ? `${color}`
                           : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                          ? "text-yellow-500"
-                          : "dark:text-gray-500 text-gray-200"
+                            ? "text-yellow-500"
+                            : selectedComp?.tone_level
+                              ? "text-rose-500"
+                              : "dark:text-gray-500 text-gray-200"
                       } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                     >
                       {prop?.hanzi}
@@ -188,8 +201,8 @@ export default function NomadMethodPage(props: any) {
                       )
                         ? `${color}`
                         : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                        ? "text-yellow-500"
-                        : "dark:text-gray-500 text-gray-200"
+                          ? "text-yellow-500"
+                          : "dark:text-gray-500 text-gray-200"
                     } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                   >
                     {prop?.hanzi}
@@ -229,8 +242,8 @@ export default function NomadMethodPage(props: any) {
                       )
                         ? `${color}`
                         : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                        ? "text-yellow-500"
-                        : "dark:text-gray-500 text-gray-200"
+                          ? "text-yellow-500"
+                          : "dark:text-gray-500 text-gray-200"
                     } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                   >
                     {prop?.hanzi}

@@ -81,7 +81,7 @@ export default function NomadMethodPage(props: any) {
     <div className="grow">
       <NavBar />
 
-      <Tabs defaultValue="needs_review" className="p-0">
+      <Tabs defaultValue="all" className="p-0">
         <div className="my-8 flex justify-between items-center md:mx-12">
           <TabsList className="space-x-8">
             <TabsTrigger
@@ -156,8 +156,8 @@ export default function NomadMethodPage(props: any) {
                           ? `${color}`
                           : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                             ? "text-yellow-500"
-                            : selectedComp?.tone_level
-                              ? "text-rose-500"
+                            : selectedComp?.final
+                              ? "text-slate-400"
                               : "dark:text-gray-500 text-gray-200"
                       } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                     >

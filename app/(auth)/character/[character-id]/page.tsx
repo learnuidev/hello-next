@@ -56,17 +56,12 @@ export default function Home() {
       <NavBar />
 
       <div className="px-4 md:px-40">
-        <div className="flex justify-between items-center w-full my-4 md:my-8">
+        <div className="flex justify-between items-center w-full mt-4 md:mt-8">
           <h1 className="text-4xl">{currentDecodedCharacter}</h1>
         </div>
-
-        <div className="my-16">
-          <h3 className="sm:text-xl my-4 space-x-2">
-            <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
-            <span>Summary</span>
-          </h3>
-          <p className="font-light">{meaningResponse?.summary}</p>
-        </div>
+        <p className="font-light mb-4 md:mb-8 mt-4">
+          {meaningResponse?.summary}
+        </p>
 
         <div className="mt-16">
           <h3 className="sm:text-xl my-8 space-x-2">

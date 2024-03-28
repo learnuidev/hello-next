@@ -84,7 +84,7 @@ export default function Home() {
                     {meaning.explanation}
                   </p>
 
-                  <div className="mx-8 w-full space-y-4 mt-2">
+                  <div className="w-full space-y-4 mt-2">
                     {meaning.use_cases?.map((useCase) => {
                       return (
                         <div key={useCase.hanzi} className="w-full">

@@ -1,30 +1,9 @@
-import { useCallback, useMemo, useRef, useState } from "react";
-import { useSpring, animated } from "@react-spring/web";
-import Lottie from "lottie-react";
-import groovyWalkAnimation from "./loading_animation.json";
-
-import yay from "./yay.json";
-
-import { useViewModeStore } from "./use-view-mode-store";
-import { initCharacter, useCharacterStore } from "./nomad-method-store";
-import { useListComponentsQuery } from "@/domain/lesson/component.queries";
-import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
-
-import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import { useListSubComponentsQuery } from "@/domain/component/component.queries";
-import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
-import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
   faArrowRight,
   faXmark,
 } from "@fortawesome/pro-thin-svg-icons";
-import { useAddStepsMutation } from "@/domain/lesson/step.mutations";
-import { ComponentForm } from "./component-form";
-import { LessonAddSuccessView } from "./lesson-add-success-view";
 import { Editor } from "@/components/Editor";
 
 export const ComponentReview = ({

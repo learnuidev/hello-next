@@ -16,6 +16,7 @@ import { pronounciationLessons } from "./pronuncation_data";
 import { useSearchQueryStore } from "./state";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useListParseQuery } from "@/domain/nmm/nmm.queries";
+import posthog from "posthog-js";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -117,12 +118,23 @@ export function SearchPage() {
 
   const searchParams = useSearchParams();
 
+  const searchQuery = searchParams.get("query");
+
+  useEffect(() => {
+    console.log("TODO: Search Query");
+    if (searchQuery) {
+      posthog.capture("search/query", {
+        query: searchQuery,
+      });
+    }
+  }, [searchQuery]);
+
   const { data: queryResult } = useListParseQuery(
     {
-      content: searchParams.get("query") || "",
+      content: searchQuery || "",
     },
     {
-      enabled: Boolean(searchParams.get("query")),
+      enabled: Boolean(searchQuery),
     }
   );
 

@@ -8,7 +8,7 @@ import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useListGrammarAnalysisQuery } from "@/domain/grammar/grammar.queries";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
@@ -138,10 +138,6 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
       // }
     }
   }, [contents, _lessonId, answers]);
-
-  const { data: analysis } = useListGrammarAnalysisQuery({
-    content: currentPhrase?.id || "",
-  });
 
   const currentPhraseIndex =
     currentLesson?.transcriptions?.findIndex(
@@ -432,15 +428,16 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
               //   (lesson: any) => lesson?.id === lessonIndex
               // );
 
-              console.log("CURRENT PHRASE ID", currentPhraseIndex)
+              console.log("CURRENT PHRASE ID", currentPhraseIndex);
 
               if (currentPhraseIndex !== -1) {
                 const nextId =
                   currentLesson?.transcriptions?.[currentPhraseIndex + 1];
 
-                console.log('next id', cleanString(nextId.hanzi))
+                console.log("next id", cleanString(nextId.hanzi));
 
-                nextId?.id && setLessonIndex(nextId?.id || cleanString(nextId.hanzi));
+                nextId?.id &&
+                  setLessonIndex(nextId?.id || cleanString(nextId.hanzi));
 
                 if (params?.["lessonId"]) {
                   router.push(

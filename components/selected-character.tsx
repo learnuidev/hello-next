@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGlass,
   faGlassesRound,
+  faHome,
   faLanguage,
   faLightbulb,
   faMale,
@@ -41,6 +42,7 @@ import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-hist
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Editor } from "./Editor";
 import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
+import { Summary } from "./summary";
 
 export function SelectedCharacter() {
   const [view, setView] = useState("sentences");
@@ -351,7 +353,7 @@ export function SelectedCharacter() {
       );
     }
     return (
-      <div className="flex justify-between space-x-4 py-4 items-center w-full hover:bg-gray-900 px-4">
+      <div className="flex justify-between space-x-4 py-4 items-center w-full hover:bg-gray-900">
         <div role="button" className="flex flex-col">
           {" "}
           <Link
@@ -649,7 +651,12 @@ export function SelectedCharacter() {
   };
 
   const SentencesView = () => {
-    return readMode ? <ReadModeView /> : <NormalView />;
+    return (
+      <>
+        <Summary characterId={selectedChar} showMeanings={false} />
+        {readMode ? <ReadModeView /> : <NormalView />}
+      </>
+    );
   };
 
   const HeaderView = () => {
@@ -663,6 +670,14 @@ export function SelectedCharacter() {
             }}
           >
             <FontAwesomeIcon className="text-2xl" icon={faXmark} />
+          </button>
+          <button
+            className="text-xl"
+            onClick={() => {
+              setView("home");
+            }}
+          >
+            <FontAwesomeIcon className="text-2xl" icon={faHome} />
           </button>
 
           <button
@@ -843,6 +858,10 @@ export function SelectedCharacter() {
       )} */}
 
       {view === "sentences" ? <SentencesView /> : null}
+
+      {!view || view === "home" ? (
+        <Summary showMeanings characterId={selectedChar} />
+      ) : null}
     </div>
   );
 }

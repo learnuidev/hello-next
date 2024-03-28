@@ -276,7 +276,7 @@ export const ComponentForm = ({
           </button>
         </div>
 
-        {showAnalysis ? (
+        {/* {showAnalysis ? (
           <div
             className={`mx-4 justify-center items-center md:mx-64 my-8 grid   ${
               (
@@ -304,8 +304,6 @@ export const ComponentForm = ({
                     className="w-full flex flex-row space-x-2"
                     key={`${lesson?.id}-${params?.en}-${params?.hanzi}`}
                   >
-                    {/* {JSON.stringify(params, null, 2)} */}
-
                     <div className="w-full flex flex-col items-center justify-start">
                       <div className="flex flex-row space-x-2">
                         <a
@@ -324,7 +322,7 @@ export const ComponentForm = ({
                 );
               })}
           </div>
-        ) : null}
+        ) : null} */}
       </div>
     </>
   );

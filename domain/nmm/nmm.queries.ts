@@ -4,6 +4,7 @@ import { queryIds } from "./queryIds";
 import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
+import posthog from "posthog-js";
 
 // TODO: Move this to .env
 const url =
@@ -31,6 +32,7 @@ export function useListParseQuery(
   params = {} as { content: string },
   options = {} as any
 ) {
+  const startTime = Date.now();
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
@@ -39,6 +41,16 @@ export function useListParseQuery(
       // if (options.query) {
       const response = await parse(params, {
         Authorization: authUser?.jwt,
+      });
+
+      const endTime = Date.now();
+      const latency = endTime - startTime;
+
+      posthog.capture("search/latency", {
+        query: params?.content,
+        start_time: startTime,
+        end_time: endTime,
+        latency: latency,
       });
       return response;
     },

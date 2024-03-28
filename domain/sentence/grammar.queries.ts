@@ -9,12 +9,25 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 const url =
   "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-grammars";
 
+export interface ListGrammarsResponse {
+  id: string;
+  creator: string;
+  sentenceId: string;
+  createdAt: number;
+  grammarAnalysis: {
+    hanzi: string;
+    pinyin: string;
+    en: string;
+    explanation: string;
+  }[];
+}
+
 const listGrammars = async (
   options: { sentenceId?: string; content: string },
   opts: {
     Authorization: string;
   }
-) => {
+): Promise<ListGrammarsResponse> => {
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -24,7 +37,7 @@ const listGrammars = async (
   });
   const resp = (await res.json()) as any;
 
-  return resp;
+  return resp as ListGrammarsResponse;
 };
 
 export function useListGrammarsQuery(
@@ -33,25 +46,24 @@ export function useListGrammarsQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery(
-    [queryIds.listGrammars, params?.content],
-    async () => {
+  return useQuery({
+    queryKey: [queryIds.listGrammars, params?.content],
+    queryFn: async () => {
       if (params?.sentenceId || params?.content) {
         const response = await listGrammars(params, {
           Authorization: authUser?.jwt,
         });
-        return response;
+        return response as ListGrammarsResponse;
       }
     },
-    {
-      ...options,
-      retry: false,
-      enabled: options?.enabled && Boolean(authUser?.jwt),
-      // cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    retry: false,
+    enabled: options?.enabled && Boolean(authUser?.jwt),
+    // cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

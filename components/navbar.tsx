@@ -6,10 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
 import { faChartColumn } from "@fortawesome/sharp-solid-svg-icons/faChartColumn";
 import { faGraduationCap } from "@fortawesome/sharp-solid-svg-icons/faGraduationCap";
-import { faMapLocation } from "@fortawesome/sharp-solid-svg-icons/faMapLocation";
+
 import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
 import { NomadIcon } from "./ui/icons";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useState } from "react";
 import { useSearchQueryStore } from "./search/state";
@@ -17,7 +17,6 @@ import React from "react";
 
 import { useEffect } from "react";
 
-import { faComment } from "@fortawesome/pro-light-svg-icons/faComment";
 import { useSelectedCharacter } from "@/app/(auth)/convos/use-selected-character";
 import { faPlayCircle, faX, faXmark } from "@fortawesome/pro-thin-svg-icons";
 import { belts } from "@/app/nmm/utils";
@@ -159,6 +158,8 @@ export const NavBar = () => {
   );
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchQueryParams = searchParams.get("query");
 
   const [isSearchOpen, setIsSearchOpen] = useState("");
 
@@ -167,15 +168,6 @@ export const NavBar = () => {
   const setQuery = useSearchQueryStore((state) => state.setQuery);
   // const [query, setQuery] = useState('')
   const [index, setIndex] = useState(0);
-
-  const queryResult = useSearchQueryStore((state) => state.queryResult) as any;
-  const setQueryResult = useSearchQueryStore((state) => state.setQueryResult);
-  const nepaliQueryResult = useSearchQueryStore(
-    (state) => state.nepaliQueryResult
-  ) as any;
-  const setNepaliQueryResult = useSearchQueryStore(
-    (state) => state.setNepaliQueryResult
-  );
 
   const option = options?.[index % options.length];
 
@@ -193,6 +185,12 @@ export const NavBar = () => {
   const { data: learnedCharacters2 } = useListCharactersQuery();
 
   const { data: reviewList } = useListCharacterReviewList();
+
+  useEffect(() => {
+    if (searchQueryParams) {
+      setQuery(searchQueryParams);
+    }
+  }, [searchQueryParams, setQuery]);
 
   if (selectedChar || routeName === "/") {
     return null;
@@ -285,76 +283,81 @@ export const NavBar = () => {
           />
         </div>
       )}
-      {routeName === "/" ? (
-        <div className="h-12"> </div>
-      ) : (
-        <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
-          {reviewList?.length > 1 ? (
-            <Link
-              href="/review"
-              className={`transition ${
-                routeName?.includes("/review")
-                  ? "text-gray-800 dark:text-gray-300"
-                  : "text-gray-200 dark:text-gray-500"
-              } hover:text-gray-700 transition text-xl`}
-            >
-              {/* <FontAwesomeIcon icon={faComment} /> */}
-              <FontAwesomeIcon icon={faPlayCircle} />
-            </Link>
-          ) : null}
-          <Link
-            href="/convos"
-            className={`transition ${
-              routeName?.includes("/convos")
-                ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-200 dark:text-gray-500"
-            } hover:text-gray-700 transition text-xl`}
-          >
-            {/* <FontAwesomeIcon icon={faComment} /> */}
-            <FontAwesomeIcon icon={faPhotoFilm} />
-          </Link>
-          <Link
-            href="/learn"
-            className={`transition ${
-              routeName === "/learn"
-                ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-200 dark:text-gray-500"
-            } hover:text-gray-700 transition text-xl hidden md:block`}
-          >
-            <FontAwesomeIcon icon={faGraduationCap} />
-          </Link>
-          <Link
-            href="/pinyin"
-            className={`transition ${
-              routeName === "/pinyin"
-                ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-200 dark:text-gray-500"
-            } hover:text-gray-700 transition text-xl hidden md:block`}
-          >
-            <FontAwesomeIcon icon={faTableTree} />
-          </Link>
-          <Link
-            href="/insights"
-            className={`transition ${
-              routeName === "/insights"
-                ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-200 dark:text-gray-500"
-            } hover:text-gray-700 transition text-xl`}
-          >
-            <FontAwesomeIcon icon={faChartColumn} />
-          </Link>
 
-          <Link
-            href="/nmm"
-            className={`transition ${
-              routeName === "/nmm"
-                ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-200 dark:text-gray-500"
-            } hover:text-gray-700 transition text-xl`}
-          >
-            <NomadIcon />
-          </Link>
-          {/* <Link
+      {query ? (
+        <div>TODO</div>
+      ) : (
+        <div>
+          {routeName === "/" ? (
+            <div className="h-12"> </div>
+          ) : (
+            <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
+              {reviewList?.length > 1 ? (
+                <Link
+                  href="/review"
+                  className={`transition ${
+                    routeName?.includes("/review")
+                      ? "text-gray-800 dark:text-gray-300"
+                      : "text-gray-200 dark:text-gray-500"
+                  } hover:text-gray-700 transition text-xl`}
+                >
+                  {/* <FontAwesomeIcon icon={faComment} /> */}
+                  <FontAwesomeIcon icon={faPlayCircle} />
+                </Link>
+              ) : null}
+              <Link
+                href="/convos"
+                className={`transition ${
+                  routeName?.includes("/convos")
+                    ? "text-gray-800 dark:text-gray-300"
+                    : "text-gray-200 dark:text-gray-500"
+                } hover:text-gray-700 transition text-xl`}
+              >
+                {/* <FontAwesomeIcon icon={faComment} /> */}
+                <FontAwesomeIcon icon={faPhotoFilm} />
+              </Link>
+              <Link
+                href="/learn"
+                className={`transition ${
+                  routeName === "/learn"
+                    ? "text-gray-800 dark:text-gray-300"
+                    : "text-gray-200 dark:text-gray-500"
+                } hover:text-gray-700 transition text-xl hidden md:block`}
+              >
+                <FontAwesomeIcon icon={faGraduationCap} />
+              </Link>
+              <Link
+                href="/pinyin"
+                className={`transition ${
+                  routeName === "/pinyin"
+                    ? "text-gray-800 dark:text-gray-300"
+                    : "text-gray-200 dark:text-gray-500"
+                } hover:text-gray-700 transition text-xl hidden md:block`}
+              >
+                <FontAwesomeIcon icon={faTableTree} />
+              </Link>
+              <Link
+                href="/insights"
+                className={`transition ${
+                  routeName === "/insights"
+                    ? "text-gray-800 dark:text-gray-300"
+                    : "text-gray-200 dark:text-gray-500"
+                } hover:text-gray-700 transition text-xl`}
+              >
+                <FontAwesomeIcon icon={faChartColumn} />
+              </Link>
+
+              <Link
+                href="/nmm"
+                className={`transition ${
+                  routeName === "/nmm"
+                    ? "text-gray-800 dark:text-gray-300"
+                    : "text-gray-200 dark:text-gray-500"
+                } hover:text-gray-700 transition text-xl`}
+              >
+                <NomadIcon />
+              </Link>
+              {/* <Link
           href="/map"
           className={`transition ${
             routeName === "/map" ? "text-gray-800 dark:text-gray-300" : "text-gray-200 dark:text-gray-500"
@@ -362,6 +365,8 @@ export const NavBar = () => {
         >
           <FontAwesomeIcon icon={faMapLocation} />
         </Link> */}
+            </div>
+          )}
         </div>
       )}
     </div>

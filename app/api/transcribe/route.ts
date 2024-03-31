@@ -5,6 +5,8 @@ import https from "https";
 import axios from "axios";
 import path from "path";
 
+export const maxDuration = 300;
+
 async function downloadAudioFromVideo({
   videoURL,
   fileLocation,

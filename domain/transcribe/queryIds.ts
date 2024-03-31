@@ -1,4 +1,5 @@
-'use client'
+"use client";
 export const queryIds = {
-  transcribe: 'transcribe'
-}
+  transcribe: "transcribe",
+  transcribeV2: "transcribe-v2",
+};

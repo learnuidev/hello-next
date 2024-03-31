@@ -92,3 +92,40 @@ export function useTranscribeQuery(params: any, options: any) {
     }
   );
 }
+export function useTranscribeQueryV2(
+  params: {
+    videoUrl: string;
+  },
+  options: any
+) {
+  return useQuery({
+    queryKey: [queryIds.transcribeV2, params?.videoUrl],
+    queryFn: async () => {
+      if (params.videoUrl) {
+        const response = await fetch("/api/transcribe", {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            videoUrl: params.videoUrl,
+          }),
+        });
+        const res = await response.json();
+
+        return {
+          ...res,
+        };
+      }
+    },
+    retry: false,
+
+    ...options,
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
+}

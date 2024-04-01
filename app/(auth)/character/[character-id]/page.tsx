@@ -13,6 +13,7 @@ import {
   useListGrammarsQuery,
 } from "@/domain/sentence/grammar.queries";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SearchResult } from "@/components/search-result";
 
 const useGetDecodedCharacter = () => {
   const params = useParams() as {
@@ -34,6 +35,8 @@ export default function Home() {
   const { data: meaning } = useListMeaningsQuery({
     content: currentDecodedCharacter,
   });
+
+  const router = useRouter();
 
   const { data: grammarAnalysis, isLoading: isGrammarAnalysisLoading } =
     useListGrammarsQuery(
@@ -57,93 +60,14 @@ export default function Home() {
     <main className="">
       <NavBar />
 
-      <div className="px-4 md:px-40">
-        <div className="flex justify-between items-center w-full mt-4 md:mt-8">
-          <h1 className="text-4xl">{currentDecodedCharacter}</h1>
-        </div>
-        <p className="font-light mb-4 md:mb-8 mt-4">
-          {meaningResponse?.summary}
-        </p>
+      <SearchResult
+        // onSearchGrammar={(grammar) => {
+        //   router.push(`/search?query=${grammar}`);
 
-        {/* <div className="mt-16">
-          <h3 className="sm:text-xl my-8 space-x-2">
-            <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
-            <span>Meanings</span>
-          </h3>
-
-          <div className="space-y-8">
-            {meaningResponse?.meanings?.map((meaning) => {
-              return (
-                <div key={meaning.meaning}>
-                  <h4 className="font-bold">{meaning.meaning}</h4>
-
-                  <p className="text-gray-300 font-light">
-                    {meaning.explanation}
-                  </p>
-
-                  <div className="w-full space-y-4 mt-2">
-                    {meaning.use_cases?.map((useCase) => {
-                      return (
-                        <div key={useCase.hanzi} className="w-full">
-                          <p>{useCase.hanzi}</p>
-                          <p>{useCase.pinyin}</p>
-                          <p>{useCase.en}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div> */}
-
-        {grammarAnalysis ? (
-          <div className="my-16">
-            <h3 className="sm:text-xl my-4 space-x-2">
-              <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
-              <span>Grammar</span>
-            </h3>
-            {isGrammarAnalysisLoading ? (
-              <div className="flex flex-col space-y-3">
-                <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-[250px]" />
-                  <Skeleton className="h-4 w-[200px]" />
-                </div>
-              </div>
-            ) : (
-              <div className="font-light space-y-4 mt-8">
-                {(
-                  grammarAnalysis as ListGrammarsResponse
-                )?.grammarAnalysis?.map((analysis) => {
-                  if (analysis?.hanzi) {
-                    return (
-                      <div
-                        key={analysis?.hanzi}
-                        className="flex space-x-4 items-center"
-                      >
-                        <p className="w-16">{analysis?.hanzi}</p>
-                        <p>{analysis?.explanation}</p>
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <div
-                        key={analysis?.original}
-                        className="flex space-x-4 items-center"
-                      >
-                        <p className="w-16">{analysis?.original}</p>
-                        <p>{analysis?.explanation}</p>
-                      </div>
-                    );
-                  }
-                })}
-              </div>
-            )}
-          </div>
-        ) : null}
-      </div>
+        //   // router.push()
+        // }}
+        query={params["character-id"]}
+      />
 
       {/* <div>
         <pre>

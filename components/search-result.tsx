@@ -97,7 +97,18 @@ export function SearchResult({
                         key={analysis?.original}
                         className="flex space-x-4 items-center"
                       >
-                        <p className="w-16">{analysis?.original}</p>
+                        {onSearchGrammar ? (
+                          <button
+                            onClick={() => {
+                              onSearchGrammar(analysis?.original || "");
+                            }}
+                          >
+                            {analysis?.original}
+                          </button>
+                        ) : (
+                          <p className="w-16">{analysis?.original}</p>
+                        )}
+
                         <p>{analysis?.explanation}</p>
                       </div>
                     );

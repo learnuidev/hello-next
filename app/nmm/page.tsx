@@ -20,17 +20,19 @@ import { useBeltStore } from "@/components/use-belt-store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAsia } from "@fortawesome/pro-light-svg-icons";
 import { faGraduationCap, faLightbulb } from "@fortawesome/pro-thin-svg-icons";
+import { useRouter } from "next/navigation";
 
 export default function NomadMethodPage(props: any) {
   // const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);
 
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
   const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
+  const router = useRouter();
 
   const selectedId = useSelectedCharacter((state: any) => state?.character);
-  const setSelectedId = useSelectedCharacter(
-    (state: any) => state?.setCharacter
-  );
+  // const setSelectedId = useSelectedCharacter(
+  //   (state: any) => state?.setCharacter
+  // );
   const [view, setView] = useState("characters");
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState(0);
@@ -72,10 +74,6 @@ export default function NomadMethodPage(props: any) {
     from: { opacity: "0" },
     to: { opacity: "1" },
   });
-
-  if (selectedId) {
-    return <SelectedCharacter />;
-  }
 
   return (
     <div className="grow">
@@ -146,7 +144,8 @@ export default function NomadMethodPage(props: any) {
                     <button
                       key={`${prop.hanzi}-chars-${idx}`}
                       onClick={() => {
-                        setSelectedId(prop.hanzi);
+                        // setSelectedId(prop.hanzi);
+                        router.push(`/nmm/${prop.hanzi}`);
                       }}
                       className={`${
                         // learnedCharacters.includes(prop?.hanzi)
@@ -192,7 +191,8 @@ export default function NomadMethodPage(props: any) {
                   <button
                     key={`${prop.hanzi}-chars-${idx}`}
                     onClick={() => {
-                      setSelectedId(prop.hanzi);
+                      router.push(`/nmm/${prop.hanzi}`);
+                      // setSelectedId(prop.hanzi);
                     }}
                     className={`${
                       // learnedCharacters.includes(prop?.hanzi)
@@ -233,7 +233,8 @@ export default function NomadMethodPage(props: any) {
                   <button
                     key={`${prop.hanzi}-chars-${idx}`}
                     onClick={() => {
-                      setSelectedId(prop.hanzi);
+                      router.push(`/nmm/${prop.hanzi}`);
+                      // setSelectedId(prop.hanzi);
                     }}
                     className={`${
                       // learnedCharacters.includes(prop?.hanzi)

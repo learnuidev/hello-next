@@ -30,7 +30,7 @@ export function Summary({
   }
   return (
     <main className="">
-      <NavBar />
+      {/* <NavBar /> */}
 
       <div className="">
         {/* <div className="flex justify-between items-center w-full my-4 md:my-8">

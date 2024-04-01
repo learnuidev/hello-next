@@ -21,7 +21,7 @@ import {
   faXmark,
 } from "@fortawesome/pro-thin-svg-icons";
 
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import Link from "next/link";
 import { useSelectedCharacter } from "@/app/(auth)/convos/use-selected-character";
@@ -44,7 +44,7 @@ import { Editor } from "./Editor";
 import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
 import { Summary } from "./summary";
 
-export function SelectedCharacter() {
+export function SelectedCharacter({ characterId }: { characterId: string }) {
   const [view, setView] = useState("sentences");
   const searchParams = useSearchParams();
 
@@ -71,10 +71,12 @@ export function SelectedCharacter() {
     [contents]
   );
 
-  const selectedChar = useSelectedCharacter((state: any) => state?.character);
-  const setSelectedChar = useSelectedCharacter(
-    (state: any) => state?.setCharacter
-  );
+  // const selectedChar = useSelectedCharacter((state: any) => state?.character);
+  // const setSelectedChar = useSelectedCharacter(
+  //   (state: any) => state?.setCharacter
+  // );
+
+  const selectedChar = characterId;
 
   const relevantAnswersHanzi = useMemo(
     () => [
@@ -93,7 +95,7 @@ export function SelectedCharacter() {
   const relevantAnswers = useMemo(
     () =>
       allAnswers?.filter((answer: any) => {
-        return answer?.phraseId?.includes(selectedChar?.hanzi || selectedChar);
+        return answer?.phraseId?.includes(selectedChar);
       }),
     [allAnswers, selectedChar]
   );
@@ -151,6 +153,8 @@ export function SelectedCharacter() {
       }),
     [characters, selectedChar]
   );
+
+  const router = useRouter();
 
   const discoverMutation = useDiscoverMutation();
 
@@ -273,7 +277,8 @@ export function SelectedCharacter() {
                 > */}
                       <button
                         onClick={() => {
-                          setSelectedChar(val);
+                          // setSelectedChar(val);
+                          router.push(`/nmm/${val}`);
 
                           if (hanz?.pinyin === "??") {
                             return discoverMutation
@@ -296,7 +301,8 @@ export function SelectedCharacter() {
                       {/* </Link> */}
                       <button
                         onClick={() => {
-                          setSelectedChar(val);
+                          // setSelectedChar(val)
+                          router.push(`/nmm/${val}`);
 
                           console.log("HANZ", hanz);
 
@@ -379,7 +385,8 @@ export function SelectedCharacter() {
                   <span
                     key={`${val}-${idy}`}
                     onClick={() => {
-                      setSelectedChar(val);
+                      // setSelectedChar(val);
+                      router.push(`/nmm/${val}`);
                     }}
                     className={`${
                       selectedChar === val
@@ -501,7 +508,8 @@ export function SelectedCharacter() {
                       > */}
                             <button
                               onClick={() => {
-                                setSelectedChar(val);
+                                // setSelectedChar(val);
+                                router.push(`/nmm/${val}`);
 
                                 if (hanz?.pinyin === "??") {
                                   return discoverMutation
@@ -524,7 +532,8 @@ export function SelectedCharacter() {
                             {/* </Link> */}
                             <button
                               onClick={() => {
-                                setSelectedChar(val);
+                                // setSelectedChar(val);
+                                router.push(`/nmm/${val}`);
 
                                 if (hanz?.pinyin === "??") {
                                   return discoverMutation
@@ -613,7 +622,8 @@ export function SelectedCharacter() {
                           <span
                             key={`${idx}-${val}-${idx}-${idy}-${idy}-${idx}`}
                             onClick={() => {
-                              setSelectedChar(val);
+                              // setSelectedChar(val);
+                              router.push(`/nmm/${val}`);
                             }}
                             className={`${
                               selectedChar === val
@@ -661,12 +671,13 @@ export function SelectedCharacter() {
 
   const HeaderView = () => {
     return (
-      <div className="flex justify-between items-center">
+      <div className="my-4 flex justify-between items-center">
         <div className="space-x-8 flex items-center">
           <button
             className="text-xl"
             onClick={() => {
-              setSelectedChar("");
+              // setSelectedChar("");
+              router.push(`/nmm`);
             }}
           >
             <FontAwesomeIcon className="text-2xl" icon={faXmark} />
@@ -788,17 +799,17 @@ export function SelectedCharacter() {
           <Link
             target="_blank"
             href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-              selectedChar?.hanzi || selectedChar
+              selectedChar
             )}`}
             className="flex items-end space-x-2"
           >
             {" "}
-            <span>{selectedChar?.hanzi || selectedChar}</span>{" "}
+            <span>{selectedChar}</span>{" "}
           </Link>
           <Link
             target="_blank"
             href={`https://hanzicraft.com/character/${encodeURIComponent(
-              selectedChar?.hanzi || selectedChar
+              selectedChar
             )}`}
             className="flex items-end space-x-2"
           >
@@ -808,7 +819,7 @@ export function SelectedCharacter() {
           <Link
             target="_blank"
             href={`https://hanzicraft.com/character/${encodeURIComponent(
-              selectedChar?.hanzi || selectedChar
+              selectedChar
             )}`}
             className="flex items-end space-x-2"
           >
@@ -860,7 +871,7 @@ export function SelectedCharacter() {
       {view === "sentences" ? <SentencesView /> : null}
 
       {!view || view === "home" ? (
-        <Summary showMeanings characterId={selectedChar} />
+        <Summary showMeanings characterId={characterId} />
       ) : null}
     </div>
   );

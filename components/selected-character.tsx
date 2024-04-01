@@ -9,22 +9,18 @@ import * as R from "ramda";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
-  faGlass,
   faGlassesRound,
   faHome,
   faLanguage,
   faLightbulb,
   faMale,
-  faRocketLaunch,
   faSpaceStationMoon,
-  faX,
   faXmark,
 } from "@fortawesome/pro-thin-svg-icons";
 
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import Link from "next/link";
-import { useSelectedCharacter } from "@/app/(auth)/convos/use-selected-character";
 
 import { useListContentsQuery } from "@/domain/content/content.queries";
 
@@ -46,9 +42,6 @@ import { Summary } from "./summary";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const [view, setView] = useState("sentences");
-  const searchParams = useSearchParams();
-
-  const lessonId = searchParams.get("lessonId");
 
   const addCharacterMutation = useAddCharacterMutation();
   // const params = useParams() as {
@@ -70,11 +63,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     () => contents?.map((content: any) => content?.transcriptions)?.flat(),
     [contents]
   );
-
-  // const selectedChar = useSelectedCharacter((state: any) => state?.character);
-  // const setSelectedChar = useSelectedCharacter(
-  //   (state: any) => state?.setCharacter
-  // );
 
   const selectedChar = characterId;
 
@@ -99,10 +87,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       }),
     [allAnswers, selectedChar]
   );
-
-  // const uniqueAnswers = relevantAnswersHanzi?.map((x: string) => {
-  //   return relevantAnswers?.find((ans: any) => ans?.hanzi === x);
-  // });
 
   const answerMap = useMemo(
     () => R.indexBy(R.prop("hanzi"), relevantAnswers),
@@ -164,17 +148,12 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     [components, selectedChar]
   );
 
-  // const readMode = true;
-
   const color = calculateColor({ tone: selectedComp?.tone_level });
 
   const { data: sentences } = useListSentencesQuery({
     component: selectedChar,
   });
 
-  // if (view === "review") {
-  //   return <div> TODO Sentences </div>;
-  // }
   if (view === "play") {
     return (
       <NomadMethod
@@ -266,18 +245,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                           : "text-gray-400 dark:text-gray-300"
                       }`}
                     >
-                      {/* <p className="text-sm">{hanz?.pinyin}</p> */}
-
-                      {/* <Link
-                  target="_blank"
-                  href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                    char?.hanzi
-                  )}`}
-                  // className="flex items-end space-x-2"
-                > */}
                       <button
                         onClick={() => {
-                          // setSelectedChar(val);
                           router.push(`/nmm/${val}`);
 
                           if (hanz?.pinyin === "??") {
@@ -298,10 +267,9 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                       >
                         {hanz?.pinyin?.toLocaleLowerCase()}
                       </button>
-                      {/* </Link> */}
+
                       <button
                         onClick={() => {
-                          // setSelectedChar(val)
                           router.push(`/nmm/${val}`);
 
                           console.log("HANZ", hanz);
@@ -328,10 +296,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             </span>
           </div>
 
-          {/* {currentPhrase?.audio ? (
-            <AudioComponent currentPhrase={currentPhrase} />
-          ) : null} */}
-
           <div className="flex space-x-4 items-center">
             {currentPhrase?.audio ? (
               <AudioComponent currentPhrase={currentPhrase} />
@@ -339,18 +303,10 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
             <Link
               target="_blank"
-              // href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-              //   currentPhrase?.hanzi
-              // )}`}
-
               href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
                 currentPhrase?.hanzi
               )}&op=translate`}
-              // href={`https://www.google.com/search?q=google+translate&query=${encodeURIComponent(
-              //   currentPhrase?.hanzi
-              // )}in%20english`}
               className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
-              // className="text-gray-500 dark:text-gray-300 text-xs"
             >
               <FontAwesomeIcon icon={faGoogle} />
             </Link>
@@ -367,7 +323,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
               currentPhrase?.hanzi
             )}`}
-            // className="flex items-end space-x-2"
           >
             <span className="text-sm text-gray-500 dark:text-gray-400">
               {currentPhrase?.pinyin}
@@ -385,7 +340,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                   <span
                     key={`${val}-${idy}`}
                     onClick={() => {
-                      // setSelectedChar(val);
                       router.push(`/nmm/${val}`);
                     }}
                     className={`${
@@ -411,18 +365,10 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
           <Link
             target="_blank"
-            // href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-            //   currentPhrase?.hanzi
-            // )}`}
-
             href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
               currentPhrase?.hanzi
             )}&op=translate`}
-            // href={`https://www.google.com/search?q=google+translate&query=${encodeURIComponent(
-            //   currentPhrase?.hanzi
-            // )}in%20english`}
             className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
-            // className="text-gray-500 dark:text-gray-300 text-xs"
           >
             <FontAwesomeIcon icon={faGoogle} />
           </Link>
@@ -436,10 +382,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     return (
       <div className="my-8">
         <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
-          {/* {firstLesson?.steps?.slice(0, 5)?.map((lesson: any) => {
-            return <HanziViewer key={lesson?.id} currentPhrase={lesson} />;
-          })} */}
-
           {uniqueAnswerIds?.map((id: any, idx: number) => {
             const char = answerMap?.[id] || {};
 
@@ -497,15 +439,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                                 : "text-gray-400 dark:text-gray-300"
                             }`}
                           >
-                            {/* <p className="text-sm">{hanz?.pinyin}</p> */}
-
-                            {/* <Link
-                        target="_blank"
-                        href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                          char?.hanzi
-                        )}`}
-                        // className="flex items-end space-x-2"
-                      > */}
                             <button
                               onClick={() => {
                                 // setSelectedChar(val);
@@ -598,7 +531,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                     href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
                       char?.hanzi
                     )}`}
-                    // className="flex items-end space-x-2"
                   >
                     <span className="text-sm text-gray-500 dark:text-gray-400">
                       {currentPhrase?.pinyin}
@@ -608,12 +540,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                     {currentPhrase?.hanzi
                       ?.split("")
                       ?.map((val: string, idy: number) => {
-                        // const toneLevel = getCharacterToneLevel(
-                        //   currentPhrase as ICharacter
-                        // );
-
-                        // const color = calculateColor({ tone: toneLevel });
-
                         const color = calculateColor({
                           tone: selectedComp?.tone_level,
                         });
@@ -676,7 +602,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           <button
             className="text-xl"
             onClick={() => {
-              // setSelectedChar("");
               router.push(`/nmm`);
             }}
           >
@@ -704,36 +629,24 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             onClick={() => {
               setView("sentences");
             }}
-            // onClick={() => {
-            //   setReadMode(!readMode);
-            // }}
           >
             <FontAwesomeIcon className="text-2xl" icon={faSpaceStationMoon} />
-            {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
           </button>
           <button
             className="text-xl"
             onClick={() => {
               setView("review");
             }}
-            // onClick={() => {
-            //   setReadMode(!readMode);
-            // }}
           >
             <FontAwesomeIcon className="text-2xl" icon={faMale} />
-            {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
           </button>
           <button
             className="text-xl"
             onClick={() => {
               setView("play");
             }}
-            // onClick={() => {
-            //   setReadMode(!readMode);
-            // }}
           >
             <PlayIcon className="text-2xl" />
-            {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
           </button>
           {isAlreadyLearned ? null : (
             <button
@@ -754,28 +667,15 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                   component: "na",
                   sub_components: [],
                 });
-                // .then(() => {
-                //   reset();
-                // });
               }}
-
-              // onClick={() => {
-              //   setView("play");
-              // }}
-              // onClick={() => {
-              //   setReadMode(!readMode);
-              // }}
             >
               <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
-              {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
             </button>
           )}
           {selectedComp?.group ? null : (
             <button
               className="text-xl"
               onClick={() => {
-                // setView("play");
-
                 discoverMutation
                   .mutateAsync({
                     hanzi: selectedComp?.hanzi,
@@ -784,12 +684,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                     console.log("Discovered!!", resp);
                   });
               }}
-              // onClick={() => {
-              //   setReadMode(!readMode);
-              // }}
             >
               <FontAwesomeIcon icon={faLanguage} />
-              {/* <FontAwesomeIcon icon={faGlassesRound} /> */}
             </button>
           )}
         </div>
@@ -859,14 +755,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           />
         </div>
       ) : null}
-
-      {/* {isAlreadyLearned?.story && (
-        <Editor
-          id="story-123"
-          className="text-center border-solid h-12 border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
-          content={isAlreadyLearned?.story || ""}
-        />
-      )} */}
 
       {view === "sentences" ? <SentencesView /> : null}
 

@@ -15,7 +15,8 @@ export interface ListGrammarsResponse {
   sentenceId: string;
   createdAt: number;
   grammarAnalysis: {
-    hanzi: string;
+    hanzi?: string;
+    original: string;
     pinyin: string;
     en: string;
     explanation: string;

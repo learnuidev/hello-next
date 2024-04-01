@@ -65,7 +65,7 @@ export default function Home() {
           {meaningResponse?.summary}
         </p>
 
-        <div className="mt-16">
+        {/* <div className="mt-16">
           <h3 className="sm:text-xl my-8 space-x-2">
             <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
             <span>Meanings</span>
@@ -96,8 +96,7 @@ export default function Home() {
               );
             })}
           </div>
-          {/* <p className="font-light">{meaning?.summary}</p> */}
-        </div>
+        </div> */}
 
         {grammarAnalysis ? (
           <div className="my-16">
@@ -118,15 +117,27 @@ export default function Home() {
                 {(
                   grammarAnalysis as ListGrammarsResponse
                 )?.grammarAnalysis?.map((analysis) => {
-                  return (
-                    <div
-                      key={analysis?.hanzi}
-                      className="flex space-x-4 items-center"
-                    >
-                      <p className="w-16">{analysis?.hanzi}</p>
-                      <p>{analysis?.explanation}</p>
-                    </div>
-                  );
+                  if (analysis?.hanzi) {
+                    return (
+                      <div
+                        key={analysis?.hanzi}
+                        className="flex space-x-4 items-center"
+                      >
+                        <p className="w-16">{analysis?.hanzi}</p>
+                        <p>{analysis?.explanation}</p>
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div
+                        key={analysis?.original}
+                        className="flex space-x-4 items-center"
+                      >
+                        <p className="w-16">{analysis?.original}</p>
+                        <p>{analysis?.explanation}</p>
+                      </div>
+                    );
+                  }
                 })}
               </div>
             )}

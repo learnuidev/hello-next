@@ -1,8 +1,6 @@
 // import Image from 'next/image'
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
-import { NavBar } from "@/components/navbar";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
 import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
@@ -30,8 +28,6 @@ export function Summary({
   }
   return (
     <main className="">
-      {/* <NavBar /> */}
-
       <div className="">
         {/* <div className="flex justify-between items-center w-full my-4 md:my-8">
           <h1 className="text-4xl">{currentDecodedCharacter}</h1>
@@ -45,6 +41,10 @@ export function Summary({
           <p className="font-light w-full sm:w-8/12">
             {meaningResponse?.summary}
           </p>
+
+          {/* <div className="my-16">
+            <SummaryV2 searchParams={{ prompt: characterId }} />
+          </div> */}
         </div>
         {showMeanings && (
           <div className="mt-16">

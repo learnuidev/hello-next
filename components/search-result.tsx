@@ -11,6 +11,7 @@ import {
   useListGrammarsQuery,
 } from "@/domain/sentence/grammar.queries";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
 
 export function SearchResult({
   query,
@@ -26,6 +27,8 @@ export function SearchResult({
   const { data: meaning } = useListMeaningsQuery({
     content: currentDecodedQuery,
   });
+
+  const router = useRouter();
 
   const { data: grammarAnalysis, isLoading: isGrammarAnalysisLoading } =
     useListGrammarsQuery(
@@ -85,10 +88,30 @@ export function SearchResult({
                             {analysis?.hanzi}
                           </button>
                         ) : (
-                          <p className="w-16">{analysis?.hanzi}</p>
+                          <button
+                            onClick={() => {
+                              router.push(
+                                `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
+                              );
+                              // onSearchGrammar(analysis?.hanzi || "");
+                            }}
+                            className="w-16"
+                          >
+                            {analysis?.hanzi}
+                          </button>
                         )}
 
-                        <p>{analysis?.explanation}</p>
+                        <button
+                          onClick={() => {
+                            router.push(
+                              `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
+                            );
+                            // onSearchGrammar(analysis?.hanzi || "");
+                          }}
+                          // className="w-16"
+                        >
+                          {analysis?.explanation}
+                        </button>
                       </div>
                     );
                   } else {

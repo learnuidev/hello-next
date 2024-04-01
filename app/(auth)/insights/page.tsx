@@ -138,7 +138,7 @@ export default function Insights() {
     <main className="">
       <NavBar />
       {selectedChar ? (
-        <SelectedCharacter />
+        <SelectedCharacter characterId={selectedChar} />
       ) : (
         <div className="w-full grid gap-4 px-4 md:px-12 my-4 md:my-12">
           <InsightsFilters />

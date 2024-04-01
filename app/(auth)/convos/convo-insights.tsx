@@ -124,7 +124,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
   }
 
   return selectedChar ? (
-    <SelectedCharacter />
+    <SelectedCharacter characterId={selectedChar} />
   ) : (
     <div className="w-full px-4 md:px-32 my-4 md:my-8">
       <div>

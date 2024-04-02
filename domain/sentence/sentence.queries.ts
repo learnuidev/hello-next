@@ -33,22 +33,26 @@ export function useListSentencesQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
+  console.log("AUTH USER", authUser);
+
   return useQuery(
     [queryIds.list_sentences, params?.component],
     async () => {
-      const response = await listSentences(params, {
-        Authorization: authUser?.jwt,
-      });
-      return response;
+      if (authUser?.jwt) {
+        const response = await listSentences(params, {
+          Authorization: authUser?.jwt,
+        });
+        return response;
+      }
     },
     {
       ...options,
-      enabled: options?.enabled && Boolean(authUser?.jwt),
+      enabled: Boolean(authUser?.jwt),
       // cacheTime: 1000 * 60 * 300, // 30 minutes,
-      // refetchOnWindowFocus: false,
-      // refetchOnFocus: false,
-      // refetchOnMount: false,
-      // refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
     }
   );
 }

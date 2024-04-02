@@ -56,8 +56,6 @@ export default function NomadMethodPage(props: any) {
 
   const lastAnswer = answers?.[answers?.length - 1];
 
-
-
   // const { data: learnedCharacters } = useListCharactersQuery();
 
   // useEffect(() => {

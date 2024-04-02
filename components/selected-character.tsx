@@ -602,7 +602,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
   const SentencesView = () => {
     return (
       <>
-        <Summary characterId={selectedChar} showMeanings={false} />
+        {/* <Summary characterId={selectedChar} showMeanings={false} /> */}
         {readMode ? <ReadModeView /> : <NormalView />}
       </>
     );
@@ -772,7 +772,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       {view === "sentences" ? <SentencesView /> : null}
 
       {!view || view === "home" ? (
-        <Summary showMeanings characterId={characterId} />
+        <Summary showMeanings={true} characterId={characterId} />
       ) : null}
     </div>
   );

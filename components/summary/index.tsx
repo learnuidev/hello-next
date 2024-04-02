@@ -2,11 +2,13 @@
 "use client";
 
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
+import Markdown from "react-markdown";
 
 import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
 import Link from "next/link";
+import { Editor } from "../Editor";
 
 export function Summary({
   characterId,
@@ -38,13 +40,17 @@ export function Summary({
             <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
             <span>Summary</span>
           </h3> */}
-          <p className="font-light w-full sm:w-8/12">
+          {/* <p className="font-light w-full sm:w-8/12">
             {meaningResponse?.summary}
-          </p>
+          </p> */}
 
-          {/* <div className="my-16">
-            <SummaryV2 searchParams={{ prompt: characterId }} />
-          </div> */}
+          <Editor
+            readOnly={true}
+            content={meaningResponse?.summary || ""}
+            id={meaningResponse?.summary || ""}
+          />
+
+          {/* <Markdown>{meaningResponse?.summary}</Markdown> */}
         </div>
         {showMeanings && (
           <div className="mt-16">
@@ -88,7 +94,6 @@ export function Summary({
                 );
               })}
             </div>
-            {/* <p className="font-light">{meaning?.summary}</p> */}
           </div>
         )}
       </div>

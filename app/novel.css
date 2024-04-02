@@ -1,5 +1,17 @@
 /* TOC */
 
+.ProseMirror {
+  padding: 0rem 4rem;
+  /* padding-right: 0rem !important; */
+  /* padding-left: 0rem !important; */
+  /* background-color: black; */
+  /* color: white; */
+
+  > * + * {
+    margin-top: 0.75em;
+  }
+}
+
 .table-of-content {
   position: fixed;
   top: 1rem;
@@ -41,7 +53,9 @@
 }
 
 .ProseMirror {
-  padding-right: 24rem;
+  /* padding-right: 0rem; */
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
   /* background-color: black; */
   /* color: white; */
 
@@ -63,7 +77,9 @@
   }
 
   & h2 {
-    font-size: 2rem;
+    margin-top: 2.4rem;
+    margin-bottom: 1.6rem;
+    font-size: 1.4rem;
     font-weight: 800;
   }
   & h3 {
@@ -81,7 +97,7 @@
       font-weight: 800;
     }
     & h2 {
-      font-size: 1.6rem;
+      font-size: 1rem;
       font-weight: 800;
     }
   }

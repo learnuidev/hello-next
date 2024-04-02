@@ -54,7 +54,7 @@ export function SearchResult({
       <div className="flex justify-between items-center w-full mt-4 md:mt-8">
         <h1 className="text-4xl">{currentDecodedQuery}</h1>
       </div>
-      <p className="font-light mb-4 md:mb-8 mt-4">{meaningResponse?.summary}</p>
+      {/* <p className="font-light mb-4 md:mb-8 mt-4">{meaningResponse?.summary}</p> */}
 
       {meaningResponse?.summary && (
         <Editor

@@ -94,7 +94,16 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
   const answerMap = useMemo(
     () => R.indexBy(R.prop("hanzi"), relevantAnswers),
     [relevantAnswers]
-  ) as Record<string, { hanzi: string; journeyId: string; phraseId: string }>;
+  ) as Record<
+    string,
+    {
+      hanzi: string;
+      journeyId: string;
+      phraseId: string;
+      input?: string;
+      explanation?: string;
+    }
+  >;
 
   const uniqueAnswerIds = useMemo(
     () => [
@@ -224,8 +233,13 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           };
         });
 
+      return "TODO";
+
       return (
         <div className="flex justify-between w-full">
+          {currentPhrase?.input && (
+            <p className="text-sm text-gray-400">{currentPhrase?.input}</p>
+          )}
           <div
             role="button"
             className="pb-8 flex flex-col"
@@ -298,10 +312,15 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                   );
                 })}
             </div>
+
             <span className="text-sm text-gray-500">
               {currentPhrase?.en || currentPhrase?.title}
             </span>
           </div>
+
+          {currentPhrase?.input && (
+            <p className="text-sm text-gray-400">{currentPhrase?.input}</p>
+          )}
 
           <div className="flex space-x-4 items-center">
             {currentPhrase?.audio ? (
@@ -366,9 +385,17 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                 );
               })}
           </span>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-300 font-semibold">
+            {currentPhrase?.input}
+          </span>
+          <span className="text-sm text-gray-400">
             {currentPhrase?.en || currentPhrase?.title}
           </span>
+          {!currentPhrase?.hanzi && (
+            <span className="text-xs text-gray-500">
+              {currentPhrase?.explanation}
+            </span>
+          )}
         </div>
 
         <div className="flex space-x-4 items-center">
@@ -386,7 +413,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             <FontAwesomeIcon icon={faGoogle} />
           </Link>
           <Link
-            href={`/search?query=${encodeURIComponent(currentPhrase?.hanzi)}`}
+            href={`/search?query=${encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input)}`}
             className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
           >
             <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -527,6 +554,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
   const NormalView = () => {
     return (
       <div className="">
+        {/* <div>{JSON.stringify(sentences, null, 2)}</div>; */}
         <div className="flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
           {uniqueAnswerIds?.map((id: any, idx: number) => {
             const char = answerMap?.[id] || {};
@@ -542,7 +570,9 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
               allSteps?.find((step: any) => cleanString(step?.hanzi) === id);
 
             return (
-              <div key={`${idx}-${char?.hanzi}-${idx}-${Math.random()}`}>
+              <div
+                key={`${idx}-${char?.hanzi || char?.input}-${idx}-${Math.random()}`}
+              >
                 <div role="button" className="pb-8 flex flex-col">
                   {" "}
                   <Link

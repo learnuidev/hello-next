@@ -40,6 +40,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Editor } from "./Editor";
 import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
 import { Summary } from "./summary";
+import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const [view, setView] = useState("sentences");
@@ -130,6 +131,10 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
   );
 
   const [readMode, setReadMode] = useState(false);
+
+  const { data: meaning } = useListMeaningsQuery({
+    content: characterId,
+  });
 
   const isAlreadyLearned = useMemo(
     () =>
@@ -620,23 +625,27 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           >
             <FontAwesomeIcon className="text-2xl" icon={faXmark} />
           </button>
-          <button
-            className="text-xl"
-            onClick={() => {
-              setView("home");
-            }}
-          >
-            <FontAwesomeIcon className="text-2xl" icon={faHome} />
-          </button>
+          {meaning ? (
+            <button
+              className="text-xl"
+              onClick={() => {
+                setView("home");
+              }}
+            >
+              <FontAwesomeIcon className="text-2xl" icon={faHome} />
+            </button>
+          ) : null}
 
-          <button
-            className="text-xl"
-            onClick={() => {
-              setReadMode(!readMode);
-            }}
-          >
-            <FontAwesomeIcon icon={faGlassesRound} />
-          </button>
+          {view === "sentences" && (
+            <button
+              className="text-xl"
+              onClick={() => {
+                setReadMode(!readMode);
+              }}
+            >
+              <FontAwesomeIcon icon={faGlassesRound} />
+            </button>
+          )}
           <button
             className="text-xl"
             onClick={() => {

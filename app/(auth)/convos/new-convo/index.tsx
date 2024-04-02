@@ -113,7 +113,6 @@ export function NewConvo({ type }: { type?: string }) {
     };
   };
 
-  console.log("redploy");
   const onAudioFileChange = (e: any) => {
     const s = URL.createObjectURL(e.target.files[0]);
 

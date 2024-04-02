@@ -76,22 +76,24 @@ export const Editor = ({
     },
   });
 
-  return (
-    <>
-      {/* <div className="hidden sm:block table-of-content">
-        <MemorizedToC
-          editor={editor}
-          items={editor?.storage?.tableOfContent?.content}
-        />
-      </div> */}
-      {editor && !readOnly && <EditorBubbleMenu editor={editor} />}
-      <div>
-        <EditorContent
-          readOnly={readOnly}
-          className={className}
-          editor={editor}
-        />
-      </div>
-    </>
-  );
+  if (content) {
+    return (
+      <>
+        {/* <div className="hidden sm:block table-of-content">
+          <MemorizedToC
+            editor={editor}
+            items={editor?.storage?.tableOfContent?.content}
+          />
+        </div> */}
+        {editor && !readOnly && <EditorBubbleMenu editor={editor} />}
+        <div>
+          <EditorContent
+            readOnly={readOnly}
+            className={className}
+            editor={editor}
+          />
+        </div>
+      </>
+    );
+  }
 };

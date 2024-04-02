@@ -44,11 +44,7 @@ export function Summary({
             {meaningResponse?.summary}
           </p> */}
 
-          <Editor
-            readOnly={true}
-            content={meaningResponse?.summary || ""}
-            id={meaningResponse?.summary || ""}
-          />
+          <Editor readOnly={true} content={meaningResponse?.summary || ""} />
 
           {/* <Markdown>{meaningResponse?.summary}</Markdown> */}
         </div>

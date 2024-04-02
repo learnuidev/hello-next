@@ -177,19 +177,21 @@ export const ComponentForm = ({
                       </span>
                     </p>
 
-                    <Editor
-                      className="text-start my-8"
-                      id="story"
-                      content={characterState?.[lesson?.key] as any}
-                      onUpdate={(val: any) => {
-                        const newState = {
-                          ...characterState,
-                          [lesson?.key]: val,
-                        };
+                    {characterState?.[lesson?.key] && (
+                      <Editor
+                        className="text-start my-8"
+                        // id="story"
+                        content={characterState?.[lesson?.key] as any}
+                        onUpdate={(val: any) => {
+                          const newState = {
+                            ...characterState,
+                            [lesson?.key]: val,
+                          };
 
-                        setCharacterState(newState);
-                      }}
-                    />
+                          setCharacterState(newState);
+                        }}
+                      />
+                    )}
                   </div>
                 ) : (
                   // <textarea

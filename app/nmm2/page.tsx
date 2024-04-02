@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Editor } from "@/components/Editor";
 import { useState } from "react";
@@ -8,7 +8,6 @@ export default function NomadMethodPage() {
   return (
     <div>
       <Editor
-        id="123"
         //  autoFocus
         onUpdate={(event: any) => {
           setCharacterState(event);

@@ -40,7 +40,7 @@ export const ComponentReview = ({
 
         <div className="pt-4 pb-16 text-gray-300">
           {/* {characterState.story} */}
-          <Editor id="story" content={characterState.story} />
+          <Editor content={characterState.story} />
         </div>
       </div>
 

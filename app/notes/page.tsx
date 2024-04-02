@@ -17,7 +17,7 @@ export default function Home() {
       <NavBar />
 
       <div className="px-4 md:px-32 md:my-4">
-        <Editor content="Hello" id="test" />
+        <Editor content="Hello" />
       </div>
     </main>
   );

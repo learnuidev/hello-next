@@ -112,6 +112,8 @@ export function NewConvo({ type }: { type?: string }) {
       setConvo("transcriptions", JSON.parse(e?.target?.result as any));
     };
   };
+
+  console.log("redploy");
   const onAudioFileChange = (e: any) => {
     const s = URL.createObjectURL(e.target.files[0]);
 

@@ -129,8 +129,6 @@ export function NewConvo({ type }: { type?: string }) {
     // alert(JSON.stringify(newConvo))
   };
 
-  console.log("NEW CONVO", newConvo);
-
   return (
     <div className="w-full">
       <div className="flex my-8 px-28">

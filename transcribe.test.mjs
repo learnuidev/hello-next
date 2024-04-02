@@ -13,8 +13,6 @@ fs.writeFileSync("./test.json", JSON.stringify({}));
 
 const stream = fs.createReadStream(`./test.json`);
 
-console.log("File stream", stream);
-
 async function downloadAudioFromVideo({ videoURL }) {
   try {
     // Download the video using ytdl
@@ -34,7 +32,6 @@ async function downloadAudioFromVideo({ videoURL }) {
         responseType: "arraybuffer",
       })
       .then(({ data }) => {
-        console.log("DATA", data);
         // return data;
         fs.writeFileSync(`./${fileName}`, data);
       })
@@ -73,8 +70,6 @@ async function transcribeAudio({ videoUrl }) {
   });
 }
 
-transcribeAudio({
-  videoUrl: "https://www.youtube.com/watch?v=m03e3iYK7m0",
-}).then((transcriptions) => {
-  console.log("TRANS", transcriptions);
-});
+// transcribeAudio({
+//   videoUrl: "https://www.youtube.com/watch?v=m03e3iYK7m0",
+// });

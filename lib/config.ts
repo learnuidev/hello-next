@@ -26,3 +26,7 @@ export const config: IConfig = {
   identityPoolId: process.env.NEXT_PUBLIC_IDENTITY_POOL_ID as string,
   uploadBucketName: process.env.NEXT_PUBLIC_UPLOAD_BUCKET_NAME as string,
 };
+
+export const siteConfig = {
+  apiUrl: process.env.NEXT_PUBLIC_API_URL || "",
+};

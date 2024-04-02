@@ -83,10 +83,6 @@ const listAnswers = async (
       ];
 
       if (curr?.hanzi === "用于构建Web和原生交互界面的库") {
-        console.log("PREV SET", prevSet);
-        console.log("CURRENT", currentPhrase);
-
-        console.log("NEW", newCharacters);
       }
 
       return {

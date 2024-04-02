@@ -11,8 +11,6 @@ const openai = new OpenAI({
 export const runtime = "edge";
 
 export async function POST(req: Request) {
-  console.log("YOO");
-  console.log("OPEN AI API KEY", process.env.OPENAI_API_KEY);
   // Extract the `prompt` from the body of the request
   const { messages } = await req.json();
 

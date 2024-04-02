@@ -53,8 +53,6 @@ export default function Home() {
       }
     );
 
-  console.log("foo");
-
   const meaningResponse = meaning as ListMeaningsResponse;
   return (
     <main className="">

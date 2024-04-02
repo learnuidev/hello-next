@@ -68,8 +68,6 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
     lessonId || params?.["lessonId"] || "lesson11"
   );
 
-  console.log("LESSON ID", _lessonId);
-
   const [lessonIndex, setLessonIndex] = useState(() => {
     const currentLesson = contents?.find(
       (lesson: any) => lesson?.id === _lessonId
@@ -90,8 +88,6 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
   const currentLesson = contents?.find(
     (lesson: any) => lesson?.id === _lessonId
   );
-
-  console.log({ lessonIndex });
 
   const currentPhrase = currentLesson?.transcriptions?.find(
     (lesson: any) =>

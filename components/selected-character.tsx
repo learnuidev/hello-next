@@ -233,7 +233,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           };
         });
 
-      return "TODO";
+      // return "TODO";
 
       return (
         <div className="flex justify-between w-full">

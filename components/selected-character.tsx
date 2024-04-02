@@ -700,7 +700,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
               onClick={() => {
                 discoverMutation
                   .mutateAsync({
-                    hanzi: selectedComp?.hanzi,
+                    hanzi: selectedComp?.hanzi || characterId,
                   })
                   .then((resp) => {
                     console.log("Discovered!!", resp);

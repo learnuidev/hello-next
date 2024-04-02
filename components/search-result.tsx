@@ -12,6 +12,7 @@ import {
 } from "@/domain/sentence/grammar.queries";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
+import { Editor } from "./Editor";
 
 export function SearchResult({
   query,
@@ -54,6 +55,14 @@ export function SearchResult({
         <h1 className="text-4xl">{currentDecodedQuery}</h1>
       </div>
       <p className="font-light mb-4 md:mb-8 mt-4">{meaningResponse?.summary}</p>
+
+      {meaningResponse?.summary && (
+        <Editor
+          // readOnly={true}
+          content={meaningResponse?.summary}
+          // id={meaningResponse?.summary}
+        />
+      )}
 
       {grammarAnalysis ? (
         <div className="my-16">

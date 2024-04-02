@@ -762,7 +762,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           </p>
 
           <Editor
-            id="story-123"
+            // id="story-123"
             // className="text-center border-solid h-12 border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
             content={isAlreadyLearned?.story || ""}
           />

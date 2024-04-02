@@ -51,18 +51,20 @@ export function SearchResult({
   const meaningResponse = meaning as ListMeaningsResponse;
   return (
     <div className="px-4 md:px-40">
-      <div className="flex justify-between items-center w-full mt-4 md:mt-8">
-        <h1 className="text-4xl">{currentDecodedQuery}</h1>
+      <div className="flex justify-between items-center w-full mt-4 md:mt-12">
+        <h1 className="text-3xl">{currentDecodedQuery}</h1>
       </div>
       {/* <p className="font-light mb-4 md:mb-8 mt-4">{meaningResponse?.summary}</p> */}
-
-      {meaningResponse?.summary && (
-        <Editor
-          // readOnly={true}
-          content={meaningResponse?.summary}
-          // id={meaningResponse?.summary}
-        />
-      )}
+      <div className="font-light mb-4 md:mb-8 mt-4">
+        {" "}
+        {meaningResponse?.summary && (
+          <Editor
+            // readOnly={true}
+            content={meaningResponse?.summary}
+            // id={meaningResponse?.summary}
+          />
+        )}
+      </div>
 
       {grammarAnalysis ? (
         <div className="my-16">
@@ -84,10 +86,9 @@ export function SearchResult({
                 (analysis) => {
                   if (analysis?.hanzi) {
                     return (
-                      <div
-                        key={analysis?.hanzi}
-                        className="flex space-x-4 items-center"
-                      >
+                      <div key={analysis?.hanzi}>
+                        <div className="flex space-x-4 items-center"></div>
+
                         {onSearchGrammar ? (
                           <button
                             onClick={() => {
@@ -111,6 +112,32 @@ export function SearchResult({
                         )}
 
                         <button
+                          className="ml-4 text-gray-200"
+                          onClick={() => {
+                            router.push(
+                              `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
+                            );
+                            // onSearchGrammar(analysis?.hanzi || "");
+                          }}
+                          // className="w-16"
+                        >
+                          {analysis?.pinyin}
+                        </button>
+                        <button
+                          className="ml-2 text-gray-200"
+                          onClick={() => {
+                            router.push(
+                              `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
+                            );
+                            // onSearchGrammar(analysis?.hanzi || "");
+                          }}
+                          // className="w-16"
+                        >
+                          {analysis?.en}
+                        </button>
+
+                        <p
+                          className="text-gray-400 mb-4"
                           onClick={() => {
                             router.push(
                               `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
@@ -120,7 +147,7 @@ export function SearchResult({
                           // className="w-16"
                         >
                           {analysis?.explanation}
-                        </button>
+                        </p>
                       </div>
                     );
                   } else {

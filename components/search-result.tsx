@@ -112,7 +112,7 @@ export function SearchResult({
                         )}
 
                         <button
-                          className="ml-4 text-gray-200"
+                          className="ml-4 text-gray-400"
                           onClick={() => {
                             router.push(
                               `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
@@ -124,7 +124,7 @@ export function SearchResult({
                           {analysis?.pinyin}
                         </button>
                         <button
-                          className="ml-2 text-gray-200"
+                          className="ml-2 text-gray-400"
                           onClick={() => {
                             router.push(
                               `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`

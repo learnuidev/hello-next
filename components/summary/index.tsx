@@ -48,7 +48,7 @@ export function Summary({
 
           {/* <Markdown>{meaningResponse?.summary}</Markdown> */}
         </div>
-        {showMeanings && (
+        {/* {showMeanings && (
           <div className="mt-16">
             <h3 className="sm:text-xl my-8 space-x-2">
               <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
@@ -91,7 +91,7 @@ export function Summary({
               })}
             </div>
           </div>
-        )}
+        )} */}
       </div>
 
       {/* <div>

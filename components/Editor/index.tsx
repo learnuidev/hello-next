@@ -86,7 +86,7 @@ export const Editor = ({
           />
         </div> */}
         {editor && !readOnly && <EditorBubbleMenu editor={editor} />}
-        <div>
+        <div className="mt-0">
           <EditorContent
             readOnly={readOnly}
             className={className}

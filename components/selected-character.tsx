@@ -426,8 +426,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
   const ReadModeView = () => {
     const discoverMutation = useDiscoverMutation();
     return (
-      <div className="my-8">
-        <div className="my-2 flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
+      <div className="">
+        <div className="flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
           {uniqueAnswerIds?.map((id: any, idx: number) => {
             const char = answerMap?.[id] || {};
 
@@ -624,7 +624,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           })}
 
           <div className="space-y-2 w-full">
-            {sentences?.slice(0, 10)?.map((sentence: any) => {
+            {sentences?.map((sentence: any) => {
               return (
                 <HanziViewer key={sentence?.id} currentPhrase={sentence} />
               );
@@ -646,7 +646,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
   const HeaderView = () => {
     return (
-      <div className="my-4 flex justify-between items-center">
+      <div className="flex justify-between items-center">
         <div className="space-x-8 flex items-center">
           <button
             className="text-xl"
@@ -812,7 +812,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       {!view || view === "home" ? (
         <article
           className={
-            "relative grid grid-cols-1 md:grid-cols-[1fr_550px] md:grid-rows-[70px_1fr]"
+            "relative grid grid-cols-1 md:grid-cols-[1fr_500px] gap-x-8 md:grid-rows-[70px_1fr] mt-0 pt-0"
             // "relative grid grid-cols-1 md:grid-cols-[550px_1fr] md:grid-rows-[70px_1fr]"
           }
         >
@@ -826,16 +826,25 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             <Summary showMeanings={true} characterId={characterId} />
           </div>
 
-          <div className="">
-            {" "}
-            <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md border border-black p-4">
-              <SentencesView />
-            </ScrollArea>
-          </div>
+          <>
+            <div className="">
+              {" "}
+              {sentences?.length > 10 ? (
+                <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
+                  <SentencesView />
+                </ScrollArea>
+              ) : (
+                <div className="hidden md:block space-y-2 h-[700px] rounded-mdp-4">
+                  <h1 className="text-xl font-bold mb-4">Example Sentences</h1>
+                  <SentencesView />
+                </div>
+              )}
+            </div>
 
-          <div className="md:hidden block">
-            <SentencesView />
-          </div>
+            <div className="md:hidden block">
+              <SentencesView />
+            </div>
+          </>
         </article>
       ) : null}
     </div>

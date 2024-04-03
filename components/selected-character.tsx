@@ -44,7 +44,7 @@ import { Summary } from "./summary";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
-  const [view, setView] = useState("sentences");
+  const [view, setView] = useState("home");
 
   const addCharacterMutation = useAddCharacterMutation();
   // const params = useParams() as {
@@ -677,22 +677,22 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
               <FontAwesomeIcon icon={faGlassesRound} />
             </button>
           )}
-          <button
+          {/* <button
             className="text-xl"
             onClick={() => {
               setView("sentences");
             }}
           >
             <FontAwesomeIcon className="text-2xl" icon={faSpaceStationMoon} />
-          </button>
-          <button
+          </button> */}
+          {/* <button
             className="text-xl"
             onClick={() => {
               setView("review");
             }}
           >
             <FontAwesomeIcon className="text-2xl" icon={faMale} />
-          </button>
+          </button> */}
           <button
             className="text-xl"
             onClick={() => {

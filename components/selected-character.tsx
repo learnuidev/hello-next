@@ -347,7 +347,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       );
     }
     return (
-      <div className="flex justify-between space-x-4 py-4 items-center w-full hover:bg-gray-900">
+      <div className="flex justify-between space-x-4 py-4 items-center w-full">
         <div role="button" className="flex flex-col">
           {" "}
           <Link
@@ -701,7 +701,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           >
             <PlayIcon className="text-2xl" />
           </button>
-          {isAlreadyLearned ? null : (
+          {/* {isAlreadyLearned ? null : (
             <button
               className="text-xl"
               onClick={() => {
@@ -724,7 +724,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             >
               <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
             </button>
-          )}
+          )} */}
           {selectedComp?.group ? null : (
             <button
               className="text-xl"
@@ -830,9 +830,13 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
           <div className="">
             {" "}
-            <ScrollArea className="space-y-2 h-[700px] rounded-md border border-black p-4">
+            <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md border border-black p-4">
               <SentencesView />
             </ScrollArea>
+          </div>
+
+          <div className="md:hidden block">
+            <SentencesView />
           </div>
         </article>
       ) : null}

@@ -656,7 +656,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           >
             <FontAwesomeIcon className="text-2xl" icon={faXmark} />
           </button>
-          {meaning ? (
+          {/* {meaning ? (
             <button
               className="text-xl"
               onClick={() => {
@@ -665,7 +665,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             >
               <FontAwesomeIcon className="text-2xl" icon={faHome} />
             </button>
-          ) : null}
+          ) : null} */}
 
           {view === "sentences" && (
             <button

@@ -870,7 +870,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
               </ScrollArea>
             ) : (
               <div className="hidden md:block space-y-2 h-[700px] rounded-mdp-4">
-                <h1 className="text-xl font-bold mb-4">Example Sentences</h1>
+                {/* <h1 className="text-xl font-bold mb-4">Example Sentences</h1> */}
                 <SentencesView />
               </div>
             )}

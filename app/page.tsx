@@ -14,8 +14,10 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { cleanString } from "@/data/convos/bm1/utils";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { Login } from "@/components/Login";
+import { useRouter } from "next/navigation";
 
 function HomeAuth() {
+  const router = useRouter();
   const [isTocHidden, setIsTocHidden] = useState(false);
   const [selectedId, setSelectedId] = useState("");
 
@@ -68,7 +70,12 @@ function HomeAuth() {
       <NavBar />
 
       {isLoading || isCharactersLoading ? null : (
-        <NomadMethod selectedId={selectedId} />
+        <NomadMethod
+          selectedId={selectedId}
+          onClose={() => {
+            router.push(`/nmm/${selectedId}`);
+          }}
+        />
       )}
     </main>
   );

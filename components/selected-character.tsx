@@ -7,7 +7,28 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 import * as R from "ramda";
 
+import React from "react";
+// import { useState, useEffect } from "react";
+
+import { NavBar } from "@/components/navbar";
+import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
+// import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
+
+// import { SelectedCharacter } from "@/components/selected-character";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import { useSpring } from "@react-spring/web";
+
+// import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+// import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useBeltStore } from "@/components/use-belt-store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGlobeAsia } from "@fortawesome/pro-light-svg-icons";
+import { faGraduationCap } from "@fortawesome/pro-thin-svg-icons";
+// import { useRouter } from "next/navigation";
+
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   faGlassesRound,
@@ -42,6 +63,7 @@ import { Editor } from "./Editor";
 import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
 import { Summary } from "./summary";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
+import { Icons } from "./ui/icons.v2";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const [view, setView] = useState("home");
@@ -59,6 +81,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       refetchOnReconnect: false,
     }
   );
+
+  // const { }
 
   const { data: contents } = useListContentsQuery();
 
@@ -426,7 +450,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
   const ReadModeView = () => {
     const discoverMutation = useDiscoverMutation();
     return (
-      <div className="">
+      <div className="w-full">
         <div className="flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
           {uniqueAnswerIds?.map((id: any, idx: number) => {
             const char = answerMap?.[id] || {};
@@ -553,7 +577,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
   const NormalView = () => {
     return (
-      <div className="">
+      <div className="w-full">
         {/* <div>{JSON.stringify(sentences, null, 2)}</div>; */}
         <div className="flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
           {uniqueAnswerIds?.map((id: any, idx: number) => {
@@ -782,71 +806,52 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     <div className="w-full px-4 md:px-12">
       <HeaderView />
 
-      {view === "review" ? (
-        // <p dangerouslySetInnerHTML={{ __html: isAlreadyLearned?.story }}></p>
-
-        <div className="">
-          <p className="text-gray-300 text-center">
-            <a
-              role="a"
-              href={`https://www.youtube.com/results?search_query=${isAlreadyLearned?.nomad}`}
-              target="_blank"
-            >
-              {isAlreadyLearned?.nomad} @{" "}
-            </a>
-            <span className="font-bold">
-              {isAlreadyLearned?.destination}, {isAlreadyLearned?.location}
-            </span>
-          </p>
-
-          <Editor
-            // id="story-123"
-            // className="text-center border-solid h-12 border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
-            content={isAlreadyLearned?.story || ""}
-          />
+      {selectedComp && (
+        <div>
+          <h3 className="text-5xl font-light">L{selectedComp?.level}</h3>
         </div>
-      ) : null}
+      )}
 
-      {view === "sentences" ? <SentencesView /> : null}
+      <code>
+        <pre>{JSON.stringify(selectedComp, null, 2)}</pre>
+      </code>
 
-      {!view || view === "home" ? (
-        <article
-          className={
-            "relative grid grid-cols-1 md:grid-cols-[1fr_500px] gap-x-8 md:grid-rows-[70px_1fr] mt-0 pt-0"
-            // "relative grid grid-cols-1 md:grid-cols-[550px_1fr] md:grid-rows-[70px_1fr]"
-          }
-        >
-          {/* <div className="">
+      <article
+        className={
+          "relative grid grid-cols-1 md:grid-cols-[1fr_500px] gap-x-8 md:grid-rows-[70px_1fr] mt-0 pt-0"
+          // "relative grid grid-cols-1 md:grid-cols-[550px_1fr] md:grid-rows-[70px_1fr]"
+        }
+      >
+        {/* <div className="">
             {" "}
             <ScrollArea className="space-y-2 h-[700px] rounded-md border border-black p-4">
               <SentencesView />
             </ScrollArea>
           </div> */}
-          <div className={"row-span-2 overflow-hidden col-span-1"}>
-            <Summary showMeanings={true} characterId={characterId} />
+        <div className={"row-span-2 overflow-hidden col-span-1"}>
+          <Summary showMeanings={true} characterId={characterId} />
+        </div>
+
+        <>
+          <div className="">
+            {" "}
+            {sentences?.length > 10 ? (
+              <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
+                <SentencesView />
+              </ScrollArea>
+            ) : (
+              <div className="hidden md:block space-y-2 h-[700px] rounded-mdp-4">
+                <h1 className="text-xl font-bold mb-4">Example Sentences</h1>
+                <SentencesView />
+              </div>
+            )}
           </div>
 
-          <>
-            <div className="">
-              {" "}
-              {sentences?.length > 10 ? (
-                <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
-                  <SentencesView />
-                </ScrollArea>
-              ) : (
-                <div className="hidden md:block space-y-2 h-[700px] rounded-mdp-4">
-                  <h1 className="text-xl font-bold mb-4">Example Sentences</h1>
-                  <SentencesView />
-                </div>
-              )}
-            </div>
-
-            <div className="md:hidden block">
-              <SentencesView />
-            </div>
-          </>
-        </article>
-      ) : null}
+          <div className="md:hidden block">
+            <SentencesView />
+          </div>
+        </>
+      </article>
     </div>
   );
 }

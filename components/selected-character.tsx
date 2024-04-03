@@ -807,14 +807,41 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       <HeaderView />
 
       {selectedComp && (
-        <div>
-          <h3 className="text-5xl font-light">L{selectedComp?.level}</h3>
+        <div className="my-8 font-light flex space-x-8 items-center text-xl">
+          <div className="flex space-x-2 items-center">
+            <Icons.earthAsia />
+            <p>{selectedComp?.level}</p>
+          </div>
+          {selectedComp?.tone_level && (
+            <div className="flex space-x-2 items-center">
+              <Icons.musicNote />
+              <p>{selectedComp?.tone_level}</p>
+            </div>
+          )}
+          {selectedComp?.initial && (
+            <div className="flex space-x-2 items-center">
+              <p>initial - </p>
+              <p>{selectedComp?.initial}</p>
+            </div>
+          )}
+          {selectedComp?.final && (
+            <div className="flex space-x-2 items-center">
+              <p>final - </p>
+              <p>{selectedComp?.final}</p>
+            </div>
+          )}
+          {selectedComp?.group && (
+            <div className="flex space-x-2 items-center">
+              <p>group - </p>
+              <p>{selectedComp?.group}</p>
+            </div>
+          )}
         </div>
       )}
 
-      <code>
+      {/* <code>
         <pre>{JSON.stringify(selectedComp, null, 2)}</pre>
-      </code>
+      </code> */}
 
       <article
         className={

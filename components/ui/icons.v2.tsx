@@ -9,9 +9,11 @@ import {
   faGear,
   faHome,
   faMagnifyingGlass,
+  faMusicNote,
   faPowerOff,
   faRectangleVerticalHistory,
   faSeedling,
+  faStairs,
 } from "@fortawesome/pro-thin-svg-icons";
 
 const createFAIcon = (icon: FontAwesomeIconProps["icon"]) => {
@@ -30,4 +32,6 @@ export const Icons = {
   powerOff: createFAIcon(faPowerOff),
   copy: createFAIcon(faCopy),
   seedling: createFAIcon(faSeedling),
+  stairs: createFAIcon(faStairs),
+  musicNote: createFAIcon(faMusicNote),
 };

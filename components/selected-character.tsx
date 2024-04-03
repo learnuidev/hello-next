@@ -808,10 +808,12 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
       {selectedComp && (
         <div className="my-8 font-light flex space-x-8 items-center text-xl">
-          <div className="flex space-x-2 items-center">
-            <Icons.earthAsia />
-            <p>{selectedComp?.level}</p>
-          </div>
+          {selectedComp?.level && (
+            <div className="flex space-x-2 items-center">
+              <Icons.earthAsia />
+              <p>{selectedComp?.level}</p>
+            </div>
+          )}
           {selectedComp?.tone_level && (
             <div className="flex space-x-2 items-center">
               <Icons.musicNote />

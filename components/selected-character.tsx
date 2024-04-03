@@ -667,16 +667,14 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             </button>
           ) : null} */}
 
-          {view === "sentences" && (
-            <button
-              className="text-xl"
-              onClick={() => {
-                setReadMode(!readMode);
-              }}
-            >
-              <FontAwesomeIcon icon={faGlassesRound} />
-            </button>
-          )}
+          <button
+            className="text-xl"
+            onClick={() => {
+              setReadMode(!readMode);
+            }}
+          >
+            <FontAwesomeIcon icon={faGlassesRound} />
+          </button>
           {/* <button
             className="text-xl"
             onClick={() => {

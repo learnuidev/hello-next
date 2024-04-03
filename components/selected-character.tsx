@@ -784,30 +784,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     <div className="w-full px-4 md:px-12">
       <HeaderView />
 
-      <article
-        className={
-          "relative grid grid-cols-1 md:grid-cols-[1fr_550px] md:grid-rows-[70px_1fr]"
-          // "relative grid grid-cols-1 md:grid-cols-[550px_1fr] md:grid-rows-[70px_1fr]"
-        }
-      >
-        {/* <div className="">
-          {" "}
-          <ScrollArea className="space-y-2 h-[700px] rounded-md border border-black p-4">
-            <SentencesView />
-          </ScrollArea>
-        </div> */}
-        <div className={"row-span-2 overflow-hidden col-span-1"}>
-          <Summary showMeanings={true} characterId={characterId} />
-        </div>
-
-        <div className="">
-          {" "}
-          <ScrollArea className="space-y-2 h-[700px] rounded-md border border-black p-4">
-            <SentencesView />
-          </ScrollArea>
-        </div>
-      </article>
-
       {view === "review" ? (
         // <p dangerouslySetInnerHTML={{ __html: isAlreadyLearned?.story }}></p>
 
@@ -833,11 +809,33 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
         </div>
       ) : null}
 
-      {/* {view === "sentences" ? <SentencesView /> : null}
+      {view === "sentences" ? <SentencesView /> : null}
 
       {!view || view === "home" ? (
-        <Summary showMeanings={true} characterId={characterId} />
-      ) : null} */}
+        <article
+          className={
+            "relative grid grid-cols-1 md:grid-cols-[1fr_550px] md:grid-rows-[70px_1fr]"
+            // "relative grid grid-cols-1 md:grid-cols-[550px_1fr] md:grid-rows-[70px_1fr]"
+          }
+        >
+          {/* <div className="">
+            {" "}
+            <ScrollArea className="space-y-2 h-[700px] rounded-md border border-black p-4">
+              <SentencesView />
+            </ScrollArea>
+          </div> */}
+          <div className={"row-span-2 overflow-hidden col-span-1"}>
+            <Summary showMeanings={true} characterId={characterId} />
+          </div>
+
+          <div className="">
+            {" "}
+            <ScrollArea className="space-y-2 h-[700px] rounded-md border border-black p-4">
+              <SentencesView />
+            </ScrollArea>
+          </div>
+        </article>
+      ) : null}
     </div>
   );
 }

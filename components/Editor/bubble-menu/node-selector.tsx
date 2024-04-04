@@ -26,7 +26,7 @@ export const NodeSelector: FC<NodeSelectorProps> = ({
   isOpen,
   setIsOpen,
 }) => {
-  const items: BubbleMenuItem[] = [
+  const items: any[] = [
     {
       name: "Text",
       icon: TextIcon,

@@ -100,7 +100,9 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       ...new Set(
         allAnswers
           ?.filter((answer: any) => {
-            return answer?.phraseId?.includes(selectedChar);
+            if (answer?.phraseId) {
+              return answer?.phraseId?.includes(selectedChar);
+            }
           })
           ?.map((x: any) => x?.phraseId)
       ),
@@ -111,7 +113,9 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
   const relevantAnswers = useMemo(
     () =>
       allAnswers?.filter((answer: any) => {
-        return answer?.phraseId?.includes(selectedChar);
+        if (answer?.phraseId) {
+          return answer?.phraseId?.includes(selectedChar);
+        }
       }),
     [allAnswers, selectedChar]
   );

@@ -67,15 +67,7 @@ export default function NomadMethodPage(props: any) {
   //   return () => clearInterval(interval);
   // }, []);
 
-  const { data: components } = useListComponentsQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+  const { data: components } = useListComponents();
 
   const styles = useSpring({
     from: { opacity: "0" },

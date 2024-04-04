@@ -33,7 +33,7 @@ export default function Home() {
       <NavBar />
       <SearchResult
         onSearchGrammar={(grammar) => {
-          router.push(`/search?query=${grammar}`);
+          router.push(`/nmm/${grammar}`);
 
           // router.push()
         }}

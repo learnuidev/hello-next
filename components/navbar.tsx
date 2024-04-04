@@ -276,7 +276,7 @@ export const NavBar = () => {
               if (event?.keyCode === 13) {
                 if (option.value as any) {
                   // handleSearch();
-                  router.push(`/search?query=${query}`);
+                  router.push(`/nmm/${query}`);
                 }
               }
             }}

@@ -361,7 +361,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
               <FontAwesomeIcon icon={faGoogle} />
             </Link>
             <Link
-              href={`/search?query=${encodeURIComponent(currentPhrase?.hanzi)}`}
+              href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}`}
               className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
             >
               <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -437,7 +437,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             <FontAwesomeIcon icon={faGoogle} />
           </Link>
           <Link
-            href={`/search?query=${encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input)}`}
+            href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input)}`}
             className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
           >
             <FontAwesomeIcon icon={faMagnifyingGlass} />

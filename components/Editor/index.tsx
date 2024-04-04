@@ -85,7 +85,7 @@ export const Editor = ({
             items={editor?.storage?.tableOfContent?.content}
           />
         </div> */}
-        {editor && !readOnly && <EditorBubbleMenu editor={editor} />}
+        {editor && <EditorBubbleMenu editor={editor} />}
         <div className="mt-0 pt-0">
           <EditorContent
             // className="pt-0"

@@ -14,67 +14,91 @@ import { NodeSelector } from "./node-selector";
 import { ColorSelector } from "./color-selector";
 import { LinkSelector } from "./link-selector";
 import { cn } from "@/lib/utils";
+import { Icons } from "@/components/ui/icons.v2";
+import { useAddSentenceMutation } from "@/domain/sentence/sentence.mutations";
+import { useParams } from "next/navigation";
 
 export interface BubbleMenuItem {
   name: string;
   isActive: () => boolean;
   command: () => void;
-  icon: typeof BoldIcon;
+  text: string;
 }
 
 type EditorBubbleMenuProps = Omit<BubbleMenuProps, "children">;
 
 // TODO: Fix Type for this component
 export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
+  const addSentenceMutation = useAddSentenceMutation();
+
+  const params = useParams() as {
+    "component-id": string;
+  };
   const items: BubbleMenuItem[] = [
     {
       name: "bold",
       isActive: () => props.editor.isActive("bold"),
-      command: () => props.editor.chain().focus().toggleBold().run(),
-      icon: BoldIcon,
+      command: () => {
+        // const { selection, state } = props.editor;
+        // const { from, to } = selection;
+
+        // const text = state.doc.textBetween(from, to, " ");
+        // return props.editor.chain().focus().toggleBold().run();
+
+        const { view, state } = props.editor;
+        const { from, to } = view.state.selection;
+        const text = state.doc.textBetween(from, to, "");
+        alert(text);
+
+        return addSentenceMutation.mutateAsync({
+          component: decodeURIComponent(params?.["component-id"]),
+          input: text,
+        });
+      },
+      text: "Add",
     },
-    {
-      name: "italic",
-      isActive: () => props.editor.isActive("italic"),
-      command: () => props.editor.chain().focus().toggleItalic().run(),
-      icon: ItalicIcon,
-    },
-    {
-      name: "underline",
-      isActive: () => props.editor.isActive("underline"),
-      command: () => props.editor.chain().focus().toggleUnderline().run(),
-      icon: UnderlineIcon,
-    },
-    {
-      name: "strike",
-      isActive: () => props.editor.isActive("strike"),
-      command: () => props.editor.chain().focus().toggleStrike().run(),
-      icon: StrikethroughIcon,
-    },
-    {
-      name: "align-left",
-      isActive: () => props.editor.isActive({ textAlign: "left" }),
-      command: () => props.editor.chain().focus().setTextAlign("left").run(),
-      icon: AlignLeft,
-    },
-    {
-      name: "align-center",
-      isActive: () => props.editor.isActive({ textAlign: "center" }),
-      command: () => props.editor.chain().focus().setTextAlign("center").run(),
-      icon: AlignCenter,
-    },
-    {
-      name: "align-right",
-      isActive: () => props.editor.isActive({ textAlign: "right" }),
-      command: () => props.editor.chain().focus().setTextAlign("right").run(),
-      icon: AlignRight,
-    },
-    {
-      name: "code",
-      isActive: () => props.editor.isActive("code"),
-      command: () => props.editor.chain().focus().toggleCode().run(),
-      icon: CodeIcon,
-    },
+    // {
+    //   name: "italic",
+    //   isActive: () => props.editor.isActive("italic"),
+    //   command: () => props.editor.chain().focus().toggleItalic().run(),
+    //   icon: ItalicIcon,
+    // },
+    // {
+    //   name: "underline",
+    //   isActive: () => props.editor.isActive("underline"),
+    //   command: () => props.editor.chain().focus().toggleUnderline().run(),
+    //   icon: UnderlineIcon,
+    // },
+    // {
+    //   name: "strike",
+    //   isActive: () => props.editor.isActive("strike"),
+    //   command: () => props.editor.chain().focus().toggleStrike().run(),
+    //   icon: StrikethroughIcon,
+    // },
+    // {
+    //   name: "align-left",
+    //   isActive: () => props.editor.isActive({ textAlign: "left" }),
+    //   command: () => props.editor.chain().focus().setTextAlign("left").run(),
+    //   icon: AlignLeft,
+    // },
+    // {
+    //   name: "align-center",
+    //   isActive: () => props.editor.isActive({ textAlign: "center" }),
+    //   command: () => props.editor.chain().focus().setTextAlign("center").run(),
+    //   icon: AlignCenter,
+    // },
+    // {
+    //   name: "align-right",
+    //   isActive: () => props.editor.isActive({ textAlign: "right" }),
+    //   command: () => props.editor.chain().focus().setTextAlign("right").run(),
+    //   icon: AlignRight,
+    // },
+    // {
+    //   name: "code",
+    //   isActive: () => props.editor.isActive("code"),
+    //   command: () => props.editor.chain().focus().toggleCode().run(),
+    //   icon: CodeIcon,
+    // },
   ];
 
   const bubbleMenuProps: EditorBubbleMenuProps = {
@@ -111,7 +135,7 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
       {...bubbleMenuProps}
       className="flex w-fit divide-x divide-stone-200 rounded border border-stone-200 bg-white shadow-xl"
     >
-      <NodeSelector
+      {/* <NodeSelector
         editor={props.editor}
         isOpen={isNodeSelectorOpen}
         setIsOpen={() => {
@@ -119,8 +143,8 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
           setIsColorSelectorOpen(false);
           setIsLinkSelectorOpen(false);
         }}
-      />
-      <LinkSelector
+      /> */}
+      {/* <LinkSelector
         editor={props.editor}
         isOpen={isLinkSelectorOpen}
         setIsOpen={() => {
@@ -128,24 +152,21 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
           setIsColorSelectorOpen(false);
           setIsNodeSelectorOpen(false);
         }}
-      />
+      /> */}
       <div className="flex">
         {items.map((item, index) => (
           <button
             key={index}
             onClick={item.command}
-            className="p-2 text-stone-600 hover:bg-stone-100 active:bg-stone-200"
+            className="flex p-2 items-center text-stone-600 text-sm hover:bg-stone-100 active:bg-stone-200"
             type="button"
           >
-            <item.icon
-              className={cn("h-4 w-4", {
-                "text-blue-500": item.isActive(),
-              })}
-            />
+            <p>{item.text}</p>
+            <Icons.compass />
           </button>
         ))}
       </div>
-      <ColorSelector
+      {/* <ColorSelector
         editor={props.editor}
         isOpen={isColorSelectorOpen}
         setIsOpen={() => {
@@ -153,7 +174,7 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
           setIsNodeSelectorOpen(false);
           setIsLinkSelectorOpen(false);
         }}
-      />
+      /> */}
     </BubbleMenu>
   );
 };

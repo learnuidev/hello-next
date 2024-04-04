@@ -53,6 +53,16 @@ export default function NomadMethodPage(props: any) {
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 
+  const { data: discoveredComponents } = useListComponentsQuery(
+    { discoverOnly: true },
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
+
   // useEffect(() => {
   //   const interval = setInterval(() => {
   //     setIndex((seconds) => seconds + 1);
@@ -95,7 +105,8 @@ export default function NomadMethodPage(props: any) {
               <FontAwesomeIcon icon={faGraduationCap} className="text-2xl" />
             </TabsTrigger>
             <TabsTrigger
-              value="learned"
+              // value="learned"
+              value="discovered"
               className="px-0 data-[state=active]:text-yellow-500"
             >
               <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
@@ -169,46 +180,39 @@ export default function NomadMethodPage(props: any) {
 
         {/* ?.slice(selectedBelt?.minCharacterLevel, selectedBelt?.maxCharacterLevel) */}
 
-        <TabsContent value="learned" className="my-8">
+        <TabsContent value="discovered" className="my-8">
           <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
-            {learnedCharacters2
-              ?.filter(
-                (character: any) =>
-                  character?.status === "learned" &&
-                  character?.level >= selectedBelt?.minCharacterLevel &&
-                  character?.level <= selectedBelt?.maxCharacterLevel
-              )
-              ?.map((prop: any, idx: number) => {
-                const selectedComp = components?.find(
-                  (component: any) => component?.hanzi === prop?.hanzi
-                );
+            {discoveredComponents?.map((prop: any, idx: number) => {
+              const selectedComp = components?.find(
+                (component: any) => component?.hanzi === prop?.hanzi
+              );
 
-                const color = calculateColor({
-                  tone: selectedComp?.tone_level,
-                });
+              const color = calculateColor({
+                tone: selectedComp?.tone_level,
+              });
 
-                return (
-                  <button
-                    key={`${prop.hanzi}-chars-${idx}`}
-                    onClick={() => {
-                      router.push(`/nmm/${prop.hanzi}`);
-                      // setSelectedId(prop.hanzi);
-                    }}
-                    className={`${
-                      // learnedCharacters.includes(prop?.hanzi)
-                      learnedCharacters2?.find(
-                        (char: any) => char?.hanzi === prop?.hanzi
-                      )
-                        ? `${color}`
-                        : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                          ? "text-yellow-500"
-                          : "dark:text-gray-500 text-gray-200"
-                    } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-                  >
-                    {prop?.hanzi}
-                  </button>
-                );
-              })}
+              return (
+                <button
+                  key={`${prop.hanzi}-chars-${idx}`}
+                  onClick={() => {
+                    router.push(`/nmm/${prop.hanzi}`);
+                    // setSelectedId(prop.hanzi);
+                  }}
+                  className={`${
+                    // learnedCharacters.includes(prop?.hanzi)
+                    learnedCharacters2?.find(
+                      (char: any) => char?.hanzi === prop?.hanzi
+                    )
+                      ? `${color}`
+                      : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                        ? "text-yellow-500"
+                        : "dark:text-gray-500 text-gray-200"
+                  } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+                >
+                  {prop?.hanzi}
+                </button>
+              );
+            })}
           </div>
         </TabsContent>
         <TabsContent value="needs_review" className="my-8">

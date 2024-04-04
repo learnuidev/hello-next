@@ -152,7 +152,9 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     }
   );
 
-  const { data: components } = useListComponentsQuery();
+  const { data: components } = useListComponentsQuery({
+    includeAll: true,
+  });
 
   const allSteps = useMemo(
     () =>
@@ -580,6 +582,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     );
   };
 
+  console.log("SELECTED", selectedComp);
+
   const NormalView = () => {
     return (
       <div className="w-full">
@@ -673,136 +677,146 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     );
   };
 
+  const NavItems = () => {
+    return (
+      <div className="space-x-8 flex items-center">
+        <button
+          className="text-xl"
+          onClick={() => {
+            router.push(`/nmm`);
+          }}
+        >
+          <FontAwesomeIcon className="text-2xl" icon={faXmark} />
+        </button>
+        {/* {meaning ? (
+      <button
+        className="text-xl"
+        onClick={() => {
+          setView("home");
+        }}
+      >
+        <FontAwesomeIcon className="text-2xl" icon={faHome} />
+      </button>
+    ) : null} */}
+
+        <button
+          className="text-xl"
+          onClick={() => {
+            setReadMode(!readMode);
+          }}
+        >
+          <FontAwesomeIcon icon={faGlassesRound} />
+        </button>
+        {/* <button
+      className="text-xl"
+      onClick={() => {
+        setView("sentences");
+      }}
+    >
+      <FontAwesomeIcon className="text-2xl" icon={faSpaceStationMoon} />
+    </button> */}
+        {/* <button
+      className="text-xl"
+      onClick={() => {
+        setView("review");
+      }}
+    >
+      <FontAwesomeIcon className="text-2xl" icon={faMale} />
+    </button> */}
+        <button
+          className="text-xl"
+          onClick={() => {
+            setView("play");
+          }}
+        >
+          <PlayIcon className="text-2xl" />
+        </button>
+        {isAlreadyLearned && !firstLesson?.id ? null : (
+          <button
+            className="text-xl"
+            onClick={() => {
+              addCharacterMutation?.mutateAsync({
+                hanzi: firstLesson?.hanzi,
+                pinyin: firstLesson?.pinyin,
+                en: firstLesson?.en,
+                level: firstLesson?.level,
+                nomad: "na",
+                destination: "na",
+                location: "na",
+                journeyId: firstLesson.id,
+                // todo | completed
+                status: "completed",
+                story: "na",
+                component: "na",
+                sub_components: [],
+              });
+            }}
+          >
+            <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
+          </button>
+        )}
+        {selectedComp?.discoveredAt ? null : (
+          <button
+            className="text-xl"
+            onClick={() => {
+              discoverMutation
+                .mutateAsync({
+                  hanzi: selectedComp?.hanzi || characterId,
+                })
+                .then((resp) => {
+                  console.log("Discovered!!", resp);
+                });
+            }}
+          >
+            <FontAwesomeIcon icon={faLanguage} />
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  const TitleView = () => {
+    return (
+      <div className={`${color} flex space-x-2 text-4xl font-extralight `}>
+        <Link
+          target="_blank"
+          href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+            selectedChar
+          )}`}
+          className="flex items-end space-x-2"
+        >
+          {" "}
+          <span>{selectedChar}</span>{" "}
+        </Link>
+        <Link
+          target="_blank"
+          href={`https://hanzicraft.com/character/${encodeURIComponent(
+            selectedChar
+          )}`}
+          className="flex items-end space-x-2"
+        >
+          {" "}
+          <span className="text-xs">{selectedComp?.pinyin}</span>
+        </Link>
+        <Link
+          target="_blank"
+          href={`https://hanzicraft.com/character/${encodeURIComponent(
+            selectedChar
+          )}`}
+          className="flex items-end space-x-2"
+        >
+          {" "}
+          <span className="text-xs">{selectedComp?.en}</span>
+        </Link>
+      </div>
+    );
+  };
+
   const HeaderView = () => {
     return (
-      <div className="flex justify-between items-center">
-        <div className="space-x-8 flex items-center">
-          <button
-            className="text-xl"
-            onClick={() => {
-              router.push(`/nmm`);
-            }}
-          >
-            <FontAwesomeIcon className="text-2xl" icon={faXmark} />
-          </button>
-          {/* {meaning ? (
-            <button
-              className="text-xl"
-              onClick={() => {
-                setView("home");
-              }}
-            >
-              <FontAwesomeIcon className="text-2xl" icon={faHome} />
-            </button>
-          ) : null} */}
-
-          <button
-            className="text-xl"
-            onClick={() => {
-              setReadMode(!readMode);
-            }}
-          >
-            <FontAwesomeIcon icon={faGlassesRound} />
-          </button>
-          {/* <button
-            className="text-xl"
-            onClick={() => {
-              setView("sentences");
-            }}
-          >
-            <FontAwesomeIcon className="text-2xl" icon={faSpaceStationMoon} />
-          </button> */}
-          {/* <button
-            className="text-xl"
-            onClick={() => {
-              setView("review");
-            }}
-          >
-            <FontAwesomeIcon className="text-2xl" icon={faMale} />
-          </button> */}
-          <button
-            className="text-xl"
-            onClick={() => {
-              setView("play");
-            }}
-          >
-            <PlayIcon className="text-2xl" />
-          </button>
-          {isAlreadyLearned ? null : (
-            <button
-              className="text-xl"
-              onClick={() => {
-                addCharacterMutation?.mutateAsync({
-                  hanzi: firstLesson?.hanzi,
-                  pinyin: firstLesson?.pinyin,
-                  en: firstLesson?.en,
-                  level: firstLesson?.level,
-                  nomad: "na",
-                  destination: "na",
-                  location: "na",
-                  journeyId: firstLesson.id,
-                  // todo | completed
-                  status: "completed",
-                  story: "na",
-                  component: "na",
-                  sub_components: [],
-                });
-              }}
-            >
-              <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
-            </button>
-          )}
-          {selectedComp?.group ? null : (
-            <button
-              className="text-xl"
-              onClick={() => {
-                discoverMutation
-                  .mutateAsync({
-                    hanzi: selectedComp?.hanzi || characterId,
-                  })
-                  .then((resp) => {
-                    console.log("Discovered!!", resp);
-                  });
-              }}
-            >
-              <FontAwesomeIcon icon={faLanguage} />
-            </button>
-          )}
-        </div>
-        <div
-          className={`${color} flex space-x-2 text-4xl my-4 font-extralight `}
-        >
-          <Link
-            target="_blank"
-            href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-              selectedChar
-            )}`}
-            className="flex items-end space-x-2"
-          >
-            {" "}
-            <span>{selectedChar}</span>{" "}
-          </Link>
-          <Link
-            target="_blank"
-            href={`https://hanzicraft.com/character/${encodeURIComponent(
-              selectedChar
-            )}`}
-            className="flex items-end space-x-2"
-          >
-            {" "}
-            <span className="text-xs">{selectedComp?.pinyin}</span>
-          </Link>
-          <Link
-            target="_blank"
-            href={`https://hanzicraft.com/character/${encodeURIComponent(
-              selectedChar
-            )}`}
-            className="flex items-end space-x-2"
-          >
-            {" "}
-            <span className="text-xs">{selectedComp?.en}</span>
-          </Link>
-        </div>
+      <div className="flex my-4 justify-between items-center">
+        <NavItems />
+        {selectedChar?.length < 4 && <TitleView />}
       </div>
     );
   };

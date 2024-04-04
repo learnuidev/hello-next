@@ -64,6 +64,7 @@ import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
 import { Summary } from "./summary";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { Icons } from "./ui/icons.v2";
+import { SearchResult } from "./search-result";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const [view, setView] = useState("home");
@@ -802,85 +803,106 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     );
   };
 
-  return (
-    <div className="w-full px-4 md:px-12">
-      <HeaderView />
+  const ViewType = () => {
+    if (characterId?.length > 3) {
+      return (
+        <SearchResult
+          onSearchGrammar={(grammar) => {
+            router.push(`/nmm/${grammar}`);
 
-      {selectedComp && (
-        <div className="my-8 font-light flex space-x-8 items-center text-xl">
-          {selectedComp?.level && (
-            <div className="flex space-x-2 items-center">
-              <Icons.earthAsia />
-              <p>{selectedComp?.level}</p>
-            </div>
-          )}
-          {selectedComp?.tone_level && (
-            <div className="flex space-x-2 items-center">
-              <Icons.musicNote />
-              <p>{selectedComp?.tone_level}</p>
-            </div>
-          )}
-          {selectedComp?.initial && (
-            <div className="flex space-x-2 items-center">
-              <p>initial - </p>
-              <p>{selectedComp?.initial}</p>
-            </div>
-          )}
-          {selectedComp?.final && (
-            <div className="flex space-x-2 items-center">
-              <p>final - </p>
-              <p>{selectedComp?.final}</p>
-            </div>
-          )}
-          {selectedComp?.group && (
-            <div className="flex space-x-2 items-center">
-              <p>group - </p>
-              <p>{selectedComp?.group}</p>
-            </div>
-          )}
-        </div>
-      )}
+            // router.push()
+          }}
+          query={characterId}
+        />
+      );
+    }
 
-      {/* <code>
+    return (
+      <>
+        {selectedComp && (
+          <div className="my-8 font-light flex space-x-8 items-center text-xl">
+            {selectedComp?.level && (
+              <div className="flex space-x-2 items-center">
+                <Icons.earthAsia />
+                <p>{selectedComp?.level}</p>
+              </div>
+            )}
+            {selectedComp?.tone_level && (
+              <div className="flex space-x-2 items-center">
+                <Icons.musicNote />
+                <p>{selectedComp?.tone_level}</p>
+              </div>
+            )}
+            {selectedComp?.initial && (
+              <div className="flex space-x-2 items-center">
+                <p>initial - </p>
+                <p>{selectedComp?.initial}</p>
+              </div>
+            )}
+            {selectedComp?.final && (
+              <div className="flex space-x-2 items-center">
+                <p>final - </p>
+                <p>{selectedComp?.final}</p>
+              </div>
+            )}
+            {selectedComp?.group && (
+              <div className="flex space-x-2 items-center">
+                <p>group - </p>
+                <p>{selectedComp?.group}</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* <code>
         <pre>{JSON.stringify(selectedComp, null, 2)}</pre>
       </code> */}
 
-      <article
-        className={
-          "relative grid grid-cols-1 md:grid-cols-[1fr_500px] gap-x-8 md:grid-rows-[70px_1fr] mt-0 pt-0"
-          // "relative grid grid-cols-1 md:grid-cols-[550px_1fr] md:grid-rows-[70px_1fr]"
-        }
-      >
-        {/* <div className="">
+        <article
+          className={
+            "relative grid grid-cols-1 md:grid-cols-[1fr_500px] gap-x-8 md:grid-rows-[70px_1fr] mt-0 pt-0"
+            // "relative grid grid-cols-1 md:grid-cols-[550px_1fr] md:grid-rows-[70px_1fr]"
+          }
+        >
+          {/* <div className="">
             {" "}
             <ScrollArea className="space-y-2 h-[700px] rounded-md border border-black p-4">
               <SentencesView />
             </ScrollArea>
           </div> */}
-        <div className={"row-span-2 overflow-hidden col-span-1"}>
-          <Summary showMeanings={true} characterId={characterId} />
-        </div>
-
-        <>
-          <div className="">
-            {" "}
-            {sentences?.length > 10 ? (
-              <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
-                <SentencesView />
-              </ScrollArea>
-            ) : (
-              <div className="hidden md:block space-y-2 h-[700px] rounded-mdp-4">
-                {/* <h1 className="text-xl font-bold mb-4">Example Sentences</h1> */}
-                <SentencesView />
-              </div>
-            )}
+          <div className={"row-span-2 overflow-hidden col-span-1"}>
+            <Summary showMeanings={true} characterId={characterId} />
           </div>
 
-          <div className="md:hidden block">
-            <SentencesView />
-          </div>
-        </>
-      </article>
+          <>
+            <div className="">
+              {" "}
+              {sentences?.length > 10 ? (
+                <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
+                  <SentencesView />
+                </ScrollArea>
+              ) : (
+                <div className="hidden md:block space-y-2 h-[700px] rounded-mdp-4">
+                  {/* <h1 className="text-xl font-bold mb-4">Example Sentences</h1> */}
+                  <SentencesView />
+                </div>
+              )}
+            </div>
+
+            <div className="md:hidden block">
+              <SentencesView />
+            </div>
+          </>
+        </article>
+      </>
+    );
+  };
+
+  return (
+    <div className="w-full px-4 md:px-12">
+      <HeaderView />
+
+      <ViewType />
     </div>
   );
 }

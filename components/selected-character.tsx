@@ -723,7 +723,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           >
             <PlayIcon className="text-2xl" />
           </button>
-          {/* {isAlreadyLearned ? null : (
+          {isAlreadyLearned ? null : (
             <button
               className="text-xl"
               onClick={() => {
@@ -746,7 +746,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             >
               <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
             </button>
-          )} */}
+          )}
           {selectedComp?.group ? null : (
             <button
               className="text-xl"

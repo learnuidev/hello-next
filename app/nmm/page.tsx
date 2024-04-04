@@ -14,7 +14,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSpring } from "@react-spring/web";
 
 import { belts, calculateColor } from "./utils";
-import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+import {
+  useListComponents,
+  useListComponentsQuery,
+} from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useBeltStore } from "@/components/use-belt-store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -53,15 +56,9 @@ export default function NomadMethodPage(props: any) {
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 
-  const { data: discoveredComponents } = useListComponentsQuery(
-    { discoverOnly: true },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+  const { data: discoveredComponents } = useListComponents({
+    discoverOnly: true,
+  });
 
   // useEffect(() => {
   //   const interval = setInterval(() => {

@@ -10,12 +10,11 @@ const url =
   "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-components";
 
 const listComponents = async (
-  options: { journeyId?: string; discoverOnly?: boolean; includeAll?: boolean },
+  options: { journeyId?: string },
   opts: {
     Authorization: string;
   }
 ) => {
-  const includeDiscoverOnly = Boolean(options?.discoverOnly);
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -27,36 +26,26 @@ const listComponents = async (
   });
   const resp = (await res.json()) as any;
 
-  return resp
-    ?.filter((x: any) => {
-      if (options?.includeAll) {
-        return true;
-      } else {
-        return includeDiscoverOnly ? !x.level : x.level;
-      }
-    })
-    .sort((a: any, b: any) => (a.level || 0) - (b.level || 0));
+  return resp;
 };
 
 export function useListComponentsQuery(
   params = {} as {
     journeyId?: string;
-    discoverOnly?: boolean;
-    includeAll?: boolean;
   },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
-    [queryIds.listComponents, JSON.stringify(Object.entries(params))],
+    [queryIds.listComponents, params?.journeyId],
     async () => {
       // if (options.query) {
       const response = await listComponents(params, {
         Authorization: authUser?.jwt,
       });
+
       return response;
-      // }
     },
     {
       ...options,
@@ -68,4 +57,29 @@ export function useListComponentsQuery(
       refetchOnReconnect: false,
     }
   );
+}
+export function useListComponents(
+  options = {} as {
+    journeyId?: string;
+    discoverOnly?: boolean;
+    includeAll?: boolean;
+  }
+) {
+  const { data, ...rest } = useListComponentsQuery({
+    journeyId: options?.journeyId,
+  });
+
+  const includeDiscoverOnly = Boolean(options?.discoverOnly);
+  return {
+    data: data
+      ?.filter((x: any) => {
+        if (options?.includeAll) {
+          return true;
+        } else {
+          return includeDiscoverOnly ? !x.level : x.level;
+        }
+      })
+      .sort((a: any, b: any) => (a.level || 0) - (b.level || 0)),
+    ...rest,
+  };
 }

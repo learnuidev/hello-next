@@ -47,7 +47,10 @@ import Link from "next/link";
 
 import { useListContentsQuery } from "@/domain/content/content.queries";
 
-import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+import {
+  useListComponents,
+  useListComponentsQuery,
+} from "@/domain/lesson/component.queries";
 import { calculateColor } from "@/app/nmm/utils";
 import { cleanString } from "@/data/convos/bm1/utils";
 import { PlayIcon } from "./ui/icons";
@@ -152,7 +155,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     }
   );
 
-  const { data: components } = useListComponentsQuery({
+  const { data: components } = useListComponents({
     includeAll: true,
   });
 
@@ -755,7 +758,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
           </button>
         )}
-        {selectedComp?.discoveredAt ? null : (
+        {selectedComp?.group || selectedComp?.discoveredAt ? null : (
           <button
             className="text-xl"
             onClick={() => {

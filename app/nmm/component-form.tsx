@@ -3,7 +3,6 @@ import { useSpring, animated } from "@react-spring/web";
 
 import { useViewModeStore } from "./use-view-mode-store";
 import { initCharacter, useCharacterStore } from "./nomad-method-store";
-import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 
 import { useListSubComponentsQuery } from "@/domain/component/component.queries";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
@@ -17,6 +16,7 @@ import {
 } from "@fortawesome/pro-thin-svg-icons";
 import { useAddStepsMutation } from "@/domain/lesson/step.mutations";
 import { Editor } from "@/components/Editor";
+import { useListComponents } from "@/domain/lesson/component.queries";
 
 export const ComponentForm = ({
   selectedId,
@@ -46,7 +46,7 @@ export const ComponentForm = ({
     (state: any) => state.setCharacter
   ) as any;
 
-  const { data: components, isLoading, isFetching } = useListComponentsQuery();
+  const { data: components, isLoading, isFetching } = useListComponents();
 
   const firstLesson = useMemo(
     () => components?.find((component: any) => component?.hanzi === selectedId),

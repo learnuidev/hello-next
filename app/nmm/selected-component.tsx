@@ -15,19 +15,11 @@ import { PageView } from "./page-view";
 
 import { calculateColor } from "./utils";
 
-import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+import { useListComponents } from "@/domain/lesson/component.queries";
 export function SelectedComponent({ selectedId, setSelectedId, belt }: any) {
   const [view, setView] = useState("sentences");
 
-  const { data: components } = useListComponentsQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+  const { data: components } = useListComponents();
 
   const selectedComp = components?.find(
     (component: any) => component?.hanzi === selectedId

@@ -14,7 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSpring } from "@react-spring/web";
 
 import { belts, calculateColor } from "../nmm/utils";
-import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useBeltStore } from "@/components/use-belt-store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -65,7 +65,7 @@ export default function NomadMethodPage(props: any) {
   //   return () => clearInterval(interval);
   // }, []);
 
-  const { data: components } = useListComponentsQuery();
+  const { data: components } = useListComponents();
 
   const { data: learnedCharacters } = useListCharacterReviewList();
 

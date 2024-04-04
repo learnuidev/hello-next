@@ -12,7 +12,7 @@ import * as R from "ramda";
 import { calculateColor } from "./utils";
 
 import { useListContentsQuery } from "@/domain/content/content.queries";
-import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+import { useListComponents } from "@/domain/lesson/component.queries";
 import { cleanString } from "@/data/convos/bm1/utils";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 
@@ -65,15 +65,7 @@ export const PageView = ({
     ?.map((content: any) => content?.transcriptions)
     .flat();
 
-  const { data: components } = useListComponentsQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+  const { data: components } = useListComponents();
 
   const allSteps =
     components

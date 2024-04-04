@@ -24,7 +24,7 @@ import { useSelectedCharacter } from "@/app/(auth)/convos/use-selected-character
 
 import { useListContentsQuery } from "@/domain/content/content.queries";
 
-import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+import { useListComponents } from "@/domain/lesson/component.queries";
 import { calculateColor } from "@/app/nmm/utils";
 import { cleanString } from "@/data/convos/bm1/utils";
 
@@ -91,7 +91,7 @@ export function SelectedCharacter({
     ...new Set(relevantAnswers?.map((answer: any) => answer?.hanzi)),
   ];
 
-  const { data: components } = useListComponentsQuery();
+  const { data: components } = useListComponents();
 
   const allSteps =
     components

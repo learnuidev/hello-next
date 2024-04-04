@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { NavBar } from "@/components/navbar";
 
 import { NomadMethod } from "./nmm/nomad-method";
-import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
@@ -15,21 +15,14 @@ import { cleanString } from "@/data/convos/bm1/utils";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { Login } from "@/components/Login";
 import { useRouter } from "next/navigation";
+import { useListComponents } from "@/domain/lesson/component.queries";
 
 function HomeAuth() {
   const router = useRouter();
   const [isTocHidden, setIsTocHidden] = useState(false);
   const [selectedId, setSelectedId] = useState("");
 
-  const { data: components, isLoading } = useListComponentsQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+  const { data: components, isLoading } = useListComponents();
 
   const { data: allAnswers } = useListAnswersQuery();
 

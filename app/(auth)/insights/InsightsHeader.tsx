@@ -17,7 +17,6 @@ import { useRepeatHistoryStore } from "../convos/_play/use-repeat-history";
 import { useSelectedCharacter } from "../convos/use-selected-character";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 
 import { useListParseQuery } from "@/domain/nmm/nmm.queries";
 
@@ -29,21 +28,14 @@ import {
   faPenLine,
 } from "@fortawesome/pro-thin-svg-icons";
 import { useCharactersDiscovered } from "./use-characters-discovered";
+import { useListComponents } from "@/domain/lesson/component.queries";
 
 export function InsightsHeader() {
   const { data: charactersDiscovered } = useCharactersDiscovered();
 
   const { data: learnedCharacters } = useListCharactersQuery();
 
-  const { data: components } = useListComponentsQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+  const { data: components } = useListComponents();
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
 

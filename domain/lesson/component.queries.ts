@@ -30,7 +30,7 @@ const listComponents = async (
   // return resp.sort((a: any, b: any) => (a.level || 0) - (b.level || 0));
 };
 
-export function useListComponentsQuery(
+function useListComponentsQuery(
   params = {} as {
     journeyId?: string;
   },

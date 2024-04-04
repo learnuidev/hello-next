@@ -4,7 +4,7 @@ import Lottie from "lottie-react";
 import groovyWalkAnimation from "./loading_animation.json";
 
 import { initCharacter, useCharacterStore } from "./nomad-method-store";
-import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+import { useListComponents } from "@/domain/lesson/component.queries";
 import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
 
 import { useAddStepsMutation } from "@/domain/lesson/step.mutations";
@@ -38,7 +38,7 @@ export function NomadMethod({
 
   const [lessonIndex, setLessonIndex] = useState(0);
 
-  const { data: components, isLoading, isFetching } = useListComponentsQuery();
+  const { data: components, isLoading, isFetching } = useListComponents();
 
   const firstLesson = useMemo(
     () => components?.find((component: any) => component?.hanzi === selectedId),

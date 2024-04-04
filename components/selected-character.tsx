@@ -8,49 +8,24 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import * as R from "ramda";
 
 import React from "react";
-// import { useState, useEffect } from "react";
 
-import { NavBar } from "@/components/navbar";
-import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
-// import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-
-// import { SelectedCharacter } from "@/components/selected-character";
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import { useSpring } from "@react-spring/web";
-
-// import { useListComponentsQuery } from "@/domain/lesson/component.queries";
-// import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useBeltStore } from "@/components/use-belt-store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobeAsia } from "@fortawesome/pro-light-svg-icons";
-import { faGraduationCap } from "@fortawesome/pro-thin-svg-icons";
-// import { useRouter } from "next/navigation";
-
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   faGlassesRound,
-  faHome,
   faLanguage,
   faLightbulb,
   faMagnifyingGlass,
-  faMale,
-  faSpaceStationMoon,
   faXmark,
 } from "@fortawesome/pro-thin-svg-icons";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import Link from "next/link";
 
 import { useListContentsQuery } from "@/domain/content/content.queries";
 
-import {
-  useListComponents,
-  useListComponentsQuery,
-} from "@/domain/lesson/component.queries";
+import { useListComponents } from "@/domain/lesson/component.queries";
 import { calculateColor } from "@/app/nmm/utils";
 import { cleanString } from "@/data/convos/bm1/utils";
 import { PlayIcon } from "./ui/icons";

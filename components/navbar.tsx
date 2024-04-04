@@ -23,7 +23,7 @@ import { belts } from "@/app/nmm/utils";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useBeltStore } from "./use-belt-store";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import { useListComponentsQuery } from "@/domain/lesson/component.queries";
+import { useListComponents } from "@/domain/lesson/component.queries";
 import { faPhotoFilm } from "@fortawesome/sharp-solid-svg-icons";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 
@@ -106,15 +106,7 @@ const options = [
 ];
 
 function useGoldenCharacters(belt: any) {
-  const { data: components, isLoading } = useListComponentsQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+  const { data: components, isLoading } = useListComponents();
 
   const { data: answers } = useListAnswersQuery(
     {},

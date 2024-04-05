@@ -709,7 +709,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
         >
           <PlayIcon className="text-2xl" />
         </button>
-        {isAlreadyLearned && !firstLesson?.id ? null : (
+        {isAlreadyLearned ? null : (
           <button
             className="text-xl"
             onClick={() => {

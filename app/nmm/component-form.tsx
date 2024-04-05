@@ -85,6 +85,8 @@ export const ComponentForm = ({
     from: { opacity: "0" },
     to: { opacity: "1" },
   });
+
+  console.log("character state", characterState);
   return (
     <>
       <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
@@ -177,21 +179,39 @@ export const ComponentForm = ({
                       </span>
                     </p>
 
-                    {characterState?.[lesson?.key] && (
-                      <Editor
-                        className="text-start my-8"
-                        // id="story"
-                        content={characterState?.[lesson?.key] as any}
-                        onUpdate={(val: any) => {
-                          const newState = {
-                            ...characterState,
-                            [lesson?.key]: val,
-                          };
+                    {/* <Editor
+                      autoFocus
+                      readOnly={false}
+                      className="text-start my-8"
+                      // id="story"
+                      content={
+                        JSON.stringify(characterState?.[lesson?.key]) ||
+                        "Whats your story"
+                      }
+                      onUpdate={(val: any) => {
+                        const newState = {
+                          ...characterState,
+                          [lesson?.key]: val,
+                        };
 
-                          setCharacterState(newState);
-                        }}
-                      />
-                    )}
+                        setCharacterState(newState);
+                      }}
+                    /> */}
+
+                    <textarea
+                      autoFocus
+                      onChange={(event) => {
+                        const newState = {
+                          ...characterState,
+                          [lesson?.key]: event?.target.value,
+                        };
+
+                        setCharacterState(newState);
+                      }}
+                      placeholder={lesson?.suggestions?.join(", ")}
+                      className="text-center border-solid h-12 border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
+                      value={characterState?.[lesson?.key] as any}
+                    />
                   </div>
                 ) : (
                   // <textarea

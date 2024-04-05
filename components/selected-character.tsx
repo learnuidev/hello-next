@@ -816,7 +816,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     return (
       <>
         {selectedComp && (
-          <div className="my-8 font-light flex space-x-8 items-center text-xl">
+          <div className="font-light flex space-x-4 items-center text-gray-400">
             {selectedComp?.level && (
               <div className="flex space-x-2 items-center">
                 <Icons.earthAsia />
@@ -841,12 +841,12 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                 <p>{selectedComp?.final}</p>
               </div>
             )}
-            {selectedComp?.group && (
+            {/* {selectedComp?.group && (
               <div className="flex space-x-2 items-center">
                 <p>group - </p>
                 <p>{selectedComp?.group}</p>
               </div>
-            )}
+            )} */}
           </div>
         )}
 

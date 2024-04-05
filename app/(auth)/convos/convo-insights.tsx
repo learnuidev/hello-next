@@ -10,14 +10,15 @@ import { SelectedCharacter } from "@/components/selected-character";
 import { useListParseQuery } from "@/domain/nmm/nmm.queries";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import Link from "next/link";
 
 export function ConvoInsights({ lessonId }: { lessonId: string }) {
   const [isTocHidden, setIsTocHidden] = useState(false);
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
-  const setSelectedChar = useSelectedCharacter(
-    (state: any) => state?.setCharacter
-  );
+  // const setSelectedChar = useSelectedCharacter(
+  //   (state: any) => state?.setCharacter
+  // );
 
   const router = useRouter();
 
@@ -144,11 +145,11 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                 (item: any) => item?.hanzi === char
               );
               return (
-                <span
-                  role="button"
-                  onClick={() => {
-                    setSelectedChar(char);
-                  }}
+                <Link
+                  href={`/nmm/${char}`}
+                  // onClick={() => {
+                  //   setSelectedChar(char);
+                  // }}
                   className={`p-2 ${
                     // ""
                     isLearned
@@ -160,7 +161,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                 >
                   {" "}
                   {char}
-                </span>
+                </Link>
               );
             })}
           </div>

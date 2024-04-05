@@ -87,12 +87,7 @@ export const Editor = ({
         </div> */}
         {editor && <EditorBubbleMenu editor={editor} />}
         <div className="mt-0 pt-0">
-          <EditorContent
-            // className="pt-0"
-            readOnly={readOnly}
-            // className={className}
-            editor={editor}
-          />
+          <EditorContent readOnly={readOnly} editor={editor} />
         </div>
       </>
     );

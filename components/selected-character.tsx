@@ -867,6 +867,19 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             </ScrollArea>
           </div> */}
           <div className={"row-span-2 overflow-hidden col-span-1"}>
+            {isAlreadyLearned?.story && (
+              <>
+                <div className="my-8 text-center">
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: isAlreadyLearned?.story,
+                    }}
+                  ></p>
+                </div>
+
+                <hr className="border-gray-500 w-11/12 m-auto mb-[-32px]" />
+              </>
+            )}
             <Summary showMeanings={true} characterId={characterId} />
           </div>
 

@@ -18,7 +18,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { groupBy } from "@/lib/utils";
 
-export function VideoPlayer({ media: { url, scripts, title } }: any) {
+export function VideoPlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
   const [toggleLoop, setToggleLoop] = useState<any>(null);
   const [toggleLoops, setToggleLoops] = useState<any>([]);
@@ -69,10 +69,10 @@ export function VideoPlayer({ media: { url, scripts, title } }: any) {
 
   const { data: contentsArr } = useListContentsQuery();
 
-  const { lessonId } = useSearchParams();
+  // const { lessonId } = useSearchParams();
   const lesson = contentsArr?.find((content: any) => content?.id === lessonId);
 
-  const finalUrl = lesson?.audio || url;
+  const finalUrl = lesson?.audio;
 
   const groupedTranscriptions = groupBy(lesson?.transcriptions || []);
 
@@ -112,7 +112,7 @@ export function VideoPlayer({ media: { url, scripts, title } }: any) {
           />
 
           <Header className="my-4 text-black text-center dark:text-gray-300 font-extralight">
-            {lesson?.title || title}
+            {lesson?.title}
           </Header>
         </div>
 
@@ -222,7 +222,7 @@ export function VideoPlayer({ media: { url, scripts, title } }: any) {
           >
             <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-900 p-4">
               <div className="space-y-8">
-                {(lesson?.transcriptions || scripts)
+                {(lesson?.transcriptions || [])
                   .filter((script: any) => {
                     if (focusMode) {
                       return (

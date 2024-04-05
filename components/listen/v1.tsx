@@ -733,14 +733,8 @@ const book1 = {
 
 const medias = [song0, song2, song1, book1];
 
-export function ListenPage() {
+export function ListenPage({ lessonId }: { lessonId: string }) {
   const [mediaIndex, setMediaIndex] = useState(0);
 
-  return (
-    <VideoPlayer
-      mediaIndex={mediaIndex}
-      setMediaIndex={setMediaIndex}
-      media={medias[mediaIndex % medias.length]}
-    />
-  );
+  return <VideoPlayer lessonId={lessonId} />;
 }

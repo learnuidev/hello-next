@@ -7,19 +7,19 @@ import Link from "next/link";
 
 import { useState } from "react";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { NavBar } from "@/components/navbar";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { useConvosStore } from "@/stores/convos-store";
-import { ConvosNavBar } from "./convos-nav-bar";
-import { ConvoDetails } from "./convo-details";
-import { useSelectedCharacter } from "./use-selected-character";
+import { ConvosNavBar } from "../convos-nav-bar";
+import { ConvoDetails } from "../convo-details";
+import { useSelectedCharacter } from "../use-selected-character";
 
-import { useViewModeStore } from "./new-convo/use-viewmode-store";
+import { useViewModeStore } from "../new-convo/use-viewmode-store";
 import { PlusIcon } from "@/components/ui/icons";
-import { NewConvo } from "./new-convo";
+import { NewConvo } from "../new-convo";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 
 function formatPercentage(number: number) {
@@ -87,7 +87,7 @@ function LessonCard({ lesson }: any) {
 
         // const urlString = rootUrl?.href;
 
-        router.push(`/convos/${lesson?.id}`);
+        router.push(`/convos?lessonId=${lesson?.id}`);
       }}
       className="px-4 md:px-32 font-light flex justify-between items-center w-full md:mt-2"
     >
@@ -111,7 +111,15 @@ function LessonCard({ lesson }: any) {
 }
 export default function Convos() {
   const [isTocHidden, setIsTocHidden] = useState(false);
-  const lessonId = useConvosStore((state: any) => state?.convoId);
+  // const lessonId = useConvosStore((state: any) => state?.convoId);
+
+  const params = useParams() as {
+    "content-id": string;
+  };
+
+  const lessonId = params["content-id"];
+
+  console.log("LESSON ID", lessonId);
 
   const viewMode = useViewModeStore((state: any) => state.viewMode);
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
@@ -138,42 +146,11 @@ export default function Convos() {
     }
   };
 
-  return viewMode === "convo/add" ? (
-    <NewConvo />
-  ) : (
+  return (
     <main className="">
-      {selectedChar ? null : lessonId && routeName?.includes("/convos") ? (
-        <ConvosNavBar />
-      ) : (
-        <NavBar />
-      )}
+      <ConvosNavBar />
 
-      {selectedChar ? null : lessonId &&
-        routeName?.includes("/convos") ? null : (
-        <div className="px-4 md:px-28 my-8">
-          <button
-            className="text-xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full"
-            onClick={() => {
-              setViewMode("convo/add");
-            }}
-          >
-            <PlusIcon />
-          </button>
-        </div>
-      )}
-
-      {lessonId ? (
-        <ConvoDetails lessonId={lessonId} />
-      ) : (
-        <div className="my-8 space-y-8">
-          {contents?.length &&
-            contents?.map((lesson: any) => {
-              return <LessonCard key={lesson?.id} lesson={lesson} />;
-            })}
-        </div>
-      )}
-
-      {/* <Wordle /> */}
+      <ConvoDetails lessonId={lessonId} />
     </main>
   );
 }

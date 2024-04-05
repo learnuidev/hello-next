@@ -32,7 +32,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   ) {
     return (
       <div>
-        <ListenPage />
+        <ListenPage lessonId={lessonId} />
       </div>
     );
   }
@@ -70,12 +70,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
 
   if (viewType === "insights") {
-    return (
-      //   <div className="font-light flex justify-between items-center w-full px-4 md:px-32 md:mt-2">
-      //     Insights
-      //   </div>
-      <ConvoInsights lessonId={lessonId} />
-    );
+    return <ConvoInsights lessonId={lessonId} />;
   }
 
   return (

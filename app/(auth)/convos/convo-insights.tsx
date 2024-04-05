@@ -37,14 +37,6 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     }
   );
 
-  const allLessonAnswers = allAnswers?.filter(
-    (answer: any) => answer?.journeyId === lessonId
-  );
-
-  const allNewCharaters = allLessonAnswers
-    .map((curr: any) => curr?.newCharacters)
-    ?.flat();
-
   const uniqueWords = [
     // @ts-ignore
     ...new Set(

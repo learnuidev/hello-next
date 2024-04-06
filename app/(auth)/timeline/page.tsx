@@ -14,7 +14,7 @@ function useListLearnedCharactersByDate() {
     ?.map((item: any) => {
       const createdAt = new Date(item?.createdAt);
       const date = getDate(createdAt);
-      const month = getMonth(createdAt);
+      const month = getMonth(createdAt) + 1;
       const year = getYear(createdAt);
 
       return {

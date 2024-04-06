@@ -3,8 +3,9 @@
 import { NavBar } from "@/components/navbar";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { getDate, getDay, getMonth, getYear } from "date-fns";
+import { getDate, getMonth, getYear } from "date-fns";
 import Link from "next/link";
+import { groupBy } from "ramda";
 
 function useListLearnedCharactersByDate() {
   const { data: learnedCharacters, ...rest } = useListCharactersQuery();
@@ -24,16 +25,18 @@ function useListLearnedCharactersByDate() {
     })
     ?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
 
+  const groupByDate = groupBy((item: any) => item?.date);
+
   const grouped =
     learnedCharactersFormatted &&
-    Object.entries(
-      Object.groupBy(learnedCharactersFormatted, (item: any) => item?.date)
-    ).map(([date, items]) => {
-      return {
-        title: date,
-        items,
-      };
-    });
+    Object.entries(groupByDate(learnedCharactersFormatted) || {}).map(
+      ([date, items]) => {
+        return {
+          title: date,
+          items,
+        };
+      }
+    );
 
   return {
     data: grouped,

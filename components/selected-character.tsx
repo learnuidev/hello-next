@@ -867,7 +867,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             </ScrollArea>
           </div> */}
           <div className={"row-span-2 overflow-hidden col-span-1"}>
-            {isAlreadyLearned?.story && (
+            {isAlreadyLearned?.story && isAlreadyLearned?.story !== "na" && (
               <>
                 <div className="my-8 text-center">
                   <p
@@ -877,10 +877,12 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                   ></p>
                 </div>
 
-                <hr className="border-gray-500 w-11/12 m-auto mb-[-32px]" />
+                <hr className="border-gray-500 w-11/12 m-auto" />
               </>
             )}
-            <Summary showMeanings={true} characterId={characterId} />
+            <div className="mt-[-32px]">
+              <Summary showMeanings={true} characterId={characterId} />
+            </div>
           </div>
 
           <>

@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   let firstMessage = {
     role: "system",
     content: `
-    You are an expert summarizer, given context, return its information.
+    You are an expert summarizer, given context, return its information in english
     For example for 一, it should return:
 
     Okay, here is the information about the number "one" in English:
@@ -44,13 +44,11 @@ export async function POST(req: Request) {
 
   // const firstMessage = messages[0];
 
-  firstMessage;
-
   // Ask OpenAI for a streaming chat completion given the prompt
   const response = await openai.chat.completions.create({
     model: "gpt-4",
     stream: true,
-    messages: [firstMessage, messages],
+    messages: [firstMessage, ...messages],
   });
 
   // Convert the response into a friendly text-stream

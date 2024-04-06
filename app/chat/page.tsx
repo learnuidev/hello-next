@@ -9,7 +9,7 @@ export default function Home() {
 
   const { messages, input, handleInputChange, handleSubmit, data, isLoading } =
     useChat({
-      api: "/api/mistral",
+      api: "/api/summarize",
       body: {
         context: "我爱你",
       },

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
 import { faChartColumn } from "@fortawesome/sharp-solid-svg-icons/faChartColumn";
-import { faGraduationCap } from "@fortawesome/sharp-solid-svg-icons/faGraduationCap";
 
 import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
 import { NomadIcon } from "./ui/icons";
@@ -26,6 +25,7 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { faPhotoFilm } from "@fortawesome/sharp-solid-svg-icons";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
+import { Icons } from "./ui/icons.v2";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -306,15 +306,16 @@ export const NavBar = () => {
               <FontAwesomeIcon icon={faPhotoFilm} />
             </Link>
             <Link
-              href="/learn"
+              href="/timeline"
               className={`transition ${
-                routeName === "/learn"
+                routeName === "/timeline"
                   ? "text-gray-800 dark:text-gray-300"
                   : "text-gray-200 dark:text-gray-500"
               } hover:text-gray-700 transition text-xl hidden md:block`}
             >
-              <FontAwesomeIcon icon={faGraduationCap} />
+              <Icons.verticalStack />
             </Link>
+
             <Link
               href="/pinyin"
               className={`transition ${

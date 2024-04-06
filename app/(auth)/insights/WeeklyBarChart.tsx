@@ -33,7 +33,7 @@ const days = {
   6: "Sat",
 };
 
-function useGetWeeklyData({ toDate }: { toDate: Date }) {
+export function useGetWeeklyData({ toDate }: { toDate: Date }) {
   // const toDate = new Date();
 
   const fromDate = sub(toDate, {

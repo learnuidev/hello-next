@@ -1,6 +1,7 @@
 "use client";
 
 import { NavBar } from "@/components/navbar";
+import { useListHistoryQuery } from "@/domain/history/history.queries";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { getDate, getMonth, getYear } from "date-fns";
@@ -48,9 +49,15 @@ export default function Timeline() {
   const { data: grouped, isLoading: isLearnedCharactersLoading } =
     useListLearnedCharactersByDate();
 
+  const { data } = useListHistoryQuery();
+
   return (
     <main className="">
       <NavBar />
+
+      <code>
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      </code>
 
       {isLearnedCharactersLoading ? (
         <div className="text-center my-16"> Loading ...</div>

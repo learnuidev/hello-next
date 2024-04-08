@@ -25,55 +25,57 @@ export function NewConvo({ type }: { type?: string }) {
   const step = useNewConvoStore((state) => state.step);
   const setStep = useNewConvoStore((state) => state.setStep);
 
+  const { data: subtitles, isLoading: isSubtitlesLoading } =
+    useListSubtitlesQuery(
+      {
+        videoUrl: newConvo?.audio,
+      },
+      {
+        enabled:
+          Boolean(newConvo?.audio) && newConvo?.audio?.includes("youtube"),
+        onSuccess: (transcriptions: any) => {
+          console.log("RESP", transcriptions);
+          setConvo("transcriptions", transcriptions);
+        },
+      }
+    );
+
   // const { data: transcriptionV2 } = useTranscribeQueryV2(
   //   {
   //     videoUrl: newConvo?.audio,
   //   },
   //   {
-  //     enabled: Boolean(newConvo?.audio),
+  //     enabled: Boolean(newConvo?.audio) && !subtitles && !isSubtitlesLoading,
   //   }
   // );
 
-  const { data: subtitles } = useListSubtitlesQuery(
-    {
-      videoUrl: newConvo?.audio,
-    },
-    {
-      enabled: Boolean(newConvo?.audio),
-      onSuccess: (transcriptions: any) => {
-        console.log("RESP", transcriptions);
-        setConvo("transcriptions", transcriptions);
-      },
-    }
-  );
+  // const { data: transcription } = useTranscribeQuery(
+  //   {
+  //     mediaUrl: newConvo?.audio,
+  //   },
+  //   {
+  //     enabled: Boolean(newConvo?.audio) && false,
+  //     onSuccess: (data: any) => {
+  //       if (data) {
+  //         const transcriptions = data?.result?.segments.map(
+  //           ({ id, start, end, text, temperature, ...rest }: any) => {
+  //             return {
+  //               id,
+  //               start,
+  //               end,
+  //               hanzi: text,
+  //               pinyin: text,
+  //               en: text,
+  //               // temperature
+  //             };
+  //           }
+  //         );
 
-  const { data: transcription } = useTranscribeQuery(
-    {
-      mediaUrl: newConvo?.audio,
-    },
-    {
-      enabled: Boolean(newConvo?.audio) && false,
-      onSuccess: (data: any) => {
-        if (data) {
-          const transcriptions = data?.result?.segments.map(
-            ({ id, start, end, text, temperature, ...rest }: any) => {
-              return {
-                id,
-                start,
-                end,
-                hanzi: text,
-                pinyin: text,
-                en: text,
-                // temperature
-              };
-            }
-          );
-
-          setConvo("transcriptions", transcriptions);
-        }
-      },
-    }
-  );
+  //         setConvo("transcriptions", transcriptions);
+  //       }
+  //     },
+  //   }
+  // );
 
   function handleEditorChange(value: any, event: any) {
     try {

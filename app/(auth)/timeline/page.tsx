@@ -55,10 +55,6 @@ export default function Timeline() {
     <main className="">
       <NavBar />
 
-      <code>
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      </code>
-
       {isLearnedCharactersLoading ? (
         <div className="text-center my-16"> Loading ...</div>
       ) : (
@@ -90,6 +86,10 @@ export default function Timeline() {
           </div>
         </div>
       )}
+
+      <code>
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      </code>
     </main>
   );
 }

@@ -13,6 +13,7 @@ import {
   useTranscribeQuery,
   useTranscribeQueryV2,
 } from "@/domain/transcribe/transcribe.queries";
+import { useListSubtitlesQuery } from "@/domain/subtitle/subtitle.queries";
 
 export function NewConvo({ type }: { type?: string }) {
   const [resultView, setResultView] = useState("");
@@ -24,12 +25,25 @@ export function NewConvo({ type }: { type?: string }) {
   const step = useNewConvoStore((state) => state.step);
   const setStep = useNewConvoStore((state) => state.setStep);
 
-  const { data: transcriptionV2 } = useTranscribeQueryV2(
+  // const { data: transcriptionV2 } = useTranscribeQueryV2(
+  //   {
+  //     videoUrl: newConvo?.audio,
+  //   },
+  //   {
+  //     enabled: Boolean(newConvo?.audio),
+  //   }
+  // );
+
+  const { data: subtitles } = useListSubtitlesQuery(
     {
       videoUrl: newConvo?.audio,
     },
     {
       enabled: Boolean(newConvo?.audio),
+      onSuccess: (transcriptions: any) => {
+        console.log("RESP", transcriptions);
+        setConvo("transcriptions", transcriptions);
+      },
     }
   );
 

@@ -36,6 +36,15 @@ function httpRequest(params) {
   });
 }
 
+const listSubtitleTracks = ({ id, lang }) => {
+  return ytdl.getInfo(id).then(async (info) => {
+    const tracks =
+      info.player_response.captions.playerCaptionsTracklistRenderer
+        .captionTracks;
+    return tracks;
+  });
+};
+
 const listSubtitlesRaw = ({ id, lang }) => {
   return ytdl.getInfo(id).then(async (info) => {
     const tracks =
@@ -86,7 +95,7 @@ const getTotalSeconds = (times) => {
   );
 };
 
-export const listSubtitles = ({ id, lang }) => {
+const listSubtitles = ({ id, lang }) => {
   return listSubtitlesRaw({ id, lang }).then((subtitles) => {
     const lyrics = subtitles.split("\n").filter(Boolean).slice(3);
 
@@ -114,3 +123,19 @@ export const listSubtitles = ({ id, lang }) => {
     }, []);
   });
 };
+
+const id = "https://www.youtube.com/watch?v=ht2uKJnox9Q";
+const lang = "zh-CN";
+
+// listSubtitles({
+//   id,
+//   lang,
+// }).then((sub) => {
+//   console.log("sub", sub);
+// });
+listSubtitleTracks({
+  id,
+  lang,
+}).then((sub) => {
+  console.log("sub", sub);
+});

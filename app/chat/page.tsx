@@ -23,11 +23,7 @@ export default function Home() {
 
   return (
     <main className="">
-      <NavBar
-        onSubmit={handleSubmit}
-        input={input}
-        handleInputChange={handleInputChange}
-      />
+      <NavBar />
 
       <div className="px-4 md:px-32 md:my-4">
         {/* <p>Chat</p> */}

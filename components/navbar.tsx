@@ -98,15 +98,7 @@ function formatPercentage(number: number) {
   }).format(number);
 }
 
-export const NavBar = ({
-  onSubmit,
-  input,
-  handleInputChange,
-}: {
-  onSubmit: any;
-  input: any;
-  handleInputChange: any;
-}) => {
+export const NavBar = () => {
   const routeName = usePathname();
   const belt = useBeltStore((x) => x?.selectedBelt);
 

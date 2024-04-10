@@ -21,6 +21,46 @@ import { useViewModeStore } from "./new-convo/use-viewmode-store";
 import { PlusIcon } from "@/components/ui/icons";
 import { NewConvo } from "./new-convo";
 import { useListContentsQuery } from "@/domain/content/content.queries";
+import { HoverEffect } from "@/components/hover-effect";
+import { useSearchQueryStore } from "@/components/search/state";
+
+type ContentType = { title: string; id: string; transcriptions?: any };
+
+function ContentsList() {
+  const { data: contents } = useListContentsQuery();
+
+  const query = useSearchQueryStore((state) => state.query);
+
+  const searchTransacription = (content: ContentType, query: string) => {
+    if (!content?.transcriptions?.length) {
+      return false;
+    }
+
+    // const foundTranscription = content?.transcriptions
+    return true;
+  };
+
+  const projects = contents
+    ? contents
+        ?.filter(
+          (content: ContentType) =>
+            content?.title?.toLowerCase()?.includes(query?.toLowerCase()) &&
+            searchTransacription(content, query)
+        )
+        ?.map((content: ContentType) => {
+          return {
+            title: content?.title,
+            description: content?.title,
+            link: `/convos/${content?.id}`,
+          };
+        })
+    : [];
+  return (
+    <div className="max-w-5xl mx-auto px-8">
+      {projects?.length > 0 && <HoverEffect items={projects} />}
+    </div>
+  );
+}
 
 function formatPercentage(number: number) {
   return Intl.NumberFormat("en-GB", {
@@ -71,22 +111,8 @@ function LessonCard({ lesson }: any) {
   const percentCompleted = completedLessons?.length / totalLessonsLength || 0;
   return (
     <button
-      // target="_blank"
-      // href={
-      //   firstUnCompletedLesson
-      //     ? `/convos/${lesson?.id}/${firstUnCompletedLesson?.id}`
-      //     : `/convos/${lesson?.id}`
-      // }
       onClick={() => {
         setLessonId(lesson?.id);
-
-        // const rootUrl = new URL("/convos");
-        // if (lesson?.id) {
-        //   rootUrl.searchParams?.append("lessonId", lesson?.id);
-        // }
-
-        // const urlString = rootUrl?.href;
-
         router.push(`/convos/${lesson?.id}`);
       }}
       className="px-4 md:px-32 font-light flex justify-between items-center w-full md:mt-2"
@@ -166,10 +192,11 @@ export default function Convos() {
         <ConvoDetails lessonId={lessonId} />
       ) : (
         <div className="my-8 space-y-8">
-          {contents?.length &&
+          {/* {contents?.length &&
             contents?.map((lesson: any) => {
               return <LessonCard key={lesson?.id} lesson={lesson} />;
-            })}
+            })} */}
+          <ContentsList />
         </div>
       )}
 

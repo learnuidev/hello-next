@@ -3,6 +3,7 @@
 import { NavBar } from "@/components/navbar";
 import { useState } from "react";
 import { Message, useChat } from "ai/react";
+import { TextGenerateEffect } from "@/components/text-generate-effect";
 
 export default function Home() {
   const [isTocHidden, setIsTocHidden] = useState(false);
@@ -42,11 +43,27 @@ export default function Home() {
         </div>
 
         {messages.length > 0
-          ? messages.map((m: Message) => {
+          ? messages.map((message: Message) => {
+              if (message.role === "user") {
+                return <h2 key={message.id}>{message.content}</h2>;
+              }
+
               return (
-                <div key={m.id} className="whitespace-pre-wrap">
-                  <div>{JSON.stringify(m)}</div>
+                <div key={message.id}>
+                  <TextGenerateEffect
+                    words={message?.content?.split?.("\n")?.join(" ")}
+                  />
+
+                  <div key={message.id} className="whitespace-pre-wrap">
+                    <div>{JSON.stringify(message)}</div>
+                  </div>
                 </div>
+              );
+              return (
+                <TextGenerateEffect
+                  key={message.id}
+                  words={message?.content?.split?.("\n")?.join(". ")}
+                />
               );
             })
           : null}

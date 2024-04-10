@@ -14,39 +14,24 @@ export async function POST(req: Request) {
   // Extract the `prompt` from the body of the request
   const { messages } = await req.json();
 
+  const promptSimple = `
+You are a language translation expert and summary
+For the given content, translate it in english please. Also give a brief summary of the content. Keep it less than 300 characters
+
+Pleae use plain english and do not use line breaks or any special characters. Don't use quotations as well
+`;
+
   let firstMessage = {
     role: "system",
-    content: `
-    You are an expert summarizer, given context, return its information in english
-    For example for 一, it should return:
-
-    Okay, here is the information about the number "one" in English:
-
-    ## The Number "One" in English
-    "One" is the cardinal number representing a single unit or the first in a series.
-    It is the most basic and fundamental number in the English number system.
-    
-    ## Numerical Representation
-    The written form is "one"
-    The numerical symbol is "1"
-
-    Usage
-    Used to indicate a single item or person
-    Can function as a noun (e.g. "I have one apple"), adjective (e.g. "I have one apple"), or pronoun (e.g. "Give me one")
-    Used in ordinal numbers to indicate the first position (e.g. "first")
-    Idioms and Expressions
-    "All in one" - everything combined into a single unit
-    "At one" - in agreement or harmony
-    "In one's own right" - by one's own merit
-    "Of one mind" - sharing the same opinion
-    So in summary, the number "one" is the fundamental building block of the English number system, with important numerical, grammatical, and idiomatic uses. Its simplicity belies its significance in the language.`,
+    content: promptSimple,
   };
 
   // const firstMessage = messages[0];
 
   // Ask OpenAI for a streaming chat completion given the prompt
   const response = await openai.chat.completions.create({
-    model: "gpt-4",
+    // model: "gpt-4",
+    model: "gpt-3.5-turbo",
     stream: true,
     messages: [firstMessage, ...messages],
   });

@@ -20,12 +20,17 @@ export default function Home() {
     if (isTocHidden) {
     }
   };
+
   return (
     <main className="">
-      <NavBar />
+      <NavBar
+        onSubmit={handleSubmit}
+        input={input}
+        handleInputChange={handleInputChange}
+      />
 
       <div className="px-4 md:px-32 md:my-4">
-        <p>Chat</p>
+        {/* <p>Chat</p> */}
 
         <div className="">
           <form
@@ -33,40 +38,45 @@ export default function Home() {
               handleSubmit(event);
             }}
           >
+            (
             <input
-              className="top-20 mb-8 mt-2 w-full rounded border border-muted p-2 shadow-xl"
+              className="-ml-6 font-extralight text-2xl top-20 mb-8 mt-2 w-full bg-black rounded-full h-12 px-4 border-transparent focus:border-transparent focus:ring-0 border border-gray-900 shadow-xl !outline-none"
               value={input}
+              disabled={isLoading}
               placeholder="Ask me anything..."
               onChange={handleInputChange}
             />
           </form>
         </div>
 
-        {messages.length > 0
-          ? messages.map((message: Message) => {
-              if (message.role === "user") {
-                return <h2 key={message.id}>{message.content}</h2>;
-              }
+        {/* <div className={formPositionClass}> */}
 
-              return (
-                <div key={message.id}>
-                  <TextGenerateEffect
-                    words={message?.content?.split?.("\n")?.join(" ")}
-                  />
+        <div className="">
+          {messages.length > 0
+            ? messages.map((message: Message) => {
+                if (message.role === "user") {
+                  return (
+                    <h2
+                      className="text-3xl mt-8 mb-12 text-gray-400"
+                      key={message.id}
+                    >
+                      {message.content}
+                    </h2>
+                  );
+                }
 
-                  <div key={message.id} className="whitespace-pre-wrap">
-                    <div>{JSON.stringify(message)}</div>
+                return (
+                  <div key={message.content} className="mb-24 ">
+                    <TextGenerateEffect
+                      className="font-extralight text-gray-300"
+                      key={message.content}
+                      words={message?.content?.split?.("\n")?.join(" ")}
+                    />
                   </div>
-                </div>
-              );
-              return (
-                <TextGenerateEffect
-                  key={message.id}
-                  words={message?.content?.split?.("\n")?.join(". ")}
-                />
-              );
-            })
-          : null}
+                );
+              })
+            : null}
+        </div>
       </div>
     </main>
   );

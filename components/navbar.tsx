@@ -26,45 +26,7 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { faPhotoFilm } from "@fortawesome/sharp-solid-svg-icons";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { Icons } from "./ui/icons.v2";
-
-const indexOfAll = (str: any, w: any, res = [] as any): any => {
-  const idx = str.indexOf(w);
-
-  const wordLen = w.length;
-
-  if (idx === -1) {
-    return res;
-  }
-  const prevIndex = res[res.length - 1] ? wordLen : 0;
-  const updatedRes = res.concat({
-    index: idx + 1 + (prevIndex || 0) - wordLen,
-  }) as any;
-  return indexOfAll(str.slice(idx + 1), w, updatedRes);
-};
-
-const calcOutcome = (props: any) => {
-  const { lesson, confidence, answer, expectedAnswer } = props;
-
-  const expAns = expectedAnswer
-    ?.replace(", ", "")
-    ?.replace("?", "")
-    ?.split("")
-    ?.filter(Boolean)
-    ?.join("")
-    ?.split(" ")
-    ?.filter((item: any) => ![", ", "？", "，"].includes(item))
-    ?.join("");
-
-  if (
-    answer !== expAns?.trim() &&
-    !lesson?.alternateAnswers?.includes(answer) &&
-    !expAns?.includes(answer)
-  ) {
-    return "fail";
-  }
-
-  return "success";
-};
+import { SearchBar } from "./search-bar";
 
 // palette used for chart: https://flatuicolors.com/palette/cn
 
@@ -251,30 +213,7 @@ export const NavBar = () => {
         </div>
       )}
 
-      {routeName === "/" ? (
-        <div className="h-12"> </div>
-      ) : (
-        <div className="h-12 hidden sm:block py-2 flex flex-row justify-center space-x-4 items-center">
-          <div className="flex items-center justify-center"></div>
-
-          <input
-            className="dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300 dark:bg-black/10 dark:text-gray-300 placeholder:text-gray-400 opacity-100 transition-all  duration-400 ease-in border-2 w-[140px] md:w-[500px] focus:w-[600px] px-4 py-2 rounded-full focus:outline-none active:outline-none dark:border-gray-800"
-            placeholder={"Search"}
-            onChange={(event) => {
-              setQuery(() => event?.target?.value);
-            }}
-            value={query}
-            onKeyDown={(event) => {
-              if (event?.keyCode === 13) {
-                if (option.value as any) {
-                  // handleSearch();
-                  router.push(`/nmm/${query}`);
-                }
-              }
-            }}
-          />
-        </div>
-      )}
+      {routeName === "/" ? <div className="h-12"> </div> : <SearchBar />}
 
       <div>
         {routeName === "/" ? (

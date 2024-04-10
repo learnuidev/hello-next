@@ -77,7 +77,7 @@ export default function RootLayout({
         </style>
       </head>
 
-      <body>
+      <body className="bg-black">
         <PostHogProvider>
           <PostHogPageView />
           <ThemeProvider attribute="class">

@@ -15,7 +15,7 @@ export function useListContentsQuery(options = {} as any) {
       const response = await listContents({
         Authorization: authUser?.jwt,
       });
-      return response?.sort((a: any, b: any) => a?.createdAt - b?.createdAt);
+      return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
       // }
     },
     {

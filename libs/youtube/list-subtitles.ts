@@ -8,7 +8,7 @@ const hourIndex = 0;
 const minuteIndex = 1;
 const secondIndex = 2;
 
-const langs = [
+export const langs = [
   "ar",
   "zh-CN",
   "en",
@@ -62,9 +62,9 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
       const englishCode = "en";
       const englishTrack = getTrack({ lang: englishCode, tracks });
       const frenchCode = "fr";
-      const frenchTrack = getTrack({ lang: "fr", tracks });
+      const frenchTrack = getTrack({ lang: frenchCode, tracks });
       const spanishCode = "es";
-      const spanishTrack = getTrack({ lang: "es", tracks });
+      const spanishTrack = getTrack({ lang: spanishCode, tracks });
       // const  =
 
       console.log("Track Found: === ", zhTrack);
@@ -100,16 +100,13 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
       const lyrics = subtitles
         ? (subtitles || "")?.split("\n").filter(Boolean).slice(3)
         : [];
-      const englishLyrics = englishSubtitles
-        .split("\n")
-        .filter(Boolean)
-        .slice(3);
+      const englishLyrics =
+        englishSubtitles.split("\n").filter(Boolean).slice(3) || [];
 
-      const frenchLyrics = frenchSubtitles.split("\n").filter(Boolean).slice(3);
-      const spanishLyrics = spanishSubtitles
-        .split("\n")
-        .filter(Boolean)
-        .slice(3);
+      const frenchLyrics =
+        frenchSubtitles?.split("\n")?.filter(Boolean)?.slice(3) || [];
+      const spanishLyrics =
+        spanishSubtitles?.split("\n")?.filter(Boolean)?.slice(3) || [];
 
       return (lyrics?.length ? lyrics : englishLyrics).reduce(
         (acc: any, curr: any, idx: any) => {
@@ -121,10 +118,10 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
             const frenchValue = frenchLyrics[idx + 1];
             const spanishValue = spanishLyrics[idx + 1];
 
-            const startTimes = timestamp.split(" ")[0].split(":") || [];
+            const startTimes = timestamp?.split(" ")?.[0]?.split(":") || [];
             const start = getTotalSeconds(startTimes);
 
-            const endTimes = timestamp.split(" ")[2].split(":") || [];
+            const endTimes = timestamp?.split(" ")?.[2]?.split(":") || [];
 
             const end = getTotalSeconds(endTimes);
 

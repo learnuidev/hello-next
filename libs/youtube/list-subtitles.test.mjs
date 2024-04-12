@@ -66,6 +66,8 @@ const listSubtitlesRaw = ({ id, lang }) => {
 
         // console.log("RES", await res.json());
 
+        console.log("FORMAT", format);
+
         const res = await httpRequest(
           `${track.baseUrl}&fmt=${format !== "json" ? format : ""}`
         );
@@ -97,7 +99,10 @@ const getTotalSeconds = (times) => {
 
 const listSubtitles = ({ id, lang }) => {
   return listSubtitlesRaw({ id, lang }).then((subtitles) => {
-    const lyrics = subtitles.split("\n").filter(Boolean).slice(3);
+    const subtitlesAll = subtitles.split("\n").filter(Boolean);
+    const lyrics = subtitlesAll.slice(3);
+
+    console.log("SUB TITLES ALL", subtitlesAll?.slice(0, 20));
 
     return lyrics.reduce((acc, curr, idx) => {
       if (idx % 2 === 0) {
@@ -124,18 +129,20 @@ const listSubtitles = ({ id, lang }) => {
   });
 };
 
-const id = "https://www.youtube.com/watch?v=ht2uKJnox9Q";
-const lang = "zh-CN";
+const id = "https://www.youtube.com/watch?v=3-UO8jbrIoM";
+// const lang = "zh-CN";
+const lang = "en";
 
-// listSubtitles({
+listSubtitles({
+  id,
+  lang,
+}).then((sub) => {
+  console.log("DONE===");
+  // console.log("sub", sub);
+});
+// listSubtitleTracks({
 //   id,
 //   lang,
 // }).then((sub) => {
 //   console.log("sub", sub);
 // });
-listSubtitleTracks({
-  id,
-  lang,
-}).then((sub) => {
-  console.log("sub", sub);
-});

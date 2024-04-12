@@ -1,5 +1,6 @@
 import ytdl from "ytdl-core";
 import https from "https";
+import { httpRequest } from "./http-request";
 
 const secondsInHour = 3600;
 const secondsInMinute = 60;
@@ -26,34 +27,6 @@ const langs = [
   "tr",
 ];
 
-function httpRequest(params: any) {
-  return new Promise(function (resolve, reject) {
-    var req = https.request(params, function (res: any) {
-      // reject on bad status
-      if (res.statusCode < 200 || res.statusCode >= 300) {
-        return reject(new Error("statusCode=" + res.statusCode));
-      }
-      // cumulate data
-      var body = [] as any;
-      res.on("data", function (chunk: any) {
-        body.push(chunk);
-      });
-      // resolve on end
-      res.on("end", function () {
-        resolve(Buffer.concat(body).toString());
-      });
-    });
-    // reject on request error
-    req.on("error", function (err) {
-      // This is not a "Second reject", just a different sort of failure
-      reject(err);
-    });
-
-    // IMPORTANT
-    req.end();
-  });
-}
-
 const getTrack = ({ tracks, lang }: { tracks: any; lang: string }) =>
   tracks.find((t: any) => t.languageCode === lang);
 
@@ -68,11 +41,21 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
         tracks.map((t: any) => t?.name?.simpleText).join(", ")
       );
 
-      console.log("TRACKS", tracks);
-      let zhTrack = getTrack({ lang, tracks });
+      // console.log("TRACKS", tracks);
+
+      let zhTrack;
+      try {
+        zhTrack = getTrack({ lang, tracks });
+      } catch (err) {
+        zhTrack = null;
+      }
 
       if (!zhTrack) {
-        zhTrack = getTrack({ lang: "zh", tracks });
+        try {
+          zhTrack = getTrack({ lang: "zh", tracks });
+        } catch (err) {
+          zhTrack = null;
+        }
       }
 
       //
@@ -91,25 +74,31 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
 
       // console.log("RES", await res.json());
 
-      const subtitles = zhTrack
-        ? ((await httpRequest(`${zhTrack?.baseUrl}&fmt=vtt`)) as any)
-        : null;
+      let subtitles;
 
-      const englishSubtitles = (await httpRequest(
-        `${englishTrack.baseUrl}&fmt=vtt`
-      )) as any;
-      const frenchSubtitles = (await httpRequest(
-        `${frenchTrack.baseUrl}&fmt=vtt`
-      )) as any;
-      const spanishSubtitles = (await httpRequest(
-        `${spanishTrack.baseUrl}&fmt=vtt`
-      )) as any;
+      try {
+        subtitles = zhTrack
+          ? ((await httpRequest(`${zhTrack?.baseUrl}&fmt=vtt`)) as any)
+          : null;
+      } catch (err) {
+        subtitles = null;
+      }
+
+      const englishSubtitles = englishTrack?.baseUrl
+        ? ((await httpRequest(`${englishTrack?.baseUrl}&fmt=vtt`)) as any)
+        : "";
+      const frenchSubtitles = frenchTrack?.baseUrl
+        ? ((await httpRequest(`${frenchTrack?.baseUrl}&fmt=vtt`)) as any)
+        : "";
+      const spanishSubtitles = spanishTrack?.baseUrl
+        ? ((await httpRequest(`${spanishTrack?.baseUrl}&fmt=vtt`)) as any)
+        : "";
 
       // console.log("RES", res);
       // return res;
 
       const lyrics = subtitles
-        ? (subtitles || "").split("\n").filter(Boolean).slice(3)
+        ? (subtitles || "")?.split("\n").filter(Boolean).slice(3)
         : [];
       const englishLyrics = englishSubtitles
         .split("\n")

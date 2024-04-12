@@ -924,7 +924,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           <>
             <div className="">
               {" "}
-              {sentences?.length > 10 ? (
+              {sentences?.length > 7 ? (
                 <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
                   <SentencesView />
                 </ScrollArea>

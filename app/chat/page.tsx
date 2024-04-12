@@ -13,6 +13,29 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { GenUI } from "@/components/gen-ui";
 import { Icons } from "@/components/ui/icons.v2";
 import { aiModels } from "@/libs/ai";
+import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
+import { useGetQueryClassifierQuery } from "@/domain/query-classifier/query-classifier.queries";
+
+function UserQueryUI({ message }: { message: Message }) {
+  const { data: queryClass } = useGetQueryClassifierQuery({
+    query: message?.content,
+  });
+
+  console.log("CONTENT", message?.content);
+
+  console.log("QUERY CLASS", queryClass);
+  return (
+    <div>
+      <h2 className="text-2xl font-extralight" key={message.id}>
+        {message.content}
+      </h2>
+
+      {/* <h3>{JSON.stringify(queryClass)}</h3> */}
+
+      <p className="text-gray-500">{queryClass as string}</p>
+    </div>
+  );
+}
 
 const AgentAnswer = ({
   message,
@@ -83,6 +106,8 @@ export default function Home() {
   const [cachedInput, setCacheInput] = useState("");
   const [cachedMessages, setCachedMessages] = useState([]);
   const router = useRouter();
+
+  const { data: authUser } = useCurrentAuthUser({});
 
   const searchParams = useSearchParams();
   const threadId = searchParams?.get("thread") || "";
@@ -246,11 +271,7 @@ export default function Home() {
           {messages.length > 0
             ? messages.map((message: Message) => {
                 if (message.role === "user") {
-                  return (
-                    <h2 className="text-2xl font-extralight" key={message.id}>
-                      {message.content}
-                    </h2>
-                  );
+                  return <UserQueryUI message={message} key={message.id} />;
                 }
 
                 return (

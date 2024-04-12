@@ -1,0 +1,18 @@
+export const langs = [
+  "ar",
+  "zh-CN",
+  "en",
+  "en",
+  "fr",
+  "de",
+  "id",
+  "it",
+  "ja",
+  "ko",
+  "ms",
+  "fa-IR",
+  "pt",
+  "es",
+  "ta",
+  "tr",
+];

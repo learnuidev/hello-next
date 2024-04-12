@@ -47,8 +47,10 @@ async function downloadAudioFromVideo({
 }
 
 // Create an OpenAI API client (that's edge friendly!)
+import { openaiConfig } from "@/libs/openai/openai.config";
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || "",
+  apiKey: openaiConfig?.apiKey,
 });
 
 export async function POST(req: Request) {

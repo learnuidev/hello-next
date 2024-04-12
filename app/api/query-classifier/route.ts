@@ -5,10 +5,11 @@ import OpenAI from "openai";
 // import MistralClient from "@mistralai/mistralai";
 // import { mistralConfig } from "@/libs/mistral/mistral-config";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || "",
-});
+import { openaiConfig } from "@/libs/openai/openai.config";
 
+const openai = new OpenAI({
+  apiKey: openaiConfig?.apiKey,
+});
 export const maxDuration = 60;
 
 export async function POST(req: Request) {

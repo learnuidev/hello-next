@@ -259,7 +259,7 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
                           }}
                         >
                           <div>
-                            {(example?.hanzi || example?.nepali)
+                            {(example?.hanzi || example?.nepali || "")
                               .split("")
                               .map((item: any, idx: any) => {
                                 return (

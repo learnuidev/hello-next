@@ -1,13 +1,17 @@
 import { aiModels } from "@/libs/ai";
-import { tavilySearch } from "@/libs/tavily/api";
+
+import { tavilySearch } from "@/libs/tavily/tavily-search";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import OpenAI from "openai";
+
 // @ts-ignore
 // import MistralClient from "@mistralai/mistralai";
 // import { mistralConfig } from "@/libs/mistral/mistral-config";
 
+import { openaiConfig } from "@/libs/openai/openai.config";
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || "",
+  apiKey: openaiConfig?.apiKey,
 });
 
 // const mistral = new MistralClient(mistralConfig.apiKey);

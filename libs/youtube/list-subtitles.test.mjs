@@ -4,6 +4,13 @@ import ytdl from "ytdl-core";
 import https from "https";
 import axios from "axios";
 import path from "path";
+// import webvtt from "node-webvtt";
+import * as webVttParser from "webvtt-parser";
+
+const WebVTTParser = webVttParser.WebVTTParser;
+
+const segmentDuration = 10; // default to 10
+const startOffset = 0; // Starting MPEG TS offset to be used in timestamp map, default 900000
 
 // Can be xml, ttml, vtt, srv1, srv2, srv3
 const format = "vtt";
@@ -133,12 +140,21 @@ const id = "https://www.youtube.com/watch?v=3-UO8jbrIoM";
 // const lang = "zh-CN";
 const lang = "en";
 
-listSubtitles({
+listSubtitlesRaw({
   id,
   lang,
 }).then((sub) => {
-  console.log("DONE===");
+  // console.log("SUB", sub.slice(0, 200));
+  // const parsed = webvtt.parse(sub, { strict: false });
+  // const segmented = webvtt.parse(sub, segmentDuration);
+  // return parsed;
+  // console.log("DONE===", segmented);
   // console.log("sub", sub);
+
+  const parser = new WebVTTParser();
+  const tree = parser.parse(sub, "metadata");
+
+  console.log("TREE", tree);
 });
 // listSubtitleTracks({
 //   id,

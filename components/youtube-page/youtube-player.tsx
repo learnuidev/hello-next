@@ -76,9 +76,15 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
 
   const groupedTranscriptions = groupBy(lesson?.transcriptions || []);
 
+  const currentScriptIndex = lesson?.transcriptions?.findIndex(
+    (example: any) =>
+      (example?.timestamp?.[0] || example?.start) < currentTime &&
+      (example?.timestamp?.[1] || example?.end) > currentTime
+  );
+
   return (
     <div className="grow flex flex-col items-center">
-      <div className="space-x-4 my-4">
+      <div className="space-x-4 my-4 hidden md:block">
         <button
           onClick={() => {
             setViewMode((prev: any) => (prev === "para" ? null : "para"));
@@ -100,30 +106,53 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
       </div>
 
       <div className="grid grid-cols-12">
-        <div className={` ${isVideoHidden ? "hidden" : ""} col-span-8`}>
-          <ReactPlayer
-            ref={playerRef}
-            url={finalUrl}
-            playing={isPlaying}
-            width="100%"
-            height={"700px"}
-            controls={true}
-            onReady={onReady}
-          />
+        <div
+          className={` ${isVideoHidden ? "hidden" : ""} md:col-span-8 col-span-12`}
+        >
+          <div className="block md:hidden">
+            <ReactPlayer
+              ref={playerRef}
+              url={finalUrl}
+              playing={isPlaying}
+              width="100%"
+              height={"320px"}
+              controls={true}
+              onReady={onReady}
+            />
+          </div>
+          <div className="hidden md:block">
+            <ReactPlayer
+              ref={playerRef}
+              url={finalUrl}
+              playing={isPlaying}
+              width="100%"
+              height={"700px"}
+              controls={true}
+              onReady={onReady}
+            />
+          </div>
 
-          <Header className="my-4 text-black text-center dark:text-gray-300 font-extralight">
+          <Header className="my-4 text-black text-center dark:text-gray-300 font-extralight hidden md:block">
             {lesson?.title}
           </Header>
         </div>
 
         {viewMode === "para" ? (
-          <div className={isVideoHidden ? "col-span-12 mx-32" : "col-span-4"}>
+          <div
+            className={
+              isVideoHidden
+                ? "col-span-12 mx-12 md:mx-32"
+                : "col-span-12 md:col-span-4"
+            }
+          >
             <div
               className={`${
-                isVideoHidden ? "col-span-8" : "col-span-4"
+                isVideoHidden
+                  ? "md:col-span-8 col-span-12"
+                  : "md:col-span-4 col-span-12"
               } w-full text-center`}
             >
-              <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-900 p-4">
+              <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-900 p-4 w-full">
                 <div className="space-y-8">
                   {Object.values(groupedTranscriptions)?.map(
                     (transcriptions: any) => {
@@ -218,11 +247,23 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
           </div>
         ) : lesson?.transcriptions?.length ? (
           <div
-            className={`${isVideoHidden ? "col-span-12" : "col-span-4"} w-full`}
+            className={`${isVideoHidden ? "col-span-12" : "md:col-span-4 col-span-12"} w-full`}
           >
-            <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-900 p-4">
+            <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-900 md:px-4 p-0">
               <div className="space-y-8">
                 {(lesson?.transcriptions || [])
+                  // ?.slice(
+                  //   currentScriptIndex ? currentScriptIndex : 0,
+                  //   currentScriptIndex ? currentScriptIndex + 8 : -1
+                  // )
+                  .filter((example: any) => {
+                    if (currentTime) {
+                      return (
+                        (example?.timestamp?.[1] || example?.end) > currentTime
+                      );
+                    }
+                    return true;
+                  })
                   .filter((script: any) => {
                     if (focusMode) {
                       return (

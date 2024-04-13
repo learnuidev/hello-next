@@ -733,7 +733,7 @@ const book1 = {
 
 const medias = [song0, song2, song1, book1];
 
-export function ListenPage({ lessonId }: { lessonId: string }) {
+export function YouTubePage({ lessonId }: { lessonId: string }) {
   const [mediaIndex, setMediaIndex] = useState(0);
 
   return <VideoPlayer lessonId={lessonId} />;

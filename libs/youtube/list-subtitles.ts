@@ -32,6 +32,12 @@ const getTrack = ({ tracks, lang }: { tracks: any; lang: string }) =>
 
 export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
   return ytdl.getInfo(id).then(async (info: any) => {
+    // const tracks =
+    //   info.player_response.captions.playerCaptionsTracklistRenderer
+    //     .captionTracks;
+
+    // const { videoDetails } = info;
+    const { videoDetails, related_videos } = info;
     const tracks =
       info.player_response.captions.playerCaptionsTracklistRenderer
         .captionTracks;
@@ -39,6 +45,10 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
       console.log(
         "Found captions for",
         tracks.map((t: any) => t?.name?.simpleText).join(", ")
+      );
+
+      const langCodes = tracks.map(
+        (track: { languageCode: string }) => track.languageCode
       );
 
       // console.log("TRACKS", tracks);
@@ -108,7 +118,7 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
       const spanishLyrics =
         spanishSubtitles?.split("\n")?.filter(Boolean)?.slice(3) || [];
 
-      return (lyrics?.length ? lyrics : englishLyrics).reduce(
+      const subtitlesList = (lyrics?.length ? lyrics : englishLyrics).reduce(
         (acc: any, curr: any, idx: any) => {
           if (idx % 2 === 0) {
             const timestamp = curr;
@@ -148,6 +158,15 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
         },
         []
       );
+
+      return subtitlesList;
+
+      return {
+        subtitles: subtitlesList,
+        videoDetails,
+        tracks,
+        relatedVideos: related_videos,
+      };
     } else {
       console.log("No captions found for this video");
     }

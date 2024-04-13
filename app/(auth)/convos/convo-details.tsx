@@ -7,7 +7,7 @@ import { Play } from "./_play";
 import { Wordle } from "@/components/wordle/game";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useSearchParams as _useSearchParams } from "next/navigation";
-import { ListenPage } from "@/components/listen/v1";
+import { YouTubePage } from "@/components/youtube-page/v1";
 
 function useSearchParams() {
   const searchParams = _useSearchParams();
@@ -32,7 +32,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   ) {
     return (
       <div>
-        <ListenPage lessonId={lessonId} />
+        <YouTubePage lessonId={lessonId} />
       </div>
     );
   }

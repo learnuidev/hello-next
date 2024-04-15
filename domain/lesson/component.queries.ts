@@ -4,6 +4,7 @@ import { queryIds } from "./queryIds";
 import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
+import { siteConfig } from "@/lib/config";
 
 // TODO: Move this to .env
 const url =
@@ -43,6 +44,55 @@ function useListComponentsQuery(
     async () => {
       // if (options.query) {
       const response = await listComponents(params, {
+        Authorization: authUser?.jwt,
+      });
+
+      return response;
+    },
+    {
+      ...options,
+      enabled: Boolean(authUser?.jwt),
+
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
+}
+
+const getComponent = async (
+  params: { componentId: string },
+  opts: {
+    Authorization: string;
+  }
+) => {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/get-component`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${opts?.Authorization}`,
+    },
+    body: JSON.stringify(params),
+  });
+  const resp = (await res.json()) as any;
+  return resp;
+
+  // return resp.sort((a: any, b: any) => (a.level || 0) - (b.level || 0));
+};
+
+export function useGetComponentQuery(
+  params = {} as {
+    componentId: string;
+  },
+  options = {} as any
+) {
+  const { data: authUser } = useCurrentAuthUser({});
+
+  return useQuery(
+    [queryIds.listComponents, params.componentId],
+    async () => {
+      // if (options.query) {
+      const response = await getComponent(params, {
         Authorization: authUser?.jwt,
       });
 

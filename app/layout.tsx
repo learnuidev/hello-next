@@ -10,6 +10,7 @@ import { Inter } from "next/font/google";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faScrewdriverWrench } from "@fortawesome/sharp-solid-svg-icons/faScrewdriverWrench";
+import "../lib/font-awesome/init";
 
 import "@/libs/cognito/init";
 import "@/libs/cognito/clientInit";
@@ -91,13 +92,13 @@ export default function RootLayout({
               </div>
 
               <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300 dark:text-gray-700">
-                <FontAwesomeIcon icon={faScrewdriverWrench} />
+                {/* <FontAwesomeIcon icon={faScrewdriverWrench} />
                 <Link
                   target="_blank"
                   href="https://www.linkedin.com/in/vishalgautamm/"
                 >
                   Vishal Gautam
-                </Link>
+                </Link> */}
               </footer>
             </div>
           </ThemeProvider>

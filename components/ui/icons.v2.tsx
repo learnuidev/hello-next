@@ -4,6 +4,7 @@ import {
 } from "@fortawesome/react-fontawesome";
 import {
   faCalculatorSimple,
+  faChevronLeft,
   faCompass,
   faCopy,
   faEarthAsia,
@@ -38,4 +39,5 @@ export const Icons = {
   musicNote: createFAIcon(faMusicNote),
   analyze: createFAIcon(faGalaxy),
   calculatorSimple: createFAIcon(faCalculatorSimple),
+  back: createFAIcon(faChevronLeft),
 };

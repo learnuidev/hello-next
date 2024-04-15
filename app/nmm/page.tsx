@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAsia } from "@fortawesome/pro-light-svg-icons";
 import { faGraduationCap, faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 import { useRouter } from "next/navigation";
+import { NMMV2 } from "./v2";
 
 export default function NomadMethodPage(props: any) {
   // const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);

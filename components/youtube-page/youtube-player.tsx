@@ -17,6 +17,7 @@ import {
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { groupBy } from "@/lib/utils";
+import { calculateColor } from "@/app/nmm/utils";
 
 export function VideoPlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -29,6 +30,8 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
   const playerRef = useRef() as any;
 
   const { data: learnedCharacters } = useListCharactersQuery();
+
+  const { data: components } = useListContentsQuery();
 
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;
@@ -256,14 +259,14 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
                   //   currentScriptIndex ? currentScriptIndex : 0,
                   //   currentScriptIndex ? currentScriptIndex + 8 : -1
                   // )
-                  .filter((example: any) => {
-                    if (currentTime) {
-                      return (
-                        (example?.timestamp?.[1] || example?.end) > currentTime
-                      );
-                    }
-                    return true;
-                  })
+                  // .filter((example: any) => {
+                  //   if (currentTime) {
+                  //     return (
+                  //       (example?.timestamp?.[1] || example?.end) > currentTime
+                  //     );
+                  //   }
+                  //   return true;
+                  // })
                   .filter((script: any) => {
                     if (focusMode) {
                       return (
@@ -303,6 +306,9 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
                             {(example?.hanzi || example?.nepali || "")
                               .split("")
                               .map((item: any, idx: any) => {
+                                const component = components?.find(
+                                  (char: any) => char?.hanzi === item
+                                );
                                 return (
                                   <span
                                     key={`${JSON.stringify(
@@ -313,7 +319,7 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
                                         example?.start) < currentTime &&
                                       (example?.timestamp?.[1] ||
                                         example?.end) > currentTime
-                                        ? "dark:text-white"
+                                        ? "text-pink-400"
                                         : learnedCharacters?.find(
                                               (char: any) =>
                                                 char?.hanzi === item

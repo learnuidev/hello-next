@@ -847,7 +847,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     return (
       <>
         {selectedComp && (
-          <div className="font-light flex space-x-4 items-center text-gray-400">
+          <div className="font-light flex space-x-4 items-center text-gray-400 mb-8">
             {selectedComp?.level && (
               <div className="flex space-x-2 items-center">
                 <Icons.earthAsia />

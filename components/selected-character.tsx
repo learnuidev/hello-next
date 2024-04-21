@@ -804,16 +804,18 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             {selectedComp?.pinyin || selectedComp?.en}
           </span>
         </Link>
-        {/* <Link
-          target="_blank"
-          href={`https://hanzicraft.com/character/${encodeURIComponent(
-            selectedChar
-          )}`}
-          className="flex items-end space-x-2"
-        >
-          {" "}
-          <span className="text-xs truncate">{selectedComp?.en}</span>
-        </Link> */}
+        {selectedComp?.pinyin && selectedComp?.en?.length < 10 && (
+          <Link
+            target="_blank"
+            href={`https://hanzicraft.com/character/${encodeURIComponent(
+              selectedChar
+            )}`}
+            className="flex items-end space-x-2"
+          >
+            {" "}
+            <span className="text-xs truncate">{selectedComp?.en}</span>
+          </Link>
+        )}
       </div>
     );
   };

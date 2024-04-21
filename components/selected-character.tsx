@@ -804,7 +804,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             {selectedComp?.pinyin || selectedComp?.en}
           </span>
         </Link>
-        {selectedComp?.pinyin && selectedComp?.en?.length < 10 && (
+        {selectedComp?.pinyin && selectedComp?.en?.length < 20 && (
           <Link
             target="_blank"
             href={`https://hanzicraft.com/character/${encodeURIComponent(

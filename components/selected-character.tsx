@@ -306,27 +306,25 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                         onClick={() => {
                           // alert("yoo 2");
 
-                          addHistoryMutation
-                            .mutateAsync({
-                              hanzi: val,
-                              contentId: selectedComp?.id || "",
-                              eventType: "CONTENT_VIEWED",
-                            } as any)
-                            .then((resp) => {
-                              router.push(`/nmm/${val}`);
+                          addHistoryMutation.mutate({
+                            hanzi: val,
+                            contentId: selectedComp?.id || "",
+                            eventType: "CONTENT_VIEWED",
+                          } as any);
 
-                              console.log("HANZ", hanz);
+                          router.push(`/nmm/${val}`);
 
-                              if (hanz?.pinyin === "??") {
-                                return discoverMutation
-                                  .mutateAsync({
-                                    hanzi: hanz?.hanzi,
-                                  })
-                                  .then((resp) => {
-                                    console.log("Discovered!!");
-                                  });
-                              }
-                            });
+                          console.log("HANZ", hanz);
+
+                          if (hanz?.pinyin === "??") {
+                            return discoverMutation
+                              .mutateAsync({
+                                hanzi: hanz?.hanzi,
+                              })
+                              .then((resp) => {
+                                console.log("Discovered!!");
+                              });
+                          }
                         }}
                       >
                         {hanz?.hanzi}
@@ -395,16 +393,13 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                   <span
                     key={`${val}-${idy}`}
                     onClick={() => {
-                      addHistoryMutation
-                        .mutateAsync({
-                          hanzi: val,
-                          contentId: selectedComp?.id || "",
-                          eventType: "CONTENT_VIEWED",
-                        } as any)
-                        .then((resp) => {
-                          // alert("yoo 3");
-                          router.push(`/nmm/${val}`);
-                        });
+                      addHistoryMutation.mutate({
+                        hanzi: val,
+                        contentId: selectedComp?.id || "",
+                        eventType: "CONTENT_VIEWED",
+                      } as any);
+
+                      router.push(`/nmm/${val}`);
                     }}
                     className={`${
                       selectedChar === val
@@ -544,27 +539,23 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                             {/* </Link> */}
                             <button
                               onClick={() => {
-                                addHistoryMutation
-                                  .mutateAsync({
-                                    hanzi: val,
-                                    contentId: selectedComp?.id || "",
-                                    eventType: "CONTENT_VIEWED",
-                                  } as any)
-                                  .then((resp) => {
-                                    // setSelectedChar(val);
-                                    // alert("yoo 5");
-                                    router.push(`/nmm/${val}`);
+                                addHistoryMutation.mutate({
+                                  hanzi: val,
+                                  contentId: selectedComp?.id || "",
+                                  eventType: "CONTENT_VIEWED",
+                                } as any);
 
-                                    if (hanz?.pinyin === "??") {
-                                      return discoverMutation
-                                        .mutateAsync({
-                                          hanzi: hanz?.hanzi,
-                                        })
-                                        .then((resp) => {
-                                          console.log("Discovered!!");
-                                        });
-                                    }
-                                  });
+                                router.push(`/nmm/${val}`);
+
+                                if (hanz?.pinyin === "??") {
+                                  return discoverMutation
+                                    .mutateAsync({
+                                      hanzi: hanz?.hanzi,
+                                    })
+                                    .then((resp) => {
+                                      console.log("Discovered!!");
+                                    });
+                                }
                               }}
                             >
                               {hanz?.hanzi}

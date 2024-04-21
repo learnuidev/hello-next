@@ -810,7 +810,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             href={`https://hanzicraft.com/character/${encodeURIComponent(
               selectedChar
             )}`}
-            className="flex items-end space-x-2"
+            className="flex items-end space-x-2 text-gray-400"
           >
             {" "}
             <span className="text-xs truncate">{selectedComp?.en}</span>

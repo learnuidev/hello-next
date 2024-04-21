@@ -44,6 +44,7 @@ import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { Icons } from "./ui/icons.v2";
 import { SearchResult } from "./search-result";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
+import { useListSubComponentsQuery } from "@/domain/component/component.queries";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const [view, setView] = useState("home");
@@ -844,6 +845,18 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       );
     }
 
+    const SubComponentsView = () => {
+      const { data: sub_components } = useListSubComponentsQuery({
+        componentId: characterId,
+      });
+
+      return (
+        <div className="text-gray-500">
+          {JSON.stringify(sub_components, null, 2)}
+        </div>
+      );
+    };
+
     return (
       <>
         {selectedComp && (
@@ -880,6 +893,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             )} */}
           </div>
         )}
+
+        {characterId?.length === 1 && <SubComponentsView />}
 
         {/* <code>
         <pre>{JSON.stringify(selectedComp, null, 2)}</pre>

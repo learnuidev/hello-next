@@ -14,6 +14,148 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
 import { Editor } from "./Editor";
 
+export function GrammarAnalysis({
+  contentId,
+  onSearchGrammar,
+  showHeader = true,
+}: {
+  contentId: string;
+  onSearchGrammar?: (grammar: string) => void;
+  showHeader?: boolean;
+}) {
+  const { data: grammarAnalysis, isLoading: isGrammarAnalysisLoading } =
+    useListGrammarsQuery(
+      {
+        sentenceId: contentId,
+        content: contentId,
+      },
+      {
+        enabled: Boolean(contentId),
+        refetchOnWindowFocus: false,
+        refetchOnFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+      }
+    );
+
+  const router = useRouter();
+
+  return grammarAnalysis ? (
+    <div>
+      {showHeader && (
+        <h3 className="sm:text-xl my-4 space-x-2">
+          <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
+          <span>Grammar</span>
+        </h3>
+      )}
+      {isGrammarAnalysisLoading ? (
+        <div className="flex flex-col space-y-3">
+          <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
+          </div>
+        </div>
+      ) : (
+        <div className="font-light space-y-4 mt-8">
+          {(grammarAnalysis as ListGrammarsResponse)?.grammarAnalysis?.map(
+            (analysis) => {
+              if (analysis?.hanzi) {
+                return (
+                  <div key={analysis?.hanzi}>
+                    <div className="flex space-x-4 items-center"></div>
+
+                    {onSearchGrammar ? (
+                      <button
+                        onClick={() => {
+                          onSearchGrammar(analysis?.hanzi || "");
+                        }}
+                      >
+                        {analysis?.hanzi}
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          router.push(
+                            `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
+                          );
+                          // onSearchGrammar(analysis?.hanzi || "");
+                        }}
+                        className="w-16"
+                      >
+                        {analysis?.hanzi}
+                      </button>
+                    )}
+
+                    <button
+                      className="ml-4 text-gray-400"
+                      onClick={() => {
+                        router.push(
+                          `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
+                        );
+                        // onSearchGrammar(analysis?.hanzi || "");
+                      }}
+                      // className="w-16"
+                    >
+                      {analysis?.pinyin}
+                    </button>
+                    <button
+                      className="ml-2 text-gray-400"
+                      onClick={() => {
+                        router.push(
+                          `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
+                        );
+                        // onSearchGrammar(analysis?.hanzi || "");
+                      }}
+                      // className="w-16"
+                    >
+                      {analysis?.en}
+                    </button>
+
+                    <p
+                      className="text-gray-400 mb-4"
+                      onClick={() => {
+                        router.push(
+                          `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
+                        );
+                        // onSearchGrammar(analysis?.hanzi || "");
+                      }}
+                      // className="w-16"
+                    >
+                      {analysis?.explanation}
+                    </p>
+                  </div>
+                );
+              } else {
+                return (
+                  <div
+                    key={analysis?.original}
+                    className="flex space-x-4 items-center"
+                  >
+                    {onSearchGrammar ? (
+                      <button
+                        onClick={() => {
+                          onSearchGrammar(analysis?.original || "");
+                        }}
+                      >
+                        {analysis?.original}
+                      </button>
+                    ) : (
+                      <p className="w-16">{analysis?.original}</p>
+                    )}
+
+                    <p>{analysis?.explanation}</p>
+                  </div>
+                );
+              }
+            }
+          )}
+        </div>
+      )}
+    </div>
+  ) : null;
+}
+
 export function SearchResult({
   query,
   onSearchGrammar,
@@ -30,23 +172,6 @@ export function SearchResult({
   });
 
   const router = useRouter();
-
-  const { data: grammarAnalysis, isLoading: isGrammarAnalysisLoading } =
-    useListGrammarsQuery(
-      {
-        sentenceId: currentDecodedQuery,
-        content: currentDecodedQuery,
-      },
-      {
-        enabled: Boolean(currentDecodedQuery),
-        refetchOnWindowFocus: false,
-        refetchOnFocus: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-      }
-    );
-
-  console.log("foo");
 
   const meaningResponse = meaning as ListMeaningsResponse;
   return (
@@ -66,118 +191,9 @@ export function SearchResult({
         )}
       </div>
 
-      {grammarAnalysis ? (
-        <div className="my-16">
-          <h3 className="sm:text-xl my-4 space-x-2">
-            <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
-            <span>Grammar</span>
-          </h3>
-          {isGrammarAnalysisLoading ? (
-            <div className="flex flex-col space-y-3">
-              <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-[250px]" />
-                <Skeleton className="h-4 w-[200px]" />
-              </div>
-            </div>
-          ) : (
-            <div className="font-light space-y-4 mt-8">
-              {(grammarAnalysis as ListGrammarsResponse)?.grammarAnalysis?.map(
-                (analysis) => {
-                  if (analysis?.hanzi) {
-                    return (
-                      <div key={analysis?.hanzi}>
-                        <div className="flex space-x-4 items-center"></div>
-
-                        {onSearchGrammar ? (
-                          <button
-                            onClick={() => {
-                              onSearchGrammar(analysis?.hanzi || "");
-                            }}
-                          >
-                            {analysis?.hanzi}
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => {
-                              router.push(
-                                `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
-                              );
-                              // onSearchGrammar(analysis?.hanzi || "");
-                            }}
-                            className="w-16"
-                          >
-                            {analysis?.hanzi}
-                          </button>
-                        )}
-
-                        <button
-                          className="ml-4 text-gray-400"
-                          onClick={() => {
-                            router.push(
-                              `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
-                            );
-                            // onSearchGrammar(analysis?.hanzi || "");
-                          }}
-                          // className="w-16"
-                        >
-                          {analysis?.pinyin}
-                        </button>
-                        <button
-                          className="ml-2 text-gray-400"
-                          onClick={() => {
-                            router.push(
-                              `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
-                            );
-                            // onSearchGrammar(analysis?.hanzi || "");
-                          }}
-                          // className="w-16"
-                        >
-                          {analysis?.en}
-                        </button>
-
-                        <p
-                          className="text-gray-400 mb-4"
-                          onClick={() => {
-                            router.push(
-                              `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
-                            );
-                            // onSearchGrammar(analysis?.hanzi || "");
-                          }}
-                          // className="w-16"
-                        >
-                          {analysis?.explanation}
-                        </p>
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <div
-                        key={analysis?.original}
-                        className="flex space-x-4 items-center"
-                      >
-                        {onSearchGrammar ? (
-                          <button
-                            onClick={() => {
-                              onSearchGrammar(analysis?.original || "");
-                            }}
-                          >
-                            {analysis?.original}
-                          </button>
-                        ) : (
-                          <p className="w-16">{analysis?.original}</p>
-                        )}
-
-                        <p>{analysis?.explanation}</p>
-                      </div>
-                    );
-                  }
-                }
-              )}
-            </div>
-          )}
-        </div>
-      ) : null}
+      <div className="my-16">
+        <GrammarAnalysis contentId={currentDecodedQuery} />
+      </div>
     </div>
   );
 }

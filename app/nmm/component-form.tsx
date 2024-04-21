@@ -5,7 +5,10 @@ import { useViewModeStore } from "./use-view-mode-store";
 import { initCharacter, useCharacterStore } from "./nomad-method-store";
 
 import { useListSubComponentsQuery } from "@/domain/component/component.queries";
-import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
+import {
+  ListGrammarsResponse,
+  useListGrammarsQuery,
+} from "@/domain/sentence/grammar.queries";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,6 +20,7 @@ import {
 import { useAddStepsMutation } from "@/domain/lesson/step.mutations";
 import { Editor } from "@/components/Editor";
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { GrammarAnalysis } from "@/components/search-result";
 
 export const ComponentForm = ({
   selectedId,
@@ -80,6 +84,8 @@ export const ComponentForm = ({
         refetchOnReconnect: false,
       }
     );
+
+  const _grammarAnalysis = grammarAnalysis as ListGrammarsResponse;
 
   const styles = useSpring({
     from: { opacity: "0" },
@@ -146,6 +152,7 @@ export const ComponentForm = ({
 
                   <h2
                     onClick={() => {
+                      console.log("SHOW");
                       setShowAnalysis(!showAnalysis);
                     }}
                     className="md:mx-12 my-2 text-black dark:text-gray-400 text-md md:text-lg"
@@ -298,22 +305,21 @@ export const ComponentForm = ({
           </button>
         </div>
 
+        {showAnalysis ? (
+          <div className="mx-12 flex justify-center text-gray-400">
+            <GrammarAnalysis contentId={lesson?.hanzi} showHeader={false} />
+          </div>
+        ) : null}
+
         {/* {showAnalysis ? (
           <div
             className={`mx-4 justify-center items-center md:mx-64 my-8 grid   ${
-              (
-                grammarAnalysis?.grammarAnalysis?.words ||
-                grammarAnalysis?.grammarAnalysis
-              )?.length < 5
+              _grammarAnalysis?.grammarAnalysis?.length < 5
                 ? "grid-cols-3"
                 : "grid-cols-5"
             } gap-y-8 text-sm px-12 text-gray-200 dark:text-gray-400`}
           >
-            {(
-              grammarAnalysis?.grammarAnalysis?.words ||
-              grammarAnalysis?.grammarAnalysis ||
-              []
-            )
+            {_grammarAnalysis?.grammarAnalysis
               ?.filter((grammar: any) => grammar?.hanzi?.length < 10)
               ?.map((grammar: any) => {
                 const params = {

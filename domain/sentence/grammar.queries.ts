@@ -49,13 +49,11 @@ export function useListGrammarsQuery(
 
   return useQuery({
     queryKey: [queryIds.listGrammars, params?.content],
-    queryFn: async () => {
-      if (params?.sentenceId || params?.content) {
-        const response = await listGrammars(params, {
-          Authorization: authUser?.jwt,
-        });
-        return response as ListGrammarsResponse;
-      }
+    queryFn: async (): Promise<ListGrammarsResponse> => {
+      const response = await listGrammars(params, {
+        Authorization: authUser?.jwt,
+      });
+      return response as ListGrammarsResponse;
     },
 
     ...options,

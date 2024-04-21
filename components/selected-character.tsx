@@ -42,7 +42,7 @@ import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
 import { Summary } from "./summary";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { Icons } from "./ui/icons.v2";
-import { SearchResult } from "./search-result";
+import { GrammarAnalysis, SearchResult } from "./search-result";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useListSubComponentsQuery } from "@/domain/component/component.queries";
 
@@ -149,7 +149,10 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
   const selectedComp = useMemo(
     () =>
-      components?.find((component: any) => component?.hanzi === selectedChar),
+      components?.find(
+        (component: any) =>
+          (component?.hanzi || component?.item) === selectedChar
+      ),
     [components, selectedChar]
   );
 
@@ -173,7 +176,10 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
   const firstLesson = useMemo(
     () =>
-      components?.find((component: any) => component?.hanzi === selectedChar),
+      components?.find(
+        (component: any) =>
+          (component?.hanzi || component?.item) === selectedChar
+      ),
     [components, selectedChar]
   );
 
@@ -419,8 +425,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           <span className="text-sm text-gray-400">
             {currentPhrase?.en || currentPhrase?.title}
           </span>
-          {!currentPhrase?.hanzi && (
-            <span className="text-xs text-gray-500">
+          {!currentPhrase?.hanzi && false && (
+            <span className="text-xs text-gray-600">
               {currentPhrase?.explanation}
             </span>
           )}
@@ -831,19 +837,19 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
   };
 
   const ViewType = () => {
-    if (characterId?.length > 3) {
-      return (
-        <SearchResult
-          onSearchGrammar={(grammar) => {
-            console.log("yoo 5");
-            router.push(`/nmm/${grammar}`);
+    // if (characterId?.length > 3) {
+    //   return (
+    //     <SearchResult
+    //       onSearchGrammar={(grammar) => {
+    //         console.log("yoo 5");
+    //         router.push(`/nmm/${grammar}`);
 
-            // router.push()
-          }}
-          query={characterId}
-        />
-      );
-    }
+    //         // router.push()
+    //       }}
+    //       query={characterId}
+    //     />
+    //   );
+    // }
 
     const SubComponentsView = () => {
       const { data: sub_components } = useListSubComponentsQuery({
@@ -859,6 +865,18 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
     return (
       <>
+        <div className="flex flex-col items-start w-full mt-4 md:mt-12">
+          <h1 className="text-3xl">{selectedComp?.hanzi || selectedChar}</h1>
+
+          <h2 className="text-gray-400 font-light">{selectedComp?.en}</h2>
+        </div>
+
+        {/* <div>
+          <code>
+            <pre>{JSON.stringify(selectedComp, null, 2)}</pre>
+          </code>
+        </div> */}
+
         {selectedComp && (
           <div className="font-light flex space-x-4 items-center text-gray-400 mb-8">
             {selectedComp?.level && (
@@ -928,6 +946,10 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             )}
             <div className="mt-[-32px]">
               <Summary showMeanings={true} characterId={characterId} />
+            </div>
+
+            <div className="my-16">
+              <GrammarAnalysis contentId={selectedChar} />
             </div>
           </div>
 

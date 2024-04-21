@@ -781,13 +781,13 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
   const TitleView = () => {
     return (
-      <div className={`${color} flex space-x-2 text-4xl font-extralight `}>
+      <div className={`flex space-x-2 text-4xl font-extralight `}>
         <Link
           target="_blank"
           href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
             selectedChar
           )}`}
-          className="flex items-end space-x-2"
+          className={`${color} flex items-end space-x-2`}
         >
           {" "}
           <span>{selectedChar}</span>{" "}
@@ -800,9 +800,11 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           className="flex items-end space-x-2"
         >
           {" "}
-          <span className="text-xs">{selectedComp?.pinyin}</span>
+          <span className="text-xs">
+            {selectedComp?.pinyin || selectedComp?.en}
+          </span>
         </Link>
-        <Link
+        {/* <Link
           target="_blank"
           href={`https://hanzicraft.com/character/${encodeURIComponent(
             selectedChar
@@ -810,8 +812,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           className="flex items-end space-x-2"
         >
           {" "}
-          <span className="text-xs">{selectedComp?.en}</span>
-        </Link>
+          <span className="text-xs truncate">{selectedComp?.en}</span>
+        </Link> */}
       </div>
     );
   };

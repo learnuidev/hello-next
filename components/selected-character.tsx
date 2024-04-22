@@ -865,11 +865,11 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
     return (
       <>
-        {selectedChar?.length > 1 && (
+        {selectedChar?.length > 3 && (
           <div className="flex flex-col items-start w-full mt-4 md:mt-12">
             <h1 className="text-3xl">{selectedComp?.hanzi || selectedChar}</h1>
 
-            <h2 className="text-gray-400 font-light">{selectedComp?.en}</h2>
+            {/* <h2 className="text-gray-400 font-light">{selectedComp?.en}</h2> */}
           </div>
         )}
 

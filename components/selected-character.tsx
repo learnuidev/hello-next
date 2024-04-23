@@ -854,6 +854,10 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
         componentId: characterId,
       });
 
+      if (sub_components?.length < 2) {
+        return null;
+      }
+
       return (
         <div className="text-gray-500">
           {JSON.stringify(sub_components, null, 2)}
@@ -862,123 +866,121 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     };
 
     return (
-      <>
-        {selectedChar?.length > 3 && (
-          <div className="flex flex-col items-start w-full mt-4 md:mt-12">
-            <h2 className="text-gray-400 font-light">
-              {selectedComp?.pinyin || selectedComp?.roman}
-            </h2>
-            <h1 className="text-3xl">{selectedComp?.hanzi || selectedChar}</h1>
+      <div
+        className={
+          "relative grid grid-cols-1 md:grid-cols-[1fr_500px] gap-x-8 md:grid-rows-[70px_1fr] pt-0"
+          // "relative grid grid-cols-1 md:grid-cols-[550px_1fr] md:grid-rows-[70px_1fr]"
+        }
+      >
+        <div className={"row-span-2 overflow-hidden col-span-1"}>
+          {selectedChar?.length > 3 && (
+            <div className="flex flex-col items-start w-full mt-4">
+              <h2 className="text-gray-400 font-light">
+                {selectedComp?.pinyin || selectedComp?.roman}
+              </h2>
+              <h1 className="text-3xl">
+                {selectedComp?.hanzi || selectedChar}
+              </h1>
 
-            <h2 className="text-gray-500 font-light">{selectedComp?.en}</h2>
-          </div>
-        )}
+              <h2 className="text-gray-500 font-light">{selectedComp?.en}</h2>
+            </div>
+          )}
 
-        {/* <div>
+          {/* <div>
           <code>
             <pre>{JSON.stringify(selectedComp, null, 2)}</pre>
           </code>
         </div> */}
 
-        {selectedComp && (
-          <div className="font-light flex space-x-4 items-center text-gray-400 mb-8">
-            {selectedComp?.level && (
-              <div className="flex space-x-2 items-center">
-                <Icons.earthAsia />
-                <p>{selectedComp?.level}</p>
-              </div>
-            )}
-            {selectedComp?.tone_level && (
-              <div className="flex space-x-2 items-center">
-                <Icons.musicNote />
-                <p>{selectedComp?.tone_level}</p>
-              </div>
-            )}
-            {selectedComp?.initial && (
-              <div className="flex space-x-2 items-center">
-                <p>initial - </p>
-                <p>{selectedComp?.initial}</p>
-              </div>
-            )}
-            {selectedComp?.final && (
-              <div className="flex space-x-2 items-center">
-                <p>final - </p>
-                <p>{selectedComp?.final}</p>
-              </div>
-            )}
-            {/* {selectedComp?.group && (
+          {selectedComp && (
+            <div className="font-light flex space-x-4 items-center text-gray-400 mb-8">
+              {selectedComp?.level && (
+                <div className="flex space-x-2 items-center">
+                  <Icons.earthAsia />
+                  <p>{selectedComp?.level}</p>
+                </div>
+              )}
+              {selectedComp?.tone_level && (
+                <div className="flex space-x-2 items-center">
+                  <Icons.musicNote />
+                  <p>{selectedComp?.tone_level}</p>
+                </div>
+              )}
+              {selectedComp?.initial && (
+                <div className="flex space-x-2 items-center">
+                  <p>initial - </p>
+                  <p>{selectedComp?.initial}</p>
+                </div>
+              )}
+              {selectedComp?.final && (
+                <div className="flex space-x-2 items-center">
+                  <p>final - </p>
+                  <p>{selectedComp?.final}</p>
+                </div>
+              )}
+              {/* {selectedComp?.group && (
               <div className="flex space-x-2 items-center">
                 <p>group - </p>
                 <p>{selectedComp?.group}</p>
               </div>
             )} */}
-          </div>
-        )}
+            </div>
+          )}
 
-        {characterId?.length === 1 && <SubComponentsView />}
+          {characterId?.length === 1 && <SubComponentsView />}
 
-        {/* <code>
+          {/* <code>
         <pre>{JSON.stringify(selectedComp, null, 2)}</pre>
       </code> */}
 
-        <article
-          className={
-            "mt-8 relative grid grid-cols-1 md:grid-cols-[1fr_500px] gap-x-8 md:grid-rows-[70px_1fr] pt-0"
-            // "relative grid grid-cols-1 md:grid-cols-[550px_1fr] md:grid-rows-[70px_1fr]"
-          }
-        >
-          {/* <div className="">
-            {" "}
-            <ScrollArea className="space-y-2 h-[700px] rounded-md border border-black p-4">
-              <SentencesView />
-            </ScrollArea>
-          </div> */}
-          <div className={"row-span-2 overflow-hidden col-span-1"}>
-            {isAlreadyLearned?.story && isAlreadyLearned?.story !== "na" && (
-              <>
-                <div className="my-8 text-center">
-                  <p
-                    dangerouslySetInnerHTML={{
-                      __html: isAlreadyLearned?.story,
-                    }}
-                  ></p>
-                </div>
+          <article>
+            <div>
+              {/* {isAlreadyLearned?.story && isAlreadyLearned?.story !== "na" && (
+                <>
+                  <div className="my-8 text-center">
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: isAlreadyLearned?.story,
+                      }}
+                    ></p>
+                  </div>
 
-                <hr className="border-gray-500 w-11/12 m-auto" />
-              </>
-            )}
-            {characterId?.length < 10 && (
-              <div className="mt-[-32px]">
-                <Summary showMeanings={true} characterId={characterId} />
-              </div>
-            )}
-
-            <div className="my-8">
-              <GrammarAnalysis contentId={selectedChar} />
-            </div>
-          </div>
-
-          <>
-            <div className="">
-              {" "}
-              {sentences?.length > 7 ? (
-                <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
-                  <SentencesView />
-                </ScrollArea>
-              ) : (
-                <div className="hidden md:block space-y-2 h-[700px] rounded-mdp-4">
-                  {/* <h1 className="text-xl font-bold mb-4">Example Sentences</h1> */}
-                  <SentencesView />
+                  <hr className="border-gray-500 w-11/12 m-auto" />
+                </>
+              )} */}
+              {characterId?.length < 10 && (
+                <div className="mt-[-32px]">
+                  <Summary showMeanings={true} characterId={characterId} />
                 </div>
               )}
-            </div>
 
-            <div className="md:hidden block">
-              <SentencesView />
+              <div className="my-8">
+                <GrammarAnalysis contentId={selectedChar} />
+              </div>
             </div>
-          </>
-        </article>
-      </>
+          </article>
+        </div>
+
+        <div>
+          <div className="">
+            {" "}
+            {sentences?.length > 7 ? (
+              <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
+                <SentencesView />
+              </ScrollArea>
+            ) : (
+              <div className="hidden md:block space-y-2 h-[700px] rounded-mdp-4">
+                {/* <h1 className="text-xl font-bold mb-4">Example Sentences</h1> */}
+                <SentencesView />
+              </div>
+            )}
+          </div>
+
+          <div className="md:hidden block">
+            <SentencesView />
+          </div>
+        </div>
+      </div>
     );
   };
 

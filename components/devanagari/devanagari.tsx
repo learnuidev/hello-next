@@ -3,21 +3,15 @@ import React, { useMemo } from "react";
 
 import { useState, useEffect } from "react";
 
-import { useLessonHistoryStore } from "../speak/useLessonHistory";
-
 import {
   nepaliVowels,
   nepaliConsonants,
   nepaliSentences,
-  nepaliWords,
-  nepaliWords1,
-  // nepaliWords204,
   uniqueWords,
   dependentVowels,
   nepaliWords203,
 } from "./data";
-// import { NewPatra } from "../convos/NewPatra";
-import { useWordsStore } from "./state";
+
 import { cc, ccV3 } from "./cc";
 
 import {
@@ -67,7 +61,7 @@ const PageView = ({ view, setSelectedId }: any) => {
     }
 
     return nepaliWords203;
-  }, [filterType, nepaliWords203, filterCharacter]) as any;
+  }, [filterType, filterCharacter]) as any;
 
   const WORD_LEN = 0;
 
@@ -100,7 +94,7 @@ const PageView = ({ view, setSelectedId }: any) => {
       return [...res].sort((a, b) => b?.words?.length - a?.words?.length);
     }
     return res;
-  }, [cc, nepaliWords204, filterZeroes, sortByPopularity]);
+  }, [nepaliWords204, filterZeroes, sortByPopularity]);
 
   const ccV3Data = useMemo(() => {
     const res = ccV3
@@ -131,7 +125,7 @@ const PageView = ({ view, setSelectedId }: any) => {
       return [...res].sort((a, b) => b?.words?.length - a?.words?.length);
     }
     return res;
-  }, [ccV3, nepaliWords204, filterZeroes, sortByPopularity]);
+  }, [nepaliWords204, filterZeroes, sortByPopularity]);
 
   switch (view) {
     case "devanagari":
@@ -686,362 +680,10 @@ const PageView = ({ view, setSelectedId }: any) => {
   }
 };
 
-const calculateColor = (dict: any) => {
-  switch (dict?.tone) {
-    case 1:
-      return "text-red-400";
-    case 2:
-      return "text-green-400";
-    case 3:
-      return "text-sky-400";
-    case 4:
-      return "text-purple-400";
-    default:
-      return "text-black dark:text-white";
-  }
-};
-
-// function ComponentEditor({ selectedId, setSelectedId }: any) {
-//   const nepaliWords204 = useWordsStore((s) => s?.words);
-
-//   const dict =
-//     dictionary?.[selectedId] ||
-//     commonChinesePhrases?.find((phrase) => phrase?.hanzi === selectedId) ||
-//     nepaliWords?.find((word: any) => word?.nepali === selectedId) ||
-//     nepaliWords204?.find((word: any) => word?.nepali === selectedId) ||
-//     cc?.find((word: any) => word?.nepali === selectedId);
-
-//   const lessonHistories = useLessonHistoryStore((state: any) => state.history);
-
-//   const speakHistory = useMemo(() => {
-//     return lessonHistories.filter((history: any) => {
-//       return history?.answer?.[0]?.transcript?.includes(selectedId);
-//     });
-//   }, [lessonHistories]);
-
-//   const relatedWords1 = nepaliWords204.filter((word: any) => {
-//     return word?.nepali?.split("")?.includes(selectedId);
-//   });
-
-//   const words2 = nepaliWords204?.filter((word: any) => {
-//     return word?.nepali?.includes(selectedId);
-//   });
-
-//   const relatedWords = useMemo(() => {
-//     return (relatedWords1?.length ? relatedWords1 : words2)?.sort(
-//       (a: any, b: any) => {
-//         return a?.nepali?.split("")?.length - b?.nepali?.split("")?.length;
-//       }
-//     );
-//   }, [relatedWords1, words2]);
-
-//   const actor = learnedActors.find((actor) => actor.id === selectedId);
-//   return (
-//     <div>
-//       <div className="my-4 mx-8 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
-//         <div></div>
-//         <div className="space-x-2 flex flex-col items-center">
-//           {dict?.nepali ? (
-//             <>
-//               <span
-//                 className={`items-center flex space-x-4 text-2xl font-bold ${calculateColor(
-//                   dict
-//                 )}`}
-//               >
-//                 {" "}
-//                 <span>{dict?.sound ? <Music url={dict?.sound} /> : null} </span>
-//                 <span> {dict?.nepali} </span>
-//                 {dict?.en ? (
-//                   <>
-//                     <span>| </span>
-//                     <span className={`text-2xl dark:text-gray-400 font-light`}>
-//                       {dict?.en}
-//                     </span>
-//                   </>
-//                 ) : null}
-//                 {dict?.nepaliRoman ? (
-//                   <>
-//                     <span>| </span>
-//                     <span className={`text-2xl dark:text-gray-400 font-light`}>
-//                       {dict?.nepaliRoman}
-//                     </span>
-//                   </>
-//                 ) : null}
-//               </span>
-
-//               {dict?.type ? (
-//                 <div className="dark:text-slate-400 flex items-center flex-row space-x-4">
-//                   <span className="dark:text-slate-400 text-[12px]">
-//                     {dict?.type}
-//                   </span>
-//                   <span className="dark:text-slate-400 text-[12px]">|</span>
-//                   <span className="dark:text-slate-400 text-[12px]">
-//                     {dict?.variant}
-//                   </span>
-//                 </div>
-//               ) : null}
-
-//               <div className="flex space-x-4 items-center">
-//                 {// nepaliWords
-//                 selectedId
-//                   ?.split("")
-//                   .map((item: any) => {
-//                     const word = nepaliWords?.find(
-//                       (word: any) => word?.nepali === item
-//                     );
-//                     return word;
-//                   })
-//                   .filter(
-//                     (word: any) =>
-//                       selectedId?.includes(word?.nepali) &&
-//                       selectedId !== word?.nepali
-//                   )
-//                   .map((word: any) => {
-//                     const selectedIdArr = selectedId
-//                       ?.split(" ")
-//                       ?.join("")
-//                       ?.split("");
-//                     const index = selectedIdArr.indexOf(word?.nepali);
-//                     return {
-//                       ...word,
-//                       index,
-//                     };
-//                   })
-//                   // .sort((a: any, b: any) => a.index - b.index)
-//                   .map((word: any, idx: any) => {
-//                     return (
-//                       <div
-//                         key={`${word?.nepali}-${idx}`}
-//                         className="text-2xl p-4 flex flex-col justify-center items-center font-extralight"
-//                       >
-//                         <div className="dark:text-slate-400 flex items-center flex-row space-x-4">
-//                           <span className="text-[12px] dark:text-gray-400">
-//                             {word?.nepaliRoman || word?.en || "n/a"}
-//                           </span>
-//                         </div>
-//                         <span
-//                           onClick={() => {
-//                             setSelectedId(word?.nepali);
-//                           }}
-//                         >
-//                           {word?.nepali}
-//                         </span>
-
-//                         {/* <div className='dark:text-slate-400 flex items-center flex-row space-x-4'>
-//                           <span className='dark:text-slate-400 text-[12px]'>
-//                             {word?.type}
-//                           </span>
-//                           <span className='dark:text-slate-400 text-[12px]'>
-//                             |
-//                           </span>
-//                           <span className='dark:text-slate-400 text-[12px]'>
-//                             {word?.variant}
-//                           </span>
-//                         </div> */}
-//                       </div>
-//                     );
-//                   })}
-//               </div>
-//             </>
-//           ) : (
-//             <span className={`items-center flex flex-col`}>
-//               <span className={`text-3xl font-bold ${calculateColor(dict)}`}>
-//                 {selectedId}
-//               </span>
-
-//               <div className="flex space-x-4 items-center">
-//                 {// nepaliWords
-//                 selectedId
-//                   ?.split("")
-//                   .map((item: any) => {
-//                     const word = nepaliWords?.find(
-//                       (word: any) => word?.nepali === item
-//                     );
-//                     return word;
-//                   })
-//                   .filter(
-//                     (word: any) =>
-//                       selectedId?.includes(word?.nepali) &&
-//                       selectedId !== word?.nepali
-//                   )
-//                   .map((word: any) => {
-//                     const selectedIdArr = selectedId
-//                       ?.split(" ")
-//                       ?.join("")
-//                       ?.split("");
-//                     const index = selectedIdArr.indexOf(word?.nepali);
-//                     return {
-//                       ...word,
-//                       index,
-//                     };
-//                   })
-//                   // .sort((a: any, b: any) => a.index - b.index)
-//                   .map((word: any, idx: any) => {
-//                     return (
-//                       <div
-//                         key={`${word?.nepali}-${idx}`}
-//                         className="text-2xl p-4 flex flex-col justify-center items-center font-extralight"
-//                       >
-//                         <div className="dark:text-slate-400 flex items-center flex-row space-x-4">
-//                           <span className="text-[12px] dark:text-gray-400">
-//                             {word?.nepaliRoman || word?.en || "n/a"}
-//                           </span>
-//                         </div>
-//                         <span
-//                           onClick={() => {
-//                             setSelectedId(word?.nepali);
-//                           }}
-//                         >
-//                           {word?.nepali}
-//                         </span>
-
-//                         {/* <div className='dark:text-slate-400 flex items-center flex-row space-x-4'>
-//                           <span className='dark:text-slate-400 text-[12px]'>
-//                             {word?.type}
-//                           </span>
-//                           <span className='dark:text-slate-400 text-[12px]'>
-//                             |
-//                           </span>
-//                           <span className='dark:text-slate-400 text-[12px]'>
-//                             {word?.variant}
-//                           </span>
-//                         </div> */}
-//                       </div>
-//                     );
-//                   })}
-//               </div>
-//             </span>
-//           )}
-//         </div>
-
-//         <button
-//           onClick={() => {
-//             setSelectedId(null);
-//           }}
-//           className={`my-4 flex flex-col items-center dark:text-gray-800 hover:dark:text-white transition`}
-//         >
-//           <CloseIcon className="text-4xl" />
-//         </button>
-//       </div>
-
-//       <div className="mx-8 md:mx-16">
-//         <p className="text-center font-extralight dark:text-gray-400">
-//           {" "}
-//           {dict?.description}
-//         </p>
-//       </div>
-//       {dict?.type === "dependent vowel" ? (
-//         <div className="mx-8 md:mx-16 my-4">
-//           {/* {nepaliConsonants?.map(consonant => {
-
-//           })} */}
-
-//           <div className="flex flex-wrap">
-//             {nepaliConsonants.map((word: any) => {
-//               return (
-//                 <div
-//                   onClick={() => {
-//                     setSelectedId(`${word?.nepali}${dict?.nepali}`);
-//                   }}
-//                   className="flex flex-col items-center justify-center p-4 font-extralight"
-//                 >
-//                   <span className="dark:text-slate-300 text-2xl">
-//                     {`${word?.nepali}${dict?.nepali}`}
-//                   </span>
-//                   {/* <span className='dark:text-slate-400'>{word?.en}</span> */}
-//                   <span className="dark:text-slate-400">
-//                     {dict?.nepali === "्"
-//                       ? `${word?.nepaliRoman?.slice(0, -1)}`
-//                       : `${word?.nepaliRoman?.slice(0, -1)}${dict.nepaliRoman}`}
-//                   </span>
-//                 </div>
-//               );
-//             })}
-//           </div>
-//         </div>
-//       ) : null}
-//       <div className="my-4 mx-8 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
-//         <div></div>
-//         <div className="space-x-2 flex flex-col items-center">
-//           {dict?.nepali ? (
-//             <>
-//               <div className="flex flex-wrap">
-//                 {relatedWords.map((word: any) => {
-//                   return (
-//                     <div
-//                       onClick={() => {
-//                         setSelectedId(word?.nepali);
-//                       }}
-//                       className="flex flex-col items-center justify-center p-4 font-extralight"
-//                     >
-//                       <span className="dark:text-slate-300 text-2xl">
-//                         {word?.nepali}
-//                       </span>
-//                       <span className="dark:text-slate-400">{word?.en}</span>
-//                       <span className="dark:text-slate-400">
-//                         {word?.nepaliRoman}
-//                       </span>
-//                     </div>
-//                   );
-//                 })}
-//               </div>
-//             </>
-//           ) : (
-//             <span className={`items-center flex flex-col`}>
-//               <span className={`text-3xl font-bold ${calculateColor(dict)}`}>
-//                 {selectedId}
-//               </span>
-
-//               <>
-//                 <div className="flex flex-wrap">
-//                   {relatedWords.map((word: any) => {
-//                     return (
-//                       <div
-//                         onClick={() => {
-//                           setSelectedId(word?.nepali);
-//                         }}
-//                         className="flex flex-col items-center justify-center p-4 font-extralight"
-//                       >
-//                         <span className="dark:text-slate-300 text-2xl">
-//                           {word?.nepali}
-//                         </span>
-//                         <span className="dark:text-slate-400">{word?.en}</span>
-//                         <span className="dark:text-slate-400">
-//                           {word?.nepaliRoman}
-//                         </span>
-//                       </div>
-//                     );
-//                   })}
-//                 </div>
-//               </>
-
-//               {/* <div>
-//                 <code>
-//                   <pre>
-//                     {JSON.stringify(
-//                       nepaliWords.filter((word: any) =>
-//                         selectedId?.includes(word?.nepali)
-//                       ),
-//                       null,
-//                       2
-//                     )}
-//                   </pre>
-//                 </code>
-//               </div> */}
-//             </span>
-//           )}
-//         </div>
-
-//         <div></div>
-//       </div>
-//     </div>
-//   );
-// }
-
 export function Devanagari() {
   const [selectedId, setSelectedId] = useState<any>("");
   // const [view, setView] = useState('devanagari')
-  const [view, setView] = useState("cc");
+  const [view, setView] = useState("devanagari");
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState(0);
 

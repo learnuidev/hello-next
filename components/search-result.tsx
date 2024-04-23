@@ -11,7 +11,7 @@ import {
   useListGrammarsQuery,
 } from "@/domain/sentence/grammar.queries";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Editor } from "./Editor";
 import Link from "next/link";
 
@@ -167,12 +167,16 @@ export function SearchResult({
   query?: string;
   onSearchGrammar?: (grammar: string) => void;
 }) {
+  const searchParams = useSearchParams();
+  const lang = searchParams.get("lang") || "";
+
   //   const currentDecodedQuery = useGetDecodedCharacter(query);
 
   const currentDecodedQuery = decodeURIComponent(query || "");
 
   const { data: meaning } = useListMeaningsQuery({
     content: currentDecodedQuery,
+    lang,
   });
 
   const router = useRouter();

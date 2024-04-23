@@ -22,6 +22,8 @@ import {
   SentenceIcon,
   WordIcon,
 } from "../ui/icons";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 const PageView = ({ view, setSelectedId }: any) => {
   const [viewMode, setViewMode] = useState("halant");
   const [variants, setVariants] = useState([]) as any;
@@ -31,6 +33,9 @@ const PageView = ({ view, setSelectedId }: any) => {
   const [filterCharacter, setFilterCharacter] = useState("");
   const [filterZeroes, toggleFilterZeroes] = useState(true);
   const [sortByPopularity, toggleSortPopularity] = useState(true);
+
+  const searchParams = useSearchParams();
+  const lang = searchParams.get("lang") || "";
 
   // const nepaliWords203 = useWordsStore((s) => s?.words);
 
@@ -180,7 +185,7 @@ const PageView = ({ view, setSelectedId }: any) => {
               })}
             </div>
           </div>
-          <div className="mx-4 my-4 md:mx-16 lex flex-wrap items-center justify-center">
+          <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-center justify-center">
             {nepaliConsonants.map((prop) => {
               // return <p className='p-4'>{prop?.hanzi}</p>
               const words = nepaliWords204?.filter((word: any) => {
@@ -198,11 +203,16 @@ const PageView = ({ view, setSelectedId }: any) => {
               //   }
               // }
               return (
-                <button
+                <Link
                   key={JSON.stringify(prop)}
-                  onClick={() => {
-                    setSelectedId(prop.nepali);
-                  }}
+                  href={
+                    lang
+                      ? `/nmm/${prop.nepali}?lang=${lang}`
+                      : `/nmm/${prop.nepali}`
+                  }
+                  // onClick={() => {
+                  //   setSelectedId(prop.nepali);
+                  // }}
                   className={`${
                     variants.includes(prop?.variant) ||
                     (isCoreOnly && words3?.length >= 20)
@@ -235,7 +245,7 @@ const PageView = ({ view, setSelectedId }: any) => {
                   {isHidden ? null : (
                     <span className="block text-[12px]"> {prop.en}</span>
                   )}
-                </button>
+                </Link>
               );
             })}
           </div>

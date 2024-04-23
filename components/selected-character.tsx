@@ -19,7 +19,7 @@ import {
   faXmark,
 } from "@fortawesome/pro-thin-svg-icons";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import Link from "next/link";
 
@@ -157,9 +157,12 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
   );
 
   const [readMode, setReadMode] = useState(false);
+  const searchParams = useSearchParams();
+  const lang = searchParams.get("lang") || "";
 
   const { data: meaning } = useListMeaningsQuery({
     content: characterId,
+    lang,
   });
 
   const isAlreadyLearned = useMemo(
@@ -187,6 +190,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
   const { data: sentences } = useListSentencesQuery({
     component: selectedChar,
+    lang,
   });
 
   if (view === "play") {

@@ -5,18 +5,21 @@ import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { meaningQueryIds } from "./meaning.query-ids";
 import { ListMeaningsResponse } from "./meanings.types";
+import { siteConfig } from "@/lib/config";
 
-// TODO: Move this to .env
-const url =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-meanings";
+export interface ListMeaningsParams {
+  sentenceId?: string;
+  content: string;
+  lang: string;
+}
 
 const listMeanings = async (
-  options: { sentenceId?: string; content: string },
+  options: { sentenceId?: string; content: string; lang: string },
   opts: {
     Authorization: string;
   }
 ): Promise<ListMeaningsResponse> => {
-  const res = await fetch(url, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/list-meanings`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,
@@ -29,13 +32,13 @@ const listMeanings = async (
 };
 
 export function useListMeaningsQuery(
-  params = {} as { content: string },
+  params = {} as ListMeaningsParams,
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery({
-    queryKey: [meaningQueryIds.listMeanings, params.content],
+    queryKey: [meaningQueryIds.listMeanings, params.content, params?.lang],
 
     queryFn: async () => {
       const response = await listMeanings(params, {

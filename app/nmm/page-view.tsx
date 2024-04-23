@@ -15,6 +15,7 @@ import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { cleanString } from "@/data/convos/bm1/utils";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
+import { useSearchParams } from "next/navigation";
 
 export const PageView = ({
   view,
@@ -77,8 +78,12 @@ export const PageView = ({
     (component: any) => component?.hanzi === selectedId
   );
 
+  const searchParams = useSearchParams();
+  const lang = searchParams.get("lang") || "";
+
   const { data: sentences } = useListSentencesQuery({
     component: selectedId,
+    lang,
   });
 
   switch (view) {

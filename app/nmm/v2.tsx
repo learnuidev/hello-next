@@ -5,14 +5,22 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useGetComponentQuery } from "@/domain/lesson/component.queries";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 function useGetComponent() {}
 
 function CharacterSummary({ characterId }: { characterId: string }) {
+  const searchParams = useSearchParams();
+  const lang = searchParams.get("lang") || "";
+
   const { data: meaning, isLoading } = useListMeaningsQuery({
     content: characterId,
+    lang,
   });
+
+  // const { data: meaning, isLoading } = useListMeaningsQuery({
+  //   content: characterId,
+  // });
 
   const { data: selectedComp, isLoading: isComponentsLoading } =
     useGetComponentQuery({

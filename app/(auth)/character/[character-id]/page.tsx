@@ -1,7 +1,7 @@
 // import Image from 'next/image'
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { NavBar } from "@/components/navbar";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
@@ -29,11 +29,14 @@ export default function Home() {
   const params = useParams() as {
     "character-id": string;
   };
+  const searchParams = useSearchParams();
+  const lang = searchParams.get("lang") || "";
 
   const currentDecodedCharacter = useGetDecodedCharacter();
 
   const { data: meaning } = useListMeaningsQuery({
     content: currentDecodedCharacter,
+    lang,
   });
 
   const router = useRouter();

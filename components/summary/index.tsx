@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
 import Link from "next/link";
 import { Editor } from "../Editor";
+import { useSearchParams } from "next/navigation";
 
 export function Summary({
   characterId,
@@ -19,8 +20,12 @@ export function Summary({
 }) {
   const currentDecodedCharacter = decodeURIComponent(characterId);
 
+  const searchParams = useSearchParams();
+  const lang = searchParams.get("lang") || "";
+
   const { data: meaning, isLoading } = useListMeaningsQuery({
     content: currentDecodedCharacter,
+    lang,
   });
 
   const meaningResponse = meaning as ListMeaningsResponse;

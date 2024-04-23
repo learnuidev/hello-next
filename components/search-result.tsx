@@ -126,7 +126,7 @@ export function GrammarAnalysis({
                   >
                     <Link
                       className="text-gray-300 font-light text-2xl"
-                      href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : ""}`}
+                      href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : analysis?.original}`}
                     >
                       {analysis?.original}
                     </Link>

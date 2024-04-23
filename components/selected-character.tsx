@@ -951,7 +951,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
               </div>
             )}
 
-            <div>
+            <div className="my-8">
               <GrammarAnalysis contentId={selectedChar} />
             </div>
           </div>

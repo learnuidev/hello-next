@@ -44,7 +44,7 @@ export function GrammarAnalysis({
   return grammarAnalysis ? (
     <div>
       {showHeader && (
-        <h3 className="sm:text-xl my-4 space-x-2">
+        <h3 className="sm:text-xl space-x-2">
           <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
           <span>Grammar</span>
         </h3>
@@ -58,7 +58,7 @@ export function GrammarAnalysis({
           </div>
         </div>
       ) : (
-        <div className="font-light space-y-4 mt-8">
+        <div className="font-light space-y-6 mt-4">
           {(grammarAnalysis as ListGrammarsResponse)?.grammarAnalysis?.map(
             (analysis) => {
               if (analysis?.hanzi) {
@@ -125,12 +125,20 @@ export function GrammarAnalysis({
                     className="flex items-start flex-col"
                   >
                     <Link
-                      className="text-gray-300 font-light text-2xl"
-                      href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : analysis?.original}`}
+                      className=" text-gray-400 text-sm"
+                      href={`/nmm/${analysis?.input}`}
+                      // className="w-16"
                     >
-                      {analysis?.original}
+                      {analysis?.roman}
                     </Link>
-                    <p className="text-gray-400 font-extralight text-md">
+                    <Link
+                      className="text-gray-300 font-light text-2xl"
+                      href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : analysis?.original || analysis?.input}`}
+                    >
+                      {analysis?.original || analysis?.input}
+                    </Link>
+
+                    <p className="text-gray-400 text-sm font-extralight text-md">
                       {analysis?.explanation}
                     </p>
                   </div>

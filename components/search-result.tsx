@@ -133,7 +133,7 @@ export function GrammarAnalysis({
                     </Link>
                     <Link
                       className="text-gray-300 font-light text-2xl"
-                      href={`/nmm/${analysis?.input}`}
+                      href={`/nmm/${analysis?.original || analysis?.input}`}
                     >
                       {analysis?.original || analysis?.input}
                     </Link>

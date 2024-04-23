@@ -306,7 +306,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                             : "text-gray-500 dark:text-gray-400 "
                         }`}
                       >
-                        {hanz?.pinyin?.toLocaleLowerCase()}
+                        {hanz?.pinyin?.toLocaleLowerCase() || hanz?.roman}
                       </button>
 
                       <button
@@ -385,7 +385,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             )}`}
           >
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              {currentPhrase?.pinyin}
+              {currentPhrase?.pinyin || currentPhrase?.roman}
             </span>
           </Link>
           <span className="text-gray-500 dark:text-gray-300 text-md">
@@ -624,7 +624,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                     )}`}
                   >
                     <span className="text-sm text-gray-500 dark:text-gray-400">
-                      {currentPhrase?.pinyin}
+                      {currentPhrase?.pinyin || currentPhrase?.roman}
                     </span>
                   </Link>
                   <span className="text-gray-500 dark:text-gray-300">
@@ -808,7 +808,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
         >
           {" "}
           <span className="text-xs">
-            {selectedComp?.pinyin || selectedComp?.en}
+            {selectedComp?.pinyin || selectedComp?.en || selectedComp?.roman}
           </span>
         </Link>
         {selectedComp?.pinyin && selectedComp?.en?.length < 20 && (

@@ -43,12 +43,12 @@ export function GrammarAnalysis({
 
   return grammarAnalysis ? (
     <div>
-      {showHeader && (
+      {/* {showHeader && (
         <h3 className="sm:text-xl space-x-2">
           <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
           <span>Grammar</span>
         </h3>
-      )}
+      )} */}
       {isGrammarAnalysisLoading ? (
         <div className="flex flex-col space-y-3">
           <Skeleton className="h-[125px] w-[250px] rounded-xl" />
@@ -124,15 +124,17 @@ export function GrammarAnalysis({
                     key={analysis?.input}
                     className="flex items-start flex-col"
                   >
+                    {analysis?.roman !== analysis?.input && (
+                      <Link
+                        className=" text-gray-400"
+                        href={`/nmm/${analysis?.input}`}
+                        // className="w-16"
+                      >
+                        {analysis?.roman}
+                      </Link>
+                    )}
                     <Link
-                      className=" text-gray-400"
-                      href={`/nmm/${analysis?.input}`}
-                      // className="w-16"
-                    >
-                      {analysis?.roman}
-                    </Link>
-                    <Link
-                      className="text-gray-300 font-light text-2xl"
+                      className="text-gray-300 font-light text-xl"
                       href={`/nmm/${analysis?.original || analysis?.input}`}
                     >
                       {analysis?.original || analysis?.input}

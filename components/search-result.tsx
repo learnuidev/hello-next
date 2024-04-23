@@ -121,11 +121,11 @@ export function GrammarAnalysis({
               } else {
                 return (
                   <div
-                    key={analysis?.original}
+                    key={analysis?.input}
                     className="flex items-start flex-col"
                   >
                     <Link
-                      className=" text-gray-400 text-sm"
+                      className=" text-gray-400"
                       href={`/nmm/${analysis?.input}`}
                       // className="w-16"
                     >
@@ -133,12 +133,20 @@ export function GrammarAnalysis({
                     </Link>
                     <Link
                       className="text-gray-300 font-light text-2xl"
-                      href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : analysis?.original || analysis?.input}`}
+                      href={`/nmm/${analysis?.input}`}
                     >
                       {analysis?.original || analysis?.input}
                     </Link>
 
-                    <p className="text-gray-400 text-sm font-extralight text-md">
+                    <Link
+                      className=" text-gray-400"
+                      href={`/nmm/${analysis?.input}`}
+                      // className="w-16"
+                    >
+                      {analysis?.en}
+                    </Link>
+
+                    <p className="text-gray-500 font-extralight">
                       {analysis?.explanation}
                     </p>
                   </div>

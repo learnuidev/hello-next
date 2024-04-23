@@ -419,9 +419,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                 );
               })}
           </span>
-          <span className="text-sm text-gray-300 font-semibold">
-            {currentPhrase?.input}
-          </span>
+          <span className="text-2xl text-gray-300">{currentPhrase?.input}</span>
           <span className="text-sm text-gray-400">
             {currentPhrase?.en || currentPhrase?.title}
           </span>
@@ -867,9 +865,10 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       <>
         {selectedChar?.length > 3 && (
           <div className="flex flex-col items-start w-full mt-4 md:mt-12">
+            <h2 className="text-gray-400 font-light">{selectedComp?.pinyin}</h2>
             <h1 className="text-3xl">{selectedComp?.hanzi || selectedChar}</h1>
 
-            {/* <h2 className="text-gray-400 font-light">{selectedComp?.en}</h2> */}
+            <h2 className="text-gray-500 font-light">{selectedComp?.en}</h2>
           </div>
         )}
 
@@ -946,9 +945,11 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                 <hr className="border-gray-500 w-11/12 m-auto" />
               </>
             )}
-            <div className="mt-[-32px]">
-              <Summary showMeanings={true} characterId={characterId} />
-            </div>
+            {characterId?.length < 3 && (
+              <div className="mt-[-32px]">
+                <Summary showMeanings={true} characterId={characterId} />
+              </div>
+            )}
 
             <div className="my-16">
               <GrammarAnalysis contentId={selectedChar} />

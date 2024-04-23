@@ -13,6 +13,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
 import { Editor } from "./Editor";
+import Link from "next/link";
 
 export function GrammarAnalysis({
   contentId,
@@ -63,7 +64,7 @@ export function GrammarAnalysis({
               if (analysis?.hanzi) {
                 return (
                   <div key={analysis?.hanzi}>
-                    <div className="flex space-x-4 items-center"></div>
+                    <div className="flex items-center flex-col"></div>
 
                     {onSearchGrammar ? (
                       <button
@@ -74,43 +75,34 @@ export function GrammarAnalysis({
                         {analysis?.hanzi}
                       </button>
                     ) : (
-                      <button
-                        onClick={() => {
-                          router.push(
-                            `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
-                          );
-                          // onSearchGrammar(analysis?.hanzi || "");
-                        }}
+                      <Link
+                        href={`/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`}
+                        // onClick={() => {
+                        //   router.push(
+
+                        //   );
+                        //   // onSearchGrammar(analysis?.hanzi || "");
+                        // }}
                         className="w-16"
                       >
                         {analysis?.hanzi}
-                      </button>
+                      </Link>
                     )}
 
-                    <button
+                    <Link
                       className="ml-4 text-gray-400"
-                      onClick={() => {
-                        router.push(
-                          `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
-                        );
-                        // onSearchGrammar(analysis?.hanzi || "");
-                      }}
+                      href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : ""}`}
                       // className="w-16"
                     >
                       {analysis?.pinyin}
-                    </button>
-                    <button
+                    </Link>
+                    <Link
                       className="ml-2 text-gray-400"
-                      onClick={() => {
-                        router.push(
-                          `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
-                        );
-                        // onSearchGrammar(analysis?.hanzi || "");
-                      }}
+                      href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : ""}`}
                       // className="w-16"
                     >
                       {analysis?.en}
-                    </button>
+                    </Link>
 
                     <p
                       className="text-gray-400 mb-4"

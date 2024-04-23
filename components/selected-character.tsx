@@ -921,7 +921,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
         <article
           className={
-            "relative grid grid-cols-1 md:grid-cols-[1fr_500px] gap-x-8 md:grid-rows-[70px_1fr] mt-0 pt-0"
+            "mt-8 relative grid grid-cols-1 md:grid-cols-[1fr_500px] gap-x-8 md:grid-rows-[70px_1fr] pt-0"
             // "relative grid grid-cols-1 md:grid-cols-[550px_1fr] md:grid-rows-[70px_1fr]"
           }
         >
@@ -945,13 +945,13 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                 <hr className="border-gray-500 w-11/12 m-auto" />
               </>
             )}
-            {characterId?.length < 3 && (
+            {characterId?.length < 10 && (
               <div className="mt-[-32px]">
                 <Summary showMeanings={true} characterId={characterId} />
               </div>
             )}
 
-            <div className="my-16">
+            <div>
               <GrammarAnalysis contentId={selectedChar} />
             </div>
           </div>

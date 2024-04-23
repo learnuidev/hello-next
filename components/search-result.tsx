@@ -90,14 +90,14 @@ export function GrammarAnalysis({
                     )}
 
                     <Link
-                      className="ml-4 text-gray-400"
+                      className=" text-gray-400"
                       href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : ""}`}
                       // className="w-16"
                     >
                       {analysis?.pinyin}
                     </Link>
                     <Link
-                      className="ml-2 text-gray-400"
+                      className=" text-gray-400"
                       href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : ""}`}
                       // className="w-16"
                     >
@@ -122,21 +122,17 @@ export function GrammarAnalysis({
                 return (
                   <div
                     key={analysis?.original}
-                    className="flex space-x-4 items-center"
+                    className="flex items-start flex-col"
                   >
-                    {onSearchGrammar ? (
-                      <button
-                        onClick={() => {
-                          onSearchGrammar(analysis?.original || "");
-                        }}
-                      >
-                        {analysis?.original}
-                      </button>
-                    ) : (
-                      <p className="w-16">{analysis?.original}</p>
-                    )}
-
-                    <p>{analysis?.explanation}</p>
+                    <Link
+                      className="text-gray-300 font-light text-2xl"
+                      href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : ""}`}
+                    >
+                      {analysis?.original}
+                    </Link>
+                    <p className="text-gray-400 font-extralight text-md">
+                      {analysis?.explanation}
+                    </p>
                   </div>
                 );
               }

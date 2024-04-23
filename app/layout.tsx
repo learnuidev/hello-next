@@ -19,6 +19,7 @@ import { Authenticated } from "@/components/Authenticated";
 import { ThemeProvider } from "next-themes";
 import { PostHogProvider } from "@/libs/posthog/posthog.provider";
 import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -79,30 +80,32 @@ export default function RootLayout({
       </head>
 
       <body className="bg-black">
-        <PostHogProvider>
-          <PostHogPageView />
-          <ThemeProvider attribute="class">
-            <div
-              className={`${inter.className} bg-bkg text-content flex h-screen flex-col`}
-            >
-              <div className="flex-1">
-                <QueryClientProvider>
-                  <Authenticated>{children}</Authenticated>
-                </QueryClientProvider>
-              </div>
+        <Suspense>
+          <PostHogProvider>
+            <PostHogPageView />
+            <ThemeProvider attribute="class">
+              <div
+                className={`${inter.className} bg-bkg text-content flex h-screen flex-col`}
+              >
+                <div className="flex-1">
+                  <QueryClientProvider>
+                    <Authenticated>{children}</Authenticated>
+                  </QueryClientProvider>
+                </div>
 
-              <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300 dark:text-gray-700">
-                {/* <FontAwesomeIcon icon={faScrewdriverWrench} />
+                <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300 dark:text-gray-700">
+                  {/* <FontAwesomeIcon icon={faScrewdriverWrench} />
                 <Link
                   target="_blank"
                   href="https://www.linkedin.com/in/vishalgautamm/"
                 >
                   Vishal Gautam
                 </Link> */}
-              </footer>
-            </div>
-          </ThemeProvider>
-        </PostHogProvider>
+                </footer>
+              </div>
+            </ThemeProvider>
+          </PostHogProvider>
+        </Suspense>
       </body>
     </html>
   );

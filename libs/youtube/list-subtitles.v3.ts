@@ -51,11 +51,6 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
       const spanishTrack = getTrack({ lang: "es", tracks });
       // const  =
 
-      console.log("Track Found: === ", zhTrack);
-
-      console.log("Retrieving captions:", zhTrack?.name?.simpleText);
-      console.log("URL", zhTrack?.baseUrl);
-
       // console.log("RES", await res.json());
 
       let subtitles;

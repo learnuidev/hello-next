@@ -8436,8 +8436,6 @@ export const nepaliWords203 = [
   return coll.findIndex((word) => word?.nepali === item?.nepali) === idx;
 });
 
-console.log("WORDS", nepaliWords203);
-
 export const songWords = [
   {
     nepali: "ग",
@@ -9355,5 +9353,3 @@ export const nepaliWords1 = nepaliConsonants.concat(nepaliVowels as any);
 export const uniqueWords = dependentVowels as any;
 
 export const nepaliWords = nepaliWords1.concat(uniqueWords) as any;
-
-console.log("NEPALI WORDS", nepaliWords);

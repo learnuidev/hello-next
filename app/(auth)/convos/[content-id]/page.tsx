@@ -119,8 +119,6 @@ export default function Convos() {
 
   const lessonId = params["content-id"];
 
-  console.log("LESSON ID", lessonId);
-
   const viewMode = useViewModeStore((state: any) => state.viewMode);
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
 

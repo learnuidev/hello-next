@@ -34,7 +34,6 @@ export function NewConvo({ type }: { type?: string }) {
         enabled:
           Boolean(newConvo?.audio) && newConvo?.audio?.includes("youtube"),
         onSuccess: (transcriptions: any) => {
-          console.log("RESP", transcriptions);
           setConvo("transcriptions", transcriptions);
         },
       }

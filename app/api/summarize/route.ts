@@ -23,8 +23,6 @@ export async function POST(req: Request) {
   // Extract the `prompt` from the body of the request
   const { messages, aiContext } = await req.json();
 
-  console.log("THREAD ID", aiContext.threadId);
-
   const lastMessage = messages?.[messages?.length - 1];
   const firstButLastMessages = messages.slice(0, -1);
   // const [...firstButLastMessages, lastMessage] = messages;
@@ -37,8 +35,6 @@ export async function POST(req: Request) {
   });
 
   // lastMessage.references = context;
-
-  console.log("CONTEXT", context);
 
   const promptSimple = `
 You are a language translation and summary expert
@@ -70,8 +66,6 @@ ${JSON.stringify(context)}
   };
 
   const selectedAiModel = aiModels.gpt35Turbo;
-
-  console.log("SELECED AI MODEL", selectedAiModel);
 
   // const firstMessage = messages[0];
 

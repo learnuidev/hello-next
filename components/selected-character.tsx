@@ -297,6 +297,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                           if (hanz?.pinyin === "??") {
                             return discoverMutation
                               .mutateAsync({
+                                lang: lang || selectedComp?.lang,
                                 hanzi: hanz?.hanzi,
                               })
                               .then((resp) => {
@@ -449,7 +450,11 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             <FontAwesomeIcon icon={faGoogle} />
           </Link>
           <Link
-            href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input)}`}
+            href={
+              lang || selectedComp?.lang
+                ? `/nmm/${encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input)}?lang=${lang || selectedComp?.lang}`
+                : `/nmm/${encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input)}`
+            }
             className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
           >
             <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -689,6 +694,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     );
   };
 
+  console.log("SELECTED", selectedComp);
+
   const NavItems = () => {
     return (
       <div className="space-x-8 flex items-center">
@@ -749,6 +756,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             className="text-xl"
             onClick={() => {
               addCharacterMutation?.mutateAsync({
+                lang: selectedComp?.lang,
                 hanzi: firstLesson?.hanzi,
                 pinyin: firstLesson?.pinyin,
                 en: firstLesson?.en,
@@ -959,7 +967,10 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
               )}
 
               <div className="my-8">
-                <GrammarAnalysis contentId={selectedChar} />
+                <GrammarAnalysis
+                  contentId={selectedChar}
+                  lang={lang || selectedComp?.lang}
+                />
               </div>
             </div>
           </article>

@@ -72,7 +72,11 @@ export default function Timeline() {
                       return (
                         <Link
                           className="py-4 pr-4 text-2xl font-light"
-                          href={`/nmm/${item?.hanzi}`}
+                          href={
+                            item?.lang
+                              ? `/nmm/${item?.hanzi}?lang=${item?.lang}`
+                              : `/nmm/${item?.hanzi}`
+                          }
                           key={item?.id}
                         >
                           {item?.hanzi}
@@ -87,9 +91,9 @@ export default function Timeline() {
         </div>
       )}
 
-      <code>
+      {/* <code>
         <pre>{JSON.stringify(data, null, 2)}</pre>
-      </code>
+      </code> */}
     </main>
   );
 }

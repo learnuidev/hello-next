@@ -17,9 +17,11 @@ import Link from "next/link";
 
 export function GrammarAnalysis({
   contentId,
+  lang,
   onSearchGrammar,
   showHeader = true,
 }: {
+  lang?: string;
   contentId: string;
   onSearchGrammar?: (grammar: string) => void;
   showHeader?: boolean;
@@ -41,6 +43,10 @@ export function GrammarAnalysis({
 
   const router = useRouter();
 
+  const ga = (grammarAnalysis as ListGrammarsResponse)?.grammarAnalysis;
+
+  const grammarAnalysisFinal = Array.isArray(ga) ? ga : [ga];
+
   return grammarAnalysis ? (
     <div>
       {/* {showHeader && (
@@ -59,103 +65,109 @@ export function GrammarAnalysis({
         </div>
       ) : (
         <div className="font-light space-y-6 mt-4">
-          {(grammarAnalysis as ListGrammarsResponse)?.grammarAnalysis?.map(
-            (analysis) => {
-              if (analysis?.hanzi) {
-                return (
-                  <div key={analysis?.hanzi}>
-                    <div className="flex items-center flex-col"></div>
+          {grammarAnalysisFinal?.map((analysis) => {
+            if (analysis?.hanzi) {
+              return (
+                <div key={analysis?.hanzi}>
+                  <div className="flex items-center flex-col"></div>
 
-                    {onSearchGrammar ? (
-                      <button
-                        onClick={() => {
-                          onSearchGrammar(analysis?.hanzi || "");
-                        }}
-                      >
-                        {analysis?.hanzi}
-                      </button>
-                    ) : (
-                      <Link
-                        href={`/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`}
-                        // onClick={() => {
-                        //   router.push(
-
-                        //   );
-                        //   // onSearchGrammar(analysis?.hanzi || "");
-                        // }}
-                        className="w-16"
-                      >
-                        {analysis?.hanzi}
-                      </Link>
-                    )}
-
-                    <Link
-                      className=" text-gray-400"
-                      href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : ""}`}
-                      // className="w-16"
-                    >
-                      {analysis?.pinyin}
-                    </Link>
-                    <Link
-                      className=" text-gray-400"
-                      href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : ""}`}
-                      // className="w-16"
-                    >
-                      {analysis?.en}
-                    </Link>
-
-                    <p
-                      className="text-gray-400 mb-4"
+                  {onSearchGrammar ? (
+                    <button
                       onClick={() => {
-                        router.push(
-                          `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
-                        );
-                        // onSearchGrammar(analysis?.hanzi || "");
+                        onSearchGrammar(analysis?.hanzi || "");
                       }}
-                      // className="w-16"
                     >
-                      {analysis?.explanation}
-                    </p>
-                  </div>
-                );
-              } else {
-                return (
-                  <div
-                    key={analysis?.input}
-                    className="flex items-start flex-col"
-                  >
-                    {analysis?.roman !== analysis?.input && (
-                      <Link
-                        className=" text-gray-400"
-                        href={`/nmm/${analysis?.input}`}
-                        // className="w-16"
-                      >
-                        {analysis?.roman}
-                      </Link>
-                    )}
+                      {analysis?.hanzi}
+                    </button>
+                  ) : (
                     <Link
-                      className="text-gray-300 font-light text-xl"
-                      href={`/nmm/${analysis?.original || analysis?.input}`}
-                    >
-                      {analysis?.original || analysis?.input}
-                    </Link>
+                      href={`/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`}
+                      // onClick={() => {
+                      //   router.push(
 
+                      //   );
+                      //   // onSearchGrammar(analysis?.hanzi || "");
+                      // }}
+                      className="w-16"
+                    >
+                      {analysis?.hanzi}
+                    </Link>
+                  )}
+
+                  <Link
+                    className=" text-gray-400"
+                    href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : ""}`}
+                    // className="w-16"
+                  >
+                    {analysis?.pinyin}
+                  </Link>
+                  <Link
+                    className=" text-gray-400"
+                    href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : ""}`}
+                    // className="w-16"
+                  >
+                    {analysis?.en}
+                  </Link>
+
+                  <p
+                    className="text-gray-400 mb-4"
+                    onClick={() => {
+                      router.push(
+                        `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
+                      );
+                      // onSearchGrammar(analysis?.hanzi || "");
+                    }}
+                    // className="w-16"
+                  >
+                    {analysis?.explanation}
+                  </p>
+                </div>
+              );
+            } else {
+              return (
+                <div
+                  key={analysis?.input}
+                  className="flex items-start flex-col"
+                >
+                  {analysis?.roman !== analysis?.input && (
                     <Link
                       className=" text-gray-400"
                       href={`/nmm/${analysis?.input}`}
                       // className="w-16"
                     >
-                      {analysis?.en}
+                      {analysis?.roman}
                     </Link>
+                  )}
+                  <Link
+                    className="text-gray-300 font-light text-xl"
+                    href={
+                      lang
+                        ? `/nmm/${analysis?.original || analysis?.input}?lang=${lang}`
+                        : `/nmm/${analysis?.original || analysis?.input}`
+                    }
+                  >
+                    {analysis?.original || analysis?.input}
+                  </Link>
 
-                    <p className="text-gray-500 font-extralight">
-                      {analysis?.explanation}
-                    </p>
-                  </div>
-                );
-              }
+                  <Link
+                    className=" text-gray-400"
+                    href={
+                      lang
+                        ? `/nmm/${analysis?.original || analysis?.input}?lang=${lang}`
+                        : `/nmm/${analysis?.original || analysis?.input}`
+                    }
+                    // className="w-16"
+                  >
+                    {analysis?.en}
+                  </Link>
+
+                  <p className="text-gray-500 font-extralight">
+                    {analysis?.explanation}
+                  </p>
+                </div>
+              );
             }
-          )}
+          })}
         </div>
       )}
     </div>

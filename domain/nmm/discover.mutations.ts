@@ -10,6 +10,7 @@ const url =
 
 type DiscoverParams = {
   hanzi: string;
+  lang?: string;
 };
 
 const discover = async (

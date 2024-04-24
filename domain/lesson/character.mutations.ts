@@ -22,6 +22,7 @@ export type AddCharacterParams = {
   story: string;
   component: string;
   sub_components: string[];
+  lang?: string;
 };
 
 const addCharacter = async (

@@ -887,11 +887,11 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       >
         <div className={"row-span-2 overflow-hidden col-span-1"}>
           {selectedChar?.length > 3 && (
-            <div className="flex flex-col items-start w-full mt-4">
+            <div className="flex flex-col items-start w-full mt-4 space-y-2">
               <h2 className="text-gray-400 font-light">
                 {selectedComp?.pinyin || selectedComp?.roman}
               </h2>
-              <h1 className="text-3xl">
+              <h1 className="text-2xl">
                 {selectedComp?.hanzi || selectedChar}
               </h1>
 

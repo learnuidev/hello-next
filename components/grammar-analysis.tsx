@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
 
 import Link from "next/link";
+import { ScrollArea } from "./ui/scroll-area";
 
 export function GrammarAnalysis({
   contentId,
@@ -41,6 +42,93 @@ export function GrammarAnalysis({
 
   const grammarAnalysisFinal = Array.isArray(ga) ? ga : [ga];
 
+  const GrammarAnalysisList = () => {
+    return (
+      <div className="font-light space-y-6 mt-4">
+        {grammarAnalysisFinal?.map((analysis) => {
+          if (analysis?.hanzi) {
+            return (
+              <div key={analysis?.hanzi} className="flex items-start flex-col">
+                <Link
+                  className=" text-gray-400"
+                  href={`/nmm/${analysis?.hanzi}`}
+                >
+                  {analysis?.pinyin}
+                </Link>
+
+                <Link
+                  className="text-gray-300 font-light text-xl"
+                  href={
+                    lang
+                      ? `/nmm/${analysis?.hanzi}?lang=${lang}`
+                      : `/nmm/${analysis?.hanzi}`
+                  }
+                >
+                  {analysis?.hanzi}
+                </Link>
+
+                <Link
+                  className=" text-gray-400"
+                  href={
+                    lang
+                      ? `/nmm/${analysis?.hanzi}?lang=${lang}`
+                      : `/nmm/${analysis?.hanzi}`
+                  }
+                  // className="w-16"
+                >
+                  {analysis?.en}
+                </Link>
+
+                <p className="text-gray-500 font-extralight">
+                  {analysis?.explanation}
+                </p>
+              </div>
+            );
+          } else {
+            return (
+              <div key={analysis?.input} className="flex items-start flex-col">
+                {analysis?.roman !== analysis?.input && (
+                  <Link
+                    className=" text-gray-400"
+                    href={`/nmm/${analysis?.input}`}
+                  >
+                    {analysis?.roman}
+                  </Link>
+                )}
+                <Link
+                  className="text-gray-300 font-light text-xl"
+                  href={
+                    lang
+                      ? `/nmm/${analysis?.original || analysis?.input}?lang=${lang}`
+                      : `/nmm/${analysis?.original || analysis?.input}`
+                  }
+                >
+                  {analysis?.original || analysis?.input}
+                </Link>
+
+                <Link
+                  className=" text-gray-400"
+                  href={
+                    lang
+                      ? `/nmm/${analysis?.original || analysis?.input}?lang=${lang}`
+                      : `/nmm/${analysis?.original || analysis?.input}`
+                  }
+                  // className="w-16"
+                >
+                  {analysis?.en}
+                </Link>
+
+                <p className="text-gray-500 font-extralight">
+                  {analysis?.explanation}
+                </p>
+              </div>
+            );
+          }
+        })}
+      </div>
+    );
+  };
+
   return grammarAnalysis ? (
     <div>
       {isGrammarAnalysisLoading ? (
@@ -52,102 +140,15 @@ export function GrammarAnalysis({
           </div>
         </div>
       ) : (
-        <div className="font-light space-y-6 mt-4">
-          {grammarAnalysisFinal?.map((analysis) => {
-            if (analysis?.hanzi) {
-              return (
-                <div key={analysis?.hanzi}>
-                  <div className="flex items-center flex-col"></div>
+        <>
+          <ScrollArea className="hidden md:block space-y-6 h-[600px] rounded-md">
+            <GrammarAnalysisList />
+          </ScrollArea>
 
-                  {onSearchGrammar ? (
-                    <button
-                      onClick={() => {
-                        onSearchGrammar(analysis?.hanzi || "");
-                      }}
-                    >
-                      {analysis?.hanzi}
-                    </button>
-                  ) : (
-                    <Link
-                      href={`/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`}
-                      className="w-16"
-                    >
-                      {analysis?.hanzi}
-                    </Link>
-                  )}
-
-                  <Link
-                    className=" text-gray-400"
-                    href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : ""}`}
-                    // className="w-16"
-                  >
-                    {analysis?.pinyin}
-                  </Link>
-                  <Link
-                    className=" text-gray-400"
-                    href={`/nmm/${analysis?.hanzi ? analysis?.hanzi : ""}`}
-                    // className="w-16"
-                  >
-                    {analysis?.en}
-                  </Link>
-
-                  <p
-                    className="text-gray-400 mb-4"
-                    onClick={() => {
-                      router.push(
-                        `/nmm/${analysis?.hanzi ? analysis?.hanzi[0] : ""}`
-                      );
-                    }}
-                  >
-                    {analysis?.explanation}
-                  </p>
-                </div>
-              );
-            } else {
-              return (
-                <div
-                  key={analysis?.input}
-                  className="flex items-start flex-col"
-                >
-                  {analysis?.roman !== analysis?.input && (
-                    <Link
-                      className=" text-gray-400"
-                      href={`/nmm/${analysis?.input}`}
-                    >
-                      {analysis?.roman}
-                    </Link>
-                  )}
-                  <Link
-                    className="text-gray-300 font-light text-xl"
-                    href={
-                      lang
-                        ? `/nmm/${analysis?.original || analysis?.input}?lang=${lang}`
-                        : `/nmm/${analysis?.original || analysis?.input}`
-                    }
-                  >
-                    {analysis?.original || analysis?.input}
-                  </Link>
-
-                  <Link
-                    className=" text-gray-400"
-                    href={
-                      lang
-                        ? `/nmm/${analysis?.original || analysis?.input}?lang=${lang}`
-                        : `/nmm/${analysis?.original || analysis?.input}`
-                    }
-                    // className="w-16"
-                  >
-                    {analysis?.en}
-                  </Link>
-
-                  <p className="text-gray-500 font-extralight">
-                    {analysis?.explanation}
-                  </p>
-                </div>
-              );
-            }
-          })}
-        </div>
+          <div className="md:hidden block">
+            <GrammarAnalysisList />
+          </div>
+        </>
       )}
     </div>
   ) : null;

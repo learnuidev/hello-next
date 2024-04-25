@@ -42,9 +42,10 @@ import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
 import { Summary } from "./summary";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { Icons } from "./ui/icons.v2";
-import { GrammarAnalysis, SearchResult } from "./search-result";
+import { SearchResult } from "./search-result";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useListSubComponentsQuery } from "@/domain/component/component.queries";
+import { GrammarAnalysis } from "./grammar-analysis";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const [view, setView] = useState("home");

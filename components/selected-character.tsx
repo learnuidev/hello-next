@@ -799,13 +799,15 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
   const TitleView = () => {
     return (
-      <div className={`flex space-x-2 text-4xl font-extralight `}>
+      <div
+        className={`flex md:flex-row flex-col space-x-0 md:space-x-2 font-extralight`}
+      >
         <Link
           target="_blank"
           href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
             selectedChar
           )}`}
-          className={`${color} flex items-end space-x-2`}
+          className={`${color} flex items-end space-x-2 text-xl md:text-4xl`}
         >
           {" "}
           <span>{selectedChar}</span>{" "}

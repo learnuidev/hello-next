@@ -1,8 +1,7 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useSpring, animated } from "@react-spring/web";
 
-import { useViewModeStore } from "./use-view-mode-store";
-import { initCharacter, useCharacterStore } from "./nomad-method-store";
+import { useCharacterStore } from "./nomad-method-store";
 
 import { useListSubComponentsQuery } from "@/domain/component/component.queries";
 import {
@@ -18,9 +17,9 @@ import {
   faXmark,
 } from "@fortawesome/pro-thin-svg-icons";
 import { useAddStepsMutation } from "@/domain/lesson/step.mutations";
-import { Editor } from "@/components/Editor";
+
 import { useListComponents } from "@/domain/lesson/component.queries";
-import { GrammarAnalysis } from "@/components/search-result";
+import { GrammarAnalysis } from "@/components/grammar-analysis";
 
 export const ComponentForm = ({
   selectedId,
@@ -310,47 +309,6 @@ export const ComponentForm = ({
             <GrammarAnalysis contentId={lesson?.hanzi} showHeader={false} />
           </div>
         ) : null}
-
-        {/* {showAnalysis ? (
-          <div
-            className={`mx-4 justify-center items-center md:mx-64 my-8 grid   ${
-              _grammarAnalysis?.grammarAnalysis?.length < 5
-                ? "grid-cols-3"
-                : "grid-cols-5"
-            } gap-y-8 text-sm px-12 text-gray-200 dark:text-gray-400`}
-          >
-            {_grammarAnalysis?.grammarAnalysis
-              ?.filter((grammar: any) => grammar?.hanzi?.length < 10)
-              ?.map((grammar: any) => {
-                const params = {
-                  hanzi: grammar?.hanzi,
-                  en: grammar?.english || grammar?.en || grammar?.title,
-                  pinyin: grammar?.pinyin,
-                };
-                return (
-                  <div
-                    className="w-full flex flex-row space-x-2"
-                    key={`${lesson?.id}-${params?.en}-${params?.hanzi}`}
-                  >
-                    <div className="w-full flex flex-col items-center justify-start">
-                      <div className="flex flex-row space-x-2">
-                        <a
-                          href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                            params?.hanzi
-                          )}`}
-                          target="_blank"
-                        >
-                          {params?.hanzi}
-                        </a>
-                        <p>{params?.pinyin}</p>
-                      </div>
-                      <p className="text-xs">{params?.en}</p>
-                    </div>
-                  </div>
-                );
-              })}
-          </div>
-        ) : null} */}
       </div>
     </>
   );

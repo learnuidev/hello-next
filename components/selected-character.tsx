@@ -159,7 +159,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
   const [readMode, setReadMode] = useState(false);
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "";
+  const lang = searchParams.get("lang") || selectedComp?.lang;
 
   const { data: meaning } = useListMeaningsQuery({
     content: characterId,
@@ -757,7 +757,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             className="text-xl"
             onClick={() => {
               addCharacterMutation?.mutateAsync({
-                lang: selectedComp?.lang,
+                lang: lang,
                 hanzi: firstLesson?.hanzi,
                 pinyin: firstLesson?.pinyin,
                 en: firstLesson?.en,

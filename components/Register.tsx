@@ -74,7 +74,7 @@ export function Register() {
                           alt='Workflow'
                       /> */}
 
-              <Lightning className="dark:text-pink-800 text-pink-600 mx-auto h-12 w-auto" />
+              <Lightning className="dark:text-rose-800 text-rose-600 mx-auto h-12 w-auto" />
               <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-200">
                 Register for a new account
               </h2>
@@ -82,7 +82,7 @@ export function Register() {
                 Or{" "}
                 <a
                   href="/login"
-                  className="font-medium text-pink-600 hover:text-pink-500"
+                  className="font-medium text-rose-600 hover:text-rose-500"
                 >
                   login to your account
                 </a>
@@ -149,7 +149,7 @@ export function Register() {
                 <div className="text-sm">
                   <a
                     href="#"
-                    className="font-medium text-pink-600 hover:text-pink-500"
+                    className="font-medium text-rose-600 hover:text-rose-500"
                   >
                     Forgot your password?
                   </a>
@@ -167,11 +167,11 @@ export function Register() {
                       email,
                     });
                   }}
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                     <LockClosedIcon
-                      className="h-5 w-5 text-pink-500 group-hover:text-pink-400"
+                      className="h-5 w-5 text-rose-500 group-hover:text-rose-400"
                       aria-hidden="true"
                     />
                   </span>
@@ -197,7 +197,7 @@ export function Register() {
                           alt='Workflow'
                       /> */}
 
-              <Lightning className="dark:text-pink-800 text-pink-600 mx-auto h-12 w-auto" />
+              <Lightning className="dark:text-rose-800 text-rose-600 mx-auto h-12 w-auto" />
               <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-200">
                 Confirm Code
               </h2>
@@ -205,7 +205,7 @@ export function Register() {
                 Or{" "}
                 <a
                   href="/login"
-                  className="font-medium text-pink-600 hover:text-pink-500"
+                  className="font-medium text-rose-600 hover:text-rose-500"
                 >
                   login to your account
                 </a>
@@ -272,7 +272,7 @@ export function Register() {
                 <div className="text-sm">
                   <a
                     href="#"
-                    className="font-medium text-pink-600 hover:text-pink-500"
+                    className="font-medium text-rose-600 hover:text-rose-500"
                   >
                     Forgot your password?
                   </a>
@@ -295,11 +295,11 @@ export function Register() {
                     //   email,
                     // });
                   }}
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                     <LockClosedIcon
-                      className="h-5 w-5 text-pink-500 group-hover:text-pink-400"
+                      className="h-5 w-5 text-rose-500 group-hover:text-rose-400"
                       aria-hidden="true"
                     />
                   </span>
@@ -325,7 +325,7 @@ export function Register() {
                         alt='Workflow'
                     /> */}
 
-              <Lightning className="dark:text-pink-800 text-pink-600 mx-auto h-12 w-auto" />
+              <Lightning className="dark:text-rose-800 text-rose-600 mx-auto h-12 w-auto" />
               <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-200">
                 Confirm Code
               </h2>
@@ -390,7 +390,7 @@ export function Register() {
                 <div className="text-sm">
                   <a
                     href="#"
-                    className="font-medium text-pink-600 hover:text-pink-500"
+                    className="font-medium text-rose-600 hover:text-rose-500"
                   >
                     Forgot your password?
                   </a>
@@ -410,11 +410,11 @@ export function Register() {
                     //   password,
                     // });
                   }}
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                     <LockClosedIcon
-                      className="h-5 w-5 text-pink-500 group-hover:text-pink-400"
+                      className="h-5 w-5 text-rose-500 group-hover:text-rose-400"
                       aria-hidden="true"
                     />
                   </span>
@@ -439,7 +439,7 @@ export function Register() {
                           alt='Workflow'
                       /> */}
 
-            <Lightning className="dark:text-pink-800 text-pink-600 mx-auto h-12 w-auto" />
+            <Lightning className="dark:text-rose-800 text-rose-600 mx-auto h-12 w-auto" />
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-200">
               Register
             </h2>
@@ -447,7 +447,7 @@ export function Register() {
               Or{" "}
               <a
                 href="/login"
-                className="font-medium text-pink-600 hover:text-pink-500"
+                className="font-medium text-rose-600 hover:text-rose-500"
               >
                 login to your account
               </a>
@@ -485,11 +485,11 @@ export function Register() {
                     password,
                   });
                 }}
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                   <LockClosedIcon
-                    className="h-5 w-5 text-pink-500 group-hover:text-pink-400"
+                    className="h-5 w-5 text-rose-500 group-hover:text-rose-400"
                     aria-hidden="true"
                   />
                 </span>
@@ -507,7 +507,7 @@ export function Register() {
               placeholder="Your answer"
               className={`animate-slidein text-center mb-4 w-full focus:outline-0 dark:bg-[#0f1117] p-2 dark:text-gray-300 ${
                 error
-                  ? `border-[1px] error dark:hover:border-pink-600 hover:border-red-600 border-red-600`
+                  ? `border-[1px] error dark:hover:border-rose-600 hover:border-red-600 border-red-600`
                   : "border-0 border-none"
               }`}
             />

@@ -30,8 +30,8 @@ export const PreviewComponent = ({ component }: any) => {
 
       {isLoading ? (
         <div className="space-y-4 mt-4">
-          <Skeleton className="h-14 w-11/12 bg-gray-900" />
-          <Skeleton className="h-14 w-11/12 bg-gray-900" />
+          <Skeleton className="h-14 w-full bg-gray-900" />
+          <Skeleton className="h-14 w-full bg-gray-900" />
         </div>
       ) : (
         <div className="p-0 space-y-4 mt-4">

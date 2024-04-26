@@ -850,20 +850,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
   };
 
   const ViewType = () => {
-    // if (characterId?.length > 3) {
-    //   return (
-    //     <SearchResult
-    //       onSearchGrammar={(grammar) => {
-    //         console.log("yoo 5");
-    //         router.push(`/nmm/${grammar}`);
-
-    //         // router.push()
-    //       }}
-    //       query={characterId}
-    //     />
-    //   );
-    // }
-
     const SubComponentsView = () => {
       const { data: sub_components } = useListSubComponentsQuery({
         componentId: characterId,
@@ -884,7 +870,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       <div
         className={
           "relative grid grid-cols-1 md:grid-cols-[1fr_500px] gap-x-8 md:grid-rows-[70px_1fr] pt-0"
-          // "relative grid grid-cols-1 md:grid-cols-[550px_1fr] md:grid-rows-[70px_1fr]"
         }
       >
         <div className={"row-span-2 overflow-hidden col-span-1"}>
@@ -902,12 +887,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
               <h2 className="text-gray-500 font-light">{selectedComp?.en}</h2>
             </div>
           )}
-
-          {/* <div>
-          <code>
-            <pre>{JSON.stringify(selectedComp, null, 2)}</pre>
-          </code>
-        </div> */}
 
           {selectedComp && (
             <div className="font-light flex space-x-4 items-center text-gray-400 mb-8">
@@ -935,36 +914,13 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                   <p>{selectedComp?.final}</p>
                 </div>
               )}
-              {/* {selectedComp?.group && (
-              <div className="flex space-x-2 items-center">
-                <p>group - </p>
-                <p>{selectedComp?.group}</p>
-              </div>
-            )} */}
             </div>
           )}
 
           {characterId?.length === 1 && <SubComponentsView />}
 
-          {/* <code>
-        <pre>{JSON.stringify(selectedComp, null, 2)}</pre>
-      </code> */}
-
           <article>
             <div>
-              {/* {isAlreadyLearned?.story && isAlreadyLearned?.story !== "na" && (
-                <>
-                  <div className="my-8 text-center">
-                    <p
-                      dangerouslySetInnerHTML={{
-                        __html: isAlreadyLearned?.story,
-                      }}
-                    ></p>
-                  </div>
-
-                  <hr className="border-gray-500 w-11/12 m-auto" />
-                </>
-              )} */}
               {characterId?.length < 10 && (
                 <div className="mt-[-32px]">
                   <Summary showMeanings={true} characterId={characterId} />
@@ -990,7 +946,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
               </ScrollArea>
             ) : (
               <div className="hidden md:block space-y-2 h-[700px] rounded-mdp-4">
-                {/* <h1 className="text-xl font-bold mb-4">Example Sentences</h1> */}
                 <SentencesView />
               </div>
             )}

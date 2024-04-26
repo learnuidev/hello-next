@@ -195,7 +195,9 @@ export function InsightsHeader() {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">
-            {learnedCharacters?.length || 0}{" "}
+            {learnedCharacters?.filter(
+              (item: { hanzi: string }) => item?.hanzi?.length === 1
+            ).length || 0}{" "}
             <span className="text-xs">+12</span>
           </div>
 

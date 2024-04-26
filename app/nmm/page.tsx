@@ -23,6 +23,7 @@ import { faGraduationCap, faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 import { useRouter, useSearchParams } from "next/navigation";
 import { NMMV2 } from "./v2";
 import { Devanagari } from "@/components/devanagari/devanagari";
+import Link from "next/link";
 
 function NomadMethodMandarin() {
   // const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);
@@ -137,12 +138,9 @@ function NomadMethodMandarin() {
                 console.log("SELECTED COMP", selectedComp);
 
                 return (
-                  <button
+                  <Link
                     key={`${prop.hanzi}-chars-${idx}`}
-                    onClick={() => {
-                      // setSelectedId(prop.hanzi);
-                      router.push(`/nmm/${prop.hanzi}`);
-                    }}
+                    href={`/nmm/${prop.hanzi}?lang=zh`}
                     className={`${
                       // learnedCharacters.includes(prop?.hanzi)
                       learnedCharacters2?.find(
@@ -157,7 +155,7 @@ function NomadMethodMandarin() {
                     } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                   >
                     {prop?.hanzi}
-                  </button>
+                  </Link>
                 );
               })}
         </div>
@@ -177,12 +175,9 @@ function NomadMethodMandarin() {
             });
 
             return (
-              <button
+              <Link
                 key={`${prop.hanzi}-chars-${idx}`}
-                onClick={() => {
-                  router.push(`/nmm/${prop.hanzi}`);
-                  // setSelectedId(prop.hanzi);
-                }}
+                href={`/nmm/${prop.hanzi}?lang=zh`}
                 className={`${
                   // learnedCharacters.includes(prop?.hanzi)
                   learnedCharacters2?.find(
@@ -195,7 +190,7 @@ function NomadMethodMandarin() {
                 } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
               >
                 {prop?.hanzi}
-              </button>
+              </Link>
             );
           })}
         </div>
@@ -219,12 +214,9 @@ function NomadMethodMandarin() {
               });
 
               return (
-                <button
+                <Link
                   key={`${prop.hanzi}-chars-${idx}`}
-                  onClick={() => {
-                    router.push(`/nmm/${prop.hanzi}`);
-                    // setSelectedId(prop.hanzi);
-                  }}
+                  href={`/nmm/${prop.hanzi}?lang=zh`}
                   className={`${
                     // learnedCharacters.includes(prop?.hanzi)
                     learnedCharacters2?.find(
@@ -237,7 +229,7 @@ function NomadMethodMandarin() {
                   } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                 >
                   {prop?.hanzi}
-                </button>
+                </Link>
               );
             })}
         </div>

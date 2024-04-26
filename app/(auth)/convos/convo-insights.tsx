@@ -53,14 +53,10 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     ?.filter(
       (x: string) =>
         ![
-          "c",
-          "i",
-          "n",
-          "d",
-          "y",
+          "？",
+          "0",
           "1",
           "2",
-          "？",
           "3",
           "4",
           "5",
@@ -68,7 +64,6 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
           "7",
           "8",
           "9",
-          "0",
           "a",
           "b",
           "c",
@@ -83,13 +78,18 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
           "l",
           "m",
           "n",
+          "o",
           "p",
           "q",
           "r",
           "t",
           "u",
           "v",
-        ]?.includes(x)
+          "w",
+          "x",
+          "y",
+          "z",
+        ]?.includes(x?.toLowerCase())
     );
 
   const totalNewCharaters = uniqueWords?.filter((char) => {

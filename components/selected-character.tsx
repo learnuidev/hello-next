@@ -4,6 +4,7 @@
 import { useMemo, useState } from "react";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useToast } from "@/components/ui/use-toast";
 
 import * as R from "ramda";
 
@@ -12,6 +13,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
+  faCheckCircle,
   faGlassesRound,
   faLanguage,
   faLightbulb,
@@ -46,10 +48,12 @@ import { SearchResult } from "./search-result";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useListSubComponentsQuery } from "@/domain/component/component.queries";
 import { GrammarAnalysis } from "./grammar-analysis";
+import { faSpinner } from "@fortawesome/sharp-solid-svg-icons";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const [view, setView] = useState("home");
   const routeName = usePathname();
+  const { toast } = useToast();
 
   const addHistoryMutation = useAddHistoryMutation();
 
@@ -787,17 +791,28 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
         {selectedComp?.group || selectedComp?.discoveredAt ? null : (
           <button
             className="text-xl"
+            disabled={discoverMutation.isLoading}
             onClick={() => {
               discoverMutation
                 .mutateAsync({
                   hanzi: selectedComp?.hanzi || characterId,
                 })
                 .then((resp) => {
+                  toast({
+                    title: "Success!",
+                    description: `Component Successfully discovered ${JSON.stringify(resp)}`,
+                  });
                   console.log("Discovered!!", resp);
                 });
             }}
           >
-            <FontAwesomeIcon icon={faLanguage} />
+            {discoverMutation.isLoading ? (
+              <FontAwesomeIcon spinPulse icon={faSpinner} />
+            ) : discoverMutation.isSuccess ? (
+              <FontAwesomeIcon className="transition" icon={faCheckCircle} />
+            ) : (
+              <FontAwesomeIcon icon={faLanguage} />
+            )}
           </button>
         )}
       </div>

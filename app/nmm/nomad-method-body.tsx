@@ -1,13 +1,7 @@
 "use client";
 import React from "react";
-import { useState, useEffect } from "react";
 
-import { NavBar } from "@/components/navbar";
-import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import { useSelectedCharacter } from "../(auth)/convos/use-selected-character";
-
-import { SelectedCharacter } from "@/components/selected-character";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -20,27 +14,17 @@ import { useBeltStore } from "@/components/use-belt-store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeAsia } from "@fortawesome/pro-light-svg-icons";
 import { faGraduationCap, faLightbulb } from "@fortawesome/pro-thin-svg-icons";
-import { useRouter, useSearchParams } from "next/navigation";
-import { NMMV2 } from "./v2";
 import { Devanagari } from "@/components/devanagari/devanagari";
 import Link from "next/link";
+import { useAddHistoryMutation } from "@/domain/history/history.mutations";
+import { usePathname } from "next/navigation";
 
 function NomadMethodMandarin() {
-  // const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);
-
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
+  const routeName = usePathname();
   const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
-  const router = useRouter();
 
-  const selectedId = useSelectedCharacter((state: any) => state?.character);
-  // const setSelectedId = useSelectedCharacter(
-  //   (state: any) => state?.setCharacter
-  // );
-  const [view, setView] = useState("characters");
-  const [query, setQuery] = useState("");
-  const [index, setIndex] = useState(0);
-
-  const { data } = useListTonePairsQuery({});
+  const addHistoryMutation = useAddHistoryMutation();
 
   const { data: answers } = useListAnswersQuery(
     {},
@@ -141,6 +125,15 @@ function NomadMethodMandarin() {
                   <Link
                     key={`${prop.hanzi}-chars-${idx}`}
                     href={`/nmm/${prop.hanzi}?lang=zh`}
+                    onClick={() => {
+                      addHistoryMutation.mutate({
+                        pathName: routeName,
+                        hanzi: prop.hanzi,
+                        lang: "zh",
+                        contentId: prop.id,
+                        eventType: "CONTENT_VIEWED",
+                      } as any);
+                    }}
                     className={`${
                       // learnedCharacters.includes(prop?.hanzi)
                       learnedCharacters2?.find(
@@ -178,6 +171,15 @@ function NomadMethodMandarin() {
               <Link
                 key={`${prop.hanzi}-chars-${idx}`}
                 href={`/nmm/${prop.hanzi}?lang=zh`}
+                onClick={() => {
+                  addHistoryMutation.mutate({
+                    hanzi: prop.hanzi,
+                    lang: "zh",
+                    pathName: routeName,
+                    contentId: prop.id,
+                    eventType: "CONTENT_VIEWED",
+                  } as any);
+                }}
                 className={`${
                   // learnedCharacters.includes(prop?.hanzi)
                   learnedCharacters2?.find(
@@ -217,6 +219,15 @@ function NomadMethodMandarin() {
                 <Link
                   key={`${prop.hanzi}-chars-${idx}`}
                   href={`/nmm/${prop.hanzi}?lang=zh`}
+                  onClick={() => {
+                    addHistoryMutation.mutate({
+                      pathName: routeName,
+                      hanzi: prop.hanzi,
+                      lang: "zh",
+                      contentId: prop.id,
+                      eventType: "CONTENT_VIEWED",
+                    } as any);
+                  }}
                   className={`${
                     // learnedCharacters.includes(prop?.hanzi)
                     learnedCharacters2?.find(

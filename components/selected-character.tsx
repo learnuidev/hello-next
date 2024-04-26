@@ -19,7 +19,7 @@ import {
   faXmark,
 } from "@fortawesome/pro-thin-svg-icons";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import Link from "next/link";
 
@@ -49,6 +49,7 @@ import { GrammarAnalysis } from "./grammar-analysis";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const [view, setView] = useState("home");
+  const routeName = usePathname();
 
   const addHistoryMutation = useAddHistoryMutation();
 
@@ -320,6 +321,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                           // alert("yoo 2");
 
                           addHistoryMutation.mutate({
+                            lang: lang,
+                            pathName: routeName,
                             hanzi: val,
                             contentId: selectedComp?.id || "",
                             eventType: "CONTENT_VIEWED",
@@ -408,6 +411,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                     onClick={() => {
                       addHistoryMutation.mutate({
                         hanzi: val,
+                        lang: lang,
+                        pathName: routeName,
                         contentId: selectedComp?.id || "",
                         eventType: "CONTENT_VIEWED",
                       } as any);
@@ -556,6 +561,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                               onClick={() => {
                                 addHistoryMutation.mutate({
                                   hanzi: val,
+                                  lang: lang,
+                                  pathName: routeName,
                                   contentId: selectedComp?.id || "",
                                   eventType: "CONTENT_VIEWED",
                                 } as any);

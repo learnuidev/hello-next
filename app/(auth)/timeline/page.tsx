@@ -88,9 +88,9 @@ export default function Timeline() {
               );
             })}
           </div>
-          <code>
+          {/* <code>
             <pre>{JSON.stringify(data, null, 2)}</pre>
-          </code>
+          </code> */}
         </div>
       )}
     </main>

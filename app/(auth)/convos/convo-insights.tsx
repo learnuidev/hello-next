@@ -82,6 +82,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
           "p",
           "q",
           "r",
+          "s",
           "t",
           "u",
           "v",
@@ -94,7 +95,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
 
   const totalNewCharaters = uniqueWords?.filter((char) => {
     const isLearned = learnedCharacters?.find(
-      (item: any) => item?.hanzi !== char
+      (item: any) => item?.hanzi === char
     );
 
     return !!isLearned;
@@ -128,7 +129,10 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
               <span className="text-sm md:text-xl">total characters </span>
             </h2>
             <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
-              <span className="text-yellow-500"> {totalNewCharaters}</span>
+              <span className="text-yellow-500">
+                {" "}
+                {uniqueWords?.length - totalNewCharaters}
+              </span>
               <span className="text-sm md:text-xl">new characters </span>
             </h2>
           </div>

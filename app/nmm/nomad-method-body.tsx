@@ -18,6 +18,13 @@ import { Devanagari } from "@/components/devanagari/devanagari";
 import Link from "next/link";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { usePathname } from "next/navigation";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { PreviewComponent } from "./preview-component";
 
 function NomadMethodMandarin() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
@@ -122,33 +129,43 @@ function NomadMethodMandarin() {
                 console.log("SELECTED COMP", selectedComp);
 
                 return (
-                  <Link
-                    key={`${prop.hanzi}-chars-${idx}`}
-                    href={`/nmm/${prop.hanzi}?lang=zh`}
-                    onClick={() => {
-                      addHistoryMutation.mutate({
-                        pathName: routeName,
-                        hanzi: prop.hanzi,
-                        lang: "zh",
-                        contentId: prop.id,
-                        eventType: "CONTENT_VIEWED",
-                      } as any);
-                    }}
-                    className={`${
-                      // learnedCharacters.includes(prop?.hanzi)
-                      learnedCharacters2?.find(
-                        (char: any) => char?.hanzi === prop?.hanzi
-                      )
-                        ? `${color}`
-                        : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                          ? "text-yellow-500"
-                          : selectedComp?.group
-                            ? "text-slate-400"
-                            : "dark:text-gray-500 text-gray-200"
-                    } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-                  >
-                    {prop?.hanzi}
-                  </Link>
+                  <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
+                    <Tooltip>
+                      <TooltipTrigger className="p-3 hover:scale-125 transition">
+                        <Link
+                          href={`/nmm/${prop.hanzi}?lang=zh`}
+                          onClick={() => {
+                            addHistoryMutation.mutate({
+                              pathName: routeName,
+                              hanzi: prop.hanzi,
+                              lang: "zh",
+                              contentId: prop.id,
+                              eventType: "CONTENT_VIEWED",
+                            } as any);
+                          }}
+                          className={`${
+                            // learnedCharacters.includes(prop?.hanzi)
+                            learnedCharacters2?.find(
+                              (char: any) => char?.hanzi === prop?.hanzi
+                            )
+                              ? `${color}`
+                              : lastAnswer?.totalCharacters?.includes(
+                                    prop?.hanzi
+                                  )
+                                ? "text-yellow-500"
+                                : selectedComp?.group
+                                  ? "text-slate-400"
+                                  : "dark:text-gray-500 text-gray-200"
+                          } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+                        >
+                          {prop?.hanzi}
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-black w-96 border-gray-800">
+                        <PreviewComponent component={prop} />
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 );
               })}
         </div>

@@ -1,4 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 
 export const PreviewComponent = ({ component }: any) => {
@@ -6,6 +7,11 @@ export const PreviewComponent = ({ component }: any) => {
 
   const { data: sentences, isLoading } = useListSentencesQuery({
     component: component?.hanzi,
+    lang: "zh",
+  });
+
+  const { data: meaning } = useListMeaningsQuery({
+    content: component?.hanzi,
     lang: "zh",
   });
 

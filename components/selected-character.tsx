@@ -791,7 +791,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
         {selectedComp?.group || selectedComp?.discoveredAt ? null : (
           <button
             className="text-xl"
-            disabled={discoverMutation.isLoading}
+            disabled={discoverMutation.isLoading || discoverMutation.isSuccess}
             onClick={() => {
               discoverMutation
                 .mutateAsync({

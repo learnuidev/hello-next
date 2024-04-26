@@ -142,7 +142,7 @@ function NomadMethodMandarin() {
                         ? `${color}`
                         : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                           ? "text-yellow-500"
-                          : selectedComp?.final
+                          : selectedComp?.group
                             ? "text-slate-400"
                             : "dark:text-gray-500 text-gray-200"
                     } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}

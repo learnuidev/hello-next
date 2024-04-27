@@ -1,6 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
+import { formatComponentName } from "./format-component-name";
 
 export const PreviewComponent = ({ component }: any) => {
   const { steps, ...rest } = component;
@@ -17,7 +18,7 @@ export const PreviewComponent = ({ component }: any) => {
 
   const stylePinyin = "font-extralight text-gray-400";
 
-  const styleEn = "text-gray-500 font-extralight truncate text-xs";
+  const styleEn = "min-w-0 text-gray-500 font-extralight truncate text-[12px]";
   return (
     <div className="w-80">
       <div className="flex w-full items-center justify-between my-2 space-x-8">
@@ -27,9 +28,7 @@ export const PreviewComponent = ({ component }: any) => {
             <h2 className={stylePinyin}>{component?.pinyin}</h2>
           </div>
 
-          <h3 className={styleEn}>
-            {component?.en?.split("/").slice(0, 4)?.join(", ")}
-          </h3>
+          <h3 className={styleEn}>{formatComponentName(component)}</h3>
         </div>
 
         <p className="text-xl font-extralight text-gray-600">

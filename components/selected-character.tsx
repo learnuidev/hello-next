@@ -49,6 +49,7 @@ import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useListSubComponentsQuery } from "@/domain/component/component.queries";
 import { GrammarAnalysis } from "./grammar-analysis";
 import { faSpinner } from "@fortawesome/sharp-solid-svg-icons";
+import { formatComponentName } from "@/app/nmm/format-component-name";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const [view, setView] = useState("home");
@@ -846,18 +847,20 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             {selectedComp?.pinyin || selectedComp?.en || selectedComp?.roman}
           </span>
         </Link>
-        {selectedComp?.pinyin && selectedComp?.en?.length < 20 && (
-          <Link
-            target="_blank"
-            href={`https://hanzicraft.com/character/${encodeURIComponent(
-              selectedChar
-            )}`}
-            className="flex items-end space-x-2 text-gray-400"
-          >
-            {" "}
-            <span className="text-xs truncate">{selectedComp?.en}</span>
-          </Link>
-        )}
+        {/* {selectedComp?.pinyin && selectedComp?.en?.length < 20 && ( */}
+        <Link
+          target="_blank"
+          href={`https://hanzicraft.com/character/${encodeURIComponent(
+            selectedChar
+          )}`}
+          className="flex items-end space-x-2 text-gray-400"
+        >
+          {" "}
+          <span className="text-xs truncate">
+            {formatComponentName(selectedComp, 2)}
+          </span>
+        </Link>
+        {/* )} */}
       </div>
     );
   };

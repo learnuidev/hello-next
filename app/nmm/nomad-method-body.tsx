@@ -99,7 +99,7 @@ function NomadMethodMandarin() {
   //   return () => clearInterval(interval);
   // }, []);
 
-  const { data: components } = useListComponents();
+  const { data: components } = useListComponents({ includeAll: true });
 
   const styles = useSpring({
     from: { opacity: "0" },
@@ -115,7 +115,7 @@ function NomadMethodMandarin() {
 
   const filteredComponents = components?.length
     ? slicedComponents
-        .filter((component: any) => component?.hanzi?.length === 1)
+        // .filter((component: any) => component?.hanzi?.length <= 3)
         .map((component: any) => {
           if (query) {
             const englishPinyin = getHumanPinyin(component);

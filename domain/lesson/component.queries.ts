@@ -130,6 +130,16 @@ export function useListComponents(
           return includeDiscoverOnly ? !x.level : x.level;
         }
       })
+      .map((item: any, idx: any) => {
+        if (item.level) {
+          return item;
+        }
+
+        return {
+          ...item,
+          level: 10000 + idx,
+        };
+      })
       .sort((a: any, b: any) => (a.level || 0) - (b.level || 0)),
     ...rest,
   };

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useSearchQueryStore } from "./search/state";
 import React from "react";
+import { Icons } from "./ui/icons.v2";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -29,8 +30,10 @@ export const SearchBar = () => {
     <div className="h-12 hidden sm:block py-2 flex flex-row justify-center space-x-4 items-center">
       <div className="flex items-center justify-center"></div>
 
+      {/* <Icons.compass /> */}
+
       <input
-        className="dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300 dark:bg-black/10 dark:text-gray-300 placeholder:text-gray-400 opacity-100 transition-all  duration-400 ease-in border-2 w-[140px] md:w-[500px] focus:w-[600px] px-4 py-2 rounded-full focus:outline-none active:outline-none dark:border-gray-800"
+        className="border-none dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300 dark:bg-black/10 dark:text-gray-300 placeholder:text-gray-400 opacity-100 border-2 w-[140px] md:w-[500px] focus:border-none px-2 py-2 rounded-full focus:outline-none active:outline-none"
         placeholder={"Search"}
         onChange={(event) => {
           setQuery(() => event?.target?.value);

@@ -25,11 +25,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { PreviewComponent } from "./preview-component";
+import { useSearchQueryStore } from "@/components/search/state";
 
 function NomadMethodMandarin() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
   const routeName = usePathname();
   const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
+  const query = useSearchQueryStore((state) => state.query);
 
   const addHistoryMutation = useAddHistoryMutation();
 
@@ -64,6 +66,17 @@ function NomadMethodMandarin() {
     from: { opacity: "0" },
     to: { opacity: "1" },
   });
+
+  const filteredComponents = components?.length
+    ? components
+        ?.slice(
+          selectedBelt?.minCharacterLevel,
+          selectedBelt?.maxCharacterLevel
+        )
+        .filter((component: any) => {
+          return component?.group?.includes(query?.toLowerCase());
+        })
+    : [];
 
   return (
     <Tabs defaultValue="all" className="p-0">
@@ -111,63 +124,56 @@ function NomadMethodMandarin() {
 
       <TabsContent value="all" className="my-8">
         <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {components?.length &&
-            components
-              ?.slice(
-                selectedBelt?.minCharacterLevel,
-                selectedBelt?.maxCharacterLevel
-              )
-              .map((prop: any, idx: number) => {
-                const selectedComp = components?.find(
-                  (component: any) => component?.hanzi === prop?.hanzi
-                );
+          {filteredComponents?.length > 0 &&
+            filteredComponents.map((prop: any, idx: number) => {
+              const selectedComp = components?.find(
+                (component: any) => component?.hanzi === prop?.hanzi
+              );
 
-                const color = calculateColor({
-                  tone: selectedComp?.tone_level,
-                });
+              const color = calculateColor({
+                tone: selectedComp?.tone_level,
+              });
 
-                console.log("SELECTED COMP", selectedComp);
+              console.log("SELECTED COMP", selectedComp);
 
-                return (
-                  <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
-                    <Tooltip>
-                      <TooltipTrigger className="p-3 hover:scale-125 transition">
-                        <Link
-                          href={`/nmm/${prop.hanzi}?lang=zh`}
-                          onClick={() => {
-                            addHistoryMutation.mutate({
-                              pathName: routeName,
-                              hanzi: prop.hanzi,
-                              lang: "zh",
-                              contentId: prop.id,
-                              eventType: "CONTENT_VIEWED",
-                            } as any);
-                          }}
-                          className={`${
-                            // learnedCharacters.includes(prop?.hanzi)
-                            learnedCharacters2?.find(
-                              (char: any) => char?.hanzi === prop?.hanzi
-                            )
-                              ? `${color}`
-                              : lastAnswer?.totalCharacters?.includes(
-                                    prop?.hanzi
-                                  )
-                                ? "text-yellow-500"
-                                : selectedComp?.group
-                                  ? "text-slate-400"
-                                  : "dark:text-gray-500 text-gray-200"
-                          } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-                        >
-                          {prop?.hanzi}
-                        </Link>
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-black w-96 border-gray-800">
-                        <PreviewComponent component={prop} />
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                );
-              })}
+              return (
+                <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
+                  <Tooltip>
+                    <TooltipTrigger className="p-3 hover:scale-125 transition">
+                      <Link
+                        href={`/nmm/${prop.hanzi}?lang=zh`}
+                        onClick={() => {
+                          addHistoryMutation.mutate({
+                            pathName: routeName,
+                            hanzi: prop.hanzi,
+                            lang: "zh",
+                            contentId: prop.id,
+                            eventType: "CONTENT_VIEWED",
+                          } as any);
+                        }}
+                        className={`${
+                          // learnedCharacters.includes(prop?.hanzi)
+                          learnedCharacters2?.find(
+                            (char: any) => char?.hanzi === prop?.hanzi
+                          )
+                            ? `${color}`
+                            : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                              ? "text-yellow-500"
+                              : selectedComp?.group
+                                ? "text-slate-400"
+                                : "dark:text-gray-500 text-gray-200"
+                        } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+                      >
+                        {prop?.hanzi}
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-black w-96 border-gray-800">
+                      <PreviewComponent component={prop} />
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              );
+            })}
         </div>
       </TabsContent>
 

@@ -66,6 +66,8 @@ export const NavBar = () => {
 
   const { data: reviewList } = useListCharacterReviewList();
 
+  // return <SearchBar />;
+
   return (
     <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
       <div className="my-2 flex space-x-2 md:space-x-8 items-center">

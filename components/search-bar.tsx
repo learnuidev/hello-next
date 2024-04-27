@@ -40,6 +40,9 @@ export const SearchBar = () => {
         }}
         value={query}
         onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            setQuery(() => "");
+          }
           if (event?.keyCode === 13) {
             router.push(`/nmm/${query}`);
           }

@@ -234,7 +234,7 @@ function NomadMethodMandarin() {
                         {prop?.hanzi}
                       </Link>
                     </TooltipTrigger>
-                    <TooltipContent className="bg-black w-96 border-gray-800">
+                    <TooltipContent className="bg-black border-gray-800">
                       <PreviewComponent component={prop} />
                     </TooltipContent>
                   </Tooltip>

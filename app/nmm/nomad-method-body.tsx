@@ -27,6 +27,44 @@ import {
 import { PreviewComponent } from "./preview-component";
 import { useSearchQueryStore } from "@/components/search/state";
 
+const characterMap = {
+  ā: "a",
+  á: "a",
+  ǎ: "a",
+  à: "a",
+  ē: "e",
+  é: "e",
+  ě: "e",
+  è: "e",
+  ī: "i",
+  í: "i",
+  ǐ: "i",
+  ì: "i",
+  ō: "o",
+  ó: "o",
+  ǒ: "o",
+  ò: "o",
+  ū: "u",
+  ú: "u",
+  ǔ: "u",
+  ù: "u",
+} as any;
+
+const getHumanPinyin = (comp: { pinyin: string }) => {
+  return comp?.pinyin
+    ?.split("")
+    ?.map((item) => {
+      const char = characterMap[item];
+
+      if (char) {
+        return char;
+      }
+
+      return item;
+    })
+    .join("");
+};
+
 function NomadMethodMandarin() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
   const routeName = usePathname();
@@ -67,16 +105,45 @@ function NomadMethodMandarin() {
     to: { opacity: "1" },
   });
 
-  const filteredComponents = components?.length
+  const slicedComponents = query
     ? components
-        ?.slice(
-          selectedBelt?.minCharacterLevel,
-          selectedBelt?.maxCharacterLevel
-        )
-        .filter((component: any) => {
-          return component?.group?.includes(query?.toLowerCase());
+    : components?.slice(
+        selectedBelt?.minCharacterLevel,
+        selectedBelt?.maxCharacterLevel
+      );
+
+  const filteredComponents = components?.length
+    ? slicedComponents
+        .map((component: any) => {
+          if (query) {
+            const englishPinyin = getHumanPinyin(component);
+
+            if (query?.toLowerCase() === englishPinyin) {
+              return {
+                ...component,
+                score: 1,
+              };
+            }
+
+            if (englishPinyin?.includes(query?.toLowerCase())) {
+              return {
+                ...component,
+                score: 0.5,
+              };
+            }
+
+            return null;
+
+            // console.log("PINYIN", pinyinCharacter);
+            // return query?.toLowerCase() === pinyinCharacter;
+          }
+          // const pinyinCharacter = getPinyinCharacter(component);
+          // console.log("PINYIN", pinyinCharacter);
+          return { ...component, score: 1 };
         })
-    : [];
+        .filter(Boolean)
+    : // .sort((a: any, b: any) => b.score - a.score)
+      [];
 
   return (
     <Tabs defaultValue="all" className="p-0">

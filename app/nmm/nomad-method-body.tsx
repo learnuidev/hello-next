@@ -114,6 +114,7 @@ function NomadMethodMandarin() {
 
   const filteredComponents = components?.length
     ? slicedComponents
+        .filter((component: any) => component?.hanzi?.length === 1)
         .map((component: any) => {
           if (query) {
             const englishPinyin = getHumanPinyin(component);

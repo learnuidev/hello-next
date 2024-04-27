@@ -133,6 +133,34 @@ function NomadMethodMandarin() {
               };
             }
 
+            if (query?.toLowerCase() === component?.en?.toLowerCase()) {
+              return {
+                ...component,
+                score: 0.4,
+              };
+            }
+
+            const queryLength = query?.length;
+
+            if (
+              component?.en
+                ?.slice(0, queryLength)
+                ?.toLowerCase()
+                ?.includes(query?.toLowerCase())
+            ) {
+              return {
+                ...component,
+                score: 0.3,
+              };
+            }
+
+            if (component?.en?.toLowerCase()?.includes(query?.toLowerCase())) {
+              return {
+                ...component,
+                score: 0.2,
+              };
+            }
+
             return null;
 
             // console.log("PINYIN", pinyinCharacter);

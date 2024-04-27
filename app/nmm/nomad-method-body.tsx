@@ -142,7 +142,8 @@ function NomadMethodMandarin() {
           return { ...component, score: 1 };
         })
         .filter(Boolean)
-    : // .sort((a: any, b: any) => b.score - a.score)
+        .sort((a: any, b: any) => b.score - a.score)
+    : //
       [];
 
   return (

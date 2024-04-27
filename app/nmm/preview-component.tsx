@@ -17,14 +17,19 @@ export const PreviewComponent = ({ component }: any) => {
 
   const stylePinyin = "font-extralight text-gray-400";
 
-  const styleEn = "text-gray-500 font-extralight truncate";
+  const styleEn = "text-gray-500 font-extralight truncate text-xs";
   return (
-    <div>
+    <div className="w-80">
       <div className="flex w-full items-center justify-between my-2 space-x-8">
-        <div className="flex items-center space-x-2">
-          <h1 className="text-2xl font-light">{component?.hanzi}</h1>
-          <h2 className={stylePinyin}>{component?.pinyin}</h2>
-          <h3 className={styleEn}>{component?.en}</h3>
+        <div>
+          <div className="flex items-center space-x-2">
+            <h1 className="text-2xl font-light">{component?.hanzi}</h1>
+            <h2 className={stylePinyin}>{component?.pinyin}</h2>
+          </div>
+
+          <h3 className={styleEn}>
+            {component?.en?.split("/").slice(0, 4)?.join(", ")}
+          </h3>
         </div>
 
         <p className="text-xl font-extralight text-gray-600">

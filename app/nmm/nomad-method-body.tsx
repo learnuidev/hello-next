@@ -62,7 +62,8 @@ const getHumanPinyin = (comp: { pinyin: string }) => {
 
       return item;
     })
-    .join("");
+    ?.join("")
+    ?.toLowerCase();
 };
 
 function NomadMethodMandarin() {

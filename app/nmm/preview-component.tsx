@@ -28,7 +28,7 @@ export const PreviewComponent = ({ component }: any) => {
             <h2 className={stylePinyin}>{component?.pinyin}</h2>
           </div>
 
-          <h3 className={styleEn}>{formatComponentName(component)}</h3>
+          <h3 className={styleEn}>{formatComponentName(component, 2)}</h3>
         </div>
 
         <p className="text-xl font-extralight text-gray-600">

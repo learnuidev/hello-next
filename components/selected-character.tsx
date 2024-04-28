@@ -50,6 +50,7 @@ import { useListSubComponentsQuery } from "@/domain/component/component.queries"
 import { GrammarAnalysis } from "./grammar-analysis";
 import { faSpinner } from "@fortawesome/sharp-solid-svg-icons";
 import { formatComponentName } from "@/app/nmm/format-component-name";
+import { useDeleteComponentMutation } from "@/domain/lesson/component.mutations";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const [view, setView] = useState("home");
@@ -154,6 +155,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     [components]
   );
 
+  console.log();
+
   const selectedComp = useMemo(
     () =>
       components?.find(
@@ -162,6 +165,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       ),
     [components, selectedChar]
   );
+
+  console.log("SELECTED COMP", selectedComp);
 
   const [readMode, setReadMode] = useState(false);
   const searchParams = useSearchParams();
@@ -183,6 +188,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
   const router = useRouter();
 
   const discoverMutation = useDiscoverMutation();
+  const deleteComponentMutation = useDeleteComponentMutation();
 
   const firstLesson = useMemo(
     () =>
@@ -816,6 +822,38 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             )}
           </button>
         )}
+        {/* {selectedComp?.group || selectedComp?.discoveredAt ? null : ( */}
+        <button
+          className="text-xl"
+          disabled={
+            deleteComponentMutation.isLoading ||
+            deleteComponentMutation.isSuccess
+          }
+          onClick={() => {
+            deleteComponentMutation
+              .mutateAsync({
+                hanzi: selectedComp?.hanzi || characterId,
+              } as any)
+              .then((resp) => {
+                toast({
+                  title: "Success!",
+                  description: `Component: ${selectedComp?.hanzi || characterId} Successfully deleted  
+                  \n 
+                  ${JSON.stringify(resp)}`,
+                });
+                console.log("Discovered!!", resp);
+              });
+          }}
+        >
+          {deleteComponentMutation.isLoading ? (
+            <FontAwesomeIcon spinPulse icon={faSpinner} />
+          ) : discoverMutation.isSuccess ? (
+            <FontAwesomeIcon className="transition" icon={faCheckCircle} />
+          ) : (
+            <Icons.powerOff />
+          )}
+        </button>
+        {/* )} */}
       </div>
     );
   };

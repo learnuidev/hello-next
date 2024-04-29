@@ -965,12 +965,13 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
           {selectedComp && (
             <div className="font-light flex space-x-4 items-center text-gray-400 mb-8">
-              {selectedComp?.level && (
-                <div className="flex space-x-2 items-center">
-                  <Icons.earthAsia />
-                  <p>{selectedComp?.level}</p>
-                </div>
-              )}
+              {selectedComp?.level ||
+                (selectedComp2?.level && (
+                  <div className="flex space-x-2 items-center">
+                    <Icons.earthAsia />
+                    <p>{selectedComp?.level || selectedComp2?.level}</p>
+                  </div>
+                ))}
               {selectedComp?.tone_level && (
                 <div className="flex space-x-2 items-center">
                   <Icons.musicNote />

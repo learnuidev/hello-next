@@ -803,8 +803,9 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             )}
           </button>
         )}
-        {characterId?.length > 1 ||
-        (selectedComp2?.level && selectedComp2?.group) ? null : (
+        {selectedComp2?.level &&
+        characterId?.length >= 1 &&
+        selectedComp2?.updated_at ? null : (
           <button
             className="text-xl"
             disabled={discoverMutation.isLoading || discoverMutation.isSuccess}

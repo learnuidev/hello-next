@@ -159,6 +159,15 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
   const selectedComp = useMemo(
     () =>
+      characters?.find(
+        (component: any) =>
+          (component?.hanzi || component?.item) === selectedChar
+      ),
+    [characters, selectedChar]
+  );
+
+  const selectedComp2 = useMemo(
+    () =>
       components?.find(
         (component: any) =>
           (component?.hanzi || component?.item) === selectedChar
@@ -166,7 +175,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     [components, selectedChar]
   );
 
-  console.log("SELECTED COMP", selectedComp);
+  console.log("SELECTED COMP 2", selectedComp2);
 
   const [readMode, setReadMode] = useState(false);
   const searchParams = useSearchParams();
@@ -409,39 +418,42 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             </span>
           </Link>
           <span className="text-gray-500 dark:text-gray-300 text-md">
-            {currentPhrase?.hanzi
-              ?.split("")
-              ?.map((val: string, idy: number) => {
-                const color = calculateColor({
-                  tone: selectedComp?.tone_level,
-                });
+            {(currentPhrase?.input
+              ? currentPhrase?.input.split(" ")
+              : currentPhrase?.hanzi?.split(" ")
+            )?.map((val: string, idy: number) => {
+              const color = calculateColor({
+                tone: selectedComp?.tone_level,
+              });
 
-                return (
-                  <span
-                    key={`${val}-${idy}`}
-                    onClick={() => {
-                      addHistoryMutation.mutate({
-                        hanzi: val,
-                        lang: lang,
-                        pathName: routeName,
-                        contentId: selectedComp?.id || "",
-                        eventType: "CONTENT_VIEWED",
-                      } as any);
+              return (
+                <span
+                  key={`${val}-${idy}`}
+                  onClick={() => {
+                    addHistoryMutation.mutate({
+                      hanzi: val,
+                      lang: lang,
+                      pathName: routeName,
+                      contentId: selectedComp?.id || "",
+                      eventType: "CONTENT_VIEWED",
+                    } as any);
 
-                      router.push(`/nmm/${val}`);
-                    }}
-                    className={`${
-                      selectedChar === val
-                        ? color
-                        : "text-gray-400 dark:text-gray-300"
-                    }`}
-                  >
-                    {val}
-                  </span>
-                );
-              })}
+                    router.push(
+                      lang ? `/nmm/${val}?lang=${lang}` : `/nmm/${val}`
+                    );
+                  }}
+                  className={`${
+                    selectedChar === val
+                      ? color
+                      : "text-gray-400 dark:text-gray-300"
+                  }`}
+                >
+                  {val}{" "}
+                </span>
+              );
+            })}
           </span>
-          <span className="text-2xl text-gray-300">{currentPhrase?.input}</span>
+          {/* <span className="text-2xl text-gray-300">{currentPhrase?.input}</span> */}
           <span className="text-sm text-gray-400">
             {currentPhrase?.en || currentPhrase?.title}
           </span>
@@ -776,26 +788,23 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             onClick={() => {
               addCharacterMutation?.mutateAsync({
                 lang: lang,
-                hanzi: firstLesson?.hanzi,
-                pinyin: firstLesson?.pinyin,
-                en: firstLesson?.en,
-                level: firstLesson?.level,
-                nomad: "na",
-                destination: "na",
-                location: "na",
-                journeyId: firstLesson.id,
-                // todo | completed
-                status: "completed",
-                story: "na",
-                component: "na",
-                sub_components: [],
+                status: "DISCOVERED",
+                hanzi: firstLesson?.hanzi || selectedChar,
+                journeyId: firstLesson?.id || "default",
               });
             }}
           >
-            <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
+            {addCharacterMutation.isLoading ? (
+              <FontAwesomeIcon spinPulse icon={faSpinner} />
+            ) : addCharacterMutation.isSuccess ? (
+              <FontAwesomeIcon className="transition" icon={faCheckCircle} />
+            ) : (
+              <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
+            )}
           </button>
         )}
-        {selectedComp?.group || selectedComp?.discoveredAt ? null : (
+        {characterId?.length > 1 ||
+        (selectedComp2?.level && selectedComp2?.group) ? null : (
           <button
             className="text-xl"
             disabled={discoverMutation.isLoading || discoverMutation.isSuccess}
@@ -822,38 +831,38 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             )}
           </button>
         )}
-        {/* {selectedComp?.group || selectedComp?.discoveredAt ? null : ( */}
-        <button
-          className="text-xl"
-          disabled={
-            deleteComponentMutation.isLoading ||
-            deleteComponentMutation.isSuccess
-          }
-          onClick={() => {
-            deleteComponentMutation
-              .mutateAsync({
-                hanzi: selectedComp?.hanzi || characterId,
-              } as any)
-              .then((resp) => {
-                toast({
-                  title: "Success!",
-                  description: `Component: ${selectedComp?.hanzi || characterId} Successfully deleted  
+        {true ? null : (
+          <button
+            className="text-xl"
+            disabled={
+              deleteComponentMutation.isLoading ||
+              deleteComponentMutation.isSuccess
+            }
+            onClick={() => {
+              deleteComponentMutation
+                .mutateAsync({
+                  hanzi: selectedComp?.hanzi || characterId,
+                } as any)
+                .then((resp) => {
+                  toast({
+                    title: "Success!",
+                    description: `Component: ${selectedComp?.hanzi || characterId} Successfully deleted  
                   \n 
                   ${JSON.stringify(resp)}`,
+                  });
+                  console.log("Discovered!!", resp);
                 });
-                console.log("Discovered!!", resp);
-              });
-          }}
-        >
-          {deleteComponentMutation.isLoading ? (
-            <FontAwesomeIcon spinPulse icon={faSpinner} />
-          ) : discoverMutation.isSuccess ? (
-            <FontAwesomeIcon className="transition" icon={faCheckCircle} />
-          ) : (
-            <Icons.powerOff />
-          )}
-        </button>
-        {/* )} */}
+            }}
+          >
+            {deleteComponentMutation.isLoading ? (
+              <FontAwesomeIcon spinPulse icon={faSpinner} />
+            ) : discoverMutation.isSuccess ? (
+              <FontAwesomeIcon className="transition" icon={faCheckCircle} />
+            ) : (
+              <Icons.powerOff />
+            )}
+          </button>
+        )}
       </div>
     );
   };
@@ -882,7 +891,10 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
         >
           {" "}
           <span className="text-xs">
-            {selectedComp?.pinyin || selectedComp?.en || selectedComp?.roman}
+            {selectedComp?.pinyin ||
+              selectedComp?.en ||
+              selectedComp?.roman ||
+              selectedComp2?.pinyin}
           </span>
         </Link>
         {/* {selectedComp?.pinyin && selectedComp?.en?.length < 20 && ( */}
@@ -895,7 +907,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
         >
           {" "}
           <span className="text-xs truncate">
-            {formatComponentName(selectedComp, 2)}
+            {formatComponentName(selectedComp, 2) || selectedComp2?.en}
           </span>
         </Link>
         {/* )} */}

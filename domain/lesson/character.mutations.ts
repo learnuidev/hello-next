@@ -10,18 +10,18 @@ const url = `https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1`;
 
 export type AddCharacterParams = {
   hanzi: string;
-  pinyin: string;
-  level?: number;
-  en: string;
-  nomad: string;
-  destination: string;
-  location: string;
+  // pinyin: string;
+  // level?: number;
+  // en: string;
+  // nomad: string;
+  // destination: string;
+  // location: string;
   journeyId: string;
-  // todo | completed
+  // // todo | completed
   status: string;
-  story: string;
-  component: string;
-  sub_components: string[];
+  // story: string;
+  // component: string;
+  // sub_components: string[];
   lang?: string;
 };
 

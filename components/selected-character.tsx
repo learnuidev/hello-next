@@ -420,7 +420,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           <span className="text-gray-500 dark:text-gray-300 text-md">
             {(currentPhrase?.input
               ? currentPhrase?.input.split(" ")
-              : currentPhrase?.hanzi?.split(" ")
+              : currentPhrase?.hanzi?.split("")
             )?.map((val: string, idy: number) => {
               const color = calculateColor({
                 tone: selectedComp?.tone_level,
@@ -448,7 +448,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
                       : "text-gray-400 dark:text-gray-300"
                   }`}
                 >
-                  {val}{" "}
+                  {val}
+                  {currentPhrase?.input ? " " : ""}
                 </span>
               );
             })}

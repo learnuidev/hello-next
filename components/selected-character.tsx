@@ -947,7 +947,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     const selected = selectedComp || selectedComp2;
 
     const level = selectedComp?.level || selectedComp2?.level;
-    const toneLevel = selectedComp.tone_level || selectedComp2?.tone_level;
+    const toneLevel = selectedComp?.tone_level || selectedComp2?.tone_level;
     const initial = selectedComp?.initial || selectedComp2?.initial;
     const final = selected?.final || selectedComp2?.final;
 

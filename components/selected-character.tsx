@@ -806,34 +806,39 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             )}
           </button>
         )}
-        {(selectedComp2?.updated_at || selectedComp2?.discoveredAt) &&
-        (selectedComp?.hanzi || characterId)?.length >= 1 ? null : (
-          <button
-            className="text-xl"
-            disabled={discoverMutation.isLoading || discoverMutation.isSuccess}
-            onClick={() => {
-              discoverMutation
-                .mutateAsync({
-                  hanzi: selectedComp?.hanzi || characterId,
-                })
-                .then((resp) => {
-                  toast({
-                    title: "Success!",
-                    description: `Component Successfully discovered ${JSON.stringify(resp)}`,
+        {selectedComp2?.updated_at || selectedComp2?.discoveredAt ? (
+          (selectedComp?.hanzi || characterId)?.length >= 1 ? null : (
+            <button
+              className="text-xl"
+              disabled={
+                discoverMutation.isLoading || discoverMutation.isSuccess
+              }
+              onClick={() => {
+                discoverMutation
+                  .mutateAsync({
+                    hanzi: selectedComp?.hanzi || characterId,
+                  })
+                  .then((resp) => {
+                    toast({
+                      title: "Success!",
+                      description: `Component Successfully discovered ${JSON.stringify(resp)}`,
+                    });
+                    console.log("Discovered!!", resp);
                   });
-                  console.log("Discovered!!", resp);
-                });
-            }}
-          >
-            {discoverMutation.isLoading ? (
-              <FontAwesomeIcon spinPulse icon={faSpinner} />
-            ) : discoverMutation.isSuccess ? (
-              <FontAwesomeIcon className="transition" icon={faCheckCircle} />
-            ) : (
-              <FontAwesomeIcon icon={faLanguage} />
-            )}
-          </button>
-        )}
+              }}
+            >
+              {discoverMutation.isLoading ? (
+                <FontAwesomeIcon spinPulse icon={faSpinner} />
+              ) : discoverMutation.isSuccess ? (
+                <FontAwesomeIcon className="transition" icon={faCheckCircle} />
+              ) : (
+                <FontAwesomeIcon icon={faLanguage} />
+              )}
+
+              {/* <span>{(selectedComp?.hanzi || characterId)?.length}</span> */}
+            </button>
+          )
+        ) : null}
         {true ? null : (
           <button
             className="text-xl"

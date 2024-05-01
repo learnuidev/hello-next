@@ -125,15 +125,14 @@ export const filterComponent = (query: string, comp: any, meta?: any) => {
 
     const component = comp?.en ? comp : metaComp || comp;
 
-    if (query === "san") {
-      console.log("COMP", metaComp);
-    }
-
     const englishPinyin = getHumanPinyin({ ...comp, ...metaComp });
 
     const en = `${comp?.en} ${metaComp?.en}`;
 
-    if (query?.toLowerCase() === englishPinyin) {
+    if (
+      query?.toLowerCase() === englishPinyin ||
+      query?.toLowerCase() === (comp?.hanzi || metaComp?.hanzi)
+    ) {
       return {
         ...comp,
         ...metaComp,

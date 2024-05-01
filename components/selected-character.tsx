@@ -912,11 +912,15 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
           href={`https://hanzicraft.com/character/${encodeURIComponent(
             selectedChar
           )}`}
-          className="flex items-end space-x-2 text-gray-400"
+          className="flex items-end text-gray-400"
         >
-          {" "}
-          <span className="text-xs truncate">
-            {formatComponentName(selectedComp, 2) || selectedComp2?.en}
+          <span className="hidden md:block text-xs truncate">
+            {formatComponentName(selectedComp, 5) ||
+              formatComponentName(selectedComp2, 5)}
+          </span>
+          <span className="block md:hidden text-xs truncate">
+            {formatComponentName(selectedComp, 2) ||
+              formatComponentName(selectedComp2, 2)}
           </span>
         </Link>
         {/* )} */}

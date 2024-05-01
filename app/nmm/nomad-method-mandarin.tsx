@@ -5,7 +5,12 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { belts, calculateColor, getHumanPinyin } from "./utils";
+import {
+  belts,
+  calculateColor,
+  filterComponent,
+  filterComponents,
+} from "./utils";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useBeltStore } from "@/components/use-belt-store";
@@ -62,77 +67,14 @@ export function NomadMethodMandarin() {
 
   const { data: components } = useListComponents({ includeAll: true });
 
-  const query = queryStr;
-
-  const slicedComponents = query
+  const slicedComponents = queryStr
     ? components
     : components?.slice(
         selectedBelt?.minCharacterLevel,
         selectedBelt?.maxCharacterLevel
       );
 
-  const filteredComponents = components?.length
-    ? slicedComponents
-        // .filter((component: any) => component?.hanzi?.length <= 3)
-        .map((component: any) => {
-          if (query) {
-            const englishPinyin = getHumanPinyin(component);
-
-            if (query?.toLowerCase() === englishPinyin) {
-              return {
-                ...component,
-                score: 1,
-              };
-            }
-
-            if (englishPinyin?.includes(query?.toLowerCase())) {
-              return {
-                ...component,
-                score: 0.5,
-              };
-            }
-
-            if (query?.toLowerCase() === component?.en?.toLowerCase()) {
-              return {
-                ...component,
-                score: 0.4,
-              };
-            }
-
-            const queryLength = query?.length;
-
-            if (
-              component?.en
-                ?.slice(0, queryLength)
-                ?.toLowerCase()
-                ?.includes(query?.toLowerCase())
-            ) {
-              return {
-                ...component,
-                score: 0.3,
-              };
-            }
-
-            if (component?.en?.toLowerCase()?.includes(query?.toLowerCase())) {
-              return {
-                ...component,
-                score: 0.2,
-              };
-            }
-
-            return null;
-
-            // console.log("PINYIN", pinyinCharacter);
-            // return query?.toLowerCase() === pinyinCharacter;
-          }
-          // const pinyinCharacter = getPinyinCharacter(component);
-          // console.log("PINYIN", pinyinCharacter);
-          return { ...component, score: 1 };
-        })
-        .filter(Boolean)
-        .sort((a: any, b: any) => b.score - a.score)
-    : //
-      [];
+  const filteredComponents = filterComponents(slicedComponents, queryStr);
 
   return (
     <Tabs defaultValue="all" className="p-0">

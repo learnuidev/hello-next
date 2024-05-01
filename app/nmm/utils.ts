@@ -117,3 +117,116 @@ export const getHumanPinyin = (comp: { pinyin: string }) => {
     ?.join("")
     ?.toLowerCase();
 };
+
+export const filterComponent = (query: string, comp: any, meta?: any) => {
+  // console.log("META", meta);
+  if (query) {
+    const metaComp = meta?.find((item: any) => item?.hanzi === comp?.hanzi);
+
+    const component = comp?.en ? comp : metaComp || comp;
+
+    if (query === "san") {
+      console.log("COMP", metaComp);
+    }
+
+    const englishPinyin = getHumanPinyin({ ...comp, ...metaComp });
+
+    if (query?.toLowerCase() === englishPinyin) {
+      return {
+        ...comp,
+        ...metaComp,
+        score: 1,
+      };
+    }
+
+    if (englishPinyin?.includes(query?.toLowerCase())) {
+      return {
+        ...comp,
+        ...metaComp,
+        score: 0.5,
+      };
+    }
+
+    if (query?.toLowerCase() === component?.en?.toLowerCase()) {
+      return {
+        ...comp,
+        ...metaComp,
+        score: 0.4,
+      };
+    }
+
+    const queryLength = query?.length;
+
+    if (
+      (comp?.en || metaComp?.en)
+        ?.slice(0, queryLength)
+        ?.toLowerCase()
+        ?.includes(query?.toLowerCase())
+    ) {
+      return {
+        ...comp,
+        ...metaComp,
+        score: 0.3,
+      };
+    }
+
+    if (
+      (comp?.en || metaComp?.en)?.toLowerCase()?.includes(query?.toLowerCase())
+    ) {
+      return {
+        ...comp,
+        ...metaComp,
+        score: 0.2,
+      };
+    }
+
+    if (
+      (comp?.es || metaComp?.es)?.toLowerCase()?.includes(query?.toLowerCase())
+    ) {
+      return {
+        ...comp,
+        ...metaComp,
+        score: 0.2,
+      };
+    }
+    if (
+      (comp?.lang || metaComp?.lang)
+        ?.toLowerCase()
+        ?.includes(query?.toLowerCase())
+    ) {
+      return {
+        ...comp,
+        ...metaComp,
+        score: 0.2,
+      };
+    }
+
+    return null;
+
+    // console.log("PINYIN", pinyinCharacter);
+    // return query?.toLowerCase() === pinyinCharacter;
+  }
+  // const pinyinCharacter = getPinyinCharacter(component);
+  // console.log("PINYIN", pinyinCharacter);
+  return { ...comp, score: 1 };
+};
+
+export const filterComponents = (
+  components: any,
+  query: string,
+  meta?: any
+) => {
+  console.log("COMPONENTS", components);
+  const filteredComponents = components?.length
+    ? components
+        // .filter((component: any) => component?.hanzi?.length <= 3)
+        .map((component: any) => {
+          return filterComponent(query, component, meta);
+        })
+        .filter(Boolean)
+        .sort((a: any, b: any) => b.score - a.score)
+    : //
+      [];
+
+  return filteredComponents;
+};

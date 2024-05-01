@@ -208,7 +208,9 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     [components, selectedChar]
   );
 
-  const color = calculateColor({ tone: selectedComp?.tone_level });
+  const toneLevel = (selectedComp || selectedComp2)?.tone_level;
+
+  const color = calculateColor({ tone: toneLevel });
 
   const { data: sentences } = useListSentencesQuery({
     component: selectedChar,
@@ -804,7 +806,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             )}
           </button>
         )}
-        {selectedComp2.discoveredAt &&
+        {(selectedComp2?.updated_at || selectedComp2?.discoveredAt) &&
         (selectedComp?.hanzi || characterId)?.length >= 1 ? null : (
           <button
             className="text-xl"
@@ -942,6 +944,13 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       );
     };
 
+    const selected = selectedComp || selectedComp2;
+
+    const level = selectedComp?.level || selectedComp2?.level;
+    const toneLevel = selectedComp.tone_level || selectedComp2?.tone_level;
+    const initial = selectedComp?.initial || selectedComp2?.initial;
+    const final = selected?.final || selectedComp2?.final;
+
     return (
       <div
         className={
@@ -964,30 +973,32 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
             </div>
           )}
 
-          {selectedComp2 && (
+          {/* <p>{JSON.stringify(selectedComp2, null, 2)}</p> */}
+
+          {selected && (
             <div className="font-light flex space-x-4 items-center text-gray-400 mb-8">
-              {selectedComp2?.level && (
+              {level && (
                 <div className="flex space-x-2 items-center">
                   <Icons.earthAsia />
-                  <p>{selectedComp2?.level}</p>
+                  <p>{level}</p>
                 </div>
               )}
-              {selectedComp?.tone_level && (
+              {toneLevel && (
                 <div className="flex space-x-2 items-center">
                   <Icons.musicNote />
-                  <p>{selectedComp?.tone_level}</p>
+                  <p>{toneLevel}</p>
                 </div>
               )}
-              {selectedComp?.initial && (
+              {initial && (
                 <div className="flex space-x-2 items-center">
                   <p>initial - </p>
-                  <p>{selectedComp?.initial}</p>
+                  <p>{initial}</p>
                 </div>
               )}
-              {selectedComp?.final && (
+              {final && (
                 <div className="flex space-x-2 items-center">
                   <p>final - </p>
-                  <p>{selectedComp?.final}</p>
+                  <p>{final}</p>
                 </div>
               )}
             </div>

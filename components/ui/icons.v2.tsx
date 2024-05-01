@@ -17,7 +17,10 @@ import {
   faRectangleVerticalHistory,
   faSeedling,
   faStairs,
+  faLightbulb,
+  faRectangleHistory,
 } from "@fortawesome/pro-thin-svg-icons";
+// import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 
 const createFAIcon = (icon: FontAwesomeIconProps["icon"]) => {
   return function FAIcon(props: any) {
@@ -40,4 +43,7 @@ export const Icons = {
   analyze: createFAIcon(faGalaxy),
   calculatorSimple: createFAIcon(faCalculatorSimple),
   back: createFAIcon(faChevronLeft),
+  lightBulb: createFAIcon(faLightbulb),
+
+  rectangleHistory: createFAIcon(faRectangleHistory),
 };

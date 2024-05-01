@@ -161,16 +161,20 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     () =>
       characters?.find(
         (component: any) =>
-          (component?.hanzi || component?.item) === selectedChar
+          (component?.hanzi || component?.item || component?.input) ===
+          selectedChar
       ),
     [characters, selectedChar]
   );
+
+  console.log("selectedComp", selectedComp);
 
   const selectedComp2 = useMemo(
     () =>
       components?.find(
         (component: any) =>
-          (component?.hanzi || component?.item) === selectedChar
+          (component?.hanzi || component?.item || component?.input) ===
+          selectedChar
       ),
     [components, selectedChar]
   );
@@ -188,8 +192,8 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
   const isAlreadyLearned = useMemo(
     () =>
-      characters?.find((character: { hanzi: string }) => {
-        return character?.hanzi === selectedChar;
+      characters?.find((character: { hanzi: string; input: string }) => {
+        return (character?.hanzi || character?.input) === selectedChar;
       }),
     [characters, selectedChar]
   );

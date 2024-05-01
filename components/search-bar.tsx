@@ -59,7 +59,7 @@ export const SearchBar = () => {
             setQuerySync(() => "");
           }
           if (event?.keyCode === 13) {
-            router.push(`/nmm/${query}`);
+            router.push(`/nmm/${querySync}`);
           }
         }}
       />

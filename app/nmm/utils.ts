@@ -212,7 +212,6 @@ export const filterComponents = (
   query: string,
   meta?: any
 ) => {
-  console.log("COMPONENTS", components);
   const filteredComponents = components?.length
     ? components
         // .filter((component: any) => component?.hanzi?.length <= 3)
@@ -224,5 +223,6 @@ export const filterComponents = (
     : //
       [];
 
+  // console.log("FILTERED COMPONENTS", filteredComponents);
   return filteredComponents;
 };

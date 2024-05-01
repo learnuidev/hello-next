@@ -104,12 +104,12 @@ export const TimelineTabBody = ({
                       className="py-4 pr-4 text-2xl font-light"
                       href={
                         item?.lang
-                          ? `/nmm/${item?.hanzi}?lang=${item?.lang}`
-                          : `/nmm/${item?.hanzi}`
+                          ? `/nmm/${item?.input || item?.hanzi}?lang=${item?.lang}`
+                          : `/nmm/${item?.input || item?.hanzi}`
                       }
                       key={item?.id}
                     >
-                      {item?.hanzi}
+                      {item?.input || item?.hanzi?.trim("")}
                     </Link>
                   );
                 })}

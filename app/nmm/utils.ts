@@ -131,6 +131,8 @@ export const filterComponent = (query: string, comp: any, meta?: any) => {
 
     const englishPinyin = getHumanPinyin({ ...comp, ...metaComp });
 
+    const en = `${comp?.en} ${metaComp?.en}`;
+
     if (query?.toLowerCase() === englishPinyin) {
       return {
         ...comp,
@@ -158,10 +160,7 @@ export const filterComponent = (query: string, comp: any, meta?: any) => {
     const queryLength = query?.length;
 
     if (
-      (comp?.en || metaComp?.en)
-        ?.slice(0, queryLength)
-        ?.toLowerCase()
-        ?.includes(query?.toLowerCase())
+      en?.slice(0, queryLength)?.toLowerCase()?.includes(query?.toLowerCase())
     ) {
       return {
         ...comp,
@@ -170,9 +169,7 @@ export const filterComponent = (query: string, comp: any, meta?: any) => {
       };
     }
 
-    if (
-      (comp?.en || metaComp?.en)?.toLowerCase()?.includes(query?.toLowerCase())
-    ) {
+    if (en?.toLowerCase()?.includes(query?.toLowerCase())) {
       return {
         ...comp,
         ...metaComp,

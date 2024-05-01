@@ -74,7 +74,11 @@ export function NomadMethodMandarin() {
         selectedBelt?.maxCharacterLevel
       );
 
-  const filteredComponents = filterComponents(slicedComponents, queryStr);
+  const filteredComponents = filterComponents(
+    slicedComponents,
+    queryStr,
+    learnedCharacters2
+  );
 
   return (
     <Tabs defaultValue="all" className="p-0">

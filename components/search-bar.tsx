@@ -5,6 +5,8 @@ import { useSearchQueryStore } from "./search/state";
 import React from "react";
 import { Icons } from "./ui/icons.v2";
 
+import { useDebouncedCallback } from "use-debounce";
+
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
 
@@ -26,6 +28,12 @@ export const SearchBar = () => {
   const query = useSearchQueryStore((state) => state.query);
   const setQuery = useSearchQueryStore((state) => state.setQuery);
 
+  const handleChange = (value: any) => {
+    setQuery(() => value);
+  };
+
+  const handleChangeDebounced = useDebouncedCallback(handleChange, 300);
+
   return (
     <div className="h-12 text-lg hidden sm:block py-2 flex flex-row justify-center items-end">
       <Icons.magnifyingGlass />
@@ -34,9 +42,9 @@ export const SearchBar = () => {
         className="font-extralight border-none dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300 dark:bg-black/10 dark:text-gray-300 placeholder:text-gray-400 opacity-100 border-2 w-[140px] md:w-[500px] focus:border-none px-2 rounded-full focus:outline-none active:outline-none"
         placeholder={"Search"}
         onChange={(event) => {
-          setQuery(() => event?.target?.value);
+          handleChangeDebounced(event?.target.value);
         }}
-        value={query}
+        // value={query}
         onKeyDown={(event) => {
           if (event.key === "Escape") {
             setQuery(() => "");

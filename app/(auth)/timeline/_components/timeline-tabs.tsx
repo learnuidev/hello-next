@@ -7,6 +7,7 @@ import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Icons } from "@/components/ui/icons.v2";
 import { TimelineTabBody } from "./timeline-tab-body";
+import { TimelineTabBodyV2 } from "./timeline-tab-body.v2";
 
 export function TimelineTabs() {
   return (
@@ -38,13 +39,13 @@ export function TimelineTabs() {
       </div>
 
       <TabsContent value="all" className="my-8">
-        <TimelineTabBody variant="all" />
+        <TimelineTabBodyV2 variant="all" />
       </TabsContent>
       <TabsContent value="timeline" className="my-8">
-        <TimelineTabBody variant="timeline" />
+        <TimelineTabBodyV2 variant="timeline" />
       </TabsContent>
       <TabsContent value="discovered" className="my-8">
-        <TimelineTabBody variant="discovered" />
+        <TimelineTabBodyV2 variant="discovered" />
       </TabsContent>
     </Tabs>
   );

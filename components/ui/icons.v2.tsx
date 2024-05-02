@@ -19,6 +19,8 @@ import {
   faStairs,
   faLightbulb,
   faRectangleHistory,
+  faPlus,
+  faMinus,
 } from "@fortawesome/pro-thin-svg-icons";
 // import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 
@@ -46,4 +48,7 @@ export const Icons = {
   lightBulb: createFAIcon(faLightbulb),
 
   rectangleHistory: createFAIcon(faRectangleHistory),
+
+  plusIcon: createFAIcon(faPlus),
+  minusIcon: createFAIcon(faMinus),
 };

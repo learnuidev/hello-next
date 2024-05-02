@@ -19,6 +19,8 @@ import { groupBy } from "ramda";
 import { useState } from "react";
 import { useTimelineState } from "./timeline.state";
 import { PreviewComponent } from "@/app/nmm/preview-component";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { TimelineDatesDrawer } from "./timeline-dates-drawer";
 
 function useListLearnedCharactersByDate({
   variant,
@@ -118,34 +120,35 @@ export const TimelineTabBodyV2 = ({
   ]?.filter(Boolean);
 
   return (
-    <div className="mx-8">
-      <article className="grid grid-cols-[320px_1fr]">
-        <div className="ml-6 w-full">
+    <div className="mx-0 md:mx-8">
+      <article className="grid grid-cols-1fr md:grid-cols-[320px_1fr]">
+        <div className="ml-6 w-full hidden md:block">
           <aside className="fixed">
-            <div className="flex flex-col w-32 items-center space-y-4 my-24">
-              {groups?.map((date) => {
-                return (
-                  <div
-                    role="button"
-                    onClick={() => {
-                      setSelectedDate(date?.title);
-                    }}
-                    key={date?.title}
-                    className={`${
-                      selectedDate === date?.title
-                        ? "font-normal"
-                        : "text-gray-600"
-                    }
-                  font-extralight flex justify-between w-full items-center hover:scale-125 transition`}
-                  >
-                    <span className="block"> {date?.title} </span>
-                    <span className="block text-xs px-2 font-bold">
-                      ({date?.items?.length})
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
+            <ScrollArea className="hidden md:block space-y-6 h-[400px] rounded-md">
+              <div className="flex flex-col w-32 items-center space-y-4 my-24">
+                {groups?.map((date) => {
+                  return (
+                    <div
+                      role="button"
+                      onClick={() => {
+                        setSelectedDate(date?.title);
+                      }}
+                      key={date?.title}
+                      className={`${
+                        selectedDate === date?.title
+                          ? "font-normal"
+                          : "text-gray-600"
+                      } font-extralight flex justify-between w-full items-center hover:scale-110 hover:text-white transition`}
+                    >
+                      <span className="block"> {date?.title} </span>
+                      <span className="block text-xs px-2 font-bold">
+                        ({date?.items?.length})
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </ScrollArea>
           </aside>
         </div>
 
@@ -157,7 +160,7 @@ export const TimelineTabBodyV2 = ({
             }
           }}
         >
-          <div className="mt-[-70px] ml-4 flex gap-4 mb-16">
+          <div className="mt-0 md:mt-[-70px] ml-4 flex gap-4 md:mb-16 mb-4">
             {langs?.map((lang) => {
               return (
                 <button
@@ -206,7 +209,7 @@ export const TimelineTabBodyV2 = ({
                           className={cn(
                             `py-4 pr-8 font-light`,
                             `  dark:hover:text-white p-3 transition lowercase`,
-                            focusLang
+                            focusLang && langs?.length > 1
                               ? // &&
                                 //   langs?.length !== 1 &&
                                 //   langs?.includes(focusLang)
@@ -230,6 +233,15 @@ export const TimelineTabBodyV2 = ({
           </div>
         </section>
       </article>
+
+      <div className="md:hidden flex w-full fixed z-50 bottom-8">
+        <div className="m-auto">
+          <TimelineDatesDrawer
+            focusLang={focusLang}
+            selectedDate={selectedDate || ""}
+          />
+        </div>
+      </div>
     </div>
   );
 };

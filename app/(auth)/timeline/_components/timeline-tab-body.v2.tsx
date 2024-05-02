@@ -87,9 +87,12 @@ export const TimelineTabBodyV2 = ({
 
   const firstGroup = groups?.[0];
 
-  const [selectedDate, setSelectedDate] = useState(dates?.[0]);
+  const [selectedDateState, setSelectedDate] = useState(dates?.[0]);
 
-  const selectedGroup = groups?.find((group) => group?.title === selectedDate);
+  const selectedDate = selectedDateState || firstGroup?.title;
+
+  const selectedGroup =
+    groups?.find((group) => group?.title === selectedDate) || firstGroup;
 
   if (isLearnedCharactersLoading) {
     return <div className="text-center my-16"> Loading ...</div>;

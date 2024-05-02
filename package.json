@@ -22,6 +22,7 @@
     "@mapbox/mapbox-gl-geocoder": "^5.0.1",
     "@mistralai/mistralai": "^0.0.8",
     "@monaco-editor/react": "^4.6.0",
+    "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-popover": "^1.0.6",
     "@radix-ui/react-scroll-area": "^1.0.5",
     "@radix-ui/react-separator": "^1.0.3",

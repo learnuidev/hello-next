@@ -22,25 +22,30 @@ export const PreviewComponent = ({ component }: any) => {
   return (
     <div className="w-80">
       <div className="flex w-full items-center justify-between my-2 space-x-8">
-        <div className="w-full">
+        <div className="w-full items-center justify-between flex-row">
           <div className="flex items-center justify-between w-full">
             <div>
               <h1 className="text-xl font-light">{component?.hanzi}</h1>
               {component?.lang === "zh" && (
                 <h2 className={stylePinyin}>{component?.pinyin}</h2>
               )}
-            </div>
-            <h2 className={stylePinyin}>{component?.lang}</h2>
-          </div>
 
-          <h3 className={styleEn}>
-            {formatComponentName(component, 2) || component?.en}
-          </h3>
+              <h3 className={styleEn}>
+                {formatComponentName(component, 2) || component?.en}
+              </h3>
+            </div>
+          </div>
         </div>
 
-        <p className="text-xl font-extralight text-gray-600">
-          {component?.level}
-        </p>
+        <div>
+          {component?.level ? (
+            <p className="text-xl font-extralight text-gray-600">
+              {component?.level}
+            </p>
+          ) : (
+            <h2 className={stylePinyin}>{component?.lang}</h2>
+          )}
+        </div>
       </div>
 
       {isLoading ? (

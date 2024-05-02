@@ -136,7 +136,7 @@ export const TimelineTabBodyV2 = ({
                         ? "font-normal"
                         : "text-gray-600"
                     }
-                  font-extralight flex justify-between w-full items-center`}
+                  font-extralight flex justify-between w-full items-center hover:scale-125 transition`}
                   >
                     <span className="block"> {date?.title} </span>
                     <span className="block text-xs px-2 font-bold">
@@ -207,7 +207,10 @@ export const TimelineTabBodyV2 = ({
                             `py-4 pr-8 font-light`,
                             `  dark:hover:text-white p-3 transition lowercase`,
                             focusLang
-                              ? focusLang === item?.lang
+                              ? // &&
+                                //   langs?.length !== 1 &&
+                                //   langs?.includes(focusLang)
+                                focusLang === item?.lang
                                 ? "text-white text-2xl"
                                 : "text-gray-700 text-2xl"
                               : "text-gray-300 text-2xl"

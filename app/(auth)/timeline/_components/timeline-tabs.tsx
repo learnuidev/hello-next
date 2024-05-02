@@ -12,7 +12,7 @@ import { TimelineTabBodyV2 } from "./timeline-tab-body.v2";
 export function TimelineTabs() {
   return (
     <Tabs defaultValue="all" className="p-0">
-      <div className="my-8 flex justify-between items-center md:mx-12">
+      <div className="mt-8 flex justify-between items-center md:mx-12">
         <TabsList className="space-x-8">
           <TabsTrigger
             value="all"

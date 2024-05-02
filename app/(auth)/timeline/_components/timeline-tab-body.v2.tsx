@@ -6,10 +6,12 @@ import { useListHistoryQuery } from "@/domain/history/history.queries";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { cn } from "@/lib/utils";
 import { getDate, getMonth, getYear } from "date-fns";
 import Link from "next/link";
 import { groupBy } from "ramda";
 import { useState } from "react";
+import { useTimelineState } from "./timeline.state";
 
 function useListLearnedCharactersByDate({
   variant,
@@ -80,6 +82,11 @@ export const TimelineTabBodyV2 = ({
 }: {
   variant: "all" | "timeline" | "discovered";
 }) => {
+  // const [focusLang, setFocusLang] = useState("");
+
+  const focusLang = useTimelineState((state: any) => state.focusLang);
+  const setFocusLang = useTimelineState((state: any) => state.setFocusLang);
+
   const { data: groups, isLoading: isLearnedCharactersLoading } =
     useListLearnedCharactersByDate({ variant });
 
@@ -98,12 +105,17 @@ export const TimelineTabBodyV2 = ({
     return <div className="text-center my-16"> Loading ...</div>;
   }
 
+  const langs = [
+    // @ts-ignore
+    ...new Set(selectedGroup?.items?.map((item: any) => item?.lang)),
+  ];
+
   return (
     <div className="mx-8">
       <article className="grid grid-cols-[320px_1fr]">
         <div className="ml-6 w-full">
           <aside className="fixed">
-            <div className="flex flex-col w-32 items-center space-y-4 my-16">
+            <div className="flex flex-col w-32 items-center space-y-4 my-24">
               {groups?.map((date) => {
                 return (
                   <div
@@ -130,17 +142,62 @@ export const TimelineTabBodyV2 = ({
           </aside>
         </div>
 
-        <section className="w-full">
+        <section
+          className="w-full"
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              setFocusLang("");
+            }
+          }}
+        >
+          <div className="flex gap-8 mb-16">
+            {langs?.map((lang) => {
+              return (
+                <button
+                  className={cn(
+                    focusLang
+                      ? focusLang === lang
+                        ? "text-white"
+                        : "text-gray-500"
+                      : "",
+                    "transition text-3xl font-extralight"
+                  )}
+                  onClick={() => {
+                    setFocusLang((prevLang: string) => {
+                      if (prevLang) {
+                        if (prevLang === lang) {
+                          return "";
+                        }
+                        return lang;
+                      } else {
+                        return lang;
+                      }
+                    });
+                  }}
+                  key={lang}
+                >
+                  {lang}
+                </button>
+              );
+            })}
+          </div>
           <div>
-            <h1 className="font-extralight text-gray-400">
+            {/* <h1 className="font-extralight text-gray-400">
               {selectedGroup?.title}
-            </h1>
+            </h1> */}
 
             <div className="flex flex-wrap flex-row w-full">
               {selectedGroup?.items?.map((item: any) => {
                 return (
                   <Link
-                    className="py-4 pr-4 text-2xl font-light"
+                    className={cn(
+                      `py-4 pr-6 text-2xl font-light hover:scale-105 transition`,
+                      focusLang
+                        ? focusLang === item?.lang
+                          ? "text-white"
+                          : "text-gray-700"
+                        : ""
+                    )}
                     href={
                       item?.lang
                         ? `/nmm/${item?.input || item?.hanzi}?lang=${item?.lang}`

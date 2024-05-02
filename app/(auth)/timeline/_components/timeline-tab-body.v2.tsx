@@ -167,7 +167,7 @@ export const TimelineTabBodyV2 = ({
                         ? "text-white"
                         : "text-gray-500"
                       : "",
-                    "transition text-xl font-extralight"
+                    "transition text-2xl font-extralight"
                   )}
                   onClick={() => {
                     setFocusLang((prevLang: string) => {

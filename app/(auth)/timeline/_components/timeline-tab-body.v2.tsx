@@ -157,7 +157,7 @@ export const TimelineTabBodyV2 = ({
             }
           }}
         >
-          <div className="ml-4 flex gap-4 mb-8">
+          <div className="mt-[-70px] ml-4 flex gap-4 mb-16">
             {langs?.map((lang) => {
               return (
                 <button
@@ -166,8 +166,8 @@ export const TimelineTabBodyV2 = ({
                       ? focusLang === lang
                         ? "text-white"
                         : "text-gray-500"
-                      : "",
-                    "transition text-2xl font-extralight"
+                      : "text-gray-300",
+                    "transition text-xl font-extralight hover:scale-125"
                   )}
                   onClick={() => {
                     setFocusLang((prevLang: string) => {

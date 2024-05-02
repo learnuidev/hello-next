@@ -11,7 +11,7 @@ import { SearchInput } from "./search-input";
 
 export const SearchBar = () => {
   return (
-    <div className="h-12 text-lg hidden sm:block py-2 flex flex-row justify-center items-end">
+    <div className="text-lg hidden sm:block py-2 flex flex-row justify-center items-end">
       {/* <SearchDialogDemo /> */}
 
       <Icons.magnifyingGlass />

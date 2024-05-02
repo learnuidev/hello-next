@@ -3,6 +3,12 @@
 import { filterComponents } from "@/app/nmm/utils";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useListHistoryQuery } from "@/domain/history/history.queries";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
@@ -12,6 +18,7 @@ import Link from "next/link";
 import { groupBy } from "ramda";
 import { useState } from "react";
 import { useTimelineState } from "./timeline.state";
+import { PreviewComponent } from "@/app/nmm/preview-component";
 
 function useListLearnedCharactersByDate({
   variant,
@@ -108,7 +115,7 @@ export const TimelineTabBodyV2 = ({
   const langs = [
     // @ts-ignore
     ...new Set(selectedGroup?.items?.map((item: any) => item?.lang)),
-  ];
+  ]?.filter(Boolean);
 
   return (
     <div className="mx-8">
@@ -150,7 +157,7 @@ export const TimelineTabBodyV2 = ({
             }
           }}
         >
-          <div className="flex gap-8 mb-16">
+          <div className="ml-4 flex gap-4 mb-8">
             {langs?.map((lang) => {
               return (
                 <button
@@ -160,7 +167,7 @@ export const TimelineTabBodyV2 = ({
                         ? "text-white"
                         : "text-gray-500"
                       : "",
-                    "transition text-3xl font-extralight"
+                    "transition text-xl font-extralight"
                   )}
                   onClick={() => {
                     setFocusLang((prevLang: string) => {
@@ -187,26 +194,33 @@ export const TimelineTabBodyV2 = ({
             </h1> */}
 
             <div className="flex flex-wrap flex-row w-full">
-              {selectedGroup?.items?.map((item: any) => {
+              {selectedGroup?.items?.map((item: any, idx: any) => {
                 return (
-                  <Link
-                    className={cn(
-                      `py-4 pr-6 text-2xl font-light hover:scale-105 transition`,
-                      focusLang
-                        ? focusLang === item?.lang
-                          ? "text-white"
-                          : "text-gray-700"
-                        : ""
-                    )}
-                    href={
-                      item?.lang
-                        ? `/nmm/${item?.input || item?.hanzi}?lang=${item?.lang}`
-                        : `/nmm/${item?.input || item?.hanzi}`
-                    }
-                    key={item?.id}
+                  <TooltipProvider
+                    key={`${item?.input || item?.hanzi?.trim("")}-chars-${idx}`}
                   >
-                    {item?.input || item?.hanzi?.trim("")}
-                  </Link>
+                    <Tooltip>
+                      <TooltipTrigger className="p-3 px-0 hover:scale-110 transition">
+                        <Link
+                          href={`/nmm/${item?.input || item?.hanzi?.trim("")}?lang=${item?.lang || "zh"}`}
+                          className={cn(
+                            `py-4 pr-8 font-light`,
+                            `  dark:hover:text-white p-3 transition lowercase`,
+                            focusLang
+                              ? focusLang === item?.lang
+                                ? "text-white text-2xl"
+                                : "text-gray-700 text-2xl"
+                              : "text-gray-300 text-2xl"
+                          )}
+                        >
+                          {item?.input || item?.hanzi?.trim("")}
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-black border-gray-800">
+                        <PreviewComponent component={item} />
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 );
               })}
             </div>

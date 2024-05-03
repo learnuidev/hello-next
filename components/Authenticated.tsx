@@ -45,14 +45,14 @@ export const Authenticated = (props: any) => {
               }
             }
 
-            if (event.key === "s") {
-              if (isSearchBarOpen) {
-                return;
-                // setSearchBarOpen(false);
-              } else {
-                setSearchBarOpen(true);
-              }
-            }
+            // if (event.key === "s") {
+            //   if (isSearchBarOpen) {
+            //     return;
+            //     // setSearchBarOpen(false);
+            //   } else {
+            //     setSearchBarOpen(true);
+            //   }
+            // }
           }}
         >
           {props.children}

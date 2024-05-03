@@ -157,6 +157,16 @@ export const HanziViewer = (props: any) => {
             <FontAwesomeIcon icon={faGoogle} />
           </Link>
           <Link
+            onClick={() => {
+              addHistoryMutation.mutate({
+                lang: lang,
+                pathName: routeName,
+                hanzi: currentPhrase?.hanzi,
+                contentId: selectedComp?.id || "",
+                componentId: selectedComp?.id || "",
+                eventType: "CONTENT_VIEWED",
+              } as any);
+            }}
             href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}`}
             className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
           >
@@ -243,6 +253,16 @@ export const HanziViewer = (props: any) => {
           <FontAwesomeIcon icon={faGoogle} />
         </Link>
         <Link
+          onClick={() => {
+            addHistoryMutation.mutate({
+              lang: lang,
+              pathName: routeName,
+              hanzi: currentPhrase?.hanzi || currentPhrase?.input,
+              contentId: selectedComp?.id || "",
+              componentId: selectedComp?.id || "",
+              eventType: "CONTENT_VIEWED",
+            } as any);
+          }}
           href={
             lang || selectedComp?.lang
               ? `/nmm/${encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input)}?lang=${lang || selectedComp?.lang}`

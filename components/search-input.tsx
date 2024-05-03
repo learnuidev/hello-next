@@ -62,6 +62,8 @@ export const SearchInput = () => {
         }
         if (event?.keyCode === 13) {
           router.push(`/nmm/${querySync}`);
+          setQuery(() => "");
+          setQuerySync(() => "");
         }
       }}
     />

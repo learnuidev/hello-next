@@ -27,34 +27,36 @@ export const Authenticated = (props: any) => {
 
   if (authUser) {
     return (
-      <div
-        className={cn(
-          isSearchBarOpen ? "blur-[50px] pointer-events-none" : "",
-          "transition-all"
-        )}
-        onKeyDown={(event) => {
-          console.log("EVENT", event);
-          if (event.key === "Escape") {
-            if (isSearchBarOpen) {
-              setSearchBarOpen(false);
+      <div>
+        <div
+          className={cn(
+            isSearchBarOpen ? "blur-[50px] pointer-events-none" : "",
+            "transition-all"
+          )}
+          onKeyDown={(event) => {
+            console.log("EVENT", event);
+            if (event.key === "Escape") {
+              if (isSearchBarOpen) {
+                setSearchBarOpen(false);
+              }
+
+              if (routeName?.includes("/nmm/")) {
+                router.push(`/nmm`);
+              }
             }
 
-            if (routeName?.includes("/nmm/")) {
-              router.push(`/nmm`);
+            if (event.key === "s") {
+              if (isSearchBarOpen) {
+                return;
+                // setSearchBarOpen(false);
+              } else {
+                setSearchBarOpen(true);
+              }
             }
-          }
-
-          if (event.key === "s") {
-            if (isSearchBarOpen) {
-              return;
-              // setSearchBarOpen(false);
-            } else {
-              setSearchBarOpen(true);
-            }
-          }
-        }}
-      >
-        {props.children}
+          }}
+        >
+          {props.children}
+        </div>
 
         {isSearchBarOpen && <SearchInputFC />}
       </div>

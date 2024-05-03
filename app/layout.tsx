@@ -1,15 +1,13 @@
 "use client";
-// import 'regenerator-runtime/runtime'
+
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
 import { QueryClientProvider } from "@/libs/react-query";
 import "./globals.css";
-import type { Metadata } from "next";
+
 import { Inter } from "next/font/google";
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faScrewdriverWrench } from "@fortawesome/sharp-solid-svg-icons/faScrewdriverWrench";
+
 import "../lib/font-awesome/init";
 
 import "@/libs/cognito/init";
@@ -20,11 +18,6 @@ import { ThemeProvider } from "next-themes";
 import { PostHogProvider } from "@/libs/posthog/posthog.provider";
 import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
 import { Suspense } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useSearchState } from "@/components/use-search-state";
-
-import { cn } from "@/lib/utils";
-import { SearchInputFC } from "@/components/search-input-fc";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,14 +31,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "zh";
-
-  const isSearchBarOpen = useSearchState((state) => state.isSearchBarOpen);
-  const setSearchBarOpen = useSearchState((state) => state.setSearchBarOpen);
-
-  const routeName = usePathname();
-  const router = useRouter();
   return (
     <html lang="en">
       <head>
@@ -92,30 +77,7 @@ export default function RootLayout({
         </style>
       </head>
 
-      <body
-        className="bg-black"
-        onKeyDown={(event) => {
-          console.log("EVENT", event);
-          if (event.key === "Escape") {
-            if (isSearchBarOpen) {
-              setSearchBarOpen(false);
-            }
-
-            if (routeName?.includes("/nmm/")) {
-              router.push(`/nmm`);
-            }
-          }
-
-          if (event.key === "s") {
-            if (isSearchBarOpen) {
-              return;
-              // setSearchBarOpen(false);
-            } else {
-              setSearchBarOpen(true);
-            }
-          }
-        }}
-      >
+      <body className="bg-black">
         <Suspense>
           <PostHogProvider>
             <PostHogPageView />
@@ -125,20 +87,7 @@ export default function RootLayout({
               >
                 <div className="flex-1">
                   <QueryClientProvider>
-                    <Authenticated>
-                      <div
-                        className={cn(
-                          isSearchBarOpen
-                            ? "blur-[50px] pointer-events-none"
-                            : "",
-                          "transition-all"
-                        )}
-                      >
-                        {children}
-                      </div>
-
-                      {isSearchBarOpen && <SearchInputFC />}
-                    </Authenticated>
+                    <Authenticated>{children}</Authenticated>
                   </QueryClientProvider>
                 </div>
 

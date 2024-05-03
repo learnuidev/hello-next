@@ -15,10 +15,10 @@ export const SearchBar = () => {
   return (
     <div
       className="text-lg sm:block py-2 flex flex-row justify-center items-end"
-      onClick={() => {
-        // alert("yo");
-        setSearchBarOpen(true);
-      }}
+      // onClick={() => {
+      //   // alert("yo");
+      //   setSearchBarOpen(true);
+      // }}
     >
       {/* <SearchDialogDemo /> */}
 

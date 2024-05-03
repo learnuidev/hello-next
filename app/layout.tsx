@@ -20,6 +20,10 @@ import { ThemeProvider } from "next-themes";
 import { PostHogProvider } from "@/libs/posthog/posthog.provider";
 import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
 import { Suspense } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchState } from "@/components/use-search-state";
+import { SearchInputFC } from "@/components/search-input-fc";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,6 +37,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const searchParams = useSearchParams();
+  const lang = searchParams.get("lang") || "zh";
+
+  const isSearchBarOpen = useSearchState((state) => state.isSearchBarOpen);
+  const setSearchBarOpen = useSearchState((state) => state.setSearchBarOpen);
+
+  const routeName = usePathname();
+  const router = useRouter();
   return (
     <html lang="en">
       <head>
@@ -79,7 +91,30 @@ export default function RootLayout({
         </style>
       </head>
 
-      <body className="bg-black">
+      <body
+        className="bg-black"
+        onKeyDown={(event) => {
+          console.log("EVENT", event);
+          if (event.key === "Escape") {
+            if (isSearchBarOpen) {
+              setSearchBarOpen(false);
+            }
+
+            if (routeName?.includes("/nmm/")) {
+              router.push(`/nmm`);
+            }
+          }
+
+          if (event.key === "s") {
+            if (isSearchBarOpen) {
+              return;
+              // setSearchBarOpen(false);
+            } else {
+              setSearchBarOpen(true);
+            }
+          }
+        }}
+      >
         <Suspense>
           <PostHogProvider>
             <PostHogPageView />
@@ -89,7 +124,20 @@ export default function RootLayout({
               >
                 <div className="flex-1">
                   <QueryClientProvider>
-                    <Authenticated>{children}</Authenticated>
+                    <Authenticated>
+                      <div
+                        className={cn(
+                          isSearchBarOpen
+                            ? "blur-[50px] pointer-events-none"
+                            : "",
+                          "transition-all"
+                        )}
+                      >
+                        {children}
+                      </div>
+
+                      {isSearchBarOpen && <SearchInputFC />}
+                    </Authenticated>
                   </QueryClientProvider>
                 </div>
 

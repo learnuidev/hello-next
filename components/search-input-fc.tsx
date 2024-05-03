@@ -1,16 +1,13 @@
 "use client";
 
-import { NavBar } from "@/components/navbar";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-import { NomadMethodBody } from "./nmm/nomad-method-body";
-import { Authenticated } from "@/components/Authenticated";
 import { useSearchState } from "@/components/use-search-state";
 
 import { useEffect, useState } from "react";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useDebouncedCallback } from "use-debounce";
-import { NmmAllComponents } from "./nmm/nmm-all-components";
+import { NmmAllComponents } from "@/app/nmm/nmm-all-components";
 
 export const SearchInputFC = () => {
   const isSearchBarOpen = useSearchState((state) => state.isSearchBarOpen);
@@ -34,7 +31,7 @@ export const SearchInputFC = () => {
     }
   }, []);
 
-  const handleChangeDebounced = useDebouncedCallback(handleChange, 300);
+  const handleChangeDebounced = useDebouncedCallback(handleChange, 400);
 
   return (
     <div
@@ -70,8 +67,8 @@ export const SearchInputFC = () => {
             value={querySync}
             onKeyDown={(event) => {
               if (event.key === "Escape") {
-                // setQuery(() => "");
-                // setQuerySync(() => "");
+                setQuery(() => "");
+                setQuerySync(() => "");
                 setSearchBarOpen(false);
               }
               if (event?.keyCode === 13) {
@@ -86,17 +83,3 @@ export const SearchInputFC = () => {
     </div>
   );
 };
-
-export default function Home() {
-  const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "zh";
-
-  return (
-    <Authenticated>
-      <main className="">
-        <NavBar />
-        <NomadMethodBody lang={lang} />
-      </main>
-    </Authenticated>
-  );
-}

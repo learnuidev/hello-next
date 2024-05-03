@@ -1061,7 +1061,14 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
   };
 
   return (
-    <div className="w-full px-4 md:px-12">
+    <div
+      className="w-full px-4 md:px-12"
+      onKeyDown={(event) => {
+        if (event.key === "Escape") {
+          router.push(`/nmm`);
+        }
+      }}
+    >
       <HeaderView />
 
       <ViewType />

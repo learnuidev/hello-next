@@ -22,8 +22,9 @@ import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
 import { Suspense } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSearchState } from "@/components/use-search-state";
-import { SearchInputFC } from "@/components/search-input-fc";
+
 import { cn } from "@/lib/utils";
+import { SearchInputFC } from "@/components/search-input-fc";
 
 const inter = Inter({ subsets: ["latin"] });
 

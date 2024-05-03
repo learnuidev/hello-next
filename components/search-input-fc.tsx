@@ -73,6 +73,7 @@ export const SearchInputFC = () => {
               }
               if (event?.keyCode === 13) {
                 router.push(`/nmm/${querySync}`);
+                setSearchBarOpen(false);
               }
             }}
           />

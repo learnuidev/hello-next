@@ -10,7 +10,10 @@ import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-hist
 
 export const AudioComponent = ({ currentPhrase }: any) => {
   const { play, togglePlay, seek, currentTime, reset } = useMusic({
-    url: currentPhrase?.audio?.female || currentPhrase?.audio?.female,
+    url:
+      currentPhrase?.audio?.female ||
+      currentPhrase?.audio?.male ||
+      currentPhrase?.audio,
   });
 
   const setRepeatHistories = useRepeatHistoryStore(

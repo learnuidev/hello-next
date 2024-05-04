@@ -16,6 +16,7 @@ import { SelectedCharacterProps } from "./select-character.types";
 import { ReadModeView } from "./readmode-view";
 
 import { NormalView } from "./normal-view";
+import { AudioComponent } from "./audio-component";
 
 const SentencesView = (props: SelectedCharacterProps) => {
   return (
@@ -72,15 +73,23 @@ export const ViewType = (props: SelectedCharacterProps) => {
     >
       <div className={"row-span-2 overflow-hidden col-span-1"}>
         {selectedChar?.length > 3 && (
-          <div className="flex flex-col items-start w-full mt-4 space-y-2">
-            {!["es", "it", "ro", "fr"]?.includes(selectedComp?.lang) && (
-              <h2 className="text-gray-400 font-light">
-                {selectedComp?.pinyin || selectedComp?.roman}
-              </h2>
-            )}
-            <h1 className="text-2xl">{selectedComp?.hanzi || selectedChar}</h1>
+          <div className="flex items-end justify-start space-x-4">
+            <div className="flex flex-col items-start space-y-2">
+              {!["es", "it", "ro", "fr"]?.includes(selectedComp?.lang) && (
+                <h2 className="text-gray-400 font-light">
+                  {selectedComp?.pinyin || selectedComp?.roman}
+                </h2>
+              )}
+              <h1 className="text-2xl">
+                {selectedComp?.hanzi || selectedChar}
+              </h1>
 
-            <h2 className="text-gray-500 font-light">{selectedComp?.en}</h2>
+              <h2 className="text-gray-500 font-light">{selectedComp?.en}</h2>
+            </div>
+
+            {selectedComp?.audio ? (
+              <AudioComponent currentPhrase={selectedComp} />
+            ) : null}
           </div>
         )}
 

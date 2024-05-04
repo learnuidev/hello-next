@@ -16,6 +16,7 @@ import { PageView } from "./page-view";
 import { calculateColor } from "./utils";
 
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { AudioComponent } from "@/components/_select-character/audio-component";
 export function SelectedComponent({ selectedId, setSelectedId, belt }: any) {
   const [view, setView] = useState("sentences");
 
@@ -48,6 +49,10 @@ export function SelectedComponent({ selectedId, setSelectedId, belt }: any) {
             </p>
 
             <p>{selectedComp?.en}</p>
+
+            {selectedComp?.audio ? (
+              <AudioComponent currentPhrase={selectedComp} />
+            ) : null}
           </div>
         </h1>
 

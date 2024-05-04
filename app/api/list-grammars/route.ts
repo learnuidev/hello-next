@@ -22,36 +22,6 @@ const chance = new Chance();
 
 export const maxDuration = 120;
 
-const listComponents = async (res = [], key = null) => {
-  let resp;
-
-  if (key) {
-    resp = await dynamodb
-      .scan({
-        TableName: awsConfig.tables.componentsTable,
-        Limit: 1000,
-        ExclusiveStartKey: key,
-      })
-      ?.promise();
-  } else {
-    resp = await dynamodb
-      .scan({
-        TableName: awsConfig.tables.componentsTable,
-        Limit: 1000,
-      })
-      ?.promise();
-  }
-
-  if (resp?.LastEvaluatedKey) {
-    return listComponents(
-      res.concat(resp?.Items as any),
-      resp?.LastEvaluatedKey as any
-    );
-  }
-
-  return res?.concat(resp?.Items as any);
-};
-
 export async function POST(req: Request) {
   // Extract the `prompt` from the body of the request
   const {

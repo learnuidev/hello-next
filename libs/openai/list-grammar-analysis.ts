@@ -46,7 +46,7 @@ export async function listGrammarAnaysis({
 }: {
   content: string;
   language: string;
-}) {
+}): Promise<any> {
   try {
     const t0 = performance.now();
 

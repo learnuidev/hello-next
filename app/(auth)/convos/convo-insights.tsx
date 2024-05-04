@@ -90,6 +90,15 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
           "x",
           "y",
           "z",
+          "”",
+          "“ ",
+          "，",
+          "：",
+          "；",
+          "、",
+          "！",
+          "（",
+          "）",
         ]?.includes(x?.toLowerCase())
     );
 

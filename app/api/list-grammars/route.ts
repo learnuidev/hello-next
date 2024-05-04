@@ -5,6 +5,8 @@ import { listGrammarAnaysis } from "@/libs/openai/list-grammar-analysis";
 import AWS from "aws-sdk";
 import Chance from "chance";
 
+export const runtime = "edge";
+
 AWS.config.update({
   region: "us-west-1",
   accessKeyId: awsConfig.accessKeyId,

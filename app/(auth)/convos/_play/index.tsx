@@ -20,7 +20,7 @@ import React from "react";
 
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useListContentsQuery } from "@/domain/content/content.queries";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { Transcription } from "@/domain/transcribe/transcribe.types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAtom, faLanguage } from "@fortawesome/pro-thin-svg-icons";
@@ -31,6 +31,8 @@ import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 export const Play = ({ lessonId }: { lessonId: string }) => {
   const [displayOptions, setDisplayOptions] = useState(false);
   const [lessonIndex, setLessonIndex] = useState(0);
+
+  const params = useParams<{ "content-id": string }>();
 
   const [results, setResults] = useState<any>({});
 
@@ -59,7 +61,16 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   const lesson = course5.lessons[lessonIndex] || null;
 
-  const lesson1 = lessonsArr?.find((lesson: any) => lesson?.id === lessonId);
+  // const { data: contentsArr } = useListContentsQuery();
+
+  const { data: contentsArr } = useListContentsQuery();
+
+  const lesson2 = contentsArr?.find(
+    (content: any) => content?.id === params["content-id"]
+  );
+
+  const lesson1 =
+    lessonsArr?.find((lesson: any) => lesson?.id === lessonId) || lesson2;
 
   const formatNumber = (time: any) => (time > 9 ? `${time}` : `0${time}`);
 
@@ -81,11 +92,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   const searchParams = useSearchParams();
 
-  const { data: contentsArr } = useListContentsQuery();
-
-  const lesson2 = contentsArr?.find(
-    (content: any) => content?.id === searchParams?.get("lessonId")
-  );
+  console.log("LESSSON 1", lesson1);
 
   const { play, togglePlay, seek, currentTime, reset } = useMusic({
     url: lesson1?.audio?.slow || lesson1?.audio || lesson2?.audio,
@@ -180,9 +187,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
               });
             }}
           >
-            <p className={`${pinyinMode ? "text-3xl" : "text-3xl"}`}>
-              {transcription?.hanzi}
-            </p>
+            <p className={``}>{transcription?.hanzi}</p>
 
             {pinyinMode ? (
               <>
@@ -344,8 +349,8 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                 currentTime > earliestTime
                   ? "dark:text-slate-600"
                   : earliestTime[0] < currentTime && latestTime[1] > currentTime
-                  ? "dark:text-slate-500"
-                  : "dark:text-slate-200"
+                    ? "dark:text-slate-500"
+                    : "dark:text-slate-200"
               } dark:hover:text-white font-extralight`}
             >
               {/* {formatTime(earliestTime[0])} */}
@@ -354,9 +359,9 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                   currentTime > earliestTime
                     ? "dark:text-slate-600"
                     : earliestTime[0] < currentTime &&
-                      latestTime[1] > currentTime
-                    ? "dark:bg-slate-200"
-                    : "dark:bg-slate-600"
+                        latestTime[1] > currentTime
+                      ? "dark:bg-slate-200"
+                      : "dark:bg-slate-600"
                 } h-2 w-2 rounded-full text`}
               ></div>
               {/* {idx + 1} */}
@@ -376,7 +381,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
     return (
       <div
         role="button"
-        className={`text-center ${
+        className={`text-center space-y-2 ${
           transcription.start < currentTime && transcription.end > currentTime
             ? "text-yellow-500"
             : ""
@@ -398,9 +403,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
           });
         }}
       >
-        <p className={`${pinyinMode ? "text-3xl" : "text-3xl"}`}>
-          {transcription?.hanzi}
-        </p>
+        <p className={""}>{transcription?.hanzi}</p>
         {pinyinMode ? (
           <>
             <p className="dark:text-gray-400 text-md">
@@ -419,7 +422,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   const Transcripts = () => {
     return (
-      <div className="pt-12 space-y-8 mb-12">
+      <div className="pt-12 space-y-12 mb-12">
         {lesson2?.transcriptions?.map((transcription: Transcription) => {
           return (
             <TranscriptItem

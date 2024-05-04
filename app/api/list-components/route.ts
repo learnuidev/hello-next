@@ -1,6 +1,9 @@
 import { awsConfig } from "@/libs/aws/aws.config";
 import AWS from "aws-sdk";
 
+export const maxDuration = 60;
+// export const runtime = "edge";
+
 AWS.config.update({
   region: "us-west-1",
   accessKeyId: awsConfig.accessKeyId,
@@ -13,9 +16,6 @@ const dynamodb = new AWS.DynamoDB.DocumentClient({
 });
 
 // import { DocumentClient } from "aws-sdk/clients/dynamodb";
-
-export const maxDuration = 60;
-export const runtime = "edge";
 
 const listComponents = async (res = [], key = null): Promise<any> => {
   let resp;

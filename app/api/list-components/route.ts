@@ -16,7 +16,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient({
 
 export const maxDuration = 60;
 
-const listComponents = async (res = [], key = null) => {
+const listComponents = async (res = [], key = null): Promise<any> => {
   let resp;
 
   if (key) {

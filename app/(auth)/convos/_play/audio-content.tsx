@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FocusIcon, FocusIcon as Header } from "@/components/ui/icons";
+import { FocusIcon } from "@/components/ui/icons";
 
 import Editor from "@monaco-editor/react";
 import { useConvosStore } from "@/data/convos/bm1";
@@ -27,6 +27,7 @@ import { faAtom, faLanguage } from "@fortawesome/pro-thin-svg-icons";
 import Link from "next/link";
 import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
+import { TranscriptItem } from "./transcript-item";
 
 export const Play = ({ lessonId }: { lessonId: string }) => {
   const [displayOptions, setDisplayOptions] = useState(false);
@@ -372,54 +373,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
     );
   };
 
-  const TranscriptItem = ({
-    transcription,
-  }: {
-    transcription: Transcription;
-  }) => {
-    const { data } = useListGrammarsQuery({ content: transcription?.hanzi });
-    return (
-      <div
-        role="button"
-        className={`text-center space-y-2 ${
-          transcription.start < currentTime && transcription.end > currentTime
-            ? "text-yellow-500"
-            : ""
-        }`}
-        key={`${transcription?.hanzi}-${transcription?.pinyin}`}
-        onClick={() => {
-          seek(transcription?.start);
-
-          setRepeatHistories({
-            lessonId: lesson1?.id || lesson2.id,
-            eventType: "speech/repeat",
-            eventTime: new Date().getTime(),
-            startTime: transcription.start,
-            hanzi: transcription.hanzi,
-            pinyin: transcription.pinyin,
-            en: transcription.en,
-            step: transcription.step,
-            // item
-          });
-        }}
-      >
-        <p className={""}>{transcription?.hanzi}</p>
-        {pinyinMode ? (
-          <>
-            <p className="dark:text-gray-400 text-md">
-              {transcription?.pinyin}
-            </p>
-            <p className="dark:text-gray-300 text-md">{transcription?.en}</p>
-
-            {/* <code>
-              <pre>{JSON.stringify(data, null, 2)}</pre>
-            </code> */}
-          </>
-        ) : null}
-      </div>
-    );
-  };
-
   const Transcripts = () => {
     return (
       <div className="pt-12 space-y-12 mb-12">
@@ -428,6 +381,10 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
             <TranscriptItem
               key={`${transcription?.hanzi}-${transcription?.pinyin}`}
               transcription={transcription}
+              seek={seek}
+              currentTime={currentTime}
+              pinyinMode={pinyinMode}
+              lessonId={lesson1?.id || lesson2?.id}
             />
           );
         })}

@@ -10,6 +10,7 @@ export interface AWSConfig {
 
   tables: {
     componentsTable: string;
+    grammarTable: string;
   };
 
   accessKeyId: string;
@@ -27,6 +28,7 @@ export const awsConfig: AWSConfig = {
   uploadBucketName: process.env.NEXT_PUBLIC_UPLOAD_BUCKET_NAME || "",
   tables: {
     componentsTable: process.env.COMPONENTS_TABLE || "",
+    grammarTable: process.env.GRAMMAR_TABLE || "",
   },
   accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
   secretKey: process.env.AWS_SECRET_ACCESS_KEY || "",

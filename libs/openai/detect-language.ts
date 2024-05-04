@@ -12,13 +12,21 @@ export async function detectLanguage(content: string) {
       {
         role: "system",
         content: `
-You are a language detection expert,
-Given a text, try to guess which language it is using ISO 639-1 language codes
-For example:
-
-Hello should return en
-你好 should return zh-CN
-        `,
+        You are a language detection expert,
+        Given a text, try to guess which language it is using ISO 639 language codes
+        For example:
+        
+        Hello should return en
+        你好 should return zh
+        
+        gelato should return it
+        
+        कल सूरज उगेगा। should return hi
+        
+        പറയുവാൻ ഇതാദ്യമായ് വരികൾ മായേ... should return ml
+        
+        
+                `,
       },
       { role: "user", content: `content: ${content}` },
     ],

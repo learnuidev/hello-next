@@ -31,7 +31,7 @@ const listGrammars = async (
     Authorization: string;
   }
 ): Promise<ListGrammarsResponse> => {
-  const res = await fetch(url, {
+  const res = await fetch("/api/list-grammars", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,

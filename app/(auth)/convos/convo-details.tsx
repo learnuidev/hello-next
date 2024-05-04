@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { useConvosStore } from "@/stores/convos-store";
 import { ConvoInsights } from "./convo-insights";
-import { Play } from "./_play";
+import { Play } from "./_play/audio-content";
 
 import { Wordle } from "@/components/wordle/game";
 import { useListContentsQuery } from "@/domain/content/content.queries";

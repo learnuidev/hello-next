@@ -139,10 +139,10 @@ export const ViewType = (props: SelectedCharacterProps) => {
                 <p>{final}</p>
               </div>
             )}
-
-            {characterId?.length === 1 && <SubComponentsView />}
           </div>
         )}
+
+        {characterId?.length === 1 && <SubComponentsView />}
 
         <article>
           <div>

@@ -186,7 +186,6 @@ export const koreanComponents = [
   "당",
   "승",
   "략",
-  "4",
   "월",
   "축",
   "역",

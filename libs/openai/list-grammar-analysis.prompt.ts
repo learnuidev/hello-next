@@ -25,9 +25,8 @@ Please provide input and english transliterations as well as a detailed explanat
 Please provide in stringified JSON format like so
 [{"input": "...", "en": "...", "explanation": "..."}`;
 
-export const ml = `
-You are a Malayalam Language Expert. 
-Please word by word or component by component grammar analysis for the given content
+export const promptNonRoman = `
+Please provide word by word or component by component grammar analysis for the given content
 Please provide input, roman and english for the sentence as well as detailed explanation for the sentence
 
 Please provide in stringified JSON format like so
@@ -45,8 +44,7 @@ For example if the language is a Dravidian:
 ]
 `;
 
-export const es = `
-You are a Spanish Language Expert. 
+export const promptRoman = `
 Please word by word or component by component grammar analysis for the given content
 Please provide input, roman and english for the sentence as well as detailed explanation for the sentence
 
@@ -70,19 +68,21 @@ export function determineAnalysisPrompt({ language }: { language: string }) {
     case "zh":
       return zh;
     case "ml":
-      return ml;
     case "ne":
-      return ml;
     case "nepali":
-      return ml;
+    case "hi_IN":
     case "hi":
-      return ml;
+    case "ja":
+    case "ko":
+    case "fa":
+    case "ur":
+      return promptNonRoman;
+
     case "es":
     case "fr":
     case "it":
-      return es;
-    case "hi_IN":
-      return ml;
+    case "mo":
+      return promptRoman;
 
     default: {
       const prompt = universalTemplate.replace("{{lang}}", language);

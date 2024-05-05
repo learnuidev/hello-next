@@ -30,6 +30,8 @@ import { Icons } from "../ui/icons.v2";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 // import { hiraganaAlphabets } from "@/langs/japanese/hiragana-alphabets";
 
+console.log("wip");
+
 const ComponentItem = ({ component: prop }: { component: string }) => {
   const lang = "ko";
 

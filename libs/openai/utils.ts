@@ -12,3 +12,20 @@ export const humanLangs = {
 } as any;
 
 export const resolveHumanLangs = (lang: string) => humanLangs[lang] || lang;
+
+export const langCodes = {
+  ne: "ne",
+  hi: "hi",
+  nepali: "ne",
+  hindi: "hi",
+  hi_IN: "hi",
+  zh_CN: "zh",
+  "zh-CN": "zh",
+  zh: "zh",
+  ml: "ml",
+  fr: "fr",
+  es: "es",
+  mo: "mo",
+} as any;
+
+export const resolveLangCode = (lang: string) => langCodes[lang] || lang;

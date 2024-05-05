@@ -18,6 +18,8 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { groupBy } from "@/lib/utils";
 import { calculateColor } from "@/app/nmm/utils";
+import { Icons } from "../ui/icons.v2";
+import { resolveLangCode } from "@/libs/openai/utils";
 
 export function VideoPlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -221,6 +223,14 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
                             >
                               <FontAwesomeIcon icon={faLanguage} />
                             </Link>
+
+                            {/* <Link
+                              href={`/nmm/${encodeURIComponent(hanzis)}${transcriptions?.[0]?.lang ? `?lang=${resolveLangCode(transcriptions?.[0]?.lang)}` : ""}`}
+                              className="text-gray-500 hover:text-white"
+                              target="_blank"
+                            >
+                              <Icons.mandarin />
+                            </Link> */}
                             <button
                               onClick={() => {
                                 setToggleLoops(transcriptions);
@@ -252,8 +262,8 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
           <div
             className={`${isVideoHidden ? "col-span-12" : "md:col-span-4 col-span-12"} w-full`}
           >
-            <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-900 md:px-4 p-0">
-              <div className="space-y-8">
+            <ScrollArea className="space-y-4 h-[700px] w-full rounded-md border border-gray-900 p-0">
+              <div className="space-y-8 w-full">
                 {(lesson?.transcriptions || [])
                   // ?.slice(
                   //   currentScriptIndex ? currentScriptIndex : 0,
@@ -282,7 +292,7 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
                     return (
                       <div
                         key={`${example?.hanzi}-${idx}`}
-                        className="flex mx-4"
+                        className="flex  w-96 px-4"
                       >
                         <div
                           className={`${
@@ -377,7 +387,7 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
                           )}
                         </div>
 
-                        <div className="space-x-4 flex flex-row items-center">
+                        <div className="space-x-2 flex flex-row items-center">
                           <Link
                             target="_blank"
                             href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
@@ -406,6 +416,20 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
                             target="_blank"
                           >
                             <FontAwesomeIcon icon={faLanguage} />
+                          </Link>
+                          <Link
+                            href={`/nmm/${encodeURIComponent(
+                              toggleLoops.length
+                                ? toggleLoops
+                                    ?.sort((a: any, b: any) => a?.end - b?.end)
+                                    ?.map((x: any) => x?.hanzi)
+                                    ?.join("")
+                                : example?.hanzi
+                            )}${example?.lang ? `?lang=${resolveLangCode(example?.lang)}` : ""}`}
+                            className="text-gray-500 hover:text-white"
+                            target="_blank"
+                          >
+                            <Icons.mandarin />
                           </Link>
                           <button
                             onClick={() => {

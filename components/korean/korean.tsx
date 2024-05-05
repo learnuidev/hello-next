@@ -607,7 +607,7 @@ export function Korean() {
   const lang = "ko";
   const [selectedId, setSelectedId] = useState<any>("");
   // const [view, setView] = useState('devanagari')
-  const [view, setView] = useState("devanagari");
+  const [view, setView] = useState("components");
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState(0);
 

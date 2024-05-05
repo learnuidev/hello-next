@@ -18,6 +18,7 @@ import { ReadModeView } from "./readmode-view";
 import { NormalView } from "./normal-view";
 import { AudioComponent } from "./audio-component";
 import Link from "next/link";
+import { Skeleton } from "../ui/skeleton";
 
 const SentencesView = (props: SelectedCharacterProps) => {
   return (
@@ -44,22 +45,26 @@ export const ViewType = (props: SelectedCharacterProps) => {
     selectedComp2,
   } = props;
   const SubComponentsView = () => {
-    const { data: sub_components } = useListSubComponentsQuery({
+    const { data: sub_components, isLoading } = useListSubComponentsQuery({
       componentId: characterId,
     });
 
-    if (sub_components?.length < 2) {
+    if (isLoading) {
+      return <Skeleton className="w-60 h-12" />;
+    }
+
+    if (!sub_components?.length) {
       return null;
     }
 
     return (
-      <div className="text-gray-500">
+      <div className="text-gray-500 flex space-x-4">
         {/* {JSON.stringify(sub_components, null, 2)} */}
         {sub_components?.map((comp: { hanzi: string; en: string }) => {
           return (
             <Link
               key={comp?.hanzi}
-              className="space-x-4"
+              className="space-x-2 flex"
               href={`/nmm/${comp?.hanzi}?lang=zh`}
             >
               <p>{comp?.hanzi}</p>
@@ -134,10 +139,10 @@ export const ViewType = (props: SelectedCharacterProps) => {
                 <p>{final}</p>
               </div>
             )}
+
+            {characterId?.length === 1 && <SubComponentsView />}
           </div>
         )}
-
-        {characterId?.length === 1 && <SubComponentsView />}
 
         <article>
           <div>

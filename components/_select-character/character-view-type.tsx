@@ -49,12 +49,16 @@ export const ViewType = (props: SelectedCharacterProps) => {
       componentId: characterId,
     });
 
-    if (isLoading) {
-      return <Skeleton className="w-60 h-12" />;
-    }
-
     if (!sub_components?.length) {
       return null;
+    }
+
+    if (lang !== "zh") {
+      return null;
+    }
+
+    if (isLoading) {
+      return <Skeleton className="w-60 h-12" />;
     }
 
     return (

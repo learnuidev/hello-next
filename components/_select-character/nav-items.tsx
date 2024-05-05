@@ -49,7 +49,8 @@ export const NavItems = (props: SelectedCharacterProps) => {
         className="text-xl"
         onClick={() => {
           console.log("yoo 4");
-          router.push(`/nmm`);
+
+          router.push(`/nmm${lang ? `?lang=${lang}` : ""}`);
         }}
       >
         <FontAwesomeIcon className="text-2xl" icon={faXmark} />

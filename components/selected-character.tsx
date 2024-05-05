@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { NomadMethod } from "@/app/nmm/nomad-method";
 
@@ -12,6 +12,10 @@ import { useSelectedCharacterData } from "./use-selected-character";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const { data } = useSelectedCharacterData({ characterId });
+
+  const searchParams = useSearchParams();
+
+  const lang = searchParams.get("lang") || "";
 
   const { selectedChar, setView, view } = data;
 
@@ -38,7 +42,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       className="w-full px-4 md:px-12"
       onKeyDown={(event) => {
         if (event.key === "Escape") {
-          router.push(`/nmm`);
+          router.push(`/nmm${lang ? `?lang=${lang}` : ""}`);
         }
       }}
     >

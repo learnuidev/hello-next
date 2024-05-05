@@ -70,7 +70,7 @@ export const NavBar = () => {
 
   return (
     <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
-      <div className="my-2 flex space-x-2 md:space-x-8 items-center">
+      <div className="my-4 flex space-x-2 md:space-x-8 items-center">
         <Link className={belt?.color} href="/">
           <FontAwesomeIcon icon={faMountainSun} />
         </Link>

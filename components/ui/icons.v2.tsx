@@ -21,7 +21,10 @@ import {
   faRectangleHistory,
   faPlus,
   faMinus,
+  faMountainSun,
+  faFingerprint,
 } from "@fortawesome/pro-thin-svg-icons";
+import { faCitrus } from "@fortawesome/sharp-solid-svg-icons";
 // import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 
 const createFAIcon = (icon: FontAwesomeIconProps["icon"]) => {
@@ -51,4 +54,8 @@ export const Icons = {
 
   plusIcon: createFAIcon(faPlus),
   minusIcon: createFAIcon(faMinus),
+
+  mountainSun: createFAIcon(faMountainSun),
+  mandarin: createFAIcon(faCitrus),
+  fingerPrint: createFAIcon(faFingerprint),
 };

@@ -7,9 +7,11 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { Authenticate } from "./Authenticate";
 // import { SearchInputFC } from "./search-input-fc";
 import { cn } from "@/lib/utils";
+import { LandingPage } from "./landing-page/landing-page";
 
 export const Authenticated = (props: any) => {
   const { data: authUser, isLoading } = useCurrentAuthUser({});
+  const routeName = usePathname();
 
   const searchParams = useSearchParams();
   const lang = searchParams.get("lang") || "zh";
@@ -17,7 +19,6 @@ export const Authenticated = (props: any) => {
   const isSearchBarOpen = useSearchState((state) => state.isSearchBarOpen);
   const setSearchBarOpen = useSearchState((state) => state.setSearchBarOpen);
 
-  const routeName = usePathname();
   const router = useRouter();
 
   if (["/login", "/register"]?.includes(routeName)) {
@@ -65,6 +66,10 @@ export const Authenticated = (props: any) => {
 
   if (isLoading) {
     return <div></div>;
+  }
+
+  if (routeName === "/") {
+    return <LandingPage />;
   }
 
   return <Authenticate />;

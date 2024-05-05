@@ -25,7 +25,45 @@ import {
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { koreanAlphabets } from "@/langs/korean/korean-alphabets";
+import { koreanComponents } from "@/langs/korean/korean-components";
+import { Icons } from "../ui/icons.v2";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 // import { hiraganaAlphabets } from "@/langs/japanese/hiragana-alphabets";
+
+const ComponentItem = ({ component: prop }: { component: string }) => {
+  const lang = "ko";
+
+  const { data: characters } = useListCharactersQuery();
+
+  const character = characters?.find((char: any) => char?.input === prop);
+
+  if (prop === "버") {
+    console.log("CHARACRTER", character);
+  }
+
+  return (
+    <Link
+      key={JSON.stringify(prop)}
+      href={lang ? `/nmm/${prop}?lang=${lang}` : `/nmm/${prop}`}
+      // onClick={() => {
+      //   setSelectedId(prop.input);
+      // }}
+      className={`${character ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-500 text-gray-200"} dark:hover:text-white p-6 flex items-center flex-col`}
+    >
+      <span className={`block text-sm dark:text-slate-600`}>
+        {character?.roman}
+      </span>
+
+      <span className="text-4xl"> {prop}</span>
+      {/* <span className={`block text-sm dark:text-slate-600`}>
+        {character?.en}
+      </span> */}
+      {/* {isHidden ? null : (
+    <span className="block text-[12px]"> {prop.en}</span>
+  )} */}
+    </Link>
+  );
+};
 const PageView = ({ view, setSelectedId }: any) => {
   const [viewMode, setViewMode] = useState("halant");
   const [variants, setVariants] = useState([]) as any;
@@ -171,6 +209,23 @@ const PageView = ({ view, setSelectedId }: any) => {
                   )} */}
                 </Link>
               );
+            })}
+          </div>
+        </>
+      );
+    case "components":
+      return (
+        <>
+          <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-end justify-center">
+            {koreanComponents.map((prop) => {
+              // return <p className='p-4'>{prop?.hanzi}</p>
+
+              // if (isCoreOnly) {
+              //   if (words3?.length < 20) {
+              //     return null
+              //   }
+              // }
+              return <ComponentItem component={prop} key={prop} />;
             })}
           </div>
         </>
@@ -577,6 +632,18 @@ export function Korean() {
           <p className="text-[8px] p-0 m-0">hangul</p>
         </button>
 
+        <button
+          onClick={() => {
+            setSelectedId(null);
+            setView("components");
+          }}
+          className={`${
+            view === "components" ? "dark:text-white" : "dark:text-gray-800"
+          } my-4 flex flex-col items-center hover:dark:text-white transition`}
+        >
+          <Icons.blockBrick className="text-2xl" />
+          <p className="text-[8px] p-0 m-0">Components</p>
+        </button>
         <button
           onClick={() => {
             setSelectedId(null);

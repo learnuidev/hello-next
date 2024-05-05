@@ -23,6 +23,7 @@ import {
   faMinus,
   faMountainSun,
   faFingerprint,
+  faBlockBrick,
 } from "@fortawesome/pro-thin-svg-icons";
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons";
 // import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
@@ -58,4 +59,6 @@ export const Icons = {
   mountainSun: createFAIcon(faMountainSun),
   mandarin: createFAIcon(faCitrus),
   fingerPrint: createFAIcon(faFingerprint),
+
+  blockBrick: createFAIcon(faBlockBrick),
 };

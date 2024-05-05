@@ -14,7 +14,7 @@ export const SearchBar = () => {
   const setSearchBarOpen = useSearchState((state) => state.setSearchBarOpen);
   return (
     <div
-      className="text-lg sm:block py-2 flex flex-row justify-center items-end"
+      className="cursor-pointer text-lg sm:block py-2 flex flex-row justify-center items-end"
       // onClick={() => {
       //   // alert("yo");
       //   setSearchBarOpen(true);
@@ -23,9 +23,9 @@ export const SearchBar = () => {
       {/* <SearchDialogDemo /> */}
 
       <Icons.magnifyingGlass
-        onClick={() => {
-          setSearchBarOpen(true);
-        }}
+      // onClick={() => {
+      //   setSearchBarOpen(true);
+      // }}
       />
 
       <SearchInput />

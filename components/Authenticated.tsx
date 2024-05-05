@@ -5,7 +5,7 @@ import { useSearchState } from "@/components/use-search-state";
 
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { Authenticate } from "./Authenticate";
-import { SearchInputFC } from "./search-input-fc";
+// import { SearchInputFC } from "./search-input-fc";
 import { cn } from "@/lib/utils";
 
 export const Authenticated = (props: any) => {
@@ -33,32 +33,32 @@ export const Authenticated = (props: any) => {
             isSearchBarOpen ? "blur-[50px] pointer-events-none" : "",
             "transition-all"
           )}
-          onKeyDown={(event) => {
-            console.log("EVENT", event);
-            if (event.key === "Escape") {
-              if (isSearchBarOpen) {
-                setSearchBarOpen(false);
-              }
+          // onKeyDown={(event) => {
+          //   console.log("EVENT", event);
+          //   if (event.key === "Escape") {
+          //     if (isSearchBarOpen) {
+          //       setSearchBarOpen(false);
+          //     }
 
-              if (routeName?.includes("/nmm/")) {
-                router.push(`/nmm`);
-              }
-            }
+          //     if (routeName?.includes("/nmm/")) {
+          //       router.push(`/nmm`);
+          //     }
+          //   }
 
-            // if (event.key === "s") {
-            //   if (isSearchBarOpen) {
-            //     return;
-            //     // setSearchBarOpen(false);
-            //   } else {
-            //     setSearchBarOpen(true);
-            //   }
-            // }
-          }}
+          //   // if (event.key === "s") {
+          //   //   if (isSearchBarOpen) {
+          //   //     return;
+          //   //     // setSearchBarOpen(false);
+          //   //   } else {
+          //   //     setSearchBarOpen(true);
+          //   //   }
+          //   // }
+          // }}
         >
           {props.children}
         </div>
 
-        {isSearchBarOpen && <SearchInputFC />}
+        {/* {isSearchBarOpen && <SearchInputFC />} */}
       </div>
     );
   }

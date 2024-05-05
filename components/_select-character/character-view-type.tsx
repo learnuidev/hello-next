@@ -17,6 +17,7 @@ import { ReadModeView } from "./readmode-view";
 
 import { NormalView } from "./normal-view";
 import { AudioComponent } from "./audio-component";
+import Link from "next/link";
 
 const SentencesView = (props: SelectedCharacterProps) => {
   return (
@@ -53,7 +54,19 @@ export const ViewType = (props: SelectedCharacterProps) => {
 
     return (
       <div className="text-gray-500">
-        {JSON.stringify(sub_components, null, 2)}
+        {/* {JSON.stringify(sub_components, null, 2)} */}
+        {sub_components?.map((comp: { hanzi: string; en: string }) => {
+          return (
+            <Link
+              key={comp?.hanzi}
+              className="space-x-4"
+              href={`/nmm/${comp?.hanzi}?lang=zh`}
+            >
+              <p>{comp?.hanzi}</p>
+              <p className="text-gray-400">{comp?.en}</p>
+            </Link>
+          );
+        })}
       </div>
     );
   };

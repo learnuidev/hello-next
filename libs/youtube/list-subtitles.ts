@@ -55,7 +55,7 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
 
       let zhTrack;
       try {
-        zhTrack = getTrack({ lang, tracks });
+        zhTrack = getTrack({ lang: "zh-CN", tracks });
       } catch (err) {
         zhTrack = null;
       }
@@ -67,14 +67,21 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
           zhTrack = null;
         }
       }
+      if (!zhTrack) {
+        try {
+          zhTrack = getTrack({ lang: "zh-Hant", tracks });
+        } catch (err) {
+          zhTrack = null;
+        }
+      }
 
       //
-      const englishCode = "en";
-      const englishTrack = getTrack({ lang: englishCode, tracks });
-      const frenchCode = "fr";
-      const frenchTrack = getTrack({ lang: frenchCode, tracks });
-      const spanishCode = "es";
-      const spanishTrack = getTrack({ lang: spanishCode, tracks });
+      // const englishCode = "en";
+      // const englishTrack = getTrack({ lang: englishCode, tracks });
+      // const frenchCode = "fr";
+      // const frenchTrack = getTrack({ lang: frenchCode, tracks });
+      // const spanishCode = "es";
+      // const spanishTrack = getTrack({ lang: spanishCode, tracks });
       // const  =
 
       console.log("Track Found: === ", zhTrack);
@@ -94,70 +101,74 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
         subtitles = null;
       }
 
-      const englishSubtitles = englishTrack?.baseUrl
-        ? ((await httpRequest(`${englishTrack?.baseUrl}&fmt=vtt`)) as any)
-        : "";
-      const frenchSubtitles = frenchTrack?.baseUrl
-        ? ((await httpRequest(`${frenchTrack?.baseUrl}&fmt=vtt`)) as any)
-        : "";
-      const spanishSubtitles = spanishTrack?.baseUrl
-        ? ((await httpRequest(`${spanishTrack?.baseUrl}&fmt=vtt`)) as any)
-        : "";
+      // const englishSubtitles = englishTrack?.baseUrl
+      //   ? ((await httpRequest(`${englishTrack?.baseUrl}&fmt=vtt`)) as any)
+      //   : "";
+      // const frenchSubtitles = frenchTrack?.baseUrl
+      //   ? ((await httpRequest(`${frenchTrack?.baseUrl}&fmt=vtt`)) as any)
+      //   : "";
+      // const spanishSubtitles = spanishTrack?.baseUrl
+      //   ? ((await httpRequest(`${spanishTrack?.baseUrl}&fmt=vtt`)) as any)
+      //   : "";
 
       // console.log("RES", res);
       // return res;
 
-      const lyrics = subtitles
-        ? (subtitles || "")?.split("\n").filter(Boolean).slice(3)
-        : [];
-      const englishLyrics =
-        englishSubtitles.split("\n").filter(Boolean).slice(3) || [];
+      const lyrics = subtitles ? (subtitles || "")?.split("\n").slice(4) : [];
+      // const englishLyrics =
+      //   englishSubtitles.split("\n").filter(Boolean).slice(3) || [];
 
-      const frenchLyrics =
-        frenchSubtitles?.split("\n")?.filter(Boolean)?.slice(3) || [];
-      const spanishLyrics =
-        spanishSubtitles?.split("\n")?.filter(Boolean)?.slice(3) || [];
+      // const frenchLyrics =
+      //   frenchSubtitles?.split("\n")?.filter(Boolean)?.slice(3) || [];
+      // const spanishLyrics =
+      //   spanishSubtitles?.split("\n")?.filter(Boolean)?.slice(3) || [];
 
-      const subtitlesList = (lyrics?.length ? lyrics : englishLyrics).reduce(
-        (acc: any, curr: any, idx: any) => {
-          if (idx % 2 === 0) {
-            const timestamp = curr;
-            const value = lyrics[idx + 1] || "";
+      const subtitlesList = lyrics.reduce((acc: any, curr: any, idx: any) => {
+        if (curr === "") {
+          // const timestamp = curr;
+          // const value = lyrics[idx + 1] || "";
+          const maybeTimestamp = lyrics[idx - 2];
+          const timestampIdx = maybeTimestamp?.includes("-->")
+            ? idx - 2
+            : idx - 3;
+          const timestamp = lyrics[timestampIdx];
 
-            const englishValue = englishLyrics[idx + 1];
-            const frenchValue = frenchLyrics[idx + 1];
-            const spanishValue = spanishLyrics[idx + 1];
+          const value = maybeTimestamp?.includes("-->")
+            ? lyrics[idx - 1]
+            : lyrics[idx - 2];
 
-            const startTimes = timestamp?.split(" ")?.[0]?.split(":") || [];
-            const start = getTotalSeconds(startTimes);
+          // const englishValue = englishLyrics[idx + 1];
+          // const frenchValue = frenchLyrics[idx + 1];
+          // const spanishValue = spanishLyrics[idx + 1];
 
-            const endTimes = timestamp?.split(" ")?.[2]?.split(":") || [];
+          const startTimes = timestamp?.split(" ")?.[0]?.split(":") || [];
+          const start = getTotalSeconds(startTimes);
 
-            const end = getTotalSeconds(endTimes);
+          const endTimes = timestamp?.split(" ")?.[2]?.split(":") || [];
 
-            const hanziProps =
-              lang === "zh-CN"
-                ? {
-                    hanzi: value,
-                    pinyin: "",
-                    en: englishValue,
-                    fr: frenchValue,
-                    es: spanishValue,
-                  }
-                : {};
+          const end = getTotalSeconds(endTimes);
 
-            return acc.concat({
-              lang,
-              start,
-              end,
-              ...hanziProps,
-            });
-          }
+          const hanziProps =
+            lang === "zh-CN"
+              ? {
+                  hanzi: value,
+                  pinyin: "",
+                  // en: englishValue,
+                  // fr: frenchValue,
+                  // es: spanishValue,
+                }
+              : {};
 
-          return acc;
-        },
-        []
-      );
+          return acc.concat({
+            lang,
+            start,
+            end,
+            ...hanziProps,
+          });
+        }
+
+        return acc;
+      }, []);
 
       return subtitlesList;
 

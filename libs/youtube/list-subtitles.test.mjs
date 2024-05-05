@@ -58,26 +58,28 @@ const listSubtitlesRaw = ({ id, lang }) => {
       info.player_response.captions.playerCaptionsTracklistRenderer
         .captionTracks;
     if (tracks && tracks.length) {
-      console.log(
-        "Found captions for",
-        tracks.map((t) => t.name.simpleText).join(", ")
-      );
+      // console.log(
+      //   "Found captions for",
+      //   tracks.map((t) => t.name.simpleText).join(", ")
+      // );
 
       console.log("TRACKS", tracks);
       const track = tracks.find((t) => t.languageCode === lang);
       if (track) {
-        console.log("Retrieving captions:", track.name.simpleText);
-        console.log("URL", track.baseUrl);
+        // console.log("Retrieving captions:", track.name.simpleText);
+        // console.log("URL", track.baseUrl);
         const output = `${info.videoDetails.title}.${track.languageCode}.${format}`;
         console.log("Saving to", output);
 
         // console.log("RES", await res.json());
 
-        console.log("FORMAT", format);
+        // console.log("FORMAT", format);
 
         const res = await httpRequest(
           `${track.baseUrl}&fmt=${format !== "json" ? format : ""}`
         );
+
+        // fs.writeFileSync(`./test`, res);
 
         // console.log("RES", res);
         return res;
@@ -136,29 +138,38 @@ const listSubtitles = ({ id, lang }) => {
   });
 };
 
-const id = "https://www.youtube.com/watch?v=3-UO8jbrIoM";
+// const id = "https://www.youtube.com/watch?v=tHSsOwJ5aCw";
+// const id = "https://www.youtube.com/watch?v=tHSsOwJ5aCw";
+const id = "https://www.youtube.com/watch?v=Jxj-kwTQTCs";
 // const lang = "zh-CN";
-const lang = "en";
+// const lang = "zh";
+const lang = "zh-Hant";
 
-listSubtitlesRaw({
-  id,
-  lang,
-}).then((sub) => {
-  // console.log("SUB", sub.slice(0, 200));
-  // const parsed = webvtt.parse(sub, { strict: false });
-  // const segmented = webvtt.parse(sub, segmentDuration);
-  // return parsed;
-  // console.log("DONE===", segmented);
-  // console.log("sub", sub);
+// listSubtitlesRaw({
+//   id,
+//   lang,
+// }).then((sub) => {
+//   // console.log("SUB", sub.slice(0, 200));
+//   // const parsed = webvtt.parse(sub, { strict: false });
+//   // const segmented = webvtt.parse(sub, segmentDuration);
+//   // return parsed;
+//   // console.log("DONE===", segmented);
+//   // console.log("sub", sub);
 
-  const parser = new WebVTTParser();
-  const tree = parser.parse(sub, "metadata");
+//   const parser = new WebVTTParser();
+//   const tree = parser.parse(sub, "metadata");
 
-  console.log("TREE", tree);
-});
-// listSubtitleTracks({
+//   console.log("TREE", tree);
+// });
+// listSubtitles({
 //   id,
 //   lang,
 // }).then((sub) => {
 //   console.log("sub", sub);
 // });
+listSubtitlesRaw({
+  id,
+  lang,
+}).then((sub) => {
+  console.log("sub", sub?.split("\n")?.slice(0, 200));
+});

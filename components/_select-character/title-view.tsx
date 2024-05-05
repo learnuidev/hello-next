@@ -37,8 +37,8 @@ export const TitleView = ({
         {" "}
         <span className="text-xs">
           {selectedComp?.pinyin ||
-            selectedComp?.en ||
             selectedComp?.roman ||
+            selectedComp?.en ||
             selectedComp2?.pinyin}
         </span>
       </Link>

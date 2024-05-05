@@ -203,8 +203,12 @@ export const HanziViewer = (props: any) => {
               <span
                 key={`${val}-${idy}`}
                 onClick={() => {
+                  const cleanedVal = val
+                    .replaceAll("!", "")
+                    ?.replaceAll(".", "")
+                    ?.replaceAll(",", "");
                   addHistoryMutation.mutate({
-                    hanzi: val,
+                    hanzi: cleanedVal,
                     lang: lang,
                     pathName: routeName,
                     contentId: selectedComp?.id || "",
@@ -212,7 +216,9 @@ export const HanziViewer = (props: any) => {
                   } as any);
 
                   router.push(
-                    lang ? `/nmm/${val}?lang=${lang}` : `/nmm/${val}`
+                    lang
+                      ? `/nmm/${cleanedVal}?lang=${lang}`
+                      : `/nmm/${cleanedVal}`
                   );
                 }}
                 className={`${

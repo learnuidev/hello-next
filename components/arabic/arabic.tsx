@@ -6,7 +6,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 // import { koreanAlphabets } from "@/langs/korean/korean-alphabets";
-import { koreanComponents } from "@/langs/korean/korean-components";
+// import { koreanComponents } from "@/langs/korean/korean-components";
 import { Icons } from "../ui/icons.v2";
 
 // import { koreanWords } from "@/langs/korean/korean-words";
@@ -14,6 +14,7 @@ import { ComponentItem } from "../component-item";
 import { WordItem } from "../word-item";
 import { arabicAlphabets } from "@/langs/arabic/arabic-alphabets";
 import { arabicWords } from "@/langs/arabic/arabic-words";
+import { arabicComponents } from "@/langs/arabic/arabic-components";
 
 const PageView = ({ view }: any) => {
   const searchParams = useSearchParams();
@@ -50,7 +51,7 @@ const PageView = ({ view }: any) => {
       return (
         <>
           <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-end justify-center">
-            {koreanComponents.map((prop) => {
+            {arabicComponents.map((prop) => {
               return <ComponentItem lang={lang} component={prop} key={prop} />;
             })}
           </div>

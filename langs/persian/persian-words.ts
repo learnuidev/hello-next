@@ -1,4 +1,4 @@
-const farsiComponents = [
+export const persianWords = [
   {
     id: "1",
     en: "a, an",

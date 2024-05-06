@@ -11,11 +11,8 @@ import { Icons } from "../ui/icons.v2";
 import { ComponentItem } from "../component-item";
 import { WordItem } from "../word-item";
 
-// Components
-// import { arabicAlphabets } from "@/langs/arabic/arabic-alphabets";
-import { arabicWords } from "@/langs/arabic/arabic-words";
-import { arabicComponents } from "@/langs/arabic/arabic-components";
 import { persianAlphabets } from "@/langs/persian/persian-alphabets";
+import { persianWords } from "@/langs/persian/persian-words";
 
 const PageView = ({ view }: any) => {
   const searchParams = useSearchParams();
@@ -48,21 +45,12 @@ const PageView = ({ view }: any) => {
           </div>
         </>
       );
-    case "components":
-      return (
-        <>
-          <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-end justify-center">
-            {arabicComponents.map((prop) => {
-              return <ComponentItem lang={lang} component={prop} key={prop} />;
-            })}
-          </div>
-        </>
-      );
+
     case "words":
       return (
         <>
           <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
-            {arabicWords.map((prop: any) => {
+            {persianWords.map((prop: any) => {
               return <WordItem component={prop} key={JSON.stringify(prop)} />;
             })}
           </div>
@@ -92,7 +80,7 @@ export function Farsi() {
           <p className="text-[8px] p-0 m-0">alphabets</p>
         </button>
 
-        <button
+        {/* <button
           onClick={() => {
             setView("components");
           }}
@@ -102,7 +90,7 @@ export function Farsi() {
         >
           <Icons.blockBrick className="text-2xl" />
           <p className="text-[8px] p-0 m-0">Components</p>
-        </button>
+        </button> */}
         <button
           onClick={() => {
             setView("words");

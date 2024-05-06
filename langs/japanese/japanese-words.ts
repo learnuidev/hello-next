@@ -1,13 +1,5 @@
 export const japaneseWords = [
   {
-    id: "1",
-    en: "a, an",
-    type: "indefinite, article",
-    level: "A1",
-    input: "A、",
-    lang: "ja",
-  },
-  {
     id: "2",
     en: "abandon",
     type: "Verb",

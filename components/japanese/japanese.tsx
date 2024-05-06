@@ -17,7 +17,7 @@ const PageView = ({ view }: any) => {
   const lang = "ja";
 
   switch (view) {
-    case "devanagari":
+    case "alphabets":
       return (
         <>
           <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-center justify-center">
@@ -58,7 +58,7 @@ const PageView = ({ view }: any) => {
         <>
           <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
             {japaneseWords.map((prop: any) => {
-              return <WordItem component={prop} key={prop.input} />;
+              return <WordItem component={prop} key={JSON.stringify(prop)} />;
             })}
           </div>
         </>
@@ -77,10 +77,10 @@ export function Japanese() {
       <div className="dark:text-gray-500 my-4 space-x-8 flex justify-center items-center">
         <button
           onClick={() => {
-            setView("devanagari");
+            setView("alphabets");
           }}
           className={`${
-            view === "devanagari" ? "dark:text-white" : "dark:text-gray-800"
+            view === "alphabets" ? "dark:text-white" : "dark:text-gray-800"
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
           <Icons.pinyinChart className="text-2xl" />

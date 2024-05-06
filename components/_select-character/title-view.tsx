@@ -6,6 +6,10 @@ import Link from "next/link";
 
 import { formatComponentName } from "@/app/nmm/format-component-name";
 import { SelectedCharacterProps } from "./select-character.types";
+import {
+  ListGrammarsResponse,
+  useListGrammarsQuery,
+} from "@/domain/sentence/grammar.queries";
 
 export const TitleView = ({
   selectedComp,
@@ -13,6 +17,25 @@ export const TitleView = ({
   color,
   selectedComp2,
 }: SelectedCharacterProps) => {
+  const { data: grammarAnalysis, isLoading: isGrammarAnalysisLoading } =
+    useListGrammarsQuery(
+      {
+        sentenceId: selectedChar,
+        content: selectedChar,
+      },
+      {
+        enabled: Boolean(selectedChar),
+        refetchOnWindowFocus: false,
+        refetchOnFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+      }
+    );
+
+  const ga = (grammarAnalysis as ListGrammarsResponse)?.grammarAnalysis;
+
+  const comp = ga?.find((item) => item?.input === selectedComp?.input);
+
   return (
     <div>
       <div
@@ -36,7 +59,8 @@ export const TitleView = ({
         >
           {" "}
           <span className="text-sm">
-            {selectedComp?.pinyin ||
+            {comp?.roman ||
+              selectedComp?.pinyin ||
               selectedComp?.roman ||
               selectedComp?.en ||
               selectedComp2?.pinyin}

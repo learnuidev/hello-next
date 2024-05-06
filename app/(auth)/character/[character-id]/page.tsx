@@ -41,21 +41,6 @@ export default function Home() {
 
   const router = useRouter();
 
-  const { data: grammarAnalysis, isLoading: isGrammarAnalysisLoading } =
-    useListGrammarsQuery(
-      {
-        sentenceId: currentDecodedCharacter,
-        content: currentDecodedCharacter,
-      },
-      {
-        enabled: Boolean(currentDecodedCharacter),
-        refetchOnWindowFocus: false,
-        refetchOnFocus: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-      }
-    );
-
   const meaningResponse = meaning as ListMeaningsResponse;
   return (
     <main className="">

@@ -23991,4 +23991,4 @@ export const arabicWords = [
     input: "منطقة",
     lang: "ar",
   },
-];
+]?.sort((a, b) => a.input.length - b.input.length);

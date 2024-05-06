@@ -23983,4 +23983,4 @@ export const japaneseWords = [
     input: "ゾーン",
     lang: "ja",
   },
-];
+]?.sort((a, b) => a.input.length - b.input.length);

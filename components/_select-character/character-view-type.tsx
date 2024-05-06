@@ -89,7 +89,7 @@ export const ViewType = (props: SelectedCharacterProps) => {
       };
     });
     return (
-      <div className="text-gray-500 flex space-x-4">
+      <div className="text-gray-500 flex space-x-4 my-8">
         {/* {JSON.stringify(sub_components, null, 2)} */}
         {subComponents?.map((item: any) => {
           return (

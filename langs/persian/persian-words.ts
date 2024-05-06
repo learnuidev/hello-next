@@ -21376,14 +21376,6 @@ export const persianWords = [
     lang: "fa",
   },
   {
-    id: "2674",
-    en: "the",
-    type: "definite article",
-    level: "A1",
-    input: "",
-    lang: "fa",
-  },
-  {
     id: "2675",
     en: "theatre",
     type: "Noun",
@@ -23991,4 +23983,4 @@ export const persianWords = [
     input: "منطقه",
     lang: "fa",
   },
-];
+]?.sort((a, b) => a.input.length - b.input.length);

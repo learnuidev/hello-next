@@ -23983,4 +23983,4 @@ export const koreanWords = [
     input: "존",
     lang: "ko",
   },
-];
+]?.sort((a, b) => a.input.length - b.input.length);

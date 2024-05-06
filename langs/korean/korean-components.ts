@@ -104,7 +104,6 @@ export const koreanComponents = [
   "늙",
   "트",
   "극",
-  ".",
   "협",
   "아",
   "앞",

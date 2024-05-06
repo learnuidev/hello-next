@@ -46,7 +46,7 @@ export const NavItems = (props: SelectedCharacterProps) => {
 
   const { toast } = useToast();
   return (
-    <div className="flex jusify-between items-center w-full space-x-32">
+    <div className="flex jusify-between items-center space-x-32">
       <div className="space-x-8 flex items-center">
         <button
           className={"text-xl"}

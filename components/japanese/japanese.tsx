@@ -7,24 +7,54 @@ import {
   nepaliVowels,
   nepaliConsonants,
   nepaliSentences,
-  uniqueWords,
   dependentVowels,
   nepaliWords203,
 } from "./data";
 
 import { cc, ccV3 } from "./cc";
 
-import {
-  PlayIcon,
-  CCIcon,
-  PinyinChartIcon,
-  PlusIcon,
-  SentenceIcon,
-  WordIcon,
-} from "../ui/icons";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Icons } from "../ui/icons.v2";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { hiraganaAlphabets } from "@/langs/japanese/hiragana-alphabets";
+import { japaneseComponents } from "@/langs/japanese/japanese-components";
+import { japaneseWords } from "@/langs/japanese/japanese-words";
+
+const ComponentItem = ({ component: prop }: { component: string }) => {
+  const lang = "ja";
+
+  const { data: characters } = useListCharactersQuery();
+
+  const character = characters?.find((char: any) => char?.input === prop);
+
+  if (prop === "버") {
+    console.log("CHARACRTER", character);
+  }
+
+  return (
+    <Link
+      key={JSON.stringify(prop)}
+      href={lang ? `/nmm/${prop}?lang=${lang}` : `/nmm/${prop}`}
+      // onClick={() => {
+      //   setSelectedId(prop.input);
+      // }}
+      className={`${character ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-500 text-gray-200"} dark:hover:text-white p-6 flex items-center flex-col`}
+    >
+      <span className={`block text-sm dark:text-slate-600`}>
+        {character?.roman}
+      </span>
+
+      <span className="text-4xl"> {prop}</span>
+      {/* <span className={`block text-sm dark:text-slate-600`}>
+        {character?.en}
+      </span> */}
+      {/* {isHidden ? null : (
+    <span className="block text-[12px]"> {prop.en}</span>
+  )} */}
+    </Link>
+  );
+};
 const PageView = ({ view, setSelectedId }: any) => {
   const [viewMode, setViewMode] = useState("halant");
   const [variants, setVariants] = useState([]) as any;
@@ -166,10 +196,27 @@ const PageView = ({ view, setSelectedId }: any) => {
                   )}
                   <span className="text-4xl"> {prop.input}</span>
                   {/* {isHidden ? null : (
-                  <span className="block text-[12px]"> {prop.en}</span>
-                )} */}
+                    <span className="block text-[12px]"> {prop.en}</span>
+                  )} */}
                 </Link>
               );
+            })}
+          </div>
+        </>
+      );
+    case "components":
+      return (
+        <>
+          <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-end justify-center">
+            {japaneseComponents.map((prop) => {
+              // return <p className='p-4'>{prop?.hanzi}</p>
+
+              // if (isCoreOnly) {
+              //   if (words3?.length < 20) {
+              //     return null
+              //   }
+              // }
+              return <ComponentItem component={prop} key={prop} />;
             })}
           </div>
         </>
@@ -177,119 +224,30 @@ const PageView = ({ view, setSelectedId }: any) => {
     case "words":
       return (
         <>
-          <div className="mx-4 md:mx-16 flex justify-between items-center">
-            <div className="px-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-              {["consonants", "vowels", "consonants only"].map(
-                (variant: any) => {
-                  return (
-                    <button
-                      key={JSON.stringify(variant)}
-                      onClick={() => {
-                        setFilterType(variant);
-                      }}
-                      className={`${
-                        filterType === variant
-                          ? "dark:text-white text-gray-700"
-                          : "dark:text-gray-400 text-gray-200"
-                      } dark:hover:text-white px-6 py-2 transition font-extralight`}
-                    >
-                      {variant}
-                    </button>
-                  );
-                }
-              )}
-            </div>
-          </div>
-          {filterType === "consonants" ? (
-            <div className="mx-4 md:mx-16 flex justify-between items-center">
-              <div className="px-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-                {nepaliConsonants.map((variant: any) => {
-                  return (
-                    <button
-                      key={JSON.stringify(variant)}
-                      onClick={() => {
-                        setFilterCharacter(variant?.nepali);
-                      }}
-                      className={`${
-                        variant?.nepali === filterCharacter
-                          ? "dark:text-white text-gray-700"
-                          : "dark:text-gray-400 text-gray-200"
-                      } dark:hover:text-white px-6 py-2 transition font-extralight`}
-                    >
-                      {variant?.nepali}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ) : null}
-          {filterType === "vowels" ? (
-            <>
-              <div className="mx-4 md:mx-16 flex justify-between items-center">
-                <div className="px-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-                  {nepaliVowels.map((variant: any) => {
-                    return (
-                      <button
-                        key={JSON.stringify(variant)}
-                        onClick={() => {
-                          setFilterCharacter(variant?.nepali);
-                        }}
-                        className={`${
-                          variant?.nepali === filterCharacter
-                            ? "dark:text-white text-gray-700"
-                            : "dark:text-gray-400 text-gray-200"
-                        } dark:hover:text-white px-6 py-2 transition font-extralight`}
-                      >
-                        {variant?.nepali}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className="mx-4 md:mx-16 flex justify-between items-center">
-                <div className="px-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-                  {dependentVowels.map((variant: any) => {
-                    return (
-                      <button
-                        key={JSON.stringify(variant)}
-                        onClick={() => {
-                          setFilterCharacter(variant?.nepali);
-                        }}
-                        className={`${
-                          variant?.nepali === filterCharacter
-                            ? "dark:text-white text-gray-700"
-                            : "dark:text-gray-400 text-gray-200"
-                        } dark:hover:text-white px-6 py-2 transition font-extralight`}
-                      >
-                        {variant?.nepali}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </>
-          ) : null}
-          <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-            {nepaliWords204.map((prop: any) => {
+          <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
+            {japaneseWords.map((prop: any) => {
               return (
-                <button
+                <Link
+                  href={`/nmm/${prop?.input}?lang=ja`}
                   key={JSON.stringify(prop)}
-                  onClick={() => {
-                    setSelectedId(prop.nepali);
-                  }}
+                  // onClick={() => {
+                  //   setSelectedId(prop.input);
+                  // }}
                   className={`${
                     true
                       ? "dark:text-white text-gray-700"
                       : "dark:text-gray-500 text-gray-200"
-                  } dark:hover:text-white p-6 transition`}
+                  } dark:hover:text-white p-6 transition text-center flex items-center flex-col`}
                 >
-                  <span className="text-4xl"> {prop.nepali}</span>
-                  <span className="block text-[12px] py-2"> {prop.en}</span>
                   <span className="block p-0 m-0 text-[12px]">
-                    {" "}
-                    {prop?.nepaliRoman}
+                    {prop?.roman}
                   </span>
-                </button>
+                  <span className="text-xl"> {prop.input}</span>
+                  <span className="block text-sm text-gray-400">
+                    {" "}
+                    {prop.en}
+                  </span>
+                </Link>
               );
             })}
           </div>
@@ -546,9 +504,10 @@ const PageView = ({ view, setSelectedId }: any) => {
 };
 
 export function Japanese() {
+  const lang = "ja";
   const [selectedId, setSelectedId] = useState<any>("");
   // const [view, setView] = useState('devanagari')
-  const [view, setView] = useState("devanagari");
+  const [view, setView] = useState("components");
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState(0);
 
@@ -571,10 +530,22 @@ export function Japanese() {
             view === "devanagari" ? "dark:text-white" : "dark:text-gray-800"
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
-          <PinyinChartIcon className="text-2xl" />
+          <Icons.pinyinChart className="text-2xl" />
           <p className="text-[8px] p-0 m-0">hiragana</p>
         </button>
 
+        <button
+          onClick={() => {
+            setSelectedId(null);
+            setView("components");
+          }}
+          className={`${
+            view === "components" ? "dark:text-white" : "dark:text-gray-800"
+          } my-4 flex flex-col items-center hover:dark:text-white transition`}
+        >
+          <Icons.blockBrick className="text-2xl" />
+          <p className="text-[8px] p-0 m-0">Components</p>
+        </button>
         <button
           onClick={() => {
             setSelectedId(null);
@@ -584,8 +555,8 @@ export function Japanese() {
             view === "words" ? "dark:text-white" : "dark:text-gray-800"
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
-          <WordIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">単語 | ワード</p>
+          <Icons.word className="text-2xl" />
+          <p className="text-[8px] p-0 m-0">Words</p>
         </button>
         <button
           onClick={() => {
@@ -596,8 +567,8 @@ export function Japanese() {
             view === "sentences" ? "dark:text-white" : "dark:text-gray-800"
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
-          <SentenceIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">語句 (Goku) </p>
+          <Icons.sentence className="text-2xl" />
+          <p className="text-[8px] p-0 m-0">Sentences </p>
         </button>
         {/* <button
           onClick={() => {

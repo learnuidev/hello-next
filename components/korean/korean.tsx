@@ -14,20 +14,13 @@ import {
 
 import { cc, ccV3 } from "./cc";
 
-import {
-  PlayIcon,
-  CCIcon,
-  PinyinChartIcon,
-  PlusIcon,
-  SentenceIcon,
-  WordIcon,
-} from "../ui/icons";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { koreanAlphabets } from "@/langs/korean/korean-alphabets";
 import { koreanComponents } from "@/langs/korean/korean-components";
 import { Icons } from "../ui/icons.v2";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { koreanWords } from "@/langs/korean/korean-words";
 // import { hiraganaAlphabets } from "@/langs/japanese/hiragana-alphabets";
 
 console.log("wip");
@@ -235,119 +228,30 @@ const PageView = ({ view, setSelectedId }: any) => {
     case "words":
       return (
         <>
-          <div className="mx-4 md:mx-16 flex justify-between items-center">
-            <div className="px-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-              {["consonants", "vowels", "consonants only"].map(
-                (variant: any) => {
-                  return (
-                    <button
-                      key={JSON.stringify(variant)}
-                      onClick={() => {
-                        setFilterType(variant);
-                      }}
-                      className={`${
-                        filterType === variant
-                          ? "dark:text-white text-gray-700"
-                          : "dark:text-gray-400 text-gray-200"
-                      } dark:hover:text-white px-6 py-2 transition font-extralight`}
-                    >
-                      {variant}
-                    </button>
-                  );
-                }
-              )}
-            </div>
-          </div>
-          {filterType === "consonants" ? (
-            <div className="mx-4 md:mx-16 flex justify-between items-center">
-              <div className="px-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-                {nepaliConsonants.map((variant: any) => {
-                  return (
-                    <button
-                      key={JSON.stringify(variant)}
-                      onClick={() => {
-                        setFilterCharacter(variant?.nepali);
-                      }}
-                      className={`${
-                        variant?.nepali === filterCharacter
-                          ? "dark:text-white text-gray-700"
-                          : "dark:text-gray-400 text-gray-200"
-                      } dark:hover:text-white px-6 py-2 transition font-extralight`}
-                    >
-                      {variant?.nepali}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ) : null}
-          {filterType === "vowels" ? (
-            <>
-              <div className="mx-4 md:mx-16 flex justify-between items-center">
-                <div className="px-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-                  {nepaliVowels.map((variant: any) => {
-                    return (
-                      <button
-                        key={JSON.stringify(variant)}
-                        onClick={() => {
-                          setFilterCharacter(variant?.nepali);
-                        }}
-                        className={`${
-                          variant?.nepali === filterCharacter
-                            ? "dark:text-white text-gray-700"
-                            : "dark:text-gray-400 text-gray-200"
-                        } dark:hover:text-white px-6 py-2 transition font-extralight`}
-                      >
-                        {variant?.nepali}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className="mx-4 md:mx-16 flex justify-between items-center">
-                <div className="px-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-                  {dependentVowels.map((variant: any) => {
-                    return (
-                      <button
-                        key={JSON.stringify(variant)}
-                        onClick={() => {
-                          setFilterCharacter(variant?.nepali);
-                        }}
-                        className={`${
-                          variant?.nepali === filterCharacter
-                            ? "dark:text-white text-gray-700"
-                            : "dark:text-gray-400 text-gray-200"
-                        } dark:hover:text-white px-6 py-2 transition font-extralight`}
-                      >
-                        {variant?.nepali}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </>
-          ) : null}
-          <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-            {nepaliWords204.map((prop: any) => {
+          <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
+            {koreanWords.map((prop: any) => {
               return (
-                <button
+                <Link
+                  href={`/nmm/${prop?.input}?lang=${prop?.lang}`}
                   key={JSON.stringify(prop)}
-                  onClick={() => {
-                    setSelectedId(prop.nepali);
-                  }}
+                  // onClick={() => {
+                  //   setSelectedId(prop.input);
+                  // }}
                   className={`${
                     true
                       ? "dark:text-white text-gray-700"
                       : "dark:text-gray-500 text-gray-200"
-                  } dark:hover:text-white p-6 transition`}
+                  } dark:hover:text-white p-6 transition text-center flex items-center flex-col`}
                 >
-                  <span className="text-4xl"> {prop.nepali}</span>
-                  <span className="block text-[12px] py-2"> {prop.en}</span>
                   <span className="block p-0 m-0 text-[12px]">
-                    {" "}
-                    {prop?.nepaliRoman}
+                    {prop?.roman}
                   </span>
-                </button>
+                  <span className="text-xl"> {prop.input}</span>
+                  <span className="block text-sm text-gray-400">
+                    {" "}
+                    {prop.en}
+                  </span>
+                </Link>
               );
             })}
           </div>
@@ -630,7 +534,7 @@ export function Korean() {
             view === "devanagari" ? "dark:text-white" : "dark:text-gray-800"
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
-          <PinyinChartIcon className="text-2xl" />
+          <Icons.pinyinChart className="text-2xl" />
           <p className="text-[8px] p-0 m-0">hangul</p>
         </button>
 
@@ -655,8 +559,8 @@ export function Korean() {
             view === "words" ? "dark:text-white" : "dark:text-gray-800"
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
-          <WordIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">단어 (danŏ)</p>
+          <Icons.word className="text-2xl" />
+          <p className="text-[8px] p-0 m-0">Words</p>
         </button>
         <button
           onClick={() => {
@@ -667,8 +571,8 @@ export function Korean() {
             view === "sentences" ? "dark:text-white" : "dark:text-gray-800"
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
-          <SentenceIcon className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">문장 (munjang) </p>
+          <Icons.sentence className="text-2xl" />
+          <p className="text-[8px] p-0 m-0">Sentences </p>
         </button>
         {/* <button
           onClick={() => {

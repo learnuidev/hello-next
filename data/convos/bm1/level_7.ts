@@ -192,7 +192,7 @@ const lessonParser = () => {
         lit: lit?.innerText,
         en: en?.innerText,
         start: 0,
-        end: 0
+        end: 0,
       };
     }),
   };

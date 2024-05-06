@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 
 import Link from "next/link";
 import { ScrollArea } from "./ui/scroll-area";
+import { cleanString } from "@/data/convos/bm1/level_7";
 
 export function GrammarAnalysis({
   contentId,
@@ -47,12 +48,10 @@ export function GrammarAnalysis({
       <div className="font-light space-y-6 mt-4">
         {grammarAnalysisFinal?.map((analysis) => {
           if (analysis?.hanzi) {
+            const cleanHanzi = cleanString(analysis?.hanzi);
             return (
-              <div key={analysis?.hanzi} className="flex items-start flex-col">
-                <Link
-                  className=" text-gray-400"
-                  href={`/nmm/${analysis?.hanzi}`}
-                >
+              <div key={cleanHanzi} className="flex items-start flex-col">
+                <Link className=" text-gray-400" href={`/nmm/${cleanHanzi}`}>
                   {analysis?.pinyin}
                 </Link>
 
@@ -60,19 +59,19 @@ export function GrammarAnalysis({
                   className="text-gray-300 font-light text-xl"
                   href={
                     lang
-                      ? `/nmm/${analysis?.hanzi}?lang=${lang}`
-                      : `/nmm/${analysis?.hanzi}`
+                      ? `/nmm/${cleanHanzi}?lang=${lang}`
+                      : `/nmm/${cleanHanzi}`
                   }
                 >
-                  {analysis?.hanzi}
+                  {cleanHanzi}
                 </Link>
 
                 <Link
                   className=" text-gray-400"
                   href={
                     lang
-                      ? `/nmm/${analysis?.hanzi}?lang=${lang}`
-                      : `/nmm/${analysis?.hanzi}`
+                      ? `/nmm/${cleanHanzi}?lang=${lang}`
+                      : `/nmm/${cleanHanzi}`
                   }
                   // className="w-16"
                 >
@@ -85,13 +84,14 @@ export function GrammarAnalysis({
               </div>
             );
           } else {
+            const cleanInput = cleanString(
+              analysis?.original || analysis?.input || ""
+            );
+
             return (
               <div key={analysis?.input} className="flex items-start flex-col">
                 {analysis?.roman !== analysis?.input && (
-                  <Link
-                    className=" text-gray-400"
-                    href={`/nmm/${analysis?.input}`}
-                  >
+                  <Link className=" text-gray-400" href={`/nmm/${cleanInput}`}>
                     {analysis?.roman}
                   </Link>
                 )}
@@ -99,19 +99,19 @@ export function GrammarAnalysis({
                   className="text-gray-300 font-light text-xl"
                   href={
                     lang
-                      ? `/nmm/${analysis?.original || analysis?.input}?lang=${lang}`
-                      : `/nmm/${analysis?.original || analysis?.input}`
+                      ? `/nmm/${cleanInput}?lang=${lang}`
+                      : `/nmm/${cleanInput}`
                   }
                 >
-                  {analysis?.original || analysis?.input}
+                  {cleanInput}
                 </Link>
 
                 <Link
                   className=" text-gray-400"
                   href={
                     lang
-                      ? `/nmm/${analysis?.original || analysis?.input}?lang=${lang}`
-                      : `/nmm/${analysis?.original || analysis?.input}`
+                      ? `/nmm/${cleanInput}?lang=${lang}`
+                      : `/nmm/${cleanInput}`
                   }
                   // className="w-16"
                 >

@@ -1,4 +1,6 @@
 export const arabicComponents = [
+  "لا",
+  "لي",
   "في",
   "ال",
   "جو",

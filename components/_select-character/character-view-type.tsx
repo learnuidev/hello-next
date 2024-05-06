@@ -19,6 +19,11 @@ import { NormalView } from "./normal-view";
 import { AudioComponent } from "./audio-component";
 import Link from "next/link";
 import { Skeleton } from "../ui/skeleton";
+import { persianWords } from "@/langs/persian/persian-words";
+import { WordItem } from "../word-item";
+import { arabicWords } from "@/langs/arabic/arabic-words";
+import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+import { persianAlphabets } from "@/langs/persian/persian-alphabets";
 
 const SentencesView = (props: SelectedCharacterProps) => {
   return (
@@ -40,44 +45,77 @@ export const ViewType = (props: SelectedCharacterProps) => {
     selectedChar,
     routeName,
     lang,
+    view,
     sentences,
     characterId,
     selectedComp2,
   } = props;
-  const SubComponentsView = () => {
+
+  const HanziSubComponentsView = () => {
     const { data: sub_components, isLoading } = useListSubComponentsQuery({
       componentId: characterId,
     });
-
-    if (!sub_components?.length) {
-      return null;
-    }
-
-    if (lang !== "zh") {
-      return null;
-    }
 
     if (isLoading) {
       return <Skeleton className="w-60 h-12" />;
     }
 
+    if (characterId?.length === 1) {
+      return (
+        <div className="text-gray-500 flex space-x-4">
+          {/* {JSON.stringify(sub_components, null, 2)} */}
+          {sub_components?.map((comp: { hanzi: string; en: string }) => {
+            return (
+              <Link
+                key={comp?.hanzi}
+                className="space-x-2 flex"
+                href={`/nmm/${comp?.hanzi}?lang=zh`}
+              >
+                <p>{comp?.hanzi}</p>
+                <p className="text-gray-400">{comp?.en}</p>
+              </Link>
+            );
+          })}
+        </div>
+      );
+    }
+  };
+
+  const FarsiSubComponentView = () => {
+    const subComponents = characterId.split("")?.map((comp: any) => {
+      const alphabet = persianAlphabets?.find((item) => item?.input === comp);
+      return {
+        ...alphabet,
+      };
+    });
     return (
       <div className="text-gray-500 flex space-x-4">
         {/* {JSON.stringify(sub_components, null, 2)} */}
-        {sub_components?.map((comp: { hanzi: string; en: string }) => {
+        {subComponents?.map((item: any) => {
           return (
             <Link
-              key={comp?.hanzi}
+              key={item?.input}
               className="space-x-2 flex"
-              href={`/nmm/${comp?.hanzi}?lang=zh`}
+              href={`/nmm/${item?.input}?lang=${lang}`}
             >
-              <p>{comp?.hanzi}</p>
-              <p className="text-gray-400">{comp?.en}</p>
+              <p>{item?.input}</p>
+              <p className="text-gray-400">{item?.roman}</p>
             </Link>
           );
         })}
       </div>
     );
+  };
+  const SubComponentsView = () => {
+    if (lang === "zh") {
+      return <HanziSubComponentsView />;
+    }
+
+    if (lang === "fa") {
+      return <FarsiSubComponentView />;
+    }
+
+    return null;
   };
 
   const selected = selectedComp || selectedComp2;
@@ -86,6 +124,66 @@ export const ViewType = (props: SelectedCharacterProps) => {
   const toneLevel = selectedComp?.tone_level || selectedComp2?.tone_level;
   const initial = selectedComp?.initial || selectedComp2?.initial;
   const final = selected?.final || selectedComp2?.final;
+
+  const HskView = () => {
+    const { data } = useListHSKWordsQuery();
+    return (
+      <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-start">
+        {data
+          ?.filter((item: any) => item?.hanzi?.includes(characterId))
+          ?.map((prop: any) => {
+            return (
+              <WordItem
+                lang={lang}
+                component={prop}
+                key={JSON.stringify(prop)}
+              />
+            );
+          })}
+      </div>
+    );
+  };
+
+  if (view === "words") {
+    if (lang === "fa") {
+      return (
+        <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
+          {persianWords
+            ?.filter((item) => item?.input?.includes(characterId))
+            ?.map((prop: any) => {
+              return (
+                <WordItem
+                  lang={lang}
+                  component={prop}
+                  key={JSON.stringify(prop)}
+                />
+              );
+            })}
+        </div>
+      );
+    }
+    if (lang === "ar") {
+      return (
+        <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
+          {arabicWords
+            ?.filter((item) => item?.input?.includes(characterId))
+            ?.map((prop: any) => {
+              return (
+                <WordItem
+                  lang={lang}
+                  component={prop}
+                  key={JSON.stringify(prop)}
+                />
+              );
+            })}
+        </div>
+      );
+    }
+
+    if (lang === "zh") {
+      return <HskView />;
+    }
+  }
 
   return (
     <div
@@ -146,7 +244,7 @@ export const ViewType = (props: SelectedCharacterProps) => {
           </div>
         )}
 
-        {characterId?.length === 1 && <SubComponentsView />}
+        <SubComponentsView />
 
         <article>
           <div>

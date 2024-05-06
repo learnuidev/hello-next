@@ -14,52 +14,57 @@ export const TitleView = ({
   selectedComp2,
 }: SelectedCharacterProps) => {
   return (
-    <div
-      className={`flex md:flex-row flex-col space-x-0 md:space-x-2 font-extralight`}
-    >
-      <Link
-        target="_blank"
-        href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-          selectedChar
-        )}`}
-        className={`${color} flex items-end space-x-2 text-xl md:text-4xl`}
+    <div>
+      <div
+        className={`flex md:flex-row flex-col space-x-0 md:space-x-2 font-extralight items-end`}
       >
-        {" "}
-        <span>{selectedChar}</span>{" "}
-      </Link>
-      <Link
-        target="_blank"
-        href={`https://hanzicraft.com/character/${encodeURIComponent(
-          selectedChar
-        )}`}
-        className="flex items-end space-x-2"
-      >
-        {" "}
-        <span className="text-xs">
-          {selectedComp?.pinyin ||
-            selectedComp?.roman ||
-            selectedComp?.en ||
-            selectedComp2?.pinyin}
-        </span>
-      </Link>
-      {/* {selectedComp?.pinyin && selectedComp?.en?.length < 20 && ( */}
-      <Link
-        target="_blank"
-        href={`https://hanzicraft.com/character/${encodeURIComponent(
-          selectedChar
-        )}`}
-        className="flex items-end text-gray-400"
-      >
-        <span className="hidden md:block text-xs truncate">
-          {formatComponentName(selectedComp, 5) ||
-            formatComponentName(selectedComp2, 5)}
-        </span>
-        <span className="block md:hidden text-xs truncate">
-          {formatComponentName(selectedComp, 2) ||
-            formatComponentName(selectedComp2, 2)}
-        </span>
-      </Link>
-      {/* )} */}
+        <Link
+          target="_blank"
+          href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+            selectedChar
+          )}`}
+          className={`${color} space-x-2 text-xl md:text-4xl`}
+        >
+          {" "}
+          <span>{selectedChar}</span>{" "}
+        </Link>
+        <Link
+          target="_blank"
+          href={`https://hanzicraft.com/character/${encodeURIComponent(
+            selectedChar
+          )}`}
+        >
+          {" "}
+          <span className="text-sm">
+            {selectedComp?.pinyin ||
+              selectedComp?.roman ||
+              selectedComp?.en ||
+              selectedComp2?.pinyin}
+          </span>
+        </Link>
+        {/* {selectedComp?.pinyin && selectedComp?.en?.length < 20 && ( */}
+
+        {/* )} */}
+      </div>
+
+      <div>
+        <Link
+          target="_blank"
+          href={`https://hanzicraft.com/character/${encodeURIComponent(
+            selectedChar
+          )}`}
+          className="flex items-end text-gray-400"
+        >
+          <span className="hidden md:block text-xs truncate">
+            {formatComponentName(selectedComp, 5) ||
+              formatComponentName(selectedComp2, 5)}
+          </span>
+          <span className="block md:hidden text-xs truncate">
+            {formatComponentName(selectedComp, 2) ||
+              formatComponentName(selectedComp2, 2)}
+          </span>
+        </Link>
+      </div>
     </div>
   );
 };

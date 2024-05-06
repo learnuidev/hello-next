@@ -58,7 +58,13 @@ const PageView = ({ view }: any) => {
         <>
           <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
             {japaneseWords.map((prop: any) => {
-              return <WordItem component={prop} key={JSON.stringify(prop)} />;
+              return (
+                <WordItem
+                  lang={lang}
+                  component={prop}
+                  key={JSON.stringify(prop)}
+                />
+              );
             })}
           </div>
         </>

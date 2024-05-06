@@ -76,6 +76,7 @@ export function determineAnalysisPrompt({ language }: { language: string }) {
     case "ko":
     case "fa":
     case "ur":
+    case "ar":
       return promptNonRoman;
 
     case "es":

@@ -13,15 +13,16 @@ const updateRes = () => {
 setInterval(updateRes, 5);
 
 // 3. Function to Format Res
-const formatRes = (res) => {
+const formatRes = (res, lang = "zh") => {
   return [...new Set(res.filter((x) => x.text).map((x) => x.text))].map((x) => {
     const items = res.filter((item) => item.text === x);
     const times = items.map((item) => item.time);
     const start = Math.min(...times);
     const end = Math.max(...times);
     return {
-      hanzi: x,
-      pinyin: "",
+      input: x,
+      roman: "",
+      lang,
       en: "",
       start,
       end,

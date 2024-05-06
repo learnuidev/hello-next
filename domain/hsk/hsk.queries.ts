@@ -4,10 +4,10 @@ import { queryIds } from "./queryIds";
 import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
+import { siteConfig } from "@/lib/config";
 
 // TODO: Move this to .env
-const url =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-hsk-words";
+const url = `${siteConfig?.apiUrl}/v1/list-hsk-words`;
 
 async function listHSKWords(opts: { Authorization: string }) {
   const res = await fetch(url, {
@@ -21,7 +21,7 @@ async function listHSKWords(opts: { Authorization: string }) {
     // }),
   });
   const resp = (await res.json()) as any;
-  return resp
+  return resp;
 }
 
 export function useListHSKWordsQuery(

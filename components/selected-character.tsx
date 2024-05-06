@@ -70,19 +70,21 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
 
   return (
     <div
-      className="relative w-full px-4 md:px-12"
+      className="relative w-full"
       onKeyDown={(event) => {
         if (event.key === "Escape") {
           router.push(`/nmm${lang ? `?lang=${lang}` : ""}`);
         }
       }}
     >
-      <HeaderView {...props} />
+      <div className="px-4 md:px-12">
+        <HeaderView {...props} />
 
-      <ViewType {...props} />
+        <ViewType {...props} />
+      </div>
 
       <div className="flex w-full fixed z-50 bottom-4">
-        <div className="m-auto">
+        <div className="flex items-center w-full justify-center">
           <div className="px-8  py-2 bg-slate-900 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
             {/* <span className="absolute inset-0 overflow-hidden rounded-full">
               <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />

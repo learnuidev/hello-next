@@ -1,7 +1,6 @@
 "use client";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { create } from "zustand";
-import { nepaliConsonants } from "./data";
 
 export const useWordsStore = create(
   persist(

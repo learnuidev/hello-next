@@ -201,10 +201,11 @@ export const filterComponent = (query: string, comp: any, meta?: any) => {
 
     // console.log("PINYIN", pinyinCharacter);
     // return query?.toLowerCase() === pinyinCharacter;
+  } else {
+    return { ...comp, score: 1 };
   }
   // const pinyinCharacter = getPinyinCharacter(component);
   // console.log("PINYIN", pinyinCharacter);
-  return { ...comp, score: 1 };
 };
 
 export const filterComponents = (

@@ -45,6 +45,57 @@ export const SearchInput = () => {
 
   const handleChangeDebounced = useDebouncedCallback(handleChange, 300);
 
+  const getSearchStageOne = (query: string) => {
+    const [objective, lang] = query?.split(" ");
+
+    if (objective === "learn") {
+      if (["fa", "persian", "farsi"]?.includes(lang?.toLowerCase())) {
+        setQuery("");
+        setQuerySync("");
+        return `/nmm?lang=fa`;
+      }
+      if (
+        ["zh", "chinese", "xi's", "xis", "zhang", "jackie"]?.includes(
+          lang?.toLowerCase()
+        )
+      ) {
+        setQuery("");
+        setQuerySync("");
+        return `/nmm`;
+      }
+      if (["ar", "arabic"]?.includes(lang?.toLowerCase())) {
+        setQuery("");
+        setQuerySync("");
+        return `/nmm?lang=ar`;
+      }
+      // if (["mallu", "malayalam"]?.includes(lang?.toLowerCase())) {
+      //   return `/nmm?lang=ml`;
+      // }
+      if (["nepali"]?.includes(lang?.toLowerCase())) {
+        setQuery("");
+        setQuerySync("");
+        return `/nmm?lang=ne`;
+      }
+      if (["korean", "ko", "kim's", "kims"]?.includes(lang?.toLowerCase())) {
+        setQuery("");
+        setQuerySync("");
+        return `/nmm?lang=ko`;
+      }
+      if (
+        ["japanese", "ja", "luffys", "luffy's", "goku's", "gokus"]?.includes(
+          lang?.toLowerCase()
+        )
+      ) {
+        setQuery("");
+        setQuerySync("");
+        return `/nmm?lang=ja`;
+      }
+
+      return null;
+    }
+    return null;
+  };
+
   return (
     <input
       // autoFocus
@@ -61,9 +112,15 @@ export const SearchInput = () => {
           setQuerySync(() => "");
         }
         if (event?.keyCode === 13) {
-          router.push(`/nmm/${querySync}`);
-          setQuery(() => "");
-          setQuerySync(() => "");
+          const searchStageOne = getSearchStageOne(querySync);
+
+          if (searchStageOne) {
+            router.push(searchStageOne);
+            setQuery("");
+            setQuerySync("");
+          } else {
+            router.push(`/nmm/${querySync}`);
+          }
         }
       }}
     />

@@ -65,6 +65,8 @@ export function NmmAllComponents() {
     learnedCharacters2
   );
 
+  console.log("FILTETED STR", queryStr);
+
   return (
     <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
       {filteredComponents?.length > 0 &&

@@ -13,6 +13,7 @@ import { WordItem } from "../word-item";
 
 import { persianAlphabets } from "@/langs/persian/persian-alphabets";
 import { persianWords } from "@/langs/persian/persian-words";
+import { persianComponents } from "@/langs/persian/persian-components";
 
 const PageView = ({ view }: any) => {
   const searchParams = useSearchParams();
@@ -62,6 +63,16 @@ const PageView = ({ view }: any) => {
           </div>
         </>
       );
+    case "components":
+      return (
+        <>
+          <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-end justify-center">
+            {persianComponents.map((prop) => {
+              return <ComponentItem lang={lang} component={prop} key={prop} />;
+            })}
+          </div>
+        </>
+      );
 
     default:
       return null;
@@ -86,7 +97,7 @@ export function Persian() {
           <p className="text-[8px] p-0 m-0">alphabets</p>
         </button>
 
-        {/* <button
+        <button
           onClick={() => {
             setView("components");
           }}
@@ -96,7 +107,7 @@ export function Persian() {
         >
           <Icons.blockBrick className="text-2xl" />
           <p className="text-[8px] p-0 m-0">Components</p>
-        </button> */}
+        </button>
         <button
           onClick={() => {
             setView("words");

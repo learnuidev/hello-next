@@ -1,0 +1,1 @@
+export const persianComponents = ["نش"];

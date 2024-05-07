@@ -101,6 +101,11 @@ export const SearchInput = () => {
         return `/nmm?lang=ja`;
       }
 
+      // Spanish Support
+      if (["es", "spanish"]?.includes(lang?.toLowerCase())) {
+        return `/nmm?lang=es`;
+      }
+
       return null;
     }
     return null;
@@ -125,9 +130,9 @@ export const SearchInput = () => {
           const searchStageOne = getSearchStageOne(querySync);
 
           if (searchStageOne) {
-            router.push(searchStageOne);
             setQuery("");
             setQuerySync("");
+            router.push(searchStageOne);
           } else {
             router.push(`/nmm/${querySync}`);
           }

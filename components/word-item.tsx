@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { cn } from "@/lib/utils";
 import { formatComponentName } from "@/app/nmm/format-component-name";
+import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 
 export const WordItem = ({
   component: prop,
@@ -16,6 +17,8 @@ export const WordItem = ({
 }) => {
   const { data: characters } = useListCharactersQuery();
 
+  const addHistoryMutation = useAddHistoryMutation();
+
   const character = characters?.find(
     (char: any) => (char?.input || char?.hanzi) === (prop?.input || prop?.hanzi)
   );
@@ -24,6 +27,17 @@ export const WordItem = ({
     <Link
       href={`/nmm/${prop?.input || prop?.hanzi}?lang=${lang || prop?.lang}`}
       key={JSON.stringify(prop)}
+      onClick={() => {
+        if (!addHistoryMutation?.isLoading) {
+          addHistoryMutation.mutate({
+            // pathName: routeName,
+            hanzi: prop?.input || prop?.hanzi,
+            lang,
+            contentId: prop?.id,
+            eventType: "CONTENT_VIEWED",
+          } as any);
+        }
+      }}
       className={`${character ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-500 text-gray-200"} dark:hover:text-white p-6 flex items-center flex-col`}
     >
       <span

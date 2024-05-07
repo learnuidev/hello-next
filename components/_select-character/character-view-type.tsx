@@ -1,30 +1,20 @@
 "use client";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-
 import React from "react";
-
 import { Summary } from "../summary";
-
 import { Icons } from "../ui/icons.v2";
-
 import { GrammarAnalysis } from "../grammar-analysis";
-
 import { SelectedCharacterProps } from "./select-character.types";
-
 import { ReadModeView } from "./readmode-view";
-
 import { NormalView } from "./normal-view";
 import { AudioComponent } from "./audio-component";
-
-import { persianWords } from "@/langs/persian/persian-words";
 import { WordItem } from "../word-item";
-import { arabicWords } from "@/langs/arabic/arabic-words";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 import { SubComponentsView } from "./subcomponents-view";
-import { japaneseWords } from "@/langs/japanese/japanese-words";
-import { koreanWords } from "@/langs/korean/korean-words";
+
+import { wordsDict } from "@/langs/words-dict";
 
 const SentencesView = (props: SelectedCharacterProps) => {
   return (
@@ -82,13 +72,6 @@ export const ViewType = (props: SelectedCharacterProps) => {
     if (lang === "zh") {
       return <HskView />;
     }
-
-    const wordsDict = {
-      ar: arabicWords,
-      fa: persianWords,
-      ja: japaneseWords,
-      ko: koreanWords,
-    } as any;
 
     const words = wordsDict[lang] || [];
 

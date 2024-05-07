@@ -6,6 +6,7 @@ import { Japanese } from "@/components/japanese/japanese";
 import { Korean } from "@/components/korean/korean";
 import { Arabic } from "@/components/arabic/arabic";
 import { Persian } from "@/components/persian/persian";
+import { Spanish } from "@/components/spanish/spanish";
 
 export function NomadMethodBody({ lang }: { lang: string }) {
   if (["ne", "nep", "nepali"]?.includes(lang)) {
@@ -16,6 +17,10 @@ export function NomadMethodBody({ lang }: { lang: string }) {
   }
   if (["ko", "korean"]?.includes(lang)) {
     return <Korean />;
+  }
+
+  if (["es"]?.includes(lang)) {
+    return <Spanish />;
   }
   if (["ar"]?.includes(lang)) {
     return <Arabic />;

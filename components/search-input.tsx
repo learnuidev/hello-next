@@ -46,7 +46,7 @@ export const SearchInput = () => {
   const handleChangeDebounced = useDebouncedCallback(handleChange, 300);
 
   const getSearchStageOne = (query: string) => {
-    const [objective, lang] = query?.split(" ");
+    const [objective, lang, ...rest] = query?.split(" ");
 
     if (objective === "learn") {
       if (["fa", "persian", "farsi"]?.includes(lang?.toLowerCase())) {
@@ -55,9 +55,19 @@ export const SearchInput = () => {
         return `/nmm?lang=fa`;
       }
       if (
-        ["zh", "chinese", "xi's", "xis", "zhang", "jackie"]?.includes(
-          lang?.toLowerCase()
-        )
+        [
+          "zh",
+          "chinese",
+          "xi's",
+          "xis",
+          "zhang",
+          "zhang's",
+          "zhangs",
+          "jackie",
+          "maos",
+          "mao",
+          "mao's",
+        ]?.includes(lang?.toLowerCase())
       ) {
         setQuery("");
         setQuerySync("");

@@ -2,13 +2,22 @@ import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/sharp-solid-svg-icons";
+
+import {
+  faCheckCircle,
+  faXmark,
+  faLanguage,
+  faLightbulb,
+} from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
+import { faPlay } from "@fortawesome/sharp-solid-svg-icons/faPlay";
 import { faBowlChopsticksNoodles } from "@fortawesome/sharp-solid-svg-icons/faBowlChopsticksNoodles";
 import { faUserShakespeare } from "@fortawesome/sharp-solid-svg-icons/faUserShakespeare";
 import { faSeedling } from "@fortawesome/sharp-solid-svg-icons/faSeedling";
 // import { faXmark } from "@fortawesome/sharp-solid-svg-icons/faXmark";
-import { faXmark } from "@fortawesome/pro-light-svg-icons/faXmark";
+
 import { faMapLocationDot } from "@fortawesome/sharp-solid-svg-icons/faMapLocationDot";
 import { faMapPin } from "@fortawesome/sharp-solid-svg-icons/faMapPin";
 import { faFarm } from "@fortawesome/sharp-solid-svg-icons/faFarm";
@@ -19,7 +28,6 @@ import { faCamcorder } from "@fortawesome/sharp-solid-svg-icons/faCamcorder";
 import { faCameraMovie } from "@fortawesome/sharp-solid-svg-icons/faCameraMovie";
 import { faClapperboardPlay } from "@fortawesome/sharp-solid-svg-icons/faClapperboardPlay";
 import { faChartSimple } from "@fortawesome/sharp-solid-svg-icons/faChartSimple";
-import { faPlay } from "@fortawesome/sharp-solid-svg-icons/faPlay";
 import { faAbacus } from "@fortawesome/sharp-solid-svg-icons/faAbacus";
 import { faTrees } from "@fortawesome/sharp-solid-svg-icons/faTrees";
 import { faGameConsoleHandheld } from "@fortawesome/sharp-solid-svg-icons/faGameConsoleHandheld";
@@ -37,7 +45,6 @@ import { faMusic } from "@fortawesome/sharp-solid-svg-icons/faMusic";
 import { faFaceGrinBeamSweat } from "@fortawesome/sharp-solid-svg-icons/faFaceGrinBeamSweat";
 import { faFaceThinking } from "@fortawesome/sharp-solid-svg-icons/faFaceThinking";
 import { faHeadphones } from "@fortawesome/sharp-solid-svg-icons/faHeadphones";
-import { faLightbulb } from "@fortawesome/sharp-solid-svg-icons/faLightbulb";
 import { faProjector } from "@fortawesome/sharp-solid-svg-icons/faProjector";
 import { faMoonCloud } from "@fortawesome/sharp-solid-svg-icons/faMoonCloud";
 import { faSunHaze } from "@fortawesome/sharp-solid-svg-icons/faSunHaze";
@@ -69,6 +76,7 @@ import {
   faMountainSun,
   faFingerprint,
   faBlockBrick,
+  faGlassesRound,
   // faTableTree,
 } from "@fortawesome/pro-thin-svg-icons";
 // import { faCitrus } from "@fortawesome/sharp-solid-svg-icons";
@@ -111,4 +119,11 @@ export const Icons = {
   pinyinChart: createFAIcon(faTableTree),
   sentence: createFAIcon(faTrees),
   word: createFAIcon(faSeedling),
+  glassesRound: createFAIcon(faGlassesRound),
+  play: createFAIcon(faPlay),
+  lightbulb: createFAIcon(faLightbulb),
+  language: createFAIcon(faLanguage),
+  xMark: createFAIcon(faXmark),
+  checkCircle: createFAIcon(faCheckCircle),
+  spinner: createFAIcon(faSpinner),
 };

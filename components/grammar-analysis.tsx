@@ -5,7 +5,7 @@ import {
   useListGrammarsQuery,
 } from "@/domain/sentence/grammar.queries";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import Link from "next/link";
 import { ScrollArea } from "./ui/scroll-area";
@@ -22,11 +22,14 @@ export function GrammarAnalysis({
   onSearchGrammar?: (grammar: string) => void;
   showHeader?: boolean;
 }) {
+  const searchParams = useSearchParams();
+  const learnedLang = searchParams.get("lang") || lang;
   const { data: grammarAnalysis, isLoading: isGrammarAnalysisLoading } =
     useListGrammarsQuery(
       {
         sentenceId: contentId,
         content: contentId,
+        lang: learnedLang,
       },
       {
         enabled: Boolean(contentId),

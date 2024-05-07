@@ -44,13 +44,13 @@ const listGrammars = async (
 };
 
 export function useListGrammarsQuery(
-  params = {} as { sentenceId?: string; content: string },
+  params = {} as { sentenceId?: string; content: string; lang?: string },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery({
-    queryKey: [queryIds.listGrammars, params?.content],
+    queryKey: [queryIds.listGrammars, params?.content, params?.lang],
     queryFn: async (): Promise<ListGrammarsResponse> => {
       const response = await listGrammars(params, {
         Authorization: authUser?.jwt,

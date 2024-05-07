@@ -10,6 +10,7 @@ import {
   ListGrammarsResponse,
   useListGrammarsQuery,
 } from "@/domain/sentence/grammar.queries";
+import { useSearchParams } from "next/navigation";
 
 export const TitleView = ({
   selectedComp,
@@ -32,9 +33,18 @@ export const TitleView = ({
       }
     );
 
-  const ga = (grammarAnalysis as ListGrammarsResponse)?.grammarAnalysis;
+  const _grammarAnalysis = (grammarAnalysis as ListGrammarsResponse)
+    ?.grammarAnalysis;
 
-  const comp = ga?.find((item) => item?.input === selectedComp?.input);
+  const searchParams = useSearchParams();
+  const learnedLang = searchParams.get("lang") || "";
+
+  const resolveedEn = ["zh"]?.includes(learnedLang)
+    ? selectedComp?.pinyin ||
+      selectedComp?.roman ||
+      selectedComp?.en ||
+      selectedComp2?.pinyin
+    : _grammarAnalysis?.[0]?.roman;
 
   return (
     <div>
@@ -58,13 +68,7 @@ export const TitleView = ({
           )}`}
         >
           {" "}
-          <span className="text-sm">
-            {comp?.roman ||
-              selectedComp?.pinyin ||
-              selectedComp?.roman ||
-              selectedComp?.en ||
-              selectedComp2?.pinyin}
-          </span>
+          <span className="text-sm">{resolveedEn}</span>
         </Link>
         {/* {selectedComp?.pinyin && selectedComp?.en?.length < 20 && ( */}
 

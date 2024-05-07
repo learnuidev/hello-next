@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { cn } from "@/lib/utils";
+import { formatComponentName } from "@/app/nmm/format-component-name";
 
 export const WordItem = ({
   component: prop,
@@ -40,7 +41,10 @@ export const WordItem = ({
           "yo"}
       </span>
       <span className="text-2xl"> {prop.input || prop?.hanzi}</span>
-      <span className="block text-sm"> {character?.en || prop.en}</span>
+      <span className="block text-sm">
+        {" "}
+        {formatComponentName({ en: character?.en || prop.en }, 2)}
+      </span>
     </Link>
   );
 };

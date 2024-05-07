@@ -24,9 +24,9 @@ export const persianAlphabets = [
     lang: "fa",
   },
   {
-    en: "E",
+    en: "tha",
     input: "ث",
-    roman: "Se",
+    roman: "tha",
     lang: "fa",
   },
   {

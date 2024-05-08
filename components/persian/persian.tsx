@@ -14,6 +14,34 @@ import { WordItem } from "../word-item";
 import { persianAlphabets } from "@/langs/persian/persian-alphabets";
 import { persianWords } from "@/langs/persian/persian-words";
 import { persianComponents } from "@/langs/persian/persian-components";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+
+const useIsLearned = ({ characterId }: { characterId: string }) => {
+  const { data } = useListCharactersQuery();
+
+  return {
+    data: data?.find((item: any) => item?.input === characterId),
+  };
+};
+
+const AlphabetItem = ({ prop, lang }: any) => {
+  const { data } = useIsLearned({ characterId: prop?.input });
+  return (
+    <Link
+      key={JSON.stringify(prop)}
+      href={lang ? `/nmm/${prop.input}?lang=${lang}` : `/nmm/${prop.input}`}
+      className={`${data ? "dark:text-white" : "dark:text-gray-500 text-gray-200"} dark:hover:text-white p-6 flex items-center flex-col lowercase`}
+    >
+      <span
+        className={`block text-sm ${data ? "dark:text-slate-300" : "dark:text-slate-600"}`}
+      >
+        {prop?.roman}
+      </span>
+
+      <span className="text-4xl"> {prop.input}</span>
+    </Link>
+  );
+};
 
 const PageView = ({ view }: any) => {
   const searchParams = useSearchParams();
@@ -21,6 +49,15 @@ const PageView = ({ view }: any) => {
 
   switch (view) {
     case "alphabets":
+      return (
+        <>
+          <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-center justify-center">
+            {persianAlphabets.map((prop) => {
+              return <AlphabetItem lang={lang} prop={prop} key={prop?.input} />;
+            })}
+          </div>
+        </>
+      );
       return (
         <>
           <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-center justify-center">

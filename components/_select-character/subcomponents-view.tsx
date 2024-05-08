@@ -79,7 +79,7 @@ export const SubComponentsView = (props: SelectedCharacterProps) => {
     return <HanziSubComponentsView {...props} />;
   }
 
-  if (props.lang === "fa") {
+  if (props.lang === "fa" && props?.characterId?.length > 1) {
     return <FarsiSubComponentView {...props} />;
   }
 

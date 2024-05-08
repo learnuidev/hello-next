@@ -99,37 +99,37 @@ export const ViewType = (props: SelectedCharacterProps) => {
       }
     >
       <div className={"row-span-2 overflow-hidden col-span-1"}>
-        {selectedChar?.length > 3 && (
-          <div className="flex items-end justify-start space-x-4">
-            <div className="flex flex-col items-start space-y-2">
-              {!["es", "it", "ro", "fr"]?.includes(selectedComp?.lang) && (
-                <h2 className="text-gray-400 font-light">
-                  {selectedComp?.pinyin || selectedComp?.roman}
-                </h2>
-              )}
-              <h1 className="text-2xl">
-                {selectedComp?.hanzi || selectedChar}
-              </h1>
+        {/* {selectedChar?.length > 3 && ( */}
+        <div className="flex items-center justify-between my-8">
+          <div className="flex flex-col items-start">
+            <h2 className="text-gray-400 font-extralight">
+              {selectedComp?.pinyin || selectedComp?.roman}
+            </h2>
 
-              <h2 className="text-gray-500 font-light">{selectedComp?.en}</h2>
-            </div>
+            <h1 className="text-4xl my-0 py-0">
+              {selectedComp?.hanzi || selectedChar}
+            </h1>
 
-            {selectedComp?.audio ? (
-              <AudioComponent currentPhrase={selectedComp} />
-            ) : null}
+            <h2 className="text-gray-500 font-light">{selectedComp?.en}</h2>
           </div>
-        )}
+
+          {level && (
+            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+              <Icons.earthAsia />
+              <p>{level}</p>
+            </div>
+          )}
+
+          {selectedComp?.audio ? (
+            <AudioComponent currentPhrase={selectedComp} />
+          ) : null}
+        </div>
+        {/* )} */}
 
         {/* <p>{JSON.stringify(selectedComp2, null, 2)}</p> */}
 
         {selected && (
-          <div className="font-light flex space-x-4 items-center text-gray-400 mb-8">
-            {level && (
-              <div className="flex space-x-2 items-center">
-                <Icons.earthAsia />
-                <p>{level}</p>
-              </div>
-            )}
+          <div className="font-light flex space-x-4 items-center text-gray-400 mb-2">
             {toneLevel && (
               <div className="flex space-x-2 items-center">
                 <Icons.musicNote />

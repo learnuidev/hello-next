@@ -166,7 +166,7 @@ export const SearchInput = () => {
         setQuerySync(event?.target?.value);
         handleChangeDebounced(event?.target.value);
       }}
-      // value={querySync}
+      value={querySync}
       onKeyDown={(event) => {
         if (event.key === "Escape") {
           setQuery(() => "");

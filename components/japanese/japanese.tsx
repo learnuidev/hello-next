@@ -12,6 +12,7 @@ import { japaneseComponents } from "@/langs/japanese/japanese-components";
 import { japaneseWords } from "@/langs/japanese/japanese-words";
 import { ComponentItem } from "../component-item";
 import { WordItem } from "../word-item";
+import { WordsList } from "../words-list";
 
 const PageView = ({ view }: any) => {
   const lang = "ja";
@@ -54,6 +55,7 @@ const PageView = ({ view }: any) => {
         </>
       );
     case "words":
+      return <WordsList words={japaneseWords} lang={lang} />;
       return (
         <>
           <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">

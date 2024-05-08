@@ -15,6 +15,7 @@ import { WordItem } from "../word-item";
 import { arabicAlphabets } from "@/langs/arabic/arabic-alphabets";
 import { arabicWords } from "@/langs/arabic/arabic-words";
 import { arabicComponents } from "@/langs/arabic/arabic-components";
+import { WordsList } from "../words-list";
 
 const PageView = ({ view }: any) => {
   const searchParams = useSearchParams();
@@ -58,21 +59,7 @@ const PageView = ({ view }: any) => {
         </>
       );
     case "words":
-      return (
-        <>
-          <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
-            {arabicWords.map((prop: any) => {
-              return (
-                <WordItem
-                  lang={lang}
-                  component={prop}
-                  key={JSON.stringify(prop)}
-                />
-              );
-            })}
-          </div>
-        </>
-      );
+      return <WordsList words={arabicWords} lang={lang} />;
 
     default:
       return null;

@@ -15,6 +15,7 @@ import { persianAlphabets } from "@/langs/persian/persian-alphabets";
 import { persianWords } from "@/langs/persian/persian-words";
 import { persianComponents } from "@/langs/persian/persian-components";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { WordsList } from "../words-list";
 
 const useIsLearned = ({ characterId }: { characterId: string }) => {
   const { data } = useListCharactersQuery();
@@ -85,6 +86,7 @@ const PageView = ({ view }: any) => {
       );
 
     case "words":
+      return <WordsList words={persianWords} lang={lang} />;
       return (
         <>
           <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">

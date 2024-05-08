@@ -12,6 +12,7 @@ import { Icons } from "../ui/icons.v2";
 import { koreanWords } from "@/langs/korean/korean-words";
 import { ComponentItem } from "../component-item";
 import { WordItem } from "../word-item";
+import { WordsList } from "../words-list";
 
 const PageView = ({ view }: any) => {
   const searchParams = useSearchParams();
@@ -55,6 +56,7 @@ const PageView = ({ view }: any) => {
         </>
       );
     case "words":
+      return <WordsList words={koreanWords} lang={lang} />;
       return (
         <>
           <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">

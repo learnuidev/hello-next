@@ -4,7 +4,7 @@ import { WordItem } from "./word-item";
 export const WordsList = ({ words, lang }: any) => {
   const query = useSearchQueryStore((state) => state.query);
   return (
-    <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
+    <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-start">
       {words
         ?.filter((prop: any) => {
           if (!query) {

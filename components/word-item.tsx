@@ -38,7 +38,7 @@ export const WordItem = ({
           } as any);
         }
       }}
-      className={`${character ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-500 text-gray-200"} dark:hover:text-white p-6 flex items-center flex-col`}
+      className={`${character ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-600 text-gray-600"} dark:hover:text-white p-6 flex items-center flex-col`}
     >
       <span
         className={cn(

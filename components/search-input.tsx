@@ -48,6 +48,21 @@ export const SearchInput = () => {
   const getSearchStageOne = (query: string) => {
     const [objective, lang, ...rest] = query?.split(" ");
 
+    // Navigation
+    const pages = {
+      timeline: "timeline",
+      t: "timeline",
+      tl: "timeline",
+    } as any;
+
+    const page = pages[objective?.toLowerCase()];
+
+    if (page) {
+      setQuery("");
+      setQuerySync("");
+      return `/${page}`;
+    }
+
     const shortCutLangs = {
       ko: "ko",
       korean: "ko",
@@ -151,7 +166,7 @@ export const SearchInput = () => {
         setQuerySync(event?.target?.value);
         handleChangeDebounced(event?.target.value);
       }}
-      value={querySync}
+      // value={querySync}
       onKeyDown={(event) => {
         if (event.key === "Escape") {
           setQuery(() => "");

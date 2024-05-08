@@ -22,7 +22,7 @@ export const NormalView = (props: SelectedCharacterProps) => {
   return (
     <div className="w-full">
       {/* <div>{JSON.stringify(sentences, null, 2)}</div>; */}
-      <div className="flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
+      <div className="flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap font-extralight">
         {uniqueAnswerIds?.map((id: any, idx: number) => {
           const char = answerMap?.[id] || {};
 

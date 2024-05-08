@@ -100,13 +100,13 @@ export const ViewType = (props: SelectedCharacterProps) => {
     >
       <div className={"row-span-2 overflow-hidden col-span-1"}>
         {/* {selectedChar?.length > 3 && ( */}
-        <div className="flex items-center justify-between my-8">
-          <div className="flex flex-col items-start">
+        <div className="flex items-center justify-between mb-8 mt-4">
+          <div className="flex flex-col items-start space-y-2">
             <h2 className="text-gray-400 font-extralight">
               {selectedComp?.pinyin || selectedComp?.roman}
             </h2>
 
-            <h1 className="text-4xl my-0 py-0">
+            <h1 className="text-4xl my-0 py-0 font-extralight">
               {selectedComp?.hanzi || selectedChar}
             </h1>
 

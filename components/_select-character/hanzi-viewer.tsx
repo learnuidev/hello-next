@@ -190,7 +190,7 @@ export const HanziViewer = (props: any) => {
             {currentPhrase?.pinyin || currentPhrase?.roman}
           </span>
         </Link>
-        <span className="text-gray-500 dark:text-gray-300 text-md">
+        <span className="text-gray-500 dark:text-gray-300 text-lg">
           {(currentPhrase?.input
             ? currentPhrase?.input.split(" ")
             : currentPhrase?.hanzi?.split("")
@@ -222,9 +222,9 @@ export const HanziViewer = (props: any) => {
                   );
                 }}
                 className={`${
-                  selectedChar === val
-                    ? color
-                    : "text-gray-400 dark:text-gray-300"
+                  selectedChar?.toLowerCase() === val?.toLowerCase()
+                    ? `${color} font-normal`
+                    : "text-gray-300 dark:text-gray-300"
                 }`}
               >
                 {val}
@@ -233,8 +233,7 @@ export const HanziViewer = (props: any) => {
             );
           })}
         </span>
-        {/* <span className="text-2xl text-gray-300">{currentPhrase?.input}</span> */}
-        <span className="text-sm text-gray-400">
+        <span className="text-[16px] text-gray-500">
           {currentPhrase?.en || currentPhrase?.title}
         </span>
         {!currentPhrase?.hanzi && false && (

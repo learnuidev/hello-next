@@ -2,7 +2,13 @@ export const persianAlphabets = [
   {
     en: "A",
     input: "ا",
-    roman: "Aleph",
+    roman: "a",
+    lang: "fa",
+  },
+  {
+    en: "AA",
+    input: "آ",
+    roman: "aa",
     lang: "fa",
   },
   {

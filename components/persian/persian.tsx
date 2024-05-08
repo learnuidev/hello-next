@@ -33,7 +33,7 @@ const PageView = ({ view }: any) => {
                       ? `/nmm/${prop.input}?lang=${lang}`
                       : `/nmm/${prop.input}`
                   }
-                  className={`${"dark:text-gray-500 text-gray-200"} dark:hover:text-white p-6 flex items-center flex-col`}
+                  className={`${"dark:text-gray-500 text-gray-200"} dark:hover:text-white p-6 flex items-center flex-col lowercase`}
                 >
                   <span className={`block text-sm dark:text-slate-600`}>
                     {prop?.roman}

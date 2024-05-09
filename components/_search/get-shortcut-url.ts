@@ -22,6 +22,11 @@ export const getShortCutUrl = (query: string) => {
     nepali: "ne",
     ar: "ar",
     arabic: "ar",
+    v: "v",
+    vi: "vi",
+    viet: "vi",
+    vietnam: "vi",
+    vietnamese: "vi",
   } as any;
 
   const shortCutLang = shortCutLangs[objective?.toLowerCase()];

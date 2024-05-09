@@ -21,7 +21,7 @@ export const SearchInput = () => {
     setQuery(() => value);
   };
 
-  const handleChangeDebounced = useDebouncedCallback(handleChange, 200);
+  const handleChangeDebounced = useDebouncedCallback(handleChange, 300);
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuerySync(event?.target?.value);

@@ -86,8 +86,7 @@ export const persianAlphabets = [
   {
     en: "N",
     input: "ژ",
-    // roman: "Zhe",
-    roman: "ja",
+    roman: "zhe / ja",
     lang: "fa",
   },
   {

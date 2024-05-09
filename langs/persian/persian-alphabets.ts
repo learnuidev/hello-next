@@ -182,7 +182,7 @@ export const persianAlphabets = [
   {
     en: "AD",
     input: "و",
-    roman: "wa / o / oo / u",
+    roman: "v/wa / oo / u",
     lang: "fa",
   },
   {

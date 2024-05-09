@@ -77,6 +77,7 @@ export function determineAnalysisPrompt({ language }: { language: string }) {
     case "fa":
     case "ur":
     case "ar":
+    case "vi":
       return promptNonRoman;
 
     case "es":
@@ -86,8 +87,7 @@ export function determineAnalysisPrompt({ language }: { language: string }) {
       return promptRoman;
 
     default: {
-      const prompt = universalTemplate.replace("{{lang}}", language);
-      return prompt;
+      return promptNonRoman;
     }
   }
 }

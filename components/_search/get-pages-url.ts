@@ -8,6 +8,8 @@ export const getPagesUrl = (query: string) => {
     timeline: timelineUrl,
     t: timelineUrl,
     tl: timelineUrl,
+    h: homePageUrl,
+    hm: homePageUrl,
     home: homePageUrl,
   } as any;
 

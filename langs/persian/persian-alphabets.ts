@@ -92,25 +92,25 @@ export const persianAlphabets = [
   {
     en: "O",
     input: "س",
-    roman: "Sin",
+    roman: "Sin / s",
     lang: "fa",
   },
   {
     en: "P",
     input: "ش",
-    roman: "Shin",
+    roman: "Shin / sh",
     lang: "fa",
   },
   {
     en: "Q",
     input: "ص",
-    roman: "Sad",
+    roman: "Sad / sa",
     lang: "fa",
   },
   {
     en: "R",
     input: "ض",
-    roman: "Zad",
+    roman: "Zad / za",
     lang: "fa",
   },
   {
@@ -128,55 +128,55 @@ export const persianAlphabets = [
   {
     en: "U",
     input: "ع",
-    roman: "Ain",
+    roman: "Ain / a",
     lang: "fa",
   },
   {
     en: "V",
     input: "غ",
-    roman: "Ghayn",
+    roman: "Ghayn / gha",
     lang: "fa",
   },
   {
     en: "W",
     input: "ف",
-    roman: "Fe",
+    roman: "Fe / fa",
     lang: "fa",
   },
   {
     en: "X",
     input: "ق",
-    roman: "Qaf",
+    roman: "Qaf / ka",
     lang: "fa",
   },
   {
     en: "Y",
     input: "ک",
-    roman: "Kaf",
+    roman: "Kaf / ka",
     lang: "fa",
   },
   {
     en: "Z",
     input: "گ",
-    roman: "Gaf",
+    roman: "Gaf / ga",
     lang: "fa",
   },
   {
     en: "AA",
     input: "ل",
-    roman: "Lam",
+    roman: "Lam / la",
     lang: "fa",
   },
   {
     en: "AB",
     input: "م",
-    roman: "Mim",
+    roman: "Mim / ma",
     lang: "fa",
   },
   {
     en: "AC",
     input: "ن",
-    roman: "Nun",
+    roman: "Nun / na",
     lang: "fa",
   },
   {
@@ -194,7 +194,7 @@ export const persianAlphabets = [
   {
     en: "AF",
     input: "ی",
-    roman: "Ye",
+    roman: "Ye / ya",
     lang: "fa",
   },
 ];

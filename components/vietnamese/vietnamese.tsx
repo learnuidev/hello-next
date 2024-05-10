@@ -11,13 +11,14 @@ import { Icons } from "../ui/icons.v2";
 import { ComponentItem } from "../component-item";
 import { WordItem } from "../word-item";
 
-import { persianAlphabets } from "@/langs/persian/persian-alphabets";
-import { persianWords } from "@/langs/persian/persian-words";
+// import { persianAlphabets } from "@/langs/persian/persian-alphabets";
+// import { persianWords } from "@/langs/persian/persian-words";
 import { persianComponents } from "@/langs/persian/persian-components";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { WordsList } from "../words-list";
 import { vietnameseWords } from "@/langs/vietnamese/vietnamese-words";
 import { vietnameseComponents } from "@/langs/vietnamese/vietnamese-components";
+import { vietnameseAlphabets } from "@/langs/vietnamese/vietnamese-alphabets";
 
 const useIsLearned = ({ characterId }: { characterId: string }) => {
   const { data } = useListCharactersQuery();
@@ -55,7 +56,7 @@ const PageView = ({ view }: any) => {
       return (
         <>
           <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-center justify-center">
-            {persianAlphabets.map((prop) => {
+            {vietnameseAlphabets.map((prop) => {
               return <AlphabetItem lang={lang} prop={prop} key={prop?.input} />;
             })}
           </div>
@@ -64,7 +65,7 @@ const PageView = ({ view }: any) => {
       return (
         <>
           <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-center justify-center">
-            {persianAlphabets.map((prop) => {
+            {vietnameseAlphabets.map((prop) => {
               return (
                 <Link
                   key={JSON.stringify(prop)}
@@ -92,7 +93,7 @@ const PageView = ({ view }: any) => {
       return (
         <>
           <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
-            {persianWords.map((prop: any) => {
+            {vietnameseWords.map((prop: any) => {
               return (
                 <WordItem
                   lang={lang}

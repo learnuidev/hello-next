@@ -122,7 +122,7 @@ const PageView = ({ view }: any) => {
 };
 
 export function Vietnamese() {
-  const [view, setView] = useState("words");
+  const [view, setView] = useState("alphabets");
 
   return (
     <div className="grow">

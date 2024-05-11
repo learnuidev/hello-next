@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Page() {
+export function StepComponent() {
   let [step, setStep] = useState(1);
 
   return (

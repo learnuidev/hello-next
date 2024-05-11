@@ -44,7 +44,7 @@ export function Email() {
   return (
     <div className="flex h-screen flex-col items-center justify-center overscroll-y-contain bg-gradient-to-br from-slate-700 to-slate-900 py-8 px-6 text-slate-600">
       <div className="mx-auto flex w-full max-w-3xl flex-1 overflow-hidden rounded-2xl bg-white ">
-        <div className="flex w-[45%] flex-col bg-slate-50 py-2">
+        <div className="flex flex-col bg-slate-50 py-2">
           <div className="border-b px-5">
             <div className="flex justify-between py-2 text-right">
               <button
@@ -105,18 +105,6 @@ export function Email() {
               ))}
             </AnimatePresence>
           </ul>
-        </div>
-        <div className="flex-1 overflow-y-scroll border-l px-8 py-8">
-          <h1 className="h-8 rounded bg-slate-100 text-2xl font-bold" />
-          <div className="mt-8 space-y-6">
-            {[...(Array(9).keys() as any)].map((i) => (
-              <div key={i} className="space-y-2 text-sm">
-                <p className="h-4 w-5/6 rounded bg-slate-100" />
-                <p className="h-4 rounded bg-slate-100" />
-                <p className="h-4 w-4/6 rounded bg-slate-100" />
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>

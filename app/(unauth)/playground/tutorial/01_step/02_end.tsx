@@ -5,7 +5,7 @@ export function StepComponent() {
   let [step, setStep] = useState(1);
 
   return (
-    <div className="mx-auto max-h-full w-full max-w-md rounded-lg bg-white shadow">
+    <div className="my-32 mx-auto max-h-full w-full max-w-md rounded-lg bg-white shadow">
       <div className="flex justify-between rounded p-8">
         <Step step={1} currentStep={step} />
         <Step step={2} currentStep={step} />
@@ -71,7 +71,7 @@ function Step({ step, currentStep }: any) {
           type: "tween",
           ease: "circOut",
         }}
-        className="absolute inset-0 rounded-full bg-blue-500"
+        className={`absolute inset-0 rounded-full ${status === "complete" ? "bg-blue-500" : "bg-blue-200"}`}
       ></motion.div>
 
       <motion.div

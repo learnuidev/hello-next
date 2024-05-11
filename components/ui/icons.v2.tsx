@@ -9,6 +9,7 @@ import {
   faXmark,
   faLanguage,
   faLightbulb,
+  faMailboxFlagUp,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -126,4 +127,5 @@ export const Icons = {
   xMark: createFAIcon(faXmark),
   checkCircle: createFAIcon(faCheckCircle),
   spinner: createFAIcon(faSpinner),
+  mailbox: createFAIcon(faMailboxFlagUp),
 };

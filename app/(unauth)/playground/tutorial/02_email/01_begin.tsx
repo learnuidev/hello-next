@@ -1,5 +1,6 @@
+import { Icons } from "@/components/ui/icons.v2";
 import { useState } from "react";
-import * as Icons from "@heroicons/react/outline";
+// import * as Icons from "@heroicons/react/outline";
 
 let titles = [
   ["Apple's newest iPhone is here", "Watch our July event"],
@@ -13,15 +14,15 @@ let titles = [
   ["React Hawaii is here!", "Time for fun in the sun"],
 ];
 
-export default function Email() {
-  const [messages, setMessages] = useState([...Array(9).keys()]);
+export function Email() {
+  const [messages, setMessages] = useState([...(Array(9).keys() as any)]);
 
   function addMessage() {
     let newId = (messages.at(-1) || 0) + 1;
     setMessages((messages) => [...messages, newId]);
   }
 
-  function archiveMessage(mid) {
+  function archiveMessage(mid: any) {
     setMessages((messages) => messages.filter((id) => id !== mid));
   }
 
@@ -35,7 +36,7 @@ export default function Email() {
                 onClick={addMessage}
                 className="-mx-2 rounded px-2 py-1 text-slate-400 hover:text-slate-500 active:bg-slate-200"
               >
-                <Icons.MailIcon className="h-5 w-5 " />
+                <Icons.mailbox className="h-5 w-5 " />
               </button>
             </div>
           </div>
@@ -60,7 +61,7 @@ export default function Email() {
         <div className="flex-1 overflow-y-scroll border-l px-8 py-8">
           <h1 className="h-8 rounded bg-slate-100 text-2xl font-bold" />
           <div className="mt-8 space-y-6">
-            {[...Array(9).keys()].map((i) => (
+            {[...(Array(9).keys() as any)].map((i) => (
               <div key={i} className="space-y-2 text-sm">
                 <p className="h-4 w-5/6 rounded bg-slate-100" />
                 <p className="h-4 rounded bg-slate-100" />

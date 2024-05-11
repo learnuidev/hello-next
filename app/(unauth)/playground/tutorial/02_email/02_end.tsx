@@ -15,6 +15,9 @@ let titles = [
   ["React Hawaii is here!", "Time for fun in the sun"],
 ];
 
+const base = 4;
+const t = (delta: number) => delta * base;
+
 export function Email() {
   const [messages, setMessages] = useState([...(Array(9).keys() as any)]);
   const [selectedMessages, setSelectedMessages] = useState<any>([]);
@@ -66,20 +69,33 @@ export function Email() {
               {[...messages].reverse().map((mid) => (
                 <motion.li
                   initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
+                  animate={{
+                    height: "auto",
+                    opacity: 1,
+                    transition: {
+                      //   type: "spring",
+                      //   bounce: 0.3,
+                      //   opacity: { delay: t(0.025) },
+                    },
+                  }}
                   exit={{ opacity: 0, height: 0 }}
-                  transition={{ opacity: { duration: 0.2 } }}
+                  transition={{
+                    duration: t(0.1),
+                    // type: "spring",
+                    // bounce: 0,
+                    opacity: { duration: t(0.01) },
+                  }}
                   key={mid}
                   className="relative"
                 >
-                  <div className="py-0.5">
+                  <div className="transition">
                     <button
                       onClick={() => toggleMessage(mid)}
                       className={`${
                         selectedMessages.includes(mid)
                           ? "bg-blue-500"
                           : "hover:bg-slate-200"
-                      } block w-full cursor-pointer truncate rounded py-3 px-3 text-left `}
+                      } block w-full cursor-pointer truncate rounded py-3 px-3 text-left`}
                     >
                       <p
                         className={`${

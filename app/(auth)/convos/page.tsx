@@ -23,11 +23,14 @@ import { NewConvo } from "./new-convo";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { HoverEffect } from "@/components/hover-effect";
 import { useSearchQueryStore } from "@/components/search/state";
+import { useListConversationsQuery } from "@/domain/conversation/use-list-conversations-query";
 
 type ContentType = { title: string; id: string; transcriptions?: any };
 
 function ContentsList() {
   const { data: contents } = useListContentsQuery();
+
+  const { data: conversations } = useListConversationsQuery();
 
   const query = useSearchQueryStore((state) => state.query);
 
@@ -55,9 +58,22 @@ function ContentsList() {
           };
         })
     : [];
+
+  console.log("CONVOS", conversations);
+
+  // return (
+  //   <div className="text-white max-w-5xl mx-auto px-8">
+  //     <code>
+  //       <pre>{JSON.stringify(conversations, null, 2)}</pre>
+  //     </code>
+  //   </div>
+  // );
+
   return (
     <div className="max-w-5xl mx-auto px-8">
-      {projects?.length > 0 && <HoverEffect items={projects} />}
+      {projects?.length > 0 && (
+        <HoverEffect items={[...((conversations || []) as any), ...projects]} />
+      )}
     </div>
   );
 }

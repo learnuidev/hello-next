@@ -7,7 +7,12 @@ import Link from "next/link";
 
 import { useState } from "react";
 
-import { useParams, usePathname, useRouter } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { NavBar } from "@/components/navbar";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
@@ -21,6 +26,7 @@ import { useViewModeStore } from "../new-convo/use-viewmode-store";
 import { PlusIcon } from "@/components/ui/icons";
 import { NewConvo } from "../new-convo";
 import { useListContentsQuery } from "@/domain/content/content.queries";
+import ConvoItem from "./convo-item";
 
 function formatPercentage(number: number) {
   return Intl.NumberFormat("en-GB", {
@@ -118,6 +124,7 @@ export default function Convos() {
   };
 
   const lessonId = params["content-id"];
+  const searchParams = useSearchParams();
 
   const viewMode = useViewModeStore((state: any) => state.viewMode);
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
@@ -143,6 +150,12 @@ export default function Convos() {
     if (isTocHidden) {
     }
   };
+
+  const contentType = searchParams.get("type");
+
+  if (contentType === "conversation") {
+    return <ConvoItem />;
+  }
 
   return (
     <main className="">

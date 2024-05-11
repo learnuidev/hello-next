@@ -10,6 +10,7 @@ import {
   faLanguage,
   faLightbulb,
   faMailboxFlagUp,
+  faBoxArchive,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -128,4 +129,5 @@ export const Icons = {
   checkCircle: createFAIcon(faCheckCircle),
   spinner: createFAIcon(faSpinner),
   mailbox: createFAIcon(faMailboxFlagUp),
+  archive: createFAIcon(faBoxArchive),
 };

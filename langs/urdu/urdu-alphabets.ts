@@ -134,7 +134,7 @@ export const urduAlphabets = [
   {
     en: "ain",
     input: "ع",
-    roman: "'",
+    roman: "ain",
     lang: "ur",
   },
   {

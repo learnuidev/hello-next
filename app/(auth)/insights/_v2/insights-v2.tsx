@@ -1,5 +1,7 @@
 "use client";
 
+import { groupBy } from "ramda";
+
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import {
   VictoryChart,
@@ -36,38 +38,17 @@ const humanLangs = {
   vi: "Vietnamese",
 } as any;
 
-// const dataA = [
-//   { x: "Personal Drones", y: 57 },
-//   { x: "Smart Thermostat", y: 40 },
-//   { x: "Television", y: 38 },
-//   { x: "Smartwatch", y: 37 },
-//   { x: "Fitness Monitor", y: 25 },
-//   { x: "Tablet", y: 19 },
-//   { x: "Camera", y: 15 },
-//   { x: "Laptop", y: 13 },
-//   { x: "Phone", y: 12 },
-// ];
-
-// const dataB = dataA.map((point) => {
-//   const y = Math.round(point.y + 3 * (Math.random() - 0.5));
-//   return { ...point, y };
-// });
-
 const width = 400;
 const height = 400;
 
 export const InsightsV2 = () => {
   const { data: learnedCharacters } = useListCharactersQuery();
 
-  const grouped = Object.groupBy(
-    learnedCharacters || [],
-    (item: any) => item?.lang
-  );
+  const grouped = groupBy((item: any) => item?.lang)(learnedCharacters || []);
 
   const uniqueLangs = [
     ...(new Set(learnedCharacters?.map((x: any) => x.lang)) as any),
   ];
-  //   .filter((x) => ["zh", "fa", "hi", "ne"]?.includes(x));
 
   const dataA = uniqueLangs?.map((lang) => {
     const x = humanLangs[lang] || lang;
@@ -78,14 +59,6 @@ export const InsightsV2 = () => {
       y: ((y?.length * 1) / 3050) * 100,
     };
   });
-  // .filter((x) => x?.y > 2);
-
-  const dataB = dataA.map((point: any) => {
-    const y = Math.round(point.y + 3 * (Math.random() - 0.5));
-    return { ...point, y };
-  });
-
-  console.log("DATA", dataA);
 
   const style = {
     data: { fill: "tomato" },
@@ -101,21 +74,35 @@ export const InsightsV2 = () => {
         <div className="w-full">
           <VictoryChart
             domain={{ y: [0, 100] }}
-            // height={400}
-            // width={400}
             domainPadding={{ x: 0, y: 0 }}
-            // domainPadding={{ x: 5, y: [0, 20] }}
             scale={{ x: "time" }}
             horizontal
           >
             <VictoryAxis
               style={{
-                // axis: { stroke: "#756f6a" },
-                // axisLabel: { fontSize: 20, padding: 30 },
-                // grid: { stroke: ({ tick }) => (tick > 0.5 ? "red" : "grey") },
-                // ticks: { stroke: "grey", size: 5 },
                 tickLabels: { fontSize: 5, fill: "white" },
               }}
+              events={[
+                {
+                  target: "tickLabels",
+                  //   mutation: () => {},
+                  eventHandlers: {
+                    onClick: (data) => {
+                      //   alert("YO", data);
+                      return [
+                        {
+                          target: "labels",
+                          mutation: (props) => {
+                            return props.text === "clicked"
+                              ? null
+                              : { text: "clicked" };
+                          },
+                        },
+                      ];
+                    },
+                  },
+                },
+              ]}
             />
             <VictoryBar
               //   padding={20}
@@ -123,6 +110,26 @@ export const InsightsV2 = () => {
               dataComponent={<Bar />}
               style={style}
               data={dataA}
+              events={[
+                {
+                  target: "data",
+                  eventHandlers: {
+                    onClick: (data) => {
+                      alert("YO");
+                      return [
+                        {
+                          target: "labels",
+                          mutation: (props) => {
+                            return props.text === "clicked"
+                              ? null
+                              : { text: "clicked" };
+                          },
+                        },
+                      ];
+                    },
+                  },
+                },
+              ]}
             />
           </VictoryChart>
         </div>

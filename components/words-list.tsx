@@ -13,6 +13,7 @@ export const WordsList = ({ words, lang }: any) => {
 
           return prop?.en?.toLowerCase()?.includes(query?.toLowerCase());
         })
+        ?.sort((a: any, b: any) => a?.input?.length - b?.input?.length)
         .map((prop: any) => {
           return (
             <WordItem lang={lang} component={prop} key={JSON.stringify(prop)} />

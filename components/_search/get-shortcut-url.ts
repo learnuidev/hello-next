@@ -27,6 +27,8 @@ export const getShortCutUrl = (query: string) => {
     viet: "vi",
     vietnam: "vi",
     vietnamese: "vi",
+    ur: "ur",
+    urdu: "ur",
   } as any;
 
   const shortCutLang = shortCutLangs[objective?.toLowerCase()];

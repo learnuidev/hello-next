@@ -1,3 +1,5 @@
+"use client";
+
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import {
   VictoryChart,

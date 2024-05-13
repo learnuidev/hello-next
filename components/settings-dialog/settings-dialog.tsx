@@ -2,6 +2,9 @@ import { Fragment, useState, useEffect, useCallback, useContext } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { Button } from "@/components/ui/button";
+
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Dialog,
   DialogContent,
@@ -12,6 +15,17 @@ import {
 import { useSettingsDialogState } from "./settings-dialog.state";
 import { Icons } from "../ui/icons.v2";
 import { cn } from "@/lib/utils";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "../input";
+import { Checkbox } from "../ui/checkbox";
 
 export function DialogDemo({
   isOpen,
@@ -30,11 +44,13 @@ export function DialogDemo({
         onClick={() => {
           closeSettings();
         }}
-        className="sm:max-w-4xl"
+        className="sm:max-w-2xl border-gray-900 bg-black"
       >
-        <DialogHeader>
+        {/* <DialogHeader className="mb-0 pb-0 flex">
           <DialogTitle>Accounts & Settings</DialogTitle>
-        </DialogHeader>
+        </DialogHeader> */}
+
+        {/* <h1 className="mb-0">Accounts & Settings</h1> */}
         <div>
           <Tabs
             onValueChange={(value) => {
@@ -45,6 +61,16 @@ export function DialogDemo({
             className="px-0 mx-0"
           >
             <TabsList className="px-0 mx-0 space-x-4 md:space-x-8">
+              <TabsTrigger
+                className={cn(
+                  "px-0 mx-0 space-x-2",
+                  tab === "profile" ? "text-white" : "text-gray-500",
+                  "transition"
+                )}
+                value="profile"
+              >
+                <Icons.user /> <span>Profile</span>
+              </TabsTrigger>
               <TabsTrigger
                 className={cn(
                   "px-0 mx-0 space-x-2",
@@ -66,8 +92,84 @@ export function DialogDemo({
                 <Icons.verticalStack /> <span>Tracking</span>
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="account">Accounts and Credentails</TabsContent>
-            <TabsContent value="tracking">Tracking Changes</TabsContent>
+            <TabsContent value="profile" className="mt-8 h-52">
+              <Card className="rounded border-black shadow-sm hover:shadow-blue-400 transition bg-[#0b0b0f]">
+                <CardHeader>
+                  <CardTitle>Profile</CardTitle>
+                  <CardDescription className="text-gray-500 font-extralight">
+                    Manage Your profile here
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="grid grid-cols-2 gap-4">
+                  <Input
+                    placeholder="Username"
+                    className="border-gray-800 placeholder:text-gray-400"
+                  />
+                  <Input
+                    placeholder="Email"
+                    className="border-gray-800 placeholder:text-gray-400"
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="account" className="mt-8 h-52">
+              <Card className="rounded border-black shadow-sm hover:shadow-orange-400 transition bg-[#0b0b0f]">
+                <CardHeader>
+                  <CardTitle>Password Manager</CardTitle>
+                  <CardDescription className="text-gray-500 font-extralight">
+                    Manage Your password here
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Input
+                    placeholder="Change Password"
+                    className="border-gray-800 placeholder:text-gray-400"
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="tracking" className="mt-8 h-52">
+              <Card className="rounded border-black shadow-sm hover:shadow-green-400 transition bg-[#0b0b0f]">
+                <CardHeader>
+                  <CardTitle>Tracking</CardTitle>
+                  <CardDescription className="text-gray-500 font-extralight">
+                    Manage your tracking here
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="gap-4 grid grid-cols-2">
+                  <div>
+                    <div className="flex z-50 items-center space-x-2">
+                      <Checkbox id="terms" />
+                      <Label htmlFor="airplane-mode">Navigation</Label>
+                    </div>
+
+                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+                      Track navigation through out the app
+                    </p>
+                  </div>
+                  <div>
+                    <div className="flex z-50 items-center space-x-2">
+                      <Checkbox id="terms" />
+                      <Label htmlFor="airplane-mode">Content</Label>
+                    </div>
+
+                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+                      Track which content you&apos;ve interacted with
+                    </p>
+                  </div>
+                  <div>
+                    <div className="flex z-50 items-center space-x-2">
+                      <Checkbox id="terms" />
+                      <Label htmlFor="airplane-mode">Search</Label>
+                    </div>
+
+                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+                      Track which you&apos;ve searched
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
           </Tabs>
         </div>
         <DialogFooter>

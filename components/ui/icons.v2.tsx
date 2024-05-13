@@ -11,6 +11,7 @@ import {
   faLightbulb,
   faMailboxFlagUp,
   faBoxArchive,
+  faUser,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -130,4 +131,5 @@ export const Icons = {
   spinner: createFAIcon(faSpinner),
   mailbox: createFAIcon(faMailboxFlagUp),
   archive: createFAIcon(faBoxArchive),
+  user: createFAIcon(faUser),
 };

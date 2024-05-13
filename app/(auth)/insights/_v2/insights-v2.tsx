@@ -50,7 +50,18 @@ const height = 400;
 export const InsightsV2 = () => {
   const { data: learnedCharacters } = useListCharactersQuery();
 
-  const grouped = groupBy((item: any) => item?.lang)(learnedCharacters || []);
+  const grouped = groupBy((item: any) => item?.lang)(
+    learnedCharacters?.map((char: any) => {
+      if (!char.lang) {
+        return {
+          ...char,
+          lang: "zh",
+        };
+      } else {
+        return char;
+      }
+    }) || []
+  );
 
   const uniqueLangs = [
     ...(new Set(learnedCharacters?.map((x: any) => x.lang)) as any),

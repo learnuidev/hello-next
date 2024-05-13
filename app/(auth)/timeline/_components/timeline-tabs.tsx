@@ -18,20 +18,20 @@ export function TimelineTabs() {
             value="all"
             className="px-0 data-[state=active]:text-yellow-500"
           >
-            <FontAwesomeIcon icon={faGlobeAsia} className="text-2xl" />
+            <Icons.globeAsia className="text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             value="timeline"
             className="px-0 data-[state=active]:text-yellow-500"
           >
-            <Icons.rectangleHistory className="text-2xl" />
+            <Icons.magnifyingGlass className="text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             // value="learned"
             value="discovered"
             className="px-0 data-[state=active]:text-yellow-500"
           >
-            <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
+            <Icons.lightBulb className="text-2xl" />
           </TabsTrigger>
         </TabsList>
 

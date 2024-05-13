@@ -12,6 +12,7 @@ import {
   faMailboxFlagUp,
   faBoxArchive,
   faUser,
+  faGlobeAsia,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -124,7 +125,6 @@ export const Icons = {
   word: createFAIcon(faSeedling),
   glassesRound: createFAIcon(faGlassesRound),
   play: createFAIcon(faPlay),
-  lightbulb: createFAIcon(faLightbulb),
   language: createFAIcon(faLanguage),
   xMark: createFAIcon(faXmark),
   checkCircle: createFAIcon(faCheckCircle),
@@ -132,4 +132,5 @@ export const Icons = {
   mailbox: createFAIcon(faMailboxFlagUp),
   archive: createFAIcon(faBoxArchive),
   user: createFAIcon(faUser),
+  globeAsia: createFAIcon(faGlobeAsia),
 };

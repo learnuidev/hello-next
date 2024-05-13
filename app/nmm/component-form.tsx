@@ -20,6 +20,7 @@ import { useAddStepsMutation } from "@/domain/lesson/step.mutations";
 
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { GrammarAnalysis } from "@/components/grammar-analysis";
+import { Editor } from "@/components/Editor";
 
 export const ComponentForm = ({
   selectedId,
@@ -185,8 +186,8 @@ export const ComponentForm = ({
                       </span>
                     </p>
 
-                    {/* <Editor
-                      autoFocus
+                    <Editor
+                      // autoFocus
                       readOnly={false}
                       className="text-start my-8"
                       // id="story"
@@ -202,9 +203,9 @@ export const ComponentForm = ({
 
                         setCharacterState(newState);
                       }}
-                    /> */}
+                    />
 
-                    <textarea
+                    {/* <textarea
                       autoFocus
                       onChange={(event) => {
                         const newState = {
@@ -217,7 +218,7 @@ export const ComponentForm = ({
                       placeholder={lesson?.suggestions?.join(", ")}
                       className="text-center border-solid h-12 border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
                       value={characterState?.[lesson?.key] as any}
-                    />
+                    /> */}
                   </div>
                 ) : (
                   // <textarea

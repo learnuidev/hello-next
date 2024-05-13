@@ -3,8 +3,9 @@ import { queryIds } from "./queryIds";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
+import { siteConfig } from "@/lib/config";
 
-const url = `https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1`;
+// const url = `https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1`;
 
 // TODO: Move this to .env
 
@@ -19,7 +20,7 @@ export type AddCharacterParams = {
   journeyId: string;
   // // todo | completed
   status: string;
-  // story: string;
+  story?: string;
   // component: string;
   // sub_components: string[];
   lang?: string;
@@ -31,7 +32,7 @@ const addCharacter = async (
     Authorization: string;
   }
 ) => {
-  const res = await fetch(`${url}/add-character`, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/add-character`, {
     method: "POST",
     headers: {
       Authorization: `${opts?.Authorization}`,
@@ -83,7 +84,7 @@ const updateChracterStatus = async (
     Authorization: string;
   }
 ) => {
-  const res = await fetch(`${url}/update-character-status`, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/update-character-status`, {
     method: "POST",
     headers: {
       Authorization: `${opts?.Authorization}`,
@@ -112,6 +113,56 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
         }
 
         // queryClient.invalidateQueries([queryIds?.listCharacters]);
+      },
+      cacheTime: 1000 * 60 * 300, // 30 minutes,
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
+}
+
+export type UpdateCharacterStoryParams = {
+  id: string;
+  story: string;
+};
+
+const updateChracterStory = async (
+  options: UpdateCharacterStoryParams,
+  opts: {
+    Authorization: string;
+  }
+) => {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/update-story`, {
+    method: "POST",
+    headers: {
+      Authorization: `${opts?.Authorization}`,
+    },
+    body: JSON.stringify(options),
+  });
+  const resp = await res.json();
+  return resp;
+};
+
+export function useUpdateCharacterStoryMutation(options = {} as any) {
+  const { data: authUser } = useCurrentAuthUser({});
+  const queryClient = useQueryClient();
+  return useMutation(
+    async (params: UpdateCharacterStoryParams) => {
+      const response = await updateChracterStory(params, {
+        Authorization: authUser?.jwt,
+      });
+      return response;
+    },
+    {
+      ...options,
+      onSuccess: (data) => {
+        if (options?.onSucess) {
+          options?.onSuccess(data);
+        }
+
+        queryClient.invalidateQueries([queryIds?.listCharacters]);
       },
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,

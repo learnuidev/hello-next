@@ -1,7 +1,7 @@
 "use client";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-import React from "react";
+import React, { useEffect } from "react";
 import { Summary } from "../summary";
 import { Icons } from "../ui/icons.v2";
 import { GrammarAnalysis } from "../grammar-analysis";
@@ -16,6 +16,8 @@ import { SubComponentsView } from "./subcomponents-view";
 
 import { wordsDict } from "@/langs/words-dict";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useStoryStore } from "./story-store";
+import { StoryEditor } from "./story-editor";
 
 const SentencesView = (props: SelectedCharacterProps) => {
   return (
@@ -54,6 +56,16 @@ export const ViewType = (props: SelectedCharacterProps) => {
   const learnedChar = data?.filter(
     (item: any) => item?.input === characterId
   )?.[0];
+
+  const story = useStoryStore((state: any) => state.story);
+
+  const setStory = useStoryStore((state: any) => state.setStory);
+
+  useEffect(() => {
+    if (learnedChar?.story) {
+      setStory(learnedChar?.story);
+    }
+  }, [learnedChar?.story, setStory]);
 
   const HskView = () => {
     const { data } = useListHSKWordsQuery();
@@ -99,17 +111,7 @@ export const ViewType = (props: SelectedCharacterProps) => {
   }
 
   if (view === "story") {
-    return (
-      <div className="my-16 text-black dark:text-white justify-start w-full md:w-7/12">
-        {/* <Editor
-          readOnly={true}
-          // key={learnedChar?.story}
-          content={learnedChar?.story}
-        /> */}
-
-        <p>{learnedChar?.story}</p>
-      </div>
-    );
+    return <StoryEditor learnedChar={learnedChar} />;
   }
 
   return (

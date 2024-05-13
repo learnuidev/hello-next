@@ -50,6 +50,45 @@ const NewCharactersTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
+export const useGetLearnedData = () => {
+  const selectedData = useSelectedDataStore(
+    (state: any) => state?.selectedData
+  );
+  const setSelectedData = useSelectedDataStore(
+    (state: any) => state?.setSelectedData
+  );
+  const demoUrl = "https://codesandbox.io/s/simple-area-chart-4ujxw";
+
+  const { data: answers, isLoading } = useListAnswersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
+
+  const newData = answers
+    ?.filter((answer: any) => {
+      const createdAt = new Date(answer?.createdAt);
+
+      return isThisMonth(createdAt);
+      // return false;
+    })
+    .map((curr: any, idx: number, ctx: any) => {
+      return {
+        ...curr,
+        name: curr?.createdAt,
+      };
+    });
+
+  return {
+    data: newData,
+    isLoading,
+  };
+};
+
 export const CharacterLearnedBarChart = () => {
   // const [selectedData, setSelectedData] = useState<any>(null);
 

@@ -7,6 +7,7 @@ import React, { ChangeEvent, KeyboardEvent } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 import { getNavigationUrl } from "./_search/get-navigation-url";
+import { signOut } from "@/libs/cognito/auth";
 
 export const SearchInput = () => {
   const router = useRouter();
@@ -33,7 +34,18 @@ export const SearchInput = () => {
       setQuery(() => "");
       setQuerySync(() => "");
     }
+
     if (event?.keyCode === 13) {
+      // 1. If the user wants to logout
+      if (
+        ["logout", "log", "so", "signout"]?.includes(querySync?.toLowerCase())
+      ) {
+        return signOut().then(() => {
+          router.push("/login");
+        });
+      }
+
+      // 2. Navigation
       const navigationUrl = getNavigationUrl(querySync);
 
       // If navigation url exists, get us to the page

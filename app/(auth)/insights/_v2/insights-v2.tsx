@@ -81,7 +81,7 @@ export const InsightsV2 = () => {
   const TopEightLanguages = () => {
     return (
       <div className="mt-8 mx-auto w-80">
-        <p className="text-center text-[13px] text-[#808080] my-8 font-['Gill Sans']">
+        <p className="text-center font-normal text-[13px] text-[#808080] my-8 font-['Gill Sans']">
           Top words learned by language{" "}
         </p>
         <div className="space-y-2">

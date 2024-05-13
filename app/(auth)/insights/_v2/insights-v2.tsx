@@ -81,7 +81,7 @@ export const InsightsV2 = () => {
     return (
       <div className="mt-8 mx-auto w-80">
         <p className="text-center text-[13px] text-[#808080] my-8 font-['Gill Sans']">
-          Top Eight Languages{" "}
+          Top words learned by language{" "}
         </p>
         <div className="space-y-2">
           {Object.entries(grouped)

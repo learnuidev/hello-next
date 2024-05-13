@@ -24,6 +24,7 @@ import { faSpinner } from "@fortawesome/sharp-solid-svg-icons";
 
 import { SelectedCharacterProps } from "./select-character.types";
 import { cn } from "@/lib/utils";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 export const NavItems = (props: SelectedCharacterProps) => {
   const {
@@ -43,6 +44,12 @@ export const NavItems = (props: SelectedCharacterProps) => {
     deleteComponentMutation,
   } = props;
   const router = useRouter();
+
+  const { data } = useListCharactersQuery();
+
+  const learnedChar = data?.filter(
+    (item: any) => item?.input === characterId
+  )?.[0];
 
   const { toast } = useToast();
   return (
@@ -81,6 +88,19 @@ export const NavItems = (props: SelectedCharacterProps) => {
         >
           <Icons.seedling />
         </button>
+        {learnedChar?.story && (
+          <button
+            className={cn(
+              "text-xl transition",
+              view === "story" ? "text-white" : "text-gray-400"
+            )}
+            onClick={() => {
+              setView("story");
+            }}
+          >
+            <Icons.compass />
+          </button>
+        )}
       </div>
     </div>
   );

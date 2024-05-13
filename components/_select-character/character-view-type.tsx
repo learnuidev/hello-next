@@ -15,6 +15,7 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { SubComponentsView } from "./subcomponents-view";
 
 import { wordsDict } from "@/langs/words-dict";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 const SentencesView = (props: SelectedCharacterProps) => {
   return (
@@ -48,6 +49,11 @@ export const ViewType = (props: SelectedCharacterProps) => {
   const toneLevel = selectedComp?.tone_level || selectedComp2?.tone_level;
   const initial = selectedComp?.initial || selectedComp2?.initial;
   const final = selected?.final || selectedComp2?.final;
+  const { data } = useListCharactersQuery();
+
+  const learnedChar = data?.filter(
+    (item: any) => item?.input === characterId
+  )?.[0];
 
   const HskView = () => {
     const { data } = useListHSKWordsQuery();
@@ -88,6 +94,20 @@ export const ViewType = (props: SelectedCharacterProps) => {
               />
             );
           })}
+      </div>
+    );
+  }
+
+  if (view === "story") {
+    return (
+      <div className="my-16 text-black dark:text-white justify-start w-full md:w-7/12">
+        {/* <Editor
+          readOnly={true}
+          // key={learnedChar?.story}
+          content={learnedChar?.story}
+        /> */}
+
+        <p>{learnedChar?.story}</p>
       </div>
     );
   }

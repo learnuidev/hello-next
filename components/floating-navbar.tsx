@@ -42,13 +42,17 @@ export const FloatingNavbar = () => {
             {reviewList?.length > 1 ? (
               <Link
                 href="/review"
-                className={`transition ${
+                className={cn(
                   routeName?.includes("/review")
                     ? "text-gray-800 dark:text-gray-300"
-                    : "text-gray-200 dark:text-gray-500"
-                } hover:text-white transition text-xl`}
+                    : "text-gray-200 dark:text-gray-500",
+                  "transition text-xl "
+                )}
               >
-                <FontAwesomeIcon icon={faPlayCircle} />
+                <FontAwesomeIcon
+                  icon={faPlayCircle}
+                  className="hover:text-white transition"
+                />
               </Link>
             ) : null}
             <Link
@@ -59,7 +63,10 @@ export const FloatingNavbar = () => {
                   : "text-gray-200 dark:text-gray-500"
               } hover:text-white transition text-xl`}
             >
-              <FontAwesomeIcon icon={faPhotoFilm} />
+              <FontAwesomeIcon
+                icon={faPhotoFilm}
+                className="hover:text-white transition"
+              />
             </Link>
             <Link
               href="/timeline"
@@ -69,7 +76,7 @@ export const FloatingNavbar = () => {
                   : "text-gray-200 dark:text-gray-500"
               } hover:text-gray-700 transition text-xl hidden md:block`}
             >
-              <Icons.verticalStack />
+              <Icons.verticalStack className="hover:text-white transition" />
             </Link>
 
             <Link
@@ -80,7 +87,10 @@ export const FloatingNavbar = () => {
                   : "text-gray-200 dark:text-gray-500"
               } hover:text-gray-700 transition text-xl hidden md:block`}
             >
-              <FontAwesomeIcon icon={faTableTree} />
+              <FontAwesomeIcon
+                icon={faTableTree}
+                className="hover:text-white transition"
+              />
             </Link>
             <Link
               href="/insights"
@@ -90,7 +100,10 @@ export const FloatingNavbar = () => {
                   : "text-gray-200 dark:text-gray-500"
               } hover:text-gray-700 transition text-xl`}
             >
-              <FontAwesomeIcon icon={faChartColumn} />
+              <FontAwesomeIcon
+                icon={faChartColumn}
+                className="hover:text-white transition"
+              />
             </Link>
 
             <Link
@@ -101,7 +114,7 @@ export const FloatingNavbar = () => {
                   : "text-gray-200 dark:text-gray-500"
               } hover:text-gray-700 transition text-xl`}
             >
-              <NomadIcon />
+              <NomadIcon className="hover:text-white transition" />
             </Link>
           </div>
 

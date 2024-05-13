@@ -41,6 +41,7 @@ export const SearchInput = () => {
         ["logout", "log", "so", "signout"]?.includes(querySync?.toLowerCase())
       ) {
         return signOut().then(() => {
+          setQuerySync(() => "");
           router.push("/login");
         });
       }

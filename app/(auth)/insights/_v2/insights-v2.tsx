@@ -69,6 +69,9 @@ export const InsightsV2 = () => {
   const TopEightLanguages = () => {
     return (
       <div className="mt-8 mx-auto w-80">
+        <p className="text-center text-[13px] text-[#808080] my-8 font-['Gill Sans']">
+          Top Eight Languages{" "}
+        </p>
         <div className="space-y-2">
           {Object.entries(grouped)
             // .filter((group) => {
@@ -126,18 +129,96 @@ export const InsightsV2 = () => {
     };
   });
 
+  const style = {
+    data: { fill: "tomato" },
+  };
+
+  const VictoryChartVersion = () => {
+    return (
+      <div className="w-full">
+        <div className="w-full">
+          <VictoryChart
+            domain={{ y: [0, 100] }}
+            domainPadding={{ x: 0, y: 0 }}
+            scale={{ x: "time" }}
+            horizontal
+          >
+            <VictoryAxis
+              style={{
+                tickLabels: { fontSize: 5, fill: "white" },
+              }}
+              axisComponent={
+                <LineSegment
+                  events={{
+                    onClick: (event: any) => {
+                      //   alert("yo", event);
+                      //   alert("axis", JSON.stringify(event));
+                    },
+                  }}
+                />
+              }
+            />
+            <VictoryBar
+              //   padding={20}
+              barWidth={({ index }) => 10}
+              dataComponent={
+                <Bar
+                  events={{
+                    onClick: (event: any) => {
+                      console.log(event);
+                      //   alert(event);
+                    },
+                  }}
+                />
+              }
+              style={style}
+              data={dataA}
+            />
+          </VictoryChart>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className="">
+    <div className="my-4 md:my-16">
       {/* <h1 className="my-8 text-2xl md:text-4xl font-extralight">Stats</h1> */}
 
       <section className="grid grid-cols-4 gap-4">
-        <div className="h-80 col-span-4 md:col-span-2">
+        <div className="mt-8 h-80 col-span-4 md:col-span-2">
           <VictoryChart
+            // animate={{ duration: 400 }}
             // height={400}
             // width={400}
-            domainPadding={{ x: 50, y: [0, 20] }}
+            // domainPadding={{ x: 50, y: [0, 20] }}
             scale={{ x: "time" }}
           >
+            <VictoryLabel
+              x={225}
+              y={5}
+              style={{
+                fill: "gray",
+              }}
+              textAnchor="middle"
+              text="Number of words learned per day"
+            />
+
+            <VictoryAxis
+              style={{
+                tickLabels: { fill: "gray" },
+              }}
+              // axisComponent={
+              //   <LineSegment
+              //     events={{
+              //       onClick: (event: any) => {
+              //         //   alert("yo", event);
+              //         //   alert("axis", JSON.stringify(event));
+              //       },
+              //     }}
+              //   />
+              // }
+            />
+
             <VictoryBar
               dataComponent={<Bar events={{ onMouseOver: () => {} }} />}
               style={{

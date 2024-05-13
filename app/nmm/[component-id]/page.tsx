@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { SelectedCharacter } from "@/components/selected-character";
 import { useParams } from "next/navigation";
@@ -10,6 +10,7 @@ export default function NomadMethodPage(props: any) {
     "component-id": string;
   };
 
+  const componentId = params["component-id"];
   // return <NMMV2 characterId={decodeURIComponent(params["component-id"])} />;
 
   return (

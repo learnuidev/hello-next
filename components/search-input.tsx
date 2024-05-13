@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSearchQueryStore } from "./search/state";
 import React, { ChangeEvent, KeyboardEvent } from "react";
 
@@ -8,9 +8,13 @@ import { useDebouncedCallback } from "use-debounce";
 
 import { getNavigationUrl } from "./_search/get-navigation-url";
 import { signOut } from "@/libs/cognito/auth";
+import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 
 export const SearchInput = () => {
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const lang = searchParams.get("lang");
 
   // 1. State
   const querySync = useSearchQueryStore((state) => state.querySync);
@@ -28,6 +32,11 @@ export const SearchInput = () => {
     setQuerySync(event?.target?.value);
     handleChangeDebounced(event?.target.value);
   };
+
+  const addHistoryMutation = useAddHistoryMutation();
+
+  // TODO: Fix this
+  const isSearchTrackingEnabled = true;
 
   const handleOnKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape") {
@@ -56,6 +65,14 @@ export const SearchInput = () => {
         router.push(navigationUrl);
       } else {
         // Else perform search
+        if (isSearchTrackingEnabled) {
+          addHistoryMutation.mutate({
+            input: querySync,
+            lang,
+            eventType: "SEARCH",
+          } as any);
+        }
+
         router.push(`/nmm/${querySync}`);
       }
     }

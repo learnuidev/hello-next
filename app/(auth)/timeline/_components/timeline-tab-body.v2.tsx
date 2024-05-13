@@ -25,7 +25,7 @@ import { TimelineDatesDrawer } from "./timeline-dates-drawer";
 function useListLearnedCharactersByDate({
   variant,
 }: {
-  variant: "all" | "timeline" | "discovered";
+  variant: "all" | "search" | "click" | "discovered";
 }) {
   const { data: learnedCharacters, ...rest } = useListCharactersQuery();
   const queryStr = useSearchQueryStore((state) => state.query);
@@ -36,12 +36,28 @@ function useListLearnedCharactersByDate({
 
   const { data } = useListHistoryQuery();
 
-  const resolvedChars =
-    variant === "all"
-      ? [...(learnedCharacters || []), ...(data?.Items || [])]
-      : variant === "timeline"
-        ? [...(data?.Items || [])]
-        : [...(learnedCharacters || [])];
+  const getResolvedChars = () => {
+    switch (variant) {
+      case "all":
+        return [...(learnedCharacters || []), ...(data?.Items || [])];
+      case "search":
+        return (
+          data?.Items?.filter((event: any) => event?.eventType === "SEARCH") ||
+          []
+        );
+      case "click":
+        return (
+          data?.Items?.filter(
+            (event: any) => event?.eventType === "CONTENT_VIEWED"
+          ) || []
+        );
+
+      default:
+        return [...(learnedCharacters || [])];
+    }
+  };
+
+  const resolvedChars = getResolvedChars();
 
   const learnedCharactersFormatted = resolvedChars
     ?.map((item: any) => {
@@ -89,7 +105,7 @@ function useListLearnedCharactersByDate({
 export const TimelineTabBodyV2 = ({
   variant,
 }: {
-  variant: "all" | "timeline" | "discovered";
+  variant: "all" | "search" | "click" | "discovered";
 }) => {
   // const [focusLang, setFocusLang] = useState("");
 
@@ -99,7 +115,7 @@ export const TimelineTabBodyV2 = ({
   const { data: groups, isLoading: isLearnedCharactersLoading } =
     useListLearnedCharactersByDate({ variant });
 
-  const dates = groups?.map((group) => group?.title);
+  const dates = groups?.map((group: any) => group?.title);
 
   const firstGroup = groups?.[0];
 
@@ -108,7 +124,7 @@ export const TimelineTabBodyV2 = ({
   const selectedDate = selectedDateState || firstGroup?.title;
 
   const selectedGroup =
-    groups?.find((group) => group?.title === selectedDate) || firstGroup;
+    groups?.find((group: any) => group?.title === selectedDate) || firstGroup;
 
   if (isLearnedCharactersLoading) {
     return <div className="text-center my-16"> Loading ...</div>;
@@ -126,7 +142,7 @@ export const TimelineTabBodyV2 = ({
           <aside className="fixed">
             <ScrollArea className="hidden md:block space-y-6 h-[400px] rounded-md">
               <div className="flex flex-col w-32 items-center space-y-4 my-24">
-                {groups?.map((date) => {
+                {groups?.map((date: any) => {
                   return (
                     <div
                       role="button"
@@ -205,7 +221,12 @@ export const TimelineTabBodyV2 = ({
                     <Tooltip>
                       <TooltipTrigger className="p-3 px-0 hover:scale-110 transition">
                         <Link
-                          href={`/nmm/${item?.input || item?.hanzi?.trim("")}?lang=${item?.lang || "zh"}`}
+                          href={
+                            item?.lang
+                              ? `/nmm/${item?.input || item?.hanzi}?lang=${item?.lang}`
+                              : `/nmm/${item?.input || item?.hanzi}`
+                          }
+                          // href={`/nmm/${item?.input || item?.hanzi?.trim("")}?lang=${item?.lang || "zh"}`}
                           className={cn(
                             `py-4 pr-8 font-light`,
                             `  dark:hover:text-white p-3 transition lowercase`,

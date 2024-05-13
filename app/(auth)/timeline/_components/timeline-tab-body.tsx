@@ -99,6 +99,7 @@ export const TimelineTabBody = ({
 
               <div className="flex flex-wrap">
                 {group?.items?.map((item: any) => {
+                  console.log("ITEM", item);
                   return (
                     <Link
                       className="py-4 pr-4 text-2xl font-light"

@@ -44,7 +44,7 @@ export function DialogDemo({
         onClick={() => {
           closeSettings();
         }}
-        className="sm:max-w-2xl border-gray-900 bg-black"
+        className="sm:max-w-2xl border-gray-900 bg-black mt-[-100px]"
       >
         {/* <DialogHeader className="mb-0 pb-0 flex">
           <DialogTitle>Accounts & Settings</DialogTitle>
@@ -100,7 +100,7 @@ export function DialogDemo({
                     Manage Your profile here
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4">
+                <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Input
                     placeholder="Username"
                     className="border-gray-800 placeholder:text-gray-400"
@@ -136,7 +136,7 @@ export function DialogDemo({
                     Manage your tracking here
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="gap-4 grid grid-cols-2">
+                <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
                   <div>
                     <div className="flex z-50 items-center space-x-2">
                       <Checkbox id="terms" />

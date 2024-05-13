@@ -161,7 +161,7 @@ export const TimelineTabBodyV2 = ({
           }}
         >
           <div className="mt-0 md:mt-[-70px] ml-4 flex gap-4 md:mb-16 mb-4">
-            {langs?.map((lang) => {
+            {langs?.map((lang: any) => {
               return (
                 <button
                   className={cn(

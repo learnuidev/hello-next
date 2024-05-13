@@ -3,11 +3,14 @@ export const getPagesUrl = (query: string) => {
 
   const homePageUrl = "/";
   const timelineUrl = "/timeline";
+  const insightsUrl = "/insights";
 
   const pages = {
     timeline: timelineUrl,
     t: timelineUrl,
     tl: timelineUrl,
+    stats: timelineUrl,
+    i: insightsUrl,
     h: homePageUrl,
     hm: homePageUrl,
     home: homePageUrl,

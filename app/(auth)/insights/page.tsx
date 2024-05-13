@@ -125,13 +125,15 @@ export default function Insights() {
   }
 
   return (
-    <main className="mx-4 md:mx-48">
-      {/* <NavBar /> */}
-      <div className="mx-4 md:mx-20">
-        <InsightsFilters />
-      </div>
-      <InsightsV2 />
-    </main>
+    <div>
+      <NavBar />
+      <main className="mx-4 md:mx-48">
+        <div className="mx-4 md:mx-20">
+          <InsightsFilters />
+        </div>
+        <InsightsV2 />
+      </main>
+    </div>
   );
 
   return (

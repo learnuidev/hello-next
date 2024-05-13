@@ -12,6 +12,7 @@ import {
   Bar,
   Axis,
   LineSegment,
+  VictoryVoronoiContainer,
 } from "victory";
 import { cn } from "@/lib/utils";
 import { belts } from "@/app/nmm/utils";
@@ -85,11 +86,7 @@ export const InsightsV2 = () => {
         </p>
         <div className="space-y-2">
           {Object.entries(grouped)
-            // .filter((group) => {
-            //   const [lang, items] = group;
 
-            //   return items?.length > 30;
-            // })
             .sort((a: any, b: any) => b?.[1]?.length - a?.[1]?.length)
             .slice(0, 8)
             .map((group) => {
@@ -199,10 +196,18 @@ export const InsightsV2 = () => {
         <div className="mt-8 h-80 col-span-4 md:col-span-2">
           <VictoryChart
             // animate={{ duration: 400 }}
-            // height={400}
+            // height={450}
             // width={400}
             // domainPadding={{ x: 50, y: [0, 20] }}
             scale={{ x: "time" }}
+            containerComponent={
+              <VictoryVoronoiContainer
+                style={{}}
+                labels={({ datum }) =>
+                  datum.y > 0 ? `${datum.x} \n ${datum.y} words` : null
+                }
+              />
+            }
           >
             <VictoryLabel
               x={225}
@@ -215,26 +220,35 @@ export const InsightsV2 = () => {
             />
 
             <VictoryAxis
+              dependentAxis
+              // label="Total # of Songs"
+              // x={0}
+              offsetX={40}
+              // style={sharedAxisStyles}
+            />
+
+            <VictoryAxis
               style={{
                 tickLabels: { fill: "gray" },
               }}
-              // axisComponent={
-              //   <LineSegment
-              //     events={{
-              //       onClick: (event: any) => {
-              //         //   alert("yo", event);
-              //         //   alert("axis", JSON.stringify(event));
-              //       },
-              //     }}
-              //   />
-              // }
             />
 
             <VictoryBar
-              dataComponent={<Bar events={{ onMouseOver: () => {} }} />}
+              // dataComponent={<Bar events={{ onMouseOver: () => {} }} />}
               style={{
                 data: { fill: "tomato" },
               }}
+              dataComponent={
+                <Bar
+                  events={{
+                    onClick: (event: any, ctx: any) => {
+                      console.log(event);
+                      console.log("CTX", ctx);
+                      //   alert(event);
+                    },
+                  }}
+                />
+              }
               data={chartData}
             />
           </VictoryChart>

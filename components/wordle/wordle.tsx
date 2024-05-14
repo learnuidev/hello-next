@@ -38,11 +38,14 @@ function GameRow(props: any) {
   );
 }
 
-export function Wordle({ lessonId }: { lessonId?: string }) {
+export function Wordle() {
   const params = useParams() as {
     lessonId: string;
     "phrase-id": string;
+    "content-id": string;
   };
+
+  const lessonId = params["content-id"];
 
   const { data: answers } = useListAnswersQuery(
     { journeyId: lessonId },
@@ -67,7 +70,7 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
     lessonId || params?.["lessonId"] || "lesson11"
   );
 
-  const [lessonIndex, setLessonIndex] = useState(() => {
+  const [lessonIndex, setTranscriptionId] = useState(() => {
     const currentLesson = contents?.find(
       (lesson: any) => lesson?.id === _lessonId
     );
@@ -120,7 +123,7 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
       ) as any;
 
       if (firstUnanswered) {
-        setLessonIndex(
+        setTranscriptionId(
           firstUnanswered?.id || cleanString(firstUnanswered?.hanzi)
         );
       }
@@ -203,6 +206,32 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
 
   // const empties = Array(5 - currentGuessHistory.length).fill("     ");
 
+  const phraseItem =
+    currentPhrase?.pinyin || currentPhrase?.hanzi || currentPhrase?.input;
+
+  if (phraseItem?.length > 16) {
+    return (
+      <div className="text-center my-32">
+        <h1 className="text-2xl font-semibold">Phrase too long</h1>
+
+        <p className="text-xs my-8 text-center px-80 text-gray-400 font-light">
+          {phraseItem}
+        </p>
+        <p className="text-gray-500 font-extralight">
+          Sentence must be 16 characters max
+        </p>
+      </div>
+    );
+  }
+
+  console.log("CONTENTS", contents);
+
+  const currentLessonStep =
+    currentLesson?.transcriptions?.findIndex(
+      (lesson: any) =>
+        cleanString(lesson?.id || lesson?.hanzi) === cleanString(lessonIndex)
+    ) + 1;
+
   return (
     <div>
       {/* <header className="flex w-80 mx-auto mt-10 mb-8">
@@ -230,7 +259,7 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
           </h2>
 
           <div className="text-md md:text-2xl font-extralight text-gray-500">
-            {currentPhraseIndex} / {totalLessons}
+            {currentLessonStep} / {totalLessons}
           </div>
         </div>
         <p></p>
@@ -267,7 +296,7 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
                 const nextId =
                   currentLesson?.transcriptions?.[currentPhraseIndex - 1];
 
-                nextId?.id && setLessonIndex(nextId?.id);
+                nextId?.id && setTranscriptionId(nextId?.id);
 
                 if (params?.["lessonId"]) {
                   router.push(
@@ -286,11 +315,13 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
           </button>
           <div className="col-span-10">
             <div className="mt-16 text-center space-y-2">
-              <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 {currentPhrase?.en}
               </p>
-              <p className="text-2xl md:text-3xl  text-gray-700 font-extralight dark:text-gray-300">
-                {currentPhrase?.pinyin}
+              <p className="text-2xl md:text-xl  text-gray-700 font-extralight dark:text-gray-300">
+                {currentPhrase?.pinyin ||
+                  currentPhrase?.hanzi ||
+                  currentPhrase?.input}
               </p>
             </div>
 
@@ -330,59 +361,83 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
                         guessTrimmed,
                       ]?.reduce((acc, curr) => `${acc}${curr}`, "");
 
-                      return addAnswerMutation
-                        .mutateAsync({
-                          hanzi: secret,
-                          answer: historyTrimmed,
-                          lessonId: _lessonId,
-                          phraseId: currentPhrase?.id,
-                          status: "correct",
-                          guessHistory: guessHistory?.[lessonIndex as string],
-                        })
-                        .then((res) => {
-                          const currentLesson = contents?.find(
-                            (lesson: any) => lesson?.id === _lessonId
-                          );
+                      const currentPhraseIndex =
+                        currentLesson?.transcriptions?.findIndex(
+                          (lesson: any) =>
+                            cleanString(lesson?.id || lesson?.hanzi) ===
+                            cleanString(lessonIndex)
+                        );
 
-                          const currentPhrase =
-                            currentLesson?.transcriptions?.find(
-                              (lesson: any) =>
-                                cleanString(lesson?.id || lesson?.hanzi) ===
-                                cleanString(lessonIndex)
-                            );
-                          const currentPhraseIndex =
-                            currentLesson?.transcriptions?.findIndex(
-                              (lesson: any) =>
-                                cleanString(lesson?.id || lesson?.hanzi) ===
-                                cleanString(lessonIndex)
-                            );
+                      console.log("CURRENT PHASE INDEX", currentPhraseIndex);
 
-                          // const lessonIdx = course1?.lessons?.findIndex(
-                          //   (lesson: any) => lesson?.id === lessonIndex
-                          // );
+                      if (currentPhraseIndex !== -1) {
+                        const nextId =
+                          currentLesson?.transcriptions?.[
+                            currentPhraseIndex + 1
+                          ];
 
-                          if (currentPhraseIndex !== -1) {
-                            const nextId =
-                              currentLesson?.transcriptions?.[
-                                currentPhraseIndex + 1
-                              ];
+                        console.log("NEXT ID", nextId);
 
-                            nextId?.id && setLessonIndex(nextId?.id);
+                        setTranscriptionId(nextId?.id || nextId?.hanzi);
 
-                            if (params?.["lessonId"]) {
-                              router.push(
-                                `/convos/${params?.["lessonId"] || _lessonId}/${
-                                  nextId?.id
-                                }`
-                              );
-                            }
-                          } else {
-                            setGameStatus("finish");
-                          }
+                        // if (params?.["lessonId"]) {
+                        //   router.push(
+                        //     `/convos/${params?.["lessonId"] || _lessonId}/${
+                        //       nextId?.id
+                        //     }`
+                        //   );
+                        // }
+                      } else {
+                        setGameStatus("finish");
+                      }
 
-                          setCurrentGuess("");
-                          setGameStatus("");
-                        });
+                      setCurrentGuess("");
+                      setGameStatus("");
+
+                      // return addAnswerMutation
+                      //   .mutateAsync({
+                      //     hanzi: secret,
+                      //     answer: historyTrimmed,
+                      //     lessonId: _lessonId,
+                      //     phraseId: currentPhrase?.id,
+                      //     status: "correct",
+                      //     guessHistory: guessHistory?.[lessonIndex as string],
+                      //   })
+                      //   .then((res) => {
+                      //     const currentPhraseIndex =
+                      //       currentLesson?.transcriptions?.findIndex(
+                      //         (lesson: any) =>
+                      //           cleanString(lesson?.id || lesson?.hanzi) ===
+                      //           cleanString(lessonIndex)
+                      //       );
+
+                      //     console.log(
+                      //       "CURRENT PHASE INDEX",
+                      //       currentPhraseIndex
+                      //     );
+
+                      //     if (currentPhraseIndex !== -1) {
+                      //       const nextId =
+                      //         currentLesson?.transcriptions?.[
+                      //           currentPhraseIndex + 1
+                      //         ];
+
+                      //       nextId?.id && setTranscriptionId(nextId?.id);
+
+                      //       if (params?.["lessonId"]) {
+                      //         router.push(
+                      //           `/convos/${params?.["lessonId"] || _lessonId}/${
+                      //             nextId?.id
+                      //           }`
+                      //         );
+                      //       }
+                      //     } else {
+                      //       setGameStatus("finish");
+                      //     }
+
+                      //     setCurrentGuess("");
+                      //     setGameStatus("");
+                      //   });
                     }}
                   >
                     Continue
@@ -429,10 +484,11 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
                 const nextId =
                   currentLesson?.transcriptions?.[currentPhraseIndex + 1];
 
+                console.log("NEXT ID", nextId);
+
                 console.log("next id", cleanString(nextId.hanzi));
 
-                nextId?.id &&
-                  setLessonIndex(nextId?.id || cleanString(nextId.hanzi));
+                setTranscriptionId(currentPhraseIndex + 1);
 
                 if (params?.["lessonId"]) {
                   router.push(
@@ -490,7 +546,7 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
                     if (lessonIdx !== -1) {
                       const nextId = contents?.[lessonIdx + 1];
 
-                      nextId?.id && setLessonIndex(nextId?.id);
+                      nextId?.id && setTranscriptionId(nextId?.id);
                     } else {
                       setGameStatus("finish");
                     }
@@ -539,11 +595,11 @@ export function Wordle({ lessonId }: { lessonId?: string }) {
                     if (lessonIdx !== -1) {
                       const nextId = contents?.[lessonIdx + 1];
 
-                      nextId?.id && setLessonIndex(nextId?.id);
+                      nextId?.id && setTranscriptionId(nextId?.id);
                     } else {
                       setGameStatus("finish");
                     }
-                    // setLessonIndex((prevIndex) => prevIndex + 1);
+                    // setTranscriptionId((prevIndex) => prevIndex + 1);
                     setCurrentGuess("");
                     setGameStatus("");
                   });

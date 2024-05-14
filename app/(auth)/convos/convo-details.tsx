@@ -4,7 +4,7 @@ import { useConvosStore } from "@/stores/convos-store";
 import { ConvoInsights } from "./convo-insights";
 import { Play } from "./_play/audio-content";
 
-import { Wordle } from "@/components/wordle/game";
+import { Wordle } from "@/components/wordle/wordle";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useSearchParams as _useSearchParams } from "next/navigation";
 import { YouTubePage } from "@/components/youtube-page/v1";
@@ -49,7 +49,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     return (
       <div>
         {/* Write */}
-        <Wordle lessonId={lessonId} />
+        <Wordle />
       </div>
     );
   }

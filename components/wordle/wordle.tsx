@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { cleanString } from "@/data/convos/bm1/utils";
 import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -39,6 +39,9 @@ function GameRow(props: any) {
 }
 
 export function Wordle() {
+  const searchParams = useSearchParams();
+
+  const lessonIndexParams = searchParams.get("lessonIndex") || null;
   const params = useParams() as {
     lessonId: string;
     "phrase-id": string;
@@ -97,6 +100,10 @@ export function Wordle() {
   );
 
   useEffect(() => {
+    // if (lessonIndexParams !== null) {
+    //   setTranscriptionId(lessonIndexParams);
+    //   return null;
+    // }
     const currentLesson = contents?.find(
       (lesson: any) => lesson?.id === _lessonId
     );
@@ -128,7 +135,7 @@ export function Wordle() {
 
       const firstUnanswered = firstUnanswereds[0];
 
-      if (firstUnanswered) {
+      if (firstUnanswered && !lessonIndexParams) {
         setTranscriptionId(
           firstUnanswered?.id || cleanString(firstUnanswered?.hanzi)
         );
@@ -141,12 +148,7 @@ export function Wordle() {
       //   alert(JSON.stringify(firstUnanswered));
       // }
     }
-  }, [contents, _lessonId, answers]);
-
-  const currentPhraseIndex =
-    currentLesson?.transcriptions?.findIndex(
-      (lesson: any) => lesson?.id === lessonIndex
-    ) + 1;
+  }, [contents, _lessonId, answers, lessonIndexParams]);
 
   const totalLessons = currentLesson?.transcriptions?.length;
 
@@ -229,8 +231,6 @@ export function Wordle() {
       </div>
     );
   }
-
-  console.log("CONTENTS", contents);
 
   const currentLessonStep =
     currentLesson?.transcriptions?.findIndex(
@@ -369,12 +369,6 @@ export function Wordle() {
       </div>
     );
   };
-
-  // const currentPhraseIndex = currentLesson?.transcriptions?.findIndex(
-  //   (lesson: any) =>
-  //     cleanString(lesson?.id || lesson?.hanzi) ===
-  //     cleanString(lessonIndex)
-  // );
 
   const PreviousLessonButton = () => {
     return (

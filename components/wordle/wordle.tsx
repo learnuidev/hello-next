@@ -41,7 +41,7 @@ function GameRow(props: any) {
 export function Wordle() {
   const searchParams = useSearchParams();
 
-  const lessonIndexParams = searchParams.get("lessonIndex") || null;
+  const lessonIndexParams = searchParams.get("step") || null;
   const params = useParams() as {
     lessonId: string;
     "phrase-id": string;
@@ -94,61 +94,56 @@ export function Wordle() {
     (lesson: any) => lesson?.id === _lessonId
   );
 
+  console.log("LESSON INDEX", lessonIndex);
+
   const currentPhrase = currentLesson?.transcriptions?.find(
     (lesson: any) =>
       cleanString(lesson?.id || lesson?.hanzi) === cleanString(lessonIndex)
   );
 
   useEffect(() => {
-    // if (lessonIndexParams !== null) {
-    //   setTranscriptionId(lessonIndexParams);
-    //   return null;
-    // }
-    const currentLesson = contents?.find(
-      (lesson: any) => lesson?.id === _lessonId
-    );
+    if (lessonIndexParams !== null) {
+      const currentLesson = contents?.find(
+        (lesson: any) => lesson?.id === _lessonId
+      );
 
-    const isEveryAnswered = currentLesson?.transcriptions?.every(
-      (transcription: any) => {
-        return answers?.find(
-          (answer: any) => answer?.phraseId === transcription?.id
+      // setTranscriptionId(lessonIndexParams);
+
+      // @ts-ignore
+      const nextId = currentLesson?.transcriptions?.[lessonIndexParams - 1];
+
+      setTranscriptionId(nextId?.id || nextId?.hanzi);
+
+      return;
+      // return null;
+    } else {
+      const currentLesson = contents?.find(
+        (lesson: any) => lesson?.id === _lessonId
+      );
+
+      const answerHanzis = answers?.map((answer: any) => answer?.hanzi);
+
+      const firstUnanswered = currentLesson?.transcriptions?.filter(
+        (transcription: any) => {
+          return !answerHanzis?.includes(transcription?.hanzi);
+        }
+      )[0];
+
+      if (firstUnanswered) {
+        console.log("FIRST ANSWERED", firstUnanswered);
+        const currentLessonStep =
+          currentLesson?.transcriptions?.findIndex(
+            (lesson: any) =>
+              cleanString(lesson?.id || lesson?.hanzi) ===
+              firstUnanswered?.hanzi
+          ) + 1;
+
+        router.push(
+          `/convos/${params?.["lessonId"] || _lessonId}?step=${currentLessonStep}`
         );
       }
-    );
-
-    if (!isEveryAnswered) {
-      // alert("not answered")
-
-      console.log("CURRENRT LESSON", currentLesson);
-
-      console.log("ANS");
-
-      const firstUnanswereds =
-        currentLesson?.transcriptions?.filter((t: any) => {
-          return !answers?.filter((ans: any) => ans?.hanzi === t?.hanzi)
-            ?.length;
-        }) || [];
-
-      console.log("ANSWERS", answers);
-
-      console.log("FIRST UNANSWEREDS", firstUnanswereds);
-
-      const firstUnanswered = firstUnanswereds[0];
-
-      if (firstUnanswered && !lessonIndexParams) {
-        setTranscriptionId(
-          firstUnanswered?.id || cleanString(firstUnanswered?.hanzi)
-        );
-      }
-
-      console.log({ firstUnanswered });
-
-      // find first unanswered
-      // if (firstUnanswered) {
-      //   alert(JSON.stringify(firstUnanswered));
-      // }
     }
-  }, [contents, _lessonId, answers, lessonIndexParams]);
+  }, [contents, _lessonId, answers, lessonIndexParams, router, params]);
 
   const totalLessons = currentLesson?.transcriptions?.length;
 
@@ -312,8 +307,11 @@ export function Wordle() {
                   currentLesson?.transcriptions?.[currentPhraseIndex + 1];
 
                 console.log("NEXT ID", nextId);
+                router.push(
+                  `/convos/${params?.["lessonId"] || _lessonId}?step=${currentPhraseIndex + 2}`
+                );
 
-                setTranscriptionId(nextId?.id || nextId?.hanzi);
+                // setTranscriptionId(nextId?.id || nextId?.hanzi);
               } else {
                 setGameStatus("finish");
               }
@@ -333,34 +331,6 @@ export function Wordle() {
               })
               .then((res) => {
                 goToNextChallenge();
-                // const currentPhraseIndex =
-                //   currentLesson?.transcriptions?.findIndex(
-                //     (lesson: any) =>
-                //       cleanString(lesson?.id || lesson?.hanzi) ===
-                //       cleanString(lessonIndex)
-                //   );
-
-                // console.log("CURRENT PHASE INDEX", currentPhraseIndex);
-
-                // if (currentPhraseIndex !== -1) {
-                //   const nextId =
-                //     currentLesson?.transcriptions?.[currentPhraseIndex + 1];
-
-                //   nextId?.id && setTranscriptionId(nextId?.id);
-
-                //   if (params?.["lessonId"]) {
-                //     router.push(
-                //       `/convos/${params?.["lessonId"] || _lessonId}/${
-                //         nextId?.id
-                //       }`
-                //     );
-                //   }
-                // } else {
-                //   setGameStatus("finish");
-                // }
-
-                // setCurrentGuess("");
-                // setGameStatus("");
               });
           }}
         >
@@ -475,6 +445,8 @@ export function Wordle() {
     );
   };
 
+  console.log("CURRENT STEP", currentPhrase);
+
   return (
     <div>
       {/* <header className="flex w-80 mx-auto mt-10 mb-8">
@@ -523,6 +495,7 @@ export function Wordle() {
 
             <div className="flex justify-center w-full my-16 flex-col items-center">
               <input
+                autoFocus
                 disabled={gameStatus === "win"}
                 className="text-center h-14 border-solid border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
                 value={currentGuess}

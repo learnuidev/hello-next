@@ -215,7 +215,7 @@ export function Wordle() {
   const phraseItem =
     currentPhrase?.hanzi || currentPhrase?.pinyin || currentPhrase?.input;
 
-  if (phraseItem?.length > 16) {
+  if (phraseItem?.length > 20) {
     return (
       <div className="text-center my-32">
         <h1 className="text-2xl font-semibold">Phrase too long</h1>

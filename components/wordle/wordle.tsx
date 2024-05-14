@@ -213,7 +213,7 @@ export function Wordle() {
   // const empties = Array(5 - currentGuessHistory.length).fill("     ");
 
   const phraseItem =
-    currentPhrase?.pinyin || currentPhrase?.hanzi || currentPhrase?.input;
+    currentPhrase?.hanzi || currentPhrase?.pinyin || currentPhrase?.input;
 
   if (phraseItem?.length > 16) {
     return (

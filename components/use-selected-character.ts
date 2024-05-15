@@ -24,11 +24,21 @@ import { useDeleteComponentMutation } from "@/domain/lesson/component.mutations"
 
 import { SelectedCharacterProps } from "./_select-character/select-character.types";
 
+import { create } from "zustand";
+
+export const useViewTypeStore = create((set: any, get: any) => ({
+  view: "home",
+  setView: (view: any) => set({ view }),
+}));
+
 export function useSelectedCharacterData({
   characterId,
 }: {
   characterId: string;
 }) {
+  // const view = useViewTypeStore((state) => state.view);
+  // const setView = useViewTypeStore((state) => state.setView);
+
   const [view, setView] = useState("home");
   const routeName = usePathname();
 

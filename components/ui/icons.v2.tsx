@@ -15,6 +15,9 @@ import {
   faGlobeAsia,
   faComputerMouse,
   faBadgeCheck,
+  faGridRound2Plus,
+  faBars,
+  faBlockQuestion,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -137,4 +140,7 @@ export const Icons = {
   globeAsia: createFAIcon(faGlobeAsia),
   computerMouse: createFAIcon(faComputerMouse),
   badgeCheck: createFAIcon(faBadgeCheck),
+  gridRound: createFAIcon(faGridRound2Plus),
+  bars: createFAIcon(faBars),
+  questionMark: createFAIcon(faBlockQuestion),
 };

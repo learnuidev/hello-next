@@ -7,6 +7,7 @@ import { Authenticate } from "./Authenticate";
 import { cn } from "@/lib/utils";
 import { LandingPage } from "./landing-page/landing-page";
 import { SettingsDialog } from "./settings-dialog/settings-dialog";
+import { whiteListUrls } from "@/data/white-list-urls";
 
 export const Authenticated = (props: any) => {
   const { data: authUser, isLoading } = useCurrentAuthUser({});
@@ -14,7 +15,7 @@ export const Authenticated = (props: any) => {
 
   const isSearchBarOpen = useSearchState((state) => state.isSearchBarOpen);
 
-  if (["/login", "/register"]?.includes(routeName)) {
+  if (whiteListUrls.includes(routeName)) {
     return <>{props.children}</>;
   }
 

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 
-import { cleanString } from "@/data/convos/bm1/utils";
 import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useParams, useSearchParams } from "next/navigation";
@@ -80,7 +79,7 @@ export function Wordle() {
 
     const firstPhraseId =
       currentLesson?.transcriptions?.[0]?.id ||
-      cleanString(currentLesson?.transcriptions?.[0]?.hanzi);
+      currentLesson?.transcriptions?.[0]?.hanzi;
 
     // 1. first find the phrase id - if found then return
     // 2. if not found then find the first phrase of the current lesson and return it
@@ -97,8 +96,7 @@ export function Wordle() {
   console.log("LESSON INDEX", lessonIndex);
 
   const currentPhrase = currentLesson?.transcriptions?.find(
-    (lesson: any) =>
-      cleanString(lesson?.id || lesson?.hanzi) === cleanString(lessonIndex)
+    (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
   );
 
   useEffect(() => {
@@ -131,15 +129,15 @@ export function Wordle() {
 
       if (firstUnanswered) {
         console.log("FIRST ANSWERED", firstUnanswered);
+        // const firstUnansweredIndex
         const currentLessonStep =
           currentLesson?.transcriptions?.findIndex(
             (lesson: any) =>
-              cleanString(lesson?.id || lesson?.hanzi) ===
-              firstUnanswered?.hanzi
+              (lesson?.id || lesson?.hanzi) === firstUnanswered?.hanzi
           ) + 1;
 
         router.push(
-          `/convos/${params?.["lessonId"] || _lessonId}?step=${currentLessonStep}`
+          `/convos/${params?.["lessonId"] || _lessonId}?step=${currentLessonStep !== 0 ? currentLessonStep : currentLessonStep + 1}`
         );
       }
     }
@@ -147,7 +145,7 @@ export function Wordle() {
 
   const totalLessons = currentLesson?.transcriptions?.length;
 
-  const secret = cleanString(currentPhrase?.hanzi);
+  const secret = currentPhrase?.hanzi;
 
   // 1. game state
   const [guessHistory, setGuessHistory] = useState<any>({
@@ -159,18 +157,20 @@ export function Wordle() {
   const currentGuessHistory = (
     guessHistory?.[lessonIndex as string] || []
   )?.filter((hist: string) => {
-    return cleanString(currentPhrase?.hanzi)?.includes(hist);
+    return currentPhrase?.hanzi?.includes(hist);
   });
 
   // 3.1 handles submittion
   const handleEnter = () => {
     // check if the currentGuess has 5 chars
-    const guessTrimmed = cleanString(currentGuess);
+    const guessTrimmed = currentGuess;
 
     const historyTrimmed = [...currentGuessHistory, guessTrimmed]?.reduce(
       (acc, curr) => `${acc}${curr}`,
       ""
     );
+
+    console.log("HISTORY", historyTrimmed);
     if (secret === guessTrimmed || secret === historyTrimmed) {
       // alert("You win");
 
@@ -229,8 +229,7 @@ export function Wordle() {
 
   const currentLessonStep =
     currentLesson?.transcriptions?.findIndex(
-      (lesson: any) =>
-        cleanString(lesson?.id || lesson?.hanzi) === cleanString(lessonIndex)
+      (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
     ) + 1;
 
   // const hasAnswered =
@@ -242,7 +241,7 @@ export function Wordle() {
       <div className="text-center transition">
         <button
           onClick={() => {
-            const guessTrimmed = cleanString(currentGuess);
+            const guessTrimmed = currentGuess;
             const historyTrimmed = [
               ...currentGuessHistory,
               guessTrimmed,
@@ -281,12 +280,14 @@ export function Wordle() {
     );
   };
 
+  console.log("SECRET", secret);
+
   const WinButton = () => {
     return (
       <div className="text-center transition mt-8">
         <button
           onClick={() => {
-            const guessTrimmed = cleanString(currentGuess);
+            const guessTrimmed = currentGuess;
             const historyTrimmed = [
               ...currentGuessHistory,
               guessTrimmed,
@@ -295,9 +296,7 @@ export function Wordle() {
             const goToNextChallenge = () => {
               const currentPhraseIndex =
                 currentLesson?.transcriptions?.findIndex(
-                  (lesson: any) =>
-                    cleanString(lesson?.id || lesson?.hanzi) ===
-                    cleanString(lessonIndex)
+                  (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
                 );
 
               console.log("CURRENT PHASE INDEX", currentPhraseIndex);
@@ -334,7 +333,7 @@ export function Wordle() {
               });
           }}
         >
-          Continue
+          {addAnswerMutation?.isLoading ? "Loading 。。。" : "Continue"}
         </button>
       </div>
     );
@@ -351,18 +350,14 @@ export function Wordle() {
           );
 
           const currentPhrase = currentLesson?.transcriptions?.find(
-            (lesson: any) =>
-              cleanString(lesson?.id || lesson?.hanzi) ===
-              cleanString(lessonIndex)
+            (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
           );
 
           // const currentPhrase = currentLesson?.transcriptions?.find(
           //   (lesson: any) => lesson?.id === lessonIndex
           // );
           const currentPhraseIndex = currentLesson?.transcriptions?.findIndex(
-            (lesson: any) =>
-              cleanString(lesson?.id || lesson?.hanzi) ===
-              cleanString(lessonIndex)
+            (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
           );
 
           console.log("CURRENT PHRASE INDEX", currentPhraseIndex);
@@ -405,14 +400,10 @@ export function Wordle() {
           );
 
           const currentPhrase = currentLesson?.transcriptions?.find(
-            (lesson: any) =>
-              cleanString(lesson?.id || lesson?.hanzi) ===
-              cleanString(lessonIndex)
+            (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
           );
           const currentPhraseIndex = currentLesson?.transcriptions?.findIndex(
-            (lesson: any) =>
-              cleanString(lesson?.id || lesson?.hanzi) ===
-              cleanString(lessonIndex)
+            (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
           );
 
           console.log("CURRENT PHRASE ID", currentPhraseIndex);
@@ -423,7 +414,7 @@ export function Wordle() {
 
             console.log("NEXT ID", nextId);
 
-            console.log("next id", cleanString(nextId.hanzi));
+            console.log("next id", nextId.hanzi);
 
             setTranscriptionId(nextId?.id || nextId?.hanzi);
 
@@ -444,8 +435,6 @@ export function Wordle() {
       </button>
     );
   };
-
-  console.log("CURRENT STEP", currentPhrase);
 
   return (
     <div>
@@ -543,7 +532,7 @@ export function Wordle() {
           <div className="text-center transition mt-8">
             <button
               onClick={() => {
-                const guessTrimmed = cleanString(currentGuess);
+                const guessTrimmed = currentGuess;
                 const historyTrimmed = [
                   ...currentGuessHistory,
                   guessTrimmed,

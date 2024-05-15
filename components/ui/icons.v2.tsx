@@ -14,6 +14,7 @@ import {
   faUser,
   faGlobeAsia,
   faComputerMouse,
+  faBadgeCheck,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -135,4 +136,5 @@ export const Icons = {
   user: createFAIcon(faUser),
   globeAsia: createFAIcon(faGlobeAsia),
   computerMouse: createFAIcon(faComputerMouse),
+  badgeCheck: createFAIcon(faBadgeCheck),
 };

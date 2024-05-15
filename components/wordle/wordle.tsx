@@ -475,7 +475,7 @@ export function Wordle() {
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 {currentPhrase?.en}
               </p>
-              <p className="text-2xl md:text-xl  text-gray-700 font-extralight dark:text-gray-300">
+              <p className="text-2xl md:text-4xl  text-gray-700 font-extralight dark:text-gray-300">
                 {currentPhrase?.pinyin ||
                   currentPhrase?.hanzi ||
                   currentPhrase?.input}

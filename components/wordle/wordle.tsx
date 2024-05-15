@@ -455,7 +455,9 @@ export function Wordle() {
               <FontAwesomeIcon className="text-2xl" icon={faBadgeCheck} />
             </span>
           ) : (
-            <div></div>
+            <span className="text-black">
+              <FontAwesomeIcon className="text-2xl" icon={faBadgeCheck} />
+            </span>
           )}
           <h2 className="text-gray-400 font-extralight text-lg md:text-2xl">
             Write the following sentence in{" "}

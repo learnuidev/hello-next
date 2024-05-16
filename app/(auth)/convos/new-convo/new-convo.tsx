@@ -157,11 +157,59 @@ export function NewConvo({ type }: { type?: string }) {
 
   console.log("NEW CONVO", newConvo);
 
-  const getTotalSentences = (txt: string) => {
-    return txt?.replaceAll("–", "").split("\n").filter(Boolean);
+  const listSections = (txt: string, lang: string) => {
+    if (lang === "zh") {
+      return txt
+        ?.replaceAll("–", "")
+        .split("\n")
+        .filter(Boolean)
+        ?.map((x) => {
+          return {
+            id: crypto.randomUUID(),
+            type: "section",
+            text: x?.trim(),
+            phrases: x
+              .trim()
+              .split("。")
+              ?.filter(Boolean)
+              ?.map((phrase) => {
+                return {
+                  id: crypto.randomUUID(),
+                  lang: "zh",
+                  input: phrase,
+                };
+              }),
+          };
+        })
+        .flat();
+    }
+    // return txt?.replaceAll("–", "").split("\n").filter(Boolean);
+    return txt
+      ?.replaceAll("–", "")
+      .split("\n")
+      .filter(Boolean)
+      ?.map((x) => {
+        return {
+          id: crypto.randomUUID(),
+          type: "section",
+          text: x?.trim(),
+          phrases: x
+            .trim()
+            .split(".")
+            ?.filter(Boolean)
+            ?.map((phrase) => {
+              return {
+                id: crypto.randomUUID(),
+                lang: lang,
+                input: phrase,
+              };
+            }),
+        };
+      })
+      .flat();
   };
 
-  const totalSentences = getTotalSentences(newConvo?.input);
+  const totalSentences = listSections(newConvo?.input, newConvo?.lang);
 
   const StepView = () => {
     switch (step) {
@@ -300,57 +348,49 @@ export function NewConvo({ type }: { type?: string }) {
         );
 
       case "audio": {
-        if (newConvo.type === "text") {
-          return (
-            <div className="md:mx-32 md:my-32 flex flex-wrap">
-              <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
-                add text here
-              </p>
-
-              <textarea
-                value={newConvo?.input}
-                onChange={(event) => {
-                  const sents = event?.target?.value;
-
-                  const totalSentences = getTotalSentences(sents);
-                  const transcriptions = totalSentences?.map((item) => {
-                    return {
-                      input: item,
-                      roman: "",
-                      en: "",
-                      lang: newConvo?.lang || "",
-                    };
-                  });
-
-                  setConvo("transcriptions", transcriptions);
-                  setConvo("input", event?.target?.value);
-                }}
-                // onKeyDown={(event) => {
-                //   if (event?.keyCode === 13) {
-                //     if (newConvo.audio) {
-                //       setConvo("mediaUrl", newConvo?.audio);
-                //       setStep("title");
-                //     }
-                //   }
-                // }}
-                autoFocus
-                placeholder=""
-                className="w-full text-center font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
-              />
-
-              {totalSentences?.length > 0 && (
-                <div>
-                  <code>
-                    <pre>{JSON.stringify(totalSentences, null, 2)}</pre>
-                  </code>
-                </div>
-              )}
-            </div>
-          );
-        }
-
         return (
           <div className="md:mx-32 md:my-32 flex flex-wrap">
+            {newConvo.type === "text" && (
+              <>
+                {" "}
+                <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
+                  add text here
+                </p>
+                <textarea
+                  value={newConvo?.input}
+                  onChange={(event) => {
+                    const sents = event?.target?.value;
+
+                    const sections = listSections(sents, newConvo?.lang);
+
+                    setConvo("sections", sections);
+                    setConvo(
+                      "transcriptions",
+                      sections?.map((section) => section?.phrases).flat()
+                    );
+                    setConvo("input", event?.target?.value);
+                  }}
+                  // onKeyDown={(event) => {
+                  //   if (event?.keyCode === 13) {
+                  //     if (newConvo.audio) {
+                  //       setConvo("mediaUrl", newConvo?.audio);
+                  //       setStep("title");
+                  //     }
+                  //   }
+                  // }}
+                  autoFocus
+                  placeholder=""
+                  className="w-full text-center font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
+                />
+                {totalSentences?.length > 0 && (
+                  <div>
+                    <code>
+                      <pre>{JSON.stringify(totalSentences, null, 2)}</pre>
+                    </code>
+                  </div>
+                )}
+              </>
+            )}
             <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
               audio link
             </p>

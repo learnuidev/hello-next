@@ -1,292 +1,229 @@
 "use client";
 
 import { NavBar } from "@/components/navbar";
-import { useEffect, useState } from "react";
-import { Message, useChat } from "ai/react";
-import { TextGenerateEffect } from "@/components/text-generate-effect";
-import {
-  useAddThreadMutation,
-  useUpdateThreadMessagesMutation,
-} from "@/domain/thread/thread.mutations";
-import { IThread, useListThreadsQuery } from "@/domain/thread/thread.queries";
-import { useRouter, useSearchParams } from "next/navigation";
-import { GenUI } from "@/components/gen-ui";
 import { Icons } from "@/components/ui/icons.v2";
-import { aiModels } from "@/libs/ai";
-import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
-import { useGetQueryClassifierQuery } from "@/domain/query-classifier/query-classifier.queries";
+import { useState } from "react";
 
-function UserQueryUI({ message }: { message: Message }) {
-  const { data: queryClass } = useGetQueryClassifierQuery({
-    query: message?.content,
-  });
-
-  console.log("CONTENT", message?.content);
-
-  console.log("QUERY CLASS", queryClass);
-  return (
-    <div>
-      <h2 className="text-2xl font-extralight" key={message.id}>
-        {message.content}
-      </h2>
-
-      {/* <h3>{JSON.stringify(queryClass)}</h3> */}
-
-      <p className="text-gray-500">{queryClass as string}</p>
-    </div>
-  );
+interface Role {
+  id?: string;
+  title: string;
 }
 
-const AgentAnswer = ({
-  message,
-  threadId,
-  finishedMsgs,
-  messages,
+interface ActionItem {
+  title: string;
+  description?: string;
+}
+
+interface ChatGoal {
+  title: string;
+}
+
+interface Phrase {
+  title: string;
+  lang?: string;
+}
+interface ChatContext {
+  title: string;
+  scenario: string;
+  goals: ChatGoal[];
+  actionItems: ActionItem[];
+  starterPhrases?: Phrase[];
+  humanRole?: Role;
+  aiRole?: Role;
+}
+
+const defaultContext: ChatContext = {
+  title: "At Mama's Restaurant",
+  scenario:
+    "You are at a Vacation in Montreal and you havent eaten all day. You wake up to a dumpling restaurant in Saint Hubert and the cashier greets you",
+  goals: [{ title: "Order Food" }],
+  humanRole: {
+    id: "customer",
+    title: "a customer",
+  },
+  aiRole: {
+    id: "cashier",
+    title: "a cashier",
+  },
+
+  actionItems: [
+    { title: "Ask whats on the menu" },
+    {
+      title: "Ask for a recommendation",
+    },
+    {
+      title: "Order three portions of dumpling to go",
+    },
+  ],
+
+  starterPhrases: [
+    {
+      title:
+        "Its my first time here, could you recommend me something special?",
+    },
+    { title: "Can I have 1 fried pork dumplings with cilantro please?" },
+    { title: "Excuse me, where is the washroom?" },
+    { title: "Its really beautiful outside." },
+  ],
+};
+
+const createChat = (context = defaultContext): ChatContext => {
+  return context;
+};
+
+const chatTemplates: ChatContext[] = [
+  {
+    title: "Latte at Starbucks",
+    scenario: "Latte at Starbucks",
+    goals: [{ title: "Ordering a latte" }],
+
+    humanRole: {
+      id: "customer",
+      title: "a customer",
+    },
+    aiRole: {
+      id: "barista",
+      title: "a barista",
+    },
+
+    starterPhrases: [
+      {
+        title: "Its my first time here, could you recommend me something",
+        lang: "en",
+      },
+      { title: "Can I have 3 medium lattes on a cup holder please?" },
+      { title: "Excuse me, can I please have the keys to the washroom?" },
+      { title: "Excuse me, can I have 2 medium lattes and a brownie please?" },
+    ],
+    actionItems: [{ title: "Order a small latte" }],
+  },
+
+  createChat(),
+
+  createChat({
+    ...defaultContext,
+    title: "At Adidas Outlet",
+    scenario:
+      "You are shopping at a mall in Beijing. You walk into a Adidas store and a staff member greets you",
+    goals: [
+      { title: "To order a pair of shoes" },
+      {
+        title: "To ask recommendations for running shoes",
+      },
+      {
+        title: "Buy running clothes at Adidas",
+      },
+    ],
+  }),
+];
+
+const ChatInfoItem = ({
+  title,
+  children,
 }: {
-  message: Message;
-  finishedMsgs: Message[];
-  threadId: string;
-  messages: Message[];
+  title: string;
+  children: React.ReactNode;
 }) => {
-  const isFinished = Boolean(
-    finishedMsgs?.length &&
-      !!finishedMsgs?.find((msg: Message) => msg?.id === message?.id)
-  );
-
-  const msgIndex = messages?.findIndex((msg) => msg?.id === message.id);
-  const userQuery = messages[msgIndex - 1]?.content || "";
-
-  const [showGenUI, setShowGenUI] = useState(false);
-
-  // console.log("FINISHED MSGS")
-
   return (
-    <div key={message.content} className="pt-4 pb-8 text-gray-400 text-lg">
-      {/* {threadId ? (
-        <p className="font-extralight ">{message.content}</p>
-      ) : (
-        <TextGenerateEffect
-          className="font-extralight "
-          key={message.content}
-          words={message?.content?.split?.("\n")?.join(" ")}
-        />
-      )} */}
-      <TextGenerateEffect
-        className="font-extralight text-gray-600"
-        key={message.content}
-        words={message?.content?.split?.("\n")?.join(" ")}
-      />
+    <section className="mx-4 flex flex-col justify-center items-start md:mx-32 mt-8">
+      <h1 className="text-lg text-gray-400">{title}</h1>
 
-      {/* <GenUI query={} /> */}
-      {/* {isFinished && ( */}
-      <div className="my-8 flex justify-end space-x-4">
-        <button>
-          <Icons.copy />
-        </button>
-        <button
-          className="analyze"
-          onClick={() => {
-            setShowGenUI((prev) => !prev);
-          }}
-        >
-          <Icons.calculatorSimple />
-        </button>
-      </div>
-      {/* )} */}
+      <div className="mt-4">{children}</div>
+    </section>
+  );
+};
 
-      {showGenUI && <GenUI query={userQuery} answer={message?.content} />}
+const ChatInfo = ({ chatContext }: { chatContext: ChatContext }) => {
+  return (
+    <div>
+      <section className="mx-4 mt-4 md:mt-24">
+        <h1 className="text-center text-3xl md:text-5xl lg:text-6xl my-4 font-light">
+          {chatContext.title}
+        </h1>
+
+        <h2 className="mb-4 md:mb-12 mx-8 md:mx-32 text-center text-lg text-gray-300 md:text-xl">
+          {chatContext.scenario}
+        </h2>
+      </section>
+      <ChatInfoItem title={"Goals"}>
+        <div className="mt-4">
+          {chatContext.goals?.map((actionItem) => {
+            return <p key={actionItem.title}>{actionItem.title}</p>;
+          })}
+        </div>
+      </ChatInfoItem>
+      <ChatInfoItem title={"Action Items"}>
+        <div className="mt-4">
+          {chatContext?.actionItems?.map((actionItem) => {
+            return <p key={actionItem.title}>{actionItem.title}</p>;
+          })}
+        </div>
+      </ChatInfoItem>
+      <ChatInfoItem title={"Starter Phrases"}>
+        <div className="mt-4">
+          {chatContext?.starterPhrases?.map((actionItem) => {
+            return <p key={actionItem.title}>{actionItem.title}</p>;
+          })}
+        </div>
+      </ChatInfoItem>
+    </div>
+  );
+};
+
+const ChatTemplatesList = ({ setChatContext }: { setChatContext: any }) => {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 justify-around pt-24 text-2xl wrap gap-y-8">
+      {chatTemplates?.map((template) => {
+        return (
+          <button
+            className="block"
+            onClick={() => {
+              setChatContext(template);
+            }}
+            key={template.title}
+          >
+            {template.title}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
+const ChatHeader = ({ setChatContext }: { setChatContext: any }) => {
+  return (
+    <div className="flex justify-between mx-4 my-4">
+      {/* <NavBar /> */}
+
+      <button>
+        <Icons.plusIcon className="text-2xl" />
+      </button>
+
+      <button
+        onClick={() => {
+          setChatContext((prev: any) => (prev === null ? createChat() : null));
+        }}
+      >
+        <Icons.xMark className="text-2xl" />
+      </button>
     </div>
   );
 };
 
 export default function Home() {
-  const [isTocHidden, setIsTocHidden] = useState(false);
-  const [updateThread, setUpdateThread] = useState(false);
-  const [finishedMsgs, setFinishedMsgs] = useState([]);
-  const [cachedInput, setCacheInput] = useState("");
-  const [cachedMessages, setCachedMessages] = useState([]);
-  const router = useRouter();
-
-  const { data: authUser } = useCurrentAuthUser({});
-
-  const searchParams = useSearchParams();
-  const threadId = searchParams?.get("thread") || "";
-
-  const { data: threads } = useListThreadsQuery();
-
-  const threadItems = (threads as any)?.Items as IThread[];
-
-  const thread = threadItems?.find(
-    (thread) => thread?.id === threadId
-  ) as IThread;
-
-  const addThreadMutation = useAddThreadMutation();
-
-  const updateThreadMutation = useUpdateThreadMessagesMutation();
-
-  const {
-    messages,
-    input,
-    handleInputChange,
-    handleSubmit,
-    setMessages,
-    setInput,
-    data,
-    isLoading,
-  } = useChat({
-    api: "/api/summarize",
-    body: {
-      aiContext: {
-        model: aiModels.gpt35Turbo,
-        threadId,
-      },
-    },
-    onResponse: (resp: any) => {
-      console.log("RESP", resp);
-    },
-    onFinish: (msg: any) => {
-      console.log("FINISHED", msg);
-      setFinishedMsgs((prev) => prev.concat(msg));
-
-      const msgs = JSON.parse(localStorage.getItem("messages") || "") as any;
-      const input = JSON.parse(localStorage.getItem("query") || "") as any;
-      console.log("INPUT", input);
-
-      console.log("MESSAGES YO", msgs);
-
-      // if (threadId) {
-      setUpdateThread(true);
-      // }
-
-      // if (msgs?.length) {
-      //   addThreadMutation
-      //     .mutateAsync({
-      //       id: threadId,
-      //       query: input,
-      //       messages: msgs,
-      //     })
-      //     .then((resp) => {
-      //       router.push(`/chat?thread=${resp.id}`);
-      //     });
-      // }
-    },
-  } as any);
-
-  useEffect(() => {
-    const updateThreadAsyncFunction = async () => {
-      return updateThreadMutation
-        .mutateAsync({
-          threadId: searchParams.get("thread") || "",
-          messages,
-        })
-        .then((resp) => {
-          alert("updated");
-        });
-    };
-
-    if (updateThread) {
-      setUpdateThread(() => {
-        updateThreadAsyncFunction();
-        return false;
-      });
-    }
-  }, [messages, searchParams, updateThread, updateThreadMutation]);
-
-  useEffect(() => {
-    if (thread && thread?.messages) {
-      setMessages(thread?.messages);
-    }
-  }, [setMessages, thread]);
-
-  useEffect(() => {
-    if (messages) {
-      localStorage.setItem("messages", JSON.stringify(messages));
-
-      setCachedMessages(() => messages as any);
-      console.log("UPDATE MESSAGES", messages);
-    }
-
-    if (input) {
-      console.log("INTPUT", input);
-      localStorage.setItem("query", JSON.stringify(input));
-    }
-  }, [messages, input]);
-
-  const toggleIsHidden = () => {
-    if (isTocHidden) {
-    }
-  };
-
-  console.log("CACHED", cachedMessages);
+  const [chatContext, setChatContext] = useState<ChatContext | null>(
+    createChat()
+  );
 
   return (
     <main className="w-full">
-      <NavBar />
+      <ChatHeader setChatContext={setChatContext} />
 
-      <div className="space-y-4 px-8 md:px-12 max-w-5xl mx-auto flex flex-col md:space-y-4">
-        {/* <p>Chat</p> */}
-
-        <div className="">
-          <form
-            onSubmit={async (event) => {
-              event.preventDefault();
-              if (!threadId) {
-                handleSubmit(event);
-                // handleSubmit(event);
-                // handleSubmit(event);
-                addThreadMutation
-                  .mutateAsync({
-                    id: threadId,
-                    query: input,
-                    messages: messages,
-                  })
-                  .then((resp) => {
-                    // handleSubmit(event);
-                    router.push(`/chat?thread=${resp.id}`);
-                  });
-
-                return null;
-              } else {
-                handleSubmit(event);
-              }
-            }}
-          >
-            (
-            <input
-              className="-ml-6 font-extralight text-2xl top-20 mb-8 mt-2 w-full bg-black rounded-full h-12 px-4 border-transparent focus:border-transparent focus:ring-0 border border-gray-900 shadow-xl !outline-none"
-              value={input}
-              disabled={isLoading}
-              placeholder="Ask me anything..."
-              onChange={(evt) => {
-                setCacheInput(evt.target.value);
-                handleInputChange(evt);
-              }}
-            />
-          </form>
-        </div>
-
-        {/* <div className={formPositionClass}> */}
-
-        <div>
-          {messages.length > 0
-            ? messages.map((message: Message) => {
-                if (message.role === "user") {
-                  return <UserQueryUI message={message} key={message.id} />;
-                }
-
-                return (
-                  <AgentAnswer
-                    threadId={threadId}
-                    key={message?.id}
-                    message={message}
-                    finishedMsgs={finishedMsgs}
-                    messages={messages}
-                  />
-                );
-              })
-            : null}
-        </div>
-      </div>
+      {chatContext ? (
+        <ChatInfo chatContext={chatContext} />
+      ) : (
+        <ChatTemplatesList setChatContext={setChatContext} />
+      )}
     </main>
   );
 }

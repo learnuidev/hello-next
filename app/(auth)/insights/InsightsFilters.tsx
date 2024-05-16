@@ -20,7 +20,7 @@ export function InsightsFilters() {
     seconds: 0,
   });
   return (
-    <div className="my-4 flex items-center justify-between space-y-2 mb-2">
+    <div className="flex items-center justify-between space-y-2">
       {/* <h1 className="text-3xl font-bold tracking-tight"> Insights</h1> */}
 
       <div></div>

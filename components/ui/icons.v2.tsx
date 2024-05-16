@@ -20,6 +20,7 @@ import {
   faBlockQuestion,
   faCircleArrowDown,
   faCircleBolt,
+  faPlus,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -63,7 +64,6 @@ import { faCloudDrizzle } from "@fortawesome/sharp-solid-svg-icons/faCloudDrizzl
 import { faCloudsSun } from "@fortawesome/sharp-solid-svg-icons/faCloudsSun";
 import { faGrid2 } from "@fortawesome/sharp-solid-svg-icons/faGrid2";
 import { faGear } from "@fortawesome/sharp-solid-svg-icons/faGear";
-import { faPlus } from "@fortawesome/sharp-solid-svg-icons/faPlus";
 
 import {
   faCalculatorSimple,

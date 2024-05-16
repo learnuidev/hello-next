@@ -5,14 +5,6 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import * as R from "ramda";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
 import { NavBar } from "@/components/navbar";
 
 import { useRepeatHistoryStore } from "../convos/_play/use-repeat-history";
@@ -21,13 +13,10 @@ import { useSelectedCharacter } from "../convos/use-selected-character";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
-import { SelectedCharacter } from "@/components/selected-character";
 import { useListParseQuery } from "@/domain/nmm/nmm.queries";
 
-import { CharacterDiscoveryBarChart } from "./CharacterDiscoveryBarChart";
-import { CharacterLearnedBarChart } from "./CharacterLearnedBarChart";
 import { InsightsFilters } from "./InsightsFilters";
-import { InsightsHeader } from "./InsightsHeader";
+
 import { useCharactersDiscovered } from "./use-characters-discovered";
 import { InsightsV2 } from "./_v2/insights-v2";
 
@@ -126,51 +115,16 @@ export default function Insights() {
 
   return (
     <div>
-      <NavBar />
-      <main className="mx-4 md:mx-48">
+      <div className="flex items-center justify-between my-4">
+        <NavBar />
         <div className="mx-4 md:mx-20">
           <InsightsFilters />
         </div>
+      </div>
+
+      <main className="mx-4 md:mx-48">
         <InsightsV2 />
       </main>
     </div>
-  );
-
-  return (
-    <main className="">
-      <NavBar />
-      <div className="w-full grid gap-4 px-4 md:px-12 my-4 md:my-12">
-        <InsightsFilters />
-        <InsightsHeader />
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
-          <Card className="col-span-4 dark:border-gray-600">
-            <CardHeader>
-              <CardTitle>Characters Learned</CardTitle>
-              <CardDescription>
-                You learned 42 characters this week.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pl-2">
-              {/* <Overview /> */}
-              <CharacterDiscoveryBarChart />
-              {/* <div>TODO</div> */}
-            </CardContent>
-          </Card>
-          <Card className="col-span-4 dark:border-gray-600">
-            <CardHeader>
-              <CardTitle>Characters Discovered</CardTitle>
-              <CardDescription>
-                You discovered 425 characters this week.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {/* <RecentSales /> */}
-              <CharacterLearnedBarChart />
-              {/* <div> TODO</div> */}
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </main>
   );
 }

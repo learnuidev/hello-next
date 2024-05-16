@@ -8,4 +8,5 @@ export type Transcription = {
   pinyn_added_at: number;
   lit?: string;
   seek: number;
+  input?: string;
 };

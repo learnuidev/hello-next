@@ -379,7 +379,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
         {lesson2?.transcriptions?.map((transcription: Transcription) => {
           return (
             <TranscriptItem
-              key={`${transcription?.hanzi}-${transcription?.pinyin}`}
+              key={`${transcription?.hanzi || transcription?.input}-${transcription?.pinyin}`}
               transcription={transcription}
               seek={seek}
               currentTime={currentTime}
@@ -399,6 +399,12 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
       {/* timestamps */}
       <Timestamps />
       {/* timestamps */}
+
+      {/* <div>
+        <code>
+          <pre>{JSON.stringify(lesson2, null, 2)}</pre>
+        </code>
+      </div> */}
 
       {focusMode ? <FocusMode /> : <Transcripts />}
     </div>

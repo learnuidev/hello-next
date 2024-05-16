@@ -212,20 +212,20 @@ export function Wordle() {
   const phraseItem =
     currentPhrase?.hanzi || currentPhrase?.pinyin || currentPhrase?.input;
 
-  if (phraseItem?.length > 20) {
-    return (
-      <div className="text-center my-32">
-        <h1 className="text-2xl font-semibold">Phrase too long</h1>
+  // if (phraseItem?.length > 20) {
+  //   return (
+  //     <div className="text-center my-32">
+  //       <h1 className="text-2xl font-semibold">Phrase too long</h1>
 
-        <p className="text-xs my-8 text-center px-80 text-gray-400 font-light">
-          {phraseItem}
-        </p>
-        <p className="text-gray-500 font-extralight">
-          Sentence must be 16 characters max
-        </p>
-      </div>
-    );
-  }
+  //       <p className="text-xs my-8 text-center px-80 text-gray-400 font-light">
+  //         {phraseItem}
+  //       </p>
+  //       <p className="text-gray-500 font-extralight">
+  //         Sentence must be 16 characters max
+  //       </p>
+  //     </div>
+  //   );
+  // }
 
   const currentLessonStep =
     currentLesson?.transcriptions?.findIndex(

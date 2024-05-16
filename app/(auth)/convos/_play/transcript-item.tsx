@@ -35,7 +35,6 @@ export const TranscriptItem = ({
           ? "text-yellow-500"
           : ""
       }`}
-      key={`${transcription?.hanzi}-${transcription?.pinyin}`}
       onClick={() => {
         seek(transcription?.start);
 
@@ -52,7 +51,7 @@ export const TranscriptItem = ({
         });
       }}
     >
-      <p className={""}>{transcription?.hanzi}</p>
+      <p className={""}>{transcription?.hanzi || transcription?.input}</p>
       {pinyinMode ? (
         <>
           <p className="dark:text-gray-400 text-md">{transcription?.pinyin}</p>

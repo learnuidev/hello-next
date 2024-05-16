@@ -4,6 +4,7 @@ export const getPagesUrl = (query: string) => {
   const homePageUrl = "/";
   const timelineUrl = "/timeline";
   const insightsUrl = "/insights";
+  const chatUrl = "/chat";
 
   const pages = {
     timeline: timelineUrl,
@@ -14,6 +15,7 @@ export const getPagesUrl = (query: string) => {
     h: homePageUrl,
     hm: homePageUrl,
     home: homePageUrl,
+    chat: chatUrl,
   } as any;
 
   const page = pages[objective?.toLowerCase()];

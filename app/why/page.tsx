@@ -115,7 +115,7 @@ export default function Home() {
         <div className="flex justify-center h-screen items-center">
           <Button
             variant="outline"
-            className="rounded-full"
+            className="rounded-full animate-bounce"
             onClick={() => {
               router.push("/pricing");
             }}

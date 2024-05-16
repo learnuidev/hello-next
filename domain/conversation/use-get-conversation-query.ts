@@ -10,7 +10,7 @@ import { Conversation } from "./conversation.type";
 const getConversation = async (
   { conversationId }: { conversationId: string },
   opts: { Authorization: string }
-) => {
+): Promise<Conversation> => {
   const res = await fetch(`${siteConfig.apiUrl}/v1/get-conversation`, {
     method: "POST",
     headers: {
@@ -21,7 +21,7 @@ const getConversation = async (
       conversationId,
     }),
   });
-  const resp = (await res.json()) as any;
+  const resp = await res.json();
 
   return resp as Conversation;
 };
@@ -33,15 +33,14 @@ export function useGetConversationQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery({
+    ...options,
     queryKey: ["get-conversation", params.conversationId],
     queryFn: async () => {
       const response = await getConversation(params, {
         Authorization: authUser?.jwt,
       });
-      return response as Conversation;
+      return response;
     },
-
-    ...options,
     retry: false,
     enabled: Boolean(authUser?.jwt && params?.conversationId),
     cacheTime: 1000 * 60 * 300, // 30 minutes,

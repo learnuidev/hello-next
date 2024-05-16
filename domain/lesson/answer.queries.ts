@@ -68,6 +68,7 @@ const listAnswers = async (
             .map((x: any) => x?.hanzi)
             .join("")
         ),
+        // @ts-ignore
       ].filter((x: string) => !engChars?.includes(x?.toLocaleLowerCase()));
       const currentPhrase = curr?.hanzi
         ?.split("")

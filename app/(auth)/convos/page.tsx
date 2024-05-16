@@ -19,7 +19,7 @@ import { useSelectedCharacter } from "./use-selected-character";
 
 import { useViewModeStore } from "./new-convo/use-viewmode-store";
 import { PlusIcon } from "@/components/ui/icons";
-import { NewConvo } from "./new-convo";
+import { NewConvo } from "./new-convo/new-convo";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { HoverEffect } from "@/components/hover-effect";
 import { useSearchQueryStore } from "@/components/search/state";

@@ -27,6 +27,8 @@ function GameTile(props: any) {
 
 function GameRow(props: any) {
   const { guess } = props;
+  console.log("GUESS", guess);
+
   return (
     <div className="flex justify-center mb-1">
       {guess.split("").map((letter: string, idx: number) => {
@@ -145,7 +147,7 @@ export function Wordle() {
 
   const totalLessons = currentLesson?.transcriptions?.length;
 
-  const secret = currentPhrase?.hanzi;
+  const secret = currentPhrase?.hanzi || currentPhrase?.input;
 
   // 1. game state
   const [guessHistory, setGuessHistory] = useState<any>({
@@ -154,10 +156,12 @@ export function Wordle() {
     2: [],
   });
 
+  console.log("GUESS HISTRT", guessHistory);
+
   const currentGuessHistory = (
     guessHistory?.[lessonIndex as string] || []
   )?.filter((hist: string) => {
-    return currentPhrase?.hanzi?.includes(hist);
+    return (currentPhrase?.hanzi || currentPhrase?.input)?.includes(hist);
   });
 
   // 3.1 handles submittion
@@ -170,8 +174,16 @@ export function Wordle() {
       ""
     );
 
-    console.log("HISTORY", historyTrimmed);
-    if (secret === guessTrimmed || secret === historyTrimmed) {
+    // console.log("HISTORY", historyTrimmed);
+    // console.log("HISTORY", currentGuess);
+    // console.log("HISTORY SEC", secret);
+
+    // console.log("LESSON INDEX", lessonIndex);
+
+    console.log("SECRET", secret);
+    console.log("SECRET", guessTrimmed);
+    console.log("SEC", secret?.includes(guessTrimmed));
+    if (secret?.trim() === guessTrimmed?.trim() || secret === historyTrimmed) {
       // alert("You win");
 
       setGameStatus("win");
@@ -185,13 +197,18 @@ export function Wordle() {
       alert("You lose");
       setGameStatus("lost");
     } else {
+      console.log("YOOOO", guessTrimmed);
       // 1. add the current guess to guessHistory
       setGuessHistory((prevHistory: any) => {
         return {
           ...prevHistory,
-          [lessonIndex]: currentGuessHistory.concat(guessTrimmed as any),
+          [lessonIndex]: (currentGuessHistory || []).concat(
+            guessTrimmed as any
+          ),
         };
       });
+
+      console.log("YOOOO");
 
       // 2. reset currentGuess
       setCurrentGuess("");
@@ -436,6 +453,8 @@ export function Wordle() {
     );
   };
 
+  console.log("currentGuessHistory", currentGuessHistory);
+
   return (
     <div>
       {/* <header className="flex w-80 mx-auto mt-10 mb-8">
@@ -449,7 +468,9 @@ export function Wordle() {
       <main className="py-12 flex items-center justify-center flex-col">
         <div className="flex flex-col md:flex-row justify-between items-center w-full px-4 md:px-32">
           {answers?.find(
-            (answer: any) => answer?.hanzi === currentPhrase?.hanzi
+            (answer: any) =>
+              (answer?.hanzi || answer?.input) ===
+              (currentPhrase?.hanzi || currentPhrase?.input)
           ) ? (
             <span className="text-yellow-400">
               <FontAwesomeIcon className="text-2xl" icon={faBadgeCheck} />

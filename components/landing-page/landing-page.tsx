@@ -3,6 +3,8 @@ import { Icons } from "../ui/icons.v2";
 import { Sparkles } from "../ui/sparkles";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { FeaturesList } from "@/app/why/features-list";
+import { WhyMandarinoBanner } from "@/app/why/why-mandarino-banner";
 
 const LandingNavBarItem = ({ href, text }: { href: string; text: string }) => {
   const routeName = usePathname();
@@ -94,10 +96,12 @@ export const LandingPage = () => {
       <LandingNavbar />
 
       <main>
-        <section>
+        <section className="h-screen">
           <MandarinoBanner />
         </section>
-        <section className="flex mx-auto">{/* <p>BYOB</p> */}</section>
+
+        <WhyMandarinoBanner />
+        <FeaturesList />
       </main>
     </div>
   );

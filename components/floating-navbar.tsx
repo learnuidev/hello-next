@@ -74,7 +74,7 @@ export const FloatingNavbar = () => {
                 routeName === "/timeline"
                   ? "text-gray-800 dark:text-gray-300"
                   : "text-gray-200 dark:text-gray-500"
-              } hover:text-gray-700 transition text-xl hidden md:block`}
+              } hover:text-gray-700 transition text-xl`}
             >
               <Icons.verticalStack className="hover:text-white transition" />
             </Link>

@@ -23,7 +23,6 @@ function SectionItem({
     offset: ["start center", "end center"],
   });
 
-  console.log(scrollYProgress);
   return (
     <motion.div
       ref={ref}
@@ -33,7 +32,7 @@ function SectionItem({
       }}
       className="w-full"
     >
-      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-white bg-black h-screen mt-[-120px]">
+      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-white bg-black h-screen">
         <h3 className="text-gray-500 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
           {step}
         </h3>

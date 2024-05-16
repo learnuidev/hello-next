@@ -1,9 +1,9 @@
 "use client";
 
 import { LandingNavbar } from "@/components/landing-page/landing-page";
-import { NavBar } from "@/components/navbar";
 import { Icons } from "@/components/ui/icons.v2";
 import { useSearchParams } from "next/navigation";
+import { mandarinoFeatures } from "./mandarino-features";
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -13,8 +13,8 @@ export default function Home() {
     <main className="w-full">
       <LandingNavbar />
 
-      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-white bg-black h-screen mt-[-120px]">
-        <h1 className="max-w-xl mb-8 text-4xl font-extrabold text-center uppercase lg:text-6xl font-display tracking-crazy lg:leading-tight">
+      <section className="flex flex-col items-center justify-center w-full mx-auto antialiased text-white bg-black h-screen mt-[-40px] md:mt-[0px]">
+        <h1 className="max-w-2xl mb-8 text-4xl font-extrabold text-center uppercase lg:text-5xl font-display tracking-crazy lg:leading-tight">
           <span> WHY GET A </span>
           <span className=" bg-gradient-to-r from-rose-400 via-purple-500 to-indigo-400 text-transparent bg-clip-text">
             {" "}
@@ -23,96 +23,35 @@ export default function Home() {
           <span> ACCOUNT?</span>
         </h1>
 
-        <h2 className="text-xl lg:text-2xl px-8 md:px-16 selection:bg-purple-600">
-          Keep your customers happy even during downtime. Reduce support
-          tickets. Build customer trust!
+        <h2 className="text-center text-lg lg:text-3xl px-8 md:px-16 lg:px-48 selection:bg-purple-600 font-light">
+          Say goodbye to <span className="text-rose-400">switching</span>{" "}
+          between apps. Experience a language learning app that{" "}
+          <span className="font-semibold">evolves</span> with you.
         </h2>
+
+        <Icons.circleArrowDown className="my-16 text-3xl animate-bounce" />
       </section>
 
-      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-white bg-black h-screen mt-[-120px]">
-        <h3 className="text-gray-500 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
-          1
-        </h3>
-        <h1 className="max-w-xl mb-8 text-3xl font-extrabold text-center uppercase lg:text-5xl font-display tracking-crazy lg:leading-tight">
-          Fast
-        </h1>
+      {mandarinoFeatures?.map((feature, idx) => {
+        return (
+          <section
+            key={feature.id}
+            className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-white bg-black h-screen mt-[-120px]"
+          >
+            <h3 className="text-gray-500 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
+              {idx + 1}
+            </h3>
+            <h1 className="max-w-xl mb-8 text-3xl font-extrabold text-center uppercase lg:text-5xl font-display tracking-crazy lg:leading-tight">
+              {feature?.title}
+            </h1>
 
-        <h2 className="text-xl lg:text-2xl px-8 md:px-16 selection:bg-purple-600">
-          Mandarino is very fast. Which means getting learning more with less
-          time
-        </h2>
-      </section>
-      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-white bg-black h-screen mt-[-120px]">
-        <h3 className="text-gray-500 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
-          2
-        </h3>
-        <h1 className="max-w-xl mb-8 text-3xl font-extrabold text-center uppercase lg:text-5xl font-display tracking-crazy lg:leading-tight">
-          BYOD
-        </h1>
-
-        <h2 className="text-xl lg:text-2xl px-8 md:px-16 selection:bg-purple-600">
-          Aka Bring Your Own Data. Unlike many cookie cutter language learning
-          apps, you bring your own data. This allows you to learn what actually
-          matters, rather than forcing things that doesnt even matter. This
-          means more personalized and lean learning experience.
-        </h2>
-      </section>
-
-      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-white bg-black h-screen mt-[-120px]">
-        <h3 className="text-gray-500 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
-          3
-        </h3>
-        <h1 className="max-w-xl mb-8 text-3xl font-extrabold text-center uppercase lg:text-5xl font-display tracking-crazy lg:leading-tight">
-          Track what you Need
-        </h1>
-
-        <h2 className="text-xl lg:text-2xl px-8 md:px-16 selection:bg-purple-600">
-          Whether you want to track your content, search or navigation, no
-          problem. Mandarino provides it all. With Tracking, you will never lose
-          your history
-        </h2>
-      </section>
-      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-white bg-black h-screen mt-[-120px]">
-        <h3 className="text-gray-500 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
-          4
-        </h3>
-        <h1 className="max-w-xl mb-8 text-3xl font-extrabold text-center uppercase lg:text-5xl font-display tracking-crazy lg:leading-tight">
-          Learn Once, Never Lose Again
-        </h1>
-
-        <h2 className="text-xl lg:text-2xl px-8 md:px-16 selection:bg-purple-600">
-          Aka Bring Your Own Data. Unlike many cookie cutter language learning
-          apps, you bring your own data. This allows you to learn what actually
-          matters, rather than forcing things that doesnt even matter
-        </h2>
-      </section>
-      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-white bg-black h-screen mt-[-120px]">
-        <h3 className="text-gray-500 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
-          5
-        </h3>
-        <h1 className="max-w-xl mb-8 text-3xl font-extrabold text-center uppercase lg:text-5xl font-display tracking-crazy lg:leading-tight">
-          Gen AI
-        </h1>
-
-        <h2 className="text-xl lg:text-2xl px-8 md:px-16 selection:bg-purple-600">
-          What if you dont have any data? No Problem. With Mandarino AI you can
-          do: grammar analysis as well as high quality sentence, dialog and
-          story generation and much much more.
-        </h2>
-      </section>
-      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-white bg-black h-screen mt-[-120px]">
-        <h3 className="text-gray-500 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
-          5
-        </h3>
-        <h1 className="max-w-xl mb-8 text-3xl font-extrabold text-center uppercase lg:text-5xl font-display tracking-crazy lg:leading-tight">
-          Applications
-        </h1>
-
-        <h2 className="text-xl lg:text-2xl px-8 md:px-16 selection:bg-purple-600">
-          Mandarino is a collection of smaller apps. Which means you only pay
-          for the apps that you use
-        </h2>
-      </section>
+            <h2
+              dangerouslySetInnerHTML={{ __html: feature?.description }}
+              className="text-xl lg:text-2xl px-8 md:px-16 selection:bg-purple-600 text-center"
+            ></h2>
+          </section>
+        );
+      })}
     </main>
   );
 }

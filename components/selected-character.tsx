@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { NomadMethod } from "@/app/nmm/nomad-method";
 
-import { HeaderView } from "./_select-character/header-view";
+import { HeaderView } from "./_select-character/selected-character-header";
 import { ViewType } from "./_select-character/character-view-type";
 import { useSelectedCharacterData } from "./use-selected-character";
 

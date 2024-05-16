@@ -48,7 +48,7 @@ export const NavItems = (props: SelectedCharacterProps) => {
   const { data } = useListCharactersQuery();
 
   const learnedChar = data?.filter(
-    (item: any) => item?.input === characterId
+    (item: any) => (item?.input || item?.hanzi) === characterId
   )?.[0];
 
   const { toast } = useToast();
@@ -88,7 +88,7 @@ export const NavItems = (props: SelectedCharacterProps) => {
         >
           <Icons.seedling />
         </button>
-        {learnedChar?.story && (
+        {learnedChar && (
           <button
             className={cn(
               "text-xl transition",

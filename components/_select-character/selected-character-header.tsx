@@ -5,7 +5,7 @@ import React from "react";
 import { SelectedCharacterProps } from "./select-character.types";
 
 import { TitleView } from "./title-view";
-import { NavItems } from "./nav-items";
+import { NavItems } from "./selected-character-nav-items";
 
 import { useToast } from "@/components/ui/use-toast";
 

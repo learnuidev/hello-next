@@ -62,10 +62,10 @@ export const ViewType = (props: SelectedCharacterProps) => {
   const setStory = useStoryStore((state: any) => state.setStory);
 
   useEffect(() => {
-    if (learnedChar?.story) {
-      setStory(learnedChar?.story);
+    if (selectedComp?.story) {
+      setStory(selectedComp?.story);
     }
-  }, [learnedChar?.story, setStory]);
+  }, [selectedComp?.story, setStory]);
 
   const HskView = () => {
     const { data } = useListHSKWordsQuery();
@@ -110,8 +110,10 @@ export const ViewType = (props: SelectedCharacterProps) => {
     );
   }
 
+  console.log("LEARNED CHAR", selectedComp);
+
   if (view === "story") {
-    return <StoryEditor learnedChar={learnedChar} />;
+    return <StoryEditor selectedChar={selectedComp} />;
   }
 
   return (

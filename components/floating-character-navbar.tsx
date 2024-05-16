@@ -2,8 +2,9 @@ import { SelectedCharacterProps } from "./_select-character/select-character.typ
 
 import { Icons } from "./ui/icons.v2";
 import { cn } from "@/lib/utils";
-import { useToast } from "./ui/use-toast";
+// import { useToast } from "./ui/use-toast";
 
+import { toast } from "sonner";
 export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
   const {
     selectedComp,
@@ -21,7 +22,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     deleteComponentMutation,
   } = props;
 
-  const { toast } = useToast();
+  // const { toast } = useToast();
 
   return (
     <div className="flex w-full fixed z-50 bottom-4">
@@ -52,6 +53,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                   addCharacterMutation?.mutateAsync({
                     lang: lang,
                     status: "DISCOVERED",
+                    story: "todo",
                     hanzi: firstLesson?.hanzi || selectedChar,
                     journeyId: firstLesson?.id || "default",
                   });
@@ -78,12 +80,12 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                     discoverMutation
                       .mutateAsync({
                         hanzi: selectedComp?.hanzi || characterId,
+                        // story: "todo",
                       })
                       .then((resp: any) => {
-                        toast({
-                          title: "Success!",
-                          description: `Component Successfully discovered ${JSON.stringify(resp)}`,
-                        });
+                        toast(
+                          `Component Successfully discovered ${JSON.stringify(resp)}`
+                        );
                         console.log("Discovered!!", resp);
                       });
                   }}
@@ -113,12 +115,9 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                       hanzi: selectedComp?.hanzi || characterId,
                     } as any)
                     .then((resp: any) => {
-                      toast({
-                        title: "Success!",
-                        description: `Component: ${selectedComp?.hanzi || characterId} Successfully deleted  
-              \n 
-              ${JSON.stringify(resp)}`,
-                      });
+                      toast(`Component: ${selectedComp?.hanzi || characterId} Successfully deleted  
+                      \n 
+                      ${JSON.stringify(resp)}`);
                       console.log("Discovered!!", resp);
                     });
                 }}

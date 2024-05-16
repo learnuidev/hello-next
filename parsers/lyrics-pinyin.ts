@@ -10,7 +10,7 @@ export const parseLyricsPinyin = () => {
     .filter((elem) => {
       return elem.nodeName !== "SPAN";
     })
-    .map((item) => item.innerText.trim())
+    .map((item: any) => item.innerText.trim())
     .filter(Boolean)
     .map((current, idx, ctx) => {
       if (idx === 0 || idx % 3 === 0) {

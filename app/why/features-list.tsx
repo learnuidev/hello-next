@@ -1,6 +1,5 @@
 "use client";
 
-import { LandingNavbar } from "@/components/landing-page/landing-page";
 import { Icons } from "@/components/ui/icons.v2";
 import { useRouter, useSearchParams } from "next/navigation";
 import { mandarinoFeatures } from "./mandarino-features";
@@ -28,13 +27,13 @@ function SectionItem({
         <h3 className="text-gray-800 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
           {step}
         </h3>
-        <h1 className="max-w-xl mb-8 text-3xl font-extrabold text-center uppercase lg:text-5xl font-display tracking-crazy lg:leading-tight">
+        <h1 className="max-w-xl mb-8  font-extrabold text-center uppercase text-4xl md:text-5xl lg:text-6xl font-display tracking-crazy lg:leading-tight">
           {feature?.title}
         </h1>
 
         <h2
           dangerouslySetInnerHTML={{ __html: feature?.description }}
-          className="text-xl lg:text-2xl px-8 md:px-16 selection:bg-purple-600 text-center font-light text-gray-300"
+          className="text-xl lg:text-2xl px-8 md:px-16 lg:px-64 selection:bg-purple-600 text-center font-light text-gray-300"
         ></h2>
       </section>
     </FadeInDiv>

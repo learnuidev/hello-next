@@ -16,12 +16,16 @@ function SectionItem({
   feature,
 }: {
   step: number;
-  feature: { id: string; title: string; description: string };
+  feature: {
+    id: string;
+    title: string;
+    description: string;
+  };
 }) {
   return (
     <FadeInDiv>
       <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-gray-200 bg-black h-screen">
-        <h3 className="text-gray-600 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
+        <h3 className="text-gray-800 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
           {step}
         </h3>
         <h1 className="max-w-xl mb-8 text-3xl font-extrabold text-center uppercase lg:text-5xl font-display tracking-crazy lg:leading-tight">

@@ -1,7 +1,10 @@
+import { Icons } from "@/components/ui/icons.v2";
+
 export const mandarinoFeatures = [
   {
     id: "fast",
     title: "Fast",
+    Icon: Icons.circleBolt,
     description:
       "At Mandarino, speed is our strength. This means you can learn more in less time.",
   },

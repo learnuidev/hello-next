@@ -19,6 +19,7 @@ import {
   faBars,
   faBlockQuestion,
   faCircleArrowDown,
+  faCircleBolt,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -145,4 +146,5 @@ export const Icons = {
   bars: createFAIcon(faBars),
   questionMark: createFAIcon(faBlockQuestion),
   circleArrowDown: createFAIcon(faCircleArrowDown),
+  circleBolt: createFAIcon(faCircleBolt),
 };

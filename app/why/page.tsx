@@ -2,11 +2,14 @@
 
 import { LandingNavbar } from "@/components/landing-page/landing-page";
 import { Icons } from "@/components/ui/icons.v2";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { mandarinoFeatures } from "./mandarino-features";
-import { useScroll, motion, AnimatePresence } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+
+import { FadeInDiv } from "@/components/fadein-div";
+import { Button } from "@/components/ui/button";
 
 function SectionItem({
   step,
@@ -15,25 +18,10 @@ function SectionItem({
   step: number;
   feature: { id: string; title: string; description: string };
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-
-    offset: ["start center", "end center"],
-  });
-
   return (
-    <motion.div
-      ref={ref}
-      style={{
-        opacity: scrollYProgress,
-        scale: 1,
-      }}
-      className="w-full"
-    >
-      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-white bg-black h-screen">
-        <h3 className="text-gray-500 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
+    <FadeInDiv>
+      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-gray-200 bg-black h-screen">
+        <h3 className="text-gray-600 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
           {step}
         </h3>
         <h1 className="max-w-xl mb-8 text-3xl font-extrabold text-center uppercase lg:text-5xl font-display tracking-crazy lg:leading-tight">
@@ -42,10 +30,10 @@ function SectionItem({
 
         <h2
           dangerouslySetInnerHTML={{ __html: feature?.description }}
-          className="text-xl lg:text-2xl px-8 md:px-16 selection:bg-purple-600 text-center"
+          className="text-xl lg:text-2xl px-8 md:px-16 selection:bg-purple-600 text-center font-light text-gray-300"
         ></h2>
       </section>
-    </motion.div>
+    </FadeInDiv>
   );
 }
 
@@ -104,8 +92,11 @@ export default function Home() {
   const searchParams = useSearchParams();
   const lang = searchParams.get("lang") || "zh";
 
+  const router = useRouter();
+
   return (
     <main className="w-full">
+      {/* <TracingBeam> */}
       <LandingNavbar />
 
       <MandarinoBanner />
@@ -115,6 +106,22 @@ export default function Home() {
           <SectionItem key={feature.id} feature={feature} step={idx + 1} />
         );
       })}
+
+      <FadeInDiv>
+        <div className="flex justify-center h-screen items-center">
+          <Button
+            variant="outline"
+            className="rounded-full"
+            onClick={() => {
+              router.push("/pricing");
+            }}
+          >
+            {" "}
+            Start A Free Trial
+          </Button>
+        </div>
+      </FadeInDiv>
+      {/* </TracingBeam> */}
     </main>
   );
 }

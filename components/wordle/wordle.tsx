@@ -15,6 +15,7 @@ import {
   faTick,
 } from "@fortawesome/pro-thin-svg-icons";
 import { useListContentsQuery } from "@/domain/content/content.queries";
+import Link from "next/link";
 
 function GameTile(props: any) {
   const { letter } = props;
@@ -500,9 +501,13 @@ export function Wordle() {
               <p className="text-lg text-gray-400 dark:text-gray-500 font-extralight">
                 {currentPhrase?.en}
               </p>
-              <p className="text-2xl  text-gray-700 font-extralight dark:text-gray-300">
+              <Link
+                target="_blank"
+                href={`/nmm/${currentPhrase?.hanzi || currentPhrase?.input}${currentPhrase?.lang ? `?lang=${currentPhrase?.lang}` : ""}`}
+                className="text-2xl  text-gray-700 font-extralight dark:text-gray-300"
+              >
                 {currentPhrase?.hanzi || currentPhrase?.input}
-              </p>
+              </Link>
               {/* <p className="text-lg  text-gray-700 font-extralight dark:text-gray-700">
                 {currentPhrase?.pinyin || currentPhrase?.roman}
               </p> */}

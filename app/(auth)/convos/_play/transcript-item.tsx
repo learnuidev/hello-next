@@ -54,7 +54,9 @@ export const TranscriptItem = ({
       <p className={""}>{transcription?.hanzi || transcription?.input}</p>
       {pinyinMode ? (
         <>
-          <p className="dark:text-gray-400 text-md">{transcription?.pinyin}</p>
+          <p className="dark:text-gray-400 text-md">
+            {transcription?.pinyin || transcription?.roman}
+          </p>
           <p className="dark:text-gray-300 text-md">{transcription?.en}</p>
         </>
       ) : null}

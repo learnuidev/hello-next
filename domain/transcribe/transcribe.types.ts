@@ -9,4 +9,5 @@ export type Transcription = {
   lit?: string;
   seek: number;
   input?: string;
+  roman?: string;
 };

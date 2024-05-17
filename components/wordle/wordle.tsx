@@ -455,6 +455,8 @@ export function Wordle() {
 
   console.log("currentGuessHistory", currentGuessHistory);
 
+  console.log("CURRENT PHRASE", currentPhrase);
+
   return (
     <div>
       {/* <header className="flex w-80 mx-auto mt-10 mb-8">
@@ -494,14 +496,15 @@ export function Wordle() {
         <div className="grid grid-cols-12 w-full px-4 md:px-32 justify-end items-center">
           <PreviousLessonButton />
           <div className="col-span-10">
-            <div className="mt-16 text-center space-y-2">
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="mt-16 text-center space-y-2 mx-0 lg:mx-32">
+              <p className="text-lg text-gray-400 dark:text-gray-500 font-extralight">
                 {currentPhrase?.en}
               </p>
-              <p className="text-2xl md:text-4xl  text-gray-700 font-extralight dark:text-gray-300">
-                {currentPhrase?.pinyin ||
-                  currentPhrase?.hanzi ||
-                  currentPhrase?.input}
+              <p className="text-2xl  text-gray-700 font-extralight dark:text-gray-300">
+                {currentPhrase?.hanzi || currentPhrase?.input}
+              </p>
+              <p className="text-lg  text-gray-700 font-extralight dark:text-gray-700">
+                {currentPhrase?.pinyin || currentPhrase?.roman}
               </p>
             </div>
 

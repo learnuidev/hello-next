@@ -503,9 +503,9 @@ export function Wordle() {
               <p className="text-2xl  text-gray-700 font-extralight dark:text-gray-300">
                 {currentPhrase?.hanzi || currentPhrase?.input}
               </p>
-              <p className="text-lg  text-gray-700 font-extralight dark:text-gray-700">
+              {/* <p className="text-lg  text-gray-700 font-extralight dark:text-gray-700">
                 {currentPhrase?.pinyin || currentPhrase?.roman}
-              </p>
+              </p> */}
             </div>
 
             <div className="flex justify-center w-full my-16 flex-col items-center">

@@ -40,7 +40,16 @@ const listGrammars = async (
   });
   const resp = (await res.json()) as any;
 
-  return resp as ListGrammarsResponse;
+  if (Array.isArray(resp?.grammarAnalysis)) {
+    return resp as ListGrammarsResponse;
+  } else {
+    const newResp = {
+      ...resp,
+      grammarAnalysis: Object.values(resp.grammarAnalysis)[0],
+    };
+
+    return newResp as ListGrammarsResponse;
+  }
 };
 
 export function useListGrammarsQuery(

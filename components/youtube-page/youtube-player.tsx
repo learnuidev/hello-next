@@ -103,9 +103,9 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
               toggleLoops.length
                 ? toggleLoops
                     ?.sort((a: any, b: any) => a?.end - b?.end)
-                    ?.map((x: any) => x?.hanzi)
+                    ?.map((x: any) => x?.hanzi || x?.input)
                     ?.join("")
-                : example?.hanzi
+                : example?.hanzi || example?.input
             )}&op=translate`}
             className="text-gray-500 hover:text-white"
           >
@@ -117,9 +117,9 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
               toggleLoops.length
                 ? toggleLoops
                     ?.sort((a: any, b: any) => a?.end - b?.end)
-                    ?.map((x: any) => x?.hanzi)
+                    ?.map((x: any) => x?.hanzi || x?.input)
                     ?.join("")
-                : example?.hanzi
+                : example?.hanzi || example?.input
             )}`}
             className="text-gray-500 hover:text-white"
             target="_blank"
@@ -131,9 +131,9 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
               toggleLoops.length
                 ? toggleLoops
                     ?.sort((a: any, b: any) => a?.end - b?.end)
-                    ?.map((x: any) => x?.hanzi)
+                    ?.map((x: any) => x?.hanzi || x?.input)
                     ?.join("")
-                : example?.hanzi
+                : example?.hanzi || example?.input
             )}${example?.lang ? `?lang=${resolveLangCode(example?.lang)}` : ""}`}
             className="text-gray-500 hover:text-white"
             target="_blank"

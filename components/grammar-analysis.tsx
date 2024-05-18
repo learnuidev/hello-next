@@ -49,7 +49,7 @@ export function GrammarAnalysis({
   const GrammarAnalysisList = () => {
     return (
       // <div className="font-light space-y-6 mt-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
         {grammarAnalysisFinal?.map((analysis) => {
           if (analysis?.hanzi) {
             const cleanHanzi = cleanString(analysis?.hanzi);
@@ -59,7 +59,7 @@ export function GrammarAnalysis({
                 className="flex items-start flex-col font-light"
               >
                 {analysis?.hanzi?.length < 4 ? (
-                  <div className="flex space-x-2 text-xl">
+                  <div className="flex space-x-2">
                     <Link
                       className="text-gray-300"
                       href={
@@ -100,7 +100,7 @@ export function GrammarAnalysis({
                 )}
 
                 <Link
-                  className=" text-gray-400"
+                  className=" text-gray-500"
                   href={
                     lang
                       ? `/nmm/${cleanHanzi}?lang=${lang}`
@@ -111,9 +111,9 @@ export function GrammarAnalysis({
                   {analysis?.en}
                 </Link>
 
-                <p className="text-gray-500 font-extralight">
+                {/* <p className="text-gray-600 font-extralight text-xs">
                   {analysis?.explanation}
-                </p>
+                </p> */}
               </div>
             );
           } else {

@@ -48,26 +48,56 @@ export function GrammarAnalysis({
 
   const GrammarAnalysisList = () => {
     return (
-      <div className="font-light space-y-6 mt-4">
+      // <div className="font-light space-y-6 mt-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
         {grammarAnalysisFinal?.map((analysis) => {
           if (analysis?.hanzi) {
             const cleanHanzi = cleanString(analysis?.hanzi);
             return (
-              <div key={cleanHanzi} className="flex items-start flex-col">
-                <Link className=" text-gray-400" href={`/nmm/${cleanHanzi}`}>
-                  {analysis?.pinyin}
-                </Link>
+              <div
+                key={cleanHanzi}
+                className="flex items-start flex-col font-light"
+              >
+                {analysis?.hanzi?.length < 4 ? (
+                  <div className="flex space-x-2 text-xl">
+                    <Link
+                      className="text-gray-300"
+                      href={
+                        lang
+                          ? `/nmm/${cleanHanzi}?lang=${lang}`
+                          : `/nmm/${cleanHanzi}`
+                      }
+                    >
+                      {cleanHanzi}
+                    </Link>
+                    <Link
+                      className=" text-gray-400"
+                      href={`/nmm/${cleanHanzi}`}
+                    >
+                      {analysis?.pinyin}
+                    </Link>
+                  </div>
+                ) : (
+                  <>
+                    <Link
+                      className=" text-gray-400"
+                      href={`/nmm/${cleanHanzi}`}
+                    >
+                      {analysis?.pinyin}
+                    </Link>
 
-                <Link
-                  className="text-gray-300 font-light text-xl"
-                  href={
-                    lang
-                      ? `/nmm/${cleanHanzi}?lang=${lang}`
-                      : `/nmm/${cleanHanzi}`
-                  }
-                >
-                  {cleanHanzi}
-                </Link>
+                    <Link
+                      className="text-gray-300 font-light text-xl"
+                      href={
+                        lang
+                          ? `/nmm/${cleanHanzi}?lang=${lang}`
+                          : `/nmm/${cleanHanzi}`
+                      }
+                    >
+                      {cleanHanzi}
+                    </Link>
+                  </>
+                )}
 
                 <Link
                   className=" text-gray-400"

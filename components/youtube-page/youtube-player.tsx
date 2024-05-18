@@ -14,6 +14,12 @@ import {
   faVideo,
   faVideoSlash,
 } from "@fortawesome/pro-thin-svg-icons";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { groupBy } from "@/lib/utils";
@@ -263,7 +269,7 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
             className={`${isVideoHidden ? "col-span-12" : "md:col-span-4 col-span-12"} w-full`}
           >
             <ScrollArea className="space-y-4 h-[700px] w-full rounded-md border border-gray-900 p-0">
-              <div className="space-y-8 w-full">
+              <div className="space-y-8 sm:space-y-4 w-full">
                 {(lesson?.transcriptions || [])
                   // ?.slice(
                   //   currentScriptIndex ? currentScriptIndex : 0,
@@ -289,104 +295,8 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
                     return true;
                   })
                   .map((example: any, idx: any) => {
-                    return (
-                      <div
-                        key={`${example?.hanzi}-${idx}`}
-                        className="flex  w-96 px-4"
-                      >
-                        <div
-                          className={`${
-                            focusMode ? "text-center" : "text-left"
-                          } w-full ${focusMode || isVideoHidden ? "" : ""}`}
-                          role="button"
-                          onClick={() => {
-                            playerRef.current.seekTo(
-                              example?.timestamp?.[0] || example?.start,
-                              "seconds"
-                            );
-
-                            try {
-                              playerRef.current?.player?.player?.play();
-                            } catch (err) {
-                              console.error(err);
-                            }
-                          }}
-                        >
-                          <div>
-                            {(example?.hanzi || example?.nepali || "")
-                              .split("")
-                              .map((item: any, idx: any) => {
-                                const component = components?.find(
-                                  (char: any) => char?.hanzi === item
-                                );
-                                return (
-                                  <span
-                                    key={`${JSON.stringify(
-                                      item
-                                    )}-${idx}-${Math.random()}`}
-                                    className={`${
-                                      (example?.timestamp?.[0] ||
-                                        example?.start) < currentTime &&
-                                      (example?.timestamp?.[1] ||
-                                        example?.end) > currentTime
-                                        ? "text-pink-400"
-                                        : learnedCharacters?.find(
-                                              (char: any) =>
-                                                char?.hanzi === item
-                                            )
-                                          ? "dark:text-gray-200"
-                                          : "dark:text-gray-400 text-gray-300"
-                                    } transition`}
-                                  >
-                                    {item}
-                                  </span>
-                                );
-                              })}
-                          </div>
-                          {example?.pinyin && (
-                            <p
-                              className={`${
-                                (example?.timestamp?.[0] || example?.start) <
-                                  currentTime &&
-                                (example?.timestamp?.[1] || example?.end) >
-                                  currentTime
-                                  ? "dark:text-gray-300"
-                                  : "dark:text-gray-500 text-gray-400"
-                              } transition`}
-                            >
-                              {example?.pinyin || example?.nepaliRoman}
-                            </p>
-                          )}
-                          {example?.en && (
-                            <p
-                              className={`${
-                                (example?.timestamp?.[0] || example?.start) <
-                                  currentTime &&
-                                (example?.timestamp?.[1] || example?.end) >
-                                  currentTime
-                                  ? "dark:text-white"
-                                  : "dark:text-gray-400 text-gray-500"
-                              } transition`}
-                            >
-                              {example?.en}
-                            </p>
-                          )}
-                          {example?.lit && (
-                            <p
-                              className={`${
-                                (example?.timestamp?.[0] || example?.start) <
-                                  currentTime &&
-                                (example?.timestamp?.[1] || example?.end) >
-                                  currentTime
-                                  ? "dark:text-gray-500"
-                                  : "dark:text-gray-500 text-gray-500"
-                              } transition`}
-                            >
-                              {example?.lit}
-                            </p>
-                          )}
-                        </div>
-
+                    const ConfigButtons = () => {
+                      return (
                         <div className="space-x-2 flex flex-row items-center">
                           <Link
                             target="_blank"
@@ -457,6 +367,116 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
                               icon={faRepeat}
                             />
                           </button>
+                        </div>
+                      );
+                    };
+                    return (
+                      <div
+                        key={`${example?.hanzi}-${idx}`}
+                        className="flex  w-96 px-4"
+                      >
+                        <div
+                          className={`${
+                            focusMode ? "text-center" : "text-left"
+                          } w-full ${focusMode || isVideoHidden ? "" : ""}`}
+                          role="button"
+                          onClick={() => {
+                            playerRef.current.seekTo(
+                              example?.timestamp?.[0] || example?.start,
+                              "seconds"
+                            );
+
+                            try {
+                              playerRef.current?.player?.player?.play();
+                            } catch (err) {
+                              console.error(err);
+                            }
+                          }}
+                        >
+                          <div>
+                            {(
+                              example?.hanzi ||
+                              example?.input ||
+                              example?.nepali ||
+                              ""
+                            )
+                              .split("")
+                              .map((item: any, idx: any) => {
+                                const component = components?.find(
+                                  (char: any) => char?.hanzi === item
+                                );
+                                return (
+                                  <span
+                                    key={`${JSON.stringify(
+                                      item
+                                    )}-${idx}-${Math.random()}`}
+                                    className={`${
+                                      (example?.timestamp?.[0] ||
+                                        example?.start) < currentTime &&
+                                      (example?.timestamp?.[1] ||
+                                        example?.end) > currentTime
+                                        ? "text-pink-400"
+                                        : learnedCharacters?.find(
+                                              (char: any) =>
+                                                char?.hanzi === item
+                                            )
+                                          ? "dark:text-gray-200"
+                                          : "dark:text-gray-400 text-gray-300"
+                                    } transition text-lg md:text-xl`}
+                                  >
+                                    {item}
+                                  </span>
+                                );
+                              })}
+                          </div>
+                          <div className="block sm:hidden">
+                            {example?.pinyin && (
+                              <p
+                                className={`${
+                                  (example?.timestamp?.[0] || example?.start) <
+                                    currentTime &&
+                                  (example?.timestamp?.[1] || example?.end) >
+                                    currentTime
+                                    ? "dark:text-gray-300"
+                                    : "dark:text-gray-500 text-gray-400"
+                                } transition`}
+                              >
+                                {example?.pinyin || example?.nepaliRoman}
+                              </p>
+                            )}
+                            {example?.en && (
+                              <p
+                                className={`${
+                                  (example?.timestamp?.[0] || example?.start) <
+                                    currentTime &&
+                                  (example?.timestamp?.[1] || example?.end) >
+                                    currentTime
+                                    ? "dark:text-white"
+                                    : "dark:text-gray-400 text-gray-500"
+                                } transition`}
+                              >
+                                {example?.en}
+                              </p>
+                            )}
+                            {example?.lit && (
+                              <p
+                                className={`${
+                                  (example?.timestamp?.[0] || example?.start) <
+                                    currentTime &&
+                                  (example?.timestamp?.[1] || example?.end) >
+                                    currentTime
+                                    ? "dark:text-gray-500"
+                                    : "dark:text-gray-500 text-gray-500"
+                                } transition`}
+                              >
+                                {example?.lit}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="block sm:hidden">
+                          <ConfigButtons />
                         </div>
                       </div>
                     );

@@ -111,6 +111,7 @@
     "victory": "^37.0.2",
     "webvtt-parser": "^2.2.0",
     "ytdl-core": "^4.11.5",
+    "zod": "^3.23.8",
     "zustand": "^4.4.1"
   },
   "devDependencies": {

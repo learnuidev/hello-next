@@ -12,5 +12,8 @@
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils"
-  }
+  },
+
+  "appType": "app",
+  "nextVersion": "14.2.2"
 }

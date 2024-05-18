@@ -93,6 +93,199 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
       (example?.timestamp?.[1] || example?.end) > currentTime
   );
 
+  const TranscriptItem = ({ example }: any) => {
+    const ConfigButtons = () => {
+      return (
+        <div className="space-x-2 flex flex-row items-center">
+          <Link
+            target="_blank"
+            href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+              toggleLoops.length
+                ? toggleLoops
+                    ?.sort((a: any, b: any) => a?.end - b?.end)
+                    ?.map((x: any) => x?.hanzi)
+                    ?.join("")
+                : example?.hanzi
+            )}&op=translate`}
+            className="text-gray-500 hover:text-white"
+          >
+            <FontAwesomeIcon icon={faGoogle} />
+          </Link>
+
+          <Link
+            href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+              toggleLoops.length
+                ? toggleLoops
+                    ?.sort((a: any, b: any) => a?.end - b?.end)
+                    ?.map((x: any) => x?.hanzi)
+                    ?.join("")
+                : example?.hanzi
+            )}`}
+            className="text-gray-500 hover:text-white"
+            target="_blank"
+          >
+            <FontAwesomeIcon icon={faLanguage} />
+          </Link>
+          <Link
+            href={`/nmm/${encodeURIComponent(
+              toggleLoops.length
+                ? toggleLoops
+                    ?.sort((a: any, b: any) => a?.end - b?.end)
+                    ?.map((x: any) => x?.hanzi)
+                    ?.join("")
+                : example?.hanzi
+            )}${example?.lang ? `?lang=${resolveLangCode(example?.lang)}` : ""}`}
+            className="text-gray-500 hover:text-white"
+            target="_blank"
+          >
+            <Icons.mandarin />
+          </Link>
+          <button
+            onClick={() => {
+              setToggleLoops((val: any) => {
+                const exist = val?.find(
+                  (item: any) => item?.end === example?.end
+                );
+                if (exist) {
+                  return val?.filter((item: any) => {
+                    return item?.end !== example?.end;
+                  });
+                }
+                return val.concat(example);
+              });
+            }}
+          >
+            <FontAwesomeIcon
+              className={
+                toggleLoops?.find((item: any) => item?.end === example?.end)
+                  ? "text-white"
+                  : "text-gray-500"
+              }
+              icon={faRepeat}
+            />
+          </button>
+        </div>
+      );
+    };
+
+    const Explanations = () => {
+      return (
+        <>
+          {example?.pinyin ||
+            (example?.roman && (
+              <p
+                className={`${
+                  (example?.timestamp?.[0] || example?.start) < currentTime &&
+                  (example?.timestamp?.[1] || example?.end) > currentTime
+                    ? "dark:text-gray-300"
+                    : "dark:text-gray-500 text-gray-400"
+                } transition`}
+              >
+                {example?.pinyin || example?.roman}
+              </p>
+            ))}
+          {example?.en && (
+            <p
+              className={`${
+                (example?.timestamp?.[0] || example?.start) < currentTime &&
+                (example?.timestamp?.[1] || example?.end) > currentTime
+                  ? "dark:text-white"
+                  : "dark:text-gray-400 text-gray-500"
+              } transition`}
+            >
+              {example?.en}
+            </p>
+          )}
+          {example?.lit && (
+            <p
+              className={`${
+                (example?.timestamp?.[0] || example?.start) < currentTime &&
+                (example?.timestamp?.[1] || example?.end) > currentTime
+                  ? "dark:text-gray-500"
+                  : "dark:text-gray-500 text-gray-500"
+              } transition`}
+            >
+              {example?.lit}
+            </p>
+          )}
+        </>
+      );
+    };
+    return (
+      <div className="flex  w-96 px-4">
+        <div
+          className={`${
+            focusMode ? "text-center" : "text-left"
+          } w-full ${focusMode || isVideoHidden ? "" : ""}`}
+          role="button"
+          onClick={() => {
+            playerRef.current.seekTo(
+              example?.timestamp?.[0] || example?.start,
+              "seconds"
+            );
+
+            try {
+              playerRef.current?.player?.player?.play();
+            } catch (err) {
+              console.error(err);
+            }
+          }}
+        >
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger className="px-0 hover:scale-110 transition">
+                <div>
+                  {(example?.hanzi || example?.input || example?.nepali || "")
+                    .split("")
+                    .map((item: any, idx: any) => {
+                      const component = components?.find(
+                        (char: any) => char?.hanzi === item
+                      );
+                      return (
+                        <span
+                          key={`${JSON.stringify(
+                            item
+                          )}-${idx}-${Math.random()}`}
+                          className={`${
+                            (example?.timestamp?.[0] || example?.start) <
+                              currentTime &&
+                            (example?.timestamp?.[1] || example?.end) >
+                              currentTime
+                              ? "text-pink-400"
+                              : learnedCharacters?.find(
+                                    (char: any) => char?.hanzi === item
+                                  )
+                                ? "dark:text-gray-200"
+                                : "dark:text-gray-400 text-gray-300"
+                          } transition text-lg md:text-xl`}
+                        >
+                          {item}
+                        </span>
+                      );
+                    })}
+                </div>
+              </TooltipTrigger>
+              <TooltipContent className="bg-black border-gray-800 p-4">
+                <Explanations />
+
+                <div className="mt-4">
+                  <ConfigButtons />
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <div className="block sm:hidden">
+            <Explanations />
+          </div>
+        </div>
+
+        <div className="block sm:hidden">
+          <ConfigButtons />
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="grow flex flex-col items-center">
       <div className="space-x-4 my-4 hidden md:block">
@@ -271,18 +464,6 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
             <ScrollArea className="space-y-4 h-[700px] w-full rounded-md border border-gray-900 p-0">
               <div className="space-y-8 sm:space-y-4 w-full">
                 {(lesson?.transcriptions || [])
-                  // ?.slice(
-                  //   currentScriptIndex ? currentScriptIndex : 0,
-                  //   currentScriptIndex ? currentScriptIndex + 8 : -1
-                  // )
-                  // .filter((example: any) => {
-                  //   if (currentTime) {
-                  //     return (
-                  //       (example?.timestamp?.[1] || example?.end) > currentTime
-                  //     );
-                  //   }
-                  //   return true;
-                  // })
                   .filter((script: any) => {
                     if (focusMode) {
                       return (
@@ -295,190 +476,11 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
                     return true;
                   })
                   .map((example: any, idx: any) => {
-                    const ConfigButtons = () => {
-                      return (
-                        <div className="space-x-2 flex flex-row items-center">
-                          <Link
-                            target="_blank"
-                            href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                              toggleLoops.length
-                                ? toggleLoops
-                                    ?.sort((a: any, b: any) => a?.end - b?.end)
-                                    ?.map((x: any) => x?.hanzi)
-                                    ?.join("")
-                                : example?.hanzi
-                            )}&op=translate`}
-                            className="text-gray-500 hover:text-white"
-                          >
-                            <FontAwesomeIcon icon={faGoogle} />
-                          </Link>
-
-                          <Link
-                            href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                              toggleLoops.length
-                                ? toggleLoops
-                                    ?.sort((a: any, b: any) => a?.end - b?.end)
-                                    ?.map((x: any) => x?.hanzi)
-                                    ?.join("")
-                                : example?.hanzi
-                            )}`}
-                            className="text-gray-500 hover:text-white"
-                            target="_blank"
-                          >
-                            <FontAwesomeIcon icon={faLanguage} />
-                          </Link>
-                          <Link
-                            href={`/nmm/${encodeURIComponent(
-                              toggleLoops.length
-                                ? toggleLoops
-                                    ?.sort((a: any, b: any) => a?.end - b?.end)
-                                    ?.map((x: any) => x?.hanzi)
-                                    ?.join("")
-                                : example?.hanzi
-                            )}${example?.lang ? `?lang=${resolveLangCode(example?.lang)}` : ""}`}
-                            className="text-gray-500 hover:text-white"
-                            target="_blank"
-                          >
-                            <Icons.mandarin />
-                          </Link>
-                          <button
-                            onClick={() => {
-                              setToggleLoops((val: any) => {
-                                const exist = val?.find(
-                                  (item: any) => item?.end === example?.end
-                                );
-                                if (exist) {
-                                  return val?.filter((item: any) => {
-                                    return item?.end !== example?.end;
-                                  });
-                                }
-                                return val.concat(example);
-                              });
-                            }}
-                          >
-                            <FontAwesomeIcon
-                              className={
-                                toggleLoops?.find(
-                                  (item: any) => item?.end === example?.end
-                                )
-                                  ? "text-white"
-                                  : "text-gray-500"
-                              }
-                              icon={faRepeat}
-                            />
-                          </button>
-                        </div>
-                      );
-                    };
                     return (
-                      <div
+                      <TranscriptItem
+                        example={example}
                         key={`${example?.hanzi}-${idx}`}
-                        className="flex  w-96 px-4"
-                      >
-                        <div
-                          className={`${
-                            focusMode ? "text-center" : "text-left"
-                          } w-full ${focusMode || isVideoHidden ? "" : ""}`}
-                          role="button"
-                          onClick={() => {
-                            playerRef.current.seekTo(
-                              example?.timestamp?.[0] || example?.start,
-                              "seconds"
-                            );
-
-                            try {
-                              playerRef.current?.player?.player?.play();
-                            } catch (err) {
-                              console.error(err);
-                            }
-                          }}
-                        >
-                          <div>
-                            {(
-                              example?.hanzi ||
-                              example?.input ||
-                              example?.nepali ||
-                              ""
-                            )
-                              .split("")
-                              .map((item: any, idx: any) => {
-                                const component = components?.find(
-                                  (char: any) => char?.hanzi === item
-                                );
-                                return (
-                                  <span
-                                    key={`${JSON.stringify(
-                                      item
-                                    )}-${idx}-${Math.random()}`}
-                                    className={`${
-                                      (example?.timestamp?.[0] ||
-                                        example?.start) < currentTime &&
-                                      (example?.timestamp?.[1] ||
-                                        example?.end) > currentTime
-                                        ? "text-pink-400"
-                                        : learnedCharacters?.find(
-                                              (char: any) =>
-                                                char?.hanzi === item
-                                            )
-                                          ? "dark:text-gray-200"
-                                          : "dark:text-gray-400 text-gray-300"
-                                    } transition text-lg md:text-xl`}
-                                  >
-                                    {item}
-                                  </span>
-                                );
-                              })}
-                          </div>
-                          <div className="block sm:hidden">
-                            {example?.pinyin && (
-                              <p
-                                className={`${
-                                  (example?.timestamp?.[0] || example?.start) <
-                                    currentTime &&
-                                  (example?.timestamp?.[1] || example?.end) >
-                                    currentTime
-                                    ? "dark:text-gray-300"
-                                    : "dark:text-gray-500 text-gray-400"
-                                } transition`}
-                              >
-                                {example?.pinyin || example?.nepaliRoman}
-                              </p>
-                            )}
-                            {example?.en && (
-                              <p
-                                className={`${
-                                  (example?.timestamp?.[0] || example?.start) <
-                                    currentTime &&
-                                  (example?.timestamp?.[1] || example?.end) >
-                                    currentTime
-                                    ? "dark:text-white"
-                                    : "dark:text-gray-400 text-gray-500"
-                                } transition`}
-                              >
-                                {example?.en}
-                              </p>
-                            )}
-                            {example?.lit && (
-                              <p
-                                className={`${
-                                  (example?.timestamp?.[0] || example?.start) <
-                                    currentTime &&
-                                  (example?.timestamp?.[1] || example?.end) >
-                                    currentTime
-                                    ? "dark:text-gray-500"
-                                    : "dark:text-gray-500 text-gray-500"
-                                } transition`}
-                              >
-                                {example?.lit}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="block sm:hidden">
-                          <ConfigButtons />
-                        </div>
-                      </div>
+                      />
                     );
                   })}
               </div>

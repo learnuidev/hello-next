@@ -33,6 +33,8 @@ function loadSchema() {
   });
 }
 
+module.exports.loadSchema = loadSchema;
+
 // loadSchema().then((schema) => {
 //   console.log("MY SCHEMA", schema);
 // });
@@ -64,6 +66,8 @@ async function listDirectoryNames(name, options = { directoriesOnly: true }) {
   //     },
   //   ];
 }
+
+module.exports.listDirectoryNames = listDirectoryNames;
 
 // listDirectoryNames().then((pages) => {
 //   console.log("PAGES", pages);

@@ -7,8 +7,7 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 
 // TODO: Move this to .env
-const url =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-components";
+const url = `${siteConfig.apiUrl}/v1/list-components`;
 
 const listComponents = async (
   options: { journeyId?: string },
@@ -16,8 +15,8 @@ const listComponents = async (
     Authorization: string;
   }
 ) => {
-  // const res = await fetch(url, {
-  const res = await fetch("/api/list-components", {
+  const res = await fetch(url, {
+    // const res = await fetch("/api/list-components", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,

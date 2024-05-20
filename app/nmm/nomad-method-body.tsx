@@ -10,6 +10,7 @@ import { Spanish } from "@/components/spanish/spanish";
 import { French } from "@/components/french/french";
 import { Vietnamese } from "@/components/vietnamese/vietnamese";
 import { Urdu } from "@/components/urdu/urdu";
+import { Russian } from "@/components/russian/russian";
 
 export function NomadMethodBody({ lang }: { lang: string }) {
   if (["ne", "nep", "nepali"]?.includes(lang)) {
@@ -43,6 +44,10 @@ export function NomadMethodBody({ lang }: { lang: string }) {
 
   if (["ur"]?.includes(lang)) {
     return <Urdu />;
+  }
+
+  if (["ru"]?.includes(lang)) {
+    return <Russian />;
   }
 
   return <NomadMethodMandarin />;

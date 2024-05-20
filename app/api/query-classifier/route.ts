@@ -12,6 +12,26 @@ const openai = new OpenAI({
 });
 export const maxDuration = 60;
 
+const extractionPrompt = `
+You are an expert prompt analyzer
+
+
+For example for the given prompt:
+i am going to mexico for a month. please create a study plan for me
+
+
+Should return:
+"{
+  "travelDetails": {
+    "to": "Mexico"
+    "duration": "1 months",
+  }, 
+  "lang": "es",
+  "topics": ["airport", "ordering tacos", "ordering taxi", "asking directions"]
+}"
+
+`;
+
 export async function POST(req: Request) {
   // Extract the `prompt` from the body of the request
   const { query } = await req.json();
@@ -48,7 +68,9 @@ Output: Query
 
    
    `;
-  const chatCompletion = (await openai.chat.completions.create({
+
+  //  Topics
+  const topicsCompletion = (await openai.chat.completions.create({
     messages: [
       {
         role: "system",
@@ -60,8 +82,24 @@ Output: Query
   })) as any;
 
   // // 1. Download video
-  const resp = chatCompletion?.choices?.[0]?.message?.content;
+  const topics = topicsCompletion?.choices?.[0]?.message?.content;
   // return subtitles;
 
-  return Response.json(resp);
+  // Parsed Data
+
+  const parsedCompletion = (await openai.chat.completions.create({
+    messages: [
+      {
+        role: "system",
+        content: extractionPrompt,
+      },
+      { role: "user", content: `content: ${query}` },
+    ],
+    model: "gpt-3.5-turbo",
+  })) as any;
+
+  // // 1. Download video
+  const metadata = JSON.parse(parsedCompletion?.choices?.[0]?.message?.content);
+
+  return Response.json({ topics, metadata });
 }

@@ -95,8 +95,10 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   console.log("LESSSON 1", lesson1);
 
+  const audioUrl = lesson1?.audio?.slow || lesson1?.audio || lesson2?.audio;
+
   const { play, togglePlay, seek, currentTime, reset } = useMusic({
-    url: lesson1?.audio?.slow || lesson1?.audio || lesson2?.audio,
+    url: audioUrl,
   });
 
   const lessonItems = lesson2?.transcriptions?.map(
@@ -173,7 +175,9 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
           <div
             role="button"
             onClick={() => {
-              seek(transcription?.start);
+              if (audioUrl) {
+                seek(transcription?.start);
+              }
 
               setRepeatHistories({
                 lessonId: lesson1?.id || lesson2.id,
@@ -382,6 +386,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
               key={`${transcription?.hanzi || transcription?.input}-${transcription?.pinyin}`}
               transcription={transcription}
               seek={seek}
+              audioUrl={audioUrl}
               currentTime={currentTime}
               pinyinMode={pinyinMode}
               lessonId={lesson1?.id || lesson2?.id}

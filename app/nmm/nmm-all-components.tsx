@@ -20,6 +20,25 @@ import {
 import { PreviewComponent } from "./preview-component";
 import { useSearchQueryStore } from "@/components/search/state";
 
+const useFilteredComponents = ({ query }: { query: string }) => {
+  const { data: components, isLoading: isComponentsLoading } =
+    useListComponents({ includeAll: true });
+
+  const { data: learnedCharacters2, isLoading: isLearnedCharactersLoading } =
+    useListCharactersQuery();
+
+  const filteredComponents = filterComponents(
+    components,
+    query,
+    learnedCharacters2
+  );
+
+  return {
+    data: filteredComponents,
+    isLoading: isComponentsLoading || isLearnedCharactersLoading,
+  };
+};
+
 export function NmmAllComponents() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
   const searchParams = useSearchParams();

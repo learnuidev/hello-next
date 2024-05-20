@@ -1,5 +1,5 @@
 export const getPagesUrl = (query: string) => {
-  const [objective, lang, ...rest] = query?.split(" ");
+  // const [objective, lang, ...rest] = query?.split(" ");
 
   const homePageUrl = "/";
   const timelineUrl = "/timeline";
@@ -18,7 +18,7 @@ export const getPagesUrl = (query: string) => {
     chat: chatUrl,
   } as any;
 
-  const page = pages[objective?.toLowerCase()];
+  const page = pages[query?.toLowerCase()];
 
   return page;
 };

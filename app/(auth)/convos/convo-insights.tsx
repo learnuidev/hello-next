@@ -38,12 +38,17 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     }
   );
 
+  console.log("LESSON", lesson);
+
   const uniqueWords = [
     // @ts-ignore
     ...new Set(
       lesson?.transcriptions
         // allLessonAnswers
-        ?.map((answer: { hanzi: string }) => answer?.hanzi)
+        ?.map(
+          (answer: { hanzi: string; input: string }) =>
+            answer?.hanzi || answer?.input
+        )
         ?.join("")
     ),
   ]

@@ -1,11 +1,9 @@
 "use client";
 import React, { useMemo } from "react";
-import { CloseIcon } from "@/components/ui/icons";
 
 import { usePinyinChartState, usePinyinChartStore } from "./state";
 
 import {
-  ColumnDef,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
@@ -15,8 +13,10 @@ import {
 import { characterDictionary, defaultData } from "./data";
 
 import { NavBar } from "@/components/navbar";
-
-const columnHelper = createColumnHelper<any>();
+import { PinyinDetail } from "./pinyin-detail";
+import { pinyinColumns } from "./pinyin-columns";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { filterComponentsExact } from "@/hooks/use-filter-components";
 
 const totalCharacters = defaultData
   ?.map((val: any) => Object.values(val))
@@ -42,346 +42,6 @@ const InfoRenderer = (info: any) => {
   return val.value;
 };
 
-const columns2 = [
-  columnHelper.group({
-    id: "pinyin",
-    // header: () => <span className='my-2 mx-2.5 text-xs text-center'>actor</span>,
-    // footer: props => props.column.id,
-    cell: InfoRenderer,
-    header: () => (
-      <span className="my-2 mx-2.5 text-xs text-center">pinyin</span>
-    ),
-  }),
-  columnHelper.group({
-    id: "pinyin",
-    // header: () => <span className='my-2 mx-2.5 text-xs text-center'>actor</span>,
-    // footer: props => props.column.id,
-    cell: InfoRenderer,
-    header: () => (
-      <span className="my-2 mx-2.5 text-xs text-center">hanzi</span>
-    ),
-  }),
-];
-
-const columns = [
-  columnHelper.group({
-    id: "initial",
-    // header: () => <span className='my-2 mx-2.5 text-xs text-center'>actor</span>,
-    // footer: props => props.column.id,
-    columns: [
-      columnHelper.accessor("initial", {
-        cell: InfoRenderer,
-        header: () => <span className="my-2 mx-2.5 text-xs text-center"></span>,
-      }),
-    ],
-  }),
-  columnHelper.group({
-    id: "A",
-    header: () => <span className="my-2 mx-2.5 text-xs text-center">A</span>,
-    // footer: props => props.column.id,
-    columns: [
-      columnHelper.accessor("aa", {
-        cell: (info) => {
-          const val = info.getValue();
-          if (!Array.isArray(val) && typeof val === "string") {
-            return val;
-          }
-          return val.value;
-        },
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">a</span>
-        ),
-      }),
-      columnHelper.accessor("aai", {
-        cell: (info) => {
-          const val = info.getValue();
-          if (!Array.isArray(val) && typeof val === "string") {
-            return val;
-          }
-          return val.value;
-        },
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ai</span>
-        ),
-      }),
-      columnHelper.accessor("aao", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ao</span>
-        ),
-      }),
-      columnHelper.accessor("aan", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">an</span>
-        ),
-      }),
-      columnHelper.accessor("aang", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ang</span>
-        ),
-      }),
-    ],
-  }),
-
-  columnHelper.group({
-    id: "E",
-    header: () => <span className="my-2 mx-2.5 text-xs text-center">E</span>,
-    // footer: props => props.column.id,
-    columns: [
-      columnHelper.accessor("ee", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">e</span>
-        ),
-      }),
-      columnHelper.accessor("eei", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ei</span>
-        ),
-      }),
-      columnHelper.accessor("een", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">en</span>
-        ),
-      }),
-
-      columnHelper.accessor("eeng", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">eng</span>
-        ),
-      }),
-      columnHelper.accessor("enull", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">null</span>
-        ),
-      }),
-    ],
-  }),
-
-  columnHelper.group({
-    id: "O",
-    header: () => <span className="my-2 mx-2.5 text-xs text-center">O</span>,
-    // footer: props => props.column.id,
-    columns: [
-      columnHelper.accessor("oo", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">o</span>
-        ),
-      }),
-      columnHelper.accessor("oong", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ong</span>
-        ),
-      }),
-      columnHelper.accessor("oou", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ou</span>
-        ),
-      }),
-    ],
-  }),
-
-  columnHelper.group({
-    id: "I",
-    header: () => <span className="my-2 mx-2.5 text-xs text-center">I</span>,
-    // footer: props => props.column.id,
-    columns: [
-      columnHelper.accessor("inull", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">null</span>
-        ),
-      }),
-      columnHelper.accessor("ia", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">a</span>
-        ),
-      }),
-      columnHelper.accessor("iao", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ao</span>
-        ),
-      }),
-      columnHelper.accessor("ie", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">e</span>
-        ),
-      }),
-      columnHelper.accessor("iou", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ou</span>
-        ),
-      }),
-      columnHelper.accessor("ian", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">an</span>
-        ),
-      }),
-      columnHelper.accessor("iang", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ang</span>
-        ),
-      }),
-      columnHelper.accessor("ien", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">en</span>
-        ),
-      }),
-      columnHelper.accessor("ieng", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">eng</span>
-        ),
-      }),
-      columnHelper.accessor("iong", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ong</span>
-        ),
-      }),
-    ],
-  }),
-
-  // // U
-  // unull: 'wu',
-  // ua: 'wa',
-  // uo: 'wo',
-  // uei: 'wei',
-  // uai: 'wai',
-  // uan: 'wan',
-  // uen: 'wen',
-  // uang: 'wang',
-  // ueng: 'weng',
-  columnHelper.group({
-    id: "U",
-    header: () => <span className="my-2 mx-2.5 text-xs text-center">U</span>,
-    // footer: props => props.column.id,
-    columns: [
-      columnHelper.accessor("unull", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">null</span>
-        ),
-      }),
-      columnHelper.accessor("ua", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">a</span>
-        ),
-      }),
-      columnHelper.accessor("uo", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">o</span>
-        ),
-      }),
-      columnHelper.accessor("uei", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ei</span>
-        ),
-      }),
-      columnHelper.accessor("uai", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ai</span>
-        ),
-      }),
-      columnHelper.accessor("uan", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">an</span>
-        ),
-      }),
-      columnHelper.accessor("uen", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">en</span>
-        ),
-      }),
-      columnHelper.accessor("uang", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ang</span>
-        ),
-      }),
-      columnHelper.accessor("ueng", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">eng</span>
-        ),
-      }),
-    ],
-  }),
-  // // ü
-  // ünull: 'yu',
-  // üe: 'yue',
-  // üan: 'yuan',
-  // üen: 'yun'
-  columnHelper.group({
-    id: "Ü",
-    header: () => <span className="my-2 mx-2.5 text-xs text-center">Ü</span>,
-    // footer: props => props.column.id,
-    columns: [
-      columnHelper.accessor("ünull", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">null</span>
-        ),
-      }),
-      columnHelper.accessor("üe", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">üe</span>
-        ),
-      }),
-      columnHelper.accessor("üan", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">üan</span>
-        ),
-      }),
-      columnHelper.accessor("üen", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ün</span>
-        ),
-      }),
-    ],
-  }),
-];
-
-const calculateColor = (dict: any) => {
-  switch (dict?.tone) {
-    case 1:
-      return "text-red-400";
-    case 2:
-      return "text-green-400";
-    case 3:
-      return "text-purple-400";
-    case 4:
-      return "text-pink-400";
-    default:
-      return "text-black dark:text-white";
-  }
-};
-
 const calculateColor2 = (dict: any) => {
   switch (dict?.tone) {
     case 1:
@@ -395,133 +55,6 @@ const calculateColor2 = (dict: any) => {
     default:
       return "text-black dark:text-white";
   }
-};
-
-const CharacterDetail = () => {
-  const [data, setData] = React.useState(() => [...defaultData]);
-  const rerender = React.useReducer(() => ({}), {})[1];
-
-  const [selectedPinyin, setSelectedPinyin] = usePinyinChartState();
-
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  const char = characterDictionary[selectedPinyin?.value || selectedPinyin];
-
-  return (
-    <div>
-      <div className="md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between text-md">
-        <div></div>
-        <h1 className="flex flex-col items-center">
-          <span className={`text-3xl font-bold dark:text-gray-200`}>
-            {selectedPinyin?.value || selectedPinyin}
-          </span>
-        </h1>
-        <button
-          onClick={() => {
-            setSelectedPinyin(null);
-          }}
-          className={`my-4 flex flex-col items-center dark:text-gray-600 hover:dark:text-white transition`}
-        >
-          <CloseIcon className="text-4xl" />
-        </button>
-      </div>
-
-      {/* <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-center">
-        {(char?.graph?.split("") || [])
-          ?.filter((prop: string) => {
-            return allChars?.find((item) => item?.hanzi === prop);
-          })
-          .map((prop: string, idx: number) => {
-            const isCore = allChars?.find((item) => item?.hanzi === prop);
-            return (
-              <button
-                key={`${prop}-chars-${idx}`}
-                onClick={() => {}}
-                className={`${
-                  learnedCharacters.includes(prop)
-                    ? "dark:text-white text-gray-700"
-                    : "dark:text-gray-500 text-gray-200"
-                } dark:hover:text-white p-6 text-4xl transition lowercase`}
-              >
-                {prop}
-              </button>
-            );
-          })}
-      </div> */}
-
-      <div className="flex justify-center">
-        {char?.variants
-          ? char.variants.map((variant: any) => {
-              return (
-                <div
-                  key={variant.pinyin}
-                  className="my-4 mx-8 md:mx-16 text-black dark:text-white"
-                >
-                  <div className="flex justify-center">
-                    <p className={`my-4 text-2xl ${calculateColor(variant)}`}>
-                      {variant?.pinyin}
-                    </p>
-                  </div>
-
-                  {variant?.examples ? (
-                    <div className="flex flex-col items-center">
-                      <div className="space-y-8 my-4">
-                        {variant?.examples.map((example: any) => {
-                          return (
-                            <div key={JSON.stringify(example)}>
-                              <div></div>
-                              {example?.examples ? (
-                                <div className="space-y-4">
-                                  {example?.examples?.map((ex: any) => {
-                                    return (
-                                      <div key={JSON.stringify(ex)}>
-                                        {ex?.hanzi
-                                          .split("")
-                                          .map((item: any) => {
-                                            return (
-                                              <span
-                                                key={JSON.stringify(item)}
-                                                className={`${
-                                                  variant?.hanzi === item
-                                                    ? calculateColor(example)
-                                                    : ""
-                                                }`}
-                                              >
-                                                {item}
-                                              </span>
-                                            );
-                                          })}
-                                        {/* <p className='dark:text-gray-600 text-gray-300'>
-                                {example?.hanzi}
-                              </p> */}
-                                        <p className="dark:text-gray-500 text-gray-400">
-                                          {ex?.pinyin}
-                                        </p>
-                                        <p className="dark:text-gray-400 text-gray-500">
-                                          {ex?.en}
-                                        </p>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              ) : null}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
-              );
-            })
-          : null}
-      </div>
-    </div>
-  );
 };
 
 function ChartPageVP({
@@ -542,9 +75,12 @@ function ChartPageVP({
 
   const table = useReactTable({
     data,
-    columns,
+    columns: pinyinColumns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  const { data: components, isLoading: isComponentsLoading } =
+    useListComponents({ includeAll: true });
 
   const filters = usePinyinChartStore((state: any) => state.filters);
   const setFilter = usePinyinChartStore((state: any) => state.setFilter);
@@ -939,7 +475,7 @@ function ChartPageVP({
     <div className="margin-auto w-full my-2 text-center flex flex-col items-center justify-center">
       <div className="p-2 w-full">
         {selectedPinyin ? (
-          <CharacterDetail />
+          <PinyinDetail />
         ) : (
           <>
             <div className="flex justify-between items-center w-full md:px-12">
@@ -1085,6 +621,11 @@ function ChartPageVP({
                         {row.getVisibleCells().map((cell) => {
                           const val = cell.getValue() as any;
                           const char = characterDictionary[val?.value || val];
+
+                          // const comps = filterComponentsExact(
+                          //   components,
+                          //   val?.value
+                          // );
 
                           return (
                             <td

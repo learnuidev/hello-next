@@ -4,10 +4,10 @@ import { queryIds } from "./queryIds";
 import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
+import { siteConfig } from "@/lib/config";
 
 // TODO: Move this to .env
-const url =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-grammars";
+const url = `${siteConfig.apiUrl}/v1/list-grammars`;
 
 export interface ListGrammarsResponse {
   id: string;
@@ -25,6 +25,18 @@ export interface ListGrammarsResponse {
   }[];
 }
 
+function getAllSubstringIndices(mainString: string, subString: string) {
+  let indices = [];
+  let startIndex = 0;
+
+  while ((startIndex = mainString.indexOf(subString, startIndex)) > -1) {
+    indices.push(startIndex);
+    startIndex += 1; // Move to the next character to continue the search
+  }
+
+  return indices;
+}
+
 const listGrammars = async (
   options: { sentenceId?: string; content: string },
   opts: {
@@ -40,16 +52,32 @@ const listGrammars = async (
   });
   const resp = (await res.json()) as any;
 
-  if (Array.isArray(resp?.grammarAnalysis)) {
-    return resp as ListGrammarsResponse;
-  } else {
-    const newResp = {
-      ...resp,
-      grammarAnalysis: Object.values(resp.grammarAnalysis)[0],
-    };
+  let newGrammarAnalysis;
+  const sentenceId = resp?.sentenceId;
 
-    return newResp as ListGrammarsResponse;
+  if (Array.isArray(resp?.grammarAnalysis)) {
+    newGrammarAnalysis = resp.grammarAnalysis;
+  } else {
+    newGrammarAnalysis = Object.values(resp.grammarAnalysis)[0] as any;
   }
+
+  newGrammarAnalysis = newGrammarAnalysis?.map((item: any) => {
+    return {
+      ...item,
+      startIndex: sentenceId?.indexOf(item?.hanzi || item?.input),
+      offset: (item?.hanzi || item?.input)?.length,
+      allIndexes: getAllSubstringIndices(
+        sentenceId,
+        item?.hanzi || item?.input
+      ),
+    };
+  });
+
+  const newResp = {
+    ...resp,
+    grammarAnalysis: newGrammarAnalysis,
+  };
+  return newResp as ListGrammarsResponse;
 };
 
 export function useListGrammarsQuery(

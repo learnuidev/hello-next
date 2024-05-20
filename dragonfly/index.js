@@ -50,6 +50,7 @@ async function listDirectoryNames(name, options = { directoriesOnly: true }) {
     });
   };
   if (name) {
+    // const pathName = path.resolve(`../hello-next/app/${name}`);
     const pathName = path.resolve(`../hello-next/app/${name}`);
     const children = await fs.readdir(pathName);
     return filterDirectoriesOnly(children);

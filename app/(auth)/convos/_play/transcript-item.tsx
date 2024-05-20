@@ -8,17 +8,26 @@ import { Transcription } from "@/domain/transcribe/transcribe.types";
 
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { useRouter } from "next/navigation";
+
 export const TranscriptItem = ({
   transcription,
   currentTime,
   lessonId,
   pinyinMode,
+  audioUrl,
   seek,
 }: {
   transcription: Transcription;
   currentTime: number;
   lessonId: number;
   pinyinMode: boolean;
+  audioUrl: string;
   seek: any;
 }) => {
   const setRepeatHistories = useRepeatHistoryStore(
@@ -26,6 +35,8 @@ export const TranscriptItem = ({
   );
 
   const { data } = useListGrammarsQuery({ content: transcription?.hanzi });
+
+  const router = useRouter();
 
   return (
     <div
@@ -36,19 +47,23 @@ export const TranscriptItem = ({
           : ""
       }`}
       onClick={() => {
-        seek(transcription?.start);
+        if (audioUrl) {
+          seek(transcription?.start);
 
-        setRepeatHistories({
-          lessonId: lessonId,
-          eventType: "speech/repeat",
-          eventTime: new Date().getTime(),
-          startTime: transcription.start,
-          hanzi: transcription.hanzi,
-          pinyin: transcription.pinyin,
-          en: transcription.en,
-          step: transcription.step,
-          // item
-        });
+          setRepeatHistories({
+            lessonId: lessonId,
+            eventType: "speech/repeat",
+            eventTime: new Date().getTime(),
+            startTime: transcription.start,
+            hanzi: transcription.hanzi,
+            pinyin: transcription.pinyin,
+            en: transcription.en,
+            step: transcription.step,
+            // item
+          });
+        } else {
+          router.push(`/nmm/${transcription.hanzi || transcription.input}`);
+        }
       }}
     >
       <p className={""}>{transcription?.hanzi || transcription?.input}</p>
@@ -57,6 +72,15 @@ export const TranscriptItem = ({
           <p className="dark:text-gray-400 text-md">
             {transcription?.pinyin || transcription?.roman}
           </p>
+          {/* <HoverCard>
+            <HoverCardTrigger>
+              <p className="dark:text-gray-400 text-md">
+                {transcription?.pinyin || transcription?.roman}
+              </p>
+            </HoverCardTrigger>
+
+            <HoverCardContent>TODO</HoverCardContent>
+          </HoverCard> */}
           <p className="dark:text-gray-300 text-md">{transcription?.en}</p>
         </>
       ) : null}

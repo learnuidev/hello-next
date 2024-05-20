@@ -1,5 +1,3 @@
-import { SelectedCharacterProps } from "./_select-character/select-character.types";
-
 import { Icons } from "./ui/icons.v2";
 import { cn } from "@/lib/utils";
 import { useToast } from "./ui/use-toast";
@@ -7,7 +5,6 @@ import { useToast } from "./ui/use-toast";
 import Link from "next/link";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
 import { faChartColumn } from "@fortawesome/sharp-solid-svg-icons/faChartColumn";
 
 import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
@@ -17,15 +14,10 @@ import { usePathname } from "next/navigation";
 import React from "react";
 
 import { faPlayCircle } from "@fortawesome/pro-thin-svg-icons";
-import { belts } from "@/app/nmm/utils";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useBeltStore } from "./use-belt-store";
-import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import { useListComponents } from "@/domain/lesson/component.queries";
+
 import { faPhotoFilm } from "@fortawesome/sharp-solid-svg-icons";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
-// import { Icons } from "./ui/icons.v2";
-import { SearchBar } from "./search-bar";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export const FloatingNavbar = () => {
   const { toast } = useToast();
@@ -33,6 +25,8 @@ export const FloatingNavbar = () => {
   const routeName = usePathname();
 
   const { data: reviewList } = useListCharacterReviewList();
+
+  const lang = useGetCurrentLang();
 
   return (
     <div className="flex w-full fixed z-50 bottom-4">
@@ -79,19 +73,21 @@ export const FloatingNavbar = () => {
               <Icons.verticalStack className="hover:text-white transition" />
             </Link>
 
-            <Link
-              href="/pinyin"
-              className={`transition ${
-                routeName === "/pinyin"
-                  ? "text-gray-800 dark:text-gray-300"
-                  : "text-gray-200 dark:text-gray-500"
-              } hover:text-gray-700 transition text-xl hidden md:block`}
-            >
-              <FontAwesomeIcon
-                icon={faTableTree}
-                className="hover:text-white transition"
-              />
-            </Link>
+            {(!lang || lang === "zh") && (
+              <Link
+                href="/pinyin"
+                className={`transition ${
+                  routeName === "/pinyin"
+                    ? "text-gray-800 dark:text-gray-300"
+                    : "text-gray-200 dark:text-gray-500"
+                } hover:text-gray-700 transition text-xl hidden md:block`}
+              >
+                <FontAwesomeIcon
+                  icon={faTableTree}
+                  className="hover:text-white transition"
+                />
+              </Link>
+            )}
             <Link
               href="/insights"
               className={`transition ${

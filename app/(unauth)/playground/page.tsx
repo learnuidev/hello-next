@@ -5,17 +5,48 @@
 // import { StepComponent } from "./tutorial/01_step/01_begin";
 import { StepComponent } from "./tutorial/01_step/02_end";
 
-// 02
-// import { Email } from "./tutorial/02_email/01_begin";
-import { Email } from "./tutorial/02_email/02_end";
+import * as React from "react";
 
-// 03
-import { ScrollableHeader } from "./tutorial/03_scrollable_header/01_end";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import { Features } from "./features";
 
 export default function Playground() {
+  const [feature, setFeature] = React.useState("step");
+  const handleChange = (feat: string) => {
+    setFeature(feat);
+  };
+
+  const Component =
+    Features?.find((feat) => feat.id === feature)?.component || StepComponent;
   return (
     <main>
-      <StepComponent />
+      <Select onValueChange={handleChange}>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Select a feature" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {Features?.map((feature) => {
+              return (
+                <SelectItem key={feature.id} value={feature.id}>
+                  {feature.label}
+                </SelectItem>
+              );
+            })}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      {/* <FeatureDropDown /> */}
+      {Component ? <Component /> : null}
     </main>
   );
 }

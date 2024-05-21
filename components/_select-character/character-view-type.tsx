@@ -113,7 +113,75 @@ export const ViewType = (props: SelectedCharacterProps) => {
   console.log("LEARNED CHAR", selectedComp);
 
   if (view === "story") {
-    return <StoryEditor selectedChar={selectedComp} />;
+    return (
+      <div>
+        <div>
+          {/* {selectedChar?.length > 3 && ( */}
+          <div className="flex items-center justify-between mb-8 mt-4 mr-0 sm:mr-32">
+            <div className="flex flex-col items-start space-y-2">
+              <h2 className="text-gray-400 font-extralight">
+                {selectedComp?.pinyin || selectedComp?.roman}
+              </h2>
+
+              <h1 className="text-4xl my-0 py-0 font-extralight">
+                {selectedComp?.hanzi || selectedChar}
+              </h1>
+
+              <h2 className="text-gray-500 font-light">{selectedComp?.en}</h2>
+            </div>
+
+            {level && (
+              <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+                <Icons.earthAsia />
+                <p>{level}</p>
+              </div>
+            )}
+
+            {selectedComp?.audio ? (
+              <AudioComponent currentPhrase={selectedComp} />
+            ) : null}
+          </div>
+          {/* )} */}
+
+          {/* <p>{JSON.stringify(selectedComp2, null, 2)}</p> */}
+
+          {selected && (
+            <div className="font-light flex space-x-4 items-center text-gray-400 mb-2">
+              {toneLevel && (
+                <div className="flex space-x-2 items-center">
+                  <Icons.musicNote />
+                  <p>{toneLevel}</p>
+                </div>
+              )}
+              {initial && (
+                <div className="flex space-x-2 items-center">
+                  <p>initial - </p>
+                  <p>{initial}</p>
+                </div>
+              )}
+              {final && (
+                <div className="flex space-x-2 items-center">
+                  <p>final - </p>
+                  <p>{final}</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          <SubComponentsView lang={lang} characterId={characterId} />
+
+          <div>
+            <StoryEditor selectedChar={selectedComp} />
+          </div>
+        </div>
+      </div>
+    );
+
+    return (
+      <div>
+        <StoryEditor selectedChar={selectedComp} />
+      </div>
+    );
   }
 
   return (

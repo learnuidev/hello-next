@@ -3,6 +3,7 @@ import { frenchWords } from "./french/french-words";
 import { japaneseWords } from "./japanese/japanese-words";
 import { koreanWords } from "./korean/korean-words";
 import { persianWords } from "./persian/persian-words";
+import { russianWords } from "./russian/russian-words";
 import { spanishWords } from "./spanish/spanish-words";
 import { urduWords } from "./urdu/urdu-words";
 import { vietnameseWords } from "./vietnamese/vietnamese-words";
@@ -16,4 +17,5 @@ export const wordsDict = {
   fr: frenchWords,
   vi: vietnameseWords,
   ur: urduWords,
+  ru: russianWords,
 } as any;

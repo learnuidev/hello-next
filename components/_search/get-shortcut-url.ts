@@ -1,5 +1,5 @@
 export const getShortCutUrl = (query: string) => {
-  const [objective, lang, ...rest] = query?.split(" ");
+  // const [objective, lang, ...rest] = query?.split(" ");
 
   const shortCutLangs = {
     ko: "ko",
@@ -34,9 +34,10 @@ export const getShortCutUrl = (query: string) => {
     ru: "ru",
     putin: "ru",
     ruski: "ru",
+    russkiy: "ru",
   } as any;
 
-  const shortCutLang = shortCutLangs[objective?.toLowerCase()];
+  const shortCutLang = shortCutLangs[query.toLowerCase()];
 
   if (shortCutLang) {
     return `/nmm?lang=${shortCutLang}`;

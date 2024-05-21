@@ -7,6 +7,7 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { cn } from "@/lib/utils";
 import { formatComponentName } from "@/app/nmm/format-component-name";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
+import { useSearchQueryStore } from "./search/state";
 
 export const WordItem = ({
   component: prop,
@@ -16,6 +17,8 @@ export const WordItem = ({
   lang: any;
 }) => {
   const { data: characters } = useListCharactersQuery();
+
+  const query = useSearchQueryStore((state) => state.query);
 
   const addHistoryMutation = useAddHistoryMutation();
 
@@ -33,6 +36,7 @@ export const WordItem = ({
             // pathName: routeName,
             hanzi: prop?.input || prop?.hanzi,
             lang,
+            query: query,
             contentId: prop?.id,
             eventType: "CONTENT_VIEWED",
           } as any);

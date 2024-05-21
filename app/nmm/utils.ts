@@ -155,6 +155,20 @@ export const filterComponent = (query: string, comp: any, meta?: any) => {
         score: 0.4,
       };
     }
+    if (query?.toLowerCase() === component?.query?.toLowerCase()) {
+      return {
+        ...comp,
+        ...metaComp,
+        score: 0.3,
+      };
+    }
+    if (component?.query?.toLowerCase()?.includes(query?.toLowerCase())) {
+      return {
+        ...comp,
+        ...metaComp,
+        score: 0.2,
+      };
+    }
 
     const queryLength = query?.length;
 

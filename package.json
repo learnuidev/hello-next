@@ -76,6 +76,7 @@
     "core-js": "^3.33.2",
     "datascript": "^1.6.5",
     "date-fns": "^2.30.0",
+    "deep-equal": "^2.2.3",
     "encoding": "^0.1.13",
     "eslint": "8.49.0",
     "eslint-config-next": "^14.2.2",

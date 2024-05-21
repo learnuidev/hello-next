@@ -20,7 +20,7 @@ import {
 import { Features } from "./features";
 
 export default function Playground() {
-  const [feature, setFeature] = React.useState("step");
+  const [feature, setFeature] = React.useState("mql");
   const handleChange = (feat: string) => {
     setFeature(feat);
   };

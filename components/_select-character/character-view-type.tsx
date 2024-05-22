@@ -14,10 +14,10 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 import { SubComponentsView } from "./subcomponents-view";
 
-import { wordsDict } from "@/langs/words-dict";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useStoryStore } from "./story-store";
 import { StoryEditor } from "./story-editor";
+import { RelatedWords } from "./related-words";
 
 const SentencesView = (props: SelectedCharacterProps) => {
   return (
@@ -91,23 +91,7 @@ export const ViewType = (props: SelectedCharacterProps) => {
       return <HskView />;
     }
 
-    const words = wordsDict[lang] || [];
-
-    return (
-      <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-start">
-        {words
-          ?.filter((item: any) => item?.input?.includes(characterId))
-          ?.map((prop: any) => {
-            return (
-              <WordItem
-                lang={lang}
-                component={prop}
-                key={JSON.stringify(prop)}
-              />
-            );
-          })}
-      </div>
-    );
+    return <RelatedWords lang={lang} characterId={characterId} />;
   }
 
   console.log("LEARNED CHAR", selectedComp);

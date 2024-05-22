@@ -28,14 +28,14 @@ export const WordItem = ({
 
   return (
     <Link
-      href={`/nmm/${prop?.input || prop?.hanzi}?lang=${lang || prop?.lang}`}
+      href={`/nmm/${prop?.input || prop?.hanzi}?lang=${prop?.lang}`}
       key={JSON.stringify(prop)}
       onClick={() => {
         if (!addHistoryMutation?.isLoading) {
           addHistoryMutation.mutate({
             // pathName: routeName,
             hanzi: prop?.input || prop?.hanzi,
-            lang,
+            lang: prop?.lang || lang,
             query: query,
             contentId: prop?.id,
             eventType: "CONTENT_VIEWED",

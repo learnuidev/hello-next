@@ -28,7 +28,7 @@ export const WordItem = ({
 
   return (
     <Link
-      href={`/nmm/${prop?.input || prop?.hanzi}?lang=${prop?.lang}`}
+      href={`/nmm/${prop?.input || prop?.hanzi}?lang=${prop?.lang || lang}`}
       key={JSON.stringify(prop)}
       onClick={() => {
         if (!addHistoryMutation?.isLoading) {

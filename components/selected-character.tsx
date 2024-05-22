@@ -11,6 +11,9 @@ import { ViewType } from "./_select-character/character-view-type";
 import { useSelectedCharacterData } from "./use-selected-character";
 
 import { FloatingCharacterNavbar } from "./floating-character-navbar";
+import { shortCuts } from "@/hooks/use-handle-search";
+
+import { LanguagesList } from "./languages-list";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const { data } = useSelectedCharacterData({ characterId });
@@ -39,6 +42,14 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     characterId,
   };
 
+  const ShowView = () => {
+    if (shortCuts?.includes(characterId) || characterId === "ll") {
+      return <LanguagesList characterId={characterId} />;
+    }
+
+    return <ViewType {...props} />;
+  };
+
   return (
     <div
       className="relative w-full"
@@ -51,7 +62,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       <div className="px-4 md:px-12">
         <HeaderView {...props} />
 
-        <ViewType {...props} />
+        <ShowView />
       </div>
 
       <FloatingCharacterNavbar {...props} />

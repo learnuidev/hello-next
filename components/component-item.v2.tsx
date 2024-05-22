@@ -4,6 +4,8 @@ import React from "react";
 import Link from "next/link";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { cn } from "@/lib/utils";
+import { formatComponentName } from "@/app/nmm/format-component-name";
 
 export const ComponentItemV2 = ({
   component,
@@ -33,15 +35,29 @@ export const ComponentItemV2 = ({
       }
       className={`${character ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-500 text-gray-200"} dark:hover:text-white p-6 flex items-center flex-col`}
     >
-      <span className={`block text-sm dark:text-slate-600`}>
-        {character?.roman}
+      {/* <span className={`block text-sm dark:text-slate-600`}>
+        {character?.roman || component?.roman}
       </span>
 
       <span className="text-4xl"> {component?.input}</span>
 
-      {/* <span className={`block text-sm dark:text-slate-600`}>
+      <span className={`block text-sm dark:text-slate-600`}>
         {character?.en}
       </span> */}
+
+      <span
+        className={cn(
+          "block p-0 m-0 text-sm",
+          component?.roman || character?.roman ? "" : "text-black"
+        )}
+      >
+        {component?.roman || character?.roman}
+      </span>
+      <span className="text-2xl"> {component.input}</span>
+      <span className="block text-sm">
+        {" "}
+        {formatComponentName({ en: character?.en || component.en }, 2)}
+      </span>
     </Link>
   );
 };

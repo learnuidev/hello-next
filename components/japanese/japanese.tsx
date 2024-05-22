@@ -8,11 +8,12 @@ import Link from "next/link";
 import { Icons } from "../ui/icons.v2";
 
 import { hiraganaAlphabets } from "@/langs/japanese/hiragana-alphabets";
-import { japaneseComponents } from "@/langs/japanese/japanese-components";
+import { japaneseComponents2 } from "@/langs/japanese/japanese-components";
 import { japaneseWords } from "@/langs/japanese/japanese-words";
 import { ComponentItem } from "../component-item";
 import { WordItem } from "../word-item";
 import { WordsList } from "../words-list";
+import { ComponentItemV2 } from "../component-item.v2";
 
 const PageView = ({ view }: any) => {
   const lang = "ja";
@@ -48,8 +49,10 @@ const PageView = ({ view }: any) => {
       return (
         <>
           <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-end justify-center">
-            {japaneseComponents.map((prop) => {
-              return <ComponentItem lang="ja" component={prop} key={prop} />;
+            {japaneseComponents2.map((prop) => {
+              return (
+                <ComponentItemV2 lang="ja" component={prop} key={prop?.input} />
+              );
             })}
           </div>
         </>

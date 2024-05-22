@@ -6,13 +6,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { koreanAlphabets } from "@/langs/korean/korean-alphabets";
-import { koreanComponents } from "@/langs/korean/korean-components";
+import { koreanComponents2 } from "@/langs/korean/korean-components";
 import { Icons } from "../ui/icons.v2";
 
 import { koreanWords } from "@/langs/korean/korean-words";
 import { ComponentItem } from "../component-item";
 import { WordItem } from "../word-item";
 import { WordsList } from "../words-list";
+import { ComponentItemV2 } from "../component-item.v2";
 
 const PageView = ({ view }: any) => {
   const searchParams = useSearchParams();
@@ -49,8 +50,10 @@ const PageView = ({ view }: any) => {
       return (
         <>
           <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-end justify-center">
-            {koreanComponents.map((prop) => {
-              return <ComponentItem lang="ko" component={prop} key={prop} />;
+            {koreanComponents2.map((prop) => {
+              return (
+                <ComponentItemV2 lang="ko" component={prop} key={prop?.input} />
+              );
             })}
           </div>
         </>

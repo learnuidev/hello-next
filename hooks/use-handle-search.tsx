@@ -10,8 +10,6 @@ import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useSearchQueryStore } from "@/components/search/state";
 import { getNavigationUrl } from "@/components/_search/get-navigation-url";
 
-export const shortCuts = ["list langauges"];
-
 export const useHandleSearch = () => {
   const router = useRouter();
 

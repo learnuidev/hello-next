@@ -11,9 +11,8 @@ import { ViewType } from "./_select-character/character-view-type";
 import { useSelectedCharacterData } from "./use-selected-character";
 
 import { FloatingCharacterNavbar } from "./floating-character-navbar";
-import { shortCuts } from "@/hooks/use-handle-search";
 
-import { LanguagesList } from "./languages-list";
+import { LanguagesList, listLanguagesShortCuts } from "./languages-list";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const { data } = useSelectedCharacterData({ characterId });
@@ -43,7 +42,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
   };
 
   const ShowView = () => {
-    if (shortCuts?.includes(characterId) || characterId === "ll") {
+    if (listLanguagesShortCuts?.includes(characterId)) {
       return <LanguagesList characterId={characterId} />;
     }
 

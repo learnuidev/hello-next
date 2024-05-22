@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { languages } from "./languages";
 
+export const listLanguagesShortCuts = [
+  "list langauges",
+  "list languages",
+  "list langs",
+  "langs",
+  "ll",
+];
+
 export const LanguagesList = ({ characterId }: { characterId: string }) => {
   const characterIdTitles = {
     ll: "List Languages",

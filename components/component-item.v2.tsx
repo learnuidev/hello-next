@@ -51,10 +51,10 @@ export const ComponentItemV2 = ({
           component?.roman || character?.roman ? "" : "text-black"
         )}
       >
-        {component?.roman || character?.roman}
+        {component?.roman || character?.roman || "yo"}
       </span>
       <span className="text-2xl"> {component.input}</span>
-      <span className="block text-sm">
+      <span className={cn("block text-sm")}>
         {" "}
         {formatComponentName({ en: character?.en || component.en }, 2)}
       </span>

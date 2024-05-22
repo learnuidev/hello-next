@@ -19880,11 +19880,19 @@ export const urduWords = [
     lang: "ur",
   },
   {
-    id: "2487",
+    id: "24878",
     en: "sorry",
     type: "Adjective exclam.",
     level: "A1",
-    input: "معذرت ۔ افسوس",
+    input: "معذرت",
+    lang: "ur",
+  },
+  {
+    id: "24879",
+    en: "sorry",
+    type: "Adjective exclam.",
+    level: "A1",
+    input: "افسوس",
     lang: "ur",
   },
   {

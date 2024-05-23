@@ -5,7 +5,10 @@ import { ConvoInsights } from "./convo-insights";
 import { Play } from "./_play/audio-content";
 
 import { Wordle } from "@/components/wordle/wordle";
-import { useListContentsQuery } from "@/domain/content/content.queries";
+import {
+  useGetContentQuery,
+  useListContentsQuery,
+} from "@/domain/content/content.queries";
 import { useSearchParams as _useSearchParams } from "next/navigation";
 import { YouTubePage } from "@/components/youtube-page/v1";
 
@@ -23,7 +26,9 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
   const { data: contentsArr } = useListContentsQuery();
 
-  const lesson2 = contentsArr?.find((content: any) => content?.id === lessonId);
+  const { data: lesson2 } = useGetContentQuery({ contentId: lessonId });
+
+  // const lesson2 = contentsArr?.find((content: any) => content?.id === lessonId);
 
   // If the link contains yotube - then show youtube page
   if (

@@ -4,7 +4,7 @@ import { queryIds } from "./queryIds";
 import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
-import { listContents } from "./content.api";
+import { getContent, listContents } from "./content.api";
 
 export function useListContentsQuery(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
@@ -29,4 +29,23 @@ export function useListContentsQuery(options = {} as any) {
       refetchOnReconnect: false,
     }
   );
+}
+
+const getContentQueryId = "get-content";
+export function useGetContentQuery(params: { contentId: string }) {
+  const { data: authUser } = useCurrentAuthUser({});
+
+  return useQuery({
+    queryKey: [getContentQueryId, params.contentId],
+    queryFn: async () => {
+      const response = await getContent(params, {
+        Authorization: authUser?.jwt,
+      });
+      return response;
+      // }
+    },
+
+    enabled: Boolean(authUser?.jwt),
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+  });
 }

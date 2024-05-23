@@ -2,7 +2,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Header } from "@/components/ui/icons";
 
 import ReactPlayer from "react-player";
-import { useListContentsQuery } from "@/domain/content/content.queries";
+import {
+  useGetContentQuery,
+  useListContentsQuery,
+} from "@/domain/content/content.queries";
 import { useSearchParams } from "@/hooks/use-search-params";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,6 +30,8 @@ import { calculateColor } from "@/app/nmm/utils";
 import { Icons } from "../ui/icons.v2";
 import { resolveLangCode } from "@/libs/openai/utils";
 import { TranscriptItem } from "./youtube-transcript-item";
+import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
+import { useParams } from "next/navigation";
 
 export function VideoPlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -36,11 +41,16 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
   const [isVideoHidden, setIsVideoHidden] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
   const [currentTime, setTime] = useState(0);
+  const params = useParams<{ "content-id": string }>();
+  const contentId = params["content-id"];
   const playerRef = useRef() as any;
+  const setRepeatHistories = useRepeatHistoryStore(
+    (state: any) => state.setHistory
+  );
 
   const { data: learnedCharacters } = useListCharactersQuery();
 
-  const { data: components } = useListContentsQuery();
+  // const { data: components } = useListContentsQuery();
 
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;
@@ -64,8 +74,20 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
         const lastEnd = Math.max(...toggleLoops?.map((x: any) => x?.end));
         const firstStart = Math.min(...toggleLoops?.map((x: any) => x?.start));
 
+        console.log("TOGGLE LOOPS", toggleLoops);
+
         if (currentTime > lastEnd) {
           playerRef.current.seekTo(firstStart, "seconds");
+
+          // for (const example of toggleLoops) {
+          //   setRepeatHistories({
+          //     contentId: contentId,
+          //     ...example,
+          //     input: example?.input || example?.hanzi,
+          //     roman: example?.roman || example?.pinyin,
+          //     createdAt: Date.now(),
+          //   });
+          // }
 
           try {
             playerRef.current?.player?.player?.play();
@@ -77,12 +99,13 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
       }, 5);
       return () => clearInterval(interval);
     }
-  }, [toggleLoops]);
+  }, [contentId, setRepeatHistories, toggleLoops]);
 
-  const { data: contentsArr } = useListContentsQuery();
+  // const { data: contentsArr } = useListContentsQuery();
 
   // const { lessonId } = useSearchParams();
-  const lesson = contentsArr?.find((content: any) => content?.id === lessonId);
+  const { data: lesson } = useGetContentQuery({ contentId: lessonId });
+  // const lesson = contentsArr?.find((content: any) => content?.id === lessonId);
 
   const finalUrl = lesson?.audio;
 
@@ -295,7 +318,7 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
                         isVideoHidden={isVideoHidden}
                         playerRef={playerRef}
                         learnedCharacters={learnedCharacters}
-                        components={components}
+                        // components={components}
                       />
                     );
                   })}

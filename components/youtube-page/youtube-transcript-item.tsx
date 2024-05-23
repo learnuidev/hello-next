@@ -30,7 +30,7 @@ export const TranscriptItem = ({
   isVideoHidden,
   playerRef,
   learnedCharacters,
-  components,
+  // components,
 }: any) => {
   const params = useParams<{ "content-id": string }>();
   const contentId = params["content-id"];
@@ -50,7 +50,7 @@ export const TranscriptItem = ({
       <div className="space-x-2 flex flex-row items-center">
         <Link
           target="_blank"
-          href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+          href={`https://translate.google.com/?tl=en&text=${encodeURIComponent(
             toggleLoops.length
               ? toggleLoops
                   ?.sort((a: any, b: any) => a?.end - b?.end)
@@ -212,9 +212,9 @@ export const TranscriptItem = ({
                   {(example?.hanzi || example?.input || example?.nepali || "")
                     .split("")
                     .map((item: any, idx: any) => {
-                      const component = components?.find(
-                        (char: any) => char?.hanzi === item
-                      );
+                      // const component = components?.find(
+                      //   (char: any) => char?.hanzi === item
+                      // );
 
                       return (
                         <span
@@ -266,13 +266,19 @@ export const TranscriptItem = ({
 
         {/* <div className="invisible hover:visible active:visible"> */}
 
-        <p className="text-gray-400">{totalRepeats?.length}</p>
+        <div>
+          <ConfigButtons />
+          <div className="flex text-gray-700 text-[10px] items-center justify-end space-x-2">
+            <Icons.music />
+            <p className="text-gray-700 font-extralight">
+              {totalRepeats?.length}
+            </p>
+          </div>
+        </div>
+
         {/* </div> */}
       </div>
-      <div>
-        {" "}
-        <ConfigButtons />
-      </div>
+      <div className="mt-4"> </div>
     </div>
   );
 };

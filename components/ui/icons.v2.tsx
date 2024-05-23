@@ -21,6 +21,7 @@ import {
   faCircleArrowDown,
   faCircleBolt,
   faPlus,
+  faMusic,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -53,7 +54,7 @@ import { faMicrophone } from "@fortawesome/sharp-solid-svg-icons/faMicrophone";
 import { faThoughtBubble } from "@fortawesome/sharp-solid-svg-icons/faThoughtBubble";
 import { faCheck } from "@fortawesome/sharp-solid-svg-icons/faCheck";
 import { faFaceLaugh } from "@fortawesome/sharp-solid-svg-icons/faFaceLaugh";
-import { faMusic } from "@fortawesome/sharp-solid-svg-icons/faMusic";
+// import { faMusic } from "@fortawesome/sharp-solid-svg-icons/faMusic";
 import { faFaceGrinBeamSweat } from "@fortawesome/sharp-solid-svg-icons/faFaceGrinBeamSweat";
 import { faFaceThinking } from "@fortawesome/sharp-solid-svg-icons/faFaceThinking";
 import { faHeadphones } from "@fortawesome/sharp-solid-svg-icons/faHeadphones";
@@ -147,4 +148,5 @@ export const Icons = {
   questionMark: createFAIcon(faBlockQuestion),
   circleArrowDown: createFAIcon(faCircleArrowDown),
   circleBolt: createFAIcon(faCircleBolt),
+  music: createFAIcon(faMusic),
 };

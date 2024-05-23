@@ -1,13 +1,9 @@
 "use client";
-import { queryIds } from "./queryIds";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useCurrentAuthUser } from "../auth/auth.queries";
+import { siteConfig } from "@/lib/config";
 import { AddContentParams } from "./content.types";
 
-// TODO: Move this to .env
-const addContentApi =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/add-content";
+const addContentApi = `${siteConfig.apiUrl}/v1/add-content`;
 
 export const addContent = async (
   params: AddContentParams,
@@ -26,11 +22,7 @@ export const addContent = async (
   return resp;
 };
 
-import { useQuery } from "@tanstack/react-query";
-
-// TODO: Move this to .env
-const listContentsApi =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-contents";
+const listContentsApi = `${siteConfig.apiUrl}/v1/list-contents`;
 
 export const listContents = async (opts: { Authorization: string }) => {
   const res = await fetch(listContentsApi, {
@@ -38,6 +30,23 @@ export const listContents = async (opts: { Authorization: string }) => {
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,
     },
+  });
+  const resp = (await res.json()) as any;
+
+  return resp;
+};
+
+export const getContent = async (
+  params: { contentId: string },
+  opts: { Authorization: string }
+) => {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/get-content`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${opts?.Authorization}`,
+    },
+
+    body: JSON.stringify(params),
   });
   const resp = (await res.json()) as any;
 

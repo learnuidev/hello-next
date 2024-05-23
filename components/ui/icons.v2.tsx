@@ -22,6 +22,8 @@ import {
   faCircleBolt,
   faPlus,
   faMusic,
+  faTable,
+  faInfo,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -149,4 +151,6 @@ export const Icons = {
   circleArrowDown: createFAIcon(faCircleArrowDown),
   circleBolt: createFAIcon(faCircleBolt),
   music: createFAIcon(faMusic),
+  table: createFAIcon(faTable),
+  info: createFAIcon(faInfo),
 };

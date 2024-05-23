@@ -28,7 +28,7 @@ const useListTables = () => {
 const useDynamoDBScan = ({ TableName }: { TableName: string }) => {
   const { data: authUser } = useCurrentAuthUser({});
   return useQuery({
-    queryKey: ["scan"],
+    queryKey: ["scan", TableName],
     queryFn: async () => {
       const tables = await fetch("/api/scan", {
         method: "POST",

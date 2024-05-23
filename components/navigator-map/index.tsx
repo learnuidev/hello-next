@@ -3,13 +3,14 @@ import * as React from "react";
 import Map, { Marker } from "react-map-gl";
 
 import GeocoderControl from "./geocoder-control";
-import { config } from "@/lib/config";
+// import { config } from "@/lib/config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCatSpace } from "@fortawesome/sharp-solid-svg-icons/faCatSpace";
 import { faMap, faMapLocationDot } from "@fortawesome/sharp-solid-svg-icons";
+import { mapBoxConfig } from "@/lib/config";
 
 export function NavigatorMap() {
-  if (!config.mapboxApiKey) {
+  if (mapBoxConfig.mapboxApiKey) {
     return (
       <div className="flex items-center justify-center flex-col my-32">
         <FontAwesomeIcon className="text-8xl text-gray-200" icon={faCatSpace} />
@@ -58,10 +59,10 @@ export function NavigatorMap() {
           zoom: 12,
         }}
         mapStyle="mapbox://styles/mapbox/streets-v12"
-        mapboxAccessToken={config.mapboxApiKey}
+        mapboxAccessToken={mapBoxConfig.mapboxApiKey}
       >
         <GeocoderControl
-          mapboxAccessToken={config.mapboxApiKey}
+          mapboxAccessToken={mapBoxConfig.mapboxApiKey}
           position="top-right"
         />
 

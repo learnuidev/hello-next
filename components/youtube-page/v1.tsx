@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { VideoPlayer } from "./youtube-player";
+import { YouTubePlayer } from "./youtube-player";
 // import {}
 
 const song0 = {
@@ -736,5 +736,5 @@ const medias = [song0, song2, song1, book1];
 export function YouTubePage({ lessonId }: { lessonId: string }) {
   const [mediaIndex, setMediaIndex] = useState(0);
 
-  return <VideoPlayer lessonId={lessonId} />;
+  return <YouTubePlayer lessonId={lessonId} />;
 }

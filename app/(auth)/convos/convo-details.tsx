@@ -11,6 +11,7 @@ import {
 } from "@/domain/content/content.queries";
 import { useSearchParams as _useSearchParams } from "next/navigation";
 import { YouTubePage } from "@/components/youtube-page/v1";
+import { YouTubePlayer } from "@/components/youtube-page/youtube-player";
 
 function useSearchParams() {
   const searchParams = _useSearchParams();
@@ -37,7 +38,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   ) {
     return (
       <div>
-        <YouTubePage lessonId={lessonId} />
+        <YouTubePlayer lessonId={lessonId} />;
       </div>
     );
   }

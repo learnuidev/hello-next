@@ -32,8 +32,9 @@ import { resolveLangCode } from "@/libs/openai/utils";
 import { TranscriptItem } from "./youtube-transcript-item";
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
 import { useParams } from "next/navigation";
+import { useSize } from "@/hooks/use-size";
 
-export function VideoPlayer({ lessonId }: { lessonId: string }) {
+export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
   const [toggleLoop, setToggleLoop] = useState<any>(null);
   const [toggleLoops, setToggleLoops] = useState<any>([]);
@@ -47,6 +48,7 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
   const setRepeatHistories = useRepeatHistoryStore(
     (state: any) => state.setHistory
   );
+  const size = useSize();
 
   const { data: learnedCharacters } = useListCharactersQuery();
 
@@ -117,6 +119,10 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
       (example?.timestamp?.[1] || example?.end) > currentTime
   );
 
+  console.log("SIZE", size);
+
+  const isSmall = size?.[0] < 600;
+
   return (
     <div className="grow flex flex-col items-center">
       <div className="space-x-4 my-4 hidden md:block">
@@ -144,7 +150,7 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
         <div
           className={` ${isVideoHidden ? "hidden" : ""} md:col-span-8 col-span-12`}
         >
-          <div className="block md:hidden">
+          {/* <div className="block md:hidden">
             <ReactPlayer
               ref={playerRef}
               url={finalUrl}
@@ -154,14 +160,14 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
               controls={true}
               onReady={onReady}
             />
-          </div>
-          <div className="hidden md:block">
+          </div> */}
+          <div className="">
             <ReactPlayer
               ref={playerRef}
               url={finalUrl}
               playing={isPlaying}
               width="100%"
-              height={"450px"}
+              height={isSmall ? "200px" : "450px"}
               controls={true}
               onReady={onReady}
             />
@@ -293,7 +299,7 @@ export function VideoPlayer({ lessonId }: { lessonId: string }) {
             className={`${isVideoHidden ? "col-span-12" : "md:col-span-4 col-span-12"} w-full`}
           >
             <ScrollArea className="space-y-4 h-[700px] w-full rounded-md border border-gray-900 p-0 pb-16">
-              <div className="sm:space-y-4 w-full">
+              <div className="sm:space-y-8 mt-4 w-full">
                 {(lesson?.transcriptions || [])
                   .filter((script: any) => {
                     if (focusMode) {

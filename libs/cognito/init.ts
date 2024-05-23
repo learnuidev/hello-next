@@ -1,13 +1,13 @@
 import { Amplify } from "aws-amplify";
 // import awsExports from './aws-exports';
-import { config } from "@/lib/config";
+import { awsConfig } from "@/lib/config";
 
 const awsExports = {
-  region: config?.awsRegion,
-  userPoolId: config?.userPoolId,
-  userPoolWebClientId: config?.userPoolWebClientId,
+  region: awsConfig?.awsRegion,
+  userPoolId: awsConfig?.userPoolId,
+  userPoolWebClientId: awsConfig?.userPoolWebClientId,
   mandatorySignIn: true,
-  graphqlEndpoint: config?.graphqlEndpoint,
+  graphqlEndpoint: awsConfig?.graphqlEndpoint,
   authenticationType: "AMAZON_COGNITO_USER_POOLS",
 };
 

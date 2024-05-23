@@ -10,7 +10,7 @@ export interface IConfig {
   uploadBucketName: string;
 }
 
-export const config: IConfig = {
+export const awsConfig: IConfig = {
   mapboxApiKey: process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string,
 
   //   AWS

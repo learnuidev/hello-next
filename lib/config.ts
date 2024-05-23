@@ -9,7 +9,9 @@ export interface IConfig {
   uploadBucketName: string;
 }
 
-export interface IMapBoxConfig {}
+export interface IMapBoxConfig {
+  mapboxApiKey: string;
+}
 
 export const mapBoxConfig: IMapBoxConfig = {
   mapboxApiKey: process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "",

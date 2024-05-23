@@ -104,7 +104,7 @@ export default function Playground() {
             className="w-full h-12 p-4 text-xl"
           />
           {/* <h1 className="text-3xl mb-4">Tables</h1> */}
-          <section className="grid grid-cols-3">
+          <section className="grid grid-cols-1 sm:grid-cols-2 mt-8">
             {/* <code>
             <pre>{JSON.stringify(tables, null, 2)}</pre>
           </code> */}
@@ -114,7 +114,7 @@ export default function Playground() {
             )?.map((tableName: string) => {
               return (
                 <button
-                  className="text-xs p-4"
+                  className="p-4 text-2xl hover:scale-110 transition"
                   onClick={() => {
                     addSelectedTable(tableName);
                   }}

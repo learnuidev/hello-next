@@ -86,7 +86,6 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                         toast(
                           `Component Successfully discovered ${JSON.stringify(resp)}`
                         );
-                        console.log("Discovered!!", resp);
                       });
                   }}
                 >
@@ -118,7 +117,6 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                       toast(`Component: ${selectedComp?.hanzi || characterId} Successfully deleted  
                       \n 
                       ${JSON.stringify(resp)}`);
-                      console.log("Discovered!!", resp);
                     });
                 }}
               >

@@ -80,14 +80,10 @@ export const HanziViewer = (props: any) => {
                         router.push(`/nmm/${val}`);
 
                         if (hanz?.pinyin === "??") {
-                          return discoverMutation
-                            .mutateAsync({
-                              lang: lang || selectedComp?.lang,
-                              hanzi: hanz?.hanzi,
-                            })
-                            .then((resp: any) => {
-                              console.log("Discovered!!");
-                            });
+                          return discoverMutation.mutateAsync({
+                            lang: lang || selectedComp?.lang,
+                            hanzi: hanz?.hanzi,
+                          });
                         }
                       }}
                       className={`text-sm ${
@@ -113,16 +109,10 @@ export const HanziViewer = (props: any) => {
 
                         router.push(`/nmm/${val}`);
 
-                        console.log("HANZ", hanz);
-
                         if (hanz?.pinyin === "??") {
-                          return discoverMutation
-                            .mutateAsync({
-                              hanzi: hanz?.hanzi,
-                            })
-                            .then((resp: any) => {
-                              console.log("Discovered!!");
-                            });
+                          return discoverMutation.mutateAsync({
+                            hanzi: hanz?.hanzi,
+                          });
                         }
                       }}
                     >

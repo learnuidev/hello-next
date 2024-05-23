@@ -36,7 +36,6 @@ export const SearchInputFC = () => {
   return (
     <div
       onKeyDown={(event) => {
-        console.log("EVENT", event);
         if (event.key === "Escape") {
           if (isSearchBarOpen) {
             setSearchBarOpen(false);

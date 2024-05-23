@@ -155,8 +155,6 @@ export function NewConvo({ type }: { type?: string }) {
     // alert(JSON.stringify(newConvo))
   };
 
-  console.log("NEW CONVO", newConvo);
-
   const listSections = (txt: string, lang: string) => {
     if (lang === "zh") {
       return txt

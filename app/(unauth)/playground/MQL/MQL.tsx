@@ -5,8 +5,6 @@ import { populate } from "./db/mock";
 import schema from "./db/schema";
 import { MQLInner } from "./MQLInner";
 
-console.log("datascript", datascript);
-
 /*Create a connection to a new db instance using the schema*/
 const conn = datascript.create_conn(schema);
 populate(conn);

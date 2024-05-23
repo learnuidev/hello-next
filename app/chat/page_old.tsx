@@ -143,18 +143,12 @@ export default function Home() {
         threadId,
       },
     },
-    onResponse: (resp: any) => {
-      console.log("RESP", resp);
-    },
+    onResponse: (resp: any) => {},
     onFinish: (msg: any) => {
-      console.log("FINISHED", msg);
       setFinishedMsgs((prev) => prev.concat(msg));
 
       const msgs = JSON.parse(localStorage.getItem("messages") || "") as any;
       const input = JSON.parse(localStorage.getItem("query") || "") as any;
-      console.log("INPUT", input);
-
-      console.log("MESSAGES YO", msgs);
 
       // if (threadId) {
       setUpdateThread(true);
@@ -205,11 +199,9 @@ export default function Home() {
       localStorage.setItem("messages", JSON.stringify(messages));
 
       setCachedMessages(() => messages as any);
-      console.log("UPDATE MESSAGES", messages);
     }
 
     if (input) {
-      console.log("INTPUT", input);
       localStorage.setItem("query", JSON.stringify(input));
     }
   }, [messages, input]);
@@ -218,8 +210,6 @@ export default function Home() {
     if (isTocHidden) {
     }
   };
-
-  console.log("CACHED", cachedMessages);
 
   return (
     <main className="w-full">

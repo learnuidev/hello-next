@@ -38,8 +38,6 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     }
   );
 
-  console.log("LESSON", lesson);
-
   const uniqueWords = [
     // @ts-ignore
     ...new Set(

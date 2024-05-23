@@ -84,8 +84,6 @@ export function NmmAllComponents() {
     learnedCharacters2
   );
 
-  console.log("FILTETED STR", queryStr);
-
   return (
     <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
       {filteredComponents?.length > 0 &&
@@ -97,8 +95,6 @@ export function NmmAllComponents() {
           const color = calculateColor({
             tone: selectedComp?.tone_level,
           });
-
-          console.log("SELECTED COMP", selectedComp);
 
           return (
             <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>

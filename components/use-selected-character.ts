@@ -121,8 +121,6 @@ export function useSelectedCharacterData({
     [components]
   );
 
-  console.log();
-
   const selectedComp = useMemo(
     () =>
       characters?.find(

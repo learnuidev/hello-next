@@ -129,7 +129,6 @@ export const InsightsV2 = () => {
 
   const { data } = useGetWeeklyData({ toDate });
 
-  //   console.log("DATA", data);
   const chartData = data?.map((item) => {
     return {
       x: item.day,
@@ -173,7 +172,6 @@ export const InsightsV2 = () => {
                 <Bar
                   events={{
                     onClick: (event: any) => {
-                      console.log(event);
                       //   alert(event);
                     },
                   }}
@@ -261,8 +259,6 @@ export const InsightsV2 = () => {
                 <Bar
                   events={{
                     onClick: (event: any, ctx: any) => {
-                      console.log(event);
-                      console.log("CTX", ctx);
                       //   alert(event);
                     },
                   }}

@@ -119,7 +119,6 @@ export const getHumanPinyin = (comp: { pinyin: string }) => {
 };
 
 export const filterComponent = (query: string, comp: any, meta?: any) => {
-  // console.log("META", meta);
   if (query) {
     const metaComp = meta?.find((item: any) => item?.hanzi === comp?.hanzi);
 
@@ -212,14 +211,9 @@ export const filterComponent = (query: string, comp: any, meta?: any) => {
     }
 
     return null;
-
-    // console.log("PINYIN", pinyinCharacter);
-    // return query?.toLowerCase() === pinyinCharacter;
   } else {
     return { ...comp, score: 1 };
   }
-  // const pinyinCharacter = getPinyinCharacter(component);
-  // console.log("PINYIN", pinyinCharacter);
 };
 
 export const filterComponents = (
@@ -238,6 +232,5 @@ export const filterComponents = (
     : //
       [];
 
-  // console.log("FILTERED COMPONENTS", filteredComponents);
   return filteredComponents;
 };

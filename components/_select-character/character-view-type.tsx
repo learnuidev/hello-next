@@ -94,8 +94,6 @@ export const ViewType = (props: SelectedCharacterProps) => {
     return <RelatedWords lang={lang} characterId={characterId} />;
   }
 
-  console.log("LEARNED CHAR", selectedComp);
-
   if (view === "story") {
     return (
       <div>

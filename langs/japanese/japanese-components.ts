@@ -8979,5 +8979,3 @@ export const japaneseComponents2 = [
     lang: "ja",
   },
 ];
-
-console.log(japaneseComponents2);

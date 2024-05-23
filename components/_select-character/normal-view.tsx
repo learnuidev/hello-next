@@ -63,7 +63,6 @@ export const NormalView = (props: SelectedCharacterProps) => {
                           key={`${idx}-${val}-${idx}-${idy}-${idy}-${idx}`}
                           onClick={() => {
                             // setSelectedChar(val);
-                            console.log("yoo 3");
                             router.push(`/nmm/${val}`);
                           }}
                           className={`${

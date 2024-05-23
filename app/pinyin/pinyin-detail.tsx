@@ -86,8 +86,6 @@ export const PinyinDetail = () => {
             tone: selectedComp?.tone_level,
           });
 
-          console.log("SELECTED COMP", selectedComp);
-
           return (
             <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
               <Tooltip>

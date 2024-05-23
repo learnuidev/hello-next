@@ -93,8 +93,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   const searchParams = useSearchParams();
 
-  console.log("LESSSON 1", lesson1);
-
   const audioUrl = lesson1?.audio?.slow || lesson1?.audio || lesson2?.audio;
 
   const { play, togglePlay, seek, currentTime, reset } = useMusic({

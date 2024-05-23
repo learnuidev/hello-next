@@ -59,8 +59,6 @@ function ContentsList() {
         })
     : [];
 
-  console.log("CONVOS", conversations);
-
   // return (
   //   <div className="text-white max-w-5xl mx-auto px-8">
   //     <code>

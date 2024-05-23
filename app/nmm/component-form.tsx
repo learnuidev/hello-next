@@ -92,7 +92,6 @@ export const ComponentForm = ({
     to: { opacity: "1" },
   });
 
-  console.log("character state", characterState);
   return (
     <>
       <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-2">
@@ -152,7 +151,6 @@ export const ComponentForm = ({
 
                   <h2
                     onClick={() => {
-                      console.log("SHOW");
                       setShowAnalysis(!showAnalysis);
                     }}
                     className="md:mx-12 my-2 text-black dark:text-gray-400 text-md md:text-lg"

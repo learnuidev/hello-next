@@ -6682,5 +6682,3 @@ export const koreanComponents2 = [
     input: "돗",
   },
 ];
-
-console.log("KOREAN COMP", koreanComponents2);

@@ -2,6 +2,7 @@
 "use client";
 
 import { MQL } from "./MQL/MQL";
+import { StoryWriter } from "./story-writer/story-writer";
 // 01
 // import { StepComponent } from "./tutorial/01_step/01_begin";
 import { StepComponent } from "./tutorial/01_step/02_end";
@@ -36,6 +37,12 @@ export const Features = [
     id: "mql",
     label: "Mandarin Query Language",
     component: MQL,
+    createdAt: Date.now(),
+  },
+  {
+    id: "story-writer",
+    label: "Story Writer",
+    component: StoryWriter,
     createdAt: Date.now(),
   },
 ];

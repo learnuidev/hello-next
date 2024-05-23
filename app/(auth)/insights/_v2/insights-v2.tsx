@@ -188,9 +188,28 @@ export const InsightsV2 = () => {
     );
   };
 
+  const totalStories = learnedCharacters?.filter(
+    (character: any) => character?.story?.length > 10
+  )?.length;
+
   return (
     <div className="my-4 md:my-16">
       {/* <h1 className="my-8 text-2xl md:text-4xl font-extralight">Stats</h1> */}
+
+      <section className="grid grid-cols-3 gap-4 mb-16 justify-center">
+        <div>
+          <p className="text-4xl">{totalStories}</p>
+          <h3>Stories</h3>
+        </div>
+        <div>
+          <p className="text-4xl">{learnedCharacters?.length}</p>
+          <h3>Characters</h3>
+        </div>
+        <div>
+          <p className="text-4xl">{42}</p>
+          <h3>Words</h3>
+        </div>
+      </section>
 
       <section className="grid grid-cols-4 gap-4">
         <div className="mt-8 h-80 col-span-4 md:col-span-2">

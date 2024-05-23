@@ -49,7 +49,7 @@ export function GrammarAnalysis({
   const GrammarAnalysisList = () => {
     const divStyles =
       grammarAnalysisFinal?.length > 4
-        ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4"
+        ? "grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4"
         : "grid grid-cols-1 gap-4 mt-4";
     return (
       // <div className="font-light space-y-6 mt-4">
@@ -127,11 +127,11 @@ export function GrammarAnalysis({
 
             return (
               <div key={analysis?.input} className="flex items-start flex-col">
-                {analysis?.roman !== analysis?.input && (
+                {/* {analysis?.roman !== analysis?.input && (
                   <Link className=" text-gray-400" href={`/nmm/${cleanInput}`}>
                     {analysis?.roman}
                   </Link>
-                )}
+                )} */}
                 <Link
                   className="text-gray-300 font-light text-xl"
                   href={
@@ -140,7 +140,7 @@ export function GrammarAnalysis({
                       : `/nmm/${cleanInput}`
                   }
                 >
-                  {cleanInput}
+                  {analysis?.input}
                 </Link>
 
                 <Link

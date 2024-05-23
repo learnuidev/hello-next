@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Header } from "@/components/ui/icons";
+import {
+  ListGrammarsResponse,
+  useListGrammarsQuery,
+} from "@/domain/sentence/grammar.queries";
 
 import ReactPlayer from "react-player";
 import { useListContentsQuery } from "@/domain/content/content.queries";
@@ -20,6 +24,7 @@ import { Icons } from "../ui/icons.v2";
 import { resolveLangCode } from "@/libs/openai/utils";
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
 import { useParams } from "next/navigation";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 export const TranscriptItem = ({
   example,
@@ -34,6 +39,19 @@ export const TranscriptItem = ({
 }: any) => {
   const params = useParams<{ "content-id": string }>();
   const contentId = params["content-id"];
+
+  const { data: contents } = useListCharactersQuery();
+
+  const { data: grammars } = useListGrammarsQuery({ content: example?.input });
+
+  const grammarContent = (
+    grammars as ListGrammarsResponse
+  )?.grammarAnalysis?.find((grammar) => grammar?.input === example?.input);
+
+  const content =
+    contents?.find(
+      (contentItem: any) => contentItem?.input === example?.input
+    ) || grammarContent;
 
   const setRepeatHistories = useRepeatHistoryStore((state) => state.setHistory);
 
@@ -138,7 +156,7 @@ export const TranscriptItem = ({
               {example?.pinyin || example?.roman}
             </p>
           ))}
-        {example?.en && (
+        {(content?.en || example?.en) && (
           <p
             className={`${
               (example?.timestamp?.[0] || example?.start) < currentTime &&
@@ -147,7 +165,7 @@ export const TranscriptItem = ({
                 : "dark:text-gray-300 text-gray-500"
             } transition`}
           >
-            {example?.en}
+            {example?.en || content?.en}
           </p>
         )}
         {example?.lit && (

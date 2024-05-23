@@ -14,6 +14,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { useRouter } from "next/navigation";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 export const TranscriptItem = ({
   transcription,

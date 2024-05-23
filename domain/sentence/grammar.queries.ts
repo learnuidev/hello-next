@@ -42,7 +42,7 @@ const listGrammars = async (
   opts: {
     Authorization: string;
   }
-): Promise<ListGrammarsResponse> => {
+) => {
   const res = await fetch("/api/list-grammars", {
     method: "POST",
     headers: {
@@ -88,7 +88,7 @@ export function useListGrammarsQuery(
 
   return useQuery({
     queryKey: [queryIds.listGrammars, params?.content, params?.lang],
-    queryFn: async (): Promise<ListGrammarsResponse> => {
+    queryFn: async () => {
       const response = await listGrammars(params, {
         Authorization: authUser?.jwt,
       });

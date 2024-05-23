@@ -5,8 +5,6 @@ import posthog from "posthog-js";
 import { PostHogProvider as PHProvider } from "posthog-js/react";
 import { posthogConfig } from "./posthog.config";
 
-console.log("POST HOG CONFIG", posthogConfig);
-
 if (typeof window !== "undefined") {
   console.log("INIT");
   // const resp = posthog.init("phc_Szwgh2TQR1jAy17IJDt6WwkVe3x8Ay5LJqkMuYGulZv", {
@@ -23,7 +21,6 @@ if (typeof window !== "undefined") {
       css_selector_allowlist: ["[ph-autocapture]"], // List of CSS selectors
     },
   });
-  console.log("RESP", resp);
 }
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {

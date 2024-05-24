@@ -27,8 +27,14 @@ export const langs = [
   "tr",
 ];
 
-const getTrack = ({ tracks, lang }: { tracks: any; lang: string }) =>
-  tracks.find((t: any) => t.languageCode === lang);
+const getTrack = ({ tracks, lang }: { tracks: any; lang: string }) => {
+  const track = tracks.find((t: any) => t.languageCode === lang);
+
+  if (track) {
+    return track;
+  }
+  return tracks[0];
+};
 
 export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
   return ytdl.getInfo(id).then(async (info: any) => {

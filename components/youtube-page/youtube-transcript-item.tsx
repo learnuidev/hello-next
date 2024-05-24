@@ -42,16 +42,17 @@ export const TranscriptItem = ({
 
   const { data: contents } = useListCharactersQuery();
 
-  const { data: grammars } = useListGrammarsQuery({ content: example?.input });
+  // const { data: grammars } = useListGrammarsQuery({ content: example?.input });
 
-  const grammarContent = (
-    grammars as ListGrammarsResponse
-  )?.grammarAnalysis?.find((grammar) => grammar?.input === example?.input);
+  // const grammarContent = (
+  //   grammars as ListGrammarsResponse
+  // )?.grammarAnalysis?.find((grammar) => grammar?.input === example?.input);
 
-  const content =
-    contents?.find(
-      (contentItem: any) => contentItem?.input === example?.input
-    ) || grammarContent;
+  const content = contents?.find(
+    (contentItem: any) =>
+      (contentItem?.input || contentItem?.hanzi) ===
+      (example?.input || example?.hanzi)
+  );
 
   const setRepeatHistories = useRepeatHistoryStore((state) => state.setHistory);
 
@@ -143,19 +144,17 @@ export const TranscriptItem = ({
   const Explanations = () => {
     return (
       <>
-        {example?.pinyin ||
-          (example?.roman && (
-            <p
-              className={`${
-                (example?.timestamp?.[0] || example?.start) < currentTime &&
-                (example?.timestamp?.[1] || example?.end) > currentTime
-                  ? "dark:text-gray-300"
-                  : "dark:text-gray-500 text-gray-400"
-              } transition`}
-            >
-              {example?.pinyin || example?.roman}
-            </p>
-          ))}
+        {(content?.pinyin ||
+          content?.roman ||
+          example?.pinyin ||
+          example?.roman) && (
+          <p className={`dark:text-gray-500 text-gray-400 transition`}>
+            {content?.pinyin ||
+              content?.roman ||
+              example?.pinyin ||
+              example?.roman}
+          </p>
+        )}
         {(content?.en || example?.en) && (
           <p
             className={`${
@@ -185,8 +184,8 @@ export const TranscriptItem = ({
   };
 
   return (
-    <div className="w-96 px-4">
-      <div className="flex items-center">
+    <div className="w-120 px-4">
+      <div className="flex items-center space-x-4">
         <div
           className={`${
             focusMode ? "text-center" : "text-left"
@@ -215,7 +214,7 @@ export const TranscriptItem = ({
         >
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="px-0 transition ">
+              <TooltipTrigger className="px-0 transition">
                 {/* <p
                 className={`${
                   (example?.timestamp?.[0] || example?.start) < currentTime &&
@@ -286,11 +285,9 @@ export const TranscriptItem = ({
 
         <div>
           <ConfigButtons />
-          <div className="flex text-gray-700 text-[10px] items-center justify-end space-x-2">
+          <div className="flex text-gray-400 text-[12px] items-center justify-end space-x-2">
             <Icons.music />
-            <p className="text-gray-700 font-extralight">
-              {totalRepeats?.length}
-            </p>
+            <p className="font-extralight">{totalRepeats?.length}</p>
           </div>
         </div>
 

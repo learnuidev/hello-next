@@ -33,7 +33,10 @@ const getTrack = ({ tracks, lang }: { tracks: any; lang: string }) => {
   if (track) {
     return track;
   }
-  return tracks[0];
+
+  if (tracks?.length === 1) {
+    return tracks[0];
+  }
 };
 
 export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {

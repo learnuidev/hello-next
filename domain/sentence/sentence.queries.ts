@@ -25,19 +25,24 @@ const listSentences = async (
 };
 
 export function useListSentencesQuery(
-  params = {} as { component?: string; lang?: string },
+  params = {} as { component?: string; lang?: string; genSents?: boolean },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
-    [queryIds.list_sentences, params?.component, params?.lang],
+    [
+      queryIds.list_sentences,
+      params?.component,
+      params?.lang,
+      params?.genSents,
+    ],
     async () => {
       if (authUser?.jwt) {
         const response = await listSentences(params, {
           Authorization: authUser?.jwt,
         });
-        return response;
+        return response?.sort((a: any, b: any) => a?.start - b?.start);
       }
     },
     {

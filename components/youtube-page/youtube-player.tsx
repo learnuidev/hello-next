@@ -33,6 +33,7 @@ import { TranscriptItem } from "./youtube-transcript-item";
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
 import { useParams } from "next/navigation";
 import { useSize } from "@/hooks/use-size";
+import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -51,8 +52,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const size = useSize();
 
   const { data: learnedCharacters } = useListCharactersQuery();
-
-  // const { data: components } = useListContentsQuery();
 
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;
@@ -107,13 +106,19 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   // const { lessonId } = useSearchParams();
   const { data: lesson } = useGetContentQuery({ contentId: lessonId });
+
+  const { data: transcriptions } = useListSentencesQuery({
+    component: lessonId,
+    lang: "zh",
+    genSents: false,
+  });
   // const lesson = contentsArr?.find((content: any) => content?.id === lessonId);
 
   const finalUrl = lesson?.audio;
 
-  const groupedTranscriptions = groupBy(lesson?.transcriptions || []);
+  const groupedTranscriptions = groupBy(transcriptions || []);
 
-  const currentScriptIndex = lesson?.transcriptions?.findIndex(
+  const currentScriptIndex = transcriptions?.findIndex(
     (example: any) =>
       (example?.timestamp?.[0] || example?.start) < currentTime &&
       (example?.timestamp?.[1] || example?.end) > currentTime
@@ -294,13 +299,13 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
               </ScrollArea>
             </div>
           </div>
-        ) : lesson?.transcriptions?.length ? (
+        ) : transcriptions?.length ? (
           <div
             className={`${isVideoHidden ? "col-span-12" : "md:col-span-4 col-span-12"} w-full`}
           >
             <ScrollArea className="space-y-4 h-[700px] w-full rounded-md border border-gray-900 p-0 pb-16">
               <div className="sm:space-y-8 mt-4 w-full">
-                {(lesson?.transcriptions || [])
+                {(transcriptions || [])
                   .filter((script: any) => {
                     if (focusMode) {
                       return (

@@ -388,18 +388,17 @@ function Join({ setChoice }: any) {
       [
         "nomadmethod-api-dev-ComponentsTable20231205-BWKOTISJM1OQ",
         "hanzi",
-        ["id"],
+        ["*"],
       ],
-      [
-        "nomadmethod-api-dev-MeaningTable-ZFRBA8067NUE",
-        "sentenceId",
-        ["summary"],
-      ],
+      ["nomadmethod-api-dev-MeaningTable-ZFRBA8067NUE", "sentenceId", ["*"]],
     ],
   });
 
   return (
     <div>
+      {/* <div>
+        {tables?.TableNames?.map(name => )}
+      </div> */}
       <code>
         <pre>{JSON.stringify(joinedData, null, 2)}</pre>
       </code>

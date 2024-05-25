@@ -144,17 +144,20 @@ export const TranscriptItem = ({
   const Explanations = () => {
     return (
       <>
-        {(content?.pinyin ||
-          content?.roman ||
-          example?.pinyin ||
-          example?.roman) && (
-          <p className={`dark:text-gray-500 text-gray-400 transition`}>
-            {content?.pinyin ||
-              content?.roman ||
-              example?.pinyin ||
-              example?.roman}
-          </p>
-        )}
+        {["zh-CN", "zh", "ml", "ne", "ja", "ko", "fa", "ar"]?.includes(
+          example?.lang
+        ) &&
+          (content?.pinyin ||
+            content?.roman ||
+            example?.pinyin ||
+            example?.roman) && (
+            <p className={`dark:text-gray-500 text-gray-400 transition`}>
+              {content?.pinyin ||
+                content?.roman ||
+                example?.pinyin ||
+                example?.roman}
+            </p>
+          )}
         {(content?.en || example?.en) && (
           <p
             className={`${
@@ -226,7 +229,7 @@ export const TranscriptItem = ({
                 {example?.input || example?.hanzi}
               </p> */}
                 <div className="text-left">
-                  {(example?.hanzi || example?.input || example?.nepali || "")
+                  {(example?.input || example?.hanzi || example?.nepali || "")
                     .split("")
                     .map((item: any, idx: any) => {
                       // const component = components?.find(

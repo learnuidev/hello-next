@@ -84,6 +84,8 @@
     "framer-motion": "^11.1.7",
     "kaboom": "^3000.1.13",
     "katex": "^0.16.8",
+    "lodash.map": "^4.6.0",
+    "lodash.pick": "^4.4.0",
     "lottie-react": "^2.4.0",
     "lucide-react": "^0.276.0",
     "mapbox-gl": "^2.15.0",

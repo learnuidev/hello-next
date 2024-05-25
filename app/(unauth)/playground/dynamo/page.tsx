@@ -169,6 +169,10 @@ export default function Playground() {
       title: "ETL",
       id: "etl",
     },
+    {
+      title: "Join",
+      id: "join",
+    },
   ];
 
   const DynamoChoices = () => {
@@ -342,9 +346,63 @@ export default function Playground() {
     );
   }
 
+  if (choice === "join") {
+    return <Join setChoice={setChoice} />;
+  }
+
   return (
     <main className={"mx-16 mt-8"}>
       Oops! We currenty dont support this choice
     </main>
+  );
+}
+
+const useJoinTables = (params: any) => {
+  const { select, join } = params;
+  const { data: authUser } = useCurrentAuthUser({});
+  return useQuery({
+    queryKey: ["join-tables", JSON.stringify(params)],
+    queryFn: async () => {
+      const tables = await fetch("/api/join", {
+        method: "POST",
+        body: JSON.stringify({
+          select,
+          join,
+        }),
+        headers: {
+          authorization: authUser?.jwt,
+        },
+      });
+      return tables.json();
+    },
+    enabled: Boolean(authUser?.jwt),
+  });
+};
+
+function Join({ setChoice }: any) {
+  const { data: tables } = useListTables();
+
+  const { data: joinedData } = useJoinTables({
+    select: ["*"],
+    join: [
+      [
+        "nomadmethod-api-dev-ComponentsTable20231205-BWKOTISJM1OQ",
+        "hanzi",
+        ["id"],
+      ],
+      [
+        "nomadmethod-api-dev-MeaningTable-ZFRBA8067NUE",
+        "sentenceId",
+        ["summary"],
+      ],
+    ],
+  });
+
+  return (
+    <div>
+      <code>
+        <pre>{JSON.stringify(joinedData, null, 2)}</pre>
+      </code>
+    </div>
   );
 }

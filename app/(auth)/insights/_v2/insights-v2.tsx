@@ -186,26 +186,30 @@ export const InsightsV2 = () => {
     );
   };
 
-  const totalStories = learnedCharacters?.filter(
-    (character: any) => character?.story?.length > 10
-  )?.length;
+  const totalStories = learnedCharacters?.filter((character: any) => {
+    const characterIsObject =
+      typeof character?.story === "object" &&
+      !Array.isArray(character?.story) &&
+      character?.story !== null;
+    return character?.story?.length > 10 || characterIsObject;
+  })?.length;
 
   return (
     <div className="my-4 md:my-16">
       {/* <h1 className="my-8 text-2xl md:text-4xl font-extralight">Stats</h1> */}
 
       <section className="grid grid-cols-3 gap-4 mb-16 justify-center">
-        <div>
+        <div className="flex items-center flex-col">
           <p className="text-4xl">{totalStories}</p>
-          <h3>Stories</h3>
+          <h3 className="text-gray-400">Stories</h3>
         </div>
-        <div>
+        <div className="flex items-center flex-col">
           <p className="text-4xl">{learnedCharacters?.length}</p>
-          <h3>Characters</h3>
+          <h3 className="text-gray-400">Characters</h3>
         </div>
-        <div>
+        <div className="flex items-center flex-col">
           <p className="text-4xl">{42}</p>
-          <h3>Words</h3>
+          <h3 className="text-gray-400">Words</h3>
         </div>
       </section>
 

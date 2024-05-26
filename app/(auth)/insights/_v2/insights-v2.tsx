@@ -51,6 +51,13 @@ const height = 400;
 export const InsightsV2 = () => {
   const { data: learnedCharacters } = useListCharactersQuery();
 
+  const totalComponents = learnedCharacters?.filter(
+    (item: any) => (item?.hanzi || item?.input)?.length === 1
+  );
+  const totalWords = learnedCharacters?.filter(
+    (item: any) => (item?.hanzi || item?.input)?.length > 1
+  );
+
   const grouped = groupBy((item: any) => item?.lang)(
     learnedCharacters?.map((char: any) => {
       if (!char.lang) {
@@ -204,11 +211,11 @@ export const InsightsV2 = () => {
           <h3 className="text-gray-400">Stories</h3>
         </div>
         <div className="flex items-center flex-col">
-          <p className="text-4xl">{learnedCharacters?.length}</p>
-          <h3 className="text-gray-400">Characters</h3>
+          <p className="text-4xl">{totalComponents?.length}</p>
+          <h3 className="text-gray-400">Components</h3>
         </div>
         <div className="flex items-center flex-col">
-          <p className="text-4xl">{42}</p>
+          <p className="text-4xl">{totalWords?.length}</p>
           <h3 className="text-gray-400">Words</h3>
         </div>
       </section>

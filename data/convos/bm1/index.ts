@@ -12,13 +12,33 @@ import { lesson7 } from "./level_7";
 import { lesson8 } from "./level_8";
 import { lesson9 } from "./level_9";
 import { lesson10 } from "./level_10";
-import { lesson11 } from "./level_11";
-import { lesson12 } from "./level_12";
-import { lesson13 } from "./level_13";
-import { lesson14 } from "./level_14";
-import { lesson15 } from "./level_15";
+// import { lesson11 } from "./level_11";
+// import { lesson12 } from "./level_12";
+// import { lesson13 } from "./level_13";
+// import { lesson14 } from "./level_14";
+// import { lesson15 } from "./level_15";
 
 import { cleanString } from "./utils";
+import { lesson21 } from "./lesson_21";
+import { lesson23 } from "./lesson_23";
+import { lesson22 } from "./lesson_22";
+import { lesson24 } from "./lesson_24";
+import { lesson25 } from "./lesson_25";
+import { lesson26 } from "./lesson_26";
+import { lesson27 } from "./lesson_27";
+import { lesson28 } from "./lesson_28";
+import { lesson29 } from "./lesson_29";
+import { lesson30 } from "./lesson_30";
+import { lesson31 } from "./lesson_31";
+import { lesson32 } from "./lesson_32";
+import { lesson33 } from "./lesson_33";
+import { lesson34 } from "./lesson_34";
+import { lesson35 } from "./lesson_35";
+import { lesson36 } from "./lesson_36";
+import { lesson37 } from "./lesson_37";
+import { lesson38 } from "./lesson_38";
+import { lesson39 } from "./lesson_39";
+import { lesson40 } from "./lesson_40";
 
 const lessonAdapter = (lesson: any) => {
   const [
@@ -57,11 +77,31 @@ export const course1 = {
       lesson8,
       lesson9,
       lesson10,
-      lesson11,
-      lesson12,
-      lesson13,
-      lesson14,
-      lesson15,
+      lesson21,
+      lesson22,
+      lesson23,
+      lesson24,
+      lesson25,
+      lesson26,
+      lesson27,
+      lesson28,
+      lesson29,
+      lesson30,
+      lesson31,
+      lesson32,
+      lesson33,
+      lesson34,
+      lesson35,
+      lesson36,
+      lesson37,
+      lesson38,
+      lesson39,
+      lesson40,
+      // lesson11,
+      // lesson12,
+      // lesson13,
+      // lesson14,
+      // lesson15,
     ] as any
   )
     ?.map((lesson: any) => {
@@ -80,7 +120,7 @@ export const course1 = {
             ["time", v?.time || [[0, 1.8, "你好!"]]],
             ["", v?.hanzi],
             ["", v?.pinyin],
-            ["", v.literal || ''],
+            ["", v.literal || ""],
             ["", v.en],
           ];
 
@@ -99,7 +139,7 @@ export const course1 = {
           //   en: (en as string)?.trim(),
           // };
 
-          return val
+          return val;
 
           return [
             ["time", [[0, 1.8, "你好!"]]],
@@ -112,6 +152,8 @@ export const course1 = {
       };
     }),
 } as any;
+
+console.log("course 1", course1);
 
 export const useConvosStore = create(
   // persist(

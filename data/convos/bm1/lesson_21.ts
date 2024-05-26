@@ -1,0 +1,127 @@
+export const lesson21 = {
+  lesson: [
+    [
+      ["time", [0, 20]],
+      ["David", " 你想要喝杯茶吗？"],
+      ["David", " Nǐ xiǎng hē bēi chá ma?"],
+      ["David", " You would-like drink cup tea question-particle?"],
+      ["David", " Would you like a cup of tea?"],
+    ],
+    [
+      ["time", [0, 20]],
+      ["Cindy", " 我平常只喝咖啡，但我现在真的想要一杯啤酒！我很伤心！"],
+      [
+        "Cindy",
+        " Wǒ píngcháng zhǐ hē kāfēi, dàn wǒ xiànzài zhēnde xiǎngyào yī bēi píjiǔ! Wǒ hěn shāngxīn!",
+      ],
+      [
+        "Cindy",
+        " I usually only drink coffee, but I now really want one cup beer! I very sad!",
+      ],
+      [
+        "Cindy",
+        " I usually only drink coffee, but now I really need a beer! I’m so sad!",
+      ],
+    ],
+    [
+      ["time", [0, 20]],
+      ["David", " 是谁啊？"],
+      ["David", " Shì shéi ā?"],
+      ["David", " Is who a?"],
+      ["David", " Who is that?"],
+    ],
+    [
+      ["time", [0, 20]],
+      ["Cindy", " 他是我的朋友，他叫小伟。他住在这里！"],
+      ["Cindy", " Tā shì wǒ de péngyou, tā jiào Xiǎowěi. Tā zhù zài zhèlǐ!"],
+      [
+        "Cindy",
+        " He is I of friend, he is-called small-great, he lives at here!",
+      ],
+      ["Cindy", " He’s my friend, Xiaowei, he lives here!"],
+    ],
+    [
+      ["time", [0, 20]],
+      ["David", " 嗯，他是你的男朋友吗？"],
+      ["David", " Èn, tā shì nǐ de nánpéngyou ma?"],
+      ["David", " Hmm, he is you of boyfriend question-particle?"],
+      ["David", " Hmm, is he your boyfriend?"],
+    ],
+    [
+      ["time", [0, 20]],
+      ["Cindy", " 不是！你有女朋友吗？"],
+      ["Cindy", " Búshi! Nǐ yǒu nǚpéngyou ma?"],
+      ["Cindy", " Not-is! You have girlfriend question-particle?"],
+      ["Cindy", " No! Do you have a girlfriend?"],
+    ],
+    [
+      ["time", [0, 20]],
+      ["小伟", "你好，我叫小伟！"],
+      ["Xiǎowěi", " Nǐhǎo, wǒ jiào Xiǎowěi!"],
+      ["Small-great", " You-good, I am-called small-great!"],
+      ["Xiaowei", " Hello, my name is Xiaowei!"],
+    ],
+    [
+      ["time", [0, 20]],
+      ["David", " 所以你是来帮助我们的吗？"],
+      ["David", " Suǒyǐ nǐ shì lái bāngzhù wǒmen de ma?"],
+      ["David", " So, you are come help we of question-particle?"],
+      ["David", " So, you’re here to help us?"],
+    ],
+    [
+      ["time", [0, 20]],
+      ["小伟", "是的，我们有多少时间？"],
+      ["Xiǎowěi", " Shìde, wǒmen yǒu duōshǎo shíjiān?"],
+      ["Small-great", " Yes, we have how-much time?"],
+      ["Xiaowei", " Yes, how much time do we have?"],
+    ],
+    [
+      ["time", [0, 20]],
+      ["Cindy", " 七天。"],
+      ["Cindy", " Qī tiān."],
+      ["Cindy", " Seven days."],
+      ["Cindy", " Seven days."],
+    ],
+    [
+      ["time", [0, 20]],
+      ["小伟", "只有一个星期？"],
+      ["Xiǎowěi", " Zhǐyǒu yīgè xīngqī?"],
+      ["Small-great", " Only one week?"],
+      ["Xiaowei", " Only one week?"],
+    ],
+    [
+      ["time", [0, 20]],
+      ["David", " 等等小伟， 你多大了？"],
+      ["David", " Děngdeng Xiǎowěi, nǐ duōdà le?"],
+      ["David", " Wait-wait Small-great, you how-old particle?"],
+      ["David", " Wait Xiaowei, how old are you?"],
+    ],
+    [
+      ["time", [0, 20]],
+      ["小伟", "我今年三十岁！怎么了？"],
+      ["Xiǎowěi", " Wǒ jīnnián sānshí suì! Zěnme le?"],
+      ["Xiǎowěi", " I this-year thirty years! What's-up?"],
+      ["Xiaowei", " I am thirty years old this year! Why?"],
+    ],
+    [
+      ["time", [0, 20]],
+      ["Cindy", " 别说了David! 我们可以明天开始吗？"],
+      ["Cindy", " Bié shuō le David! Wǒmen kěyǐ míngtiān kāishǐ ma?"],
+      [
+        "Cindy",
+        " Don't speak particle David! We can tomorrow start question-particle?",
+      ],
+      ["Cindy", " Stop David! Can we start tomorrow?"],
+    ],
+    [
+      ["time", [0, 20]],
+      ["小伟", "不用，我们现在就可以开始！我有一个计划！"],
+      [
+        "Xiǎowěi",
+        " Bùyòng, wǒmen xiànzài jiù kěyǐ kāishǐ! Wǒ yǒu yī gè jìhuà!",
+      ],
+      ["Xiǎowěi", " Not-need, we now just can start! I have one piece plan!"],
+      ["Xiaowei", " No, we can start right now! I have a plan!"],
+    ],
+  ],
+};

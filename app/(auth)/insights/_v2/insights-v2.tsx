@@ -51,6 +51,10 @@ const height = 400;
 export const InsightsV2 = () => {
   const { data: learnedCharacters } = useListCharactersQuery();
 
+  const isForeignLang = (item: any, lang: string) =>
+    item?.input && item?.lang === lang;
+  const isChineseComponent = (item: any) => item?.hanzi;
+
   const totalComponents = learnedCharacters?.filter(
     (item: any) => (item?.hanzi || item?.input)?.length === 1
   );

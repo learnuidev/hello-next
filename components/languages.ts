@@ -11,4 +11,5 @@ export const languages = [
   { id: "ne", label: "Nepali" },
   { id: "ro", label: "Romanian" },
   { id: "da", label: "Danish" },
+  { id: "no", label: "Norwegian" },
 ];

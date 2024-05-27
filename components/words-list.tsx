@@ -1,76 +1,49 @@
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useSearchQueryStore } from "./search/state";
 import { WordItem } from "./word-item";
-import { wordsDict } from "@/langs/words-dict";
-import { useQuery } from "@tanstack/react-query";
+import { useListFilteredWords } from "./use-list-filtered-words";
 
-const lettersDict = {
-  ó: "o",
-} as any;
+export const WordsList = ({ words, lang, showWords }: any) => {
+  if (showWords) {
+    return <WordsListRemote lang={lang} words={words} />;
+  } else {
+    return <WordsListLegacy lang={lang} />;
+  }
+};
 
-const cleanInput = (input: any) =>
-  input
-    ?.split("")
-    ?.map((x: any) => {
-      if (lettersDict?.[x]) {
-        return lettersDict?.[x];
-      }
-      return x;
-    })
-    ?.join("");
-
-const useListFilteredWords = ({
+const WordsListRemote = ({
+  words,
   lang,
-  query,
 }: {
   lang: string;
-  query: string;
+  words: { input: string; hanzi: string }[];
 }) => {
-  const words = wordsDict[lang];
-  const { data: characters } = useListCharactersQuery();
+  const query = useSearchQueryStore((state) => state.query);
 
-  const filterWord = (prop: any) => {
-    if (prop?.lang !== lang) {
-      return false;
-    }
-
-    if (prop?.hanzi?.split(" ")?.length > 2) {
-      return false;
-    }
-
+  const dataToShow = words?.filter((item: any) => {
     if (!query) {
       return true;
     }
 
-    const lowerCasedQuery = query?.toLowerCase();
-
-    return (
-      prop?.en?.toLowerCase()?.includes(lowerCasedQuery) ||
-      cleanInput(prop?.input)?.toLowerCase()?.includes(lowerCasedQuery)
+    const containsNativeText = (item?.input || item?.hanzi)?.includes(
+      query?.toLowerCase()
     );
-  };
-
-  return useQuery({
-    queryKey: ["list-filtered-words-list", lang, query],
-    queryFn: async () => {
-      if (query) {
-        return Promise.resolve(
-          [...characters, ...words]
-            ?.filter(filterWord)
-            ?.sort((a: any, b: any) => a?.input?.length - b?.input?.length)
-        );
-      } else {
-        return Promise.resolve(
-          [...words]
-            ?.filter(filterWord)
-            ?.sort((a: any, b: any) => a?.input?.length - b?.input?.length)
-        );
-      }
-    },
+    const containsEnText = item?.en?.includes(query?.toLowerCase());
+    const containsRomanText = item?.roman?.includes(query?.toLowerCase());
+    return containsNativeText || containsEnText || containsRomanText;
   });
+
+  return (
+    <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-start">
+      {dataToShow?.map((prop: any) => {
+        return (
+          <WordItem lang={lang} component={prop} key={JSON.stringify(prop)} />
+        );
+      })}
+    </div>
+  );
 };
 
-export const WordsList = ({ words, lang }: any) => {
+const WordsListLegacy = ({ lang }: { lang: string }) => {
   const query = useSearchQueryStore((state) => state.query);
 
   const { data } = useListFilteredWords({ lang, query });

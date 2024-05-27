@@ -9,6 +9,7 @@ import { signOut } from "@/libs/cognito/auth";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useSearchQueryStore } from "@/components/search/state";
 import { getNavigationUrl } from "@/components/_search/get-navigation-url";
+import { useListLanguages } from "@/components/languages-list";
 
 export const useHandleSearch = () => {
   const router = useRouter();
@@ -33,6 +34,8 @@ export const useHandleSearch = () => {
     handleChangeDebounced(event?.target.value);
   };
 
+  const langs = useListLanguages();
+
   const addHistoryMutation = useAddHistoryMutation();
 
   // TODO: Fix this
@@ -45,6 +48,20 @@ export const useHandleSearch = () => {
     }
 
     if (event?.keyCode === 13) {
+      // 2. If the user selects a lang
+      const langSelected = langs?.find(
+        (lang) => lang?.id === querySync?.toLowerCase()
+      );
+
+      console.log("LANG SELECTED", langSelected);
+      console.log("LANGS", langs);
+
+      if (langSelected) {
+        setQuery("");
+        setQuerySync("");
+        router.push(`/nmm?lang=${langSelected?.id}`);
+        return null;
+      }
       // 1. If the user wants to logout
       if (
         ["logout", "log", "so", "signout"]?.includes(querySync?.toLowerCase())

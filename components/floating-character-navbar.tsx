@@ -1,3 +1,4 @@
+import { useListComponents } from "@/domain/lesson/component.queries";
 import { SelectedCharacterProps } from "./_select-character/select-character.types";
 
 import { Icons } from "./ui/icons.v2";
@@ -21,6 +22,13 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     discoverMutation,
     deleteComponentMutation,
   } = props;
+
+  const { data: components } = useListComponents();
+  const hasAlreadyLearned = components?.find(
+    (item: any) => (item?.hanzi || item?.input) === characterId
+  );
+
+  console.log("CHAR ID", characterId);
 
   // const { toast } = useToast();
 
@@ -71,7 +79,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
             {selectedComp2?.updated_at ? null : !selectedComp2?.updated_at ||
               !selectedComp2?.discoveredAt ? (
               // (selectedComp?.hanzi || characterId)?.length > 1 ? null : (
-              false ? null : (
+              false ? null : hasAlreadyLearned ? null : (
                 <button
                   className="text-xl"
                   disabled={

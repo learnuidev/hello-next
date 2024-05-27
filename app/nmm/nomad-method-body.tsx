@@ -11,6 +11,7 @@ import { French } from "@/components/french/french";
 import { Vietnamese } from "@/components/vietnamese/vietnamese";
 import { Urdu } from "@/components/urdu/urdu";
 import { Russian } from "@/components/russian/russian";
+import { LangItem } from "@/components/lang-item/lang-item";
 
 export function NomadMethodBody({ lang }: { lang: string }) {
   if (["ne", "nep", "nepali"]?.includes(lang)) {
@@ -50,5 +51,9 @@ export function NomadMethodBody({ lang }: { lang: string }) {
     return <Russian />;
   }
 
-  return <NomadMethodMandarin />;
+  if (!lang || ["zh", "zh-CN"]?.includes(lang)) {
+    return <NomadMethodMandarin />;
+  }
+
+  return <LangItem />;
 }

@@ -149,7 +149,10 @@ function ChartPageVP({
 
     const containsGroup = filteredComponents?.filter(
       (comp: any) =>
-        (comp?.en === querySync || comp?.en?.split(" ")?.includes(querySync)) &&
+        (comp?.en === querySync ||
+          comp?.en?.split(" ")?.includes(querySync) ||
+          comp?.en?.split("/")?.includes(querySync) ||
+          comp?.en?.split(",")?.includes(querySync)) &&
         val?.value === comp?.group
 
       // comp?.en?.includes(querySync)

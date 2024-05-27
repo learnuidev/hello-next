@@ -82,7 +82,7 @@ export const useHandleSearch = () => {
         router.push(navigationUrl);
       } else {
         // Else perform search
-        if (isSearchTrackingEnabled) {
+        if (isSearchTrackingEnabled && querySync?.toLowerCase() !== "ll") {
           addHistoryMutation.mutate({
             input: querySync,
             lang,

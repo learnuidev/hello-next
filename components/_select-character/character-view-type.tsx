@@ -57,6 +57,20 @@ export const ViewType = (props: SelectedCharacterProps) => {
     (item: any) => item?.input === characterId
   )?.[0];
 
+  const pinyinOrRoman =
+    selectedComp?.pinyin ||
+    selectedComp?.roman ||
+    selectedComp2?.pinyin ||
+    selectedComp2?.roman;
+  const selectedCompEn = selectedComp?.en || selectedComp2?.en;
+
+  const selectedCompInput =
+    selectedComp?.hanzi ||
+    selectedComp?.input ||
+    selectedComp2?.input ||
+    selectedComp2?.hanzi ||
+    selectedChar;
+
   const story = useStoryStore((state: any) => state.story);
 
   const setStory = useStoryStore((state: any) => state.setStory);
@@ -101,15 +115,13 @@ export const ViewType = (props: SelectedCharacterProps) => {
           {/* {selectedChar?.length > 3 && ( */}
           <div className="flex items-center justify-between mb-8 mt-4 mr-0 sm:mr-32">
             <div className="flex flex-col items-start space-y-2">
-              <h2 className="text-gray-400 font-extralight">
-                {selectedComp?.pinyin || selectedComp?.roman}
-              </h2>
+              <h2 className="text-gray-400 font-extralight">{pinyinOrRoman}</h2>
 
               <h1 className="text-4xl my-0 py-0 font-extralight">
                 {selectedComp?.hanzi || selectedChar}
               </h1>
 
-              <h2 className="text-gray-500 font-light">{selectedComp?.en}</h2>
+              <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
             </div>
 
             {level && (
@@ -176,15 +188,13 @@ export const ViewType = (props: SelectedCharacterProps) => {
         {/* {selectedChar?.length > 3 && ( */}
         <div className="flex items-center justify-between mb-8 mt-4">
           <div className="flex flex-col items-start space-y-2">
-            <h2 className="text-gray-400 font-extralight">
-              {selectedComp?.pinyin || selectedComp?.roman}
-            </h2>
+            <h2 className="text-gray-400 font-extralight">{pinyinOrRoman}</h2>
 
             <h1 className="text-4xl my-0 py-0 font-extralight">
-              {selectedComp?.hanzi || selectedChar}
+              {selectedCompInput}
             </h1>
 
-            <h2 className="text-gray-500 font-light">{selectedComp?.en}</h2>
+            <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
           </div>
 
           {level && (

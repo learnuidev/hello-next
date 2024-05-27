@@ -21,7 +21,7 @@ import { useSearchQueryStore } from "@/components/search/state";
 
 export const PinyinDetail = () => {
   const [selectedPinyin, setSelectedPinyin] = usePinyinChartState();
-  const querySync = useSearchQueryStore((state) => state.query);
+  const querySync = useSearchQueryStore((state) => state.query)?.toLowerCase();
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 
@@ -82,7 +82,7 @@ export const PinyinDetail = () => {
         {data
           ?.filter((prop: any, idx: number) => {
             if (querySync) {
-              return prop?.en === querySync;
+              return prop?.en === querySync || prop?.en?.includes(querySync);
             }
 
             return true;

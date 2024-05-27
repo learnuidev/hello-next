@@ -17,6 +17,8 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useGetQueryClassifierQuery } from "@/domain/query-classifier/query-classifier.queries";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { Editor } from "@/components/Editor";
+import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+import { cn, removeNull } from "@/lib/utils";
 
 function UserQueryUI({ message }: { message: Message }) {
   //   const { data: queryClass } = useGetQueryClassifierQuery({
@@ -48,19 +50,64 @@ function isSerializable(content: string) {
 const TableView = ({ content }: { content: string }) => {
   const canViewAsTable = isSerializable(content);
 
+  const { data: hskWords } = useListHSKWordsQuery();
+
   if (!canViewAsTable) {
     return <div> Content Not Supported </div>;
   }
 
   const data = JSON.parse(content);
 
-  const tableHeaders = Object.keys(data?.[0]).filter((item) => item !== "lang");
+  const formattedData = data?.map((item: any) => {
+    const hskLevel = hskWords?.find(
+      (hskWord: any) => hskWord?.hanzi === item?.input
+    );
+
+    return removeNull({
+      ...item,
+      hsk: hskLevel?.level || 9000,
+    });
+  });
+
+  const containsOnlyHsk = formattedData?.every(
+    (data: any) => data?.hsk !== 9000
+  );
+  const containsSomeHsk = formattedData?.some(
+    (data: any) => data?.hsk !== 9000
+  );
+
+  const tableHeaders = containsSomeHsk
+    ? [
+        ...Object.keys(formattedData?.[0]).filter((item) => item !== "lang"),
+        "hsk",
+      ]
+    : ["en", "input", "roman"];
+
+  const colors = {
+    1: "text-white",
+    2: "text-yellow-300",
+    3: "text-emerald-400",
+    4: "text-blue-300",
+    5: "text-brown-300",
+    6: "text-orange-300",
+    7: "text-rose-200",
+    8: "text-rose-300",
+    9: "text-rose-400",
+    9000: "text-gray-300",
+  } as any;
+
+  const gridType = containsSomeHsk ? "grid-cols-4" : "grid-cols-3";
 
   return (
     <div className="">
       <table className="flex flex-col">
         <thead>
-          <tr className="grid grid-cols-3 items-center justify-center">
+          <tr
+            className={cn(
+              "grid items-center justify-center text-gray-400",
+              gridType
+            )}
+          >
             {tableHeaders?.map((header) => {
               return (
                 <th key={header} scope="col" className="text-left">
@@ -72,18 +119,30 @@ const TableView = ({ content }: { content: string }) => {
         </thead>
 
         <tbody>
-          {data?.map((item: any) => {
+          {formattedData?.map((item: any) => {
             // const isInput =
             return (
               <tr
                 key={JSON.stringify(item)}
-                className="grid grid-cols-3 items-center justify-center"
+                className={cn(
+                  colors?.[item?.hsk] || "text-gray-300",
+                  `grid items-center justify-center`,
+                  gridType
+                )}
               >
                 <th scope="row" className="text-left font-light">
                   {item?.[tableHeaders?.[0]]}
                 </th>
                 <td className="text-left"> {item?.[tableHeaders?.[1]]}</td>
                 <td className="text-left"> {item?.[tableHeaders?.[2]]}</td>
+                {containsSomeHsk && (
+                  <td className="text-left">
+                    {" "}
+                    {item?.[tableHeaders?.[3]] === 9000
+                      ? null
+                      : item?.[tableHeaders?.[3]]}
+                  </td>
+                )}
                 {/* <td className="text-left"> {item?.[tableHeaders?.[3]]}</td> */}
               </tr>
             );

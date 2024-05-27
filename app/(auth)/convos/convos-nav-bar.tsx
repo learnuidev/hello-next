@@ -21,7 +21,6 @@ import React from "react";
 
 import { useEffect } from "react";
 
-
 import {
   // faBrainCircuit,
   // faSeedling,
@@ -35,6 +34,7 @@ import {
   faBrainCircuit,
   faMusicNote,
 } from "@fortawesome/sharp-solid-svg-icons";
+import { Icons } from "@/components/ui/icons.v2";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -128,7 +128,7 @@ export const ConvosNavBar = () => {
   const router = useRouter();
 
   return (
-    <div className="z-50 flex justify-between items-center w-full px-4 md:px-32 md:mt-2 my-2 py-2">
+    <div className="z-50 flex justify-between items-center w-full md:mt-2 my-2 py-2">
       <button
         className="text-3xl"
         onClick={() => {
@@ -142,21 +142,31 @@ export const ConvosNavBar = () => {
       <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
         <button
           onClick={() => {
+            setViewType("ai");
+          }}
+          className={`transition ${
+            viewType === "ai" ? "text-gray-200" : "text-gray-800"
+          } hover:text-white transition text-xl`}
+        >
+          <Icons.ai />
+        </button>
+        <button
+          onClick={() => {
             setViewType("listen");
           }}
           className={`transition ${
-            viewType === "listen" ? "text-gray-800" : "text-gray-200"
-          } hover:text-gray-700 transition text-xl`}
+            viewType === "listen" ? "text-gray-200" : "text-gray-800"
+          } hover:text-white transition text-xl`}
         >
-          <FontAwesomeIcon icon={faMusicNote} />
+          <Icons.musicNoteSolid />
         </button>
         <button
           onClick={() => {
             setViewType("write");
           }}
           className={`transition ${
-            viewType === "write" ? "text-gray-800" : "text-gray-200"
-          } hover:text-gray-700 transition text-xl`}
+            viewType === "write" ? "text-gray-200" : "text-gray-800"
+          } hover:text-white transition text-xl`}
         >
           <FontAwesomeIcon icon={faTypewriter} />
         </button>
@@ -165,8 +175,8 @@ export const ConvosNavBar = () => {
             setViewType("speak");
           }}
           className={`transition ${
-            viewType === "speak" ? "text-gray-800" : "text-gray-200"
-          } hover:text-gray-700 transition text-xl`}
+            viewType === "speak" ? "text-gray-200" : "text-gray-800"
+          } hover:text-white transition text-xl`}
         >
           <FontAwesomeIcon icon={faMicrophone} />
         </button>
@@ -176,7 +186,7 @@ export const ConvosNavBar = () => {
             setViewType("learn");
           }}
           className={`transition ${
-            viewType === "learn" ? "text-green-600" : "text-gray-200"
+            viewType === "learn" ? "text-green-200" : "text-gray-800"
           } hover:text-green-500 transition text-xl`}
         >
           <FontAwesomeIcon icon={faSeedling} />
@@ -186,8 +196,8 @@ export const ConvosNavBar = () => {
             setViewType("insights");
           }}
           className={`transition ${
-            viewType === "insights" ? "text-gray-800" : "text-gray-200"
-          } hover:text-gray-700 transition text-xl`}
+            viewType === "insights" ? "text-gray-200" : "text-gray-800"
+          } hover:text-white transition text-xl`}
         >
           <FontAwesomeIcon icon={faChartColumn} />
         </button>

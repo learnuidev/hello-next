@@ -2,7 +2,16 @@ import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/sharp-solid-svg-icons";
+import { faMicrochipAi, faSpinner } from "@fortawesome/sharp-solid-svg-icons";
+
+import {
+  // faMicrophone,
+  // faSeedling,
+  // faPlay,
+  // faTypewriter,
+  // faBrainCircuit,
+  faMusicNote as faMusicNoteSolid,
+} from "@fortawesome/sharp-solid-svg-icons";
 
 import {
   faCheckCircle,
@@ -24,6 +33,7 @@ import {
   faMusic,
   faTable,
   faInfo,
+  faAlignRight,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -114,6 +124,7 @@ export const Icons = {
   seedling: createFAIcon(faSeedling),
   stairs: createFAIcon(faStairs),
   musicNote: createFAIcon(faMusicNote),
+  musicNoteSolid: createFAIcon(faMusicNoteSolid),
   analyze: createFAIcon(faGalaxy),
   calculatorSimple: createFAIcon(faCalculatorSimple),
   back: createFAIcon(faChevronLeft),
@@ -153,4 +164,6 @@ export const Icons = {
   music: createFAIcon(faMusic),
   table: createFAIcon(faTable),
   info: createFAIcon(faInfo),
+  ai: createFAIcon(faMicrochipAi),
+  paragraph: createFAIcon(faAlignRight),
 };

@@ -158,7 +158,7 @@ export default function Convos() {
   }
 
   return (
-    <main className="">
+    <main className="px-4 md:px-32">
       <ConvosNavBar />
 
       <ConvoDetails lessonId={lessonId} />

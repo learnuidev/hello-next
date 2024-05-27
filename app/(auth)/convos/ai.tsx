@@ -132,7 +132,7 @@ const TableView = ({ content }: { content: string }) => {
               <tr
                 key={JSON.stringify(item)}
                 className={cn(
-                  colors?.[item?.hsk] || "text-gray-300",
+                  colors?.[item?.hsk] || "text-white",
                   `grid items-center justify-center gap-x-4`,
                   gridType
                 )}

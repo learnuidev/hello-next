@@ -12,4 +12,6 @@ export const languages = [
   { id: "ro", label: "Romanian" },
   { id: "da", label: "Danish" },
   { id: "no", label: "Norwegian" },
+  { id: "hi", label: "Hindi" },
+  { id: "ml", label: "Malayalam" },
 ];

@@ -58,6 +58,7 @@ export function NomadMethodMandarin() {
 
   const { data: discoveredComponents } = useListComponents({
     discoverOnly: true,
+    singleItemsOnly: true,
   });
 
   useEffect(() => {

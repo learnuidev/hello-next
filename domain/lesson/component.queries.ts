@@ -113,6 +113,7 @@ export function useListComponents(
   options = {} as {
     journeyId?: string;
     discoverOnly?: boolean;
+    singleItemsOnly?: boolean;
     includeAll?: boolean;
   }
 ) {
@@ -123,11 +124,21 @@ export function useListComponents(
   const includeDiscoverOnly = Boolean(options?.discoverOnly);
   return {
     data: data
-      ?.filter((x: any) => {
+      ?.filter((item: any) => {
+        if (options?.singleItemsOnly) {
+          return (item?.hanzi || item?.input)?.length === 1;
+        } else {
+          return true;
+        }
+      })
+      ?.filter((item: any) => {
+        if (options?.singleItemsOnly) {
+          return (item?.hanzi || item?.input)?.length === 1;
+        }
         if (options?.includeAll) {
           return true;
         } else {
-          return includeDiscoverOnly ? !x.level : x.level;
+          return includeDiscoverOnly ? !item.level : item.level;
         }
       })
       .map((item: any, idx: any) => {

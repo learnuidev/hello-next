@@ -26,6 +26,7 @@ function UserQueryUI({ message }: { message: Message }) {
   return (
     <div>
       <h2 className="text-2xl font-extralight text-gray-500" key={message.id}>
+        {/* {"> "} */}
         {message.content}
       </h2>
 
@@ -132,7 +133,11 @@ const AgentAnswer = ({
 
       {!canViewAsTable ? (
         <div className="overflow-auto">
-          <p className="">{message.content}</p>
+          <Editor
+            className="font-light md:w-8/12 w-full"
+            content={message.content}
+          />
+          {/* <p className="font-light md:w-8/12 w-full">{message.content}</p> */}
         </div>
       ) : (
         // <Editor content={message.content} />
@@ -147,7 +152,7 @@ const AgentAnswer = ({
 
       {/* <GenUI query={} /> */}
       {/* {isFinished && ( */}
-      <div className="flex justify-end space-x-4 mt-8 mb-12">
+      <div className="flex justify-end space-x-4 mt-8 mb-4">
         {canViewAsTable && (
           <button
             onClick={() => {
@@ -172,17 +177,16 @@ const AgentAnswer = ({
             <Icons.paragraph />
           </button>
         )}
-        {/* <button
+        <button
           className={`transition ${
             viewType === "analyze" ? "text-gray-200" : "text-gray-800"
           } hover:text-white transition text-xl`}
-          //   className="analyze"
           onClick={() => {
             setShowGenUI((prev) => !prev);
           }}
         >
           <Icons.calculatorSimple />
-        </button> */}
+        </button>
       </div>
       {/* )} */}
 

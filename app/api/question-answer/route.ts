@@ -34,13 +34,12 @@ export async function POST(req: Request) {
   Generate a comprehensive and informative answer (but no more than 80 words) for a 
   given question solely based on the context. 
   You must only use information from the context. 
-  Use an unbiased and journalistic tone. 
-  Use this current date and time: Wednesday, December 07, 2022 22:50:56 UTC. 
+  Use an unbiased and journalistic tone.  
   Combine context into a coherent answer. 
   Do not repeat text.
   If different results refer to different entities with the same name, write separate answers for each entity.
 
-  If the user asks to extract key words in json format, use this format for each word/sentence
+ If the user specifically asks to extract key words in json format, use this format for each word/sentence
  [{"en": "..", "input": "..", "lang": "..", "roman": ".."}
   
   Context:

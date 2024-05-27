@@ -25,7 +25,7 @@ function UserQueryUI({ message }: { message: Message }) {
 
   return (
     <div>
-      <h2 className="text-2xl font-extralight" key={message.id}>
+      <h2 className="text-2xl font-extralight text-gray-500" key={message.id}>
         {message.content}
       </h2>
 
@@ -56,8 +56,8 @@ const TableView = ({ content }: { content: string }) => {
   const tableHeaders = Object.keys(data?.[0]).filter((item) => item !== "lang");
 
   return (
-    <div className="h-64 overflow-auto">
-      <table className="flex flex-col scroll-y-auto h-96">
+    <div className="">
+      <table className="flex flex-col">
         <thead>
           <tr className="grid grid-cols-3 items-center justify-center">
             {tableHeaders?.map((header) => {
@@ -72,6 +72,7 @@ const TableView = ({ content }: { content: string }) => {
 
         <tbody>
           {data?.map((item: any) => {
+            // const isInput =
             return (
               <tr
                 key={JSON.stringify(item)}
@@ -108,10 +109,12 @@ const AgentAnswer = ({
       !!finishedMsgs?.find((msg: Message) => msg?.id === message?.id)
   );
 
-  const [viewType, setViewType] = useState("table");
+  const [viewType, setViewType] = useState("editor");
 
   const msgIndex = messages?.findIndex((msg) => msg?.id === message.id);
   const userQuery = messages[msgIndex - 1]?.content || "";
+
+  const canViewAsTable = isSerializable(message?.content);
 
   const [showGenUI, setShowGenUI] = useState(false);
 
@@ -127,8 +130,8 @@ const AgentAnswer = ({
         />
       )} */}
 
-      {viewType === "editor" ? (
-        <div className="h-64 overflow-auto">
+      {!canViewAsTable ? (
+        <div className="overflow-auto">
           <p className="">{message.content}</p>
         </div>
       ) : (
@@ -144,28 +147,32 @@ const AgentAnswer = ({
 
       {/* <GenUI query={} /> */}
       {/* {isFinished && ( */}
-      <div className="my-8 flex justify-end space-x-4">
-        <button
-          onClick={() => {
-            setViewType("table");
-          }}
-          className={`transition ${
-            viewType === "table" ? "text-gray-200" : "text-gray-800"
-          } hover:text-white transition text-xl`}
-        >
-          <Icons.table />
-        </button>
-        <button
-          onClick={() => {
-            setViewType("editor");
-          }}
-          className={`transition ${
-            viewType === "editor" ? "text-gray-200" : "text-gray-800"
-          } hover:text-white transition text-xl`}
-        >
-          <Icons.paragraph />
-        </button>
-        <button
+      <div className="flex justify-end space-x-4 mt-8 mb-12">
+        {canViewAsTable && (
+          <button
+            onClick={() => {
+              setViewType("table");
+            }}
+            className={`transition ${
+              true ? "text-gray-200" : "text-gray-800"
+            } hover:text-white transition text-xl`}
+          >
+            <Icons.table />
+          </button>
+        )}
+        {!canViewAsTable && (
+          <button
+            onClick={() => {
+              setViewType("editor");
+            }}
+            className={`transition ${
+              true ? "text-gray-200" : "text-gray-800"
+            } hover:text-white transition text-xl`}
+          >
+            <Icons.paragraph />
+          </button>
+        )}
+        {/* <button
           className={`transition ${
             viewType === "analyze" ? "text-gray-200" : "text-gray-800"
           } hover:text-white transition text-xl`}
@@ -175,7 +182,7 @@ const AgentAnswer = ({
           }}
         >
           <Icons.calculatorSimple />
-        </button>
+        </button> */}
       </div>
       {/* )} */}
 
@@ -260,8 +267,8 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
     const msgs = JSON.parse(localStorage.getItem(lessonId) as any) || [];
 
     if (
-      msgs?.length &&
-      JSON.stringify(msgs) !== localStorage.getItem(lessonId)
+      msgs?.length
+      //   && JSON.stringify(msgs) !== localStorage.getItem(lessonId)
     ) {
       setMessages(msgs);
     }

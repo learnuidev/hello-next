@@ -23,8 +23,6 @@ function UserQueryUI({ message }: { message: Message }) {
   //     query: message?.content,
   //   });
 
-  console.log("CONTENT", message?.content);
-
   //   console.log("QUERY CLASS", queryClass);
   return (
     <div>
@@ -59,10 +57,10 @@ const TableView = ({ content }: { content: string }) => {
   const tableHeaders = Object.keys(data?.[0]).filter((item) => item !== "lang");
 
   return (
-    <div className="h-80 overflow-auto">
+    <div className="h-64 overflow-auto">
       <table className="flex flex-col scroll-y-auto h-96">
         <thead>
-          <tr className="grid grid-cols-8 items-center justify-center">
+          <tr className="grid grid-cols-3 items-center justify-center">
             {tableHeaders?.map((header) => {
               return (
                 <th key={header} scope="col" className="text-left">
@@ -78,7 +76,7 @@ const TableView = ({ content }: { content: string }) => {
             return (
               <tr
                 key={JSON.stringify(item)}
-                className="grid grid-cols-8 items-center justify-center text-sm"
+                className="grid grid-cols-3 items-center justify-center"
               >
                 <th scope="row" className="text-left font-light">
                   {item?.[tableHeaders?.[0]]}
@@ -133,7 +131,9 @@ const AgentAnswer = ({
       )} */}
 
       {viewType === "editor" ? (
-        <p className="h-80">{message.content}</p>
+        <div className="h-64 overflow-auto">
+          <p className="">{message.content}</p>
+        </div>
       ) : (
         // <Editor content={message.content} />
         <TableView content={message.content} />
@@ -204,8 +204,6 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
 
   const { data: threads } = useListThreadsQuery();
 
-  console.log("THREADS", threads);
-
   const threadItems = (threads as any)?.Items as IThread[];
 
   const thread = threadItems?.find(
@@ -215,6 +213,8 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
   const addThreadMutation = useAddThreadMutation();
 
   const updateThreadMutation = useUpdateThreadMessagesMutation();
+
+  console.log("LESSON 2", lesson2);
 
   const {
     messages,
@@ -241,8 +241,6 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
       const msgs = JSON.parse(localStorage.getItem("messages") || "") as any;
       const input = JSON.parse(localStorage.getItem("query") || "") as any;
 
-      console.log("MSG");
-
       // if (threadId) {
       //   setUpdateThread(true);
       // }
@@ -262,11 +260,12 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
   } as any);
 
   useEffect(() => {
-    console.log("LESSON ID", lessonId);
     const msgs = JSON.parse(localStorage.getItem(lessonId) as any) || [];
 
-    console.log("MSGS", msgs);
-    if (msgs?.length) {
+    if (
+      msgs?.length &&
+      JSON.stringify(msgs) !== localStorage.getItem(lessonId)
+    ) {
       setMessages(msgs);
     }
   }, [lessonId, setMessages]);

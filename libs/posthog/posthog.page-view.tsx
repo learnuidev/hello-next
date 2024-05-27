@@ -10,7 +10,6 @@ export function PostHogPageView() {
   const posthog = usePostHog();
   // Track pageviews
   useEffect(() => {
-    console.log("PAGE VIEW", pathname);
     if (pathname && posthog) {
       let url = window.origin + pathname;
       if (searchParams.toString()) {
@@ -19,8 +18,6 @@ export function PostHogPageView() {
       posthog.capture("$pageview", {
         $current_url: url,
       });
-
-      console.log("CAPTURED");
     }
   }, [pathname, searchParams, posthog]);
 

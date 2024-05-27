@@ -98,11 +98,15 @@ const AgentAnswer = ({
   message,
   threadId,
   finishedMsgs,
+  updateMessages,
   messages,
+  questionMessage,
 }: {
+  questionMessage: Message;
   message: Message;
   finishedMsgs: Message[];
   threadId: string;
+  updateMessages: (messages: Message[]) => void;
   messages: Message[];
 }) => {
   const isFinished = Boolean(
@@ -187,6 +191,21 @@ const AgentAnswer = ({
         >
           <Icons.calculatorSimple />
         </button>
+        <button
+          className={`transition ${
+            viewType === "analyze" ? "text-gray-200" : "text-gray-800"
+          } hover:text-white transition text-xl`}
+          onClick={() => {
+            updateMessages(
+              messages
+                ?.filter((msg) => msg?.id !== message?.id)
+                ?.filter((msg) => msg?.id !== questionMessage?.id)
+            );
+            // setShowGenUI((prev) => !prev);
+          }}
+        >
+          <Icons.trash />
+        </button>
       </div>
       {/* )} */}
 
@@ -221,8 +240,6 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
   const addThreadMutation = useAddThreadMutation();
 
   const updateThreadMutation = useUpdateThreadMessagesMutation();
-
-  console.log("LESSON 2", lesson2);
 
   const {
     messages,
@@ -266,6 +283,13 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
       // }
     },
   } as any);
+
+  const updateMessages = (newMessages: any) => {
+    // if (newMessages?.length > 0) {
+    localStorage.setItem(lessonId, JSON.stringify(messages));
+    setMessages(newMessages);
+    // }
+  };
 
   useEffect(() => {
     const msgs = JSON.parse(localStorage.getItem(lessonId) as any) || [];
@@ -370,13 +394,17 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
 
         <div>
           {messages.length > 0
-            ? messages.map((message: Message) => {
+            ? messages.map((message: Message, idx) => {
                 if (message.role === "user") {
                   return <UserQueryUI message={message} key={message.id} />;
                 }
 
+                const questionMessage = messages[idx - 1];
+
                 return (
                   <AgentAnswer
+                    questionMessage={questionMessage}
+                    updateMessages={updateMessages}
                     threadId={threadId}
                     key={message?.id}
                     message={message}

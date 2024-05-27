@@ -34,6 +34,7 @@ import {
   faTable,
   faInfo,
   faAlignRight,
+  faTrash,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -166,4 +167,5 @@ export const Icons = {
   info: createFAIcon(faInfo),
   ai: createFAIcon(faMicrochipAi),
   paragraph: createFAIcon(faAlignRight),
+  trash: createFAIcon(faTrash),
 };

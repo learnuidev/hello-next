@@ -96,8 +96,6 @@ export function Wordle() {
     (lesson: any) => lesson?.id === _lessonId
   );
 
-  console.log("LESSON INDEX", lessonIndex);
-
   const currentPhrase = currentLesson?.transcriptions?.find(
     (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
   );
@@ -181,9 +179,6 @@ export function Wordle() {
 
     // console.log("LESSON INDEX", lessonIndex);
 
-    console.log("SECRET", secret);
-    console.log("SECRET", guessTrimmed);
-    console.log("SEC", secret?.includes(guessTrimmed));
     if (secret?.trim() === guessTrimmed?.trim() || secret === historyTrimmed) {
       // alert("You win");
 
@@ -297,8 +292,6 @@ export function Wordle() {
       </div>
     );
   };
-
-  console.log("SECRET", secret);
 
   const WinButton = () => {
     return (
@@ -453,10 +446,6 @@ export function Wordle() {
       </button>
     );
   };
-
-  console.log("currentGuessHistory", currentGuessHistory);
-
-  console.log("CURRENT PHRASE", currentPhrase);
 
   return (
     <div>

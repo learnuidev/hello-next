@@ -124,8 +124,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       (example?.timestamp?.[1] || example?.end) > currentTime
   );
 
-  console.log("SIZE", size);
-
   const isSmall = size?.[0] < 600;
 
   return (

@@ -63,9 +63,19 @@ const TableView = ({ content }: { content: string }) => {
       (hskWord: any) => hskWord?.hanzi === item?.input
     );
 
+    const hskLevels = [
+      ...new Set(
+        hskWords
+          ?.filter((hskWord: any) => {
+            return item?.input?.includes(hskWord?.hanzi);
+          })
+          ?.map((hskWord: any) => hskWord?.level)
+      ),
+    ]?.join(", ");
+
     return removeNull({
       ...item,
-      hsk: hskLevel?.level || 9000,
+      hsk: hskLevel?.level || hskLevels,
     });
   });
 
@@ -77,10 +87,7 @@ const TableView = ({ content }: { content: string }) => {
   );
 
   const tableHeaders = containsSomeHsk
-    ? [
-        ...Object.keys(formattedData?.[0]).filter((item) => item !== "lang"),
-        "hsk",
-      ]
+    ? [...Object.keys(formattedData?.[0]).filter((item) => item !== "lang")]
     : ["en", "input", "roman"];
 
   const colors = {
@@ -104,7 +111,7 @@ const TableView = ({ content }: { content: string }) => {
         <thead>
           <tr
             className={cn(
-              "grid items-center justify-center text-gray-400",
+              "grid items-center justify-center text-gray-400 gap-x-4",
               gridType
             )}
           >
@@ -126,7 +133,7 @@ const TableView = ({ content }: { content: string }) => {
                 key={JSON.stringify(item)}
                 className={cn(
                   colors?.[item?.hsk] || "text-gray-300",
-                  `grid items-center justify-center`,
+                  `grid items-center justify-center gap-x-4`,
                   gridType
                 )}
               >

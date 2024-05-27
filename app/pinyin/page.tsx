@@ -18,6 +18,9 @@ import { pinyinColumns } from "./pinyin-columns";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { filterComponentsExact } from "@/hooks/use-filter-components";
 import { useSearchQueryStore } from "@/components/search/state";
+import { filterComponents } from "../nmm/utils";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useQuery } from "@tanstack/react-query";
 
 const totalCharacters = defaultData
   ?.map((val: any) => Object.values(val))
@@ -58,6 +61,28 @@ const calculateColor2 = (dict: any) => {
   }
 };
 
+function useFilterComponents(query: string) {
+  const { data: learnedCharacters2 } = useListCharactersQuery();
+  const { data: components, isLoading: isComponentsLoading } =
+    useListComponents({ includeAll: true });
+
+  return useQuery({
+    queryKey: ["filter-components", query],
+    queryFn: async () => {
+      if (!query) {
+        return [];
+      }
+      const filteredComponents = filterComponents(
+        components,
+        query,
+        learnedCharacters2
+      );
+
+      return filteredComponents;
+    },
+  });
+}
+
 function ChartPageVP({
   children,
   controls,
@@ -80,9 +105,6 @@ function ChartPageVP({
     columns: pinyinColumns,
     getCoreRowModel: getCoreRowModel(),
   });
-
-  const { data: components, isLoading: isComponentsLoading } =
-    useListComponents({ includeAll: true });
 
   const filters = usePinyinChartStore((state: any) => state.filters);
   const setFilter = usePinyinChartStore((state: any) => state.setFilter);
@@ -114,15 +136,31 @@ function ChartPageVP({
     return [];
   }, [filters]);
 
+  const { data: filteredComponents } = useFilterComponents(querySync);
+
+  console.log("FILTERED COMPONENTS", filteredComponents);
+
   const calcRowColor = (val: any, lesson?: any, querySync?: string) => {
     console.log("VAL", val);
 
     if (querySync && val?.value?.includes(querySync?.toLowerCase())) {
       return "text-white";
     }
+
+    const containsGroup = filteredComponents?.filter(
+      (comp: any) => comp?.en === querySync && val?.value?.includes(comp?.group)
+      // comp?.en?.includes(querySync)
+    )?.[0];
+
+    if (containsGroup) {
+      console.log("CONTAINS GROUP", containsGroup);
+      return "text-white";
+    }
+
     if (querySync && !val?.value?.includes(querySync?.toLowerCase())) {
       return "text-gray-800";
     }
+
     if (lesson) {
       // SIMPLE FINALS ===
       if (

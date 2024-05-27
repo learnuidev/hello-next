@@ -47,6 +47,18 @@ function isSerializable(content: string) {
   }
 }
 
+export const useGetHskLevelHandler = () => {
+  const { data: hskWords } = useListHSKWordsQuery();
+
+  return (item: any) => {
+    const hskLevel = hskWords?.find(
+      (hskWord: any) => hskWord?.hanzi === (item?.input || item?.hanzi)
+    );
+
+    return hskLevel?.level;
+  };
+};
+
 const TableView = ({ content }: { content: string }) => {
   const canViewAsTable = isSerializable(content);
 

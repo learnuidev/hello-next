@@ -10,6 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ScrollArea } from "./ui/scroll-area";
 import { cleanString } from "@/data/convos/bm1/level_7";
+import { useGetHskLevelHandler } from "@/app/(auth)/convos/ai";
 
 export function GrammarAnalysis({
   contentId,
@@ -51,57 +52,70 @@ export function GrammarAnalysis({
       grammarAnalysisFinal?.length > 4
         ? "grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4"
         : "grid grid-cols-1 gap-4 mt-4";
+
+    const getHskLevelHandler = useGetHskLevelHandler();
     return (
       // <div className="font-light space-y-6 mt-4">
       <div className={divStyles}>
         {grammarAnalysisFinal?.map((analysis) => {
           if (analysis?.hanzi) {
+            const hskLevel = getHskLevelHandler(analysis);
             const cleanHanzi = cleanString(analysis?.hanzi);
             return (
               <div
                 key={cleanHanzi}
                 className="flex items-start flex-col font-light"
               >
-                {analysis?.hanzi?.length < 4 ? (
-                  <div className="flex space-x-2">
-                    <Link
-                      className="text-gray-300"
-                      href={
-                        lang
-                          ? `/nmm/${cleanHanzi}?lang=${lang}`
-                          : `/nmm/${cleanHanzi}`
-                      }
-                    >
-                      {cleanHanzi}
-                    </Link>
-                    <Link
-                      className=" text-gray-400"
-                      href={`/nmm/${cleanHanzi}`}
-                    >
-                      {analysis?.pinyin}
-                    </Link>
-                  </div>
-                ) : (
-                  <>
-                    <Link
-                      className=" text-gray-400"
-                      href={`/nmm/${cleanHanzi}`}
-                    >
-                      {analysis?.pinyin}
-                    </Link>
+                <div className="flex items-start flex-row space-x-2">
+                  {analysis?.hanzi?.length < 4 ? (
+                    <div className="flex space-x-2">
+                      <Link
+                        className="text-gray-300"
+                        href={
+                          lang
+                            ? `/nmm/${cleanHanzi}?lang=${lang}`
+                            : `/nmm/${cleanHanzi}`
+                        }
+                      >
+                        {cleanHanzi}
+                      </Link>
+                      <Link
+                        className=" text-gray-400"
+                        href={`/nmm/${cleanHanzi}`}
+                      >
+                        {analysis?.pinyin}
+                      </Link>
+                    </div>
+                  ) : (
+                    <>
+                      <Link
+                        className=" text-gray-400"
+                        href={`/nmm/${cleanHanzi}`}
+                      >
+                        {analysis?.pinyin}
+                      </Link>
 
-                    <Link
-                      className="text-gray-300 font-light text-xl"
-                      href={
-                        lang
-                          ? `/nmm/${cleanHanzi}?lang=${lang}`
-                          : `/nmm/${cleanHanzi}`
-                      }
-                    >
-                      {cleanHanzi}
-                    </Link>
-                  </>
-                )}
+                      <Link
+                        className="text-gray-300 font-light text-xl"
+                        href={
+                          lang
+                            ? `/nmm/${cleanHanzi}?lang=${lang}`
+                            : `/nmm/${cleanHanzi}`
+                        }
+                      >
+                        {cleanHanzi}
+                      </Link>
+                    </>
+                  )}
+
+                  {/* <p className="text-gray-600 font-extralight text-xs">
+                  {analysis?.explanation}
+                </p> */}
+
+                  {hskLevel ? (
+                    <p className="text-gray-600"> | hsk {hskLevel} </p>
+                  ) : null}
+                </div>
 
                 <Link
                   className=" text-gray-500"
@@ -114,10 +128,6 @@ export function GrammarAnalysis({
                 >
                   {analysis?.en}
                 </Link>
-
-                {/* <p className="text-gray-600 font-extralight text-xs">
-                  {analysis?.explanation}
-                </p> */}
               </div>
             );
           } else {

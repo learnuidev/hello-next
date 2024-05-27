@@ -21,9 +21,6 @@ function UserQueryUI({ message }: { message: Message }) {
     query: message?.content,
   });
 
-  console.log("CONTENT", message?.content);
-
-  console.log("QUERY CLASS", queryClass);
   return (
     <div>
       <h2 className="text-2xl font-extralight" key={message.id}>
@@ -113,8 +110,6 @@ export default function Home() {
   const threadId = searchParams?.get("thread") || "";
 
   const { data: threads } = useListThreadsQuery();
-
-  console.log("THREADS", threads);
 
   const threadItems = (threads as any)?.Items as IThread[];
 

@@ -153,8 +153,6 @@ export const course1 = {
     }),
 } as any;
 
-console.log("course 1", course1);
-
 export const useConvosStore = create(
   // persist(
   (set: any, get: any) => ({

@@ -23,7 +23,6 @@ function UserQueryUI({ message }: { message: Message }) {
   //     query: message?.content,
   //   });
 
-  //   console.log("QUERY CLASS", queryClass);
   return (
     <div>
       <h2 className="text-2xl font-extralight" key={message.id}>
@@ -115,8 +114,6 @@ const AgentAnswer = ({
   const userQuery = messages[msgIndex - 1]?.content || "";
 
   const [showGenUI, setShowGenUI] = useState(false);
-
-  // console.log("FINISHED MSGS")
 
   return (
     <div key={message.content} className="pt-4 pb-8 text-gray-300 text-lg">

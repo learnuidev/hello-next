@@ -32,7 +32,6 @@ import Link from "next/link";
 // import { ChartPage } from "../chart/v1";
 
 export const Pronounciation = ({ lessonId }: any) => {
-  console.log("LESSONID", lessonId);
   const router = useRouter();
   const [lessonIndex, setLessonIndex] = useState(0);
   const [selectedChar, setSelectedChar] = useState<any>({});
@@ -119,10 +118,6 @@ export const Pronounciation = ({ lessonId }: any) => {
       .split(" ")
       .filter((item: any) => ![", ", "？", "，"].includes(item))
       .join("");
-
-    console.log("ANS", answer);
-
-    console.log("expAns", expAns);
 
     if (expAns.includes(answer)) {
       return "text-green-500";

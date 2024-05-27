@@ -17,8 +17,6 @@ export const StoryEditor = ({ selectedChar }: any) => {
 
   const storyId = crypto.randomUUID();
 
-  console.log("LEARNED CHAR", selectedChar);
-
   return (
     <div className="my-16 text-black dark:text-white justify-start w-full md:9/12 lg:w-7/12">
       <Editor

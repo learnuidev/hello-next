@@ -69,7 +69,10 @@ export function NmmAllComponents() {
     }
   }, [searchQueryParams, setQuery]);
 
-  const { data: components } = useListComponents({ includeAll: true });
+  const { data: components } = useListComponents({
+    includeAll: true,
+    singleItemsOnly: true,
+  });
 
   const slicedComponents = queryStr
     ? components

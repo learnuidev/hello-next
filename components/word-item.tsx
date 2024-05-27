@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { formatComponentName } from "@/app/nmm/format-component-name";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useSearchQueryStore } from "./search/state";
+import { useListComponents } from "@/domain/lesson/component.queries";
 
 export const WordItem = ({
   component: prop,
@@ -17,14 +18,18 @@ export const WordItem = ({
   lang: any;
 }) => {
   const { data: characters } = useListCharactersQuery();
+  const { data: components } = useListComponents();
 
   const query = useSearchQueryStore((state) => state.query);
 
   const addHistoryMutation = useAddHistoryMutation();
 
-  const character = characters?.find(
-    (char: any) => (char?.input || char?.hanzi) === (prop?.input || prop?.hanzi)
-  );
+  const character = [...characters, ...(components || [])]
+    ?.filter(
+      (char: any) =>
+        (char?.input || char?.hanzi) === (prop?.input || prop?.hanzi)
+    )
+    ?.find((item) => item?.en);
 
   return (
     <Link

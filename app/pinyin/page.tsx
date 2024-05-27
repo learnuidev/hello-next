@@ -17,6 +17,7 @@ import { PinyinDetail } from "./pinyin-detail";
 import { pinyinColumns } from "./pinyin-columns";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { filterComponentsExact } from "@/hooks/use-filter-components";
+import { useSearchQueryStore } from "@/components/search/state";
 
 const totalCharacters = defaultData
   ?.map((val: any) => Object.values(val))
@@ -68,6 +69,7 @@ function ChartPageVP({
 }) {
   const [data, setData] = React.useState(() => [...defaultData]);
   const rerender = React.useReducer(() => ({}), {})[1];
+  const querySync = useSearchQueryStore((state) => state.query);
 
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
@@ -112,7 +114,15 @@ function ChartPageVP({
     return [];
   }, [filters]);
 
-  const calcRowColor = (val: any, lesson?: any) => {
+  const calcRowColor = (val: any, lesson?: any, querySync?: string) => {
+    console.log("VAL", val);
+
+    if (querySync && val?.value?.includes(querySync?.toLowerCase())) {
+      return "text-white";
+    }
+    if (querySync && !val?.value?.includes(querySync?.toLowerCase())) {
+      return "text-gray-800";
+    }
     if (lesson) {
       // SIMPLE FINALS ===
       if (
@@ -643,7 +653,8 @@ function ChartPageVP({
                                   : "font-light"
                               } hover:bg-gray-200 dark:hover:bg-gray-800 dark:hover:text-white hover:text-gray-800 ${calcRowColor(
                                 val,
-                                lesson
+                                lesson,
+                                querySync
                               )} transition`}
                             >
                               {flexRender(

@@ -92,14 +92,14 @@ const TableView = ({ content }: { content: string }) => {
 
   const colors = {
     1: "text-white",
-    2: "text-yellow-300",
-    3: "text-emerald-400",
-    4: "text-blue-300",
-    5: "text-brown-300",
-    6: "text-orange-300",
-    7: "text-rose-200",
-    8: "text-rose-300",
-    9: "text-rose-400",
+    2: "text-white",
+    3: "text-white",
+    4: "text-white",
+    5: "text-white",
+    6: "text-white",
+    7: "text-white",
+    8: "text-white",
+    9: "text-white",
     9000: "text-gray-300",
   } as any;
 

@@ -7,15 +7,39 @@ import { alphabetsDict } from "@/langs/alphabets-dict";
 // hooks
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 // components
 import { LangPageView } from "./lang-page-view";
 import { Icons } from "../ui/icons.v2";
 
+export const useViewTypeStore = create(
+  persist(
+    (set: any, get: any) => ({
+      view: "home",
+      views: {},
+      setViews: (charId: string, view: any) =>
+        set({ views: { ...get().views, [charId]: view } }),
+      setView: (view: any) => set({ view }),
+    }),
+    {
+      name: "lang-tabs-store", // name of the item in the storage (must be unique)
+      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+    }
+  )
+);
+
 export function LangItem() {
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang");
-  const [view, setView] = useState("words");
+  const lang = searchParams.get("lang") || "";
+
+  const views = useViewTypeStore((state: any) => state.views) as any;
+  const view = views?.[lang] || "words";
+  const setViews = useViewTypeStore((state) => state.setViews);
+  const setView = (view: any) => {
+    return setViews(lang || "", view);
+  };
 
   const alphabets = alphabetsDict?.[lang || ""];
 

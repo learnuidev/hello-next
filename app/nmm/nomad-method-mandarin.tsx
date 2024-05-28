@@ -30,6 +30,7 @@ import {
 import { PreviewComponent } from "./preview-component";
 import { useSearchQueryStore } from "@/components/search/state";
 import { NmmAllComponents } from "./nmm-all-components";
+import { Icons } from "@/components/ui/icons.v2";
 
 export function NomadMethodMandarin() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
@@ -90,20 +91,20 @@ export function NomadMethodMandarin() {
             value="all"
             className="px-0 data-[state=active]:text-yellow-500"
           >
-            <FontAwesomeIcon icon={faGlobeAsia} className="text-2xl" />
+            <Icons.lightBulb className="text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             value="needs_review"
             className="px-0 data-[state=active]:text-yellow-500"
           >
-            <FontAwesomeIcon icon={faGraduationCap} className="text-2xl" />
+            <Icons.graduationCap className="text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             // value="learned"
             value="discovered"
             className="px-0 data-[state=active]:text-yellow-500"
           >
-            <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
+            <Icons.globeAsia className="text-2xl" />
           </TabsTrigger>
         </TabsList>
 
@@ -134,43 +135,45 @@ export function NomadMethodMandarin() {
 
       <TabsContent value="discovered" className="my-8">
         <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
-          {discoveredComponents?.map((prop: any, idx: number) => {
-            const selectedComp = components?.find(
-              (component: any) => component?.hanzi === prop?.hanzi
-            );
+          {discoveredComponents
+            ?.filter((comp: any) => comp?.level < 3501)
+            .map((prop: any, idx: number) => {
+              const selectedComp = components?.find(
+                (component: any) => component?.hanzi === prop?.hanzi
+              );
 
-            const color = calculateColor({
-              tone: selectedComp?.tone_level,
-            });
+              const color = calculateColor({
+                tone: selectedComp?.tone_level,
+              });
 
-            return (
-              <Link
-                key={`${prop.hanzi}-chars-${idx}`}
-                href={`/nmm/${prop.hanzi}?lang=zh`}
-                onClick={() => {
-                  addHistoryMutation.mutate({
-                    hanzi: prop.hanzi,
-                    lang: "zh",
-                    pathName: routeName,
-                    contentId: prop.id,
-                    eventType: "CONTENT_VIEWED",
-                  } as any);
-                }}
-                className={`${
-                  // learnedCharacters.includes(prop?.hanzi)
-                  learnedCharacters2?.find(
-                    (char: any) => char?.hanzi === prop?.hanzi
-                  )
-                    ? `${color}`
-                    : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                      ? "text-yellow-500"
-                      : "dark:text-gray-500 text-gray-200"
-                } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-              >
-                {prop?.hanzi}
-              </Link>
-            );
-          })}
+              return (
+                <Link
+                  key={`${prop.hanzi}-chars-${idx}`}
+                  href={`/nmm/${prop.hanzi}?lang=zh`}
+                  onClick={() => {
+                    addHistoryMutation.mutate({
+                      hanzi: prop.hanzi,
+                      lang: "zh",
+                      pathName: routeName,
+                      contentId: prop.id,
+                      eventType: "CONTENT_VIEWED",
+                    } as any);
+                  }}
+                  className={`${
+                    // learnedCharacters.includes(prop?.hanzi)
+                    learnedCharacters2?.find(
+                      (char: any) => char?.hanzi === prop?.hanzi
+                    )
+                      ? `${color}`
+                      : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                        ? "text-yellow-500"
+                        : "dark:text-gray-500 text-gray-200"
+                  } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+                >
+                  {prop?.hanzi}
+                </Link>
+              );
+            })}
         </div>
       </TabsContent>
       <TabsContent value="needs_review" className="my-8">

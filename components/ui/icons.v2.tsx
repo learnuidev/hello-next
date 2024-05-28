@@ -39,6 +39,7 @@ import {
   faInfo,
   faAlignRight,
   faTrash,
+  faGraduationCap,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -173,4 +174,5 @@ export const Icons = {
   paragraph: createFAIcon(faAlignRight),
   trash: createFAIcon(faTrash),
   book: createFAIcon(faBook),
+  graduationCap: createFAIcon(faGraduationCap),
 };

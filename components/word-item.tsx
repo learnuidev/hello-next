@@ -49,7 +49,7 @@ export const WordItem = ({
       }}
       className={`${character ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-600 text-gray-600"} dark:hover:text-white p-6 flex items-center flex-col`}
     >
-      {["es", "fr"]?.includes(lang) ? null : (
+      {["es", "fr", "ml", "no", "da"]?.includes(lang) ? null : (
         <span
           className={cn(
             "block p-0 m-0 text-sm",

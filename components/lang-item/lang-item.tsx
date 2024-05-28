@@ -15,6 +15,9 @@ import { russianWords } from "@/langs/russian/russian-words";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { wordsDict } from "@/langs/words-dict";
 import { alphabetsDict } from "@/langs/alphabets-dict";
+import { useQuery } from "@tanstack/react-query";
+import { useSearchQueryStore } from "../search/state";
+import { formatComponentName } from "@/app/nmm/format-component-name";
 
 const useIsLearned = ({ characterId }: { characterId: string }) => {
   const { data } = useListCharactersQuery();
@@ -47,11 +50,61 @@ const AlphabetItem = ({ prop, lang }: any) => {
   );
 };
 
+const useListDictionaryWords = (lang: string) => {
+  const query = useSearchQueryStore((state) => state.query);
+
+  const { data: characters } = useListCharactersQuery();
+  const { data: components } = useListComponents();
+
+  return useQuery({
+    queryKey: ["list-dictionary-words", lang, query],
+    queryFn: async () => {
+      const dictionaryWords = wordsDict[lang];
+
+      const dataToShow = dictionaryWords?.filter((item: any) => {
+        if (!query) {
+          return true;
+        }
+
+        const containsNativeText = (item?.input || item?.hanzi)?.includes(
+          query?.toLowerCase()
+        );
+        const containsEnText = item?.en?.includes(query?.toLowerCase());
+        const containsRomanText = item?.roman?.includes(query?.toLowerCase());
+        return containsNativeText || containsEnText || containsRomanText;
+      });
+
+      return dataToShow?.map((prop: any) => {
+        const character = [...(characters || []), ...(components || [])]
+          ?.filter(
+            (char: any) =>
+              (char?.input || char?.hanzi) === (prop?.input || prop?.hanzi)
+          )
+          ?.find((item) => item?.en);
+
+        return {
+          ...prop,
+          ...character,
+          input: prop.input || prop?.hanzi,
+          roman:
+            prop?.roman ||
+            character?.roman ||
+            character?.pinyin ||
+            prop?.pinyin,
+
+          en: formatComponentName({ en: character?.en || prop.en }, 1),
+        };
+      });
+      // return dictionaryWords;
+    },
+  });
+};
+
 const PageView = ({ view }: any) => {
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang");
+  const lang = searchParams.get("lang") || "";
 
-  const dictionaryWords = wordsDict[lang || ""];
+  const { data: dictionaryWords } = useListDictionaryWords(lang);
 
   const { data } = useListCharactersQuery();
   const { data: comps } = useListComponents();

@@ -121,59 +121,60 @@ export function NomadMethodMandarin() {
 
       <TabsContent value="needs_review" className="my-4 md:my-8">
         <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-          {learnedCharacters2
-            ?.filter(
-              (character: any) =>
-                character?.status !== "learned" &&
-                character?.level >= selectedBelt?.minCharacterLevel &&
-                character?.level <= selectedBelt?.maxCharacterLevel
-            )
-            ?.map((prop: any, idx: number) => {
-              const selectedComp = components?.find(
-                (component: any) => component?.hanzi === prop?.hanzi
-              );
+          {(queryStr
+            ? filteredComponents
+            : learnedCharacters2?.filter(
+                (character: any) =>
+                  character?.status !== "learned" &&
+                  character?.level >= selectedBelt?.minCharacterLevel &&
+                  character?.level <= selectedBelt?.maxCharacterLevel
+              )
+          )?.map((prop: any, idx: number) => {
+            const selectedComp = components?.find(
+              (component: any) => component?.hanzi === prop?.hanzi
+            );
 
-              const color = calculateColor({
-                tone: selectedComp?.tone_level,
-              });
+            const color = calculateColor({
+              tone: selectedComp?.tone_level,
+            });
 
-              return (
-                <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
-                  <Link
-                    href={`/nmm/${prop.hanzi}?lang=zh`}
-                    onClick={() => {
-                      addHistoryMutation.mutate({
-                        pathName: routeName,
-                        input: prop.input,
-                        lang: "zh",
-                        contentId: prop.id,
-                        eventType: "CONTENT_VIEWED",
-                      } as any);
-                    }}
-                    className={`${
-                      // learnedCharacters.includes(prop?.hanzi)
-                      learnedCharacters2?.find(
-                        (char: any) => char?.hanzi === prop?.hanzi
-                      )
-                        ? `${color}`
-                        : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                          ? "text-yellow-500"
-                          : selectedComp?.group
-                            ? "text-slate-400"
-                            : "dark:text-gray-500 text-gray-200"
-                    } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-                  >
-                    {prop?.hanzi}
-                  </Link>
-                </div>
-              );
-            })}
+            return (
+              <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
+                <Link
+                  href={`/nmm/${prop.hanzi}?lang=zh`}
+                  onClick={() => {
+                    addHistoryMutation.mutate({
+                      pathName: routeName,
+                      input: prop.input,
+                      lang: "zh",
+                      contentId: prop.id,
+                      eventType: "CONTENT_VIEWED",
+                    } as any);
+                  }}
+                  className={`${
+                    // learnedCharacters.includes(prop?.hanzi)
+                    learnedCharacters2?.find(
+                      (char: any) => char?.hanzi === prop?.hanzi
+                    )
+                      ? `${color}`
+                      : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                        ? "text-yellow-500"
+                        : selectedComp?.group
+                          ? "text-slate-400"
+                          : "dark:text-gray-500 text-gray-200"
+                  } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+                >
+                  {prop?.hanzi}
+                </Link>
+              </div>
+            );
+          })}
         </div>
       </TabsContent>
 
       <TabsContent value="all" className="my-4 md:my-8">
         <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-          {discoveredComponents
+          {(queryStr ? filteredComponents : discoveredComponents)
             ?.filter((comp: any) => comp?.level < 3501)
             .map((prop: any, idx: number) => {
               const selectedComp = components?.find(

@@ -68,7 +68,7 @@ export const WordItem = ({
       <span className="text-2xl"> {prop.input || prop?.hanzi}</span>
       <span className="block text-sm">
         {" "}
-        {formatComponentName({ en: character?.en || prop.en }, 2)}
+        {formatComponentName({ en: character?.en || prop.en }, 1)}
       </span>
     </Link>
   );

@@ -144,7 +144,7 @@ export function NomadMethodMandarin() {
                     onClick={() => {
                       addHistoryMutation.mutate({
                         pathName: routeName,
-                        hanzi: prop.hanzi,
+                        input: prop.input,
                         lang: "zh",
                         contentId: prop.id,
                         eventType: "CONTENT_VIEWED",
@@ -190,7 +190,7 @@ export function NomadMethodMandarin() {
                     href={`/nmm/${prop.hanzi}?lang=zh`}
                     onClick={() => {
                       addHistoryMutation.mutate({
-                        hanzi: prop.hanzi,
+                        input: prop.input,
                         lang: "zh",
                         pathName: routeName,
                         contentId: prop.id,

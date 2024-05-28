@@ -18,6 +18,7 @@ import { alphabetsDict } from "@/langs/alphabets-dict";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchQueryStore } from "../search/state";
 import { formatComponentName } from "@/app/nmm/format-component-name";
+import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 
 const useIsLearned = ({ characterId }: { characterId: string }) => {
   const { data } = useListCharactersQuery();
@@ -50,6 +51,23 @@ const AlphabetItem = ({ prop, lang }: any) => {
   );
 };
 
+const filterWordsByQuery = (data: any, query: string) => {
+  const dataToShow = data?.filter((item: any) => {
+    if (!query) {
+      return true;
+    }
+
+    const containsNativeText = (item?.input || item?.hanzi)?.includes(
+      query?.toLowerCase()
+    );
+    const containsEnText = item?.en?.includes(query?.toLowerCase());
+    const containsRomanText = item?.roman?.includes(query?.toLowerCase());
+    return containsNativeText || containsEnText || containsRomanText;
+  });
+
+  return dataToShow;
+};
+
 const useListDictionaryWords = (lang: string) => {
   const query = useSearchQueryStore((state) => state.query);
 
@@ -61,18 +79,7 @@ const useListDictionaryWords = (lang: string) => {
     queryFn: async () => {
       const dictionaryWords = wordsDict[lang];
 
-      const dataToShow = dictionaryWords?.filter((item: any) => {
-        if (!query) {
-          return true;
-        }
-
-        const containsNativeText = (item?.input || item?.hanzi)?.includes(
-          query?.toLowerCase()
-        );
-        const containsEnText = item?.en?.includes(query?.toLowerCase());
-        const containsRomanText = item?.roman?.includes(query?.toLowerCase());
-        return containsNativeText || containsEnText || containsRomanText;
-      });
+      const dataToShow = filterWordsByQuery(dictionaryWords, query);
 
       return dataToShow?.map((prop: any) => {
         const character = [...(characters || []), ...(components || [])]
@@ -100,6 +107,92 @@ const useListDictionaryWords = (lang: string) => {
   });
 };
 
+export const useLearnedWords = (lang: string) => {
+  const { data } = useListCharactersQuery();
+  const query = useSearchQueryStore((state) => state.query);
+
+  return useQuery({
+    queryKey: ["list-learned-words", lang, JSON.stringify(data), query],
+    queryFn: async () => {
+      const words = [...(data || [])]
+        ?.filter((item: any) => item?.lang === lang)
+        ?.filter((item: any) => (item?.input || item?.hanzi)?.length < 20);
+
+      const dataToShow = filterWordsByQuery(words, query);
+      return dataToShow;
+    },
+  });
+
+  const words = [...(data || [])]
+    ?.filter((item: any) => item?.lang === lang)
+    ?.filter((item: any) => (item?.input || item?.hanzi)?.length < 20);
+};
+
+export const useLearnedSentences = (lang: string) => {
+  const { data } = useListCharactersQuery();
+  const query = useSearchQueryStore((state) => state.query);
+
+  return useQuery({
+    queryKey: ["list-learned-sentences", lang, JSON.stringify(data), query],
+    queryFn: async () => {
+      const words = [...(data || [])]
+        ?.filter((item: any) => item?.lang === lang)
+        ?.filter((item: any) => (item?.input || item?.hanzi)?.length > 20);
+
+      const dataToShow = filterWordsByQuery(words, query);
+      return dataToShow?.map((item: any) => {
+        return {
+          input: (item?.input || item?.hanzi)?.toLowerCase(),
+          en: item?.en?.toLowerCase(),
+          roman: (item?.roman || item?.pinyin)?.toLowerCase(),
+        };
+      });
+    },
+  });
+
+  const words = [...(data || [])]
+    ?.filter((item: any) => item?.lang === lang)
+    ?.filter((item: any) => (item?.input || item?.hanzi)?.length < 20);
+};
+
+function SentencesList({ lang }: { lang: string }) {
+  const { data: sents } = useLearnedSentences(lang);
+  const query = useSearchQueryStore((state) => state.query);
+  const addHistoryMutation = useAddHistoryMutation();
+
+  return (
+    <div className="max-w-5xl md:mx-12 flex flex-col space-y-8">
+      {sents?.map((prop: any) => {
+        return (
+          // <div key={JSON.stringify(prop)}>
+          <Link
+            href={`/nmm/${prop?.input || prop?.hanzi}?lang=${prop?.lang || lang}`}
+            key={JSON.stringify(prop)}
+            onClick={() => {
+              if (!addHistoryMutation?.isLoading) {
+                addHistoryMutation.mutate({
+                  // pathName: routeName,
+                  input: prop?.input || prop?.hanzi,
+                  roman: prop?.roman,
+                  lang: prop?.lang || lang,
+                  contentType: "sentence",
+                  query: query,
+                  contentId: prop?.id,
+                  eventType: "CONTENT_VIEWED",
+                } as any);
+              }
+            }}
+            // className={`${prop ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-600 text-gray-600"} dark:hover:text-white p-6 flex items-center flex-col`}
+          >
+            <p className="text-xl font-light">{prop?.input}</p>
+            <p className="text-gray-400">{prop?.en}</p>
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
+
 const PageView = ({ view }: any) => {
   const searchParams = useSearchParams();
   const lang = searchParams.get("lang") || "";
@@ -109,9 +202,8 @@ const PageView = ({ view }: any) => {
   const { data } = useListCharactersQuery();
   // const { data: comps } = useListComponents();
 
-  const words = [...(data || [])]
-    ?.filter((item: any) => item?.lang === lang)
-    ?.filter((item: any) => (item?.input || item?.hanzi)?.length < 20);
+  const { data: words } = useLearnedWords(lang);
+  const { data: sents } = useLearnedSentences(lang);
 
   console.log("filtered components", words);
   const alphabets = alphabetsDict?.[lang || ""];
@@ -132,6 +224,9 @@ const PageView = ({ view }: any) => {
       return <WordsList showWords={true} words={dictionaryWords} lang={lang} />;
     case "words":
       return <WordsList showWords={true} words={words} lang={lang} />;
+    case "sentences":
+      // return <WordsList showWords={true} words={sents} lang={lang} />;
+      return <SentencesList lang={lang} />;
 
     default:
       return null;
@@ -182,7 +277,18 @@ export function LangItem() {
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
           <Icons.word className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Learned Words</p>
+          <p className="text-[8px] p-0 m-0">Words</p>
+        </button>
+        <button
+          onClick={() => {
+            setView("sentences");
+          }}
+          className={`${
+            view === "sentences" ? "dark:text-white" : "dark:text-gray-800"
+          } my-4 flex flex-col items-center hover:dark:text-white transition`}
+        >
+          <Icons.tree className="text-2xl" />
+          <p className="text-[8px] p-0 m-0">Sentences</p>
         </button>
       </div>
 

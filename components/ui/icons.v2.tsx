@@ -41,6 +41,7 @@ import {
   faTrash,
   faGraduationCap,
   faSpaceStationMoon,
+  faTree,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -177,4 +178,5 @@ export const Icons = {
   book: createFAIcon(faBook),
   graduationCap: createFAIcon(faGraduationCap),
   rocket: createFAIcon(faSpaceStationMoon),
+  tree: createFAIcon(faTree),
 };

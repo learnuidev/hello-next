@@ -14,6 +14,7 @@ import { russianAlphabets } from "@/langs/russian/russian-alphabets";
 import { russianWords } from "@/langs/russian/russian-words";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { wordsDict } from "@/langs/words-dict";
+import { alphabetsDict } from "@/langs/alphabets-dict";
 
 const useIsLearned = ({ characterId }: { characterId: string }) => {
   const { data } = useListCharactersQuery();
@@ -38,6 +39,10 @@ const AlphabetItem = ({ prop, lang }: any) => {
       </span>
 
       <span className="text-4xl"> {prop.input}</span>
+      <span className="text-sm trim text-gray-600">
+        {" "}
+        {prop?.sound?.split(" ")?.[0]}
+      </span>
     </Link>
   );
 };
@@ -56,18 +61,19 @@ const PageView = ({ view }: any) => {
     ?.filter((item: any) => (item?.input || item?.hanzi)?.length < 20);
 
   console.log("filtered components", words);
+  const alphabets = alphabetsDict?.[lang || ""];
 
   switch (view) {
-    // case "alphabets":
-    //   return (
-    //     <>
-    //       <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-center justify-center">
-    //         {russianAlphabets.map((prop) => {
-    //           return <AlphabetItem lang={lang} prop={prop} key={prop?.input} />;
-    //         })}
-    //       </div>
-    //     </>
-    //   );
+    case "alphabets":
+      return (
+        <>
+          <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-center justify-center">
+            {alphabets.map((prop: any) => {
+              return <AlphabetItem lang={lang} prop={prop} key={prop?.input} />;
+            })}
+          </div>
+        </>
+      );
 
     case "dictionary":
       return <WordsList showWords={true} words={dictionaryWords} lang={lang} />;
@@ -80,11 +86,28 @@ const PageView = ({ view }: any) => {
 };
 
 export function LangItem() {
+  const searchParams = useSearchParams();
+  const lang = searchParams.get("lang");
   const [view, setView] = useState("words");
+
+  const alphabets = alphabetsDict?.[lang || ""];
 
   return (
     <div className="grow">
       <div className="dark:text-gray-500 my-4 space-x-8 flex justify-center items-center">
+        {alphabets?.length > 0 && (
+          <button
+            onClick={() => {
+              setView("alphabets");
+            }}
+            className={`${
+              view === "alphabets" ? "dark:text-white" : "dark:text-gray-800"
+            } my-4 flex flex-col items-center hover:dark:text-white transition`}
+          >
+            <Icons.pinyinChart className="text-2xl" />
+            <p className="text-[8px] p-0 m-0">alphabets</p>
+          </button>
+        )}
         <button
           onClick={() => {
             setView("dictionary");

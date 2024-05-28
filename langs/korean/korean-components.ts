@@ -3905,8 +3905,14 @@ export const koreanComponents2 = [
   {
     lang: "ko",
     en: "find",
-    roman: "chat",
+    roman: "chaj",
     input: "찾",
+  },
+  {
+    lang: "ko",
+    en: "did",
+    roman: "ass",
+    input: "았",
   },
   {
     lang: "ko",

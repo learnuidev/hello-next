@@ -44,7 +44,7 @@ export function LangItem() {
   const alphabets = alphabetsDict?.[lang || ""];
 
   return (
-    <div className="grow">
+    <div className="grow mb-32">
       <div className="dark:text-gray-500 my-4 space-x-8 flex justify-center items-center">
         {alphabets?.length > 0 && (
           <button

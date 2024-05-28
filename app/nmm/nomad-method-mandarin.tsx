@@ -85,26 +85,26 @@ export function NomadMethodMandarin() {
 
   return (
     <Tabs defaultValue="all" className="p-0">
-      <div className="my-8 flex justify-between items-center md:mx-12">
+      <div className="my-2 md:my-8 flex justify-between items-center md:mx-12 flex-col md:flex-row space-y-4 md:space-y-0">
         <TabsList className="space-x-8">
           <TabsTrigger
             value="all"
             className="px-0 data-[state=active]:text-yellow-500"
           >
-            <Icons.lightBulb className="text-2xl" />
+            <Icons.rocket className="text-xl md:text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             value="needs_review"
             className="px-0 data-[state=active]:text-yellow-500"
           >
-            <Icons.graduationCap className="text-2xl" />
+            <Icons.graduationCap className="text-xl md:text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             // value="learned"
             value="discovered"
             className="px-0 data-[state=active]:text-yellow-500"
           >
-            <Icons.globeAsia className="text-2xl" />
+            <Icons.globeAsia className="text-xl md:text-2xl" />
           </TabsTrigger>
         </TabsList>
 
@@ -127,14 +127,14 @@ export function NomadMethodMandarin() {
         </div>
       </div>
 
-      <TabsContent value="all" className="my-8">
+      <TabsContent value="all" className="my-4 md:my-8">
         <NmmAllComponents />
       </TabsContent>
 
       {/* ?.slice(selectedBelt?.minCharacterLevel, selectedBelt?.maxCharacterLevel) */}
 
-      <TabsContent value="discovered" className="my-8">
-        <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
+      <TabsContent value="discovered" className="my-4 md:my-8">
+        <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
           {discoveredComponents
             ?.filter((comp: any) => comp?.level < 3501)
             .map((prop: any, idx: number) => {
@@ -176,8 +176,8 @@ export function NomadMethodMandarin() {
             })}
         </div>
       </TabsContent>
-      <TabsContent value="needs_review" className="my-8">
-        <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
+      <TabsContent value="needs_review" className="my-4 md:my-8">
+        <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
           {learnedCharacters2
             ?.filter(
               (character: any) =>

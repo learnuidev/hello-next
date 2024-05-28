@@ -88,7 +88,7 @@ export function NmmAllComponents() {
   );
 
   return (
-    <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
+    <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
       {filteredComponents?.length > 0 &&
         filteredComponents
           // ?.filter((comp: any) => comp?.level < 100)
@@ -104,7 +104,7 @@ export function NmmAllComponents() {
             return (
               <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
                 <Tooltip>
-                  <TooltipTrigger className="p-3 hover:scale-125 transition">
+                  <TooltipTrigger className="p-2 md:p-3 hover:scale-125 transition">
                     <Link
                       href={`/nmm/${prop.hanzi}?lang=zh`}
                       onClick={() => {

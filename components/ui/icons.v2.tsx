@@ -40,6 +40,7 @@ import {
   faAlignRight,
   faTrash,
   faGraduationCap,
+  faSpaceStationMoon,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -175,4 +176,5 @@ export const Icons = {
   trash: createFAIcon(faTrash),
   book: createFAIcon(faBook),
   graduationCap: createFAIcon(faGraduationCap),
+  rocket: createFAIcon(faSpaceStationMoon),
 };

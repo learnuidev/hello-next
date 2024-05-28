@@ -28,10 +28,6 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     (item: any) => (item?.hanzi || item?.input) === characterId
   );
 
-  console.log("CHAR ID", characterId);
-
-  // const { toast } = useToast();
-
   return (
     <div className="flex w-full fixed z-50 bottom-4">
       <div className="flex items-center w-full justify-center">

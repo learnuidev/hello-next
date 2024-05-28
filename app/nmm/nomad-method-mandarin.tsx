@@ -5,29 +5,15 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import {
-  belts,
-  calculateColor,
-  filterComponent,
-  filterComponents,
-} from "./utils";
+import { belts, calculateColor, filterComponents } from "./utils";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useBeltStore } from "@/components/use-belt-store";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobeAsia } from "@fortawesome/pro-light-svg-icons";
-import { faGraduationCap, faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 
 import Link from "next/link";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { usePathname, useSearchParams } from "next/navigation";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { PreviewComponent } from "./preview-component";
+
 import { useSearchQueryStore } from "@/components/search/state";
 import { NmmAllComponents } from "./nmm-all-components";
 import { Icons } from "@/components/ui/icons.v2";
@@ -84,11 +70,11 @@ export function NomadMethodMandarin() {
   );
 
   return (
-    <Tabs defaultValue="all" className="p-0">
+    <Tabs defaultValue="core" className="p-0">
       <div className="my-2 md:my-8 flex justify-between items-center md:mx-12 flex-col md:flex-row space-y-4 md:space-y-0">
         <TabsList className="space-x-8">
           <TabsTrigger
-            value="all"
+            value="core"
             className="px-0 data-[state=active]:text-yellow-500"
           >
             <Icons.rocket className="text-xl md:text-2xl" />
@@ -101,7 +87,7 @@ export function NomadMethodMandarin() {
           </TabsTrigger>
           <TabsTrigger
             // value="learned"
-            value="discovered"
+            value="all"
             className="px-0 data-[state=active]:text-yellow-500"
           >
             <Icons.globeAsia className="text-xl md:text-2xl" />
@@ -127,13 +113,13 @@ export function NomadMethodMandarin() {
         </div>
       </div>
 
-      <TabsContent value="all" className="my-4 md:my-8">
+      <TabsContent value="core" className="my-4 md:my-8">
         <NmmAllComponents />
       </TabsContent>
 
       {/* ?.slice(selectedBelt?.minCharacterLevel, selectedBelt?.maxCharacterLevel) */}
 
-      <TabsContent value="discovered" className="my-4 md:my-8">
+      <TabsContent value="all" className="my-4 md:my-8">
         <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
           {discoveredComponents
             ?.filter((comp: any) => comp?.level < 3501)
@@ -147,31 +133,34 @@ export function NomadMethodMandarin() {
               });
 
               return (
-                <Link
-                  key={`${prop.hanzi}-chars-${idx}`}
-                  href={`/nmm/${prop.hanzi}?lang=zh`}
-                  onClick={() => {
-                    addHistoryMutation.mutate({
-                      hanzi: prop.hanzi,
-                      lang: "zh",
-                      pathName: routeName,
-                      contentId: prop.id,
-                      eventType: "CONTENT_VIEWED",
-                    } as any);
-                  }}
-                  className={`${
-                    // learnedCharacters.includes(prop?.hanzi)
-                    learnedCharacters2?.find(
-                      (char: any) => char?.hanzi === prop?.hanzi
-                    )
-                      ? `${color}`
-                      : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                        ? "text-yellow-500"
-                        : "dark:text-gray-500 text-gray-200"
-                  } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-                >
-                  {prop?.hanzi}
-                </Link>
+                <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
+                  <Link
+                    href={`/nmm/${prop.hanzi}?lang=zh`}
+                    onClick={() => {
+                      addHistoryMutation.mutate({
+                        hanzi: prop.hanzi,
+                        lang: "zh",
+                        pathName: routeName,
+                        contentId: prop.id,
+                        eventType: "CONTENT_VIEWED",
+                      } as any);
+                    }}
+                    className={`${
+                      // learnedCharacters.includes(prop?.hanzi)
+                      learnedCharacters2?.find(
+                        (char: any) => char?.hanzi === prop?.hanzi
+                      )
+                        ? `${color}`
+                        : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                          ? "text-yellow-500"
+                          : selectedComp?.group
+                            ? "text-slate-400"
+                            : "dark:text-gray-500 text-gray-200"
+                    } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+                  >
+                    {prop?.hanzi}
+                  </Link>
+                </div>
               );
             })}
         </div>
@@ -195,31 +184,34 @@ export function NomadMethodMandarin() {
               });
 
               return (
-                <Link
-                  key={`${prop.hanzi}-chars-${idx}`}
-                  href={`/nmm/${prop.hanzi}?lang=zh`}
-                  onClick={() => {
-                    addHistoryMutation.mutate({
-                      pathName: routeName,
-                      hanzi: prop.hanzi,
-                      lang: "zh",
-                      contentId: prop.id,
-                      eventType: "CONTENT_VIEWED",
-                    } as any);
-                  }}
-                  className={`${
-                    // learnedCharacters.includes(prop?.hanzi)
-                    learnedCharacters2?.find(
-                      (char: any) => char?.hanzi === prop?.hanzi
-                    )
-                      ? `${color}`
-                      : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                        ? "text-yellow-500"
-                        : "dark:text-gray-500 text-gray-200"
-                  } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-                >
-                  {prop?.hanzi}
-                </Link>
+                <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
+                  <Link
+                    href={`/nmm/${prop.hanzi}?lang=zh`}
+                    onClick={() => {
+                      addHistoryMutation.mutate({
+                        pathName: routeName,
+                        hanzi: prop.hanzi,
+                        lang: "zh",
+                        contentId: prop.id,
+                        eventType: "CONTENT_VIEWED",
+                      } as any);
+                    }}
+                    className={`${
+                      // learnedCharacters.includes(prop?.hanzi)
+                      learnedCharacters2?.find(
+                        (char: any) => char?.hanzi === prop?.hanzi
+                      )
+                        ? `${color}`
+                        : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                          ? "text-yellow-500"
+                          : selectedComp?.group
+                            ? "text-slate-400"
+                            : "dark:text-gray-500 text-gray-200"
+                    } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+                  >
+                    {prop?.hanzi}
+                  </Link>
+                </div>
               );
             })}
         </div>

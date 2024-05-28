@@ -19,25 +19,58 @@ import {
 } from "@/components/ui/tooltip";
 import { PreviewComponent } from "./preview-component";
 import { useSearchQueryStore } from "@/components/search/state";
+import { useQuery } from "@tanstack/react-query";
 
-const useFilteredComponents = ({ query }: { query: string }) => {
-  const { data: components, isLoading: isComponentsLoading } =
-    useListComponents({ includeAll: true });
+export function useListComponentsByBelt() {
+  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
+  const searchParams = useSearchParams();
+  const queryStr = useSearchQueryStore((state) => state.query);
+  const setQuery = useSearchQueryStore((state) => state.setQuery);
 
-  const { data: learnedCharacters2, isLoading: isLearnedCharactersLoading } =
-    useListCharactersQuery();
-
-  const filteredComponents = filterComponents(
-    components,
-    query,
-    learnedCharacters2
+  const { data: answers } = useListAnswersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
   );
 
-  return {
-    data: filteredComponents,
-    isLoading: isComponentsLoading || isLearnedCharactersLoading,
-  };
-};
+  const { data: learnedCharacters2 } = useListCharactersQuery();
+
+  const { data: components } = useListComponents({
+    includeAll: true,
+    singleItemsOnly: true,
+  });
+
+  // return filteredComponents;
+
+  return useQuery({
+    queryKey: [
+      "list-components-by-belt",
+      selectedBelt,
+      JSON.stringify(components),
+      JSON.stringify(learnedCharacters2),
+    ],
+    queryFn: async () => {
+      const slicedComponents = queryStr
+        ? components
+        : components?.slice(
+            selectedBelt?.minCharacterLevel,
+            selectedBelt?.maxCharacterLevel
+          );
+
+      const filteredComponents = filterComponents(
+        slicedComponents,
+        queryStr,
+        learnedCharacters2
+      );
+
+      return filteredComponents;
+    },
+  });
+}
 
 export function NmmAllComponents() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
@@ -74,18 +107,7 @@ export function NmmAllComponents() {
     singleItemsOnly: true,
   });
 
-  const slicedComponents = queryStr
-    ? components
-    : components?.slice(
-        selectedBelt?.minCharacterLevel,
-        selectedBelt?.maxCharacterLevel
-      );
-
-  const filteredComponents = filterComponents(
-    slicedComponents,
-    queryStr,
-    learnedCharacters2
-  );
+  const { data: filteredComponents } = useListComponentsByBelt();
 
   return (
     <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">

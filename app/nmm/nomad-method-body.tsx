@@ -24,9 +24,9 @@ export function NomadMethodBody({ lang }: { lang: string }) {
     return <Korean />;
   }
 
-  if (["es"]?.includes(lang)) {
-    return <Spanish />;
-  }
+  // if (["es"]?.includes(lang)) {
+  //   return <Spanish />;
+  // }
   if (["ar"]?.includes(lang)) {
     return <Arabic />;
   }
@@ -35,9 +35,9 @@ export function NomadMethodBody({ lang }: { lang: string }) {
     return <Persian />;
   }
 
-  if (["fr"]?.includes(lang)) {
-    return <French />;
-  }
+  // if (["fr"]?.includes(lang)) {
+  //   return <French />;
+  // }
 
   if (["vi"]?.includes(lang)) {
     return <Vietnamese />;

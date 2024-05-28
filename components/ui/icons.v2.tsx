@@ -2,7 +2,11 @@ import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
-import { faMicrochipAi, faSpinner } from "@fortawesome/sharp-solid-svg-icons";
+import {
+  faBook,
+  faMicrochipAi,
+  faSpinner,
+} from "@fortawesome/sharp-solid-svg-icons";
 
 import {
   // faMicrophone,
@@ -168,4 +172,5 @@ export const Icons = {
   ai: createFAIcon(faMicrochipAi),
   paragraph: createFAIcon(faAlignRight),
   trash: createFAIcon(faTrash),
+  book: createFAIcon(faBook),
 };

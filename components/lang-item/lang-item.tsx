@@ -13,6 +13,7 @@ import { WordsList } from "../words-list";
 import { russianAlphabets } from "@/langs/russian/russian-alphabets";
 import { russianWords } from "@/langs/russian/russian-words";
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { wordsDict } from "@/langs/words-dict";
 
 const useIsLearned = ({ characterId }: { characterId: string }) => {
   const { data } = useListCharactersQuery();
@@ -45,27 +46,31 @@ const PageView = ({ view }: any) => {
   const searchParams = useSearchParams();
   const lang = searchParams.get("lang");
 
+  const dictionaryWords = wordsDict[lang || ""];
+
   const { data } = useListCharactersQuery();
   const { data: comps } = useListComponents();
 
-  const words = [...(comps || []), ...(data || [])]?.filter(
-    (item: any) => item?.lang === lang
-  );
+  const words = [...(comps || []), ...(data || [])]
+    ?.filter((item: any) => item?.lang === lang)
+    ?.filter((item: any) => (item?.input || item?.hanzi)?.length < 20);
 
   console.log("filtered components", words);
 
   switch (view) {
-    case "alphabets":
-      return (
-        <>
-          <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-center justify-center">
-            {russianAlphabets.map((prop) => {
-              return <AlphabetItem lang={lang} prop={prop} key={prop?.input} />;
-            })}
-          </div>
-        </>
-      );
+    // case "alphabets":
+    //   return (
+    //     <>
+    //       <div className="mx-4 my-4 md:mx-16 flex flex-wrap items-center justify-center">
+    //         {russianAlphabets.map((prop) => {
+    //           return <AlphabetItem lang={lang} prop={prop} key={prop?.input} />;
+    //         })}
+    //       </div>
+    //     </>
+    //   );
 
+    case "dictionary":
+      return <WordsList showWords={true} words={dictionaryWords} lang={lang} />;
     case "words":
       return <WordsList showWords={true} words={words} lang={lang} />;
 
@@ -82,14 +87,14 @@ export function LangItem() {
       <div className="dark:text-gray-500 my-4 space-x-8 flex justify-center items-center">
         <button
           onClick={() => {
-            setView("alphabets");
+            setView("dictionary");
           }}
           className={`${
-            view === "alphabets" ? "dark:text-white" : "dark:text-gray-800"
+            view === "dictionary" ? "dark:text-white" : "dark:text-gray-800"
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
-          <Icons.pinyinChart className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">alphabets</p>
+          <Icons.book className="text-2xl" />
+          <p className="text-[8px] p-0 m-0">dictionary</p>
         </button>
 
         <button
@@ -101,7 +106,7 @@ export function LangItem() {
           } my-4 flex flex-col items-center hover:dark:text-white transition`}
         >
           <Icons.word className="text-2xl" />
-          <p className="text-[8px] p-0 m-0">Words</p>
+          <p className="text-[8px] p-0 m-0">Learned Words</p>
         </button>
       </div>
 

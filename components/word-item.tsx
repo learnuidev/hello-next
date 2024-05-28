@@ -24,7 +24,7 @@ export const WordItem = ({
 
   const addHistoryMutation = useAddHistoryMutation();
 
-  const character = [...characters, ...(components || [])]
+  const character = [...(characters || []), ...(components || [])]
     ?.filter(
       (char: any) =>
         (char?.input || char?.hanzi) === (prop?.input || prop?.hanzi)
@@ -49,20 +49,22 @@ export const WordItem = ({
       }}
       className={`${character ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-600 text-gray-600"} dark:hover:text-white p-6 flex items-center flex-col`}
     >
-      <span
-        className={cn(
-          "block p-0 m-0 text-sm",
-          prop?.roman || character?.roman || character?.pinyin || prop?.pinyin
-            ? ""
-            : "text-black"
-        )}
-      >
-        {prop?.roman ||
-          character?.roman ||
-          character?.pinyin ||
-          prop?.pinyin ||
-          "yo"}
-      </span>
+      {["es", "fr"]?.includes(lang) ? null : (
+        <span
+          className={cn(
+            "block p-0 m-0 text-sm",
+            prop?.roman || character?.roman || character?.pinyin || prop?.pinyin
+              ? ""
+              : "text-black"
+          )}
+        >
+          {prop?.roman ||
+            character?.roman ||
+            character?.pinyin ||
+            prop?.pinyin ||
+            "yo"}
+        </span>
+      )}
       <span className="text-2xl"> {prop.input || prop?.hanzi}</span>
       <span className="block text-sm">
         {" "}

@@ -107,13 +107,16 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   // const { lessonId } = useSearchParams();
   const { data: lesson } = useGetContentQuery({ contentId: lessonId });
 
-  const { data: transcriptions } = useListSentencesQuery({
+  const { data: transcriptionsData } = useListSentencesQuery({
     component: lessonId,
     lang: "zh",
     genSents: false,
   });
   // const lesson = contentsArr?.find((content: any) => content?.id === lessonId);
 
+  const transcriptions = transcriptionsData?.length
+    ? transcriptionsData
+    : lesson?.transcriptions;
   const finalUrl = lesson?.audio;
 
   const groupedTranscriptions = groupBy(transcriptions || []);

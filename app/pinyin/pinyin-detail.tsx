@@ -47,7 +47,7 @@ export const PinyinDetail = () => {
   const displayData = filteredData?.length ? filteredData : data;
 
   return (
-    <div>
+    <div className="">
       <div className="md:mx-16 text-black dark:text-white grid grid-cols-3">
         <div></div>
         <h1 className="flex flex-col items-center">

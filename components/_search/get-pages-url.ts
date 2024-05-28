@@ -18,6 +18,8 @@ export const getPagesUrl = (query: string) => {
     home: homePageUrl,
     chat: chatUrl,
     pinyin: pinyinUrl,
+    ht: pinyinUrl,
+    hc: pinyinUrl,
   } as any;
 
   const page = pages[query?.toLowerCase()];

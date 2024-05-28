@@ -35,7 +35,8 @@ export const WordItem = ({
           } as any);
         }
       }}
-      className={`${prop ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-600 text-gray-600"} dark:hover:text-white p-6 flex items-center flex-col`}
+      // className={`${prop ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-600 text-gray-600"} dark:hover:text-white p-6 flex items-center flex-col`}
+      className={` dark:hover:text-white p-6 flex items-center flex-col text-gray-200`}
     >
       {["es", "fr", "ml", "no", "da"]?.includes(lang) ? null : (
         <span
@@ -48,7 +49,7 @@ export const WordItem = ({
         </span>
       )}
       <span className="text-2xl"> {prop.input || prop?.hanzi}</span>
-      <span className="block text-sm">
+      <span className="block text-sm text-gray-500">
         {formatComponentName({ en: prop?.en || prop.en }, 1)}
       </span>
     </Link>

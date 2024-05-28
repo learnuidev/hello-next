@@ -20,7 +20,11 @@ const useLearnedSentences = (lang: string) => {
     queryFn: async () => {
       const words = [...(data || [])]
         ?.filter((item: any) => item?.lang === lang)
-        ?.filter((item: any) => (item?.input || item?.hanzi)?.length > 20);
+        ?.filter(
+          (item: any) =>
+            (item?.input || item?.hanzi)?.length > 20 ||
+            (item?.input || item?.hanzi)?.split(" ")?.length >= 3
+        );
 
       const dataToShow = filterWordsByQuery(words, query);
       return dataToShow?.map((item: any) => {

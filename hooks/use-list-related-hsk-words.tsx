@@ -1,7 +1,14 @@
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useListComponents } from "@/domain/lesson/component.queries";
 
 export const useListRelatedHSKWords = (characterId: string) => {
-  const { data } = useListHSKWordsQuery();
+  const { data: hsk } = useListHSKWordsQuery();
+
+  const { data: components } = useListComponents();
+  const { data: characters } = useListCharactersQuery();
+
+  const data = [...(hsk || []), ...(components || []), ...(characters || [])];
 
   const uniqueWords = [
     ...(new Set(
@@ -16,7 +23,11 @@ export const useListRelatedHSKWords = (characterId: string) => {
       const itemEn = data?.filter(
         (item: any) => item?.hanzi === word && item?.en
       )?.[0];
-      return { ...item, en: itemEn?.en || item?.en };
+      return {
+        ...item,
+        en: itemEn?.en || item?.en,
+        roman: itemEn?.roman || itemEn?.pinyin,
+      };
     }),
   };
 };

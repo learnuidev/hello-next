@@ -25,14 +25,23 @@ import { useDeleteComponentMutation } from "@/domain/lesson/component.mutations"
 import { SelectedCharacterProps } from "./_select-character/select-character.types";
 
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
-export const useViewTypeStore = create((set: any, get: any) => ({
-  view: "home",
-  views: {},
-  setViews: (charId: string, view: any) =>
-    set({ views: { ...get().views, [charId]: view } }),
-  setView: (view: any) => set({ view }),
-}));
+export const useViewTypeStore = create(
+  persist(
+    (set: any, get: any) => ({
+      view: "home",
+      views: {},
+      setViews: (charId: string, view: any) =>
+        set({ views: { ...get().views, [charId]: view } }),
+      setView: (view: any) => set({ view }),
+    }),
+    {
+      name: "component-tabs-store", // name of the item in the storage (must be unique)
+      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+    }
+  )
+);
 
 export function useSelectedCharacterData({
   characterId,
@@ -40,7 +49,7 @@ export function useSelectedCharacterData({
   characterId: string;
 }) {
   // const view = useViewTypeStore((state) => state.view);
-  const views = useViewTypeStore((state) => state.views) as any;
+  const views = useViewTypeStore((state: any) => state.views) as any;
   const view = views?.[characterId] || "home";
   const setViews = useViewTypeStore((state) => state.setViews);
   const setView = (view: any) => {

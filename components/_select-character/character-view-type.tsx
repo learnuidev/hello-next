@@ -10,7 +10,6 @@ import { ReadModeView } from "./readmode-view";
 import { NormalView } from "./normal-view";
 import { AudioComponent } from "./audio-component";
 import { WordItem } from "../word-item";
-import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 import { SubComponentsView } from "./subcomponents-view";
 
@@ -18,6 +17,7 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useStoryStore } from "./story-store";
 import { StoryEditor } from "./story-editor";
 import { RelatedWords } from "./related-words";
+import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
 
 const SentencesView = (props: SelectedCharacterProps) => {
   return (
@@ -81,21 +81,16 @@ export const ViewType = (props: SelectedCharacterProps) => {
     }
   }, [selectedComp?.story, setStory]);
 
+  const { data: relatedHskWords } = useListRelatedHSKWords(characterId);
+
   const HskView = () => {
-    const { data } = useListHSKWordsQuery();
     return (
       <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-start">
-        {data
-          ?.filter((item: any) => item?.hanzi?.includes(characterId))
-          ?.map((prop: any) => {
-            return (
-              <WordItem
-                lang={lang}
-                component={prop}
-                key={JSON.stringify(prop)}
-              />
-            );
-          })}
+        {relatedHskWords?.map((prop: any) => {
+          return (
+            <WordItem lang={lang} component={prop} key={JSON.stringify(prop)} />
+          );
+        })}
       </div>
     );
   };
@@ -197,12 +192,20 @@ export const ViewType = (props: SelectedCharacterProps) => {
             <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
           </div>
 
-          {level && (
-            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-              <Icons.earthAsia />
-              <p>{level}</p>
-            </div>
-          )}
+          <div className="flex items-center space-x-4">
+            {relatedHskWords?.length > 0 && (
+              <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+                <Icons.word />
+                <p>{relatedHskWords?.length}</p>
+              </div>
+            )}
+            {level && (
+              <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+                <Icons.earthAsia />
+                <p>{level}</p>
+              </div>
+            )}
+          </div>
 
           {selectedComp?.audio ? (
             <AudioComponent currentPhrase={selectedComp} />

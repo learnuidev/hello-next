@@ -107,9 +107,9 @@ const PageView = ({ view }: any) => {
   const { data: dictionaryWords } = useListDictionaryWords(lang);
 
   const { data } = useListCharactersQuery();
-  const { data: comps } = useListComponents();
+  // const { data: comps } = useListComponents();
 
-  const words = [...(comps || []), ...(data || [])]
+  const words = [...(data || [])]
     ?.filter((item: any) => item?.lang === lang)
     ?.filter((item: any) => (item?.input || item?.hanzi)?.length < 20);
 

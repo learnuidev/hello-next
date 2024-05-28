@@ -28,6 +28,9 @@ import { create } from "zustand";
 
 export const useViewTypeStore = create((set: any, get: any) => ({
   view: "home",
+  views: {},
+  setViews: (charId: string, view: any) =>
+    set({ views: { ...get().views, [charId]: view } }),
   setView: (view: any) => set({ view }),
 }));
 
@@ -37,9 +40,13 @@ export function useSelectedCharacterData({
   characterId: string;
 }) {
   // const view = useViewTypeStore((state) => state.view);
-  // const setView = useViewTypeStore((state) => state.setView);
-
-  const [view, setView] = useState("home");
+  const views = useViewTypeStore((state) => state.views) as any;
+  const view = views?.[characterId] || "home";
+  const setViews = useViewTypeStore((state) => state.setViews);
+  const setView = (view: any) => {
+    return setViews(characterId, view);
+  };
+  // const [view, setView] = useState("home");
   const routeName = usePathname();
 
   const addHistoryMutation = useAddHistoryMutation();

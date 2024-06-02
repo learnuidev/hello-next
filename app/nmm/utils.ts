@@ -122,16 +122,28 @@ export const filterComponent = (query: string, comp: any, meta?: any) => {
   if (query) {
     const metaComp = meta?.find((item: any) => item?.hanzi === comp?.hanzi);
 
+    const storyJSON = JSON.stringify(metaComp?.story)?.toLowerCase() || "";
+
     const component = comp?.en ? comp : metaComp || comp;
 
     const englishPinyin = getHumanPinyin({ ...comp, ...metaComp });
 
     const en = `${comp?.en} ${metaComp?.en}`;
 
+    // First Filter
     if (
       query?.toLowerCase() === englishPinyin ||
       query?.toLowerCase() === (comp?.hanzi || metaComp?.hanzi)
     ) {
+      return {
+        ...comp,
+        ...metaComp,
+        score: 1,
+      };
+    }
+
+    // Second Filter
+    if (storyJSON.includes(query?.toLowerCase())) {
       return {
         ...comp,
         ...metaComp,
@@ -219,13 +231,13 @@ export const filterComponent = (query: string, comp: any, meta?: any) => {
 export const filterComponents = (
   components: any,
   query: string,
-  meta?: any
+  characters?: any
 ) => {
   const filteredComponents = components?.length
     ? components
         // .filter((component: any) => component?.hanzi?.length <= 3)
         .map((component: any) => {
-          return filterComponent(query, component, meta);
+          return filterComponent(query, component, characters);
         })
         .filter(Boolean)
         .sort((a: any, b: any) => b.score - a.score)

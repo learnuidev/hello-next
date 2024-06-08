@@ -44,6 +44,8 @@ import {
   faTree,
 } from "@fortawesome/pro-thin-svg-icons";
 
+import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
+
 import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
 import { faPlay } from "@fortawesome/sharp-solid-svg-icons/faPlay";
 import { faBowlChopsticksNoodles } from "@fortawesome/sharp-solid-svg-icons/faBowlChopsticksNoodles";

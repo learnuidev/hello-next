@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import * as R from "ramda";
+
 import { useRouter } from "next/navigation";
 
 import { useSelectedCharacter } from "./use-selected-character";
 import { SelectedCharacter } from "@/components/selected-character";
 import { useListParseQuery } from "@/domain/nmm/nmm.queries";
-import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
 
@@ -16,15 +16,14 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
   const [isTocHidden, setIsTocHidden] = useState(false);
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
-  // const setSelectedChar = useSelectedCharacter(
-  //   (state: any) => state?.setCharacter
-  // );
 
   const router = useRouter();
 
-  const { data: contentsArr } = useListContentsQuery();
+  const { data: lesson } = useGetContentQuery({ contentId: lessonId });
 
-  const lesson = contentsArr?.find((content: any) => content?.id === lessonId);
+  console.log("LESSON", lesson);
+
+  const lang = lesson?.lang || lesson?.transcriptions?.[0]?.lang;
 
   const { data: learnedCharacters } = useListCharactersQuery();
 
@@ -168,7 +167,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
               );
               return (
                 <Link
-                  href={`/nmm/${char}`}
+                  href={`/nmm/${char}${lang ? `?lang=${lang}` : ""}`}
                   // onClick={() => {
                   //   setSelectedChar(char);
                   // }}

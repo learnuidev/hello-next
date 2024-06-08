@@ -14,7 +14,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient({
   region: "us-east-1",
 });
 
-export const maxDuration = 120;
+export const maxDuration = 60;
 
 export async function POST(req: Request) {
   const {

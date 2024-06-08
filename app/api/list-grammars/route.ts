@@ -20,7 +20,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient({
 
 const chance = new Chance();
 
-export const maxDuration = 120;
+export const maxDuration = 60;
 
 export async function POST(req: Request) {
   // Extract the `prompt` from the body of the request

@@ -158,28 +158,42 @@ export const TranscriptItem = ({
                 example?.roman}
             </p>
           )}
+
+        {example?.roman ? (
+          <p
+            className={`${
+              (example?.timestamp?.[0] || example?.start) < currentTime &&
+              (example?.timestamp?.[1] || example?.end) > currentTime
+                ? "dark:text-white"
+                : " text-gray-400"
+            } transition`}
+          >
+            {example?.roman}
+          </p>
+        ) : (
+          example?.lit && (
+            <p
+              className={`${
+                (example?.timestamp?.[0] || example?.start) < currentTime &&
+                (example?.timestamp?.[1] || example?.end) > currentTime
+                  ? "dark:text-gray-500"
+                  : "dark:text-gray-300 text-gray-300"
+              } transition`}
+            >
+              {example?.lit}
+            </p>
+          )
+        )}
         {(content?.en || example?.en) && (
           <p
             className={`${
               (example?.timestamp?.[0] || example?.start) < currentTime &&
               (example?.timestamp?.[1] || example?.end) > currentTime
                 ? "dark:text-white"
-                : "dark:text-gray-300 text-gray-500"
-            } transition`}
-          >
-            {example?.en || content?.en}
-          </p>
-        )}
-        {example?.lit && (
-          <p
-            className={`${
-              (example?.timestamp?.[0] || example?.start) < currentTime &&
-              (example?.timestamp?.[1] || example?.end) > currentTime
-                ? "dark:text-gray-500"
                 : "dark:text-gray-500 text-gray-500"
             } transition`}
           >
-            {example?.lit}
+            {example?.en || content?.en}
           </p>
         )}
       </>
@@ -249,7 +263,7 @@ export const TranscriptItem = ({
                                     (char: any) => char?.hanzi === item
                                   )
                                 ? "dark:text-gray-200"
-                                : "dark:text-gray-400 text-gray-300"
+                                : "dark:text-gray-300 text-gray-300"
                           } transition text-md`}
                         >
                           {item}

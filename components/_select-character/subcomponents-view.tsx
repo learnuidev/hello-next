@@ -19,6 +19,14 @@ interface SelectedCharacterProps {
   lang: string;
 }
 
+const SubComponentContainer = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="text-gray-500 flex space-x-4 my-8 overflow-y-auto pb-4">
+      {children}
+    </div>
+  );
+};
+
 const HanziSubComponentsView = ({
   characterId,
   lang,
@@ -33,8 +41,7 @@ const HanziSubComponentsView = ({
 
   if (characterId?.length === 1) {
     return (
-      <div className="text-gray-500 flex space-x-4">
-        {/* {JSON.stringify(sub_components, null, 2)} */}
+      <SubComponentContainer>
         {sub_components?.map((comp: { hanzi: string; en: string }) => {
           return (
             <Link
@@ -47,7 +54,7 @@ const HanziSubComponentsView = ({
             </Link>
           );
         })}
-      </div>
+      </SubComponentContainer>
     );
   }
 };
@@ -63,8 +70,7 @@ const FarsiSubComponentView = ({
     };
   });
   return (
-    <div className="text-gray-500 flex space-x-4 my-8">
-      {/* {JSON.stringify(sub_components, null, 2)} */}
+    <SubComponentContainer>
       {subComponents?.map((item: any) => {
         return (
           <Link
@@ -77,7 +83,7 @@ const FarsiSubComponentView = ({
           </Link>
         );
       })}
-    </div>
+    </SubComponentContainer>
   );
 };
 
@@ -92,8 +98,7 @@ const UrduSubComponentView = ({
     };
   });
   return (
-    <div className="text-gray-500 flex space-x-4 my-8">
-      {/* {JSON.stringify(sub_components, null, 2)} */}
+    <SubComponentContainer>
       {subComponents?.map((item: any) => {
         return (
           <Link
@@ -106,7 +111,7 @@ const UrduSubComponentView = ({
           </Link>
         );
       })}
-    </div>
+    </SubComponentContainer>
   );
 };
 
@@ -121,8 +126,7 @@ const RussianSubComponentView = ({
     };
   });
   return (
-    <div className="text-gray-500 flex space-x-4 my-8">
-      {/* {JSON.stringify(sub_components, null, 2)} */}
+    <SubComponentContainer>
       {subComponents?.map((item: any) => {
         return (
           <Link
@@ -135,7 +139,7 @@ const RussianSubComponentView = ({
           </Link>
         );
       })}
-    </div>
+    </SubComponentContainer>
   );
 };
 const JapaneseSubComponentView = ({
@@ -151,8 +155,7 @@ const JapaneseSubComponentView = ({
     };
   });
   return (
-    <div className="text-gray-500 flex space-x-4 my-8">
-      {/* {JSON.stringify(sub_components, null, 2)} */}
+    <SubComponentContainer>
       {subComponents?.map((item: any) => {
         return (
           <Link
@@ -165,7 +168,7 @@ const JapaneseSubComponentView = ({
           </Link>
         );
       })}
-    </div>
+    </SubComponentContainer>
   );
 };
 
@@ -182,7 +185,7 @@ const KoreanSubComponentView = ({
     };
   });
   return (
-    <div className="text-gray-500 flex space-x-4 my-8">
+    <SubComponentContainer>
       {/* {JSON.stringify(sub_components, null, 2)} */}
       {subComponents?.map((item: any) => {
         return (
@@ -196,7 +199,7 @@ const KoreanSubComponentView = ({
           </Link>
         );
       })}
-    </div>
+    </SubComponentContainer>
   );
 };
 
@@ -205,14 +208,16 @@ const ArabicSubComponentView = ({
   lang,
 }: SelectedCharacterProps) => {
   const subComponents = characterId.split("")?.map((comp: any) => {
-    const alphabet = arabicAlphabets?.find((item) => item?.input === comp);
+    const alphabet = [...arabicAlphabets, ...koreanComponents2].find(
+      (item) => item?.input === comp
+    );
     return {
       ...alphabet,
     };
   });
+
   return (
-    <div className="text-gray-500 flex space-x-4 my-8">
-      {/* {JSON.stringify(sub_components, null, 2)} */}
+    <SubComponentContainer>
       {subComponents?.map((item: any) => {
         return (
           <Link
@@ -225,7 +230,7 @@ const ArabicSubComponentView = ({
           </Link>
         );
       })}
-    </div>
+    </SubComponentContainer>
   );
 };
 

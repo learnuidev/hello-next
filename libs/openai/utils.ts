@@ -26,6 +26,7 @@ export const langCodes = {
   fr: "fr",
   es: "es",
   mo: "mo",
+  ar: "ar",
 } as any;
 
 export const resolveLangCode = (lang: string) => langCodes[lang] || lang;

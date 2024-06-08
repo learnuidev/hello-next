@@ -39,7 +39,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   ) {
     return (
       <div>
-        <YouTubePlayer lessonId={lessonId} />;
+        <YouTubePlayer lessonId={lessonId} />
       </div>
     );
   }

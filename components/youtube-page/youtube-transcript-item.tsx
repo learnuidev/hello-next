@@ -151,7 +151,14 @@ export const TranscriptItem = ({
             content?.roman ||
             example?.pinyin ||
             example?.roman) && (
-            <p className={`dark:text-gray-500 text-gray-400 transition`}>
+            <p
+              className={`${
+                (example?.timestamp?.[0] || example?.start) < currentTime &&
+                (example?.timestamp?.[1] || example?.end) > currentTime
+                  ? "dark:text-white"
+                  : " text-gray-400"
+              } transition`}
+            >
               {content?.pinyin ||
                 content?.roman ||
                 example?.pinyin ||
@@ -159,7 +166,7 @@ export const TranscriptItem = ({
             </p>
           )}
 
-        {example?.roman ? (
+        {/* {example?.roman ? (
           <p
             className={`${
               (example?.timestamp?.[0] || example?.start) < currentTime &&
@@ -183,13 +190,13 @@ export const TranscriptItem = ({
               {example?.lit}
             </p>
           )
-        )}
+        )} */}
         {(content?.en || example?.en) && (
           <p
             className={`${
               (example?.timestamp?.[0] || example?.start) < currentTime &&
               (example?.timestamp?.[1] || example?.end) > currentTime
-                ? "dark:text-white"
+                ? "dark:text-gray-400"
                 : "dark:text-gray-500 text-gray-500"
             } transition`}
           >

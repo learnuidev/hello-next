@@ -5,6 +5,11 @@ export const chineseComponents = [
     en: "Flute",
   },
   {
+    input: "⺀",
+    lang: "zh",
+    en: "Rain Drops",
+  },
+  {
     input: "不",
     lang: "zh",
     en: "Do Not Enter Sign",
@@ -37,7 +42,7 @@ export const chineseComponents = [
   {
     input: "子",
     lang: "zh",
-    en: "Child",
+    en: "Kid",
   },
   {
     input: "用",
@@ -57,7 +62,7 @@ export const chineseComponents = [
   {
     input: "十",
     lang: "zh",
-    en: "Cross",
+    en: "Cross / Messi",
   },
   {
     input: "工",
@@ -72,7 +77,7 @@ export const chineseComponents = [
   {
     input: "文",
     lang: "zh",
-    en: "Giant",
+    en: "Cultured Person",
   },
   {
     input: "二",
@@ -92,12 +97,12 @@ export const chineseComponents = [
   {
     input: "门",
     lang: "zh",
-    en: "Saloon Doors",
+    en: "Door",
   },
   {
     input: "儿",
     lang: "zh",
-    en: "Legs",
+    en: "Kid",
   },
   {
     input: "几",

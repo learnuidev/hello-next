@@ -55,9 +55,12 @@ export function NmmAllComponents() {
     includeAll: true,
     singleItemsOnly: true,
   });
+  const { data: componentsAll } = useListComponents({
+    includeAll: true,
+  });
 
   const slicedComponents = queryStr
-    ? components
+    ? componentsAll
     : components?.slice(
         selectedBelt?.minCharacterLevel,
         selectedBelt?.maxCharacterLevel

@@ -20,6 +20,7 @@ import {
 import { PreviewComponent } from "./preview-component";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useQuery } from "@tanstack/react-query";
+import { allCharacters } from "@/langs/chinese /characters";
 
 export function NmmAllComponents() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
@@ -43,7 +44,7 @@ export function NmmAllComponents() {
 
   const lastAnswer = answers?.[answers?.length - 1];
 
-  const { data: learnedCharacters2 } = useListCharactersQuery();
+  const { data: learnedCharacters2, isLoading } = useListCharactersQuery();
 
   useEffect(() => {
     if (searchQueryParams) {
@@ -51,17 +52,20 @@ export function NmmAllComponents() {
     }
   }, [searchQueryParams, setQuery]);
 
-  const { data: components } = useListComponents({
-    includeAll: true,
-    singleItemsOnly: true,
-  });
+  const { data: components, isLoading: isComponentsLoading } =
+    useListComponents({
+      includeAll: true,
+      singleItemsOnly: true,
+    });
   const { data: componentsAll } = useListComponents({
     includeAll: true,
   });
 
+  const comps = isComponentsLoading ? allCharacters : componentsAll;
+
   const slicedComponents = queryStr
-    ? componentsAll
-    : components?.slice(
+    ? comps
+    : (isComponentsLoading ? allCharacters : components)?.slice(
         selectedBelt?.minCharacterLevel,
         selectedBelt?.maxCharacterLevel
       );
@@ -105,15 +109,17 @@ export function NmmAllComponents() {
                       }}
                       className={`${
                         // learnedCharacters.includes(prop?.hanzi)
-                        learnedCharacters2?.find(
-                          (char: any) => char?.hanzi === prop?.hanzi
-                        )
-                          ? `${color}`
-                          : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                            ? "text-yellow-500"
-                            : selectedComp?.group
-                              ? "text-slate-400"
-                              : "dark:text-gray-500 text-gray-200"
+                        isLoading || isComponentsLoading
+                          ? "text-gray-400"
+                          : learnedCharacters2?.find(
+                                (char: any) => char?.hanzi === prop?.hanzi
+                              )
+                            ? `${color}`
+                            : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                              ? "text-yellow-500"
+                              : selectedComp?.group
+                                ? "text-slate-400"
+                                : "dark:text-gray-500 text-gray-200"
                       } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                     >
                       {prop?.hanzi}

@@ -8,8 +8,10 @@ export const calculateColor = (dict: any) => {
       return "text-purple-400";
     case 4:
       return "text-pink-400";
-    default:
+    case 5:
       return "text-gray-600 dark:text-white";
+    default:
+      return "";
   }
 };
 
@@ -23,8 +25,8 @@ export const calculateBorderColor = (dict: any) => {
       return "border-purple-400";
     case 4:
       return "border-pink-300";
-    default:
-      return "dark:text-white";
+    // default:
+    //   return "dark:text-white";
   }
 };
 

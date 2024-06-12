@@ -41,6 +41,7 @@ import {
   faTrash,
   faGraduationCap,
   faSpaceStationMoon,
+  faPlayCircle,
   faTree,
 } from "@fortawesome/pro-thin-svg-icons";
 
@@ -181,4 +182,5 @@ export const Icons = {
   graduationCap: createFAIcon(faGraduationCap),
   rocket: createFAIcon(faSpaceStationMoon),
   tree: createFAIcon(faTree),
+  playCircle: createFAIcon(faPlayCircle),
 };

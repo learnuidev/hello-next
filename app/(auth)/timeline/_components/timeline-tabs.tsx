@@ -1,13 +1,8 @@
 "use client";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobeAsia } from "@fortawesome/pro-light-svg-icons";
-import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Icons } from "@/components/ui/icons.v2";
 import { TimelineTabBody } from "./timeline-tab-body";
-import { TimelineTabBodyV2 } from "./timeline-tab-body.v2";
 
 export function TimelineTabs() {
   return (
@@ -45,16 +40,16 @@ export function TimelineTabs() {
       </div>
 
       <TabsContent value="all" className="my-8">
-        <TimelineTabBodyV2 variant="all" />
+        <TimelineTabBody variant="all" />
       </TabsContent>
       <TabsContent value="search" className="my-8">
-        <TimelineTabBodyV2 variant="search" />
+        <TimelineTabBody variant="search" />
       </TabsContent>
       <TabsContent value="click" className="my-8">
-        <TimelineTabBodyV2 variant="click" />
+        <TimelineTabBody variant="click" />
       </TabsContent>
       <TabsContent value="discovered" className="my-8">
-        <TimelineTabBodyV2 variant="discovered" />
+        <TimelineTabBody variant="discovered" />
       </TabsContent>
     </Tabs>
   );

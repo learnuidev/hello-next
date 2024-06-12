@@ -3,9 +3,10 @@ import { SelectedCharacterProps } from "./_select-character/select-character.typ
 
 import { Icons } from "./ui/icons.v2";
 import { cn } from "@/lib/utils";
-// import { useToast } from "./ui/use-toast";
 
 import { toast } from "sonner";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
   const {
     selectedComp,
@@ -28,11 +29,23 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     (item: any) => (item?.hanzi || item?.input) === characterId
   );
 
+  const routeName = usePathname();
+
   return (
     <div className="flex w-full fixed z-50 bottom-4">
       <div className="flex items-center w-full justify-center">
         <div className="px-8  py-2 bg-slate-900 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
           <div className="space-x-8 flex justify-center items-center w-full">
+            <Link
+              href={`/review?input=${characterId}&lang=${lang}`}
+              className={cn(
+                "text-gray-800 dark:text-gray-300",
+                "transition text-xl "
+              )}
+            >
+              <Icons.playCircle className="hover:text-white transition" />
+            </Link>
+
             <button
               className={cn("text-xl")}
               onClick={() => {

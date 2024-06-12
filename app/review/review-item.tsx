@@ -1,3 +1,5 @@
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import Link from "next/link";
 
@@ -5,6 +7,8 @@ import { useSearchParams } from "next/navigation";
 
 export const ReviewItem = () => {
   const searchParams = useSearchParams();
+
+  const { data: components } = useListCharactersQuery();
 
   const reviewId = searchParams.get("input") || "";
   const lang = searchParams.get("lang") || "";
@@ -20,10 +24,7 @@ export const ReviewItem = () => {
     : reviewId && lang
       ? groups?.filter((group) =>
           group?.items?.find((item: any) => {
-            return (
-              [item?.hanzi, item?.input]?.includes(reviewId) &&
-              item?.lang === lang
-            );
+            return [item?.hanzi, item?.input]?.includes(reviewId);
 
             return true;
           })
@@ -34,7 +35,7 @@ export const ReviewItem = () => {
     ?.map((group) => group.items)
     ?.flat()
     ?.filter((item) => {
-      if (lang) {
+      if (lang && item?.lang) {
         return JSON.stringify(item?.lang)?.includes(lang);
       }
 
@@ -67,12 +68,30 @@ export const ReviewItem = () => {
     );
   }
 
+  const reviewCharactersKeys = groupItems
+    ?.map((item) => item?.hanzi || item?.input)
+    ?.filter((item) => {
+      const comp = components?.find((c: any) => c?.hanzi === item);
+      if (comp?.steps) {
+        delete comp?.steps;
+      }
+      return comp;
+    });
+
+  const reviewCharacters = reviewCharactersKeys?.map((item) => {
+    const comp = components?.find((c: any) => c?.hanzi === item);
+    if (comp?.steps) {
+      delete comp?.steps;
+    }
+    return comp;
+  });
+
   return (
     <section className="w-full px-4 md:px-12 md:my-4">
-      <h1>Total: {totalItems}</h1>
+      <h1>Total: {reviewCharactersKeys?.length}</h1>
       <div className="">
         <code>
-          <pre>{JSON.stringify(groupItems, null, 2)}</pre>
+          <pre>{JSON.stringify(reviewCharactersKeys, null, 2)}</pre>
         </code>
       </div>
     </section>

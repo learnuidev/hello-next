@@ -156,7 +156,7 @@ export function NomadMethodMandarin() {
                     learnedCharacters2?.find(
                       (char: any) => char?.hanzi === prop?.hanzi
                     )
-                      ? `${color}`
+                      ? `hover:${color} text-gray-800`
                       : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                         ? "text-yellow-500"
                         : selectedComp?.group
@@ -203,7 +203,7 @@ export function NomadMethodMandarin() {
                       learnedCharacters2?.find(
                         (char: any) => char?.hanzi === prop?.hanzi
                       )
-                        ? `${color}`
+                        ? `hover:${color} text-gray-800`
                         : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                           ? "text-yellow-500"
                           : selectedComp?.group

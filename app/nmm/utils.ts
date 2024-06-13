@@ -1,15 +1,15 @@
 export const calculateColor = (dict: any) => {
   switch (parseInt(dict?.tone)) {
     case 1:
-      return "text-red-400";
+      return "hover:text-rose-400";
     case 2:
-      return "text-teal-500";
+      return "hover:text-teal-400";
     case 3:
-      return "text-purple-400";
+      return "hover:text-purple-400";
     case 4:
-      return "text-pink-400";
+      return "hover:text-pink-400";
     case 5:
-      return "text-gray-600 dark:text-white";
+      return "hover:text-gray-600 hover:dark:text-white";
     default:
       return "";
   }

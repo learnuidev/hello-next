@@ -114,13 +114,13 @@ export function NmmAllComponents() {
                           : learnedCharacters2?.find(
                                 (char: any) => char?.hanzi === prop?.hanzi
                               )
-                            ? `hover:${color} text-gray-300`
+                            ? `${color} text-gray-800`
                             : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                               ? "text-yellow-500"
                               : selectedComp?.group
                                 ? "text-slate-400"
-                                : "dark:text-gray-500 text-gray-200"
-                      } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+                                : "dark:text-gray-500"
+                      } p-3 text-2xl md:text-2xl transition lowercase`}
                     >
                       {prop?.hanzi}
                     </Link>

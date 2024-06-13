@@ -5,7 +5,15 @@ import Link from "next/link";
 
 import { useSearchParams } from "next/navigation";
 
-export const useGetReviewState = ({ date: customDate }: { date?: string }) => {
+export const useGetReviewState = ({
+  date: customDate,
+  year,
+  month,
+}: {
+  date?: string;
+  year?: number;
+  month?: number;
+}) => {
   const searchParams = useSearchParams();
 
   const { data: components } = useListCharactersQuery();
@@ -17,19 +25,22 @@ export const useGetReviewState = ({ date: customDate }: { date?: string }) => {
   const { data: groups, isLoading: isLearnedCharactersLoading } =
     useListLearnedCharactersByDate({ variant: "discovered" });
 
-  const filteredGroups = date
-    ? groups?.filter((group) =>
-        group?.items?.find((item: any) => item?.date === date)
-      )
-    : reviewId && lang
-      ? groups?.filter((group) =>
-          group?.items?.find((item: any) => {
-            return [item?.hanzi, item?.input]?.includes(reviewId);
+  const filteredGroups =
+    year && month
+      ? groups?.filter((group) => group?.year === year && group.month === month)
+      : date
+        ? groups?.filter((group) =>
+            group?.items?.find((item: any) => item?.date === date)
+          )
+        : reviewId && lang
+          ? groups?.filter((group) =>
+              group?.items?.find((item: any) => {
+                return [item?.hanzi, item?.input]?.includes(reviewId);
 
-            return true;
-          })
-        )
-      : groups;
+                return true;
+              })
+            )
+          : groups;
 
   const groupItems = filteredGroups
     ?.map((group) => group.items)

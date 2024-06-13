@@ -1,8 +1,20 @@
 import Link from "next/link";
 import { useGetReviewState } from "./use-get-review-state";
 
-export const TotalReviews = ({ date }: { date: string }) => {
-  const { totalLangs, groupItems, totalItems } = useGetReviewState({ date });
+export const TotalReviews = ({
+  date,
+  year,
+  month,
+}: {
+  date?: string;
+  year?: number;
+  month?: number;
+}) => {
+  const { totalLangs, groupItems, totalItems } = useGetReviewState({
+    date,
+    year,
+    month,
+  });
 
   return (
     <div className="">

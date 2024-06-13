@@ -125,7 +125,7 @@ export function NomadMethodMandarin() {
             ? filteredComponents
             : learnedCharacters2?.filter(
                 (character: any) =>
-                  character?.status !== "learned" &&
+                  character?.status === "needs_review" &&
                   character?.level >= selectedBelt?.minCharacterLevel &&
                   character?.level <= selectedBelt?.maxCharacterLevel
               )
@@ -156,7 +156,7 @@ export function NomadMethodMandarin() {
                     learnedCharacters2?.find(
                       (char: any) => char?.hanzi === prop?.hanzi
                     )
-                      ? `hover:${color} text-gray-800`
+                      ? `hover:${color} text-gray-300`
                       : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                         ? "text-yellow-500"
                         : selectedComp?.group

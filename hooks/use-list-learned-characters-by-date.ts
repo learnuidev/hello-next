@@ -20,6 +20,8 @@ export function useListLearnedCharactersByDate({
   data: {
     title: string;
     items: any;
+    year: number;
+    month: number;
   }[];
 } {
   const { data: learnedCharacters, ...rest } = useListCharactersQuery();
@@ -64,7 +66,10 @@ export function useListLearnedCharactersByDate({
       return {
         ...item,
         // date: date,
-        date: `${date}/${month}/${year}`,
+        date: `${month}/${date}/${year}`,
+        day: date,
+        month: month,
+        year,
       };
     })
     ?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
@@ -86,6 +91,8 @@ export function useListLearnedCharactersByDate({
         }
         return {
           title: date,
+          year: getYear(new Date(date)),
+          month: getMonth(new Date(date)) + 1,
           items: filteredComponents,
         };
       })

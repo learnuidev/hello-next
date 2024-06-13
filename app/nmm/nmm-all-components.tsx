@@ -114,7 +114,7 @@ export function NmmAllComponents() {
                           : learnedCharacters2?.find(
                                 (char: any) => char?.hanzi === prop?.hanzi
                               )
-                            ? `${color}`
+                            ? `hover:${color} text-gray-300`
                             : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                               ? "text-yellow-500"
                               : selectedComp?.group

@@ -23,6 +23,9 @@ import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { Icons } from "./ui/icons.v2";
 import { SearchBar } from "./search-bar";
 import { FloatingNavbar } from "./floating-navbar";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useReviewStore } from "@/app/review/review-store";
+import { cn } from "@/lib/utils";
 
 function useGoldenCharacters(belt: any) {
   const { data: components, isLoading } = useListComponents();
@@ -67,12 +70,67 @@ export const NavBar = () => {
 
   const { data: reviewList } = useListCharacterReviewList();
 
+  const viewType = useReviewStore((state: any) => state.viewType);
+  const setViewType = useReviewStore((state: any) => state.setViewType);
+
   // return <SearchBar />;
 
   return (
     <div className="relative">
       <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-4">
         <SearchBar />
+        {/* <div>hello</div> */}
+
+        {routeName?.includes("/review") ? (
+          <div className="z-40 space-x-8 ml-[-400px] flex items-center text-gray-500 font-light">
+            <button
+              onClick={() => {
+                setViewType("day");
+              }}
+              className={cn(viewType === "day" ? "text-white" : "")}
+            >
+              day
+            </button>
+            <button
+              onClick={() => {
+                setViewType("week");
+              }}
+              className={cn(viewType === "week" ? "text-white" : "")}
+            >
+              week
+            </button>
+            <button
+              onClick={() => {
+                setViewType("month");
+              }}
+              className={cn(viewType === "month" ? "text-white" : "")}
+            >
+              month
+            </button>
+            <button
+              onClick={() => {
+                setViewType("year");
+              }}
+              className={cn(viewType === "year" ? "text-white" : "")}
+            >
+              year
+            </button>
+          </div>
+        ) : null}
+
+        {routeName?.includes("/review") ? (
+          <div className="flex items-center space-x-4 text-gray-500">
+            <button>
+              <ArrowLeft className="h-5" />
+            </button>
+
+            <button className="text-sm">Today</button>
+
+            <button>
+              <ArrowRight className="h-5" />
+            </button>
+          </div>
+        ) : null}
       </div>
 
       <FloatingNavbar />

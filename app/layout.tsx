@@ -78,7 +78,7 @@ export default function RootLayout({
         </style>
       </head>
 
-      <body className="bg-black">
+      <body className="bg-[rgb(9,10,11)]">
         <Suspense>
           <PostHogProvider>
             <PostHogPageView />

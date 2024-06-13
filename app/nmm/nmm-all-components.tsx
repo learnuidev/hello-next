@@ -96,9 +96,9 @@ export function NmmAllComponents() {
               (char: any) => char?.hanzi === prop?.hanzi
             );
 
-            if (learnedChar?.status === "forgotten") {
-              return null;
-            }
+            // if (learnedChar?.status === "forgotten") {
+            //   return null;
+            // }
 
             return (
               <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
@@ -120,7 +120,9 @@ export function NmmAllComponents() {
                         isLoading || isComponentsLoading
                           ? "text-gray-400"
                           : learnedChar
-                            ? `${color} text-gray-300`
+                            ? learnedChar?.status === "forgotten"
+                              ? "text-gray-800"
+                              : `${color} text-gray-300`
                             : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                               ? "text-yellow-500"
                               : selectedComp?.group

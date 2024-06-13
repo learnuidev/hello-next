@@ -2,7 +2,7 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import Link from "next/link";
 import { TotalReviews } from "./total-reviews";
-import { getDay, getYear } from "date-fns";
+import { getDay, getYear, intervalToDuration, getTime } from "date-fns";
 import { groupBy } from "ramda";
 
 const indexToDays = {
@@ -104,7 +104,7 @@ export const YearlyReview = () => {
                     0{month?.month}/{year?.year}
                   </h1> */}
 
-                  <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3 grid-cols-2 justify-around items-center gap-2 md:px-16 p-4 mb-8 text-gray-400 font-light text-2xl">
+                  <div className="grid xl:grid-cols-5 lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-3 grid-cols-2 justify-around items-center gap-2 md:px-16 p-4 mb-8 text-gray-400 font-light text-2xl">
                     {groupTitles?.map((groupTitle) => {
                       const groupItem = groups?.find(
                         (group) => group?.title === groupTitle
@@ -117,23 +117,53 @@ export const YearlyReview = () => {
                         return indexToDays?.[dayIndex];
                       })();
 
+                      const intervalParams = {
+                        start: new Date(groupTitle),
+                        end: new Date(),
+                      };
+
+                      const startTime = getTime(new Date(groupTitle));
+                      const endTime = getTime(new Date());
+
+                      const interval = intervalToDuration(intervalParams);
+
+                      // const days = Math.floor(
+                      //   Math.abs(startTime - endTime) / (36000 * 2000)
+                      // );
+
+                      if (groupTitle === "4/30/2024") {
+                        console.log("Start time", startTime);
+                        console.log("End time", endTime);
+                        console.log("GROUP TITLE", groupTitle);
+                        // console.log("interval", interval);
+                        console.log("interval-params", intervalParams);
+                      }
+
                       return (
                         <div
                           key={groupTitle}
-                          className="hover:text-white transition aspect-square border-2 border-[#0b0b0f] bg-[rgb(13,14,16)] flex flex-col justify-between py-4 pb-8 px-4"
+                          className="hover:text-white transition md:aspect-square border-2 border-[#0b0b0f] bg-[rgb(13,14,16)] flex flex-col justify-between py-4 pb-8 px-4"
                         >
                           {/* <h2 className="md:text-xl text-sm text-slate-700">
             {groupTitle}
           </h2> */}
 
                           <div className="flex justify-between items-center">
-                            <p className="text-[14px]">{day}</p>
+                            <p className="text-[14px]">
+                              {interval.days === 0
+                                ? "today"
+                                : `${interval.days}d`}
+                            </p>
 
                             <Link
                               href={`/review?date=${groupTitle}`}
-                              className="text-[14px] text-slate-400"
+                              className="text-[14px] text-slate-600"
                             >
-                              {groupTitle}
+                              {day} {groupTitle}
+                              {/* {groupTitle
+                                ?.split("/")
+                                .map((x, i) => (i === 0 ? parseInt(x) + 1 : x))
+                                ?.join("/")} */}
                             </Link>
                           </div>
 
@@ -145,44 +175,6 @@ export const YearlyReview = () => {
                 </div>
               );
             })}
-            <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3 grid-cols-2 justify-around items-center gap-2 md:px-16 p-4 mb-8 text-gray-400 font-light text-2xl">
-              {groupTitles?.map((groupTitle) => {
-                const groupItem = groups?.find(
-                  (group) => group?.title === groupTitle
-                )?.items?.[0];
-
-                //   const day = groupItem ? groupTitle : getDay(new Date(groupTitle));
-                const day = (() => {
-                  const dayIndex = getDay(new Date(groupTitle));
-
-                  return indexToDays?.[dayIndex];
-                })();
-
-                return (
-                  <div
-                    key={groupTitle}
-                    className="hover:text-white transition aspect-square border-2 border-[#0b0b0f] bg-[rgb(13,14,16)] flex flex-col justify-between py-4 pb-8 px-4"
-                  >
-                    {/* <h2 className="md:text-xl text-sm text-slate-700">
-          {groupTitle}
-        </h2> */}
-
-                    <div className="flex justify-between items-center">
-                      <p className="text-[14px]">{day}</p>
-
-                      <Link
-                        href={`/review?date=${groupTitle}`}
-                        className="text-[14px] text-slate-400"
-                      >
-                        {groupTitle}
-                      </Link>
-                    </div>
-
-                    <TotalReviews date={groupTitle} />
-                  </div>
-                );
-              })}
-            </div>
           </div>
         );
       })}

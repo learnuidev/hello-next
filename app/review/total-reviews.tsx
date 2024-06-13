@@ -7,7 +7,7 @@ export const TotalReviews = ({ date }: { date: string }) => {
   return (
     <div className="">
       <div className="space-x-4 text-[16px] text-gray-500">
-        {totalLangs?.slice(0, 5)?.map((lang) => {
+        {totalLangs?.slice(0, 3)?.map((lang) => {
           return (
             <Link
               className="transition hover:text-white"
@@ -18,13 +18,13 @@ export const TotalReviews = ({ date }: { date: string }) => {
             </Link>
           );
         })}
-      </div>
 
-      {totalLangs?.length > 5 && (
-        <p className="text-gray-500 mt-[-8px] text-[16px] mb-4">
-          + {totalLangs?.length - 5}
-        </p>
-      )}
+        {totalLangs?.length > 5 && (
+          <span className="text-gray-500 text-[16px]">
+            + {totalLangs?.length - 3}
+          </span>
+        )}
+      </div>
 
       <h4 className="text-sm text-gray-700">{totalItems} items </h4>
     </div>

@@ -115,7 +115,7 @@ export default function Insights() {
 
   return (
     <div>
-      <div className="flex items-center justify-between my-4">
+      <div className="flex items-center justify-between mb-4">
         <NavBar />
         <div className="mx-4 md:mx-20">
           <InsightsFilters />

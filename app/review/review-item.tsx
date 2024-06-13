@@ -1,52 +1,22 @@
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useListComponents } from "@/domain/lesson/component.queries";
-import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import Link from "next/link";
 
 import { useSearchParams } from "next/navigation";
+import { useGetReviewState } from "./use-get-review-state";
+import { Icons } from "@/components/ui/icons.v2";
 
 export const ReviewItem = () => {
   const searchParams = useSearchParams();
 
   const { data: components } = useListCharactersQuery();
 
-  const reviewId = searchParams.get("input") || "";
   const lang = searchParams.get("lang") || "";
   const date = searchParams.get("date") || "";
 
-  const { data: groups, isLoading: isLearnedCharactersLoading } =
-    useListLearnedCharactersByDate({ variant: "discovered" });
-
-  const filteredGroups = date
-    ? groups?.filter((group) =>
-        group?.items?.find((item: any) => item?.date === date)
-      )
-    : reviewId && lang
-      ? groups?.filter((group) =>
-          group?.items?.find((item: any) => {
-            return [item?.hanzi, item?.input]?.includes(reviewId);
-
-            return true;
-          })
-        )
-      : groups;
-
-  const groupItems = filteredGroups
-    ?.map((group) => group.items)
-    ?.flat()
-    ?.filter((item) => {
-      if (lang && item?.lang) {
-        return JSON.stringify(item?.lang)?.includes(lang);
-      }
-
-      return true;
+  const { totalLangs, groupItems, reviewCharactersKeys, reviewCharacters } =
+    useGetReviewState({
+      date,
     });
-
-  const totalItems = groupItems?.length || 0;
-
-  const totalLangs = [...new Set(groupItems?.map((x) => x.lang))].filter(
-    Boolean
-  );
 
   if (!lang && totalLangs?.length > 0) {
     return (
@@ -68,31 +38,28 @@ export const ReviewItem = () => {
     );
   }
 
-  const reviewCharactersKeys = groupItems
-    ?.map((item) => item?.hanzi || item?.input)
-    ?.filter((item) => {
-      const comp = components?.find((c: any) => c?.hanzi === item);
-      if (comp?.steps) {
-        delete comp?.steps;
-      }
-      return comp;
-    });
-
-  const reviewCharacters = reviewCharactersKeys?.map((item) => {
-    const comp = components?.find((c: any) => c?.hanzi === item);
-    if (comp?.steps) {
-      delete comp?.steps;
-    }
-    return comp;
-  });
-
   return (
-    <section className="w-full px-4 md:px-12 md:my-4">
-      <h1>Total: {reviewCharactersKeys?.length}</h1>
-      <div className="">
-        <code>
-          <pre>{JSON.stringify(reviewCharactersKeys, null, 2)}</pre>
-        </code>
+    <section className="w-full px-4 md:px-12 mt-8">
+      <div className="flex items-center justify-between">
+        <div className="flex">
+          <Link href="/review">
+            <Icons.xMark />
+          </Link>
+        </div>
+        <h1 className="text-gray-400 text-2xl font-extralight">
+          {reviewCharactersKeys?.length} items{" "}
+        </h1>
+      </div>
+
+      <div className="space-y-4 mt-8">
+        {reviewCharacters?.map((character: any) => {
+          return (
+            <div key={JSON.stringify(character)}>
+              <h3 className="text-gray-300">{character?.input}</h3>
+              <h4 className="text-gray-400 font-light">{character?.en}</h4>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

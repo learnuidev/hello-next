@@ -34,7 +34,7 @@ export const ReviewV2 = () => {
     <main>
       <NavBar />
 
-      <section className="flex justify-between items-center w-full px-4 md:px-12 md:my-4">
+      {/* <section className="flex justify-between items-center w-full px-4 md:px-12 md:my-4">
         {isSelected && (
           <div className="flex">
             <Link href="/review">
@@ -42,7 +42,7 @@ export const ReviewV2 = () => {
             </Link>
           </div>
         )}
-      </section>
+      </section> */}
 
       {isSelected ? <ReviewItem /> : <ReviewList />}
     </main>

@@ -58,31 +58,18 @@ function formatPercentage(number: number) {
   }).format(number);
 }
 
-export const NavBar = () => {
+export const ReviewNavBar = () => {
   const routeName = usePathname();
   const belt = useBeltStore((x) => x?.selectedBelt);
-
-  const goldenChars = useGoldenCharacters(belt);
-
-  const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
-
-  const { data: learnedCharacters2 } = useListCharactersQuery();
-
-  const { data: reviewList } = useListCharacterReviewList();
 
   const viewType = useReviewStore((state: any) => state.viewType);
   const setViewType = useReviewStore((state: any) => state.setViewType);
 
-  // return <SearchBar />;
-
   return (
-    <div className="relative">
-      <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-4">
-        <SearchBar />
-        {/* <div>hello</div> */}
-
-        {routeName?.includes("/review") ? (
-          <div className="z-40 space-x-8 ml-[-400px] flex items-center text-gray-500 font-light">
+    <>
+      {routeName?.includes("/review") ? (
+        <div className="hidden md:block">
+          <div className="z-40 space-x-8 ml-[-360px] flex items-center text-gray-500 font-light">
             <button
               onClick={() => {
                 setViewType("day");
@@ -116,21 +103,49 @@ export const NavBar = () => {
               year
             </button>
           </div>
-        ) : null}
+        </div>
+      ) : null}
 
-        {routeName?.includes("/review") ? (
-          <div className="flex items-center space-x-4 text-gray-500">
-            <button>
-              <ArrowLeft className="h-5" />
-            </button>
+      {routeName?.includes("/review") ? (
+        <div className="flex items-center space-x-4 text-gray-500">
+          <button>
+            <ArrowLeft className="h-5" />
+          </button>
 
-            <button className="text-sm">Today</button>
+          <button className="text-sm">Today</button>
 
-            <button>
-              <ArrowRight className="h-5" />
-            </button>
-          </div>
-        ) : null}
+          <button>
+            <ArrowRight className="h-5" />
+          </button>
+        </div>
+      ) : null}
+    </>
+  );
+};
+export const NavBar = () => {
+  const routeName = usePathname();
+  const belt = useBeltStore((x) => x?.selectedBelt);
+
+  const goldenChars = useGoldenCharacters(belt);
+
+  const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
+
+  const { data: learnedCharacters2 } = useListCharactersQuery();
+
+  const { data: reviewList } = useListCharacterReviewList();
+
+  const viewType = useReviewStore((state: any) => state.viewType);
+  const setViewType = useReviewStore((state: any) => state.setViewType);
+
+  // return <SearchBar />;
+
+  return (
+    <div className="relative">
+      <div className="flex justify-between items-center w-full px-4 md:px-12 md:my-4">
+        <SearchBar />
+        {/* <div>hello</div> */}
+
+        <ReviewNavBar />
       </div>
 
       <FloatingNavbar />

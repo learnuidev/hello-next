@@ -92,6 +92,14 @@ export function NmmAllComponents() {
               tone: selectedComp?.tone_level,
             });
 
+            const learnedChar = learnedCharacters2?.find(
+              (char: any) => char?.hanzi === prop?.hanzi
+            );
+
+            if (learnedChar?.status === "forgotten") {
+              return null;
+            }
+
             return (
               <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
                 <Tooltip>
@@ -111,15 +119,13 @@ export function NmmAllComponents() {
                         // learnedCharacters.includes(prop?.hanzi)
                         isLoading || isComponentsLoading
                           ? "text-gray-400"
-                          : learnedCharacters2?.find(
-                                (char: any) => char?.hanzi === prop?.hanzi
-                              )
-                            ? `${color} text-gray-800`
+                          : learnedChar
+                            ? `${color} text-gray-300`
                             : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                               ? "text-yellow-500"
                               : selectedComp?.group
-                                ? "text-slate-400"
-                                : "dark:text-gray-500"
+                                ? "text-slate-500"
+                                : "dark:text-gray-700"
                       } p-3 text-2xl md:text-2xl transition lowercase`}
                     >
                       {prop?.hanzi}

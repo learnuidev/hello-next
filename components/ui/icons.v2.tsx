@@ -43,6 +43,8 @@ import {
   faSpaceStationMoon,
   faPlayCircle,
   faTree,
+  faFire,
+  faEye,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
@@ -113,11 +115,12 @@ import {
   faBlockBrick,
   faGlassesRound,
   // faTableTree,
+  faCheck as faCheckThin,
 } from "@fortawesome/pro-thin-svg-icons";
 // import { faCitrus } from "@fortawesome/sharp-solid-svg-icons";
 // import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 
-const createFAIcon = (icon: FontAwesomeIconProps["icon"]) => {
+const createFAIcon = (icon: FontAwesomeIconProps["icon"]): any => {
   return function FAIcon(props: any) {
     return <FontAwesomeIcon icon={icon} {...props} />;
   };
@@ -183,4 +186,7 @@ export const Icons = {
   rocket: createFAIcon(faSpaceStationMoon),
   tree: createFAIcon(faTree),
   playCircle: createFAIcon(faPlayCircle),
-};
+  check: createFAIcon(faCheckThin),
+  fire: createFAIcon(faFire),
+  eye: createFAIcon(faEye),
+} as any;

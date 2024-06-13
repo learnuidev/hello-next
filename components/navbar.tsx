@@ -65,9 +65,11 @@ export const ReviewNavBar = () => {
   const viewType = useReviewStore((state: any) => state.viewType);
   const setViewType = useReviewStore((state: any) => state.setViewType);
 
+  const isV2 = false;
+
   return (
     <>
-      {routeName?.includes("/review") ? (
+      {routeName?.includes("/review") && isV2 ? (
         <div className="hidden md:block">
           <div className="z-40 space-x-8 ml-[-360px] flex items-center text-gray-500 font-light">
             <button
@@ -106,7 +108,7 @@ export const ReviewNavBar = () => {
         </div>
       ) : null}
 
-      {routeName?.includes("/review") ? (
+      {routeName?.includes("/review") && isV2 ? (
         <div className="flex items-center space-x-4 text-gray-500">
           <button>
             <ArrowLeft className="h-5" />

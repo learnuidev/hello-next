@@ -61,6 +61,12 @@ export const InsightsV2 = () => {
   const totalWords = learnedCharacters?.filter(
     (item: any) => (item?.hanzi || item?.input)?.length > 1
   );
+  const totalForgotten = learnedCharacters?.filter(
+    (item: any) => item?.status === "forgotten"
+  );
+  const totalErrors = learnedCharacters?.filter(
+    (item: any) => item?.wrongCount
+  );
 
   const grouped = groupBy((item: any) => item?.lang)(
     learnedCharacters?.map((char: any) => {
@@ -209,18 +215,27 @@ export const InsightsV2 = () => {
     <div className="my-4 md:my-16">
       {/* <h1 className="my-8 text-2xl md:text-4xl font-extralight">Stats</h1> */}
 
-      <section className="grid grid-cols-3 gap-4 mb-16 justify-center">
+      <section className="grid grid-cols-3 md:grid-cols-5 gap-4 mt-8 md:mt-0 md:mb-16 justify-center items-center">
         <div className="flex items-center flex-col">
-          <p className="text-4xl">{totalStories}</p>
-          <h3 className="text-gray-400">Stories</h3>
+          <p className="text-2xl md:text-4xl">{totalComponents?.length}</p>
+          <h3 className="text-[14px] text-gray-400">Components</h3>
         </div>
         <div className="flex items-center flex-col">
-          <p className="text-4xl">{totalComponents?.length}</p>
-          <h3 className="text-gray-400">Components</h3>
+          <p className="text-2xl md:text-4xl">{totalWords?.length}</p>
+          <h3 className="text-[14px] text-gray-400">Words</h3>
+        </div>
+
+        <div className="flex items-center flex-col">
+          <p className="text-2xl md:text-4xl">{totalStories}</p>
+          <h3 className="text-[14px] text-gray-400">Stories</h3>
         </div>
         <div className="flex items-center flex-col">
-          <p className="text-4xl">{totalWords?.length}</p>
-          <h3 className="text-gray-400">Words</h3>
+          <p className="text-2xl md:text-4xl">{totalForgotten?.length}</p>
+          <h3 className="text-[14px] text-gray-400">Forgotten</h3>
+        </div>
+        <div className="flex items-center flex-col">
+          <p className="text-2xl md:text-4xl">{totalErrors?.length}</p>
+          <h3 className="text-[14px] text-gray-400">Incorrect</h3>
         </div>
       </section>
 

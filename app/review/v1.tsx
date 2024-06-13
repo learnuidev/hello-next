@@ -24,11 +24,13 @@ import Link from "next/link";
 import { isBefore } from "date-fns";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { ReviewV2 } from "./v2";
+import { Icons } from "@/components/ui/icons.v2";
 
 export function ReviewV1(props: any) {
   // const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);
 
   const [resp, setResp] = useState(null);
+  const [reveal, setReveal] = useState(false);
 
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
   const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
@@ -68,13 +70,17 @@ export function ReviewV1(props: any) {
 
   const { data: components } = useListComponents();
 
-  const { data: learnedCharacters } = useListCharacterReviewList();
+  const { data: learnedCharacters, isLoading } = useListCharacterReviewList();
 
   const currentCharacter = learnedCharacters?.[index];
 
   const currentComponent = components?.find(
     (component: any) => component?.hanzi === currentCharacter?.hanzi
   );
+
+  if (isLoading) {
+    return;
+  }
 
   if (!currentCharacter) {
     return (
@@ -91,13 +97,13 @@ export function ReviewV1(props: any) {
 
   return (
     <div className="grow text-center">
-      <NavBar />
+      {/* <NavBar /> */}
       <h1 className="text-2xl mt-16 mb-16">Do you know this character?</h1>
 
       <div className="my-32">
         <h2 className="text-8xl md:text-9xl">{currentCharacter?.hanzi}</h2>
 
-        {resp ? (
+        {reveal || resp ? (
           <div className="mt-8">
             <h3> {currentCharacter?.pinyin || currentComponent?.pinyin}</h3>
             <h3> {currentCharacter?.en || currentComponent?.en}</h3>
@@ -113,6 +119,7 @@ export function ReviewV1(props: any) {
               updateCharacterStatusMutation.mutateAsync(resp).then((res) => {
                 setResp(null);
                 setIndex(index + 1);
+                setReveal(false);
               });
             }}
           >
@@ -133,29 +140,60 @@ export function ReviewV1(props: any) {
         </div>
       ) : (
         <div className="space-x-24 my-8 text-5xl">
-          <button
-            disabled={updateCharacterStatusMutation?.isLoading}
-            className="hover:text-green-400"
-            onClick={() => {
-              setResp({
-                characterId: currentCharacter?.id,
-                status: "learned",
-              } as any);
-            }}
-          >
-            <FontAwesomeIcon icon={faCheck} />
-          </button>
-          <button
-            disabled={updateCharacterStatusMutation?.isLoading}
-            onClick={() => {
-              setResp({
-                characterId: currentCharacter?.id,
-                status: "needs_review",
-              } as any);
-            }}
-          >
-            <FontAwesomeIcon icon={faXmark} />
-          </button>
+          {reveal ? (
+            <>
+              <button
+                disabled={updateCharacterStatusMutation?.isLoading}
+                className="hover:text-green-400"
+                onClick={() => {
+                  setResp({
+                    characterId: currentCharacter?.id,
+                    status: "learned",
+                    rightCount: (currentCharacter?.rightCount || 0) + 1,
+                  } as any);
+                }}
+              >
+                <Icons.check />
+              </button>
+              <button
+                disabled={updateCharacterStatusMutation?.isLoading}
+                onClick={() => {
+                  setResp({
+                    characterId: currentCharacter?.id,
+                    status: "needs_review",
+                    wrongCount: (currentCharacter?.wrongCount || 0) + 1,
+                  } as any);
+                }}
+              >
+                <Icons.xMark />
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                disabled={updateCharacterStatusMutation?.isLoading}
+                onClick={() => {
+                  setReveal(true);
+                }}
+              >
+                <Icons.eye />
+              </button>
+
+              <button
+                disabled={updateCharacterStatusMutation?.isLoading}
+                onClick={() => {
+                  setResp({
+                    characterId: currentCharacter?.id,
+                    status: "forgotten",
+                    forgottenAt: Date.now(),
+                    rightCount: (currentCharacter?.rightCount || 0) + 1,
+                  } as any);
+                }}
+              >
+                <Icons.fire />
+              </button>
+            </>
+          )}
         </div>
       )}
 

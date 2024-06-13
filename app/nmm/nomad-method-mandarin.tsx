@@ -185,6 +185,10 @@ export function NomadMethodMandarin() {
                 tone: selectedComp?.tone_level,
               });
 
+              const learnedChar = learnedCharacters2?.find(
+                (char: any) => char?.hanzi === prop?.hanzi
+              ) as any;
+
               return (
                 <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
                   <Link
@@ -200,16 +204,30 @@ export function NomadMethodMandarin() {
                     }}
                     className={`${
                       // learnedCharacters.includes(prop?.hanzi)
-                      learnedCharacters2?.find(
-                        (char: any) => char?.hanzi === prop?.hanzi
-                      )
-                        ? `hover:${color} text-gray-800`
+                      learnedChar
+                        ? learnedChar?.forgottenAt &&
+                          learnedChar?.status === "forgotten"
+                          ? `${color} text-gray-800`
+                          : `${color} text-gray-300`
                         : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                           ? "text-yellow-500"
                           : selectedComp?.group
                             ? "text-slate-400"
-                            : "dark:text-gray-500 text-gray-200"
-                    } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+                            : "dark:text-gray-500"
+                    } p-3 text-2xl md:text-2xl transition lowercase`}
+
+                    // className={`${
+                    //   // learnedCharacters.includes(prop?.hanzi)
+                    //   learnedCharacters2?.find(
+                    //     (char: any) => char?.hanzi === prop?.hanzi
+                    //   )
+                    //     ? `hover:${color} text-gray-800`
+                    //     : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                    //       ? "text-yellow-500"
+                    //       : selectedComp?.group
+                    //         ? "text-slate-400"
+                    //         : "dark:text-gray-500 text-gray-200"
+                    // } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                   >
                     {prop?.hanzi}
                   </Link>

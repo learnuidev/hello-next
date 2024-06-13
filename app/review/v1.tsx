@@ -1,49 +1,20 @@
 "use client";
+
 import React from "react";
-import { useState, useEffect } from "react";
-
+import { useState } from "react";
 import { NavBar } from "@/components/navbar";
-import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import { useSelectedCharacter } from "../(auth)/convos/use-selected-character";
-
-import { SelectedCharacter } from "@/components/selected-character";
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import { useSpring } from "@react-spring/web";
-
-import { belts, calculateColor } from "../nmm/utils";
 import { useListComponents } from "@/domain/lesson/component.queries";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useBeltStore } from "@/components/use-belt-store";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faXmark } from "@fortawesome/pro-thin-svg-icons";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import Link from "next/link";
-import { isBefore } from "date-fns";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
-import { ReviewV2 } from "./v2";
 import { Icons } from "@/components/ui/icons.v2";
 
 export function ReviewV1(props: any) {
-  // const [selectedBelt, setSelectedBelt] = useState<any>(belts?.[0]);
-
   const [resp, setResp] = useState(null);
   const [reveal, setReveal] = useState(false);
 
-  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
-  const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
-
-  const selectedId = useSelectedCharacter((state: any) => state?.character);
-  const setSelectedId = useSelectedCharacter(
-    (state: any) => state?.setCharacter
-  );
-  const [view, setView] = useState("characters");
-  const [query, setQuery] = useState("");
   const [index, setIndex] = useState(0);
-
-  const { data } = useListTonePairsQuery({});
 
   const { data: answers } = useListAnswersQuery(
     {},
@@ -56,17 +27,6 @@ export function ReviewV1(props: any) {
   );
 
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
-
-  const lastAnswer = answers?.[answers?.length - 1];
-
-  // const { data: learnedCharacters } = useListCharactersQuery();
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setIndex((seconds) => seconds + 1);
-  //   }, 3000);
-  //   return () => clearInterval(interval);
-  // }, []);
 
   const { data: components } = useListComponents();
 
@@ -125,18 +85,7 @@ export function ReviewV1(props: any) {
           >
             Continue
           </button>
-          <Link
-            href={"/nmm"}
-            // disabled={updateCharacterStatusMutation?.isLoading}
-            // onClick={() => {
-            //   updateCharacterStatusMutation.mutateAsync(resp).then((res) => {
-            //     setResp(null);
-            //     setIndex(index + 1);
-            //   });
-            // }}
-          >
-            Exit
-          </Link>
+          <Link href={"/nmm"}>Exit</Link>
         </div>
       ) : (
         <div className="space-x-24 my-8 text-5xl">
@@ -199,8 +148,6 @@ export function ReviewV1(props: any) {
           )}
         </div>
       )}
-
-      {/* {JSON.stringify(currentCharacter, null, 2)} */}
     </div>
   );
 }

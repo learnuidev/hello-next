@@ -150,6 +150,7 @@ export function ReviewV1(props: any) {
                     characterId: currentCharacter?.id,
                     status: "learned",
                     rightCount: (currentCharacter?.rightCount || 0) + 1,
+                    rightAt: Date.now(),
                   } as any);
                 }}
               >
@@ -162,6 +163,7 @@ export function ReviewV1(props: any) {
                     characterId: currentCharacter?.id,
                     status: "needs_review",
                     wrongCount: (currentCharacter?.wrongCount || 0) + 1,
+                    wrongAt: Date.now(),
                   } as any);
                 }}
               >
@@ -186,6 +188,7 @@ export function ReviewV1(props: any) {
                     characterId: currentCharacter?.id,
                     status: "forgotten",
                     forgottenAt: Date.now(),
+                    rightAt: Date.now(),
                     rightCount: (currentCharacter?.rightCount || 0) + 1,
                   } as any);
                 }}

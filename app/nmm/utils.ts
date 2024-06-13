@@ -120,7 +120,12 @@ export const getHumanPinyin = (comp: { pinyin: string }) => {
     ?.toLowerCase();
 };
 
-export const filterComponent = (query: string, comp: any, meta?: any) => {
+export const filterComponent = (
+  query: string,
+  comp: any,
+  meta?: any,
+  isQuerySameAsVal = false
+) => {
   if (query) {
     const metaComp = meta?.find((item: any) => item?.hanzi === comp?.hanzi);
 
@@ -144,8 +149,10 @@ export const filterComponent = (query: string, comp: any, meta?: any) => {
       };
     }
 
+    console.log("QUERY", query);
+
     // Second Filter
-    if (storyJSON.includes(query?.toLowerCase())) {
+    if (!isQuerySameAsVal && storyJSON.includes(query?.toLowerCase())) {
       return {
         ...comp,
         ...metaComp,
@@ -233,13 +240,19 @@ export const filterComponent = (query: string, comp: any, meta?: any) => {
 export const filterComponents = (
   components: any,
   query: string,
-  characters?: any
+  characters?: any,
+  isQuerySameAsVal = false
 ) => {
   const filteredComponents = components?.length
     ? components
         // .filter((component: any) => component?.hanzi?.length <= 3)
         .map((component: any) => {
-          return filterComponent(query, component, characters);
+          return filterComponent(
+            query,
+            component,
+            characters,
+            isQuerySameAsVal
+          );
         })
         .filter(Boolean)
         .sort((a: any, b: any) => b.score - a.score)

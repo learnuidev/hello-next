@@ -6,7 +6,7 @@ import { filterComponents, getHumanPinyin } from "@/app/nmm/utils";
 
 export const useFilteredComponents = (
   { query }: { query: string },
-  { exact }: { exact: boolean }
+  { exact, isQuerySameAsVal }: { exact: boolean; isQuerySameAsVal?: boolean }
 ) => {
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
@@ -19,7 +19,8 @@ export const useFilteredComponents = (
   const filteredComponents = filterComponents(
     components,
     humanizedQuery,
-    learnedCharacters2
+    learnedCharacters2,
+    isQuerySameAsVal
   );
 
   return {

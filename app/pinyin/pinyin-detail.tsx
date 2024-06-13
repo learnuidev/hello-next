@@ -31,6 +31,7 @@ export const PinyinDetail = () => {
     },
     {
       exact: true,
+      isQuerySameAsVal: true,
     }
   );
 

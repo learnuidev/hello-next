@@ -231,7 +231,7 @@ export const InsightsV2 = () => {
         </div>
         <div className="flex items-center flex-col">
           <p className="text-2xl md:text-4xl">{totalForgotten?.length}</p>
-          <h3 className="text-[14px] text-gray-400">Forgotten</h3>
+          <h3 className="text-[14px] text-gray-400">Mastered</h3>
         </div>
         <div className="flex items-center flex-col">
           <p className="text-2xl md:text-4xl">{totalErrors?.length}</p>

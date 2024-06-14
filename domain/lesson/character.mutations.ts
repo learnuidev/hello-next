@@ -5,10 +5,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 
-// const url = `https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1`;
-
-// TODO: Move this to .env
-
 export type AddCharacterParams = {
   hanzi: string;
   // pinyin: string;
@@ -112,7 +108,7 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        // queryClient.invalidateQueries([queryIds?.listCharacters]);
+        queryClient.refetchQueries([queryIds.listCharacters]);
       },
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,

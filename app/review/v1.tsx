@@ -3,7 +3,6 @@
 import React from "react";
 import { useState } from "react";
 import { NavBar } from "@/components/navbar";
-import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import Link from "next/link";
@@ -14,25 +13,13 @@ export function ReviewV1(props: any) {
   const [resp, setResp] = useState(null);
   const [reveal, setReveal] = useState(false);
 
-  const [index, setIndex] = useState(0);
-
-  const { data: answers } = useListAnswersQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
-
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
 
   const { data: components } = useListComponents();
 
   const { data: learnedCharacters, isLoading } = useListCharacterReviewList();
 
-  const currentCharacter = learnedCharacters?.[index];
+  const currentCharacter = learnedCharacters?.[0];
 
   const currentComponent = components?.find(
     (component: any) => component?.hanzi === currentCharacter?.hanzi
@@ -57,7 +44,6 @@ export function ReviewV1(props: any) {
 
   return (
     <div className="grow text-center">
-      {/* <NavBar /> */}
       <h1 className="text-2xl mt-16 mb-16">Do you know this character?</h1>
 
       <div className="my-32">
@@ -78,7 +64,7 @@ export function ReviewV1(props: any) {
             onClick={() => {
               updateCharacterStatusMutation.mutateAsync(resp).then((res) => {
                 setResp(null);
-                setIndex(index + 1);
+                // setIndex(index + 1);
                 setReveal(false);
               });
             }}
@@ -160,7 +146,7 @@ export function ReviewV1(props: any) {
                   setReveal(true);
                 }}
               >
-                <Icons.eye />
+                <Icons.lightBulb />
               </button>
             </>
           )}

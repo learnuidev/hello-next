@@ -118,17 +118,6 @@ export function ReviewV1(props: any) {
               >
                 <Icons.xMark />
               </button>
-            </>
-          ) : (
-            <>
-              <button
-                disabled={updateCharacterStatusMutation?.isLoading}
-                onClick={() => {
-                  setReveal(true);
-                }}
-              >
-                <Icons.eye />
-              </button>
 
               <button
                 disabled={updateCharacterStatusMutation?.isLoading}
@@ -143,6 +132,17 @@ export function ReviewV1(props: any) {
                 }}
               >
                 <Icons.fire />
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                disabled={updateCharacterStatusMutation?.isLoading}
+                onClick={() => {
+                  setReveal(true);
+                }}
+              >
+                <Icons.eye />
               </button>
             </>
           )}

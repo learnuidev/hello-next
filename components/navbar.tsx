@@ -7,6 +7,8 @@ import { FloatingNavbar } from "./floating-navbar";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useReviewStore } from "@/app/review/review-store";
 import { cn } from "@/lib/utils";
+import { Icons } from "./ui/icons.v2";
+import Link from "next/link";
 
 export const ReviewNavBar = () => {
   const routeName = usePathname();
@@ -82,6 +84,12 @@ export const NavBar = () => {
         <SearchBar />
 
         <ReviewNavBar />
+
+        {routeName?.includes("learn") && (
+          <Link href="/">
+            <Icons.xMark />
+          </Link>
+        )}
       </div>
 
       {routeName?.includes("learn") ? null : <FloatingNavbar />}

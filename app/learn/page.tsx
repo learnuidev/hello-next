@@ -41,7 +41,7 @@ const agenda = [
       },
       {
         id: "pinyin-next",
-        title: "Pinyin V2",
+        title: "Pinyin Pro",
       },
       {
         id: "tracking",
@@ -50,6 +50,10 @@ const agenda = [
       {
         id: "analytics",
         title: "Analytics",
+      },
+      {
+        id: "byod",
+        title: "BYOD",
       },
     ],
   },
@@ -141,13 +145,32 @@ const agenda = [
       },
     ],
   },
+
   {
     id: "settings",
-    title: "04. Settings",
+    title: "05. Settings",
     tasks: [
       {
         id: "reset-password",
         title: "Reset Password",
+      },
+    ],
+  },
+  {
+    id: "concepts",
+    title: "06. Concepts",
+    tasks: [
+      {
+        id: "components",
+        title: "Components",
+      },
+      {
+        id: "nomad-method",
+        title: "Nomad Method",
+      },
+      {
+        id: "why-not-srs",
+        title: "SRS vs IRS 🌶️",
       },
     ],
   },

@@ -10,14 +10,17 @@ import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { Icons } from "@/components/ui/icons.v2";
 
 export function ReviewV1(props: any) {
-  const [resp, setResp] = useState(null);
   const [reveal, setReveal] = useState(false);
 
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
 
   const { data: components } = useListComponents();
 
-  const { data: learnedCharacters, isLoading } = useListCharacterReviewList();
+  const {
+    data: learnedCharacters,
+    isLoading,
+    isRefetching,
+  } = useListCharacterReviewList();
 
   const currentCharacter = learnedCharacters?.[0];
 
@@ -46,42 +49,32 @@ export function ReviewV1(props: any) {
     <div className="grow text-center">
       <h1 className="text-2xl mt-16 mb-16">Do you know this character?</h1>
 
-      <div className="my-32">
-        <h2 className="text-8xl md:text-9xl">{currentCharacter?.hanzi}</h2>
-
-        {reveal || resp ? (
-          <div className="mt-8">
-            <h3> {currentCharacter?.pinyin || currentComponent?.pinyin}</h3>
-            <h3> {currentCharacter?.en || currentComponent?.en}</h3>
-          </div>
-        ) : null}
-      </div>
-
-      {resp ? (
-        <div className="space-x-24 my-8 text-3xl">
-          <button
-            disabled={updateCharacterStatusMutation?.isLoading}
-            onClick={() => {
-              updateCharacterStatusMutation.mutateAsync(resp).then((res) => {
-                setResp(null);
-                // setIndex(index + 1);
-                setReveal(false);
-              });
-            }}
-          >
-            Continue
-          </button>
-          <Link href={"/nmm"}>Exit</Link>
+      {isRefetching ? (
+        <div className="my-32">
+          <h2 className="text-8xl md:text-9xl">...</h2>
         </div>
       ) : (
-        <div className="space-x-24 my-8 text-5xl">
+        <div className="my-32">
+          <h2 className="text-8xl md:text-9xl">{currentCharacter?.hanzi}</h2>
+
           {reveal ? (
-            <>
-              <button
-                disabled={updateCharacterStatusMutation?.isLoading}
-                className="hover:text-green-400"
-                onClick={() => {
-                  setResp({
+            <div className="mt-8">
+              <h3> {currentCharacter?.pinyin || currentComponent?.pinyin}</h3>
+              <h3> {currentCharacter?.en || currentComponent?.en}</h3>
+            </div>
+          ) : null}
+        </div>
+      )}
+
+      <div className="space-x-24 my-8 text-5xl">
+        {reveal ? (
+          <>
+            <button
+              disabled={updateCharacterStatusMutation?.isLoading}
+              className="hover:text-green-400"
+              onClick={() => {
+                updateCharacterStatusMutation
+                  .mutateAsync({
                     characterId: currentCharacter?.id,
                     status: "learned",
                     rightCount: (currentCharacter?.rightCount || 0) + 1,
@@ -92,15 +85,21 @@ export function ReviewV1(props: any) {
                       outcome: "correct",
                       createdAt: Date.now(),
                     }),
-                  } as any);
-                }}
-              >
-                <Icons.check />
-              </button>
-              <button
-                disabled={updateCharacterStatusMutation?.isLoading}
-                onClick={() => {
-                  setResp({
+                  } as any)
+                  .then((res) => {
+                    setReveal(false);
+                  });
+
+                // setResp();
+              }}
+            >
+              <Icons.check />
+            </button>
+            <button
+              disabled={updateCharacterStatusMutation?.isLoading}
+              onClick={() => {
+                updateCharacterStatusMutation
+                  .mutateAsync({
                     characterId: currentCharacter?.id,
                     status: "needs_review",
                     wrongCount: (currentCharacter?.wrongCount || 0) + 1,
@@ -111,16 +110,22 @@ export function ReviewV1(props: any) {
                       outcome: "incorrect",
                       createdAt: Date.now(),
                     }),
-                  } as any);
-                }}
-              >
-                <Icons.xMark />
-              </button>
+                  } as any)
+                  .then((res) => {
+                    setReveal(false);
+                  });
 
-              <button
-                disabled={updateCharacterStatusMutation?.isLoading}
-                onClick={() => {
-                  setResp({
+                // setResp();
+              }}
+            >
+              <Icons.xMark />
+            </button>
+
+            <button
+              disabled={updateCharacterStatusMutation?.isLoading}
+              onClick={() => {
+                updateCharacterStatusMutation
+                  .mutateAsync({
                     characterId: currentCharacter?.id,
                     status: "forgotten",
                     forgottenAt: Date.now(),
@@ -132,26 +137,32 @@ export function ReviewV1(props: any) {
                       outcome: "correct",
                       createdAt: Date.now(),
                     }),
-                  } as any);
-                }}
-              >
-                <Icons.fire />
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                disabled={updateCharacterStatusMutation?.isLoading}
-                onClick={() => {
-                  setReveal(true);
-                }}
-              >
-                <Icons.lightBulb />
-              </button>
-            </>
-          )}
-        </div>
-      )}
+                  } as any)
+                  .then((res) => {
+                    setReveal(false);
+                  });
+              }}
+            >
+              <Icons.fire />
+            </button>
+          </>
+        ) : isRefetching ? null : (
+          <>
+            <button
+              disabled={updateCharacterStatusMutation?.isLoading}
+              onClick={() => {
+                setReveal(true);
+              }}
+            >
+              <Icons.lightBulb />
+            </button>
+
+            <Link href={"/nmm"}>
+              <Icons.xMark />
+            </Link>
+          </>
+        )}
+      </div>
     </div>
   );
 }

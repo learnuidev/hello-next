@@ -16,7 +16,7 @@ import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { usePathname, useSearchParams } from "next/navigation";
 
 import { useSearchQueryStore } from "@/components/search/state";
-import { NmmAllComponents } from "./nmm-core-components";
+
 import { Icons } from "@/components/ui/icons.v2";
 
 export function AllComponents() {

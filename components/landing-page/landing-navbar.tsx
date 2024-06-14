@@ -20,8 +20,9 @@ const LandingNavBarItem = ({ href, text }: { href: string; text: string }) => {
 };
 
 export const LandingNavbar = () => {
+  const routeName = usePathname();
   return (
-    <nav className="flex justify-between items-center w-full px-4 md:px-20 my-2 md:my-6">
+    <nav className="flex justify-between items-center w-full px-4 md:px-12 my-2 md:my-6">
       <div className="flex space-x-2 md:space-x-8 items-center">
         <Link href="/">
           <Icons.mandarin className="text-xl hover:text-rose-400 transition" />
@@ -30,8 +31,17 @@ export const LandingNavbar = () => {
       <div className="hidden md:block">
         <div className="space-x-8 flex">
           <LandingNavBarItem text={"Why?"} href={"/why"} />
-          {/* <LandingNavBarItem text={"Pricing"} href={"/pricing"} /> */}
-          <LandingNavBarItem text={"Learn"} href={"/learn"} />
+
+          <Link
+            href={"/learn"}
+            className={cn(
+              `flex items-center text-sm space-x-2 transition hover:text-rose-400`,
+              routeName === "/learn" ? "text-rose-400" : "text-gray-500"
+            )}
+          >
+            <Icons.glassesRound />
+            <p>Learn</p>
+          </Link>
         </div>
       </div>
       <div className="hidden md:block">

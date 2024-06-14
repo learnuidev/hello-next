@@ -217,24 +217,24 @@ export const InsightsV2 = () => {
 
       <section className="grid grid-cols-3 md:grid-cols-5 gap-4 mt-8 md:mt-0 md:mb-16 justify-center items-center">
         <div className="flex items-center flex-col">
-          <p className="text-2xl md:text-4xl">{totalComponents?.length}</p>
+          <p className="text-2xl md:text-4xl">{totalComponents?.length || 0}</p>
           <h3 className="text-[14px] text-gray-400">Components</h3>
         </div>
         <div className="flex items-center flex-col">
-          <p className="text-2xl md:text-4xl">{totalWords?.length}</p>
+          <p className="text-2xl md:text-4xl">{totalWords?.length || 0}</p>
           <h3 className="text-[14px] text-gray-400">Words</h3>
         </div>
 
         <div className="flex items-center flex-col">
-          <p className="text-2xl md:text-4xl">{totalStories}</p>
+          <p className="text-2xl md:text-4xl">{totalStories || 0}</p>
           <h3 className="text-[14px] text-gray-400">Stories</h3>
         </div>
         <div className="flex items-center flex-col">
-          <p className="text-2xl md:text-4xl">{totalForgotten?.length}</p>
+          <p className="text-2xl md:text-4xl">{totalForgotten?.length || 0}</p>
           <h3 className="text-[14px] text-gray-400">Mastered</h3>
         </div>
         <div className="flex items-center flex-col">
-          <p className="text-2xl md:text-4xl">{totalErrors?.length}</p>
+          <p className="text-2xl md:text-4xl">{totalErrors?.length || 0}</p>
           <h3 className="text-[14px] text-gray-400">Incorrect</h3>
         </div>
       </section>

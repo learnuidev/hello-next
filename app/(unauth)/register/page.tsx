@@ -13,6 +13,7 @@ import { NavBar } from "@/components/navbar";
 import { Link } from "@/components/link";
 
 import { Register } from "@/components/Register";
+import { LandingNavbar } from "@/components/landing-page/landing-navbar";
 
 interface CoursePreview {
   title: string;
@@ -43,6 +44,7 @@ export default function Home() {
   };
   return (
     <main className="">
+      <LandingNavbar />
       <Register />
     </main>
   );

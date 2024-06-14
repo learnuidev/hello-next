@@ -7,7 +7,7 @@ import { useSearchState } from "@/components/use-search-state";
 import { useEffect, useState } from "react";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useDebouncedCallback } from "use-debounce";
-import { NmmAllComponents } from "@/app/nmm/nmm-core-components";
+import { NmmCoreComponents } from "@/app/nmm/nmm-core-components";
 
 export const SearchInputFC = () => {
   const isSearchBarOpen = useSearchState((state) => state.isSearchBarOpen);
@@ -79,7 +79,7 @@ export const SearchInputFC = () => {
             }}
           />
 
-          <div className="my-16 px-2">{query && <NmmAllComponents />}</div>
+          <div className="my-16 px-2">{query && <NmmCoreComponents />}</div>
         </div>
       </div>
     </div>

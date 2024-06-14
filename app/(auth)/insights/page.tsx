@@ -110,7 +110,7 @@ export default function Insights() {
   );
 
   if (isLoading) {
-    return <div> is loading ...</div>;
+    return <div></div>;
   }
 
   return (

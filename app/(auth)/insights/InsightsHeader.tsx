@@ -122,7 +122,7 @@ export function InsightsHeader() {
   );
 
   if (isLoading) {
-    return <div> is loading ...</div>;
+    return <div></div>;
   }
 
   return (

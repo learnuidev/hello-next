@@ -23,7 +23,7 @@ function SectionItem({
 }) {
   return (
     <FadeInDiv>
-      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-gray-200 bg-black h-screen">
+      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-gray-200 h-screen">
         <h3 className="text-gray-800 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
           {step}
         </h3>
@@ -40,6 +40,26 @@ function SectionItem({
   );
 }
 
+export const FreeTrialButton = ({ showBanner }: { showBanner?: boolean }) => {
+  const router = useRouter();
+  return (
+    <FadeInDiv>
+      <div className="flex justify-center h-screen items-center space-y-16">
+        <Button
+          variant="outline"
+          className="rounded-full animate-bounce"
+          onClick={() => {
+            router.push("/register");
+          }}
+        >
+          {" "}
+          Register For Free
+        </Button>
+      </div>
+    </FadeInDiv>
+  );
+};
+
 export const FeaturesList = () => {
   const router = useRouter();
 
@@ -51,20 +71,7 @@ export const FeaturesList = () => {
         );
       })}
 
-      <FadeInDiv>
-        <div className="flex justify-center h-screen items-center">
-          <Button
-            variant="outline"
-            className="rounded-full animate-bounce"
-            onClick={() => {
-              router.push("/pricing");
-            }}
-          >
-            {" "}
-            Start A Free Trial
-          </Button>
-        </div>
-      </FadeInDiv>
+      <FreeTrialButton />
     </>
   );
 };

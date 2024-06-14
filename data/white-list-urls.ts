@@ -4,4 +4,5 @@ export const whiteListUrls = [
   "/pricing",
   "/blog",
   "/why",
+  "/learn",
 ];

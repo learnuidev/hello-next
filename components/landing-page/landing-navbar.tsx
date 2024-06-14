@@ -30,8 +30,8 @@ export const LandingNavbar = () => {
       <div className="hidden md:block">
         <div className="space-x-8 flex">
           <LandingNavBarItem text={"Why?"} href={"/why"} />
-          <LandingNavBarItem text={"Pricing"} href={"/pricing"} />
-          <LandingNavBarItem text={"Blog"} href={"/blog"} />
+          {/* <LandingNavBarItem text={"Pricing"} href={"/pricing"} /> */}
+          <LandingNavBarItem text={"Learn"} href={"/learn"} />
         </div>
       </div>
       <div className="hidden md:block">

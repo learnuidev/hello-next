@@ -22,7 +22,7 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { useQuery } from "@tanstack/react-query";
 import { allCharacters } from "@/langs/chinese /characters";
 
-export function NmmAllComponents() {
+export function NmmCoreComponents() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
   const searchParams = useSearchParams();
   const searchQueryParams = searchParams.get("query") || "";

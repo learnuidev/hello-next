@@ -7,7 +7,7 @@ import { useSearchState } from "@/components/use-search-state";
 import { useEffect, useState } from "react";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useDebouncedCallback } from "use-debounce";
-import { NmmAllComponents } from "@/app/nmm/nmm-all-components";
+import { NmmAllComponents } from "@/app/nmm/nmm-core-components";
 
 export const SearchInputFC = () => {
   const isSearchBarOpen = useSearchState((state) => state.isSearchBarOpen);

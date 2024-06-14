@@ -47,7 +47,15 @@ export function ReviewV1(props: any) {
 
   return (
     <div className="grow text-center">
-      <h1 className="text-2xl mt-16 mb-16">Do you know this character?</h1>
+      <div className="flex items-center justify-between mt-16 mb-16 px-4 md:px-16">
+        <Link href={"/nmm"}>
+          <Icons.xMark className="text-xl" />
+        </Link>
+
+        <h1 className="text-2xl">Do you know this character?</h1>
+
+        <div></div>
+      </div>
 
       {isRefetching ? (
         <div className="my-32">
@@ -55,11 +63,23 @@ export function ReviewV1(props: any) {
         </div>
       ) : (
         <div className="my-32">
-          <h2 className="text-8xl md:text-9xl">{currentCharacter?.hanzi}</h2>
+          {reveal ? (
+            <div className="mt-8">
+              <h3 className="text-gray-400">
+                {" "}
+                {currentCharacter?.pinyin ||
+                  currentComponent?.pinyin ||
+                  currentCharacter?.roman ||
+                  currentComponent?.roman}
+              </h3>
+            </div>
+          ) : null}
+          <h2 className="text-8xl md:text-9xl">
+            {currentCharacter?.hanzi || currentCharacter?.input}
+          </h2>
 
           {reveal ? (
             <div className="mt-8">
-              <h3> {currentCharacter?.pinyin || currentComponent?.pinyin}</h3>
               <h3> {currentCharacter?.en || currentComponent?.en}</h3>
             </div>
           ) : null}
@@ -156,10 +176,6 @@ export function ReviewV1(props: any) {
             >
               <Icons.lightBulb />
             </button>
-
-            <Link href={"/nmm"}>
-              <Icons.xMark />
-            </Link>
           </>
         )}
       </div>

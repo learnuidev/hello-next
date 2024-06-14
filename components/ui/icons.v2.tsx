@@ -120,7 +120,7 @@ import {
 // import { faCitrus } from "@fortawesome/sharp-solid-svg-icons";
 // import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 
-const createFAIcon = (icon: FontAwesomeIconProps["icon"]): any => {
+const createFAIcon = (icon: FontAwesomeIconProps["icon"]) => {
   return function FAIcon(props: any) {
     return <FontAwesomeIcon icon={icon} {...props} />;
   };
@@ -189,4 +189,4 @@ export const Icons = {
   check: createFAIcon(faCheckThin),
   fire: createFAIcon(faFire),
   eye: createFAIcon(faEye),
-} as any;
+};

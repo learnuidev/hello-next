@@ -100,6 +100,12 @@ export function ReviewV1(props: any) {
                     status: "learned",
                     rightCount: (currentCharacter?.rightCount || 0) + 1,
                     rightAt: Date.now(),
+                    reviewHistory: (
+                      currentCharacter?.reviewHistory || []
+                    ).concat({
+                      outcome: "correct",
+                      createdAt: Date.now(),
+                    }),
                   } as any);
                 }}
               >
@@ -113,6 +119,12 @@ export function ReviewV1(props: any) {
                     status: "needs_review",
                     wrongCount: (currentCharacter?.wrongCount || 0) + 1,
                     wrongAt: Date.now(),
+                    reviewHistory: (
+                      currentCharacter?.reviewHistory || []
+                    ).concat({
+                      outcome: "incorrect",
+                      createdAt: Date.now(),
+                    }),
                   } as any);
                 }}
               >
@@ -128,6 +140,12 @@ export function ReviewV1(props: any) {
                     forgottenAt: Date.now(),
                     rightAt: Date.now(),
                     rightCount: (currentCharacter?.rightCount || 0) + 1,
+                    reviewHistory: (
+                      currentCharacter?.reviewHistory || []
+                    ).concat({
+                      outcome: "correct",
+                      createdAt: Date.now(),
+                    }),
                   } as any);
                 }}
               >

@@ -10,6 +10,7 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { getDate, getMonth, getYear } from "date-fns";
 import Link from "next/link";
 import { groupBy } from "ramda";
+import { useGetAuthUserProfileQuery } from "./user/use-get-auth-user-profile";
 
 export function useListLearnedCharactersByDate({
   variant,
@@ -56,7 +57,24 @@ export function useListLearnedCharactersByDate({
 
   const resolvedChars = getResolvedChars();
 
-  const learnedCharactersFormatted = resolvedChars
+  const { data: authUserProfile } = useGetAuthUserProfileQuery();
+  const userProfile = authUserProfile as any;
+  const profileHistory = userProfile
+    ? {
+        ...userProfile,
+        input: "Joined Mandarino",
+        roman: "Joined",
+        status: "joined",
+        en: "Joined",
+        score: 1,
+        createdAt: userProfile?.createdAt,
+      }
+    : null;
+
+  console.log("PROFILE HISTORY", profileHistory);
+
+  const learnedCharactersFormatted = [...resolvedChars, profileHistory]
+    ?.filter(Boolean)
     ?.map((item: any) => {
       const createdAt = new Date(item?.createdAt);
       const date = getDate(createdAt);
@@ -101,5 +119,5 @@ export function useListLearnedCharactersByDate({
   return {
     data: grouped,
     ...rest,
-  };
+  } as any;
 }

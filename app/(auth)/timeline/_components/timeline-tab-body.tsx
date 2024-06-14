@@ -1,8 +1,5 @@
 "use client";
 
-import { filterComponents } from "@/app/nmm/utils";
-import { useSearchQueryStore } from "@/components/search/state";
-import { useListHistoryQuery } from "@/domain/history/history.queries";
 import {
   Tooltip,
   TooltipContent,
@@ -10,18 +7,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useListComponents } from "@/domain/lesson/component.queries";
 import { cn } from "@/lib/utils";
-import { getDate, getMonth, getYear } from "date-fns";
 import Link from "next/link";
-import { groupBy } from "ramda";
 import { useState } from "react";
 import { useTimelineState } from "./timeline.state";
 import { PreviewComponent } from "@/app/nmm/preview-component";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TimelineDatesDrawer } from "./timeline-dates-drawer";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
+import { Icons } from "@/components/ui/icons.v2";
 
 export const TimelineTabBody = ({
   variant,
@@ -46,6 +40,10 @@ export const TimelineTabBody = ({
 
   const selectedGroup =
     groups?.find((group: any) => group?.title === selectedDate) || firstGroup;
+
+  const joined = selectedGroup?.items?.find(
+    (item: any) => item?.status === "joined"
+  );
 
   if (isLearnedCharactersLoading) {
     return <div className="text-center my-16"> Loading ...</div>;
@@ -135,6 +133,9 @@ export const TimelineTabBody = ({
 
             <div className="flex flex-wrap flex-row w-full">
               {selectedGroup?.items?.map((item: any, idx: any) => {
+                if (item?.status === "joined") {
+                  return null;
+                }
                 return (
                   <TooltipProvider
                     key={`${item?.input || item?.hanzi?.trim("")}-chars-${idx}`}
@@ -172,6 +173,19 @@ export const TimelineTabBody = ({
                 );
               })}
             </div>
+
+            {joined ? (
+              <div className="ml-[-260px] my-32 text-center flex items-center justify-center flex-col">
+                <p className="my-4">
+                  {" "}
+                  <Icons.mountainSun className="text-3xl text-gray-600" />
+                </p>
+                <h1 className="text-2xl font-extralight text-gray-600">
+                  {" "}
+                  Joined Mandarino
+                </h1>
+              </div>
+            ) : null}
           </div>
         </section>
       </article>

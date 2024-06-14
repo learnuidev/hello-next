@@ -151,8 +151,16 @@ const agenda = [
     title: "05. Settings",
     tasks: [
       {
+        id: "preferences",
+        title: "Preferences",
+      },
+      {
         id: "reset-password",
         title: "Reset Password",
+      },
+      {
+        id: "tracking",
+        title: "Tracking",
       },
     ],
   },

@@ -37,7 +37,7 @@ export function Login() {
       // setViewtype(RegistrationViewTypes.confirmLogin);
 
       queryClient?.invalidateQueries([authQueryIds?.currentAuthUser]);
-      router.push("/");
+      // router.push("/");
     },
     onError: (err: any) => {
       console.error("ERROR YO", err.message);

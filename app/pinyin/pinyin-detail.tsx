@@ -35,6 +35,8 @@ export const PinyinDetail = () => {
     }
   );
 
+  console.log("DATA", data);
+
   const { data: components } = useListComponents({ includeAll: true });
 
   const filteredData = data?.filter((prop: any, idx: number) => {
@@ -46,6 +48,8 @@ export const PinyinDetail = () => {
   });
 
   const displayData = filteredData?.length ? filteredData : data;
+
+  console.log("DISPLAY DATA", displayData);
 
   return (
     <div className="">

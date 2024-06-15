@@ -4,10 +4,7 @@ import { queryIds } from "./queryIds";
 import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
-
-// TODO: Move this to .env
-const url =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-sub-components";
+import { siteConfig } from "@/lib/config";
 
 const listSubComponents = async (
   { componentId }: { componentId: string },
@@ -15,7 +12,7 @@ const listSubComponents = async (
     Authorization: string;
   }
 ) => {
-  const res = await fetch(url, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/list-sub-components`, {
     method: "POST",
     headers: {
       // 'Access-Control-Allow-Origin': "*",
@@ -48,7 +45,7 @@ export function useListSubComponentsQuery(
     },
     {
       ...options,
-      // enabled: Boolean(authUser?.jwt),
+      enabled: Boolean(authUser?.jwt),
       // enabled: Boolean(journeyId),
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,

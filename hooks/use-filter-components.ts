@@ -3,6 +3,7 @@
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { filterComponents, getHumanPinyin } from "@/app/nmm/utils";
+import { allCharacters } from "@/langs/chinese /characters";
 
 export const useFilteredComponents = (
   { query }: { query: string },
@@ -17,7 +18,7 @@ export const useFilteredComponents = (
   const humanizedQuery = getHumanPinyin({ pinyin: query });
 
   const filteredComponents = filterComponents(
-    components,
+    components || allCharacters,
     humanizedQuery,
     learnedCharacters2,
     isQuerySameAsVal
@@ -31,7 +32,7 @@ export const useFilteredComponents = (
       return true;
     }),
     isLoading: isComponentsLoading || isLearnedCharactersLoading,
-  };
+  } as any;
 };
 
 export const filterComponentsExact = (components: any, query: any) => {

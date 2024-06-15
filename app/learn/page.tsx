@@ -1,4 +1,5 @@
 import { NavBar } from "@/components/navbar";
+import { cn } from "@/lib/utils";
 
 const agenda = [
   {
@@ -203,7 +204,19 @@ export default function LearnMandarino() {
                   <div className="mx-4 my-4">
                     {lesson?.tasks?.map((task) => {
                       return (
-                        <div key={task.id} className="">
+                        <div
+                          key={task.id}
+                          className={cn(
+                            lesson?.id !== "multi-languages"
+                              ? "text-white"
+                              : lesson?.id === "multi-languages" &&
+                                  ["Mandarin", "Nepali", "Romanian"]?.includes(
+                                    task?.title
+                                  )
+                                ? "text-white"
+                                : "text-gray-800"
+                          )}
+                        >
                           <p>{task?.title}</p>
                         </div>
                       );

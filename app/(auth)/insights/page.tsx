@@ -109,9 +109,9 @@ export default function Insights() {
     correctAnswers?.length / allAnswers?.length
   );
 
-  if (isLoading) {
-    return <div></div>;
-  }
+  // if (isLoading) {
+  //   return <div></div>;
+  // }
 
   return (
     <div>

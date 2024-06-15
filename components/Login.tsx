@@ -10,7 +10,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 
 import { queryIds as authQueryIds } from "@/domain/auth/queryIds";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 enum RegistrationViewTypes {
   login,
@@ -22,6 +22,8 @@ enum RegistrationViewTypes {
 export function Login() {
   const [username, setUserName] = useState("");
   // const [username, setUserName] = useState("");
+  const routeName = usePathname();
+
   const [code, setCode] = useState("");
   const [authUser, setAuthUser] = useState(null);
   const [password, setPassword] = useState("");
@@ -37,7 +39,10 @@ export function Login() {
       // setViewtype(RegistrationViewTypes.confirmLogin);
 
       queryClient?.invalidateQueries([authQueryIds?.currentAuthUser]);
-      // router.push("/");
+
+      if (routeName === "/login") {
+        router.push("/");
+      }
     },
     onError: (err: any) => {
       console.error("ERROR YO", err.message);

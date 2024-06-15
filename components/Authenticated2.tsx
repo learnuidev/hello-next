@@ -9,15 +9,11 @@ import { LandingPage } from "./landing-page/landing-page";
 import { SettingsDialog } from "./settings-dialog/settings-dialog";
 import { whiteListUrls } from "@/data/white-list-urls";
 
-export const Authenticated = (props: any) => {
+export const Authenticated2 = (props: any) => {
   const { data: authUser, isLoading } = useCurrentAuthUser({});
   const routeName = usePathname();
 
   const isSearchBarOpen = useSearchState((state) => state.isSearchBarOpen);
-
-  if (whiteListUrls.includes(routeName) || routeName?.includes("nmm")) {
-    return <>{props.children}</>;
-  }
 
   if (authUser) {
     return (

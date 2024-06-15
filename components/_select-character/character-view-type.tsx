@@ -18,6 +18,9 @@ import { useStoryStore } from "./story-store";
 import { StoryEditor } from "./story-editor";
 import { RelatedWords } from "./related-words";
 import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
+import { Authenticated } from "../Authenticated";
+import { Authenticate } from "../Authenticate";
+import { Authenticated2 } from "../Authenticated2";
 
 const SentencesView = (props: SelectedCharacterProps) => {
   return (
@@ -174,108 +177,110 @@ export const ViewType = (props: SelectedCharacterProps) => {
   }
 
   return (
-    <div
-      className={
-        "relative grid grid-cols-1 md:grid-cols-[1fr_500px] gap-x-8 md:grid-rows-[70px_1fr] pt-0"
-      }
-    >
-      <div className={"row-span-2 overflow-hidden col-span-1"}>
-        {/* {selectedChar?.length > 3 && ( */}
-        <div className="flex items-center justify-between mb-8 mt-4">
-          <div className="flex flex-col items-start space-y-2">
-            <h2 className="text-gray-400 font-extralight">{pinyinOrRoman}</h2>
+    <Authenticated2>
+      <div
+        className={
+          "relative grid grid-cols-1 md:grid-cols-[1fr_500px] gap-x-8 md:grid-rows-[70px_1fr] pt-0"
+        }
+      >
+        <div className={"row-span-2 overflow-hidden col-span-1"}>
+          {/* {selectedChar?.length > 3 && ( */}
+          <div className="flex items-center justify-between mb-8 mt-4">
+            <div className="flex flex-col items-start space-y-2">
+              <h2 className="text-gray-400 font-extralight">{pinyinOrRoman}</h2>
 
-            <h1 className="text-4xl my-0 py-0 font-extralight">
-              {selectedCompInput}
-            </h1>
+              <h1 className="text-4xl my-0 py-0 font-extralight">
+                {selectedCompInput}
+              </h1>
 
-            <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            {relatedHskWords?.length > 0 && (
-              <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-                <Icons.word />
-                <p>{relatedHskWords?.length}</p>
-              </div>
-            )}
-            {level && (
-              <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-                <Icons.earthAsia />
-                <p>{level}</p>
-              </div>
-            )}
-          </div>
-
-          {selectedComp?.audio ? (
-            <AudioComponent currentPhrase={selectedComp} />
-          ) : null}
-        </div>
-        {/* )} */}
-
-        {/* <p>{JSON.stringify(selectedComp2, null, 2)}</p> */}
-
-        {selected && (
-          <div className="font-light flex space-x-4 items-center text-gray-400 mb-2">
-            {toneLevel && (
-              <div className="flex space-x-2 items-center">
-                <Icons.musicNote />
-                <p>{toneLevel}</p>
-              </div>
-            )}
-            {initial && (
-              <div className="flex space-x-2 items-center">
-                <p>initial - </p>
-                <p>{initial}</p>
-              </div>
-            )}
-            {final && (
-              <div className="flex space-x-2 items-center">
-                <p>final - </p>
-                <p>{final}</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        <SubComponentsView lang={lang} characterId={characterId} />
-
-        <article>
-          <div>
-            {characterId?.length < 10 && (
-              <div className="mt-[-32px]">
-                <Summary showMeanings={true} characterId={characterId} />
-              </div>
-            )}
-
-            <div className="my-8">
-              <GrammarAnalysis
-                contentId={selectedChar}
-                lang={lang || selectedComp?.lang}
-              />
+              <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
             </div>
-          </div>
-        </article>
-      </div>
 
-      <div>
-        <div className="">
-          {" "}
-          {sentences?.length > 7 ? (
-            <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
-              <SentencesView {...props} />
-            </ScrollArea>
-          ) : (
-            <div className="hidden md:block space-y-2 h-[700px] rounded-mdp-4">
-              <SentencesView {...props} />
+            <div className="flex items-center space-x-4">
+              {relatedHskWords?.length > 0 && (
+                <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+                  <Icons.word />
+                  <p>{relatedHskWords?.length}</p>
+                </div>
+              )}
+              {level && (
+                <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+                  <Icons.earthAsia />
+                  <p>{level}</p>
+                </div>
+              )}
+            </div>
+
+            {selectedComp?.audio ? (
+              <AudioComponent currentPhrase={selectedComp} />
+            ) : null}
+          </div>
+          {/* )} */}
+
+          {/* <p>{JSON.stringify(selectedComp2, null, 2)}</p> */}
+
+          {selected && (
+            <div className="font-light flex space-x-4 items-center text-gray-400 mb-2">
+              {toneLevel && (
+                <div className="flex space-x-2 items-center">
+                  <Icons.musicNote />
+                  <p>{toneLevel}</p>
+                </div>
+              )}
+              {initial && (
+                <div className="flex space-x-2 items-center">
+                  <p>initial - </p>
+                  <p>{initial}</p>
+                </div>
+              )}
+              {final && (
+                <div className="flex space-x-2 items-center">
+                  <p>final - </p>
+                  <p>{final}</p>
+                </div>
+              )}
             </div>
           )}
+
+          <SubComponentsView lang={lang} characterId={characterId} />
+
+          <article>
+            <div>
+              {characterId?.length < 10 && (
+                <div className="mt-[-32px]">
+                  <Summary showMeanings={true} characterId={characterId} />
+                </div>
+              )}
+
+              <div className="my-8">
+                <GrammarAnalysis
+                  contentId={selectedChar}
+                  lang={lang || selectedComp?.lang}
+                />
+              </div>
+            </div>
+          </article>
         </div>
 
-        <div className="md:hidden block">
-          <SentencesView {...props} />
+        <div>
+          <div className="">
+            {" "}
+            {sentences?.length > 7 ? (
+              <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
+                <SentencesView {...props} />
+              </ScrollArea>
+            ) : (
+              <div className="hidden md:block space-y-2 h-[700px] rounded-mdp-4">
+                <SentencesView {...props} />
+              </div>
+            )}
+          </div>
+
+          <div className="md:hidden block">
+            <SentencesView {...props} />
+          </div>
         </div>
       </div>
-    </div>
+    </Authenticated2>
   );
 };

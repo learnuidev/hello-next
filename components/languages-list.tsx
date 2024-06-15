@@ -2,6 +2,7 @@ import Link from "next/link";
 import { languages } from "./languages";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { allLangs } from "@/data/agenda";
 
 export const listLanguagesShortCuts = [
   "list langauges",
@@ -39,6 +40,10 @@ export const useListLanguages = () => {
 
       return language;
     });
+
+  if (!langs?.length) {
+    return allLangs;
+  }
   return langs;
 };
 

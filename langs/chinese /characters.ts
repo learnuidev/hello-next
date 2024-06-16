@@ -1,5 +1,5 @@
 // @ts-ignore
-export const allCharacters = [
+export const chineseCharacters = [
   {
     initial: "y",
     en: "one",

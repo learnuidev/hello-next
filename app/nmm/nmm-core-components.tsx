@@ -20,7 +20,8 @@ import {
 import { PreviewComponent } from "./preview-component";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useQuery } from "@tanstack/react-query";
-import { allCharacters } from "@/langs/chinese /characters";
+import { chineseCharacters } from "@/langs/chinese /characters";
+import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 
 export function NmmCoreComponents() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
@@ -61,11 +62,11 @@ export function NmmCoreComponents() {
     includeAll: true,
   });
 
-  const comps = isComponentsLoading ? allCharacters : componentsAll;
+  const comps = isComponentsLoading ? chineseCharacters : componentsAll;
 
   const slicedComponents = queryStr
     ? comps
-    : (isComponentsLoading ? allCharacters : components)?.slice(
+    : (isComponentsLoading ? chineseCharacters : components)?.slice(
         selectedBelt?.minCharacterLevel,
         selectedBelt?.maxCharacterLevel
       );
@@ -75,6 +76,8 @@ export function NmmCoreComponents() {
     queryStr,
     learnedCharacters2
   );
+
+  const { data: authUser } = useCurrentAuthUser({});
 
   // const { data: filteredComponents } = useListComponentsByBelt();
 
@@ -107,13 +110,17 @@ export function NmmCoreComponents() {
                     <Link
                       href={`/nmm/${prop.hanzi}?lang=zh`}
                       onClick={() => {
-                        addHistoryMutation.mutate({
-                          pathName: routeName,
-                          hanzi: prop.hanzi,
-                          lang: "zh",
-                          contentId: prop.id,
-                          eventType: "CONTENT_VIEWED",
-                        } as any);
+                        if (authUser?.jwt) {
+                          addHistoryMutation.mutate({
+                            pathName: routeName,
+                            hanzi: prop.hanzi,
+                            lang: "zh",
+                            contentId: prop.id,
+                            eventType: "CONTENT_VIEWED",
+                          } as any);
+                        } else {
+                          alert("yoo");
+                        }
                       }}
                       className={`${
                         // learnedCharacters.includes(prop?.hanzi)

@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { allCharacters } from "@/langs/chinese /characters";
+import { chineseCharacters } from "@/langs/chinese /characters";
 
 import { belts, calculateColor, filterComponents } from "./utils";
 import { useListComponents } from "@/domain/lesson/component.queries";
@@ -62,11 +62,11 @@ export function AllComponents() {
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
 
-  const comps = isComponentsLoading ? allCharacters : componentsAll;
+  const comps = isComponentsLoading ? chineseCharacters : componentsAll;
 
   const slicedComponents = queryStr
     ? comps
-    : (isComponentsLoading ? allCharacters : components)?.slice(
+    : (isComponentsLoading ? chineseCharacters : components)?.slice(
         0,
         selectedBelt?.maxCharacterLevel
       );

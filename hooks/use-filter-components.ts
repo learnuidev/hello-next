@@ -3,7 +3,7 @@
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { filterComponents, getHumanPinyin } from "@/app/nmm/utils";
-import { allCharacters } from "@/langs/chinese /characters";
+import { chineseCharacters } from "@/langs/chinese /characters";
 
 export const useFilteredComponents = (
   { query }: { query: string },
@@ -18,7 +18,7 @@ export const useFilteredComponents = (
   const humanizedQuery = getHumanPinyin({ pinyin: query });
 
   const filteredComponents = filterComponents(
-    components || allCharacters,
+    components || chineseCharacters,
     humanizedQuery,
     learnedCharacters2,
     isQuerySameAsVal

@@ -10,6 +10,7 @@ import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
 import Link from "next/link";
 import { Editor } from "../Editor";
 import { useSearchParams } from "next/navigation";
+import { chineseMeanings } from "@/langs/chinese /meanings";
 
 export function Summary({
   characterId,
@@ -28,11 +29,19 @@ export function Summary({
     lang,
   });
 
-  const meaningResponse = meaning as ListMeaningsResponse;
+  let meaningResponse = chineseMeanings?.find(
+    (meaning) => meaning.sentenceId === characterId
+  ) as any;
 
-  if (isLoading) {
-    return null;
+  if (!meaningResponse) {
+    meaningResponse = meaning as ListMeaningsResponse;
   }
+
+  console.log("MEANING RESPONSE", meaningResponse);
+
+  // if (isLoading) {
+  //   return null;
+  // }
   return (
     <main className="">
       <div className="">

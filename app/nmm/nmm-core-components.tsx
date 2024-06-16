@@ -119,7 +119,7 @@ export function NmmCoreComponents() {
                             eventType: "CONTENT_VIEWED",
                           } as any);
                         } else {
-                          alert("yoo");
+                          // alert("yoo");
                         }
                       }}
                       className={`${

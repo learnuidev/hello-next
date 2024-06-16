@@ -108,6 +108,7 @@ export const ViewType = (props: SelectedCharacterProps) => {
 
   if (view === "words") {
     if (lang === "zh") {
+      // return <div>yooo</div>;
       return <HskView />;
     }
 

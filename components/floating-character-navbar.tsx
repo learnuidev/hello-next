@@ -16,6 +16,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     addCharacterMutation,
     selectedComp2,
     setView,
+    view,
     lang,
     characterId,
     selectedChar,
@@ -28,6 +29,16 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
   const hasAlreadyLearned = components?.find(
     (item: any) => (item?.hanzi || item?.input) === characterId
   );
+
+  console.log("CHARACTER ID", characterId);
+
+  const pinyinOrRoman =
+    (hasAlreadyLearned && hasAlreadyLearned?.pinyin) ||
+    hasAlreadyLearned?.roman;
+
+  const multiSentence =
+    pinyinOrRoman?.split(".")?.length > 1 ||
+    pinyinOrRoman?.split("?")?.length > 1;
 
   const routeName = usePathname();
 
@@ -63,6 +74,25 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
             >
               <Icons.play className="text-2xl" />
             </button>
+            {multiSentence && (
+              <button
+                className="text-xl"
+                onClick={() => {
+                  // setView("unzoom");
+                  if (view === "zoom") {
+                    setView("unzoom");
+                  } else {
+                    setView("zoom");
+                  }
+                }}
+              >
+                {view === "zoom" ? (
+                  <Icons.zoomOut className="text-2xl" />
+                ) : (
+                  <Icons.zoomIn className="text-2xl" />
+                )}
+              </button>
+            )}
             {isAlreadyLearned ? null : (
               <button
                 className="text-xl"

@@ -46,6 +46,9 @@ import {
   faFire,
   faEye,
   faPlanetRinged,
+  faMagnifyingGlassPlus,
+  faMagnifyingGlassMinus,
+  faWandMagic,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
@@ -191,4 +194,7 @@ export const Icons = {
   fire: createFAIcon(faFire),
   eye: createFAIcon(faEye),
   planet: createFAIcon(faPlanetRinged),
+  zoomIn: createFAIcon(faMagnifyingGlassPlus),
+  zoomOut: createFAIcon(faMagnifyingGlassMinus),
+  discover: createFAIcon(faWandMagic),
 };

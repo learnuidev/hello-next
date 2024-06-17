@@ -55,7 +55,6 @@ export function GrammarAnalysis({
 
     const getHskLevelHandler = useGetHskLevelHandler();
     return (
-      // <div className="font-light space-y-6 mt-4">
       <div className={divStyles}>
         {grammarAnalysisFinal?.map((analysis) => {
           if (analysis?.hanzi) {
@@ -188,7 +187,7 @@ export function GrammarAnalysis({
         </div>
       ) : (
         <>
-          <ScrollArea className="hidden md:block space-y-6 h-[600px] rounded-md">
+          <ScrollArea className="hidden md:block h-screen rounded-md">
             <GrammarAnalysisList />
           </ScrollArea>
 

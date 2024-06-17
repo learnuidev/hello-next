@@ -88,6 +88,17 @@ export const NavItems = (props: SelectedCharacterProps) => {
         >
           <Icons.seedling />
         </button>
+        <button
+          className={cn(
+            "text-xl transition",
+            view === "sentences" ? "text-white" : "text-gray-400"
+          )}
+          onClick={() => {
+            setView("sentences");
+          }}
+        >
+          <Icons.tree />
+        </button>
         {learnedChar && (
           <button
             className={cn(

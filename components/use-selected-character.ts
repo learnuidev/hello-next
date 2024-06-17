@@ -27,6 +27,30 @@ import { SelectedCharacterProps } from "./_select-character/select-character.typ
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
+function useGetCharacter({ characterId }: { characterId: string }) {
+  const { data: characters } = useListCharactersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
+
+  const selectedComp = useMemo(
+    () =>
+      characters?.find(
+        (component: any) =>
+          (component?.hanzi || component?.item || component?.input) ===
+          characterId
+      ),
+    [characters, characterId]
+  );
+
+  return selectedComp;
+}
+
 export const useViewTypeStore = create(
   persist(
     (set: any, get: any) => ({

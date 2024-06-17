@@ -26,6 +26,8 @@ const listComponents = async (
     }),
   });
   const resp = (await res.json()) as any;
+
+  // console.log("RESP", resp);
   return resp;
 
   // return resp.sort((a: any, b: any) => (a.level || 0) - (b.level || 0));

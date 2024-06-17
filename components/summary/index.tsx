@@ -49,7 +49,7 @@ export function Summary({
           <h1 className="text-4xl">{currentDecodedCharacter}</h1>
         </div> */}
 
-        <div className="my-16">
+        <div className="">
           {/* <h3 className="sm:text-xl my-4 space-x-2">
             <FontAwesomeIcon icon={faLightbulb} className="text-2xl" />
             <span>Summary</span>

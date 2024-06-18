@@ -41,8 +41,6 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
     characterId,
   };
 
-  console.log("PROPS", props);
-
   const ShowView = () => {
     if (listLanguagesShortCuts?.includes(characterId)) {
       return <LanguagesList characterId={characterId} />;

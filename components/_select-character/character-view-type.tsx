@@ -202,6 +202,7 @@ export const ViewType = (props: SelectedCharacterProps) => {
       <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-start">
         {relatedHskWords
           ?.filter((item) => (item?.hanzi || item?.input)?.length <= 4)
+          ?.sort((a, b) => a?.pinyin?.length - b?.pinyin?.length)
           ?.map((prop: any) => {
             return (
               <WordItem

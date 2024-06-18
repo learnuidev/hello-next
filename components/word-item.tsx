@@ -63,7 +63,7 @@ export const WordItem = ({
           }
         }}
         // className={`${prop ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-600 text-gray-600"} dark:hover:text-white p-6 flex items-center flex-col`}
-        className={` dark:hover:text-white p-6 flex items-center flex-col text-gray-200`}
+        className={` dark:hover:text-white p-6 flex items-center justify-center flex-col text-gray-200`}
       >
         {readMode || show ? (
           ["es", "fr", "ml", "no", "da"]?.includes(lang) ? null : (
@@ -78,31 +78,31 @@ export const WordItem = ({
           )
         ) : (
           <span className={cn("block p-0 m-0 text-sm", "text-black")}>
-            {"."}
+            {prop?.roman || prop?.pinyin || "yo"}
           </span>
         )}
         <span
+          onClick={() => {
+            setShow(!!show);
+          }}
           onMouseEnter={() => {
             setShow(true);
           }}
           onMouseLeave={() => {
             setShow(false);
           }}
-          onClick={() => {
-            setShow(!!show);
-          }}
-          className="text-2xl text-gray-400 hover:text-white transition"
+          className="w-full text-center text-2xl text-gray-400 hover:text-white transition"
         >
           {" "}
           {prop.input || prop?.hanzi}
         </span>
         {readMode || show ? (
-          <span className="block text-sm text-gray-500 truncate">
+          <span className="block text-sm text-gray-500">
             {formatComponentName({ en: prop?.en || prop.en }, 1)}
           </span>
         ) : (
           <span className={cn("block p-0 m-0 text-sm", "text-black")}>
-            {"."}
+            {formatComponentName({ en: prop?.en || prop.en }, 1)}
           </span>
         )}
       </Link>

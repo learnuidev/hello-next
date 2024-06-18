@@ -9,7 +9,7 @@ import { SelectedCharacterProps } from "./select-character.types";
 import { ReadModeView } from "./readmode-view";
 import { NormalView } from "./normal-view";
 import { AudioComponent } from "./audio-component";
-import { WordItem } from "../word-item";
+import { useShowsStore, WordItem } from "../word-item";
 
 import { SubComponentsView } from "./subcomponents-view";
 
@@ -29,6 +29,7 @@ import { useSelectedCharacterData } from "../use-selected-character";
 import { useSearchParams } from "next/navigation";
 import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
 import { useGetCharacter } from "@/hooks/use-get-character";
+import { useReadModeStore } from "@/stores/use-readmode-store";
 
 const hanziToSentences = (hanzi: string) =>
   hanzi
@@ -218,18 +219,36 @@ export const ViewType = (props: SelectedCharacterProps) => {
   const HskSentenceView = () => {
     const query = useSearchQueryStore((state) => state.query);
 
+    // const readMode = useReadModeStore((state) => state.readMode);
+
+    const shows = useShowsStore((state) => state.shows) as any;
+    const setShows = useShowsStore((state) => state.setShows) as any;
+    const readMode = useReadModeStore((state) => state.readMode);
+
     const addHistoryMutation = useAddHistoryMutation();
 
     return (
-      <div className="mt-12 text-black dark:text-white gap-8 grid grid-cols-1 sm:grid-cols-2">
+      <div className="mt-12 text-black dark:text-white gap-8 grid grid-cols-1 sm:grid-cols-3">
         {relatedHskWords
           ?.filter((item) => (item?.hanzi || item?.input)?.length > 4)
           ?.sort((a, b) => a?.pinyin?.length - b?.pinyin?.length)
           ?.map((prop: any) => {
+            const show = shows?.[prop?.hanzi];
+
+            const setShow = (show: boolean) => {
+              setShows({ ...shows, [prop?.hanzi]: show });
+            };
+
             return (
               <Link
                 href={`/nmm/${prop?.input || prop?.hanzi}?lang=${prop?.lang || lang}`}
                 key={JSON.stringify(prop)}
+                onMouseEnter={() => {
+                  setShow(true);
+                }}
+                onMouseLeave={() => {
+                  setShow(false);
+                }}
                 className="font-extralight text-xl"
                 onClick={() => {
                   if (!addHistoryMutation?.isLoading) {
@@ -244,9 +263,23 @@ export const ViewType = (props: SelectedCharacterProps) => {
                   }
                 }}
               >
-                <p className="text-gray-400">{prop?.pinyin}</p>
-                <p>{prop?.hanzi}</p>
-                <p className="text-gray-500">{prop?.en}</p>
+                {show || readMode ? (
+                  <p className="text-gray-400">{prop?.pinyin}</p>
+                ) : (
+                  <p className="text-black">{prop?.pinyin}</p>
+                )}
+                <p
+                  onClick={() => {
+                    setShow(!!show);
+                  }}
+                >
+                  {prop?.hanzi}
+                </p>
+                {show || readMode ? (
+                  <p className="text-gray-500">{prop?.en}</p>
+                ) : (
+                  <p className="text-black">{prop?.en}</p>
+                )}
               </Link>
             );
             // return (

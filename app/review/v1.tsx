@@ -9,8 +9,22 @@ import Link from "next/link";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { Icons } from "@/components/ui/icons.v2";
 
+const getEndTimeAndDiff = (startTime: number, endTime: number) => {
+  const diff = endTime - startTime;
+
+  console.log("Diff Time", diff);
+  console.log("Start Time", startTime);
+
+  return {
+    endTime,
+    timeTaken: diff,
+  };
+};
+
 export function ReviewV1(props: any) {
   const [reveal, setReveal] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
+  const [endTime, setEndTime] = useState(Date.now());
 
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
 
@@ -22,7 +36,16 @@ export function ReviewV1(props: any) {
     isRefetching,
   } = useListCharacterReviewList();
 
-  const currentCharacter = learnedCharacters?.[0];
+  const unReviewedCharacters = learnedCharacters?.filter(
+    (character: any) => character?.hanzi?.length === 1
+  );
+  const currentCharacter = unReviewedCharacters?.[0];
+  // const startTime = Date.now();
+
+  console.log("START TIME", startTime);
+  console.log("END TIME", endTime);
+  const diff = endTime - startTime;
+  console.log("DIFF TIME", diff);
 
   const currentComponent = components?.find(
     (component: any) => component?.hanzi === currentCharacter?.hanzi
@@ -93,6 +116,7 @@ export function ReviewV1(props: any) {
               disabled={updateCharacterStatusMutation?.isLoading}
               className="hover:text-green-400"
               onClick={() => {
+                const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
                 updateCharacterStatusMutation
                   .mutateAsync({
                     characterId: currentCharacter?.id,
@@ -104,10 +128,16 @@ export function ReviewV1(props: any) {
                     ).concat({
                       outcome: "correct",
                       createdAt: Date.now(),
+                      startTime: startTime,
+                      endTime: endTime,
+                      timeTaken,
                     }),
                   } as any)
                   .then((res) => {
+                    const startTime = Date.now();
                     setReveal(false);
+                    setStartTime(startTime);
+                    setEndTime(startTime);
                   });
 
                 // setResp();
@@ -118,6 +148,8 @@ export function ReviewV1(props: any) {
             <button
               disabled={updateCharacterStatusMutation?.isLoading}
               onClick={() => {
+                const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
+
                 updateCharacterStatusMutation
                   .mutateAsync({
                     characterId: currentCharacter?.id,
@@ -129,10 +161,16 @@ export function ReviewV1(props: any) {
                     ).concat({
                       outcome: "incorrect",
                       createdAt: Date.now(),
+                      startTime: startTime,
+                      endTime: endTime,
+                      timeTaken,
                     }),
                   } as any)
                   .then((res) => {
+                    const startTime = Date.now();
                     setReveal(false);
+                    setStartTime(startTime);
+                    setEndTime(startTime);
                   });
 
                 // setResp();
@@ -144,6 +182,7 @@ export function ReviewV1(props: any) {
             <button
               disabled={updateCharacterStatusMutation?.isLoading}
               onClick={() => {
+                const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
                 updateCharacterStatusMutation
                   .mutateAsync({
                     characterId: currentCharacter?.id,
@@ -156,10 +195,16 @@ export function ReviewV1(props: any) {
                     ).concat({
                       outcome: "correct",
                       createdAt: Date.now(),
+                      startTime: startTime,
+                      endTime: endTime,
+                      timeTaken,
                     }),
                   } as any)
                   .then((res) => {
+                    const startTime = Date.now();
                     setReveal(false);
+                    setStartTime(startTime);
+                    setEndTime(startTime);
                   });
               }}
             >
@@ -172,12 +217,17 @@ export function ReviewV1(props: any) {
               disabled={updateCharacterStatusMutation?.isLoading}
               onClick={() => {
                 setReveal(true);
+                setEndTime(Date.now());
               }}
             >
               <Icons.lightBulb />
             </button>
           </>
         )}
+      </div>
+
+      <div className="mt-16 text-gray-400">
+        {diff !== 0 && <p className="text-4xl text-center">{diff}ms</p>}
       </div>
     </div>
   );

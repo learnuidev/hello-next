@@ -199,7 +199,7 @@ export const ViewType = (props: SelectedCharacterProps) => {
 
   const HskWordView = () => {
     return (
-      <div className="mx-4 my-4 md:mx-16 text-black dark:text-white grid grid-cols-8">
+      <div className="mx-4 my-4 md:mx-16 text-black dark:text-white grid md:grid-cols-8 sm:grid-cols-4 grid-cols-2">
         {relatedHskWords
           ?.filter((item) => (item?.hanzi || item?.input)?.length <= 4)
           ?.sort((a, b) => a?.hanzi?.length - b?.hanzi?.length)

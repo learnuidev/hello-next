@@ -26,6 +26,7 @@ import { SelectedCharacterProps } from "./_select-character/select-character.typ
 
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { useReadModeStore } from "@/stores/use-readmode-store";
 
 function useGetCharacter({ characterId }: { characterId: string }) {
   const { data: characters } = useListCharactersQuery(
@@ -181,7 +182,10 @@ export function useSelectedCharacterData({
     [components, selectedChar]
   );
 
-  const [readMode, setReadMode] = useState(false);
+  const readMode = useReadModeStore((state) => state.readMode);
+  const setReadMode = useReadModeStore((state) => state.setReadMode);
+
+  // const [readMode, setReadMode] = useState(false);
   const searchParams = useSearchParams();
   const lang = searchParams.get("lang") || selectedComp?.lang;
 

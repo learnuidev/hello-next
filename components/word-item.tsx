@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 import Link from "next/link";
 
@@ -7,6 +7,23 @@ import { cn } from "@/lib/utils";
 import { formatComponentName } from "@/app/nmm/format-component-name";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useSearchQueryStore } from "./search/state";
+
+import { persist, createJSONStorage } from "zustand/middleware";
+import { create } from "zustand";
+import { Icons } from "./ui/icons.v2";
+import { useReadModeStore } from "@/stores/use-readmode-store";
+
+// const [query, setQuery] = useState('')
+// const [index, setIndex] = useState(0)
+// const [queryResult, setQueryResult] = useState<any>(null)
+
+export const useShowsStore = create((set: any, get: any) => ({
+  shows: {},
+  setShows: (f: any) =>
+    typeof f === "function"
+      ? set({ shows: f(get().shows) })
+      : set({ shows: f }),
+}));
 
 export const WordItem = ({
   component: prop,
@@ -16,42 +33,88 @@ export const WordItem = ({
   lang: any;
 }) => {
   const query = useSearchQueryStore((state) => state.query);
+  // const [show, setShow] = useState(false);
+  const shows = useShowsStore((state) => state.shows) as any;
+  const setShows = useShowsStore((state) => state.setShows) as any;
+  const readMode = useReadModeStore((state) => state.readMode);
+  const show = shows?.[prop?.input || prop?.hanzi];
+
+  const setShow = (show: boolean) => {
+    setShows({ ...shows, [prop?.input || prop?.hanzi]: show });
+  };
 
   const addHistoryMutation = useAddHistoryMutation();
 
   return (
-    <Link
-      href={`/nmm/${prop?.input || prop?.hanzi}?lang=${prop?.lang || lang}`}
-      key={JSON.stringify(prop)}
-      onClick={() => {
-        if (!addHistoryMutation?.isLoading) {
-          addHistoryMutation.mutate({
-            // pathName: routeName,
-            hanzi: prop?.input || prop?.hanzi,
-            lang: prop?.lang || lang,
-            query: query,
-            contentId: prop?.id,
-            eventType: "CONTENT_VIEWED",
-          } as any);
-        }
-      }}
-      // className={`${prop ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-600 text-gray-600"} dark:hover:text-white p-6 flex items-center flex-col`}
-      className={` dark:hover:text-white p-6 flex items-center flex-col text-gray-200`}
-    >
-      {["es", "fr", "ml", "no", "da"]?.includes(lang) ? null : (
+    <div>
+      <Link
+        href={`/nmm/${prop?.input || prop?.hanzi}?lang=${prop?.lang || lang}`}
+        key={JSON.stringify(prop)}
+        onClick={() => {
+          if (!addHistoryMutation?.isLoading) {
+            addHistoryMutation.mutate({
+              // pathName: routeName,
+              hanzi: prop?.input || prop?.hanzi,
+              lang: prop?.lang || lang,
+              query: query,
+              contentId: prop?.id,
+              eventType: "CONTENT_VIEWED",
+            } as any);
+          }
+        }}
+        // className={`${prop ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-600 text-gray-600"} dark:hover:text-white p-6 flex items-center flex-col`}
+        className={` dark:hover:text-white p-6 flex items-center flex-col text-gray-200`}
+      >
+        {readMode || show ? (
+          ["es", "fr", "ml", "no", "da"]?.includes(lang) ? null : (
+            <span
+              className={cn(
+                "block p-0 m-0 text-sm",
+                prop?.roman || prop?.pinyin ? "" : "text-black"
+              )}
+            >
+              {prop?.roman || prop?.pinyin || "yo"}
+            </span>
+          )
+        ) : (
+          <span className={cn("block p-0 m-0 text-sm", "text-black")}>
+            {"."}
+          </span>
+        )}
         <span
-          className={cn(
-            "block p-0 m-0 text-sm",
-            prop?.roman || prop?.pinyin ? "" : "text-black"
-          )}
+          onMouseEnter={() => {
+            setShow(true);
+          }}
+          onMouseLeave={() => {
+            setShow(false);
+          }}
+          onClick={() => {
+            setShow(!!show);
+          }}
+          className="text-2xl text-gray-400 hover:text-white transition"
         >
-          {prop?.roman || prop?.pinyin || "yo"}
+          {" "}
+          {prop.input || prop?.hanzi}
         </span>
-      )}
-      <span className="text-2xl"> {prop.input || prop?.hanzi}</span>
-      <span className="block text-sm text-gray-500">
-        {formatComponentName({ en: prop?.en || prop.en }, 1)}
-      </span>
-    </Link>
+        {readMode || show ? (
+          <span className="block text-sm text-gray-500 truncate">
+            {formatComponentName({ en: prop?.en || prop.en }, 1)}
+          </span>
+        ) : (
+          <span className={cn("block p-0 m-0 text-sm", "text-black")}>
+            {"."}
+          </span>
+        )}
+      </Link>
+
+      {/* <button
+        onClick={() => {
+          setShow(!show);
+        }}
+        className="text-center w-full"
+      >
+        <Icons.glassesRound />
+      </button> */}
+    </div>
   );
 };

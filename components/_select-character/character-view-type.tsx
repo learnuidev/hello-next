@@ -199,10 +199,10 @@ export const ViewType = (props: SelectedCharacterProps) => {
 
   const HskWordView = () => {
     return (
-      <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-start">
+      <div className="mx-4 my-4 md:mx-16 text-black dark:text-white grid grid-cols-8">
         {relatedHskWords
           ?.filter((item) => (item?.hanzi || item?.input)?.length <= 4)
-          ?.sort((a, b) => a?.pinyin?.length - b?.pinyin?.length)
+          ?.sort((a, b) => a?.hanzi?.length - b?.hanzi?.length)
           ?.map((prop: any) => {
             return (
               <WordItem

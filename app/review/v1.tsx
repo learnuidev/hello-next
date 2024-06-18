@@ -97,9 +97,13 @@ export function ReviewV1(props: any) {
               </h3>
             </div>
           ) : null}
-          <h2 className="text-8xl md:text-9xl">
+          <Link
+            href={`/nmm/${currentCharacter?.hanzi || currentCharacter?.input}?lang=${currentCharacter?.lang}`}
+            className="text-8xl md:text-9xl"
+            target="_blank"
+          >
             {currentCharacter?.hanzi || currentCharacter?.input}
-          </h2>
+          </Link>
 
           {reveal ? (
             <div className="mt-8">

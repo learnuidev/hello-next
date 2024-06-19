@@ -21,7 +21,7 @@ interface SelectedCharacterProps {
 
 const SubComponentContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="text-gray-500 flex space-x-4 my-8 overflow-y-auto pb-4">
+    <div className="text-gray-500 flex space-x-4 my-4 overflow-y-auto pb-4">
       {children}
     </div>
   );

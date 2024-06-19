@@ -459,7 +459,7 @@ export const ViewType = (props: SelectedCharacterProps) => {
           {/* <p>{JSON.stringify(selectedComp2, null, 2)}</p> */}
 
           {selected && (
-            <div className="font-light flex space-x-4 items-center text-gray-400 mb-2">
+            <div className="font-light flex space-x-4 items-center text-gray-400">
               {toneLevel && (
                 <div className="flex space-x-2 items-center">
                   <Icons.musicNote />
@@ -558,39 +558,10 @@ export const ViewType = (props: SelectedCharacterProps) => {
           </div>
         )}
 
-        {/* )} */}
-
-        {/* <p>{JSON.stringify(selectedComp2, null, 2)}</p> */}
-
-        {selected && (
-          <div className="font-light flex space-x-4 items-center text-gray-400 mb-2">
-            {toneLevel && (
-              <div className="flex space-x-2 items-center">
-                <Icons.musicNote />
-                <p>{toneLevel}</p>
-              </div>
-            )}
-            {initial && (
-              <div className="flex space-x-2 items-center">
-                <p>initial - </p>
-                <p>{initial}</p>
-              </div>
-            )}
-            {final && (
-              <div className="flex space-x-2 items-center">
-                <p>final - </p>
-                <p>{final}</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        <SubComponentsView lang={lang} characterId={characterId} />
-
         <article>
           <div>
             {characterId?.length < 10 && (
-              <div className="mt-[-32px]">
+              <div className="mt-8">
                 <Summary showMeanings={true} characterId={characterId} />
               </div>
             )}

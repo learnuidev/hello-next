@@ -14,6 +14,7 @@ import { Icons } from "@/components/ui/icons.v2";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import { reviewCounterStore } from "./review-counter-store";
+import { cn } from "@/lib/utils";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -85,7 +86,9 @@ export function ReviewV1(props: any) {
       return true;
     });
 
-  const hasReviewedAll = groupItems?.length === reviewCount;
+  const hasReviewedAll = date ? groupItems?.length <= reviewCount : false;
+
+  console.log("HAS REVIEWED ALL", hasReviewedAll);
 
   const unReviewedCharacters = isSelected
     ? hasReviewedAll
@@ -122,7 +125,7 @@ export function ReviewV1(props: any) {
 
   console.log("currentCharacter", currentCharacter);
 
-  if (!currentCharacter) {
+  if (!currentCharacter || hasReviewedAll) {
     return (
       <div className="grow text-center">
         {/* <NavBar /> */}
@@ -156,6 +159,11 @@ export function ReviewV1(props: any) {
     );
   }
 
+  const isContentLessThanFive =
+    (currentCharacter?.hanzi || currentCharacter?.input)?.length < 5;
+  const isParagraph =
+    (currentCharacter?.hanzi || currentCharacter?.input)?.length > 20;
+
   return (
     <div className="grow text-center">
       <div className="flex items-center justify-between mt-16 mb-16 px-4 md:px-16">
@@ -163,7 +171,11 @@ export function ReviewV1(props: any) {
           <Icons.xMark className="text-xl" />
         </Link>
 
-        <h1 className="text-2xl">Do you know this character?</h1>
+        {isParagraph ? (
+          <h1 className="text-2xl">Do you know this paragraph?</h1>
+        ) : (
+          <h1 className="text-2xl">Do you know this character?</h1>
+        )}
 
         <Link href={`/review?view=cal`}>
           <Icons.cal className="text-xl" />
@@ -187,13 +199,25 @@ export function ReviewV1(props: any) {
               </h3>
             </div>
           ) : null}
-          <Link
-            href={`/nmm/${currentCharacter?.hanzi || currentCharacter?.input}${!lang ? "" : `?lang=${currentCharacter?.lang || currentComponent?.lang}`}`}
-            className="text-8xl md:text-9xl"
-            target="_blank"
-          >
-            {currentCharacter?.hanzi || currentCharacter?.input}
-          </Link>
+          {isContentLessThanFive ? (
+            <Link
+              href={`/nmm/${currentCharacter?.hanzi || currentCharacter?.input}${!lang ? "" : `?lang=${currentCharacter?.lang || currentComponent?.lang}`}`}
+              className={cn("text-8xl md:text-9xl")}
+              target="_blank"
+            >
+              {currentCharacter?.hanzi || currentCharacter?.input}
+            </Link>
+          ) : (
+            <div className="lg:px-80 md:px-32 px-8">
+              <Link
+                href={`/nmm/${currentCharacter?.hanzi || currentCharacter?.input}${!lang ? "" : `?lang=${currentCharacter?.lang || currentComponent?.lang}`}`}
+                className={cn("text-md")}
+                target="_blank"
+              >
+                {currentCharacter?.hanzi || currentCharacter?.input}
+              </Link>
+            </div>
+          )}
 
           {reveal ? (
             <div className="mt-8">

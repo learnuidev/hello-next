@@ -192,7 +192,7 @@ export const agenda = [
       },
       {
         id: "why-not-srs",
-        title: "SRS vs IRS 🌶️",
+        title: "SRS vs TRS 🌶️",
       },
     ],
   },

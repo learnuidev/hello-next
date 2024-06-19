@@ -4,7 +4,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 export const useReviewStore = create(
   persist(
     (set) => ({
-      viewType: "year",
+      viewType: "month",
       setViewType: (id: string) => set(() => ({ viewType: id })),
     }),
 

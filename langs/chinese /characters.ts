@@ -36249,6 +36249,18 @@ export const chineseCharacters = [
     level: 3026,
     hanzi: "嗨",
     nmmIndex: 20317,
+    subComponents: [
+      {
+        hanzi: "每",
+        en: "Montesorri",
+        lang: "zh",
+      },
+      {
+        hanzi: "氵",
+        en: "Water Bottle",
+        lang: "zh",
+      },
+    ],
   },
   {
     count: 0,

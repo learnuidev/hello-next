@@ -47,6 +47,7 @@ export function ReviewV1(props: any) {
 
   const char = searchParams?.get("char");
   const date = searchParams?.get("date") || "";
+  const langParams = searchParams?.get("lang") || "";
 
   const isSelected = date;
 
@@ -75,6 +76,13 @@ export function ReviewV1(props: any) {
     // ?.filter((character: any) => character?.hanzi?.length === 1)
     ?.sort((a: any, b: any) => {
       return (a?.reviewHistory?.length || 0) - (b?.reviewHistory?.length || 0);
+    })
+    ?.filter((item: any) => {
+      if (langParams) {
+        return item?.lang === langParams;
+      }
+
+      return true;
     });
 
   const hasReviewedAll = groupItems?.length === reviewCount;

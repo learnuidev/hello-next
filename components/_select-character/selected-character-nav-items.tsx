@@ -99,6 +99,23 @@ export const NavItems = (props: SelectedCharacterProps) => {
         >
           <Icons.tree />
         </button>
+
+        <button
+          className={cn(
+            "text-xl transition",
+            view === "super-components" ? "text-white" : "text-gray-400"
+          )}
+          onClick={() => {
+            setView("super-components");
+          }}
+        >
+          {view === "super-components" ? (
+            <Icons.lightningSolid />
+          ) : (
+            <Icons.lightning />
+          )}
+        </button>
+
         {learnedChar && (
           <button
             className={cn(

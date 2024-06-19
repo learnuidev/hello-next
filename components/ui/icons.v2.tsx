@@ -15,6 +15,7 @@ import {
   // faTypewriter,
   // faBrainCircuit,
   faMusicNote as faMusicNoteSolid,
+  faBoltLightning as faBoltLightningSolid,
 } from "@fortawesome/sharp-solid-svg-icons";
 
 import {
@@ -51,6 +52,7 @@ import {
   faWandMagic,
   faClock,
   faRollerCoaster,
+  faBoltLightning,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
@@ -202,4 +204,6 @@ export const Icons = {
   clock: createFAIcon(faClock),
   cal: createFAIcon(faClock),
   reset: createFAIcon(faRollerCoaster),
+  lightning: createFAIcon(faBoltLightning),
+  lightningSolid: createFAIcon(faBoltLightningSolid),
 };

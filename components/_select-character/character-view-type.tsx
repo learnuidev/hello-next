@@ -31,6 +31,36 @@ import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
 import { useGetCharacter } from "@/hooks/use-get-character";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { usePaginationStore } from "@/stores/use-pagination-store";
+import { useListSuperComponentsQuery } from "@/domain/component/super-component.queries";
+
+const HskSuperComponentsWordView = ({
+  componentId,
+}: {
+  componentId: string;
+}) => {
+  const { data: superComponents_ } = useListSuperComponentsQuery({
+    componentId,
+  });
+
+  const superComponents = superComponents_ as any;
+
+  return (
+    <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap">
+      {superComponents
+        // ?.sort((a: any, b: any) => (a?.en?.length || 0) - (b?.en?.length || 0))
+        ?.sort((a: any, b: any) => (a?.level || 20000) - (b?.level || 20000))
+        ?.map((prop: any) => {
+          return (
+            <WordItem
+              lang={prop?.lang}
+              component={prop}
+              key={JSON.stringify(prop)}
+            />
+          );
+        })}
+    </div>
+  );
+};
 
 const hanziToSentences = (hanzi: string) =>
   hanzi
@@ -217,6 +247,7 @@ export const ViewType = (props: SelectedCharacterProps) => {
       </div>
     );
   };
+
   const HskSentenceView = () => {
     const query = useSearchQueryStore((state) => state.query);
 
@@ -409,6 +440,13 @@ export const ViewType = (props: SelectedCharacterProps) => {
       </div>
     );
   };
+
+  if (view === "super-components") {
+    if (lang === "zh") {
+      // return <div>yooo</div>;
+      return <HskSuperComponentsWordView componentId={characterId} />;
+    }
+  }
 
   if (view === "words") {
     if (lang === "zh") {

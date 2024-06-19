@@ -45,7 +45,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
   return (
     <div className="flex w-full fixed z-50 bottom-4">
       <div className="flex items-center w-full justify-center">
-        <div className="px-8  py-2 bg-slate-900 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
+        <div className="px-8  py-2 bg-[rgb(14,15,18)] no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
           <div className="space-x-8 flex justify-center items-center w-full">
             <Link
               href={`/review?input=${characterId}&lang=${lang}`}

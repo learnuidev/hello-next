@@ -226,6 +226,7 @@ export function ReviewV1(props: any) {
                           createdAt: Date.now(),
                           startTime: startTime,
                           endTime: endTime,
+                          reviewDate: date,
                           nextReviewTime: option?.value,
                           timeTaken,
                         }),
@@ -265,6 +266,7 @@ export function ReviewV1(props: any) {
                       createdAt: Date.now(),
                       startTime: startTime,
                       endTime: endTime,
+                      reviewDate: date,
                       timeTaken,
                     }),
                   } as any)
@@ -308,6 +310,7 @@ export function ReviewV1(props: any) {
                       createdAt: Date.now(),
                       startTime: startTime,
                       endTime: endTime,
+                      reviewDate: date,
                       timeTaken,
                     }),
                   } as any)

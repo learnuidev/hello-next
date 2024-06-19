@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { NavBar } from "@/components/navbar";
 import { useListComponents } from "@/domain/lesson/component.queries";
@@ -8,6 +8,7 @@ import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.muta
 import Link from "next/link";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { Icons } from "@/components/ui/icons.v2";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -37,11 +38,22 @@ export function ReviewV1(props: any) {
     isRefetching,
   } = useListCharacterReviewList();
 
+  const searchParams = useSearchParams();
+
+  const char = searchParams?.get("char");
+
   const unReviewedCharacters = learnedCharacters?.filter(
     (character: any) => character?.hanzi?.length === 1
   );
   const currentCharacter = unReviewedCharacters?.[0];
+  const router = useRouter();
   // const startTime = Date.now();
+
+  // useEffect(() => {
+  //   if (currentCharacter?.hanzi) {
+  //     router.push(`/review?char=${currentCharacter?.hanzi}`);
+  //   }
+  // }, [currentCharacter]);
 
   console.log("START TIME", startTime);
   console.log("END TIME", endTime);

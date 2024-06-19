@@ -49,6 +49,7 @@ import {
   faMagnifyingGlassPlus,
   faMagnifyingGlassMinus,
   faWandMagic,
+  faClock,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
@@ -197,4 +198,5 @@ export const Icons = {
   zoomIn: createFAIcon(faMagnifyingGlassPlus),
   zoomOut: createFAIcon(faMagnifyingGlassMinus),
   discover: createFAIcon(faWandMagic),
+  clock: createFAIcon(faClock),
 };

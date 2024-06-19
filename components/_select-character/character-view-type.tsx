@@ -246,6 +246,11 @@ export const ViewType = (props: SelectedCharacterProps) => {
         };
       });
 
+    const sliced = relatedSentences?.slice(
+      pagination?.start || 0,
+      pagination?.end || 10
+    );
+
     return (
       <div>
         <div className="flex justify-center mt-8">
@@ -270,10 +275,9 @@ export const ViewType = (props: SelectedCharacterProps) => {
           })}
         </div>
 
-        <div className="mt-12 text-black dark:text-white gap-8 grid grid-cols-1 sm:grid-cols-3">
-          {relatedSentences
-            ?.slice(pagination?.start || 0, pagination?.end || 10)
-            ?.map((prop: any) => {
+        {sliced?.length > 5 ? (
+          <div className="mt-12 text-black dark:text-white gap-8 grid grid-cols-1 sm:grid-cols-3">
+            {sliced?.map((prop: any) => {
               const show = shows?.[prop?.hanzi];
 
               const setShow = (show: boolean) => {
@@ -335,7 +339,73 @@ export const ViewType = (props: SelectedCharacterProps) => {
               //   />
               // );
             })}
-        </div>
+          </div>
+        ) : (
+          <div className="mt-12 text-black dark:text-white gap-8 grid grid-cols-1 mx-0 md:mx-36">
+            {sliced?.map((prop: any) => {
+              const show = shows?.[prop?.hanzi];
+
+              const setShow = (show: boolean) => {
+                setShows({ ...shows, [prop?.hanzi]: show });
+              };
+
+              return (
+                <Link
+                  href={`/nmm/${prop?.input || prop?.hanzi}?lang=${prop?.lang || lang}`}
+                  key={JSON.stringify(prop)}
+                  className="font-extralight text-xl"
+                  onClick={() => {
+                    if (!addHistoryMutation?.isLoading) {
+                      addHistoryMutation.mutate({
+                        // pathName: routeName,
+                        hanzi: prop?.input || prop?.hanzi,
+                        lang: prop?.lang || lang,
+                        query: query,
+                        contentId: prop?.id,
+                        eventType: "CONTENT_VIEWED",
+                      } as any);
+                    }
+                  }}
+                >
+                  {show || readMode ? (
+                    <p className="text-gray-400 text-sm fade-in-100 transition">
+                      {prop?.pinyin}
+                    </p>
+                  ) : (
+                    <p className="text-black text-sm">{prop?.pinyin}</p>
+                  )}
+                  <p
+                    onClick={() => {
+                      setShow(!!show);
+                    }}
+                    onMouseEnter={() => {
+                      setShow(true);
+                    }}
+                    onMouseLeave={() => {
+                      setShow(false);
+                    }}
+                  >
+                    {prop?.hanzi}
+                  </p>
+                  {show || readMode ? (
+                    <p className="text-gray-500 text-sm transition fade-in-100">
+                      {prop?.en}
+                    </p>
+                  ) : (
+                    <p className="text-black text-sm">{prop?.en}</p>
+                  )}
+                </Link>
+              );
+              // return (
+              //   <WordItem
+              //     lang={lang}
+              //     component={prop}
+              //     key={JSON.stringify(prop)}
+              //   />
+              // );
+            })}
+          </div>
+        )}
       </div>
     );
   };

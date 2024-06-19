@@ -23,6 +23,7 @@ const getEndTimeAndDiff = (startTime: number, endTime: number) => {
 
 export function ReviewV1(props: any) {
   const [reveal, setReveal] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
   const [endTime, setEndTime] = useState(Date.now());
 
@@ -50,6 +51,8 @@ export function ReviewV1(props: any) {
   const currentComponent = components?.find(
     (component: any) => component?.hanzi === currentCharacter?.hanzi
   );
+
+  const lang = currentCharacter?.lang || currentComponent?.lang;
 
   if (isLoading) {
     return;
@@ -98,7 +101,7 @@ export function ReviewV1(props: any) {
             </div>
           ) : null}
           <Link
-            href={`/nmm/${currentCharacter?.hanzi || currentCharacter?.input}?lang=${currentCharacter?.lang}`}
+            href={`/nmm/${currentCharacter?.hanzi || currentCharacter?.input}${!lang ? "" : `?lang=${currentCharacter?.lang || currentComponent?.lang}`}`}
             className="text-8xl md:text-9xl"
             target="_blank"
           >
@@ -113,8 +116,56 @@ export function ReviewV1(props: any) {
         </div>
       )}
 
-      <div className="space-x-24 my-8 text-5xl">
-        {reveal ? (
+      <div className="space-x-12 sm:space-x-16 md:space-x-24 my-8 md:text-5xl sm:text-3xl text-2xl">
+        {showOptions ? (
+          <>
+            {[
+              { title: "1m", value: "1m" },
+              { title: "5m", value: "5m" },
+              { title: "10m", value: "10m" },
+              { title: "1d", value: "1d" },
+            ].map((option) => {
+              return (
+                <button
+                  key={JSON.stringify(option)}
+                  disabled={updateCharacterStatusMutation?.isLoading}
+                  className="hover:text-rose-400 font-extralight"
+                  onClick={() => {
+                    const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
+
+                    updateCharacterStatusMutation
+                      .mutateAsync({
+                        characterId: currentCharacter?.id,
+                        status: "needs_review",
+                        wrongCount: (currentCharacter?.wrongCount || 0) + 1,
+                        wrongAt: Date.now(),
+                        nextReviewTime: option?.value,
+                        reviewHistory: (
+                          currentCharacter?.reviewHistory || []
+                        ).concat({
+                          outcome: "incorrect",
+                          createdAt: Date.now(),
+                          startTime: startTime,
+                          endTime: endTime,
+                          nextReviewTime: option?.value,
+                          timeTaken,
+                        }),
+                      } as any)
+                      .then((res) => {
+                        const startTime = Date.now();
+                        setReveal(false);
+                        setShowOptions(false);
+                        setStartTime(startTime);
+                        setEndTime(startTime);
+                      });
+                  }}
+                >
+                  {option?.title}
+                </button>
+              );
+            })}
+          </>
+        ) : reveal ? (
           <>
             <button
               disabled={updateCharacterStatusMutation?.isLoading}
@@ -152,32 +203,7 @@ export function ReviewV1(props: any) {
             <button
               disabled={updateCharacterStatusMutation?.isLoading}
               onClick={() => {
-                const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
-
-                updateCharacterStatusMutation
-                  .mutateAsync({
-                    characterId: currentCharacter?.id,
-                    status: "needs_review",
-                    wrongCount: (currentCharacter?.wrongCount || 0) + 1,
-                    wrongAt: Date.now(),
-                    reviewHistory: (
-                      currentCharacter?.reviewHistory || []
-                    ).concat({
-                      outcome: "incorrect",
-                      createdAt: Date.now(),
-                      startTime: startTime,
-                      endTime: endTime,
-                      timeTaken,
-                    }),
-                  } as any)
-                  .then((res) => {
-                    const startTime = Date.now();
-                    setReveal(false);
-                    setStartTime(startTime);
-                    setEndTime(startTime);
-                  });
-
-                // setResp();
+                setShowOptions(true);
               }}
             >
               <Icons.xMark />
@@ -230,9 +256,12 @@ export function ReviewV1(props: any) {
         )}
       </div>
 
-      <div className="mt-16 text-gray-400">
-        {diff !== 0 && <p className="text-4xl text-center">{diff}ms</p>}
-      </div>
+      {diff !== 0 && (
+        <div className="mt-16 text-[rgb(31,32,33)] font-extralight flex space-x-6 items-center justify-center">
+          <Icons.clock className="text-3xl" />
+          <p className="text-4xl text-center">{diff}ms</p>
+        </div>
+      )}
     </div>
   );
 }

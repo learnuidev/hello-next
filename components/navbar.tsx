@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import React from "react";
 import { SearchBar } from "./search-bar";
 import { FloatingNavbar } from "./floating-navbar";
@@ -15,6 +15,10 @@ export const ReviewNavBar = () => {
 
   const viewType = useReviewStore((state: any) => state.viewType);
   const setViewType = useReviewStore((state: any) => state.setViewType);
+
+  const searchParams = useSearchParams();
+
+  const view = searchParams?.get("view");
 
   const isV2 = false;
 

@@ -6,9 +6,14 @@ import { NavBar } from "@/components/navbar";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import Link from "next/link";
-import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
+import {
+  getReviewCharacters,
+  useListCharacterReviewList,
+} from "@/hooks/use-character-review-list";
 import { Icons } from "@/components/ui/icons.v2";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
+import { reviewCounterStore } from "./review-counter-store";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -41,10 +46,47 @@ export function ReviewV1(props: any) {
   const searchParams = useSearchParams();
 
   const char = searchParams?.get("char");
+  const date = searchParams?.get("date") || "";
 
-  const unReviewedCharacters = learnedCharacters?.filter(
-    (character: any) => character?.hanzi?.length === 1
-  );
+  const isSelected = date;
+
+  const reviewCounts = reviewCounterStore((state: any) => state?.reviewCounts);
+  const setReviewCount = reviewCounterStore(
+    (state: any) => state?.setReviewCount
+  )(date);
+  const resetReviewCount = reviewCounterStore(
+    (state: any) => state?.resetReviewCount
+  )(date);
+
+  const reviewCount = reviewCounts?.[date] || 0;
+
+  const { data: groups, isLoading: isLearnedCharactersLoading } =
+    useListLearnedCharactersByDate({ variant: "discovered" });
+
+  const filteredGroups = isSelected
+    ? groups?.filter((group) =>
+        group?.items?.find((item: any) => item?.status === "needs_review")
+      )
+    : groups;
+
+  const group = groups?.find((group) => group?.title === date);
+
+  const groupItems = group?.items
+    // ?.filter((character: any) => character?.hanzi?.length === 1)
+    ?.sort((a: any, b: any) => {
+      return (a?.reviewHistory?.length || 0) - (b?.reviewHistory?.length || 0);
+    });
+
+  const hasReviewedAll = groupItems?.length === reviewCount;
+
+  const unReviewedCharacters = isSelected
+    ? hasReviewedAll
+      ? getReviewCharacters(groupItems)
+      : groupItems
+    : learnedCharacters?.filter(
+        (character: any) => character?.hanzi?.length === 1
+      );
+
   const currentCharacter = unReviewedCharacters?.[0];
   const router = useRouter();
   // const startTime = Date.now();
@@ -66,18 +108,41 @@ export function ReviewV1(props: any) {
 
   const lang = currentCharacter?.lang || currentComponent?.lang;
 
-  if (isLoading) {
-    return;
-  }
+  // if (isLoading) {
+  //   return;
+  // }
+
+  console.log("currentCharacter", currentCharacter);
 
   if (!currentCharacter) {
     return (
       <div className="grow text-center">
-        <NavBar />
+        {/* <NavBar /> */}
+        <div className="flex items-center justify-between mt-16 mb-16 px-4 md:px-16">
+          <Link href={"/nmm"}>
+            <Icons.xMark className="text-xl" />
+          </Link>
+
+          <h1 className="text-2xl"></h1>
+
+          <Link href={`/review?view=cal`}>
+            <Icons.cal className="text-xl" />
+          </Link>
+        </div>
         <div className="my-32">
           <h1 className="text-2xl">All Done</h1>
 
           <p className="my-4">You have finished all your reviews</p>
+        </div>
+
+        <div>
+          <button
+            onClick={() => {
+              resetReviewCount();
+            }}
+          >
+            <Icons.reset className="text-xl" />
+          </button>
         </div>
       </div>
     );
@@ -92,7 +157,9 @@ export function ReviewV1(props: any) {
 
         <h1 className="text-2xl">Do you know this character?</h1>
 
-        <div></div>
+        <Link href={`/review?view=cal`}>
+          <Icons.cal className="text-xl" />
+        </Link>
       </div>
 
       {isRefetching ? (
@@ -169,6 +236,7 @@ export function ReviewV1(props: any) {
                         setShowOptions(false);
                         setStartTime(startTime);
                         setEndTime(startTime);
+                        setReviewCount(reviewCount + 1);
                       });
                   }}
                 >
@@ -205,6 +273,7 @@ export function ReviewV1(props: any) {
                     setReveal(false);
                     setStartTime(startTime);
                     setEndTime(startTime);
+                    setReviewCount(reviewCount + 1);
                   });
 
                 // setResp();
@@ -247,6 +316,7 @@ export function ReviewV1(props: any) {
                     setReveal(false);
                     setStartTime(startTime);
                     setEndTime(startTime);
+                    setReviewCount(reviewCount + 1);
                   });
               }}
             >

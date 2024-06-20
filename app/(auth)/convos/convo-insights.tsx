@@ -114,8 +114,11 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
           ".",
           "?",
           "",
-        ]?.includes(x?.toLowerCase())
+          " ",
+        ]?.includes(x?.toLowerCase()) || !Boolean(x)
     );
+
+  console.log("unique words", uniqueWords);
 
   const totalNewCharaters = uniqueWords?.filter((char) => {
     const isLearned = learnedCharacters?.find(

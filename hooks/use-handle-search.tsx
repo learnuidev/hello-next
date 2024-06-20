@@ -10,6 +10,7 @@ import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useSearchQueryStore } from "@/components/search/state";
 import { getNavigationUrl } from "@/components/_search/get-navigation-url";
 import { useListLanguages } from "@/components/languages-list";
+import { traditionalToSimplified } from "@/langs/chinese /traditional-chinese-characters";
 
 export const useHandleSearch = () => {
   const router = useRouter();
@@ -90,7 +91,15 @@ export const useHandleSearch = () => {
           } as any);
         }
 
-        router.push(`/nmm/${querySync}`);
+        const selectedChar = traditionalToSimplified(querySync);
+
+        if (selectedChar === querySync) {
+          router.push(`/nmm/${querySync}`);
+        } else {
+          router.push(`/nmm/${selectedChar}?lang=zh&trad=${querySync}`);
+        }
+
+        // router.push(`/nmm/${querySync}`);
       }
     }
   };

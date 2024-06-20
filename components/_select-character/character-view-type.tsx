@@ -32,7 +32,6 @@ import { useGetCharacter } from "@/hooks/use-get-character";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { usePaginationStore } from "@/stores/use-pagination-store";
 import { useListSuperComponentsQuery } from "@/domain/component/super-component.queries";
-import { traditionalToSimplified } from "@/langs/chinese /traditional-chinese-characters";
 
 const HskSuperComponentsWordView = ({
   componentId,
@@ -168,19 +167,19 @@ export const ViewType = (props: SelectedCharacterProps) => {
     allSteps,
     components,
     selectedComp,
-    selectedChar: selectedChar_,
+    selectedChar,
     routeName,
     lang,
     view,
     sentences,
-    characterId: characterId_,
+    characterId,
     selectedComp2,
   } = props;
 
   const selected = selectedComp || selectedComp2;
 
-  const characterId = traditionalToSimplified(characterId_);
-  const selectedChar = traditionalToSimplified(selectedChar_);
+  // const characterId = traditionalToSimplified(characterId_);
+  // const selectedChar = traditionalToSimplified(selectedChar_);
 
   const level = selectedComp?.level || selectedComp2?.level;
   const toneLevel = selectedComp?.tone_level || selectedComp2?.tone_level;

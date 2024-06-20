@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
   const {
     selectedComp,
@@ -41,6 +42,10 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     pinyinOrRoman?.split("?")?.length > 1;
 
   const routeName = usePathname();
+
+  const currentCharacter = selectedComp;
+
+  const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
 
   return (
     <div className="flex w-full fixed z-50 bottom-4">
@@ -114,6 +119,58 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                   <Icons.lightBulb className="text-2xl" />
                 )}
               </button>
+            )}
+            {currentCharacter?.status === "forgotten" ? null : (
+              <button
+                disabled={updateCharacterStatusMutation?.isLoading}
+                onClick={() => {
+                  //  const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
+                  updateCharacterStatusMutation
+                    .mutateAsync({
+                      characterId: currentCharacter?.id,
+                      status: "forgotten",
+                      forgottenAt: Date.now(),
+                      rightAt: Date.now(),
+                      rightCount: (currentCharacter?.rightCount || 0) + 1,
+                    } as any)
+                    .then((res) => {
+                      const startTime = Date.now();
+                      // setReveal(false);
+                      // setStartTime(startTime);
+                      // setEndTime(startTime);
+                      // setReviewCount(reviewCount + 1);
+                    });
+                }}
+              >
+                {updateCharacterStatusMutation.isLoading ? (
+                  <Icons.spinner className="text-2xl" spinPulse />
+                ) : updateCharacterStatusMutation.isSuccess ? (
+                  <Icons.checkCircle className="transition text-2xl" />
+                ) : (
+                  <Icons.fire className="text-2xl" />
+                )}
+              </button>
+
+              // <button
+              //   className="text-xl"
+              //   onClick={() => {
+              //     addCharacterMutation?.mutateAsync({
+              //       lang: lang,
+              //       status: "DISCOVERED",
+              //       story: "todo",
+              //       hanzi: firstLesson?.hanzi || selectedChar,
+              //       journeyId: firstLesson?.id || "default",
+              //     });
+              //   }}
+              // >
+              //   {addCharacterMutation.isLoading ? (
+              //     <Icons.spinner spinPulse />
+              //   ) : addCharacterMutation.isSuccess ? (
+              //     <Icons.checkCircle className="transition" />
+              //   ) : (
+              //     <Icons.lightBulb className="text-2xl" />
+              //   )}
+              // </button>
             )}
             {selectedComp2?.updated_at ? null : !selectedComp2?.updated_at ||
               !selectedComp2?.discoveredAt ? (

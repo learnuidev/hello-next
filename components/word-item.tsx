@@ -63,7 +63,9 @@ export const WordItem = ({
           }
         }}
         // className={`${prop ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-600 text-gray-600"} dark:hover:text-white p-6 flex items-center flex-col`}
-        className={` dark:hover:text-white p-6 flex items-center justify-center flex-col text-gray-200`}
+        className={cn(
+          ` dark:hover:text-white p-6 flex items-center justify-center flex-col text-gray-200`
+        )}
       >
         {readMode || show ? (
           ["es", "fr", "ml", "no", "da"]?.includes(lang) ? null : (
@@ -91,7 +93,10 @@ export const WordItem = ({
           onMouseLeave={() => {
             setShow(false);
           }}
-          className="w-full text-center text-2xl text-gray-400 hover:text-white transition"
+          className={cn(
+            !prop?.level ? "text-gray-800" : "text-gray-400",
+            "w-full text-center text-2xl  hover:text-white transition"
+          )}
         >
           {" "}
           {prop.input || prop?.hanzi}

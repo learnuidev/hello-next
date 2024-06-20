@@ -32,6 +32,7 @@ import { useGetCharacter } from "@/hooks/use-get-character";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { usePaginationStore } from "@/stores/use-pagination-store";
 import { useListSuperComponentsQuery } from "@/domain/component/super-component.queries";
+import { traditionalToSimplified } from "@/langs/chinese /traditional-chinese-characters";
 
 const HskSuperComponentsWordView = ({
   componentId,
@@ -167,16 +168,19 @@ export const ViewType = (props: SelectedCharacterProps) => {
     allSteps,
     components,
     selectedComp,
-    selectedChar,
+    selectedChar: selectedChar_,
     routeName,
     lang,
     view,
     sentences,
-    characterId,
+    characterId: characterId_,
     selectedComp2,
   } = props;
 
   const selected = selectedComp || selectedComp2;
+
+  const characterId = traditionalToSimplified(characterId_);
+  const selectedChar = traditionalToSimplified(selectedChar_);
 
   const level = selectedComp?.level || selectedComp2?.level;
   const toneLevel = selectedComp?.tone_level || selectedComp2?.tone_level;
@@ -578,6 +582,11 @@ export const ViewType = (props: SelectedCharacterProps) => {
             ) : null}
           </div>
         )}
+        {/* {selectedChar_ !== selectedChar && (
+          <h2 className="text-4xl my-0 py-0 font-extralight">
+            {selectedChar_}
+          </h2>
+        )} */}
 
         {multiSentence ? null : (
           <div className="flex items-center space-x-4">

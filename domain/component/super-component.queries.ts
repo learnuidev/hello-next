@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
-import { chineseCharacters } from "@/langs/chinese /characters";
+import { useListCharactersQuery } from "../lesson/character.queries";
+import { useListComponents } from "../lesson/component.queries";
 
 const listSuperComponents = async (
   { componentId }: { componentId: string },
@@ -12,37 +13,27 @@ const listSuperComponents = async (
     Authorization: string;
   }
 ) => {
-  try {
-    const res = await fetch(`${siteConfig.apiUrl}/v1/list-super-components`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${opts?.Authorization}`,
-      },
-      body: JSON.stringify({
-        componentId,
-      }),
-    });
-    let resp = (await res.json()) as any;
+  const res = await fetch(`${siteConfig.apiUrl}/v1/list-super-components`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${opts?.Authorization}`,
+    },
+    body: JSON.stringify({
+      componentId,
+    }),
+  });
+  let resp = (await res.json()) as any;
 
-    resp = resp?.map((item: any) => {
-      const char = chineseCharacters?.find(
-        (comp) => comp?.hanzi === item?.hanzi
-      );
+  // resp = resp?.map((item: any) => {
+  //   const char = chineseCharacters?.find((comp) => comp?.hanzi === item?.hanzi);
 
-      return {
-        ...item,
-        ...char,
-      };
-    });
+  //   return {
+  //     ...item,
+  //     ...char,
+  //   };
+  // });
 
-    return resp;
-  } catch (err) {
-    let resp = chineseCharacters?.find(
-      (comp) => comp?.hanzi === componentId
-    )?.subComponents;
-
-    return resp || [];
-  }
+  return resp;
 };
 
 export const listQueryComponentsQueryId = "list-super-components";
@@ -53,14 +44,33 @@ export function useListSuperComponentsQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
+  const { data: chineseCharacters } = useListComponents();
+
   return useQuery({
-    queryKey: [listQueryComponentsQueryId, params?.componentId],
+    queryKey: [
+      listQueryComponentsQueryId,
+      params?.componentId,
+      JSON.stringify(chineseCharacters),
+    ],
     queryFn: async () => {
       const response = await listSuperComponents(params, {
         Authorization: authUser?.jwt,
       });
 
-      return response?.sort((a: any, b: any) => a?.level - b?.level);
+      let resp;
+
+      resp = response?.map((item: any) => {
+        const char = chineseCharacters?.find(
+          (comp: any) => comp?.hanzi === item?.hanzi
+        );
+
+        return {
+          ...item,
+          ...char,
+        };
+      });
+
+      return resp.sort((a: any, b: any) => a?.level - b?.level);
     },
     ...options,
     enabled: Boolean(authUser?.jwt),

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { calculateColor } from "@/app/nmm/utils";
 import { cleanString } from "@/data/convos/bm1/utils";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
@@ -13,10 +13,13 @@ import { useListContentsQuery } from "@/domain/content/content.queries";
 
 const ContentSentences = ({
   characterId,
-  lang,
+
   ...props
 }: SelectedCharacterProps) => {
   const { data: contents } = useListContentsQuery();
+  const searchParams = useSearchParams();
+
+  const lang = props?.lang || searchParams.get("lang") || "";
 
   const relevantSentences = contents
     ?.map((content: any) => content?.transcriptions)
@@ -34,6 +37,7 @@ const ContentSentences = ({
             <HanziViewer
               key={sentence?.id}
               {...props}
+              lang={lang}
               currentPhrase={sentence}
             />
           );

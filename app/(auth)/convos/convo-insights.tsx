@@ -115,7 +115,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
           "?",
           "",
           " ",
-        ]?.includes(x?.toLowerCase()) || !Boolean(x)
+        ]?.includes(x?.toLowerCase())
     );
 
   console.log("unique words", uniqueWords);

@@ -57,10 +57,11 @@ export const FloatingNavbar = () => {
                   : "text-gray-200 dark:text-gray-500"
               } hover:text-white transition text-xl`}
             >
-              <FontAwesomeIcon
-                icon={faPhotoFilm}
-                className="hover:text-white transition"
-              />
+              {routeName?.includes("/convos") ? (
+                <Icons.contentSolid className="hover:text-white transition" />
+              ) : (
+                <Icons.content className="hover:text-white transition" />
+              )}
             </Link>
             <Link
               href="/timeline"

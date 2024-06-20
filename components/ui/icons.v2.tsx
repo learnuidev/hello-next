@@ -4,7 +4,7 @@ import {
 } from "@fortawesome/react-fontawesome";
 import {
   faBook,
-  faMicrochipAi,
+  faMicrochipAi as faMicrochipAiSolid,
   faSpinner,
 } from "@fortawesome/sharp-solid-svg-icons";
 
@@ -16,10 +16,12 @@ import {
   // faBrainCircuit,
   faMusicNote as faMusicNoteSolid,
   faBoltLightning as faBoltLightningSolid,
+  faPhotoFilm as faPhotoFilmSolid,
 } from "@fortawesome/sharp-solid-svg-icons";
 
 import {
   faCheckCircle,
+  faMicrochipAi,
   faXmark,
   faLanguage,
   faLightbulb,
@@ -53,6 +55,7 @@ import {
   faClock,
   faRollerCoaster,
   faBoltLightning,
+  faPhotoFilm,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
@@ -206,4 +209,6 @@ export const Icons = {
   reset: createFAIcon(faRollerCoaster),
   lightning: createFAIcon(faBoltLightning),
   lightningSolid: createFAIcon(faBoltLightningSolid),
+  content: createFAIcon(faPhotoFilm),
+  contentSolid: createFAIcon(faPhotoFilmSolid),
 };

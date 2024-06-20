@@ -154,12 +154,12 @@ const SentencesView = (props: SelectedCharacterProps) => {
   return (
     <>
       {/* <Summary characterId={selectedChar} showMeanings={false} /> */}
-      {props.readMode ? <ReadModeView {...props} /> : <NormalView {...props} />}
+      <ReadModeView {...props} />
     </>
   );
 };
 
-export const ViewType = (props: SelectedCharacterProps) => {
+export const CharacterViewType = (props: SelectedCharacterProps) => {
   const {
     uniqueAnswerIds,
     answerMap,

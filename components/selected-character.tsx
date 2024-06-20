@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { NomadMethod } from "@/app/nmm/nomad-method";
 
 import { HeaderView } from "./_select-character/selected-character-header";
-import { ViewType } from "./_select-character/character-view-type";
+import { CharacterViewType } from "./_select-character/character-view-type";
 import { useSelectedCharacterData } from "./use-selected-character";
 
 import { FloatingCharacterNavbar } from "./floating-character-navbar";
@@ -46,7 +46,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       return <LanguagesList characterId={characterId} />;
     }
 
-    return <ViewType {...props} />;
+    return <CharacterViewType {...props} />;
   };
 
   return (

@@ -101,13 +101,13 @@ export const HanziViewer = (props: any) => {
                       onClick={() => {
                         // alert("yoo 2");
 
-                        addHistoryMutation.mutate({
-                          lang: lang,
-                          pathName: routeName,
-                          hanzi: val,
-                          contentId: selectedComp?.id || "",
-                          eventType: "CONTENT_VIEWED",
-                        } as any);
+                        // addHistoryMutation.mutate({
+                        //   lang: lang,
+                        //   pathName: routeName,
+                        //   hanzi: val,
+                        //   contentId: selectedComp?.id || "",
+                        //   eventType: "CONTENT_VIEWED",
+                        // } as any);
 
                         router.push(
                           lang ? `/nmm/${val}?lang=${lang}` : `/nmm/${val}`
@@ -152,14 +152,14 @@ export const HanziViewer = (props: any) => {
           </Link>
           <Link
             onClick={() => {
-              addHistoryMutation.mutate({
-                lang: lang,
-                pathName: routeName,
-                hanzi: currentPhrase?.hanzi,
-                contentId: selectedComp?.id || "",
-                componentId: selectedComp?.id || "",
-                eventType: "CONTENT_VIEWED",
-              } as any);
+              // addHistoryMutation.mutate({
+              //   lang: lang,
+              //   pathName: routeName,
+              //   hanzi: currentPhrase?.hanzi,
+              //   contentId: selectedComp?.id || "",
+              //   componentId: selectedComp?.id || "",
+              //   eventType: "CONTENT_VIEWED",
+              // } as any);
             }}
             // href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}`}
 
@@ -207,13 +207,13 @@ export const HanziViewer = (props: any) => {
                     .replaceAll("!", "")
                     ?.replaceAll(".", "")
                     ?.replaceAll(",", "");
-                  addHistoryMutation.mutate({
-                    hanzi: cleanedVal,
-                    lang: lang,
-                    pathName: routeName,
-                    contentId: selectedComp?.id || "",
-                    eventType: "CONTENT_VIEWED",
-                  } as any);
+                  // addHistoryMutation.mutate({
+                  //   hanzi: cleanedVal,
+                  //   lang: lang,
+                  //   pathName: routeName,
+                  //   contentId: selectedComp?.id || "",
+                  //   eventType: "CONTENT_VIEWED",
+                  // } as any);
 
                   router.push(
                     lang
@@ -259,14 +259,14 @@ export const HanziViewer = (props: any) => {
         </Link>
         <Link
           onClick={() => {
-            addHistoryMutation.mutate({
-              lang: lang,
-              pathName: routeName,
-              hanzi: currentPhrase?.hanzi || currentPhrase?.input,
-              contentId: selectedComp?.id || "",
-              componentId: selectedComp?.id || "",
-              eventType: "CONTENT_VIEWED",
-            } as any);
+            // addHistoryMutation.mutate({
+            //   lang: lang,
+            //   pathName: routeName,
+            //   hanzi: currentPhrase?.hanzi || currentPhrase?.input,
+            //   contentId: selectedComp?.id || "",
+            //   componentId: selectedComp?.id || "",
+            //   eventType: "CONTENT_VIEWED",
+            // } as any);
           }}
           href={
             lang || selectedComp?.lang

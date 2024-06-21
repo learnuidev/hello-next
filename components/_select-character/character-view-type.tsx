@@ -325,14 +325,14 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
                   className="font-extralight text-xl"
                   onClick={() => {
                     if (!addHistoryMutation?.isLoading) {
-                      addHistoryMutation.mutate({
-                        // pathName: routeName,
-                        hanzi: prop?.input || prop?.hanzi,
-                        lang: prop?.lang || lang,
-                        query: query,
-                        contentId: prop?.id,
-                        eventType: "CONTENT_VIEWED",
-                      } as any);
+                      // addHistoryMutation.mutate({
+                      //   // pathName: routeName,
+                      //   hanzi: prop?.input || prop?.hanzi,
+                      //   lang: prop?.lang || lang,
+                      //   query: query,
+                      //   contentId: prop?.id,
+                      //   eventType: "CONTENT_VIEWED",
+                      // } as any);
                     }
                   }}
                 >
@@ -389,16 +389,16 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
                   key={JSON.stringify(prop)}
                   className="font-extralight text-xl"
                   onClick={() => {
-                    if (!addHistoryMutation?.isLoading) {
-                      addHistoryMutation.mutate({
-                        // pathName: routeName,
-                        hanzi: prop?.input || prop?.hanzi,
-                        lang: prop?.lang || lang,
-                        query: query,
-                        contentId: prop?.id,
-                        eventType: "CONTENT_VIEWED",
-                      } as any);
-                    }
+                    // if (!addHistoryMutation?.isLoading) {
+                    //   addHistoryMutation.mutate({
+                    //     // pathName: routeName,
+                    //     hanzi: prop?.input || prop?.hanzi,
+                    //     lang: prop?.lang || lang,
+                    //     query: query,
+                    //     contentId: prop?.id,
+                    //     eventType: "CONTENT_VIEWED",
+                    //   } as any);
+                    // }
                   }}
                 >
                   {show || readMode ? (

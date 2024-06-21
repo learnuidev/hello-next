@@ -195,13 +195,13 @@ export const ReadModeView = (props: SelectedCharacterProps) => {
 
                             <button
                               onClick={() => {
-                                addHistoryMutation.mutate({
-                                  hanzi: val,
-                                  lang: lang,
-                                  pathName: routeName,
-                                  contentId: selectedComp?.id || "",
-                                  eventType: "CONTENT_VIEWED",
-                                } as any);
+                                // addHistoryMutation.mutate({
+                                //   hanzi: val,
+                                //   lang: lang,
+                                //   pathName: routeName,
+                                //   contentId: selectedComp?.id || "",
+                                //   eventType: "CONTENT_VIEWED",
+                                // } as any);
 
                                 router.push(
                                   `/nmm/${val}${lang ? `?lang=${lang}` : ""}`

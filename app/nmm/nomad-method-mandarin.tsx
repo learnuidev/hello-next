@@ -147,13 +147,13 @@ export function NomadMethodMandarin() {
                 <Link
                   href={`/nmm/${prop.hanzi}?lang=zh`}
                   onClick={() => {
-                    addHistoryMutation.mutate({
-                      pathName: routeName,
-                      input: prop.input,
-                      lang: "zh",
-                      contentId: prop.id,
-                      eventType: "CONTENT_VIEWED",
-                    } as any);
+                    // addHistoryMutation.mutate({
+                    //   pathName: routeName,
+                    //   input: prop.input,
+                    //   lang: "zh",
+                    //   contentId: prop.id,
+                    //   eventType: "CONTENT_VIEWED",
+                    // } as any);
                   }}
                   className={`${
                     // learnedCharacters.includes(prop?.hanzi)

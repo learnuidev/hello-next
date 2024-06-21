@@ -52,14 +52,14 @@ export const WordItem = ({
         key={JSON.stringify(prop)}
         onClick={() => {
           if (!addHistoryMutation?.isLoading) {
-            addHistoryMutation.mutate({
-              // pathName: routeName,
-              hanzi: prop?.input || prop?.hanzi,
-              lang: prop?.lang || lang,
-              query: query,
-              contentId: prop?.id,
-              eventType: "CONTENT_VIEWED",
-            } as any);
+            // addHistoryMutation.mutate({
+            //   // pathName: routeName,
+            //   hanzi: prop?.input || prop?.hanzi,
+            //   lang: prop?.lang || lang,
+            //   query: query,
+            //   contentId: prop?.id,
+            //   eventType: "CONTENT_VIEWED",
+            // } as any);
           }
         }}
         // className={`${prop ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-600 text-gray-600"} dark:hover:text-white p-6 flex items-center flex-col`}

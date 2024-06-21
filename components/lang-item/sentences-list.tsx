@@ -57,16 +57,16 @@ export function SentencesList({ lang }: { lang: string }) {
             key={JSON.stringify(prop)}
             onClick={() => {
               if (!addHistoryMutation?.isLoading) {
-                addHistoryMutation.mutate({
-                  // pathName: routeName,
-                  input: prop?.input || prop?.hanzi,
-                  roman: prop?.roman,
-                  lang: prop?.lang || lang,
-                  contentType: "sentence",
-                  query: query,
-                  contentId: prop?.id,
-                  eventType: "CONTENT_VIEWED",
-                } as any);
+                // addHistoryMutation.mutate({
+                //   // pathName: routeName,
+                //   input: prop?.input || prop?.hanzi,
+                //   roman: prop?.roman,
+                //   lang: prop?.lang || lang,
+                //   contentType: "sentence",
+                //   query: query,
+                //   contentId: prop?.id,
+                //   eventType: "CONTENT_VIEWED",
+                // } as any);
               }
             }}
             // className={`${prop ? "dark:text-gray-400 text-gray-200" : "dark:text-gray-600 text-gray-600"} dark:hover:text-white p-6 flex items-center flex-col`}

@@ -111,13 +111,13 @@ export function NmmCoreComponents() {
                       href={`/nmm/${prop.hanzi}?lang=zh`}
                       onClick={() => {
                         if (authUser?.jwt) {
-                          addHistoryMutation.mutate({
-                            pathName: routeName,
-                            hanzi: prop.hanzi,
-                            lang: "zh",
-                            contentId: prop.id,
-                            eventType: "CONTENT_VIEWED",
-                          } as any);
+                          // addHistoryMutation.mutate({
+                          //   pathName: routeName,
+                          //   hanzi: prop.hanzi,
+                          //   lang: "zh",
+                          //   contentId: prop.id,
+                          //   eventType: "CONTENT_VIEWED",
+                          // } as any);
                         } else {
                           // alert("yoo");
                         }

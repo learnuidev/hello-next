@@ -109,13 +109,13 @@ export function AllComponents() {
               <Link
                 href={`/nmm/${prop.hanzi}?lang=zh`}
                 onClick={() => {
-                  addHistoryMutation.mutate({
-                    input: prop.input,
-                    lang: "zh",
-                    pathName: routeName,
-                    contentId: prop.id,
-                    eventType: "CONTENT_VIEWED",
-                  } as any);
+                  // addHistoryMutation.mutate({
+                  //   input: prop.input,
+                  //   lang: "zh",
+                  //   pathName: routeName,
+                  //   contentId: prop.id,
+                  //   eventType: "CONTENT_VIEWED",
+                  // } as any);
                 }}
                 className={`${
                   // learnedCharacters.includes(prop?.hanzi)

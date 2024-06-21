@@ -21,12 +21,12 @@ export function TimelineTabs() {
           >
             <Icons.magnifyingGlass className="text-2xl" />
           </TabsTrigger>
-          <TabsTrigger
+          {/* <TabsTrigger
             value="click"
             className="px-0 data-[state=active]:text-yellow-500"
           >
             <Icons.computerMouse className="text-2xl" />
-          </TabsTrigger>
+          </TabsTrigger> */}
           <TabsTrigger
             // value="learned"
             value="discovered"
@@ -44,9 +44,6 @@ export function TimelineTabs() {
       </TabsContent>
       <TabsContent value="search" className="my-8">
         <TimelineTabBody variant="search" />
-      </TabsContent>
-      <TabsContent value="click" className="my-8">
-        <TimelineTabBody variant="click" />
       </TabsContent>
       <TabsContent value="discovered" className="my-8">
         <TimelineTabBody variant="discovered" />

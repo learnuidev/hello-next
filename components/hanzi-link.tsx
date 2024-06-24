@@ -43,7 +43,9 @@ export function HanziLink({ character }: { character: { hanzi: string } }) {
             ? learnedChar?.status === "forgotten"
               ? "text-yellow-500"
               : `hover:${color} text-gray-300`
-            : "dark:text-gray-700 text-gray-200"
+            : selectedComp?.length > 1 || selectedComp?.group
+              ? "dark:text-gray-600 text-gray-200"
+              : "dark:text-gray-800 text-gray-200"
         } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
       >
         {character?.hanzi}

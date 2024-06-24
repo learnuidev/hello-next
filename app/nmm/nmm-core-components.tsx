@@ -107,7 +107,7 @@ export function NmmCoreComponents() {
             return (
               <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
                 <Tooltip>
-                  <TooltipTrigger className="p-2 md:p-3 hover:scale-125 transition">
+                  <TooltipTrigger className="hover:scale-125 transition">
                     <HanziLink character={prop} />
                   </TooltipTrigger>
                   <TooltipContent className="bg-black border-gray-800">

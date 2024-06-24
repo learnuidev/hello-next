@@ -124,17 +124,17 @@ export function NmmCoreComponents() {
                       }}
                       className={`${
                         // learnedCharacters.includes(prop?.hanzi)
-                        isLoading || isComponentsLoading
+                        isComponentsLoading
                           ? "text-gray-400"
                           : learnedChar
                             ? learnedChar?.status === "forgotten"
-                              ? "text-gray-800"
+                              ? "text-gray-700"
                               : `${color} text-gray-300`
                             : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                               ? "text-yellow-500"
                               : selectedComp?.group
                                 ? "text-slate-500"
-                                : "dark:text-gray-700"
+                                : "dark:text-gray-900"
                       } p-3 text-2xl md:text-2xl transition lowercase`}
                     >
                       {prop?.hanzi}

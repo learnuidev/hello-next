@@ -126,30 +126,18 @@ export function AllComponents() {
                 }}
                 className={`${
                   // learnedCharacters.includes(prop?.hanzi)
-                  learnedChar
-                    ? learnedChar?.forgottenAt &&
-                      learnedChar?.status === "forgotten"
-                      ? `${color} text-gray-800`
-                      : `${color} text-gray-300`
-                    : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                      ? "text-yellow-500"
-                      : selectedComp?.group
-                        ? "text-slate-400"
-                        : "dark:text-gray-500"
+                  isComponentsLoading
+                    ? "text-gray-400"
+                    : learnedChar
+                      ? learnedChar?.status === "forgotten"
+                        ? "text-gray-700"
+                        : `${color} text-gray-300`
+                      : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                        ? "text-yellow-500"
+                        : selectedComp?.group
+                          ? "text-slate-500"
+                          : "dark:text-gray-900"
                 } p-3 text-2xl md:text-2xl transition lowercase`}
-
-                // className={`${
-                //   // learnedCharacters.includes(prop?.hanzi)
-                //   learnedCharacters2?.find(
-                //     (char: any) => char?.hanzi === prop?.hanzi
-                //   )
-                //     ? `hover:${color} text-gray-800`
-                //     : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                //       ? "text-yellow-500"
-                //       : selectedComp?.group
-                //         ? "text-slate-400"
-                //         : "dark:text-gray-500 text-gray-200"
-                // } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
               >
                 {prop?.hanzi}
               </Link>

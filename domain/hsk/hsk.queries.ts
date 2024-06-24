@@ -8,7 +8,8 @@ import { siteConfig } from "@/lib/config";
 import { hskWords } from "@/langs/chinese /hsk";
 
 // TODO: Move this to .env
-const url = `${siteConfig?.apiUrl}/v1/list-hsk-words`;
+// const url = `${siteConfig?.apiUrl}/v1/list-hsk-words`;
+const url = `${siteConfig?.apiUrl}/v1/list-hsk-words/v3`;
 
 async function listHSKWords(opts: { Authorization: string }) {
   const res = await fetch(url, {

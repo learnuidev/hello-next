@@ -26,6 +26,7 @@ import { AllComponents } from "./all-components";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { course1 } from "@/data/convos/bm1";
 import { XiaomaView } from "./xiaoma/xiaoma";
+import { cn } from "@/lib/utils";
 
 const getLevel = (queryStr: string) => {
   if (queryStr?.includes("1")) {
@@ -97,6 +98,9 @@ export function NomadMethodMandarin() {
     }
   );
 
+  const viewType = useSearchQueryStore((state) => state.type);
+  const setViewType = useSearchQueryStore((state) => state.setType);
+
   const lastAnswer = answers?.[answers?.length - 1];
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
@@ -133,58 +137,79 @@ export function NomadMethodMandarin() {
   const HskView = ({
     children,
     variant,
+    type,
   }: {
     children: React.ReactNode;
     variant?: "all";
+    // type?: "character" | "word" | "sentence";
+    type?: string;
   }) => {
     if (!queryStr?.includes("hsk")) {
       return children;
     }
 
+    const resolvedHskWords = resolveHsk(queryStr, hskWords, variant);
+
+    const hskCharacters = [
+      ...new Set(
+        resolvedHskWords
+          ?.map((x: any) => x.hanzi)
+          ?.join()
+          ?.split("")
+      ),
+    ]
+      ?.filter((val: any) => filterNonHanYu(val))
+      ?.map((id) => {
+        return {
+          hanzi: id,
+          lang: "zh",
+        };
+      });
+
+    const vals = type === "word" ? resolvedHskWords : hskCharacters;
+
     return (
       <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-        {resolveHsk(queryStr, hskWords, variant)?.map(
-          (prop: any, idx: number) => {
-            const selectedComp = components?.find(
-              (component: any) => component?.hanzi === prop?.hanzi
-            );
+        {vals?.map((prop: any, idx: number) => {
+          const selectedComp = components?.find(
+            (component: any) => component?.hanzi === prop?.hanzi
+          );
 
-            const color = calculateColor({
-              tone: selectedComp?.tone_level,
-            });
+          const color = calculateColor({
+            tone: selectedComp?.tone_level,
+          });
 
-            return (
-              <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
-                <Link
-                  href={`/nmm/${prop.hanzi}?lang=zh`}
-                  onClick={() => {
-                    // addHistoryMutation.mutate({
-                    //   pathName: routeName,
-                    //   input: prop.input,
-                    //   lang: "zh",
-                    //   contentId: prop.id,
-                    //   eventType: "CONTENT_VIEWED",
-                    // } as any);
-                  }}
-                  className={`${
-                    // learnedCharacters.includes(prop?.hanzi)
-                    learnedCharacters2?.find(
-                      (char: any) => char?.hanzi === prop?.hanzi
-                    )
-                      ? `hover:${color} text-gray-300`
-                      : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                        ? "text-yellow-500"
-                        : selectedComp?.group
-                          ? "text-slate-400"
-                          : "dark:text-gray-500 text-gray-200"
-                  } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-                >
-                  {prop?.hanzi}
-                </Link>
-              </div>
-            );
-          }
-        )}
+          return (
+            <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
+              <Link
+                href={`/nmm/${prop.hanzi}?lang=zh`}
+                onClick={() => {
+                  // addHistoryMutation.mutate({
+                  //   pathName: routeName,
+                  //   input: prop.input,
+                  //   lang: "zh",
+                  //   contentId: prop.id,
+                  //   eventType: "CONTENT_VIEWED",
+                  // } as any);
+                }}
+                className={`${
+                  // learnedCharacters.includes(prop?.hanzi)
+                  learnedCharacters2?.find(
+                    (char: any) => char?.hanzi === prop?.hanzi
+                  )
+                    ? `hover:${color} text-gray-300`
+                    : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                      ? "text-yellow-500"
+                      : selectedComp?.group
+                        ? "text-slate-400"
+                        : "dark:text-gray-500 text-gray-200"
+                } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+              >
+                {prop?.hanzi}
+              </Link>
+            </div>
+          );
+        })}
       </div>
     );
   };
@@ -209,11 +234,55 @@ export function NomadMethodMandarin() {
             <TabsTrigger
               // value="learned"
               value="all"
-              className="px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
+              className={cn(
+                "px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
+              )}
             >
               <Icons.globeAsia className="text-xl md:text-2xl" />
             </TabsTrigger>
           </TabsList>
+
+          {queryStr?.includes("hsk") && (
+            <div className="space-x-8">
+              <button
+                onClick={() => {
+                  setViewType("character");
+                }}
+                className={cn(
+                  viewType === "character"
+                    ? "dark:text-white"
+                    : " text-gray-500",
+                  "px-0 "
+                )}
+              >
+                <Icons.seedling className="text-xl md:text-2xl" />
+              </button>
+              <button
+                onClick={() => {
+                  setViewType("word");
+                }}
+                className={cn(
+                  viewType === "word" ? "dark:text-white" : " text-gray-500",
+                  "px-0"
+                )}
+              >
+                <Icons.tree className="text-xl md:text-2xl" />
+              </button>
+              <button
+                // value="learned"
+
+                onClick={() => {
+                  setViewType("sentence");
+                }}
+                className={cn(
+                  viewType === "sentence" ? "dark:text-white" : "text-gray-500",
+                  "px-0 "
+                )}
+              >
+                <Icons.trees className="text-xl md:text-2xl" />
+              </button>
+            </div>
+          )}
 
           {
             <div className="space-x-4">
@@ -237,7 +306,7 @@ export function NomadMethodMandarin() {
         </div>
 
         <TabsContent value="core" className="my-4 md:my-8">
-          <HskView>
+          <HskView type={viewType}>
             <NmmCoreComponents />
           </HskView>
         </TabsContent>
@@ -245,7 +314,7 @@ export function NomadMethodMandarin() {
         {/* ?.slice(selectedBelt?.minCharacterLevel, selectedBelt?.maxCharacterLevel) */}
 
         <TabsContent value="needs_review" className="my-4 md:my-8">
-          <HskView>
+          <HskView type={viewType}>
             <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
               {(queryStr
                 ? queryStr?.includes("hsk")
@@ -305,7 +374,7 @@ export function NomadMethodMandarin() {
         </TabsContent>
 
         <TabsContent value="all" className="my-4 md:my-8">
-          <HskView variant="all">
+          <HskView variant="all" type={viewType}>
             <AllComponents />
           </HskView>
         </TabsContent>

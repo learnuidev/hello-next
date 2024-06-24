@@ -6,6 +6,9 @@ import { create } from "zustand";
 // const [queryResult, setQueryResult] = useState<any>(null)
 
 export const useSearchQueryStore = create((set: any, get: any) => ({
+  type: "character",
+  setType: (f: any) =>
+    typeof f === "function" ? set({ type: f(get().type) }) : set({ type: f }),
   querySync: "",
   setQuerySync: (f: any) =>
     typeof f === "function"

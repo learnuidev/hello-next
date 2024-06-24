@@ -120,7 +120,8 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                 )}
               </button>
             )}
-            {currentCharacter?.status === "forgotten" ? null : (
+            {!isAlreadyLearned ||
+            currentCharacter?.status === "forgotten" ? null : (
               <button
                 disabled={updateCharacterStatusMutation?.isLoading}
                 onClick={() => {

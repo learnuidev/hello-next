@@ -148,11 +148,11 @@ export function NomadMethodMandarin() {
       return children;
     }
 
-    console.log("HSK", hskWords);
+    // console.log("HSK", hskWords);
 
     const resolvedHskWords = resolveHsk(queryStr, hskWords, variant);
 
-    console.log("RESOL", resolvedHskWords);
+    // console.log("RESOL", resolvedHskWords);
 
     const hskCharacters = [
       ...new Set(
@@ -170,6 +170,8 @@ export function NomadMethodMandarin() {
         };
       });
 
+    // console.log("HSK Characters", hskCharacters);
+
     const vals = type === "word" ? resolvedHskWords : hskCharacters;
 
     return (
@@ -186,7 +188,12 @@ export function NomadMethodMandarin() {
           return (
             <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
               <Link
-                href={`/nmm/${prop.hanzi}?lang=zh`}
+                // href={`/nmm/${prop.hanzi}?lang=zh`}
+                href={
+                  `/nmm/${prop.hanzi}?lang=zh` +
+                  (prop?.hskLevel ? `&hsk=${prop?.hskLevel}` : ``) +
+                  ""
+                }
                 onClick={() => {
                   // addHistoryMutation.mutate({
                   //   pathName: routeName,

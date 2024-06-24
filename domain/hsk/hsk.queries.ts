@@ -23,7 +23,12 @@ async function listHSKWords(opts: { Authorization: string }) {
     // }),
   });
   const resp = (await res.json()) as any;
-  return resp;
+  return resp.map((x: any) => {
+    return {
+      ...x,
+      hskLevel: x?.level,
+    };
+  });
 }
 
 export function useListHSKWordsQuery(

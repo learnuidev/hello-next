@@ -7,7 +7,11 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
 import { calculateColor } from "@/app/nmm/utils";
 
-export function HanziLink({ character }: { character: { hanzi: string } }) {
+export function HanziLink({
+  character,
+}: {
+  character: { hanzi: string; hskLevel?: number };
+}) {
   const { data: components } = useListComponents({ includeAll: true });
 
   const selectedComp = components?.find(
@@ -27,7 +31,11 @@ export function HanziLink({ character }: { character: { hanzi: string } }) {
   return (
     <div className="p-2 md:p-3">
       <Link
-        href={`/nmm/${character.hanzi}?lang=zh`}
+        href={
+          `/nmm/${character.hanzi}?lang=zh` +
+          (character?.hskLevel ? `&hsk=${character?.hskLevel}` : ``) +
+          ""
+        }
         onClick={() => {
           // addHistoryMutation.mutate({
           //   pathName: routeName,

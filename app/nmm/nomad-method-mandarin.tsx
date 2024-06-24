@@ -67,12 +67,12 @@ const resolveHsk = (
 
   if (variant === "all") {
     return hskWords?.filter((item) => {
-      return item?.hskLevel <= level;
+      return item?.level <= level;
     });
   }
 
   return hskWords?.filter((item) => {
-    return item?.hskLevel === level;
+    return item?.level === level;
   });
 };
 
@@ -148,7 +148,11 @@ export function NomadMethodMandarin() {
       return children;
     }
 
+    console.log("HSK", hskWords);
+
     const resolvedHskWords = resolveHsk(queryStr, hskWords, variant);
+
+    console.log("RESOL", resolvedHskWords);
 
     const hskCharacters = [
       ...new Set(

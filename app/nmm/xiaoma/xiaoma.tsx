@@ -161,7 +161,7 @@ function Xiaoma() {
           </TabsTrigger>
         </TabsList>
 
-        {/* {
+        {
           <div className="space-x-4">
             {belts?.map?.((belt) => {
               return (
@@ -171,6 +171,7 @@ function Xiaoma() {
                     setSelectedBelt(belt as any);
                   }}
                   className={`${
+                    selectedBelt !== null &&
                     belt?.level === (selectedBelt?.level as any)
                       ? belt?.fill
                       : belt?.unselected
@@ -179,51 +180,64 @@ function Xiaoma() {
               );
             })}
           </div>
-        } */}
+        }
       </div>
 
       <TabsContent value="characters" className="my-4 md:my-8">
         <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-          {xiaomaCharacters?.map((prop: any, idx: number) => {
-            const selectedComp = components?.find(
-              (component: any) => component?.hanzi === prop?.hanzi
-            );
+          {xiaomaCharacters
 
-            const color = calculateColor({
-              tone: selectedComp?.tone_level,
-            });
+            .filter((prop: any, idx: number) => {
+              const selectedComp = components?.find(
+                (component: any) => component?.hanzi === prop?.hanzi
+              );
 
-            return (
-              <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
-                <Link
-                  href={`/nmm/${prop.hanzi}?lang=zh`}
-                  onClick={() => {
-                    // addHistoryMutation.mutate({
-                    //   pathName: routeName,
-                    //   input: prop.input,
-                    //   lang: "zh",
-                    //   contentId: prop.id,
-                    //   eventType: "CONTENT_VIEWED",
-                    // } as any);
-                  }}
-                  className={`${
-                    // learnedCharacters.includes(prop?.hanzi)
-                    learnedCharacters2?.find(
-                      (char: any) => char?.hanzi === prop?.hanzi
-                    )
-                      ? `hover:${color} text-gray-300`
-                      : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                        ? "text-yellow-500"
-                        : selectedComp?.group
-                          ? "text-slate-400"
-                          : "dark:text-gray-500 text-gray-200"
-                  } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-                >
-                  {prop?.hanzi}
-                </Link>
-              </div>
-            );
-          })}
+              return (
+                selectedComp?.level <= selectedBelt?.maxCharacterLevel &&
+                selectedComp?.level >= selectedBelt?.minCharacterLevel
+              );
+            })
+
+            .map((prop: any, idx: number) => {
+              const selectedComp = components?.find(
+                (component: any) => component?.hanzi === prop?.hanzi
+              );
+
+              const color = calculateColor({
+                tone: selectedComp?.tone_level,
+              });
+
+              return (
+                <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
+                  <Link
+                    href={`/nmm/${prop.hanzi}?lang=zh`}
+                    onClick={() => {
+                      // addHistoryMutation.mutate({
+                      //   pathName: routeName,
+                      //   input: prop.input,
+                      //   lang: "zh",
+                      //   contentId: prop.id,
+                      //   eventType: "CONTENT_VIEWED",
+                      // } as any);
+                    }}
+                    className={`${
+                      // learnedCharacters.includes(prop?.hanzi)
+                      learnedCharacters2?.find(
+                        (char: any) => char?.hanzi === prop?.hanzi
+                      )
+                        ? `hover:${color} text-gray-300`
+                        : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
+                          ? "text-yellow-500"
+                          : selectedComp?.group
+                            ? "text-slate-400"
+                            : "dark:text-gray-500 text-gray-200"
+                    } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+                  >
+                    {prop?.hanzi}
+                  </Link>
+                </div>
+              );
+            })}
         </div>
       </TabsContent>
 

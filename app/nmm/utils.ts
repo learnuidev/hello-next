@@ -32,40 +32,41 @@ export const calculateBorderColor = (dict: any) => {
 
 export const belts = [
   {
-    fill: "bg-slate-100",
+    fill: "bg-slate-600",
     color: "text-white",
-    unselected: "bg-slate-800",
+    unselected: "bg-gray-800",
     maxCharacterLevel: 105,
     minCharacterLevel: 0,
     level: "white",
   },
+
   {
-    fill: "bg-yellow-500",
-    unselected: "bg-yellow-800",
+    fill: "bg-yellow-600",
+    unselected: "bg-gray-800",
     color: "text-yellow-500",
     maxCharacterLevel: 300,
     minCharacterLevel: 105,
     level: "yellow",
   },
   {
-    fill: "bg-green-500",
-    unselected: "bg-green-800",
+    fill: "bg-green-600",
+    unselected: "bg-gray-800",
     color: "text-green-500",
     maxCharacterLevel: 600,
     minCharacterLevel: 300,
     level: "green",
   },
   {
-    fill: "bg-blue-500",
-    unselected: "bg-blue-800",
+    fill: "bg-blue-600",
+    unselected: "bg-gray-800",
     color: "text-blue-500",
     maxCharacterLevel: 1200,
     minCharacterLevel: 600,
     level: "blue",
   },
   {
-    fill: "bg-red-500",
-    unselected: "bg-red-800",
+    fill: "bg-rose-500",
+    unselected: "bg-gray-800",
     color: "text-red-500",
     maxCharacterLevel: 2000,
     minCharacterLevel: 1200,
@@ -78,6 +79,15 @@ export const belts = [
     maxCharacterLevel: 3050,
     minCharacterLevel: 2000,
     level: "black",
+  },
+
+  {
+    fill: "bg-violet-500",
+    color: "text-white",
+    unselected: "bg-gray-800",
+    maxCharacterLevel: 4000,
+    minCharacterLevel: 0,
+    level: "all",
   },
 ];
 

@@ -19,6 +19,7 @@ import { Icons } from "@/components/ui/icons.v2";
 
 import { course1 } from "@/data/convos/bm1";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+import { HanziLink } from "@/components/hanzi-link";
 
 const getLevel = (queryStr: string) => {
   if (queryStr?.includes("1")) {
@@ -240,47 +241,11 @@ function Xiaoma() {
             })
 
             .map((prop: any, idx: number) => {
-              const selectedComp = components?.find(
-                (component: any) => component?.hanzi === prop?.hanzi
-              );
-
-              const color = calculateColor({
-                tone: selectedComp?.tone_level,
-              });
-
-              const learnedChar = learnedCharacters2?.find(
-                (char: any) => char?.hanzi === prop?.hanzi
-              );
-
               return (
-                <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
-                  <Link
-                    href={`/nmm/${prop.hanzi}?lang=zh`}
-                    onClick={() => {
-                      // addHistoryMutation.mutate({
-                      //   pathName: routeName,
-                      //   input: prop.input,
-                      //   lang: "zh",
-                      //   contentId: prop.id,
-                      //   eventType: "CONTENT_VIEWED",
-                      // } as any);
-                    }}
-                    className={`${
-                      // learnedCharacters.includes(prop?.hanzi)
-                      learnedChar
-                        ? learnedChar?.status === "forgotten"
-                          ? "text-yellow-500"
-                          : `hover:${color} text-gray-300`
-                        : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                          ? "text-yellow-500"
-                          : selectedComp?.group
-                            ? "text-slate-700"
-                            : "dark:text-gray-800 text-gray-200"
-                    } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-                  >
-                    {prop?.hanzi}
-                  </Link>
-                </div>
+                <HanziLink
+                  character={prop}
+                  key={`${prop.hanzi}-chars-${idx}`}
+                />
               );
             })}
         </div>
@@ -291,47 +256,8 @@ function Xiaoma() {
       <TabsContent value="words" className="my-4 md:my-8">
         <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
           {xiaomaWords?.map((prop: any, idx: number) => {
-            const selectedComp = components?.find(
-              (component: any) => component?.hanzi === prop?.hanzi
-            );
-
-            const color = calculateColor({
-              tone: selectedComp?.tone_level,
-            });
-
-            const learnedChar = learnedCharacters2?.find(
-              (char: any) => char?.hanzi === prop?.hanzi
-            );
-
             return (
-              <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
-                <Link
-                  href={`/nmm/${prop.hanzi}?lang=zh`}
-                  onClick={() => {
-                    // addHistoryMutation.mutate({
-                    //   pathName: routeName,
-                    //   input: prop.input,
-                    //   lang: "zh",
-                    //   contentId: prop.id,
-                    //   eventType: "CONTENT_VIEWED",
-                    // } as any);
-                  }}
-                  className={`${
-                    // learnedCharacters.includes(prop?.hanzi)
-                    learnedChar
-                      ? learnedChar?.status === "forgotten"
-                        ? "text-yellow-500"
-                        : `hover:${color} text-gray-300`
-                      : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                        ? "text-yellow-500"
-                        : selectedComp?.group
-                          ? "text-slate-700"
-                          : "dark:text-gray-900 text-gray-200"
-                  } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-                >
-                  {prop?.hanzi}
-                </Link>
-              </div>
+              <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
             );
           })}
         </div>
@@ -340,43 +266,8 @@ function Xiaoma() {
       <TabsContent value="sentences" className="my-4 md:my-8">
         <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
           {xiaomaSentences?.map((prop: any, idx: number) => {
-            const selectedComp = components?.find(
-              (component: any) => component?.hanzi === prop?.hanzi
-            );
-
-            const color = calculateColor({
-              tone: selectedComp?.tone_level,
-            });
-
             return (
-              <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
-                <Link
-                  href={`/nmm/${prop.hanzi}?lang=zh`}
-                  onClick={() => {
-                    // addHistoryMutation.mutate({
-                    //   pathName: routeName,
-                    //   input: prop.input,
-                    //   lang: "zh",
-                    //   contentId: prop.id,
-                    //   eventType: "CONTENT_VIEWED",
-                    // } as any);
-                  }}
-                  className={`${
-                    // learnedCharacters.includes(prop?.hanzi)
-                    learnedCharacters2?.find(
-                      (char: any) => char?.hanzi === prop?.hanzi
-                    )
-                      ? `hover:${color} text-gray-300`
-                      : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                        ? "text-yellow-500"
-                        : selectedComp?.group
-                          ? "text-slate-700"
-                          : "dark:text-gray-900 text-gray-200"
-                  } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-                >
-                  {prop?.hanzi}
-                </Link>
-              </div>
+              <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
             );
           })}
         </div>

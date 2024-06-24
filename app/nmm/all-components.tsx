@@ -18,6 +18,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useSearchQueryStore } from "@/components/search/state";
 
 import { Icons } from "@/components/ui/icons.v2";
+import { HanziLink } from "@/components/hanzi-link";
 
 export function AllComponents() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
@@ -99,49 +100,8 @@ export function AllComponents() {
       {filteredComponents
         ?.filter((comp: any) => comp?.level < 3501)
         .map((prop: any, idx: number) => {
-          const selectedComp = components?.find(
-            (component: any) => component?.hanzi === prop?.hanzi
-          );
-
-          const color = calculateColor({
-            tone: selectedComp?.tone_level,
-          });
-
-          const learnedChar = learnedCharacters2?.find(
-            (char: any) => char?.hanzi === prop?.hanzi
-          ) as any;
-
           return (
-            <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
-              <Link
-                href={`/nmm/${prop.hanzi}?lang=zh`}
-                onClick={() => {
-                  // addHistoryMutation.mutate({
-                  //   input: prop.input,
-                  //   lang: "zh",
-                  //   pathName: routeName,
-                  //   contentId: prop.id,
-                  //   eventType: "CONTENT_VIEWED",
-                  // } as any);
-                }}
-                className={`${
-                  // learnedCharacters.includes(prop?.hanzi)
-                  isComponentsLoading
-                    ? "text-gray-400"
-                    : learnedChar
-                      ? learnedChar?.status === "forgotten"
-                        ? "text-yellow-500"
-                        : `${color} text-gray-300`
-                      : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                        ? "text-yellow-500"
-                        : selectedComp?.group
-                          ? "text-slate-700"
-                          : "dark:text-gray-900 dark:hover:text-white"
-                } p-3 text-2xl md:text-2xl transition lowercase`}
-              >
-                {prop?.hanzi}
-              </Link>
-            </div>
+            <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
           );
         })}
     </div>

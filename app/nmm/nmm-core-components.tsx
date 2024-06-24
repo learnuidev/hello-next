@@ -22,6 +22,7 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { useQuery } from "@tanstack/react-query";
 import { chineseCharacters } from "@/langs/chinese /characters";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
+import { HanziLink } from "@/components/hanzi-link";
 
 export function NmmCoreComponents() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
@@ -107,38 +108,7 @@ export function NmmCoreComponents() {
               <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
                 <Tooltip>
                   <TooltipTrigger className="p-2 md:p-3 hover:scale-125 transition">
-                    <Link
-                      href={`/nmm/${prop.hanzi}?lang=zh`}
-                      onClick={() => {
-                        if (authUser?.jwt) {
-                          // addHistoryMutation.mutate({
-                          //   pathName: routeName,
-                          //   hanzi: prop.hanzi,
-                          //   lang: "zh",
-                          //   contentId: prop.id,
-                          //   eventType: "CONTENT_VIEWED",
-                          // } as any);
-                        } else {
-                          // alert("yoo");
-                        }
-                      }}
-                      className={`${
-                        // learnedCharacters.includes(prop?.hanzi)
-                        isComponentsLoading
-                          ? "text-gray-400"
-                          : learnedChar
-                            ? learnedChar?.status === "forgotten"
-                              ? "text-yellow-500"
-                              : `${color} text-gray-300`
-                            : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                              ? "text-yellow-500"
-                              : selectedComp?.group
-                                ? "text-slate-700"
-                                : "dark:text-gray-900"
-                      } p-3 text-2xl md:text-2xl transition lowercase`}
-                    >
-                      {prop?.hanzi}
-                    </Link>
+                    <HanziLink character={prop} />
                   </TooltipTrigger>
                   <TooltipContent className="bg-black border-gray-800">
                     <PreviewComponent component={prop} />

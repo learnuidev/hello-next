@@ -248,6 +248,10 @@ function Xiaoma() {
                 tone: selectedComp?.tone_level,
               });
 
+              const learnedChar = learnedCharacters2?.find(
+                (char: any) => char?.hanzi === prop?.hanzi
+              );
+
               return (
                 <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
                   <Link
@@ -263,15 +267,15 @@ function Xiaoma() {
                     }}
                     className={`${
                       // learnedCharacters.includes(prop?.hanzi)
-                      learnedCharacters2?.find(
-                        (char: any) => char?.hanzi === prop?.hanzi
-                      )
-                        ? `hover:${color} text-gray-300`
+                      learnedChar
+                        ? learnedChar?.status === "forgotten"
+                          ? "text-gray-900"
+                          : `hover:${color} text-gray-300`
                         : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                           ? "text-yellow-500"
                           : selectedComp?.group
-                            ? "text-slate-400"
-                            : "dark:text-gray-500 text-gray-200"
+                            ? "text-slate-600"
+                            : "dark:text-gray-800 text-gray-200"
                     } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                   >
                     {prop?.hanzi}
@@ -295,6 +299,10 @@ function Xiaoma() {
               tone: selectedComp?.tone_level,
             });
 
+            const learnedChar = learnedCharacters2?.find(
+              (char: any) => char?.hanzi === prop?.hanzi
+            );
+
             return (
               <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
                 <Link
@@ -310,15 +318,15 @@ function Xiaoma() {
                   }}
                   className={`${
                     // learnedCharacters.includes(prop?.hanzi)
-                    learnedCharacters2?.find(
-                      (char: any) => char?.hanzi === prop?.hanzi
-                    )
-                      ? `hover:${color} text-gray-300`
+                    learnedChar
+                      ? learnedChar?.status === "forgotten"
+                        ? "text-gray-800"
+                        : `hover:${color} text-gray-300`
                       : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                         ? "text-yellow-500"
                         : selectedComp?.group
-                          ? "text-slate-400"
-                          : "dark:text-gray-500 text-gray-200"
+                          ? "text-slate-700"
+                          : "dark:text-gray-900 text-gray-200"
                   } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                 >
                   {prop?.hanzi}
@@ -362,8 +370,8 @@ function Xiaoma() {
                       : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                         ? "text-yellow-500"
                         : selectedComp?.group
-                          ? "text-slate-400"
-                          : "dark:text-gray-500 text-gray-200"
+                          ? "text-slate-700"
+                          : "dark:text-gray-900 text-gray-200"
                   } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                 >
                   {prop?.hanzi}

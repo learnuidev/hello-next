@@ -32,7 +32,7 @@ export const calculateBorderColor = (dict: any) => {
 
 export const belts = [
   {
-    fill: "bg-slate-600",
+    fill: "bg-white",
     color: "text-white",
     unselected: "bg-gray-800",
     maxCharacterLevel: 105,

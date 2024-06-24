@@ -125,6 +125,15 @@ function Xiaoma() {
     ),
   ]
     .filter((val: any) => filterNonHanYu(val))
+    .filter((item: any) => {
+      return item.split("").every((val: any) => {
+        const selectedComp = components?.find(
+          (component: any) => component?.hanzi === val
+        );
+
+        return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
+      });
+    })
     .map((id) => {
       return {
         hanzi: id,
@@ -132,9 +141,19 @@ function Xiaoma() {
       };
     });
 
-  const xiaomaWords = hskWords?.filter((word: any) => {
-    return JSON.stringify(xiaomaSentences)?.includes(word?.hanzi);
-  });
+  const xiaomaWords = hskWords
+    ?.filter((word: any) => {
+      return JSON.stringify(xiaomaSentences)?.includes(word?.hanzi);
+    })
+    .filter((item: any) => {
+      return item.hanzi?.split("").every((val: any) => {
+        const selectedComp = components?.find(
+          (component: any) => component?.hanzi === val
+        );
+
+        return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
+      });
+    });
 
   return (
     <Tabs defaultValue="characters" className="p-0">

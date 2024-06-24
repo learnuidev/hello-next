@@ -185,6 +185,14 @@ export function NomadMethodMandarin() {
             tone: selectedComp?.tone_level,
           });
 
+          const learnedChar = learnedCharacters2?.find(
+            (char: any) => char?.hanzi === prop?.hanzi
+          );
+
+          if (learnedChar?.status === "forgotten" && variant !== "all") {
+            return null;
+          }
+
           return (
             <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
               <Link

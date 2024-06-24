@@ -6,6 +6,7 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 import Link from "next/link";
 import { calculateColor } from "@/app/nmm/utils";
+import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 export function HanziLink({
   character,
@@ -27,6 +28,18 @@ export function HanziLink({
   const learnedChar = learnedCharacters2?.find(
     (char: any) => char?.hanzi === character?.hanzi
   );
+
+  const { data: answers } = useListAnswersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
+
+  const lastAnswer = answers?.[answers?.length - 1];
 
   return (
     <div className="p-2 md:p-3">
@@ -50,10 +63,12 @@ export function HanziLink({
           learnedChar
             ? learnedChar?.status === "forgotten"
               ? "text-yellow-500"
-              : `hover:${color} text-gray-300`
+              : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                ? "text-rose-500"
+                : `hover:${color} text-gray-300`
             : selectedComp?.length > 1 || selectedComp?.group
               ? "dark:text-gray-500 text-gray-200"
-              : "dark:text-gray-800 text-gray-200"
+              : "dark:text-gray-700 text-gray-200"
         } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
       >
         {character?.hanzi}

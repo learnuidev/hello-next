@@ -27,6 +27,7 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { course1 } from "@/data/convos/bm1";
 import { XiaomaView } from "./xiaoma/xiaoma";
 import { cn } from "@/lib/utils";
+import { HanziLink } from "@/components/hanzi-link";
 
 const getLevel = (queryStr: string) => {
   if (queryStr?.includes("1")) {
@@ -88,6 +89,9 @@ export function NomadMethodMandarin() {
 
   const addHistoryMutation = useAddHistoryMutation();
 
+  const viewType = useSearchQueryStore((state) => state.type);
+  const setViewType = useSearchQueryStore((state) => state.setType);
+
   const { data: answers } = useListAnswersQuery(
     {},
     {
@@ -97,9 +101,6 @@ export function NomadMethodMandarin() {
       refetchOnReconnect: false,
     }
   );
-
-  const viewType = useSearchQueryStore((state) => state.type);
-  const setViewType = useSearchQueryStore((state) => state.setType);
 
   const lastAnswer = answers?.[answers?.length - 1];
 
@@ -195,37 +196,7 @@ export function NomadMethodMandarin() {
 
           return (
             <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
-              <Link
-                // href={`/nmm/${prop.hanzi}?lang=zh`}
-                href={
-                  `/nmm/${prop.hanzi}?lang=zh` +
-                  (prop?.hskLevel ? `&hsk=${prop?.hskLevel}` : ``) +
-                  ""
-                }
-                onClick={() => {
-                  // addHistoryMutation.mutate({
-                  //   pathName: routeName,
-                  //   input: prop.input,
-                  //   lang: "zh",
-                  //   contentId: prop.id,
-                  //   eventType: "CONTENT_VIEWED",
-                  // } as any);
-                }}
-                className={`${
-                  // learnedCharacters.includes(prop?.hanzi)
-                  learnedCharacters2?.find(
-                    (char: any) => char?.hanzi === prop?.hanzi
-                  )
-                    ? `hover:${color} text-gray-300`
-                    : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
-                      ? "text-yellow-500"
-                      : selectedComp?.group
-                        ? "text-slate-400"
-                        : "dark:text-gray-500 text-gray-200"
-                } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-              >
-                {prop?.hanzi}
-              </Link>
+              <HanziLink character={prop} />
             </div>
           );
         })}

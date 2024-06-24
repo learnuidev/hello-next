@@ -11,6 +11,7 @@ import { useListParseQuery } from "@/domain/nmm/nmm.queries";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
+import { filterNonHanYu } from "@/app/nmm/utils";
 
 export function ConvoInsights({ lessonId }: { lessonId: string }) {
   const [isTocHidden, setIsTocHidden] = useState(false);
@@ -52,71 +53,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     .join("")
     ?.toLocaleLowerCase()
     ?.split("")
-    ?.filter(
-      (x: string) =>
-        ![
-          "？",
-          "0",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "a",
-          "b",
-          "c",
-          "d",
-          "e",
-          "f",
-          "g",
-          "h",
-          "i",
-          "j",
-          "k",
-          "l",
-          "m",
-          "n",
-          "o",
-          "p",
-          "q",
-          "r",
-          "s",
-          "t",
-          "u",
-          "v",
-          "w",
-          "x",
-          "y",
-          "z",
-          "”",
-          "“ ",
-          "，",
-          "：",
-          "；",
-          "、",
-          "！",
-          "（",
-          "）",
-          "“",
-          "。",
-          "‘",
-          "’",
-          "《",
-          "》",
-          "/",
-          "!",
-          "(",
-          ")",
-          ".",
-          "?",
-          "",
-          " ",
-        ]?.includes(x?.toLowerCase())
-    );
+    ?.filter(filterNonHanYu);
 
   console.log("unique words", uniqueWords);
 

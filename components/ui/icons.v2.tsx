@@ -211,4 +211,5 @@ export const Icons = {
   lightningSolid: createFAIcon(faBoltLightningSolid),
   content: createFAIcon(faPhotoFilm),
   contentSolid: createFAIcon(faPhotoFilmSolid),
+  trees: createFAIcon(faTrees),
 };

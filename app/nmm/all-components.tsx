@@ -64,10 +64,17 @@ export function AllComponents() {
 
   const comps = isComponentsLoading ? chineseCharacters : componentsAll;
 
+  // const slicedComponents = queryStr
+  //   ? comps
+  //   : (isComponentsLoading ? chineseCharacters : components)?.slice(
+  //       0,
+  //       selectedBelt?.maxCharacterLevel
+  //     );
+
   const slicedComponents = queryStr
     ? comps
     : (isComponentsLoading ? chineseCharacters : components)?.slice(
-        0,
+        selectedBelt?.minCharacterLevel,
         selectedBelt?.maxCharacterLevel
       );
 

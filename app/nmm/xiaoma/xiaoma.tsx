@@ -141,21 +141,43 @@ function Xiaoma() {
       <div className="my-2 md:my-8 flex justify-between items-center md:mx-12 flex-col md:flex-row space-y-4 md:space-y-0">
         <TabsList className="space-x-8">
           <TabsTrigger
+            value="core"
+            className="px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
+          >
+            <Icons.rocket className="text-xl md:text-2xl" />
+          </TabsTrigger>
+          <TabsTrigger
+            value="needs_review"
+            className="px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
+          >
+            <Icons.graduationCap className="text-xl md:text-2xl" />
+          </TabsTrigger>
+          <TabsTrigger
+            // value="learned"
+            value="all"
+            className="px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
+          >
+            <Icons.globeAsia className="text-xl md:text-2xl" />
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsList className="space-x-8">
+          <TabsTrigger
             value="characters"
-            className="px-0 data-[state=active]:text-rose-300"
+            className="px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
           >
             <Icons.seedling className="text-xl md:text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             value="words"
-            className="px-0 data-[state=active]:text-rose-300"
+            className="px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
           >
             <Icons.tree className="text-xl md:text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             // value="learned"
             value="sentences"
-            className="px-0 data-[state=active]:text-rose-300"
+            className="px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
           >
             <Icons.trees className="text-xl md:text-2xl" />
           </TabsTrigger>

@@ -128,7 +128,7 @@ export function NmmCoreComponents() {
                           ? "text-gray-400"
                           : learnedChar
                             ? learnedChar?.status === "forgotten"
-                              ? "text-gray-700"
+                              ? "text-gray-900"
                               : `${color} text-gray-300`
                             : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                               ? "text-yellow-500"

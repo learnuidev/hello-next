@@ -195,7 +195,7 @@ export function NomadMethodMandarin() {
           }
 
           return (
-            <div className="p-2 md:p-3" key={`${prop.hanzi}-chars-${idx}`}>
+            <div key={`${prop.hanzi}-chars-${idx}`}>
               <HanziLink character={prop} />
             </div>
           );

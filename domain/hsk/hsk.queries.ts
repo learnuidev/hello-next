@@ -41,6 +41,14 @@ export function useListHSKWordsQuery(
       const response = await listHSKWords({
         Authorization: authUser?.jwt,
       });
+
+      // const uniqueHsks = [...new Set(response?.map((res: any) => res.hanzi))];
+
+      // return uniqueHsks?.map((hsk) => {
+      //   const hskItem = response?.find((item: any) => item?.hanzi === hsk);
+
+      //   return hskItem;
+      // });
       return response;
     },
     {

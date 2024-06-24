@@ -130,13 +130,13 @@ export function AllComponents() {
                     ? "text-gray-400"
                     : learnedChar
                       ? learnedChar?.status === "forgotten"
-                        ? "text-gray-900"
+                        ? "text-yellow-500"
                         : `${color} text-gray-300`
                       : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                         ? "text-yellow-500"
                         : selectedComp?.group
                           ? "text-slate-700"
-                          : "dark:text-gray-900"
+                          : "dark:text-gray-900 dark:hover:text-white"
                 } p-3 text-2xl md:text-2xl transition lowercase`}
               >
                 {prop?.hanzi}

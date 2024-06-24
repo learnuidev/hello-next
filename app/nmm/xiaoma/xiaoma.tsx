@@ -269,7 +269,7 @@ function Xiaoma() {
                       // learnedCharacters.includes(prop?.hanzi)
                       learnedChar
                         ? learnedChar?.status === "forgotten"
-                          ? "text-gray-900"
+                          ? "text-yellow-500"
                           : `hover:${color} text-gray-300`
                         : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                           ? "text-yellow-500"
@@ -320,7 +320,7 @@ function Xiaoma() {
                     // learnedCharacters.includes(prop?.hanzi)
                     learnedChar
                       ? learnedChar?.status === "forgotten"
-                        ? "text-gray-800"
+                        ? "text-yellow-500"
                         : `hover:${color} text-gray-300`
                       : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                         ? "text-yellow-500"

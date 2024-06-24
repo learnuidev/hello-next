@@ -133,7 +133,7 @@ export function NmmCoreComponents() {
                             : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                               ? "text-yellow-500"
                               : selectedComp?.group
-                                ? "text-slate-500"
+                                ? "text-slate-700"
                                 : "dark:text-gray-900"
                       } p-3 text-2xl md:text-2xl transition lowercase`}
                     >

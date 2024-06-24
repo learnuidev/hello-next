@@ -274,7 +274,7 @@ function Xiaoma() {
                         : lastAnswer?.totalCharacters?.includes(prop?.hanzi)
                           ? "text-yellow-500"
                           : selectedComp?.group
-                            ? "text-slate-600"
+                            ? "text-slate-700"
                             : "dark:text-gray-800 text-gray-200"
                     } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                   >

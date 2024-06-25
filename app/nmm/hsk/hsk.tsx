@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useSearchParams } from "next/navigation";
 import { useSearchQueryStore } from "@/components/search/state";
@@ -138,13 +138,15 @@ export const HskView = ({
 };
 
 const HskWordsView = ({ variant }: { variant?: "all" }) => {
-  const searchParams = useSearchParams();
-
   const queryStr = useSearchQueryStore((state) => state.query);
 
-  const { data: components } = useListComponents({ includeAll: true });
+  // const { data: resolvedHskWords } = useResolveHsk({ queryStr, variant });
+  const { data: hskWords } = useListHSKWordsQuery();
 
-  const { data: resolvedHskWords } = useResolveHsk({ queryStr, variant });
+  const resolvedHskWords = useMemo(
+    () => resolveHsk(queryStr, hskWords, variant),
+    [queryStr, hskWords, variant]
+  );
 
   return (
     <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
@@ -161,7 +163,30 @@ const HskWordsView = ({ variant }: { variant?: "all" }) => {
 const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
 
-  const { data: hskCharacters } = useGetHskCharacters({ queryStr, variant });
+  // const { data: hskCharacters } = useGetHskCharacters({ queryStr, variant });
+
+  const { data: hskWords } = useListHSKWordsQuery();
+
+  const resolvedHskWords = useMemo(
+    () => resolveHsk(queryStr, hskWords, variant),
+    [queryStr, hskWords, variant]
+  );
+
+  const hskCharacters = [
+    ...new Set(
+      resolvedHskWords
+        ?.map((x: any) => x.hanzi)
+        ?.join()
+        ?.split("")
+    ),
+  ]
+    ?.filter((val: any) => filterNonHanYu(val))
+    ?.map((id) => {
+      return {
+        hanzi: id,
+        lang: "zh",
+      };
+    });
 
   return (
     <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">

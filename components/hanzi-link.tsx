@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
@@ -15,8 +15,12 @@ export function HanziLink({
 }) {
   const { data: components } = useListComponents({ includeAll: true });
 
-  const selectedComp = components?.find(
-    (component: any) => component?.hanzi === character?.hanzi
+  const selectedComp = useMemo(
+    () =>
+      components?.find(
+        (component: any) => component?.hanzi === character?.hanzi
+      ),
+    [components, character]
   );
 
   const color = calculateColor({

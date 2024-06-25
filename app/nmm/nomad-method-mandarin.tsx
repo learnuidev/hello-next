@@ -190,9 +190,9 @@ export function NomadMethodMandarin() {
             (char: any) => char?.hanzi === prop?.hanzi
           );
 
-          if (learnedChar?.status === "forgotten" && variant !== "all") {
-            return null;
-          }
+          // if (learnedChar?.status === "forgotten" && variant !== "all") {
+          //   return null;
+          // }
 
           return (
             <div key={`${prop.hanzi}-chars-${idx}`}>

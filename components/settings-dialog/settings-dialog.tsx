@@ -255,7 +255,8 @@ export function DialogDemo({
                     </div>
 
                     <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-                      Xiaoma's Street Mandarin: Speaking Focused
+                      Based on Street Mandarin by Xiaoma (Focuses on Speaking
+                      Chinese)
                     </p>
                   </div>
                 </CardContent>

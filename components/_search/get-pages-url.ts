@@ -6,9 +6,13 @@ export const getPagesUrl = (query: string) => {
   const insightsUrl = "/insights";
   const chatUrl = "/chat";
   const pinyinUrl = "/pinyin";
+  const reviewUrl = "/review";
 
   const pages = {
     timeline: timelineUrl,
+    r: reviewUrl,
+    review: reviewUrl,
+    srs: reviewUrl,
     t: timelineUrl,
     tl: timelineUrl,
     stats: timelineUrl,

@@ -1,35 +1,13 @@
 "use client";
-import React, { useEffect } from "react";
 
-import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-// import {
-//   belts,
-//   calculateColor,
-//   filterComponents,
-//   filterNonHanYu,
-// } from "./utils";
+import React from "react";
 import { useListComponents } from "@/domain/lesson/component.queries";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useBeltStore } from "@/components/use-belt-store";
-
-import Link from "next/link";
-import { useAddHistoryMutation } from "@/domain/history/history.mutations";
-import { usePathname, useSearchParams } from "next/navigation";
-
+import { useSearchParams } from "next/navigation";
 import { useSearchQueryStore } from "@/components/search/state";
-// import { NmmCoreComponents } from "./nmm-core-components";
-import { Icons } from "@/components/ui/icons.v2";
-// import { AllComponents } from "./all-components";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
-import { course1 } from "@/data/convos/bm1";
-// import { XiaomaView } from "./xiaoma/xiaoma";
-import { cn } from "@/lib/utils";
 import { HanziLink } from "@/components/hanzi-link";
 import { useQuery } from "@tanstack/react-query";
-import { calculateColor, filterNonHanYu } from "../utils";
+import { filterNonHanYu } from "../utils";
 
 const getLevel = (queryStr: string) => {
   if (queryStr?.includes("1")) {
@@ -91,7 +69,7 @@ function useResolveHsk({
   return useQuery({
     queryKey: ["resolve-hsk", queryStr, variant, JSON.stringify(hskWords)],
 
-    queryFn: async () => {
+    queryFn: () => {
       const resolvedHskWords = resolveHsk(queryStr, hskWords, variant);
 
       return resolvedHskWords;
@@ -114,7 +92,7 @@ function useGetHskCharacters({
       JSON.stringify(resolvedHskWords),
     ],
 
-    queryFn: async () => {
+    queryFn: () => {
       const hskCharacters = [
         ...new Set(
           resolvedHskWords
@@ -150,8 +128,6 @@ export const HskView = ({
   // type?: "character" | "word" | "sentence";
   type?: string;
 }) => {
-  const searchParams = useSearchParams();
-
   const queryStr = useSearchQueryStore((state) => state.query);
 
   if (!queryStr?.toLowerCase()?.includes("hsk")) {
@@ -167,44 +143,16 @@ export const HskView = ({
 
 const HskWordsView = ({ variant }: { variant?: "all" }) => {
   const searchParams = useSearchParams();
-  const searchQueryParams = searchParams.get("query") || "";
 
   const queryStr = useSearchQueryStore((state) => state.query);
-  const setQuery = useSearchQueryStore((state) => state.setQuery);
-
-  const { data: learnedCharacters2 } = useListCharactersQuery();
-
-  useEffect(() => {
-    if (searchQueryParams) {
-      setQuery(searchQueryParams);
-    }
-  }, [searchQueryParams, setQuery]);
 
   const { data: components } = useListComponents({ includeAll: true });
-
-  // console.log("HSK", hskWords);
 
   const { data: resolvedHskWords } = useResolveHsk({ queryStr, variant });
 
   return (
     <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
       {resolvedHskWords?.map((prop: any, idx: number) => {
-        const selectedComp = components?.find(
-          (component: any) => component?.hanzi === prop?.hanzi
-        );
-
-        const color = calculateColor({
-          tone: selectedComp?.tone_level,
-        });
-
-        const learnedChar = learnedCharacters2?.find(
-          (char: any) => char?.hanzi === prop?.hanzi
-        );
-
-        // if (learnedChar?.status === "forgotten" && variant !== "all") {
-        //   return null;
-        // }
-
         return (
           <div key={`${prop.hanzi}-chars-${idx}`}>
             <HanziLink character={prop} />
@@ -215,43 +163,13 @@ const HskWordsView = ({ variant }: { variant?: "all" }) => {
   );
 };
 const HskCharacterView = ({ variant }: { variant?: "all" }) => {
-  const searchParams = useSearchParams();
-  const searchQueryParams = searchParams.get("query") || "";
-
   const queryStr = useSearchQueryStore((state) => state.query);
-  const setQuery = useSearchQueryStore((state) => state.setQuery);
-
-  const { data: learnedCharacters2 } = useListCharactersQuery();
-
-  useEffect(() => {
-    if (searchQueryParams) {
-      setQuery(searchQueryParams);
-    }
-  }, [searchQueryParams, setQuery]);
-
-  const { data: components } = useListComponents({ includeAll: true });
 
   const { data: hskCharacters } = useGetHskCharacters({ queryStr, variant });
 
   return (
     <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
       {hskCharacters?.map((prop: any, idx: number) => {
-        const selectedComp = components?.find(
-          (component: any) => component?.hanzi === prop?.hanzi
-        );
-
-        const color = calculateColor({
-          tone: selectedComp?.tone_level,
-        });
-
-        const learnedChar = learnedCharacters2?.find(
-          (char: any) => char?.hanzi === prop?.hanzi
-        );
-
-        // if (learnedChar?.status === "forgotten" && variant !== "all") {
-        //   return null;
-        // }
-
         return (
           <div key={`${prop.hanzi}-chars-${idx}`}>
             <HanziLink character={prop} />

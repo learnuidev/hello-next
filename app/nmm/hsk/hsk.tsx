@@ -110,10 +110,6 @@ function useGetHskCharacters({
         });
 
       return hskCharacters;
-
-      // const resolvedHskWords = resolveHsk(queryStr, hskWords, variant);
-
-      // return resolvedHskWords;
     },
   });
 }

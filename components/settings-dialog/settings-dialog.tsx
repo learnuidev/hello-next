@@ -28,6 +28,7 @@ import { Input } from "../input";
 import { Checkbox } from "../ui/checkbox";
 import { useLearningModeStore } from "./learning-mode.store";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
+import { useRouter } from "next/navigation";
 
 export function SettingsDialogInner({
   isOpen,
@@ -237,7 +238,7 @@ export function SettingsDialogInner({
                     </div>
 
                     <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-                      Great for HSK Exam Prepration (Recommended)
+                      Great for HSK Exam Preparation (Recommended)
                     </p>
                   </div>
                   <div>
@@ -324,6 +325,59 @@ function useDocSearchKeyboardEvents({ isOpen, onOpen, onClose }: any) {
   }, [isOpen, onOpen, onClose]);
 }
 
+function useLearnModeEvents() {
+  const setMode = useLearningModeStore((state: any) => state.setMode);
+  const mode = useLearningModeStore((state: any) => state.mode);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    function onKeyDown(event: any) {
+      if (event.key === "h" && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        setMode("hsk");
+      }
+      if (["m"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        setMode("nmm");
+      }
+      if (["x"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        setMode("xiaoma");
+      }
+      if (["i"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        router.push("/insights");
+      }
+      if (["o"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        router.push("/");
+      }
+      if (["r"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        router.push("/review");
+      }
+      if (["l"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        router.push("/timeline");
+      }
+      if (["p"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        router.push("/pinyin");
+      }
+      if (["e"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        router.push("/convos");
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [mode, setMode]);
+}
+
 export function SettingsDialog() {
   const [query, setQuery] = useState("");
 
@@ -345,6 +399,8 @@ export function SettingsDialog() {
     onOpen,
     onClose,
   });
+
+  useLearnModeEvents();
 
   if (!authUser) {
     return null;

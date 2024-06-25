@@ -28,6 +28,8 @@ import { course1 } from "@/data/convos/bm1";
 import { XiaomaView } from "./xiaoma/xiaoma";
 import { cn } from "@/lib/utils";
 import { HanziLink } from "@/components/hanzi-link";
+import { useQuery } from "@tanstack/react-query";
+import { HskView } from "./hsk/hsk";
 
 const getLevel = (queryStr: string) => {
   if (queryStr?.includes("1")) {
@@ -106,11 +108,6 @@ export function NomadMethodMandarin() {
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 
-  const { data: discoveredComponents } = useListComponents({
-    discoverOnly: true,
-    singleItemsOnly: true,
-  });
-
   useEffect(() => {
     if (searchQueryParams) {
       setQuery(searchQueryParams);
@@ -131,75 +128,6 @@ export function NomadMethodMandarin() {
     queryStr,
     learnedCharacters2
   );
-
-  const HskView = ({
-    children,
-    variant,
-    type,
-  }: {
-    children: React.ReactNode;
-    variant?: "all";
-    // type?: "character" | "word" | "sentence";
-    type?: string;
-  }) => {
-    if (!queryStr?.toLowerCase()?.includes("hsk")) {
-      return children;
-    }
-
-    // console.log("HSK", hskWords);
-
-    const resolvedHskWords = resolveHsk(queryStr, hskWords, variant);
-
-    // console.log("RESOL", resolvedHskWords);
-
-    const hskCharacters = [
-      ...new Set(
-        resolvedHskWords
-          ?.map((x: any) => x.hanzi)
-          ?.join()
-          ?.split("")
-      ),
-    ]
-      ?.filter((val: any) => filterNonHanYu(val))
-      ?.map((id) => {
-        return {
-          hanzi: id,
-          lang: "zh",
-        };
-      });
-
-    // console.log("HSK Characters", hskCharacters);
-
-    const vals = type === "word" ? resolvedHskWords : hskCharacters;
-
-    return (
-      <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-        {vals?.map((prop: any, idx: number) => {
-          const selectedComp = components?.find(
-            (component: any) => component?.hanzi === prop?.hanzi
-          );
-
-          const color = calculateColor({
-            tone: selectedComp?.tone_level,
-          });
-
-          const learnedChar = learnedCharacters2?.find(
-            (char: any) => char?.hanzi === prop?.hanzi
-          );
-
-          // if (learnedChar?.status === "forgotten" && variant !== "all") {
-          //   return null;
-          // }
-
-          return (
-            <div key={`${prop.hanzi}-chars-${idx}`}>
-              <HanziLink character={prop} />
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
 
   return (
     <XiaomaView>
@@ -304,9 +232,7 @@ export function NomadMethodMandarin() {
           <HskView type={viewType}>
             <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
               {(queryStr
-                ? queryStr?.includes("hsk")
-                  ? resolveHsk(queryStr, hskWords)
-                  : filteredComponents
+                ? filteredComponents
                 : learnedCharacters2?.filter(
                     (character: any) =>
                       character?.status === "needs_review" &&

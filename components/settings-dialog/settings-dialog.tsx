@@ -353,7 +353,7 @@ function useLearnModeEvents() {
         event.preventDefault();
         router.push("/");
       }
-      if (["r"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+      if (["r"]?.includes(event.key) && event.ctrlKey) {
         event.preventDefault();
         router.push("/review");
       }

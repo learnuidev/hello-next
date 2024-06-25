@@ -16,7 +16,12 @@ export const Authenticated = (props: any) => {
   const isSearchBarOpen = useSearchState((state) => state.isSearchBarOpen);
 
   if (whiteListUrls.includes(routeName) || routeName?.includes("nmm")) {
-    return <>{props.children}</>;
+    return (
+      <>
+        {props.children}
+        <SettingsDialog />
+      </>
+    );
   }
 
   if (authUser) {

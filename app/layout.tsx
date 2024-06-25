@@ -19,6 +19,7 @@ import { ThemeProvider } from "next-themes";
 import { PostHogProvider } from "@/libs/posthog/posthog.provider";
 import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
 import { Suspense } from "react";
+import { SettingsDialog } from "@/components/settings-dialog/settings-dialog";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -91,6 +92,8 @@ export default function RootLayout({
                     <Authenticated>{children}</Authenticated>
                   </QueryClientProvider>
                 </div>
+
+                <SettingsDialog />
 
                 <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300 dark:text-gray-700">
                   {/* <FontAwesomeIcon icon={faScrewdriverWrench} />

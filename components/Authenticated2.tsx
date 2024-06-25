@@ -25,7 +25,6 @@ export const Authenticated2 = (props: any) => {
           )}
         >
           {props.children}
-          <SettingsDialog />
         </div>
       </div>
     );

@@ -27,8 +27,9 @@ import {
 import { Input } from "../input";
 import { Checkbox } from "../ui/checkbox";
 import { useLearningModeStore } from "./learning-mode.store";
+import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 
-export function DialogDemo({
+export function SettingsDialogInner({
   isOpen,
   closeSettings,
 }: {
@@ -326,6 +327,8 @@ function useDocSearchKeyboardEvents({ isOpen, onOpen, onClose }: any) {
 export function SettingsDialog() {
   const [query, setQuery] = useState("");
 
+  const { data: authUser, isLoading } = useCurrentAuthUser({});
+
   const isOpen = useSettingsDialogState((state) => state.isOpen);
   const setOpen = useSettingsDialogState((state) => state.setIsOpen);
 
@@ -343,9 +346,13 @@ export function SettingsDialog() {
     onClose,
   });
 
+  if (!authUser) {
+    return null;
+  }
+
   return (
     <div>
-      <DialogDemo
+      <SettingsDialogInner
         isOpen={isOpen}
         openSettings={onOpen}
         closeSettings={onClose}

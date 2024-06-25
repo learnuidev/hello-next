@@ -62,7 +62,7 @@ export function HanziLink({
           // learnedCharacters.includes(prop?.hanzi)
           learnedChar
             ? learnedChar?.status === "forgotten"
-              ? "text-yellow-500"
+              ? "text-gray-900"
               : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
                 //   ? "text-rose-500"
                 `hover:${color} text-gray-300`

@@ -213,11 +213,11 @@ export function DialogDemo({
                           }
                         }}
                       />
-                      <Label htmlFor="airplane-mode">NMM</Label>
+                      <Label htmlFor="airplane-mode">Mandarin Blueprint</Label>
                     </div>
 
                     <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-                      Nomad Mandarin Method
+                      Based on Mandarin Blueprint Curriculum
                     </p>
                   </div>
                   <div>
@@ -236,7 +236,7 @@ export function DialogDemo({
                     </div>
 
                     <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-                      HSK Learning Mode
+                      Great for HSK Exam Prepration (Recommended)
                     </p>
                   </div>
                   <div>
@@ -255,7 +255,7 @@ export function DialogDemo({
                     </div>
 
                     <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-                      Xiaoma's Street Mandarin Mode
+                      Xiaoma's Street Mandarin: Speaking Focused
                     </p>
                   </div>
                 </CardContent>
@@ -264,7 +264,14 @@ export function DialogDemo({
           </Tabs>
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button
+            type="submit"
+            onClick={() => {
+              closeSettings();
+            }}
+          >
+            Save changes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -142,7 +142,7 @@ export function NomadMethodMandarin() {
     // type?: "character" | "word" | "sentence";
     type?: string;
   }) => {
-    if (!queryStr?.includes("hsk")) {
+    if (!queryStr?.toLowerCase()?.includes("hsk")) {
       return children;
     }
 

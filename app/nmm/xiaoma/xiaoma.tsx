@@ -60,7 +60,7 @@ export const XiaomaView = ({
 }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
 
-  if (!queryStr?.includes("xiaoma")) {
+  if (!queryStr?.toLowerCase()?.includes("xiaoma")) {
     return children;
   }
 

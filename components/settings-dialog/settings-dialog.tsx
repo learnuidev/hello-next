@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "../input";
 import { Checkbox } from "../ui/checkbox";
+import { useLearningModeStore } from "./learning-mode.store";
 
 export function DialogDemo({
   isOpen,
@@ -37,6 +38,9 @@ export function DialogDemo({
 }) {
   const tab = useSettingsDialogState((state) => state.tab);
   const setCurrentTab = useSettingsDialogState((state) => state.setCurrentTab);
+
+  const setMode = useLearningModeStore((state: any) => state.setMode);
+  const mode = useLearningModeStore((state: any) => state.mode);
 
   return (
     <Dialog open={isOpen}>
@@ -69,7 +73,9 @@ export function DialogDemo({
                 )}
                 value="profile"
               >
-                <Icons.user /> <span>Profile</span>
+                {tab === "profile" ? <Icons.userSolid /> : <Icons.user />}
+
+                <span>Profile</span>
               </TabsTrigger>
               <TabsTrigger
                 className={cn(
@@ -89,7 +95,23 @@ export function DialogDemo({
                 )}
                 value="tracking"
               >
-                <Icons.verticalStack /> <span>Tracking</span>
+                {tab === "tracking" ? (
+                  <Icons.verticalStackSolid />
+                ) : (
+                  <Icons.verticalStack />
+                )}
+                <span>Tracking</span>
+              </TabsTrigger>
+              <TabsTrigger
+                className={cn(
+                  "px-0 mx-0 space-x-2",
+                  tab === "learn" ? "text-white" : "text-gray-500",
+                  "transition"
+                )}
+                value="learn"
+              >
+                {tab === "learn" ? <Icons.brain /> : <Icons.glassesRound />}
+                <span>Learn</span>
               </TabsTrigger>
             </TabsList>
             <TabsContent value="profile" className="mt-8 h-52">
@@ -165,6 +187,75 @@ export function DialogDemo({
 
                     <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
                       Track which you&apos;ve searched
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="learn" className="mt-8 h-52">
+              <Card className="rounded border-black shadow-sm hover:shadow-green-400 transition bg-[#0b0b0f]">
+                <CardHeader>
+                  <CardTitle>Learn</CardTitle>
+                  <CardDescription className="text-gray-500 font-extralight">
+                    Select your preferred learning method
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
+                  <div>
+                    <div className="flex z-50 items-center space-x-2">
+                      <Checkbox
+                        checked={mode === "nmm"}
+                        onCheckedChange={(event) => {
+                          if (event) {
+                            setMode("nmm");
+                          } else {
+                            setMode("");
+                          }
+                        }}
+                      />
+                      <Label htmlFor="airplane-mode">NMM</Label>
+                    </div>
+
+                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+                      Nomad Mandarin Method
+                    </p>
+                  </div>
+                  <div>
+                    <div className="flex z-50 items-center space-x-2">
+                      <Checkbox
+                        checked={mode === "hsk"}
+                        onCheckedChange={(event) => {
+                          if (event) {
+                            setMode("hsk");
+                          } else {
+                            setMode("");
+                          }
+                        }}
+                      />
+                      <Label htmlFor="airplane-mode">HSK</Label>
+                    </div>
+
+                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+                      HSK Learning Mode
+                    </p>
+                  </div>
+                  <div>
+                    <div className="flex z-50 items-center space-x-2">
+                      <Checkbox
+                        checked={mode === "xiaoma"}
+                        onCheckedChange={(event) => {
+                          if (event) {
+                            setMode("xiaoma");
+                          } else {
+                            setMode("");
+                          }
+                        }}
+                      />
+                      <Label htmlFor="airplane-mode">Xiaoma</Label>
+                    </div>
+
+                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+                      Xiaoma's Street Mandarin Mode
                     </p>
                   </div>
                 </CardContent>

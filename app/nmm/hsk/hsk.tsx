@@ -8,6 +8,7 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { HanziLink } from "@/components/hanzi-link";
 import { useQuery } from "@tanstack/react-query";
 import { filterNonHanYu } from "../utils";
+import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 
 const getLevel = (queryStr: string) => {
   if (queryStr?.includes("1")) {
@@ -125,6 +126,16 @@ export const HskView = ({
   type?: string;
 }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
+
+  const mode = useLearningModeStore((state: any) => state.mode);
+
+  if (mode === "hsk") {
+    if (type === "word") {
+      return <HskWordsView variant={variant} />;
+    } else {
+      return <HskCharacterView variant={variant} />;
+    }
+  }
 
   if (!queryStr?.toLowerCase()?.includes("hsk")) {
     return children;

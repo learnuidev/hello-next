@@ -13,10 +13,13 @@ import {
   // faSeedling,
   // faPlay,
   // faTypewriter,
-  // faBrainCircuit,
+  faBrainCircuit,
   faMusicNote as faMusicNoteSolid,
   faBoltLightning as faBoltLightningSolid,
   faPhotoFilm as faPhotoFilmSolid,
+  faRectangleVerticalHistory as faRectangleVerticalHistorySolid,
+  faUser as faUserSolid,
+  faGlassesRound as faGlassesRoundSolid,
 } from "@fortawesome/sharp-solid-svg-icons";
 
 import {
@@ -140,6 +143,7 @@ const createFAIcon = (icon: FontAwesomeIconProps["icon"]) => {
 export const Icons = {
   magnifyingGlass: createFAIcon(faMagnifyingGlass),
   verticalStack: createFAIcon(faRectangleVerticalHistory),
+  verticalStackSolid: createFAIcon(faRectangleVerticalHistorySolid),
   earthAsia: createFAIcon(faEarthAsia),
   compass: createFAIcon(faCompass),
   home: createFAIcon(faHome),
@@ -170,6 +174,7 @@ export const Icons = {
   sentence: createFAIcon(faTrees),
   word: createFAIcon(faSeedling),
   glassesRound: createFAIcon(faGlassesRound),
+  glassesRoundSolid: createFAIcon(faGlassesRoundSolid),
   play: createFAIcon(faPlay),
   language: createFAIcon(faLanguage),
   xMark: createFAIcon(faXmark),
@@ -178,6 +183,7 @@ export const Icons = {
   mailbox: createFAIcon(faMailboxFlagUp),
   archive: createFAIcon(faBoxArchive),
   user: createFAIcon(faUser),
+  userSolid: createFAIcon(faUserSolid),
   globeAsia: createFAIcon(faGlobeAsia),
   computerMouse: createFAIcon(faComputerMouse),
   badgeCheck: createFAIcon(faBadgeCheck),
@@ -212,4 +218,5 @@ export const Icons = {
   content: createFAIcon(faPhotoFilm),
   contentSolid: createFAIcon(faPhotoFilmSolid),
   trees: createFAIcon(faTrees),
+  brain: createFAIcon(faBrainCircuit),
 };

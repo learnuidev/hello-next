@@ -20,6 +20,7 @@ import { Icons } from "@/components/ui/icons.v2";
 import { course1 } from "@/data/convos/bm1";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { HanziLink } from "@/components/hanzi-link";
+import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 
 const getLevel = (queryStr: string) => {
   if (queryStr?.includes("1")) {
@@ -59,6 +60,12 @@ export const XiaomaView = ({
   variant?: "all";
 }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
+
+  const mode = useLearningModeStore((state: any) => state.mode);
+
+  if (mode === "xiaoma") {
+    return <Xiaoma />;
+  }
 
   if (!queryStr?.toLowerCase()?.includes("xiaoma")) {
     return children;

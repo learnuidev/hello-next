@@ -131,9 +131,9 @@ export const HskView = ({
   }
 
   if (type === "word") {
-    return <HskWordsView />;
+    return <HskWordsView variant={variant} />;
   } else {
-    return <HskCharacterView />;
+    return <HskCharacterView variant={variant} />;
   }
 };
 

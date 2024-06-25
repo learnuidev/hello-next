@@ -74,6 +74,7 @@
     "chance": "^1.1.11",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "cmdk": "^1.0.0",
     "core-js": "^3.33.2",
     "datascript": "^1.6.5",
     "date-fns": "^2.30.0",

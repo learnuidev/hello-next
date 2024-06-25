@@ -30,6 +30,8 @@ import { cn } from "@/lib/utils";
 import { HanziLink } from "@/components/hanzi-link";
 import { useQuery } from "@tanstack/react-query";
 import { HskView } from "./hsk/hsk";
+import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
+import { HSKCombobox } from "./hsk-combobox";
 
 const getLevel = (queryStr: string) => {
   if (queryStr?.includes("1")) {
@@ -88,6 +90,7 @@ export function NomadMethodMandarin() {
   const queryStr = useSearchQueryStore((state) => state.query);
   const setQuery = useSearchQueryStore((state) => state.setQuery);
   const { data: hskWords } = useListHSKWordsQuery();
+  const mode = useLearningModeStore((state: any) => state.mode);
 
   const addHistoryMutation = useAddHistoryMutation();
 
@@ -157,7 +160,7 @@ export function NomadMethodMandarin() {
             </TabsTrigger>
           </TabsList>
 
-          {queryStr?.includes("hsk") && (
+          {(queryStr?.includes("hsk") || mode === "hsk") && (
             <div className="space-x-8">
               <button
                 onClick={() => {
@@ -199,7 +202,11 @@ export function NomadMethodMandarin() {
             </div>
           )}
 
-          {
+          {mode === "hsk" ? (
+            <div className="mx-8">
+              <HSKCombobox />
+            </div>
+          ) : (
             <div className="space-x-4">
               {belts?.map?.((belt) => {
                 return (
@@ -217,7 +224,7 @@ export function NomadMethodMandarin() {
                 );
               })}
             </div>
-          }
+          )}
         </div>
 
         <TabsContent value="core" className="my-4 md:my-8">

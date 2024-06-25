@@ -7,8 +7,11 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { HanziLink } from "@/components/hanzi-link";
 import { useQuery } from "@tanstack/react-query";
-import { filterNonHanYu } from "../utils";
+import { filterComponents, filterNonHanYu } from "../utils";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
+import { useBeltStore } from "@/components/use-belt-store";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useHSKLevelStore } from "../hsk-level-store";
 
 const getLevel = (queryStr: string) => {
   if (queryStr?.includes("1")) {
@@ -42,19 +45,26 @@ const getLevel = (queryStr: string) => {
 
 const resolveHsk = (
   queryStr: string,
-  hskWords: { hanzi: string; level: number; hskLevel: number }[],
-  variant?: "all"
+  {
+    hskWords,
+    variant,
+    level,
+  }: {
+    hskWords: { hanzi: string; level: number; hskLevel: number }[];
+    variant?: "all";
+    level?: number;
+  }
 ) => {
-  const level = getLevel(queryStr);
+  const resolvedLevel = level || getLevel(queryStr);
 
   if (variant === "all") {
     return hskWords?.filter((item) => {
-      return item?.level <= level;
+      return item?.level <= resolvedLevel;
     });
   }
 
   return hskWords?.filter((item) => {
-    return item?.level === level;
+    return item?.level === resolvedLevel;
   });
 };
 
@@ -71,7 +81,7 @@ function useResolveHsk({
     queryKey: ["resolve-hsk", queryStr, variant, JSON.stringify(hskWords)],
 
     queryFn: () => {
-      const resolvedHskWords = resolveHsk(queryStr, hskWords, variant);
+      const resolvedHskWords = resolveHsk(queryStr, { hskWords, variant });
 
       return resolvedHskWords;
     },
@@ -153,10 +163,11 @@ const HskWordsView = ({ variant }: { variant?: "all" }) => {
 
   // const { data: resolvedHskWords } = useResolveHsk({ queryStr, variant });
   const { data: hskWords } = useListHSKWordsQuery();
+  const level = useHSKLevelStore((state) => state.level);
 
   const resolvedHskWords = useMemo(
-    () => resolveHsk(queryStr, hskWords, variant),
-    [queryStr, hskWords, variant]
+    () => resolveHsk(queryStr, { hskWords, variant, level }),
+    [queryStr, hskWords, variant, level]
   );
 
   return (
@@ -173,14 +184,18 @@ const HskWordsView = ({ variant }: { variant?: "all" }) => {
 };
 const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
+  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
+  const { data: learnedCharacters2 } = useListCharactersQuery();
+  const { data: components } = useListComponents({ includeAll: true });
+  const level = useHSKLevelStore((state) => state.level);
 
   // const { data: hskCharacters } = useGetHskCharacters({ queryStr, variant });
 
   const { data: hskWords } = useListHSKWordsQuery();
 
   const resolvedHskWords = useMemo(
-    () => resolveHsk(queryStr, hskWords, variant),
-    [queryStr, hskWords, variant]
+    () => resolveHsk(queryStr, { hskWords, variant, level }),
+    [queryStr, hskWords, variant, level]
   );
 
   const hskCharacters = [
@@ -193,15 +208,36 @@ const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   ]
     ?.filter((val: any) => filterNonHanYu(val))
     ?.map((id) => {
+      const learnedChar = learnedCharacters2?.find(
+        (char: any) => id === char?.hanzi
+      );
+      const learnedComp = components?.find((char: any) => id === char?.hanzi);
+
       return {
+        ...learnedComp,
+        ...learnedChar,
         hanzi: id,
         lang: "zh",
       };
     });
 
+  console.log("HSK CHARS", hskCharacters);
+
+  const slicedComponents = queryStr ? components : hskCharacters;
+  // : hskCharacters?.slice(
+  //     selectedBelt?.minCharacterLevel,
+  //     selectedBelt?.maxCharacterLevel
+  //   );
+
+  const filteredComponents = filterComponents(
+    slicedComponents,
+    queryStr,
+    learnedCharacters2
+  );
+
   return (
     <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
-      {hskCharacters?.map((prop: any, idx: number) => {
+      {filteredComponents?.map((prop: any, idx: number) => {
         return (
           <div key={`${prop.hanzi}-chars-${idx}`}>
             <HanziLink character={prop} />

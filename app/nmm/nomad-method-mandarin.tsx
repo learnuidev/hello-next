@@ -32,6 +32,7 @@ import { useQuery } from "@tanstack/react-query";
 import { HskView } from "./hsk/hsk";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { HSKCombobox } from "./hsk-combobox";
+import { useHSKLevelStore } from "./hsk-level-store";
 
 const getLevel = (queryStr: string) => {
   if (queryStr?.includes("1")) {
@@ -110,6 +111,9 @@ export function NomadMethodMandarin() {
   const lastAnswer = answers?.[answers?.length - 1];
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
+
+  const setLevel = useHSKLevelStore((state) => state.setLevel);
+  const hskLevel = useHSKLevelStore((state) => state.level);
 
   useEffect(() => {
     if (searchQueryParams) {
@@ -203,10 +207,28 @@ export function NomadMethodMandarin() {
           )}
 
           {mode === "hsk" ? (
-            <div className="mx-8">
-              <HSKCombobox />
+            <div className="space-x-4">
+              {belts?.map?.((belt) => {
+                return (
+                  <button
+                    key={belt?.fill}
+                    onClick={() => {
+                      // setSelectedBelt(belt as any);
+                      setLevel(belt?.hskLevel);
+                    }}
+                    className={`${
+                      belt?.hskLevel === hskLevel
+                        ? belt?.fill
+                        : belt?.unselected
+                    } h-4 w-4 rounded-full text`}
+                  ></button>
+                );
+              })}
             </div>
           ) : (
+            // <div className="mx-8">
+            //   <HSKCombobox />
+            // </div>
             <div className="space-x-4">
               {belts?.map?.((belt) => {
                 return (

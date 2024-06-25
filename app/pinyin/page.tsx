@@ -21,6 +21,7 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { filterComponents } from "../nmm/utils";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useQuery } from "@tanstack/react-query";
+import { getGroup } from "../(auth)/hmm/get-group";
 
 const totalCharacters = defaultData
   ?.map((val: any) => Object.values(val))
@@ -138,10 +139,34 @@ function ChartPageVP({
 
   const { data: filteredComponents } = useFilterComponents(querySync);
 
-  console.log("FILTERED COMPONENTS", filteredComponents);
+  const { data: chineseComponents } = useListComponents();
 
   const calcRowColor = (val: any, lesson?: any, querySync?: string) => {
-    console.log("VAL", val);
+    const chineseChars =
+      querySync
+        ?.split("")
+        ?.map((item) => {
+          return chineseComponents?.filter(
+            (comp: any) => comp?.hanzi === item
+          )?.[0];
+        })
+        ?.filter(Boolean) || [];
+
+    const isHanzi = chineseChars?.length > 0;
+
+    if (isHanzi) {
+      const groups = chineseChars?.map((char) => getGroup(char));
+
+      if (groups?.includes(val?.value)) {
+        return "text-white";
+      }
+      // console.log("=======================================");
+      // console.log("FILTERED COMPONENTS", filteredComponents);
+      // console.log("CHINESE CHARS", chineseChars);
+      // console.log("VAL", val);
+      // console.log("IS HANZI", isHanzi);
+      // console.log("=======================================");
+    }
 
     if (querySync && val?.value?.includes(querySync?.toLowerCase())) {
       return "text-white";

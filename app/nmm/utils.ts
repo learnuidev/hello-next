@@ -174,8 +174,6 @@ export const filterComponent = (
       };
     }
 
-    console.log("QUERY", query);
-
     // Second Filter
     if (!isQuerySameAsVal && storyJSON.includes(query?.toLowerCase())) {
       return {

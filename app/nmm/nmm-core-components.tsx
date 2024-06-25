@@ -100,9 +100,9 @@ export function NmmCoreComponents() {
               (char: any) => char?.hanzi === prop?.hanzi
             );
 
-            if (learnedChar?.status === "forgotten") {
-              return null;
-            }
+            // if (learnedChar?.status === "forgotten") {
+            //   return null;
+            // }
 
             return (
               <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>

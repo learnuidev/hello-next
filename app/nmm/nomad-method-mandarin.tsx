@@ -125,9 +125,6 @@ export function NomadMethodMandarin() {
         selectedBelt?.minCharacterLevel,
         selectedBelt?.maxCharacterLevel
       );
-  const slicedComponentsAgg = queryStr
-    ? components
-    : components?.slice(0, selectedBelt?.maxCharacterLevel);
 
   const filteredComponents = filterComponents(
     slicedComponents,
@@ -190,9 +187,9 @@ export function NomadMethodMandarin() {
             (char: any) => char?.hanzi === prop?.hanzi
           );
 
-          // if (learnedChar?.status === "forgotten" && variant !== "all") {
-          //   return null;
-          // }
+          if (learnedChar?.status === "forgotten" && variant !== "all") {
+            return null;
+          }
 
           return (
             <div key={`${prop.hanzi}-chars-${idx}`}>

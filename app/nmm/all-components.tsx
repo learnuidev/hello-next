@@ -65,19 +65,19 @@ export function AllComponents() {
 
   const comps = isComponentsLoading ? chineseCharacters : componentsAll;
 
-  // const slicedComponents = queryStr
-  //   ? comps
-  //   : (isComponentsLoading ? chineseCharacters : components)?.slice(
-  //       0,
-  //       selectedBelt?.maxCharacterLevel
-  //     );
-
   const slicedComponents = queryStr
     ? comps
     : (isComponentsLoading ? chineseCharacters : components)?.slice(
-        selectedBelt?.minCharacterLevel,
+        0,
         selectedBelt?.maxCharacterLevel
       );
+
+  // const slicedComponents = queryStr
+  //   ? comps
+  //   : (isComponentsLoading ? chineseCharacters : components)?.slice(
+  //       selectedBelt?.minCharacterLevel,
+  //       selectedBelt?.maxCharacterLevel
+  //     );
 
   const filteredComponents = filterComponents(
     slicedComponents,

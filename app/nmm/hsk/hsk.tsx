@@ -89,7 +89,7 @@ function useResolveHsk({
   const { data: hskWords } = useListHSKWordsQuery();
 
   return useQuery({
-    queryKey: ["resolve-hsk", queryStr, variant],
+    queryKey: ["resolve-hsk", queryStr, variant, JSON.stringify(hskWords)],
 
     queryFn: async () => {
       const resolvedHskWords = resolveHsk(queryStr, hskWords, variant);
@@ -105,10 +105,14 @@ function useGetHskCharacters({
   queryStr: string;
   variant?: "all";
 }) {
-  const { data: hskWords } = useListHSKWordsQuery();
   const { data: resolvedHskWords } = useResolveHsk({ queryStr, variant });
   return useQuery({
-    queryKey: ["hist-hsk-characters", queryStr, variant],
+    queryKey: [
+      "hist-hsk-characters",
+      queryStr,
+      variant,
+      JSON.stringify(resolvedHskWords),
+    ],
 
     queryFn: async () => {
       const hskCharacters = [

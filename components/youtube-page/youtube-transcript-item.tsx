@@ -48,11 +48,17 @@ export const TranscriptItem = ({
   //   grammars as ListGrammarsResponse
   // )?.grammarAnalysis?.find((grammar) => grammar?.input === example?.input);
 
-  const content = contents?.find(
-    (contentItem: any) =>
-      (contentItem?.input || contentItem?.hanzi) ===
-      (example?.input || example?.hanzi)
-  );
+  const content =
+    contents?.find(
+      (contentItem: any) =>
+        (contentItem?.input || contentItem?.hanzi) ===
+        (example?.input || example?.hanzi)
+    ) ||
+    learnedCharacters?.find(
+      (contentItem: any) =>
+        (contentItem?.input || contentItem?.hanzi) ===
+        (example?.input || example?.hanzi)
+    );
 
   const setRepeatHistories = useRepeatHistoryStore((state) => state.setHistory);
 

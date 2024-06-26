@@ -55,10 +55,10 @@ function useListComponentsQuery(
       ...options,
       enabled: Boolean(authUser?.jwt),
 
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
+      // refetchOnWindowFocus: false,
+      // refetchOnFocus: false,
+      // refetchOnMount: false,
+      // refetchOnReconnect: false,
     }
   );
 }

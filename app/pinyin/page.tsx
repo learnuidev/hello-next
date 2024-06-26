@@ -524,7 +524,7 @@ function ChartPageVP({
       val?.levels?.includes("ü:simple-final") &&
       filters.includes("ü:simple-final")
     ) {
-      return "text-violet-500";
+      return "text-orange-500";
     }
 
     if (
@@ -532,14 +532,14 @@ function ChartPageVP({
       val?.levels?.includes("ü:nasal-final") &&
       filters.includes("ü:simple-final")
     ) {
-      return "text-violet-500 dark:border-fuchsia-300 underline decoration-dotted";
+      return "text-orange-500 dark:border-fuchsia-300 underline decoration-dotted";
     }
 
     if (
       val?.levels?.includes("ü:compound-final") &&
       filters.includes("ü:simple-final")
     ) {
-      return "text-violet-500 dark:border-fuchsia-300";
+      return "text-orange-500 dark:border-fuchsia-300";
     }
     // Ü ==== END
     // ======= SIMPLE FINAL STYLING END =======

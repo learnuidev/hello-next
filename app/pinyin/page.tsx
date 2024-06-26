@@ -586,19 +586,7 @@ function ChartPageVP({
                   >
                     e
                   </button>
-                  <button
-                    className={`${
-                      filters.includes("o:simple-final")
-                        ? "dark:text-slate-200 text-slate-700"
-                        : "dark:text-slate-500 text-slate-400"
-                    } transition`}
-                    onClick={() => {
-                      setFilter("o:simple-final");
-                      setFilter("o:compound-final");
-                    }}
-                  >
-                    o
-                  </button>
+
                   <button
                     className={`${
                       filters.includes("i:simple-final")
@@ -611,6 +599,20 @@ function ChartPageVP({
                     }}
                   >
                     i
+                  </button>
+
+                  <button
+                    className={`${
+                      filters.includes("o:simple-final")
+                        ? "dark:text-slate-200 text-slate-700"
+                        : "dark:text-slate-500 text-slate-400"
+                    } transition`}
+                    onClick={() => {
+                      setFilter("o:simple-final");
+                      setFilter("o:compound-final");
+                    }}
+                  >
+                    o
                   </button>
                   <button
                     className={`${

@@ -131,32 +131,6 @@ export const pinyinColumns = [
   }),
 
   columnHelper.group({
-    id: "O",
-    header: () => <span className="my-2 mx-2.5 text-xs text-center">O</span>,
-    // footer: props => props.column.id,
-    columns: [
-      columnHelper.accessor("oo", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">o</span>
-        ),
-      }),
-      columnHelper.accessor("oong", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ong</span>
-        ),
-      }),
-      columnHelper.accessor("oou", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">ou</span>
-        ),
-      }),
-    ],
-  }),
-
-  columnHelper.group({
     id: "I",
     header: () => <span className="my-2 mx-2.5 text-xs text-center">I</span>,
     // footer: props => props.column.id,
@@ -217,6 +191,32 @@ export const pinyinColumns = [
         cell: InfoRenderer,
         header: () => (
           <span className="my-2 mx-2.5 text-xs text-center">ong</span>
+        ),
+      }),
+    ],
+  }),
+
+  columnHelper.group({
+    id: "O",
+    header: () => <span className="my-2 mx-2.5 text-xs text-center">O</span>,
+    // footer: props => props.column.id,
+    columns: [
+      columnHelper.accessor("oo", {
+        cell: InfoRenderer,
+        header: () => (
+          <span className="my-2 mx-2.5 text-xs text-center">o</span>
+        ),
+      }),
+      columnHelper.accessor("oong", {
+        cell: InfoRenderer,
+        header: () => (
+          <span className="my-2 mx-2.5 text-xs text-center">ong</span>
+        ),
+      }),
+      columnHelper.accessor("oou", {
+        cell: InfoRenderer,
+        header: () => (
+          <span className="my-2 mx-2.5 text-xs text-center">ou</span>
         ),
       }),
     ],

@@ -3846,152 +3846,6 @@ export const defaultData: any = [
   },
   //   c
 
-  //   zh
-  {
-    // A
-    initial: "zh",
-    aa: {
-      value: "zha",
-      problemInitial: true,
-      levels: ["a", "e", "yi", "a:simple-final"],
-      tonguePos: "roof",
-    },
-    aai: {
-      value: "zhai",
-      problemInitial: true,
-      tonguePos: "roof",
-      levels: ["a:compound-final", "a:nasal-final"],
-    },
-    aao: {
-      value: "zhao",
-      problemInitial: true,
-      tonguePos: "roof",
-      levels: ["a:compound-final", "a:nasal-final"],
-    },
-    aan: {
-      value: "zhan",
-      problemInitial: true,
-      tonguePos: "roof",
-      levels: ["a:compound-final", "a:nasal-final"],
-    },
-    aang: {
-      value: "zhang",
-      problemInitial: true,
-      tonguePos: "roof",
-      levels: ["a:compound-final", "a:nasal-final"],
-    },
-    // E
-    ee: {
-      value: "zhe",
-      problemInitial: true,
-      tonguePos: "roof",
-      levels: ["a", "e", "yi", "e:simple-final"],
-    },
-    eei: {
-      value: "zhei",
-      problemInitial: true,
-      tonguePos: "roof",
-      levels: ["e:compound-final"],
-    },
-    een: {
-      value: "zhen",
-      problemInitial: true,
-      tonguePos: "roof",
-      levels: ["e:compound-final", "e:nasal-final"],
-    },
-    eeng: {
-      value: "zheng",
-      problemInitial: true,
-      tonguePos: "roof",
-      levels: ["e:compound-final", "e:nasal-final"],
-    },
-    enull: "",
-    // O
-    oo: "",
-    oong: {
-      value: "zhong",
-      problemInitial: true,
-      tonguePos: "roof",
-      levels: ["o:compound-final", "o:nasal-final"],
-    },
-    oou: {
-      value: "zhou",
-      problemInitial: true,
-      tonguePos: "roof",
-      levels: ["o:compound-final"],
-    },
-    // I
-    inull: {
-      value: "zhi",
-      problemInitial: true,
-      tonguePos: "roof",
-      levels: ["a", "e", "yi", "i:simple-final"],
-    },
-    ia: "",
-    iao: "",
-    ie: "",
-    iou: "",
-    ian: "",
-    iang: "",
-    ien: "",
-    ieng: "",
-    iong: "",
-    // U
-    unull: {
-      value: "zhu",
-      problemInitial: true,
-      tonguePos: "roof",
-      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
-    },
-    ua: {
-      levels: ["u:compound-final"],
-      value: "zhua",
-      problemInitial: true,
-      tonguePos: "roof",
-    },
-    uo: {
-      levels: ["u:compound-final"],
-      value: "zhuo",
-      problemInitial: true,
-      tonguePos: "roof",
-    },
-    uei: {
-      levels: ["u:compound-final"],
-      value: "zhui",
-      problemInitial: true,
-      tonguePos: "roof",
-    },
-    uai: {
-      levels: ["u:compound-final"],
-      value: "zhuai",
-      problemInitial: true,
-      tonguePos: "roof",
-    },
-    uan: {
-      levels: ["u:compound-final", "u:nasal-final"],
-      value: "zhuan",
-      problemInitial: true,
-      tonguePos: "roof",
-    },
-    uen: {
-      levels: ["u:compound-final", "u:nasal-final"],
-      value: "zhun",
-      problemInitial: true,
-      tonguePos: "roof",
-    },
-    uang: {
-      levels: ["u:compound-final", "u:nasal-final"],
-      value: "zhuang",
-      problemInitial: true,
-      tonguePos: "roof",
-    },
-    ueng: "",
-    // ü
-    ünull: "",
-    üe: "",
-    üan: "",
-    üen: "",
-  },
   //   ch
   {
     // A
@@ -4267,6 +4121,153 @@ export const defaultData: any = [
     uang: {
       levels: ["u:compound-final", "u:nasal-final"],
       value: "shuang",
+      problemInitial: true,
+      tonguePos: "roof",
+    },
+    ueng: "",
+    // ü
+    ünull: "",
+    üe: "",
+    üan: "",
+    üen: "",
+  },
+
+  //   zh
+  {
+    // A
+    initial: "zh",
+    aa: {
+      value: "zha",
+      problemInitial: true,
+      levels: ["a", "e", "yi", "a:simple-final"],
+      tonguePos: "roof",
+    },
+    aai: {
+      value: "zhai",
+      problemInitial: true,
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
+    },
+    aao: {
+      value: "zhao",
+      problemInitial: true,
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
+    },
+    aan: {
+      value: "zhan",
+      problemInitial: true,
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
+    },
+    aang: {
+      value: "zhang",
+      problemInitial: true,
+      tonguePos: "roof",
+      levels: ["a:compound-final", "a:nasal-final"],
+    },
+    // E
+    ee: {
+      value: "zhe",
+      problemInitial: true,
+      tonguePos: "roof",
+      levels: ["a", "e", "yi", "e:simple-final"],
+    },
+    eei: {
+      value: "zhei",
+      problemInitial: true,
+      tonguePos: "roof",
+      levels: ["e:compound-final"],
+    },
+    een: {
+      value: "zhen",
+      problemInitial: true,
+      tonguePos: "roof",
+      levels: ["e:compound-final", "e:nasal-final"],
+    },
+    eeng: {
+      value: "zheng",
+      problemInitial: true,
+      tonguePos: "roof",
+      levels: ["e:compound-final", "e:nasal-final"],
+    },
+    enull: "",
+    // O
+    oo: "",
+    oong: {
+      value: "zhong",
+      problemInitial: true,
+      tonguePos: "roof",
+      levels: ["o:compound-final", "o:nasal-final"],
+    },
+    oou: {
+      value: "zhou",
+      problemInitial: true,
+      tonguePos: "roof",
+      levels: ["o:compound-final"],
+    },
+    // I
+    inull: {
+      value: "zhi",
+      problemInitial: true,
+      tonguePos: "roof",
+      levels: ["a", "e", "yi", "i:simple-final"],
+    },
+    ia: "",
+    iao: "",
+    ie: "",
+    iou: "",
+    ian: "",
+    iang: "",
+    ien: "",
+    ieng: "",
+    iong: "",
+    // U
+    unull: {
+      value: "zhu",
+      problemInitial: true,
+      tonguePos: "roof",
+      levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
+    },
+    ua: {
+      levels: ["u:compound-final"],
+      value: "zhua",
+      problemInitial: true,
+      tonguePos: "roof",
+    },
+    uo: {
+      levels: ["u:compound-final"],
+      value: "zhuo",
+      problemInitial: true,
+      tonguePos: "roof",
+    },
+    uei: {
+      levels: ["u:compound-final"],
+      value: "zhui",
+      problemInitial: true,
+      tonguePos: "roof",
+    },
+    uai: {
+      levels: ["u:compound-final"],
+      value: "zhuai",
+      problemInitial: true,
+      tonguePos: "roof",
+    },
+    uan: {
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "zhuan",
+      problemInitial: true,
+      tonguePos: "roof",
+    },
+    uen: {
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "zhun",
+      problemInitial: true,
+      tonguePos: "roof",
+    },
+    uang: {
+      levels: ["u:compound-final", "u:nasal-final"],
+      value: "zhuang",
       problemInitial: true,
       tonguePos: "roof",
     },

@@ -19,13 +19,14 @@ import { filterComponents } from "../nmm/utils";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useQuery } from "@tanstack/react-query";
 import { getGroup } from "../(auth)/hmm/get-group";
+import { legacyData } from "./___legacy_data.v1";
 
-const totalCharacters = defaultData
+const totalCharacters = legacyData
   ?.map((val: any) => Object.values(val))
   .flat()
   .filter((val: any) => val?.value);
 
-const totalProblemInitials = defaultData
+const totalProblemInitials = legacyData
   ?.map((val: any) => Object.values(val))
   .flat()
   .filter((val: any) => val?.value && val?.problemInitial);
@@ -94,6 +95,7 @@ export function PinyinTable({
   const setFilter = usePinyinChartStore((state: any) => state.setFilter);
 
   const selectedCharacters = useMemo(() => {
+    console.log("FILTERS", filters);
     if (!filters.length) {
       return [];
     }
@@ -119,6 +121,8 @@ export function PinyinTable({
     }
     return [];
   }, [filters]);
+
+  console.log("SELECTED CHARACTERS", selectedCharacters);
 
   const { data: filteredComponents } = useFilterComponents(querySync);
 

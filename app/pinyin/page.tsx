@@ -379,7 +379,7 @@ function ChartPageVP({
         val?.tonguePos === "roof" &&
         !filters.includes("problem-initial:roof")
       ) {
-        return "text-red-500  dark:border-red-300";
+        return "text-red-400  dark:border-red-300";
       }
       if (
         val?.tonguePos === "middle" &&
@@ -388,13 +388,13 @@ function ChartPageVP({
         if (val.hiss) {
           return "text-orange-500 dark:border-orange-300 italic";
         }
-        return "text-orange-500  dark:border-orange-300";
+        return "text-orange-400  dark:border-orange-300";
       }
       if (
         val?.tonguePos === "bottom" &&
         !filters.includes("problem-initial:bottom")
       ) {
-        return "text-yellow-500  dark:border-yellow-300";
+        return "text-yellow-400  dark:border-yellow-300";
       }
     }
     // ======= SIMPLE FINAL STYLING =======
@@ -404,20 +404,20 @@ function ChartPageVP({
       filters.includes("a:simple-final")
     ) {
       // return 'text-cyan-200 border-[1px] dark:border-cyan-200 border-dotted'
-      return "text-cyan-500";
+      return "text-cyan-400";
     }
     if (
       val?.levels?.includes("a:compound-final") &&
       val?.levels?.includes("a:nasal-final") &&
       filters.includes("a:simple-final")
     ) {
-      return "text-cyan-500 dark:border-cyan-200 underline decoration-dotted";
+      return "text-cyan-400 dark:border-cyan-200 underline decoration-dotted";
     }
     if (
       val?.levels?.includes("a:compound-final") &&
       filters.includes("a:simple-final")
     ) {
-      return "text-cyan-500  dark:border-cyan-200";
+      return "text-cyan-400  dark:border-cyan-200";
     }
 
     // A ==== END
@@ -428,7 +428,7 @@ function ChartPageVP({
       filters.includes("e:simple-final")
     ) {
       // return 'text-emerald-300  border-[1px] dark:border-emerald-300 border-dotted'
-      return "text-emerald-500";
+      return "text-emerald-400";
     }
 
     if (
@@ -436,13 +436,13 @@ function ChartPageVP({
       val?.levels?.includes("e:nasal-final") &&
       filters.includes("e:simple-final")
     ) {
-      return "text-emerald-500 dark:border-emerald-300 underline decoration-dotted";
+      return "text-emerald-400 dark:border-emerald-300 underline decoration-dotted";
     }
     if (
       val?.levels?.includes("e:compound-final") &&
       filters.includes("e:simple-final")
     ) {
-      return "text-emerald-500 dark:border-emerald-300";
+      return "text-emerald-400 dark:border-emerald-300";
     }
 
     // E ==== END
@@ -452,7 +452,7 @@ function ChartPageVP({
       val?.levels?.includes("o:simple-final") &&
       filters.includes("o:simple-final")
     ) {
-      return "text-violet-500";
+      return "text-violet-400";
     }
 
     if (
@@ -460,14 +460,14 @@ function ChartPageVP({
       val?.levels?.includes("o:nasal-final") &&
       filters.includes("o:simple-final")
     ) {
-      return "text-violet-500 dark:border-violet-400 underline decoration-dotted";
+      return "text-violet-400 dark:border-violet-400 underline decoration-dotted";
     }
 
     if (
       val?.levels?.includes("o:compound-final") &&
       filters.includes("o:simple-final")
     ) {
-      return "text-violet-500 dark:border-violet-400";
+      return "text-violet-400 dark:border-violet-400";
     }
     // O ==== END
 
@@ -477,7 +477,7 @@ function ChartPageVP({
       filters.includes("i:simple-final")
     ) {
       // return 'text-indigo-300 border-[1px] dark:border-indigo-300 border-dotted'
-      return "text-lime-500";
+      return "text-lime-400";
     }
 
     if (
@@ -485,14 +485,14 @@ function ChartPageVP({
       val?.levels?.includes("i:nasal-final") &&
       filters.includes("i:simple-final")
     ) {
-      return "text-lime-500  dark:border-lime-400 underline decoration-dotted";
+      return "text-lime-400  dark:border-lime-400 underline decoration-dotted";
     }
 
     if (
       val?.levels?.includes("i:compound-final") &&
       filters.includes("i:simple-final")
     ) {
-      return "text-lime-500 dark:border-lime-400";
+      return "text-lime-400 dark:border-lime-400";
     }
     // I === END
 
@@ -501,7 +501,7 @@ function ChartPageVP({
       val?.levels?.includes("u:simple-final") &&
       filters.includes("u:simple-final")
     ) {
-      return "text-rose-500";
+      return "text-rose-400";
     }
 
     if (
@@ -509,14 +509,14 @@ function ChartPageVP({
       val?.levels?.includes("u:nasal-final") &&
       filters.includes("u:simple-final")
     ) {
-      return "text-rose-500 dark:border-neutral-300 underline decoration-dotted";
+      return "text-rose-400 dark:border-neutral-300 underline decoration-dotted";
     }
 
     if (
       val?.levels?.includes("u:compound-final") &&
       filters.includes("u:simple-final")
     ) {
-      return "text-rose-500 dark:border-neutral-300";
+      return "text-rose-400 dark:border-neutral-300";
     }
     // U ==== END
     // Ü
@@ -524,7 +524,7 @@ function ChartPageVP({
       val?.levels?.includes("ü:simple-final") &&
       filters.includes("ü:simple-final")
     ) {
-      return "text-orange-500";
+      return "text-pink-300";
     }
 
     if (
@@ -532,14 +532,14 @@ function ChartPageVP({
       val?.levels?.includes("ü:nasal-final") &&
       filters.includes("ü:simple-final")
     ) {
-      return "text-orange-500 dark:border-fuchsia-300 underline decoration-dotted";
+      return "text-pink-300 dark:border-fuchsia-300 underline decoration-dotted";
     }
 
     if (
       val?.levels?.includes("ü:compound-final") &&
       filters.includes("ü:simple-final")
     ) {
-      return "text-orange-500 dark:border-fuchsia-300";
+      return "text-pink-300 dark:border-fuchsia-300";
     }
     // Ü ==== END
     // ======= SIMPLE FINAL STYLING END =======

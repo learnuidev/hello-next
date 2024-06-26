@@ -10,9 +10,11 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
 export function HanziLink({
+  className,
   character,
 }: {
   character: { hanzi: string; hskLevel?: number };
+  className?: string;
 }) {
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
@@ -82,7 +84,32 @@ export function HanziLink({
                 : "dark:text-gray-700 text-gray-200"
         } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
       >
-        {character?.hanzi}
+        {character?.hanzi?.split("")?.map((val, idx) => {
+          const learnedChar = learnedCharacters2?.find(
+            (char: any) => char?.hanzi === val
+          );
+          return (
+            <span
+              key={`${val}-${idx}`}
+              className={`${
+                brightMode || isCharactersLoading || isComponentsLoading
+                  ? "dark:text-gray-300 text-gray-700"
+                  : // learnedCharacters.includes(prop?.hanzi)
+                    learnedChar
+                    ? learnedChar?.status === "forgotten"
+                      ? "text-gray-900"
+                      : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                        //   ? "text-rose-500"
+                        `hover:${color} text-gray-300`
+                    : selectedComp?.length > 1 || selectedComp?.group
+                      ? "dark:text-gray-500 text-gray-200"
+                      : "dark:text-gray-700 text-gray-200"
+              } dark:hover:text-white text-2xl md:text-2xl transition lowercase`}
+            >
+              {val}
+            </span>
+          );
+        })}
       </Link>
     </div>
   );

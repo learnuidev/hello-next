@@ -140,7 +140,7 @@ export const HskView = ({
   const mode = useLearningModeStore((state: any) => state.mode);
 
   if (mode === "hsk") {
-    if (type === "word") {
+    if (type === "word" || type === "sentence") {
       return <HskWordsView variant={variant} />;
     } else {
       return <HskCharacterView variant={variant} />;
@@ -151,7 +151,7 @@ export const HskView = ({
     return children;
   }
 
-  if (type === "word") {
+  if (type === "word" || type === "sentence") {
     return <HskWordsView variant={variant} />;
   } else {
     return <HskCharacterView variant={variant} />;

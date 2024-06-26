@@ -28,7 +28,7 @@ const InfoRenderer = (info: any) => {
   if (!Array.isArray(val) && typeof val === "string") {
     return val;
   }
-  return val.value;
+  return val?.value;
 };
 
 export const pinyinColumns = [
@@ -247,6 +247,12 @@ export const pinyinColumns = [
           <span className="my-2 mx-2.5 text-xs text-center">a</span>
         ),
       }),
+      columnHelper.accessor("üe", {
+        cell: InfoRenderer,
+        header: () => (
+          <span className="my-2 mx-2.5 text-xs text-center">e</span>
+        ),
+      }),
       columnHelper.accessor("uo", {
         cell: InfoRenderer,
         header: () => (
@@ -289,28 +295,17 @@ export const pinyinColumns = [
           <span className="my-2 mx-2.5 text-xs text-center">eng</span>
         ),
       }),
-    ],
-  }),
-  // // ü
-  // ünull: 'yu',
-  // üe: 'yue',
-  // üan: 'yuan',
-  // üen: 'yun'
-  columnHelper.group({
-    id: "Ü",
-    header: () => <span className="my-2 mx-2.5 text-xs text-center">Ü</span>,
-    // footer: props => props.column.id,
-    columns: [
+
       columnHelper.accessor("ünull", {
         cell: InfoRenderer,
         header: () => <span className="my-2 mx-2.5 text-xs text-center"></span>,
       }),
-      columnHelper.accessor("üe", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">üe</span>
-        ),
-      }),
+      // columnHelper.accessor("üe", {
+      //   cell: InfoRenderer,
+      //   header: () => (
+      //     <span className="my-2 mx-2.5 text-xs text-center">üe</span>
+      //   ),
+      // }),
       columnHelper.accessor("üan", {
         cell: InfoRenderer,
         header: () => (
@@ -325,4 +320,38 @@ export const pinyinColumns = [
       }),
     ],
   }),
+  // // ü
+  // ünull: 'yu',
+  // üe: 'yue',
+  // üan: 'yuan',
+  // üen: 'yun'
+  // columnHelper.group({
+  //   id: "Ü",
+  //   header: () => <span className="my-2 mx-2.5 text-xs text-center">Ü</span>,
+  //   // footer: props => props.column.id,
+  //   columns: [
+  //     columnHelper.accessor("ünull", {
+  //       cell: InfoRenderer,
+  //       header: () => <span className="my-2 mx-2.5 text-xs text-center"></span>,
+  //     }),
+  //     // columnHelper.accessor("üe", {
+  //     //   cell: InfoRenderer,
+  //     //   header: () => (
+  //     //     <span className="my-2 mx-2.5 text-xs text-center">üe</span>
+  //     //   ),
+  //     // }),
+  //     columnHelper.accessor("üan", {
+  //       cell: InfoRenderer,
+  //       header: () => (
+  //         <span className="my-2 mx-2.5 text-xs text-center">üan</span>
+  //       ),
+  //     }),
+  //     columnHelper.accessor("üen", {
+  //       cell: InfoRenderer,
+  //       header: () => (
+  //         <span className="my-2 mx-2.5 text-xs text-center">ün</span>
+  //       ),
+  //     }),
+  //   ],
+  // }),
 ];

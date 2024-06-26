@@ -357,7 +357,7 @@ export function PinyinTable({
 
     // return ''
     // PROBLEM INITIAL
-    if (val.problemInitial && filters.includes("problem-initial")) {
+    if (val?.problemInitial && filters.includes("problem-initial")) {
       if (
         val?.tonguePos === "roof" &&
         !filters.includes("problem-initial:roof")
@@ -610,19 +610,6 @@ export function PinyinTable({
                       }}
                     >
                       u
-                    </button>
-                    <button
-                      className={`${
-                        filters.includes("ü:simple-final")
-                          ? "dark:text-slate-200 text-slate-700"
-                          : "dark:text-slate-500 text-slate-400"
-                      } transition`}
-                      onClick={() => {
-                        setFilter("ü:simple-final");
-                        setFilter("ü:compound-final");
-                      }}
-                    >
-                      ü
                     </button>
                     <button
                       className={`${

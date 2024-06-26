@@ -535,129 +535,133 @@ export function PinyinTable({
 
   return (
     <div className="margin-auto w-full my-2 text-center flex flex-col items-center justify-center">
-      <div className="p-2 w-full">
+      <div className="w-full">
         {selectedPinyin ? (
           <PinyinDetail />
         ) : (
           <>
-            <div className="flex justify-between items-center w-full md:px-12">
-              {!lesson ? (
-                <div className="mr-[-180px] text-2xl flex space-x-8 font-extralight">
-                  <button
-                    className={`${
-                      filters.includes("a:simple-final")
-                        ? "dark:text-slate-200 text-slate-700"
-                        : "dark:text-slate-500 text-slate-400"
-                    } transition`}
-                    onClick={() => {
-                      setFilter("a:simple-final");
-                      setFilter("a:compound-final");
-                    }}
-                  >
-                    a
-                  </button>
-                  <button
-                    className={`${
-                      filters.includes("e:simple-final")
-                        ? "dark:text-slate-200 text-slate-700"
-                        : "dark:text-slate-500 text-slate-400"
-                    } transition`}
-                    onClick={() => {
-                      setFilter("e:simple-final");
-                      setFilter("e:compound-final");
-                    }}
-                  >
-                    e
-                  </button>
+            <div className="fixed sm:right-48 xs:left-12 xs:top-[4px] ml-12 sm:ml-0 sm:top-2">
+              <div className="flex w-full flex-col items-start">
+                {!lesson ? (
+                  <div className="mr-[-180px] text-lg flex space-x-4 font-extralight">
+                    <button
+                      className={`${
+                        filters.includes("a:simple-final")
+                          ? "dark:text-slate-200 text-slate-700"
+                          : "dark:text-slate-500 text-slate-400"
+                      } transition`}
+                      onClick={() => {
+                        setFilter("a:simple-final");
+                        setFilter("a:compound-final");
+                      }}
+                    >
+                      a
+                    </button>
+                    <button
+                      className={`${
+                        filters.includes("e:simple-final")
+                          ? "dark:text-slate-200 text-slate-700"
+                          : "dark:text-slate-500 text-slate-400"
+                      } transition`}
+                      onClick={() => {
+                        setFilter("e:simple-final");
+                        setFilter("e:compound-final");
+                      }}
+                    >
+                      e
+                    </button>
 
-                  <button
-                    className={`${
-                      filters.includes("i:simple-final")
-                        ? "dark:text-slate-200 text-slate-700"
-                        : "dark:text-slate-500 text-slate-400"
-                    } transition`}
-                    onClick={() => {
-                      setFilter("i:simple-final");
-                      setFilter("i:compound-final");
-                    }}
-                  >
-                    i
-                  </button>
+                    <button
+                      className={`${
+                        filters.includes("i:simple-final")
+                          ? "dark:text-slate-200 text-slate-700"
+                          : "dark:text-slate-500 text-slate-400"
+                      } transition`}
+                      onClick={() => {
+                        setFilter("i:simple-final");
+                        setFilter("i:compound-final");
+                      }}
+                    >
+                      i
+                    </button>
 
-                  <button
-                    className={`${
-                      filters.includes("o:simple-final")
-                        ? "dark:text-slate-200 text-slate-700"
-                        : "dark:text-slate-500 text-slate-400"
-                    } transition`}
-                    onClick={() => {
-                      setFilter("o:simple-final");
-                      setFilter("o:compound-final");
-                    }}
-                  >
-                    o
-                  </button>
-                  <button
-                    className={`${
-                      filters.includes("u:simple-final")
-                        ? "dark:text-slate-200 text-slate-700"
-                        : "dark:text-slate-500 text-slate-400"
-                    } transition`}
-                    onClick={() => {
-                      setFilter("u:simple-final");
-                      setFilter("u:compound-final");
-                    }}
-                  >
-                    u
-                  </button>
-                  <button
-                    className={`${
-                      filters.includes("ü:simple-final")
-                        ? "dark:text-slate-200 text-slate-700"
-                        : "dark:text-slate-500 text-slate-400"
-                    } transition`}
-                    onClick={() => {
-                      setFilter("ü:simple-final");
-                      setFilter("ü:compound-final");
-                    }}
-                  >
-                    ü
-                  </button>
-                  <button
-                    className={`${
-                      filters.includes("problem-initial")
-                        ? "dark:text-slate-200 text-slate-700"
-                        : "dark:text-slate-500 text-slate-400"
-                    } transition`}
-                    onClick={() => {
-                      setFilter("problem-initial");
-                    }}
-                  >
-                    pi
-                  </button>
-                </div>
-              ) : controls ? (
-                controls
-              ) : (
-                <div></div>
-              )}
-              <div className="font-extralight text-slate-800 flex space-x-8 text-md">
-                <div className="flex flex-col items-center justify-center">
-                  <span>
-                    {problemInitials?.length} / {totalProblemInitials?.length}
-                  </span>
-                  <span className="text-xs">problem initials</span>
-                </div>
-
-                <div className="flex flex-col items-center justify-center">
-                  <span>
-                    {selectedCharacters?.length} / {totalCharacters?.length}
-                  </span>
-                  <span className="text-xs">characters</span>
-                </div>
+                    <button
+                      className={`${
+                        filters.includes("o:simple-final")
+                          ? "dark:text-slate-200 text-slate-700"
+                          : "dark:text-slate-500 text-slate-400"
+                      } transition`}
+                      onClick={() => {
+                        setFilter("o:simple-final");
+                        setFilter("o:compound-final");
+                      }}
+                    >
+                      o
+                    </button>
+                    <button
+                      className={`${
+                        filters.includes("u:simple-final")
+                          ? "dark:text-slate-200 text-slate-700"
+                          : "dark:text-slate-500 text-slate-400"
+                      } transition`}
+                      onClick={() => {
+                        setFilter("u:simple-final");
+                        setFilter("u:compound-final");
+                      }}
+                    >
+                      u
+                    </button>
+                    <button
+                      className={`${
+                        filters.includes("ü:simple-final")
+                          ? "dark:text-slate-200 text-slate-700"
+                          : "dark:text-slate-500 text-slate-400"
+                      } transition`}
+                      onClick={() => {
+                        setFilter("ü:simple-final");
+                        setFilter("ü:compound-final");
+                      }}
+                    >
+                      ü
+                    </button>
+                    <button
+                      className={`${
+                        filters.includes("problem-initial")
+                          ? "dark:text-slate-200 text-slate-700"
+                          : "dark:text-slate-500 text-slate-400"
+                      } transition`}
+                      onClick={() => {
+                        setFilter("problem-initial");
+                      }}
+                    >
+                      pi
+                    </button>
+                  </div>
+                ) : controls ? (
+                  controls
+                ) : (
+                  <div></div>
+                )}
               </div>
             </div>
-            <div className="md:px-12 md:my-8 text-xs">
+
+            <div className="fixed right-4 sm:right-60 top-2 font-extralight text-slate-500 flex space-x-8 text-md">
+              <div className="flex flex-col items-center justify-center">
+                <span>
+                  {problemInitials?.length} / {totalProblemInitials?.length}
+                </span>
+                <span className="text-xs">problem initials</span>
+              </div>
+
+              <div className="flex flex-col items-center justify-center">
+                <span>
+                  {selectedCharacters?.length} / {totalCharacters?.length}
+                </span>
+                <span className="text-xs">characters</span>
+              </div>
+            </div>
+
+            <div className="md:px-12 text-xs mt-12 sm:mt-0">
               <table>
                 <thead>
                   {table.getHeaderGroups().map((headerGroup) => (

@@ -645,13 +645,13 @@ export const defaultData: any = [
       problemInitial: true,
       tonguePos: "bottom",
     },
-    üan: {
+    uan: {
       value: "juan",
       levels: ["u:compound-final", "ü:nasal-final"],
       problemInitial: true,
       tonguePos: "bottom",
     },
-    üen: {
+    uen: {
       value: "jun",
       levels: ["u:compound-final", "ü:nasal-final"],
       problemInitial: true,
@@ -1063,13 +1063,13 @@ export const defaultData: any = [
       problemInitial: true,
       tonguePos: "bottom",
     },
-    üan: {
+    uan: {
       value: "quan",
       levels: ["u:compound-final", "ü:nasal-final"],
       problemInitial: true,
       tonguePos: "bottom",
     },
-    üen: {
+    uen: {
       value: "qun",
       levels: ["u:compound-final", "ü:nasal-final"],
       problemInitial: true,
@@ -1527,13 +1527,13 @@ export const defaultData: any = [
       problemInitial: true,
       tonguePos: "bottom",
     },
-    üan: {
+    uan: {
       value: "xuan",
       levels: ["u:compound-final", "ü:nasal-final"],
       problemInitial: true,
       tonguePos: "bottom",
     },
-    üen: {
+    uen: {
       value: "xun",
       levels: ["u:compound-final", "ü:nasal-final"],
       problemInitial: true,
@@ -1571,8 +1571,8 @@ export const defaultData: any = [
     },
     // ü
     üe: { value: "yue", levels: ["u:compound-final"] },
-    üan: { value: "yuan", levels: ["u:compound-final", "ü:nasal-final"] },
-    üen: { value: "yun", levels: ["u:compound-final", "ü:nasal-final"] },
+    uan: { value: "yuan", levels: ["u:compound-final", "ü:nasal-final"] },
+    uen: { value: "yun", levels: ["u:compound-final", "ü:nasal-final"] },
   },
 
   //   z

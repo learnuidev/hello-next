@@ -672,7 +672,7 @@ function ChartPageVP({
                 </div>
               </div>
             </div>
-            <div className="md:px-16 md:my-8 text-xs">
+            <div className="md:px-12 md:my-8 text-xs">
               <table>
                 <thead>
                   {table.getHeaderGroups().map((headerGroup) => (

@@ -7,13 +7,17 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
 import { calculateColor } from "@/app/nmm/utils";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
+import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
 export function HanziLink({
   character,
 }: {
   character: { hanzi: string; hskLevel?: number };
 }) {
-  const { data: components } = useListComponents({ includeAll: true });
+  const { data: components, isLoading: isComponentsLoading } =
+    useListComponents({ includeAll: true });
+
+  const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const selectedComp = useMemo(
     () =>
@@ -27,7 +31,8 @@ export function HanziLink({
     tone: selectedComp?.tone_level,
   });
 
-  const { data: learnedCharacters2 } = useListCharactersQuery();
+  const { data: learnedCharacters2, isLoading: isCharactersLoading } =
+    useListCharactersQuery();
 
   const learnedChar = learnedCharacters2?.find(
     (char: any) => char?.hanzi === character?.hanzi
@@ -63,16 +68,18 @@ export function HanziLink({
           // } as any);
         }}
         className={`${
-          // learnedCharacters.includes(prop?.hanzi)
-          learnedChar
-            ? learnedChar?.status === "forgotten"
-              ? "text-gray-900"
-              : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
-                //   ? "text-rose-500"
-                `hover:${color} text-gray-300`
-            : selectedComp?.length > 1 || selectedComp?.group
-              ? "dark:text-gray-500 text-gray-200"
-              : "dark:text-gray-700 text-gray-200"
+          brightMode || isCharactersLoading || isComponentsLoading
+            ? "dark:text-gray-300 text-gray-700"
+            : // learnedCharacters.includes(prop?.hanzi)
+              learnedChar
+              ? learnedChar?.status === "forgotten"
+                ? "text-gray-900"
+                : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                  //   ? "text-rose-500"
+                  `hover:${color} text-gray-300`
+              : selectedComp?.length > 1 || selectedComp?.group
+                ? "dark:text-gray-500 text-gray-200"
+                : "dark:text-gray-700 text-gray-200"
         } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
       >
         {character?.hanzi}

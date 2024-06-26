@@ -29,6 +29,7 @@ import { Checkbox } from "../ui/checkbox";
 import { useLearningModeStore } from "./learning-mode.store";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useRouter } from "next/navigation";
+import { useBrightModeStore } from "./use-bright-mode-store";
 
 export function SettingsDialogInner({
   isOpen,
@@ -329,6 +330,10 @@ function useLearnModeEvents() {
   const setMode = useLearningModeStore((state: any) => state.setMode);
   const mode = useLearningModeStore((state: any) => state.mode);
 
+  const brightMode = useBrightModeStore((state: any) => state.mode);
+
+  const setBrightMode = useBrightModeStore((state: any) => state.setMode);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -369,13 +374,18 @@ function useLearnModeEvents() {
         event.preventDefault();
         router.push("/convos");
       }
+
+      if (["b"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        setBrightMode((val: any) => !val);
+      }
     }
 
     window.addEventListener("keydown", onKeyDown);
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [mode, setMode]);
+  }, [mode, setMode, setBrightMode, brightMode]);
 }
 
 export function SettingsDialog() {

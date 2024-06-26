@@ -142,6 +142,33 @@ export function XiaomaViewType({
 
         return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
       });
+    })
+    ?.filter((prop: any, idx: any, coll: any) => {
+      const qIdx = coll.findIndex((v: any) => v?.hanzi === prop?.hanzi);
+
+      if (idx !== qIdx) {
+        return false;
+      }
+
+      const selectedComp = components?.find(
+        (component: any) => component?.hanzi === prop?.hanzi
+      );
+
+      const hskCharacter = hskWords?.find(
+        (word: any) => word?.hanzi === prop?.hanzi
+      );
+
+      console.log("HSK ", hskCharacter);
+
+      if (variant === "all") {
+        return (
+          !!selectedComp && hskCharacter?.hskLevel <= selectedBelt?.hskLevel
+        );
+      }
+
+      return (
+        !!selectedComp && hskCharacter?.hskLevel === selectedBelt?.hskLevel
+      );
     });
 
   const xiaomaCharacters = [
@@ -196,15 +223,6 @@ export function XiaomaViewType({
               );
 
               return !!hskCharacter;
-
-              if (variant === "all") {
-                return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
-              }
-
-              return (
-                selectedComp?.level <= selectedBelt?.maxCharacterLevel &&
-                selectedComp?.level >= selectedBelt?.minCharacterLevel
-              );
             })
         ).map((prop: any, idx: number) => {
           return (
@@ -218,35 +236,11 @@ export function XiaomaViewType({
   if (viewType === "word") {
     return (
       <div className={containerStyle}>
-        {xiaomaWords
-          ?.filter((prop: any) => {
-            const selectedComp = components?.find(
-              (component: any) => component?.hanzi === prop?.hanzi
-            );
-
-            const hskCharacter = hskWords?.find(
-              (word: any) => word?.hanzi === prop?.hanzi
-            );
-
-            console.log("HSK ", hskCharacter);
-
-            if (variant === "all") {
-              return (
-                !!selectedComp &&
-                hskCharacter?.hskLevel <= selectedBelt?.hskLevel
-              );
-            }
-
-            return (
-              !!selectedComp &&
-              hskCharacter?.hskLevel === selectedBelt?.hskLevel
-            );
-          })
-          .map((prop: any, idx: number) => {
-            return (
-              <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
-            );
-          })}
+        {xiaomaWords?.map((prop: any, idx: number) => {
+          return (
+            <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
+          );
+        })}
       </div>
     );
   }

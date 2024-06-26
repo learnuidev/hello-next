@@ -501,7 +501,7 @@ function ChartPageVP({
       val?.levels?.includes("u:simple-final") &&
       filters.includes("u:simple-final")
     ) {
-      return "text-neutral-500";
+      return "text-rose-500";
     }
 
     if (
@@ -509,14 +509,14 @@ function ChartPageVP({
       val?.levels?.includes("u:nasal-final") &&
       filters.includes("u:simple-final")
     ) {
-      return "text-neutral-500 dark:border-neutral-300 underline decoration-dotted";
+      return "text-rose-500 dark:border-neutral-300 underline decoration-dotted";
     }
 
     if (
       val?.levels?.includes("u:compound-final") &&
       filters.includes("u:simple-final")
     ) {
-      return "text-neutral-500 dark:border-neutral-300";
+      return "text-rose-500 dark:border-neutral-300";
     }
     // U ==== END
     // Ü
@@ -524,7 +524,7 @@ function ChartPageVP({
       val?.levels?.includes("ü:simple-final") &&
       filters.includes("ü:simple-final")
     ) {
-      return "text-fuchsia-500";
+      return "text-violet-500";
     }
 
     if (
@@ -532,14 +532,14 @@ function ChartPageVP({
       val?.levels?.includes("ü:nasal-final") &&
       filters.includes("ü:simple-final")
     ) {
-      return "text-fuchsia-500 dark:border-fuchsia-300 underline decoration-dotted";
+      return "text-violet-500 dark:border-fuchsia-300 underline decoration-dotted";
     }
 
     if (
       val?.levels?.includes("ü:compound-final") &&
       filters.includes("ü:simple-final")
     ) {
-      return "text-fuchsia-500 dark:border-fuchsia-300";
+      return "text-violet-500 dark:border-fuchsia-300";
     }
     // Ü ==== END
     // ======= SIMPLE FINAL STYLING END =======

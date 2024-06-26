@@ -12,22 +12,10 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { characterDictionary, defaultData } from "./data";
-
 import { NavBar } from "@/components/navbar";
 import { PinyinDetail } from "./pinyin-detail";
 
 const columnHelper = createColumnHelper<any>();
-
-const totalCharacters = defaultData
-  ?.map((val: any) => Object.values(val))
-  .flat()
-  .filter((val: any) => val?.value);
-
-const totalProblemInitials = defaultData
-  ?.map((val: any) => Object.values(val))
-  .flat()
-  .filter((val: any) => val?.value && val?.problemInitial);
 
 // aa: 'a',
 // aai: 'ai',
@@ -137,9 +125,7 @@ export const pinyinColumns = [
       }),
       columnHelper.accessor("enull", {
         cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">null</span>
-        ),
+        header: () => <span className="my-2 mx-2.5 text-xs text-center"></span>,
       }),
     ],
   }),
@@ -177,9 +163,7 @@ export const pinyinColumns = [
     columns: [
       columnHelper.accessor("inull", {
         cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">null</span>
-        ),
+        header: () => <span className="my-2 mx-2.5 text-xs text-center"></span>,
       }),
       columnHelper.accessor("ia", {
         cell: InfoRenderer,
@@ -255,9 +239,7 @@ export const pinyinColumns = [
     columns: [
       columnHelper.accessor("unull", {
         cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">null</span>
-        ),
+        header: () => <span className="my-2 mx-2.5 text-xs text-center"></span>,
       }),
       columnHelper.accessor("ua", {
         cell: InfoRenderer,
@@ -321,9 +303,7 @@ export const pinyinColumns = [
     columns: [
       columnHelper.accessor("ünull", {
         cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">null</span>
-        ),
+        header: () => <span className="my-2 mx-2.5 text-xs text-center"></span>,
       }),
       columnHelper.accessor("üe", {
         cell: InfoRenderer,

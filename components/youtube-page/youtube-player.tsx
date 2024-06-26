@@ -34,6 +34,7 @@ import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-hist
 import { useParams } from "next/navigation";
 import { useSize } from "@/hooks/use-size";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
+import { useListComponents } from "@/domain/lesson/component.queries";
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -51,7 +52,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   );
   const size = useSize();
 
-  const { data: learnedCharacters } = useListCharactersQuery();
+  const { data: learnedCharacters } = useListComponents();
 
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;

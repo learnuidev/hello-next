@@ -6,13 +6,17 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { HanziLink } from "@/components/hanzi-link";
 
 import { useGetXiaoma } from "./use-get-xiaoma";
+import { useBeltStore } from "@/components/use-belt-store";
+import { belts } from "../utils";
 
 export function XiaomaViewType({
   variant,
 }: {
   variant?: "core" | "needs_review" | "all";
 }) {
-  const { data } = useGetXiaoma({ variant });
+  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
+
+  const { data } = useGetXiaoma({ variant, selectedBelt });
 
   const xiaomaCharacters = data?.xiaomaCharacters || [];
   const xiaomaWords = data?.xiaomaWords || [];

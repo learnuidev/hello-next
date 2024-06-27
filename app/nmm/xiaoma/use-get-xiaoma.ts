@@ -48,33 +48,29 @@ export const useGetXiaoma = ({
         ]
           .filter((val: any) => filterNonHanYu(val))
           .filter((item: any) => {
-            return item.split("").some((val: any) => {
-              const selectedComp = components?.find(
-                (component: any) => component?.hanzi === val
-              );
-
+            const checkItem = item.split("").filter((val: any) => {
               const hskCharacter = hskWords?.find((word: any) =>
                 JSON.stringify(word?.hanzi)?.includes(val)
               );
 
-              // if (variant === "all") {
-              //   return hskCharacter?.hskLevel <= selectedBelt?.hskLevel;
-              //   return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
-              // }
-
-              // return hskCharacter?.hskLevel === selectedBelt?.hskLevel;
-
               if (variant === "all") {
-                return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
+                return hskCharacter?.hskLevel <= selectedBelt?.hskLevel;
               }
 
-              return (
-                selectedComp?.level <= selectedBelt?.maxCharacterLevel &&
-                selectedComp?.level >= selectedBelt?.minCharacterLevel
-              );
-
-              // return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
+              return hskCharacter?.hskLevel === selectedBelt?.hskLevel;
             });
+
+            if ([1]?.includes(selectedBelt?.hskLevel)) {
+              return checkItem?.length / item?.length > 0.9;
+            }
+            if ([2]?.includes(selectedBelt?.hskLevel)) {
+              return checkItem?.length / item?.length > 0.2;
+            }
+            if ([3]?.includes(selectedBelt?.hskLevel)) {
+              return checkItem?.length / item?.length > 0.2;
+            }
+
+            return checkItem?.length / item?.length > 0.01;
           })
           .map((id) => {
             return {
@@ -117,26 +113,9 @@ export const useGetXiaoma = ({
 
             if (variant === "all") {
               return hskCharacter?.hskLevel <= selectedBelt?.hskLevel;
-              return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
             }
 
             return hskCharacter?.hskLevel === selectedBelt?.hskLevel;
-
-            // const hskCharacter = hskWords?.find(
-            //   (word: any) => word?.hanzi === prop?.hanzi
-            // );
-
-            // console.log("HSK ", hskCharacter);
-
-            // if (variant === "all") {
-            //   return (
-            //     !!selectedComp && hskCharacter?.hskLevel <= selectedBelt?.hskLevel
-            //   );
-            // }
-
-            // return (
-            //   !!selectedComp && hskCharacter?.hskLevel === selectedBelt?.hskLevel
-            // );
           });
       }
 

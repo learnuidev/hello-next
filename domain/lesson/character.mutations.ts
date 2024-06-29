@@ -4,6 +4,7 @@ import { queryIds } from "./queryIds";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
+import { listCharactersQueryId } from "./character.queries";
 
 export type AddCharacterParams = {
   hanzi: string;
@@ -56,7 +57,7 @@ export function useAddCharacterMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([queryIds?.listCharacters]);
+        queryClient.invalidateQueries([listCharactersQueryId]);
       },
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,
@@ -108,7 +109,7 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.refetchQueries([queryIds.listCharacters]);
+        queryClient.refetchQueries([listCharactersQueryId]);
       },
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,
@@ -158,7 +159,7 @@ export function useUpdateCharacterStoryMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([queryIds?.listCharacters]);
+        queryClient.invalidateQueries([listCharactersQueryId]);
       },
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,

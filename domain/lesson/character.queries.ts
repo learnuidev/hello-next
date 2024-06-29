@@ -29,6 +29,7 @@ const listCharacters = async (
   return resp;
 };
 
+export const listCharactersQueryId = "list-characters";
 export function useListCharactersQuery(
   params = {} as { journeyId?: string },
   options = {} as any
@@ -36,7 +37,7 @@ export function useListCharactersQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
-    [queryIds.listCharacters],
+    [listCharactersQueryId],
     async () => {
       // if (options.query) {
       const response = await listCharacters(params, {

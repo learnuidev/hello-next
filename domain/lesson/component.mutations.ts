@@ -5,9 +5,10 @@ import { queryIds } from "../lesson/queryIds";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
+import { listCharactersQueryId } from "./character.queries";
 
 const deleteComponent = async (
-  props: { hanzi: string },
+  props: { id: string },
   opts: {
     Authorization: string;
   }
@@ -17,10 +18,12 @@ const deleteComponent = async (
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,
     },
-    body: JSON.stringify({
-      hanzi: props.hanzi,
-    }),
+    body: JSON.stringify({ id: props?.id }),
   });
+
+  if (!res?.ok) {
+    throw new Error("yoo");
+  }
   const resp = (await res.json()) as any;
   return resp;
 };
@@ -30,7 +33,7 @@ export function useDeleteComponentMutation(options = {} as any) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (params: { hanzi: string }) => {
+    mutationFn: async (params: { hanzi: string; id: string }) => {
       // if (options.query) {
       const deletedComponent = await deleteComponent(params, {
         Authorization: authUser?.jwt,
@@ -44,7 +47,7 @@ export function useDeleteComponentMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      queryClient.invalidateQueries([queryIds.listComponents, data?.journeyId]);
+      queryClient.invalidateQueries([listCharactersQueryId]);
     },
 
     ...options,

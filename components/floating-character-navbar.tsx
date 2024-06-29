@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
   const {
     selectedComp,
@@ -26,8 +27,13 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     deleteComponentMutation,
   } = props;
 
-  const { data: components } = useListComponents();
+  const { data: components, isLoading } = useListComponents();
+  const { data: chars } = useListCharactersQuery();
   const hasAlreadyLearned = components?.find(
+    (item: any) => (item?.hanzi || item?.input) === characterId
+  );
+
+  const hasAlreadyReviewed = chars?.find(
     (item: any) => (item?.hanzi || item?.input) === characterId
   );
 
@@ -98,7 +104,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                 )}
               </button>
             )}
-            {isAlreadyLearned ? null : (
+            {isLoading || isAlreadyLearned ? null : (
               <button
                 className="text-xl"
                 onClick={() => {
@@ -113,8 +119,6 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
               >
                 {addCharacterMutation.isLoading ? (
                   <Icons.spinner spinPulse />
-                ) : addCharacterMutation.isSuccess ? (
-                  <Icons.checkCircle className="transition" />
                 ) : (
                   <Icons.lightBulb className="text-2xl" />
                 )}
@@ -173,7 +177,8 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
               //   )}
               // </button>
             )}
-            {selectedComp2?.updated_at ? null : !selectedComp2?.updated_at ||
+            {isLoading ||
+            selectedComp2?.updated_at ? null : !selectedComp2?.updated_at ||
               !selectedComp2?.discoveredAt ? (
               // (selectedComp?.hanzi || characterId)?.length > 1 ? null : (
               false ? null : hasAlreadyLearned?.discoveredAt ? null : (
@@ -207,17 +212,15 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                 </button>
               )
             ) : null}
-            {true ? null : (
+            {!hasAlreadyReviewed?.id ? null : (
               <button
                 className="text-xl"
-                disabled={
-                  deleteComponentMutation.isLoading ||
-                  deleteComponentMutation.isSuccess
-                }
+                disabled={deleteComponentMutation.isLoading}
                 onClick={() => {
                   deleteComponentMutation
                     .mutateAsync({
-                      hanzi: selectedComp?.hanzi || characterId,
+                      hanzi: hasAlreadyReviewed?.hanzi,
+                      id: hasAlreadyReviewed?.id,
                     } as any)
                     .then((resp: any) => {
                       toast(`Component: ${selectedComp?.hanzi || characterId} Successfully deleted  

@@ -150,26 +150,9 @@ export const useGetXiaoma = ({
 
             if (variant === "all") {
               return hskCharacter?.hskLevel <= selectedBelt?.hskLevel;
-              return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
             }
 
             return hskCharacter?.hskLevel === selectedBelt?.hskLevel;
-
-            return (
-              selectedComp?.level <= selectedBelt?.maxCharacterLevel &&
-              selectedComp?.level >= selectedBelt?.minCharacterLevel
-            );
-
-            // if (variant === "all") {
-            //   return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
-            // }
-
-            // return (
-            //   selectedComp?.level <= selectedBelt?.maxCharacterLevel &&
-            //   selectedComp?.level >= selectedBelt?.minCharacterLevel
-            // );
-
-            return !!hskCharacter;
           });
       }
 

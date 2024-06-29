@@ -72,11 +72,24 @@ export const ReadModeView = (props: SelectedCharacterProps) => {
 
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+
+  const sentenceView = searchParams.get("sentence-view") || "ai";
+
   const { data: contents } = useListContentsQuery();
 
   return (
     <div className="w-full">
-      <Tabs defaultValue="ai" className="p-0">
+      <Tabs
+        defaultValue="ai"
+        className="p-0"
+        value={sentenceView}
+        onValueChange={(value) => {
+          router.push(
+            `/nmm/${characterId}/${lang ? `?lang=${lang}` : ""}${lang ? `&sentence-view=${value}` : `?sentence-view=${value}`}`
+          );
+        }}
+      >
         <div className="mt-8 flex justify-between items-center">
           <TabsList className="space-x-8">
             {contents?.length > 0 && (

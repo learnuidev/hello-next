@@ -1,5 +1,6 @@
 "use client";
 import React, { useMemo } from "react";
+import { groupBy } from "ramda";
 
 import { usePinyinChartState, usePinyinChartStore } from "./state";
 
@@ -15,7 +16,7 @@ import { PinyinDetail } from "./pinyin-detail";
 import { pinyinColumns } from "./pinyin-columns";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useSearchQueryStore } from "@/components/search/state";
-import { filterComponents } from "../nmm/utils";
+import { filterComponents, getHumanPinyin } from "../nmm/utils";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useQuery } from "@tanstack/react-query";
 import { getGroup } from "../(auth)/hmm/get-group";
@@ -128,7 +129,34 @@ export function PinyinTable({
 
   const { data: chineseComponents } = useListComponents();
 
+  const activePinyinSounds = useMemo(
+    () =>
+      groupBy((item: any) => item?.humanPinyin)(
+        chineseComponents
+          ?.filter((comp: any) => comp?.hanzi?.length === 1)
+          ?.map((comp: any) => {
+            return {
+              ...comp,
+              humanPinyin: getHumanPinyin(comp),
+            };
+          }) || []
+      ),
+    [chineseComponents]
+  );
+
+  console.log("ACTIVE PINYIN SOUNDS", activePinyinSounds);
+
   const calcRowColor = (val: any, lesson?: any, querySync?: string) => {
+    if (typeof val === "string") {
+      return "text-gray-600";
+    }
+    if (val) {
+      console.log("VAL", val);
+    }
+
+    if (!querySync && !activePinyinSounds?.[val?.value]) {
+      return "text-gray-600";
+    }
     const chineseChars =
       querySync
         ?.split("")

@@ -157,7 +157,7 @@ export function PinyinTable({
             };
           }) || []
       ),
-    [chineseChars]
+    [chineseComponents]
   );
 
   const calcRowColor = (val: any, lesson?: any, querySync?: string) => {

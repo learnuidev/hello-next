@@ -21,6 +21,7 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useQuery } from "@tanstack/react-query";
 import { getGroup } from "../(auth)/hmm/get-group";
 import { legacyData } from "./___legacy_data.v1";
+import { cn } from "@/lib/utils";
 
 const totalCharacters = legacyData
   ?.map((val: any) => Object.values(val))
@@ -128,8 +129,23 @@ export function PinyinTable({
   const { data: filteredComponents } = useFilterComponents(querySync);
 
   const { data: chineseComponents } = useListComponents();
+  const { data: chineseChars } = useListCharactersQuery();
 
   const activePinyinSounds = useMemo(
+    () =>
+      groupBy((item: any) => item?.humanPinyin)(
+        chineseChars
+          ?.filter((comp: any) => comp?.hanzi?.length === 1)
+          ?.map((comp: any) => {
+            return {
+              ...comp,
+              humanPinyin: getHumanPinyin(comp),
+            };
+          }) || []
+      ),
+    [chineseChars]
+  );
+  const activePinyinComponentSounds = useMemo(
     () =>
       groupBy((item: any) => item?.humanPinyin)(
         chineseComponents
@@ -141,7 +157,7 @@ export function PinyinTable({
             };
           }) || []
       ),
-    [chineseComponents]
+    [chineseChars]
   );
 
   const calcRowColor = (val: any, lesson?: any, querySync?: string) => {
@@ -738,9 +754,20 @@ export function PinyinTable({
                               )}
 
                               {val?.value && (
-                                <sup className="text-gray-700 text-[8px] ml-[1px]">
-                                  {activePinyinSounds?.[val?.value]?.length ||
-                                    0}
+                                <sup
+                                  className={cn(
+                                    activePinyinSounds?.[val?.value]?.length
+                                      ? "text-gray-600"
+                                      : activePinyinComponentSounds?.[
+                                            val?.value
+                                          ]?.length
+                                        ? "text-gray-600"
+                                        : "text-black",
+                                    "text-[8px] ml-[1px]"
+                                  )}
+                                >
+                                  {activePinyinComponentSounds?.[val?.value]
+                                    ?.length || 0}
                                 </sup>
                               )}
 

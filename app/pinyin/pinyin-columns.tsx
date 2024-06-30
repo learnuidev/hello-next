@@ -137,7 +137,9 @@ export const pinyinColumns = [
     columns: [
       columnHelper.accessor("inull", {
         cell: InfoRenderer,
-        header: () => <span className="my-2 mx-2.5 text-xs text-center"></span>,
+        header: () => (
+          <span className="my-2 mx-2.5 text-xs text-center">i</span>
+        ),
       }),
       columnHelper.accessor("ia", {
         cell: InfoRenderer,
@@ -178,13 +180,13 @@ export const pinyinColumns = [
       columnHelper.accessor("ien", {
         cell: InfoRenderer,
         header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">en</span>
+          <span className="my-2 mx-2.5 text-xs text-center">in</span>
         ),
       }),
       columnHelper.accessor("ieng", {
         cell: InfoRenderer,
         header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">eng</span>
+          <span className="my-2 mx-2.5 text-xs text-center">ing</span>
         ),
       }),
       columnHelper.accessor("iong", {
@@ -239,7 +241,9 @@ export const pinyinColumns = [
     columns: [
       columnHelper.accessor("unull", {
         cell: InfoRenderer,
-        header: () => <span className="my-2 mx-2.5 text-xs text-center"></span>,
+        header: () => (
+          <span className="my-2 mx-2.5 text-xs text-center">u</span>
+        ),
       }),
       columnHelper.accessor("ua", {
         cell: InfoRenderer,

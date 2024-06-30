@@ -1625,7 +1625,7 @@ export const legacyData: any = [
     },
     ieng: {
       levels: ["i:compound-final", "i:nasal-final"],
-      value: "jieng",
+      value: "jing",
       problemInitial: true,
       tonguePos: "bottom",
     },
@@ -1744,7 +1744,7 @@ export const legacyData: any = [
     },
     ieng: {
       levels: ["i:compound-final", "i:nasal-final"],
-      value: "qieng",
+      value: "qing",
       problemInitial: true,
       tonguePos: "bottom",
     },

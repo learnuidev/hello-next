@@ -737,13 +737,12 @@ export function PinyinTable({
                                 cell.getContext()
                               )}
 
-                              {val?.value &&
-                                (activePinyinSounds?.[val?.value]
-                                  ?.length as any) > 0 && (
-                                  <sup className="text-gray-500 text-[8px] ml-[1px]">
-                                    {activePinyinSounds?.[val?.value]?.length}
-                                  </sup>
-                                )}
+                              {val?.value && (
+                                <sup className="text-gray-700 text-[8px] ml-[1px]">
+                                  {activePinyinSounds?.[val?.value]?.length ||
+                                    0}
+                                </sup>
+                              )}
 
                               {char?.examples?.length ? (
                                 <div className="flex mt-1 space-x-1 items-center justify-center">

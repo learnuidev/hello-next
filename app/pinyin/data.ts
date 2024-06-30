@@ -1500,7 +1500,7 @@ export const defaultData: any = [
     },
     ieng: {
       levels: ["i:compound-final", "i:nasal-final"],
-      value: "xieng",
+      value: "xing",
       problemInitial: true,
       tonguePos: "bottom",
     },

@@ -283,12 +283,12 @@ export const pinyinColumns = [
           <span className="my-2 mx-2.5 text-xs text-center">ei</span>
         ),
       }),
-      columnHelper.accessor("ueng", {
-        cell: InfoRenderer,
-        header: () => (
-          <span className="my-2 mx-2.5 text-xs text-center">eng</span>
-        ),
-      }),
+      // columnHelper.accessor("ueng", {
+      //   cell: InfoRenderer,
+      //   header: () => (
+      //     <span className="my-2 mx-2.5 text-xs text-center">eng</span>
+      //   ),
+      // }),
 
       columnHelper.accessor("uo", {
         cell: InfoRenderer,

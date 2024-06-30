@@ -1402,7 +1402,7 @@ export const defaultData: any = [
     ee: "",
     eei: "",
     een: "",
-    eeng: "",
+    eeng: { value: "weng", levels: ["e:compound-final", "e:nasal-final"] },
     enull: "",
     // O
     oo: "",
@@ -1435,7 +1435,7 @@ export const defaultData: any = [
     uan: { value: "wan", levels: ["u:compound-final", "u:nasal-final"] },
     uen: { value: "wen", levels: ["u:compound-final", "u:nasal-final"] },
     uang: { value: "wang", levels: ["u:compound-final", "u:nasal-final"] },
-    ueng: { value: "weng", levels: ["u:compound-final", "u:nasal-final"] },
+    ueng: "",
 
     // ü
     ünull: "",

@@ -724,12 +724,13 @@ export const defaultData: any = [
     eeng: { value: "leng", levels: ["e:compound-final", "e:nasal-final"] },
     enull: "",
     // O
-    oo: {
-      initial: "null",
-      final: "lo",
-      value: "lo",
-      levels: ["o", "u (wu)", "ü(yu)", "o:simple-final"],
-    },
+    oo: "",
+    // oo: {
+    //   initial: "null",
+    //   final: "lo",
+    //   value: "lo",
+    //   levels: ["o", "u (wu)", "ü(yu)", "o:simple-final"],
+    // },
     oong: { value: "long", levels: ["o:compound-final", "o:nasal-final"] },
     oou: { value: "lou", levels: ["o:compound-final"] },
     // I
@@ -914,7 +915,7 @@ export const defaultData: any = [
       value: "o",
       levels: ["o", "u (wu)", "ü(yu)", "o:simple-final"],
     },
-    oong: { value: "ong", levels: ["o:compound-final", "o:nasal-final"] },
+    oong: "",
     oou: { value: "ou", levels: ["o:compound-final"] },
   },
 

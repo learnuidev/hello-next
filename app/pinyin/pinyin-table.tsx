@@ -20,15 +20,15 @@ import { filterComponents, getHumanPinyin } from "../nmm/utils";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useQuery } from "@tanstack/react-query";
 import { getGroup } from "../(auth)/hmm/get-group";
-import { legacyData } from "./___legacy_data.v1";
+// import { legacyData } from "./data";
 import { cn } from "@/lib/utils";
 
-const totalCharacters = legacyData
+const totalCharacters = defaultData
   ?.map((val: any) => Object.values(val))
   .flat()
   .filter((val: any) => val?.value);
 
-const totalProblemInitials = legacyData
+const totalProblemInitials = defaultData
   ?.map((val: any) => Object.values(val))
   .flat()
   .filter((val: any) => val?.value && val?.problemInitial);
@@ -745,10 +745,12 @@ export function PinyinTable({
                                 querySync
                               )} transition`}
                             >
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext()
-                              )}
+                              <span>
+                                {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext()
+                                )}
+                              </span>
 
                               {val?.value && (
                                 <sup

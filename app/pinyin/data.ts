@@ -700,6 +700,7 @@ export const defaultData: any = [
   //   l
   {
     // A
+    ...emptyVars,
     initial: "l",
     aa: {
       value: "la",
@@ -765,7 +766,6 @@ export const defaultData: any = [
     //   value: "lü",
     //   levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     // },
-    üe: { value: "lue", levels: ["u:compound-final"] },
     üan: "",
     üen: "",
   },
@@ -1071,10 +1071,9 @@ export const defaultData: any = [
 
   //   r
   {
+    ...emptyVars,
     // A
     initial: "r",
-    aa: "",
-    aai: "",
     aao: {
       value: "rao",
       problemInitial: true,
@@ -1100,7 +1099,6 @@ export const defaultData: any = [
       tonguePos: "roof",
       levels: ["a", "e", "yi", "e:simple-final"],
     },
-    eei: "",
     een: {
       value: "ren",
       problemInitial: true,
@@ -1113,9 +1111,7 @@ export const defaultData: any = [
       tonguePos: "roof",
       levels: ["e:compound-final", "e:nasal-final"],
     },
-    enull: "",
     // O
-    oo: "",
     oong: {
       value: "rong",
       problemInitial: true,
@@ -1135,27 +1131,12 @@ export const defaultData: any = [
       tonguePos: "roof",
       levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: "",
-    iao: "",
-    ie: "",
-    iou: "",
-    ian: "",
-    iang: "",
-    ien: "",
-    ieng: "",
-    iong: "",
     // U
     unull: {
       value: "ru",
       problemInitial: true,
       tonguePos: "roof",
       levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
-    },
-    ua: {
-      levels: ["u:compound-final"],
-      value: "rua",
-      problemInitial: true,
-      tonguePos: "roof",
     },
     uo: {
       levels: ["u:compound-final"],
@@ -1169,7 +1150,6 @@ export const defaultData: any = [
       problemInitial: true,
       tonguePos: "roof",
     },
-    uai: "",
     uan: {
       levels: ["u:compound-final", "u:nasal-final"],
       value: "ruan",
@@ -1182,17 +1162,11 @@ export const defaultData: any = [
       problemInitial: true,
       tonguePos: "roof",
     },
-    uang: "",
-    ueng: "",
-    // ü
-    ünull: "",
-    üe: "",
-    üan: "",
-    üen: "",
   },
 
   //   s
   {
+    ...emptyVars,
     // A
     initial: "s",
     aa: {
@@ -1233,7 +1207,6 @@ export const defaultData: any = [
       problemInitial: true,
       tonguePos: "bottom",
     },
-    eei: "",
     een: {
       value: "sen",
       problemInitial: true,
@@ -1246,7 +1219,6 @@ export const defaultData: any = [
       tonguePos: "bottom",
       levels: ["e:compound-final", "e:nasal-final"],
     },
-    enull: "",
     // O
     oo: "",
     oong: {
@@ -1268,15 +1240,6 @@ export const defaultData: any = [
       tonguePos: "bottom",
       levels: ["a", "e", "yi", "i:simple-final"],
     },
-    ia: "",
-    iao: "",
-    ie: "",
-    iou: "",
-    ian: "",
-    iang: "",
-    ien: "",
-    ieng: "",
-    iong: "",
     // U
     unull: {
       value: "su",
@@ -1284,7 +1247,7 @@ export const defaultData: any = [
       tonguePos: "bottom",
       levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
-    ua: "",
+
     uo: {
       value: "suo",
       problemInitial: true,
@@ -1297,7 +1260,7 @@ export const defaultData: any = [
       tonguePos: "bottom",
       levels: ["u:compound-final"],
     },
-    uai: "",
+
     uan: {
       value: "suan",
       problemInitial: true,
@@ -1310,13 +1273,6 @@ export const defaultData: any = [
       tonguePos: "bottom",
       levels: ["u:compound-final", "u:nasal-final"],
     },
-    uang: "",
-    ueng: "",
-    // ü
-    ünull: "",
-    üe: "",
-    üan: "",
-    üen: "",
   },
 
   //   T

@@ -337,7 +337,7 @@ export const defaultData: any = [
       levels: ["a", "e", "yi", "e:simple-final"],
     },
     eei: { value: "dei", levels: ["e:compound-final"] },
-    een: { value: "den", levels: ["e:compound-final", "e:nasal-final"] },
+    een: "",
     eeng: { value: "deng", levels: ["e:compound-final", "e:nasal-final"] },
     enull: "",
     // O
@@ -392,7 +392,7 @@ export const defaultData: any = [
     },
     eei: { value: "ei", levels: ["e:compound-final"] },
     een: { value: "en", levels: ["e:compound-final", "e:nasal-final"] },
-    eeng: { value: "eng", levels: ["e:compound-final", "e:nasal-final"] },
+    eeng: "",
     enull: {
       value: "er",
       levels: ["e:compound-final", "e:special-final"],
@@ -611,12 +611,7 @@ export const defaultData: any = [
       problemInitial: true,
       tonguePos: "bottom",
     },
-    ien: {
-      levels: ["i:compound-final", "i:nasal-final"],
-      value: "jien",
-      problemInitial: true,
-      tonguePos: "bottom",
-    },
+    ien: "",
     ieng: {
       levels: ["i:compound-final", "i:nasal-final"],
       value: "jing",
@@ -679,7 +674,7 @@ export const defaultData: any = [
       value: "ke",
       levels: ["a", "e", "yi", "e:simple-final"],
     },
-    eei: { value: "kei", levels: ["e:compound-final"] },
+    eei: "",
     een: { value: "ken", levels: ["e:compound-final", "e:nasal-final"] },
     eeng: { value: "keng", levels: ["e:compound-final", "e:nasal-final"] },
     // O
@@ -1031,12 +1026,7 @@ export const defaultData: any = [
       problemInitial: true,
       tonguePos: "bottom",
     },
-    ien: {
-      levels: ["i:compound-final", "i:nasal-final"],
-      value: "qien",
-      problemInitial: true,
-      tonguePos: "bottom",
-    },
+    ien: "",
     ieng: {
       levels: ["i:compound-final", "i:nasal-final"],
       value: "qing",

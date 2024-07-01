@@ -1485,7 +1485,7 @@ export const defaultData: any = [
     },
     ien: {
       levels: ["i:compound-final", "i:nasal-final"],
-      value: "xien",
+      value: "xin",
       problemInitial: true,
       tonguePos: "bottom",
     },
@@ -1553,7 +1553,8 @@ export const defaultData: any = [
     iang: { value: "yang", levels: ["i:compound-final", "i:nasal-final"] },
     ien: { value: "yin", levels: ["i:compound-final", "i:nasal-final"] },
     ieng: { value: "ying", levels: ["i:compound-final", "i:nasal-final"] },
-    iong: { value: "yiong", levels: ["i:compound-final", "i:nasal-final"] },
+    // o
+    oong: { value: "yong", levels: ["o:compound-final", "o:nasal-final"] },
 
     unull: {
       initial: "null",

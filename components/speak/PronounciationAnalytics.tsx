@@ -383,7 +383,6 @@ export const PronounciationAnalytics = ({
                     }
 
                     // console.log('ROW', row)
-                    console.log("VAL", val);
                     // const char = characterDictionary[val?.value || val]
                     return (
                       <td

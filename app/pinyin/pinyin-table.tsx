@@ -164,9 +164,6 @@ export function PinyinTable({
     if (typeof val === "string") {
       return "text-gray-600";
     }
-    if (val) {
-      console.log("VAL", val);
-    }
 
     if (!querySync && !activePinyinSounds?.[val?.value]) {
       return "text-gray-600";

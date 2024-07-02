@@ -164,6 +164,8 @@ export function ReviewV1(props: any) {
   const isParagraph =
     (currentCharacter?.hanzi || currentCharacter?.input)?.length > 20;
 
+  const characterLink = `/nmm/${currentCharacter?.hanzi || currentCharacter?.input}${!lang ? "?lang=zh&id=true" : `?lang=${currentCharacter?.lang || currentComponent?.lang}`}`;
+
   return (
     <div className="grow text-center">
       <div className="flex items-center justify-between mt-16 mb-16 px-4 md:px-16">
@@ -201,7 +203,7 @@ export function ReviewV1(props: any) {
           ) : null}
           {isContentLessThanFive ? (
             <Link
-              href={`/nmm/${currentCharacter?.hanzi || currentCharacter?.input}${!lang ? "" : `?lang=${currentCharacter?.lang || currentComponent?.lang}`}`}
+              href={characterLink}
               className={cn("text-8xl md:text-9xl")}
               target="_blank"
             >
@@ -210,7 +212,7 @@ export function ReviewV1(props: any) {
           ) : (
             <div className="lg:px-80 md:px-32 px-8">
               <Link
-                href={`/nmm/${currentCharacter?.hanzi || currentCharacter?.input}${!lang ? "" : `?lang=${currentCharacter?.lang || currentComponent?.lang}`}`}
+                href={characterLink}
                 className={cn("text-md")}
                 target="_blank"
               >

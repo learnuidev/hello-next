@@ -129,6 +129,9 @@ const characterMap = {
   ù: "u",
   ü: "u",
   ǚ: "u",
+  ǖ: "u",
+  ǘ: "u",
+  ǜ: "u",
 } as any;
 
 export const getHumanPinyin = (comp: { pinyin: string }) => {

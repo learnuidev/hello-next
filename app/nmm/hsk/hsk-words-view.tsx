@@ -62,10 +62,10 @@ export const HskWordsView = ({ variant }: { variant?: "all" }) => {
                 setHskView(selectedBelt?.hskLevel, topic);
               }}
             >
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-[180px] dark:border-gray-800">
                 <SelectValue placeholder="Select a topic" />
               </SelectTrigger>
-              <SelectContent className="bg-black">
+              <SelectContent className="bg-black dark:border-gray-900">
                 <SelectGroup>
                   <SelectLabel>Topics</SelectLabel>
 

@@ -64,9 +64,21 @@ export const InsightsV2 = () => {
   const totalForgotten = learnedCharacters?.filter(
     (item: any) => item?.status === "forgotten"
   );
-  const totalErrors = learnedCharacters?.filter(
+  const totalErrors_ = learnedCharacters?.filter(
     (item: any) => item?.wrongCount
   );
+
+  const totalErrors =
+    learnedCharacters
+      ?.map((item: any) => {
+        return item?.reviewHistory?.filter(
+          (val: any) => val?.outcome === "incorrect"
+        );
+      })
+      ?.flat()
+      ?.filter(Boolean) || [];
+
+  console.log("TE", totalErrors);
 
   const grouped = groupBy((item: any) => item?.lang)(
     learnedCharacters?.map((char: any) => {

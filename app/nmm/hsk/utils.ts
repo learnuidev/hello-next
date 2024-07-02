@@ -40,10 +40,12 @@ export const resolveHsk = (
     hskWords,
     variant,
     level,
+    topic,
   }: {
     hskWords: { hanzi: string; level: number; hskLevel: number }[];
     variant?: "all";
     level?: number;
+    topic?: string;
   }
 ) => {
   const resolvedLevel = level || getLevel(queryStr);

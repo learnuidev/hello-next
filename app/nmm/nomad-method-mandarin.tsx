@@ -34,54 +34,6 @@ import { useLearningModeStore } from "@/components/settings-dialog/learning-mode
 import { HSKCombobox } from "./hsk-combobox";
 import { useHSKLevelStore } from "./hsk-level-store";
 
-const getLevel = (queryStr: string) => {
-  if (queryStr?.includes("1")) {
-    return 1;
-  }
-  if (queryStr?.includes("2")) {
-    return 2;
-  }
-  if (queryStr?.includes("3")) {
-    return 3;
-  }
-  if (queryStr?.includes("4")) {
-    return 4;
-  }
-  if (queryStr?.includes("5")) {
-    return 5;
-  }
-  if (queryStr?.includes("6")) {
-    return 6;
-  }
-  if (
-    queryStr?.includes("7") ||
-    queryStr?.includes("8") ||
-    queryStr?.includes("9")
-  ) {
-    return 9;
-  }
-
-  return 1;
-};
-
-const resolveHsk = (
-  queryStr: string,
-  hskWords: { hanzi: string; level: number; hskLevel: number }[],
-  variant?: "all"
-) => {
-  const level = getLevel(queryStr);
-
-  if (variant === "all") {
-    return hskWords?.filter((item) => {
-      return item?.level <= level;
-    });
-  }
-
-  return hskWords?.filter((item) => {
-    return item?.level === level;
-  });
-};
-
 export function NomadMethodMandarin() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
   const searchParams = useSearchParams();

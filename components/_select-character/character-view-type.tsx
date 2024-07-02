@@ -32,6 +32,8 @@ import { useGetCharacter } from "@/hooks/use-get-character";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { usePaginationStore } from "@/stores/use-pagination-store";
 import { useListSuperComponentsQuery } from "@/domain/component/super-component.queries";
+import { useBeltStore } from "../use-belt-store";
+import { RelatedHskWords } from "./related-hsk-words";
 
 const HskSuperComponentsWordView = ({
   componentId,
@@ -231,25 +233,6 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
   }, [selectedComp?.story, setStory]);
 
   const { data: relatedHskWords } = useListRelatedHSKWords(characterId);
-
-  const HskWordView = () => {
-    return (
-      <div className="mx-4 my-4 md:mx-16 text-black dark:text-white grid md:grid-cols-8 sm:grid-cols-4 grid-cols-2">
-        {relatedHskWords
-          ?.filter((item) => (item?.hanzi || item?.input)?.length <= 4)
-          ?.sort((a, b) => a?.hanzi?.length - b?.hanzi?.length)
-          ?.map((prop: any) => {
-            return (
-              <WordItem
-                lang={lang}
-                component={prop}
-                key={JSON.stringify(prop)}
-              />
-            );
-          })}
-      </div>
-    );
-  };
 
   const HskSentenceView = () => {
     const query = useSearchQueryStore((state) => state.query);
@@ -454,7 +437,7 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
   if (view === "words") {
     if (lang === "zh") {
       // return <div>yooo</div>;
-      return <HskWordView />;
+      return <RelatedHskWords characterId={characterId} lang={lang} />;
     }
 
     return <RelatedWords lang={lang} characterId={characterId} />;

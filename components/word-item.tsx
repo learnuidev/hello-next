@@ -100,6 +100,11 @@ export const WordItem = ({
         >
           {" "}
           {prop.input || prop?.hanzi}
+          {prop?.hskLevel && (
+            <sub className="dark:text-gray-700 text-xs pl-[2px]">
+              {prop?.hskLevel}
+            </sub>
+          )}
         </span>
         {readMode || show ? (
           <span className="block text-sm text-gray-500">

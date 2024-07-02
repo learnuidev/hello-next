@@ -5,8 +5,6 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 export const useListRelatedHSKWords = (characterId: string) => {
   const { data: hsk } = useListHSKWordsQuery();
 
-  console.log("HSK", hsk);
-
   const { data: components } = useListComponents();
   const { data: characters } = useListCharactersQuery();
 

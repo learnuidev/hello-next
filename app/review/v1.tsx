@@ -125,6 +125,10 @@ export function ReviewV1(props: any) {
 
   console.log("currentCharacter", currentCharacter);
 
+  if (isLoading || isLearnedCharactersLoading) {
+    return <div> ... </div>;
+  }
+
   if (!currentCharacter || hasReviewedAll) {
     return (
       <div className="grow text-center">

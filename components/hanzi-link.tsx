@@ -61,14 +61,14 @@ export function HanziLink({
   const lastAnswer = answers?.[answers?.length - 1];
 
   return (
-    <div className="p-4 md:p-3 flex flex-col items-center justify-center w-full">
+    <div className="p-4 md:p-3 flex flex-col items-center justify-center">
       <p
         className={cn(
           "top-0 text-xs text-gray-400",
-          brightMode ? "text-gray-400" : "text-black"
+          brightMode ? "text-gray-600" : "text-black"
         )}
       >
-        {character?.pinyin}
+        {character?.pinyin || selectedComp?.pinyin}
       </p>
       <Link
         href={
@@ -131,10 +131,10 @@ export function HanziLink({
       <p
         className={cn(
           "text-xs text-gray-400 w-16 truncate text-center",
-          brightMode ? "text-gray-400" : "text-black"
+          brightMode ? "text-gray-500" : "text-black"
         )}
       >
-        {character?.en}
+        {character?.en || selectedComp?.en}
       </p>
     </div>
   );

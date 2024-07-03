@@ -127,9 +127,10 @@ export function HanziLink({
           );
         })}
       </Link>
+
       <p
         className={cn(
-          "top-0 text-xs text-gray-400",
+          "text-xs text-gray-400 w-16 truncate text-center",
           brightMode ? "text-gray-400" : "text-black"
         )}
       >

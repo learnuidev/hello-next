@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/hover-card";
 import { useRouter } from "next/navigation";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import Link from "next/link";
 
 export const TranscriptItem = ({
   transcription,
@@ -41,37 +42,74 @@ export const TranscriptItem = ({
 
   const router = useRouter();
 
+  console.log("AUDIO URL", audioUrl);
+
+  if (audioUrl) {
+    return (
+      <div
+        role="button"
+        className={`text-center space-y-2 ${
+          transcription.start < currentTime && transcription.end > currentTime
+            ? "text-yellow-500"
+            : ""
+        }`}
+        onClick={() => {
+          if (audioUrl) {
+            seek(transcription?.start);
+
+            setRepeatHistories({
+              lessonId: lessonId,
+              eventType: "speech/repeat",
+              eventTime: new Date().getTime(),
+              startTime: transcription.start,
+              hanzi: transcription.hanzi,
+              pinyin: transcription.pinyin,
+              en: transcription.en,
+              step: transcription.step,
+              // item
+            });
+          } else {
+            router.push(
+              `/nmm/${transcription.hanzi || transcription.input}` + lang
+                ? `?lang=${lang}`
+                : ""
+            );
+          }
+        }}
+      >
+        <p className={""}>{transcription?.hanzi || transcription?.input}</p>
+        {pinyinMode ? (
+          <>
+            <p className="dark:text-gray-400 text-md">
+              {transcription?.pinyin || transcription?.roman}
+            </p>
+            {/* <HoverCard>
+              <HoverCardTrigger>
+                <p className="dark:text-gray-400 text-md">
+                  {transcription?.pinyin || transcription?.roman}
+                </p>
+              </HoverCardTrigger>
+  
+              <HoverCardContent>TODO</HoverCardContent>
+            </HoverCard> */}
+            <p className="dark:text-gray-300 text-md">{transcription?.en}</p>
+          </>
+        ) : null}
+      </div>
+    );
+  }
+
   return (
-    <div
-      role="button"
-      className={`text-center space-y-2 ${
+    <Link
+      className={`block text-center space-y-2 ${
         transcription.start < currentTime && transcription.end > currentTime
           ? "text-yellow-500"
           : ""
       }`}
-      onClick={() => {
-        if (audioUrl) {
-          seek(transcription?.start);
-
-          setRepeatHistories({
-            lessonId: lessonId,
-            eventType: "speech/repeat",
-            eventTime: new Date().getTime(),
-            startTime: transcription.start,
-            hanzi: transcription.hanzi,
-            pinyin: transcription.pinyin,
-            en: transcription.en,
-            step: transcription.step,
-            // item
-          });
-        } else {
-          router.push(
-            `/nmm/${transcription.hanzi || transcription.input}` + lang
-              ? `?lang=${lang}`
-              : ""
-          );
-        }
-      }}
+      target={"_blank"}
+      href={`/nmm/${transcription.hanzi || transcription.input}${
+        lang ? `?lang=${lang}` : ""
+      }`}
     >
       <p className={""}>{transcription?.hanzi || transcription?.input}</p>
       {pinyinMode ? (
@@ -91,6 +129,6 @@ export const TranscriptItem = ({
           <p className="dark:text-gray-300 text-md">{transcription?.en}</p>
         </>
       ) : null}
-    </div>
+    </Link>
   );
 };

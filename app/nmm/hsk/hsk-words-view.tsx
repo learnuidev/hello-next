@@ -53,7 +53,7 @@ export const HskWordsView = ({ variant }: { variant?: "all" }) => {
 
   return (
     <div>
-      <div className="mx-12">
+      {/* <div className="mx-12">
         {topics?.length > 0 && (
           <div>
             <Select
@@ -81,7 +81,7 @@ export const HskWordsView = ({ variant }: { variant?: "all" }) => {
             </Select>
           </div>
         )}
-      </div>
+      </div> */}
       <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
         {filteredWords?.map((prop: any, idx: number) => {
           return (

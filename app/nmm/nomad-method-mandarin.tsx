@@ -1,9 +1,19 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import {
   belts,
@@ -33,6 +43,8 @@ import { HskView } from "./hsk/hsk";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { HSKCombobox } from "./hsk-combobox";
 import { useHSKLevelStore } from "./hsk-level-store";
+import { useHskViewStore } from "./hsk/state";
+import { resolveHsk } from "./hsk/utils";
 
 export function NomadMethodMandarin() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
@@ -87,6 +99,26 @@ export function NomadMethodMandarin() {
     queryStr,
     learnedCharacters2
   );
+
+  const hskView = (useHskViewStore((state) => state.view) as any)?.[
+    selectedBelt?.hskLevel
+  ];
+  const setHskView = useHskViewStore((state) => state.setView);
+
+  const resolvedHskWords = useMemo(
+    () =>
+      resolveHsk(queryStr, {
+        hskWords,
+        variant: "all",
+        level: selectedBelt?.hskLevel,
+      }),
+    [queryStr, hskWords, selectedBelt?.hskLevel]
+  );
+
+  const topics = [
+    "All",
+    ...(new Set(resolvedHskWords?.map((word: any) => word?.type)) as any),
+  ];
 
   return (
     <XiaomaView>
@@ -158,47 +190,79 @@ export function NomadMethodMandarin() {
             </div>
           )}
 
-          {mode === "hsk" ? (
-            <div className="space-x-4">
-              {belts?.map?.((belt) => {
-                return (
-                  <button
-                    key={belt?.fill}
-                    onClick={() => {
-                      // setSelectedBelt(belt as any);
-                      setLevel(belt?.hskLevel);
+          <div className="flex items-center">
+            <div className="mx-12">
+              {topics?.length > 0 && (
+                <div>
+                  <Select
+                    value={hskView}
+                    onValueChange={(topic) => {
+                      setHskView(selectedBelt?.hskLevel, topic);
                     }}
-                    className={`${
-                      belt?.hskLevel === hskLevel
-                        ? belt?.fill
-                        : belt?.unselected
-                    } h-4 w-4 rounded-full text`}
-                  ></button>
-                );
-              })}
+                  >
+                    <SelectTrigger className="w-[180px] dark:border-gray-800">
+                      <SelectValue placeholder="Select a topic" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-black dark:border-gray-900">
+                      <SelectGroup>
+                        <SelectLabel>Topics</SelectLabel>
+
+                        {topics?.map((topic) => {
+                          return (
+                            <SelectItem value={topic} key={topic}>
+                              {topic}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
             </div>
-          ) : (
-            // <div className="mx-8">
-            //   <HSKCombobox />
-            // </div>
-            <div className="space-x-4">
-              {belts?.map?.((belt) => {
-                return (
-                  <button
-                    key={belt?.fill}
-                    onClick={() => {
-                      setSelectedBelt(belt as any);
-                    }}
-                    className={`${
-                      belt?.level === (selectedBelt?.level as any)
-                        ? belt?.fill
-                        : belt?.unselected
-                    } h-4 w-4 rounded-full text`}
-                  ></button>
-                );
-              })}
-            </div>
-          )}
+
+            {mode === "hsk" ? (
+              <div className="space-x-4">
+                {belts?.map?.((belt) => {
+                  return (
+                    <button
+                      key={belt?.fill}
+                      onClick={() => {
+                        // setSelectedBelt(belt as any);
+                        setLevel(belt?.hskLevel);
+                      }}
+                      className={`${
+                        belt?.hskLevel === hskLevel
+                          ? belt?.fill
+                          : belt?.unselected
+                      } h-4 w-4 rounded-full text`}
+                    ></button>
+                  );
+                })}
+              </div>
+            ) : (
+              // <div className="mx-8">
+              //   <HSKCombobox />
+              // </div>
+              <div className="space-x-4">
+                {belts?.map?.((belt) => {
+                  return (
+                    <button
+                      key={belt?.fill}
+                      onClick={() => {
+                        setSelectedBelt(belt as any);
+                      }}
+                      className={`${
+                        belt?.level === (selectedBelt?.level as any)
+                          ? belt?.fill
+                          : belt?.unselected
+                      } h-4 w-4 rounded-full text`}
+                    ></button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
 
         <TabsContent value="core" className="my-4 md:my-8">

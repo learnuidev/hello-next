@@ -45,10 +45,10 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   );
 
   const filteredWords = resolvedHskWords?.filter((item: any) => {
-    if (!item?.type || hskView === "All") {
+    if (!item?.topic || hskView === "All") {
       return true;
     }
-    return item?.type === hskView;
+    return item?.topic === hskView;
   });
 
   const hskCharacters = [

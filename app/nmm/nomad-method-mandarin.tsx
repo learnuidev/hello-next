@@ -117,7 +117,7 @@ export function NomadMethodMandarin() {
 
   const topics = [
     "All",
-    ...(new Set(resolvedHskWords?.map((word: any) => word?.type)) as any),
+    ...(new Set(resolvedHskWords?.map((word: any) => word?.topic)) as any),
   ];
 
   return (

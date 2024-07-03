@@ -5,15 +5,15 @@ export const useHskViewStore = create(
   persist(
     (set: any, get: any) => ({
       view: {
-        1: "all",
-        2: "all",
-        3: "all",
-        4: "all",
-        5: "all",
-        6: "all",
-        7: "all",
-        8: "all",
-        9: "all",
+        1: "All",
+        2: "All",
+        3: "All",
+        4: "All",
+        5: "All",
+        6: "All",
+        7: "All",
+        8: "All",
+        9: "All",
       },
       setView: (level: number, event: any) =>
         set({
@@ -24,7 +24,7 @@ export const useHskViewStore = create(
         }),
     }),
     {
-      name: "mandarino/hsk-filter-type-3", // name of the item in the storage (must be unique)
+      name: "mandarino/hsk-filter-type-4", // name of the item in the storage (must be unique)
       storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
     }
   )

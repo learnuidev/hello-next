@@ -40,14 +40,14 @@ export const HskWordsView = ({ variant }: { variant?: "all" }) => {
   );
 
   const filteredWords = resolvedHskWords?.filter((item: any) => {
-    if (!item?.topic || hskView === "all") {
+    if (!item?.topic || hskView === "All") {
       return true;
     }
     return item?.topic === hskView;
   });
 
   const topics = [
-    "all",
+    "All",
     ...(new Set(resolvedHskWords?.map((word: any) => word?.topic)) as any),
   ];
 

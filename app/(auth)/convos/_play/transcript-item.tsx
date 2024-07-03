@@ -117,15 +117,6 @@ export const TranscriptItem = ({
           <p className="dark:text-gray-400 text-md">
             {transcription?.pinyin || transcription?.roman}
           </p>
-          {/* <HoverCard>
-            <HoverCardTrigger>
-              <p className="dark:text-gray-400 text-md">
-                {transcription?.pinyin || transcription?.roman}
-              </p>
-            </HoverCardTrigger>
-
-            <HoverCardContent>TODO</HoverCardContent>
-          </HoverCard> */}
           <p className="dark:text-gray-300 text-md">{transcription?.en}</p>
         </>
       ) : null}

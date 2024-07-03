@@ -1,20 +1,9 @@
 "use client";
 
 import { useRepeatHistoryStore } from "./use-repeat-history";
-
 import React from "react";
-
 import { Transcription } from "@/domain/transcribe/transcribe.types";
-
-import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
-
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
 import { useRouter } from "next/navigation";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
 
 export const TranscriptItem = ({

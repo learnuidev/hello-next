@@ -85,7 +85,7 @@ export const HskWordsView = ({ variant }: { variant?: "all" }) => {
       <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
         {filteredWords?.map((prop: any, idx: number) => {
           return (
-            <div key={`${prop.hanzi}-chars-${idx}`}>
+            <div key={`${prop.hanzi}-chars-${idx}`} className="relative">
               <HanziLink character={prop} />
             </div>
           );

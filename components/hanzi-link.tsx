@@ -8,12 +8,20 @@ import Link from "next/link";
 import { calculateColor } from "@/app/nmm/utils";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
+import { cn } from "@/lib/utils";
+
+interface HSKCharacter {
+  hanzi: string;
+  hskLevel: number;
+  pinyin: string;
+  en: string;
+}
 
 export function HanziLink({
   className,
   character,
 }: {
-  character: { hanzi: string; hskLevel?: number };
+  character: HSKCharacter;
   className?: string;
 }) {
   const { data: components, isLoading: isComponentsLoading } =
@@ -53,7 +61,15 @@ export function HanziLink({
   const lastAnswer = answers?.[answers?.length - 1];
 
   return (
-    <div className="p-2 md:p-3">
+    <div className="p-4 md:p-3 flex flex-col items-center justify-center w-full">
+      <p
+        className={cn(
+          "top-0 text-xs text-gray-400",
+          brightMode ? "text-gray-400" : "text-black"
+        )}
+      >
+        {character?.pinyin}
+      </p>
       <Link
         href={
           `/nmm/${character.hanzi}?lang=zh` +
@@ -82,7 +98,7 @@ export function HanziLink({
               : selectedComp?.length > 1 || selectedComp?.group
                 ? "dark:text-gray-500 text-gray-200"
                 : "dark:text-gray-700 text-gray-200"
-        } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+        } dark:hover:text-white text-2xl md:text-2xl transition lowercase`}
       >
         {character?.hanzi?.split("")?.map((val, idx) => {
           const learnedChar = learnedCharacters2?.find(
@@ -111,6 +127,14 @@ export function HanziLink({
           );
         })}
       </Link>
+      <p
+        className={cn(
+          "top-0 text-xs text-gray-400",
+          brightMode ? "text-gray-400" : "text-black"
+        )}
+      >
+        {character?.en}
+      </p>
     </div>
   );
 }

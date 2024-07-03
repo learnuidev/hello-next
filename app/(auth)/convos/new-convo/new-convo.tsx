@@ -480,6 +480,7 @@ export function NewConvo({ type }: { type?: string }) {
                       author: newConvo?.author,
                       location: newConvo?.location,
                       // title: string;
+                      lang: newConvo?.lang,
                       audio: newConvo?.audio,
                       transcriptions: newConvo?.transcriptions,
                     });

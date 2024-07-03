@@ -5,28 +5,14 @@ import { ConvoInsights } from "./convo-insights";
 import { Play } from "./_play/audio-content";
 
 import { Wordle } from "@/components/wordle/wordle";
-import {
-  useGetContentQuery,
-  useListContentsQuery,
-} from "@/domain/content/content.queries";
+import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useSearchParams as _useSearchParams } from "next/navigation";
-import { YouTubePage } from "@/components/youtube-page/v1";
+
 import { YouTubePlayer } from "@/components/youtube-page/youtube-player";
 import { AI } from "./ai";
 
-function useSearchParams() {
-  const searchParams = _useSearchParams();
-  return {
-    lessonId: searchParams?.get("lessonId") as string,
-  };
-}
-
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const viewType = useConvosStore((state: any) => state?.viewType);
-
-  // const { lessonId } = useSearchParams();
-
-  const { data: contentsArr } = useListContentsQuery();
 
   const { data: lesson2 } = useGetContentQuery({ contentId: lessonId });
 

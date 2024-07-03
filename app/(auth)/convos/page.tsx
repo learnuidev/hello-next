@@ -30,7 +30,7 @@ type ContentType = { title: string; id: string; transcriptions?: any };
 function ContentsList() {
   const { data: contents } = useListContentsQuery();
 
-  const { data: conversations } = useListConversationsQuery();
+  // const { data: conversations } = useListConversationsQuery();
 
   const query = useSearchQueryStore((state) => state.query);
 
@@ -69,9 +69,7 @@ function ContentsList() {
 
   return (
     <div className="max-w-5xl mx-auto px-8">
-      {projects?.length > 0 && (
-        <HoverEffect items={[...((conversations || []) as any), ...projects]} />
-      )}
+      {projects?.length > 0 && <HoverEffect items={[...projects]} />}
     </div>
   );
 }
@@ -190,7 +188,7 @@ export default function Convos() {
 
       {selectedChar ? null : lessonId &&
         routeName?.includes("/convos") ? null : (
-        <div className="px-4 md:px-28 my-8">
+        <div className="px-4 md:px-8 mt-4">
           <button
             className="text-xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full"
             onClick={() => {

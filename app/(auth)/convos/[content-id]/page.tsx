@@ -25,7 +25,6 @@ import { useSelectedCharacter } from "../use-selected-character";
 import { useViewModeStore } from "../new-convo/use-viewmode-store";
 import { PlusIcon } from "@/components/ui/icons";
 import { NewConvo } from "../new-convo/new-convo";
-import { useListContentsQuery } from "@/domain/content/content.queries";
 import ConvoItem from "./convo-item";
 
 function formatPercentage(number: number) {
@@ -133,8 +132,6 @@ export default function Convos() {
   const setSelectedChar = useSelectedCharacter(
     (state: any) => state?.setCharacter
   );
-
-  const { data: contents } = useListContentsQuery();
 
   const routeName = usePathname();
 

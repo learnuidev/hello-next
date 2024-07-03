@@ -23,6 +23,7 @@ export const TranscriptItem = ({
   pinyinMode,
   audioUrl,
   seek,
+  lang,
 }: {
   transcription: Transcription;
   currentTime: number;
@@ -30,12 +31,13 @@ export const TranscriptItem = ({
   pinyinMode: boolean;
   audioUrl: string;
   seek: any;
+  lang?: string;
 }) => {
   const setRepeatHistories = useRepeatHistoryStore(
     (state: any) => state.setHistory
   );
 
-  const { data } = useListGrammarsQuery({ content: transcription?.hanzi });
+  // const { data } = useListGrammarsQuery({ content: transcription?.hanzi });
 
   const router = useRouter();
 
@@ -63,7 +65,11 @@ export const TranscriptItem = ({
             // item
           });
         } else {
-          router.push(`/nmm/${transcription.hanzi || transcription.input}`);
+          router.push(
+            `/nmm/${transcription.hanzi || transcription.input}` + lang
+              ? `?lang=${lang}`
+              : ""
+          );
         }
       }}
     >

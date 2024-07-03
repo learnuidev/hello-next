@@ -19,7 +19,7 @@ import { useModeStore, usePinyinModeStore } from "./use-mode";
 import React from "react";
 
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
-import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useParams, useSearchParams } from "next/navigation";
 import { Transcription } from "@/domain/transcribe/transcribe.types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -64,11 +64,8 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   // const { data: contentsArr } = useListContentsQuery();
 
-  const { data: contentsArr } = useListContentsQuery();
-
-  const lesson2 = contentsArr?.find(
-    (content: any) => content?.id === params["content-id"]
-  );
+  // const { data: contentsArr } = useListContentsQuery();
+  const { data: lesson2 } = useGetContentQuery({ contentId: lessonId });
 
   const lesson1 =
     lessonsArr?.find((lesson: any) => lesson?.id === lessonId) || lesson2;
@@ -381,6 +378,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
         {lesson2?.transcriptions?.map((transcription: Transcription) => {
           return (
             <TranscriptItem
+              lang={lesson2?.lang}
               key={`${transcription?.hanzi || transcription?.input}-${transcription?.pinyin}`}
               transcription={transcription}
               seek={seek}

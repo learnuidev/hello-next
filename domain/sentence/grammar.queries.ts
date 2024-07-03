@@ -89,19 +89,25 @@ export function useListGrammarsQuery(
   return useQuery({
     queryKey: [queryIds.listGrammars, params?.content, params?.lang],
     queryFn: async () => {
-      const response = await listGrammars(params, {
-        Authorization: authUser?.jwt,
-      });
-      return response as ListGrammarsResponse;
+      if (Object.keys(params)?.length) {
+        const response = await listGrammars(params, {
+          Authorization: authUser?.jwt,
+        });
+        return response as ListGrammarsResponse;
+      }
     },
 
     ...options,
     retry: false,
-    enabled: options?.enabled && Boolean(authUser?.jwt),
+    enabled:
+      options?.enabled &&
+      Boolean(authUser?.jwt) &&
+      (params?.sentenceId || params?.content),
     // cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
     refetchOnFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
+    retryCount: 1,
   });
 }

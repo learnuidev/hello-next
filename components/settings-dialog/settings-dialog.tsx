@@ -356,7 +356,7 @@ function useLearnModeEvents() {
       }
       if (["o"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
-        router.push("/");
+        router.push("/nmm");
       }
       if (["r"]?.includes(event.key) && event.ctrlKey) {
         event.preventDefault();

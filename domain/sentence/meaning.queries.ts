@@ -37,6 +37,8 @@ export function useListMeaningsQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
+  console.log("PARAMS", params);
+
   return useQuery({
     queryKey: [meaningQueryIds.listMeanings, params.content, params?.lang],
 

@@ -11,7 +11,7 @@ import { useListParseQuery } from "@/domain/nmm/nmm.queries";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
-import { filterNonHanYu } from "@/app/nmm/utils";
+import { filterNonEnglishAlphabets, filterNonHanYu } from "@/app/nmm/utils";
 
 export function ConvoInsights({ lessonId }: { lessonId: string }) {
   const [isTocHidden, setIsTocHidden] = useState(false);
@@ -38,22 +38,36 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     }
   );
 
-  const uniqueWords = [
-    // @ts-ignore
-    ...new Set(
-      lesson?.transcriptions
-        // allLessonAnswers
-        ?.map(
-          (answer: { hanzi: string; input: string }) =>
-            answer?.hanzi || answer?.input
-        )
-        ?.join("")
-    ),
-  ]
-    .join("")
-    ?.toLocaleLowerCase()
-    ?.split("")
-    ?.filter(filterNonHanYu);
+  const uniqueWords =
+    lang === "zh"
+      ? [
+          // @ts-ignore
+          ...new Set(
+            lesson?.transcriptions
+              // allLessonAnswers
+              ?.map(
+                (answer: { hanzi: string; input: string }) =>
+                  answer?.hanzi || answer?.input
+              )
+              ?.join("")
+          ),
+        ]
+          .join("")
+          ?.toLocaleLowerCase()
+          ?.split("")
+          ?.filter(filterNonHanYu)
+      : [
+          ...new Set(
+            lesson?.transcriptions
+              // allLessonAnswers
+              ?.map(
+                (answer: { hanzi: string; input: string }) =>
+                  answer?.hanzi || answer?.input?.split(" ")
+              )
+              ?.flat()
+              .map(filterNonEnglishAlphabets)
+          ),
+        ];
 
   console.log("unique words", uniqueWords);
 
@@ -108,7 +122,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
 
         <div className="my-8">
           <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
-            {uniqueWords?.map((char, idx: number) => {
+            {uniqueWords?.map((char: any, idx: number) => {
               const isLearned = learnedCharacters?.find(
                 (item: any) => item?.hanzi === char
               );

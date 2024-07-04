@@ -39,6 +39,7 @@ export function NewConvo({ type }: { type?: string }) {
     useListSubtitlesQuery(
       {
         videoUrl: newConvo?.audio,
+        lang: newConvo?.lang,
       },
       {
         enabled:

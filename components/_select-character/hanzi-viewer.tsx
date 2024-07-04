@@ -45,7 +45,7 @@ export const HanziViewer = (props: any) => {
 
     return (
       <div className="flex justify-between w-full">
-        {currentPhrase?.input && (
+        {lang !== "en" && currentPhrase?.input && (
           <p className="text-sm text-gray-400">{currentPhrase?.input}</p>
         )}
         <div
@@ -132,7 +132,7 @@ export const HanziViewer = (props: any) => {
           </span>
         </div>
 
-        {currentPhrase?.input && (
+        {lang !== "en" && currentPhrase?.input && (
           <p className="text-sm text-gray-400">{currentPhrase?.input}</p>
         )}
 
@@ -186,9 +186,11 @@ export const HanziViewer = (props: any) => {
             currentPhrase?.hanzi
           )}`}
         >
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            {currentPhrase?.pinyin || currentPhrase?.roman}
-          </span>
+          {lang !== "en" && (
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              {currentPhrase?.pinyin || currentPhrase?.roman}
+            </span>
+          )}
         </Link>
         <span className="text-gray-500 dark:text-gray-300 text-lg">
           {(currentPhrase?.input
@@ -233,9 +235,11 @@ export const HanziViewer = (props: any) => {
             );
           })}
         </span>
-        <span className="text-[16px] text-gray-500">
-          {currentPhrase?.en || currentPhrase?.title}
-        </span>
+        {lang !== "en" && (
+          <span className="text-[16px] text-gray-500">
+            {currentPhrase?.en || currentPhrase?.title}
+          </span>
+        )}
         {!currentPhrase?.hanzi && false && (
           <span className="text-xs text-gray-600">
             {currentPhrase?.explanation}

@@ -73,7 +73,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
 
   const totalNewCharaters = uniqueWords?.filter((char) => {
     const isLearned = learnedCharacters?.find(
-      (item: any) => item?.hanzi === char
+      (item: any) => (item?.hanzi || item?.input) === char
     );
 
     return !!isLearned;
@@ -124,7 +124,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
           <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
             {uniqueWords?.map((char: any, idx: number) => {
               const isLearned = learnedCharacters?.find(
-                (item: any) => item?.hanzi === char
+                (item: any) => (item?.hanzi || item?.input) === char
               );
               return (
                 <Link

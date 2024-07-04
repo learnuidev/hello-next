@@ -385,7 +385,7 @@ function useLearnModeEvents() {
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [mode, setMode, setBrightMode, brightMode]);
+  }, [mode, setMode, setBrightMode, brightMode, router]);
 }
 
 export function SettingsDialog() {
@@ -412,9 +412,9 @@ export function SettingsDialog() {
 
   useLearnModeEvents();
 
-  if (!authUser) {
-    return null;
-  }
+  // if (!authUser) {
+  //   return null;
+  // }
 
   return (
     <div>

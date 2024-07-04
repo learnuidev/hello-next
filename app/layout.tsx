@@ -19,6 +19,7 @@ import { ThemeProvider } from "next-themes";
 import { PostHogProvider } from "@/libs/posthog/posthog.provider";
 import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
 import { Suspense } from "react";
+import { SettingsDialog } from "@/components/settings-dialog/settings-dialog";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -89,6 +90,7 @@ export default function RootLayout({
                 <div className="flex-1">
                   <QueryClientProvider>
                     <Authenticated>{children}</Authenticated>
+                    <SettingsDialog />
                   </QueryClientProvider>
                 </div>
 

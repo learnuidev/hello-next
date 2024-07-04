@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useContentViewStore } from "./character-store";
+import { useContentViewStore } from "./use-content-view-store";
 
 const ContentSentences = ({
   characterId,

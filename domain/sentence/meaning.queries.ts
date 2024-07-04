@@ -49,7 +49,7 @@ export function useListMeaningsQuery(
 
     ...options,
     retry: false,
-    enabled: Boolean(params.content) && Boolean(authUser?.jwt),
+    enabled: Boolean(params.content),
     // cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
     refetchOnFocus: false,

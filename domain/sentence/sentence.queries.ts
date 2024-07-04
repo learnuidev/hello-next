@@ -38,17 +38,17 @@ export function useListSentencesQuery(
       params?.genSents,
     ],
     async () => {
-      if (authUser?.jwt) {
-        const response = await listSentences(params, {
-          Authorization: authUser?.jwt,
-        });
-        return response?.sort((a: any, b: any) => a?.start - b?.start);
-      }
+      // if (authUser?.jwt) {
+      const response = await listSentences(params, {
+        Authorization: authUser?.jwt,
+      });
+      return response?.sort((a: any, b: any) => a?.start - b?.start);
+      // }
     },
     {
       ...options,
       retry: false,
-      enabled: Boolean(authUser?.jwt),
+      // enabled: Boolean(authUser?.jwt),
       // cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,
       refetchOnFocus: false,

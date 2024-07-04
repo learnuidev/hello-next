@@ -6,7 +6,7 @@ import { Summary } from "../summary";
 import { Icons } from "../ui/icons.v2";
 import { GrammarAnalysis } from "../grammar-analysis";
 import { SelectedCharacterProps } from "./select-character.types";
-import { ReadModeView } from "./readmode-view";
+import { CharacterSentences } from "./character-sentences";
 import { NormalView } from "./normal-view";
 import { AudioComponent } from "./audio-component";
 import { useShowsStore, WordItem } from "../word-item";
@@ -149,15 +149,6 @@ const ZoomedCharacter = ({ characterId }: { characterId: string }) => {
         );
       })}
     </div>
-  );
-};
-
-const SentencesView = (props: SelectedCharacterProps) => {
-  return (
-    <>
-      {/* <Summary characterId={selectedChar} showMeanings={false} /> */}
-      <ReadModeView {...props} />
-    </>
   );
 };
 
@@ -649,17 +640,17 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
             {" "}
             {sentences?.length > 7 ? (
               <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
-                <SentencesView {...props} />
+                <CharacterSentences {...props} />
               </ScrollArea>
             ) : (
               <div className="hidden md:block space-y-2 h-[700px] rounded-mdp-4">
-                <SentencesView {...props} />
+                <CharacterSentences {...props} />
               </div>
             )}
           </div>
 
           <div className="md:hidden block">
-            <SentencesView {...props} />
+            <CharacterSentences {...props} />
           </div>
         </div>
       )}

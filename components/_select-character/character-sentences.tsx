@@ -22,6 +22,7 @@ const ContentSentences = ({
   const lang = props?.lang || searchParams.get("lang") || "";
 
   const relevantSentences = contents
+    ?.filter((content: any) => content?.lang === lang)
     ?.map((content: any) => content?.transcriptions)
     ?.flat()
     ?.sort(
@@ -53,7 +54,7 @@ const ContentSentences = ({
   );
 };
 
-export const ReadModeView = (props: SelectedCharacterProps) => {
+export const CharacterSentences = (props: SelectedCharacterProps) => {
   const {
     uniqueAnswerIds,
     answerMap,

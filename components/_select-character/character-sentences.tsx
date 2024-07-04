@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { calculateColor } from "@/app/nmm/utils";
 import { cleanString } from "@/data/convos/bm1/utils";
@@ -10,6 +10,18 @@ import { HanziViewer } from "./hanzi-viewer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Icons } from "../ui/icons.v2";
 import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useSelectedCharacterData } from "../use-selected-character";
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useContentViewStore } from "./character-store";
 
 const ContentSentences = ({
   characterId,
@@ -19,10 +31,24 @@ const ContentSentences = ({
   const { data: contents } = useListContentsQuery();
   const searchParams = useSearchParams();
 
+  const view = useContentViewStore((state) => state.view);
+  const setView = useContentViewStore((state) => state.setView);
+
   const lang = props?.lang || searchParams.get("lang") || "";
 
-  const relevantSentences = contents
-    ?.filter((content: any) => content?.lang === lang)
+  const filteredContents = contents?.filter((content: any) => {
+    if (view === "all") {
+      // if (lang) {
+      //   return content?.lang === lang;
+      // }
+
+      return true;
+    }
+
+    return content?.title === view;
+  });
+
+  const allSentences = filteredContents
     ?.map((content: any) => content?.transcriptions)
     ?.flat()
     ?.sort(
@@ -30,19 +56,61 @@ const ContentSentences = ({
     )
     ?.filter((item: any) => JSON.stringify(item)?.includes(characterId));
 
+  const contentTitles = useMemo(
+    () => [
+      { title: "all" },
+      ...(contents || [])?.filter((c: any) =>
+        JSON.stringify(c)?.includes(characterId)
+      ),
+    ],
+    [characterId, contents]
+  );
+
   return (
     <div>
-      <div className="flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
-        {relevantSentences?.slice(0, 100)?.map((sentence: any) => {
-          return (
-            <HanziViewer
-              key={sentence?.id}
-              {...props}
-              lang={lang}
-              currentPhrase={sentence}
-            />
-          );
-        })}
+      <div>
+        <Select
+          value={view}
+          onValueChange={(topic) => {
+            setView(topic);
+          }}
+        >
+          <SelectTrigger className="w-[320px] text-xs dark:border-gray-800">
+            <SelectValue placeholder="Select a topic" />
+          </SelectTrigger>
+          <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">
+            <SelectGroup>
+              <SelectLabel>Contents</SelectLabel>
+
+              {contentTitles?.map((topic: any) => {
+                return (
+                  <SelectItem
+                    value={topic?.title}
+                    key={topic?.title}
+                    className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
+                  >
+                    {topic?.title} {topic?.lang ? `[${topic?.lang}]` : ""}
+                  </SelectItem>
+                );
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div>
+        <div className="flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
+          {allSentences?.slice(0, 100)?.map((sentence: any) => {
+            return (
+              <HanziViewer
+                key={sentence?.id}
+                {...props}
+                lang={sentence?.lang || lang}
+                currentPhrase={sentence}
+              />
+            );
+          })}
+        </div>
       </div>
 
       {/* <section>
@@ -54,7 +122,11 @@ const ContentSentences = ({
   );
 };
 
-export const CharacterSentences = (props: SelectedCharacterProps) => {
+export const CharacterSentences = (props: { characterId: string }) => {
+  const { data } = useSelectedCharacterData({
+    characterId: props?.characterId,
+  });
+
   const {
     uniqueAnswerIds,
     answerMap,
@@ -63,12 +135,10 @@ export const CharacterSentences = (props: SelectedCharacterProps) => {
     components,
     selectedComp,
     selectedChar,
-    routeName,
     characterId,
     lang,
     sentences,
-    addHistoryMutation,
-  } = props;
+  } = data;
   const discoverMutation = useDiscoverMutation();
 
   const router = useRouter();
@@ -264,7 +334,7 @@ export const CharacterSentences = (props: SelectedCharacterProps) => {
           </div>
         </TabsContent>
         <TabsContent value="content" className="my-8">
-          <ContentSentences {...props} />
+          <ContentSentences {...data} />
         </TabsContent>
       </Tabs>
     </div>

@@ -95,7 +95,6 @@
     "next-absolute-url": "^1.2.2",
     "next-themes": "^0.2.1",
     "node-fetch": "^3.3.2",
-    "node-webvtt": "^1.9.4",
     "openai": "^4.24.7",
     "postcss": "8.4.29",
     "posthog-js": "^1.110.0",

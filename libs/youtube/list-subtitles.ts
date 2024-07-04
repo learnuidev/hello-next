@@ -8,6 +8,11 @@ const hourIndex = 0;
 const minuteIndex = 1;
 const secondIndex = 2;
 
+// @ts-ignore
+import { WebVTTParser } from "webvtt-parser";
+
+const parser = new WebVTTParser();
+
 export const langs = [
   "ar",
   "zh-CN",
@@ -39,7 +44,114 @@ const getTrack = ({ tracks, lang }: { tracks: any; lang: string }) => {
   }
 };
 
+const resolveTrack = ({ tracks, lang }: any) => {
+  let zhTrack;
+  try {
+    zhTrack = getTrack({ lang: "zh-CN", tracks });
+  } catch (err) {
+    zhTrack = null;
+  }
+
+  if (!zhTrack) {
+    try {
+      zhTrack = getTrack({ lang: "zh", tracks });
+    } catch (err) {
+      zhTrack = null;
+    }
+  }
+  if (!zhTrack) {
+    try {
+      zhTrack = getTrack({ lang: "zh-Hant", tracks });
+    } catch (err) {
+      zhTrack = null;
+    }
+  }
+  if (!zhTrack) {
+    try {
+      zhTrack = getTrack({ lang, tracks });
+    } catch (err) {
+      zhTrack = null;
+    }
+  }
+
+  if (!zhTrack) {
+    zhTrack = tracks[0];
+  }
+
+  return zhTrack;
+};
+
 export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
+  return ytdl.getInfo(id).then(async (info: any) => {
+    // const tracks =
+    //   info.player_response.captions.playerCaptionsTracklistRenderer
+    //     .captionTracks;
+
+    // const { videoDetails } = info;
+    const { videoDetails, related_videos } = info;
+    const tracks =
+      info.player_response.captions.playerCaptionsTracklistRenderer
+        .captionTracks;
+    if (tracks && tracks.length) {
+      console.log(
+        "Found captions for",
+        tracks.map((t: any) => t?.name?.simpleText).join(", ")
+      );
+
+      const langCodes = tracks.map(
+        (track: { languageCode: string }) => track.languageCode
+      );
+
+      let resolvedLang = langCodes?.[0] || lang;
+
+      const zhTrack = resolveTrack({ lang: resolvedLang, tracks });
+
+      let subtitles;
+
+      try {
+        subtitles = zhTrack
+          ? ((await httpRequest(`${zhTrack?.baseUrl}&fmt=vtt`)) as any)
+          : null;
+      } catch (err) {
+        subtitles = null;
+      }
+
+      const tree = parser.parse(subtitles, "metadata");
+
+      const newSubtitles = tree?.cues?.map((cue: any) => {
+        const hanziProps =
+          resolvedLang === "zh-CN"
+            ? {
+                hanzi: cue?.text?.split("\n").join(" "),
+                pinyin: "",
+              }
+            : {
+                input: cue?.text?.split("\n").join(" "),
+              };
+
+        return {
+          lang: resolvedLang,
+          start: cue?.startTime,
+          end: cue?.endTime,
+          ...hanziProps,
+        };
+      });
+
+      return newSubtitles;
+
+      return {
+        subtitles: newSubtitles,
+        videoDetails,
+        tracks,
+        relatedVideos: related_videos,
+      };
+    } else {
+      console.log("No captions found for this video");
+    }
+  });
+};
+
+export const listTracks = ({ id, lang }: { id: string; lang: string }) => {
   return ytdl.getInfo(id).then(async (info: any) => {
     // const tracks =
     //   info.player_response.captions.playerCaptionsTracklistRenderer

@@ -101,11 +101,12 @@ const ContentSentences = ({
       <div>
         <div className="flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
           {allSentences?.slice(0, 100)?.map((sentence: any) => {
+            const resolvedLang = sentence?.lang || lang;
             return (
               <HanziViewer
                 key={sentence?.id}
                 {...props}
-                lang={sentence?.lang || lang}
+                lang={resolvedLang === "zh-CN" ? "zh" : resolvedLang}
                 currentPhrase={sentence}
               />
             );

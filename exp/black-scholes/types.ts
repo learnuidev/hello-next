@@ -3,7 +3,7 @@ export interface IBlackScholes {
   strikePrice: number;
   time: number;
   rate: number;
-  sigma: number;
+  volatility: number;
 }
 
 export type OptionType = "put" | "call";

@@ -14,7 +14,7 @@ function blackScholes(
     strikePrice,
     time,
     rate,
-    sigma,
+    volatility,
     optionType = "call",
   } = props;
 
@@ -24,7 +24,7 @@ function blackScholes(
       strikePrice,
       time,
       rate,
-      sigma,
+      volatility,
     });
   } else {
     return getPutOptionPrice({
@@ -32,7 +32,7 @@ function blackScholes(
       strikePrice,
       time,
       rate,
-      sigma,
+      volatility,
     });
   }
 }
@@ -42,14 +42,14 @@ const stockPrice = 100; // Current stock price
 const strikePrice = 100; // Strike price
 const time = 1; // Time to maturity in years
 const rate = 0.05; // Risk-free interest rate
-const sigma = 0.2; // Volatility
+const volatility = 0.2; // Volatility
 
 const callPrice = blackScholes({
   stockPrice,
   strikePrice,
   time,
   rate,
-  sigma,
+  volatility,
   optionType: "call",
 });
 const putPrice = blackScholes({
@@ -57,7 +57,7 @@ const putPrice = blackScholes({
   strikePrice,
   time,
   rate,
-  sigma,
+  volatility,
   optionType: "put",
 });
 

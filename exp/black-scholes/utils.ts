@@ -24,36 +24,36 @@ function getDelta({
   strikePrice,
   time,
   rate,
-  sigma,
+  volatility,
 }: IBlackScholes) {
   return (
     (Math.log(stockPrice / strikePrice) +
-      (rate + (sigma * sigma) / 2.0) * time) /
-    (sigma * Math.sqrt(time))
+      (rate + (volatility * volatility) / 2.0) * time) /
+    (volatility * Math.sqrt(time))
   );
 }
 function calculateD1D2(props: IBlackScholes) {
-  const { stockPrice, strikePrice, time, rate, sigma } = props;
+  const { stockPrice, strikePrice, time, rate, volatility } = props;
   const d1 = getDelta({
     stockPrice,
     strikePrice,
     time,
     rate,
-    sigma,
+    volatility,
   });
 
-  const d2 = d1 - sigma * Math.sqrt(time);
+  const d2 = d1 - volatility * Math.sqrt(time);
   return { d1, d2 };
 }
 
 export function getCallOptionPrice(props: IBlackScholes) {
-  const { stockPrice, strikePrice, time, rate, sigma } = props;
+  const { stockPrice, strikePrice, time, rate, volatility } = props;
   const { d1, d2 } = calculateD1D2({
     stockPrice,
     strikePrice,
     time,
     rate,
-    sigma,
+    volatility,
   });
 
   const N_d1 = cumulativeNormalDistribution(d1);
@@ -64,13 +64,13 @@ export function getCallOptionPrice(props: IBlackScholes) {
 
 // Function to calculate the Black-Scholes option price
 export function getPutOptionPrice(props: IBlackScholes) {
-  const { stockPrice, strikePrice, time, rate, sigma } = props;
+  const { stockPrice, strikePrice, time, rate, volatility } = props;
   const { d1, d2 } = calculateD1D2({
     stockPrice,
     strikePrice,
     time,
     rate,
-    sigma,
+    volatility,
   });
 
   const N_minusD1 = cumulativeNormalDistribution(-d1);

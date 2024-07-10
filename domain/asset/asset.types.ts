@@ -1,5 +1,5 @@
 export interface GetUploadUrlParams {
-  urlId: string;
+  urlId?: string;
   contentType: string;
   extension: string;
 }

@@ -6,4 +6,5 @@ export type AddContentParams = {
   audio: string;
   transcriptions: any;
   lang: string;
+  contentUrl?: string;
 };

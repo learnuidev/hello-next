@@ -45,11 +45,15 @@ function ContentsList() {
 
   const projects = contents
     ? contents
-        ?.filter(
-          (content: ContentType) =>
+        ?.filter((content: ContentType) => {
+          if (!query) {
+            return true;
+          }
+          return (
             content?.title?.toLowerCase()?.includes(query?.toLowerCase()) &&
             searchTransacription(content, query)
-        )
+          );
+        })
         ?.map((content: ContentType) => {
           return {
             title: content?.title,

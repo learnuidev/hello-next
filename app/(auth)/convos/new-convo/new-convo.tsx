@@ -1,6 +1,7 @@
 "use client";
 
 import { useConvosStore } from "./use-convos-store";
+import Axios from "axios";
 
 import { CloseIcon } from "@/components/ui/icons";
 import { useNewConvoStore, useViewModeStore } from "./use-viewmode-store";
@@ -15,6 +16,8 @@ import {
   useTranscribeQueryV2,
 } from "@/domain/transcribe/transcribe.queries";
 import { useListSubtitlesQuery } from "@/domain/subtitle/subtitle.queries";
+import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
+import { getUploadUrl } from "@/domain/asset/asset.api";
 
 export const contentTypes = [
   "audio",
@@ -24,6 +27,7 @@ export const contentTypes = [
   // "movie",
   "youtube",
   // "tutorial",
+  "file",
 ];
 export function NewConvo({ type }: { type?: string }) {
   const [resultView, setResultView] = useState("");
@@ -131,6 +135,10 @@ export function NewConvo({ type }: { type?: string }) {
     };
   };
 
+  function getFileExtension(file: any) {
+    return file.name.split(".").pop().toLowerCase();
+  }
+
   const onFileChange = (e: any) => {
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0], "UTF-8");
@@ -139,13 +147,65 @@ export function NewConvo({ type }: { type?: string }) {
     };
   };
 
+  const { data: authUser } = useCurrentAuthUser({});
+
+  const addContentMutation = useAddContentMutation();
+
+  const onUploadFileChange = async (e: any) => {
+    const file = e.target.files[0];
+    const extension = getFileExtension(file) || "";
+
+    const contentType = file.type || "";
+
+    console.log({ extension, contentType });
+
+    const response = (await getUploadUrl(
+      { extension, contentType },
+      {
+        Authorization: authUser?.jwt,
+      }
+    )) as any;
+
+    const { signedUrl: url, s3Key, assetUrl } = response;
+
+    console.log("RESPONSE", response);
+
+    alert(JSON.stringify({ extension, contentType }));
+
+    const fileReader = new FileReader();
+
+    // const formData = new FormData();
+    // formData.append("image", file);
+
+    const resp = await Axios.put(url, file, {
+      headers: { ["Content-Type"]: contentType },
+    });
+
+    console.log("UPLOADED");
+
+    addContentMutation
+      .mutateAsync({
+        title: newConvo?.title || "todo",
+        type: newConvo?.type || "todo",
+        author: newConvo?.author || "todo",
+        location: newConvo?.location || "todo",
+        // title: string;
+        lang: newConvo?.lang || "todo",
+        audio: newConvo?.audio || "todo",
+        contentUrl: assetUrl || "todo",
+        transcriptions: newConvo?.transcriptions,
+      })
+      .then((resp) => {
+        alert("DONE");
+        setConvo("uploaded", response);
+      });
+  };
+
   const onAudioFileChange = (e: any) => {
     const s = URL.createObjectURL(e.target.files[0]);
 
     setConvo("audio", s);
   };
-
-  const addContentMutation = useAddContentMutation();
 
   const convos = useConvosStore((state) => state.convos);
   const addNewConvo_ = useConvosStore((state) => state.setConvo);
@@ -347,6 +407,25 @@ export function NewConvo({ type }: { type?: string }) {
         );
 
       case "audio": {
+        if (newConvo.type === "file") {
+          return (
+            <div className="md:mx-32 md:my-32 flex flex-wrap">
+              <div className="flex justify-center items-center flex-col w-full my-4">
+                <button className="dark:text-gray-600 text-[12px] mb-2">
+                  Upload File
+                </button>
+
+                <div>
+                  <input
+                    type="file"
+                    className="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                    onChange={onUploadFileChange}
+                  />
+                </div>
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="md:mx-32 md:my-32 flex flex-wrap">
             {newConvo.type === "text" && (

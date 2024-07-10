@@ -1,4 +1,5 @@
 import { arabicWords } from "./arabic/arabic-words";
+import { catalanWords } from "./catalan/catalan-words";
 import { frenchWords } from "./french/french-words";
 import { japaneseWords } from "./japanese/japanese-words";
 import { koreanWords } from "./korean/korean-words";
@@ -15,6 +16,7 @@ export const wordsDict = {
   ko: koreanWords,
   es: spanishWords,
   fr: frenchWords,
+  ca: catalanWords,
   vi: vietnameseWords,
   ur: urduWords,
   ru: russianWords,

@@ -35,6 +35,9 @@ export const getShortCutUrl = (query: string) => {
     putin: "ru",
     ruski: "ru",
     russkiy: "ru",
+    // Catalan
+    ca: "ca",
+    catalan: "ca",
   } as any;
 
   const shortCutLang = shortCutLangs[query.toLowerCase()];

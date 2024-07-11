@@ -3,16 +3,22 @@ import { queryIds } from "./queryIds";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
-import { AddContentParams } from "./content.types";
 import { siteConfig } from "@/lib/config";
+import { listUserAssetsQueryId } from "./asset.queries";
 
-const addContent = async (
-  params: AddContentParams,
+// TODO: Move this to .env
+const url =
+  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/add-content";
+
+interface AddUserAssetParams {}
+
+const addUserAsset = async (
+  params: AddUserAssetParams,
   opts: {
     Authorization: string;
   }
 ) => {
-  const res = await fetch(`${siteConfig.apiUrl}/v1/add-content`, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/add-user-asset`, {
     method: "POST",
     headers: {
       Authorization: `${opts?.Authorization}`,
@@ -23,12 +29,12 @@ const addContent = async (
   return resp;
 };
 
-export function useAddContentMutation(options = {} as any) {
+export function useAddUserAssetMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
   return useMutation(
-    async (params: AddContentParams) => {
-      const response = await addContent(params, {
+    async (params: AddUserAssetParams) => {
+      const response = await addUserAsset(params, {
         Authorization: authUser?.jwt,
       });
       return response;
@@ -40,10 +46,7 @@ export function useAddContentMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([
-          queryIds?.listContents,
-          data?.journeyId,
-        ]);
+        queryClient.invalidateQueries([listUserAssetsQueryId, authUser?.jwt]);
       },
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,

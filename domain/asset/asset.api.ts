@@ -5,10 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { GetUploadUrlParams, GetUploadUrlSuccess } from "./asset.types";
+import { siteConfig } from "@/lib/config";
 
 // TODO: Move this to .env
-const url =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/get-upload-url";
 
 export const getUploadUrl = async (
   { contentType, extension }: GetUploadUrlParams,
@@ -16,7 +15,7 @@ export const getUploadUrl = async (
     Authorization: string;
   }
 ): Promise<GetUploadUrlSuccess> => {
-  const res = await fetch(url, {
+  const res = await fetch(`${siteConfig.apiUrl}/v2/get-upload-url`, {
     method: "POST",
     headers: {
       // 'Access-Control-Allow-Origin': "*",

@@ -20,6 +20,8 @@ import {
   faRectangleVerticalHistory as faRectangleVerticalHistorySolid,
   faUser as faUserSolid,
   faGlassesRound as faGlassesRoundSolid,
+  faArrowUpRightFromSquare,
+  faCircleInfo,
 } from "@fortawesome/sharp-solid-svg-icons";
 
 import {
@@ -59,6 +61,8 @@ import {
   faRollerCoaster,
   faBoltLightning,
   faPhotoFilm,
+  // faCircleInfo,
+  // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
@@ -219,4 +223,6 @@ export const Icons = {
   contentSolid: createFAIcon(faPhotoFilmSolid),
   trees: createFAIcon(faTrees),
   brain: createFAIcon(faBrainCircuit),
+  circleInfo: createFAIcon(faCircleInfo),
+  externalLink: createFAIcon(faArrowUpRightFromSquare),
 };

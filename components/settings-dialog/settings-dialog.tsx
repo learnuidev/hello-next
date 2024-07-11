@@ -354,9 +354,13 @@ function useLearnModeEvents() {
         event.preventDefault();
         router.push("/insights");
       }
-      if (["o"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+      if (["o"]?.includes(event.key) && event.metaKey) {
         event.preventDefault();
         router.push("/nmm");
+      }
+      if (["t"]?.includes(event.key) && event.ctrlKey) {
+        event.preventDefault();
+        router.push("/tita");
       }
       if (["r"]?.includes(event.key) && event.ctrlKey) {
         event.preventDefault();

@@ -533,12 +533,30 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
       <div className={"col-span-5 row-span-2 overflow-hidden"}>
         {/* {selectedChar?.length > 3 && ( */}
 
+        {(selectedComp2?.input || selectedComp2?.hanzi)?.length > 8 && (
+          <div className="p-2">
+            {selectedComp2 ? (
+              selectedComp2?.audio ? (
+                <AudioComponent
+                  key={JSON.stringify(selectedComp2)}
+                  currentPhrase={selectedComp2}
+                />
+              ) : (
+                <AddAudioButton
+                  key={JSON.stringify(selectedComp2)}
+                  currentPhrase={selectedComp2}
+                />
+              )
+            ) : null}
+          </div>
+        )}
+
         {view === "zoom" ? (
-          <div>
+          <div className="mb-4">
             <ZoomedCharacter characterId={characterId} />{" "}
           </div>
         ) : (
-          <div className="flex items-center justify-between mb-8 mt-4 pr-4">
+          <div className="flex items-center justify-between mb-4 mt-4 pr-4">
             <div className="flex flex-col items-start space-y-2">
               <h2 className="text-gray-400 font-extralight">{pinyinOrRoman}</h2>
 
@@ -555,19 +573,23 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
               <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
             </div>
 
-            {selectedComp2 ? (
-              selectedComp2?.audio ? (
-                <AudioComponent
-                  key={JSON.stringify(selectedComp2)}
-                  currentPhrase={selectedComp2}
-                />
-              ) : (
-                <AddAudioButton
-                  key={JSON.stringify(selectedComp2)}
-                  currentPhrase={selectedComp2}
-                />
-              )
-            ) : null}
+            {(selectedComp2?.input || selectedComp2?.hanzi)?.length <= 8 && (
+              <div className="p-2">
+                {selectedComp2 ? (
+                  selectedComp2?.audio ? (
+                    <AudioComponent
+                      key={JSON.stringify(selectedComp2)}
+                      currentPhrase={selectedComp2}
+                    />
+                  ) : (
+                    <AddAudioButton
+                      key={JSON.stringify(selectedComp2)}
+                      currentPhrase={selectedComp2}
+                    />
+                  )
+                ) : null}
+              </div>
+            )}
           </div>
         )}
         {/* {selectedChar_ !== selectedChar && (

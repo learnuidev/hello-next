@@ -43,7 +43,7 @@ export function useUpdateComponentMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([queryIds.listComponents, null]);
+        queryClient.invalidateQueries([queryIds.listComponents]);
       },
     }
   );

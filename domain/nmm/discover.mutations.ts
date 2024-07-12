@@ -47,10 +47,7 @@ export function useDiscoverMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([
-          queryIds.listComponents,
-          data?.journeyId,
-        ]);
+        queryClient.invalidateQueries([queryIds.listComponents]);
       },
     }
   );

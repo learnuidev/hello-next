@@ -42,7 +42,7 @@ function useListComponentsQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
-    [queryIds.listComponents, params?.journeyId],
+    [queryIds.listComponents],
     async () => {
       // if (options.query) {
       const response = await listComponents(params, {
@@ -91,7 +91,7 @@ export function useGetComponentQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
-    [queryIds.listComponents, params.componentId],
+    [queryIds.listComponents],
     async () => {
       // if (options.query) {
       const response = await getComponent(params, {

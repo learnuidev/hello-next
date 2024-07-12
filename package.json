@@ -116,6 +116,7 @@
     "tiptap-markdown": "^0.8.2",
     "typescript": "5.2.2",
     "use-debounce": "^10.0.0",
+    "use-sound": "^4.0.3",
     "vaul": "^0.9.0",
     "victory": "^37.0.2",
     "webvtt-parser": "^2.2.0",

@@ -34,6 +34,7 @@ import { usePaginationStore } from "@/stores/use-pagination-store";
 import { useListSuperComponentsQuery } from "@/domain/component/super-component.queries";
 import { useBeltStore } from "../use-belt-store";
 import { RelatedHskWords } from "./related-hsk-words";
+import { AddAudioButton } from "./add-audio-button";
 
 const HskSuperComponentsWordView = ({
   componentId,
@@ -169,7 +170,9 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
     selectedComp2,
   } = props;
 
-  const selected = selectedComp || selectedComp2;
+  const selected = selectedComp2 || selectedComp;
+
+  console.log("selected comp", selectedComp);
 
   // const characterId = traditionalToSimplified(characterId_);
   // const selectedChar = traditionalToSimplified(selectedChar_);
@@ -212,6 +215,8 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
     selectedComp2?.input ||
     selectedComp2?.hanzi ||
     selectedChar;
+
+  console.log("SEL COMP 2", selectedComp2);
 
   const story = useStoryStore((state: any) => state.story);
 
@@ -533,7 +538,7 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
             <ZoomedCharacter characterId={characterId} />{" "}
           </div>
         ) : (
-          <div className="flex items-center justify-between mb-8 mt-4">
+          <div className="flex items-center justify-between mb-8 mt-4 pr-4">
             <div className="flex flex-col items-start space-y-2">
               <h2 className="text-gray-400 font-extralight">{pinyinOrRoman}</h2>
 
@@ -550,9 +555,17 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
               <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
             </div>
 
-            {selectedComp?.audio ? (
-              <AudioComponent currentPhrase={selectedComp} />
-            ) : null}
+            {selectedComp2?.audio ? (
+              <AudioComponent
+                key={JSON.stringify(selectedComp2)}
+                currentPhrase={selectedComp2}
+              />
+            ) : (
+              <AddAudioButton
+                key={JSON.stringify(selectedComp2)}
+                currentPhrase={selectedComp2}
+              />
+            )}
           </div>
         )}
         {/* {selectedChar_ !== selectedChar && (

@@ -4,41 +4,60 @@ import React from "react";
 
 import { PlayIcon } from "../ui/icons";
 
-import { useMusic } from "@/app/(auth)/convos/_play/use-music";
 import { PauseIcon } from "lucide-react";
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
 
+import { create } from "zustand";
+import useSound from "use-sound";
+
+const useMusicStore = create((set: any, get: any) => ({
+  play: false,
+  setPlay: (f: any) =>
+    typeof f === "function" ? set({ play: f(get().play) }) : set({ play: f }),
+  time: 0,
+  setTime: (f: any) =>
+    typeof f === "function" ? set({ time: f(get().time) }) : set({ time: f }),
+  results: {},
+  setResults: (f: any) =>
+    typeof f === "function"
+      ? set({ results: f(get().results) })
+      : set({ results: f }),
+}));
+
 export const AudioComponent = ({ currentPhrase }: any) => {
-  const { play, togglePlay, seek, currentTime, reset } = useMusic({
-    url:
-      currentPhrase?.audio?.female ||
-      currentPhrase?.audio?.male ||
-      currentPhrase?.audio,
-  });
+  const playMusic = useMusicStore((state: any) => state.play);
+  const setPlay = useMusicStore((state: any) => state.setPlay);
+
+  const boopSfx =
+    currentPhrase?.audio?.female ||
+    currentPhrase?.audio?.male ||
+    currentPhrase?.audio ||
+    "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.us-east-1.amazonaws.com/learnuidev@gmail.com/01J2F7ACPKCVZ0WFRTTZNT543E.m4a";
 
   const setRepeatHistories = useRepeatHistoryStore(
     (state: any) => state.setHistory
   );
 
+  const [play, { stop }] = useSound(boopSfx) as any;
+
   return (
     <button
       className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${
-        play
+        playMusic
           ? `dark:text-white ring-slate-900/5 dark:ring-white`
           : "ring-slate-900/5 dark:ring-slate-300 dark:text-slate-300"
       } shadow-lg rounded-full flex items-center justify-center transition`}
       onClick={() => {
-        if (!play) {
-          setRepeatHistories({
-            ...currentPhrase,
-            eventType: "sentence/repeat",
-            eventTime: new Date().getTime(),
-          });
+        if (playMusic) {
+          stop();
+          setPlay(false);
+        } else {
+          play();
+          setPlay(true);
         }
-        togglePlay();
       }}
     >
-      {play ? <PauseIcon /> : <PlayIcon className="ml-1" />}
+      {playMusic ? <PauseIcon /> : <PlayIcon className="ml-1" />}
     </button>
   );
 };

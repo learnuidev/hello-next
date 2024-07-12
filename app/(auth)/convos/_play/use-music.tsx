@@ -25,25 +25,27 @@ export const useMusic = (props: {
   onAudioEnd?: any;
   className?: string;
 }) => {
-  const [play, setPlay] = useState(false);
+  // const [play, setPlay] = useState(false);
   let audio = useRef() as any;
   const [currentTime, setTime] = useState(0);
-  // const play = useMusicStore((state: any) => state.play)
-  // const setPlay = useMusicStore((state: any) => state.setPlay)
+  const play = useMusicStore((state: any) => state.play);
+  const setPlay = useMusicStore((state: any) => state.setPlay);
   // const currentTime = useMusicStore((state: any) => state.time)
   // const setTime = useMusicStore((state: any) => state.setTime)
 
+  console.log("PLAY", play);
+
   const togglePlay = () => {
-    setPlay((play) => !play);
+    setPlay((play: any) => !play);
   };
 
-  useEffect(() => {
-    audio?.current?.pause();
-    // if (play) {
-    //   audio?.current?.play()
-    // }
-    setPlay(false);
-  }, [props.url]);
+  // useEffect(() => {
+  //   audio?.current?.pause();
+  //   // if (play) {
+  //   //   audio?.current?.play()
+  //   // }
+  //   setPlay(false);
+  // }, [props.url, setPlay]);
 
   useEffect(() => {
     if (play) {
@@ -87,7 +89,7 @@ export const useMusic = (props: {
     return () => {
       audio.current?.pause();
     };
-  }, [props]);
+  }, [props, setPlay]);
 
   return {
     seek,

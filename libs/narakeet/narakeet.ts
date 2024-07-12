@@ -4,7 +4,7 @@ const narakeet = narakeetApi({
   apiKey: process.env.NARAKEET_API_KEY,
 });
 
-interface INarakeetVoice {
+export interface INarakeetVoice {
   name: string;
   language: string;
   languageCode: string;

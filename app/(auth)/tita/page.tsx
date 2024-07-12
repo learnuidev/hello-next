@@ -20,9 +20,80 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { narakeetLangs } from "@/libs/narakeet/narakeet-langs";
+import { listVoices } from "@/libs/narakeet/narakeet";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
+import { useTitaStore } from "./use-tita-store";
+import useSound from "use-sound";
+
+const useListNarakeetVoicesQuery = ({ lang }: { lang: string }) => {
+  const { data: authUser } = useCurrentAuthUser({});
+
+  return useQuery({
+    queryKey: ["list-narakeet-voices", authUser?.jwt, lang],
+    queryFn: async () => {
+      const voices = await fetch("/api/list-narakeet-voices", {
+        method: "POST",
+
+        body: JSON.stringify({
+          lang,
+        }),
+
+        headers: {
+          Authorization: `${authUser?.jwt}`,
+        },
+      });
+
+      return voices.json();
+    },
+  });
+};
+
+const PlayVoice = ({ voice }: { voice: string }) => {
+  const audioUrl = `https://www.narakeet.com/samples/voices/${voice}.mp3`;
+
+  const [play, { stop, isPlaying }] = useSound(audioUrl) as any;
+  return (
+    <button
+      className="px-2"
+      onClick={() => {
+        play();
+      }}
+    >
+      Play
+    </button>
+  );
+};
 
 export default function Tita() {
-  const handleChange = () => {};
+  const lang = useTitaStore((state) => state?.lang);
+  const voiceItem = useTitaStore((state) => state?.voice);
+  const setVoice = useTitaStore((state) => state?.setVoice);
+  const setLang = useTitaStore((state) => state?.setLang);
+
+  const handleChange = (language: any) => {
+    setLang(language);
+  };
+  const handleVoiceChange = (voice: any) => {
+    console.log("VOICE", voice);
+    setVoice(voice);
+  };
+
+  const { data: voices } = useListNarakeetVoicesQuery({ lang });
+
+  const voicesList = voices?.map((voice: any) => {
+    return {
+      id: voice?.name,
+      label: voice?.name,
+    };
+  });
+
+  const voice =
+    voices?.find((voice: any) => voice?.name === voiceItem)?.name ||
+    voices?.[0]?.name ||
+    "loading...";
+
   return (
     <div>
       <NavBar />
@@ -82,7 +153,7 @@ export default function Tita() {
         </section>
 
         <section className="flex justify-center my-10 flex-row items-center space-x-4">
-          <Select onValueChange={handleChange}>
+          <Select value={lang} onValueChange={handleChange}>
             <SelectTrigger className="w-[320px] text-gray-400 hover:text-white transition">
               <SelectValue placeholder="Language" />
             </SelectTrigger>
@@ -91,7 +162,7 @@ export default function Tita() {
                 {narakeetLangs?.map((feature) => {
                   return (
                     <SelectItem
-                      className="px-2"
+                      className=""
                       key={feature.id}
                       value={feature.id}
                     >
@@ -102,26 +173,38 @@ export default function Tita() {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Select onValueChange={handleChange}>
-            <SelectTrigger className="w-[320px] text-gray-400 hover:text-white transition">
-              <SelectValue placeholder="Language" />
-            </SelectTrigger>
-            <SelectContent className="bg-black">
-              <SelectGroup>
-                {narakeetLangs?.map((feature) => {
-                  return (
-                    <SelectItem
-                      className="px-2"
-                      key={feature.id}
-                      value={feature.id}
-                    >
-                      {feature.label}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          {voicesList?.length > 0 ? (
+            <Select value={voice} onValueChange={handleVoiceChange}>
+              <SelectTrigger className="w-[320px] text-gray-400 hover:text-white transition">
+                <SelectValue placeholder="Voice" />
+              </SelectTrigger>
+              <SelectContent className="bg-black">
+                <SelectGroup>
+                  {voicesList?.map((feature: any) => {
+                    return (
+                      <SelectItem
+                        className=""
+                        key={feature.id}
+                        value={feature.id}
+                      >
+                        {feature.label}
+                      </SelectItem>
+                    );
+
+                    // return (
+                    //   <CustomSelectItem key={feature.id} id={feature.id}>
+                    //     {feature.label}
+                    //   </CustomSelectItem>
+                    // );
+                  })}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          ) : (
+            <div className="w-[320px] text-center"> Loading ...</div>
+          )}
+
+          {voice && <PlayVoice voice={voice} />}
         </section>
 
         <section className="flex justify-center">

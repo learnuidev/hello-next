@@ -48,7 +48,7 @@ export const AudioComponent = ({ currentPhrase }: any) => {
           : "ring-slate-900/5 dark:ring-slate-300 dark:text-slate-300"
       } shadow-lg rounded-full flex items-center justify-center transition`}
       onClick={() => {
-        if (playMusic) {
+        if (playMusic && false) {
           stop();
           setPlay(false);
         } else {

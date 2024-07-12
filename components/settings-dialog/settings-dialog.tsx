@@ -245,6 +245,25 @@ export function SettingsDialogInner({
                   <div>
                     <div className="flex z-50 items-center space-x-2">
                       <Checkbox
+                        checked={mode === "yct"}
+                        onCheckedChange={(event) => {
+                          if (event) {
+                            setMode("yct");
+                          } else {
+                            setMode("");
+                          }
+                        }}
+                      />
+                      <Label htmlFor="airplane-mode">YCT</Label>
+                    </div>
+
+                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+                      Great for Youth Chinese Test Preparation
+                    </p>
+                  </div>
+                  <div>
+                    <div className="flex z-50 items-center space-x-2">
+                      <Checkbox
                         checked={mode === "xiaoma"}
                         onCheckedChange={(event) => {
                           if (event) {
@@ -338,6 +357,10 @@ function useLearnModeEvents() {
 
   useEffect(() => {
     function onKeyDown(event: any) {
+      if (event.key === "y" && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        setMode("yct");
+      }
       if (event.key === "h" && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         setMode("hsk");

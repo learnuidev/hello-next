@@ -9,28 +9,6 @@ import { useLearningModeStore } from "@/components/settings-dialog/learning-mode
 import { cn } from "@/lib/utils";
 import { XiaomaViewType } from "./xiaoma-view-type";
 
-export const XiaomaView = ({
-  children,
-  variant,
-}: {
-  children: React.ReactNode;
-  variant?: "all";
-}) => {
-  const queryStr = useSearchQueryStore((state) => state.query);
-
-  const mode = useLearningModeStore((state: any) => state.mode);
-
-  if (mode === "xiaoma") {
-    return <Xiaoma />;
-  }
-
-  if (!queryStr?.toLowerCase()?.includes("xiaoma")) {
-    return children;
-  }
-
-  return <Xiaoma />;
-};
-
 function Xiaoma() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
   const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
@@ -138,3 +116,25 @@ function Xiaoma() {
     </Tabs>
   );
 }
+
+export const XiaomaView = ({
+  children,
+  variant,
+}: {
+  children: React.ReactNode;
+  variant?: "all";
+}) => {
+  const queryStr = useSearchQueryStore((state) => state.query);
+
+  const mode = useLearningModeStore((state: any) => state.mode);
+
+  if (mode === "xiaoma") {
+    return <Xiaoma />;
+  }
+
+  if (!queryStr?.toLowerCase()?.includes("xiaoma")) {
+    return children;
+  }
+
+  return <Xiaoma />;
+};

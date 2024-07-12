@@ -61,7 +61,7 @@ const PlayVoice = ({ voice }: { voice: string }) => {
         play();
       }}
     >
-      Play
+      <Icons.play className="text-2xl" />
     </button>
   );
 };

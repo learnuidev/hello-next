@@ -28,7 +28,7 @@ export const AudioComponent = ({ currentPhrase }: any) => {
   const playMusic = useMusicStore((state: any) => state.play);
   const setPlay = useMusicStore((state: any) => state.setPlay);
 
-  const boopSfx =
+  const audioUrl =
     currentPhrase?.audio?.female ||
     currentPhrase?.audio?.male ||
     currentPhrase?.audio ||
@@ -38,7 +38,7 @@ export const AudioComponent = ({ currentPhrase }: any) => {
     (state: any) => state.setHistory
   );
 
-  const [play, { stop }] = useSound(boopSfx) as any;
+  const [play, { stop, isPlaying }] = useSound(audioUrl) as any;
 
   return (
     <button
@@ -54,10 +54,16 @@ export const AudioComponent = ({ currentPhrase }: any) => {
         } else {
           play();
           setPlay(true);
+
+          setRepeatHistories({
+            ...currentPhrase,
+            eventType: "sentence/repeat",
+            eventTime: Date.now(),
+          });
         }
       }}
     >
-      {playMusic ? <PauseIcon /> : <PlayIcon className="ml-1" />}
+      {isPlaying ? <PauseIcon /> : <PlayIcon className="ml-1" />}
     </button>
   );
 };

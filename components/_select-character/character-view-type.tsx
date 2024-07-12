@@ -555,17 +555,19 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
               <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
             </div>
 
-            {selectedComp2?.audio ? (
-              <AudioComponent
-                key={JSON.stringify(selectedComp2)}
-                currentPhrase={selectedComp2}
-              />
-            ) : (
-              <AddAudioButton
-                key={JSON.stringify(selectedComp2)}
-                currentPhrase={selectedComp2}
-              />
-            )}
+            {selectedComp2 ? (
+              selectedComp2?.audio ? (
+                <AudioComponent
+                  key={JSON.stringify(selectedComp2)}
+                  currentPhrase={selectedComp2}
+                />
+              ) : (
+                <AddAudioButton
+                  key={JSON.stringify(selectedComp2)}
+                  currentPhrase={selectedComp2}
+                />
+              )
+            ) : null}
           </div>
         )}
         {/* {selectedChar_ !== selectedChar && (

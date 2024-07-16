@@ -8,6 +8,8 @@ import { HanziLink } from "@/components/hanzi-link";
 import { useGetXiaoma } from "./use-get-xiaoma";
 import { useBeltStore } from "@/components/use-belt-store";
 import { belts } from "../utils";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { chineseCharacters } from "@/langs/chinese /characters";
 
 export function XiaomaViewType({
   variant,
@@ -21,6 +23,12 @@ export function XiaomaViewType({
   const xiaomaCharacters = data?.xiaomaCharacters || [];
   const xiaomaWords = data?.xiaomaWords || [];
   const xiaomaSentences = data?.xiaomaSentences || [];
+
+  const { data: componentsAll } = useListComponents({
+    includeAll: true,
+  });
+
+  const comps = componentsAll ? componentsAll : chineseCharacters;
 
   const viewType = useSearchQueryStore((state) => state.type);
 
@@ -43,8 +51,14 @@ export function XiaomaViewType({
     return (
       <div className={containerStyle}>
         {xiaomaCharacters.map((prop: any, idx: number) => {
+          console.log("XIAOMA", prop);
+
+          const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
           return (
-            <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
+            <HanziLink
+              character={comp || prop}
+              key={`${prop.hanzi}-chars-${idx}`}
+            />
           );
         })}
       </div>

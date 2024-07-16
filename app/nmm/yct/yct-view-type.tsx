@@ -8,6 +8,8 @@ import { HanziLink } from "@/components/hanzi-link";
 import { useGetYct } from "./use-get-yct";
 import { useBeltStore } from "@/components/use-belt-store";
 import { belts } from "../utils";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { chineseCharacters } from "@/langs/chinese /characters";
 
 export function YctViewType({
   variant,
@@ -23,6 +25,12 @@ export function YctViewType({
   const xiaomaSentences = data?.sentences || [];
 
   const viewType = useSearchQueryStore((state) => state.type);
+
+  const { data: componentsAll } = useListComponents({
+    includeAll: true,
+  });
+
+  const comps = componentsAll ? componentsAll : chineseCharacters;
 
   const containerStyle =
     "my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start";
@@ -43,8 +51,12 @@ export function YctViewType({
     return (
       <div className={containerStyle}>
         {xiaomaCharacters.map((prop: any, idx: number) => {
+          const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
           return (
-            <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
+            <HanziLink
+              character={comp || prop}
+              key={`${prop.hanzi}-chars-${idx}`}
+            />
           );
         })}
       </div>

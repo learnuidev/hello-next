@@ -82,6 +82,7 @@ export function NmmCoreComponents() {
 
   // const { data: filteredComponents } = useListComponentsByBelt();
 
+  // return "TODO";
   return (
     <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
       {filteredComponents?.length > 0 &&
@@ -103,6 +104,8 @@ export function NmmCoreComponents() {
             // if (learnedChar?.status === "forgotten") {
             //   return null;
             // }
+
+            console.log("nmm", prop);
 
             return (
               <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>

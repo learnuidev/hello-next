@@ -22,6 +22,7 @@ import {
 
 import { resolveHsk } from "./utils";
 import { useHskViewStore } from "./state";
+import { chineseCharacters } from "@/langs/chinese /characters";
 
 export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
@@ -34,6 +35,8 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
     selectedBelt?.hskLevel
   ];
   const setHskView = useHskViewStore((state) => state.setView);
+
+  const comps = components ? components : chineseCharacters;
 
   // const { data: hskCharacters } = useGetHskCharacters({ queryStr, variant });
 
@@ -134,9 +137,11 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
 
       <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
         {filteredComponents?.map((prop: any, idx: number) => {
+          const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
+
           return (
             <div key={`${prop.hanzi}-chars-${idx}`}>
-              <HanziLink character={prop} />
+              <HanziLink character={comp} />
             </div>
           );
         })}

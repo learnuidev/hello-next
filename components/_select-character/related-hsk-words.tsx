@@ -34,12 +34,12 @@ export const RelatedHskWords = ({
         ?.sort((a, b) => a?.hanzi?.length - b?.hanzi?.length)
         ?.map((prop: any, idx: any) => {
           const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
-          return (
-            <HanziLink
-              character={{ ...prop, ...comp }}
-              key={`${prop.hanzi}-chars-${idx}`}
-            />
-          );
+          // return (
+          //   <HanziLink
+          //     character={{ ...prop, ...comp }}
+          //     key={`${prop.hanzi}-chars-${idx}`}
+          //   />
+          // );
           return (
             <WordItem lang={lang} component={prop} key={JSON.stringify(prop)} />
           );

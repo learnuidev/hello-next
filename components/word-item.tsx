@@ -12,6 +12,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { create } from "zustand";
 import { Icons } from "./ui/icons.v2";
 import { useReadModeStore } from "@/stores/use-readmode-store";
+import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
 // const [query, setQuery] = useState('')
 // const [index, setIndex] = useState(0)
@@ -44,6 +45,7 @@ export const WordItem = ({
   };
 
   const addHistoryMutation = useAddHistoryMutation();
+  const brightMode = useBrightModeStore((state: any) => state.mode);
 
   return (
     <div>
@@ -67,7 +69,7 @@ export const WordItem = ({
           ` dark:hover:text-white p-6 flex items-center justify-center flex-col text-gray-200`
         )}
       >
-        {readMode || show ? (
+        {readMode || show || brightMode ? (
           ["es", "fr", "ml", "no", "da"]?.includes(lang) ? null : (
             <span
               className={cn(
@@ -106,7 +108,7 @@ export const WordItem = ({
             </sub>
           )}
         </span>
-        {readMode || show ? (
+        {readMode || show || brightMode ? (
           <span className="block text-sm text-gray-500">
             {formatComponentName({ en: prop?.en || prop.en }, 1)}
           </span>

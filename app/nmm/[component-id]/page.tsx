@@ -12,8 +12,6 @@ export default function NomadMethodPage(props: any) {
 
   const routeName = usePathname();
 
-  console.log("PATH NAME", routeName);
-
   const componentId = params["component-id"];
   // return <NMMV2 characterId={decodeURIComponent(params["component-id"])} />;
 

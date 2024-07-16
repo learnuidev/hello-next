@@ -126,6 +126,12 @@ export function HanziLink({
             </span>
           );
         })}
+
+        {character.hskLevel && (
+          <sub className="dark:text-gray-700 text-xs pl-[2px]">
+            {character?.hskLevel}
+          </sub>
+        )}
       </Link>
 
       <p

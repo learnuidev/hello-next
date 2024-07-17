@@ -533,24 +533,6 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
       <div className={"col-span-5 row-span-2 overflow-hidden"}>
         {/* {selectedChar?.length > 3 && ( */}
 
-        {(selectedComp2?.input || selectedComp2?.hanzi)?.length > 8 && (
-          <div className="p-2">
-            {selectedComp2 ? (
-              selectedComp2?.audio ? (
-                <AudioComponent
-                  key={JSON.stringify(selectedComp2)}
-                  currentPhrase={selectedComp2}
-                />
-              ) : (
-                <AddAudioButton
-                  key={JSON.stringify(selectedComp2)}
-                  currentPhrase={selectedComp2}
-                />
-              )
-            ) : null}
-          </div>
-        )}
-
         {view === "zoom" ? (
           <div className="mb-4">
             <ZoomedCharacter characterId={characterId} />{" "}
@@ -573,7 +555,7 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
               <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
             </div>
 
-            {(selectedComp2?.input || selectedComp2?.hanzi)?.length <= 8 && (
+            {/* {(selectedComp2?.input || selectedComp2?.hanzi)?.length <= 8 && (
               <div className="p-2">
                 {selectedComp2 ? (
                   selectedComp2?.audio ? (
@@ -589,9 +571,28 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
                   )
                 ) : null}
               </div>
-            )}
+            )} */}
           </div>
         )}
+
+        {(selectedComp2?.input || selectedComp2?.hanzi) && (
+          <div className="my-8">
+            {selectedComp2 ? (
+              selectedComp2?.audio ? (
+                <AudioComponent
+                  key={JSON.stringify(selectedComp2)}
+                  currentPhrase={selectedComp2}
+                />
+              ) : (
+                <AddAudioButton
+                  key={JSON.stringify(selectedComp2)}
+                  currentPhrase={selectedComp2}
+                />
+              )
+            ) : null}
+          </div>
+        )}
+
         {/* {selectedChar_ !== selectedChar && (
           <h2 className="text-4xl my-0 py-0 font-extralight">
             {selectedChar_}

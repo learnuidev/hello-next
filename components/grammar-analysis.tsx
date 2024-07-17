@@ -187,7 +187,7 @@ export function GrammarAnalysis({
         </div>
       ) : (
         <>
-          <ScrollArea className="hidden md:block h-screen rounded-md">
+          <ScrollArea className="hidden md:block rounded-md">
             <GrammarAnalysisList />
           </ScrollArea>
 

@@ -35,10 +35,10 @@ export default function Home() {
         className="relative mx-auto flex w-fit h-12 items-center rounded-full border-2 border-black bg-[rgb(35,36,37)] p-1"
       >
         <Tab setPosition={setPosition}>Home</Tab>
-        <Tab setPosition={setPosition}>Pricing</Tab>
-        <Tab setPosition={setPosition}>Features</Tab>
-        <Tab setPosition={setPosition}>Docs</Tab>
-        <Tab setPosition={setPosition}>Blog</Tab>
+        <Tab setPosition={setPosition}>Create</Tab>
+        <Tab setPosition={setPosition}>Library</Tab>
+        <Tab setPosition={setPosition}>Explore</Tab>
+        <Tab setPosition={setPosition}>Search</Tab>
 
         <Cursor position={position} />
       </div>

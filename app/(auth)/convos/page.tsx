@@ -56,14 +56,14 @@ function ContentsList() {
   const projects = contents
     ? contents
         ?.filter((content: ContentType) => {
-          if (contentType) {
-            if (contentType === "all") {
-              return true;
-            }
-            return contentType === content?.type;
-          }
-
           if (!query) {
+            if (contentType) {
+              if (contentType === "all") {
+                return true;
+              }
+              return contentType === content?.type;
+            }
+
             return true;
           }
 

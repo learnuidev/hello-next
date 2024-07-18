@@ -55,7 +55,7 @@ export function AnimatedContentsFilter() {
         >
           All
         </Tab>
-        <Tab
+        {/* <Tab
           id={"audio"}
           setPosition={setPosition}
           setPositions={setPositions}
@@ -64,7 +64,7 @@ export function AnimatedContentsFilter() {
           }}
         >
           Audio
-        </Tab>
+        </Tab> */}
         <Tab
           id={"youtube"}
           setPosition={setPosition}

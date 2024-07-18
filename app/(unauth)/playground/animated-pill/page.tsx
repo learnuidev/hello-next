@@ -32,7 +32,7 @@ export default function Home() {
             };
           });
         }}
-        className="relative mx-auto flex w-fit h-12 items-center rounded-full border-2 border-black bg-[rgb(21,22,23)] p-1"
+        className="relative mx-auto flex w-fit h-12 items-center rounded-full border-2 border-black bg-[rgb(35,36,37)] p-1"
       >
         <Tab setPosition={setPosition}>Home</Tab>
         <Tab setPosition={setPosition}>Pricing</Tab>
@@ -83,7 +83,7 @@ function Cursor({ position }: { position: ICursorPosition }) {
   return (
     <motion.div
       animate={position}
-      className="absolute z-0 h-10 rounded-full bg-[rgb(55,56,57)]"
+      className="absolute z-0 h-10 rounded-full bg-white"
     />
   );
 }

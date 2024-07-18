@@ -61,6 +61,7 @@ import {
   faRollerCoaster,
   faBoltLightning,
   faPhotoFilm,
+  faVolume,
   // faCircleInfo,
   // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
@@ -225,4 +226,5 @@ export const Icons = {
   brain: createFAIcon(faBrainCircuit),
   circleInfo: createFAIcon(faCircleInfo),
   externalLink: createFAIcon(faArrowUpRightFromSquare),
+  volume: createFAIcon(faVolume),
 };

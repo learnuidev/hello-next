@@ -143,36 +143,52 @@ export const TranscriptItem = ({
 
   return (
     <div className="flex flex-row justify-center items-center space-x-4">
-      <div>
-        <button
-          onClick={() => {
-            speak(transcription?.hanzi || transcription?.input || "");
-          }}
-        >
-          <Icons.play />{" "}
-        </button>{" "}
-      </div>
-      <Link
+      <div></div>
+      <div
         className={`block text-center space-y-2 ${
           transcription.start < currentTime && transcription.end > currentTime
             ? "text-yellow-500"
             : ""
         }`}
-        target={"_blank"}
-        href={`/nmm/${transcription.hanzi || transcription.input}${
-          lang ? `?lang=${lang}` : ""
-        }`}
+        // target={"_blank"}
+        // href={`/nmm/${transcription.hanzi || transcription.input}${
+        //   lang ? `?lang=${lang}` : ""
+        // }`}
       >
-        <p className={""}>{transcription?.hanzi || transcription?.input}</p>
         {pinyinMode ? (
           <>
-            <p className="dark:text-gray-400 text-md">
+            <p className="dark:text-gray-500 text-md">
               {transcription?.pinyin || transcription?.roman}
             </p>
-            <p className="dark:text-gray-300 text-md">{transcription?.en}</p>
           </>
         ) : null}
-      </Link>
+        <p className={"space-x-2 text-xl"}>
+          <a
+            target={"_blank"}
+            href={`/nmm/${transcription.hanzi || transcription.input}${
+              lang ? `?lang=${lang}` : ""
+            }`}
+          >
+            {" "}
+            {transcription?.hanzi || transcription?.input}
+          </a>
+
+          <span>
+            <button
+              onClick={() => {
+                speak(transcription?.hanzi || transcription?.input || "");
+              }}
+            >
+              <Icons.volume />{" "}
+            </button>{" "}
+          </span>
+        </p>
+        {pinyinMode ? (
+          <>
+            <p className="dark:text-gray-400 text-md">{transcription?.en}</p>
+          </>
+        ) : null}
+      </div>
     </div>
   );
 };

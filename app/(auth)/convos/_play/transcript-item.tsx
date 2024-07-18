@@ -88,14 +88,14 @@ export const TranscriptItem = ({
     return (
       <div
         role="button"
-        className={`text-center space-y-2 ${
+        className={`space-y-2 ${
           transcription.start < currentTime && transcription.end > currentTime
             ? "text-yellow-500"
             : ""
         }`}
         onClick={() => {
           if (audioUrl) {
-            seek(transcription?.start);
+            // seek(transcription?.start);
 
             setRepeatHistories({
               lessonId: lessonId,
@@ -117,22 +117,41 @@ export const TranscriptItem = ({
           }
         }}
       >
-        <p className={""}>{transcription?.hanzi || transcription?.input}</p>
         {pinyinMode ? (
           <>
-            <p className="dark:text-gray-400 text-md">
+            <p className="dark:text-gray-500 text-md">
               {transcription?.pinyin || transcription?.roman}
             </p>
-            {/* <HoverCard>
-              <HoverCardTrigger>
-                <p className="dark:text-gray-400 text-md">
-                  {transcription?.pinyin || transcription?.roman}
-                </p>
-              </HoverCardTrigger>
-  
-              <HoverCardContent>TODO</HoverCardContent>
-            </HoverCard> */}
-            <p className="dark:text-gray-300 text-md">{transcription?.en}</p>
+          </>
+        ) : null}
+
+        <p className={"space-x-2 text-xl"}>
+          <a
+            target={"_blank"}
+            href={`/nmm/${transcription.hanzi || transcription.input}${
+              lang ? `?lang=${lang}` : ""
+            }`}
+          >
+            {" "}
+            {transcription?.hanzi || transcription?.input}
+          </a>
+
+          <span>
+            <button
+              onClick={() => {
+                seek(transcription?.start);
+                // speak(transcription?.hanzi || transcription?.input || "");
+              }}
+            >
+              <Icons.volume />{" "}
+            </button>{" "}
+          </span>
+        </p>
+
+        {/* <p className={""}>{transcription?.hanzi || transcription?.input}</p> */}
+        {pinyinMode ? (
+          <>
+            <p className="dark:text-gray-400 text-md">{transcription?.en}</p>
           </>
         ) : null}
       </div>

@@ -1,11 +1,6 @@
-"use client";
-import React, { useEffect, useRef, useState } from "react";
-import { PlayIcon, PauseIcon } from "@/components/ui/icons";
-
-import { persist, createJSONStorage } from "zustand/middleware";
+import { useEffect, useRef } from "react";
 import { create } from "zustand";
 
-// No
 const useMusicStore = create((set: any, get: any) => ({
   play: false,
   setPlay: (f: any) =>
@@ -20,32 +15,17 @@ const useMusicStore = create((set: any, get: any) => ({
       : set({ results: f }),
 }));
 
-export const useMusic = (props: {
-  url: string;
-  onAudioEnd?: any;
-  className?: string;
-}) => {
-  // const [play, setPlay] = useState(false);
+export const useMusicV2 = ({ url }: { url: string }) => {
   let audio = useRef() as any;
-  // const [currentTime, setTime] = useState(0);
+
   const play = useMusicStore((state: any) => state.play);
   const setPlay = useMusicStore((state: any) => state.setPlay);
   const currentTime = useMusicStore((state: any) => state.time);
   const setTime = useMusicStore((state: any) => state.setTime);
 
-  console.log("PLAY", play);
-
   const togglePlay = () => {
     setPlay((play: any) => !play);
   };
-
-  // useEffect(() => {
-  //   audio?.current?.pause();
-  //   // if (play) {
-  //   //   audio?.current?.play()
-  //   // }
-  //   setPlay(false);
-  // }, [props.url, setPlay]);
 
   useEffect(() => {
     if (play) {
@@ -54,6 +34,13 @@ export const useMusic = (props: {
       audio.current?.pause();
     }
   }, [play]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime((seconds: any) => audio?.current?.currentTime);
+    }, 500);
+    return () => clearInterval(interval);
+  }, [setTime]);
 
   const seek = (seekTime: any) => {
     if (!play) {
@@ -65,6 +52,7 @@ export const useMusic = (props: {
       audio.current.currentTime = seekTime;
     }
   };
+
   const reset = () => {
     audio.current?.pause();
     audio.current.currentTime = 0;
@@ -72,16 +60,9 @@ export const useMusic = (props: {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTime((seconds: any) => audio?.current?.currentTime);
-    }, 500);
-    return () => clearInterval(interval);
-  }, [setTime]);
-
-  useEffect(() => {
-    audio.current = new Audio(props.url);
+    audio.current = new Audio(url);
     audio.current.onended = (event: any) => {
-      props?.onAudioEnd && props?.onAudioEnd();
+      //   props?.onAudioEnd && props?.onAudioEnd();
       // setPlay(false)
       setPlay(() => false);
     };
@@ -89,28 +70,7 @@ export const useMusic = (props: {
     return () => {
       audio.current?.pause();
     };
-  }, [props, setPlay]);
+  }, [setPlay, url]);
 
-  return {
-    seek,
-    play,
-    togglePlay,
-    currentTime,
-    reset,
-  };
-};
-
-export const Music = (props: {
-  url: string;
-
-  className?: string;
-  onAudioEnd?: any;
-}) => {
-  const { play, togglePlay } = useMusic(props);
-
-  return (
-    <button className={props?.className ?? ""} onClick={togglePlay}>
-      {play ? <PauseIcon /> : <PlayIcon />}
-    </button>
-  );
+  return { isPlaying: play, togglePlay, seek, currentTime, reset };
 };

@@ -62,6 +62,7 @@ import {
   faBoltLightning,
   faPhotoFilm,
   faVolume,
+  faStop,
   // faCircleInfo,
   // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
@@ -227,4 +228,6 @@ export const Icons = {
   circleInfo: createFAIcon(faCircleInfo),
   externalLink: createFAIcon(faArrowUpRightFromSquare),
   volume: createFAIcon(faVolume),
+  pause: createFAIcon(faPause),
+  stop: createFAIcon(faStop),
 };

@@ -10,6 +10,7 @@ import { useSearchParams as _useSearchParams } from "next/navigation";
 
 import { YouTubePlayer } from "@/components/youtube-page/youtube-player";
 import { AI } from "./ai";
+import { PlayV2 } from "./_play-v2/play-v2";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const viewType = useConvosStore((state: any) => state?.viewType);
@@ -39,8 +40,9 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
   if (viewType === "listen") {
     return (
-      <div className="font-light flex justify-between items-center w-full px-4 md:px-32 md:mt-2">
-        <Play lessonId={lessonId} />
+      <div className="font-light flex justify-between items-center w-full md:mt-12">
+        {/* <Play key={lessonId} lessonId={lessonId} /> */}
+        <PlayV2 contentId={lessonId} />
       </div>
     );
   }

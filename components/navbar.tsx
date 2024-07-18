@@ -9,6 +9,7 @@ import { useReviewStore } from "@/app/review/review-store";
 import { cn } from "@/lib/utils";
 import { Icons } from "./ui/icons.v2";
 import Link from "next/link";
+import { AnimatedContentsFilter } from "./animated-contents-filter";
 
 export const ReviewNavBar = () => {
   const routeName = usePathname();
@@ -94,6 +95,7 @@ export const NavBar = () => {
             <Icons.xMark />
           </Link>
         )}
+        {routeName?.includes("/convos") && <AnimatedContentsFilter />}
       </div>
 
       {routeName?.includes("learn") ? null : <FloatingNavbar />}

@@ -24,11 +24,21 @@ import { useListContentsQuery } from "@/domain/content/content.queries";
 import { HoverEffect } from "@/components/hover-effect";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useListConversationsQuery } from "@/domain/conversation/use-list-conversations-query";
+import { useContentTypeStore } from "./use-content-type-store";
 
-type ContentType = { title: string; id: string; transcriptions?: any };
+type ContentType = {
+  title: string;
+  id: string;
+  transcriptions?: any;
+  type: string;
+};
 
 function ContentsList() {
   const { data: contents } = useListContentsQuery();
+
+  const contentType = useContentTypeStore((state) => state.contentType);
+
+  console.log("CONTENT TYPE", contentType);
 
   // const { data: conversations } = useListConversationsQuery();
 
@@ -46,9 +56,17 @@ function ContentsList() {
   const projects = contents
     ? contents
         ?.filter((content: ContentType) => {
+          if (contentType) {
+            if (contentType === "all") {
+              return true;
+            }
+            return contentType === content?.type;
+          }
+
           if (!query) {
             return true;
           }
+
           return (
             content?.title?.toLowerCase()?.includes(query?.toLowerCase()) &&
             searchTransacription(content, query)

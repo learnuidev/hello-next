@@ -100,9 +100,7 @@ export function useListGrammarsQuery(
     ...options,
     retry: false,
     enabled:
-      Boolean(options?.enabled) &&
-      Boolean(authUser?.jwt) &&
-      Boolean(params?.sentenceId || params?.content),
+      Boolean(authUser?.jwt) && Boolean(params?.sentenceId || params?.content),
     // cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
     refetchOnFocus: false,

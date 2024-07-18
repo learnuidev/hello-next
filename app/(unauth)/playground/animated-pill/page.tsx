@@ -46,42 +46,7 @@ export default function Home() {
   );
 }
 
-export function AnimatedPill({ children }: { children: React.ReactNode }) {
-  const [position, setPosition] = useState<ICursorPosition>({
-    left: 0,
-    width: 0,
-    opacity: 0,
-  });
-
-  return (
-    <div
-      className="my-4"
-      //   className="grid h-screen place-content-center bg-neutral-100"
-    >
-      <div
-        onMouseLeave={() => {
-          setPosition((prevPos) => {
-            return {
-              ...prevPos,
-              opacity: 0,
-            };
-          });
-        }}
-        className="relative mx-auto flex w-fit h-12 items-center rounded-full border-2 border-black bg-[rgb(35,36,37)] p-1"
-      >
-        <Tab setPosition={setPosition}>Home</Tab>
-        <Tab setPosition={setPosition}>Create</Tab>
-        <Tab setPosition={setPosition}>Library</Tab>
-        <Tab setPosition={setPosition}>Explore</Tab>
-        <Tab setPosition={setPosition}>Search</Tab>
-
-        <Cursor position={position} />
-      </div>
-    </div>
-  );
-}
-
-export function Tab({
+function Tab({
   children,
   setPosition,
 }: {

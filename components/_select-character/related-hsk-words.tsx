@@ -26,24 +26,29 @@ export const RelatedHskWords = ({
 
   const comps = componentsAll ? componentsAll : chineseCharacters;
 
+  const filteredRelatedHskWords = relatedHskWords
+    ?.filter((item: any) => (item?.hanzi || item?.input)?.length <= 4)
+    // ?.filter((item) => item?.level === 2)
+    ?.sort((a, b) => a?.hanzi?.length - b?.hanzi?.length);
+
+  if (!filteredRelatedHskWords?.length) {
+    return "TODO";
+  }
+
   return (
     <div className="mx-4 my-4 md:mx-16 text-black dark:text-white grid md:grid-cols-8 sm:grid-cols-4 grid-cols-2">
-      {relatedHskWords
-        ?.filter((item: any) => (item?.hanzi || item?.input)?.length <= 4)
-        // ?.filter((item) => item?.level === 2)
-        ?.sort((a, b) => a?.hanzi?.length - b?.hanzi?.length)
-        ?.map((prop: any, idx: any) => {
-          const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
-          // return (
-          //   <HanziLink
-          //     character={{ ...prop, ...comp }}
-          //     key={`${prop.hanzi}-chars-${idx}`}
-          //   />
-          // );
-          return (
-            <WordItem lang={lang} component={prop} key={JSON.stringify(prop)} />
-          );
-        })}
+      {filteredRelatedHskWords?.map((prop: any, idx: any) => {
+        // const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
+        // return (
+        //   <HanziLink
+        //     character={{ ...prop, ...comp }}
+        //     key={`${prop.hanzi}-chars-${idx}`}
+        //   />
+        // );
+        return (
+          <WordItem lang={lang} component={prop} key={JSON.stringify(prop)} />
+        );
+      })}
     </div>
   );
 };

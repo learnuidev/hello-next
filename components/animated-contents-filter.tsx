@@ -43,7 +43,7 @@ export function AnimatedContentsFilter() {
             });
           }
         }}
-        className="cursor-pointer relative mx-auto flex w-fit h-12 items-center rounded-full border-2 border-black bg-[rgb(35,36,37)] p-1"
+        className="cursor-pointer relative mx-auto flex w-fit h-12 items-center rounded-full border-2 border-black bg-[rgb(21,23,25)] p-1"
       >
         <Tab
           setPosition={setPosition}
@@ -170,7 +170,7 @@ function Cursor({ position }: { position: ICursorPosition }) {
   return (
     <motion.div
       animate={position}
-      className="absolute z-0 h-10 rounded-full bg-white"
+      className="absolute z-0 h-10 rounded-full bg-gray-200"
     />
   );
 }

@@ -23,6 +23,7 @@ import {
 import { resolveHsk } from "./utils";
 import { useHskViewStore } from "./state";
 import { chineseCharacters } from "@/langs/chinese /characters";
+import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 
 export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
@@ -30,6 +31,8 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   const { data: learnedCharacters2 } = useListCharactersQuery();
   const { data: components } = useListComponents({ includeAll: true });
   const level = useHSKLevelStore((state) => state.level);
+
+  const mode = useLearningModeStore((state: any) => state.mode);
 
   const hskView = (useHskViewStore((state) => state.view) as any)?.[
     selectedBelt?.hskLevel
@@ -40,7 +43,10 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
 
   // const { data: hskCharacters } = useGetHskCharacters({ queryStr, variant });
 
-  const { data: hskWords } = useListHSKWordsQuery();
+  const { data: hskWords } = useListHSKWordsQuery({
+    version: mode === "hsk" ? 2 : 3,
+    content: "",
+  });
 
   const resolvedHskWords = useMemo(
     () => resolveHsk(queryStr, { hskWords, variant, level }),

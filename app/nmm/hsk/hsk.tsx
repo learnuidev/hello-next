@@ -20,7 +20,7 @@ export const HskView = ({
 
   const mode = useLearningModeStore((state: any) => state.mode);
 
-  if (mode === "hsk") {
+  if (mode === "hsk" || mode === "hsk3") {
     if (type === "word" || type === "sentence") {
       return <HskWordsView variant={variant} />;
     } else {

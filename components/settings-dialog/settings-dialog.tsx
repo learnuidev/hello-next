@@ -245,6 +245,25 @@ export function SettingsDialogInner({
                   <div>
                     <div className="flex z-50 items-center space-x-2">
                       <Checkbox
+                        checked={mode === "hsk3"}
+                        onCheckedChange={(event) => {
+                          if (event) {
+                            setMode("hsk3");
+                          } else {
+                            setMode("");
+                          }
+                        }}
+                      />
+                      <Label htmlFor="airplane-mode">HSK 3.0</Label>
+                    </div>
+
+                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+                      For HSK 3.0 Exam Preparation
+                    </p>
+                  </div>
+                  <div>
+                    <div className="flex z-50 items-center space-x-2">
+                      <Checkbox
                         checked={mode === "yct"}
                         onCheckedChange={(event) => {
                           if (event) {

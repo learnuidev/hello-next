@@ -72,7 +72,7 @@ export function HanziLink({
       </p>
       <Link
         href={
-          `/nmm/${character.hanzi}?lang=zh` +
+          `/nmm/${character?.hanzi}?lang=zh` +
           (character?.hskLevel ? `&hsk=${character?.hskLevel}` : ``) +
           ""
         }
@@ -127,7 +127,7 @@ export function HanziLink({
           );
         })}
 
-        {character.hskLevel && (
+        {character?.hskLevel && (
           <sub className="dark:text-gray-700 text-xs pl-[2px]">
             {character?.hskLevel}
           </sub>

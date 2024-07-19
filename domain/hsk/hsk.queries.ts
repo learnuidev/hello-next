@@ -7,6 +7,7 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { hskWords } from "@/langs/chinese /hsk";
 import { hsk2WordBank } from "@/langs/chinese /hsk-2";
+import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 
 // TODO: Move this to .env
 // const url = `${siteConfig?.apiUrl}/v1/list-hsk-words`;
@@ -41,7 +42,9 @@ export function useListHSKWordsQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  const version = params?.version || 3;
+  const mode = useLearningModeStore((state: any) => state.mode);
+
+  const version = params?.version || mode === "hsk3" ? 3 : 2;
 
   return useQuery(
     [queryIds.listHSKWords, authUser?.jwt, version],
@@ -69,7 +72,7 @@ export function useListHSKWordsQuery(
     },
     {
       ...options,
-      enabled: Boolean(params?.version),
+      enabled: Boolean(version),
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,
       refetchOnFocus: false,

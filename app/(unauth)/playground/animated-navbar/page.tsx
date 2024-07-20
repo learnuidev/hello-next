@@ -36,7 +36,7 @@ export default function Home() {
               y: 20,
               opacity: 0,
               filter: "blur(5px)",
-              transition: { ease: "easeIn", duration: 0.22 },
+              transition: { ease: "easeIn", duration: 0.12 },
             }}
             initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
             animate={{

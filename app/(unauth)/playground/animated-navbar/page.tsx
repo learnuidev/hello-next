@@ -18,7 +18,7 @@ export default function Home() {
     opacity: 0,
   });
 
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
 
   return (
     <div

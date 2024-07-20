@@ -25,8 +25,8 @@ export default function Home() {
       className="p-8"
       //   className="grid h-screen place-content-center bg-neutral-100"
     >
-      <div className="grid grid-cols-3 gap-4">
-        <div className="border-2 border-white p-4 grid grid-rows-subgrid text-center">
+      <div className="grid grid-cols-4 gap-4">
+        <div className="border-2 border-white p-4 grid grid-rows-subgrid text-center row-span-3 rounded-xl">
           <h2 className="my-4 text-2xl leading-10">Engineering</h2>
 
           <p>
@@ -46,7 +46,7 @@ export default function Home() {
 
           <div className="aspect-square bg-gray-400 h-44"></div>
         </div>
-        <div className="border-2 border-white p-4 grid grid-rows-subgrid text-center">
+        <div className="border-2 border-white p-4 grid grid-rows-subgrid text-center row-span-3 rounded-xl">
           <h2 className="my-4 text-2xl leading-10">Engineering</h2>
 
           <p>
@@ -59,7 +59,7 @@ export default function Home() {
 
           <div className="aspect-square bg-gray-400 h-44"></div>
         </div>
-        <div className="border-2 border-white p-4 grid grid-rows-subgrid text-center">
+        <div className="border-2 border-white p-4 grid grid-rows-subgrid text-center row-span-3 rounded-xl">
           <h2 className="my-4 text-2xl leading-10">Engineering</h2>
 
           <p>

@@ -45,33 +45,39 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
         <h1 className="text-2xl leading-9">{content?.title}</h1>{" "}
         <div className="flex space-x-8">
           <div className="space-x-4">
-            <button
-              className="text-xl"
-              onClick={() => {
-                setView("focus");
-              }}
-            >
-              <Icons.lightBulb />
-            </button>
-            <button
-              className="text-xl"
-              onClick={() => {
-                setView("default");
-              }}
-            >
-              <Icons.list />
-            </button>
-            <button
-              className="text-xl"
-              onClick={() => {
-                setView("focus");
-                setFocus((focus: string) =>
-                  focus === "hanzi" ? "en" : "hanzi"
-                );
-              }}
-            >
-              <Icons.glassesRound />
-            </button>
+            {view === "focus" ? (
+              <button
+                className="text-xl"
+                onClick={() => {
+                  setView("default");
+                }}
+              >
+                <Icons.list />
+              </button>
+            ) : (
+              <button
+                className="text-xl"
+                onClick={() => {
+                  setView("focus");
+                }}
+              >
+                <Icons.lightBulb />
+              </button>
+            )}
+
+            {view === "focus" && (
+              <button
+                className="text-xl"
+                onClick={() => {
+                  setView("focus");
+                  setFocus((focus: string) =>
+                    focus === "hanzi" ? "en" : "hanzi"
+                  );
+                }}
+              >
+                <Icons.glassesRound />
+              </button>
+            )}
             <button
               className="text-xl"
               onClick={() => {

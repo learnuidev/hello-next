@@ -189,10 +189,10 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
           )}
         </div>
 
-        {displayGrammar && (hanzi || currentTranscription?.input) && (
+        {displayGrammar && (
           <div className="w-full col-span-4">
             <GrammarAnalysis
-              contentId={currentTranscription?.input}
+              contentId={currentTranscription?.input || hanzi}
               showHeader={false}
             />
           </div>

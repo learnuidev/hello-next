@@ -182,7 +182,7 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
           )}
         </div>
 
-        {(hanzi || currentTranscription?.input) && (
+        {displayGrammar && (hanzi || currentTranscription?.input) && (
           <div className="w-full col-span-4">
             <GrammarAnalysis
               contentId={currentTranscription?.input}

@@ -176,7 +176,8 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
                           >
                             {focus === "hanzi"
                               ? transcription?.input || transcription?.hanzi
-                              : transcription?.en}{" "}
+                              : transcription?.en}
+                            {". "}
                           </span>
                         );
                       }

@@ -72,14 +72,14 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
             >
               <Icons.glassesRound />
             </button>
-            {/* <button
+            <button
               className="text-xl"
               onClick={() => {
                 setDisplayGrammar((prev: any) => !prev);
               }}
             >
               <Icons.analyze />
-            </button> */}
+            </button>
           </div>
         </div>
         <div className="flex space-x-8">

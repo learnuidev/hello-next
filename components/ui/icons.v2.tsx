@@ -64,6 +64,7 @@ import {
   faVolume,
   faStop,
   faList,
+  faMagnifyingGlassChart,
   // faCircleInfo,
   // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
@@ -161,7 +162,7 @@ export const Icons = {
   stairs: createFAIcon(faStairs),
   musicNote: createFAIcon(faMusicNote),
   musicNoteSolid: createFAIcon(faMusicNoteSolid),
-  analyze: createFAIcon(faGalaxy),
+  analyze: createFAIcon(faMagnifyingGlassChart),
   calculatorSimple: createFAIcon(faCalculatorSimple),
   back: createFAIcon(faChevronLeft),
   lightBulb: createFAIcon(faLightbulb),

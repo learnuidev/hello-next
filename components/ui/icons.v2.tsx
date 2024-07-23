@@ -63,6 +63,7 @@ import {
   faPhotoFilm,
   faVolume,
   faStop,
+  faList,
   // faCircleInfo,
   // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
@@ -230,4 +231,5 @@ export const Icons = {
   volume: createFAIcon(faVolume),
   pause: createFAIcon(faPause),
   stop: createFAIcon(faStop),
+  list: createFAIcon(faList),
 };

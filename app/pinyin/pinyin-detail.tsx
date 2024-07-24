@@ -174,7 +174,7 @@ export const PinyinDetail = () => {
         })}
       </div>
 
-      <div className="my-32 text-gray-600 text-4xl">
+      <div className="my-32 text-gray-600 text-xl">
         {pinyinCodes?.map((code: any) => {
           return (
             <span
@@ -187,6 +187,7 @@ export const PinyinDetail = () => {
                 setSelectedLevel(null);
               }}
             >
+              {code?.level}
               {code?.total}{" "}
             </span>
           );

@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { CloseIcon } from "@/components/ui/icons";
 
 import { usePinyinChartState } from "./state";
@@ -21,7 +21,10 @@ import { useSearchQueryStore } from "@/components/search/state";
 
 export const PinyinDetail = () => {
   const [selectedPinyin, setSelectedPinyin] = usePinyinChartState();
+  const [selectedLevel, setSelectedLevel] = useState<any>(null);
   const querySync = useSearchQueryStore((state) => state.query)?.toLowerCase();
+
+  console.log("selectedLevel", selectedLevel);
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 
@@ -50,6 +53,23 @@ export const PinyinDetail = () => {
   const displayData = filteredData?.length ? filteredData : data;
 
   console.log("DISPLAY DATA", displayData);
+
+  // const pinyinCode = displayData.map(val => )
+
+  // Todo: Get Pinyin Code
+  const pinyinCodes = Object.entries(
+    Object.groupBy(
+      displayData.map((x: any) => x.tone_level),
+      (identity: number) => identity
+    )
+  ).map(([key, val]) => {
+    return {
+      level: parseInt(key),
+      total: val?.length,
+    };
+  });
+
+  console.log("displayData", displayData);
 
   return (
     <div className="">
@@ -118,16 +138,29 @@ export const PinyinDetail = () => {
                     //     eventType: "CONTENT_VIEWED",
                     //   } as any);
                     // }}
-                    className={`${
-                      // learnedCharacters.includes(prop?.hanzi)
-                      learnedCharacters2?.find(
+                    className={`${(() => {
+                      if (selectedLevel) {
+                        if (selectedLevel?.level === prop?.tone_level) {
+                          return "text-white";
+                        } else {
+                          return "text-gray-800";
+                        }
+                      }
+
+                      const isLearnedCharacter = learnedCharacters2?.find(
                         (char: any) => char?.hanzi === prop?.hanzi
-                      )
-                        ? `${color}`
-                        : selectedComp?.group
-                          ? "text-slate-400"
-                          : "dark:text-gray-500 text-gray-200"
-                    } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
+                      );
+
+                      if (isLearnedCharacter) {
+                        return `${color}`;
+                      }
+
+                      if (selectedComp?.group) {
+                        return "text-slate-400";
+                      }
+
+                      return "dark:text-gray-500 text-gray-200";
+                    })()} dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
                   >
                     {prop?.hanzi}
                   </Link>
@@ -137,6 +170,25 @@ export const PinyinDetail = () => {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
+          );
+        })}
+      </div>
+
+      <div className="my-32 text-gray-600 text-4xl">
+        {pinyinCodes?.map((code: any) => {
+          return (
+            <span
+              onMouseEnter={() => {
+                setSelectedLevel(code);
+              }}
+              className="hover:text-white transition cursor-pointer"
+              key={code?.level}
+              onMouseLeave={() => {
+                setSelectedLevel(null);
+              }}
+            >
+              {code?.total}{" "}
+            </span>
           );
         })}
       </div>

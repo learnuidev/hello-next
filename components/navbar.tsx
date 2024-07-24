@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils";
 import { Icons } from "./ui/icons.v2";
 import Link from "next/link";
 import { AnimatedContentsFilter } from "./animated-contents-filter";
+import { ContentDropdown } from "./_select-character/content-dropdown";
+import { useLearningModeStore } from "./settings-dialog/learning-mode.store";
 
 export const ReviewNavBar = () => {
   const routeName = usePathname();
@@ -80,6 +82,34 @@ export const ReviewNavBar = () => {
     </>
   );
 };
+export const ContentsDropdown = () => {
+  const routeName = usePathname();
+
+  const viewType = useReviewStore((state: any) => state.viewType);
+  const setViewType = useReviewStore((state: any) => state.setViewType);
+
+  const searchParams = useSearchParams();
+
+  const setMode = useLearningModeStore((state: any) => state.setMode);
+  const mode = useLearningModeStore((state: any) => state.mode);
+
+  const view = searchParams?.get("view");
+
+  const isV2 = false;
+
+  return (
+    <>
+      {routeName?.includes("/") || routeName?.includes("/nmm") ? (
+        <ContentDropdown
+          value={mode}
+          onSelect={(val) => {
+            setMode(val);
+          }}
+        />
+      ) : null}
+    </>
+  );
+};
 export const NavBar = () => {
   const routeName = usePathname();
 
@@ -89,6 +119,7 @@ export const NavBar = () => {
         <SearchBar />
 
         <ReviewNavBar />
+        <ContentsDropdown />
 
         {routeName?.includes("learn") && (
           <Link href="/">

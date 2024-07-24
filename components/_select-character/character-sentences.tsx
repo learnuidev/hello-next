@@ -122,6 +122,105 @@ const ContentSentences = ({
     </div>
   );
 };
+const ContentDropdown = ({
+  characterId,
+
+  ...props
+}: SelectedCharacterProps) => {
+  const { data: contents } = useListContentsQuery();
+  const searchParams = useSearchParams();
+
+  const view = useContentViewStore((state) => state.view);
+  const setView = useContentViewStore((state) => state.setView);
+
+  const lang = props?.lang || searchParams.get("lang") || "";
+
+  const filteredContents = contents?.filter((content: any) => {
+    if (view === "all") {
+      // if (lang) {
+      //   return content?.lang === lang;
+      // }
+
+      return true;
+    }
+
+    return content?.title === view;
+  });
+
+  const allSentences = filteredContents
+    ?.map((content: any) => content?.transcriptions)
+    ?.flat()
+    ?.sort(
+      (a: any, b: any) => JSON.stringify(a)?.length - JSON.stringify(b)?.length
+    )
+    ?.filter((item: any) => JSON.stringify(item)?.includes(characterId));
+
+  const contentTitles = useMemo(
+    () => [
+      { title: "all" },
+      ...(contents || [])?.filter((c: any) =>
+        JSON.stringify(c)?.includes(characterId)
+      ),
+    ],
+    [characterId, contents]
+  );
+
+  return (
+    <div>
+      <div>
+        <Select
+          value={view}
+          onValueChange={(topic) => {
+            setView(topic);
+          }}
+        >
+          <SelectTrigger className="w-[320px] text-xs dark:border-gray-800">
+            <SelectValue placeholder="Select a topic" />
+          </SelectTrigger>
+          <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">
+            <SelectGroup>
+              <SelectLabel>Contents</SelectLabel>
+
+              {contentTitles?.map((topic: any) => {
+                return (
+                  <SelectItem
+                    value={topic?.title}
+                    key={topic?.title}
+                    className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
+                  >
+                    {topic?.title} {topic?.lang ? `[${topic?.lang}]` : ""}
+                  </SelectItem>
+                );
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div>
+        <div className="flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
+          {allSentences?.slice(0, 100)?.map((sentence: any) => {
+            const resolvedLang = sentence?.lang || lang;
+            return (
+              <HanziViewer
+                key={sentence?.id}
+                {...props}
+                lang={resolvedLang === "zh-CN" ? "zh" : resolvedLang}
+                currentPhrase={sentence}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      {/* <section>
+        <code>
+          <pre>{JSON.stringify(relevantSentences?.length, null, 2)}</pre>
+        </code>
+      </section> */}
+    </div>
+  );
+};
 
 export const CharacterSentences = (props: { characterId: string }) => {
   const { data } = useSelectedCharacterData({

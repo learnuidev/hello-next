@@ -4,6 +4,8 @@ import { CloseIcon } from "@/components/ui/icons";
 
 import { usePinyinChartState } from "./state";
 
+import { groupBy } from "ramda";
+
 import { useFilteredComponents } from "@/hooks/use-filter-components";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
@@ -57,17 +59,20 @@ export const PinyinDetail = () => {
   // const pinyinCode = displayData.map(val => )
 
   // Todo: Get Pinyin Code
-  const pinyinCodes = Object.entries(
-    Object.groupBy(
-      displayData.map((x: any) => x.tone_level),
-      (identity: number) => identity
-    )
-  ).map(([key, val]) => {
+
+  const grouped = groupBy((item: any) => item)(
+    displayData.map((x: any) => x.tone_level)
+  );
+  const pinyinCodes = Object.entries(grouped).map(([key, val]) => {
+    console.log("KEY", key);
+    const level = parseInt(key);
     return {
-      level: parseInt(key),
+      level: Number.isNaN(level) ? 5 : level,
       total: val?.length,
     };
   });
+
+  console.log("PINYIN CODES", pinyinCodes);
 
   console.log("displayData", displayData);
 
@@ -140,6 +145,9 @@ export const PinyinDetail = () => {
                     // }}
                     className={`${(() => {
                       if (selectedLevel) {
+                        if (selectedLevel?.level === 5 && !prop?.tone_level) {
+                          return "text-white";
+                        }
                         if (selectedLevel?.level === prop?.tone_level) {
                           return "text-white";
                         } else {

@@ -130,7 +130,7 @@ export const ContentView = ({
   const { data: contents, isLoading } = useListContentsQuery();
   const content = contents?.find((c: any) => c?.id === mode);
 
-  if (isLoading) return;
+  if (isLoading) return children;
 
   if (content) {
     return <Content contentId={mode} />;

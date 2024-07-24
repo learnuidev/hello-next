@@ -97,9 +97,11 @@ export const ContentsDropdown = () => {
 
   const isV2 = false;
 
+  console.log("ROUTENAME", routeName);
+
   return (
     <>
-      {routeName?.includes("/") || routeName?.includes("/nmm") ? (
+      {routeName === "/" || routeName === "/nmm" ? (
         <ContentDropdown
           value={mode}
           onSelect={(val) => {

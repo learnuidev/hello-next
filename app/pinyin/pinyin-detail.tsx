@@ -78,7 +78,7 @@ export const PinyinDetail = () => {
 
   return (
     <div className="">
-      <div className="md:mx-16 text-black dark:text-white grid grid-cols-3">
+      <div className="my-8 md:mx-12 mx-4 text-black dark:text-white flex justify-between items-center">
         <div></div>
         <h1 className="flex flex-col items-center">
           <span className={`text-3xl font-bold dark:text-gray-200`}>
@@ -89,7 +89,7 @@ export const PinyinDetail = () => {
           onClick={() => {
             setSelectedPinyin(null);
           }}
-          className={`mr-[-400px] my-4 flex flex-col items-center dark:text-gray-600 hover:dark:text-white transition`}
+          className={`flex flex-col items-center dark:text-gray-600 hover:dark:text-white transition`}
         >
           <CloseIcon className="text-4xl" />
         </button>

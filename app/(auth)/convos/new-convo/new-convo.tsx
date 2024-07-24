@@ -216,8 +216,9 @@ export function NewConvo({ type }: { type?: string }) {
         .split("\n")
         .filter(Boolean)
         ?.map((x) => {
+          const sectionId = crypto.randomUUID();
           return {
-            id: crypto.randomUUID(),
+            id: sectionId,
             type: "section",
             text: x?.trim(),
             phrases: x
@@ -227,6 +228,7 @@ export function NewConvo({ type }: { type?: string }) {
               ?.map((phrase) => {
                 return {
                   id: crypto.randomUUID(),
+                  sectionId,
                   lang: "zh",
                   input: phrase,
                 };

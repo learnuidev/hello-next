@@ -10,6 +10,7 @@ import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode
 import { useViewType } from "./use-view-type";
 import { cn } from "@/lib/utils";
 import { GrammarAnalysis } from "@/components/grammar-analysis";
+import { groupBy } from "ramda";
 
 export const PlayV2 = ({ contentId }: { contentId: string }) => {
   const { data: content } = useGetContentQuery({ contentId });
@@ -38,6 +39,12 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
       );
     }
   );
+
+  const sectionIdExits = content?.transcriptions?.every(
+    (item: any) => item?.sectionId
+  );
+
+  const groupBySectionId = groupBy((item: any) => item.sectionId);
 
   return (
     <div className="w-full">
@@ -144,9 +151,106 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
               })}
             </div>
           )}
-          {view === "focus" && (
+          {view === "focus" ? (
+            sectionIdExits ? (
+              <div>
+                <div>
+                  {Object.entries(
+                    groupBySectionId(content?.transcriptions) as any
+                  )?.map((val: any) => {
+                    const transcriptions = val[1];
+                    return (
+                      <div key={JSON.stringify(val)}>
+                        <div className="">
+                          <div className="text-2xl gap-4">
+                            <div className="p-8">
+                              {transcriptions?.map(
+                                (transcription: Transcription) => {
+                                  return (
+                                    <span
+                                      key={JSON.stringify(transcription)}
+                                      onClick={() => {
+                                        seek(transcription?.start);
+                                        setHanzi((prev: string) =>
+                                          prev === transcription?.input
+                                            ? ""
+                                            : transcription?.input
+                                        );
+                                      }}
+                                      className={cn(
+                                        "text-center h-24",
+                                        isPlaying
+                                          ? transcription.start < currentTime &&
+                                            transcription.end > currentTime
+                                            ? "text-white"
+                                            : transcription.end < currentTime
+                                              ? "text-gray-600"
+                                              : "text-gray-500"
+                                          : "text-white"
+                                      )}
+                                    >
+                                      {focus === "hanzi"
+                                        ? transcription?.input ||
+                                          transcription?.hanzi
+                                        : transcription?.en}
+                                    </span>
+                                  );
+                                }
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div className="">
+                  <div className="mb-12 text-2xl gap-4">
+                    <div className="p-8">
+                      {content?.transcriptions?.map(
+                        (transcription: Transcription) => {
+                          return (
+                            <span
+                              key={JSON.stringify(transcription)}
+                              onClick={() => {
+                                seek(transcription?.start);
+                                setHanzi((prev: string) =>
+                                  prev === transcription?.input
+                                    ? ""
+                                    : transcription?.input
+                                );
+                              }}
+                              className={cn(
+                                "text-center h-24",
+                                isPlaying
+                                  ? transcription.start < currentTime &&
+                                    transcription.end > currentTime
+                                    ? "text-white"
+                                    : transcription.end < currentTime
+                                      ? "text-gray-600"
+                                      : "text-gray-500"
+                                  : "text-white"
+                              )}
+                            >
+                              {focus === "hanzi"
+                                ? transcription?.input || transcription?.hanzi
+                                : transcription?.en}
+                              {". "}
+                            </span>
+                          );
+                        }
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          ) : (
             <div>
-              <div className="hidden lg:block">
+              <div className="">
                 <div className="mb-12 text-2xl gap-4">
                   <div className="p-8">
                     {content?.transcriptions?.map(

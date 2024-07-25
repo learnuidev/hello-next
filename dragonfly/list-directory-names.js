@@ -1,26 +1,26 @@
 const fs = require("fs").promises;
 const path = require("path");
 
-// async function listDirectoryNames(name, options = { directoriesOnly: true }) {
-//   const filterDirectoriesOnly = (pages) => {
-//     return pages?.filter((pageName) => {
-//       if (options.directoriesOnly) {
-//         return !pageName.includes(".");
-//       }
+async function listDirectoryNames(name, options = { directoriesOnly: true }) {
+  const filterDirectoriesOnly = (pages) => {
+    return pages?.filter((pageName) => {
+      if (options.directoriesOnly) {
+        return !pageName.includes(".");
+      }
 
-//       return true;
-//     });
-//   };
-//   if (name) {
-//     const pathName = path.resolve(`../hello-next/app/${name}`);
-//     const children = await fs.readdir(pathName);
-//     return filterDirectoriesOnly(children);
-//   }
+      return true;
+    });
+  };
+  if (name) {
+    const pathName = path.resolve(`../app/${name}`);
+    const children = await fs.readdir(pathName);
+    return filterDirectoriesOnly(children);
+  }
 
-//   const pathName = path.resolve(`../hello-next/app`);
-//   const children = await fs.readdir(pathName);
-//   return filterDirectoriesOnly(children);
-// }
+  const pathName = path.resolve(`./app`);
+  const children = await fs.readdir(pathName);
+  return filterDirectoriesOnly(children);
+}
 
 // module.exports.listDirectoryNames = listDirectoryNames;
 

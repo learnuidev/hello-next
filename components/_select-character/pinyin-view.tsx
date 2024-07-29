@@ -44,9 +44,7 @@ export const PinyinView = ({ characterId }: { characterId: string }) => {
   const displayData = data?.filter((x: any) => x.hanzi?.length === 1);
 
   const grouped = groupBy((item: any) => item)(
-    displayData
-      .filter((x: any) => x.hanzi?.length === 1)
-      .map((x: any) => x.tone_level)
+    displayData.map((x: any) => x.tone_level)
   );
 
   const pinyinCodes = Object.entries(grouped).map(([key, val]) => {

@@ -31,7 +31,7 @@ export const PinyinView = ({ characterId }: { characterId: string }) => {
 
   const humanPinyin = getHumanPinyin(selectedComp);
 
-  const { data: displayData } = useFilteredComponents(
+  const { data } = useFilteredComponents(
     {
       query: humanPinyin,
     },
@@ -41,8 +41,12 @@ export const PinyinView = ({ characterId }: { characterId: string }) => {
     }
   );
 
+  const displayData = data?.filter((x: any) => x.hanzi?.length === 1);
+
   const grouped = groupBy((item: any) => item)(
-    displayData.map((x: any) => x.tone_level)
+    displayData
+      .filter((x: any) => x.hanzi?.length === 1)
+      .map((x: any) => x.tone_level)
   );
 
   const pinyinCodes = Object.entries(grouped).map(([key, val]) => {

@@ -122,27 +122,27 @@ export const PinyinView = ({ characterId }: { characterId: string }) => {
               );
             })}
           </div>
-
-          <div className="my-32 text-gray-600 text-xl">
-            {pinyinCodes?.map((code: any) => {
-              return (
-                <span
-                  onMouseEnter={() => {
-                    setSelectedLevel(code);
-                  }}
-                  className="hover:text-white transition cursor-pointer"
-                  key={code?.level}
-                  onMouseLeave={() => {
-                    setSelectedLevel(null);
-                  }}
-                >
-                  {code?.level}
-                  {code?.total}{" "}
-                </span>
-              );
-            })}
-          </div>
         </section>
+
+        <div className="flex justify-center w-full my-32 text-gray-600 text-xl space-x-2">
+          {pinyinCodes?.map((code: any) => {
+            return (
+              <p
+                onMouseEnter={() => {
+                  setSelectedLevel(code);
+                }}
+                className="hover:text-white transition cursor-pointer"
+                key={code?.level}
+                onMouseLeave={() => {
+                  setSelectedLevel(null);
+                }}
+              >
+                {code?.level}
+                {code?.total}{" "}
+              </p>
+            );
+          })}
+        </div>
       </main>
     </div>
   );

@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
 import { calculateColor, getHumanPinyin } from "@/app/nmm/utils";
 import { useFilteredComponents } from "@/hooks/use-filter-components";
+import { groupBy } from "ramda";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
@@ -20,6 +21,7 @@ import { PreviewComponent } from "@/app/nmm/preview-component";
 
 export const PinyinView = ({ characterId }: { characterId: string }) => {
   const { data: components } = useListComponents();
+  const [selectedLevel, setSelectedLevel] = useState<any>(null);
 
   const selectedComp = components?.find(
     (component: any) => component?.hanzi === characterId
@@ -38,6 +40,18 @@ export const PinyinView = ({ characterId }: { characterId: string }) => {
       isQuerySameAsVal: true,
     }
   );
+
+  const grouped = groupBy((item: any) => item)(
+    displayData.map((x: any) => x.tone_level)
+  );
+
+  const pinyinCodes = Object.entries(grouped).map(([key, val]) => {
+    const level = parseInt(key);
+    return {
+      level: Number.isNaN(level) ? 5 : level,
+      total: val?.length,
+    };
+  });
 
   return (
     <div>
@@ -68,6 +82,20 @@ export const PinyinView = ({ characterId }: { characterId: string }) => {
                       <Link
                         href={`/nmm/${prop.hanzi}?lang=zh`}
                         className={`${(() => {
+                          if (selectedLevel) {
+                            if (
+                              selectedLevel?.level === 5 &&
+                              !prop?.tone_level
+                            ) {
+                              return "text-white";
+                            }
+                            if (selectedLevel?.level === prop?.tone_level) {
+                              return "text-white";
+                            } else {
+                              return "text-gray-800";
+                            }
+                          }
+
                           const isLearnedCharacter = learnedCharacters2?.find(
                             (char: any) => char?.hanzi === prop?.hanzi
                           );
@@ -91,6 +119,26 @@ export const PinyinView = ({ characterId }: { characterId: string }) => {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
+              );
+            })}
+          </div>
+
+          <div className="my-32 text-gray-600 text-xl">
+            {pinyinCodes?.map((code: any) => {
+              return (
+                <span
+                  onMouseEnter={() => {
+                    setSelectedLevel(code);
+                  }}
+                  className="hover:text-white transition cursor-pointer"
+                  key={code?.level}
+                  onMouseLeave={() => {
+                    setSelectedLevel(null);
+                  }}
+                >
+                  {code?.level}
+                  {code?.total}{" "}
+                </span>
               );
             })}
           </div>

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useMemo } from "react";
 import {
   CloudyIcon,
@@ -57,6 +58,7 @@ const calcOutcome = (props: any) => {
   return "success";
 };
 
+// #region search-page
 export function SearchPage() {
   const [queryStatus, setQueryStatus] = useState("idle");
   const query = useSearchQueryStore((state) => state.query);

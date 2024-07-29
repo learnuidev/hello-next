@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { CloseIcon } from "@/components/ui/icons";
 
 import { usePinyinChartState } from "./state";
@@ -40,8 +40,6 @@ export const PinyinDetail = () => {
     }
   );
 
-  console.log("DATA", data);
-
   const { data: components } = useListComponents({ includeAll: true });
 
   const filteredData = data?.filter((prop: any, idx: number) => {
@@ -54,27 +52,16 @@ export const PinyinDetail = () => {
 
   const displayData = filteredData?.length ? filteredData : data;
 
-  console.log("DISPLAY DATA", displayData);
-
-  // const pinyinCode = displayData.map(val => )
-
-  // Todo: Get Pinyin Code
-
   const grouped = groupBy((item: any) => item)(
     displayData.map((x: any) => x.tone_level)
   );
   const pinyinCodes = Object.entries(grouped).map(([key, val]) => {
-    console.log("KEY", key);
     const level = parseInt(key);
     return {
       level: Number.isNaN(level) ? 5 : level,
       total: val?.length,
     };
   });
-
-  console.log("PINYIN CODES", pinyinCodes);
-
-  console.log("displayData", displayData);
 
   return (
     <div className="">
@@ -95,29 +82,6 @@ export const PinyinDetail = () => {
         </button>
       </div>
 
-      {/* <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
-        {data?.map((prop: any, idx: any) => {
-          return (
-            <Link
-              key={`${prop.hanzi}-chars-${idx}`}
-              href={`/nmm/${prop.hanzi}?lang=zh`}
-              // onClick={() => {
-              //   addHistoryMutation.mutate({
-              //     pathName: routeName,
-              //     hanzi: prop.hanzi,
-              //     lang: "zh",
-              //     contentId: prop.id,
-              //     eventType: "CONTENT_VIEWED",
-              //   } as any);
-              // }}
-              className={`dark:text-gray-500 text-gray-200 dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-            >
-              {prop?.hanzi}
-            </Link>
-          );
-        })}
-      </div> */}
-
       <div className="mx-4 my-4 md:mx-12 text-black dark:text-white flex flex-wrap items-center justify-center">
         {displayData?.map((prop: any, idx: number) => {
           const selectedComp = components?.find(
@@ -134,15 +98,6 @@ export const PinyinDetail = () => {
                 <TooltipTrigger className="p-3 hover:scale-125 transition">
                   <Link
                     href={`/nmm/${prop.hanzi}?lang=zh`}
-                    // onClick={() => {
-                    //   addHistoryMutation.mutate({
-                    //     pathName: routeName,
-                    //     hanzi: prop.hanzi,
-                    //     lang: "zh",
-                    //     contentId: prop.id,
-                    //     eventType: "CONTENT_VIEWED",
-                    //   } as any);
-                    // }}
                     className={`${(() => {
                       if (selectedLevel) {
                         if (selectedLevel?.level === 5 && !prop?.tone_level) {

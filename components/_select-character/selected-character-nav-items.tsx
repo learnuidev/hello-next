@@ -129,6 +129,18 @@ export const NavItems = (props: SelectedCharacterProps) => {
             <Icons.compass />
           </button>
         )}
+
+        <button
+          className={cn(
+            "text-xl transition",
+            view === "pinyin" ? "text-white" : "text-gray-400"
+          )}
+          onClick={() => {
+            setView("pinyin");
+          }}
+        >
+          <Icons.pinyinChart />
+        </button>
       </div>
     </div>
   );

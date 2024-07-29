@@ -24,6 +24,12 @@ export const useFilteredComponents = (
     isQuerySameAsVal
   );
 
+  if (!query) {
+    return {
+      data: [],
+    };
+  }
+
   return {
     data: filteredComponents?.filter((item: any) => {
       if (exact) {

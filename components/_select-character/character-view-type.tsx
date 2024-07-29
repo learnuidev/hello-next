@@ -35,6 +35,8 @@ import { useListSuperComponentsQuery } from "@/domain/component/super-component.
 import { useBeltStore } from "../use-belt-store";
 import { RelatedHskWords } from "./related-hsk-words";
 import { AddAudioButton } from "./add-audio-button";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { PinyinView } from "./pinyin-view";
 
 const HskSuperComponentsWordView = ({
   componentId,
@@ -428,6 +430,10 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
       // return <div>yooo</div>;
       return <HskSuperComponentsWordView componentId={characterId} />;
     }
+  }
+
+  if (view === "pinyin") {
+    return <PinyinView characterId={characterId} />;
   }
 
   if (view === "words") {

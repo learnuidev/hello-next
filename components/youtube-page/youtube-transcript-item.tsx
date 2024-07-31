@@ -107,12 +107,13 @@ export const TranscriptItem = ({
 
         <Link
           href={`/nmm/${encodeURIComponent(
-            toggleLoops.length
-              ? toggleLoops
-                  ?.sort((a: any, b: any) => a?.end - b?.end)
-                  ?.map((x: any) => x?.hanzi || x?.input)
-                  ?.join("")
-              : example?.hanzi || example?.input
+            // toggleLoops.length
+            //   ? toggleLoops
+            //       ?.sort((a: any, b: any) => a?.end - b?.end)
+            //       ?.map((x: any) => x?.hanzi || x?.input)
+            //       ?.join("")
+            // :
+            example?.hanzi || example?.input
           )}${example?.lang ? `?lang=${resolveLangCode(example?.lang)}` : ""}`}
           className="text-gray-500 hover:text-white"
           target="_blank"

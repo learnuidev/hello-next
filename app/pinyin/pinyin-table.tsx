@@ -151,9 +151,9 @@ export function PinyinTable({
     () =>
       groupBy((item: any) => item?.humanPinyin)(
         chineseComponents
-          ?.filter(
-            (comp: any) => comp?.hanzi?.length === 1 && comp?.level <= 3500
-          )
+          // ?.filter(
+          //   (comp: any) => comp?.hanzi?.length === 1 && comp?.level <= 3500
+          // )
           ?.map((comp: any) => {
             return {
               ...comp,

@@ -164,6 +164,8 @@ export function PinyinTable({
     [chineseComponents]
   );
 
+  console.log("activePinyinComponentSounds", activePinyinComponentSounds);
+
   const calcRowColor = (val: any, lesson?: any, querySync?: string) => {
     if (typeof val === "string") {
       return "text-gray-600";
@@ -766,7 +768,8 @@ export function PinyinTable({
                                           ]?.length
                                         ? "text-gray-600"
                                         : "text-black",
-                                    "text-[8px] ml-[1px]"
+                                    "text-[8px] ml-[1px]",
+                                    calcRowColor(val, lesson, querySync)
                                   )}
                                 >
                                   {activePinyinComponentSounds?.[val?.value]

@@ -141,7 +141,7 @@ export function PinyinTable({
           ?.map((comp: any) => {
             return {
               ...comp,
-              humanPinyin: getHumanPinyin(comp),
+              humanPinyin: getHumanPinyin(comp) || comp?.group,
             };
           }) || []
       ),
@@ -158,7 +158,7 @@ export function PinyinTable({
           ?.map((comp: any) => {
             return {
               ...comp,
-              humanPinyin: getHumanPinyin(comp),
+              humanPinyin: getHumanPinyin(comp) || comp?.group,
             };
           }) || []
       ),

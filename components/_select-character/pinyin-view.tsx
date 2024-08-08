@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
 import { calculateColor, getHumanPinyin } from "@/app/nmm/utils";
@@ -18,10 +18,17 @@ import {
 } from "@/components/ui/tooltip";
 
 import { PreviewComponent } from "@/app/nmm/preview-component";
+import { create } from "zustand";
+
+export const useSelectedLevel = create((set: any, get: any) => ({
+  selectedLevel: null,
+  setSelectedLevel: (mode: any) => set({ selectedLevel: mode }),
+}));
 
 export const PinyinView = ({ characterId }: { characterId: string }) => {
   const { data: components } = useListComponents();
-  const [selectedLevel, setSelectedLevel] = useState<any>(null);
+  const selectedLevel = useSelectedLevel((state) => state.selectedLevel) as any;
+  const setSelectedLevel = useSelectedLevel((state) => state.setSelectedLevel);
 
   const selectedComp = components?.find(
     (component: any) => component?.hanzi === characterId
@@ -130,14 +137,18 @@ export const PinyinView = ({ characterId }: { characterId: string }) => {
           {pinyinCodes?.map((code: any) => {
             return (
               <p
-                onMouseEnter={() => {
-                  setSelectedLevel(code);
+                onClick={() => {
+                  if (selectedLevel) {
+                    setSelectedLevel(null);
+                  } else {
+                    setSelectedLevel(code);
+                  }
                 }}
                 className="hover:text-white transition cursor-pointer"
                 key={code?.level}
-                onMouseLeave={() => {
-                  setSelectedLevel(null);
-                }}
+                // onMouseLeave={() => {
+                //   setSelectedLevel(null);
+                // }}
               >
                 {code?.level}
                 {code?.total}{" "}

@@ -37,6 +37,7 @@ import { RelatedHskWords } from "./related-hsk-words";
 import { AddAudioButton } from "./add-audio-button";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { PinyinView } from "./pinyin-view";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 
 const HskSuperComponentsWordView = ({
   componentId,
@@ -231,6 +232,8 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
   const HskSentenceView = () => {
     const query = useSearchQueryStore((state) => state.query);
 
+    const brightMode = useBrightModeStore((state: any) => state.mode);
+
     // const readMode = useReadModeStore((state) => state.readMode);
 
     const pagination = usePaginationStore((state) => state.pagination);
@@ -313,7 +316,7 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
                     }
                   }}
                 >
-                  {show || readMode ? (
+                  {brightMode || show || readMode ? (
                     <p className="text-gray-400 text-sm fade-in-100 transition">
                       {prop?.pinyin}
                     </p>
@@ -333,7 +336,7 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
                   >
                     {prop?.hanzi}
                   </p>
-                  {show || readMode ? (
+                  {brightMode || show || readMode ? (
                     <p className="text-gray-500 text-sm transition fade-in-100">
                       {prop?.en}
                     </p>

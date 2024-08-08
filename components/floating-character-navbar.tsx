@@ -37,8 +37,6 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     (item: any) => (item?.hanzi || item?.input) === characterId
   );
 
-  console.log("CHARACTER ID", characterId);
-
   const pinyinOrRoman =
     (hasAlreadyLearned && hasAlreadyLearned?.pinyin) ||
     hasAlreadyLearned?.roman;

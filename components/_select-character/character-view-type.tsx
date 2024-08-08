@@ -174,8 +174,6 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
 
   const selected = selectedComp2 || selectedComp;
 
-  console.log("selected comp", selectedComp);
-
   // const characterId = traditionalToSimplified(characterId_);
   // const selectedChar = traditionalToSimplified(selectedChar_);
 
@@ -217,8 +215,6 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
     selectedComp2?.input ||
     selectedComp2?.hanzi ||
     selectedChar;
-
-  console.log("SEL COMP 2", selectedComp2);
 
   const story = useStoryStore((state: any) => state.story);
 
@@ -424,8 +420,6 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
       </div>
     );
   };
-
-  console.log("VIEW", view);
 
   if (view === "super-components") {
     return <HskSuperComponentsWordView componentId={characterId} />;

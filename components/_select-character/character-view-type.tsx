@@ -425,11 +425,10 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
     );
   };
 
+  console.log("VIEW", view);
+
   if (view === "super-components") {
-    if (lang === "zh") {
-      // return <div>yooo</div>;
-      return <HskSuperComponentsWordView componentId={characterId} />;
-    }
+    return <HskSuperComponentsWordView componentId={characterId} />;
   }
 
   if (view === "pinyin") {
@@ -437,14 +436,10 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
   }
 
   if (view === "words") {
-    if (lang === "zh") {
-      // return <div>yooo</div>;
-      return <RelatedHskWords characterId={characterId} lang={lang} />;
-    }
-
-    return <RelatedWords lang={lang} characterId={characterId} />;
+    return <RelatedHskWords characterId={characterId} lang={lang} />;
   }
   if (view === "sentences") {
+    return <HskSentenceView />;
     if (lang === "zh") {
       // return <div>yooo</div>;
       return <HskSentenceView />;

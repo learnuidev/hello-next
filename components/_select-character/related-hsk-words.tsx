@@ -8,6 +8,7 @@ import { useBeltStore } from "../use-belt-store";
 import { HanziLink } from "../hanzi-link";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { chineseCharacters } from "@/langs/chinese /characters";
+import { RelatedWords } from "./related-words";
 
 export const RelatedHskWords = ({
   characterId,
@@ -32,7 +33,7 @@ export const RelatedHskWords = ({
     ?.sort((a, b) => a?.hanzi?.length - b?.hanzi?.length);
 
   if (!filteredRelatedHskWords?.length) {
-    return "TODO";
+    return <RelatedWords lang={lang} characterId={characterId} />;
   }
 
   return (

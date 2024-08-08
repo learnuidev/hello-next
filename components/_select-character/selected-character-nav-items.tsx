@@ -25,6 +25,7 @@ import { faSpinner } from "@fortawesome/sharp-solid-svg-icons";
 import { SelectedCharacterProps } from "./select-character.types";
 import { cn } from "@/lib/utils";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useListSuperComponentsQuery } from "@/domain/component/super-component.queries";
 
 export const NavItems = (props: SelectedCharacterProps) => {
   const {
@@ -44,6 +45,12 @@ export const NavItems = (props: SelectedCharacterProps) => {
     deleteComponentMutation,
   } = props;
   const router = useRouter();
+
+  const { data: superComponents_ } = useListSuperComponentsQuery({
+    componentId: characterId,
+  });
+
+  const superComponents = superComponents_ as any;
 
   const { data } = useListCharactersQuery();
 
@@ -100,21 +107,23 @@ export const NavItems = (props: SelectedCharacterProps) => {
           <Icons.tree />
         </button>
 
-        <button
-          className={cn(
-            "text-xl transition",
-            view === "super-components" ? "text-white" : "text-gray-400"
-          )}
-          onClick={() => {
-            setView("super-components");
-          }}
-        >
-          {view === "super-components" ? (
-            <Icons.lightningSolid />
-          ) : (
-            <Icons.lightning />
-          )}
-        </button>
+        {superComponents?.length > 0 && (
+          <button
+            className={cn(
+              "text-xl transition",
+              view === "super-components" ? "text-white" : "text-gray-400"
+            )}
+            onClick={() => {
+              setView("super-components");
+            }}
+          >
+            {view === "super-components" ? (
+              <Icons.lightningSolid />
+            ) : (
+              <Icons.lightning />
+            )}
+          </button>
+        )}
 
         {learnedChar && (
           <button

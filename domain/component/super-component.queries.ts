@@ -70,7 +70,7 @@ export function useListSuperComponentsQuery(
         };
       });
 
-      return resp.sort((a: any, b: any) => a?.level - b?.level);
+      return resp.sort((a: any, b: any) => a?.level - b?.level) as any;
     },
     ...options,
     enabled: Boolean(authUser?.jwt),

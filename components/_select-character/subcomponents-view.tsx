@@ -235,7 +235,7 @@ const ArabicSubComponentView = ({
 };
 
 export const SubComponentsView = (props: SelectedCharacterProps) => {
-  if (props.lang === "zh") {
+  if (!props.lang || props.lang === "zh") {
     return <HanziSubComponentsView {...props} />;
   }
 

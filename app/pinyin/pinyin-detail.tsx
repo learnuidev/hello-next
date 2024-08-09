@@ -26,8 +26,6 @@ export const PinyinDetail = () => {
   const [selectedLevel, setSelectedLevel] = useState<any>(null);
   const querySync = useSearchQueryStore((state) => state.query)?.toLowerCase();
 
-  console.log("selectedLevel", selectedLevel);
-
   const { data: learnedCharacters2 } = useListCharactersQuery();
 
   const { data } = useFilteredComponents(

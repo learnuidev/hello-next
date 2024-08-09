@@ -105,8 +105,6 @@ export function NmmCoreComponents() {
             //   return null;
             // }
 
-            console.log("nmm", prop);
-
             return (
               <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
                 <Tooltip>

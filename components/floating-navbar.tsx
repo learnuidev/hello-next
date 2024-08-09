@@ -28,6 +28,10 @@ const FloatingNavbarComp = () => {
 
   const lang = useGetCurrentLang();
 
+  if (routeName === "/pinyin") {
+    return null;
+  }
+
   return (
     // <div className={cn("flex w-full fixed z-50 bottom-4")}>
     <div

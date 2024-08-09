@@ -352,8 +352,6 @@ export const CharacterSentences = (props: { characterId: string }) => {
                           >
                             <button
                               onClick={() => {
-                                alert("yoo 4");
-
                                 router.push(
                                   `/nmm/${val}${lang ? `?lang=${lang}` : ""}`
                                 );

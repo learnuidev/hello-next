@@ -32,8 +32,6 @@ export const TranscriptItem = ({
     (voice: any) => voice?.name === "Li-Mu"
   )?.[0] as any;
 
-  console.log("SELECTED VOICE", selecectedVoice);
-
   const speak = (word: string) => {
     const utter = new SpeechSynthesisUtterance(word);
 
@@ -73,16 +71,12 @@ export const TranscriptItem = ({
         }, {});
 
       setVoicesList(voices);
-      console.log("LOGGED", voices);
-      console.log("LOGGED", synthRef.current.getVoices());
     }, 100);
   }, [synthRef]);
 
   // const { data } = useListGrammarsQuery({ content: transcription?.hanzi });
 
   const router = useRouter();
-
-  console.log("AUDIO URL", audioUrl);
 
   if (audioUrl) {
     return (
@@ -157,8 +151,6 @@ export const TranscriptItem = ({
       </div>
     );
   }
-
-  console.log("TRANSCRIPTION", transcription?.input);
 
   return (
     <div className="flex flex-row justify-center items-center space-x-4">

@@ -159,8 +159,6 @@ export function NewConvo({ type }: { type?: string }) {
 
     const contentType = file.type || "";
 
-    console.log({ extension, contentType });
-
     const response = (await getUploadUrl(
       { extension, contentType },
       {
@@ -169,8 +167,6 @@ export function NewConvo({ type }: { type?: string }) {
     )) as any;
 
     const { signedUrl: url, s3Key, assetUrl, id } = response;
-
-    console.log("RESPONSE", response);
 
     // const formData = new FormData();
     // formData.append("image", file);
@@ -188,8 +184,6 @@ export function NewConvo({ type }: { type?: string }) {
         uploadBucketKey: s3Key,
       })
       .then(async () => {
-        console.log("UPLOADED");
-
         alert("DONE");
       });
   };

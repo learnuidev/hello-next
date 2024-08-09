@@ -78,8 +78,6 @@ export const InsightsV2 = () => {
       ?.flat()
       ?.filter(Boolean) || [];
 
-  console.log("TE", totalErrors);
-
   const grouped = groupBy((item: any) => item?.lang)(
     learnedCharacters?.map((char: any) => {
       if (!char.lang) {

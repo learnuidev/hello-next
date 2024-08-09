@@ -97,8 +97,6 @@ export const ContentsDropdown = () => {
 
   const isV2 = false;
 
-  console.log("ROUTENAME", routeName);
-
   return (
     <>
       {routeName === "/" || routeName === "/nmm" ? (

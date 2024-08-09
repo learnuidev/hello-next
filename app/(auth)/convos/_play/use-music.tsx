@@ -33,8 +33,6 @@ export const useMusic = (props: {
   const currentTime = useMusicStore((state: any) => state.time);
   const setTime = useMusicStore((state: any) => state.setTime);
 
-  console.log("PLAY", play);
-
   const togglePlay = () => {
     setPlay((play: any) => !play);
   };

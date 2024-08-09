@@ -22,8 +22,6 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
 
   const { data: lesson } = useGetContentQuery({ contentId: lessonId });
 
-  console.log("LESSON", lesson);
-
   const lang = lesson?.lang || lesson?.transcriptions?.[0]?.lang;
 
   const { data: learnedCharacters } = useListCharactersQuery();
@@ -68,8 +66,6 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
               .map(filterNonEnglishAlphabets)
           ),
         ];
-
-  console.log("unique words", uniqueWords);
 
   const totalNewCharaters = uniqueWords?.filter((char) => {
     const isLearned = learnedCharacters?.find(

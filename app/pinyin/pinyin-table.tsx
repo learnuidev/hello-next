@@ -97,7 +97,6 @@ export function PinyinTable({
   const setFilter = usePinyinChartStore((state: any) => state.setFilter);
 
   const selectedCharacters = useMemo(() => {
-    console.log("FILTERS", filters);
     if (!filters.length) {
       return [];
     }
@@ -123,8 +122,6 @@ export function PinyinTable({
     }
     return [];
   }, [filters]);
-
-  console.log("SELECTED CHARACTERS", selectedCharacters);
 
   const { data: filteredComponents } = useFilterComponents(querySync);
 
@@ -164,8 +161,6 @@ export function PinyinTable({
       ),
     [chineseComponents]
   );
-
-  console.log("activePinyinComponentSounds", activePinyinComponentSounds);
 
   const calcRowColor = (val: any, lesson?: any, querySync?: string) => {
     if (typeof val === "string") {
@@ -217,7 +212,6 @@ export function PinyinTable({
     )?.[0];
 
     if (containsGroup) {
-      console.log("CONTAINS GROUP", containsGroup);
       return "text-white";
     }
 

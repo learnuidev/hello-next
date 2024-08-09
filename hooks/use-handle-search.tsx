@@ -54,9 +54,6 @@ export const useHandleSearch = () => {
         (lang) => lang?.id === querySync?.toLowerCase()
       );
 
-      console.log("LANG SELECTED", langSelected);
-      console.log("LANGS", langs);
-
       if (langSelected) {
         setQuery("");
         setQuerySync("");

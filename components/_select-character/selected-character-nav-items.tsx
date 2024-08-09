@@ -65,8 +65,6 @@ export const NavItems = (props: SelectedCharacterProps) => {
         <button
           className={"text-xl"}
           onClick={() => {
-            console.log("yoo 4");
-
             router.push(`/nmm${lang ? `?lang=${lang}` : ""}`);
           }}
         >

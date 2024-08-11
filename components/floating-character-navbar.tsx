@@ -9,6 +9,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+
+const isMultiSentence = (str: string) => {
+  const isHanziMultiSentence = str.split("。")?.length > 1;
+
+  if (!isHanziMultiSentence) {
+    return str.split(".")?.length > 1;
+  }
+
+  return isHanziMultiSentence;
+};
 export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
   const {
     selectedComp,
@@ -41,9 +51,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     (hasAlreadyLearned && hasAlreadyLearned?.pinyin) ||
     hasAlreadyLearned?.roman;
 
-  const multiSentence =
-    pinyinOrRoman?.split(".")?.length > 1 ||
-    pinyinOrRoman?.split("?")?.length > 1;
+  const multiSentence = isMultiSentence(characterId);
 
   const routeName = usePathname();
 

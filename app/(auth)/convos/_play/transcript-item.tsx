@@ -153,10 +153,10 @@ export const TranscriptItem = ({
   }
 
   return (
-    <div className="flex flex-row justify-center items-center space-x-4">
+    <div className="flex flex-row">
       <div></div>
       <div
-        className={`block text-center space-y-2 ${
+        className={`block space-y-2 ${
           transcription.start < currentTime && transcription.end > currentTime
             ? "text-yellow-500"
             : ""

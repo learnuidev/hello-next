@@ -61,11 +61,12 @@ export function HanziLink({
   const lastAnswer = answers?.[answers?.length - 1];
 
   return (
-    <div className="p-4 md:p-3 flex flex-col items-center justify-center">
+    <div className="p-2 md:p-3 flex flex-col items-center justify-center">
       <p
         className={cn(
           "top-0 text-xs text-gray-400",
-          brightMode ? "text-gray-600" : "text-black"
+          brightMode ? "text-gray-600" : "text-black",
+          className
         )}
       >
         {character?.pinyin || selectedComp?.pinyin}

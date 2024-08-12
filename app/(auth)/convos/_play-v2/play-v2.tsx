@@ -132,7 +132,7 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
       </div>
 
       <div className="grid grid-cols-12">
-        <div className="col-span-8">
+        <div className="md:col-span-8 col-span-12">
           {view === "default" && (
             <div className="pt-12 space-y-12 mb-12">
               {content?.transcriptions?.map((transcription: Transcription) => {

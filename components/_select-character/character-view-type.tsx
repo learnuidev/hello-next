@@ -381,7 +381,7 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
                     // }
                   }}
                 >
-                  {show || readMode ? (
+                  {brightMode || show || readMode ? (
                     <p className="text-gray-400 text-sm fade-in-100 transition">
                       {prop?.pinyin}
                     </p>
@@ -401,7 +401,7 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
                   >
                     {prop?.hanzi}
                   </p>
-                  {show || readMode ? (
+                  {brightMode || show || readMode ? (
                     <p className="text-gray-500 text-sm transition fade-in-100">
                       {prop?.en}
                     </p>

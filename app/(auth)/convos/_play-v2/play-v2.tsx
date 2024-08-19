@@ -262,6 +262,7 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
         {displayGrammar && (
           <div className="w-full col-span-4">
             <GrammarAnalysis
+              lang={content?.lang}
               contentId={currentTranscription?.input || hanzi}
               showHeader={false}
             />

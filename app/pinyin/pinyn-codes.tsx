@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { create } from "zustand";
 
 export const useSelectedLevel = create((set: any, get: any) => ({
@@ -31,7 +32,10 @@ export const PinyinCodes = ({
                 setSelectedLevel({ ...code, isClicked: true });
               }
             }}
-            className="hover:text-white transition cursor-pointer"
+            className={cn(
+              "hover:text-white transition cursor-pointer",
+              selectedLevel?.level === code?.level && "dark:text-white"
+            )}
             key={code?.level}
             onMouseLeave={() => {
               if (!selectedLevel?.isClicked) {

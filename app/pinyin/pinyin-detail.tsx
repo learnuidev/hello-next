@@ -20,10 +20,12 @@ import {
 } from "@/components/ui/tooltip";
 import { PreviewComponent } from "../nmm/preview-component";
 import { useSearchQueryStore } from "@/components/search/state";
+import { PinyinCodes, useSelectedLevel } from "./pinyn-codes";
 
 export const PinyinDetail = () => {
   const [selectedPinyin, setSelectedPinyin] = usePinyinChartState();
-  const [selectedLevel, setSelectedLevel] = useState<any>(null);
+  const selectedLevel = useSelectedLevel((state) => state.selectedLevel) as any;
+
   const querySync = useSearchQueryStore((state) => state.query)?.toLowerCase();
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
@@ -57,7 +59,7 @@ export const PinyinDetail = () => {
     const level = parseInt(key);
     return {
       level: Number.isNaN(level) ? 5 : level,
-      total: val?.length,
+      total: val?.length || 0,
     };
   });
 
@@ -135,25 +137,7 @@ export const PinyinDetail = () => {
         })}
       </div>
 
-      <div className="my-32 text-gray-600 text-xl">
-        {pinyinCodes?.map((code: any) => {
-          return (
-            <span
-              onMouseEnter={() => {
-                setSelectedLevel(code);
-              }}
-              className="hover:text-white transition cursor-pointer"
-              key={code?.level}
-              onMouseLeave={() => {
-                setSelectedLevel(null);
-              }}
-            >
-              {code?.level}
-              {code?.total}{" "}
-            </span>
-          );
-        })}
-      </div>
+      {pinyinCodes && <PinyinCodes pinyinCodes={pinyinCodes} />}
     </div>
   );
 };

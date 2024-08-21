@@ -19,16 +19,11 @@ import {
 
 import { PreviewComponent } from "@/app/nmm/preview-component";
 import { create } from "zustand";
-
-export const useSelectedLevel = create((set: any, get: any) => ({
-  selectedLevel: null,
-  setSelectedLevel: (mode: any) => set({ selectedLevel: mode }),
-}));
+import { PinyinCodes, useSelectedLevel } from "@/app/pinyin/pinyn-codes";
 
 export const PinyinView = ({ characterId }: { characterId: string }) => {
   const { data: components } = useListComponents();
   const selectedLevel = useSelectedLevel((state) => state.selectedLevel) as any;
-  const setSelectedLevel = useSelectedLevel((state) => state.setSelectedLevel);
 
   const selectedComp = components?.find(
     (component: any) => component?.hanzi === characterId
@@ -58,7 +53,7 @@ export const PinyinView = ({ characterId }: { characterId: string }) => {
     const level = parseInt(key);
     return {
       level: Number.isNaN(level) ? 5 : level,
-      total: val?.length,
+      total: val?.length || 0,
     };
   });
 
@@ -133,29 +128,7 @@ export const PinyinView = ({ characterId }: { characterId: string }) => {
           </div>
         </section>
 
-        <div className="flex justify-center w-full my-32 text-gray-600 text-xl space-x-2">
-          {pinyinCodes?.map((code: any) => {
-            return (
-              <p
-                onClick={() => {
-                  if (selectedLevel) {
-                    setSelectedLevel(null);
-                  } else {
-                    setSelectedLevel(code);
-                  }
-                }}
-                className="hover:text-white transition cursor-pointer"
-                key={code?.level}
-                // onMouseLeave={() => {
-                //   setSelectedLevel(null);
-                // }}
-              >
-                {code?.level}
-                {code?.total}{" "}
-              </p>
-            );
-          })}
-        </div>
+        {pinyinCodes && <PinyinCodes pinyinCodes={pinyinCodes} />}
       </main>
     </div>
   );

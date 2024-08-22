@@ -160,7 +160,7 @@ export const FloatingNavbar = () => {
       >
         <div className="text-black">TODO</div>
         <AnimatePresence>
-          {show && (
+          {/* {show && (
             <motion.div
               exit={{
                 y: -20,
@@ -171,19 +171,55 @@ export const FloatingNavbar = () => {
               initial={{
                 opacity: 0,
                 scale: 0.9,
-                y: 20,
-                filter: "blur(800px)",
+                // y: 20,
+                filter: "blur(80px)",
               }}
               animate={{
                 opacity: 1,
                 scale: 1,
                 y: 0,
                 filter: "blur(0px)",
-                transition: { type: "spring", duration: 0.3, ease: "easeIn" },
+                transition: { type: "spring", duration: 0.2 },
               }}
               className={cn(
                 "transition",
                 show ? "visible" : "invisible",
+                "hidden sm:block w-full"
+              )}
+            >
+              <FloatingNavbarComp />
+            </motion.div>
+          )} */}
+
+          {show && (
+            <motion.div
+              exit={{
+                y: -20,
+                opacity: 0,
+                scale: 0.8,
+                filter: "blur(800px)",
+                transition: { ease: "easeIn", duration: 0.12 },
+              }}
+              initial={{
+                opacity: 0,
+                scale: 0.9,
+                y: 20,
+                filter: "blur(800px)",
+              }}
+              animate={{
+                opacity: 1,
+                scale: 1.1,
+                y: 0,
+                filter: "blur(0px)",
+                transition: {
+                  duration: 0.1,
+                  ease: "easeIn",
+                  type: "just",
+                },
+              }}
+              className={cn(
+                "transition",
+                // show ? "visible" : "invisible",
                 "hidden sm:block w-full"
               )}
             >

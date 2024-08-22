@@ -38,6 +38,8 @@ import { AddAudioButton } from "./add-audio-button";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { PinyinView } from "./pinyin-view";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { cn } from "@/lib/utils";
+import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
 
 const HskSuperComponentsWordView = ({
   componentId,
@@ -435,6 +437,14 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
   if (view === "words") {
     return <RelatedHskWords characterId={characterId} lang={lang} />;
   }
+
+  if (view === "analytics") {
+    return (
+      <div>
+        <CharacterAnalytics characterId={characterId} lang={lang} />
+      </div>
+    );
+  }
   if (view === "sentences") {
     return <HskSentenceView />;
     if (lang === "zh") {
@@ -545,7 +555,14 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
                   {selectedCompInput}
                 </h1>
               ) : (
-                <h1 className="text-4xl my-0 py-0 font-extralight">
+                <h1
+                  className={cn(
+                    selectedCompInput?.length < 16
+                      ? "text-2xl md:text-4xl"
+                      : "text-xl",
+                    "my-0 py-0 font-extralight"
+                  )}
+                >
                   {selectedCompInput}
                 </h1>
               )}

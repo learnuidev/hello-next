@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListSuperComponentsQuery } from "@/domain/component/super-component.queries";
 
-export const NavItems = (props: SelectedCharacterProps) => {
+export const SelectedCharacterNavItems = (props: SelectedCharacterProps) => {
   const {
     selectedComp,
     selectedChar,
@@ -45,6 +45,8 @@ export const NavItems = (props: SelectedCharacterProps) => {
     deleteComponentMutation,
   } = props;
   const router = useRouter();
+
+  console.log("CHAR ID", characterId);
 
   const { data: superComponents_ } = useListSuperComponentsQuery({
     componentId: characterId,
@@ -80,7 +82,7 @@ export const NavItems = (props: SelectedCharacterProps) => {
             setView("home");
           }}
         >
-          <Icons.mandarin />
+          {view === "home" ? <Icons.mandarinSolid /> : <Icons.mandarin />}
         </button>
         <button
           className={cn(
@@ -91,7 +93,7 @@ export const NavItems = (props: SelectedCharacterProps) => {
             setView("words");
           }}
         >
-          <Icons.seedling />
+          {view === "words" ? <Icons.seedlingSolid /> : <Icons.seedling />}
         </button>
         <button
           className={cn(
@@ -102,7 +104,7 @@ export const NavItems = (props: SelectedCharacterProps) => {
             setView("sentences");
           }}
         >
-          <Icons.tree />
+          {view === "sentences" ? <Icons.treeSolid /> : <Icons.tree />}
         </button>
 
         {superComponents?.length > 0 && (
@@ -122,6 +124,23 @@ export const NavItems = (props: SelectedCharacterProps) => {
             )}
           </button>
         )}
+        {characterId?.length > 1 && (
+          <button
+            className={cn(
+              "text-xl transition",
+              view === "analytics" ? "text-white" : "text-gray-400"
+            )}
+            onClick={() => {
+              setView("analytics");
+            }}
+          >
+            {view === "analytics" ? (
+              <Icons.chartColumnSolid />
+            ) : (
+              <Icons.chartColumn />
+            )}
+          </button>
+        )}
 
         {learnedChar && (
           <button
@@ -137,17 +156,19 @@ export const NavItems = (props: SelectedCharacterProps) => {
           </button>
         )}
 
-        <button
-          className={cn(
-            "text-xl transition",
-            view === "pinyin" ? "text-white" : "text-gray-400"
-          )}
-          onClick={() => {
-            setView("pinyin");
-          }}
-        >
-          <Icons.pinyinChart />
-        </button>
+        {characterId?.length === 1 && (
+          <button
+            className={cn(
+              "text-xl transition",
+              view === "pinyin" ? "text-white" : "text-gray-400"
+            )}
+            onClick={() => {
+              setView("pinyin");
+            }}
+          >
+            <Icons.pinyinChart />
+          </button>
+        )}
       </div>
     </div>
   );

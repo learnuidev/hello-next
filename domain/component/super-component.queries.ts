@@ -73,7 +73,7 @@ export function useListSuperComponentsQuery(
       return resp.sort((a: any, b: any) => a?.level - b?.level) as any;
     },
     ...options,
-    enabled: Boolean(authUser?.jwt),
+    enabled: Boolean(authUser?.jwt) && params?.componentId?.length === 1,
     // enabled: Boolean(journeyId),
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

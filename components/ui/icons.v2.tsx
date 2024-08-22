@@ -65,17 +65,20 @@ import {
   faStop,
   faList,
   faMagnifyingGlassChart,
+  faChartColumn,
+  faSeedling,
+  faCitrus,
   // faCircleInfo,
   // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
 
-import { faCitrus } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
+import { faCitrus as faCitrusSolid } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
 import { faPlay } from "@fortawesome/sharp-solid-svg-icons/faPlay";
 import { faBowlChopsticksNoodles } from "@fortawesome/sharp-solid-svg-icons/faBowlChopsticksNoodles";
 import { faUserShakespeare } from "@fortawesome/sharp-solid-svg-icons/faUserShakespeare";
-import { faSeedling } from "@fortawesome/sharp-solid-svg-icons/faSeedling";
+
 // import { faXmark } from "@fortawesome/sharp-solid-svg-icons/faXmark";
 
 import { faMapLocationDot } from "@fortawesome/sharp-solid-svg-icons/faMapLocationDot";
@@ -93,6 +96,9 @@ import { faTrees } from "@fortawesome/sharp-solid-svg-icons/faTrees";
 import { faGameConsoleHandheld } from "@fortawesome/sharp-solid-svg-icons/faGameConsoleHandheld";
 import { faBackpack } from "@fortawesome/sharp-solid-svg-icons/faBackpack";
 import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
+import { faChartColumn as faChartColumnSolid } from "@fortawesome/sharp-solid-svg-icons/faChartColumn";
+import { faTree as faTreeSolid } from "@fortawesome/sharp-solid-svg-icons/faTree";
+import { faSeedling as faSeedlingSolid } from "@fortawesome/sharp-solid-svg-icons/faSeedling";
 import { faComment } from "@fortawesome/sharp-solid-svg-icons/faComment";
 import { faAngleRight } from "@fortawesome/sharp-solid-svg-icons/faAngleRight";
 import { faPause } from "@fortawesome/sharp-solid-svg-icons/faPause";
@@ -159,6 +165,7 @@ export const Icons = {
   powerOff: createFAIcon(faPowerOff),
   copy: createFAIcon(faCopy),
   seedling: createFAIcon(faSeedling),
+  seedlingSolid: createFAIcon(faSeedlingSolid),
   stairs: createFAIcon(faStairs),
   musicNote: createFAIcon(faMusicNote),
   musicNoteSolid: createFAIcon(faMusicNoteSolid),
@@ -174,6 +181,7 @@ export const Icons = {
 
   mountainSun: createFAIcon(faMountainSun),
   mandarin: createFAIcon(faCitrus),
+  mandarinSolid: createFAIcon(faCitrusSolid),
   fingerPrint: createFAIcon(faFingerprint),
 
   blockBrick: createFAIcon(faBlockBrick),
@@ -210,6 +218,7 @@ export const Icons = {
   graduationCap: createFAIcon(faGraduationCap),
   rocket: createFAIcon(faSpaceStationMoon),
   tree: createFAIcon(faTree),
+  treeSolid: createFAIcon(faTreeSolid),
   playCircle: createFAIcon(faPlayCircle),
   check: createFAIcon(faCheckThin),
   fire: createFAIcon(faFire),
@@ -233,4 +242,7 @@ export const Icons = {
   pause: createFAIcon(faPause),
   stop: createFAIcon(faStop),
   list: createFAIcon(faList),
+
+  chartColumn: createFAIcon(faChartColumn),
+  chartColumnSolid: createFAIcon(faChartColumnSolid),
 };

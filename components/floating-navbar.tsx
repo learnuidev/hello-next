@@ -163,17 +163,18 @@ export const FloatingNavbar = () => {
           {show && (
             <motion.div
               exit={{
-                y: 20,
+                y: -20,
                 opacity: 0,
-                filter: "blur(5px)",
+                filter: "blur(50px)",
                 transition: { ease: "easeIn", duration: 0.12 },
               }}
-              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+              initial={{ opacity: 0, scale: 0.8, y: 20, filter: "blur(800px)" }}
               animate={{
                 opacity: 1,
-                y: -16,
+                scale: 1,
+                y: 0,
                 filter: "blur(0px)",
-                transition: { type: "spring", duration: 0.3 },
+                transition: { type: "spring", duration: 0.5 },
               }}
               className={cn(
                 "transition",

@@ -10,6 +10,7 @@ import { faChartColumn } from "@fortawesome/sharp-solid-svg-icons/faChartColumn"
 import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
 import { NomadIcon } from "./ui/icons";
 import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 
 import React, { useState } from "react";
 
@@ -157,15 +158,33 @@ export const FloatingNavbar = () => {
         }}
         className={cn("flex w-full fixed z-50 bottom-4")}
       >
-        <div
-          className={cn(
-            "transition",
-            show ? "visible" : "invisible",
-            "hidden sm:block w-full"
+        <div className="text-black">TODO</div>
+        <AnimatePresence>
+          {show && (
+            <motion.div
+              exit={{
+                y: 20,
+                opacity: 0,
+                filter: "blur(5px)",
+                transition: { ease: "easeIn", duration: 0.12 },
+              }}
+              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+              animate={{
+                opacity: 1,
+                y: -16,
+                filter: "blur(0px)",
+                transition: { type: "spring", duration: 0.3 },
+              }}
+              className={cn(
+                "transition",
+                show ? "visible" : "invisible",
+                "hidden sm:block w-full"
+              )}
+            >
+              <FloatingNavbarComp />
+            </motion.div>
           )}
-        >
-          <FloatingNavbarComp />
-        </div>
+        </AnimatePresence>
       </div>
     </div>
   );

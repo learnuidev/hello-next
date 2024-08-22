@@ -86,7 +86,10 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
               </button>
             )}
             <button
-              className="text-xl"
+              className={cn(
+                "text-xl",
+                displayGrammar ? "text-white" : "text-gray-500"
+              )}
               onClick={() => {
                 setDisplayGrammar((prev: any) => !prev);
               }}
@@ -263,7 +266,11 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
           <div className="w-full col-span-4">
             <GrammarAnalysis
               lang={content?.lang}
-              contentId={currentTranscription?.input || hanzi}
+              contentId={
+                currentTranscription?.input ||
+                currentTranscription?.hanzi ||
+                hanzi
+              }
               showHeader={false}
             />
           </div>

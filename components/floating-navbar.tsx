@@ -208,7 +208,7 @@ export const FloatingNavbar = () => {
               }}
               animate={{
                 opacity: 1,
-                scale: 1.1,
+                scale: 1,
                 y: 0,
                 filter: "blur(0px)",
                 transition: {

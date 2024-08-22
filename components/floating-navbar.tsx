@@ -168,13 +168,18 @@ export const FloatingNavbar = () => {
                 filter: "blur(50px)",
                 transition: { ease: "easeIn", duration: 0.12 },
               }}
-              initial={{ opacity: 0, scale: 0.8, y: 20, filter: "blur(800px)" }}
+              initial={{
+                opacity: 0,
+                scale: 0.9,
+                y: 20,
+                filter: "blur(800px)",
+              }}
               animate={{
                 opacity: 1,
                 scale: 1,
                 y: 0,
                 filter: "blur(0px)",
-                transition: { type: "spring", duration: 0.5 },
+                transition: { type: "spring", duration: 0.3, ease: "easeIn" },
               }}
               className={cn(
                 "transition",

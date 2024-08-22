@@ -7,7 +7,7 @@ import { Icons } from "../ui/icons.v2";
 import { GrammarAnalysis } from "../grammar-analysis";
 import { SelectedCharacterProps } from "./select-character.types";
 import { CharacterSentences } from "./character-sentences";
-import { NormalView } from "./normal-view";
+
 import { AudioComponent } from "./audio-component";
 import { useShowsStore, WordItem } from "../word-item";
 
@@ -18,9 +18,7 @@ import { useStoryStore } from "./story-store";
 import { StoryEditor } from "./story-editor";
 import { RelatedWords } from "./related-words";
 import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
-import { Authenticated } from "../Authenticated";
-import { Authenticate } from "../Authenticate";
-import { Authenticated2 } from "../Authenticated2";
+
 import { chineseCharacters } from "@/langs/chinese /characters";
 import Link from "next/link";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
@@ -32,10 +30,10 @@ import { useGetCharacter } from "@/hooks/use-get-character";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { usePaginationStore } from "@/stores/use-pagination-store";
 import { useListSuperComponentsQuery } from "@/domain/component/super-component.queries";
-import { useBeltStore } from "../use-belt-store";
+
 import { RelatedHskWords } from "./related-hsk-words";
 import { AddAudioButton } from "./add-audio-button";
-import { useListComponents } from "@/domain/lesson/component.queries";
+
 import { PinyinView } from "./pinyin-view";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { cn } from "@/lib/utils";
@@ -631,42 +629,13 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
           </div>
         )}
 
-        {/* )} */}
-
-        {/* <p>{JSON.stringify(selectedComp2, null, 2)}</p> */}
-
-        {/* {selected && (
-          <div className="font-light flex space-x-4 items-center text-gray-400 mb-2">
-            {toneLevel && (
-              <div className="flex space-x-2 items-center">
-                <Icons.musicNote />
-                <p>{toneLevel}</p>
-              </div>
-            )}
-            {initial && (
-              <div className="flex space-x-2 items-center">
-                <p>initial - </p>
-                <p>{initial}</p>
-              </div>
-            )}
-            {final && (
-              <div className="flex space-x-2 items-center">
-                <p>final - </p>
-                <p>{final}</p>
-              </div>
-            )}
-          </div>
-        )} */}
-
         <SubComponentsView lang={lang} characterId={characterId} />
 
         <article>
           <div>
-            {characterId?.length < 10 && (
-              <div className="mt-8">
-                <Summary showMeanings={true} characterId={characterId} />
-              </div>
-            )}
+            <div className="mt-8">
+              <Summary showMeanings={true} characterId={characterId} />
+            </div>
 
             {selectedCompInput?.length < 32 && (
               <div className="my-8">

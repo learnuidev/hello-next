@@ -46,8 +46,6 @@ export const SelectedCharacterNavItems = (props: SelectedCharacterProps) => {
   } = props;
   const router = useRouter();
 
-  console.log("CHAR ID", characterId);
-
   const { data: superComponents_ } = useListSuperComponentsQuery({
     componentId: characterId,
   });

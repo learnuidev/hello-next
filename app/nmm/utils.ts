@@ -392,6 +392,8 @@ export const filterNonEnglishAlphabets = (hanzi: string) =>
         "）",
         "",
         " ",
+        "\ud83d",
+        "\ude01",
       ]?.includes(x);
     })
     .join("");

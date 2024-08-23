@@ -166,10 +166,10 @@ export const TranscriptItem = ({
                   : " text-gray-400"
               } transition`}
             >
-              {content?.pinyin ||
-                content?.roman ||
-                example?.pinyin ||
-                example?.roman}
+              {example?.pinyin ||
+                example?.roman ||
+                content?.pinyin ||
+                content?.roman}
             </p>
           )}
 

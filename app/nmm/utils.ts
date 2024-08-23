@@ -368,6 +368,7 @@ export const filterNonHanYu = (hanzi: string): boolean =>
     "\ude01",
     "~",
     "、",
+    '"',
   ]?.includes(hanzi?.toLowerCase());
 
 export const filterNonEnglishAlphabets = (hanzi: string) =>
@@ -398,6 +399,7 @@ export const filterNonEnglishAlphabets = (hanzi: string) =>
         "\ude01",
         "~",
         "、",
+        '"',
       ]?.includes(x);
     })
     .join("");

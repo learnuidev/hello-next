@@ -181,7 +181,6 @@ export function CharacterAnalytics({
                     <HanziLink
                       character={{
                         hanzi: char,
-                        hskLevel: 9,
                         pinyin: "",
                         en: "",
                       }}

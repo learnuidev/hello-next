@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 interface HSKCharacter {
   hanzi: string;
-  hskLevel: number;
+  hskLevel?: number;
   pinyin: string;
   en: string;
 }

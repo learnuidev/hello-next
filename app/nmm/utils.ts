@@ -370,6 +370,7 @@ export const filterNonHanYu = (hanzi: string): boolean =>
     "、",
     '"',
     "-",
+    "？",
   ]?.includes(hanzi?.toLowerCase());
 
 export const filterNonEnglishAlphabets = (hanzi: string) =>
@@ -402,6 +403,7 @@ export const filterNonEnglishAlphabets = (hanzi: string) =>
         "、",
         '"',
         "-",
+        "？",
       ]?.includes(x);
     })
     .join("");

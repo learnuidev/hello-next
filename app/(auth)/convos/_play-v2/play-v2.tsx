@@ -238,11 +238,11 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
                                         transcription.end > currentTime
                                         ? "text-white"
                                         : transcription.end < currentTime
-                                          ? "text-gray-600"
+                                          ? "text-gray-800"
                                           : "text-gray-500"
                                       : currentTime
                                         ? transcription.end < currentTime
-                                          ? "text-gray-600"
+                                          ? "text-gray-800"
                                           : "text-gray-500"
                                         : "text-white"
                               )}

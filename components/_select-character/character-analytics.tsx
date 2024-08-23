@@ -73,8 +73,6 @@ export function CharacterAnalytics({
           ),
         ];
 
-  console.log("UNIQUE WORDS", uniqueWords);
-
   const totalNewCharaters = uniqueWords?.filter((char) => {
     const isLearned = learnedCharacters?.find(
       (item: any) => (item?.hanzi || item?.input) === char

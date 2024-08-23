@@ -76,7 +76,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         const lastEnd = Math.max(...toggleLoops?.map((x: any) => x?.end));
         const firstStart = Math.min(...toggleLoops?.map((x: any) => x?.start));
 
-        console.log("TOGGLE LOOPS", toggleLoops);
+        // console.log("TOGGLE LOOPS", toggleLoops);
 
         if (currentTime > lastEnd) {
           playerRef.current.seekTo(firstStart, "seconds");

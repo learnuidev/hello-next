@@ -88,8 +88,6 @@ export function ReviewV1(props: any) {
 
   const hasReviewedAll = date ? groupItems?.length <= reviewCount : false;
 
-  console.log("HAS REVIEWED ALL", hasReviewedAll);
-
   const unReviewedCharacters = isSelected
     ? hasReviewedAll
       ? getReviewCharacters(groupItems)

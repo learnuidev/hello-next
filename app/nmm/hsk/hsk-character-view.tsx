@@ -147,7 +147,7 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
 
           return (
             <div key={`${prop.hanzi}-chars-${idx}`}>
-              <HanziLink character={comp} />
+              <HanziLink character={comp || prop} />
             </div>
           );
         })}

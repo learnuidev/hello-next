@@ -10,15 +10,14 @@ import { faChartColumn } from "@fortawesome/sharp-solid-svg-icons/faChartColumn"
 import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
 import { NomadIcon } from "./ui/icons";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
 
 import React, { useState } from "react";
 
 import { faPlayCircle } from "@fortawesome/pro-thin-svg-icons";
 
-import { faPhotoFilm } from "@fortawesome/sharp-solid-svg-icons";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { TheDock } from "@/components/the-dock";
 
 const FloatingNavbarComp = () => {
   const { toast } = useToast();
@@ -142,92 +141,8 @@ export const FloatingNavbar = () => {
   const lang = useGetCurrentLang();
 
   return (
-    <div>
-      <div className={cn("flex w-full fixed z-50 bottom-0")}>
-        <div className="block sm:hidden w-full">
-          <FloatingNavbarComp />
-        </div>
-      </div>
-
-      <div
-        onMouseEnter={() => {
-          setShow(true);
-        }}
-        onMouseLeave={() => {
-          setShow(false);
-        }}
-        className={cn("flex w-full fixed z-50 bottom-0")}
-      >
-        <div className="text-black">TODO</div>
-        <AnimatePresence>
-          {/* {show && (
-            <motion.div
-              exit={{
-                y: -20,
-                opacity: 0,
-                filter: "blur(50px)",
-                transition: { ease: "easeIn", duration: 0.12 },
-              }}
-              initial={{
-                opacity: 0,
-                scale: 0.9,
-                // y: 20,
-                filter: "blur(80px)",
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                y: 0,
-                filter: "blur(0px)",
-                transition: { type: "spring", duration: 0.2 },
-              }}
-              className={cn(
-                "transition",
-                show ? "visible" : "invisible",
-                "hidden sm:block w-full"
-              )}
-            >
-              <FloatingNavbarComp />
-            </motion.div>
-          )} */}
-
-          {show && (
-            <motion.div
-              exit={{
-                y: -20,
-                opacity: 0,
-                scale: 0.8,
-                filter: "blur(800px)",
-                transition: { ease: "easeIn", duration: 0.12 },
-              }}
-              initial={{
-                opacity: 0,
-                scale: 0.9,
-                y: 80,
-                filter: "blur(800px)",
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1.15,
-                y: -5,
-                filter: "blur(0px)",
-                transition: {
-                  duration: 0.1,
-                  ease: "easeOut",
-                  type: "just",
-                },
-              }}
-              className={cn(
-                "transition",
-                // show ? "visible" : "invisible",
-                "hidden sm:block w-full"
-              )}
-            >
-              <FloatingNavbarComp />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </div>
+    <TheDock>
+      <FloatingNavbarComp />
+    </TheDock>
   );
 };

@@ -143,7 +143,7 @@ export const FloatingNavbar = () => {
 
   return (
     <div>
-      <div className={cn("flex w-full fixed z-50 bottom-4")}>
+      <div className={cn("flex w-full fixed z-50 bottom-0")}>
         <div className="block sm:hidden w-full">
           <FloatingNavbarComp />
         </div>
@@ -156,7 +156,7 @@ export const FloatingNavbar = () => {
         onMouseLeave={() => {
           setShow(false);
         }}
-        className={cn("flex w-full fixed z-50 bottom-4")}
+        className={cn("flex w-full fixed z-50 bottom-0")}
       >
         <div className="text-black">TODO</div>
         <AnimatePresence>
@@ -203,17 +203,17 @@ export const FloatingNavbar = () => {
               initial={{
                 opacity: 0,
                 scale: 0.9,
-                y: 20,
+                y: 80,
                 filter: "blur(800px)",
               }}
               animate={{
                 opacity: 1,
-                scale: 1,
-                y: 0,
+                scale: 1.15,
+                y: -5,
                 filter: "blur(0px)",
                 transition: {
                   duration: 0.1,
-                  ease: "easeIn",
+                  ease: "easeOut",
                   type: "just",
                 },
               }}

@@ -166,7 +166,7 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
                       <div key={JSON.stringify(val)}>
                         <div className="">
                           <div className="text-2xl gap-4">
-                            <div className="py-8">
+                            <div className="">
                               {transcriptions?.map(
                                 (transcription: Transcription) => {
                                   return (
@@ -212,7 +212,7 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
               <div>
                 <div className="">
                   <div className="mb-12 text-2xl gap-4">
-                    <div className="py-8">
+                    <div className="">
                       {content?.transcriptions?.map(
                         (transcription: Transcription) => {
                           return (

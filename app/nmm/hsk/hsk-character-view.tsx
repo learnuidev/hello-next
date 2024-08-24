@@ -145,6 +145,10 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
         {filteredComponents?.map((prop: any, idx: number) => {
           const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
 
+          if (!comp) {
+            return null;
+          }
+
           return (
             <div key={`${prop.hanzi}-chars-${idx}`}>
               <HanziLink character={comp || prop} />

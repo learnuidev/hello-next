@@ -152,7 +152,9 @@ export function NomadMethodMandarin() {
                 </TabsTrigger>
               </TabsList>
 
-              {(queryStr?.includes("hsk") || mode === "hsk") && (
+              {(queryStr?.includes("hsk") ||
+                mode === "hsk" ||
+                mode === "hsk3") && (
                 <div className="space-x-8">
                   <button
                     onClick={() => {

@@ -30,6 +30,7 @@ import { useLearningModeStore } from "./learning-mode.store";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useRouter } from "next/navigation";
 import { useBrightModeStore } from "./use-bright-mode-store";
+import { useViewType } from "@/app/(auth)/convos/_play-v2/use-view-type";
 
 export function SettingsDialogInner({
   isOpen,
@@ -365,8 +366,9 @@ function useDocSearchKeyboardEvents({ isOpen, onOpen, onClose }: any) {
 }
 
 function useLearnModeEvents() {
-  const setMode = useLearningModeStore((state: any) => state.setMode);
-  const mode = useLearningModeStore((state: any) => state.mode);
+  const setMode = useLearningModeStore((state) => state.setMode);
+  const mode = useLearningModeStore((state) => state.mode);
+  const setFocus = useViewType((state) => state.setFocus);
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
@@ -424,6 +426,8 @@ function useLearnModeEvents() {
       if (["b"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         setBrightMode((val: any) => !val);
+        setFocus((focus: string) => (focus === "hanzi" ? "en" : "hanzi"));
+        // setView((prev: string) => (prev === "focus" ? "default" : "focus"));
       }
     }
 

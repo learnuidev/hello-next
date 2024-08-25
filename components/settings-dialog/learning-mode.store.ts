@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 export const useLearningModeStore = create(
-  persist(
+  persist<any>(
     (set) => ({
       mode: "hsk",
       setMode: (id: string) => set(() => ({ mode: id })),

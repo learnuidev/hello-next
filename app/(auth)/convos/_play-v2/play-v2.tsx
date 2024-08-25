@@ -72,19 +72,22 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
               </button>
             )}
 
-            {view === "focus" && (
-              <button
-                className="text-xl"
-                onClick={() => {
-                  setView("focus");
-                  setFocus((focus: string) =>
-                    focus === "hanzi" ? "en" : "hanzi"
-                  );
-                }}
-              >
+            {/* {view === "focus" && ( */}
+            <button
+              className="text-xl"
+              onClick={() => {
+                setFocus((focus: string) =>
+                  focus === "hanzi" ? "en" : "hanzi"
+                );
+              }}
+            >
+              {focus === "en" ? (
+                <Icons.glassesRoundSolid />
+              ) : (
                 <Icons.glassesRound />
-              </button>
-            )}
+              )}
+            </button>
+            {/* )} */}
             <button
               className={cn(
                 "text-xl",

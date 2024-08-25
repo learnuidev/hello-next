@@ -59,7 +59,7 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
                   setView("default");
                 }}
               >
-                <Icons.list />
+                <Icons.lightBulbSolid />
               </button>
             ) : (
               <button

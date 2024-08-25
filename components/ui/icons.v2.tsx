@@ -78,6 +78,7 @@ import { faCitrus as faCitrusSolid } from "@fortawesome/sharp-solid-svg-icons/fa
 import { faPlay } from "@fortawesome/sharp-solid-svg-icons/faPlay";
 import { faBowlChopsticksNoodles } from "@fortawesome/sharp-solid-svg-icons/faBowlChopsticksNoodles";
 import { faUserShakespeare } from "@fortawesome/sharp-solid-svg-icons/faUserShakespeare";
+import { faLightbulb as faLightbulbSolid } from "@fortawesome/sharp-solid-svg-icons/faLightbulb";
 
 // import { faXmark } from "@fortawesome/sharp-solid-svg-icons/faXmark";
 
@@ -173,6 +174,7 @@ export const Icons = {
   calculatorSimple: createFAIcon(faCalculatorSimple),
   back: createFAIcon(faChevronLeft),
   lightBulb: createFAIcon(faLightbulb),
+  lightBulbSolid: createFAIcon(faLightbulbSolid),
 
   rectangleHistory: createFAIcon(faRectangleHistory),
 

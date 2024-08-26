@@ -1,19 +1,14 @@
 "use client";
-// import { Xiaoma } from './stsml/v1/XiaomaV2'
 
-// import { useConvosStore } from 'ui/data/convos/bm1'
 import Link from "next/link";
 
 import { CloseIcon } from "@/components/ui/icons";
-import { useNewConvoStore, useViewModeStore } from "./useViewModeStore";
-// import {
-//   useTranscribeQuery,
-//   useTranscriptionStore
-// } from '../../react-query/transcribe/transcribe.queries'
-import { useState } from "react";
-// import { lesson1 } from "ui/data/convos/bm1/level_1";
+import { useViewModeStore } from "./useViewModeStore";
+
 import { useSpeakStore } from "../speak/useSpeakStore";
 import { useTranscribeQuery } from "@/domain/transcribe/transcribe.queries";
+import { StepContainerVariant1, useNewConvoStore } from "../step";
+import { useState } from "react";
 
 export function NewSpeak({ type }: { type?: string }) {
   const [resultView, setResultView] = useState("");
@@ -209,7 +204,7 @@ export function NewSpeak({ type }: { type?: string }) {
       </div>
 
       {step === "type" ? (
-        <div className="md:mx-32 md:mt-32 flex flex-wrap">
+        <StepContainerVariant1>
           <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
             type
           </p>
@@ -245,9 +240,9 @@ export function NewSpeak({ type }: { type?: string }) {
               );
             })}
           </div>
-        </div>
+        </StepContainerVariant1>
       ) : step === "title" ? (
-        <div className="md:mx-32 md:mt-32 flex flex-wrap">
+        <StepContainerVariant1>
           <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
             title
           </p>
@@ -267,9 +262,9 @@ export function NewSpeak({ type }: { type?: string }) {
             placeholder=""
             className="w-full text-center text-3xl font-extralight focus:outline-0 dark:bg-black  p-2 border-0 border-none dark:text-gray-300"
           />
-        </div>
+        </StepContainerVariant1>
       ) : step === "lesson" ? (
-        <div className="md:mx-32 md:mt-32 flex flex-wrap">
+        <StepContainerVariant1>
           <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
             lesson
           </p>
@@ -298,9 +293,9 @@ export function NewSpeak({ type }: { type?: string }) {
               );
             })}
           </div>
-        </div>
+        </StepContainerVariant1>
       ) : step === "author" ? (
-        <div className="md:mx-32 md:mt-32 flex flex-wrap">
+        <StepContainerVariant1>
           <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
             author
           </p>
@@ -336,7 +331,7 @@ export function NewSpeak({ type }: { type?: string }) {
               );
             })}
           </div>
-        </div>
+        </StepContainerVariant1>
       ) : step === "audio" ? (
         <div className="md:mx-32 md:my-32 flex flex-wrap">
           {audioType === "url" ? (
@@ -462,7 +457,7 @@ export function NewSpeak({ type }: { type?: string }) {
         </div>
       ) : (
         <>
-          <div className="md:mx-32 md:mt-32 flex flex-wrap">
+          <StepContainerVariant1>
             <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
               preview
             </p>
@@ -472,7 +467,7 @@ export function NewSpeak({ type }: { type?: string }) {
               <code>{JSON.stringify(transcription, null, 2)}</code>
             </pre>
           </div> */}
-          </div>
+          </StepContainerVariant1>
 
           {/* <Xiaoma lessonId={newConvo?.id} /> */}
         </>

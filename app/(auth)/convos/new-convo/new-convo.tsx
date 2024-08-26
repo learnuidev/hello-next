@@ -4,21 +4,23 @@ import { useConvosStore } from "./use-convos-store";
 import Axios from "axios";
 
 import { CloseIcon } from "@/components/ui/icons";
-import { useNewConvoStore, useViewModeStore } from "./use-viewmode-store";
+import { useViewModeStore } from "./use-viewmode-store";
 
-import { Editor as CustomEditor } from "@/components/Editor";
 import Editor from "@monaco-editor/react";
 
 import { useState } from "react";
 import { useAddContentMutation } from "@/domain/content/content.mutations";
-import {
-  useTranscribeQuery,
-  useTranscribeQueryV2,
-} from "@/domain/transcribe/transcribe.queries";
+
 import { useListSubtitlesQuery } from "@/domain/subtitle/subtitle.queries";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { getUploadUrl } from "@/domain/asset/asset.api";
 import { useAddUserAssetMutation } from "@/domain/asset/asset.mutation";
+import {
+  StepContainerVariant1,
+  StepTitle,
+  StepTitleContainer,
+  useNewConvoStore,
+} from "@/components/step";
 
 export const contentTypes = [
   "audio",
@@ -30,6 +32,7 @@ export const contentTypes = [
   // "tutorial",
   "file",
 ];
+
 export function NewConvo({ type }: { type?: string }) {
   const [resultView, setResultView] = useState("");
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
@@ -263,10 +266,8 @@ export function NewConvo({ type }: { type?: string }) {
     switch (step) {
       case "type":
         return (
-          <div className="md:mx-32 md:mt-32 flex flex-wrap">
-            <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
-              type
-            </p>
+          <StepContainerVariant1>
+            <StepTitle>type</StepTitle>
             <input
               value={newConvo?.type}
               onChange={(event) => {
@@ -299,14 +300,12 @@ export function NewConvo({ type }: { type?: string }) {
                 );
               })}
             </div>
-          </div>
+          </StepContainerVariant1>
         );
       case "title":
         return (
-          <div className="md:mx-32 md:mt-32 flex flex-wrap">
-            <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
-              title of the conversation
-            </p>
+          <StepContainerVariant1>
+            <StepTitle>title of the conversation</StepTitle>
 
             <input
               onChange={(event) => {
@@ -324,14 +323,12 @@ export function NewConvo({ type }: { type?: string }) {
               placeholder=""
               className="w-full text-center text-3xl font-extralight focus:outline-0  p-2 border-0 border-none dark:text-gray-300"
             />
-          </div>
+          </StepContainerVariant1>
         );
       case "lang":
         return (
-          <div className="md:mx-32 md:mt-32 flex flex-wrap">
-            <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
-              language of the content
-            </p>
+          <StepContainerVariant1>
+            <StepTitle>language of the content</StepTitle>
 
             <input
               onChange={(event) => {
@@ -349,15 +346,13 @@ export function NewConvo({ type }: { type?: string }) {
               placeholder=""
               className="w-full text-center text-3xl font-extralight focus:outline-0  p-2 border-0 border-none dark:text-gray-300"
             />
-          </div>
+          </StepContainerVariant1>
         );
 
       case "author":
         return (
-          <div className="md:mx-32 md:mt-32 flex flex-wrap">
-            <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
-              author
-            </p>
+          <StepContainerVariant1>
+            <StepTitle>author</StepTitle>
             <input
               value={newConvo?.author}
               onChange={(event) => {
@@ -392,7 +387,7 @@ export function NewConvo({ type }: { type?: string }) {
                 }
               )}
             </div>
-          </div>
+          </StepContainerVariant1>
         );
 
       case "audio": {
@@ -420,9 +415,7 @@ export function NewConvo({ type }: { type?: string }) {
             {newConvo.type === "text" && (
               <>
                 {" "}
-                <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
-                  add text here
-                </p>
+                <StepTitle>add text here</StepTitle>
                 <textarea
                   value={newConvo?.input}
                   onChange={(event) => {
@@ -458,9 +451,7 @@ export function NewConvo({ type }: { type?: string }) {
                 )}
               </>
             )}
-            <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
-              audio link
-            </p>
+            <StepTitle>audio link</StepTitle>
             <input
               value={newConvo?.audio}
               onChange={(event) => {
@@ -498,10 +489,8 @@ export function NewConvo({ type }: { type?: string }) {
 
       case "location":
         return (
-          <div className="md:mx-32 md:mt-32 flex flex-wrap">
-            <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
-              location of the conversation
-            </p>
+          <StepContainerVariant1>
+            <StepTitle>location of the conversation</StepTitle>
             <input
               value={newConvo?.location}
               onChange={(event) => {
@@ -518,16 +507,14 @@ export function NewConvo({ type }: { type?: string }) {
               placeholder=""
               className="w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
             />
-          </div>
+          </StepContainerVariant1>
         );
 
       default:
         return (
           <>
             <div className="md:mx-32 flex flex-wrap">
-              <p className="w-full text-xl my-8 text-center font-extralight dark:text-gray-500">
-                preview
-              </p>
+              <StepTitle>preview</StepTitle>
 
               <Editor
                 height="400px"
@@ -578,7 +565,7 @@ export function NewConvo({ type }: { type?: string }) {
           </button>
         </div>
 
-        <div className="flex items-center w-full justify-center">
+        <StepTitleContainer>
           {[
             {
               stepId: "type",
@@ -634,7 +621,7 @@ export function NewConvo({ type }: { type?: string }) {
               </button>
             );
           })}
-        </div>
+        </StepTitleContainer>
 
         <div></div>
       </div>

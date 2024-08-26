@@ -7,23 +7,17 @@ import { useRouter } from "next/navigation";
 
 import { useSelectedCharacter } from "./use-selected-character";
 import { SelectedCharacter } from "@/components/selected-character";
-import { useListParseQuery } from "@/domain/nmm/nmm.queries";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
 import { filterNonEnglishAlphabets, filterNonHanYu } from "@/app/nmm/utils";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 
-import { persist, createJSONStorage } from "zustand/middleware";
 import { create } from "zustand";
 import { HanziLink } from "@/components/hanzi-link";
-
-// const [query, setQuery] = useState('')
-// const [index, setIndex] = useState(0)
-// const [queryResult, setQueryResult] = useState<any>(null)
 
 export const useSearchQueryStore = create((set: any, get: any) => ({
   type: "character",

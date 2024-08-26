@@ -90,35 +90,39 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
           ?.split("")
           ?.filter(filterNonHanYu)
       : lang === "en"
-        ? lesson?.transcriptions
-            // allLessonAnswers
-            ?.map(
-              (answer: { hanzi: string; input: string }) =>
-                answer?.hanzi || answer?.input?.split(" ")
-            )
-            ?.flat()
-            ?.map((word: string) => {
-              let newWord = word
-                ?.replaceAll(", ", "")
-                ?.replaceAll(":", "")
-                ?.replaceAll("-", "")
-                ?.replaceAll("?", "")
-                ?.replaceAll(",", "");
+        ? [
+            ...new Set(
+              lesson?.transcriptions
+                // allLessonAnswers
+                ?.map(
+                  (answer: { hanzi: string; input: string }) =>
+                    answer?.hanzi || answer?.input?.split(" ")
+                )
+                ?.flat()
+                ?.map((word: string) => {
+                  let newWord = word
+                    ?.replaceAll(", ", "")
+                    ?.replaceAll(":", "")
+                    ?.replaceAll("-", "")
+                    ?.replaceAll("?", "")
+                    ?.replaceAll(",", "");
 
-              const indexOfSingleQuote = newWord?.indexOf("'");
+                  const indexOfSingleQuote = newWord?.indexOf("'");
 
-              console.log("indexOfSingleQuote", indexOfSingleQuote);
+                  console.log("indexOfSingleQuote", indexOfSingleQuote);
 
-              if (
-                indexOfSingleQuote === 0 ||
-                indexOfSingleQuote + 1 === newWord?.length
-              ) {
-                newWord = newWord?.replaceAll("'", "");
-              }
+                  if (
+                    indexOfSingleQuote === 0 ||
+                    indexOfSingleQuote + 1 === newWord?.length
+                  ) {
+                    newWord = newWord?.replaceAll("'", "");
+                  }
 
-              return newWord;
-            })
-            ?.filter(Boolean)
+                  return newWord;
+                })
+                ?.filter(Boolean)
+            ),
+          ]
         : [
             ...new Set(
               lesson?.transcriptions

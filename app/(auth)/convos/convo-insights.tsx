@@ -102,6 +102,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                 ?.replaceAll(", ", "")
                 ?.replaceAll(":", "")
                 ?.replaceAll("-", "")
+                ?.replaceAll("?", "")
                 ?.replaceAll(",", "");
 
               const indexOfSingleQuote = newWord?.indexOf("'");

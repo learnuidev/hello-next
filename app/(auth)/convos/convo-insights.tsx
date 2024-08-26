@@ -131,7 +131,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
             ),
           ];
 
-  const totalNewCharaters = uniqueWords?.filter((char) => {
+  const totalNewCharaters = uniqueWords?.filter((char: any) => {
     const isLearned = learnedCharacters?.find(
       (item: any) => (item?.hanzi || item?.input) === char
     );

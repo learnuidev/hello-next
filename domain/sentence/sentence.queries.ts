@@ -25,7 +25,12 @@ const listSentences = async (
 };
 
 export function useListSentencesQuery(
-  params = {} as { component?: string; lang?: string; genSents?: boolean },
+  params = {} as {
+    component?: string;
+    lang?: string;
+    genSents?: boolean;
+    contentLang?: string;
+  },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
@@ -36,6 +41,7 @@ export function useListSentencesQuery(
       params?.component,
       params?.lang,
       params?.genSents,
+      params?.contentLang,
     ],
     async () => {
       // if (authUser?.jwt) {

@@ -188,6 +188,7 @@ export function useSelectedCharacterData({
   // const [readMode, setReadMode] = useState(false);
   const searchParams = useSearchParams();
   const lang = searchParams.get("lang") || selectedComp?.lang;
+  const contentLang = searchParams.get("content") || "";
 
   const isAlreadyLearned = useMemo(
     () =>
@@ -216,6 +217,7 @@ export function useSelectedCharacterData({
   const { data: sentences } = useListSentencesQuery({
     component: selectedChar,
     lang,
+    contentLang,
   });
 
   const props = {

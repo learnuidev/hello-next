@@ -20,9 +20,11 @@ interface HSKCharacter {
 export function HanziLink({
   className,
   character,
+  lang,
 }: {
   character: HSKCharacter;
   className?: string;
+  lang?: string;
 }) {
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
@@ -75,6 +77,7 @@ export function HanziLink({
         href={
           `/nmm/${character?.hanzi}?lang=zh` +
           (character?.hskLevel ? `&hsk=${character?.hskLevel}` : ``) +
+          (lang ? `&content=${lang}` : ``) +
           ""
         }
         onClick={() => {

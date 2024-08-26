@@ -232,11 +232,13 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                     <HanziLink
                       character={isLearned}
                       key={`${isLearned?.hanzi}-chars-${idx}`}
+                      lang={lang}
                     />
                   );
                 } else {
                   return (
                     <HanziLink
+                      lang={lang}
                       character={{
                         hanzi: char,
                         hskLevel: 9,
@@ -287,6 +289,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
 
                 return (
                   <HanziLink
+                    lang={lang}
                     character={char}
                     key={`${char?.hanzi}-chars-${idx}`}
                     // className={

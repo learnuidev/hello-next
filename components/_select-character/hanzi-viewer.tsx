@@ -3,7 +3,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/pro-thin-svg-icons";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { calculateColor } from "@/app/nmm/utils";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
@@ -23,6 +23,10 @@ export const HanziViewer = (props: any) => {
   } = props;
 
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  const contentLang = searchParams.get("content") || "";
 
   if (readMode) {
     const currentPhrasePinyin = currentPhrase?.hanzi
@@ -186,11 +190,12 @@ export const HanziViewer = (props: any) => {
             currentPhrase?.hanzi
           )}`}
         >
-          {lang !== "en" && (
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              {currentPhrase?.pinyin || currentPhrase?.roman}
-            </span>
-          )}
+          {lang !== "en" ||
+            (contentLang !== "en" && (
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {currentPhrase?.pinyin || currentPhrase?.roman}
+              </span>
+            ))}
         </Link>
         <span className="text-gray-500 dark:text-gray-300 text-lg">
           {(currentPhrase?.input

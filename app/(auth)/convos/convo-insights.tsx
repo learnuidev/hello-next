@@ -89,18 +89,47 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
           ?.toLocaleLowerCase()
           ?.split("")
           ?.filter(filterNonHanYu)
-      : [
-          ...new Set(
-            lesson?.transcriptions
-              // allLessonAnswers
-              ?.map(
-                (answer: { hanzi: string; input: string }) =>
-                  answer?.hanzi || answer?.input?.split(" ")
-              )
-              ?.flat()
-              .map(filterNonEnglishAlphabets)
-          ),
-        ];
+      : lang === "en"
+        ? lesson?.transcriptions
+            // allLessonAnswers
+            ?.map(
+              (answer: { hanzi: string; input: string }) =>
+                answer?.hanzi || answer?.input?.split(" ")
+            )
+            ?.flat()
+            ?.map((word: string) => {
+              let newWord = word
+                ?.replaceAll(", ", "")
+                ?.replaceAll(":", "")
+                ?.replaceAll("-", "")
+                ?.replaceAll(",", "");
+
+              const indexOfSingleQuote = newWord?.indexOf("'");
+
+              console.log("indexOfSingleQuote", indexOfSingleQuote);
+
+              if (
+                indexOfSingleQuote === 0 ||
+                indexOfSingleQuote + 1 === newWord?.length
+              ) {
+                newWord = newWord?.replaceAll("'", "");
+              }
+
+              return newWord;
+            })
+            ?.filter(Boolean)
+        : [
+            ...new Set(
+              lesson?.transcriptions
+                // allLessonAnswers
+                ?.map(
+                  (answer: { hanzi: string; input: string }) =>
+                    answer?.hanzi || answer?.input?.split(" ")
+                )
+                ?.flat()
+                .map(filterNonEnglishAlphabets)
+            ),
+          ];
 
   const totalNewCharaters = uniqueWords?.filter((char) => {
     const isLearned = learnedCharacters?.find(
@@ -131,24 +160,26 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
   ) : (
     <div className="w-full px-4 my-4 md:my-8">
       <div>
-        <div className="flex justify-between w-full">
-          <div className="flex justify-start space-x-16">
-            <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-              {uniqueWords?.length}{" "}
-              <span className="text-sm md:text-xl">total characters </span>
-            </h2>
+        <div>
+          <div className="flex justify-between w-full">
+            <div className="flex justify-start space-x-4 sm:space-x-16">
+              <h2 className="text-xl sm:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+                {uniqueWords?.length}{" "}
+                <span className="text-sm md:text-xl">total chars </span>
+              </h2>
+              <h2 className="text-xl sm:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
+                <span className="text-yellow-500">
+                  {" "}
+                  {uniqueWords?.length - totalNewCharaters}
+                </span>
+                <span className="text-sm md:text-xl">new chars </span>
+              </h2>
+            </div>
+
             <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
-              <span className="text-yellow-500">
-                {" "}
-                {uniqueWords?.length - totalNewCharaters}
-              </span>
-              <span className="text-sm md:text-xl">new characters </span>
+              <span className="text-gray-300"> {understandingRate}</span>
             </h2>
           </div>
-
-          <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
-            <span className="text-gray-300"> {understandingRate}</span>
-          </h2>
         </div>
 
         <div className="space-x-8 my-8">
@@ -175,16 +206,16 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
             <Icons.tree className="text-xl md:text-2xl" />
           </button>
           {/* <button
-            onClick={() => {
-              setViewType("sentence");
-            }}
-            className={cn(
-              viewType === "sentence" ? "dark:text-white" : "text-gray-500",
-              "px-0 "
-            )}
-          >
-            <Icons.trees className="text-xl md:text-2xl" />
-          </button> */}
+      onClick={() => {
+        setViewType("sentence");
+      }}
+      className={cn(
+        viewType === "sentence" ? "dark:text-white" : "text-gray-500",
+        "px-0 "
+      )}
+    >
+      <Icons.trees className="text-xl md:text-2xl" />
+    </button> */}
         </div>
 
         {viewType === "character" && (

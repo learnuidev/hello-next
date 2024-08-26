@@ -17,6 +17,7 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
 
   const audioUrl = content?.audio?.slow || content?.audio;
   const brightMode = useBrightModeStore((state: any) => state.mode);
+  const setBrightMode = useBrightModeStore((state: any) => state.setMode);
   const view = useViewType((state: any) => state.view);
   const focus = useViewType((state: any) => state.focus);
   const setView = useViewType((state: any) => state.setView);
@@ -66,6 +67,11 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
                 className="text-xl"
                 onClick={() => {
                   setView("focus");
+                  if (brightMode) {
+                    setBrightMode(false);
+                  } else {
+                    setBrightMode(true);
+                  }
                 }}
               >
                 <Icons.lightBulb />
@@ -79,12 +85,31 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
                 setFocus((focus: string) =>
                   focus === "hanzi" ? "en" : "hanzi"
                 );
+
+                if (brightMode) {
+                  setBrightMode(false);
+                } else {
+                  setBrightMode(true);
+                }
               }}
             >
-              {focus === "en" ? (
-                <Icons.glassesRoundSolid />
-              ) : (
-                <Icons.glassesRound />
+              {view === "default" && (
+                <>
+                  {brightMode ? (
+                    <Icons.glassesRoundSolid />
+                  ) : (
+                    <Icons.glassesRound />
+                  )}
+                </>
+              )}
+              {view !== "default" && (
+                <>
+                  {focus === "en" ? (
+                    <Icons.glassesRoundSolid />
+                  ) : (
+                    <Icons.glassesRound />
+                  )}
+                </>
               )}
             </button>
             {/* )} */}

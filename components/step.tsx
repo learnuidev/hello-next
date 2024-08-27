@@ -19,7 +19,7 @@ export const useNewConvoStore = create(
       step: "audio",
       setStep: (step: any) => set({ step }),
       convo: {
-        id: `mandarino#resource#${new Date().getTime()}`,
+        id: "mandarino#resource#" + new Date().getTime(),
         type: "",
         author: "",
         location: "",

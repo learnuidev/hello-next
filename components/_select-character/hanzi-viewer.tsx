@@ -65,9 +65,13 @@ export const HanziViewer = (props: any) => {
                   tone: selectedComp?.tone_level,
                 });
 
+                console.log("SELECT COMP", selectedComp);
+
                 const hanz = currentPhrasePinyin?.find(
                   (x: any) => x?.hanzi === val
                 );
+
+                console.log("COLOR", color);
 
                 return (
                   <div
@@ -180,6 +184,7 @@ export const HanziViewer = (props: any) => {
       </div>
     );
   }
+
   return (
     <div className="flex justify-between space-x-4 py-4 items-center w-full">
       <div role="button" className="flex flex-col">

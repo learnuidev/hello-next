@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { useRouter } from "next/navigation";
@@ -20,16 +20,33 @@ import { create } from "zustand";
 import { HanziLink } from "@/components/hanzi-link";
 
 export const useSearchQueryStore = create((set: any, get: any) => ({
+  sortType: "timeline",
+  setSortType: (f: any) =>
+    typeof f === "function"
+      ? set({ sortType: f(get().sortType) })
+      : set({ sortType: f }),
   type: "character",
   setType: (f: any) =>
     typeof f === "function" ? set({ type: f(get().type) }) : set({ type: f }),
 }));
+
+const getFrequency = ({ lesson, input }: any) => {
+  const transcriptions = lesson?.transcriptions?.filter(
+    (transcription: any) => {
+      return (transcription?.hanzi || transcription?.input)?.includes(input);
+    }
+  );
+
+  return transcriptions?.length;
+};
 
 export function ConvoInsights({ lessonId }: { lessonId: string }) {
   const [isTocHidden, setIsTocHidden] = useState(false);
 
   const viewType = useSearchQueryStore((state) => state.type);
   const setViewType = useSearchQueryStore((state) => state.setType);
+  const setSortType = useSearchQueryStore((state) => state.setSortType);
+  const sortType = useSearchQueryStore((state) => state.sortType);
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
 
@@ -53,18 +70,40 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     }
   );
 
-  const filteredHskWords = hskWords?.filter((word: any) => {
-    const transcription = lesson?.transcriptions?.filter(
-      (transcription: any) => {
-        return (transcription?.hanzi || transcription?.input)?.includes(
-          word?.hanzi
+  const filteredHskWords = useMemo(() => {
+    const res = hskWords
+      ?.filter((word: any) => {
+        const transcription = lesson?.transcriptions?.filter(
+          (transcription: any) => {
+            return (transcription?.hanzi || transcription?.input)?.includes(
+              word?.hanzi
+            );
+          }
         );
-      }
-    );
 
-    return transcription?.length > 0;
-  });
+        return transcription?.length > 0;
+      })
+      ?.map((char: any, idx: number) => {
+        const frequency = getFrequency({
+          lesson,
+          input: char?.hanzi || char?.input,
+        });
 
+        return {
+          ...char,
+          frequency: frequency,
+        };
+      });
+
+    if (sortType === "popular") {
+      return res?.sort(
+        (first: any, second: any) => second?.frequency - first?.frequency
+      );
+    }
+    return res;
+  }, [hskWords, lesson, sortType]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const uniqueWords =
     lang === "zh"
       ? [
@@ -138,6 +177,27 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     return !!isLearned;
   })?.length;
 
+  const uniqueWordsMemo = useMemo(() => {
+    const res = uniqueWords?.map((char: any, idx: number) => {
+      const frequency = getFrequency({
+        lesson,
+        input: char?.hanzi || char?.input || char,
+      });
+
+      return {
+        input: char,
+        frequency: frequency,
+      };
+    });
+
+    if (sortType === "popular") {
+      return res?.sort(
+        (first: any, second: any) => second?.frequency - first?.frequency
+      );
+    }
+    return res;
+  }, [lesson, uniqueWords, sortType]);
+
   const understandingRate = Intl.NumberFormat("en-GB", {
     style: "percent",
     minimumFractionDigits: 1,
@@ -181,53 +241,69 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
           </div>
         </div>
 
-        <div className="space-x-8 my-8">
-          <button
-            onClick={() => {
-              setViewType("character");
-            }}
-            className={cn(
-              viewType === "character" ? "dark:text-white" : " text-gray-500",
-              "px-0 "
-            )}
-          >
-            <Icons.seedling className="text-xl md:text-2xl" />
-          </button>
-          <button
-            onClick={() => {
-              setViewType("word");
-            }}
-            className={cn(
-              viewType === "word" ? "dark:text-white" : " text-gray-500",
-              "px-0"
-            )}
-          >
-            <Icons.tree className="text-xl md:text-2xl" />
-          </button>
-          {/* <button
-      onClick={() => {
-        setViewType("sentence");
-      }}
-      className={cn(
-        viewType === "sentence" ? "dark:text-white" : "text-gray-500",
-        "px-0 "
-      )}
-    >
-      <Icons.trees className="text-xl md:text-2xl" />
-    </button> */}
+        <div className="flex justify-between items-center">
+          <div className="space-x-8 my-8">
+            <button
+              onClick={() => {
+                setViewType("character");
+              }}
+              className={cn(
+                viewType === "character" ? "dark:text-white" : " text-gray-500",
+                "px-0 "
+              )}
+            >
+              <Icons.seedling className="text-xl md:text-2xl" />
+            </button>
+            <button
+              onClick={() => {
+                setViewType("word");
+              }}
+              className={cn(
+                viewType === "word" ? "dark:text-white" : " text-gray-500",
+                "px-0"
+              )}
+            >
+              <Icons.tree className="text-xl md:text-2xl" />
+            </button>
+          </div>
+          <div className="space-x-8 my-8">
+            <button
+              onClick={() => {
+                setSortType("popular");
+              }}
+              className={cn(
+                sortType === "popular" ? "dark:text-white" : " text-gray-500",
+                "px-0 "
+              )}
+            >
+              <Icons.fire className="text-xl md:text-2xl" />
+            </button>
+            <button
+              onClick={() => {
+                setSortType("timeline");
+              }}
+              className={cn(
+                sortType === "timeline" ? "dark:text-white" : " text-gray-500",
+                "px-0 "
+              )}
+            >
+              <Icons.timeline className="text-xl md:text-2xl" />
+            </button>
+          </div>
         </div>
 
         {viewType === "character" && (
           <div className="my-8">
             <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
-              {uniqueWords?.map((char: any, idx: number) => {
+              {uniqueWordsMemo.map((char: any, idx: number) => {
                 const isLearned = learnedCharacters?.find(
-                  (item: any) => (item?.hanzi || item?.input) === char
+                  (item: any) => (item?.hanzi || item?.input) === char?.input
                 );
 
                 if (isLearned) {
                   return (
                     <HanziLink
+                      frequency={char?.frequency}
                       character={isLearned}
                       key={`${isLearned?.hanzi}-chars-${idx}`}
                       lang={lang}
@@ -237,8 +313,9 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                   return (
                     <HanziLink
                       lang={lang}
+                      frequency={char?.frequency}
                       character={{
-                        hanzi: char,
+                        hanzi: char?.input,
                         hskLevel: 9,
                         pinyin: "",
                         en: "",
@@ -248,7 +325,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                       //     ? "text-gray-700 dark:text-gray-300"
                       //     : "text-gray-400 dark:text-gray-500"
                       // }
-                      key={`${char}-chars-${idx}`}
+                      key={`${char?.input}-chars-${idx}`}
                     />
                   );
                 }
@@ -281,13 +358,10 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
           <div className="my-8">
             <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
               {filteredHskWords?.map((char: any, idx: number) => {
-                const isLearned = learnedCharacters?.find(
-                  (item: any) => (item?.hanzi || item?.input) === char
-                );
-
                 return (
                   <HanziLink
                     lang={lang}
+                    frequency={char?.frequency}
                     character={char}
                     key={`${char?.hanzi}-chars-${idx}`}
                     // className={
@@ -296,25 +370,6 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                     //     : "text-gray-400 dark:text-gray-500"
                     // }
                   />
-                );
-                return (
-                  <Link
-                    href={`/nmm/${char}${lang ? `?lang=${lang}` : ""}`}
-                    // onClick={() => {
-                    //   setSelectedChar(char);
-                    // }}
-                    className={`p-2 ${
-                      // ""
-                      isLearned
-                        ? "text-gray-700 dark:text-gray-300"
-                        : "text-gray-400 dark:text-gray-500"
-                    }`}
-                    // className="p-2"
-                    key={`${idx}-${char?.hanzi}-${idx}`}
-                  >
-                    {" "}
-                    {char?.hanzi}
-                  </Link>
                 );
               })}
             </div>

@@ -68,6 +68,7 @@ import {
   faChartColumn,
   faSeedling,
   faCitrus,
+  faTimeline,
   // faCircleInfo,
   // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
@@ -247,4 +248,5 @@ export const Icons = {
 
   chartColumn: createFAIcon(faChartColumn),
   chartColumnSolid: createFAIcon(faChartColumnSolid),
+  timeline: createFAIcon(faTimeline),
 };

@@ -20,10 +20,12 @@ interface HSKCharacter {
 export function HanziLink({
   className,
   character,
+  frequency = 0,
   lang,
 }: {
   character: HSKCharacter;
   className?: string;
+  frequency?: number;
   lang?: string;
 }) {
   const { data: components, isLoading: isComponentsLoading } =
@@ -104,6 +106,10 @@ export function HanziLink({
                 : "dark:text-gray-700 text-gray-200"
         } dark:hover:text-white text-2xl md:text-2xl transition lowercase`}
       >
+        {frequency > 0 && (
+          <sub className="dark:text-gray-700 text-xs pl-[2px]">{frequency}</sub>
+        )}
+
         {character?.hanzi?.split("")?.map((val, idx) => {
           const learnedChar = learnedCharacters2?.find(
             (char: any) => char?.hanzi === val

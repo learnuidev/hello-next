@@ -115,9 +115,11 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   });
   // const lesson = contentsArr?.find((content: any) => content?.id === lessonId);
 
-  const transcriptions = transcriptionsData?.length
-    ? transcriptionsData
-    : lesson?.transcriptions;
+  const transcriptions = lesson?.transcriptions
+    ? lesson?.transcriptions
+    : transcriptionsData?.length
+      ? transcriptionsData
+      : lesson?.transcriptions;
   const finalUrl = lesson?.audio;
 
   const groupedTranscriptions = groupBy(transcriptions || []);

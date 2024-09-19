@@ -530,7 +530,6 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
   // const
 
   return (
-    // <Authenticated2>
     <div
       className={
         "relative grid grid-cols-1 md:grid-cols-8 gap-x-8 md:grid-rows-[70px_1fr] pt-0"

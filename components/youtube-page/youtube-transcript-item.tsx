@@ -246,16 +246,19 @@ export const TranscriptItem = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="px-0 transition">
-                {/* <p
-                className={`${
-                  (example?.timestamp?.[0] || example?.start) < currentTime &&
-                  (example?.timestamp?.[1] || example?.end) > currentTime
-                    ? "text-pink-400"
-                    : "dark:text-gray-400 text-gray-300"
-                } transition text-md text-left`}
-              >
-                {example?.input || example?.hanzi}
-              </p> */}
+                {example?.pinyin && (
+                  <p
+                    className={`${
+                      (example?.timestamp?.[0] || example?.start) <
+                        currentTime &&
+                      (example?.timestamp?.[1] || example?.end) > currentTime
+                        ? "text-pink-400"
+                        : "dark:text-gray-400 text-gray-300"
+                    } transition text-md text-left`}
+                  >
+                    {example?.pinyin}
+                  </p>
+                )}
                 <div className="text-left">
                   {(example?.input || example?.hanzi || example?.nepali || "")
                     .split("")

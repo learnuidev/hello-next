@@ -252,7 +252,7 @@ export const TranscriptItem = ({
                       (example?.timestamp?.[0] || example?.start) <
                         currentTime &&
                       (example?.timestamp?.[1] || example?.end) > currentTime
-                        ? "text-pink-400"
+                        ? "text-rose-400"
                         : "dark:text-gray-400 text-gray-300"
                     } transition text-md text-left`}
                   >
@@ -290,16 +290,16 @@ export const TranscriptItem = ({
                 </div>
 
                 {/* <p
-                className={`${
-                  (example?.timestamp?.[0] || example?.start) < currentTime &&
-                  (example?.timestamp?.[1] || example?.end) > currentTime
-                    ? "text-pink-400"
-                    : "text-gray-500"
-                } transition text-md`}
-              >
-                {" "}
-                {example?.en}
-              </p> */}
+                  className={`${
+                    (example?.timestamp?.[0] || example?.start) < currentTime &&
+                    (example?.timestamp?.[1] || example?.end) > currentTime
+                      ? "text-rose-400"
+                      : "text-gray-500"
+                  } transition text-md`}
+                >
+                  {" "}
+                  {example?.en}
+                </p> */}
               </TooltipTrigger>
               <TooltipContent className="bg-black border-gray-800 p-4">
                 <Explanations />

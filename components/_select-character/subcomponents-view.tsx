@@ -13,6 +13,7 @@ import { japaneseComponents2 } from "@/langs/japanese/japanese-components";
 import { koreanAlphabets } from "@/langs/korean/korean-alphabets";
 import { koreanComponents2 } from "@/langs/korean/korean-components";
 import { arabicAlphabets } from "@/langs/arabic/arabic-alphabets";
+import { useListComponents } from "@/domain/lesson/component.queries";
 
 interface SelectedCharacterProps {
   characterId: string;
@@ -31,6 +32,7 @@ const HanziSubComponentsView = ({
   characterId,
   lang,
 }: SelectedCharacterProps) => {
+  const { data: components } = useListComponents();
   const { data: sub_components, isLoading } = useListSubComponentsQuery({
     componentId: characterId,
   });
@@ -43,6 +45,9 @@ const HanziSubComponentsView = ({
     return (
       <SubComponentContainer>
         {sub_components?.map((comp: { hanzi: string; en: string }) => {
+          const component = components?.find(
+            (component) => component?.hanzi === comp?.hanzi
+          );
           return (
             <Link
               key={comp?.hanzi}
@@ -50,7 +55,9 @@ const HanziSubComponentsView = ({
               href={`/nmm/${comp?.hanzi}?lang=zh`}
             >
               <p>{comp?.hanzi}</p>
-              <p className="text-gray-400">{comp?.en}</p>
+              <p className="text-gray-400 truncate">
+                {comp?.en || component?.en}
+              </p>
             </Link>
           );
         })}

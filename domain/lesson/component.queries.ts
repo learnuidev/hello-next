@@ -9,12 +9,22 @@ import { siteConfig } from "@/lib/config";
 // TODO: Move this to .env
 const url = `${siteConfig.apiUrl}/v1/list-components`;
 
+interface IComponent {
+  input: string;
+  hanzi: string;
+  pinyin: string;
+  roman: string;
+  en: string;
+  lang: string;
+  id: string;
+}
+
 const listComponents = async (
   options: { journeyId?: string },
   opts: {
     Authorization: string;
   }
-) => {
+): Promise<IComponent[]> => {
   const res = await fetch(url, {
     // const res = await fetch("/api/list-components", {
     method: "POST",

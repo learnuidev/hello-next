@@ -1,11 +1,12 @@
 "use client";
 
 import { useRepeatHistoryStore } from "./use-repeat-history";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Transcription } from "@/domain/transcribe/transcribe.types";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+
 import { Icons } from "@/components/ui/icons.v2";
+import { useSpeak } from "./use-speak";
 
 export const TranscriptItem = ({
   transcription,
@@ -24,55 +25,11 @@ export const TranscriptItem = ({
   seek: any;
   lang?: string;
 }) => {
-  const synthRef = useRef(window.speechSynthesis);
-
-  const [voicesList, setVoicesList] = useState<any>({});
-
-  const selecectedVoice = voicesList?.["zh-CN"]?.filter(
-    (voice: any) => voice?.name === "Li-Mu"
-  )?.[0] as any;
-
-  const speak = (word: string) => {
-    const utter = new SpeechSynthesisUtterance(word);
-
-    utter.rate = 0.8;
-
-    utter.voice = selecectedVoice?.voice;
-    synthRef.current.speak(utter);
-  };
+  const { speak } = useSpeak();
 
   const setRepeatHistories = useRepeatHistoryStore(
     (state: any) => state.setHistory
   );
-
-  useEffect(() => {
-    setTimeout(() => {
-      const voices = [...synthRef.current.getVoices()]
-        .filter((x) => x.lang === "zh-CN")
-        .map((item) => ({
-          voice: item,
-          name: item.name,
-          lang: item.lang,
-          voiceURI: item.voiceURI,
-          localService: item.localService,
-        }))
-        .reduce((acc: any, curr) => {
-          if (acc[curr.lang]) {
-            return {
-              ...acc,
-              [curr.lang]: acc[curr.lang].concat(curr),
-            };
-          }
-
-          return {
-            ...acc,
-            [curr.lang]: [curr],
-          };
-        }, {});
-
-      setVoicesList(voices);
-    }, 100);
-  }, [synthRef]);
 
   // const { data } = useListGrammarsQuery({ content: transcription?.hanzi });
 

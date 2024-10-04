@@ -9,6 +9,7 @@ import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-hist
 
 import { create } from "zustand";
 import useSound from "use-sound";
+import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
 
 const useMusicStore = create((set: any, get: any) => ({
   play: false,
@@ -28,11 +29,14 @@ export const AudioComponent = ({ currentPhrase }: any) => {
   const playMusic = useMusicStore((state: any) => state.play);
   const setPlay = useMusicStore((state: any) => state.setPlay);
 
+  const { speak } = useSpeak();
+
   const audioUrl =
     currentPhrase?.audio?.female ||
     currentPhrase?.audio?.male ||
-    currentPhrase?.audio ||
-    "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.us-east-1.amazonaws.com/learnuidev@gmail.com/01J2F7ACPKCVZ0WFRTTZNT543E.m4a";
+    currentPhrase?.audio;
+  // ||
+  // "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.us-east-1.amazonaws.com/learnuidev@gmail.com/01J2F7ACPKCVZ0WFRTTZNT543E.m4a";
 
   const setRepeatHistories = useRepeatHistoryStore(
     (state: any) => state.setHistory
@@ -48,18 +52,22 @@ export const AudioComponent = ({ currentPhrase }: any) => {
           : "ring-slate-900/5 dark:ring-slate-300 dark:text-slate-300"
       } shadow-lg rounded-full flex items-center justify-center transition`}
       onClick={() => {
-        if (playMusic && false) {
-          stop();
-          setPlay(false);
-        } else {
-          play();
-          setPlay(true);
+        if (audioUrl) {
+          if (playMusic && false) {
+            stop();
+            setPlay(false);
+          } else {
+            play();
+            setPlay(true);
 
-          setRepeatHistories({
-            ...currentPhrase,
-            eventType: "sentence/repeat",
-            eventTime: Date.now(),
-          });
+            setRepeatHistories({
+              ...currentPhrase,
+              eventType: "sentence/repeat",
+              eventTime: Date.now(),
+            });
+          }
+        } else {
+          speak(currentPhrase?.hanzi || currentPhrase?.input);
         }
       }}
     >

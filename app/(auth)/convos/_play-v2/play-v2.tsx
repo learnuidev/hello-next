@@ -161,6 +161,7 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
           </p>
         </div>
       </div>
+      {/* Play header ends */}
 
       <div className="grid grid-cols-12 gap-0 sm:gap-8">
         <div className="md:col-span-8 col-span-12">

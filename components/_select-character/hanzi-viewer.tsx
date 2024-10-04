@@ -145,9 +145,9 @@ export const HanziViewer = (props: any) => {
         )}
 
         <div className="flex space-x-4 items-center">
-          {currentPhrase?.audio ? (
-            <AudioComponent currentPhrase={currentPhrase} />
-          ) : null}
+          {/* {currentPhrase?.audio ? ( */}
+          <AudioComponent currentPhrase={currentPhrase} />
+          {/* ) : null} */}
 
           <Link
             target="_blank"
@@ -258,9 +258,9 @@ export const HanziViewer = (props: any) => {
       </div>
 
       <div className="flex space-x-4 items-center">
-        {currentPhrase?.audio ? (
-          <AudioComponent currentPhrase={currentPhrase} />
-        ) : null}
+        {/* {currentPhrase?.audio ? ( */}
+        <AudioComponent currentPhrase={currentPhrase} />
+        {/* ) : null} */}
 
         <Link
           target="_blank"

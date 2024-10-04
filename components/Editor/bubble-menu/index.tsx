@@ -17,11 +17,13 @@ import { cn } from "@/lib/utils";
 import { Icons } from "@/components/ui/icons.v2";
 import { useAddSentenceMutation } from "@/domain/sentence/sentence.mutations";
 import { useParams } from "next/navigation";
+import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
 
 export interface BubbleMenuItem {
   name: string;
   isActive: () => boolean;
   command: () => void;
+  Icon?: any;
   text: string;
 }
 
@@ -31,6 +33,8 @@ type EditorBubbleMenuProps = Omit<BubbleMenuProps, "children">;
 export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
   const addSentenceMutation = useAddSentenceMutation();
 
+  const { speak } = useSpeak();
+
   const params = useParams() as {
     "component-id": string;
   };
@@ -38,6 +42,7 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
     {
       name: "bold",
       isActive: () => props.editor.isActive("bold"),
+      Icon: Icons.compass,
       command: () => {
         // const { selection, state } = props.editor;
         // const { from, to } = selection;
@@ -56,6 +61,26 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
         });
       },
       text: "Add",
+    },
+    {
+      name: "bold",
+      isActive: () => props.editor.isActive("bold"),
+      Icon: Icons.playCircle,
+      command: () => {
+        // const { selection, state } = props.editor;
+        // const { from, to } = selection;
+
+        // const text = state.doc.textBetween(from, to, " ");
+        // return props.editor.chain().focus().toggleBold().run();
+
+        const { view, state } = props.editor;
+        const { from, to } = view.state.selection;
+        const text = state.doc.textBetween(from, to, "");
+
+        speak(text);
+      },
+
+      text: "Speak",
     },
     // {
     //   name: "italic",
@@ -158,11 +183,11 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
           <button
             key={index}
             onClick={item.command}
-            className="flex p-2 items-center text-stone-600 text-sm hover:bg-stone-100 active:bg-stone-200"
+            className="flex space-x-2 p-2 items-center text-stone-600 text-sm hover:bg-stone-100 active:bg-stone-200"
             type="button"
           >
             <p>{item.text}</p>
-            <Icons.compass />
+            <item.Icon />
           </button>
         ))}
       </div>

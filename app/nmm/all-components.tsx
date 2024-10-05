@@ -3,21 +3,17 @@ import React, { useEffect } from "react";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { chineseCharacters } from "@/langs/chinese /characters";
 
-import { belts, calculateColor } from "./utils";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useBeltStore } from "@/components/use-belt-store";
 
-import Link from "next/link";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { usePathname, useSearchParams } from "next/navigation";
 
 import { useSearchQueryStore } from "@/components/search/state";
 
-import { Icons } from "@/components/ui/icons.v2";
 import { HanziLink } from "@/components/hanzi-link";
 import { filterComponents } from "./nmm-utils/filter-components";
 
@@ -73,28 +69,11 @@ export function AllComponents() {
         selectedBelt?.maxCharacterLevel
       );
 
-  // const slicedComponents = queryStr
-  //   ? comps
-  //   : (isComponentsLoading ? chineseCharacters : components)?.slice(
-  //       selectedBelt?.minCharacterLevel,
-  //       selectedBelt?.maxCharacterLevel
-  //     );
-
   const filteredComponents = filterComponents(
     slicedComponents,
     queryStr,
     learnedCharacters2
   );
-
-  //   const slicedComponents = queryStr
-  //     ? components
-  //     : components?.slice(0, selectedBelt?.maxCharacterLevel);
-
-  //   const filteredComponents = filterComponents(
-  //     slicedComponents,
-  //     queryStr,
-  //     learnedCharacters2
-  //   );
 
   return (
     <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">

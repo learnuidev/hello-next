@@ -2,11 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Header } from "@/components/ui/icons";
 
 import ReactPlayer from "react-player";
-import {
-  useGetContentQuery,
-  useListContentsQuery,
-} from "@/domain/content/content.queries";
-import { useSearchParams } from "@/hooks/use-search-params";
+import { useGetContentQuery } from "@/domain/content/content.queries";
+
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,18 +14,11 @@ import {
   faVideo,
   faVideoSlash,
 } from "@fortawesome/pro-thin-svg-icons";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+
 import { groupBy } from "@/lib/utils";
-import { calculateColor } from "@/app/nmm/utils";
-import { Icons } from "../ui/icons.v2";
-import { resolveLangCode } from "@/libs/openai/utils";
+
 import { TranscriptItem } from "./youtube-transcript-item";
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
 import { useParams } from "next/navigation";

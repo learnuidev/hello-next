@@ -2,7 +2,6 @@
 
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useQuery } from "@tanstack/react-query";
-import { filterNonHanYu } from "../utils";
 
 export const getLevel = (queryStr: string) => {
   if (queryStr?.includes("1")) {

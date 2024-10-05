@@ -5,7 +5,7 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { HanziLink } from "@/components/hanzi-link";
-import { filterComponents, filterNonHanYu } from "../utils";
+import { filterComponents } from "../utils";
 
 import { useBeltStore } from "@/components/use-belt-store";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
@@ -24,6 +24,7 @@ import { resolveHsk } from "./utils";
 import { useHskViewStore } from "./state";
 import { chineseCharacters } from "@/langs/chinese /characters";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
+import { filterNonHanYu } from "../nmm-utils/filter-non-hanyu";
 
 export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);

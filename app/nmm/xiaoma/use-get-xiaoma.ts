@@ -1,6 +1,5 @@
 "use client";
 
-import { filterNonHanYu } from "../utils";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
 import { course1 } from "@/data/convos/bm1";
@@ -8,6 +7,7 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 import { useQuery } from "@tanstack/react-query";
 import { useSearchQueryStore } from "@/components/search/state";
+import { filterNonHanYu } from "../nmm-utils/filter-non-hanyu";
 
 export const useGetXiaoma = ({
   variant,

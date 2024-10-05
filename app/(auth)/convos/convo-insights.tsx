@@ -10,7 +10,7 @@ import { SelectedCharacter } from "@/components/selected-character";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
-import { filterNonEnglishAlphabets, filterNonHanYu } from "@/app/nmm/utils";
+
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 import { Icons } from "@/components/ui/icons.v2";
@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils";
 
 import { create } from "zustand";
 import { HanziLink } from "@/components/hanzi-link";
+import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
+import { filterNonEnglishAlphabets } from "@/app/nmm/nmm-utils/filter-non-english-alphabets";
 
 export const useSearchQueryStore = create((set: any, get: any) => ({
   sortType: "timeline",

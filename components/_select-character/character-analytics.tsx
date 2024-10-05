@@ -10,7 +10,7 @@ import { SelectedCharacter } from "@/components/selected-character";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
-import { filterNonEnglishAlphabets, filterNonHanYu } from "@/app/nmm/utils";
+
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 import { Icons } from "@/components/ui/icons.v2";
@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils";
 
 import { create } from "zustand";
 import { HanziLink } from "@/components/hanzi-link";
+import { filterNonEnglishAlphabets } from "@/app/nmm/nmm-utils/filter-non-english-alphabets";
+import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
 
 export const useSearchQueryStore = create((set: any, get: any) => ({
   type: "character",

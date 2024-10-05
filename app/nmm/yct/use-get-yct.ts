@@ -1,6 +1,5 @@
 "use client";
 
-import { filterNonHanYu } from "../utils";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
 import { course1 } from "@/data/convos/bm1";
@@ -10,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchQueryStore } from "@/components/search/state";
 import { yctWords } from "./yct-words";
 import { useListContentsQuery } from "@/domain/content/content.queries";
+import { filterNonHanYu } from "../nmm-utils/filter-non-hanyu";
 
 export const useGetYct = ({
   variant,

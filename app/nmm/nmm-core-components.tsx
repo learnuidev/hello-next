@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
-import { belts, calculateColor, filterComponents } from "./utils";
+import { belts, calculateColor } from "./utils";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useBeltStore } from "@/components/use-belt-store";
@@ -23,6 +23,7 @@ import { useQuery } from "@tanstack/react-query";
 import { chineseCharacters } from "@/langs/chinese /characters";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { HanziLink } from "@/components/hanzi-link";
+import { filterComponents } from "./nmm-utils/filter-components";
 
 export function NmmCoreComponents() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);

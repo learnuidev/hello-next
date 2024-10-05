@@ -39,10 +39,11 @@ import { useLearningModeStore } from "@/components/settings-dialog/learning-mode
 import { HSKCombobox } from "./hsk-combobox";
 import { useHSKLevelStore } from "./hsk-level-store";
 import { useHskViewStore } from "./hsk/state";
-import { resolveHsk } from "./hsk/utils";
+
 import { YctView } from "./yct/yct-view";
 import { ContentView } from "./content/content-view";
 import { filterComponents } from "./nmm-utils/filter-components";
+import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
 
 export function NomadMethodMandarin() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);

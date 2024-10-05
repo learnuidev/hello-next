@@ -16,10 +16,11 @@ import {
 } from "@/components/ui/select";
 
 import { useHSKLevelStore } from "../hsk-level-store";
-import { resolveHsk } from "./utils";
+
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useHskViewStore } from "./state";
 import { useBeltStore } from "@/components/use-belt-store";
+import { resolveHsk } from "./hsk-utils/resolve-hsk";
 
 export const HskWordsView = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);

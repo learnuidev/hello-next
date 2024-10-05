@@ -20,11 +20,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { resolveHsk } from "./utils";
 import { useHskViewStore } from "./state";
 import { chineseCharacters } from "@/langs/chinese /characters";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { filterNonHanYu } from "../nmm-utils/filter-non-hanyu";
+import { resolveHsk } from "./hsk-utils/resolve-hsk";
 
 export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);

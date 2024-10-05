@@ -10,7 +10,6 @@ import { useFilteredComponents } from "@/hooks/use-filter-components";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
 import { useListComponents } from "@/domain/lesson/component.queries";
-import { calculateColor } from "../nmm/utils";
 
 import {
   Tooltip,
@@ -21,6 +20,7 @@ import {
 import { PreviewComponent } from "../nmm/preview-component";
 import { useSearchQueryStore } from "@/components/search/state";
 import { PinyinCodes, useSelectedLevel } from "./pinyn-codes";
+import { calculateColor } from "../nmm/nmm-utils/calculate-color";
 
 export const PinyinDetail = () => {
   const [selectedPinyin, setSelectedPinyin] = usePinyinChartState();

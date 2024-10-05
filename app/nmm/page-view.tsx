@@ -9,13 +9,12 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import * as R from "ramda";
 
-import { calculateColor } from "./utils";
-
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { cleanString } from "@/data/convos/bm1/utils";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { useSearchParams } from "next/navigation";
+import { calculateColor } from "./nmm-utils/calculate-color";
 
 export const PageView = ({
   view,

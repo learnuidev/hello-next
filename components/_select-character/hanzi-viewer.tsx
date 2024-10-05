@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/pro-thin-svg-icons";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { calculateColor } from "@/app/nmm/utils";
+
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { AudioComponent } from "./audio-component";
+import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 
 export const HanziViewer = (props: any) => {
   const {

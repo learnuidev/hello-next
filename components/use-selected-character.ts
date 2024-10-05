@@ -10,7 +10,6 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 
 import { useListComponents } from "@/domain/lesson/component.queries";
-import { calculateColor } from "@/app/nmm/utils";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
@@ -27,6 +26,7 @@ import { SelectedCharacterProps } from "./_select-character/select-character.typ
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { useReadModeStore } from "@/stores/use-readmode-store";
+import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 
 function useGetCharacter({ characterId }: { characterId: string }) {
   const { data: characters } = useListCharactersQuery(

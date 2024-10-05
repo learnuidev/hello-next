@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { calculateColor } from "@/app/nmm/utils";
+
 import { cleanString } from "@/data/convos/bm1/utils";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
 import { SelectedCharacterProps } from "./select-character.types";
@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useContentViewStore } from "./use-content-view-store";
+import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 
 const ContentSentences = ({
   characterId,

@@ -3,10 +3,11 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { calculateColor } from "@/app/nmm/utils";
+
 import { cleanString } from "@/data/convos/bm1/utils";
 import { SelectedCharacterProps } from "./select-character.types";
 import { HanziViewer } from "./hanzi-viewer";
+import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 
 export const NormalView = (props: SelectedCharacterProps) => {
   const {

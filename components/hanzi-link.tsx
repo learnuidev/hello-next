@@ -5,10 +5,11 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 import Link from "next/link";
-import { calculateColor } from "@/app/nmm/utils";
+
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 import { cn } from "@/lib/utils";
+import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 
 interface HSKCharacter {
   hanzi: string;

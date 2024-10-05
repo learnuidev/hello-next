@@ -13,10 +13,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { PageView } from "./page-view";
 
-import { calculateColor } from "./utils";
-
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { AudioComponent } from "@/components/_select-character/audio-component";
+import { calculateColor } from "./nmm-utils/calculate-color";
 export function SelectedComponent({ selectedId, setSelectedId, belt }: any) {
   const [view, setView] = useState("sentences");
 

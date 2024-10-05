@@ -2,8 +2,10 @@
 
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { filterComponents, getHumanPinyin } from "@/app/nmm/utils";
+
 import { chineseCharacters } from "@/langs/chinese /characters";
+import { filterComponents } from "@/app/nmm/nmm-utils/filter-components";
+import { getHumanPinyin } from "@/app/nmm/nmm-utils/get-human-pinyin";
 
 export const useFilteredComponents = (
   { query }: { query: string },

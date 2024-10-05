@@ -1,6 +1,5 @@
 "use client";
 
-import { filterComponents } from "@/app/nmm/utils";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useListHistoryQuery } from "@/domain/history/history.queries";
 
@@ -11,6 +10,7 @@ import { getDate, getMonth, getYear } from "date-fns";
 import Link from "next/link";
 import { groupBy } from "ramda";
 import { useGetAuthUserProfileQuery } from "./user/use-get-auth-user-profile";
+import { filterComponents } from "@/app/nmm/nmm-utils/filter-components";
 
 export function useListLearnedCharactersByDate({
   variant,

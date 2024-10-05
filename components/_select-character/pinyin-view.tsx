@@ -3,7 +3,7 @@
 import React from "react";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
-import { calculateColor, getHumanPinyin } from "@/app/nmm/utils";
+import { calculateColor } from "@/app/nmm/utils";
 import { useFilteredComponents } from "@/hooks/use-filter-components";
 import { groupBy } from "ramda";
 
@@ -20,6 +20,7 @@ import {
 import { PreviewComponent } from "@/app/nmm/preview-component";
 import { create } from "zustand";
 import { PinyinCodes, useSelectedLevel } from "@/app/pinyin/pinyn-codes";
+import { getHumanPinyin } from "@/app/nmm/nmm-utils/get-human-pinyin";
 
 export const PinyinView = ({ characterId }: { characterId: string }) => {
   const { data: components } = useListComponents();

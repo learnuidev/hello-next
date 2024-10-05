@@ -5,7 +5,7 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { HanziLink } from "@/components/hanzi-link";
-import { filterComponents } from "../utils";
+import { filterComponents } from "../nmm-utils/filter-components";
 
 import { useBeltStore } from "@/components/use-belt-store";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";

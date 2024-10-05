@@ -16,12 +16,14 @@ import { PinyinDetail } from "./pinyin-detail";
 import { pinyinColumns } from "./pinyin-columns";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useSearchQueryStore } from "@/components/search/state";
-import { filterComponents, getHumanPinyin } from "../nmm/utils";
+
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useQuery } from "@tanstack/react-query";
 import { getGroup } from "../(auth)/hmm/get-group";
 // import { legacyData } from "./data";
 import { cn } from "@/lib/utils";
+import { filterComponents } from "../nmm/nmm-utils/filter-components";
+import { getHumanPinyin } from "../nmm/nmm-utils/get-human-pinyin";
 
 const totalCharacters = defaultData
   ?.map((val: any) => Object.values(val))

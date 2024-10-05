@@ -15,12 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import {
-  belts,
-  calculateColor,
-  filterComponents,
-  filterNonHanYu,
-} from "./utils";
+import { belts, calculateColor } from "./utils";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useBeltStore } from "@/components/use-belt-store";
@@ -47,6 +42,7 @@ import { useHskViewStore } from "./hsk/state";
 import { resolveHsk } from "./hsk/utils";
 import { YctView } from "./yct/yct-view";
 import { ContentView } from "./content/content-view";
+import { filterComponents } from "./nmm-utils/filter-components";
 
 export function NomadMethodMandarin() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);

@@ -1,17 +1,11 @@
-import { Fragment, useState, useEffect, useCallback, useContext } from "react";
+import { Fragment, useState, useEffect, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { Button } from "@/components/ui/button";
 
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { useSettingsDialogState } from "./settings-dialog.state";
 import { Icons } from "../ui/icons.v2";
 import { cn } from "@/lib/utils";
@@ -20,7 +14,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -28,9 +21,8 @@ import { Input } from "../input";
 import { Checkbox } from "../ui/checkbox";
 import { useLearningModeStore } from "./learning-mode.store";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
-import { useRouter } from "next/navigation";
-import { useBrightModeStore } from "./use-bright-mode-store";
-import { useViewType } from "@/app/(auth)/convos/_play-v2/use-view-type";
+
+import { useShortCuts } from "./use-short-cuts";
 
 export function SettingsDialogInner({
   isOpen,
@@ -365,79 +357,6 @@ function useDocSearchKeyboardEvents({ isOpen, onOpen, onClose }: any) {
   }, [isOpen, onOpen, onClose]);
 }
 
-function useLearnModeEvents() {
-  const setMode = useLearningModeStore((state) => state.setMode);
-  const mode = useLearningModeStore((state) => state.mode);
-  const setFocus = useViewType((state) => state.setFocus);
-
-  const brightMode = useBrightModeStore((state: any) => state.mode);
-
-  const setBrightMode = useBrightModeStore((state: any) => state.setMode);
-
-  const router = useRouter();
-
-  useEffect(() => {
-    function onKeyDown(event: any) {
-      if (event.key === "y" && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        setMode("yct");
-      }
-      if (event.key === "h" && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        setMode("hsk");
-      }
-      if (["m"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        setMode("nmm");
-      }
-      if (["x"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        setMode("xiaoma");
-      }
-      if (["i"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        router.push("/insights");
-      }
-      if (["o"]?.includes(event.key) && event.metaKey) {
-        event.preventDefault();
-        router.push("/nmm");
-      }
-      if (["t"]?.includes(event.key) && event.ctrlKey) {
-        event.preventDefault();
-        router.push("/tita");
-      }
-      if (["r"]?.includes(event.key) && event.ctrlKey) {
-        event.preventDefault();
-        router.push("/review");
-      }
-      if (["l"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        router.push("/timeline");
-      }
-      if (["p"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        router.push("/pinyin");
-      }
-      if (["e"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        router.push("/convos");
-      }
-
-      if (["b"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        setBrightMode((val: any) => !val);
-        setFocus((focus: string) => (focus === "hanzi" ? "en" : "hanzi"));
-        // setView((prev: string) => (prev === "focus" ? "default" : "focus"));
-      }
-    }
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [mode, setMode, setBrightMode, brightMode, router]);
-}
-
 export function SettingsDialog() {
   const [query, setQuery] = useState("");
 
@@ -460,7 +379,7 @@ export function SettingsDialog() {
     onClose,
   });
 
-  useLearnModeEvents();
+  useShortCuts();
 
   // if (!authUser) {
   //   return null;

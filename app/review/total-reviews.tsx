@@ -18,6 +18,28 @@ export const TotalReviews = ({
 
   return (
     <div className="">
+      <div className="space-x-4 text-[16px] text-gray-500 truncate">
+        {groupItems?.map((item) => {
+          return (
+            <Link
+              className="transition hover:text-white"
+              href={
+                `/nmm/${item?.hanzi}` + item?.lang ? `?lang=${item?.lang}` : ""
+              }
+              target="_blank"
+              key={item?.id}
+            >
+              {item?.hanzi}
+            </Link>
+          );
+        })}
+
+        {totalLangs?.length > 5 && (
+          <span className="text-gray-500 text-[16px]">
+            + {totalLangs?.length - 3}
+          </span>
+        )}
+      </div>
       <div className="space-x-4 text-[16px] text-gray-500">
         {totalLangs?.slice(0, 3)?.map((lang) => {
           return (

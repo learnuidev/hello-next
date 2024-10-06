@@ -1,20 +1,18 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
-import { NavBar } from "@/components/navbar";
+
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import Link from "next/link";
-import {
-  getReviewCharacters,
-  useListCharacterReviewList,
-} from "@/hooks/use-character-review-list";
+import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { Icons } from "@/components/ui/icons.v2";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import { reviewCounterStore } from "./review-counter-store";
 import { cn } from "@/lib/utils";
+import { useUnreviwedCharacters } from "./use-unreviewed-characters";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -46,12 +44,10 @@ export function ReviewV1(props: any) {
   } = useListCharacterReviewList();
 
   const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const char = searchParams?.get("char");
   const date = searchParams?.get("date") || "";
   const langParams = searchParams?.get("lang") || "";
-
-  const isSelected = date;
 
   const reviewCounts = reviewCounterStore((state: any) => state?.reviewCounts);
   const setReviewCount = reviewCounterStore(
@@ -65,12 +61,6 @@ export function ReviewV1(props: any) {
 
   const { data: groups, isLoading: isLearnedCharactersLoading } =
     useListLearnedCharactersByDate({ variant: "discovered" });
-
-  const filteredGroups = isSelected
-    ? groups?.filter((group) =>
-        group?.items?.find((item: any) => item?.status === "needs_review")
-      )
-    : groups;
 
   const group = groups?.find((group) => group?.title === date);
 
@@ -89,16 +79,23 @@ export function ReviewV1(props: any) {
 
   const hasReviewedAll = date ? groupItems?.length <= reviewCount : false;
 
-  const unReviewedCharacters = isSelected
-    ? hasReviewedAll
-      ? getReviewCharacters(groupItems)
-      : groupItems
-    : learnedCharacters?.filter(
-        (character: any) => character?.hanzi?.length === 1
-      );
+  const unReviewedCharacters = useUnreviwedCharacters();
 
-  const currentCharacter = unReviewedCharacters?.[0];
-  const router = useRouter();
+  const nextCharacter = searchParams.get("character");
+
+  // useEffect(() => {
+  //   if (!nextCharacter) {
+  //     if (unReviewedCharacters?.[1]?.hanzi) {
+  //       router.push(`/review?character=${unReviewedCharacters?.[1]?.hanzi}`);
+  //     }
+  //   }
+  // }, [nextCharacter, router, unReviewedCharacters]);
+
+  console.log("unreviewed characters", unReviewedCharacters);
+
+  const currentCharacter =
+    unReviewedCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
+    unReviewedCharacters?.[0];
   // const startTime = Date.now();
 
   // useEffect(() => {
@@ -275,6 +272,12 @@ export function ReviewV1(props: any) {
                         setStartTime(startTime);
                         setEndTime(startTime);
                         setReviewCount(reviewCount + 1);
+
+                        if (unReviewedCharacters?.[1]?.hanzi) {
+                          router.push(
+                            `/review?character=${unReviewedCharacters?.[1]?.hanzi}`
+                          );
+                        }
                       });
                   }}
                 >
@@ -324,6 +327,12 @@ export function ReviewV1(props: any) {
                         setStartTime(startTime);
                         setEndTime(startTime);
                         setReviewCount(reviewCount + 1);
+
+                        if (unReviewedCharacters?.[1]?.hanzi) {
+                          router.push(
+                            `/review?character=${unReviewedCharacters?.[1]?.hanzi}`
+                          );
+                        }
                       });
                   }}
                 >
@@ -380,6 +389,12 @@ export function ReviewV1(props: any) {
                     setStartTime(startTime);
                     setEndTime(startTime);
                     setReviewCount(reviewCount + 1);
+
+                    if (unReviewedCharacters?.[1]?.hanzi) {
+                      router.push(
+                        `/review?character=${unReviewedCharacters?.[1]?.hanzi}`
+                      );
+                    }
                   });
               }}
             >

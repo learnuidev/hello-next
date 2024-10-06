@@ -18,9 +18,12 @@ import { faPlayCircle } from "@fortawesome/pro-thin-svg-icons";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { TheDock } from "@/components/the-dock";
+import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 
 const FloatingNavbarComp = () => {
   const { toast } = useToast();
+
+  const unReviewedCharacters = useUnreviwedCharacters();
 
   const routeName = usePathname();
 
@@ -56,7 +59,11 @@ const FloatingNavbarComp = () => {
 
           {reviewList?.length > 1 ? (
             <Link
-              href="/review"
+              href={
+                unReviewedCharacters?.[0]?.hanzi
+                  ? `/review?character=${unReviewedCharacters?.[0]?.hanzi}`
+                  : "/review"
+              }
               className={cn(
                 routeName?.includes("/review")
                   ? "text-gray-800 dark:text-gray-300"

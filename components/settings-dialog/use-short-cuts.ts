@@ -5,11 +5,14 @@ import { useLearningModeStore } from "./learning-mode.store";
 import { useRouter } from "next/navigation";
 import { useBrightModeStore } from "./use-bright-mode-store";
 import { useViewType } from "@/app/(auth)/convos/_play-v2/use-view-type";
+import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 
 export function useShortCuts() {
   const setMode = useLearningModeStore((state) => state.setMode);
   const mode = useLearningModeStore((state) => state.mode);
   const setFocus = useViewType((state) => state.setFocus);
+
+  const unReviewedCharacters = useUnreviwedCharacters();
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
@@ -51,7 +54,12 @@ export function useShortCuts() {
       }
       if (["r"]?.includes(event.key) && event.ctrlKey) {
         event.preventDefault();
-        router.push("/review");
+
+        if (unReviewedCharacters?.[0]?.hanzi) {
+          router.push(`/review?character=${unReviewedCharacters?.[0]?.hanzi}`);
+        } else {
+          router.push("/review");
+        }
       }
       if (["l"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
@@ -78,5 +86,13 @@ export function useShortCuts() {
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [mode, setMode, setBrightMode, brightMode, router]);
+  }, [
+    mode,
+    setMode,
+    setBrightMode,
+    brightMode,
+    router,
+    unReviewedCharacters,
+    setFocus,
+  ]);
 }

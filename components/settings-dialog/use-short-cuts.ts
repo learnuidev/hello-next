@@ -29,6 +29,7 @@ export function useShortCuts() {
       if (event.key === "h" && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         // router.push("/");
+        router.push("/nmm");
         setMode("hsk");
       }
       if (["m"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {

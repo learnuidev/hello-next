@@ -31,6 +31,7 @@ const getEndTimeAndDiff = (startTime: number, endTime: number) => {
 export function ReviewV1(props: any) {
   const [reveal, setReveal] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const [showCorrectOptions, setShowCorrectOptions] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
   const [endTime, setEndTime] = useState(Date.now());
 
@@ -282,39 +283,62 @@ export function ReviewV1(props: any) {
               );
             })}
           </>
+        ) : showCorrectOptions ? (
+          <>
+            {[
+              { title: "1d", value: "1d" },
+              { title: "3d", value: "3d" },
+              { title: "7d", value: "7d" },
+              { title: "1m", value: "30d" },
+            ].map((option) => {
+              return (
+                <button
+                  key={JSON.stringify(option)}
+                  disabled={updateCharacterStatusMutation?.isLoading}
+                  className="hover:text-rose-400 font-extralight"
+                  onClick={() => {
+                    const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
+                    updateCharacterStatusMutation
+                      .mutateAsync({
+                        characterId: currentCharacter?.id,
+                        status: "learned",
+                        rightCount: (currentCharacter?.rightCount || 0) + 1,
+                        rightAt: Date.now(),
+                        nextReviewTime: option?.value,
+                        reviewHistory: (
+                          currentCharacter?.reviewHistory || []
+                        ).concat({
+                          outcome: "correct",
+                          createdAt: Date.now(),
+                          startTime: startTime,
+                          endTime: endTime,
+                          reviewDate: date,
+                          nextReviewTime: option?.value,
+                          timeTaken,
+                        }),
+                      } as any)
+                      .then((res) => {
+                        const startTime = Date.now();
+                        setReveal(false);
+                        setShowCorrectOptions(false);
+                        setStartTime(startTime);
+                        setEndTime(startTime);
+                        setReviewCount(reviewCount + 1);
+                      });
+                  }}
+                >
+                  {option?.title}
+                </button>
+              );
+            })}
+          </>
         ) : reveal ? (
           <>
             <button
               disabled={updateCharacterStatusMutation?.isLoading}
               className="hover:text-green-400"
               onClick={() => {
-                const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
-                updateCharacterStatusMutation
-                  .mutateAsync({
-                    characterId: currentCharacter?.id,
-                    status: "learned",
-                    rightCount: (currentCharacter?.rightCount || 0) + 1,
-                    rightAt: Date.now(),
-                    reviewHistory: (
-                      currentCharacter?.reviewHistory || []
-                    ).concat({
-                      outcome: "correct",
-                      createdAt: Date.now(),
-                      startTime: startTime,
-                      endTime: endTime,
-                      reviewDate: date,
-                      timeTaken,
-                    }),
-                  } as any)
-                  .then((res) => {
-                    const startTime = Date.now();
-                    setReveal(false);
-                    setStartTime(startTime);
-                    setEndTime(startTime);
-                    setReviewCount(reviewCount + 1);
-                  });
-
-                // setResp();
+                setShowCorrectOptions(true);
               }}
             >
               <Icons.check />

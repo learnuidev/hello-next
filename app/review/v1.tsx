@@ -26,6 +26,14 @@ const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   };
 };
 
+const getPonderTime = (endTime: number) => {
+  const ponderEndTime = Date.now();
+
+  const { timeTaken: ponderTime } = getEndTimeAndDiff(endTime, ponderEndTime);
+
+  return ponderTime;
+};
+
 export function ReviewV1(props: any) {
   const [reveal, setReveal] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
@@ -246,6 +254,8 @@ export function ReviewV1(props: any) {
                   onClick={() => {
                     const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
 
+                    const ponderTime = getPonderTime(endTime);
+
                     updateCharacterStatusMutation
                       .mutateAsync({
                         characterId: currentCharacter?.id,
@@ -263,6 +273,7 @@ export function ReviewV1(props: any) {
                           reviewDate: date,
                           nextReviewTime: option?.value,
                           timeTaken,
+                          ponderTime,
                         }),
                       } as any)
                       .then((res) => {
@@ -301,6 +312,9 @@ export function ReviewV1(props: any) {
                   className="hover:text-rose-400 font-extralight"
                   onClick={() => {
                     const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
+
+                    const ponderTime = getPonderTime(endTime);
+
                     updateCharacterStatusMutation
                       .mutateAsync({
                         characterId: currentCharacter?.id,
@@ -318,6 +332,7 @@ export function ReviewV1(props: any) {
                           reviewDate: date,
                           nextReviewTime: option?.value,
                           timeTaken,
+                          ponderTime,
                         }),
                       } as any)
                       .then((res) => {
@@ -365,6 +380,9 @@ export function ReviewV1(props: any) {
               disabled={updateCharacterStatusMutation?.isLoading}
               onClick={() => {
                 const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
+
+                const ponderTime = getPonderTime(endTime);
+
                 updateCharacterStatusMutation
                   .mutateAsync({
                     characterId: currentCharacter?.id,
@@ -381,6 +399,7 @@ export function ReviewV1(props: any) {
                       endTime: endTime,
                       reviewDate: date,
                       timeTaken,
+                      ponderTime,
                     }),
                   } as any)
                   .then((res) => {

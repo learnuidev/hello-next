@@ -70,6 +70,7 @@ export function AddApiKeyDialog({
                   </Label>
                   <Input
                     value={title}
+                    placeholder="My test key"
                     onChange={(event) => {
                       setTitle(event.target.value);
                     }}

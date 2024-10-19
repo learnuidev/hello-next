@@ -116,7 +116,7 @@ export function SettingsDialogInner({
                 <span>API Keys</span>
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="profile" className="mt-8 h-52">
+            <TabsContent value="profile" className="mt-8">
               <Card className="rounded border-black shadow-sm hover:shadow-blue-400 transition bg-[#0b0b0f]">
                 <CardHeader>
                   <CardTitle>Profile</CardTitle>
@@ -136,7 +136,7 @@ export function SettingsDialogInner({
                 </CardContent>
               </Card>
             </TabsContent>
-            <TabsContent value="account" className="mt-8 h-52">
+            <TabsContent value="account" className="mt-8">
               <Card className="rounded border-black shadow-sm hover:shadow-orange-400 transition bg-[#0b0b0f]">
                 <CardHeader>
                   <CardTitle>Password Manager</CardTitle>
@@ -152,7 +152,7 @@ export function SettingsDialogInner({
                 </CardContent>
               </Card>
             </TabsContent>
-            <TabsContent value="tracking" className="mt-8 h-52">
+            <TabsContent value="tracking" className="mt-8">
               <Card className="rounded border-black shadow-sm hover:shadow-green-400 transition bg-[#0b0b0f]">
                 <CardHeader>
                   <CardTitle>Tracking</CardTitle>
@@ -194,7 +194,7 @@ export function SettingsDialogInner({
                 </CardContent>
               </Card>
             </TabsContent>
-            <TabsContent value="learn" className="mt-8 h-52">
+            <TabsContent value="learn" className="mt-8">
               <LearnTab />
             </TabsContent>
             <TabsContent value="api-keys" className="mt-8">

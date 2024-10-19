@@ -38,7 +38,7 @@ export function AddApiKeySuccessDialog({
               <CardTitle>Save your key</CardTitle>
               <CardDescription className="text-gray-500 font-extralight">
                 <p>
-                  {`Please save this secret key somewhere safe and accessible. For security reasons, you won't be able to view it again through your OpenAI account. If you lose this secret key, you'll need to generate a new one.`}
+                  {`Please save this secret key somewhere safe and accessible. For security reasons, you won't be able to view it again through your Mandarino account. If you lose this secret key, you'll need to generate a new one.`}
                 </p>
               </CardDescription>
             </CardHeader>

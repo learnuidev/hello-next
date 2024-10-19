@@ -70,7 +70,7 @@ export function DeleteApiKeyDialog({
               Cancel
             </Button>
             <Button
-              className="bg-red-600"
+              className="bg-red-600 hover:bg-red-700 rounded"
               type="submit"
               onClick={() => {
                 deleteUserCredentialMutation

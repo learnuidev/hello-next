@@ -63,14 +63,19 @@ export function AddApiKeyDialog({
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Label className="text-gray-400"> Name </Label>
-                <Input
-                  value={title}
-                  onChange={(event) => {
-                    setTitle(event.target.value);
-                  }}
-                  className="border-gray-800 placeholder:text-gray-400"
-                />
+                <div className="space-y-2">
+                  <Label className="text-gray-400">
+                    Name{" "}
+                    <span className="text-gray-500 ml-[2px]">Optional</span>
+                  </Label>
+                  <Input
+                    value={title}
+                    onChange={(event) => {
+                      setTitle(event.target.value);
+                    }}
+                    className="border-gray-800 placeholder:text-gray-400"
+                  />
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -88,11 +93,12 @@ export function AddApiKeyDialog({
                 onClick={() => {
                   addUserCredentialMutation
                     .mutateAsync({
-                      title,
+                      title: title || `${Date.now()}`,
                     })
                     .then(({ apiKey, apiSecret }: UserCredential) => {
                       closeAddDialog();
                       setAddCredentials({ apiKey, apiSecret });
+                      setTitle("");
 
                       toast(`User credentials successfully added`);
                     });

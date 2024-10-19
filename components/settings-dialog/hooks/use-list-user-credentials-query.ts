@@ -2,7 +2,18 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const listUserCredentials = async (opts: { Authorization: string }) => {
+export interface UserCredential {
+  title: string;
+  id: string;
+  createdAt: number;
+  apiKey: string;
+  apiSecret: string;
+  previewApiSecret: string;
+}
+
+const listUserCredentials = async (opts: {
+  Authorization: string;
+}): Promise<UserCredential[]> => {
   const res = await fetch(`${siteConfig.apiUrl}/v1/list-user-credentials`, {
     method: "POST",
     headers: {
@@ -15,7 +26,7 @@ const listUserCredentials = async (opts: { Authorization: string }) => {
     throw Error(`Something went wrong`);
   }
   const resp = await res.json();
-  return resp;
+  return resp as UserCredential[];
 };
 
 export const listUserCredentialsQueryId = "list-user-credentials";

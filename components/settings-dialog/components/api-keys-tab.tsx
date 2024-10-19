@@ -34,7 +34,7 @@ export function ApiKeysTab() {
 
       <Card className="rounded border-black shadow-sm hover:shadow-green-400 transition bg-[#0b0b0f]">
         <CardHeader>
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center">
             <CardTitle>API Keys</CardTitle>
 
             <Button
@@ -46,7 +46,7 @@ export function ApiKeysTab() {
               + Add API Key
             </Button>
           </div>
-          <CardDescription className="text-gray-500 font-extralight mt-4">
+          <CardDescription className="text-gray-500 font-extralight">
             As the project owner, you can manage all API keys, but avoid sharing
             or exposing them in client-side code; Mandarino may disable any
             publicly leaked key for security.

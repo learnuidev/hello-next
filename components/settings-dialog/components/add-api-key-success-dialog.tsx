@@ -11,7 +11,9 @@ import {
 } from "@/components/ui/card";
 
 import { Input } from "@/components/input";
-import { Label } from "@radix-ui/react-label";
+import { Icons } from "@/components/ui/icons.v2";
+import { toast } from "sonner";
+import { copyTextToClipboard } from "../utils/copy-to-clipboard";
 
 export function AddApiKeySuccessDialog({
   isOpen,
@@ -43,20 +45,23 @@ export function AddApiKeySuccessDialog({
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                <Label className="text-gray-400"> API Key </Label>
+              <div className="flex items-center space-x-2">
                 <Input
-                  value={apiKey}
+                  value={`${apiKey}${apiSecret}`}
                   className="border-gray-800 placeholder:text-gray-400"
                 />
-              </div>
 
-              <div className="mt-4 space-y-2">
-                <Label className="text-gray-400"> Secret Key</Label>
-                <Input
-                  value={apiSecret}
-                  className="border-gray-800 placeholder:text-gray-400"
-                />
+                <Button
+                  onClick={() => {
+                    copyTextToClipboard(`${apiKey}${apiSecret}`).then(() => {
+                      toast("API key copied!");
+                    });
+                  }}
+                  className="bg-green-600 hover:bg-green-700 rounded space-x-2"
+                >
+                  <Icons.copy className="font-bold" />
+                  <span> Copy</span>
+                </Button>
               </div>
             </CardContent>
           </Card>

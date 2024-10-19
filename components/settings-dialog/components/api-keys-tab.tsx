@@ -20,13 +20,14 @@ function formatDate(timestamp: number) {
   return formattedDate;
 }
 
-export function ApiKeysTab() {
+export function ApiKeysTab({ closeSettings }: { closeSettings: () => void }) {
   const [isAddCredentialOpen, setIsAddCredentialOpen] = useState(false);
 
   return (
     <>
       <AddApiKeyDialog
         isOpen={isAddCredentialOpen}
+        closeSettings={closeSettings}
         closeAddDialog={() => {
           setIsAddCredentialOpen(false);
         }}

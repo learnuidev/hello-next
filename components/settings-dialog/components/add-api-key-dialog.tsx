@@ -23,9 +23,11 @@ export function AddApiKeyDialog({
   isOpen,
 
   closeAddDialog,
+  closeSettings,
 }: {
   isOpen: boolean;
   closeAddDialog: () => void;
+  closeSettings: () => void;
 }) {
   const [title, setTitle] = useState("");
   const addUserCredentialMutation = useAddUserCredentialMutation();
@@ -42,6 +44,7 @@ export function AddApiKeyDialog({
         apiKey={addCredentials?.apiKey || ""}
         closeAddDialog={() => {
           setAddCredentials(null);
+          closeSettings();
         }}
       />
 
@@ -94,7 +97,7 @@ export function AddApiKeyDialog({
                 onClick={() => {
                   addUserCredentialMutation
                     .mutateAsync({
-                      title: title || `${Date.now()}`,
+                      title: title || `Secret-Key-${Date.now()}`,
                     })
                     .then(({ apiKey, apiSecret }: UserCredential) => {
                       closeAddDialog();

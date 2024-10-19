@@ -49,10 +49,12 @@ export function ApiKeysTable() {
         </TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Name</TableHead>
-            <TableHead>API Key</TableHead>
-            <TableHead>Secret Key</TableHead>
-            <TableHead>Created At</TableHead>
+            <TableHead className="w-[100px] uppercase text-[12px]">
+              Name
+            </TableHead>
+
+            <TableHead className="uppercase text-[12px]">Secret Key</TableHead>
+            <TableHead className="uppercase text-[12px]">Created At</TableHead>
             {/* <TableHead className="text-right">Action</TableHead> */}
           </TableRow>
         </TableHeader>
@@ -60,11 +62,6 @@ export function ApiKeysTable() {
           {userCredentials?.map((credential) => (
             <TableRow key={credential?.id}>
               <TableCell className="font-medium">{credential?.title}</TableCell>
-              <TableCell className="font-medium">
-                <p className="truncate overflow-hidden">
-                  {credential?.apiKey?.slice(0, 8)}...
-                </p>
-              </TableCell>
               <TableCell className="font-medium">
                 {credential?.previewApiSecret}
               </TableCell>

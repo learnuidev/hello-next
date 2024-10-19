@@ -9,6 +9,7 @@ export interface UserCredential {
   apiKey: string;
   apiSecret: string;
   previewApiSecret: string;
+  userId: string;
 }
 
 const listUserCredentials = async (opts: {

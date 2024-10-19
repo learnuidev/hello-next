@@ -13,6 +13,7 @@ import {
   // faSeedling,
   // faPlay,
   // faTypewriter,
+  faLock as faLockSolid,
   faBrainCircuit,
   faMusicNote as faMusicNoteSolid,
   faBoltLightning as faBoltLightningSolid,
@@ -69,6 +70,7 @@ import {
   faSeedling,
   faCitrus,
   faTimeline,
+  faLock,
   // faCircleInfo,
   // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
@@ -249,4 +251,6 @@ export const Icons = {
   chartColumn: createFAIcon(faChartColumn),
   chartColumnSolid: createFAIcon(faChartColumnSolid),
   timeline: createFAIcon(faTimeline),
+  lock: createFAIcon(faLock),
+  lockSolid: createFAIcon(faLockSolid),
 };

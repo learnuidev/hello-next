@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { Button } from "@/components/ui/button";
@@ -19,10 +19,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "../input";
 import { Checkbox } from "../ui/checkbox";
-import { useLearningModeStore } from "./learning-mode.store";
+
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 
 import { useShortCuts } from "./use-short-cuts";
+
+import { ApiKeysTab } from "./components/api-keys-tab";
+import { LearnTab } from "./components/learn-tab";
 
 export function SettingsDialogInner({
   isOpen,
@@ -35,9 +38,6 @@ export function SettingsDialogInner({
   const tab = useSettingsDialogState((state) => state.tab);
   const setCurrentTab = useSettingsDialogState((state) => state.setCurrentTab);
 
-  const setMode = useLearningModeStore((state: any) => state.setMode);
-  const mode = useLearningModeStore((state: any) => state.mode);
-
   return (
     <Dialog open={isOpen}>
       <DialogContent
@@ -46,11 +46,6 @@ export function SettingsDialogInner({
         }}
         className="sm:max-w-2xl border-gray-900 bg-black mt-[-100px]"
       >
-        {/* <DialogHeader className="mb-0 pb-0 flex">
-          <DialogTitle>Accounts & Settings</DialogTitle>
-        </DialogHeader> */}
-
-        {/* <h1 className="mb-0">Accounts & Settings</h1> */}
         <div>
           <Tabs
             onValueChange={(value) => {
@@ -108,6 +103,17 @@ export function SettingsDialogInner({
               >
                 {tab === "learn" ? <Icons.brain /> : <Icons.glassesRound />}
                 <span>Learn</span>
+              </TabsTrigger>
+              <TabsTrigger
+                className={cn(
+                  "px-0 mx-0 space-x-2",
+                  tab === "api-keys" ? "text-white" : "text-gray-500",
+                  "transition"
+                )}
+                value="api-keys"
+              >
+                {tab === "api-keys" ? <Icons.lockSolid /> : <Icons.lock />}
+                <span>API Keys</span>
               </TabsTrigger>
             </TabsList>
             <TabsContent value="profile" className="mt-8 h-52">
@@ -189,112 +195,10 @@ export function SettingsDialogInner({
               </Card>
             </TabsContent>
             <TabsContent value="learn" className="mt-8 h-52">
-              <Card className="rounded border-black shadow-sm hover:shadow-green-400 transition bg-[#0b0b0f]">
-                <CardHeader>
-                  <CardTitle>Learn</CardTitle>
-                  <CardDescription className="text-gray-500 font-extralight">
-                    Select your preferred learning method
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
-                  <div>
-                    <div className="flex z-50 items-center space-x-2">
-                      <Checkbox
-                        checked={mode === "nmm"}
-                        onCheckedChange={(event) => {
-                          if (event) {
-                            setMode("nmm");
-                          } else {
-                            setMode("");
-                          }
-                        }}
-                      />
-                      <Label htmlFor="airplane-mode">Mandarin Blueprint</Label>
-                    </div>
-
-                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-                      Based on Mandarin Blueprint Curriculum
-                    </p>
-                  </div>
-                  <div>
-                    <div className="flex z-50 items-center space-x-2">
-                      <Checkbox
-                        checked={mode === "hsk"}
-                        onCheckedChange={(event) => {
-                          if (event) {
-                            setMode("hsk");
-                          } else {
-                            setMode("");
-                          }
-                        }}
-                      />
-                      <Label htmlFor="airplane-mode">HSK</Label>
-                    </div>
-
-                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-                      Great for HSK Exam Preparation (Recommended)
-                    </p>
-                  </div>
-                  <div>
-                    <div className="flex z-50 items-center space-x-2">
-                      <Checkbox
-                        checked={mode === "hsk3"}
-                        onCheckedChange={(event) => {
-                          if (event) {
-                            setMode("hsk3");
-                          } else {
-                            setMode("");
-                          }
-                        }}
-                      />
-                      <Label htmlFor="airplane-mode">HSK 3.0</Label>
-                    </div>
-
-                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-                      For HSK 3.0 Exam Preparation
-                    </p>
-                  </div>
-                  <div>
-                    <div className="flex z-50 items-center space-x-2">
-                      <Checkbox
-                        checked={mode === "yct"}
-                        onCheckedChange={(event) => {
-                          if (event) {
-                            setMode("yct");
-                          } else {
-                            setMode("");
-                          }
-                        }}
-                      />
-                      <Label htmlFor="airplane-mode">YCT</Label>
-                    </div>
-
-                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-                      Great for Youth Chinese Test Preparation
-                    </p>
-                  </div>
-                  <div>
-                    <div className="flex z-50 items-center space-x-2">
-                      <Checkbox
-                        checked={mode === "xiaoma"}
-                        onCheckedChange={(event) => {
-                          if (event) {
-                            setMode("xiaoma");
-                          } else {
-                            setMode("");
-                          }
-                        }}
-                      />
-                      <Label htmlFor="airplane-mode">Xiaoma</Label>
-                    </div>
-
-                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-                      Based on Street Mandarin by Xiaoma (Focuses on Speaking
-                      Chinese)
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+              <LearnTab />
+            </TabsContent>
+            <TabsContent value="api-keys" className="mt-8">
+              <ApiKeysTab />
             </TabsContent>
           </Tabs>
         </div>

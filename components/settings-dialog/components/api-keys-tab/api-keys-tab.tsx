@@ -1,7 +1,5 @@
 import { Button } from "@/components/ui/button";
 
-import { format } from "date-fns";
-
 import {
   Card,
   CardContent,
@@ -14,11 +12,6 @@ import { useState } from "react";
 
 import { AddApiKeyDialog } from "./components/add-api-key-dialog";
 import { ApiKeysTable } from "./components/api-keys-table";
-
-function formatDate(timestamp: number) {
-  const formattedDate = format(timestamp, "MMM d, yyyy");
-  return formattedDate;
-}
 
 export function ApiKeysTab({ closeSettings }: { closeSettings: () => void }) {
   const [isAddCredentialOpen, setIsAddCredentialOpen] = useState(false);
@@ -41,7 +34,6 @@ export function ApiKeysTab({ closeSettings }: { closeSettings: () => void }) {
             <Button
               className="rounded-full hover:border-rose-400"
               variant="outline"
-              // className="bg-green-600 hover:bg-green-700 rounded"
               onClick={() => {
                 setIsAddCredentialOpen(true);
               }}

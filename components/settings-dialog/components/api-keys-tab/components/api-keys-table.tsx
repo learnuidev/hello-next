@@ -8,7 +8,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useListUserCredentialsQuery } from "@/components/settings-dialog/hooks/use-list-user-credentials-query";
+import {
+  useListUserCredentialsQuery,
+  UserCredential,
+} from "@/components/settings-dialog/hooks/use-list-user-credentials-query";
 
 import { Icons } from "@/components/ui/icons.v2";
 
@@ -16,6 +19,7 @@ import { useState } from "react";
 
 import { DeleteApiKeyDialog } from "./delete-api-key-dialog";
 import { formatDate } from "@/components/settings-dialog/utils/format-date";
+import { UpdateUserCredentialDialog } from "./update-user-credential-dialog";
 
 export function ApiKeysTable() {
   const {
@@ -25,6 +29,7 @@ export function ApiKeysTable() {
   } = useListUserCredentialsQuery();
 
   const [deleteId, setDeleteId] = useState("");
+  const [userCredential, setUpdateItem] = useState<UserCredential | null>(null);
 
   if (isLoading) {
     return null;
@@ -65,6 +70,15 @@ export function ApiKeysTable() {
           setDeleteId("");
         }}
       />
+      {userCredential && (
+        <UpdateUserCredentialDialog
+          userCredential={userCredential}
+          isOpen={Boolean(userCredential)}
+          closeDialog={() => {
+            setUpdateItem(null);
+          }}
+        />
+      )}
 
       <Table>
         <TableCaption className="text-gray-500">
@@ -95,13 +109,22 @@ export function ApiKeysTable() {
               <TableCell>{formatDate(credential?.createdAt)}</TableCell>
               {/* <TableCell>{credential.paymentMethod}</TableCell> */}
               <TableCell className="text-right" colSpan={3}>
-                <button
-                  onClick={() => {
-                    setDeleteId(credential?.id);
-                  }}
-                >
-                  <Icons.trash />
-                </button>
+                <div className="space-x-4">
+                  <button
+                    onClick={() => {
+                      setUpdateItem(credential);
+                    }}
+                  >
+                    <Icons.edit />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setDeleteId(credential?.id);
+                    }}
+                  >
+                    <Icons.trash />
+                  </button>
+                </div>
               </TableCell>
             </TableRow>
           ))}

@@ -9,6 +9,8 @@ export interface UserCredential {
   apiKey: string;
   apiSecret: string;
   previewApiSecret: string;
+  scopes: string[];
+  permissionType: string;
   userId: string;
 }
 

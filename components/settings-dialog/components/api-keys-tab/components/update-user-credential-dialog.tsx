@@ -6,7 +6,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,7 +14,6 @@ import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { UserCredential } from "@/components/settings-dialog/hooks/use-list-user-credentials-query";
-import { useAddUserCredentialMutation } from "@/components/settings-dialog/hooks/use-add-user-credential-mutation";
 
 import { useState } from "react";
 import { Input } from "@/components/input";
@@ -33,21 +31,23 @@ import {
 } from "../constants/permissions-list";
 import { getScopes } from "../utils/get-scopes";
 import { getName } from "../utils/get-name";
+import { useUpdateUserCredentialMutation } from "@/components/settings-dialog/hooks/use-update-user-credential-mutation";
 
-export function AddApiKeyDialog({
+export function UpdateUserCredentialDialog({
   isOpen,
-
-  closeAddDialog,
-  closeSettings,
+  userCredential,
+  closeDialog,
 }: {
   isOpen: boolean;
-  closeAddDialog: () => void;
-  closeSettings: () => void;
+  closeDialog: () => void;
+  userCredential: UserCredential;
 }) {
-  const [title, setTitle] = useState("");
-  const [permissionType, setPermissionType] = useState(defaultPermissionType);
-  const [scopes, setScopes] = useState<string[]>(noneOnlyScopes);
-  const addUserCredentialMutation = useAddUserCredentialMutation();
+  const [title, setTitle] = useState(userCredential.title);
+  const [permissionType, setPermissionType] = useState(
+    userCredential.permissionType
+  );
+  const [scopes, setScopes] = useState<string[]>(userCredential.scopes);
+  const updateUserCredentialMutation = useUpdateUserCredentialMutation();
   const [addCredentials, setAddCredentials] = useState<{
     apiKey?: string;
     apiSecret: string;
@@ -88,14 +88,14 @@ export function AddApiKeyDialog({
         apiKey={addCredentials?.apiKey || ""}
         closeAddDialog={() => {
           setAddCredentials(null);
-          closeSettings();
+          // closeSettings();
         }}
       />
 
       <Dialog open={isOpen}>
         <DialogContent
           onClick={() => {
-            closeAddDialog();
+            closeDialog();
           }}
           className="sm:max-w-2xl border-gray-900 bg-black mt-[-100px]"
         >
@@ -136,7 +136,7 @@ export function AddApiKeyDialog({
                         setPermissionType(value);
                       }}
                     >
-                      <TabsList className="grid grid-cols-5">
+                      <TabsList className="grid grid-cols-5 ">
                         {permissionTypes?.map((permissionType) => {
                           return (
                             <TabsTrigger
@@ -191,7 +191,7 @@ export function AddApiKeyDialog({
             <div className="space-x-4 px-4">
               <Button
                 onClick={() => {
-                  closeAddDialog();
+                  closeDialog();
                 }}
               >
                 Cancel
@@ -204,14 +204,15 @@ export function AddApiKeyDialog({
                   scopes?.every((scope) => isNoneOnlyScope(scope))
                 }
                 onClick={() => {
-                  addUserCredentialMutation
+                  updateUserCredentialMutation
                     .mutateAsync({
+                      id: userCredential.id,
+                      permissionType: permissionType,
                       title: title || getName(permissionType),
                       scopes: getScopes(permissionType, scopes),
-                      permissionType,
                     })
                     .then(({ apiKey, apiSecret }: UserCredential) => {
-                      closeAddDialog();
+                      closeDialog();
                       setAddCredentials({ apiKey, apiSecret });
                       resetState();
 
@@ -219,9 +220,9 @@ export function AddApiKeyDialog({
                     });
                 }}
               >
-                {addUserCredentialMutation?.isLoading
-                  ? "Creating..."
-                  : "Create secret key"}
+                {updateUserCredentialMutation?.isLoading
+                  ? "Updating..."
+                  : "Update"}
               </Button>
             </div>
           </DialogFooter>

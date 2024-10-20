@@ -1,20 +1,24 @@
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { listUserCredentialsQueryId } from "./use-list-user-credentials-query";
+import {
+  listUserCredentialsQueryId,
+  UserCredential,
+} from "./use-list-user-credentials-query";
 
-interface AddCredentialParams {
+interface UpdateCredentialParams {
+  id: string;
   title: string;
   scopes: string[];
   permissionType: string;
 }
-const addUserCredential = async (
-  params: AddCredentialParams,
+const updateUserCredential = async (
+  params: UpdateCredentialParams,
   opts: {
     Authorization: string;
   }
 ) => {
-  const res = await fetch(`${siteConfig.apiUrl}/v1/add-user-credential`, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/update-user-credential`, {
     method: "POST",
     headers: {
       Authorization: `${opts?.Authorization}`,
@@ -25,13 +29,13 @@ const addUserCredential = async (
   return resp;
 };
 
-export const useAddUserCredentialMutation = (options = {} as any) => {
+export const useUpdateUserCredentialMutation = (options = {} as any) => {
   const { data: authUser } = useCurrentAuthUser({});
 
   const queryClient = useQueryClient();
   return useMutation(
-    async (params: AddCredentialParams) => {
-      const response = await addUserCredential(params, {
+    async (params: UpdateCredentialParams) => {
+      const response = await updateUserCredential(params, {
         Authorization: authUser?.jwt,
       });
       return response;

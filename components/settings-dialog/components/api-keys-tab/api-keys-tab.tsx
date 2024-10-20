@@ -12,8 +12,8 @@ import {
 
 import { useState } from "react";
 
-import { AddApiKeyDialog } from "./add-api-key-dialog";
-import { ApiKeysTable } from "./api-keys-table";
+import { AddApiKeyDialog } from "./components/add-api-key-dialog";
+import { ApiKeysTable } from "./components/api-keys-table";
 
 function formatDate(timestamp: number) {
   const formattedDate = format(timestamp, "MMM d, yyyy");

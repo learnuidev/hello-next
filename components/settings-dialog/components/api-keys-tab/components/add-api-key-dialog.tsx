@@ -14,8 +14,8 @@ import { toast } from "sonner";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { UserCredential } from "../../hooks/use-list-user-credentials-query";
-import { useAddUserCredentialMutation } from "../../hooks/use-add-user-credential-mutation";
+import { UserCredential } from "@/components/settings-dialog/hooks/use-list-user-credentials-query";
+import { useAddUserCredentialMutation } from "@/components/settings-dialog/hooks/use-add-user-credential-mutation";
 
 import { useState } from "react";
 import { Input } from "@/components/input";
@@ -30,9 +30,9 @@ import {
   noneOnlyScopes,
   permissionsList,
   permissionTypes,
-} from "./constants/permissions-list";
-import { getScopes } from "./utils/get-scopes";
-import { getName } from "./utils/get-name";
+} from "../constants/permissions-list";
+import { getScopes } from "../utils/get-scopes";
+import { getName } from "../utils/get-name";
 
 export function AddApiKeyDialog({
   isOpen,

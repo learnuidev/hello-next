@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/input";
 import { Icons } from "@/components/ui/icons.v2";
 import { toast } from "sonner";
-import { copyTextToClipboard } from "../../utils/copy-to-clipboard";
+import { copyTextToClipboard } from "@/components/settings-dialog/utils/copy-to-clipboard";
 
 export function AddApiKeySuccessDialog({
   isOpen,

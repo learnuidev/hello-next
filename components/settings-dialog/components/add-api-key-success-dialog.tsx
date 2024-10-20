@@ -57,7 +57,9 @@ export function AddApiKeySuccessDialog({
                       toast("API key copied!");
                     });
                   }}
-                  className="bg-green-600 hover:bg-green-700 rounded space-x-2"
+                  variant="outline"
+                  className="rounded-full space-x-2 hover:border-orange-400"
+                  // className="bg-green-600 hover:bg-green-700 rounded space-x-2"
                 >
                   <Icons.copy className="font-bold" />
                   <span> Copy</span>

@@ -33,13 +33,15 @@ export function ApiKeysTab({ closeSettings }: { closeSettings: () => void }) {
         }}
       />
 
-      <Card className="rounded border-black shadow-sm hover:shadow-green-400 transition bg-[#0b0b0f]">
+      <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
         <CardHeader>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center mb-4">
             <CardTitle>API Keys</CardTitle>
 
             <Button
-              className="bg-green-600 hover:bg-green-700 rounded"
+              className="rounded-full hover:border-orange-400"
+              variant="outline"
+              // className="bg-green-600 hover:bg-green-700 rounded"
               onClick={() => {
                 setIsAddCredentialOpen(true);
               }}

@@ -15,7 +15,7 @@ export function LearnTab() {
   const mode = useLearningModeStore((state: any) => state.mode);
 
   return (
-    <Card className="rounded border-black shadow-sm hover:shadow-green-400 transition bg-[#0b0b0f]">
+    <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
       <CardHeader>
         <CardTitle>Learn</CardTitle>
         <CardDescription className="text-gray-500 font-extralight">

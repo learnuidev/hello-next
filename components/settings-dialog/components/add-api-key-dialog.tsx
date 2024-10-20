@@ -93,7 +93,9 @@ export function AddApiKeyDialog({
                 Cancel
               </Button>
               <Button
-                className="bg-green-600 hover:bg-green-700 rounded"
+                variant="outline"
+                className="rounded-full hover:border-orange-400"
+                // className="bg-green-600 hover:bg-green-700 rounded"
                 onClick={() => {
                   addUserCredentialMutation
                     .mutateAsync({

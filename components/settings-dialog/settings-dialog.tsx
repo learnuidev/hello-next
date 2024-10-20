@@ -117,7 +117,7 @@ export function SettingsDialogInner({
               </TabsTrigger>
             </TabsList>
             <TabsContent value="profile" className="mt-8">
-              <Card className="rounded border-black shadow-sm hover:shadow-blue-400 transition bg-[#0b0b0f]">
+              <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
                 <CardHeader>
                   <CardTitle>Profile</CardTitle>
                   <CardDescription className="text-gray-500 font-extralight">
@@ -137,7 +137,7 @@ export function SettingsDialogInner({
               </Card>
             </TabsContent>
             <TabsContent value="account" className="mt-8">
-              <Card className="rounded border-black shadow-sm hover:shadow-orange-400 transition bg-[#0b0b0f]">
+              <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
                 <CardHeader>
                   <CardTitle>Password Manager</CardTitle>
                   <CardDescription className="text-gray-500 font-extralight">
@@ -153,7 +153,7 @@ export function SettingsDialogInner({
               </Card>
             </TabsContent>
             <TabsContent value="tracking" className="mt-8">
-              <Card className="rounded border-black shadow-sm hover:shadow-green-400 transition bg-[#0b0b0f]">
+              <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
                 <CardHeader>
                   <CardTitle>Tracking</CardTitle>
                   <CardDescription className="text-gray-500 font-extralight">

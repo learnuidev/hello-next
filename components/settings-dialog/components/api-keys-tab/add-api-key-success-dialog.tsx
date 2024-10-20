@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/input";
 import { Icons } from "@/components/ui/icons.v2";
 import { toast } from "sonner";
-import { copyTextToClipboard } from "../utils/copy-to-clipboard";
+import { copyTextToClipboard } from "../../utils/copy-to-clipboard";
 
 export function AddApiKeySuccessDialog({
   isOpen,
@@ -58,7 +58,7 @@ export function AddApiKeySuccessDialog({
                     });
                   }}
                   variant="outline"
-                  className="rounded-full space-x-2 hover:border-rose-400"
+                  className="rounded-full space-x-2 hover:border-rose-400 border-gray-800"
                   // className="bg-green-600 hover:bg-green-700 rounded space-x-2"
                 >
                   <Icons.copy className="font-bold" />

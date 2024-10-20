@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/card";
 import { toast } from "sonner";
 
-import { UserCredential } from "../hooks/use-list-user-credentials-query";
-import { useAddUserCredentialMutation } from "../hooks/use-add-user-credential-mutation";
+import { UserCredential } from "../../hooks/use-list-user-credentials-query";
+import { useAddUserCredentialMutation } from "../../hooks/use-add-user-credential-mutation";
 
 import { useState } from "react";
 import { Input } from "@/components/input";

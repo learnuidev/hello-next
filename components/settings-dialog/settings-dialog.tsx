@@ -24,8 +24,8 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 
 import { useShortCuts } from "./use-short-cuts";
 
-import { ApiKeysTab } from "./components/api-keys-tab";
-import { LearnTab } from "./components/learn-tab";
+import { ApiKeysTab } from "./components/api-keys-tab/api-keys-tab";
+import { LearnTab } from "./components/learn-tab/learn-tab";
 
 export function SettingsDialogInner({
   isOpen,

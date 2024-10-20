@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useLearningModeStore } from "../learning-mode.store";
+import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export function LearnTab() {

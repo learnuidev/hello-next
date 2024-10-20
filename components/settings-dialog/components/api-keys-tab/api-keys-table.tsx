@@ -8,14 +8,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { useListUserCredentialsQuery } from "../hooks/use-list-user-credentials-query";
+import { useListUserCredentialsQuery } from "@/components/settings-dialog/hooks/use-list-user-credentials-query";
 
 import { Icons } from "@/components/ui/icons.v2";
 
 import { useState } from "react";
 
 import { DeleteApiKeyDialog } from "./delete-api-key-dialog";
-import { formatDate } from "../utils/format-date";
+import { formatDate } from "@/components/settings-dialog/utils/format-date";
 
 export function ApiKeysTable() {
   const { data: userCredentials, isError } = useListUserCredentialsQuery();

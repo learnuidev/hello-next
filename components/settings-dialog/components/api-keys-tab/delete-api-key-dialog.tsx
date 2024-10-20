@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/card";
 import { toast } from "sonner";
 
-import { useListUserCredentialsQuery } from "../hooks/use-list-user-credentials-query";
+import { useListUserCredentialsQuery } from "@/components/settings-dialog/hooks/use-list-user-credentials-query";
 
-import { useDeleteUserCredentialMutation } from "../hooks/use-delete-user-credential-mutation";
+import { useDeleteUserCredentialMutation } from "@/components/settings-dialog/hooks/use-delete-user-credential-mutation";
 
 import { Input } from "@/components/input";
 

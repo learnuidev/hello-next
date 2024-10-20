@@ -38,11 +38,9 @@ export function AddUserCredentialDialog({
   isOpen,
 
   closeAddDialog,
-  closeSettings,
 }: {
   isOpen: boolean;
   closeAddDialog: () => void;
-  closeSettings: () => void;
 }) {
   const [title, setTitle] = useState("");
   const [permissionType, setPermissionType] = useState(defaultPermissionType);
@@ -88,7 +86,6 @@ export function AddUserCredentialDialog({
         apiKey={addCredentials?.apiKey || ""}
         closeAddDialog={() => {
           setAddCredentials(null);
-          closeSettings();
         }}
       />
 

@@ -13,14 +13,13 @@ import { useState } from "react";
 import { AddUserCredentialDialog } from "./components/add-user-credential-dialog";
 import { ApiKeysTable } from "./components/api-keys-table";
 
-export function ApiKeysTab({ closeSettings }: { closeSettings: () => void }) {
+export function ApiKeysTab() {
   const [isAddCredentialOpen, setIsAddCredentialOpen] = useState(false);
 
   return (
     <>
       <AddUserCredentialDialog
         isOpen={isAddCredentialOpen}
-        closeSettings={closeSettings}
         closeAddDialog={() => {
           setIsAddCredentialOpen(false);
         }}

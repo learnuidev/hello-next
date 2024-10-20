@@ -198,7 +198,7 @@ export function SettingsDialogInner({
               <LearnTab />
             </TabsContent>
             <TabsContent value="api-keys" className="mt-8">
-              <ApiKeysTab closeSettings={closeSettings} />
+              <ApiKeysTab />
             </TabsContent>
           </Tabs>
         </div>

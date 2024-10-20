@@ -27,6 +27,7 @@ export function ApiKeysTable() {
   const [deleteId, setDeleteId] = useState("");
 
   if (isLoading) {
+    return null;
     return (
       <div className="text-center my-8">
         <Icons.mandarin className="text-2xl mb-4 text-gray-500" />

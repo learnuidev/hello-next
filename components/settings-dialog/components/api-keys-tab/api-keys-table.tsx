@@ -18,9 +18,31 @@ import { DeleteApiKeyDialog } from "./delete-api-key-dialog";
 import { formatDate } from "@/components/settings-dialog/utils/format-date";
 
 export function ApiKeysTable() {
-  const { data: userCredentials, isError } = useListUserCredentialsQuery();
+  const {
+    data: userCredentials,
+    isError,
+    isLoading,
+  } = useListUserCredentialsQuery();
 
   const [deleteId, setDeleteId] = useState("");
+
+  if (isLoading) {
+    return (
+      <div className="text-center my-8">
+        <Icons.mandarin className="text-2xl mb-4 text-gray-500" />
+        <p className="text-gray-400 font-light">Loading...</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="text-center my-8">
+        <Icons.info className="text-2xl mb-4 text-gray-500" />
+        <p className="text-gray-400 font-light">Something went wrong!</p>
+      </div>
+    );
+  }
 
   if (!userCredentials?.length) {
     return (

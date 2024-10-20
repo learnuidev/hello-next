@@ -44,7 +44,7 @@ export function ApiKeysTab({ closeSettings }: { closeSettings: () => void }) {
                 setIsAddCredentialOpen(true);
               }}
             >
-              + Add API Key
+              + Add new secret key
             </Button>
           </div>
           <CardDescription className="text-gray-500 font-extralight">

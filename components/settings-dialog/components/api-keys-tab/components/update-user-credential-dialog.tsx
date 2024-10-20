@@ -15,10 +15,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { UserCredential } from "@/components/settings-dialog/hooks/use-list-user-credentials-query";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/input";
 import { Label } from "@radix-ui/react-label";
-import { AddApiKeySuccessDialog } from "./add-api-key-success-dialog";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PermissionItem } from "./permission-item";
@@ -82,16 +81,6 @@ export function UpdateUserCredentialDialog({
 
   return (
     <>
-      <AddApiKeySuccessDialog
-        isOpen={Boolean(addCredentials)}
-        apiSecret={addCredentials?.apiSecret || ""}
-        apiKey={addCredentials?.apiKey || ""}
-        closeAddDialog={() => {
-          setAddCredentials(null);
-          // closeSettings();
-        }}
-      />
-
       <Dialog open={isOpen}>
         <DialogContent
           onClick={() => {
@@ -213,7 +202,6 @@ export function UpdateUserCredentialDialog({
                     })
                     .then(({ apiKey, apiSecret }: UserCredential) => {
                       closeDialog();
-                      setAddCredentials({ apiKey, apiSecret });
                       resetState();
 
                       toast(`User credentials successfully added`);

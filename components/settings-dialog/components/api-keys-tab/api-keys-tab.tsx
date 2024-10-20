@@ -10,7 +10,7 @@ import {
 
 import { useState } from "react";
 
-import { AddApiKeyDialog } from "./components/add-api-key-dialog";
+import { AddUserCredentialDialog } from "./components/add-user-credential-dialog";
 import { ApiKeysTable } from "./components/api-keys-table";
 
 export function ApiKeysTab({ closeSettings }: { closeSettings: () => void }) {
@@ -18,7 +18,7 @@ export function ApiKeysTab({ closeSettings }: { closeSettings: () => void }) {
 
   return (
     <>
-      <AddApiKeyDialog
+      <AddUserCredentialDialog
         isOpen={isAddCredentialOpen}
         closeSettings={closeSettings}
         closeAddDialog={() => {

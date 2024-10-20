@@ -15,7 +15,7 @@ import { Icons } from "@/components/ui/icons.v2";
 import { toast } from "sonner";
 import { copyTextToClipboard } from "@/components/settings-dialog/utils/copy-to-clipboard";
 
-export function AddApiKeySuccessDialog({
+export function AddUserCredentialSuccessDialog({
   isOpen,
   apiKey,
   apiSecret,

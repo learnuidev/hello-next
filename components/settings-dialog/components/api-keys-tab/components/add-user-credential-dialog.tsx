@@ -20,7 +20,7 @@ import { useAddUserCredentialMutation } from "@/components/settings-dialog/hooks
 import { useState } from "react";
 import { Input } from "@/components/input";
 import { Label } from "@radix-ui/react-label";
-import { AddApiKeySuccessDialog } from "./add-api-key-success-dialog";
+import { AddUserCredentialSuccessDialog } from "./add-user-credential-success-dialog";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PermissionItem } from "./permission-item";
@@ -34,7 +34,7 @@ import {
 import { getScopes } from "../utils/get-scopes";
 import { getName } from "../utils/get-name";
 
-export function AddApiKeyDialog({
+export function AddUserCredentialDialog({
   isOpen,
 
   closeAddDialog,
@@ -82,7 +82,7 @@ export function AddApiKeyDialog({
 
   return (
     <>
-      <AddApiKeySuccessDialog
+      <AddUserCredentialSuccessDialog
         isOpen={Boolean(addCredentials)}
         apiSecret={addCredentials?.apiSecret || ""}
         apiKey={addCredentials?.apiKey || ""}

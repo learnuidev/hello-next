@@ -58,7 +58,7 @@ export function AddApiKeySuccessDialog({
                     });
                   }}
                   variant="outline"
-                  className="rounded-full space-x-2 hover:border-orange-400"
+                  className="rounded-full space-x-2 hover:border-rose-400"
                   // className="bg-green-600 hover:bg-green-700 rounded space-x-2"
                 >
                   <Icons.copy className="font-bold" />

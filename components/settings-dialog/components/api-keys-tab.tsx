@@ -39,7 +39,7 @@ export function ApiKeysTab({ closeSettings }: { closeSettings: () => void }) {
             <CardTitle>API Keys</CardTitle>
 
             <Button
-              className="rounded-full hover:border-orange-400"
+              className="rounded-full hover:border-rose-400"
               variant="outline"
               // className="bg-green-600 hover:bg-green-700 rounded"
               onClick={() => {

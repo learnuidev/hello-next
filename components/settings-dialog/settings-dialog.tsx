@@ -209,7 +209,7 @@ export function SettingsDialogInner({
               closeSettings();
             }}
           >
-            Save changes
+            Close Settings
           </Button>
         </DialogFooter>
       </DialogContent>

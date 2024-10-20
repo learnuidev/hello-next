@@ -86,7 +86,7 @@ export function UpdateUserCredentialDialog({
           onClick={() => {
             closeDialog();
           }}
-          className="sm:max-w-2xl border-gray-900 bg-black mt-[-100px]"
+          className="sm:max-w-2xl border-gray-900 bg-black mt-[-100px] p-8"
         >
           <div>
             <Card className="rounded border-black shadow-sm transition bg-[#0b0b0f] p-8">
@@ -177,7 +177,7 @@ export function UpdateUserCredentialDialog({
             </Card>
           </div>
           <DialogFooter>
-            <div className="space-x-4 px-4">
+            <div className="space-x-4">
               <Button
                 onClick={() => {
                   closeDialog();

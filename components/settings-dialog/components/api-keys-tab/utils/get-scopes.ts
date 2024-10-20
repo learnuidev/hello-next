@@ -12,5 +12,5 @@ export const getScopes = (
     return readOnlyScopes;
   }
 
-  return scopes.filter((item) => !item?.includes("none"));
+  return scopes;
 };

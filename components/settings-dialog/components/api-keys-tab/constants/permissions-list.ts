@@ -105,7 +105,15 @@ const getScopesByType = (type: string) => {
     .map((x) => x.scopesList)
     .flat()
     .map((x) => x.id)
-    .filter((item) => item?.includes(type));
+    .filter((item) => {
+      if (type === "write") {
+        if (item?.includes("search") || item.includes("analytics")) {
+          return item?.includes("read");
+        }
+      }
+
+      return item?.includes(type);
+    });
 };
 
 export const isNoneOnlyScope = (scope: string): boolean => {
@@ -114,3 +122,4 @@ export const isNoneOnlyScope = (scope: string): boolean => {
 
 export const noneOnlyScopes = getScopesByType("none");
 export const readOnlyScopes = getScopesByType("read");
+export const writeOnlyScopes = getScopesByType("write");

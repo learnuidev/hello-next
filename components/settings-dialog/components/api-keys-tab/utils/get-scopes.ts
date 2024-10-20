@@ -1,11 +1,11 @@
-import { readOnlyScopes } from "../constants/permissions-list";
+import { readOnlyScopes, writeOnlyScopes } from "../constants/permissions-list";
 
 export const getScopes = (
   permissionType: string,
   scopes: string[]
 ): string[] => {
   if (permissionType === "all") {
-    return ["*"];
+    return writeOnlyScopes;
   }
 
   if (permissionType === "read-only") {

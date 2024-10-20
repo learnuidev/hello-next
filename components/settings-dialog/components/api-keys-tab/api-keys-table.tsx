@@ -71,19 +71,23 @@ export function ApiKeysTable() {
           A list of your recent API Keys.
         </TableCaption>
         <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px] uppercase text-[12px]">
+          <TableRow className="border-gray-700">
+            <TableHead className="w-[100px] uppercase text-[12px] text-gray-400 font-semibold">
               Name
             </TableHead>
 
-            <TableHead className="uppercase text-[12px]">Secret Key</TableHead>
-            <TableHead className="uppercase text-[12px]">Created At</TableHead>
+            <TableHead className="uppercase text-[12px] text-gray-400 font-semibold">
+              Secret Key
+            </TableHead>
+            <TableHead className="uppercase text-[12px] text-gray-400 font-semibold">
+              Created At
+            </TableHead>
             {/* <TableHead className="text-right">Action</TableHead> */}
           </TableRow>
         </TableHeader>
         <TableBody>
           {userCredentials?.map((credential) => (
-            <TableRow key={credential?.id}>
+            <TableRow key={credential?.id} className="border-gray-800">
               <TableCell className="font-medium">{credential?.title}</TableCell>
               <TableCell className="font-medium">
                 {credential?.previewApiSecret}

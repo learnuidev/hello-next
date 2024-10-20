@@ -3,10 +3,12 @@ import { siteConfig } from "@/lib/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { listUserCredentialsQueryId } from "./use-list-user-credentials-query";
 
+interface AddCredentialParams {
+  title: string;
+  scopes: string[];
+}
 const addUserCredential = async (
-  params: {
-    title: string;
-  },
+  params: AddCredentialParams,
   opts: {
     Authorization: string;
   }
@@ -27,7 +29,7 @@ export const useAddUserCredentialMutation = (options = {} as any) => {
 
   const queryClient = useQueryClient();
   return useMutation(
-    async (params: { title: string }) => {
+    async (params: AddCredentialParams) => {
       const response = await addUserCredential(params, {
         Authorization: authUser?.jwt,
       });

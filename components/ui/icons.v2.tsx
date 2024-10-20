@@ -71,6 +71,7 @@ import {
   faCitrus,
   faTimeline,
   faLock,
+  faInfoCircle,
   // faCircleInfo,
   // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
@@ -253,4 +254,5 @@ export const Icons = {
   timeline: createFAIcon(faTimeline),
   lock: createFAIcon(faLock),
   lockSolid: createFAIcon(faLockSolid),
+  infoCircle: createFAIcon(faInfoCircle),
 };

@@ -6,10 +6,13 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { UserCredential } from "../../hooks/use-list-user-credentials-query";
 import { useAddUserCredentialMutation } from "../../hooks/use-add-user-credential-mutation";
@@ -18,6 +21,18 @@ import { useState } from "react";
 import { Input } from "@/components/input";
 import { Label } from "@radix-ui/react-label";
 import { AddApiKeySuccessDialog } from "./add-api-key-success-dialog";
+
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { PermissionItem } from "./permission-item";
+import {
+  defaultPermissionType,
+  isNoneOnlyScope,
+  noneOnlyScopes,
+  permissionsList,
+  permissionTypes,
+} from "./constants/permissions-list";
+import { getScopes } from "./utils/get-scopes";
+import { getName } from "./utils/get-name";
 
 export function AddApiKeyDialog({
   isOpen,
@@ -30,11 +45,40 @@ export function AddApiKeyDialog({
   closeSettings: () => void;
 }) {
   const [title, setTitle] = useState("");
+  const [permissionType, setPermissionType] = useState(defaultPermissionType);
+  const [scopes, setScopes] = useState<string[]>(noneOnlyScopes);
   const addUserCredentialMutation = useAddUserCredentialMutation();
   const [addCredentials, setAddCredentials] = useState<{
     apiKey?: string;
     apiSecret: string;
   } | null>(null);
+
+  const manageScope = (scopeId: string) => {
+    setScopes((prevScopes) => {
+      const initialScopeId = scopeId?.split(".")[0];
+
+      if (prevScopes?.includes(scopeId)) {
+        return prevScopes?.filter((item) => item !== scopeId);
+      }
+
+      const exists = prevScopes?.filter((scope) =>
+        scope?.includes(initialScopeId)
+      );
+
+      if (exists?.length) {
+        return prevScopes
+          ?.filter((item) => !exists?.includes(item))
+          .concat(scopeId);
+      }
+      return prevScopes.concat(scopeId);
+    });
+  };
+
+  const resetState = () => {
+    setTitle("");
+    setScopes(noneOnlyScopes);
+    setPermissionType(defaultPermissionType);
+  };
 
   return (
     <>
@@ -66,19 +110,79 @@ export function AddApiKeyDialog({
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
-                  <Label className="text-gray-400">
-                    Name{" "}
-                    <span className="text-gray-500 ml-[2px]">Optional</span>
-                  </Label>
-                  <Input
-                    value={title}
-                    placeholder="My test key"
-                    onChange={(event) => {
-                      setTitle(event.target.value);
-                    }}
-                    className="border-gray-800 placeholder:text-gray-400"
-                  />
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-gray-300">
+                      <span className="font-bold"> Name </span>
+                      <span className="text-gray-500 ml-[2px]">Optional</span>
+                    </Label>
+                    <Input
+                      value={title}
+                      placeholder="My test key"
+                      onChange={(event) => {
+                        setTitle(event.target.value);
+                      }}
+                      className="border-gray-800 placeholder:text-gray-400"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-gray-300">
+                      <span className="font-bold"> Permissions </span>
+                    </Label>
+
+                    <Tabs
+                      defaultValue={permissionType}
+                      onValueChange={(value) => {
+                        setPermissionType(value);
+                      }}
+                    >
+                      <TabsList className="grid grid-cols-5">
+                        {permissionTypes?.map((permissionType) => {
+                          return (
+                            <TabsTrigger
+                              key={permissionType.id}
+                              className="data-[state=active]:bg-rose-500 data-[state=active]:rounded"
+                              value={permissionType.id}
+                            >
+                              {permissionType.title}
+                            </TabsTrigger>
+                          );
+                        })}
+                      </TabsList>
+                      <TabsContent value="restricted">
+                        <div className="flex justify-between items-center uppercase text-[12px] text-gray-400 font-semibold mt-2">
+                          <h3> Resources </h3>
+
+                          <p> Permissions </p>
+                        </div>
+
+                        <ScrollArea className="block space-y-6 h-[300px] rounded-md">
+                          <div className="space-y-2">
+                            {permissionsList?.map((permission) => {
+                              if (permission?.enabled) {
+                                return null;
+                              }
+
+                              return (
+                                <PermissionItem
+                                  key={permission.description}
+                                  title={permission.title}
+                                  description={permission.description}
+                                  onSelectedScope={(id) => {
+                                    manageScope(id);
+                                    console.log("TODO");
+                                  }}
+                                  selectedScopes={scopes}
+                                  scopesList={permission.scopesList}
+                                  endpointsList={permission.endpointsList}
+                                />
+                              );
+                            })}
+                          </div>
+                        </ScrollArea>
+                      </TabsContent>
+                    </Tabs>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -95,16 +199,20 @@ export function AddApiKeyDialog({
               <Button
                 variant="outline"
                 className="rounded-full hover:border-rose-400"
-                // className="bg-green-600 hover:bg-green-700 rounded"
+                disabled={
+                  permissionType === "restricted" &&
+                  scopes?.every((scope) => isNoneOnlyScope(scope))
+                }
                 onClick={() => {
                   addUserCredentialMutation
                     .mutateAsync({
-                      title: title || `Secret-Key-${Date.now()}`,
+                      title: title || getName(permissionType),
+                      scopes: getScopes(permissionType, scopes),
                     })
                     .then(({ apiKey, apiSecret }: UserCredential) => {
                       closeAddDialog();
                       setAddCredentials({ apiKey, apiSecret });
-                      setTitle("");
+                      resetState();
 
                       toast(`User credentials successfully added`);
                     });

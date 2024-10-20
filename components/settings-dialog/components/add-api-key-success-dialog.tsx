@@ -47,13 +47,13 @@ export function AddApiKeySuccessDialog({
             <CardContent>
               <div className="flex items-center space-x-2">
                 <Input
-                  value={`${apiKey}${apiSecret}`}
+                  value={`${apiSecret}`}
                   className="border-gray-800 placeholder:text-gray-400"
                 />
 
                 <Button
                   onClick={() => {
-                    copyTextToClipboard(`${apiKey}${apiSecret}`).then(() => {
+                    copyTextToClipboard(`${apiSecret}`).then(() => {
                       toast("API key copied!");
                     });
                   }}

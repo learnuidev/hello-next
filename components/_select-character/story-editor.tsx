@@ -8,7 +8,7 @@ import { Editor } from "../Editor";
 import { useStoryStore } from "./story-store";
 import { useUpdateCharacterStoryMutation } from "@/domain/lesson/character.mutations";
 
-export const StoryEditor = ({ selectedChar }: any) => {
+export const StoryEditor = ({ selectedChar, story: initStory }: any) => {
   const story = useStoryStore((state: any) => state.story);
 
   const setStory = useStoryStore((state: any) => state.setStory);
@@ -19,14 +19,23 @@ export const StoryEditor = ({ selectedChar }: any) => {
 
   return (
     <div className="my-16 text-black dark:text-white justify-start w-full md:9/12 lg:w-7/12">
-      <Editor
-        // key={JSON.stringify(selectedChar)}
-        readOnly={false}
-        content={story || selectedChar?.story}
-        onUpdate={(val: any) => {
-          setStory(val);
-        }}
-      />
+      {initStory ? (
+        <Editor
+          readOnly={false}
+          content={initStory || story || selectedChar?.story}
+          onUpdate={(val: any) => {
+            setStory(val);
+          }}
+        />
+      ) : (
+        <Editor
+          readOnly={false}
+          content={initStory || story || selectedChar?.story}
+          onUpdate={(val: any) => {
+            setStory(val);
+          }}
+        />
+      )}
 
       {story && story !== selectedChar?.story && (
         <button

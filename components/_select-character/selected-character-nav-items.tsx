@@ -4,46 +4,18 @@ import { useToast } from "@/components/ui/use-toast";
 
 import React from "react";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import {
-  faCheckCircle,
-  faGlassesRound,
-  faLanguage,
-  faLightbulb,
-  faXmark,
-} from "@fortawesome/pro-thin-svg-icons";
-
 import { useRouter } from "next/navigation";
 
-import { PlayIcon } from "../ui/icons";
-
 import { Icons } from "../ui/icons.v2";
-
-import { faSpinner } from "@fortawesome/sharp-solid-svg-icons";
 
 import { SelectedCharacterProps } from "./select-character.types";
 import { cn } from "@/lib/utils";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListSuperComponentsQuery } from "@/domain/component/super-component.queries";
+import { SelectedCharacterStoryButton } from "./selected-character-story-button";
 
 export const SelectedCharacterNavItems = (props: SelectedCharacterProps) => {
-  const {
-    selectedComp,
-    selectedChar,
-    lang,
-    setReadMode,
-    readMode,
-    isAlreadyLearned,
-    addCharacterMutation,
-    selectedComp2,
-    view,
-    setView,
-    firstLesson,
-    characterId,
-    discoverMutation,
-    deleteComponentMutation,
-  } = props;
+  const { lang, view, setView, characterId } = props;
   const router = useRouter();
 
   const { data: superComponents_ } = useListSuperComponentsQuery({
@@ -68,7 +40,7 @@ export const SelectedCharacterNavItems = (props: SelectedCharacterProps) => {
             router.push(`/nmm${lang ? `?lang=${lang}` : ""}`);
           }}
         >
-          <FontAwesomeIcon className="text-2xl" icon={faXmark} />
+          <Icons.xMark className="text-2xl" />
         </button>
 
         <button
@@ -140,19 +112,7 @@ export const SelectedCharacterNavItems = (props: SelectedCharacterProps) => {
           </button>
         )}
 
-        {learnedChar && (
-          <button
-            className={cn(
-              "text-xl transition",
-              view === "story" ? "text-white" : "text-gray-400"
-            )}
-            onClick={() => {
-              setView("story");
-            }}
-          >
-            <Icons.compass />
-          </button>
-        )}
+        <SelectedCharacterStoryButton {...props} />
 
         {characterId?.length === 1 && (
           <button

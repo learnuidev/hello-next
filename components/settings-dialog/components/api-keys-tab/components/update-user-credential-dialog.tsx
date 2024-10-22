@@ -204,7 +204,7 @@ export function UpdateUserCredentialDialog({
                       closeDialog();
                       resetState();
 
-                      toast(`User credentials successfully added`);
+                      toast(`User credentials successfully updated`);
                     });
                 }}
               >

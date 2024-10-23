@@ -32,7 +32,7 @@ export const StoryEditor = ({
       />
 
       {/* {!disableSave && story && story !== selectedChar?.story && ( */}
-      {!disableSave && story && story !== selectedChar?.story && (
+      {story && story !== selectedChar?.story && (
         <button
           className="my-12"
           onClick={() => {

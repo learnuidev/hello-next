@@ -240,6 +240,7 @@ export const StoryView = (props: SelectedCharacterProps) => {
         {storyMode === "global" ? (
           <div key="global">
             <StoryEditor
+              disableSave={true}
               key={componentWithStory?.story}
               selectedChar={selectedComp}
               story={componentWithStory?.story}

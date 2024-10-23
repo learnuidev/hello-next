@@ -19,23 +19,13 @@ export const StoryEditor = ({ selectedChar, story: initStory }: any) => {
 
   return (
     <div className="my-16 text-black dark:text-white justify-start w-full md:9/12 lg:w-7/12">
-      {initStory ? (
-        <Editor
-          readOnly={false}
-          content={initStory || story || selectedChar?.story}
-          onUpdate={(val: any) => {
-            setStory(val);
-          }}
-        />
-      ) : (
-        <Editor
-          readOnly={false}
-          content={initStory || story || selectedChar?.story}
-          onUpdate={(val: any) => {
-            setStory(val);
-          }}
-        />
-      )}
+      <Editor
+        readOnly={false}
+        content={initStory || story}
+        onUpdate={(val: any) => {
+          setStory(val);
+        }}
+      />
 
       {story && story !== selectedChar?.story && (
         <button

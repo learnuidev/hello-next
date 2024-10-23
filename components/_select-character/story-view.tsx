@@ -1,7 +1,7 @@
 "use client";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Summary } from "../summary";
 import { Icons } from "../ui/icons.v2";
 import { GrammarAnalysis } from "../grammar-analysis";
@@ -21,6 +21,8 @@ import { chineseCharacters } from "@/langs/chinese /characters";
 import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
+import { cn } from "@/lib/utils";
+import { create } from "zustand";
 
 const genStoryApi = async (
   { hanzi, lang, options }: { hanzi: string; lang: string; options: any },
@@ -83,6 +85,11 @@ const useGenStoryQuery = (
   });
 };
 
+export const useStoryModeStore = create((set: any) => ({
+  storyMode: "your-story",
+  setStoryMode: (f: any) => set({ storyMode: f }),
+}));
+
 export const StoryView = (props: SelectedCharacterProps) => {
   const {
     uniqueAnswerIds,
@@ -100,9 +107,12 @@ export const StoryView = (props: SelectedCharacterProps) => {
     selectedComp2,
   } = props;
 
-  const selected = selectedComp2 || selectedComp;
+  // const [storyMode, setStoryMode] = useState("global");
+  const storyMode = useStoryModeStore((state) => state.storyMode);
+  const setStoryMode = useStoryModeStore((state) => state.setStoryMode);
+  const story = useStoryStore((state: any) => state.story);
 
-  console.log("SELECTED COMP", selectedComp2);
+  const selected = selectedComp2 || selectedComp;
 
   const level = selectedComp?.level || selectedComp2?.level;
   const toneLevel = selectedComp?.tone_level || selectedComp2?.tone_level;
@@ -121,7 +131,7 @@ export const StoryView = (props: SelectedCharacterProps) => {
       options: {},
     },
     {
-      enabled: selectedComp2 && !Boolean(selectedComp2?.story),
+      enabled: true,
     }
   );
 
@@ -198,12 +208,52 @@ export const StoryView = (props: SelectedCharacterProps) => {
 
         <SubComponentsView lang={lang} characterId={characterId} />
 
-        <div>
-          <StoryEditor
-            selectedChar={selectedComp}
-            story={selectedComp2?.story || componentWithStory?.story}
-          />
+        <div className="space-x-4 my-8">
+          <button
+            className={cn(
+              storyMode === "your-story" ? "text-white" : "text-gray-400",
+              "space-x-2"
+            )}
+            onClick={() => {
+              setStoryMode("your-story");
+            }}
+          >
+            <Icons.book />
+
+            <span>Your Story</span>
+          </button>
+
+          <button
+            className={cn(
+              storyMode === "global" ? "text-white" : "text-gray-400",
+              "space-x-2"
+            )}
+            onClick={() => {
+              setStoryMode("global");
+            }}
+          >
+            <Icons.globeAsia />
+            <span>Global</span>
+          </button>
         </div>
+
+        {storyMode === "global" ? (
+          <div key="global">
+            <StoryEditor
+              key={componentWithStory?.story}
+              selectedChar={selectedComp}
+              story={componentWithStory?.story}
+            />
+          </div>
+        ) : (
+          <div key="your-story">
+            <StoryEditor
+              key={selectedComp2?.story}
+              selectedChar={selectedComp}
+              story={story}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

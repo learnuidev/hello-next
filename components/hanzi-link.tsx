@@ -75,7 +75,7 @@ export function HanziLink({
       <p
         className={cn(
           "top-0 text-xs text-gray-400",
-          brightMode ? "text-gray-600" : "text-black",
+          brightMode ? "text-gray-600" : "text-gray-800",
           className
         )}
       >
@@ -153,7 +153,7 @@ export function HanziLink({
       <p
         className={cn(
           "text-xs text-gray-400 w-16 truncate text-center",
-          brightMode ? "text-gray-500" : "text-black"
+          brightMode ? "text-gray-500" : "text-gray-800"
         )}
       >
         {character?.en || selectedComp?.en}

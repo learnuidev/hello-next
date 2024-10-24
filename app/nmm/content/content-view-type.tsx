@@ -11,6 +11,7 @@ import { belts } from "../utils";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { chineseCharacters } from "@/langs/chinese /characters";
 import { NmmListContainer } from "@/components/nmm-list-container";
+import { NmmListContainerSentence } from "@/components/nmm-list-container-sentence";
 
 export function ContentViewType({
   variant,
@@ -39,13 +40,13 @@ export function ContentViewType({
 
   if (viewType === "sentence") {
     return (
-      <NmmListContainer>
+      <NmmListContainerSentence>
         {xiaomaSentences?.map((prop: any, idx: number) => {
           return (
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
           );
         })}
-      </NmmListContainer>
+      </NmmListContainerSentence>
     );
   }
 

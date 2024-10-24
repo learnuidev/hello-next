@@ -24,6 +24,7 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { HanziLink } from "@/components/hanzi-link";
 import { filterComponents } from "./nmm-utils/filter-components";
 import { calculateColor } from "./nmm-utils/calculate-color";
+import { NmmListContainer } from "@/components/nmm-list-container";
 
 export function NmmCoreComponents() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
@@ -85,7 +86,7 @@ export function NmmCoreComponents() {
 
   // return "TODO";
   return (
-    <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
+    <NmmListContainer>
       {filteredComponents?.length > 0 &&
         filteredComponents
           // ?.filter((comp: any) => comp?.level < 100)
@@ -119,6 +120,6 @@ export function NmmCoreComponents() {
               </TooltipProvider>
             );
           })}
-    </div>
+    </NmmListContainer>
   );
 }

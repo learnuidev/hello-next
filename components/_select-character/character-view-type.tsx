@@ -39,6 +39,7 @@ import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { cn } from "@/lib/utils";
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
 import { StoryView } from "./story-view";
+import { CharacterTitle } from "./character-title";
 
 const HskSuperComponentsWordView = ({
   componentId,
@@ -479,28 +480,13 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
           </div>
         ) : (
           <div className="flex items-center justify-between mb-4 mt-4 pr-4">
-            <div className="flex flex-col items-start space-y-2">
-              <h2 className="text-gray-400 font-extralight">{pinyinOrRoman}</h2>
-
-              {lang === "zh" && multiSentence ? (
-                <h1 className="text-xl my-0 py-0 font-extralight">
-                  {selectedCompInput}
-                </h1>
-              ) : (
-                <h1
-                  className={cn(
-                    selectedCompInput?.length < 16
-                      ? "text-2xl md:text-4xl"
-                      : "text-xl",
-                    "my-0 py-0 font-extralight"
-                  )}
-                >
-                  {selectedCompInput}
-                </h1>
-              )}
-
-              <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
-            </div>
+            <CharacterTitle
+              pinyinOrRoman={pinyinOrRoman}
+              multiSentence={multiSentence}
+              lang={lang}
+              selectedCompInput={selectedCompInput}
+              selectedCompEn={selectedCompEn}
+            />
 
             {/* {(selectedComp2?.input || selectedComp2?.hanzi)?.length <= 8 && (
               <div className="p-2">

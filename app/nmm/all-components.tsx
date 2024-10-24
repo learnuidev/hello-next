@@ -16,6 +16,7 @@ import { useSearchQueryStore } from "@/components/search/state";
 
 import { HanziLink } from "@/components/hanzi-link";
 import { filterComponents } from "./nmm-utils/filter-components";
+import { NmmListContainer } from "@/components/nmm-list-container";
 
 export function AllComponents() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
@@ -76,7 +77,7 @@ export function AllComponents() {
   );
 
   return (
-    <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
+    <NmmListContainer>
       {filteredComponents
         ?.filter((comp: any) => comp?.level < 3501)
         .map((prop: any, idx: number) => {
@@ -84,6 +85,6 @@ export function AllComponents() {
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
           );
         })}
-    </div>
+    </NmmListContainer>
   );
 }

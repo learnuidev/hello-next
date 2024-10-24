@@ -9,6 +9,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
 const isMultiSentence = (str: string) => {
   const isHanziMultiSentence = str.split("。")?.length > 1;
@@ -47,6 +48,8 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     (item: any) => (item?.hanzi || item?.input) === characterId
   );
 
+  const setBrightMode = useBrightModeStore((state: any) => state.setMode);
+
   const pinyinOrRoman =
     (hasAlreadyLearned && hasAlreadyLearned?.pinyin) ||
     hasAlreadyLearned?.roman;
@@ -77,6 +80,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
             <button
               className={cn("text-xl")}
               onClick={() => {
+                setBrightMode((prev: any) => !prev);
                 setReadMode(!readMode);
               }}
             >

@@ -25,6 +25,7 @@ import { chineseCharacters } from "@/langs/chinese /characters";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { filterNonHanYu } from "../nmm-utils/filter-non-hanyu";
 import { resolveHsk } from "./hsk-utils/resolve-hsk";
+import { NmmListContainer } from "@/components/nmm-list-container";
 
 export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
@@ -142,7 +143,7 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
         )}
       </div> */}
 
-      <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
+      <NmmListContainer>
         {filteredComponents?.map((prop: any, idx: number) => {
           const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
 
@@ -156,7 +157,7 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
             </div>
           );
         })}
-      </div>
+      </NmmListContainer>
     </div>
   );
 };

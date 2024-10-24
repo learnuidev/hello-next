@@ -10,6 +10,7 @@ import { useBeltStore } from "@/components/use-belt-store";
 import { belts } from "../utils";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { chineseCharacters } from "@/langs/chinese /characters";
+import { NmmListContainer } from "@/components/nmm-list-container";
 
 export function YctViewType({
   variant,
@@ -32,24 +33,21 @@ export function YctViewType({
 
   const comps = componentsAll ? componentsAll : chineseCharacters;
 
-  const containerStyle =
-    "my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start";
-
   if (viewType === "sentence") {
     return (
-      <div className={containerStyle}>
+      <NmmListContainer>
         {xiaomaSentences?.map((prop: any, idx: number) => {
           return (
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
           );
         })}
-      </div>
+      </NmmListContainer>
     );
   }
 
   if (viewType === "character") {
     return (
-      <div className={containerStyle}>
+      <NmmListContainer>
         {xiaomaCharacters.map((prop: any, idx: number) => {
           const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
           return (
@@ -59,19 +57,19 @@ export function YctViewType({
             />
           );
         })}
-      </div>
+      </NmmListContainer>
     );
   }
 
   if (viewType === "word") {
     return (
-      <div className={containerStyle}>
+      <NmmListContainer>
         {xiaomaWords?.map((prop: any, idx: number) => {
           return (
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
           );
         })}
-      </div>
+      </NmmListContainer>
     );
   }
 }

@@ -45,6 +45,7 @@ import { ContentView } from "./content/content-view";
 import { filterComponents } from "./nmm-utils/filter-components";
 import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
 import { calculateColor } from "./nmm-utils/calculate-color";
+import { NmmListContainer } from "@/components/nmm-list-container";
 
 export function NomadMethodMandarin() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
@@ -283,7 +284,7 @@ export function NomadMethodMandarin() {
 
             <TabsContent value="needs_review" className="my-4 md:my-8">
               <HskView type={viewType}>
-                <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
+                <NmmListContainer>
                   {(queryStr
                     ? filteredComponents
                     : learnedCharacters2?.filter(
@@ -334,7 +335,7 @@ export function NomadMethodMandarin() {
                       </div>
                     );
                   })}
-                </div>
+                </NmmListContainer>
               </HskView>
             </TabsContent>
 

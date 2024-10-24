@@ -6,9 +6,12 @@ import { useRouter } from "next/navigation";
 import { useBrightModeStore } from "./use-bright-mode-store";
 import { useViewType } from "@/app/(auth)/convos/_play-v2/use-view-type";
 import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
+import { useReadModeStore } from "@/stores/use-readmode-store";
 
 export function useShortCuts() {
   const setMode = useLearningModeStore((state) => state.setMode);
+  const readMode = useReadModeStore((state) => state.readMode);
+  const setReadMode = useReadModeStore((state) => state.setReadMode);
   const mode = useLearningModeStore((state) => state.mode);
   const setFocus = useViewType((state) => state.setFocus);
 
@@ -78,6 +81,7 @@ export function useShortCuts() {
       if (["b"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         setBrightMode((val: any) => !val);
+        setReadMode(!readMode);
         setFocus((focus: string) => (focus === "hanzi" ? "en" : "hanzi"));
         // setView((prev: string) => (prev === "focus" ? "default" : "focus"));
       }

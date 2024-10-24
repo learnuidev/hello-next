@@ -21,6 +21,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useHskViewStore } from "./state";
 import { useBeltStore } from "@/components/use-belt-store";
 import { resolveHsk } from "./hsk-utils/resolve-hsk";
+import { NmmListContainer } from "@/components/nmm-list-container";
 
 export const HskWordsView = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
@@ -54,36 +55,7 @@ export const HskWordsView = ({ variant }: { variant?: "all" }) => {
 
   return (
     <div>
-      {/* <div className="mx-12">
-        {topics?.length > 0 && (
-          <div>
-            <Select
-              value={hskView}
-              onValueChange={(topic) => {
-                setHskView(selectedBelt?.hskLevel, topic);
-              }}
-            >
-              <SelectTrigger className="w-[180px] dark:border-gray-800">
-                <SelectValue placeholder="Select a topic" />
-              </SelectTrigger>
-              <SelectContent className="bg-black dark:border-gray-900">
-                <SelectGroup>
-                  <SelectLabel>Topics</SelectLabel>
-
-                  {topics?.map((topic) => {
-                    return (
-                      <SelectItem value={topic} key={topic}>
-                        {topic}
-                      </SelectItem>
-                    );
-                  })}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-      </div> */}
-      <div className="my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start">
+      <NmmListContainer>
         {filteredWords?.map((prop: any, idx: number) => {
           return (
             <div key={`${prop.hanzi}-chars-${idx}`} className="relative">
@@ -91,7 +63,7 @@ export const HskWordsView = ({ variant }: { variant?: "all" }) => {
             </div>
           );
         })}
-      </div>
+      </NmmListContainer>
     </div>
   );
 };

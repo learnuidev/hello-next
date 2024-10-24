@@ -19,6 +19,8 @@ import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { TheDock } from "@/components/the-dock";
 import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
+import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
+import { useReadModeStore } from "@/stores/use-readmode-store";
 
 const FloatingNavbarComp = () => {
   const { toast } = useToast();
@@ -31,6 +33,10 @@ const FloatingNavbarComp = () => {
 
   const lang = useGetCurrentLang();
 
+  const setBrightMode = useBrightModeStore((state: any) => state.setMode);
+  const setReadMode = useReadModeStore((state) => state.setReadMode);
+  const readMode = useReadModeStore((state) => state.readMode);
+
   if (routeName === "/pinyin") {
     return null;
   }
@@ -40,8 +46,8 @@ const FloatingNavbarComp = () => {
     <div
       className={cn("transition", "flex items-center w-full justify-center")}
     >
-      <div className="px-8  py-2 bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
-        <div className="space-x-8 flex justify-center items-center w-full">
+      <div className="px-8 py-2 bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
+        <div className="space-x-6 md:space-x-8 flex justify-center items-center w-full">
           <Link
             href="/convos"
             className={`transition ${
@@ -118,6 +124,16 @@ const FloatingNavbarComp = () => {
               />
             </Link>
           )}
+
+          <button
+            className={cn("text-xl")}
+            onClick={() => {
+              setBrightMode((prev: any) => !prev);
+              setReadMode(!readMode);
+            }}
+          >
+            <Icons.glassesRound />
+          </button>
 
           <Link
             href="/nmm"

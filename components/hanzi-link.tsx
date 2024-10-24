@@ -66,7 +66,12 @@ export function HanziLink({
   const lastAnswer = answers?.[answers?.length - 1];
 
   return (
-    <div className="p-2 md:p-3 flex flex-col items-center justify-center">
+    <div
+      className={cn(
+        "p-2 md:p-3 flex flex-col items-center justify-center",
+        className
+      )}
+    >
       <p
         className={cn(
           "top-0 text-xs text-gray-400",

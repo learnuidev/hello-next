@@ -120,6 +120,10 @@ export function HanziLink({
           const learnedChar = learnedCharacters2?.find(
             (char: any) => char?.hanzi === val
           );
+
+          const color = calculateColor({
+            tone: learnedChar?.tone_level,
+          });
           return (
             <span
               key={`${val}-${idx}`}

@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <Authenticated>
-      <main className="bg-white dark:bg-black">
+      <main className="bg-white dark:bg-[rgb(9,10,11)]">
         <NavBar />
         <NomadMethodBody lang={lang} />
       </main>

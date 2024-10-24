@@ -36,9 +36,7 @@ export const CharacterTitle = ({
 
   return (
     <div className="flex flex-col items-start space-y-2">
-      {brightMode && (
-        <h2 className="text-gray-400 font-extralight">{pinyinOrRoman}</h2>
-      )}
+      <h2 className="text-gray-400 font-extralight">{pinyinOrRoman}</h2>
 
       {lang === "zh" ? (
         <div>
@@ -90,9 +88,9 @@ export const CharacterTitle = ({
         </h1>
       )}
 
-      {brightMode && (
-        <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
-      )}
+      {/* {brightMode && ( */}
+      <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
+      {/* )} */}
     </div>
   );
 };

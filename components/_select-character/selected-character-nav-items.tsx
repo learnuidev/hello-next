@@ -112,7 +112,7 @@ export const SelectedCharacterNavItems = (props: SelectedCharacterProps) => {
           </button>
         )}
 
-        <SelectedCharacterStoryButton {...props} />
+        {learnedChar && <SelectedCharacterStoryButton {...props} />}
 
         {characterId?.length === 1 && (
           <button

@@ -232,22 +232,24 @@ export function NomadMethodMandarin() {
 
                 {mode === "hsk" ? (
                   <div className="space-x-4">
-                    {belts?.map?.((belt) => {
-                      return (
-                        <button
-                          key={belt?.fill}
-                          onClick={() => {
-                            // setSelectedBelt(belt as any);
-                            setLevel(belt?.hskLevel);
-                          }}
-                          className={`${
-                            belt?.hskLevel === hskLevel
-                              ? belt?.fill
-                              : belt?.unselected
-                          } h-4 w-4 rounded-full text`}
-                        ></button>
-                      );
-                    })}
+                    {(mode === "hsk3" ? belts : belts.slice(0, 6))?.map?.(
+                      (belt) => {
+                        return (
+                          <button
+                            key={belt?.fill}
+                            onClick={() => {
+                              // setSelectedBelt(belt as any);
+                              setLevel(belt?.hskLevel);
+                            }}
+                            className={`${
+                              belt?.hskLevel === hskLevel
+                                ? belt?.fill
+                                : belt?.unselected
+                            } h-4 w-4 rounded-full text`}
+                          ></button>
+                        );
+                      }
+                    )}
                   </div>
                 ) : (
                   // <div className="mx-8">

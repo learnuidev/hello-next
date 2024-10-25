@@ -2,7 +2,7 @@
 
 import type { AnimationScope } from "framer-motion";
 import React, { useState } from "react";
-import { useAnimate } from "framer-motion";
+import { useAnimate, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 // import type { RouterOutputs } from "@acme/api";
@@ -22,7 +22,7 @@ interface FlipCardProps {
   //   session: Session | null;
 }
 
-export const FlipCardComp = ({
+export const FlipCardY = ({
   animationScope,
   editable,
   flashcard,
@@ -32,29 +32,26 @@ export const FlipCardComp = ({
   const [flipScope, flipAnimate] = useAnimate<HTMLDivElement>();
   const [flipped, setFlipped] = useState<boolean>(false);
 
-  //   const flipCard = () => {
-  //     if (flipped) {
-  //       //   void flipAnimate(flipScope.current, { rotateX: [0, 180] });
-  //       void flipAnimate(flipScope.current, { rotateY: [180, 0] });
-  //     } else {
-  //       //   void flipAnimate(flipScope.current, { rotateX: [180, 360] });
-  //       void flipAnimate(flipScope.current, { rotateY: [360, 180] });
-  //     }
-  //     setFlipped((prev) => !prev);
-  //   };
-
   const flipCard = () => {
     if (flipped) {
-      void flipAnimate(flipScope.current, { rotateX: [0, 180] });
+      void flipAnimate(
+        flipScope.current,
+        { rotateX: [0, 180] },
+        { duration: 0.6 }
+      );
     } else {
-      void flipAnimate(flipScope.current, { rotateX: [180, 360] });
+      void flipAnimate(
+        flipScope.current,
+        { rotateX: [180, 360] },
+        { duration: 0.6 }
+      );
     }
+
     setFlipped((prev) => !prev);
   };
 
   return (
     <div>
-      <h1>{`${flipped}`}</h1>
       <div
         role="presentation"
         ref={animationScope}
@@ -63,13 +60,14 @@ export const FlipCardComp = ({
           "min-h-[40rem]": fullscreen,
         })}
       >
-        <div
+        <motion.div
           ref={flipScope}
           onClick={flipCard}
-          className="relative h-72 w-64 rounded-xl shadow-sm shadow-gray-400 cursor-pointer [transform-style:preserve-3d]"
+          initial={{ rotateY: 0 }}
+          className="relative w-[400px] h-64 rounded-2xl shadow-sm bg-[rgb(21,22,23)] cursor-pointer [transform-style:preserve-3d]"
         >
           <FlipCardContent
-            title="Term"
+            title="Get a hint"
             content={flashcard.term}
             editable={editable}
             //   flashcard={flashcard}
@@ -83,7 +81,7 @@ export const FlipCardComp = ({
             //   session={session}
             back
           />
-        </div>
+        </motion.div>
       </div>
     </div>
   );

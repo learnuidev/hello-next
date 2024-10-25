@@ -40,6 +40,7 @@ import { cn } from "@/lib/utils";
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
 import { StoryView } from "./story-view";
 import { CharacterTitle } from "./character-title";
+import { useSlicedRelatedSentencesByCharacter } from "./use-sliced-related-sentences-by-character";
 
 const HskSuperComponentsWordView = ({
   componentId,
@@ -237,11 +238,7 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
   const { data: relatedHskWords } = useListRelatedHSKWords(characterId);
 
   const HskSentenceView = () => {
-    const query = useSearchQueryStore((state) => state.query);
-
     const brightMode = useBrightModeStore((state: any) => state.mode);
-
-    // const readMode = useReadModeStore((state) => state.readMode);
 
     const pagination = usePaginationStore((state) => state.pagination);
     const setPagination = usePaginationStore((state) => state.setPagination);
@@ -267,10 +264,9 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
         };
       });
 
-    const sliced = relatedSentences?.slice(
-      pagination?.start || 0,
-      pagination?.end || 10
-    );
+    const sliced = useSlicedRelatedSentencesByCharacter(characterId);
+
+    console.log("SLICED", sliced);
 
     return (
       <div>

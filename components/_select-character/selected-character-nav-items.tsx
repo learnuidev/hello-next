@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListSuperComponentsQuery } from "@/domain/component/super-component.queries";
 import { SelectedCharacterStoryButton } from "./selected-character-story-button";
+import { useRelatedHskWordsByCharacter } from "./use-filter-related-hsk-words-by-character";
+import { useSlicedRelatedSentencesByCharacter } from "./use-sliced-related-sentences-by-character";
 
 export const SelectedCharacterNavItems = (props: SelectedCharacterProps) => {
   const { lang, view, setView, characterId } = props;
@@ -21,6 +23,12 @@ export const SelectedCharacterNavItems = (props: SelectedCharacterProps) => {
   const { data: superComponents_ } = useListSuperComponentsQuery({
     componentId: characterId,
   });
+
+  const filteredRelatedHskWords = useRelatedHskWordsByCharacter({
+    characterId,
+  });
+
+  const relatedSentences = useSlicedRelatedSentencesByCharacter(characterId);
 
   const superComponents = superComponents_ as any;
 
@@ -54,28 +62,32 @@ export const SelectedCharacterNavItems = (props: SelectedCharacterProps) => {
         >
           {view === "home" ? <Icons.mandarinSolid /> : <Icons.mandarin />}
         </button>
-        <button
-          className={cn(
-            "text-xl transition",
-            view === "words" ? "text-white" : "text-gray-400"
-          )}
-          onClick={() => {
-            setView("words");
-          }}
-        >
-          {view === "words" ? <Icons.seedlingSolid /> : <Icons.seedling />}
-        </button>
-        <button
-          className={cn(
-            "text-xl transition",
-            view === "sentences" ? "text-white" : "text-gray-400"
-          )}
-          onClick={() => {
-            setView("sentences");
-          }}
-        >
-          {view === "sentences" ? <Icons.treeSolid /> : <Icons.tree />}
-        </button>
+        {filteredRelatedHskWords?.length > 0 && (
+          <button
+            className={cn(
+              "text-xl transition",
+              view === "words" ? "text-white" : "text-gray-400"
+            )}
+            onClick={() => {
+              setView("words");
+            }}
+          >
+            {view === "words" ? <Icons.seedlingSolid /> : <Icons.seedling />}
+          </button>
+        )}
+        {relatedSentences?.length > 0 && (
+          <button
+            className={cn(
+              "text-xl transition",
+              view === "sentences" ? "text-white" : "text-gray-400"
+            )}
+            onClick={() => {
+              setView("sentences");
+            }}
+          >
+            {view === "sentences" ? <Icons.treeSolid /> : <Icons.tree />}
+          </button>
+        )}
 
         {superComponents?.length > 0 && (
           <button

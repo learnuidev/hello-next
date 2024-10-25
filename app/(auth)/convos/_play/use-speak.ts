@@ -14,7 +14,7 @@ export const useSpeak = () => {
   const speak = (word: string) => {
     const utter = new SpeechSynthesisUtterance(word);
 
-    utter.rate = 0.8;
+    utter.rate = 0.6;
 
     utter.voice = selecectedVoice?.voice;
     synthRef.current.speak(utter);

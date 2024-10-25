@@ -7,6 +7,7 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
 import { Icons } from "../ui/icons.v2";
+import Link from "next/link";
 
 export const CharacterTitle = ({
   pinyinOrRoman,
@@ -55,7 +56,7 @@ export const CharacterTitle = ({
               });
 
               return (
-                <a
+                <Link
                   href={`/nmm/${val}?lang=zh`}
                   key={`${val}-${idx}`}
                   className={`${
@@ -74,7 +75,7 @@ export const CharacterTitle = ({
                   } dark:hover:text-white text-2xl md:text-2xl transition lowercase font-light`}
                 >
                   {val}
-                </a>
+                </Link>
               );
             })}
           </div>

@@ -567,7 +567,7 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
         </article>
       </div>
 
-      {selectedCompInput?.length > 32 ? (
+      {selectedCompInput?.length >= 32 ? (
         <div className="col-span-3">
           <GrammarAnalysis
             contentId={selectedChar}

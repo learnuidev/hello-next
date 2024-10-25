@@ -133,7 +133,14 @@ const ZoomedCharacterItem = ({
   return (
     <div className="font-light text-lg">
       <p className="font-light text-gray-400">{character?.pinyin}</p>
-      <p className="font-light"> {sentence?.input}</p>
+      <Link
+        href={`/nmm/${sentence?.input}?lang=zh`}
+        target="_blank"
+        className="font-light"
+      >
+        {" "}
+        {sentence?.input}
+      </Link>
 
       <p className="font-extralight text-gray-500">{character?.en}</p>
     </div>

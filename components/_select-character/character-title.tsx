@@ -8,6 +8,7 @@ import { useReadModeStore } from "@/stores/use-readmode-store";
 import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
 import { Icons } from "../ui/icons.v2";
 import Link from "next/link";
+import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
 
 export const CharacterTitle = ({
   pinyinOrRoman,
@@ -50,9 +51,13 @@ export const CharacterTitle = ({
               const learnedChar = learnedCharacters2?.find(
                 (char: any) => char?.hanzi === val
               );
+              const comp = components?.find((char: any) => char?.hanzi === val);
 
               const color = calculateColor({
                 tone: learnedChar?.tone_level,
+              });
+              const hoverColor = calculateHoverColor({
+                tone: learnedChar?.tone_level || comp?.tone_level,
               });
 
               return (
@@ -61,18 +66,18 @@ export const CharacterTitle = ({
                   key={`${val}-${idx}`}
                   className={`${
                     brightMode || isCharactersLoading
-                      ? "dark:text-gray-300 text-gray-700"
+                      ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
                       : // learnedCharacters.includes(prop?.hanzi)
                         learnedChar
                         ? learnedChar?.status === "forgotten"
-                          ? "text-gray-900"
+                          ? `text-gray-900 ${hoverColor}`
                           : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
                             //   ? "text-rose-500"
-                            `hover:${color} text-gray-300`
+                            `${color} text-gray-300 ${hoverColor}`
                         : selectedComp?.length > 1 || selectedComp?.group
-                          ? "dark:text-gray-500 text-gray-200"
-                          : "dark:text-gray-700 text-gray-200"
-                  } dark:hover:text-white text-2xl md:text-2xl transition lowercase font-light`}
+                          ? `dark:text-gray-500 text-gray-200 ${hoverColor}`
+                          : `dark:text-gray-700 text-gray-200 ${hoverColor}`
+                  } ${hoverColor} text-2xl transition lowercase font-light`}
                 >
                   {val}
                 </Link>

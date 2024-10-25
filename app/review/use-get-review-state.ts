@@ -1,7 +1,7 @@
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useListComponents } from "@/domain/lesson/component.queries";
+
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
-import Link from "next/link";
 
 import { useSearchParams } from "next/navigation";
 
@@ -19,7 +19,7 @@ export const useGetReviewState = ({
   const { data: components } = useListCharactersQuery();
 
   const reviewId = searchParams.get("input") || "";
-  const lang = searchParams.get("lang") || "";
+  const lang = useGetCurrentLang();
   const date = customDate || searchParams.get("date") || "";
 
   const { data: groups, isLoading: isLearnedCharactersLoading } =

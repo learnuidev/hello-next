@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Editor } from "./Editor";
 
 import { GrammarAnalysis } from "./grammar-analysis";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export function SearchResult({
   query,
@@ -15,7 +16,7 @@ export function SearchResult({
   onSearchGrammar?: (grammar: string) => void;
 }) {
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "";
+  const lang = useGetCurrentLang();
 
   const currentDecodedQuery = decodeURIComponent(query || "");
 

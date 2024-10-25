@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { useContentViewStore } from "./use-content-view-store";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 const ContentSentences = ({
   characterId,
@@ -35,7 +36,9 @@ const ContentSentences = ({
   const view = useContentViewStore((state) => state.view);
   const setView = useContentViewStore((state) => state.setView);
 
-  const lang = props?.lang || searchParams.get("lang") || "";
+  const searchParamsLang = useGetCurrentLang();
+
+  const lang = props?.lang || searchParamsLang;
 
   const filteredContents = contents?.filter((content: any) => {
     if (view === "all") {
@@ -134,7 +137,9 @@ const ContentDropdown = ({
   const view = useContentViewStore((state) => state.view);
   const setView = useContentViewStore((state) => state.setView);
 
-  const lang = props?.lang || searchParams.get("lang") || "";
+  const slang = useGetCurrentLang();
+
+  const lang = props?.lang || slang;
 
   const filteredContents = contents?.filter((content: any) => {
     if (view === "all") {

@@ -198,8 +198,6 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
 
   const searchParams = useSearchParams();
 
-  // const lang = searchParams.get("lang") || "";
-
   // const { selectedChar, setView, view } = characterData;
 
   const pinyinOrRoman =

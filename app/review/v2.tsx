@@ -1,16 +1,17 @@
 import { NavBar } from "@/components/navbar";
-import { Icons } from "@/components/ui/icons.v2";
+
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
-import Link from "next/link";
+
 import { useSearchParams } from "next/navigation";
 import { ReviewList } from "./review-list";
 import { ReviewItem } from "./review-item";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export const ReviewV2 = () => {
   const searchParams = useSearchParams();
 
   const reviewId = searchParams.get("input") || "";
-  const lang = searchParams.get("lang") || "";
+  const lang = useGetCurrentLang();
   const date = searchParams.get("date") || "";
 
   const { data: groups, isLoading: isLearnedCharactersLoading } =

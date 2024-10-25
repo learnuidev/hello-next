@@ -12,11 +12,11 @@ import { SentencesList } from "./sentences-list";
 import { AlphabetItem } from "./alphabet-item";
 import { useListDictionaryWords } from "./use-dictionary-words";
 import { useLearnedWords } from "./use-learned-words";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export const LangPageView = ({ view }: any) => {
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "";
-
+  const lang = useGetCurrentLang();
   const { data: dictionaryWords } = useListDictionaryWords(lang);
 
   const { data: words } = useLearnedWords(lang);

@@ -5,7 +5,9 @@ import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
 import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
 import { Editor } from "../Editor";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useGetCharacterId } from "@/app/(auth)/character/[character-id]/use-get-character-id";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export function Summary({
   characterId,
@@ -14,15 +16,25 @@ export function Summary({
   characterId: string;
   showMeanings: boolean;
 }) {
-  const currentDecodedCharacter = decodeURIComponent(characterId);
+  const characaterId = useGetCharacterId();
 
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "";
+  const lang = useGetCurrentLang();
 
-  const { data: meaning, isLoading } = useListMeaningsQuery({
-    content: currentDecodedCharacter,
-    lang,
-  });
+  const router = useRouter();
+
+  const { data: meaning, isLoading } = useListMeaningsQuery(
+    {
+      content: characaterId,
+      lang,
+    },
+    {
+      onSuccess: (data: any) => {
+        console.log("");
+        router.push(`/nmm/${characterId}?lang=${data?.lang}`);
+      },
+    }
+  );
 
   let meaningResponse = meaning as ListMeaningsResponse;
 

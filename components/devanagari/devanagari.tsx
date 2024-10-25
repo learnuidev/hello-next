@@ -24,6 +24,7 @@ import {
 } from "../ui/icons";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 const PageView = ({ view, setSelectedId }: any) => {
   const [viewMode, setViewMode] = useState("halant");
   const [variants, setVariants] = useState([]) as any;
@@ -35,8 +36,7 @@ const PageView = ({ view, setSelectedId }: any) => {
   const [sortByPopularity, toggleSortPopularity] = useState(true);
 
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "";
-
+  const lang = useGetCurrentLang();
   // const nepaliWords203 = useWordsStore((s) => s?.words);
 
   const nepaliWords204 = useMemo(() => {

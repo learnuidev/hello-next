@@ -1,14 +1,12 @@
 "use client";
+
 import React from "react";
-import { useSearchParams } from "next/navigation";
-import { WordItem } from "../word-item";
 import { spanishWords } from "@/langs/spanish/spanish-words";
 import { WordsList } from "../words-list";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export function Spanish() {
-  const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "";
-
+  const lang = useGetCurrentLang();
   return (
     <div className="grow">
       <WordsList words={spanishWords} lang={lang} />

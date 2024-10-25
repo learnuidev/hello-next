@@ -5,11 +5,11 @@ import { WordItem } from "../word-item";
 
 import { frenchWords } from "@/langs/french/french-words";
 import { WordsList } from "../words-list";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export function French() {
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "";
-
+  const lang = useGetCurrentLang();
   return (
     <div className="grow">
       <WordsList words={frenchWords} lang={lang} />

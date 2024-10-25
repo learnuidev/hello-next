@@ -13,14 +13,14 @@ import { useSelectedCharacterData } from "./use-selected-character";
 import { FloatingCharacterNavbar } from "./floating-character-navbar";
 
 import { LanguagesList, listLanguagesShortCuts } from "./languages-list";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const { data } = useSelectedCharacterData({ characterId });
 
   const searchParams = useSearchParams();
 
-  const lang = searchParams.get("lang") || "";
-
+  const lang = useGetCurrentLang();
   const { selectedChar, setView, view } = data;
 
   const router = useRouter();

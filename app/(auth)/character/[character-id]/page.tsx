@@ -1,19 +1,13 @@
-// import Image from 'next/image'
 "use client";
 
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { NavBar } from "@/components/navbar";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
-import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
-import {
-  ListGrammarsResponse,
-  useListGrammarsQuery,
-} from "@/domain/sentence/grammar.queries";
-import { Skeleton } from "@/components/ui/skeleton";
+
 import { SearchResult } from "@/components/search-result";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 const useGetDecodedCharacter = () => {
   const params = useParams() as {
@@ -29,8 +23,8 @@ export default function Home() {
   const params = useParams() as {
     "character-id": string;
   };
-  const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "";
+
+  const lang = useGetCurrentLang();
 
   const currentDecodedCharacter = useGetDecodedCharacter();
 

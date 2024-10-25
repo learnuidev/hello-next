@@ -11,6 +11,7 @@ import {
   useListGrammarsQuery,
 } from "@/domain/sentence/grammar.queries";
 import { useSearchParams } from "next/navigation";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export const TitleView = ({
   selectedComp,
@@ -37,7 +38,7 @@ export const TitleView = ({
     ?.grammarAnalysis;
 
   const searchParams = useSearchParams();
-  const learnedLang = searchParams.get("lang") || "";
+  const learnedLang = useGetCurrentLang();
 
   const resolveedEn = ["zh"]?.includes(learnedLang)
     ? selectedComp?.pinyin ||

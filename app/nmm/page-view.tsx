@@ -15,6 +15,7 @@ import { cleanString } from "@/data/convos/bm1/utils";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { useSearchParams } from "next/navigation";
 import { calculateColor } from "./nmm-utils/calculate-color";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export const PageView = ({
   view,
@@ -78,7 +79,7 @@ export const PageView = ({
   );
 
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "";
+  const lang = useGetCurrentLang();
 
   const { data: sentences } = useListSentencesQuery({
     component: selectedId,

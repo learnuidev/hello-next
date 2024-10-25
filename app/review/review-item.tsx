@@ -4,13 +4,14 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useGetReviewState } from "./use-get-review-state";
 import { Icons } from "@/components/ui/icons.v2";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export const ReviewItem = () => {
   const searchParams = useSearchParams();
 
   const { data: components } = useListCharactersQuery();
 
-  const lang = searchParams.get("lang") || "";
+  const lang = useGetCurrentLang();
   const date = searchParams.get("date") || "";
 
   const { totalLangs, groupItems, reviewCharactersKeys, reviewCharacters } =

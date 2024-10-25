@@ -13,6 +13,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 // components
 import { LangPageView } from "./lang-page-view";
 import { Icons } from "../ui/icons.v2";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export const useViewTypeStore = create(
   persist(
@@ -32,8 +33,7 @@ export const useViewTypeStore = create(
 
 export function LangItem() {
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "";
-
+  const lang = useGetCurrentLang();
   const views = useViewTypeStore((state: any) => state.views) as any;
   const view = views?.[lang] || "words";
   const setViews = useViewTypeStore((state) => state.setViews);

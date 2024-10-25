@@ -14,11 +14,11 @@ import { ComponentItem } from "../component-item";
 import { WordItem } from "../word-item";
 import { WordsList } from "../words-list";
 import { ComponentItemV2 } from "../component-item.v2";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 const PageView = ({ view }: any) => {
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "";
-
+  const lang = useGetCurrentLang();
   switch (view) {
     case "alphabets":
       return (

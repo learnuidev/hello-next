@@ -20,6 +20,7 @@ interface FlipCardContentProps {
   content: string;
   editable?: boolean;
   back?: boolean;
+  variant?: "vertical" | "horizontal";
   //   flashcard: RouterOutputs["studySet"]["byId"]["flashcards"][0];
   //   session: Session | null;
 }
@@ -29,23 +30,22 @@ const FlipCardContent = ({
   title,
   content,
   editable,
+  variant,
   //   flashcard,
   //   session,
 }: FlipCardContentProps) => {
-  //   const { toggleStar } = useStar(flashcard);
-  //   const { onOpenChange } = useSignInDialogContext();
-
-  //   const onStarClick = (event: MouseEvent) => {
-  //     event.stopPropagation();
-
-  //     session ? toggleStar() : onOpenChange(true);
-  //   };
-
   return (
     <div
-      className={cn("absolute h-full w-full [backface-visibility:hidden]", {
-        "[transform:rotateX(180deg)]": back,
-      })}
+      className={cn(
+        "absolute h-full w-full [backface-visibility:hidden]",
+        variant === "vertical"
+          ? {
+              "[transform:rotateX(180deg)]": back,
+            }
+          : {
+              "[transform:rotateY(180deg)]": back,
+            }
+      )}
     >
       <div className="flex h-full w-full flex-col rounded-lg bg-primary-foreground p-4 drop-shadow-lg md:p-4">
         <div className="flex items-center justify-between">
@@ -56,7 +56,7 @@ const FlipCardContent = ({
               className="rounded-full"
               //   onClick={onStarClick}
             >
-              <Icons.ai />
+              <Icons.lightBulbSolid />
               {/* <Star
                 size={16}
                 className={flashcard.starred ? "text-yellow-300" : undefined}

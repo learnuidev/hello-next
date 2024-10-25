@@ -1,11 +1,11 @@
-import { FlipCard } from "@/app/next/features/flip-card/flip-card";
+import { FlipCardFeature } from "@/app/next/features/flip-card/flip-card-feature";
 import { InsightsV2 } from "@/app/next/features/insights-v2/insights-v2";
 
 export const features = [
   {
     id: "flip-card",
     name: "Flip Card",
-    Component: FlipCard,
+    Component: FlipCardFeature,
   },
   {
     id: "insights-v2",

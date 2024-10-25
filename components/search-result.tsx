@@ -25,8 +25,6 @@ export function SearchResult({
     lang,
   });
 
-  const router = useRouter();
-
   const meaningResponse = meaning as ListMeaningsResponse;
   return (
     <div className="px-4 md:px-40">

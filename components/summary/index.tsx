@@ -5,7 +5,7 @@ import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
 import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
 import { Editor } from "../Editor";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useGetCharacterId } from "@/app/(auth)/character/[character-id]/use-get-character-id";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
@@ -18,7 +18,6 @@ export function Summary({
 }) {
   const characaterId = useGetCharacterId();
 
-  const searchParams = useSearchParams();
   const lang = useGetCurrentLang();
 
   const router = useRouter();
@@ -31,7 +30,7 @@ export function Summary({
     {
       onSuccess: (data: any) => {
         console.log("");
-        router.push(`/nmm/${characterId}?lang=${data?.lang}`);
+        router.push(`/nmm/${characterId}?lang=${lang ? lang : data?.lang}`);
       },
     }
   );

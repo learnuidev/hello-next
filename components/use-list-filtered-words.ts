@@ -55,7 +55,7 @@ export const useListFilteredWords = ({
     queryFn: async () => {
       if (query) {
         return Promise.resolve(
-          [...characters, ...words]
+          [...(characters || []), ...words]
             ?.filter(filterWord)
             ?.sort((a: any, b: any) => a?.input?.length - b?.input?.length)
         );

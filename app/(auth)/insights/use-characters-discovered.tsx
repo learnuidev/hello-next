@@ -28,7 +28,7 @@ export function useCharactersDiscovered() {
 
   const uniqueWordsStr = uniqueWords
     ?.join(" ")
-    ?.concat(learnedCharacters?.map((x: any) => x?.hanzi)?.join(" "));
+    ?.concat((learnedCharacters || [])?.map((x: any) => x?.hanzi)?.join(" "));
 
   const { data: unlockedNMMCharacters, isLoading: isCharactersLoading } =
     useListParseQuery({

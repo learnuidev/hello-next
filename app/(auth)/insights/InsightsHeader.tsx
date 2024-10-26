@@ -4,17 +4,9 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import * as R from "ramda";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { useRepeatHistoryStore } from "../convos/_play/use-repeat-history";
-
-import { useSelectedCharacter } from "../convos/use-selected-character";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
@@ -28,16 +20,11 @@ import {
   faPenLine,
 } from "@fortawesome/pro-thin-svg-icons";
 import { useCharactersDiscovered } from "./use-characters-discovered";
-import { useListComponents } from "@/domain/lesson/component.queries";
 
 export function InsightsHeader() {
   const { data: charactersDiscovered } = useCharactersDiscovered();
 
   const { data: learnedCharacters } = useListCharactersQuery();
-
-  const { data: components } = useListComponents();
-
-  const selectedChar = useSelectedCharacter((state: any) => state?.character);
 
   const repeatHistories = useRepeatHistoryStore((state: any) => state.history);
 
@@ -73,7 +60,7 @@ export function InsightsHeader() {
 
   const uniqueWordsStr = uniqueWords
     ?.join(" ")
-    ?.concat(learnedCharacters?.map((x: any) => x?.hanzi)?.join(" "));
+    ?.concat((learnedCharacters || [])?.map((x: any) => x?.hanzi)?.join(" "));
 
   const { data: unlockedNMMCharacters } =
     useListParseQuery({
@@ -130,18 +117,7 @@ export function InsightsHeader() {
       <Card className="dark:border-gray-600">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Listening</CardTitle>
-          {/* <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          className="h-4 w-4 text-muted-foreground"
-        >
-          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-        </svg> */}
+
           <FontAwesomeIcon icon={faMusic} />
         </CardHeader>
         <CardContent>
@@ -181,7 +157,6 @@ export function InsightsHeader() {
             {charactersDiscovered?.length}{" "}
             <span className="text-xs">+{repeatHistories?.length || 0}</span>
           </div>
-          {/* <div className="text-2xl font-bold">+12,234</div> */}
           <p className="text-xs text-muted-foreground">+19% from last month</p>
         </CardContent>
       </Card>

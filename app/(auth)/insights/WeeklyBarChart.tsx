@@ -59,7 +59,7 @@ export function useGetWeeklyData({ toDate }: { toDate: Date }) {
   const filteredCharacters = Object.entries(
     R.countBy(
       (x: any) => x.day,
-      learnedCharacters
+      (learnedCharacters || [])
         // ?.filter((item: any) => {
         //   const createdAt = new Date(item?.createdAt);
 

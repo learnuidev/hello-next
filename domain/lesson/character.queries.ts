@@ -43,6 +43,8 @@ interface ICharacter {
   hanzi: string;
   input?: string;
   lang?: string;
+  steps?: any;
+  roman?: string;
 }
 
 const listCharacters = async (
@@ -79,7 +81,9 @@ export function useListCharactersQuery(
       const response = await listCharacters(params, {
         Authorization: authUser?.jwt,
       });
-      return response?.sort((a: any, b: any) => a?.createdAt - b?.createdAt);
+      return (
+        response?.sort((a: any, b: any) => a?.createdAt - b?.createdAt) || []
+      );
       // }
     },
     {

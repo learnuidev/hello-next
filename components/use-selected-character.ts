@@ -192,7 +192,7 @@ export function useSelectedCharacterData({
 
   const isAlreadyLearned = useMemo(
     () =>
-      characters?.find((character: { hanzi: string; input: string }) => {
+      characters?.find((character) => {
         return (character?.hanzi || character?.input) === selectedChar;
       }),
     [characters, selectedChar]

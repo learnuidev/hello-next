@@ -72,8 +72,8 @@ export function useAddCharacterMutation(options = {} as any) {
 
 export type UpdateCharacterStatusParams = {
   characterId: string;
-  status: string;
-};
+  status?: string;
+} & any;
 
 const updateChracterStatus = async (
   options: UpdateCharacterStatusParams,
@@ -88,6 +88,10 @@ const updateChracterStatus = async (
     },
     body: JSON.stringify(options),
   });
+
+  if (!res.ok) {
+    throw Error(`Message ${res.statusText}`);
+  }
   const resp = await res.json();
   return resp;
 };
@@ -109,7 +113,7 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.refetchQueries([listCharactersQueryId]);
+        // queryClient.refetchQueries([listCharactersQueryId]);
       },
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,

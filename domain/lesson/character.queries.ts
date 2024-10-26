@@ -9,12 +9,48 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 const url =
   "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-characters";
 
+interface ICharacter {
+  reviewHistory?: {
+    createdAt: number;
+    timeTaken: number;
+    ponderTime?: number;
+    startTime: number;
+    endTime: number;
+    reviewDate: string;
+    outcome: string;
+  }[];
+  location: string;
+  component: string;
+  sub_components: { hanzi: string; en: string }[];
+  status: string;
+  createdAt: number;
+  en: string;
+  pinyin: string;
+  story: string;
+  group?: string;
+  tone_level?: number;
+  data_version: string;
+  level: number;
+  rightCount: number;
+  userId: string;
+  nomad: string;
+  destination: string;
+  journeyId: string;
+  next_review_date: number;
+  id: string;
+  rightAt: number;
+  forgottenAt: number;
+  hanzi: string;
+  input?: string;
+  lang?: string;
+}
+
 const listCharacters = async (
   options: { journeyId?: string },
   opts: {
     Authorization: string;
   }
-) => {
+): Promise<ICharacter[]> => {
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -26,7 +62,7 @@ const listCharacters = async (
   });
   const resp = (await res.json()) as any;
 
-  return resp;
+  return resp as ICharacter[];
 };
 
 export const listCharactersQueryId = "list-characters";

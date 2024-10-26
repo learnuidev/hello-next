@@ -5,6 +5,14 @@ import { queryIds } from "./queryIds";
 export function useCurrentAuthUser(options = {}) {
   return useQuery([queryIds.currentAuthUser], currentAuthUser, {
     ...options,
-    retry: false
+    retry: false,
   });
 }
+
+const superAdminEmail = "learnuidev@gmail.com";
+
+export const useIsSuperAdmin = () => {
+  const { data } = useCurrentAuthUser();
+
+  return data?.email === superAdminEmail;
+};

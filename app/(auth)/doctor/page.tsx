@@ -1,5 +1,9 @@
 "use client";
 
+import {
+  useCurrentAuthUser,
+  useIsSuperAdmin,
+} from "@/domain/auth/auth.queries";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
@@ -37,6 +41,12 @@ export default function Doctor() {
 
     return null;
   };
+
+  const isSuperAdmin = useIsSuperAdmin();
+
+  if (!isSuperAdmin) {
+    return <div> You dont have the permission to view this page </div>;
+  }
 
   return (
     <div className="m-8">

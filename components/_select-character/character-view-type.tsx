@@ -571,14 +571,14 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
       </div>
 
       {selectedCompInput?.length >= 32 ? (
-        <div className="col-span-3">
+        <div className="col-span-5 md:col-span-3">
           <GrammarAnalysis
             contentId={selectedChar}
             lang={lang || selectedComp?.lang}
           />
         </div>
       ) : (
-        <div className="col-span-3">
+        <div className="col-span-5 md:col-span-3">
           <div className="">
             {" "}
             {sentences?.length > 7 ? (

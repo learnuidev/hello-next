@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { cleanString } from "@/data/convos/bm1/utils";
 import { SelectedCharacterProps } from "./select-character.types";
-import { HanziViewer } from "./hanzi-viewer";
+import { SentenceItem } from "./sentence-item";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 
 export const NormalView = (props: SelectedCharacterProps) => {
@@ -92,7 +92,7 @@ export const NormalView = (props: SelectedCharacterProps) => {
         <div className="space-y-2 w-full">
           {sentences?.map((sentence: any) => {
             return (
-              <HanziViewer
+              <SentenceItem
                 key={sentence?.id}
                 {...props}
                 currentPhrase={sentence}

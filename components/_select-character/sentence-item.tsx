@@ -10,7 +10,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { AudioComponent } from "./audio-component";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 
-export const HanziViewer = (props: any) => {
+export const SentenceItem = (props: any) => {
   const {
     components,
     selectedComp,

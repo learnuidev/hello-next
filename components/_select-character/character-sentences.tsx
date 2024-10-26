@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { cleanString } from "@/data/convos/bm1/utils";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
 import { SelectedCharacterProps } from "./select-character.types";
-import { HanziViewer } from "./hanzi-viewer";
+import { SentenceItem } from "./sentence-item";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Icons } from "../ui/icons.v2";
 import { useListContentsQuery } from "@/domain/content/content.queries";
@@ -107,7 +107,7 @@ const ContentSentences = ({
           {allSentences?.slice(0, 100)?.map((sentence: any) => {
             const resolvedLang = sentence?.lang || lang;
             return (
-              <HanziViewer
+              <SentenceItem
                 key={sentence?.id}
                 {...props}
                 lang={resolvedLang === "zh-CN" ? "zh" : resolvedLang}
@@ -208,7 +208,7 @@ const ContentDropdown = ({
           {allSentences?.slice(0, 100)?.map((sentence: any) => {
             const resolvedLang = sentence?.lang || lang;
             return (
-              <HanziViewer
+              <SentenceItem
                 key={sentence?.id}
                 {...props}
                 lang={resolvedLang === "zh-CN" ? "zh" : resolvedLang}
@@ -428,7 +428,7 @@ export const CharacterSentences = (props: { characterId: string }) => {
           <div className="flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
             {sentences?.slice(0, 10)?.map((sentence: any) => {
               return (
-                <HanziViewer
+                <SentenceItem
                   key={sentence?.id}
                   {...props}
                   currentPhrase={sentence}

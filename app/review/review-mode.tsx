@@ -186,6 +186,24 @@ export function ReviewMode(props: any) {
     );
   }
 
+  const goToNextChar = () => {
+    const currentCharacterIndex = unReviewedCharacters?.findIndex(
+      (char: any) => char?.hanzi === character
+    );
+
+    const nextChar = unReviewedCharacters?.[currentCharacterIndex];
+
+    if (nextChar?.hanzi) {
+      const url = getUrl();
+
+      if (url?.includes("&")) {
+        return router.push(`${url}&character=${nextChar?.hanzi}`);
+      } else {
+        router.push(`/review?character=${nextChar?.hanzi}`);
+      }
+    }
+  };
+
   const isContentLessThanFive =
     (currentCharacter?.hanzi || currentCharacter?.input)?.length < 5;
   const isParagraph =
@@ -303,25 +321,7 @@ export function ReviewMode(props: any) {
                         setEndTime(startTime);
                         setReviewCount(reviewCount + 1);
 
-                        const currentCharacterIndex =
-                          unReviewedCharacters?.findIndex(
-                            (char: any) => char?.hanzi === character
-                          );
-
-                        const nextChar =
-                          unReviewedCharacters?.[currentCharacterIndex + 1];
-
-                        if (nextChar?.hanzi) {
-                          const url = getUrl();
-
-                          if (url?.includes("&")) {
-                            return router.push(
-                              `${url}&character=${nextChar?.hanzi}`
-                            );
-                          } else {
-                            router.push(`/review?character=${nextChar?.hanzi}`);
-                          }
-                        }
+                        goToNextChar();
                       });
                   }}
                 >
@@ -376,32 +376,7 @@ export function ReviewMode(props: any) {
                         setEndTime(startTime);
                         setReviewCount(reviewCount + 1);
 
-                        console.log("HANZ", unReviewedCharacters?.[1]?.hanzi);
-
-                        console.log(
-                          "unReviewedCharacters",
-                          unReviewedCharacters
-                        );
-
-                        const currentCharacterIndex =
-                          unReviewedCharacters?.findIndex(
-                            (char: any) => char?.hanzi === character
-                          );
-
-                        const nextChar =
-                          unReviewedCharacters?.[currentCharacterIndex + 1];
-
-                        if (nextChar?.hanzi) {
-                          const url = getUrl();
-
-                          if (url?.includes("&")) {
-                            return router.push(
-                              `${url}&character=${nextChar?.hanzi}`
-                            );
-                          } else {
-                            router.push(`/review?character=${nextChar?.hanzi}`);
-                          }
-                        }
+                        goToNextChar();
                       });
                   }}
                 >
@@ -463,25 +438,7 @@ export function ReviewMode(props: any) {
                     setEndTime(startTime);
                     setReviewCount(reviewCount + 1);
 
-                    const currentCharacterIndex =
-                      unReviewedCharacters?.findIndex(
-                        (char: any) => char?.hanzi === character
-                      );
-
-                    const nextChar =
-                      unReviewedCharacters?.[currentCharacterIndex + 1];
-
-                    if (nextChar?.hanzi) {
-                      const url = getUrl();
-
-                      if (url?.includes("&")) {
-                        return router.push(
-                          `${url}&character=${nextChar?.hanzi}`
-                        );
-                      } else {
-                        router.push(`/review?character=${nextChar?.hanzi}`);
-                      }
-                    }
+                    goToNextChar();
                   });
               }}
             >

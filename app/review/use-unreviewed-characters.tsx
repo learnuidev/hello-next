@@ -63,15 +63,15 @@ export function useUnreviwedCharacters() {
         (character: any) => character?.hanzi?.length === 1
       );
 
-  // if (["hsk", "hsk3"]?.includes(mode)) {
-  //   return hskCharacters?.filter((item: any) => {
-  //     const unreviewedCharacter = unReviewedCharacters?.find(
-  //       (char: any) => char?.hanzi === item?.hanzi
-  //     );
+  if (["hsk", "hsk3"]?.includes(mode)) {
+    return hskCharacters?.filter((item: any) => {
+      const unreviewedCharacter = unReviewedCharacters?.find(
+        (char: any) => char?.hanzi === item?.hanzi
+      );
 
-  //     return unreviewedCharacter;
-  //   });
-  // }
+      return unreviewedCharacter;
+    });
+  }
 
   return unReviewedCharacters;
 }

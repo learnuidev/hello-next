@@ -7,6 +7,7 @@ import { useBrightModeStore } from "./use-bright-mode-store";
 import { useViewType } from "@/app/(auth)/convos/_play-v2/use-view-type";
 import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 import { useReadModeStore } from "@/stores/use-readmode-store";
+import { useGetReviewUrl } from "./use-get-review-url";
 
 export function useShortCuts() {
   const setMode = useLearningModeStore((state) => state.setMode);
@@ -20,6 +21,7 @@ export function useShortCuts() {
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
+  const reviewUrl = useGetReviewUrl();
 
   const router = useRouter();
 
@@ -59,11 +61,7 @@ export function useShortCuts() {
       if (["r"]?.includes(event.key) && event.ctrlKey) {
         event.preventDefault();
 
-        if (unReviewedCharacters?.[0]?.hanzi) {
-          router.push(`/review?character=${unReviewedCharacters?.[0]?.hanzi}`);
-        } else {
-          router.push("/review");
-        }
+        router.push(reviewUrl);
       }
       if (["l"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
@@ -99,5 +97,7 @@ export function useShortCuts() {
     router,
     unReviewedCharacters,
     setFocus,
+    setReadMode,
+    readMode,
   ]);
 }

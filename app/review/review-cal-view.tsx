@@ -7,7 +7,7 @@ import { ReviewList } from "./review-list";
 import { ReviewItem } from "./review-item";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
-export const ReviewV2 = () => {
+export const ReviewCalView = () => {
   const searchParams = useSearchParams();
 
   const reviewId = searchParams.get("input") || "";

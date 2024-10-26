@@ -13,6 +13,7 @@ import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-charact
 import { reviewCounterStore } from "./review-counter-store";
 import { cn } from "@/lib/utils";
 import { useUnreviwedCharacters } from "./use-unreviewed-characters";
+import { useGetReviewParams } from "./use-get-review-params";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -34,7 +35,7 @@ const getPonderTime = (endTime: number) => {
   return ponderTime;
 };
 
-export function ReviewV1(props: any) {
+export function ReviewMode(props: any) {
   const [reveal, setReveal] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [showCorrectOptions, setShowCorrectOptions] = useState(false);
@@ -51,11 +52,13 @@ export function ReviewV1(props: any) {
     isRefetching,
   } = useListCharacterReviewList();
 
-  const searchParams = useSearchParams();
   const router = useRouter();
 
-  const date = searchParams?.get("date") || "";
-  const langParams = searchParams?.get("lang") || "";
+  const {
+    date,
+    lang: langParams,
+    character: nextCharacter,
+  } = useGetReviewParams();
 
   const reviewCounts = reviewCounterStore((state: any) => state?.reviewCounts);
   const setReviewCount = reviewCounterStore(
@@ -88,8 +91,6 @@ export function ReviewV1(props: any) {
   const hasReviewedAll = date ? groupItems?.length <= reviewCount : false;
 
   const unReviewedCharacters = useUnreviwedCharacters();
-
-  const nextCharacter = searchParams.get("character");
 
   // useEffect(() => {
   //   if (!nextCharacter) {

@@ -1,16 +1,21 @@
 "use client";
 import React from "react";
-import { ReviewV2 } from "./v2";
-import { ReviewV1 } from "./v1";
-import { useSearchParams } from "next/navigation";
+import { ReviewCalView } from "@/app/review/review-cal-view";
+import { ReviewMode } from "@/app/review/review-mode";
+
+import { useGetReviewParams } from "@/app/review/use-get-review-params";
+import { HskReviewMode } from "@/app/review/hsk-review-mode/hsk-review-mode";
 
 export default function NomadMethodPage(props: any) {
-  const searchParams = useSearchParams();
+  const { view, mode } = useGetReviewParams();
 
-  const view = searchParams?.get("view");
+  if (["hsk", "hsk3"]?.includes(mode)) {
+    return <HskReviewMode />;
+  }
 
   if (view === "cal") {
-    return <ReviewV2 />;
+    return <ReviewCalView />;
   }
-  return <ReviewV1 />;
+
+  return <ReviewMode />;
 }

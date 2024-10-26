@@ -132,7 +132,7 @@ export function ReviewMode(props: any) {
 
   const lang = currentCharacter?.lang || currentComponent?.lang;
 
-  const { studyMode } = useGetReviewParams();
+  const { studyMode, character } = useGetReviewParams();
 
   // if (isLoading) {
   //   return;
@@ -303,17 +303,23 @@ export function ReviewMode(props: any) {
                         setEndTime(startTime);
                         setReviewCount(reviewCount + 1);
 
-                        if (unReviewedCharacters?.[1]?.hanzi) {
+                        const currentCharacterIndex =
+                          unReviewedCharacters?.findIndex(
+                            (char: any) => char?.hanzi === character
+                          );
+
+                        const nextChar =
+                          unReviewedCharacters?.[currentCharacterIndex + 1];
+
+                        if (nextChar?.hanzi) {
                           const url = getUrl();
 
                           if (url?.includes("&")) {
                             return router.push(
-                              `${url}&character=${unReviewedCharacters?.[1]?.hanzi}`
+                              `${url}&character=${nextChar?.hanzi}`
                             );
                           } else {
-                            router.push(
-                              `/review?character=${unReviewedCharacters?.[1]?.hanzi}`
-                            );
+                            router.push(`/review?character=${nextChar?.hanzi}`);
                           }
                         }
                       });
@@ -377,17 +383,23 @@ export function ReviewMode(props: any) {
                           unReviewedCharacters
                         );
 
-                        if (unReviewedCharacters?.[1]?.hanzi) {
+                        const currentCharacterIndex =
+                          unReviewedCharacters?.findIndex(
+                            (char: any) => char?.hanzi === character
+                          );
+
+                        const nextChar =
+                          unReviewedCharacters?.[currentCharacterIndex + 1];
+
+                        if (nextChar?.hanzi) {
                           const url = getUrl();
 
                           if (url?.includes("&")) {
                             return router.push(
-                              `${url}&character=${unReviewedCharacters?.[1]?.hanzi}`
+                              `${url}&character=${nextChar?.hanzi}`
                             );
                           } else {
-                            router.push(
-                              `/review?character=${unReviewedCharacters?.[1]?.hanzi}`
-                            );
+                            router.push(`/review?character=${nextChar?.hanzi}`);
                           }
                         }
                       });
@@ -451,21 +463,24 @@ export function ReviewMode(props: any) {
                     setEndTime(startTime);
                     setReviewCount(reviewCount + 1);
 
-                    if (unReviewedCharacters?.[1]?.hanzi) {
+                    const currentCharacterIndex =
+                      unReviewedCharacters?.findIndex(
+                        (char: any) => char?.hanzi === character
+                      );
+
+                    const nextChar =
+                      unReviewedCharacters?.[currentCharacterIndex + 1];
+
+                    if (nextChar?.hanzi) {
                       const url = getUrl();
 
                       if (url?.includes("&")) {
                         return router.push(
-                          `${url}&character=${unReviewedCharacters?.[1]?.hanzi}`
+                          `${url}&character=${nextChar?.hanzi}`
                         );
                       } else {
-                        router.push(
-                          `/review?character=${unReviewedCharacters?.[1]?.hanzi}`
-                        );
+                        router.push(`/review?character=${nextChar?.hanzi}`);
                       }
-                      // router.push(
-                      //   `/review?character=${unReviewedCharacters?.[1]?.hanzi}`
-                      // );
                     }
                   });
               }}

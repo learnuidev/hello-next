@@ -71,8 +71,6 @@ export function useListLearnedCharactersByDate({
       }
     : null;
 
-  console.log("PROFILE HISTORY", profileHistory);
-
   const learnedCharactersFormatted = [...resolvedChars, profileHistory]
     ?.filter(Boolean)
     ?.map((item: any) => {

@@ -20,9 +20,6 @@ import { useBeltStore } from "@/components/use-belt-store";
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
 
-  console.log("Diff Time", diff);
-  console.log("Start Time", startTime);
-
   return {
     endTime,
     timeTaken: diff,
@@ -96,9 +93,10 @@ export function ReviewMode(props: any) {
 
   const hasReviewedAll = date ? groupItems?.length <= reviewCount : false;
 
-  const unReviewedCharacters = useUnreviwedCharacters();
-
-  console.log("UNREVIEW CHARS", unReviewedCharacters);
+  const {
+    data: unReviewedCharacters,
+    isLoading: isUnreviewedCharactersLoading,
+  } = useUnreviwedCharacters();
 
   // useEffect(() => {
   //   if (!nextCharacter) {
@@ -107,8 +105,6 @@ export function ReviewMode(props: any) {
   //     }
   //   }
   // }, [nextCharacter, router, unReviewedCharacters]);
-
-  console.log("unreviewed characters", unReviewedCharacters);
 
   const currentCharacter =
     unReviewedCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
@@ -121,10 +117,7 @@ export function ReviewMode(props: any) {
   //   }
   // }, [currentCharacter]);
 
-  console.log("START TIME", startTime);
-  console.log("END TIME", endTime);
   const diff = endTime - startTime;
-  console.log("DIFF TIME", diff);
 
   const currentComponent = components?.find(
     (component: any) => component?.hanzi === currentCharacter?.hanzi
@@ -138,8 +131,6 @@ export function ReviewMode(props: any) {
   //   return;
   // }
 
-  console.log("currentCharacter", currentCharacter);
-
   const getUrl = () => {
     if (["hsk3", "hsk"]?.includes(mode)) {
       return `/review?mode=${mode}&level=${selectedBelt.hskLevel}&study-mode=${studyMode}`;
@@ -149,10 +140,10 @@ export function ReviewMode(props: any) {
   };
 
   if (isLoading || isLearnedCharactersLoading) {
-    return <div> ... </div>;
+    return <div className="">...</div>;
   }
 
-  if (!currentCharacter || hasReviewedAll) {
+  if ((!currentCharacter || hasReviewedAll) && !isUnreviewedCharactersLoading) {
     return (
       <div className="grow text-center">
         {/* <NavBar /> */}
@@ -191,7 +182,9 @@ export function ReviewMode(props: any) {
       (char: any) => char?.hanzi === character
     );
 
-    const nextChar = unReviewedCharacters?.[currentCharacterIndex];
+    console.log("CURRENT CHAR INDEX", currentCharacterIndex);
+
+    const nextChar = unReviewedCharacters?.[0];
 
     if (nextChar?.hanzi) {
       const url = getUrl();
@@ -213,25 +206,33 @@ export function ReviewMode(props: any) {
 
   return (
     <div className="grow text-center">
-      <div className="flex items-center justify-between mt-16 mb-16 px-4 md:px-16">
+      <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
         <Link href={"/nmm"}>
           <Icons.xMark className="text-xl" />
         </Link>
 
-        {isParagraph ? (
-          <h1 className="text-2xl">Do you know this paragraph?</h1>
-        ) : (
-          <h1 className="text-2xl">Do you know this character?</h1>
-        )}
+        <p className="text-gray-700 text-xl">
+          <Icons.language /> {unReviewedCharacters?.length}
+        </p>
 
         <Link href={`/review?view=cal`}>
           <Icons.cal className="text-xl" />
         </Link>
       </div>
 
+      <div>
+        {isParagraph ? (
+          <h1 className="text-2xl">Do you know this paragraph?</h1>
+        ) : (
+          <h1 className="text-2xl">Do you know this character?</h1>
+        )}
+      </div>
+
       {isRefetching ? (
         <div className="my-32">
-          <h2 className="text-8xl md:text-9xl">...</h2>
+          <h2 className="text-8xl md:text-9xl">
+            <Icons.loadingSpinner />{" "}
+          </h2>
         </div>
       ) : (
         <div className="my-32">
@@ -454,7 +455,7 @@ export function ReviewMode(props: any) {
                 setEndTime(Date.now());
               }}
             >
-              <Icons.lightBulb />
+              <Icons.lightBulb className="text-4xl md:text-5xl" />
             </button>
           </>
         )}

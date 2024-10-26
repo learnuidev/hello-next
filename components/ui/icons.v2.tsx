@@ -74,6 +74,7 @@ import {
   faInfoCircle,
   faPenToSquare,
   faConstruction,
+  faTruckRampBox,
   // faCircleInfo,
   // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
@@ -259,4 +260,5 @@ export const Icons = {
   infoCircle: createFAIcon(faInfoCircle),
   edit: createFAIcon(faPenToSquare),
   construction: createFAIcon(faConstruction),
+  loadingSpinner: createFAIcon(faTruckRampBox),
 };

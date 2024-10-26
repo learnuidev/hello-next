@@ -16,7 +16,7 @@ export function useShortCuts() {
   const mode = useLearningModeStore((state) => state.mode);
   const setFocus = useViewType((state) => state.setFocus);
 
-  const unReviewedCharacters = useUnreviwedCharacters();
+  const { data: unReviewedCharacters } = useUnreviwedCharacters();
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
 

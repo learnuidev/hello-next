@@ -23,7 +23,8 @@ export function useUnreviwedCharacters() {
 
   const { mode } = useGetReviewParams();
 
-  const hskCharacters = useGetHskCharacters({});
+  const { data: hskCharacters, isLoading: isHskCharactersLoading } =
+    useGetHskCharacters({});
 
   const char = searchParams?.get("char");
   const date = searchParams?.get("date") || "";
@@ -64,14 +65,22 @@ export function useUnreviwedCharacters() {
       );
 
   if (["hsk", "hsk3"]?.includes(mode)) {
-    return hskCharacters?.filter((item: any) => {
+    const data = hskCharacters?.filter((item: any) => {
       const unreviewedCharacter = unReviewedCharacters?.find(
         (char: any) => char?.hanzi === item?.hanzi
       );
 
       return unreviewedCharacter;
     });
+
+    return {
+      data,
+      isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
+    };
   }
 
-  return unReviewedCharacters;
+  return {
+    data: unReviewedCharacters,
+    isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
+  };
 }

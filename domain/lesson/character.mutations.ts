@@ -113,7 +113,7 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        // queryClient.refetchQueries([listCharactersQueryId]);
+        queryClient.refetchQueries([listCharactersQueryId]);
       },
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,

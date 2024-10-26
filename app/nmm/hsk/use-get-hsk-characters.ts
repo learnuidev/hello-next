@@ -20,8 +20,10 @@ import { resolveHsk } from "./hsk-utils/resolve-hsk";
 export const useGetHskCharacters = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
-  const { data: learnedCharacters2 } = useListCharactersQuery();
-  const { data: components } = useListComponents({ includeAll: true });
+  const { data: learnedCharacters2, isLoading: isCharactersLoading } =
+    useListCharactersQuery();
+  const { data: components, isLoading: isComponentsLoading } =
+    useListComponents({ includeAll: true });
   const level = useHSKLevelStore((state) => state.level);
 
   const mode = useLearningModeStore((state: any) => state.mode);
@@ -35,7 +37,7 @@ export const useGetHskCharacters = ({ variant }: { variant?: "all" }) => {
 
   // const { data: hskCharacters } = useGetHskCharacters({ queryStr, variant });
 
-  const { data: hskWords } = useListHSKWordsQuery({
+  const { data: hskWords, isLoading } = useListHSKWordsQuery({
     version: mode === "hsk" ? 2 : 3,
     content: "",
   });
@@ -44,8 +46,6 @@ export const useGetHskCharacters = ({ variant }: { variant?: "all" }) => {
     () => resolveHsk(queryStr, { hskWords, variant, level }),
     [queryStr, hskWords, variant, level]
   );
-
-  console.log("HSK WOrDS", resolvedHskWords);
 
   const filteredWords = resolvedHskWords?.filter((item: any) => {
     if (!item?.topic || hskView === "All") {
@@ -103,5 +103,8 @@ export const useGetHskCharacters = ({ variant }: { variant?: "all" }) => {
     );
   });
 
-  return filteredComponents;
+  return {
+    data: filteredComponents,
+    isLoading: isLoading || isCharactersLoading || isComponentsLoading,
+  };
 };

@@ -8,9 +8,11 @@ export const SelectHskReviewMode = () => {
 
   return (
     <main>
-      <h1 className="text-center mt-64 text-7xl font-bold">HSK Review Mode</h1>
+      <h1 className="text-center mt-48 md:mt-64 text-5xl md:text-7xl font-bold">
+        HSK Review Mode
+      </h1>
 
-      <p className="text-center text-2xl font-extralight mt-2 mb-8 text-gray-400">
+      <p className="text-center text-lg md:text-2xl font-extralight mt-2 mb-8 text-gray-400">
         Please select one of the following
       </p>
 

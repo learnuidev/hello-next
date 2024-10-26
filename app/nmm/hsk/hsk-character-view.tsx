@@ -15,7 +15,7 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
 
   const comps = components ? components : chineseCharacters;
 
-  const filteredComponents = useGetHskCharacters({ variant });
+  const { data: filteredComponents } = useGetHskCharacters({ variant });
 
   return (
     <div>

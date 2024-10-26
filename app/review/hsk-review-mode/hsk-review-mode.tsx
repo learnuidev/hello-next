@@ -1,6 +1,6 @@
 import { SelectHskReviewMode } from "@/app/review/hsk-review-mode/select-hsk-review-mode";
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
-import { HskExamMode } from "@/app/review/hsk-review-mode/hsk-exam-mode";
+import { HskExamMode } from "@/app/review/hsk-review-mode/hsk-exam-mode/hsk-exam-mode";
 import { ReviewMode } from "@/app/review/review-mode";
 
 export const HskReviewMode = () => {

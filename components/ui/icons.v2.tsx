@@ -73,6 +73,7 @@ import {
   faLock,
   faInfoCircle,
   faPenToSquare,
+  faConstruction,
   // faCircleInfo,
   // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
@@ -257,4 +258,5 @@ export const Icons = {
   lockSolid: createFAIcon(faLockSolid),
   infoCircle: createFAIcon(faInfoCircle),
   edit: createFAIcon(faPenToSquare),
+  construction: createFAIcon(faConstruction),
 };

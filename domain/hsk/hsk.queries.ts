@@ -44,7 +44,7 @@ export function useListHSKWordsQuery(
 
   const mode = useLearningModeStore((state: any) => state.mode);
 
-  const version = params?.version || mode === "hsk3" ? 3 : 2;
+  const version = mode ? (mode === "hsk3" ? 3 : 2) : params?.version;
 
   return useQuery(
     [queryIds.listHSKWords, authUser?.jwt, version],

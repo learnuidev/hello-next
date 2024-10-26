@@ -8,6 +8,8 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import { reviewCounterStore } from "./review-counter-store";
+import { useGetHskCharacters } from "../nmm/hsk/use-get-hsk-characters";
+import { useGetReviewParams } from "./use-get-review-params";
 
 export function useUnreviwedCharacters() {
   const {
@@ -18,6 +20,10 @@ export function useUnreviwedCharacters() {
 
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  const { mode } = useGetReviewParams();
+
+  const hskCharacters = useGetHskCharacters({});
 
   const char = searchParams?.get("char");
   const date = searchParams?.get("date") || "";
@@ -56,6 +62,16 @@ export function useUnreviwedCharacters() {
     : learnedCharacters?.filter(
         (character: any) => character?.hanzi?.length === 1
       );
+
+  // if (["hsk", "hsk3"]?.includes(mode)) {
+  //   return hskCharacters?.filter((item: any) => {
+  //     const unreviewedCharacter = unReviewedCharacters?.find(
+  //       (char: any) => char?.hanzi === item?.hanzi
+  //     );
+
+  //     return unreviewedCharacter;
+  //   });
+  // }
 
   return unReviewedCharacters;
 }

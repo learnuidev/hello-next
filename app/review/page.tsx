@@ -6,7 +6,7 @@ import { ReviewMode } from "@/app/review/review-mode";
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { HskReviewMode } from "@/app/review/hsk-review-mode/hsk-review-mode";
 
-export default function NomadMethodPage(props: any) {
+export default function ReviewPage(props: any) {
   const { view, mode } = useGetReviewParams();
 
   if (["hsk", "hsk3"]?.includes(mode)) {

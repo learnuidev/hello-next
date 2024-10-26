@@ -49,8 +49,8 @@ export const AudioComponent = ({ currentPhrase }: any) => {
       className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${
         playMusic
           ? `dark:text-white ring-slate-900/5 dark:ring-white`
-          : "ring-slate-900/5 dark:ring-slate-300 dark:text-slate-300"
-      } shadow-lg rounded-full flex items-center justify-center transition`}
+          : "ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"
+      } shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`}
       onClick={() => {
         if (audioUrl) {
           if (playMusic && false) {

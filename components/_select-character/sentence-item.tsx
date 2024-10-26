@@ -187,7 +187,7 @@ export const SentenceItem = (props: any) => {
   }
 
   return (
-    <div className="flex justify-between space-x-4 py-4 items-center w-full">
+    <div className="flex  flex-row justify-between space-x-4 py-4 items-center w-full">
       <div role="button" className="flex flex-col">
         {" "}
         <Link
@@ -196,12 +196,11 @@ export const SentenceItem = (props: any) => {
             currentPhrase?.hanzi
           )}`}
         >
-          {lang !== "en" ||
-            (contentLang !== "en" && (
-              <span className="text-sm text-gray-500 dark:text-gray-400">
-                {currentPhrase?.pinyin || currentPhrase?.roman}
-              </span>
-            ))}
+          {lang !== "en" && (
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              {currentPhrase?.pinyin || currentPhrase?.roman}
+            </span>
+          )}
         </Link>
         <span className="text-gray-500 dark:text-gray-300 text-lg">
           {(currentPhrase?.input
@@ -258,7 +257,7 @@ export const SentenceItem = (props: any) => {
         )}
       </div>
 
-      <div className="flex space-x-4 items-center">
+      <div className="flex space-x-2 md:space-x-4 items-center">
         {/* {currentPhrase?.audio ? ( */}
         <AudioComponent currentPhrase={currentPhrase} />
         {/* ) : null} */}

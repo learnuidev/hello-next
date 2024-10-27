@@ -37,6 +37,7 @@ const getPonderTime = (endTime: number) => {
 export function ReviewMode(props: any) {
   const [reveal, setReveal] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const [emotion, setEmotion] = useState("");
   const [showCorrectOptions, setShowCorrectOptions] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
   const [endTime, setEndTime] = useState(Date.now());
@@ -206,15 +207,15 @@ export function ReviewMode(props: any) {
     <div className="grow text-center">
       <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
         <Link href={"/nmm"}>
-          <Icons.xMark className="text-xl" />
+          <Icons.xMark className="text-xl md:text-3xl" />
         </Link>
 
-        <p className="text-gray-700 text-xl">
+        <p className="text-gray-700 text-xl md:text-3xl">
           <Icons.language /> {unReviewedCharacters?.length}
         </p>
 
         <Link href={`/review?view=cal`}>
-          <Icons.cal className="text-xl" />
+          <Icons.cal className="text-xl md:text-3xl" />
         </Link>
       </div>
 
@@ -228,9 +229,7 @@ export function ReviewMode(props: any) {
 
       {isRefetching ? (
         <div className="my-32">
-          <h2 className="text-8xl md:text-9xl">
-            <Icons.loadingSpinner />{" "}
-          </h2>
+          <h2 className="text-8xl md:text-9xl">...</h2>
         </div>
       ) : (
         <div className="my-32">
@@ -311,6 +310,7 @@ export function ReviewMode(props: any) {
                           timeTaken,
                           ponderTime,
                           mode,
+                          emotion,
                         }),
                       } as any)
                       .then((res) => {
@@ -319,6 +319,7 @@ export function ReviewMode(props: any) {
                         setShowOptions(false);
                         setStartTime(startTime);
                         setEndTime(startTime);
+                        setEmotion("");
                         setReviewCount(reviewCount + 1);
 
                         goToNextChar();
@@ -367,6 +368,7 @@ export function ReviewMode(props: any) {
                           timeTaken,
                           ponderTime,
                           mode,
+                          emotion,
                         }),
                       } as any)
                       .then((res) => {
@@ -375,6 +377,7 @@ export function ReviewMode(props: any) {
                         setShowCorrectOptions(false);
                         setStartTime(startTime);
                         setEndTime(startTime);
+                        setEmotion("");
                         setReviewCount(reviewCount + 1);
 
                         goToNextChar();
@@ -431,6 +434,7 @@ export function ReviewMode(props: any) {
                       timeTaken,
                       ponderTime,
                       mode,
+                      emotion,
                     }),
                   } as any)
                   .then((res) => {
@@ -439,7 +443,7 @@ export function ReviewMode(props: any) {
                     setStartTime(startTime);
                     setEndTime(startTime);
                     setReviewCount(reviewCount + 1);
-
+                    setEmotion("");
                     goToNextChar();
                   });
               }}
@@ -461,16 +465,27 @@ export function ReviewMode(props: any) {
           </>
         )}
       </div>
-      <div className="space-x-12 mt-12 text-2xl">
+      <div className="space-x-12 mt-12 text-3xl">
         {showOptions ? (
           <>
             {[
-              { title: "Cry", value: "cry", Icon: Icons.cry },
-              { title: "Angry", value: "angry", Icon: Icons.angry },
+              {
+                title: "Cry",
+                value: "cry",
+                Icon: Icons.cry,
+                IconActive: Icons.crySolid,
+              },
+              {
+                title: "Angry",
+                value: "angry",
+                Icon: Icons.angry,
+                IconActive: Icons.angrySolid,
+              },
               {
                 title: "Spiral Eyes",
                 value: "spiral-eyes",
                 Icon: Icons.spiralEyes,
+                IconActive: Icons.spiralEyesSolid,
               },
             ].map((option) => {
               return (
@@ -478,9 +493,15 @@ export function ReviewMode(props: any) {
                   key={JSON.stringify(option)}
                   disabled={updateCharacterStatusMutation?.isLoading}
                   className="hover:text-rose-400 font-extralight"
-                  onClick={() => {}}
+                  onClick={() => {
+                    setEmotion(option.value);
+                  }}
                 >
-                  <option.Icon />
+                  {emotion === option?.value ? (
+                    <option.IconActive />
+                  ) : (
+                    <option.Icon />
+                  )}
                 </button>
               );
             })}
@@ -488,27 +509,45 @@ export function ReviewMode(props: any) {
         ) : showCorrectOptions ? (
           <>
             {[
-              { title: "Sweat", value: "grin-sweat", Icon: Icons.grinSweat },
-              { title: "Smirk", value: "smirk", Icon: Icons.smirk },
+              {
+                title: "Sweat",
+                value: "grin-sweat",
+                Icon: Icons.grinSweat,
+                IconActive: Icons.grinSweatSolid,
+              },
               {
                 title: "Smile",
                 value: "smile",
                 Icon: Icons.smile,
+                IconActive: Icons.smileSolid,
+              },
+              {
+                title: "Smirk",
+                value: "smirk",
+                Icon: Icons.smirk,
+                IconActive: Icons.smirkSolid,
               },
               {
                 title: "Grin",
                 value: "grin",
                 Icon: Icons.grin,
+                IconActive: Icons.grinSolid,
               },
             ].map((option) => {
               return (
                 <button
                   key={JSON.stringify(option)}
                   disabled={updateCharacterStatusMutation?.isLoading}
-                  className="hover:text-rose-400 font-extralight"
-                  onClick={() => {}}
+                  className={cn("hover:text-rose-400 font-extralight")}
+                  onClick={() => {
+                    setEmotion(option.value);
+                  }}
                 >
-                  <option.Icon />
+                  {emotion === option?.value ? (
+                    <option.IconActive />
+                  ) : (
+                    <option.Icon />
+                  )}
                 </button>
               );
             })}

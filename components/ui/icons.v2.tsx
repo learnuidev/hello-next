@@ -23,6 +23,14 @@ import {
   faGlassesRound as faGlassesRoundSolid,
   faArrowUpRightFromSquare,
   faCircleInfo,
+  faFaceSadCry as faFaceSadCrySolid,
+  faGrinBeamSweat as faGrinBeamSweatSolid,
+  faFaceSadSweat as faFaceSadSweatSolid,
+  faFaceAngry as faFaceAngrySolid,
+  faFaceSpiralEyes as faFaceSpiralEyesSolid,
+  faFaceSmirking as faFaceSmirkingSolid,
+  faSmile as faSmileSolid,
+  faFaceGrin as faFaceGrinSolid,
 } from "@fortawesome/sharp-solid-svg-icons";
 
 import {
@@ -271,11 +279,19 @@ export const Icons = {
   loadingSpinner: createFAIcon(faTruckRampBox),
 
   cry: createFAIcon(faFaceSadCry),
+  crySolid: createFAIcon(faFaceSadCrySolid),
   grinSweat: createFAIcon(faGrinBeamSweat),
+  grinSweatSolid: createFAIcon(faGrinBeamSweatSolid),
   sadSweat: createFAIcon(faFaceSadSweat),
+  sadSweatSolid: createFAIcon(faFaceSadSweatSolid),
   angry: createFAIcon(faFaceAngry),
+  angrySolid: createFAIcon(faFaceAngrySolid),
   spiralEyes: createFAIcon(faFaceSpiralEyes),
+  spiralEyesSolid: createFAIcon(faFaceSpiralEyesSolid),
   smirk: createFAIcon(faFaceSmirking),
+  smirkSolid: createFAIcon(faFaceSmirkingSolid),
   smile: createFAIcon(faSmile),
+  smileSolid: createFAIcon(faSmileSolid),
   grin: createFAIcon(faFaceGrin),
+  grinSolid: createFAIcon(faFaceGrinSolid),
 };

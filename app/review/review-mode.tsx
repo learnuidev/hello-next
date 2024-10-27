@@ -466,93 +466,97 @@ export function ReviewMode(props: any) {
         )}
       </div>
       <div className="space-x-12 mt-12 text-3xl">
-        {showOptions ? (
-          <>
-            {[
-              {
-                title: "Cry",
-                value: "cry",
-                Icon: Icons.cry,
-                IconActive: Icons.crySolid,
-              },
-              {
-                title: "Angry",
-                value: "angry",
-                Icon: Icons.angry,
-                IconActive: Icons.angrySolid,
-              },
-              {
-                title: "Spiral Eyes",
-                value: "spiral-eyes",
-                Icon: Icons.spiralEyes,
-                IconActive: Icons.spiralEyesSolid,
-              },
-            ].map((option) => {
-              return (
-                <button
-                  key={JSON.stringify(option)}
-                  disabled={updateCharacterStatusMutation?.isLoading}
-                  className="hover:text-rose-400 font-extralight"
-                  onClick={() => {
-                    setEmotion(option.value);
-                  }}
-                >
-                  {emotion === option?.value ? (
-                    <option.IconActive />
-                  ) : (
-                    <option.Icon />
-                  )}
-                </button>
-              );
-            })}
-          </>
-        ) : showCorrectOptions ? (
-          <>
-            {[
-              {
-                title: "Sweat",
-                value: "grin-sweat",
-                Icon: Icons.grinSweat,
-                IconActive: Icons.grinSweatSolid,
-              },
-              {
-                title: "Smile",
-                value: "smile",
-                Icon: Icons.smile,
-                IconActive: Icons.smileSolid,
-              },
-              {
-                title: "Smirk",
-                value: "smirk",
-                Icon: Icons.smirk,
-                IconActive: Icons.smirkSolid,
-              },
-              {
-                title: "Grin",
-                value: "grin",
-                Icon: Icons.grin,
-                IconActive: Icons.grinSolid,
-              },
-            ].map((option) => {
-              return (
-                <button
-                  key={JSON.stringify(option)}
-                  disabled={updateCharacterStatusMutation?.isLoading}
-                  className={cn("hover:text-rose-400 font-extralight")}
-                  onClick={() => {
-                    setEmotion(option.value);
-                  }}
-                >
-                  {emotion === option?.value ? (
-                    <option.IconActive />
-                  ) : (
-                    <option.Icon />
-                  )}
-                </button>
-              );
-            })}
-          </>
-        ) : null}
+        {
+          // showOptions ? (
+          //   <>
+          //     {[
+          //       {
+          //         title: "Cry",
+          //         value: "cry",
+          //         Icon: Icons.cry,
+          //         IconActive: Icons.crySolid,
+          //       },
+          //       {
+          //         title: "Angry",
+          //         value: "angry",
+          //         Icon: Icons.angry,
+          //         IconActive: Icons.angrySolid,
+          //       },
+          //       {
+          //         title: "Spiral Eyes",
+          //         value: "spiral-eyes",
+          //         Icon: Icons.spiralEyes,
+          //         IconActive: Icons.spiralEyesSolid,
+          //       },
+          //     ].map((option) => {
+          //       return (
+          //         <button
+          //           key={JSON.stringify(option)}
+          //           disabled={updateCharacterStatusMutation?.isLoading}
+          //           className="hover:text-rose-400 font-extralight"
+          //           onClick={() => {
+          //             setEmotion(option.value);
+          //           }}
+          //         >
+          //           {emotion === option?.value ? (
+          //             <option.IconActive />
+          //           ) : (
+          //             <option.Icon />
+          //           )}
+          //         </button>
+          //       );
+          //     })}
+          //   </>
+          // )
+          // :
+          showCorrectOptions ? (
+            <>
+              {[
+                {
+                  title: "Sweat",
+                  value: "grin-sweat",
+                  Icon: Icons.grinSweat,
+                  IconActive: Icons.grinSweatSolid,
+                },
+                {
+                  title: "Smile",
+                  value: "smile",
+                  Icon: Icons.smile,
+                  IconActive: Icons.smileSolid,
+                },
+                {
+                  title: "Smirk",
+                  value: "smirk",
+                  Icon: Icons.smirk,
+                  IconActive: Icons.smirkSolid,
+                },
+                {
+                  title: "Grin",
+                  value: "grin",
+                  Icon: Icons.grin,
+                  IconActive: Icons.grinSolid,
+                },
+              ].map((option) => {
+                return (
+                  <button
+                    key={JSON.stringify(option)}
+                    disabled={updateCharacterStatusMutation?.isLoading}
+                    className={cn("hover:text-rose-400 font-extralight")}
+                    onClick={() => {
+                      setEmotion(option.value);
+                    }}
+                  >
+                    {emotion === option?.value ? (
+                      <option.IconActive />
+                    ) : (
+                      <option.Icon />
+                    )}
+                  </button>
+                );
+              })}
+            </>
+          ) : null
+        }
       </div>
 
       {diff !== 0 && (

@@ -16,6 +16,7 @@ import { useUnreviwedCharacters } from "./use-unreviewed-characters";
 import { useGetReviewParams } from "./use-get-review-params";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { useBeltStore } from "@/components/use-belt-store";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -45,6 +46,8 @@ export function ReviewMode(props: any) {
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
 
   const { data: components } = useListComponents();
+
+  const { data: allCharacters } = useListCharactersQuery();
 
   const {
     data: learnedCharacters,
@@ -99,24 +102,10 @@ export function ReviewMode(props: any) {
     isLoading: isUnreviewedCharactersLoading,
   } = useUnreviwedCharacters();
 
-  // useEffect(() => {
-  //   if (!nextCharacter) {
-  //     if (unReviewedCharacters?.[1]?.hanzi) {
-  //       router.push(`/review?character=${unReviewedCharacters?.[1]?.hanzi}`);
-  //     }
-  //   }
-  // }, [nextCharacter, router, unReviewedCharacters]);
-
   const currentCharacter =
     unReviewedCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
+    allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
     unReviewedCharacters?.[0];
-  // const startTime = Date.now();
-
-  // useEffect(() => {
-  //   if (currentCharacter?.hanzi) {
-  //     router.push(`/review?char=${currentCharacter?.hanzi}`);
-  //   }
-  // }, [currentCharacter]);
 
   const diff = endTime - startTime;
 
@@ -127,10 +116,6 @@ export function ReviewMode(props: any) {
   const lang = currentCharacter?.lang || currentComponent?.lang;
 
   const { studyMode, character } = useGetReviewParams();
-
-  // if (isLoading) {
-  //   return;
-  // }
 
   const getUrl = () => {
     if (["hsk3", "hsk"]?.includes(mode)) {

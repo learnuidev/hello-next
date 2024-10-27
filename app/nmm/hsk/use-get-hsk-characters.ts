@@ -16,6 +16,7 @@ import { chineseCharacters } from "@/langs/chinese /characters";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { filterNonHanYu } from "../nmm-utils/filter-non-hanyu";
 import { resolveHsk } from "./hsk-utils/resolve-hsk";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 
 export const useGetHskCharacters = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
@@ -88,14 +89,26 @@ export const useGetHskCharacters = ({ variant }: { variant?: "all" }) => {
   //     selectedBelt?.maxCharacterLevel
   //   );
 
+  const brightMode = useBrightModeStore((state: any) => state.mode);
+
   const filteredComponents = filterComponents(
     slicedComponents,
     queryStr,
     learnedCharacters2
   )?.filter((prop: any) => {
+    const learnedChar = learnedCharacters2?.find(
+      (char: any) => char?.hanzi === prop?.hanzi
+    );
+
+    if (!brightMode && learnedChar?.status === "forgotten") {
+      return false;
+    }
+
     if (hskView === "All") {
       return true;
     }
+
+    return true;
 
     return (
       filteredWords?.filter((word) => word?.hanzi?.includes(prop?.hanzi))

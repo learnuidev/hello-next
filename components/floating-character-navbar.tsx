@@ -99,7 +99,6 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
               <button
                 className="text-xl"
                 onClick={() => {
-                  // setView("unzoom");
                   if (view === "zoom") {
                     setView("unzoom");
                   } else {
@@ -139,58 +138,33 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
               <button
                 disabled={updateCharacterStatusMutation?.isLoading}
                 onClick={() => {
-                  //  const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
-                  updateCharacterStatusMutation
-                    .mutateAsync({
-                      characterId: currentCharacter?.id,
-                      status: "forgotten",
-                      forgottenAt: Date.now(),
-                      rightAt: Date.now(),
-                      rightCount: (currentCharacter?.rightCount || 0) + 1,
-                    } as any)
-                    .then((res) => {
-                      const startTime = Date.now();
-                      // setReveal(false);
-                      // setStartTime(startTime);
-                      // setEndTime(startTime);
-                      // setReviewCount(reviewCount + 1);
-                    });
+                  updateCharacterStatusMutation.mutateAsync({
+                    characterId: currentCharacter?.id,
+                    status: "forgotten",
+                    statusHistory: (
+                      currentCharacter?.statusHistory || []
+                    ).concat({
+                      type: "status-change",
+                      createdAt: Date.now(),
+                      newStatus: "forgotten",
+                      oldStatus: currentCharacter?.status,
+                    }),
+                    forgottenAt: Date.now(),
+                    rightAt: Date.now(),
+                    rightCount: (currentCharacter?.rightCount || 0) + 1,
+                  } as any);
                 }}
               >
                 {updateCharacterStatusMutation.isLoading ? (
                   <Icons.spinner className="text-2xl" spinPulse />
-                ) : updateCharacterStatusMutation.isSuccess ? (
-                  <Icons.checkCircle className="transition text-2xl" />
                 ) : (
                   <Icons.fire className="text-2xl" />
                 )}
               </button>
-
-              // <button
-              //   className="text-xl"
-              //   onClick={() => {
-              //     addCharacterMutation?.mutateAsync({
-              //       lang: lang,
-              //       status: "DISCOVERED",
-              //       story: "todo",
-              //       hanzi: firstLesson?.hanzi || selectedChar,
-              //       journeyId: firstLesson?.id || "default",
-              //     });
-              //   }}
-              // >
-              //   {addCharacterMutation.isLoading ? (
-              //     <Icons.spinner spinPulse />
-              //   ) : addCharacterMutation.isSuccess ? (
-              //     <Icons.checkCircle className="transition" />
-              //   ) : (
-              //     <Icons.lightBulb className="text-2xl" />
-              //   )}
-              // </button>
             )}
             {isLoading ||
             selectedComp2?.updated_at ? null : !selectedComp2?.updated_at ||
               !selectedComp2?.discoveredAt ? (
-              // (selectedComp?.hanzi || characterId)?.length > 1 ? null : (
               false ? null : hasAlreadyLearned?.discoveredAt ? null : (
                 <button
                   className="text-xl"
@@ -201,7 +175,6 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                     discoverMutation
                       .mutateAsync({
                         hanzi: selectedComp?.hanzi || characterId,
-                        // story: "todo",
                       })
                       .then((resp: any) => {
                         toast(
@@ -212,8 +185,6 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                 >
                   {discoverMutation.isLoading ? (
                     <Icons.spinner spinPulse />
-                  ) : discoverMutation.isSuccess ? (
-                    <Icons.checkCircle className="transition" />
                   ) : (
                     <Icons.language />
                   )}
@@ -222,27 +193,41 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                 </button>
               )
             ) : null}
-            {!hasAlreadyReviewed?.id ? null : (
+            {currentCharacter?.status === "forgotten" && (
               <button
                 className="text-xl"
                 disabled={deleteComponentMutation.isLoading}
                 onClick={() => {
-                  deleteComponentMutation
-                    .mutateAsync({
-                      hanzi: hasAlreadyReviewed?.hanzi,
-                      id: hasAlreadyReviewed?.id,
-                    } as any)
-                    .then((resp: any) => {
-                      toast(`Component: ${selectedComp?.hanzi || characterId} Successfully deleted  
-                      \n 
-                      ${JSON.stringify(resp)}`);
-                    });
+                  updateCharacterStatusMutation.mutateAsync({
+                    characterId: currentCharacter?.id,
+                    status: "DISCOVERED",
+                    forgottenAt: Date.now(),
+                    rightAt: Date.now(),
+                    statusHistory: (
+                      currentCharacter?.statusHistory || []
+                    ).concat({
+                      type: "status-change",
+                      createdAt: Date.now(),
+                      newStatus: "DISCOVERED",
+                      oldStatus: currentCharacter?.status,
+                    }),
+                    rightCount: (currentCharacter?.rightCount || 0) + 1,
+                  } as any);
+
+                  // deleteComponentMutation
+                  //   .mutateAsync({
+                  //     hanzi: hasAlreadyReviewed?.hanzi,
+                  //     id: hasAlreadyReviewed?.id,
+                  //   } as any)
+                  //   .then((resp: any) => {
+                  //     toast(`Component: ${selectedComp?.hanzi || characterId} Successfully deleted
+                  //     \n
+                  //     ${JSON.stringify(resp)}`);
+                  //   });
                 }}
               >
-                {deleteComponentMutation.isLoading ? (
+                {updateCharacterStatusMutation.isLoading ? (
                   <Icons.spinner spinPulse />
-                ) : discoverMutation.isSuccess ? (
-                  <Icons.checkCircle className="transition" />
                 ) : (
                   <Icons.powerOff />
                 )}

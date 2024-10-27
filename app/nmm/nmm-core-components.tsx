@@ -25,6 +25,8 @@ import { HanziLink } from "@/components/hanzi-link";
 import { filterComponents } from "./nmm-utils/filter-components";
 import { calculateColor } from "./nmm-utils/calculate-color";
 import { NmmListContainer } from "@/components/nmm-list-container";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { Nothing } from "./nothing";
 
 export function NmmCoreComponents() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
@@ -81,45 +83,49 @@ export function NmmCoreComponents() {
   );
 
   const { data: authUser } = useCurrentAuthUser({});
+  const brightMode = useBrightModeStore((state: any) => state.mode);
 
   // const { data: filteredComponents } = useListComponentsByBelt();
+
+  const learnedComps = filteredComponents
+    // ?.filter((comp: any) => comp?.level < 100)
+    .filter((prop: any) => {
+      const learnedChar = learnedCharacters2?.find(
+        (char: any) => char?.hanzi === prop?.hanzi
+      );
+
+      if (!brightMode && learnedChar?.status === "forgotten") {
+        return null;
+      }
+
+      return true;
+    });
+
+  if (learnedComps?.length === 0) {
+    return <Nothing message={"You have learned everything in this belt"} />;
+  }
 
   // return "TODO";
   return (
     <NmmListContainer>
-      {filteredComponents?.length > 0 &&
-        filteredComponents
-          // ?.filter((comp: any) => comp?.level < 100)
-          .map((prop: any, idx: number) => {
-            const selectedComp = components?.find(
-              (component: any) => component?.hanzi === prop?.hanzi
-            );
+      {learnedComps.map((prop: any, idx: number) => {
+        const selectedComp = components?.find(
+          (component: any) => component?.hanzi === prop?.hanzi
+        );
 
-            const color = calculateColor({
-              tone: selectedComp?.tone_level,
-            });
-
-            const learnedChar = learnedCharacters2?.find(
-              (char: any) => char?.hanzi === prop?.hanzi
-            );
-
-            // if (learnedChar?.status === "forgotten") {
-            //   return null;
-            // }
-
-            return (
-              <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
-                <Tooltip>
-                  <TooltipTrigger className="hover:scale-125 transition">
-                    <HanziLink character={prop} />
-                  </TooltipTrigger>
-                  <TooltipContent className="bg-black border-gray-800">
-                    <PreviewComponent component={prop} />
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            );
-          })}
+        return (
+          <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
+            <Tooltip>
+              <TooltipTrigger className="hover:scale-125 transition">
+                <HanziLink character={prop} />
+              </TooltipTrigger>
+              <TooltipContent className="bg-black border-gray-800">
+                <PreviewComponent component={prop} />
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        );
+      })}
     </NmmListContainer>
   );
 }

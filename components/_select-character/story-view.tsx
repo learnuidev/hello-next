@@ -19,7 +19,10 @@ import { StoryEditor } from "./story-editor";
 
 import { chineseCharacters } from "@/langs/chinese /characters";
 import { useQuery } from "@tanstack/react-query";
-import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
+import {
+  useCurrentAuthUser,
+  useIsSuperAdmin,
+} from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { create } from "zustand";
@@ -135,6 +138,8 @@ export const StoryView = (props: SelectedCharacterProps) => {
     }
   );
 
+  const isSuperAdmin = useIsSuperAdmin();
+
   const pinyinOrRoman =
     selectedComp?.pinyin ||
     selectedComp?.roman ||
@@ -223,21 +228,23 @@ export const StoryView = (props: SelectedCharacterProps) => {
             <span>Your Story</span>
           </button>
 
-          <button
-            className={cn(
-              storyMode === "global" ? "text-white" : "text-gray-400",
-              "space-x-2"
-            )}
-            onClick={() => {
-              setStoryMode("global");
-            }}
-          >
-            <Icons.globeAsia />
-            <span>Global</span>
-          </button>
+          {isSuperAdmin && (
+            <button
+              className={cn(
+                storyMode === "global" ? "text-white" : "text-gray-400",
+                "space-x-2"
+              )}
+              onClick={() => {
+                setStoryMode("global");
+              }}
+            >
+              <Icons.globeAsia />
+              <span>Global</span>
+            </button>
+          )}
         </div>
 
-        {storyMode === "global" ? (
+        {storyMode === "global" && isSuperAdmin ? (
           <div key="global">
             <StoryEditor
               disableSave={true}

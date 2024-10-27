@@ -31,6 +31,7 @@ import {
   faFaceSmirking as faFaceSmirkingSolid,
   faSmile as faSmileSolid,
   faFaceGrin as faFaceGrinSolid,
+  faFaceParty as faFacePartySolid,
 } from "@fortawesome/sharp-solid-svg-icons";
 
 import {
@@ -91,6 +92,7 @@ import {
   faSmile,
   faGrinBeamSweat,
   faFaceGrin,
+  faFaceParty,
   // faCircleInfo,
   // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
@@ -294,4 +296,6 @@ export const Icons = {
   smileSolid: createFAIcon(faSmileSolid),
   grin: createFAIcon(faFaceGrin),
   grinSolid: createFAIcon(faFaceGrinSolid),
+  party: createFAIcon(faFaceParty),
+  partySolid: createFAIcon(faFacePartySolid),
 };

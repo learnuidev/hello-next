@@ -524,17 +524,23 @@ export function ReviewMode(props: any) {
                   Icon: Icons.smile,
                   IconActive: Icons.smileSolid,
                 },
-                {
-                  title: "Smirk",
-                  value: "smirk",
-                  Icon: Icons.smirk,
-                  IconActive: Icons.smirkSolid,
-                },
+                // {
+                //   title: "Smirk",
+                //   value: "smirk",
+                //   Icon: Icons.smirk,
+                //   IconActive: Icons.smirkSolid,
+                // },
                 {
                   title: "Grin",
                   value: "grin",
                   Icon: Icons.grin,
                   IconActive: Icons.grinSolid,
+                },
+                {
+                  title: "Party",
+                  value: "Party",
+                  Icon: Icons.party,
+                  IconActive: Icons.partySolid,
                 },
               ].map((option) => {
                 return (

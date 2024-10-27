@@ -14,7 +14,7 @@ export const HskExamMode = () => {
 
   return (
     <main>
-      <h1 className="text-center mt-64 text-7xl font-bold">HSK Exam Mode</h1>
+      <h1 className="text-center mt-64 text-7xl font-bold">HSK iExam Mode</h1>
 
       <div className="flex items-center justify-center flex-row space-x-4 mt-4 text-gray-600">
         <Icons.construction className="text-2xl" />

@@ -182,8 +182,6 @@ export function ReviewMode(props: any) {
       (char: any) => char?.hanzi === character
     );
 
-    console.log("CURRENT CHAR INDEX", currentCharacterIndex);
-
     const nextChar = unReviewedCharacters?.[0];
 
     if (nextChar?.hanzi) {
@@ -459,6 +457,60 @@ export function ReviewMode(props: any) {
             </button>
           </>
         )}
+      </div>
+      <div className="space-x-12 mt-12 text-2xl">
+        {showOptions ? (
+          <>
+            {[
+              { title: "Cry", value: "cry", Icon: Icons.cry },
+              { title: "Angry", value: "angry", Icon: Icons.angry },
+              {
+                title: "Spiral Eyes",
+                value: "spiral-eyes",
+                Icon: Icons.spiralEyes,
+              },
+            ].map((option) => {
+              return (
+                <button
+                  key={JSON.stringify(option)}
+                  disabled={updateCharacterStatusMutation?.isLoading}
+                  className="hover:text-rose-400 font-extralight"
+                  onClick={() => {}}
+                >
+                  <option.Icon />
+                </button>
+              );
+            })}
+          </>
+        ) : showCorrectOptions ? (
+          <>
+            {[
+              { title: "Sweat", value: "grin-sweat", Icon: Icons.grinSweat },
+              { title: "Smirk", value: "smirk", Icon: Icons.smirk },
+              {
+                title: "Smile",
+                value: "smile",
+                Icon: Icons.smile,
+              },
+              {
+                title: "Grin",
+                value: "grin",
+                Icon: Icons.grin,
+              },
+            ].map((option) => {
+              return (
+                <button
+                  key={JSON.stringify(option)}
+                  disabled={updateCharacterStatusMutation?.isLoading}
+                  className="hover:text-rose-400 font-extralight"
+                  onClick={() => {}}
+                >
+                  <option.Icon />
+                </button>
+              );
+            })}
+          </>
+        ) : null}
       </div>
 
       {diff !== 0 && (

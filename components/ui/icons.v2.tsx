@@ -75,6 +75,14 @@ import {
   faPenToSquare,
   faConstruction,
   faTruckRampBox,
+  faFaceSadCry,
+  faFaceSadSweat,
+  faFaceAngry,
+  faFaceSpiralEyes,
+  faFaceSmirking,
+  faSmile,
+  faGrinBeamSweat,
+  faFaceGrin,
   // faCircleInfo,
   // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
@@ -261,4 +269,13 @@ export const Icons = {
   edit: createFAIcon(faPenToSquare),
   construction: createFAIcon(faConstruction),
   loadingSpinner: createFAIcon(faTruckRampBox),
+
+  cry: createFAIcon(faFaceSadCry),
+  grinSweat: createFAIcon(faGrinBeamSweat),
+  sadSweat: createFAIcon(faFaceSadSweat),
+  angry: createFAIcon(faFaceAngry),
+  spiralEyes: createFAIcon(faFaceSpiralEyes),
+  smirk: createFAIcon(faFaceSmirking),
+  smile: createFAIcon(faSmile),
+  grin: createFAIcon(faFaceGrin),
 };

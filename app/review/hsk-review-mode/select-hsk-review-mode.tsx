@@ -31,7 +31,7 @@ export const SelectHskReviewMode = () => {
           }}
           className="dark:boder-gray-200 border-[1px] px-4 py-2 rounded-full"
         >
-          HSK Exam Mode
+          HSK iExam Mode
         </button>
       </div>
     </main>

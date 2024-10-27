@@ -12,6 +12,7 @@ const hsk2ExamSpec = {
       },
       question: {
         en: "Determine whether the Chinese character matches the English translation. Answer True or False.",
+        zh: "判断这个汉字是否与英文翻译相匹配。回答“是”或“否”。",
       },
       totalQuestions: 5,
       type: "simple-true-false",
@@ -22,6 +23,30 @@ const hsk2ExamSpec = {
           en: "Airplane",
           answer: false,
         },
+        {
+          zh: "火车",
+          pinyin: "huǒchē",
+          en: "Train",
+          answer: true,
+        },
+        {
+          zh: "游泳",
+          pinyin: "yóuyǒng",
+          en: "Swimming",
+          answer: true,
+        },
+        {
+          zh: "自行车",
+          pinyin: "zìxíngchē",
+          en: "Car",
+          answer: false,
+        },
+        {
+          zh: "休息",
+          pinyin: "xiūxi",
+          en: "Rest",
+          answer: true,
+        },
       ],
     },
     {
@@ -31,8 +56,10 @@ const hsk2ExamSpec = {
       },
       question: {
         en: "Match each Chinese character with its English meaning.",
+        zh: "将每个汉字与它的英文意思相匹配。",
       },
       type: "social-interaction-simple-match",
+      totalQuestions: 5,
 
       options: [
         {
@@ -72,11 +99,45 @@ const hsk2ExamSpec = {
         },
       ],
       answers: [
-        { id: 1, en: "I like this book very much." },
-        { id: 2, en: "What are you cooking today?" },
-        { id: 3, en: "Sorry, I want to go to bed." },
-        { id: 4, en: "Mama, can you see me?" },
-        { id: 5, en: "You're welcome. Are you feeling better?" },
+        { optionId: 1, en: "I like this book very much." },
+        { optionId: 2, en: "What are you cooking today?" },
+        { optionId: 3, en: "Sorry, I want to go to bed." },
+        { optionId: 4, en: "Mama, can you see me?" },
+        { optionId: 5, en: "You're welcome. Are you feeling better?" },
+      ],
+    },
+    {
+      title: {
+        zh: "第三部分",
+        en: "Part Three",
+      },
+      totalQuestions: 5,
+      question: {
+        en: "Match each question with the correct response.",
+        zh: "将每个问题与正确的回答相匹配。",
+      },
+      type: "question-answer-simple-match",
+      options: [
+        { id: 1, zh: "你叫什么名字？", pinyin: "nǐ jiào shénme míngzi?" },
+        { id: 2, zh: "你是哪国人？", pinyin: "nǐ shì nǎ guó rén?" },
+        { id: 3, zh: "你几岁？", pinyin: "nǐ jǐ suì?" },
+        { id: 4, zh: "现在几点？", pinyin: "xiànzài jǐ diǎn?" },
+        { id: 5, zh: "你住在哪里？", pinyin: "nǐ zhù zài nǎlǐ?" },
+      ],
+      answers: [
+        { optionId: 1, zh: "我叫李明。", pinyin: "wǒ jiào Lǐ Míng." },
+        {
+          optionId: 2,
+          zh: "我是中国人。",
+          pinyin: "wǒ shì Zhōngguó rén.",
+        },
+        { optionId: 3, zh: "我二十岁。", pinyin: "wǒ èrshí suì." },
+        { optionId: 4, zh: "现在三点。", pinyin: "xiànzài sān diǎn." },
+        {
+          optionId: 5,
+          zh: "我住在北京。",
+          pinyin: "wǒ zhù zài Běijīng.",
+        },
       ],
     },
   ],

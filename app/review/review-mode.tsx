@@ -310,6 +310,7 @@ export function ReviewMode(props: any) {
                           nextReviewTime: option?.value,
                           timeTaken,
                           ponderTime,
+                          mode,
                         }),
                       } as any)
                       .then((res) => {
@@ -365,6 +366,7 @@ export function ReviewMode(props: any) {
                           nextReviewTime: option?.value,
                           timeTaken,
                           ponderTime,
+                          mode,
                         }),
                       } as any)
                       .then((res) => {
@@ -428,6 +430,7 @@ export function ReviewMode(props: any) {
                       reviewDate: date,
                       timeTaken,
                       ponderTime,
+                      mode,
                     }),
                   } as any)
                   .then((res) => {

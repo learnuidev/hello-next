@@ -104,7 +104,7 @@ export function ReviewMode(props: any) {
 
   const currentCharacter =
     unReviewedCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
-    allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
+    // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
     unReviewedCharacters?.[0];
 
   const diff = endTime - startTime;
@@ -168,7 +168,14 @@ export function ReviewMode(props: any) {
       (char: any) => char?.hanzi === character
     );
 
-    const nextChar = unReviewedCharacters?.[0];
+    // const currentCharacter =
+    //   unReviewedCharacters?.find(
+    //     (char: any) => char?.hanzi === nextCharacter
+    //   ) ||
+    //   // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
+    //   unReviewedCharacters?.[0];
+
+    const nextChar = unReviewedCharacters?.[currentCharacterIndex + 1];
 
     if (nextChar?.hanzi) {
       const url = getUrl();

@@ -15,14 +15,14 @@ import { SubComponentsView } from "./subcomponents-view";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useStoryStore } from "./story-store";
-import { StoryEditor } from "./story-editor";
+
 import { RelatedWords } from "./related-words";
 import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
 
 import { chineseCharacters } from "@/langs/chinese /characters";
 import Link from "next/link";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
-import { useSearchQueryStore } from "../search/state";
+
 import { useSelectedCharacterData } from "../use-selected-character";
 import { useSearchParams } from "next/navigation";
 import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
@@ -41,6 +41,7 @@ import { CharacterAnalytics } from "@/components/_select-character/character-ana
 import { StoryView } from "./story-view";
 import { CharacterTitle } from "./character-title";
 import { useSlicedRelatedSentencesByCharacter } from "./use-sliced-related-sentences-by-character";
+import { useRelatedHskWordsByCharacter } from "./use-filter-related-hsk-words-by-character";
 
 const HskSuperComponentsWordView = ({
   componentId,
@@ -235,7 +236,14 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
     }
   }, [selectedComp?.story, setStory]);
 
-  const { data: relatedHskWords } = useListRelatedHSKWords(characterId);
+  const { data: totalRelatedHskWords } = useListRelatedHSKWords(characterId);
+
+  const relatedHskWords = useRelatedHskWordsByCharacter({
+    characterId,
+  });
+
+  const totalRelatedSentences =
+    totalRelatedHskWords?.length - relatedHskWords?.length;
 
   const HskSentenceView = () => {
     const brightMode = useBrightModeStore((state: any) => state.mode);
@@ -539,6 +547,12 @@ export const CharacterViewType = (props: SelectedCharacterProps) => {
               <div className="text-slate-500  text-extralight flex space-x-2 items-center">
                 <Icons.word />
                 <p>{relatedHskWords?.length}</p>
+              </div>
+            )}
+            {totalRelatedSentences > 0 && (
+              <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+                <Icons.sentence />
+                <p>{totalRelatedSentences}</p>
               </div>
             )}
             {level && (

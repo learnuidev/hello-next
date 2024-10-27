@@ -209,7 +209,7 @@ export function NomadMethodMandarin() {
                           setHskView(selectedBelt?.hskLevel, topic);
                         }}
                       >
-                        <SelectTrigger className="w-[180px] dark:border-gray-800">
+                        <SelectTrigger className="w-[180px] dark:border-gray-800 border-gray-400">
                           <SelectValue placeholder="Select a topic" />
                         </SelectTrigger>
                         <SelectContent className="bg-black dark:border-gray-900">

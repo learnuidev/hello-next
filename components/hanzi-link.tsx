@@ -75,7 +75,7 @@ export function HanziLink({
       <p
         className={cn(
           "top-0 text-xs text-gray-400",
-          brightMode ? "text-gray-600" : "text-gray-800",
+          brightMode ? "text-gray-600" : "dark:text-gray-800 text-gray-200",
           className
         )}
       >
@@ -103,7 +103,7 @@ export function HanziLink({
             : // learnedCharacters.includes(prop?.hanzi)
               learnedChar
               ? learnedChar?.status === "forgotten"
-                ? "text-gray-900"
+                ? "dark:text-gray-900 text-gray-100"
                 : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
                   //   ? "text-rose-500"
                   `hover:${color} text-gray-300`
@@ -133,7 +133,7 @@ export function HanziLink({
                   : // learnedCharacters.includes(prop?.hanzi)
                     learnedChar
                     ? learnedChar?.status === "forgotten"
-                      ? "text-gray-900"
+                      ? "dark:text-gray-900 text-gray-100"
                       : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
                         //   ? "text-rose-500"
                         `hover:${color} text-gray-300`
@@ -157,7 +157,7 @@ export function HanziLink({
       <p
         className={cn(
           "text-xs text-gray-400 w-16 truncate text-center",
-          brightMode ? "text-gray-500" : "text-gray-800"
+          brightMode ? "text-gray-500" : "dark:text-gray-800 text-gray-200"
         )}
       >
         {character?.en || selectedComp?.en}

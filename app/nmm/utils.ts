@@ -15,9 +15,9 @@ export const calculateBorderColor = (dict: any) => {
 
 export const belts = [
   {
-    fill: "bg-white",
-    color: "text-white",
-    unselected: "bg-gray-800",
+    fill: "dark:bg-white bg-gray-100",
+    color: "dark:text-white text-gray-100",
+    unselected: "dark:bg-gray-800 bg-gray-400",
     maxCharacterLevel: 105,
     minCharacterLevel: 0,
     level: "white",
@@ -25,8 +25,8 @@ export const belts = [
   },
 
   {
-    fill: "bg-yellow-600",
-    unselected: "bg-gray-800",
+    fill: "dark:bg-yellow-500 bg-yellow-400",
+    unselected: "dark:bg-gray-800 bg-gray-400",
     color: "text-yellow-500",
     maxCharacterLevel: 300,
     minCharacterLevel: 105,
@@ -34,8 +34,8 @@ export const belts = [
     hskLevel: 2,
   },
   {
-    fill: "bg-green-600",
-    unselected: "bg-gray-800",
+    fill: "dark:bg-green-500 bg-green-400",
+    unselected: "dark:bg-gray-800 bg-gray-400",
     color: "text-green-500",
     maxCharacterLevel: 600,
     minCharacterLevel: 300,
@@ -43,8 +43,8 @@ export const belts = [
     hskLevel: 3,
   },
   {
-    fill: "bg-blue-600",
-    unselected: "bg-gray-800",
+    fill: "dark:bg-blue-500 bg-blue-400",
+    unselected: "dark:bg-gray-800 bg-gray-400",
     color: "text-blue-500",
     maxCharacterLevel: 1000,
     minCharacterLevel: 600,
@@ -52,8 +52,8 @@ export const belts = [
     hskLevel: 4,
   },
   {
-    fill: "bg-rose-500",
-    unselected: "bg-gray-800",
+    fill: "dark:bg-rose-500 bg-rose-400",
+    unselected: "dark:bg-gray-800 bg-gray-400",
     color: "text-red-500",
     maxCharacterLevel: 1500,
     minCharacterLevel: 1000,
@@ -61,8 +61,8 @@ export const belts = [
     hskLevel: 5,
   },
   {
-    fill: "bg-pink-500",
-    unselected: "bg-gray-800",
+    fill: "dark:bg-pink-500 bg-pink-400",
+    unselected: "dark:bg-gray-800 bg-gray-400",
     color: "text-pink-500",
     maxCharacterLevel: 2200,
     minCharacterLevel: 1500,
@@ -70,8 +70,8 @@ export const belts = [
     hskLevel: 6,
   },
   {
-    fill: "bg-gray-500",
-    unselected: "bg-slate-800",
+    fill: "dark:bg-gray-500 bg-gray-600",
+    unselected: "dark:bg-slate-800 bg-gray-400",
     color: "text-gray-500",
     maxCharacterLevel: 3050,
     minCharacterLevel: 2200,
@@ -82,7 +82,7 @@ export const belts = [
   // {
   //   fill: "bg-violet-500",
   //   color: "text-white",
-  //   unselected: "bg-gray-800",
+  //   unselected: "dark: bg-gray-800 bg-gray-200",
   //   maxCharacterLevel: 3500,
   //   minCharacterLevel: 0,
   //   level: "all",

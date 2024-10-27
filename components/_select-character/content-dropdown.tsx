@@ -46,7 +46,7 @@ export const ContentDropdown = ({
         onSelect(topic);
       }}
     >
-      <SelectTrigger className="w-[320px] text-xs dark:border-gray-800">
+      <SelectTrigger className="w-[320px] text-xs dark:border-gray-800 border-gray-400">
         <SelectValue placeholder="Select a topic" />
       </SelectTrigger>
       <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">

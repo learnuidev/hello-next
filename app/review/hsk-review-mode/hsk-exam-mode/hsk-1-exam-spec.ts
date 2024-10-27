@@ -1,4 +1,4 @@
-const hsk2ExamSpec = {
+const hsk2ExamReadExample = {
   title: {
     zh: "二、阅 读",
     en: "2. Reading",
@@ -138,6 +138,59 @@ const hsk2ExamSpec = {
           zh: "我住在北京。",
           pinyin: "wǒ zhù zài Běijīng.",
         },
+      ],
+    },
+
+    {
+      title: {
+        zh: "第四部分",
+        en: "Part Three",
+      },
+      question: {
+        en: "Fill in the blank with the correct response.",
+        zh: "用正确的答案填空。",
+      },
+      type: "social-interaction-fill-in-the-blank",
+      totalQuestions: 5,
+
+      options: [
+        {
+          id: 1,
+          zh: "我喜欢吃______。",
+          pinyin: "Wǒ xǐhuān chī ______.",
+          topics: "food, preferences, social interaction, daily life",
+        },
+        {
+          id: 2,
+          zh: "你______去哪里？",
+          pinyin: "Nǐ ______ qù nǎlǐ?",
+          topics: "asking questions, travel, daily life, communication",
+        },
+        {
+          id: 3,
+          zh: "今天的天气很好，我们______去公园。",
+          pinyin: "Jīntiān de tiānqì hěn hǎo, wǒmen ______ qù gōngyuán.",
+          topics: "weather, activities, planning, social interaction",
+        },
+        {
+          id: 4,
+          zh: "你______这个电影吗？",
+          pinyin: "Nǐ ______ zhège diànyǐng ma?",
+          topics: "asking questions, movies, entertainment, social interaction",
+        },
+        {
+          id: 5,
+          zh: "我在学校______。",
+          pinyin: "Wǒ zài xuéxiào ______.",
+          topics: "education, daily life, social interaction, location",
+        },
+      ],
+      answers: [
+        { optionId: 1, hanzi: "苹果", pinyin: "píngguǒ" }, // "apple"
+        { optionId: 2, hanzi: "想", pinyin: "xiǎng" }, // "where to go"
+        { optionId: 3, hanzi: "一起", pinyin: "yīqǐ" }, // "together"
+        { optionId: 4, hanzi: "喜欢", pinyin: "xǐhuān" }, // "like"
+        { optionId: 5, hanzi: "上课", pinyin: "shàngkè" }, // "in class"
       ],
     },
   ],

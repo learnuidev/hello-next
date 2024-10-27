@@ -14,15 +14,17 @@ export const HskExamMode = () => {
 
   return (
     <main>
-      <h1 className="text-center mt-64 text-7xl font-bold">HSK iExam Mode</h1>
+      <h1 className="text-center mt-48 md:mt-64 text-5xl md:text-7xl font-bold">
+        HSK iExam Mode
+      </h1>
 
-      <div className="flex items-center justify-center flex-row space-x-4 mt-4 text-gray-600">
-        <Icons.construction className="text-2xl" />
+      <div className="flex items-center justify-center flex-row text-lg md:text-2xl space-x-2 mt-2 mb-8 text-gray-400">
+        <Icons.construction />
 
-        <p className="text-center text-3xl font-extralight">Coming Soon</p>
+        <p className="text-center font-extralight">Coming Soon</p>
       </div>
 
-      <div className="flex items-center justify-center space-x-4 mt-16">
+      <div className="flex items-center justify-center space-x-4 mt-8">
         <button
           onClick={() => {
             router.push(`${reviewUrl}`);

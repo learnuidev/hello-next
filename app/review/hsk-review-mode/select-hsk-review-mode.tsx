@@ -9,7 +9,7 @@ export const SelectHskReviewMode = () => {
   return (
     <main>
       <h1 className="text-center mt-48 md:mt-64 text-5xl md:text-7xl font-bold">
-        HSK Review Mode
+        HSK Review
       </h1>
 
       <p className="text-center text-lg md:text-2xl font-extralight mt-2 mb-8 text-gray-400">
@@ -23,7 +23,7 @@ export const SelectHskReviewMode = () => {
           }}
           className="dark:boder-gray-200 border-[1px] px-4 py-2 rounded-full"
         >
-          SRS Mode
+          HSK SRS
         </button>
         <button
           onClick={() => {
@@ -31,7 +31,7 @@ export const SelectHskReviewMode = () => {
           }}
           className="dark:boder-gray-200 border-[1px] px-4 py-2 rounded-full"
         >
-          HSK iExam Mode
+          HSK iExam
         </button>
       </div>
     </main>

@@ -58,7 +58,7 @@ export function useShortCuts() {
         event.preventDefault();
         router.push("/tita");
       }
-      if (["r"]?.includes(event.key) && event.ctrlKey) {
+      if (["r"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
 
         router.push(reviewUrl);

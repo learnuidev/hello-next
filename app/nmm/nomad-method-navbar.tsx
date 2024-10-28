@@ -95,7 +95,10 @@ export function NomadMethodNavbar() {
         </TabsTrigger>
       </TabsList>
 
-      {(queryStr?.includes("hsk") || mode === "hsk" || mode === "hsk3") && (
+      {(queryStr?.includes("hsk") ||
+        mode === "hsk" ||
+        mode === "hsk3" ||
+        mode === "xiaoma") && (
         <div className="space-x-8">
           <button
             onClick={() => {
@@ -136,35 +139,37 @@ export function NomadMethodNavbar() {
       )}
 
       <div className="flex items-center">
-        <div className="mx-12">
-          {topics?.length > 0 && (
-            <div>
-              <Select
-                value={hskView}
-                onValueChange={(topic) => {
-                  setHskView(selectedBelt?.hskLevel, topic);
-                }}
-              >
-                <SelectTrigger className="w-[180px] dark:border-gray-800 border-gray-400">
-                  <SelectValue placeholder="Select a topic" />
-                </SelectTrigger>
-                <SelectContent className="bg-black dark:border-gray-900">
-                  <SelectGroup>
-                    <SelectLabel>Topics</SelectLabel>
+        {["hsk", "hsk3"]?.includes(mode) && (
+          <div className="mx-12">
+            {topics?.length > 0 && (
+              <div>
+                <Select
+                  value={hskView}
+                  onValueChange={(topic) => {
+                    setHskView(selectedBelt?.hskLevel, topic);
+                  }}
+                >
+                  <SelectTrigger className="w-[180px] dark:border-gray-800 border-gray-400">
+                    <SelectValue placeholder="Select a topic" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-black dark:border-gray-900">
+                    <SelectGroup>
+                      <SelectLabel>Topics</SelectLabel>
 
-                    {topics?.map((topic) => {
-                      return (
-                        <SelectItem value={topic} key={topic}>
-                          {topic}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
-        </div>
+                      {topics?.map((topic) => {
+                        return (
+                          <SelectItem value={topic} key={topic}>
+                            {topic}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+          </div>
+        )}
 
         {mode === "hsk" ? (
           <div className="space-x-4">
@@ -177,6 +182,24 @@ export function NomadMethodNavbar() {
                   }}
                   className={`${
                     belt?.hskLevel === hskLevel ? belt?.fill : belt?.unselected
+                  } h-4 w-4 rounded-full text`}
+                ></button>
+              );
+            })}
+          </div>
+        ) : mode === "yct" ? (
+          <div className="space-x-4">
+            {belts?.slice(0, 4).map?.((belt) => {
+              return (
+                <button
+                  key={belt?.fill}
+                  onClick={() => {
+                    setSelectedBelt(belt as any);
+                  }}
+                  className={`${
+                    belt?.level === (selectedBelt?.level as any)
+                      ? belt?.fill
+                      : belt?.unselected
                   } h-4 w-4 rounded-full text`}
                 ></button>
               );

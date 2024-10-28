@@ -1,17 +1,15 @@
 "use client";
-import React from "react";
 
 import { useSearchQueryStore } from "@/components/search/state";
 
 import { HanziLink } from "@/components/hanzi-link";
 
-import { useGetContent } from "./use-get-content";
-import { useBeltStore } from "@/components/use-belt-store";
-import { belts } from "../utils";
-import { useListComponents } from "@/domain/lesson/component.queries";
-import { chineseCharacters } from "@/langs/chinese /characters";
 import { NmmListContainer } from "@/components/nmm-list-container";
 import { NmmListContainerSentence } from "@/components/nmm-list-container-sentence";
+import { useBeltStore } from "@/components/use-belt-store";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { chineseCharacters } from "@/langs/chinese /characters";
+import { useGetContent } from "./use-get-content";
 
 export function ContentViewType({
   variant,

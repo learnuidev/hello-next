@@ -2,20 +2,17 @@
 
 import { groupBy } from "ramda";
 
+import { belts } from "@/app/nmm/utils";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import {
-  VictoryChart,
-  VictoryStack,
-  VictoryBar,
-  VictoryAxis,
-  VictoryLabel,
   Bar,
-  Axis,
   LineSegment,
+  VictoryAxis,
+  VictoryBar,
+  VictoryChart,
+  VictoryLabel,
   VictoryVoronoiContainer,
 } from "victory";
-import { cn } from "@/lib/utils";
-import { belts } from "@/app/nmm/utils";
 import { useInsightsState } from "../use-insights-state";
 import { useGetWeeklyData } from "../WeeklyBarChart";
 

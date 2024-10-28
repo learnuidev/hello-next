@@ -120,6 +120,9 @@ export function NomadMethodNavbar() {
 
   const router = useRouter();
 
+  const isNonNmm =
+    queryStr?.includes("hsk") || ["xiaoma", "hsk", "hsk3"].includes(mode);
+
   return (
     <>
       <div className="block sm:hidden">
@@ -153,31 +156,33 @@ export function NomadMethodNavbar() {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Select
-            value={viewMode}
-            onValueChange={(viewMode) => {
-              router.push(`/nmm?tab=${tab}&view-mode=${viewMode}`);
-            }}
-          >
-            <SelectTrigger className="w-fulltext-xs dark:border-gray-800 border-gray-400">
-              <SelectValue placeholder="Select a topic" />
-            </SelectTrigger>
-            <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">
-              <SelectGroup>
-                {viewModes.map((mode: any) => {
-                  return (
-                    <SelectItem
-                      value={mode.id}
-                      key={mode.id}
-                      className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
-                    >
-                      {mode.title}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          {isNonNmm && (
+            <Select
+              value={viewMode}
+              onValueChange={(viewMode) => {
+                router.push(`/nmm?tab=${tab}&view-mode=${viewMode}`);
+              }}
+            >
+              <SelectTrigger className="w-fulltext-xs dark:border-gray-800 border-gray-400">
+                <SelectValue placeholder="Select a topic" />
+              </SelectTrigger>
+              <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">
+                <SelectGroup>
+                  {viewModes.map((mode: any) => {
+                    return (
+                      <SelectItem
+                        value={mode.id}
+                        key={mode.id}
+                        className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
+                      >
+                        {mode.title}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
 
           <Select
             value={
@@ -241,10 +246,7 @@ export function NomadMethodNavbar() {
             </TabsTrigger>
           </TabsList>
 
-          {(queryStr?.includes("hsk") ||
-            mode === "hsk" ||
-            mode === "hsk3" ||
-            mode === "xiaoma") && (
+          {isNonNmm && (
             <div className="space-x-8">
               <button
                 onClick={() => {

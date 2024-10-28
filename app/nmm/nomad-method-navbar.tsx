@@ -101,10 +101,6 @@ export function NomadMethodNavbar() {
       title: "All",
       id: "all",
     },
-    {
-      title: "Sentence",
-      id: "sentence",
-    },
   ];
 
   const viewModes = [

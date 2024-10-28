@@ -20,11 +20,11 @@ export const SearchInput = () => {
         "font-extralight border-none dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300 dark:bg-black/10 dark:text-gray-300 placeholder:text-gray-400 opacity-100 border-2 focus:border-none px-2 rounded-full focus:outline-none active:outline-none py-2",
         "w-full md:w-[800px]"
       )}
-      onChange={(e) => {
-        setQuerySync(e.target.value);
-      }}
+      // onChange={(e) => {
+      //   setQuerySync(e.target.value);
+      // }}
       placeholder={"Search"}
-      // onChange={handleOnChange}
+      onChange={handleOnChange}
       value={querySync}
       onKeyDown={handleOnKeyDown}
     />

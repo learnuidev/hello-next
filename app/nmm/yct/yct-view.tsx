@@ -1,19 +1,17 @@
 "use client";
+import { TabsContent } from "@/components/ui/tabs";
 import React from "react";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 
 import { useSearchQueryStore } from "@/components/search/state";
 
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 
+import { NomadMethodTabsContainer } from "../nomad-method-tabs-container";
 import { YctViewType } from "./yct-view-type";
-import { NomadMethodNavbar } from "../nomad-method-navbar";
 
 function Yct() {
   return (
-    <Tabs defaultValue="core" className="p-0">
-      <NomadMethodNavbar />
-
+    <NomadMethodTabsContainer>
       <TabsContent value="core" className="my-4 md:my-8">
         <YctViewType variant="core" />
       </TabsContent>
@@ -27,7 +25,7 @@ function Yct() {
       <TabsContent value="all" className="my-4 md:my-8">
         <YctViewType variant="all" />
       </TabsContent>
-    </Tabs>
+    </NomadMethodTabsContainer>
   );
 }
 

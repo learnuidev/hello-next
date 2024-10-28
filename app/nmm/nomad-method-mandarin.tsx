@@ -3,7 +3,7 @@ import { useEffect, useMemo } from "react";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { TabsContent } from "@/components/ui/tabs";
 
 import { useBeltStore } from "@/components/use-belt-store";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
@@ -11,7 +11,7 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useSearchQueryStore } from "@/components/search/state";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
@@ -28,7 +28,7 @@ import { ContentView } from "./content/content-view";
 import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
 import { calculateColor } from "./nmm-utils/calculate-color";
 import { filterComponents } from "./nmm-utils/filter-components";
-import { NomadMethodNavbar } from "./nomad-method-navbar";
+import { NomadMethodTabsContainer } from "./nomad-method-tabs-container";
 import { YctView } from "./yct/yct-view";
 
 export function NomadMethodMandarin() {
@@ -105,13 +105,13 @@ export function NomadMethodMandarin() {
     ...(new Set(resolvedHskWords?.map((word: any) => word?.topic)) as any),
   ];
 
+  const router = useRouter();
+
   return (
     <ContentView>
       <YctView>
         <XiaomaView>
-          <Tabs defaultValue="core" className="p-0">
-            <NomadMethodNavbar />
-
+          <NomadMethodTabsContainer>
             <TabsContent value="core" className="my-4 md:my-8">
               <HskView type={viewType}>
                 <NmmCoreComponents />
@@ -182,7 +182,7 @@ export function NomadMethodMandarin() {
                 <AllComponents />
               </HskView>
             </TabsContent>
-          </Tabs>
+          </NomadMethodTabsContainer>
         </XiaomaView>
       </YctView>
     </ContentView>

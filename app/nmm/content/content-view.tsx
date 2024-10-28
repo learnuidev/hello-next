@@ -1,18 +1,16 @@
 "use client";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { TabsContent } from "@/components/ui/tabs";
 import React from "react";
 
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 
 import { useListContentsQuery } from "@/domain/content/content.queries";
-import { NomadMethodNavbar } from "../nomad-method-navbar";
+import { NomadMethodTabsContainer } from "../nomad-method-tabs-container";
 import { ContentViewType } from "./content-view-type";
 
 function Content({ contentId }: { contentId: string }) {
   return (
-    <Tabs defaultValue="core" className="p-0">
-      <NomadMethodNavbar />
-
+    <NomadMethodTabsContainer>
       <TabsContent value="core" className="my-4 md:my-8">
         <ContentViewType variant="core" contentId={contentId} />
       </TabsContent>
@@ -24,7 +22,7 @@ function Content({ contentId }: { contentId: string }) {
       <TabsContent value="all" className="my-4 md:my-8">
         <ContentViewType variant="all" contentId={contentId} />
       </TabsContent>
-    </Tabs>
+    </NomadMethodTabsContainer>
   );
 }
 

@@ -14,7 +14,7 @@ export const SearchBar = () => {
   const setSearchBarOpen = useSearchState((state) => state.setSearchBarOpen);
   return (
     <div
-      className="cursor-pointer text-lg sm:block py-2 flex flex-row justify-center items-center"
+      className="cursor-pointer text-lg py-2 flex flex-row justify-center items-center"
       // onClick={() => {
       //   // alert("yo");
       //   setSearchBarOpen(true);

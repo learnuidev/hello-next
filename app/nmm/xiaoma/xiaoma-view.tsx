@@ -1,16 +1,14 @@
 "use client";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { TabsContent } from "@/components/ui/tabs";
 import React from "react";
-import { NomadMethodNavbar } from "../nomad-method-navbar";
+import { NomadMethodTabsContainer } from "../nomad-method-tabs-container";
 import { XiaomaViewType } from "./xiaoma-view-type";
 
 function Xiaoma() {
   return (
-    <Tabs defaultValue="core" className="p-0">
-      <NomadMethodNavbar />
-
+    <NomadMethodTabsContainer>
       <TabsContent value="core" className="my-4 md:my-8">
         <XiaomaViewType variant="core" />
       </TabsContent>
@@ -22,7 +20,7 @@ function Xiaoma() {
       <TabsContent value="all" className="my-4 md:my-8">
         <XiaomaViewType variant="all" />
       </TabsContent>
-    </Tabs>
+    </NomadMethodTabsContainer>
   );
 }
 

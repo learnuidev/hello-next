@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { FilterSelect } from "@/app/nmm/filter-select";
 
 export const ContentDropdown = ({
   onSelect,
@@ -40,32 +41,14 @@ export const ContentDropdown = ({
   );
 
   return (
-    <Select
+    <FilterSelect
       value={value}
       onValueChange={(topic) => {
         onSelect(topic);
       }}
-    >
-      <SelectTrigger className="w-[320px] text-xs dark:border-gray-800 border-gray-400">
-        <SelectValue placeholder="Select a topic" />
-      </SelectTrigger>
-      <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">
-        <SelectGroup>
-          <SelectLabel>Contents</SelectLabel>
-
-          {contentTitles?.map((topic: any) => {
-            return (
-              <SelectItem
-                value={topic?.id}
-                key={topic?.id}
-                className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
-              >
-                {topic?.title} {topic?.lang ? `[${topic?.lang}]` : ""}
-              </SelectItem>
-            );
-          })}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+      className="w-[320px]"
+      items={contentTitles}
+      title="Select a content"
+    />
   );
 };

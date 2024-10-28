@@ -3,16 +3,6 @@ import { useMemo } from "react";
 
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import { useBeltStore } from "@/components/use-belt-store";
 import { belts } from "./utils";
 
@@ -31,8 +21,9 @@ import { useLearningModeStore } from "@/components/settings-dialog/learning-mode
 import { useHSKLevelStore } from "./hsk-level-store";
 import { useHskViewStore } from "./hsk/state";
 
-import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
 import { useListContentsQuery } from "@/domain/content/content.queries";
+import { FilterSelect } from "./filter-select";
+import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
 import { useGetNmmParams } from "./use-get-nmm-params";
 
 export function NomadMethodNavbar() {
@@ -103,121 +94,91 @@ export function NomadMethodNavbar() {
     },
   ];
 
-  const viewModes = [
-    {
-      id: "character",
-      title: "Character",
-    },
-    {
-      id: "word",
-      title: "Word",
-    },
-    {
-      id: "sentence",
-      title: "Sentence",
-    },
-  ];
+  let viewModes = ["hsk", "hsk3", "yct"]?.includes(mode)
+    ? [
+        {
+          id: "character",
+          title: "Character",
+        },
+        {
+          id: "word",
+          title: "Word",
+        },
+      ]
+    : [
+        {
+          id: "character",
+          title: "Character",
+        },
+        {
+          id: "word",
+          title: "Word",
+        },
+        {
+          id: "sentence",
+          title: "Sentence",
+        },
+      ];
 
   const router = useRouter();
 
   const isNonNmm =
-    queryStr?.includes("hsk") || ["xiaoma", "hsk", "hsk3"].includes(mode);
+    queryStr?.includes("hsk") ||
+    ["xiaoma", "hsk", "hsk3"].includes(mode) ||
+    mode !== "nmm";
 
   return (
     <>
       <div className="block sm:hidden">
         <div className="my-2 md:my-8 flex justify-between items-center gap-2 flex-row mx-4">
-          <Select
+          <FilterSelect
+            title={"Select a topic"}
             value={tab}
+            items={coreTitles}
             onValueChange={(tab) => {
-              // onSelect(topic);
-
               router.push(`/nmm?tab=${tab}&view-mode=${viewMode}`);
             }}
-          >
-            <SelectTrigger className="w-fulltext-xs dark:border-gray-800 border-gray-400">
-              <SelectValue placeholder="Select a topic" />
-            </SelectTrigger>
-            <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">
-              <SelectGroup>
-                {/* <SelectLabel>Contents</SelectLabel> */}
+          />
 
-                {coreTitles.map((coreTitle) => {
-                  return (
-                    <SelectItem
-                      value={coreTitle.id}
-                      key={coreTitle.id}
-                      className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
-                    >
-                      {coreTitle.title}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
           {isNonNmm && (
-            <Select
+            <FilterSelect
+              title={"Select view mode"}
               value={viewMode}
+              items={viewModes}
               onValueChange={(viewMode) => {
+                setViewType(viewMode);
                 router.push(`/nmm?tab=${tab}&view-mode=${viewMode}`);
               }}
-            >
-              <SelectTrigger className="w-fulltext-xs dark:border-gray-800 border-gray-400">
-                <SelectValue placeholder="Select a topic" />
-              </SelectTrigger>
-              <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">
-                <SelectGroup>
-                  {viewModes.map((mode: any) => {
-                    return (
-                      <SelectItem
-                        value={mode.id}
-                        key={mode.id}
-                        className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
-                      >
-                        {mode.title}
-                      </SelectItem>
-                    );
-                  })}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            />
           )}
 
-          <Select
+          <FilterSelect
+            title={
+              ["hsk", "hsk3"]?.includes(mode)
+                ? "Select a level"
+                : "Select a belt"
+            }
             value={
               ["hsk", "hsk3"]?.includes(mode)
                 ? `${hskLevel}`
                 : `${selectedBelt?.hskLevel}`
             }
+            items={(mode === "ycy"
+              ? belts?.slice(0, 4)
+              : mode === "hsk"
+                ? belts?.slice(0, 6)
+                : belts
+            ).map((belt) => ({
+              id: `${belt.hskLevel}`,
+              title: `${["hsk", "hsk3"]?.includes(mode) ? "Level " : "Belt "} ${belt.hskLevel}`,
+            }))}
             onValueChange={(beltId) => {
-              // onSelect(topic);
               const beltIdInt = parseInt(beltId);
               const belt = belts?.find((belt) => belt.hskLevel === beltIdInt);
               setLevel(beltIdInt);
               setSelectedBelt(belt);
             }}
-          >
-            <SelectTrigger className="w-fulltext-xs dark:border-gray-800 border-gray-400">
-              <SelectValue placeholder="Select a topic" />
-            </SelectTrigger>
-            <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">
-              <SelectGroup>
-                {belts.map((belt) => {
-                  return (
-                    <SelectItem
-                      value={`${belt.hskLevel}`}
-                      key={belt.hskLevel}
-                      className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
-                    >
-                      {["hsk", "hsk3"]?.includes(mode) ? "HSK " : "Belt "}{" "}
-                      {belt.hskLevel}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          />
         </div>
       </div>
       <div className="hidden sm:block">
@@ -293,29 +254,18 @@ export function NomadMethodNavbar() {
               <div className="mx-12">
                 {topics?.length > 0 && (
                   <div>
-                    <Select
+                    <FilterSelect
+                      className="w-[180px]"
                       value={hskView}
                       onValueChange={(topic) => {
                         setHskView(selectedBelt?.hskLevel, topic);
                       }}
-                    >
-                      <SelectTrigger className="w-[180px] dark:border-gray-800 border-gray-400">
-                        <SelectValue placeholder="Select a topic" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-black dark:border-gray-900">
-                        <SelectGroup>
-                          <SelectLabel>Topics</SelectLabel>
-
-                          {topics?.map((topic) => {
-                            return (
-                              <SelectItem value={topic} key={topic}>
-                                {topic}
-                              </SelectItem>
-                            );
-                          })}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                      items={topics.map((topic) => ({
+                        id: topic,
+                        title: topic,
+                      }))}
+                      title={"Select a topic "}
+                    />
                   </div>
                 )}
               </div>

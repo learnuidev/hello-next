@@ -99,24 +99,29 @@ export function NomadMethodNavbar() {
         {
           id: "character",
           title: "Character",
+          icon: Icons.seedling,
         },
         {
           id: "word",
           title: "Word",
+          icon: Icons.tree,
         },
       ]
     : [
         {
           id: "character",
           title: "Character",
+          icon: Icons.seedling,
         },
         {
           id: "word",
           title: "Word",
+          icon: Icons.tree,
         },
         {
           id: "sentence",
           title: "Sentence",
+          icon: Icons.trees,
         },
       ];
 
@@ -131,14 +136,16 @@ export function NomadMethodNavbar() {
     <>
       <div className="block sm:hidden">
         <div className="my-2 md:my-8 flex justify-between items-center gap-2 flex-row mx-4">
-          <FilterSelect
-            title={"Select a topic"}
-            value={tab}
-            items={coreTitles}
-            onValueChange={(tab) => {
-              router.push(`/nmm?tab=${tab}&view-mode=${viewMode}`);
-            }}
-          />
+          {mode === "nmm" && (
+            <FilterSelect
+              title={"Select a topic"}
+              value={tab}
+              items={coreTitles}
+              onValueChange={(tab) => {
+                router.push(`/nmm?tab=${tab}&view-mode=${viewMode}`);
+              }}
+            />
+          )}
 
           {isNonNmm && (
             <FilterSelect
@@ -183,69 +190,52 @@ export function NomadMethodNavbar() {
       </div>
       <div className="hidden sm:block">
         <div className="my-2 md:my-8 flex justify-between items-center md:mx-12 flex-col md:flex-row space-y-4 md:space-y-0">
-          <TabsList className="space-x-8">
-            <TabsTrigger
-              value="core"
-              className="px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
-            >
-              <Icons.rocket className="text-xl md:text-2xl" />
-            </TabsTrigger>
-            <TabsTrigger
-              value="needs_review"
-              className="px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
-            >
-              <Icons.graduationCap className="text-xl md:text-2xl" />
-            </TabsTrigger>
-            <TabsTrigger
-              // value="learned"
-              value="all"
-              className={cn(
-                "px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
-              )}
-            >
-              <Icons.globeAsia className="text-xl md:text-2xl" />
-            </TabsTrigger>
-          </TabsList>
+          {mode === "nmm" && (
+            <TabsList className="space-x-8">
+              <TabsTrigger
+                value="core"
+                className="px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
+              >
+                <Icons.rocket className="text-xl md:text-2xl" />
+              </TabsTrigger>
+              <TabsTrigger
+                value="needs_review"
+                className="px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
+              >
+                <Icons.graduationCap className="text-xl md:text-2xl" />
+              </TabsTrigger>
+              <TabsTrigger
+                // value="learned"
+                value="all"
+                className={cn(
+                  "px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
+                )}
+              >
+                <Icons.globeAsia className="text-xl md:text-2xl" />
+              </TabsTrigger>
+            </TabsList>
+          )}
 
           {isNonNmm && (
             <div className="space-x-8">
-              <button
-                onClick={() => {
-                  setViewType("character");
-                }}
-                className={cn(
-                  viewType === "character"
-                    ? "dark:text-white"
-                    : " text-gray-500",
-                  "px-0 "
-                )}
-              >
-                <Icons.seedling className="text-xl md:text-2xl" />
-              </button>
-              <button
-                onClick={() => {
-                  setViewType("word");
-                }}
-                className={cn(
-                  viewType === "word" ? "dark:text-white" : " text-gray-500",
-                  "px-0"
-                )}
-              >
-                <Icons.tree className="text-xl md:text-2xl" />
-              </button>
-              <button
-                // value="learned"
-
-                onClick={() => {
-                  setViewType("sentence");
-                }}
-                className={cn(
-                  viewType === "sentence" ? "dark:text-white" : "text-gray-500",
-                  "px-0 "
-                )}
-              >
-                <Icons.trees className="text-xl md:text-2xl" />
-              </button>
+              {viewModes?.map((viewMode) => {
+                return (
+                  <button
+                    key={viewMode.id}
+                    onClick={() => {
+                      setViewType(viewMode.id);
+                    }}
+                    className={cn(
+                      viewType === viewMode.id
+                        ? "dark:text-white"
+                        : " text-gray-500",
+                      "px-0 "
+                    )}
+                  >
+                    <viewMode.icon className="text-xl md:text-2xl" />
+                  </button>
+                );
+              })}
             </div>
           )}
 

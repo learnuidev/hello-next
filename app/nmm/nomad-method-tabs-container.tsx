@@ -14,8 +14,6 @@ export function NomadMethodTabsContainer({
 }) {
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-
   const { tab, viewMode } = useGetNmmParams();
 
   return (
@@ -23,6 +21,7 @@ export function NomadMethodTabsContainer({
       onValueChange={(tab) => {
         router.push(`/nmm?tab=${tab}&view-mode=${viewMode}`);
       }}
+      value={tab}
       defaultValue={tab}
       className="p-0"
     >

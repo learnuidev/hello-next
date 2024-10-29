@@ -43,8 +43,6 @@ export function useShortCuts() {
         event.preventDefault();
         router.push("/");
         return null;
-        // router.push("/nmm");
-        // setMode(mode === "hsk" ? "hsk3" : "hsk");
       }
 
       if (event.key === "h" && (event.metaKey || event.ctrlKey)) {

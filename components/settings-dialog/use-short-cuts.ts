@@ -32,12 +32,28 @@ export function useShortCuts() {
         event.preventDefault();
         setMode("yct");
       }
+
+      console.log("EVENT", event);
+
+      if (
+        event.key === "h" &&
+        (event.metaKey || event.ctrlKey) &&
+        event.shiftKey
+      ) {
+        event.preventDefault();
+        router.push("/");
+        return null;
+        // router.push("/nmm");
+        // setMode(mode === "hsk" ? "hsk3" : "hsk");
+      }
+
       if (event.key === "h" && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         // router.push("/");
         // router.push("/nmm");
         setMode(mode === "hsk" ? "hsk3" : "hsk");
       }
+
       if (["m"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         setMode("nmm");

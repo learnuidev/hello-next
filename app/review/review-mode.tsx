@@ -120,7 +120,7 @@ export function ReviewMode(props: any) {
 
   const getUrl = () => {
     if (["hsk3", "hsk"]?.includes(mode)) {
-      return `/review?mode=${mode}&level=${selectedBelt.hskLevel}&study-mode=${studyMode}`;
+      return `/review?mode=${mode}&level=${level}&study-mode=${studyMode}`;
     }
 
     return "/review";

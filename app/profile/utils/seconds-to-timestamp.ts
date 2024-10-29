@@ -10,17 +10,33 @@ export function secondsToTimestamp(milliseconds: number) {
   // Build the timestamp string
   let timestamp = "";
   if (days > 0) {
+    if (days <= 1) {
+      timestamp += `${days} day`;
+    } else {
+      timestamp += `${days} days`;
+    }
+
     timestamp += `${days} day`;
-    if (hours > 0 || minutes > 0) timestamp += " ";
+    // if (hours > 0 || minutes > 0) timestamp += " ";
     return timestamp.trim();
   }
   if (hours > 0) {
-    timestamp += `${hours} hour`;
-    if (minutes > 0) timestamp += " ";
+    if (hours <= 1) {
+      timestamp += `${hours} hour`;
+    } else {
+      timestamp += `${hours} hours`;
+    }
+
+    // if (minutes > 0) timestamp += " ";
     return timestamp.trim();
   }
   if (minutes > 0 || (days === 0 && hours === 0)) {
-    timestamp += `${minutes} min`;
+    if (minutes <= 1) {
+      timestamp += `${minutes} min`;
+    } else {
+      timestamp += `${minutes} mins`;
+    }
+
     return timestamp.trim();
   }
   return timestamp.trim();

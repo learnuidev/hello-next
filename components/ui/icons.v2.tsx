@@ -102,6 +102,8 @@ import {
   faCommentQuote,
   faFire as faFireDuoTone,
   faMessageQuote,
+  faTree as faTreeDuotone,
+  faSeedling as faSeedlingDuotone,
 } from "@fortawesome/pro-duotone-svg-icons";
 
 import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
@@ -309,4 +311,6 @@ export const Icons = {
   eightOClock: createFAIcon(faClockEight as any),
   commentQuote: createFAIcon(faCommentQuote as any),
   messageQuote: createFAIcon(faMessageQuote as any),
+  treeDuotone: createFAIcon(faTreeDuotone as any),
+  seedlingDuotone: createFAIcon(faSeedlingDuotone as any),
 };

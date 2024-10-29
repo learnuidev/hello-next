@@ -1,17 +1,11 @@
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 
 export const useGetTotalActiveDays = () => {
-  const { data } = useListCharactersQuery();
+  const { data: groups } = useListLearnedCharactersByDate({ variant: "all" });
 
-  console.log("DATA", data);
+  const totalActiveDays = groups?.length || 0;
 
-  const totalActiveDays =
-    data?.filter(
-      (item) =>
-        ((item?.hanzi || item?.input)?.length || 0) > 3 && item?.lang === "zh"
-    )?.length || 0;
-
-  return totalActiveDays < 1
+  return totalActiveDays <= 1
     ? `${totalActiveDays} day`
     : `${totalActiveDays} days`;
 };

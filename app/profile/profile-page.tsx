@@ -1,9 +1,11 @@
 import { FloatingNavbar } from "@/components/floating-navbar";
-import { NavBar } from "@/components/navbar";
 import { Icons } from "@/components/ui/icons.v2";
-import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useGetAuthUserProfileQuery } from "@/hooks/user/use-get-auth-user-profile";
 import { format, parseISO } from "date-fns";
+import { ProfileStatsItem } from "./components/profile-stats-item";
+import { LifeTimeSentencesStats } from "./components/life-time-sentences-stats";
+import { TimeStudiedStats } from "./components/time-studied-stats";
+import { LongestStreakStats } from "./components/longest-streak-stats";
 
 const formatISODate = (isoDate: string) => {
   if (!isoDate) return null;
@@ -30,55 +32,9 @@ export const ProfilePage = () => {
       </section>
 
       <section className="flex flex-row justify-center items-center gap-16 mt-16">
-        <div className="flex flex-col justify-center items-center">
-          <Icons.messageQuote
-            className="text-4xl"
-            style={{
-              "--fa-primary-color": "#A594F9",
-              "--fa-secondary-color": "#CDC1FF",
-            }}
-          />
-
-          <p className="text-lg font-semibold mt-2">134</p>
-          <p className="uppercase text-gray-500 font-light text-[10px]">
-            Sentences
-          </p>
-          <p className="uppercase text-gray-500 font-light text-[10px]">
-            Lifetime
-          </p>
-        </div>
-        <div className="flex flex-col justify-center items-center">
-          <Icons.eightOClock
-            className="text-4xl"
-            style={{
-              "--fa-primary-color": "#8ABFA3",
-              "--fa-secondary-color": "#00FF9C",
-            }}
-          />
-
-          <p className="text-lg font-semibold mt-2">88 min</p>
-          <p className="uppercase text-gray-500 font-light text-[10px]">Time</p>
-          <p className="uppercase text-gray-500 font-light text-[10px]">
-            Studied
-          </p>
-        </div>
-        <div className="flex flex-col justify-center items-center">
-          <Icons.fireDuoTone
-            className="text-4xl"
-            style={{
-              "--fa-primary-color": "#CC2B52",
-              "--fa-secondary-color": "#AF1740",
-            }}
-          />
-
-          <p className="text-lg font-semibold mt-2">1 day</p>
-          <p className="uppercase text-gray-500 font-light text-[10px]">
-            Longest
-          </p>
-          <p className="uppercase text-gray-500 font-light text-[10px]">
-            Streak
-          </p>
-        </div>
+        <LifeTimeSentencesStats />
+        <TimeStudiedStats />
+        <LongestStreakStats />
       </section>
 
       <FloatingNavbar />

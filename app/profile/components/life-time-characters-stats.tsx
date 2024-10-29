@@ -13,8 +13,8 @@ export const LifeTimeCharactersStats = () => {
       <Icons.seedlingDuotone
         className="text-4xl"
         style={{
-          "--fa-primary-color": "#8ABFA3",
-          "--fa-secondary-color": "#00FF9C",
+          "--fa-primary-color": "#00FF9C",
+          "--fa-secondary-color": "#8ABFA3",
         }}
       />
     </ProfileStatsItem>

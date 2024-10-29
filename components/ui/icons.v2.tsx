@@ -97,6 +97,13 @@ import {
   // faArrowUpRightFromSquare,
 } from "@fortawesome/pro-thin-svg-icons";
 
+import {
+  faClockEight,
+  faCommentQuote,
+  faFire as faFireDuoTone,
+  faMessageQuote,
+} from "@fortawesome/pro-duotone-svg-icons";
+
 import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
 
 import { faCitrus as faCitrusSolid } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -249,6 +256,7 @@ export const Icons = {
   playCircle: createFAIcon(faPlayCircle),
   check: createFAIcon(faCheckThin),
   fire: createFAIcon(faFire),
+  fireDuoTone: createFAIcon(faFireDuoTone as any),
   eye: createFAIcon(faEye),
   planet: createFAIcon(faPlanetRinged),
   zoomIn: createFAIcon(faMagnifyingGlassPlus),
@@ -298,4 +306,7 @@ export const Icons = {
   grinSolid: createFAIcon(faFaceGrinSolid),
   party: createFAIcon(faFaceParty),
   partySolid: createFAIcon(faFacePartySolid),
+  eightOClock: createFAIcon(faClockEight as any),
+  commentQuote: createFAIcon(faCommentQuote as any),
+  messageQuote: createFAIcon(faMessageQuote as any),
 };

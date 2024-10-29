@@ -119,7 +119,7 @@ export const NavBar = () => {
         <SearchBar />
 
         <ReviewNavBar />
-        <ContentsDropdown />
+        {routeName !== "/" && <ContentsDropdown />}
 
         {routeName?.includes("learn") && (
           <Link href="/">

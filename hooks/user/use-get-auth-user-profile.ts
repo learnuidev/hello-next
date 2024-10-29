@@ -1,14 +1,19 @@
 "use client";
 
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { siteConfig } from "@/lib/config";
 
-interface User {
-  email: string;
+export interface UserProfile {
+  followingCount: number;
+  likesCount: number;
+  roles: string[];
+  followersCount: number;
   createdAt: string;
+  email: string;
+  compositionsCount: number;
 }
-const getAuthUser = async (opts: { Authorization: string }): Promise<User> => {
+const getAuthUser = async (opts: { Authorization: string }) => {
   const res = await fetch(`${siteConfig.apiUrl}/v1/get-user`, {
     method: "POST",
     headers: {
@@ -17,20 +22,20 @@ const getAuthUser = async (opts: { Authorization: string }): Promise<User> => {
   });
   const resp = await res.json();
 
-  return resp as User;
+  return resp as UserProfile;
 };
 
 export function useGetAuthUserProfileQuery(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<UserProfile, Error>({
     queryKey: ["get-auth-user", authUser?.jwt],
 
-    queryFn: async (): Promise<User> => {
+    queryFn: async () => {
       const response = await getAuthUser({
         Authorization: authUser?.jwt,
       });
-      return response as User;
+      return response as UserProfile;
     },
 
     ...options,

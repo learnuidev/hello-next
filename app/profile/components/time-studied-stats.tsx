@@ -9,8 +9,8 @@ export const TimeStudiedStats = () => {
       <Icons.eightOClock
         className="text-4xl"
         style={{
-          "--fa-primary-color": "#8ABFA3",
-          "--fa-secondary-color": "#00FF9C",
+          "--fa-primary-color": "#FEEE91",
+          "--fa-secondary-color": "#FEEE91",
         }}
       />
     </ProfileStatsItem>

@@ -14,11 +14,13 @@ export const ProfileBanner = () => {
   }
 
   return (
-    <section className="flex justify-center flex-col items-center mt-32">
+    <section className="flex justify-center flex-col items-center mt-24 md:mt-32">
       <h1 className="text-2xl font-bold"> Me </h1>
 
-      <p className="text-gray-400 font-light mt-2">Free User</p>
-      <p className="text-gray-400 font-light">
+      <p className="text-gray-400 text-sm md:text-md font-light mt-2">
+        Free User
+      </p>
+      <p className="text-gray-400 text-sm md:text-md font-light">
         Joined {formatISODate(profile?.createdAt)}
       </p>
     </section>

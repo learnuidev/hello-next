@@ -61,11 +61,11 @@ function useFilterComponents(query: string) {
       if (!query) {
         return [];
       }
-      const filteredComponents = filterComponents(
+      const filteredComponents = filterComponents({
         components,
         query,
-        learnedCharacters2
-      );
+        characters: learnedCharacters2,
+      });
 
       return filteredComponents;
     },

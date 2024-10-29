@@ -19,12 +19,12 @@ export const useFilteredComponents = (
 
   const humanizedQuery = getHumanPinyin({ pinyin: query });
 
-  const filteredComponents = filterComponents(
-    components || chineseCharacters,
-    humanizedQuery,
-    learnedCharacters2,
-    isQuerySameAsVal
-  );
+  const filteredComponents = filterComponents({
+    components: components || chineseCharacters,
+    query: humanizedQuery,
+    characters: learnedCharacters2,
+    isQuerySameAsVal,
+  });
 
   if (!query) {
     return {
@@ -46,7 +46,11 @@ export const useFilteredComponents = (
 export const filterComponentsExact = (components: any, query: any) => {
   const humanizedQuery = getHumanPinyin({ pinyin: query });
 
-  const filteredComponents = filterComponents(components, humanizedQuery, []);
+  const filteredComponents = filterComponents({
+    components,
+    query: humanizedQuery,
+    characters: [],
+  });
 
   return filteredComponents?.filter((item: any) => {
     return item?.score === 1;

@@ -12,7 +12,8 @@ export const resolveHsk = (
     variant?: "all";
     level?: number;
     topic?: string;
-  }
+  },
+  options = { fetchAll: false }
 ) => {
   const resolvedLevel = level || getHskLevel(queryStr);
 

@@ -17,7 +17,6 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { AllComponents } from "./all-components";
-import { useHSKLevelStore } from "./hsk-level-store";
 import { HskView } from "./hsk/hsk";
 import { useHskViewStore } from "./hsk/state";
 import { NmmCoreComponents } from "./nmm-core-components";
@@ -61,9 +60,6 @@ export function NomadMethodMandarin() {
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 
-  const setLevel = useHSKLevelStore((state) => state.setLevel);
-  const hskLevel = useHSKLevelStore((state) => state.level);
-
   useEffect(() => {
     if (searchQueryParams) {
       setQuery(searchQueryParams);
@@ -79,11 +75,11 @@ export function NomadMethodMandarin() {
         selectedBelt?.maxCharacterLevel
       );
 
-  const filteredComponents = filterComponents(
-    slicedComponents,
-    queryStr,
-    learnedCharacters2
-  );
+  const filteredComponents = filterComponents({
+    components: slicedComponents,
+    query: queryStr,
+    characters: learnedCharacters2,
+  });
 
   const hskView = (useHskViewStore((state) => state.view) as any)?.[
     selectedBelt?.hskLevel

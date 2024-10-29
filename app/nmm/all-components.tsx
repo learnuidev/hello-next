@@ -70,11 +70,11 @@ export function AllComponents() {
         selectedBelt?.maxCharacterLevel
       );
 
-  const filteredComponents = filterComponents(
-    slicedComponents,
-    queryStr,
-    learnedCharacters2
-  );
+  const filteredComponents = filterComponents({
+    components: slicedComponents,
+    query: queryStr,
+    characters: learnedCharacters2,
+  });
 
   return (
     <NmmListContainer>

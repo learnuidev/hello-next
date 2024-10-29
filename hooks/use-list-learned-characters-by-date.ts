@@ -96,11 +96,11 @@ export function useListLearnedCharactersByDate({
     learnedCharactersFormatted &&
     Object.entries(groupByDate(learnedCharactersFormatted) || {})
       .map(([date, items]) => {
-        const filteredComponents = filterComponents(
-          items,
-          queryStr,
-          components
-        );
+        const filteredComponents = filterComponents({
+          components: items,
+          query: queryStr,
+          characters: components,
+        });
 
         if (!filteredComponents?.length) {
           return null;

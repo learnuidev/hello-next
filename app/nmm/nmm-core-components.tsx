@@ -76,11 +76,11 @@ export function NmmCoreComponents() {
         selectedBelt?.maxCharacterLevel
       );
 
-  const filteredComponents = filterComponents(
-    slicedComponents,
-    queryStr,
-    learnedCharacters2
-  );
+  const filteredComponents = filterComponents({
+    components: slicedComponents,
+    query: queryStr,
+    characters: learnedCharacters2,
+  });
 
   const { data: authUser } = useCurrentAuthUser({});
   const brightMode = useBrightModeStore((state: any) => state.mode);

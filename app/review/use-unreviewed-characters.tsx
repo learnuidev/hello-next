@@ -21,10 +21,10 @@ export function useUnreviwedCharacters() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const { mode } = useGetReviewParams();
+  const { mode, level } = useGetReviewParams();
 
   const { data: hskCharacters, isLoading: isHskCharactersLoading } =
-    useGetHskCharacters({});
+    useGetHskCharacters({ variant: "all", getAll: true });
 
   const char = searchParams?.get("char");
   const date = searchParams?.get("date") || "";
@@ -70,7 +70,7 @@ export function useUnreviwedCharacters() {
         (char: any) => char?.hanzi === item?.hanzi
       );
 
-      return unreviewedCharacter;
+      return unreviewedCharacter && item?.hskLevel == level;
     });
 
     return {

@@ -1,11 +1,43 @@
 import { getHumanPinyin } from "./get-human-pinyin";
 
-const filterComponent = (
-  query: string,
-  comp: any,
-  meta?: any,
-  isQuerySameAsVal = false
-) => {
+// const filterComponent = ({
+//   component,
+//   query,
+//   characters,
+//   isQuerySameAsVal = false,
+//   getAll = false,
+// }: {
+//   component: any;
+//   query: string;
+//   characters?: any;
+//   isQuerySameAsVal?: boolean;
+//   getAll?: boolean;
+// }) => {
+
+// const filterComponent = (
+//   query: string,
+//   comp: any,
+//   meta?: any,
+//   isQuerySameAsVal = false
+// ) => {
+const filterComponent = ({
+  component: comp,
+  query,
+  characters,
+  isQuerySameAsVal = false,
+  meta,
+  getAll = false,
+}: {
+  component: any;
+  query: string;
+  characters?: any;
+  meta?: any;
+  isQuerySameAsVal?: boolean;
+  getAll?: boolean;
+}) => {
+  if (getAll) {
+    return { ...comp, score: 1 };
+  }
   if (query) {
     const metaComp = meta?.find((item: any) => item?.hanzi === comp?.hanzi);
 
@@ -115,22 +147,30 @@ const filterComponent = (
   }
 };
 
-export const filterComponents = (
-  components: any,
-  query: string,
-  characters?: any,
-  isQuerySameAsVal = false
-) => {
+export const filterComponents = ({
+  components,
+  query,
+  characters,
+  isQuerySameAsVal = false,
+  getAll = false,
+}: {
+  components: any;
+  query: string;
+  characters?: any;
+  isQuerySameAsVal?: boolean;
+  getAll?: boolean;
+}) => {
   const filteredComponents = components?.length
     ? components
         // .filter((component: any) => component?.hanzi?.length <= 3)
         .map((component: any) => {
-          return filterComponent(
+          return filterComponent({
             query,
             component,
             characters,
-            isQuerySameAsVal
-          );
+            isQuerySameAsVal,
+            getAll,
+          });
         })
         .filter(Boolean)
         .sort((a: any, b: any) => b.score - a.score)

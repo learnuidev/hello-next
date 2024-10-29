@@ -1,27 +1,15 @@
 "use client";
 
-import React, { useMemo } from "react";
+import { HanziLink } from "@/components/hanzi-link";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
-import { HanziLink } from "@/components/hanzi-link";
+import { useMemo } from "react";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-import { useHSKLevelStore } from "../hsk-level-store";
-
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { useHskViewStore } from "./state";
+import { useGetReviewParams } from "@/app/review/use-get-review-params";
+import { NmmListContainer } from "@/components/nmm-list-container";
 import { useBeltStore } from "@/components/use-belt-store";
 import { resolveHsk } from "./hsk-utils/resolve-hsk";
-import { NmmListContainer } from "@/components/nmm-list-container";
+import { useHskViewStore } from "./state";
 
 export const HskWordsView = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
@@ -34,7 +22,9 @@ export const HskWordsView = ({ variant }: { variant?: "all" }) => {
   const setHskView = useHskViewStore((state) => state.setView);
 
   const { data: hskWords } = useListHSKWordsQuery();
-  const level = useHSKLevelStore((state) => state.level);
+  const { level } = useGetReviewParams();
+
+  const hskLevel = level;
 
   const resolvedHskWords = useMemo(
     () => resolveHsk(queryStr, { hskWords, variant, level, topic: hskView }),

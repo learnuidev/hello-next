@@ -1,31 +1,38 @@
 "use client";
 
-import { useMemo } from "react";
-import { useListComponents } from "@/domain/lesson/component.queries";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { useMemo } from "react";
 
 import { filterComponents } from "../nmm-utils/filter-components";
 
 import { useBeltStore } from "@/components/use-belt-store";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useHSKLevelStore } from "../hsk-level-store";
 
-import { useHskViewStore } from "./state";
-import { chineseCharacters } from "@/langs/chinese /characters";
+import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { chineseCharacters } from "@/langs/chinese /characters";
 import { filterNonHanYu } from "../nmm-utils/filter-non-hanyu";
 import { resolveHsk } from "./hsk-utils/resolve-hsk";
-import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { useHskViewStore } from "./state";
 
-export const useGetHskCharacters = ({ variant }: { variant?: "all" }) => {
+export const useGetHskCharacters = ({
+  variant,
+  getAll = false,
+}: {
+  variant?: "all";
+  getAll?: boolean;
+}) => {
   const queryStr = useSearchQueryStore((state) => state.query);
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersQuery();
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
-  const level = useHSKLevelStore((state) => state.level);
+
+  const { level } = useGetReviewParams();
 
   const mode = useLearningModeStore((state: any) => state.mode);
 
@@ -75,6 +82,7 @@ export const useGetHskCharacters = ({ variant }: { variant?: "all" }) => {
         ...learnedChar,
         hanzi: id,
         lang: "zh",
+        hskLevel: level,
       };
     });
 
@@ -91,11 +99,12 @@ export const useGetHskCharacters = ({ variant }: { variant?: "all" }) => {
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
-  const filteredComponents = filterComponents(
-    slicedComponents,
-    queryStr,
-    learnedCharacters2
-  )?.filter((prop: any) => {
+  const filteredComponents = filterComponents({
+    components: slicedComponents,
+    query: queryStr,
+    characters: learnedCharacters2,
+    getAll,
+  })?.filter((prop: any) => {
     const learnedChar = learnedCharacters2?.find(
       (char: any) => char?.hanzi === prop?.hanzi
     );

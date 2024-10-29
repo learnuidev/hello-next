@@ -18,10 +18,10 @@ import { cn } from "@/lib/utils";
 
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 
-import { useHSKLevelStore } from "./hsk-level-store";
 import { useHskViewStore } from "./hsk/state";
 
 import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useGetReviewParams } from "../review/use-get-review-params";
 import { FilterSelect } from "./filter-select";
 import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
 import { useGetNmmParams } from "./use-get-nmm-params";
@@ -39,8 +39,11 @@ export function NomadMethodNavbar() {
   const viewType = useSearchQueryStore((state) => state.type);
   const setViewType = useSearchQueryStore((state) => state.setType);
 
-  const setLevel = useHSKLevelStore((state) => state.setLevel);
-  const hskLevel = useHSKLevelStore((state) => state.level);
+  const { level } = useGetReviewParams();
+
+  const hskLevel = level;
+
+  console.log("HSK LEVEL", hskLevel);
 
   const hskView = (useHskViewStore((state) => state.view) as any)?.[
     selectedBelt?.hskLevel
@@ -182,7 +185,7 @@ export function NomadMethodNavbar() {
             onValueChange={(beltId) => {
               const beltIdInt = parseInt(beltId);
               const belt = belts?.find((belt) => belt.hskLevel === beltIdInt);
-              setLevel(beltIdInt);
+              router.push(`/nmm?level=${belt?.hskLevel}`);
               setSelectedBelt(belt);
             }}
           />
@@ -269,7 +272,9 @@ export function NomadMethodNavbar() {
                       <button
                         key={belt?.fill}
                         onClick={() => {
-                          setLevel(belt?.hskLevel);
+                          // alert("TODO");
+                          router.push(`/nmm?level=${belt?.hskLevel}`);
+                          // setLevel(belt?.hskLevel);
                         }}
                         className={`${
                           belt?.hskLevel === hskLevel
@@ -288,6 +293,7 @@ export function NomadMethodNavbar() {
                     <button
                       key={belt?.fill}
                       onClick={() => {
+                        router.push(`/nmm?level=${belt?.hskLevel}`);
                         setSelectedBelt(belt as any);
                       }}
                       className={`${
@@ -306,6 +312,7 @@ export function NomadMethodNavbar() {
                     <button
                       key={belt?.fill}
                       onClick={() => {
+                        router.push(`/nmm?level=${belt?.hskLevel}`);
                         setSelectedBelt(belt as any);
                       }}
                       className={`${

@@ -1,9 +1,15 @@
 import { Icons } from "@/components/ui/icons.v2";
 import { ProfileStatsItem } from "./profile-stats-item";
+import { useGetTotalActiveDays } from "../hooks/use-get-total-active-days";
 
-export const LongestStreakStats = () => {
+export const TotalActiveDaysStats = () => {
+  const totalActiveDays = useGetTotalActiveDays();
   return (
-    <ProfileStatsItem stat={"1 day"} title="Longest" subtitle="Streak">
+    <ProfileStatsItem
+      stat={totalActiveDays}
+      title="Total"
+      subtitle="Active Days"
+    >
       <Icons.fireDuoTone
         className="text-4xl"
         style={{

@@ -1,8 +1,9 @@
 import { FloatingNavbar } from "@/components/floating-navbar";
 import { LifeTimeSentencesStats } from "./components/life-time-sentences-stats";
-import { LongestStreakStats } from "./components/longest-streak-stats";
+
 import { ProfileBanner } from "./components/profile-banner";
 import { TimeStudiedStats } from "./components/time-studied-stats";
+import { TotalActiveDaysStats } from "./components/total-active-days-stats";
 
 export const ProfilePage = () => {
   return (
@@ -12,8 +13,14 @@ export const ProfilePage = () => {
       <section className="flex flex-row justify-center items-center gap-16 mt-16">
         <LifeTimeSentencesStats />
         <TimeStudiedStats />
-        <LongestStreakStats />
+        <TotalActiveDaysStats />
       </section>
+
+      {/* <section>
+        <code>
+          <pre>{JSON.stringify(timeStudied, null, 2)}</pre>
+        </code>
+      </section> */}
 
       <FloatingNavbar />
     </main>

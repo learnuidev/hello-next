@@ -10,15 +10,18 @@ export function secondsToTimestamp(milliseconds: number) {
   // Build the timestamp string
   let timestamp = "";
   if (days > 0) {
-    timestamp += `${days}d`;
+    timestamp += `${days} day`;
     if (hours > 0 || minutes > 0) timestamp += " ";
+    return timestamp.trim();
   }
   if (hours > 0) {
-    timestamp += `${hours}h`;
+    timestamp += `${hours} hour`;
     if (minutes > 0) timestamp += " ";
+    return timestamp.trim();
   }
   if (minutes > 0 || (days === 0 && hours === 0)) {
-    timestamp += `${minutes}min`;
+    timestamp += `${minutes} min`;
+    return timestamp.trim();
   }
   return timestamp.trim();
 }

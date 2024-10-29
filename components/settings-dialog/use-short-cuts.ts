@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useLearningModeStore } from "./learning-mode.store";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useBrightModeStore } from "./use-bright-mode-store";
 import { useViewType } from "@/app/(auth)/convos/_play-v2/use-view-type";
 import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
@@ -15,6 +15,7 @@ export function useShortCuts() {
   const setReadMode = useReadModeStore((state) => state.setReadMode);
   const mode = useLearningModeStore((state) => state.mode);
   const setFocus = useViewType((state) => state.setFocus);
+  const routeName = usePathname();
 
   const { data: unReviewedCharacters } = useUnreviwedCharacters();
 
@@ -83,6 +84,61 @@ export function useShortCuts() {
         setFocus((focus: string) => (focus === "hanzi" ? "en" : "hanzi"));
         // setView((prev: string) => (prev === "focus" ? "default" : "focus"));
       }
+
+      if (["1"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        if (routeName?.includes("/nmm")) {
+          router.push(`/nmm?level=${1}`);
+        }
+
+        return;
+      }
+      if (["2"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        if (routeName?.includes("/nmm")) {
+          router.push(`/nmm?level=${2}`);
+        }
+
+        return;
+      }
+      if (["3"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        if (routeName?.includes("/nmm")) {
+          router.push(`/nmm?level=${3}`);
+        }
+
+        return;
+      }
+      if (["4"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        if (routeName?.includes("/nmm")) {
+          router.push(`/nmm?level=${4}`);
+        }
+
+        return;
+      }
+      if (["5"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        if (routeName?.includes("/nmm")) {
+          router.push(`/nmm?level=${5}`);
+        }
+
+        return;
+      }
+      if (["6"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        if (routeName?.includes("/nmm")) {
+          router.push(`/nmm?level=${6}`);
+        }
+
+        return;
+      }
+      if (
+        (["7"]?.includes(event.key) ||
+          ["8"]?.includes(event.key) ||
+          ["9"]?.includes(event.key)) &&
+        (event.metaKey || event.ctrlKey)
+      ) {
+        if (routeName?.includes("/nmm")) {
+          router.push(`/nmm?level=${9}`);
+        }
+
+        return;
+      }
     }
 
     window.addEventListener("keydown", onKeyDown);
@@ -99,5 +155,6 @@ export function useShortCuts() {
     setFocus,
     setReadMode,
     readMode,
+    reviewUrl,
   ]);
 }

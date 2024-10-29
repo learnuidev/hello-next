@@ -59,6 +59,7 @@ export function ReviewMode(props: any) {
 
   const {
     date,
+    level,
     lang: langParams,
     character: nextCharacter,
   } = useGetReviewParams();
@@ -168,13 +169,6 @@ export function ReviewMode(props: any) {
       (char: any) => char?.hanzi === character
     );
 
-    // const currentCharacter =
-    //   unReviewedCharacters?.find(
-    //     (char: any) => char?.hanzi === nextCharacter
-    //   ) ||
-    //   // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
-    //   unReviewedCharacters?.[0];
-
     const nextChar = unReviewedCharacters?.[currentCharacterIndex + 1];
 
     if (nextChar?.hanzi) {
@@ -198,7 +192,7 @@ export function ReviewMode(props: any) {
   return (
     <div className="grow text-center">
       <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
-        <Link href={"/nmm"}>
+        <Link href={`/nmm?level=${level}`}>
           <Icons.xMark className="text-xl md:text-3xl" />
         </Link>
 

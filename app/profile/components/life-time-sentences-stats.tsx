@@ -13,8 +13,8 @@ export const LifeTimeSentencesStats = () => {
       <Icons.messageQuote
         className="text-4xl"
         style={{
-          "--fa-primary-color": "#A594F9",
-          "--fa-secondary-color": "#CDC1FF",
+          "--fa-primary-color": "#CDC1FF",
+          "--fa-secondary-color": "#A594F9",
         }}
       />
     </ProfileStatsItem>

@@ -8,6 +8,7 @@ import { useViewType } from "@/app/(auth)/convos/_play-v2/use-view-type";
 import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { useGetReviewUrl } from "./use-get-review-url";
+import { useGetReviewParams } from "@/app/review/use-get-review-params";
 
 export function useShortCuts() {
   const setMode = useLearningModeStore((state) => state.setMode);
@@ -23,6 +24,7 @@ export function useShortCuts() {
 
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
   const reviewUrl = useGetReviewUrl();
+  const { level, mode: reviewMode, studyMode } = useGetReviewParams();
 
   const router = useRouter();
 
@@ -101,42 +103,54 @@ export function useShortCuts() {
 
       if (["1"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         // if (routeName?.includes("/nmm")) {
-        router.push(`/nmm?level=${1}`);
+        router.push(
+          `/nmm?level=${1}&mode=${reviewMode}&study-mode=${studyMode}`
+        );
         // }
 
         return;
       }
       if (["2"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         // if (routeName?.includes("/nmm")) {
-        router.push(`/nmm?level=${2}`);
+        router.push(
+          `/nmm?level=${2}&mode=${reviewMode}&study-mode=${studyMode}`
+        );
         // }
 
         return;
       }
       if (["3"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         // if (routeName?.includes("/nmm")) {
-        router.push(`/nmm?level=${3}`);
+        router.push(
+          `/nmm?level=${3}&mode=${reviewMode}&study-mode=${studyMode}`
+        );
         // }
 
         return;
       }
       if (["4"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         // if (routeName?.includes("/nmm")) {
-        router.push(`/nmm?level=${4}`);
+        router.push(
+          `/nmm?level=${4}&mode=${reviewMode}&study-mode=${studyMode}`
+        );
         // }
 
         return;
       }
       if (["5"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         // if (routeName?.includes("/nmm")) {
-        router.push(`/nmm?level=${5}`);
+        router.push(
+          `/nmm?level=${5}&mode=${reviewMode}&study-mode=${studyMode}`
+        );
         // }
 
         return;
       }
       if (["6"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         // if (routeName?.includes("/nmm")) {
-        router.push(`/nmm?level=${6}`);
+        router.push(
+          `/nmm?level=${6}&mode=${reviewMode}&study-mode=${studyMode}`
+        );
         // }
 
         return;

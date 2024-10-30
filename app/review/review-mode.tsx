@@ -120,10 +120,10 @@ export function ReviewMode(props: any) {
 
   const getUrl = () => {
     if (["hsk3", "hsk"]?.includes(mode)) {
-      return `/review?mode=${mode}&level=${level}&study-mode=${studyMode}`;
+      return `/review?mode=${mode}&level=${level}&study-mode=${studyMode}&date=${date}`;
     }
 
-    return "/review";
+    return `/review?date=${date}`;
   };
 
   if (isLoading || isLearnedCharactersLoading) {

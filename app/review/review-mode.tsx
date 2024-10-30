@@ -17,6 +17,7 @@ import { useGetReviewParams } from "./use-get-review-params";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { useBeltStore } from "@/components/use-belt-store";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -119,11 +120,18 @@ export function ReviewMode(props: any) {
   const { studyMode, character } = useGetReviewParams();
 
   const getUrl = () => {
-    if (["hsk3", "hsk"]?.includes(mode)) {
-      return `/review?mode=${mode}&level=${level}&study-mode=${studyMode}&date=${date}`;
-    }
+    const reviewSearchParamsUrl = getReviewSearchParams({
+      mode,
+      level,
+      studyMode,
+      date,
+    });
+    // if (["hsk3", "hsk"]?.includes(mode)) {
+    //   return `/review?mode=${mode}&level=${level}&study-mode=${studyMode}&date=${date}`;
+    // }
+    return `/review?${reviewSearchParamsUrl}`;
 
-    return `/review?date=${date}`;
+    // return `/review?date=${date}`;
   };
 
   if (isLoading || isLearnedCharactersLoading) {

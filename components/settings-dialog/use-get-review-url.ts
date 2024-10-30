@@ -3,15 +3,27 @@ import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 import { useBeltStore } from "../use-belt-store";
 import { useLearningModeStore } from "./learning-mode.store";
 
-const getReviewSearchParams = ({ mode, character, level }: any) => {
+export const getReviewSearchParams = ({
+  mode,
+  character,
+  level,
+  studyMode,
+  date,
+}: any) => {
   const urlSearchParams = new URLSearchParams();
 
   if (mode) {
-    urlSearchParams.set("mode", "hsk");
+    urlSearchParams.set("mode", mode);
+  }
+  if (date) {
+    urlSearchParams.set("date", date);
   }
 
   if (character) {
     urlSearchParams.set("character", character);
+  }
+  if (studyMode) {
+    urlSearchParams.set("study-mode", studyMode);
   }
   if (level) {
     urlSearchParams.set("level", level);

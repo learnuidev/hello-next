@@ -23,7 +23,7 @@ export function AllComponents() {
   const searchParams = useSearchParams();
   const searchQueryParams = searchParams.get("query") || "";
   const routeName = usePathname();
-  const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
+
   const queryStr = useSearchQueryStore((state) => state.query);
   const setQuery = useSearchQueryStore((state) => state.setQuery);
 

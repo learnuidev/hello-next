@@ -274,7 +274,7 @@ export function NomadMethodNavbar() {
                         onClick={() => {
                           // alert("TODO");
                           router.push(`/nmm?level=${belt?.hskLevel}`);
-                          // setLevel(belt?.hskLevel);
+                          setSelectedBelt(belt as any);
                         }}
                         className={`${
                           belt?.hskLevel === hskLevel
@@ -297,7 +297,7 @@ export function NomadMethodNavbar() {
                         setSelectedBelt(belt as any);
                       }}
                       className={`${
-                        belt?.level === (selectedBelt?.level as any)
+                        belt?.hskLevel === hskLevel
                           ? belt?.fill
                           : belt?.unselected
                       } h-4 w-4 rounded-full text`}

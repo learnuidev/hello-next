@@ -100,44 +100,44 @@ export function useShortCuts() {
       }
 
       if (["1"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?level=${1}`);
-        }
+        // if (routeName?.includes("/nmm")) {
+        router.push(`/nmm?level=${1}`);
+        // }
 
         return;
       }
       if (["2"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?level=${2}`);
-        }
+        // if (routeName?.includes("/nmm")) {
+        router.push(`/nmm?level=${2}`);
+        // }
 
         return;
       }
       if (["3"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?level=${3}`);
-        }
+        // if (routeName?.includes("/nmm")) {
+        router.push(`/nmm?level=${3}`);
+        // }
 
         return;
       }
       if (["4"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?level=${4}`);
-        }
+        // if (routeName?.includes("/nmm")) {
+        router.push(`/nmm?level=${4}`);
+        // }
 
         return;
       }
       if (["5"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?level=${5}`);
-        }
+        // if (routeName?.includes("/nmm")) {
+        router.push(`/nmm?level=${5}`);
+        // }
 
         return;
       }
       if (["6"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?level=${6}`);
-        }
+        // if (routeName?.includes("/nmm")) {
+        router.push(`/nmm?level=${6}`);
+        // }
 
         return;
       }
@@ -147,9 +147,9 @@ export function useShortCuts() {
           ["9"]?.includes(event.key)) &&
         (event.metaKey || event.ctrlKey)
       ) {
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?level=${9}`);
-        }
+        // if (routeName?.includes("/nmm")) {
+        router.push(`/nmm?level=${9}`);
+        // }
 
         return;
       }

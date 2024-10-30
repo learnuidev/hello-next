@@ -328,7 +328,7 @@ export function ReviewMode(props: any) {
         ) : showCorrectOptions ? (
           <>
             {[
-              { title: "1d", value: "1d" },
+              // { title: "1d", value: "1d" },
               { title: "3d", value: "3d" },
               { title: "7d", value: "7d" },
               { title: "1m", value: "30d" },

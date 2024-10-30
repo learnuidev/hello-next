@@ -5,7 +5,7 @@ import { ProfileStatsItem } from "./profile-stats-item";
 export const TimeStudiedStats = () => {
   const timeStudied = useGetTotalTimeStudied();
   return (
-    <ProfileStatsItem stat={timeStudied} title="Time" subtitle="Studied">
+    <ProfileStatsItem stat={timeStudied} title="Time" subtitle="Reviwed">
       <Icons.eightOClock
         className="text-4xl"
         style={{

@@ -316,7 +316,7 @@ export function NomadMethodNavbar() {
                         setSelectedBelt(belt as any);
                       }}
                       className={`${
-                        belt?.level === (selectedBelt?.level as any)
+                        belt?.hskLevel === hskLevel
                           ? belt?.fill
                           : belt?.unselected
                       } h-4 w-4 rounded-full text`}

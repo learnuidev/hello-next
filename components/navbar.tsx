@@ -110,13 +110,13 @@ export const ContentsDropdown = () => {
     </>
   );
 };
-export const NavBar = () => {
+export const NavBar = ({ autoFocus }: { autoFocus?: boolean }) => {
   const routeName = usePathname();
 
   return (
     <div className="relative">
       <div className="flex justify-between items-center w-full px-4 md:px-12">
-        <SearchBar />
+        <SearchBar autoFocus={autoFocus} />
 
         <ReviewNavBar />
         {routeName !== "/" && <ContentsDropdown />}

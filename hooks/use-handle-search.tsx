@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, KeyboardEvent } from "react";
 
 import { useDebouncedCallback } from "use-debounce";
@@ -14,6 +14,7 @@ import { traditionalToSimplified } from "@/langs/chinese /traditional-chinese-ch
 
 export const useHandleSearch = () => {
   const router = useRouter();
+  const path = usePathname();
 
   const searchParams = useSearchParams();
   const lang = searchParams.get("lang");
@@ -33,6 +34,10 @@ export const useHandleSearch = () => {
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuerySync(event?.target?.value);
     handleChangeDebounced(event?.target.value);
+  };
+
+  const handleCourseOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuerySync(event?.target?.value);
   };
 
   const langs = useListLanguages();
@@ -102,7 +107,9 @@ export const useHandleSearch = () => {
   };
 
   return {
-    handleOnChange,
+    handleOnChange: path?.includes("/courses")
+      ? handleCourseOnChange
+      : handleOnChange,
     handleOnKeyDown,
   };
 };

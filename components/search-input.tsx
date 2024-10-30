@@ -1,28 +1,23 @@
 "use client";
 
-import { useSearchQueryStore } from "./search/state";
-import React from "react";
 import { useHandleSearch } from "@/hooks/use-handle-search";
 import { cn } from "@/lib/utils";
+import { useSearchQueryStore } from "./search/state";
 
-export const SearchInput = () => {
+export const SearchInput = ({ autoFocus }: { autoFocus?: boolean }) => {
   // 1. State
   const querySync = useSearchQueryStore((state) => state.querySync);
-  const setQuerySync = useSearchQueryStore((state) => state.setQuerySync);
 
   // 2. Handlers
   const { handleOnChange, handleOnKeyDown } = useHandleSearch();
 
   return (
     <input
-      autoFocus
+      autoFocus={autoFocus === false ? false : true}
       className={cn(
         "font-extralight border-none dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300 dark:bg-black/10 dark:text-gray-300 placeholder:text-gray-400 opacity-100 border-2 focus:border-none px-2 rounded-full focus:outline-none active:outline-none py-2",
         "w-full md:w-[800px]"
       )}
-      // onChange={(e) => {
-      //   setQuerySync(e.target.value);
-      // }}
       placeholder={"Search"}
       onChange={handleOnChange}
       value={querySync}

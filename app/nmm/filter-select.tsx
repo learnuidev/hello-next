@@ -35,7 +35,9 @@ export const FilterSelect = ({
         <SelectValue placeholder={title} />
       </SelectTrigger>
       <SelectContent
-        className={cn("bg-black dark:border-gray-900 w-[300px] text-xs")}
+        className={cn(
+          "dark:bg-black bg-white dark:border-gray-900 w-[300px] text-xs"
+        )}
       >
         <SelectGroup>
           {items.map((coreTitle) => {
@@ -43,7 +45,7 @@ export const FilterSelect = ({
               <SelectItem
                 value={coreTitle.id}
                 key={coreTitle.id}
-                className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
+                className="text-gray-400 text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition dark:data-[state=checked]:text-white data-[state=checked]:text-black"
               >
                 {coreTitle.title}
               </SelectItem>

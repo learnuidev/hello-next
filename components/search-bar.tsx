@@ -10,7 +10,7 @@ import { SearchDialogDemo } from "./search-dialog";
 import { SearchInput } from "./search-input";
 import { useSearchState } from "./use-search-state";
 
-export const SearchBar = () => {
+export const SearchBar = ({ autoFocus }: { autoFocus?: boolean }) => {
   const setSearchBarOpen = useSearchState((state) => state.setSearchBarOpen);
   return (
     <div
@@ -23,12 +23,13 @@ export const SearchBar = () => {
       {/* <SearchDialogDemo /> */}
 
       <Icons.magnifyingGlass
+
       // onClick={() => {
       //   setSearchBarOpen(true);
       // }}
       />
 
-      <SearchInput />
+      <SearchInput autoFocus={autoFocus} />
     </div>
   );
 };

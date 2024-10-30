@@ -52,6 +52,12 @@ export function useShortCuts() {
         // router.push("/");
         // router.push("/nmm");
         setMode(mode === "hsk" ? "hsk3" : "hsk");
+
+        if (routeName?.includes("/review")) {
+          router.push(
+            `/review?level=${level}&mode=${mode === "hsk" ? "hsk3" : "hsk"}&study-mode=${studyMode}`
+          );
+        }
       }
 
       if (["m"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {

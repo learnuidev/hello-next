@@ -21,8 +21,8 @@ export const useGetReviewUrl = () => {
   }
 
   if (unReviewedCharacters?.[0]?.hanzi) {
-    return `/review?character=${unReviewedCharacters?.[0]?.hanzi}`;
+    return `/review?character=${unReviewedCharacters?.[0]?.hanzi}&mode=${mode}&level=${level}`;
   } else {
-    return "/review";
+    return `/review?mode=${mode}&level=${level}`;
   }
 };

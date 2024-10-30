@@ -9,7 +9,7 @@ export const useGetReviewParams = () => {
   const level = parseInt(searchParams.get("level") as string) || 1;
   const character = searchParams.get("character");
   const view = searchParams.get("view");
-  const studyMode = searchParams.get("study-mode") || "";
+  const studyMode = searchParams.get("study-mode") || "srs";
 
   return {
     date,

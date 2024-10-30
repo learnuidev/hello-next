@@ -3,6 +3,23 @@ import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 import { useBeltStore } from "../use-belt-store";
 import { useLearningModeStore } from "./learning-mode.store";
 
+const getReviewSearchParams = ({ mode, character, level }: any) => {
+  const urlSearchParams = new URLSearchParams();
+
+  if (mode) {
+    urlSearchParams.set("mode", "hsk");
+  }
+
+  if (character) {
+    urlSearchParams.set("character", character);
+  }
+  if (level) {
+    urlSearchParams.set("level", level);
+  }
+
+  return urlSearchParams.toString();
+};
+
 export const useGetReviewUrl = () => {
   const mode = useLearningModeStore((state) => state.mode);
 
@@ -16,13 +33,15 @@ export const useGetReviewUrl = () => {
 
   const { data: unReviewedCharacters } = useUnreviwedCharacters();
 
-  if (["hsk3", "hsk"]?.includes(mode)) {
-    return `/review?mode=${mode}&character=${unReviewedCharacters?.[0]?.hanzi}&level=${hskLevel}`;
-  }
+  return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi })}`;
 
-  if (unReviewedCharacters?.[0]?.hanzi) {
-    return `/review?character=${unReviewedCharacters?.[0]?.hanzi}&mode=${mode}&level=${level}`;
-  } else {
-    return `/review?mode=${mode}&level=${level}`;
-  }
+  // if (["hsk3", "hsk"]?.includes(mode)) {
+  //   return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi })}`;
+  // }
+
+  // if (unReviewedCharacters?.[0]?.hanzi) {
+  //   return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi })}`;
+  // } else {
+  //   return `/review?mode=${mode}&level=${level}`;
+  // }
 };

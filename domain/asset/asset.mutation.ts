@@ -4,7 +4,8 @@ import { queryIds } from "./queryIds";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
-import { listUserAssetsQueryId } from "./asset.queries";
+import { listUserAssetsQueryKey } from "./use-list-user-assets";
+// import { listUserAssetsQueryId } from "./asset.queries";
 
 // TODO: Move this to .env
 const url =
@@ -46,7 +47,7 @@ export function useAddUserAssetMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([listUserAssetsQueryId, authUser?.jwt]);
+        queryClient.invalidateQueries([listUserAssetsQueryKey, authUser?.jwt]);
       },
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,

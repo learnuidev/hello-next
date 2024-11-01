@@ -45,6 +45,9 @@ export function TimelineTabs() {
       <TabsContent value="search" className="my-8">
         <TimelineTabBody variant="search" />
       </TabsContent>
+      {/* <TabsContent value="click" className="my-8">
+        <TimelineTabBody variant="click" />
+      </TabsContent> */}
       <TabsContent value="discovered" className="my-8">
         <TimelineTabBody variant="discovered" />
       </TabsContent>

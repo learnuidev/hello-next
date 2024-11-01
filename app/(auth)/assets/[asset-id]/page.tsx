@@ -5,6 +5,8 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import { useState } from "react";
+import { ReactReader } from "react-reader";
 
 const useGetUserAsset = (id: string) => {
   const { data: authUser } = useCurrentAuthUser({});
@@ -32,8 +34,21 @@ const useGetUserAsset = (id: string) => {
 export default function Assets() {
   const params = useParams<{ "asset-id": string }>();
   const id = "01J2F7D814JVWWRST573NJT39S";
+  const [location, setLocation] = useState<string | number>(0);
 
   const { data: userAsset, isError } = useGetUserAsset(params["asset-id"]);
+
+  if (userAsset?.extension === "epub") {
+    return (
+      <div style={{ height: "100vh" }}>
+        <ReactReader
+          url={userAsset?.sourceUrl || "https://www.google.com"}
+          location={location}
+          locationChanged={(epubcfi: string) => setLocation(epubcfi)}
+        />
+      </div>
+    );
+  }
   return (
     <main className="">
       <NavBar />

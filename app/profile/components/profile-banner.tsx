@@ -9,10 +9,6 @@ const formatISODate = (isoDate: string) => {
 export const ProfileBanner = () => {
   const { data: profile } = useGetAuthUserProfileQuery();
 
-  if (!profile) {
-    return null;
-  }
-
   return (
     <section className="flex justify-center flex-col items-center mt-24 md:mt-32">
       <h1 className="text-2xl font-bold"> Me </h1>
@@ -21,7 +17,7 @@ export const ProfileBanner = () => {
         Free User
       </p>
       <p className="text-gray-400 text-sm md:text-md font-light">
-        Joined {formatISODate(profile?.createdAt)}
+        Joined {formatISODate(profile?.createdAt || new Date().toISOString())}
       </p>
     </section>
   );

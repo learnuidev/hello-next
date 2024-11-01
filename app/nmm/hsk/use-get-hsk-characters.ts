@@ -13,7 +13,6 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
-import { chineseCharacters } from "@/langs/chinese /characters";
 import { filterNonHanYu } from "../nmm-utils/filter-non-hanyu";
 import { resolveHsk } from "./hsk-utils/resolve-hsk";
 import { useHskViewStore } from "./state";
@@ -39,11 +38,6 @@ export const useGetHskCharacters = ({
   const hskView = (useHskViewStore((state) => state.view) as any)?.[
     selectedBelt?.hskLevel
   ];
-  const setHskView = useHskViewStore((state) => state.setView);
-
-  const comps = components ? components : chineseCharacters;
-
-  // const { data: hskCharacters } = useGetHskCharacters({ queryStr, variant });
 
   const { data: hskWords, isLoading } = useListHSKWordsQuery({
     version: mode === "hsk" ? 2 : 3,

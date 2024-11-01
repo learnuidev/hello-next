@@ -150,15 +150,6 @@ const FloatingNavbarComp = () => {
   );
 };
 export const FloatingNavbar = () => {
-  const { toast } = useToast();
-  const [show, setShow] = useState(false);
-
-  const routeName = usePathname();
-
-  const { data: reviewList } = useListCharacterReviewList();
-
-  const lang = useGetCurrentLang();
-
   return (
     <TheDock>
       <FloatingNavbarComp />

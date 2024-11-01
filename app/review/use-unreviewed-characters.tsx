@@ -24,7 +24,7 @@ export function useUnreviwedCharacters() {
   const { mode, level } = useGetReviewParams();
 
   const { data: hskCharacters, isLoading: isHskCharactersLoading } =
-    useGetHskCharacters({ variant: "all", getAll: true });
+    useGetHskCharacters({ getAll: true });
 
   const char = searchParams?.get("char");
   const date = searchParams?.get("date") || "";

@@ -19,9 +19,10 @@ export const getReviewSearchParams = ({
     urlSearchParams.set("date", date);
   }
 
-  if (character) {
-    urlSearchParams.set("character", character);
-  }
+  // if (character) {
+  //   urlSearchParams.set("character", character);
+  // }
+
   if (studyMode) {
     urlSearchParams.set("study-mode", studyMode);
   }

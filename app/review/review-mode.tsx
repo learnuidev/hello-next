@@ -183,9 +183,9 @@ export function ReviewMode(props: any) {
       const url = getUrl();
 
       if (url?.includes("&")) {
-        return router.push(`${url}&character=${nextChar?.hanzi}`);
+        return router.push(`${url}`);
       } else {
-        router.push(`/review?character=${nextChar?.hanzi}`);
+        router.push(`/review`);
       }
     }
   };

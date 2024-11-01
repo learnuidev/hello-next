@@ -4,6 +4,7 @@ import { NavBar } from "@/components/navbar";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 
 const useGetUserAsset = (id: string) => {
   const { data: authUser } = useCurrentAuthUser({});
@@ -29,8 +30,10 @@ const useGetUserAsset = (id: string) => {
   });
 };
 export default function Assets() {
+  const params = useParams<{ "asset-id": string }>();
   const id = "01J2F7D814JVWWRST573NJT39S";
-  const { data: userAsset, isError } = useGetUserAsset(id);
+
+  const { data: userAsset, isError } = useGetUserAsset(params["asset-id"]);
   return (
     <main className="">
       <NavBar />

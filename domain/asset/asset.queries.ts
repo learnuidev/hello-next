@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { getUploadUrl } from "./asset.api";
 import { siteConfig } from "@/lib/config";
+import { UploadFileResponse } from "@/domain/file-upload/use-upload-file";
 
 interface GetUploadUrlParams {
   urlId: string;
@@ -45,27 +46,3 @@ export function useGetUploadUrlQuery(
     }
   );
 }
-
-export const listUserAssetsQueryId = "list-user-assets";
-export const useListUserAssets = () => {
-  const { data: authUser } = useCurrentAuthUser({});
-
-  return useQuery({
-    queryKey: ["listUserAssetsQueryId", authUser?.jwt],
-    queryFn: async () => {
-      const resp = await fetch(`${siteConfig.apiUrl}/v1/list-user-assets`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${authUser?.jwt}`,
-        },
-      });
-
-      if (!resp.ok) {
-        throw new Error("Something wrong happened");
-      }
-
-      return resp.json();
-    },
-    retry: false,
-  });
-};

@@ -3,7 +3,10 @@ import { currentAuthUser } from "@/libs/cognito/auth";
 import { queryIds } from "./queryIds";
 
 export function useCurrentAuthUser(options = {}) {
-  return useQuery([queryIds.currentAuthUser], currentAuthUser, {
+  return useQuery({
+    queryKey: [queryIds.currentAuthUser],
+
+    queryFn: currentAuthUser,
     ...options,
     retry: false,
   });

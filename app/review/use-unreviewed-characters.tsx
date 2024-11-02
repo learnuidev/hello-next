@@ -65,13 +65,18 @@ export function useUnreviwedCharacters() {
       );
 
   if (["hsk", "hsk3"]?.includes(mode)) {
-    const data = hskCharacters?.filter((item: any) => {
-      const unreviewedCharacter = unReviewedCharacters?.find(
-        (char: any) => char?.hanzi === item?.hanzi
-      );
+    const data = hskCharacters
+      ?.filter((item: any) => {
+        const unreviewedCharacter = unReviewedCharacters?.find(
+          (char: any) => char?.hanzi === item?.hanzi
+        );
 
-      return unreviewedCharacter && item?.hskLevel == level;
-    });
+        return unreviewedCharacter && item?.hskLevel == level;
+      })
+      ?.sort(
+        (a: any, b: any) =>
+          (a.next_review_date || 0) - (b?.next_review_date || 0)
+      );
 
     return {
       data,
@@ -80,7 +85,9 @@ export function useUnreviwedCharacters() {
   }
 
   return {
-    data: unReviewedCharacters,
+    data: unReviewedCharacters?.sort(
+      (a: any, b: any) => (a.next_review_date || 0) - (b?.next_review_date || 0)
+    ),
     isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
   };
 }

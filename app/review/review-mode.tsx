@@ -138,6 +138,10 @@ export function ReviewMode(props: any) {
     return <div className="">...</div>;
   }
 
+  const remainingItems = date
+    ? groupItems?.length - reviewCount
+    : unReviewedCharacters?.length;
+
   if ((!currentCharacter || hasReviewedAll) && !isUnreviewedCharactersLoading) {
     return (
       <div className="grow text-center">
@@ -184,8 +188,10 @@ export function ReviewMode(props: any) {
 
       if (url?.includes("&")) {
         return router.push(`${url}`);
+      } else if (url?.includes("date")) {
+        router.push(url);
       } else {
-        router.push(`/review`);
+        router.push("/review");
       }
     }
   };
@@ -205,7 +211,7 @@ export function ReviewMode(props: any) {
         </Link>
 
         <p className="text-gray-700 text-xl md:text-3xl">
-          <Icons.language /> {unReviewedCharacters?.length}
+          <Icons.language /> {remainingItems}
         </p>
 
         <Link href={`/review?view=cal`}>

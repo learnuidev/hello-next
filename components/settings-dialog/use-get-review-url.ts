@@ -12,11 +12,13 @@ export const getReviewSearchParams = ({
 }: any) => {
   const urlSearchParams = new URLSearchParams();
 
-  if (mode) {
-    urlSearchParams.set("mode", mode);
-  }
   if (date) {
     urlSearchParams.set("date", date);
+    return urlSearchParams.toString();
+  }
+
+  if (mode) {
+    urlSearchParams.set("mode", mode);
   }
 
   // if (character) {

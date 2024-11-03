@@ -138,16 +138,12 @@ export function PinyinTable({
   const activePinyinSounds = useMemo(
     () =>
       groupBy((item: any) => item?.humanPinyin)(
-        chineseChars
-          ?.filter(
-            (comp: any) => comp?.hanzi?.length === 1 && comp?.level <= 3500
-          )
-          ?.map((comp: any) => {
-            return {
-              ...comp,
-              humanPinyin: getHumanPinyin(comp) || comp?.group,
-            };
-          }) || []
+        chineseChars?.map((comp: any) => {
+          return {
+            ...comp,
+            humanPinyin: getHumanPinyin(comp) || comp?.group,
+          };
+        }) || []
       ),
     [chineseChars]
   );
@@ -170,6 +166,8 @@ export function PinyinTable({
   );
 
   const calcRowColor = (val: any, lesson?: any, querySync?: string) => {
+    // console.log("VAL", val);
+
     if (typeof val === "string") {
       return "text-gray-600";
     }

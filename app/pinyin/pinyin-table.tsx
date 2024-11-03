@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils";
 import { filterComponents } from "../nmm/nmm-utils/filter-components";
 import { getHumanPinyin } from "../nmm/nmm-utils/get-human-pinyin";
 import { useRouter, useSearchParams } from "next/navigation";
+import { chineseCharacters } from "@/langs/chinese /characters";
 
 const totalCharacters = defaultData
   ?.map((val: any) => Object.values(val))
@@ -132,8 +133,10 @@ export function PinyinTable({
 
   const { data: filteredComponents } = useFilterComponents(querySync);
 
-  const { data: chineseComponents } = useListComponents();
+  const { data: chineseComponents2 } = useListComponents({ includeAll: true });
   const { data: chineseChars } = useListCharactersQuery();
+
+  const chineseComponents = chineseComponents2 || chineseCharacters;
 
   const activePinyinSounds = useMemo(
     () =>

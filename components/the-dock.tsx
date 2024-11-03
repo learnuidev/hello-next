@@ -2,12 +2,18 @@ import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 
-export const TheDock = ({ children }: { children?: React.ReactNode }) => {
+export const TheDock = ({
+  children,
+  className,
+}: {
+  children?: React.ReactNode;
+  className?: string;
+}) => {
   const [show, setShow] = useState(false);
 
   return (
     <div>
-      <div className={cn("flex w-full fixed z-50 bottom-0")}>
+      <div className={cn("flex w-full fixed z-50 bottom-0", className)}>
         <div className="block sm:hidden w-full">{children}</div>
       </div>
 

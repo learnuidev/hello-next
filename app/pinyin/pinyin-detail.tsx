@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import { CloseIcon } from "@/components/ui/icons";
 
-import { usePinyinChartState } from "./state";
-
 import { groupBy } from "ramda";
 
 import { useFilteredComponents } from "@/hooks/use-filter-components";
@@ -21,9 +19,13 @@ import { PreviewComponent } from "../nmm/preview-component";
 import { useSearchQueryStore } from "@/components/search/state";
 import { PinyinCodes, useSelectedLevel } from "./pinyn-codes";
 import { calculateColor } from "../nmm/nmm-utils/calculate-color";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export const PinyinDetail = () => {
-  const [selectedPinyin, setSelectedPinyin] = usePinyinChartState();
+  // const [selectedPinyin, setSelectedPinyin] = usePinyinChartState();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const selectedPinyin = searchParams.get("selected-pinyin");
   const selectedLevel = useSelectedLevel((state) => state.selectedLevel) as any;
 
   const querySync = useSearchQueryStore((state) => state.query)?.toLowerCase();
@@ -32,7 +34,7 @@ export const PinyinDetail = () => {
 
   const { data } = useFilteredComponents(
     {
-      query: selectedPinyin?.value || "",
+      query: selectedPinyin || "",
     },
     {
       exact: true,
@@ -69,12 +71,13 @@ export const PinyinDetail = () => {
         <div></div>
         <h1 className="flex flex-col items-center">
           <span className={`text-3xl font-bold dark:text-gray-200`}>
-            {selectedPinyin?.value || selectedPinyin}
+            {selectedPinyin || selectedPinyin}
           </span>
         </h1>
         <button
           onClick={() => {
-            setSelectedPinyin(null);
+            router.push("/pinyin");
+            // setSelectedPinyin(null);
           }}
           className={`flex flex-col items-center dark:text-gray-600 hover:dark:text-white transition`}
         >

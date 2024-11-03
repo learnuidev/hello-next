@@ -35,14 +35,3 @@ export const usePinyinChartStore = create(
     }
   )
 );
-
-export const usePinyinChartState = () => {
-  const selectedCharacter = usePinyinChartStore(
-    (state: any) => state.selectedCharacter
-  );
-  const setSelectedCharacter = usePinyinChartStore(
-    (state: any) => state.setSelectedCharacter
-  );
-
-  return [selectedCharacter, setSelectedCharacter];
-};

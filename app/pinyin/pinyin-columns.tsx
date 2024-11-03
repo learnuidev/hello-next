@@ -2,7 +2,7 @@
 import React, { useMemo } from "react";
 import { CloseIcon } from "@/components/ui/icons";
 
-import { usePinyinChartState, usePinyinChartStore } from "./state";
+import { usePinyinChartStore } from "./state";
 
 import {
   ColumnDef,

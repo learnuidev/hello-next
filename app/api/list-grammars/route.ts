@@ -80,6 +80,7 @@ export async function POST(req: Request) {
         creator: userId || "unknown",
         sentenceId: sentenceId || content,
         createdAt,
+        lang: language,
         grammarAnalysis: _grammarAnalysis,
       });
 

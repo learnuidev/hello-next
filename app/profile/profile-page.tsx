@@ -5,10 +5,12 @@ import { ProfileBanner } from "./components/profile-banner";
 import { TimeStudiedStats } from "./components/time-studied-stats";
 import { TotalActiveDaysStats } from "./components/total-active-days-stats";
 import { LifeTimeCharactersStats } from "./components/life-time-characters-stats";
+import { NavBar } from "@/components/navbar";
 
 export const ProfilePage = () => {
   return (
     <main className="bg-white dark:bg-[rgb(9,10,11)]">
+      <NavBar />
       <ProfileBanner />
 
       <section className="flex flex-row justify-center items-center gap-x-16 gap-y-8 mt-16 flex-wrap">

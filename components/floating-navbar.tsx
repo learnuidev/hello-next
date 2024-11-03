@@ -151,7 +151,7 @@ const FloatingNavbarComp = () => {
 };
 export const FloatingNavbar = () => {
   return (
-    <TheDock>
+    <TheDock className="sm:bottom-0 bottom-4">
       <FloatingNavbarComp />
     </TheDock>
   );

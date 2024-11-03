@@ -2,7 +2,7 @@
 import React, { useMemo } from "react";
 import { groupBy } from "ramda";
 
-import { usePinyinChartState, usePinyinChartStore } from "./state";
+import { usePinyinChartStore } from "./state";
 
 import {
   flexRender,
@@ -24,6 +24,7 @@ import { getGroup } from "../(auth)/hmm/get-group";
 import { cn } from "@/lib/utils";
 import { filterComponents } from "../nmm/nmm-utils/filter-components";
 import { getHumanPinyin } from "../nmm/nmm-utils/get-human-pinyin";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const totalCharacters = defaultData
   ?.map((val: any) => Object.values(val))
@@ -84,10 +85,14 @@ export function PinyinTable({
   const [data, setData] = React.useState(() => [...defaultData]);
   const rerender = React.useReducer(() => ({}), {})[1];
   const querySync = useSearchQueryStore((state) => state.query);
+  const router = useRouter();
 
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
-  const [selectedPinyin, setSelectedPinyin] = usePinyinChartState();
+  const searchParams = useSearchParams();
+  const selectedPinyin = searchParams.get("selected-pinyin");
+
+  // const [selectedPinyin, setSelectedPinyin] = usePinyinChartState();
 
   const table = useReactTable({
     data,
@@ -731,7 +736,11 @@ export function PinyinTable({
                           return (
                             <td
                               onClick={() => {
-                                setSelectedPinyin(cell.getValue());
+                                // alert(JSON.stringify(cell.getValue()));
+                                router.push(
+                                  `/pinyin?selected-pinyin=${(cell.getValue() as any)?.value}`
+                                );
+                                // setSelectedPinyin(cell.getValue());
                               }}
                               role="button"
                               key={cell.id}

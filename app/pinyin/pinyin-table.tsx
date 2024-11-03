@@ -20,7 +20,6 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useQuery } from "@tanstack/react-query";
 import { getGroup } from "../(auth)/hmm/get-group";
-// import { legacyData } from "./data";
 import { cn } from "@/lib/utils";
 import { filterComponents } from "../nmm/nmm-utils/filter-components";
 import { getHumanPinyin } from "../nmm/nmm-utils/get-human-pinyin";
@@ -729,19 +728,17 @@ export function PinyinTable({
                           const val = cell.getValue() as any;
                           const char = characterDictionary[val?.value || val];
 
-                          // const comps = filterComponentsExact(
-                          //   components,
-                          //   val?.value
-                          // );
-
                           return (
                             <td
                               onClick={() => {
-                                // alert(JSON.stringify(cell.getValue()));
-                                router.push(
-                                  `/pinyin?selected-pinyin=${(cell.getValue() as any)?.value}`
-                                );
-                                // setSelectedPinyin(cell.getValue());
+                                const cellValue = (cell.getValue() as any)
+                                  ?.value;
+
+                                if (cellValue !== undefined) {
+                                  router.push(
+                                    `/pinyin?selected-pinyin=${(cell.getValue() as any)?.value}`
+                                  );
+                                }
                               }}
                               role="button"
                               key={cell.id}

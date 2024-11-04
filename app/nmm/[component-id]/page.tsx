@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { SelectedCharacter } from "@/components/selected-character";
 import { useParams, usePathname } from "next/navigation";
 import { NMMV2 } from "../v2";
+import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
 
 export default function NomadMethodPage(props: any) {
   const params = useParams() as {
@@ -12,7 +13,9 @@ export default function NomadMethodPage(props: any) {
 
   const routeName = usePathname();
 
-  const componentId = params["component-id"];
+  const componentId = decodeURIComponent(params["component-id"]);
+
+  const { data } = useListComponentVariantsQuery({ hanzi: componentId });
   // return <NMMV2 characterId={decodeURIComponent(params["component-id"])} />;
 
   // return (
@@ -23,9 +26,5 @@ export default function NomadMethodPage(props: any) {
   //   </div>
   // );
 
-  return (
-    <SelectedCharacter
-      characterId={decodeURIComponent(params["component-id"])}
-    />
-  );
+  return <SelectedCharacter characterId={componentId} />;
 }

@@ -2,7 +2,7 @@
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import React, { useEffect } from "react";
-import { Summary } from "../summary";
+import { Summary } from "../summary/summary";
 import { Icons } from "../ui/icons.v2";
 import { GrammarAnalysis } from "../grammar-analysis";
 import { SelectedCharacterProps } from "./select-character.types";

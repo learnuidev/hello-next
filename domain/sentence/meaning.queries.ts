@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
-import { meaningQueryIds } from "./meaning.query-ids";
+
 import { ListMeaningsResponse } from "./meanings.types";
 import { siteConfig } from "@/lib/config";
 
@@ -31,6 +31,8 @@ const listMeanings = async (
   return resp;
 };
 
+export const listMeaningQueryKey = "list-meanings";
+
 export function useListMeaningsQuery(
   params = {} as ListMeaningsParams,
   options = {} as any
@@ -38,7 +40,7 @@ export function useListMeaningsQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery({
-    queryKey: [meaningQueryIds.listMeanings, params.content, params?.lang],
+    queryKey: [listMeaningQueryKey, params.content, params?.lang],
 
     queryFn: async () => {
       const response = await listMeanings(params, {

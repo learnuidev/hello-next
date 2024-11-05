@@ -26,7 +26,6 @@ export function GrammarAnalysis({
   const searchParams = useSearchParams();
   const learnedLang = searchParams.get("lang") || lang;
 
-  console.log("CONTENT ID", contentId);
   const { data: grammarAnalysis, isLoading: isGrammarAnalysisLoading } =
     useListGrammarsQuery(
       {

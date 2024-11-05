@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
-import { meaningQueryIds } from "./meaning.query-ids";
+
 import { ListMeaningsResponse } from "./meanings.types";
 
 // TODO: Move this to .env
@@ -35,7 +35,7 @@ export function useAnalyrizeLyricsQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery({
-    queryKey: [meaningQueryIds.listMeanings, params.lyrics],
+    queryKey: ["analyze-lyrics", params.lyrics],
 
     queryFn: async () => {
       const response = await analyzeLyrics(params, {

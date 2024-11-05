@@ -35,8 +35,6 @@ export function useShortCuts() {
         setMode("yct");
       }
 
-      console.log("EVENT", event);
-
       if (
         event.key === "h" &&
         (event.metaKey || event.ctrlKey) &&

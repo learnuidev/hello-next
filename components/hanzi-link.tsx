@@ -107,9 +107,9 @@ export function HanziLink({
                 : `hover:${color} text-gray-300`
               : selectedComp?.length > 1 || selectedComp?.group
                 ? "dark:text-gray-500 text-gray-200"
-                : lastAnswer?.totalCharacters?.includes(character?.hanzi)
-                  ? "dark:text-yellow-500"
-                  : "dark:text-gray-700 text-gray-200"
+                : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                  //   ? "dark:text-yellow-500"
+                  "dark:text-gray-700 text-gray-200"
         } dark:hover:text-white text-2xl md:text-2xl transition lowercase`}
       >
         {frequency > 0 && (
@@ -139,9 +139,7 @@ export function HanziLink({
                   : learnedChar
                     ? learnedChar?.status === "forgotten"
                       ? "dark:text-gray-900 text-gray-100"
-                      : lastAnswer?.totalCharacters?.includes(character?.hanzi)
-                        ? "text-yellow-500"
-                        : `hover:${color} text-gray-300`
+                      : `hover:${color} text-gray-300`
                     : lastAnswer?.totalCharacters?.includes(character?.hanzi)
                       ? "text-yellow-500"
                       : selectedComp?.length > 1 || selectedComp?.group

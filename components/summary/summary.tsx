@@ -75,7 +75,8 @@ export function Summary({
 
           {isSuperAdmin &&
             Boolean(summary) &&
-            summary !== meaningResponse?.summary && (
+            JSON.stringify(summary) !==
+              JSON.stringify(meaningResponse?.summary) && (
               <button
                 className="my-12"
                 onClick={() => {

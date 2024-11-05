@@ -104,12 +104,12 @@ export function HanziLink({
               learnedChar
               ? learnedChar?.status === "forgotten"
                 ? "dark:text-gray-900 text-gray-100"
-                : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
-                  //   ? "text-rose-500"
-                  `hover:${color} text-gray-300`
-              : selectedComp?.length > 1 || selectedComp?.group
-                ? "dark:text-gray-500 text-gray-200"
-                : "dark:text-gray-700 text-gray-200"
+                : `hover:${color} text-gray-300`
+              : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                ? "dark:text-yellow-500"
+                : selectedComp?.length > 1 || selectedComp?.group
+                  ? "dark:text-gray-500 text-gray-200"
+                  : "dark:text-gray-700 text-gray-200"
         } dark:hover:text-white text-2xl md:text-2xl transition lowercase`}
       >
         {frequency > 0 && (
@@ -124,22 +124,29 @@ export function HanziLink({
           const color = calculateColor({
             tone: learnedChar?.tone_level,
           });
+
+          if (val === "什") {
+            // alert(val);
+            console.log("LEARNED CHAR", learnedChar);
+          }
+
           return (
             <span
               key={`${val}-${idx}`}
               className={`${
                 brightMode || isCharactersLoading || isComponentsLoading
                   ? "dark:text-gray-300 text-gray-700"
-                  : // learnedCharacters.includes(prop?.hanzi)
-                    learnedChar
+                  : learnedChar
                     ? learnedChar?.status === "forgotten"
                       ? "dark:text-gray-900 text-gray-100"
-                      : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
-                        //   ? "text-rose-500"
-                        `hover:${color} text-gray-300`
-                    : selectedComp?.length > 1 || selectedComp?.group
-                      ? "dark:text-gray-500 text-gray-200"
-                      : "dark:text-gray-700 text-gray-200"
+                      : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                        ? "text-yellow-500"
+                        : `hover:${color} text-gray-300`
+                    : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                      ? "text-yellow-500"
+                      : selectedComp?.length > 1 || selectedComp?.group
+                        ? "dark:text-gray-500 text-gray-200"
+                        : "dark:text-gray-700 text-gray-200"
               } dark:hover:text-white text-2xl md:text-2xl transition lowercase`}
             >
               {val}

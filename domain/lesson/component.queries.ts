@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 // TODO: Move this to .env
 const url = `${siteConfig.apiUrl}/v1/list-components`;
@@ -20,7 +21,7 @@ interface IComponent {
 }
 
 const listComponents = async (
-  options: { journeyId?: string },
+  options: { journeyId?: string; lang?: string },
   opts: {
     Authorization: string;
   }
@@ -32,6 +33,7 @@ const listComponents = async (
       Authorization: `Bearer ${opts?.Authorization}`,
     },
     body: JSON.stringify({
+      lang: options?.lang,
       journeyId: options?.journeyId,
     }),
   });
@@ -46,18 +48,23 @@ const listComponents = async (
 function useListComponentsQuery(
   params = {} as {
     journeyId?: string;
+    lang?: string;
   },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
+  const currentLang = useGetCurrentLang();
 
   return useQuery(
     [queryIds.listComponents],
     async () => {
       // if (options.query) {
-      const response = await listComponents(params, {
-        Authorization: authUser?.jwt,
-      });
+      const response = await listComponents(
+        { ...params, lang: currentLang },
+        {
+          Authorization: authUser?.jwt,
+        }
+      );
 
       return response;
     },

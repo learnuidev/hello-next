@@ -73,7 +73,7 @@ export const belts = [
     fill: "dark:bg-gray-500 bg-gray-600",
     unselected: "dark:bg-slate-800 bg-gray-400",
     color: "text-gray-500",
-    maxCharacterLevel: 3050,
+    maxCharacterLevel: 30500,
     minCharacterLevel: 2200,
     level: "black",
     hskLevel: 9,

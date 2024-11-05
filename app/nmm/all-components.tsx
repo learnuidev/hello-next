@@ -79,7 +79,7 @@ export function AllComponents() {
   return (
     <NmmListContainer>
       {filteredComponents
-        ?.filter((comp: any) => comp?.level < 3501)
+        // ?.filter((comp: any) => comp?.level < 3501)
         .map((prop: any, idx: number) => {
           return (
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />

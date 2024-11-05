@@ -21,8 +21,8 @@ import { useLearningModeStore } from "@/components/settings-dialog/learning-mode
 import { useHskViewStore } from "./hsk/state";
 
 import { useListContentsQuery } from "@/domain/content/content.queries";
-import { useGetReviewParams } from "../review/use-get-review-params";
 import { FilterSelect } from "./filter-select";
+import { getNmmSearchParamsUrl } from "./get-nmm-params-url";
 import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
 import { useGetNmmParams } from "./use-get-nmm-params";
 
@@ -39,7 +39,7 @@ export function NomadMethodNavbar() {
   const viewType = useSearchQueryStore((state) => state.type);
   const setViewType = useSearchQueryStore((state) => state.setType);
 
-  const { level } = useGetReviewParams();
+  const { tab, viewMode, level } = useGetNmmParams();
 
   const hskLevel = level;
 
@@ -81,8 +81,6 @@ export function NomadMethodNavbar() {
     ],
     [contents]
   );
-
-  const { tab, viewMode } = useGetNmmParams();
 
   const coreTitles = [
     { title: "Core", id: "core" },
@@ -145,7 +143,10 @@ export function NomadMethodNavbar() {
               value={tab}
               items={coreTitles}
               onValueChange={(tab) => {
-                router.push(`/nmm?tab=${tab}&view-mode=${viewMode}`);
+                router.push(
+                  `/nmm?${getNmmSearchParamsUrl({ level: level, tab })}`
+                );
+                // router.push(`/nmm?tab=${tab}&view-mode=${viewMode}`);
               }}
             />
           )}
@@ -157,7 +158,10 @@ export function NomadMethodNavbar() {
               items={viewModes}
               onValueChange={(viewMode) => {
                 setViewType(viewMode);
-                router.push(`/nmm?tab=${tab}&view-mode=${viewMode}`);
+                router.push(
+                  `/nmm?${getNmmSearchParamsUrl({ level: level, tab, viewMode })}`
+                );
+                // router.push(`/nmm?tab=${tab}&view-mode=${viewMode}`);
               }}
             />
           )}
@@ -272,8 +276,9 @@ export function NomadMethodNavbar() {
                       <button
                         key={belt?.fill}
                         onClick={() => {
-                          // alert("TODO");
-                          router.push(`/nmm?level=${belt?.hskLevel}`);
+                          router.push(
+                            `/nmm?${getNmmSearchParamsUrl({ level: belt?.hskLevel, tab, viewMode })}`
+                          );
                           setSelectedBelt(belt as any);
                         }}
                         className={`${
@@ -293,7 +298,10 @@ export function NomadMethodNavbar() {
                     <button
                       key={belt?.fill}
                       onClick={() => {
-                        router.push(`/nmm?level=${belt?.hskLevel}`);
+                        router.push(
+                          `/nmm?${getNmmSearchParamsUrl({ level: belt?.hskLevel, tab, viewMode })}`
+                        );
+
                         setSelectedBelt(belt as any);
                       }}
                       className={`${
@@ -312,7 +320,9 @@ export function NomadMethodNavbar() {
                     <button
                       key={belt?.fill}
                       onClick={() => {
-                        router.push(`/nmm?level=${belt?.hskLevel}`);
+                        router.push(
+                          `/nmm?${getNmmSearchParamsUrl({ level: belt?.hskLevel, tab, viewMode })}`
+                        );
                         setSelectedBelt(belt as any);
                       }}
                       className={`${

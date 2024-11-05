@@ -29,6 +29,14 @@ import { calculateColor } from "./nmm-utils/calculate-color";
 import { filterComponents } from "./nmm-utils/filter-components";
 import { NomadMethodTabsContainer } from "./nomad-method-tabs-container";
 import { YctView } from "./yct/yct-view";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { HanziLink } from "@/components/hanzi-link";
+import { PreviewComponent } from "./preview-component";
 
 export function NomadMethodMandarin() {
   const selectedBelt = useBeltStore((x) => x?.selectedBelt);
@@ -135,6 +143,19 @@ export function NomadMethodMandarin() {
                     const color = calculateColor({
                       tone: selectedComp?.tone_level,
                     });
+
+                    return (
+                      <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
+                        <Tooltip>
+                          <TooltipTrigger className="hover:scale-125 transition">
+                            <HanziLink character={prop} />
+                          </TooltipTrigger>
+                          <TooltipContent className="bg-black border-gray-800">
+                            <PreviewComponent component={prop} />
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    );
 
                     return (
                       <div key={`${prop.hanzi}-chars-${idx}`}>

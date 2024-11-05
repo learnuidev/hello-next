@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { NomadMethodNavbar } from "./nomad-method-navbar";
 import { useGetNmmParams } from "./use-get-nmm-params";
+import { getNmmSearchParamsUrl } from "./get-nmm-params-url";
 
 export function NomadMethodTabsContainer({
   children,
@@ -13,13 +14,15 @@ export function NomadMethodTabsContainer({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-
-  const { tab, viewMode } = useGetNmmParams();
+  const { tab, viewMode, level } = useGetNmmParams();
 
   return (
     <Tabs
-      onValueChange={(tab) => {
-        router.push(`/nmm?tab=${tab}&view-mode=${viewMode}`);
+      onValueChange={(currentTab) => {
+        router.push(
+          `/nmm?${getNmmSearchParamsUrl({ level: level, tab: currentTab, viewMode })}`
+        );
+        // router.push(`/nmm?tab=${tab}&view-mode=${viewMode}`);
       }}
       value={tab}
       defaultValue={tab}

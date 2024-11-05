@@ -66,7 +66,7 @@ export function AllComponents() {
   const slicedComponents = queryStr
     ? comps
     : (isComponentsLoading ? chineseCharacters : components)?.slice(
-        0,
+        selectedBelt?.minCharacterLevel,
         selectedBelt?.maxCharacterLevel
       );
 
@@ -79,7 +79,7 @@ export function AllComponents() {
   return (
     <NmmListContainer>
       {filteredComponents
-        // ?.filter((comp: any) => comp?.level < 3501)
+        ?.filter((comp: any) => comp?.hanzi?.length === 1)
         .map((prop: any, idx: number) => {
           return (
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />

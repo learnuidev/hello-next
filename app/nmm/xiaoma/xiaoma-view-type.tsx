@@ -6,17 +6,18 @@ import { HanziLink } from "@/components/hanzi-link";
 
 import { NmmListContainer } from "@/components/nmm-list-container";
 import { NmmListContainerSentence } from "@/components/nmm-list-container-sentence";
-import { useBeltStore } from "@/components/use-belt-store";
+
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { chineseCharacters } from "@/langs/chinese /characters";
 import { useGetXiaoma } from "./use-get-xiaoma";
+import { useGetSelectedBelt } from "../use-get-selected-belt";
 
 export function XiaomaViewType({
   variant,
 }: {
   variant?: "core" | "needs_review" | "all";
 }) {
-  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
+  const selectedBelt = useGetSelectedBelt();
 
   const { data } = useGetXiaoma({ variant, selectedBelt });
 

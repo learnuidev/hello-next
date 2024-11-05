@@ -1,23 +1,22 @@
 "use client";
 
-import React from "react";
 import { useState } from "react";
 
-import { useListComponents } from "@/domain/lesson/component.queries";
-import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
-import Link from "next/link";
-import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
-import { Icons } from "@/components/ui/icons.v2";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
-import { reviewCounterStore } from "./review-counter-store";
-import { cn } from "@/lib/utils";
-import { useUnreviwedCharacters } from "./use-unreviewed-characters";
-import { useGetReviewParams } from "./use-get-review-params";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
-import { useBeltStore } from "@/components/use-belt-store";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { Icons } from "@/components/ui/icons.v2";
+import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
+import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { reviewCounterStore } from "./review-counter-store";
+import { useGetReviewParams } from "./use-get-review-params";
+import { useUnreviwedCharacters } from "./use-unreviewed-characters";
+
 import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -66,8 +65,6 @@ export function ReviewMode(props: any) {
   } = useGetReviewParams();
 
   const mode = useLearningModeStore((state) => state.mode);
-
-  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
 
   const reviewCounts = reviewCounterStore((state: any) => state?.reviewCounts);
   const setReviewCount = reviewCounterStore(

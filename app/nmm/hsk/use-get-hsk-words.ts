@@ -5,14 +5,15 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useMemo } from "react";
 
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
-import { useBeltStore } from "@/components/use-belt-store";
+
 import { resolveHsk } from "./hsk-utils/resolve-hsk";
 import { useHskViewStore } from "./state";
+import { useGetSelectedBelt } from "../use-get-selected-belt";
 
 export const useGetHskWords = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
 
-  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
+  const selectedBelt = useGetSelectedBelt();
 
   const hskView = (useHskViewStore((state) => state.view) as any)?.[
     selectedBelt?.hskLevel

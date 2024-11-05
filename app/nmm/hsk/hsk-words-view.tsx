@@ -7,14 +7,15 @@ import { useMemo } from "react";
 
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { NmmListContainer } from "@/components/nmm-list-container";
-import { useBeltStore } from "@/components/use-belt-store";
+
 import { resolveHsk } from "./hsk-utils/resolve-hsk";
 import { useHskViewStore } from "./state";
+import { useGetSelectedBelt } from "../use-get-selected-belt";
 
 export const HskWordsView = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
 
-  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
+  const selectedBelt = useGetSelectedBelt();
 
   const hskView = (useHskViewStore((state) => state.view) as any)?.[
     selectedBelt?.hskLevel

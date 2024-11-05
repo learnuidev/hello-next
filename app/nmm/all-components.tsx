@@ -1,13 +1,12 @@
 "use client";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { chineseCharacters } from "@/langs/chinese /characters";
 
-import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useBeltStore } from "@/components/use-belt-store";
+import { useListComponents } from "@/domain/lesson/component.queries";
 
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -15,11 +14,12 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useSearchQueryStore } from "@/components/search/state";
 
 import { HanziLink } from "@/components/hanzi-link";
-import { filterComponents } from "./nmm-utils/filter-components";
 import { NmmListContainer } from "@/components/nmm-list-container";
+import { filterComponents } from "./nmm-utils/filter-components";
+import { useGetSelectedBelt } from "./use-get-selected-belt";
 
 export function AllComponents() {
-  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
+  const selectedBelt = useGetSelectedBelt();
   const searchParams = useSearchParams();
   const searchQueryParams = searchParams.get("query") || "";
   const routeName = usePathname();

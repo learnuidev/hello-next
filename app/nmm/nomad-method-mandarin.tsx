@@ -5,7 +5,6 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { TabsContent } from "@/components/ui/tabs";
 
-import { useBeltStore } from "@/components/use-belt-store";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
@@ -22,28 +21,29 @@ import { useHskViewStore } from "./hsk/state";
 import { NmmCoreComponents } from "./nmm-core-components";
 import { XiaomaView } from "./xiaoma/xiaoma-view";
 
+import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainer } from "@/components/nmm-list-container";
-import { ContentView } from "./content/content-view";
-import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
-import { calculateColor } from "./nmm-utils/calculate-color";
-import { filterComponents } from "./nmm-utils/filter-components";
-import { NomadMethodTabsContainer } from "./nomad-method-tabs-container";
-import { YctView } from "./yct/yct-view";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { HanziLink } from "@/components/hanzi-link";
+import { ContentView } from "./content/content-view";
+import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
+import { calculateColor } from "./nmm-utils/calculate-color";
+import { filterComponents } from "./nmm-utils/filter-components";
+import { NomadMethodTabsContainer } from "./nomad-method-tabs-container";
 import { PreviewComponent } from "./preview-component";
+import { useGetSelectedBelt } from "./use-get-selected-belt";
+import { YctView } from "./yct/yct-view";
 
 export function NomadMethodMandarin() {
-  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
+  const selectedBelt = useGetSelectedBelt();
   const searchParams = useSearchParams();
   const searchQueryParams = searchParams.get("query") || "";
   const routeName = usePathname();
-  const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
+
   const queryStr = useSearchQueryStore((state) => state.query);
   const setQuery = useSearchQueryStore((state) => state.setQuery);
   const { data: hskWords } = useListHSKWordsQuery();

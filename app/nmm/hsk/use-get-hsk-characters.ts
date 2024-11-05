@@ -7,7 +7,6 @@ import { useMemo } from "react";
 
 import { filterComponents } from "../nmm-utils/filter-components";
 
-import { useBeltStore } from "@/components/use-belt-store";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
@@ -16,6 +15,7 @@ import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode
 import { filterNonHanYu } from "../nmm-utils/filter-non-hanyu";
 import { resolveHsk } from "./hsk-utils/resolve-hsk";
 import { useHskViewStore } from "./state";
+import { useGetSelectedBelt } from "../use-get-selected-belt";
 
 export const useGetHskCharacters = ({
   variant,
@@ -25,7 +25,7 @@ export const useGetHskCharacters = ({
   getAll?: boolean;
 }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
-  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
+  const selectedBelt = useGetSelectedBelt();
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersQuery();
   const { data: components, isLoading: isComponentsLoading } =

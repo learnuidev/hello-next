@@ -6,9 +6,9 @@ import { HanziLink } from "@/components/hanzi-link";
 
 import { NmmListContainer } from "@/components/nmm-list-container";
 import { NmmListContainerSentence } from "@/components/nmm-list-container-sentence";
-import { useBeltStore } from "@/components/use-belt-store";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { chineseCharacters } from "@/langs/chinese /characters";
+import { useGetSelectedBelt } from "../use-get-selected-belt";
 import { useGetContent } from "./use-get-content";
 
 export function ContentViewType({
@@ -18,7 +18,7 @@ export function ContentViewType({
   variant?: "core" | "needs_review" | "all";
   contentId: string;
 }) {
-  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
+  const selectedBelt = useGetSelectedBelt();
 
   const { data } = useGetContent({ variant, selectedBelt, contentId });
 

@@ -1,40 +1,38 @@
 "use client";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
-import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useBeltStore } from "@/components/use-belt-store";
+import { useListComponents } from "@/domain/lesson/component.queries";
 
-import Link from "next/link";
-import { useAddHistoryMutation } from "@/domain/history/history.mutations";
-import { usePathname, useSearchParams } from "next/navigation";
+import { HanziLink } from "@/components/hanzi-link";
+import { NmmListContainer } from "@/components/nmm-list-container";
+import { useSearchQueryStore } from "@/components/search/state";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { PreviewComponent } from "./preview-component";
-import { useSearchQueryStore } from "@/components/search/state";
-import { useQuery } from "@tanstack/react-query";
-import { chineseCharacters } from "@/langs/chinese /characters";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
-import { HanziLink } from "@/components/hanzi-link";
+import { useAddHistoryMutation } from "@/domain/history/history.mutations";
+import { chineseCharacters } from "@/langs/chinese /characters";
+import { usePathname, useSearchParams } from "next/navigation";
 import { filterComponents } from "./nmm-utils/filter-components";
-import { calculateColor } from "./nmm-utils/calculate-color";
-import { NmmListContainer } from "@/components/nmm-list-container";
-import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { Nothing } from "./nothing";
+import { PreviewComponent } from "./preview-component";
+import { useGetSelectedBelt } from "./use-get-selected-belt";
 
 export function NmmCoreComponents() {
-  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
   const searchParams = useSearchParams();
   const searchQueryParams = searchParams.get("query") || "";
   const routeName = usePathname();
   const queryStr = useSearchQueryStore((state) => state.query);
   const setQuery = useSearchQueryStore((state) => state.setQuery);
+
+  const selectedBelt = useGetSelectedBelt();
 
   const addHistoryMutation = useAddHistoryMutation();
 

@@ -3,7 +3,6 @@ import { useMemo } from "react";
 
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { useBeltStore } from "@/components/use-belt-store";
 import { belts } from "./utils";
 
 import { useRouter, useSearchParams } from "next/navigation";
@@ -25,12 +24,12 @@ import { FilterSelect } from "./filter-select";
 import { getNmmSearchParamsUrl } from "./get-nmm-params-url";
 import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
 import { useGetNmmParams } from "./use-get-nmm-params";
+import { useGetSelectedBelt } from "./use-get-selected-belt";
 
 export function NomadMethodNavbar() {
-  const selectedBelt = useBeltStore((x) => x?.selectedBelt);
+  const selectedBelt = useGetSelectedBelt();
   const searchParams = useSearchParams();
 
-  const setSelectedBelt = useBeltStore((x) => x?.setSelectedBelt);
   const queryStr = useSearchQueryStore((state) => state.query);
 
   const { data: hskWords } = useListHSKWordsQuery();
@@ -190,7 +189,6 @@ export function NomadMethodNavbar() {
               const beltIdInt = parseInt(beltId);
               const belt = belts?.find((belt) => belt.hskLevel === beltIdInt);
               router.push(`/nmm?level=${belt?.hskLevel}`);
-              setSelectedBelt(belt);
             }}
           />
         </div>
@@ -279,7 +277,6 @@ export function NomadMethodNavbar() {
                           router.push(
                             `/nmm?${getNmmSearchParamsUrl({ level: belt?.hskLevel, tab, viewMode })}`
                           );
-                          setSelectedBelt(belt as any);
                         }}
                         className={`${
                           belt?.hskLevel === hskLevel
@@ -301,8 +298,6 @@ export function NomadMethodNavbar() {
                         router.push(
                           `/nmm?${getNmmSearchParamsUrl({ level: belt?.hskLevel, tab, viewMode })}`
                         );
-
-                        setSelectedBelt(belt as any);
                       }}
                       className={`${
                         belt?.hskLevel === hskLevel
@@ -323,7 +318,6 @@ export function NomadMethodNavbar() {
                         router.push(
                           `/nmm?${getNmmSearchParamsUrl({ level: belt?.hskLevel, tab, viewMode })}`
                         );
-                        setSelectedBelt(belt as any);
                       }}
                       className={`${
                         belt?.hskLevel === hskLevel

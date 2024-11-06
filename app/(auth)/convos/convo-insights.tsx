@@ -6,7 +6,7 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useRouter } from "next/navigation";
 
 import { useSelectedCharacter } from "./use-selected-character";
-import { SelectedCharacter } from "@/components/selected-character-container";
+import { SelectedCharacterContainer } from "@/components/selected-character-container";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
@@ -217,7 +217,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
   }
 
   return selectedChar ? (
-    <SelectedCharacter characterId={selectedChar} />
+    <SelectedCharacterContainer characterId={selectedChar} />
   ) : (
     <div className="w-full px-4 my-4 md:my-8">
       <div>

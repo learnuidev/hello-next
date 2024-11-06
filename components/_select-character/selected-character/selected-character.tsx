@@ -11,27 +11,13 @@ import { RelatedHskWords } from "./related-hsk-words";
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
 import { PinyinView } from "../pinyin-view";
 import { StoryView } from "../story-view";
-import { CharacterItemView } from "./character-item-view";
+import { CharacterOverviewView } from "./character-overview-view";
 import { HskSentenceView } from "./hsk-sentences-view";
 import { HskSuperComponentsWordView } from "./hsk-super-components-view";
 import { SimilarCharactersView } from "./similar-characters-view";
 
 export const SelectedCharacter = (props: SelectedCharacterProps) => {
-  const {
-    uniqueAnswerIds,
-    answerMap,
-    allContents,
-    allSteps,
-    components,
-    selectedComp,
-    selectedChar,
-    routeName,
-    lang,
-    view,
-    sentences,
-    characterId,
-    selectedComp2,
-  } = props;
+  const { selectedComp, lang, view, characterId, selectedComp2 } = props;
 
   const offlineCharacter = chineseCharacters?.find(
     (char) => char?.hanzi === characterId || char?.input === characterId
@@ -77,6 +63,6 @@ export const SelectedCharacter = (props: SelectedCharacterProps) => {
       return <SimilarCharactersView componentId={characterId} />;
 
     default:
-      return <CharacterItemView {...props} />;
+      return <CharacterOverviewView {...props} />;
   }
 };

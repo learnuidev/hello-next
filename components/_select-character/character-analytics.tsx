@@ -6,7 +6,7 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useRouter } from "next/navigation";
 
 import { useSelectedCharacter } from "../../app/(auth)/convos/use-selected-character";
-import { SelectedCharacter } from "@/components/selected-character-container";
+import { SelectedCharacterContainer } from "@/components/selected-character-container";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
@@ -100,7 +100,7 @@ export function CharacterAnalytics({
   }
 
   return selectedChar ? (
-    <SelectedCharacter characterId={selectedChar} />
+    <SelectedCharacterContainer characterId={selectedChar} />
   ) : (
     <div className="w-full px-4 my-4 md:my-8">
       <div>

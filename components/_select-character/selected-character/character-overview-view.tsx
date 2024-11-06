@@ -16,7 +16,7 @@ import { SubComponentsView } from "../subcomponents-view";
 import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
 import { ZoomedCharacter } from "./zoomed-character";
 
-export const CharacterItemView = (props: SelectedCharacterProps) => {
+export const CharacterOverviewView = (props: SelectedCharacterProps) => {
   const {
     uniqueAnswerIds,
     answerMap,

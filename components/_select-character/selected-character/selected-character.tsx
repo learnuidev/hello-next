@@ -1,22 +1,22 @@
 "use client";
 
-import { SelectedCharacterProps } from "./../select-character.types";
+import { SelectedCharacterProps } from "../select-character.types";
 
-import { RelatedWords } from "./../related-words";
+import { RelatedWords } from "../related-words";
 
 import { chineseCharacters } from "@/langs/chinese /characters";
 
 import { RelatedHskWords } from "./related-hsk-words";
 
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
-import { PinyinView } from "./../pinyin-view";
-import { StoryView } from "./../story-view";
+import { PinyinView } from "../pinyin-view";
+import { StoryView } from "../story-view";
 import { CharacterItemView } from "./character-item-view";
 import { HskSentenceView } from "./hsk-sentences-view";
 import { HskSuperComponentsWordView } from "./hsk-super-components-view";
 import { SimilarCharactersView } from "./similar-characters-view";
 
-export const CharacterItem = (props: SelectedCharacterProps) => {
+export const SelectedCharacter = (props: SelectedCharacterProps) => {
   const {
     uniqueAnswerIds,
     answerMap,

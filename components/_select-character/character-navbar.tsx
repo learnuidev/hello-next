@@ -9,7 +9,7 @@ import { Icons } from "../ui/icons.v2";
 import { useListSuperComponentsQuery } from "@/domain/component/super-component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { cn } from "@/lib/utils";
-import { useGetSimilarLookingCharacters } from "./character-item/use-get-similar-looking-characters";
+import { useGetSimilarLookingCharacters } from "./selected-character/use-get-similar-looking-characters";
 import { SelectedCharacterStoryButton } from "./selected-character-story-button";
 import { useRelatedHskWordsByCharacter } from "./use-filter-related-hsk-words-by-character";
 import { useSlicedRelatedSentencesByCharacter } from "./use-sliced-related-sentences-by-character";

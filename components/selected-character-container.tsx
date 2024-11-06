@@ -10,10 +10,14 @@ import { useSelectedCharacterData } from "./use-selected-character";
 import { FloatingCharacterNavbar } from "./floating-character-navbar";
 
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
-import { CharacterItem } from "./_select-character/character-item/character-item";
+import { SelectedCharacter } from "./_select-character/selected-character/selected-character";
 import { LanguagesList, listLanguagesShortCuts } from "./languages-list";
 
-export function SelectedCharacter({ characterId }: { characterId: string }) {
+export function SelectedCharacterContainer({
+  characterId,
+}: {
+  characterId: string;
+}) {
   const { data } = useSelectedCharacterData({ characterId });
 
   const searchParams = useSearchParams();
@@ -44,7 +48,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       return <LanguagesList characterId={characterId} />;
     }
 
-    return <CharacterItem {...props} />;
+    return <SelectedCharacter {...props} />;
   };
 
   return (

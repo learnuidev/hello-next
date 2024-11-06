@@ -1,6 +1,6 @@
 "use client";
 
-import { SelectedCharacterProps } from "./../select-character.types";
+import { SelectedCharacterProps } from "../select-character.types";
 
 import { useShowsStore } from "../../word-item";
 
@@ -11,8 +11,8 @@ import { usePaginationStore } from "@/stores/use-pagination-store";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 
 import { useBrightModeStore } from "../../settings-dialog/use-bright-mode-store";
-import { useRelatedHskWordsByCharacter } from "./../use-filter-related-hsk-words-by-character";
-import { useSlicedRelatedSentencesByCharacter } from "./../use-sliced-related-sentences-by-character";
+import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
+import { useSlicedRelatedSentencesByCharacter } from "../use-sliced-related-sentences-by-character";
 
 export const HskSentenceView = (props: SelectedCharacterProps) => {
   const {

@@ -6,7 +6,7 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useRouter } from "next/navigation";
 
 import { useSelectedCharacter } from "./use-selected-character";
-import { SelectedCharacter } from "@/components/selected-character";
+import { SelectedCharacter } from "@/components/selected-character-container";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";

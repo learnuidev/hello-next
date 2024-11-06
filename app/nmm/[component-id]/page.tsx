@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 
-import { SelectedCharacter } from "@/components/selected-character";
+import { SelectedCharacter } from "@/components/selected-character-container";
 import { useParams, usePathname } from "next/navigation";
 import { NMMV2 } from "../v2";
 import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";

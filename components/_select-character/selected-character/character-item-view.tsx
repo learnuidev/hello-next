@@ -4,16 +4,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { GrammarAnalysis } from "../../grammar-analysis";
 import { Summary } from "../../summary/summary";
 import { Icons } from "../../ui/icons.v2";
-import { CharacterSentences } from "./../character-sentences";
-import { SelectedCharacterProps } from "./../select-character.types";
+import { CharacterSentences } from "../character-sentences";
+import { SelectedCharacterProps } from "../select-character.types";
 
 import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
 import { chineseCharacters } from "@/langs/chinese /characters";
-import { AddAudioButton } from "./../add-audio-button";
-import { AudioComponent } from "./../audio-component";
-import { CharacterTitle } from "./../character-title";
-import { SubComponentsView } from "./../subcomponents-view";
-import { useRelatedHskWordsByCharacter } from "./../use-filter-related-hsk-words-by-character";
+import { AddAudioButton } from "../add-audio-button";
+import { AudioComponent } from "../audio-component";
+import { CharacterTitle } from "../character-title";
+import { SubComponentsView } from "../subcomponents-view";
+import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
 import { ZoomedCharacter } from "./zoomed-character";
 
 export const CharacterItemView = (props: SelectedCharacterProps) => {

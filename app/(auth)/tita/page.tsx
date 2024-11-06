@@ -15,53 +15,50 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { narakeetLangs } from "@/libs/narakeet/narakeet-langs";
-import { listVoices } from "@/libs/narakeet/narakeet";
-import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
-import { useTitaStore } from "./use-tita-store";
+import { narakeetLangs } from "@/libs/narakeet/narakeet-langs";
+import { useQuery } from "@tanstack/react-query";
 import useSound from "use-sound";
-
-const useListNarakeetVoicesQuery = ({ lang }: { lang: string }) => {
-  const { data: authUser } = useCurrentAuthUser({});
-
-  return useQuery({
-    queryKey: ["list-narakeet-voices", authUser?.jwt, lang],
-    queryFn: async () => {
-      const voices = await fetch("/api/list-narakeet-voices", {
-        method: "POST",
-
-        body: JSON.stringify({
-          lang,
-        }),
-
-        headers: {
-          Authorization: `${authUser?.jwt}`,
-        },
-      });
-
-      return voices.json();
-    },
-  });
-};
+import { useTitaStore } from "./use-tita-store";
+import { useListNarakeetVoicesQuery } from "./use-list-narakeet-voices-query";
+import { useState } from "react";
+import { NarakeetVoicesList } from "./narakeet-voices-list";
 
 const PlayVoice = ({ voice }: { voice: string }) => {
+  // const audioUrl = `https://www.narakeet.com/samples/voices/yifei.mp3`;
+
+  const [isPlaying, setIsPlaying] = useState(false);
+
   const audioUrl = `https://www.narakeet.com/samples/voices/${voice}.mp3`;
 
-  const [play, { stop, isPlaying }] = useSound(audioUrl) as any;
+  console.log("AUDIO URL", audioUrl);
+
+  const [play, { stop, duration, audio }] = useSound(audioUrl) as any;
+  // console.log("PROPS", props);
+  // const [play, { stop }] = props;
+
+  console.log("DURATION", duration);
   return (
     <button
       className="px-2"
       onClick={() => {
-        play();
+        if (!isPlaying) {
+          setIsPlaying(true);
+          play();
+        } else {
+          setIsPlaying(false);
+          stop();
+        }
       }}
     >
-      <Icons.play className="text-2xl" />
+      {isPlaying ? (
+        <Icons.pause className="text-2xl" />
+      ) : (
+        <Icons.play className="text-2xl" />
+      )}
     </button>
   );
 };
@@ -91,8 +88,7 @@ export default function Tita() {
 
   const voice =
     voices?.find((voice: any) => voice?.name === voiceItem)?.name ||
-    voices?.[0]?.name ||
-    "loading...";
+    voices?.[0]?.name;
 
   return (
     <div>
@@ -173,38 +169,7 @@ export default function Tita() {
               </SelectGroup>
             </SelectContent>
           </Select>
-          {voicesList?.length > 0 ? (
-            <Select value={voice} onValueChange={handleVoiceChange}>
-              <SelectTrigger className="w-[320px] text-gray-400 hover:text-white transition">
-                <SelectValue placeholder="Voice" />
-              </SelectTrigger>
-              <SelectContent className="bg-black">
-                <SelectGroup>
-                  {voicesList?.map((feature: any) => {
-                    return (
-                      <SelectItem
-                        className=""
-                        key={feature.id}
-                        value={feature.id}
-                      >
-                        {feature.label}
-                      </SelectItem>
-                    );
-
-                    // return (
-                    //   <CustomSelectItem key={feature.id} id={feature.id}>
-                    //     {feature.label}
-                    //   </CustomSelectItem>
-                    // );
-                  })}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          ) : (
-            <div className="w-[320px] text-center"> Loading ...</div>
-          )}
-
-          {voice && <PlayVoice voice={voice} />}
+          <NarakeetVoicesList />
         </section>
 
         <section className="flex justify-center">

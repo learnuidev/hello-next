@@ -2,7 +2,7 @@
 
 import { SelectedCharacterProps } from "../select-character.types";
 
-import { AddAudioButton } from "../add-audio-button";
+import { AddAudioButtons } from "./add-audio-buttons";
 import { AudioComponent } from "../audio-component";
 
 export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
@@ -20,7 +20,7 @@ export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
               currentPhrase={selectedComp2}
             />
           ) : (
-            <AddAudioButton
+            <AddAudioButtons
               key={JSON.stringify(selectedComp2)}
               currentPhrase={selectedComp2}
             />

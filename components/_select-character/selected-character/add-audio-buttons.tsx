@@ -1,4 +1,4 @@
-import { Icons } from "../ui/icons.v2";
+import { Icons } from "../../ui/icons.v2";
 
 import { useState } from "react";
 import { getUploadUrl } from "@/domain/asset/asset.api";
@@ -49,7 +49,7 @@ export function useUpdateComponentMutation(options = {} as any) {
   );
 }
 
-export const AddAudioButton = (props: any) => {
+export const AddAudioButtons = (props: any) => {
   const generateAudioMutation = () => {
     alert("generate audio");
   };

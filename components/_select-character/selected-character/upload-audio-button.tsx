@@ -1,14 +1,13 @@
 import { Icons } from "../../ui/icons.v2";
 
-import { useState } from "react";
 import { getUploadUrl } from "@/domain/asset/asset.api";
-import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
-import Axios from "axios";
 import { useAddUserAssetMutation } from "@/domain/asset/asset.mutation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { siteConfig } from "@/lib/config";
+import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
+import { IComponent } from "@/domain/lesson/component.queries";
 import { queryIds } from "@/domain/lesson/queryIds";
-import { GenerateAudioDialog } from "./generate-audio-dialog/generate-audio-dialog";
+import { siteConfig } from "@/lib/config";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Axios from "axios";
 
 const updateComponent = async (
   params: any,
@@ -50,7 +49,7 @@ export function useUpdateComponentMutation(options = {} as any) {
   );
 }
 
-export const UploadAudioButton = (props: any) => {
+export const UploadAudioButton = (props: { currentPhrase: IComponent }) => {
   function getFileExtension(file: any) {
     return file.name.split(".").pop().toLowerCase();
   }

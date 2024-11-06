@@ -4,6 +4,7 @@ import { SelectedCharacterProps } from "../select-character.types";
 
 import { AddAudioButtons } from "./add-audio-buttons";
 import { AudioComponent } from "../audio-component";
+import { IComponent } from "@/domain/lesson/component.queries";
 
 export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
   const { selectedComp2 } = props;
@@ -22,7 +23,7 @@ export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
           ) : (
             <AddAudioButtons
               key={JSON.stringify(selectedComp2)}
-              currentPhrase={selectedComp2}
+              currentPhrase={selectedComp2 as IComponent}
             />
           )
         ) : null}

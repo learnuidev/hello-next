@@ -39,3 +39,23 @@ export const startGeneratingAudio = (
       return resp;
     });
 };
+
+export interface IGetAudioResourceParams {
+  statusUrl: string;
+}
+export interface IGetAudioResourceResponse {
+  percent: number;
+  finished: boolean;
+  succeeded: boolean;
+  message: string;
+  result: string;
+  durationInSeconds: number;
+}
+
+export const getAudioResource = (params: IGetAudioResourceParams) => {
+  return narakeet
+    .getAudioResource(params)
+    .then((resp: IGetAudioResourceResponse) => {
+      return resp;
+    });
+};

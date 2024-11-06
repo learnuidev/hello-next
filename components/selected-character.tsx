@@ -1,19 +1,17 @@
 "use client";
 
-import React from "react";
-
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { NomadMethod } from "@/app/nmm/nomad-method";
 
 import { HeaderView } from "./_select-character/selected-character-header";
-import { CharacterViewType } from "./_select-character/character-view-type";
 import { useSelectedCharacterData } from "./use-selected-character";
 
 import { FloatingCharacterNavbar } from "./floating-character-navbar";
 
-import { LanguagesList, listLanguagesShortCuts } from "./languages-list";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { CharacterItem } from "./_select-character/character-item/character-item";
+import { LanguagesList, listLanguagesShortCuts } from "./languages-list";
 
 export function SelectedCharacter({ characterId }: { characterId: string }) {
   const { data } = useSelectedCharacterData({ characterId });
@@ -46,7 +44,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       return <LanguagesList characterId={characterId} />;
     }
 
-    return <CharacterViewType {...props} />;
+    return <CharacterItem {...props} />;
   };
 
   return (

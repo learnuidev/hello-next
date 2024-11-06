@@ -6,7 +6,7 @@ import { RelatedWords } from "./../related-words";
 
 import { chineseCharacters } from "@/langs/chinese /characters";
 
-import { RelatedHskWords } from "./../related-hsk-words";
+import { RelatedHskWords } from "./related-hsk-words";
 
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
 import { PinyinView } from "./../pinyin-view";
@@ -14,6 +14,7 @@ import { StoryView } from "./../story-view";
 import { CharacterItemView } from "./character-item-view";
 import { HskSentenceView } from "./hsk-sentences-view";
 import { HskSuperComponentsWordView } from "./hsk-super-components-view";
+import { SimilarCharactersView } from "./similar-characters-view";
 
 export const CharacterItem = (props: SelectedCharacterProps) => {
   const {
@@ -71,6 +72,9 @@ export const CharacterItem = (props: SelectedCharacterProps) => {
     }
     case "story":
       return <StoryView {...props} />;
+
+    case "similar-looking-characters":
+      return <SimilarCharactersView componentId={characterId} />;
 
     default:
       return <CharacterItemView {...props} />;

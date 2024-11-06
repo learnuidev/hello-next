@@ -2,99 +2,93 @@ import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
-import {
-  faBook,
-  faMicrochipAi as faMicrochipAiSolid,
-  faSpinner,
-} from "@fortawesome/sharp-solid-svg-icons";
+import { faBook, faSpinner } from "@fortawesome/sharp-solid-svg-icons";
 
 import {
+  faArrowUpRightFromSquare,
+  faBoltLightning as faBoltLightningSolid,
+  faBrainCircuit,
+  faCircleInfo,
+  faFaceAngry as faFaceAngrySolid,
+  faFaceGrin as faFaceGrinSolid,
+  faFaceParty as faFacePartySolid,
+  faFaceSadCry as faFaceSadCrySolid,
+  faFaceSadSweat as faFaceSadSweatSolid,
+  faFaceSmirking as faFaceSmirkingSolid,
+  faFaceSpiralEyes as faFaceSpiralEyesSolid,
+  faGlassesRound as faGlassesRoundSolid,
+  faGrinBeamSweat as faGrinBeamSweatSolid,
   // faMicrophone,
   // faSeedling,
   // faPlay,
   // faTypewriter,
   faLock as faLockSolid,
-  faBrainCircuit,
   faMusicNote as faMusicNoteSolid,
-  faBoltLightning as faBoltLightningSolid,
   faPhotoFilm as faPhotoFilmSolid,
   faRectangleVerticalHistory as faRectangleVerticalHistorySolid,
-  faUser as faUserSolid,
-  faGlassesRound as faGlassesRoundSolid,
-  faArrowUpRightFromSquare,
-  faCircleInfo,
-  faFaceSadCry as faFaceSadCrySolid,
-  faGrinBeamSweat as faGrinBeamSweatSolid,
-  faFaceSadSweat as faFaceSadSweatSolid,
-  faFaceAngry as faFaceAngrySolid,
-  faFaceSpiralEyes as faFaceSpiralEyesSolid,
-  faFaceSmirking as faFaceSmirkingSolid,
   faSmile as faSmileSolid,
-  faFaceGrin as faFaceGrinSolid,
-  faFaceParty as faFacePartySolid,
+  faUser as faUserSolid,
 } from "@fortawesome/sharp-solid-svg-icons";
 
 import {
-  faCheckCircle,
-  faMicrochipAi,
-  faXmark,
-  faLanguage,
-  faLightbulb,
-  faMailboxFlagUp,
-  faBoxArchive,
-  faUser,
-  faGlobeAsia,
-  faComputerMouse,
+  faAlignRight,
   faBadgeCheck,
-  faGridRound2Plus,
   faBars,
   faBlockQuestion,
+  faBoltLightning,
+  faBoxArchive,
+  faChartColumn,
+  faCheckCircle,
   faCircleArrowDown,
   faCircleBolt,
-  faPlus,
-  faMusic,
-  faTable,
-  faInfo,
-  faAlignRight,
-  faTrash,
-  faGraduationCap,
-  faSpaceStationMoon,
-  faPlayCircle,
-  faTree,
-  faFire,
-  faEye,
-  faPlanetRinged,
-  faMagnifyingGlassPlus,
-  faMagnifyingGlassMinus,
-  faWandMagic,
-  faClock,
-  faRollerCoaster,
-  faBoltLightning,
-  faPhotoFilm,
-  faVolume,
-  faStop,
-  faList,
-  faMagnifyingGlassChart,
-  faChartColumn,
-  faSeedling,
   faCitrus,
-  faTimeline,
-  faLock,
-  faInfoCircle,
-  faPenToSquare,
+  faClock,
+  faComputerMouse,
   faConstruction,
-  faTruckRampBox,
-  faFaceSadCry,
-  faFaceSadSweat,
+  faEye,
   faFaceAngry,
-  faFaceSpiralEyes,
-  faFaceSmirking,
-  faSmile,
-  faGrinBeamSweat,
   faFaceGrin,
   faFaceParty,
-  // faCircleInfo,
-  // faArrowUpRightFromSquare,
+  faFaceSadCry,
+  faFaceSadSweat,
+  faFaceSmirking,
+  faFaceSpiralEyes,
+  faFire,
+  faGlobeAsia,
+  faGraduationCap,
+  faGridRound2Plus,
+  faGrinBeamSweat,
+  faInfo,
+  faInfoCircle,
+  faLanguage,
+  faLightbulb,
+  faList,
+  faLock,
+  faMagnifyingGlassChart,
+  faMagnifyingGlassMinus,
+  faMagnifyingGlassPlus,
+  faMailboxFlagUp,
+  faMicrochipAi,
+  faMusic,
+  faPenToSquare,
+  faPhotoFilm,
+  faPlanetRinged,
+  faPlayCircle,
+  faPlus,
+  faRollerCoaster,
+  faSeedling,
+  faSmile,
+  faSpaceStationMoon,
+  faStop,
+  faTable,
+  faTimeline,
+  faTrash,
+  faTree,
+  faTruckRampBox,
+  faUser,
+  faVolume,
+  faWandMagic,
+  faXmark,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -102,84 +96,51 @@ import {
   faCommentQuote,
   faFire as faFireDuoTone,
   faMessageQuote,
-  faTree as faTreeDuotone,
   faSeedling as faSeedlingDuotone,
+  faTree as faTreeDuotone,
 } from "@fortawesome/pro-duotone-svg-icons";
 
-import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
-
 import { faCitrus as faCitrusSolid } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
-import { faPlay } from "@fortawesome/sharp-solid-svg-icons/faPlay";
-import { faBowlChopsticksNoodles } from "@fortawesome/sharp-solid-svg-icons/faBowlChopsticksNoodles";
-import { faUserShakespeare } from "@fortawesome/sharp-solid-svg-icons/faUserShakespeare";
 import { faLightbulb as faLightbulbSolid } from "@fortawesome/sharp-solid-svg-icons/faLightbulb";
+import { faPlay } from "@fortawesome/sharp-solid-svg-icons/faPlay";
 
 // import { faXmark } from "@fortawesome/sharp-solid-svg-icons/faXmark";
 
-import { faMapLocationDot } from "@fortawesome/sharp-solid-svg-icons/faMapLocationDot";
-import { faMapPin } from "@fortawesome/sharp-solid-svg-icons/faMapPin";
-import { faFarm } from "@fortawesome/sharp-solid-svg-icons/faFarm";
-import { faCow } from "@fortawesome/sharp-solid-svg-icons/faCow";
-import { faTheaterMasks } from "@fortawesome/sharp-solid-svg-icons/faTheaterMasks";
-import { faCameraRetro } from "@fortawesome/sharp-solid-svg-icons/faCameraRetro";
-import { faCamcorder } from "@fortawesome/sharp-solid-svg-icons/faCamcorder";
-import { faCameraMovie } from "@fortawesome/sharp-solid-svg-icons/faCameraMovie";
-import { faClapperboardPlay } from "@fortawesome/sharp-solid-svg-icons/faClapperboardPlay";
-import { faChartSimple } from "@fortawesome/sharp-solid-svg-icons/faChartSimple";
-import { faAbacus } from "@fortawesome/sharp-solid-svg-icons/faAbacus";
-import { faTrees } from "@fortawesome/sharp-solid-svg-icons/faTrees";
-import { faGameConsoleHandheld } from "@fortawesome/sharp-solid-svg-icons/faGameConsoleHandheld";
-import { faBackpack } from "@fortawesome/sharp-solid-svg-icons/faBackpack";
-import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
 import { faChartColumn as faChartColumnSolid } from "@fortawesome/sharp-solid-svg-icons/faChartColumn";
-import { faTree as faTreeSolid } from "@fortawesome/sharp-solid-svg-icons/faTree";
-import { faSeedling as faSeedlingSolid } from "@fortawesome/sharp-solid-svg-icons/faSeedling";
-import { faComment } from "@fortawesome/sharp-solid-svg-icons/faComment";
-import { faAngleRight } from "@fortawesome/sharp-solid-svg-icons/faAngleRight";
 import { faPause } from "@fortawesome/sharp-solid-svg-icons/faPause";
-import { faAngleLeft } from "@fortawesome/sharp-solid-svg-icons/faAngleLeft";
-import { faMicrophone } from "@fortawesome/sharp-solid-svg-icons/faMicrophone";
-import { faThoughtBubble } from "@fortawesome/sharp-solid-svg-icons/faThoughtBubble";
-import { faCheck } from "@fortawesome/sharp-solid-svg-icons/faCheck";
-import { faFaceLaugh } from "@fortawesome/sharp-solid-svg-icons/faFaceLaugh";
+import { faSeedling as faSeedlingSolid } from "@fortawesome/sharp-solid-svg-icons/faSeedling";
+import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
+import { faTree as faTreeSolid } from "@fortawesome/sharp-solid-svg-icons/faTree";
+import { faTrees } from "@fortawesome/sharp-solid-svg-icons/faTrees";
 // import { faMusic } from "@fortawesome/sharp-solid-svg-icons/faMusic";
-import { faFaceGrinBeamSweat } from "@fortawesome/sharp-solid-svg-icons/faFaceGrinBeamSweat";
-import { faFaceThinking } from "@fortawesome/sharp-solid-svg-icons/faFaceThinking";
-import { faHeadphones } from "@fortawesome/sharp-solid-svg-icons/faHeadphones";
-import { faProjector } from "@fortawesome/sharp-solid-svg-icons/faProjector";
-import { faMoonCloud } from "@fortawesome/sharp-solid-svg-icons/faMoonCloud";
-import { faSunHaze } from "@fortawesome/sharp-solid-svg-icons/faSunHaze";
-import { faCloudDrizzle } from "@fortawesome/sharp-solid-svg-icons/faCloudDrizzle";
-import { faCloudsSun } from "@fortawesome/sharp-solid-svg-icons/faCloudsSun";
-import { faGrid2 } from "@fortawesome/sharp-solid-svg-icons/faGrid2";
 import { faGear } from "@fortawesome/sharp-solid-svg-icons/faGear";
 
 import {
+  faBlockBrick,
   faCalculatorSimple,
+  // faTableTree,
+  faCheck as faCheckThin,
   faChevronLeft,
   faCompass,
   faCopy,
   faEarthAsia,
-  faGalaxy,
+  faFingerprint,
+  faGlassesRound,
   // faGear,
   faHome,
   faMagnifyingGlass,
-  faMusicNote,
-  faPowerOff,
-  faRectangleVerticalHistory,
-  // faSeedling,
-  faStairs,
-  // faLightbulb,
-  faRectangleHistory,
   // faPlus,
   faMinus,
   faMountainSun,
-  faFingerprint,
-  faBlockBrick,
-  faGlassesRound,
-  // faTableTree,
-  faCheck as faCheckThin,
+  faMusicNote,
+  faPowerOff,
+  // faLightbulb,
+  faRectangleHistory,
+  faRectangleVerticalHistory,
+  // faSeedling,
+  faStairs,
 } from "@fortawesome/pro-thin-svg-icons";
+import { faConnectdevelop } from "@fortawesome/free-brands-svg-icons";
 // import { faCitrus } from "@fortawesome/sharp-solid-svg-icons";
 // import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 
@@ -313,4 +274,6 @@ export const Icons = {
   messageQuote: createFAIcon(faMessageQuote as any),
   treeDuotone: createFAIcon(faTreeDuotone as any),
   seedlingDuotone: createFAIcon(faSeedlingDuotone as any),
+
+  connectDevelop: createFAIcon(faConnectdevelop),
 };

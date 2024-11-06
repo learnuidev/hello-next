@@ -10,7 +10,7 @@ import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 // TODO: Move this to .env
 const url = `${siteConfig.apiUrl}/v1/list-components`;
 
-interface IComponent {
+export interface IComponent {
   input: string;
   hanzi: string;
   pinyin: string;

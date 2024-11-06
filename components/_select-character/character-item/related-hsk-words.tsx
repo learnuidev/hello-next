@@ -1,10 +1,9 @@
 "use client";
 
-import React from "react";
-
-import { WordItem } from "../word-item";
-import { RelatedWords } from "./related-words";
-import { useRelatedHskWordsByCharacter } from "./use-filter-related-hsk-words-by-character";
+import { HanziLink } from "@/components/hanzi-link";
+import { NmmListContainer } from "@/components/nmm-list-container";
+import { RelatedWords } from "../related-words";
+import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
 
 export const RelatedHskWords = ({
   characterId,
@@ -22,12 +21,12 @@ export const RelatedHskWords = ({
   }
 
   return (
-    <div className="mx-4 my-4 md:mx-16 text-black dark:text-white grid md:grid-cols-8 sm:grid-cols-4 grid-cols-2">
+    <NmmListContainer className="px-0">
       {filteredRelatedHskWords?.map((prop: any, idx: any) => {
         return (
-          <WordItem lang={lang} component={prop} key={JSON.stringify(prop)} />
+          <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
         );
       })}
-    </div>
+    </NmmListContainer>
   );
 };

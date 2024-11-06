@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { NomadMethod } from "@/app/nmm/nomad-method";
 
-import { HeaderView } from "./_select-character/selected-character-header";
+import { CharacterNavbar } from "./_select-character/character-navbar";
 import { useSelectedCharacterData } from "./use-selected-character";
 
 import { FloatingCharacterNavbar } from "./floating-character-navbar";
@@ -57,7 +57,7 @@ export function SelectedCharacter({ characterId }: { characterId: string }) {
       }}
     >
       <div className="px-4 md:px-12">
-        <HeaderView {...props} />
+        <CharacterNavbar {...props} />
 
         <ShowView />
       </div>

@@ -15,7 +15,8 @@ interface HSKCharacter {
   hanzi: string;
   hskLevel?: number;
   pinyin: string;
-  en: string;
+  en?: string;
+  discoveredAt?: string;
 }
 
 export function HanziLink({
@@ -135,7 +136,9 @@ export function HanziLink({
               key={`${val}-${idx}`}
               className={`${
                 brightMode || isCharactersLoading || isComponentsLoading
-                  ? "dark:text-gray-300 text-gray-700"
+                  ? !selectedComp?.discoveredAt
+                    ? "text-gray-700"
+                    : "dark:text-gray-300 text-gray-700"
                   : learnedChar
                     ? learnedChar?.status === "forgotten"
                       ? "dark:text-gray-900 text-gray-100"

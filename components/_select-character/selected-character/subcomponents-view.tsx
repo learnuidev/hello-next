@@ -3,7 +3,7 @@
 import React from "react";
 import { useListSubComponentsQuery } from "@/domain/component/component.queries";
 import Link from "next/link";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { persianAlphabets } from "@/langs/persian/persian-alphabets";
 import { urduAlphabets } from "@/langs/urdu/urdu-alphabets";

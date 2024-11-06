@@ -1,30 +1,25 @@
 "use client";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
-import React, { useEffect, useState } from "react";
-import { Summary } from "../summary/summary";
-import { Icons } from "../ui/icons.v2";
-import { GrammarAnalysis } from "../grammar-analysis";
-import { SelectedCharacterProps } from "./select-character.types";
-import { CharacterSentences } from "./character-sentences";
+import { useEffect } from "react";
+import { Icons } from "@/components/ui/icons.v2";
+import { SelectedCharacterProps } from "../select-character.types";
 
-import { AudioComponent } from "./audio-component";
-import { useShowsStore, WordItem } from "../word-item";
+import { AudioComponent } from "../audio-component";
 
 import { SubComponentsView } from "./subcomponents-view";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useStoryStore } from "./story-store";
 import { StoryEditor } from "./story-editor";
+import { useStoryStore } from "./story-store";
 
-import { chineseCharacters } from "@/langs/chinese /characters";
-import { useQuery } from "@tanstack/react-query";
 import {
   useCurrentAuthUser,
   useIsSuperAdmin,
 } from "@/domain/auth/auth.queries";
+import { chineseCharacters } from "@/langs/chinese /characters";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 import { create } from "zustand";
 
 const genStoryApi = async (

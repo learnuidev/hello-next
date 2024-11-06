@@ -2,9 +2,9 @@
 
 import React from "react";
 
-import { Icons } from "../ui/icons.v2";
+import { Icons } from "../../ui/icons.v2";
 
-import { Editor } from "../Editor";
+import { Editor } from "../../Editor";
 import { useStoryStore } from "./story-store";
 import { useUpdateCharacterStoryMutation } from "@/domain/lesson/character.mutations";
 

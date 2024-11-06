@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
 import { useFilteredComponents } from "@/hooks/use-filter-components";
@@ -16,13 +15,16 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { PreviewComponent } from "@/app/nmm/preview-component";
-import { create } from "zustand";
-import { PinyinCodes, useSelectedLevel } from "@/app/pinyin/pinyn-codes";
-import { getHumanPinyin } from "@/app/nmm/nmm-utils/get-human-pinyin";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
+import { getHumanPinyin } from "@/app/nmm/nmm-utils/get-human-pinyin";
+import { PreviewComponent } from "@/app/nmm/preview-component";
+import { PinyinCodes, useSelectedLevel } from "@/app/pinyin/pinyn-codes";
+import { SelectedCharacterProps } from "../select-character.types";
+import { SelectedCharacterTitle } from "./selected-character-title";
 
-export const PinyinView = ({ characterId }: { characterId: string }) => {
+export const PinyinView = (props: SelectedCharacterProps) => {
+  const { characterId } = props;
+
   const { data: components } = useListComponents();
   const selectedLevel = useSelectedLevel((state) => state.selectedLevel) as any;
 
@@ -60,13 +62,9 @@ export const PinyinView = ({ characterId }: { characterId: string }) => {
 
   return (
     <div>
-      <aside></aside>
-
       <main>
-        <div className="my-8">
-          <h2 className="text-gray-400">{selectedComp?.pinyin}</h2>
-          <h1 className="text-4xl font-extralight my-2">{characterId}</h1>
-          <h3 className="text-gray-500">{selectedComp?.en}</h3>
+        <div className="mt-[32px] mb-32 sm:mb-44">
+          <SelectedCharacterTitle {...props} />
         </div>
 
         <section>

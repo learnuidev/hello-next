@@ -9,8 +9,8 @@ import { chineseCharacters } from "@/langs/chinese /characters";
 import { RelatedHskWords } from "./related-hsk-words";
 
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
-import { PinyinView } from "../pinyin-view";
-import { StoryView } from "../story-view";
+import { PinyinView } from "./pinyin-view";
+import { StoryView } from "./story-view";
 import { CharacterOverviewView } from "./character-overview-view";
 import { HskSentenceView } from "./hsk-sentences-view";
 import { HskSuperComponentsWordView } from "./hsk-super-components-view";
@@ -36,7 +36,7 @@ export const SelectedCharacter = (props: SelectedCharacterProps) => {
       return <HskSuperComponentsWordView componentId={characterId} />;
 
     case "pinyin":
-      return <PinyinView characterId={characterId} />;
+      return <PinyinView {...props} />;
 
     case "words":
       return <RelatedHskWords characterId={characterId} lang={lang} />;

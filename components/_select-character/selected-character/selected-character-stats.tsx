@@ -1,0 +1,69 @@
+"use client";
+
+import { Icons } from "../../ui/icons.v2";
+import { SelectedCharacterProps } from "../select-character.types";
+
+import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
+import { chineseCharacters } from "@/langs/chinese /characters";
+import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
+
+export const SelectedCharacterStats = (props: SelectedCharacterProps) => {
+  const {
+    selectedComp,
+
+    characterId,
+    selectedComp2,
+  } = props;
+
+  const level = selectedComp?.level || selectedComp2?.level;
+
+  const offlineCharacter = chineseCharacters?.find(
+    (char) => char?.hanzi === characterId || char?.input === characterId
+  );
+
+  const pinyinOrRoman =
+    selectedComp?.pinyin ||
+    selectedComp?.roman ||
+    selectedComp2?.pinyin ||
+    selectedComp2?.roman ||
+    offlineCharacter?.pinyin ||
+    offlineCharacter?.roman;
+
+  const { data: totalRelatedHskWords } = useListRelatedHSKWords(characterId);
+
+  const relatedHskWords = useRelatedHskWordsByCharacter({
+    characterId,
+  });
+
+  const totalRelatedSentences =
+    totalRelatedHskWords?.length - relatedHskWords?.length;
+
+  const multiSentence =
+    pinyinOrRoman?.split(".")?.length > 1 ||
+    pinyinOrRoman?.split("?")?.length > 1;
+
+  // const
+
+  return multiSentence ? null : (
+    <div className="flex items-center space-x-4">
+      {relatedHskWords?.length > 0 && (
+        <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+          <Icons.word />
+          <p>{relatedHskWords?.length}</p>
+        </div>
+      )}
+      {totalRelatedSentences > 0 && (
+        <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+          <Icons.sentence />
+          <p>{totalRelatedSentences}</p>
+        </div>
+      )}
+      {level && (
+        <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+          <Icons.earthAsia />
+          <p>{level}</p>
+        </div>
+      )}
+    </div>
+  );
+};

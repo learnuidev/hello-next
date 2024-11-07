@@ -20,6 +20,7 @@ export const PrecisionInsightView = () => {
 
   const isEqual = querySync.split("=");
   const isGreater = querySync.split(">");
+  const isContains = querySync.split("~");
 
   const attr = isEqual[0]?.trim();
   const val = isEqual?.[1]?.trim();
@@ -40,9 +41,7 @@ export const PrecisionInsightView = () => {
       }
 
       if (
-        (typeof attributeItem === "string"
-          ? attributeItem?.toLowerCase()
-          : attributeItem) === val?.toLowerCase()?.trim()
+        `${attributeItem}`?.toLowerCase() === `${val}`?.toLowerCase()?.trim()
       ) {
         return true;
       } else {
@@ -55,6 +54,12 @@ export const PrecisionInsightView = () => {
       const val = isGreater?.[1]?.trim();
 
       return item[attr] > parseInt(val);
+    }
+    if (isContains?.length > 1) {
+      const attr = isContains[0]?.trim();
+      const val = isContains?.[1]?.trim();
+
+      return item[`${attr}`]?.includes(`${val}`);
     }
 
     return JSON.stringify(item)

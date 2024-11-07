@@ -11,16 +11,17 @@ export const PrecisionInsightView = () => {
   const totalAttempts = useListAttempts();
   const topTenIncorrect = useGetTopTenIncorrect();
 
-  const querySync = useSearchQueryStore((state) => state.querySync);
+  const querySync = useSearchQueryStore((state) => state.query);
 
   const isEqual = querySync.split("=");
+  const isGreater = querySync.split(">");
 
   const attr = isEqual[0]?.trim();
   const val = isEqual?.[1]?.trim();
 
   console.log("IS EQUAL", [attr, val]);
 
-  const filteredErrors = totalAttempts?.filter((item) => {
+  const filteredTotalAttempts = totalAttempts?.filter((item) => {
     if (!querySync) {
       return true;
     }
@@ -34,6 +35,13 @@ export const PrecisionInsightView = () => {
       } else {
         return false;
       }
+    }
+
+    if (isGreater?.length > 1) {
+      const attr = isGreater[0]?.trim();
+      const val = isGreater?.[1]?.trim();
+
+      return item[attr] > parseInt(val);
     }
 
     return JSON.stringify(item)
@@ -52,17 +60,29 @@ export const PrecisionInsightView = () => {
         </h1>
 
         <div>
-          <p className="font-extralight text-3xl">{filteredErrors?.length}</p>
+          {querySync && (
+            <p className="font-extralight text-3xl">
+              {filteredTotalAttempts?.length}
+            </p>
+          )}
         </div>
       </div>
 
       <PrecisionInsightHeaders />
 
-      <section>
-        <code>
-          <pre>{JSON.stringify(topTenIncorrect, null, 2)}</pre>
-        </code>
-      </section>
+      {querySync ? (
+        <section>
+          <code>
+            <pre>{JSON.stringify(filteredTotalAttempts, null, 2)}</pre>
+          </code>
+        </section>
+      ) : (
+        <section>
+          <code>
+            <pre>{JSON.stringify(topTenIncorrect, null, 2)}</pre>
+          </code>
+        </section>
+      )}
     </div>
   );
 };

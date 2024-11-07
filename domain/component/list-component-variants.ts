@@ -78,6 +78,10 @@ const listComponentVariants = async (
       hanzi,
     }),
   });
+
+  if (!res.ok) {
+    throw Error(res.statusText);
+  }
   let resp = (await res.json()) as any;
 
   return resp;

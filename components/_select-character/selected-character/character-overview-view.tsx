@@ -6,43 +6,25 @@ import { Summary } from "../../summary/summary";
 import { CharacterSentences } from "../character-sentences";
 import { SelectedCharacterProps } from "../select-character.types";
 
-import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
-import { chineseCharacters } from "@/langs/chinese /characters";
-import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { SelectedCharacterHeader } from "./selected-character-header";
+import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
+import { SentenceItemV2 } from "./sentence-item-v2";
+
+const grammarTypesToTitle = {
+  "v.": "verb",
+} as any;
 
 export const CharacterOverviewView = (props: SelectedCharacterProps) => {
   const {
-    uniqueAnswerIds,
-    answerMap,
-    allContents,
-    allSteps,
-    components,
     selectedComp,
     selectedChar,
-    routeName,
     lang,
-    view,
     sentences,
     characterId,
     selectedComp2,
   } = props;
-
-  const level = selectedComp?.level || selectedComp2?.level;
-
-  const offlineCharacter = chineseCharacters?.find(
-    (char) => char?.hanzi === characterId || char?.input === characterId
-  );
-
-  const pinyinOrRoman =
-    selectedComp?.pinyin ||
-    selectedComp?.roman ||
-    selectedComp2?.pinyin ||
-    selectedComp2?.roman ||
-    offlineCharacter?.pinyin ||
-    offlineCharacter?.roman;
-  const selectedCompEn =
-    selectedComp?.en || selectedComp2?.en || offlineCharacter?.en;
 
   const selectedCompInput =
     selectedComp?.hanzi ||
@@ -51,20 +33,9 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
     selectedComp2?.hanzi ||
     selectedChar;
 
-  const { data: totalRelatedHskWords } = useListRelatedHSKWords(characterId);
+  const { data } = useListComponentVariantsQuery({ hanzi: characterId });
 
-  const relatedHskWords = useRelatedHskWordsByCharacter({
-    characterId,
-  });
-
-  const totalRelatedSentences =
-    totalRelatedHskWords?.length - relatedHskWords?.length;
-
-  const multiSentence =
-    pinyinOrRoman?.split(".")?.length > 1 ||
-    pinyinOrRoman?.split("?")?.length > 1;
-
-  // const
+  console.log("DATA", data);
 
   return (
     <div
@@ -78,7 +49,90 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
         <article>
           <div>
             <div className="mt-8">
-              <Summary showMeanings={true} characterId={characterId} />
+              <Tabs defaultValue="overview">
+                {/* <Tabs defaultValue="dé"> */}
+                <div>
+                  <TabsList className="space-x-8">
+                    <TabsTrigger
+                      value="overview"
+                      className="px-0 data-[state=active]:text-yellow-500 data-[state=active]:font-bold"
+                    >
+                      {" "}
+                      Overview
+                    </TabsTrigger>
+                    {(data || [])?.map((item) => {
+                      return (
+                        <TabsTrigger
+                          key={item?.hanbookId}
+                          value={item?.pinyin}
+                          className="px-0 data-[state=active]:text-yellow-500 data-[state=active]:font-bold"
+                        >
+                          {item?.pinyin}
+                        </TabsTrigger>
+                      );
+                    })}
+                  </TabsList>
+                </div>
+
+                <TabsContent value="overview" className="mt-6">
+                  <Summary showMeanings={true} characterId={characterId} />
+                </TabsContent>
+
+                {(data || [])?.map((item) => {
+                  return (
+                    <TabsContent value={item?.pinyin} className="mt-6">
+                      <div>
+                        <h1 className="text-2xl mb-4">
+                          <span>{item?.pinyin}</span> has{" "}
+                          <strong>{item?.useCases?.length}</strong> use cases
+                        </h1>
+
+                        <div className="space-y-12">
+                          {item?.useCases?.map((useCase, idx) => {
+                            return (
+                              <div key={useCase?.en}>
+                                <div>
+                                  <h2 className="text-xl font-light">
+                                    <span className=""> {idx + 1}. </span>
+                                    <span>
+                                      <strong>
+                                        {grammarTypesToTitle[
+                                          useCase?.type as string
+                                        ] || useCase?.type}
+                                      </strong>
+                                    </span>
+                                  </h2>
+
+                                  <h3 className="text-gray-400">
+                                    {useCase?.en
+                                      ?.replaceAll("(", "")
+                                      ?.replaceAll(")", "")}
+                                  </h3>
+                                </div>
+                                <div className="mt-4 space-y-4">
+                                  {useCase?.sentences?.map((sentence) => {
+                                    return (
+                                      <SentenceItemV2
+                                        className="block"
+                                        key={sentence?.hanzi}
+                                        {...sentence}
+                                        href={`/nmm/${sentence?.hanzi}?lang=zh`}
+                                      />
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      {/* <code>
+                        <pre>{JSON.stringify(item?.useCases, null, 4)}</pre>
+                      </code> */}
+                    </TabsContent>
+                  );
+                })}
+              </Tabs>
             </div>
 
             {selectedCompInput?.length < 32 && (

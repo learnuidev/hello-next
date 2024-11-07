@@ -36,7 +36,7 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
         return (
           <Link
             key={`${val}-${idx}`}
-            href={`/nmm/${comp?.hanzi}?lang=zh`}
+            href={`/nmm/${comp?.hanzi}?lang=${comp?.lang || "zh"}`}
             target="_blank"
             className="block"
           >

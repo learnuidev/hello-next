@@ -38,7 +38,7 @@ function ContentsList() {
 
   const contentType = useContentTypeStore((state) => state.contentType);
 
-  // const { data: conversations } = useListConversationsQuery();
+  const { data: conversations } = useListConversationsQuery();
 
   const query = useSearchQueryStore((state) => state.query);
 

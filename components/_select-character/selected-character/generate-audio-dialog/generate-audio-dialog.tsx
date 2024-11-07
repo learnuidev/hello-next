@@ -18,9 +18,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 // Todos:
 
-// 1. Generate text to audio
-// 2. Check if the status has succeeded
-// 3. Once the status has succeeded save the audio in s3
+// 1. Generate text to audio -> DONE
+// 2. Check if the status has succeeded -> DONE
+// 3. Once the status has succeeded save the audio in s3 -> TODO
 // 4. Once the file has saved in s3, update user assets table
 // 5. Once it has been saved in user assets, update the component to include audio url
 

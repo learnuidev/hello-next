@@ -32,8 +32,6 @@
 //     messages,
 //   });
 
-//   console.log("RESP", response);
-
 //   // Convert the response into a friendly text-stream. The Mistral client responses are
 //   // compatible with the Vercel AI SDK OpenAIStream adapter.
 //   const stream = OpenAIStream(response);

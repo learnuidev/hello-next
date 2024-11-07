@@ -41,7 +41,6 @@ export function useGetQueryClassifierQuery(
         }
       );
 
-      console.log("RESPONSE", response);
       return response;
       //   }
     },

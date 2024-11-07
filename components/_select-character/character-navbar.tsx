@@ -28,12 +28,6 @@ export const CharacterNavbar = (props: SelectedCharacterProps) => {
 
   const similarLookingCharacters = useGetSimilarLookingCharacters(characterId);
 
-  console.log(
-    "SIMILAR LOOKING CHARS",
-    // componentVariants
-    similarLookingCharacters
-  );
-
   const relatedSentences = useSlicedRelatedSentencesByCharacter(characterId);
 
   const superComponents = superComponents_ as any;

@@ -5,7 +5,7 @@ import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
 import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
 import { Editor } from "../Editor";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useGetCharacterId } from "@/app/(auth)/character/[character-id]/use-get-character-id";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useUpdateComponentSummaryMutation } from "@/domain/component-summary/update-component-summary";
@@ -35,8 +35,10 @@ export function Summary({
 
   const summary = useSummaryStore((state: any) => state.summary);
   const isSuperAdmin = useIsSuperAdmin();
+  const searchParams = useSearchParams();
 
   const setSummary = useSummaryStore((state: any) => state.setSummary);
+  const statusUrl = searchParams.get("status-url");
 
   const { data: meaning, isLoading } = useListMeaningsQuery(
     {
@@ -46,7 +48,9 @@ export function Summary({
     {
       onSuccess: (data: any) => {
         console.log("");
-        router.push(`/nmm/${characterId}?lang=${lang ? lang : data?.lang}`);
+        router.push(
+          `/nmm/${characterId}?lang=${lang ? lang : data?.lang}${statusUrl ? `&status-url=${statusUrl}` : ``}`
+        );
       },
     }
   );

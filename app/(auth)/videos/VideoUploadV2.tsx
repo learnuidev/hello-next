@@ -70,8 +70,6 @@
 
 //       const { signedUrl: url, s3Key } = uploadResp;
 
-//       console.log("UPLOAD RESP", uploadResp);
-
 //       console.log("S3Key", s3Key);
 //       const formData = new FormData();
 //       formData.append("image", file);

@@ -17,6 +17,7 @@ export async function POST(req: Request) {
   const isVerified = await verifyJwt(jwtToken, { isAdmin: false });
 
   if (isVerified) {
+    console.log("STATUS URL", statusUrl);
     const resp = await getAudioResource({
       statusUrl,
     } as IGetAudioResourceParams);

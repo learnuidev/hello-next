@@ -1,15 +1,20 @@
 "use client";
 
+import { PrecisionInsightHeaders } from "@/app/(auth)/insights/insights-v2/precision-insight-view/precision-insight-headers";
+import { useListAttempts } from "@/app/(auth)/insights/insights-v2/use-list-attempts";
 import { useSearchQueryStore } from "@/components/search/state";
 import { Icons } from "@/components/ui/icons.v2";
 import Link from "next/link";
-import { useListAttempts } from "@/app/(auth)/insights/insights-v2/use-list-attempts";
-import { PrecisionInsightHeaders } from "@/app/(auth)/insights/insights-v2/precision-insight-view/precision-insight-headers";
-import { useGetTopTenIncorrect } from "@/app/(auth)/insights/insights-v2/precision-insight-view/use-get-top-ten-incorrect";
+import {
+  TwoSectionLayout,
+  TwoSectionLayoutItem,
+} from "../components/two-section-layout";
+import { PrecisionSearchResults } from "./precision-search-results";
+import { TopTenIncorrectComponents } from "./top-ten-incorrect-components";
+import { TopTenRecentlyReviewedComponents } from "./top-ten-recently-reviewed-components";
 
 export const PrecisionInsightView = () => {
   const totalAttempts = useListAttempts();
-  const topTenIncorrect = useGetTopTenIncorrect();
 
   const querySync = useSearchQueryStore((state) => state.query);
 
@@ -18,8 +23,6 @@ export const PrecisionInsightView = () => {
 
   const attr = isEqual[0]?.trim();
   const val = isEqual?.[1]?.trim();
-
-  console.log("IS EQUAL", [attr, val]);
 
   const filteredTotalAttempts = totalAttempts?.filter((item) => {
     if (!querySync) {
@@ -71,17 +74,19 @@ export const PrecisionInsightView = () => {
       <PrecisionInsightHeaders />
 
       {querySync ? (
-        <section>
-          <code>
-            <pre>{JSON.stringify(filteredTotalAttempts, null, 2)}</pre>
-          </code>
-        </section>
+        <PrecisionSearchResults searchResults={filteredTotalAttempts} />
       ) : (
-        <section>
-          <code>
-            <pre>{JSON.stringify(topTenIncorrect, null, 2)}</pre>
-          </code>
-        </section>
+        <TwoSectionLayout>
+          <TwoSectionLayoutItem>
+            <TopTenIncorrectComponents />
+          </TwoSectionLayoutItem>
+          <TwoSectionLayoutItem>
+            <TopTenRecentlyReviewedComponents />
+            {/* <code>
+              <pre>{JSON.stringify(topTenIncorrect, null, 2)}</pre>
+            </code> */}
+          </TwoSectionLayoutItem>
+        </TwoSectionLayout>
       )}
     </div>
   );

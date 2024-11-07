@@ -16,6 +16,7 @@ export const useListAttempts = () => {
             en: item?.en,
             story: item?.story,
             status: item?.status,
+            group: item?.group,
             totalAttempts: item?.reviewHistory?.length,
             totalIncorrect:
               item?.reviewHistory?.filter((v: any) => v.outcome === "incorrect")

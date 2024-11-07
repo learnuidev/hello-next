@@ -133,7 +133,7 @@ export const CharacterDiscoveryAreaChart = () => {
     }
   );
 
-  const newData = answers.map((curr: any, idx: number, ctx: any) => {
+  const newData = answers?.map((curr: any, idx: number, ctx: any) => {
     return {
       ...curr,
       name: curr?.createdAt,

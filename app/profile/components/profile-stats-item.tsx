@@ -1,14 +1,17 @@
+export interface IStatItem {
+  id?: string;
+  children?: React.ReactNode;
+  title: string;
+  subtitle?: string;
+  stat: number | string;
+}
+
 export const ProfileStatsItem = ({
   children,
   stat,
   title,
   subtitle,
-}: {
-  children: React.ReactNode;
-  title: string;
-  subtitle: string;
-  stat: number | string;
-}) => {
+}: IStatItem) => {
   return (
     <div className="flex flex-col justify-center items-center">
       {children}

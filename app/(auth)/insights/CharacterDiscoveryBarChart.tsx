@@ -1,6 +1,3 @@
-import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import React, { PureComponent, useState } from "react";
-
 import { WeeklyBarChart } from "./WeeklyBarChart";
 import { useInsightsState } from "./use-insights-state";
 

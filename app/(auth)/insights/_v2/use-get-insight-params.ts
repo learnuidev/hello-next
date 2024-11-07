@@ -7,7 +7,10 @@ export function useGetInsightParams() {
 
   const view = searchParams.get("view") || "";
 
+  const filter = searchParams.get("filter") || "filter";
+
   return {
     view,
+    filter,
   };
 }

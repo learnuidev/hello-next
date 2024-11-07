@@ -2,7 +2,8 @@
 
 import { useListAttempts } from "./use-list-attempts";
 
-export const useListErrors = () => {
+export const useListCorrect = () => {
   const totalAttempts = useListAttempts();
-  return totalAttempts.filter((value: any) => value.outcome === "incorrect");
+
+  return totalAttempts.filter((value: any) => value.outcome === "correct");
 };

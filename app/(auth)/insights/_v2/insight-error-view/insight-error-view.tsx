@@ -2,18 +2,38 @@
 
 import { Icons } from "@/components/ui/icons.v2";
 import Link from "next/link";
-import { useListErrors } from "./use-list-errors";
+import { useListErrors } from "../use-list-errors";
 import { useSearchQueryStore } from "@/components/search/state";
+import { ErrorInsightHeaders } from "./error-insight-headers";
 
 export const InsightErrorView = () => {
   const totalErrors = useListErrors();
 
   const querySync = useSearchQueryStore((state) => state.querySync);
 
+  const isEqual = querySync.split("=");
+
+  const attr = isEqual[0]?.trim();
+  const val = isEqual?.[1]?.trim();
+
+  console.log("IS EQUAL", [attr, val]);
+
   const filteredErrors = totalErrors?.filter((item) => {
     if (!querySync) {
       return true;
     }
+
+    if (isEqual?.length > 1) {
+      const attr = isEqual[0]?.trim();
+      // return item[attr]?.toLowerCase() === val?.toLowerCase();
+
+      if (item[attr]?.toLowerCase() === val?.toLowerCase()?.trim()) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     return JSON.stringify(item)
       ?.toLowerCase()
       ?.includes(querySync?.toLowerCase());
@@ -33,6 +53,8 @@ export const InsightErrorView = () => {
           <p className="font-extralight text-3xl">{filteredErrors?.length}</p>
         </div>
       </div>
+
+      <ErrorInsightHeaders />
 
       <section>
         <code>

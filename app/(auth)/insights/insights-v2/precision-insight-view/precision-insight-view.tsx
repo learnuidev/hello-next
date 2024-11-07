@@ -33,7 +33,17 @@ export const PrecisionInsightView = () => {
       const attr = isEqual[0]?.trim();
       // return item[attr]?.toLowerCase() === val?.toLowerCase();
 
-      if (item[attr]?.toLowerCase() === val?.toLowerCase()?.trim()) {
+      const attributeItem = item?.[attr];
+
+      if (!attributeItem) {
+        return false;
+      }
+
+      if (
+        (typeof attributeItem === "string"
+          ? attributeItem?.toLowerCase()
+          : attributeItem) === val?.toLowerCase()?.trim()
+      ) {
         return true;
       } else {
         return false;
@@ -54,7 +64,7 @@ export const PrecisionInsightView = () => {
 
   return (
     <div className="my-4 md:my-16 relative">
-      <div className="sticky top-0 py-4 z-20 bg-[rgb(9,10,11)] mb-12 flex justify-between items-center">
+      <div className="sticky top-0 z-20 bg-[rgb(9,10,11)] mb-12 flex justify-between items-center">
         <Link href="/insights">
           <Icons.xMark />
         </Link>

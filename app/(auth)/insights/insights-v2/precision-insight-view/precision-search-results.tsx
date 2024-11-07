@@ -20,6 +20,7 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
             key={`${val}-${idx}`}
             href={`/nmm/${comp?.hanzi}?lang="zh"`}
             target="_blank"
+            className="block"
           >
             <div className="flex items-start justify-between">
               <div>

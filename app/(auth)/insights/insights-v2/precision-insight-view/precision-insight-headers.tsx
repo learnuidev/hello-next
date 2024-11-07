@@ -1,11 +1,11 @@
 "use client";
 
-import { InsightItem } from "@/app/(auth)/insights/_v2/components/insight-item";
-import { useGetFailureRate } from "@/app/(auth)/insights/_v2/use-get-failure-rate";
-import { useListAttempts } from "@/app/(auth)/insights/_v2/use-list-attempts";
-import { useListCorrect } from "@/app/(auth)/insights/_v2/use-list-correct";
-import { useListErrors } from "@/app/(auth)/insights/_v2/use-list-errors";
-import { useGetInsightParams } from "../use-get-insight-params";
+import { InsightItem } from "@/app/(auth)/insights/insights-v2/components/insight-item";
+import { useGetFailureRate } from "@/app/(auth)/insights/insights-v2/use-get-failure-rate";
+import { useListAttempts } from "@/app/(auth)/insights/insights-v2/use-list-attempts";
+import { useListCorrect } from "@/app/(auth)/insights/insights-v2/use-list-correct";
+import { useListErrors } from "@/app/(auth)/insights/insights-v2/use-list-errors";
+import { useGetInsightParams } from "@/app/(auth)/insights/insights-v2/use-get-insight-params";
 
 export const PrecisionInsightHeaders = () => {
   const totalErrors = useListErrors();

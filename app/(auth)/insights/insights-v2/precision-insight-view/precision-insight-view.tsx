@@ -1,12 +1,11 @@
 "use client";
 
+import { useSearchQueryStore } from "@/components/search/state";
 import { Icons } from "@/components/ui/icons.v2";
 import Link from "next/link";
-import { useListErrors } from "../use-list-errors";
-import { useSearchQueryStore } from "@/components/search/state";
-import { PrecisionInsightHeaders } from "./precision-insight-headers";
-import { useListAttempts } from "../use-list-attempts";
-import { useGetTopTenIncorrect } from "./use-get-top-ten-incorrect";
+import { useListAttempts } from "@/app/(auth)/insights/insights-v2/use-list-attempts";
+import { PrecisionInsightHeaders } from "@/app/(auth)/insights/insights-v2/precision-insight-view/precision-insight-headers";
+import { useGetTopTenIncorrect } from "@/app/(auth)/insights/insights-v2/precision-insight-view/use-get-top-ten-incorrect";
 
 export const PrecisionInsightView = () => {
   const totalAttempts = useListAttempts();

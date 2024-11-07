@@ -1,6 +1,6 @@
 "use client";
 
-import { useListAttempts } from "./use-list-attempts";
+import { useListAttempts } from "@/app/(auth)/insights/insights-v2/use-list-attempts";
 
 export const useListErrors = () => {
   const totalAttempts = useListAttempts();

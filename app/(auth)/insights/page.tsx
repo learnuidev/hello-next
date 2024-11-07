@@ -5,7 +5,7 @@ import { NavBar } from "@/components/navbar";
 
 import { InsightsFilters } from "./InsightsFilters";
 
-import { InsightsV2 } from "./_v2/insights-v2";
+import { InsightsV2 } from "./insights-v2/insights-v2";
 import { CharacterDiscoveryAreaChart } from "./CharacterDiscoveryAreaChart";
 import { CharacterDiscoveryBarChart } from "./CharacterDiscoveryBarChart";
 import { CharacterLearnedBarChart } from "./CharacterLearnedBarChart";

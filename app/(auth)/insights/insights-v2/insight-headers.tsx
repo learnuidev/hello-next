@@ -1,10 +1,10 @@
 "use client";
 
-import { InsightItem } from "@/app/(auth)/insights/_v2/components/insight-item";
+import { InsightItem } from "@/app/(auth)/insights/insights-v2/components/insight-item";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useGetInsightParams } from "./use-get-insight-params";
-import { useListErrors } from "./use-list-errors";
-import { useGetFailureRate } from "./use-get-failure-rate";
+import { useGetInsightParams } from "@/app/(auth)/insights/insights-v2/use-get-insight-params";
+import { useListErrors } from "@/app/(auth)/insights/insights-v2/use-list-errors";
+import { useGetFailureRate } from "@/app/(auth)/insights/insights-v2/use-get-failure-rate";
 
 export const InsightHeaders = () => {
   const { data: learnedCharacters } = useListCharactersQuery();

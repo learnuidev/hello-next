@@ -1,8 +1,7 @@
 "use client";
 
-import { useListAttempts } from "./use-list-attempts";
-import { useListCorrect } from "./use-list-correct";
-import { useListErrors } from "./use-list-errors";
+import { useListAttempts } from "@/app/(auth)/insights/insights-v2/use-list-attempts";
+import { useListErrors } from "@/app/(auth)/insights/insights-v2/use-list-errors";
 
 export const useGetFailureRate = () => {
   const totalAttempts = useListAttempts();

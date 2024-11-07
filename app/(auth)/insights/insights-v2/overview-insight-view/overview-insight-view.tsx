@@ -13,9 +13,9 @@ import {
   VictoryLabel,
   VictoryVoronoiContainer,
 } from "victory";
-import { useInsightsState } from "../use-insights-state";
-import { useGetWeeklyData } from "../WeeklyBarChart";
-import { InsightHeaders } from "./insight-headers";
+import { useInsightsState } from "@/app/(auth)/insights/use-insights-state";
+import { useGetWeeklyData } from "@/app/(auth)/insights/WeeklyBarChart";
+import { InsightHeaders } from "@/app/(auth)/insights/insights-v2/insight-headers";
 
 const humanLangs = {
   ne: "Nepali",

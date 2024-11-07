@@ -25,7 +25,7 @@ export const CharacterTitle = ({
   const { data } = useListComponentVariantsQuery({ hanzi: characterId });
 
   const pinyins = data?.map((val) => val?.pinyin) || [];
-  // const englishMeanings = data?.map((val) => val?.en) || [];
+  const englishMeanings = data?.map((val) => val?.en) || [];
 
   const { speak } = useSpeak();
 
@@ -53,7 +53,9 @@ export const CharacterTitle = ({
         // <div>{JSON.stringify(pinyins)}</div>
         <h2 className="text-gray-400 font-extralight">{pinyins?.join("/")}</h2>
       ) : (
-        <h2 className="text-gray-400 font-extralight">{pinyinOrRoman}</h2>
+        <h2 className="text-gray-400 font-extralight">
+          {pinyinOrRoman || pinyins?.[0]}
+        </h2>
       )}
 
       {lang === "zh" ? (
@@ -122,7 +124,9 @@ export const CharacterTitle = ({
 
       {/* {brightMode && ( */}
 
-      <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
+      <h2 className="text-gray-500 font-light">
+        {selectedCompEn || englishMeanings?.[0]}
+      </h2>
 
       {/* {englishMeanings?.length > 1 ? (
         <h2 className="text-gray-400 font-extralight">

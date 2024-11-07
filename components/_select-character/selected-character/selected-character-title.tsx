@@ -54,6 +54,7 @@ export const SelectedCharacterTitle = (props: SelectedCharacterProps) => {
       <CharacterTitle
         pinyinOrRoman={pinyinOrRoman}
         multiSentence={multiSentence}
+        characterId={characterId}
         lang={lang}
         selectedCompInput={selectedCompInput}
         selectedCompEn={selectedCompEn}

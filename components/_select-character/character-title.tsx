@@ -1,14 +1,15 @@
-import { cn } from "@/lib/utils";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
-import { useMemo } from "react";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { cn } from "@/lib/utils";
+import { useMemo } from "react";
 
-import { useReadModeStore } from "@/stores/use-readmode-store";
 import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
-import { Icons } from "../ui/icons.v2";
-import Link from "next/link";
 import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
+import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
+import { useReadModeStore } from "@/stores/use-readmode-store";
+import Link from "next/link";
+import { Icons } from "../ui/icons.v2";
 
 export const CharacterTitle = ({
   pinyinOrRoman,
@@ -16,9 +17,15 @@ export const CharacterTitle = ({
   multiSentence,
   selectedCompInput,
   selectedCompEn,
+  characterId,
 }: any) => {
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersQuery();
+
+  const { data } = useListComponentVariantsQuery({ hanzi: characterId });
+
+  const pinyins = data?.map((val) => val?.pinyin) || [];
+  // const englishMeanings = data?.map((val) => val?.en) || [];
 
   const { speak } = useSpeak();
 
@@ -42,7 +49,12 @@ export const CharacterTitle = ({
 
   return (
     <div className="flex flex-col items-start space-y-2">
-      <h2 className="text-gray-400 font-extralight">{pinyinOrRoman}</h2>
+      {pinyins?.length > 1 ? (
+        // <div>{JSON.stringify(pinyins)}</div>
+        <h2 className="text-gray-400 font-extralight">{pinyins?.join("/")}</h2>
+      ) : (
+        <h2 className="text-gray-400 font-extralight">{pinyinOrRoman}</h2>
+      )}
 
       {lang === "zh" ? (
         <div className="space-x-4 flex items-center">
@@ -109,7 +121,17 @@ export const CharacterTitle = ({
       )}
 
       {/* {brightMode && ( */}
+
       <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
+
+      {/* {englishMeanings?.length > 1 ? (
+        <h2 className="text-gray-400 font-extralight">
+          {englishMeanings?.join(" / ")}
+        </h2>
+      ) : (
+        <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
+      )} */}
+
       {/* )} */}
     </div>
   );

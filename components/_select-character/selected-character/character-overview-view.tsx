@@ -52,26 +52,28 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
               <Tabs defaultValue="overview">
                 {/* <Tabs defaultValue="dé"> */}
                 <div>
-                  <TabsList className="space-x-8">
-                    <TabsTrigger
-                      value="overview"
-                      className="px-0 data-[state=active]:text-yellow-500 data-[state=active]:font-bold"
-                    >
-                      {" "}
-                      Overview
-                    </TabsTrigger>
-                    {(data || [])?.map((item) => {
-                      return (
-                        <TabsTrigger
-                          key={item?.hanbookId}
-                          value={item?.pinyin}
-                          className="px-0 data-[state=active]:text-yellow-500 data-[state=active]:font-bold"
-                        >
-                          {item?.pinyin}
-                        </TabsTrigger>
-                      );
-                    })}
-                  </TabsList>
+                  {false && (
+                    <TabsList className="space-x-8">
+                      <TabsTrigger
+                        value="overview"
+                        className="px-0 data-[state=active]:text-yellow-500 data-[state=active]:font-bold"
+                      >
+                        {" "}
+                        Overview
+                      </TabsTrigger>
+                      {(data || [])?.map((item) => {
+                        return (
+                          <TabsTrigger
+                            key={item?.hanbookId}
+                            value={item?.pinyin}
+                            className="px-0 data-[state=active]:text-yellow-500 data-[state=active]:font-bold"
+                          >
+                            {item?.pinyin}
+                          </TabsTrigger>
+                        );
+                      })}
+                    </TabsList>
+                  )}
                 </div>
 
                 <TabsContent value="overview" className="mt-6">

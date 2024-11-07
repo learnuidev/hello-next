@@ -1,6 +1,6 @@
 "use client";
 
-import { InsightErrorView } from "./insight-error-view/insight-error-view";
+import { PrecisionInsightView } from "./precision-insight-view/precision-insight-view";
 import { OverviewInsightView } from "./overview-insight-view";
 import { useGetInsightParams } from "./use-get-insight-params";
 
@@ -10,7 +10,7 @@ export const InsightsV2 = () => {
   switch (view) {
     case "errors":
     case "failure-rate":
-      return <InsightErrorView />;
+      return <PrecisionInsightView />;
     default:
       return <OverviewInsightView />;
   }

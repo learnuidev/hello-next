@@ -7,7 +7,7 @@ import { useListCorrect } from "@/app/(auth)/insights/_v2/use-list-correct";
 import { useListErrors } from "@/app/(auth)/insights/_v2/use-list-errors";
 import { useGetInsightParams } from "../use-get-insight-params";
 
-export const ErrorInsightHeaders = () => {
+export const PrecisionInsightHeaders = () => {
   const totalErrors = useListErrors();
   const totalAttempts = useListAttempts();
   const totalCorrect = useListCorrect();

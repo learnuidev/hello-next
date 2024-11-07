@@ -4,10 +4,13 @@ import { Icons } from "@/components/ui/icons.v2";
 import Link from "next/link";
 import { useListErrors } from "../use-list-errors";
 import { useSearchQueryStore } from "@/components/search/state";
-import { ErrorInsightHeaders } from "./error-insight-headers";
+import { PrecisionInsightHeaders } from "./precision-insight-headers";
+import { useListAttempts } from "../use-list-attempts";
+import { useGetTopTenIncorrect } from "./use-get-top-ten-incorrect";
 
-export const InsightErrorView = () => {
-  const totalErrors = useListErrors();
+export const PrecisionInsightView = () => {
+  const totalAttempts = useListAttempts();
+  const topTenIncorrect = useGetTopTenIncorrect();
 
   const querySync = useSearchQueryStore((state) => state.querySync);
 
@@ -18,7 +21,7 @@ export const InsightErrorView = () => {
 
   console.log("IS EQUAL", [attr, val]);
 
-  const filteredErrors = totalErrors?.filter((item) => {
+  const filteredErrors = totalAttempts?.filter((item) => {
     if (!querySync) {
       return true;
     }
@@ -46,7 +49,7 @@ export const InsightErrorView = () => {
           <Icons.xMark />
         </Link>
         <h1 className="text-2xl dark:text-gray-500 font-extralight text-center">
-          Errors
+          Precision
         </h1>
 
         <div>
@@ -54,11 +57,11 @@ export const InsightErrorView = () => {
         </div>
       </div>
 
-      <ErrorInsightHeaders />
+      <PrecisionInsightHeaders />
 
       <section>
         <code>
-          <pre>{JSON.stringify(filteredErrors, null, 2)}</pre>
+          <pre>{JSON.stringify(topTenIncorrect, null, 2)}</pre>
         </code>
       </section>
     </div>

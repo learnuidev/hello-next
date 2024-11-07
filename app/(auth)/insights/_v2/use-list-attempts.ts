@@ -15,6 +15,13 @@ export const useListAttempts = () => {
             pinyin: item?.pinyin,
             en: item?.en,
             story: item?.story,
+            totalAttempts: item?.reviewHistory?.length,
+            totalIncorrect:
+              item?.reviewHistory?.filter((v: any) => v.outcome === "incorrect")
+                ?.length || 0,
+            totalCorrect:
+              item?.reviewHistory?.filter((v: any) => v.outcome === "correct")
+                ?.length || 0,
           });
         }, []);
       })

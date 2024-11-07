@@ -80,7 +80,11 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
 
                 {(data || [])?.map((item) => {
                   return (
-                    <TabsContent value={item?.pinyin} className="mt-6">
+                    <TabsContent
+                      key={item?.pinyin}
+                      value={item?.pinyin}
+                      className="mt-6"
+                    >
                       <div>
                         <h1 className="text-2xl mb-4">
                           <span>{item?.pinyin}</span> has{" "}

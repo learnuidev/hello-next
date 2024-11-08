@@ -1,29 +1,11 @@
 import { verifyJwt } from "@/libs/cognito/jwt";
-import path from "path";
-import fs from "fs";
 import axios from "axios";
-import util from "util";
-
-// const readFile = require('util').promisify(fs.readFile);
-
 import { headers } from "next/headers";
-
-import { getUploadUrl } from "@/domain/asset/asset.api";
 import { addUserAsset } from "@/domain/asset/add-user-asset.api";
+import { getUploadUrl } from "@/domain/asset/asset.api";
 import { updateComponent } from "@/domain/component/update-component.api";
 
 export const maxDuration = 60;
-
-function readFile(filePath: string) {
-  return new Promise((resolve, reject) => {
-    fs.readFile(filePath, (err, data) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(data);
-    });
-  });
-}
 
 export async function POST(req: Request) {
   const headersApi = headers();

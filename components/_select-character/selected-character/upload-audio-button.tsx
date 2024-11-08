@@ -3,28 +3,12 @@ import { Icons } from "../../ui/icons.v2";
 import { getUploadUrl } from "@/domain/asset/asset.api";
 import { useAddUserAssetMutation } from "@/domain/asset/asset.mutation";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
+import { updateComponent } from "@/domain/component/update-component.api";
 import { IComponent } from "@/domain/lesson/component.queries";
 import { queryIds } from "@/domain/lesson/queryIds";
 import { siteConfig } from "@/lib/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Axios from "axios";
-
-const updateComponent = async (
-  params: any,
-  opts: {
-    Authorization: string;
-  }
-) => {
-  const res = await fetch(`${siteConfig.apiUrl}/v1/update-component`, {
-    method: "POST",
-    headers: {
-      Authorization: `${opts?.Authorization}`,
-    },
-    body: JSON.stringify(params),
-  });
-  const resp = await res.json();
-  return resp;
-};
 
 export function useUpdateComponentMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});

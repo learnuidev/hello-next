@@ -1,11 +1,5 @@
-"use client";
-import { queryIds } from "./queryIds";
-
-import { useQuery } from "@tanstack/react-query";
-
-import { useCurrentAuthUser } from "../auth/auth.queries";
-import { GetUploadUrlParams, GetUploadUrlSuccess } from "./asset.types";
 import { siteConfig } from "@/lib/config";
+import { GetUploadUrlParams, GetUploadUrlSuccess } from "./asset.types";
 
 // TODO: Move this to .env
 

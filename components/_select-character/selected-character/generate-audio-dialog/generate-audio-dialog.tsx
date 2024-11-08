@@ -2,6 +2,7 @@ import { NarakeetVoicesList } from "@/app/(auth)/tita/narakeet-voices-list";
 import { useGetAudioResourceQuery } from "@/app/(auth)/tita/use-get-audio-resource-query";
 import { useStartGeneratingAudioMutation } from "@/app/(auth)/tita/use-start-generating-audio-mutation";
 import { useTitaStore } from "@/app/(auth)/tita/use-tita-store";
+import { useUploadAudioMutation } from "@/app/(auth)/tita/use-upload-audio-mutation";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,6 +16,42 @@ import { Icons } from "@/components/ui/icons.v2";
 import { IComponent } from "@/domain/lesson/component.queries";
 import { IGetAudioResourceResponse } from "@/libs/narakeet/narakeet";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import useSound from "use-sound";
+
+const PlayVoice = ({ audioUrl }: { audioUrl: string }) => {
+  // const audioUrl = `https://www.narakeet.com/samples/voices/yifei.mp3`;
+
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  console.log("AUDIO URL", audioUrl);
+
+  const [play, { stop, duration, audio }] = useSound(audioUrl) as any;
+  // console.log("PROPS", props);
+  // const [play, { stop }] = props;
+
+  console.log("DURATION", duration);
+  return (
+    <button
+      className="px-2"
+      onClick={() => {
+        if (!isPlaying) {
+          setIsPlaying(true);
+          play();
+        } else {
+          setIsPlaying(false);
+          stop();
+        }
+      }}
+    >
+      {isPlaying ? (
+        <Icons.pause className="text-2xl" />
+      ) : (
+        <Icons.play className="text-2xl" />
+      )}
+    </button>
+  );
+};
 
 // Todos:
 
@@ -42,15 +79,18 @@ export function GenerateAudioDialog({
   const resourceStatus = useTitaStore((state) => state.resourceStatus);
   const setResourceStatus = useTitaStore((state) => state.setResourceStatus);
   const startGeneratingAudioMutation = useStartGeneratingAudioMutation();
+
+  const uploadAudioMutation = useUploadAudioMutation();
   const generateAudio = () => {
     return startGeneratingAudioMutation
       .mutateAsync({
         text: currentPhrase?.hanzi,
         voice: voiceItem,
         speed: 0.7,
-        volume: "soft",
+        volume: "standard",
       })
       .then((res) => {
+        setResourceStatus(null);
         setAudioResource(res);
         // router.push(
         //   `/nmm/${currentPhrase.hanzi}?lang=zh&status-url=${res.statusUrl}`
@@ -73,10 +113,17 @@ export function GenerateAudioDialog({
     }
   );
 
+  const audioUrl = (resourceStatus as any)?.result;
+
   console.log("RESOURCE STATUS", resourceStatus);
 
+  console.log("CURRENT P", currentPhrase);
+
   return (
-    <Dialog open={isOpen}>
+    <Dialog
+      open={isOpen}
+      // @ts-ignore
+    >
       <DialogTrigger
         onClick={() => {
           openDialog();
@@ -86,17 +133,52 @@ export function GenerateAudioDialog({
           <Icons.ai /> Generate
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-black">
+      <DialogContent
+        className="sm:max-w-[425px] bg-black"
+        onClick={() => {
+          closeDialog();
+        }}
+      >
         <DialogHeader>
           <DialogTitle>Add audio</DialogTitle>
         </DialogHeader>
 
-        <div>{voiceItem}</div>
-
         <div>
           <NarakeetVoicesList />
 
-          <div>{JSON.stringify(data, null, 2)}</div>
+          <div className="mt-8">
+            {startGeneratingAudioMutation?.isLoading ? (
+              <p>Generating...</p>
+            ) : !audioUrl ? (
+              <div>Loading Audio </div>
+            ) : (
+              <div>
+                {audioUrl && (
+                  <div>
+                    <PlayVoice audioUrl={audioUrl} />
+
+                    <button
+                      onClick={() => {
+                        uploadAudioMutation
+                          .mutateAsync({
+                            audioUrl,
+                            component: currentPhrase?.hanzi,
+                            componentId: currentPhrase?.id,
+                          })
+                          .then((resp) => {
+                            alert(JSON.stringify(resp));
+                          });
+                      }}
+                    >
+                      Upload Audio{" "}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* <div>{JSON.stringify(resourceStatus, null, 2)}</div> */}
         </div>
 
         <DialogFooter>

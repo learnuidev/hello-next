@@ -1,34 +1,9 @@
 "use client";
-import { queryIds } from "./queryIds";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
-import { siteConfig } from "@/lib/config";
+import { addUserAsset, AddUserAssetParams } from "./add-user-asset.api";
 import { listUserAssetsQueryKey } from "./use-list-user-assets";
-// import { listUserAssetsQueryId } from "./asset.queries";
-
-// TODO: Move this to .env
-const url =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/add-content";
-
-interface AddUserAssetParams {}
-
-const addUserAsset = async (
-  params: AddUserAssetParams,
-  opts: {
-    Authorization: string;
-  }
-) => {
-  const res = await fetch(`${siteConfig.apiUrl}/v1/add-user-asset`, {
-    method: "POST",
-    headers: {
-      Authorization: `${opts?.Authorization}`,
-    },
-    body: JSON.stringify(params),
-  });
-  const resp = await res.json();
-  return resp;
-};
 
 export function useAddUserAssetMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});

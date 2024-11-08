@@ -175,7 +175,7 @@ export function NewConvo({ type }: { type?: string }) {
     // formData.append("image", file);
 
     Axios.put(url, file, {
-      headers: { ["Content-Type"]: contentType },
+      headers: { "Content-Type": contentType },
     });
 
     addUserAssetMutation

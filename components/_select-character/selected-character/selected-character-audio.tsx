@@ -11,6 +11,8 @@ export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
 
   // const
 
+  console.log("SELECTED COMP", selectedComp2);
+
   return (
     (selectedComp2?.input || selectedComp2?.hanzi) && (
       <div className="my-8">

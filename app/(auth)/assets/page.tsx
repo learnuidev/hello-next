@@ -6,12 +6,15 @@ import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { cn } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
+import { useDeleteUserAssetMutation } from "./use-delete-user-asset-mutation";
 
 export default function Assets() {
   const { data: userAssets, isError } = useListUserAssets();
   const searchParams = useSearchParams();
 
   const assetTypeSearchParam = searchParams.get("type") || "";
+
+  const deleteUserAssetMutation = useDeleteUserAssetMutation();
 
   const assetTypes = [
     ...new Set(userAssets?.map((x) => x.extension)),
@@ -77,6 +80,20 @@ export default function Assets() {
                     >
                       <pre>{JSON.stringify(asset, null, 2)}</pre>
                     </code>
+
+                    <button
+                      onClick={() => {
+                        deleteUserAssetMutation
+                          .mutateAsync({
+                            id: asset?.id,
+                          })
+                          .then(() => {
+                            alert("Delete succcess");
+                          });
+                      }}
+                    >
+                      Delete
+                    </button>
                   </div>
                 );
               })}

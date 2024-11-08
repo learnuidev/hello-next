@@ -35,17 +35,20 @@ export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
           )
         ) : null}
 
-        {selectedComp2 && isSuperAdmin && (
-          <div>
-            <button
-              onClick={() => {
-                setUploadNew(true);
-              }}
-            >
-              Upload New{" "}
-            </button>
-          </div>
-        )}
+        {selectedComp2 &&
+          selectedComp2?.audio &&
+          isSuperAdmin &&
+          !uploadNew && (
+            <div>
+              <button
+                onClick={() => {
+                  setUploadNew(true);
+                }}
+              >
+                Upload New{" "}
+              </button>
+            </div>
+          )}
       </div>
     )
   );

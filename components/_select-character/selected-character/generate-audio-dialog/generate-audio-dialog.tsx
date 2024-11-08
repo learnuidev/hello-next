@@ -13,7 +13,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Icons } from "@/components/ui/icons.v2";
-import { IComponent } from "@/domain/lesson/component.queries";
+import {
+  IComponent,
+  listComponentsQueryKey,
+} from "@/domain/lesson/component.queries";
 import { IGetAudioResourceResponse } from "@/libs/narakeet/narakeet";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -96,7 +99,11 @@ export function GenerateAudioDialog({
   const searchParams = useSearchParams();
   const statusUrl = audioResource?.statusUrl || "";
 
-  const { data } = useGetAudioResourceQuery(
+  const {
+    data,
+    isLoading: isAudioLoading,
+    isPaused,
+  } = useGetAudioResourceQuery(
     {
       statusUrl: statusUrl,
     },
@@ -140,8 +147,12 @@ export function GenerateAudioDialog({
           <div className="mt-8">
             {startGeneratingAudioMutation?.isLoading ? (
               <p>Generating...</p>
+            ) : !data ? (
+              <div> </div>
+            ) : isAudioLoading ? (
+              <p>Loading Audio..</p>
             ) : !audioUrl ? (
-              <div>Loading Audio </div>
+              <div> </div>
             ) : (
               <div>
                 {audioUrl && (
@@ -149,6 +160,7 @@ export function GenerateAudioDialog({
                     <PlayVoice audioUrl={audioUrl} />
 
                     <button
+                      disabled={!audioUrl}
                       onClick={() => {
                         uploadAudioMutation
                           .mutateAsync({
@@ -157,7 +169,12 @@ export function GenerateAudioDialog({
                             componentId: currentPhrase?.id,
                           })
                           .then((resp) => {
-                            alert(JSON.stringify(resp));
+                            // alert(JSON.stringify(resp));
+                            setResourceStatus(null);
+                            setAudioResource(null);
+                            queryClient.invalidateQueries([
+                              listComponentsQueryKey,
+                            ]);
 
                             closeDialog();
                           });
@@ -169,6 +186,37 @@ export function GenerateAudioDialog({
                 )}
               </div>
             )}
+
+            <div>
+              {audioUrl && (
+                <div className="flex justify-start space-x-4 items-center">
+                  <PlayVoice audioUrl={audioUrl} />
+
+                  <button
+                    disabled={!audioUrl}
+                    onClick={() => {
+                      uploadAudioMutation
+                        .mutateAsync({
+                          audioUrl,
+                          component: currentPhrase?.hanzi,
+                          componentId: currentPhrase?.id,
+                        })
+                        .then((resp) => {
+                          setResourceStatus(null);
+                          setAudioResource(null);
+                          queryClient.invalidateQueries([
+                            listComponentsQueryKey,
+                          ]);
+
+                          closeDialog();
+                        });
+                    }}
+                  >
+                    Upload Audio{" "}
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* <div>{JSON.stringify(resourceStatus, null, 2)}</div> */}

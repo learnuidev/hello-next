@@ -41,6 +41,8 @@ export async function POST(req: Request) {
       responseType: "arraybuffer",
     });
 
+    console.log("AUDIO RESPONSE", audioResponse);
+
     // 2. Get Upload Url
     const getUploadUrlParams = {
       extension: "mp3",
@@ -64,7 +66,7 @@ export async function POST(req: Request) {
     const userAssetParams = {
       id,
       name: component,
-      // size: fileSize,
+      size: parseInt(audioResponse.headers["content-length"]) || 0,
       contentType: getUploadUrlParams?.contentType,
       extension: getUploadUrlParams?.extension,
       sourceUrl: assetUrl,

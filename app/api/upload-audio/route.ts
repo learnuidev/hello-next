@@ -8,8 +8,6 @@ import util from "util";
 
 import { headers } from "next/headers";
 
-import { deleteFile } from "./delete-file";
-import { downloadFile } from "./download-file";
 import { getUploadUrl } from "@/domain/asset/asset.api";
 import { addUserAsset } from "@/domain/asset/add-user-asset.api";
 import { updateComponent } from "@/domain/component/update-component.api";
@@ -35,7 +33,7 @@ export async function POST(req: Request) {
   const jwtToken = headersApi.get("authorization") || "";
   const isVerified = await verifyJwt(jwtToken, { isAdmin: false });
 
-  if (isVerified || true) {
+  if (isVerified) {
     // 1. Download audio as audio buffer
     const audioResponse = await axios.get(audioUrl, {
       responseType: "arraybuffer",

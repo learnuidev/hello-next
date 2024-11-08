@@ -23,7 +23,7 @@ export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
               key={JSON.stringify(selectedComp2)}
               currentPhrase={selectedComp2}
             />
-          ) : (
+          ) : !isSuperAdmin ? null : (
             <AddAudioButtons
               closeUploadNew={() => {
                 setUploadNew(false);

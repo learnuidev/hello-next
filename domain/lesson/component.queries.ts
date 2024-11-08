@@ -44,6 +44,7 @@ const listComponents = async (
   // return resp.sort((a: any, b: any) => (a.level || 0) - (b.level || 0));
 };
 
+export const listComponentsQueryKey = "list-components";
 function useListComponentsQuery(
   params = {} as {
     journeyId?: string;
@@ -55,7 +56,7 @@ function useListComponentsQuery(
   const currentLang = useGetCurrentLang();
 
   return useQuery(
-    [queryIds.listComponents],
+    [listComponentsQueryKey],
     async () => {
       // if (options.query) {
       const response = await listComponents(
@@ -107,7 +108,7 @@ export function useGetComponentQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
-    [queryIds.listComponents],
+    ["get-component", params?.componentId],
     async () => {
       // if (options.query) {
       const response = await getComponent(params, {

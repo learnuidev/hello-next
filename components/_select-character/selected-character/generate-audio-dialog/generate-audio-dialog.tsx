@@ -15,20 +15,17 @@ import {
 import { Icons } from "@/components/ui/icons.v2";
 import { IComponent } from "@/domain/lesson/component.queries";
 import { IGetAudioResourceResponse } from "@/libs/narakeet/narakeet";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import useSound from "use-sound";
 
 const PlayVoice = ({ audioUrl }: { audioUrl: string }) => {
-  // const audioUrl = `https://www.narakeet.com/samples/voices/yifei.mp3`;
-
   const [isPlaying, setIsPlaying] = useState(false);
 
   console.log("AUDIO URL", audioUrl);
 
   const [play, { stop, duration, audio }] = useSound(audioUrl) as any;
-  // console.log("PROPS", props);
-  // const [play, { stop }] = props;
 
   console.log("DURATION", duration);
   return (
@@ -79,6 +76,7 @@ export function GenerateAudioDialog({
   const resourceStatus = useTitaStore((state) => state.resourceStatus);
   const setResourceStatus = useTitaStore((state) => state.setResourceStatus);
   const startGeneratingAudioMutation = useStartGeneratingAudioMutation();
+  const queryClient = useQueryClient();
 
   const uploadAudioMutation = useUploadAudioMutation();
   const generateAudio = () => {
@@ -92,9 +90,6 @@ export function GenerateAudioDialog({
       .then((res) => {
         setResourceStatus(null);
         setAudioResource(res);
-        // router.push(
-        //   `/nmm/${currentPhrase.hanzi}?lang=zh&status-url=${res.statusUrl}`
-        // );
       });
   };
 
@@ -114,10 +109,6 @@ export function GenerateAudioDialog({
   );
 
   const audioUrl = (resourceStatus as any)?.result;
-
-  console.log("RESOURCE STATUS", resourceStatus);
-
-  console.log("CURRENT P", currentPhrase);
 
   return (
     <Dialog
@@ -167,6 +158,8 @@ export function GenerateAudioDialog({
                           })
                           .then((resp) => {
                             alert(JSON.stringify(resp));
+
+                            closeDialog();
                           });
                       }}
                     >

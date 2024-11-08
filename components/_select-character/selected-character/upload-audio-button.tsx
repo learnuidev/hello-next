@@ -4,7 +4,10 @@ import { getUploadUrl } from "@/domain/asset/asset.api";
 import { useAddUserAssetMutation } from "@/domain/asset/asset.mutation";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { updateComponent } from "@/domain/component/update-component.api";
-import { IComponent } from "@/domain/lesson/component.queries";
+import {
+  IComponent,
+  listComponentsQueryKey,
+} from "@/domain/lesson/component.queries";
 import { queryIds } from "@/domain/lesson/queryIds";
 import { siteConfig } from "@/lib/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -27,7 +30,7 @@ export function useUpdateComponentMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([queryIds.listComponents]);
+        queryClient.invalidateQueries([listComponentsQueryKey]);
       },
     }
   );

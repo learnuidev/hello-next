@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { queryIds } from "../lesson/queryIds";
 import { siteConfig } from "@/lib/config";
+import { listComponentsQueryKey } from "../lesson/component.queries";
 
 const addSentenceUrl = `${siteConfig.apiUrl}/v1/add-sentence`;
 
@@ -46,7 +47,7 @@ export function useAddSentenceMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([queryIds.listComponents]);
+        queryClient.invalidateQueries([listComponentsQueryKey]);
       },
     }
   );

@@ -5,8 +5,12 @@ import { useState } from "react";
 
 export const AddAudioButtons = ({
   currentPhrase,
+  closeUploadNew,
+  uploadNew,
 }: {
   currentPhrase: IComponent;
+  uploadNew: boolean;
+  closeUploadNew: () => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -14,12 +18,13 @@ export const AddAudioButtons = ({
       <UploadAudioButton currentPhrase={currentPhrase} />
       <GenerateAudioDialog
         currentPhrase={currentPhrase}
-        isOpen={isOpen}
+        isOpen={isOpen || uploadNew}
         openDialog={() => {
           setIsOpen(true);
         }}
         closeDialog={() => {
           setIsOpen(false);
+          closeUploadNew();
         }}
       />
     </div>

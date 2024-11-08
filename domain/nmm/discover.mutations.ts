@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { queryIds } from "../lesson/queryIds";
+import { listComponentsQueryKey } from "../lesson/component.queries";
 
 // TODO: Move this to .env
 const url =
@@ -47,7 +48,7 @@ export function useDiscoverMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([queryIds.listComponents]);
+        queryClient.invalidateQueries([listComponentsQueryKey]);
       },
     }
   );

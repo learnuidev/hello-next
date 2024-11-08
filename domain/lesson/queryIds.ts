@@ -4,5 +4,5 @@ export const queryIds = {
   listCharacters: "list-characters",
   addCharacter: "add-character",
 
-  listComponents: "list-components",
+  // listComponents: "list-components",
 };

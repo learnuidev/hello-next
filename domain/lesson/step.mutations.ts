@@ -1,9 +1,9 @@
 "use client";
 // import { queryIds } from "./queryIds";
-import { queryIds } from "./queryIds";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
+import { listComponentsQueryKey } from "./component.queries";
 
 // TODO: Move this to .env
 const url =
@@ -47,7 +47,7 @@ export function useAddStepsMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([queryIds?.listComponents]);
+        queryClient.invalidateQueries([listComponentsQueryKey]);
       },
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,

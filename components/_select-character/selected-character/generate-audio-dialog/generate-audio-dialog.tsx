@@ -110,7 +110,6 @@ export function GenerateAudioDialog({
     {
       onSuccess: (data: IGetAudioResourceResponse) => {
         setResourceStatus(data);
-        // console.log("DATA", data);
       },
     }
   );

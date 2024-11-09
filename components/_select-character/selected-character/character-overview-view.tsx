@@ -35,8 +35,6 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
 
   const { data } = useListComponentVariantsQuery({ hanzi: characterId });
 
-  console.log("DATA", data);
-
   return (
     <div
       className={

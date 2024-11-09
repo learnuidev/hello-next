@@ -22,8 +22,6 @@ export function ContentViewType({
 
   const { data } = useGetContent({ variant, selectedBelt, contentId });
 
-  console.log("DATAA", data);
-
   const xiaomaCharacters = data?.characters || [];
   const xiaomaWords = data?.words || [];
   const xiaomaSentences = data?.sentences || [];

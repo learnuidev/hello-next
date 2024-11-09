@@ -104,10 +104,6 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
             </div>
 
             <div className="flex justify-end items-end">
-              {/* <p className="text-lg sm:text-xl font-light truncate text-gray-500">
-                {comp?.en?.split("/")?.slice(0, 2)?.join("; ")}
-              </p> */}
-
               {comp?.status === "not_started" ? null : (
                 <div className="flex justify-start text-gray-500 font-light space-x-2">
                   <div>
@@ -127,27 +123,10 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
                   )}
                 </div>
               )}
-
-              {/* <div className="space-x-[2px] text-gray-400 font-light">
-                <span>
-                  <StatusIcon.Icon />
-                </span>
-
-                <span> {StatusIcon.title}</span>
-              </div> */}
             </div>
-
-            {/* <div>
-              <code>
-                <pre>{JSON.stringify(comp, null, 4)}</pre>
-              </code>
-            </div> */}
           </Link>
         );
       })}
-      {/* <code>
-        <pre>{JSON.stringify(groupByHanzi(searchResults), null, 2)}</pre>
-      </code> */}
     </section>
   );
 };

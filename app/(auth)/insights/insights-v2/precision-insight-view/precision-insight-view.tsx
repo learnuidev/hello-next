@@ -1,8 +1,6 @@
 "use client";
 
 import { PrecisionInsightHeaders } from "@/app/(auth)/insights/insights-v2/precision-insight-view/precision-insight-headers";
-import { useListAttempts } from "@/app/(auth)/insights/insights-v2/use-list-attempts";
-import { useSearchQueryStore } from "@/components/search/state";
 import { Icons } from "@/components/ui/icons.v2";
 import Link from "next/link";
 import {
@@ -12,60 +10,10 @@ import {
 import { PrecisionSearchResults } from "./precision-search-results";
 import { TopTenIncorrectComponents } from "./top-ten-incorrect-components";
 import { TopTenRecentlyReviewedComponents } from "./top-ten-recently-reviewed-components";
+import { useGetInsightSearchResults } from "./use-get-insight-search-results";
 
 export const PrecisionInsightView = () => {
-  const totalAttempts = useListAttempts();
-
-  const querySync = useSearchQueryStore((state) => state.query);
-
-  const isEqual = querySync.split("=");
-  const isGreater = querySync.split(">");
-  const isContains = querySync.split("~");
-
-  const attr = isEqual[0]?.trim();
-  const val = isEqual?.[1]?.trim();
-
-  const filteredTotalAttempts = totalAttempts?.filter((item) => {
-    if (!querySync) {
-      return true;
-    }
-
-    if (isEqual?.length > 1) {
-      const attr = isEqual[0]?.trim();
-      // return item[attr]?.toLowerCase() === val?.toLowerCase();
-
-      const attributeItem = item?.[attr];
-
-      if (!attributeItem) {
-        return false;
-      }
-
-      if (
-        `${attributeItem}`?.toLowerCase() === `${val}`?.toLowerCase()?.trim()
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    if (isGreater?.length > 1) {
-      const attr = isGreater[0]?.trim();
-      const val = isGreater?.[1]?.trim();
-
-      return item?.[attr] > parseInt(val);
-    }
-    if (isContains?.length > 1) {
-      const attr = isContains[0]?.trim();
-      const val = isContains?.[1]?.trim();
-
-      return `${item?.[`${attr}`]}`?.includes(`${val}`);
-    }
-
-    return JSON.stringify(item)
-      ?.toLowerCase()
-      ?.includes(querySync?.toLowerCase());
-  });
+  const filteredTotalAttempts = useGetInsightSearchResults();
 
   return (
     <div className="my-4 md:my-16 relative">
@@ -78,7 +26,7 @@ export const PrecisionInsightView = () => {
         </h1>
 
         <div>
-          {querySync && (
+          {filteredTotalAttempts?.length > 0 && (
             <p className="font-extralight text-3xl">
               {filteredTotalAttempts?.length}
             </p>
@@ -88,7 +36,7 @@ export const PrecisionInsightView = () => {
 
       <PrecisionInsightHeaders />
 
-      {querySync ? (
+      {filteredTotalAttempts?.length > 0 ? (
         <PrecisionSearchResults searchResults={filteredTotalAttempts} />
       ) : (
         <TwoSectionLayout>

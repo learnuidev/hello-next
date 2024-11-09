@@ -2,11 +2,14 @@
 
 import { useListAttempts } from "@/app/(auth)/insights/insights-v2/use-list-attempts";
 import { useSearchQueryStore } from "@/components/search/state";
+import { useListComponents } from "@/domain/lesson/component.queries";
 
-export const useGetInsightSearchResults = () => {
+export const useGetInsightSearchResults = (filterType?: string) => {
   const totalAttempts = useListAttempts();
 
   const querySync = useSearchQueryStore((state) => state.query);
+
+  const { data } = useListComponents();
 
   const isEqual = querySync.split("=");
   const isGreater = querySync.split(">");
@@ -15,7 +18,7 @@ export const useGetInsightSearchResults = () => {
   const val = isEqual?.[1]?.trim();
 
   const filteredTotalAttempts = querySync
-    ? totalAttempts?.filter((item: any) => {
+    ? (filterType === "all" ? data : totalAttempts)?.filter((item: any) => {
         if (!querySync) {
           return true;
         }

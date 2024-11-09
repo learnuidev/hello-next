@@ -37,6 +37,8 @@ import { NomadMethodTabsContainer } from "./nomad-method-tabs-container";
 import { PreviewComponent } from "./preview-component";
 import { useGetSelectedBelt } from "./use-get-selected-belt";
 import { YctView } from "./yct/yct-view";
+import { PrecisionSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/precision-search-results";
+import { useGetInsightSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/use-get-insight-search-results";
 
 export function NomadMethodMandarin() {
   const selectedBelt = useGetSelectedBelt();
@@ -110,6 +112,16 @@ export function NomadMethodMandarin() {
   ];
 
   const router = useRouter();
+
+  const searchResults = useGetInsightSearchResults("all");
+
+  if (queryStr) {
+    return (
+      <div className="mx-4 md:mx-48">
+        <PrecisionSearchResults searchResults={searchResults} />
+      </div>
+    );
+  }
 
   return (
     <ContentView>

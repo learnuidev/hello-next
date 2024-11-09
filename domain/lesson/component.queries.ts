@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useListCharactersQuery } from "./character.queries";
 
 // TODO: Move this to .env
 const url = `${siteConfig.apiUrl}/v1/list-components`;
@@ -52,11 +53,12 @@ function useListComponentsQuery(
   },
   options = {} as any
 ) {
+  const { data: learnedCharacters } = useListCharactersQuery();
   const { data: authUser } = useCurrentAuthUser({});
   const currentLang = useGetCurrentLang();
 
   return useQuery(
-    [listComponentsQueryKey],
+    [listComponentsQueryKey, JSON.stringify(learnedCharacters)],
     async () => {
       // if (options.query) {
       const response = await listComponents(
@@ -66,7 +68,42 @@ function useListComponentsQuery(
         }
       );
 
-      return response;
+      // return response;
+
+      return response?.map((component) => {
+        const item = learnedCharacters?.find(
+          (char) => char?.hanzi === component?.hanzi
+        );
+
+        const defaultComp = {
+          ...component,
+          totalAttempts: 0,
+          totalIncorrect: 0,
+          totalCorrect: 0,
+        };
+
+        if (!item) {
+          return defaultComp;
+        }
+        if (!item?.reviewHistory?.length) {
+          return defaultComp;
+        }
+
+        return {
+          ...component,
+          story: item?.story,
+          status: item?.status,
+          group: item?.group,
+          totalAttempts: item?.reviewHistory?.length,
+          totalIncorrect:
+            item?.reviewHistory?.filter((v: any) => v.outcome === "incorrect")
+              ?.length || 0,
+
+          totalCorrect:
+            item?.reviewHistory?.filter((v: any) => v.outcome === "correct")
+              ?.length || 0,
+        };
+      });
     },
     {
       ...options,

@@ -33,6 +33,8 @@ export function NmmCoreComponents() {
   const setQuery = useSearchQueryStore((state) => state.setQuery);
 
   const selectedBelt = useGetSelectedBelt();
+  const { data: authUser } = useCurrentAuthUser({});
+  const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const addHistoryMutation = useAddHistoryMutation();
 
@@ -79,9 +81,6 @@ export function NmmCoreComponents() {
     query: queryStr,
     characters: learnedCharacters2,
   });
-
-  const { data: authUser } = useCurrentAuthUser({});
-  const brightMode = useBrightModeStore((state: any) => state.mode);
 
   // const { data: filteredComponents } = useListComponentsByBelt();
 

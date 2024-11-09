@@ -80,9 +80,6 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
                 {comp?.en?.split("/")?.slice(0, 2)?.join("; ")}
               </p>
               <div className="flex justify-start text-gray-500 font-light space-x-2">
-                <span>
-                  <StatusIcon.Icon />
-                </span>
                 <div>
                   <span>{comp?.totalAttempts}</span>{" "}
                   {comp?.totalAttempts > 1 ? "attempts" : "attempt"}

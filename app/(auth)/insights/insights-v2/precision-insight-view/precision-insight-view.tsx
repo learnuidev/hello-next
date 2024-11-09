@@ -53,13 +53,13 @@ export const PrecisionInsightView = () => {
       const attr = isGreater[0]?.trim();
       const val = isGreater?.[1]?.trim();
 
-      return item[attr] > parseInt(val);
+      return item?.[attr] > parseInt(val);
     }
     if (isContains?.length > 1) {
       const attr = isContains[0]?.trim();
       const val = isContains?.[1]?.trim();
 
-      return item[`${attr}`]?.includes(`${val}`);
+      return `${item?.[`${attr}`]}`?.includes(`${val}`);
     }
 
     return JSON.stringify(item)
@@ -97,9 +97,6 @@ export const PrecisionInsightView = () => {
           </TwoSectionLayoutItem>
           <TwoSectionLayoutItem>
             <TopTenRecentlyReviewedComponents />
-            {/* <code>
-              <pre>{JSON.stringify(topTenIncorrect, null, 2)}</pre>
-            </code> */}
           </TwoSectionLayoutItem>
         </TwoSectionLayout>
       )}

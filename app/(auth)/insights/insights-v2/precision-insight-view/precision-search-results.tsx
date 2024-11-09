@@ -4,6 +4,13 @@ import { Icons } from "@/components/ui/icons.v2";
 import Link from "next/link";
 import { groupBy } from "ramda";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 const StatusIcons = {
   needs_review: {
     title: "Needs Review",
@@ -47,18 +54,31 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
                   <span className="text-2xl sm:text-4xl truncate">
                     {comp?.hanzi}{" "}
                   </span>
-                  <span className="text-xl text-gray-400 truncate">
+                  <span className="text-xl text-gray-300 truncate font-extralight">
                     {" "}
                     {comp?.pinyin}
                   </span>
                 </h1>
               </div>
-              <p className="text-lg sm:text-2xl font-extralight truncate text-gray-300">
-                {comp?.en?.split("/")?.slice(0, 2)?.join("; ")}
-              </p>
+
+              <TooltipProvider delayDuration={100}>
+                <Tooltip>
+                  <TooltipTrigger className="p-3 px-0 hover:scale-110 transition">
+                    <StatusIcon.Icon className="text-lg sm:text-2xl" />
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-black border-gray-800 rounded-full">
+                    <p>
+                      <span className="text-xs"> {StatusIcon.title}</span>
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
 
-            <div className="flex justify-between items-end mt-2">
+            <div className="flex justify-between items-end">
+              <p className="text-lg sm:text-xl font-light truncate text-gray-400">
+                {comp?.en?.split("/")?.slice(0, 2)?.join("; ")}
+              </p>
               <div className="flex justify-start text-gray-500 font-light space-x-2">
                 <span>
                   <StatusIcon.Icon />

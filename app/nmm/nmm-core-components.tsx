@@ -48,7 +48,7 @@ export function NmmCoreComponents() {
     }
   );
 
-  const lastAnswer = answers?.[answers?.length - 1];
+  // const lastAnswer = answers?.[answers?.length - 1];
 
   const { data: learnedCharacters2, isLoading } = useListCharactersQuery();
 
@@ -63,40 +63,56 @@ export function NmmCoreComponents() {
       includeAll: true,
       singleItemsOnly: true,
     });
-  const { data: componentsAll } = useListComponents({
-    includeAll: true,
-  });
+  // const { data: componentsAll } = useListComponents({
+  //   includeAll: true,
+  // });
 
-  const comps = isComponentsLoading ? chineseCharacters : componentsAll;
+  // const comps = isComponentsLoading ? chineseCharacters : componentsAll;
 
-  const slicedComponents = queryStr
-    ? comps
-    : (isComponentsLoading ? chineseCharacters : components)?.slice(
-        selectedBelt?.minCharacterLevel,
-        selectedBelt?.maxCharacterLevel
-      );
+  // const slicedComponents = queryStr
+  //   ? comps
+  //   : (isComponentsLoading ? chineseCharacters : components)?.slice(
+  //       selectedBelt?.minCharacterLevel,
+  //       selectedBelt?.maxCharacterLevel
+  //     );
 
-  const filteredComponents = filterComponents({
-    components: slicedComponents,
-    query: queryStr,
-    characters: learnedCharacters2,
-  });
+  // const filteredComponents = filterComponents({
+  //   components: slicedComponents,
+  //   query: queryStr,
+  //   characters: learnedCharacters2,
+  // });
 
   // const { data: filteredComponents } = useListComponentsByBelt();
 
-  const learnedComps = filteredComponents
-    // ?.filter((comp: any) => comp?.level < 100)
-    .filter((prop: any) => {
-      const learnedChar = learnedCharacters2?.find(
-        (char: any) => char?.hanzi === prop?.hanzi
-      );
+  const learnedComps =
+    (isComponentsLoading ? chineseCharacters : components)
+      ?.slice(selectedBelt?.minCharacterLevel, selectedBelt?.maxCharacterLevel)
+      // ?.filter((comp: any) => comp?.level < 100)
+      .filter((prop: any) => {
+        const learnedChar = learnedCharacters2?.find(
+          (char: any) => char?.hanzi === prop?.hanzi
+        );
 
-      if (!brightMode && learnedChar?.status === "forgotten") {
-        return null;
-      }
+        if (!brightMode && learnedChar?.status === "forgotten") {
+          return null;
+        }
 
-      return true;
-    });
+        return true;
+      }) || [];
+
+  // const learnedComps = filteredComponents
+  //   // ?.filter((comp: any) => comp?.level < 100)
+  //   .filter((prop: any) => {
+  //     const learnedChar = learnedCharacters2?.find(
+  //       (char: any) => char?.hanzi === prop?.hanzi
+  //     );
+
+  //     if (!brightMode && learnedChar?.status === "forgotten") {
+  //       return null;
+  //     }
+
+  //     return true;
+  //   });
 
   if (learnedComps?.length === 0) {
     return <Nothing message={"You have learned everything in this belt"} />;

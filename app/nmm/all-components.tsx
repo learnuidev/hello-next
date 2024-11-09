@@ -41,12 +41,12 @@ export function AllComponents() {
 
   const lastAnswer = answers?.[answers?.length - 1];
 
-  const { data: learnedCharacters2 } = useListCharactersQuery();
+  // const { data: learnedCharacters2 } = useListCharactersQuery();
 
-  const { data: discoveredComponents } = useListComponents({
-    discoverOnly: true,
-    singleItemsOnly: true,
-  });
+  // const { data: discoveredComponents } = useListComponents({
+  //   discoverOnly: true,
+  //   singleItemsOnly: true,
+  // });
 
   useEffect(() => {
     if (searchQueryParams) {
@@ -54,27 +54,32 @@ export function AllComponents() {
     }
   }, [searchQueryParams, setQuery]);
 
-  const { data: componentsAll } = useListComponents({
-    includeAll: true,
-  });
+  // const { data: componentsAll } = useListComponents({
+  //   includeAll: true,
+  // });
 
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
 
-  const comps = isComponentsLoading ? chineseCharacters : componentsAll;
+  // const comps = isComponentsLoading ? chineseCharacters : componentsAll;
 
-  const slicedComponents = queryStr
-    ? comps
-    : (isComponentsLoading ? chineseCharacters : components)?.slice(
-        selectedBelt?.minCharacterLevel,
-        selectedBelt?.maxCharacterLevel
-      );
+  // const slicedComponents = queryStr
+  //   ? comps
+  //   : (isComponentsLoading ? chineseCharacters : components)?.slice(
+  //       selectedBelt?.minCharacterLevel,
+  //       selectedBelt?.maxCharacterLevel
+  //     );
 
-  const filteredComponents = filterComponents({
-    components: slicedComponents,
-    query: queryStr,
-    characters: learnedCharacters2,
-  });
+  // const filteredComponents = filterComponents({
+  //   components: slicedComponents,
+  //   query: queryStr,
+  //   characters: learnedCharacters2,
+  // });
+  const filteredComponents =
+    (isComponentsLoading ? chineseCharacters : components)?.slice(
+      selectedBelt?.minCharacterLevel,
+      selectedBelt?.maxCharacterLevel
+    ) || [];
 
   return (
     <NmmListContainer>

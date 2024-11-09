@@ -9,7 +9,7 @@ export const useGetInsightSearchResults = (filterType?: string) => {
 
   const querySync = useSearchQueryStore((state) => state.query);
 
-  const { data } = useListComponents();
+  const { data: components } = useListComponents();
 
   const isEqual = querySync.split("=");
   const isGreater = querySync.split(">");
@@ -18,48 +18,50 @@ export const useGetInsightSearchResults = (filterType?: string) => {
   const val = isEqual?.[1]?.trim();
 
   const filteredTotalAttempts = querySync
-    ? (filterType === "all" ? data : totalAttempts)?.filter((item: any) => {
-        if (!querySync) {
-          return true;
-        }
-
-        if (isEqual?.length > 1) {
-          const attr = isEqual[0]?.trim();
-          // return item[attr]?.toLowerCase() === val?.toLowerCase();
-
-          const attributeItem = item?.[attr];
-
-          if (!attributeItem) {
-            return false;
-          }
-
-          if (
-            `${attributeItem}`?.toLowerCase() ===
-            `${val}`?.toLowerCase()?.trim()
-          ) {
+    ? (filterType === "all" ? components : totalAttempts)?.filter(
+        (item: any) => {
+          if (!querySync) {
             return true;
-          } else {
-            return false;
           }
+
+          if (isEqual?.length > 1) {
+            const attr = isEqual[0]?.trim();
+            // return item[attr]?.toLowerCase() === val?.toLowerCase();
+
+            const attributeItem = item?.[attr];
+
+            if (!attributeItem) {
+              return false;
+            }
+
+            if (
+              `${attributeItem}`?.toLowerCase() ===
+              `${val}`?.toLowerCase()?.trim()
+            ) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+
+          if (isGreater?.length > 1) {
+            const attr = isGreater[0]?.trim();
+            const val = isGreater?.[1]?.trim();
+
+            return item?.[attr] > parseInt(val);
+          }
+          if (isContains?.length > 1) {
+            const attr = isContains[0]?.trim();
+            const val = isContains?.[1]?.trim();
+
+            return `${item?.[`${attr}`]}`?.includes(`${val}`);
+          }
+
+          return JSON.stringify(item)
+            ?.toLowerCase()
+            ?.includes(querySync?.toLowerCase());
         }
-
-        if (isGreater?.length > 1) {
-          const attr = isGreater[0]?.trim();
-          const val = isGreater?.[1]?.trim();
-
-          return item?.[attr] > parseInt(val);
-        }
-        if (isContains?.length > 1) {
-          const attr = isContains[0]?.trim();
-          const val = isContains?.[1]?.trim();
-
-          return `${item?.[`${attr}`]}`?.includes(`${val}`);
-        }
-
-        return JSON.stringify(item)
-          ?.toLowerCase()
-          ?.includes(querySync?.toLowerCase());
-      })
+      )
     : [];
 
   return (filteredTotalAttempts || [])?.slice(0, 100);

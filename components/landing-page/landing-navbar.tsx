@@ -65,9 +65,16 @@ export const LandingNavbar = () => {
       </div>
 
       <div className="block md:hidden">
-        <button className="text-2xl">
+        {/* <button className="text-2xl">
           <Icons.bars />
-        </button>
+        </button> */}
+        <Link
+          href="/login"
+          className="flex items-center text-sm space-x-2 hover:text-rose-400 transition"
+        >
+          <Icons.fingerPrint className="" />
+          <p>Login</p>
+        </Link>
       </div>
     </nav>
   );

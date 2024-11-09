@@ -7,17 +7,25 @@ export const useSpeak = () => {
 
   const [voicesList, setVoicesList] = useState<any>({});
 
+  // console.log("VOICES LIST", voicesList);
+
   const selecectedVoice = voicesList?.["zh-CN"]?.filter(
-    (voice: any) => voice?.name === "Li-Mu"
+    (voice: any) =>
+      // this works for chrome
+      voice?.name === "Li-Mu" ||
+      // this is for safari
+      voice?.name === "Tingting"
   )?.[0] as any;
 
   const speak = (word: string) => {
     const utter = new SpeechSynthesisUtterance(word);
 
-    utter.rate = 0.6;
+    // utter.rate = 0.6;
+    utter.lang = "zh-CN";
 
-    utter.voice = selecectedVoice?.voice;
-    synthRef.current.speak(utter);
+    // utter.voice = selecectedVoice?.voice;
+    // synthRef.current.speak(utter);
+    window?.speechSynthesis?.speak(utter);
   };
 
   useEffect(() => {

@@ -66,13 +66,9 @@ export const SentenceItem = (props: any) => {
                   tone: selectedComp?.tone_level,
                 });
 
-                console.log("SELECT COMP", selectedComp);
-
                 const hanz = currentPhrasePinyin?.find(
                   (x: any) => x?.hanzi === val
                 );
-
-                console.log("COLOR", color);
 
                 return (
                   <div

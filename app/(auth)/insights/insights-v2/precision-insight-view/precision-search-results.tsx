@@ -28,6 +28,10 @@ const StatusIcons = {
     title: "Mastered",
     Icon: RedFireDuoTone,
   },
+  not_started: {
+    title: "Not Started",
+    Icon: Icons.questionMark,
+  },
 } as any;
 
 export const PrecisionSearchResults = ({ searchResults }: any) => {

@@ -96,8 +96,11 @@ import {
   faCommentQuote,
   faFire as faFireDuoTone,
   faMessageQuote,
+  faLightbulb as faLightBulbDT,
   faSeedling as faSeedlingDuotone,
   faTree as faTreeDuotone,
+  faGlassesRound as faGlassesRoundDT,
+  faBookSpells as faBookSpellsDT,
 } from "@fortawesome/pro-duotone-svg-icons";
 
 import { faCitrus as faCitrusSolid } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -141,6 +144,7 @@ import {
   faStairs,
 } from "@fortawesome/pro-thin-svg-icons";
 import { faConnectdevelop } from "@fortawesome/free-brands-svg-icons";
+import { cn } from "@/lib/utils";
 // import { faCitrus } from "@fortawesome/sharp-solid-svg-icons";
 // import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 
@@ -274,6 +278,37 @@ export const Icons = {
   messageQuote: createFAIcon(faMessageQuote as any),
   treeDuotone: createFAIcon(faTreeDuotone as any),
   seedlingDuotone: createFAIcon(faSeedlingDuotone as any),
+  lightBulbDuotone: createFAIcon(faLightBulbDT as any),
 
   connectDevelop: createFAIcon(faConnectdevelop),
+  glassesRoundDT: createFAIcon(faGlassesRoundDT as any),
+  bookSpellsDT: createFAIcon(faBookSpellsDT as any),
+};
+
+export const RedFireDuoTone = ({ className }: { className?: string }) => {
+  return (
+    <Icons.fireDuoTone
+      className={cn(className)}
+      style={{
+        "--fa-primary-color": "#CC2B52",
+        "--fa-secondary-color": "#AF1740",
+      }}
+    />
+  );
+};
+
+export const GreenLightbulbDuoTone = ({
+  className,
+}: {
+  className?: string;
+}) => {
+  return (
+    <Icons.lightBulbDuotone
+      className={cn(className)}
+      style={{
+        "--fa-primary-color": "#00FF9C",
+        "--fa-secondary-color": "#00FF9C",
+      }}
+    />
+  );
 };

@@ -1,6 +1,10 @@
 "use client";
 
-import { Icons } from "@/components/ui/icons.v2";
+import {
+  GreenLightbulbDuoTone,
+  Icons,
+  RedFireDuoTone,
+} from "@/components/ui/icons.v2";
 import Link from "next/link";
 import { groupBy } from "ramda";
 
@@ -18,11 +22,11 @@ const StatusIcons = {
   },
   learned: {
     title: "Learned",
-    Icon: Icons.lightBulb,
+    Icon: GreenLightbulbDuoTone,
   },
   forgotten: {
     title: "Mastered",
-    Icon: Icons.fireDuoTone,
+    Icon: RedFireDuoTone,
   },
 } as any;
 

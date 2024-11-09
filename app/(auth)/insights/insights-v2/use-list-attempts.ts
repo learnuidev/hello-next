@@ -1,13 +1,25 @@
 "use client";
 
+import { useSearchQueryStore } from "@/components/search/state";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 export const useListAttempts = () => {
   const { data: learnedCharacters } = useListCharactersQuery();
+  const querySync = useSearchQueryStore((state) => state.query);
 
   const totalAttempts =
     learnedCharacters
       ?.map((item: any) => {
+        if (!item?.reviewHistory?.length && item?.hanzi?.length === 1) {
+          return [
+            {
+              ...item,
+              totalAttempts: 0,
+              totalIncorrect: 0,
+              totalCorrect: 0,
+            },
+          ];
+        }
         return item?.reviewHistory?.reduce((acc: any, curr: any) => {
           return acc.concat({
             ...curr,

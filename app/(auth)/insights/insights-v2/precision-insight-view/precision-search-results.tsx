@@ -31,7 +31,8 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
       {Object.entries(groupedByHanzi)?.map(([k, val]: any, idx) => {
         const comp = val?.[0];
 
-        const StatusIcon = StatusIcons?.[comp?.status];
+        const StatusIcon =
+          StatusIcons?.[comp?.status] || StatusIcons["learned"];
 
         return (
           <Link
@@ -42,8 +43,8 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
           >
             <div className="flex items-end justify-between">
               <div>
-                <h1 className="text-4xl">
-                  {comp?.hanzi}{" "}
+                <h1 className="text-4xl truncate">
+                  <span className="truncate">{comp?.hanzi} </span>
                   <span className="text-xl text-gray-400 truncate">
                     {" "}
                     {comp?.pinyin}

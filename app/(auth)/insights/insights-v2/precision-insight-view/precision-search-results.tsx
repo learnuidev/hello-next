@@ -14,6 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 const StatusIcons = {
   needs_review: {
@@ -58,14 +59,30 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
           >
             <div className="flex items-end justify-between">
               <div>
-                <h1 className="truncate">
-                  <span className="text-2xl sm:text-4xl truncate">
-                    {comp?.hanzi}{" "}
-                  </span>
-                  <span className="text-xl text-gray-300 truncate font-extralight">
+                {comp?.pinyin?.length > 8 && (
+                  <span className="text-lg text-gray-400 truncate font-extralight">
                     {" "}
                     {comp?.pinyin}
                   </span>
+                )}
+
+                <h1 className="truncate font-light">
+                  <span
+                    className={cn(
+                      "truncate",
+                      comp?.pinyin?.length > 8
+                        ? "text-lg"
+                        : "text-2xl sm:text-4xl"
+                    )}
+                  >
+                    {comp?.hanzi}{" "}
+                  </span>
+                  {comp?.pinyin?.length < 8 && (
+                    <span className="text-xl text-gray-400 truncate font-extralight">
+                      {" "}
+                      {comp?.pinyin}
+                    </span>
+                  )}
                 </h1>
               </div>
 
@@ -84,7 +101,7 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
             </div>
 
             <div className="flex justify-between items-end">
-              <p className="text-lg sm:text-xl font-light truncate text-gray-400">
+              <p className="text-lg sm:text-xl font-light truncate text-gray-500">
                 {comp?.en?.split("/")?.slice(0, 2)?.join("; ")}
               </p>
               {comp?.status === "not_started" ? null : (

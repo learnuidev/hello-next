@@ -57,7 +57,7 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
             target="_blank"
             className="block"
           >
-            <div className="flex items-end justify-between">
+            <div className="flex items-end justify-between flex-wrap">
               <div>
                 {comp?.pinyin?.length > 8 && (
                   <p className="text-lg text-gray-400 truncate font-extralight">
@@ -69,7 +69,7 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
                   <span
                     className={cn(
                       "truncate",
-                      comp?.pinyin?.length > 8
+                      comp?.hanzi?.length > 8
                         ? "text-lg"
                         : "text-2xl sm:text-4xl"
                     )}
@@ -83,6 +83,10 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
                     </span>
                   )}
                 </h1>
+
+                <p className="text-lg font-light truncate text-gray-500">
+                  {comp?.en?.split("/")?.slice(0, 2)?.join("; ")}
+                </p>
               </div>
 
               <TooltipProvider delayDuration={100}>
@@ -99,10 +103,11 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
               </TooltipProvider>
             </div>
 
-            <div className="flex justify-between items-end">
-              <p className="text-lg sm:text-xl font-light truncate text-gray-500">
+            <div className="flex justify-end items-end">
+              {/* <p className="text-lg sm:text-xl font-light truncate text-gray-500">
                 {comp?.en?.split("/")?.slice(0, 2)?.join("; ")}
-              </p>
+              </p> */}
+
               {comp?.status === "not_started" ? null : (
                 <div className="flex justify-start text-gray-500 font-light space-x-2">
                   <div>

@@ -15,7 +15,7 @@ export const useGetInsightSearchResults = () => {
   const val = isEqual?.[1]?.trim();
 
   const filteredTotalAttempts = querySync
-    ? totalAttempts?.filter((item) => {
+    ? totalAttempts?.filter((item: any) => {
         if (!querySync) {
           return true;
         }

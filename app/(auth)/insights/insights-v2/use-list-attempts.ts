@@ -2,8 +2,18 @@
 
 import { useSearchQueryStore } from "@/components/search/state";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { IComponent } from "@/domain/lesson/component.queries";
 
-export const useListAttempts = () => {
+type InsightItem = IComponent & {
+  story: string;
+  status: string;
+  group: string;
+  totalAttempts: number;
+  totalIncorrect: number;
+  totalCorrect: number;
+};
+
+export const useListAttempts = (): InsightItem[] => {
   const { data: learnedCharacters } = useListCharactersQuery();
   const querySync = useSearchQueryStore((state) => state.query);
 

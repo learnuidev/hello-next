@@ -47,6 +47,7 @@ export function NomadMethodMandarin() {
   const routeName = usePathname();
 
   const queryStr = useSearchQueryStore((state) => state.query);
+  const queryStrSync = useSearchQueryStore((state) => state.querySync);
   const setQuery = useSearchQueryStore((state) => state.setQuery);
   const { data: hskWords } = useListHSKWordsQuery();
   const mode = useLearningModeStore((state: any) => state.mode);
@@ -115,7 +116,7 @@ export function NomadMethodMandarin() {
 
   const searchResults = useGetInsightSearchResults("all");
 
-  if (queryStr) {
+  if (queryStrSync) {
     return (
       <div className="mx-4 md:mx-48">
         <PrecisionSearchResults searchResults={searchResults} />

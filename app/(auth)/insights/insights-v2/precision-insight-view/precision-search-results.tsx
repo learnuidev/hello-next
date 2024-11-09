@@ -27,7 +27,7 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
     return null;
   }
   return (
-    <section className="space-y-12">
+    <section className="space-y-12 mt-12 pb-32">
       {Object.entries(groupedByHanzi)?.map(([k, val]: any, idx) => {
         const comp = val?.[0];
 
@@ -43,36 +43,50 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
           >
             <div className="flex items-end justify-between">
               <div>
-                <h1 className="text-4xl truncate">
-                  <span className="truncate">{comp?.hanzi} </span>
+                <h1 className="truncate">
+                  <span className="text-2xl sm:text-4xl truncate">
+                    {comp?.hanzi}{" "}
+                  </span>
                   <span className="text-xl text-gray-400 truncate">
                     {" "}
                     {comp?.pinyin}
                   </span>
                 </h1>
               </div>
-              <p className="text-2xl font-extralight truncate text-gray-300">
-                {comp?.en?.split("/")?.slice(0, 3)?.join("; ")}
+              <p className="text-lg sm:text-2xl font-extralight truncate text-gray-300">
+                {comp?.en?.split("/")?.slice(0, 2)?.join("; ")}
               </p>
             </div>
 
             <div className="flex justify-between items-end mt-2">
               <div className="flex justify-start text-gray-500 font-light space-x-2">
+                <span>
+                  <StatusIcon.Icon />
+                </span>
                 <div>
-                  <span>{comp?.totalAttempts}</span> attempts
+                  <span>{comp?.totalAttempts}</span>{" "}
+                  {comp?.totalAttempts > 1 ? "attempts" : "attempt"}
                 </div>
-                <div>
-                  <span>{comp?.totalIncorrect}</span> incorrect
-                </div>
+                {comp?.totalIncorrect > 0 ? (
+                  <div>
+                    <span>{comp?.totalIncorrect}</span> incorrect
+                  </div>
+                ) : (
+                  comp?.totalCorrect > 0 && (
+                    <div>
+                      <span>{comp?.totalCorrect}</span> correct
+                    </div>
+                  )
+                )}
               </div>
 
-              <div className="space-x-[2px] text-gray-400 font-light">
+              {/* <div className="space-x-[2px] text-gray-400 font-light">
                 <span>
                   <StatusIcon.Icon />
                 </span>
 
                 <span> {StatusIcon.title}</span>
-              </div>
+              </div> */}
             </div>
 
             {/* <div>

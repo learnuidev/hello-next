@@ -87,23 +87,25 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
               <p className="text-lg sm:text-xl font-light truncate text-gray-400">
                 {comp?.en?.split("/")?.slice(0, 2)?.join("; ")}
               </p>
-              <div className="flex justify-start text-gray-500 font-light space-x-2">
-                <div>
-                  <span>{comp?.totalAttempts}</span>{" "}
-                  {comp?.totalAttempts > 1 ? "attempts" : "attempt"}
-                </div>
-                {comp?.totalIncorrect > 0 ? (
+              {comp?.status === "not_started" ? null : (
+                <div className="flex justify-start text-gray-500 font-light space-x-2">
                   <div>
-                    <span>{comp?.totalIncorrect}</span> incorrect
+                    <span>{comp?.totalAttempts}</span>{" "}
+                    {comp?.totalAttempts > 1 ? "attempts" : "attempt"}
                   </div>
-                ) : (
-                  comp?.totalCorrect > 0 && (
+                  {comp?.totalIncorrect > 0 ? (
                     <div>
-                      <span>{comp?.totalCorrect}</span> correct
+                      <span>{comp?.totalIncorrect}</span> incorrect
                     </div>
-                  )
-                )}
-              </div>
+                  ) : (
+                    comp?.totalCorrect > 0 && (
+                      <div>
+                        <span>{comp?.totalCorrect}</span> correct
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
 
               {/* <div className="space-x-[2px] text-gray-400 font-light">
                 <span>

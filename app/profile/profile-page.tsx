@@ -10,7 +10,7 @@ import { useGetInsightSearchResults } from "../(auth)/insights/insights-v2/preci
 import { PrecisionSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/precision-search-results";
 
 export const ProfilePage = () => {
-  const searchResults = useGetInsightSearchResults();
+  const searchResults = useGetInsightSearchResults("all");
 
   if (searchResults?.length) {
     return (

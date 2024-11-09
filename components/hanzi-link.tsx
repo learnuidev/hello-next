@@ -125,11 +125,6 @@ export function HanziLink({
             tone: learnedChar?.tone_level,
           });
 
-          if (val === "什") {
-            // alert(val);
-            console.log("LEARNED CHAR", learnedChar);
-          }
-
           return (
             <span
               key={`${val}-${idx}`}

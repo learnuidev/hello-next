@@ -42,8 +42,6 @@ export function NomadMethodNavbar() {
 
   const hskLevel = level;
 
-  console.log("HSK LEVEL", hskLevel);
-
   const hskView = (useHskViewStore((state) => state.view) as any)?.[
     selectedBelt?.hskLevel
   ];

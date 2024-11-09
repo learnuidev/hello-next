@@ -60,10 +60,9 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
             <div className="flex items-end justify-between">
               <div>
                 {comp?.pinyin?.length > 8 && (
-                  <span className="text-lg text-gray-400 truncate font-extralight">
-                    {" "}
+                  <p className="text-lg text-gray-400 truncate font-extralight">
                     {comp?.pinyin}
-                  </span>
+                  </p>
                 )}
 
                 <h1 className="truncate font-light">

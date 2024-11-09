@@ -70,7 +70,7 @@ export function useShortCuts() {
         event.preventDefault();
         router.push("/insights");
       }
-      if (["o"]?.includes(event.key) && event.metaKey) {
+      if (["o"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         router.push("/nmm");
       }

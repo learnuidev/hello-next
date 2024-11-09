@@ -62,5 +62,5 @@ export const useGetInsightSearchResults = (filterType?: string) => {
       })
     : [];
 
-  return filteredTotalAttempts || [];
+  return (filteredTotalAttempts || [])?.slice(0, 100);
 };

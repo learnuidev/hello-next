@@ -10,7 +10,7 @@ export const ProfileBanner = () => {
   const { data: profile } = useGetAuthUserProfileQuery();
 
   return (
-    <section className="flex justify-center flex-col items-center mt-24 md:mt-32">
+    <section className="flex justify-center flex-col items-center mt-12 md:mt-32">
       <h1 className="text-2xl font-bold"> Me </h1>
 
       <p className="text-gray-400 text-sm md:text-md font-light mt-2">

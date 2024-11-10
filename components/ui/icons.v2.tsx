@@ -90,6 +90,7 @@ import {
   faVolume,
   faWandMagic,
   faXmark,
+  faChartRadar,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -285,6 +286,7 @@ export const Icons = {
   glassesRoundDT: createFAIcon(faGlassesRoundDT as any),
   bookSpellsDT: createFAIcon(faBookSpellsDT as any),
   google: createFAIcon(faGoogle),
+  track: createFAIcon(faChartRadar),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

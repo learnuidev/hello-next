@@ -50,7 +50,6 @@ export const CharacterTitle = ({
   return (
     <div className="flex flex-col items-start space-y-2">
       {pinyins?.length > 1 ? (
-        // <div>{JSON.stringify(pinyins)}</div>
         <h2 className="text-gray-400 font-extralight">{pinyins?.join("/")}</h2>
       ) : (
         <h2 className="text-gray-400 font-extralight">
@@ -99,13 +98,15 @@ export const CharacterTitle = ({
             })}
           </div>
 
-          <button
-            onClick={() => {
-              speak(selectedCompInput);
-            }}
-          >
-            <Icons.volume className="text-2xl" />
-          </button>
+          <div className="space-x-4 flex">
+            <button
+              onClick={() => {
+                speak(selectedCompInput);
+              }}
+            >
+              <Icons.volume className="text-2xl" />
+            </button>
+          </div>
         </div>
       ) : lang === "zh" && multiSentence ? (
         <h1 className="text-xl my-0 py-0 font-extralight">
@@ -122,21 +123,9 @@ export const CharacterTitle = ({
         </h1>
       )}
 
-      {/* {brightMode && ( */}
-
       <h2 className="text-gray-500 font-light">
         {selectedCompEn || englishMeanings?.[0]}
       </h2>
-
-      {/* {englishMeanings?.length > 1 ? (
-        <h2 className="text-gray-400 font-extralight">
-          {englishMeanings?.join(" / ")}
-        </h2>
-      ) : (
-        <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
-      )} */}
-
-      {/* )} */}
     </div>
   );
 };

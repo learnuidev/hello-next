@@ -17,7 +17,7 @@ export const WhyMandarinoBanner = () => {
   });
 
   return (
-    <section className="flex flex-col items-center w-full mx-auto antialiased text-white h-screen mt-48">
+    <section className="flex flex-col items-center w-full mx-auto antialiased text-black dark:text-white h-screen pt-48 bg-purple-50 dark:bg-[rgb(9,10,11)]">
       <h1 className="max-w-4xl mb-8 text-4xl font-extrabold text-center uppercase lg:text-7xl font-display tracking-crazy lg:leading-tight">
         <span> WHY GET A </span>
         <span className=" bg-gradient-to-r from-rose-400 via-purple-500 to-indigo-400 text-transparent bg-clip-text">
@@ -48,7 +48,7 @@ export const WhyMandarinoBanner = () => {
           <Icons.circleArrowDown
             className={cn(
               "my-16 text-3xl animate-bounce",
-              showButton ? "text-white" : "text-black"
+              showButton ? "dark:text-white text-black" : "text-black"
             )}
           />
         </motion.span>

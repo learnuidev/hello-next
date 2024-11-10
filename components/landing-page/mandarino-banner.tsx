@@ -3,10 +3,10 @@ import { Sparkles } from "../ui/sparkles";
 export function MandarinoBanner() {
   return (
     <div className="h-[40rem] w-full flex flex-col items-center justify-center overflow-hidden rounded-md">
-      <h1 className="md:text-7xl text-5xl lg:text-8xl font-bold text-center text-white relative z-20">
+      <h1 className="text-black md:text-7xl text-5xl lg:text-8xl font-bold text-center dark:text-white relative z-20">
         Mandarino
       </h1>
-      <p className="mb-4 lg:text-xl text-lg font-extralight text-gray-300">
+      <p className="mb-4 lg:text-2xl text-lg font-extralight dark:text-gray-300 text-gray-800">
         A modern language learning app
       </p>
       <div className="w-[40rem] h-40 relative">

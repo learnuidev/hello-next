@@ -23,7 +23,7 @@ function SectionItem({
 }) {
   return (
     <FadeInDiv>
-      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-gray-200 h-screen">
+      <section className="flex flex-col items-center justify-center w-full px-4 mx-auto antialiased text-gray-800 dark:text-gray-200 h-screen">
         <h3 className="text-gray-800 font-extralight text-3xl md:text-6xl my-8 lg:my-12">
           {step}
         </h3>
@@ -33,7 +33,7 @@ function SectionItem({
 
         <h2
           dangerouslySetInnerHTML={{ __html: feature?.description }}
-          className="text-xl lg:text-2xl px-8 md:px-16 lg:px-64 selection:bg-purple-600 text-center font-light text-gray-300"
+          className="text-xl lg:text-2xl px-8 md:px-16 lg:px-64 selection:bg-purple-600 text-center font-light text-gray-700 dark:text-gray-300"
         ></h2>
       </section>
     </FadeInDiv>

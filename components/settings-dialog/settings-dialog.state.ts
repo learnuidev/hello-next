@@ -5,4 +5,13 @@ export const useSettingsDialogState = create((set: any, get: any) => ({
   setIsOpen: (isOpen: any) => set({ isOpen }),
   tab: "learn",
   setCurrentTab: (tab: any) => set({ tab }),
+  userPreferenceState: {},
+  setUserPreferenceState: (props: any) => {
+    set({
+      userPreferenceState: {
+        ...get().userPreferenceState,
+        ...props,
+      },
+    });
+  },
 }));

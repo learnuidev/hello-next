@@ -9,61 +9,21 @@ import {
 } from "@/components/ui/card";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useSettingsDialogState } from "../../settings-dialog.state";
 
 export function LearnTab() {
   const setMode = useLearningModeStore((state: any) => state.setMode);
   const mode = useLearningModeStore((state: any) => state.mode);
 
+  const userPreferenceState = useSettingsDialogState(
+    (state) => state.userPreferenceState
+  ) as any;
+  const setUserPreferenceState = useSettingsDialogState(
+    (state) => state.setUserPreferenceState
+  );
+
   return (
     <div className="space-y-4">
-      <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
-        <CardHeader>
-          <CardTitle>Learn</CardTitle>
-          <CardDescription className="text-gray-500 font-extralight">
-            Select your preferred learning method
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
-          <div>
-            <div className="flex z-50 items-center space-x-2">
-              <Checkbox
-                checked={mode === "nmm"}
-                onCheckedChange={(event) => {
-                  if (event) {
-                    setMode("nmm");
-                  } else {
-                    setMode("");
-                  }
-                }}
-              />
-              <Label htmlFor="airplane-mode">Mandarin Blueprint</Label>
-            </div>
-
-            <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-              Based on Mandarin Blueprint Curriculum
-            </p>
-          </div>
-          <div>
-            <div className="flex z-50 items-center space-x-2">
-              <Checkbox
-                checked={mode === "hsk"}
-                onCheckedChange={(event) => {
-                  if (event) {
-                    setMode("hsk");
-                  } else {
-                    setMode("");
-                  }
-                }}
-              />
-              <Label htmlFor="airplane-mode">HSK</Label>
-            </div>
-
-            <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-              Great for HSK Exam Preparation (Recommended)
-            </p>
-          </div>
-        </CardContent>
-      </Card>
       <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
         <CardHeader>
           <CardTitle>Learning Mode</CardTitle>
@@ -75,8 +35,9 @@ export function LearnTab() {
           <div>
             <div className="flex z-50 items-center space-x-2">
               <Checkbox
-                checked={mode === "nmm"}
+                checked={userPreferenceState.learningMode === "nmm"}
                 onCheckedChange={(event) => {
+                  setUserPreferenceState({ learningMode: "nmm" });
                   if (event) {
                     setMode("nmm");
                   } else {
@@ -84,22 +45,25 @@ export function LearnTab() {
                   }
                 }}
               />
-              <Label htmlFor="airplane-mode">Mandarin Blueprint</Label>
+              <Label htmlFor="airplane-mode">Nomad Method Blueprint</Label>
             </div>
 
             <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-              Based on Mandarin Blueprint Curriculum
+              Based on Nomad Method Blueprint Curriculum
             </p>
           </div>
           <div>
             <div className="flex z-50 items-center space-x-2">
               <Checkbox
-                checked={mode === "hsk"}
+                checked={userPreferenceState.learningMode === "hsk"}
                 onCheckedChange={(event) => {
+                  const learningMode = "hsk";
                   if (event) {
-                    setMode("hsk");
+                    setMode(learningMode);
+                    setUserPreferenceState({ learningMode });
                   } else {
                     setMode("");
+                    setUserPreferenceState({ learningMode: "nmm" });
                   }
                 }}
               />
@@ -113,12 +77,15 @@ export function LearnTab() {
           <div>
             <div className="flex z-50 items-center space-x-2">
               <Checkbox
-                checked={mode === "hsk3"}
+                checked={userPreferenceState.learningMode === "hsk3"}
                 onCheckedChange={(event) => {
+                  const learningMode = "hsk3";
                   if (event) {
-                    setMode("hsk3");
+                    setMode(learningMode);
+                    setUserPreferenceState({ learningMode });
                   } else {
                     setMode("");
+                    setUserPreferenceState({ learningMode: "nmm" });
                   }
                 }}
               />
@@ -134,10 +101,13 @@ export function LearnTab() {
               <Checkbox
                 checked={mode === "yct"}
                 onCheckedChange={(event) => {
+                  const learningMode = "yct";
                   if (event) {
-                    setMode("yct");
+                    setMode(learningMode);
+                    setUserPreferenceState({ learningMode });
                   } else {
                     setMode("");
+                    setUserPreferenceState({ learningMode: "nmm" });
                   }
                 }}
               />
@@ -153,10 +123,13 @@ export function LearnTab() {
               <Checkbox
                 checked={mode === "xiaoma"}
                 onCheckedChange={(event) => {
+                  const learningMode = "xiaoma";
                   if (event) {
-                    setMode("xiaoma");
+                    setMode(learningMode);
+                    setUserPreferenceState({ learningMode });
                   } else {
                     setMode("");
+                    setUserPreferenceState({ learningMode: "nmm" });
                   }
                 }}
               />

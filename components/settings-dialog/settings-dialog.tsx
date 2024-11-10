@@ -26,6 +26,8 @@ import { useShortCuts } from "./use-short-cuts";
 
 import { ApiKeysTab } from "./components/api-keys-tab/api-keys-tab";
 import { LearnTab } from "./components/learn-tab/learn-tab";
+import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
+import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
 
 export function SettingsDialogInner({
   isOpen,
@@ -37,6 +39,16 @@ export function SettingsDialogInner({
 }) {
   const tab = useSettingsDialogState((state) => state.tab);
   const setCurrentTab = useSettingsDialogState((state) => state.setCurrentTab);
+  const userPreferenceState = useSettingsDialogState(
+    (state) => state.userPreferenceState
+  ) as any;
+  const setUserPreferenceState = useSettingsDialogState(
+    (state) => state.setUserPreferenceState
+  );
+
+  const { data } = useGetUserPreferenceQuery();
+
+  const updateUserPerferenceMutation = useUpdateUserPrefenceMutation();
 
   return (
     <Dialog open={isOpen}>
@@ -163,7 +175,17 @@ export function SettingsDialogInner({
                 <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
                   <div>
                     <div className="flex z-50 items-center space-x-2">
-                      <Checkbox id="terms" />
+                      <Checkbox
+                        id="navigation"
+                        checked={Boolean(
+                          userPreferenceState.isNavigationEnabled
+                        )}
+                        onCheckedChange={(event) => {
+                          setUserPreferenceState({
+                            isNavigationEnabled: event,
+                          });
+                        }}
+                      />
                       <Label htmlFor="airplane-mode">Navigation</Label>
                     </div>
 
@@ -173,7 +195,17 @@ export function SettingsDialogInner({
                   </div>
                   <div>
                     <div className="flex z-50 items-center space-x-2">
-                      <Checkbox id="terms" />
+                      <Checkbox
+                        id="content-tracking"
+                        checked={Boolean(
+                          userPreferenceState.isContentTrackingEnabled
+                        )}
+                        onCheckedChange={(event) => {
+                          setUserPreferenceState({
+                            isContentTrackingEnabled: event,
+                          });
+                        }}
+                      />
                       <Label htmlFor="airplane-mode">Content</Label>
                     </div>
 
@@ -183,7 +215,15 @@ export function SettingsDialogInner({
                   </div>
                   <div>
                     <div className="flex z-50 items-center space-x-2">
-                      <Checkbox id="terms" />
+                      <Checkbox
+                        id="search-tracking"
+                        checked={Boolean(userPreferenceState.isSearchEnabled)}
+                        onCheckedChange={(event) => {
+                          setUserPreferenceState({
+                            isSearchEnabled: event,
+                          });
+                        }}
+                      />
                       <Label htmlFor="airplane-mode">Search</Label>
                     </div>
 
@@ -210,6 +250,18 @@ export function SettingsDialogInner({
             }}
           >
             Close Settings
+          </Button>
+          <Button
+            type="submit"
+            onClick={() => {
+              updateUserPerferenceMutation
+                .mutateAsync(userPreferenceState)
+                .then((resp) => {
+                  closeSettings();
+                });
+            }}
+          >
+            Save
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -18,7 +18,7 @@ export const PrecisionInsightHeaders = () => {
   const insightsList = [
     {
       id: "total",
-      stat: totalAttempts?.length || 0,
+      stat: totalAttempts?.filter((item) => item?.totalAttempts)?.length || 0,
       title: "Total Attempts",
     },
     { id: "correct", stat: totalCorrect?.length || 0, title: "Correct" },

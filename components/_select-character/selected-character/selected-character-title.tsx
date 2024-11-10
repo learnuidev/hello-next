@@ -7,16 +7,8 @@ import { CharacterTitle } from "../character-title";
 import { ZoomedCharacter } from "./zoomed-character";
 
 export const SelectedCharacterTitle = (props: SelectedCharacterProps) => {
-  const {
-    selectedComp,
-    selectedChar,
-
-    lang,
-    view,
-
-    characterId,
-    selectedComp2,
-  } = props;
+  const { selectedComp, selectedChar, lang, view, characterId, selectedComp2 } =
+    props;
 
   const offlineCharacter = chineseCharacters?.find(
     (char) => char?.hanzi === characterId || char?.input === characterId

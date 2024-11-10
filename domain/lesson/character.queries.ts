@@ -45,6 +45,7 @@ interface ICharacter {
   lang?: string;
   steps?: any;
   roman?: string;
+  track?: boolean;
 }
 
 const listCharacters = async (

@@ -4,7 +4,7 @@ import { useMemo } from "react";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
-export function useGetCharacter({ characterId }: { characterId: string }) {
+export function useListTrackableCharactersQuery() {
   const { data: characters } = useListCharactersQuery(
     {},
     {
@@ -15,15 +15,10 @@ export function useGetCharacter({ characterId }: { characterId: string }) {
     }
   );
 
-  const selectedCharacter = useMemo(
-    () =>
-      characters?.find(
-        (component: any) =>
-          (component?.hanzi || component?.item || component?.input) ===
-          characterId
-      ),
-    [characters, characterId]
+  const trackableCharacters = useMemo(
+    () => characters?.filter((component: any) => component?.track),
+    [characters]
   );
 
-  return selectedCharacter;
+  return trackableCharacters;
 }

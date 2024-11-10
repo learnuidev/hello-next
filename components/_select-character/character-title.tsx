@@ -10,15 +10,18 @@ import { useListComponentVariantsQuery } from "@/domain/component/list-component
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import Link from "next/link";
 import { Icons } from "../ui/icons.v2";
+import { CharacterTrackButton } from "./selected-character/character-track-button";
+import { SelectedCharacterProps } from "./select-character.types";
 
-export const CharacterTitle = ({
-  pinyinOrRoman,
-  lang,
-  multiSentence,
-  selectedCompInput,
-  selectedCompEn,
-  characterId,
-}: any) => {
+export const CharacterTitle = (props: any) => {
+  const {
+    pinyinOrRoman,
+    lang,
+    multiSentence,
+    selectedCompInput,
+    selectedCompEn,
+    characterId,
+  } = props;
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersQuery();
 
@@ -106,6 +109,8 @@ export const CharacterTitle = ({
             >
               <Icons.volume className="text-2xl" />
             </button>
+
+            <CharacterTrackButton />
           </div>
         </div>
       ) : lang === "zh" && multiSentence ? (

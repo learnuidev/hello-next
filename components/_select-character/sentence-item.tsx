@@ -11,6 +11,9 @@ import { AudioComponent } from "./audio-component";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { Icons } from "../ui/icons.v2";
 import { GoogleLink } from "./selected-character/google-link";
+import { useAddHistoryMutation } from "@/domain/history/history.mutations";
+import { useListTrackableCharactersQuery } from "@/hooks/use-list-trackable-characters";
+import { useIsContentTrackingEnabled } from "@/domain/user/use-is-content-tracking-enabled";
 
 export const SentenceItem = (props: any) => {
   const {
@@ -21,9 +24,21 @@ export const SentenceItem = (props: any) => {
     lang,
     readMode,
     discoverMutation,
-    addHistoryMutation,
     currentPhrase,
   } = props;
+
+  const addHistoryMutation = useAddHistoryMutation();
+  const trackableCharacters = useListTrackableCharactersQuery();
+  const isContentTrackingEnabled = useIsContentTrackingEnabled();
+
+  const unEncoded = currentPhrase?.hanzi || currentPhrase?.input;
+
+  const containsTrackableCharacters =
+    trackableCharacters?.filter((item) => unEncoded?.includes(item?.hanzi)) ||
+    [];
+
+  const canTrack =
+    isContentTrackingEnabled && containsTrackableCharacters?.length > 0;
 
   const router = useRouter();
 
@@ -32,7 +47,6 @@ export const SentenceItem = (props: any) => {
   const contentLang = searchParams.get("content") || "";
 
   const Links = () => {
-    const unEncoded = currentPhrase?.hanzi || currentPhrase?.input;
     const hanziOrInput = encodeURIComponent(unEncoded);
     return (
       <div className="flex space-x-4 items-center">
@@ -44,14 +58,16 @@ export const SentenceItem = (props: any) => {
 
         <Link
           onClick={() => {
-            // addHistoryMutation.mutate({
-            //   lang: lang,
-            //   pathName: routeName,
-            //   hanzi: currentPhrase?.hanzi,
-            //   contentId: selectedComp?.id || "",
-            //   componentId: selectedComp?.id || "",
-            //   eventType: "CONTENT_VIEWED",
-            // } as any);
+            if (canTrack) {
+              addHistoryMutation.mutate({
+                lang: lang,
+                hanzi: unEncoded,
+                trackingCharacters: containsTrackableCharacters?.map(
+                  (item) => item?.hanzi
+                ),
+                eventType: "CONTENT_VIEWED",
+              } as any);
+            }
           }}
           // href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}`}
 

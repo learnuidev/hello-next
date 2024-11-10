@@ -31,6 +31,39 @@ export const SentenceItem = (props: any) => {
 
   const contentLang = searchParams.get("content") || "";
 
+  const Links = () => {
+    const unEncoded = currentPhrase?.hanzi || currentPhrase?.input;
+    const hanziOrInput = encodeURIComponent(unEncoded);
+    return (
+      <div className="flex space-x-4 items-center">
+        {/* {currentPhrase?.audio ? ( */}
+        <AudioComponent currentPhrase={currentPhrase} />
+        {/* ) : null} */}
+
+        <GoogleLink hanzi={unEncoded} className={"h-8 w-8"} />
+
+        <Link
+          onClick={() => {
+            // addHistoryMutation.mutate({
+            //   lang: lang,
+            //   pathName: routeName,
+            //   hanzi: currentPhrase?.hanzi,
+            //   contentId: selectedComp?.id || "",
+            //   componentId: selectedComp?.id || "",
+            //   eventType: "CONTENT_VIEWED",
+            // } as any);
+          }}
+          // href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}`}
+
+          href={`/nmm/${hanziOrInput}${lang || selectedComp?.lang ? `?lang=${lang || selectedComp?.lang}` : ``}`}
+          className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
+        >
+          <Icons.magnifyingGlass />
+        </Link>
+      </div>
+    );
+  };
+
   if (readMode) {
     const currentPhrasePinyin = currentPhrase?.hanzi
       ?.split("")
@@ -143,36 +176,7 @@ export const SentenceItem = (props: any) => {
           <p className="text-sm text-gray-400">{currentPhrase?.input}</p>
         )}
 
-        <div className="flex space-x-4 items-center">
-          {/* {currentPhrase?.audio ? ( */}
-          <AudioComponent currentPhrase={currentPhrase} />
-          {/* ) : null} */}
-
-          <GoogleLink hanzi={currentPhrase?.hanzi} className={"h-8 w-8"} />
-
-          <Link
-            onClick={() => {
-              // addHistoryMutation.mutate({
-              //   lang: lang,
-              //   pathName: routeName,
-              //   hanzi: currentPhrase?.hanzi,
-              //   contentId: selectedComp?.id || "",
-              //   componentId: selectedComp?.id || "",
-              //   eventType: "CONTENT_VIEWED",
-              // } as any);
-            }}
-            // href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}`}
-
-            href={
-              lang || selectedComp?.lang
-                ? `/nmm/${encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input)}?lang=${lang || selectedComp?.lang}`
-                : `/nmm/${encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input)}`
-            }
-            className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
-          >
-            <Icons.magnifyingGlass />
-          </Link>
-        </div>
+        <Links />
       </div>
     );
   }
@@ -248,41 +252,7 @@ export const SentenceItem = (props: any) => {
         )}
       </div>
 
-      <div className="flex space-x-2 md:space-x-4 items-center">
-        {/* {currentPhrase?.audio ? ( */}
-        <AudioComponent currentPhrase={currentPhrase} />
-        {/* ) : null} */}
-
-        <Link
-          target="_blank"
-          href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-            currentPhrase?.hanzi
-          )}&op=translate`}
-          className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
-        >
-          <FontAwesomeIcon icon={faGoogle} />
-        </Link>
-        <Link
-          onClick={() => {
-            // addHistoryMutation.mutate({
-            //   lang: lang,
-            //   pathName: routeName,
-            //   hanzi: currentPhrase?.hanzi || currentPhrase?.input,
-            //   contentId: selectedComp?.id || "",
-            //   componentId: selectedComp?.id || "",
-            //   eventType: "CONTENT_VIEWED",
-            // } as any);
-          }}
-          href={
-            lang || selectedComp?.lang
-              ? `/nmm/${encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input)}?lang=${lang || selectedComp?.lang}`
-              : `/nmm/${encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input)}`
-          }
-          className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
-        >
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </Link>
-      </div>
+      <Links />
     </div>
   );
 };

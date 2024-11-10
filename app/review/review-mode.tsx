@@ -401,8 +401,49 @@ export function ReviewMode(props: any) {
             <button
               disabled={updateCharacterStatusMutation?.isLoading}
               onClick={() => {
-                setShowOptions(true);
+                const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
+
+                const ponderTime = getPonderTime(endTime);
+
+                console.log("PONDER TIME", ponderTime);
+
+                updateCharacterStatusMutation
+                  .mutateAsync({
+                    characterId: currentCharacter?.id,
+                    status: "needs_review",
+                    wrongCount: (currentCharacter?.wrongCount || 0) + 1,
+                    wrongAt: Date.now(),
+                    nextReviewTime: "now",
+                    reviewHistory: (
+                      currentCharacter?.reviewHistory || []
+                    ).concat({
+                      outcome: "incorrect",
+                      createdAt: Date.now(),
+                      startTime: startTime,
+                      endTime: endTime,
+                      reviewDate: date,
+                      nextReviewTime: "now",
+                      timeTaken,
+                      ponderTime,
+                      mode,
+                      emotion,
+                    }),
+                  } as any)
+                  .then((res) => {
+                    const startTime = Date.now();
+                    setReveal(false);
+                    setShowOptions(false);
+                    setStartTime(startTime);
+                    setEndTime(startTime);
+                    setEmotion("");
+                    setReviewCount(reviewCount + 1);
+
+                    goToNextChar();
+                  });
               }}
+              // onClick={() => {
+              //   setShowOptions(true);
+              // }}
             >
               <Icons.xMark />
             </button>

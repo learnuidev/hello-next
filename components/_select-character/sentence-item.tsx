@@ -9,6 +9,8 @@ import Link from "next/link";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { AudioComponent } from "./audio-component";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
+import { Icons } from "../ui/icons.v2";
+import { GoogleLink } from "./selected-character/google-link";
 
 export const SentenceItem = (props: any) => {
   const {
@@ -146,15 +148,8 @@ export const SentenceItem = (props: any) => {
           <AudioComponent currentPhrase={currentPhrase} />
           {/* ) : null} */}
 
-          <Link
-            target="_blank"
-            href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-              currentPhrase?.hanzi
-            )}&op=translate`}
-            className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
-          >
-            <FontAwesomeIcon icon={faGoogle} />
-          </Link>
+          <GoogleLink hanzi={currentPhrase?.hanzi} className={"h-8 w-8"} />
+
           <Link
             onClick={() => {
               // addHistoryMutation.mutate({
@@ -175,7 +170,7 @@ export const SentenceItem = (props: any) => {
             }
             className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
           >
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
+            <Icons.magnifyingGlass />
           </Link>
         </div>
       </div>

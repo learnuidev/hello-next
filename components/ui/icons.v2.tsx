@@ -3,6 +3,7 @@ import {
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
 import { faBook, faSpinner } from "@fortawesome/sharp-solid-svg-icons";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 import {
   faArrowUpRightFromSquare,
@@ -283,6 +284,7 @@ export const Icons = {
   connectDevelop: createFAIcon(faConnectdevelop),
   glassesRoundDT: createFAIcon(faGlassesRoundDT as any),
   bookSpellsDT: createFAIcon(faBookSpellsDT as any),
+  google: createFAIcon(faGoogle),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

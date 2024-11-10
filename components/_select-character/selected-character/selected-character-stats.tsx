@@ -6,6 +6,9 @@ import { SelectedCharacterProps } from "../select-character.types";
 import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
 import { chineseCharacters } from "@/langs/chinese /characters";
 import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
+import { GoogleLink } from "./google-link";
+import { YablaLink } from "./yabla-link";
+import { HanbookLink } from "./hanbook-link";
 
 export const SelectedCharacterStats = (props: SelectedCharacterProps) => {
   const {
@@ -44,26 +47,36 @@ export const SelectedCharacterStats = (props: SelectedCharacterProps) => {
 
   // const
 
-  return multiSentence ? null : (
-    <div className="flex items-center space-x-4">
-      {relatedHskWords?.length > 0 && (
-        <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-          <Icons.word />
-          <p>{relatedHskWords?.length}</p>
+  return (
+    <div className="flex justify-between items-center">
+      {multiSentence ? null : (
+        <div className="flex items-center space-x-4">
+          {relatedHskWords?.length > 0 && (
+            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+              <Icons.word />
+              <p>{relatedHskWords?.length}</p>
+            </div>
+          )}
+          {totalRelatedSentences > 0 && (
+            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+              <Icons.sentence />
+              <p>{totalRelatedSentences}</p>
+            </div>
+          )}
+          {level && (
+            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+              <Icons.earthAsia />
+              <p>{level}</p>
+            </div>
+          )}
         </div>
       )}
-      {totalRelatedSentences > 0 && (
-        <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-          <Icons.sentence />
-          <p>{totalRelatedSentences}</p>
-        </div>
-      )}
-      {level && (
-        <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-          <Icons.earthAsia />
-          <p>{level}</p>
-        </div>
-      )}
+
+      <div className="space-x-4 flex items-center px-2">
+        <GoogleLink hanzi={characterId} />
+        <YablaLink hanzi={characterId} />
+        <HanbookLink hanzi={characterId} />
+      </div>
     </div>
   );
 };

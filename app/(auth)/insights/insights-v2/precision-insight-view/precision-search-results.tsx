@@ -50,6 +50,10 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
         const StatusIcon =
           StatusIcons?.[comp?.status] || StatusIcons["learned"];
 
+        if (comp?.hanzi?.length > 16) {
+          return null;
+        }
+
         return (
           <Link
             key={`${val}-${idx}`}
@@ -57,7 +61,7 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
             target="_blank"
             className="block"
           >
-            <div className="flex items-end justify-between flex-wrap">
+            <div className="flex items-start w-full justify-between flex-wrap truncate">
               <div>
                 {comp?.pinyin?.length > 8 && (
                   <p className="text-lg text-gray-400 truncate font-extralight">
@@ -83,10 +87,6 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
                     </span>
                   )}
                 </h1>
-
-                <p className="text-lg font-light truncate text-gray-500">
-                  {comp?.en?.split("/")?.slice(0, 2)?.join("; ")}
-                </p>
               </div>
 
               <TooltipProvider delayDuration={100}>
@@ -103,7 +103,10 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
               </TooltipProvider>
             </div>
 
-            <div className="flex justify-end items-end">
+            <div className="flex justify-between items-between">
+              <p className="text-lg font-light truncate text-gray-500">
+                {comp?.en?.split("/")?.slice(0, 2)?.join("; ")}
+              </p>
               {comp?.status === "not_started" ? null : (
                 <div className="flex justify-start text-gray-500 font-light space-x-2">
                   <div>

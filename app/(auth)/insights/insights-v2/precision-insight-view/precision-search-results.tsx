@@ -15,25 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-
-const StatusIcons = {
-  needs_review: {
-    title: "Needs Review",
-    Icon: Icons.glassesRound,
-  },
-  learned: {
-    title: "Learned",
-    Icon: GreenLightbulbDuoTone,
-  },
-  forgotten: {
-    title: "Mastered",
-    Icon: RedFireDuoTone,
-  },
-  not_started: {
-    title: "Not Started",
-    Icon: Icons.questionMark,
-  },
-} as any;
+import { StatusIcons } from "./status-icons";
 
 export const PrecisionSearchResults = ({ searchResults }: any) => {
   const groupByHanzi = groupBy((val: any) => val.hanzi);

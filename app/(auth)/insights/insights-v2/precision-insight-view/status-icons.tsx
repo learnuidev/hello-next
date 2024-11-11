@@ -1,0 +1,26 @@
+"use client";
+
+import {
+  GreenLightbulbDuoTone,
+  Icons,
+  RedFireDuoTone,
+} from "@/components/ui/icons.v2";
+
+export const StatusIcons = {
+  needs_review: {
+    title: "Needs Review",
+    Icon: Icons.glassesRound,
+  },
+  learned: {
+    title: "Learned",
+    Icon: GreenLightbulbDuoTone,
+  },
+  forgotten: {
+    title: "Mastered",
+    Icon: RedFireDuoTone,
+  },
+  not_started: {
+    title: "Not Started",
+    Icon: Icons.questionMark,
+  },
+} as any;

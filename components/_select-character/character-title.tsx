@@ -1,18 +1,19 @@
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { cn } from "@/lib/utils";
 
 import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
+import { StatusIcons } from "@/app/(auth)/insights/insights-v2/precision-insight-view/status-icons";
+import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
 import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
+import { useGetCharacter } from "@/hooks/use-get-character";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import Link from "next/link";
-import { Icons, RedFireDuoTone } from "../ui/icons.v2";
+import { Icons } from "../ui/icons.v2";
 import { CharacterTrackButton } from "./selected-character/character-track-button";
-import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
-import { useGetCharacter } from "@/hooks/use-get-character";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -27,8 +28,6 @@ export const CharacterTitle = (props: any) => {
   const componentId = useGetComponentId();
 
   const { data } = useListComponentVariantsQuery({ hanzi: characterId });
-
-  console.log("COMP ID", componentId);
 
   const character = useGetCharacter({ characterId: componentId });
 
@@ -49,13 +48,8 @@ export const CharacterTitle = (props: any) => {
   //   const brightMode = useBrightModeStore((state: any) => state.mode);
   const brightMode = useReadModeStore((state) => state.readMode);
 
-  const color = calculateColor({
-    tone: selectedComp?.tone_level,
-  });
-
-  console.log("CHAR", character);
-
-  console.log("SELECTED COMP", selectedComp);
+  const StatusIcon =
+    StatusIcons?.[character?.status || ""] || StatusIcons["learned"];
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
@@ -87,6 +81,31 @@ export const CharacterTitle = (props: any) => {
                 const hoverColor = calculateHoverColor({
                   tone: learnedChar?.tone_level || comp?.tone_level,
                 });
+
+                if (selectedCompInput?.length > 1) {
+                  return (
+                    <Link
+                      href={`/nmm/${val}?lang=zh`}
+                      key={`${val}-${idx}`}
+                      className={`${
+                        brightMode || isCharactersLoading
+                          ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
+                          : // learnedCharacters.includes(prop?.hanzi)
+                            learnedChar
+                            ? learnedChar?.status === "forgotten"
+                              ? `text-gray-900 ${hoverColor}`
+                              : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                                //   ? "text-rose-500"
+                                `${color} text-gray-300 ${hoverColor}`
+                            : selectedComp?.length > 1 || selectedComp?.group
+                              ? `dark:text-gray-500 text-gray-200 ${hoverColor}`
+                              : `dark:text-gray-700 text-gray-200 ${hoverColor}`
+                      } ${hoverColor} text-2xl transition lowercase font-light`}
+                    >
+                      {val}
+                    </Link>
+                  );
+                }
 
                 return (
                   <Link
@@ -126,9 +145,10 @@ export const CharacterTitle = (props: any) => {
           </div>
 
           <div>
-            {character?.status === "forgotten" && (
+            <StatusIcon.Icon className="text-2xl" />
+            {/* {character?.status === "forgotten" && (
               <RedFireDuoTone className="text-2xl" />
-            )}
+            )} */}
           </div>
         </div>
       ) : lang === "zh" && multiSentence ? (

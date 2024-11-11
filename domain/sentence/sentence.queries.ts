@@ -37,19 +37,13 @@ export function useListSentencesQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
-    [
-      queryIds.list_sentences,
-      params?.component,
-      params?.lang,
-      params?.genSents,
-      params?.contentLang,
-    ],
+    [queryIds.list_sentences, params?.component],
     async () => {
       // if (authUser?.jwt) {
       const response = await listSentences(params, {
         Authorization: authUser?.jwt,
       });
-      return response?.sort((a: any, b: any) => a?.start - b?.start);
+      return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
       // }
     },
     {

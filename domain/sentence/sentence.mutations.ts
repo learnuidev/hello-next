@@ -37,7 +37,7 @@ export function useAddSentenceMutation(options = {} as any) {
       const response = await addSentence(params, {
         Authorization: authUser?.jwt,
       });
-      return response;
+      return { ...response, componentId: params?.component };
     },
     {
       ...options,
@@ -46,7 +46,7 @@ export function useAddSentenceMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([listSentencesQueryKey, data?.component]);
+        queryClient.refetchQueries([listSentencesQueryKey, data?.componentId]);
       },
     }
   );

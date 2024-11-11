@@ -72,17 +72,19 @@ export const SentenceItem = (props: any) => {
 
         <GoogleLink hanzi={unEncoded} className={"h-8 w-8"} />
 
-        <button
-          className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
-          onClick={() => {
-            deleteSentenceMutation?.mutateAsync({
-              id: currentPhrase?.id,
-              component: componentId,
-            });
-          }}
-        >
-          <Icons.trash />
-        </button>
+        {currentPhrase?.id && (
+          <button
+            className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
+            onClick={() => {
+              deleteSentenceMutation?.mutateAsync({
+                id: currentPhrase?.id,
+                component: componentId,
+              });
+            }}
+          >
+            <Icons.trash />
+          </button>
+        )}
       </div>
     );
   };

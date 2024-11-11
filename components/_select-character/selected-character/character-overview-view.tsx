@@ -38,7 +38,7 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
   return (
     <div
       className={
-        "relative grid grid-cols-1 md:grid-cols-8 gap-x-8 md:grid-rows-[70px_1fr] pt-0"
+        "relative grid grid-cols-1 md:grid-cols-8 gap-x-8 md:grid-rows-[70px_1fr] pt-0 pb-32"
       }
     >
       <div className={"col-span-5 row-span-2 overflow-hidden"}>

@@ -161,7 +161,7 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
             </button>
           ))}
 
-          <div className="mb-1 mt-2 px-2 text-sm text-stone-500">
+          {/* <div className="mb-1 mt-2 px-2 text-sm text-stone-500">
             Background
           </div>
 
@@ -189,7 +189,7 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
                 <Check className="h-4 w-4" />
               )}
             </button>
-          ))}
+          ))} */}
         </Popover.Content>
       </div>
     </Popover.Root>

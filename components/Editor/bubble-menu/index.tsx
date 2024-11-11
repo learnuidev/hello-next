@@ -1,30 +1,20 @@
-import { BubbleMenu, BubbleMenuProps, isNodeSelection } from "@tiptap/react";
-import { FC, useState } from "react";
-import {
-  BoldIcon,
-  ItalicIcon,
-  UnderlineIcon,
-  StrikethroughIcon,
-  AlignCenter,
-  AlignRight,
-  AlignLeft,
-  CodeIcon,
-} from "lucide-react";
-import { NodeSelector } from "./node-selector";
-import { ColorSelector } from "./color-selector";
-import { LinkSelector } from "./link-selector";
-import { cn } from "@/lib/utils";
+import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
 import { Icons } from "@/components/ui/icons.v2";
 import { useAddSentenceMutation } from "@/domain/sentence/sentence.mutations";
-import { useParams } from "next/navigation";
-import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { BubbleMenu, BubbleMenuProps, isNodeSelection } from "@tiptap/react";
+import { useParams, useRouter } from "next/navigation";
+import { FC, useState } from "react";
+
+import { NodeSelector } from "./node-selector";
+import { ColorSelector } from "./color-selector";
 
 export interface BubbleMenuItem {
   name: string;
   isActive: () => boolean;
   command: () => void;
   Icon?: any;
-  text: string;
+  text?: string;
 }
 
 type EditorBubbleMenuProps = Omit<BubbleMenuProps, "children">;
@@ -32,6 +22,9 @@ type EditorBubbleMenuProps = Omit<BubbleMenuProps, "children">;
 // TODO: Fix Type for this component
 export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
   const addSentenceMutation = useAddSentenceMutation();
+  const lang = useGetCurrentLang();
+
+  const router = useRouter();
 
   const { speak } = useSpeak();
 
@@ -40,9 +33,9 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
   };
   const items: BubbleMenuItem[] = [
     {
-      name: "bold",
+      name: "add",
       isActive: () => props.editor.isActive("bold"),
-      Icon: Icons.compass,
+      Icon: Icons.plusIcon,
       command: () => {
         // const { selection, state } = props.editor;
         // const { from, to } = selection;
@@ -60,10 +53,10 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
           input: text,
         });
       },
-      text: "Add",
+      // text: "Add",
     },
     {
-      name: "bold",
+      name: "play",
       isActive: () => props.editor.isActive("bold"),
       Icon: Icons.playCircle,
       command: () => {
@@ -80,14 +73,44 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
         speak(text);
       },
 
-      text: "Speak",
+      // text: "Search",
     },
-    // {
-    //   name: "italic",
-    //   isActive: () => props.editor.isActive("italic"),
-    //   command: () => props.editor.chain().focus().toggleItalic().run(),
-    //   icon: ItalicIcon,
-    // },
+    {
+      name: "route",
+      isActive: () => props.editor.isActive("bold"),
+      Icon: Icons.magnifyingGlass,
+      command: () => {
+        // const { selection, state } = props.editor;
+        // const { from, to } = selection;
+
+        // const text = state.doc.textBetween(from, to, " ");
+        // return props.editor.chain().focus().toggleBold().run();
+
+        const { view, state } = props.editor;
+        const { from, to } = view.state.selection;
+        const text = state.doc.textBetween(from, to, "");
+
+        router.push(`/nmm/${text}?lang=${lang || "zh"}`);
+      },
+
+      // text: "Search",
+    },
+    {
+      name: "bold",
+      isActive: () => props.editor.isActive("bold"),
+      Icon: Icons.bold,
+      command: () => {
+        return props.editor.chain().focus().toggleBold().run();
+      },
+
+      // text: "Search",
+    },
+    {
+      name: "italic",
+      isActive: () => props.editor.isActive("italic"),
+      command: () => props.editor.chain().focus().toggleItalic().run(),
+      Icon: Icons.italic,
+    },
     // {
     //   name: "underline",
     //   isActive: () => props.editor.isActive("underline"),
@@ -154,21 +177,13 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
   const [isNodeSelectorOpen, setIsNodeSelectorOpen] = useState(false);
   const [isColorSelectorOpen, setIsColorSelectorOpen] = useState(false);
   const [isLinkSelectorOpen, setIsLinkSelectorOpen] = useState(false);
+  const [isActionSelectorOpen, setIsActionSelectorOpen] = useState(false);
 
   return (
     <BubbleMenu
       {...bubbleMenuProps}
       className="flex w-fit divide-x divide-stone-200 rounded border border-stone-200 bg-white shadow-xl"
     >
-      {/* <NodeSelector
-        editor={props.editor}
-        isOpen={isNodeSelectorOpen}
-        setIsOpen={() => {
-          setIsNodeSelectorOpen(!isNodeSelectorOpen);
-          setIsColorSelectorOpen(false);
-          setIsLinkSelectorOpen(false);
-        }}
-      /> */}
       {/* <LinkSelector
         editor={props.editor}
         isOpen={isLinkSelectorOpen}
@@ -191,15 +206,26 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
           </button>
         ))}
       </div>
-      {/* <ColorSelector
+      <NodeSelector
+        editor={props.editor}
+        isOpen={isNodeSelectorOpen}
+        setIsOpen={() => {
+          setIsNodeSelectorOpen(!isNodeSelectorOpen);
+          setIsColorSelectorOpen(false);
+          setIsLinkSelectorOpen(false);
+          setIsActionSelectorOpen(false);
+        }}
+      />
+      <ColorSelector
         editor={props.editor}
         isOpen={isColorSelectorOpen}
         setIsOpen={() => {
           setIsColorSelectorOpen(!isColorSelectorOpen);
           setIsNodeSelectorOpen(false);
           setIsLinkSelectorOpen(false);
+          setIsActionSelectorOpen(false);
         }}
-      /> */}
+      />
     </BubbleMenu>
   );
 };

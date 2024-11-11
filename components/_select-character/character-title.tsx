@@ -75,7 +75,6 @@ export const CharacterTitle = (props: any) => {
                   tone: learnedChar?.tone_level || selectedComp?.tone_level,
                 });
 
-                console.log("COLOR", color);
                 const hoverColor = calculateHoverColor({
                   tone: learnedChar?.tone_level || comp?.tone_level,
                 });

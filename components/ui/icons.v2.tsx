@@ -91,6 +91,8 @@ import {
   faWandMagic,
   faXmark,
   faChartRadar,
+  faItalic,
+  faBold,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -287,6 +289,8 @@ export const Icons = {
   bookSpellsDT: createFAIcon(faBookSpellsDT as any),
   google: createFAIcon(faGoogle),
   track: createFAIcon(faChartRadar),
+  italic: createFAIcon(faItalic),
+  bold: createFAIcon(faBold),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

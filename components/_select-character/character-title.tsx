@@ -49,7 +49,7 @@ export const CharacterTitle = (props: any) => {
   const brightMode = useReadModeStore((state) => state.readMode);
 
   const StatusIcon =
-    StatusIcons?.[character?.status || ""] || StatusIcons["learned"];
+    StatusIcons?.[character?.status || ""] || StatusIcons["not_started"];
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">

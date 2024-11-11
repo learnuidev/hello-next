@@ -45,7 +45,7 @@ export const SentenceItem = (props: any) => {
   const Links = () => {
     const hanziOrInput = encodeURIComponent(unEncoded);
     return (
-      <div className="flex justify-between items-center w-full mt-2 pb-32">
+      <div className="flex justify-between items-center w-full mt-2">
         <AudioComponent currentPhrase={currentPhrase} />
 
         <div className="flex gap-2 justify-end items-end w-full pr-2">

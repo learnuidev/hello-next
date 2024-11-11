@@ -12,6 +12,7 @@ import { AudioComponent } from "./audio-component";
 import { GoogleLink } from "./selected-character/google-link";
 import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence-mutation";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -27,6 +28,8 @@ export const SentenceItem = (props: any) => {
   const containsTrackableCharacters =
     trackableCharacters?.filter((item) => unEncoded?.includes(item?.hanzi)) ||
     [];
+
+  const isSuperAdmin = useIsSuperAdmin();
 
   const canTrack =
     isContentTrackingEnabled && containsTrackableCharacters?.length > 0;
@@ -72,7 +75,7 @@ export const SentenceItem = (props: any) => {
 
         <GoogleLink hanzi={unEncoded} className={"h-8 w-8"} />
 
-        {currentPhrase?.id && (
+        {isSuperAdmin && currentPhrase?.id && (
           <button
             disabled={
               deleteSentenceMutation?.isLoading ||

@@ -11,12 +11,7 @@ import { YablaLink } from "./yabla-link";
 import { HanbookLink } from "./hanbook-link";
 
 export const SelectedCharacterStats = (props: SelectedCharacterProps) => {
-  const {
-    selectedComp,
-
-    characterId,
-    selectedComp2,
-  } = props;
+  const { selectedComp, characterId, selectedComp2 } = props;
 
   const level = selectedComp?.level || selectedComp2?.level;
 

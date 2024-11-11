@@ -89,21 +89,8 @@ export const useStoryModeStore = create((set: any) => ({
 }));
 
 export const StoryView = (props: SelectedCharacterProps) => {
-  const {
-    uniqueAnswerIds,
-    answerMap,
-    allContents,
-    allSteps,
-    components,
-    selectedComp,
-    selectedChar,
-    routeName,
-    lang,
-    view,
-    sentences,
-    characterId,
-    selectedComp2,
-  } = props;
+  const { selectedComp, selectedChar, lang, characterId, selectedComp2 } =
+    props;
 
   // const [storyMode, setStoryMode] = useState("global");
   const storyMode = useStoryModeStore((state) => state.storyMode);

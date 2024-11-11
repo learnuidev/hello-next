@@ -79,8 +79,12 @@ function useListComponentsQuery(
   );
 }
 
+interface IGetComponentParams {
+  componentId?: string;
+  hanzi?: string;
+}
 const getComponent = async (
-  params: { componentId: string },
+  params: IGetComponentParams,
   opts: {
     Authorization: string;
   }
@@ -99,15 +103,13 @@ const getComponent = async (
 };
 
 export function useGetComponentQuery(
-  params = {} as {
-    componentId: string;
-  },
+  params = {} as IGetComponentParams,
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
-    ["get-component", params?.componentId],
+    ["get-component", params?.componentId, params?.hanzi],
     async () => {
       // if (options.query) {
       const response = await getComponent(params, {

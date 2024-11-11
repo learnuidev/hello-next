@@ -5,6 +5,7 @@ import { SelectedCharacterContainer } from "@/components/selected-character-cont
 import { useParams, usePathname } from "next/navigation";
 import { NMMV2 } from "../v2";
 import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
+import { useGetComponentId } from "./use-get-component-id";
 
 export default function NomadMethodPage(props: any) {
   const params = useParams() as {
@@ -13,10 +14,10 @@ export default function NomadMethodPage(props: any) {
 
   const routeName = usePathname();
 
-  const componentId = decodeURIComponent(params["component-id"]);
+  const componentId = useGetComponentId();
 
   const { data } = useListComponentVariantsQuery({ hanzi: componentId });
-  // return <NMMV2 characterId={decodeURIComponent(params["component-id"])} />;
+  // return <NMMV2 characterId={componentId} />;
 
   // return (
   //   <div>

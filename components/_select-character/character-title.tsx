@@ -1,8 +1,10 @@
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useListComponents } from "@/domain/lesson/component.queries";
+import {
+  useGetComponentQuery,
+  useListComponents,
+} from "@/domain/lesson/component.queries";
 import { cn } from "@/lib/utils";
-import { useMemo } from "react";
 
 import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
 import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
@@ -11,19 +13,14 @@ import { useReadModeStore } from "@/stores/use-readmode-store";
 import Link from "next/link";
 import { Icons } from "../ui/icons.v2";
 import { CharacterTrackButton } from "./selected-character/character-track-button";
-import { SelectedCharacterProps } from "./select-character.types";
+import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 
 export const CharacterTitle = (props: any) => {
-  const {
-    pinyinOrRoman,
-    lang,
-    multiSentence,
-    selectedCompInput,
-    selectedCompEn,
-    characterId,
-  } = props;
+  const { lang, multiSentence, characterId } = props;
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersQuery();
+
+  const componentId = useGetComponentId();
 
   const { data } = useListComponentVariantsQuery({ hanzi: characterId });
 
@@ -35,13 +32,11 @@ export const CharacterTitle = (props: any) => {
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
 
-  const selectedComp = useMemo(
-    () =>
-      components?.find(
-        (component: any) => component?.hanzi === selectedCompInput
-      ),
-    [components, selectedCompInput]
-  );
+  const { data: selectedComp } = useGetComponentQuery({
+    hanzi: componentId,
+  });
+
+  const selectedCompInput = selectedComp?.hanzi;
 
   //   const brightMode = useBrightModeStore((state: any) => state.mode);
   const brightMode = useReadModeStore((state) => state.readMode);
@@ -56,7 +51,7 @@ export const CharacterTitle = (props: any) => {
         <h2 className="text-gray-400 font-extralight">{pinyins?.join("/")}</h2>
       ) : (
         <h2 className="text-gray-400 font-extralight">
-          {pinyinOrRoman || pinyins?.[0]}
+          {selectedComp?.pinyin || pinyins?.[0]}
         </h2>
       )}
 
@@ -129,7 +124,7 @@ export const CharacterTitle = (props: any) => {
       )}
 
       <h2 className="text-gray-500 font-light">
-        {selectedCompEn || englishMeanings?.[0]}
+        {selectedComp?.en || englishMeanings?.[0]}
       </h2>
     </div>
   );

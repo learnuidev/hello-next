@@ -1,26 +1,21 @@
 "use client";
 
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/pro-thin-svg-icons";
-import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { AudioComponent } from "./audio-component";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
-import { Icons } from "../ui/icons.v2";
-import { GoogleLink } from "./selected-character/google-link";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
-import { useListTrackableCharactersQuery } from "@/hooks/use-list-trackable-characters";
 import { useIsContentTrackingEnabled } from "@/domain/user/use-is-content-tracking-enabled";
+import { useListTrackableCharactersQuery } from "@/hooks/use-list-trackable-characters";
+import { Icons } from "../ui/icons.v2";
+import { AudioComponent } from "./audio-component";
+import { GoogleLink } from "./selected-character/google-link";
 
 export const SentenceItem = (props: any) => {
   const {
     components,
     selectedComp,
     selectedChar,
-    routeName,
     lang,
     readMode,
     discoverMutation,
@@ -61,6 +56,7 @@ export const SentenceItem = (props: any) => {
             if (canTrack) {
               addHistoryMutation.mutate({
                 lang: lang,
+                // characterId,
                 hanzi: unEncoded,
                 trackingCharacters: containsTrackableCharacters?.map(
                   (item) => item?.hanzi

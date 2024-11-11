@@ -3,38 +3,9 @@ import { Icons } from "../../ui/icons.v2";
 import { getUploadUrl } from "@/domain/asset/asset.api";
 import { useAddUserAssetMutation } from "@/domain/asset/asset.mutation";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
-import { updateComponent } from "@/domain/component/update-component.api";
-import {
-  IComponent,
-  listComponentsQueryKey,
-} from "@/domain/lesson/component.queries";
-import { queryIds } from "@/domain/lesson/queryIds";
-import { siteConfig } from "@/lib/config";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useUpdateComponentMutation } from "@/domain/component/use-update-component-mutation";
+import { IComponent } from "@/domain/lesson/component.queries";
 import Axios from "axios";
-
-export function useUpdateComponentMutation(options = {} as any) {
-  const { data: authUser } = useCurrentAuthUser({});
-  const queryClient = useQueryClient();
-  return useMutation(
-    async (params: any) => {
-      const response = await updateComponent(params, {
-        Authorization: authUser?.jwt,
-      });
-      return response;
-    },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
-        }
-
-        queryClient.invalidateQueries([listComponentsQueryKey]);
-      },
-    }
-  );
-}
 
 export const UploadAudioButton = (props: { currentPhrase: IComponent }) => {
   function getFileExtension(file: any) {

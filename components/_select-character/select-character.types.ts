@@ -2,8 +2,6 @@ export interface SelectedCharacterProps {
   uniqueAnswerIds: any;
   answerMap: any;
   allContents: any;
-  allSteps: any;
-  components: any;
   selectedComp: any;
   selectedChar: any;
   routeName: any;

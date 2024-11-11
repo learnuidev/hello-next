@@ -1,20 +1,18 @@
 "use client";
 
-import React from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-import { cleanString } from "@/data/convos/bm1/utils";
+import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { SelectedCharacterProps } from "./select-character.types";
 import { SentenceItem } from "./sentence-item";
-import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 
 export const NormalView = (props: SelectedCharacterProps) => {
   const {
     uniqueAnswerIds,
     answerMap,
     allContents,
-    allSteps,
+
     selectedComp,
     selectedChar,
     sentences,
@@ -31,9 +29,9 @@ export const NormalView = (props: SelectedCharacterProps) => {
             (lesson: any) => lesson?.id === char?.phraseId
           );
 
-          const currentPhrase =
-            allContents?.find((lesson: any) => lesson?.id === char?.phraseId) ||
-            allSteps?.find((step: any) => cleanString(step?.hanzi) === id);
+          const currentPhrase = allContents?.find(
+            (lesson: any) => lesson?.id === char?.phraseId
+          );
 
           return (
             <div

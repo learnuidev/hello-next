@@ -34,11 +34,7 @@ const PlayVoice = ({ voice }: { voice: string }) => {
 
   const audioUrl = `https://www.narakeet.com/samples/voices/${voice}.mp3`;
 
-  console.log("AUDIO URL", audioUrl);
-
   const [play, { stop, duration, audio }] = useSound(audioUrl) as any;
-  // console.log("PROPS", props);
-  // const [play, { stop }] = props;
 
   console.log("DURATION", duration);
   return (

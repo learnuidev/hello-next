@@ -15,21 +15,7 @@ import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-b
 import { useSlicedRelatedSentencesByCharacter } from "../use-sliced-related-sentences-by-character";
 
 export const HskSentenceView = (props: SelectedCharacterProps) => {
-  const {
-    uniqueAnswerIds,
-    answerMap,
-    allContents,
-    allSteps,
-    components,
-    selectedComp,
-    selectedChar,
-    routeName,
-    lang,
-    view,
-    sentences,
-    characterId,
-    selectedComp2,
-  } = props;
+  const { lang, characterId } = props;
 
   const relatedHskWords = useRelatedHskWordsByCharacter({
     characterId,

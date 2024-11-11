@@ -1,5 +1,8 @@
 "use client";
 
+import { Card } from "@/components/ui/card";
+import { Icons } from "@/components/ui/icons.v2";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   useCurrentAuthUser,
   useIsSuperAdmin,
@@ -7,6 +10,8 @@ import {
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { CharacterAndToneLevel } from "./character-and-tone-level/character-and-tone-level";
+import { Language } from "./language/language";
 
 export default function Doctor() {
   const { data: components } = useListComponents({});
@@ -45,26 +50,49 @@ export default function Doctor() {
   const isSuperAdmin = useIsSuperAdmin();
 
   if (!isSuperAdmin) {
-    return <div> You dont have the permission to view this page </div>;
+    return (
+      <Card className="text-center mt-32 py-32 mx-auto max-w-5xl">
+        <Icons.infoCircle />
+        <p className="text-xl">
+          You dont have the permission to view this page{" "}
+        </p>
+      </Card>
+    );
   }
 
   return (
-    <div className="m-8">
-      <button
-        className="bg-gray-800 px-4 py-2"
-        onClick={() => {
-          mutateAll().then(() => {
-            alert("DONE");
-          });
-        }}
-      >
-        {" "}
-        Mutate All
-      </button>
+    <div className="mt-8 md:mx-12">
+      <h1>Dr. Mando</h1>
 
-      <code>
-        <pre>{JSON.stringify(characterWithOutGroupAndToneLevel, null, 2)}</pre>
-      </code>
+      <Tabs defaultValue="tone-level" className="p-0">
+        <div className="mt-8 flex justify-between items-center">
+          <TabsList className="space-x-8">
+            <TabsTrigger
+              value="tone-level"
+              className="px-0 data-[state=active]:text-yellow-500"
+            >
+              <Icons.musicNote className="text-2xl" />
+            </TabsTrigger>
+            <TabsTrigger
+              value="search"
+              className="px-0 data-[state=active]:text-yellow-500"
+            >
+              <Icons.language className="text-2xl" />
+            </TabsTrigger>
+          </TabsList>
+
+          <div className="space-x-4"></div>
+        </div>
+
+        <TabsContent value="tone-level" className="my-8">
+          <CharacterAndToneLevel />
+        </TabsContent>
+        <TabsContent value="search" className="my-8">
+          <Language />
+        </TabsContent>
+        <TabsContent value="click" className="my-8"></TabsContent>
+        <TabsContent value="discovered" className="my-8"></TabsContent>
+      </Tabs>
     </div>
   );
 }

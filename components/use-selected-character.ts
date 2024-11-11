@@ -9,7 +9,10 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 import { useListContentsQuery } from "@/domain/content/content.queries";
 
-import { useListComponents } from "@/domain/lesson/component.queries";
+import {
+  useGetComponentQuery,
+  useListComponents,
+} from "@/domain/lesson/component.queries";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
@@ -149,18 +152,9 @@ export function useSelectedCharacterData({
     }
   );
 
-  const { data: components } = useListComponents({
-    includeAll: true,
-  });
-
-  const allSteps = useMemo(
-    () =>
-      components
-        ?.map((component: any) => component?.steps)
-        ?.filter(Boolean)
-        ?.flat() || [],
-    [components]
-  );
+  // const { data: components } = useListComponents({
+  //   includeAll: true,
+  // });
 
   const selectedComp = useMemo(
     () =>
@@ -172,15 +166,9 @@ export function useSelectedCharacterData({
     [characters, selectedChar]
   );
 
-  const selectedComp2 = useMemo(
-    () =>
-      components?.find(
-        (component: any) =>
-          (component?.hanzi || component?.item || component?.input) ===
-          selectedChar
-      ),
-    [components, selectedChar]
-  );
+  const { data: selectedComp2 } = useGetComponentQuery({
+    hanzi: characterId || "",
+  });
 
   const readMode = useReadModeStore((state) => state.readMode);
   const setReadMode = useReadModeStore((state) => state.setReadMode);
@@ -201,14 +189,7 @@ export function useSelectedCharacterData({
   const discoverMutation = useDiscoverMutation();
   const deleteComponentMutation = useDeleteComponentMutation();
 
-  const firstLesson = useMemo(
-    () =>
-      components?.find(
-        (component: any) =>
-          (component?.hanzi || component?.item) === selectedChar
-      ),
-    [components, selectedChar]
-  );
+  const firstLesson = selectedComp2;
 
   const toneLevel = (selectedComp || selectedComp2)?.tone_level;
 
@@ -224,8 +205,6 @@ export function useSelectedCharacterData({
     uniqueAnswerIds,
     answerMap,
     allContents,
-    allSteps,
-    components,
     selectedComp,
     selectedChar,
     routeName,

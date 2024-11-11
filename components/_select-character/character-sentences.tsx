@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 
-import { cleanString } from "@/data/convos/bm1/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
+import { Icons } from "../ui/icons.v2";
+import { useSelectedCharacterData } from "../use-selected-character";
 import { SelectedCharacterProps } from "./select-character.types";
 import { SentenceItem } from "./sentence-item";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Icons } from "../ui/icons.v2";
-import { useListContentsQuery } from "@/domain/content/content.queries";
-import { useSelectedCharacterData } from "../use-selected-character";
 
+import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import {
   Select,
   SelectContent,
@@ -21,9 +21,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useContentViewStore } from "./use-content-view-store";
-import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
+import { useListComponents } from "@/domain/lesson/component.queries";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useContentViewStore } from "./use-content-view-store";
 
 const ContentSentences = ({
   characterId,
@@ -233,12 +233,12 @@ export const CharacterSentences = (props: { characterId: string }) => {
     characterId: props?.characterId,
   });
 
+  const { data: components } = useListComponents();
+
   const {
     uniqueAnswerIds,
     answerMap,
     allContents,
-    allSteps,
-    components,
     selectedComp,
     selectedChar,
     characterId,
@@ -306,11 +306,9 @@ export const CharacterSentences = (props: { characterId: string }) => {
               (lesson: any) => lesson?.id === char?.phraseId
             );
 
-            const currentPhrase =
-              allContents?.find(
-                (lesson: any) => lesson?.id === char?.phraseId
-              ) ||
-              allSteps?.find((step: any) => cleanString(step?.hanzi) === id);
+            const currentPhrase = allContents?.find(
+              (lesson: any) => lesson?.id === char?.phraseId
+            );
 
             const currentPhrasePinyin = currentPhrase?.hanzi
               ?.split("")

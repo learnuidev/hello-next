@@ -1,19 +1,18 @@
 "use client";
 
-import React from "react";
 import { useListSubComponentsQuery } from "@/domain/component/component.queries";
 import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
+import React from "react";
 
-import { persianAlphabets } from "@/langs/persian/persian-alphabets";
-import { urduAlphabets } from "@/langs/urdu/urdu-alphabets";
-import { russianAlphabets } from "@/langs/russian/russian-alphabets";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { arabicAlphabets } from "@/langs/arabic/arabic-alphabets";
 import { hiraganaAlphabets } from "@/langs/japanese/hiragana-alphabets";
 import { japaneseComponents2 } from "@/langs/japanese/japanese-components";
 import { koreanAlphabets } from "@/langs/korean/korean-alphabets";
 import { koreanComponents2 } from "@/langs/korean/korean-components";
-import { arabicAlphabets } from "@/langs/arabic/arabic-alphabets";
-import { useListComponents } from "@/domain/lesson/component.queries";
+import { persianAlphabets } from "@/langs/persian/persian-alphabets";
+import { russianAlphabets } from "@/langs/russian/russian-alphabets";
+import { urduAlphabets } from "@/langs/urdu/urdu-alphabets";
 
 interface SelectedCharacterProps {
   characterId: string;
@@ -36,10 +35,6 @@ const HanziSubComponentsView = ({
   const { data: sub_components, isLoading } = useListSubComponentsQuery({
     componentId: characterId,
   });
-
-  if (isLoading) {
-    return <Skeleton className="w-60 h-12" />;
-  }
 
   if (characterId?.length === 1) {
     return (

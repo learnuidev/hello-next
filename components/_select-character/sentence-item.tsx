@@ -10,9 +10,13 @@ import { useListTrackableCharactersQuery } from "@/hooks/use-list-trackable-char
 import { Icons } from "../ui/icons.v2";
 import { AudioComponent } from "./audio-component";
 import { GoogleLink } from "./selected-character/google-link";
+import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence-mutation";
+import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
+
+  const componentId = useGetComponentId();
 
   const addHistoryMutation = useAddHistoryMutation();
   const trackableCharacters = useListTrackableCharactersQuery();
@@ -31,6 +35,8 @@ export const SentenceItem = (props: any) => {
 
   const searchParams = useSearchParams();
 
+  const deleteSentenceMutation = useDeleteSentenceMutation();
+
   const contentLang = searchParams.get("content") || "";
 
   const Links = () => {
@@ -38,10 +44,9 @@ export const SentenceItem = (props: any) => {
     return (
       <div className="flex space-x-4 items-center">
         {/* {currentPhrase?.audio ? ( */}
+
         <AudioComponent currentPhrase={currentPhrase} />
         {/* ) : null} */}
-
-        <GoogleLink hanzi={unEncoded} className={"h-8 w-8"} />
 
         <Link
           onClick={() => {
@@ -64,6 +69,20 @@ export const SentenceItem = (props: any) => {
         >
           <Icons.magnifyingGlass />
         </Link>
+
+        <GoogleLink hanzi={unEncoded} className={"h-8 w-8"} />
+
+        <button
+          className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
+          onClick={() => {
+            deleteSentenceMutation?.mutateAsync({
+              id: currentPhrase?.id,
+              component: componentId,
+            });
+          }}
+        >
+          <Icons.trash />
+        </button>
       </div>
     );
   };

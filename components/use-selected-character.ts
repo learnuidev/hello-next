@@ -9,10 +9,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 import { useListContentsQuery } from "@/domain/content/content.queries";
 
-import {
-  useGetComponentQuery,
-  useListComponents,
-} from "@/domain/lesson/component.queries";
+import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";

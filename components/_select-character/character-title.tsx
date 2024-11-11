@@ -1,9 +1,7 @@
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import {
-  useGetComponentQuery,
-  useListComponents,
-} from "@/domain/lesson/component.queries";
+import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
+import { useListComponents } from "@/domain/lesson/component.queries";
 import { cn } from "@/lib/utils";
 
 import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";

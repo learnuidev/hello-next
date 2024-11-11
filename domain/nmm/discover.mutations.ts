@@ -2,10 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
-import { queryIds } from "../lesson/queryIds";
-import { listComponentsQueryKey } from "../lesson/component.queries";
-
-// TODO: Move this to .env
+import { getComponentQueryKey } from "../lesson/use-get-component-query";
 const url =
   "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/discover";
 
@@ -48,7 +45,7 @@ export function useDiscoverMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([listComponentsQueryKey]);
+        queryClient.invalidateQueries([getComponentQueryKey, data?.hanzi]);
       },
     }
   );

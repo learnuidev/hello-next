@@ -13,10 +13,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Icons } from "@/components/ui/icons.v2";
-import {
-  IComponent,
-  listComponentsQueryKey,
-} from "@/domain/lesson/component.queries";
+import { IComponent } from "@/domain/lesson/component.queries";
+import { getComponentQueryKey } from "@/domain/lesson/use-get-component-query";
 import { IGetAudioResourceResponse } from "@/libs/narakeet/narakeet";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -172,7 +170,8 @@ export function GenerateAudioDialog({
                             setResourceStatus(null);
                             setAudioResource(null);
                             queryClient.invalidateQueries([
-                              listComponentsQueryKey,
+                              getComponentQueryKey,
+                              currentPhrase?.hanzi,
                             ]);
 
                             closeDialog();
@@ -204,7 +203,8 @@ export function GenerateAudioDialog({
                           setResourceStatus(null);
                           setAudioResource(null);
                           queryClient.invalidateQueries([
-                            listComponentsQueryKey,
+                            getComponentQueryKey,
+                            currentPhrase?.hanzi,
                           ]);
 
                           closeDialog();

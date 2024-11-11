@@ -1,7 +1,7 @@
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { updateComponent } from "@/domain/component/update-component.api";
-import { listComponentsQueryKey } from "@/domain/lesson/component.queries";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getComponentQueryKey } from "../lesson/use-get-component-query";
 
 export function useUpdateComponentMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
@@ -20,7 +20,7 @@ export function useUpdateComponentMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        // queryClient.invalidateQueries([listComponentsQueryKey]);
+        queryClient.invalidateQueries([getComponentQueryKey, data?.hanzi]);
       },
     }
   );

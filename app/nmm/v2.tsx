@@ -2,7 +2,7 @@ import { Editor } from "@/components/Editor";
 import { MemoizedReactMarkdown } from "@/components/markdown";
 import { Icons } from "@/components/ui/icons.v2";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useGetComponentQuery } from "@/domain/lesson/component.queries";
+import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";

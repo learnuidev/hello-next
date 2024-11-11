@@ -24,6 +24,7 @@ const listSentences = async (
   return resp;
 };
 
+export const listSentencesQueryKey = "list-sentences";
 export function useListSentencesQuery(
   params = {} as {
     component?: string;

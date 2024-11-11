@@ -1,10 +1,5 @@
 "use client";
 
-import {
-  GreenLightbulbDuoTone,
-  Icons,
-  RedFireDuoTone,
-} from "@/components/ui/icons.v2";
 import Link from "next/link";
 import { groupBy } from "ramda";
 
@@ -15,7 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { StatusIcons } from "./status-icons";
+import { getStatusIcon } from "./status-icons";
 
 export const PrecisionSearchResults = ({ searchResults }: any) => {
   const groupByHanzi = groupBy((val: any) => val.hanzi);
@@ -29,8 +24,7 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
       {Object.entries(groupedByHanzi)?.map(([k, val]: any, idx) => {
         const comp = val?.[0];
 
-        const StatusIcon =
-          StatusIcons?.[comp?.status] || StatusIcons["learned"];
+        const StatusIcon = getStatusIcon(comp?.status);
 
         if (comp?.hanzi?.length > 16) {
           return null;

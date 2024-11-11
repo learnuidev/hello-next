@@ -24,3 +24,9 @@ export const StatusIcons = {
     Icon: Icons.questionMark,
   },
 } as any;
+
+export const getStatusIcon = (status = "") => {
+  const StatusIcon = StatusIcons?.[status] || StatusIcons["not_started"];
+
+  return StatusIcon;
+};

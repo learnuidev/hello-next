@@ -5,7 +5,7 @@ import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { cn } from "@/lib/utils";
 
 import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
-import { StatusIcons } from "@/app/(auth)/insights/insights-v2/precision-insight-view/status-icons";
+import { getStatusIcon } from "@/app/(auth)/insights/insights-v2/precision-insight-view/status-icons";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
 import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
@@ -45,11 +45,9 @@ export const CharacterTitle = (props: any) => {
 
   const selectedCompInput = selectedComp?.hanzi || selectedCompInput2;
 
-  //   const brightMode = useBrightModeStore((state: any) => state.mode);
   const brightMode = useReadModeStore((state) => state.readMode);
 
-  const StatusIcon =
-    StatusIcons?.[character?.status || ""] || StatusIcons["not_started"];
+  const StatusIcon = getStatusIcon(character?.status);
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">

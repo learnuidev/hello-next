@@ -15,8 +15,8 @@ export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
   const isSuperAdmin = useIsSuperAdmin();
 
   return (
-    <div className="my-8 flex justify-between items-center w-full">
-      {(selectedComp2?.input || selectedComp2?.hanzi) && (
+    (selectedComp2?.input || selectedComp2?.hanzi) && (
+      <div className="my-8 flex justify-between items-center w-full">
         <div className="flex justify-start space-x-8 items-center">
           {selectedComp2 ? (
             selectedComp2?.audio && !uploadNew ? (
@@ -51,9 +51,7 @@ export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
               </div>
             )}
         </div>
-      )}
-
-      {/* <CharacterTrackButton {...props} /> */}
-    </div>
+      </div>
+    )
   );
 };

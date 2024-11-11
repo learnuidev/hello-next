@@ -142,7 +142,9 @@ export const CharacterTitle = (props: any) => {
           </div>
 
           <div>
-            <StatusIcon.Icon className="text-2xl" />
+            {selectedCompInput?.length < 4 && (
+              <StatusIcon.Icon className="text-2xl" />
+            )}
             {/* {character?.status === "forgotten" && (
               <RedFireDuoTone className="text-2xl" />
             )} */}

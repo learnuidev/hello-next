@@ -7,7 +7,8 @@ import { CharacterTitle } from "../character-title";
 import { ZoomedCharacter } from "./zoomed-character";
 
 export const SelectedCharacterTitle = (props: SelectedCharacterProps) => {
-  const { selectedComp, lang, view, characterId, selectedComp2 } = props;
+  const { selectedComp, selectedChar, lang, view, characterId, selectedComp2 } =
+    props;
 
   const offlineCharacter = chineseCharacters?.find(
     (char) => char?.hanzi === characterId || char?.input === characterId
@@ -20,6 +21,15 @@ export const SelectedCharacterTitle = (props: SelectedCharacterProps) => {
     selectedComp2?.roman ||
     offlineCharacter?.pinyin ||
     offlineCharacter?.roman;
+  const selectedCompEn =
+    selectedComp?.en || selectedComp2?.en || offlineCharacter?.en;
+
+  const selectedCompInput =
+    selectedComp?.hanzi ||
+    selectedComp?.input ||
+    selectedComp2?.input ||
+    selectedComp2?.hanzi ||
+    selectedChar;
 
   const multiSentence =
     pinyinOrRoman?.split(".")?.length > 1 ||
@@ -34,9 +44,12 @@ export const SelectedCharacterTitle = (props: SelectedCharacterProps) => {
   ) : (
     <div className="flex items-center justify-between mb-4 mt-4 pr-4">
       <CharacterTitle
-        lang={lang}
+        pinyinOrRoman={pinyinOrRoman}
         multiSentence={multiSentence}
         characterId={characterId}
+        lang={lang}
+        selectedCompInput={selectedCompInput}
+        selectedCompEn={selectedCompEn}
       />
     </div>
   );

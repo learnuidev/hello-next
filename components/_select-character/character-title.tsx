@@ -9,18 +9,28 @@ import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
 import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import Link from "next/link";
-import { Icons } from "../ui/icons.v2";
+import { Icons, RedFireDuoTone } from "../ui/icons.v2";
 import { CharacterTrackButton } from "./selected-character/character-track-button";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
+import { useGetCharacter } from "@/hooks/use-get-character";
 
 export const CharacterTitle = (props: any) => {
-  const { lang, multiSentence, characterId } = props;
+  const {
+    lang,
+    multiSentence,
+    characterId,
+    selectedCompInput: selectedCompInput2,
+  } = props;
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersQuery();
 
   const componentId = useGetComponentId();
 
   const { data } = useListComponentVariantsQuery({ hanzi: characterId });
+
+  console.log("COMP ID", componentId);
+
+  const character = useGetCharacter({ characterId: componentId });
 
   const pinyins = data?.map((val) => val?.pinyin) || [];
   const englishMeanings = data?.map((val) => val?.en) || [];
@@ -34,7 +44,7 @@ export const CharacterTitle = (props: any) => {
     hanzi: componentId,
   });
 
-  const selectedCompInput = selectedComp?.hanzi;
+  const selectedCompInput = selectedComp?.hanzi || selectedCompInput2;
 
   //   const brightMode = useBrightModeStore((state: any) => state.mode);
   const brightMode = useReadModeStore((state) => state.readMode);
@@ -43,8 +53,12 @@ export const CharacterTitle = (props: any) => {
     tone: selectedComp?.tone_level,
   });
 
+  console.log("CHAR", character);
+
+  console.log("SELECTED COMP", selectedComp);
+
   return (
-    <div className="flex flex-col items-start space-y-2">
+    <div className="flex flex-col items-start space-y-2 w-full">
       {pinyins?.length > 1 ? (
         <h2 className="text-gray-400 font-extralight">{pinyins?.join("/")}</h2>
       ) : (
@@ -54,56 +68,67 @@ export const CharacterTitle = (props: any) => {
       )}
 
       {lang === "zh" ? (
-        <div className="space-x-4 flex items-center">
-          <div>
-            {selectedCompInput?.split("")?.map((val: any, idx: any) => {
-              const learnedChar = learnedCharacters2?.find(
-                (char: any) => char?.hanzi === val
-              );
-              const comp = components?.find((char: any) => char?.hanzi === val);
+        <div className="flex justify-between items-center w-full">
+          <div className="space-x-4 flex items-center">
+            <div>
+              {selectedCompInput?.split("")?.map((val: any, idx: any) => {
+                const learnedChar = learnedCharacters2?.find(
+                  (char: any) => char?.hanzi === val
+                );
+                const comp = components?.find(
+                  (char: any) => char?.hanzi === val
+                );
 
-              const color = calculateColor({
-                tone: learnedChar?.tone_level,
-              });
-              const hoverColor = calculateHoverColor({
-                tone: learnedChar?.tone_level || comp?.tone_level,
-              });
+                const color = calculateColor({
+                  tone: learnedChar?.tone_level || selectedComp?.tone_level,
+                });
 
-              return (
-                <Link
-                  href={`/nmm/${val}?lang=zh`}
-                  key={`${val}-${idx}`}
-                  className={`${
-                    brightMode || isCharactersLoading
-                      ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
-                      : // learnedCharacters.includes(prop?.hanzi)
-                        learnedChar
-                        ? learnedChar?.status === "forgotten"
-                          ? `text-gray-900 ${hoverColor}`
-                          : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
-                            //   ? "text-rose-500"
-                            `${color} text-gray-300 ${hoverColor}`
-                        : selectedComp?.length > 1 || selectedComp?.group
-                          ? `dark:text-gray-500 text-gray-200 ${hoverColor}`
-                          : `dark:text-gray-700 text-gray-200 ${hoverColor}`
-                  } ${hoverColor} text-2xl transition lowercase font-light`}
-                >
-                  {val}
-                </Link>
-              );
-            })}
+                console.log("COLOR", color);
+                const hoverColor = calculateHoverColor({
+                  tone: learnedChar?.tone_level || comp?.tone_level,
+                });
+
+                return (
+                  <Link
+                    href={`/nmm/${val}?lang=zh`}
+                    key={`${val}-${idx}`}
+                    className={`${
+                      brightMode || isCharactersLoading
+                        ? learnedChar?.status === "forgotten" &&
+                          componentId?.length > 1
+                          ? `dark:text-gray-600`
+                          : `dark:text-gray-300 text-gray-700 ${color}`
+                        : // learnedCharacters.includes(prop?.hanzi)
+                          learnedChar
+                          ? `${color} text-gray-300 ${hoverColor}`
+                          : selectedComp?.length > 1 || selectedComp?.group
+                            ? `dark:text-gray-500 text-gray-200 ${hoverColor}`
+                            : `dark:text-gray-700 text-gray-200 ${hoverColor}`
+                    } ${hoverColor} text-2xl transition lowercase font-light`}
+                  >
+                    {val}
+                  </Link>
+                );
+              })}
+            </div>
+
+            <div className="space-x-4 flex">
+              <button
+                onClick={() => {
+                  speak(selectedCompInput);
+                }}
+              >
+                <Icons.volume className="text-2xl" />
+              </button>
+
+              <CharacterTrackButton />
+            </div>
           </div>
 
-          <div className="space-x-4 flex">
-            <button
-              onClick={() => {
-                speak(selectedCompInput);
-              }}
-            >
-              <Icons.volume className="text-2xl" />
-            </button>
-
-            <CharacterTrackButton />
+          <div>
+            {character?.status === "forgotten" && (
+              <RedFireDuoTone className="text-2xl" />
+            )}
           </div>
         </div>
       ) : lang === "zh" && multiSentence ? (

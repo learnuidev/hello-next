@@ -169,11 +169,6 @@ export const SentenceItem = (props: any) => {
             {currentPhrase?.en || currentPhrase?.title}
           </span>
         )}
-        {!currentPhrase?.hanzi && false && (
-          <span className="text-xs text-gray-600">
-            {currentPhrase?.explanation}
-          </span>
-        )}
       </div>
 
       <Links />

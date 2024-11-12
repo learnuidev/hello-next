@@ -108,19 +108,20 @@ export const CharacterTitle = (props: any) => {
                   <Link
                     href={`/nmm/${val}?lang=zh`}
                     key={`${val}-${idx}`}
-                    className={`${
-                      brightMode || isCharactersLoading
-                        ? learnedChar?.status === "forgotten" &&
-                          componentId?.length > 1
-                          ? `dark:text-gray-600`
-                          : `dark:text-gray-300 text-gray-700 ${color}`
-                        : // learnedCharacters.includes(prop?.hanzi)
-                          learnedChar
-                          ? `${color} text-gray-300 ${hoverColor}`
-                          : selectedComp?.length > 1 || selectedComp?.group
-                            ? `dark:text-gray-500 text-gray-200 ${hoverColor}`
-                            : `dark:text-gray-700 text-gray-200 ${hoverColor}`
-                    } ${hoverColor} text-2xl transition lowercase font-light`}
+                    className={`${color} text-2xl transition lowercase font-light`}
+                    // className={`${
+                    //   brightMode || isCharactersLoading
+                    //     ? learnedChar?.status === "forgotten" &&
+                    //       componentId?.length > 1
+                    //       ? `dark:text-gray-600`
+                    //       : `dark:text-gray-300 text-gray-700 ${color}`
+                    //     : // learnedCharacters.includes(prop?.hanzi)
+                    //       learnedChar
+                    //       ? `${color} text-gray-300 ${hoverColor}`
+                    //       : selectedComp?.length > 1 || selectedComp?.group
+                    //         ? `dark:text-gray-500 text-gray-200 ${hoverColor}`
+                    //         : `dark:text-gray-700 text-gray-200 ${hoverColor}`
+                    // } ${hoverColor} text-2xl transition lowercase font-light`}
                   >
                     {val}
                   </Link>

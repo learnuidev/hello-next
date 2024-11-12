@@ -80,6 +80,9 @@ export function CharacterAnalytics({
           </div>
 
           <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
+            <span>
+              <Icons.fireDuoTone />
+            </span>
             <span className="text-gray-300"> {masteryRate}</span>
           </h2>
         </div>

@@ -14,6 +14,8 @@ import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useReadModeStore } from "@/stores/use-readmode-store";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -44,66 +46,80 @@ export const SentenceItem = (props: any) => {
   const contentLang = searchParams.get("content") || "";
   const brightMode = useReadModeStore((state) => state.readMode);
 
+  const { data: characters } = useListCharactersQuery();
+
+  const characterAnalytics = useGetCharacterAnalytics({
+    characterId: componentId,
+    lang: currentPhrase?.lang,
+  });
+
   const Links = () => {
     const hanziOrInput = encodeURIComponent(unEncoded);
     return (
-      <div className="flex gap-2 justify-end items-end w-full pr-2 mt-2 sm:mt-0">
-        {/* {currentPhrase?.audio ? ( */}
+      <div className="flex justify-between items-center w-full">
+        <div>
+          <p className="text-[16px] font-light">
+            {characterAnalytics?.understandingRate}
+          </p>
+        </div>
+        <div className="flex gap-2 justify-end items-end w-full pr-2 mt-2 sm:mt-0">
+          {/* {currentPhrase?.audio ? ( */}
 
-        {/* ) : null} */}
-        <AudioComponent currentPhrase={currentPhrase} />
+          {/* ) : null} */}
+          <AudioComponent currentPhrase={currentPhrase} />
 
-        <Link
-          onClick={() => {
-            if (canTrack) {
-              addHistoryMutation.mutate({
-                lang: lang,
-                // characterId,
-                hanzi: unEncoded,
-                trackingCharacters: containsTrackableCharacters?.map(
-                  (item) => item?.hanzi
-                ),
-                eventType: "CONTENT_VIEWED",
-              } as any);
-            }
-          }}
-          // href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}`}
-
-          href={`/nmm/${hanziOrInput}${lang || selectedComp?.lang ? `?lang=${lang || selectedComp?.lang}` : ``}`}
-          className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
-        >
-          <Icons.magnifyingGlass />
-        </Link>
-
-        <GoogleLink hanzi={unEncoded} className={"h-8 w-8"} />
-
-        {isSuperAdmin && currentPhrase?.id && (
-          <button
-            disabled={
-              deleteSentenceMutation?.isLoading ||
-              deleteSentenceMutation.isSuccess
-            }
-            className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
-            onDoubleClick={() => {
-              deleteSentenceMutation?.mutateAsync({
-                id: currentPhrase?.id,
-                component: componentId,
-              });
+          <Link
+            onClick={() => {
+              if (canTrack) {
+                addHistoryMutation.mutate({
+                  lang: lang,
+                  // characterId,
+                  hanzi: unEncoded,
+                  trackingCharacters: containsTrackableCharacters?.map(
+                    (item) => item?.hanzi
+                  ),
+                  eventType: "CONTENT_VIEWED",
+                } as any);
+              }
             }}
+            // href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}`}
+
+            href={`/nmm/${hanziOrInput}${lang || selectedComp?.lang ? `?lang=${lang || selectedComp?.lang}` : ``}`}
+            className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
           >
-            {deleteSentenceMutation?.isLoading ? (
-              <Icons.spinner spinPulse />
-            ) : (
-              <Icons.trash />
-            )}
-          </button>
-        )}
+            <Icons.magnifyingGlass />
+          </Link>
+
+          <GoogleLink hanzi={unEncoded} className={"h-8 w-8"} />
+
+          {isSuperAdmin && currentPhrase?.id && (
+            <button
+              disabled={
+                deleteSentenceMutation?.isLoading ||
+                deleteSentenceMutation.isSuccess
+              }
+              className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
+              onDoubleClick={() => {
+                deleteSentenceMutation?.mutateAsync({
+                  id: currentPhrase?.id,
+                  component: componentId,
+                });
+              }}
+            >
+              {deleteSentenceMutation?.isLoading ? (
+                <Icons.spinner spinPulse />
+              ) : (
+                <Icons.trash />
+              )}
+            </button>
+          )}
+        </div>
       </div>
     );
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between py-4 w-full">
+    <div className="flex flex-col items-center justify-between py-4 w-full">
       <div role="button" className="flex flex-col w-full">
         {" "}
         <Link

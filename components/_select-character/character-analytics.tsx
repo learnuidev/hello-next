@@ -1,12 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-
-import { useRouter } from "next/navigation";
-
-import { useSelectedCharacter } from "../../app/(auth)/convos/use-selected-character";
 import { SelectedCharacterContainer } from "@/components/selected-character-container";
+import { useSelectedCharacter } from "../../app/(auth)/convos/use-selected-character";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import Link from "next/link";
@@ -16,10 +11,9 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 
-import { create } from "zustand";
 import { HanziLink } from "@/components/hanzi-link";
-import { filterNonEnglishAlphabets } from "@/app/nmm/nmm-utils/filter-non-english-alphabets";
-import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
+import { create } from "zustand";
+import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 
 export const useSearchQueryStore = create((set: any, get: any) => ({
   type: "character",
@@ -34,8 +28,6 @@ export function CharacterAnalytics({
   characterId: string;
   lang: string;
 }) {
-  const [isTocHidden, setIsTocHidden] = useState(false);
-
   const viewType = useSearchQueryStore((state) => state.type);
   const setViewType = useSearchQueryStore((state) => state.setType);
 
@@ -43,61 +35,27 @@ export function CharacterAnalytics({
 
   const { data: hskWords } = useListHSKWordsQuery();
 
-  const router = useRouter();
-
   const { data: learnedCharacters } = useListCharactersQuery();
-
-  const { data: allAnswers, isLoading } = useListAnswersQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
 
   const filteredHskWords = hskWords?.filter((word: any) => {
     return characterId?.includes(word?.hanzi);
   });
 
-  const uniqueWords =
-    lang === "zh"
-      ? characterId
-          ?.split("")
-          .join("")
-          ?.toLocaleLowerCase()
-          ?.split("")
-          ?.filter(filterNonHanYu)
-      : [
-          ...new Set(
-            [...characterId?.split("")].map(filterNonEnglishAlphabets)
-          ),
-        ];
+  const { understandingRate, totalCharaters, totalNewCharaters, uniqueWords } =
+    useGetCharacterAnalytics({
+      characterId,
+      lang,
+    });
 
-  const totalNewCharaters = uniqueWords?.filter((char) => {
-    const isLearned = learnedCharacters?.find(
-      (item: any) => (item?.hanzi || item?.input) === char
-    );
-
-    return !!isLearned;
-  })?.length;
-
-  const understandingRate = Intl.NumberFormat("en-GB", {
-    style: "percent",
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 2,
-  }).format(totalNewCharaters / uniqueWords?.length);
-
-  if (isLoading) {
-    return (
-      <div className=" px-4 md:px-32 my-4 md:my-8">
-        <div className="text-center my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
-          ...
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className=" px-4 md:px-32 my-4 md:my-8">
+  //       <div className="text-center my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
+  //         ...
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return selectedChar ? (
     <SelectedCharacterContainer characterId={selectedChar} />
@@ -107,14 +65,11 @@ export function CharacterAnalytics({
         <div className="flex justify-between w-full">
           <div className="flex justify-start space-x-16">
             <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-              {uniqueWords?.length}{" "}
+              {totalCharaters}{" "}
               <span className="text-sm md:text-xl">total characters </span>
             </h2>
             <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
-              <span className="text-yellow-500">
-                {" "}
-                {uniqueWords?.length - totalNewCharaters}
-              </span>
+              <span className="text-yellow-500"> {totalNewCharaters}</span>
               <span className="text-sm md:text-xl">new characters </span>
             </h2>
           </div>

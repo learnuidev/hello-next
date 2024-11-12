@@ -139,19 +139,20 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
               </Tabs>
             </div>
 
-            {selectedCompInput?.length < 32 && (
-              <div className="my-8">
-                <GrammarAnalysis
-                  contentId={selectedChar}
-                  lang={lang || selectedComp?.lang}
-                />
-              </div>
-            )}
+            {selectedCompInput?.length < 32 &&
+              props?.sentences?.length !== 0 && (
+                <div className="my-8">
+                  <GrammarAnalysis
+                    contentId={selectedChar}
+                    lang={lang || selectedComp?.lang}
+                  />
+                </div>
+              )}
           </div>
         </article>
       </div>
 
-      {selectedCompInput?.length >= 32 ? (
+      {selectedCompInput?.length >= 32 || props?.sentences?.length === 0 ? (
         <div className="col-span-5 md:col-span-3">
           <GrammarAnalysis
             contentId={selectedChar}

@@ -41,11 +41,16 @@ export function CharacterAnalytics({
     return characterId?.includes(word?.hanzi);
   });
 
-  const { understandingRate, totalCharaters, totalNewCharaters, uniqueWords } =
-    useGetCharacterAnalytics({
-      characterId,
-      lang,
-    });
+  const {
+    understandingRate,
+    totalCharaters,
+    totalNewCharaters,
+    uniqueWords,
+    masteryRate,
+  } = useGetCharacterAnalytics({
+    characterId,
+    lang,
+  });
 
   // if (isLoading) {
   //   return (
@@ -75,7 +80,7 @@ export function CharacterAnalytics({
           </div>
 
           <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
-            <span className="text-gray-300"> {understandingRate}</span>
+            <span className="text-gray-300"> {masteryRate}</span>
           </h2>
         </div>
 

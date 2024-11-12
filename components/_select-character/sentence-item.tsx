@@ -7,7 +7,7 @@ import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useIsContentTrackingEnabled } from "@/domain/user/use-is-content-tracking-enabled";
 import { useListTrackableCharactersQuery } from "@/hooks/use-list-trackable-characters";
-import { Icons } from "../ui/icons.v2";
+import { Icons, RedFireDuoTone } from "../ui/icons.v2";
 import { AudioComponent } from "./audio-component";
 import { GoogleLink } from "./selected-character/google-link";
 import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence-mutation";
@@ -49,17 +49,22 @@ export const SentenceItem = (props: any) => {
   const { data: characters } = useListCharactersQuery();
 
   const characterAnalytics = useGetCharacterAnalytics({
-    characterId: componentId,
+    characterId: currentPhrase?.hanzi || currentPhrase?.input,
     lang: currentPhrase?.lang,
   });
 
   const Links = () => {
     const hanziOrInput = encodeURIComponent(unEncoded);
     return (
-      <div className="flex justify-between items-center w-full">
+      <div className="flex justify-between items-center w-full mt-2">
         <div>
-          <p className="text-[16px] font-light">
-            {characterAnalytics?.understandingRate}
+          <p className="text-[16px] font-light flex space-x-2">
+            <span>
+              {" "}
+              <RedFireDuoTone />
+            </span>
+
+            <span> {characterAnalytics?.masteryRate}</span>
           </p>
         </div>
         <div className="flex gap-2 justify-end items-end w-full pr-2 mt-2 sm:mt-0">

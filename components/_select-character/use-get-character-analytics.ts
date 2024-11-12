@@ -2,8 +2,6 @@
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
-import { useRouter } from "next/navigation";
-
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
@@ -19,8 +17,6 @@ export function useGetCharacterAnalytics({
   lang: string;
 }) {
   const { data: hskWords } = useListHSKWordsQuery();
-
-  const router = useRouter();
 
   const { data: learnedCharacters } = useListCharactersQuery();
 
@@ -56,15 +52,37 @@ export function useGetCharacterAnalytics({
     return !!isLearned;
   })?.length;
 
+  const totalMasteredCharacters = uniqueWords
+    ?.map((char) => {
+      const isLearned =
+        learnedCharacters?.find((item: any) => item?.hanzi === char) || [];
+
+      return isLearned;
+    })
+    ?.filter(Boolean)
+    ?.filter((item: any) => item?.status === "forgotten");
+
+  if (characterId === "各地的气候都不一样。") {
+    console.log("TOTAL MASTERED", totalMasteredCharacters);
+  }
+
   const understandingRate = Intl.NumberFormat("en-GB", {
     style: "percent",
     minimumFractionDigits: 1,
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 1,
   }).format(totalNewCharaters / uniqueWords?.length);
+
+  const masteryRate = Intl.NumberFormat("en-GB", {
+    style: "percent",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  }).format(totalMasteredCharacters?.length / uniqueWords?.length);
 
   return {
     uniqueWords,
     understandingRate,
+    masteryRate,
+
     totalCharaters: uniqueWords?.length,
     totalNewCharaters: uniqueWords?.length - totalNewCharaters,
   };

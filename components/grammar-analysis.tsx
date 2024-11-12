@@ -1,27 +1,20 @@
 "use client";
 
-import {
-  ListGrammarsResponse,
-  useListGrammarsQuery,
-} from "@/domain/sentence/grammar.queries";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { useGetHskLevelHandler } from "@/app/(auth)/convos/ai";
+import { cleanString } from "@/data/convos/bm1/level_7";
 import Link from "next/link";
 import { ScrollArea } from "./ui/scroll-area";
-import { cleanString } from "@/data/convos/bm1/level_7";
-import { useGetHskLevelHandler } from "@/app/(auth)/convos/ai";
 
 export function GrammarAnalysis({
   contentId,
   lang,
-  onSearchGrammar,
-  showHeader = true,
 }: {
   lang?: string;
   contentId: string;
-  onSearchGrammar?: (grammar: string) => void;
-  showHeader?: boolean;
 }) {
   const searchParams = useSearchParams();
   const learnedLang = searchParams.get("lang") || lang;
@@ -44,8 +37,7 @@ export function GrammarAnalysis({
 
   const router = useRouter();
 
-  const grammarAnalysisFinal = (grammarAnalysis as ListGrammarsResponse)
-    ?.grammarAnalysis;
+  const grammarAnalysisFinal = grammarAnalysis?.grammarAnalysis || [];
 
   const GrammarAnalysisList = () => {
     const divStyles =
@@ -107,10 +99,6 @@ export function GrammarAnalysis({
                     </>
                   )}
 
-                  {/* <p className="text-gray-600 font-extralight text-xs">
-                  {analysis?.explanation}
-                </p> */}
-
                   {hskLevel ? (
                     <p className="text-gray-600"> | hsk {hskLevel} </p>
                   ) : null}
@@ -123,7 +111,6 @@ export function GrammarAnalysis({
                       ? `/nmm/${cleanHanzi}?lang=${lang}`
                       : `/nmm/${cleanHanzi}`
                   }
-                  // className="w-16"
                 >
                   {analysis?.en}
                 </Link>
@@ -136,11 +123,6 @@ export function GrammarAnalysis({
 
             return (
               <div key={analysis?.input} className="flex items-start flex-col">
-                {/* {analysis?.roman !== analysis?.input && (
-                  <Link className=" text-gray-400" href={`/nmm/${cleanInput}`}>
-                    {analysis?.roman}
-                  </Link>
-                )} */}
                 <Link
                   className="text-gray-300 font-light text-xl"
                   href={

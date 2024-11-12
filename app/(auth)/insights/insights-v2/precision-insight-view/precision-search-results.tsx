@@ -1,7 +1,5 @@
 "use client";
 
-import { groupBy } from "ramda";
-
 import { Icons } from "@/components/ui/icons.v2";
 import { useState } from "react";
 import { CharacterSearchResult } from "./character-search-result";
@@ -9,12 +7,6 @@ import { WordSearchResult } from "./word-search-result";
 
 export const PrecisionSearchResults = ({ searchResults }: any) => {
   const [view, setView] = useState("character");
-  const groupByHanzi = groupBy((val: any) => val.hanzi);
-  const groupedByHanzi = groupByHanzi(searchResults) as any;
-
-  if (!groupedByHanzi) {
-    return null;
-  }
 
   const finalView =
     view === "character" && !searchResults?.length ? "word" : view;

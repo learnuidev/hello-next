@@ -46,7 +46,14 @@ export function GrammarAnalysis({
 
   const ga = (grammarAnalysis as ListGrammarsResponse)?.grammarAnalysis;
 
-  const grammarAnalysisFinal = Array.isArray(ga) ? ga : [ga];
+  const grammarAnalysisFinal = (Array.isArray(ga) ? ga : [ga])
+    .map((analysis: any) => {
+      return {
+        ...analysis,
+        hanzi: cleanString(analysis?.hanzi),
+      };
+    })
+    .filter((analysis: any) => analysis.hanzi);
 
   const GrammarAnalysisList = () => {
     const divStyles =

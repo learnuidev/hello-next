@@ -300,7 +300,6 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
                 currentTranscription?.hanzi ||
                 hanzi
               }
-              showHeader={false}
             />
           </div>
         )}

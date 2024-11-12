@@ -305,7 +305,7 @@ export const ComponentForm = ({
 
         {showAnalysis ? (
           <div className="mx-12 flex justify-center text-gray-400">
-            <GrammarAnalysis contentId={lesson?.hanzi} showHeader={false} />
+            <GrammarAnalysis contentId={lesson?.hanzi} />
           </div>
         ) : null}
       </div>

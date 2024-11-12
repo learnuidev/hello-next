@@ -130,7 +130,7 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
               };
 
         return {
-          lang: resolvedLang,
+          lang: "zh",
           start: cue?.startTime,
           end: cue?.endTime,
           ...hanziProps,
@@ -281,7 +281,7 @@ export const listTracks = ({ id, lang }: { id: string; lang: string }) => {
               : {};
 
           return acc.concat({
-            lang,
+            lang: "zh",
             start,
             end,
             ...hanziProps,

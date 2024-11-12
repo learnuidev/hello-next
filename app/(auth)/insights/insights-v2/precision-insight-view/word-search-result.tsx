@@ -20,25 +20,23 @@ export function WordSearchResult() {
 
   const { data: hskWords } = useListHSKWordsQuery();
 
-  const filteredHsk = hskWords
-    ?.filter((item: any) => {
-      const isHanzi = item?.hanzi?.includes(querySync);
+  const filteredHsk = hskWords?.filter((item: any) => {
+    const isHanzi = item?.hanzi?.includes(querySync);
 
-      if (isHanzi) {
-        return true;
-      }
+    if (isHanzi) {
+      return true;
+    }
 
-      const humanPinyin = getHumanPinyin(item);
+    const humanPinyin = getHumanPinyin(item);
 
-      const isSearchByPinyin = humanPinyin?.includes(querySyncLowerCased);
+    const isSearchByPinyin = humanPinyin?.includes(querySyncLowerCased);
 
-      if (isSearchByPinyin) {
-        return true;
-      }
+    if (isSearchByPinyin) {
+      return true;
+    }
 
-      return item?.en?.toLowerCase()?.includes(querySyncLowerCased);
-    })
-    ?.slice(0, 100);
+    return item?.en?.toLowerCase()?.includes(querySyncLowerCased);
+  });
 
   console.log("HSK WORDS", filteredHsk);
 
@@ -46,9 +44,11 @@ export function WordSearchResult() {
     return null;
   }
 
+  const displayablefilteredHsk = filteredHsk?.slice(0, 100);
+
   return (
     <section className="space-y-12 mt-12 pb-32">
-      {filteredHsk?.map((val: any, idx: any) => {
+      {displayablefilteredHsk?.map((val: any, idx: any) => {
         const comp = val;
 
         const StatusIcon = getStatusIcon(comp?.status);

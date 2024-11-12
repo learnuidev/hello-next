@@ -8,11 +8,14 @@ import { LifeTimeCharactersStats } from "./components/life-time-characters-stats
 import { NavBar } from "@/components/navbar";
 import { useGetInsightSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/use-get-insight-search-results";
 import { PrecisionSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/precision-search-results";
+import { useSearchQueryStore } from "@/components/search/state";
 
 export const ProfilePage = () => {
   const searchResults = useGetInsightSearchResults("all");
 
-  if (searchResults?.length) {
+  const queryStrSync = useSearchQueryStore((state) => state.querySync);
+
+  if (queryStrSync) {
     return (
       <main className="bg-white dark:bg-[rgb(9,10,11)]">
         <NavBar />

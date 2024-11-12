@@ -61,7 +61,7 @@ export const SentenceItem = (props: any) => {
           <p className="text-[16px] font-light flex space-x-2">
             <span>
               {" "}
-              <RedFireDuoTone />
+              <Icons.fireDuoTone />
             </span>
 
             <span> {characterAnalytics?.masteryRate}</span>

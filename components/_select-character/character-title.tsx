@@ -51,13 +51,17 @@ export const CharacterTitle = (props: any) => {
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
-      {pinyins?.length > 1 ? (
-        <h2 className="text-gray-400 font-extralight">{pinyins?.join("/")}</h2>
-      ) : (
-        <h2 className="text-gray-400 font-extralight">
-          {selectedComp?.pinyin || pinyins?.[0]}
-        </h2>
-      )}
+      {brightMode ? (
+        pinyins?.length > 1 ? (
+          <h2 className="text-gray-400 font-extralight">
+            {pinyins?.join("/")}
+          </h2>
+        ) : (
+          <h2 className="text-gray-400 font-extralight">
+            {selectedComp?.pinyin || pinyins?.[0]}
+          </h2>
+        )
+      ) : null}
 
       {lang === "zh" ? (
         <div className="flex justify-between items-center w-full">

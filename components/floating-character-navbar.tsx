@@ -48,6 +48,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     (item: any) => (item?.hanzi || item?.input) === characterId
   );
 
+  const brightMode = useBrightModeStore((state: any) => state.mode);
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
 
   const pinyinOrRoman =
@@ -78,7 +79,10 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
             </Link>
 
             <button
-              className={cn("text-xl")}
+              className={cn(
+                "text-xl",
+                brightMode ? "dark:text-white" : "dark:text-gray-500"
+              )}
               onClick={() => {
                 setBrightMode((prev: any) => !prev);
                 setReadMode(!readMode);

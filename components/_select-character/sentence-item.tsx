@@ -57,7 +57,17 @@ export const SentenceItem = (props: any) => {
     const hanziOrInput = encodeURIComponent(unEncoded);
     return (
       <div className="flex justify-between items-center w-full mt-2">
-        <div>
+        <div className="flex items-center space-x-2">
+          {characterAnalytics?.precisionRate !== "0.0%" && (
+            <p className="text-[16px] font-light flex space-x-2">
+              <span>
+                {" "}
+                <Icons.bullsEyeArrowDT />
+              </span>
+
+              <span> {characterAnalytics?.precisionRate}</span>
+            </p>
+          )}
           <p className="text-[16px] font-light flex space-x-2">
             <span>
               {" "}

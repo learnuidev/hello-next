@@ -52,15 +52,19 @@ export function useGetCharacterAnalytics({
     return !!isLearned;
   })?.length;
 
-  const totalMasteredCharacters = uniqueWords
+  const totalLearnedCharacters = uniqueWords
     ?.map((char) => {
-      const isLearned =
-        learnedCharacters?.find((item: any) => item?.hanzi === char) || [];
+      const isLearned = learnedCharacters?.find(
+        (item: any) => item?.hanzi === char
+      );
 
       return isLearned;
     })
-    ?.filter(Boolean)
-    ?.filter((item: any) => item?.status === "forgotten");
+    ?.filter(Boolean);
+
+  const totalMasteredCharacters = totalLearnedCharacters?.filter(
+    (item: any) => item?.status === "forgotten"
+  );
 
   if (characterId === "各地的气候都不一样。") {
     console.log("TOTAL MASTERED", totalMasteredCharacters);
@@ -78,11 +82,39 @@ export function useGetCharacterAnalytics({
     maximumFractionDigits: 1,
   }).format(totalMasteredCharacters?.length / uniqueWords?.length);
 
+  const totalReviewedCharacters = totalLearnedCharacters?.filter(
+    (character: any) => character?.reviewHistory?.length > 0
+  );
+
+  const averagePrecisionRate =
+    totalReviewedCharacters
+      ?.map((char) => {
+        const totalReviews = char?.reviewHistory?.length || 1;
+        const totalIncorrectReviews =
+          char?.reviewHistory?.filter(
+            (reviewItem) => reviewItem?.outcome === "incorrect"
+          )?.length || 0;
+
+        return totalIncorrectReviews / totalReviews;
+      })
+      .reduce((acc, curr) => acc + curr, 0) /
+    (totalReviewedCharacters?.length || 1);
+
+  const precisionRate = Intl.NumberFormat("en-GB", {
+    style: "percent",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  }).format(averagePrecisionRate);
+
+  if (characterId === "编辑会定期检查错误。") {
+    console.log("PRECISION RATE", totalReviewedCharacters);
+  }
+
   return {
     uniqueWords,
     understandingRate,
     masteryRate,
-
+    precisionRate,
     totalCharaters: uniqueWords?.length,
     totalNewCharaters: uniqueWords?.length - totalNewCharaters,
   };

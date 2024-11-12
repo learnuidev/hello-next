@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { HanziLink } from "@/components/hanzi-link";
 import { create } from "zustand";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
+import { NmmListContainer } from "../nmm-list-container";
 
 export const useSearchQueryStore = create((set: any, get: any) => ({
   type: "character",
@@ -43,6 +44,7 @@ export function CharacterAnalytics({
 
   const {
     understandingRate,
+    precisionRate,
     totalCharaters,
     totalNewCharaters,
     uniqueWords,
@@ -67,24 +69,33 @@ export function CharacterAnalytics({
   ) : (
     <div className="w-full px-4 my-4 md:my-8">
       <div>
-        <div className="flex justify-between w-full">
-          <div className="flex justify-start space-x-16">
-            <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+        <div className="flex flex-row justify-between w-full">
+          <div className="flex justify-start space-x-4 sm:space-x-16">
+            <h2 className="text-xl sm:text-3xl my-4 font-extralight text-gray-500 dark:text-gray-300">
               {totalCharaters}{" "}
-              <span className="text-sm md:text-xl">total characters </span>
+              <span className="text-sm md:text-xl">total </span>
             </h2>
-            <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
+            <h2 className="text-xl sm:text-3xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
               <span className="text-yellow-500"> {totalNewCharaters}</span>
-              <span className="text-sm md:text-xl">new characters </span>
+              <span className="text-sm md:text-xl">new </span>
             </h2>
           </div>
 
-          <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
-            <span>
-              <Icons.fireDuoTone />
-            </span>
-            <span className="text-gray-300"> {masteryRate}</span>
-          </h2>
+          <div className="flex space-x-2 sm:space-x-8">
+            <h2 className="text-lg sm:text-3xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
+              <span>
+                <Icons.bullsEyeArrowDT />
+              </span>
+              <span className="text-gray-300"> {precisionRate}</span>
+            </h2>
+
+            <h2 className="text-lg sm:text-3xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
+              <span>
+                <Icons.fireDuoTone />
+              </span>
+              <span className="text-gray-300"> {masteryRate}</span>
+            </h2>
+          </div>
         </div>
 
         <div className="space-x-8 my-8">
@@ -125,7 +136,7 @@ export function CharacterAnalytics({
 
         {viewType === "character" && (
           <div className="my-8">
-            <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
+            <NmmListContainer className="md:mx-0">
               {uniqueWords?.map((char: any, idx: number) => {
                 if (!char) {
                   return null;
@@ -179,13 +190,13 @@ export function CharacterAnalytics({
                   </Link>
                 );
               })}
-            </div>
+            </NmmListContainer>
           </div>
         )}
 
         {viewType === "word" && (
           <div className="my-8">
-            <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
+            <NmmListContainer className="md:mx-0">
               {filteredHskWords?.map((char: any, idx: number) => {
                 const isLearned = learnedCharacters?.find(
                   (item: any) => (item?.hanzi || item?.input) === char
@@ -222,7 +233,7 @@ export function CharacterAnalytics({
                   </Link>
                 );
               })}
-            </div>
+            </NmmListContainer>
           </div>
         )}
       </div>

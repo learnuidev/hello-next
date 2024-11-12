@@ -93,6 +93,8 @@ import {
   faChartRadar,
   faItalic,
   faBold,
+  faBullseye,
+  faBullseyeArrow,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -105,6 +107,8 @@ import {
   faTree as faTreeDuotone,
   faGlassesRound as faGlassesRoundDT,
   faBookSpells as faBookSpellsDT,
+  faBullseye as faBullseyeDT,
+  faBullseyeArrow as faBullseyeArrowDT,
 } from "@fortawesome/pro-duotone-svg-icons";
 
 import { faCitrus as faCitrusSolid } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -291,6 +295,10 @@ export const Icons = {
   track: createFAIcon(faChartRadar),
   italic: createFAIcon(faItalic),
   bold: createFAIcon(faBold),
+  bullsEyeDT: createFAIcon(faBullseyeDT as any),
+  bullsEyeArrowDT: createFAIcon(faBullseyeArrowDT as any),
+  bullsEyeArrow: createFAIcon(faBullseyeArrow),
+  bullsEye: createFAIcon(faBullseye),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

@@ -13,6 +13,7 @@ import { GoogleLink } from "./selected-character/google-link";
 import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence-mutation";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
+import { useReadModeStore } from "@/stores/use-readmode-store";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -41,6 +42,7 @@ export const SentenceItem = (props: any) => {
   const deleteSentenceMutation = useDeleteSentenceMutation();
 
   const contentLang = searchParams.get("content") || "";
+  const brightMode = useReadModeStore((state) => state.readMode);
 
   const Links = () => {
     const hanziOrInput = encodeURIComponent(unEncoded);
@@ -113,7 +115,7 @@ export const SentenceItem = (props: any) => {
             currentPhrase?.hanzi
           )}`}
         >
-          {lang !== "en" && (
+          {brightMode && lang !== "en" && (
             <span className="text-sm text-gray-500 dark:text-gray-400">
               {currentPhrase?.pinyin || currentPhrase?.roman}
             </span>

@@ -158,7 +158,7 @@ export function ReviewMode(props: any) {
   }
 
   const remainingItems = input
-    ? totalCharacters - reviewCount
+    ? uniqueComponentWords?.length - reviewCount
     : date
       ? groupItems?.length - reviewCount
       : unReviewedCharacters?.length;

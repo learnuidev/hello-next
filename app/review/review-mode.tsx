@@ -96,7 +96,26 @@ export function ReviewMode(props: any) {
       return true;
     });
 
-  const hasReviewedAll = date ? groupItems?.length <= reviewCount : false;
+  const {
+    understandingRate,
+    precisionRate,
+    totalCharacters,
+    uniqueComponentWords,
+    totalNewCharaters,
+    uniqueWords,
+    masteryRate,
+  } = useGetCharacterAnalytics({
+    characterId: input,
+    lang: "zh",
+  });
+
+  console.log("uniqueComponentWords", uniqueComponentWords);
+
+  const hasReviewedAll = input
+    ? uniqueComponentWords?.length <= reviewCount
+    : date
+      ? groupItems?.length <= reviewCount
+      : false;
 
   const {
     data: unReviewedCharacters,
@@ -117,18 +136,6 @@ export function ReviewMode(props: any) {
   const lang = currentCharacter?.lang || currentComponent?.lang;
 
   const { studyMode, character } = useGetReviewParams();
-
-  const {
-    understandingRate,
-    precisionRate,
-    totalCharacters,
-    totalNewCharaters,
-    uniqueWords,
-    masteryRate,
-  } = useGetCharacterAnalytics({
-    characterId: input,
-    lang: "zh",
-  });
 
   const getUrl = () => {
     const reviewSearchParamsUrl = getReviewSearchParams({

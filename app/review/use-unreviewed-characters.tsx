@@ -62,6 +62,7 @@ export function useUnreviwedCharacters() {
     precisionRate,
     totalCharacters,
     totalNewCharaters,
+    uniqueComponentWords,
     uniqueWords,
     masteryRate,
   } = useGetCharacterAnalytics({
@@ -70,27 +71,14 @@ export function useUnreviwedCharacters() {
   });
 
   const hasReviewedAll = input
-    ? totalCharacters <= reviewCount
+    ? uniqueComponentWords?.length <= reviewCount
     : date
       ? groupItems?.length <= reviewCount
       : false;
 
-  console.log("GROUP ITEMS", groupItems);
+  // console.log("GROUP ITEMS", groupItems);
 
-  console.log("TOTAL WORDS", uniqueWords);
-  const uniqueComponentWords = uniqueWords
-    ?.map((word) => {
-      const comp = learnedCharacters?.find(
-        (item: any) => (item?.hanzi || item?.input) === word
-      );
-
-      if (!comp) {
-        return null;
-      }
-
-      return comp;
-    })
-    ?.filter(Boolean);
+  // console.log("TOTAL WORDS", uniqueWords);
 
   const unReviewedCharacters = input
     ? hasReviewedAll

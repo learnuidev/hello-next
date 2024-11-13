@@ -110,8 +110,23 @@ export function useGetCharacterAnalytics({
     console.log("PRECISION RATE", totalReviewedCharacters);
   }
 
+  const uniqueComponentWords = uniqueWords
+    ?.map((word) => {
+      const comp = learnedCharacters?.find(
+        (item: any) => (item?.hanzi || item?.input) === word
+      );
+
+      if (!comp) {
+        return null;
+      }
+
+      return comp;
+    })
+    ?.filter(Boolean);
+
   return {
     uniqueWords,
+    uniqueComponentWords,
     understandingRate,
     masteryRate,
     precisionRate,

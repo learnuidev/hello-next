@@ -57,6 +57,7 @@ export const filterNonEnglishAlphabets = (hanzi: string) =>
         "z",
         "【",
         "】",
+        "|",
       ]?.includes(x?.toLowerCase());
     })
     .join("");

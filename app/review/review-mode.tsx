@@ -17,6 +17,7 @@ import { useUnreviwedCharacters } from "./use-unreviewed-characters";
 
 import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -60,6 +61,7 @@ export function ReviewMode(props: any) {
   const {
     date,
     level,
+    input,
     lang: langParams,
     character: nextCharacter,
   } = useGetReviewParams();
@@ -116,12 +118,25 @@ export function ReviewMode(props: any) {
 
   const { studyMode, character } = useGetReviewParams();
 
+  const {
+    understandingRate,
+    precisionRate,
+    totalCharacters,
+    totalNewCharaters,
+    uniqueWords,
+    masteryRate,
+  } = useGetCharacterAnalytics({
+    characterId: input,
+    lang: "zh",
+  });
+
   const getUrl = () => {
     const reviewSearchParamsUrl = getReviewSearchParams({
       mode,
       level,
       studyMode,
       date,
+      input,
     });
     // if (["hsk3", "hsk"]?.includes(mode)) {
     //   return `/review?mode=${mode}&level=${level}&study-mode=${studyMode}&date=${date}`;
@@ -135,9 +150,11 @@ export function ReviewMode(props: any) {
     return <div className="">...</div>;
   }
 
-  const remainingItems = date
-    ? groupItems?.length - reviewCount
-    : unReviewedCharacters?.length;
+  const remainingItems = input
+    ? totalCharacters - reviewCount
+    : date
+      ? groupItems?.length - reviewCount
+      : unReviewedCharacters?.length;
 
   if ((!currentCharacter || hasReviewedAll) && !isUnreviewedCharactersLoading) {
     return (
@@ -185,7 +202,7 @@ export function ReviewMode(props: any) {
 
       if (url?.includes("&")) {
         return router.push(`${url}`);
-      } else if (url?.includes("date")) {
+      } else if (url?.includes("date") || url?.includes("input")) {
         router.push(url);
       } else {
         router.push("/review");

@@ -9,8 +9,14 @@ export const getReviewSearchParams = ({
   level,
   studyMode,
   date,
+  input,
 }: any) => {
   const urlSearchParams = new URLSearchParams();
+
+  if (input) {
+    urlSearchParams.set("input", input);
+    return urlSearchParams.toString();
+  }
 
   if (date) {
     urlSearchParams.set("date", date);

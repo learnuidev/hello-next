@@ -45,7 +45,7 @@ export function CharacterAnalytics({
   const {
     understandingRate,
     precisionRate,
-    totalCharaters,
+    totalCharacters,
     totalNewCharaters,
     uniqueWords,
     masteryRate,
@@ -72,7 +72,7 @@ export function CharacterAnalytics({
         <div className="flex flex-row justify-between w-full">
           <div className="flex justify-start space-x-4 sm:space-x-16">
             <h2 className="text-xl sm:text-3xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-              {totalCharaters}{" "}
+              {totalCharacters}{" "}
               <span className="text-sm md:text-xl">total </span>
             </h2>
             <h2 className="text-xl sm:text-3xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">

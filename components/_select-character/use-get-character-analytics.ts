@@ -115,7 +115,7 @@ export function useGetCharacterAnalytics({
     understandingRate,
     masteryRate,
     precisionRate,
-    totalCharaters: uniqueWords?.length,
+    totalCharacters: uniqueWords?.length,
     totalNewCharaters: uniqueWords?.length - totalNewCharaters,
   };
 }

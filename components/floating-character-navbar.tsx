@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 import { toast } from "sonner";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
@@ -47,6 +47,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
   const hasAlreadyReviewed = chars?.find(
     (item: any) => (item?.hanzi || item?.input) === characterId
   );
+  const router = useRouter();
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
@@ -68,7 +69,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
       <div className="flex items-center w-full justify-center">
         <div className="px-8  py-2 bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
           <div className="space-x-8 flex justify-center items-center w-full">
-            <Link
+            {/* <Link
               href={`/review?input=${characterId}&lang=${lang}`}
               className={cn(
                 "text-gray-800 dark:text-gray-300",
@@ -76,7 +77,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
               )}
             >
               <Icons.playCircle className="hover:text-white transition" />
-            </Link>
+            </Link> */}
 
             <button
               className={cn(
@@ -94,7 +95,11 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
             <button
               className="text-xl"
               onClick={() => {
-                setView("play");
+                if (characterId?.length > 1) {
+                  router.push(`/review?input=${characterId}&lang=${lang}`);
+                } else {
+                  setView("play");
+                }
               }}
             >
               <Icons.play className="text-2xl" />

@@ -10,6 +10,8 @@ import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-charact
 import { reviewCounterStore } from "./review-counter-store";
 import { useGetHskCharacters } from "../nmm/hsk/use-get-hsk-characters";
 import { useGetReviewParams } from "./use-get-review-params";
+import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
+import { useListComponents } from "@/domain/lesson/component.queries";
 
 export function useUnreviwedCharacters() {
   const {
@@ -28,9 +30,10 @@ export function useUnreviwedCharacters() {
 
   const char = searchParams?.get("char");
   const date = searchParams?.get("date") || "";
+  const input = searchParams?.get("input") || "";
   const langParams = searchParams?.get("lang") || "";
 
-  const isSelected = date;
+  // const isSelected = date;
 
   const reviewCounts = reviewCounterStore((state: any) => state?.reviewCounts);
 
@@ -54,15 +57,52 @@ export function useUnreviwedCharacters() {
       return true;
     });
 
-  const hasReviewedAll = date ? groupItems?.length <= reviewCount : false;
+  const {
+    understandingRate,
+    precisionRate,
+    totalCharacters,
+    totalNewCharaters,
+    uniqueWords,
+    masteryRate,
+  } = useGetCharacterAnalytics({
+    characterId: input,
+    lang: "zh",
+  });
 
-  const unReviewedCharacters = isSelected
-    ? hasReviewedAll
-      ? getReviewCharacters(groupItems)
-      : groupItems
-    : learnedCharacters?.filter(
-        (character: any) => character?.hanzi?.length === 1
+  const hasReviewedAll = input
+    ? totalCharacters <= reviewCount
+    : date
+      ? groupItems?.length <= reviewCount
+      : false;
+
+  console.log("GROUP ITEMS", groupItems);
+
+  console.log("TOTAL WORDS", uniqueWords);
+  const uniqueComponentWords = uniqueWords
+    ?.map((word) => {
+      const comp = learnedCharacters?.find(
+        (item: any) => (item?.hanzi || item?.input) === word
       );
+
+      if (!comp) {
+        return null;
+      }
+
+      return comp;
+    })
+    ?.filter(Boolean);
+
+  const unReviewedCharacters = input
+    ? hasReviewedAll
+      ? getReviewCharacters(uniqueComponentWords)
+      : uniqueComponentWords
+    : date
+      ? hasReviewedAll
+        ? getReviewCharacters(groupItems)
+        : groupItems
+      : learnedCharacters?.filter(
+          (character: any) => character?.hanzi?.length === 1
+        );
 
   if (["hsk", "hsk3"]?.includes(mode)) {
     const data = hskCharacters

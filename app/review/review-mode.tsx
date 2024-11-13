@@ -163,6 +163,8 @@ export function ReviewMode(props: any) {
       ? groupItems?.length - reviewCount
       : unReviewedCharacters?.length;
 
+  console.log("uniqueComponentWord", uniqueComponentWords);
+
   if ((!currentCharacter || hasReviewedAll) && !isUnreviewedCharactersLoading) {
     return (
       <div className="grow text-center">

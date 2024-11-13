@@ -96,7 +96,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
               className="text-xl"
               onClick={() => {
                 if (characterId?.length > 1) {
-                  router.push(`/review?input=${characterId}&lang=${lang}`);
+                  router.push(`/review?input=${characterId}`);
                 } else {
                   setView("play");
                 }

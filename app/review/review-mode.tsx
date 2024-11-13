@@ -109,8 +109,6 @@ export function ReviewMode(props: any) {
     lang: "zh",
   });
 
-  console.log("uniqueComponentWords", uniqueComponentWords);
-
   const hasReviewedAll = input
     ? uniqueComponentWords?.length <= reviewCount
     : date
@@ -163,7 +161,8 @@ export function ReviewMode(props: any) {
       ? groupItems?.length - reviewCount
       : unReviewedCharacters?.length;
 
-  console.log("uniqueComponentWord", uniqueComponentWords);
+  console.log("uniqueComponentWords", uniqueComponentWords);
+  console.log("REVIEW COUNT", reviewCount);
 
   if ((!currentCharacter || hasReviewedAll) && !isUnreviewedCharactersLoading) {
     return (

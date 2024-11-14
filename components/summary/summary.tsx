@@ -90,7 +90,7 @@ export function Summary({
                       summary,
                     })
                     .then(() => {
-                      console.log("Story Successfully Updated");
+                      console.log("Summary Successfully Updated");
                     });
                 }}
               >

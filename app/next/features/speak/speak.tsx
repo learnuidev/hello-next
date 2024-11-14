@@ -19,8 +19,6 @@ export const Speak = () => {
   const [showPinyin, setShowPinyin] = useState(true);
   const topTenIncorrect = useGetTopTenIncorrect();
 
-  const randomDataIndex = useMemo(() => getRandomNumber(9), [getRandomNumber]);
-
   const {
     transcript,
     listening,
@@ -29,13 +27,24 @@ export const Speak = () => {
     ...rest
   } = useSpeechRecognition({ transcribing: true });
 
-  const { data } = useListSentencesQuery({
-    component: topTenIncorrect?.[randomDataIndex]?.hanzi,
-  });
+  const randomDataIndex = useMemo(() => getRandomNumber(9), []);
+
+  console.log(
+    "HANZI",
+    topTenIncorrect?.[randomDataIndex]?.hanzi || topTenIncorrect?.[0]?.hanzi
+  );
+  const { data } = useListSentencesQuery(
+    {
+      component: topTenIncorrect?.[randomDataIndex]?.hanzi,
+    },
+    {
+      enabled: Boolean(topTenIncorrect?.[randomDataIndex]?.hanzi),
+    }
+  );
 
   const randomPhraseIndex = useMemo(
     () => getRandomNumber(data?.length - 1),
-    []
+    [data]
   );
 
   const phrase = data?.[randomPhraseIndex];

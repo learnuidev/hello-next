@@ -39,12 +39,12 @@ export function useListSentencesQuery(
   return useQuery(
     [queryIds.list_sentences, params?.component],
     async () => {
-      // if (authUser?.jwt) {
-      const response = await listSentences(params, {
-        Authorization: authUser?.jwt,
-      });
-      return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
-      // }
+      if (params?.component) {
+        const response = await listSentences(params, {
+          Authorization: authUser?.jwt,
+        });
+        return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
+      }
     },
     {
       ...options,

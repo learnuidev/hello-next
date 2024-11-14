@@ -37,7 +37,7 @@ export const CharacterTrackButton = () => {
         }}
       >
         {updateCharacterMutation?.isLoading ? (
-          <Icons.spinner spinPulse />
+          <Icons.spinner className="dark:text-white text-black" spinPulse />
         ) : (
           <Icons.track className="text-2xl" />
         )}

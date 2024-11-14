@@ -173,7 +173,7 @@ export function SettingsDialogInner({
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
-                  <div>
+                  {/* <div>
                     <div className="flex z-50 items-center space-x-2">
                       <Checkbox
                         id="navigation"
@@ -192,7 +192,7 @@ export function SettingsDialogInner({
                     <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
                       Track navigation through out the app
                     </p>
-                  </div>
+                  </div> */}
                   <div>
                     <div className="flex z-50 items-center space-x-2">
                       <Checkbox

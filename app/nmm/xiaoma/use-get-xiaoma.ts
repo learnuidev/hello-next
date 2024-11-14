@@ -35,88 +35,102 @@ export const useGetXiaoma = ({
     ],
 
     queryFn: async () => {
-      let xiaomaSentences = [] as any;
+      // let xiaomaSentences = [] as any;
 
-      if (viewType === "sentence" || viewType === "word") {
-        xiaomaSentences = [
-          ...new Set(
-            course1?.lessons
-              .map((x: any) => x.lessons)
-              .flat()
-              .map((x: any) => x.id)
-          ),
-        ]
-          .filter((val: any) => filterNonHanYu(val))
-          .filter((item: any) => {
-            const checkItem = item.split("").filter((val: any) => {
-              const hskCharacter = hskWords?.find((word: any) =>
-                JSON.stringify(word?.hanzi)?.includes(val)
-              );
-
-              if (variant === "all") {
-                return hskCharacter?.hskLevel <= selectedBelt?.hskLevel;
-              }
-
-              return hskCharacter?.hskLevel === selectedBelt?.hskLevel;
-            });
-
-            if ([1]?.includes(selectedBelt?.hskLevel)) {
-              return checkItem?.length / item?.length > 0.9;
-            }
-            if ([2]?.includes(selectedBelt?.hskLevel)) {
-              return checkItem?.length / item?.length > 0.2;
-            }
-            if ([3]?.includes(selectedBelt?.hskLevel)) {
-              return checkItem?.length / item?.length > 0.2;
-            }
-
-            return checkItem?.length / item?.length > 0.01;
-          })
-          .map((id) => {
+      let xiaomaSentences = course1?.lessons
+        .map((lesson: any) => {
+          return lesson?.lesson.map((value: any, index: any) => {
+            const [t, hanzi, pinyin, lit, en] = value;
             return {
-              hanzi: id,
-              lang: "zh",
+              level: index + 1,
+              hanzi: hanzi[1],
+              pinyin: pinyin[1],
+              en: en[1],
+              lit: lit[1],
             };
           });
-      }
+        })
+        .flat();
+
+      // if (viewType === "sentence" || viewType === "word") {
+      //   xiaomaSentences = [
+      //     ...new Set(
+      //       course1?.lessons
+      //         .map((x: any) => x.lessons)
+      //         .flat()
+      //         .map((x: any) => x.id)
+      //     ),
+      //   ]
+      //     .filter((val: any) => filterNonHanYu(val))
+      //     .filter((item: any) => {
+      //       const checkItem = item.split("").filter((val: any) => {
+      //         const hskCharacter = hskWords?.find((word: any) =>
+      //           JSON.stringify(word?.hanzi)?.includes(val)
+      //         );
+
+      //         if (variant === "all") {
+      //           return hskCharacter?.hskLevel <= selectedBelt?.hskLevel;
+      //         }
+
+      //         return hskCharacter?.hskLevel === selectedBelt?.hskLevel;
+      //       });
+
+      //       if ([1]?.includes(selectedBelt?.hskLevel)) {
+      //         return checkItem?.length / item?.length > 0.9;
+      //       }
+      //       if ([2]?.includes(selectedBelt?.hskLevel)) {
+      //         return checkItem?.length / item?.length > 0.2;
+      //       }
+      //       if ([3]?.includes(selectedBelt?.hskLevel)) {
+      //         return checkItem?.length / item?.length > 0.2;
+      //       }
+
+      //       return checkItem?.length / item?.length > 0.01;
+      //     })
+      //     .map((id) => {
+      //       return {
+      //         hanzi: id,
+      //         lang: "zh",
+      //       };
+      //     });
+      // }
 
       let xiaomaWords = [] as any;
 
       if (viewType === "word") {
-        xiaomaWords = hskWords
-          ?.filter((word: any) => {
-            return JSON.stringify(xiaomaSentences)?.includes(word?.hanzi);
-          })
-          .filter((item: any) => {
-            return item.hanzi?.split("").every((val: any) => {
-              const selectedComp = components?.find(
-                (component: any) => component?.hanzi === val
-              );
+        xiaomaWords = hskWords?.filter((word: any) => {
+          return JSON.stringify(xiaomaSentences)?.includes(word?.hanzi);
+        });
+        // .filter((item: any) => {
+        //   return item.hanzi?.split("").every((val: any) => {
+        //     const selectedComp = components?.find(
+        //       (component: any) => component?.hanzi === val
+        //     );
 
-              return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
-            });
-          })
-          ?.filter((prop: any, idx: any, coll: any) => {
-            const qIdx = coll.findIndex((v: any) => v?.hanzi === prop?.hanzi);
+        //     return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
+        //   });
+        // });
+        // ?.filter((prop: any, idx: any, coll: any) => {
+        //   const qIdx = coll.findIndex((v: any) => v?.hanzi === prop?.hanzi);
 
-            if (idx !== qIdx) {
-              return false;
-            }
+        //   if (idx !== qIdx) {
+        //     return false;
+        //   }
 
-            const selectedComp = components?.find(
-              (component: any) => component?.hanzi === prop?.hanzi
-            );
+        //   const selectedComp = components?.find(
+        //     (component: any) => component?.hanzi === prop?.hanzi
+        //   );
 
-            const hskCharacter = hskWords?.find((word: any) =>
-              JSON.stringify(word)?.includes(prop?.hanzi)
-            );
+        //   const hskCharacter = hskWords?.find((word: any) =>
+        //     JSON.stringify(word)?.includes(prop?.hanzi)
+        //   );
 
-            if (variant === "all") {
-              return hskCharacter?.hskLevel <= selectedBelt?.hskLevel;
-            }
+        //   if (variant === "all") {
+        //     return hskCharacter?.hskLevel <= selectedBelt?.hskLevel;
+        //   }
 
-            return hskCharacter?.hskLevel === selectedBelt?.hskLevel;
-          });
+        //   return hskCharacter?.hskLevel === selectedBelt?.hskLevel;
+        // });
       }
 
       let xiaomaCharacters = [] as any;

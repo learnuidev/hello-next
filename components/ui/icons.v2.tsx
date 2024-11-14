@@ -95,6 +95,7 @@ import {
   faBold,
   faBullseye,
   faBullseyeArrow,
+  faRadar,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -292,7 +293,7 @@ export const Icons = {
   glassesRoundDT: createFAIcon(faGlassesRoundDT as any),
   bookSpellsDT: createFAIcon(faBookSpellsDT as any),
   google: createFAIcon(faGoogle),
-  track: createFAIcon(faChartRadar),
+  track: createFAIcon(faRadar),
   italic: createFAIcon(faItalic),
   bold: createFAIcon(faBold),
   bullsEyeDT: createFAIcon(faBullseyeDT as any),

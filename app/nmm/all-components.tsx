@@ -5,7 +5,6 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { chineseCharacters } from "@/langs/chinese /characters";
 
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
@@ -14,8 +13,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useSearchQueryStore } from "@/components/search/state";
 
 import { HanziLink } from "@/components/hanzi-link";
-import { NmmListContainer } from "@/components/nmm-list-container";
-import { filterComponents } from "./nmm-utils/filter-components";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { useGetSelectedBelt } from "./use-get-selected-belt";
 
 export function AllComponents() {
@@ -77,12 +75,12 @@ export function AllComponents() {
   // });
   const filteredComponents =
     (isComponentsLoading ? chineseCharacters : components)?.slice(
-      selectedBelt?.minCharacterLevel,
+      0,
       selectedBelt?.maxCharacterLevel
     ) || [];
 
   return (
-    <NmmListContainer>
+    <NmmListContainerAll>
       {filteredComponents
         ?.filter((comp: any) => comp?.hanzi?.length === 1)
         .map((prop: any, idx: number) => {
@@ -90,6 +88,6 @@ export function AllComponents() {
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
           );
         })}
-    </NmmListContainer>
+    </NmmListContainerAll>
   );
 }

@@ -18,7 +18,7 @@ interface HSKCharacter {
   en?: string;
 }
 
-export function HanziLink({
+export function HanziLinkSentence({
   className,
   character,
   frequency = 0,
@@ -159,7 +159,7 @@ export function HanziLink({
 
       <p
         className={cn(
-          "text-xs text-gray-400 w-24 truncate text-center",
+          "text-xs text-gray-400 text-center",
           brightMode ? "text-gray-500" : "dark:text-gray-800 text-gray-200"
         )}
       >

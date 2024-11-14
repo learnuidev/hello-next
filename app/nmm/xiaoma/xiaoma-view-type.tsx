@@ -11,6 +11,7 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { chineseCharacters } from "@/langs/chinese /characters";
 import { useGetXiaoma } from "./use-get-xiaoma";
 import { useGetSelectedBelt } from "../use-get-selected-belt";
+import { HanziLinkSentence } from "@/components/hanzi-link-sentence";
 
 export function XiaomaViewType({
   variant,
@@ -35,13 +36,16 @@ export function XiaomaViewType({
 
   if (viewType === "sentence") {
     return (
-      <NmmListContainerSentence>
+      <div className="flex flex-col md:mx-8 mx-2">
         {xiaomaSentences?.map((prop: any, idx: number) => {
           return (
-            <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
+            <HanziLinkSentence
+              character={prop}
+              key={`${prop.hanzi}-chars-${idx}`}
+            />
           );
         })}
-      </NmmListContainerSentence>
+      </div>
     );
   }
 

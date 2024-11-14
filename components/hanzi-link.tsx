@@ -10,6 +10,7 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 import { cn } from "@/lib/utils";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
+import { useCanTrackFunction } from "./use-can-track-function";
 
 interface HSKCharacter {
   hanzi: string;
@@ -23,11 +24,13 @@ export function HanziLink({
   character,
   frequency = 0,
   lang,
+  enableTracking = false,
 }: {
   character: HSKCharacter;
   className?: string;
   frequency?: number;
   lang?: string;
+  enableTracking?: boolean;
 }) {
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
@@ -63,6 +66,10 @@ export function HanziLink({
     }
   );
 
+  const { trackFunction } = useCanTrackFunction(character, {
+    type: "word",
+  });
+
   const lastAnswer = answers?.[answers?.length - 1];
 
   return (
@@ -89,6 +96,9 @@ export function HanziLink({
           ""
         }
         onClick={() => {
+          if (enableTracking) {
+            trackFunction();
+          }
           // addHistoryMutation.mutate({
           //   pathName: routeName,
           //   input: prop.input,

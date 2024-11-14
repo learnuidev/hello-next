@@ -1,20 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
+import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
-import { useAddHistoryMutation } from "@/domain/history/history.mutations";
-import { useIsContentTrackingEnabled } from "@/domain/user/use-is-content-tracking-enabled";
-import { useListTrackableCharactersQuery } from "@/hooks/use-list-trackable-characters";
-import { Icons, RedFireDuoTone } from "../ui/icons.v2";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
+import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence-mutation";
+import { useReadModeStore } from "@/stores/use-readmode-store";
+import { Icons } from "../ui/icons.v2";
+import { useCanTrackFunction } from "../use-can-track-function";
 import { AudioComponent } from "./audio-component";
 import { GoogleLink } from "./selected-character/google-link";
-import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence-mutation";
-import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
-import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
-import { useReadModeStore } from "@/stores/use-readmode-store";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 
 export const SentenceItem = (props: any) => {
@@ -22,31 +19,19 @@ export const SentenceItem = (props: any) => {
 
   const componentId = useGetComponentId();
 
-  const addHistoryMutation = useAddHistoryMutation();
-  const trackableCharacters = useListTrackableCharactersQuery();
-  const isContentTrackingEnabled = useIsContentTrackingEnabled();
-
   const unEncoded = currentPhrase?.hanzi || currentPhrase?.input;
-
-  const containsTrackableCharacters =
-    trackableCharacters?.filter((item) => unEncoded?.includes(item?.hanzi)) ||
-    [];
 
   const isSuperAdmin = useIsSuperAdmin();
 
-  const canTrack =
-    isContentTrackingEnabled && containsTrackableCharacters?.length > 0;
+  const { trackFunction } = useCanTrackFunction(currentPhrase, {
+    lang,
+  });
 
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-
   const deleteSentenceMutation = useDeleteSentenceMutation();
 
-  const contentLang = searchParams.get("content") || "";
   const brightMode = useReadModeStore((state) => state.readMode);
-
-  const { data: characters } = useListCharactersQuery();
 
   const characterAnalytics = useGetCharacterAnalytics({
     characterId: currentPhrase?.hanzi || currentPhrase?.input,
@@ -84,19 +69,7 @@ export const SentenceItem = (props: any) => {
           <AudioComponent currentPhrase={currentPhrase} />
 
           <Link
-            onClick={() => {
-              if (canTrack) {
-                addHistoryMutation.mutate({
-                  lang: lang,
-                  // characterId,
-                  hanzi: unEncoded,
-                  trackingCharacters: containsTrackableCharacters?.map(
-                    (item) => item?.hanzi
-                  ),
-                  eventType: "CONTENT_VIEWED",
-                } as any);
-              }
-            }}
+            onClick={trackFunction}
             // href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}`}
 
             href={`/nmm/${hanziOrInput}${lang || selectedComp?.lang ? `?lang=${lang || selectedComp?.lang}` : ``}`}

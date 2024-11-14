@@ -24,7 +24,11 @@ export const RelatedHskWords = ({
     <NmmListContainer className="px-0">
       {filteredRelatedHskWords?.map((prop: any, idx: any) => {
         return (
-          <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
+          <HanziLink
+            character={prop}
+            key={`${prop.hanzi}-chars-${idx}`}
+            enableTracking
+          />
         );
       })}
     </NmmListContainer>

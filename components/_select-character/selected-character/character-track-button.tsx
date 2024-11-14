@@ -24,7 +24,7 @@ export const CharacterTrackButton = () => {
     characterItem?.id && (
       <button
         className={
-          characterItem?.track ? "dark:text-white text-black" : "text-gray-500"
+          characterItem?.track ? "dark:text-white text-black" : "text-gray-700"
         }
         disabled={updateCharacterMutation?.isLoading}
         onClick={() => {

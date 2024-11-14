@@ -1,9 +1,11 @@
 import React from "react";
+import "regenerator-runtime";
+// import "regenerator-runtime/runtime";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 
-import 'regenerator-runtime/runtime'
+// import "regenerator-runtime/runtime";
 
 const Dictaphone = () => {
   const {
@@ -11,7 +13,8 @@ const Dictaphone = () => {
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition,
-  } = useSpeechRecognition({});
+    ...rest
+  } = useSpeechRecognition({ transcribing: true });
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesnt support speech recognition.</span>;
@@ -22,7 +25,10 @@ const Dictaphone = () => {
       <p>Microphone: {listening ? "on" : "off"}</p>
       <button
         onClick={() => {
-          SpeechRecognition.startListening?.({ language: "zh-CN" });
+          SpeechRecognition.startListening?.({
+            language: "zh-CN",
+            continuous: true,
+          });
         }}
       >
         Start
@@ -36,6 +42,8 @@ const Dictaphone = () => {
       </button>
       <button onClick={resetTranscript}>Reset</button>
       <p>{transcript}</p>
+
+      <div>{JSON.stringify(rest)}</div>
     </div>
   );
 };

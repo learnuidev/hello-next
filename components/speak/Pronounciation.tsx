@@ -27,7 +27,7 @@ import { PronounciationAnalytics } from "./PronounciationAnalytics";
 import { useCurrentLesson } from "./useCurrentLesson";
 import { course1, useSpeakStore } from "./useSpeakStore";
 import Link from "next/link";
-// import Dictaphone from "./useSpeechRecognition_v2";
+import Dictaphone from "./useSpeechRecognition_v2";
 // import { Speak } from "./use-speech-recognition";
 // import { ChartPage } from "../chart/v1";
 
@@ -159,7 +159,7 @@ export const Pronounciation = ({ lessonId }: any) => {
   if (lesson) {
     return (
       <div className="pt-28 grow flex flex-col items-center min-h-screen overflow-y-auto">
-        {/* <Dictaphone /> */}
+        <Dictaphone />
         {/* <Speak /> */}
         <div className="mb-8 md:my-8 text-center">
           <Header className="text-black dark:text-gray-400 text-xl font-extrabold mb-8">

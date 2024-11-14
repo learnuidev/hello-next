@@ -33,7 +33,7 @@ export const ContentDropdown = ({
       { id: "hsk", title: "hsk" },
       { id: "hsk3", title: "hsk 3" },
       { id: "nmm", title: "nmm" },
-      { id: "xiaoma", title: "xiaoma" },
+      { id: "xiaoma", title: "speak" },
       { id: "yct", title: "yct" },
       ...(contents || []),
     ],

@@ -133,12 +133,15 @@ export function LearnTab() {
                   }
                 }}
               />
-              <Label htmlFor="airplane-mode">Xiaoma</Label>
+              <Label htmlFor="airplane-mode">Speak</Label>
             </div>
 
             <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-              Based on Street Mandarin by Xiaoma (Focuses on Speaking Chinese)
+              Focuses on Speaking Chinese Components
             </p>
+            {/* <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+              Based on Street Mandarin by Xiaoma (Focuses on Speaking Chinese)
+            </p> */}
           </div>
         </CardContent>
       </Card>

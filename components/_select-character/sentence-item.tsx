@@ -117,7 +117,7 @@ export const SentenceItem = (props: any) => {
           )}`}
         >
           {brightMode && lang !== "en" && (
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-[16px] text-gray-500 dark:text-gray-400">
               {currentPhrase?.pinyin || currentPhrase?.roman}
             </span>
           )}

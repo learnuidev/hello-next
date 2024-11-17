@@ -11,6 +11,7 @@ import Link from "next/link";
 import { groupBy } from "ramda";
 import { useGetAuthUserProfileQuery } from "./user/use-get-auth-user-profile";
 import { filterComponents } from "@/app/nmm/nmm-utils/filter-components";
+import { getReviewDate } from "./get-review-date";
 
 export function useListLearnedCharactersByDate({
   variant,
@@ -74,15 +75,12 @@ export function useListLearnedCharactersByDate({
   const learnedCharactersFormatted = [...resolvedChars, profileHistory]
     ?.filter(Boolean)
     ?.map((item: any) => {
-      const createdAt = new Date(item?.createdAt);
-      const date = getDate(createdAt);
-      const month = getMonth(createdAt) + 1;
-      const year = getYear(createdAt);
+      const { reviewDate, date, month, year } = getReviewDate(item);
 
       return {
         ...item,
         // date: date,
-        date: `${month}/${date}/${year}`,
+        date: reviewDate,
         day: date,
         month: month,
         year,

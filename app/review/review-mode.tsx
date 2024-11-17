@@ -18,6 +18,9 @@ import { useUnreviwedCharacters } from "./use-unreviewed-characters";
 import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
+import { useSpeak } from "../(auth)/convos/_play/use-speak";
+import { AudioComponent } from "@/components/_select-character/audio-component";
+import { SpeakComponent } from "@/components/_select-character/speak-component";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -108,6 +111,8 @@ export function ReviewMode(props: any) {
     characterId: input,
     lang: "zh",
   });
+
+  const { speak } = useSpeak();
 
   const hasReviewedAll = input
     ? uniqueComponentWords?.length <= reviewCount
@@ -276,13 +281,17 @@ export function ReviewMode(props: any) {
             </Link>
           ) : (
             <div className="lg:px-80 md:px-32 px-8">
-              <Link
-                href={characterLink}
-                className={cn("text-md")}
-                target="_blank"
-              >
-                {currentCharacter?.hanzi || currentCharacter?.input}
-              </Link>
+              <div className="flex justify-center items-center space-x-4">
+                <Link
+                  href={characterLink}
+                  className={cn("text-md")}
+                  target="_blank"
+                >
+                  {currentCharacter?.hanzi || currentCharacter?.input}
+                </Link>
+
+                <SpeakComponent currentPhrase={currentCharacter} />
+              </div>
             </div>
           )}
 

@@ -2,6 +2,7 @@ import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 
 import { useLearningModeStore } from "./learning-mode.store";
+import { getReviewDate } from "@/hooks/get-review-date";
 
 export const getReviewSearchParams = ({
   mode,
@@ -44,5 +45,13 @@ export const useGetReviewUrl = () => {
 
   const { data: unReviewedCharacters } = useUnreviwedCharacters();
 
-  return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi })}`;
+  const unReviewedCharacter = unReviewedCharacters?.[0];
+
+  const { reviewDate, month, year } = getReviewDate(unReviewedCharacter);
+
+  console.log("unreviewedCharacter", unReviewedCharacter);
+
+  console.log("REVIEW DATE", reviewDate);
+
+  return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi, date: reviewDate })}`;
 };

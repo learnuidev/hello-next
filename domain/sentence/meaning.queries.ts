@@ -39,7 +39,7 @@ export function useListMeaningsQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<ListMeaningsResponse, Error>({
     queryKey: [listMeaningQueryKey, params.content, params?.lang],
 
     queryFn: async () => {

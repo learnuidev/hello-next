@@ -18,4 +18,9 @@ export interface ListMeaningsResponse {
   meanings: MeaningItem[];
   createdAt: number;
   id: string;
+  details: {
+    pinyin: string;
+    hanzi: string;
+    en: string;
+  };
 }

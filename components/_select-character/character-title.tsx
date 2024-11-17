@@ -14,6 +14,7 @@ import { useReadModeStore } from "@/stores/use-readmode-store";
 import Link from "next/link";
 import { Icons } from "../ui/icons.v2";
 import { CharacterTrackButton } from "./selected-character/character-track-button";
+import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -43,6 +44,13 @@ export const CharacterTitle = (props: any) => {
     hanzi: componentId,
   });
 
+  const { data: meaning, isLoading } = useListMeaningsQuery({
+    content: componentId,
+    lang,
+  });
+
+  console.log("MEANING", meaning);
+
   const selectedCompInput = selectedComp?.hanzi || selectedCompInput2;
 
   const brightMode = useReadModeStore((state) => state.readMode);
@@ -58,7 +66,7 @@ export const CharacterTitle = (props: any) => {
           </h2>
         ) : (
           <h2 className="text-gray-400 font-extralight">
-            {selectedComp?.pinyin || pinyins?.[0]}
+            {selectedComp?.pinyin || pinyins?.[0] || meaning?.details?.pinyin}
           </h2>
         )
       ) : null}
@@ -171,7 +179,7 @@ export const CharacterTitle = (props: any) => {
       )}
 
       <h2 className="text-gray-500 font-light">
-        {selectedComp?.en || englishMeanings?.[0]}
+        {selectedComp?.en || englishMeanings?.[0] || meaning?.details?.en}
       </h2>
     </div>
   );

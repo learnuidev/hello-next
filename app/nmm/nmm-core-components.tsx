@@ -85,22 +85,20 @@ export function NmmCoreComponents() {
   // const { data: filteredComponents } = useListComponentsByBelt();
 
   const learnedComps =
-    (isComponentsLoading ? chineseCharacters : components)?.slice(
-      selectedBelt?.minCharacterLevel,
-      selectedBelt?.maxCharacterLevel
-    ) || [];
-  // ?.filter((comp: any) => comp?.level < 100)
-  // .filter((prop: any) => {
-  //   const learnedChar = learnedCharacters2?.find(
-  //     (char: any) => char?.hanzi === prop?.hanzi
-  //   );
+    (isComponentsLoading ? chineseCharacters : components)
+      ?.slice(selectedBelt?.minCharacterLevel, selectedBelt?.maxCharacterLevel)
+      // ?.filter((comp: any) => comp?.level < 100)
+      .filter((prop: any) => {
+        const learnedChar = learnedCharacters2?.find(
+          (char: any) => char?.hanzi === prop?.hanzi
+        );
 
-  //   if (!brightMode && learnedChar?.status === "forgotten") {
-  //     return null;
-  //   }
+        if (!brightMode && learnedChar?.status === "forgotten") {
+          return null;
+        }
 
-  //   return true;
-  // }) || [];
+        return true;
+      }) || [];
 
   // const learnedComps = filteredComponents
   //   // ?.filter((comp: any) => comp?.level < 100)

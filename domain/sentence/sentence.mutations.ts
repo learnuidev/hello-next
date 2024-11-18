@@ -46,7 +46,14 @@ export function useAddSentenceMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.refetchQueries([listSentencesQueryKey, data?.componentId]);
+        queryClient.setQueryData(
+          [listSentencesQueryKey, data?.componentId],
+          (old: any) => {
+            return [data, ...old];
+          }
+        );
+
+        // queryClient.refetchQueries([listSentencesQueryKey, data?.componentId]);
       },
     }
   );

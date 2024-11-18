@@ -105,8 +105,6 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                 } else {
                   const { reviewDate, month, year } = getReviewDate(character);
 
-                  console.log("REVIEW DATE", reviewDate);
-
                   return router.push(
                     `/review?${getReviewSearchParams({ date: reviewDate })}`
                   );

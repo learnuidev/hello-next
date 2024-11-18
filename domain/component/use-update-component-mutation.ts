@@ -20,7 +20,12 @@ export function useUpdateComponentMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([getComponentQueryKey, data?.hanzi]);
+        queryClient.setQueryData(
+          [getComponentQueryKey, data?.hanzi],
+          (old: any) => [data, ...old]
+        );
+
+        // queryClient.invalidateQueries([getComponentQueryKey, data?.hanzi]);
       },
     }
   );

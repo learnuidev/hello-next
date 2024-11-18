@@ -106,10 +106,6 @@ export function useGetCharacterAnalytics({
     maximumFractionDigits: 1,
   }).format(averagePrecisionRate);
 
-  if (characterId === "编辑会定期检查错误。") {
-    console.log("PRECISION RATE", totalReviewedCharacters);
-  }
-
   const uniqueComponentWords = uniqueWords
     ?.map((word) => {
       const comp = learnedCharacters?.find(

@@ -45,11 +45,18 @@ export function useDiscoverMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([
-          getComponentQueryKey,
-          data?.hanzi,
-          authUser?.jwt,
-        ]);
+        queryClient.setQueryData(
+          [getComponentQueryKey, data?.hanzi, authUser?.jwt],
+          (old: any) => {
+            return data;
+          }
+        );
+
+        // queryClient.invalidateQueries([
+        //   getComponentQueryKey,
+        //   data?.hanzi,
+        //   authUser?.jwt,
+        // ]);
       },
     }
   );

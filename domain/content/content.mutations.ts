@@ -40,10 +40,17 @@ export function useAddContentMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.invalidateQueries([
-          queryIds?.listContents,
-          data?.journeyId,
-        ]);
+        queryClient.setQueryData(
+          [queryIds?.listContents, data?.journeyId],
+          (old: any) => {
+            return [data, ...old];
+          }
+        );
+
+        // queryClient.invalidateQueries([
+        //   queryIds?.listContents,
+        //   data?.journeyId,
+        // ]);
       },
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,

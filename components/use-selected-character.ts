@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
+import { useMemo } from "react";
 
 import * as R from "ramda";
 
@@ -23,34 +23,10 @@ import { useDeleteComponentMutation } from "@/domain/lesson/component.mutations"
 
 import { SelectedCharacterProps } from "./_select-character/select-character.types";
 
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
-import { useReadModeStore } from "@/stores/use-readmode-store";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
-
-function useGetCharacter({ characterId }: { characterId: string }) {
-  const { data: characters } = useListCharactersQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
-
-  const selectedComp = useMemo(
-    () =>
-      characters?.find(
-        (component: any) =>
-          (component?.hanzi || component?.item || component?.input) ===
-          characterId
-      ),
-    [characters, characterId]
-  );
-
-  return selectedComp;
-}
+import { useReadModeStore } from "@/stores/use-readmode-store";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 export const useViewTypeStore = create(
   persist(

@@ -36,7 +36,7 @@ export function useGetComponentQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
-    [getComponentQueryKey, params?.hanzi],
+    [getComponentQueryKey, params?.hanzi, authUser?.jwt],
     async () => {
       // if (options.query) {
       const response = await getComponent(params, {

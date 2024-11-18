@@ -11,6 +11,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 import { getReviewSearchParams } from "./settings-dialog/use-get-review-url";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 
 const isMultiSentence = (str: string) => {
   const isHanziMultiSentence = str.split("。")?.length > 1;
@@ -64,6 +65,9 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
   const currentCharacter = selectedComp;
 
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
+  const isSuperAdmin = useIsSuperAdmin();
+
+  console.log("SELECTED COMP ", selectedComp2);
 
   return (
     <div className="flex w-full fixed z-50 bottom-4">
@@ -180,37 +184,32 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                 )}
               </button>
             )}
-            {isLoading ||
-            selectedComp2?.updated_at ? null : !selectedComp2?.updated_at ||
-              !selectedComp2?.discoveredAt ? (
-              false ? null : hasAlreadyLearned?.discoveredAt ? null : (
-                <button
-                  className="text-xl"
-                  disabled={
-                    discoverMutation.isLoading || discoverMutation.isSuccess
-                  }
-                  onClick={() => {
-                    discoverMutation
-                      .mutateAsync({
-                        hanzi: selectedComp?.hanzi || characterId,
-                      })
-                      .then((resp: any) => {
-                        toast(
-                          `Component Successfully discovered ${JSON.stringify(resp)}`
-                        );
-                      });
-                  }}
-                >
-                  {discoverMutation.isLoading ? (
-                    <Icons.spinner spinPulse />
-                  ) : (
-                    <Icons.language />
-                  )}
 
-                  {/* <span>{(selectedComp?.hanzi || characterId)?.length}</span> */}
-                </button>
-              )
-            ) : null}
+            {!isLoading && isSuperAdmin && !selectedComp2 && (
+              <button
+                className="text-xl"
+                disabled={
+                  discoverMutation.isLoading || discoverMutation.isSuccess
+                }
+                onClick={() => {
+                  discoverMutation
+                    .mutateAsync({
+                      hanzi: selectedComp?.hanzi || characterId,
+                    })
+                    .then((resp: any) => {
+                      toast(
+                        `Component Successfully discovered ${JSON.stringify(resp)}`
+                      );
+                    });
+                }}
+              >
+                {discoverMutation.isLoading ? (
+                  <Icons.spinner spinPulse />
+                ) : (
+                  <Icons.language />
+                )}
+              </button>
+            )}
             {currentCharacter?.status === "forgotten" && (
               <button
                 className="text-xl"

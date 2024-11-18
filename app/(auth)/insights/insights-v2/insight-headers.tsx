@@ -5,14 +5,17 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useGetInsightParams } from "@/app/(auth)/insights/insights-v2/use-get-insight-params";
 import { useListErrors } from "@/app/(auth)/insights/insights-v2/use-list-errors";
 import { useGetFailureRate } from "@/app/(auth)/insights/insights-v2/use-get-failure-rate";
+import { useGetTotalLifetimeCharacters } from "@/app/profile/hooks/use-get-total-lifetime-characters";
 
 export const InsightHeaders = () => {
   const { data: learnedCharacters } = useListCharactersQuery();
   const { filter, view } = useGetInsightParams();
 
-  const totalComponents = learnedCharacters?.filter(
-    (item: any) => (item?.hanzi || item?.input)?.length === 1
-  );
+  // const totalComponents = learnedCharacters?.filter(
+  //   (item: any) => (item?.hanzi || item?.input)?.length === 1
+  // );
+  const lifeTimeCharacters = useGetTotalLifetimeCharacters();
+
   const totalWords = learnedCharacters?.filter(
     (item: any) => (item?.hanzi || item?.input)?.length > 1
   );
@@ -34,7 +37,7 @@ export const InsightHeaders = () => {
   const insightsList = [
     {
       id: "components",
-      stat: totalComponents?.length || 0,
+      stat: lifeTimeCharacters || 0,
       title: "Components",
     },
     { id: "words", stat: totalWords?.length || 0, title: "Words" },

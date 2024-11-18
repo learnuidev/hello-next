@@ -1,15 +1,16 @@
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { SelectedCharacterProps } from "./_select-character/select-character.types";
 
-import { Icons } from "./ui/icons.v2";
 import { cn } from "@/lib/utils";
+import { Icons } from "./ui/icons.v2";
 
-import { toast } from "sonner";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { getReviewDate } from "@/hooks/get-review-date";
+import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
+import { getReviewSearchParams } from "./settings-dialog/use-get-review-url";
 
 const isMultiSentence = (str: string) => {
   const isHanziMultiSentence = str.split("。")?.length > 1;
@@ -44,9 +45,9 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     (item: any) => (item?.hanzi || item?.input) === characterId
   );
 
-  const hasAlreadyReviewed = chars?.find(
+  const character = chars?.find(
     (item: any) => (item?.hanzi || item?.input) === characterId
-  );
+  ) as any;
   const router = useRouter();
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
@@ -98,6 +99,14 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                 if (characterId?.length > 1) {
                   router.push(`/review?input=${characterId}`);
                 } else {
+                  const { reviewDate, month, year } = getReviewDate(character);
+
+                  console.log("REVIEW DATE", reviewDate);
+
+                  return router.push(
+                    `/review?${getReviewSearchParams({ date: reviewDate })}`
+                  );
+
                   setView("play");
                 }
               }}

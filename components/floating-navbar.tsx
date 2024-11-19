@@ -1,6 +1,5 @@
-import { Icons } from "./ui/icons.v2";
 import { cn } from "@/lib/utils";
-import { useToast } from "./ui/use-toast";
+import { Icons } from "./ui/icons.v2";
 
 import Link from "next/link";
 
@@ -8,24 +7,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartColumn } from "@fortawesome/sharp-solid-svg-icons/faChartColumn";
 
 import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
-import { NomadIcon } from "./ui/icons";
 import { usePathname } from "next/navigation";
-
-import React, { useState } from "react";
+import { NomadIcon } from "./ui/icons";
 
 import { faPlayCircle } from "@fortawesome/pro-thin-svg-icons";
 
+import { TheDock } from "@/components/the-dock";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
-import { TheDock } from "@/components/the-dock";
-import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 import { useReadModeStore } from "@/stores/use-readmode-store";
+import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
 import { useGetReviewUrl } from "./settings-dialog/use-get-review-url";
 
 const FloatingNavbarComp = () => {
-  const { toast } = useToast();
-
   const routeName = usePathname();
   const reviewUrl = useGetReviewUrl();
 
@@ -46,8 +41,37 @@ const FloatingNavbarComp = () => {
     <div
       className={cn("transition", "flex items-center w-full justify-center")}
     >
-      <div className="px-8 py-2 bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
-        <div className="space-x-6 md:space-x-8 flex justify-center items-center w-full">
+      <div className="overflow-y-auto px-8 py-2 bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
+        <div className="space-x-6 md:space-x-8 flex justify-center items-center w-full ">
+          <button
+            className={cn(
+              "text-xl",
+              readMode
+                ? "text-gray-800 dark:text-gray-300"
+                : "text-gray-200 dark:text-gray-500"
+            )}
+            onClick={() => {
+              setBrightMode((prev: any) => !prev);
+              setReadMode(!readMode);
+            }}
+          >
+            <Icons.glassesRound />
+          </button>
+
+          <Link
+            href="/diary"
+            className={`transition ${
+              routeName?.includes("/diary")
+                ? "text-gray-800 dark:text-gray-300"
+                : "text-gray-200 dark:text-gray-500"
+            } hover:text-white transition text-xl`}
+          >
+            {routeName?.includes("/diary") ? (
+              <Icons.diary className="hover:text-white transition" />
+            ) : (
+              <Icons.diary className="hover:text-white transition" />
+            )}
+          </Link>
           <Link
             href="/convos"
             className={`transition ${
@@ -120,16 +144,6 @@ const FloatingNavbarComp = () => {
               />
             </Link>
           )}
-
-          <button
-            className={cn("text-xl")}
-            onClick={() => {
-              setBrightMode((prev: any) => !prev);
-              setReadMode(!readMode);
-            }}
-          >
-            <Icons.glassesRound />
-          </button>
 
           <Link
             href="/nmm"

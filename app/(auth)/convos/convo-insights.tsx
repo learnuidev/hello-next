@@ -168,29 +168,6 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
   }, [lesson, uniqueCharacters, sortType]);
 
   const filteredHskWords = useMemo(() => {
-    // const res_new = uniqueCharactersMemo
-    //   .map((char) => {
-    //     const hskWord = hskWords.filter(
-    //       (word: any) =>
-    //         word?.hanzi?.includes(char?.hanzi) ||
-    //         word?.hanzi?.includes(char?.input)
-    //     );
-
-    //     return hskWord;
-    //   })
-    //   .flat()
-    //   ?.map((char: any, idx: number) => {
-    //     const frequency = getFrequency({
-    //       lesson,
-    //       input: char?.hanzi || char?.input || char,
-    //     });
-
-    //     return {
-    //       ...char,
-    //       frequency: frequency,
-    //     };
-    //   });
-
     const res = hskWords
       ?.filter((word: any) => {
         const transcription = lesson?.transcriptions?.filter(

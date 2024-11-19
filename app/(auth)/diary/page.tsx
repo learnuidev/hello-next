@@ -5,6 +5,7 @@ import { NavBar } from "@/components/navbar";
 import { useAddJournalEntryMutation } from "./hooks/use-add-journal-entry-mutatuon";
 import { useListJournalEntriesQuery } from "./hooks/use-list-journal-entries.query";
 import Link from "next/link";
+import { useDeleteJournalEntryMutation } from "./hooks/use-delete-journal-entry-mutatuon";
 
 const exampleEntry = {
   text: `It’s been 2 months and 15 days since I quit weed and alcohol. The first month was very hard. I had anxiety attacks, paranoia, insomnia, and so on. But after a month, things started to get much better.
@@ -23,6 +24,7 @@ I love them. I love life.
 
 export default function Diary() {
   const addJournalMutation = useAddJournalEntryMutation();
+  const deleteJournalMutation = useDeleteJournalEntryMutation();
 
   const { data: journalEntries } = useListJournalEntriesQuery();
   return (
@@ -34,9 +36,7 @@ export default function Diary() {
 
         <button
           onClick={() => {
-            addJournalMutation.mutateAsync(exampleEntry).then(() => {
-              alert("DONE");
-            });
+            addJournalMutation.mutateAsync(exampleEntry);
           }}
         >
           Add
@@ -45,11 +45,22 @@ export default function Diary() {
         <section className="mt-8">
           {journalEntries?.map((journalEntry) => {
             return (
-              <Link key={journalEntry.id} href={`/diary/${journalEntry.id}`}>
-                <code>
-                  <pre>{JSON.stringify(journalEntry, null, 4)}</pre>
-                </code>
-              </Link>
+              <div key={journalEntry.id}>
+                <Link href={`/diary/${journalEntry.id}`}>
+                  <code>
+                    <pre>{JSON.stringify(journalEntry, null, 4)}</pre>
+                  </code>
+                </Link>
+
+                <button
+                  onClick={() => {
+                    deleteJournalMutation.mutateAsync(journalEntry);
+                  }}
+                >
+                  {/* {deleteJournalMutation.isLoading ? "Deleting..." : "Delete"} */}
+                  {"Delete"}
+                </button>
+              </div>
             );
           })}
         </section>

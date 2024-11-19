@@ -72,41 +72,8 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     }
   );
 
-  const filteredHskWords = useMemo(() => {
-    const res = hskWords
-      ?.filter((word: any) => {
-        const transcription = lesson?.transcriptions?.filter(
-          (transcription: any) => {
-            return (transcription?.hanzi || transcription?.input)?.includes(
-              word?.hanzi
-            );
-          }
-        );
-
-        return transcription?.length > 0;
-      })
-      ?.map((char: any, idx: number) => {
-        const frequency = getFrequency({
-          lesson,
-          input: char?.hanzi || char?.input,
-        });
-
-        return {
-          ...char,
-          frequency: frequency,
-        };
-      });
-
-    if (sortType === "popular") {
-      return res?.sort(
-        (first: any, second: any) => second?.frequency - first?.frequency
-      );
-    }
-    return res;
-  }, [hskWords, lesson, sortType]);
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const uniqueWords =
+  const uniqueCharacters =
     lang === "zh"
       ? [
           // @ts-ignore
@@ -171,7 +138,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
             ),
           ];
 
-  const totalNewCharaters = uniqueWords?.filter((char: any) => {
+  const totalNewCharaters = uniqueCharacters?.filter((char: any) => {
     const isLearned = learnedCharacters?.find(
       (item: any) => (item?.hanzi || item?.input) === char
     );
@@ -179,8 +146,8 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
     return !!isLearned;
   })?.length;
 
-  const uniqueWordsMemo = useMemo(() => {
-    const res = uniqueWords?.map((char: any, idx: number) => {
+  const uniqueCharactersMemo = useMemo(() => {
+    const res = uniqueCharacters?.map((char: any, idx: number) => {
       const frequency = getFrequency({
         lesson,
         input: char?.hanzi || char?.input || char,
@@ -198,13 +165,90 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
       );
     }
     return res;
-  }, [lesson, uniqueWords, sortType]);
+  }, [lesson, uniqueCharacters, sortType]);
+
+  const filteredHskWords = useMemo(() => {
+    // const res_new = uniqueCharactersMemo
+    //   .map((char) => {
+    //     const hskWord = hskWords.filter(
+    //       (word: any) =>
+    //         word?.hanzi?.includes(char?.hanzi) ||
+    //         word?.hanzi?.includes(char?.input)
+    //     );
+
+    //     return hskWord;
+    //   })
+    //   .flat()
+    //   ?.map((char: any, idx: number) => {
+    //     const frequency = getFrequency({
+    //       lesson,
+    //       input: char?.hanzi || char?.input || char,
+    //     });
+
+    //     return {
+    //       ...char,
+    //       frequency: frequency,
+    //     };
+    //   });
+
+    const res = hskWords
+      ?.filter((word: any) => {
+        const transcription = lesson?.transcriptions?.filter(
+          (transcription: any) => {
+            return (transcription?.hanzi || transcription?.input)?.includes(
+              word?.hanzi
+            );
+          }
+        );
+
+        return transcription?.length > 0;
+      })
+      ?.map((char: any, idx: number) => {
+        const frequency = getFrequency({
+          lesson,
+          input: char?.hanzi || char?.input,
+        });
+
+        const transcription = lesson?.transcriptions?.find(
+          (transcription: any) =>
+            (transcription?.hanzi || transcription?.input)?.includes(
+              char?.hanzi || char?.input
+            )
+        );
+
+        const wordIndex =
+          lesson?.transcriptions?.findIndex((transcription: any) =>
+            (transcription?.hanzi || transcription?.input)?.includes(
+              char?.hanzi || char?.input
+            )
+          ) * 10;
+
+        const characterIndex = (
+          transcription?.hanzi || transcription?.input
+        )?.indexOf(char?.hanzi || char?.input);
+
+        return {
+          ...char,
+          wordIndex: (wordIndex || 0) + (characterIndex || 0),
+          frequency: frequency,
+        };
+      });
+
+    if (sortType === "popular") {
+      return res?.sort(
+        (first: any, second: any) => second?.frequency - first?.frequency
+      );
+    }
+    return res?.sort(
+      (first: any, second: any) => first?.wordIndex - second?.wordIndex
+    );
+  }, [hskWords, lesson, sortType]);
 
   const understandingRate = Intl.NumberFormat("en-GB", {
     style: "percent",
     minimumFractionDigits: 1,
     maximumFractionDigits: 2,
-  }).format(totalNewCharaters / uniqueWords?.length);
+  }).format(totalNewCharaters / uniqueCharacters?.length);
 
   if (isLoading) {
     return (
@@ -225,13 +269,13 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
           <div className="flex justify-between w-full">
             <div className="flex justify-start space-x-4 sm:space-x-16">
               <h2 className="text-xl sm:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
-                {uniqueWords?.length}{" "}
+                {uniqueCharacters?.length}{" "}
                 <span className="text-sm md:text-xl">total chars </span>
               </h2>
               <h2 className="text-xl sm:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
                 <span className="text-yellow-500">
                   {" "}
-                  {uniqueWords?.length - totalNewCharaters}
+                  {uniqueCharacters?.length - totalNewCharaters}
                 </span>
                 <span className="text-sm md:text-xl">new chars </span>
               </h2>
@@ -297,7 +341,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
         {viewType === "character" && (
           <div className="my-8">
             <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
-              {uniqueWordsMemo.map((char: any, idx: number) => {
+              {uniqueCharactersMemo.map((char: any, idx: number) => {
                 const isLearned = learnedCharacters?.find(
                   (item: any) => (item?.hanzi || item?.input) === char?.input
                 );

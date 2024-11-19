@@ -38,9 +38,19 @@ export function CharacterAnalytics({
 
   const { data: learnedCharacters } = useListCharactersQuery();
 
-  const filteredHskWords = hskWords?.filter((word: any) => {
-    return characterId?.includes(word?.hanzi);
-  });
+  const filteredHskWords = hskWords
+    ?.filter((word: any) => {
+      return characterId?.includes(word?.hanzi);
+    })
+    .map((item: any) => {
+      const wordIndex = characterId?.indexOf(item?.hanzi || item?.input);
+
+      return {
+        ...item,
+        wordIndex: wordIndex || 0,
+      };
+    })
+    ?.sort((first: any, second: any) => first?.wordIndex - second?.wordIndex);
 
   const {
     understandingRate,

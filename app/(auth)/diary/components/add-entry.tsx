@@ -105,6 +105,7 @@ export const AddEntry = () => {
                     text,
                   })
                   .then((resp) => {
+                    setCreateNew(false);
                     router.push(`/diary/${resp.id}`);
                   });
               }}

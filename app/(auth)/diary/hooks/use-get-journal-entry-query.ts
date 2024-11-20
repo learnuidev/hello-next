@@ -2,7 +2,7 @@
 
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { JournalEntry } from "./journal-entry.types";
 
 export const getJournalEntryQueryKey = "get-journal-entry";
@@ -10,8 +10,14 @@ export const getJournalEntryQueryKey = "get-journal-entry";
 export const useGetJournalEntryQuery = (entryId: string) => {
   const { data: authUser } = useCurrentAuthUser({});
 
+  const queryClient = useQueryClient();
+  const queryKey = [getJournalEntryQueryKey, entryId, authUser?.jwt];
+
+  const data = queryClient.getQueryData(queryKey) as JournalEntry;
+
   return useQuery<JournalEntry, Error>({
-    queryKey: [getJournalEntryQueryKey, entryId, authUser?.jwt],
+    queryKey,
+    refetchInterval: data?.status === "PROCESSING" ? 2000 : false,
     queryFn: async () => {
       const journalEntriesResp = await fetch(
         `${siteConfig.apiUrl}/v1/get-journal-entry`,

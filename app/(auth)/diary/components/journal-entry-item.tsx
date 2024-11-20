@@ -85,12 +85,16 @@ export const JournalEntryItem = ({
             <Icons.bookmark />
           </button>
           <button
-            onClick={() => {
+            onDoubleClick={() => {
               deleteJournalMutation.mutateAsync(journalEntry);
             }}
-            className=" text-gray-500"
+            className="text-gray-500"
           >
-            <Icons.trash />
+            {deleteJournalMutation?.isLoading ? (
+              <Icons.spinner spinPulse />
+            ) : (
+              <Icons.trash />
+            )}
           </button>
         </div>
       </div>

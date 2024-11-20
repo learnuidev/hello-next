@@ -1,7 +1,7 @@
 export interface JournalEntry {
   userId: string; // User's email address
   updatedAt: number; // Timestamp of when the object was last updated
-  status: "PROCESSED"; // Status of the journey (fixed value)
+  status: "PROCESSING" | "PROCESSED"; // Status of the journey (fixed value)
   latency: number; // Latency in milliseconds
   createdAt: number; // Timestamp of when the object was created
   emotions: string; // Comma-separated list of emotions

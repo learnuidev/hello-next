@@ -9,6 +9,7 @@ import { AddEntry } from "./components/add-entry";
 import { JournalEntryItem } from "./components/journal-entry-item";
 import { useDiaryStore } from "./hooks/use-diary-store";
 import { useDiaryParams } from "./hooks/use-diary-params";
+import Link from "next/link";
 
 export default function Diary() {
   const setCreateNew = useDiaryStore((state) => state.setCreateNew);
@@ -27,15 +28,23 @@ export default function Diary() {
           </div>
         ) : (
           <div className="px-4 md:px-12 mt-12">
-            <button
-              onClick={() => {
-                setCreateNew(true);
-              }}
-              className="uppercase text-gray-400 border-[1px] px-4 py-2 border-gray-800"
-            >
-              <Icons.plusIcon />
-              <span> Add</span>
-            </button>
+            <div className="flex justify-between items-center ">
+              <button
+                onClick={() => {
+                  setCreateNew(true);
+                }}
+                className="uppercase text-gray-400 border-[1px] px-4 py-2 border-gray-800 text-xs sm:text-sm"
+              >
+                <Icons.plusIcon />
+                <span> Add</span>
+              </button>
+
+              {emotion && (
+                <Link href="/diary" className="text-gray-400">
+                  Clear
+                </Link>
+              )}
+            </div>
 
             <section className="mt-8 space-y-12">
               {journalEntries

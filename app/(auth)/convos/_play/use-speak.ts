@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export const useSpeak = () => {
+export const useSpeak = (lang = "zh-CN") => {
   const synthRef = useRef(window.speechSynthesis);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [currentString, setCurrentString] = useState("");
@@ -13,7 +13,7 @@ export const useSpeak = () => {
 
   // console.log("VOICES LIST", voicesList);
 
-  const selecectedVoice = voicesList?.["zh-CN"]?.filter(
+  const selecectedVoice = voicesList?.[lang]?.filter(
     (voice: any) =>
       // this works for chrome
       voice?.name === "Li-Mu" ||
@@ -47,7 +47,7 @@ export const useSpeak = () => {
     };
 
     utter.rate = 0.6;
-    utter.lang = "zh-CN";
+    utter.lang = lang;
 
     // utter.voice = selecectedVoice?.voice;
     // synthRef.current.speak(utter);
@@ -67,7 +67,7 @@ export const useSpeak = () => {
   useEffect(() => {
     setTimeout(() => {
       const voices = [...synthRef.current.getVoices()]
-        .filter((x) => x.lang === "zh-CN")
+        .filter((x) => x.lang === lang)
         .map((item) => ({
           voice: item,
           name: item.name,
@@ -100,5 +100,6 @@ export const useSpeak = () => {
     speak,
     currentString,
     stopSpeaking,
+    voicesList,
   };
 };

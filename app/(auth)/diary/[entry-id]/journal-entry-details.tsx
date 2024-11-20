@@ -122,7 +122,8 @@ export function JournalEntryDetails() {
 
   const { data: journalEntry } = useGetJournalEntryQuery(entryId);
 
-  const { speak, isSpeaking, currentString, stopSpeaking } = useSpeak();
+  const { speak, isSpeaking, currentString, stopSpeaking, voicesList } =
+    useSpeak();
 
   if (!journalEntry) {
     return null;

@@ -5,6 +5,23 @@ import { useDeleteJournalEntryMutation } from "../hooks/use-delete-journal-entry
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 
+export const JournalEntryTitle = ({
+  journalEntry,
+  className,
+}: {
+  journalEntry: JournalEntry;
+  className?: string;
+}) => {
+  return (
+    <Link
+      href={`/diary/${journalEntry.id}`}
+      className={cn("text-lg block", className)}
+    >
+      {journalEntry.title || "No title"}
+    </Link>
+  );
+};
+
 export const JournalEntryItem = ({
   journalEntry,
   showFull,
@@ -16,9 +33,8 @@ export const JournalEntryItem = ({
   return (
     <div key={journalEntry.id}>
       <div className="mb-4">
-        <Link href={`/diary/${journalEntry.id}`} className="text-lg block">
-          {journalEntry.title || "No title"}
-        </Link>
+        <JournalEntryTitle journalEntry={journalEntry} />
+
         <p className="text-sm text-gray-500">
           {showFull
             ? journalEntry.emotions?.split(", ")?.join(", ")

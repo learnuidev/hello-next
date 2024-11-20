@@ -5,6 +5,7 @@ import { NavBar } from "@/components/navbar";
 import { useEntryParams } from "./use-entry-params";
 import { useGetJournalDetailsQuery } from "../hooks/use-get-journal-details-query";
 import { useGetJournalEntryQuery } from "../hooks/use-get-journal-entry-query";
+import { JournalEntryItem } from "../components/journal-entry-item";
 // import { useDiaryParams } from "./use-entry-params";
 
 export default function DiaryItem() {
@@ -14,13 +15,19 @@ export default function DiaryItem() {
 
   const { data: journalEntry } = useGetJournalEntryQuery(entryId);
   return (
-    <main className="">
+    <main className="max-w-3xl m-auto">
       <NavBar />
 
       <div className="px-4 md:px-12">
-        <section>Diary Item: {entryId}</section>
+        {/* <section>Diary Item: {entryId}</section> */}
 
-        <section className="mt-8">
+        <div className="mt-12">
+          {journalEntry && (
+            <JournalEntryItem showFull journalEntry={journalEntry} />
+          )}
+        </div>
+
+        <section className="mt-8 text-gray-600">
           <code>
             <pre>{JSON.stringify(journalEntry, null, 4)}</pre>
           </code>

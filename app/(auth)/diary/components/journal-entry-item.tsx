@@ -3,11 +3,14 @@ import { JournalEntry } from "../hooks/journal-entry.types";
 import { formatJournalDate } from "../utils/format-journal-date";
 import { useDeleteJournalEntryMutation } from "../hooks/use-delete-journal-entry-mutatuon";
 import { Icons } from "@/components/ui/icons.v2";
+import { cn } from "@/lib/utils";
 
 export const JournalEntryItem = ({
   journalEntry,
+  showFull,
 }: {
   journalEntry: JournalEntry;
+  showFull?: boolean;
 }) => {
   const deleteJournalMutation = useDeleteJournalEntryMutation();
   return (
@@ -21,7 +24,12 @@ export const JournalEntryItem = ({
         </p>
       </div>
 
-      <p className="line-clamp-3 text-gray-300 font-extralight">
+      <p
+        className={cn(
+          "text-gray-300 font-extralight",
+          showFull ? "" : "line-clamp-3"
+        )}
+      >
         {journalEntry.text}
       </p>
 

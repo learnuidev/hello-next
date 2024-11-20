@@ -10,7 +10,7 @@ export const getJournalEntryQueryKey = "get-journal-entry";
 export const useGetJournalEntryQuery = (entryId: string) => {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery<JournalEntry[], Error>({
+  return useQuery<JournalEntry, Error>({
     queryKey: [getJournalEntryQueryKey, entryId, authUser?.jwt],
     queryFn: async () => {
       const journalEntriesResp = await fetch(

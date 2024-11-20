@@ -17,13 +17,25 @@ import { useGetJournalEntryQuery } from "../hooks/use-get-journal-entry-query";
 import { useEntryParams } from "./use-entry-params";
 import { useJournalDetailStore } from "./use-journal-detail-store";
 import { useSpeak } from "../../convos/_play/use-speak";
+import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
 
 function JournalDetailsBody({ entryId }: { entryId: string }) {
   const { data: journalDetails } = useGetJournalDetailsQuery(entryId);
   const showHanzi = useJournalDetailStore((state) => state.showHanzi);
-  const { speak } = useSpeak();
+  const { speak, isSpeaking, currentString, charStartIndex, charEndIndex } =
+    useSpeak();
 
   const { data: journalEntry } = useGetJournalEntryQuery(entryId);
+
+  const hanzis =
+    journalDetails?.translations?.map((item) => item?.hanzi).join(" ") || "";
+
+  const characterAnalytics = useGetCharacterAnalytics({
+    characterId: hanzis,
+    lang: "zh",
+  });
+
+  // console.log("CHARACTER ANALYTICS", characterAnalytics);
 
   if (!journalDetails) {
     return <div className="text-lg">{journalEntry?.text}</div>;
@@ -47,14 +59,40 @@ function JournalDetailsBody({ entryId }: { entryId: string }) {
                   return (
                     <span
                       onClick={() => {
-                        if (showHanzi) {
-                          speak(transcription?.hanzi);
-                        }
+                        // if (showHanzi) {
+                        speak(transcription?.hanzi);
+                        // }
                       }}
                       key={JSON.stringify(transcription)}
-                      className={cn("text-center h-24", "text-gray-300")}
+                      className={cn(
+                        "text-center h-24",
+                        "text-gray-300",
+                        currentString
+                          ? currentString === transcription?.hanzi
+                            ? "dark:text-white"
+                            : "dark:text-gray-600"
+                          : ""
+                      )}
                     >
-                      {showHanzi ? transcription?.hanzi : transcription?.en}{" "}
+                      {showHanzi
+                        ? transcription?.hanzi?.split("").map((char, i) => {
+                            return (
+                              <span
+                                key={`${char}-${i}`}
+                                className={
+                                  currentString &&
+                                  currentString === transcription?.hanzi
+                                    ? i >= charStartIndex && i <= charEndIndex
+                                      ? "bg-rose-600"
+                                      : ""
+                                    : ""
+                                }
+                              >
+                                {char}
+                              </span>
+                            );
+                          })
+                        : transcription?.en}{" "}
                     </span>
                   );
                 })}
@@ -84,7 +122,7 @@ export function JournalEntryDetails() {
 
   const { data: journalEntry } = useGetJournalEntryQuery(entryId);
 
-  const { speak } = useSpeak();
+  const { speak, isSpeaking, currentString, stopSpeaking } = useSpeak();
 
   if (!journalEntry) {
     return null;
@@ -136,10 +174,14 @@ export function JournalEntryDetails() {
             showHanzi ? "dark:text-white text-black" : "text-gray-400"
           )}
           onClick={() => {
-            speak(hanzi);
+            if (isSpeaking) {
+              stopSpeaking();
+            } else {
+              speak(hanzi);
+            }
           }}
         >
-          <Icons.play />
+          {isSpeaking ? <Icons.pause /> : <Icons.play />}
         </button>
         {/* )} */}
       </section>

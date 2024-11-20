@@ -32,12 +32,16 @@ export function useGetCharacterAnalytics({
 
   const uniqueWords =
     lang === "zh"
-      ? characterId
-          ?.split("")
-          .join("")
-          ?.toLocaleLowerCase()
-          ?.split("")
-          ?.filter(filterNonHanYu)
+      ? [
+          ...new Set(
+            characterId
+              ?.split("")
+              .join("")
+              ?.toLocaleLowerCase()
+              ?.split("")
+              ?.filter(filterNonHanYu)
+          ),
+        ]
       : [
           ...new Set(
             [...characterId?.split("")].map(filterNonEnglishAlphabets)

@@ -4,6 +4,10 @@ import { useEffect, useRef, useState } from "react";
 
 export const useSpeak = () => {
   const synthRef = useRef(window.speechSynthesis);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [currentString, setCurrentString] = useState("");
+  const [charStartIndex, setCharStartIndex] = useState(0);
+  const [charEndIndex, setCharEndIndex] = useState(0);
 
   const [voicesList, setVoicesList] = useState<any>({});
 
@@ -17,16 +21,48 @@ export const useSpeak = () => {
       voice?.name === "Tingting"
   )?.[0] as any;
 
+  const resetState = () => {
+    setIsSpeaking(false);
+    setCurrentString("");
+    setCharStartIndex(0);
+    setCharEndIndex(0);
+  };
+
   const speak = (word: string) => {
     const utter = new SpeechSynthesisUtterance(word);
 
-    // utter.rate = 0.6;
+    utter.onboundary = (event) => {
+      if (event.charIndex >= 0) {
+        setCharStartIndex(event.charIndex);
+        setCharEndIndex(event.charIndex + event.charLength);
+        // setCurrentWordIndex(event.charIndex);
+      }
+    };
+
+    utter.onend = (event) => {
+      resetState();
+      console.log(
+        `Utterance has finished being spoken after ${event.elapsedTime} seconds.`
+      );
+    };
+
+    utter.rate = 0.6;
     utter.lang = "zh-CN";
 
     // utter.voice = selecectedVoice?.voice;
     // synthRef.current.speak(utter);
-    window?.speechSynthesis?.speak(utter);
+    setCurrentString(word);
+    if (!isSpeaking) {
+      window?.speechSynthesis?.speak(utter);
+    }
+
+    setIsSpeaking(true);
   };
+
+  function stopSpeaking() {
+    resetState();
+    window.speechSynthesis.cancel();
+  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -58,6 +94,11 @@ export const useSpeak = () => {
   }, [synthRef]);
 
   return {
+    isSpeaking,
+    charStartIndex,
+    charEndIndex,
     speak,
+    currentString,
+    stopSpeaking,
   };
 };

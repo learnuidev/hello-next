@@ -52,7 +52,7 @@ const filterComponent = ({
     // First Filter
     if (
       query?.toLowerCase() === englishPinyin ||
-      query?.toLowerCase() === (comp?.hanzi || metaComp?.hanzi)
+      query?.toLowerCase() === (comp?.hanzi || metaComp?.hanzi || comp?.input)
     ) {
       return {
         ...comp,

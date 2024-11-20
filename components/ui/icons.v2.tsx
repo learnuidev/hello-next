@@ -99,6 +99,7 @@ import {
   faMicrophone,
   faArrowsRotate,
   faNotebook,
+  faBookmark,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -306,6 +307,7 @@ export const Icons = {
   microphone: createFAIcon(faMicrophone),
   refresh: createFAIcon(faArrowsRotate),
   diary: createFAIcon(faNotebook),
+  bookmark: createFAIcon(faBookmark),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

@@ -21,6 +21,7 @@ import { useSpeak } from "../../convos/_play/use-speak";
 function JournalDetailsBody({ entryId }: { entryId: string }) {
   const { data: journalDetails } = useGetJournalDetailsQuery(entryId);
   const showHanzi = useJournalDetailStore((state) => state.showHanzi);
+  const { speak } = useSpeak();
 
   const { data: journalEntry } = useGetJournalEntryQuery(entryId);
 
@@ -45,6 +46,11 @@ function JournalDetailsBody({ entryId }: { entryId: string }) {
                 {transcriptions?.map((transcription: JournalTranslation) => {
                   return (
                     <span
+                      onClick={() => {
+                        if (showHanzi) {
+                          speak(transcription?.hanzi);
+                        }
+                      }}
                       key={JSON.stringify(transcription)}
                       className={cn("text-center h-24", "text-gray-300")}
                     >

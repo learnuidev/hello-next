@@ -21,6 +21,37 @@ export const JournalEntryTitle = ({
     </Link>
   );
 };
+export const JournalEntryEmotions = ({
+  journalEntry,
+  showFull,
+  className,
+}: {
+  journalEntry: JournalEntry;
+  className?: string;
+  showFull?: boolean;
+}) => {
+  return (
+    <p className={cn("text-sm text-gray-500", className)}>
+      {showFull
+        ? journalEntry.emotions?.split(", ")?.join(", ")
+        : journalEntry.emotions?.split(", ")?.slice(0, 4).join(", ")}
+    </p>
+  );
+};
+export const JournalEntryDate = ({
+  journalEntry,
+
+  className,
+}: {
+  journalEntry: JournalEntry;
+  className?: string;
+}) => {
+  return (
+    <p className={cn("text-gray-600 font-light", className)}>
+      {formatJournalDate(journalEntry.createdAt)}
+    </p>
+  );
+};
 
 export const JournalEntryItem = ({
   journalEntry,
@@ -35,11 +66,7 @@ export const JournalEntryItem = ({
       <div className="mb-4">
         <JournalEntryTitle journalEntry={journalEntry} />
 
-        <p className="text-sm text-gray-500">
-          {showFull
-            ? journalEntry.emotions?.split(", ")?.join(", ")
-            : journalEntry.emotions?.split(", ")?.slice(0, 4).join(", ")}
-        </p>
+        <JournalEntryEmotions journalEntry={journalEntry} showFull={showFull} />
       </div>
 
       <p
@@ -52,9 +79,7 @@ export const JournalEntryItem = ({
       </p>
 
       <div className="flex justify-between items-center mt-4">
-        <p className="text-gray-600 font-light">
-          {formatJournalDate(journalEntry.createdAt)}
-        </p>
+        <JournalEntryDate journalEntry={journalEntry} />
         <div className="flex justify-end space-x-4 items-center">
           <button className="text-gray-500">
             <Icons.bookmark />

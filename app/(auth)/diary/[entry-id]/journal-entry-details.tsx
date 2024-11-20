@@ -123,19 +123,19 @@ export function JournalEntryDetails() {
         >
           <Icons.language className="text-2xl" />
         </button>
-        {showHanzi && (
-          <button
-            className={cn(
-              "mt-[-4px]",
-              showHanzi ? "dark:text-white text-black" : "text-gray-400"
-            )}
-            onClick={() => {
-              speak(hanzi);
-            }}
-          >
-            <Icons.play />
-          </button>
-        )}
+        {/* {showHanzi && ( */}
+        <button
+          className={cn(
+            "mt-[-4px]",
+            showHanzi ? "dark:text-white text-black" : "text-gray-400"
+          )}
+          onClick={() => {
+            speak(hanzi);
+          }}
+        >
+          <Icons.play />
+        </button>
+        {/* )} */}
       </section>
 
       <div className="">

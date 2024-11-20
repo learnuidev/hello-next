@@ -15,26 +15,28 @@ export default function DiaryItem() {
 
   const { data: journalEntry } = useGetJournalEntryQuery(entryId);
   return (
-    <main className="max-w-3xl m-auto">
-      <NavBar />
+    <main>
+      <div className="max-w-3xl m-auto">
+        <NavBar />
 
-      <div className="px-4 md:px-12">
-        {/* <section>Diary Item: {entryId}</section> */}
+        <div className="px-4 md:px-12">
+          {/* <section>Diary Item: {entryId}</section> */}
 
-        <div className="mt-12">
-          {journalEntry && (
-            <JournalEntryItem showFull journalEntry={journalEntry} />
-          )}
+          <div className="mt-12">
+            {journalEntry && (
+              <JournalEntryItem showFull journalEntry={journalEntry} />
+            )}
+          </div>
+
+          <section className="mt-8 text-gray-600">
+            <code>
+              <pre>{JSON.stringify(journalEntry, null, 4)}</pre>
+            </code>
+            <code>
+              <pre>{JSON.stringify(data, null, 4)}</pre>
+            </code>
+          </section>
         </div>
-
-        <section className="mt-8 text-gray-600">
-          <code>
-            <pre>{JSON.stringify(journalEntry, null, 4)}</pre>
-          </code>
-          <code>
-            <pre>{JSON.stringify(data, null, 4)}</pre>
-          </code>
-        </section>
       </div>
 
       <FloatingNavbar />

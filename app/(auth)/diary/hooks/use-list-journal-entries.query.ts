@@ -26,7 +26,9 @@ export const useListJournalEntriesQuery = () => {
         }
       );
 
-      return journalEntriesResp.json();
+      const entries = (await journalEntriesResp.json()) as JournalEntry[];
+
+      return entries.sort((a, b) => b.createdAt - a.createdAt);
     },
   });
 };

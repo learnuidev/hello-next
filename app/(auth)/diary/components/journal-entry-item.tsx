@@ -16,35 +16,42 @@ export const JournalEntryItem = ({
   return (
     <div key={journalEntry.id}>
       <div className="mb-4">
-        <Link href={`/diary/${journalEntry.id}`} className="text-lg mb-2 block">
+        <Link href={`/diary/${journalEntry.id}`} className="text-lg block">
           {journalEntry.title || "No title"}
         </Link>
-        <p className="text-gray-400 font-light">
-          {formatJournalDate(journalEntry.createdAt)}
+        <p className="text-sm text-gray-500">
+          {showFull
+            ? journalEntry.emotions?.split(", ")?.join(", ")
+            : journalEntry.emotions?.split(", ")?.slice(0, 4).join(", ")}
         </p>
       </div>
 
       <p
         className={cn(
-          "text-gray-300 font-extralight",
-          showFull ? "" : "line-clamp-3"
+          "text-gray-300 font-extralight text-[16px]",
+          showFull ? "" : "line-clamp-2"
         )}
       >
         {journalEntry.text}
       </p>
 
-      <div className="flex justify-end space-x-4">
-        <button className="mt-8 text-gray-500">
-          <Icons.bookmark />
-        </button>
-        <button
-          onClick={() => {
-            deleteJournalMutation.mutateAsync(journalEntry);
-          }}
-          className="mt-8 text-gray-500"
-        >
-          <Icons.trash />
-        </button>
+      <div className="flex justify-between items-center mt-4">
+        <p className="text-gray-600 font-light">
+          {formatJournalDate(journalEntry.createdAt)}
+        </p>
+        <div className="flex justify-end space-x-4 items-center">
+          <button className="text-gray-500">
+            <Icons.bookmark />
+          </button>
+          <button
+            onClick={() => {
+              deleteJournalMutation.mutateAsync(journalEntry);
+            }}
+            className=" text-gray-500"
+          >
+            <Icons.trash />
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -40,7 +40,15 @@ export const useGetJournalDetailsQuery = (entryId: string) => {
         }
       );
 
-      return journalEntriesResp.json();
+      const journalDetails =
+        (await journalEntriesResp.json()) as JournalDetails;
+
+      return {
+        ...journalDetails,
+        translations: journalDetails.translations.filter((item) => {
+          return item?.en !== ".";
+        }),
+      };
     },
   });
 };

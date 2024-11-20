@@ -8,12 +8,14 @@ import { Icons } from "@/components/ui/icons.v2";
 import { AddEntry } from "./components/add-entry";
 import { JournalEntryItem } from "./components/journal-entry-item";
 import { useDiaryStore } from "./hooks/use-diary-store";
+import { useDiaryParams } from "./hooks/use-diary-params";
 
 export default function Diary() {
   const setCreateNew = useDiaryStore((state) => state.setCreateNew);
   const createNew = useDiaryStore((state) => state.createNew);
 
   const { data: journalEntries } = useListJournalEntriesQuery();
+  const { emotion } = useDiaryParams();
   return (
     <main>
       <div className="max-w-3xl m-auto">
@@ -36,14 +38,22 @@ export default function Diary() {
             </button>
 
             <section className="mt-8 space-y-12">
-              {journalEntries?.map((journalEntry) => {
-                return (
-                  <JournalEntryItem
-                    journalEntry={journalEntry}
-                    key={journalEntry.id}
-                  />
-                );
-              })}
+              {journalEntries
+                ?.filter((journalEntry) => {
+                  if (!emotion) {
+                    return true;
+                  }
+
+                  return journalEntry.emotions?.includes(emotion);
+                })
+                ?.map((journalEntry) => {
+                  return (
+                    <JournalEntryItem
+                      journalEntry={journalEntry}
+                      key={journalEntry.id}
+                    />
+                  );
+                })}
             </section>
           </div>
         )}

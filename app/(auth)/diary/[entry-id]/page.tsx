@@ -41,7 +41,7 @@ function JournalDetailsBody({ entryId }: { entryId: string }) {
         const transcriptions = val[1] as JournalTranslation[];
         return (
           <div key={JSON.stringify(val)}>
-            <div className="text-lg gap-4">
+            <div className="text-[16px] sm:text-lg gap-4">
               <div className="py-2">
                 {transcriptions?.map((transcription: JournalTranslation) => {
                   return (
@@ -58,6 +58,15 @@ function JournalDetailsBody({ entryId }: { entryId: string }) {
           </div>
         );
       })}
+
+      {/* <section className="mt-8 text-gray-600">
+        <code>
+          <pre>{JSON.stringify(journalEntry, null, 4)}</pre>
+        </code>
+        <code>
+          <pre>{JSON.stringify(journalDetails, null, 4)}</pre>
+        </code>
+      </section> */}
     </div>
   );
 }
@@ -81,9 +90,12 @@ export default function DiaryItem() {
         <div className="px-4 md:px-12">
           <div className="mt-12 flex justify-between items-center">
             <div>
-              <JournalEntryDate journalEntry={journalEntry} />
+              <JournalEntryDate
+                className="text-sm sm:text-[16px]"
+                journalEntry={journalEntry}
+              />
               <JournalEntryTitle
-                className="text-2xl"
+                className="sm:text-2xl text-xl"
                 journalEntry={journalEntry}
               />
             </div>
@@ -93,7 +105,9 @@ export default function DiaryItem() {
             </Link>
           </div>
 
-          <JournalDetailsBody entryId={entryId} />
+          <div className="mt-8">
+            <JournalDetailsBody entryId={entryId} />
+          </div>
 
           <section className="mt-8 mb-8">
             <button
@@ -111,25 +125,17 @@ export default function DiaryItem() {
           <div className="">
             {journalEntry?.emotions?.split(", ").map((emotion) => {
               return (
-                <Badge
-                  variant="outline"
-                  className="mr-2 my-[4px] border-gray-600 text-gray-500"
-                  key={emotion}
-                >
-                  {emotion}
-                </Badge>
+                <Link key={emotion} href={`/diary?emotion=${emotion}`}>
+                  <Badge
+                    variant="outline"
+                    className="mr-2 my-[4px] border-gray-600 text-gray-500"
+                  >
+                    {emotion}
+                  </Badge>
+                </Link>
               );
             })}
           </div>
-
-          {/* <section className="mt-8 text-gray-600">
-            <code>
-              <pre>{JSON.stringify(journalEntry, null, 4)}</pre>
-            </code>
-            <code>
-              <pre>{JSON.stringify(journalDetails, null, 4)}</pre>
-            </code>
-          </section> */}
         </div>
       </div>
 

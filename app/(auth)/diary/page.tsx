@@ -46,7 +46,7 @@ export default function Diary() {
               )}
             </div>
 
-            <section className="mt-8 space-y-12">
+            <section className="mt-8 space-y-12 mb-24">
               {journalEntries
                 ?.filter((journalEntry) => {
                   if (!emotion) {

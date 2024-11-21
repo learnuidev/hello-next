@@ -189,7 +189,7 @@ export function ReviewMode(props: any) {
   const ReviewHeader = () => {
     return (
       <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
-        <Link href={"/nmm"}>
+        <Link href={`/nmm${level ? `?level=${level}` : ""}`}>
           <Icons.xMark className="text-xl" />
         </Link>
 

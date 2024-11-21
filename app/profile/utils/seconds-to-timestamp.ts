@@ -6,6 +6,7 @@ export function secondsToTimestamp(milliseconds: number) {
   // Calculate days, hours, and minutes
   const days = Math.floor(milliseconds / day);
   const hours = Math.floor((milliseconds % day) / hour);
+  // const hours = 12;
   const minutes = Math.floor((milliseconds % hour) / minute);
   // Build the timestamp string
   let timestamp = "";
@@ -16,25 +17,33 @@ export function secondsToTimestamp(milliseconds: number) {
       timestamp += `${days} days`;
     }
 
-    timestamp += `${days} day`;
+    // timestamp += `${days} day`;
     // if (hours > 0 || minutes > 0) timestamp += " ";
-    return timestamp.trim();
+    // return timestamp.trim();
   }
   if (hours > 0) {
-    if (hours <= 1) {
-      timestamp += `${hours} hour`;
+    if (days > 0) {
+      timestamp += ` ${hours}h`;
     } else {
-      timestamp += `${hours} hours`;
+      if (hours <= 1) {
+        timestamp += ` ${hours} hour`;
+      } else {
+        timestamp += ` ${hours} hours`;
+      }
     }
 
     // if (minutes > 0) timestamp += " ";
-    return timestamp.trim();
+    // return timestamp.trim();
   }
   if (minutes > 0 || (days === 0 && hours === 0)) {
-    if (minutes <= 1) {
-      timestamp += `${minutes} min`;
+    if (days > 0 || hours > 0) {
+      timestamp += ` ${minutes}m`;
     } else {
-      timestamp += `${minutes} mins`;
+      if (minutes <= 1) {
+        timestamp += ` ${minutes} min`;
+      } else {
+        timestamp += ` ${minutes} mins`;
+      }
     }
 
     return timestamp.trim();

@@ -15,6 +15,7 @@ import { reviewCounterStore } from "./review-counter-store";
 import { useGetReviewParams } from "./use-get-review-params";
 import { useIsContent } from "./use-is-content";
 import { isBefore } from "date-fns";
+import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 export function useUnreviwedCharacters() {
   const {
@@ -27,6 +28,7 @@ export function useUnreviwedCharacters() {
   const router = useRouter();
 
   const { mode, level, reviewMode } = useGetReviewParams();
+  const { data: hskWords } = useListHSKWordsQuery();
 
   const { data: hskCharacters, isLoading: isHskCharactersLoading } =
     useGetHskCharacters({ getAll: true });
@@ -110,16 +112,27 @@ export function useUnreviwedCharacters() {
 
     const data = uniqueCharactersMemo
       ?.filter((item: any) => {
+        const hskCharacter = hskWords?.find((word: any) =>
+          JSON.stringify(word)?.includes(item?.hanzi)
+        );
+
         const hskLevel = getHSKLevel(item?.level);
+
+        // return  selectedBelt?.hskLevel;
         return (
-          item?.isLearned && item?.status !== "forgotten" && hskLevel === level
+          item?.isLearned &&
+          item?.status !== "forgotten" &&
+          hskCharacter?.hskLevel === level
         );
+        // return (
+        //   item?.isLearned && item?.status !== "forgotten" && hskLevel === level
+        // );
       })
-      ?.sort((a: any, b: any) => {
-        return (
-          (a?.reviewHistory?.length || 0) - (b?.reviewHistory?.length || 0)
-        );
-      })
+      // ?.sort((a: any, b: any) => {
+      //   return (
+      //     (a?.reviewHistory?.length || 0) - (b?.reviewHistory?.length || 0)
+      //   );
+      // })
       ?.filter((character: any) => {
         if (reviewMode === "all") {
           return true;

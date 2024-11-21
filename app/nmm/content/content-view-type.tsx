@@ -22,9 +22,11 @@ export function ContentViewType({
 
   const { data } = useGetContent({ variant, selectedBelt, contentId });
 
-  const xiaomaCharacters = data?.characters || [];
-  const xiaomaWords = data?.words || [];
-  const xiaomaSentences = data?.sentences || [];
+  const characters = data?.characters || [];
+  const words = data?.words || [];
+  const sentences = data?.sentences || [];
+
+  // console.log("DATA", data);
 
   const { data: componentsAll } = useListComponents({
     includeAll: true,
@@ -37,7 +39,7 @@ export function ContentViewType({
   if (viewType === "sentence") {
     return (
       <NmmListContainerSentence>
-        {xiaomaSentences?.map((prop: any, idx: number) => {
+        {sentences?.map((prop: any, idx: number) => {
           return (
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
           );
@@ -49,7 +51,7 @@ export function ContentViewType({
   if (viewType === "character") {
     return (
       <NmmListContainer>
-        {xiaomaCharacters.map((prop: any, idx: number) => {
+        {characters.map((prop: any, idx: number) => {
           console.log("XIAOMA", prop);
 
           const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
@@ -67,7 +69,7 @@ export function ContentViewType({
   if (viewType === "word") {
     return (
       <NmmListContainer>
-        {xiaomaWords?.map((prop: any, idx: number) => {
+        {words?.map((prop: any, idx: number) => {
           return (
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
           );

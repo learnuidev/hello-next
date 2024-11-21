@@ -249,15 +249,17 @@ export function ReviewMode(props: any) {
         </Link>
       </div>
 
-      <div>
-        {isParagraph ? (
-          <h1 className="text-2xl">Do you know this paragraph?</h1>
-        ) : (
-          <h1 className="text-2xl">Do you know this character?</h1>
-        )}
-      </div>
+      {updateCharacterStatusMutation?.isLoading ? null : (
+        <div>
+          {isParagraph ? (
+            <h1 className="text-2xl">Do you know this paragraph?</h1>
+          ) : (
+            <h1 className="text-2xl">Do you know this character?</h1>
+          )}
+        </div>
+      )}
 
-      {isRefetching ? (
+      {updateCharacterStatusMutation?.isLoading || isRefetching ? (
         <div className="my-32">
           <h2 className="text-8xl md:text-9xl">...</h2>
         </div>

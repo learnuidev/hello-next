@@ -81,7 +81,7 @@ export function HanziLink({
     >
       <p
         className={cn(
-          "top-0 text-xs text-gray-400",
+          "top-0 text-xs text-gray-400 w-24 text-center truncate",
           brightMode ? "text-gray-600" : "dark:text-gray-800 text-gray-200",
           className
         )}
@@ -120,7 +120,7 @@ export function HanziLink({
                 : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
                   //   ? "dark:text-yellow-500"
                   "dark:text-gray-700 text-gray-200"
-        } dark:hover:text-white text-2xl md:text-2xl transition lowercase`}
+        } dark:hover:text-white text-2xl md:text-2xl transition lowercase w-28 text-center`}
       >
         {frequency > 0 && (
           <sub className="dark:text-gray-700 text-xs pl-[2px]">{frequency}</sub>
@@ -153,7 +153,7 @@ export function HanziLink({
                       : selectedComp?.length > 1 || selectedComp?.group
                         ? "dark:text-gray-500 text-gray-200"
                         : "dark:text-gray-700 text-gray-200"
-              } dark:hover:text-white text-2xl md:text-2xl transition lowercase`}
+              } dark:hover:text-white text-2xl transition lowercase w-full`}
             >
               {val}
             </span>
@@ -169,7 +169,7 @@ export function HanziLink({
 
       <p
         className={cn(
-          "text-xs text-gray-400 w-24 truncate text-center",
+          "text-xs text-gray-400 w-16 truncate text-center",
           brightMode ? "text-gray-500" : "dark:text-gray-800 text-gray-200"
         )}
       >

@@ -20,6 +20,7 @@ import { create } from "zustand";
 import { HanziLink } from "@/components/hanzi-link";
 import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
 import { filterNonEnglishAlphabets } from "@/app/nmm/nmm-utils/filter-non-english-alphabets";
+import { NmmListContainer } from "@/components/nmm-list-container";
 
 export const useSearchQueryStore = create((set: any, get: any) => ({
   sortType: "timeline",
@@ -317,7 +318,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
 
         {viewType === "character" && (
           <div className="my-8">
-            <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
+            <NmmListContainer>
               {uniqueCharactersMemo.map((char: any, idx: number) => {
                 const isLearned = learnedCharacters?.find(
                   (item: any) => (item?.hanzi || item?.input) === char?.input
@@ -373,13 +374,13 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                   </Link>
                 );
               })}
-            </div>
+            </NmmListContainer>
           </div>
         )}
 
         {viewType === "word" && (
           <div className="my-8">
-            <div className="my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
+            <NmmListContainer className="gap-4">
               {filteredHskWords?.map((char: any, idx: number) => {
                 return (
                   <HanziLink
@@ -395,7 +396,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                   />
                 );
               })}
-            </div>
+            </NmmListContainer>
           </div>
         )}
       </div>

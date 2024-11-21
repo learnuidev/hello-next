@@ -36,9 +36,9 @@ const FloatingNavbarComp = () => {
   const setReadMode = useReadModeStore((state) => state.setReadMode);
   const readMode = useReadModeStore((state) => state.readMode);
 
-  if (routeName === "/pinyin") {
-    return null;
-  }
+  // if (routeName === "/pinyin") {
+  //   return null;
+  // }
 
   if (routeName?.includes("/review")) {
     return (

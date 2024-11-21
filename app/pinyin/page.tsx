@@ -8,7 +8,9 @@ function ChartPage(props: any) {
   return (
     <div>
       <NavBar />
-      <PinyinTable />
+      <div className="sm:mb-0 mb-16">
+        <PinyinTable />
+      </div>
     </div>
   );
 }

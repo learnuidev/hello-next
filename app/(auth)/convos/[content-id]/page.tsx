@@ -26,6 +26,7 @@ import { useViewModeStore } from "../new-convo/use-viewmode-store";
 import { PlusIcon } from "@/components/ui/icons";
 import { NewConvo } from "../new-convo/new-convo";
 import ConvoItem from "./convo-item";
+import { FloatingNavbar } from "@/components/floating-navbar";
 
 function formatPercentage(number: number) {
   return Intl.NumberFormat("en-GB", {
@@ -155,10 +156,16 @@ export default function Convos() {
   }
 
   return (
-    <main className="px-4 md:px-32">
-      <ConvosNavBar />
+    <main>
+      <div className="px-4 md:px-32">
+        <ConvosNavBar />
 
-      <ConvoDetails lessonId={lessonId} />
+        <div className="sm:mb-0 mb-16">
+          <ConvoDetails lessonId={lessonId} />
+        </div>
+      </div>
+
+      <FloatingNavbar />
     </main>
   );
 }

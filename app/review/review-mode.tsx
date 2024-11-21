@@ -252,7 +252,9 @@ export function ReviewMode(props: any) {
         <div className="my-32">
           <h1 className="text-2xl">All Done</h1>
 
-          <p className="my-4">You have finished all your reviews</p>
+          <p className="my-4">
+            You have finished all your reviews for this level
+          </p>
         </div>
 
         <div className="space-x-12 flex justify-center items-center">

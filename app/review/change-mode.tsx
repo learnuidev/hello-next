@@ -3,7 +3,7 @@ import { belts } from "../nmm/utils";
 import { useGetReviewParams } from "./use-get-review-params";
 
 export const ChangeMode = () => {
-  const { mode } = useGetReviewParams();
+  const { mode, reviewMode } = useGetReviewParams();
 
   const levelBelts = mode === "hsk" ? belts?.slice(0, 6) : belts;
   return (
@@ -19,7 +19,7 @@ export const ChangeMode = () => {
             return (
               <Link
                 className="text-4xl dark:text-gray-400 text-gray-600 hover:text-gray-900 hover:dark:text-white font-light"
-                href={`/review?mode=${mode}&level=${belt.hskLevel}`}
+                href={`/review?mode=${mode}&level=${belt.hskLevel}${reviewMode ? `&review-mode=${reviewMode}` : ``}`}
                 key={JSON.stringify(belt)}
               >
                 {belt.hskLevel}

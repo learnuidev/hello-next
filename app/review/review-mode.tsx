@@ -256,7 +256,7 @@ export function ReviewMode(props: any) {
         </div>
 
         <div className="space-x-12 flex justify-center items-center">
-          {hskMode?.includes("hsk") ? (
+          {hskMode?.includes("hsk") || isContent ? (
             <button
               className="flex items-center flex-col hover:text-white text-gray-400"
               onClick={() => {
@@ -286,7 +286,21 @@ export function ReviewMode(props: any) {
             </button>
           )}
 
-          {reviewMode === "all" && hasNoChars ? null : (
+          {(reviewMode === "all" && hasNoChars) || isContent ? (
+            <button
+              className="flex items-center flex-col hover:text-white text-gray-400 "
+              onClick={() => {
+                resetReviewCount();
+                router.push(`/nmm?mode=${hskMode}`);
+              }}
+            >
+              <Icons.mandarin className="text-xl" />
+
+              <span className="text-[14px] font-light mt-2 uppercase">
+                Back to Home
+              </span>
+            </button>
+          ) : (
             <button
               className="flex items-center flex-col hover:text-white text-gray-400 "
               onClick={() => {

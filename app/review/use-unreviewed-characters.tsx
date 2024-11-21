@@ -146,7 +146,7 @@ export function useUnreviwedCharacters() {
           (a.next_review_date || 0) - (b?.next_review_date || 0)
       );
 
-    console.log("DATA", data);
+    console.log("CONTENT REVIEW DATA", data);
     return {
       data,
       isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
@@ -170,11 +170,15 @@ export function useUnreviwedCharacters() {
       (a: any, b: any) => (a.next_review_date || 0) - (b?.next_review_date || 0)
     );
 
+    console.log("HSK REVIEW DATA", data);
+
     return {
       data,
       isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
     };
   }
+
+  console.log("GENERIC DATA", unReviewedCharacters);
 
   return {
     data: unReviewedCharacters

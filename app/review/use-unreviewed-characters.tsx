@@ -99,7 +99,9 @@ export function useUnreviwedCharacters() {
   if (["hsk", "hsk3"]?.includes(mode)) {
     const data = (
       reviewMode === "all"
-        ? hskCharacters
+        ? hskCharacters?.filter((item: any) => {
+            return item?.journeyId;
+          })
         : hskCharacters?.filter((item: any) => {
             const unreviewedCharacter = unReviewedCharacters?.find(
               (char: any) => char?.hanzi === item?.hanzi
@@ -110,10 +112,6 @@ export function useUnreviwedCharacters() {
     )?.sort(
       (a: any, b: any) => (a.next_review_date || 0) - (b?.next_review_date || 0)
     );
-
-    console.log("HSK", hskCharacters);
-
-    console.log("DATA", data);
 
     return {
       data,

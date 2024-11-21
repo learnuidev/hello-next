@@ -19,9 +19,13 @@ import { useGetSelectedBelt } from "../use-get-selected-belt";
 
 export const useGetHskCharacters = ({
   variant,
+  version,
+  level: levelInput,
   getAll = false,
 }: {
   variant?: "all";
+  version?: number;
+  level?: number;
   getAll?: boolean;
 }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
@@ -40,13 +44,14 @@ export const useGetHskCharacters = ({
   ];
 
   const { data: hskWords, isLoading } = useListHSKWordsQuery({
-    version: mode === "hsk" ? 2 : 3,
+    version: version || mode === "hsk" ? 2 : 3,
     content: "",
   });
 
   const resolvedHskWords = useMemo(
-    () => resolveHsk(queryStr, { hskWords, variant, level }),
-    [queryStr, hskWords, variant, level]
+    () =>
+      resolveHsk(queryStr, { hskWords, variant, level: levelInput || level }),
+    [queryStr, hskWords, variant, level, levelInput]
   );
 
   const filteredWords = resolvedHskWords?.filter((item: any) => {
@@ -76,7 +81,7 @@ export const useGetHskCharacters = ({
         ...learnedChar,
         hanzi: id,
         lang: "zh",
-        hskLevel: level,
+        hskLevel: levelInput || level,
       };
     });
 

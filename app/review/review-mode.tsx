@@ -129,7 +129,7 @@ export function ReviewMode(props: any) {
     isLoading: isUnreviewedCharactersLoading,
   } = useUnreviwedCharacters();
 
-  console.log("UN REVIEWED CHARS", unReviewedCharacters);
+  // console.log("UN REVIEWED CHARS", unReviewedCharacters);
 
   const currentCharacter =
     reviewMode === "all"

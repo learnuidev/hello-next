@@ -12,6 +12,10 @@ import { useGetHskCharacters } from "../nmm/hsk/use-get-hsk-characters";
 import { useGetReviewParams } from "./use-get-review-params";
 import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useGetContentInsights } from "../(auth)/convos/use-get-content-insights";
+import { belts, getHSKLevel } from "../nmm/utils";
+import { useIsContent } from "./use-is-content";
 
 export function useUnreviwedCharacters() {
   const {
@@ -28,6 +32,8 @@ export function useUnreviwedCharacters() {
   const { data: hskCharacters, isLoading: isHskCharactersLoading } =
     useGetHskCharacters({ getAll: true });
 
+  const isContent = useIsContent(mode);
+
   const char = searchParams?.get("char");
   const date = searchParams?.get("date") || "";
   const input = searchParams?.get("input") || "";
@@ -36,6 +42,8 @@ export function useUnreviwedCharacters() {
   // const isSelected = date;
 
   const reviewCounts = reviewCounterStore((state: any) => state?.reviewCounts);
+
+  const { uniqueCharactersMemo } = useGetContentInsights({ lessonId: mode });
 
   const reviewCount = reviewCounts?.[date] || 0;
 
@@ -95,6 +103,41 @@ export function useUnreviwedCharacters() {
         );
 
   // console.log("UN REVIEWED CHARS", unReviewedCharacters);
+
+  belts;
+
+  if (isContent) {
+    // console.log("UNIQUE CHARACTERS", uniqueCharactersMemo);
+
+    const data = (
+      reviewMode === "all"
+        ? uniqueCharactersMemo?.filter((item: any) => {
+            const hskLevel = getHSKLevel(item?.level);
+            return item?.isLearned && hskLevel === level;
+          })
+        : uniqueCharactersMemo?.filter((item: any) => {
+            const hskLevel = getHSKLevel(item?.level);
+            return (
+              item?.isLearned &&
+              item?.status !== "forgotten" &&
+              hskLevel === level
+            );
+            // const unreviewedCharacter = unReviewedCharacters?.find(
+            //   (char: any) => char?.hanzi === item?.hanzi
+            // );
+
+            // return unreviewedCharacter && item?.hskLevel == level;
+          })
+    )?.sort(
+      (a: any, b: any) => (a.next_review_date || 0) - (b?.next_review_date || 0)
+    );
+
+    console.log("DATA", data);
+    return {
+      data,
+      isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
+    };
+  }
 
   if (["hsk", "hsk3"]?.includes(mode)) {
     const data = (

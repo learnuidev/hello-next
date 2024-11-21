@@ -20,6 +20,7 @@ import { useGetCharacterAnalytics } from "@/components/_select-character/use-get
 import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useSpeak } from "../(auth)/convos/_play/use-speak";
+import { useIsContent } from "./use-is-content";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -168,6 +169,8 @@ export function ReviewMode(props: any) {
     // return `/review?date=${date}`;
   };
 
+  const isContent = useIsContent(hskMode);
+
   if (isLoading || isLearnedCharactersLoading) {
     return <div className="">...</div>;
   }
@@ -288,7 +291,7 @@ export function ReviewMode(props: any) {
               className="flex items-center flex-col hover:text-white text-gray-400 "
               onClick={() => {
                 resetReviewCount();
-                if (hskMode?.includes("hsk")) {
+                if (hskMode?.includes("hsk") || isContent) {
                   router.push(
                     `/review?mode=${hskMode}&level=${level}&review-mode=all`
                   );

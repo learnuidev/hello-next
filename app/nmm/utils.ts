@@ -88,3 +88,12 @@ export const belts = [
   //   level: "all",
   // },
 ];
+
+export const getHSKLevel = (level: number) => {
+  const belt = belts?.find(
+    (belt) =>
+      belt?.minCharacterLevel <= level && belt?.maxCharacterLevel >= level
+  );
+
+  return belt?.hskLevel;
+};

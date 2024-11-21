@@ -12,6 +12,7 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { CharacterAndToneLevel } from "./character-and-tone-level/character-and-tone-level";
 import { Language } from "./language/language";
+import { UndiscoveredComponents } from "./undiscovered-components/undiscovered-components";
 
 export default function Doctor() {
   const { data: components } = useListComponents({});
@@ -79,6 +80,12 @@ export default function Doctor() {
             >
               <Icons.language className="text-2xl" />
             </TabsTrigger>
+            <TabsTrigger
+              value="undiscovered"
+              className="px-0 data-[state=active]:text-yellow-500"
+            >
+              Undiscovered
+            </TabsTrigger>
           </TabsList>
 
           <div className="space-x-4"></div>
@@ -91,7 +98,9 @@ export default function Doctor() {
           <Language />
         </TabsContent>
         <TabsContent value="click" className="my-8"></TabsContent>
-        <TabsContent value="discovered" className="my-8"></TabsContent>
+        <TabsContent value="undiscovered" className="my-8">
+          <UndiscoveredComponents />
+        </TabsContent>
       </Tabs>
     </div>
   );

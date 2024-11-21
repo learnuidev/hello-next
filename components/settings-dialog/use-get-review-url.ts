@@ -62,3 +62,26 @@ export const useGetReviewUrl = ({ reviewMode } = {} as any) => {
 
   return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi, reviewSpeed, reviewMode })}`;
 };
+export const useGetReviewUrlFn = () => {
+  const mode = useLearningModeStore((state) => state.mode);
+
+  const { level, reviewSpeed, input: inputParams } = useGetReviewParams();
+
+  const { data: unReviewedCharacters } = useUnreviwedCharacters();
+
+  const unReviewedCharacter = unReviewedCharacters?.[0];
+
+  const { reviewDate, month, year } = getReviewDate(unReviewedCharacter);
+
+  // return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi, date: reviewDate })}`;
+
+  return ({ reviewMode, character, input } = {} as any) =>
+    `/review?${getReviewSearchParams({
+      mode,
+      level,
+      input: input || inputParams,
+      character: character || unReviewedCharacters?.[0]?.hanzi,
+      reviewSpeed,
+      reviewMode,
+    })}`;
+};

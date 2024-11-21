@@ -6,8 +6,9 @@ import { ReviewMode } from "@/app/review/review-mode";
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { HskReviewMode } from "@/app/review/hsk-review-mode/hsk-review-mode";
 import { ChangeMode } from "./change-mode";
+import { FloatingNavbar } from "@/components/floating-navbar";
 
-export default function ReviewPage(props: any) {
+function ReviewPageInner(props: any) {
   const { view, mode } = useGetReviewParams();
 
   if (view === "hsk-level") {
@@ -23,4 +24,14 @@ export default function ReviewPage(props: any) {
   }
 
   return <ReviewMode />;
+}
+
+export default function ReviewPage(props: any) {
+  return (
+    <>
+      <ReviewPageInner />
+
+      <FloatingNavbar />
+    </>
+  );
 }

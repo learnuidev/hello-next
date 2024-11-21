@@ -255,7 +255,7 @@ export function ReviewMode(props: any) {
         <div className="my-32">
           <h1 className="text-2xl">All Done</h1>
 
-          <p className="my-4">
+          <p className="my-4 text-gray-400 px-12">
             You have finished all your reviews for this level
           </p>
         </div>

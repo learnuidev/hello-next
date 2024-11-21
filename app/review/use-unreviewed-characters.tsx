@@ -23,7 +23,7 @@ export function useUnreviwedCharacters() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const { mode, level } = useGetReviewParams();
+  const { mode, level, reviewMode } = useGetReviewParams();
 
   const { data: hskCharacters, isLoading: isHskCharactersLoading } =
     useGetHskCharacters({ getAll: true });
@@ -94,19 +94,26 @@ export function useUnreviwedCharacters() {
           (character: any) => character?.hanzi?.length === 1
         );
 
-  if (["hsk", "hsk3"]?.includes(mode)) {
-    const data = hskCharacters
-      ?.filter((item: any) => {
-        const unreviewedCharacter = unReviewedCharacters?.find(
-          (char: any) => char?.hanzi === item?.hanzi
-        );
+  // console.log("UN REVIEWED CHARS", unReviewedCharacters);
 
-        return unreviewedCharacter && item?.hskLevel == level;
-      })
-      ?.sort(
-        (a: any, b: any) =>
-          (a.next_review_date || 0) - (b?.next_review_date || 0)
-      );
+  if (["hsk", "hsk3"]?.includes(mode)) {
+    const data = (
+      reviewMode === "all"
+        ? hskCharacters
+        : hskCharacters?.filter((item: any) => {
+            const unreviewedCharacter = unReviewedCharacters?.find(
+              (char: any) => char?.hanzi === item?.hanzi
+            );
+
+            return unreviewedCharacter && item?.hskLevel == level;
+          })
+    )?.sort(
+      (a: any, b: any) => (a.next_review_date || 0) - (b?.next_review_date || 0)
+    );
+
+    console.log("HSK", hskCharacters);
+
+    console.log("DATA", data);
 
     return {
       data,

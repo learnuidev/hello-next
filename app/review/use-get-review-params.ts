@@ -10,12 +10,14 @@ export const useGetReviewParams = () => {
   const character = searchParams.get("character");
   const view = searchParams.get("view");
   const studyMode = searchParams.get("study-mode") || "srs";
+  const reviewMode = searchParams.get("review-mode") || "";
   const input = searchParams.get("input") || "";
   const reviewSpeed = searchParams.get("review-speed") || "";
 
   return {
     date,
     lang: langParams,
+    reviewMode,
     mode,
     level,
     character,

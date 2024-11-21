@@ -15,12 +15,11 @@ import { reviewCounterStore } from "./review-counter-store";
 import { useGetReviewParams } from "./use-get-review-params";
 import { useUnreviwedCharacters } from "./use-unreviewed-characters";
 
+import { SpeakComponent } from "@/components/_select-character/speak-component";
+import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
 import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
 import { useSpeak } from "../(auth)/convos/_play/use-speak";
-import { AudioComponent } from "@/components/_select-character/audio-component";
-import { SpeakComponent } from "@/components/_select-character/speak-component";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -65,6 +64,8 @@ export function ReviewMode(props: any) {
     date,
     level,
     input,
+    reviewMode,
+    mode: hskMode,
     lang: langParams,
     character: nextCharacter,
     reviewSpeed,
@@ -128,7 +129,7 @@ export function ReviewMode(props: any) {
     isLoading: isUnreviewedCharactersLoading,
   } = useUnreviwedCharacters();
 
-  // console.log("UN REVIEWED CHARS", unReviewedCharacters);
+  console.log("UN REVIEWED CHARS", unReviewedCharacters);
 
   const currentCharacter =
     unReviewedCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
@@ -172,35 +173,89 @@ export function ReviewMode(props: any) {
       ? groupItems?.length - reviewCount
       : unReviewedCharacters?.length;
 
-  if ((!currentCharacter || hasReviewedAll) && !isUnreviewedCharactersLoading) {
+  const hasNoChars =
+    (!currentCharacter || hasReviewedAll) && !isUnreviewedCharactersLoading;
+
+  const ReviewHeader = () => {
+    return (
+      <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
+        <Link href={"/nmm"}>
+          <Icons.xMark className="text-xl" />
+        </Link>
+
+        {/* <h1 className="text-2xl"></h1> */}
+        <p className="text-gray-700 text-xl md:text-3xl">
+          <Icons.language /> {remainingItems}
+        </p>
+
+        <Link href={`/review?view=cal`}>
+          <Icons.cal className="text-xl" />
+        </Link>
+      </div>
+    );
+  };
+
+  if (hasNoChars) {
     return (
       <div className="grow text-center">
         {/* <NavBar /> */}
-        <div className="flex items-center justify-between mt-16 mb-16 px-4 md:px-16">
-          <Link href={"/nmm"}>
-            <Icons.xMark className="text-xl" />
-          </Link>
 
-          <h1 className="text-2xl"></h1>
+        <ReviewHeader />
 
-          <Link href={`/review?view=cal`}>
-            <Icons.cal className="text-xl" />
-          </Link>
-        </div>
         <div className="my-32">
           <h1 className="text-2xl">All Done</h1>
 
           <p className="my-4">You have finished all your reviews</p>
         </div>
 
-        <div>
+        <div className="space-x-12 flex justify-center items-center">
           <button
+            className="flex items-center flex-col hover:text-white text-gray-400"
             onClick={() => {
               resetReviewCount();
+              router.push(`/review?view=cal`);
             }}
           >
-            <Icons.reset className="text-xl" />
+            <Icons.cal className="text-xl" />
+
+            <span className="text-[14px] font-light mt-2 uppercase">
+              Change date
+            </span>
           </button>
+
+          {/* <button
+            className="flex items-center flex-col hover:text-white text-gray-400"
+            onClick={() => {
+              resetReviewCount();
+              router.push(`/review?view=cal`);
+            }}
+          >
+            <h4 className="text-xl text-gray-500">HSK</h4>
+
+            <span className="text-[14px] font-light uppercase">
+              Change level
+            </span>
+          </button> */}
+
+          {reviewMode === "all" && hasNoChars ? null : (
+            <button
+              className="flex items-center flex-col hover:text-white text-gray-400 "
+              onClick={() => {
+                resetReviewCount();
+                if (hskMode?.includes("hsk")) {
+                  router.push(
+                    `/review?mode=${hskMode}&level=${level}&review-mode=all`
+                  );
+                }
+              }}
+            >
+              <Icons.repeat className="text-xl" />
+
+              <span className="text-[14px] font-light mt-2 uppercase">
+                Restart
+              </span>
+            </button>
+          )}
         </div>
       </div>
     );
@@ -235,19 +290,7 @@ export function ReviewMode(props: any) {
 
   return (
     <div className="grow text-center">
-      <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
-        <Link href={`/nmm?level=${level}`}>
-          <Icons.xMark className="text-xl md:text-3xl" />
-        </Link>
-
-        <p className="text-gray-700 text-xl md:text-3xl">
-          <Icons.language /> {remainingItems}
-        </p>
-
-        <Link href={`/review?view=cal`}>
-          <Icons.cal className="text-xl md:text-3xl" />
-        </Link>
-      </div>
+      <ReviewHeader />
 
       {updateCharacterStatusMutation?.isLoading ? null : (
         <div>

@@ -82,8 +82,6 @@ export function ReviewMode(props: any) {
     (state: any) => state?.resetReviewCount
   )(date);
 
-  console.log("test");
-
   const reviewCount = reviewCounts?.[date] || 0;
 
   const { data: groups, isLoading: isLearnedCharactersLoading } =

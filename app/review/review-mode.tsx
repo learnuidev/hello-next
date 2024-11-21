@@ -210,7 +210,9 @@ export function ReviewMode(props: any) {
               router.push(`/review?view=hsk-level&mode=${hskMode}`);
             }}
           >
-            <p className="text-xl font-light">HSK</p>
+            <p className="text-xl font-light uppercase">
+              {hskMode?.includes("hsk") ? hskMode : "HSK"}
+            </p>
           </button>
         </div>
 

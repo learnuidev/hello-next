@@ -97,6 +97,8 @@ export function ReviewMode(props: any) {
         return item?.lang === langParams;
       }
 
+      return item?.hanzi?.length <= 3;
+
       return true;
     });
 

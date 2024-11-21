@@ -231,5 +231,8 @@ export function useShortCuts() {
     reviewUrl,
     reviewMode,
     studyMode,
+    routeName,
+    level,
+    view,
   ]);
 }

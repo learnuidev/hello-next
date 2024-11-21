@@ -132,9 +132,13 @@ export function ReviewMode(props: any) {
   console.log("UN REVIEWED CHARS", unReviewedCharacters);
 
   const currentCharacter =
-    unReviewedCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
-    // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
-    unReviewedCharacters?.[0];
+    reviewMode === "all"
+      ? unReviewedCharacters?.[reviewCount]
+      : unReviewedCharacters?.find(
+          (char: any) => char?.hanzi === nextCharacter
+        ) ||
+        // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
+        unReviewedCharacters?.[0];
 
   const diff = endTime - startTime;
 
@@ -172,7 +176,9 @@ export function ReviewMode(props: any) {
     ? uniqueComponentWords?.length - reviewCount
     : date
       ? groupItems?.length - reviewCount
-      : unReviewedCharacters?.length;
+      : reviewMode === "all"
+        ? unReviewedCharacters?.length - reviewCount
+        : unReviewedCharacters?.length;
 
   const hasNoChars =
     (!currentCharacter || hasReviewedAll) && !isUnreviewedCharactersLoading;

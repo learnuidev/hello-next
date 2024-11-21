@@ -154,6 +154,7 @@ export function ReviewMode(props: any) {
       date,
       input,
       reviewSpeed,
+      reviewMode,
     });
     // if (["hsk3", "hsk"]?.includes(mode)) {
     //   return `/review?mode=${mode}&level=${level}&study-mode=${studyMode}&date=${date}`;
@@ -188,9 +189,44 @@ export function ReviewMode(props: any) {
           <Icons.language /> {remainingItems}
         </p>
 
-        <Link href={`/review?view=cal`}>
-          <Icons.cal className="text-xl" />
-        </Link>
+        <div className="flex space-x-4 items-center">
+          <Link
+            href={`/review?view=cal`}
+            className="flex items-center flex-col hover:text-white text-gray-400"
+          >
+            <Icons.cal className="text-xl" />
+          </Link>
+
+          <button
+            className="flex items-center flex-col hover:text-white text-gray-500"
+            onClick={() => {
+              resetReviewCount();
+              router.push(`/review?view=hsk-level&mode=${hskMode}`);
+            }}
+          >
+            <p className="text-xl font-light">HSK</p>
+          </button>
+        </div>
+
+        {/* {hskMode?.includes("hsk") ? (
+          <button
+            className="flex items-center flex-col hover:text-white text-gray-400"
+            onClick={() => {
+              resetReviewCount();
+              router.push(`/review?view=hsk-level&mode=${hskMode}`);
+            }}
+          >
+            <p className="text-xl text-gray-500">HSK</p>
+
+            <span className="text-[10px] font-light uppercase">
+              Change level
+            </span>
+          </button>
+        ) : (
+          <Link href={`/review?view=cal`}>
+            <Icons.cal className="text-xl" />
+          </Link>
+        )} */}
       </div>
     );
   };
@@ -209,33 +245,35 @@ export function ReviewMode(props: any) {
         </div>
 
         <div className="space-x-12 flex justify-center items-center">
-          <button
-            className="flex items-center flex-col hover:text-white text-gray-400"
-            onClick={() => {
-              resetReviewCount();
-              router.push(`/review?view=cal`);
-            }}
-          >
-            <Icons.cal className="text-xl" />
+          {hskMode?.includes("hsk") ? (
+            <button
+              className="flex items-center flex-col hover:text-white text-gray-400"
+              onClick={() => {
+                resetReviewCount();
+                router.push(`/review?view=hsk-level&mode=${hskMode}`);
+              }}
+            >
+              <h4 className="text-xl text-gray-500">HSK</h4>
 
-            <span className="text-[14px] font-light mt-2 uppercase">
-              Change date
-            </span>
-          </button>
+              <span className="text-[14px] font-light uppercase">
+                Change level
+              </span>
+            </button>
+          ) : (
+            <button
+              className="flex items-center flex-col hover:text-white text-gray-400"
+              onClick={() => {
+                resetReviewCount();
+                router.push(`/review?view=cal`);
+              }}
+            >
+              <Icons.cal className="text-xl" />
 
-          {/* <button
-            className="flex items-center flex-col hover:text-white text-gray-400"
-            onClick={() => {
-              resetReviewCount();
-              router.push(`/review?view=cal`);
-            }}
-          >
-            <h4 className="text-xl text-gray-500">HSK</h4>
-
-            <span className="text-[14px] font-light uppercase">
-              Change level
-            </span>
-          </button> */}
+              <span className="text-[14px] font-light mt-2 uppercase">
+                Change date
+              </span>
+            </button>
+          )}
 
           {reviewMode === "all" && hasNoChars ? null : (
             <button
@@ -288,11 +326,15 @@ export function ReviewMode(props: any) {
 
   const characterLink = `/nmm/${currentCharacter?.hanzi || currentCharacter?.input}${!lang ? "?lang=zh&id=true" : `?lang=${currentCharacter?.lang || currentComponent?.lang}`}`;
 
+  const characterHanziOrInput =
+    currentCharacter?.hanzi || currentCharacter?.input;
+
   return (
     <div className="grow text-center">
       <ReviewHeader />
 
-      {updateCharacterStatusMutation?.isLoading ? null : (
+      {updateCharacterStatusMutation?.isLoading ||
+      !characterHanziOrInput ? null : (
         <div>
           {isParagraph ? (
             <h1 className="text-2xl">Do you know this paragraph?</h1>
@@ -302,7 +344,9 @@ export function ReviewMode(props: any) {
         </div>
       )}
 
-      {updateCharacterStatusMutation?.isLoading || isRefetching ? (
+      {updateCharacterStatusMutation?.isLoading ||
+      isRefetching ||
+      !characterHanziOrInput ? (
         <div className="my-32">
           <h2 className="text-8xl md:text-9xl">...</h2>
         </div>

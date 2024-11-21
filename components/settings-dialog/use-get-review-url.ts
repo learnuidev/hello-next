@@ -12,11 +12,15 @@ export const getReviewSearchParams = ({
   date,
   input,
   reviewSpeed,
+  reviewMode,
 }: any) => {
   const urlSearchParams = new URLSearchParams();
 
   if (reviewSpeed) {
     urlSearchParams.set("review-speed", reviewSpeed);
+  }
+  if (reviewMode) {
+    urlSearchParams.set("review-mode", reviewMode);
   }
 
   if (input) {

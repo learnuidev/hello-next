@@ -24,7 +24,7 @@ export function useShortCuts() {
 
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
   const reviewUrl = useGetReviewUrl();
-  const { level, mode: reviewMode, studyMode } = useGetReviewParams();
+  const { level, mode: reviewMode, studyMode, view } = useGetReviewParams();
 
   const router = useRouter();
 
@@ -53,7 +53,7 @@ export function useShortCuts() {
 
         if (routeName?.includes("/review")) {
           router.push(
-            `/review?level=${level}&mode=${mode === "hsk" ? "hsk3" : "hsk"}&study-mode=${studyMode}`
+            `/review?level=${level}&mode=${mode === "hsk" ? "hsk3" : "hsk"}&study-mode=${studyMode}${view ? `&view=${view}` : ``}`
           );
         }
       }

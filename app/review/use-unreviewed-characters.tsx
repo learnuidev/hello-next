@@ -45,7 +45,9 @@ export function useUnreviwedCharacters() {
   const group = groups?.find((group) => group?.title === date);
 
   const groupItems = group?.items
-    // ?.filter((character: any) => character?.hanzi?.length === 1)
+    ?.filter(
+      (character: any) => (character?.hanzi || character?.input)?.length <= 3
+    )
     ?.sort((a: any, b: any) => {
       return (a?.reviewHistory?.length || 0) - (b?.reviewHistory?.length || 0);
     })
@@ -113,9 +115,16 @@ export function useUnreviwedCharacters() {
   }
 
   return {
-    data: unReviewedCharacters?.sort(
-      (a: any, b: any) => (a.next_review_date || 0) - (b?.next_review_date || 0)
-    ),
+    data: unReviewedCharacters
+      ?.sort(
+        (a: any, b: any) =>
+          (a.next_review_date || 0) - (b?.next_review_date || 0)
+      )
+      ?.sort((a: any, b: any) => {
+        return (
+          (b?.reviewHistory?.length || 0) - (a?.reviewHistory?.length || 0)
+        );
+      }),
     isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
   };
 }

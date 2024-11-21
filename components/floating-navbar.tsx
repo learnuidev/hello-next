@@ -18,9 +18,8 @@ import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
-import { useGetReviewUrl } from "./settings-dialog/use-get-review-url";
-import { useModeStore } from "@/app/(auth)/convos/_play/use-mode";
 import { useLearningModeStore } from "./settings-dialog/learning-mode.store";
+import { useGetReviewUrl } from "./settings-dialog/use-get-review-url";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();

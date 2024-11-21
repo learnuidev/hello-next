@@ -11,6 +11,7 @@ export const useGetReviewParams = () => {
   const view = searchParams.get("view");
   const studyMode = searchParams.get("study-mode") || "srs";
   const input = searchParams.get("input") || "";
+  const reviewSpeed = searchParams.get("review-speed") || "";
 
   return {
     date,
@@ -21,5 +22,6 @@ export const useGetReviewParams = () => {
     view,
     studyMode,
     input,
+    reviewSpeed,
   };
 };

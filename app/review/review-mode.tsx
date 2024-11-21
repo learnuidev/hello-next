@@ -67,6 +67,7 @@ export function ReviewMode(props: any) {
     input,
     lang: langParams,
     character: nextCharacter,
+    reviewSpeed,
   } = useGetReviewParams();
 
   const mode = useLearningModeStore((state) => state.mode);
@@ -125,6 +126,8 @@ export function ReviewMode(props: any) {
     isLoading: isUnreviewedCharactersLoading,
   } = useUnreviwedCharacters();
 
+  // console.log("UN REVIEWED CHARS", unReviewedCharacters);
+
   const currentCharacter =
     unReviewedCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
     // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
@@ -147,6 +150,7 @@ export function ReviewMode(props: any) {
       studyMode,
       date,
       input,
+      reviewSpeed,
     });
     // if (["hsk3", "hsk"]?.includes(mode)) {
     //   return `/review?mode=${mode}&level=${level}&study-mode=${studyMode}&date=${date}`;
@@ -300,24 +304,151 @@ export function ReviewMode(props: any) {
         </div>
       )}
 
-      <div className="space-x-12 sm:space-x-16 md:space-x-24 my-8 md:text-5xl sm:text-3xl text-2xl">
-        {showOptions ? (
-          <>
-            {[
-              { title: "1m", value: "1m" },
-              { title: "5m", value: "5m" },
-              { title: "10m", value: "10m" },
-              { title: "1d", value: "1d" },
-            ].map((option) => {
-              return (
-                <button
-                  key={JSON.stringify(option)}
-                  disabled={updateCharacterStatusMutation?.isLoading}
-                  className="hover:text-rose-400 font-extralight"
-                  onClick={() => {
+      {updateCharacterStatusMutation?.isLoading ? null : (
+        <div className="space-x-12 sm:space-x-16 md:space-x-24 my-8 md:text-5xl sm:text-3xl text-2xl">
+          {showOptions ? (
+            <>
+              {[
+                { title: "1m", value: "1m" },
+                { title: "5m", value: "5m" },
+                { title: "10m", value: "10m" },
+                { title: "1d", value: "1d" },
+              ].map((option) => {
+                return (
+                  <button
+                    key={JSON.stringify(option)}
+                    disabled={updateCharacterStatusMutation?.isLoading}
+                    className="hover:text-rose-400 font-extralight"
+                    onClick={() => {
+                      const { timeTaken } = getEndTimeAndDiff(
+                        startTime,
+                        endTime
+                      );
+
+                      const ponderTime = getPonderTime(endTime);
+
+                      updateCharacterStatusMutation
+                        .mutateAsync({
+                          characterId: currentCharacter?.id,
+                          status: "needs_review",
+                          wrongCount: (currentCharacter?.wrongCount || 0) + 1,
+                          wrongAt: Date.now(),
+                          nextReviewTime: option?.value,
+                          reviewHistory: (
+                            currentCharacter?.reviewHistory || []
+                          ).concat({
+                            outcome: "incorrect",
+                            createdAt: Date.now(),
+                            startTime: startTime,
+                            endTime: endTime,
+                            reviewDate: date,
+                            nextReviewTime: option?.value,
+                            timeTaken,
+                            ponderTime,
+                            mode,
+                            emotion,
+                          }),
+                        } as any)
+                        .then((res) => {
+                          const startTime = Date.now();
+                          setReveal(false);
+                          setShowOptions(false);
+                          setStartTime(startTime);
+                          setEndTime(startTime);
+                          setEmotion("");
+                          setReviewCount(reviewCount + 1);
+
+                          goToNextChar();
+                        });
+                    }}
+                  >
+                    {option?.title}
+                  </button>
+                );
+              })}
+            </>
+          ) : showCorrectOptions ? (
+            <>
+              {[
+                // { title: "1d", value: "1d" },
+                { title: "3d", value: "3d" },
+                { title: "7d", value: "7d" },
+                { title: "1m", value: "30d" },
+                { title: "3m", value: "90d" },
+              ].map((option) => {
+                return (
+                  <button
+                    key={JSON.stringify(option)}
+                    disabled={updateCharacterStatusMutation?.isLoading}
+                    className="hover:text-rose-400 font-extralight"
+                    onClick={() => {
+                      const { timeTaken } = getEndTimeAndDiff(
+                        startTime,
+                        endTime
+                      );
+
+                      const ponderTime = getPonderTime(endTime);
+
+                      updateCharacterStatusMutation
+                        .mutateAsync({
+                          characterId: currentCharacter?.id,
+                          status: "learned",
+                          rightCount: (currentCharacter?.rightCount || 0) + 1,
+                          rightAt: Date.now(),
+                          nextReviewTime: option?.value,
+                          reviewHistory: (
+                            currentCharacter?.reviewHistory || []
+                          ).concat({
+                            outcome: "correct",
+                            createdAt: Date.now(),
+                            startTime: startTime,
+                            endTime: endTime,
+                            reviewDate: date,
+                            nextReviewTime: option?.value,
+                            timeTaken,
+                            ponderTime,
+                            mode,
+                            emotion,
+                          }),
+                        } as any)
+                        .then((res) => {
+                          const startTime = Date.now();
+                          setReveal(false);
+                          setShowCorrectOptions(false);
+                          setStartTime(startTime);
+                          setEndTime(startTime);
+                          setEmotion("");
+                          setReviewCount(reviewCount + 1);
+
+                          goToNextChar();
+                        });
+                    }}
+                  >
+                    {option?.title}
+                  </button>
+                );
+              })}
+            </>
+          ) : reveal ? (
+            <>
+              <button
+                disabled={updateCharacterStatusMutation?.isLoading}
+                className="hover:text-green-400"
+                onClick={() => {
+                  setShowCorrectOptions(true);
+                }}
+              >
+                <Icons.check />
+              </button>
+              <button
+                disabled={updateCharacterStatusMutation?.isLoading}
+                onClick={() => {
+                  if (reviewSpeed) {
                     const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
 
                     const ponderTime = getPonderTime(endTime);
+
+                    console.log("PONDER TIME", ponderTime);
 
                     updateCharacterStatusMutation
                       .mutateAsync({
@@ -325,7 +456,7 @@ export function ReviewMode(props: any) {
                         status: "needs_review",
                         wrongCount: (currentCharacter?.wrongCount || 0) + 1,
                         wrongAt: Date.now(),
-                        nextReviewTime: option?.value,
+                        nextReviewTime: "1m",
                         reviewHistory: (
                           currentCharacter?.reviewHistory || []
                         ).concat({
@@ -334,7 +465,7 @@ export function ReviewMode(props: any) {
                           startTime: startTime,
                           endTime: endTime,
                           reviewDate: date,
-                          nextReviewTime: option?.value,
+                          nextReviewTime: "1m",
                           timeTaken,
                           ponderTime,
                           mode,
@@ -352,295 +483,184 @@ export function ReviewMode(props: any) {
 
                         goToNextChar();
                       });
-                  }}
-                >
-                  {option?.title}
-                </button>
-              );
-            })}
-          </>
-        ) : showCorrectOptions ? (
-          <>
-            {[
-              // { title: "1d", value: "1d" },
-              { title: "3d", value: "3d" },
-              { title: "7d", value: "7d" },
-              { title: "1m", value: "30d" },
-              { title: "3m", value: "90d" },
-            ].map((option) => {
-              return (
-                <button
-                  key={JSON.stringify(option)}
-                  disabled={updateCharacterStatusMutation?.isLoading}
-                  className="hover:text-rose-400 font-extralight"
-                  onClick={() => {
-                    const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
+                  } else {
+                    setShowOptions(true);
+                  }
+                }}
+                // onClick={() => {
+                //   setShowOptions(true);
+                // }}
+              >
+                <Icons.xMark />
+              </button>
 
-                    const ponderTime = getPonderTime(endTime);
+              <button
+                disabled={updateCharacterStatusMutation?.isLoading}
+                onClick={() => {
+                  const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
 
-                    updateCharacterStatusMutation
-                      .mutateAsync({
-                        characterId: currentCharacter?.id,
-                        status: "learned",
-                        rightCount: (currentCharacter?.rightCount || 0) + 1,
-                        rightAt: Date.now(),
-                        nextReviewTime: option?.value,
-                        reviewHistory: (
-                          currentCharacter?.reviewHistory || []
-                        ).concat({
-                          outcome: "correct",
-                          createdAt: Date.now(),
-                          startTime: startTime,
-                          endTime: endTime,
-                          reviewDate: date,
-                          nextReviewTime: option?.value,
-                          timeTaken,
-                          ponderTime,
-                          mode,
-                          emotion,
-                        }),
-                      } as any)
-                      .then((res) => {
-                        const startTime = Date.now();
-                        setReveal(false);
-                        setShowCorrectOptions(false);
-                        setStartTime(startTime);
-                        setEndTime(startTime);
-                        setEmotion("");
-                        setReviewCount(reviewCount + 1);
+                  const ponderTime = getPonderTime(endTime);
 
-                        goToNextChar();
-                      });
-                  }}
-                >
-                  {option?.title}
-                </button>
-              );
-            })}
-          </>
-        ) : reveal ? (
-          <>
-            <button
-              disabled={updateCharacterStatusMutation?.isLoading}
-              className="hover:text-green-400"
-              onClick={() => {
-                setShowCorrectOptions(true);
-              }}
-            >
-              <Icons.check />
-            </button>
-            <button
-              disabled={updateCharacterStatusMutation?.isLoading}
-              onClick={() => {
-                const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
-
-                const ponderTime = getPonderTime(endTime);
-
-                console.log("PONDER TIME", ponderTime);
-
-                updateCharacterStatusMutation
-                  .mutateAsync({
-                    characterId: currentCharacter?.id,
-                    status: "needs_review",
-                    wrongCount: (currentCharacter?.wrongCount || 0) + 1,
-                    wrongAt: Date.now(),
-                    nextReviewTime: "now",
-                    reviewHistory: (
-                      currentCharacter?.reviewHistory || []
-                    ).concat({
-                      outcome: "incorrect",
-                      createdAt: Date.now(),
-                      startTime: startTime,
-                      endTime: endTime,
-                      reviewDate: date,
-                      nextReviewTime: "now",
-                      timeTaken,
-                      ponderTime,
-                      mode,
-                      emotion,
-                    }),
-                  } as any)
-                  .then((res) => {
-                    const startTime = Date.now();
-                    setReveal(false);
-                    setShowOptions(false);
-                    setStartTime(startTime);
-                    setEndTime(startTime);
-                    setEmotion("");
-                    setReviewCount(reviewCount + 1);
-
-                    goToNextChar();
-                  });
-              }}
-              // onClick={() => {
-              //   setShowOptions(true);
-              // }}
-            >
-              <Icons.xMark />
-            </button>
-
-            <button
-              disabled={updateCharacterStatusMutation?.isLoading}
-              onClick={() => {
-                const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
-
-                const ponderTime = getPonderTime(endTime);
-
-                updateCharacterStatusMutation
-                  .mutateAsync({
-                    characterId: currentCharacter?.id,
-                    status: "forgotten",
-                    forgottenAt: Date.now(),
-                    rightAt: Date.now(),
-                    rightCount: (currentCharacter?.rightCount || 0) + 1,
-                    reviewHistory: (
-                      currentCharacter?.reviewHistory || []
-                    ).concat({
-                      outcome: "correct",
-                      createdAt: Date.now(),
-                      startTime: startTime,
-                      endTime: endTime,
-                      reviewDate: date,
-                      timeTaken,
-                      ponderTime,
-                      mode,
-                      emotion,
-                    }),
-                  } as any)
-                  .then((res) => {
-                    const startTime = Date.now();
-                    setReveal(false);
-                    setStartTime(startTime);
-                    setEndTime(startTime);
-                    setReviewCount(reviewCount + 1);
-                    setEmotion("");
-                    goToNextChar();
-                  });
-              }}
-            >
-              <Icons.fire />
-            </button>
-          </>
-        ) : isRefetching ? null : (
-          <>
-            <button
-              disabled={updateCharacterStatusMutation?.isLoading}
-              onClick={() => {
-                setReveal(true);
-                setEndTime(Date.now());
-              }}
-            >
-              <Icons.lightBulb className="text-4xl md:text-5xl" />
-            </button>
-          </>
-        )}
-      </div>
-      <div className="space-x-12 mt-12 text-3xl">
-        {
-          // showOptions ? (
-          //   <>
-          //     {[
-          //       {
-          //         title: "Cry",
-          //         value: "cry",
-          //         Icon: Icons.cry,
-          //         IconActive: Icons.crySolid,
-          //       },
-          //       {
-          //         title: "Angry",
-          //         value: "angry",
-          //         Icon: Icons.angry,
-          //         IconActive: Icons.angrySolid,
-          //       },
-          //       {
-          //         title: "Spiral Eyes",
-          //         value: "spiral-eyes",
-          //         Icon: Icons.spiralEyes,
-          //         IconActive: Icons.spiralEyesSolid,
-          //       },
-          //     ].map((option) => {
-          //       return (
-          //         <button
-          //           key={JSON.stringify(option)}
-          //           disabled={updateCharacterStatusMutation?.isLoading}
-          //           className="hover:text-rose-400 font-extralight"
-          //           onClick={() => {
-          //             setEmotion(option.value);
-          //           }}
-          //         >
-          //           {emotion === option?.value ? (
-          //             <option.IconActive />
-          //           ) : (
-          //             <option.Icon />
-          //           )}
-          //         </button>
-          //       );
-          //     })}
-          //   </>
-          // )
-          // :
-          showCorrectOptions ? (
-            <>
-              {[
-                {
-                  title: "Sweat",
-                  value: "grin-sweat",
-                  Icon: Icons.grinSweat,
-                  IconActive: Icons.grinSweatSolid,
-                },
-                {
-                  title: "Smile",
-                  value: "smile",
-                  Icon: Icons.smile,
-                  IconActive: Icons.smileSolid,
-                },
-                // {
-                //   title: "Smirk",
-                //   value: "smirk",
-                //   Icon: Icons.smirk,
-                //   IconActive: Icons.smirkSolid,
-                // },
-                {
-                  title: "Grin",
-                  value: "grin",
-                  Icon: Icons.grin,
-                  IconActive: Icons.grinSolid,
-                },
-                {
-                  title: "Party",
-                  value: "Party",
-                  Icon: Icons.party,
-                  IconActive: Icons.partySolid,
-                },
-              ].map((option) => {
-                return (
-                  <button
-                    key={JSON.stringify(option)}
-                    disabled={updateCharacterStatusMutation?.isLoading}
-                    className={cn("hover:text-rose-400 font-extralight")}
-                    onClick={() => {
-                      setEmotion(option.value);
-                    }}
-                  >
-                    {emotion === option?.value ? (
-                      <option.IconActive />
-                    ) : (
-                      <option.Icon />
-                    )}
-                  </button>
-                );
-              })}
+                  updateCharacterStatusMutation
+                    .mutateAsync({
+                      characterId: currentCharacter?.id,
+                      status: "forgotten",
+                      forgottenAt: Date.now(),
+                      rightAt: Date.now(),
+                      rightCount: (currentCharacter?.rightCount || 0) + 1,
+                      reviewHistory: (
+                        currentCharacter?.reviewHistory || []
+                      ).concat({
+                        outcome: "correct",
+                        createdAt: Date.now(),
+                        startTime: startTime,
+                        endTime: endTime,
+                        reviewDate: date,
+                        timeTaken,
+                        ponderTime,
+                        mode,
+                        emotion,
+                      }),
+                    } as any)
+                    .then((res) => {
+                      const startTime = Date.now();
+                      setReveal(false);
+                      setStartTime(startTime);
+                      setEndTime(startTime);
+                      setReviewCount(reviewCount + 1);
+                      setEmotion("");
+                      goToNextChar();
+                    });
+                }}
+              >
+                <Icons.fire />
+              </button>
             </>
-          ) : null
-        }
-      </div>
-
-      {diff !== 0 && (
-        <div className="mt-16 text-[rgb(31,32,33)] font-extralight flex space-x-6 items-center justify-center">
-          <Icons.clock className="text-3xl" />
-          <p className="text-4xl text-center">{diff}ms</p>
+          ) : isRefetching ? null : (
+            <>
+              <button
+                disabled={updateCharacterStatusMutation?.isLoading}
+                onClick={() => {
+                  setReveal(true);
+                  setEndTime(Date.now());
+                }}
+              >
+                <Icons.lightBulb className="text-4xl md:text-5xl" />
+              </button>
+            </>
+          )}
         </div>
       )}
+      {updateCharacterStatusMutation?.isLoading ? null : (
+        <div className="space-x-12 mt-12 text-3xl">
+          {
+            // showOptions ? (
+            //   <>
+            //     {[
+            //       {
+            //         title: "Cry",
+            //         value: "cry",
+            //         Icon: Icons.cry,
+            //         IconActive: Icons.crySolid,
+            //       },
+            //       {
+            //         title: "Angry",
+            //         value: "angry",
+            //         Icon: Icons.angry,
+            //         IconActive: Icons.angrySolid,
+            //       },
+            //       {
+            //         title: "Spiral Eyes",
+            //         value: "spiral-eyes",
+            //         Icon: Icons.spiralEyes,
+            //         IconActive: Icons.spiralEyesSolid,
+            //       },
+            //     ].map((option) => {
+            //       return (
+            //         <button
+            //           key={JSON.stringify(option)}
+            //           disabled={updateCharacterStatusMutation?.isLoading}
+            //           className="hover:text-rose-400 font-extralight"
+            //           onClick={() => {
+            //             setEmotion(option.value);
+            //           }}
+            //         >
+            //           {emotion === option?.value ? (
+            //             <option.IconActive />
+            //           ) : (
+            //             <option.Icon />
+            //           )}
+            //         </button>
+            //       );
+            //     })}
+            //   </>
+            // )
+            // :
+            showCorrectOptions ? (
+              <>
+                {[
+                  {
+                    title: "Sweat",
+                    value: "grin-sweat",
+                    Icon: Icons.grinSweat,
+                    IconActive: Icons.grinSweatSolid,
+                  },
+                  {
+                    title: "Smile",
+                    value: "smile",
+                    Icon: Icons.smile,
+                    IconActive: Icons.smileSolid,
+                  },
+                  // {
+                  //   title: "Smirk",
+                  //   value: "smirk",
+                  //   Icon: Icons.smirk,
+                  //   IconActive: Icons.smirkSolid,
+                  // },
+                  {
+                    title: "Grin",
+                    value: "grin",
+                    Icon: Icons.grin,
+                    IconActive: Icons.grinSolid,
+                  },
+                  {
+                    title: "Party",
+                    value: "Party",
+                    Icon: Icons.party,
+                    IconActive: Icons.partySolid,
+                  },
+                ].map((option) => {
+                  return (
+                    <button
+                      key={JSON.stringify(option)}
+                      disabled={updateCharacterStatusMutation?.isLoading}
+                      className={cn("hover:text-rose-400 font-extralight")}
+                      onClick={() => {
+                        setEmotion(option.value);
+                      }}
+                    >
+                      {emotion === option?.value ? (
+                        <option.IconActive />
+                      ) : (
+                        <option.Icon />
+                      )}
+                    </button>
+                  );
+                })}
+              </>
+            ) : null
+          }
+        </div>
+      )}
+
+      {updateCharacterStatusMutation?.isLoading
+        ? null
+        : diff !== 0 && (
+            <div className="mt-16 text-[rgb(31,32,33)] font-extralight flex space-x-6 items-center justify-center">
+              <Icons.clock className="text-3xl" />
+              <p className="text-4xl text-center">{diff}ms</p>
+            </div>
+          )}
     </div>
   );
 }

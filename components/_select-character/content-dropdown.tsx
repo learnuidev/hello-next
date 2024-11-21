@@ -1,21 +1,9 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { useSearchParams } from "next/navigation";
-
-import { SelectedCharacterProps } from "./select-character.types";
+import { useMemo } from "react";
 
 import { useListContentsQuery } from "@/domain/content/content.queries";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { FilterSelect } from "@/app/nmm/filter-select";
 
 export const ContentDropdown = ({

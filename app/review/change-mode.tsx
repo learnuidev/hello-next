@@ -11,7 +11,11 @@ export const ChangeMode = () => {
       <section>
         <h1 className="text-center text-2xl mb-16">
           {" "}
-          Change <span className="uppercase">{mode}</span> Level{" "}
+          Change{" "}
+          <span className="uppercase">
+            {mode?.includes("hsk") ? mode : "hsk"}
+          </span>{" "}
+          Level{" "}
         </h1>
 
         <div className="flex space-x-12 justify-center items-center">

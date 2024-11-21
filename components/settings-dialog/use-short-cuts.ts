@@ -25,7 +25,13 @@ export function useShortCuts() {
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
   // const reviewUrl = useGetReviewUrl({ reviewMode: "all" });
   const reviewUrl = useGetReviewUrl();
-  const { level, mode: reviewMode, studyMode, view } = useGetReviewParams();
+  const {
+    level,
+    mode: viewMode,
+    reviewMode,
+    studyMode,
+    view,
+  } = useGetReviewParams();
 
   const router = useRouter();
 
@@ -54,7 +60,7 @@ export function useShortCuts() {
 
         if (routeName?.includes("/review")) {
           router.push(
-            `/review?level=${level}&mode=${mode === "hsk" ? "hsk3" : "hsk"}&study-mode=${studyMode}${view ? `&view=${view}` : ``}`
+            `/review?level=${level}&mode=${mode === "hsk" ? "hsk3" : "hsk"}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}${view ? `&view=${view}` : ``}`
           );
         }
       }
@@ -113,12 +119,12 @@ export function useShortCuts() {
       if (["1"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         if (routeName?.includes("/nmm")) {
           router.push(
-            `/nmm?level=${1}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/nmm?level=${1}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
         if (routeName?.includes("/review")) {
           router.push(
-            `/review?level=${1}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/review?level=${1}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
 
@@ -127,12 +133,12 @@ export function useShortCuts() {
       if (["2"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         if (routeName?.includes("/nmm")) {
           router.push(
-            `/nmm?level=${2}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/nmm?level=${2}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
         if (routeName?.includes("/review")) {
           router.push(
-            `/review?level=${2}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/review?level=${2}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
 
@@ -141,12 +147,12 @@ export function useShortCuts() {
       if (["3"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         if (routeName?.includes("/nmm")) {
           router.push(
-            `/nmm?level=${3}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/nmm?level=${3}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
         if (routeName?.includes("/review")) {
           router.push(
-            `/review?level=${3}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/review?level=${3}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
 
@@ -155,12 +161,12 @@ export function useShortCuts() {
       if (["4"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         if (routeName?.includes("/nmm")) {
           router.push(
-            `/nmm?level=${4}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/nmm?level=${4}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
         if (routeName?.includes("/review")) {
           router.push(
-            `/review?level=${4}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/review?level=${4}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
 
@@ -169,12 +175,12 @@ export function useShortCuts() {
       if (["5"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         if (routeName?.includes("/nmm")) {
           router.push(
-            `/nmm?level=${5}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/nmm?level=${5}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
         if (routeName?.includes("/review")) {
           router.push(
-            `/review?level=${5}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/review?level=${5}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
 
@@ -183,12 +189,12 @@ export function useShortCuts() {
       if (["6"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         if (routeName?.includes("/nmm")) {
           router.push(
-            `/nmm?level=${6}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/nmm?level=${6}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
         if (routeName?.includes("/review")) {
           router.push(
-            `/review?level=${6}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/review?level=${6}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
 
@@ -202,12 +208,12 @@ export function useShortCuts() {
       ) {
         if (routeName?.includes("/nmm")) {
           router.push(
-            `/nmm?level=${9}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/nmm?level=${9}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
         if (routeName?.includes("/review")) {
           router.push(
-            `/review?level=${9}&mode=${reviewMode}&study-mode=${studyMode}`
+            `/review?level=${9}&mode=${viewMode}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
           );
         }
 
@@ -230,10 +236,11 @@ export function useShortCuts() {
     setReadMode,
     readMode,
     reviewUrl,
-    reviewMode,
+    viewMode,
     studyMode,
     routeName,
     level,
     view,
+    reviewMode,
   ]);
 }

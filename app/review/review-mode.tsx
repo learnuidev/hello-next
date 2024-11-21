@@ -132,8 +132,13 @@ export function ReviewMode(props: any) {
 
   // console.log("UN REVIEWED CHARS", unReviewedCharacters);
 
-  const currentCharacter =
-    reviewMode === "all"
+  const isContent = useIsContent(hskMode);
+
+  const currentCharacter = isContent
+    ? reviewMode === "all"
+      ? unReviewedCharacters?.[reviewCount]
+      : unReviewedCharacters?.[0]
+    : reviewMode === "all"
       ? unReviewedCharacters?.[reviewCount]
       : unReviewedCharacters?.find(
           (char: any) => char?.hanzi === nextCharacter
@@ -168,8 +173,6 @@ export function ReviewMode(props: any) {
 
     // return `/review?date=${date}`;
   };
-
-  const isContent = useIsContent(hskMode);
 
   if (isLoading || isLearnedCharactersLoading) {
     return <div className="">...</div>;

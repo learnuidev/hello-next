@@ -6,16 +6,16 @@ import {
 } from "@/hooks/use-character-review-list";
 
 import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
+import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
+import { isBefore } from "date-fns";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGetContentInsights } from "../(auth)/convos/use-get-content-insights";
 import { useGetHskCharacters } from "../nmm/hsk/use-get-hsk-characters";
-import { belts, getHSKLevel } from "../nmm/utils";
+import { belts } from "../nmm/utils";
 import { reviewCounterStore } from "./review-counter-store";
 import { useGetReviewParams } from "./use-get-review-params";
 import { useIsContent } from "./use-is-content";
-import { isBefore } from "date-fns";
-import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 export function useUnreviwedCharacters() {
   const {
@@ -116,23 +116,13 @@ export function useUnreviwedCharacters() {
           JSON.stringify(word)?.includes(item?.hanzi)
         );
 
-        const hskLevel = getHSKLevel(item?.level);
-
-        // return  selectedBelt?.hskLevel;
         return (
           item?.isLearned &&
           item?.status !== "forgotten" &&
           hskCharacter?.hskLevel === level
         );
-        // return (
-        //   item?.isLearned && item?.status !== "forgotten" && hskLevel === level
-        // );
       })
-      // ?.sort((a: any, b: any) => {
-      //   return (
-      //     (a?.reviewHistory?.length || 0) - (b?.reviewHistory?.length || 0)
-      //   );
-      // })
+
       ?.filter((character: any) => {
         if (reviewMode === "all") {
           return true;
@@ -140,15 +130,17 @@ export function useUnreviwedCharacters() {
         return character?.next_review_date
           ? isBefore(new Date(character?.next_review_date), new Date())
           : true;
-      })
-      ?.sort(
-        (a: any, b: any) =>
-          (a.next_review_date || 0) - (b?.next_review_date || 0)
-      );
+      });
 
     console.log("CONTENT REVIEW DATA", data);
     return {
-      data,
+      data:
+        reviewMode === "all"
+          ? data
+          : data?.sort(
+              (a: any, b: any) =>
+                (a.next_review_date || 0) - (b?.next_review_date || 0)
+            ),
       isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
     };
   }

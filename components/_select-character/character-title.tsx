@@ -120,7 +120,7 @@ export const CharacterTitle = (props: any) => {
                   <Link
                     href={`/nmm/${val}?lang=zh`}
                     key={`${val}-${idx}`}
-                    className={`${color} text-2xl transition lowercase font-light`}
+                    className={`${color} text-3xl sm:text-4xl transition lowercase font-light`}
                     // className={`${
                     //   brightMode || isCharactersLoading
                     //     ? learnedChar?.status === "forgotten" &&

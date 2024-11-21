@@ -14,6 +14,7 @@ import { belts, getHSKLevel } from "../nmm/utils";
 import { reviewCounterStore } from "./review-counter-store";
 import { useGetReviewParams } from "./use-get-review-params";
 import { useIsContent } from "./use-is-content";
+import { isBefore } from "date-fns";
 
 export function useUnreviwedCharacters() {
   const {
@@ -113,6 +114,19 @@ export function useUnreviwedCharacters() {
         return (
           item?.isLearned && item?.status !== "forgotten" && hskLevel === level
         );
+      })
+      ?.sort((a: any, b: any) => {
+        return (
+          (a?.reviewHistory?.length || 0) - (b?.reviewHistory?.length || 0)
+        );
+      })
+      ?.filter((character: any) => {
+        if (reviewMode === "all") {
+          return true;
+        }
+        return character?.next_review_date
+          ? isBefore(new Date(character?.next_review_date), new Date())
+          : true;
       })
       ?.sort(
         (a: any, b: any) =>

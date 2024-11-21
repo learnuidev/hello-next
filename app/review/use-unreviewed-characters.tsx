@@ -5,16 +5,14 @@ import {
   useListCharacterReviewList,
 } from "@/hooks/use-character-review-list";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
-import { reviewCounterStore } from "./review-counter-store";
-import { useGetHskCharacters } from "../nmm/hsk/use-get-hsk-characters";
-import { useGetReviewParams } from "./use-get-review-params";
 import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
-import { useListComponents } from "@/domain/lesson/component.queries";
-import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useGetContentInsights } from "../(auth)/convos/use-get-content-insights";
+import { useGetHskCharacters } from "../nmm/hsk/use-get-hsk-characters";
 import { belts, getHSKLevel } from "../nmm/utils";
+import { reviewCounterStore } from "./review-counter-store";
+import { useGetReviewParams } from "./use-get-review-params";
 import { useIsContent } from "./use-is-content";
 
 export function useUnreviwedCharacters() {
@@ -109,28 +107,17 @@ export function useUnreviwedCharacters() {
   if (isContent) {
     // console.log("UNIQUE CHARACTERS", uniqueCharactersMemo);
 
-    const data = (
-      reviewMode === "all"
-        ? uniqueCharactersMemo?.filter((item: any) => {
-            const hskLevel = getHSKLevel(item?.level);
-            return item?.isLearned && hskLevel === level;
-          })
-        : uniqueCharactersMemo?.filter((item: any) => {
-            const hskLevel = getHSKLevel(item?.level);
-            return (
-              item?.isLearned &&
-              item?.status !== "forgotten" &&
-              hskLevel === level
-            );
-            // const unreviewedCharacter = unReviewedCharacters?.find(
-            //   (char: any) => char?.hanzi === item?.hanzi
-            // );
-
-            // return unreviewedCharacter && item?.hskLevel == level;
-          })
-    )?.sort(
-      (a: any, b: any) => (a.next_review_date || 0) - (b?.next_review_date || 0)
-    );
+    const data = uniqueCharactersMemo
+      ?.filter((item: any) => {
+        const hskLevel = getHSKLevel(item?.level);
+        return (
+          item?.isLearned && item?.status !== "forgotten" && hskLevel === level
+        );
+      })
+      ?.sort(
+        (a: any, b: any) =>
+          (a.next_review_date || 0) - (b?.next_review_date || 0)
+      );
 
     console.log("DATA", data);
     return {

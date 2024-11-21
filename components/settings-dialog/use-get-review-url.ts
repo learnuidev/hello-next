@@ -47,7 +47,7 @@ export const getReviewSearchParams = ({
   return urlSearchParams.toString();
 };
 
-export const useGetReviewUrl = () => {
+export const useGetReviewUrl = ({ reviewMode } = {} as any) => {
   const mode = useLearningModeStore((state) => state.mode);
 
   const { level, reviewSpeed } = useGetReviewParams();
@@ -60,5 +60,5 @@ export const useGetReviewUrl = () => {
 
   // return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi, date: reviewDate })}`;
 
-  return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi, reviewSpeed })}`;
+  return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi, reviewSpeed, reviewMode })}`;
 };

@@ -23,6 +23,7 @@ export function useShortCuts() {
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
+  // const reviewUrl = useGetReviewUrl({ reviewMode: "all" });
   const reviewUrl = useGetReviewUrl();
   const { level, mode: reviewMode, studyMode, view } = useGetReviewParams();
 

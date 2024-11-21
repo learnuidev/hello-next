@@ -191,17 +191,24 @@ export function ReviewMode(props: any) {
 
   const ReviewHeader = () => {
     return (
-      <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
-        <Link href={`/nmm${level ? `?level=${level}` : ""}`}>
+      <div className="grid grid-cols-11 items-center justify-between w-full mt-8 mb-16 px-4 md:px-16">
+        <Link
+          href={`/nmm${level ? `?level=${level}` : ""}`}
+          className="col-span-1 justify-start"
+        >
           <Icons.xMark className="text-xl" />
         </Link>
 
+        <div className="col-span-4"></div>
+
         {/* <h1 className="text-2xl"></h1> */}
-        <p className="text-gray-700 text-xl md:text-3xl">
+        <p className="text-gray-700 text-xl md:text-3xl w-full col-span-1">
           <Icons.language /> {remainingItems}
         </p>
 
-        <div className="flex space-x-4 items-center">
+        <div className="col-span-4"></div>
+
+        <div className="flex space-x-4 items-center w-full col-span-1">
           <Link
             href={`/review?view=cal`}
             className="flex items-center flex-col hover:text-white text-gray-400"

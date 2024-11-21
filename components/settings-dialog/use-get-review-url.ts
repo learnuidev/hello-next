@@ -49,5 +49,7 @@ export const useGetReviewUrl = () => {
 
   const { reviewDate, month, year } = getReviewDate(unReviewedCharacter);
 
-  return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi, date: reviewDate })}`;
+  // return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi, date: reviewDate })}`;
+
+  return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi })}`;
 };

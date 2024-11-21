@@ -19,10 +19,14 @@ import { useReadModeStore } from "@/stores/use-readmode-store";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
 import { useGetReviewUrl } from "./settings-dialog/use-get-review-url";
+import { useModeStore } from "@/app/(auth)/convos/_play/use-mode";
+import { useLearningModeStore } from "./settings-dialog/learning-mode.store";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
   const reviewUrl = useGetReviewUrl();
+
+  const mode = useLearningModeStore((state: any) => state.mode);
 
   const { data: reviewList } = useListCharacterReviewList();
 

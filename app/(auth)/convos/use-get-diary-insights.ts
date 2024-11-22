@@ -27,13 +27,11 @@ export const useSearchQueryStore = create((set: any, get: any) => ({
 }));
 
 const getFrequency = ({ lesson, input }: any) => {
-  const transcriptions = lesson?.transcriptions?.filter(
-    (transcription: any) => {
-      return (transcription?.hanzi || transcription?.input)?.includes(input);
-    }
-  );
+  const translations = lesson?.translations?.filter((transcription: any) => {
+    return (transcription?.hanzi || transcription?.input)?.includes(input);
+  });
 
-  return transcriptions?.length;
+  return translations?.length;
 };
 
 export function useGetDiaryInsights({ entryId }: { entryId: string }) {

@@ -21,6 +21,7 @@ import { getReviewSearchParams } from "@/components/settings-dialog/use-get-revi
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useSpeak } from "../(auth)/convos/_play/use-speak";
 import { useIsContent } from "./use-is-content";
+import { useIsEntry } from "./use-is-entry";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -65,6 +66,7 @@ export function ReviewMode(props: any) {
     date,
     level,
     input,
+    entryId,
     reviewMode,
     mode: hskMode,
     lang: langParams,
@@ -133,20 +135,25 @@ export function ReviewMode(props: any) {
   // console.log("UN REVIEWED CHARS", unReviewedCharacters);
 
   const isContent = useIsContent(hskMode);
+  const isEntry = useIsEntry(entryId);
 
-  const currentCharacter = isContent
+  const currentCharacter = isEntry
     ? reviewMode === "all"
       ? unReviewedCharacters?.[reviewCount]
       : unReviewedCharacters?.[0]
-    : date
-      ? unReviewedCharacters?.[reviewCount]
-      : reviewMode === "all"
+    : isContent
+      ? reviewMode === "all"
         ? unReviewedCharacters?.[reviewCount]
-        : unReviewedCharacters?.find(
-            (char: any) => char?.hanzi === nextCharacter
-          ) ||
-          // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
-          unReviewedCharacters?.[0];
+        : unReviewedCharacters?.[0]
+      : date
+        ? unReviewedCharacters?.[reviewCount]
+        : reviewMode === "all"
+          ? unReviewedCharacters?.[reviewCount]
+          : unReviewedCharacters?.find(
+              (char: any) => char?.hanzi === nextCharacter
+            ) ||
+            // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
+            unReviewedCharacters?.[0];
 
   const diff = endTime - startTime;
 
@@ -194,7 +201,13 @@ export function ReviewMode(props: any) {
   const ReviewHeader = () => {
     return (
       <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
-        <Link href={`/nmm${level ? `?level=${level}` : ""}`}>
+        <Link
+          href={
+            entryId
+              ? `/diary/${entryId}?view=insights`
+              : `/nmm${level ? `?level=${level}` : ""}`
+          }
+        >
           <Icons.xMark className="text-xl" />
         </Link>
 
@@ -211,17 +224,19 @@ export function ReviewMode(props: any) {
             <Icons.cal className="text-xl" />
           </Link>
 
-          <button
-            className="flex items-center flex-col hover:text-white text-gray-500"
-            onClick={() => {
-              resetReviewCount();
-              router.push(`/review?view=hsk-level&mode=${hskMode}`);
-            }}
-          >
-            <p className="text-xl font-light uppercase">
-              {hskMode?.includes("hsk") ? hskMode : "HSK"}
-            </p>
-          </button>
+          {isEntry ? null : (
+            <button
+              className="flex items-center flex-col hover:text-white text-gray-500"
+              onClick={() => {
+                resetReviewCount();
+                router.push(`/review?view=hsk-level&mode=${hskMode}`);
+              }}
+            >
+              <p className="text-xl font-light uppercase">
+                {hskMode?.includes("hsk") ? hskMode : "HSK"}
+              </p>
+            </button>
+          )}
         </div>
 
         {/* {hskMode?.includes("hsk") ? (
@@ -293,12 +308,17 @@ export function ReviewMode(props: any) {
             </button>
           )}
 
-          {(reviewMode === "all" && hasNoChars) || isContent ? (
+          {(reviewMode === "all" && hasNoChars) || isContent || isEntry ? (
             <button
               className="flex items-center flex-col hover:text-white text-gray-400 "
               onClick={() => {
                 resetReviewCount();
-                router.push(`/nmm?mode=${hskMode}`);
+
+                if (isEntry) {
+                  router.push(`/diary/${entryId}?view=insights`);
+                } else {
+                  router.push(`/nmm?mode=${hskMode}`);
+                }
               }}
             >
               <Icons.mandarin className="text-xl" />
@@ -312,7 +332,7 @@ export function ReviewMode(props: any) {
               className="flex items-center flex-col hover:text-white text-gray-400 "
               onClick={() => {
                 resetReviewCount();
-                if (hskMode?.includes("hsk") || isContent) {
+                if (hskMode?.includes("hsk") || isContent || isEntry) {
                   router.push(
                     `/review?mode=${hskMode}&level=${level}&review-mode=all`
                   );

@@ -16,6 +16,8 @@ import { belts } from "../nmm/utils";
 import { reviewCounterStore } from "./review-counter-store";
 import { useGetReviewParams } from "./use-get-review-params";
 import { useIsContent } from "./use-is-content";
+import { useIsEntry } from "./use-is-entry";
+import { useGetDiaryInsights } from "../(auth)/convos/use-get-diary-insights";
 
 export function useUnreviwedCharacters() {
   const {
@@ -27,13 +29,14 @@ export function useUnreviwedCharacters() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const { mode, level, reviewMode } = useGetReviewParams();
+  const { mode, level, reviewMode, entryId } = useGetReviewParams();
   const { data: hskWords } = useListHSKWordsQuery();
 
   const { data: hskCharacters, isLoading: isHskCharactersLoading } =
     useGetHskCharacters({ getAll: true });
 
   const isContent = useIsContent(mode);
+  const isEntry = useIsEntry(entryId);
 
   const char = searchParams?.get("char");
   const date = searchParams?.get("date") || "";
@@ -45,6 +48,8 @@ export function useUnreviwedCharacters() {
   const reviewCounts = reviewCounterStore((state: any) => state?.reviewCounts);
 
   const { uniqueCharactersMemo } = useGetContentInsights({ lessonId: mode });
+  const { uniqueCharactersMemo: uniqueDiaryCharactersMemo } =
+    useGetDiaryInsights({ entryId });
 
   const reviewCount = reviewCounts?.[date] || 0;
 
@@ -105,7 +110,42 @@ export function useUnreviwedCharacters() {
 
   // console.log("UN REVIEWED CHARS", unReviewedCharacters);
 
-  belts;
+  if (isEntry) {
+    // console.log("UNIQUE CHARACTERS", uniqueCharactersMemo);
+
+    const data = uniqueDiaryCharactersMemo
+      ?.filter((item: any) => {
+        const hskCharacter = hskWords?.find((word: any) =>
+          JSON.stringify(word)?.includes(item?.hanzi)
+        );
+
+        return (
+          item?.isLearned && item?.status !== "forgotten"
+          // && hskCharacter?.hskLevel === level
+        );
+      })
+
+      ?.filter((character: any) => {
+        if (reviewMode === "all") {
+          return true;
+        }
+        return character?.next_review_date
+          ? isBefore(new Date(character?.next_review_date), new Date())
+          : true;
+      });
+
+    console.log("ENTRY REVIEW DATA", data);
+    return {
+      data:
+        reviewMode === "all"
+          ? data
+          : data?.sort(
+              (a: any, b: any) =>
+                (a.next_review_date || 0) - (b?.next_review_date || 0)
+            ),
+      isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
+    };
+  }
 
   if (isContent) {
     // console.log("UNIQUE CHARACTERS", uniqueCharactersMemo);
@@ -117,9 +157,8 @@ export function useUnreviwedCharacters() {
         );
 
         return (
-          item?.isLearned &&
-          item?.status !== "forgotten" &&
-          hskCharacter?.hskLevel === level
+          item?.isLearned && item?.status !== "forgotten"
+          // && hskCharacter?.hskLevel === level
         );
       })
 

@@ -5,7 +5,8 @@ export const useGetReviewParams = () => {
 
   const date = searchParams.get("date") || "";
   const langParams = searchParams.get("lang") || "";
-  const mode = searchParams.get("mode") || "";
+  const mode = (searchParams.get("mode") || "") as string;
+  const entryId = (searchParams.get("entry-id") || "") as string;
   const level = parseInt(searchParams.get("level") as string) || 1;
   const character = searchParams.get("character");
   const view = searchParams.get("view");
@@ -17,6 +18,7 @@ export const useGetReviewParams = () => {
   return {
     date,
     lang: langParams,
+    entryId,
     reviewMode,
     mode,
     level,

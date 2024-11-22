@@ -443,7 +443,7 @@ export function NewConvo({ type }: { type?: string }) {
                   placeholder=""
                   className="w-full text-center font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
                 />
-                <div>
+                <div className="my-8">
                   <button
                     onClick={() => {
                       setShowJSON(!showJSON);

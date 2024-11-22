@@ -83,7 +83,7 @@ export function DiaryInsights({ entryId }: { entryId: string }) {
   return selectedChar ? (
     <SelectedCharacterContainer characterId={selectedChar} />
   ) : (
-    <div className="w-full px-4 my-4 md:my-8">
+    <div className="w-full my-4 md:my-8">
       <div>
         <div>
           <div className="flex justify-between w-full">

@@ -5,6 +5,7 @@ import { NavBar } from "@/components/navbar";
 import { JournalEntryDetails } from "./journal-entry-details";
 import { useEntryParams } from "./use-entry-params";
 import { DiaryInsights } from "../../convos/diary-insights";
+import { JournalEntryActionButtons } from "./journal-entry-action-buttons";
 
 export default function DiaryItem() {
   const { view, entryId } = useEntryParams();
@@ -14,7 +15,10 @@ export default function DiaryItem() {
         <NavBar />
 
         {view === "insights" ? (
-          <DiaryInsights entryId={entryId} />
+          <div>
+            <DiaryInsights entryId={entryId} />
+            <JournalEntryActionButtons entryId={entryId} />
+          </div>
         ) : (
           <JournalEntryDetails />
         )}

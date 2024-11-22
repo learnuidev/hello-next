@@ -18,6 +18,7 @@ import { useEntryParams } from "./use-entry-params";
 import { useJournalDetailStore } from "./use-journal-detail-store";
 import { useSpeak } from "../../convos/_play/use-speak";
 import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
+import { JournalEntryActionButtons } from "./journal-entry-action-buttons";
 
 function JournalDetailsBody({ entryId }: { entryId: string }) {
   const { data: journalDetails } = useGetJournalDetailsQuery(entryId);
@@ -157,48 +158,7 @@ export function JournalEntryDetails() {
         <JournalDetailsBody entryId={entryId} />
       </div>
 
-      <section className="mt-8 mb-8  flex justify-between items-center">
-        <div className="space-x-4 flex items-center">
-          <button
-            className={cn(
-              "dark:text-gray-400 text-gray-600 hover:dark:text-white hover:text-gray-800",
-              showHanzi ? "dark:text-white text-black" : "text-gray-400"
-            )}
-            // className={cn(
-            //   showHanzi ? "dark:text-white text-black" : "text-gray-400"
-            // )}
-            onClick={() => {
-              setShowHanzi(!showHanzi);
-            }}
-          >
-            <Icons.language className="text-2xl" />
-          </button>
-          {/* {showHanzi && ( */}
-          <button
-            className={cn(
-              "mt-[-4px]",
-              "dark:text-gray-400 text-gray-600 hover:dark:text-white hover:text-gray-800"
-            )}
-            onClick={() => {
-              if (isSpeaking) {
-                stopSpeaking();
-              } else {
-                speak(hanzi);
-              }
-            }}
-          >
-            {isSpeaking ? <Icons.pause /> : <Icons.play />}
-          </button>
-        </div>
-        {/* )} */}
-
-        <Link
-          href={`/diary/${entryId}?view=insights`}
-          className="dark:text-gray-400 text-gray-600 hover:dark:text-white hover:text-gray-800"
-        >
-          <Icons.chartColumn />
-        </Link>
-      </section>
+      <JournalEntryActionButtons entryId={entryId} />
 
       <div className="">
         {journalEntry?.emotions?.split(", ").map((emotion) => {

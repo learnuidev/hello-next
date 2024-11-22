@@ -4,9 +4,11 @@ import React, { useState } from "react";
 
 export const TheDock = ({
   children,
+  innerClassName,
   className,
 }: {
   children?: React.ReactNode;
+  innerClassName?: string;
   className?: string;
 }) => {
   const [show, setShow] = useState(false);
@@ -14,7 +16,9 @@ export const TheDock = ({
   return (
     <div>
       <div className={cn("flex w-full fixed z-50 bottom-0", className)}>
-        <div className="block sm:hidden w-full">{children}</div>
+        <div className={cn("block sm:hidden w-full", innerClassName)}>
+          {children}
+        </div>
       </div>
 
       <div

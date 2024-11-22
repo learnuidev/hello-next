@@ -17,7 +17,10 @@ import { useUnreviwedCharacters } from "./use-unreviewed-characters";
 
 import { SpeakComponent } from "@/components/_select-character/speak-component";
 import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
-import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
+import {
+  getReviewSearchParams,
+  getReviewUrl,
+} from "@/components/settings-dialog/use-get-review-url";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useSpeak } from "../(auth)/convos/_play/use-speak";
 import { useIsContent } from "./use-is-content";
@@ -224,7 +227,7 @@ export function ReviewMode(props: any) {
             <Icons.cal className="text-xl" />
           </Link>
 
-          {isEntry ? null : (
+          {isEntry || isContent ? null : (
             <button
               className="flex items-center flex-col hover:text-white text-gray-500"
               onClick={() => {
@@ -278,7 +281,7 @@ export function ReviewMode(props: any) {
         </div>
 
         <div className="space-x-12 flex justify-center items-center">
-          {hskMode?.includes("hsk") || isContent ? (
+          {hskMode?.includes("hsk") ? (
             <button
               className="flex items-center flex-col hover:text-white text-gray-400"
               onClick={() => {
@@ -333,9 +336,13 @@ export function ReviewMode(props: any) {
               onClick={() => {
                 resetReviewCount();
                 if (hskMode?.includes("hsk") || isContent || isEntry) {
-                  router.push(
-                    `/review?mode=${hskMode}&level=${level}&review-mode=all`
-                  );
+                  const reviewSearchParams = getReviewSearchParams({
+                    entryId,
+                    mode: hskMode,
+                    level,
+                    reviewMode: "all",
+                  });
+                  router.push(`/review?${reviewSearchParams}`);
                 }
               }}
             >

@@ -195,8 +195,13 @@ const FloatingNavbarComp = () => {
   );
 };
 export const FloatingNavbar = () => {
+  const routeName = usePathname();
+  const isReviewUrl = routeName?.includes("/review");
   return (
-    <TheDock className="sm:bottom-0 bottom-4">
+    <TheDock
+      className="sm:bottom-0 bottom-4"
+      innerClassName={isReviewUrl ? "sm:block" : ""}
+    >
       <FloatingNavbarComp />
     </TheDock>
   );

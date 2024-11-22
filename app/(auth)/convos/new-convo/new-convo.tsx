@@ -35,6 +35,7 @@ export const contentTypes = [
 
 export function NewConvo({ type }: { type?: string }) {
   const [resultView, setResultView] = useState("");
+  const [showJSON, setShowJSON] = useState(false);
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
 
   const newConvo = useNewConvoStore((state) => state.convo) as any;
@@ -442,7 +443,16 @@ export function NewConvo({ type }: { type?: string }) {
                   placeholder=""
                   className="w-full text-center font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
                 />
-                {totalSentences?.length > 0 && (
+                <div>
+                  <button
+                    onClick={() => {
+                      setShowJSON(!showJSON);
+                    }}
+                  >
+                    {showJSON ? "Hide" : "Show"}
+                  </button>
+                </div>
+                {showJSON && totalSentences?.length > 0 && (
                   <div>
                     <code>
                       <pre>{JSON.stringify(totalSentences, null, 2)}</pre>

@@ -11,7 +11,9 @@ export function secondsToTimestamp(milliseconds: number) {
   // Build the timestamp string
   let timestamp = "";
   if (days > 0) {
-    if (days <= 1) {
+    if (hours || minutes) {
+      timestamp += `${days}d`;
+    } else if (days <= 1) {
       timestamp += `${days} day`;
     } else {
       timestamp += `${days} days`;
@@ -22,7 +24,7 @@ export function secondsToTimestamp(milliseconds: number) {
     // return timestamp.trim();
   }
   if (hours > 0) {
-    if (days > 0) {
+    if (days || minutes) {
       timestamp += ` ${hours}h`;
     } else {
       if (hours <= 1) {

@@ -138,13 +138,15 @@ export function ReviewMode(props: any) {
     ? reviewMode === "all"
       ? unReviewedCharacters?.[reviewCount]
       : unReviewedCharacters?.[0]
-    : reviewMode === "all"
+    : date
       ? unReviewedCharacters?.[reviewCount]
-      : unReviewedCharacters?.find(
-          (char: any) => char?.hanzi === nextCharacter
-        ) ||
-        // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
-        unReviewedCharacters?.[0];
+      : reviewMode === "all"
+        ? unReviewedCharacters?.[reviewCount]
+        : unReviewedCharacters?.find(
+            (char: any) => char?.hanzi === nextCharacter
+          ) ||
+          // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
+          unReviewedCharacters?.[0];
 
   const diff = endTime - startTime;
 

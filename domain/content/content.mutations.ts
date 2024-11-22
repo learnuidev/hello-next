@@ -40,12 +40,9 @@ export function useAddContentMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
-        queryClient.setQueryData(
-          [queryIds?.listContents, data?.journeyId],
-          (old: any) => {
-            return [data, ...old];
-          }
-        );
+        queryClient.setQueryData([queryIds?.listContents], (old: any) => {
+          return [data, ...old];
+        });
 
         // queryClient.invalidateQueries([
         //   queryIds?.listContents,

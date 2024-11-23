@@ -64,7 +64,7 @@ export const Speak = () => {
     return null;
   }
 
-  const formattedTransacript = transcript?.split("").filter(Boolean).join("");
+  const formattedTransacript = transcript?.split(" ").filter(Boolean).join("");
 
   const filteredItems = ["。"];
 

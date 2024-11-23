@@ -210,7 +210,7 @@ export const Speak = () => {
       </div>
 
       {showMeta && (
-        <>
+        <div className="max-w-2xl m-auto">
           <div className="dark:text-gray-500 mt-16">
             <code>
               <pre>{JSON.stringify(rest, null, 4)}</pre>
@@ -222,7 +222,7 @@ export const Speak = () => {
               <pre>{JSON.stringify(data?.[0], null, 4)}</pre>
             </code>
           </section>
-        </>
+        </div>
       )}
     </div>
   );

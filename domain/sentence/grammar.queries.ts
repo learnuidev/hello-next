@@ -37,6 +37,8 @@ function getAllSubstringIndices(mainString: string, subString: string) {
   return indices;
 }
 
+console.log("");
+
 const listGrammars = async (
   options: { sentenceId?: string; content: string },
   opts: {

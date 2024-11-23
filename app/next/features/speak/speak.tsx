@@ -10,14 +10,19 @@ import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { Icon } from "@radix-ui/react-select";
+import { cleanString } from "@/data/convos/bm1/level_7";
 
 function getRandomNumber(n: number) {
   return Math.floor(Math.random() * (n + 1));
 }
 
 export const Speak = () => {
-  const [showPinyin, setShowPinyin] = useState(true);
+  const [showPinyin, setShowPinyin] = useState(false);
+  const [showMeta, setShowMeta] = useState(false);
   const topTenIncorrect = useGetTopTenIncorrect();
+  const [index, setIndex] = useState(0);
+  const [randomDataIndex, setRandomDataIndex] = useState(getRandomNumber(9));
 
   const {
     transcript,
@@ -27,7 +32,9 @@ export const Speak = () => {
     ...rest
   } = useSpeechRecognition({ transcribing: true });
 
-  const randomDataIndex = useMemo(() => getRandomNumber(9), []);
+  // const randomDataIndex = useMemo(() => getRandomNumber(9), []);
+
+  const component = topTenIncorrect?.[randomDataIndex]?.hanzi;
 
   console.log(
     "HANZI",
@@ -42,18 +49,22 @@ export const Speak = () => {
     }
   );
 
-  const randomPhraseIndex = useMemo(
-    () => getRandomNumber(data?.length - 1),
-    [data]
-  );
+  // const randomPhraseIndex = useMemo(
+  //   () => getRandomNumber(data?.length - 1),
+  //   [data]
+  // );
 
-  const phrase = data?.[randomPhraseIndex];
+  const phrase = data?.[index];
+
+  const cleanedHanzi = cleanString(phrase?.hanzi);
 
   const { speak } = useSpeak();
 
   if (!phrase) {
     return null;
   }
+
+  const formattedTransacript = transcript?.split("").filter(Boolean).join("");
 
   const filteredItems = ["。"];
 
@@ -66,17 +77,19 @@ export const Speak = () => {
           href={`/nmm/${phrase?.hanzi}`}
           target="_blank"
         >
-          {phrase?.hanzi?.split("").map((item: any, idx: any) => {
-            const transcriptKey = transcript?.[idx];
+          {cleanedHanzi?.split("").map((item: any, idx: any) => {
+            const transcriptKey = formattedTransacript?.[idx];
             return (
               <span
                 key={`${item}-${idx}`}
                 className={cn(
-                  listening || filteredItems?.includes(item) || !transcript
-                    ? ""
-                    : transcriptKey === item
-                      ? "text-green-400"
-                      : "text-yellow-400"
+                  item === component && !transcript
+                    ? "text-blue-400"
+                    : listening || filteredItems?.includes(item) || !transcript
+                      ? ""
+                      : transcriptKey === item
+                        ? "text-green-400"
+                        : "text-yellow-400"
                 )}
               >
                 {item}
@@ -85,6 +98,12 @@ export const Speak = () => {
           })}
         </Link>
         <p className="font-light text-gray-400">{phrase?.en}</p>
+
+        {/* <p>
+          <code>
+            <pre>{JSON.stringify(transcript)}</pre>
+          </code>
+        </p> */}
       </section>
 
       <div className="text-gray-400 space-x-12 flex justify-center items-center mt-32">
@@ -131,10 +150,48 @@ export const Speak = () => {
       </div>
 
       <div className="text-center mt-12">
-        <p>{transcript}</p>
+        <p>{formattedTransacript}</p>
       </div>
 
-      <div className="flex justify-center space-x-4 mt-8 text-gray-400">
+      <div className="space-x-12 flex justify-center items-center mt-32">
+        <button
+          className={cn(
+            "text-xl text-gray-400 hover:dark:text-white hover:text-black  hover:border-s-gray-500 rounded w-10 h-10"
+          )}
+          onClick={() => {
+            setIndex(Math.max(0, index - 1));
+          }}
+        >
+          <Icons.arrowLeft />
+        </button>
+
+        <button
+          className={cn(
+            "text-xl text-gray-400 hover:dark:text-white hover:text-black  hover:border-s-gray-500 rounded w-10 h-10"
+          )}
+          onClick={() => {
+            setRandomDataIndex(getRandomNumber(9));
+            setIndex(0);
+          }}
+        >
+          <Icons.refresh />
+        </button>
+
+        <button
+          className={cn(
+            "text-xl text-gray-400 hover:dark:text-white hover:text-black  hover:border-s-gray-500 rounded w-10 h-10"
+          )}
+          onClick={() => {
+            setIndex(Math.min(data?.length - 1, index + 1));
+            // SpeechRecognition.stopListening();
+            // resetTranscript();
+          }}
+        >
+          <Icons.arrowRight />
+        </button>
+      </div>
+
+      <div className="flex justify-center space-x-4 mt-8 dark:text-gray-500">
         <button
           onClick={() => {
             setShowPinyin(!showPinyin);
@@ -142,19 +199,30 @@ export const Speak = () => {
         >
           {showPinyin ? "Hide Pinyin" : "Show Pinyin"}
         </button>
+        <button
+          onClick={() => {
+            setShowMeta(!showMeta);
+          }}
+        >
+          {showMeta ? "Hide Meta" : "Show Meta"}
+        </button>
       </div>
 
-      <div className="text-gray-500 mt-16">
-        <code>
-          <pre>{JSON.stringify(rest, null, 4)}</pre>
-        </code>
-      </div>
+      {showMeta && (
+        <>
+          <div className="dark:text-gray-500 mt-16">
+            <code>
+              <pre>{JSON.stringify(rest, null, 4)}</pre>
+            </code>
+          </div>
 
-      <section className="text-gray-500 mt-16">
-        <code>
-          <pre>{JSON.stringify(data?.[0], null, 4)}</pre>
-        </code>
-      </section>
+          <section className="dark:text-gray-500 mt-16">
+            <code>
+              <pre>{JSON.stringify(data?.[0], null, 4)}</pre>
+            </code>
+          </section>
+        </>
+      )}
     </div>
   );
 };

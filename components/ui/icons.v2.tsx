@@ -101,6 +101,8 @@ import {
   faNotebook,
   faBookmark,
   faRepeat,
+  faArrowLeft,
+  faArrowRight,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -310,6 +312,8 @@ export const Icons = {
   diary: createFAIcon(faNotebook),
   bookmark: createFAIcon(faBookmark),
   repeat: createFAIcon(faRepeat),
+  arrowLeft: createFAIcon(faArrowLeft),
+  arrowRight: createFAIcon(faArrowRight),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

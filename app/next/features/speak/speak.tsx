@@ -172,6 +172,7 @@ export const Speak = () => {
           onClick={() => {
             setRandomDataIndex(getRandomNumber(9));
             setIndex(0);
+            resetTranscript();
           }}
         >
           <Icons.refresh />

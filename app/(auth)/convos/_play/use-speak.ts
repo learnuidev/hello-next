@@ -29,6 +29,7 @@ export const useSpeak = (lang = "zh-CN") => {
   };
 
   const speak = (word: string) => {
+    stopSpeaking();
     const utter = new SpeechSynthesisUtterance(word);
 
     utter.onboundary = (event) => {
@@ -52,9 +53,9 @@ export const useSpeak = (lang = "zh-CN") => {
     // utter.voice = selecectedVoice?.voice;
     // synthRef.current.speak(utter);
     setCurrentString(word);
-    if (!isSpeaking) {
-      window?.speechSynthesis?.speak(utter);
-    }
+    // if (!isSpeaking) {
+    window?.speechSynthesis?.speak(utter);
+    // }
 
     setIsSpeaking(true);
   };

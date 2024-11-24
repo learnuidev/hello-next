@@ -37,15 +37,13 @@ function getAllSubstringIndices(mainString: string, subString: string) {
   return indices;
 }
 
-console.log("yo");
-
 const listGrammars = async (
   options: { sentenceId?: string; content: string },
   opts: {
     Authorization: string;
   }
 ) => {
-  const res = await fetch("/api/list-grammars", {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/list-grammars`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,

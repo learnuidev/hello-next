@@ -141,6 +141,14 @@ const filterComponent = ({
       };
     }
 
+    if (JSON.stringify(comp)?.toLowerCase()?.includes(query?.toLowerCase())) {
+      return {
+        ...comp,
+        ...metaComp,
+        score: 0.1,
+      };
+    }
+
     return null;
   } else {
     return { ...comp, score: 1 };

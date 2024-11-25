@@ -13,6 +13,7 @@ import {
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { cn } from "@/lib/utils";
 import { getStatusIcon } from "./status-icons";
+import { NoResultView } from "./no-result-view";
 
 export function WordSearchResult() {
   const querySync = useSearchQueryStore((state) => state.query);
@@ -38,10 +39,8 @@ export function WordSearchResult() {
     return item?.en?.toLowerCase()?.includes(querySyncLowerCased);
   });
 
-  console.log("HSK WORDS", filteredHsk);
-
   if (!filteredHsk?.length) {
-    return null;
+    return <NoResultView />;
   }
 
   const displayablefilteredHsk = filteredHsk?.slice(0, 100);

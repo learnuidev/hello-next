@@ -11,13 +11,14 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { getStatusIcon } from "./status-icons";
+import { NoResultView } from "./no-result-view";
 
 export function CharacterSearchResult({ searchResults }: any) {
   const groupByHanzi = groupBy((val: any) => val.hanzi);
   const groupedByHanzi = groupByHanzi(searchResults) as any;
 
-  if (!groupedByHanzi) {
-    return null;
+  if (!groupedByHanzi?.length) {
+    return <NoResultView />;
   }
 
   return (

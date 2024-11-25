@@ -4,12 +4,13 @@ import { Icons } from "@/components/ui/icons.v2";
 import { useState } from "react";
 import { CharacterSearchResult } from "./character-search-result";
 import { WordSearchResult } from "./word-search-result";
+import { SearchHistoryResult } from "./search-history-result";
 
 export const PrecisionSearchResults = ({ searchResults }: any) => {
   const [view, setView] = useState("character");
 
-  const finalView =
-    view === "character" && !searchResults?.length ? "word" : view;
+  // const finalView =
+  //   view === "character" && !searchResults?.length ? "word" : view;
   return (
     <div>
       <div className="space-x-8 mt-8 sm:mt-0">
@@ -17,21 +18,31 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
           onClick={() => {
             setView("character");
           }}
-          className={finalView === "character" ? "text-white" : "text-gray-600"}
+          className={view === "character" ? "text-white" : "text-gray-600"}
         >
           <Icons.compass className="text-2xl" />
         </button>
         <button
-          className={finalView === "word" ? "text-white" : "text-gray-600"}
+          className={view === "word" ? "text-white" : "text-gray-600"}
           onClick={() => {
             setView("word");
           }}
         >
           <Icons.seedling className="text-2xl" />
         </button>
+        <button
+          className={view === "search" ? "text-white" : "text-gray-600"}
+          onClick={() => {
+            setView("search");
+          }}
+        >
+          <Icons.magnifyingGlass className="text-2xl" />
+        </button>
       </div>
-      {finalView === "character" ? (
+      {view === "character" ? (
         <CharacterSearchResult searchResults={searchResults} />
+      ) : view === "search" ? (
+        <SearchHistoryResult />
       ) : (
         <WordSearchResult />
       )}

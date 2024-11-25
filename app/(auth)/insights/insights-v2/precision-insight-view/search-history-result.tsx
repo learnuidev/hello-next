@@ -20,15 +20,13 @@ export function SearchHistoryResult() {
   return (
     <>
       <section className="space-y-8 mt-12 pb-32">
-        {filteredSearchResults?.map((val, idx: any) => {
-          const comp = val;
-
-          const hanziOrInput = val?.input || val?.hanzi;
+        {filteredSearchResults?.map((comp, idx: any) => {
+          const hanziOrInput = comp?.input || comp?.hanzi;
 
           return (
             <Link
-              key={`${val}-${idx}`}
-              href={`/nmm/${comp?.hanzi}?lang=${comp?.lang || "zh"}`}
+              key={`${comp?.input}-${idx}`}
+              href={`/nmm/${comp?.input}?lang=${comp?.lang || "zh"}`}
               target="_blank"
               className="block"
             >
@@ -40,7 +38,7 @@ export function SearchHistoryResult() {
                 <p className="">
                   <span className="text-sm font-light text-gray-500">
                     {" "}
-                    {formatJournalDate(val?.createdAt)}
+                    {formatJournalDate(comp?.createdAt)}
                   </span>
                 </p>
               </div>

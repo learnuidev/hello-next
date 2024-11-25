@@ -8,6 +8,7 @@ import { siteConfig } from "@/lib/config";
 import { hskWords } from "@/langs/chinese /hsk";
 import { hsk2WordBank } from "@/langs/chinese /hsk-2";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
+import { useGetUserPreferenceQuery } from "../user/use-get-user-preference-query";
 
 // TODO: Move this to .env
 // const url = `${siteConfig?.apiUrl}/v1/list-hsk-words`;
@@ -44,7 +45,15 @@ export function useListHSKWordsQuery(
 
   const mode = useLearningModeStore((state: any) => state.mode);
 
-  const version = mode ? (mode === "hsk3" ? 3 : 2) : params?.version;
+  const { data: userPreference } = useGetUserPreferenceQuery();
+
+  const initVersion = mode ? (mode === "hsk3" ? 3 : 2) : params?.version;
+
+  const version = userPreference?.learningMode
+    ? userPreference?.learningMode === "hsk3"
+      ? 3
+      : 2
+    : initVersion;
 
   return useQuery(
     [queryIds.listHSKWords, authUser?.jwt, version],

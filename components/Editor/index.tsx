@@ -1,14 +1,13 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import { defaultExtensions } from "./extensions";
+import Mathematics from "@tiptap-pro/extension-mathematics";
+import TableOfContent from "@tiptap-pro/extension-table-of-content";
+import { EditorContent, useEditor } from "@tiptap/react";
+import React from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { EditorBubbleMenu } from "./bubble-menu";
-import Mathematics from "@tiptap-pro/extension-mathematics";
-import UniqueID from "@tiptap-pro/extension-unique-id";
-import TableOfContent from "@tiptap-pro/extension-table-of-content";
+import { defaultExtensions } from "./extensions";
 import { ToC } from "./ToC";
-import React from "react";
 
 import "katex/dist/katex.min.css";
 

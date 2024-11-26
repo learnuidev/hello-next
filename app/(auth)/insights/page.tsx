@@ -13,6 +13,7 @@ import { useGetFromAndToDate } from "./use-get-from-date";
 import { formatDate } from "@/components/settings-dialog/utils/format-date";
 import { useGetInsightSearchResults } from "./insights-v2/precision-insight-view/use-get-insight-search-results";
 import { PrecisionSearchResults } from "./insights-v2/precision-insight-view/precision-search-results";
+import { useSearchQueryStore } from "@/components/search/state";
 
 function ToAndFromDate() {
   const { fromDate, toDate } = useGetFromAndToDate();
@@ -24,6 +25,7 @@ export default function Insights() {
   const { fromDate, toDate } = useGetFromAndToDate();
 
   const searchResults = useGetInsightSearchResults();
+  const querySync = useSearchQueryStore((state) => state.query);
 
   return (
     <div>
@@ -48,7 +50,7 @@ export default function Insights() {
           <ToAndFromDate />
         </div>
 
-        {searchResults?.length > 0 ? (
+        {querySync?.length > 0 ? (
           <PrecisionSearchResults searchResults={searchResults} />
         ) : (
           <InsightsV2 />

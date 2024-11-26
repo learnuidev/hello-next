@@ -4,10 +4,10 @@ import { useRouter } from "next/navigation";
 
 import { useSearchState } from "@/components/use-search-state";
 
-import { useEffect, useState } from "react";
-import { useSearchQueryStore } from "@/components/search/state";
-import { useDebouncedCallback } from "use-debounce";
 import { NmmCoreComponents } from "@/app/nmm/nmm-core-components";
+import { useSearchQueryStore } from "@/components/search/state";
+import { useEffect } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 export const SearchInputFC = () => {
   const isSearchBarOpen = useSearchState((state) => state.isSearchBarOpen);

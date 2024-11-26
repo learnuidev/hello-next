@@ -103,6 +103,7 @@ import {
   faRepeat,
   faArrowLeft,
   faArrowRight,
+  faMobile,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -314,6 +315,7 @@ export const Icons = {
   repeat: createFAIcon(faRepeat),
   arrowLeft: createFAIcon(faArrowLeft),
   arrowRight: createFAIcon(faArrowRight),
+  mobile: createFAIcon(faMobile),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

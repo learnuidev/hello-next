@@ -1,33 +1,25 @@
-import { useState, useEffect, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useCallback, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
-import { Label } from "@/components/ui/label";
-
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
-import { useSettingsDialogState } from "./settings-dialog.state";
-import { Icons } from "../ui/icons.v2";
 import { cn } from "@/lib/utils";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "../input";
-import { Checkbox } from "../ui/checkbox";
+import { Icons } from "../ui/icons.v2";
+import { useSettingsDialogState } from "./settings-dialog.state";
 
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 
 import { useShortCuts } from "./use-short-cuts";
 
-import { ApiKeysTab } from "./components/api-keys-tab/api-keys-tab";
-import { LearnTab } from "./components/learn-tab/learn-tab";
 import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
 import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
+import { ApiKeysTab } from "./components/api-keys-tab/api-keys-tab";
+import { LearnTab } from "./components/learn-tab/learn-tab";
+import { LoginAndSecurityTab } from "./components/login-and-security-tab/login-and-security-tab";
+import { ProfileTab } from "./components/profile-tab/profile-tab";
+import { TrackingTab } from "./components/tracking-tab/tracking-tab";
+import { UiTab } from "./components/ui-tab/ui-tab";
 
 export function SettingsDialogInner({
   isOpen,
@@ -68,7 +60,7 @@ export function SettingsDialogInner({
             className="px-0 mx-0"
           >
             <TabsList className="px-0 mx-0 space-x-4 md:space-x-8">
-              <TabsTrigger
+              {/* <TabsTrigger
                 className={cn(
                   "px-0 mx-0 space-x-2",
                   tab === "profile" ? "text-white" : "text-gray-500",
@@ -79,8 +71,8 @@ export function SettingsDialogInner({
                 {tab === "profile" ? <Icons.userSolid /> : <Icons.user />}
 
                 <span>Profile</span>
-              </TabsTrigger>
-              <TabsTrigger
+              </TabsTrigger> */}
+              {/* <TabsTrigger
                 className={cn(
                   "px-0 mx-0 space-x-2",
                   tab === "account" ? "text-white" : "text-gray-500",
@@ -89,6 +81,16 @@ export function SettingsDialogInner({
                 value="account"
               >
                 <Icons.fingerPrint /> <span>Login and Security</span>
+              </TabsTrigger> */}
+              <TabsTrigger
+                className={cn(
+                  "px-0 mx-0 space-x-2",
+                  tab === "app" ? "text-white" : "text-gray-500",
+                  "transition"
+                )}
+                value="app"
+              >
+                <Icons.mobile /> <span>App & Dock</span>
               </TabsTrigger>
               <TabsTrigger
                 className={cn(
@@ -129,116 +131,22 @@ export function SettingsDialogInner({
               </TabsTrigger>
             </TabsList>
             <TabsContent value="profile" className="mt-8">
-              <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
-                <CardHeader>
-                  <CardTitle>Profile</CardTitle>
-                  <CardDescription className="text-gray-500 font-extralight">
-                    Manage Your profile here
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Input
-                    placeholder="Username"
-                    className="border-gray-800 placeholder:text-gray-400"
-                  />
-                  <Input
-                    placeholder="Email"
-                    className="border-gray-800 placeholder:text-gray-400"
-                  />
-                </CardContent>
-              </Card>
+              <ProfileTab />
             </TabsContent>
             <TabsContent value="account" className="mt-8">
-              <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
-                <CardHeader>
-                  <CardTitle>Password Manager</CardTitle>
-                  <CardDescription className="text-gray-500 font-extralight">
-                    Manage Your password here
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Input
-                    placeholder="Change Password"
-                    className="border-gray-800 placeholder:text-gray-400"
-                  />
-                </CardContent>
-              </Card>
+              <LoginAndSecurityTab />
             </TabsContent>
             <TabsContent value="tracking" className="mt-8">
-              <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
-                <CardHeader>
-                  <CardTitle>Tracking</CardTitle>
-                  <CardDescription className="text-gray-500 font-extralight">
-                    Manage your tracking here
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
-                  {/* <div>
-                    <div className="flex z-50 items-center space-x-2">
-                      <Checkbox
-                        id="navigation"
-                        checked={Boolean(
-                          userPreferenceState.isNavigationEnabled
-                        )}
-                        onCheckedChange={(event) => {
-                          setUserPreferenceState({
-                            isNavigationEnabled: event,
-                          });
-                        }}
-                      />
-                      <Label htmlFor="airplane-mode">Navigation</Label>
-                    </div>
-
-                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-                      Track navigation through out the app
-                    </p>
-                  </div> */}
-                  <div>
-                    <div className="flex z-50 items-center space-x-2">
-                      <Checkbox
-                        id="content-tracking"
-                        checked={Boolean(
-                          userPreferenceState.isContentTrackingEnabled
-                        )}
-                        onCheckedChange={(event) => {
-                          setUserPreferenceState({
-                            isContentTrackingEnabled: event,
-                          });
-                        }}
-                      />
-                      <Label htmlFor="airplane-mode">Content</Label>
-                    </div>
-
-                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-                      Track which content you&apos;ve interacted with
-                    </p>
-                  </div>
-                  <div>
-                    <div className="flex z-50 items-center space-x-2">
-                      <Checkbox
-                        id="search-tracking"
-                        checked={Boolean(userPreferenceState.isSearchEnabled)}
-                        onCheckedChange={(event) => {
-                          setUserPreferenceState({
-                            isSearchEnabled: event,
-                          });
-                        }}
-                      />
-                      <Label htmlFor="airplane-mode">Search</Label>
-                    </div>
-
-                    <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-                      Track which you&apos;ve searched
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+              <TrackingTab />
             </TabsContent>
             <TabsContent value="learn" className="mt-8">
               <LearnTab />
             </TabsContent>
             <TabsContent value="api-keys" className="mt-8">
               <ApiKeysTab />
+            </TabsContent>
+            <TabsContent value="app" className="mt-8">
+              <UiTab />
             </TabsContent>
           </Tabs>
         </div>
@@ -254,11 +162,8 @@ export function SettingsDialogInner({
           <Button
             type="submit"
             onClick={() => {
-              updateUserPreferenceMutation
-                .mutateAsync(userPreferenceState)
-                .then((resp) => {
-                  closeSettings();
-                });
+              updateUserPreferenceMutation.mutate(userPreferenceState);
+              closeSettings();
             }}
           >
             Save

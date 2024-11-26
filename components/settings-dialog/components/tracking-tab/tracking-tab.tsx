@@ -1,0 +1,98 @@
+import { Label } from "@/components/ui/label";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
+import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
+import { useSettingsDialogState } from "../../settings-dialog.state";
+import { Checkbox } from "@/components/ui/checkbox";
+
+export function TrackingTab() {
+  const tab = useSettingsDialogState((state) => state.tab);
+  const setCurrentTab = useSettingsDialogState((state) => state.setCurrentTab);
+  const userPreferenceState = useSettingsDialogState(
+    (state) => state.userPreferenceState
+  ) as any;
+  const setUserPreferenceState = useSettingsDialogState(
+    (state) => state.setUserPreferenceState
+  );
+
+  const { data } = useGetUserPreferenceQuery();
+
+  const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
+
+  return (
+    <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
+      <CardHeader>
+        <CardTitle>Tracking</CardTitle>
+        <CardDescription className="text-gray-500 font-extralight">
+          Manage your tracking here
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
+        {/* <div>
+      <div className="flex z-50 items-center space-x-2">
+        <Checkbox
+          id="navigation"
+          checked={Boolean(
+            userPreferenceState.isNavigationEnabled
+          )}
+          onCheckedChange={(event) => {
+            setUserPreferenceState({
+              isNavigationEnabled: event,
+            });
+          }}
+        />
+        <Label htmlFor="airplane-mode">Navigation</Label>
+      </div>
+
+      <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+        Track navigation through out the app
+      </p>
+    </div> */}
+        <div>
+          <div className="flex z-50 items-center space-x-2">
+            <Checkbox
+              id="content-tracking"
+              checked={Boolean(userPreferenceState.isContentTrackingEnabled)}
+              onCheckedChange={(event) => {
+                setUserPreferenceState({
+                  isContentTrackingEnabled: event,
+                });
+              }}
+            />
+            <Label htmlFor="airplane-mode">Content</Label>
+          </div>
+
+          <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+            Track which content you&apos;ve interacted with
+          </p>
+        </div>
+        <div>
+          <div className="flex z-50 items-center space-x-2">
+            <Checkbox
+              id="search-tracking"
+              checked={Boolean(userPreferenceState.isSearchEnabled)}
+              onCheckedChange={(event) => {
+                setUserPreferenceState({
+                  isSearchEnabled: event,
+                });
+              }}
+            />
+            <Label htmlFor="airplane-mode">Search</Label>
+          </div>
+
+          <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+            Track which you&apos;ve searched
+          </p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

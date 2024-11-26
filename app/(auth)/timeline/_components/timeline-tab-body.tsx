@@ -193,8 +193,10 @@ export const TimelineTabBody = ({
       <div className="md:hidden flex w-full fixed z-50 bottom-8">
         <div className="m-auto">
           <TimelineDatesDrawer
+            groups={groups}
             focusLang={focusLang}
             selectedDate={selectedDate || ""}
+            setSelectedDate={setSelectedDate}
           />
         </div>
       </div>

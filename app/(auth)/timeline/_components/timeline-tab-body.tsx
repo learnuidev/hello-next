@@ -18,6 +18,7 @@ import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-charact
 import { Icons } from "@/components/ui/icons.v2";
 import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainer } from "@/components/nmm-list-container";
+import { calculateTotalTimeStudied } from "@/app/profile/hooks/use-get-total-time-studied";
 
 export const TimelineTabBody = ({
   variant,
@@ -130,27 +131,41 @@ export const TimelineTabBody = ({
           </div>
           <div>
             {["discovered", "reviewed"]?.includes(variant) ? (
-              <NmmListContainer>
-                {selectedGroup?.items?.map((item: any, idx: any) => {
-                  if (item?.status === "joined") {
-                    return null;
-                  }
-                  return (
-                    <TooltipProvider
-                      key={`${item?.input || item?.hanzi?.trim("")}-chars-${idx}`}
-                    >
-                      <Tooltip>
-                        <TooltipTrigger className="p-3 px-0 hover:scale-110 transition">
-                          <HanziLink character={item} />
-                        </TooltipTrigger>
-                        <TooltipContent className="bg-black border-gray-800">
-                          <PreviewComponent component={item} />
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  );
-                })}
-              </NmmListContainer>
+              <div>
+                {variant === "reviewed" ? (
+                  <div>
+                    <div className="space-x-2 text-gray-400">
+                      <Icons.clock />
+                      <span>
+                        {calculateTotalTimeStudied(selectedGroup?.items)}
+                      </span>
+                    </div>
+                  </div>
+                ) : null}
+                <NmmListContainer>
+                  {selectedGroup?.items
+                    ?.filter((item: any) => item?.hanzi?.length === 1)
+                    ?.map((item: any, idx: any) => {
+                      if (item?.status === "joined") {
+                        return null;
+                      }
+                      return (
+                        <TooltipProvider
+                          key={`${item?.input || item?.hanzi?.trim("")}-chars-${idx}`}
+                        >
+                          <Tooltip>
+                            <TooltipTrigger className="p-3 px-0 hover:scale-110 transition">
+                              <HanziLink character={item} />
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-black border-gray-800">
+                              <PreviewComponent component={item} />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      );
+                    })}
+                </NmmListContainer>
+              </div>
             ) : (
               <div className="flex flex-wrap flex-row w-full mb-32">
                 {selectedGroup?.items?.map((item: any, idx: any) => {

@@ -1,17 +1,20 @@
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { secondsToTimestamp } from "../utils/seconds-to-timestamp";
 
+export const calculateTotalTimeStudied = (items: any) => {
+  return secondsToTimestamp(
+    items
+      ?.map((item: any) => {
+        return (item?.timeTaken || 0) + (item?.ponderTime || 0);
+      })
+      .reduce((acc: any, curr: any) => acc + curr, 0) || 0
+  );
+};
+
 export const useGetTotalTimeStudied = () => {
   const { data } = useListCharactersQuery();
 
-  const totalTimeStudied =
-    data
-      ?.map((item) => item?.reviewHistory)
-      .flat()
-      ?.map((item) => {
-        return (item?.timeTaken || 0) + (item?.ponderTime || 0);
-      })
-      .reduce((acc, curr) => acc + curr, 0) || 0;
-
-  return secondsToTimestamp(totalTimeStudied);
+  return calculateTotalTimeStudied(
+    data?.map((item: any) => item?.reviewHistory).flat()
+  );
 };

@@ -48,7 +48,7 @@ export function SettingsDialogInner({
 
   const { data } = useGetUserPreferenceQuery();
 
-  const updateUserPerferenceMutation = useUpdateUserPrefenceMutation();
+  const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
 
   return (
     <Dialog open={isOpen}>
@@ -254,7 +254,7 @@ export function SettingsDialogInner({
           <Button
             type="submit"
             onClick={() => {
-              updateUserPerferenceMutation
+              updateUserPreferenceMutation
                 .mutateAsync(userPreferenceState)
                 .then((resp) => {
                   closeSettings();

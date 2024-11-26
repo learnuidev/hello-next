@@ -6,12 +6,22 @@ export const TheDock = ({
   children,
   innerClassName,
   className,
+  show: showNavbar,
 }: {
   children?: React.ReactNode;
   innerClassName?: string;
   className?: string;
+  show?: boolean;
 }) => {
   const [show, setShow] = useState(false);
+
+  if (showNavbar) {
+    return (
+      <div className={cn("flex w-full fixed z-50 bottom-0", className)}>
+        <div className={cn("block w-full", innerClassName)}>{children}</div>
+      </div>
+    );
+  }
 
   return (
     <div>

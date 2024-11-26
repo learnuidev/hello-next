@@ -145,6 +145,33 @@ export function LearnTab() {
           </div>
         </CardContent>
       </Card>
+      <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
+        <CardHeader>
+          <CardTitle>UI Settings</CardTitle>
+          <CardDescription className="text-gray-500 font-extralight">
+            Change your UI Settings
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
+          <div>
+            <div className="flex z-50 items-center space-x-2">
+              <Checkbox
+                checked={userPreferenceState.showNavbar}
+                onCheckedChange={(event) => {
+                  setUserPreferenceState({
+                    showNavbar: !userPreferenceState.showNavbar,
+                  });
+                }}
+              />
+              <Label htmlFor="airplane-mode">Display Navbar</Label>
+            </div>
+
+            <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+              Show or hide navbar
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

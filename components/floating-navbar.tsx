@@ -18,6 +18,8 @@ import {
   useGetReviewUrlFn,
 } from "./settings-dialog/use-get-review-url";
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
+import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
+import { useSettingsDialogState } from "./settings-dialog/settings-dialog.state";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
@@ -197,10 +199,21 @@ const FloatingNavbarComp = () => {
 export const FloatingNavbar = () => {
   const routeName = usePathname();
   const isReviewUrl = routeName?.includes("/review");
+
+  const userPreferenceState = useSettingsDialogState(
+    (state) => state.userPreferenceState
+  ) as any;
+
+  const { data } = useGetUserPreferenceQuery();
   return (
     <TheDock
       className="sm:bottom-0 bottom-4"
       innerClassName={isReviewUrl ? "sm:block" : ""}
+      show={
+        data?.showNavbar !== userPreferenceState?.showNavbar
+          ? userPreferenceState?.showNavbar
+          : data?.showNavbar
+      }
     >
       <FloatingNavbarComp />
     </TheDock>

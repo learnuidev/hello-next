@@ -129,7 +129,9 @@ export const NavBar = ({ autoFocus }: { autoFocus?: boolean }) => {
         {routeName?.includes("/convos") && <AnimatedContentsFilter />}
       </div>
 
-      {routeName?.includes("learn") ? null : <FloatingNavbar />}
+      {routeName?.includes("learn") || routeName?.includes("diary") ? null : (
+        <FloatingNavbar />
+      )}
     </div>
   );
 };

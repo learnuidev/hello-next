@@ -29,7 +29,7 @@ export const useHandleSearch = () => {
     setQuery(() => value);
   };
 
-  const handleChangeDebounced = useDebouncedCallback(handleChange, 300);
+  const handleChangeDebounced = useDebouncedCallback(handleChange, 500);
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuerySync(event?.target?.value);

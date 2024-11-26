@@ -17,7 +17,7 @@ export function CharacterSearchResult({ searchResults }: any) {
   const groupByHanzi = groupBy((val: any) => val.hanzi);
   const groupedByHanzi = groupByHanzi(searchResults) as any;
 
-  if (!groupedByHanzi?.length) {
+  if (!Object.entries(groupedByHanzi)?.length) {
     return <NoResultView />;
   }
 

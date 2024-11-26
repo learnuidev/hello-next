@@ -92,10 +92,6 @@ export function useUnreviwedCharacters() {
       ? groupItems?.length <= reviewCount
       : false;
 
-  // console.log("GROUP ITEMS", groupItems);
-
-  // console.log("TOTAL WORDS", uniqueWords);
-
   const unReviewedCharacters = input
     ? hasReviewedAll
       ? getReviewCharacters(uniqueComponentWords)
@@ -108,11 +104,7 @@ export function useUnreviwedCharacters() {
           (character: any) => character?.hanzi?.length === 1
         );
 
-  // console.log("UN REVIEWED CHARS", unReviewedCharacters);
-
   if (isEntry) {
-    // console.log("UNIQUE CHARACTERS", uniqueCharactersMemo);
-
     const data = uniqueDiaryCharactersMemo
       ?.filter((item: any) => {
         const hskCharacter = hskWords?.find((word: any) =>
@@ -134,7 +126,6 @@ export function useUnreviwedCharacters() {
           : true;
       });
 
-    console.log("ENTRY REVIEW DATA", data);
     return {
       data:
         reviewMode === "all"
@@ -148,8 +139,6 @@ export function useUnreviwedCharacters() {
   }
 
   if (isContent) {
-    // console.log("UNIQUE CHARACTERS", uniqueCharactersMemo);
-
     const data = uniqueCharactersMemo
       ?.filter((item: any) => {
         const hskCharacter = hskWords?.find((word: any) =>
@@ -171,7 +160,6 @@ export function useUnreviwedCharacters() {
           : true;
       });
 
-    console.log("CONTENT REVIEW DATA", data);
     return {
       data:
         reviewMode === "all"
@@ -201,15 +189,11 @@ export function useUnreviwedCharacters() {
       (a: any, b: any) => (a.next_review_date || 0) - (b?.next_review_date || 0)
     );
 
-    console.log("HSK REVIEW DATA", data);
-
     return {
       data,
       isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
     };
   }
-
-  console.log("GENERIC DATA", unReviewedCharacters);
 
   return {
     data: unReviewedCharacters

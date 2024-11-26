@@ -34,13 +34,9 @@ export function useListLearnedCharactersByDate({
     includeAll: true,
   });
 
-  console.log("LEARNED ");
-
   const totalAttempts = useListAttempts();
 
   const { data } = useListHistoryQuery();
-
-  console.log("TOTAL ATTEMPTS", totalAttempts);
 
   const getResolvedChars = () => {
     switch (variant) {

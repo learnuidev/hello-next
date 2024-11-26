@@ -27,17 +27,6 @@ export const OverviewInsightView = () => {
         <PrecisionSearchResults searchResults={searchResults} />
       ) : (
         <div className="flex flex-col space-y-24">
-          <section className="grid grid-cols-4 gap-4 h-auto">
-            <div className="mt-8 col-span-4 md:col-span-2">
-              <WeeklyReviewedCharactersChart />
-              {/* <WeeklyLearnedCharactersChart /> */}
-            </div>
-
-            <div className="mt-8 col-span-4 md:col-span-2">
-              <TopTenRecentlyReviewedComponents />
-            </div>
-          </section>
-
           <section className="grid grid-cols-4 gap-4 items-start">
             <div className="mt-8 col-span-4 md:col-span-2">
               <WeeklyLearnedCharactersChart />
@@ -46,6 +35,17 @@ export const OverviewInsightView = () => {
             <div className="mt-8 col-span-4 md:col-span-2">
               {/* <TopEightLanguages /> */}
               <TopTenRecentlyLearnedComponents />
+            </div>
+          </section>
+
+          <section className="grid grid-cols-4 gap-4 h-auto">
+            <div className="mt-8 col-span-4 md:col-span-2">
+              <WeeklyReviewedCharactersChart />
+              {/* <WeeklyLearnedCharactersChart /> */}
+            </div>
+
+            <div className="mt-8 col-span-4 md:col-span-2">
+              <TopTenRecentlyReviewedComponents />
             </div>
           </section>
         </div>

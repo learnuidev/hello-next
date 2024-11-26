@@ -19,7 +19,7 @@ export interface GetUserPreferenceResponse {
   isNavigationEnabled?: boolean;
   isSearchEnabled?: boolean;
   learningMode?: string;
-  showNavbar?: boolean;
+  automaticallyShowAndHideDock?: boolean;
 }
 
 const getUserPrefrence = async (opts: {

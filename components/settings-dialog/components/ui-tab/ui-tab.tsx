@@ -35,10 +35,11 @@ export function UiTab() {
           <div>
             <div className="flex z-50 items-center space-x-2">
               <Checkbox
-                checked={userPreferenceState.showNavbar}
+                checked={userPreferenceState.automaticallyShowAndHideDock}
                 onCheckedChange={(event) => {
                   setUserPreferenceState({
-                    showNavbar: !userPreferenceState.showNavbar,
+                    automaticallyShowAndHideDock:
+                      !userPreferenceState.automaticallyShowAndHideDock,
                   });
                 }}
               />
@@ -46,7 +47,7 @@ export function UiTab() {
             </div>
 
             <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-              Automatically so or hide the dock
+              Automatically hide and show the Dock
             </p>
           </div>
         </CardContent>

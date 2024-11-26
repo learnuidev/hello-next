@@ -210,9 +210,10 @@ export const FloatingNavbar = () => {
       className="sm:bottom-0 bottom-4"
       innerClassName={isReviewUrl ? "sm:block" : ""}
       show={
-        data?.showNavbar !== userPreferenceState?.showNavbar
-          ? userPreferenceState?.showNavbar
-          : data?.showNavbar
+        data?.automaticallyShowAndHideDock !==
+        userPreferenceState?.automaticallyShowAndHideDock
+          ? !userPreferenceState?.automaticallyShowAndHideDock
+          : !data?.automaticallyShowAndHideDock
       }
     >
       <FloatingNavbarComp />

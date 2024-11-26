@@ -16,6 +16,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { TimelineDatesDrawer } from "./timeline-dates-drawer";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import { Icons } from "@/components/ui/icons.v2";
+import { HanziLink } from "@/components/hanzi-link";
+import { NmmListContainer } from "@/components/nmm-list-container";
 
 export const TimelineTabBody = ({
   variant,
@@ -127,48 +129,72 @@ export const TimelineTabBody = ({
             })}
           </div>
           <div>
-            <div className="flex flex-wrap flex-row w-full mb-32">
-              {selectedGroup?.items?.map((item: any, idx: any) => {
-                if (item?.status === "joined") {
-                  return null;
-                }
-                return (
-                  <TooltipProvider
-                    key={`${item?.input || item?.hanzi?.trim("")}-chars-${idx}`}
-                  >
-                    <Tooltip>
-                      <TooltipTrigger className="p-3 px-0 hover:scale-110 transition">
-                        <Link
-                          href={
-                            item?.lang
-                              ? `/nmm/${item?.input || item?.hanzi}?lang=${item?.lang}`
-                              : `/nmm/${item?.input || item?.hanzi}`
-                          }
-                          // href={`/nmm/${item?.input || item?.hanzi?.trim("")}?lang=${item?.lang || "zh"}`}
-                          className={cn(
-                            `py-4 pr-8 font-light`,
-                            `  dark:hover:text-white p-3 transition lowercase`,
-                            focusLang && langs?.length > 1
-                              ? // &&
-                                //   langs?.length !== 1 &&
-                                //   langs?.includes(focusLang)
-                                focusLang === item?.lang
-                                ? "text-white text-2xl"
-                                : "text-gray-700 text-2xl"
-                              : "text-gray-300 text-2xl"
-                          )}
-                        >
-                          {item?.input || item?.hanzi?.trim("")}
-                        </Link>
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-black border-gray-800">
-                        <PreviewComponent component={item} />
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                );
-              })}
-            </div>
+            {["discovered", "reviewed"]?.includes(variant) ? (
+              <NmmListContainer>
+                {selectedGroup?.items?.map((item: any, idx: any) => {
+                  if (item?.status === "joined") {
+                    return null;
+                  }
+                  return (
+                    <TooltipProvider
+                      key={`${item?.input || item?.hanzi?.trim("")}-chars-${idx}`}
+                    >
+                      <Tooltip>
+                        <TooltipTrigger className="p-3 px-0 hover:scale-110 transition">
+                          <HanziLink character={item} />
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-black border-gray-800">
+                          <PreviewComponent component={item} />
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  );
+                })}
+              </NmmListContainer>
+            ) : (
+              <div className="flex flex-wrap flex-row w-full mb-32">
+                {selectedGroup?.items?.map((item: any, idx: any) => {
+                  if (item?.status === "joined") {
+                    return null;
+                  }
+                  return (
+                    <TooltipProvider
+                      key={`${item?.input || item?.hanzi?.trim("")}-chars-${idx}`}
+                    >
+                      <Tooltip>
+                        <TooltipTrigger className="p-3 px-0 hover:scale-110 transition">
+                          <Link
+                            href={
+                              item?.lang
+                                ? `/nmm/${item?.input || item?.hanzi}?lang=${item?.lang}`
+                                : `/nmm/${item?.input || item?.hanzi}`
+                            }
+                            // href={`/nmm/${item?.input || item?.hanzi?.trim("")}?lang=${item?.lang || "zh"}`}
+                            className={cn(
+                              `py-4 pr-8 font-light`,
+                              `  dark:hover:text-white p-3 transition lowercase`,
+                              focusLang && langs?.length > 1
+                                ? // &&
+                                  //   langs?.length !== 1 &&
+                                  //   langs?.includes(focusLang)
+                                  focusLang === item?.lang
+                                  ? "text-white text-2xl"
+                                  : "text-gray-700 text-2xl"
+                                : "text-gray-300 text-2xl"
+                            )}
+                          >
+                            {item?.input || item?.hanzi?.trim("")}
+                          </Link>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-black border-gray-800">
+                          <PreviewComponent component={item} />
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  );
+                })}
+              </div>
+            )}
 
             {joined ? (
               <div className="ml-[-260px] my-32 text-center flex items-center justify-center flex-col">

@@ -11,6 +11,8 @@ import { CharacterDiscoveryBarChart } from "./CharacterDiscoveryBarChart";
 import { CharacterLearnedBarChart } from "./CharacterLearnedBarChart";
 import { useGetFromAndToDate } from "./use-get-from-date";
 import { formatDate } from "@/components/settings-dialog/utils/format-date";
+import { useGetInsightSearchResults } from "./insights-v2/precision-insight-view/use-get-insight-search-results";
+import { PrecisionSearchResults } from "./insights-v2/precision-insight-view/precision-search-results";
 
 function ToAndFromDate() {
   const { fromDate, toDate } = useGetFromAndToDate();
@@ -20,6 +22,9 @@ function ToAndFromDate() {
 
 export default function Insights() {
   const { fromDate, toDate } = useGetFromAndToDate();
+
+  const searchResults = useGetInsightSearchResults();
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
@@ -43,7 +48,11 @@ export default function Insights() {
           <ToAndFromDate />
         </div>
 
-        <InsightsV2 />
+        {searchResults?.length > 0 ? (
+          <PrecisionSearchResults searchResults={searchResults} />
+        ) : (
+          <InsightsV2 />
+        )}
       </main>
     </div>
   );

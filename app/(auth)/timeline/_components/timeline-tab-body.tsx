@@ -20,7 +20,7 @@ import { Icons } from "@/components/ui/icons.v2";
 export const TimelineTabBody = ({
   variant,
 }: {
-  variant: "all" | "search" | "click" | "discovered";
+  variant: "all" | "search" | "click" | "discovered" | "reviewed";
 }) => {
   // const [focusLang, setFocusLang] = useState("");
 

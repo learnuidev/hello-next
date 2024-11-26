@@ -34,6 +34,13 @@ export function TimelineTabs() {
           >
             <Icons.lightBulb className="text-2xl" />
           </TabsTrigger>
+          <TabsTrigger
+            // value="learned"
+            value="reviewed"
+            className="px-0 data-[state=active]:text-yellow-500"
+          >
+            <Icons.play className="text-2xl" />
+          </TabsTrigger>
         </TabsList>
 
         <div className="space-x-4"></div>
@@ -48,8 +55,8 @@ export function TimelineTabs() {
       <TabsContent value="click" className="my-8">
         <TimelineTabBody variant="click" />
       </TabsContent>
-      <TabsContent value="discovered" className="my-8">
-        <TimelineTabBody variant="discovered" />
+      <TabsContent value="reviewed" className="my-8">
+        <TimelineTabBody variant="reviewed" />
       </TabsContent>
     </Tabs>
   );

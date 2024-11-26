@@ -12,11 +12,12 @@ import { groupBy } from "ramda";
 import { useGetAuthUserProfileQuery } from "./user/use-get-auth-user-profile";
 import { filterComponents } from "@/app/nmm/nmm-utils/filter-components";
 import { getReviewDate } from "./get-review-date";
+import { useListAttempts } from "@/app/(auth)/insights/insights-v2/use-list-attempts";
 
 export function useListLearnedCharactersByDate({
   variant,
 }: {
-  variant: "all" | "search" | "click" | "discovered";
+  variant: "all" | "search" | "click" | "discovered" | "reviewed";
 }): {
   isLoading: boolean;
   data: {
@@ -33,7 +34,13 @@ export function useListLearnedCharactersByDate({
     includeAll: true,
   });
 
+  console.log("LEARNED ");
+
+  const totalAttempts = useListAttempts();
+
   const { data } = useListHistoryQuery();
+
+  console.log("TOTAL ATTEMPTS", totalAttempts);
 
   const getResolvedChars = () => {
     switch (variant) {
@@ -50,6 +57,8 @@ export function useListLearnedCharactersByDate({
             (event: any) => event?.eventType === "CONTENT_VIEWED"
           ) || []
         );
+      case "reviewed":
+        return totalAttempts;
 
       default:
         return [...(learnedCharacters || [])];

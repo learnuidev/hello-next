@@ -12,6 +12,12 @@ import { CharacterLearnedBarChart } from "./CharacterLearnedBarChart";
 import { useGetFromAndToDate } from "./use-get-from-date";
 import { formatDate } from "@/components/settings-dialog/utils/format-date";
 
+function ToAndFromDate() {
+  const { fromDate, toDate } = useGetFromAndToDate();
+
+  return `${formatDate(Date.parse(fromDate?.toISOString()))} - ${formatDate(Date.parse(toDate?.toISOString()))}`;
+}
+
 export default function Insights() {
   const { fromDate, toDate } = useGetFromAndToDate();
   return (
@@ -19,7 +25,11 @@ export default function Insights() {
       <div className="flex items-center justify-between mb-4">
         <NavBar />
 
-        <div className="mx-4 md:mx-20">
+        <div className="mx-4 md:mx-20 space-x-8 flex items-center">
+          <div className="text-gray-500 font-extralight hidden sm:block">
+            <ToAndFromDate />
+          </div>
+
           <InsightsFilters />
         </div>
       </div>
@@ -29,10 +39,10 @@ export default function Insights() {
       </div> */}
 
       <main className="mx-4 md:mx-48">
-        <div className="text-gray-500 font-extralight">
-          {formatDate(Date.parse(fromDate?.toISOString()))} -{" "}
-          {formatDate(Date.parse(toDate?.toISOString()))}
+        <div className="text-gray-500 font-extralight sm:hidden block text-center">
+          <ToAndFromDate />
         </div>
+
         <InsightsV2 />
       </main>
     </div>

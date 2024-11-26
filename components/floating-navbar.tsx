@@ -12,14 +12,13 @@ import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
+import { useGetReviewParams } from "@/app/review/use-get-review-params";
+import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import { useLearningModeStore } from "./settings-dialog/learning-mode.store";
 import {
   useGetReviewUrl,
   useGetReviewUrlFn,
 } from "./settings-dialog/use-get-review-url";
-import { useGetReviewParams } from "@/app/review/use-get-review-params";
-import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
-import { useSettingsDialogState } from "./settings-dialog/settings-dialog.state";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
@@ -200,21 +199,12 @@ export const FloatingNavbar = () => {
   const routeName = usePathname();
   const isReviewUrl = routeName?.includes("/review");
 
-  const userPreferenceState = useSettingsDialogState(
-    (state) => state.userPreferenceState
-  ) as any;
-
-  const { data } = useGetUserPreferenceQuery();
+  const isAutomatic = useShowAutomaticallyTheDock();
   return (
     <TheDock
       className="sm:bottom-0 bottom-4"
       innerClassName={isReviewUrl ? "sm:block" : ""}
-      show={
-        data?.automaticallyShowAndHideDock !==
-        userPreferenceState?.automaticallyShowAndHideDock
-          ? !userPreferenceState?.automaticallyShowAndHideDock
-          : !data?.automaticallyShowAndHideDock
-      }
+      isAutomatic={isAutomatic}
     >
       <FloatingNavbarComp />
     </TheDock>

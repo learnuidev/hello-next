@@ -6,16 +6,16 @@ export const TheDock = ({
   children,
   innerClassName,
   className,
-  show: showNavbar,
+  isAutomatic = true,
 }: {
   children?: React.ReactNode;
   innerClassName?: string;
   className?: string;
-  show?: boolean;
+  isAutomatic?: boolean;
 }) => {
   const [show, setShow] = useState(false);
 
-  if (showNavbar) {
+  if (!isAutomatic) {
     return (
       <div className={cn("flex w-full fixed z-50 bottom-0", className)}>
         <div className={cn("block w-full", innerClassName)}>{children}</div>

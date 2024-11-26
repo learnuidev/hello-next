@@ -47,7 +47,7 @@ export function UiTab() {
             </div>
 
             <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-              Automatically hide and show the Dock
+              Automatically hide and show the Dock (Desktop only)
             </p>
           </div>
         </CardContent>

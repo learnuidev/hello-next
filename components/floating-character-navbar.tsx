@@ -12,6 +12,8 @@ import { toast } from "sonner";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 import { getReviewSearchParams } from "./settings-dialog/use-get-review-url";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
+import { TheDock } from "./the-dock";
+import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 
 const isMultiSentence = (str: string) => {
   const isHanziMultiSentence = str.split("。")?.length > 1;
@@ -67,23 +69,13 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
   const isSuperAdmin = useIsSuperAdmin();
 
-  console.log("SELECTED COMP ", selectedComp2);
+  const isAutomatic = useShowAutomaticallyTheDock();
 
   return (
-    <div className="flex w-full fixed z-50 bottom-4">
+    <TheDock isAutomatic={isAutomatic} className="bottom-4">
       <div className="flex items-center w-full justify-center">
         <div className="px-8  py-2 bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
           <div className="space-x-8 flex justify-center items-center w-full">
-            {/* <Link
-              href={`/review?input=${characterId}&lang=${lang}`}
-              className={cn(
-                "text-gray-800 dark:text-gray-300",
-                "transition text-xl "
-              )}
-            >
-              <Icons.playCircle className="hover:text-white transition" />
-            </Link> */}
-
             <button
               className={cn(
                 "text-xl",
@@ -253,6 +245,6 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
           <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />
         </div>
       </div>
-    </div>
+    </TheDock>
   );
 };

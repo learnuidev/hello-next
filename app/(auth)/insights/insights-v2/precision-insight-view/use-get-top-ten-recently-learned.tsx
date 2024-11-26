@@ -1,7 +1,7 @@
-import { useListAttempts } from "../use-list-attempts";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 export const useGetTopTenRecentlyLearned = () => {
-  const totalAttempts = useListAttempts();
+  const { data } = useListCharactersQuery();
 
-  return totalAttempts?.slice(0, 10);
+  return data?.sort((a, b) => b?.createdAt - a?.createdAt)?.slice(0, 8);
 };

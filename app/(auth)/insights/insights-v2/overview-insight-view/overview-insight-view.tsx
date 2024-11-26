@@ -2,30 +2,16 @@
 
 import { InsightHeaders } from "@/app/(auth)/insights/insights-v2/insight-headers";
 import { useInsightsState } from "@/app/(auth)/insights/use-insights-state";
-import { useGetWeeklyData } from "@/app/(auth)/insights/WeeklyBarChart";
-import {
-  Bar,
-  VictoryAxis,
-  VictoryBar,
-  VictoryChart,
-  VictoryLabel,
-  VictoryVoronoiContainer,
-} from "victory";
-import { TopEightLanguages } from "./top-eight-languages";
-import { useGetInsightSearchResults } from "../precision-insight-view/use-get-insight-search-results";
 import { PrecisionSearchResults } from "../precision-insight-view/precision-search-results";
+import { useGetInsightSearchResults } from "../precision-insight-view/use-get-insight-search-results";
+import { WeeklyLearnedCharactersChart } from "./weekly-learned-characters-chart";
+import { TopEightLanguages } from "./top-eight-languages";
+import { WeeklyReviewedCharactersChart } from "./weekly-reviewed-characters-chart";
+import { TopTenRecentlyReviewedComponents } from "../precision-insight-view/top-ten-recently-reviewed-components";
+import { TopTenRecentlyLearnedComponents } from "../precision-insight-view/top-ten-recently-learned-components";
 
 export const OverviewInsightView = () => {
   const toDate = useInsightsState((state) => state.toDate);
-
-  const { data } = useGetWeeklyData({ toDate });
-
-  const chartData = data?.map((item) => {
-    return {
-      x: item.day,
-      y: item.count,
-    };
-  });
 
   const searchResults = useGetInsightSearchResults();
 
@@ -40,70 +26,29 @@ export const OverviewInsightView = () => {
       {searchResults?.length > 0 ? (
         <PrecisionSearchResults searchResults={searchResults} />
       ) : (
-        <section className="grid grid-cols-4 gap-4">
-          <div className="mt-8 h-80 col-span-4 md:col-span-2">
-            <VictoryChart
-              // animate={{ duration: 400 }}
-              // height={450}
-              // width={400}
-              // domainPadding={{ x: 50, y: [0, 20] }}
-              scale={{ x: "time" }}
-              containerComponent={
-                <VictoryVoronoiContainer
-                  style={{}}
-                  labels={({ datum }) =>
-                    datum.y > 0 ? `${datum.x} \n ${datum.y} words` : null
-                  }
-                />
-              }
-            >
-              <VictoryLabel
-                x={225}
-                y={5}
-                style={{
-                  fill: "gray",
-                }}
-                textAnchor="middle"
-                text="Number of words learned per day"
-              />
+        <div className="flex flex-col space-y-24">
+          <section className="grid grid-cols-4 gap-4 h-auto">
+            <div className="mt-8 col-span-4 md:col-span-2">
+              <WeeklyReviewedCharactersChart />
+              {/* <WeeklyLearnedCharactersChart /> */}
+            </div>
 
-              <VictoryAxis
-                dependentAxis
-                // label="Total # of Songs"
-                // x={0}
-                offsetX={40}
-                // style={sharedAxisStyles}
-              />
+            <div className="mt-8 col-span-4 md:col-span-2">
+              <TopTenRecentlyReviewedComponents />
+            </div>
+          </section>
 
-              <VictoryAxis
-                style={{
-                  tickLabels: { fill: "gray" },
-                }}
-              />
+          <section className="grid grid-cols-4 gap-4 items-start">
+            <div className="mt-8 col-span-4 md:col-span-2">
+              <WeeklyLearnedCharactersChart />
+            </div>
 
-              <VictoryBar
-                // dataComponent={<Bar events={{ onMouseOver: () => {} }} />}
-                style={{
-                  data: { fill: "tomato" },
-                }}
-                dataComponent={
-                  <Bar
-                    events={{
-                      onClick: (event: any, ctx: any) => {
-                        //   alert(event);
-                      },
-                    }}
-                  />
-                }
-                data={chartData}
-              />
-            </VictoryChart>
-          </div>
-
-          <div className="h-32 col-span-4 md:col-span-2">
-            <TopEightLanguages />
-          </div>
-        </section>
+            <div className="mt-8 col-span-4 md:col-span-2">
+              {/* <TopEightLanguages /> */}
+              <TopTenRecentlyLearnedComponents />
+            </div>
+          </section>
+        </div>
       )}
     </div>
   );

@@ -1,22 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useGetTopTenIncorrect } from "./use-get-top-ten-incorrect";
+import { useGetTopTenRecentlyLearned } from "./use-get-top-ten-recently-learned";
 
-export const TopTenIncorrectComponents = () => {
-  const topTenIncorrect = useGetTopTenIncorrect();
+export const TopTenRecentlyLearnedComponents = () => {
+  const topTenRecentlyLearned = useGetTopTenRecentlyLearned();
 
-  if (!topTenIncorrect) {
+  if (topTenRecentlyLearned?.length === 0) {
     return null;
   }
 
   return (
     <div className="mx-auto w-80">
       <p className="text-center font-normal text-[13px] text-[#808080] my-8 font-['Gill Sans']">
-        Top Incorrect Components
+        Recently Learned Components
       </p>
       <div className="space-y-2">
-        {topTenIncorrect?.map((component: any) => {
+        {topTenRecentlyLearned?.map((component: any) => {
           return (
             <Link
               key={"lang"}
@@ -31,7 +31,11 @@ export const TopTenIncorrectComponents = () => {
                 </p>
 
                 <div className="text-left text-gray-400">
-                  {component?.totalIncorrect}
+                  {component?.totalAttempts ||
+                    component?.en
+                      ?.split("/")?.[0]
+                      ?.split(",")?.[0]
+                      ?.split(";")?.[0]}
                 </div>
               </div>
             </Link>

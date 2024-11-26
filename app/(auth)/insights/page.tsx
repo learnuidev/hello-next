@@ -9,18 +9,30 @@ import { InsightsV2 } from "./insights-v2/insights-v2";
 import { CharacterDiscoveryAreaChart } from "./CharacterDiscoveryAreaChart";
 import { CharacterDiscoveryBarChart } from "./CharacterDiscoveryBarChart";
 import { CharacterLearnedBarChart } from "./CharacterLearnedBarChart";
+import { useGetFromAndToDate } from "./use-get-from-date";
+import { formatDate } from "@/components/settings-dialog/utils/format-date";
 
 export default function Insights() {
+  const { fromDate, toDate } = useGetFromAndToDate();
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
         <NavBar />
+
         <div className="mx-4 md:mx-20">
           <InsightsFilters />
         </div>
       </div>
 
+      {/* <div className="">
+        <CharacterLearnedBarChart />
+      </div> */}
+
       <main className="mx-4 md:mx-48">
+        <div className="text-gray-500 font-extralight">
+          {formatDate(Date.parse(fromDate?.toISOString()))} -{" "}
+          {formatDate(Date.parse(toDate?.toISOString()))}
+        </div>
         <InsightsV2 />
       </main>
     </div>

@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useGetTopTenRecentlyLearned } from "./use-get-top-ten-recently-learned";
+import { useGetTopTenRecentlyReviewed } from "./use-get-top-ten-recently-reviewed";
 
 export const TopTenRecentlyReviewedComponents = () => {
-  const topTenIncorrect = useGetTopTenRecentlyLearned();
+  const topTenIncorrect = useGetTopTenRecentlyReviewed();
 
   if (topTenIncorrect?.length === 0) {
     return null;
@@ -13,7 +13,7 @@ export const TopTenRecentlyReviewedComponents = () => {
   return (
     <div className="mx-auto w-80">
       <p className="text-center font-normal text-[13px] text-[#808080] my-8 font-['Gill Sans']">
-        Top Ten Recently Reviewed Components
+        Recently Reviewed Components
       </p>
       <div className="space-y-2">
         {topTenIncorrect?.map((component: any) => {

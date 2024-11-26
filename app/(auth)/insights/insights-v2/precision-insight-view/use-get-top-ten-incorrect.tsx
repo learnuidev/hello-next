@@ -13,7 +13,7 @@ export const useGetTopTenIncorrect = () => {
       );
       return (totalBIncorrect?.length || 0) - (totalAIncorrect?.length || 0);
     })
-    ?.slice(0, 10)
+    ?.slice(0, 8)
     ?.map((val) => {
       const totalIncorrect = val?.reviewHistory?.filter(
         (hist) => hist.outcome === "incorrect"

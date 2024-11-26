@@ -48,7 +48,7 @@ export const TopEightLanguages = () => {
   );
 
   return (
-    <div className="mt-8 mx-auto w-80">
+    <div className="mt-8 mx-auto sm:w-96 w-full px-8 sm:p-0">
       <p className="text-center font-normal text-[13px] text-[#808080] my-8 font-['Gill Sans']">
         Top words learned by language{" "}
       </p>

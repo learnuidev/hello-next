@@ -22,7 +22,7 @@ export const TimelineTabBody = ({
 }: {
   variant: "all" | "search" | "click" | "discovered" | "reviewed";
 }) => {
-  // const [focusLang, setFocusLang] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   const focusLang = useTimelineState((state: any) => state.focusLang);
   const setFocusLang = useTimelineState((state: any) => state.setFocusLang);
@@ -127,11 +127,7 @@ export const TimelineTabBody = ({
             })}
           </div>
           <div>
-            {/* <h1 className="font-extralight text-gray-400">
-              {selectedGroup?.title}
-            </h1> */}
-
-            <div className="flex flex-wrap flex-row w-full">
+            <div className="flex flex-wrap flex-row w-full mb-32">
               {selectedGroup?.items?.map((item: any, idx: any) => {
                 if (item?.status === "joined") {
                   return null;
@@ -190,9 +186,11 @@ export const TimelineTabBody = ({
         </section>
       </article>
 
-      <div className="md:hidden flex w-full fixed z-50 bottom-8">
+      <div className="md:hidden flex w-full fixed z-50 bottom-20">
         <div className="m-auto">
           <TimelineDatesDrawer
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
             groups={groups}
             focusLang={focusLang}
             selectedDate={selectedDate || ""}

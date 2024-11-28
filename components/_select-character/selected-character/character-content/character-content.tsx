@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { Nothing } from "@/app/nmm/nothing";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useAddCharacterContentMutation } from "@/domain/character-contents/use-add-character-contents-mutation";
 import { useListCharacterContentsQuery } from "@/domain/character-contents/use-list-character-contents-query";
@@ -38,6 +39,8 @@ export const CharacterContent = ({ characterId }: { characterId: string }) => {
         <code>
           <pre>{JSON.stringify(data, null, 2)}</pre>
         </code>
+      ) : data?.length === 0 ? (
+        <Nothing />
       ) : (
         <section className="columns-1 sm:columns-2 lg:columns-3 py-10 md:py-20 gap-4">
           {data?.map((item: any) => {

@@ -156,10 +156,6 @@ export const CharacterNavbar = (props: SelectedCharacterProps) => {
               <Icons.pinyinChart />
             </button>
           )}
-
-          {learnedChar && characterId?.length === 1 && (
-            <SelectedCharacterStoryButton {...props} />
-          )}
         </div>
       </div>
     </div>

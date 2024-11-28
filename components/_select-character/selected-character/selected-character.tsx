@@ -15,6 +15,7 @@ import { CharacterOverviewView } from "./character-overview-view";
 import { HskSentenceView } from "./hsk-sentences-view";
 import { HskSuperComponentsWordView } from "./hsk-super-components-view";
 import { SimilarCharactersView } from "./similar-characters-view";
+import { CharacterContent } from "./character-content/character-content";
 
 export const SelectedCharacter = (props: SelectedCharacterProps) => {
   const { selectedComp, lang, view, characterId, selectedComp2 } = props;
@@ -61,6 +62,8 @@ export const SelectedCharacter = (props: SelectedCharacterProps) => {
 
     case "similar-looking-characters":
       return <SimilarCharactersView componentId={characterId} />;
+    case "content":
+      return <CharacterContent characterId={characterId} />;
 
     default:
       return <CharacterOverviewView {...props} />;

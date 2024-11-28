@@ -14,6 +14,8 @@ import { getReviewSearchParams } from "./settings-dialog/use-get-review-url";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { TheDock } from "./the-dock";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
+import { SelectedCharacterStoryButton } from "./_select-character/selected-character-story-button";
+import { SelectedCharacterContentsButton } from "./_select-character/selected-character-contents-button";
 
 const isMultiSentence = (str: string) => {
   const isHanziMultiSentence = str.split("。")?.length > 1;
@@ -68,6 +70,12 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
 
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
   const isSuperAdmin = useIsSuperAdmin();
+
+  const { data } = useListCharactersQuery();
+
+  const learnedChar = data?.filter(
+    (item: any) => (item?.input || item?.hanzi) === characterId
+  )?.[0];
 
   const isAutomatic = useShowAutomaticallyTheDock();
 
@@ -240,6 +248,12 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                 )}
               </button>
             )}
+
+            {learnedChar && characterId?.length === 1 && (
+              <SelectedCharacterStoryButton {...props} />
+            )}
+
+            {learnedChar && <SelectedCharacterContentsButton {...props} />}
           </div>
 
           <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />

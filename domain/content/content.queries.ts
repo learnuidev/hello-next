@@ -45,7 +45,7 @@ export function useGetContentQuery(params: { contentId: string }) {
       // }
     },
 
-    enabled: Boolean(authUser?.jwt),
+    enabled: Boolean(authUser?.jwt) && Boolean(params?.contentId),
     cacheTime: 1000 * 60 * 300, // 30 minutes,
   });
 }

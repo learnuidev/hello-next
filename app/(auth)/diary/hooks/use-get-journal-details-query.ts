@@ -24,7 +24,9 @@ export const useGetJournalDetailsQuery = (entryId: string) => {
 
   return useQuery<JournalDetails, Error>({
     queryKey: [getJournalDetailsQueryKey, entryId, authUser?.jwt],
+    enabled: Boolean(entryId),
     queryFn: async () => {
+      // if (entryId) {
       const journalEntriesResp = await fetch(
         `${siteConfig.apiUrl}/v1/get-journal-details`,
         {
@@ -49,6 +51,7 @@ export const useGetJournalDetailsQuery = (entryId: string) => {
           return item?.en !== ".";
         }),
       };
+      // }
     },
   });
 };

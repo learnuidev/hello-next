@@ -13,8 +13,6 @@ export const CharacterContent = ({ characterId }: { characterId: string }) => {
   const addCharacterContentMutation = useAddCharacterContentMutation();
   return (
     <div>
-      {/* <h1>Character Content: {characterId}</h1> */}
-
       <section className="my-12 flex space-x-12">
         <UploadFileButton
           onSuccess={(resp) => {
@@ -36,31 +34,26 @@ export const CharacterContent = ({ characterId }: { characterId: string }) => {
         )}
       </section>
 
-      <section className="columns-1 sm:columns-2 lg:columns-3 py-10 md:py-20 gap-4">
-        {data?.map((item: any) => {
-          if (["png", "jpg", "jpeg"]?.includes(item?.extension)) {
-            return (
-              <div key={item.id} className="mb-4 break-inside-avoid">
-                <div>
+      {isSuperAdmin && showMeta ? (
+        <code>
+          <pre>{JSON.stringify(data, null, 2)}</pre>
+        </code>
+      ) : (
+        <section className="columns-1 sm:columns-2 lg:columns-3 py-10 md:py-20 gap-4">
+          {data?.map((item: any) => {
+            if (["png", "jpg", "jpeg"]?.includes(item?.extension)) {
+              return (
+                <div key={item.id} className="mb-4 break-inside-avoid">
                   <img
                     className="w-full object-cover rounded-xl"
                     alt={item?.name}
                     src={item?.sourceUrl}
                   />
                 </div>
-                {/* <p className="absolute bottom-[-20px] text-gray-400">
-                  {item?.name}
-                </p> */}
-              </div>
-            );
-          }
-        })}
-      </section>
-
-      {isSuperAdmin && showMeta && (
-        <code>
-          <pre>{JSON.stringify(data, null, 2)}</pre>
-        </code>
+              );
+            }
+          })}
+        </section>
       )}
     </div>
   );

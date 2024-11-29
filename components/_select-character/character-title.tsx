@@ -49,8 +49,6 @@ export const CharacterTitle = (props: any) => {
     lang,
   });
 
-  console.log("MEANING", meaning);
-
   const selectedCompInput = selectedComp?.hanzi || selectedCompInput2;
 
   const brightMode = useReadModeStore((state) => state.readMode);

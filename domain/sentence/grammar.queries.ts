@@ -38,7 +38,7 @@ function getAllSubstringIndices(mainString: string, subString: string) {
 }
 
 const listGrammars = async (
-  options: { sentenceId?: string; content: string },
+  options: { sentenceId?: string; content: string; lang?: string },
   opts: {
     Authorization: string;
   }
@@ -61,17 +61,19 @@ const listGrammars = async (
     newGrammarAnalysis = Object.values(resp.grammarAnalysis)[0] as any;
   }
 
-  newGrammarAnalysis = newGrammarAnalysis?.map((item: any) => {
-    return {
-      ...item,
-      startIndex: sentenceId?.indexOf(item?.hanzi || item?.input),
-      offset: (item?.hanzi || item?.input)?.length,
-      allIndexes: getAllSubstringIndices(
-        sentenceId,
-        item?.hanzi || item?.input
-      ),
-    };
-  });
+  if (options?.lang === "zh") {
+    newGrammarAnalysis = newGrammarAnalysis?.map((item: any) => {
+      return {
+        ...item,
+        startIndex: sentenceId?.indexOf(item?.hanzi || item?.input),
+        offset: (item?.hanzi || item?.input)?.length,
+        allIndexes: getAllSubstringIndices(
+          sentenceId,
+          item?.hanzi || item?.input
+        ),
+      };
+    });
+  }
 
   const newResp = {
     ...resp,
@@ -87,7 +89,12 @@ export function useListGrammarsQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ListGrammarsResponse, Error>({
-    queryKey: [queryIds.listGrammars, params?.content, params?.lang],
+    queryKey: [
+      queryIds.listGrammars,
+      params?.content,
+      params?.lang,
+      authUser?.jwt,
+    ],
     queryFn: async () => {
       if (Object.keys(params)?.length) {
         const response = await listGrammars(params, {

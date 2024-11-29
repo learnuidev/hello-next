@@ -95,11 +95,12 @@ export function useListComponents(
   return {
     data: data
       ?.filter((item: any) => {
-        if (options?.singleItemsOnly) {
-          return (item?.hanzi || item?.input)?.length === 1;
-        } else {
-          return true;
-        }
+        return (item?.hanzi || item?.input)?.length === 1;
+        // if (options?.singleItemsOnly) {
+        //   return (item?.hanzi || item?.input)?.length === 1;
+        // } else {
+        //   return true;
+        // }
       })
       ?.filter((item: any) => {
         if (options?.singleItemsOnly) {

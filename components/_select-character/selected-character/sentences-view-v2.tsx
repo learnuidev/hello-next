@@ -49,12 +49,12 @@ function SentenceViewItem({ prop }: { prop: any }) {
         // }
       }}
     >
-      {brightMode || show || readMode ? (
+      {readMode ? (
         <p className="text-gray-400 text-sm fade-in-100 transition">
-          {prop?.pinyin}
+          {prop?.pinyin || prop?.roman}
         </p>
       ) : (
-        <p className="text-black text-sm">{prop?.pinyin}</p>
+        <p className="text-black text-sm"></p>
       )}
       <p
         onClick={() => {

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
@@ -24,15 +24,21 @@ import { filterComponents } from "./nmm-utils/filter-components";
 import { Nothing } from "./nothing";
 import { PreviewComponent } from "./preview-component";
 import { useGetSelectedBelt } from "./use-get-selected-belt";
+import { useGetNmmParams } from "./use-get-nmm-params";
 
 export function NmmCoreComponents() {
   const searchParams = useSearchParams();
+
   const searchQueryParams = searchParams.get("query") || "";
   const routeName = usePathname();
   const queryStr = useSearchQueryStore((state) => state.query);
   const setQuery = useSearchQueryStore((state) => state.setQuery);
 
+  const { level } = useGetNmmParams();
+
   const selectedBelt = useGetSelectedBelt();
+
+  const [slicedByLevels, setSliced] = useState<any>({});
   const { data: authUser } = useCurrentAuthUser({});
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
@@ -84,6 +90,8 @@ export function NmmCoreComponents() {
 
   // const { data: filteredComponents } = useListComponentsByBelt();
 
+  console.log("SELECTED BELT", selectedBelt);
+
   const learnedComps =
     (isComponentsLoading ? chineseCharacters : components)
       ?.slice(selectedBelt?.minCharacterLevel, selectedBelt?.maxCharacterLevel)
@@ -117,27 +125,48 @@ export function NmmCoreComponents() {
   //     return true;
   //   });
 
+  const sliced = slicedByLevels?.[level] || 100;
+
   if (learnedComps?.length === 0) {
     return <Nothing message={"You have learned everything in this belt"} />;
   }
 
   // return "TODO";
   return (
-    <NmmListContainer>
-      {learnedComps.map((prop: any, idx: number) => {
-        return (
-          <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
-            <Tooltip>
-              <TooltipTrigger className="hover:scale-125 transition">
-                <HanziLink character={prop} />
-              </TooltipTrigger>
-              <TooltipContent className="bg-black border-gray-800">
-                <PreviewComponent component={prop} />
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        );
-      })}
-    </NmmListContainer>
+    <div className="mb-24">
+      <NmmListContainer>
+        {learnedComps?.slice(0, sliced).map((prop: any, idx: number) => {
+          return (
+            <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
+              <Tooltip>
+                <TooltipTrigger className="hover:scale-125 transition">
+                  <HanziLink character={prop} />
+                </TooltipTrigger>
+                <TooltipContent className="bg-black border-gray-800">
+                  <PreviewComponent component={prop} />
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          );
+        })}
+      </NmmListContainer>
+
+      {learnedComps?.length < sliced ? null : (
+        <div className="flex justify-center items-center mb-24 mt-12">
+          <button
+            onClick={() => {
+              setSliced((prev: any) => {
+                return {
+                  ...prev,
+                  [level]: (prev?.[level] || 100) + 100,
+                };
+              });
+            }}
+          >
+            Load More
+          </button>
+        </div>
+      )}
+    </div>
   );
 }

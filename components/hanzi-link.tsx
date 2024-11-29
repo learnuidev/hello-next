@@ -79,15 +79,17 @@ export function HanziLink({
         className
       )}
     >
-      <p
-        className={cn(
-          "top-0 text-xs text-gray-400 w-24 text-center truncate",
-          brightMode ? "text-gray-600" : "dark:text-gray-800 text-gray-200",
-          className
-        )}
-      >
-        {character?.pinyin || selectedComp?.pinyin}
-      </p>
+      {brightMode && (
+        <p
+          className={cn(
+            "top-0 text-xs text-gray-400 w-24 text-center truncate",
+            brightMode ? "text-gray-600" : "dark:text-gray-800 text-gray-200",
+            className
+          )}
+        >
+          {character?.pinyin || selectedComp?.pinyin}
+        </p>
+      )}
       <Link
         href={
           `/nmm/${character?.hanzi}?lang=zh` +
@@ -170,7 +172,8 @@ export function HanziLink({
       <p
         className={cn(
           "text-xs text-gray-400 w-16 truncate text-center",
-          brightMode ? "text-gray-500" : "dark:text-gray-800 text-gray-200"
+          // brightMode ? "text-gray-500" : "dark:text-gray-800 text-gray-200"
+          "text-gray-500"
         )}
       >
         {character?.en || selectedComp?.en}

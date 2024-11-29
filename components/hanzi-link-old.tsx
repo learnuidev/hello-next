@@ -17,9 +17,6 @@ interface HSKCharacter {
   hskLevel?: number;
   pinyin: string;
   en?: string;
-  tone_level?: number;
-  status: string;
-  group?: string;
 }
 
 export function HanziLink({
@@ -40,27 +37,24 @@ export function HanziLink({
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
-  // const selectedComp = useMemo(
-  //   () =>
-  //     components?.find(
-  //       (component: any) => component?.hanzi === character?.hanzi
-  //     ),
-  //   [components, character]
-  // );
-
-  const selectedComp = character;
+  const selectedComp = useMemo(
+    () =>
+      components?.find(
+        (component: any) => component?.hanzi === character?.hanzi
+      ),
+    [components, character]
+  );
 
   const color = calculateColor({
-    tone: character?.tone_level,
+    tone: selectedComp?.tone_level,
   });
 
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersQuery();
 
-  const learnedChar = character;
-  // const learnedChar = learnedCharacters2?.find(
-  //   (char: any) => char?.hanzi === character?.hanzi
-  // );
+  const learnedChar = learnedCharacters2?.find(
+    (char: any) => char?.hanzi === character?.hanzi
+  );
 
   const { data: answers } = useListAnswersQuery(
     {},
@@ -121,7 +115,7 @@ export function HanziLink({
               ? learnedChar?.status === "forgotten"
                 ? "dark:text-gray-900 text-gray-100"
                 : `hover:${color} text-gray-300`
-              : selectedComp?.group
+              : selectedComp?.length > 1 || selectedComp?.group
                 ? "dark:text-gray-500 text-gray-200"
                 : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
                   //   ? "dark:text-yellow-500"
@@ -156,7 +150,7 @@ export function HanziLink({
                       : `hover:${color} text-gray-300`
                     : lastAnswer?.totalCharacters?.includes(character?.hanzi)
                       ? "text-yellow-500"
-                      : selectedComp?.group
+                      : selectedComp?.length > 1 || selectedComp?.group
                         ? "dark:text-gray-500 text-gray-200"
                         : "dark:text-gray-700 text-gray-200"
               } dark:hover:text-white text-2xl transition lowercase w-full`}

@@ -89,11 +89,14 @@ export function NmmCoreComponents() {
       ?.slice(selectedBelt?.minCharacterLevel, selectedBelt?.maxCharacterLevel)
       // ?.filter((comp: any) => comp?.level < 100)
       .filter((prop: any) => {
-        const learnedChar = learnedCharacters2?.find(
-          (char: any) => char?.hanzi === prop?.hanzi
-        );
+        // const learnedChar = learnedCharacters2?.find(
+        //   (char: any) => char?.hanzi === prop?.hanzi
+        // );
 
-        if (!brightMode && learnedChar?.status === "forgotten") {
+        // if (!brightMode && learnedChar?.status === "forgotten") {
+        //   return null;
+        // }
+        if (!brightMode && prop?.status === "forgotten") {
           return null;
         }
 
@@ -122,10 +125,6 @@ export function NmmCoreComponents() {
   return (
     <NmmListContainer>
       {learnedComps.map((prop: any, idx: number) => {
-        const selectedComp = components?.find(
-          (component: any) => component?.hanzi === prop?.hanzi
-        );
-
         return (
           <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
             <Tooltip>

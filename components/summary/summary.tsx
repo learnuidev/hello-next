@@ -49,7 +49,7 @@ export function Summary({
       onSuccess: (data: any) => {
         console.log("");
         router.push(
-          `/nmm/${characterId}?lang=${lang ? lang : data?.lang}${statusUrl ? `&status-url=${statusUrl}` : ``}`
+          `/nmm/${characterId}?lang=${data?.lang ? data?.lang : lang}${statusUrl ? `&status-url=${statusUrl}` : ``}`
         );
       },
     }

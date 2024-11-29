@@ -27,14 +27,7 @@ import { PlusIcon } from "@/components/ui/icons";
 import { NewConvo } from "../new-convo/new-convo";
 import ConvoItem from "./convo-item";
 import { FloatingNavbar } from "@/components/floating-navbar";
-
-function formatPercentage(number: number) {
-  return Intl.NumberFormat("en-GB", {
-    style: "percent",
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 2,
-  }).format(number);
-}
+import { formatPercentage } from "@/app/profile/utils/format-percentage";
 
 // useConvosStore
 

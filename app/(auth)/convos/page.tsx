@@ -25,6 +25,7 @@ import { HoverEffect } from "@/components/hover-effect";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useListConversationsQuery } from "@/domain/conversation/use-list-conversations-query";
 import { useContentTypeStore } from "./use-content-type-store";
+import { formatPercentage } from "@/app/profile/utils/format-percentage";
 
 type ContentType = {
   title: string;
@@ -92,14 +93,6 @@ function ContentsList() {
       {projects?.length > 0 && <HoverEffect items={[...projects]} />}
     </div>
   );
-}
-
-function formatPercentage(number: number) {
-  return Intl.NumberFormat("en-GB", {
-    style: "percent",
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 2,
-  }).format(number);
 }
 
 // useConvosStore

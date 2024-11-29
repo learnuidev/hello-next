@@ -6,6 +6,7 @@ import { useGetInsightParams } from "@/app/(auth)/insights/insights-v2/use-get-i
 import { useListErrors } from "@/app/(auth)/insights/insights-v2/use-list-errors";
 import { useGetFailureRate } from "@/app/(auth)/insights/insights-v2/use-get-failure-rate";
 import { useGetTotalLifetimeCharacters } from "@/app/profile/hooks/use-get-total-lifetime-characters";
+import { useGetProgress } from "./use-get-progress";
 
 export const InsightHeaders = () => {
   const { data: learnedCharacters } = useListCharactersQuery();
@@ -26,6 +27,8 @@ export const InsightHeaders = () => {
   const totalErrors = useListErrors();
   const failureRate = useGetFailureRate();
 
+  const progress = useGetProgress();
+
   const totalStories = learnedCharacters?.filter((character: any) => {
     const characterIsObject =
       typeof character?.story === "object" &&
@@ -34,13 +37,20 @@ export const InsightHeaders = () => {
     return character?.story?.length > 10 || characterIsObject;
   })?.length;
 
+  console.log("progress", progress);
+
   const insightsList = [
     {
       id: "components",
       stat: lifeTimeCharacters || 0,
       title: "Components",
     },
-    { id: "words", stat: totalWords?.length || 0, title: "Words" },
+    {
+      id: "progress",
+      stat: progress?.overallHskProgress || 0,
+      title: "HSK Progress",
+    },
+    // { id: "words", stat: totalWords?.length || 0, title: "Words" },
     // { id: "stories", stat: totalStories || 0, title: "Stories" },
     { id: "forgotten", stat: totalForgotten?.length || 0, title: "Mastered" },
     { id: "errors", stat: totalErrors?.length || 0, title: "Errors" },

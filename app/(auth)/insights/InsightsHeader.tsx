@@ -20,6 +20,7 @@ import {
   faPenLine,
 } from "@fortawesome/pro-thin-svg-icons";
 import { useCharactersDiscovered } from "./use-characters-discovered";
+import { formatPercentage } from "@/app/profile/utils/format-percentage";
 
 export function InsightsHeader() {
   const { data: charactersDiscovered } = useCharactersDiscovered();
@@ -91,14 +92,6 @@ export function InsightsHeader() {
     (character) => character?.hanzi
   );
   const unlockedCharactersNMMStr = unlockedCharactersNMM?.join(" ");
-
-  function formatPercentage(number: number) {
-    return Intl.NumberFormat("en-GB", {
-      style: "percent",
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 2,
-    }).format(number);
-  }
 
   const correctAnswers = allAnswers?.filter(
     (answer: any) => answer?.status === "correct"

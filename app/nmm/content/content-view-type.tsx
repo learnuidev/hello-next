@@ -10,6 +10,7 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { chineseCharacters } from "@/langs/chinese /characters";
 import { useGetSelectedBelt } from "../use-get-selected-belt";
 import { useGetContent } from "./use-get-content";
+import { SentencesViewV2 } from "@/components/_select-character/selected-character/sentences-view-v2";
 
 export function ContentViewType({
   variant,
@@ -20,7 +21,12 @@ export function ContentViewType({
 }) {
   const selectedBelt = useGetSelectedBelt();
 
-  const { data } = useGetContent({ variant, selectedBelt, contentId });
+  const { data } = useGetContent({
+    variant,
+    selectedBelt,
+    contentId,
+    returnAll: true,
+  });
 
   const characters = data?.characters || [];
   const words = data?.words || [];
@@ -38,8 +44,18 @@ export function ContentViewType({
 
   if (viewType === "sentence") {
     return (
+      <div className="mx-4 md:mx-12">
+        <SentencesViewV2 relatedSentences={sentences} />
+      </div>
+    );
+    return (
       <NmmListContainerSentence>
         {sentences?.map((prop: any, idx: number) => {
+          return (
+            <div key={`${prop.hanzi}-chars-${idx}`}>
+              <p>{prop?.hanzi}</p>
+            </div>
+          );
           return (
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
           );
@@ -52,8 +68,6 @@ export function ContentViewType({
     return (
       <NmmListContainer>
         {characters.map((prop: any, idx: number) => {
-          console.log("XIAOMA", prop);
-
           const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
           return (
             <HanziLink

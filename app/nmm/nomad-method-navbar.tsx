@@ -25,6 +25,8 @@ import { getNmmSearchParamsUrl } from "./get-nmm-params-url";
 import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
 import { useGetNmmParams } from "./use-get-nmm-params";
 import { useGetSelectedBelt } from "./use-get-selected-belt";
+import { useIsContent } from "../review/use-is-content";
+import { useGetReviewParams } from "../review/use-get-review-params";
 
 export function NomadMethodNavbar() {
   const selectedBelt = useGetSelectedBelt();
@@ -65,6 +67,8 @@ export function NomadMethodNavbar() {
   const { data: contents } = useListContentsQuery();
 
   const value = "hsk";
+
+  const isContent = useIsContent(mode);
 
   const contentTitles = useMemo(
     () => [
@@ -242,32 +246,54 @@ export function NomadMethodNavbar() {
             </div>
           )}
 
-          <div className="flex items-center">
-            {["hsk", "hsk3"]?.includes(mode) && (
-              <div className="mx-12">
-                {topics?.length > 0 && (
-                  <div>
-                    <FilterSelect
-                      className="w-[180px]"
-                      value={hskView}
-                      onValueChange={(topic) => {
-                        setHskView(selectedBelt?.hskLevel, topic);
-                      }}
-                      items={topics.map((topic) => ({
-                        id: topic,
-                        title: topic,
-                      }))}
-                      title={"Select a topic "}
-                    />
-                  </div>
-                )}
-              </div>
-            )}
+          {isContent ? null : (
+            <div className="flex items-center">
+              {["hsk", "hsk3"]?.includes(mode) && (
+                <div className="mx-12">
+                  {topics?.length > 0 && (
+                    <div>
+                      <FilterSelect
+                        className="w-[180px]"
+                        value={hskView}
+                        onValueChange={(topic) => {
+                          setHskView(selectedBelt?.hskLevel, topic);
+                        }}
+                        items={topics.map((topic) => ({
+                          id: topic,
+                          title: topic,
+                        }))}
+                        title={"Select a topic "}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
 
-            {mode === "hsk" ? (
-              <div className="space-x-4">
-                {(mode === "hsk3" ? belts : belts.slice(0, 6))?.map?.(
-                  (belt) => {
+              {mode === "hsk" ? (
+                <div className="space-x-4">
+                  {(mode === "hsk3" ? belts : belts.slice(0, 6))?.map?.(
+                    (belt) => {
+                      return (
+                        <button
+                          key={belt?.fill}
+                          onClick={() => {
+                            router.push(
+                              `/nmm?${getNmmSearchParamsUrl({ level: belt?.hskLevel, tab, viewMode })}`
+                            );
+                          }}
+                          className={`${
+                            belt?.hskLevel === hskLevel
+                              ? belt?.fill
+                              : belt?.unselected
+                          } h-4 w-4 rounded-full text`}
+                        ></button>
+                      );
+                    }
+                  )}
+                </div>
+              ) : mode === "yct" ? (
+                <div className="space-x-4">
+                  {belts?.slice(0, 4).map?.((belt) => {
                     return (
                       <button
                         key={belt?.fill}
@@ -283,51 +309,31 @@ export function NomadMethodNavbar() {
                         } h-4 w-4 rounded-full text`}
                       ></button>
                     );
-                  }
-                )}
-              </div>
-            ) : mode === "yct" ? (
-              <div className="space-x-4">
-                {belts?.slice(0, 4).map?.((belt) => {
-                  return (
-                    <button
-                      key={belt?.fill}
-                      onClick={() => {
-                        router.push(
-                          `/nmm?${getNmmSearchParamsUrl({ level: belt?.hskLevel, tab, viewMode })}`
-                        );
-                      }}
-                      className={`${
-                        belt?.hskLevel === hskLevel
-                          ? belt?.fill
-                          : belt?.unselected
-                      } h-4 w-4 rounded-full text`}
-                    ></button>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="space-x-4">
-                {belts?.map?.((belt) => {
-                  return (
-                    <button
-                      key={belt?.fill}
-                      onClick={() => {
-                        router.push(
-                          `/nmm?${getNmmSearchParamsUrl({ level: belt?.hskLevel, tab, viewMode })}`
-                        );
-                      }}
-                      className={`${
-                        belt?.hskLevel === hskLevel
-                          ? belt?.fill
-                          : belt?.unselected
-                      } h-4 w-4 rounded-full text`}
-                    ></button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+                  })}
+                </div>
+              ) : (
+                <div className="space-x-4">
+                  {belts?.map?.((belt) => {
+                    return (
+                      <button
+                        key={belt?.fill}
+                        onClick={() => {
+                          router.push(
+                            `/nmm?${getNmmSearchParamsUrl({ level: belt?.hskLevel, tab, viewMode })}`
+                          );
+                        }}
+                        className={`${
+                          belt?.hskLevel === hskLevel
+                            ? belt?.fill
+                            : belt?.unselected
+                        } h-4 w-4 rounded-full text`}
+                      ></button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>

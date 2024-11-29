@@ -13,10 +13,12 @@ export const useGetContent = ({
   variant,
   selectedBelt,
   contentId,
+  returnAll,
 }: {
   variant?: "core" | "needs_review" | "all";
   selectedBelt: any;
   contentId: string;
+  returnAll: boolean;
 }) => {
   const viewType = useSearchQueryStore((state) => state.type);
 
@@ -26,24 +28,26 @@ export const useGetContent = ({
 
   const { data: hskWords } = useListHSKWordsQuery();
 
+  const queryKey = returnAll
+    ? ["list-content-items", viewType, contentId]
+    : [
+        "list-content-items",
+        variant,
+        selectedBelt?.hskLevel,
+        selectedBelt?.maxCharacterLevel,
+        selectedBelt?.minCharacterLevel,
+        contentId,
+        viewType,
+        JSON.stringify(hskWords),
+        JSON.stringify(contents),
+      ];
+
   return useQuery({
     // @ts-ignore
-    queryKey: [
-      "list-content-items",
-      variant,
-      selectedBelt?.hskLevel,
-      selectedBelt?.maxCharacterLevel,
-      selectedBelt?.minCharacterLevel,
-      contentId,
-      viewType,
-      JSON.stringify(hskWords),
-      JSON.stringify(contents),
-    ],
+    queryKey: queryKey,
 
     queryFn: async () => {
       const content = contents?.find((c: any) => c?.id === contentId);
-
-      console.log("CONTENT", content);
 
       let xiaomaSentences = [] as any;
 
@@ -55,7 +59,14 @@ export const useGetContent = ({
         ]
           .filter((val: any) => filterNonHanYu(val))
           .map((id) => {
+            const transcription = content?.transcriptions?.find(
+              (transcription: any) => {
+                return (transcription?.hanzi || transcription?.input) === id;
+              }
+            );
+
             return {
+              ...transcription,
               hanzi: id,
               lang: "zh",
             };
@@ -75,10 +86,17 @@ export const useGetContent = ({
                 (component: any) => component?.hanzi === val
               );
 
+              if (returnAll) {
+                return true;
+              }
+
               return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
             });
           })
           ?.filter((prop: any, idx: any, coll: any) => {
+            if (returnAll) {
+              return true;
+            }
             const qIdx = coll.findIndex((v: any) => v?.hanzi === prop?.hanzi);
 
             if (idx !== qIdx) {
@@ -120,6 +138,9 @@ export const useGetContent = ({
             };
           })
           ?.filter((prop: any, idx: number) => {
+            if (returnAll) {
+              return true;
+            }
             const selectedComp = components?.find(
               (component: any) => component?.hanzi === prop?.hanzi
             );
@@ -136,11 +157,13 @@ export const useGetContent = ({
           });
       }
 
-      return {
+      const resp = {
         characters: xiaomaCharacters,
         words: xiaomaWords,
         sentences: xiaomaSentences,
       };
+
+      return resp;
     },
 
     refetchOnWindowFocus: false,

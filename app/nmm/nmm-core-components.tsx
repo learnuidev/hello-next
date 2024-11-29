@@ -90,8 +90,6 @@ export function NmmCoreComponents() {
 
   // const { data: filteredComponents } = useListComponentsByBelt();
 
-  console.log("SELECTED BELT", selectedBelt);
-
   const learnedComps =
     (isComponentsLoading ? chineseCharacters : components)
       ?.slice(selectedBelt?.minCharacterLevel, selectedBelt?.maxCharacterLevel)

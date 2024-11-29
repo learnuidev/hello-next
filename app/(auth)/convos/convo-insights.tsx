@@ -179,6 +179,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                       frequency={char?.frequency}
                       character={{
                         hanzi: char?.input,
+                        // status: char?.status || "not_started",
                         hskLevel: 9,
                         pinyin: "",
                         en: "",

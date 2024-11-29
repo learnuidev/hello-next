@@ -183,6 +183,7 @@ export function DiaryInsights({ entryId }: { entryId: string }) {
                       character={{
                         hanzi: char?.input,
                         hskLevel: 9,
+                        // status: char?.status || "not_started",
                         pinyin: "",
                         en: "",
                       }}

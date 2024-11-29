@@ -15,10 +15,13 @@ type DuCourse = {
   is_new: boolean;
   document_ids: null;
   release_at: string;
+  free: boolean;
+  crd_url: string;
 };
 
 type DuLesson = {
   id: string;
+  crd_url: string;
   title: string;
   level: DuLevels;
   note: string | null;
@@ -73,6 +76,7 @@ export type DuChapter = {
   release_at_formatted: string;
   canonical_url: string;
   path: string;
+
   locked: boolean;
   release_at: string;
   updated_at: string;

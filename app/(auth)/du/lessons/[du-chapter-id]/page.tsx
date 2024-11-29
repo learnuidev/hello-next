@@ -4,12 +4,11 @@ import { FloatingNavbar } from "@/components/floating-navbar";
 import { NavBar } from "@/components/navbar";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useGetDuParams } from "../../hooks/use-get-du-params";
+import { DuLessonView } from "./components/du-chapter-view";
 // import { DuChapters } from "./components/du-chapters/du-chapters";
 
 export default function LessonItem() {
   const isSuperAdmin = useIsSuperAdmin();
-
-  const { lessonId } = useGetDuParams();
 
   if (!isSuperAdmin) {
     return <NoPermissionView />;
@@ -19,7 +18,7 @@ export default function LessonItem() {
       <NavBar />
 
       <div className="mt-8 md:mx-12">
-        <div>{lessonId}</div>
+        <DuLessonView />
       </div>
 
       <FloatingNavbar />

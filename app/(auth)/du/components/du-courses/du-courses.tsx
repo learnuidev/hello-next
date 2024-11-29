@@ -21,7 +21,14 @@ export const DuCourses = () => {
             <div className="space-y-8 mt-4 columns-1 sm:columns-2 lg:columns-5 gap-4">
               {section?.items?.map((item) => {
                 return (
-                  <Link href={`/du/${item?.path}`} key={JSON.stringify(item)}>
+                  <Link
+                    href={
+                      section?.display === "lesson"
+                        ? `/du/lessons/${item?.id}`
+                        : `/du/${item?.path}`
+                    }
+                    key={JSON.stringify(item)}
+                  >
                     <img
                       className="object-cover rounded-xl w-full"
                       src={item?.large_image_url}

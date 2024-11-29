@@ -8,7 +8,13 @@ interface ListChaptersResponse {
   lessons: DuChapter[];
 }
 
-export const useListChapters = (courseId: string) => {
+export const useListChapters = ({
+  courseId,
+  cookie,
+}: {
+  courseId: string;
+  cookie: string;
+}) => {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ListChaptersResponse, Error>({
@@ -19,6 +25,7 @@ export const useListChapters = (courseId: string) => {
 
         body: JSON.stringify({
           courseId,
+          cookie,
         }),
         headers: {
           Authorization: `Bearer ${authUser?.jwt}`,

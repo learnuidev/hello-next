@@ -23,9 +23,10 @@ export const DuCourses = () => {
                 return (
                   <Link
                     href={
-                      section?.display === "lesson"
-                        ? `/du/lessons/${item?.id}`
-                        : `/du/${item?.path}`
+                      `/du/${item?.path}`
+                      // section?.display === "lesson"
+                      //   ? `/du/lessons/${item?.id}`
+                      //   : `/du/${item?.path}`
                     }
                     key={JSON.stringify(item)}
                   >

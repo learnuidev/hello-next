@@ -183,31 +183,34 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
               </button>
             )}
 
-            {!isLoading && isSuperAdmin && !selectedComp2 && (
-              <button
-                className="text-xl"
-                disabled={
-                  discoverMutation.isLoading || discoverMutation.isSuccess
-                }
-                onClick={() => {
-                  discoverMutation
-                    .mutateAsync({
-                      hanzi: selectedComp?.hanzi || characterId,
-                    })
-                    .then((resp: any) => {
-                      toast(
-                        `Component Successfully discovered ${JSON.stringify(resp)}`
-                      );
-                    });
-                }}
-              >
-                {discoverMutation.isLoading ? (
-                  <Icons.spinner spinPulse />
-                ) : (
-                  <Icons.language />
-                )}
-              </button>
-            )}
+            {characterId?.length <= 3 &&
+              !isLoading &&
+              isSuperAdmin &&
+              !selectedComp2 && (
+                <button
+                  className="text-xl"
+                  disabled={
+                    discoverMutation.isLoading || discoverMutation.isSuccess
+                  }
+                  onClick={() => {
+                    discoverMutation
+                      .mutateAsync({
+                        hanzi: selectedComp?.hanzi || characterId,
+                      })
+                      .then((resp: any) => {
+                        toast(
+                          `Component Successfully discovered ${JSON.stringify(resp)}`
+                        );
+                      });
+                  }}
+                >
+                  {discoverMutation.isLoading ? (
+                    <Icons.spinner spinPulse />
+                  ) : (
+                    <Icons.language />
+                  )}
+                </button>
+              )}
             {currentCharacter?.status === "forgotten" && (
               <button
                 className="text-xl"

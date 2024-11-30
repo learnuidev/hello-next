@@ -26,10 +26,29 @@ export const DuChapters = () => {
 
   const course = lesson?.course;
 
+  // return (
+  //   <div className="grid grid-cols-4 gap-8">
+  //     {data?.lessons?.map((lesson) => {
+  //       return (
+  //         <div
+  //           key={JSON.stringify(lesson)}
+  //           className="h-32 border-[1px] rounded w-full border-gray-500 p-4"
+  //         >
+  //           <h4>{lesson?.title}</h4>
+  //         </div>
+  //       );
+  //     })}
+  //   </div>
+  // );
+
   return (
-    <div>
-      <div>
-        <Link href="/du"> Stories </Link> / Story: {course?.title}
+    <div className="w-full">
+      <div className="text-gray-500">
+        <Link href="/du" className="hover:text-white">
+          {" "}
+          Stories{" "}
+        </Link>{" "}
+        / Story: {course?.title}
       </div>
       <div className="mt-12 mb-4">
         <p className="uppercase mt-8 font-bold text-gray-400">
@@ -42,15 +61,14 @@ export const DuChapters = () => {
 
         <span>Save Story</span>
       </button> */}
-      <div className="mt-16 grid gap-12 items-start grid-cols-12">
-        <img
-          className={cn(
-            "w-full object-cover rounded-xl",
-            "sm:col-span-6 col-span-12"
-          )}
-          src={course?.large_image_url}
-          alt={course?.title}
-        />
+      <div className="mt-16 grid gap-12 items-start grid-cols-12 w-full">
+        <div className={cn("sm:col-span-6 col-span-12 pr-4")}>
+          <img
+            className={cn("w-full object-cover rounded-xl")}
+            src={course?.large_image_url}
+            alt={course?.title}
+          />
+        </div>
         <div className="sm:col-span-5 col-span-12">
           <p className="text-xl text-gray-300 font-extralight">
             {course?.description}
@@ -75,7 +93,20 @@ export const DuChapters = () => {
         </div>
       </div>
 
-      <div className="mx-auto mt-12">
+      {/* <div className="grid grid-cols-1 sm:grid-cols-4 gap-8 mt-12 mb-32">
+          {data?.lessons?.map((lesson) => {
+            return (
+              <div
+                key={JSON.stringify(lesson)}
+                className="h-32 border-[1px] rounded w-full border-gray-500 p-4"
+              >
+                <h4>{lesson?.title}</h4>
+              </div>
+            );
+          })}
+        </div> */}
+
+      <div className="mt-12">
         <HoverEffect
           className="lg:grid-cols-4 w-full"
           items={

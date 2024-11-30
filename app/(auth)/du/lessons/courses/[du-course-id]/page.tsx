@@ -11,11 +11,13 @@ export default function CourseItem() {
   if (!isSuperAdmin) {
     return <NoPermissionView />;
   }
+
+  // return <div>YO</div>;
   return (
-    <div>
+    <div className="w-full">
       <NavBar />
 
-      <div className="mx-4 mr-12 mt-8 md:mx-12">
+      <div className="mx-4 mt-8 md:mx-12">
         <DuChapters />
       </div>
 

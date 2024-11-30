@@ -48,13 +48,21 @@ export function useGetCharacterAnalytics({
           ),
         ];
 
-  const totalNewCharaters = uniqueWords?.filter((char) => {
+  const totalLearnedCharaters = uniqueWords?.filter((char) => {
     const isLearned = learnedCharacters?.find(
       (item: any) => (item?.hanzi || item?.input) === char
     );
 
     return !!isLearned;
   })?.length;
+
+  const newCharaters = uniqueWords?.filter((char) => {
+    const isLearned = learnedCharacters?.find(
+      (item: any) => (item?.hanzi || item?.input) === char
+    );
+
+    return !isLearned;
+  });
 
   const totalLearnedCharacters = uniqueWords
     ?.map((char) => {
@@ -78,7 +86,7 @@ export function useGetCharacterAnalytics({
     style: "percent",
     minimumFractionDigits: 1,
     maximumFractionDigits: 1,
-  }).format(totalNewCharaters / uniqueWords?.length);
+  }).format(totalLearnedCharaters / uniqueWords?.length);
 
   const masteryRate = Intl.NumberFormat("en-GB", {
     style: "percent",
@@ -131,6 +139,7 @@ export function useGetCharacterAnalytics({
     masteryRate,
     precisionRate,
     totalCharacters: uniqueWords?.length,
-    totalNewCharaters: uniqueWords?.length - totalNewCharaters,
+    newCharaters,
+    totalNewCharaters: uniqueWords?.length - totalLearnedCharaters,
   };
 }

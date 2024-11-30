@@ -51,6 +51,7 @@ export const DuLessonView = () => {
     precisionRate,
     totalCharacters,
     totalNewCharaters,
+    newCharaters,
     uniqueWords,
     masteryRate,
   } = duAnalytics;
@@ -158,6 +159,7 @@ export const DuLessonView = () => {
                     precisionRate,
                     totalCharacters,
                     totalNewCharaters,
+                    newCharaters,
                   },
                   null,
                   4

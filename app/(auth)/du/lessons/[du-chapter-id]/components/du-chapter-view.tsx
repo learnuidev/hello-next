@@ -4,6 +4,7 @@ import { useListTopLessons } from "../../../hooks/use-list-top-lessons";
 import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 
 export const DuLessonView = () => {
   const { chapterId, cookie } = useGetDuParams();
@@ -23,7 +24,7 @@ export const DuLessonView = () => {
   const course = data?.course;
 
   if (!course) {
-    return null;
+    return <LottieLoadingAnimation />;
   }
 
   return (

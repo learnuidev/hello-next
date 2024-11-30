@@ -13,6 +13,7 @@ import {
 import { Icons } from "@/components/ui/icons.v2";
 import { HoverEffect } from "@/components/hover-effect";
 import { cn } from "@/lib/utils";
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 
 export const DuChapters = () => {
   const { courseId, cookie } = useGetDuParams();
@@ -27,7 +28,7 @@ export const DuChapters = () => {
   const course = lesson?.course;
 
   if (!course) {
-    return null;
+    return <LottieLoadingAnimation />;
   }
 
   return (

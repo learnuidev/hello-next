@@ -6,6 +6,15 @@ import { useQuery } from "@tanstack/react-query";
 
 interface GetChapterDetailsResponse {
   course: DuCourse;
+  subtitles: {
+    words: {
+      hsk?: number;
+      hanzi: string;
+      pinyin?: string;
+      meaning?: string;
+      tc_hanzi: string;
+    }[];
+  };
 }
 
 export const useGetChapterDetails = ({

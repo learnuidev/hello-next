@@ -26,20 +26,9 @@ export const DuChapters = () => {
 
   const course = lesson?.course;
 
-  // return (
-  //   <div className="grid grid-cols-4 gap-8">
-  //     {data?.lessons?.map((lesson) => {
-  //       return (
-  //         <div
-  //           key={JSON.stringify(lesson)}
-  //           className="h-32 border-[1px] rounded w-full border-gray-500 p-4"
-  //         >
-  //           <h4>{lesson?.title}</h4>
-  //         </div>
-  //       );
-  //     })}
-  //   </div>
-  // );
+  if (!course) {
+    return null;
+  }
 
   return (
     <div className="w-full">
@@ -56,11 +45,7 @@ export const DuChapters = () => {
         </p>
         <h1 className="text-2xl font-bold">{course?.title}</h1>
       </div>
-      {/* <button className="text-sm space-x-2 border-[1px] rounded-2xl px-2 py-1">
-        <Icons.bookmark />
 
-        <span>Save Story</span>
-      </button> */}
       <div className="mt-16 grid gap-12 items-start grid-cols-12 w-full">
         <div className={cn("sm:col-span-6 col-span-12 pr-4")}>
           <img
@@ -92,19 +77,6 @@ export const DuChapters = () => {
           </div>
         </div>
       </div>
-
-      {/* <div className="grid grid-cols-1 sm:grid-cols-4 gap-8 mt-12 mb-32">
-          {data?.lessons?.map((lesson) => {
-            return (
-              <div
-                key={JSON.stringify(lesson)}
-                className="h-32 border-[1px] rounded w-full border-gray-500 p-4"
-              >
-                <h4>{lesson?.title}</h4>
-              </div>
-            );
-          })}
-        </div> */}
 
       <div className="mt-12">
         <HoverEffect

@@ -3,6 +3,7 @@ import { useGetDuParams } from "../../../hooks/use-get-du-params";
 import { useListTopLessons } from "../../../hooks/use-list-top-lessons";
 import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export const DuLessonView = () => {
   const { chapterId, cookie } = useGetDuParams();
@@ -24,103 +25,62 @@ export const DuLessonView = () => {
   const course = data?.course;
 
   return (
-    <div>
-      <div>
-        <Link href="/du"> Stories </Link> /{" "}
-        <Link
-          href={
-            `/du/${course?.path}`
-            // section?.display === "lesson"
-            //   ? `/du/lessons/${item?.id}`
-            //   : `/du/${item?.path}`
-          }
-        >
+    <div className="">
+      <div className="text-gray-400">
+        <Link href="/du" className="hover:text-white">
+          {" "}
+          Stories{" "}
+        </Link>{" "}
+        /{" "}
+        <Link href={`/du/${course?.path}`} className="hover:text-white">
           Story: {course?.title}
         </Link>{" "}
         / <span>{chapterId}</span>
       </div>
-      <div className="mt-12 mb-4">
+      {/* <div className="mt-12 mb-4">
         <p className="uppercase mt-8 font-bold text-gray-400">
           {course?.levels?.join(", ")}
         </p>
         <h1 className="text-2xl font-bold">{course?.title}</h1>
+      </div> */}
+
+      <div className="mt-12 max-w-4xl m-auto">
+        {data?.subtitles?.words?.map((subtitle) => {
+          // if (JSON.stringify(subtitle)?.includes("\n")) {
+          //   return <h1 key={JSON.stringify(subtitle)}>YOOO</h1>;
+          // }
+
+          if (subtitle?.hanzi === "\n") {
+            return <h1 key={JSON.stringify(subtitle)}></h1>;
+          }
+          return (
+            <span
+              key={JSON.stringify(subtitle)}
+              className={cn(
+                "inline-flex flex-col mt-2 items-center",
+                subtitle?.hsk ? "border-b-[1px] border-gray-700" : ""
+              )}
+            >
+              <span
+                className={cn(
+                  subtitle?.pinyin ? "text-gray-500" : "text-black",
+                  "text-sm"
+                )}
+              >
+                {subtitle?.pinyin || ""}
+              </span>
+              <span className="text-2xl text-gray-300">{subtitle?.hanzi}</span>
+              {/* <span>{subtitle?.meaning || ""}</span> */}
+            </span>
+          );
+        })}
       </div>
 
-      {/* <button className="text-sm space-x-2 border-[1px] rounded-2xl px-2 py-1">
-        <Icons.bookmark />
-
-        <span>Save Story</span>
-      </button> */}
-      {/* <div className="mt-16 grid gap-12 items-start grid-cols-12">
-        <img
-          className="col-span-6"
-          src={course?.large_image_url}
-          alt={course?.title}
-        />
-        <div className="col-span-5">
-          <p className="text-xl text-gray-300 font-extralight">
-            {course?.description}
-          </p>
-
-          <div className="space-x-8 mt-16">
-            <Link
-              href={`/du/${lesson?.path}${(lesson?.path?.includes("?") ? "&" : "?") + `courseId=${courseId}`}`}
-              className="space-x-2 border-[1px] rounded-full px-4 py-2"
-            >
-              <Icons.glassesRound />
-
-              <span>Start Reading</span>
-            </Link>
-
-            <button className="space-x-2 border-[1px] rounded-full px-4 py-[5.5px]">
-              <Icons.bookmark />
-
-              <span>Favourite</span>
-            </button>
-          </div>
-        </div>
-      </div> */}
-
-      {/* <div className="mx-auto mt-12">
-        <HoverEffect
-          className="lg:grid-cols-4"
-          items={
-            data?.lessons?.map((lesson, idx) => {
-              return {
-                title: `Chapter ${idx + 1}`,
-                description: `Start Reading`,
-                link: `/du/${lesson?.path}${(lesson?.path?.includes("?") ? "&" : "?") + `courseId=${courseId}`}`,
-              };
-            }) || []
-          }
-        />
-      </div> */}
-
-      <section>
+      {/* <section>
         <code>
-          <pre>
-            {/* {JSON.stringify(selectedItem, null, 4)} */}
-
-            {JSON.stringify(data, null, 4)}
-          </pre>
+          <pre>{JSON.stringify(data?.subtitles, null, 4)}</pre>
         </code>
-      </section>
-    </div>
-  );
-
-  return (
-    <div>
-      <h1>{chapterId}</h1>
-
-      <section>
-        <code>
-          <pre>
-            {/* {JSON.stringify(selectedItem, null, 4)} */}
-
-            {JSON.stringify(data, null, 4)}
-          </pre>
-        </code>
-      </section>
+      </section> */}
     </div>
   );
 };

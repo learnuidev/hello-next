@@ -1,11 +1,11 @@
-import { DuChapter, DuSection } from "@/app/(auth)/du/du.types";
+import { DuChapter, DuCourse, DuSection } from "@/app/(auth)/du/du.types";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { duChineseApiUrl } from "@/libs/du-chinese/du-chinese-api-url";
 import { useQuery } from "@tanstack/react-query";
 // import { DuSection } from "../du.types";
 
-interface ListChaptersResponse {
-  lessons: DuChapter[];
+interface GetChapterDetailsResponse {
+  course: DuCourse;
 }
 
 export const useGetChapterDetails = ({
@@ -19,7 +19,7 @@ export const useGetChapterDetails = ({
 }) => {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery<ListChaptersResponse, Error>({
+  return useQuery<GetChapterDetailsResponse, Error>({
     queryKey: [
       "du-chinese/get-chapter-details",
       chapterId,

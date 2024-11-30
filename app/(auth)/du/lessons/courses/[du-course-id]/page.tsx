@@ -15,7 +15,7 @@ export default function CourseItem() {
     <div>
       <NavBar />
 
-      <div className="mt-8 md:mx-12">
+      <div className="mx-4 mr-12 mt-8 md:mx-12">
         <DuChapters />
       </div>
 

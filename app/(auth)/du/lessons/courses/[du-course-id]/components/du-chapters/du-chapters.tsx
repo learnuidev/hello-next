@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Icons } from "@/components/ui/icons.v2";
 import { HoverEffect } from "@/components/hover-effect";
+import { cn } from "@/lib/utils";
 
 export const DuChapters = () => {
   const { courseId, cookie } = useGetDuParams();
@@ -43,11 +44,14 @@ export const DuChapters = () => {
       </button> */}
       <div className="mt-16 grid gap-12 items-start grid-cols-12">
         <img
-          className="col-span-6"
+          className={cn(
+            "w-full object-cover rounded-xl",
+            "sm:col-span-6 col-span-12"
+          )}
           src={course?.large_image_url}
           alt={course?.title}
         />
-        <div className="col-span-5">
+        <div className="sm:col-span-5 col-span-12">
           <p className="text-xl text-gray-300 font-extralight">
             {course?.description}
           </p>
@@ -73,7 +77,7 @@ export const DuChapters = () => {
 
       <div className="mx-auto mt-12">
         <HoverEffect
-          className="lg:grid-cols-4"
+          className="lg:grid-cols-4 w-full"
           items={
             data?.lessons?.map((lesson, idx) => {
               return {

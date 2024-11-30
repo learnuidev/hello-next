@@ -1,4 +1,4 @@
-type DuCourse = {
+export type DuCourse = {
   id: number;
   title: string;
   description: string;

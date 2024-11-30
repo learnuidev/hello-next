@@ -4,10 +4,6 @@ import { useListTopLessons } from "../../hooks/use-list-top-lessons";
 import { useGetDuParams } from "../../hooks/use-get-du-params";
 import { useDuStore } from "../../hooks/use-du-store";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
-import {
-  DuChinesdeLink,
-  DuChineseIcon,
-} from "@/components/_select-character/selected-character/duchinese-icon";
 
 export const DuCourses = () => {
   const { cookie } = useGetDuParams();

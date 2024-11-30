@@ -66,7 +66,7 @@ export const DuLessonView = () => {
   }
 
   const DuChapterNavbar = () => (
-    <div className="space-x-8 flex items-center">
+    <div className="space-x-4 sm:space-x-8 flex items-center">
       <Link href={data?.canonical_url} target="_blank" className="block">
         <DuChineseIcon className={"h-6"} />
       </Link>
@@ -124,16 +124,15 @@ export const DuLessonView = () => {
 
       <div className="mt-12 max-w-6xl m-auto mb-32 sticky">
         <section className="mb-12 flex items-center justify-between">
-          <div className="flex space-x-8">
-            <div className="space-x-4">
-              <button
-                className="text-2xl"
-                onClick={() => {
-                  togglePlay();
-                }}
-              >
-                {isPlaying ? <Icons.pause /> : <Icons.play />}
-                {/* {isPlaying ? (
+          <div className="space-x-4 flex items-center">
+            <button
+              className="text-2xl"
+              onClick={() => {
+                togglePlay();
+              }}
+            >
+              {isPlaying ? <Icons.pause /> : <Icons.play />}
+              {/* {isPlaying ? (
                 <div>
                   <div className="flex space-x-1" aria-hidden="true">
                     <div className="w-1 h-4 bg-white animate-wave1"></div>
@@ -144,16 +143,16 @@ export const DuLessonView = () => {
               ) : (
                 <Icons.play />
               )} */}
-              </button>
-              <button
-                className="text-2xl"
-                onClick={() => {
-                  reset();
-                }}
-              >
-                <Icons.stop />
-              </button>
-            </div>
+            </button>
+            <button
+              className="text-2xl"
+              onClick={() => {
+                reset();
+              }}
+            >
+              <Icons.stop />
+            </button>
+
             <p className="w-16 font-extralight text-2xl text-center dark:text-slate-300 text-slate-600">
               {formatTime(currentTime)}
             </p>

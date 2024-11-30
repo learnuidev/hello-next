@@ -10,10 +10,12 @@ interface ListChaptersResponse {
 
 export const useGetChapterDetails = ({
   chapterId,
+  courseId,
   cookie,
 }: {
   chapterId: string;
   cookie: string;
+  courseId: string;
 }) => {
   const { data: authUser } = useCurrentAuthUser({});
 
@@ -22,6 +24,7 @@ export const useGetChapterDetails = ({
       "du-chinese/get-chapter-details",
       chapterId,
       cookie,
+      courseId,
       authUser?.jwt,
     ],
     queryFn: async () => {

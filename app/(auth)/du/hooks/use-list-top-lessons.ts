@@ -9,7 +9,13 @@ interface ListTopLessonsResponse {
   more_categories: Categories[];
 }
 
-export const useListTopLessons = (levels?: string | string[]) => {
+export const useListTopLessons = ({
+  levels,
+  cookie,
+}: {
+  levels?: string | string[];
+  cookie?: string;
+}) => {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ListTopLessonsResponse, Error>({
@@ -24,6 +30,7 @@ export const useListTopLessons = (levels?: string | string[]) => {
 
         body: JSON.stringify({
           levels,
+          cookie,
         }),
         headers: {
           Authorization: `Bearer ${authUser?.jwt}`,

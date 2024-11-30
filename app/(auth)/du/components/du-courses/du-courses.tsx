@@ -1,9 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useListTopLessons } from "../../hooks/use-list-top-lessons";
+import { useGetDuParams } from "../../hooks/use-get-du-params";
 
 export const DuCourses = () => {
-  const { data } = useListTopLessons();
+  const { cookie } = useGetDuParams();
+  const { data } = useListTopLessons({ cookie });
 
   const duCourses = data?.sections?.filter(
     (section) => section?.item_type === "course"
@@ -18,7 +20,7 @@ export const DuCourses = () => {
               {section?.section_name}
             </h2>
 
-            <div className="space-y-8 mt-4 columns-1 sm:columns-2 lg:columns-5 gap-4">
+            <div className="space-y-8 mt-4 columns-1 sm:columns-2 lg:columns-5 gap-4 gap-y-4">
               {section?.items?.map((item) => {
                 return (
                   <Link

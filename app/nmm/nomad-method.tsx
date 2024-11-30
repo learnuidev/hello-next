@@ -1,16 +1,14 @@
 import { useMemo, useState } from "react";
 
-import Lottie from "lottie-react";
-import groovyWalkAnimation from "./loading_animation.json";
-
-import { initCharacter, useCharacterStore } from "./nomad-method-store";
-import { useListComponents } from "@/domain/lesson/component.queries";
 import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { initCharacter, useCharacterStore } from "./nomad-method-store";
 
 import { useAddStepsMutation } from "@/domain/lesson/step.mutations";
 import { ComponentForm } from "./component-form";
-import { LessonAddSuccessView } from "./lesson-add-success-view";
 import { ComponentReview } from "./component-review";
+import { LessonAddSuccessView } from "./lesson-add-success-view";
+import { LottieLoadingAnimation } from "./lottie-loading-animation";
 import { NoLessonView } from "./no-lesson-view";
 
 export function NomadMethod({
@@ -80,15 +78,7 @@ export function NomadMethod({
 
   if (addStepsMutation?.isLoading || isFetching) {
     // load lottile files here
-    return (
-      <div className="content-center my-64">
-        <Lottie
-          className="h-60"
-          // animationData={rocketAnimation}
-          animationData={groovyWalkAnimation}
-        />
-      </div>
-    );
+    return <LottieLoadingAnimation />;
   }
 
   if (

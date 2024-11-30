@@ -2,14 +2,21 @@
 import Link from "next/link";
 import { useListTopLessons } from "../../hooks/use-list-top-lessons";
 import { useGetDuParams } from "../../hooks/use-get-du-params";
+import { useDuStore } from "../../hooks/use-du-store";
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 
 export const DuCourses = () => {
   const { cookie } = useGetDuParams();
-  const { data } = useListTopLessons({ cookie });
+  const levels = useDuStore((state) => state.levels);
+  const { data, isLoading } = useListTopLessons({ cookie, levels });
 
   const duCourses = data?.sections?.filter(
     (section) => section?.item_type === "course"
   );
+
+  if (isLoading) {
+    return <LottieLoadingAnimation />;
+  }
   return (
     <div className="space-y-12">
       {data?.sections?.map((section) => {

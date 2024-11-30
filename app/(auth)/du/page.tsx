@@ -5,6 +5,7 @@ import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { NoPermissionView } from "../doctor/no-permission-view";
 
 import { DuCourses } from "./components/du-courses/du-courses";
+import { DuLevelSelector } from "./components/du-level-selector/du-level-selector";
 
 export default function DuChinse() {
   const isSuperAdmin = useIsSuperAdmin();
@@ -16,7 +17,8 @@ export default function DuChinse() {
     <div>
       <NavBar />
 
-      <div className="mt-8 md:mx-12">
+      <div className="mt-8 md:mx-12 mb-32">
+        <DuLevelSelector />
         <DuCourses />
       </div>
 

@@ -316,6 +316,7 @@ export const Icons = {
   arrowLeft: createFAIcon(faArrowLeft),
   arrowRight: createFAIcon(faArrowRight),
   mobile: createFAIcon(faMobile),
+  // bookmark: createFAIcon(faBookmark),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

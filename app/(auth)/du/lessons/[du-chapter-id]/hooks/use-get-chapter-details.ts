@@ -33,6 +33,7 @@ export const useGetChapterDetails = ({
 
         body: JSON.stringify({
           chapterId,
+          courseId,
           cookie,
         }),
         headers: {

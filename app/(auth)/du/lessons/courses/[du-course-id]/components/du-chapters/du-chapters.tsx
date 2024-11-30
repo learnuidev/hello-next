@@ -18,7 +18,7 @@ export const DuChapters = () => {
             <Link
               key={JSON.stringify(lesson)}
               // href={`/du/lessons/${lesson?.id}`}
-              href={`/du/${lesson?.path}${(lesson?.path?.includes("?") ? "&" : "?") + `{?courseId=${courseId}`}`}
+              href={`/du/${lesson?.path}${(lesson?.path?.includes("?") ? "&" : "?") + `courseId=${courseId}`}`}
             >
               <code>
                 <pre>{JSON.stringify(lesson, null, 4)}</pre>

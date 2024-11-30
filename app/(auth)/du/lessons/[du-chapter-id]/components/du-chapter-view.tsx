@@ -4,9 +4,9 @@ import { useListTopLessons } from "../../../hooks/use-list-top-lessons";
 import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
 
 export const DuLessonView = () => {
-  const { chapterId } = useGetDuParams();
+  const { chapterId, cookie } = useGetDuParams();
 
-  const { data: courses } = useListTopLessons();
+  const { data: courses } = useListTopLessons({ cookie });
 
   const searchParams = useSearchParams();
 

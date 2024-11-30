@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useMusicV2 } from "@/app/(auth)/convos/_play-v2/use-music-v2";
 import { formatTime } from "@/app/(auth)/convos/_play/utils";
 import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
+import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
 
 export const DuLessonView = () => {
   const { chapterId, cookie } = useGetDuParams();
@@ -40,6 +41,9 @@ export const DuLessonView = () => {
 
   const course = data?.course;
 
+  const characterId =
+    data?.subtitles?.words?.map((word) => word?.hanzi)?.join("") || "";
+
   const duAnalytics = useGetCharacterAnalytics({
     characterId:
       data?.subtitles?.words?.map((word) => word?.hanzi)?.join("") || "",
@@ -59,6 +63,36 @@ export const DuLessonView = () => {
   if (!course) {
     return <LottieLoadingAnimation />;
   }
+
+  const DuChapterNavbar = () => (
+    <div className="space-x-8">
+      <button
+        onClick={() => {
+          setViewMode((viewMode) => (viewMode === "stats" ? "core" : "stats"));
+          // togglePinyin((pinyin) => !pinyin);
+        }}
+      >
+        <Icons.chartColumn
+          className={cn(
+            "text-2xl",
+            viewMode === "stats" ? "text-white" : "text-gray-400"
+          )}
+        />
+      </button>
+      <button
+        onClick={() => {
+          togglePinyin((pinyin) => !pinyin);
+        }}
+      >
+        <Icons.language
+          className={cn(
+            "text-2xl",
+            viewPinyin ? "text-white" : "text-gray-400"
+          )}
+        />
+      </button>
+    </div>
+  );
 
   return (
     <div className="">
@@ -118,40 +152,12 @@ export const DuLessonView = () => {
             </p>
           </div>
 
-          <div className="space-x-8">
-            <button
-              onClick={() => {
-                setViewMode((viewMode) =>
-                  viewMode === "stats" ? "core" : "stats"
-                );
-                // togglePinyin((pinyin) => !pinyin);
-              }}
-            >
-              <Icons.chartColumn
-                className={cn(
-                  "text-2xl",
-                  viewMode === "stats" ? "text-white" : "text-gray-400"
-                )}
-              />
-            </button>
-            <button
-              onClick={() => {
-                togglePinyin((pinyin) => !pinyin);
-              }}
-            >
-              <Icons.language
-                className={cn(
-                  "text-2xl",
-                  viewPinyin ? "text-white" : "text-gray-400"
-                )}
-              />
-            </button>
-          </div>
+          <DuChapterNavbar />
         </section>
 
         {viewMode === "stats" ? (
           <div>
-            <code>
+            {/* <code>
               <pre>
                 {JSON.stringify(
                   {
@@ -165,10 +171,9 @@ export const DuLessonView = () => {
                   4
                 )}
               </pre>
-            </code>{" "}
-            <code>
-              <pre>{JSON.stringify(duAnalytics, null, 4)}</pre>
-            </code>{" "}
+            </code>{" "} */}
+
+            <CharacterAnalytics characterId={characterId} lang={"zh"} />
           </div>
         ) : (
           data?.subtitles?.words?.map((subtitle) => {

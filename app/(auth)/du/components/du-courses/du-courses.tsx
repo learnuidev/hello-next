@@ -20,7 +20,7 @@ export const DuCourses = () => {
               {section?.section_name}
             </h2>
 
-            <div className="space-y-8 mt-4 columns-1 sm:columns-2 lg:columns-5 gap-4 gap-y-4">
+            <div className="space-y-12 mt-4 columns-1 sm:columns-2 lg:columns-5 gap-4 gap-y-4">
               {section?.items?.map((item) => {
                 return (
                   <Link
@@ -31,6 +31,7 @@ export const DuCourses = () => {
                       //   : `/du/${item?.path}`
                     }
                     key={JSON.stringify(item)}
+                    className="block"
                   >
                     <img
                       className="object-cover rounded-xl w-full"

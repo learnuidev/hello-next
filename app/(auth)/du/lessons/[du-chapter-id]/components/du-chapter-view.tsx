@@ -1,3 +1,5 @@
+"use client";
+
 import { useSearchParams } from "next/navigation";
 import { useGetDuParams } from "../../../hooks/use-get-du-params";
 import { useListTopLessons } from "../../../hooks/use-list-top-lessons";
@@ -9,11 +11,14 @@ import { Icons } from "@/components/ui/icons.v2";
 import { useState } from "react";
 import { useMusicV2 } from "@/app/(auth)/convos/_play-v2/use-music-v2";
 import { formatTime } from "@/app/(auth)/convos/_play/utils";
+import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
 
 export const DuLessonView = () => {
   const { chapterId, cookie } = useGetDuParams();
   const [selected, setSelected] = useState<any>(null);
   const [viewPinyin, togglePinyin] = useState(false);
+
+  const [viewMode, setViewMode] = useState("core");
 
   const { data: courses } = useListTopLessons({ cookie });
 
@@ -35,6 +40,21 @@ export const DuLessonView = () => {
 
   const course = data?.course;
 
+  const duAnalytics = useGetCharacterAnalytics({
+    characterId:
+      data?.subtitles?.words?.map((word) => word?.hanzi)?.join("") || "",
+    lang: "zh",
+  });
+
+  const {
+    understandingRate,
+    precisionRate,
+    totalCharacters,
+    totalNewCharaters,
+    uniqueWords,
+    masteryRate,
+  } = duAnalytics;
+
   if (!course) {
     return <LottieLoadingAnimation />;
   }
@@ -53,7 +73,14 @@ export const DuLessonView = () => {
         / <span>{chapterId}</span>
       </div>
 
-      <div className="mt-12 max-w-6xl m-auto mb-32">
+      <div className="mt-12 mb-4">
+        <p className="uppercase mt-8 font-bold text-gray-400">
+          {course?.levels?.join(", ")}
+        </p>
+        <h1 className="text-2xl font-bold">{course?.title}</h1>
+      </div>
+
+      <div className="mt-12 max-w-6xl m-auto mb-32 sticky">
         <section className="mb-12 flex items-center justify-between">
           <div className="flex space-x-8">
             <div className="space-x-4">
@@ -90,56 +117,97 @@ export const DuLessonView = () => {
             </p>
           </div>
 
-          <button
-            onClick={() => {
-              togglePinyin((pinyin) => !pinyin);
-            }}
-          >
-            <Icons.language
-              className={cn(
-                "text-2xl",
-                viewPinyin ? "text-white" : "text-gray-400"
-              )}
-            />
-          </button>
+          <div className="space-x-8">
+            <button
+              onClick={() => {
+                setViewMode((viewMode) =>
+                  viewMode === "stats" ? "core" : "stats"
+                );
+                // togglePinyin((pinyin) => !pinyin);
+              }}
+            >
+              <Icons.chartColumn
+                className={cn(
+                  "text-2xl",
+                  viewMode === "stats" ? "text-white" : "text-gray-400"
+                )}
+              />
+            </button>
+            <button
+              onClick={() => {
+                togglePinyin((pinyin) => !pinyin);
+              }}
+            >
+              <Icons.language
+                className={cn(
+                  "text-2xl",
+                  viewPinyin ? "text-white" : "text-gray-400"
+                )}
+              />
+            </button>
+          </div>
         </section>
 
-        {data?.subtitles?.words?.map((subtitle) => {
-          if (subtitle?.hanzi === "\n") {
-            return <h1 className="my-12" key={JSON.stringify(subtitle)}></h1>;
-          }
-          return (
-            <span
-              // onMouseEnter={() => {
-              //   setSelected(subtitle);
-              // }}
-              // onMouseLeave={() => {
-              //   setSelected(null);
-              // }}
-              key={JSON.stringify(subtitle)}
-              className={cn("inline-flex flex-col mt-2 items-center px-[2px]")}
-            >
-              {viewPinyin && (
-                <span
-                  className={cn(
-                    subtitle?.pinyin ? "text-gray-500" : "text-black",
-                    "text-sm"
-                  )}
-                >
-                  {subtitle?.pinyin || ""}
-                </span>
-              )}
-              <Link
-                href={`/nmm/${subtitle.hanzi}?lang=zh`}
-                target="_blank"
-                className="text-3xl font-light text-gray-300 hover:text-rose-400"
+        {viewMode === "stats" ? (
+          <div>
+            <code>
+              <pre>
+                {JSON.stringify(
+                  {
+                    understandingRate,
+                    precisionRate,
+                    totalCharacters,
+                    totalNewCharaters,
+                  },
+                  null,
+                  4
+                )}
+              </pre>
+            </code>{" "}
+            <code>
+              <pre>{JSON.stringify(duAnalytics, null, 4)}</pre>
+            </code>{" "}
+          </div>
+        ) : (
+          data?.subtitles?.words?.map((subtitle) => {
+            if (subtitle?.hanzi === "\n") {
+              return <h1 className="my-12" key={JSON.stringify(subtitle)}></h1>;
+            }
+            return (
+              <span
+                // onMouseEnter={() => {
+                //   setSelected(subtitle);
+                // }}
+                // onMouseLeave={() => {
+                //   setSelected(null);
+                // }}
+                key={JSON.stringify(subtitle)}
+                className={cn(
+                  "inline-flex flex-col mt-2 items-center px-[2px]"
+                )}
               >
-                {subtitle?.hanzi}
-                {"   "}
-              </Link>
-            </span>
-          );
-        })}
+                {viewPinyin && (
+                  <span
+                    className={cn(
+                      subtitle?.pinyin ? "text-gray-500" : "text-black",
+                      "text-sm"
+                    )}
+                  >
+                    {subtitle?.pinyin || ""}
+                  </span>
+                )}
+                <Link
+                  href={`/nmm/${subtitle.hanzi}?lang=zh`}
+                  target="_blank"
+                  className="text-3xl font-light text-gray-300 hover:text-rose-400"
+                >
+                  {subtitle?.hanzi}
+                  {"   "}
+                </Link>
+              </span>
+            );
+          })
+        )}
       </div>
 
       {/* <code>

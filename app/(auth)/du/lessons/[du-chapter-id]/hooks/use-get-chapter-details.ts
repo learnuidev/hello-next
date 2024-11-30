@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 interface GetChapterDetailsResponse {
   course: DuCourse;
   audio_url?: string;
+  canonical_url: string;
   subtitles: {
     words: {
       hsk?: number;

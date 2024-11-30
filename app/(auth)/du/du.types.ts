@@ -24,6 +24,7 @@ type DuLesson = {
   crd_url: string;
   title: string;
   level: DuLevels;
+  levels: DuLevels;
   note: string | null;
   synopsis: string;
   author: string | null;
@@ -65,7 +66,7 @@ export type DuLevels =
 export type DuChapter = {
   id: string;
   title: string;
-  level: DuLevels;
+  level: DuLevels[];
   note: null | string;
   synopsis: string;
   author: null | string;

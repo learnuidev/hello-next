@@ -4,6 +4,10 @@ import { useListTopLessons } from "../../hooks/use-list-top-lessons";
 import { useGetDuParams } from "../../hooks/use-get-du-params";
 import { useDuStore } from "../../hooks/use-du-store";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import {
+  DuChinesdeLink,
+  DuChineseIcon,
+} from "@/components/_select-character/selected-character/duchinese-icon";
 
 export const DuCourses = () => {
   const { cookie } = useGetDuParams();
@@ -30,22 +34,32 @@ export const DuCourses = () => {
             <div className="space-y-12 mt-4 columns-1 sm:columns-2 lg:columns-5 gap-4 gap-y-4">
               {section?.items?.map((item) => {
                 return (
-                  <Link
-                    href={
-                      `/du/${item?.path}`
-                      // section?.display === "lesson"
-                      //   ? `/du/lessons/${item?.id}`
-                      //   : `/du/${item?.path}`
-                    }
-                    key={JSON.stringify(item)}
-                    className="block"
-                  >
-                    <img
-                      className="object-cover rounded-xl w-full"
-                      src={item?.large_image_url}
-                      alt={item?.title}
-                    />
-                  </Link>
+                  <div key={JSON.stringify(item)}>
+                    <Link
+                      href={
+                        `/du/${item?.path}`
+                        // section?.display === "lesson"
+                        //   ? `/du/lessons/${item?.id}`
+                        //   : `/du/${item?.path}`
+                      }
+                      className="block"
+                    >
+                      <img
+                        className="object-cover rounded-xl w-full"
+                        src={item?.large_image_url}
+                        alt={item?.title}
+                      />
+                    </Link>
+
+                    <p className="mt-2 truncate">
+                      {" "}
+                      <span>{item?.title}</span>
+                    </p>
+                    <p className="font-light text-gray-400 text-sm capitalize">
+                      {" "}
+                      <span>{item?.levels?.[0]}</span>
+                    </p>
+                  </div>
                 );
               })}
             </div>

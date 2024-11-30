@@ -13,6 +13,7 @@ import { useMusicV2 } from "@/app/(auth)/convos/_play-v2/use-music-v2";
 import { formatTime } from "@/app/(auth)/convos/_play/utils";
 import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
+import { DuChineseIcon } from "../../../components/duchinese-icon";
 
 export const DuLessonView = () => {
   const { chapterId, cookie } = useGetDuParams();
@@ -65,7 +66,10 @@ export const DuLessonView = () => {
   }
 
   const DuChapterNavbar = () => (
-    <div className="space-x-8">
+    <div className="space-x-8 flex items-center">
+      <Link href={data?.canonical_url} target="_blank" className="block">
+        <DuChineseIcon className={"h-6"} />
+      </Link>
       <button
         onClick={() => {
           setViewMode((viewMode) => (viewMode === "stats" ? "core" : "stats"));
@@ -96,6 +100,9 @@ export const DuLessonView = () => {
 
   return (
     <div className="">
+      {/* <code>
+        <pre>{JSON.stringify(data, null, 4)}</pre>
+      </code> */}
       <div className="text-gray-400">
         <Link href="/du" className="hover:text-white">
           {" "}

@@ -5,9 +5,13 @@ import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { Icons } from "@/components/ui/icons.v2";
+import { useState } from "react";
 
 export const DuLessonView = () => {
   const { chapterId, cookie } = useGetDuParams();
+  const [selected, setSelected] = useState<any>(null);
+  const [viewPinyin, togglePinyin] = useState(false);
 
   const { data: courses } = useListTopLessons({ cookie });
 
@@ -40,50 +44,60 @@ export const DuLessonView = () => {
         </Link>{" "}
         / <span>{chapterId}</span>
       </div>
-      {/* <div className="mt-12 mb-4">
-        <p className="uppercase mt-8 font-bold text-gray-400">
-          {course?.levels?.join(", ")}
-        </p>
-        <h1 className="text-2xl font-bold">{course?.title}</h1>
-      </div> */}
 
-      <div className="mt-12 max-w-4xl m-auto mb-32">
+      <section className="mt-12">
+        <button
+          onClick={() => {
+            togglePinyin((pinyin) => !pinyin);
+          }}
+        >
+          <Icons.language
+            className={cn(
+              "text-2xl",
+              viewPinyin ? "text-white" : "text-gray-400"
+            )}
+          />
+        </button>
+      </section>
+
+      <div className="mt-12 max-w-6xl m-auto mb-32">
         {data?.subtitles?.words?.map((subtitle) => {
-          // if (JSON.stringify(subtitle)?.includes("\n")) {
-          //   return <h1 key={JSON.stringify(subtitle)}>YOOO</h1>;
-          // }
-
           if (subtitle?.hanzi === "\n") {
-            return <h1 key={JSON.stringify(subtitle)}></h1>;
+            return <h1 className="my-12" key={JSON.stringify(subtitle)}></h1>;
           }
           return (
             <span
+              // onMouseEnter={() => {
+              //   setSelected(subtitle);
+              // }}
+              // onMouseLeave={() => {
+              //   setSelected(null);
+              // }}
               key={JSON.stringify(subtitle)}
-              className={cn(
-                "inline-flex flex-col mt-2 items-center",
-                subtitle?.hsk ? "border-b-[1px] border-gray-700" : ""
-              )}
+              className={cn("inline-flex flex-col mt-2 items-center px-[2px]")}
             >
-              <span
-                className={cn(
-                  subtitle?.pinyin ? "text-gray-500" : "text-black",
-                  "text-sm"
-                )}
+              {viewPinyin && (
+                <span
+                  className={cn(
+                    subtitle?.pinyin ? "text-gray-500" : "text-black",
+                    "text-sm"
+                  )}
+                >
+                  {subtitle?.pinyin || ""}
+                </span>
+              )}
+              <Link
+                href={`/nmm/${subtitle.hanzi}?lang=zh`}
+                target="_blank"
+                className="text-3xl font-light text-gray-300 hover:text-rose-400"
               >
-                {subtitle?.pinyin || ""}
-              </span>
-              <span className="text-2xl text-gray-300">{subtitle?.hanzi}</span>
-              {/* <span>{subtitle?.meaning || ""}</span> */}
+                {subtitle?.hanzi}
+                {"   "}
+              </Link>
             </span>
           );
         })}
       </div>
-
-      {/* <section>
-        <code>
-          <pre>{JSON.stringify(data?.subtitles, null, 4)}</pre>
-        </code>
-      </section> */}
     </div>
   );
 };

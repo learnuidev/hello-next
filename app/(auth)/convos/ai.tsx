@@ -47,7 +47,7 @@ function isSerializable(content: string) {
   }
 }
 
-export const useGetHskLevelHandler = () => {
+export const useGetHskWordHandler = () => {
   const { data: hskWords } = useListHSKWordsQuery();
 
   return (item: any) => {
@@ -55,7 +55,7 @@ export const useGetHskLevelHandler = () => {
       (hskWord: any) => hskWord?.hanzi === (item?.input || item?.hanzi)
     );
 
-    return hskLevel?.level;
+    return hskLevel;
   };
 };
 

@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { useGetHskLevelHandler } from "@/app/(auth)/convos/ai";
+import { useGetHskWordHandler } from "@/app/(auth)/convos/ai";
 import { cleanString } from "@/data/convos/bm1/level_7";
 import Link from "next/link";
 import { ScrollArea } from "./ui/scroll-area";
@@ -45,12 +45,12 @@ export function GrammarAnalysis({
         ? "grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4"
         : "grid grid-cols-1 gap-4 mt-4";
 
-    const getHskLevelHandler = useGetHskLevelHandler();
+    const getHskWordHandler = useGetHskWordHandler();
     return (
       <div className={divStyles}>
         {grammarAnalysisFinal?.map((analysis) => {
           if (analysis?.hanzi) {
-            const hskLevel = getHskLevelHandler(analysis);
+            const hskWord = getHskWordHandler(analysis);
             const cleanHanzi = cleanString(analysis?.hanzi);
             return (
               <div
@@ -99,8 +99,8 @@ export function GrammarAnalysis({
                     </>
                   )}
 
-                  {hskLevel ? (
-                    <p className="text-gray-600"> | hsk {hskLevel} </p>
+                  {hskWord?.level ? (
+                    <p className="text-gray-600"> | hsk {hskWord?.level} </p>
                   ) : null}
                 </div>
 
@@ -112,7 +112,7 @@ export function GrammarAnalysis({
                       : `/nmm/${cleanHanzi}`
                   }
                 >
-                  {analysis?.en}
+                  {analysis?.en || hskWord?.en}
                 </Link>
               </div>
             );

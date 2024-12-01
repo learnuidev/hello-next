@@ -151,7 +151,7 @@ export const TranscriptItem = ({
   const Explanations = () => {
     return (
       <>
-        {["zh-CN", "zh", "ml", "ne", "ja", "ko", "fa", "ar"]?.includes(
+        {/* {["zh-CN", "zh", "ml", "ne", "ja", "ko", "fa", "ar"]?.includes(
           example?.lang
         ) &&
           (content?.pinyin ||
@@ -171,33 +171,8 @@ export const TranscriptItem = ({
                 content?.pinyin ||
                 content?.roman}
             </p>
-          )}
+          )} */}
 
-        {/* {example?.roman ? (
-          <p
-            className={`${
-              (example?.timestamp?.[0] || example?.start) < currentTime &&
-              (example?.timestamp?.[1] || example?.end) > currentTime
-                ? "dark:text-white"
-                : " text-gray-400"
-            } transition`}
-          >
-            {example?.roman}
-          </p>
-        ) : (
-          example?.lit && (
-            <p
-              className={`${
-                (example?.timestamp?.[0] || example?.start) < currentTime &&
-                (example?.timestamp?.[1] || example?.end) > currentTime
-                  ? "dark:text-gray-500"
-                  : "dark:text-gray-300 text-gray-300"
-              } transition`}
-            >
-              {example?.lit}
-            </p>
-          )
-        )} */}
         {(content?.en || example?.en) && (
           <p
             className={`${

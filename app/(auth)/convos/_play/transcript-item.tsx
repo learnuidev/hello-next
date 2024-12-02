@@ -81,12 +81,12 @@ export const TranscriptItem = ({
         <p className={"space-x-2 text-xl"}>
           <a
             target={"_blank"}
-            href={`/nmm/${transcription.hanzi || transcription.input}${
+            href={`/nmm/${transcription.input || transcription.hanzi}${
               lang ? `?lang=${lang}` : ""
             }`}
           >
             {" "}
-            {transcription?.hanzi || transcription?.input}
+            {transcription?.input || transcription?.hanzi}
           </a>
 
           <span>

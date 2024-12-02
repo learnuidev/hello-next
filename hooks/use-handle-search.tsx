@@ -9,7 +9,7 @@ import { getNavigationUrl } from "@/components/_search/get-navigation-url";
 import { useListLanguages } from "@/components/languages-list";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
-import { traditionalToSimplified } from "@/langs/chinese /traditional-chinese-characters";
+import { traditionalToSimplified } from "@/langs/chinese /traditiona-to-simplified";
 import { signOut } from "@/libs/cognito/auth";
 
 export const useHandleSearch = () => {

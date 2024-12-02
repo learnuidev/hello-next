@@ -342,7 +342,7 @@ export const TranscriptItem = ({
           }}
         />
       )}
-      {editMode && (
+      {(timeStamp?.hanzi || example?.hanzi) && editMode && (
         <input
           className="w-full"
           value={timeStamp?.hanzi || example?.hanzi}
@@ -351,7 +351,7 @@ export const TranscriptItem = ({
           }}
         />
       )}
-      {editMode && (
+      {(timeStamp?.input || example?.input) && editMode && (
         <input
           className="w-full"
           value={timeStamp?.input || example?.input}

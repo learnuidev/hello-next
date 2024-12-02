@@ -133,8 +133,8 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                 )}
               </button>
             )}
-            {characterId?.length > 3 ? null : isLoading ||
-              isAlreadyLearned ? null : (
+            {!selectedComp2 ? null : characterId?.length >
+              3 ? null : isLoading || isAlreadyLearned ? null : (
               <button
                 className="text-xl"
                 onClick={() => {

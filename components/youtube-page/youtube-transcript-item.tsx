@@ -342,6 +342,24 @@ export const TranscriptItem = ({
           }}
         />
       )}
+      {editMode && (
+        <input
+          className="w-full"
+          value={timeStamp?.hanzi || example?.hanzi}
+          onChange={(event) => {
+            setTimer("hanzi", event?.target?.value);
+          }}
+        />
+      )}
+      {editMode && (
+        <input
+          className="w-full"
+          value={timeStamp?.input || example?.input}
+          onChange={(event) => {
+            setTimer("input", event?.target?.value);
+          }}
+        />
+      )}
 
       {editMode && (
         <input

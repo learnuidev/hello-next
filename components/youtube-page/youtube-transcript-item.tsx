@@ -264,12 +264,12 @@ export const TranscriptItem = ({
                 {(example?.pinyin || example?.roman) && (
                   <p
                     className={`${
-                      (example?.timestamp?.[0] ||
-                        example?.start ||
-                        timeStamp?.start) < currentTime &&
-                      (example?.timestamp?.[1] ||
-                        example?.end ||
-                        timeStamp?.end) > currentTime
+                      (timeStamp?.start ||
+                        example?.timestamp?.[0] ||
+                        example?.start) < currentTime &&
+                      (timeStamp?.end ||
+                        example?.timestamp?.[1] ||
+                        example?.end) > currentTime
                         ? "text-rose-400"
                         : "dark:text-gray-400 text-gray-300"
                     } transition text-md text-left`}
@@ -289,12 +289,12 @@ export const TranscriptItem = ({
                         <span
                           key={`${JSON.stringify(item)}-${idx}-${Math.random()}`}
                           className={`${
-                            (example?.timestamp?.[0] ||
-                              example?.start ||
-                              timeStamp?.start) < currentTime &&
-                            (example?.timestamp?.[1] ||
-                              example?.end ||
-                              timeStamp?.end) > currentTime
+                            (timeStamp?.start ||
+                              example?.timestamp?.[0] ||
+                              example?.start) < currentTime &&
+                            (timeStamp?.end ||
+                              example?.timestamp?.[1] ||
+                              example?.end) > currentTime
                               ? "text-rose-400"
                               : learnedCharacters?.find(
                                     (char: any) => char?.hanzi === item

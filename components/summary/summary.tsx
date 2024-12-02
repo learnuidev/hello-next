@@ -48,11 +48,11 @@ export function Summary({
     {
       onSuccess: (data: any) => {
         console.log("");
-        // if (!lang) {
-        router.push(
-          `/nmm/${characterId}?lang=${data?.lang ? data?.lang : lang}${statusUrl ? `&status-url=${statusUrl}` : ``}`
-        );
-        // }
+        if (!lang) {
+          router.push(
+            `/nmm/${characterId}?lang=${data?.lang ? data?.lang : lang}${statusUrl ? `&status-url=${statusUrl}` : ``}`
+          );
+        }
       },
     }
   );

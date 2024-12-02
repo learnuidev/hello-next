@@ -67,7 +67,7 @@ export const CharacterTitle = (props: any) => {
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
-      {!brightMode ? (
+      {brightMode ? (
         pinyins?.length > 1 ? (
           <h2 className="text-gray-400 font-extralight">
             {pinyins?.join("/")}
@@ -119,7 +119,7 @@ export const CharacterTitle = (props: any) => {
                       href={`/nmm/${val}?lang=zh`}
                       key={`${val}-${idx}`}
                       className={`${
-                        !brightMode || isCharactersLoading
+                        brightMode || isCharactersLoading
                           ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
                           : // learnedCharacters.includes(prop?.hanzi)
                             learnedChar

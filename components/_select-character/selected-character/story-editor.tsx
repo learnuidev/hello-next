@@ -7,6 +7,7 @@ import { Icons } from "../../ui/icons.v2";
 import { Editor } from "../../Editor";
 import { useStoryStore } from "./story-store";
 import { useUpdateCharacterStoryMutation } from "@/domain/lesson/character.mutations";
+import { characterStore } from "../character-store";
 
 export const StoryEditor = ({
   selectedChar,
@@ -14,6 +15,8 @@ export const StoryEditor = ({
   disableSave,
 }: any) => {
   const story = useStoryStore((state: any) => state.story);
+
+  // const pinyinInput = characterStore((state) => state.pinyin);
 
   const setStory = useStoryStore((state: any) => state.setStory);
 
@@ -40,6 +43,7 @@ export const StoryEditor = ({
               .mutateAsync({
                 id: selectedChar?.id,
                 story: story,
+                // pinyin: !!pinyinInput ? pinyinInput : null,
               })
               .then(() => {
                 console.log("Story Successfully Updated");

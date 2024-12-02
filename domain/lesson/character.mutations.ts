@@ -136,6 +136,7 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
 export type UpdateCharacterStoryParams = {
   id: string;
   story: string;
+  pinyin?: string | null;
 };
 
 const updateChracterStory = async (

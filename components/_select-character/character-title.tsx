@@ -15,6 +15,8 @@ import Link from "next/link";
 import { Icons } from "../ui/icons.v2";
 import { CharacterTrackButton } from "./selected-character/character-track-button";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
+import { useState } from "react";
+import { characterStore } from "./character-store";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -25,6 +27,9 @@ export const CharacterTitle = (props: any) => {
   } = props;
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersQuery();
+
+  const pinyinInput = characterStore((state) => state.pinyin);
+  const setPinyin = characterStore((state) => state.setPinyin);
 
   const componentId = useGetComponentId();
 
@@ -53,19 +58,30 @@ export const CharacterTitle = (props: any) => {
 
   const brightMode = useReadModeStore((state) => state.readMode);
 
+  console.log("BM", brightMode);
+
   const StatusIcon = getStatusIcon(character?.status);
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
-      {brightMode ? (
+      {!brightMode ? (
         pinyins?.length > 1 ? (
           <h2 className="text-gray-400 font-extralight">
             {pinyins?.join("/")}
           </h2>
         ) : (
-          <h2 className="text-gray-400 font-extralight">
-            {selectedComp?.pinyin || pinyins?.[0] || meaning?.details?.pinyin}
-          </h2>
+          <input
+            value={
+              pinyinInput ||
+              selectedComp?.pinyin ||
+              pinyins?.[0] ||
+              meaning?.details?.pinyin
+            }
+            onChange={(event) => {
+              setPinyin(event.target.value);
+            }}
+            className="text-gray-400  bg-black font-extralight focus-visible:ring-0 focus-visible:ring-transparent w-full"
+          />
         )
       ) : null}
 
@@ -95,12 +111,12 @@ export const CharacterTitle = (props: any) => {
                       href={`/nmm/${val}?lang=zh`}
                       key={`${val}-${idx}`}
                       className={`${
-                        brightMode || isCharactersLoading
+                        !brightMode || isCharactersLoading
                           ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
                           : // learnedCharacters.includes(prop?.hanzi)
                             learnedChar
                             ? learnedChar?.status === "forgotten"
-                              ? `text-gray-900 ${hoverColor}`
+                              ? `text-gray-700 ${hoverColor}`
                               : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
                                 //   ? "text-rose-500"
                                 `${color} text-gray-300 ${hoverColor}`

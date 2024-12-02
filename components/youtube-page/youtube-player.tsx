@@ -55,6 +55,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const [lessonIndex, setLessonIndex] = useState(0);
 
+  const [loopCounter, setLoopCounter] = useState(0);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((seconds) => playerRef?.current?.getCurrentTime());
@@ -75,15 +77,36 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         if (currentTime > lastEnd) {
           playerRef.current.seekTo(firstStart, "seconds");
 
-          // for (const example of toggleLoops) {
-          //   setRepeatHistories({
-          //     contentId: contentId,
-          //     ...example,
-          //     input: example?.input || example?.hanzi,
-          //     roman: example?.roman || example?.pinyin,
-          //     createdAt: Date.now(),
-          //   });
-          // }
+          for (const example of toggleLoops) {
+            setRepeatHistories({
+              contentId: contentId,
+              ...example,
+              input: example?.input || example?.hanzi,
+              roman: example?.roman || example?.pinyin,
+              createdAt: Date.now(),
+            });
+          }
+
+          // setLoopCounter((prev) => {
+          //   console.log("PREV", prev);
+          //   if (prev === 1) {
+          //     for (const example of toggleLoops) {
+          //       setRepeatHistories({
+          //         contentId: contentId,
+          //         ...example,
+          //         input: example?.input || example?.hanzi,
+          //         roman: example?.roman || example?.pinyin,
+          //         createdAt: Date.now(),
+          //       });
+          //     }
+          //   }
+
+          //   if (prev >= 1) {
+          //     return 0;
+          //   }
+
+          //   return prev + 1;
+          // });
 
           try {
             playerRef.current?.player?.player?.play();
@@ -95,7 +118,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       }, 5);
       return () => clearInterval(interval);
     }
-  }, [contentId, setRepeatHistories, toggleLoops]);
+  }, [contentId, setRepeatHistories, toggleLoops, loopCounter, setLoopCounter]);
 
   // const { data: contentsArr } = useListContentsQuery();
 

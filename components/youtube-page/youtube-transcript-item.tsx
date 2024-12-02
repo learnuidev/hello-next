@@ -1,17 +1,3 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Header } from "@/components/ui/icons";
-import {
-  ListGrammarsResponse,
-  useListGrammarsQuery,
-} from "@/domain/sentence/grammar.queries";
-
-import ReactPlayer from "react-player";
-import { useListContentsQuery } from "@/domain/content/content.queries";
-import { useSearchParams } from "@/hooks/use-search-params";
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { faLanguage, faRepeat } from "@fortawesome/pro-thin-svg-icons";
 import {
   Tooltip,
   TooltipContent,
@@ -19,12 +5,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { faLanguage, faRepeat } from "@fortawesome/pro-thin-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
-import { Icons } from "../ui/icons.v2";
-import { resolveLangCode } from "@/libs/openai/utils";
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
-import { useParams } from "next/navigation";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { resolveLangCode } from "@/libs/openai/utils";
+import { useParams } from "next/navigation";
+import { Icons } from "../ui/icons.v2";
 
 export const TranscriptItem = ({
   example,
@@ -221,7 +210,7 @@ export const TranscriptItem = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="px-0 transition">
-                {example?.pinyin && (
+                {(example?.pinyin || example?.roman) && (
                   <p
                     className={`${
                       (example?.timestamp?.[0] || example?.start) <
@@ -231,7 +220,7 @@ export const TranscriptItem = ({
                         : "dark:text-gray-400 text-gray-300"
                     } transition text-md text-left`}
                   >
-                    {example?.pinyin}
+                    {example?.pinyin || example?.roman}
                   </p>
                 )}
                 <div className="text-left">

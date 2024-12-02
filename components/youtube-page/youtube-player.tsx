@@ -1,11 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
 import { Header } from "@/components/ui/icons";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import ReactPlayer from "react-player";
 import { useGetContentQuery } from "@/domain/content/content.queries";
+import ReactPlayer from "react-player";
 
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   faGlasses,
@@ -14,17 +12,19 @@ import {
   faVideo,
   faVideoSlash,
 } from "@fortawesome/pro-thin-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 import { groupBy } from "@/lib/utils";
 
-import { TranscriptItem } from "./youtube-transcript-item";
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
-import { useParams } from "next/navigation";
-import { useSize } from "@/hooks/use-size";
-import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
+import { useSize } from "@/hooks/use-size";
+import { useParams } from "next/navigation";
+import { TranscriptItem } from "./youtube-transcript-item";
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -122,6 +122,126 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const isSmall = size?.[0] < 600;
 
+  console.log("GROUPED", groupedTranscriptions);
+
+  const ParaView = () => {
+    return (
+      <div
+        className={
+          isVideoHidden
+            ? "col-span-12 mx-12 md:mx-32"
+            : "col-span-12 md:col-span-4"
+        }
+      >
+        <div
+          className={`${
+            isVideoHidden
+              ? "md:col-span-8 col-span-12"
+              : "md:col-span-4 col-span-12"
+          } w-full text-center`}
+        >
+          <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-900 p-4 w-full">
+            <div className="space-y-8">
+              {Object.values(groupedTranscriptions)?.map(
+                (transcriptions: any) => {
+                  const hanzis = transcriptions
+                    ?.map((t: any) => t?.hanzi)
+                    ?.join("");
+                  return (
+                    <div key={JSON.stringify(transcriptions)}>
+                      <div className="flex flex-wrap">
+                        {transcriptions.map((transcription: any) => {
+                          return (
+                            <span
+                              role="button"
+                              className={`${
+                                transcription?.start < currentTime &&
+                                transcription?.end > currentTime
+                                  ? "dark:text-white"
+                                  : "dark:text-gray-400 text-gray-300"
+                              } transition block py-1 px-1`}
+                              key={transcription?.hanzi}
+                              onClick={() => {
+                                playerRef.current.seekTo(
+                                  transcription?.start,
+                                  "seconds"
+                                );
+
+                                try {
+                                  playerRef.current?.player?.player?.play();
+                                } catch (err) {
+                                  console.error(err);
+                                }
+                              }}
+                            >
+                              {" "}
+                              {transcription?.input || transcription?.hanzi}
+                              {"  "}
+                            </span>
+                          );
+                        })}
+                      </div>
+
+                      <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
+                        <Link
+                          // href=""
+                          target="_blank"
+                          href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                            hanzis
+                          )}&op=translate`}
+                          className="text-gray-500 hover:text-white"
+                        >
+                          <FontAwesomeIcon icon={faGoogle} />
+                        </Link>
+
+                        <Link
+                          // href=""
+                          href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                            hanzis
+                          )}`}
+                          className="text-gray-500 hover:text-white"
+                          target="_blank"
+                        >
+                          <FontAwesomeIcon icon={faLanguage} />
+                        </Link>
+
+                        {/* <Link
+                      href={`/nmm/${encodeURIComponent(hanzis)}${transcriptions?.[0]?.lang ? `?lang=${resolveLangCode(transcriptions?.[0]?.lang)}` : ""}`}
+                      className="text-gray-500 hover:text-white"
+                      target="_blank"
+                    >
+                      <Icons.mandarin />
+                    </Link> */}
+                        <button
+                          onClick={() => {
+                            setToggleLoops(transcriptions);
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            className={
+                              toggleLoops?.find((item: any) =>
+                                transcriptions?.find(
+                                  (x: any) => x.end === item?.end
+                                )
+                              )
+                                ? "text-white"
+                                : "text-gray-500"
+                            }
+                            icon={faRepeat}
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          </ScrollArea>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="grow flex flex-col items-center">
       <div className="space-x-4 my-4 hidden md:block">
@@ -178,121 +298,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         </div>
 
         {viewMode === "para" ? (
-          <div
-            className={
-              isVideoHidden
-                ? "col-span-12 mx-12 md:mx-32"
-                : "col-span-12 md:col-span-4"
-            }
-          >
-            <div
-              className={`${
-                isVideoHidden
-                  ? "md:col-span-8 col-span-12"
-                  : "md:col-span-4 col-span-12"
-              } w-full text-center`}
-            >
-              <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-900 p-4 w-full">
-                <div className="space-y-8">
-                  {Object.values(groupedTranscriptions)?.map(
-                    (transcriptions: any) => {
-                      const hanzis = transcriptions
-                        ?.map((t: any) => t?.hanzi)
-                        ?.join("");
-                      return (
-                        <div key={JSON.stringify(transcriptions)}>
-                          <div className="flex flex-wrap">
-                            {transcriptions
-                              // ?.slice(0, 100)
-                              .map((transcription: any) => {
-                                return (
-                                  <span
-                                    role="button"
-                                    className={`${
-                                      transcription?.start < currentTime &&
-                                      transcription?.end > currentTime
-                                        ? "dark:text-white"
-                                        : "dark:text-gray-400 text-gray-300"
-                                    } transition block py-1 px-1`}
-                                    key={transcription?.hanzi}
-                                    onClick={() => {
-                                      playerRef.current.seekTo(
-                                        transcription?.start,
-                                        "seconds"
-                                      );
-
-                                      try {
-                                        playerRef.current?.player?.player?.play();
-                                      } catch (err) {
-                                        console.error(err);
-                                      }
-                                    }}
-                                  >
-                                    {" "}
-                                    {transcription?.hanzi}
-                                    {"  "}
-                                  </span>
-                                );
-                              })}
-                          </div>
-
-                          <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
-                            <Link
-                              // href=""
-                              target="_blank"
-                              href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                                hanzis
-                              )}&op=translate`}
-                              className="text-gray-500 hover:text-white"
-                            >
-                              <FontAwesomeIcon icon={faGoogle} />
-                            </Link>
-
-                            <Link
-                              // href=""
-                              href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                                hanzis
-                              )}`}
-                              className="text-gray-500 hover:text-white"
-                              target="_blank"
-                            >
-                              <FontAwesomeIcon icon={faLanguage} />
-                            </Link>
-
-                            {/* <Link
-                              href={`/nmm/${encodeURIComponent(hanzis)}${transcriptions?.[0]?.lang ? `?lang=${resolveLangCode(transcriptions?.[0]?.lang)}` : ""}`}
-                              className="text-gray-500 hover:text-white"
-                              target="_blank"
-                            >
-                              <Icons.mandarin />
-                            </Link> */}
-                            <button
-                              onClick={() => {
-                                setToggleLoops(transcriptions);
-                              }}
-                            >
-                              <FontAwesomeIcon
-                                className={
-                                  toggleLoops?.find((item: any) =>
-                                    transcriptions?.find(
-                                      (x: any) => x.end === item?.end
-                                    )
-                                  )
-                                    ? "text-white"
-                                    : "text-gray-500"
-                                }
-                                icon={faRepeat}
-                              />
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    }
-                  )}
-                </div>
-              </ScrollArea>
-            </div>
-          </div>
+          <ParaView />
         ) : transcriptions?.length ? (
           <div
             className={`${isVideoHidden ? "col-span-12" : "md:col-span-4 col-span-12"} w-full`}

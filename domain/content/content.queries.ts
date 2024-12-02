@@ -41,7 +41,19 @@ export function useGetContentQuery(params: { contentId: string }) {
       const response = await getContent(params, {
         Authorization: authUser?.jwt,
       });
-      return response;
+      return {
+        ...response,
+        transcriptions: response?.transcriptions?.map((transcription: any) => {
+          if (!transcription?.start) {
+            return {
+              ...transcription,
+              start: 0,
+              end: 0,
+            };
+          }
+          return transcription;
+        }),
+      };
       // }
     },
 

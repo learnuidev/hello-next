@@ -14,6 +14,27 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { resolveLangCode } from "@/libs/openai/utils";
 import { useParams } from "next/navigation";
 import { Icons } from "../ui/icons.v2";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+
+export const useContentEditStore = create(
+  persist(
+    (set: any, get: any) => ({
+      editMode: false,
+      setEditMode: (mode?: any) => set({ editMode: mode || !get().editMode }),
+      times: [],
+      resetTimes: () => set({ times: [] }),
+      setTimes: (f: any) =>
+        typeof f === "function"
+          ? set({ times: f(get().times) })
+          : set({ times: f }),
+    }),
+    {
+      name: "mandario/transcript-item-store", // name of the item in the storage (must be unique)
+      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+    }
+  )
+);
 
 export const TranscriptItem = ({
   example,
@@ -28,6 +49,46 @@ export const TranscriptItem = ({
 }: any) => {
   const params = useParams<{ "content-id": string }>();
   const contentId = params["content-id"];
+
+  const editMode = useContentEditStore((state) => state.editMode);
+  const setEditMode = useContentEditStore((state) => state.setEditMode);
+
+  const times = useContentEditStore((state) => state.times);
+  const setTimes = useContentEditStore((state) => state.setTimes);
+
+  const setTimer = (
+    type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
+    newValue?: string
+  ) => {
+    const offset = newValue || currentTime - 0.2;
+    setTimes((prev: any) => {
+      const exists = prev?.find((item: any) => item?.id === example?.id);
+
+      if (exists) {
+        return prev.map((item: any) => {
+          if (item?.id === example?.id) {
+            return {
+              ...exists,
+              [type]: offset,
+            };
+          }
+
+          return item;
+        });
+        // return prev.concat({
+        //   ...exists,
+        //   start: currentTime,
+        // });
+      }
+
+      return prev.concat({
+        id: example?.id,
+        [type]: offset,
+      });
+    });
+  };
+
+  const timeStamp = times?.find((time: any) => time?.id === example?.id) as any;
 
   const { data: contents } = useListCharactersQuery();
 
@@ -140,28 +201,6 @@ export const TranscriptItem = ({
   const Explanations = () => {
     return (
       <>
-        {/* {["zh-CN", "zh", "ml", "ne", "ja", "ko", "fa", "ar"]?.includes(
-          example?.lang
-        ) &&
-          (content?.pinyin ||
-            content?.roman ||
-            example?.pinyin ||
-            example?.roman) && (
-            <p
-              className={`${
-                (example?.timestamp?.[0] || example?.start) < currentTime &&
-                (example?.timestamp?.[1] || example?.end) > currentTime
-                  ? "dark:text-white"
-                  : " text-gray-400"
-              } transition`}
-            >
-              {example?.pinyin ||
-                example?.roman ||
-                content?.pinyin ||
-                content?.roman}
-            </p>
-          )} */}
-
         {(content?.en || example?.en) && (
           <p
             className={`${
@@ -178,8 +217,20 @@ export const TranscriptItem = ({
     );
   };
 
+  const exampleKeys = Object.keys(example);
+
+  const pinyinOrRoman = example?.pinyin ? "pinyin" : "roman";
+  const hanziOrInput = example?.input ? "input" : "hanzi";
+
   return (
     <div className="w-120 px-4">
+      {/* {editMode && (
+        <div>
+          <code>
+            <pre>{JSON.stringify(example, null, 2)}</pre>
+          </code>
+        </div>
+      )} */}
       <div className="flex items-center space-x-4">
         <div
           className={`${
@@ -196,7 +247,7 @@ export const TranscriptItem = ({
             });
 
             playerRef.current.seekTo(
-              example?.timestamp?.[0] || example?.start,
+              timeStamp?.start || example?.timestamp?.[0] || example?.start,
               "seconds"
             );
 
@@ -213,9 +264,12 @@ export const TranscriptItem = ({
                 {(example?.pinyin || example?.roman) && (
                   <p
                     className={`${
-                      (example?.timestamp?.[0] || example?.start) <
-                        currentTime &&
-                      (example?.timestamp?.[1] || example?.end) > currentTime
+                      (example?.timestamp?.[0] ||
+                        example?.start ||
+                        timeStamp?.start) < currentTime &&
+                      (example?.timestamp?.[1] ||
+                        example?.end ||
+                        timeStamp?.end) > currentTime
                         ? "text-rose-400"
                         : "dark:text-gray-400 text-gray-300"
                     } transition text-md text-left`}
@@ -235,10 +289,12 @@ export const TranscriptItem = ({
                         <span
                           key={`${JSON.stringify(item)}-${idx}-${Math.random()}`}
                           className={`${
-                            (example?.timestamp?.[0] || example?.start) <
-                              currentTime &&
-                            (example?.timestamp?.[1] || example?.end) >
-                              currentTime
+                            (example?.timestamp?.[0] ||
+                              example?.start ||
+                              timeStamp?.start) < currentTime &&
+                            (example?.timestamp?.[1] ||
+                              example?.end ||
+                              timeStamp?.end) > currentTime
                               ? "text-rose-400"
                               : learnedCharacters?.find(
                                     (char: any) => char?.hanzi === item
@@ -252,18 +308,6 @@ export const TranscriptItem = ({
                       );
                     })}
                 </div>
-
-                {/* <p
-                  className={`${
-                    (example?.timestamp?.[0] || example?.start) < currentTime &&
-                    (example?.timestamp?.[1] || example?.end) > currentTime
-                      ? "text-rose-400"
-                      : "text-gray-500"
-                  } transition text-md`}
-                >
-                  {" "}
-                  {example?.en}
-                </p> */}
               </TooltipTrigger>
               <TooltipContent className="bg-black border-gray-800 p-4">
                 <Explanations />
@@ -274,24 +318,78 @@ export const TranscriptItem = ({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          {/* <div className="block sm:hidden"> */}
-          <Explanations />
-          {/* </div> */}
-        </div>
 
-        {/* <div className="invisible hover:visible active:visible"> */}
+          <Explanations />
+        </div>
 
         <div>
           <ConfigButtons />
+
           <div className="flex text-gray-400 text-[12px] items-center justify-end space-x-2">
             <Icons.music />
             <p className="font-extralight">{totalRepeats?.length}</p>
           </div>
         </div>
-
-        {/* </div> */}
       </div>
       <div className="mt-4"> </div>
+
+      {editMode && (
+        <input
+          className="w-full"
+          value={timeStamp?.[pinyinOrRoman] || example?.[pinyinOrRoman]}
+          onChange={(event) => {
+            setTimer(pinyinOrRoman, event?.target?.value);
+          }}
+        />
+      )}
+
+      {editMode && (
+        <input
+          className="w-full"
+          value={timeStamp?.en || example?.en}
+          onChange={(event) => {
+            setTimer("en", event?.target?.value);
+          }}
+        />
+      )}
+
+      {editMode && (
+        <div className="flex text-gray-400 text-[12px] items-center justify-end space-x-2">
+          <div>
+            <input
+              value={timeStamp?.start || example?.start}
+              onChange={(event) => {
+                setTimer("start", event?.target?.value);
+              }}
+            />
+            <button
+              onClick={() => {
+                setTimer("start");
+              }}
+            >
+              Set Start{" "}
+            </button>
+          </div>
+
+          <div>
+            <input
+              value={timeStamp?.end || example?.end}
+              onChange={(event) => {
+                setTimer("end", event?.target?.value);
+              }}
+            />
+
+            <button
+              onClick={() => {
+                setTimer("end");
+              }}
+            >
+              {" "}
+              Set End{" "}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -31,7 +31,7 @@ export function useListContentsQuery(options = {} as any) {
   );
 }
 
-const getContentQueryId = "get-content";
+export const getContentQueryId = "get-content";
 export function useGetContentQuery(params: { contentId: string }) {
   const { data: authUser } = useCurrentAuthUser({});
 

@@ -22,7 +22,7 @@ export function TimelineTabs() {
             <Icons.magnifyingGlass className="text-2xl" />
           </TabsTrigger>
           <TabsTrigger
-            value="click"
+            value="track"
             className="px-0 data-[state=active]:text-yellow-500"
           >
             <Icons.track className="text-2xl" />
@@ -52,8 +52,8 @@ export function TimelineTabs() {
       <TabsContent value="search" className="my-8">
         <TimelineTabBody variant="search" />
       </TabsContent>
-      <TabsContent value="click" className="my-8">
-        <TimelineTabBody variant="click" />
+      <TabsContent value="track" className="my-8">
+        <TimelineTabBody variant="track" />
       </TabsContent>
       <TabsContent value="discovered" className="my-8">
         <TimelineTabBody variant="discovered" />

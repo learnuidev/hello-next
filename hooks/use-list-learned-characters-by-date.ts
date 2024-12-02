@@ -17,7 +17,7 @@ import { useListAttempts } from "@/app/(auth)/insights/insights-v2/use-list-atte
 export function useListLearnedCharactersByDate({
   variant,
 }: {
-  variant: "all" | "search" | "click" | "discovered" | "reviewed";
+  variant: "all" | "search" | "track" | "click" | "discovered" | "reviewed";
 }): {
   isLoading: boolean;
   data: {
@@ -53,6 +53,13 @@ export function useListLearnedCharactersByDate({
             (event: any) => event?.eventType === "CONTENT_VIEWED"
           ) || []
         );
+      case "track":
+        return (
+          data?.Items?.filter(
+            (event: any) => event?.eventType === "CONTENT_TRACKED"
+          ) || []
+        );
+
       case "reviewed":
         return totalAttempts;
 

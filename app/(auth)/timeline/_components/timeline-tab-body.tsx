@@ -23,7 +23,7 @@ import { calculateTotalTimeStudied } from "@/app/profile/hooks/use-get-total-tim
 export const TimelineTabBody = ({
   variant,
 }: {
-  variant: "all" | "search" | "click" | "discovered" | "reviewed";
+  variant: "all" | "search" | "track" | "click" | "discovered" | "reviewed";
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 

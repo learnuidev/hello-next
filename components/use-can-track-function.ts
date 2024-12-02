@@ -31,7 +31,7 @@ export const useCanTrackFunction = (
         trackingCharacters: containsTrackableCharacters?.map(
           (item) => item?.hanzi
         ),
-        eventType: "CONTENT_VIEWED",
+        eventType: "CONTENT_TRACKED",
         ...metadata,
       } as any);
     }

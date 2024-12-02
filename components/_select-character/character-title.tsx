@@ -70,18 +70,23 @@ export const CharacterTitle = (props: any) => {
             {pinyins?.join("/")}
           </h2>
         ) : (
-          <input
-            value={
-              pinyins?.[0] ||
+          <h2
+            // value={
+            //   pinyins?.[0] ||
+            //   pinyinInput ||
+            //   selectedComp?.pinyin ||
+            //   meaning?.details?.pinyin
+            // }
+            // onChange={(event) => {
+            //   setPinyin(event.target.value);
+            // }}
+            className="text-gray-400  font-extralight focus-visible:ring-0 focus-visible:ring-transparent w-full"
+          >
+            {pinyins?.[0] ||
               pinyinInput ||
               selectedComp?.pinyin ||
-              meaning?.details?.pinyin
-            }
-            onChange={(event) => {
-              setPinyin(event.target.value);
-            }}
-            className="text-gray-400  bg-black font-extralight focus-visible:ring-0 focus-visible:ring-transparent w-full"
-          />
+              meaning?.details?.pinyin}
+          </h2>
         )
       ) : null}
 

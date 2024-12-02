@@ -72,9 +72,9 @@ export const CharacterTitle = (props: any) => {
         ) : (
           <input
             value={
+              pinyins?.[0] ||
               pinyinInput ||
               selectedComp?.pinyin ||
-              pinyins?.[0] ||
               meaning?.details?.pinyin
             }
             onChange={(event) => {
@@ -193,7 +193,7 @@ export const CharacterTitle = (props: any) => {
       )}
 
       <h2 className="text-gray-500 font-light">
-        {selectedComp?.en || englishMeanings?.[0] || meaning?.details?.en}
+        {englishMeanings?.[0] || selectedComp?.en || meaning?.details?.en}
       </h2>
     </div>
   );

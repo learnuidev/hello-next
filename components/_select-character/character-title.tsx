@@ -17,6 +17,7 @@ import { CharacterTrackButton } from "./selected-character/character-track-butto
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { useState } from "react";
 import { characterStore } from "./character-store";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -56,7 +57,9 @@ export const CharacterTitle = (props: any) => {
 
   const selectedCompInput = selectedComp?.hanzi || selectedCompInput2;
 
-  const brightMode = useReadModeStore((state) => state.readMode);
+  // const brightMode = useReadModeStore((state) => state.readMode);
+
+  const brightMode = useBrightModeStore((state: any) => state.mode);
 
   console.log("BM", brightMode);
 

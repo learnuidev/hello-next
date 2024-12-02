@@ -13,6 +13,7 @@ import { useCanTrackFunction } from "../use-can-track-function";
 import { AudioComponent } from "./audio-component";
 import { GoogleLink } from "./selected-character/google-link";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -31,7 +32,7 @@ export const SentenceItem = (props: any) => {
 
   const deleteSentenceMutation = useDeleteSentenceMutation();
 
-  const brightMode = useReadModeStore((state) => state.readMode);
+  const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const characterAnalytics = useGetCharacterAnalytics({
     characterId: currentPhrase?.hanzi || currentPhrase?.input,

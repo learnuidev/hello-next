@@ -25,7 +25,7 @@ export const TranscriptItem = ({
   seek: any;
   lang?: string;
 }) => {
-  const { speak } = useSpeak();
+  const { speak } = useSpeak(lang);
 
   const setRepeatHistories = useRepeatHistoryStore(
     (state: any) => state.setHistory

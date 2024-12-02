@@ -2,7 +2,60 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export const useSpeak = (lang = "zh-CN") => {
+const langVars = [
+  ["en-US", "en"],
+  ["it-IT", "it"],
+  ["sv-SE", "sv"],
+  // ["fr-CA", "fr"],
+  ["ms-MY", "ms"],
+  ["de-DE", "de"],
+  ["en-GB", "en"],
+  ["he-IL", "he"],
+  ["en-AU", "en"],
+  ["id-ID", "id"],
+  ["fr-FR", "fr"],
+  ["bg-BG", "bg"],
+  ["es-ES", "es"],
+  ["es-MX", "es"],
+  ["fi-FI", "fi"],
+  ["pt-BR", "pt"],
+  ["nl-BE", "nl"],
+  ["ja-JP", "ja"],
+  ["ro-RO", "ro"],
+  ["pt-PT", "pt"],
+  ["th-TH", "th"],
+  ["hr-HR", "hr"],
+  ["sk-SK", "sk"],
+  ["hi-IN", "hi"],
+  ["uk-UA", "uk"],
+  ["zh-CN", "zh"],
+  ["vi-VN", "vi"],
+  ["ar-001", "ar"],
+  // ["zh-TW", "zh"],
+  ["el-GR", "el"],
+  ["ru-RU", "ru"],
+  ["en-IE", "en"],
+  ["ca-ES", "ca"],
+  ["nb-NO", "nb"],
+  ["en-IN", "en"],
+  ["da-DK", "da"],
+  // ["zh-HK", "zh"],
+  ["en-ZA", "en"],
+  ["hu-HU", "hu"],
+  ["nl-NL", "nl"],
+  ["tr-TR", "tr"],
+  ["ko-KR", "ko"],
+  ["pl-PL", "pl"],
+  ["cs-CZ", "cs"],
+  ["es-US", "es"],
+];
+
+function getLang(id = "zh") {
+  return langVars?.filter((lang) => lang[1] === id)?.[0]?.[0] || "zh-CN";
+}
+
+export const useSpeak = (defLang = "zh") => {
+  const lang = getLang(defLang);
   const synthRef = useRef(window.speechSynthesis);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [currentString, setCurrentString] = useState("");

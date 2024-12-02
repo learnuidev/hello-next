@@ -69,7 +69,7 @@ export const CharacterTitle = (props: any) => {
         )
       ) : null}
 
-      {lang === "zh" ? (
+      {(lang || meaning?.lang) === "zh" ? (
         <div className="flex justify-between items-center w-full">
           <div className="space-x-4 flex items-center">
             <div>

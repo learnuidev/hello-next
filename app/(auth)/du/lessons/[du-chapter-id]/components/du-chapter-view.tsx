@@ -204,11 +204,11 @@ export const DuLessonView = () => {
 
                             textSize?.[0],
                             activeSubtitle?.sentence === subtitle?.sentence
-                              ? "text-gray-400"
+                              ? "text-white"
                               : "text-gray-600",
                             currentTime > subtitle?.startTime &&
                               currentTime < subtitle.endTime
-                              ? "text-white"
+                              ? "bg-blue-600"
                               : "",
                             !isPlaying ? "text-gray-500" : ""
                           )}
@@ -225,11 +225,11 @@ export const DuLessonView = () => {
 
                           textSize?.[1],
                           activeSubtitle?.sentence === subtitle?.sentence
-                            ? "text-gray-400"
+                            ? "text-white"
                             : "text-gray-600",
                           currentTime > subtitle?.startTime &&
                             currentTime < subtitle.endTime
-                            ? "text-white"
+                            ? "bg-blue-600"
                             : "0",
                           !isPlaying ? "text-gray-300" : ""
                         )}

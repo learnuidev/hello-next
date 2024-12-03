@@ -24,9 +24,7 @@ export const HanziTooltip = (props: {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger className="hover:scale-125 transition">
-          {children}
-        </TooltipTrigger>
+        <TooltipTrigger className="transition">{children}</TooltipTrigger>
         <TooltipContent className="bg-black border-gray-800">
           <PreviewComponent component={component} />
         </TooltipContent>

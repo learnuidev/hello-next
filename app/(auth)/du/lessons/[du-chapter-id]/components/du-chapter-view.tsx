@@ -250,7 +250,7 @@ export const DuLessonView = () => {
                         "text-sm",
                         // currentTime > subtitle?.startTime &&
                         //   currentTime < subtitle.endTime
-                        activeSubtitle?.sentence === currentTime?.sentence
+                        activeSubtitle?.sentence === subtitle?.sentence
                           ? "text-white"
                           : "text-gray-500"
                       )}
@@ -267,7 +267,7 @@ export const DuLessonView = () => {
                     }}
                     className={cn(
                       "text-3xl font-light text-gray-300 hover:text-rose-400",
-                      activeSubtitle?.sentence === currentTime?.sentence
+                      activeSubtitle?.sentence === subtitle?.sentence
                         ? // currentTime > subtitle?.startTime &&
                           //   currentTime < subtitle.endTime
                           "text-white"

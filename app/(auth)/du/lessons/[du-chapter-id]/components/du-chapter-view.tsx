@@ -248,8 +248,9 @@ export const DuLessonView = () => {
                       className={cn(
                         subtitle?.pinyin ? "text-gray-500" : "text-black",
                         "text-sm",
-                        currentTime > subtitle?.startTime &&
-                          currentTime < subtitle.endTime
+                        // currentTime > subtitle?.startTime &&
+                        //   currentTime < subtitle.endTime
+                        activeSubtitle?.sentence === currentTime?.sentence
                           ? "text-white"
                           : "text-gray-500"
                       )}
@@ -266,9 +267,10 @@ export const DuLessonView = () => {
                     }}
                     className={cn(
                       "text-3xl font-light text-gray-300 hover:text-rose-400",
-                      currentTime > subtitle?.startTime &&
-                        currentTime < subtitle.endTime
-                        ? "text-white"
+                      activeSubtitle?.sentence === currentTime?.sentence
+                        ? // currentTime > subtitle?.startTime &&
+                          //   currentTime < subtitle.endTime
+                          "text-white"
                         : "text-gray-500"
                     )}
                   >

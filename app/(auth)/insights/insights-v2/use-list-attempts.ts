@@ -15,7 +15,7 @@ type InsightItem = IComponent & {
 
 export const useListAttempts = (): InsightItem[] => {
   const { data: learnedCharacters } = useListCharactersQuery();
-  const querySync = useSearchQueryStore((state) => state.query);
+  const querySync = useSearchQueryStore((state) => state.query2);
 
   const totalAttempts =
     learnedCharacters

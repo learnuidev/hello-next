@@ -25,7 +25,7 @@ export default function Insights() {
   const { fromDate, toDate } = useGetFromAndToDate();
 
   const searchResults = useGetInsightSearchResults();
-  const querySync = useSearchQueryStore((state) => state.query);
+  const querySync = useSearchQueryStore((state) => state.query2);
 
   return (
     <div>

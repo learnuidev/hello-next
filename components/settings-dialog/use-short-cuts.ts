@@ -74,7 +74,7 @@ export function useShortCuts() {
         }
       }
 
-      if (["d"]?.includes(event.key) && event.shiftKey) {
+      if (["u"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         router.push("/du");
       }

@@ -85,7 +85,8 @@ export const DuChapters = () => {
           items={
             data?.lessons?.map((lesson, idx) => {
               return {
-                title: `Chapter ${idx + 1}`,
+                // title: `Chapter ${idx + 1}`,
+                title: `${idx + 1}. ${lesson?.title}`,
                 description: `Start Reading`,
                 link: `/du/${lesson?.path}${(lesson?.path?.includes("?") ? "&" : "?") + `courseId=${courseId}`}`,
               };

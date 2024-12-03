@@ -11,6 +11,7 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { traditionalToSimplified } from "@/langs/chinese /traditiona-to-simplified";
 import { signOut } from "@/libs/cognito/auth";
+import { useIsDu } from "./use-is-du";
 
 export const useHandleSearch = () => {
   const router = useRouter();
@@ -29,10 +30,16 @@ export const useHandleSearch = () => {
     setQuery(() => value);
   };
 
+  const isDu = useIsDu();
+
   const handleChangeDebounced = useDebouncedCallback(handleChange, 300);
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuerySync(event?.target?.value);
+
+    if (isDu) {
+      return;
+    }
     handleChangeDebounced(event?.target.value);
   };
 

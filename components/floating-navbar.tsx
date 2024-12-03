@@ -40,11 +40,11 @@ const FloatingNavbarComp = () => {
   const readMode = useReadModeStore((state) => state.readMode);
 
   if (isDu) {
-    return null;
+    if (isDuExact) {
+      return <DuNavbar />;
+    }
   }
-  if (isDuExact) {
-    return <DuNavbar />;
-  }
+
   if (routeName?.includes("/review")) {
     return (
       <div

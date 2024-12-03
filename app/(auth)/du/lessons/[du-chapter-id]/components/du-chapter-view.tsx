@@ -122,17 +122,18 @@ export const DuLessonView = () => {
         <h1 className="text-2xl font-bold">{course?.title}</h1>
       </div>
 
-      <div className="mt-12 max-w-6xl m-auto mb-32 sticky">
-        <section className="mb-12 flex items-center justify-between">
-          <div className="space-x-4 flex items-center">
-            <button
-              className="text-2xl"
-              onClick={() => {
-                togglePlay();
-              }}
-            >
-              {isPlaying ? <Icons.pause /> : <Icons.play />}
-              {/* {isPlaying ? (
+      <div className="mt-12 max-w-6xl m-auto mb-32 relative">
+        <div className="sticky top-0 pt-4 pb-2 bg-[rgb(9,10,11)]">
+          <section className="mb-8 flex items-center justify-between">
+            <div className="space-x-4 flex items-center">
+              <button
+                className="text-2xl"
+                onClick={() => {
+                  togglePlay();
+                }}
+              >
+                {isPlaying ? <Icons.pause /> : <Icons.play />}
+                {/* {isPlaying ? (
                 <div>
                   <div className="flex space-x-1" aria-hidden="true">
                     <div className="w-1 h-4 bg-white animate-wave1"></div>
@@ -143,40 +144,41 @@ export const DuLessonView = () => {
               ) : (
                 <Icons.play />
               )} */}
-            </button>
-            <button
-              className="text-2xl"
-              onClick={() => {
-                reset();
-              }}
-            >
-              <Icons.stop />
-            </button>
+              </button>
+              <button
+                className="text-2xl"
+                onClick={() => {
+                  reset();
+                }}
+              >
+                <Icons.stop />
+              </button>
 
-            <p className="w-16 font-extralight text-2xl text-center dark:text-slate-300 text-slate-600">
-              {formatTime(currentTime)}
-            </p>
+              <p className="w-16 font-extralight text-2xl text-center dark:text-slate-300 text-slate-600">
+                {formatTime(currentTime)}
+              </p>
+            </div>
+
+            <DuChapterNavbar />
+          </section>
+
+          <div className="h-12 mb-4">
+            <h4 className="text-xs text-gray-500">Word meaning</h4>
+
+            <div className="flex justify-between items-center mt-2 w-full">
+              <p className="space-x-2 text-[16px] font-extralight">
+                <span>{selected?.hanzi}</span>
+
+                <span className="text-red-400">{selected?.pinyin}</span>
+
+                <span className="truncate">{selected?.meaning}</span>
+              </p>
+
+              {selected?.hsk && <p>HSK {selected?.hsk}</p>}
+            </div>
+
+            {/* <span>{JSON.stringify(selected)}</span> */}
           </div>
-
-          <DuChapterNavbar />
-        </section>
-
-        <div className="h-12 mb-8">
-          <h4 className="text-xs text-gray-500">Word meaning</h4>
-
-          <div className="flex justify-between items-center mt-2 w-full">
-            <p className="space-x-2 text-[16px] font-extralight">
-              <span>{selected?.hanzi}</span>
-
-              <span className="text-red-400">{selected?.pinyin}</span>
-
-              <span className="truncate">{selected?.meaning}</span>
-            </p>
-
-            {selected?.hsk && <p>HSK {selected?.hsk}</p>}
-          </div>
-
-          {/* <span>{JSON.stringify(selected)}</span> */}
         </div>
 
         {viewMode === "stats" ? (

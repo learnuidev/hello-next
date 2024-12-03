@@ -19,10 +19,13 @@ import {
   useGetReviewUrl,
   useGetReviewUrlFn,
 } from "./settings-dialog/use-get-review-url";
+import { useIsDu } from "@/hooks/use-is-du";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
   const reviewUrl = useGetReviewUrl();
+
+  const isDu = useIsDu();
 
   const reviewUrlFn = useGetReviewUrlFn();
   const { reviewMode } = useGetReviewParams();
@@ -35,7 +38,7 @@ const FloatingNavbarComp = () => {
   const setReadMode = useReadModeStore((state) => state.setReadMode);
   const readMode = useReadModeStore((state) => state.readMode);
 
-  if (routeName?.includes("/du")) {
+  if (isDu) {
     return <DuNavbar />;
   }
   if (routeName?.includes("/review")) {

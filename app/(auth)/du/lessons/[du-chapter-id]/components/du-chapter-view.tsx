@@ -99,7 +99,7 @@ export const DuLessonView = () => {
   );
 
   return (
-    <div className="">
+    <div className="relative">
       {/* <code>
         <pre>{JSON.stringify(data, null, 4)}</pre>
       </code> */}
@@ -115,7 +115,7 @@ export const DuLessonView = () => {
         / <span>{chapterId}</span>
       </div>
 
-      <div className="mt-12 mb-4">
+      <div className="mt-12 mb-4 sticky">
         <p className="uppercase mt-8 font-bold text-gray-400">
           {course?.levels?.join(", ")}
         </p>
@@ -161,6 +161,19 @@ export const DuLessonView = () => {
           <DuChapterNavbar />
         </section>
 
+        <div className="h-12 mb-8">
+          <h4 className="text-xs text-gray-500">Word meaning</h4>
+          <p className="mt-2 space-x-2 text-[16px] font-extralight">
+            <span>{selected?.hanzi}</span>
+
+            <span className="text-red-400">{selected?.pinyin}</span>
+
+            <span className="truncate">{selected?.meaning}</span>
+          </p>
+
+          {/* <span>{JSON.stringify(selected)}</span> */}
+        </div>
+
         {viewMode === "stats" ? (
           <div>
             {/* <code>
@@ -189,12 +202,12 @@ export const DuLessonView = () => {
 
             return (
               <span
-                // onMouseEnter={() => {
-                //   setSelected(subtitle);
-                // }}
-                // onMouseLeave={() => {
-                //   setSelected(null);
-                // }}
+                onMouseEnter={() => {
+                  setSelected(subtitle);
+                }}
+                onMouseLeave={() => {
+                  setSelected(null);
+                }}
                 key={JSON.stringify(subtitle)}
                 className={cn(
                   "inline-flex flex-col mt-2 items-center px-[2px]"

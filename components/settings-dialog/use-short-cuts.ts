@@ -74,10 +74,16 @@ export function useShortCuts() {
         }
       }
 
+      if (["d"]?.includes(event.key) && event.shiftKey) {
+        event.preventDefault();
+        router.push("/du");
+      }
+
       if (["d"]?.includes(event.key) && event.ctrlKey) {
         event.preventDefault();
         router.push("/diary");
       }
+
       if (["m"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         setMode("nmm");

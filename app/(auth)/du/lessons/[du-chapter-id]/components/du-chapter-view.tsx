@@ -186,6 +186,7 @@ export const DuLessonView = () => {
             if (subtitle?.hanzi === "\n") {
               return <h1 className="my-12" key={JSON.stringify(subtitle)}></h1>;
             }
+
             return (
               <span
                 // onMouseEnter={() => {
@@ -212,7 +213,13 @@ export const DuLessonView = () => {
                 <Link
                   href={`/nmm/${subtitle.hanzi}?lang=zh`}
                   target="_blank"
-                  className="text-3xl font-light text-gray-300 hover:text-rose-400"
+                  className={cn(
+                    "text-3xl font-light text-gray-300 hover:text-rose-400",
+                    currentTime > subtitle?.startTime &&
+                      currentTime < subtitle.endTime
+                      ? "text-white"
+                      : "text-gray-500"
+                  )}
                 >
                   {subtitle?.hanzi}
                   {"   "}

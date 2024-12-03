@@ -14,7 +14,7 @@ import { useGetDuParams } from "../../../hooks/use-get-du-params";
 import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
 
 const sizes = {
-  0: ["text-xs", "text-xl", "my-4", "px-[2px]"],
+  0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
   1: ["text-sm", "text-2xl", "my-10", "px-[2px]"],
   2: ["text-[14px]", "text-3xl", "my-12"],
   3: ["text-[16px]", "text-4xl", "my-12", "px-[4px]"],
@@ -238,7 +238,7 @@ export const DuLessonView = () => {
                           currentTime < subtitle.endTime
                           ? "text-white "
                           : "text-gray-500",
-                        !isPlaying ? "text-gray-500" : "",
+
                         textSize?.[0],
                         activeSubtitle?.sentence === subtitle?.sentence
                           ? "text-gray-400"
@@ -246,7 +246,8 @@ export const DuLessonView = () => {
                         currentTime > subtitle?.startTime &&
                           currentTime < subtitle.endTime
                           ? "text-white"
-                          : ""
+                          : "",
+                        !isPlaying ? "text-gray-500" : ""
                       )}
                     >
                       {subtitle?.pinyin || ""}
@@ -259,7 +260,6 @@ export const DuLessonView = () => {
                     className={cn(
                       "text-3xl font-light text-gray-300 hover:text-rose-400",
 
-                      !isPlaying ? "text-gray-300" : "",
                       textSize?.[1],
                       activeSubtitle?.sentence === subtitle?.sentence
                         ? "text-gray-400"
@@ -267,7 +267,8 @@ export const DuLessonView = () => {
                       currentTime > subtitle?.startTime &&
                         currentTime < subtitle.endTime
                         ? "text-white"
-                        : "0"
+                        : "0",
+                      !isPlaying ? "text-gray-300" : ""
                     )}
                   >
                     {subtitle?.hanzi}

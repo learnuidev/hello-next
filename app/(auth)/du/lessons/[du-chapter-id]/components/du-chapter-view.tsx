@@ -1,19 +1,17 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useGetDuParams } from "../../../hooks/use-get-du-params";
-import { useListTopLessons } from "../../../hooks/use-list-top-lessons";
-import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
-import { Icons } from "@/components/ui/icons.v2";
-import { useState } from "react";
 import { useMusicV2 } from "@/app/(auth)/convos/_play-v2/use-music-v2";
 import { formatTime } from "@/app/(auth)/convos/_play/utils";
-import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
+import { Icons } from "@/components/ui/icons.v2";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { DuChineseIcon } from "../../../components/duchinese-icon";
+import { useGetDuParams } from "../../../hooks/use-get-du-params";
+import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[2px]"],
@@ -30,8 +28,6 @@ export const DuLessonView = () => {
   const [viewPinyin, togglePinyin] = useState(false);
 
   const [viewMode, setViewMode] = useState("core");
-
-  const { data: courses } = useListTopLessons({ cookie });
 
   const searchParams = useSearchParams();
 
@@ -53,22 +49,6 @@ export const DuLessonView = () => {
 
   const characterId =
     data?.subtitles?.words?.map((word) => word?.hanzi)?.join("") || "";
-
-  const duAnalytics = useGetCharacterAnalytics({
-    characterId:
-      data?.subtitles?.words?.map((word) => word?.hanzi)?.join("") || "",
-    lang: "zh",
-  });
-
-  const {
-    understandingRate,
-    precisionRate,
-    totalCharacters,
-    totalNewCharaters,
-    newCharaters,
-    uniqueWords,
-    masteryRate,
-  } = duAnalytics;
 
   if (!course) {
     return <LottieLoadingAnimation />;
@@ -116,9 +96,6 @@ export const DuLessonView = () => {
 
   return (
     <div className="relative">
-      {/* <code>
-        <pre>{JSON.stringify(data, null, 4)}</pre>
-      </code> */}
       <div className="text-gray-400">
         <Link href="/du" className="hover:text-white">
           {" "}
@@ -130,13 +107,6 @@ export const DuLessonView = () => {
         </Link>{" "}
         / <span>{chapterId}</span>
       </div>
-
-      {/* <div className="mt-12 mb-4 sticky">
-        <p className="uppercase mt-8 font-bold text-gray-400">
-          {course?.levels?.join(", ")}
-        </p>
-        <h1 className="text-2xl font-bold">{course?.title}</h1>
-      </div> */}
 
       <div className="mt-12 max-w-6xl m-auto mb-32 relative">
         <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
@@ -177,7 +147,6 @@ export const DuLessonView = () => {
 
             <div className="space-x-2">
               <button
-                // className="text-2xl"
                 onClick={() => {
                   setTextSizeIndex((prev) => Math.min(3, prev + 1));
                 }}
@@ -207,14 +176,9 @@ export const DuLessonView = () => {
 
             <div className="flex justify-between items-center mt-2 w-full">
               <p className="space-x-2 text-[16px] font-extralight">
-                {/* {selected?.sentence || activeSubtitle?.sentence} */}
                 {activeSubtitle?.sentence}
               </p>
-
-              {/* {selected?.hsk && <p>HSK {selected?.hsk}</p>} */}
             </div>
-
-            {/* <span>{JSON.stringify(selected)}</span> */}
           </div>
           <div className="h-12 mb-4">
             <h4 className="text-xs text-gray-500">Word meaning</h4>
@@ -230,29 +194,11 @@ export const DuLessonView = () => {
 
               {selected?.hsk && <p>HSK {selected?.hsk}</p>}
             </div>
-
-            {/* <span>{JSON.stringify(selected)}</span> */}
           </div>
         </div>
 
         {viewMode === "stats" ? (
           <div>
-            {/* <code>
-              <pre>
-                {JSON.stringify(
-                  {
-                    understandingRate,
-                    precisionRate,
-                    totalCharacters,
-                    totalNewCharaters,
-                    newCharaters,
-                  },
-                  null,
-                  4
-                )}
-              </pre>
-            </code>{" "} */}
-
             <CharacterAnalytics characterId={characterId} lang={"zh"} />
           </div>
         ) : (
@@ -279,9 +225,6 @@ export const DuLessonView = () => {
                   className={cn(
                     "inline-flex flex-col mt-2 items-center px-[2px]",
                     textSize?.[3]
-                    // activeSubtitle?.sentence === subtitle?.sentence
-                    //   ? "sticky top-[180px] bg-[rgb(9,10,11)]"
-                    //   : ""
                   )}
                 >
                   {viewPinyin && (
@@ -296,34 +239,35 @@ export const DuLessonView = () => {
                           ? "text-white "
                           : "text-gray-500",
                         !isPlaying ? "text-gray-500" : "",
-                        textSize?.[0]
-                        // activeSubtitle?.sentence === subtitle?.sentence
-                        //   ? "bg-gray-800"
-                        //   : ""
+                        textSize?.[0],
+                        activeSubtitle?.sentence === subtitle?.sentence
+                          ? "text-gray-400"
+                          : "text-gray-600",
+                        currentTime > subtitle?.startTime &&
+                          currentTime < subtitle.endTime
+                          ? "text-white"
+                          : ""
                       )}
                     >
                       {subtitle?.pinyin || ""}
                     </Link>
                   )}
                   <button
-                    // as="button"
-                    // href={`/nmm/${subtitle.hanzi}?lang=zh`}
-                    // target="_blank"
                     onClick={() => {
                       seek(subtitle?.startTime);
                     }}
                     className={cn(
                       "text-3xl font-light text-gray-300 hover:text-rose-400",
 
+                      !isPlaying ? "text-gray-300" : "",
+                      textSize?.[1],
+                      activeSubtitle?.sentence === subtitle?.sentence
+                        ? "text-gray-400"
+                        : "text-gray-600",
                       currentTime > subtitle?.startTime &&
                         currentTime < subtitle.endTime
                         ? "text-white"
-                        : "text-gray-500",
-                      !isPlaying ? "text-gray-300" : "",
-                      textSize?.[1]
-                      // activeSubtitle?.sentence === subtitle?.sentence
-                      //   ? "bg-gray-800"
-                      //   : ""
+                        : "0"
                     )}
                   >
                     {subtitle?.hanzi}
@@ -335,10 +279,6 @@ export const DuLessonView = () => {
           </div>
         )}
       </div>
-
-      {/* <code>
-        <pre>{JSON.stringify(data, null, 4)}</pre>
-      </code> */}
     </div>
   );
 };

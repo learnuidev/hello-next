@@ -16,8 +16,10 @@ import { useListAttempts } from "@/app/(auth)/insights/insights-v2/use-list-atte
 
 export function useListLearnedCharactersByDate({
   variant,
+  query,
 }: {
   variant: "all" | "search" | "track" | "click" | "discovered" | "reviewed";
+  query?: string;
 }): {
   isLoading: boolean;
   data: {
@@ -28,7 +30,7 @@ export function useListLearnedCharactersByDate({
   }[];
 } {
   const { data: learnedCharacters, ...rest } = useListCharactersQuery();
-  const queryStr = useSearchQueryStore((state) => state.query);
+  const queryStr = useSearchQueryStore((state) => state.query2);
 
   const { data: components } = useListComponents({
     includeAll: true,

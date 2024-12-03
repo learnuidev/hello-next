@@ -7,7 +7,7 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 export const useGetInsightSearchResults = (filterType?: string) => {
   const totalAttempts = useListAttempts();
 
-  const querySync = useSearchQueryStore((state) => state.query);
+  const querySync = useSearchQueryStore((state) => state.query2);
 
   const { data: components } = useListComponents();
 

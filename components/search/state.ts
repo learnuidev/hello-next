@@ -19,6 +19,11 @@ export const useSearchQueryStore = create((set: any, get: any) => ({
     typeof f === "function"
       ? set({ query: f(get().query) })
       : set({ query: f }),
+  query2: "",
+  setQuery2: (f: any) =>
+    typeof f === "function"
+      ? set({ query2: f(get().query2) })
+      : set({ query2: f }),
   queryResult: null,
   dictionary: null,
   setQueryResult: (f: any) =>

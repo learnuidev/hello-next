@@ -16,7 +16,7 @@ import { getStatusIcon } from "./status-icons";
 import { NoResultView } from "./no-result-view";
 
 export function WordSearchResult() {
-  const querySync = useSearchQueryStore((state) => state.query);
+  const querySync = useSearchQueryStore((state) => state.query2);
   const querySyncLowerCased = querySync?.toLowerCase();
 
   const { data: hskWords } = useListHSKWordsQuery();

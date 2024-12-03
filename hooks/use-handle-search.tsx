@@ -24,10 +24,11 @@ export const useHandleSearch = () => {
   const querySync = useSearchQueryStore((state) => state.querySync);
   const setQuerySync = useSearchQueryStore((state) => state.setQuerySync);
   const setQuery = useSearchQueryStore((state) => state.setQuery);
+  const setQuery2 = useSearchQueryStore((state) => state.setQuery2);
 
   // 2. Handlers
   const handleChange = (value: any) => {
-    setQuery(() => value);
+    setQuery2(() => value);
   };
 
   const isDu = useIsDu();

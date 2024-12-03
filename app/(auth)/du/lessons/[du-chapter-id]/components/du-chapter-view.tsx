@@ -115,15 +115,15 @@ export const DuLessonView = () => {
         / <span>{chapterId}</span>
       </div>
 
-      <div className="mt-12 mb-4 sticky">
+      {/* <div className="mt-12 mb-4 sticky">
         <p className="uppercase mt-8 font-bold text-gray-400">
           {course?.levels?.join(", ")}
         </p>
         <h1 className="text-2xl font-bold">{course?.title}</h1>
-      </div>
+      </div> */}
 
       <div className="mt-12 max-w-6xl m-auto mb-32 relative">
-        <div className="sticky top-0 pt-4 pb-2 bg-[rgb(9,10,11)]">
+        <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
           <section className="mb-8 flex items-center justify-between">
             <div className="space-x-4 flex items-center">
               <button
@@ -162,6 +162,17 @@ export const DuLessonView = () => {
             <DuChapterNavbar />
           </section>
 
+          <div className="h-12 mb-4">
+            <h4 className="text-xs text-gray-500">Sentence meaning</h4>
+
+            <div className="flex justify-between items-center mt-2 w-full">
+              <p className="space-x-2 text-[16px] font-extralight">todo</p>
+
+              {/* {selected?.hsk && <p>HSK {selected?.hsk}</p>} */}
+            </div>
+
+            {/* <span>{JSON.stringify(selected)}</span> */}
+          </div>
           <div className="h-12 mb-4">
             <h4 className="text-xs text-gray-500">Word meaning</h4>
 

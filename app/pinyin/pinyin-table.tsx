@@ -84,7 +84,7 @@ export function PinyinTable({
 }) {
   const [data, setData] = React.useState(() => [...defaultData]);
   const rerender = React.useReducer(() => ({}), {})[1];
-  const querySync = useSearchQueryStore((state) => state.query);
+  const querySync = useSearchQueryStore((state) => state.query2);
   const router = useRouter();
 
   const [isOpen, setIsOpen] = React.useState<boolean>(false);

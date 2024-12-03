@@ -20,6 +20,7 @@ import {
   useGetReviewUrlFn,
 } from "./settings-dialog/use-get-review-url";
 import { useIsDu } from "@/hooks/use-is-du";
+import { useIsDuLessons } from "@/hooks/use-is-du-lessons";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
@@ -35,6 +36,8 @@ const FloatingNavbarComp = () => {
 
   const lang = useGetCurrentLang();
 
+  const isDuLessons = useIsDuLessons();
+
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
   const setReadMode = useReadModeStore((state) => state.setReadMode);
   const readMode = useReadModeStore((state) => state.readMode);
@@ -43,6 +46,10 @@ const FloatingNavbarComp = () => {
     if (isDuExact) {
       return <DuNavbar />;
     }
+  }
+
+  if (isDuLessons) {
+    return null;
   }
 
   if (routeName?.includes("/review")) {

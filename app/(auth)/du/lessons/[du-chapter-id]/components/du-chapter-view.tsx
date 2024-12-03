@@ -161,7 +161,11 @@ export const DuLessonView = () => {
           ) : (
             <div className="mt-12">
               {data?.subtitles?.words?.map((subtitle) => {
-                if (subtitle?.hanzi === "\n") {
+                if (
+                  subtitle?.hanzi?.trim() === "\n" ||
+                  subtitle?.hanzi?.trim() === "\n\n" ||
+                  subtitle?.hanzi?.includes("\n")
+                ) {
                   return (
                     <h1
                       className={cn("my-12", textSize?.[2])}

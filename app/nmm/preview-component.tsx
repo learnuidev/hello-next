@@ -1,16 +1,42 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { formatComponentName } from "./format-component-name";
+import { useListBookmarksQuery } from "@/domain/bookmark/use-list-bookmarks-query";
+import { Icons } from "@/components/ui/icons.v2";
+import { useAddBookmarkMutation } from "@/domain/bookmark/use-add-bookmark-mutation";
+import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
+import { useDeleteBookmarkMutation } from "@/domain/bookmark/use-delete-bookmark-mutation";
 
-export const PreviewComponent = ({ component }: any) => {
-  const { steps, ...rest } = component;
+export const PreviewComponent = ({
+  component,
+}: {
+  component: {
+    hanzi: string;
+    level?: number;
+    lang?: string;
+    pinyin?: string;
+    en: string;
+  };
+}) => {
+  const { hanzi, level, en, lang, pinyin } = component;
 
   const { data: sentences, isLoading } = useListSentencesQuery({
-    component: component?.hanzi,
-    lang: component?.lang || "zh",
+    component: hanzi,
+    lang: lang || "zh",
   });
 
+  const { data: comp } = useGetComponentQuery({
+    hanzi,
+  });
+
+  const { data } = useListBookmarksQuery();
+
+  const bookmarked = data?.filter((item: any) => item?.hanzi === hanzi)?.[0];
+
   const stylePinyin = "font-extralight text-gray-400";
+
+  const addBookMarkMutation = useAddBookmarkMutation();
+  const deleteBookMarkMutation = useDeleteBookmarkMutation();
 
   const styleEn = "min-w-0 text-gray-500 font-extralight truncate text-[12px]";
   return (
@@ -19,25 +45,54 @@ export const PreviewComponent = ({ component }: any) => {
         <div className="w-full items-center justify-between flex-row">
           <div className="flex items-center justify-between w-full">
             <div>
-              <h1 className="text-xl font-light">{component?.hanzi}</h1>
-              {component?.lang === "zh" && (
-                <h2 className={stylePinyin}>{component?.pinyin}</h2>
-              )}
+              <h1 className="text-xl font-light">{hanzi}</h1>
+              {lang === "zh" && <h2 className={stylePinyin}>{pinyin}</h2>}
 
               <h3 className={styleEn}>
                 {formatComponentName(component, 2) || component?.en}
               </h3>
             </div>
+
+            <div>
+              <button
+                disabled={
+                  deleteBookMarkMutation?.isLoading ||
+                  addBookMarkMutation?.isLoading
+                }
+                onClick={() => {
+                  if (bookmarked) {
+                    deleteBookMarkMutation.mutateAsync({
+                      hanzi,
+                    });
+                  } else {
+                    addBookMarkMutation.mutateAsync({
+                      hanzi,
+                      en: en || component?.en,
+                      pinyin: pinyin || component?.pinyin,
+                      lang: "zh",
+                    });
+                  }
+                }}
+                className="text-xl"
+              >
+                {deleteBookMarkMutation?.isLoading ||
+                addBookMarkMutation?.isLoading ? (
+                  <Icons.spinner spinPulse />
+                ) : bookmarked ? (
+                  <Icons.bookmarkSolid />
+                ) : (
+                  <Icons.bookmark />
+                )}
+              </button>
+            </div>
           </div>
         </div>
 
         <div>
-          {component?.level ? (
-            <p className="text-xl font-extralight text-gray-600">
-              {component?.level}
-            </p>
+          {level ? (
+            <p className="text-xl font-extralight text-gray-600">{level}</p>
           ) : (
-            <h2 className={stylePinyin}>{component?.lang}</h2>
+            <h2 className={stylePinyin}>{lang}</h2>
           )}
         </div>
       </div>

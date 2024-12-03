@@ -13,6 +13,7 @@ import { DuChineseIcon } from "../../../components/duchinese-icon";
 import { useGetDuParams } from "../../../hooks/use-get-du-params";
 import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
 import { divMode } from "@tsparticles/engine";
+import { HanziTooltip } from "@/components/_select-character/selected-character/hanzi-tooltip";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -168,67 +169,76 @@ export const DuLessonView = () => {
                 }
 
                 return (
-                  <span
-                    onMouseEnter={() => {
-                      setSelected(subtitle);
-                    }}
-                    onMouseLeave={() => {
-                      setSelected(null);
+                  <HanziTooltip
+                    component={{
+                      hanzi: subtitle?.hanzi,
+                      en: subtitle?.meaning || "",
+                      pinyin: subtitle?.pinyin,
                     }}
                     key={JSON.stringify(subtitle)}
-                    className={cn(
-                      "inline-flex flex-col mt-2 items-center px-[2px]",
-                      textSize?.[3]
-                    )}
                   >
-                    {viewPinyin && (
-                      <Link
-                        href={`/nmm/${subtitle.hanzi}?lang=zh`}
-                        target="_blank"
-                        className={cn(
-                          subtitle?.pinyin ? "text-gray-500" : "text-black",
-                          "text-sm",
-                          currentTime > subtitle?.startTime &&
-                            currentTime < subtitle.endTime
-                            ? "text-white "
-                            : "text-gray-500",
+                    <span
+                      onMouseEnter={() => {
+                        setSelected(subtitle);
+                      }}
+                      onMouseLeave={() => {
+                        setSelected(null);
+                      }}
+                      key={JSON.stringify(subtitle)}
+                      className={cn(
+                        "inline-flex flex-col mt-2 items-center px-[2px]",
+                        textSize?.[3]
+                      )}
+                    >
+                      {viewPinyin && (
+                        <Link
+                          href={`/nmm/${subtitle.hanzi}?lang=zh`}
+                          target="_blank"
+                          className={cn(
+                            subtitle?.pinyin ? "text-gray-500" : "text-black",
+                            "text-sm",
+                            currentTime > subtitle?.startTime &&
+                              currentTime < subtitle.endTime
+                              ? "text-white "
+                              : "text-gray-500",
 
-                          textSize?.[0],
+                            textSize?.[0],
+                            activeSubtitle?.sentence === subtitle?.sentence
+                              ? "text-gray-400"
+                              : "text-gray-600",
+                            currentTime > subtitle?.startTime &&
+                              currentTime < subtitle.endTime
+                              ? "text-white"
+                              : "",
+                            !isPlaying ? "text-gray-500" : ""
+                          )}
+                        >
+                          {subtitle?.pinyin || ""}
+                        </Link>
+                      )}
+                      <button
+                        onClick={() => {
+                          seek(subtitle?.startTime);
+                        }}
+                        className={cn(
+                          "text-3xl font-light text-gray-300 hover:text-rose-400",
+
+                          textSize?.[1],
                           activeSubtitle?.sentence === subtitle?.sentence
                             ? "text-gray-400"
                             : "text-gray-600",
                           currentTime > subtitle?.startTime &&
                             currentTime < subtitle.endTime
                             ? "text-white"
-                            : "",
-                          !isPlaying ? "text-gray-500" : ""
+                            : "0",
+                          !isPlaying ? "text-gray-300" : ""
                         )}
                       >
-                        {subtitle?.pinyin || ""}
-                      </Link>
-                    )}
-                    <button
-                      onClick={() => {
-                        seek(subtitle?.startTime);
-                      }}
-                      className={cn(
-                        "text-3xl font-light text-gray-300 hover:text-rose-400",
-
-                        textSize?.[1],
-                        activeSubtitle?.sentence === subtitle?.sentence
-                          ? "text-gray-400"
-                          : "text-gray-600",
-                        currentTime > subtitle?.startTime &&
-                          currentTime < subtitle.endTime
-                          ? "text-white"
-                          : "0",
-                        !isPlaying ? "text-gray-300" : ""
-                      )}
-                    >
-                      {subtitle?.hanzi}
-                      {"   "}
-                    </button>
-                  </span>
+                        {subtitle?.hanzi}
+                        {"   "}
+                      </button>
+                    </span>
+                  </HanziTooltip>
                 );
               })}
             </div>

@@ -163,13 +163,18 @@ export const DuLessonView = () => {
 
         <div className="h-12 mb-8">
           <h4 className="text-xs text-gray-500">Word meaning</h4>
-          <p className="mt-2 space-x-2 text-[16px] font-extralight">
-            <span>{selected?.hanzi}</span>
 
-            <span className="text-red-400">{selected?.pinyin}</span>
+          <div className="flex justify-between items-center mt-2 w-full">
+            <p className="space-x-2 text-[16px] font-extralight">
+              <span>{selected?.hanzi}</span>
 
-            <span className="truncate">{selected?.meaning}</span>
-          </p>
+              <span className="text-red-400">{selected?.pinyin}</span>
+
+              <span className="truncate">{selected?.meaning}</span>
+            </p>
+
+            {selected?.hsk && <p>HSK {selected?.hsk}</p>}
+          </div>
 
           {/* <span>{JSON.stringify(selected)}</span> */}
         </div>

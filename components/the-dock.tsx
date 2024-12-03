@@ -40,7 +40,7 @@ export const TheDock = ({
         }}
         className={cn("flex w-full fixed z-50 bottom-0")}
       >
-        <div className="text-black">TODO</div>
+        {/* <div className="text-black">TODO</div> */}
         <AnimatePresence>
           {show && (
             <motion.div

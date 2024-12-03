@@ -1,6 +1,6 @@
 import { usePathname } from "next/navigation";
 
-export const useIsDu = () => {
+export const useIsDu = (exact = true) => {
   const routeName = usePathname();
-  return routeName?.includes("/du");
+  return exact ? routeName === "/du" : routeName?.includes("/du");
 };

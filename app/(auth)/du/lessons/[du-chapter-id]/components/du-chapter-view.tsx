@@ -12,6 +12,7 @@ import { useState } from "react";
 import { DuChineseIcon } from "../../../components/duchinese-icon";
 import { useGetDuParams } from "../../../hooks/use-get-du-params";
 import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
+import { divMode } from "@tsparticles/engine";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -67,7 +68,7 @@ export const DuLessonView = () => {
       >
         <Icons.chartColumn
           className={cn(
-            "text-2xl",
+            "sm:text-lg text-2xl",
             viewMode === "stats" ? "text-white" : "text-gray-400"
           )}
         />
@@ -79,7 +80,7 @@ export const DuLessonView = () => {
       >
         <Icons.language
           className={cn(
-            "text-2xl",
+            "sm:text-lg text-2xl",
             viewPinyin ? "text-white" : "text-gray-400"
           )}
         />
@@ -96,189 +97,195 @@ export const DuLessonView = () => {
 
   return (
     <div className="relative">
-      <div className="text-gray-400">
-        <Link href="/du" className="hover:text-white">
-          {" "}
-          Stories{" "}
-        </Link>{" "}
-        /{" "}
-        <Link href={`/du/${course?.path}`} className="hover:text-white">
-          Story: {course?.title}
-        </Link>{" "}
-        / <span>{chapterId}</span>
-      </div>
-
-      <div className="mt-12 max-w-6xl m-auto mb-32 relative">
-        <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
-          <section className="mb-8 flex items-center justify-between">
-            <div className="space-x-4 flex items-center">
-              <button
-                className="text-2xl"
-                onClick={() => {
-                  togglePlay();
-                }}
-              >
-                {isPlaying ? <Icons.pause /> : <Icons.play />}
-                {/* {isPlaying ? (
-                <div>
-                  <div className="flex space-x-1" aria-hidden="true">
-                    <div className="w-1 h-4 bg-white animate-wave1"></div>
-                    <div className="w-1 h-4 bg-white animate-wave2"></div>
-                    <div className="w-1 h-4 bg-white animate-wave3"></div>
-                  </div>
-                </div>
-              ) : (
-                <Icons.play />
-              )} */}
-              </button>
-              <button
-                className="text-2xl"
-                onClick={() => {
-                  reset();
-                }}
-              >
-                <Icons.stop />
-              </button>
-
-              <p className="w-16 font-extralight text-2xl text-center dark:text-slate-300 text-slate-600">
-                {formatTime(currentTime)}
-              </p>
-            </div>
-
-            <div className="space-x-2">
-              <button
-                onClick={() => {
-                  setTextSizeIndex((prev) => Math.min(3, prev + 1));
-                }}
-                className={cn(
-                  textSizeIndex === 3 ? "text-gray-400" : "",
-                  "text-2xl"
-                )}
-              >
-                A
-              </button>
-
-              <button
-                onClick={() => {
-                  setTextSizeIndex((prev) => Math.max(0, prev - 1));
-                }}
-                className={textSizeIndex === 0 ? "text-gray-400" : ""}
-              >
-                A
-              </button>
-            </div>
-
-            <DuChapterNavbar />
-          </section>
-
-          <div className="h-12 mb-4">
-            <h4 className="text-xs text-gray-500">Sentence meaning</h4>
-
-            <div className="flex justify-between items-center mt-2 w-full">
-              <p className="space-x-2 text-[16px] font-extralight">
-                {activeSubtitle?.sentence}
-              </p>
-            </div>
-          </div>
-          <div className="h-12 mb-4">
-            <h4 className="text-xs text-gray-500">Word meaning</h4>
-
-            <div className="flex justify-between items-center mt-2 w-full">
-              <p className="space-x-2 text-[16px] font-extralight">
-                <span>{selected?.hanzi}</span>
-
-                <span className="text-red-400">{selected?.pinyin}</span>
-
-                <span className="truncate">{selected?.meaning}</span>
-              </p>
-
-              {selected?.hsk && <p>HSK {selected?.hsk}</p>}
-            </div>
-          </div>
+      <div className="mx-4 mt-8 md:mx-12">
+        <div className="text-gray-400">
+          <Link href="/du" className="hover:text-white">
+            {" "}
+            Stories{" "}
+          </Link>{" "}
+          /{" "}
+          <Link href={`/du/${course?.path}`} className="hover:text-white">
+            Story: {course?.title}
+          </Link>{" "}
+          / <span>{chapterId}</span>
         </div>
 
-        {viewMode === "stats" ? (
-          <div>
-            <CharacterAnalytics characterId={characterId} lang={"zh"} />
+        <div className="mt-12 max-w-6xl m-auto mb-32 relative">
+          <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
+            <div className="pb-4">
+              <h4 className="text-xs text-gray-500">Sentence meaning</h4>
+
+              {activeSubtitle?.sentence ? (
+                <div className="flex justify-between items-center mt-2 w-full">
+                  <p className="space-x-2 sm:text-xl text-[16px] font-extralight pb-[4px]">
+                    {activeSubtitle?.sentence}
+                  </p>
+                </div>
+              ) : (
+                <div className="h-12"></div>
+              )}
+            </div>
+
+            <div className="h-16 mb-4 hidden sm:block">
+              <h4 className="text-xs text-gray-500">Word meaning</h4>
+
+              {selected ? (
+                <div className="h-14 mt-2 w-full">
+                  <div className="flex justify-between items-center">
+                    <p className="space-x-2 text-[16px] font-extralight">
+                      <span>{selected?.hanzi}</span>
+
+                      <span className="text-red-400">{selected?.pinyin}</span>
+                    </p>
+
+                    {selected?.hsk && <p>HSK {selected?.hsk}</p>}
+                  </div>
+
+                  <p className="font-extralight">
+                    <span className="truncate">{selected?.meaning}</span>
+                  </p>
+                </div>
+              ) : (
+                <div className="h-14"></div>
+              )}
+            </div>
           </div>
-        ) : (
-          <div className="mt-12">
-            {data?.subtitles?.words?.map((subtitle) => {
-              if (subtitle?.hanzi === "\n") {
+
+          {viewMode === "stats" ? (
+            <div>
+              <CharacterAnalytics characterId={characterId} lang={"zh"} />
+            </div>
+          ) : (
+            <div className="mt-12">
+              {data?.subtitles?.words?.map((subtitle) => {
+                if (subtitle?.hanzi === "\n") {
+                  return (
+                    <h1
+                      className={cn("my-12", textSize?.[2])}
+                      key={JSON.stringify(subtitle)}
+                    ></h1>
+                  );
+                }
+
                 return (
-                  <h1
-                    className={cn("my-12", textSize?.[2])}
+                  <span
+                    onMouseEnter={() => {
+                      setSelected(subtitle);
+                    }}
+                    onMouseLeave={() => {
+                      setSelected(null);
+                    }}
                     key={JSON.stringify(subtitle)}
-                  ></h1>
-                );
-              }
+                    className={cn(
+                      "inline-flex flex-col mt-2 items-center px-[2px]",
+                      textSize?.[3]
+                    )}
+                  >
+                    {viewPinyin && (
+                      <Link
+                        href={`/nmm/${subtitle.hanzi}?lang=zh`}
+                        target="_blank"
+                        className={cn(
+                          subtitle?.pinyin ? "text-gray-500" : "text-black",
+                          "text-sm",
+                          currentTime > subtitle?.startTime &&
+                            currentTime < subtitle.endTime
+                            ? "text-white "
+                            : "text-gray-500",
 
-              return (
-                <span
-                  onMouseEnter={() => {
-                    setSelected(subtitle);
-                  }}
-                  onMouseLeave={() => {
-                    setSelected(null);
-                  }}
-                  key={JSON.stringify(subtitle)}
-                  className={cn(
-                    "inline-flex flex-col mt-2 items-center px-[2px]",
-                    textSize?.[3]
-                  )}
-                >
-                  {viewPinyin && (
-                    <Link
-                      href={`/nmm/${subtitle.hanzi}?lang=zh`}
-                      target="_blank"
+                          textSize?.[0],
+                          activeSubtitle?.sentence === subtitle?.sentence
+                            ? "text-gray-400"
+                            : "text-gray-600",
+                          currentTime > subtitle?.startTime &&
+                            currentTime < subtitle.endTime
+                            ? "text-white"
+                            : "",
+                          !isPlaying ? "text-gray-500" : ""
+                        )}
+                      >
+                        {subtitle?.pinyin || ""}
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => {
+                        seek(subtitle?.startTime);
+                      }}
                       className={cn(
-                        subtitle?.pinyin ? "text-gray-500" : "text-black",
-                        "text-sm",
-                        currentTime > subtitle?.startTime &&
-                          currentTime < subtitle.endTime
-                          ? "text-white "
-                          : "text-gray-500",
+                        "text-3xl font-light text-gray-300 hover:text-rose-400",
 
-                        textSize?.[0],
+                        textSize?.[1],
                         activeSubtitle?.sentence === subtitle?.sentence
                           ? "text-gray-400"
                           : "text-gray-600",
                         currentTime > subtitle?.startTime &&
                           currentTime < subtitle.endTime
                           ? "text-white"
-                          : "",
-                        !isPlaying ? "text-gray-500" : ""
+                          : "0",
+                        !isPlaying ? "text-gray-300" : ""
                       )}
                     >
-                      {subtitle?.pinyin || ""}
-                    </Link>
-                  )}
-                  <button
-                    onClick={() => {
-                      seek(subtitle?.startTime);
-                    }}
-                    className={cn(
-                      "text-3xl font-light text-gray-300 hover:text-rose-400",
+                      {subtitle?.hanzi}
+                      {"   "}
+                    </button>
+                  </span>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
 
-                      textSize?.[1],
-                      activeSubtitle?.sentence === subtitle?.sentence
-                        ? "text-gray-400"
-                        : "text-gray-600",
-                      currentTime > subtitle?.startTime &&
-                        currentTime < subtitle.endTime
-                        ? "text-white"
-                        : "0",
-                      !isPlaying ? "text-gray-300" : ""
-                    )}
-                  >
-                    {subtitle?.hanzi}
-                    {"   "}
-                  </button>
-                </span>
-              );
-            })}
+      <div className="fixed bottom-0 py-4 px-4 sm:px-16 w-full z-30 m-auto bg-[rgb(12,13,14)]">
+        <section className="flex items-center justify-between">
+          <div className="space-x-2">
+            <button
+              onClick={() => {
+                setTextSizeIndex((prev) => Math.min(3, prev + 1));
+              }}
+              className={cn(
+                textSizeIndex === 3 ? "text-gray-400" : "",
+                "text-2xl"
+              )}
+            >
+              A
+            </button>
+
+            <button
+              onClick={() => {
+                setTextSizeIndex((prev) => Math.max(0, prev - 1));
+              }}
+              className={textSizeIndex === 0 ? "text-gray-400" : ""}
+            >
+              A
+            </button>
           </div>
-        )}
+
+          <div className="space-x-4 flex items-center">
+            <button
+              className="sm:text-2xl text-lg"
+              onClick={() => {
+                togglePlay();
+              }}
+            >
+              {isPlaying ? <Icons.pause /> : <Icons.play />}
+            </button>
+
+            <p className="font-extralight sm:text-2xl text-xl text-center dark:text-slate-300 text-slate-600">
+              {formatTime(currentTime)}
+            </p>
+            <button
+              className="sm:text-2xl text-lg"
+              onClick={() => {
+                reset();
+              }}
+            >
+              <Icons.stop />
+            </button>
+          </div>
+
+          <DuChapterNavbar />
+        </section>
       </div>
     </div>
   );

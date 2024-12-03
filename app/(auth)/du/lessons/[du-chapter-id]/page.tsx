@@ -17,7 +17,7 @@ export default function LessonItem() {
     <div>
       <NavBar />
 
-      <div className="mx-4 mt-8 md:mx-12">
+      <div>
         <DuLessonView />
       </div>
 

@@ -25,7 +25,8 @@ const FloatingNavbarComp = () => {
   const routeName = usePathname();
   const reviewUrl = useGetReviewUrl();
 
-  const isDu = useIsDu();
+  const isDuExact = useIsDu(true);
+  const isDu = useIsDu(false);
 
   const reviewUrlFn = useGetReviewUrlFn();
   const { reviewMode } = useGetReviewParams();
@@ -39,6 +40,9 @@ const FloatingNavbarComp = () => {
   const readMode = useReadModeStore((state) => state.readMode);
 
   if (isDu) {
+    return null;
+  }
+  if (isDuExact) {
     return <DuNavbar />;
   }
   if (routeName?.includes("/review")) {

@@ -15,8 +15,17 @@ import { useGetCharacterAnalytics } from "@/components/_select-character/use-get
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
 import { DuChineseIcon } from "../../../components/duchinese-icon";
 
+const sizes = {
+  0: ["text-xs", "text-xl", "my-4", "px-[2px]"],
+  1: ["text-sm", "text-2xl", "my-10", "px-[2px]"],
+  2: ["text-[14px]", "text-3xl", "my-12"],
+  3: ["text-[16px]", "text-4xl", "my-12", "px-[4px]"],
+} as any;
+
 export const DuLessonView = () => {
   const { chapterId, cookie } = useGetDuParams();
+
+  const [textSizeIndex, setTextSizeIndex] = useState(1);
   const [selected, setSelected] = useState<any>(null);
   const [viewPinyin, togglePinyin] = useState(false);
 
@@ -103,6 +112,8 @@ export const DuLessonView = () => {
       currentTime > subtitle?.startTime && currentTime < subtitle.endTime
   );
 
+  const textSize = sizes?.[textSizeIndex] || sizes?.[1];
+
   return (
     <div className="relative">
       {/* <code>
@@ -164,6 +175,30 @@ export const DuLessonView = () => {
               </p>
             </div>
 
+            <div className="space-x-2">
+              <button
+                // className="text-2xl"
+                onClick={() => {
+                  setTextSizeIndex((prev) => Math.min(3, prev + 1));
+                }}
+                className={cn(
+                  textSizeIndex === 3 ? "text-gray-400" : "",
+                  "text-2xl"
+                )}
+              >
+                A
+              </button>
+
+              <button
+                onClick={() => {
+                  setTextSizeIndex((prev) => Math.max(0, prev - 1));
+                }}
+                className={textSizeIndex === 0 ? "text-gray-400" : ""}
+              >
+                A
+              </button>
+            </div>
+
             <DuChapterNavbar />
           </section>
 
@@ -172,7 +207,8 @@ export const DuLessonView = () => {
 
             <div className="flex justify-between items-center mt-2 w-full">
               <p className="space-x-2 text-[16px] font-extralight">
-                {selected?.sentence || activeSubtitle?.sentence}
+                {/* {selected?.sentence || activeSubtitle?.sentence} */}
+                {activeSubtitle?.sentence}
               </p>
 
               {/* {selected?.hsk && <p>HSK {selected?.hsk}</p>} */}
@@ -224,7 +260,10 @@ export const DuLessonView = () => {
             {data?.subtitles?.words?.map((subtitle) => {
               if (subtitle?.hanzi === "\n") {
                 return (
-                  <h1 className="my-12" key={JSON.stringify(subtitle)}></h1>
+                  <h1
+                    className={cn("my-12", textSize?.[2])}
+                    key={JSON.stringify(subtitle)}
+                  ></h1>
                 );
               }
 
@@ -238,7 +277,11 @@ export const DuLessonView = () => {
                   }}
                   key={JSON.stringify(subtitle)}
                   className={cn(
-                    "inline-flex flex-col mt-2 items-center px-[2px]"
+                    "inline-flex flex-col mt-2 items-center px-[2px]",
+                    textSize?.[3]
+                    // activeSubtitle?.sentence === subtitle?.sentence
+                    //   ? "sticky top-[180px] bg-[rgb(9,10,11)]"
+                    //   : ""
                   )}
                 >
                   {viewPinyin && (
@@ -248,11 +291,15 @@ export const DuLessonView = () => {
                       className={cn(
                         subtitle?.pinyin ? "text-gray-500" : "text-black",
                         "text-sm",
-                        // currentTime > subtitle?.startTime &&
-                        //   currentTime < subtitle.endTime
-                        activeSubtitle?.sentence === subtitle?.sentence
-                          ? "text-white"
-                          : "text-gray-500"
+                        currentTime > subtitle?.startTime &&
+                          currentTime < subtitle.endTime
+                          ? "text-white "
+                          : "text-gray-500",
+                        !isPlaying ? "text-gray-500" : "",
+                        textSize?.[0]
+                        // activeSubtitle?.sentence === subtitle?.sentence
+                        //   ? "bg-gray-800"
+                        //   : ""
                       )}
                     >
                       {subtitle?.pinyin || ""}
@@ -267,11 +314,16 @@ export const DuLessonView = () => {
                     }}
                     className={cn(
                       "text-3xl font-light text-gray-300 hover:text-rose-400",
-                      activeSubtitle?.sentence === subtitle?.sentence
-                        ? // currentTime > subtitle?.startTime &&
-                          //   currentTime < subtitle.endTime
-                          "text-white"
-                        : "text-gray-500"
+
+                      currentTime > subtitle?.startTime &&
+                        currentTime < subtitle.endTime
+                        ? "text-white"
+                        : "text-gray-500",
+                      !isPlaying ? "text-gray-300" : "",
+                      textSize?.[1]
+                      // activeSubtitle?.sentence === subtitle?.sentence
+                      //   ? "bg-gray-800"
+                      //   : ""
                     )}
                   >
                     {subtitle?.hanzi}

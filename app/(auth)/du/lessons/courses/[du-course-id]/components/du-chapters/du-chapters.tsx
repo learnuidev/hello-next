@@ -87,7 +87,7 @@ export const DuChapters = () => {
               return {
                 // title: `Chapter ${idx + 1}`,
                 title: `${idx + 1}. ${lesson?.title}`,
-                description: `Start Reading`,
+                description: lesson?.synopsis || `Start Reading`,
                 link: `/du/${lesson?.path}${(lesson?.path?.includes("?") ? "&" : "?") + `courseId=${courseId}`}`,
               };
             }) || []

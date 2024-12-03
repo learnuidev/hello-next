@@ -206,7 +206,11 @@ export const DuLessonView = () => {
                     target="_blank"
                     className={cn(
                       subtitle?.pinyin ? "text-gray-500" : "text-black",
-                      "text-sm"
+                      "text-sm",
+                      currentTime > subtitle?.startTime &&
+                        currentTime < subtitle.endTime
+                        ? "text-white"
+                        : "text-gray-500"
                     )}
                   >
                     {subtitle?.pinyin || ""}

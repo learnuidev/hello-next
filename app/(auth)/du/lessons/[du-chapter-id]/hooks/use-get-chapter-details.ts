@@ -24,6 +24,7 @@ interface GetChapterDetailsResponse {
       endIndex: number;
       startTime: number;
       endTime: number;
+      sentence: string;
     }[];
   };
 }

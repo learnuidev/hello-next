@@ -201,18 +201,24 @@ export const DuLessonView = () => {
                 )}
               >
                 {viewPinyin && (
-                  <span
+                  <Link
+                    href={`/nmm/${subtitle.hanzi}?lang=zh`}
+                    target="_blank"
                     className={cn(
                       subtitle?.pinyin ? "text-gray-500" : "text-black",
                       "text-sm"
                     )}
                   >
                     {subtitle?.pinyin || ""}
-                  </span>
+                  </Link>
                 )}
-                <Link
-                  href={`/nmm/${subtitle.hanzi}?lang=zh`}
-                  target="_blank"
+                <button
+                  // as="button"
+                  // href={`/nmm/${subtitle.hanzi}?lang=zh`}
+                  // target="_blank"
+                  onClick={() => {
+                    seek(subtitle?.startTime);
+                  }}
                   className={cn(
                     "text-3xl font-light text-gray-300 hover:text-rose-400",
                     currentTime > subtitle?.startTime &&
@@ -223,7 +229,7 @@ export const DuLessonView = () => {
                 >
                   {subtitle?.hanzi}
                   {"   "}
-                </Link>
+                </button>
               </span>
             );
           })

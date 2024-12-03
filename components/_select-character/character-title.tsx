@@ -61,9 +61,12 @@ export const CharacterTitle = (props: any) => {
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
-  console.log("BM", brightMode);
-
   const StatusIcon = getStatusIcon(character?.status);
+
+  const finalEnVal =
+    englishMeanings?.length === 1
+      ? englishMeanings?.[0] || selectedComp?.en || meaning?.details?.en
+      : selectedComp?.en || meaning?.details?.en || englishMeanings?.[0];
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
@@ -200,9 +203,7 @@ export const CharacterTitle = (props: any) => {
         </h1>
       )}
 
-      <h2 className="text-gray-500 font-light">
-        {englishMeanings?.[0] || selectedComp?.en || meaning?.details?.en}
-      </h2>
+      <h2 className="text-gray-500 font-light">{finalEnVal}</h2>
     </div>
   );
 };

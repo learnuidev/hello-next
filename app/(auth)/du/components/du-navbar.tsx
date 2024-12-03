@@ -10,7 +10,7 @@ export const DuNavbar = () => {
 
   const setCookie = useDuStore((state) => state.setCookie);
 
-  const revifyUserHandler = useReverifyUserHandler();
+  const reverifyUserHandler = useReverifyUserHandler();
 
   return (
     <div
@@ -21,7 +21,7 @@ export const DuNavbar = () => {
           <button
             onClick={() => {
               setCookie("");
-              revifyUserHandler();
+              reverifyUserHandler();
             }}
             className={`transition ${
               !reviewMode

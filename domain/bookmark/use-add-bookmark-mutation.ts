@@ -1,5 +1,3 @@
-// const addBookmarkQueryKey = 'add-bookmark',
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";

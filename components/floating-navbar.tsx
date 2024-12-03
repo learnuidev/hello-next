@@ -12,9 +12,9 @@ import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
+import { DuNavbar } from "@/app/(auth)/du/components/du-navbar";
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
-import { useLearningModeStore } from "./settings-dialog/learning-mode.store";
 import {
   useGetReviewUrl,
   useGetReviewUrlFn,
@@ -27,8 +27,6 @@ const FloatingNavbarComp = () => {
   const reviewUrlFn = useGetReviewUrlFn();
   const { reviewMode } = useGetReviewParams();
 
-  const mode = useLearningModeStore((state: any) => state.mode);
-
   const { data: reviewList } = useListCharacterReviewList();
 
   const lang = useGetCurrentLang();
@@ -37,10 +35,9 @@ const FloatingNavbarComp = () => {
   const setReadMode = useReadModeStore((state) => state.setReadMode);
   const readMode = useReadModeStore((state) => state.readMode);
 
-  // if (routeName === "/pinyin") {
-  //   return null;
-  // }
-
+  if (routeName?.includes("/du")) {
+    return <DuNavbar />;
+  }
   if (routeName?.includes("/review")) {
     return (
       <div

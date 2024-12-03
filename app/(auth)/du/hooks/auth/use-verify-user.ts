@@ -1,12 +1,14 @@
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { duChineseApiUrl } from "@/libs/du-chinese/du-chinese-api-url";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useDuStore } from "../use-du-store";
 
+export const verifyUserQueryKey = "du-chinese/verify-user";
 export const useVerifyUser = ({ cookie }: { cookie?: string }) => {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<{ success: boolean; message: string }, Error>({
-    queryKey: ["du-chinese/list-top-lessons", authUser?.jwt],
+    queryKey: [verifyUserQueryKey, authUser?.jwt, cookie],
     retry: false,
     queryFn: async () => {
       const resp = await fetch(`${duChineseApiUrl}/v1/verify-user`, {
@@ -29,8 +31,19 @@ export const useVerifyUser = ({ cookie }: { cookie?: string }) => {
   });
 };
 
+export const useReverifyUserHandler = () => {
+  const queryClient = useQueryClient();
+  const { data: authUser } = useCurrentAuthUser({});
+  const cookie = useDuStore((state) => state.cookie);
+
+  return () => {
+    queryClient.invalidateQueries([verifyUserQueryKey, authUser?.jwt, cookie]);
+  };
+};
+
 export const useVerifyUserMutation = () => {
   const { data: authUser } = useCurrentAuthUser({});
+  const revifyUserHandler = useReverifyUserHandler();
 
   return useMutation({
     mutationFn: async ({ cookie }: { cookie: string }) => {
@@ -46,6 +59,10 @@ export const useVerifyUserMutation = () => {
       });
 
       return resp.json();
+    },
+
+    onSuccess: () => {
+      revifyUserHandler();
     },
   });
 };

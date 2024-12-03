@@ -1,7 +1,7 @@
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useVerifyUserMutation } from "../hooks/auth/use-verify-user";
 import { useDuStore } from "../hooks/use-du-store";
-import { cn } from "@/lib/utils";
 
 export const DuLogin = () => {
   const [cookie, setCookieLocal] = useState("");
@@ -9,6 +9,7 @@ export const DuLogin = () => {
   const setCookie = useDuStore((state) => state.setCookie);
 
   const verifyUserMutation = useVerifyUserMutation();
+
   return (
     <div className="mt-32 flex justify-center items-center flex-col">
       <h1 className="text-2xl font-bold">Login</h1>
@@ -43,6 +44,8 @@ export const DuLogin = () => {
               setCookie(cookie);
               setError("Success");
             }
+
+            // revifyUserHandler();
             // alert(JSON.stringify(res));
           });
         }}

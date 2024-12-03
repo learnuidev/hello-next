@@ -10,10 +10,14 @@ export const WithVerifiedUser = ({
 }) => {
   const { cookie } = useGetDuParams();
 
-  const { data, isLoading } = useVerifyUser({ cookie });
+  const { data, isLoading, isError } = useVerifyUser({ cookie });
 
   if (isLoading) {
     return null;
+  }
+
+  if (isError) {
+    return <DuLogin />;
   }
 
   if (data) {

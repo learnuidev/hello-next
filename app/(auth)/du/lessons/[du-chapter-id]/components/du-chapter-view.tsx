@@ -66,14 +66,14 @@ export const DuLessonView = () => {
         const firstStart = Math.min(
           ...(selectedWords || [])
             ?.map((x: any) => x?.startTime)
-            .filter(Boolean)
+            .filter((val) => (typeof val === "number" ? true : Boolean(val)))
         );
 
         if (currentTime > lastEnd - 0.7) {
           seek(firstStart);
         }
         // setTime((seconds) => playerRef?.current?.getCurrentTime());
-      }, 200);
+      }, 5);
       return () => clearInterval(interval);
     }
   }, [currentTime, data?.subtitles?.words, loop, seek]);
@@ -249,6 +249,9 @@ export const DuLessonView = () => {
                       )}
                       <button
                         onClick={() => {
+                          if (loop) {
+                            setLoop(subtitle.sentence);
+                          }
                           seek(subtitle?.startTime);
                         }}
                         className={cn(

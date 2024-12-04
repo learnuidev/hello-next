@@ -87,8 +87,6 @@ export const DuLessonView = () => {
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      console.log("EVENT", event);
-
       if (event.code === "ArrowLeft" || event.code === "ArrowUp") {
         // alert("check previous");
         getPreviousChapter();

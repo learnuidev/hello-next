@@ -73,14 +73,18 @@ export const DuLessonView = () => {
 
   const minIndex = Math.min(maxChapterIndex, (chapterIndex || 0) + 1);
   const nextLesson = isLastChapter
-    ? lessonsList?.lessons?.[0]
+    ? lessonsList?.lessons?.filter(
+        (lesson) => lesson?.course?.title !== course?.title
+      )?.[0]
     : chapters?.lessons?.[minIndex];
 
   const maxIndex = Math.max(0, (chapterIndex || 0) - 1);
   // const previousLesson = chapters?.lessons?.[maxIndex];
 
   const previousLesson = isFirstChapter
-    ? lessonsList?.lessons?.[0]
+    ? lessonsList?.lessons?.filter(
+        (lesson) => lesson?.course?.title !== course?.title
+      )?.[0]
     : chapters?.lessons?.[maxIndex];
 
   const getNextChapter = useCallback(() => {
@@ -90,7 +94,9 @@ export const DuLessonView = () => {
         const nextChapter = chapters?.lessons?.[maxIndex];
         router.push(`/du/${nextChapter?.path}&courseId=${courseId}`);
       } else {
-        const nextLesson = lessonsList?.lessons?.[0];
+        const nextLesson = lessonsList?.lessons?.filter(
+          (lesson) => lesson?.course?.title !== course?.title
+        )?.[0];
 
         router.push(`/du/${nextLesson?.path}`);
       }
@@ -111,7 +117,9 @@ export const DuLessonView = () => {
         const previousChapter = chapters?.lessons?.[maxIndex];
         router.push(`/du/${previousChapter?.path}&courseId=${courseId}`);
       } else {
-        const nextLesson = lessonsList?.lessons?.[0];
+        const nextLesson = lessonsList?.lessons?.filter(
+          (lesson) => lesson?.course?.title !== course?.title
+        )?.[0];
         router.push(`/du/${nextLesson?.path}`);
       }
     }
@@ -217,9 +225,45 @@ export const DuLessonView = () => {
 
   const textSize = sizes?.[textSizeIndex] || sizes?.[1];
 
+  const ActionButtons = ({ className }: { className?: string }) => {
+    return (
+      <div className={cn("flex justify-between items-center mt-16", className)}>
+        <div>
+          <button
+            className="text-left"
+            onClick={() => {
+              getPreviousChapter();
+            }}
+          >
+            <p>Previous</p>
+
+            <p className="mt-2 text-sm text-gray-300">{`${previousLesson?.title}`}</p>
+            <p className="text-xs text-gray-400">
+              {previousLesson?.course?.title}
+            </p>
+          </button>
+        </div>
+        <div>
+          <button
+            className="text-left"
+            onClick={() => {
+              getNextChapter();
+            }}
+          >
+            <p> Next</p>
+            <p className="mt-2 text-sm text-gray-300">{`${nextLesson?.title}`}</p>
+            <p className="text-xs text-gray-400">{nextLesson?.course?.title}</p>
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="relative">
       <div className="mx-4 mt-8 md:mx-12">
+        {/* <ActionButtons className="mb-16" /> */}
+
         <div className="text-gray-400">
           <Link href="/du" className="hover:text-white">
             {" "}
@@ -398,36 +442,7 @@ export const DuLessonView = () => {
             </div>
           )}
 
-          <div className="flex justify-between items-center mt-16">
-            <div>
-              <button
-                onClick={() => {
-                  getPreviousChapter();
-                }}
-              >
-                Previous
-              </button>
-
-              <p className="mt-2 text-sm text-gray-300">{`${previousLesson?.title}`}</p>
-              <p className="text-xs text-gray-400">
-                {previousLesson?.course?.title}
-              </p>
-            </div>
-            <div>
-              <button
-                onClick={() => {
-                  getNextChapter();
-                }}
-              >
-                Next
-              </button>
-
-              <p className="mt-2 text-sm text-gray-300">{`${nextLesson?.title}`}</p>
-              <p className="text-xs text-gray-400">
-                {nextLesson?.course?.title}
-              </p>
-            </div>
-          </div>
+          <ActionButtons />
         </div>
       </div>
 

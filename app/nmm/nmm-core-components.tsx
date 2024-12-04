@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
@@ -19,12 +19,12 @@ import {
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { chineseCharacters } from "@/langs/chinese /characters";
+import { motion } from "framer-motion";
 import { usePathname, useSearchParams } from "next/navigation";
-import { filterComponents } from "./nmm-utils/filter-components";
 import { Nothing } from "./nothing";
 import { PreviewComponent } from "./preview-component";
-import { useGetSelectedBelt } from "./use-get-selected-belt";
 import { useGetNmmParams } from "./use-get-nmm-params";
+import { useGetSelectedBelt } from "./use-get-selected-belt";
 
 export function NmmCoreComponents() {
   const searchParams = useSearchParams();
@@ -33,6 +33,7 @@ export function NmmCoreComponents() {
   const routeName = usePathname();
   const queryStr = useSearchQueryStore((state) => state.query);
   const setQuery = useSearchQueryStore((state) => state.setQuery);
+  const loaderRef = useRef(null);
 
   const { level } = useGetNmmParams();
 
@@ -58,11 +59,41 @@ export function NmmCoreComponents() {
 
   const { data: learnedCharacters2, isLoading } = useListCharactersQuery();
 
+  const loadMoreItems = useCallback(() => {
+    setSliced((prev: any) => {
+      return {
+        ...prev,
+        [level]: (prev?.[level] || 100) + 100,
+      };
+    });
+  }, [level]);
+
   useEffect(() => {
     if (searchQueryParams) {
       setQuery(searchQueryParams);
     }
   }, [searchQueryParams, setQuery]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMoreItems();
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [isLoading, loadMoreItems]);
 
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({
@@ -151,18 +182,7 @@ export function NmmCoreComponents() {
 
       {learnedComps?.length < sliced ? null : (
         <div className="flex justify-center items-center mb-24 mt-12">
-          <button
-            onClick={() => {
-              setSliced((prev: any) => {
-                return {
-                  ...prev,
-                  [level]: (prev?.[level] || 100) + 100,
-                };
-              });
-            }}
-          >
-            Load More
-          </button>
+          <motion.div ref={loaderRef}>Loading...</motion.div>
         </div>
       )}
     </div>

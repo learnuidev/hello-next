@@ -45,7 +45,7 @@ function useGetProgress(courseId: string) {
   );
 
   return formatPercentage(
-    (studiedCourseLessons?.length || 1) / ((data?.lessons || [])?.length || 1)
+    (studiedCourseLessons?.length || 0) / ((data?.lessons || [])?.length || 1)
   );
 }
 

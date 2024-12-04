@@ -143,7 +143,7 @@ export const CharacterNavbar = (props: SelectedCharacterProps) => {
             </button>
           )}
 
-          {/* {characterId?.length === 1 && (
+          {characterId?.length === 1 && (
             <button
               className={cn(
                 "text-xl transition",
@@ -155,7 +155,7 @@ export const CharacterNavbar = (props: SelectedCharacterProps) => {
             >
               <Icons.pinyinChart />
             </button>
-          )} */}
+          )}
         </div>
       </div>
     </div>

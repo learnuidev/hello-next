@@ -189,7 +189,7 @@ export function NmmCoreComponents() {
       {learnedComps?.length < sliced ? null : (
         <div className="flex justify-center items-center mb-24 mt-12">
           <motion.button onClick={loadMoreItems} ref={loaderRef}>
-            Loading More
+            Loading...
           </motion.button>
         </div>
       )}

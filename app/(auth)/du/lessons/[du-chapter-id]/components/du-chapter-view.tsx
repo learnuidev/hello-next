@@ -247,38 +247,45 @@ export const DuLessonView = () => {
   console.log("PREVIOUS LESSON TITLE", previousLesson);
 
   const ActionButtons = ({ className }: { className?: string }) => {
-    if (!previousLesson && !nextLesson) {
-      return null;
-    }
     return (
       <div className={cn("flex justify-between items-center mt-16", className)}>
-        <div>
-          <button
-            className="text-left"
-            onClick={() => {
-              getPreviousChapter();
-            }}
-          >
-            <p>Previous</p>
+        {previousLesson ? (
+          <div>
+            <button
+              className="text-left"
+              onClick={() => {
+                getPreviousChapter();
+              }}
+            >
+              <p>Previous</p>
 
-            <p className="mt-2 text-sm text-gray-300">{`${previousLesson?.title}`}</p>
-            <p className="text-xs text-gray-400">
-              {previousLesson?.course?.title}
-            </p>
-          </button>
-        </div>
-        <div>
-          <button
-            className="text-left"
-            onClick={() => {
-              getNextChapter();
-            }}
-          >
-            <p> Next</p>
-            <p className="mt-2 text-sm text-gray-300">{`${nextLesson?.title}`}</p>
-            <p className="text-xs text-gray-400">{nextLesson?.course?.title}</p>
-          </button>
-        </div>
+              <p className="mt-2 text-sm text-gray-300">{`${previousLesson?.title}`}</p>
+              <p className="text-xs text-gray-400">
+                {previousLesson?.course?.title}
+              </p>
+            </button>
+          </div>
+        ) : (
+          <div></div>
+        )}
+        {nextLesson ? (
+          <div>
+            <button
+              className="text-left"
+              onClick={() => {
+                getNextChapter();
+              }}
+            >
+              <p> Next</p>
+              <p className="mt-2 text-sm text-gray-300">{`${nextLesson?.title}`}</p>
+              <p className="text-xs text-gray-400">
+                {nextLesson?.course?.title}
+              </p>
+            </button>
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
     );
   };

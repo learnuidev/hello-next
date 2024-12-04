@@ -2,15 +2,15 @@
 import { useFavouriteCourseMutation } from "@/app/(auth)/du/hooks/use-favourite-course-mutation";
 import { useGetDuParams } from "@/app/(auth)/du/hooks/use-get-du-params";
 import { useListSavedLessonsQuery } from "@/app/(auth)/du/hooks/use-list-saved-lessons-query";
+import { useListStudiedLessonsQuery } from "@/app/(auth)/du/hooks/use-list-studied-lessons-query";
+import { useUnfavouriteCourseMutation } from "@/app/(auth)/du/hooks/use-unfavourite-course-mutation";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { formatPercentage } from "@/app/profile/utils/format-percentage";
 import { HoverEffect } from "@/components/hover-effect";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useListChapters } from "../../hooks/use-list-chapters";
-import { useUnfavouriteCourseMutation } from "@/app/(auth)/du/hooks/use-unfavourite-course-mutation";
-import { useListStudiedLessonsQuery } from "@/app/(auth)/du/hooks/use-list-studied-lessons-query";
-import { formatPercentage } from "@/app/profile/utils/format-percentage";
 
 function useIsSaved(courseId: number) {
   const { cookie } = useGetDuParams();
@@ -22,13 +22,6 @@ function useIsSaved(courseId: number) {
   return savedLessons?.lessons?.find(
     (lesson) => lesson?.document?.id === courseId
   );
-}
-
-function useIsRead(lessonId: string) {
-  const { cookie } = useGetDuParams();
-  const { data: studiedLessons } = useListStudiedLessonsQuery({
-    cookie,
-  });
 }
 
 function useGetProgress(courseId: string) {

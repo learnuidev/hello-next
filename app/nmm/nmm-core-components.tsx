@@ -10,6 +10,7 @@ import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainer } from "@/components/nmm-list-container";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { motion } from "framer-motion";
 import {
   Tooltip,
   TooltipContent,
@@ -19,15 +20,20 @@ import {
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { chineseCharacters } from "@/langs/chinese /characters";
-import { motion } from "framer-motion";
 import { usePathname, useSearchParams } from "next/navigation";
+import { filterComponents } from "./nmm-utils/filter-components";
 import { Nothing } from "./nothing";
 import { PreviewComponent } from "./preview-component";
-import { useGetNmmParams } from "./use-get-nmm-params";
 import { useGetSelectedBelt } from "./use-get-selected-belt";
+import { useGetNmmParams } from "./use-get-nmm-params";
+import { useScroll } from "react-spring";
+// import { useScroll } from "framer-motion";
 
 export function NmmCoreComponents() {
   const searchParams = useSearchParams();
+  const { scrollYProgress } = useScroll();
+
+  console.log("SCROLL Y PROGRESS", scrollYProgress);
 
   const searchQueryParams = searchParams.get("query") || "";
   const routeName = usePathname();
@@ -182,7 +188,9 @@ export function NmmCoreComponents() {
 
       {learnedComps?.length < sliced ? null : (
         <div className="flex justify-center items-center mb-24 mt-12">
-          <motion.div ref={loaderRef}>Loading...</motion.div>
+          <motion.button onClick={loadMoreItems} ref={loaderRef}>
+            Loading More
+          </motion.button>
         </div>
       )}
     </div>

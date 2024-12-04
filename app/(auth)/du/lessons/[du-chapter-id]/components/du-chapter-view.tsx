@@ -143,7 +143,7 @@ export const DuLessonView = () => {
           / <span>{chapterId}</span>
         </div>
 
-        <div className="mt-12 h-16 max-w-6xl m-auto relative">
+        <div className="mt-12 mb-32 max-w-6xl m-auto relative">
           <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
             <div className="pb-4">
               <h4 className="text-xs text-gray-500">Sentence meaning</h4>

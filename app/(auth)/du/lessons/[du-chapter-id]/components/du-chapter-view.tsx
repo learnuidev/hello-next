@@ -9,11 +9,12 @@ import { HanziTooltip } from "@/components/_select-character/selected-character/
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { DuChineseIcon } from "../../../components/duchinese-icon";
 import { useGetDuParams } from "../../../hooks/use-get-du-params";
 import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
+import { useListChapters } from "../../courses/[du-course-id]/hooks/use-list-chapters";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -42,11 +43,67 @@ export const DuLessonView = () => {
     cookie: `oHAI2NVPZgiAz%2F%2FR4YbLaUgYCpCxgIuwHUSADEqYngzUXQeBlLaUBAvozrtvHy8vbDy9v0dNJcHOa5FMPKwC6xmxLn3PtZRz6OHGzY7On0eiGL2t0rsJ2nDeYiiwyqzJdLRj18Xf0nqrDtiWXxQKh%2BHquYx49VE8WAtHH3GR1q3dd7idL2PFiYU384VoqqrJ8PtaVtXnkQg2i1W%2BQJ9QdbvPCSq%2BhdqhTI21teAtRZUSeIE9FmDBFPsWJiL7Q%2FAXvOeC4Lj9PYKF2lWZ3IwVnluL0UYuhVujxlhWwOTnylx1tcr9Q%2BTEvYNiziVaeyJbSO7DNLsXrkM2Ui53D1NppsTaLXv%2Bi8We71NmnvCz5HseHB%2BEPLc%2BEMYRpO02siEFKW18g7e1%2B1YyAJ0L7uWiYSHsfsj2jdm13TW1Y6XIC3JnHebFxBSGWozHZ3FUrtR%2BgpNtj37N5fIf8My%2B8DASmen8kacwr8VJURBZTP3TDdaLBGi7YAVbLGIXhAySZhK3L%2BQSSXWUxgVf6cM0ZJcAYVTZpgsDSnKnvFhD0PKGVoyL6GDF%2BAG5oH2Dmdu%2BDEEYV%2FPy7u01JODCvQxMIVvFJJ%2Bfq5go0YMU%2BA0%3D--5wP9B4t69qnaAiEB--CcfIMirI1Ix1oPBxDhXIQQ%3D%3D`,
   });
 
+  const { data: chapters } = useListChapters({
+    courseId,
+    cookie,
+  });
+
+  const chapterIndex = chapters?.lessons?.findIndex(
+    (lesson) => lesson?.id === data?.id
+  );
+
+  const maxChapterIndex = (chapters?.lessons || [])?.length - 1;
+
   const audioUrl = data?.audio_url || "";
+
+  const router = useRouter();
+
+  const getNextChapter = useCallback(() => {
+    if (typeof chapterIndex === "number" && !isLoading) {
+      const maxIndex = Math.min(maxChapterIndex, chapterIndex + 1);
+      const nextChapter = chapters?.lessons?.[maxIndex];
+      router.push(`/du/${nextChapter?.path}&courseId=${courseId}`);
+    }
+  }, [
+    chapterIndex,
+    chapters?.lessons,
+    courseId,
+    isLoading,
+    maxChapterIndex,
+    router,
+  ]);
+
+  const getPreviousChapter = useCallback(() => {
+    if (typeof chapterIndex === "number" && !isLoading) {
+      const maxIndex = Math.max(0, chapterIndex - 1);
+      const previousChapter = chapters?.lessons?.[maxIndex];
+      router.push(`/du/${previousChapter?.path}&courseId=${courseId}`);
+    }
+  }, [chapterIndex, chapters?.lessons, courseId, isLoading, router]);
 
   const { isPlaying, togglePlay, seek, currentTime, reset } = useMusicV2({
     url: audioUrl,
   });
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      console.log("EVENT", event);
+
+      if (event.code === "ArrowLeft" || event.code === "ArrowUp") {
+        // alert("check previous");
+        getPreviousChapter();
+      }
+
+      if (event.code === "ArrowRight" || event.code === "ArrowDown") {
+        getNextChapter();
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [getNextChapter, getPreviousChapter]);
 
   const course = data?.course;
 

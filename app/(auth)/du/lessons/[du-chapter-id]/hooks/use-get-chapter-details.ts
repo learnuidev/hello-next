@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 // import { DuSection } from "../du.types";
 
 interface GetChapterDetailsResponse {
+  id: string;
   course: DuCourse;
   title: string;
   large_image_url: string;

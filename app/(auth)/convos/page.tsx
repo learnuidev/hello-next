@@ -54,7 +54,7 @@ function ContentsList() {
 
   const projects = contents
     ? contents
-        ?.filter((content: ContentType) => {
+        ?.filter((content: any) => {
           if (!query) {
             if (contentType) {
               if (contentType === "all") {
@@ -71,7 +71,7 @@ function ContentsList() {
             searchTransacription(content, query)
           );
         })
-        ?.map((content: ContentType) => {
+        ?.map((content: any) => {
           return {
             title: content?.title,
             description: content?.title,

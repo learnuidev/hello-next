@@ -87,6 +87,7 @@ export type DuChapter = {
   course_path: string;
   course_type: string;
   course_position: number;
+  status: "not_started" | "read";
   course: {
     id: number;
     title: string;

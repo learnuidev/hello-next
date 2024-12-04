@@ -8,6 +8,7 @@ export const HoverEffect = ({
   className,
 }: {
   items: {
+    icon?: any;
     title: string;
     description: string;
     link: string;
@@ -51,9 +52,16 @@ export const HoverEffect = ({
             )}
           </AnimatePresence>
           <Card>
-            <CardTitle>{item.title}</CardTitle>
+            <div className="flex justify-between items-center">
+              <CardTitle>{item.title}</CardTitle>
+              <p>
+                {" "}
+                <span>{item?.icon && <item.icon className="text-xl" />}</span>
+              </p>
+            </div>
+
             <CardDescription className="flex justify-between">
-              <p> {item.description || item?.subtopic}</p>
+              <p> {item.description || item?.subtopic} </p>
               <p>{item?.lang}</p>
             </CardDescription>
           </Card>

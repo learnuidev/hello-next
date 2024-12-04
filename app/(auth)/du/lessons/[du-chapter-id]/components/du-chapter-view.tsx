@@ -134,12 +134,12 @@ export const DuLessonView = () => {
         <div className="text-gray-400">
           <Link href="/du" className="hover:text-white">
             {" "}
-            Stories{" "}
+            Courses{" "}
           </Link>{" "}
           {course?.title ? " / " : null}
           {course?.title ? (
             <Link href={`/du/${course?.path}`} className="hover:text-white">
-              Story: {course?.title}
+              {course?.title}
             </Link>
           ) : null}
         </div>

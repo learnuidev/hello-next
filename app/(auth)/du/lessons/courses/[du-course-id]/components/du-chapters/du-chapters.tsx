@@ -1,19 +1,60 @@
 /* eslint-disable @next/next/no-img-element */
+import { useFavouriteCourseMutation } from "@/app/(auth)/du/hooks/use-favourite-course-mutation";
 import { useGetDuParams } from "@/app/(auth)/du/hooks/use-get-du-params";
-import { useListChapters } from "../../hooks/use-list-chapters";
-import Link from "next/link";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Icons } from "@/components/ui/icons.v2";
-import { HoverEffect } from "@/components/hover-effect";
-import { cn } from "@/lib/utils";
+import { useListSavedLessonsQuery } from "@/app/(auth)/du/hooks/use-list-saved-lessons-query";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { HoverEffect } from "@/components/hover-effect";
+import { Icons } from "@/components/ui/icons.v2";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useListChapters } from "../../hooks/use-list-chapters";
+import { useUnfavouriteCourseMutation } from "@/app/(auth)/du/hooks/use-unfavourite-course-mutation";
+import { useListStudiedLessonsQuery } from "@/app/(auth)/du/hooks/use-list-studied-lessons-query";
+import { formatPercentage } from "@/app/profile/utils/format-percentage";
+
+function useIsSaved(courseId: number) {
+  const { cookie } = useGetDuParams();
+
+  const { data: savedLessons } = useListSavedLessonsQuery({
+    cookie,
+  });
+
+  return savedLessons?.lessons?.find(
+    (lesson) => lesson?.document?.id === courseId
+  );
+}
+
+function useIsRead(lessonId: string) {
+  const { cookie } = useGetDuParams();
+  const { data: studiedLessons } = useListStudiedLessonsQuery({
+    cookie,
+  });
+}
+
+function useGetProgress(courseId: string) {
+  const { cookie } = useGetDuParams();
+
+  const { data } = useListChapters({
+    courseId,
+    cookie,
+  });
+
+  const { data: studiedLessons } = useListStudiedLessonsQuery({
+    cookie,
+  });
+
+  const lesson = data?.lessons?.[0];
+
+  const course = lesson?.course;
+
+  const studiedCourseLessons = studiedLessons?.lessons?.filter(
+    (lesson) => lesson?.course?.id === course?.id
+  );
+
+  return formatPercentage(
+    (studiedCourseLessons?.length || 1) / ((data?.lessons || [])?.length || 1)
+  );
+}
 
 export const DuChapters = () => {
   const { courseId, cookie } = useGetDuParams();
@@ -23,9 +64,18 @@ export const DuChapters = () => {
     cookie,
   });
 
+  const progress = useGetProgress(courseId);
+
+  const favouriteCourseMutation = useFavouriteCourseMutation();
+  const unfavouriteCourseMutation = useUnfavouriteCourseMutation();
+
   const lesson = data?.lessons?.[0];
 
   const course = lesson?.course;
+
+  const isSaved = useIsSaved(course?.id || 0);
+
+  // console.log("COURSE", course);
 
   if (!course) {
     return <LottieLoadingAnimation />;
@@ -36,15 +86,27 @@ export const DuChapters = () => {
       <div className="text-gray-500">
         <Link href="/du" className="hover:text-white">
           {" "}
-          Stories{" "}
+          Courses{" "}
         </Link>{" "}
-        / Story: {course?.title}
+        / Series: {course?.title}
       </div>
       <div className="mt-12 mb-4">
-        <p className="uppercase mt-8 font-bold text-gray-400">
-          {course?.levels?.join(", ")}
-        </p>
-        <h1 className="text-2xl font-bold">{course?.title}</h1>
+        <div className="flex justify-between items-center">
+          <div>
+            <p className="uppercase font-bold text-gray-400">
+              {course?.levels?.join(", ")}
+            </p>
+            <h1 className="text-2xl font-bold">{course?.title}</h1>
+          </div>
+
+          <div className="flex flex-col items-center justify-center">
+            <p className="text-3xl">{progress}</p>
+
+            <p className="text-xs font-extralight text-gray-400 uppercase">
+              progress
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="mt-16 grid gap-12 items-start grid-cols-12 w-full">
@@ -70,10 +132,33 @@ export const DuChapters = () => {
               <span>Start Reading</span>
             </Link>
 
-            <button className="space-x-2 border-[1px] rounded-full px-4 py-[5.5px]">
-              <Icons.bookmark />
+            <button
+              disabled={true}
+              onClick={() => {
+                if (isSaved) {
+                  unfavouriteCourseMutation.mutateAsync({
+                    courseId: `${course.id}`,
+                    cookie,
+                  });
+                } else {
+                  favouriteCourseMutation.mutateAsync({
+                    courseId: `${course.id}`,
+                    cookie,
+                  });
+                }
+              }}
+              className="space-x-2 border-[1px] rounded-full px-4 py-[5.5px]"
+            >
+              {unfavouriteCourseMutation?.isLoading ||
+              favouriteCourseMutation?.isLoading ? (
+                <Icons.spinner spinPulse />
+              ) : (
+                <>
+                  {isSaved ? <Icons.bookmarkSolid /> : <Icons.bookmark />}
 
-              <span>Favourite</span>
+                  <span>{!isSaved ? "Unfavourited" : "Favourited"}</span>
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -86,6 +171,12 @@ export const DuChapters = () => {
             data?.lessons?.map((lesson, idx) => {
               return {
                 // title: `Chapter ${idx + 1}`,
+                icon:
+                  lesson?.status === "not_started"
+                    ? () => <Icons.questionMark className="text-2xl" />
+                    : () => (
+                        <Icons.badgeCheck className="text-rose-400 text-2xl" />
+                      ),
                 title:
                   lesson?.title !== course?.title
                     ? `${idx + 1}. ${lesson?.title}`

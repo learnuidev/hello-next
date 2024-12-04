@@ -57,6 +57,8 @@ export const TimelineTabBody = ({
     ...new Set(selectedGroup?.items?.map((item: any) => item?.lang)),
   ]?.filter(Boolean);
 
+  console.log("timeline-items", selectedGroup?.items);
+
   return (
     <div className="mx-0 md:mx-8">
       <article className="grid grid-cols-1fr md:grid-cols-[320px_1fr]">

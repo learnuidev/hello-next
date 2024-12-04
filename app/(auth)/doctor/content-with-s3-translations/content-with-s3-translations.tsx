@@ -35,6 +35,7 @@ export function ContentWithS3Translations() {
               sourceUrl: res.sourceUrl,
               uploadBucketKey: res.uploadBucketKey,
               s3LinkAddedAt: Date.now(),
+              updateContent: true,
             });
           });
         })
@@ -71,6 +72,12 @@ export function ContentWithS3Translations() {
       >
         Mutate All
       </button>
+
+      <div>
+        <p className="text-3xl font-extralight">
+          {contentsWithoutS3?.length} contents
+        </p>
+      </div>
 
       <div>
         <code>

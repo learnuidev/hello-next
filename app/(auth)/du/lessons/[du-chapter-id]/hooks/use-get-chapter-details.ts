@@ -6,6 +6,9 @@ import { useQuery } from "@tanstack/react-query";
 
 interface GetChapterDetailsResponse {
   course: DuCourse;
+  title: string;
+  large_image_url: string;
+  synopsis: string;
   audio_url?: string;
   canonical_url: string;
 

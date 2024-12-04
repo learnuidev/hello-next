@@ -1,9 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useMusicV2 } from "@/app/(auth)/convos/_play-v2/use-music-v2";
 import { formatTime } from "@/app/(auth)/convos/_play/utils";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
+import { HanziTooltip } from "@/components/_select-character/selected-character/hanzi-tooltip";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -12,8 +14,6 @@ import { useEffect, useState } from "react";
 import { DuChineseIcon } from "../../../components/duchinese-icon";
 import { useGetDuParams } from "../../../hooks/use-get-du-params";
 import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
-import { divMode } from "@tsparticles/engine";
-import { HanziTooltip } from "@/components/_select-character/selected-character/hanzi-tooltip";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -136,12 +136,43 @@ export const DuLessonView = () => {
             {" "}
             Stories{" "}
           </Link>{" "}
-          /{" "}
-          <Link href={`/du/${course?.path}`} className="hover:text-white">
-            Story: {course?.title}
-          </Link>{" "}
-          / <span>{chapterId}</span>
+          {course?.title ? " / " : null}
+          {course?.title ? (
+            <Link href={`/du/${course?.path}`} className="hover:text-white">
+              Story: {course?.title}
+            </Link>
+          ) : null}
         </div>
+
+        <div className="mt-12">
+          <p className="text-sm sm:text-lg uppercase mt-8 font-bold text-gray-400">
+            {course?.levels?.join(", ")}
+          </p>
+          <h1 className="text-md sm:text-2xl font-bold">{data?.title}</h1>
+        </div>
+
+        {data?.synopsis && (
+          <div className="mt-16 grid gap-12 items-start grid-cols-12 w-full">
+            <div className={cn("sm:col-span-3 col-span-12 pr-4")}>
+              <img
+                className={cn("w-full object-cover rounded-xl")}
+                src={data?.large_image_url}
+                alt={data?.title}
+              />
+            </div>
+            <div className="sm:col-span-6 col-span-12">
+              <p className="text-xl text-gray-300 font-extralight">
+                {data?.synopsis}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* <div>
+          <code>
+            <pre>{JSON.stringify(data, null, 4)}</pre>
+          </code>
+        </div> */}
 
         <div className="mt-12 mb-32 max-w-6xl m-auto relative">
           <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">

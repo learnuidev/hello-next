@@ -9,8 +9,6 @@ interface ListTopLessonsResponse {
   more_categories: Categories[];
 }
 
-console.log("yo");
-
 export const useListTopLessons = ({
   levels,
   cookie,

@@ -272,7 +272,7 @@ export const Icons = {
   infoCircle: createFAIcon(faInfoCircle),
   edit: createFAIcon(faPenToSquare),
   construction: createFAIcon(faConstruction),
-  loadingSpinner: createFAIcon(faTruckRampBox),
+  loadingSpinner: createFAIcon(faSpinner),
 
   cry: createFAIcon(faFaceSadCry),
   crySolid: createFAIcon(faFaceSadCrySolid),

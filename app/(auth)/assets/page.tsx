@@ -115,7 +115,11 @@ export default function Assets() {
                           });
                       }}
                     >
-                      Delete
+                      {deleteUserAssetMutation?.isLoading ? (
+                        <Icons.spinner spinPulse />
+                      ) : (
+                        "Delete"
+                      )}
                     </button>
                   </div>
                 );

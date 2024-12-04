@@ -149,7 +149,7 @@ export const DuChapters = () => {
                 <>
                   {isSaved ? <Icons.bookmarkSolid /> : <Icons.bookmark />}
 
-                  <span>{!isSaved ? "Unfavourited" : "Favourited"}</span>
+                  <span>{!isSaved ? "Favourite" : "Favourited"}</span>
                 </>
               )}
             </button>

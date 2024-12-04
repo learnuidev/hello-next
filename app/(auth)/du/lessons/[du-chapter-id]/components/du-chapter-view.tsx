@@ -48,6 +48,7 @@ export const DuLessonView = () => {
 
   const { data: lessonsList } = useListLessons({
     levels: course?.levels || [data?.level || ""]?.filter(Boolean) || [],
+    hideStudied: true,
     cookie,
   });
 
@@ -72,6 +73,11 @@ export const DuLessonView = () => {
   const router = useRouter();
 
   const minIndex = Math.min(maxChapterIndex, (chapterIndex || 0) + 1);
+
+  // const nextLessonIndex =
+  //   (lessonsList?.lessons?.filter(lesson => lesson?.course?.title !== course?.title).indexOf(
+  //     (lesson: any) => lesson?.course?.title === course?.title
+  //   ) || 0) + 10;
   const nextLesson = isLastChapter
     ? lessonsList?.lessons?.filter(
         (lesson) => lesson?.course?.title !== course?.title
@@ -82,23 +88,26 @@ export const DuLessonView = () => {
   // const previousLesson = chapters?.lessons?.[maxIndex];
 
   const previousLesson = isFirstChapter
-    ? lessonsList?.lessons?.filter(
+    ? // ? lessonsList?.lessons?.[nextLessonIndex]
+      lessonsList?.lessons?.filter(
         (lesson) => lesson?.course?.title !== course?.title
       )?.[0]
     : chapters?.lessons?.[maxIndex];
 
   const getNextChapter = useCallback(() => {
-    if (typeof chapterIndex === "number" && !isLoading) {
-      if (!isLastChapter) {
-        const maxIndex = Math.min(maxChapterIndex, chapterIndex + 1);
-        const nextChapter = chapters?.lessons?.[maxIndex];
-        router.push(`/du/${nextChapter?.path}&courseId=${courseId}`);
-      } else {
-        const nextLesson = lessonsList?.lessons?.filter(
-          (lesson) => lesson?.course?.title !== course?.title
-        )?.[0];
+    if (nextLesson) {
+      if (typeof chapterIndex === "number" && !isLoading) {
+        if (!isLastChapter) {
+          const maxIndex = Math.min(maxChapterIndex, chapterIndex + 1);
+          const nextChapter = chapters?.lessons?.[maxIndex];
+          router.push(`/du/${nextChapter?.path}&courseId=${courseId}`);
+        } else {
+          const nextLesson = lessonsList?.lessons?.filter(
+            (lesson) => lesson?.course?.title !== course?.title
+          )?.[0];
 
-        router.push(`/du/${nextLesson?.path}`);
+          router.push(`/du/${nextLesson?.path}`);
+        }
       }
     }
   }, [
@@ -111,16 +120,18 @@ export const DuLessonView = () => {
   ]);
 
   const getPreviousChapter = useCallback(() => {
-    if (typeof chapterIndex === "number" && !isLoading) {
-      if (!isFirstChapter) {
-        const maxIndex = Math.max(0, chapterIndex - 1);
-        const previousChapter = chapters?.lessons?.[maxIndex];
-        router.push(`/du/${previousChapter?.path}&courseId=${courseId}`);
-      } else {
-        const nextLesson = lessonsList?.lessons?.filter(
-          (lesson) => lesson?.course?.title !== course?.title
-        )?.[0];
-        router.push(`/du/${nextLesson?.path}`);
+    if (previousLesson) {
+      if (typeof chapterIndex === "number" && !isLoading) {
+        if (!isFirstChapter) {
+          const maxIndex = Math.max(0, chapterIndex - 1);
+          const previousChapter = chapters?.lessons?.[maxIndex];
+          router.push(`/du/${previousChapter?.path}&courseId=${courseId}`);
+        } else {
+          const nextLesson = lessonsList?.lessons?.filter(
+            (lesson) => lesson?.course?.title !== course?.title
+          )?.[0];
+          router.push(`/du/${nextLesson?.path}`);
+        }
       }
     }
   }, [chapterIndex, chapters?.lessons, courseId, isLoading, router]);
@@ -225,7 +236,12 @@ export const DuLessonView = () => {
 
   const textSize = sizes?.[textSizeIndex] || sizes?.[1];
 
+  console.log("PREVIOUS LESSON TITLE", previousLesson);
+
   const ActionButtons = ({ className }: { className?: string }) => {
+    if (!previousLesson && !nextLesson) {
+      return null;
+    }
     return (
       <div className={cn("flex justify-between items-center mt-16", className)}>
         <div>

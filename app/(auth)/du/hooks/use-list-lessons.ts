@@ -14,9 +14,11 @@ interface ListTopLessonsResponse {
 
 export const useListLessons = ({
   levels,
+  hideStudied,
   cookie,
 }: {
   levels?: string | string[];
+  hideStudied?: boolean;
   cookie?: string;
 }) => {
   const { data: authUser } = useCurrentAuthUser({});
@@ -26,6 +28,7 @@ export const useListLessons = ({
       "du-chinese/list-lessons",
       JSON.stringify(levels),
       authUser?.jwt,
+      hideStudied,
     ],
     queryFn: async () => {
       const resp = await fetch(`${duChineseApiUrl}/v1/list-lessons`, {
@@ -33,6 +36,7 @@ export const useListLessons = ({
 
         body: JSON.stringify({
           levels,
+          hideStudied,
           cookie,
         }),
         headers: {

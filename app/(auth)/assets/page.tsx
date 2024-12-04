@@ -7,12 +7,17 @@ import { cn } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { useDeleteUserAssetMutation } from "./use-delete-user-asset-mutation";
+import { useSearchQueryStore } from "@/components/search/state";
+import { Nothing } from "@/app/nmm/nothing";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
+import { Icons } from "@/components/ui/icons.v2";
 
 export default function Assets() {
   const { data: userAssets, isError } = useListUserAssets();
   const searchParams = useSearchParams();
 
   const assetTypeSearchParam = searchParams.get("type") || "";
+  const querySync = useSearchQueryStore((state) => state.query2);
 
   const deleteUserAssetMutation = useDeleteUserAssetMutation();
 
@@ -21,15 +26,33 @@ export default function Assets() {
   ] as string[];
 
   const filteredUserAssets = useMemo(() => {
-    return userAssets?.filter((item) => {
-      if (assetTypeSearchParam) {
-        return item?.extension === assetTypeSearchParam;
-      }
-      return true;
-    });
-  }, [assetTypeSearchParam, userAssets]);
+    return userAssets
+      ?.filter((item) => {
+        if (assetTypeSearchParam) {
+          return item?.extension === assetTypeSearchParam;
+        }
+        return true;
+      })
+      .filter((item) => {
+        return JSON.stringify(item)
+          ?.toLowerCase()
+          ?.includes(querySync?.toLowerCase());
+      });
+  }, [assetTypeSearchParam, querySync, userAssets]);
 
   const router = useRouter();
+
+  const isSuperAdmin = useIsSuperAdmin();
+
+  if (!isSuperAdmin) {
+    return (
+      <Nothing
+        message={"You dont have the permission to view this page"}
+        icon={Icons.infoCircle}
+      />
+    );
+  }
+
   return (
     <main className="">
       <NavBar />
@@ -82,7 +105,7 @@ export default function Assets() {
                     </code>
 
                     <button
-                      onClick={() => {
+                      onDoubleClick={() => {
                         deleteUserAssetMutation
                           .mutateAsync({
                             id: asset?.id,

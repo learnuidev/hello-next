@@ -13,7 +13,6 @@ export const PreviewComponent = (props: {
     en: string;
   };
 }) => {
-  console.log("PROPS: ", props);
   const { component } = props;
   const { level, en, lang, pinyin } = component;
 

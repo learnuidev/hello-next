@@ -1,13 +1,14 @@
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
 import { faBook, faSpinner } from "@fortawesome/sharp-solid-svg-icons";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 import {
   faArrowUpRightFromSquare,
   faBoltLightning as faBoltLightningSolid,
+  faBookmark as faBookmarkSolid,
   faBrainCircuit,
   faCircleInfo,
   faFaceAngry as faFaceAngrySolid,
@@ -19,7 +20,6 @@ import {
   faFaceSpiralEyes as faFaceSpiralEyesSolid,
   faGlassesRound as faGlassesRoundSolid,
   faGrinBeamSweat as faGrinBeamSweatSolid,
-  faBookmark as faBookmarkSolid,
   // faMicrophone,
   // faSeedling,
   // faPlay,
@@ -34,11 +34,17 @@ import {
 
 import {
   faAlignRight,
+  faArrowLeft,
+  faArrowRight,
+  faArrowsRotate,
   faBadgeCheck,
   faBars,
-  faQuestion,
+  faBold,
   faBoltLightning,
+  faBookmark,
   faBoxArchive,
+  faBullseye,
+  faBullseyeArrow,
   faChartColumn,
   faCheckCircle,
   faCircleArrowDown,
@@ -62,6 +68,7 @@ import {
   faGrinBeamSweat,
   faInfo,
   faInfoCircle,
+  faItalic,
   faLanguage,
   faLightbulb,
   faList,
@@ -71,12 +78,18 @@ import {
   faMagnifyingGlassPlus,
   faMailboxFlagUp,
   faMicrochipAi,
+  faMicrophone,
+  faMobile,
   faMusic,
+  faNotebook,
   faPenToSquare,
   faPhotoFilm,
   faPlanetRinged,
   faPlayCircle,
   faPlus,
+  faQuestion,
+  faRadar,
+  faRepeat,
   faRollerCoaster,
   faSeedling,
   faSmile,
@@ -86,40 +99,25 @@ import {
   faTimeline,
   faTrash,
   faTree,
-  faTruckRampBox,
   faUser,
   faVolume,
   faWandMagic,
   faXmark,
-  faChartRadar,
-  faItalic,
-  faBold,
-  faBullseye,
-  faBullseyeArrow,
-  faRadar,
-  faMicrophone,
-  faArrowsRotate,
-  faNotebook,
-  faBookmark,
-  faRepeat,
-  faArrowLeft,
-  faArrowRight,
-  faMobile,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
+  faBookSpells as faBookSpellsDT,
+  faBullseyeArrow as faBullseyeArrowDT,
+  faBullseye as faBullseyeDT,
   faClockEight,
   faCommentQuote,
   faFire as faFireDuoTone,
-  faMessageQuote,
+  faGlassesRound as faGlassesRoundDT,
+  faKiwiFruit,
   faLightbulb as faLightBulbDT,
+  faMessageQuote,
   faSeedling as faSeedlingDuotone,
   faTree as faTreeDuotone,
-  faGlassesRound as faGlassesRoundDT,
-  faBookSpells as faBookSpellsDT,
-  faBullseye as faBullseyeDT,
-  faBullseyeArrow as faBullseyeArrowDT,
-  faKiwiFruit,
 } from "@fortawesome/pro-duotone-svg-icons";
 
 import { faCitrus as faCitrusSolid } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -137,6 +135,8 @@ import { faTrees } from "@fortawesome/sharp-solid-svg-icons/faTrees";
 // import { faMusic } from "@fortawesome/sharp-solid-svg-icons/faMusic";
 import { faGear } from "@fortawesome/sharp-solid-svg-icons/faGear";
 
+import { cn } from "@/lib/utils";
+import { faConnectdevelop } from "@fortawesome/free-brands-svg-icons";
 import {
   faBlockBrick,
   faCalculatorSimple,
@@ -162,8 +162,6 @@ import {
   // faSeedling,
   faStairs,
 } from "@fortawesome/pro-thin-svg-icons";
-import { faConnectdevelop } from "@fortawesome/free-brands-svg-icons";
-import { cn } from "@/lib/utils";
 // import { faCitrus } from "@fortawesome/sharp-solid-svg-icons";
 // import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 

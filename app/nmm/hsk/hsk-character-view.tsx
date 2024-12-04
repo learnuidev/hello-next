@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
 import { HanziLink } from "@/components/hanzi-link";
+import { motion } from "framer-motion";
 
 import { chineseCharacters } from "@/langs/chinese /characters";
 
@@ -14,6 +15,7 @@ import { useGetNmmParams } from "../use-get-nmm-params";
 
 export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   const { data: components } = useListComponents({ includeAll: true });
+  const loaderRef = useRef(null);
 
   const { level } = useGetNmmParams();
   const [slicedByLevels, setSliced] = useState<any>({});
@@ -23,6 +25,36 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   const { data: filteredComponents, isLoading } = useGetHskCharacters({
     variant,
   });
+
+  const loadMoreItems = useCallback(() => {
+    setSliced((prev: any) => {
+      return {
+        ...prev,
+        [level]: (prev?.[level] || 100) + 100,
+      };
+    });
+  }, [level]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMoreItems();
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [isLoading, loadMoreItems]);
 
   if (filteredComponents?.length === 0 && !isLoading) {
     return <Nothing message={"You have learned everything in this belt"} />;
@@ -50,7 +82,7 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
 
       {filteredComponents?.length < sliced ? null : (
         <div className="flex justify-center items-center mb-24 mt-12">
-          <button
+          {/* <button
             onClick={() => {
               setSliced((prev: any) => {
                 return {
@@ -61,7 +93,11 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
             }}
           >
             Load More
-          </button>
+          </button> */}
+
+          <motion.button onClick={loadMoreItems} ref={loaderRef}>
+            Loading...
+          </motion.button>
         </div>
       )}
     </div>

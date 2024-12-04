@@ -74,7 +74,7 @@ export function ContentWithS3Translations() {
       </button>
 
       <div>
-        <p className="text-3xl font-extralight">
+        <p className="my-8 text-3xl font-extralight">
           {contentsWithoutS3?.length} contents
         </p>
       </div>

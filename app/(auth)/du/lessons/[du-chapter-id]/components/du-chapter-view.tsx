@@ -85,7 +85,11 @@ export const DuLessonView = () => {
   const DuChapterNavbar = () => (
     <div className="space-x-4 sm:space-x-8 flex items-center">
       {data !== undefined && (
-        <Link href={data?.canonical_url} target="_blank" className="block">
+        <Link
+          href={data?.canonical_url}
+          target="_blank"
+          className="sm:block hidden"
+        >
           <DuChineseIcon className={"h-6"} />
         </Link>
       )}

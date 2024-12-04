@@ -1,5 +1,7 @@
 "use client";
 
+// @ts-ignore
+
 import { useState, useEffect } from "react";
 
 import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
@@ -75,7 +77,7 @@ export function Wordle() {
     lessonId || params?.["lessonId"] || "lesson11"
   );
 
-  const [lessonIndex, setTranscriptionId] = useState(() => {
+  const [lessonIndex, setTranscriptionId] = useState<any>(() => {
     const currentLesson = contents?.find(
       (lesson: any) => lesson?.id === _lessonId
     );
@@ -86,7 +88,7 @@ export function Wordle() {
 
     // 1. first find the phrase id - if found then return
     // 2. if not found then find the first phrase of the current lesson and return it
-    return phraseId || firstPhraseId;
+    return (phraseId || firstPhraseId) as any;
   });
   // const [secret, setSecret] = useState("我爱中文啊");
 
@@ -241,6 +243,7 @@ export function Wordle() {
   // }
 
   const currentLessonStep =
+    // @ts-ignore
     currentLesson?.transcriptions?.findIndex(
       (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
     ) + 1;
@@ -261,10 +264,13 @@ export function Wordle() {
             ]?.reduce((acc, curr) => `${acc}${curr}`, "");
 
             return addAnswerMutation
+
               .mutateAsync({
+                // @ts-ignore
                 hanzi: secret,
                 answer: historyTrimmed,
                 lessonId: _lessonId,
+                // @ts-ignore
                 phraseId: currentPhrase?.id,
                 status: "incorrect",
                 guessHistory: guessHistory?.[lessonIndex as string],
@@ -275,6 +281,7 @@ export function Wordle() {
                 );
 
                 if (lessonIdx !== -1) {
+                  // @ts-ignore
                   const nextId = contents?.[lessonIdx + 1];
 
                   nextId?.id && setTranscriptionId(nextId?.id);
@@ -314,10 +321,12 @@ export function Wordle() {
 
               if (currentPhraseIndex !== -1) {
                 const nextId =
+                  // @ts-ignore
                   currentLesson?.transcriptions?.[currentPhraseIndex + 1];
 
                 console.log("NEXT ID", nextId);
                 router.push(
+                  // @ts-ignore
                   `/convos/${params?.["lessonId"] || _lessonId}?step=${currentPhraseIndex + 2}`
                 );
 
@@ -331,10 +340,13 @@ export function Wordle() {
             };
 
             return addAnswerMutation
+
               .mutateAsync({
+                // @ts-ignore
                 hanzi: secret,
                 answer: historyTrimmed,
                 lessonId: _lessonId,
+                // @ts-ignore
                 phraseId: currentPhrase?.id,
                 status: "correct",
                 guessHistory: guessHistory?.[lessonIndex as string],
@@ -379,6 +391,7 @@ export function Wordle() {
 
           if (currentPhraseIndex !== -1) {
             const nextId =
+              // @ts-ignore
               currentLesson?.transcriptions?.[currentPhraseIndex - 1];
 
             setTranscriptionId(nextId?.id || nextId?.hanzi);
@@ -421,10 +434,12 @@ export function Wordle() {
 
           if (currentPhraseIndex !== -1) {
             const nextId =
+              // @ts-ignore
               currentLesson?.transcriptions?.[currentPhraseIndex + 1];
 
             console.log("NEXT ID", nextId);
 
+            // @ts-ignore
             console.log("next id", nextId.hanzi);
 
             setTranscriptionId(nextId?.id || nextId?.hanzi);
@@ -492,6 +507,7 @@ export function Wordle() {
               </p>
               <Link
                 target="_blank"
+                // @ts-ignore
                 href={`/nmm/${currentPhrase?.hanzi || currentPhrase?.input}${currentPhrase?.lang ? `?lang=${currentPhrase?.lang}` : ""}`}
                 className="text-2xl  text-gray-700 font-extralight dark:text-gray-300"
               >
@@ -560,9 +576,11 @@ export function Wordle() {
 
                 return addAnswerMutation
                   .mutateAsync({
+                    // @ts-ignore
                     hanzi: secret,
                     answer: historyTrimmed,
                     lessonId: _lessonId,
+                    // @ts-ignore
                     phraseId: currentPhrase?.id,
                     status: "incorrect",
                     guessHistory: guessHistory?.[lessonIndex as string],
@@ -573,6 +591,7 @@ export function Wordle() {
                     );
 
                     if (lessonIdx !== -1) {
+                      // @ts-ignore
                       const nextId = contents?.[lessonIdx + 1];
 
                       nextId?.id && setTranscriptionId(nextId?.id);

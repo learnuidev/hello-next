@@ -11,7 +11,15 @@ type ListContentsResponse = {
   sourceUrl?: string;
   uploadBucketKey?: string;
   title: string;
-  transcriptions: { input: string; roman: string; lit: string }[];
+  transcriptions: {
+    input: string;
+    roman: string;
+    lit: string;
+    hanzi?: string;
+    pinyin?: string;
+    id?: string;
+    en?: string;
+  }[];
 }[];
 
 export function useListContentsQuery(options = {} as any) {

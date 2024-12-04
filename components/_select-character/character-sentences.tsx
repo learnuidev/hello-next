@@ -269,7 +269,7 @@ export const CharacterSentences = (props: { characterId: string }) => {
       >
         <div className="mt-8 flex justify-between items-center">
           <TabsList className="space-x-8">
-            {contents?.length > 0 && (
+            {(contents || [])?.length > 0 && (
               <TabsTrigger
                 value="content"
                 className="px-0 data-[state=active]:text-white text-gray-400"

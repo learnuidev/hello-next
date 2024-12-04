@@ -398,7 +398,7 @@ export const DuLessonView = () => {
             </div>
           )}
 
-          <div className="flex justify-between items-center mt-8">
+          <div className="flex justify-between items-center mt-16">
             <div>
               <button
                 onClick={() => {

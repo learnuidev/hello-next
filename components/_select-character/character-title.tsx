@@ -18,6 +18,7 @@ import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { useState } from "react";
 import { characterStore } from "./character-store";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { BookmarkButton } from "@/app/nmm/bookmark-button";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -67,6 +68,13 @@ export const CharacterTitle = (props: any) => {
     englishMeanings?.length === 1
       ? englishMeanings?.[0] || selectedComp?.en || meaning?.details?.en
       : selectedComp?.en || meaning?.details?.en || englishMeanings?.[0];
+
+  const selectedPinyin = pinyins?.length
+    ? pinyins?.join("/")
+    : pinyins?.[0] ||
+      pinyinInput ||
+      selectedComp?.pinyin ||
+      meaning?.details?.pinyin;
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
@@ -176,6 +184,13 @@ export const CharacterTitle = (props: any) => {
               </button>
 
               <CharacterTrackButton />
+
+              <BookmarkButton
+                hanzi={characterId}
+                lang={lang}
+                en={finalEnVal}
+                pinyin={selectedPinyin}
+              />
             </div>
           </div>
 

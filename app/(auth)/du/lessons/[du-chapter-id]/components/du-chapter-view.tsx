@@ -8,7 +8,7 @@ import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DuChineseIcon } from "../../../components/duchinese-icon";
 import { useGetDuParams } from "../../../hooks/use-get-du-params";
 import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
@@ -28,6 +28,7 @@ export const DuLessonView = () => {
   const [textSizeIndex, setTextSizeIndex] = useState(1);
   const [selected, setSelected] = useState<any>(null);
   const [viewPinyin, togglePinyin] = useState(false);
+  const [loop, setLoop] = useState<any>(null);
 
   const [viewMode, setViewMode] = useState("core");
 
@@ -51,6 +52,31 @@ export const DuLessonView = () => {
 
   const characterId =
     data?.subtitles?.words?.map((word) => word?.hanzi)?.join("") || "";
+
+  useEffect(() => {
+    if (loop) {
+      const interval = setInterval(() => {
+        const selectedWords =
+          data?.subtitles?.words?.filter((word) => word?.sentence === loop) ||
+          [];
+
+        const lastEnd = Math.max(
+          ...selectedWords?.map((x: any) => x?.endTime).filter(Boolean)
+        );
+        const firstStart = Math.min(
+          ...(selectedWords || [])
+            ?.map((x: any) => x?.startTime)
+            .filter(Boolean)
+        );
+
+        if (currentTime > lastEnd - 0.7) {
+          seek(firstStart);
+        }
+        // setTime((seconds) => playerRef?.current?.getCurrentTime());
+      }, 200);
+      return () => clearInterval(interval);
+    }
+  }, [currentTime, data?.subtitles?.words, loop, seek]);
 
   if (isLoading) {
     return <LottieLoadingAnimation />;
@@ -113,20 +139,15 @@ export const DuLessonView = () => {
           / <span>{chapterId}</span>
         </div>
 
-        <div className="mt-12 max-w-6xl m-auto mb-32 relative">
+        <div className="mt-12 h-16 max-w-6xl m-auto relative">
           <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
             <div className="pb-4">
               <h4 className="text-xs text-gray-500">Sentence meaning</h4>
-
-              {activeSubtitle?.sentence ? (
-                <div className="flex justify-between items-center mt-2 w-full">
-                  <p className="space-x-2 sm:text-xl text-[16px] font-extralight pb-[4px]">
-                    {activeSubtitle?.sentence}
-                  </p>
-                </div>
-              ) : (
-                <div className="h-12"></div>
-              )}
+              <div className="h-16 flex justify-between items-center mt-2 w-full">
+                <p className="space-x-2 sm:text-xl text-[16px] font-extralight pb-[4px]">
+                  {activeSubtitle?.sentence || "..."}
+                </p>
+              </div>
             </div>
 
             <div className="h-16 mb-4 hidden sm:block">
@@ -164,7 +185,7 @@ export const DuLessonView = () => {
                 if (
                   subtitle?.hanzi?.trim() === "\n" ||
                   subtitle?.hanzi?.trim() === "\n\n" ||
-                  subtitle?.hanzi?.includes("\n")
+                  subtitle?.hanzi?.trim() === ""
                 ) {
                   return (
                     <h1
@@ -277,7 +298,7 @@ export const DuLessonView = () => {
             </button>
           </div>
 
-          <div className="space-x-4 flex items-center">
+          <div className="sm:space-x-6 space-x-4 flex items-center">
             <button
               className="sm:text-2xl text-lg"
               onClick={() => {
@@ -287,9 +308,29 @@ export const DuLessonView = () => {
               {isPlaying ? <Icons.pause /> : <Icons.play />}
             </button>
 
+            <button
+              className={cn(
+                "sm:text-2xl text-lg",
+                loop ? "text-white" : "text-gray-400"
+              )}
+              disabled={!activeSubtitle}
+              onClick={() => {
+                setLoop((loop: any) => {
+                  if (loop) {
+                    return null;
+                  }
+
+                  return activeSubtitle?.sentence;
+                });
+              }}
+            >
+              <Icons.loop />
+            </button>
+
             <p className="font-extralight sm:text-2xl text-xl text-center dark:text-slate-300 text-slate-600">
               {formatTime(currentTime)}
             </p>
+
             <button
               className="sm:text-2xl text-lg"
               onClick={() => {

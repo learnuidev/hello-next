@@ -318,6 +318,7 @@ export const Icons = {
   arrowLeft: createFAIcon(faArrowLeft),
   arrowRight: createFAIcon(faArrowRight),
   mobile: createFAIcon(faMobile),
+  loop: createFAIcon(faRepeat),
   // bookmark: createFAIcon(faBookmark),
 };
 

@@ -1,6 +1,9 @@
 "use client";
 
 import { useGetHskCharacters } from "@/app/nmm/hsk/use-get-hsk-characters";
+import { NoLessonView } from "@/app/nmm/no-lesson-view";
+import { Nothing } from "@/app/nmm/nothing";
+import { Icons } from "@/components/ui/icons.v2";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
@@ -27,10 +30,6 @@ export function UndiscoveredComponents() {
     return undiscoveredChar;
   });
 
-  console.log("COMPS", components);
-
-  console.log("FILTERED COMPS", filteredComponents);
-
   const mutateAll = async () => {
     if (undiscoveredHskCharacters?.length !== 0) {
       return Promise.all(
@@ -47,6 +46,10 @@ export function UndiscoveredComponents() {
 
   if (!isSuperAdmin) {
     return <div> You dont have the permission to view this page </div>;
+  }
+
+  if (!undiscoveredHskCharacters?.length) {
+    return <Nothing icon={Icons.kiwi} message={"Nothing to discover here"} />;
   }
 
   return (

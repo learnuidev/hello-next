@@ -1,15 +1,23 @@
 "use client";
 import { queryIds } from "./queryIds";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { getContent, listContents } from "./content.api";
 
+type ListContentsResponse = {
+  id: string;
+  sourceUrl?: string;
+  uploadBucketKey?: string;
+  title: string;
+  transcriptions: { input: string; roman: string; lit: string }[];
+}[];
+
 export function useListContentsQuery(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery(
+  return useQuery<ListContentsResponse, Error>(
     [queryIds.listContents],
     async () => {
       const response = await listContents({
@@ -35,6 +43,8 @@ export const getContentQueryId = "get-content";
 export function useGetContentQuery(params: { contentId: string }) {
   const { data: authUser } = useCurrentAuthUser({});
 
+  const queryClient = useQueryClient();
+
   return useQuery({
     queryKey: [getContentQueryId, params.contentId],
     queryFn: async () => {
@@ -54,7 +64,18 @@ export function useGetContentQuery(params: { contentId: string }) {
           return transcription;
         }),
       };
+
       // }
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData([queryIds.listContents], (old: any) => {
+        return (old || []).map((content: any) => {
+          if (content?.id === data?.id) {
+            return data;
+          }
+          return content;
+        });
+      });
     },
 
     enabled: Boolean(authUser?.jwt) && Boolean(params?.contentId),

@@ -5,8 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { getUploadUrl } from "./asset.api";
-import { siteConfig } from "@/lib/config";
-import { UploadFileResponse } from "@/domain/file-upload/use-upload-file";
 
 interface GetUploadUrlParams {
   urlId: string;

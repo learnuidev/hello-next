@@ -1,5 +1,7 @@
 "use client";
 
+import { Nothing } from "@/app/nmm/nothing";
+import { Icons } from "@/components/ui/icons.v2";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useUpdateComponentMutation } from "@/domain/component/use-update-component-mutation";
 
@@ -36,6 +38,15 @@ export function Language() {
 
   if (!isSuperAdmin) {
     return <div> You dont have the permission to view this page </div>;
+  }
+
+  if (!componentsWithoutLang?.length) {
+    return (
+      <Nothing
+        icon={Icons.kiwi}
+        message={"You have discovered all the components"}
+      />
+    );
   }
 
   return (

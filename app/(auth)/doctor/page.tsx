@@ -13,6 +13,7 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { CharacterAndToneLevel } from "./character-and-tone-level/character-and-tone-level";
 import { Language } from "./language/language";
 import { UndiscoveredComponents } from "./undiscovered-components/undiscovered-components";
+import { ContentWithS3Translations } from "./content-with-s3-translations/content-with-s3-translations";
 
 export default function Doctor() {
   const { data: components } = useListComponents({});
@@ -86,6 +87,12 @@ export default function Doctor() {
             >
               Undiscovered
             </TabsTrigger>
+            <TabsTrigger
+              value="content-with-s3"
+              className="px-0 data-[state=active]:text-yellow-500"
+            >
+              Content without S3
+            </TabsTrigger>
           </TabsList>
 
           <div className="space-x-4"></div>
@@ -100,6 +107,9 @@ export default function Doctor() {
         <TabsContent value="click" className="my-8"></TabsContent>
         <TabsContent value="undiscovered" className="my-8">
           <UndiscoveredComponents />
+        </TabsContent>
+        <TabsContent value="content-with-s3" className="my-8">
+          <ContentWithS3Translations />
         </TabsContent>
       </Tabs>
     </div>

@@ -119,6 +119,7 @@ import {
   faBookSpells as faBookSpellsDT,
   faBullseye as faBullseyeDT,
   faBullseyeArrow as faBullseyeArrowDT,
+  faKiwiFruit,
 } from "@fortawesome/pro-duotone-svg-icons";
 
 import { faCitrus as faCitrusSolid } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -319,6 +320,7 @@ export const Icons = {
   arrowRight: createFAIcon(faArrowRight),
   mobile: createFAIcon(faMobile),
   loop: createFAIcon(faRepeat),
+  kiwi: createFAIcon(faKiwiFruit as any),
   // bookmark: createFAIcon(faBookmark),
 };
 

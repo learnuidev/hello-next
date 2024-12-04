@@ -117,6 +117,7 @@ export const DuLessonView = () => {
     isLoading,
     maxChapterIndex,
     router,
+    nextLesson,
   ]);
 
   const getPreviousChapter = useCallback(() => {
@@ -134,7 +135,14 @@ export const DuLessonView = () => {
         }
       }
     }
-  }, [chapterIndex, chapters?.lessons, courseId, isLoading, router]);
+  }, [
+    chapterIndex,
+    chapters?.lessons,
+    courseId,
+    isLoading,
+    router,
+    previousLesson,
+  ]);
 
   const { isPlaying, togglePlay, seek, currentTime, reset } = useMusicV2({
     url: audioUrl,

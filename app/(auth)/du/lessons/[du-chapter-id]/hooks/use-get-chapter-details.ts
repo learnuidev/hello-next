@@ -12,6 +12,7 @@ interface GetChapterDetailsResponse {
   synopsis: string;
   audio_url?: string;
   canonical_url: string;
+  level: string;
 
   subtitles: {
     sentence_indices: number[];

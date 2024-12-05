@@ -2,6 +2,7 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { duChineseApiUrl } from "@/libs/du-chinese/du-chinese-api-url";
 import { useQuery } from "@tanstack/react-query";
 import { DuSection } from "../du.types";
+import { useListStudiedLessonsQuery } from "./use-list-studied-lessons-query";
 
 type Categories = [string, string];
 interface ListTopLessonsResponse {
@@ -27,6 +28,10 @@ export const useListLessons = ({
 }) => {
   const { data: authUser } = useCurrentAuthUser({});
 
+  const { data: studiedLessons } = useListStudiedLessonsQuery({
+    cookie,
+  });
+
   return useQuery<ListTopLessonsResponse, Error>({
     queryKey: [
       "du-chinese/list-lessons",
@@ -35,6 +40,7 @@ export const useListLessons = ({
       hideStudied,
       query,
       category,
+      JSON.stringify(studiedLessons),
     ],
     queryFn: async () => {
       const resp = await fetch(`${duChineseApiUrl}/v1/list-lessons`, {
@@ -52,7 +58,20 @@ export const useListLessons = ({
         },
       });
 
-      return resp.json();
+      const respJSON = (await resp.json()) as ListTopLessonsResponse;
+
+      return {
+        ...respJSON,
+        lessons: respJSON.lessons.map((lesson) => {
+          const isRead = studiedLessons?.lessons?.find(
+            (l) => l?.id == lesson?.id
+          );
+          return {
+            ...lesson,
+            status: isRead ? "read" : "not_started",
+          };
+        }),
+      };
     },
   });
 };

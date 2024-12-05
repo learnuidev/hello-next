@@ -17,6 +17,7 @@ import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
 import { useListChapters } from "../../courses/[du-course-id]/hooks/use-list-chapters";
 import { useListLessons } from "../../../hooks/use-list-lessons";
 import { DuChaptersDrawer } from "./du-chapters-drawer";
+import { DuRecommendationsDrawer } from "./du-recommendations-drawer";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -236,7 +237,15 @@ export const DuLessonView = () => {
         </Link>
       )}
 
-      <DuChaptersDrawer courseId={courseId} />
+      {course?.title ? (
+        <DuChaptersDrawer courseId={courseId} disabled={isPlaying} />
+      ) : (
+        <DuRecommendationsDrawer
+          courseId={courseId}
+          chapterId={chapterId}
+          disabled={isPlaying}
+        />
+      )}
       <button
         onClick={() => {
           setViewMode((viewMode) => (viewMode === "stats" ? "core" : "stats"));

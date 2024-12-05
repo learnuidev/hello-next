@@ -11,28 +11,33 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useGetDuParams } from "../../../hooks/use-get-du-params";
 import { useListChapters } from "../../courses/[du-course-id]/hooks/use-list-chapters";
+import { useListLessons } from "../../../hooks/use-list-lessons";
+import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
 
-export function DuChaptersDrawer({
+export function DuRecommendationsDrawer({
   courseId: _courseId,
   disabled,
+  chapterId,
 }: {
   courseId: string;
   disabled?: boolean;
+  chapterId: string;
 }) {
   const duParams = useGetDuParams();
 
   const { cookie } = duParams;
 
-  const courseId = _courseId || duParams.courseId;
-
-  const { data } = useListChapters({
-    courseId,
-    cookie,
+  const { data, isLoading } = useGetChapterDetails({
+    chapterId,
+    courseId: _courseId,
+    cookie: cookie,
   });
 
-  const lesson = data?.lessons?.[0];
-
-  const course = lesson?.course;
+  const { data: lessonsList } = useListLessons({
+    levels: [data?.level || ""]?.filter(Boolean) || [],
+    hideStudied: true,
+    cookie,
+  });
 
   return (
     <Drawer>
@@ -49,12 +54,12 @@ export function DuChaptersDrawer({
       <DrawerContent className="border-gray-800">
         <div className="mx-auto w-full px-4 sm:px-16">
           <DrawerHeader className="pb-0 mb-0">
-            <DrawerTitle className="text-center">Select a chapter</DrawerTitle>
+            <DrawerTitle className="text-center">Recommendations</DrawerTitle>
           </DrawerHeader>
 
           <ScrollArea className="space-y-6 w-full h-[600px] rounded-md mb-20">
             <div className="mt-4 grid grid-cols-4 mb-32 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-10 gap-4 gap-y-4 lg:gap-8">
-              {data?.lessons?.map((item, idx) => {
+              {lessonsList?.lessons?.map((item, idx) => {
                 //   const item = val?.document;
                 return (
                   <div
@@ -69,17 +74,12 @@ export function DuChaptersDrawer({
                       />
                     </Link>
 
-                    <div className="mt-2 flex justify-between items-center">
+                    <div className="mt-2 flex justify-between items-center w-full">
                       <div>
-                        <p className="truncate text-sm">
-                          {" "}
-                          <span>
-                            {item?.title === course?.title
-                              ? `Chapter ${idx + 1}`
-                              : item?.title?.length > 33
-                                ? `${item?.title?.slice(0, 30)}...`
-                                : item?.title}
-                          </span>
+                        <p className="truncate text-sm w-full">
+                          {item?.title?.length > 30
+                            ? `${item?.title?.slice(0, 30)}...`
+                            : item?.title}
                         </p>
                         <p className="font-light text-gray-400 text-xs sm:text-sm capitalize">
                           {" "}
@@ -87,7 +87,7 @@ export function DuChaptersDrawer({
                         </p>
                       </div>
 
-                      {lesson?.status === "not_started" ? (
+                      {item?.status === "not_started" ? (
                         <Icons.questionMark className="sm:text-2xl text-lg" />
                       ) : (
                         <Icons.badgeCheck className="text-rose-400 sm:text-2xl text-lg" />

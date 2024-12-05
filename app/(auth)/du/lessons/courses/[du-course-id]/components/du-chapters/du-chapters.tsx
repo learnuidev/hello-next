@@ -81,7 +81,7 @@ export const DuChapters = () => {
           {" "}
           Courses{" "}
         </Link>{" "}
-        / Series: {course?.title}
+        / {course?.title}
       </div>
       <div className="mt-12 mb-4">
         <div className="flex justify-between items-center">

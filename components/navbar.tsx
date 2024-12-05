@@ -12,6 +12,7 @@ import Link from "next/link";
 import { AnimatedContentsFilter } from "./animated-contents-filter";
 import { ContentDropdown } from "./_select-character/content-dropdown";
 import { useLearningModeStore } from "./settings-dialog/learning-mode.store";
+import { DuNavbar } from "@/app/(auth)/du/components/du-navbar";
 
 export const ReviewNavBar = () => {
   const routeName = usePathname();
@@ -127,6 +128,8 @@ export const NavBar = ({ autoFocus }: { autoFocus?: boolean }) => {
           </Link>
         )}
         {routeName?.includes("/convos") && <AnimatedContentsFilter />}
+
+        {routeName === "/du" && <DuNavbar />}
       </div>
 
       {routeName?.includes("learn") || routeName?.includes("diary") ? null : (

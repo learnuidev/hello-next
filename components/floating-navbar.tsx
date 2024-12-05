@@ -12,7 +12,7 @@ import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
-import { DuNavbar } from "@/app/(auth)/du/components/du-navbar";
+import { FloatingDuNavbar } from "@/app/(auth)/du/components/floating-du-navbar";
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import {
@@ -44,7 +44,7 @@ const FloatingNavbarComp = () => {
 
   if (isDu) {
     if (isDuExact) {
-      return <DuNavbar />;
+      return <FloatingDuNavbar />;
     }
   }
 

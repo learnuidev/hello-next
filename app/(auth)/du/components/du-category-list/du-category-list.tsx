@@ -5,13 +5,22 @@ import { useDuStore } from "../../hooks/use-du-store";
 import { Nothing } from "@/app/nmm/nothing";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import Link from "next/link";
+import { getDuCategory } from "../../constants/du-categories";
 
-export const DuSearchResults = () => {
+export const DuCategoryList = () => {
   const query = useSearchQueryStore((state) => state.query2);
   const levels = useDuStore((state: any) => state.levels);
-  const { cookie } = useGetDuParams();
+  const { cookie, category } = useGetDuParams();
 
-  const { data, isLoading } = useListLessons({ query, cookie, levels });
+  const { data, isLoading } = useListLessons({
+    cookie,
+    category,
+    levels,
+  });
+
+  const duCategory = getDuCategory(category);
+
+  // const { data, isLoading } = useListLessons({ query, cookie, levels });
   return (
     <div className="">
       {isLoading ? (
@@ -23,10 +32,9 @@ export const DuSearchResults = () => {
           message={"Nothing found. Please try searching for something else"}
         />
       ) : (
-        <section className="my">
+        <section className="">
           <h2 className="text-2xl font-semibold text-gray-300">
-            {" "}
-            Search Results
+            Category: {duCategory?.title}
           </h2>
 
           <div className="mt-4 grid grid-cols-3 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-10 gap-4 gap-y-4 lg:gap-8">

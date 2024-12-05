@@ -9,11 +9,31 @@ import { DuLevelSelector } from "./components/du-level-selector/du-level-selecto
 import { WithVerifiedUser } from "./components/with-verified-user";
 import { useSearchQueryStore } from "@/components/search/state";
 import { DuSearchResults } from "./components/du-search-results/du-search-results";
+import { useGetDuParams } from "./hooks/use-get-du-params";
+import { DuCategoryList } from "./components/du-category-list/du-category-list";
+import { DuFavouriteList } from "./components/du-favourite-list/du-favourite-list";
+
+function DuView() {
+  const { view, category } = useGetDuParams();
+  const query = useSearchQueryStore((state) => state.query2);
+
+  if (query) {
+    return <DuSearchResults />;
+  }
+
+  if (category) {
+    return <DuCategoryList />;
+  }
+
+  if (view) {
+    return <DuFavouriteList />;
+  }
+
+  return <DuCourses />;
+}
 
 export default function DuChinse() {
   const isSuperAdmin = useIsSuperAdmin();
-
-  const query = useSearchQueryStore((state) => state.query2);
 
   if (!isSuperAdmin) {
     return <NoPermissionView />;
@@ -22,11 +42,13 @@ export default function DuChinse() {
   return (
     <WithVerifiedUser>
       <div>
-        <NavBar />
+        <div>
+          <NavBar />
+        </div>
 
-        <div className="mt-8 md:mx-12 mb-32">
+        <div className="mt-8 mx-4 md:mx-12 mb-32">
           <DuLevelSelector />
-          {query ? <DuSearchResults /> : <DuCourses />}
+          <DuView />
         </div>
 
         <FloatingNavbar />

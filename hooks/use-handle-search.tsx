@@ -58,6 +58,7 @@ export const useHandleSearch = () => {
   const handleOnKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape") {
       setQuery(() => "");
+      setQuery2(() => "");
       setQuerySync(() => "");
     }
 

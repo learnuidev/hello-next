@@ -8,7 +8,7 @@ export const DuLevelSelector = () => {
   const levels = useDuStore((state: any) => state.levels);
   const setLevels = useDuStore((state: any) => state.setLevels);
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex mb-12 gap-4 lg:space-x-8 space-x-0">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex mb-8 sm:mb-12 gap-4 lg:space-x-8 space-x-0">
       {Object.values(duLevels).map((level) => {
         return (
           <div className="items-top flex space-x-2" key={level.id}>

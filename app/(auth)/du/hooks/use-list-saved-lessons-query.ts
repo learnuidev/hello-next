@@ -27,6 +27,7 @@ type LessonDocument = {
   course_type: string | null;
   course_position: number | null;
   course: unknown | null;
+  levels: string[];
 };
 
 type CourseDocument = {
@@ -46,6 +47,7 @@ type CourseDocument = {
   is_new: boolean;
   document_ids: unknown | null;
   release_at: string;
+  level: string;
 };
 
 type LessonItem = {
@@ -74,7 +76,7 @@ export const useListSavedLessonsQuery = ({
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ListSavedLessonsResponse, Error>({
-    queryKey: [listSavedLessonsQueryKey, authUser?.jwt],
+    queryKey: [listSavedLessonsQueryKey, authUser?.jwt, JSON.stringify(levels)],
     queryFn: async () => {
       const resp = await fetch(`${duChineseApiUrl}/v1/list-saved-lessons`, {
         method: "POST",

@@ -324,7 +324,7 @@ export const DuLessonView = () => {
             >
               {course?.title}
             </Link>
-          ) : null}
+          ) : null}{" "}
           /{" "}
           <button
             onClick={() => {

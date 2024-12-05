@@ -16,6 +16,7 @@ import { useGetDuParams } from "../../../hooks/use-get-du-params";
 import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
 import { useListChapters } from "../../courses/[du-course-id]/hooks/use-list-chapters";
 import { useListLessons } from "../../../hooks/use-list-lessons";
+import { DuChaptersDrawer } from "./du-chapters-drawer";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -234,6 +235,8 @@ export const DuLessonView = () => {
           <DuChineseIcon className={"h-6"} />
         </Link>
       )}
+
+      <DuChaptersDrawer courseId={courseId} />
       <button
         onClick={() => {
           setViewMode((viewMode) => (viewMode === "stats" ? "core" : "stats"));
@@ -242,7 +245,7 @@ export const DuLessonView = () => {
       >
         <Icons.chartColumn
           className={cn(
-            "sm:text-lg text-2xl",
+            "sm:text-2xl text-2xl",
             viewMode === "stats" ? "text-white" : "text-gray-400"
           )}
         />
@@ -254,7 +257,7 @@ export const DuLessonView = () => {
       >
         <Icons.language
           className={cn(
-            "sm:text-lg text-2xl",
+            "sm:text-2xl text-2xl",
             viewPinyin ? "text-white" : "text-gray-400"
           )}
         />
@@ -387,40 +390,42 @@ export const DuLessonView = () => {
         </div> */}
 
         <div className="mt-6 mb-32 max-w-6xl m-auto relative">
-          <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
-            <div className="pb-4">
-              <h4 className="text-xs text-gray-500">Sentence meaning</h4>
-              <div className="h-16 flex justify-between items-center mt-2 w-full">
-                <p className="space-x-2 sm:text-xl text-[16px] font-extralight pb-[4px]">
-                  {activeSubtitle?.sentence || "..."}
-                </p>
-              </div>
-            </div>
-
-            <div className="h-16 mb-4 hidden sm:block">
-              <h4 className="text-xs text-gray-500">Word meaning</h4>
-
-              {selected ? (
-                <div className="h-14 mt-2 w-full">
-                  <div className="flex justify-between items-center">
-                    <p className="space-x-2 text-[16px] font-extralight">
-                      <span>{selected?.hanzi}</span>
-
-                      <span className="text-red-400">{selected?.pinyin}</span>
-                    </p>
-
-                    {selected?.hsk && <p>HSK {selected?.hsk}</p>}
-                  </div>
-
-                  <p className="font-extralight">
-                    <span className="truncate">{selected?.meaning}</span>
+          {viewMode !== "stats" && (
+            <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
+              <div className="pb-4">
+                <h4 className="text-xs text-gray-500">Sentence meaning</h4>
+                <div className="h-16 flex justify-between items-center mt-2 w-full">
+                  <p className="space-x-2 sm:text-xl text-[16px] font-extralight pb-[4px]">
+                    {activeSubtitle?.sentence || "..."}
                   </p>
                 </div>
-              ) : (
-                <div className="h-14"></div>
-              )}
+              </div>
+
+              <div className="h-16 mb-4 hidden sm:block">
+                <h4 className="text-xs text-gray-500">Word meaning</h4>
+
+                {selected ? (
+                  <div className="h-14 mt-2 w-full">
+                    <div className="flex justify-between items-center">
+                      <p className="space-x-2 text-[16px] font-extralight">
+                        <span>{selected?.hanzi}</span>
+
+                        <span className="text-red-400">{selected?.pinyin}</span>
+                      </p>
+
+                      {selected?.hsk && <p>HSK {selected?.hsk}</p>}
+                    </div>
+
+                    <p className="font-extralight">
+                      <span className="truncate">{selected?.meaning}</span>
+                    </p>
+                  </div>
+                ) : (
+                  <div className="h-14"></div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           {viewMode === "stats" ? (
             <div>

@@ -70,6 +70,7 @@ import {
   faInfoCircle,
   faItalic,
   faLanguage,
+  faLayerGroup,
   faLightbulb,
   faList,
   faLock,
@@ -319,6 +320,7 @@ export const Icons = {
   mobile: createFAIcon(faMobile),
   loop: createFAIcon(faRepeat),
   kiwi: createFAIcon(faKiwiFruit as any),
+  layerGroup: createFAIcon(faLayerGroup),
   // bookmark: createFAIcon(faBookmark),
 };
 

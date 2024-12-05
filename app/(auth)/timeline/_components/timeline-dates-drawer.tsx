@@ -11,29 +11,20 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 export function TimelineDatesDrawer({
-  focusLang,
   groups,
   selectedDate,
   setSelectedDate,
-  isOpen,
-  setIsOpen,
 }: {
   focusLang: string;
-  isOpen: boolean;
-  setIsOpen: any;
+
   groups: any;
   selectedDate: string;
   setSelectedDate: any;
 }) {
   return (
-    <Drawer open={isOpen}>
+    <Drawer>
       <DrawerTrigger asChild>
-        <button
-          onClick={() => {
-            setIsOpen(true);
-          }}
-          className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block"
-        >
+        <button className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
           <span className="absolute inset-0 overflow-hidden rounded-full">
             <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
           </span>
@@ -44,7 +35,7 @@ export function TimelineDatesDrawer({
         </button>
         {/* <Button className="">Open Drawer</Button> */}
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="border-gray-800">
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader className="pb-0 mb-0">
             <DrawerTitle>Select a date</DrawerTitle>
@@ -63,7 +54,6 @@ export function TimelineDatesDrawer({
                       )}
                       onClick={() => {
                         setSelectedDate(group?.title);
-                        setIsOpen(false);
                       }}
                       key={group?.title}
                     >

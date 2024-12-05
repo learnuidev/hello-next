@@ -7,26 +7,24 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+import { PreviewComponent } from "@/app/nmm/preview-component";
+import { calculateTotalTimeStudied } from "@/app/profile/hooks/use-get-total-time-studied";
+import { HanziLink } from "@/components/hanzi-link";
+import { NmmListContainer } from "@/components/nmm-list-container";
+import { Icons } from "@/components/ui/icons.v2";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";
-import { useTimelineState } from "./timeline.state";
-import { PreviewComponent } from "@/app/nmm/preview-component";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { TimelineDatesDrawer } from "./timeline-dates-drawer";
-import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
-import { Icons } from "@/components/ui/icons.v2";
-import { HanziLink } from "@/components/hanzi-link";
-import { NmmListContainer } from "@/components/nmm-list-container";
-import { calculateTotalTimeStudied } from "@/app/profile/hooks/use-get-total-time-studied";
+import { useTimelineState } from "./timeline.state";
 
 export const TimelineTabBody = ({
   variant,
 }: {
   variant: "all" | "search" | "track" | "click" | "discovered" | "reviewed";
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const focusLang = useTimelineState((state: any) => state.focusLang);
   const setFocusLang = useTimelineState((state: any) => state.setFocusLang);
 
@@ -232,8 +230,6 @@ export const TimelineTabBody = ({
       <div className="md:hidden flex w-full fixed z-50 bottom-20">
         <div className="m-auto">
           <TimelineDatesDrawer
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
             groups={groups}
             focusLang={focusLang}
             selectedDate={selectedDate || ""}

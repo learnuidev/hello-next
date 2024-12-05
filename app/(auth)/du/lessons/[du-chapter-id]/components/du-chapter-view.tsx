@@ -31,6 +31,7 @@ export const DuLessonView = () => {
   const [selected, setSelected] = useState<any>(null);
   const [viewPinyin, togglePinyin] = useState(false);
   const [loop, setLoop] = useState<any>(null);
+  const [viewPreview, setViewPreview] = useState(false);
 
   const [viewMode, setViewMode] = useState("core");
 
@@ -306,32 +307,44 @@ export const DuLessonView = () => {
               {course?.title}
             </Link>
           ) : null}
-          / {data?.title}
+          /{" "}
+          <button
+            onClick={() => {
+              setViewPreview((viewPreview) => !viewPreview);
+            }}
+            className="hover:text-white"
+          >
+            {data?.title}
+          </button>
         </div>
 
-        {/* <div className="mt-12">
-          <p className="text-sm sm:text-lg uppercase mt-8 font-bold text-gray-400">
-            {course?.levels?.join(", ")}
-          </p>
-          <h1 className="text-md sm:text-2xl font-bold">{data?.title}</h1>
-        </div> */}
-
-        {/* {data?.synopsis && data?.synopsis !== "null" && (
-          <div className="mt-16 grid gap-12 items-start grid-cols-12 w-full">
-            <div className={cn("sm:col-span-3 col-span-12 pr-4")}>
-              <img
-                className={cn("w-full object-cover rounded-xl")}
-                src={data?.large_image_url}
-                alt={data?.title}
-              />
-            </div>
-            <div className="sm:col-span-6 col-span-12">
-              <p className="text-xl text-gray-300 font-extralight">
-                {data?.synopsis}
+        {viewPreview && (
+          <>
+            <div className="mt-12">
+              <p className="text-sm sm:text-lg uppercase mt-8 font-bold text-gray-400">
+                {course?.levels?.join(", ")}
               </p>
+              <h1 className="text-md sm:text-2xl font-bold">{data?.title}</h1>
             </div>
-          </div>
-        )} */}
+
+            {data?.synopsis && data?.synopsis !== "null" && (
+              <div className="mt-16 grid gap-12 items-start grid-cols-12 w-full">
+                <div className={cn("sm:col-span-3 col-span-12 pr-4")}>
+                  <img
+                    className={cn("w-full object-cover rounded-xl")}
+                    src={data?.large_image_url}
+                    alt={data?.title}
+                  />
+                </div>
+                <div className="sm:col-span-6 col-span-12">
+                  <p className="text-xl text-gray-300 font-extralight">
+                    {data?.synopsis}
+                  </p>
+                </div>
+              </div>
+            )}
+          </>
+        )}
 
         {/* <div>
           <code>
@@ -339,7 +352,7 @@ export const DuLessonView = () => {
           </code>
         </div> */}
 
-        <div className="mt-12 mb-32 max-w-6xl m-auto relative">
+        <div className="mt-6 mb-32 max-w-6xl m-auto relative">
           <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
             <div className="pb-4">
               <h4 className="text-xs text-gray-500">Sentence meaning</h4>

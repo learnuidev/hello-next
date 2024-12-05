@@ -95,17 +95,23 @@ export const DuLessonView = () => {
       )?.[0]
     : chapters?.lessons?.[maxIndex];
 
+  const { isPlaying, togglePlay, seek, currentTime, reset } = useMusicV2({
+    url: audioUrl,
+  });
+
   const getNextChapter = useCallback(() => {
     if (nextLesson) {
       if (typeof chapterIndex === "number" && !isLoading) {
         if (!isLastChapter) {
           const maxIndex = Math.min(maxChapterIndex, chapterIndex + 1);
           const nextChapter = chapters?.lessons?.[maxIndex];
+          reset();
           router.push(`/du/${nextChapter?.path}&courseId=${courseId}`);
         } else {
           const nextLesson = lessonsList?.lessons?.filter(
             (lesson) => lesson?.course?.title !== course?.title
           )?.[0];
+          reset();
 
           router.push(`/du/${nextLesson?.path}`);
         }
@@ -118,6 +124,7 @@ export const DuLessonView = () => {
     isLoading,
     maxChapterIndex,
     router,
+    reset,
     nextLesson,
   ]);
 
@@ -127,11 +134,13 @@ export const DuLessonView = () => {
         if (!isFirstChapter) {
           const maxIndex = Math.max(0, chapterIndex - 1);
           const previousChapter = chapters?.lessons?.[maxIndex];
+          reset();
           router.push(`/du/${previousChapter?.path}&courseId=${courseId}`);
         } else {
           const nextLesson = lessonsList?.lessons?.filter(
             (lesson) => lesson?.course?.title !== course?.title
           )?.[0];
+          reset();
           router.push(`/du/${nextLesson?.path}`);
         }
       }
@@ -142,12 +151,9 @@ export const DuLessonView = () => {
     courseId,
     isLoading,
     router,
+    reset,
     previousLesson,
   ]);
-
-  const { isPlaying, togglePlay, seek, currentTime, reset } = useMusicV2({
-    url: audioUrl,
-  });
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -297,13 +303,25 @@ export const DuLessonView = () => {
         {/* <ActionButtons className="mb-16" /> */}
 
         <div className="text-gray-400">
-          <Link href="/du" className="hover:text-white">
+          <Link
+            onClick={() => {
+              reset();
+            }}
+            href="/du"
+            className="hover:text-white"
+          >
             {" "}
             Courses{" "}
           </Link>{" "}
           {course?.title ? " / " : null}
           {course?.title ? (
-            <Link href={`/du/${course?.path}`} className="hover:text-white">
+            <Link
+              onClick={() => {
+                reset();
+              }}
+              href={`/du/${course?.path}`}
+              className="hover:text-white"
+            >
               {course?.title}
             </Link>
           ) : null}

@@ -67,6 +67,8 @@ export const DuLessonView = () => {
   const isLastChapter = chapterIndex === (chapters?.lessons || [])?.length - 1;
   const isFirstChapter = chapterIndex === 0;
 
+  const isEmpty = !chapters?.lessons;
+
   const maxChapterIndex = (chapters?.lessons || [])?.length - 1;
 
   const audioUrl = data?.audio_url || "";
@@ -79,21 +81,23 @@ export const DuLessonView = () => {
   //   (lessonsList?.lessons?.filter(lesson => lesson?.course?.title !== course?.title).indexOf(
   //     (lesson: any) => lesson?.course?.title === course?.title
   //   ) || 0) + 10;
-  const nextLesson = isLastChapter
-    ? lessonsList?.lessons?.filter(
-        (lesson) => lesson?.course?.title !== course?.title
-      )?.[0]
-    : chapters?.lessons?.[minIndex];
+  const nextLesson =
+    isLastChapter || isEmpty
+      ? lessonsList?.lessons?.filter(
+          (lesson) => lesson?.course?.title !== course?.title
+        )?.[0]
+      : chapters?.lessons?.[minIndex];
 
   const maxIndex = Math.max(0, (chapterIndex || 0) - 1);
   // const previousLesson = chapters?.lessons?.[maxIndex];
 
-  const previousLesson = isFirstChapter
-    ? // ? lessonsList?.lessons?.[nextLessonIndex]
-      lessonsList?.lessons?.filter(
-        (lesson) => lesson?.course?.title !== course?.title
-      )?.[0]
-    : chapters?.lessons?.[maxIndex];
+  const previousLesson =
+    isFirstChapter || isEmpty
+      ? // ? lessonsList?.lessons?.[nextLessonIndex]
+        lessonsList?.lessons?.filter(
+          (lesson) => lesson?.course?.title !== course?.title
+        )?.[0]
+      : chapters?.lessons?.[maxIndex];
 
   const { isPlaying, togglePlay, seek, currentTime, reset } = useMusicV2({
     url: audioUrl,
@@ -101,6 +105,9 @@ export const DuLessonView = () => {
 
   const getNextChapter = useCallback(() => {
     if (nextLesson) {
+      if (isEmpty) {
+        router.push(`/du/${nextLesson?.path}`);
+      }
       if (typeof chapterIndex === "number" && !isLoading) {
         if (!isLastChapter) {
           const maxIndex = Math.min(maxChapterIndex, chapterIndex + 1);
@@ -118,19 +125,26 @@ export const DuLessonView = () => {
       }
     }
   }, [
-    chapterIndex,
-    chapters?.lessons,
-    courseId,
-    isLoading,
-    maxChapterIndex,
-    router,
-    reset,
     nextLesson,
+    isEmpty,
+    chapterIndex,
+    isLoading,
+    isLastChapter,
+    maxChapterIndex,
+    chapters?.lessons,
+    reset,
+    router,
+    courseId,
+    lessonsList?.lessons,
+    course?.title,
   ]);
 
   const getPreviousChapter = useCallback(() => {
     if (previousLesson) {
-      if (typeof chapterIndex === "number" && !isLoading) {
+      if (isEmpty) {
+        router.push(`/du/${previousLesson?.path}`);
+      }
+      if (typeof chapterIndex === "number" && !isLoading && !isEmpty) {
         if (!isFirstChapter) {
           const maxIndex = Math.max(0, chapterIndex - 1);
           const previousChapter = chapters?.lessons?.[maxIndex];
@@ -146,13 +160,17 @@ export const DuLessonView = () => {
       }
     }
   }, [
-    chapterIndex,
-    chapters?.lessons,
-    courseId,
-    isLoading,
-    router,
-    reset,
     previousLesson,
+    isEmpty,
+    chapterIndex,
+    isLoading,
+    isFirstChapter,
+    chapters?.lessons,
+    reset,
+    router,
+    courseId,
+    lessonsList?.lessons,
+    course?.title,
   ]);
 
   useEffect(() => {
@@ -250,8 +268,6 @@ export const DuLessonView = () => {
   );
 
   const textSize = sizes?.[textSizeIndex] || sizes?.[1];
-
-  console.log("PREVIOUS LESSON TITLE", previousLesson);
 
   const ActionButtons = ({ className }: { className?: string }) => {
     return (

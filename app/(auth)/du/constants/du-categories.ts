@@ -17,10 +17,10 @@ export const duCategories = {
     id: "funny_story",
     title: "Funny Story",
   },
-  courses: {
-    id: "courses",
-    title: "Courses",
-  },
+  // courses: {
+  //   id: "courses",
+  //   title: "Courses",
+  // },
 
   business_in_china: {
     id: "business_in_china",

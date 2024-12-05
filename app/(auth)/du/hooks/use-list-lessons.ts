@@ -16,10 +16,12 @@ export const useListLessons = ({
   levels,
   hideStudied,
   cookie,
+  query,
 }: {
   levels?: string | string[];
   hideStudied?: boolean;
   cookie?: string;
+  query?: string;
 }) => {
   const { data: authUser } = useCurrentAuthUser({});
 
@@ -29,6 +31,7 @@ export const useListLessons = ({
       JSON.stringify(levels),
       authUser?.jwt,
       hideStudied,
+      query,
     ],
     queryFn: async () => {
       const resp = await fetch(`${duChineseApiUrl}/v1/list-lessons`, {
@@ -38,6 +41,7 @@ export const useListLessons = ({
           levels,
           hideStudied,
           cookie,
+          query,
         }),
         headers: {
           Authorization: `Bearer ${authUser?.jwt}`,

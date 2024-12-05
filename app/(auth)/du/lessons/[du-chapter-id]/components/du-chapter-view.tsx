@@ -315,7 +315,7 @@ export const DuLessonView = () => {
           <h1 className="text-md sm:text-2xl font-bold">{data?.title}</h1>
         </div>
 
-        {data?.synopsis && (
+        {data?.synopsis && data?.synopsis !== "null" && (
           <div className="mt-16 grid gap-12 items-start grid-cols-12 w-full">
             <div className={cn("sm:col-span-3 col-span-12 pr-4")}>
               <img

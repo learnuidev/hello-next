@@ -38,9 +38,9 @@ export const useHandleSearch = () => {
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuerySync(event?.target?.value);
 
-    if (isDu) {
-      return;
-    }
+    // if (isDu) {
+    //   return;
+    // }
     handleChangeDebounced(event?.target.value);
   };
 

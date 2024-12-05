@@ -5,6 +5,7 @@ import { useDuStore } from "../../hooks/use-du-store";
 import { Nothing } from "@/app/nmm/nothing";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import Link from "next/link";
+import { Icons } from "@/components/ui/icons.v2";
 
 export const DuSearchResults = () => {
   const query = useSearchQueryStore((state) => state.query2);
@@ -20,6 +21,8 @@ export const DuSearchResults = () => {
         </div>
       ) : !data?.lessons?.length ? (
         <Nothing
+          icon={Icons.content}
+          className="sm:mt-48"
           message={"Nothing found. Please try searching for something else"}
         />
       ) : (

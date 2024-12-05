@@ -17,6 +17,7 @@ export type DuCourse = {
   release_at: string;
   free: boolean;
   crd_url: string;
+  level: string;
 };
 
 type DuLesson = {

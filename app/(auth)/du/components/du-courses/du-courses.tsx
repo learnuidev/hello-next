@@ -27,19 +27,14 @@ export const DuCourses = () => {
               {section?.section_name}
             </h2>
 
-            <div className="space-y-12 mt-4 columns-1 sm:columns-2 lg:columns-5 gap-4 gap-y-4">
+            <div className="mt-4 grid grid-cols-3 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-10 gap-4 gap-y-4 lg:gap-8">
               {section?.items?.map((item) => {
                 return (
-                  <div key={JSON.stringify(item)}>
-                    <Link
-                      href={
-                        `/du/${item?.path}`
-                        // section?.display === "lesson"
-                        //   ? `/du/lessons/${item?.id}`
-                        //   : `/du/${item?.path}`
-                      }
-                      className="block"
-                    >
+                  <div
+                    key={JSON.stringify(item)}
+                    className="block col-span-3 lg:col-span-2"
+                  >
+                    <Link href={`/du/${item?.path}`} className="block">
                       <img
                         className="object-cover rounded-xl w-full"
                         src={item?.large_image_url}
@@ -53,7 +48,7 @@ export const DuCourses = () => {
                     </p>
                     <p className="font-light text-gray-400 text-sm capitalize">
                       {" "}
-                      <span>{item?.levels?.[0]}</span>
+                      <span>{item?.levels?.[0] || item?.level}</span>
                     </p>
                   </div>
                 );
@@ -62,9 +57,6 @@ export const DuCourses = () => {
           </div>
         );
       })}
-      {/* <code>
-        <pre>{JSON.stringify(data, null, 4)}</pre>
-      </code>{" "} */}
     </div>
   );
 };

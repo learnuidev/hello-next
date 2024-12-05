@@ -62,7 +62,9 @@ export const DuChapters = () => {
   const favouriteCourseMutation = useFavouriteCourseMutation();
   const unfavouriteCourseMutation = useUnfavouriteCourseMutation();
 
-  const lesson = data?.lessons?.[0];
+  const lesson = data?.lessons?.filter(
+    (lesson) => lesson?.status === "not_started"
+  )[0];
 
   const course = lesson?.course;
 
@@ -122,7 +124,11 @@ export const DuChapters = () => {
             >
               <Icons.glassesRound />
 
-              <span>Start Reading</span>
+              {progress === "0%" ? (
+                <span>Start Reading</span>
+              ) : (
+                <span>Continue</span>
+              )}
             </Link>
 
             <button

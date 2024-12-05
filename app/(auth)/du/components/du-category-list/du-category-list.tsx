@@ -1,14 +1,14 @@
-import { useSearchQueryStore } from "@/components/search/state";
-import { useListLessons } from "../../hooks/use-list-lessons";
-import { useGetDuParams } from "../../hooks/use-get-du-params";
-import { useDuStore } from "../../hooks/use-du-store";
-import { Nothing } from "@/app/nmm/nothing";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { Nothing } from "@/app/nmm/nothing";
+import { useSearchQueryStore } from "@/components/search/state";
 import Link from "next/link";
 import { getDuCategory } from "../../constants/du-categories";
+import { useDuStore } from "../../hooks/use-du-store";
+import { useGetDuParams } from "../../hooks/use-get-du-params";
+import { useListLessons } from "../../hooks/use-list-lessons";
 
 export const DuCategoryList = () => {
-  const query = useSearchQueryStore((state) => state.query2);
+  const query = useSearchQueryStore((state) => state.querySync);
   const levels = useDuStore((state: any) => state.levels);
   const { cookie, category } = useGetDuParams();
 
@@ -20,14 +20,22 @@ export const DuCategoryList = () => {
 
   const duCategory = getDuCategory(category);
 
-  // const { data, isLoading } = useListLessons({ query, cookie, levels });
+  const filteredLessons = data?.lessons?.filter((item) => {
+    if (query) {
+      return JSON.stringify(item)
+        ?.toLowerCase()
+        ?.includes(query?.toLowerCase());
+    }
+    return true;
+  });
+
   return (
     <div className="">
       {isLoading ? (
         <div>
           <LottieLoadingAnimation />
         </div>
-      ) : !data?.lessons?.length ? (
+      ) : !filteredLessons?.length ? (
         <Nothing
           message={"Nothing found. Please try searching for something else"}
         />
@@ -38,21 +46,13 @@ export const DuCategoryList = () => {
           </h2>
 
           <div className="mt-4 grid grid-cols-3 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-10 gap-4 gap-y-4 lg:gap-8">
-            {data?.lessons?.map((item) => {
+            {filteredLessons?.map((item) => {
               return (
                 <div
                   key={JSON.stringify(item)}
                   className="block col-span-3 lg:col-span-2"
                 >
-                  <Link
-                    href={
-                      `/du/${item?.path}`
-                      // section?.display === "lesson"
-                      //   ? `/du/lessons/${item?.id}`
-                      //   : `/du/${item?.path}`
-                    }
-                    className="block"
-                  >
+                  <Link href={`/du/${item?.path}`} className="block">
                     <img
                       className="object-cover rounded-xl w-full"
                       src={item?.large_image_url}
@@ -74,12 +74,6 @@ export const DuCategoryList = () => {
               );
             })}
           </div>
-
-          {/* <div>
-            <code>
-              <pre>{JSON.stringify(data, null, 4)}</pre>
-            </code>
-          </div> */}
         </section>
       )}
     </div>

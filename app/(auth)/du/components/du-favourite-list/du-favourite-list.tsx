@@ -1,15 +1,13 @@
-import { useSearchQueryStore } from "@/components/search/state";
-import { useListLessons } from "../../hooks/use-list-lessons";
-import { useGetDuParams } from "../../hooks/use-get-du-params";
-import { useDuStore } from "../../hooks/use-du-store";
-import { Nothing } from "@/app/nmm/nothing";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { Nothing } from "@/app/nmm/nothing";
+import { useSearchQueryStore } from "@/components/search/state";
 import Link from "next/link";
-import { getDuCategory } from "../../constants/du-categories";
+import { useDuStore } from "../../hooks/use-du-store";
+import { useGetDuParams } from "../../hooks/use-get-du-params";
 import { useListSavedLessonsQuery } from "../../hooks/use-list-saved-lessons-query";
 
 export const DuFavouriteList = () => {
-  const query = useSearchQueryStore((state) => state.query2);
+  const query = useSearchQueryStore((state) => state.querySync);
   const levels = useDuStore((state: any) => state.levels);
   const { cookie, category } = useGetDuParams();
 
@@ -18,16 +16,22 @@ export const DuFavouriteList = () => {
     levels,
   });
 
-  const duCategory = getDuCategory(category);
+  const filteredLessons = data?.lessons?.filter((item) => {
+    if (query) {
+      return JSON.stringify(item)
+        ?.toLowerCase()
+        ?.includes(query?.toLowerCase());
+    }
+    return true;
+  });
 
-  // const { data, isLoading } = useListLessons({ query, cookie, levels });
   return (
     <div className="">
       {isLoading ? (
         <div>
           <LottieLoadingAnimation />
         </div>
-      ) : !data?.lessons?.length ? (
+      ) : !filteredLessons?.length ? (
         <Nothing
           message={"Nothing found. Please try searching for something else"}
         />
@@ -37,14 +41,8 @@ export const DuFavouriteList = () => {
             Saved Lessons
           </h2>
 
-          {/* <div>
-            <code>
-              <pre>{JSON.stringify(data, null, 4)}</pre>
-            </code>
-          </div> */}
-
           <div className="mt-4 grid grid-cols-3 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-10 gap-4 gap-y-4 lg:gap-8">
-            {data?.lessons?.map((val) => {
+            {filteredLessons?.map((val) => {
               const item = val?.document;
               return (
                 <div
@@ -73,12 +71,6 @@ export const DuFavouriteList = () => {
               );
             })}
           </div>
-
-          {/* <div>
-            <code>
-              <pre>{JSON.stringify(data, null, 4)}</pre>
-            </code>
-          </div> */}
         </section>
       )}
     </div>

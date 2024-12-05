@@ -17,16 +17,16 @@ function DuView() {
   const { view, category } = useGetDuParams();
   const query = useSearchQueryStore((state) => state.query2);
 
-  if (query) {
-    return <DuSearchResults />;
-  }
-
   if (category) {
     return <DuCategoryList />;
   }
 
   if (view) {
     return <DuFavouriteList />;
+  }
+
+  if (query) {
+    return <DuSearchResults />;
   }
 
   return <DuCourses />;

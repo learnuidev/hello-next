@@ -292,7 +292,7 @@ export const DuLessonView = () => {
 
   return (
     <div className="relative">
-      <div className="mx-4 mt-8 md:mx-12">
+      <div className="mx-4 mt-4 md:mx-12">
         {/* <ActionButtons className="mb-16" /> */}
 
         <div className="text-gray-400">
@@ -306,16 +306,17 @@ export const DuLessonView = () => {
               {course?.title}
             </Link>
           ) : null}
+          / {data?.title}
         </div>
 
-        <div className="mt-12">
+        {/* <div className="mt-12">
           <p className="text-sm sm:text-lg uppercase mt-8 font-bold text-gray-400">
             {course?.levels?.join(", ")}
           </p>
           <h1 className="text-md sm:text-2xl font-bold">{data?.title}</h1>
-        </div>
+        </div> */}
 
-        {data?.synopsis && data?.synopsis !== "null" && (
+        {/* {data?.synopsis && data?.synopsis !== "null" && (
           <div className="mt-16 grid gap-12 items-start grid-cols-12 w-full">
             <div className={cn("sm:col-span-3 col-span-12 pr-4")}>
               <img
@@ -330,7 +331,7 @@ export const DuLessonView = () => {
               </p>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* <div>
           <code>

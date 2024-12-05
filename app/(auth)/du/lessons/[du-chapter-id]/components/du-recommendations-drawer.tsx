@@ -59,35 +59,35 @@ export function DuRecommendationsDrawer({
 
           <ScrollArea className="space-y-6 w-full h-[600px] rounded-md mb-20">
             <div className="mt-4 grid grid-cols-4 mb-32 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-10 gap-4 gap-y-4 lg:gap-8">
-              {lessonsList?.lessons?.map((item, idx) => {
-                //   const item = val?.document;
+              {lessonsList?.lessons?.map((lesson, idx) => {
+                //   const lesson = val?.document;
                 return (
                   <div
-                    key={JSON.stringify(item)}
+                    key={JSON.stringify(lesson)}
                     className="block col-span-2 lg:col-span-2"
                   >
-                    <Link href={`/du/${item?.path}`} className="block">
+                    <Link href={`/du/${lesson?.path}`} className="block">
                       <img
                         className="object-cover rounded-xl w-full"
-                        src={item?.large_image_url}
-                        alt={item?.title}
+                        src={lesson?.large_image_url}
+                        alt={lesson?.title}
                       />
                     </Link>
 
-                    <div className="mt-2 flex justify-between items-center w-full">
+                    <div className="mt-2 flex justify-between lessons-center w-full">
                       <div>
                         <p className="truncate text-sm w-full">
-                          {item?.title?.length > 30
-                            ? `${item?.title?.slice(0, 30)}...`
-                            : item?.title}
+                          {lesson?.title?.length > 30
+                            ? `${lesson?.title?.slice(0, 30)}...`
+                            : lesson?.title}
                         </p>
                         <p className="font-light text-gray-400 text-xs sm:text-sm capitalize">
                           {" "}
-                          <span>{item?.level}</span>
+                          <span>{lesson?.level}</span>
                         </p>
                       </div>
 
-                      {item?.status === "not_started" ? (
+                      {lesson?.status === "not_started" ? (
                         <Icons.questionMark className="sm:text-2xl text-lg" />
                       ) : (
                         <Icons.badgeCheck className="text-rose-400 sm:text-2xl text-lg" />

@@ -54,36 +54,35 @@ export function DuChaptersDrawer({
 
           <ScrollArea className="space-y-6 w-full h-[600px] rounded-md mb-20">
             <div className="mt-4 grid grid-cols-4 mb-32 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-10 gap-4 gap-y-4 lg:gap-8">
-              {data?.lessons?.map((item, idx) => {
-                //   const item = val?.document;
+              {data?.lessons?.map((lesson, idx) => {
                 return (
                   <div
-                    key={JSON.stringify(item)}
+                    key={JSON.stringify(lesson?.id)}
                     className="block col-span-2 lg:col-span-2"
                   >
-                    <Link href={`/du/${item?.path}`} className="block">
+                    <Link href={`/du/${lesson?.path}`} className="block">
                       <img
                         className="object-cover rounded-xl w-full"
-                        src={item?.large_image_url}
-                        alt={item?.title}
+                        src={lesson?.large_image_url}
+                        alt={lesson?.title}
                       />
                     </Link>
 
-                    <div className="mt-2 flex justify-between items-center">
+                    <div className="mt-2 flex justify-between lessons-center">
                       <div>
                         <p className="truncate text-sm">
                           {" "}
                           <span>
-                            {item?.title === course?.title
+                            {lesson?.title === course?.title
                               ? `Chapter ${idx + 1}`
-                              : item?.title?.length > 33
-                                ? `${item?.title?.slice(0, 30)}...`
-                                : item?.title}
+                              : lesson?.title?.length > 33
+                                ? `${lesson?.title?.slice(0, 30)}...`
+                                : lesson?.title}
                           </span>
                         </p>
                         <p className="font-light text-gray-400 text-xs sm:text-sm capitalize">
                           {" "}
-                          <span>{item?.level}</span>
+                          <span>{lesson?.level}</span>
                         </p>
                       </div>
 

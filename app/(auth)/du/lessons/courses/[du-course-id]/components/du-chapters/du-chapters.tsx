@@ -62,9 +62,11 @@ export const DuChapters = () => {
   const favouriteCourseMutation = useFavouriteCourseMutation();
   const unfavouriteCourseMutation = useUnfavouriteCourseMutation();
 
-  const lesson = data?.lessons?.filter(
-    (lesson) => lesson?.status === "not_started"
-  )[0];
+  const firstLesson = data?.lessons?.[0];
+
+  const lesson =
+    data?.lessons?.filter((lesson) => lesson?.status === "not_started")[0] ||
+    firstLesson;
 
   const course = lesson?.course;
 

@@ -33,7 +33,7 @@ export const DuFavouriteList = () => {
         />
       ) : (
         <section className="">
-          <h2 className="text-2xl font-semibold text-gray-300">
+          <h2 className="text-2xl font-semibold text-gray-300 mb-8 sm:mb-16">
             Saved Lessons
           </h2>
 

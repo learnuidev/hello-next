@@ -34,6 +34,7 @@ function DuView() {
 
 export default function DuChinse() {
   const isSuperAdmin = useIsSuperAdmin();
+  const { view } = useGetDuParams();
 
   if (!isSuperAdmin) {
     return <NoPermissionView />;
@@ -47,7 +48,7 @@ export default function DuChinse() {
         </div>
 
         <div className="mt-8 mx-4 md:mx-12 mb-32">
-          <DuLevelSelector />
+          {view !== "favourite" && <DuLevelSelector />}
           <DuView />
         </div>
 

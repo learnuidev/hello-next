@@ -68,7 +68,7 @@ export function DuChaptersDrawer({
 
                     <div className="mt-2 flex justify-between items-center">
                       <div>
-                        <p className="truncate">
+                        <p className="truncate text-sm md:text-lg">
                           {" "}
                           <span>
                             {item?.title === course?.title
@@ -76,16 +76,16 @@ export function DuChaptersDrawer({
                               : item?.title}
                           </span>
                         </p>
-                        <p className="font-light text-gray-400 text-sm capitalize">
+                        <p className="font-light text-gray-400 text-xs sm:text-sm capitalize">
                           {" "}
                           <span>{item?.level}</span>
                         </p>
                       </div>
 
                       {lesson?.status === "not_started" ? (
-                        <Icons.questionMark className="text-2xl" />
+                        <Icons.questionMark className="sm:text-2xl text-lg" />
                       ) : (
-                        <Icons.badgeCheck className="text-rose-400 text-2xl" />
+                        <Icons.badgeCheck className="text-rose-400 sm:text-2xl text-lg" />
                       )}
                     </div>
                   </div>

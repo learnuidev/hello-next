@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
@@ -34,11 +35,63 @@ export const HtmlParser = () => {
         <Nothing />
       ) : isLoading ? (
         <LottieLoadingAnimation />
-      ) : (
+      ) : ["unknown", "people.cn"]?.includes(data?.sourceId) ? (
         <section className="mt-12">
           <code>
             <pre>{JSON.stringify(data, null, 4)}</pre>
           </code>
+        </section>
+      ) : (
+        <section className="mt-12">
+          <h1 className="text-center text-xl sm:text-3xl">
+            {data?.data?.title}
+          </h1>
+
+          <div className="max-w-5xl m-auto">
+            {data?.data?.sections?.length === 0 ? (
+              <Nothing />
+            ) : (
+              data?.data?.sections?.map((section, idx, ctx) => {
+                if (section?.image) {
+                  return (
+                    <div
+                      key={JSON.stringify(section)}
+                      className="flex justify-center items-center"
+                    >
+                      <img
+                        className="rounded-2xl text-center"
+                        alt="Image"
+                        src={section?.image}
+                      />
+                    </div>
+                  );
+                }
+
+                if (section.caption) {
+                  return (
+                    <p
+                      key={JSON.stringify(section)}
+                      className="text-center mt-4 text-gray-400 text-sm"
+                    >
+                      {section?.hanzi}
+                    </p>
+                  );
+                }
+
+                return (
+                  <p
+                    className="my-12 text-gray-300 sm:my-16 text-lg sm:text-xl"
+                    key={JSON.stringify(section)}
+                  >
+                    {section?.hanzi}
+                  </p>
+                );
+              })
+            )}
+          </div>
+          {/* <code>
+            <pre>{JSON.stringify(data, null, 4)}</pre>
+          </code> */}
         </section>
       )}
     </div>

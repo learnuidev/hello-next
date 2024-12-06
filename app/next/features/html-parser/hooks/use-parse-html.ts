@@ -8,10 +8,27 @@ const websiteSchema = z.object({
   website: z.string().url("Invalid URL"),
 });
 
+interface ParsedHtmlSection {
+  hanzi: string;
+  image?: string;
+  caption?: string;
+}
+interface ParseHtmlResponse {
+  sourceId: string;
+  url: string;
+  data: {
+    title: string;
+    audioUrl?: string;
+    publicationDate?: string;
+
+    sections: ParsedHtmlSection[];
+  };
+}
+
 export const useParseHtmlQuery = (url: string) => {
   const token = useJwtToken();
 
-  return useQuery({
+  return useQuery<ParseHtmlResponse, Error>({
     queryKey: ["parse-html", token, url],
     enabled: Boolean(url),
     retry: false,

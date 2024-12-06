@@ -9,15 +9,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { features } from "@/app/next/components/features";
+import { useSearchParams } from "next/navigation";
 
 export const FeatureSelect = ({
   onValueChange,
 }: {
   onValueChange: (str: string) => void;
 }) => {
+  const searchParams = useSearchParams();
+  const featureId = searchParams.get("feature-id") || "";
   return (
     <div className="my-4">
-      <Select onValueChange={onValueChange}>
+      <Select value={featureId} onValueChange={onValueChange}>
         <SelectTrigger className="w-[180px] border-gray-800">
           <SelectValue placeholder="Select a feature" />
         </SelectTrigger>

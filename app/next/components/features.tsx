@@ -1,6 +1,7 @@
 import { FlipCardFeature } from "@/app/next/features/flip-card/flip-card-feature";
 import { InsightsV2 } from "@/app/next/features/insights-v2/insights-v2";
 import { Speak } from "@/app/next/features/speak/speak";
+import { HtmlParser } from "../features/html-parser/html-parser";
 
 export const features = [
   {
@@ -17,6 +18,11 @@ export const features = [
     id: "speak",
     name: "Speak",
     Component: Speak,
+  },
+  {
+    id: "html-parser",
+    name: "Parser",
+    Component: HtmlParser,
   },
 ];
 

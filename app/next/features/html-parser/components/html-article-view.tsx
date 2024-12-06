@@ -39,12 +39,12 @@ export const HtmlArticleView = () => {
 
       {/* <p>{url}</p> */}
 
-      {isError ? (
+      {isLoading ? (
+        <LottieLoadingAnimation />
+      ) : isError ? (
         <Nothing message="Invalid url" />
       ) : !data ? (
         <Nothing />
-      ) : isLoading ? (
-        <LottieLoadingAnimation />
       ) : ["unknown", "people.cn"]?.includes(data?.sourceId) ||
         data?.type === "not-supported" ? (
         <section className="mt-12">
@@ -103,7 +103,7 @@ export const HtmlArticleView = () => {
 
                 return (
                   <p
-                    className="my-8 text-gray-300 sm:my-16 text-lg sm:text-xl"
+                    className="my-8 text-gray-300 text-lg sm:text-xl"
                     key={JSON.stringify(section)}
                   >
                     {section?.hanzi}
@@ -116,26 +116,28 @@ export const HtmlArticleView = () => {
             <pre>{JSON.stringify(data, null, 4)}</pre>
           </code> */}
 
-          <div className="flex justify-center items-center space-x-4">
-            {data?.data?.links?.map((link) => {
-              return (
-                <button
-                  className={cn(
-                    "text-2xl transition-all",
-                    title == link?.title ? "text-white" : "text-gray-400"
-                  )}
-                  onClick={() => {
-                    router.push(
-                      `/next?feature-id=html-parser&url=${link?.href}&view=${view}&title=${link?.title}`
-                    );
-                  }}
-                  key={JSON.stringify(link)}
-                >
-                  {link?.title}
-                </button>
-              );
-            })}
-          </div>
+          {data?.data?.links?.length !== 1 && (
+            <div className="flex justify-center items-center space-x-4">
+              {data?.data?.links?.map((link) => {
+                return (
+                  <button
+                    className={cn(
+                      "text-2xl transition-all font-extralight",
+                      title == link?.title ? "text-white" : "text-gray-400"
+                    )}
+                    onClick={() => {
+                      router.push(
+                        `/next?feature-id=html-parser&url=${link?.href}&view=${view}&title=${link?.title}`
+                      );
+                    }}
+                    key={JSON.stringify(link)}
+                  >
+                    {link?.title}
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
           {/* <div className="flex justify-center items-center">
             <code>

@@ -15,6 +15,7 @@ interface ParsedHtmlSection {
 }
 interface ParseHtmlResponse {
   sourceId: string;
+  type?: string;
   url: string;
   data: {
     title: string;

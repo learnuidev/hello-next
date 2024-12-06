@@ -35,7 +35,8 @@ export const HtmlParser = () => {
         <Nothing />
       ) : isLoading ? (
         <LottieLoadingAnimation />
-      ) : ["unknown", "people.cn"]?.includes(data?.sourceId) ? (
+      ) : ["unknown", "people.cn"]?.includes(data?.sourceId) ||
+        data?.type === "not-supported" ? (
         <section className="mt-12">
           <code>
             <pre>{JSON.stringify(data, null, 4)}</pre>

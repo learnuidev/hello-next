@@ -10,11 +10,11 @@ import { HtmlArticleView } from "./components/html-article-view";
 export const HtmlParser = () => {
   const { url, view } = useGetNextParams();
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  useEffect(() => {
-    router.push(`/next?feature-id=html-parser&url=${url}`);
-  }, [router, url]);
+  // useEffect(() => {
+  //   router.push(`/next?feature-id=html-parser&url=${url}`);
+  // }, [router, url]);
 
   if (view === "analytics") {
     return <HtmlAnalyticsView />;

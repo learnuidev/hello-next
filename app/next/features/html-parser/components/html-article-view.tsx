@@ -8,9 +8,10 @@ import { useGetNextParams } from "../../../hooks/use-get-next-params";
 import { useParseHtmlQuery } from "../hooks/use-parse-html";
 import Link from "next/link";
 import { Icons } from "@/components/ui/icons.v2";
+import { cn } from "@/lib/utils";
 
 export const HtmlArticleView = () => {
-  const { url } = useGetNextParams();
+  const { url, view, title } = useGetNextParams();
 
   const router = useRouter();
 
@@ -19,9 +20,9 @@ export const HtmlArticleView = () => {
   return (
     <div>
       <section>
-        <div className="flex items-center w-full justify-center mt-8">
+        <div className="flex items-center w-full justify-center mt-[-60px]">
           <input
-            className="w-full h-12 lg:h-[54px] sm:w-[740px] p-2 px-6 rounded-full outline-none text-lg font-extralight focus:shadow-sm focus:shadow-rose-400 transition bg-gray-100 dark:bg-[rgb(32,33,35)] placeholder:text-gray-300 dark:placeholder:text-gray-500"
+            className="w-full h-12 lg:h-[44px] sm:w-[740px] py-2 px-6 rounded-full outline-none text-[16px] font-extralight focus:shadow-sm focus:shadow-rose-400 transition bg-gray-100 dark:bg-[rgb(32,33,35)] placeholder:text-gray-300 dark:placeholder:text-gray-500"
             placeholder={"https://www.mandarino.io"}
             onKeyDown={(event: any) => {
               if (event.key === "Enter") {
@@ -35,6 +36,8 @@ export const HtmlArticleView = () => {
           />
         </div>
       </section>
+
+      {/* <p>{url}</p> */}
 
       {isError ? (
         <Nothing message="Invalid url" />
@@ -100,7 +103,7 @@ export const HtmlArticleView = () => {
 
                 return (
                   <p
-                    className="my-12 text-gray-300 sm:my-16 text-lg sm:text-xl"
+                    className="my-8 text-gray-300 sm:my-16 text-lg sm:text-xl"
                     key={JSON.stringify(section)}
                   >
                     {section?.hanzi}
@@ -112,6 +115,33 @@ export const HtmlArticleView = () => {
           {/* <code>
             <pre>{JSON.stringify(data, null, 4)}</pre>
           </code> */}
+
+          <div className="flex justify-center items-center space-x-4">
+            {data?.data?.links?.map((link) => {
+              return (
+                <button
+                  className={cn(
+                    "text-2xl transition-all",
+                    title == link?.title ? "text-white" : "text-gray-400"
+                  )}
+                  onClick={() => {
+                    router.push(
+                      `/next?feature-id=html-parser&url=${link?.href}&view=${view}&title=${link?.title}`
+                    );
+                  }}
+                  key={JSON.stringify(link)}
+                >
+                  {link?.title}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* <div className="flex justify-center items-center">
+            <code>
+              <pre>{JSON.stringify(data?.data?.links, null, 4)}</pre>
+            </code>
+          </div> */}
         </section>
       )}
     </div>

@@ -7,10 +7,12 @@ export const useGetNextParams = () => {
   const searchParams = useSearchParams();
   const view = searchParams.get("view") || "default";
   const urlValue = searchParams.get("url") || url;
+  const title = searchParams.get("title") || "";
   const featureId = searchParams.get("feature-id") || defaultFeature.id;
 
   return {
     featureId,
+    title,
     url: urlValue,
     view,
   };

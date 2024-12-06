@@ -23,6 +23,11 @@ interface ParseHtmlResponse {
     audioUrl?: string;
     publicationDate?: string;
 
+    links?: {
+      title: string;
+      href: string;
+    }[];
+
     sections: ParsedHtmlSection[];
   };
 }

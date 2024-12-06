@@ -11,6 +11,7 @@ const websiteSchema = z.object({
 interface ParsedHtmlSection {
   hanzi: string;
   image?: string;
+  img?: string;
   caption?: string;
 }
 interface ParseHtmlResponse {

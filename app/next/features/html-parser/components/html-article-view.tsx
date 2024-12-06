@@ -72,16 +72,16 @@ export const HtmlArticleView = () => {
               <Nothing />
             ) : (
               data?.data?.sections?.map((section, idx, ctx) => {
-                if (section?.image) {
+                if (section?.image || section?.img) {
                   return (
                     <div
                       key={JSON.stringify(section)}
                       className="flex justify-center items-center"
                     >
                       <img
-                        className="rounded-2xl text-center"
+                        className="rounded-2xl text-center mt-12 w-full sm:max-w-xl"
                         alt="Image"
-                        src={section?.image}
+                        src={section?.image || section?.img}
                       />
                     </div>
                   );

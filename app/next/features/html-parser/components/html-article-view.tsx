@@ -6,6 +6,8 @@ import { Nothing } from "@/app/nmm/nothing";
 import { useRouter } from "next/navigation";
 import { useGetNextParams } from "../../../hooks/use-get-next-params";
 import { useParseHtmlQuery } from "../hooks/use-parse-html";
+import Link from "next/link";
+import { Icons } from "@/components/ui/icons.v2";
 
 export const HtmlArticleView = () => {
   const { url } = useGetNextParams();
@@ -52,6 +54,18 @@ export const HtmlArticleView = () => {
           <h1 className="text-center text-xl sm:text-3xl lg:px-80 sm:px-32 px-8">
             {data?.data?.title}
           </h1>
+
+          <div className="underline">
+            <Link
+              className="text-center block space-x-2 mt-4 text-gray-400 text-xs"
+              href={data?.url}
+              target="_blank"
+            >
+              <span> Original Article</span>
+
+              <Icons.externalLink />
+            </Link>
+          </div>
 
           <div className="max-w-5xl m-auto">
             {data?.data?.sections?.length === 0 ? (

@@ -25,7 +25,7 @@ export const TheDock = ({
 
   return (
     <div>
-      <div className={cn("flex w-full fixed z-50 bottom-0", className)}>
+      <div className={cn("flex w-full fixed z-50 bottom-32", className)}>
         <div className={cn("block sm:hidden w-full", innerClassName)}>
           {children}
         </div>
@@ -38,9 +38,9 @@ export const TheDock = ({
         onMouseLeave={() => {
           setShow(false);
         }}
-        className={cn("flex w-full fixed z-50 bottom-0")}
+        className={cn("flex w-full fixed z-50 bottom-2")}
       >
-        {/* <div className="text-black">TODO</div> */}
+        <div className="text-black">.</div>
         <AnimatePresence>
           {show && (
             <motion.div

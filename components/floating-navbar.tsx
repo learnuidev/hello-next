@@ -213,7 +213,7 @@ export const FloatingNavbar = () => {
   const isAutomatic = useShowAutomaticallyTheDock();
   return (
     <TheDock
-      className="sm:bottom-0 bottom-4"
+      className="bottom-2"
       innerClassName={isReviewUrl ? "sm:block" : ""}
       isAutomatic={isAutomatic}
     >

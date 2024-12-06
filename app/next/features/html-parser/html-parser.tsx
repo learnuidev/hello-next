@@ -44,7 +44,7 @@ export const HtmlParser = () => {
         </section>
       ) : (
         <section className="mt-12">
-          <h1 className="text-center text-xl sm:text-3xl">
+          <h1 className="text-center text-xl sm:text-3xl lg:px-80 sm:px-32 px-8">
             {data?.data?.title}
           </h1>
 

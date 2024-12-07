@@ -33,7 +33,7 @@ export const HtmlArticleView = () => {
       context: contextualizeHanzi(
         allChars || [],
         hskWords2 || [],
-        section?.hanzi
+        section?.hanzi || ""
       ),
     };
   });

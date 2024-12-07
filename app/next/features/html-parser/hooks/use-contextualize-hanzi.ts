@@ -2,7 +2,7 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
 const indexOfAllV2: any = (ctx: any, str: any, w: any, res = [] as any) => {
-  const idx = str.indexOf(w);
+  const idx = str?.indexOf(w);
 
   const wordLen = w.length;
 
@@ -42,7 +42,7 @@ export const contextualizeHanzi = (allChars: any, hskWords2: any, str: any) => {
 
   const contextualized = [...(allChars || []), ...hskWords2]
     .map(({ hanzi, level }) => {
-      const startingIndex = str.indexOf(hanzi);
+      const startingIndex = str?.indexOf(hanzi);
       if (startingIndex !== -1) {
         const length = hanzi.length;
         const word2 = str.slice(startingIndex, startingIndex + length);

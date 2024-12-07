@@ -622,7 +622,7 @@ export const DuLessonView = () => {
             <button
               className={cn(
                 "sm:text-2xl text-lg",
-                loop ? "text-white" : "text-gray-400"
+                loop ? "text-white" : "text-gray-600"
               )}
               disabled={!activeSubtitle}
               onClick={() => {

@@ -59,12 +59,7 @@ function SectionView({ section, viewPinyin, setSelected }: any) {
               >
                 {viewPinyin && (
                   <span
-                    className={cn(
-                      "text-xs",
-                      item?.pinyin
-                        ? "text-gray-400 hover:text-rose-400"
-                        : "text-black"
-                    )}
+                    className={cn("text-xs", item?.pinyin ? "" : "text-black")}
                   >
                     {item?.pinyin || "."}
                   </span>
@@ -106,6 +101,10 @@ export const HtmlArticleView = () => {
 
   const { data, isError, isLoading } = useParseHtmlQuery(url);
 
+  const { data: titleContext } = useListDictionaryMeaningsQuery(
+    data?.data?.title || ""
+  );
+
   // const dataWithContext = data?.data?.sections?.map((section) => {
   //   return {
   //     ...section,
@@ -122,18 +121,7 @@ export const HtmlArticleView = () => {
       if (["b"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         togglePinyin((view) => !view);
-
-        // setView((prev: string) => (prev === "focus" ? "default" : "focus"));
       }
-
-      // if (event.code === "ArrowLeft" || event.code === "ArrowUp") {
-      //   // alert("check previous");
-      //   getPreviousChapter();
-      // }
-
-      // if (event.code === "ArrowRight" || event.code === "ArrowDown") {
-      //   getNextChapter();
-      // }
     }
 
     window.addEventListener("keydown", onKeyDown);
@@ -223,13 +211,50 @@ export const HtmlArticleView = () => {
         </section>
       ) : (
         <section className="mt-12">
-          <Link
-            target="_blank"
-            href={data?.url}
-            className="block text-center text-xl sm:text-3xl lg:px-80 sm:px-32 px-8"
-          >
-            {data?.data?.title}
-          </Link>
+          {viewPinyin ? (
+            <div className="block text-center lg:px-80 sm:px-32 px-8">
+              {titleContext?.map((item: any) => {
+                return (
+                  <span
+                    onMouseEnter={() => {
+                      setSelected(item);
+                    }}
+                    onMouseLeave={() => {
+                      setSelected(null);
+                    }}
+                    className="text-gray-300 text-lg sm:text-xl hover:text-rose-400 inline-flex flex-col items-center"
+                    key={JSON.stringify(item)}
+                  >
+                    {viewPinyin && (
+                      <span
+                        className={cn(
+                          "text-xs",
+                          item?.pinyin ? "" : "text-black"
+                        )}
+                      >
+                        {item?.pinyin || "."}
+                      </span>
+                    )}
+                    <Link
+                      href={`/nmm/${item?.hanzi}?lang=zh`}
+                      target="_blank"
+                      className="text-xl sm:text-3xl"
+                    >
+                      {item?.hanzi}
+                    </Link>
+                  </span>
+                );
+              })}
+            </div>
+          ) : (
+            <Link
+              target="_blank"
+              href={data?.url}
+              className="block text-center text-xl sm:text-3xl lg:px-80 sm:px-32 px-8"
+            >
+              {data?.data?.title}
+            </Link>
+          )}
 
           <div>
             <Link

@@ -85,7 +85,7 @@ export const HtmlArticleView = () => {
         </div>
       </section>
 
-      {view !== "analytics" && (
+      {viewPinyin && view !== "analytics" && (
         <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
           {/* <div className="pb-4">
             <h4 className="text-xs text-gray-500">Sentence meaning</h4>
@@ -197,49 +197,51 @@ export const HtmlArticleView = () => {
 
                 return (
                   <>
-                    {/* <p
-                      className="my-8 text-gray-300 text-lg sm:text-xl"
-                      key={JSON.stringify(section)}
-                    >
-                      {section?.hanzi}
-                    </p> */}
-
-                    <p className="my-8">
-                      {section?.context?.new?.map((item: any) => {
-                        return (
-                          <span
-                            onMouseEnter={() => {
-                              setSelected(item);
-                            }}
-                            onMouseLeave={() => {
-                              setSelected(null);
-                            }}
-                            className="text-gray-300 text-lg sm:text-xl hover:text-rose-400 inline-flex flex-col items-center"
-                            key={JSON.stringify(item)}
-                          >
-                            {viewPinyin && (
-                              <span
-                                className={cn(
-                                  "text-xs",
-                                  item?.pinyin
-                                    ? "text-gray-400 hover:text-rose-400"
-                                    : "text-black"
-                                )}
-                              >
-                                {item?.pinyin || "."}
-                              </span>
-                            )}
-                            <Link
-                              href={`/nmm/${item?.hanzi}?lang=zh`}
-                              target="_blank"
-                              className="text-2xl"
+                    {viewPinyin ? (
+                      <p className="my-8">
+                        {section?.context?.new?.map((item: any) => {
+                          return (
+                            <span
+                              onMouseEnter={() => {
+                                setSelected(item);
+                              }}
+                              onMouseLeave={() => {
+                                setSelected(null);
+                              }}
+                              className="text-gray-300 text-lg sm:text-xl hover:text-rose-400 inline-flex flex-col items-center"
+                              key={JSON.stringify(item)}
                             >
-                              {item?.hanzi}
-                            </Link>
-                          </span>
-                        );
-                      })}
-                    </p>
+                              {viewPinyin && (
+                                <span
+                                  className={cn(
+                                    "text-xs",
+                                    item?.pinyin
+                                      ? "text-gray-400 hover:text-rose-400"
+                                      : "text-black"
+                                  )}
+                                >
+                                  {item?.pinyin || "."}
+                                </span>
+                              )}
+                              <Link
+                                href={`/nmm/${item?.hanzi}?lang=zh`}
+                                target="_blank"
+                                className="text-lg sm:text-2xl"
+                              >
+                                {item?.hanzi}
+                              </Link>
+                            </span>
+                          );
+                        })}
+                      </p>
+                    ) : (
+                      <p
+                        className="my-8 text-gray-300 text-lg sm:text-2xl"
+                        key={JSON.stringify(section)}
+                      >
+                        {section?.hanzi}
+                      </p>
+                    )}
                   </>
                 );
               })

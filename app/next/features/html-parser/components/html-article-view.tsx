@@ -8,10 +8,89 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useGetNextParams } from "../../../hooks/use-get-next-params";
-import { contextualizeHanzi } from "../hooks/use-contextualize-hanzi";
-import { useParseHtmlQuery } from "../hooks/use-parse-html";
 import { useEffect, useState } from "react";
+import { useGetNextParams } from "../../../hooks/use-get-next-params";
+import { useListDictionaryMeaningsQuery } from "../hooks/use-dictionary-list-meanings";
+import { useParseHtmlQuery } from "../hooks/use-parse-html";
+
+function SectionView({ section, viewPinyin, setSelected }: any) {
+  const { data: context } = useListDictionaryMeaningsQuery(section?.hanzi);
+  if (section?.image || section?.img) {
+    return (
+      <div
+        key={JSON.stringify(section)}
+        className="flex justify-center items-center"
+      >
+        <img
+          className="rounded-2xl text-center mt-6 w-full sm:max-w-xl"
+          alt="Image"
+          src={section?.image || section?.img}
+        />
+      </div>
+    );
+  }
+
+  if (section.caption) {
+    return (
+      <p
+        key={JSON.stringify(section)}
+        className="text-center mt-4 text-gray-400 text-sm"
+      >
+        {section?.hanzi}
+      </p>
+    );
+  }
+
+  return (
+    <>
+      {viewPinyin && context !== undefined && context?.length > 0 ? (
+        <p className="my-8">
+          {context?.map((item: any) => {
+            return (
+              <span
+                onMouseEnter={() => {
+                  setSelected(item);
+                }}
+                onMouseLeave={() => {
+                  setSelected(null);
+                }}
+                className="text-gray-300 text-lg sm:text-xl hover:text-rose-400 inline-flex flex-col items-center"
+                key={JSON.stringify(item)}
+              >
+                {viewPinyin && (
+                  <span
+                    className={cn(
+                      "text-xs",
+                      item?.pinyin
+                        ? "text-gray-400 hover:text-rose-400"
+                        : "text-black"
+                    )}
+                  >
+                    {item?.pinyin || "."}
+                  </span>
+                )}
+                <Link
+                  href={`/nmm/${item?.hanzi}?lang=zh`}
+                  target="_blank"
+                  className="text-lg sm:text-2xl"
+                >
+                  {item?.hanzi}
+                </Link>
+              </span>
+            );
+          })}
+        </p>
+      ) : (
+        <p
+          className="my-8 text-gray-300 text-lg sm:text-2xl"
+          key={JSON.stringify(section)}
+        >
+          {section?.hanzi}
+        </p>
+      )}
+    </>
+  );
+}
 
 export const HtmlArticleView = () => {
   const { url, view, title } = useGetNextParams();
@@ -27,16 +106,16 @@ export const HtmlArticleView = () => {
 
   const { data, isError, isLoading } = useParseHtmlQuery(url);
 
-  const dataWithContext = data?.data?.sections?.map((section) => {
-    return {
-      ...section,
-      context: contextualizeHanzi(
-        allChars || [],
-        hskWords2 || [],
-        section?.hanzi || ""
-      ),
-    };
-  });
+  // const dataWithContext = data?.data?.sections?.map((section) => {
+  //   return {
+  //     ...section,
+  //     context: contextualizeHanzi(
+  //       allChars || [],
+  //       hskWords2 || [],
+  //       section?.hanzi || ""
+  //     )?.new,
+  //   };
+  // });
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -63,7 +142,7 @@ export const HtmlArticleView = () => {
     };
   }, [togglePinyin]);
 
-  console.log("DATA WITH CTX", dataWithContext);
+  // console.log("DATA WITH CTX", dataWithContext);
 
   return (
     <div>
@@ -165,84 +244,17 @@ export const HtmlArticleView = () => {
           <div className="max-w-5xl m-auto mt-2 border-t-[1px] border-gray-900" />
 
           <div className="max-w-5xl m-auto">
-            {dataWithContext?.length === 0 ? (
+            {data?.data?.sections?.length === 0 ? (
               <Nothing />
             ) : (
-              dataWithContext?.map((section, idx, ctx) => {
-                if (section?.image || section?.img) {
-                  return (
-                    <div
-                      key={JSON.stringify(section)}
-                      className="flex justify-center items-center"
-                    >
-                      <img
-                        className="rounded-2xl text-center mt-6 w-full sm:max-w-xl"
-                        alt="Image"
-                        src={section?.image || section?.img}
-                      />
-                    </div>
-                  );
-                }
-
-                if (section.caption) {
-                  return (
-                    <p
-                      key={JSON.stringify(section)}
-                      className="text-center mt-4 text-gray-400 text-sm"
-                    >
-                      {section?.hanzi}
-                    </p>
-                  );
-                }
-
+              data?.data?.sections?.map((section, idx, ctx) => {
                 return (
-                  <>
-                    {viewPinyin ? (
-                      <p className="my-8">
-                        {section?.context?.new?.map((item: any) => {
-                          return (
-                            <span
-                              onMouseEnter={() => {
-                                setSelected(item);
-                              }}
-                              onMouseLeave={() => {
-                                setSelected(null);
-                              }}
-                              className="text-gray-300 text-lg sm:text-xl hover:text-rose-400 inline-flex flex-col items-center"
-                              key={JSON.stringify(item)}
-                            >
-                              {viewPinyin && (
-                                <span
-                                  className={cn(
-                                    "text-xs",
-                                    item?.pinyin
-                                      ? "text-gray-400 hover:text-rose-400"
-                                      : "text-black"
-                                  )}
-                                >
-                                  {item?.pinyin || "."}
-                                </span>
-                              )}
-                              <Link
-                                href={`/nmm/${item?.hanzi}?lang=zh`}
-                                target="_blank"
-                                className="text-lg sm:text-2xl"
-                              >
-                                {item?.hanzi}
-                              </Link>
-                            </span>
-                          );
-                        })}
-                      </p>
-                    ) : (
-                      <p
-                        className="my-8 text-gray-300 text-lg sm:text-2xl"
-                        key={JSON.stringify(section)}
-                      >
-                        {section?.hanzi}
-                      </p>
-                    )}
-                  </>
+                  <SectionView
+                    key={JSON.stringify(section)}
+                    section={section}
+                    setSelected={setSelected}
+                    viewPinyin={viewPinyin}
+                  />
                 );
               })
             )}

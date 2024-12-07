@@ -74,6 +74,7 @@ import {
   faLightbulb,
   faList,
   faLock,
+  faMagicWandSparkles,
   faMagnifyingGlassChart,
   faMagnifyingGlassMinus,
   faMagnifyingGlassPlus,
@@ -322,6 +323,7 @@ export const Icons = {
   kiwi: createFAIcon(faKiwiFruit as any),
   layerGroup: createFAIcon(faLayerGroup),
   // bookmark: createFAIcon(faBookmark),
+  magicWand: createFAIcon(faMagicWandSparkles),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

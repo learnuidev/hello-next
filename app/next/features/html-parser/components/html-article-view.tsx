@@ -16,6 +16,9 @@ import { useParseHtmlQuery } from "../hooks/use-parse-html";
 function SectionView({ section, viewPinyin, setSelected }: any) {
   const { data: context } = useListDictionaryMeaningsQuery(section?.hanzi);
   if (section?.image || section?.img) {
+    if (viewPinyin) {
+      return null;
+    }
     return (
       <div
         key={JSON.stringify(section)}
@@ -31,6 +34,9 @@ function SectionView({ section, viewPinyin, setSelected }: any) {
   }
 
   if (section.caption) {
+    if (viewPinyin) {
+      return null;
+    }
     return (
       <p
         key={JSON.stringify(section)}

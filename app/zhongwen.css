@@ -11,39 +11,48 @@
 
 .w-hanzi-small {
   background: black !important;
+  color: white !important;
 }
 
 .w-def-small {
   background: black !important;
-  color: white !important;
+  color: rgb(107, 114, 128) !important;
   display: block;
-  margin-bottom: 16px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+
+  /* margin-bottom: 8px; */
 }
 
 .w-pinyin-small.tone1 {
   background: black !important;
+  color: rgb(251, 113, 133) !important;
 }
 .w-pinyin-small.tone2 {
   background: black !important;
+  color: rgb(45, 212, 191) !important;
 }
 
 .w-pinyin-small.tone3 {
   background: black !important;
+  color: rgb(192, 132, 252) !important;
 }
 
 .w-pinyin-small.tone4 {
   background: black !important;
+  color: rgb(244, 114, 182) !important;
 }
 
 .w-pinyin-small.tone5 {
   background: black !important;
+  color: gray !important;
 }
 
 .grammar {
   background: black !important;
-  color: white !important;
+  color: rgb(75, 85, 99) !important;
 }
 .vocab {
   background: black !important;
-  color: white !important;
+  color: rgb(75, 85, 99) !important;
 }

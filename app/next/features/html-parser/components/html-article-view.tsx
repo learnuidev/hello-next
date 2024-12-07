@@ -60,7 +60,7 @@ function SectionView({ section, viewPinyin, setSelected }: any) {
                 onMouseLeave={() => {
                   setSelected(null);
                 }}
-                className="text-gray-300 text-lg sm:text-xl hover:text-rose-400 inline-flex flex-col items-center"
+                className="text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center"
                 key={JSON.stringify(item)}
               >
                 {viewPinyin && (
@@ -228,7 +228,7 @@ export const HtmlArticleView = () => {
                     onMouseLeave={() => {
                       setSelected(null);
                     }}
-                    className="text-gray-300 text-lg sm:text-xl hover:text-rose-400 inline-flex flex-col items-center"
+                    className="text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center"
                     key={JSON.stringify(item)}
                   >
                     {viewPinyin && (

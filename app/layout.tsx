@@ -6,6 +6,7 @@ import "regenerator-runtime/runtime";
 
 import { QueryClientProvider } from "@/libs/react-query";
 import "./globals.css";
+import "./zhongwen.css";
 
 import { Inter } from "next/font/google";
 

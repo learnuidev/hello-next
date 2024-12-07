@@ -1,0 +1,49 @@
+#zhongwen-window {
+  background: black !important;
+  text: white !importanat;
+  border-color: black !important;
+  padding: 16px;
+  -webkit-box-shadow: 21px -26px 131px -68px rgba(0, 0, 0, 0.75) !important;
+  -moz-box-shadow: 21px -26px 131px -68px rgba(0, 0, 0, 0.75) !important;
+  box-shadow: 21px -26px 131px -68px rgba(0, 0, 0, 0.75) !important;
+  /* box-shadow: none !important; */
+}
+
+.w-hanzi-small {
+  background: black !important;
+}
+
+.w-def-small {
+  background: black !important;
+  color: white !important;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.w-pinyin-small.tone1 {
+  background: black !important;
+}
+.w-pinyin-small.tone2 {
+  background: black !important;
+}
+
+.w-pinyin-small.tone3 {
+  background: black !important;
+}
+
+.w-pinyin-small.tone4 {
+  background: black !important;
+}
+
+.w-pinyin-small.tone5 {
+  background: black !important;
+}
+
+.grammar {
+  background: black !important;
+  color: white !important;
+}
+.vocab {
+  background: black !important;
+  color: white !important;
+}

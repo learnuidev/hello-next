@@ -5,7 +5,6 @@ import { useMusicV2 } from "@/app/(auth)/convos/_play-v2/use-music-v2";
 import { formatTime } from "@/app/(auth)/convos/_play/utils";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
-import { HanziTooltip } from "@/components/_select-character/selected-character/hanzi-tooltip";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -13,9 +12,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { DuChineseIcon } from "../../../components/duchinese-icon";
 import { useGetDuParams } from "../../../hooks/use-get-du-params";
-import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
-import { useListChapters } from "../../courses/[du-course-id]/hooks/use-list-chapters";
 import { useListLessons } from "../../../hooks/use-list-lessons";
+import { useListChapters } from "../../courses/[du-course-id]/hooks/use-list-chapters";
+import { useGetChapterDetails } from "../hooks/use-get-chapter-details";
 import { DuChaptersDrawer } from "./du-chapters-drawer";
 import { DuRecommendationsDrawer } from "./du-recommendations-drawer";
 
@@ -175,6 +174,11 @@ export const DuLessonView = () => {
     course?.title,
   ]);
 
+  const activeSubtitle = data?.subtitles?.words?.find(
+    (subtitle) =>
+      currentTime > subtitle?.startTime && currentTime < subtitle.endTime
+  );
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.code === "ArrowLeft" || event.code === "ArrowUp") {
@@ -185,13 +189,59 @@ export const DuLessonView = () => {
       if (event.code === "ArrowRight" || event.code === "ArrowDown") {
         getNextChapter();
       }
+
+      if (["p"]?.includes(event.key)) {
+        togglePinyin((pinyin) => !pinyin);
+      }
+
+      if (["a"]?.includes(event.key)) {
+        setViewMode((viewMode) => (viewMode === "stats" ? "core" : "stats"));
+        // togglePinyin((pinyin) => !pinyin);
+      }
+
+      if (["l"]?.includes(event.key)) {
+        // togglePinyin((pinyin) => !pinyin);
+
+        if (activeSubtitle?.sentence) {
+          if (loop) {
+            setLoop(null);
+          } else {
+            setLoop(activeSubtitle?.sentence);
+          }
+        }
+      }
+
+      if (event.code === "Space") {
+        // Vishal 07-12-2024-10-20: prevents the browser from scrolling down
+        event.preventDefault();
+        togglePlay();
+      }
+      if (event.code === "Escape") {
+        // Vishal 07-12-2024-10-30: prevents the browser from escaping fullscreen mode
+        event.preventDefault();
+        reset();
+      }
+
+      if (["s"]?.includes(event.key)) {
+        event.preventDefault();
+        reset();
+      }
     }
 
     window.addEventListener("keydown", onKeyDown);
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [getNextChapter, getPreviousChapter]);
+  }, [
+    getNextChapter,
+    setViewMode,
+    getPreviousChapter,
+    togglePlay,
+    togglePinyin,
+    activeSubtitle?.sentence,
+    reset,
+    loop,
+  ]);
 
   const characterId =
     data?.subtitles?.words?.map((word) => word?.hanzi)?.join("") || "";
@@ -272,11 +322,6 @@ export const DuLessonView = () => {
         />
       </button>
     </div>
-  );
-
-  const activeSubtitle = data?.subtitles?.words?.find(
-    (subtitle) =>
-      currentTime > subtitle?.startTime && currentTime < subtitle.endTime
   );
 
   const textSize = sizes?.[textSizeIndex] || sizes?.[1];
@@ -498,7 +543,7 @@ export const DuLessonView = () => {
                             currentTime < subtitle.endTime
                             ? "text-white"
                             : "",
-                          !isPlaying ? "text-gray-500" : ""
+                          currentTime === 0 ? "text-gray-300" : ""
                         )}
                       >
                         {subtitle?.pinyin || ""}
@@ -522,7 +567,7 @@ export const DuLessonView = () => {
                           currentTime < subtitle.endTime
                           ? "text-white"
                           : "0",
-                        !isPlaying ? "text-gray-300" : ""
+                        currentTime === 0 ? "text-gray-300" : ""
                       )}
                     >
                       {subtitle?.hanzi}

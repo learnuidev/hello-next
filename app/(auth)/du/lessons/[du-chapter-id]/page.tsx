@@ -5,6 +5,7 @@ import { NavBar } from "@/components/navbar";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useGetDuParams } from "../../hooks/use-get-du-params";
 import { DuLessonView } from "./components/du-chapter-view";
+import { WithVerifiedUser } from "../../components/with-verified-user";
 // import { DuChapters } from "./components/du-chapters/du-chapters";
 
 export default function LessonItem() {
@@ -14,14 +15,16 @@ export default function LessonItem() {
     return <NoPermissionView />;
   }
   return (
-    <div>
-      <NavBar />
-
+    <WithVerifiedUser>
       <div>
-        <DuLessonView />
-      </div>
+        <NavBar />
 
-      <FloatingNavbar />
-    </div>
+        <div>
+          <DuLessonView />
+        </div>
+
+        <FloatingNavbar />
+      </div>
+    </WithVerifiedUser>
   );
 }

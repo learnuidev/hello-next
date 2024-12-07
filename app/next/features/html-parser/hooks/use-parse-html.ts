@@ -8,6 +8,12 @@ const websiteSchema = z.object({
   website: z.string().url("Invalid URL"),
 });
 
+interface RelatedArticle {
+  href: string;
+  title: string;
+  image: string;
+}
+
 interface ParsedHtmlSection {
   hanzi: string;
   image?: string;
@@ -27,6 +33,8 @@ interface ParseHtmlResponse {
       title: string;
       href: string;
     }[];
+
+    relatedArticles: RelatedArticle[];
 
     sections: ParsedHtmlSection[];
   };

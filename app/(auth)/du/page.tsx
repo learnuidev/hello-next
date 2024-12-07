@@ -6,7 +6,7 @@ import { NoPermissionView } from "../doctor/no-permission-view";
 
 import { DuCourses } from "./components/du-courses/du-courses";
 import { DuLevelSelector } from "./components/du-level-selector/du-level-selector";
-import { WithVerifiedUser } from "./components/with-verified-user";
+import { WithVerifiedDuUser } from "./components/with-verified-du-user";
 import { useSearchQueryStore } from "@/components/search/state";
 import { DuSearchResults } from "./components/du-search-results/du-search-results";
 import { useGetDuParams } from "./hooks/use-get-du-params";
@@ -41,7 +41,7 @@ export default function DuChinse() {
   }
 
   return (
-    <WithVerifiedUser>
+    <WithVerifiedDuUser>
       <div>
         <div>
           <NavBar />
@@ -54,6 +54,6 @@ export default function DuChinse() {
 
         <FloatingNavbar />
       </div>
-    </WithVerifiedUser>
+    </WithVerifiedDuUser>
   );
 }

@@ -3,10 +3,8 @@ import { NoPermissionView } from "@/app/(auth)/doctor/no-permission-view";
 import { FloatingNavbar } from "@/components/floating-navbar";
 import { NavBar } from "@/components/navbar";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
-import { useGetDuParams } from "../../hooks/use-get-du-params";
+import { WithVerifiedDuUser } from "../../components/with-verified-du-user";
 import { DuLessonView } from "./components/du-chapter-view";
-import { WithVerifiedUser } from "../../components/with-verified-user";
-// import { DuChapters } from "./components/du-chapters/du-chapters";
 
 export default function LessonItem() {
   const isSuperAdmin = useIsSuperAdmin();
@@ -15,7 +13,7 @@ export default function LessonItem() {
     return <NoPermissionView />;
   }
   return (
-    <WithVerifiedUser>
+    <WithVerifiedDuUser>
       <div>
         <NavBar />
 
@@ -25,6 +23,6 @@ export default function LessonItem() {
 
         <FloatingNavbar />
       </div>
-    </WithVerifiedUser>
+    </WithVerifiedDuUser>
   );
 }

@@ -4,6 +4,7 @@ import { FloatingNavbar } from "@/components/floating-navbar";
 import { NavBar } from "@/components/navbar";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { DuChapters } from "./components/du-chapters/du-chapters";
+import { WithVerifiedDuUser } from "../../../components/with-verified-du-user";
 
 export default function CourseItem() {
   const isSuperAdmin = useIsSuperAdmin();
@@ -12,16 +13,17 @@ export default function CourseItem() {
     return <NoPermissionView />;
   }
 
-  // return <div>YO</div>;
   return (
-    <div className="w-full">
-      <NavBar />
+    <WithVerifiedDuUser>
+      <div className="w-full">
+        <NavBar />
 
-      <div className="mx-4 mt-8 md:mx-12">
-        <DuChapters />
+        <div className="mx-4 mt-8 md:mx-12">
+          <DuChapters />
+        </div>
+
+        <FloatingNavbar />
       </div>
-
-      <FloatingNavbar />
-    </div>
+    </WithVerifiedDuUser>
   );
 }

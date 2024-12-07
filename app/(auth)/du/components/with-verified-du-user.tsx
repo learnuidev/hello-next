@@ -3,7 +3,7 @@ import { useVerifyUser } from "../hooks/auth/use-verify-user";
 import { useGetDuParams } from "../hooks/use-get-du-params";
 import { DuLogin } from "./du-login";
 
-export const WithVerifiedUser = ({
+export const WithVerifiedDuUser = ({
   children,
 }: {
   children: React.ReactNode;

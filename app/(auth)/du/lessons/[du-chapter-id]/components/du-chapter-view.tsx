@@ -183,23 +183,28 @@ export const DuLessonView = () => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.code === "ArrowLeft" || event.code === "ArrowUp") {
         // alert("check previous");
+        event.preventDefault();
         getPreviousChapter();
       }
 
       if (event.code === "ArrowRight" || event.code === "ArrowDown") {
+        event.preventDefault();
         getNextChapter();
       }
 
       if (["p"]?.includes(event.key)) {
+        event.preventDefault();
         togglePinyin((pinyin) => !pinyin);
       }
 
       if (["a"]?.includes(event.key)) {
+        event.preventDefault();
         setViewMode((viewMode) => (viewMode === "stats" ? "core" : "stats"));
         // togglePinyin((pinyin) => !pinyin);
       }
 
       if (["l"]?.includes(event.key)) {
+        event.preventDefault();
         // togglePinyin((pinyin) => !pinyin);
 
         if (activeSubtitle?.sentence) {

@@ -12,6 +12,10 @@ import { useEffect, useState } from "react";
 import { useGetNextParams } from "../../../hooks/use-get-next-params";
 import { useListDictionaryMeaningsQuery } from "../hooks/use-dictionary-list-meanings";
 import { useParseHtmlQuery } from "../hooks/use-parse-html";
+import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
+import { useListUserAssets } from "@/domain/asset/use-list-user-assets";
+import { useMusicV2 } from "@/app/(auth)/convos/_play-v2/use-music-v2";
+import { Icons } from "@/components/ui/icons.v2";
 
 function SectionView({ section, viewPinyin, setSelected }: any) {
   const { data: context } = useListDictionaryMeaningsQuery(section?.hanzi);
@@ -96,6 +100,16 @@ function SectionView({ section, viewPinyin, setSelected }: any) {
 export const HtmlArticleView = () => {
   const { url, view, title } = useGetNextParams();
   const [viewPinyin, togglePinyin] = useState(false);
+
+  const { data: userAssets, isLoading: isAssetsLoading } = useListUserAssets();
+
+  const userAsset = (userAssets || []).find(
+    (userAsset: any) => userAsset?.webpageUrl === url
+  );
+
+  const { isPlaying, togglePlay, seek, currentTime, reset } = useMusicV2({
+    url: userAsset?.sourceUrl || "",
+  });
 
   const [selected, setSelected] = useState<any>(null);
 
@@ -217,50 +231,83 @@ export const HtmlArticleView = () => {
         </section>
       ) : (
         <section className="mt-12">
-          {viewPinyin ? (
-            <div className="block text-center lg:px-80 sm:px-32 px-8">
-              {titleContext?.map((item: any) => {
-                return (
-                  <span
-                    onMouseEnter={() => {
-                      setSelected(item);
-                    }}
-                    onMouseLeave={() => {
-                      setSelected(null);
-                    }}
-                    className="text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center"
-                    key={JSON.stringify(item)}
-                  >
-                    {viewPinyin && (
+          <div className="flex justify-between items-center">
+            <div></div>
+            <div className="flex space-x-8 items-center lg:px-80 sm:px-32 px-8">
+              {viewPinyin ? (
+                <div className="block text-center ">
+                  {titleContext?.map((item: any) => {
+                    return (
                       <span
-                        className={cn(
-                          "text-xs",
-                          item?.pinyin ? "" : "text-black"
-                        )}
+                        onMouseEnter={() => {
+                          setSelected(item);
+                        }}
+                        onMouseLeave={() => {
+                          setSelected(null);
+                        }}
+                        className="text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center"
+                        key={JSON.stringify(item)}
                       >
-                        {item?.pinyin || "."}
+                        {viewPinyin && (
+                          <span
+                            className={cn(
+                              "text-xs",
+                              item?.pinyin ? "" : "text-black"
+                            )}
+                          >
+                            {item?.pinyin || "."}
+                          </span>
+                        )}
+                        <Link
+                          href={`/nmm/${item?.hanzi}?lang=zh`}
+                          target="_blank"
+                          className="text-xl sm:text-3xl"
+                        >
+                          {item?.hanzi}
+                        </Link>
                       </span>
-                    )}
-                    <Link
-                      href={`/nmm/${item?.hanzi}?lang=zh`}
-                      target="_blank"
-                      className="text-xl sm:text-3xl"
-                    >
-                      {item?.hanzi}
-                    </Link>
-                  </span>
-                );
-              })}
+                    );
+                  })}
+                </div>
+              ) : (
+                <Link
+                  target="_blank"
+                  href={data?.url}
+                  className="block text-center text-xl sm:text-3xl"
+                >
+                  {data?.data?.title}
+                </Link>
+              )}
+
+              {userAsset?.webpageUrl && (
+                <div className="space-x-4">
+                  <button
+                    className="text-2xl"
+                    onClick={() => {
+                      togglePlay();
+                    }}
+                  >
+                    {isPlaying ? <Icons.pause /> : <Icons.play />}
+                  </button>
+
+                  <button
+                    className="text-2xl"
+                    onClick={() => {
+                      reset();
+                    }}
+                  >
+                    <Icons.stop />
+                  </button>
+                </div>
+              )}
             </div>
-          ) : (
-            <Link
-              target="_blank"
-              href={data?.url}
-              className="block text-center text-xl sm:text-3xl lg:px-80 sm:px-32 px-8"
-            >
-              {data?.data?.title}
-            </Link>
-          )}
+
+            {!isAssetsLoading && !userAsset?.webpageUrl ? (
+              <UploadFileButton context={{ webpageUrl: url }} />
+            ) : (
+              <div></div>
+            )}
+          </div>
 
           <div>
             <Link

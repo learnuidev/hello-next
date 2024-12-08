@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 
 export const UploadFileButton = (
   props: PropsWithChildren & {
+    context?: any;
     onSuccess?: (resp: UploadFileResponse) => void;
     className?: string;
   }
@@ -19,7 +20,7 @@ export const UploadFileButton = (
     props?.onSuccess !== undefined && props?.onSuccess(resp);
 
     queryClient.invalidateQueries([listUserAssetsQueryKey, authUser?.jwt]);
-  });
+  }, props?.context);
 
   return (
     <div className={cn("space-x-2", props.className)}>

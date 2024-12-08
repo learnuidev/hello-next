@@ -11,10 +11,11 @@ export interface UploadFileResponse {
   userId: string;
   uploadBucketKey: string;
   status: string;
+  webpageUrl?: string;
   createdAt: number;
 }
 
-export function useUploadFile(cb?: any) {
+export function useUploadFile(cb?: any, ctx?: any) {
   function getFileExtension(file: any) {
     return file.name.split(".").pop().toLowerCase();
   }
@@ -62,6 +63,7 @@ export function useUploadFile(cb?: any) {
         extension,
         sourceUrl: assetUrl,
         uploadBucketKey: s3Key,
+        ...ctx,
       })
       .then(async (resp: UploadFileResponse) => {
         console.log("UPLOADED", resp);

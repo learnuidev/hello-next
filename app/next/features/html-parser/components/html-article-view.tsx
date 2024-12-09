@@ -37,6 +37,23 @@ function SectionView({ section, viewPinyin, setSelected }: any) {
     );
   }
 
+  if (section.title) {
+    const subsectionStyle = "my-4 font-semibold text-2xl";
+
+    if (section?.href) {
+      return (
+        <Link
+          className={cn(subsectionStyle, "block")}
+          href={section?.href}
+          target="_blank"
+        >
+          {section?.title}
+        </Link>
+      );
+    }
+    return <h3 className={subsectionStyle}>{section?.title}</h3>;
+  }
+
   if (section.caption) {
     if (viewPinyin) {
       return null;

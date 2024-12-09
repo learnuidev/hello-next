@@ -113,12 +113,20 @@ export const TranscriptItem = ({
   const setRepeatHistories = useRepeatHistoryStore((state) => state.setHistory);
 
   const histories = useRepeatHistoryStore((state) => state.history);
-  const totalRepeats = histories?.filter((history: any) => {
-    return (
-      history?.contentId === contentId &&
-      history?.input === (example?.input || example?.hanzi)
-    );
-  });
+  const totalRepeats = [
+    ...new Set(
+      histories
+        ?.filter((history: any) => {
+          return (
+            history?.contentId === contentId &&
+            history?.input === (example?.input || example?.hanzi)
+          );
+        })
+        .map((x: any) => parseInt(`${x.createdAt}`.slice(0, -3)))
+    ),
+  ].map((x) => x);
+
+  console.log("TOTAL REPEATS", totalRepeats);
 
   const ConfigButtons = () => {
     return (

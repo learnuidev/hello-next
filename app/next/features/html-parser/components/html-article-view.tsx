@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useGetNextParams } from "../../../hooks/use-get-next-params";
 import { useListDictionaryMeaningsQuery } from "../hooks/use-dictionary-list-meanings";
-import { useParseHtmlQuery } from "../hooks/use-parse-html";
+import { ParseHtmlResponse, useParseHtmlQuery } from "../hooks/use-parse-html";
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { useListUserAssets } from "@/domain/asset/use-list-user-assets";
 import { useMusicV2 } from "@/app/(auth)/convos/_play-v2/use-music-v2";
@@ -45,6 +45,7 @@ function SectionView({ section, viewPinyin, setSelected }: any) {
         <Link
           className={cn(subsectionStyle, "block")}
           href={section?.href}
+          // href={`/next?feature-id=html-parser&url=${section?.href}`}
           target="_blank"
         >
           {section?.title}
@@ -381,57 +382,68 @@ export const HtmlArticleView = () => {
             </div>
           )}
 
-          {data?.data?.relatedArticles?.length > 0 && (
-            <div className="mt-12">
-              <h3 className="text-center text-xl font-semibold my-8">
-                Related
-              </h3>
-
-              <div className="max-w-5xl overflow-y-auto flex flex-row m-auto gap-4">
-                {data?.data?.relatedArticles?.map((lesson, idx) => {
-                  return (
-                    <Link
-                      href={`/next?feature-id=html-parser&url=${lesson?.href}&view=${view}`}
-                      key={JSON.stringify(lesson)}
-                      className="block"
-                    >
-                      {lesson?.image !== undefined && (
-                        <div className="block w-56">
-                          <img
-                            className="object-cover rounded-xl h-32 w-96"
-                            src={lesson?.image}
-                            alt={lesson?.title}
-                          />
-                        </div>
-                      )}
-
-                      <div className="mt-2 flex justify-between lessons-center w-full">
-                        <div>
-                          <p className="truncate text-sm w-full">
-                            {lesson?.title?.length > 30
-                              ? `${lesson?.title?.slice(0, 30)}...`
-                              : lesson?.title}
-                          </p>
-                          {/* <p className="font-light text-gray-400 text-xs sm:text-sm capitalize">
-                          {" "}
-                          <span>{lesson?.level}</span>
-                        </p> */}
-                        </div>
-
-                        {/* {lesson?.status === "not_started" ? (
-                        <Icons.questionMark className="sm:text-2xl text-lg" />
-                      ) : (
-                        <Icons.badgeCheck className="text-rose-400 sm:text-2xl text-lg" />
-                      )} */}
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          <RelatedArticles data={data} />
         </section>
       )}
     </div>
   );
 };
+
+function RelatedArticles({ data }: { data: ParseHtmlResponse }) {
+  const { url, view, title } = useGetNextParams();
+
+  return (
+    <>
+      {data?.data?.relatedArticles?.length > 0 && (
+        <div className="mt-12 mb-32">
+          <h3 className="text-center text-xl font-semibold my-8">Related</h3>
+
+          <div className="max-w-5xl overflow-y-auto flex flex-row m-auto gap-4">
+            {data?.data?.relatedArticles?.map((lesson, idx) => {
+              return (
+                <Link
+                  href={`/next?feature-id=html-parser&url=${lesson?.href}&view=${view}`}
+                  key={JSON.stringify(lesson)}
+                  className={cn(
+                    "block",
+                    lesson?.image ? "" : "p-4 border-[1px] border-gray-800"
+                  )}
+                >
+                  {lesson?.image !== undefined && (
+                    <div className="block w-56">
+                      <img
+                        className="object-cover rounded-xl h-32 w-96"
+                        src={lesson?.image}
+                        alt={lesson?.title}
+                      />
+                    </div>
+                  )}
+
+                  <div className="mt-2 flex justify-between lessons-center w-full">
+                    <div>
+                      <p className="truncate text-sm w-full">
+                        {lesson?.title?.length > 30
+                          ? `${lesson?.title?.slice(0, 30)}...`
+                          : lesson?.title}
+                      </p>
+                      {/* <p className="font-light text-gray-400 text-xs sm:text-sm capitalize">
+                  {" "}
+                  <span>{lesson?.level}</span>
+                </p> */}
+                    </div>
+
+                    {/* {lesson?.status === "not_started" ? (
+                <Icons.questionMark className="sm:text-2xl text-lg" />
+              ) : (
+                <Icons.badgeCheck className="text-rose-400 sm:text-2xl text-lg" />
+              )} */}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

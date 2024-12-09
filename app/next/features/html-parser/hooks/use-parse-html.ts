@@ -20,7 +20,7 @@ interface ParsedHtmlSection {
   img?: string;
   caption?: string;
 }
-interface ParseHtmlResponse {
+export interface ParseHtmlResponse {
   sourceId: string;
   type?: string;
   url: string;

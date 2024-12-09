@@ -21,6 +21,7 @@ import {
   SandpackProvider,
   SandpackLayout,
   SandpackCodeEditor,
+  SandpackPreview,
 } from "@codesandbox/sandpack-react";
 
 function CodeBlock({ code }: { code: string }) {
@@ -37,6 +38,7 @@ function CodeBlock({ code }: { code: string }) {
     >
       <SandpackLayout>
         <SandpackCodeEditor />
+        {/* <SandpackPreview /> */}
       </SandpackLayout>
     </SandpackProvider>
   );
@@ -81,14 +83,18 @@ function SectionView({ section, viewPinyin, setSelected }: any) {
   }
 
   if (section?.h3Title) {
-    return (
-      <div className="bg-[rgb(18,19,20)] p-8 rounded">
-        <h3 className="text-xl text-gray-400"> {section?.h3Title}</h3>
-        {section?.ul?.map((item: any) => {
-          return <li key={item}>{item?.item || item?.hanzi}</li>;
-        })}
-      </div>
-    );
+    if (section?.ul?.length > 0) {
+      return (
+        <div className="bg-[rgb(18,19,20)] p-8 rounded">
+          <h3 className="text-xl text-gray-400"> {section?.h3Title}</h3>
+          {section?.ul?.map((item: any) => {
+            return <li key={item}>{item?.item || item?.hanzi}</li>;
+          })}
+        </div>
+      );
+    }
+
+    return <h3 className="text-xl"> {section?.h3Title}</h3>;
   }
 
   if (section.caption) {
@@ -228,7 +234,7 @@ export const HtmlArticleView = () => {
       </section>
 
       {viewPinyin && view !== "analytics" && (
-        <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
+        <div className="z-30 sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
           {/* <div className="pb-4">
             <h4 className="text-xs text-gray-500">Sentence meaning</h4>
             <div className="h-16 flex justify-between items-center mt-2 w-full">
@@ -285,7 +291,7 @@ export const HtmlArticleView = () => {
           </code>
         </section>
       ) : (
-        <section className="mt-12">
+        <section className={viewPinyin ? "" : "mt-12"}>
           <div className="flex justify-between items-center">
             <div></div>
             <div className="flex space-x-8 items-center lg:px-80 sm:px-32 px-8">

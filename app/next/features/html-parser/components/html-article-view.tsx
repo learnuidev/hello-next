@@ -395,13 +395,15 @@ export const HtmlArticleView = () => {
                       key={JSON.stringify(lesson)}
                       className="block"
                     >
-                      <div className="block w-56">
-                        <img
-                          className="object-cover rounded-xl h-32 w-96"
-                          src={lesson?.image}
-                          alt={lesson?.title}
-                        />
-                      </div>
+                      {lesson?.image !== undefined && (
+                        <div className="block w-56">
+                          <img
+                            className="object-cover rounded-xl h-32 w-96"
+                            src={lesson?.image}
+                            alt={lesson?.title}
+                          />
+                        </div>
+                      )}
 
                       <div className="mt-2 flex justify-between lessons-center w-full">
                         <div>

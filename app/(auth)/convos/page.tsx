@@ -26,6 +26,8 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { useListConversationsQuery } from "@/domain/conversation/use-list-conversations-query";
 import { useContentTypeStore } from "./use-content-type-store";
 import { formatPercentage } from "@/app/profile/utils/format-percentage";
+import { Nothing } from "@/app/nmm/nothing";
+import { Icons } from "@/components/ui/icons.v2";
 
 type ContentType = {
   title: string;
@@ -41,7 +43,7 @@ function ContentsList() {
 
   const { data: conversations } = useListConversationsQuery();
 
-  const query = useSearchQueryStore((state) => state.query);
+  const query = useSearchQueryStore((state) => state.query2);
 
   const searchTransacription = (content: ContentType, query: string) => {
     if (!content?.transcriptions?.length) {
@@ -66,6 +68,10 @@ function ContentsList() {
             return true;
           }
 
+          return JSON.stringify(content)
+            ?.toLowerCase()
+            ?.includes(query?.toLowerCase());
+
           return (
             content?.title?.toLowerCase()?.includes(query?.toLowerCase()) &&
             searchTransacription(content, query)
@@ -79,6 +85,12 @@ function ContentsList() {
           };
         })
     : [];
+
+  if (!projects?.length) {
+    return (
+      <Nothing message={`Nothing found for: ${query}`} icon={Icons.content} />
+    );
+  }
 
   // return (
   //   <div className="text-white max-w-5xl mx-auto px-8">

@@ -17,6 +17,31 @@ import { useListUserAssets } from "@/domain/asset/use-list-user-assets";
 import { useMusicV2 } from "@/app/(auth)/convos/_play-v2/use-music-v2";
 import { Icons } from "@/components/ui/icons.v2";
 
+import {
+  SandpackProvider,
+  SandpackLayout,
+  SandpackCodeEditor,
+} from "@codesandbox/sandpack-react";
+
+function CodeBlock({ code }: { code: string }) {
+  return (
+    <SandpackProvider
+      options={{
+        autorun: false,
+      }}
+      template="react"
+      theme="dark"
+      files={{
+        "/App.js": code,
+      }}
+    >
+      <SandpackLayout>
+        <SandpackCodeEditor />
+      </SandpackLayout>
+    </SandpackProvider>
+  );
+}
+
 function SectionView({ section, viewPinyin, setSelected }: any) {
   const { data: context } = useListDictionaryMeaningsQuery(section?.hanzi);
   if (section?.image || section?.img) {
@@ -55,6 +80,17 @@ function SectionView({ section, viewPinyin, setSelected }: any) {
     return <h3 className={subsectionStyle}>{section?.title}</h3>;
   }
 
+  if (section?.h3Title) {
+    return (
+      <div className="bg-[rgb(18,19,20)] p-8 rounded">
+        <h3 className="text-xl text-gray-400"> {section?.h3Title}</h3>
+        {section?.ul?.map((item: any) => {
+          return <li key={item}>{item?.item || item?.hanzi}</li>;
+        })}
+      </div>
+    );
+  }
+
   if (section.caption) {
     if (viewPinyin) {
       return null;
@@ -67,6 +103,10 @@ function SectionView({ section, viewPinyin, setSelected }: any) {
         {section?.hanzi}
       </p>
     );
+  }
+
+  if (section.code) {
+    return <CodeBlock code={section.code} />;
   }
 
   return (
@@ -104,10 +144,7 @@ function SectionView({ section, viewPinyin, setSelected }: any) {
           })}
         </p>
       ) : (
-        <p
-          className="my-8 text-gray-300 text-lg sm:text-2xl"
-          key={JSON.stringify(section)}
-        >
+        <p className="my-8 text-gray-300 text-lg" key={JSON.stringify(section)}>
           {section?.hanzi}
         </p>
       )}

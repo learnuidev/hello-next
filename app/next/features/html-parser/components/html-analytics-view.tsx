@@ -15,8 +15,8 @@ export const HtmlAnalyticsView = () => {
 
   const { data, isError, isLoading } = useParseHtmlQuery(url);
 
-  const characterId =
-    data?.data?.sections?.map((section) => section.hanzi).join("") || "";
+  const characterId = JSON.stringify(data);
+  // data?.data?.sections?.map((section) => section.hanzi).join("") || "";
 
   return <CharacterAnalytics lang="zh" characterId={characterId} />;
 };

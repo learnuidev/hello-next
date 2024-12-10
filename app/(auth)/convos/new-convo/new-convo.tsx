@@ -61,6 +61,7 @@ export function NewConvo({ type }: { type?: string }) {
           setConvo("title", transcriptions.title);
           setConvo("description", transcriptions.description);
           setConvo("author", transcriptions.author.user);
+          setConvo("thumbnails", transcriptions.thumbnails);
         },
       }
     );

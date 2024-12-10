@@ -11,6 +11,11 @@ export interface GetInfoResponse {
     name: string;
     user: string;
   };
+  thumbnails: {
+    url: string;
+    width: number;
+    height: number;
+  };
 }
 
 export function useListSubtitlesQuery(

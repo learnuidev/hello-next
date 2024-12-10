@@ -93,7 +93,9 @@ const listSubtitles = async ({ id, lang }) => {
   //   return ytdl.getInfo(id);
   const info = await ytdl.getInfo(id);
 
-  const { title, description, author } = info.videoDetails;
+  // return info.videoDetails;
+
+  const { title, description, author, thumbnails } = info.videoDetails;
 
   // const tracks =
   //   info.player_response.captions.playerCaptionsTracklistRenderer
@@ -200,21 +202,10 @@ const listTracks = ({ id, lang }) => {
         }
       }
 
-      //
-      // const englishCode = "en";
-      // const englishTrack = getTrack({ lang: englishCode, tracks });
-      // const frenchCode = "fr";
-      // const frenchTrack = getTrack({ lang: frenchCode, tracks });
-      // const spanishCode = "es";
-      // const spanishTrack = getTrack({ lang: spanishCode, tracks });
-      // const  =
-
       console.log("Track Found: === ", zhTrack);
 
       console.log("Retrieving captions:", zhTrack?.name?.simpleText);
       console.log("URL", zhTrack?.baseUrl);
-
-      // console.log("RES", await res.json());
 
       let subtitles;
 
@@ -226,32 +217,10 @@ const listTracks = ({ id, lang }) => {
         subtitles = null;
       }
 
-      // const englishSubtitles = englishTrack?.baseUrl
-      //   ? ((await httpRequest(`${englishTrack?.baseUrl}&fmt=vtt`)) as any)
-      //   : "";
-      // const frenchSubtitles = frenchTrack?.baseUrl
-      //   ? ((await httpRequest(`${frenchTrack?.baseUrl}&fmt=vtt`)) as any)
-      //   : "";
-      // const spanishSubtitles = spanishTrack?.baseUrl
-      //   ? ((await httpRequest(`${spanishTrack?.baseUrl}&fmt=vtt`)) as any)
-      //   : "";
-
-      // console.log("RES", res);
-      // return res;
-
       const lyrics = subtitles ? (subtitles || "")?.split("\n").slice(4) : [];
-      // const englishLyrics =
-      //   englishSubtitles.split("\n").filter(Boolean).slice(3) || [];
-
-      // const frenchLyrics =
-      //   frenchSubtitles?.split("\n")?.filter(Boolean)?.slice(3) || [];
-      // const spanishLyrics =
-      //   spanishSubtitles?.split("\n")?.filter(Boolean)?.slice(3) || [];
 
       const subtitlesList = lyrics.reduce((acc, curr, idx) => {
         if (curr === "") {
-          // const timestamp = curr;
-          // const value = lyrics[idx + 1] || "";
           const maybeTimestamp = lyrics[idx - 2];
           const timestampIdx = maybeTimestamp?.includes("-->")
             ? idx - 2
@@ -261,10 +230,6 @@ const listTracks = ({ id, lang }) => {
           const value = maybeTimestamp?.includes("-->")
             ? lyrics[idx - 1]
             : lyrics[idx - 2];
-
-          // const englishValue = englishLyrics[idx + 1];
-          // const frenchValue = frenchLyrics[idx + 1];
-          // const spanishValue = spanishLyrics[idx + 1];
 
           const startTimes = timestamp?.split(" ")?.[0]?.split(":") || [];
           const start = getTotalSeconds(startTimes);
@@ -278,9 +243,6 @@ const listTracks = ({ id, lang }) => {
               ? {
                   hanzi: value,
                   pinyin: "",
-                  // en: englishValue,
-                  // fr: frenchValue,
-                  // es: spanishValue,
                 }
               : {};
 
@@ -296,13 +258,6 @@ const listTracks = ({ id, lang }) => {
       }, []);
 
       return subtitlesList;
-
-      return {
-        subtitles: subtitlesList,
-        videoDetails,
-        tracks,
-        relatedVideos: related_videos,
-      };
     } else {
       console.log("No captions found for this video");
     }

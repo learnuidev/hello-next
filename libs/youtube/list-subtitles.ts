@@ -91,7 +91,7 @@ export const listSubtitles = async ({
   const info = (await ytdl.getInfo(id)) as any;
 
   const { videoDetails, related_videos } = info;
-  const { title, description, author } = info.videoDetails;
+  const { title, description, author, thumbnails } = info.videoDetails;
 
   const tracks =
     info.player_response.captions.playerCaptionsTracklistRenderer.captionTracks;
@@ -145,6 +145,7 @@ export const listSubtitles = async ({
       title,
       description,
       subtitles: newSubtitles,
+      thumbnails,
       author,
     };
   } else {

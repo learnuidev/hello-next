@@ -81,7 +81,76 @@ const resolveTrack = ({ tracks, lang }: any) => {
   return zhTrack;
 };
 
-export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
+export const listSubtitles = async ({
+  id,
+  lang,
+}: {
+  id: string;
+  lang: string;
+}) => {
+  const info = (await ytdl.getInfo(id)) as any;
+
+  const { videoDetails, related_videos } = info;
+  const { title, description, author } = info.videoDetails;
+
+  const tracks =
+    info.player_response.captions.playerCaptionsTracklistRenderer.captionTracks;
+
+  if (tracks && tracks.length) {
+    console.log(
+      "Found captions for",
+      tracks.map((t: any) => t?.name?.simpleText).join(", ")
+    );
+
+    const langCodes = tracks.map(
+      (track: { languageCode: string }) => track.languageCode
+    );
+
+    let resolvedLang = langCodes?.[0] || lang;
+
+    const zhTrack = resolveTrack({ lang: resolvedLang, tracks });
+
+    let subtitles;
+
+    try {
+      subtitles = zhTrack
+        ? ((await httpRequest(`${zhTrack?.baseUrl}&fmt=vtt`)) as any)
+        : null;
+    } catch (err) {
+      subtitles = null;
+    }
+
+    const tree = parser.parse(subtitles, "metadata");
+
+    const newSubtitles = tree?.cues?.map((cue: any) => {
+      const hanziProps =
+        resolvedLang === "zh-CN"
+          ? {
+              input: cue?.text?.split("\n").join(" "),
+              pinyin: "",
+            }
+          : {
+              input: cue?.text?.split("\n").join(" "),
+            };
+
+      return {
+        lang: "zh",
+        start: cue?.startTime,
+        end: cue?.endTime,
+        ...hanziProps,
+      };
+    });
+
+    return {
+      title,
+      description,
+      subtitles: newSubtitles,
+      author,
+    };
+  } else {
+    console.log("No captions found for this video");
+  }
+
   return ytdl.getInfo(id).then(async (info: any) => {
     // const tracks =
     //   info.player_response.captions.playerCaptionsTracklistRenderer
@@ -122,7 +191,7 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
         const hanziProps =
           resolvedLang === "zh-CN"
             ? {
-                hanzi: cue?.text?.split("\n").join(" "),
+                input: cue?.text?.split("\n").join(" "),
                 pinyin: "",
               }
             : {
@@ -272,7 +341,7 @@ export const listTracks = ({ id, lang }: { id: string; lang: string }) => {
           const hanziProps =
             lang === "zh-CN"
               ? {
-                  hanzi: value,
+                  input: value,
                   pinyin: "",
                   // en: englishValue,
                   // fr: frenchValue,

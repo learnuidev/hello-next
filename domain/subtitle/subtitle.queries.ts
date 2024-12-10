@@ -2,6 +2,17 @@
 
 import { useQuery } from "@tanstack/react-query";
 
+export interface GetInfoResponse {
+  title: string;
+  description: string;
+  subtitles: { input: string; lang: string }[];
+  author: {
+    id: string;
+    name: string;
+    user: string;
+  };
+}
+
 export function useListSubtitlesQuery(
   params: {
     videoUrl: string;
@@ -9,7 +20,7 @@ export function useListSubtitlesQuery(
   },
   options: any
 ) {
-  return useQuery({
+  return useQuery<GetInfoResponse, Error>({
     queryKey: ["list-subtitles", params?.videoUrl],
     queryFn: async () => {
       if (params.videoUrl) {

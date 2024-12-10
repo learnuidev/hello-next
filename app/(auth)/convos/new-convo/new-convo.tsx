@@ -11,7 +11,10 @@ import Editor from "@monaco-editor/react";
 import { useState } from "react";
 import { useAddContentMutation } from "@/domain/content/content.mutations";
 
-import { useListSubtitlesQuery } from "@/domain/subtitle/subtitle.queries";
+import {
+  GetInfoResponse,
+  useListSubtitlesQuery,
+} from "@/domain/subtitle/subtitle.queries";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { getUploadUrl } from "@/domain/asset/asset.api";
 import { useAddUserAssetMutation } from "@/domain/asset/asset.mutation";
@@ -53,8 +56,11 @@ export function NewConvo({ type }: { type?: string }) {
       {
         enabled:
           Boolean(newConvo?.audio) && newConvo?.audio?.includes("youtube"),
-        onSuccess: (transcriptions: any) => {
-          setConvo("transcriptions", transcriptions);
+        onSuccess: (transcriptions: GetInfoResponse) => {
+          setConvo("transcriptions", transcriptions.subtitles);
+          setConvo("title", transcriptions.title);
+          setConvo("description", transcriptions.description);
+          setConvo("author", transcriptions.author.user);
         },
       }
     );

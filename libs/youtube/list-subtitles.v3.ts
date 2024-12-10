@@ -1,4 +1,4 @@
-import ytdl from "ytdl-core";
+import ytdl from "@distube/ytdl-core";
 import { httpRequest } from "./http-request";
 import { getTotalSeconds } from "./get-total-seconds";
 import * as R from "ramda";

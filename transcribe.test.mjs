@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import fs from "fs";
-import ytdl from "ytdl-core";
+import ytdl from "@distube/ytdl-core";
 import https from "https";
 import path from "path";
 

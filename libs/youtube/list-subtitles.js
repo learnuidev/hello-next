@@ -153,115 +153,11 @@ const listSubtitles = async ({ id, lang }) => {
       title,
       description,
       author,
+      thumbnails,
     };
   } else {
     console.log("No captions found for this video");
   }
-};
-
-const listTracks = ({ id, lang }) => {
-  return ytdl.getInfo(id).then(async (info) => {
-    // const tracks =
-    //   info.player_response.captions.playerCaptionsTracklistRenderer
-    //     .captionTracks;
-
-    // const { videoDetails } = info;
-    const { videoDetails, related_videos } = info;
-    const tracks =
-      info.player_response.captions.playerCaptionsTracklistRenderer
-        .captionTracks;
-    if (tracks && tracks.length) {
-      console.log(
-        "Found captions for",
-        tracks.map((t) => t?.name?.simpleText).join(", ")
-      );
-
-      const langCodes = tracks.map((track) => track.languageCode);
-
-      // console.log("TRACKS", tracks);
-
-      let zhTrack;
-      try {
-        zhTrack = getTrack({ lang: "zh-CN", tracks });
-      } catch (err) {
-        zhTrack = null;
-      }
-
-      if (!zhTrack) {
-        try {
-          zhTrack = getTrack({ lang: "zh", tracks });
-        } catch (err) {
-          zhTrack = null;
-        }
-      }
-      if (!zhTrack) {
-        try {
-          zhTrack = getTrack({ lang: "zh-Hant", tracks });
-        } catch (err) {
-          zhTrack = null;
-        }
-      }
-
-      console.log("Track Found: === ", zhTrack);
-
-      console.log("Retrieving captions:", zhTrack?.name?.simpleText);
-      console.log("URL", zhTrack?.baseUrl);
-
-      let subtitles;
-
-      try {
-        subtitles = zhTrack
-          ? await httpRequest(`${zhTrack?.baseUrl}&fmt=vtt`)
-          : null;
-      } catch (err) {
-        subtitles = null;
-      }
-
-      const lyrics = subtitles ? (subtitles || "")?.split("\n").slice(4) : [];
-
-      const subtitlesList = lyrics.reduce((acc, curr, idx) => {
-        if (curr === "") {
-          const maybeTimestamp = lyrics[idx - 2];
-          const timestampIdx = maybeTimestamp?.includes("-->")
-            ? idx - 2
-            : idx - 3;
-          const timestamp = lyrics[timestampIdx];
-
-          const value = maybeTimestamp?.includes("-->")
-            ? lyrics[idx - 1]
-            : lyrics[idx - 2];
-
-          const startTimes = timestamp?.split(" ")?.[0]?.split(":") || [];
-          const start = getTotalSeconds(startTimes);
-
-          const endTimes = timestamp?.split(" ")?.[2]?.split(":") || [];
-
-          const end = getTotalSeconds(endTimes);
-
-          const hanziProps =
-            lang === "zh-CN"
-              ? {
-                  hanzi: value,
-                  pinyin: "",
-                }
-              : {};
-
-          return acc.concat({
-            lang: "zh",
-            start,
-            end,
-            ...hanziProps,
-          });
-        }
-
-        return acc;
-      }, []);
-
-      return subtitlesList;
-    } else {
-      console.log("No captions found for this video");
-    }
-  });
 };
 
 const getTotalSeconds = (times) => {
@@ -274,13 +170,12 @@ const getTotalSeconds = (times) => {
 
 module.exports = {
   listSubtitles,
-  listTracks,
   getTotalSeconds,
 };
 
-const id = "https://www.youtube.com/watch?v=87tHecsCjtE";
-const lang = "zh-CN";
+// const id = "https://www.youtube.com/watch?v=87tHecsCjtE";
+// const lang = "zh-CN";
 
-listSubtitles({ id, lang }).then((transcriptions) => {
-  console.log(transcriptions);
-});
+// listSubtitles({ id, lang }).then((transcriptions) => {
+//   console.log(transcriptions);
+// });

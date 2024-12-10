@@ -548,7 +548,8 @@ export function NewConvo({ type }: { type?: string }) {
                     addNewConvo();
 
                     addContentMutation.mutateAsync({
-                      ...newConvo,
+                      thumbnails: newConvo.thumbnails,
+                      description: newConvo.description,
                       title: newConvo?.title,
                       type: newConvo?.type,
                       author: newConvo?.author,

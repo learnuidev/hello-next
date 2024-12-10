@@ -7,4 +7,4 @@ export type AddContentParams = {
   transcriptions: any;
   lang: string;
   contentUrl?: string;
-};
+} & any;

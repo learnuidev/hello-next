@@ -7,12 +7,47 @@ import { IComponent } from "@/domain/lesson/component.queries";
 import { useState } from "react";
 import { AudioComponent } from "../audio-component";
 import { AddAudioButtons } from "./add-audio-buttons";
+import { useListCharacterContentsQuery } from "@/domain/character-contents/use-list-character-contents-query";
+import { useAddCharacterContentMutation } from "@/domain/character-contents/use-add-character-contents-mutation";
+import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 
 export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
   const { selectedComp2, selectedComp } = props;
   const [uploadNew, setUploadNew] = useState(false);
 
+  const { data } = useListCharacterContentsQuery(props.characterId);
+
+  const containsAudio = data?.find((item: any) =>
+    ["wav", "mp3"]?.includes(item?.extension)
+  );
+
+  const addCharacterContentMutation = useAddCharacterContentMutation();
+
   const isSuperAdmin = useIsSuperAdmin();
+
+  if (containsAudio) {
+    return (
+      <div className="px-2">
+        <AudioComponent
+          key={JSON.stringify(containsAudio)}
+          currentPhrase={containsAudio}
+        />
+      </div>
+    );
+  } else {
+    if (isSuperAdmin) {
+      return (
+        <UploadFileButton
+          onSuccess={(resp) => {
+            addCharacterContentMutation.mutateAsync({
+              content: props.characterId,
+              ...resp,
+            });
+          }}
+        />
+      );
+    }
+  }
 
   return (
     (selectedComp2?.input || selectedComp2?.hanzi) && (

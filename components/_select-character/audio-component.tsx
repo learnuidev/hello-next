@@ -34,7 +34,8 @@ export const AudioComponent = ({ currentPhrase }: any) => {
   const audioUrl =
     currentPhrase?.audio?.female ||
     currentPhrase?.audio?.male ||
-    currentPhrase?.audio;
+    currentPhrase?.audio ||
+    currentPhrase?.sourceUrl;
   // ||
   // "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.us-east-1.amazonaws.com/learnuidev@gmail.com/01J2F7ACPKCVZ0WFRTTZNT543E.m4a";
 

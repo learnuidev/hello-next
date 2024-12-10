@@ -7,6 +7,7 @@ import { useListCorrect } from "@/app/(auth)/insights/insights-v2/use-list-corre
 import { useListErrors } from "@/app/(auth)/insights/insights-v2/use-list-errors";
 import { useGetInsightParams } from "@/app/(auth)/insights/insights-v2/use-get-insight-params";
 import { useGetProgress } from "../use-get-progress";
+import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
 
 export const ProgressInsightHeaders = () => {
   const totalErrors = useListErrors();
@@ -17,6 +18,10 @@ export const ProgressInsightHeaders = () => {
   const progress = useGetProgress();
 
   const { filter, view } = useGetInsightParams();
+
+  const { data: userPreference } = useGetUserPreferenceQuery();
+
+  const version = userPreference?.learningMode === "hsk3" ? 3 : 2;
 
   const insightsList = [
     {
@@ -35,29 +40,31 @@ export const ProgressInsightHeaders = () => {
 
   return (
     <div className="space-y-8">
-      <section className="grid grid-cols-3 md:grid-cols-4 gap-4 mt-8 md:mt-0 md:mb-16 justify-center items-center">
-        {progress?.hskV2.map((item) => (
-          <InsightItem
-            href={`/insights?view=${view}&filter=${item?.id}`}
-            key={item.id}
-            id={item.id}
-            stat={item.stat}
-            title={item.title}
-          />
-        ))}
-      </section>
-
-      <section className="grid grid-cols-3 md:grid-cols-4 gap-4 mt-8 md:mt-0 md:mb-16 justify-center items-center">
-        {progress?.hskV3.map((item) => (
-          <InsightItem
-            href={`/insights?view=${view}&filter=${item?.id}`}
-            key={item.id}
-            id={item.id}
-            stat={item.stat}
-            title={item.title}
-          />
-        ))}
-      </section>
+      {version === 3 ? (
+        <section className="grid grid-cols-3 md:grid-cols-4 gap-4 mt-8 md:mt-0 md:mb-16 justify-center items-center">
+          {progress?.hskV3.map((item) => (
+            <InsightItem
+              href={`/insights?view=${view}&filter=${item?.id}`}
+              key={item.id}
+              id={item.id}
+              stat={item.stat}
+              title={item.title}
+            />
+          ))}
+        </section>
+      ) : (
+        <section className="grid grid-cols-3 md:grid-cols-4 gap-4 mt-8 md:mt-0 md:mb-16 justify-center items-center">
+          {progress?.hskV2.map((item) => (
+            <InsightItem
+              href={`/insights?view=${view}&filter=${item?.id}`}
+              key={item.id}
+              id={item.id}
+              stat={item.stat}
+              title={item.title}
+            />
+          ))}
+        </section>
+      )}
     </div>
   );
 };

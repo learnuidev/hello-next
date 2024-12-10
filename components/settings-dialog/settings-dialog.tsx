@@ -12,7 +12,6 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 
 import { useShortCuts } from "./use-short-cuts";
 
-import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
 import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
 import { ApiKeysTab } from "./components/api-keys-tab/api-keys-tab";
 import { LearnTab } from "./components/learn-tab/learn-tab";
@@ -37,8 +36,6 @@ export function SettingsDialogInner({
   const setUserPreferenceState = useSettingsDialogState(
     (state) => state.setUserPreferenceState
   );
-
-  const { data } = useGetUserPreferenceQuery();
 
   const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
 

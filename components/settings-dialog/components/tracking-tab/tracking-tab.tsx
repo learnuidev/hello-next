@@ -8,10 +8,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
 import { useSettingsDialogState } from "../../settings-dialog.state";
-import { Checkbox } from "@/components/ui/checkbox";
 
 export function TrackingTab() {
   const tab = useSettingsDialogState((state) => state.tab);
@@ -22,8 +21,6 @@ export function TrackingTab() {
   const setUserPreferenceState = useSettingsDialogState(
     (state) => state.setUserPreferenceState
   );
-
-  const { data } = useGetUserPreferenceQuery();
 
   const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
 

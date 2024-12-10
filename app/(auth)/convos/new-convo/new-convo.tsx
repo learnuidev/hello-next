@@ -547,6 +547,7 @@ export function NewConvo({ type }: { type?: string }) {
                     addNewConvo();
 
                     addContentMutation.mutateAsync({
+                      ...newConvo,
                       title: newConvo?.title,
                       type: newConvo?.type,
                       author: newConvo?.author,

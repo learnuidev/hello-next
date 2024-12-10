@@ -80,7 +80,7 @@ function ContentsList() {
         ?.map((content: any) => {
           return {
             title: content?.title,
-            description: content?.title,
+            description: content?.description || content?.title,
             link: `/convos/${content?.id}`,
           };
         })

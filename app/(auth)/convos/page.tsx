@@ -3,32 +3,31 @@
 
 import "@/libs/cognito/init";
 // import Link from "next/link";
-import Link from "next/link";
 
 import { useState } from "react";
 
-import { usePathname, useRouter } from "next/navigation";
 import { NavBar } from "@/components/navbar";
+import { usePathname, useRouter } from "next/navigation";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { useConvosStore } from "@/stores/convos-store";
-import { ConvosNavBar } from "./convos-nav-bar";
 import { ConvoDetails } from "./convo-details";
+import { ConvosNavBar } from "./convos-nav-bar";
 import { useSelectedCharacter } from "./use-selected-character";
 
-import { useViewModeStore } from "./new-convo/use-viewmode-store";
-import { PlusIcon } from "@/components/ui/icons";
-import { NewConvo } from "./new-convo/new-convo";
-import { useListContentsQuery } from "@/domain/content/content.queries";
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { Nothing } from "@/app/nmm/nothing";
+import { formatPercentage } from "@/app/profile/utils/format-percentage";
 import { HoverEffect } from "@/components/hover-effect";
 import { useSearchQueryStore } from "@/components/search/state";
-import { useListConversationsQuery } from "@/domain/conversation/use-list-conversations-query";
-import { useContentTypeStore } from "./use-content-type-store";
-import { formatPercentage } from "@/app/profile/utils/format-percentage";
-import { Nothing } from "@/app/nmm/nothing";
+import { PlusIcon } from "@/components/ui/icons";
 import { Icons } from "@/components/ui/icons.v2";
-import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useListConversationsQuery } from "@/domain/conversation/use-list-conversations-query";
+import { NewConvo } from "./new-convo/new-convo";
+import { useViewModeStore } from "./new-convo/use-viewmode-store";
+import { useContentTypeStore } from "./use-content-type-store";
 
 type ContentType = {
   title: string;

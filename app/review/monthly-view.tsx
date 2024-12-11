@@ -1,9 +1,8 @@
 import { useSearchQueryStore } from "@/components/search/state";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
+import { getDay, getTime, intervalToDuration } from "date-fns";
 import Link from "next/link";
 import { TotalReviews } from "./total-reviews";
-import { getDay, getYear, intervalToDuration, getTime } from "date-fns";
-import { groupBy } from "ramda";
 
 const indexToDays = {
   0: "Sun",

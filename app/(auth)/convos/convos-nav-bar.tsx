@@ -1,40 +1,19 @@
 "use client";
 
-import Link from "next/link";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMountainSun } from "@fortawesome/pro-duotone-svg-icons/faMountainSun";
 import { faChartColumn } from "@fortawesome/sharp-solid-svg-icons/faChartColumn";
-import { faGraduationCap } from "@fortawesome/sharp-solid-svg-icons/faGraduationCap";
-// import { faBrain } from "@fortawesome/sharp-solid-svg-icons/faBrain";
-import { faMapLocation } from "@fortawesome/sharp-solid-svg-icons/faMapLocation";
-import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
-// import { NomadIcon } from "./ui/icons";
-import { usePathname, useRouter } from "next/navigation";
+
 import { faXmark } from "@fortawesome/pro-light-svg-icons/faXmark";
+import { usePathname, useRouter } from "next/navigation";
 
 import { useConvosStore } from "@/stores/convos-store";
 
-import { useState } from "react";
-// import { useSearchQueryStore } from "./search/state";
-import React from "react";
-
-import { useEffect } from "react";
-
-import {
-  // faBrainCircuit,
-  // faSeedling,
-  faComment,
-} from "@fortawesome/pro-light-svg-icons";
+import { Icons } from "@/components/ui/icons.v2";
 import {
   faMicrophone,
   faSeedling,
-  faPlay,
   faTypewriter,
-  faBrainCircuit,
-  faMusicNote,
 } from "@fortawesome/sharp-solid-svg-icons";
-import { Icons } from "@/components/ui/icons.v2";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);

@@ -1,6 +1,4 @@
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useSearchQueryStore } from "./search/state";
-import { WordItem } from "./word-item";
 import { wordsDict } from "@/langs/words-dict";
 import { useQuery } from "@tanstack/react-query";
 

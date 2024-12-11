@@ -6,13 +6,12 @@ import { useListHistoryQuery } from "@/domain/history/history.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
-import { getDate, getMonth, getYear } from "date-fns";
-import Link from "next/link";
-import { groupBy } from "ramda";
-import { useGetAuthUserProfileQuery } from "./user/use-get-auth-user-profile";
-import { filterComponents } from "@/app/nmm/nmm-utils/filter-components";
-import { getReviewDate } from "./get-review-date";
 import { useListAttempts } from "@/app/(auth)/insights/insights-v2/use-list-attempts";
+import { filterComponents } from "@/app/nmm/nmm-utils/filter-components";
+import { getMonth, getYear } from "date-fns";
+import { groupBy } from "ramda";
+import { getReviewDate } from "./get-review-date";
+import { useGetAuthUserProfileQuery } from "./user/use-get-auth-user-profile";
 
 export function useListLearnedCharactersByDate({
   variant,

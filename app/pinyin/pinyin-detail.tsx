@@ -1,25 +1,24 @@
 "use client";
-import React, { useState } from "react";
 import { CloseIcon } from "@/components/ui/icons";
 
 import { groupBy } from "ramda";
 
-import { useFilteredComponents } from "@/hooks/use-filter-components";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import Link from "next/link";
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { useFilteredComponents } from "@/hooks/use-filter-components";
+import Link from "next/link";
 
+import { useSearchQueryStore } from "@/components/search/state";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { PreviewComponent } from "../nmm/preview-component";
-import { useSearchQueryStore } from "@/components/search/state";
-import { PinyinCodes, useSelectedLevel } from "./pinyn-codes";
-import { calculateColor } from "../nmm/nmm-utils/calculate-color";
 import { useRouter, useSearchParams } from "next/navigation";
+import { calculateColor } from "../nmm/nmm-utils/calculate-color";
+import { PreviewComponent } from "../nmm/preview-component";
+import { PinyinCodes, useSelectedLevel } from "./pinyn-codes";
 
 export const PinyinDetail = () => {
   // const [selectedPinyin, setSelectedPinyin] = usePinyinChartState();

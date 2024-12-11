@@ -15,12 +15,7 @@ import { HanziLink } from "@/components/hanzi-link";
 import { create } from "zustand";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { NmmListContainer } from "../nmm-list-container";
-
-export const useSearchQueryStore = create((set: any, get: any) => ({
-  type: "character",
-  setType: (f: any) =>
-    typeof f === "function" ? set({ type: f(get().type) }) : set({ type: f }),
-}));
+import { useInsightsSettingsStore } from "@/app/(auth)/convos/use-insights-settings-store";
 
 export function CharacterAnalytics({
   characterId,
@@ -29,8 +24,8 @@ export function CharacterAnalytics({
   characterId: string;
   lang: string;
 }) {
-  const viewType = useSearchQueryStore((state) => state.type);
-  const setViewType = useSearchQueryStore((state) => state.setType);
+  const viewType = useInsightsSettingsStore((state) => state.type);
+  const setViewType = useInsightsSettingsStore((state) => state.setType);
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
 

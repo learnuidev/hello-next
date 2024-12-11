@@ -1,23 +1,13 @@
 "use client";
 
-import React, { useMemo } from "react";
-import {
-  CloudyIcon,
-  MoonIcon,
-  SearchIcon,
-  SunRiseIcon,
-} from "@/components/ui/icons";
 import { Header } from "@/components/Header";
-import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-import { useQuery } from "@tanstack/react-query";
-import { pronounciationLessons } from "./pronuncation_data";
-
-import { useSearchQueryStore } from "./state";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useListParseQuery } from "@/domain/nmm/nmm.queries";
+import { useSearchParams } from "next/navigation";
 import posthog from "posthog-js";
+import { useSearchQueryStore } from "./state";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);

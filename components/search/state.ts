@@ -1,4 +1,3 @@
-import { persist, createJSONStorage } from "zustand/middleware";
 import { create } from "zustand";
 
 // const [query, setQuery] = useState('')

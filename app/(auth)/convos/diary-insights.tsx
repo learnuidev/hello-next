@@ -14,17 +14,7 @@ import { NmmListContainer } from "@/components/nmm-list-container";
 import { create } from "zustand";
 import { useGetJournalDetailsQuery } from "../diary/hooks/use-get-journal-details-query";
 import { useGetDiaryInsights } from "./use-get-diary-insights";
-
-export const useSearchQueryStore = create((set: any, get: any) => ({
-  sortType: "timeline",
-  setSortType: (f: any) =>
-    typeof f === "function"
-      ? set({ sortType: f(get().sortType) })
-      : set({ sortType: f }),
-  type: "character",
-  setType: (f: any) =>
-    typeof f === "function" ? set({ type: f(get().type) }) : set({ type: f }),
-}));
+import { useInsightsSettingsStore } from "./use-insights-settings-store";
 
 const getFrequency = ({ lesson, input }: any) => {
   const transcriptions = lesson?.transcriptions?.filter(
@@ -37,10 +27,10 @@ const getFrequency = ({ lesson, input }: any) => {
 };
 
 export function DiaryInsights({ entryId }: { entryId: string }) {
-  const viewType = useSearchQueryStore((state) => state.type);
-  const setViewType = useSearchQueryStore((state) => state.setType);
-  const setSortType = useSearchQueryStore((state) => state.setSortType);
-  const sortType = useSearchQueryStore((state) => state.sortType);
+  const viewType = useInsightsSettingsStore((state) => state.type);
+  const setViewType = useInsightsSettingsStore((state) => state.setType);
+  const setSortType = useInsightsSettingsStore((state) => state.setSortType);
+  const sortType = useInsightsSettingsStore((state) => state.sortType);
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
 

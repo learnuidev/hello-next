@@ -3,11 +3,11 @@
 import { FilterSelect } from "@/app/nmm/filter-select";
 import { belts } from "@/app/nmm/utils";
 import { NavBar } from "@/components/navbar";
+import { useSearchQueryStore } from "@/components/search/state";
 import { useListContentsQuery } from "@/domain/content/content.queries";
+import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useGetCoursesSearchParams } from "./hooks/use-get-courses-search-params";
-import { cn } from "@/lib/utils";
-import { useSearchQueryStore } from "@/components/search/state";
 
 export default function Courses() {
   const router = useRouter();

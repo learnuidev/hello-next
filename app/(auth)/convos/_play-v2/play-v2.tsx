@@ -11,6 +11,9 @@ import { useViewType } from "./use-view-type";
 import { cn } from "@/lib/utils";
 import { GrammarAnalysis } from "@/components/grammar-analysis";
 import { groupBy } from "ramda";
+import { UploadAudioButton } from "@/components/_select-character/selected-character/upload-audio-button";
+import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
+import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 
 export const PlayV2 = ({ contentId }: { contentId: string }) => {
   const { data: content } = useGetContentQuery({ contentId });
@@ -28,6 +31,8 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
   );
   const hanzi = useViewType((state: any) => state.hanzi);
   const setHanzi = useViewType((state: any) => state.setHanzi);
+
+  const updateContentMutation = useUpdateContentMutation();
 
   const { isPlaying, togglePlay, seek, currentTime, reset } = useMusicV2({
     url: audioUrl,
@@ -52,7 +57,7 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
       <div className="flex items-center justify-between w-full mb-12">
         <h1 className="text-2xl leading-9">{content?.title}</h1>{" "}
         <div className="flex space-x-8">
-          <div className="space-x-4">
+          <div className="space-x-4 flex items-center">
             {view === "focus" ? (
               <button
                 className="text-xl"
@@ -124,6 +129,18 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
             >
               <Icons.analyze />
             </button>
+
+            <UploadFileButton
+              onSuccess={(res) => {
+                return updateContentMutation.mutateAsync({
+                  id: content?.id || "",
+                  audio: res.sourceUrl,
+                  uploadBucketKey: res.uploadBucketKey,
+                  s3LinkAddedAt: Date.now(),
+                  updateContent: true,
+                });
+              }}
+            />
           </div>
         </div>
         <div className="flex space-x-8">

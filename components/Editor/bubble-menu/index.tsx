@@ -8,6 +8,7 @@ import { FC, useState } from "react";
 
 import { NodeSelector } from "./node-selector";
 import { ColorSelector } from "./color-selector";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 
 export interface BubbleMenuItem {
   name: string;
@@ -31,30 +32,10 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
   const params = useParams() as {
     "component-id": string;
   };
-  const items: BubbleMenuItem[] = [
-    {
-      name: "add",
-      isActive: () => props.editor.isActive("bold"),
-      Icon: Icons.plusIcon,
-      command: () => {
-        // const { selection, state } = props.editor;
-        // const { from, to } = selection;
 
-        // const text = state.doc.textBetween(from, to, " ");
-        // return props.editor.chain().focus().toggleBold().run();
+  const isSuperAdmin = useIsSuperAdmin();
 
-        const { view, state } = props.editor;
-        const { from, to } = view.state.selection;
-        const text = state.doc.textBetween(from, to, "");
-        alert(text);
-
-        return addSentenceMutation.mutateAsync({
-          component: decodeURIComponent(params?.["component-id"]),
-          input: text,
-        });
-      },
-      // text: "Add",
-    },
+  let items: BubbleMenuItem[] = [
     {
       name: "play",
       isActive: () => props.editor.isActive("bold"),
@@ -72,8 +53,6 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
 
         speak(text);
       },
-
-      // text: "Search",
     },
     {
       name: "route",
@@ -92,8 +71,6 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
 
         router.push(`/nmm/${text}?lang=${lang || "zh"}`);
       },
-
-      // text: "Search",
     },
     {
       name: "bold",
@@ -102,8 +79,6 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
       command: () => {
         return props.editor.chain().focus().toggleBold().run();
       },
-
-      // text: "Search",
     },
     {
       name: "italic",
@@ -148,6 +123,35 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
     //   icon: CodeIcon,
     // },
   ];
+
+  if (isSuperAdmin) {
+    items = [
+      {
+        name: "add",
+        isActive: () => props.editor.isActive("bold"),
+        Icon: Icons.plusIcon,
+        command: () => {
+          // const { selection, state } = props.editor;
+          // const { from, to } = selection;
+
+          // const text = state.doc.textBetween(from, to, " ");
+          // return props.editor.chain().focus().toggleBold().run();
+
+          const { view, state } = props.editor;
+          const { from, to } = view.state.selection;
+          const text = state.doc.textBetween(from, to, "");
+          alert(text);
+
+          return addSentenceMutation.mutateAsync({
+            component: decodeURIComponent(params?.["component-id"]),
+            input: text,
+          });
+        },
+        // text: "Add",
+      },
+      ...items,
+    ];
+  }
 
   const bubbleMenuProps: EditorBubbleMenuProps = {
     ...props,

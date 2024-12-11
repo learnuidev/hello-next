@@ -28,6 +28,7 @@ import { useContentTypeStore } from "./use-content-type-store";
 import { formatPercentage } from "@/app/profile/utils/format-percentage";
 import { Nothing } from "@/app/nmm/nothing";
 import { Icons } from "@/components/ui/icons.v2";
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 
 type ContentType = {
   title: string;
@@ -37,7 +38,7 @@ type ContentType = {
 };
 
 function ContentsList() {
-  const { data: contents } = useListContentsQuery();
+  const { data: contents, isLoading } = useListContentsQuery();
 
   const contentType = useContentTypeStore((state) => state.contentType);
 
@@ -85,6 +86,10 @@ function ContentsList() {
           };
         })
     : [];
+
+  if (isLoading) {
+    return <LottieLoadingAnimation />;
+  }
 
   if (!projects?.length) {
     return (

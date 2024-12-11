@@ -53,7 +53,7 @@ export const HoverEffect = ({
           </AnimatePresence>
           <Card>
             <div className="flex justify-between items-center">
-              <CardTitle>{item.title}</CardTitle>
+              <CardTitle className="line-clamp-1">{item.title}</CardTitle>
               <p>
                 {" "}
                 <span>{item?.icon && <item.icon className="text-xl" />}</span>
@@ -61,7 +61,10 @@ export const HoverEffect = ({
             </div>
 
             <CardDescription className="flex justify-between">
-              <p> {item.description || item?.subtopic} </p>
+              <p className="line-clamp-3">
+                {" "}
+                {item.description || item?.subtopic}{" "}
+              </p>
               <p>{item?.lang}</p>
             </CardDescription>
           </Card>

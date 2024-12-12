@@ -179,10 +179,16 @@ export const DuLessonView = () => {
       currentTime > subtitle?.startTime && currentTime < subtitle.endTime
   );
 
+  const increaseFontSize = useCallback(() => {
+    setTextSizeIndex((prev) => Math.min(3, prev + 1));
+  }, [setTextSizeIndex]);
+  const decreaseFontSize = useCallback(() => {
+    setTextSizeIndex((prev) => Math.max(0, prev - 1));
+  }, [setTextSizeIndex]);
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.code === "ArrowLeft" || event.code === "ArrowUp") {
-        // alert("check previous");
         event.preventDefault();
         getPreviousChapter();
       }
@@ -195,6 +201,17 @@ export const DuLessonView = () => {
       if (["p"]?.includes(event.key)) {
         event.preventDefault();
         togglePinyin((pinyin) => !pinyin);
+      }
+
+      if (["-"]?.includes(event.key)) {
+        event.preventDefault();
+
+        decreaseFontSize();
+      }
+      if (["="]?.includes(event.key)) {
+        event.preventDefault();
+
+        increaseFontSize();
       }
 
       if (["a"]?.includes(event.key)) {
@@ -246,6 +263,8 @@ export const DuLessonView = () => {
     activeSubtitle?.sentence,
     reset,
     loop,
+    increaseFontSize,
+    decreaseFontSize,
   ]);
 
   const characterId =
@@ -593,9 +612,7 @@ export const DuLessonView = () => {
         <section className="flex items-center justify-between">
           <div className="space-x-2">
             <button
-              onClick={() => {
-                setTextSizeIndex((prev) => Math.min(3, prev + 1));
-              }}
+              onClick={increaseFontSize}
               className={cn(
                 textSizeIndex === 3 ? "text-gray-400" : "",
                 "text-2xl"
@@ -605,9 +622,7 @@ export const DuLessonView = () => {
             </button>
 
             <button
-              onClick={() => {
-                setTextSizeIndex((prev) => Math.max(0, prev - 1));
-              }}
+              onClick={decreaseFontSize}
               className={textSizeIndex === 0 ? "text-gray-400" : ""}
             >
               A

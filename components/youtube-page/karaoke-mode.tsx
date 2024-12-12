@@ -36,8 +36,6 @@ export function KaraokeMode({
 }) {
   const [currentLyricIndex, setCurrentLyricIndex] = useState(0);
 
-  console.log("TRANSCRIPTIONS", transcriptions);
-
   const currentTranscription = transcriptions?.find(
     (trans: any) => trans?.start < currentTime && trans?.end > currentTime
   );
@@ -55,8 +53,6 @@ export function KaraokeMode({
       return item?.start < currentTime && item?.end < currentTime;
     })
     ?.slice(-1);
-
-  console.log("IS INTRO", isIntro);
 
   return (
     <div className="mt-4 w-[700px] bg-gradient-to-b from-black to-black flex flex-col justify-center p-4">

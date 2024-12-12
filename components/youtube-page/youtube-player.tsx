@@ -60,6 +60,36 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const [loopCounter, setLoopCounter] = useState(0);
 
+  const togglePlay = useCallback(() => {
+    // alert("yo");
+    console.log("PLAYER REF", playerRef);
+    // conso le.log("PLAYER REF", playerRef?.current?.player?.player?.play());
+
+    if (playerRef?.current?.player?.isPlaying) {
+      playerRef?.current?.player?.player?.pause();
+    } else {
+      playerRef?.current?.player?.player.play();
+    }
+
+    // playerRef?.current?.pause();
+  }, [playerRef]);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.code === "Space") {
+        // Vishal 07-12-2024-10-20: prevents the browser from scrolling down
+
+        event.preventDefault();
+        togglePlay();
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [togglePlay]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((seconds) => playerRef?.current?.getCurrentTime());

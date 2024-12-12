@@ -29,6 +29,7 @@ import { Icons } from "../ui/icons.v2";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { KaraokeMode } from "./karaoke-mode";
 import { KaraokeModeV2 } from "./karaoke-mode-v2";
+import { KaraokeModeV3 } from "./karaoke-mode-v3";
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -156,11 +157,9 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const resetTimes = useContentEditStore((state) => state.resetTimes);
   const times = useContentEditStore((state) => state.times);
 
-  console.log("GROUPED", groupedTranscriptions);
-
   return (
     <div className="grow flex flex-col items-center">
-      <div className="space-x-4 my-4 hidden md:block">
+      <div className="space-x-4 my-4 hidden md:block z-50">
         <button
           className={viewMode === "karaoke" ? "text-white" : "text-gray-500"}
           onClick={() => {
@@ -286,7 +285,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                 : "col-span-12 md:col-span-4"
             }
           >
-            <KaraokeModeV2
+            <KaraokeModeV3
               isPlaying={isPlaying}
               playerRef={playerRef}
               transcriptions={transcriptions}

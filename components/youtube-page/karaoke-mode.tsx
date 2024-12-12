@@ -50,47 +50,52 @@ export function KaraokeMode({
 
   const startingTime = transcriptions?.[0]?.start - currentTime || 0;
 
+  const lastThreeLyrics = transcriptions
+    ?.filter((item: any) => {
+      return item?.start < currentTime && item?.end < currentTime;
+    })
+    ?.slice(-3);
+
   console.log("IS INTRO", isIntro);
 
   return (
-    <div className="w-[700px] bg-gradient-to-b from-black to-black flex flex-col justify-center p-4">
+    <div className="mt-4 w-[700px] bg-gradient-to-b from-black to-black flex flex-col justify-center p-4">
       <div className="w-full max-w-2xl bg-black/50 backdrop-blur-md rounded-xl p-4 shadow-2xl">
         {/* Past Lyrics */}
-        <div className="h-24 overflow-y-auto flex justify-center flex-col text-xs items-center">
-          {transcriptions
-            ?.filter((item: any) => {
-              return item?.start < currentTime && item?.end < currentTime;
-            })
-            ?.slice(-3)
+        <div
+          className={cn(
+            "h-24 overflow-y-auto flex justify-center flex-col text-xs items-center",
+            "mb-4"
+          )}
+        >
+          {lastThreeLyrics.map((lyric: any, idx: any, ctx: any) => (
+            <div
+              onClick={() => {
+                playerRef.current.seekTo(lyric?.start, "seconds");
 
-            .map((lyric: any, idx: any, ctx: any) => (
-              <div
-                onClick={() => {
-                  playerRef.current.seekTo(lyric?.start, "seconds");
-
-                  try {
-                    playerRef.current?.player?.player?.play();
-                  } catch (err) {
-                    console.error(err);
-                  }
-                }}
-                key={JSON.stringify(lyric) + `${idx}`}
-                className={cn(
-                  "text-gray-600 text-lg cursor-pointer hover:text-white/75 transition-colors",
-                  ctx?.length === 1
+                try {
+                  playerRef.current?.player?.player?.play();
+                } catch (err) {
+                  console.error(err);
+                }
+              }}
+              key={JSON.stringify(lyric) + `${idx}`}
+              className={cn(
+                "text-gray-600 text-lg cursor-pointer hover:text-white/75 transition-colors",
+                ctx?.length === 1
+                  ? "text-gray-600"
+                  : ctx?.length === 2
                     ? "text-gray-600"
-                    : ctx?.length === 2
-                      ? "text-gray-600"
-                      : idx === 0
-                        ? "text-gray-800"
-                        : idx === 1
-                          ? "text-gray-700"
-                          : "text-gray-600"
-                )}
-              >
-                {lyric?.input}
-              </div>
-            ))}
+                    : idx === 0
+                      ? "text-gray-800"
+                      : idx === 1
+                        ? "text-gray-700"
+                        : "text-gray-600"
+              )}
+            >
+              {lyric?.input}
+            </div>
+          ))}
         </div>
 
         {/* Current Lyric */}
@@ -159,7 +164,7 @@ export function KaraokeMode({
               <div
                 key={JSON.stringify(lyric)}
                 className={cn(
-                  "text-white/50 text-lg cursor-pointer hover:text-white/75 transition-colors",
+                  "text-white/50 text-lg cursor-pointer hover:text-white/75 transition-colors flex flex-col items-center justify-center",
                   idx === 0
                     ? "text-gray-600"
                     : idx === 1
@@ -176,7 +181,8 @@ export function KaraokeMode({
                   }
                 }}
               >
-                {lyric?.input}
+                {/* <p>{lyric.roman}</p> */}
+                <p>{lyric?.input}</p>
               </div>
             ))}
         </div>

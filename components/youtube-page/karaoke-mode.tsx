@@ -54,7 +54,7 @@ export function KaraokeMode({
     ?.filter((item: any) => {
       return item?.start < currentTime && item?.end < currentTime;
     })
-    ?.slice(-2);
+    ?.slice(-1);
 
   console.log("IS INTRO", isIntro);
 
@@ -64,8 +64,8 @@ export function KaraokeMode({
         {/* Past Lyrics */}
         <div
           className={cn(
-            "h-32 overflow-y-auto flex justify-center flex-col text-xs items-center",
-            "mb-4"
+            "overflow-y-auto flex justify-center flex-col text-xs items-center",
+            "mb-24"
           )}
         >
           {lastThreeLyrics.map((lyric: any, idx: any, ctx: any) => (
@@ -82,15 +82,16 @@ export function KaraokeMode({
               key={JSON.stringify(lyric) + `${idx}`}
               className={cn(
                 "text-gray-600 text-lg cursor-pointer hover:text-white/75 transition-colors",
-                ctx?.length === 1
-                  ? "text-gray-600"
-                  : //   : ctx?.length === 2
-                    //     ? "text-gray-600"
-                    idx === 0
-                    ? "text-gray-800"
-                    : idx === 1
-                      ? "text-gray-700"
-                      : "text-gray-600"
+                "text-gray-700"
+                // ctx?.length === 1
+                //   ? "text-gray-600"
+                //   : //   : ctx?.length === 2
+                //     //     ? "text-gray-600"
+                //     idx === 0
+                //     ? "text-gray-800"
+                //     : idx === 1
+                //       ? "text-gray-700"
+                //       : "text-gray-600"
               )}
             >
               {lyric?.input}
@@ -102,7 +103,7 @@ export function KaraokeMode({
         <div className="h-44 flex justify-center overflow-hidden my-4">
           {!isPlaying && currentTime === 0 ? (
             <button
-              className="text-4xl"
+              className="text-4xl mt-[-100px]"
               onClick={() => {
                 try {
                   playerRef.current?.player?.player?.play();
@@ -131,25 +132,27 @@ export function KaraokeMode({
               </p>
             </button>
           ) : (
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={JSON.stringify(currentTranscription)}
-                initial={{ y: 50, opacity: 0.4 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -50, opacity: 0 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="text-4xl font-bold text-center text-white w-[700px]"
-              >
-                <p className="text-xl font-light text-gray-400">
-                  {currentTranscription?.pinyin || currentTranscription?.roman}
-                </p>
-                <p>
-                  {currentTranscription?.input || currentTranscription?.hanzi}
-                </p>
+            // <AnimatePresence mode="wait">
+            <motion.div
+              key={JSON.stringify(currentTranscription)}
+              initial={{ y: 50, opacity: 0.4 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -50, opacity: 0 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="text-4xl font-bold text-center text-white w-[700px]"
+            >
+              <p className="text-xl font-light text-gray-400">
+                {currentTranscription?.pinyin || currentTranscription?.roman}
+              </p>
+              <p>
+                {currentTranscription?.input || currentTranscription?.hanzi}
+              </p>
 
-                <p className="text-xl">{currentTranscription?.en}</p>
-              </motion.div>
-            </AnimatePresence>
+              <p className="text-xl text-gray-500">
+                {currentTranscription?.en}
+              </p>
+            </motion.div>
+            // </AnimatePresence>
           )}
         </div>
 
@@ -159,7 +162,7 @@ export function KaraokeMode({
             ?.filter((trans: any) => {
               return trans.start > currentTime;
             })
-            ?.slice(0, 2)
+            ?.slice(0, 1)
             .map((lyric: any, idx: any) => (
               <div
                 key={JSON.stringify(lyric)}
@@ -182,7 +185,13 @@ export function KaraokeMode({
                 }}
               >
                 {/* <p>{lyric.roman}</p> */}
-                <p>{lyric?.input}</p>
+                <p className="text-xs font-light text-gray-400">
+                  {lyric?.pinyin || lyric?.roman}
+                </p>
+                <p>{lyric?.input || lyric?.hanzi}</p>
+
+                <p className="text-xs">{lyric?.en}</p>
+                {/* <p>{lyric?.input}</p> */}
               </div>
             ))}
         </div>

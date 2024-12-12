@@ -2,6 +2,8 @@
 
 import { useConvosStore } from "./use-convos-store";
 import Axios from "axios";
+// ts-ignore next
+import { chineseConverter } from "mandarino/src/utils/chinese-converter";
 
 import { CloseIcon } from "@/components/ui/icons";
 import { useViewModeStore } from "./use-viewmode-store";
@@ -427,7 +429,7 @@ export function NewConvo({ type }: { type?: string }) {
                 <textarea
                   value={newConvo?.input}
                   onChange={(event) => {
-                    const sents = event?.target?.value;
+                    const sents = chineseConverter(event?.target?.value);
 
                     const sections = listSections(sents, newConvo?.lang);
 

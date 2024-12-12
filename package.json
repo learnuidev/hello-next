@@ -133,7 +133,7 @@
     "@types/mapbox__mapbox-gl-geocoder": "^4.7.5",
     "@types/ramda": "^0.29.7",
     "@types/react-speech-recognition": "^3.9.4",
-    "mandarino": "^27.8.202-4.3.27",
+    "mandarino": "^6.12.202-4.23.41",
     "postcss-nesting": "^12.0.1"
   }
 }

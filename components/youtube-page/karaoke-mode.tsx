@@ -54,7 +54,7 @@ export function KaraokeMode({
     ?.filter((item: any) => {
       return item?.start < currentTime && item?.end < currentTime;
     })
-    ?.slice(-3);
+    ?.slice(-2);
 
   console.log("IS INTRO", isIntro);
 
@@ -64,7 +64,7 @@ export function KaraokeMode({
         {/* Past Lyrics */}
         <div
           className={cn(
-            "h-24 overflow-y-auto flex justify-center flex-col text-xs items-center",
+            "h-32 overflow-y-auto flex justify-center flex-col text-xs items-center",
             "mb-4"
           )}
         >
@@ -84,13 +84,13 @@ export function KaraokeMode({
                 "text-gray-600 text-lg cursor-pointer hover:text-white/75 transition-colors",
                 ctx?.length === 1
                   ? "text-gray-600"
-                  : ctx?.length === 2
-                    ? "text-gray-600"
-                    : idx === 0
-                      ? "text-gray-800"
-                      : idx === 1
-                        ? "text-gray-700"
-                        : "text-gray-600"
+                  : //   : ctx?.length === 2
+                    //     ? "text-gray-600"
+                    idx === 0
+                    ? "text-gray-800"
+                    : idx === 1
+                      ? "text-gray-700"
+                      : "text-gray-600"
               )}
             >
               {lyric?.input}
@@ -159,7 +159,7 @@ export function KaraokeMode({
             ?.filter((trans: any) => {
               return trans.start > currentTime;
             })
-            ?.slice(0, 3)
+            ?.slice(0, 2)
             .map((lyric: any, idx: any) => (
               <div
                 key={JSON.stringify(lyric)}

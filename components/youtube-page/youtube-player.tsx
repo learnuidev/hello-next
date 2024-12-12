@@ -60,6 +60,23 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const [loopCounter, setLoopCounter] = useState(0);
 
+  const { data: transcriptionsData } = useListSentencesQuery({
+    component: lessonId,
+    lang: "zh",
+    genSents: false,
+  });
+  // const lesson = contentsArr?.find((content: any) => content?.id === lessonId);
+
+  // const { lessonId } = useSearchParams();
+  const { data: lesson } = useGetContentQuery({ contentId: lessonId });
+
+  const transcriptions = lesson?.transcriptions
+    ? lesson?.transcriptions
+    : transcriptionsData?.length
+      ? transcriptionsData
+      : lesson?.transcriptions;
+  const finalUrl = lesson?.audio;
+
   const togglePlay = useCallback(() => {
     // alert("yo");
     console.log("PLAYER REF", playerRef);
@@ -74,6 +91,57 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     // playerRef?.current?.pause();
   }, [playerRef]);
 
+  const seekBefore = useCallback(() => {
+    const currentTranscription = transcriptions?.find(
+      (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+    );
+
+    const currentTranscriptionIndex = Math.max(
+      transcriptions?.findIndex(
+        (trans: any) => trans?.start === currentTranscription?.start
+      ),
+      0
+    );
+
+    const prevIndex = Math.max(currentTranscriptionIndex - 1, 0);
+    const prevTranscription = transcriptions?.[prevIndex];
+
+    playerRef.current.seekTo(prevTranscription?.start, "seconds");
+
+    try {
+      playerRef.current?.player?.player?.play();
+    } catch (err) {
+      console.error(err);
+    }
+  }, [currentTime, transcriptions]);
+
+  const seekAfter = useCallback(() => {
+    const currentTranscription = transcriptions?.find(
+      (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+    );
+
+    const currentTranscriptionIndex = Math.max(
+      transcriptions?.findIndex(
+        (trans: any) => trans?.start === currentTranscription?.start
+      ),
+      0
+    );
+
+    const nextIndex = Math.min(
+      currentTranscriptionIndex + 1,
+      transcriptions?.length - 1
+    );
+    const nextTranscription = transcriptions?.[nextIndex];
+
+    playerRef.current.seekTo(nextTranscription?.start, "seconds");
+
+    try {
+      playerRef.current?.player?.player?.play();
+    } catch (err) {
+      console.error(err);
+    }
+  }, [currentTime, transcriptions]);
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.code === "Space") {
@@ -81,6 +149,19 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
         event.preventDefault();
         togglePlay();
+        return null;
+      }
+
+      if (event.code === "ArrowLeft") {
+        // alert(event.code);
+        seekBefore();
+        return null;
+      }
+
+      if (event.code === "ArrowRight") {
+        // alert(event.code);
+        seekAfter();
+        return null;
       }
     }
 
@@ -88,7 +169,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [togglePlay]);
+  }, [togglePlay, seekBefore, seekAfter]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -154,23 +235,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   }, [contentId, setRepeatHistories, toggleLoops, loopCounter, setLoopCounter]);
 
   // const { data: contentsArr } = useListContentsQuery();
-
-  // const { lessonId } = useSearchParams();
-  const { data: lesson } = useGetContentQuery({ contentId: lessonId });
-
-  const { data: transcriptionsData } = useListSentencesQuery({
-    component: lessonId,
-    lang: "zh",
-    genSents: false,
-  });
-  // const lesson = contentsArr?.find((content: any) => content?.id === lessonId);
-
-  const transcriptions = lesson?.transcriptions
-    ? lesson?.transcriptions
-    : transcriptionsData?.length
-      ? transcriptionsData
-      : lesson?.transcriptions;
-  const finalUrl = lesson?.audio;
 
   const groupedTranscriptions = groupBy(transcriptions || []);
 

@@ -28,6 +28,7 @@ import { TranscriptItem, useContentEditStore } from "./youtube-transcript-item";
 import { Icons } from "../ui/icons.v2";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { KaraokeMode } from "./karaoke-mode";
+import { KaraokeModeV2 } from "./karaoke-mode-v2";
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -285,7 +286,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                 : "col-span-12 md:col-span-4"
             }
           >
-            <KaraokeMode
+            <KaraokeModeV2
               isPlaying={isPlaying}
               playerRef={playerRef}
               transcriptions={transcriptions}

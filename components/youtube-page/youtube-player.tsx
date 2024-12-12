@@ -27,6 +27,7 @@ import { useParams } from "next/navigation";
 import { TranscriptItem, useContentEditStore } from "./youtube-transcript-item";
 import { Icons } from "../ui/icons.v2";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
+import { KaraokeMode } from "./karaoke-mode";
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -160,14 +161,27 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     <div className="grow flex flex-col items-center">
       <div className="space-x-4 my-4 hidden md:block">
         <button
+          className={viewMode === "karaoke" ? "text-white" : "text-gray-500"}
+          onClick={() => {
+            setViewMode((prev: any) => (prev === "karaoke" ? null : "karaoke"));
+            setIsVideoHidden((isHidden) =>
+              viewMode !== "karaoke" ? true : false
+            );
+          }}
+        >
+          <Icons.karaoke />
+        </button>
+        <button
+          className={viewMode === "para" ? "text-white" : "text-gray-500"}
           onClick={() => {
             setViewMode((prev: any) => (prev === "para" ? null : "para"));
           }}
         >
-          <FontAwesomeIcon icon={faGlasses} />
+          <Icons.glassesRound />
         </button>
 
         <button
+          className={isVideoHidden ? "text-white" : "text-gray-500"}
           onClick={() => {
             setIsVideoHidden((isHidden) => !isHidden);
           }}
@@ -180,7 +194,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         </button>
 
         <button
-          className={editMode ? "text-white" : "text-gray-400"}
+          className={editMode ? "text-white" : "text-gray-500"}
           onClick={() => {
             setEditMode();
           }}
@@ -253,7 +267,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
               playing={isPlaying}
               width="100%"
               height={isSmall ? "200px" : "450px"}
-              controls={true}
+              controls
               onReady={onReady}
             />
           </div>
@@ -263,7 +277,22 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           </Header>
         </div>
 
-        {viewMode === "para" ? (
+        {viewMode === "karaoke" ? (
+          <div
+            className={
+              isVideoHidden
+                ? "col-span-12 mx-12 md:mx-32"
+                : "col-span-12 md:col-span-4"
+            }
+          >
+            <KaraokeMode
+              isPlaying={isPlaying}
+              playerRef={playerRef}
+              transcriptions={transcriptions}
+              currentTime={currentTime}
+            />
+          </div>
+        ) : viewMode === "para" ? (
           <div
             className={
               isVideoHidden
@@ -396,6 +425,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                     return true;
                   })
                   .map((example: any, idx: any) => {
+                    // return "TODO";
                     return (
                       <TranscriptItem
                         example={example}

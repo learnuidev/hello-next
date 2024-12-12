@@ -81,6 +81,7 @@ import {
   faMailboxFlagUp,
   faMicrochipAi,
   faMicrophone,
+  faMicrophoneStand,
   faMobile,
   faMusic,
   faNotebook,
@@ -324,6 +325,7 @@ export const Icons = {
   layerGroup: createFAIcon(faLayerGroup),
   // bookmark: createFAIcon(faBookmark),
   magicWand: createFAIcon(faMagicWandSparkles),
+  karaoke: createFAIcon(faMicrophoneStand),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

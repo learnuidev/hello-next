@@ -28,9 +28,7 @@ export const useListLessons = ({
 }) => {
   const { data: authUser } = useCurrentAuthUser({});
 
-  const { data: studiedLessons } = useListStudiedLessonsQuery({
-    cookie,
-  });
+  const { data: studiedLessons } = useListStudiedLessonsQuery({});
 
   return useQuery<ListTopLessonsResponse, Error>({
     queryKey: [

@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useListForYou } from "./use-list-for-you";
-import { useListStudiedLessonsQuery } from "../../hooks/use-list-studied-lessons-query";
 
 export const DuForYou = () => {
   const { data: section } = useListForYou();

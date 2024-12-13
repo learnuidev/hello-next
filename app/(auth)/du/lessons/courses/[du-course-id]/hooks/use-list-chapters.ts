@@ -1,5 +1,4 @@
-import { DuChapter, DuSection } from "@/app/(auth)/du/du.types";
-import { useListSavedLessonsQuery } from "@/app/(auth)/du/hooks/use-list-saved-lessons-query";
+import { DuChapter } from "@/app/(auth)/du/du.types";
 import { useListStudiedLessonsQuery } from "@/app/(auth)/du/hooks/use-list-studied-lessons-query";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { duChineseApiUrl } from "@/libs/du-chinese/du-chinese-api-url";
@@ -19,9 +18,7 @@ export const useListChapters = ({
 }) => {
   const { data: authUser } = useCurrentAuthUser({});
 
-  const { data: studiedLessons } = useListStudiedLessonsQuery({
-    cookie,
-  });
+  const { data: studiedLessons } = useListStudiedLessonsQuery({});
 
   return useQuery<ListChaptersResponse, Error>({
     queryKey: [

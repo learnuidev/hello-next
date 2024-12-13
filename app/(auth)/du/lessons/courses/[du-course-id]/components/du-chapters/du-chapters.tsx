@@ -32,9 +32,7 @@ function useGetProgress(courseId: string) {
     cookie,
   });
 
-  const { data: studiedLessons } = useListStudiedLessonsQuery({
-    cookie,
-  });
+  const { data: studiedLessons } = useListStudiedLessonsQuery({});
 
   const lesson = data?.lessons?.[0];
 

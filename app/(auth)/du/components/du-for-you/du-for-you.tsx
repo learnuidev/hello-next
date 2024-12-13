@@ -5,6 +5,10 @@ import { useListForYou } from "./use-list-for-you";
 export const DuForYou = () => {
   const { data: section } = useListForYou();
 
+  if (!section?.items?.length) {
+    return null;
+  }
+
   return (
     <div key={"For you"}>
       <h2 className="text-2xl font-semibold text-gray-300"> {section.title}</h2>

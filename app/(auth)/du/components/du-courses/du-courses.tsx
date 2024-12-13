@@ -4,6 +4,7 @@ import { useListTopLessons } from "../../hooks/use-list-top-lessons";
 import { useGetDuParams } from "../../hooks/use-get-du-params";
 import { useDuStore } from "../../hooks/use-du-store";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { DuForYou } from "../du-for-you/du-for-you";
 
 export const DuCourses = () => {
   const { cookie } = useGetDuParams();
@@ -17,8 +18,10 @@ export const DuCourses = () => {
   if (isLoading) {
     return <LottieLoadingAnimation />;
   }
+
   return (
     <div className="space-y-12">
+      <DuForYou />
       {data?.sections?.map((section) => {
         return (
           <div key={JSON.stringify(section)}>

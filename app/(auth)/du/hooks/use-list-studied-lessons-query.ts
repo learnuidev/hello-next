@@ -1,6 +1,7 @@
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { duChineseApiUrl } from "@/libs/du-chinese/du-chinese-api-url";
 import { useQuery } from "@tanstack/react-query";
+import { useGetDuParams } from "./use-get-du-params";
 
 type LessonDocument = {
   id: string;
@@ -26,9 +27,7 @@ type LessonDocument = {
   course_path: string | null;
   course_type: string | null;
   course_position: number | null;
-  course: {
-    id: number;
-  };
+  course: any;
 };
 
 type ListSavedLessonsResponse = {
@@ -39,11 +38,11 @@ type ListSavedLessonsResponse = {
 export const listStudiedLessonsQueryKey = "du-chinese/list-studied-lessons";
 export const useListStudiedLessonsQuery = ({
   levels,
-  cookie,
 }: {
   levels?: string | string[];
-  cookie?: string;
 }) => {
+  const { chapterId, cookie } = useGetDuParams();
+
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ListSavedLessonsResponse, Error>({

@@ -3,6 +3,7 @@ import { useAddBookmarkMutation } from "@/domain/bookmark/use-add-bookmark-mutat
 import { useDeleteBookmarkMutation } from "@/domain/bookmark/use-delete-bookmark-mutation";
 import { useListBookmarksQuery } from "@/domain/bookmark/use-list-bookmarks-query";
 import { cn } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
 
 export const BookmarkButton = (props: {
   hanzi: string;
@@ -14,6 +15,9 @@ export const BookmarkButton = (props: {
 }) => {
   const { hanzi, pinyin, lang, en, className } = props;
   const { data } = useListBookmarksQuery();
+  const searchParams = useSearchParams();
+
+  const context = searchParams?.get("context");
 
   const bookmarked = data?.filter((item: any) => item?.hanzi === hanzi)?.[0];
 
@@ -36,6 +40,7 @@ export const BookmarkButton = (props: {
             en,
             pinyin,
             lang,
+            context,
           });
         }
       }}

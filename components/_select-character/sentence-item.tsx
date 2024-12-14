@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
@@ -19,6 +19,10 @@ export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
 
   const componentId = useGetComponentId();
+
+  const searchParams = useSearchParams();
+
+  const context = searchParams?.get("context");
 
   const unEncoded = currentPhrase?.hanzi || currentPhrase?.input;
 
@@ -150,8 +154,8 @@ export const SentenceItem = (props: any) => {
 
                   router.push(
                     lang
-                      ? `/nmm/${cleanedVal}?lang=${lang}`
-                      : `/nmm/${cleanedVal}`
+                      ? `/nmm/${cleanedVal}?lang=${lang}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
+                      : `/nmm/${cleanedVal}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
                   );
                 }}
                 className={`${

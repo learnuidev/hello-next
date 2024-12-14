@@ -7,7 +7,7 @@ import { Icons } from "./ui/icons.v2";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { getReviewDate } from "@/hooks/get-review-date";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 import { getReviewSearchParams } from "./settings-dialog/use-get-review-url";
@@ -43,6 +43,10 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     discoverMutation,
     deleteComponentMutation,
   } = props;
+
+  const searchParams = useSearchParams();
+
+  const context = searchParams?.get("context");
 
   const { data: components, isLoading } = useListComponents();
   const { data: chars } = useListCharactersQuery();
@@ -141,6 +145,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                   addCharacterMutation?.mutateAsync({
                     lang: lang,
                     status: "DISCOVERED",
+                    context,
                     story: "todo",
                     hanzi: firstLesson?.hanzi || selectedChar,
                     journeyId: firstLesson?.id || "default",
@@ -197,6 +202,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                     discoverMutation
                       .mutateAsync({
                         hanzi: selectedComp?.hanzi || characterId,
+                        context,
                       })
                       .then((resp: any) => {
                         toast(

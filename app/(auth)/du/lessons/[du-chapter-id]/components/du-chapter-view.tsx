@@ -525,6 +525,13 @@ export const DuLessonView = () => {
                   );
                 }
 
+                const getHanzi = (sentence: string) => {
+                  return data?.subtitles?.words
+                    ?.filter((word) => word?.sentence === sentence)
+                    ?.map((word) => word?.hanzi)
+                    ?.join("");
+                };
+
                 return (
                   // <HanziTooltip
                   //   component={{
@@ -549,7 +556,10 @@ export const DuLessonView = () => {
                   >
                     {viewPinyin && (
                       <Link
-                        href={`/nmm/${subtitle.hanzi}?lang=zh`}
+                        // onClick={() => {
+                        //   alert(JSON.stringify(getHanzi(subtitle?.sentence)));
+                        // }}
+                        href={`/nmm/${subtitle.hanzi}?lang=zh&context=${getHanzi(subtitle?.sentence)}`}
                         target="_blank"
                         className={cn(
                           subtitle?.pinyin ? "text-gray-500" : "text-black",

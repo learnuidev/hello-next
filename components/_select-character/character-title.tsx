@@ -19,6 +19,7 @@ import { useState } from "react";
 import { characterStore } from "./character-store";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { BookmarkButton } from "@/app/nmm/bookmark-button";
+import { useSearchParams } from "next/navigation";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -29,6 +30,9 @@ export const CharacterTitle = (props: any) => {
   } = props;
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersQuery();
+  const searchParams = useSearchParams();
+
+  const context = searchParams?.get("context");
 
   const pinyinInput = characterStore((state) => state.pinyin);
   const setPinyin = characterStore((state) => state.setPinyin);
@@ -127,7 +131,7 @@ export const CharacterTitle = (props: any) => {
                 if (selectedCompInput?.length > 1) {
                   return (
                     <Link
-                      href={`/nmm/${val}?lang=zh`}
+                      href={`/nmm/${val}?lang=zh${context ? `&context=${context}` : ""}`}
                       key={`${val}-${idx}`}
                       className={`${
                         brightMode || isCharactersLoading
@@ -151,7 +155,8 @@ export const CharacterTitle = (props: any) => {
 
                 return (
                   <Link
-                    href={`/nmm/${val}?lang=zh`}
+                    // href={`/nmm/${val}?lang=zh`}
+                    href={`/nmm/${val}?lang=zh${context ? `&context=${context}` : ""}`}
                     key={`${val}-${idx}`}
                     className={`${color} text-3xl sm:text-4xl transition lowercase font-light`}
                     // className={`${

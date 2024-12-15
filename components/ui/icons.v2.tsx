@@ -53,6 +53,7 @@ import {
   faClock,
   faComputerMouse,
   faConstruction,
+  faDatabase,
   faEye,
   faFaceAngry,
   faFaceGrin,
@@ -326,6 +327,7 @@ export const Icons = {
   // bookmark: createFAIcon(faBookmark),
   magicWand: createFAIcon(faMagicWandSparkles),
   karaoke: createFAIcon(faMicrophoneStand),
+  database: createFAIcon(faDatabase),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

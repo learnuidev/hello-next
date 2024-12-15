@@ -12,6 +12,11 @@ export const useContentEditStore = create(
         typeof f === "function"
           ? set({ times: f(get().times) })
           : set({ times: f }),
+      contextTimes: [],
+      setContextTimes: (f: any) =>
+        typeof f === "function"
+          ? set({ contextTimes: f(get().contextTimes) })
+          : set({ contextTimes: f }),
     }),
     {
       name: "mandario/transcript-item-store", // name of the item in the storage (must be unique)

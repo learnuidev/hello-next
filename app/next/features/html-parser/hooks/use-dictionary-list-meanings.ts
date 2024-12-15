@@ -15,6 +15,10 @@ export const useListDictionaryMeaningsQuery = (hanzi: string) => {
     queryKey: ["list-dictionary-meanings", token, hanzi],
     enabled: Boolean(hanzi),
     retry: false,
+    refetchIntervalInBackground: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
     queryFn: async () => {
       try {
         const res = await fetch(

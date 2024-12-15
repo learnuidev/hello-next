@@ -3,7 +3,6 @@
 
 import "@/libs/cognito/init";
 // import Link from "next/link";
-import Link from "next/link";
 
 import { useState } from "react";
 
@@ -13,102 +12,24 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import { NavBar } from "@/components/navbar";
-
-import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
 import { useConvosStore } from "@/stores/convos-store";
-import { ConvosNavBar } from "../convos-nav-bar";
 import { ConvoDetails } from "../convo-details";
+import { ConvosNavBar } from "../convos-nav-bar";
 import { useSelectedCharacter } from "../use-selected-character";
 
 import { useViewModeStore } from "../new-convo/use-viewmode-store";
-import { PlusIcon } from "@/components/ui/icons";
-import { NewConvo } from "../new-convo/new-convo";
 import ConvoItem from "./convo-item";
-import { FloatingNavbar } from "@/components/floating-navbar";
-import { formatPercentage } from "@/app/profile/utils/format-percentage";
+import { fa0 } from "@fortawesome/pro-thin-svg-icons";
+import { ContentItemV2 } from "./content-item-v2/content-item-v2";
 
 // useConvosStore
 
-function LessonCard({ lesson }: any) {
-  const { data: allAnswers, isLoading } = useListAnswersQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
-
-  const lessonId = useConvosStore((state: any) => state?.convoId);
-  const setLessonId = useConvosStore((state: any) => state?.setConvoId);
-
-  const router = useRouter();
-
-  const totalLessonsLength = lesson?.transcriptions?.length;
-
-  const completedLessons = lesson?.transcriptions?.filter((phrase: any) =>
-    allAnswers?.find(
-      (answer: any) =>
-        answer?.phraseId === phrase?.id && answer?.status === "correct"
-    )
-  );
-
-  const uncompletedLessons = lesson?.transcriptions?.filter(
-    (phrase: any) =>
-      !completedLessons?.find(
-        (completedPhrase: any) => completedPhrase?.id === phrase?.id
-      )
-  );
-
-  const firstUnCompletedLesson = uncompletedLessons?.[0];
-
-  //   const fistCompletedLesson = lesson?.transcriptions?.filter(lesson => completedLessons?.find(cl => cl?.))
-
-  const percentCompleted = completedLessons?.length / totalLessonsLength || 0;
-  return (
-    <button
-      // target="_blank"
-      // href={
-      //   firstUnCompletedLesson
-      //     ? `/convos/${lesson?.id}/${firstUnCompletedLesson?.id}`
-      //     : `/convos/${lesson?.id}`
-      // }
-      onClick={() => {
-        setLessonId(lesson?.id);
-
-        // const rootUrl = new URL("/convos");
-        // if (lesson?.id) {
-        //   rootUrl.searchParams?.append("lessonId", lesson?.id);
-        // }
-
-        // const urlString = rootUrl?.href;
-
-        router.push(`/convos?lessonId=${lesson?.id}`);
-      }}
-      className="px-4 md:px-32 font-light flex justify-between items-center w-full md:mt-2"
-    >
-      <h2 className="text-2xl">{lesson?.title}</h2>
-      <p className="text-2xl">{formatPercentage(percentCompleted)}</p>
-    </button>
-
-    // <Link
-    //   target="_blank"
-    //   href={
-    //     firstUnCompletedLesson
-    //       ? `/convos/${lesson?.id}/${firstUnCompletedLesson?.id}`
-    //       : `/convos/${lesson?.id}`
-    //   }
-    //   className="font-light flex justify-between items-center w-full px-4 md:px-32 md:mt-2"
-    // >
-    //   <h2 className="text-2xl">{lesson?.title}</h2>
-    //   <p className="text-2xl">{formatPercentage(percentCompleted)}</p>
-    // </Link>
-  );
+export default function ContentItem() {
+  return <ContentItemV2 />;
 }
-export default function Convos() {
+
+function Convos_old() {
   const [isTocHidden, setIsTocHidden] = useState(false);
   // const lessonId = useConvosStore((state: any) => state?.convoId);
 

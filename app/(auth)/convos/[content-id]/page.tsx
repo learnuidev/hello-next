@@ -118,6 +118,7 @@ export default function Convos() {
 
   const lessonId = params["content-id"];
   const searchParams = useSearchParams();
+  const viewType = useConvosStore((state: any) => state?.viewType);
 
   const viewMode = useViewModeStore((state: any) => state.viewMode);
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
@@ -151,14 +152,14 @@ export default function Convos() {
   return (
     <main>
       <div className="px-4 md:px-32">
-        <ConvosNavBar />
+        {/* <ConvosNavBar /> */}
 
         <div className="mb-24">
           <ConvoDetails lessonId={lessonId} />
         </div>
       </div>
 
-      <FloatingNavbar />
+      {/* <FloatingNavbar /> */}
     </main>
   );
 }

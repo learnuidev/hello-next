@@ -11,6 +11,7 @@ import { useSearchParams as _useSearchParams } from "next/navigation";
 import { YouTubePlayer } from "@/components/youtube-page/youtube-player";
 import { AI } from "./ai";
 import { PlayV2 } from "./_play-v2/play-v2";
+import { PlayV3 } from "./play-v3/play-v3";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const viewType = useConvosStore((state: any) => state?.viewType);
@@ -39,12 +40,14 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
 
   if (viewType === "listen") {
-    return (
-      <div className="font-light flex justify-between items-center w-full md:mt-12">
-        {/* <Play key={lessonId} lessonId={lessonId} /> */}
-        <PlayV2 contentId={lessonId} />
-      </div>
-    );
+    // return (
+    //   <div className="font-light flex justify-between items-center w-full md:mt-12">
+    //     {/* <Play key={lessonId} lessonId={lessonId} /> */}
+    //     <PlayV2 contentId={lessonId} />
+    //   </div>
+    // );
+
+    return <PlayV3 contentId={lessonId} />;
   }
 
   if (viewType === "write") {

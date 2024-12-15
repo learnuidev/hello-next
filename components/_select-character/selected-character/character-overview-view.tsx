@@ -11,6 +11,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SelectedCharacterHeader } from "./selected-character-header";
 import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
 import { SentenceItemV2 } from "./sentence-item-v2";
+import { useGetSelectedCharacterParams } from "./use-get-selected-character-params";
+import { CharacterVariantSummary } from "./character-variant-summary";
 
 const grammarTypesToTitle = {
   "v.": "verb",
@@ -25,6 +27,8 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
     characterId,
     selectedComp2,
   } = props;
+
+  const { variant } = useGetSelectedCharacterParams();
 
   const selectedCompInput =
     selectedComp?.hanzi ||
@@ -75,7 +79,11 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
                 </div>
 
                 <TabsContent value="overview" className="mt-6">
-                  <Summary showMeanings={true} characterId={characterId} />
+                  {variant ? (
+                    <CharacterVariantSummary />
+                  ) : (
+                    <Summary showMeanings={true} characterId={characterId} />
+                  )}
                 </TabsContent>
 
                 {(data || [])?.map((item) => {

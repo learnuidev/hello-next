@@ -85,7 +85,18 @@ export const CharacterTitle = (props: any) => {
       {brightMode ? (
         pinyins?.length > 1 ? (
           <h2 className="text-gray-400 font-extralight">
-            {pinyins?.join("/")}
+            {pinyins?.map((pinyin, i, ctx) => {
+              return (
+                <Link
+                  href={`/nmm/${characterId}?lang=zh&variant=${pinyin}`}
+                  className=""
+                  key={pinyin}
+                >
+                  {pinyin}
+                  {ctx?.length - 1 !== i ? "; " : ""}
+                </Link>
+              );
+            })}
           </h2>
         ) : (
           <h2

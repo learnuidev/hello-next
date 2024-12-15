@@ -10,4 +10,5 @@ export type Transcription = {
   seek: number;
   input?: string;
   roman?: string;
+  id: string;
 };

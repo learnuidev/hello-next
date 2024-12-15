@@ -14,6 +14,7 @@ import { groupBy } from "ramda";
 import { UploadAudioButton } from "@/components/_select-character/selected-character/upload-audio-button";
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
+import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 
 export const PlayV2 = ({ contentId }: { contentId: string }) => {
   const { data: content } = useGetContentQuery({ contentId });
@@ -31,6 +32,45 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
   );
   const hanzi = useViewType((state: any) => state.hanzi);
   const setHanzi = useViewType((state: any) => state.setHanzi);
+
+  const editMode = useContentEditStore((state) => state.editMode);
+  const setEditMode = useContentEditStore((state) => state.setEditMode);
+  const resetTimes = useContentEditStore((state) => state.resetTimes);
+  const times = useContentEditStore((state) => state.times);
+  const setTimes = useContentEditStore((state) => state.setTimes);
+
+  const setTimer = (
+    id: string,
+    type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
+    newValue?: string
+  ) => {
+    const offset = newValue || currentTime - 0.2;
+    setTimes((prev: any) => {
+      const exists = prev?.find((item: any) => item?.id === id);
+
+      if (exists) {
+        return prev.map((item: any) => {
+          if (item?.id === id) {
+            return {
+              ...exists,
+              [type]: offset,
+            };
+          }
+
+          return item;
+        });
+        // return prev.concat({
+        //   ...exists,
+        //   start: currentTime,
+        // });
+      }
+
+      return prev.concat({
+        id,
+        [type]: offset,
+      });
+    });
+  };
 
   const updateContentMutation = useUpdateContentMutation();
 
@@ -129,6 +169,57 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
             >
               <Icons.analyze />
             </button>
+
+            <button
+              className={editMode ? "text-white" : "text-gray-500"}
+              onClick={() => {
+                setEditMode();
+              }}
+            >
+              <Icons.edit />
+            </button>
+
+            {editMode && (
+              <button
+                onClick={() => {
+                  resetTimes();
+                }}
+              >
+                Reset
+              </button>
+            )}
+
+            {editMode && (
+              <button
+                onClick={() => {
+                  const editedTranscriptions = {
+                    id: content?.id,
+                    transcriptions: content?.transcriptions?.map(
+                      (transcription: any) => {
+                        const time = times?.find(
+                          (t: any) => t?.id === transcription?.id
+                        ) as any;
+                        return {
+                          ...transcription,
+                          ...time,
+                        };
+                      }
+                    ),
+                  };
+
+                  updateContentMutation
+                    .mutateAsync({
+                      ...editedTranscriptions,
+                    })
+                    .then((resp) => {
+                      setEditMode();
+                      // resetTimes();
+                    });
+                }}
+              >
+                Save
+              </button>
+            )}
 
             <UploadFileButton
               onSuccess={(res) => {

@@ -24,12 +24,13 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { useSize } from "@/hooks/use-size";
 import { useParams } from "next/navigation";
-import { TranscriptItem, useContentEditStore } from "./youtube-transcript-item";
+import { TranscriptItem } from "./youtube-transcript-item";
 import { Icons } from "../ui/icons.v2";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { KaraokeMode } from "./karaoke-mode";
 import { KaraokeModeV2 } from "./karaoke-mode-v2";
 import { KaraokeModeV3 } from "./karaoke-mode-v3";
+import { useContentEditStore } from "./use-content-edit-store";
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);

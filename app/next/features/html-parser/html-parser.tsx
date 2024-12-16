@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useGetNextParams } from "../../hooks/use-get-next-params";
 import { HtmlAnalyticsView } from "./components/html-analytics-view";
 import { HtmlArticleView } from "./components/html-article-view";
+import { HtmlHistoryView } from "./components/html-history-view";
 
 export const HtmlParser = () => {
   const { url, view } = useGetNextParams();
@@ -18,6 +19,10 @@ export const HtmlParser = () => {
 
   if (view === "analytics") {
     return <HtmlAnalyticsView />;
+  }
+
+  if (view === "history") {
+    return <HtmlHistoryView />;
   }
 
   return <HtmlArticleView />;

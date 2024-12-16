@@ -23,6 +23,8 @@ import {
   SandpackCodeEditor,
   SandpackPreview,
 } from "@codesandbox/sandpack-react";
+import { HtmlHistoryView } from "./html-history-view";
+import { useHtmlHistoryStore } from "../hooks/use-html-history-store";
 
 function CodeBlock({ code }: { code: string }) {
   return (
@@ -162,6 +164,8 @@ export const HtmlArticleView = () => {
   const { url, view, title } = useGetNextParams();
   const [viewPinyin, togglePinyin] = useState(false);
 
+  const _history = useHtmlHistoryStore((state) => state.history);
+
   const { data: userAssets, isLoading: isAssetsLoading } = useListUserAssets();
 
   const userAsset = (userAssets || []).find(
@@ -218,9 +222,9 @@ export const HtmlArticleView = () => {
 
   // console.log("DATA WITH CTX", dataWithContext);
 
-  if (!url) {
-    return <Nothing message="Please provide a url" />;
-  }
+  // if (!url) {
+  //   return <Nothing message="Please provide a url" />;
+  // }
 
   return (
     <div>
@@ -286,7 +290,20 @@ export const HtmlArticleView = () => {
 
       {/* <p>{url}</p> */}
 
-      {isLoading ? (
+      {!url ? (
+        <div>
+          <Nothing message="Please provide a url" />
+
+          {history?.length > 0 && (
+            <div className="">
+              <h2 className="text-center font-light text-gray-400">
+                Recent Searches
+              </h2>
+              <HtmlHistoryView hideClearAll />
+            </div>
+          )}
+        </div>
+      ) : isLoading ? (
         <LottieLoadingAnimation />
       ) : isError ? (
         <Nothing message="Invalid url" />

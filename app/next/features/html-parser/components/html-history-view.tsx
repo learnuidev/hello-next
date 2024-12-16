@@ -4,7 +4,11 @@ import { Icons } from "@/components/ui/icons.v2";
 import Link from "next/link";
 import { formatJournalDate } from "@/app/(auth)/diary/utils/format-journal-date";
 
-export const HtmlHistoryView = () => {
+export const HtmlHistoryView = ({
+  hideClearAll,
+}: {
+  hideClearAll?: boolean;
+}) => {
   const _history = useHtmlHistoryStore((state) => state.history);
   const clearHistory = useHtmlHistoryStore((state) => state.clearHistory);
   const removeHistory = useHtmlHistoryStore((state) => state.removeHistory);
@@ -18,15 +22,17 @@ export const HtmlHistoryView = () => {
   }
   return (
     <div>
-      <div className="my-12">
-        <button
-          onDoubleClick={() => {
-            clearHistory();
-          }}
-        >
-          Clear All
-        </button>
-      </div>
+      {hideClearAll ? null : (
+        <div className="my-12">
+          <button
+            onDoubleClick={() => {
+              clearHistory();
+            }}
+          >
+            Clear All
+          </button>
+        </div>
+      )}
       <section>
         <div className="mt-12 grid grid-cols-4 mb-32 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-10 gap-4 gap-y-4 lg:gap-8">
           {history?.map((lesson: any, idx) => {

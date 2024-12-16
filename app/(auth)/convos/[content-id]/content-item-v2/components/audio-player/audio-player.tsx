@@ -146,7 +146,18 @@ function SectionView({
         </p>
       ) : (
         <p
-          className="my-8 text-gray-300 text-lg"
+          // className="my-8 text-gray-300 text-lg"
+          className={cn(
+            "hover:text-rose-400 my-4",
+            textSize?.[1],
+            currentTime === 0 ? "text-gray-300" : "",
+
+            activeSubtitle?.en === section?.en ? "text-white" : "text-gray-600",
+            currentTime > section?.start && currentTime < section.end
+              ? "text-white"
+              : "text-gray-400"
+            // "text-white"
+          )}
           key={JSON.stringify(section)}
           onClick={() => {
             seek(section?.start);

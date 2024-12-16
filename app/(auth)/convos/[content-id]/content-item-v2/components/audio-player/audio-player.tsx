@@ -10,10 +10,55 @@ import { CharacterAnalytics } from "@/components/_select-character/character-ana
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
 
-function SectionView({ section, viewPinyin, setSelected, seek }: any) {
+function SectionView({
+  section,
+  viewPinyin,
+  setSelected,
+  seek,
+  currentTime,
+}: any) {
   const { data: context } = useListDictionaryMeaningsQuery(section?.input);
 
   //   console.log("CTX", context);
+  const editMode = useContentEditStore((state) => state.editMode);
+  const setEditMode = useContentEditStore((state) => state.setEditMode);
+  const resetTimes = useContentEditStore((state) => state.resetTimes);
+  const times = useContentEditStore((state) => state.times);
+  const setTimes = useContentEditStore((state) => state.setTimes);
+
+  const timeStamp = times?.find((time: any) => time?.id === section?.id) as any;
+
+  const setTimer = (
+    type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
+    newValue?: string
+  ) => {
+    const offset = newValue || currentTime - 0.2;
+    setTimes((prev: any) => {
+      const exists = prev?.find((item: any) => item?.id === section?.id);
+
+      if (exists) {
+        return prev.map((item: any) => {
+          if (item?.id === section?.id) {
+            return {
+              ...exists,
+              [type]: offset,
+            };
+          }
+
+          return item;
+        });
+        // return prev.concat({
+        //   ...exists,
+        //   start: currentTime,
+        // });
+      }
+
+      return prev.concat({
+        id: section?.id,
+        [type]: offset,
+      });
+    });
+  };
 
   console.log("SECTION", section);
 
@@ -65,6 +110,76 @@ function SectionView({ section, viewPinyin, setSelected, seek }: any) {
           {section?.input}
         </p>
       )}
+
+      <div className="flex flex-col">
+        {(timeStamp?.roman || section?.roman) && editMode && (
+          <input
+            className=""
+            value={timeStamp?.roman || section?.roman}
+            onChange={(event) => {
+              setTimer("roman", event?.target?.value);
+            }}
+          />
+        )}
+
+        {(timeStamp?.input || section?.input) && editMode && (
+          <input
+            className=""
+            value={timeStamp?.input || section?.input}
+            onChange={(event) => {
+              setTimer("input", event?.target?.value);
+            }}
+          />
+        )}
+
+        {editMode && (
+          <input
+            className="w-full"
+            value={timeStamp?.en || section?.en}
+            onChange={(event) => {
+              setTimer("en", event?.target?.value);
+            }}
+          />
+        )}
+
+        {editMode && (
+          <div className="flex text-gray-400 text-[12px] items-center justify-start mt-4 space-x-2">
+            <div>
+              <input
+                value={timeStamp?.start || section?.start}
+                onChange={(event) => {
+                  setTimer("start", event?.target?.value);
+                }}
+              />
+              <button
+                onClick={() => {
+                  setTimer("start");
+                }}
+              >
+                Set Start{" "}
+              </button>
+            </div>
+
+            <div>
+              <input
+                value={timeStamp?.end || section?.end}
+                onChange={(event) => {
+                  setTimer("end", event?.target?.value);
+                }}
+              />
+
+              <button
+                onClick={() => {
+                  setTimer("end");
+                }}
+              >
+                {" "}
+                Set End{" "}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }
@@ -337,6 +452,7 @@ export const AudioPlayer = () => {
               return (
                 <SectionView
                   seek={seek}
+                  currentTime={currentTime}
                   setSelected={setSelected}
                   viewPinyin={viewPinyin}
                   section={transcription}
@@ -444,9 +560,7 @@ export const AudioPlayer = () => {
             </div>
           )}
 
-          {editMode ? (
-            <ContentEditMode />
-          ) : viewMode === "stats" ? (
+          {viewMode === "stats" ? (
             <div>
               <CharacterAnalytics characterId={characterId} lang={"zh"} />
             </div>

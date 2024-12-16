@@ -34,7 +34,7 @@ export const useListDictionaryMeaningsQuery = (hanzi: string) => {
           }
         );
 
-        return res.json();
+        return (await res.json()) as Meanings[];
       } catch (err) {
         throw err;
       }

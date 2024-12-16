@@ -40,7 +40,9 @@ export const UploadFileButton = (
         onChange={onUploadFileChange}
       />
 
-      <label htmlFor="actual-btn">{props.icon || props?.children || ""}</label>
+      <label htmlFor="actual-btn">
+        {props.icon || props?.children || "Add File"}
+      </label>
     </div>
   );
 };

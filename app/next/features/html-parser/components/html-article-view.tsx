@@ -199,7 +199,12 @@ export const HtmlArticleView = () => {
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (["b"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+      // if (["b"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+      //   event.preventDefault();
+      //   togglePinyin((view) => !view);
+      // }
+
+      if (["p"]?.includes(event.key)) {
         event.preventDefault();
         togglePinyin((view) => !view);
       }
@@ -212,6 +217,10 @@ export const HtmlArticleView = () => {
   }, [togglePinyin]);
 
   // console.log("DATA WITH CTX", dataWithContext);
+
+  if (!url) {
+    return <Nothing message="Please provide a url" />;
+  }
 
   return (
     <div>

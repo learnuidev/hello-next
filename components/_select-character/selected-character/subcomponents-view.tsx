@@ -51,7 +51,7 @@ const HanziSubComponentsView = ({
             >
               <p>{comp?.hanzi}</p>
               <p className="text-gray-400 truncate">
-                {comp?.en || component?.en}
+                {component?.en || comp?.en}
               </p>
             </Link>
           );

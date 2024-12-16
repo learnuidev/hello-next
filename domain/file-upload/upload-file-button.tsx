@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 
 export const UploadFileButton = (
   props: PropsWithChildren & {
+    icon?: any;
+    types?: string[];
     context?: any;
     onSuccess?: (resp: UploadFileResponse) => void;
     className?: string;
@@ -15,16 +17,22 @@ export const UploadFileButton = (
 ) => {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
-  const onUploadFileChange = useUploadFile((resp: UploadFileResponse) => {
-    // alert(JSON.stringify(resp));
-    props?.onSuccess !== undefined && props?.onSuccess(resp);
+  const onUploadFileChange = useUploadFile(
+    (resp: UploadFileResponse) => {
+      // alert(JSON.stringify(resp));
+      props?.onSuccess !== undefined && props?.onSuccess(resp);
 
-    queryClient.invalidateQueries([listUserAssetsQueryKey, authUser?.jwt]);
-  }, props?.context);
+      queryClient.invalidateQueries([listUserAssetsQueryKey, authUser?.jwt]);
+    },
+    props?.context,
+    {
+      types: props?.types,
+    }
+  );
 
   return (
     <div className={cn("space-x-2", props.className)}>
-      <Icons.plusIcon />
+      {!props?.icon && <Icons.plusIcon />}
       <input
         type="file"
         id="actual-btn"
@@ -32,7 +40,7 @@ export const UploadFileButton = (
         onChange={onUploadFileChange}
       />
 
-      <label htmlFor="actual-btn">{props?.children || "Choose File"}</label>
+      <label htmlFor="actual-btn">{props.icon || props?.children || ""}</label>
     </div>
   );
 };

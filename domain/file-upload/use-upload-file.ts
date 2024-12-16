@@ -15,7 +15,7 @@ export interface UploadFileResponse {
   createdAt: number;
 }
 
-export function useUploadFile(cb?: any, ctx?: any) {
+export function useUploadFile(cb?: any, ctx?: any, props?: any) {
   function getFileExtension(file: any) {
     return file.name.split(".").pop().toLowerCase();
   }
@@ -33,6 +33,13 @@ export function useUploadFile(cb?: any, ctx?: any) {
     const fileSize = file.size || 0;
 
     console.log({ extension, contentType });
+
+    if (props?.types && !props?.types?.includes(extension)) {
+      alert("Incorrect file type");
+      e.target.value = "";
+
+      return null;
+    }
 
     console.log("FILE", file);
 
@@ -67,6 +74,7 @@ export function useUploadFile(cb?: any, ctx?: any) {
       })
       .then(async (resp: UploadFileResponse) => {
         console.log("UPLOADED", resp);
+        e.target.value = "";
 
         cb(resp);
       });

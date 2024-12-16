@@ -9,17 +9,27 @@ import { formatTime } from "@/app/(auth)/convos/_play/utils";
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
+import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
+import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
+
+const sizes = {
+  0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
+  1: ["text-sm", "text-2xl", "my-10", "px-[2px]"],
+  2: ["text-[14px]", "text-3xl", "my-12"],
+  3: ["text-[16px]", "text-4xl", "my-12", "px-[4px]"],
+} as any;
 
 function SectionView({
+  activeSubtitle,
   section,
   viewPinyin,
   setSelected,
+  textSize,
   seek,
   currentTime,
 }: any) {
   const { data: context } = useListDictionaryMeaningsQuery(section?.input);
 
-  //   console.log("CTX", context);
   const editMode = useContentEditStore((state) => state.editMode);
   const setEditMode = useContentEditStore((state) => state.setEditMode);
   const resetTimes = useContentEditStore((state) => state.resetTimes);
@@ -60,12 +70,10 @@ function SectionView({
     });
   };
 
-  console.log("SECTION", section);
-
   return (
     <>
       {viewPinyin && context !== undefined && context?.length > 0 ? (
-        <p className="my-8">
+        <p className="my-4">
           {context?.map((item: any) => {
             return (
               <span
@@ -75,14 +83,39 @@ function SectionView({
                 onMouseLeave={() => {
                   setSelected(null);
                 }}
-                className="text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center"
+                className={cn(
+                  "text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center",
+                  textSize?.[3]
+                )}
                 key={JSON.stringify(item)}
               >
                 {viewPinyin && (
                   <span
-                    className={cn("text-xs", item?.pinyin ? "" : "text-black")}
+                    // className={cn(
+                    //   "text-xs",
+                    //   item?.pinyin ? "" : "text-black",
+                    //   textSize?.[0]
+                    // )}
+
+                    className={cn(
+                      section?.pinyin ? "text-gray-500" : "text-black",
+                      "text-sm",
+                      currentTime > section?.start && currentTime < section.end
+                        ? "text-white "
+                        : "text-gray-500",
+
+                      textSize?.[0],
+                      activeSubtitle?.sentence === section?.sentence
+                        ? "text-gray-400"
+                        : "text-gray-600",
+                      currentTime > section?.start && currentTime < section.end
+                        ? "text-white"
+                        : "",
+                      currentTime === 0 ? "text-gray-300" : "",
+                      "text-start"
+                    )}
                   >
-                    {item?.pinyin || "."}
+                    {item?.pinyin || ""}
                   </span>
                 )}
                 <span
@@ -91,7 +124,19 @@ function SectionView({
                   }}
                   //   href={`/nmm/${item?.hanzi}?lang=zh`}
                   //   target="_blank"
-                  className="text-lg sm:text-2xl"
+                  className={cn(
+                    "hover:text-rose-400",
+                    textSize?.[1],
+                    currentTime === 0 ? "text-gray-300" : "",
+
+                    activeSubtitle?.en === section?.en
+                      ? "text-white"
+                      : "text-gray-600",
+                    currentTime > section?.start && currentTime < section.end
+                      ? "text-white"
+                      : "text-gray-400"
+                    // "text-white"
+                  )}
                 >
                   {item?.hanzi}
                 </span>
@@ -186,6 +231,8 @@ function SectionView({
 
 export const AudioPlayer = () => {
   const [textSizeIndex, setTextSizeIndex] = useState(1);
+  const textSize = sizes?.[textSizeIndex] || sizes?.[1];
+
   const [selected, setSelected] = useState<any>(null);
   const [viewPinyin, togglePinyin] = useState(false);
   const [loop, setLoop] = useState<any>(null);
@@ -209,6 +256,8 @@ export const AudioPlayer = () => {
     (subtitle: any) =>
       currentTime > subtitle?.start && currentTime < subtitle.end
   );
+
+  const updateContentMutation = useUpdateContentMutation();
 
   const increaseFontSize = useCallback(() => {
     setTextSizeIndex((prev) => Math.min(3, prev + 1));
@@ -404,6 +453,22 @@ export const AudioPlayer = () => {
 
   const ContentSettingsNavbar = () => (
     <div className="space-x-4 sm:space-x-8 flex items-center">
+      {!content?.audio && (
+        <UploadFileButton
+          icon={<Icons.upload className="text-2xl" />}
+          types={["mp3", "m4a"]}
+          onSuccess={(res) => {
+            return updateContentMutation.mutateAsync({
+              id: content?.id || "",
+              audio: res.sourceUrl,
+              uploadBucketKey: res.uploadBucketKey,
+              s3LinkAddedAt: Date.now(),
+              updateContent: true,
+            });
+          }}
+        />
+      )}
+
       <button
         onClick={() => {
           setEditMode();
@@ -412,7 +477,7 @@ export const AudioPlayer = () => {
         <Icons.gear
           className={cn(
             "sm:text-2xl text-2xl",
-            viewMode === "stats" ? "text-white" : "text-gray-400"
+            editMode ? "text-white" : "text-gray-400"
           )}
         />
       </button>
@@ -451,6 +516,7 @@ export const AudioPlayer = () => {
             {content?.transcriptions?.map((transcription: any) => {
               return (
                 <SectionView
+                  activeSubtitle={activeSubtitle}
                   seek={seek}
                   currentTime={currentTime}
                   setSelected={setSelected}
@@ -569,7 +635,10 @@ export const AudioPlayer = () => {
               {content?.transcriptions?.map((transcription: any) => {
                 return (
                   <SectionView
+                    activeSubtitle={activeSubtitle}
+                    currentTime={currentTime}
                     seek={seek}
+                    textSize={textSize}
                     setSelected={setSelected}
                     viewPinyin={viewPinyin}
                     section={transcription}

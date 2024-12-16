@@ -51,6 +51,7 @@ import {
   faCircleBolt,
   faCitrus,
   faClock,
+  faCloudArrowUp,
   faComputerMouse,
   faConstruction,
   faDatabase,
@@ -328,6 +329,7 @@ export const Icons = {
   magicWand: createFAIcon(faMagicWandSparkles),
   karaoke: createFAIcon(faMicrophoneStand),
   database: createFAIcon(faDatabase),
+  upload: createFAIcon(faCloudArrowUp),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

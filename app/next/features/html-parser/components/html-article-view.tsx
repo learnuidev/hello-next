@@ -294,7 +294,7 @@ export const HtmlArticleView = () => {
         <div>
           <Nothing message="Please provide a url" />
 
-          {history?.length > 0 && (
+          {_history?.length > 0 && (
             <div className="">
               <h2 className="text-center font-light text-gray-400">
                 Recent Searches

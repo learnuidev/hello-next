@@ -398,7 +398,7 @@ export const AudioPlayer = () => {
               });
           }}
         >
-          Save
+          {updateContentMutation?.isLoading ? "Saving..." : "Save"}
         </button>
       )}
 

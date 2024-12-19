@@ -226,8 +226,8 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
                 return updateContentMutation.mutateAsync({
                   id: content?.id || "",
                   audio: res.sourceUrl,
-                  uploadBucketKey: res.uploadBucketKey,
-                  s3LinkAddedAt: Date.now(),
+                  audioUploadBucketKey: res.uploadBucketKey,
+                  audioS3LinkAddedAt: Date.now(),
                   updateContent: true,
                 });
               }}

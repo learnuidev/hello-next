@@ -57,10 +57,6 @@ function SectionView({
 
           return item;
         });
-        // return prev.concat({
-        //   ...exists,
-        //   start: currentTime,
-        // });
       }
 
       return prev.concat({
@@ -69,6 +65,10 @@ function SectionView({
       });
     });
   };
+
+  const selectedSection = times?.find(
+    (time: any) => time?.id === section?.id
+  ) as any;
 
   return (
     <>
@@ -91,12 +91,6 @@ function SectionView({
               >
                 {viewPinyin && (
                   <span
-                    // className={cn(
-                    //   "text-xs",
-                    //   item?.pinyin ? "" : "text-black",
-                    //   textSize?.[0]
-                    // )}
-
                     className={cn(
                       section?.pinyin ? "text-gray-500" : "text-black",
                       "text-sm",
@@ -120,7 +114,7 @@ function SectionView({
                 )}
                 <span
                   onClick={() => {
-                    seek(section?.start);
+                    seek(selectedSection?.start || section?.start);
                   }}
                   //   href={`/nmm/${item?.hanzi}?lang=zh`}
                   //   target="_blank"
@@ -160,7 +154,7 @@ function SectionView({
           )}
           key={JSON.stringify(section)}
           onClick={() => {
-            seek(section?.start);
+            seek(selectedSection?.start || section?.start);
           }}
         >
           {section?.input}
@@ -358,110 +352,6 @@ export const AudioPlayer = () => {
   const setContextTimes = useContentEditStore((state) => state.setContextTimes);
   const contextTimes = useContentEditStore((state) => state.contextTimes);
 
-  const ContentEditor = ({ subtitle }: any) => {
-    const { data: context } = useListDictionaryMeaningsQuery(subtitle?.input);
-
-    const setTimer = (
-      id: string,
-      type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
-      newValue?: string
-    ) => {
-      const offset = newValue || currentTime - 0.2;
-      setContextTimes((prev: any) => {
-        const exists = prev?.find((item: any) => item?.contextId === id);
-
-        if (exists) {
-          return prev.map((item: any) => {
-            if (item?.contextId === id) {
-              return {
-                ...exists,
-                [type]: offset,
-              };
-            }
-
-            return item;
-          });
-          // return prev.concat({
-          //   ...exists,
-          //   start: currentTime,
-          // });
-        }
-
-        return prev.concat({
-          contextId: id,
-          transcriptionId: subtitle?.id,
-          [type]: offset,
-        });
-      });
-    };
-
-    return (
-      <div>
-        {/* <code>
-          <pre>{JSON.stringify(contextTimes || "N/A", null, 4)}</pre>
-        </code> */}
-
-        <h2 className="text-center font-bold">Context Editor</h2>
-        <div>
-          {context?.map((item: any) => {
-            const timeStamp = contextTimes?.find(
-              (val: any) => val?.contextId === item?.id
-            ) as any;
-            return (
-              <div key={JSON.stringify(item)}>
-                <code
-                  onClick={() => {
-                    if (timeStamp?.start) {
-                      seek(timeStamp?.start);
-                    }
-                  }}
-                >
-                  <pre>{JSON.stringify(item, null, 2)}</pre>
-                </code>
-
-                <div className="flex text-gray-400 text-[12px] items-center justify-end space-x-2">
-                  <div>
-                    <input
-                      value={timeStamp?.start}
-                      onChange={(event: any) => {
-                        setTimer(item?.id, "start", event?.target?.value);
-                      }}
-                    />
-                    <button
-                      onClick={() => {
-                        setTimer(item?.id, "start");
-                      }}
-                    >
-                      Set Start{" "}
-                    </button>
-                  </div>
-
-                  <div>
-                    <input
-                      value={timeStamp?.end}
-                      onChange={(event) => {
-                        setTimer(item?.id, "end", event?.target?.value);
-                      }}
-                    />
-
-                    <button
-                      onClick={() => {
-                        setTimer(item?.id, "end");
-                      }}
-                    >
-                      {" "}
-                      Set End{" "}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
-
   const ContentSettingsNavbar = () => (
     <div className="space-x-4 sm:space-x-8 flex items-center">
       {!content?.audio && (
@@ -472,12 +362,44 @@ export const AudioPlayer = () => {
             return updateContentMutation.mutateAsync({
               id: content?.id || "",
               audio: res.sourceUrl,
-              uploadBucketKey: res.uploadBucketKey,
-              s3LinkAddedAt: Date.now(),
+              audioUploadBucketKey: res.uploadBucketKey,
+              audioS3LinkAddedAt: Date.now(),
               updateContent: true,
             });
           }}
         />
+      )}
+
+      {editMode && (
+        <button
+          onClick={() => {
+            const editedTranscriptions = {
+              id: content?.id,
+              transcriptions: content?.transcriptions?.map(
+                (transcription: any) => {
+                  const time = times?.find(
+                    (t: any) => t?.id === transcription?.id
+                  ) as any;
+                  return {
+                    ...transcription,
+                    ...time,
+                  };
+                }
+              ),
+            };
+
+            updateContentMutation
+              .mutateAsync({
+                ...editedTranscriptions,
+              })
+              .then((resp) => {
+                setEditMode();
+                // resetTimes();
+              });
+          }}
+        >
+          Save
+        </button>
       )}
 
       <button
@@ -519,55 +441,6 @@ export const AudioPlayer = () => {
     </div>
   );
 
-  const ContentEditMode = () => {
-    return (
-      <div className="grid grid-cols-2">
-        <div>
-          <div className="px-4 md:px-12">
-            {content?.transcriptions?.map((transcription: any) => {
-              return (
-                <SectionView
-                  activeSubtitle={activeSubtitle}
-                  seek={seek}
-                  currentTime={currentTime}
-                  setSelected={setSelected}
-                  viewPinyin={viewPinyin}
-                  section={transcription}
-                  key={JSON.stringify(transcription)}
-                />
-              );
-            })}
-            {/* <div>
-                <code>
-                  <pre>{JSON.stringify(content, null, 4)}</pre>
-                </code>
-              </div> */}
-          </div>
-        </div>
-
-        <div>
-          <div className="space-x-8 text-2xl">
-            <button>
-              <Icons.database />
-            </button>
-            <button>
-              <Icons.database />
-            </button>
-          </div>
-
-          {content?.transcriptions?.map((subtitle: any) => {
-            return (
-              <ContentEditor
-                key={JSON.stringify(subtitle)}
-                subtitle={subtitle}
-              />
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className="relative">
       <div className="mt-4">
@@ -592,12 +465,6 @@ export const AudioPlayer = () => {
             {content?.title}
           </span>
         </div>
-
-        {/* <div>
-          <code>
-            <pre>{JSON.stringify(data, null, 4)}</pre>
-          </code>
-        </div> */}
 
         <div className="mt-6 mb-32 m-auto relative w-full">
           {viewMode !== "stats" && (
@@ -657,11 +524,6 @@ export const AudioPlayer = () => {
                   />
                 );
               })}
-              {/* <div>
-                <code>
-                  <pre>{JSON.stringify(content, null, 4)}</pre>
-                </code>
-              </div> */}
             </div>
           )}
         </div>
@@ -734,6 +596,12 @@ export const AudioPlayer = () => {
           <ContentSettingsNavbar />
         </section>
       </div>
+
+      {editMode && (
+        <code>
+          <pre>{JSON.stringify(times || "N/A", null, 4)}</pre>
+        </code>
+      )}
     </div>
   );
 };

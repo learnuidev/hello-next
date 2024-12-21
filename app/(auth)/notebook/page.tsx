@@ -17,7 +17,7 @@ export const useListVoices = () => {
   return useQuery<IListVoicesResponse, Error>({
     queryKey: ["elevenlabs/list-voices"],
     queryFn: async () => {
-      const response = await fetch("/api/list-voices", {
+      const response = await fetch("/api/elevenlabs-voices-list-voices", {
         method: "POST",
         headers: {
           Authorization: `${authUser?.jwt}`,

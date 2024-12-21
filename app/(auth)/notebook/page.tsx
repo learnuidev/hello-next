@@ -29,6 +29,40 @@ export const useListVoices = () => {
   });
 };
 
+export const useGetUserSubscription = () => {
+  const { data: authUser } = useCurrentAuthUser();
+  return useQuery<IListVoicesResponse, Error>({
+    queryKey: ["elevenlabs/get-subscription"],
+    queryFn: async () => {
+      const response = await fetch("/api/elevenlabs-user-get-subscription", {
+        method: "POST",
+        headers: {
+          Authorization: `${authUser?.jwt}`,
+        },
+      });
+
+      return response.json();
+    },
+  });
+};
+
+export const useListHistory = () => {
+  const { data: authUser } = useCurrentAuthUser();
+  return useQuery<IListVoicesResponse, Error>({
+    queryKey: ["elevenlabs/list-history"],
+    queryFn: async () => {
+      const response = await fetch("/api/elevenlabs-history-get-all", {
+        method: "POST",
+        headers: {
+          Authorization: `${authUser?.jwt}`,
+        },
+      });
+
+      return response.json();
+    },
+  });
+};
+
 function VoiceItem({ voice }: { voice: ElevenlabsVoice }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [play, { stop, duration, audio }] = useSound(voice?.preview_url) as any;
@@ -67,6 +101,8 @@ function VoiceItem({ voice }: { voice: ElevenlabsVoice }) {
 
 export default function NotebookLM() {
   const { data: voices, isLoading } = useListVoices();
+  const { data: subscription } = useGetUserSubscription();
+  const { data: history } = useListHistory();
   const [selectedUseCase, setUseCase] = useState("conversational");
 
   if (isLoading) {
@@ -114,7 +150,12 @@ export default function NotebookLM() {
 
       <section>
         <code>
-          <pre>{JSON.stringify(conversationalVoices, null, 4)}</pre>
+          <pre>{JSON.stringify(history, null, 4)}</pre>
+        </code>
+      </section>
+      <section>
+        <code>
+          <pre>{JSON.stringify(subscription, null, 4)}</pre>
         </code>
       </section>
     </div>

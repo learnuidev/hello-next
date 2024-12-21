@@ -10,6 +10,7 @@
     "server": "flask run"
   },
   "dependencies": {
+    "@11labs/react": "^0.0.4",
     "@codesandbox/sandpack-react": "^2.19.10",
     "@distube/ytdl-core": "^4.15.1",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",

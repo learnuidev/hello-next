@@ -26,7 +26,28 @@ import { ContentItemV2 } from "./content-item-v2/content-item-v2";
 // useConvosStore
 
 export default function ContentItem() {
-  return <ContentItemV2 />;
+  const params = useParams() as {
+    "content-id": string;
+  };
+
+  const lessonId = params["content-id"];
+
+  return (
+    <main>
+      <div className="px-4 md:px-32">
+        <ConvosNavBar />
+
+        <div className="mb-24">
+          <ConvoDetails lessonId={lessonId} />
+          {/* <ContentItemV2 /> */}
+        </div>
+      </div>
+
+      {/* <FloatingNavbar /> */}
+    </main>
+  );
+
+  // return <ContentItemV2 />;
 }
 
 function Convos_old() {

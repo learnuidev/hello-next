@@ -12,6 +12,7 @@ import { YouTubePlayer } from "@/components/youtube-page/youtube-player";
 import { AI } from "./ai";
 import { PlayV2 } from "./_play-v2/play-v2";
 import { PlayV3 } from "./play-v3/play-v3";
+import { AudioPlayer } from "./[content-id]/content-item-v2/components/audio-player/audio-player";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const viewType = useConvosStore((state: any) => state?.viewType);
@@ -47,7 +48,9 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     //   </div>
     // );
 
-    return <PlayV3 contentId={lessonId} />;
+    return <AudioPlayer />;
+
+    // return <PlayV3 contentId={lessonId} />;
   }
 
   if (viewType === "write") {

@@ -234,7 +234,7 @@ export const CharacterTitle = (props: any) => {
         </h1>
       )}
 
-      <h2 className="dark:text-gray-500 text-gray-700 font-light truncate">
+      <h2 className="dark:text-gray-500 text-gray-700 font-light">
         {finalEnVal?.split("/")?.slice(0, 4)?.join("/")}
       </h2>
     </div>

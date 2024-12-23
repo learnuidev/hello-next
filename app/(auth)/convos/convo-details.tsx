@@ -13,11 +13,22 @@ import { AI } from "./ai";
 import { PlayV2 } from "./_play-v2/play-v2";
 import { PlayV3 } from "./play-v3/play-v3";
 import { AudioPlayer } from "./[content-id]/content-item-v2/components/audio-player/audio-player";
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const viewType = useConvosStore((state: any) => state?.viewType);
 
-  const { data: lesson2 } = useGetContentQuery({ contentId: lessonId });
+  const { data: lesson2, isLoading } = useGetContentQuery({
+    contentId: lessonId,
+  });
+
+  if (isLoading) {
+    return (
+      <div>
+        <LottieLoadingAnimation />
+      </div>
+    );
+  }
 
   // const lesson2 = contentsArr?.find((content: any) => content?.id === lessonId);
 

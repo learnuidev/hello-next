@@ -131,7 +131,7 @@ export function KaraokeModeV3({
               ? yMap?.[currentIndex - index]
               : 150,
           scale: isCurrentLyric
-            ? 1
+            ? 1.5
             : isPastLyric
               ? scaleMap?.[currentIndex - index]
               : 0.7,
@@ -163,7 +163,7 @@ export function KaraokeModeV3({
         <p className="text-gray-400 font-light text-xl">
           {lyric?.pinyin || lyric?.roman}
         </p>
-        <p>{lyric?.input}</p>
+        <p className="text-3xl">{lyric?.input}</p>
 
         <p className="text-gray-500 font-bold text-xl">{lyric?.en}</p>
       </motion.div>

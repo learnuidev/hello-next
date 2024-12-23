@@ -380,7 +380,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                 : "col-span-12 md:col-span-4"
             }
           >
-            <KaraokeMode
+            <KaraokeModeV3
               isPlaying={isPlaying}
               playerRef={playerRef}
               transcriptions={transcriptions}

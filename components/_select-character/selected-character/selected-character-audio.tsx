@@ -17,9 +17,10 @@ export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
 
   const { data } = useListCharacterContentsQuery(props.characterId);
 
-  const containsAudio = data?.find((item: any) =>
+  const containsAudios = data?.filter((item: any) =>
     ["wav", "mp3"]?.includes(item?.extension)
   );
+  const containsAudio = containsAudios?.[containsAudios?.length - 1];
 
   const addCharacterContentMutation = useAddCharacterContentMutation();
 
@@ -27,11 +28,22 @@ export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
 
   if (containsAudio) {
     return (
-      <div className="px-2">
+      <div className="px-2 space-x-8 flex items-center">
         <AudioComponent
           key={JSON.stringify(containsAudio)}
           currentPhrase={containsAudio}
         />
+
+        <UploadFileButton
+          onSuccess={(resp) => {
+            addCharacterContentMutation.mutateAsync({
+              content: props.characterId,
+              ...resp,
+            });
+          }}
+        >
+          Upload Another
+        </UploadFileButton>
       </div>
     );
   } else {

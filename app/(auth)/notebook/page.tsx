@@ -12,7 +12,7 @@ import useSound from "use-sound";
 interface IListVoicesResponse {
   voices: ElevenlabsVoice[];
 }
-export const useListVoices = () => {
+const useListVoices = () => {
   const { data: authUser } = useCurrentAuthUser();
   return useQuery<IListVoicesResponse, Error>({
     queryKey: ["elevenlabs/list-voices"],
@@ -29,7 +29,7 @@ export const useListVoices = () => {
   });
 };
 
-export const useGetUserSubscription = () => {
+const useGetUserSubscription = () => {
   const { data: authUser } = useCurrentAuthUser();
   return useQuery<IListVoicesResponse, Error>({
     queryKey: ["elevenlabs/get-subscription"],
@@ -46,7 +46,7 @@ export const useGetUserSubscription = () => {
   });
 };
 
-export const useListHistory = () => {
+const useListHistory = () => {
   const { data: authUser } = useCurrentAuthUser();
   return useQuery<IListVoicesResponse, Error>({
     queryKey: ["elevenlabs/list-history"],
@@ -148,14 +148,19 @@ export default function NotebookLM() {
         })}
       </div>
 
-      <section>
+      {/* <section>
         <code>
           <pre>{JSON.stringify(history, null, 4)}</pre>
+        </code>
+      </section> */}
+      <section>
+        <code>
+          <pre>{JSON.stringify(subscription, null, 4)}</pre>
         </code>
       </section>
       <section>
         <code>
-          <pre>{JSON.stringify(subscription, null, 4)}</pre>
+          <pre>{JSON.stringify(conversationalVoices, null, 4)}</pre>
         </code>
       </section>
     </div>

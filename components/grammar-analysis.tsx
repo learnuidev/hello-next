@@ -79,7 +79,7 @@ export function GrammarAnalysis({
                           {cleanHanzi}
                         </Link>
                         <Link
-                          className=" text-gray-600 dark:text-gray-400"
+                          className=" text-gray-900 font-semibold dark:text-gray-400"
                           href={`/nmm/${cleanHanzi}`}
                         >
                           {analysis?.pinyin}
@@ -116,7 +116,7 @@ export function GrammarAnalysis({
                   </div>
 
                   <Link
-                    className=" text-gray-500"
+                    className="text-gray-800 dark:text-gray-500"
                     href={
                       lang
                         ? `/nmm/${cleanHanzi}?lang=${lang}`
@@ -149,7 +149,7 @@ export function GrammarAnalysis({
                   </Link>
 
                   <Link
-                    className=" text-gray-400"
+                    className="text-gray-800 dark:text-gray-500"
                     href={
                       lang
                         ? `/nmm/${cleanInput}?lang=${lang}`
@@ -174,6 +174,9 @@ export function GrammarAnalysis({
 
   return grammarAnalysis ? (
     <div>
+      <h1 className="text-xl text-center font-bold dark:text-gray-400 text-gray-800 mt-4 md:mt-0">
+        Grammar Analysis
+      </h1>
       {isGrammarAnalysisLoading ? (
         <div className="flex flex-col space-y-3">
           <Skeleton className="h-[125px] w-[250px] rounded-xl" />

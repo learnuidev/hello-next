@@ -31,7 +31,12 @@ export const UploadFileButton = (
   );
 
   return (
-    <div className={cn("space-x-2", props.className)}>
+    <div
+      className={cn(
+        "space-x-2 text-gray-400 dark:text-gray-700",
+        props.className
+      )}
+    >
       {!props?.icon && <Icons.plusIcon />}
       <input
         type="file"

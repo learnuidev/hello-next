@@ -10,7 +10,7 @@ export const SelectedCharacterContentsButton = ({
     <button
       className={cn(
         "text-xl transition",
-        view === "content" ? "text-white" : "text-gray-400"
+        view === "content" ? "dark:text-white text-rose-400" : "text-gray-400"
       )}
       onClick={() => {
         setView("content");

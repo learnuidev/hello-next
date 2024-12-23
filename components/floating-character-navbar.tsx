@@ -86,12 +86,12 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
   return (
     <TheDock isAutomatic={isAutomatic} className="bottom-4">
       <div className="flex items-center w-full justify-center">
-        <div className="px-8  py-2 bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
+        <div className="px-8  py-2 bg-gray-100 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
           <div className="space-x-8 flex justify-center items-center w-full">
             <button
               className={cn(
                 "text-xl",
-                brightMode ? "dark:text-white" : "dark:text-gray-500"
+                brightMode ? "dark:text-white text-black" : "dark:text-gray-500"
               )}
               onClick={() => {
                 setBrightMode((prev: any) => !prev);
@@ -102,7 +102,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
             </button>
 
             <button
-              className="text-xl"
+              className="text-xl text-black dark:text-white"
               onClick={() => {
                 if (characterId?.length > 1) {
                   router.push(`/review?input=${characterId}`);
@@ -121,7 +121,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
             </button>
             {multiSentence && (
               <button
-                className="text-xl"
+                className="text-xl text-black dark:text-white"
                 onClick={() => {
                   if (view === "zoom") {
                     setView("unzoom");
@@ -140,7 +140,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
             {!selectedComp2 ? null : characterId?.length >
               3 ? null : isLoading || isAlreadyLearned ? null : (
               <button
-                className="text-xl"
+                className="text-xl text-black dark:text-white"
                 onClick={() => {
                   addCharacterMutation?.mutateAsync({
                     lang: lang,
@@ -163,6 +163,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
             currentCharacter?.status === "forgotten" ? null : (
               <button
                 disabled={updateCharacterStatusMutation?.isLoading}
+                className="text-xl text-black dark:text-white"
                 onClick={() => {
                   updateCharacterStatusMutation.mutateAsync({
                     characterId: currentCharacter?.id,
@@ -194,7 +195,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
               isSuperAdmin &&
               !selectedComp2 && (
                 <button
-                  className="text-xl"
+                  className="text-xl text-black dark:text-white"
                   disabled={
                     discoverMutation.isLoading || discoverMutation.isSuccess
                   }
@@ -220,7 +221,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
               )}
             {currentCharacter?.status === "forgotten" && (
               <button
-                className="text-xl"
+                className="text-xl text-black dark:text-white"
                 disabled={deleteComponentMutation.isLoading}
                 onClick={() => {
                   updateCharacterStatusMutation.mutateAsync({

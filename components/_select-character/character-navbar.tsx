@@ -38,6 +38,12 @@ export const CharacterNavbar = (props: SelectedCharacterProps) => {
     (item: any) => (item?.input || item?.hanzi) === characterId
   )?.[0];
 
+  const styleFn = (currentView: string) => {
+    return view === currentView
+      ? "dark:text-white text-rose-400"
+      : "dark:text-gray-400 text-gray-600";
+  };
+
   return (
     <div className="flex my-4 justify-start items-center w-full">
       <div className="flex jusify-between items-center space-x-32">
@@ -52,10 +58,7 @@ export const CharacterNavbar = (props: SelectedCharacterProps) => {
           </button>
 
           <button
-            className={cn(
-              "text-xl transition",
-              view === "home" ? "text-white" : "text-gray-400"
-            )}
+            className={cn("text-xl transition", styleFn("home"))}
             onClick={() => {
               setView("home");
             }}
@@ -64,10 +67,7 @@ export const CharacterNavbar = (props: SelectedCharacterProps) => {
           </button>
           {filteredRelatedHskWords?.length > 0 && (
             <button
-              className={cn(
-                "text-xl transition",
-                view === "words" ? "text-white" : "text-gray-400"
-              )}
+              className={cn("text-xl transition", styleFn("words"))}
               onClick={() => {
                 setView("words");
               }}
@@ -77,10 +77,7 @@ export const CharacterNavbar = (props: SelectedCharacterProps) => {
           )}
           {relatedSentences?.length > 0 && (
             <button
-              className={cn(
-                "text-xl transition",
-                view === "sentences" ? "text-white" : "text-gray-400"
-              )}
+              className={cn("text-xl transition", styleFn("sentences"))}
               onClick={() => {
                 setView("sentences");
               }}
@@ -91,10 +88,7 @@ export const CharacterNavbar = (props: SelectedCharacterProps) => {
 
           {superComponents?.length > 0 && (
             <button
-              className={cn(
-                "text-xl transition",
-                view === "super-components" ? "text-white" : "text-gray-400"
-              )}
+              className={cn("text-xl transition", styleFn("super-components"))}
               onClick={() => {
                 setView("super-components");
               }}
@@ -108,10 +102,7 @@ export const CharacterNavbar = (props: SelectedCharacterProps) => {
           )}
           {characterId?.length > 1 && (
             <button
-              className={cn(
-                "text-xl transition",
-                view === "analytics" ? "text-white" : "text-gray-400"
-              )}
+              className={cn("text-xl transition", styleFn("analytics"))}
               onClick={() => {
                 setView("analytics");
               }}
@@ -127,9 +118,8 @@ export const CharacterNavbar = (props: SelectedCharacterProps) => {
             <button
               className={cn(
                 "text-xl transition",
-                view === "similar-looking-characters"
-                  ? "text-white"
-                  : "text-gray-400"
+
+                styleFn("similar-looking-characters")
               )}
               onClick={() => {
                 setView("similar-looking-characters");
@@ -145,10 +135,7 @@ export const CharacterNavbar = (props: SelectedCharacterProps) => {
 
           {characterId?.length === 1 && (
             <button
-              className={cn(
-                "text-xl transition",
-                view === "pinyin" ? "text-white" : "text-gray-400"
-              )}
+              className={cn("text-xl transition", styleFn("pinyin"))}
               onClick={() => {
                 setView("pinyin");
               }}

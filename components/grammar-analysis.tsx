@@ -8,6 +8,7 @@ import { useGetHskWordHandler } from "@/app/(auth)/convos/ai";
 import { cleanString } from "@/data/convos/bm1/level_7";
 import Link from "next/link";
 import { ScrollArea } from "./ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 export function GrammarAnalysis({
   contentId,
@@ -46,113 +47,127 @@ export function GrammarAnalysis({
         : "grid grid-cols-1 gap-4 mt-4";
 
     const getHskWordHandler = useGetHskWordHandler();
+
     return (
-      <div className={divStyles}>
-        {grammarAnalysisFinal?.map((analysis) => {
-          if (analysis?.hanzi) {
-            const hskWord = getHskWordHandler(analysis);
-            const cleanHanzi = cleanString(analysis?.hanzi);
-            return (
-              <div
-                key={cleanHanzi}
-                className="flex items-start flex-col font-light"
-              >
-                <div className="flex items-start flex-row space-x-2">
-                  {analysis?.hanzi?.length < 4 ? (
-                    <div className="flex space-x-2">
-                      <Link
-                        className="text-gray-300"
-                        href={
-                          lang
-                            ? `/nmm/${cleanHanzi}?lang=${lang}`
-                            : `/nmm/${cleanHanzi}`
-                        }
-                      >
-                        {cleanHanzi}
-                      </Link>
-                      <Link
-                        className=" text-gray-400"
-                        href={`/nmm/${cleanHanzi}`}
-                      >
-                        {analysis?.pinyin}
-                      </Link>
-                    </div>
-                  ) : (
-                    <>
-                      <Link
-                        className=" text-gray-400"
-                        href={`/nmm/${cleanHanzi}`}
-                      >
-                        {analysis?.pinyin}
-                      </Link>
+      <div className="rounded-2xl">
+        <div
+          className={cn(
+            divStyles,
+            "shadows-sm shadow-2 shadow-black p-8 bg-gray-50 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden"
+          )}
+        >
+          {grammarAnalysisFinal?.map((analysis) => {
+            if (analysis?.hanzi) {
+              const hskWord = getHskWordHandler(analysis);
+              const cleanHanzi = cleanString(analysis?.hanzi);
+              return (
+                <div
+                  key={cleanHanzi}
+                  className="flex items-start flex-col font-light"
+                >
+                  <div className="flex items-start flex-row space-x-2">
+                    {analysis?.hanzi?.length < 4 ? (
+                      <div className="flex space-x-2">
+                        <Link
+                          className="text-gray-900 dark:text-gray-300"
+                          href={
+                            lang
+                              ? `/nmm/${cleanHanzi}?lang=${lang}`
+                              : `/nmm/${cleanHanzi}`
+                          }
+                        >
+                          {cleanHanzi}
+                        </Link>
+                        <Link
+                          className=" text-gray-600 dark:text-gray-400"
+                          href={`/nmm/${cleanHanzi}`}
+                        >
+                          {analysis?.pinyin}
+                        </Link>
+                      </div>
+                    ) : (
+                      <>
+                        <Link
+                          className=" text-gray-600 dark:text-gray-400"
+                          href={`/nmm/${cleanHanzi}`}
+                        >
+                          {analysis?.pinyin}
+                        </Link>
 
-                      <Link
-                        className="text-gray-300 font-light text-xl"
-                        href={
-                          lang
-                            ? `/nmm/${cleanHanzi}?lang=${lang}`
-                            : `/nmm/${cleanHanzi}`
-                        }
-                      >
-                        {cleanHanzi}
-                      </Link>
-                    </>
-                  )}
+                        <Link
+                          className="text-gray-900 dark:text-gray-300 font-light text-xl"
+                          href={
+                            lang
+                              ? `/nmm/${cleanHanzi}?lang=${lang}`
+                              : `/nmm/${cleanHanzi}`
+                          }
+                        >
+                          {cleanHanzi}
+                        </Link>
+                      </>
+                    )}
 
-                  {hskWord?.level ? (
-                    <p className="text-gray-600"> | hsk {hskWord?.level} </p>
-                  ) : null}
+                    {hskWord?.level ? (
+                      <p className="text-gray-400 dark:text-gray-600">
+                        {" "}
+                        | hsk {hskWord?.level}{" "}
+                      </p>
+                    ) : null}
+                  </div>
+
+                  <Link
+                    className=" text-gray-500"
+                    href={
+                      lang
+                        ? `/nmm/${cleanHanzi}?lang=${lang}`
+                        : `/nmm/${cleanHanzi}`
+                    }
+                  >
+                    {analysis?.en || hskWord?.en}
+                  </Link>
                 </div>
+              );
+            } else {
+              const cleanInput = cleanString(
+                analysis?.original || analysis?.input || ""
+              );
 
-                <Link
-                  className=" text-gray-500"
-                  href={
-                    lang
-                      ? `/nmm/${cleanHanzi}?lang=${lang}`
-                      : `/nmm/${cleanHanzi}`
-                  }
+              return (
+                <div
+                  key={analysis?.input}
+                  className="flex items-start flex-col"
                 >
-                  {analysis?.en || hskWord?.en}
-                </Link>
-              </div>
-            );
-          } else {
-            const cleanInput = cleanString(
-              analysis?.original || analysis?.input || ""
-            );
+                  <Link
+                    className="text-gray-300 font-light text-xl"
+                    href={
+                      lang
+                        ? `/nmm/${cleanInput}?lang=${lang}`
+                        : `/nmm/${cleanInput}`
+                    }
+                  >
+                    {analysis?.input}
+                  </Link>
 
-            return (
-              <div key={analysis?.input} className="flex items-start flex-col">
-                <Link
-                  className="text-gray-300 font-light text-xl"
-                  href={
-                    lang
-                      ? `/nmm/${cleanInput}?lang=${lang}`
-                      : `/nmm/${cleanInput}`
-                  }
-                >
-                  {analysis?.input}
-                </Link>
+                  <Link
+                    className=" text-gray-400"
+                    href={
+                      lang
+                        ? `/nmm/${cleanInput}?lang=${lang}`
+                        : `/nmm/${cleanInput}`
+                    }
+                    // className="w-16"
+                  >
+                    {analysis?.en}
+                  </Link>
 
-                <Link
-                  className=" text-gray-400"
-                  href={
-                    lang
-                      ? `/nmm/${cleanInput}?lang=${lang}`
-                      : `/nmm/${cleanInput}`
-                  }
-                  // className="w-16"
-                >
-                  {analysis?.en}
-                </Link>
-
-                <p className="text-gray-500 font-extralight">
-                  {analysis?.explanation}
-                </p>
-              </div>
-            );
-          }
-        })}
+                  <p className="text-gray-500 font-extralight">
+                    {analysis?.explanation}
+                  </p>
+                </div>
+              );
+            }
+          })}
+        </div>
       </div>
     );
   };

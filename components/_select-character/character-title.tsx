@@ -84,7 +84,7 @@ export const CharacterTitle = (props: any) => {
     <div className="flex flex-col items-start space-y-2 w-full">
       {brightMode ? (
         pinyins?.length > 1 ? (
-          <h2 className="text-gray-400 font-extralight">
+          <h2 className="text-gray-900 dark:text-gray-400  font-extralight">
             {pinyins?.map((pinyin, i, ctx) => {
               return (
                 <Link
@@ -109,7 +109,7 @@ export const CharacterTitle = (props: any) => {
             // onChange={(event) => {
             //   setPinyin(event.target.value);
             // }}
-            className="text-gray-400  font-extralight focus-visible:ring-0 focus-visible:ring-transparent w-full"
+            className="text-gray-900 dark:text-gray-400  font-extralight focus-visible:ring-0 focus-visible:ring-transparent w-full"
           >
             {pinyins?.[0] ||
               pinyinInput ||
@@ -234,7 +234,9 @@ export const CharacterTitle = (props: any) => {
         </h1>
       )}
 
-      <h2 className="text-gray-500 font-light">{finalEnVal}</h2>
+      <h2 className="dark:text-gray-500 text-gray-700 font-light truncate">
+        {finalEnVal?.split("/")?.slice(0, 4)?.join("/")}
+      </h2>
     </div>
   );
 };

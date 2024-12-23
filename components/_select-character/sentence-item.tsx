@@ -161,7 +161,7 @@ export const SentenceItem = (props: any) => {
                 className={`${
                   selectedChar?.toLowerCase() === val?.toLowerCase()
                     ? `${color} font-normal`
-                    : "text-gray-300 dark:text-gray-300"
+                    : "text-gray-700 dark:text-gray-300"
                 }`}
               >
                 {val}
@@ -171,7 +171,7 @@ export const SentenceItem = (props: any) => {
           })}
         </span>
         {lang !== "en" && (
-          <span className="text-[16px] text-gray-500">
+          <span className="text-[16px] dark:text-gray-500 text-gray-400">
             {currentPhrase?.en || currentPhrase?.title}
           </span>
         )}

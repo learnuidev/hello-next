@@ -272,7 +272,7 @@ export const CharacterSentences = (props: { characterId: string }) => {
             {(contents || [])?.length > 0 && (
               <TabsTrigger
                 value="content"
-                className="px-0 data-[state=active]:text-white text-gray-400"
+                className="px-0 dark:data-[state=active]:text-white data-[state=active]:text-black text-gray-700 dark:text-gray-400"
               >
                 <Icons.content className="text-2xl" />
               </TabsTrigger>
@@ -281,7 +281,7 @@ export const CharacterSentences = (props: { characterId: string }) => {
             {uniqueAnswerIds?.length > 0 && (
               <TabsTrigger
                 value="answers"
-                className="px-0 data-[state=active]:text-white text-gray-400"
+                className="px-0 dark:data-[state=active]:text-white data-[state=active]:text-black text-gray-700 dark:text-gray-400"
               >
                 <Icons.info className="text-2xl" />
               </TabsTrigger>
@@ -289,7 +289,7 @@ export const CharacterSentences = (props: { characterId: string }) => {
 
             <TabsTrigger
               value="ai"
-              className="px-0 data-[state=active]:text-white text-gray-400"
+              className="px-0 dark:data-[state=active]:text-white data-[state=active]:text-black text-gray-700 dark:text-gray-400"
             >
               <Icons.ai className="text-2xl" />
             </TabsTrigger>

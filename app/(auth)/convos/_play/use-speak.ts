@@ -54,7 +54,12 @@ function getLang(id = "zh") {
   return langVars?.filter((lang) => lang[1] === id)?.[0]?.[0] || "zh-CN";
 }
 
-export const useSpeak = (defLang = "zh") => {
+export const useSpeak = (
+  defLang = "zh",
+  opts = {
+    utterRate: 0.6,
+  }
+) => {
   const lang = getLang(defLang);
   const synthRef = useRef(window.speechSynthesis);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -100,7 +105,7 @@ export const useSpeak = (defLang = "zh") => {
       );
     };
 
-    utter.rate = 0.6;
+    utter.rate = opts?.utterRate || 0.6;
     utter.lang = lang;
 
     // utter.voice = selecectedVoice?.voice;

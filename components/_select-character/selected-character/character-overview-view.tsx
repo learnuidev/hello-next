@@ -52,13 +52,13 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
           // "dark:bg-[rgb(11,12,13)] bg-gray-50 px-8 rounded-2xl"
         )}
       >
-        <div className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-8 rounded-2xl">
+        <div className="dark:bg-[rgb(11,12,13)] bg-gray-50 sm:p-8 p-2 rounded-2xl">
           <SelectedCharacterHeader {...props} />
         </div>
 
-        <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-8 rounded-2xl mt-8">
+        <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:p-8 rounded-2xl mt-8">
           <div>
-            <div className="mt-8 ">
+            <div className="mt-8">
               <Tabs defaultValue="overview">
                 {/* <Tabs defaultValue="dé"> */}
                 <div>
@@ -183,7 +183,7 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
                   <CharacterSentences {...props} />
                 </ScrollArea>
               ) : (
-                <div className="hidden md:block space-y-2 h-[700px] rounded-mdp-4">
+                <div className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
                   <CharacterSentences {...props} />
                 </div>
               )}

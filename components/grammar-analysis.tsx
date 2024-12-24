@@ -53,7 +53,7 @@ export function GrammarAnalysis({
         <div
           className={cn(
             divStyles,
-            "shadows-sm shadow-2 shadow-black p-8 bg-gray-50 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden"
+            "shadows-sm shadow-2 shadow-black p-2 sm:p-8 bg-gray-50 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden mt-8 sm:mt-0"
           )}
         >
           {grammarAnalysisFinal?.map((analysis) => {

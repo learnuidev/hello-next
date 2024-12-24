@@ -63,7 +63,7 @@ function PhraseItem({
     >
       <div
         className={cn(
-          `max-w-[70%] rounded-lg p-2`,
+          `max-w-full sm:max-w-[70%] rounded-lg p-2`,
           message.sourceLang === "en"
             ? "dark:bg-[rgb(21,22,23)] bg-blue-500 text-white"
             : "dark:bg-[rgb(21,22,23)] bg-white",
@@ -76,18 +76,18 @@ function PhraseItem({
             {showPinyin && (
               <p className="text-gray-400 font-extralight">{message?.pinyin}</p>
             )}
-            <p className="text-2xl">
+            <p className="text-xl sm:text-2xl">
               {message?.output
                 ?.replaceAll(/&quot;/g, '"')
                 ?.replaceAll(/&#39;/g, "'")}
             </p>
-            <p className="text-gray-500">{message.input}</p>
+            <p className="text-gray-500 text-sm sm:text-md">{message.input}</p>
           </div>
 
-          <div className="mt-2 flex justify-end">
+          <div className="flex justify-end">
             <button
               className={cn(
-                "text-xl border-[1px] border-gray-700 dark:hover:border-gray-500 w-10 h-10 rounded-full"
+                "sm:text-xl text-[16px] border-[1px] border-gray-700 dark:hover:border-gray-500 w-6 h-6 sm:w-10 sm:h-10 rounded-full"
               )}
               onClick={() => {
                 speak(message?.output);

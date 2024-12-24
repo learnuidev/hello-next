@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useJwtToken } from "../html-parser/hooks/use-jwt-token";
+import { Button } from "@/components/ui/button";
 
 const useAddTranslationMutation = () => {
   const token = useJwtToken();
@@ -174,6 +175,24 @@ export const PhraseUI = () => {
 
   const queryClient = useQueryClient();
 
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    SpeechRecognition.stopListening();
+
+    const transcriptExists = inputTranscript || transcript;
+
+    const params = getInput(transcriptExists);
+
+    if (Boolean(transcriptExists)) {
+      addTranslation.mutateAsync(params).then((resp) => {
+        setInputTranscript("");
+        resetTranscript();
+
+        queryClient.refetchQueries([listTranslationsQueryKey, contextId]);
+      });
+    }
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Chat area */}
@@ -188,7 +207,7 @@ export const PhraseUI = () => {
           </Link>
         </div>
         {/* Messages */}
-        <ScrollArea className="flex-1 p-4 dark:bg-[rgb(11,12,13)] mb-24 bg-black rounded">
+        <ScrollArea className="flex-1 p-4 dark:bg-[rgb(11,12,13)] mb-48 bg-black rounded">
           {translations?.length === 0 ? (
             <Nothing icon={Icons.ai} message={"Say something..."} />
           ) : (
@@ -210,7 +229,7 @@ export const PhraseUI = () => {
         <div className="absolute w-full bottom-0 dark:bg-[rgb(21,22,23)] p-2 rounded bg-white border-t dark:border-gray-700 flex">
           <div className="flex flex-col w-full items-start">
             <form
-              onSubmit={() => {}}
+              onSubmit={handleSubmit}
               className="w-full dark:bg-[rgb(21,22,23)] bg-white dark:border-gray-700 flex"
             >
               <textarea
@@ -219,11 +238,11 @@ export const PhraseUI = () => {
                 }}
                 value={inputTranscript || transcript}
                 placeholder="Type a message..."
-                className="flex-1 mr-2 px-2 py-4 dark:bg-[rgb(21,22,23)]"
+                className="flex-1 mr-2 px-2 py-4 dark:bg-[rgb(21,22,23)] border-transparent focus:border-transparent focus:ring-0 focus:outline-none resize-none"
               />
-              {/* <Button type="submit">
-                <SendHorizontal className="h-4 w-4" />
-              </Button> */}
+              <Button type="submit">
+                <Icons.paperPlane className="text-xl dark:text-gray-600 dark:hover:text-white text-gray-700" />
+              </Button>
             </form>
 
             <div className="flex justify-between mt-4 w-full items-center">
@@ -239,7 +258,7 @@ export const PhraseUI = () => {
                   <img
                     src="https://static.vecteezy.com/system/resources/previews/022/120/365/non_2x/china-flag-round-shape-free-png.png"
                     alt="Chinese flag"
-                    className="h-6"
+                    className="h-8"
                   />
                 </button>
                 <button
@@ -251,7 +270,7 @@ export const PhraseUI = () => {
                   <img
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/United-kingdom_flag_icon_round.svg/2048px-United-kingdom_flag_icon_round.svg.png"
                     alt="Chinese flag"
-                    className="h-6"
+                    className="h-8"
                   />
                 </button>
               </div>
@@ -322,7 +341,7 @@ export const PhraseUI = () => {
                     "text-xl border-[1px] border-gray-700 hover:border-gray-500 rounded-full w-10 h-10"
                   )}
                   onClick={() => {
-                    SpeechRecognition.stopListening();
+                    // SpeechRecognition.stopListening();
                     resetTranscript();
                   }}
                 >

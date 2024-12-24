@@ -87,6 +87,7 @@ import {
   faMobile,
   faMusic,
   faNotebook,
+  faPaperPlaneTop,
   faPenToSquare,
   faPhotoFilm,
   faPlanetRinged,
@@ -332,6 +333,7 @@ export const Icons = {
   database: createFAIcon(faDatabase),
   upload: createFAIcon(faCloudArrowUp),
   robot: createFAIcon(faRobotAstromech),
+  paperPlane: createFAIcon(faPaperPlaneTop),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

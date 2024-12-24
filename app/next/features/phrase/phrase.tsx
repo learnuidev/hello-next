@@ -160,19 +160,12 @@ export const _Shuo = () => {
 
   const queryClient = useQueryClient();
 
-  //   if (!phrase) {
-  //     return null;
-  //   }
-
-  console.log("TRANSLATIONS", translations);
-
   return (
     <div>
-      {/* <div>
-        <code>
-          <pre>{JSON.stringify(translations || [], null, 4)}</pre>
-        </code>
-      </div> */}
+      <Link href="/next?feature-id=phrase" className="text-3xl mt-8 block">
+        <Icons.xMark />{" "}
+      </Link>
+
       <section className="flex justify-start flex-col w-full items-center mt-32">
         {showPinyin && (
           <p className="text-gray-500 text-2xl">{phrase?.pinyin}</p>
@@ -243,7 +236,13 @@ export const _Shuo = () => {
             }
           }}
         >
-          {listening ? <Icons.stop /> : <Icons.microphone />}
+          {addTranslation?.isLoading ? (
+            <Icons.loadingSpinner spinPulse />
+          ) : listening ? (
+            <Icons.stop />
+          ) : (
+            <Icons.microphone />
+          )}
         </button>
         <button
           className={cn(
@@ -372,6 +371,22 @@ export const _Shuo = () => {
   );
 };
 
+function PhraseSettings() {
+  return (
+    <div>
+      <div className="my-8 flex justify-between items-center">
+        <Link href="/next?feature-id=phrase" className="text-3xl">
+          <Icons.xMark />{" "}
+        </Link>
+
+        <h1> Settings</h1>
+
+        <div></div>
+      </div>
+    </div>
+  );
+}
+
 export const Phrase = () => {
   const router = useRouter();
 
@@ -381,9 +396,14 @@ export const Phrase = () => {
 
   const searchParams = useSearchParams();
   const contextId = searchParams?.get("contextId");
+  const view = searchParams?.get("view");
 
   if (contextId) {
     return <_Shuo />;
+  }
+
+  if (view === "settings") {
+    return <PhraseSettings />;
   }
   return (
     <div>
@@ -412,14 +432,14 @@ export const Phrase = () => {
           <Icons.verticalStack className="text-5xl" />
           <span className="">History</span>
         </button>
-        <button
+        <Link
           className="flex flex-col items-center gap-4 hover:text-white text-gray-500"
-          onClick={() => {}}
+          href={`/next?feature-id=phrase&view=settings`}
         >
           {" "}
           <Icons.robot className="text-5xl" />
           <span className="">Settings</span>
-        </button>
+        </Link>
       </div>
 
       <section className="my-32">
@@ -429,7 +449,7 @@ export const Phrase = () => {
 
         <section>
           <div className="mt-12 grid grid-cols-4 mb-32 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-10 gap-4 gap-y-4 lg:gap-8">
-            {translationsHistory?.slice(0, 5)?.map((history: any) => {
+            {translationsHistory?.slice(0, 100)?.map((history: any) => {
               return (
                 <Link
                   key={JSON.stringify(history?.id)}

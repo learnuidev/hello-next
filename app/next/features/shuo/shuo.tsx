@@ -7,7 +7,6 @@ import SpeechRecognition, {
 import "regenerator-runtime";
 
 import { Icons } from "@/components/ui/icons.v2";
-import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

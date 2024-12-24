@@ -405,7 +405,10 @@ export const Shuo = () => {
         <h2 className="text-center text-gray-400 font-bold">History</h2>
         {translationsHistory?.map((history: any) => {
           return (
-            <Link href={`/next?feature-id=phrase&contextId=${history?.id}`}>
+            <Link
+              key={JSON.stringify(history)}
+              href={`/next?feature-id=phrase&contextId=${history?.id}`}
+            >
               <code key={JSON.stringify(history)}>
                 <pre>{JSON.stringify(history, null, 4)}</pre>
               </code>

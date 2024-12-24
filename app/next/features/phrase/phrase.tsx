@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useJwtToken } from "../html-parser/hooks/use-jwt-token";
+import { formatJournalDate } from "@/app/(auth)/diary/utils/format-journal-date";
 
 const useAddTranslationMutation = () => {
   const token = useJwtToken();
@@ -371,7 +372,7 @@ export const _Shuo = () => {
   );
 };
 
-export const Shuo = () => {
+export const Phrase = () => {
   const router = useRouter();
 
   const { data: translationsHistory } = useListTranslationHistory();
@@ -386,8 +387,9 @@ export const Shuo = () => {
   }
   return (
     <div>
-      <div className="space-x-8 flex justify-center items-center mt-32">
+      <div className="space-x-24 flex justify-center items-center mt-32">
         <button
+          className="flex flex-col items-center gap-4 hover:text-white text-gray-500"
           onClick={() => {
             addTranslationHistoryMutation.mutateAsync().then((resp) => {
               router.push(`/next?feature-id=phrase&contextId=${resp?.id}`);
@@ -395,25 +397,79 @@ export const Shuo = () => {
           }}
         >
           {" "}
-          New Session{" "}
+          <Icons.commentQuote className="text-5xl" />
+          <span className="">
+            {addTranslationHistoryMutation?.isLoading
+              ? "Starting..."
+              : "New Session"}
+          </span>
         </button>
-        {/* <button> History </button> */}
+        <button
+          className="flex flex-col items-center gap-4 hover:text-white text-gray-500"
+          onClick={() => {}}
+        >
+          {" "}
+          <Icons.verticalStack className="text-5xl" />
+          <span className="">History</span>
+        </button>
+        <button
+          className="flex flex-col items-center gap-4 hover:text-white text-gray-500"
+          onClick={() => {}}
+        >
+          {" "}
+          <Icons.robot className="text-5xl" />
+          <span className="">Settings</span>
+        </button>
       </div>
 
-      <section className="mt-8">
-        <h2 className="text-center text-gray-400 font-bold">History</h2>
-        {translationsHistory?.map((history: any) => {
-          return (
-            <Link
-              key={JSON.stringify(history)}
-              href={`/next?feature-id=phrase&contextId=${history?.id}`}
-            >
-              <code key={JSON.stringify(history)}>
-                <pre>{JSON.stringify(history, null, 4)}</pre>
-              </code>
-            </Link>
-          );
-        })}
+      <section className="my-32">
+        <h2 className="text-center dark:text-gray-600 font-bold text-2xl">
+          Recent History
+        </h2>
+
+        <section>
+          <div className="mt-12 grid grid-cols-4 mb-32 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-10 gap-4 gap-y-4 lg:gap-8">
+            {translationsHistory?.slice(0, 5)?.map((history: any) => {
+              return (
+                <Link
+                  key={JSON.stringify(history?.id)}
+                  href={`/next?feature-id=phrase&contextId=${history?.id}`}
+                  className="block h-36 p-4 col-span-2 lg:col-span-2 shadow-2 shadow-sm dark:shadow-gray-800 shadow-gray-200 rounded-2xl"
+                >
+                  <Link
+                    href={`/next?feature-id=phrase&contextId=${history?.id}`}
+                    className="flex justify-between items-center"
+                  >
+                    <div>
+                      <p className="truncate text-sm">
+                        {" "}
+                        <span>{history?.data?.title}</span>
+                      </p>
+                      <p className="mt-2 font-light text-gray-400 text-sm truncate capitalize">
+                        {" "}
+                        <span>{formatJournalDate(history?.createdAt)}</span>
+                      </p>
+                    </div>
+                  </Link>
+
+                  <p className="font-extralight text-sm dark:text-gray-500">
+                    <span>{history?.title || "No title..."}</span>
+                  </p>
+
+                  <div className="mt-8 flex justify-between w-full items-center">
+                    <div className="flex items-center space-x-4">
+                      <p className="text-gray-400 dark:text-gray-600 text-xs space-x-[2px]">
+                        <span>
+                          {history?.description || "No description..."}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
       </section>
     </div>
   );

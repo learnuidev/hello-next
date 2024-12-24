@@ -95,6 +95,7 @@ import {
   faQuestion,
   faRadar,
   faRepeat,
+  faRobotAstromech,
   faRollerCoaster,
   faSeedling,
   faSmile,
@@ -330,6 +331,7 @@ export const Icons = {
   karaoke: createFAIcon(faMicrophoneStand),
   database: createFAIcon(faDatabase),
   upload: createFAIcon(faCloudArrowUp),
+  robot: createFAIcon(faRobotAstromech),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

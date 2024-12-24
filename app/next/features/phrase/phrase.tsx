@@ -172,7 +172,9 @@ export const _Shuo = () => {
         )}
 
         <p className="text-2xl">{phrase?.input}</p>
-        <p className="font-light text-gray-400 text-2xl">{phrase?.output}</p>
+        <p className="font-light text-gray-400 text-2xl">
+          {phrase?.output?.replace(/&quot;/g, '"')}
+        </p>
       </section>
 
       <section className="flex justify-start flex-col w-full items-center mt-32">

@@ -89,7 +89,7 @@ export const Phrase = () => {
   }
   return (
     <div>
-      <div className="space-x-24 flex justify-center items-center mt-32">
+      <div className="space-x-12 sm:space-x-24 flex justify-center items-center mt-32">
         <button
           className="flex flex-col items-center gap-4 hover:text-white text-gray-500"
           onClick={() => {
@@ -99,11 +99,11 @@ export const Phrase = () => {
           }}
         >
           {" "}
-          <Icons.commentQuote className="text-5xl" />
+          <Icons.commentQuote className="text-3xl lg:text-5xl" />
           <span className="">
             {addTranslationHistoryMutation?.isLoading
               ? "Starting..."
-              : "New Session"}
+              : "New Chat"}
           </span>
         </button>
         <button
@@ -111,7 +111,7 @@ export const Phrase = () => {
           onClick={() => {}}
         >
           {" "}
-          <Icons.verticalStack className="text-5xl" />
+          <Icons.verticalStack className="text-3xl lg:text-5xl" />
           <span className="">History</span>
         </button>
         <Link
@@ -119,7 +119,7 @@ export const Phrase = () => {
           href={`/next?feature-id=phrase&view=settings`}
         >
           {" "}
-          <Icons.robot className="text-5xl" />
+          <Icons.gear className="text-3xl lg:text-5xl" />
           <span className="">Settings</span>
         </Link>
       </div>

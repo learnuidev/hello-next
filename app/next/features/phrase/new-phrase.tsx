@@ -2,7 +2,7 @@
 import { Icons } from "@/components/ui/icons.v2";
 import { languages } from "./languages";
 import { useState } from "react";
-import { useAddTranslationHistoryMutation } from "./hooks/use-add-translation-mutation";
+import { useAddTranslationHistoryMutation } from "./hooks/use-add-translation-history-mutation";
 import { useRouter } from "next/navigation";
 
 export const NewPhrase = ({ cancelNewChat }: { cancelNewChat: () => void }) => {
@@ -76,6 +76,7 @@ export const NewPhrase = ({ cancelNewChat }: { cancelNewChat: () => void }) => {
                 targetLang,
               })
               .then((resp) => {
+                cancelNewChat();
                 router.push(`/next?feature-id=phrase&contextId=${resp?.id}`);
               });
           }}

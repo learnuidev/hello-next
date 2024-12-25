@@ -6,7 +6,7 @@ import { Icons } from "@/components/ui/icons.v2";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useAddTranslationHistoryMutation } from "./hooks/use-add-translation-mutation";
+import { useAddTranslationHistoryMutation } from "./hooks/use-add-translation-history-mutation";
 import { useListTranslationHistory } from "./hooks/use-list-translation-history";
 import { languages } from "./languages";
 import { NewPhrase } from "./new-phrase";

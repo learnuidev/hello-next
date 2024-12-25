@@ -51,7 +51,10 @@ const langVars = [
 ];
 
 function getLang(id = "zh") {
-  return langVars?.filter((lang) => lang[1] === id)?.[0]?.[0] || "zh-CN";
+  return (
+    langVars?.filter((lang) => lang[1] === id || lang[0] === id)?.[0]?.[0] ||
+    "zh-CN"
+  );
 }
 
 export const useSpeak = (

@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
 import { useGetTopTenIncorrect } from "@/app/(auth)/insights/insights-v2/precision-insight-view/use-get-top-ten-incorrect";
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -7,123 +6,23 @@ import SpeechRecognition, {
 import "regenerator-runtime";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-import chineseFlag from "./chinese.webp";
-import ukFlag from "./uk.png";
 
 import { Nothing } from "@/app/nmm/nothing";
+import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons.v2";
-import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useJwtToken } from "../html-parser/hooks/use-jwt-token";
-import { Button } from "@/components/ui/button";
-
-const useAddTranslationMutation = () => {
-  const token = useJwtToken();
-
-  return useMutation({
-    mutationFn: async (props: {
-      input: string;
-      sourceLang: string;
-      targetLang: string;
-      contextId: string;
-    }) => {
-      const res = await fetch(`${siteConfig.apiUrlV2}/v1/add-translation`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(props),
-      });
-
-      return res.json();
-    },
-  });
-};
-
-function PhraseItem({
-  message,
-  idx,
-  showPinyin,
-}: {
-  message: any;
-  idx: any;
-  showPinyin: boolean;
-}) {
-  const lang = message?.sourceLang === "en" ? "zh-CN" : "en";
-
-  const { speak } = useSpeak(lang, {
-    utterRate: 1,
-  });
-  return (
-    <div
-      key={message.id}
-      className={cn(`flex`, idx % 2 === 0 ? "justify-start" : "justify-end")}
-    >
-      <div
-        className={cn(
-          `max-w-full sm:max-w-[70%] rounded-lg p-2`,
-          message.sourceLang === "en"
-            ? "dark:bg-[rgb(21,22,23)] bg-blue-500 text-white"
-            : "dark:bg-[rgb(21,22,23)] bg-white",
-
-          "rounded-2xl px-2 py-2"
-        )}
-      >
-        <div className="flex space-x-4 items-center">
-          <div>
-            {showPinyin && (
-              <p className="text-gray-400 font-extralight">{message?.pinyin}</p>
-            )}
-            <p className="text-xl sm:text-2xl">
-              {message?.output
-                ?.replaceAll(/&quot;/g, '"')
-                ?.replaceAll(/&#39;/g, "'")}
-            </p>
-            <p className="text-gray-500 text-sm sm:text-md">{message.input}</p>
-          </div>
-
-          <div className="flex justify-end">
-            <button
-              className={cn(
-                "sm:text-xl text-[16px] border-[1px] border-gray-700 dark:hover:border-gray-500 w-6 h-6 sm:w-10 sm:h-10 rounded-full"
-              )}
-              onClick={() => {
-                speak(message?.output);
-              }}
-            >
-              <Icons.volume />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-const listTranslationsQueryKey = "list-translations";
-const useListTranslations = (contextId: string) => {
-  const token = useJwtToken();
-  return useQuery<any>({
-    queryKey: [listTranslationsQueryKey, contextId],
-    queryFn: async () => {
-      const res = await fetch(`${siteConfig.apiUrlV2}/v1/list-translations`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ contextId }),
-      });
-
-      const resJson = (await res.json()) as any;
-
-      return resJson?.sort((a: any, b: any) => a?.createdAt - b?.createdAt);
-    },
-  });
-};
+import { useAddTranslationMutation } from "./hooks/use-add-translation-mutation";
+import { useGetTranslationHistory } from "./hooks/use-get-translation-history";
+import {
+  listTranslationsQueryKey,
+  useListTranslations,
+} from "./hooks/use-list-translations";
+import { languages } from "./languages";
+import { PhraseItem } from "./phrase-item";
 
 function getRandomNumber(n: number) {
   return Math.floor(Math.random() * (n + 1));
@@ -135,20 +34,33 @@ export const PhraseUI = () => {
   const [convoMode, setConvoMode] = useState("solo");
   const [showPinyin, setShowPinyin] = useState(false);
   const [sourceLang, setSourceLang] = useState("en");
-  const [showMeta, setShowMeta] = useState(false);
   const topTenIncorrect = useGetTopTenIncorrect();
-  const [index, setIndex] = useState(0);
   const [randomDataIndex, setRandomDataIndex] = useState(getRandomNumber(9));
 
   const searchParams = useSearchParams();
   const contextId = searchParams?.get("contextId") || "";
 
+  const { data: translationContext } = useGetTranslationHistory(contextId);
+
+  const sourceLangLogo = languages.find(
+    (lang) => lang.id === translationContext?.sourceLang
+  );
+  const targetLangLogo = languages.find(
+    (lang) => lang.id === translationContext?.targetLang
+  );
+
   const getInput = (input: string) => {
     return {
       input,
       contextId,
-      sourceLang: sourceLang,
-      targetLang: sourceLang === "en" ? "zh-CN" : "en",
+      sourceLang:
+        sourceLang === translationContext?.sourceLang
+          ? translationContext?.sourceLang
+          : translationContext?.targetLang,
+      targetLang:
+        sourceLang === translationContext?.sourceLang
+          ? translationContext?.targetLang
+          : translationContext?.sourceLang,
     };
   };
 
@@ -251,25 +163,35 @@ export const PhraseUI = () => {
               <div className="mt-2 w-full flex justify-start space-x-4 dark:text-gray-500">
                 <button
                   className={
-                    sourceLang === "zh-CN" ? "text-white" : "opacity-40"
+                    sourceLang === sourceLangLogo?.id
+                      ? "text-white"
+                      : "opacity-40"
                   }
                   onClick={() => {
-                    setSourceLang("zh-CN");
+                    setSourceLang(sourceLangLogo?.id || "");
                   }}
                 >
                   <img
-                    src={chineseFlag.src}
-                    alt="Chinese flag"
+                    src={sourceLangLogo?.src}
+                    alt={sourceLangLogo?.title}
                     className="h-8"
                   />
                 </button>
                 <button
-                  className={sourceLang === "en" ? "text-white" : "opacity-40"}
+                  className={
+                    sourceLang === targetLangLogo?.id
+                      ? "text-white"
+                      : "opacity-40"
+                  }
                   onClick={() => {
-                    setSourceLang("en");
+                    setSourceLang(targetLangLogo?.id || "");
                   }}
                 >
-                  <img src={ukFlag.src} alt="UK flag" className="h-8" />
+                  <img
+                    src={targetLangLogo?.src}
+                    alt={targetLangLogo?.title}
+                    className="h-8"
+                  />
                 </button>
               </div>
 
@@ -309,14 +231,6 @@ export const PhraseUI = () => {
                           ]);
                         });
                       }
-
-                      if (convoMode === "convo") {
-                        if (sourceLang === "zh-CN") {
-                          setSourceLang("en");
-                        } else {
-                          setSourceLang("zh-CN");
-                        }
-                      }
                     } else {
                       resetTranscript();
                       SpeechRecognition.startListening?.({
@@ -339,7 +253,6 @@ export const PhraseUI = () => {
                     "text-xl border-[1px] border-gray-700 hover:border-gray-500 rounded-full w-10 h-10"
                   )}
                   onClick={() => {
-                    // SpeechRecognition.stopListening();
                     resetTranscript();
                   }}
                 >

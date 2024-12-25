@@ -89,6 +89,7 @@
     "eslint": "8.49.0",
     "eslint-config-next": "^14.2.2",
     "framer-motion": "^11.1.7",
+    "idb-keyval": "^6.2.1",
     "kaboom": "^3000.1.13",
     "katex": "^0.16.8",
     "lodash.map": "^4.6.0",

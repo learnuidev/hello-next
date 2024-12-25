@@ -111,17 +111,17 @@ export const PhraseUI = () => {
     <div className="flex h-screen bg-gray-100">
       {/* Chat area */}
       <div className="relative flex-1 flex flex-col dark:bg-[rgb(11,12,13)]">
-        <div className="flex justify-between dark:border-gray-700 border-b p-4 items-center">
-          <div className="dark:bg-[rgb(11,12,13)] w-full bg-white">
-            <h2 className="font-light dark:text-gray-400">{contextId}</h2>
-          </div>
+        <div className="flex justify-between dark:border-gray-700 border-b px-4 py-0 items-center">
+          <h2 className="dark:bg-[rgb(11,12,13)] text-xs font-light dark:text-gray-400 truncate">
+            {contextId}
+          </h2>
 
-          <Link href="/next?feature-id=phrase" className="text-3xl block">
+          <Link href="/next?feature-id=phrase" className="text-xl block">
             <Icons.xMark />{" "}
           </Link>
         </div>
         {/* Messages */}
-        <ScrollArea className="flex-1 p-4 dark:bg-[rgb(11,12,13)] mb-48 bg-black rounded">
+        <ScrollArea className="flex-1 p-4 dark:bg-[rgb(11,12,13)] pb-36 bg-black rounded">
           {translations?.length === 0 ? (
             <Nothing icon={Icons.ai} message={"Say something..."} />
           ) : (
@@ -152,7 +152,7 @@ export const PhraseUI = () => {
                 }}
                 value={inputTranscript || transcript}
                 placeholder="Type a message..."
-                className="flex-1 mr-2 px-2 py-4 dark:bg-[rgb(21,22,23)] border-transparent focus:border-transparent focus:ring-0 focus:outline-none resize-none"
+                className="flex-1 mr-2 px-2 py-0 dark:bg-[rgb(21,22,23)] border-transparent focus:border-transparent focus:ring-0 focus:outline-none resize-none"
               />
               <Button type="submit">
                 <Icons.paperPlane className="text-xl dark:text-gray-600 dark:hover:text-white text-gray-700" />

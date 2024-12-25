@@ -12,7 +12,7 @@ const MandarinoNext = () => {
 
   const { view, featureId, url } = useGetNextParams();
   return (
-    <main className="mx-4 sm:mx-16">
+    <main className={featureId === "phrase" ? "" : "mx-4 sm:mx-16"}>
       {featureId !== "phrase" && (
         <div className="flex justify-between items-center">
           <FeatureSelect

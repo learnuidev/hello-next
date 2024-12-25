@@ -1,0 +1,88 @@
+/* eslint-disable @next/next/no-img-element */
+import { Icons } from "@/components/ui/icons.v2";
+import { languages } from "./languages";
+import { useState } from "react";
+import { useAddTranslationHistoryMutation } from "./hooks/use-add-translation-mutation";
+import { useRouter } from "next/navigation";
+
+export const NewPhrase = ({ cancelNewChat }: { cancelNewChat: () => void }) => {
+  const [sourceLang, setSourceLang] = useState("en");
+  const [targetLang, setTargetLang] = useState("zh-CN");
+
+  const router = useRouter();
+
+  const addTranslationHistoryMutation = useAddTranslationHistoryMutation();
+
+  return (
+    <div>
+      <button
+        onClick={() => {
+          cancelNewChat();
+        }}
+      >
+        <Icons.xMark />{" "}
+      </button>
+
+      <section>
+        <h2 className="text-center text-2xl font-extralight mt-12">
+          Select Source Language
+        </h2>
+
+        <div className="flex justify-center space-x-8 mt-8">
+          {languages.map((lang) => {
+            return (
+              <button
+                key={lang.id}
+                onClick={() => {
+                  setSourceLang(lang.id);
+                }}
+                className={sourceLang === lang.id ? "text-white" : "opacity-40"}
+              >
+                <img src={lang.src} alt={lang.title} className="h-8" />
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="mt-16">
+        <h2 className="text-center text-2xl font-extralight mt-12">
+          Select Target Language
+        </h2>
+
+        <div className="flex justify-center space-x-8 mt-8">
+          {languages.map((lang) => {
+            return (
+              <button
+                key={lang.id}
+                onClick={() => {
+                  setTargetLang(lang.id);
+                }}
+                className={targetLang === lang.id ? "text-white" : "opacity-40"}
+              >
+                <img src={lang.src} alt={lang.title} className="h-8" />
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      <div className="flex justify-center items-center mt-12">
+        <button
+          onClick={() => {
+            addTranslationHistoryMutation
+              .mutateAsync({
+                sourceLang,
+                targetLang,
+              })
+              .then((resp) => {
+                router.push(`/next?feature-id=phrase&contextId=${resp?.id}`);
+              });
+          }}
+        >
+          Add
+        </button>
+      </div>
+    </div>
+  );
+};

@@ -3,55 +3,14 @@ import "regenerator-runtime";
 
 import { formatJournalDate } from "@/app/(auth)/diary/utils/format-journal-date";
 import { Icons } from "@/components/ui/icons.v2";
-import { siteConfig } from "@/lib/config";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useJwtToken } from "../html-parser/hooks/use-jwt-token";
+import { useState } from "react";
+import { useAddTranslationHistoryMutation } from "./hooks/use-add-translation-mutation";
+import { useListTranslationHistory } from "./hooks/use-list-translation-history";
+import { languages } from "./languages";
+import { NewPhrase } from "./new-phrase";
 import { PhraseUI } from "./phrase-ui";
-
-const useAddTranslationHistoryMutation = () => {
-  const token = useJwtToken();
-
-  return useMutation({
-    mutationFn: async () => {
-      const res = await fetch(
-        `${siteConfig.apiUrlV2}/v1/add-translation-history`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      return res.json();
-    },
-  });
-};
-
-const listTranslationHistoryQueryKey = "list-translation-history";
-const useListTranslationHistory = () => {
-  const token = useJwtToken();
-  return useQuery<any>({
-    queryKey: [listTranslationHistoryQueryKey],
-    queryFn: async () => {
-      const res = await fetch(
-        `${siteConfig.apiUrlV2}/v1/list-translation-history`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const resJson = await res.json();
-
-      return resJson?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
-    },
-  });
-};
 
 function PhraseSettings() {
   return (
@@ -72,6 +31,12 @@ function PhraseSettings() {
 export const Phrase = () => {
   const router = useRouter();
 
+  const [newChat, setNewChat] = useState(false);
+
+  const cancelNewChat = () => {
+    setNewChat(false);
+  };
+
   const { data: translationsHistory } = useListTranslationHistory();
 
   const addTranslationHistoryMutation = useAddTranslationHistoryMutation();
@@ -87,15 +52,21 @@ export const Phrase = () => {
   if (view === "settings") {
     return <PhraseSettings />;
   }
+
+  if (newChat) {
+    return <NewPhrase cancelNewChat={cancelNewChat} />;
+  }
   return (
     <div>
       <div className="space-x-12 sm:space-x-24 flex justify-center items-center mt-32">
         <button
           className="flex flex-col items-center gap-4 hover:text-white text-gray-500"
           onClick={() => {
-            addTranslationHistoryMutation.mutateAsync().then((resp) => {
-              router.push(`/next?feature-id=phrase&contextId=${resp?.id}`);
-            });
+            // setView('new')
+            setNewChat(true);
+            // addTranslationHistoryMutation.mutateAsync().then((resp) => {
+            //   router.push(`/next?feature-id=phrase&contextId=${resp?.id}`);
+            // });
           }}
         >
           {" "}
@@ -132,6 +103,12 @@ export const Phrase = () => {
         <section>
           <div className="mt-12 grid grid-cols-2 mb-32 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-10 gap-4 gap-y-4 lg:gap-8">
             {translationsHistory?.slice(0, 100)?.map((history: any) => {
+              const sourceLangSrc = languages.find(
+                (lang) => lang.id === history.sourceLang
+              );
+              const targetLangSrc = languages.find(
+                (lang) => lang.id === history.targetLang
+              );
               return (
                 <Link
                   key={JSON.stringify(history?.id)}
@@ -157,16 +134,18 @@ export const Phrase = () => {
                   <p className="font-extralight text-sm dark:text-gray-500">
                     <span>{history?.title || "No title..."}</span>
                   </p>
-
-                  {/* <div className="mt-8 flex justify-between w-full items-center">
-                    <div className="flex items-center space-x-4">
-                      <p className="text-gray-400 dark:text-gray-600 text-xs space-x-[2px]">
-                        <span>
-                          {history?.description || "No description..."}
-                        </span>
-                      </p>
-                    </div>
-                  </div> */}
+                  <div className="mt-4 flex space-x-4">
+                    <img
+                      src={sourceLangSrc?.src}
+                      alt={sourceLangSrc?.title}
+                      className="h-6"
+                    />
+                    <img
+                      src={targetLangSrc?.src}
+                      alt={targetLangSrc?.title}
+                      className="h-6"
+                    />
+                  </div>
                 </Link>
               );
             })}

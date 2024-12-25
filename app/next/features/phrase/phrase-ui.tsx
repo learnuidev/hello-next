@@ -7,6 +7,8 @@ import SpeechRecognition, {
 import "regenerator-runtime";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
+import chineseFlag from "./chinese.webp";
+import ukFlag from "./uk.png";
 
 import { Nothing } from "@/app/nmm/nothing";
 import { Icons } from "@/components/ui/icons.v2";
@@ -196,7 +198,7 @@ export const PhraseUI = () => {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Chat area */}
-      <div className="relative flex-1 flex flex-col dark:bg-black">
+      <div className="relative flex-1 flex flex-col dark:bg-[rgb(11,12,13)]">
         <div className="flex justify-between dark:border-gray-700 border-b p-4 items-center">
           <div className="dark:bg-[rgb(11,12,13)] w-full bg-white">
             <h2 className="font-light dark:text-gray-400">{contextId}</h2>
@@ -256,7 +258,7 @@ export const PhraseUI = () => {
                   }}
                 >
                   <img
-                    src="https://static.vecteezy.com/system/resources/previews/022/120/365/non_2x/china-flag-round-shape-free-png.png"
+                    src={chineseFlag.src}
                     alt="Chinese flag"
                     className="h-8"
                   />
@@ -267,11 +269,7 @@ export const PhraseUI = () => {
                     setSourceLang("en");
                   }}
                 >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/United-kingdom_flag_icon_round.svg/2048px-United-kingdom_flag_icon_round.svg.png"
-                    alt="Chinese flag"
-                    className="h-8"
-                  />
+                  <img src={ukFlag.src} alt="UK flag" className="h-8" />
                 </button>
               </div>
 

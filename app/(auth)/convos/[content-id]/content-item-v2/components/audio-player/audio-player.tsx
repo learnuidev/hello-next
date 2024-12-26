@@ -474,28 +474,17 @@ export const AudioPlayer = () => {
 
   return (
     <div className="relative">
-      <div className="mt-4">
-        <div className="text-gray-400  px-4 md:px-12">
-          <Link
-            onClick={() => {
-              //   reset();
-            }}
-            href="/du"
-            className="hover:text-white"
-          >
+      <div className="">
+        {/* <div className="text-gray-400  px-4 md:px-12">
+          <Link onClick={() => {}} href="/du" className="hover:text-white">
             {" "}
             Courses{" "}
           </Link>{" "}
           {" / "}
-          <span
-            onClick={() => {
-              // reset();
-            }}
-            className="hover:text-white"
-          >
+          <span onClick={() => {}} className="hover:text-white">
             {content?.title}
           </span>
-        </div>
+        </div> */}
 
         <div className="mt-6 mb-32 m-auto relative w-full">
           {viewMode !== "stats" && (

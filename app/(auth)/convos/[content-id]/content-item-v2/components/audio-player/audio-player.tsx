@@ -11,6 +11,7 @@ import { useContentEditStore } from "@/components/youtube-page/use-content-edit-
 import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
+import { useRouter } from "next/navigation";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -72,13 +73,15 @@ function SectionView({
     (time: any) => time?.id === section?.id
   ) as any;
 
+  const router = useRouter();
+
   return (
     <>
       {viewPinyin && context !== undefined && context?.length > 0 ? (
         <p className="my-4">
           {context?.map((item: any) => {
             return (
-              <Link
+              <span
                 onMouseEnter={() => {
                   setSelected(item);
                   setActive(section);
@@ -91,12 +94,11 @@ function SectionView({
                   "text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center",
                   textSize?.[3]
                 )}
-                target="_blank"
-                href={`/nmm/${item?.hanzi}?lang=zh`}
                 key={JSON.stringify(item)}
               >
                 {viewPinyin && (
-                  <span
+                  <Link
+                    href={`/nmm/${item?.hanzi}?lang=zh`}
                     className={cn(
                       section?.pinyin ? "text-gray-500" : "text-black",
                       "text-sm",
@@ -108,20 +110,18 @@ function SectionView({
                       activeSubtitle?.sentence === section?.sentence
                         ? "text-gray-400"
                         : "text-gray-600",
-                      (currentTime > section?.start &&
-                        currentTime < section.end) ||
-                        selected?.pinyin === section?.pinyin
-                        ? "text-white dark:text-white"
-                        : "dark:text-gray-500",
                       currentTime === 0 ? "text-gray-300" : "",
                       "text-start",
+                      currentTime > section?.start && currentTime < section.end
+                        ? "dark:text-white text-black"
+                        : "text-gray-400",
                       selected?.pinyin === item?.pinyin
                         ? "text-rose-500 dark:text-rose-400"
                         : "dark:text-gray-500"
                     )}
                   >
                     {item?.pinyin || ""}
-                  </span>
+                  </Link>
                 )}
                 <span
                   onClick={() => {
@@ -138,7 +138,7 @@ function SectionView({
                       ? "text-white"
                       : "text-gray-600",
                     currentTime > section?.start && currentTime < section.end
-                      ? "text-white"
+                      ? "dark:text-white text-black"
                       : "text-gray-400",
 
                     item?.pinyin && selected?.pinyin === item?.pinyin
@@ -149,7 +149,7 @@ function SectionView({
                 >
                   {item?.hanzi}
                 </span>
-              </Link>
+              </span>
             );
           })}
         </p>
@@ -161,9 +161,11 @@ function SectionView({
             textSize?.[1],
             currentTime === 0 ? "text-gray-300" : "",
 
-            activeSubtitle?.en === section?.en ? "text-white" : "text-gray-600",
+            activeSubtitle?.en === section?.en
+              ? "dark:text-white text-black"
+              : "text-gray-600",
             currentTime > section?.start && currentTime < section.end
-              ? "text-white"
+              ? "dark:text-white text-gray-900"
               : "text-gray-400"
             // "text-white"
           )}
@@ -426,7 +428,7 @@ export const AudioPlayer = () => {
         <Icons.gear
           className={cn(
             "sm:text-2xl text-2xl",
-            editMode ? "text-white" : "text-gray-400"
+            editMode ? "dark:text-white text-black" : "text-gray-400"
           )}
         />
       </button>
@@ -438,7 +440,9 @@ export const AudioPlayer = () => {
         <Icons.chartColumn
           className={cn(
             "sm:text-2xl text-2xl",
-            viewMode === "stats" ? "text-white" : "text-gray-400"
+            viewMode === "stats"
+              ? "dark:text-white text-black"
+              : "text-gray-400"
           )}
         />
       </button>
@@ -450,7 +454,7 @@ export const AudioPlayer = () => {
         <Icons.language
           className={cn(
             "sm:text-2xl text-2xl",
-            viewPinyin ? "text-white" : "text-gray-400"
+            viewPinyin ? "dark:text-white text-black" : "text-gray-400"
           )}
         />
       </button>
@@ -484,9 +488,11 @@ export const AudioPlayer = () => {
 
         <div className="mt-6 mb-32 m-auto relative w-full">
           {viewMode !== "stats" && (
-            <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)] px-4 md:px-12">
+            <div className="sticky top-0 pt-4 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)] px-4 md:px-12">
               <div className="pb-4">
-                <h4 className="text-xs text-gray-500">Sentence meaning</h4>
+                <h4 className="text-xs text-gray-700 dark:text-gray-500">
+                  Sentence meaning
+                </h4>
                 <div className="h-16 flex justify-between items-center mt-2 w-full">
                   <p className="space-x-2 sm:text-xl text-[16px] font-extralight pb-[4px]">
                     {isPlaying
@@ -497,7 +503,9 @@ export const AudioPlayer = () => {
               </div>
 
               <div className="h-16 mb-4 hidden sm:block">
-                <h4 className="text-xs text-gray-500">Word meaning</h4>
+                <h4 className="text-xs text-gray-700 dark:text-gray-500">
+                  Word meaning
+                </h4>
 
                 {selected ? (
                   <div className="h-14 mt-2 w-full">
@@ -549,7 +557,7 @@ export const AudioPlayer = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-0 py-4 w-full z-30 m-auto bg-[rgb(12,13,14)]">
+      <div className="fixed bottom-0 py-4 w-full z-30 m-auto bg-white dark:bg-[rgb(12,13,14)]">
         <section className="flex items-center justify-between px-4 sm:px-16">
           <div className="space-x-2">
             <button

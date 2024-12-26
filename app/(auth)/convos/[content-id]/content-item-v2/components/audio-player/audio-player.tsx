@@ -538,7 +538,11 @@ export const AudioPlayer = () => {
                         </span>
                       </p>
 
-                      {selected?.hsk && <p>HSK {selected?.hsk}</p>}
+                      {selected?.hskLevel && (
+                        <p className="text-gray-600 dark:text-gray-400">
+                          HSK {selected?.hskLevel}
+                        </p>
+                      )}
                     </div>
 
                     {viewPinyin && (

@@ -1,6 +1,7 @@
 import { siteConfig } from "@/lib/config";
 import { useQuery } from "@tanstack/react-query";
 import { useJwtToken } from "./use-jwt-token";
+import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 interface Meanings {
   hanzi: string;
@@ -11,8 +12,15 @@ interface Meanings {
 export const useListDictionaryMeaningsQuery = (hanzi: string) => {
   const token = useJwtToken();
 
+  const { data: hskWords } = useListHSKWordsQuery();
+
   return useQuery<Meanings[], Error>({
-    queryKey: ["list-dictionary-meanings", token, hanzi],
+    queryKey: [
+      "list-dictionary-meanings",
+      token,
+      hanzi,
+      JSON.stringify(hskWords),
+    ],
     enabled: Boolean(hanzi),
     retry: false,
     refetchIntervalInBackground: false,
@@ -34,7 +42,18 @@ export const useListDictionaryMeaningsQuery = (hanzi: string) => {
           }
         );
 
-        return (await res.json()) as Meanings[];
+        const respJson = (await res.json()) as Meanings[];
+
+        return respJson.map((item) => {
+          const hskLevel = hskWords?.find(
+            (hskWord: any) => hskWord?.hanzi === item?.hanzi
+          );
+
+          return {
+            ...hskLevel,
+            ...item,
+          };
+        });
       } catch (err) {
         throw err;
       }

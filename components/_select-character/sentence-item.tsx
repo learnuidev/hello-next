@@ -71,19 +71,22 @@ export const SentenceItem = (props: any) => {
           {/* {currentPhrase?.audio ? ( */}
 
           {/* ) : null} */}
-          <AudioComponent currentPhrase={currentPhrase} />
+          <AudioComponent
+            currentPhrase={currentPhrase}
+            className="h-6 w-6 text-xs"
+          />
 
           <Link
             onClick={trackFunction}
             // href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}`}
 
             href={`/nmm/${hanziOrInput}${lang || selectedComp?.lang ? `?lang=${lang || selectedComp?.lang}` : ``}`}
-            className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
+            className={`text-xs bg-white dark:bg-black p-2 w-6 h-6 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
           >
             <Icons.magnifyingGlass />
           </Link>
 
-          <GoogleLink hanzi={unEncoded} className={"h-8 w-8"} />
+          <GoogleLink hanzi={unEncoded} className={"h-6 w-6 text-xs"} />
 
           {isSuperAdmin && currentPhrase?.id && (
             <button
@@ -91,7 +94,7 @@ export const SentenceItem = (props: any) => {
                 deleteSentenceMutation?.isLoading ||
                 deleteSentenceMutation.isSuccess
               }
-              className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
+              className={`text-xs bg-white dark:bg-black p-2 w-6 h-6 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
               onDoubleClick={() => {
                 deleteSentenceMutation?.mutateAsync({
                   id: currentPhrase?.id,
@@ -112,7 +115,7 @@ export const SentenceItem = (props: any) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between py-4 w-full">
+    <div className="flex flex-col items-center justify-between p-4 w-full bg-gray-50 dark:bg-[rgb(4,5,6)] my-2 rounded-2xl">
       <div role="button" className="flex flex-col w-full">
         {" "}
         <Link
@@ -122,12 +125,12 @@ export const SentenceItem = (props: any) => {
           )}`}
         >
           {brightMode && lang !== "en" && (
-            <span className="text-[16px] text-gray-500 dark:text-gray-400">
+            <span className="text-[16px] text-gray-600 dark:text-gray-400">
               {currentPhrase?.pinyin || currentPhrase?.roman}
             </span>
           )}
         </Link>
-        <span className="text-gray-500 dark:text-gray-300 text-lg">
+        <span className="text-gray-900 dark:text-gray-300 text-lg">
           {(currentPhrase?.input
             ? currentPhrase?.input.split(" ")
             : currentPhrase?.hanzi?.split("")

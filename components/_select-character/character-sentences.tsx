@@ -267,7 +267,7 @@ export const CharacterSentences = (props: { characterId: string }) => {
           );
         }}
       >
-        <div className="mt-8 flex justify-between items-center">
+        <div className="mt-2 flex justify-between items-center">
           <TabsList className="space-x-8">
             {(contents || [])?.length > 0 && (
               <TabsTrigger
@@ -298,7 +298,7 @@ export const CharacterSentences = (props: { characterId: string }) => {
           <div className="space-x-4"></div>
         </div>
 
-        <TabsContent value="answers" className="my-8">
+        <TabsContent value="answers" className="my-2">
           {uniqueAnswerIds?.map((id: any, idx: number) => {
             const char = answerMap?.[id] || {};
 
@@ -422,7 +422,7 @@ export const CharacterSentences = (props: { characterId: string }) => {
             );
           })}
         </TabsContent>
-        <TabsContent value="ai" className="my-8">
+        <TabsContent value="ai" className="my-2">
           <div className="flex justify-start flex-col items-start text-2xl text-gray-700 flex-wrap">
             {sentences?.slice(0, 10)?.map((sentence: any) => {
               return (
@@ -435,7 +435,7 @@ export const CharacterSentences = (props: { characterId: string }) => {
             })}
           </div>
         </TabsContent>
-        <TabsContent value="content" className="my-8">
+        <TabsContent value="content" className="my-2">
           <ContentSentences {...data} />
         </TabsContent>
       </Tabs>

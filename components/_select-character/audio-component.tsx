@@ -10,6 +10,7 @@ import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-hist
 import { create } from "zustand";
 import useSound from "use-sound";
 import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
+import { cn } from "@/lib/utils";
 
 const useMusicStore = create((set: any, get: any) => ({
   play: false,
@@ -25,7 +26,7 @@ const useMusicStore = create((set: any, get: any) => ({
       : set({ results: f }),
 }));
 
-export const AudioComponent = ({ currentPhrase }: any) => {
+export const AudioComponent = ({ currentPhrase, className }: any) => {
   const playMusic = useMusicStore((state: any) => state.play);
   const setPlay = useMusicStore((state: any) => state.setPlay);
 
@@ -47,11 +48,14 @@ export const AudioComponent = ({ currentPhrase }: any) => {
 
   return (
     <button
-      className={`text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${
-        playMusic
-          ? `dark:text-white ring-slate-900/5 dark:ring-white`
-          : "ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"
-      } shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`}
+      className={cn(
+        `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${
+          playMusic
+            ? `dark:text-white ring-slate-900/5 dark:ring-white`
+            : "ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"
+        } shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
+        className
+      )}
       onClick={() => {
         if (audioUrl) {
           if (playMusic && false) {

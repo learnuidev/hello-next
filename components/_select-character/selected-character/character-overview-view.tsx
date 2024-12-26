@@ -175,17 +175,17 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
             lang={lang || selectedComp?.lang}
           />
         ) : (
-          <div className="shadows-sm shadow-2 shadow-black py-8 px-2 bg-gray-50 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
+          <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
             <div className="">
               {" "}
               {sentences?.length > 7 ? (
-                <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
+                <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
                   <CharacterSentences {...props} />
                 </ScrollArea>
               ) : (
-                <div className="hidden md:block space-y-2 h-[700px] rounded-md p-4">
+                <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
                   <CharacterSentences {...props} />
-                </div>
+                </ScrollArea>
               )}
             </div>
 

@@ -78,7 +78,14 @@ function SectionView({
   return (
     <>
       {viewPinyin && context !== undefined && context?.length > 0 ? (
-        <p className="my-4">
+        <p
+          className={cn(
+            "my-4",
+            currentTime > section?.start && currentTime < section.end
+              ? "dark:text-white text-black"
+              : "text-gray-400"
+          )}
+        >
           {context?.map((item: any) => {
             return (
               <span
@@ -98,6 +105,7 @@ function SectionView({
               >
                 {viewPinyin && (
                   <Link
+                    target="_blank"
                     href={`/nmm/${item?.hanzi}?lang=zh`}
                     className={cn(
                       section?.pinyin ? "text-gray-500" : "text-black",
@@ -112,13 +120,13 @@ function SectionView({
                         : "text-gray-600",
                       currentTime === 0 ? "text-gray-300" : "",
                       "text-start",
+                      currentTime > section?.start && currentTime < section.end
+                        ? "dark:text-white text-black"
+                        : "dark:text-gray-400 text-gray-600",
 
                       selected?.pinyin === item?.pinyin
                         ? "text-rose-500 dark:text-rose-400"
-                        : "dark:text-gray-500",
-                      currentTime > section?.start && currentTime < section.end
-                        ? "dark:text-white text-black"
-                        : "text-gray-400"
+                        : ""
                     )}
                   >
                     {item?.pinyin || ""}
@@ -139,12 +147,14 @@ function SectionView({
                       ? "text-white"
                       : "text-gray-600",
 
-                    item?.pinyin && selected?.pinyin === item?.pinyin
-                      ? "text-rose-500 dark:text-rose-400"
-                      : "dark:text-gray-500",
                     currentTime > section?.start && currentTime < section.end
                       ? "dark:text-white text-black"
-                      : "text-gray-400"
+                      : "dark:text-gray-400 text-gray-500",
+
+                    item?.pinyin && selected?.pinyin === item?.pinyin
+                      ? "text-rose-500 dark:text-rose-400"
+                      : ""
+
                     // "text-white"
                   )}
                 >
@@ -489,13 +499,13 @@ export const AudioPlayer = () => {
 
         <div className="mt-6 mb-32 m-auto relative w-full">
           {viewMode !== "stats" && (
-            <div className="sticky top-0 pt-4 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)] px-4 md:px-12">
+            <div className="sticky top-0 pt-4 pb-[4px] bg-gray-100 rounded-2xl dark:bg-[rgb(9,10,11)] px-4 md:px-12">
               <div className="pb-4">
                 <h4 className="text-xs text-gray-700 dark:text-gray-500">
                   Sentence meaning
                 </h4>
                 <div className="h-16 flex justify-between items-center mt-2 w-full">
-                  <p className="space-x-2 sm:text-xl text-[16px] font-extralight pb-[4px]">
+                  <p className="text-black space-x-2 sm:text-xl text-[16px] font-extralight pb-[4px]">
                     {isPlaying
                       ? active?.en || activeSubtitle?.en
                       : activeSubtitle?.en || active?.en || "..."}

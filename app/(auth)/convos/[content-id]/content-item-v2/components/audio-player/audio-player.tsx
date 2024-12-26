@@ -78,7 +78,7 @@ function SectionView({
         <p className="my-4">
           {context?.map((item: any) => {
             return (
-              <span
+              <Link
                 onMouseEnter={() => {
                   setSelected(item);
                   setActive(section);
@@ -91,6 +91,7 @@ function SectionView({
                   "text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center",
                   textSize?.[3]
                 )}
+                href={`/nmm/${item?.hanzi}?lang=zh`}
                 key={JSON.stringify(item)}
               >
                 {viewPinyin && (
@@ -147,7 +148,7 @@ function SectionView({
                 >
                   {item?.hanzi}
                 </span>
-              </span>
+              </Link>
             );
           })}
         </p>
@@ -547,8 +548,8 @@ export const AudioPlayer = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-0 py-4 px-4 sm:px-16 w-full z-30 m-auto bg-[rgb(12,13,14)]">
-        <section className="flex items-center justify-between">
+      <div className="fixed bottom-0 py-4 w-full z-30 m-auto bg-[rgb(12,13,14)]">
+        <section className="flex items-center justify-between px-4 sm:px-16">
           <div className="space-x-2">
             <button
               onClick={increaseFontSize}
@@ -611,7 +612,9 @@ export const AudioPlayer = () => {
             </button>
           </div>
 
-          <ContentSettingsNavbar />
+          <div className="mr-8 sm:mr-32">
+            <ContentSettingsNavbar />
+          </div>
         </section>
       </div>
 

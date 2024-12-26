@@ -80,7 +80,7 @@ function SectionView({
       {viewPinyin && context !== undefined && context?.length > 0 ? (
         <p
           className={cn(
-            "my-4",
+            "my-2",
             currentTime > section?.start && currentTime < section.end
               ? "dark:text-white text-black"
               : "text-gray-400"
@@ -494,7 +494,7 @@ export const AudioPlayer = () => {
                   Sentence meaning
                 </h4>
                 <div className="h-16 flex justify-between items-center mt-2 w-full">
-                  <p className="text-black space-x-2 sm:text-xl text-[16px] font-extralight pb-[4px]">
+                  <p className="text-black dark:text-white space-x-2 sm:text-xl text-[16px] font-extralight pb-[4px]">
                     {isPlaying
                       ? active?.en || activeSubtitle?.en
                       : activeSubtitle?.en || active?.en || "..."}
@@ -535,7 +535,7 @@ export const AudioPlayer = () => {
               <CharacterAnalytics characterId={characterId} lang={"zh"} />
             </div>
           ) : (
-            <div className="px-4 md:px-12">
+            <div className="px-4 md:px-12 mt-4">
               {content?.transcriptions?.map((transcription: any) => {
                 return (
                   <SectionView

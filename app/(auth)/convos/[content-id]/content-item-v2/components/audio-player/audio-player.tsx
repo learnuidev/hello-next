@@ -112,12 +112,13 @@ function SectionView({
                         : "text-gray-600",
                       currentTime === 0 ? "text-gray-300" : "",
                       "text-start",
-                      currentTime > section?.start && currentTime < section.end
-                        ? "dark:text-white text-black"
-                        : "text-gray-400",
+
                       selected?.pinyin === item?.pinyin
                         ? "text-rose-500 dark:text-rose-400"
-                        : "dark:text-gray-500"
+                        : "dark:text-gray-500",
+                      currentTime > section?.start && currentTime < section.end
+                        ? "dark:text-white text-black"
+                        : "text-gray-400"
                     )}
                   >
                     {item?.pinyin || ""}
@@ -137,13 +138,13 @@ function SectionView({
                     activeSubtitle?.en === section?.en
                       ? "text-white"
                       : "text-gray-600",
-                    currentTime > section?.start && currentTime < section.end
-                      ? "dark:text-white text-black"
-                      : "text-gray-400",
 
                     item?.pinyin && selected?.pinyin === item?.pinyin
                       ? "text-rose-500 dark:text-rose-400"
-                      : "dark:text-gray-500"
+                      : "dark:text-gray-500",
+                    currentTime > section?.start && currentTime < section.end
+                      ? "dark:text-white text-black"
+                      : "text-gray-400"
                     // "text-white"
                   )}
                 >

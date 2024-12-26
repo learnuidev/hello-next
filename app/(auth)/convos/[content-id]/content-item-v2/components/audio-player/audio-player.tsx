@@ -91,6 +91,7 @@ function SectionView({
                   "text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center",
                   textSize?.[3]
                 )}
+                target="_blank"
                 href={`/nmm/${item?.hanzi}?lang=zh`}
                 key={JSON.stringify(item)}
               >

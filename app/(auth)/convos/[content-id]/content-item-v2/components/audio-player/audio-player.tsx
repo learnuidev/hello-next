@@ -547,7 +547,9 @@ export const AudioPlayer = () => {
 
                     {viewPinyin && (
                       <p className="font-extralight">
-                        <span className="truncate">{selected?.en}</span>
+                        <span className="">
+                          {selected?.en?.split(";")?.slice(0, 5)?.join(";")}
+                        </span>
                       </p>
                     )}
                   </div>

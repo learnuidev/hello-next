@@ -166,6 +166,14 @@ function SectionView({
         </p>
       ) : (
         <p
+          onMouseEnter={() => {
+            setSelected(section);
+            setActive(section);
+          }}
+          onMouseLeave={() => {
+            setSelected(null);
+            setActive(null);
+          }}
           // className="my-8 text-gray-300 text-lg"
           className={cn(
             "hover:text-rose-400 my-4",
@@ -486,9 +494,9 @@ export const AudioPlayer = () => {
           </span>
         </div> */}
 
-        <div className="mt-6 mb-32 m-auto relative w-full">
+        <div className="mb-32 m-auto relative w-full">
           {viewMode !== "stats" && (
-            <div className="sticky top-0 pt-4 pb-[4px] bg-gray-100 rounded-2xl dark:bg-[rgb(9,10,11)] px-4 md:px-12">
+            <div className="sticky top-2 pt-4 pb-[4px] bg-gray-100 rounded-2xl dark:bg-[rgb(9,10,11)] px-4 md:px-12">
               <div className="pb-4">
                 <h4 className="text-xs text-gray-700 dark:text-gray-500">
                   Sentence meaning
@@ -503,25 +511,41 @@ export const AudioPlayer = () => {
               </div>
 
               <div className="h-16 mb-4 hidden sm:block">
-                <h4 className="text-xs text-gray-700 dark:text-gray-500">
-                  Word meaning
-                </h4>
+                {viewPinyin ? (
+                  <h4 className="text-xs text-gray-700 dark:text-gray-500">
+                    Word meaning
+                  </h4>
+                ) : (
+                  <h4 className="text-xs text-gray-700 dark:text-gray-500">
+                    Pinyin
+                  </h4>
+                )}
 
                 {selected ? (
                   <div className="h-14 mt-2 w-full">
                     <div className="flex justify-between items-center">
                       <p className="space-x-2 text-[16px] font-extralight">
-                        <span>{selected?.hanzi}</span>
+                        {viewPinyin && <span>{selected?.hanzi}</span>}
 
-                        <span className="text-red-400">{selected?.pinyin}</span>
+                        <span
+                          className={
+                            viewPinyin
+                              ? "text-red-400"
+                              : "text-gray-700 dark:text-gray-400"
+                          }
+                        >
+                          {selected?.pinyin?.trim() || selected?.roman?.trim()}
+                        </span>
                       </p>
 
                       {selected?.hsk && <p>HSK {selected?.hsk}</p>}
                     </div>
 
-                    <p className="font-extralight">
-                      <span className="truncate">{selected?.en}</span>
-                    </p>
+                    {viewPinyin && (
+                      <p className="font-extralight">
+                        <span className="truncate">{selected?.en}</span>
+                      </p>
+                    )}
                   </div>
                 ) : (
                   <div className="h-14"></div>

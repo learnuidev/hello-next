@@ -21,12 +21,14 @@ const sizes = {
 
 function SectionView({
   activeSubtitle,
+  selected,
   section,
   viewPinyin,
   setSelected,
   textSize,
   seek,
   currentTime,
+  setActive,
 }: any) {
   const { data: context } = useListDictionaryMeaningsQuery(section?.input);
 
@@ -79,9 +81,11 @@ function SectionView({
               <span
                 onMouseEnter={() => {
                   setSelected(item);
+                  setActive(section);
                 }}
                 onMouseLeave={() => {
                   setSelected(null);
+                  setActive(null);
                 }}
                 className={cn(
                   "text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center",
@@ -95,18 +99,23 @@ function SectionView({
                       section?.pinyin ? "text-gray-500" : "text-black",
                       "text-sm",
                       currentTime > section?.start && currentTime < section.end
-                        ? "text-white "
+                        ? "dark:text-white"
                         : "text-gray-500",
 
                       textSize?.[0],
                       activeSubtitle?.sentence === section?.sentence
                         ? "text-gray-400"
                         : "text-gray-600",
-                      currentTime > section?.start && currentTime < section.end
-                        ? "text-white"
-                        : "",
+                      (currentTime > section?.start &&
+                        currentTime < section.end) ||
+                        selected?.pinyin === section?.pinyin
+                        ? "text-white dark:text-white"
+                        : "dark:text-gray-500",
                       currentTime === 0 ? "text-gray-300" : "",
-                      "text-start"
+                      "text-start",
+                      selected?.pinyin === item?.pinyin
+                        ? "text-rose-500 dark:text-rose-400"
+                        : "dark:text-gray-500"
                     )}
                   >
                     {item?.pinyin || ""}
@@ -128,7 +137,11 @@ function SectionView({
                       : "text-gray-600",
                     currentTime > section?.start && currentTime < section.end
                       ? "text-white"
-                      : "text-gray-400"
+                      : "text-gray-400",
+
+                    item?.pinyin && selected?.pinyin === item?.pinyin
+                      ? "text-rose-500 dark:text-rose-400"
+                      : "dark:text-gray-500"
                     // "text-white"
                   )}
                 >
@@ -239,6 +252,7 @@ export const AudioPlayer = () => {
   const textSize = sizes?.[textSizeIndex] || sizes?.[1];
 
   const [selected, setSelected] = useState<any>(null);
+  const [active, setActive] = useState<any>(null);
   const [viewPinyin, togglePinyin] = useState(false);
   const [loop, setLoop] = useState<any>(null);
   const [viewPreview, setViewPreview] = useState(false);
@@ -473,7 +487,9 @@ export const AudioPlayer = () => {
                 <h4 className="text-xs text-gray-500">Sentence meaning</h4>
                 <div className="h-16 flex justify-between items-center mt-2 w-full">
                   <p className="space-x-2 sm:text-xl text-[16px] font-extralight pb-[4px]">
-                    {activeSubtitle?.en || "..."}
+                    {isPlaying
+                      ? active?.en || activeSubtitle?.en
+                      : activeSubtitle?.en || active?.en || "..."}
                   </p>
                 </div>
               </div>
@@ -514,10 +530,12 @@ export const AudioPlayer = () => {
                 return (
                   <SectionView
                     activeSubtitle={activeSubtitle}
+                    setActive={setActive}
                     currentTime={currentTime}
                     seek={seek}
                     textSize={textSize}
                     setSelected={setSelected}
+                    selected={selected}
                     viewPinyin={viewPinyin}
                     section={transcription}
                     key={JSON.stringify(transcription)}

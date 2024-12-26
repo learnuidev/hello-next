@@ -613,7 +613,7 @@ export const AudioPlayer = () => {
             </button>
           </div>
 
-          <div className="mr-8 sm:mr-32">
+          <div className="mr-8 sm:mr-60">
             <ContentSettingsNavbar />
           </div>
         </section>

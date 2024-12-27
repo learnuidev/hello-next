@@ -496,7 +496,7 @@ export const AudioPlayer = () => {
 
         <div className="mb-32 m-auto relative w-full">
           {viewMode !== "stats" && (
-            <div className="sticky top-2 pt-4 pb-[4px] bg-gray-100 rounded-2xl dark:bg-[rgb(9,10,11)] px-4 md:px-12">
+            <div className="sticky pt-4 pb-[4px] bg-gray-100 rounded-2xl dark:bg-[rgb(9,10,11)] px-4 md:px-12">
               <div className="pb-4">
                 <h4 className="text-xs text-gray-700 dark:text-gray-500">
                   Sentence meaning
@@ -522,7 +522,7 @@ export const AudioPlayer = () => {
                 )}
 
                 {selected ? (
-                  <div className="h-14 w-full">
+                  <div className="h-14 mt-2 w-full">
                     <div className="flex justify-between items-center">
                       <p className="space-x-2 text-[16px] font-extralight">
                         {viewPinyin && <span>{selected?.hanzi}</span>}

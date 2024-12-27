@@ -483,17 +483,6 @@ export const AudioPlayer = () => {
   return (
     <div className="relative">
       <div className="">
-        {/* <div className="text-gray-400  px-4 md:px-12">
-          <Link onClick={() => {}} href="/du" className="hover:text-white">
-            {" "}
-            Courses{" "}
-          </Link>{" "}
-          {" / "}
-          <span onClick={() => {}} className="hover:text-white">
-            {content?.title}
-          </span>
-        </div> */}
-
         <div className="mb-32 m-auto relative w-full">
           {viewMode !== "stats" && (
             <div className="sticky top-0 pt-4 pb-[4px] bg-gray-100 rounded-2xl dark:bg-[rgb(9,10,11)] px-4 md:px-12">
@@ -501,8 +490,8 @@ export const AudioPlayer = () => {
                 <h4 className="text-xs text-gray-700 dark:text-gray-500">
                   Sentence meaning
                 </h4>
-                <div className="h-16 flex justify-between items-center mt-2 w-full">
-                  <p className="text-black dark:text-white space-x-2 sm:text-xl text-[16px] font-extralight pb-[4px]">
+                <div className="h-20 flex justify-between items-center mt-2 w-full">
+                  <p className="text-black dark:text-white space-x-2 text-[16px] font-extralight pb-[4px]">
                     {isPlaying
                       ? active?.en || activeSubtitle?.en
                       : activeSubtitle?.en || active?.en || "..."}
@@ -510,7 +499,7 @@ export const AudioPlayer = () => {
                 </div>
               </div>
 
-              <div className="h-16 mb-4 hidden sm:block">
+              <div className="h-20 mb-4 hidden sm:block">
                 {viewPinyin ? (
                   <h4 className="text-xs text-gray-700 dark:text-gray-500">
                     Word meaning

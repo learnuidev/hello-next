@@ -522,7 +522,7 @@ export const AudioPlayer = () => {
                 )}
 
                 {selected ? (
-                  <div className="h-14 mt-2 w-full">
+                  <div className="h-14 w-full">
                     <div className="flex justify-between items-center">
                       <p className="space-x-2 text-[16px] font-extralight">
                         {viewPinyin && <span>{selected?.hanzi}</span>}

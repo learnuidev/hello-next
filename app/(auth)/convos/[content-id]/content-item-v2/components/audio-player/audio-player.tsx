@@ -22,6 +22,7 @@ const sizes = {
 
 function SectionView({
   activeSubtitle,
+  active,
   selected,
   section,
   viewPinyin,
@@ -77,125 +78,107 @@ function SectionView({
 
   return (
     <>
-      {viewPinyin && context !== undefined && context?.length > 0 ? (
-        <p
-          className={cn(
-            "my-2",
-            currentTime > section?.start && currentTime < section.end
-              ? "dark:text-white text-black"
-              : "text-gray-400"
-          )}
-        >
-          {context?.map((item: any) => {
-            return (
-              <span
-                onMouseEnter={() => {
-                  setSelected(item);
-                  setActive(section);
-                }}
-                onMouseLeave={() => {
-                  setSelected(null);
-                  setActive(null);
-                }}
-                className={cn(
-                  "text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center",
-                  textSize?.[3]
-                )}
-                key={JSON.stringify(item)}
-              >
-                {viewPinyin && (
-                  <Link
-                    target="_blank"
-                    href={`/nmm/${item?.hanzi}?lang=zh`}
-                    className={cn(
-                      section?.pinyin ? "text-gray-500" : "text-black",
-                      "text-sm",
-                      currentTime > section?.start && currentTime < section.end
-                        ? "dark:text-white"
-                        : "text-gray-500",
+      <p
+        className={cn(
+          viewPinyin ? "my-2" : "my-4",
+          currentTime > section?.start && currentTime < section.end
+            ? "dark:text-white text-black"
+            : "text-gray-400"
+        )}
+      >
+        {context?.map((item: any) => {
+          return (
+            <span
+              onClick={() => {
+                setSelected(item);
+                // if (selected) {
+                //   setSelected(null);
+                // } else {
+                //   setSelected(item);
+                // }
 
-                      textSize?.[0],
-                      activeSubtitle?.sentence === section?.sentence
-                        ? "text-gray-400"
-                        : "text-gray-600",
-                      currentTime === 0 ? "text-gray-300" : "",
-                      "text-start",
-                      currentTime > section?.start && currentTime < section.end
-                        ? "dark:text-white text-black"
-                        : "dark:text-gray-400 text-gray-600",
-
-                      selected?.pinyin === item?.pinyin
-                        ? "text-rose-500 dark:text-rose-400"
-                        : ""
-                    )}
-                  >
-                    {item?.pinyin || ""}
-                  </Link>
-                )}
-                <span
-                  onClick={() => {
-                    seek(selectedSection?.start || section?.start);
-                  }}
-                  //   href={`/nmm/${item?.hanzi}?lang=zh`}
-                  //   target="_blank"
+                // if (active) {
+                //   setActive(null);
+                // } else {
+                //   setActive(section);
+                // }
+                setActive(section);
+              }}
+              onMouseEnter={() => {
+                setSelected(item);
+                setActive(section);
+              }}
+              onMouseLeave={() => {
+                setSelected(null);
+                setActive(null);
+              }}
+              className={cn(
+                "text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center",
+                textSize?.[3]
+              )}
+              key={JSON.stringify(item)}
+            >
+              {viewPinyin && (
+                <Link
+                  target="_blank"
+                  href={`/nmm/${item?.hanzi}?lang=zh`}
                   className={cn(
-                    "hover:text-rose-400",
-                    textSize?.[1],
-                    currentTime === 0 ? "text-gray-300" : "",
+                    section?.pinyin ? "text-gray-500" : "text-black",
+                    "text-sm",
+                    currentTime > section?.start && currentTime < section.end
+                      ? "dark:text-white"
+                      : "text-gray-500",
 
-                    activeSubtitle?.en === section?.en
-                      ? "text-white"
+                    textSize?.[0],
+                    activeSubtitle?.sentence === section?.sentence
+                      ? "text-gray-400"
                       : "text-gray-600",
-
+                    currentTime === 0 ? "text-gray-300" : "",
+                    "text-start",
                     currentTime > section?.start && currentTime < section.end
                       ? "dark:text-white text-black"
-                      : "dark:text-gray-400 text-gray-500",
+                      : "dark:text-gray-400 text-gray-600",
 
-                    item?.pinyin && selected?.pinyin === item?.pinyin
+                    selected?.pinyin === item?.pinyin
                       ? "text-rose-500 dark:text-rose-400"
                       : ""
-
-                    // "text-white"
                   )}
                 >
-                  {item?.hanzi}
-                </span>
-              </span>
-            );
-          })}
-        </p>
-      ) : (
-        <p
-          onMouseEnter={() => {
-            setSelected(section);
-            setActive(section);
-          }}
-          onMouseLeave={() => {
-            setSelected(null);
-            setActive(null);
-          }}
-          // className="my-8 text-gray-300 text-lg"
-          className={cn(
-            "hover:text-rose-400 my-4",
-            textSize?.[1],
-            currentTime === 0 ? "text-gray-300" : "",
+                  {item?.pinyin || ""}
+                </Link>
+              )}
+              <span
+                onClick={() => {
+                  seek(selectedSection?.start || section?.start);
+                }}
+                //   href={`/nmm/${item?.hanzi}?lang=zh`}
+                //   target="_blank"
+                className={cn(
+                  "hover:text-rose-400",
+                  textSize?.[1],
+                  currentTime === 0 ? "text-gray-300" : "",
 
-            activeSubtitle?.en === section?.en
-              ? "dark:text-white text-black"
-              : "text-gray-600",
-            currentTime > section?.start && currentTime < section.end
-              ? "dark:text-white text-gray-900"
-              : "text-gray-400"
-            // "text-white"
-          )}
-          key={JSON.stringify(section)}
-          onClick={() => {
-            seek(selectedSection?.start || section?.start);
-          }}
-        >
-          {section?.input}
-        </p>
-      )}
+                  activeSubtitle?.en === section?.en
+                    ? "text-white"
+                    : "text-gray-600",
+
+                  currentTime > section?.start && currentTime < section.end
+                    ? "dark:text-white text-black"
+                    : "dark:text-gray-400 text-gray-500",
+
+                  item?.pinyin && selected?.pinyin === item?.pinyin
+                    ? "text-rose-500 dark:text-rose-400"
+                    : ""
+
+                  // "text-white"
+                )}
+              >
+                {item?.hanzi}
+              </span>
+            </span>
+          );
+        })}
+      </p>
 
       <div className="flex flex-col">
         {(timeStamp?.roman || section?.roman) && editMode && (
@@ -268,6 +251,200 @@ function SectionView({
       </div>
     </>
   );
+
+  // return (
+  //   <>
+  //     {viewPinyin && context !== undefined && context?.length > 0 ? (
+  //       <p
+  //         className={cn(
+  //           "my-2",
+  //           currentTime > section?.start && currentTime < section.end
+  //             ? "dark:text-white text-black"
+  //             : "text-gray-400"
+  //         )}
+  //       >
+  //         {context?.map((item: any) => {
+  //           return (
+  //             <span
+  //               onMouseEnter={() => {
+  //                 setSelected(item);
+  //                 setActive(section);
+  //               }}
+  //               onMouseLeave={() => {
+  //                 setSelected(null);
+  //                 setActive(null);
+  //               }}
+  //               className={cn(
+  //                 "text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center",
+  //                 textSize?.[3]
+  //               )}
+  //               key={JSON.stringify(item)}
+  //             >
+  //               {viewPinyin && (
+  //                 <Link
+  //                   target="_blank"
+  //                   href={`/nmm/${item?.hanzi}?lang=zh`}
+  //                   className={cn(
+  //                     section?.pinyin ? "text-gray-500" : "text-black",
+  //                     "text-sm",
+  //                     currentTime > section?.start && currentTime < section.end
+  //                       ? "dark:text-white"
+  //                       : "text-gray-500",
+
+  //                     textSize?.[0],
+  //                     activeSubtitle?.sentence === section?.sentence
+  //                       ? "text-gray-400"
+  //                       : "text-gray-600",
+  //                     currentTime === 0 ? "text-gray-300" : "",
+  //                     "text-start",
+  //                     currentTime > section?.start && currentTime < section.end
+  //                       ? "dark:text-white text-black"
+  //                       : "dark:text-gray-400 text-gray-600",
+
+  //                     selected?.pinyin === item?.pinyin
+  //                       ? "text-rose-500 dark:text-rose-400"
+  //                       : ""
+  //                   )}
+  //                 >
+  //                   {item?.pinyin || ""}
+  //                 </Link>
+  //               )}
+  //               <span
+  //                 onClick={() => {
+  //                   seek(selectedSection?.start || section?.start);
+  //                 }}
+  //                 //   href={`/nmm/${item?.hanzi}?lang=zh`}
+  //                 //   target="_blank"
+  //                 className={cn(
+  //                   "hover:text-rose-400",
+  //                   textSize?.[1],
+  //                   currentTime === 0 ? "text-gray-300" : "",
+
+  //                   activeSubtitle?.en === section?.en
+  //                     ? "text-white"
+  //                     : "text-gray-600",
+
+  //                   currentTime > section?.start && currentTime < section.end
+  //                     ? "dark:text-white text-black"
+  //                     : "dark:text-gray-400 text-gray-500",
+
+  //                   item?.pinyin && selected?.pinyin === item?.pinyin
+  //                     ? "text-rose-500 dark:text-rose-400"
+  //                     : ""
+
+  //                   // "text-white"
+  //                 )}
+  //               >
+  //                 {item?.hanzi}
+  //               </span>
+  //             </span>
+  //           );
+  //         })}
+  //       </p>
+  //     ) : (
+  //       <p
+  //         onMouseEnter={() => {
+  //           setSelected(section);
+  //           setActive(section);
+  //         }}
+  //         onMouseLeave={() => {
+  //           setSelected(null);
+  //           setActive(null);
+  //         }}
+  //         // className="my-8 text-gray-300 text-lg"
+  //         className={cn(
+  //           "hover:text-rose-400 my-4",
+  //           textSize?.[1],
+  //           currentTime === 0 ? "text-gray-300" : "",
+
+  //           activeSubtitle?.en === section?.en
+  //             ? "dark:text-white text-black"
+  //             : "text-gray-600",
+  //           currentTime > section?.start && currentTime < section.end
+  //             ? "dark:text-white text-gray-900"
+  //             : "text-gray-400"
+  //           // "text-white"
+  //         )}
+  //         key={JSON.stringify(section)}
+  //         onClick={() => {
+  //           seek(selectedSection?.start || section?.start);
+  //         }}
+  //       >
+  //         {section?.input}
+  //       </p>
+  //     )}
+
+  //     <div className="flex flex-col">
+  //       {(timeStamp?.roman || section?.roman) && editMode && (
+  //         <input
+  //           className=""
+  //           value={timeStamp?.roman || section?.roman}
+  //           onChange={(event) => {
+  //             setTimer("roman", event?.target?.value);
+  //           }}
+  //         />
+  //       )}
+
+  //       {(timeStamp?.input || section?.input) && editMode && (
+  //         <input
+  //           className=""
+  //           value={timeStamp?.input || section?.input}
+  //           onChange={(event) => {
+  //             setTimer("input", event?.target?.value);
+  //           }}
+  //         />
+  //       )}
+
+  //       {editMode && (
+  //         <input
+  //           className="w-full"
+  //           value={timeStamp?.en || section?.en}
+  //           onChange={(event) => {
+  //             setTimer("en", event?.target?.value);
+  //           }}
+  //         />
+  //       )}
+
+  //       {editMode && (
+  //         <div className="flex text-gray-400 text-[12px] items-center justify-start mt-4 space-x-2">
+  //           <div>
+  //             <input
+  //               value={timeStamp?.start || section?.start}
+  //               onChange={(event) => {
+  //                 setTimer("start", event?.target?.value);
+  //               }}
+  //             />
+  //             <button
+  //               onClick={() => {
+  //                 setTimer("start");
+  //               }}
+  //             >
+  //               Set Start{" "}
+  //             </button>
+  //           </div>
+
+  //           <div>
+  //             <input
+  //               value={timeStamp?.end || section?.end}
+  //               onChange={(event) => {
+  //                 setTimer("end", event?.target?.value);
+  //               }}
+  //             />
+
+  //             <button
+  //               onClick={() => {
+  //                 setTimer("end");
+  //               }}
+  //             >
+  //               {" "}
+  //               Set End{" "}
+  //             </button>
+  //           </div>
+  //         </div>
+  //       )}
+  //     </div>
+  //   </>
+  // );
 }
 
 export const AudioPlayer = () => {
@@ -500,15 +677,9 @@ export const AudioPlayer = () => {
               </div>
 
               <div className="h-20 mb-4 hidden sm:block">
-                {viewPinyin ? (
-                  <h4 className="text-xs text-gray-700 dark:text-gray-500">
-                    Word meaning
-                  </h4>
-                ) : (
-                  <h4 className="text-xs text-gray-700 dark:text-gray-500">
-                    Pinyin
-                  </h4>
-                )}
+                <h4 className="text-xs text-gray-700 dark:text-gray-500">
+                  Word meaning
+                </h4>
 
                 {selected ? (
                   <div className="h-14 mt-2 w-full">
@@ -516,13 +687,7 @@ export const AudioPlayer = () => {
                       <p className="space-x-2 text-[16px] font-extralight">
                         {viewPinyin && <span>{selected?.hanzi}</span>}
 
-                        <span
-                          className={
-                            viewPinyin
-                              ? "text-red-400"
-                              : "text-gray-700 dark:text-gray-400"
-                          }
-                        >
+                        <span className={"text-red-400"}>
                           {selected?.pinyin?.trim() || selected?.roman?.trim()}
                         </span>
                       </p>
@@ -534,13 +699,11 @@ export const AudioPlayer = () => {
                       )}
                     </div>
 
-                    {viewPinyin && (
-                      <p className="font-extralight">
-                        <span className="">
-                          {selected?.en?.split(";")?.slice(0, 5)?.join(";")}
-                        </span>
-                      </p>
-                    )}
+                    <p className="font-extralight">
+                      <span className="">
+                        {selected?.en?.split(";")?.slice(0, 5)?.join(";")}
+                      </span>
+                    </p>
                   </div>
                 ) : (
                   <div className="h-14"></div>
@@ -560,6 +723,7 @@ export const AudioPlayer = () => {
                   <SectionView
                     activeSubtitle={activeSubtitle}
                     setActive={setActive}
+                    active={active}
                     currentTime={currentTime}
                     seek={seek}
                     textSize={textSize}

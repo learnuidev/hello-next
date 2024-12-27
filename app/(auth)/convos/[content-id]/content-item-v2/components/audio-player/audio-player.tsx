@@ -676,7 +676,7 @@ export const AudioPlayer = () => {
                 </div>
               </div>
 
-              <div className="h-20 mb-4 hidden sm:block">
+              <div className="h-20 mb-4">
                 <h4 className="text-xs text-gray-700 dark:text-gray-500">
                   Word meaning
                 </h4>

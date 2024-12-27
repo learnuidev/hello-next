@@ -496,7 +496,7 @@ export const AudioPlayer = () => {
 
         <div className="mb-32 m-auto relative w-full">
           {viewMode !== "stats" && (
-            <div className="sticky pt-4 pb-[4px] bg-gray-100 rounded-2xl dark:bg-[rgb(9,10,11)] px-4 md:px-12">
+            <div className="sticky top-0 pt-4 pb-[4px] bg-gray-100 rounded-2xl dark:bg-[rgb(9,10,11)] px-4 md:px-12">
               <div className="pb-4">
                 <h4 className="text-xs text-gray-700 dark:text-gray-500">
                   Sentence meaning

@@ -568,21 +568,21 @@ export const AudioPlayer = () => {
 
   const ContentSettingsNavbar = () => (
     <div className="space-x-4 sm:space-x-8 flex items-center">
-      {!content?.audio && (
-        <UploadFileButton
-          icon={<Icons.upload className="text-2xl" />}
-          types={["mp3", "m4a"]}
-          onSuccess={(res) => {
-            return updateContentMutation.mutateAsync({
-              id: content?.id || "",
-              audio: res.sourceUrl,
-              audioUploadBucketKey: res.uploadBucketKey,
-              audioS3LinkAddedAt: Date.now(),
-              updateContent: true,
-            });
-          }}
-        />
-      )}
+      {/* {!content?.audio && ( */}
+      <UploadFileButton
+        icon={<Icons.upload className="text-2xl" />}
+        types={["mp3", "m4a"]}
+        onSuccess={(res) => {
+          return updateContentMutation.mutateAsync({
+            id: content?.id || "",
+            audio: res.sourceUrl,
+            audioUploadBucketKey: res.uploadBucketKey,
+            audioS3LinkAddedAt: Date.now(),
+            updateContent: true,
+          });
+        }}
+      />
+      {/* )} */}
 
       {editMode && (
         <button

@@ -12,6 +12,7 @@ import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { traditionalToSimplified } from "@/langs/chinese /traditiona-to-simplified";
 import { signOut } from "@/libs/cognito/auth";
 import { useIsDu } from "./use-is-du";
+import { useIsSearchTrackingEnabled } from "./use-is-search-tracking-enabled";
 
 export const useHandleSearch = () => {
   const router = useRouter();
@@ -53,7 +54,7 @@ export const useHandleSearch = () => {
   const addHistoryMutation = useAddHistoryMutation();
 
   // TODO: Fix this
-  const isSearchTrackingEnabled = true;
+  const isSearchTrackingEnabled = useIsSearchTrackingEnabled();
 
   const handleOnKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape") {

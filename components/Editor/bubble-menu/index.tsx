@@ -9,6 +9,8 @@ import { FC, useState } from "react";
 import { NodeSelector } from "./node-selector";
 import { ColorSelector } from "./color-selector";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
+import { useIsSearchTrackingEnabled } from "@/hooks/use-is-search-tracking-enabled";
+import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 
 export interface BubbleMenuItem {
   name: string;
@@ -26,6 +28,11 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
   const lang = useGetCurrentLang();
 
   const router = useRouter();
+
+  const addHistoryMutation = useAddHistoryMutation();
+
+  // TODO: Fix this
+  const isSearchTrackingEnabled = useIsSearchTrackingEnabled();
 
   const { speak } = useSpeak();
 
@@ -68,6 +75,14 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
         const { view, state } = props.editor;
         const { from, to } = view.state.selection;
         const text = state.doc.textBetween(from, to, "");
+
+        if (isSearchTrackingEnabled) {
+          addHistoryMutation.mutate({
+            input: text,
+            lang,
+            eventType: "SEARCH",
+          } as any);
+        }
 
         router.push(`/nmm/${text}?lang=${lang || "zh"}`);
       },

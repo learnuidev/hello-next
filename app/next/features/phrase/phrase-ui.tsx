@@ -155,15 +155,7 @@ export const PhraseUI = () => {
                 className="flex-1 mr-2 px-2 py-0 dark:bg-[rgb(21,22,23)] border-transparent focus:border-transparent focus:ring-0 focus:outline-none resize-none"
               />
               <Button disabled={addTranslation.isLoading} type="submit">
-                {addTranslation?.isLoading ? (
-                  <Icons.loadingSpinner
-                    className="text-xl dark:text-gray-600 dark:hover:text-white text-gray-700"
-                    spinPulse
-                  />
-                ) : (
-                  <Icons.paperPlane className="text-xl dark:text-gray-600 dark:hover:text-white text-gray-700" />
-                  // <Icons.microphone />
-                )}
+                <Icons.paperPlane className="text-xl dark:text-gray-600 dark:hover:text-white text-gray-700" />
               </Button>
             </form>
 
@@ -249,7 +241,13 @@ export const PhraseUI = () => {
                     }
                   }}
                 >
-                  <Icons.microphone />
+                  {addTranslation?.isLoading ? (
+                    <Icons.loadingSpinner spinPulse />
+                  ) : listening ? (
+                    <Icons.stop />
+                  ) : (
+                    <Icons.microphone />
+                  )}
                 </button>
                 <button
                   className={cn(

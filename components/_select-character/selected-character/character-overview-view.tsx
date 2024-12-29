@@ -56,7 +56,7 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
           <SelectedCharacterHeader {...props} />
         </div>
 
-        <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:p-8 rounded-2xl mt-8">
+        <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl">
           <div>
             <div className="mt-8">
               <Tabs defaultValue="overview">
@@ -86,9 +86,11 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
                   )}
                 </div>
 
-                <TabsContent value="overview" className="mt-6">
+                <TabsContent value="overview">
                   {variant ? (
-                    <CharacterVariantSummary />
+                    <div className="mt-6">
+                      <CharacterVariantSummary />
+                    </div>
                   ) : (
                     <Summary showMeanings={true} characterId={characterId} />
                   )}

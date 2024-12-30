@@ -56,9 +56,9 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
           <SelectedCharacterHeader {...props} />
         </div>
 
-        <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl">
+        <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-8">
           <div>
-            <div className="mt-8">
+            <div className="">
               <Tabs defaultValue="overview">
                 {/* <Tabs defaultValue="dé"> */}
                 <div>

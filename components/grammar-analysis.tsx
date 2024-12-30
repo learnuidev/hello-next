@@ -174,9 +174,6 @@ export function GrammarAnalysis({
 
   return grammarAnalysis ? (
     <div>
-      <h1 className="text-xl text-center font-bold dark:text-gray-400 text-gray-800 mt-4 md:mt-0">
-        Grammar Analysis
-      </h1>
       {isGrammarAnalysisLoading ? (
         <div className="flex flex-col space-y-3">
           <Skeleton className="h-[125px] w-[250px] rounded-xl" />

@@ -78,6 +78,10 @@ export function useShortCuts() {
         event.preventDefault();
         router.push("/du");
       }
+      if (["a"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        router.push("/apps");
+      }
 
       if (["d"]?.includes(event.key) && event.ctrlKey) {
         event.preventDefault();

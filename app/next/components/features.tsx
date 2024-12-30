@@ -24,7 +24,18 @@ export const features = [
   {
     id: "html-parser",
     name: "Parser",
-    Component: HtmlParser,
+
+    Component: () => {
+      return (
+        <FeatureContextProvider
+          value={{
+            rootUrl: `/next`,
+          }}
+        >
+          <HtmlParser />
+        </FeatureContextProvider>
+      );
+    },
   },
   {
     id: "phrase",
@@ -33,7 +44,7 @@ export const features = [
       return (
         <FeatureContextProvider
           value={{
-            rootUrl: `/next?feature-id=phrase`,
+            rootUrl: `/next`,
           }}
         >
           <Phrase />

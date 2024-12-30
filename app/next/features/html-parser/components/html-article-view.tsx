@@ -25,6 +25,7 @@ import {
 } from "@codesandbox/sandpack-react";
 import { HtmlHistoryView } from "./html-history-view";
 import { useHtmlHistoryStore } from "../hooks/use-html-history-store";
+import { useFeatureContext } from "../../feature-context-provider";
 
 function CodeBlock({ code }: { code: string }) {
   return (
@@ -47,6 +48,7 @@ function CodeBlock({ code }: { code: string }) {
 }
 
 function SectionView({ section, viewPinyin, setSelected }: any) {
+  const { rootUrl } = useFeatureContext();
   const { data: context } = useListDictionaryMeaningsQuery(section?.hanzi);
   if (section?.image || section?.img) {
     if (viewPinyin) {
@@ -182,6 +184,8 @@ export const HtmlArticleView = () => {
 
   const { data: hskWords2 } = useListHSKWordsQuery();
 
+  const { rootUrl } = useFeatureContext();
+
   const { data: allChars } = useListComponents();
 
   const { data, isError, isLoading } = useParseHtmlQuery(url);
@@ -229,7 +233,7 @@ export const HtmlArticleView = () => {
   return (
     <div>
       <section>
-        <div className="flex items-center w-full justify-center mt-[-60px]">
+        <div className="flex items-center w-full justify-center">
           <input
             className="w-full h-12 lg:h-[44px] sm:w-[740px] py-2 px-6 rounded-full outline-none text-[16px] font-extralight focus:shadow-sm focus:shadow-rose-400 transition bg-gray-100 dark:bg-[rgb(32,33,35)] placeholder:text-gray-300 dark:placeholder:text-gray-500"
             placeholder={url || "https://www.mandarino.io"}
@@ -237,7 +241,7 @@ export const HtmlArticleView = () => {
               if (event.key === "Enter") {
                 if (event.target.value) {
                   router.push(
-                    `/next?feature-id=html-parser&url=${event.target.value || url}`
+                    `${rootUrl}?feature-id=html-parser&url=${event.target.value || url}`
                   );
                 }
               }
@@ -439,7 +443,7 @@ export const HtmlArticleView = () => {
                     )}
                     onClick={() => {
                       router.push(
-                        `/next?feature-id=html-parser&url=${link?.href}&view=${view}&title=${link?.title}`
+                        `${rootUrl}?feature-id=html-parser&url=${link?.href}&view=${view}&title=${link?.title}`
                       );
                     }}
                     key={JSON.stringify(link)}
@@ -461,6 +465,8 @@ export const HtmlArticleView = () => {
 function RelatedArticles({ data }: { data: ParseHtmlResponse }) {
   const { url, view, title } = useGetNextParams();
 
+  const { rootUrl } = useFeatureContext();
+
   return (
     <>
       {data?.data?.relatedArticles?.length > 0 && (
@@ -471,7 +477,7 @@ function RelatedArticles({ data }: { data: ParseHtmlResponse }) {
             {data?.data?.relatedArticles?.map((lesson, idx) => {
               return (
                 <Link
-                  href={`/next?feature-id=html-parser&url=${lesson?.href}&view=${view}`}
+                  href={`${rootUrl}?feature-id=html-parser&url=${lesson?.href}&view=${view}`}
                   key={JSON.stringify(lesson)}
                   className={cn(
                     "block",

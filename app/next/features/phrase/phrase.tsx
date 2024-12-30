@@ -4,10 +4,11 @@ import "regenerator-runtime";
 import { formatJournalDate } from "@/app/(auth)/diary/utils/format-journal-date";
 import { Icons } from "@/components/ui/icons.v2";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAddTranslationHistoryMutation } from "./hooks/use-add-translation-history-mutation";
 import { useListTranslationHistory } from "./hooks/use-list-translation-history";
+import { usePhraseParams } from "./hooks/use-phrase-params";
 import { languages } from "./languages";
 import { NewPhrase } from "./new-phrase";
 import { PhraseUI } from "./phrase-ui";
@@ -41,9 +42,7 @@ export const Phrase = () => {
 
   const addTranslationHistoryMutation = useAddTranslationHistoryMutation();
 
-  const searchParams = useSearchParams();
-  const contextId = searchParams?.get("contextId");
-  const view = searchParams?.get("view");
+  const { contextId, view } = usePhraseParams();
 
   if (contextId) {
     return <PhraseUI />;

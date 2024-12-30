@@ -4,6 +4,27 @@ import "regenerator-runtime";
 
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
+import { useDeleteTranslationMutation } from "./hooks/use-delete-translation-mutation";
+import { usePhraseParams } from "./hooks/use-phrase-params";
+
+const PhraseActionButton = ({
+  onClick,
+  children,
+}: {
+  onClick: () => void;
+  children: React.ReactNode;
+}) => {
+  return (
+    <button
+      className={cn(
+        "text-[14px] border-[1px] border-gray-700 dark:hover:border-gray-500 w-8 h-8 rounded-full"
+      )}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+};
 
 export function PhraseItem({
   message,
@@ -23,6 +44,10 @@ export function PhraseItem({
   const formattedOutput = message?.output
     ?.replaceAll(/&quot;/g, '"')
     ?.replaceAll(/&#39;/g, "'");
+
+  const { contextId } = usePhraseParams();
+
+  const deleteTranslationMutation = useDeleteTranslationMutation(contextId);
   return (
     <div
       key={message.id}
@@ -36,26 +61,38 @@ export function PhraseItem({
           "rounded-2xl px-2 py-2"
         )}
       >
-        <div className="flex space-x-4 items-center">
+        <div className="flex space-x-4 flex-col">
           <div>
             {showPinyin && (
               <p className="text-gray-400 font-extralight">{message?.pinyin}</p>
             )}
-            <p className="text-xl sm:text-2xl">{formattedOutput}</p>
-            <p className="text-gray-500 text-sm sm:text-md">{message.input}</p>
+            <p className="text-xl sm:text-xl font-extralight">
+              {formattedOutput}
+            </p>
+            <p className="text-gray-500 text-sm sm:text-md mt-2">
+              {message.input}
+            </p>
           </div>
 
-          <div className="flex justify-end">
-            <button
-              className={cn(
-                "sm:text-xl text-[16px] border-[1px] border-gray-700 dark:hover:border-gray-500 w-6 h-6 sm:w-10 sm:h-10 rounded-full"
-              )}
+          <div className="flex justify-end space-x-2 mt-4">
+            <PhraseActionButton
               onClick={() => {
                 speak(formattedOutput);
               }}
             >
               <Icons.volume />
-            </button>
+            </PhraseActionButton>
+            <PhraseActionButton
+              onClick={() => {
+                deleteTranslationMutation.mutateAsync({ id: message?.id });
+              }}
+            >
+              {deleteTranslationMutation.isLoading ? (
+                <Icons.loadingSpinner spinPulse />
+              ) : (
+                <Icons.trash />
+              )}
+            </PhraseActionButton>
           </div>
         </div>
       </div>

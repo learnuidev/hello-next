@@ -11,9 +11,9 @@ import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useJwtToken } from "../html-parser/hooks/use-jwt-token";
+import { usePhraseParams } from "./hooks/use-phrase-params";
 
 const useAddTranslationMutation = () => {
   const token = useJwtToken();
@@ -73,8 +73,7 @@ export const PhraseUI = () => {
   const [index, setIndex] = useState(0);
   const [randomDataIndex, setRandomDataIndex] = useState(getRandomNumber(9));
 
-  const searchParams = useSearchParams();
-  const contextId = searchParams?.get("contextId") || "";
+  const { contextId } = usePhraseParams();
 
   const getInput = (input: string) => {
     return {

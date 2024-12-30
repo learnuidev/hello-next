@@ -13,7 +13,6 @@ import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useAddTranslationMutation } from "./hooks/use-add-translation-mutation";
 import { useGetTranslationHistory } from "./hooks/use-get-translation-history";
@@ -21,6 +20,7 @@ import {
   listTranslationsQueryKey,
   useListTranslations,
 } from "./hooks/use-list-translations";
+import { usePhraseParams } from "./hooks/use-phrase-params";
 import { languages } from "./languages";
 import { PhraseItem } from "./phrase-item";
 
@@ -37,8 +37,7 @@ export const PhraseUI = () => {
   const topTenIncorrect = useGetTopTenIncorrect();
   const [randomDataIndex, setRandomDataIndex] = useState(getRandomNumber(9));
 
-  const searchParams = useSearchParams();
-  const contextId = searchParams?.get("contextId") || "";
+  const { contextId } = usePhraseParams();
 
   const { data: translationContext } = useGetTranslationHistory(contextId);
 

@@ -4,10 +4,13 @@ import { languages } from "./languages";
 import { useState } from "react";
 import { useAddTranslationHistoryMutation } from "./hooks/use-add-translation-history-mutation";
 import { useRouter } from "next/navigation";
+import { useFeatureContext } from "../feature-context-provider";
 
 export const NewPhrase = ({ cancelNewChat }: { cancelNewChat: () => void }) => {
   const [sourceLang, setSourceLang] = useState("en");
   const [targetLang, setTargetLang] = useState("zh-CN");
+
+  const { rootUrl } = useFeatureContext();
 
   const router = useRouter();
 
@@ -77,7 +80,9 @@ export const NewPhrase = ({ cancelNewChat }: { cancelNewChat: () => void }) => {
               })
               .then((resp) => {
                 cancelNewChat();
-                router.push(`/next?feature-id=phrase&contextId=${resp?.id}`);
+                router.push(
+                  `${rootUrl}?feature-id=phrase&contextId=${resp?.id}`
+                );
               });
           }}
         >

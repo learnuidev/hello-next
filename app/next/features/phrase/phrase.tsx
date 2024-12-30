@@ -4,7 +4,6 @@ import "regenerator-runtime";
 import { formatJournalDate } from "@/app/(auth)/diary/utils/format-journal-date";
 import { Icons } from "@/components/ui/icons.v2";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAddTranslationHistoryMutation } from "./hooks/use-add-translation-history-mutation";
 import { useListTranslationHistory } from "./hooks/use-list-translation-history";
@@ -12,12 +11,14 @@ import { usePhraseParams } from "./hooks/use-phrase-params";
 import { languages } from "./languages";
 import { NewPhrase } from "./new-phrase";
 import { PhraseUI } from "./phrase-ui";
+import { useFeatureContext } from "../feature-context-provider";
 
 function PhraseSettings() {
+  const { rootUrl } = useFeatureContext();
   return (
     <div>
       <div className="my-8 flex justify-between items-center">
-        <Link href="/next?feature-id=phrase" className="text-3xl">
+        <Link href={rootUrl} className="text-3xl">
           <Icons.xMark />{" "}
         </Link>
 
@@ -30,9 +31,8 @@ function PhraseSettings() {
 }
 
 export const Phrase = () => {
-  const router = useRouter();
-
   const [newChat, setNewChat] = useState(false);
+  const { rootUrl } = useFeatureContext();
 
   const cancelNewChat = () => {
     setNewChat(false);
@@ -61,11 +61,7 @@ export const Phrase = () => {
         <button
           className="flex flex-col items-center gap-4 hover:text-white text-gray-500"
           onClick={() => {
-            // setView('new')
             setNewChat(true);
-            // addTranslationHistoryMutation.mutateAsync().then((resp) => {
-            //   router.push(`/next?feature-id=phrase&contextId=${resp?.id}`);
-            // });
           }}
         >
           {" "}
@@ -86,7 +82,7 @@ export const Phrase = () => {
         </button>
         <Link
           className="flex flex-col items-center gap-4 hover:text-white text-gray-500"
-          href={`/next?feature-id=phrase&view=settings`}
+          href={`${rootUrl}?feature-id=phrase&view=settings`}
         >
           {" "}
           <Icons.gear className="text-3xl lg:text-5xl" />
@@ -111,11 +107,11 @@ export const Phrase = () => {
               return (
                 <Link
                   key={JSON.stringify(history?.id)}
-                  href={`/next?feature-id=phrase&contextId=${history?.id}`}
+                  href={`${rootUrl}?feature-id=phrase&contextId=${history?.id}`}
                   className="block h-18 p-4 col-span-2 lg:col-span-2 shadow-2 shadow-sm dark:shadow-gray-800 shadow-gray-200 rounded-2xl"
                 >
                   <Link
-                    href={`/next?feature-id=phrase&contextId=${history?.id}`}
+                    href={`${rootUrl}t?feature-id=phrase&contextId=${history?.id}`}
                     className="flex justify-between items-center"
                   >
                     <div>

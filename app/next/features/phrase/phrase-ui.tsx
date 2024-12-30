@@ -23,6 +23,7 @@ import {
 import { usePhraseParams } from "./hooks/use-phrase-params";
 import { languages } from "./languages";
 import { PhraseItem } from "./phrase-item";
+import { useFeatureContext } from "../feature-context-provider";
 
 function getRandomNumber(n: number) {
   return Math.floor(Math.random() * (n + 1));
@@ -81,10 +82,7 @@ export const PhraseUI = () => {
 
   const component = topTenIncorrect?.[randomDataIndex]?.hanzi;
 
-  console.log(
-    "HANZI",
-    topTenIncorrect?.[randomDataIndex]?.hanzi || topTenIncorrect?.[0]?.hanzi
-  );
+  const { rootUrl } = useFeatureContext();
 
   const queryClient = useQueryClient();
 
@@ -115,7 +113,7 @@ export const PhraseUI = () => {
             {contextId}
           </h2>
 
-          <Link href="/next?feature-id=phrase" className="text-xl block">
+          <Link href={`${rootUrl}?feature-id=phrase`} className="text-xl block">
             <Icons.xMark />{" "}
           </Link>
         </div>

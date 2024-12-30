@@ -3,6 +3,7 @@ import { InsightsV2 } from "@/app/next/features/insights-v2/insights-v2";
 import { Speak } from "@/app/next/features/speak/speak";
 import { HtmlParser } from "@/app/next/features/html-parser/html-parser";
 import { Phrase } from "@/app/next/features/phrase/phrase";
+import { FeatureContextProvider } from "../features/feature-context-provider";
 
 export const features = [
   {
@@ -28,7 +29,17 @@ export const features = [
   {
     id: "phrase",
     name: "Phrase",
-    Component: Phrase,
+    Component: () => {
+      return (
+        <FeatureContextProvider
+          value={{
+            rootUrl: `/next?feature-id=phrase`,
+          }}
+        >
+          <Phrase />
+        </FeatureContextProvider>
+      );
+    },
   },
 ];
 

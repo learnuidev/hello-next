@@ -78,7 +78,7 @@ export default function AppsPage() {
     },
 
     {
-      href: "/next",
+      href: "/translator",
       title: "Translator",
       Icon: Icons.microphone,
     },

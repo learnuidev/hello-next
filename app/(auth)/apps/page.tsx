@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { DuChineseIcon } from "../du/components/duchinese-icon";
 import { useSettingsDialogState } from "@/components/settings-dialog/settings-dialog.state";
+import { useGetReviewUrl } from "@/components/settings-dialog/use-get-review-url";
+import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 
 function AppLinkItem({
   href,
@@ -39,6 +41,9 @@ function AppLinkItem({
 
 export default function AppsPage() {
   const setOpen = useSettingsDialogState((state) => state.setIsOpen);
+  const { data: reviewList } = useListCharacterReviewList();
+
+  const reviewUrl = useGetReviewUrl();
   const apps = [
     {
       href: "/pinyin",
@@ -49,6 +54,12 @@ export default function AppsPage() {
       href: "/insights",
       title: "Insights",
       Icon: Icons.chartColumn,
+    },
+    {
+      href: reviewUrl,
+      title: "Review",
+      Icon: Icons.playCircle,
+      hidden: reviewList?.length === 0,
     },
 
     {
@@ -91,7 +102,11 @@ export default function AppsPage() {
 
       <section className="flex items-center justify-center flex-wrap gap-16">
         {apps.map((props) => {
-          const { href, title, onClick, Icon } = props;
+          const { href, title, onClick, Icon, hidden } = props;
+
+          if (hidden) {
+            return null;
+          }
           return (
             <AppLinkItem
               key={JSON.stringify(props)}

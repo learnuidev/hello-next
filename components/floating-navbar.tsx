@@ -95,35 +95,23 @@ const FloatingNavbarComp = () => {
     >
       <div className="overflow-y-auto px-8 py-2 bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
         <div className="space-x-6 md:space-x-8 flex justify-center items-center w-full ">
-          <button
-            className={cn(
-              "text-xl",
-              readMode
-                ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-200 dark:text-gray-500"
-            )}
-            onClick={() => {
-              setBrightMode((prev: any) => !prev);
-              setReadMode(!readMode);
-            }}
-          >
-            <Icons.glassesRound />
-          </button>
+          {!["/", "/apps"]?.includes(routeName) && (
+            <button
+              className={cn(
+                "text-xl",
+                readMode
+                  ? "text-gray-800 dark:text-gray-300"
+                  : "text-gray-200 dark:text-gray-500"
+              )}
+              onClick={() => {
+                setBrightMode((prev: any) => !prev);
+                setReadMode(!readMode);
+              }}
+            >
+              <Icons.glassesRound />
+            </button>
+          )}
 
-          <Link
-            href="/diary"
-            className={`transition ${
-              routeName?.includes("/diary")
-                ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-200 dark:text-gray-500"
-            } hover:text-white transition text-xl`}
-          >
-            {routeName?.includes("/diary") ? (
-              <Icons.diary className="hover:text-white transition" />
-            ) : (
-              <Icons.diary className="hover:text-white transition" />
-            )}
-          </Link>
           <Link
             href="/convos"
             className={`transition ${
@@ -164,7 +152,7 @@ const FloatingNavbarComp = () => {
             <Icons.verticalStack className="hover:text-white transition" />
           </Link>
 
-          <Link
+          {/* <Link
             href="/insights"
             className={`transition ${
               routeName === "/insights"
@@ -173,9 +161,9 @@ const FloatingNavbarComp = () => {
             } hover:text-gray-700 transition text-xl`}
           >
             <Icons.chartColumn className="hover:text-white transition" />
-          </Link>
+          </Link> */}
 
-          {(!lang || lang === "zh") && (
+          {/* {(!lang || lang === "zh") && (
             <Link
               href="/pinyin"
               className={`transition ${
@@ -186,7 +174,18 @@ const FloatingNavbarComp = () => {
             >
               <Icons.pinyinChart className="hover:text-white transition" />
             </Link>
-          )}
+          )} */}
+
+          <Link
+            href="/apps"
+            className={`transition ${
+              routeName === "/apps"
+                ? "text-gray-800 dark:text-gray-300"
+                : "text-gray-200 dark:text-gray-500"
+            } hover:text-gray-700 transition text-xl`}
+          >
+            <Icons.apps className="hover:text-white transition" />
+          </Link>
 
           <Link
             href="/nmm"

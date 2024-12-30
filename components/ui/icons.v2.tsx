@@ -43,6 +43,7 @@ import {
   faBoltLightning,
   faBookmark,
   faBoxArchive,
+  faBrowser,
   faBullseye,
   faBullseyeArrow,
   faChartColumn,
@@ -66,6 +67,7 @@ import {
   faFire,
   faGlobeAsia,
   faGraduationCap,
+  faGrid2,
   faGridRound2Plus,
   faGrinBeamSweat,
   faInfo,
@@ -334,6 +336,9 @@ export const Icons = {
   upload: createFAIcon(faCloudArrowUp),
   robot: createFAIcon(faRobotAstromech),
   paperPlane: createFAIcon(faPaperPlaneTop),
+
+  apps: createFAIcon(faGrid2),
+  browser: createFAIcon(faBrowser),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

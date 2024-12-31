@@ -170,9 +170,11 @@ export const HtmlArticleView = () => {
 
   const { data: userAssets, isLoading: isAssetsLoading } = useListUserAssets();
 
-  const userAsset = (userAssets || []).find(
+  const _userAsset = (userAssets || []).filter(
     (userAsset: any) => userAsset?.webpageUrl === url
   );
+
+  const userAsset = _userAsset?.[_userAsset?.length - 1];
 
   const { isPlaying, togglePlay, seek, currentTime, reset } = useMusicV2({
     url: userAsset?.sourceUrl || "",
@@ -393,11 +395,13 @@ export const HtmlArticleView = () => {
               )}
             </div>
 
-            {!isAssetsLoading && !userAsset?.webpageUrl ? (
+            <UploadFileButton context={{ webpageUrl: url }} />
+
+            {/* {!isAssetsLoading && !userAsset?.webpageUrl ? (
               <UploadFileButton context={{ webpageUrl: url }} />
             ) : (
               <div></div>
-            )}
+            )} */}
           </div>
 
           <div>

@@ -233,7 +233,7 @@ export const HtmlArticleView = () => {
   // }
 
   return (
-    <div>
+    <div className="mb-32">
       <section>
         <div className="flex items-center w-full justify-center">
           <input
@@ -395,13 +395,11 @@ export const HtmlArticleView = () => {
               )}
             </div>
 
-            <UploadFileButton context={{ webpageUrl: url }} />
-
-            {/* {!isAssetsLoading && !userAsset?.webpageUrl ? (
+            {!isAssetsLoading && !userAsset?.webpageUrl ? (
               <UploadFileButton context={{ webpageUrl: url }} />
             ) : (
               <div></div>
-            )} */}
+            )}
           </div>
 
           <div>

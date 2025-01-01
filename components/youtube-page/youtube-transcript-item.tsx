@@ -108,8 +108,6 @@ export const TranscriptItem = ({
     ),
   ].map((x) => x);
 
-  console.log("TOTAL REPEATS", totalRepeats);
-
   const ConfigButtons = () => {
     return (
       <div className="space-x-2 flex flex-row items-center">

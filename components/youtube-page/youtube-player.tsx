@@ -31,6 +31,7 @@ import { KaraokeMode } from "./karaoke-mode";
 import { KaraokeModeV2 } from "./karaoke-mode-v2";
 import { KaraokeModeV3 } from "./karaoke-mode-v3";
 import { useContentEditStore } from "./use-content-edit-store";
+import { resolveLangCode } from "@/libs/openai/utils";
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -171,6 +172,10 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [togglePlay, seekBefore, seekAfter]);
+
+  const currentTranscription = transcriptions?.find(
+    (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -367,9 +372,27 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             />
           </div>
 
-          <Header className="my-4 text-black text-center dark:text-gray-300 font-extralight hidden md:block">
+          {/* <Header className="my-4 text-black text-center dark:text-gray-300 font-extralight hidden md:block">
             {lesson?.title}
-          </Header>
+          </Header> */}
+
+          {currentTranscription && (
+            <div className="text-center my-8">
+              <p className="text-gray-400">{currentTranscription?.pinyin}</p>
+
+              <Link
+                className="text-3xl font-extralight"
+                href={`/nmm/${encodeURIComponent(
+                  currentTranscription?.input
+                )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
+                target="_blank"
+              >
+                {currentTranscription?.input}
+              </Link>
+
+              <p className="text-gray-500">{currentTranscription?.en}</p>
+            </div>
+          )}
         </div>
 
         {viewMode === "karaoke" ? (

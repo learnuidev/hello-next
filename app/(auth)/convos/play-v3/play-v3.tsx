@@ -6,6 +6,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useMusicV2 } from "../_play-v2/use-music-v2";
 import { formatTime } from "../_play/utils";
 import { groupBy } from "ramda";
+import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
+import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
+import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -51,10 +54,19 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
   const [textSizeIndex, setTextSizeIndex] = useState(1);
 
+  const editMode = useContentEditStore((state) => state.editMode);
+  const setEditMode = useContentEditStore((state) => state.setEditMode);
+
+  const resetTimes = useContentEditStore((state) => state.resetTimes);
+  const times = useContentEditStore((state) => state.times);
+  const setTimes = useContentEditStore((state) => state.setTimes);
+
   const audioUrl = content?.audio;
   const { isPlaying, togglePlay, seek, currentTime, reset } = useMusicV2({
     url: audioUrl,
   });
+
+  const updateContentMutation = useUpdateContentMutation();
 
   const increaseFontSize = useCallback(() => {
     setTextSizeIndex((prev) => Math.min(3, prev + 1));
@@ -73,6 +85,35 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const textSize = sizes?.[textSizeIndex] || sizes?.[1];
 
   const groupBySectionId = groupBy((item: any) => item.sectionId);
+
+  const setTimer = (
+    type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
+    section: any,
+    newValue?: string
+  ) => {
+    const offset = newValue || currentTime - 0.2;
+    setTimes((prev: any) => {
+      const exists = prev?.find((item: any) => item?.id === section?.id);
+
+      if (exists) {
+        return prev.map((item: any) => {
+          if (item?.id === section?.id) {
+            return {
+              ...exists,
+              [type]: offset,
+            };
+          }
+
+          return item;
+        });
+      }
+
+      return prev.concat({
+        id: section?.id,
+        [type]: offset,
+      });
+    });
+  };
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -181,6 +222,10 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
       <div className="relative space-y-8">
         {content?.transcriptions?.map((subtitle: any) => {
+          const timeStamp = times?.find(
+            (time: any) => time?.id === subtitle?.id
+          ) as any;
+
           return (
             // <HanziTooltip
             //   component={{
@@ -190,71 +235,148 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
             //   }}
             //   key={JSON.stringify(subtitle)}
             // >
-            <span
-              onMouseEnter={() => {
-                setSelected(subtitle);
-              }}
-              onMouseLeave={() => {
-                setSelected(null);
-              }}
-              key={JSON.stringify(subtitle)}
-              className={cn(
-                "inline-flex flex-col mt-2 items-start px-[2px]",
-                textSize?.[3]
-              )}
-            >
-              {viewPinyin && (
-                <Link
-                  // onClick={() => {
-                  //   alert(JSON.stringify(getHanzi(subtitle?.sentence)));
-                  // }}
-                  href={`/nmm/${subtitle.hanzi}?lang=zh`}
-                  target="_blank"
-                  className={cn(
-                    subtitle?.pinyin ? "text-gray-500" : "text-black",
-                    "text-sm",
-                    currentTime > subtitle?.start && currentTime < subtitle.end
-                      ? "text-white "
-                      : "text-gray-500",
+            <>
+              <span
+                onMouseEnter={() => {
+                  setSelected(subtitle);
+                }}
+                onMouseLeave={() => {
+                  setSelected(null);
+                }}
+                key={JSON.stringify(subtitle)}
+                className={cn(
+                  "inline-flex flex-col mt-2 items-start px-[2px]",
+                  textSize?.[3]
+                )}
+              >
+                {viewPinyin && (
+                  <Link
+                    // onClick={() => {
+                    //   alert(JSON.stringify(getHanzi(subtitle?.sentence)));
+                    // }}
+                    href={`/nmm/${subtitle.hanzi}?lang=zh`}
+                    target="_blank"
+                    className={cn(
+                      subtitle?.pinyin ? "text-gray-500" : "text-black",
+                      "text-sm",
+                      currentTime > subtitle?.start &&
+                        currentTime < subtitle.end
+                        ? "text-white "
+                        : "text-gray-500",
 
-                    textSize?.[0],
+                      textSize?.[0],
+                      activeSubtitle?.sentence === subtitle?.sentence
+                        ? "text-gray-400"
+                        : "text-gray-600",
+                      currentTime > subtitle?.start &&
+                        currentTime < subtitle.end
+                        ? "text-white"
+                        : "",
+                      currentTime === 0 ? "text-gray-300" : "",
+                      "text-start"
+                    )}
+                  >
+                    {subtitle?.pinyin || subtitle?.roman || ""}
+                  </Link>
+                )}
+                <button
+                  onClick={() => {
+                    if (loop) {
+                      setLoop(subtitle.input);
+                    }
+                    seek(timeStamp?.start || subtitle?.start);
+                  }}
+                  className={cn(
+                    "text-3xl font-light text-gray-300 hover:text-rose-400 text-left",
+
+                    textSize?.[1],
                     activeSubtitle?.sentence === subtitle?.sentence
                       ? "text-gray-400"
                       : "text-gray-600",
                     currentTime > subtitle?.start && currentTime < subtitle.end
                       ? "text-white"
-                      : "",
-                    currentTime === 0 ? "text-gray-300" : "",
-                    "text-start"
+                      : "0",
+                    currentTime === 0 ? "text-gray-300" : ""
                   )}
                 >
-                  {subtitle?.pinyin || subtitle?.roman || ""}
-                </Link>
-              )}
-              <button
-                onClick={() => {
-                  if (loop) {
-                    setLoop(subtitle.input);
-                  }
-                  seek(subtitle?.start);
-                }}
-                className={cn(
-                  "text-3xl font-light text-gray-300 hover:text-rose-400 text-left",
+                  {subtitle?.input || subtitle?.hanzi}
+                  {"   "}
+                </button>
+              </span>
 
-                  textSize?.[1],
-                  activeSubtitle?.sentence === subtitle?.sentence
-                    ? "text-gray-400"
-                    : "text-gray-600",
-                  currentTime > subtitle?.start && currentTime < subtitle.end
-                    ? "text-white"
-                    : "0",
-                  currentTime === 0 ? "text-gray-300" : ""
-                )}
-              >
-                {subtitle?.input || subtitle?.hanzi}
-                {"   "}
-              </button>
-            </span>
+              {editMode && (
+                <div className="flex flex-col">
+                  {(timeStamp?.roman || subtitle?.roman) && editMode && (
+                    <input
+                      className=""
+                      value={timeStamp?.roman || subtitle?.roman}
+                      onChange={(event) => {
+                        setTimer("roman", subtitle, event?.target?.value);
+                      }}
+                    />
+                  )}
+
+                  {(timeStamp?.input || subtitle?.input) && editMode && (
+                    <input
+                      className=""
+                      value={timeStamp?.input || subtitle?.input}
+                      onChange={(event) => {
+                        setTimer("input", subtitle, event?.target?.value);
+                      }}
+                    />
+                  )}
+
+                  {editMode && (
+                    <input
+                      className="w-full"
+                      value={timeStamp?.en || subtitle?.en}
+                      onChange={(event) => {
+                        setTimer("en", subtitle, event?.target?.value);
+                      }}
+                    />
+                  )}
+
+                  {editMode && (
+                    <div className="flex text-gray-400 text-[12px] items-center justify-start mt-4 space-x-2">
+                      <div>
+                        <input
+                          value={timeStamp?.start || subtitle?.start}
+                          onChange={(event) => {
+                            setTimer("start", event?.target?.value);
+                          }}
+                        />
+                        <button
+                          onClick={() => {
+                            setTimer("start", subtitle);
+                          }}
+                        >
+                          Set Start{" "}
+                        </button>
+                      </div>
+
+                      <div>
+                        <input
+                          value={timeStamp?.end || subtitle?.end}
+                          onChange={(event) => {
+                            setTimer("end", event?.target?.value);
+                          }}
+                        />
+
+                        <button
+                          onClick={() => {
+                            setTimer("end", subtitle);
+                          }}
+                        >
+                          {" "}
+                          Set End{" "}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
+
             // </HanziTooltip>
           );
         })}
@@ -334,6 +456,66 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
           {/* <DuChapterNavbar /> */}
 
           <div className="space-x-4 sm:space-x-8 flex items-center justify-start mr-8 sm:mr-60">
+            <UploadFileButton
+              icon={<Icons.upload className="text-2xl" />}
+              types={["mp3", "m4a"]}
+              onSuccess={(res) => {
+                return updateContentMutation.mutateAsync({
+                  id: content?.id || "",
+                  audio: res.sourceUrl,
+                  audioUploadBucketKey: res.uploadBucketKey,
+                  audioS3LinkAddedAt: Date.now(),
+                  updateContent: true,
+                });
+              }}
+            />
+            {/* )} */}
+
+            <button
+              onClick={() => {
+                setEditMode();
+              }}
+            >
+              <Icons.gear
+                className={cn(
+                  "sm:text-2xl text-2xl",
+                  editMode ? "dark:text-white text-black" : "text-gray-400"
+                )}
+              />
+            </button>
+
+            {editMode && (
+              <button
+                onClick={() => {
+                  const editedTranscriptions = {
+                    id: content?.id,
+                    transcriptions: content?.transcriptions?.map(
+                      (transcription: any) => {
+                        const time = times?.find(
+                          (t: any) => t?.id === transcription?.id
+                        ) as any;
+                        return {
+                          ...transcription,
+                          ...time,
+                        };
+                      }
+                    ),
+                  };
+
+                  updateContentMutation
+                    .mutateAsync({
+                      ...editedTranscriptions,
+                    })
+                    .then((resp) => {
+                      setEditMode();
+                      // resetTimes();
+                    });
+                }}
+              >
+                {updateContentMutation?.isLoading ? "Saving..." : "Save"}
+              </button>
+            )}
+
             <button
               onClick={() => {
                 //   setViewMode((viewMode) => (viewMode === "stats" ? "core" : "stats"));

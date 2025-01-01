@@ -12,7 +12,7 @@ export const ContentItemV2 = () => {
     return <YouTubePlayer lessonId={contentId} />;
   }
 
-  //   return <PlayV2 contentId={contentId} />;
+  return <PlayV2 contentId={contentId} />;
 
-  return <AudioPlayer />;
+  // return <AudioPlayer />;
 };

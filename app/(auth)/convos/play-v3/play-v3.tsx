@@ -28,12 +28,12 @@ function ContentDetailHeader({ content }: any) {
 
 function ActiveSubtitleDisplay({ activeSubtitle, selected }: any) {
   return (
-    <div className="mt-6 m-auto relative">
+    <div className="mt-6 sticky top-0 m-auto bg-[rgb(9,10,11)] z-50">
       <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
         <div className="pb-4">
           <h4 className="text-xs text-gray-500">Sentence meaning</h4>
           <div className="h-16 flex justify-between items-center mt-2 w-full">
-            <p className="space-x-2 sm:text-xl text-[16px] font-extralight pb-[4px]">
+            <p className="space-x-2 text-[16px] font-extralight pb-[4px]">
               {activeSubtitle?.en || selected?.en || "..."}
             </p>
           </div>
@@ -234,7 +234,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
               <button
                 onClick={() => {
                   if (loop) {
-                    setLoop(subtitle.sentence);
+                    setLoop(subtitle.input);
                   }
                   seek(subtitle?.start);
                 }}
@@ -333,7 +333,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
           {/* <DuChapterNavbar /> */}
 
-          <div className="space-x-4 sm:space-x-8 flex items-center justify-start">
+          <div className="space-x-4 sm:space-x-8 flex items-center justify-start mr-8 sm:mr-60">
             <button
               onClick={() => {
                 //   setViewMode((viewMode) => (viewMode === "stats" ? "core" : "stats"));

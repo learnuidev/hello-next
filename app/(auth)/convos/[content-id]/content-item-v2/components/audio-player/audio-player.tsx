@@ -354,6 +354,18 @@ export const AudioPlayer = () => {
     setEditMode,
   ]);
 
+  useEffect(() => {
+    if (loop) {
+      const interval = setInterval(() => {
+        if (currentTime > loop?.end) {
+          seek(loop?.start);
+        }
+        // setTime((seconds) => playerRef?.current?.getCurrentTime());
+      }, 5);
+      return () => clearInterval(interval);
+    }
+  }, [currentTime, activeSubtitle, loop, seek]);
+
   const ContentSettingsNavbar = () => (
     <div className="space-x-4 sm:space-x-8 flex items-center">
       <UploadFileButton
@@ -570,7 +582,7 @@ export const AudioPlayer = () => {
                     return null;
                   }
 
-                  return activeSubtitle?.sentence;
+                  return activeSubtitle;
                 });
               }}
             >

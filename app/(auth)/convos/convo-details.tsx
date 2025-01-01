@@ -59,9 +59,9 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     //   </div>
     // );
 
-    return <AudioPlayer />;
+    // return <AudioPlayer />;
 
-    // return <PlayV3 contentId={lessonId} />;
+    return <PlayV3 contentId={lessonId} />;
   }
 
   if (viewType === "write") {

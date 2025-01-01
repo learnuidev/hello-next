@@ -154,7 +154,7 @@ function SectionView({
                 //   href={`/nmm/${item?.hanzi}?lang=zh`}
                 //   target="_blank"
                 className={cn(
-                  "hover:text-rose-400",
+                  "hover:text-rose-400 font-extralight",
                   textSize?.[1],
                   currentTime === 0 ? "text-gray-300" : "",
 

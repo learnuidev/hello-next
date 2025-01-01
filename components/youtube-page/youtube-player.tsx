@@ -177,6 +177,19 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     (trans: any) => trans?.start < currentTime && trans?.end > currentTime
   );
 
+  const currentTranscriptionIndex = Math.max(
+    transcriptions?.findIndex(
+      (trans: any) => trans?.start === currentTranscription?.start
+    ),
+    0
+  );
+
+  const nextIndex = Math.min(
+    currentTranscriptionIndex + 1,
+    transcriptions?.length - 1
+  );
+  const nextTranscription = transcriptions?.[nextIndex];
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((seconds) => playerRef?.current?.getCurrentTime());
@@ -391,6 +404,24 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
               </Link>
 
               <p className="text-gray-500">{currentTranscription?.en}</p>
+            </div>
+          )}
+
+          {currentTranscription && nextTranscription && (
+            <div className="text-center my-8 hidden sm:block">
+              <p className="text-gray-400">{nextTranscription?.pinyin}</p>
+
+              <Link
+                className="text-2xl font-extralight"
+                href={`/nmm/${encodeURIComponent(
+                  nextTranscription?.input
+                )}${nextTranscription?.lang ? `?lang=${resolveLangCode(nextTranscription?.lang)}` : ""}`}
+                target="_blank"
+              >
+                {nextTranscription?.input}
+              </Link>
+
+              <p className="text-gray-500">{nextTranscription?.en}</p>
             </div>
           )}
         </div>

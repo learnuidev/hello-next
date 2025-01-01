@@ -86,22 +86,11 @@ function SectionView({
             : "text-gray-400"
         )}
       >
-        {context?.map((item: any) => {
+        {(context || section?.context)?.map((item: any) => {
           return (
             <span
               onClick={() => {
                 setSelected(item);
-                // if (selected) {
-                //   setSelected(null);
-                // } else {
-                //   setSelected(item);
-                // }
-
-                // if (active) {
-                //   setActive(null);
-                // } else {
-                //   setActive(section);
-                // }
                 setActive(section);
               }}
               onMouseEnter={() => {
@@ -151,8 +140,6 @@ function SectionView({
                 onClick={() => {
                   seek(selectedSection?.start || section?.start);
                 }}
-                //   href={`/nmm/${item?.hanzi}?lang=zh`}
-                //   target="_blank"
                 className={cn(
                   "hover:text-rose-400 font-extralight",
                   textSize?.[1],
@@ -169,8 +156,6 @@ function SectionView({
                   item?.pinyin && selected?.pinyin === item?.pinyin
                     ? "text-rose-500 dark:text-rose-400"
                     : ""
-
-                  // "text-white"
                 )}
               >
                 {item?.hanzi}
@@ -251,200 +236,6 @@ function SectionView({
       </div>
     </>
   );
-
-  // return (
-  //   <>
-  //     {viewPinyin && context !== undefined && context?.length > 0 ? (
-  //       <p
-  //         className={cn(
-  //           "my-2",
-  //           currentTime > section?.start && currentTime < section.end
-  //             ? "dark:text-white text-black"
-  //             : "text-gray-400"
-  //         )}
-  //       >
-  //         {context?.map((item: any) => {
-  //           return (
-  //             <span
-  //               onMouseEnter={() => {
-  //                 setSelected(item);
-  //                 setActive(section);
-  //               }}
-  //               onMouseLeave={() => {
-  //                 setSelected(null);
-  //                 setActive(null);
-  //               }}
-  //               className={cn(
-  //                 "text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center",
-  //                 textSize?.[3]
-  //               )}
-  //               key={JSON.stringify(item)}
-  //             >
-  //               {viewPinyin && (
-  //                 <Link
-  //                   target="_blank"
-  //                   href={`/nmm/${item?.hanzi}?lang=zh`}
-  //                   className={cn(
-  //                     section?.pinyin ? "text-gray-500" : "text-black",
-  //                     "text-sm",
-  //                     currentTime > section?.start && currentTime < section.end
-  //                       ? "dark:text-white"
-  //                       : "text-gray-500",
-
-  //                     textSize?.[0],
-  //                     activeSubtitle?.sentence === section?.sentence
-  //                       ? "text-gray-400"
-  //                       : "text-gray-600",
-  //                     currentTime === 0 ? "text-gray-300" : "",
-  //                     "text-start",
-  //                     currentTime > section?.start && currentTime < section.end
-  //                       ? "dark:text-white text-black"
-  //                       : "dark:text-gray-400 text-gray-600",
-
-  //                     selected?.pinyin === item?.pinyin
-  //                       ? "text-rose-500 dark:text-rose-400"
-  //                       : ""
-  //                   )}
-  //                 >
-  //                   {item?.pinyin || ""}
-  //                 </Link>
-  //               )}
-  //               <span
-  //                 onClick={() => {
-  //                   seek(selectedSection?.start || section?.start);
-  //                 }}
-  //                 //   href={`/nmm/${item?.hanzi}?lang=zh`}
-  //                 //   target="_blank"
-  //                 className={cn(
-  //                   "hover:text-rose-400",
-  //                   textSize?.[1],
-  //                   currentTime === 0 ? "text-gray-300" : "",
-
-  //                   activeSubtitle?.en === section?.en
-  //                     ? "text-white"
-  //                     : "text-gray-600",
-
-  //                   currentTime > section?.start && currentTime < section.end
-  //                     ? "dark:text-white text-black"
-  //                     : "dark:text-gray-400 text-gray-500",
-
-  //                   item?.pinyin && selected?.pinyin === item?.pinyin
-  //                     ? "text-rose-500 dark:text-rose-400"
-  //                     : ""
-
-  //                   // "text-white"
-  //                 )}
-  //               >
-  //                 {item?.hanzi}
-  //               </span>
-  //             </span>
-  //           );
-  //         })}
-  //       </p>
-  //     ) : (
-  //       <p
-  //         onMouseEnter={() => {
-  //           setSelected(section);
-  //           setActive(section);
-  //         }}
-  //         onMouseLeave={() => {
-  //           setSelected(null);
-  //           setActive(null);
-  //         }}
-  //         // className="my-8 text-gray-300 text-lg"
-  //         className={cn(
-  //           "hover:text-rose-400 my-4",
-  //           textSize?.[1],
-  //           currentTime === 0 ? "text-gray-300" : "",
-
-  //           activeSubtitle?.en === section?.en
-  //             ? "dark:text-white text-black"
-  //             : "text-gray-600",
-  //           currentTime > section?.start && currentTime < section.end
-  //             ? "dark:text-white text-gray-900"
-  //             : "text-gray-400"
-  //           // "text-white"
-  //         )}
-  //         key={JSON.stringify(section)}
-  //         onClick={() => {
-  //           seek(selectedSection?.start || section?.start);
-  //         }}
-  //       >
-  //         {section?.input}
-  //       </p>
-  //     )}
-
-  //     <div className="flex flex-col">
-  //       {(timeStamp?.roman || section?.roman) && editMode && (
-  //         <input
-  //           className=""
-  //           value={timeStamp?.roman || section?.roman}
-  //           onChange={(event) => {
-  //             setTimer("roman", event?.target?.value);
-  //           }}
-  //         />
-  //       )}
-
-  //       {(timeStamp?.input || section?.input) && editMode && (
-  //         <input
-  //           className=""
-  //           value={timeStamp?.input || section?.input}
-  //           onChange={(event) => {
-  //             setTimer("input", event?.target?.value);
-  //           }}
-  //         />
-  //       )}
-
-  //       {editMode && (
-  //         <input
-  //           className="w-full"
-  //           value={timeStamp?.en || section?.en}
-  //           onChange={(event) => {
-  //             setTimer("en", event?.target?.value);
-  //           }}
-  //         />
-  //       )}
-
-  //       {editMode && (
-  //         <div className="flex text-gray-400 text-[12px] items-center justify-start mt-4 space-x-2">
-  //           <div>
-  //             <input
-  //               value={timeStamp?.start || section?.start}
-  //               onChange={(event) => {
-  //                 setTimer("start", event?.target?.value);
-  //               }}
-  //             />
-  //             <button
-  //               onClick={() => {
-  //                 setTimer("start");
-  //               }}
-  //             >
-  //               Set Start{" "}
-  //             </button>
-  //           </div>
-
-  //           <div>
-  //             <input
-  //               value={timeStamp?.end || section?.end}
-  //               onChange={(event) => {
-  //                 setTimer("end", event?.target?.value);
-  //               }}
-  //             />
-
-  //             <button
-  //               onClick={() => {
-  //                 setTimer("end");
-  //               }}
-  //             >
-  //               {" "}
-  //               Set End{" "}
-  //             </button>
-  //           </div>
-  //         </div>
-  //       )}
-  //     </div>
-  //   </>
-  // );
 }
 
 export const AudioPlayer = () => {
@@ -563,12 +354,8 @@ export const AudioPlayer = () => {
     setEditMode,
   ]);
 
-  const setContextTimes = useContentEditStore((state) => state.setContextTimes);
-  const contextTimes = useContentEditStore((state) => state.contextTimes);
-
   const ContentSettingsNavbar = () => (
     <div className="space-x-4 sm:space-x-8 flex items-center">
-      {/* {!content?.audio && ( */}
       <UploadFileButton
         icon={<Icons.upload className="text-2xl" />}
         types={["mp3", "m4a"]}

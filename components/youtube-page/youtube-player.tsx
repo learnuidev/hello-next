@@ -407,7 +407,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             </div>
           )}
 
-          {currentTranscription && nextTranscription && (
+          {/* {currentTranscription && nextTranscription && (
             <div className="text-center my-8 hidden sm:block">
               <p className="text-gray-400">{nextTranscription?.pinyin}</p>
 
@@ -423,7 +423,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
               <p className="text-gray-500">{nextTranscription?.en}</p>
             </div>
-          )}
+          )} */}
         </div>
 
         {viewMode === "karaoke" ? (

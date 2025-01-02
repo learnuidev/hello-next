@@ -254,7 +254,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                     // onClick={() => {
                     //   alert(JSON.stringify(getHanzi(subtitle?.sentence)));
                     // }}
-                    href={`/nmm/${subtitle.hanzi}?lang=zh`}
+                    href={`/nmm/${subtitle.hanzi || subtitle?.input}?lang=zh`}
                     target="_blank"
                     className={cn(
                       subtitle?.pinyin ? "text-gray-500" : "text-black",

@@ -16,6 +16,7 @@ import { TheDock } from "./the-dock";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import { SelectedCharacterStoryButton } from "./_select-character/selected-character-story-button";
 import { SelectedCharacterContentsButton } from "./_select-character/selected-character-contents-button";
+import { useCharacterContextStore } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 
 const isMultiSentence = (str: string) => {
   const isHanziMultiSentence = str.split("。")?.length > 1;
@@ -83,6 +84,11 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
 
   const isAutomatic = useShowAutomaticallyTheDock();
 
+  const characterContext = useCharacterContextStore((state) => state.context);
+  const contentContext = characterContext?.filter((item) =>
+    JSON.stringify(item)?.includes(firstLesson?.hanzi || selectedChar)
+  );
+
   return (
     <TheDock isAutomatic={isAutomatic} className="bottom-4">
       <div className="flex items-center w-full justify-center">
@@ -146,6 +152,8 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                     lang: lang,
                     status: "DISCOVERED",
                     context,
+                    contentContext:
+                      contentContext?.length > 0 ? contentContext : null,
                     story: "todo",
                     hanzi: firstLesson?.hanzi || selectedChar,
                     journeyId: firstLesson?.id || "default",

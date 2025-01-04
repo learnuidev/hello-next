@@ -105,21 +105,18 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const setContext = useCharacterContextStore((state) => state.setContext);
 
   const setIfExists = (evt: any) => {
-    console.log("LOGGED", evt);
     const exists =
       context?.find((ctx: any) => ctx?.input === evt?.input) ||
       context?.find((ctx: any) => ctx?.hanzi === evt?.hanzi);
 
-    console.log("EXISTS", exists);
     if (exists) {
+      console.log("EXISTS", exists);
       // return setContext(context);
       return null;
     }
     setContext(context.concat(evt));
     return null;
   };
-
-  console.log("CONTEXT", context);
 
   const setTimer = (
     type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
@@ -335,7 +332,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                 {viewPinyin && (
                   <Link
                     onClick={() => {
-                      setIfExists(subtitle);
+                      setIfExists({ ...subtitle, contentId });
                     }}
                     href={`/nmm/${subtitle.hanzi || subtitle?.input}?lang=zh`}
                     target="_blank"

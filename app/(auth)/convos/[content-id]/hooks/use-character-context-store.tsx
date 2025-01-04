@@ -1,7 +1,7 @@
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
 export const useCharacterContextStore = createIndexDBStore({
-  name: "mandarino/character-context-3",
+  name: "mandarino/character-context-4",
   handler: (set: any, get: any) => ({
     context: [],
     // setContext: (event: any) => set({ context: get().context.concat(event) }),

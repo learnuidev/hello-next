@@ -2,13 +2,14 @@ import { Icons } from "@/components/ui/icons.v2";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { useMusicV2 } from "../_play-v2/use-music-v2";
 import { formatTime } from "../_play/utils";
-import { groupBy } from "ramda";
+import { groupBy, splitEvery } from "ramda";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
+import { useCharacterContextStore } from "../[content-id]/hooks/use-character-context-store";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -29,7 +30,11 @@ function ContentDetailHeader({ content }: any) {
   );
 }
 
-function ActiveSubtitleDisplay({ activeSubtitle, selected }: any) {
+function ActiveSubtitleDisplay({
+  activeSubtitle,
+  selected,
+  selectedWord,
+}: any) {
   return (
     <div className="mt-6 sticky top-0 m-auto bg-[rgb(9,10,11)] z-50">
       <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
@@ -41,6 +46,14 @@ function ActiveSubtitleDisplay({ activeSubtitle, selected }: any) {
             </p>
           </div>
         </div>
+        {/* <div className="pb-4">
+          <h4 className="text-xs text-gray-500">Word meaning</h4>
+          <div className="h-16 flex justify-between items-center mt-2 w-full">
+            <p className="space-x-2 text-[16px] font-extralight pb-[4px]">
+              {JSON.stringify(selectedWord)}
+            </p>
+          </div>
+        </div> */}
       </div>
     </div>
   );
@@ -51,6 +64,8 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const [selected, setSelected] = useState<any>(null);
   const [loop, setLoop] = useState<any>(null);
   const [viewPinyin, togglePinyin] = useState(false);
+
+  const [hovered, setHovered] = useState({});
 
   const [textSizeIndex, setTextSizeIndex] = useState(1);
 
@@ -86,6 +101,26 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
   const groupBySectionId = groupBy((item: any) => item.sectionId);
 
+  const context = useCharacterContextStore((state) => state.context);
+  const setContext = useCharacterContextStore((state) => state.setContext);
+
+  const setIfExists = (evt: any) => {
+    console.log("LOGGED", evt);
+    const exists =
+      context?.find((ctx: any) => ctx?.input === evt?.input) ||
+      context?.find((ctx: any) => ctx?.hanzi === evt?.hanzi);
+
+    console.log("EXISTS", exists);
+    if (exists) {
+      // return setContext(context);
+      return null;
+    }
+    setContext(context.concat(evt));
+    return null;
+  };
+
+  console.log("CONTEXT", context);
+
   const setTimer = (
     type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
     section: any,
@@ -114,6 +149,53 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       });
     });
   };
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const zhongWenWindow = document.getElementById("zhongwen-window") as any;
+
+  //     if (zhongWenWindow) {
+  //       try {
+  //         const hanzi =
+  //           document.querySelectorAll(".w-hanzi-small")?.[0]?.innerHTML;
+  //         const pinyin =
+  //           document.querySelectorAll(".w-pinyin-small")?.[0]?.innerHTML;
+  //         const en = [...document.querySelectorAll(".w-def-small")]?.map(
+  //           (node) => node?.innerHTML
+  //         );
+
+  //         const children = splitEvery(5, [...zhongWenWindow.children])
+  //           .map((item) => {
+  //             return item.map((node) => node?.innerText);
+  //           })
+  //           ?.map((values) => {
+  //             return {
+  //               hanzi: values?.[0],
+  //               hanziTraditional: values?.[1],
+  //               pinyin: values?.[2],
+  //             };
+  //           }) as any;
+
+  //         console.log("CHILDREN", children);
+
+  //         if (
+  //           children?.length > 0 &&
+  //           JSON.stringify(children) !== JSON.stringify(hovered)
+  //         ) {
+  //           setHovered({ hanzi, pinyin, en });
+  //           console.log("LOGGED", children);
+  //         } else if (children?.length === 0) {
+  //           setHovered([]);
+  //         }
+  //       } catch (err) {
+  //         console.log("ERR", err);
+  //       }
+  //     }
+
+  //     // setTime((seconds) => playerRef?.current?.getCurrentTime());
+  //   }, 300);
+  //   return () => clearInterval(interval);
+  // });
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -214,6 +296,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       <ContentDetailHeader content={content} />
 
       <ActiveSubtitleDisplay
+        selectedWord={hovered}
         selected={selected}
         activeSubtitle={activeSubtitle}
       />
@@ -251,9 +334,9 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
               >
                 {viewPinyin && (
                   <Link
-                    // onClick={() => {
-                    //   alert(JSON.stringify(getHanzi(subtitle?.sentence)));
-                    // }}
+                    onClick={() => {
+                      setIfExists(subtitle);
+                    }}
                     href={`/nmm/${subtitle.hanzi || subtitle?.input}?lang=zh`}
                     target="_blank"
                     className={cn(

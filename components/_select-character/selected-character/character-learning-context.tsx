@@ -1,3 +1,4 @@
+import { useCharacterContextStore } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { isYoutube } from "@/app/(auth)/convos/utils/is-youtube";
 import { formatDate } from "@/components/settings-dialog/utils/format-date";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
@@ -24,6 +25,24 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
 
   const isSmall = useIsSmall();
   const height = isSmall ? "200px" : "450px";
+
+  const context = useCharacterContextStore((state) => state.context);
+  const setContext = useCharacterContextStore((state) => state.setContext);
+
+  const setIfExists = (evt: any) => {
+    console.log("EVT", evt);
+    const exists = context?.filter(
+      (ctx: any) => (ctx?.input || ctx?.hanzi) === (evt?.input || evt?.hanzi)
+    )?.[0];
+
+    if (exists) {
+      console.log("EXISTS", exists);
+      // return setContext(context);
+      return null;
+    }
+    setContext((prev: any) => prev?.concat(evt));
+    return null;
+  };
 
   useEffect(() => {
     if (contentSegment?.start) {
@@ -102,6 +121,9 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
 
               <Link
                 className="text-3xl font-extralight"
+                onClick={() => {
+                  setIfExists({ ...currentTranscription, contentId });
+                }}
                 href={`/nmm/${encodeURIComponent(
                   currentTranscription?.input
                 )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
@@ -118,9 +140,7 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
 
               <Link
                 className="text-3xl font-extralight dark:text-gray-900 text-gray-100"
-                href={`/nmm/${encodeURIComponent(
-                  currentTranscription?.input
-                )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
+                href={``}
                 target="_blank"
               >
                 ...

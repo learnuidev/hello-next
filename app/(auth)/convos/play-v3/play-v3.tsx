@@ -110,16 +110,17 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const setContext = useCharacterContextStore((state) => state.setContext);
 
   const setIfExists = (evt: any) => {
-    const exists =
-      context?.find((ctx: any) => ctx?.input === evt?.input) ||
-      context?.find((ctx: any) => ctx?.hanzi === evt?.hanzi);
+    console.log("EVT", evt);
+    const exists = context?.filter(
+      (ctx: any) => (ctx?.input || ctx?.hanzi) === (evt?.input || evt?.hanzi)
+    )?.[0];
 
     if (exists) {
       console.log("EXISTS", exists);
       // return setContext(context);
       return null;
     }
-    setContext(context.concat(evt));
+    setContext((prev: any) => prev?.concat(evt));
     return null;
   };
 

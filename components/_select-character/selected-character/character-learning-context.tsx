@@ -58,7 +58,13 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
     relevantContent && (
       <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-8">
         <div className="mb-8">
-          <h2 className="font-bold text-xl">Learning Context</h2>
+          <Link
+            className="font-bold text-xl"
+            target="_blank"
+            href={`/convos/${contentId}?seek=${contentSegment?.start}`}
+          >
+            Learning Context
+          </Link>
           <p className="text-gray-400" onClick={playCurrentSegment}>
             You learned this character on {formatDate(selectedComp?.createdAt)}
           </p>

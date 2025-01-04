@@ -32,6 +32,7 @@ import { KaraokeModeV2 } from "./karaoke-mode-v2";
 import { KaraokeModeV3 } from "./karaoke-mode-v3";
 import { useContentEditStore } from "./use-content-edit-store";
 import { resolveLangCode } from "@/libs/openai/utils";
+import { useIsSmall } from "./utils/use-is-small";
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -263,7 +264,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       (example?.timestamp?.[1] || example?.end) > currentTime
   );
 
-  const isSmall = size?.[0] < 600;
+  const isSmall = useIsSmall();
 
   const editMode = useContentEditStore((state) => state.editMode);
   const setEditMode = useContentEditStore((state) => state.setEditMode);
@@ -586,6 +587,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                         isVideoHidden={isVideoHidden}
                         playerRef={playerRef}
                         learnedCharacters={learnedCharacters}
+                        lessonId={lessonId}
                         // components={components}
                       />
                     );

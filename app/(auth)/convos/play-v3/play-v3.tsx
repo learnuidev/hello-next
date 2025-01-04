@@ -10,6 +10,7 @@ import { useUpdateContentMutation } from "@/domain/content/use-update-content-mu
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { useCharacterContextStore } from "../[content-id]/hooks/use-character-context-store";
+import { useSearchParams } from "next/navigation";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -64,6 +65,10 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const [selected, setSelected] = useState<any>(null);
   const [loop, setLoop] = useState<any>(null);
   const [viewPinyin, togglePinyin] = useState(false);
+
+  const searchParams = useSearchParams();
+
+  const seekValue = searchParams?.get("seek");
 
   const [hovered, setHovered] = useState({});
 
@@ -193,6 +198,12 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   //   }, 300);
   //   return () => clearInterval(interval);
   // });
+
+  useEffect(() => {
+    if (seekValue) {
+      seek(seekValue);
+    }
+  }, [seekValue]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {

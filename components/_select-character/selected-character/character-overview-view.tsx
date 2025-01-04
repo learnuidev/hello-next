@@ -8,12 +8,13 @@ import { SelectedCharacterProps } from "../select-character.types";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { SelectedCharacterHeader } from "./selected-character-header";
 import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
+import { cn } from "@/lib/utils";
+import { CharacterLearningContext } from "./character-learning-context";
+import { CharacterVariantSummary } from "./character-variant-summary";
+import { SelectedCharacterHeader } from "./selected-character-header";
 import { SentenceItemV2 } from "./sentence-item-v2";
 import { useGetSelectedCharacterParams } from "./use-get-selected-character-params";
-import { CharacterVariantSummary } from "./character-variant-summary";
-import { cn } from "@/lib/utils";
 
 const grammarTypesToTitle = {
   "v.": "verb",
@@ -55,6 +56,8 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
         <div className="dark:bg-[rgb(11,12,13)] bg-gray-50 sm:p-8 p-2 rounded-2xl">
           <SelectedCharacterHeader {...props} />
         </div>
+
+        <CharacterLearningContext selectedComp={selectedComp} />
 
         <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-8">
           <div>

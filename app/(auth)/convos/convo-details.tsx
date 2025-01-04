@@ -14,6 +14,7 @@ import { PlayV2 } from "./_play-v2/play-v2";
 import { PlayV3 } from "./play-v3/play-v3";
 import { AudioPlayer } from "./[content-id]/content-item-v2/components/audio-player/audio-player";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { isYoutube } from "./utils/is-youtube";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const viewType = useConvosStore((state: any) => state?.viewType);
@@ -33,10 +34,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   // const lesson2 = contentsArr?.find((content: any) => content?.id === lessonId);
 
   // If the link contains yotube - then show youtube page
-  if (
-    viewType === "listen" &&
-    lesson2?.audio?.includes("https://www.youtube.com")
-  ) {
+  if (viewType === "listen" && isYoutube(lesson2?.audio)) {
     return (
       <div>
         <YouTubePlayer lessonId={lessonId} />

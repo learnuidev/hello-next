@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 
-export const CharacterLearningContext = ({ selectedComp }: any) => {
+const CharacterLearningContextInner = ({ selectedComp }: any) => {
   const learnedCharacter = selectedComp;
   const playerRef = useRef() as any;
   const [currentTime, setTime] = useState(0);
@@ -184,4 +184,14 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
       </article>
     )
   );
+};
+
+export const CharacterLearningContext = ({ selectedComp }: any) => {
+  const learnedCharacter = selectedComp;
+
+  if (learnedCharacter?.contentContext?.length === 0) {
+    return null;
+  }
+
+  return <CharacterLearningContextInner selectedComp={selectedComp} />;
 };

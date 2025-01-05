@@ -370,7 +370,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                   </Link>
                 )}
 
-                {!brightMode ? (
+                {brightMode ? (
                   <div>
                     {(subtitle?.input || subtitle?.hanzi)
                       ?.split("")
@@ -409,8 +409,10 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                               `${
                                 currentTime > subtitle?.start &&
                                 currentTime < subtitle.end
-                                  ? "dark:text-white text-black"
-                                  : brightMode || isCharactersLoading
+                                  ? brightMode
+                                    ? `${color} ${hoverColor}`
+                                    : `dark:text-white text-black ${color} ${hoverColor}`
+                                  : !brightMode || isCharactersLoading
                                     ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
                                     : // learnedCharacters.includes(prop?.hanzi)
                                       learnedChar

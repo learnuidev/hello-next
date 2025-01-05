@@ -87,7 +87,10 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
         >
           Learning Context
         </Link>
-        <p className="text-gray-400" onClick={playCurrentSegment}>
+        <p
+          className="font-extralight text-gray-500 dark:text-gray-400"
+          onClick={playCurrentSegment}
+        >
           You learned this character on {formatDate(selectedComp?.createdAt)}
         </p>
       </div>
@@ -154,7 +157,10 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
           >
             Learning Context
           </Link>
-          <p className="text-gray-400" onClick={playCurrentSegment}>
+          <p
+            className="font-extralight dark:text-gray-400 text-gray-500"
+            onClick={playCurrentSegment}
+          >
             You learned this character on {formatDate(selectedComp?.createdAt)}
           </p>
         </div>

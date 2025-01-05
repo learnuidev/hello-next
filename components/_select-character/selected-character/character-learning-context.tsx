@@ -59,7 +59,10 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
   }, []);
 
   function playCurrentSegment() {
-    playerRef?.current?.seekTo(Math.max(contentSegment?.start, 0));
+    const maxValue = Math.floor(Math.max(contentSegment?.start, 0));
+
+    console.log("seekTo", maxValue);
+    playerRef?.current?.seekTo(maxValue);
 
     try {
       playerRef.current?.player?.player?.play();

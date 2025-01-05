@@ -141,34 +141,36 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
       </div>
     </article>
   ) : (
-    <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-8">
-      <div className="mb-4">
-        <Link
-          className="font-bold text-xl"
-          target="_blank"
-          href={`/nmm/${contentSegment?.input || contentSegment?.hanzi}${contentSegment?.lang ? `?lang=${contentSegment?.lang}` : ""}`}
-        >
-          Learning Context
-        </Link>
-        <p className="text-gray-400" onClick={playCurrentSegment}>
-          You learned this character on {formatDate(selectedComp?.createdAt)}
-        </p>
-      </div>
+    selectedComp?.createdAt && (
+      <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-8">
+        <div className="mb-4">
+          <Link
+            className="font-bold text-xl"
+            target="_blank"
+            href={`/nmm/${contentSegment?.input || contentSegment?.hanzi}${contentSegment?.lang ? `?lang=${contentSegment?.lang}` : ""}`}
+          >
+            Learning Context
+          </Link>
+          <p className="text-gray-400" onClick={playCurrentSegment}>
+            You learned this character on {formatDate(selectedComp?.createdAt)}
+          </p>
+        </div>
 
-      <div>
-        <p className="text-gray-400">
-          {contentSegment?.pinyin || contentSegment?.roman}
-        </p>
+        <div>
+          <p className="text-gray-400">
+            {contentSegment?.pinyin || contentSegment?.roman}
+          </p>
 
-        <Link
-          href={`/nmm/${contentSegment?.input || contentSegment?.hanzi}${contentSegment?.lang ? `?lang=${contentSegment?.lang}` : ""}`}
-          target="_blank"
-          className="block text-3xl font-extralight"
-        >
-          {contentSegment?.input || contentSegment?.hanzi}
-        </Link>
-        <p className="mb-4 text-gray-500">{contentSegment?.en}</p>
-      </div>
-    </article>
+          <Link
+            href={`/nmm/${contentSegment?.input || contentSegment?.hanzi}${contentSegment?.lang ? `?lang=${contentSegment?.lang}` : ""}`}
+            target="_blank"
+            className="block text-3xl font-extralight"
+          >
+            {contentSegment?.input || contentSegment?.hanzi}
+          </Link>
+          <p className="mb-4 text-gray-500">{contentSegment?.en}</p>
+        </div>
+      </article>
+    )
   );
 };

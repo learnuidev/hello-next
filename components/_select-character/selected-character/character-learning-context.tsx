@@ -46,8 +46,10 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
   };
 
   useEffect(() => {
+    const maxValue = Math.floor(Math.max(contentSegment?.start, 0));
+
     if (contentSegment?.start) {
-      playerRef?.current?.seekTo(Math.max(contentSegment?.start, 0));
+      playerRef?.current?.seekTo(maxValue);
     }
   }, [contentSegment?.start, isYoutubeMedia]);
 

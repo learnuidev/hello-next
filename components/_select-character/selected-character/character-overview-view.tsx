@@ -59,7 +59,7 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
 
         <CharacterLearningContext selectedComp={selectedComp} />
 
-        <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-8">
+        <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-4">
           <div>
             <div className="">
               <Tabs defaultValue="overview">

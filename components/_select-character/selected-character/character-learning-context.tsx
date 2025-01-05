@@ -162,7 +162,7 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
           <Link
             href={`/nmm/${contentSegment?.input || contentSegment?.hanzi}${contentSegment?.lang ? `?lang=${contentSegment?.lang}` : ""}`}
             target="_blank"
-            className="block text-xl"
+            className="font-extralight block text-2xl"
           >
             {contentSegment?.input || contentSegment?.hanzi}
           </Link>

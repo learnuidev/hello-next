@@ -17,7 +17,10 @@ import { Icons } from "../ui/icons.v2";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { useContentEditStore } from "./use-content-edit-store";
-import { useCharacterContextStore } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
+import {
+  useCharacterContextStore,
+  useSetIfExists,
+} from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 
 export const TranscriptItem = ({
   example,
@@ -33,25 +36,7 @@ export const TranscriptItem = ({
   const params = useParams<{ "content-id": string }>();
   const contentId = params["content-id"];
 
-  const context = useCharacterContextStore((state) => state.context);
-  const setContext = useCharacterContextStore((state) => state.setContext);
-
-  console.log("CONTEXT", context);
-
-  const setIfExists = (evt: any) => {
-    console.log("EVT", evt);
-    const exists = context?.filter(
-      (ctx: any) => (ctx?.input || ctx?.hanzi) === (evt?.input || evt?.hanzi)
-    )?.[0];
-
-    if (exists) {
-      console.log("EXISTS", exists);
-      // return setContext(context);
-      return null;
-    }
-    setContext((prev: any) => prev?.concat(evt));
-    return null;
-  };
+  const setIfExists = useSetIfExists();
 
   const editMode = useContentEditStore((state) => state.editMode);
   const setEditMode = useContentEditStore((state) => state.setEditMode);

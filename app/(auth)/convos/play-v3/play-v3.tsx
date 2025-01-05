@@ -9,7 +9,10 @@ import { groupBy, splitEvery } from "ramda";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
-import { useCharacterContextStore } from "../[content-id]/hooks/use-character-context-store";
+import {
+  useCharacterContextStore,
+  useSetIfExists,
+} from "../[content-id]/hooks/use-character-context-store";
 import { useSearchParams } from "next/navigation";
 
 const sizes = {
@@ -104,25 +107,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
   const textSize = sizes?.[textSizeIndex] || sizes?.[1];
 
-  const groupBySectionId = groupBy((item: any) => item.sectionId);
-
-  const context = useCharacterContextStore((state) => state.context);
-  const setContext = useCharacterContextStore((state) => state.setContext);
-
-  const setIfExists = (evt: any) => {
-    console.log("EVT", evt);
-    const exists = context?.filter(
-      (ctx: any) => (ctx?.input || ctx?.hanzi) === (evt?.input || evt?.hanzi)
-    )?.[0];
-
-    if (exists) {
-      console.log("EXISTS", exists);
-      // return setContext(context);
-      return null;
-    }
-    setContext((prev: any) => prev?.concat(evt));
-    return null;
-  };
+  const setIfExists = useSetIfExists();
 
   const setTimer = (
     type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",

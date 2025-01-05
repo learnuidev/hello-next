@@ -20,6 +20,7 @@ import { characterStore } from "./character-store";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { BookmarkButton } from "@/app/nmm/bookmark-button";
 import { useSearchParams } from "next/navigation";
+import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -79,6 +80,8 @@ export const CharacterTitle = (props: any) => {
       pinyinInput ||
       selectedComp?.pinyin ||
       meaning?.details?.pinyin;
+
+  const setIfExists = useSetIfExists();
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
@@ -142,6 +145,11 @@ export const CharacterTitle = (props: any) => {
                 if (selectedCompInput?.length > 1) {
                   return (
                     <Link
+                      onClick={() => {
+                        if (meaning?.details) {
+                          setIfExists({ ...meaning?.details });
+                        }
+                      }}
                       href={`/nmm/${val}?lang=zh${context ? `&context=${context}` : ""}`}
                       key={`${val}-${idx}`}
                       className={`${

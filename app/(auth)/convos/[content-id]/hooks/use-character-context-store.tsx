@@ -12,3 +12,25 @@ export const useCharacterContextStore = createIndexDBStore({
     clearContext: (event: any) => set({ context: [] }),
   }),
 });
+
+export const useSetIfExists = () => {
+  const context = useCharacterContextStore((state) => state.context);
+  const setContext = useCharacterContextStore((state) => state.setContext);
+
+  const setIfExists = (evt: any) => {
+    console.log("EVT", evt);
+    const exists = context?.filter(
+      (ctx: any) => (ctx?.input || ctx?.hanzi) === (evt?.input || evt?.hanzi)
+    )?.[0];
+
+    if (exists) {
+      console.log("EXISTS", exists);
+      // return setContext(context);
+      return null;
+    }
+    setContext((prev: any) => prev?.concat(evt));
+    return null;
+  };
+
+  return setIfExists;
+};

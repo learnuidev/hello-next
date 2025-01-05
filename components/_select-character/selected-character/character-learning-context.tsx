@@ -189,7 +189,7 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
 export const CharacterLearningContext = ({ selectedComp }: any) => {
   const learnedCharacter = selectedComp;
 
-  if (learnedCharacter?.contentContext?.length === 0) {
+  if (!learnedCharacter?.contentContext?.length) {
     return null;
   }
 

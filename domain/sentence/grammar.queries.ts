@@ -89,12 +89,7 @@ export function useListGrammarsQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ListGrammarsResponse, Error>({
-    queryKey: [
-      queryIds.listGrammars,
-      params?.content,
-      params?.lang,
-      authUser?.jwt,
-    ],
+    queryKey: [queryIds.listGrammars, params?.content],
     queryFn: async () => {
       if (Object.keys(params)?.length) {
         const response = await listGrammars(params, {

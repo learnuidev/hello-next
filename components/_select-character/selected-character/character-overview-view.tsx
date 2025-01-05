@@ -164,6 +164,7 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
               props?.sentences?.length !== 0 && (
                 <div className="my-8">
                   <GrammarAnalysis
+                    className="p-0 sm:p-0"
                     contentId={selectedChar}
                     lang={lang || selectedComp?.lang}
                   />

@@ -13,9 +13,11 @@ import { cn } from "@/lib/utils";
 export function GrammarAnalysis({
   contentId,
   lang,
+  className,
 }: {
   lang?: string;
   contentId: string;
+  className?: string;
 }) {
   const searchParams = useSearchParams();
   const learnedLang = searchParams.get("lang") || lang;
@@ -53,7 +55,8 @@ export function GrammarAnalysis({
         <div
           className={cn(
             divStyles,
-            "shadows-sm shadow-2 shadow-black p-2 sm:p-8 bg-gray-50 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden mt-8 sm:mt-0"
+            "shadows-sm shadow-2 shadow-black p-2 sm:p-8 bg-gray-50 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden mt-4 sm:mt-0",
+            className
           )}
         >
           {grammarAnalysisFinal?.map((analysis) => {

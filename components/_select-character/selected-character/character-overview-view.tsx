@@ -59,119 +59,115 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
 
         <CharacterLearningContext selectedComp={selectedComp} />
 
-        <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-4">
-          <div>
-            <div className="">
-              <Tabs defaultValue="overview">
-                {/* <Tabs defaultValue="dé"> */}
-                <div>
-                  {false && (
-                    <TabsList className="space-x-8">
-                      <TabsTrigger
-                        value="overview"
-                        className="px-0 data-[state=active]:text-yellow-500 data-[state=active]:font-bold"
-                      >
-                        {" "}
-                        Overview
-                      </TabsTrigger>
-                      {(data || [])?.map((item) => {
-                        return (
-                          <TabsTrigger
-                            key={item?.hanbookId}
-                            value={item?.pinyin}
-                            className="px-0 data-[state=active]:text-yellow-500 data-[state=active]:font-bold"
-                          >
-                            {item?.pinyin}
-                          </TabsTrigger>
-                        );
-                      })}
-                    </TabsList>
-                  )}
-                </div>
+        <>
+          <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-4">
+            <div>
+              <div className="">
+                <Tabs defaultValue="overview">
+                  {/* <Tabs defaultValue="dé"> */}
+                  <div>
+                    {false && (
+                      <TabsList className="space-x-8">
+                        <TabsTrigger
+                          value="overview"
+                          className="px-0 data-[state=active]:text-yellow-500 data-[state=active]:font-bold"
+                        >
+                          {" "}
+                          Overview
+                        </TabsTrigger>
+                        {(data || [])?.map((item) => {
+                          return (
+                            <TabsTrigger
+                              key={item?.hanbookId}
+                              value={item?.pinyin}
+                              className="px-0 data-[state=active]:text-yellow-500 data-[state=active]:font-bold"
+                            >
+                              {item?.pinyin}
+                            </TabsTrigger>
+                          );
+                        })}
+                      </TabsList>
+                    )}
+                  </div>
 
-                <TabsContent value="overview">
-                  {variant ? (
-                    <div className="mt-6">
-                      <CharacterVariantSummary />
-                    </div>
-                  ) : (
-                    <Summary showMeanings={true} characterId={characterId} />
-                  )}
-                </TabsContent>
-
-                {(data || [])?.map((item) => {
-                  return (
-                    <TabsContent
-                      key={item?.pinyin}
-                      value={item?.pinyin}
-                      className="mt-6"
-                    >
-                      <div>
-                        <h1 className="text-2xl mb-4">
-                          <span>{item?.pinyin}</span> has{" "}
-                          <strong>{item?.useCases?.length}</strong> use cases
-                        </h1>
-
-                        <div className="space-y-12">
-                          {item?.useCases?.map((useCase, idx) => {
-                            return (
-                              <div key={useCase?.en}>
-                                <div>
-                                  <h2 className="text-xl font-light">
-                                    <span className=""> {idx + 1}. </span>
-                                    <span>
-                                      <strong>
-                                        {grammarTypesToTitle[
-                                          useCase?.type as string
-                                        ] || useCase?.type}
-                                      </strong>
-                                    </span>
-                                  </h2>
-
-                                  <h3 className="text-gray-400">
-                                    {useCase?.en
-                                      ?.replaceAll("(", "")
-                                      ?.replaceAll(")", "")}
-                                  </h3>
-                                </div>
-                                <div className="mt-4 space-y-4">
-                                  {useCase?.sentences?.map((sentence) => {
-                                    return (
-                                      <SentenceItemV2
-                                        className="block"
-                                        key={sentence?.hanzi}
-                                        {...sentence}
-                                        href={`/nmm/${sentence?.hanzi}?lang=zh`}
-                                      />
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
+                  <TabsContent value="overview">
+                    {variant ? (
+                      <div className="mt-6">
+                        <CharacterVariantSummary />
                       </div>
-                      {/* <code>
-                        <pre>{JSON.stringify(item?.useCases, null, 4)}</pre>
-                      </code> */}
-                    </TabsContent>
-                  );
-                })}
-              </Tabs>
-            </div>
+                    ) : (
+                      <Summary showMeanings={true} characterId={characterId} />
+                    )}
+                  </TabsContent>
 
-            {selectedCompInput?.length < 32 &&
-              props?.sentences?.length !== 0 && (
-                <div className="my-8">
-                  <GrammarAnalysis
-                    className="p-0 sm:p-0"
-                    contentId={selectedChar}
-                    lang={lang || selectedComp?.lang}
-                  />
-                </div>
-              )}
-          </div>
-        </article>
+                  {(data || [])?.map((item) => {
+                    return (
+                      <TabsContent
+                        key={item?.pinyin}
+                        value={item?.pinyin}
+                        className="mt-6"
+                      >
+                        <div>
+                          <h1 className="text-2xl mb-4">
+                            <span>{item?.pinyin}</span> has{" "}
+                            <strong>{item?.useCases?.length}</strong> use cases
+                          </h1>
+
+                          <div className="space-y-12">
+                            {item?.useCases?.map((useCase, idx) => {
+                              return (
+                                <div key={useCase?.en}>
+                                  <div>
+                                    <h2 className="text-xl font-light">
+                                      <span className=""> {idx + 1}. </span>
+                                      <span>
+                                        <strong>
+                                          {grammarTypesToTitle[
+                                            useCase?.type as string
+                                          ] || useCase?.type}
+                                        </strong>
+                                      </span>
+                                    </h2>
+
+                                    <h3 className="text-gray-400">
+                                      {useCase?.en
+                                        ?.replaceAll("(", "")
+                                        ?.replaceAll(")", "")}
+                                    </h3>
+                                  </div>
+                                  <div className="mt-4 space-y-4">
+                                    {useCase?.sentences?.map((sentence) => {
+                                      return (
+                                        <SentenceItemV2
+                                          className="block"
+                                          key={sentence?.hanzi}
+                                          {...sentence}
+                                          href={`/nmm/${sentence?.hanzi}?lang=zh`}
+                                        />
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </TabsContent>
+                    );
+                  })}
+                </Tabs>
+              </div>
+            </div>
+          </article>
+          {selectedCompInput?.length < 32 && props?.sentences?.length !== 0 && (
+            <div className="mt-4 mb-8">
+              <GrammarAnalysis
+                contentId={selectedChar}
+                lang={lang || selectedComp?.lang}
+              />
+            </div>
+          )}
+        </>
       </div>
 
       <div className={"col-span-5 md:col-span-3"}>

@@ -137,7 +137,7 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
     </article>
   ) : (
     selectedComp?.createdAt && (
-      <article className="dark:bg-[rgb(14,15,16)] bg-gray-50 p-4 sm:p-8 rounded-2xl mt-2">
+      <article className="dark:bg-[rgb(14,15,16)] bg-gray-50 p-4 sm:p-8 rounded-2xl mt-4">
         <div className="mb-4">
           <Link
             className="font-bold text-xl"

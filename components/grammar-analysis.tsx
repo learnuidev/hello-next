@@ -51,14 +51,14 @@ export function GrammarAnalysis({
     const getHskWordHandler = useGetHskWordHandler();
 
     return (
-      <div className="rounded-2xl">
-        <div
-          className={cn(
-            divStyles,
-            "shadows-sm shadow-2 shadow-black p-2 sm:p-8 bg-gray-50 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden mt-4 sm:mt-0",
-            className
-          )}
-        >
+      <div
+        className={cn(
+          "rounded-2xl",
+          "shadows-sm shadow-2 shadow-black p-2 sm:px-8 py-4 bg-gray-50 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden mt-4 sm:mt-0"
+        )}
+      >
+        <h4 className="font-bold text-xl">Grammar Analysis</h4>
+        <div className={cn(divStyles, className)}>
           {grammarAnalysisFinal?.map((analysis) => {
             if (analysis?.hanzi) {
               const hskWord = getHskWordHandler(analysis);

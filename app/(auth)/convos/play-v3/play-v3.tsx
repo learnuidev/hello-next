@@ -37,8 +37,8 @@ function ActiveSubtitleDisplay({
   selectedWord,
 }: any) {
   return (
-    <div className="mt-6 sticky top-0 m-auto bg-[rgb(9,10,11)] z-50">
-      <div className="sticky top-0 pt-4 pb-[4px] bg-[rgb(9,10,11)]">
+    <div className="mt-6 sticky top-0 m-auto bg-gray-50 dark:bg-[rgb(9,10,11)] z-50">
+      <div className="sticky top-0 pt-4 px-2 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)]">
         <div className="pb-4">
           <h4 className="text-xs text-gray-500">Sentence meaning</h4>
           <div className="h-16 flex justify-between items-center mt-2 w-full">
@@ -362,7 +362,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                         : "text-gray-600",
                       currentTime > subtitle?.start &&
                         currentTime < subtitle.end
-                        ? "text-white"
+                        ? "dark:text-white text-black"
                         : "",
                       currentTime === 0 ? "text-gray-300" : "",
                       "text-start"
@@ -386,7 +386,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                       ? "text-gray-400"
                       : "text-gray-600",
                     currentTime > subtitle?.start && currentTime < subtitle.end
-                      ? "text-white"
+                      ? "dark:text-white text-black"
                       : "0",
                     currentTime === 0 ? "text-gray-300" : ""
                   )}
@@ -481,30 +481,32 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       </div> */}
 
       {/* <div className="fixed bottom-0 w-full z-30 m-auto bg-[rgb(12,13,14)]"> */}
-      <div className="fixed bottom-0 py-4 px-4 sm:px-16 w-full z-30 m-auto bg-[rgb(12,13,14)]">
+      <div className="w-full fixed bottom-0 py-4 px-4 z-30 m-auto bg-gray-50 dark:bg-[rgb(12,13,14)]">
         <section className="flex items-center justify-between">
-          <div className="space-x-2">
-            <button
-              onClick={increaseFontSize}
-              className={cn(
-                textSizeIndex === 3 ? "text-gray-400" : "",
-                "text-2xl"
-              )}
-            >
-              A
-            </button>
+          {editMode ? null : (
+            <div className="space-x-2">
+              <button
+                onClick={increaseFontSize}
+                className={cn(
+                  textSizeIndex === 3 ? "text-gray-400" : "",
+                  "text-2xl"
+                )}
+              >
+                A
+              </button>
 
-            <button
-              onClick={decreaseFontSize}
-              className={textSizeIndex === 0 ? "text-gray-400" : ""}
-            >
-              A
-            </button>
-          </div>
+              <button
+                onClick={decreaseFontSize}
+                className={textSizeIndex === 0 ? "text-gray-400" : ""}
+              >
+                A
+              </button>
+            </div>
+          )}
 
-          <div className="sm:space-x-6 space-x-4 flex items-center">
+          <div className="sm:space-x-6 space-x-2 flex items-center">
             <button
-              className="sm:text-2xl text-lg"
+              className="sm:text-2xl text-[16px]"
               onClick={() => {
                 togglePlay();
               }}
@@ -514,7 +516,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
             <button
               className={cn(
-                "sm:text-2xl text-lg",
+                "sm:text-2xl text-[16px]",
                 loop ? "text-white" : "text-gray-600"
               )}
               disabled={!activeSubtitle}
@@ -531,12 +533,12 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
               <Icons.loop />
             </button>
 
-            <p className="font-extralight sm:text-2xl text-xl text-center dark:text-slate-300 text-slate-600">
+            <p className="font-extralight sm:text-2xl text-[16px] text-center dark:text-slate-300 text-slate-600">
               {formatTime(currentTime)}
             </p>
 
             <button
-              className="sm:text-2xl text-lg"
+              className="sm:text-2xl text-[16px]"
               onClick={() => {
                 reset();
               }}
@@ -549,7 +551,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
           <div className="space-x-4 sm:space-x-8 flex items-center justify-start mr-8 sm:mr-60">
             <UploadFileButton
-              icon={<Icons.upload className="text-2xl" />}
+              icon={<Icons.upload className="text-[16px] sm:text-2xl" />}
               types={["mp3", "m4a"]}
               onSuccess={(res) => {
                 return updateContentMutation.mutateAsync({
@@ -570,7 +572,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
             >
               <Icons.gear
                 className={cn(
-                  "sm:text-2xl text-2xl",
+                  "sm:text-2xl text-[16px]",
                   editMode ? "dark:text-white text-black" : "text-gray-400"
                 )}
               />
@@ -616,7 +618,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
             >
               <Icons.chartColumn
                 className={cn(
-                  "sm:text-2xl text-2xl",
+                  "sm:text-2xl text-[16px]",
                   viewMode === "stats" ? "text-white" : "text-gray-400"
                 )}
               />
@@ -628,7 +630,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
             >
               <Icons.language
                 className={cn(
-                  "sm:text-2xl text-2xl",
+                  "sm:text-2xl text-[16px]",
                   viewPinyin ? "text-white" : "text-gray-400"
                 )}
               />

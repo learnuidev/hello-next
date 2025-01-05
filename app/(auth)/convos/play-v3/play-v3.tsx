@@ -14,6 +14,11 @@ import {
   useSetIfExists,
 } from "../[content-id]/hooks/use-character-context-store";
 import { useSearchParams } from "next/navigation";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
+import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -68,6 +73,14 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const [selected, setSelected] = useState<any>(null);
   const [loop, setLoop] = useState<any>(null);
   const [viewPinyin, togglePinyin] = useState(false);
+
+  const { data: learnedCharacters2, isLoading: isCharactersLoading } =
+    useListCharactersQuery();
+
+  const { data: components, isLoading: isComponentsLoading } =
+    useListComponents({ includeAll: true });
+
+  const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const searchParams = useSearchParams();
 
@@ -356,29 +369,102 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                     {subtitle?.pinyin || subtitle?.roman || ""}
                   </Link>
                 )}
-                <button
-                  onClick={() => {
-                    if (loop) {
-                      setLoop(subtitle.input);
-                    }
-                    seek(timeStamp?.start || subtitle?.start);
-                  }}
-                  className={cn(
-                    "text-3xl font-light text-gray-300 hover:text-rose-400 text-left",
 
-                    textSize?.[1],
-                    activeSubtitle?.sentence === subtitle?.sentence
-                      ? "text-gray-400"
-                      : "text-gray-600",
-                    currentTime > subtitle?.start && currentTime < subtitle.end
-                      ? "dark:text-white text-black"
-                      : "0",
-                    currentTime === 0 ? "text-gray-300" : ""
-                  )}
-                >
-                  {subtitle?.input || subtitle?.hanzi}
-                  {"   "}
-                </button>
+                {!brightMode ? (
+                  <div>
+                    {(subtitle?.input || subtitle?.hanzi)
+                      ?.split("")
+                      ?.map((val: any, idx: any) => {
+                        const learnedChar = learnedCharacters2?.find(
+                          (char: any) => char?.hanzi === val
+                        );
+                        const comp = components?.find(
+                          (char: any) => char?.hanzi === val
+                        );
+
+                        const color = calculateColor({
+                          tone: learnedChar?.tone_level,
+                        });
+
+                        const hoverColor = calculateHoverColor({
+                          tone: learnedChar?.tone_level || comp?.tone_level,
+                        });
+
+                        return (
+                          <span
+                            onClick={() => {
+                              if (loop) {
+                                setLoop(subtitle.input);
+                              }
+                              seek(timeStamp?.start || subtitle?.start);
+                            }}
+                            // onClick={() => {
+                            //   if (meaning?.details) {
+                            //     setIfExists({ ...meaning?.details });
+                            //   }
+                            // }}
+                            // href={`/nmm/${val}?lang=zh${context ? `&context=${context}` : ""}`}
+                            key={`${val}-${idx}`}
+                            className={cn(
+                              `${
+                                currentTime > subtitle?.start &&
+                                currentTime < subtitle.end
+                                  ? "dark:text-white text-black"
+                                  : brightMode || isCharactersLoading
+                                    ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
+                                    : // learnedCharacters.includes(prop?.hanzi)
+                                      learnedChar
+                                      ? learnedChar?.status === "forgotten"
+                                        ? `text-gray-200 dark:text-gray-600 ${hoverColor}`
+                                        : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                                          //   ? "text-rose-500"
+                                          `${color} text-gray-300 ${hoverColor}`
+                                      : `dark:text-gray-200 text-gray-800 ${hoverColor}`
+                              } ${hoverColor} ${color} text-2xl transition lowercase font-light`,
+                              // "text-3xl font-light text-gray-300 hover:text-rose-400 text-left"
+
+                              textSize?.[1]
+                              // activeSubtitle?.sentence === subtitle?.sentence
+                              //   ? "text-gray-400"
+                              //   : "text-gray-600",
+                              // currentTime > subtitle?.start &&
+                              //   currentTime < subtitle.end
+                              //   ? "dark:text-white text-black"
+                              //   : "0",
+                              // currentTime === 0 ? "text-gray-300" : ""
+                            )}
+                          >
+                            {val}
+                          </span>
+                        );
+                      })}
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      if (loop) {
+                        setLoop(subtitle.input);
+                      }
+                      seek(timeStamp?.start || subtitle?.start);
+                    }}
+                    className={cn(
+                      "text-3xl font-light text-gray-300 hover:text-rose-400 text-left",
+
+                      textSize?.[1],
+                      activeSubtitle?.sentence === subtitle?.sentence
+                        ? "text-gray-400"
+                        : "text-gray-600",
+                      currentTime > subtitle?.start &&
+                        currentTime < subtitle.end
+                        ? "dark:text-white text-black"
+                        : "0",
+                      currentTime === 0 ? "text-gray-300" : ""
+                    )}
+                  >
+                    {subtitle?.input || subtitle?.hanzi}
+                    {"   "}
+                  </button>
+                )}
               </span>
 
               {editMode && (
@@ -419,7 +505,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                         <input
                           value={timeStamp?.start || subtitle?.start}
                           onChange={(event) => {
-                            setTimer("start", event?.target?.value);
+                            setTimer("start", subtitle, event?.target?.value);
                           }}
                         />
                         <button
@@ -435,7 +521,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                         <input
                           value={timeStamp?.end || subtitle?.end}
                           onChange={(event) => {
-                            setTimer("end", event?.target?.value);
+                            setTimer("end", subtitle, event?.target?.value);
                           }}
                         />
 

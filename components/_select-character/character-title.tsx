@@ -102,18 +102,7 @@ export const CharacterTitle = (props: any) => {
             })}
           </h2>
         ) : (
-          <h2
-            // value={
-            //   pinyins?.[0] ||
-            //   pinyinInput ||
-            //   selectedComp?.pinyin ||
-            //   meaning?.details?.pinyin
-            // }
-            // onChange={(event) => {
-            //   setPinyin(event.target.value);
-            // }}
-            className="text-gray-900 dark:text-gray-400  font-extralight focus-visible:ring-0 focus-visible:ring-transparent w-full"
-          >
+          <h2 className="text-gray-900 dark:text-gray-400  font-extralight focus-visible:ring-0 focus-visible:ring-transparent w-full">
             {pinyins?.[0] ||
               pinyinInput ||
               selectedComp?.pinyin ||

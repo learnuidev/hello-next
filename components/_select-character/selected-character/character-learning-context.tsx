@@ -13,9 +13,10 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
   const playerRef = useRef() as any;
   const [currentTime, setTime] = useState(0);
 
-  const contentSegment = learnedCharacter?.contentContext?.find(
-    (content: any) => content?.contentId
-  );
+  const contentSegment =
+    learnedCharacter?.contentContext?.find(
+      (content: any) => content?.contentId
+    ) || learnedCharacter?.contentContext?.[0];
 
   const contentId = contentSegment?.contentId || "";
 
@@ -73,88 +74,101 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
     (trans: any) => trans?.start < currentTime && trans?.end > currentTime
   );
 
-  return (
-    relevantContent && (
-      <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-8">
-        <div className="mb-4">
-          <Link
-            className="font-bold text-xl"
-            target="_blank"
-            href={`/convos/${contentId}?seek=${contentSegment?.start}`}
-          >
-            Learning Context
-          </Link>
-          <p className="text-gray-400" onClick={playCurrentSegment}>
-            You learned this character on {formatDate(selectedComp?.createdAt)}
-          </p>
-        </div>
+  return relevantContent ? (
+    <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-8">
+      <div className="mb-4">
+        <Link
+          className="font-bold text-xl"
+          target="_blank"
+          href={`/convos/${contentId}?seek=${contentSegment?.start}`}
+        >
+          Learning Context
+        </Link>
+        <p className="text-gray-400" onClick={playCurrentSegment}>
+          You learned this character on {formatDate(selectedComp?.createdAt)}
+        </p>
+      </div>
 
-        <div>
-          {/* <button className="text-gray-400" onClick={playCurrentSegment}>
-            {contentSegment?.pinyin || contentSegment?.roman}
-          </button>
+      <div>
+        <ReactPlayer
+          ref={playerRef}
+          url={relevantContent?.audio}
+          // playing={isPlaying}
+          width="100%"
+          height={isYoutubeMedia ? height : "40px"}
+          controls
+          // onReady={onReady}
+        />
 
-          <Link
-            href={`/convos/${contentId}?seek=${contentSegment?.start}`}
-            target="_blank"
-            className="block text-3xl font-extralight"
-          >
-            {contentSegment?.input || contentSegment?.hanzi}
-          </Link>
-          <button onClick={playCurrentSegment} className="mb-4 text-gray-500">
-            {contentSegment?.en}
-          </button> */}
+        {contentSegment?.contentId ? (
+          currentTranscription ? (
+            <div className="text-center my-4">
+              <p className="text-gray-400">
+                {currentTranscription?.pinyin || "..."}
+              </p>
 
-          <ReactPlayer
-            ref={playerRef}
-            url={relevantContent?.audio}
-            // playing={isPlaying}
-            width="100%"
-            height={isYoutubeMedia ? height : "40px"}
-            controls
-            // onReady={onReady}
-          />
+              <Link
+                className="text-3xl font-extralight"
+                onClick={() => {
+                  setIfExists({ ...currentTranscription, contentId });
+                }}
+                href={`/nmm/${encodeURIComponent(
+                  currentTranscription?.input
+                )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
+                target="_blank"
+              >
+                {currentTranscription?.input}
+              </Link>
 
-          {contentSegment ? (
-            currentTranscription ? (
-              <div className="text-center my-4">
-                <p className="text-gray-400">
-                  {currentTranscription?.pinyin || "..."}
-                </p>
+              <p className="text-gray-500">{currentTranscription?.en}</p>
+            </div>
+          ) : (
+            <div className="text-center my-4">
+              <p className="text-gray-100 dark:text-gray-900">...</p>
 
-                <Link
-                  className="text-3xl font-extralight"
-                  onClick={() => {
-                    setIfExists({ ...currentTranscription, contentId });
-                  }}
-                  href={`/nmm/${encodeURIComponent(
-                    currentTranscription?.input
-                  )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
-                  target="_blank"
-                >
-                  {currentTranscription?.input}
-                </Link>
+              <Link
+                className="text-3xl font-extralight dark:text-gray-900 text-gray-100"
+                href={``}
+                target="_blank"
+              >
+                ...
+              </Link>
 
-                <p className="text-gray-500">{currentTranscription?.en}</p>
-              </div>
-            ) : (
-              <div className="text-center my-4">
-                <p className="text-gray-100 dark:text-gray-900">...</p>
+              <p className="dark:text-gray-900 text-gray-100">...</p>
+            </div>
+          )
+        ) : null}
+      </div>
+    </article>
+  ) : (
+    <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-8">
+      <div className="mb-4">
+        <Link
+          className="font-bold text-xl"
+          target="_blank"
+          href={`/nmm/${contentSegment?.input || contentSegment?.hanzi}${contentSegment?.lang ? `?lang=${contentSegment?.lang}` : ""}`}
+        >
+          Learning Context
+        </Link>
+        <p className="text-gray-400" onClick={playCurrentSegment}>
+          You learned this character on {formatDate(selectedComp?.createdAt)}
+        </p>
+      </div>
 
-                <Link
-                  className="text-3xl font-extralight dark:text-gray-900 text-gray-100"
-                  href={``}
-                  target="_blank"
-                >
-                  ...
-                </Link>
+      <div>
+        <p className="text-gray-400">
+          {contentSegment?.pinyin || contentSegment?.roman}
+        </p>
 
-                <p className="dark:text-gray-900 text-gray-100">...</p>
-              </div>
-            )
-          ) : null}
-        </div>
-      </article>
-    )
+        <Link
+          href={`/nmm/${contentSegment?.input || contentSegment?.hanzi}${contentSegment?.lang ? `?lang=${contentSegment?.lang}` : ""}`}
+          target="_blank"
+          className="block text-3xl font-extralight"
+        >
+          {contentSegment?.input || contentSegment?.hanzi}
+        </Link>
+        <p className="mb-4 text-gray-500">{contentSegment?.en}</p>
+      </div>
+    </article>
   );
 };

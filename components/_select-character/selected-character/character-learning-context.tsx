@@ -76,7 +76,7 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
   return (
     relevantContent && (
       <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-8">
-        <div className="">
+        <div className="mb-4">
           <Link
             className="font-bold text-xl"
             target="_blank"

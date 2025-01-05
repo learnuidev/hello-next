@@ -54,6 +54,7 @@ export function useGetContentQuery(params: { contentId: string }) {
   const queryClient = useQueryClient();
 
   return useQuery({
+    // @ts-ignore
     queryKey: [getContentQueryId, params.contentId],
     queryFn: async () => {
       const response = await getContent(params, {
@@ -88,5 +89,10 @@ export function useGetContentQuery(params: { contentId: string }) {
 
     enabled: Boolean(authUser?.jwt) && Boolean(params?.contentId),
     cacheTime: 1000 * 60 * 300, // 30 minutes,
+
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
 }

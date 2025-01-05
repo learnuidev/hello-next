@@ -89,8 +89,6 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
     JSON.stringify(item)?.includes(firstLesson?.hanzi || selectedChar)
   );
 
-  console.log("CONTENT CONTEXT", contentContext);
-
   return (
     <TheDock isAutomatic={isAutomatic} className="bottom-4">
       <div className="flex items-center w-full justify-center">

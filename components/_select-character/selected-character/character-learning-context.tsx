@@ -76,7 +76,7 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
   return (
     relevantContent && (
       <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-8">
-        <div className="mb-8">
+        <div className="">
           <Link
             className="font-bold text-xl"
             target="_blank"
@@ -115,40 +115,44 @@ export const CharacterLearningContext = ({ selectedComp }: any) => {
             // onReady={onReady}
           />
 
-          {currentTranscription ? (
-            <div className="text-center my-8">
-              <p className="text-gray-400">{currentTranscription?.pinyin}</p>
+          {contentSegment ? (
+            currentTranscription ? (
+              <div className="text-center my-4">
+                <p className="text-gray-400">
+                  {currentTranscription?.pinyin || "..."}
+                </p>
 
-              <Link
-                className="text-3xl font-extralight"
-                onClick={() => {
-                  setIfExists({ ...currentTranscription, contentId });
-                }}
-                href={`/nmm/${encodeURIComponent(
-                  currentTranscription?.input
-                )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
-                target="_blank"
-              >
-                {currentTranscription?.input}
-              </Link>
+                <Link
+                  className="text-3xl font-extralight"
+                  onClick={() => {
+                    setIfExists({ ...currentTranscription, contentId });
+                  }}
+                  href={`/nmm/${encodeURIComponent(
+                    currentTranscription?.input
+                  )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
+                  target="_blank"
+                >
+                  {currentTranscription?.input}
+                </Link>
 
-              <p className="text-gray-500">{currentTranscription?.en}</p>
-            </div>
-          ) : (
-            <div className="text-center my-8">
-              <p className="text-gray-100 dark:text-gray-900">...</p>
+                <p className="text-gray-500">{currentTranscription?.en}</p>
+              </div>
+            ) : (
+              <div className="text-center my-4">
+                <p className="text-gray-100 dark:text-gray-900">...</p>
 
-              <Link
-                className="text-3xl font-extralight dark:text-gray-900 text-gray-100"
-                href={``}
-                target="_blank"
-              >
-                ...
-              </Link>
+                <Link
+                  className="text-3xl font-extralight dark:text-gray-900 text-gray-100"
+                  href={``}
+                  target="_blank"
+                >
+                  ...
+                </Link>
 
-              <p className="dark:text-gray-900 text-gray-100">...</p>
-            </div>
-          )}
+                <p className="dark:text-gray-900 text-gray-100">...</p>
+              </div>
+            )
+          ) : null}
         </div>
       </article>
     )

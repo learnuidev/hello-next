@@ -67,7 +67,7 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
   );
 
   return relevantContent ? (
-    <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-8">
+    <article className="dark:bg-[rgb(14,15,16)] bg-gray-50 p-4 sm:p-8 rounded-2xl mt-2">
       <div className="mb-4">
         <Link
           className="font-bold text-xl"
@@ -77,7 +77,7 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
           Learning Context
         </Link>
         <p
-          className="font-extralight text-gray-500 dark:text-gray-400"
+          className="font-extralight text-gray-500 text-sm"
           onClick={playCurrentSegment}
         >
           You learned this character on {formatDate(selectedComp?.createdAt)}
@@ -97,7 +97,7 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
 
         {contentSegment?.contentId ? (
           currentTranscription ? (
-            <div className="text-center my-4">
+            <div className="text-center mt-4">
               <p className="text-gray-400">
                 {currentTranscription?.pinyin || "..."}
               </p>
@@ -118,7 +118,7 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
               <p className="text-gray-500">{currentTranscription?.en}</p>
             </div>
           ) : (
-            <div className="text-center my-4">
+            <div className="text-center mt-4">
               <p className="text-gray-100 dark:text-gray-900">...</p>
 
               <Link
@@ -137,7 +137,7 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
     </article>
   ) : (
     selectedComp?.createdAt && (
-      <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-8">
+      <article className="dark:bg-[rgb(14,15,16)] bg-gray-50 p-4 sm:p-8 rounded-2xl mt-2">
         <div className="mb-4">
           <Link
             className="font-bold text-xl"
@@ -147,7 +147,7 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
             Learning Context
           </Link>
           <p
-            className="font-extralight dark:text-gray-400 text-gray-500"
+            className="font-extralight text-gray-500 text-sm"
             onClick={playCurrentSegment}
           >
             You learned this character on {formatDate(selectedComp?.createdAt)}
@@ -155,18 +155,18 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
         </div>
 
         <div>
-          <p className="text-gray-400">
+          <p className=" text-gray-600 dark:text-gray-400">
             {contentSegment?.pinyin || contentSegment?.roman}
           </p>
 
           <Link
             href={`/nmm/${contentSegment?.input || contentSegment?.hanzi}${contentSegment?.lang ? `?lang=${contentSegment?.lang}` : ""}`}
             target="_blank"
-            className="block text-3xl font-extralight"
+            className="block text-xl"
           >
             {contentSegment?.input || contentSegment?.hanzi}
           </Link>
-          <p className="mb-4 text-gray-500">{contentSegment?.en}</p>
+          <p className="font-light dark:text-gray-500">{contentSegment?.en}</p>
         </div>
       </article>
     )

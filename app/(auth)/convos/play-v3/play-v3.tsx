@@ -410,7 +410,9 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                                 currentTime > subtitle?.start &&
                                 currentTime < subtitle.end
                                   ? brightMode
-                                    ? `${color} ${hoverColor}`
+                                    ? learnedChar?.status === "forgotten"
+                                      ? "text-gray-200 dark:text-gray-600"
+                                      : `${color} ${hoverColor}`
                                     : `dark:text-white text-black ${color} ${hoverColor}`
                                   : !brightMode || isCharactersLoading
                                     ? `dark:text-gray-300 text-gray-700 ${hoverColor}`

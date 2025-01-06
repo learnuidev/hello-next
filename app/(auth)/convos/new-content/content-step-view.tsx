@@ -19,6 +19,6 @@ export const ContentStepView = () => {
     case "preview":
       return <ContentPreview />;
     default:
-      return <ContentDetails />;
+      return <ContentPreview />;
   }
 };

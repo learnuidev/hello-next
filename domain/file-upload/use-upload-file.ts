@@ -25,7 +25,7 @@ export function useUploadFile(cb?: any, ctx?: any, props?: any) {
   const { data: authUser } = useCurrentAuthUser({});
 
   const onUploadFileChange = async (e: any) => {
-    const file = e.target.files[0];
+    const file = e?.target?.files?.[0] || e;
     const extension = getFileExtension(file) || "";
 
     const contentType = file.type || "";
@@ -74,7 +74,10 @@ export function useUploadFile(cb?: any, ctx?: any, props?: any) {
       })
       .then(async (resp: UploadFileResponse) => {
         console.log("UPLOADED", resp);
-        e.target.value = "";
+
+        if (e?.target?.value) {
+          e.target.value = "";
+        }
 
         cb(resp);
       });

@@ -1,4 +1,4 @@
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { faGoogle, faYoutube } from "@fortawesome/free-brands-svg-icons";
 import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
@@ -76,6 +76,7 @@ import {
   faLanguage,
   faLayerGroup,
   faLightbulb,
+  faLink,
   faList,
   faLock,
   faMagicWandSparkles,
@@ -90,6 +91,7 @@ import {
   faMusic,
   faNotebook,
   faPaperPlaneTop,
+  faPaste,
   faPenToSquare,
   faPhotoFilm,
   faPlanetRinged,
@@ -339,6 +341,9 @@ export const Icons = {
 
   apps: createFAIcon(faGrid2),
   browser: createFAIcon(faBrowser),
+  link: createFAIcon(faLink),
+  paste: createFAIcon(faPaste),
+  youtube: createFAIcon(faYoutube),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

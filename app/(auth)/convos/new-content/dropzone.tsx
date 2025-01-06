@@ -3,6 +3,20 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone, FileRejection } from "react-dropzone";
 import ReactPlayer from "react-player";
+import { ContentTypeItem } from "./components/content-type-item";
+import { ContentOptionsButton } from "./components/content-option-buttons";
+import {
+  contentFilesStore,
+  contentSouceBucketStore,
+  contentSouceUrlStore,
+  contentTypeStore,
+} from "./new-content-store";
+import { fi } from "date-fns/locale";
+import {
+  UploadFileResponse,
+  useUploadFile,
+} from "@/domain/file-upload/use-upload-file";
+import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 
 interface DropzoneProps {
   className?: string;
@@ -12,22 +26,49 @@ interface FileWithPreview extends File {
   preview: string;
 }
 
-// function isAudio(type: string) {
-//   return ["audio/wav", "audio/mp3"]?.includes(type);
-// }
-
-function isVideo(type: string) {
-  return ["video/mp4"]?.includes(type);
+function isVideo(file: any) {
+  return (
+    ["video/mp4"]?.includes(file.type) ||
+    file.path?.includes("mp4") ||
+    file?.path?.includes("m4a")
+  );
 }
 
 export const Dropzone = ({ className }: DropzoneProps) => {
-  const [files, setFiles] = useState<FileWithPreview[]>([]);
+  const files = contentFilesStore((state) => state.files);
+  const setFiles = contentFilesStore((state) => state.setFiles);
+  //   const [files, setFiles] = useState<FileWithPreview[]>([]);
+
+  const isSmall = useIsSmall();
+
+  const removeAll = () => {
+    setFiles([]);
+    setRejected([]);
+  };
+
   const [rejected, setRejected] = useState<FileRejection[]>([]);
+  const contentType = contentTypeStore((state) => state.type);
+  const setContentType = contentTypeStore((state) => state.setType);
+
+  const setSourceUrl = contentSouceUrlStore((state) => state.setSourcUrl);
+  const sourceUrl = contentSouceUrlStore((state) => state.sourceUrl);
+  const setSourceBucket = contentSouceBucketStore(
+    (state) => state.setSourceBucket
+  );
+
+  const onUploadFileChange = useUploadFile((resp: UploadFileResponse) => {
+    // alert(JSON.stringify(resp));
+    const { uploadBucketKey, sourceUrl } = resp;
+
+    setSourceUrl(sourceUrl);
+    setSourceBucket(uploadBucketKey);
+    removeAll();
+  });
 
   const onDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
       if (acceptedFiles?.length) {
-        setFiles((previousFiles) => [
+        setFiles((previousFiles: FileWithPreview[]) => [
           ...previousFiles,
           ...acceptedFiles.map((file) =>
             Object.assign(file, { preview: URL.createObjectURL(file) })
@@ -53,32 +94,32 @@ export const Dropzone = ({ className }: DropzoneProps) => {
 
   useEffect(() => {
     // Revoke the data uris to avoid memory leaks
-    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
+    return () =>
+      files.forEach((file: FileWithPreview) =>
+        URL.revokeObjectURL(file.preview)
+      );
   }, [files]);
 
   const removeFile = (name: string) => {
-    setFiles((files) => files.filter((file) => file.name !== name));
-  };
-
-  const removeAll = () => {
-    setFiles([]);
-    setRejected([]);
+    setFiles((files: FileWithPreview[]) =>
+      files.filter((file) => file.name !== name)
+    );
   };
 
   const removeRejected = (name: string) => {
     setRejected((files) => files.filter(({ file }) => file.name !== name));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     if (!files?.length) return;
 
     const formData = new FormData();
-    files.forEach((file) => formData.append("file", file));
-    formData.append("upload_preset", "friendsbook");
 
-    console.log("files", files);
+    onUploadFileChange(files?.[0]);
+    // files.forEach((file) => formData.append("file", file));
+    // formData.append("upload_preset", "friendsbook");
+
+    // console.log("files", files);
 
     // const URL = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
     // const data = await fetch(URL, {
@@ -89,53 +130,152 @@ export const Dropzone = ({ className }: DropzoneProps) => {
     // console.log(data);
   };
 
+  console.log("content type", contentType);
+
+  if (contentType === "youtube") {
+    return (
+      <div
+        onClick={() => {
+          setContentType("");
+        }}
+      >
+        {" "}
+        Youtube Flow
+      </div>
+    );
+  }
+  if (contentType === "website") {
+    return (
+      <div
+        onClick={() => {
+          setContentType("");
+        }}
+      >
+        {" "}
+        Html Flow{" "}
+      </div>
+    );
+  }
+
+  if (contentType === "text") {
+    return (
+      <div
+        onClick={() => {
+          setContentType("");
+        }}
+      >
+        {" "}
+        Text Flow{" "}
+      </div>
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit} className="w-full block">
-      <div
-        {...getRootProps({
-          className: className,
-        })}
-      >
-        <input {...getInputProps()} />
-        <div className="w-[600px] flex flex-col items-center justify-center border-dotted dark:border-gray-700 border-2 rounded-2xl pt-16">
-          <Icons.upload className="w-5 h-5 fill-current" />
+      {!sourceUrl && files?.length === 0 && (
+        <div
+          {...getRootProps({
+            className: className,
+          })}
+        >
+          <input {...getInputProps()} />
+          <div className="px-4 w-full sm:min-w-[600px] flex flex-col items-center justify-center border-dotted dark:border-gray-700 border-2 rounded-2xl pt-16">
+            <Icons.upload className="w-5 h-5 fill-current" />
 
-          <p className="dark:text-gray-400 font-extralight mt-2">
-            {isDragActive
-              ? "Drop the files here ..."
-              : "Drag & drop or choose file to upload"}
-          </p>
-          <p className="dark:text-gray-500 font-extralight mt-12 pb-8">
-            Supported file types: Vide, Audio (e.g. mp3)
-          </p>
+            <p className="dark:text-gray-400 text-gray-600 font-light mt-2">
+              {isDragActive
+                ? "Drop the files here ..."
+                : "Drag & drop or choose file to upload"}
+            </p>
+            <p className="text-sm dark:text-gray-500 text-gray-500 font-extralight mt-12 pb-8">
+              Supported file types: Video, Audio (e.g. mp3)
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Preview */}
 
-      <div className="mt-8 space-y-4">
-        {files.map((file) => (
-          <div
-            key={file.name}
-            className="rounded-md shadow-lg flex flex-row justify-end space-x-4 items-center gap-2 pb-2"
-          >
-            <ReactPlayer
-              url={file.preview}
-              width={"600px"}
-              height={isVideo(file.type) ? "100%" : "40px"}
-              controls
-            />
+      {sourceUrl !== "undefined" && (
+        <ReactPlayer
+          url={sourceUrl}
+          width={isSmall ? "100%" : "600px"}
+          height={"100%"}
+          controls
+        />
+      )}
 
-            <button
-              type="button"
-              className="w-8 h-8 px-2 border border-secondary-400 bg-secondary-400 rounded-full flex justify-center items-center  dark:hover:bg-gray-800 hover:bg-white transition-colors"
-              onClick={() => removeFile(file.name)}
+      <div className="mt-8 space-y-4">
+        {files.map((file: FileWithPreview) => {
+          console.log("FILE", file);
+          return (
+            <div
+              key={file.name}
+              className="rounded-md shadow-lg flex flex-col justify-end space-x-4 items-end gap-2 pb-2"
             >
-              <Icons.xMark className="w-5 h-5 fill-white hover:fill-secondary-400 transition-colors" />
-            </button>
-          </div>
-        ))}
+              <ReactPlayer
+                url={file.preview}
+                width={isSmall ? "100%" : "600px"}
+                height={isVideo(file) ? "100%" : "40px"}
+                controls
+              />
+
+              <div className="flex space-x-4 mt-2">
+                <button
+                  type="button"
+                  className="w-8 h-8 px-2 border border-secondary-400 bg-secondary-400 rounded-full flex justify-center items-center  dark:hover:bg-gray-800 hover:bg-white transition-colors"
+                  onClick={() => removeFile(file.name)}
+                >
+                  <Icons.xMark className="w-5 h-5 fill-white hover:fill-secondary-400 transition-colors" />
+                </button>
+                <button
+                  type="button"
+                  className="w-8 h-8 px-2 border border-secondary-400 bg-secondary-400 rounded-full flex justify-center items-center  dark:hover:bg-gray-800 hover:bg-white transition-colors"
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                >
+                  <Icons.check className="w-5 h-5 fill-white hover:fill-secondary-400 transition-colors" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
+
+      {!sourceUrl && files?.length === 0 && (
+        <div className="flex gap-4 flex-col sm:flex-row">
+          <ContentTypeItem title={"Link"} Icon={Icons.link}>
+            <div className="mt-4 space-x-4">
+              {[
+                { id: "website", title: "Web", Icon: Icons.browser },
+                { id: "youtube", title: "YouTube", Icon: Icons.youtube },
+              ].map((linkType) => {
+                return (
+                  <ContentOptionsButton
+                    linkType={linkType}
+                    key={JSON.stringify(linkType)}
+                  />
+                );
+              })}
+            </div>
+          </ContentTypeItem>
+          <ContentTypeItem title={"Paste"} Icon={Icons.paste}>
+            <div className="mt-4 space-x-4">
+              {[
+                { id: "text", title: "Copied text", Icon: Icons.paragraph },
+              ].map((linkType) => {
+                return (
+                  <ContentOptionsButton
+                    linkType={linkType}
+                    key={JSON.stringify(linkType)}
+                  />
+                );
+              })}
+            </div>
+          </ContentTypeItem>
+        </div>
+      )}
     </form>
   );
 };

@@ -41,10 +41,15 @@ export const contentSouceBucketStore = create(
   )
 );
 
-export const contentFilesStore = create((set: any, get: any) => ({
-  files: [],
-  setFiles: (event: any) =>
-    typeof event === "function"
-      ? set({ files: event(get().files) })
-      : set({ files: event }),
-}));
+export const contentSourceStore = create(
+  persist(
+    (set: any, get: any) => ({
+      source: null,
+      setSource: (event: any) => set({ source: event }),
+    }),
+    {
+      name: "mandarino/content-source", // name of the item in the storage (must be unique)
+      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+    }
+  )
+);

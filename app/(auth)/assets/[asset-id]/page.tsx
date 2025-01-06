@@ -7,6 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { ReactReader } from "react-reader";
+import { isAudio } from "../../convos/new-content/utils/is-audio";
+import ReactPlayer from "react-player";
 
 const useGetUserAsset = (id: string) => {
   const { data: authUser } = useCurrentAuthUser({});
@@ -31,6 +33,29 @@ const useGetUserAsset = (id: string) => {
     retry: false,
   });
 };
+
+function RenderContent({
+  userAsset,
+}: {
+  userAsset: { extension: string; sourceUrl: string };
+}) {
+  if (isAudio(userAsset?.sourceUrl)) {
+    return (
+      <ReactPlayer
+        url={userAsset?.sourceUrl}
+        // width={isSmall ? "100%" : "600px"}
+        height={"40px"}
+        controls
+      />
+    );
+  }
+
+  return (
+    <code>
+      <pre>{JSON.stringify(userAsset, null, 2)}</pre>
+    </code>
+  );
+}
 export default function Assets() {
   const params = useParams<{ "asset-id": string }>();
   const id = "01J2F7D814JVWWRST573NJT39S";
@@ -56,13 +81,7 @@ export default function Assets() {
       <section className="px-4 md:px-12">
         <h1 className="text-2xl my-8"> Assets</h1>
 
-        {isError ? (
-          "ERR"
-        ) : (
-          <code>
-            <pre>{JSON.stringify(userAsset, null, 2)}</pre>
-          </code>
-        )}
+        {isError ? "ERR" : <RenderContent userAsset={userAsset} />}
       </section>
     </main>
   );

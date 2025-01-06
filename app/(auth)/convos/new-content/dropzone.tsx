@@ -6,9 +6,9 @@ import ReactPlayer from "react-player";
 import { ContentTypeItem } from "./components/content-type-item";
 import { ContentOptionsButton } from "./components/content-option-buttons";
 import {
-  contentFilesStore,
   contentSouceBucketStore,
   contentSouceUrlStore,
+  contentSourceStore,
   contentTypeStore,
 } from "./new-content-store";
 import { fi } from "date-fns/locale";
@@ -17,6 +17,8 @@ import {
   useUploadFile,
 } from "@/domain/file-upload/use-upload-file";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
+import { useUploadFileV2 } from "@/domain/file-upload/use-upload-file-v2";
+import { isVideo } from "./utils/is-video";
 
 interface DropzoneProps {
   className?: string;
@@ -26,18 +28,8 @@ interface FileWithPreview extends File {
   preview: string;
 }
 
-function isVideo(file: any) {
-  return (
-    ["video/mp4"]?.includes(file.type) ||
-    file.path?.includes("mp4") ||
-    file?.path?.includes("m4a")
-  );
-}
-
 export const Dropzone = ({ className }: DropzoneProps) => {
-  const files = contentFilesStore((state) => state.files);
-  const setFiles = contentFilesStore((state) => state.setFiles);
-  //   const [files, setFiles] = useState<FileWithPreview[]>([]);
+  const [files, setFiles] = useState<FileWithPreview[]>([]);
 
   const isSmall = useIsSmall();
 
@@ -50,20 +42,27 @@ export const Dropzone = ({ className }: DropzoneProps) => {
   const contentType = contentTypeStore((state) => state.type);
   const setContentType = contentTypeStore((state) => state.setType);
 
-  const setSourceUrl = contentSouceUrlStore((state) => state.setSourcUrl);
-  const sourceUrl = contentSouceUrlStore((state) => state.sourceUrl);
-  const setSourceBucket = contentSouceBucketStore(
-    (state) => state.setSourceBucket
+  //   const setSourceUrl = contentSouceUrlStore((state) => state.setSourcUrl);
+  //   const sourceUrl = contentSouceUrlStore((state) => state.sourceUrl);
+  //   const setSourceBucket = contentSouceBucketStore(
+  //     (state) => state.setSourceBucket
+  //   );
+
+  const source = contentSourceStore((state) => state.source) as any;
+  const setSource = contentSourceStore((state) => state.setSource);
+
+  const { onUploadFileChange, addUserAssetMutation } = useUploadFileV2(
+    (resp: UploadFileResponse) => {
+      // alert(JSON.stringify(resp));
+      const { uploadBucketKey, sourceUrl } = resp;
+
+      setSource(resp);
+
+      // setSourceUrl(sourceUrl);
+      // setSourceBucket(uploadBucketKey);
+      removeAll();
+    }
   );
-
-  const onUploadFileChange = useUploadFile((resp: UploadFileResponse) => {
-    // alert(JSON.stringify(resp));
-    const { uploadBucketKey, sourceUrl } = resp;
-
-    setSourceUrl(sourceUrl);
-    setSourceBucket(uploadBucketKey);
-    removeAll();
-  });
 
   const onDrop = useCallback(
     (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
@@ -172,7 +171,7 @@ export const Dropzone = ({ className }: DropzoneProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="w-full block">
-      {!sourceUrl && files?.length === 0 && (
+      {!source?.sourceUrl && files?.length === 0 && (
         <div
           {...getRootProps({
             className: className,
@@ -196,13 +195,27 @@ export const Dropzone = ({ className }: DropzoneProps) => {
 
       {/* Preview */}
 
-      {sourceUrl !== "undefined" && (
-        <ReactPlayer
-          url={sourceUrl}
-          width={isSmall ? "100%" : "600px"}
-          height={"100%"}
-          controls
-        />
+      {source?.sourceUrl !== undefined && (
+        <div className="rounded-md shadow-lg flex flex-col justify-end space-x-4 items-end gap-2 pb-2">
+          <ReactPlayer
+            url={source?.sourceUrl}
+            // width={isSmall ? "100%" : "600px"}
+            height={isVideo(source?.sourceUrl) ? "100%" : "40px"}
+            controls
+          />
+
+          <div className="flex space-x-4 mt-2">
+            <button
+              type="button"
+              className="w-8 h-8 px-2 border border-secondary-400 bg-secondary-400 rounded-full flex justify-center items-center  dark:hover:bg-gray-800 hover:bg-white transition-colors"
+              onClick={() => {
+                setSource(null);
+              }}
+            >
+              <Icons.xMark className="w-5 h-5 fill-white hover:fill-secondary-400 transition-colors" />
+            </button>
+          </div>
+        </div>
       )}
 
       <div className="mt-8 space-y-4">
@@ -235,7 +248,14 @@ export const Dropzone = ({ className }: DropzoneProps) => {
                     handleSubmit();
                   }}
                 >
-                  <Icons.check className="w-5 h-5 fill-white hover:fill-secondary-400 transition-colors" />
+                  {addUserAssetMutation.isLoading ? (
+                    <Icons.spinner
+                      spinPulse
+                      className="w-5 h-5 fill-white hover:fill-secondary-400 transition-colors"
+                    />
+                  ) : (
+                    <Icons.check className="w-5 h-5 fill-white hover:fill-secondary-400 transition-colors" />
+                  )}
                 </button>
               </div>
             </div>
@@ -243,7 +263,7 @@ export const Dropzone = ({ className }: DropzoneProps) => {
         })}
       </div>
 
-      {!sourceUrl && files?.length === 0 && (
+      {!source?.sourceUrl && files?.length === 0 && (
         <div className="flex gap-4 flex-col sm:flex-row">
           <ContentTypeItem title={"Link"} Icon={Icons.link}>
             <div className="mt-4 space-x-4">

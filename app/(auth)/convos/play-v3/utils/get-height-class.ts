@@ -1,7 +1,8 @@
 const heightMapping = {
-  100: "h-8",
+  100: "h-10",
   200: "h-12",
   300: "h-16",
+  400: "h-16",
   500: "h-20",
   600: "h-28",
   700: "h-28",
@@ -9,10 +10,7 @@ const heightMapping = {
 } as any;
 
 export const getHeightClass = (length: number) => {
-  for (const maxLength of Object.keys(heightMapping).reverse()) {
-    if (length > parseInt(maxLength)) {
-      return heightMapping[maxLength];
-    }
-  }
-  return heightMapping[200]; // Default case if length is less than or equal to 200
+  const minVal = Math.floor(length / 100) * 100;
+
+  return heightMapping?.[minVal] || "h-38";
 };

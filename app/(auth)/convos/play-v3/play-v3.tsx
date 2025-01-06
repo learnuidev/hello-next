@@ -86,6 +86,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
     useListComponents({ includeAll: true });
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
+  const setBrightMode = useBrightModeStore((state: any) => state.setMode);
 
   const searchParams = useSearchParams();
 
@@ -627,6 +628,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
             <UploadFileButton
               icon={<Icons.upload className="text-[16px] sm:text-2xl" />}
               types={["mp3", "m4a"]}
+              className="hidden sm:block"
               onSuccess={(res) => {
                 return updateContentMutation.mutateAsync({
                   id: content?.id || "",
@@ -706,6 +708,18 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                 className={cn(
                   "sm:text-2xl text-[16px]",
                   viewPinyin ? "text-white" : "text-gray-400"
+                )}
+              />
+            </button>
+            <button
+              onClick={() => {
+                setBrightMode((mode: any) => !mode);
+              }}
+            >
+              <Icons.glassesRound
+                className={cn(
+                  "sm:text-2xl text-[16px]",
+                  brightMode ? "text-white" : "text-gray-400"
                 )}
               />
             </button>

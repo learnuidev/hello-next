@@ -5,8 +5,6 @@ import posthog from "posthog-js";
 import { PostHogProvider as PHProvider } from "posthog-js/react";
 import { posthogConfig } from "./posthog.config";
 
-console.log("POSTHOG", posthogConfig);
-
 if (typeof window !== "undefined") {
   // const resp = posthog.init("phc_Szwgh2TQR1jAy17IJDt6WwkVe3x8Ay5LJqkMuYGulZv", {
   //   api_host: "https://app.posthog.com",

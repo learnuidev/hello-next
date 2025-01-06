@@ -3,7 +3,7 @@
 import { CloseIcon } from "@/components/ui/icons";
 
 import { StepTitleContainer, useNewConvoStore } from "@/components/step";
-import { useViewModeStore } from "@/components/convos/useViewModeStore";
+import { useViewModeStore } from "../new-convo/use-viewmode-store";
 
 export function NewContentHeader() {
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);

@@ -25,8 +25,10 @@ import { PlusIcon } from "@/components/ui/icons";
 import { Icons } from "@/components/ui/icons.v2";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useListConversationsQuery } from "@/domain/conversation/use-list-conversations-query";
+import { useIsNewContentFormEnabled } from "@/libs/posthog/hooks/use-is-new-content-form-enabled";
 import { NewContent } from "./new-content/new-content";
 import { useViewModeStore } from "./new-content/use-viewmode-store";
+import { NewConvo } from "./new-convo/new-convo";
 import { useContentTypeStore } from "./use-content-type-store";
 
 type ContentType = {
@@ -195,18 +197,28 @@ export default function Convos() {
   const router = useRouter();
 
   // CONVOS
-  // const lessonId = useConvosStore((state: any) => state?.convoId);
+
   const setLessonId = useConvosStore((state: any) => state?.setConvoId);
 
-  // const router = useRouter();
+  const isNewContentEnabled = useIsNewContentFormEnabled();
 
   const toggleIsHidden = () => {
     if (isTocHidden) {
     }
   };
 
+  const ContentViewMode = () => {
+    if (isNewContentEnabled) {
+      return <NewContent />;
+    }
+
+    return <NewConvo />;
+  };
+
+  console.log("VIEW MODE", viewMode);
+
   return viewMode === "convo/add" ? (
-    <NewContent />
+    <ContentViewMode />
   ) : (
     <main className="">
       {selectedChar ? null : lessonId && routeName?.includes("/convos") ? (
@@ -219,7 +231,7 @@ export default function Convos() {
         routeName?.includes("/convos") ? null : (
         <div className="px-4 md:px-8 mt-4">
           <button
-            className="text-xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full"
+            className="text-xl dark:hover:text-white md:px-4 py-1 dark:text-slate-600 shadow-md rounded-full"
             onClick={() => {
               setViewMode("convo/add");
             }}

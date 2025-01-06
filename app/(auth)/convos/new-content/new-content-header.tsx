@@ -1,9 +1,9 @@
 "use client";
 
 import { CloseIcon } from "@/components/ui/icons";
-import { useViewModeStore } from "./use-viewmode-store";
 
 import { StepTitleContainer, useNewConvoStore } from "@/components/step";
+import { useViewModeStore } from "@/components/convos/useViewModeStore";
 
 export function NewContentHeader() {
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);

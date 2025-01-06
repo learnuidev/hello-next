@@ -27,9 +27,10 @@ import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useListConversationsQuery } from "@/domain/conversation/use-list-conversations-query";
 import { useIsNewContentFormEnabled } from "@/libs/posthog/hooks/use-is-new-content-form-enabled";
 import { NewContent } from "./new-content/new-content";
-import { useViewModeStore } from "./new-content/use-viewmode-store";
+
 import { NewConvo } from "./new-convo/new-convo";
 import { useContentTypeStore } from "./use-content-type-store";
+import { useViewModeStore } from "./new-convo/use-viewmode-store";
 
 type ContentType = {
   title: string;
@@ -207,7 +208,10 @@ export default function Convos() {
     }
   };
 
+  console.log("process.env", process.env);
+
   const ContentViewMode = () => {
+    console.log("NEW CONTENT ENABLED", isNewContentEnabled);
     if (isNewContentEnabled) {
       return <NewContent />;
     }

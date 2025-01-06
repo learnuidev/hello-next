@@ -18,10 +18,10 @@ import { ConvoDetails } from "../convo-details";
 import { ConvosNavBar } from "../convos-nav-bar";
 import { useSelectedCharacter } from "../use-selected-character";
 
-import { useViewModeStore } from "../new-content/use-viewmode-store";
 import ConvoItem from "./convo-item";
 import { fa0 } from "@fortawesome/pro-thin-svg-icons";
 import { ContentItemV2 } from "./content-item-v2/content-item-v2";
+import { useViewModeStore } from "@/components/convos/useViewModeStore";
 
 // useConvosStore
 

@@ -56,7 +56,7 @@ function ActiveSubtitleDisplay({
             className={`${height} flex justify-between items-center mt-2 w-full`}
           >
             <p className="space-x-2 text-[16px] font-extralight pb-[4px]">
-              {subtitleValue} ({subtitleValue?.length})
+              {subtitleValue}
             </p>
           </div>
         </div>

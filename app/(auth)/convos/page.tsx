@@ -25,8 +25,8 @@ import { PlusIcon } from "@/components/ui/icons";
 import { Icons } from "@/components/ui/icons.v2";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useListConversationsQuery } from "@/domain/conversation/use-list-conversations-query";
-import { NewConvo } from "./new-convo/new-convo";
-import { useViewModeStore } from "./new-convo/use-viewmode-store";
+import { NewContent } from "./new-content/new-content";
+import { useViewModeStore } from "./new-content/use-viewmode-store";
 import { useContentTypeStore } from "./use-content-type-store";
 
 type ContentType = {
@@ -206,7 +206,7 @@ export default function Convos() {
   };
 
   return viewMode === "convo/add" ? (
-    <NewConvo />
+    <NewContent />
   ) : (
     <main className="">
       {selectedChar ? null : lessonId && routeName?.includes("/convos") ? (

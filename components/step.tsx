@@ -16,7 +16,7 @@ export const StepTitleContainer = ({ children }: ReactChildrenProps) => {
 export const useNewConvoStore = create(
   persist(
     (set: any, get: any) => ({
-      step: "audio",
+      step: "content",
       setStep: (step: any) => set({ step }),
       convo: {
         id: "mandarino#resource#" + new Date().getTime(),
@@ -51,7 +51,7 @@ export const StepTitle = ({ children }: ReactChildrenProps) => {
 };
 
 export const StepContainerVariant1 = ({ children }: ReactChildrenProps) => {
-  return <div className="md:mx-32 md:mt-32 flex flex-wrap">{children}</div>;
+  return <div className="md:mx-32 flex flex-wrap">{children}</div>;
 };
 
 export const StepInput = ({ value, onChange, onKeyDown, placeholder }: any) => {

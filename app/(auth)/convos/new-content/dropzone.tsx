@@ -268,8 +268,13 @@ export const Dropzone = ({ className }: DropzoneProps) => {
           <ContentTypeItem title={"Link"} Icon={Icons.link}>
             <div className="mt-4 space-x-4">
               {[
-                { id: "website", title: "Web", Icon: Icons.browser },
                 { id: "youtube", title: "YouTube", Icon: Icons.youtube },
+                {
+                  id: "website",
+                  title: "Web",
+                  Icon: Icons.browser,
+                  disabled: true,
+                },
               ].map((linkType) => {
                 return (
                   <ContentOptionsButton

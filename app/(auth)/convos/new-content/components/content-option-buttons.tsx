@@ -4,12 +4,14 @@ interface LinkType {
   id: string;
   title: string;
   Icon: any;
+  disabled?: boolean;
 }
 
 export function ContentOptionsButton({ linkType }: { linkType: LinkType }) {
   const setType = contentTypeStore((state) => state.setType);
   return (
     <button
+      disabled={!!linkType?.disabled}
       key={JSON.stringify(linkType)}
       onClick={() => {
         setType(linkType.id);

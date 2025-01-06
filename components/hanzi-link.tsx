@@ -109,23 +109,46 @@ export function HanziLink({
           //   eventType: "CONTENT_VIEWED",
           // } as any);
         }}
-        className={`${
-          brightMode || isCharactersLoading || isComponentsLoading
-            ? "dark:text-gray-300 text-gray-700"
-            : // learnedCharacters.includes(prop?.hanzi)
-              learnedChar
-              ? learnedChar?.status === "forgotten"
-                ? "dark:text-gray-900 text-gray-100"
-                : `hover:${color} text-gray-300`
-              : selectedComp?.length > 1 || selectedComp?.group
-                ? "dark:text-gray-500 text-gray-200"
-                : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
-                  //   ? "dark:text-yellow-500"
-                  "dark:text-gray-700 text-gray-200"
-        } dark:hover:text-white text-2xl md:text-2xl transition lowercase w-28 text-center`}
+        className={cn(
+          `${
+            brightMode || isCharactersLoading || isComponentsLoading
+              ? "dark:text-gray-300 text-gray-700"
+              : // learnedCharacters.includes(prop?.hanzi)
+                learnedChar
+                ? learnedChar?.status === "forgotten"
+                  ? "dark:text-gray-900 text-gray-100"
+                  : `hover:${color} text-gray-300`
+                : selectedComp?.length > 1 || selectedComp?.group
+                  ? "dark:text-gray-500 text-gray-200"
+                  : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                    //   ? "dark:text-yellow-500"
+                    "dark:text-gray-700 text-gray-200"
+          } dark:hover:text-white text-2xl md:text-2xl transition lowercase w-28 text-center`
+          // "flex flex-col items-center"
+        )}
       >
         {frequency > 0 && (
-          <sub className="dark:text-gray-700 text-xs pl-[2px]">{frequency}</sub>
+          <sub
+            className={cn(
+              `${
+                brightMode || isCharactersLoading || isComponentsLoading
+                  ? "dark:text-gray-300 text-gray-700"
+                  : // learnedCharacters.includes(prop?.hanzi)
+                    learnedChar
+                    ? learnedChar?.status === "forgotten"
+                      ? "dark:text-gray-900 text-gray-100"
+                      : `hover:${color} text-gray-300`
+                    : selectedComp?.length > 1 || selectedComp?.group
+                      ? "dark:text-gray-500 text-gray-200"
+                      : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                        //   ? "dark:text-yellow-500"
+                        "dark:text-gray-700 text-gray-200"
+              } dark:hover:text-white text-xs transition lowercase text-center`
+              // "flex flex-col items-center"
+            )}
+          >
+            {frequency}
+          </sub>
         )}
 
         {character?.hanzi?.split("")?.map((val, idx) => {
@@ -148,12 +171,12 @@ export function HanziLink({
                     "dark:text-gray-300 text-gray-700"
                   : learnedChar
                     ? learnedChar?.status === "forgotten"
-                      ? "dark:text-gray-900 text-gray-100"
+                      ? "dark:text-gray-900 text-gray-300"
                       : `hover:${color} text-gray-300`
                     : lastAnswer?.totalCharacters?.includes(character?.hanzi)
                       ? "text-yellow-500"
                       : selectedComp?.length > 1 || selectedComp?.group
-                        ? "dark:text-gray-500 text-gray-200"
+                        ? "dark:text-gray-300 text-gray-800"
                         : "dark:text-gray-700 text-gray-200"
               } dark:hover:text-white text-2xl transition lowercase w-full`}
             >
@@ -173,7 +196,7 @@ export function HanziLink({
         className={cn(
           "text-xs text-gray-400 w-16 truncate text-center",
           // brightMode ? "text-gray-500" : "dark:text-gray-800 text-gray-200"
-          "text-gray-500"
+          "dark:text-gray-500 text-gray-800"
         )}
       >
         {character?.en || selectedComp?.en}

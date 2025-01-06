@@ -79,11 +79,11 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
         <div>
           <div className="flex justify-between w-full">
             <div className="flex justify-start space-x-4 sm:space-x-16">
-              <h2 className="text-xl sm:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+              <h2 className="text-xl sm:text-4xl my-4 font-extralight text-gray-800 dark:text-gray-300">
                 {uniqueCharacters?.length}{" "}
                 <span className="text-sm md:text-xl">total chars </span>
               </h2>
-              <h2 className="text-xl sm:text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
+              <h2 className="text-xl sm:text-4xl my-4 font-extralight text-gray-800 dark:text-gray-300 space-x-2">
                 <span className="text-yellow-500">
                   {" "}
                   {uniqueCharacters?.length - totalNewCharaters}
@@ -93,7 +93,9 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
             </div>
 
             <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
-              <span className="text-gray-300"> {understandingRate}</span>
+              <span className="dark:text-gray-300 text-gray-900">
+                {understandingRate}
+              </span>
             </h2>
           </div>
         </div>

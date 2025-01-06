@@ -60,14 +60,6 @@ function ActiveSubtitleDisplay({
             </p>
           </div>
         </div>
-        {/* <div className="pb-4">
-          <h4 className="text-xs text-gray-500">Word meaning</h4>
-          <div className="h-16 flex justify-between items-center mt-2 w-full">
-            <p className="space-x-2 text-[16px] font-extralight pb-[4px]">
-              {JSON.stringify(selectedWord)}
-            </p>
-          </div>
-        </div> */}
       </div>
     </div>
   );
@@ -157,65 +149,8 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
     });
   };
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     const zhongWenWindow = document.getElementById("zhongwen-window") as any;
-
-  //     if (zhongWenWindow) {
-  //       try {
-  //         const hanzi =
-  //           document.querySelectorAll(".w-hanzi-small")?.[0]?.innerHTML;
-  //         const pinyin =
-  //           document.querySelectorAll(".w-pinyin-small")?.[0]?.innerHTML;
-  //         const en = [...document.querySelectorAll(".w-def-small")]?.map(
-  //           (node) => node?.innerHTML
-  //         );
-
-  //         const children = splitEvery(5, [...zhongWenWindow.children])
-  //           .map((item) => {
-  //             return item.map((node) => node?.innerText);
-  //           })
-  //           ?.map((values) => {
-  //             return {
-  //               hanzi: values?.[0],
-  //               hanziTraditional: values?.[1],
-  //               pinyin: values?.[2],
-  //             };
-  //           }) as any;
-
-  //         console.log("CHILDREN", children);
-
-  //         if (
-  //           children?.length > 0 &&
-  //           JSON.stringify(children) !== JSON.stringify(hovered)
-  //         ) {
-  //           setHovered({ hanzi, pinyin, en });
-  //           console.log("LOGGED", children);
-  //         } else if (children?.length === 0) {
-  //           setHovered([]);
-  //         }
-  //       } catch (err) {
-  //         console.log("ERR", err);
-  //       }
-  //     }
-
-  //     // setTime((seconds) => playerRef?.current?.getCurrentTime());
-  //   }, 300);
-  //   return () => clearInterval(interval);
-  // });
-
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      //   if (event.code === "ArrowLeft" || event.code === "ArrowUp") {
-      //     event.preventDefault();
-      //     getPreviousChapter();
-      //   }
-
-      //   if (event.code === "ArrowRight" || event.code === "ArrowDown") {
-      //     event.preventDefault();
-      //     getNextChapter();
-      //   }
-
       if (["p"]?.includes(event.key?.toLowerCase())) {
         event.preventDefault();
         togglePinyin((pinyin) => !pinyin);
@@ -232,15 +167,8 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         increaseFontSize();
       }
 
-      //   if (["a"]?.includes(event.key)) {
-      //     event.preventDefault();
-      //     setViewMode((viewMode) => (viewMode === "stats" ? "core" : "stats"));
-      //     // togglePinyin((pinyin) => !pinyin);
-      //   }
-
       if (["l"]?.includes(event.key?.toLowerCase())) {
         event.preventDefault();
-        // togglePinyin((pinyin) => !pinyin);
 
         if (activeSubtitle?.input) {
           if (loop) {
@@ -292,7 +220,6 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         if (selectedWords?.start && currentTime > selectedWords?.end) {
           seek(selectedWords?.start);
         }
-        // setTime((seconds) => playerRef?.current?.getCurrentTime());
       }, 5);
       return () => clearInterval(interval);
     }
@@ -317,14 +244,6 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
           ) as any;
 
           return (
-            // <HanziTooltip
-            //   component={{
-            //     hanzi: subtitle?.hanzi,
-            //     en: subtitle?.meaning || "",
-            //     pinyin: subtitle?.pinyin,
-            //   }}
-            //   key={JSON.stringify(subtitle)}
-            // >
             <>
               <span
                 onMouseEnter={() => {
@@ -398,12 +317,6 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                               }
                               seek(timeStamp?.start || subtitle?.start);
                             }}
-                            // onClick={() => {
-                            //   if (meaning?.details) {
-                            //     setIfExists({ ...meaning?.details });
-                            //   }
-                            // }}
-                            // href={`/nmm/${val}?lang=zh${context ? `&context=${context}` : ""}`}
                             key={`${val}-${idx}`}
                             className={cn(
                               `${
@@ -425,17 +338,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                                           `${color} text-gray-300 ${hoverColor}`
                                       : `dark:text-gray-200 text-gray-800 ${hoverColor}`
                               } ${hoverColor} ${color} text-2xl transition lowercase font-light`,
-                              // "text-3xl font-light text-gray-300 hover:text-rose-400 text-left"
-
                               textSize?.[1]
-                              // activeSubtitle?.sentence === subtitle?.sentence
-                              //   ? "text-gray-400"
-                              //   : "text-gray-600",
-                              // currentTime > subtitle?.start &&
-                              //   currentTime < subtitle.end
-                              //   ? "dark:text-white text-black"
-                              //   : "0",
-                              // currentTime === 0 ? "text-gray-300" : ""
                             )}
                           >
                             {val}
@@ -543,19 +446,10 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                 </div>
               )}
             </>
-
-            // </HanziTooltip>
           );
         })}
       </div>
 
-      {/* <div>
-        <code>
-          <pre>{JSON.stringify(content, null, 4)}</pre>
-        </code>
-      </div> */}
-
-      {/* <div className="fixed bottom-0 w-full z-30 m-auto bg-[rgb(12,13,14)]"> */}
       <div className="w-full fixed bottom-0 py-4 px-4 z-30 m-auto bg-gray-50 dark:bg-[rgb(12,13,14)]">
         <section className="flex items-center justify-between">
           {editMode ? null : (
@@ -622,8 +516,6 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
             </button>
           </div>
 
-          {/* <DuChapterNavbar /> */}
-
           <div className="space-x-4 sm:space-x-8 flex items-center justify-start mr-8 sm:mr-60">
             <UploadFileButton
               icon={<Icons.upload className="text-[16px] sm:text-2xl" />}
@@ -639,7 +531,6 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                 });
               }}
             />
-            {/* )} */}
 
             <button
               onClick={() => {
@@ -686,12 +577,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
               </button>
             )}
 
-            <button
-              onClick={() => {
-                //   setViewMode((viewMode) => (viewMode === "stats" ? "core" : "stats"));
-                // togglePinyin((pinyin) => !pinyin);
-              }}
-            >
+            <button onClick={() => {}}>
               <Icons.chartColumn
                 className={cn(
                   "sm:text-2xl text-[16px]",

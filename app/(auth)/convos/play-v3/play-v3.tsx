@@ -1,24 +1,21 @@
-import { Icons } from "@/components/ui/icons.v2";
-import { useGetContentQuery } from "@/domain/content/content.queries";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { useMusicV2 } from "../_play-v2/use-music-v2";
-import { formatTime } from "../_play/utils";
-import { groupBy, splitEvery } from "ramda";
-import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
-import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
-import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
-import {
-  useCharacterContextStore,
-  useSetIfExists,
-} from "../[content-id]/hooks/use-character-context-store";
-import { useSearchParams } from "next/navigation";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useListComponents } from "@/domain/lesson/component.queries";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { Icons } from "@/components/ui/icons.v2";
+import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
+import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
+import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { useSetIfExists } from "../[content-id]/hooks/use-character-context-store";
+import { useMusicV2 } from "../_play-v2/use-music-v2";
+import { formatTime } from "../_play/utils";
+import { getHeightClass } from "./utils/get-height-class";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -44,14 +41,22 @@ function ActiveSubtitleDisplay({
   selected,
   selectedWord,
 }: any) {
+  const subtitleValue = activeSubtitle?.en || selected?.en || "...";
+
+  const length = subtitleValue?.length;
+
+  const height = getHeightClass(length);
+
   return (
     <div className="mt-6 sticky top-0 m-auto bg-gray-50 dark:bg-[rgb(9,10,11)] z-50">
       <div className="sticky top-0 pt-4 px-2 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)]">
         <div className="pb-4">
           <h4 className="text-xs text-gray-500">Sentence meaning</h4>
-          <div className="h-16 flex justify-between items-center mt-2 w-full">
+          <div
+            className={`${height} flex justify-between items-center mt-2 w-full`}
+          >
             <p className="space-x-2 text-[16px] font-extralight pb-[4px]">
-              {activeSubtitle?.en || selected?.en || "..."}
+              {subtitleValue}
             </p>
           </div>
         </div>
@@ -199,12 +204,6 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   // });
 
   useEffect(() => {
-    if (seekValue) {
-      seek(seekValue);
-    }
-  }, [seekValue]);
-
-  useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       //   if (event.code === "ArrowLeft" || event.code === "ArrowUp") {
       //     event.preventDefault();
@@ -216,7 +215,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       //     getNextChapter();
       //   }
 
-      if (["p"]?.includes(event.key)) {
+      if (["p"]?.includes(event.key?.toLowerCase())) {
         event.preventDefault();
         togglePinyin((pinyin) => !pinyin);
       }
@@ -238,7 +237,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       //     // togglePinyin((pinyin) => !pinyin);
       //   }
 
-      if (["l"]?.includes(event.key)) {
+      if (["l"]?.includes(event.key?.toLowerCase())) {
         event.preventDefault();
         // togglePinyin((pinyin) => !pinyin);
 

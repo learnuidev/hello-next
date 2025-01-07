@@ -53,3 +53,15 @@ export const contentSourceStore = create(
     }
   )
 );
+export const contentTextStore = create(
+  persist(
+    (set: any, get: any) => ({
+      text: null,
+      setText: (event: any) => set({ text: event }),
+    }),
+    {
+      name: "mandarino/content-text", // name of the item in the storage (must be unique)
+      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+    }
+  )
+);

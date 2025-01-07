@@ -19,6 +19,7 @@ import {
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { useUploadFileV2 } from "@/domain/file-upload/use-upload-file-v2";
 import { isVideo } from "./utils/is-video";
+import { TextContent } from "./components/text-content/text-content";
 
 interface DropzoneProps {
   className?: string;
@@ -160,17 +161,16 @@ export const Dropzone = ({ className }: DropzoneProps) => {
     return (
       <div
         onClick={() => {
-          setContentType("");
+          // setContentType("");
         }}
       >
-        {" "}
-        Text Flow{" "}
+        <TextContent />
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full block">
+    <form onSubmit={handleSubmit} className="w-full block m-auto">
       {!source?.sourceUrl && files?.length === 0 && (
         <div
           {...getRootProps({

@@ -1,17 +1,14 @@
-import { StepContainerVariant1, StepTitle } from "@/components/step";
-import { useState } from "react";
-
+import { StepTitle } from "@/components/step";
 import { Dropzone } from "./dropzone";
-import { Icons } from "@/components/ui/icons.v2";
 
 export const ContentType = () => {
   return (
-    <StepContainerVariant1>
+    <div className="mx-4 md:mx-32">
       <StepTitle>Add Content</StepTitle>
 
-      <section className="m-auto">
+      <section className="max-w-4xl m-auto">
         <Dropzone />
       </section>
-    </StepContainerVariant1>
+    </div>
   );
 };

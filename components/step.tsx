@@ -51,7 +51,7 @@ export const StepTitle = ({ children }: ReactChildrenProps) => {
 };
 
 export const StepContainerVariant1 = ({ children }: ReactChildrenProps) => {
-  return <div className="md:mx-32 flex flex-wrap">{children}</div>;
+  return <div className="mx-4 md:mx-32 flex flex-wrap">{children}</div>;
 };
 
 export const StepInput = ({ value, onChange, onKeyDown, placeholder }: any) => {

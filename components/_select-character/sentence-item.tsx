@@ -14,6 +14,7 @@ import { AudioComponent } from "./audio-component";
 import { GoogleLink } from "./selected-character/google-link";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -31,6 +32,8 @@ export const SentenceItem = (props: any) => {
   const { trackFunction } = useCanTrackFunction(currentPhrase, {
     lang,
   });
+
+  const setIfExists = useSetIfExists();
 
   const router = useRouter();
 
@@ -79,7 +82,10 @@ export const SentenceItem = (props: any) => {
           />
 
           <Link
-            onClick={trackFunction}
+            onClick={() => {
+              setIfExists({ ...currentPhrase });
+              trackFunction();
+            }}
             // href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}`}
 
             href={`/nmm/${resolvedLang ? `?lang=${resolvedLang}` : ``}`}
@@ -125,6 +131,9 @@ export const SentenceItem = (props: any) => {
           href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
             currentPhrase?.hanzi
           )}`}
+          onClick={() => {
+            setIfExists({ ...currentPhrase });
+          }}
         >
           {brightMode && lang !== "en" && (
             <span className="text-[16px] text-gray-600 dark:text-gray-400">
@@ -156,6 +165,8 @@ export const SentenceItem = (props: any) => {
                   //   contentId: selectedComp?.id || "",
                   //   eventType: "CONTENT_VIEWED",
                   // } as any);
+
+                  setIfExists({ ...currentPhrase });
 
                   router.push(
                     resolvedLang

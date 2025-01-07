@@ -211,21 +211,6 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
     activeSubtitle?.input,
   ]);
 
-  // useEffect(() => {
-  //   if (loop) {
-  //     const interval = setInterval(() => {
-  //       const selectedWords =
-  //         content?.transcriptions?.find((word: any) => word?.input === loop) ||
-  //         [];
-
-  //       if (selectedWords?.start && currentTime > selectedWords?.end) {
-  //         seek(selectedWords);
-  //       }
-  //     }, 20);
-  //     return () => clearInterval(interval);
-  //   }
-  // }, [currentTime, content?.transcriptions, loop, seek]);
-
   const debounceSeek = useDebouncedCallback((selectedWords: any) => {
     seek(selectedWords?.start);
   }, 30);

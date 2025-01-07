@@ -43,6 +43,8 @@ export const SentenceItem = (props: any) => {
     lang: currentPhrase?.lang,
   });
 
+  const resolvedLang = lang || selectedComp?.lang || currentPhrase?.lang;
+
   const Links = () => {
     const hanziOrInput = encodeURIComponent(unEncoded);
     return (
@@ -80,7 +82,7 @@ export const SentenceItem = (props: any) => {
             onClick={trackFunction}
             // href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}`}
 
-            href={`/nmm/${hanziOrInput}${lang || selectedComp?.lang ? `?lang=${lang || selectedComp?.lang}` : ``}`}
+            href={`/nmm/${resolvedLang ? `?lang=${resolvedLang}` : ``}`}
             className={`text-xs bg-white dark:bg-black p-2 w-6 h-6 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
           >
             <Icons.magnifyingGlass />
@@ -156,8 +158,8 @@ export const SentenceItem = (props: any) => {
                   // } as any);
 
                   router.push(
-                    lang
-                      ? `/nmm/${cleanedVal}?lang=${lang}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
+                    resolvedLang
+                      ? `/nmm/${cleanedVal}?lang=${resolvedLang}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
                       : `/nmm/${cleanedVal}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
                   );
                 }}

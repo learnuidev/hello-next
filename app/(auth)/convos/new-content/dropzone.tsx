@@ -204,7 +204,7 @@ export const Dropzone = ({ className }: DropzoneProps) => {
             controls
           />
 
-          <div className="flex space-x-4 mt-2">
+          <div className="flex space-x-4 p-2">
             <button
               type="button"
               className="w-8 h-8 px-2 border border-secondary-400 bg-secondary-400 rounded-full flex justify-center items-center  dark:hover:bg-gray-800 hover:bg-white transition-colors"
@@ -233,7 +233,7 @@ export const Dropzone = ({ className }: DropzoneProps) => {
                 controls
               />
 
-              <div className="flex space-x-4 mt-2">
+              <div className="flex space-x-4 p-2">
                 <button
                   type="button"
                   className="w-8 h-8 px-2 border border-secondary-400 bg-secondary-400 rounded-full flex justify-center items-center  dark:hover:bg-gray-800 hover:bg-white transition-colors"

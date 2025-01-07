@@ -287,7 +287,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                       "text-start"
                     )}
                   >
-                    {subtitle?.pinyin || subtitle?.roman || ""}
+                    {subtitle?.roman || subtitle?.pinyin || ""}
                   </Link>
                 )}
 

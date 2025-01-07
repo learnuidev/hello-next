@@ -16,6 +16,7 @@ import { useSetIfExists } from "../[content-id]/hooks/use-character-context-stor
 import { useMusicV2 } from "../_play-v2/use-music-v2";
 import { formatTime } from "../_play/utils";
 import { getHeightClass } from "./utils/get-height-class";
+import { useDebouncedCallback } from "use-debounce";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -210,20 +211,36 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
     activeSubtitle?.input,
   ]);
 
+  // useEffect(() => {
+  //   if (loop) {
+  //     const interval = setInterval(() => {
+  //       const selectedWords =
+  //         content?.transcriptions?.find((word: any) => word?.input === loop) ||
+  //         [];
+
+  //       if (selectedWords?.start && currentTime > selectedWords?.end) {
+  //         seek(selectedWords);
+  //       }
+  //     }, 20);
+  //     return () => clearInterval(interval);
+  //   }
+  // }, [currentTime, content?.transcriptions, loop, seek]);
+
+  const debounceSeek = useDebouncedCallback((selectedWords: any) => {
+    seek(selectedWords?.start);
+  }, 30);
+
   useEffect(() => {
     if (loop) {
-      const interval = setInterval(() => {
-        const selectedWords =
-          content?.transcriptions?.find((word: any) => word?.input === loop) ||
-          [];
+      const selectedWords =
+        content?.transcriptions?.find((word: any) => word?.input === loop) ||
+        [];
 
-        if (selectedWords?.start && currentTime > selectedWords?.end) {
-          seek(selectedWords?.start);
-        }
-      }, 5);
-      return () => clearInterval(interval);
+      if (selectedWords?.start && currentTime > selectedWords?.end) {
+        debounceSeek(selectedWords);
+      }
     }
-  }, [currentTime, content?.transcriptions, loop, seek]);
+  }, [currentTime, content?.transcriptions, loop, debounceSeek]);
 
   return (
     <div className="relative">

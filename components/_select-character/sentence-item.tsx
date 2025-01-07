@@ -86,9 +86,8 @@ export const SentenceItem = (props: any) => {
               setIfExists({ ...currentPhrase });
               trackFunction();
             }}
-            // href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}`}
-
-            href={`/nmm/${resolvedLang ? `?lang=${resolvedLang}` : ``}`}
+            href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi)}${resolvedLang ? `?lang=${resolvedLang}` : ``}`}
+            // href={`/nmm/${resolvedLang ? `?lang=${resolvedLang}` : ``}`}
             className={`text-xs bg-white dark:bg-black p-2 w-6 h-6 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
           >
             <Icons.magnifyingGlass />

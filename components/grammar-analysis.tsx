@@ -60,6 +60,7 @@ export function GrammarAnalysis({
         <h4 className="font-bold text-xl">Grammar Analysis</h4>
         <div className={cn(divStyles, className)}>
           {grammarAnalysisFinal?.map((analysis) => {
+            const resolvedLang = lang || analysis?.lang;
             if (analysis?.hanzi) {
               const hskWord = getHskWordHandler(analysis);
               const cleanHanzi = cleanString(analysis?.hanzi);
@@ -74,8 +75,8 @@ export function GrammarAnalysis({
                         <Link
                           className="text-gray-900 dark:text-gray-300"
                           href={
-                            lang
-                              ? `/nmm/${cleanHanzi}?lang=${lang}`
+                            resolvedLang
+                              ? `/nmm/${cleanHanzi}?lang=${resolvedLang}`
                               : `/nmm/${cleanHanzi}`
                           }
                         >
@@ -100,8 +101,8 @@ export function GrammarAnalysis({
                         <Link
                           className="text-gray-900 dark:text-gray-300 font-light text-xl"
                           href={
-                            lang
-                              ? `/nmm/${cleanHanzi}?lang=${lang}`
+                            resolvedLang
+                              ? `/nmm/${cleanHanzi}?lang=${resolvedLang}`
                               : `/nmm/${cleanHanzi}`
                           }
                         >
@@ -121,8 +122,8 @@ export function GrammarAnalysis({
                   <Link
                     className="text-gray-800 dark:text-gray-500"
                     href={
-                      lang
-                        ? `/nmm/${cleanHanzi}?lang=${lang}`
+                      resolvedLang
+                        ? `/nmm/${cleanHanzi}?lang=${resolvedLang}`
                         : `/nmm/${cleanHanzi}`
                     }
                   >
@@ -143,8 +144,8 @@ export function GrammarAnalysis({
                   <Link
                     className="text-gray-300 font-light text-xl"
                     href={
-                      lang
-                        ? `/nmm/${cleanInput}?lang=${lang}`
+                      resolvedLang
+                        ? `/nmm/${cleanInput}?lang=${resolvedLang}`
                         : `/nmm/${cleanInput}`
                     }
                   >
@@ -154,8 +155,8 @@ export function GrammarAnalysis({
                   <Link
                     className="text-gray-800 dark:text-gray-500"
                     href={
-                      lang
-                        ? `/nmm/${cleanInput}?lang=${lang}`
+                      resolvedLang
+                        ? `/nmm/${cleanInput}?lang=${resolvedLang}`
                         : `/nmm/${cleanInput}`
                     }
                     // className="w-16"

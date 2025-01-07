@@ -22,6 +22,7 @@ export interface ListGrammarsResponse {
     pinyin: string;
     en: string;
     explanation: string;
+    lang?: string;
   }[];
 }
 

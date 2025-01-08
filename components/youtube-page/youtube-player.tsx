@@ -200,57 +200,53 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   useEffect(() => {
     if (toggleLoops?.length) {
-      const interval = setInterval(() => {
-        const currentTime = playerRef?.current?.getCurrentTime();
+      const currentTime = playerRef?.current?.getCurrentTime();
 
-        const lastEnd = Math.max(...toggleLoops?.map((x: any) => x?.end));
-        const firstStart = Math.min(...toggleLoops?.map((x: any) => x?.start));
+      const lastEnd = Math.max(...toggleLoops?.map((x: any) => x?.end));
+      const firstStart = Math.min(...toggleLoops?.map((x: any) => x?.start));
 
-        // console.log("TOGGLE LOOPS", toggleLoops);
+      // console.log("TOGGLE LOOPS", toggleLoops);
 
-        if (currentTime > lastEnd) {
-          playerRef.current.seekTo(firstStart, "seconds");
+      if (currentTime > lastEnd) {
+        playerRef.current.seekTo(firstStart, "seconds");
 
-          for (const example of toggleLoops) {
-            setRepeatHistories({
-              contentId: contentId,
-              ...example,
-              input: example?.input || example?.hanzi,
-              roman: example?.roman || example?.pinyin,
-              createdAt: Date.now(),
-            });
-          }
-
-          // setLoopCounter((prev) => {
-          //   console.log("PREV", prev);
-          //   if (prev === 1) {
-          //     for (const example of toggleLoops) {
-          //       setRepeatHistories({
-          //         contentId: contentId,
-          //         ...example,
-          //         input: example?.input || example?.hanzi,
-          //         roman: example?.roman || example?.pinyin,
-          //         createdAt: Date.now(),
-          //       });
-          //     }
-          //   }
-
-          //   if (prev >= 1) {
-          //     return 0;
-          //   }
-
-          //   return prev + 1;
-          // });
-
-          try {
-            playerRef.current?.player?.player?.play();
-          } catch (err) {
-            console.error(err);
-          }
+        for (const example of toggleLoops) {
+          setRepeatHistories({
+            contentId: contentId,
+            ...example,
+            input: example?.input || example?.hanzi,
+            roman: example?.roman || example?.pinyin,
+            createdAt: Date.now(),
+          });
         }
-        // setTime((seconds) => playerRef?.current?.getCurrentTime());
-      }, 5);
-      return () => clearInterval(interval);
+
+        // setLoopCounter((prev) => {
+        //   console.log("PREV", prev);
+        //   if (prev === 1) {
+        //     for (const example of toggleLoops) {
+        //       setRepeatHistories({
+        //         contentId: contentId,
+        //         ...example,
+        //         input: example?.input || example?.hanzi,
+        //         roman: example?.roman || example?.pinyin,
+        //         createdAt: Date.now(),
+        //       });
+        //     }
+        //   }
+
+        //   if (prev >= 1) {
+        //     return 0;
+        //   }
+
+        //   return prev + 1;
+        // });
+
+        try {
+          playerRef.current?.player?.player?.play();
+        } catch (err) {
+          console.error(err);
+        }
+      }
     }
   }, [contentId, setRepeatHistories, toggleLoops, loopCounter, setLoopCounter]);
 
@@ -271,9 +267,31 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const resetTimes = useContentEditStore((state) => state.resetTimes);
   const times = useContentEditStore((state) => state.times);
 
+  const ActiveTranscription = () => {
+    return (
+      currentTranscription && (
+        <div className="text-center my-8">
+          <p className="text-gray-400">{currentTranscription?.pinyin}</p>
+
+          <Link
+            className="text-3xl font-extralight"
+            href={`/nmm/${encodeURIComponent(
+              currentTranscription?.input
+            )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
+            target="_blank"
+          >
+            {currentTranscription?.input}
+          </Link>
+
+          <p className="text-gray-500">{currentTranscription?.en}</p>
+        </div>
+      )
+    );
+  };
+
   return (
     <div className="grow flex flex-col items-center">
-      <div className="space-x-4 my-4 hidden md:block z-50">
+      <div className="space-x-4 my-4 block z-50">
         <button
           className={viewMode === "karaoke" ? "text-white" : "text-gray-500"}
           onClick={() => {
@@ -390,23 +408,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             {lesson?.title}
           </Header> */}
 
-          {currentTranscription && (
-            <div className="text-center my-8">
-              <p className="text-gray-400">{currentTranscription?.pinyin}</p>
-
-              <Link
-                className="text-3xl font-extralight"
-                href={`/nmm/${encodeURIComponent(
-                  currentTranscription?.input
-                )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
-                target="_blank"
-              >
-                {currentTranscription?.input}
-              </Link>
-
-              <p className="text-gray-500">{currentTranscription?.en}</p>
-            </div>
-          )}
+          <ActiveTranscription />
 
           {/* {currentTranscription && nextTranscription && (
             <div className="text-center my-8 hidden sm:block">
@@ -555,6 +557,13 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                 </div>
               </ScrollArea>
             </div>
+
+            {isVideoHidden && (
+              <div>
+                {" "}
+                <ActiveTranscription />
+              </div>
+            )}
           </div>
         ) : transcriptions?.length ? (
           <div
@@ -594,6 +603,13 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                   })}
               </div>
             </ScrollArea>
+
+            {isVideoHidden && (
+              <div>
+                {" "}
+                <ActiveTranscription />
+              </div>
+            )}
           </div>
         ) : null}
       </div>

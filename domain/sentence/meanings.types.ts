@@ -23,5 +23,6 @@ export interface ListMeaningsResponse {
     pinyin: string;
     hanzi: string;
     en: string;
+    roman: string;
   };
 }

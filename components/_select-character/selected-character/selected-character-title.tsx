@@ -42,7 +42,7 @@ export const SelectedCharacterTitle = (props: SelectedCharacterProps) => {
       <ZoomedCharacter characterId={characterId} />{" "}
     </div>
   ) : (
-    <div className="flex items-center justify-between mb-4 mt-4 pr-4">
+    <div className="flex items-center justify-between mb-4 mt-4">
       <CharacterTitle
         pinyinOrRoman={pinyinOrRoman}
         multiSentence={multiSentence}

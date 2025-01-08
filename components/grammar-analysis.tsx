@@ -154,7 +154,7 @@ export function GrammarAnalysis({
                   </Link>
 
                   <Link
-                    className="text-gray-300 font-light text-xl"
+                    className="text-gray-300 font-light"
                     href={
                       resolvedLang
                         ? `/nmm/${cleanInput}?lang=${resolvedLang}`

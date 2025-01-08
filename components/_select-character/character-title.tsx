@@ -47,7 +47,7 @@ export const CharacterTitle = (props: any) => {
   const pinyins = data?.map((val) => val?.pinyin) || [];
   const englishMeanings = data?.map((val) => val?.en) || [];
 
-  const { speak } = useSpeak();
+  const { speak } = useSpeak(lang);
 
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
@@ -106,7 +106,8 @@ export const CharacterTitle = (props: any) => {
             {pinyins?.[0] ||
               pinyinInput ||
               selectedComp?.pinyin ||
-              meaning?.details?.pinyin}
+              meaning?.details?.pinyin ||
+              meaning?.details?.roman}
           </h2>
         )
       ) : null}
@@ -187,7 +188,7 @@ export const CharacterTitle = (props: any) => {
               })}
             </div>
 
-            <div className="space-x-4 flex">
+            {/* <div className="space-x-4 flex">
               <button
                 onClick={() => {
                   speak(selectedCompInput);
@@ -204,7 +205,7 @@ export const CharacterTitle = (props: any) => {
                 en={finalEnVal}
                 pinyin={selectedPinyin}
               />
-            </div>
+            </div> */}
           </div>
 
           <div>
@@ -234,6 +235,25 @@ export const CharacterTitle = (props: any) => {
       <h2 className="dark:text-gray-500 text-gray-700 font-light">
         {finalEnVal?.split("/")?.slice(0, 4)?.join("/")}
       </h2>
+
+      <div className="space-x-4 flex">
+        <button
+          onClick={() => {
+            speak(selectedCompInput);
+          }}
+        >
+          <Icons.volume className="text-2xl" />
+        </button>
+
+        <CharacterTrackButton />
+
+        <BookmarkButton
+          hanzi={characterId}
+          lang={lang}
+          en={finalEnVal}
+          pinyin={selectedPinyin}
+        />
+      </div>
     </div>
   );
 };

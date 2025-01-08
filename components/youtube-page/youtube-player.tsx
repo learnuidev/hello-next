@@ -33,6 +33,7 @@ import { KaraokeModeV3 } from "./karaoke-mode-v3";
 import { useContentEditStore } from "./use-content-edit-store";
 import { resolveLangCode } from "@/libs/openai/utils";
 import { useIsSmall } from "./utils/use-is-small";
+import { useDebouncedCallback } from "use-debounce";
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -198,6 +199,11 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     return () => clearInterval(interval);
   }, []);
 
+  const debounceSeek = useDebouncedCallback((firstStart: any) => {
+    // seek(selectedWords?.start);
+    playerRef.current.seekTo(firstStart, "seconds");
+  }, 30);
+
   useEffect(() => {
     if (toggleLoops?.length) {
       // const currentTime = playerRef?.current?.getCurrentTime();
@@ -208,7 +214,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       // console.log("TOGGLE LOOPS", toggleLoops);
 
       if (currentTime > lastEnd) {
-        playerRef.current.seekTo(firstStart, "seconds");
+        debounceSeek(firstStart);
 
         for (const example of toggleLoops) {
           setRepeatHistories({
@@ -255,6 +261,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     loopCounter,
     setLoopCounter,
     currentTime,
+    debounceSeek,
   ]);
 
   // const { data: contentsArr } = useListContentsQuery();

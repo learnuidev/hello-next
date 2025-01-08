@@ -202,6 +202,12 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const debounceSeek = useDebouncedCallback((firstStart: any) => {
     // seek(selectedWords?.start);
     playerRef.current.seekTo(firstStart, "seconds");
+
+    try {
+      playerRef.current?.player?.player?.play();
+    } catch (err) {
+      console.error(err);
+    }
   }, 30);
 
   useEffect(() => {
@@ -246,12 +252,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
         //   return prev + 1;
         // });
-
-        try {
-          playerRef.current?.player?.player?.play();
-        } catch (err) {
-          console.error(err);
-        }
       }
     }
   }, [

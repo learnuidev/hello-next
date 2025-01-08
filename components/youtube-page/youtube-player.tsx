@@ -283,33 +283,31 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const ActiveTranscription = () => {
     return (
-      currentTranscription && (
-        <div className="text-center my-8">
-          <p className="text-gray-400 text-sm sm:text-[16px]">
-            {currentTranscription?.pinyin}
-          </p>
+      <div className="text-center my-2 sm:my-8 h-24">
+        <p className="text-gray-400 text-sm sm:text-[16px]">
+          {currentTranscription?.pinyin}
+        </p>
 
-          <Link
-            className="text-xl sm:text-3xl font-extralight"
-            href={`/nmm/${encodeURIComponent(
-              currentTranscription?.input
-            )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
-            target="_blank"
-          >
-            {currentTranscription?.input}
-          </Link>
+        <Link
+          className="text-xl sm:text-3xl font-extralight"
+          href={`/nmm/${encodeURIComponent(
+            currentTranscription?.input
+          )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
+          target="_blank"
+        >
+          {currentTranscription?.input}
+        </Link>
 
-          <p className="text-gray-500 text-sm sm:text-[16px]">
-            {currentTranscription?.en}
-          </p>
-        </div>
-      )
+        <p className="text-gray-500 text-sm sm:text-[16px]">
+          {currentTranscription?.en}
+        </p>
+      </div>
     );
   };
 
   return (
     <div className="grow flex flex-col items-center">
-      <div className="space-x-4 my-4 block z-50">
+      <div className="space-x-4 sm:my-4 block z-50">
         <button
           className={viewMode === "karaoke" ? "text-white" : "text-gray-500"}
           onClick={() => {
@@ -477,7 +475,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                   : "md:col-span-4 col-span-12"
               } w-full text-center`}
             >
-              <ScrollArea className="space-y-4 h-[330px] sm:h-[640px] rounded-md border border-gray-900 p-4 w-full">
+              <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] rounded-md border border-gray-900 w-full">
                 <div className="space-y-8">
                   {Object.values(groupedTranscriptions)?.map(
                     (transcriptions: any) => {
@@ -587,7 +585,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           <div
             className={`${isVideoHidden ? "col-span-12" : "md:col-span-4 col-span-12"} w-full`}
           >
-            <ScrollArea className="space-y-4 h-[330px] sm:h-[640px] w-full rounded-md border border-gray-900 p-0 pb-16">
+            <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md border border-gray-900 p-0 pb-16">
               <div className="sm:space-y-8 mt-4 w-full">
                 {(transcriptions || [])
                   .filter((script: any) => {

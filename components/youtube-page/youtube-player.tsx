@@ -200,7 +200,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   useEffect(() => {
     if (toggleLoops?.length) {
-      const currentTime = playerRef?.current?.getCurrentTime();
+      // const currentTime = playerRef?.current?.getCurrentTime();
 
       const lastEnd = Math.max(...toggleLoops?.map((x: any) => x?.end));
       const firstStart = Math.min(...toggleLoops?.map((x: any) => x?.start));
@@ -248,7 +248,14 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         }
       }
     }
-  }, [contentId, setRepeatHistories, toggleLoops, loopCounter, setLoopCounter]);
+  }, [
+    contentId,
+    setRepeatHistories,
+    toggleLoops,
+    loopCounter,
+    setLoopCounter,
+    currentTime,
+  ]);
 
   // const { data: contentsArr } = useListContentsQuery();
 
@@ -271,10 +278,12 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     return (
       currentTranscription && (
         <div className="text-center my-8">
-          <p className="text-gray-400">{currentTranscription?.pinyin}</p>
+          <p className="text-gray-400 text-sm sm:text-[16px]">
+            {currentTranscription?.pinyin}
+          </p>
 
           <Link
-            className="text-3xl font-extralight"
+            className="text-xl sm:text-3xl font-extralight"
             href={`/nmm/${encodeURIComponent(
               currentTranscription?.input
             )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
@@ -283,7 +292,9 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             {currentTranscription?.input}
           </Link>
 
-          <p className="text-gray-500">{currentTranscription?.en}</p>
+          <p className="text-gray-500 text-sm sm:text-[16px]">
+            {currentTranscription?.en}
+          </p>
         </div>
       )
     );
@@ -448,7 +459,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           <div
             className={
               isVideoHidden
-                ? "col-span-12 mx-12 md:mx-32"
+                ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
                 : "col-span-12 md:col-span-4"
             }
           >
@@ -459,7 +470,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                   : "md:col-span-4 col-span-12"
               } w-full text-center`}
             >
-              <ScrollArea className="space-y-4 h-[700px] rounded-md border border-gray-900 p-4 w-full">
+              <ScrollArea className="space-y-4 h-[330px] sm:h-[640px] rounded-md border border-gray-900 p-4 w-full">
                 <div className="space-y-8">
                   {Object.values(groupedTranscriptions)?.map(
                     (transcriptions: any) => {
@@ -569,7 +580,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           <div
             className={`${isVideoHidden ? "col-span-12" : "md:col-span-4 col-span-12"} w-full`}
           >
-            <ScrollArea className="space-y-4 h-[700px] w-full rounded-md border border-gray-900 p-0 pb-16">
+            <ScrollArea className="space-y-4 h-[330px] sm:h-[640px] w-full rounded-md border border-gray-900 p-0 pb-16">
               <div className="sm:space-y-8 mt-4 w-full">
                 {(transcriptions || [])
                   .filter((script: any) => {

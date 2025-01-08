@@ -50,6 +50,10 @@ export function GrammarAnalysis({
 
     const getHskWordHandler = useGetHskWordHandler();
 
+    if (!grammarAnalysisFinal?.length) {
+      return null;
+    }
+
     return (
       <div
         className={cn(

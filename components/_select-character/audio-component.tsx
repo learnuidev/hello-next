@@ -30,7 +30,7 @@ export const AudioComponent = ({ currentPhrase, className }: any) => {
   const playMusic = useMusicStore((state: any) => state.play);
   const setPlay = useMusicStore((state: any) => state.setPlay);
 
-  const { speak } = useSpeak();
+  const { speak } = useSpeak(currentPhrase?.lang);
 
   const audioUrl =
     currentPhrase?.audio?.female ||

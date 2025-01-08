@@ -142,6 +142,18 @@ export function GrammarAnalysis({
                   className="flex items-start flex-col"
                 >
                   <Link
+                    className="text-gray-800 dark:text-gray-400"
+                    href={
+                      resolvedLang
+                        ? `/nmm/${cleanInput}?lang=${resolvedLang}`
+                        : `/nmm/${cleanInput}`
+                    }
+                    // className="w-16"
+                  >
+                    {analysis?.roman}
+                  </Link>
+
+                  <Link
                     className="text-gray-300 font-light text-xl"
                     href={
                       resolvedLang
@@ -164,7 +176,7 @@ export function GrammarAnalysis({
                     {analysis?.en}
                   </Link>
 
-                  <p className="text-gray-500 font-extralight">
+                  <p className="text-gray-500 font-extralight text-sm">
                     {analysis?.explanation}
                   </p>
                 </div>

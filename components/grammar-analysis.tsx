@@ -45,6 +45,10 @@ export function GrammarAnalysis({
 
   const grammarAnalysisFinal = (grammarAnalysis?.grammarAnalysis || [])?.filter(
     (item) => {
+      // if (contentId?.length < 40) {
+      //   return true;
+      // }
+
       const char = item?.hanzi || item?.input;
 
       const isLearned =
@@ -57,7 +61,11 @@ export function GrammarAnalysis({
         learnedCharacters?.filter((item: any) => {
           const hanziOrInput = item?.hanzi || item?.input;
           // return hanziOrInput === char;
-          return char?.split("")?.some((val) => val === hanziOrInput);
+          return char
+            ?.split("")
+            ?.some(
+              (val) => val === hanziOrInput && item.status === "forgotten"
+            );
         }) || [];
       const isEveryCharacterLearned =
         isEveryCharacterLearnedArr?.length === char?.length;

@@ -40,9 +40,6 @@ export async function POST(req: Request) {
   Combine context into a coherent answer. 
   Do not repeat text.
   If different results refer to different entities with the same name, write separate answers for each entity.
-
- If the user specifically asks to extract key words in json format, use this format for each word/sentence
- [{"en": "..", "input": "..", "lang": "..", "roman": ".."}
   
   Context:
   ${JSON.stringify(context)}
@@ -56,7 +53,7 @@ export async function POST(req: Request) {
     const selectedAiModel = aiModels.gpt35Turbo;
 
     const response = await openai.chat.completions.create({
-      model: aiModels.gpt35Turbo,
+      model: "deepseek-chat",
       stream: true,
       messages: [firstMessage, ...messages],
     });

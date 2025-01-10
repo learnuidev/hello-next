@@ -108,7 +108,7 @@ export function useListComponentVariantsQuery(
 
     ...options,
     retry: false,
-    enabled: Boolean(authUser?.jwt),
+    // enabled: Boolean(authUser?.jwt),
     // cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
     refetchOnFocus: false,

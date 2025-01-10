@@ -118,7 +118,7 @@ export const PhraseUI = () => {
           </Link>
         </div>
         {/* Messages */}
-        <ScrollArea className="flex-1 p-4 dark:bg-[rgb(11,12,13)] pb-36 bg-black rounded">
+        <ScrollArea className="flex-1 p-4 dark:bg-[rgb(11,12,13)] pb-36 bg-black rounded w-full sm:max-w-3xl m-auto">
           {translations?.length === 0 ? (
             <Nothing icon={Icons.ai} message={"Say something..."} />
           ) : (

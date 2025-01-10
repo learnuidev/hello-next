@@ -1,6 +1,7 @@
 export const aiModels = {
   gpt35Turbo: "gpt-3.5-turbo",
   mistralSmall: "mistral-small",
+  deepseekChat: "deepseek-chat",
 };
 
 export const aiModelsList = [
@@ -11,5 +12,9 @@ export const aiModelsList = [
   {
     id: aiModels.mistralSmall,
     title: "Mistral Small",
+  },
+  {
+    id: aiModels.deepseekChat,
+    title: "Deepseek Chat",
   },
 ];

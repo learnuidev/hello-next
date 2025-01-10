@@ -3,11 +3,9 @@ import { aiModels } from "@/libs/ai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import OpenAI from "openai";
 
-import { openaiConfig } from "@/libs/openai/openai.config";
 import { verifyJwt } from "@/libs/cognito/jwt";
-import { getJwtToken } from "../utils";
-import { headers } from "next/headers";
 import { deepseekConfig } from "@/libs/deepseek/deepseek-config";
+import { headers } from "next/headers";
 
 const openai = new OpenAI({
   apiKey: deepseekConfig.apiKey,
@@ -20,17 +18,13 @@ export const runtime = "edge";
 export async function POST(req: Request) {
   const { messages, context } = await req.json();
 
-  // const jwtToken = getJwtToken();
-
   const headersApi = headers();
 
   const jwtToken = headersApi.get("authorization") || "";
 
-  // return jwtToken;
-
   const isVerified = await verifyJwt(jwtToken, { isAdmin: true });
 
-  if (isVerified || true) {
+  if (isVerified) {
     const prompt = `
   
   Generate a comprehensive and informative answer (but no more than 80 words) for a 
@@ -50,10 +44,8 @@ export async function POST(req: Request) {
       content: prompt,
     };
 
-    const selectedAiModel = aiModels.gpt35Turbo;
-
     const response = await openai.chat.completions.create({
-      model: "deepseek-chat",
+      model: aiModels.deepseekChat,
       stream: true,
       messages: [firstMessage, ...messages],
     });

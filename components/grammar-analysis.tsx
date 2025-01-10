@@ -53,8 +53,17 @@ export function GrammarAnalysis({
           return hanziOrInput === char;
         }) || [];
 
+      const isEveryCharacterLearnedArr =
+        learnedCharacters?.filter((item: any) => {
+          const hanziOrInput = item?.hanzi || item?.input;
+          // return hanziOrInput === char;
+          return char?.split("")?.some((val) => val === hanziOrInput);
+        }) || [];
+      const isEveryCharacterLearned =
+        isEveryCharacterLearnedArr?.length === char?.length;
+
       console.log("is learned", isLearned);
-      return isLearned?.length === 0;
+      return isLearned?.length === 0 && !isEveryCharacterLearned;
     }
   );
 

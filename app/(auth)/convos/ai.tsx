@@ -19,6 +19,7 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import { Editor } from "@/components/Editor";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { cn, removeNull } from "@/lib/utils";
+import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
 
 function UserQueryUI({ message }: { message: Message }) {
   //   const { data: queryClass } = useGetQueryClassifierQuery({
@@ -213,18 +214,12 @@ const AgentAnswer = ({
         />
       )} */}
 
-      {!canViewAsTable ? (
-        <div className="overflow-auto">
-          <Editor
-            className="font-light md:w-8/12 w-full"
-            content={message.content}
-          />
-          {/* <p className="font-light md:w-8/12 w-full">{message.content}</p> */}
-        </div>
-      ) : (
-        // <Editor content={message.content} />
-        <TableView content={message.content} />
-      )}
+      <div className="overflow-auto">
+        <Editor
+          className="font-light md:w-8/12 w-full"
+          content={message.content}
+        />
+      </div>
 
       {/* <TextGenerateEffect
         className="font-extralight text-gray-600"
@@ -232,8 +227,6 @@ const AgentAnswer = ({
         words={message?.content?.split?.("\n")?.join(" ")}
       /> */}
 
-      {/* <GenUI query={} /> */}
-      {/* {isFinished && ( */}
       <div className="flex justify-end space-x-4 mt-8 mb-4">
         {canViewAsTable && (
           <button
@@ -319,6 +312,8 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
 
   const updateThreadMutation = useUpdateThreadMessagesMutation();
 
+  const jwt = useJwtToken();
+
   const {
     messages,
     input,
@@ -336,6 +331,9 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
       //     model: aiModels.gpt35Turbo,
       //     threadId,
       //   },
+    },
+    headers: {
+      Authorization: `${jwt}`,
     },
     onResponse: (resp: any) => {},
     onFinish: (msg: any) => {

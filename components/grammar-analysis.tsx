@@ -9,6 +9,7 @@ import { cleanString } from "@/data/convos/bm1/level_7";
 import Link from "next/link";
 import { ScrollArea } from "./ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 export function GrammarAnalysis({
   contentId,
@@ -40,7 +41,22 @@ export function GrammarAnalysis({
 
   const router = useRouter();
 
-  const grammarAnalysisFinal = grammarAnalysis?.grammarAnalysis || [];
+  const { data: learnedCharacters } = useListCharactersQuery();
+
+  const grammarAnalysisFinal = (grammarAnalysis?.grammarAnalysis || [])?.filter(
+    (item) => {
+      const char = item?.hanzi || item?.input;
+
+      const isLearned =
+        learnedCharacters?.filter((item: any) => {
+          const hanziOrInput = item?.hanzi || item?.input;
+          return hanziOrInput === char;
+        }) || [];
+
+      console.log("is learned", isLearned);
+      return isLearned?.length === 0;
+    }
+  );
 
   const GrammarAnalysisList = () => {
     const divStyles =

@@ -102,7 +102,7 @@ export const CharacterTitle = (props: any) => {
             })}
           </h2>
         ) : (
-          <h2 className="text-gray-900 dark:text-gray-400  font-extralight focus-visible:ring-0 focus-visible:ring-transparent w-full">
+          <h2 className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full">
             {pinyins?.[0] ||
               pinyinInput ||
               selectedComp?.pinyin ||
@@ -164,57 +164,21 @@ export const CharacterTitle = (props: any) => {
 
                 return (
                   <Link
-                    // href={`/nmm/${val}?lang=zh`}
                     href={`/nmm/${val}?lang=zh${context ? `&context=${context}` : ""}`}
                     key={`${val}-${idx}`}
                     className={`${color} text-3xl sm:text-4xl transition lowercase font-light`}
-                    // className={`${
-                    //   brightMode || isCharactersLoading
-                    //     ? learnedChar?.status === "forgotten" &&
-                    //       componentId?.length > 1
-                    //       ? `dark:text-gray-600`
-                    //       : `dark:text-gray-300 text-gray-700 ${color}`
-                    //     : // learnedCharacters.includes(prop?.hanzi)
-                    //       learnedChar
-                    //       ? `${color} text-gray-300 ${hoverColor}`
-                    //       : selectedComp?.length > 1 || selectedComp?.group
-                    //         ? `dark:text-gray-500 text-gray-200 ${hoverColor}`
-                    //         : `dark:text-gray-700 text-gray-200 ${hoverColor}`
-                    // } ${hoverColor} text-2xl transition lowercase font-light`}
                   >
                     {val}
                   </Link>
                 );
               })}
             </div>
-
-            {/* <div className="space-x-4 flex">
-              <button
-                onClick={() => {
-                  speak(selectedCompInput);
-                }}
-              >
-                <Icons.volume className="text-2xl" />
-              </button>
-
-              <CharacterTrackButton />
-
-              <BookmarkButton
-                hanzi={characterId}
-                lang={lang}
-                en={finalEnVal}
-                pinyin={selectedPinyin}
-              />
-            </div> */}
           </div>
 
           <div>
             {selectedCompInput?.length < 4 && (
               <StatusIcon.Icon className="text-2xl" />
             )}
-            {/* {character?.status === "forgotten" && (
-              <RedFireDuoTone className="text-2xl" />
-            )} */}
           </div>
         </div>
       ) : lang === "zh" && multiSentence ? (
@@ -232,7 +196,7 @@ export const CharacterTitle = (props: any) => {
         </h1>
       )}
 
-      <h2 className="dark:text-gray-500 text-gray-700 font-light">
+      <h2 className="dark:text-gray-500 text-gray-900 font-light">
         {finalEnVal?.split("/")?.slice(0, 4)?.join("/")}
       </h2>
 

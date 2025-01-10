@@ -45,9 +45,9 @@ export function GrammarAnalysis({
 
   const grammarAnalysisFinal = (grammarAnalysis?.grammarAnalysis || [])?.filter(
     (item) => {
-      // if (contentId?.length < 40) {
-      //   return true;
-      // }
+      if (contentId?.length < 40) {
+        return true;
+      }
 
       const char = item?.hanzi || item?.input;
 
@@ -70,7 +70,6 @@ export function GrammarAnalysis({
       const isEveryCharacterLearned =
         isEveryCharacterLearnedArr?.length === char?.length;
 
-      console.log("is learned", isLearned);
       return isLearned?.length === 0 && !isEveryCharacterLearned;
     }
   );

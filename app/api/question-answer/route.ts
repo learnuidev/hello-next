@@ -7,9 +7,11 @@ import { openaiConfig } from "@/libs/openai/openai.config";
 import { verifyJwt } from "@/libs/cognito/jwt";
 import { getJwtToken } from "../utils";
 import { headers } from "next/headers";
+import { deepseekConfig } from "@/libs/deepseek/deepseek-config";
 
 const openai = new OpenAI({
-  apiKey: openaiConfig?.apiKey,
+  apiKey: deepseekConfig.apiKey,
+  baseURL: "https://api.deepseek.com",
 });
 
 // IMPORTANT! Set the runtime to edge

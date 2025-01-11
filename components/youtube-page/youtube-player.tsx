@@ -34,6 +34,7 @@ import { useContentEditStore } from "./use-content-edit-store";
 import { resolveLangCode } from "@/libs/openai/utils";
 import { useIsSmall } from "./utils/use-is-small";
 import { useDebouncedCallback } from "use-debounce";
+import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -49,6 +50,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const setRepeatHistories = useRepeatHistoryStore(
     (state: any) => state.setHistory
   );
+  const setIfExists = useSetIfExists();
   const size = useSize();
 
   const { data: learnedCharacters } = useListComponents();
@@ -289,6 +291,9 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         </p>
 
         <Link
+          onClick={() => {
+            setIfExists({ ...currentTranscription, contentId });
+          }}
           className="text-xl sm:text-3xl font-extralight"
           href={`/nmm/${encodeURIComponent(
             currentTranscription?.input

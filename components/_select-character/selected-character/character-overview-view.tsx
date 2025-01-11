@@ -76,7 +76,7 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
               <div className="">
                 <Tabs defaultValue="overview">
                   {/* <Tabs defaultValue="dé"> */}
-                  <div className="mb-8 overflow-y-auto">
+                  <div className="mt-4 overflow-y-auto">
                     {true && (
                       <TabsList className="space-x-8 overflow-y-auto">
                         <TabsTrigger

@@ -45,7 +45,7 @@ export function GrammarAnalysis({
 
   const grammarAnalysisFinal = (grammarAnalysis?.grammarAnalysis || [])?.filter(
     (item) => {
-      if (contentId?.length < 40) {
+      if (contentId?.length < 80) {
         return true;
       }
 

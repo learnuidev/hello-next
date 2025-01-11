@@ -90,7 +90,8 @@ export function GrammarAnalysis({
       <div
         className={cn(
           "rounded-2xl",
-          "shadows-sm shadow-2 shadow-black p-2 sm:px-8 py-4 bg-gray-50 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden mt-4 sm:mt-0"
+          "shadows-sm shadow-2 shadow-black p-2 sm:px-8 py-4 bg-gray-50 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden mt-4 sm:mt-0",
+          "dark:bg-[rgb(14,15,16)] bg-gray-50 p-4 sm:p-8 rounded-2xl mt-2"
         )}
       >
         <h4 className="font-bold text-xl">Grammar Analysis</h4>

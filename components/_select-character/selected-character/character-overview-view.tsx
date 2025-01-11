@@ -15,6 +15,8 @@ import { CharacterVariantSummary } from "./character-variant-summary";
 import { SelectedCharacterHeader } from "./selected-character-header";
 import { SentenceItemV2 } from "./sentence-item-v2";
 import { useGetSelectedCharacterParams } from "./use-get-selected-character-params";
+import { StoryEditor } from "./story-editor";
+import { useStoryStore } from "./story-store";
 
 const grammarTypesToTitle = {
   "v.": "verb",
@@ -41,6 +43,8 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
 
   const { data } = useListComponentVariantsQuery({ hanzi: characterId });
 
+  const story = useStoryStore((state: any) => state.story);
+
   return (
     <div
       className={
@@ -57,116 +61,83 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
           <SelectedCharacterHeader {...props} />
         </div>
 
-        <CharacterLearningContext selectedComp={selectedComp} />
-
         <>
-          <article className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-4">
+          <article>
             <div>
               <div className="">
                 <Tabs defaultValue="overview">
                   {/* <Tabs defaultValue="dé"> */}
-                  <div>
-                    {false && (
+                  <div className="mb-8">
+                    {true && (
                       <TabsList className="space-x-8">
                         <TabsTrigger
                           value="overview"
-                          className="px-0 data-[state=active]:text-yellow-500 data-[state=active]:font-bold"
+                          className="px-0 data-[state=active]:text-rose-400 data-[state=active]:font-bold"
                         >
-                          {" "}
                           Overview
                         </TabsTrigger>
-                        {(data || [])?.map((item) => {
-                          return (
-                            <TabsTrigger
-                              key={item?.hanbookId}
-                              value={item?.pinyin}
-                              className="px-0 data-[state=active]:text-yellow-500 data-[state=active]:font-bold"
-                            >
-                              {item?.pinyin}
-                            </TabsTrigger>
-                          );
-                        })}
+                        {selectedComp && (
+                          <TabsTrigger
+                            value="learning-context"
+                            className="px-0 data-[state=active]:text-rose-400 data-[state=active]:font-bold"
+                          >
+                            Learning Context
+                          </TabsTrigger>
+                        )}
+
+                        <TabsTrigger
+                          value="grammar-analysis"
+                          className="px-0 data-[state=active]:text-rose-400 data-[state=active]:font-bold"
+                        >
+                          Grammar
+                        </TabsTrigger>
+                        <TabsTrigger
+                          value="story"
+                          className="px-0 data-[state=active]:text-rose-400 data-[state=active]:font-bold"
+                        >
+                          Story
+                        </TabsTrigger>
                       </TabsList>
                     )}
                   </div>
 
                   <TabsContent value="overview">
-                    {variant ? (
-                      <div className="mt-6">
-                        <CharacterVariantSummary />
-                      </div>
-                    ) : (
-                      <Summary showMeanings={true} characterId={characterId} />
-                    )}
-                  </TabsContent>
-
-                  {(data || [])?.map((item) => {
-                    return (
-                      <TabsContent
-                        key={item?.pinyin}
-                        value={item?.pinyin}
-                        className="mt-6"
-                      >
-                        <div>
-                          <h1 className="text-2xl mb-4">
-                            <span>{item?.pinyin}</span> has{" "}
-                            <strong>{item?.useCases?.length}</strong> use cases
-                          </h1>
-
-                          <div className="space-y-12">
-                            {item?.useCases?.map((useCase, idx) => {
-                              return (
-                                <div key={useCase?.en}>
-                                  <div>
-                                    <h2 className="text-xl font-light">
-                                      <span className=""> {idx + 1}. </span>
-                                      <span>
-                                        <strong>
-                                          {grammarTypesToTitle[
-                                            useCase?.type as string
-                                          ] || useCase?.type}
-                                        </strong>
-                                      </span>
-                                    </h2>
-
-                                    <h3 className="text-gray-400">
-                                      {useCase?.en
-                                        ?.replaceAll("(", "")
-                                        ?.replaceAll(")", "")}
-                                    </h3>
-                                  </div>
-                                  <div className="mt-4 space-y-4">
-                                    {useCase?.sentences?.map((sentence) => {
-                                      return (
-                                        <SentenceItemV2
-                                          className="block"
-                                          key={sentence?.hanzi}
-                                          {...sentence}
-                                          href={`/nmm/${sentence?.hanzi}?lang=zh`}
-                                        />
-                                      );
-                                    })}
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
+                    <div className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-4">
+                      {variant ? (
+                        <div className="mt-6">
+                          <CharacterVariantSummary />
                         </div>
-                      </TabsContent>
-                    );
-                  })}
+                      ) : (
+                        <Summary
+                          showMeanings={true}
+                          characterId={characterId}
+                        />
+                      )}
+                    </div>
+                  </TabsContent>
+                  {selectedComp && (
+                    <TabsContent value="learning-context">
+                      <CharacterLearningContext selectedComp={selectedComp} />
+                    </TabsContent>
+                  )}
+
+                  <TabsContent value="grammar-analysis">
+                    <GrammarAnalysis
+                      contentId={selectedChar}
+                      lang={lang || selectedComp?.lang}
+                    />
+                  </TabsContent>
+                  <TabsContent value="story">
+                    <StoryEditor
+                      key={selectedComp2?.story}
+                      selectedChar={selectedComp}
+                      story={story}
+                    />
+                  </TabsContent>
                 </Tabs>
               </div>
             </div>
           </article>
-          {selectedCompInput?.length < 32 && props?.sentences?.length !== 0 && (
-            <div className="mt-4 mb-8">
-              <GrammarAnalysis
-                contentId={selectedChar}
-                lang={lang || selectedComp?.lang}
-              />
-            </div>
-          )}
         </>
       </div>
 

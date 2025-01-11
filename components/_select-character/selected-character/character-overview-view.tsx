@@ -17,6 +17,7 @@ import { SentenceItemV2 } from "./sentence-item-v2";
 import { useGetSelectedCharacterParams } from "./use-get-selected-character-params";
 import { StoryEditor } from "./story-editor";
 import { useStoryStore } from "./story-store";
+import { useEffect } from "react";
 
 const grammarTypesToTitle = {
   "v.": "verb",
@@ -44,6 +45,14 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
   const { data } = useListComponentVariantsQuery({ hanzi: characterId });
 
   const story = useStoryStore((state: any) => state.story);
+
+  const setStory = useStoryStore((state: any) => state.setStory);
+
+  useEffect(() => {
+    if (selectedComp?.story) {
+      setStory(selectedComp?.story);
+    }
+  }, [selectedComp?.story, setStory]);
 
   return (
     <div
@@ -91,12 +100,14 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
                         >
                           Grammar
                         </TabsTrigger>
-                        <TabsTrigger
-                          value="story"
-                          className="px-0 data-[state=active]:text-rose-400 data-[state=active]:font-bold"
-                        >
-                          Story
-                        </TabsTrigger>
+                        {selectedComp?.story && (
+                          <TabsTrigger
+                            value="story"
+                            className="px-0 data-[state=active]:text-rose-400 data-[state=active]:font-bold"
+                          >
+                            Story
+                          </TabsTrigger>
+                        )}
                       </TabsList>
                     )}
                   </div>
@@ -127,13 +138,15 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
                       lang={lang || selectedComp?.lang}
                     />
                   </TabsContent>
-                  <TabsContent value="story">
-                    <StoryEditor
-                      key={selectedComp2?.story}
-                      selectedChar={selectedComp}
-                      story={story}
-                    />
-                  </TabsContent>
+                  {selectedComp?.story && (
+                    <TabsContent value="story">
+                      <StoryEditor
+                        key={selectedComp?.story}
+                        selectedChar={selectedComp}
+                        story={story}
+                      />
+                    </TabsContent>
+                  )}
                 </Tabs>
               </div>
             </div>

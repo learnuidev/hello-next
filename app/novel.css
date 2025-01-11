@@ -301,3 +301,7 @@ ul[data-type="taskList"] li[data-checked="true"] > div > p {
 /* Container of the KaTeX rendering */
 .Tiptap-mathematics-render {
 }
+
+.tiptap hr {
+  border-color: gray;
+}

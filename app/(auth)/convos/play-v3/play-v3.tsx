@@ -17,6 +17,7 @@ import { useMusicV2 } from "../_play-v2/use-music-v2";
 import { formatTime } from "../_play/utils";
 import { getHeightClass } from "./utils/get-height-class";
 import { useDebouncedCallback } from "use-debounce";
+import { groupBy } from "ramda";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -227,6 +228,8 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
     }
   }, [currentTime, content?.transcriptions, loop, debounceSeek]);
 
+  const groupBySectionId = groupBy((item: any) => item.sectionId);
+
   return (
     <div className="relative">
       <ContentDetailHeader content={content} />
@@ -240,216 +243,247 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       <div></div>
 
       <div className="relative space-y-8">
-        {content?.transcriptions?.map((subtitle: any) => {
-          const timeStamp = times?.find(
-            (time: any) => time?.id === subtitle?.id
-          ) as any;
+        {Object.entries(groupBySectionId(content?.transcriptions) as any)?.map(
+          (sectionAndTranscriptions: any) => {
+            const transcriptions = sectionAndTranscriptions[1];
 
-          return (
-            <>
-              <span
-                onMouseEnter={() => {
-                  setSelected(subtitle);
-                }}
-                onMouseLeave={() => {
-                  setSelected(null);
-                }}
-                key={JSON.stringify(subtitle)}
-                className={cn(
-                  "inline-flex flex-col mt-2 items-start px-[2px]",
-                  textSize?.[3]
-                )}
-              >
-                {viewPinyin && (
-                  <Link
-                    onClick={() => {
-                      setIfExists({ ...subtitle, contentId });
-                    }}
-                    href={`/nmm/${subtitle.hanzi || subtitle?.input}?lang=zh`}
-                    target="_blank"
-                    className={cn(
-                      subtitle?.pinyin ? "text-gray-500" : "text-black",
-                      "text-sm",
-                      currentTime > subtitle?.start &&
-                        currentTime < subtitle.end
-                        ? "text-white "
-                        : "text-gray-500",
+            return (
+              <div key={JSON.stringify(sectionAndTranscriptions)}>
+                {transcriptions?.map((subtitle: any) => {
+                  const timeStamp = times?.find(
+                    (time: any) => time?.id === subtitle?.id
+                  ) as any;
 
-                      textSize?.[0],
-                      activeSubtitle?.sentence === subtitle?.sentence
-                        ? "text-gray-400"
-                        : "text-gray-600",
-                      currentTime > subtitle?.start &&
-                        currentTime < subtitle.end
-                        ? "dark:text-white text-black"
-                        : "",
-                      currentTime === 0 ? "text-gray-300" : "",
-                      "text-start"
-                    )}
-                  >
-                    {subtitle?.roman || subtitle?.pinyin || ""}
-                  </Link>
-                )}
+                  return (
+                    <>
+                      <span
+                        onMouseEnter={() => {
+                          setSelected(subtitle);
+                        }}
+                        onMouseLeave={() => {
+                          setSelected(null);
+                        }}
+                        key={JSON.stringify(subtitle)}
+                        className={cn(
+                          "inline-flex flex-col mt-2 items-start px-[2px]",
+                          textSize?.[3]
+                        )}
+                      >
+                        {viewPinyin && (
+                          <Link
+                            onClick={() => {
+                              setIfExists({ ...subtitle, contentId });
+                            }}
+                            href={`/nmm/${subtitle.hanzi || subtitle?.input}?lang=zh`}
+                            target="_blank"
+                            className={cn(
+                              subtitle?.pinyin ? "text-gray-500" : "text-black",
+                              "text-sm",
+                              currentTime > subtitle?.start &&
+                                currentTime < subtitle.end
+                                ? "text-white "
+                                : "text-gray-500",
 
-                {brightMode ? (
-                  <div>
-                    {(subtitle?.input || subtitle?.hanzi)
-                      ?.split("")
-                      ?.map((val: any, idx: any) => {
-                        const learnedChar = learnedCharacters2?.find(
-                          (char: any) => char?.hanzi === val
-                        );
-                        const comp = components?.find(
-                          (char: any) => char?.hanzi === val
-                        );
+                              textSize?.[0],
+                              activeSubtitle?.sentence === subtitle?.sentence
+                                ? "text-gray-400"
+                                : "text-gray-600",
+                              currentTime > subtitle?.start &&
+                                currentTime < subtitle.end
+                                ? "dark:text-white text-black"
+                                : "",
+                              currentTime === 0 ? "text-gray-300" : "",
+                              "text-start"
+                            )}
+                          >
+                            {subtitle?.roman || subtitle?.pinyin || ""}
+                          </Link>
+                        )}
 
-                        const color = calculateColor({
-                          tone: learnedChar?.tone_level,
-                        });
+                        {brightMode ? (
+                          <div>
+                            {(subtitle?.input || subtitle?.hanzi)
+                              ?.split("")
+                              ?.map((val: any, idx: any) => {
+                                const learnedChar = learnedCharacters2?.find(
+                                  (char: any) => char?.hanzi === val
+                                );
+                                const comp = components?.find(
+                                  (char: any) => char?.hanzi === val
+                                );
 
-                        const hoverColor = calculateHoverColor({
-                          tone: learnedChar?.tone_level || comp?.tone_level,
-                        });
+                                const color = calculateColor({
+                                  tone: learnedChar?.tone_level,
+                                });
 
-                        return (
-                          <span
+                                const hoverColor = calculateHoverColor({
+                                  tone:
+                                    learnedChar?.tone_level || comp?.tone_level,
+                                });
+
+                                return (
+                                  <span
+                                    onClick={() => {
+                                      if (loop) {
+                                        setLoop(subtitle.input);
+                                      }
+                                      seek(timeStamp?.start || subtitle?.start);
+                                    }}
+                                    key={`${val}-${idx}`}
+                                    className={cn(
+                                      `${
+                                        currentTime > subtitle?.start &&
+                                        currentTime < subtitle.end
+                                          ? brightMode
+                                            ? learnedChar?.status ===
+                                              "forgotten"
+                                              ? "text-gray-200 dark:text-gray-600"
+                                              : `${color} ${hoverColor}`
+                                            : `dark:text-white text-black ${color} ${hoverColor}`
+                                          : !brightMode || isCharactersLoading
+                                            ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
+                                            : // learnedCharacters.includes(prop?.hanzi)
+                                              learnedChar
+                                              ? learnedChar?.status ===
+                                                "forgotten"
+                                                ? `text-gray-200 dark:text-gray-600 ${hoverColor}`
+                                                : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                                                  //   ? "text-rose-500"
+                                                  `${color} text-gray-300 ${hoverColor}`
+                                              : `dark:text-gray-200 text-gray-800 ${hoverColor}`
+                                      } ${hoverColor} ${color} text-2xl transition lowercase font-light`,
+                                      textSize?.[1]
+                                    )}
+                                  >
+                                    {val}
+                                  </span>
+                                );
+                              })}
+                          </div>
+                        ) : (
+                          <button
                             onClick={() => {
                               if (loop) {
                                 setLoop(subtitle.input);
                               }
                               seek(timeStamp?.start || subtitle?.start);
                             }}
-                            key={`${val}-${idx}`}
                             className={cn(
-                              `${
-                                currentTime > subtitle?.start &&
+                              "text-3xl font-light text-gray-300 hover:text-rose-400 text-left",
+
+                              textSize?.[1],
+                              activeSubtitle?.sentence === subtitle?.sentence
+                                ? "text-gray-400"
+                                : "text-gray-600",
+                              currentTime > subtitle?.start &&
                                 currentTime < subtitle.end
-                                  ? brightMode
-                                    ? learnedChar?.status === "forgotten"
-                                      ? "text-gray-200 dark:text-gray-600"
-                                      : `${color} ${hoverColor}`
-                                    : `dark:text-white text-black ${color} ${hoverColor}`
-                                  : !brightMode || isCharactersLoading
-                                    ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
-                                    : // learnedCharacters.includes(prop?.hanzi)
-                                      learnedChar
-                                      ? learnedChar?.status === "forgotten"
-                                        ? `text-gray-200 dark:text-gray-600 ${hoverColor}`
-                                        : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
-                                          //   ? "text-rose-500"
-                                          `${color} text-gray-300 ${hoverColor}`
-                                      : `dark:text-gray-200 text-gray-800 ${hoverColor}`
-                              } ${hoverColor} ${color} text-2xl transition lowercase font-light`,
-                              textSize?.[1]
+                                ? "dark:text-white text-black"
+                                : "0",
+                              currentTime === 0 ? "text-gray-300" : ""
                             )}
                           >
-                            {val}
-                          </span>
-                        );
-                      })}
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => {
-                      if (loop) {
-                        setLoop(subtitle.input);
-                      }
-                      seek(timeStamp?.start || subtitle?.start);
-                    }}
-                    className={cn(
-                      "text-3xl font-light text-gray-300 hover:text-rose-400 text-left",
+                            {subtitle?.input || subtitle?.hanzi}
+                            {"   "}
+                          </button>
+                        )}
+                      </span>
 
-                      textSize?.[1],
-                      activeSubtitle?.sentence === subtitle?.sentence
-                        ? "text-gray-400"
-                        : "text-gray-600",
-                      currentTime > subtitle?.start &&
-                        currentTime < subtitle.end
-                        ? "dark:text-white text-black"
-                        : "0",
-                      currentTime === 0 ? "text-gray-300" : ""
-                    )}
-                  >
-                    {subtitle?.input || subtitle?.hanzi}
-                    {"   "}
-                  </button>
-                )}
-              </span>
+                      {editMode && (
+                        <div className="flex flex-col">
+                          {(timeStamp?.roman || subtitle?.roman) &&
+                            editMode && (
+                              <input
+                                className=""
+                                value={timeStamp?.roman || subtitle?.roman}
+                                onChange={(event) => {
+                                  setTimer(
+                                    "roman",
+                                    subtitle,
+                                    event?.target?.value
+                                  );
+                                }}
+                              />
+                            )}
 
-              {editMode && (
-                <div className="flex flex-col">
-                  {(timeStamp?.roman || subtitle?.roman) && editMode && (
-                    <input
-                      className=""
-                      value={timeStamp?.roman || subtitle?.roman}
-                      onChange={(event) => {
-                        setTimer("roman", subtitle, event?.target?.value);
-                      }}
-                    />
-                  )}
+                          {(timeStamp?.input || subtitle?.input) &&
+                            editMode && (
+                              <input
+                                className=""
+                                value={timeStamp?.input || subtitle?.input}
+                                onChange={(event) => {
+                                  setTimer(
+                                    "input",
+                                    subtitle,
+                                    event?.target?.value
+                                  );
+                                }}
+                              />
+                            )}
 
-                  {(timeStamp?.input || subtitle?.input) && editMode && (
-                    <input
-                      className=""
-                      value={timeStamp?.input || subtitle?.input}
-                      onChange={(event) => {
-                        setTimer("input", subtitle, event?.target?.value);
-                      }}
-                    />
-                  )}
+                          {editMode && (
+                            <input
+                              className="w-full"
+                              value={timeStamp?.en || subtitle?.en}
+                              onChange={(event) => {
+                                setTimer("en", subtitle, event?.target?.value);
+                              }}
+                            />
+                          )}
 
-                  {editMode && (
-                    <input
-                      className="w-full"
-                      value={timeStamp?.en || subtitle?.en}
-                      onChange={(event) => {
-                        setTimer("en", subtitle, event?.target?.value);
-                      }}
-                    />
-                  )}
+                          {editMode && (
+                            <div className="flex text-gray-400 text-[12px] items-center justify-start mt-4 space-x-2">
+                              <div>
+                                <input
+                                  value={timeStamp?.start || subtitle?.start}
+                                  onChange={(event) => {
+                                    setTimer(
+                                      "start",
+                                      subtitle,
+                                      event?.target?.value
+                                    );
+                                  }}
+                                />
+                                <button
+                                  onClick={() => {
+                                    setTimer("start", subtitle);
+                                  }}
+                                >
+                                  Set Start{" "}
+                                </button>
+                              </div>
 
-                  {editMode && (
-                    <div className="flex text-gray-400 text-[12px] items-center justify-start mt-4 space-x-2">
-                      <div>
-                        <input
-                          value={timeStamp?.start || subtitle?.start}
-                          onChange={(event) => {
-                            setTimer("start", subtitle, event?.target?.value);
-                          }}
-                        />
-                        <button
-                          onClick={() => {
-                            setTimer("start", subtitle);
-                          }}
-                        >
-                          Set Start{" "}
-                        </button>
-                      </div>
+                              <div>
+                                <input
+                                  value={timeStamp?.end || subtitle?.end}
+                                  onChange={(event) => {
+                                    setTimer(
+                                      "end",
+                                      subtitle,
+                                      event?.target?.value
+                                    );
+                                  }}
+                                />
 
-                      <div>
-                        <input
-                          value={timeStamp?.end || subtitle?.end}
-                          onChange={(event) => {
-                            setTimer("end", subtitle, event?.target?.value);
-                          }}
-                        />
-
-                        <button
-                          onClick={() => {
-                            setTimer("end", subtitle);
-                          }}
-                        >
-                          {" "}
-                          Set End{" "}
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </>
-          );
-        })}
+                                <button
+                                  onClick={() => {
+                                    setTimer("end", subtitle);
+                                  }}
+                                >
+                                  {" "}
+                                  Set End{" "}
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </>
+                  );
+                })}
+              </div>
+            );
+          }
+        )}
       </div>
 
       <div className="w-full fixed bottom-0 py-4 px-4 z-30 m-auto bg-gray-50 dark:bg-[rgb(12,13,14)]">

@@ -13,58 +13,37 @@ export function NewConvoInput() {
   const newConvo = useNewConvoStore((state) => state.convo) as any;
   const setConvo = useNewConvoStore((state) => state.setConvo);
 
-  const listSections = (txt: string, lang: string) => {
-    if (lang === "zh") {
-      return txt
-        ?.replaceAll("–", "")
+  const listSections = (story: string, lang: string) => {
+    // 1. Split the story by new line
+    return (
+      story
         .split("\n")
+        // 2. Filter out the empty string
         .filter(Boolean)
-        ?.map((x) => {
+        .map((section) => {
+          // 3. Added a section id
           const sectionId = crypto.randomUUID();
+
+          // 4. Split the sections by 。As well as filter out empty string
+          const sectionItems = section.split("。").filter(Boolean);
           return {
             id: sectionId,
-            type: "section",
-            text: x?.trim(),
-            phrases: x
-              .trim()
-              .split("。")
-              ?.filter(Boolean)
-              ?.map((phrase) => {
-                return {
-                  id: crypto.randomUUID(),
-                  sectionId,
-                  lang: "zh",
-                  input: phrase,
-                };
-              }),
-          };
-        })
-        .flat();
-    }
-    // return txt?.replaceAll("–", "").split("\n").filter(Boolean);
-    return txt
-      ?.replaceAll("–", "")
-      .split("\n")
-      .filter(Boolean)
-      ?.map((x) => {
-        return {
-          id: crypto.randomUUID(),
-          type: "section",
-          text: x?.trim(),
-          phrases: x
-            .trim()
-            .split(".")
-            ?.filter(Boolean)
-            ?.map((phrase) => {
+            text: section,
+            // 5. Map the transcriptions
+            transcriptions: sectionItems.map((transcription) => {
               return {
                 id: crypto.randomUUID(),
-                lang: lang,
-                input: phrase,
+                sectionId: sectionId,
+                lang,
+                input:
+                  sectionItems?.length === 1
+                    ? transcription
+                    : `${transcription}。`,
               };
             }),
-        };
-      })
-      .flat();
+          };
+        })
+    );
   };
 
   const totalSentences = listSections(newConvo?.input, newConvo?.lang);
@@ -82,7 +61,7 @@ export function NewConvoInput() {
           setConvo("sections", sections);
           setConvo(
             "transcriptions",
-            sections?.map((section) => section?.phrases).flat()
+            sections.map((section) => section.transcriptions)?.flat()
           );
           setConvo("input", event?.target?.value);
         }}

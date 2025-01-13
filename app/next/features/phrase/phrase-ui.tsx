@@ -137,8 +137,8 @@ export const PhraseUI = () => {
 
         {/* Input area */}
 
-        <div className="absolute w-full bottom-0 dark:bg-[rgb(21,22,23)] p-2 rounded bg-white border-t dark:border-gray-700 flex">
-          <div className="flex flex-col w-full items-start">
+        <div className="absolute w-full bottom-0  p-2 rounded bg-white  dark:bg-[rgb(9,10,11)] flex">
+          <div className="flex flex-col w-full items-start sm:max-w-3xl m-auto dark:bg-[rgb(21,22,23)] border-t dark:border-gray-700">
             <form
               onSubmit={handleSubmit}
               className="w-full dark:bg-[rgb(21,22,23)] bg-white dark:border-gray-700 flex"
@@ -156,7 +156,7 @@ export const PhraseUI = () => {
               </Button>
             </form>
 
-            <div className="flex justify-between mt-4 w-full items-center">
+            <div className="flex justify-between mt-4 w-full items-center p-2">
               <div className="mt-2 w-full flex justify-start space-x-4 dark:text-gray-500">
                 <button
                   className={

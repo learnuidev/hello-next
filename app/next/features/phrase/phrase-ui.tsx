@@ -141,7 +141,7 @@ export const PhraseUI = () => {
           <div className="flex flex-col w-full items-start sm:max-w-3xl m-auto dark:bg-[rgb(21,22,23)] border-t dark:border-gray-700">
             <form
               onSubmit={handleSubmit}
-              className="w-full dark:bg-[rgb(21,22,23)] bg-white dark:border-gray-700 flex"
+              className="w-full dark:bg-[rgb(21,22,23)] bg-white dark:border-gray-700 flex p-2 rounded-full"
             >
               <textarea
                 onChange={(event) => {
@@ -149,7 +149,7 @@ export const PhraseUI = () => {
                 }}
                 value={inputTranscript || transcript}
                 placeholder="Type a message..."
-                className="flex-1 mr-2 px-2 py-0 dark:bg-[rgb(21,22,23)] border-transparent focus:border-transparent focus:ring-0 focus:outline-none resize-none"
+                className="flex-1 py-0 dark:bg-[rgb(21,22,23)] border-transparent focus:border-transparent focus:ring-0 focus:outline-none resize-none"
               />
               <Button disabled={addTranslation.isLoading} type="submit">
                 <Icons.paperPlane className="text-xl dark:text-gray-600 dark:hover:text-white text-gray-700" />

@@ -16,11 +16,12 @@ import {
   useCurrentAuthUser,
   useIsSuperAdmin,
 } from "@/domain/auth/auth.queries";
-import { chineseCharacters } from "@/langs/chinese /characters";
+
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { create } from "zustand";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 
 const genStoryApi = async (
   { hanzi, lang, options }: { hanzi: string; lang: string; options: any },
@@ -105,8 +106,10 @@ export const StoryView = (props: SelectedCharacterProps) => {
   const final = selected?.final || selectedComp2?.final;
   const { data } = useListCharactersQuery();
 
+  const { data: chineseCharacters } = useListChineseCharactersQuery();
+
   const offlineCharacter = chineseCharacters?.find(
-    (char) => char?.hanzi === characterId || char?.input === characterId
+    (char: any) => char?.hanzi === characterId || char?.input === characterId
   );
 
   const { data: componentWithStory } = useGenStoryQuery(

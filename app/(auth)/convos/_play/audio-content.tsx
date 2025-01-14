@@ -1,32 +1,30 @@
 "use client";
 
-import { useState } from "react";
 import { FocusIcon } from "@/components/ui/icons";
+import { useState } from "react";
 
 import Editor from "@monaco-editor/react";
-import { useConvosStore } from "@/data/convos/bm1";
 
 import { useMusic } from "./use-music";
 
-import { PlayButton } from "./play-button";
 import { course5 } from "@/data/pronunciation_data";
+import { PlayButton } from "./play-button";
 
 import { useRepeatHistoryStore } from "./use-repeat-history";
 import { useViewModeStore } from "./use-view-mode";
 
 import { useModeStore, usePinyinModeStore } from "./use-mode";
 
-import React from "react";
-
-import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useGetContentQuery } from "@/domain/content/content.queries";
-import { useParams, useSearchParams } from "next/navigation";
-import { Transcription } from "@/domain/transcribe/transcribe.types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAtom, faLanguage } from "@fortawesome/pro-thin-svg-icons";
-import Link from "next/link";
-import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
+import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+import { useListSpeakQuery } from "@/domain/hsk/use-list-speak-query";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
+import { Transcription } from "@/domain/transcribe/transcribe.types";
+import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
+import { faAtom, faLanguage } from "@fortawesome/pro-thin-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
+import { useParams, useSearchParams } from "next/navigation";
 import { TranscriptItem } from "./transcript-item";
 
 export const Play = ({ lessonId }: { lessonId: string }) => {
@@ -39,7 +37,9 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   const { data: hskWords } = useListHSKWordsQuery();
 
-  const lessonsArr = useConvosStore((state) => state?.convos);
+  const { data } = useListSpeakQuery();
+
+  const lessonsArr = data?.lessons;
 
   // const results = useResults(store => store.results)
 

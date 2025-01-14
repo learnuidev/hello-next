@@ -9,6 +9,7 @@ import { useSpeakStore } from "../speak/useSpeakStore";
 import { useTranscribeQuery } from "@/domain/transcribe/transcribe.queries";
 import { StepContainerVariant1, useNewConvoStore } from "../step";
 import { useState } from "react";
+import { useListSpeakQuery } from "@/domain/hsk/use-list-speak-query";
 
 export function NewSpeak({ type }: { type?: string }) {
   const [resultView, setResultView] = useState("");
@@ -112,13 +113,13 @@ export function NewSpeak({ type }: { type?: string }) {
     setConvo("audio", s);
   };
 
-  const lessons = useSpeakStore((state) => state.lessons);
+  const { data: course1 } = useListSpeakQuery();
+  const lessons = course1?.lessons;
+
   const addNewSpeak = useSpeakStore((state) => state.setSpeak);
 
   const addNewConvo = () => {
     addNewSpeak(newConvo?.lessonId, newConvo);
-
-    // alert(JSON.stringify(newConvo))
   };
 
   return (
@@ -278,7 +279,7 @@ export function NewSpeak({ type }: { type?: string }) {
             className="w-full text-center text-3xl font-extralight focus:outline-0 dark:bg-black  p-2 border-0 border-none dark:text-gray-300"
           />
           <div className="flex justify-center w-full my-16 space-x-8 flex-wrap">
-            {(lessons || []).map((item) => {
+            {(lessons || []).map((item: any) => {
               return (
                 <button
                   key={item?.id}

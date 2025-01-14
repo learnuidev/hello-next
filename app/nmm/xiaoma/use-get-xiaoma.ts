@@ -2,12 +2,12 @@
 
 import { useListComponents } from "@/domain/lesson/component.queries";
 
-import { course1 } from "@/data/convos/bm1";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 import { useQuery } from "@tanstack/react-query";
 import { useSearchQueryStore } from "@/components/search/state";
 import { filterNonHanYu } from "../nmm-utils/filter-non-hanyu";
+import { useListSpeakQuery } from "@/domain/hsk/use-list-speak-query";
 
 export const useGetXiaoma = ({
   variant,
@@ -22,6 +22,8 @@ export const useGetXiaoma = ({
 
   const { data: hskWords } = useListHSKWordsQuery();
 
+  const { data: course1 } = useListSpeakQuery();
+
   return useQuery({
     // @ts-ignore
     queryKey: [
@@ -32,6 +34,7 @@ export const useGetXiaoma = ({
       selectedBelt?.minCharacterLevel,
       viewType,
       JSON.stringify(hskWords),
+      JSON.stringify(course1),
     ],
 
     queryFn: async () => {
@@ -52,73 +55,6 @@ export const useGetXiaoma = ({
             });
           })
           .flat();
-        // .filter(({ hanzi: val }: any) => filterNonHanYu(val))
-        // .filter(({ hanzi: item }: any) => {
-        //   const checkItem = item.split("").filter((val: any) => {
-        //     const hskCharacter = hskWords?.find((word: any) =>
-        //       JSON.stringify(word?.hanzi)?.includes(val)
-        //     );
-
-        //     if (variant === "all") {
-        //       return hskCharacter?.hskLevel <= selectedBelt?.hskLevel;
-        //     }
-
-        //     return hskCharacter?.hskLevel === selectedBelt?.hskLevel;
-        //   });
-
-        //   if ([1]?.includes(selectedBelt?.hskLevel)) {
-        //     return checkItem?.length / item?.length > 0.9;
-        //   }
-        //   if ([2]?.includes(selectedBelt?.hskLevel)) {
-        //     return checkItem?.length / item?.length > 0.2;
-        //   }
-        //   if ([3]?.includes(selectedBelt?.hskLevel)) {
-        //     return checkItem?.length / item?.length > 0.2;
-        //   }
-
-        //   return checkItem?.length / item?.length > 0.01;
-        // });
-
-        // xiaomaSentences = [
-        //   ...new Set(
-        //     course1?.lessons
-        //       .map((x: any) => x.lessons)
-        //       .flat()
-        //       .map((x: any) => x.id)
-        //   ),
-        // ]
-        //   .filter((val: any) => filterNonHanYu(val))
-        //   .filter((item: any) => {
-        //     const checkItem = item.split("").filter((val: any) => {
-        //       const hskCharacter = hskWords?.find((word: any) =>
-        //         JSON.stringify(word?.hanzi)?.includes(val)
-        //       );
-
-        //       if (variant === "all") {
-        //         return hskCharacter?.hskLevel <= selectedBelt?.hskLevel;
-        //       }
-
-        //       return hskCharacter?.hskLevel === selectedBelt?.hskLevel;
-        //     });
-
-        //     if ([1]?.includes(selectedBelt?.hskLevel)) {
-        //       return checkItem?.length / item?.length > 0.9;
-        //     }
-        //     if ([2]?.includes(selectedBelt?.hskLevel)) {
-        //       return checkItem?.length / item?.length > 0.2;
-        //     }
-        //     if ([3]?.includes(selectedBelt?.hskLevel)) {
-        //       return checkItem?.length / item?.length > 0.2;
-        //     }
-
-        //     return checkItem?.length / item?.length > 0.01;
-        //   })
-        //   .map((id) => {
-        //     return {
-        //       hanzi: id,
-        //       lang: "zh",
-        //     };
-        //   });
       }
 
       let xiaomaWords = [] as any;
@@ -190,10 +126,10 @@ export const useGetXiaoma = ({
             );
 
             if (variant === "all") {
-              return hskCharacter?.hskLevel <= selectedBelt?.hskLevel;
+              return hskCharacter?.level <= selectedBelt?.hskLevel;
             }
 
-            return hskCharacter?.hskLevel === selectedBelt?.hskLevel;
+            return hskCharacter?.level === selectedBelt?.hskLevel;
           });
       }
 

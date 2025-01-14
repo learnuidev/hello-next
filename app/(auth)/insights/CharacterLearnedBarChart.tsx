@@ -21,9 +21,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import { course1 } from "@/data/convos/bm1/index";
 import { useSelectedDataStore } from "./use-selected-data";
 import { isThisMonth } from "date-fns";
+import { useListSpeakQuery } from "@/domain/hsk/use-list-speak-query";
 
 const NewCharactersTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -123,6 +123,8 @@ export const CharacterLearnedBarChart = () => {
         name: curr?.createdAt,
       };
     });
+
+  const { data: course1 } = useListSpeakQuery();
 
   const currentLesson = course1?.lessons?.find(
     (lesson: any) => lesson?.id === selectedData?.journeyId

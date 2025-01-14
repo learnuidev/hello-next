@@ -7,9 +7,9 @@ import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainer } from "@/components/nmm-list-container";
 import { NmmListContainerSentence } from "@/components/nmm-list-container-sentence";
 import { useListComponents } from "@/domain/lesson/component.queries";
-import { chineseCharacters } from "@/langs/chinese /characters";
 import { useGetSelectedBelt } from "../use-get-selected-belt";
 import { useGetYct } from "./use-get-yct";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 
 export function YctViewType({
   variant,
@@ -25,6 +25,8 @@ export function YctViewType({
   const xiaomaSentences = data?.sentences || [];
 
   const viewType = useSearchQueryStore((state) => state.type);
+
+  const { data: chineseCharacters } = useListChineseCharactersQuery();
 
   const { data: componentsAll } = useListComponents({
     includeAll: true,

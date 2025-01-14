@@ -4,19 +4,21 @@ import { Icons } from "../../ui/icons.v2";
 import { SelectedCharacterProps } from "../select-character.types";
 
 import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
-import { chineseCharacters } from "@/langs/chinese /characters";
+
 import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
 import { GoogleLink } from "./google-link";
 import { YablaLink } from "./yabla-link";
 import { HanbookLink } from "./hanbook-link";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 
 export const SelectedCharacterStats = (props: SelectedCharacterProps) => {
   const { selectedComp, characterId, selectedComp2 } = props;
 
   const level = selectedComp?.level || selectedComp2?.level;
+  const { data: chineseCharacters } = useListChineseCharactersQuery();
 
   const offlineCharacter = chineseCharacters?.find(
-    (char) => char?.hanzi === characterId || char?.input === characterId
+    (char: any) => char?.hanzi === characterId || char?.input === characterId
   );
 
   const pinyinOrRoman =

@@ -6,12 +6,11 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { HanziLink } from "@/components/hanzi-link";
 import { motion } from "framer-motion";
 
-import { chineseCharacters } from "@/langs/chinese /characters";
-
 import { NmmListContainer } from "@/components/nmm-list-container";
 import { useGetHskCharacters } from "./use-get-hsk-characters";
 import { Nothing } from "../nothing";
 import { useGetNmmParams } from "../use-get-nmm-params";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 
 export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   const { data: components } = useListComponents({ includeAll: true });
@@ -19,6 +18,8 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
 
   const { level } = useGetNmmParams();
   const [slicedByLevels, setSliced] = useState<any>({});
+
+  const { data: chineseCharacters } = useListChineseCharactersQuery();
 
   const comps = components ? components : chineseCharacters;
 

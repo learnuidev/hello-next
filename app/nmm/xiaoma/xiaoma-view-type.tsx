@@ -8,10 +8,10 @@ import { NmmListContainer } from "@/components/nmm-list-container";
 import { NmmListContainerSentence } from "@/components/nmm-list-container-sentence";
 
 import { useListComponents } from "@/domain/lesson/component.queries";
-import { chineseCharacters } from "@/langs/chinese /characters";
 import { useGetXiaoma } from "./use-get-xiaoma";
 import { useGetSelectedBelt } from "../use-get-selected-belt";
 import { HanziLinkSentence } from "@/components/hanzi-link-sentence";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 
 export function XiaomaViewType({
   variant,
@@ -29,6 +29,8 @@ export function XiaomaViewType({
   const { data: componentsAll } = useListComponents({
     includeAll: true,
   });
+
+  const { data: chineseCharacters } = useListChineseCharactersQuery();
 
   const comps = componentsAll ? componentsAll : chineseCharacters;
 
@@ -53,8 +55,6 @@ export function XiaomaViewType({
     return (
       <NmmListContainer>
         {xiaomaCharacters.map((prop: any, idx: number) => {
-          console.log("XIAOMA", prop);
-
           const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
           return (
             <HanziLink

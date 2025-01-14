@@ -376,18 +376,11 @@ export function Wordle() {
             (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
           );
 
-          // const currentPhrase = currentLesson?.transcriptions?.find(
-          //   (lesson: any) => lesson?.id === lessonIndex
-          // );
           const currentPhraseIndex = currentLesson?.transcriptions?.findIndex(
             (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
           );
 
           console.log("CURRENT PHRASE INDEX", currentPhraseIndex);
-
-          // const lessonIdx = course1?.lessons?.findIndex(
-          //   (lesson: any) => lesson?.id === lessonIndex
-          // );
 
           if (currentPhraseIndex !== -1) {
             const nextId =
@@ -395,14 +388,7 @@ export function Wordle() {
               currentLesson?.transcriptions?.[currentPhraseIndex - 1];
 
             setTranscriptionId(nextId?.id || nextId?.hanzi);
-
-            // if (params?.["lessonId"]) {
-            //   router.push(
-            //     `/convos/${params?.["lessonId"] || _lessonId}/${nextId?.id}`
-            //   );
-            // }
           } else {
-            // setGameStatus("finish");
           }
 
           setCurrentGuess("");

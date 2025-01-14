@@ -1,35 +1,26 @@
 "use client";
-import { useState } from "react";
 import {
   AnalyticsIcon,
   CloseIcon,
-  NextIcon,
   Header,
-  PrevIcon,
+  NextIcon,
   PinyinChartIcon,
+  PrevIcon,
 } from "@/components/ui/icons";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-import { Music, useMusic } from "@/components/music";
+import { Music } from "@/components/music";
 
-import {
-  course,
-  course2,
-  course3,
-  course4,
-  course5,
-} from "./pronounciation_data";
+import { course } from "./pronounciation_data";
+import { PronounciationAnalytics } from "./PronounciationAnalytics";
 import { useLessonHistoryStore } from "./useLessonHistory";
 import { useViewModeStore } from "./useViewModeStore";
-import { PronounciationAnalytics } from "./PronounciationAnalytics";
-// import { PronounciationSuggestions } from "ui/PronunciationSuggestions";
-// import { dictionary } from "ui/data/hmm/data/dictionary";
-import { useCurrentLesson } from "./useCurrentLesson";
-import { course1, useSpeakStore } from "./useSpeakStore";
+
 import Link from "next/link";
+import { useCurrentLesson } from "./useCurrentLesson";
+import { useSpeakStore } from "./useSpeakStore";
 import Dictaphone from "./useSpeechRecognition_v2";
-// import { Speak } from "./use-speech-recognition";
-// import { ChartPage } from "../chart/v1";
 
 export const Pronounciation = ({ lessonId }: any) => {
   const router = useRouter();
@@ -40,20 +31,11 @@ export const Pronounciation = ({ lessonId }: any) => {
   const setLesson = useCurrentLesson((state: any) => state.setCurrentLesson);
   // const lessonId = useCurrentLesson((state: any) => state.lessonId)
   const lessons = useSpeakStore((state: any) => state.lessons);
-  // const lessons = course1.lessons
 
   const lessonHistories = useLessonHistoryStore((state: any) => state.history);
   const setLessonHistories = useLessonHistoryStore(
     (state: any) => state.setHistory
   );
-
-  // const lessonArr =
-
-  // const lesson1 = lessonsArr?.find((lesson: any) => lesson?.id === lessonId)
-
-  // const { play, togglePlay, seek, currentTime, reset } = useMusic({
-  //   url: lesson1.audio,
-  // });
 
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
 

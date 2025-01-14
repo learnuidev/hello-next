@@ -1,23 +1,14 @@
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import React, { PureComponent, useState } from "react";
 import {
-  AreaChart,
   Area,
+  AreaChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
 } from "recharts";
 
-import sub from "date-fns/sub";
-import isBefore from "date-fns/isBefore";
-import isAfter from "date-fns/isAfter";
-import getDay from "date-fns/getDay";
-import isThisWeek from "date-fns/isThisWeek";
-import * as R from "ramda";
-
-import { course1 } from "@/data/convos/bm1/index";
+import { useListSpeakQuery } from "@/domain/hsk/use-list-speak-query";
 import { useSelectedDataStore } from "./use-selected-data";
 
 const data = [
@@ -139,6 +130,8 @@ export const CharacterDiscoveryAreaChart = () => {
       name: curr?.createdAt,
     };
   });
+
+  const { data: course1 } = useListSpeakQuery();
 
   const currentLesson = course1?.lessons?.find(
     (lesson: any) => lesson?.id === selectedData?.journeyId

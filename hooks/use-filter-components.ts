@@ -3,14 +3,15 @@
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
-import { chineseCharacters } from "@/langs/chinese /characters";
 import { filterComponents } from "@/app/nmm/nmm-utils/filter-components";
 import { getHumanPinyin } from "@/app/nmm/nmm-utils/get-human-pinyin";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 
 export const useFilteredComponents = (
   { query }: { query: string },
   { exact, isQuerySameAsVal }: { exact: boolean; isQuerySameAsVal?: boolean }
 ) => {
+  const { data: chineseCharacters } = useListChineseCharactersQuery();
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
 

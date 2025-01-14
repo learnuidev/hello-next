@@ -5,8 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
-import { hskWords } from "@/langs/chinese /hsk";
-import { hsk2WordBank } from "@/langs/chinese /hsk-2";
+
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { useGetUserPreferenceQuery } from "../user/use-get-user-preference-query";
 
@@ -14,27 +13,17 @@ import { useGetUserPreferenceQuery } from "../user/use-get-user-preference-query
 // const url = `${siteConfig?.apiUrl}/v1/list-hsk-words`;
 const url = `${siteConfig?.apiUrl}/v1/list-hsk-words/v3`;
 
-async function listHSKWords(params: {}, opts: { Authorization: string }) {
-  const res = await fetch(url, {
+export async function listHSKWords(params: {}) {
+  const res = await fetch(`/api/list-hsk-words`, {
     method: "POST",
     headers: {
-      // 'Access-Control-Allow-Origin': "*",
-      Authorization: `Bearer ${opts?.Authorization}`,
+      Authorization: ``,
     },
 
     body: JSON.stringify(params),
-    // body: JSON.stringify({
-    //   content: params?.content,
-    // }),
   });
   const resp = (await res.json()) as any;
   return resp;
-  // return resp.map((x: any) => {
-  //   return {
-  //     ...x,
-  //     hskLevel: x?.level,
-  //   };
-  // });
 }
 
 export function useListHSKWordsQuery(
@@ -58,28 +47,16 @@ export function useListHSKWordsQuery(
   return useQuery(
     [queryIds.listHSKWords, authUser?.jwt, version],
     async () => {
-      if (!authUser?.jwt) {
-        if (version === 2) {
-          return hsk2WordBank;
-        } else {
-          return hskWords;
-        }
-      }
+      // if (!authUser?.jwt) {
+      //   if (version === 2) {
+      //     return hsk2WordBank;
+      //   } else {
+      //     return hskWords;
+      //   }
+      // }
       // if (options.query) {
-      const response = await listHSKWords(
-        { ...params, version },
-        {
-          Authorization: authUser?.jwt,
-        }
-      );
+      const response = await listHSKWords({ ...params, version });
 
-      // const uniqueHsks = [...new Set(response?.map((res: any) => res.hanzi))];
-
-      // return uniqueHsks?.map((hsk) => {
-      //   const hskItem = response?.find((item: any) => item?.hanzi === hsk);
-
-      //   return hskItem;
-      // });
       return response;
     },
     {

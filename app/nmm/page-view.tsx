@@ -11,7 +11,7 @@ import * as R from "ramda";
 
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
-import { cleanString } from "@/data/convos/bm1/utils";
+import { cleanString } from "@/data/convos/bm1/clean-string";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { useSearchParams } from "next/navigation";
 import { calculateColor } from "./nmm-utils/calculate-color";

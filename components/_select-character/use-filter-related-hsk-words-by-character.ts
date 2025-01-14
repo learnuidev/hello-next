@@ -1,7 +1,7 @@
 import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
 
 import { useListComponents } from "@/domain/lesson/component.queries";
-import { chineseCharacters } from "@/langs/chinese /characters";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 
 export const useRelatedHskWordsByCharacter = ({
   characterId,
@@ -9,6 +9,8 @@ export const useRelatedHskWordsByCharacter = ({
   characterId: string;
 }) => {
   const { data: relatedHskWords } = useListRelatedHSKWords(characterId);
+
+  const { data: chineseCharacters } = useListChineseCharactersQuery();
 
   const { data: componentsAll } = useListComponents({
     includeAll: true,

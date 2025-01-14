@@ -1,19 +1,15 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 
 import { useConvosStore } from "@/stores/convos-store";
 import { ConvoInsights } from "./convo-insights";
-import { Play } from "./_play/audio-content";
 
 import { Wordle } from "@/components/wordle/wordle";
 import { useGetContentQuery } from "@/domain/content/content.queries";
-import { useSearchParams as _useSearchParams } from "next/navigation";
 
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { YouTubePlayer } from "@/components/youtube-page/youtube-player";
 import { AI } from "./ai";
-import { PlayV2 } from "./_play-v2/play-v2";
 import { PlayV3 } from "./play-v3/play-v3";
-import { AudioPlayer } from "./[content-id]/content-item-v2/components/audio-player/audio-player";
-import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { isYoutube } from "./utils/is-youtube";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {

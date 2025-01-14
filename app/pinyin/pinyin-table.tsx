@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 import { filterComponents } from "../nmm/nmm-utils/filter-components";
 import { getHumanPinyin } from "../nmm/nmm-utils/get-human-pinyin";
 import { useRouter, useSearchParams } from "next/navigation";
-import { chineseCharacters } from "@/langs/chinese /characters";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 
 const totalCharacters = defaultData
   ?.map((val: any) => Object.values(val))
@@ -82,6 +82,7 @@ export function PinyinTable({
   children?: any;
   lesson?: any;
 }) {
+  const { data: chineseCharacters } = useListChineseCharactersQuery();
   const [data, setData] = React.useState(() => [...defaultData]);
   const rerender = React.useReducer(() => ({}), {})[1];
   const querySync = useSearchQueryStore((state) => state.query2);

@@ -7,10 +7,11 @@ import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainer } from "@/components/nmm-list-container";
 import { NmmListContainerSentence } from "@/components/nmm-list-container-sentence";
 import { useListComponents } from "@/domain/lesson/component.queries";
-import { chineseCharacters } from "@/langs/chinese /characters";
+
 import { useGetSelectedBelt } from "../use-get-selected-belt";
 import { useGetContent } from "./use-get-content";
 import { SentencesViewV2 } from "@/components/_select-character/selected-character/sentences-view-v2";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 
 export function ContentViewType({
   variant,
@@ -37,6 +38,8 @@ export function ContentViewType({
   const { data: componentsAll } = useListComponents({
     includeAll: true,
   });
+
+  const { data: chineseCharacters } = useListChineseCharactersQuery();
 
   const comps = componentsAll ? componentsAll : chineseCharacters;
 

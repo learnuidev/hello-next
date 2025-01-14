@@ -5,13 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
-import { chineseCharacters } from "@/langs/chinese /characters";
+import { useListChineseCharactersQuery } from "../hsk/list-chinese-characters-query";
 
 const listSubComponents = async (
   { componentId }: { componentId: string },
   opts: {
     Authorization: string;
-  }
+  },
+  chineseCharacters: any
 ) => {
   try {
     const res = await fetch(`${siteConfig.apiUrl}/v1/list-sub-components`, {
@@ -28,14 +29,14 @@ const listSubComponents = async (
 
     if (!resp) {
       resp = chineseCharacters?.find(
-        (comp) => comp?.hanzi === componentId
+        (comp: any) => comp?.hanzi === componentId
       )?.subComponents;
     }
 
     return resp;
   } catch (err) {
     let resp = chineseCharacters?.find(
-      (comp) => comp?.hanzi === componentId
+      (comp: any) => comp?.hanzi === componentId
     )?.subComponents;
 
     return resp || [];
@@ -48,13 +49,19 @@ export function useListSubComponentsQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
+  const { data: chineseCharacters } = useListChineseCharactersQuery();
+
   return useQuery(
     [queryIds.listSubComponents, params?.componentId],
     async () => {
       // if (options.query) {
-      const response = await listSubComponents(params, {
-        Authorization: authUser?.jwt,
-      });
+      const response = await listSubComponents(
+        params,
+        {
+          Authorization: authUser?.jwt,
+        },
+        chineseCharacters
+      );
 
       return response?.sort((a: any, b: any) => a?.createdAt - b?.createdAt);
       // }

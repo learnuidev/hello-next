@@ -5,11 +5,12 @@ import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useGetHskWordHandler } from "@/app/(auth)/convos/ai";
-import { cleanString } from "@/data/convos/bm1/level_7";
+
 import Link from "next/link";
 import { ScrollArea } from "./ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { cleanString } from "@/data/convos/bm1/clean-string";
 
 export function GrammarAnalysis({
   contentId,

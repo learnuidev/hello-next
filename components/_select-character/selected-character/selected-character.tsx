@@ -4,8 +4,6 @@ import { SelectedCharacterProps } from "../select-character.types";
 
 import { RelatedWords } from "../related-words";
 
-import { chineseCharacters } from "@/langs/chinese /characters";
-
 import { RelatedHskWords } from "./related-hsk-words";
 
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
@@ -16,12 +14,15 @@ import { HskSentenceView } from "./hsk-sentences-view";
 import { HskSuperComponentsWordView } from "./hsk-super-components-view";
 import { SimilarCharactersView } from "./similar-characters-view";
 import { CharacterContent } from "./character-content/character-content";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 
 export const SelectedCharacter = (props: SelectedCharacterProps) => {
   const { selectedComp, lang, view, characterId, selectedComp2 } = props;
 
+  const { data: chineseCharacters } = useListChineseCharactersQuery();
+
   const offlineCharacter = chineseCharacters?.find(
-    (char) => char?.hanzi === characterId || char?.input === characterId
+    (char: any) => char?.hanzi === characterId || char?.input === characterId
   );
 
   const pinyinOrRoman =

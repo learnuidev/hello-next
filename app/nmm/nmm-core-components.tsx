@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
-import { chineseCharacters } from "@/langs/chinese /characters";
+
 import { usePathname, useSearchParams } from "next/navigation";
 import { filterComponents } from "./nmm-utils/filter-components";
 import { Nothing } from "./nothing";
@@ -27,6 +27,7 @@ import { PreviewComponent } from "./preview-component";
 import { useGetSelectedBelt } from "./use-get-selected-belt";
 import { useGetNmmParams } from "./use-get-nmm-params";
 import { useScroll } from "react-spring";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 // import { useScroll } from "framer-motion";
 
 export function NmmCoreComponents() {
@@ -126,6 +127,7 @@ export function NmmCoreComponents() {
   // });
 
   // const { data: filteredComponents } = useListComponentsByBelt();
+  const { data: chineseCharacters } = useListChineseCharactersQuery();
 
   const learnedComps =
     (isComponentsLoading ? chineseCharacters : components)

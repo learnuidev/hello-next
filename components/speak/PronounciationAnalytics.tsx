@@ -34,8 +34,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useCurrentLesson } from "./useCurrentLesson";
-import { course1, useSpeakStore } from "./useSpeakStore";
+
+import { useSpeakStore } from "./useSpeakStore";
 
 const columnHelper = createColumnHelper<any>();
 

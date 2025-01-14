@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Icon } from "@radix-ui/react-select";
-import { cleanString } from "@/data/convos/bm1/level_7";
+import { cleanString } from "@/data/convos/bm1/clean-string";
 
 function getRandomNumber(n: number) {
   return Math.floor(Math.random() * (n + 1));

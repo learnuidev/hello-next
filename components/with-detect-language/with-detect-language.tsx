@@ -31,9 +31,9 @@ export function WithDetectLanguage({
 
   const { data, isLoading } = useDetectLanguageQuery(content, lang);
 
-  if (isLoading) {
-    return <LottieLoadingAnimation />;
-  }
+  // if (isLoading) {
+  //   return <LottieLoadingAnimation />;
+  // }
 
   if (!data) {
     return null;

@@ -7,7 +7,7 @@ interface DetectLanguageResponse {
   lang: string;
 }
 
-export const useDetectLanguageQuery = (content: string) => {
+export const useDetectLanguageQuery = (content: string, lang?: string) => {
   const token = useJwtToken();
 
   const router = useRouter();
@@ -25,19 +25,25 @@ export const useDetectLanguageQuery = (content: string) => {
     },
     queryFn: async () => {
       try {
-        const res = await fetch(`${siteConfig.apiUrlV2}/v1/detect-lanuage`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            content,
-          }),
-        });
+        if (lang) {
+          return {
+            lang,
+          } as DetectLanguageResponse;
+        } else {
+          const res = await fetch(`${siteConfig.apiUrlV2}/v1/detect-lanuage`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              content,
+            }),
+          });
 
-        const respJson = (await res.json()) as DetectLanguageResponse;
+          const respJson = (await res.json()) as DetectLanguageResponse;
 
-        return respJson;
+          return respJson;
+        }
       } catch (err) {
         throw err;
       }

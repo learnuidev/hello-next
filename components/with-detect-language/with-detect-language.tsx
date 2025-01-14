@@ -2,6 +2,7 @@ import { Nothing } from "@/app/nmm/nothing";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { useDetectLanguageQuery } from "./use-detect-language-query";
 import Link from "next/link";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 const supportedLangs = [
   "fr",
@@ -25,7 +26,9 @@ export function WithDetectLanguage({
   children: React.ReactNode;
   content: string;
 }) {
-  const { data, isLoading } = useDetectLanguageQuery(content);
+  const lang = useGetCurrentLang();
+
+  const { data, isLoading } = useDetectLanguageQuery(content, lang);
 
   if (isLoading) {
     return <LottieLoadingAnimation />;

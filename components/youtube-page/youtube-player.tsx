@@ -1,4 +1,3 @@
-import { Header } from "@/components/ui/icons";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useGetContentQuery } from "@/domain/content/content.queries";
@@ -6,7 +5,6 @@ import ReactPlayer from "react-player";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  faGlasses,
   faLanguage,
   faRepeat,
   faVideo,
@@ -20,21 +18,18 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { groupBy } from "@/lib/utils";
 
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
+import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
-import { useSize } from "@/hooks/use-size";
 import { useParams } from "next/navigation";
-import { TranscriptItem } from "./youtube-transcript-item";
 import { Icons } from "../ui/icons.v2";
-import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { KaraokeMode } from "./karaoke-mode";
-import { KaraokeModeV2 } from "./karaoke-mode-v2";
-import { KaraokeModeV3 } from "./karaoke-mode-v3";
-import { useContentEditStore } from "./use-content-edit-store";
-import { resolveLangCode } from "@/libs/openai/utils";
-import { useIsSmall } from "./utils/use-is-small";
+import { TranscriptItem } from "./youtube-transcript-item";
+
 import { useDebouncedCallback } from "use-debounce";
-import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
+import { ActiveTranscription } from "./active-transcription";
+import { useContentEditStore } from "./use-content-edit-store";
+import { useIsSmall } from "./utils/use-is-small";
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
@@ -50,8 +45,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const setRepeatHistories = useRepeatHistoryStore(
     (state: any) => state.setHistory
   );
-  const setIfExists = useSetIfExists();
-  const size = useSize();
 
   const { data: learnedCharacters } = useListComponents();
 
@@ -62,8 +55,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     // playerRef.current.seekTo(0, 'seconds')
   }, []);
 
-  const [lessonIndex, setLessonIndex] = useState(0);
-
   const [loopCounter, setLoopCounter] = useState(0);
 
   const { data: transcriptionsData } = useListSentencesQuery({
@@ -71,9 +62,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     lang: "zh",
     genSents: false,
   });
-  // const lesson = contentsArr?.find((content: any) => content?.id === lessonId);
 
-  // const { lessonId } = useSearchParams();
   const { data: lesson } = useGetContentQuery({ contentId: lessonId });
 
   const transcriptions = lesson?.transcriptions
@@ -188,12 +177,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     0
   );
 
-  const nextIndex = Math.min(
-    currentTranscriptionIndex + 1,
-    transcriptions?.length - 1
-  );
-  const nextTranscription = transcriptions?.[nextIndex];
-
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((seconds) => playerRef?.current?.getCurrentTime());
@@ -205,6 +188,16 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     // seek(selectedWords?.start);
     playerRef.current.seekTo(firstStart, "seconds");
 
+    for (const example of toggleLoops) {
+      setRepeatHistories({
+        contentId: contentId,
+        ...example,
+        input: example?.input || example?.hanzi,
+        roman: example?.roman || example?.pinyin,
+        createdAt: Date.now(),
+      });
+    }
+
     try {
       playerRef.current?.player?.player?.play();
     } catch (err) {
@@ -214,46 +207,11 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   useEffect(() => {
     if (toggleLoops?.length) {
-      // const currentTime = playerRef?.current?.getCurrentTime();
-
       const lastEnd = Math.max(...toggleLoops?.map((x: any) => x?.end));
       const firstStart = Math.min(...toggleLoops?.map((x: any) => x?.start));
 
-      // console.log("TOGGLE LOOPS", toggleLoops);
-
       if (currentTime > lastEnd) {
         debounceSeek(firstStart);
-
-        for (const example of toggleLoops) {
-          setRepeatHistories({
-            contentId: contentId,
-            ...example,
-            input: example?.input || example?.hanzi,
-            roman: example?.roman || example?.pinyin,
-            createdAt: Date.now(),
-          });
-        }
-
-        // setLoopCounter((prev) => {
-        //   console.log("PREV", prev);
-        //   if (prev === 1) {
-        //     for (const example of toggleLoops) {
-        //       setRepeatHistories({
-        //         contentId: contentId,
-        //         ...example,
-        //         input: example?.input || example?.hanzi,
-        //         roman: example?.roman || example?.pinyin,
-        //         createdAt: Date.now(),
-        //       });
-        //     }
-        //   }
-
-        //   if (prev >= 1) {
-        //     return 0;
-        //   }
-
-        //   return prev + 1;
-        // });
       }
     }
   }, [
@@ -266,15 +224,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     debounceSeek,
   ]);
 
-  // const { data: contentsArr } = useListContentsQuery();
-
   const groupedTranscriptions = groupBy(transcriptions || []);
-
-  const currentScriptIndex = transcriptions?.findIndex(
-    (example: any) =>
-      (example?.timestamp?.[0] || example?.start) < currentTime &&
-      (example?.timestamp?.[1] || example?.end) > currentTime
-  );
 
   const isSmall = useIsSmall();
 
@@ -282,33 +232,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const setEditMode = useContentEditStore((state) => state.setEditMode);
   const resetTimes = useContentEditStore((state) => state.resetTimes);
   const times = useContentEditStore((state) => state.times);
-
-  const ActiveTranscription = () => {
-    return (
-      <div className="text-center my-2 sm:my-8 h-24">
-        <p className="text-gray-400 text-sm sm:text-[16px]">
-          {currentTranscription?.pinyin}
-        </p>
-
-        <Link
-          onClick={() => {
-            setIfExists({ ...currentTranscription, contentId });
-          }}
-          className="text-xl sm:text-3xl font-extralight"
-          href={`/nmm/${encodeURIComponent(
-            currentTranscription?.input
-          )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
-          target="_blank"
-        >
-          {currentTranscription?.input}
-        </Link>
-
-        <p className="text-gray-500 text-sm sm:text-[16px]">
-          {currentTranscription?.en}
-        </p>
-      </div>
-    );
-  };
 
   return (
     <div className="grow flex flex-col items-center">
@@ -425,29 +348,11 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             />
           </div>
 
-          {/* <Header className="my-4 text-black text-center dark:text-gray-300 font-extralight hidden md:block">
-            {lesson?.title}
-          </Header> */}
-
-          <ActiveTranscription />
-
-          {/* {currentTranscription && nextTranscription && (
-            <div className="text-center my-8 hidden sm:block">
-              <p className="text-gray-400">{nextTranscription?.pinyin}</p>
-
-              <Link
-                className="text-2xl font-extralight"
-                href={`/nmm/${encodeURIComponent(
-                  nextTranscription?.input
-                )}${nextTranscription?.lang ? `?lang=${resolveLangCode(nextTranscription?.lang)}` : ""}`}
-                target="_blank"
-              >
-                {nextTranscription?.input}
-              </Link>
-
-              <p className="text-gray-500">{nextTranscription?.en}</p>
-            </div>
-          )} */}
+          <ActiveTranscription
+            currentTime={currentTime}
+            transcriptions={transcriptions}
+            contentId={contentId}
+          />
         </div>
 
         {viewMode === "karaoke" ? (
@@ -458,7 +363,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                 : "col-span-12 md:col-span-4"
             }
           >
-            <KaraokeModeV3
+            <KaraokeMode
               isPlaying={isPlaying}
               playerRef={playerRef}
               transcriptions={transcriptions}
@@ -581,8 +486,11 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
             {isVideoHidden && (
               <div>
-                {" "}
-                <ActiveTranscription />
+                <ActiveTranscription
+                  currentTime={currentTime}
+                  transcriptions={transcriptions}
+                  contentId={contentId}
+                />
               </div>
             )}
           </div>
@@ -627,8 +535,11 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
             {isVideoHidden && (
               <div>
-                {" "}
-                <ActiveTranscription />
+                <ActiveTranscription
+                  currentTime={currentTime}
+                  transcriptions={transcriptions}
+                  contentId={contentId}
+                />
               </div>
             )}
           </div>

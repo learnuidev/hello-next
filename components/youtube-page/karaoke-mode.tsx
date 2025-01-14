@@ -129,12 +129,12 @@ export function KaraokeMode({
             </button>
           ) : (
             // <AnimatePresence mode="wait">
-            <motion.div
+            <div
               key={JSON.stringify(currentTranscription)}
-              initial={{ y: 50, opacity: 0.4 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -50, opacity: 0 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
+              // initial={{ y: 50, opacity: 0.4 }}
+              // animate={{ y: 0, opacity: 1 }}
+              // exit={{ y: -50, opacity: 0 }}
+              // transition={{ duration: 0.5, ease: "easeInOut" }}
               className="text-4xl font-bold text-center text-white w-[700px]"
             >
               <p className="text-xl font-light text-gray-400">
@@ -147,7 +147,7 @@ export function KaraokeMode({
               <p className="text-xl text-gray-500">
                 {currentTranscription?.en}
               </p>
-            </motion.div>
+            </div>
             // </AnimatePresence>
           )}
         </div>
@@ -192,21 +192,6 @@ export function KaraokeMode({
             ))}
         </div>
       </div>
-    </div>
-  );
-}
-
-function LyricProgress({ current, total }: { current: number; total: number }) {
-  const progress = ((current + 1) / total) * 100;
-
-  return (
-    <div className="w-full bg-gray-700 rounded-full h-2.5">
-      <motion.div
-        className="bg-blue-600 h-2.5 rounded-full"
-        initial={{ width: 0 }}
-        animate={{ width: `${progress}%` }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-      />
     </div>
   );
 }

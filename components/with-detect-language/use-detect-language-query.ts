@@ -13,7 +13,7 @@ export const useDetectLanguageQuery = (content: string, lang?: string) => {
   const router = useRouter();
 
   return useQuery<DetectLanguageResponse, Error>({
-    queryKey: ["detect-content", content],
+    queryKey: ["detect-content", content, lang],
     enabled: Boolean(content),
     retry: false,
     refetchIntervalInBackground: false,
@@ -21,7 +21,11 @@ export const useDetectLanguageQuery = (content: string, lang?: string) => {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     onSuccess: (data) => {
-      router.push(`/nmm/${content}?lang=${data?.lang}`);
+      if (lang) {
+        return;
+      } else {
+        router.push(`/nmm/${content}?lang=${data?.lang}`);
+      }
     },
     queryFn: async () => {
       try {

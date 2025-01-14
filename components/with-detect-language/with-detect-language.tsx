@@ -17,6 +17,7 @@ const supportedLangs = [
   "ru",
   "hi",
   "ur",
+  "ja",
 ];
 
 export function WithDetectLanguage({
@@ -44,7 +45,7 @@ export function WithDetectLanguage({
 
   return (
     <>
-      <Nothing message="Language not supported. Sry" />
+      <Nothing message="Language not supported." />
 
       <Link href="/nmm" className="text-center block">
         Back

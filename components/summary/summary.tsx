@@ -3,16 +3,16 @@
 
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
-import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
-import { Editor } from "../Editor";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useGetCharacterId } from "@/app/(auth)/character/[character-id]/use-get-character-id";
-import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useUpdateComponentSummaryMutation } from "@/domain/component-summary/update-component-summary";
+import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Editor } from "../Editor";
 
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { create } from "zustand";
 import { Icons } from "../ui/icons.v2";
-import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 
 export const useSummaryStore = create((set) => ({
   summary: "",
@@ -30,7 +30,6 @@ export function Summary({
 
   const lang = useGetCurrentLang();
 
-  const router = useRouter();
   const updateSummaryMutation = useUpdateComponentSummaryMutation();
 
   const summary = useSummaryStore((state: any) => state.summary);
@@ -40,22 +39,10 @@ export function Summary({
   const setSummary = useSummaryStore((state: any) => state.setSummary);
   const statusUrl = searchParams.get("status-url");
 
-  const { data: meaning, isLoading } = useListMeaningsQuery(
-    {
-      content: characaterId,
-      lang,
-    },
-    {
-      onSuccess: (data: any) => {
-        console.log("");
-        if (lang) {
-          router.push(
-            `/nmm/${characterId}?lang=${data?.lang ? data?.lang : lang}${statusUrl ? `&status-url=${statusUrl}` : ``}`
-          );
-        }
-      },
-    }
-  );
+  const { data: meaning, isLoading } = useListMeaningsQuery({
+    content: characaterId,
+    lang,
+  });
 
   let meaningResponse = meaning as ListMeaningsResponse;
 

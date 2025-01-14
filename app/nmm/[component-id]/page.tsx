@@ -6,6 +6,7 @@ import { useParams, usePathname } from "next/navigation";
 import { NMMV2 } from "../v2";
 import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
 import { useGetComponentId } from "./use-get-component-id";
+import { WithDetectLanguage } from "@/components/with-detect-language/with-detect-language";
 
 export default function NomadMethodPage(props: any) {
   const params = useParams() as {
@@ -27,5 +28,9 @@ export default function NomadMethodPage(props: any) {
   //   </div>
   // );
 
-  return <SelectedCharacterContainer characterId={componentId} />;
+  return (
+    <WithDetectLanguage content={componentId}>
+      <SelectedCharacterContainer characterId={componentId} />;
+    </WithDetectLanguage>
+  );
 }

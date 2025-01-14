@@ -30,7 +30,7 @@ export default function NomadMethodPage(props: any) {
 
   return (
     <WithDetectLanguage content={componentId}>
-      <SelectedCharacterContainer characterId={componentId} />;
+      <SelectedCharacterContainer characterId={componentId} />
     </WithDetectLanguage>
   );
 }

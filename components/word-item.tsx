@@ -96,7 +96,7 @@ export const WordItem = ({
             setShow(false);
           }}
           className={cn(
-            !prop?.level ? "text-gray-800" : "text-gray-400",
+            !prop?.level ? "dark:text-white text-gray-800" : "text-gray-400",
             "w-full text-center text-2xl  hover:text-white transition"
           )}
         >

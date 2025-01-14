@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetCharacterId } from "@/app/(auth)/character/[character-id]/use-get-character-id";
+import { useGetCharacterId } from "@/hooks/use-get-character-id";
 
 import { Icons } from "@/components/ui/icons.v2";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";

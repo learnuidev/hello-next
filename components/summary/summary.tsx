@@ -3,7 +3,7 @@
 
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
-import { useGetCharacterId } from "@/app/(auth)/character/[character-id]/use-get-character-id";
+import { useGetCharacterId } from "@/hooks/use-get-character-id";
 import { useUpdateComponentSummaryMutation } from "@/domain/component-summary/update-component-summary";
 import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";

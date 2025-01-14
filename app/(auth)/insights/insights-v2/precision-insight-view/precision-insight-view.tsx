@@ -7,7 +7,7 @@ import {
   TwoSectionLayout,
   TwoSectionLayoutItem,
 } from "../components/two-section-layout";
-import { PrecisionSearchResults } from "./precision-search-results";
+import { PrecisionSearchResults } from "./search-results";
 import { TopTenIncorrectComponents } from "./top-ten-incorrect-components";
 import { TopTenRecentlyReviewedComponents } from "./top-ten-recently-reviewed-components";
 import { useGetInsightSearchResults } from "./use-get-insight-search-results";

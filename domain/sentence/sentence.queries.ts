@@ -37,9 +37,9 @@ export function useListSentencesQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
-    [queryIds.list_sentences, params?.component],
+    [queryIds.list_sentences, params?.component, params?.lang],
     async () => {
-      if (params?.component) {
+      if (params?.component && params.lang) {
         const response = await listSentences(params, {
           Authorization: authUser?.jwt,
         });

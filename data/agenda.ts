@@ -4,11 +4,11 @@ export const allLangs = [
     title: "Mandarin",
     label: "Mandarin",
   },
-  {
-    id: "ne",
-    title: "Nepali",
-    label: "Nepali",
-  },
+  // {
+  //   id: "ne",
+  //   title: "Nepali",
+  //   label: "Nepali",
+  // },
   {
     id: "ro",
     title: "Romanian",
@@ -29,11 +29,11 @@ export const allLangs = [
     title: "Korean",
     label: "Korean",
   },
-  {
-    id: "ja",
-    title: "Japanese",
-    label: "Japanese",
-  },
+  // {
+  //   id: "ja",
+  //   title: "Japanese",
+  //   label: "Japanese",
+  // },
   {
     id: "es",
     title: "Spanish",
@@ -59,20 +59,20 @@ export const allLangs = [
     title: "Urdu",
     label: "Urdu",
   },
-  {
-    id: "ma",
-    title: "Malayalam",
-    label: "Malayalam",
-  },
-  {
-    id: "da",
-    title: "Danish",
-    label: "Danish",
-  },
-  {
-    id: "nor",
-    title: "Norwegian",
-  },
+  // {
+  //   id: "ma",
+  //   title: "Malayalam",
+  //   label: "Malayalam",
+  // },
+  // {
+  //   id: "da",
+  //   title: "Danish",
+  //   label: "Danish",
+  // },
+  // {
+  //   id: "nor",
+  //   title: "Norwegian",
+  // },
 ];
 
 export const agenda = [

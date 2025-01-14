@@ -43,15 +43,17 @@ export function useListMeaningsQuery(
     queryKey: [listMeaningQueryKey, params.content, params?.lang],
 
     queryFn: async () => {
-      const response = await listMeanings(params, {
-        Authorization: authUser?.jwt,
-      });
-      return response as ListMeaningsResponse;
+      if (params.lang) {
+        const response = await listMeanings(params, {
+          Authorization: authUser?.jwt,
+        });
+        return response as ListMeaningsResponse;
+      }
     },
 
     ...options,
     retry: false,
-    enabled: Boolean(params.content),
+    enabled: Boolean(params.content) && Boolean(params.lang),
     // cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
     refetchOnFocus: false,

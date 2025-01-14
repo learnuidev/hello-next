@@ -3,7 +3,20 @@ import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { useDetectLanguageQuery } from "./use-detect-language-query";
 import Link from "next/link";
 
-const supportedLangs = ["fr", "es", "zh", "en", "ro"];
+const supportedLangs = [
+  "fr",
+  "es",
+  "zh",
+  "en",
+  "ro",
+  "fa",
+  "ko",
+  "ar",
+  "it",
+  "ru",
+  "hi",
+  "ur",
+];
 
 export function WithDetectLanguage({
   children,

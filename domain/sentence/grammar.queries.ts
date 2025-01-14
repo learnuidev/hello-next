@@ -92,7 +92,7 @@ export function useListGrammarsQuery(
   return useQuery<ListGrammarsResponse, Error>({
     queryKey: [queryIds.listGrammars, params?.content],
     queryFn: async () => {
-      if (Object.keys(params)?.length) {
+      if (Object.keys(params)?.length && params?.lang) {
         const response = await listGrammars(params, {
           Authorization: authUser?.jwt,
         });

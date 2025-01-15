@@ -269,36 +269,39 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                           textSize?.[3]
                         )}
                       >
-                        {viewPinyin && (
-                          <Link
-                            onClick={() => {
-                              setIfExists({ ...subtitle, contentId });
-                            }}
-                            href={`/nmm/${subtitle?.input || subtitle.hanzi}?lang=${subtitle?.lang || "zh"}`}
-                            target="_blank"
-                            className={cn(
-                              subtitle?.pinyin ? "text-gray-500" : "text-black",
-                              "text-sm",
-                              currentTime > subtitle?.start &&
-                                currentTime < subtitle.end
-                                ? "text-white "
-                                : "text-gray-500",
+                        {viewPinyin &&
+                          ["zh", "zh-CN"].includes(subtitle.lang) && (
+                            <Link
+                              onClick={() => {
+                                setIfExists({ ...subtitle, contentId });
+                              }}
+                              href={`/nmm/${subtitle?.input || subtitle.hanzi}?lang=${subtitle?.lang || "zh"}`}
+                              target="_blank"
+                              className={cn(
+                                subtitle?.pinyin
+                                  ? "text-gray-500"
+                                  : "text-black",
+                                "text-sm",
+                                currentTime > subtitle?.start &&
+                                  currentTime < subtitle.end
+                                  ? "text-white "
+                                  : "text-gray-500",
 
-                              textSize?.[0],
-                              activeSubtitle?.sentence === subtitle?.sentence
-                                ? "text-gray-400"
-                                : "text-gray-600",
-                              currentTime > subtitle?.start &&
-                                currentTime < subtitle.end
-                                ? "dark:text-white text-black"
-                                : "",
-                              currentTime === 0 ? "text-gray-300" : "",
-                              "text-start"
-                            )}
-                          >
-                            {subtitle?.roman || subtitle?.pinyin || ""}
-                          </Link>
-                        )}
+                                textSize?.[0],
+                                activeSubtitle?.sentence === subtitle?.sentence
+                                  ? "text-gray-400"
+                                  : "text-gray-600",
+                                currentTime > subtitle?.start &&
+                                  currentTime < subtitle.end
+                                  ? "dark:text-white text-black"
+                                  : "",
+                                currentTime === 0 ? "text-gray-300" : "",
+                                "text-start"
+                              )}
+                            >
+                              {subtitle?.roman || subtitle?.pinyin || ""}
+                            </Link>
+                          )}
 
                         {brightMode ? (
                           <div>
@@ -388,11 +391,46 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                         )}
                       </span>
 
+                      {viewPinyin &&
+                        !["zh", "zh-CN"]?.includes(subtitle.lang) && (
+                          <div className="mt-4 flex space-x-4">
+                            <button
+                              className={cn(
+                                "sm:text-2xl text-[16px]",
+                                loop === subtitle?.input
+                                  ? "text-white"
+                                  : "text-gray-600"
+                              )}
+                              onClick={() => {
+                                setLoop((loop: any) => {
+                                  if (loop) {
+                                    return null;
+                                  }
+
+                                  return subtitle?.input;
+                                });
+                              }}
+                            >
+                              <Icons.loop />
+                            </button>
+                            <Link
+                              href={`/nmm/${subtitle?.input || subtitle.hanzi}?lang=${subtitle?.lang || "zh"}`}
+                              target="_blank"
+                              className={cn(
+                                "sm:text-2xl text-[16px] dark:hover:text-white hover:text-black text-gray-600"
+                              )}
+                            >
+                              <Icons.magnifyingGlass />
+                            </Link>
+                          </div>
+                        )}
+
                       {editMode && (
                         <div className="flex flex-col">
                           {(timeStamp?.roman || subtitle?.roman) &&
-                            editMode && (
-                              <input
+                            editMode &&
+                            ["zh", "zh-CN"]?.includes(subtitle.lang) && (
+                              <textarea
                                 className=""
                                 value={timeStamp?.roman || subtitle?.roman}
                                 onChange={(event) => {
@@ -407,8 +445,8 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
                           {(timeStamp?.input || subtitle?.input) &&
                             editMode && (
-                              <input
-                                className=""
+                              <textarea
+                                className="my-4 focus-visible:outline-none focus-visible:ring-ring"
                                 value={timeStamp?.input || subtitle?.input}
                                 onChange={(event) => {
                                   setTimer(
@@ -421,8 +459,8 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                             )}
 
                           {editMode && (
-                            <input
-                              className="w-full"
+                            <textarea
+                              className="w-full mt-4 focus-visible:outline-none focus-visible:ring-ring"
                               value={timeStamp?.en || subtitle?.en}
                               onChange={(event) => {
                                 setTimer("en", subtitle, event?.target?.value);
@@ -474,6 +512,10 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                                 </button>
                               </div>
                             </div>
+                          )}
+
+                          {editMode && (
+                            <div className="border-b-2 dark:border-gray-800 mt-4"></div>
                           )}
                         </div>
                       )}

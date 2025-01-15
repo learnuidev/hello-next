@@ -274,7 +274,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                             onClick={() => {
                               setIfExists({ ...subtitle, contentId });
                             }}
-                            href={`/nmm/${subtitle.hanzi || subtitle?.input}?lang=zh`}
+                            href={`/nmm/${subtitle?.input || subtitle.hanzi}?lang=${subtitle?.lang || "zh"}`}
                             target="_blank"
                             className={cn(
                               subtitle?.pinyin ? "text-gray-500" : "text-black",

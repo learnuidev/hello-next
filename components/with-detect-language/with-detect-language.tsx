@@ -17,7 +17,7 @@ const supportedLangs = [
   "ru",
   "hi",
   "ur",
-  "ja",
+  // "ja",
   "fr-FR",
   "es-ES",
   "ro-RO",

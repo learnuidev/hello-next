@@ -69,6 +69,13 @@ const resolveTrack = ({ tracks, lang }) => {
   }
   if (!zhTrack) {
     try {
+      zhTrack = getTrack({ lang: "zh-Hans", tracks });
+    } catch (err) {
+      zhTrack = null;
+    }
+  }
+  if (!zhTrack) {
+    try {
       zhTrack = getTrack({ lang: "zh-Hant", tracks });
     } catch (err) {
       zhTrack = null;
@@ -113,7 +120,10 @@ const listSubtitles = async ({ id, lang }) => {
 
     const langCodes = tracks.map((track) => track.languageCode);
 
-    let resolvedLang = langCodes?.[0] || lang;
+    // console.log("LANG CODES", langCodes);
+
+    let resolvedLang =
+      langCodes?.find((code) => "zh-Hans" === code) || langCodes?.[0] || lang;
 
     const zhTrack = resolveTrack({ lang: resolvedLang, tracks });
 

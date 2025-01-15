@@ -170,10 +170,6 @@ export function GrammarAnalysis({
                 </div>
               );
             } else {
-              const cleanInput = cleanString(
-                analysis?.original || analysis?.input || ""
-              );
-
               return (
                 <div
                   key={analysis?.input}
@@ -183,8 +179,8 @@ export function GrammarAnalysis({
                     className="text-gray-800 dark:text-gray-400"
                     href={
                       resolvedLang
-                        ? `/nmm/${cleanInput}?lang=${resolvedLang}`
-                        : `/nmm/${cleanInput}`
+                        ? `/nmm/${analysis?.input}?lang=${resolvedLang}`
+                        : `/nmm/${analysis?.input}`
                     }
                     // className="w-16"
                   >
@@ -195,8 +191,8 @@ export function GrammarAnalysis({
                     className="text-gray-300 font-light"
                     href={
                       resolvedLang
-                        ? `/nmm/${cleanInput}?lang=${resolvedLang}`
-                        : `/nmm/${cleanInput}`
+                        ? `/nmm/${analysis?.input}?lang=${resolvedLang}`
+                        : `/nmm/${analysis?.input}`
                     }
                   >
                     {analysis?.input}
@@ -206,8 +202,8 @@ export function GrammarAnalysis({
                     className="text-gray-800 dark:text-gray-500"
                     href={
                       resolvedLang
-                        ? `/nmm/${cleanInput}?lang=${resolvedLang}`
-                        : `/nmm/${cleanInput}`
+                        ? `/nmm/${analysis?.input}?lang=${resolvedLang}`
+                        : `/nmm/${analysis?.input}`
                     }
                     // className="w-16"
                   >

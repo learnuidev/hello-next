@@ -17,7 +17,7 @@ const supportedLangs = [
   "ru",
   "hi",
   "ur",
-  "ja",
+  // "ja",
 ];
 
 export function WithDetectLanguage({

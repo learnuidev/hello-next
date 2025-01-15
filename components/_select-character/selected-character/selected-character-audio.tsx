@@ -18,7 +18,7 @@ export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
   const { data } = useListCharacterContentsQuery(props.characterId);
 
   const containsAudios = data?.filter((item: any) =>
-    ["wav", "mp3"]?.includes(item?.extension)
+    ["wav", "mp3", "m4a"]?.includes(item?.extension)
   );
   const containsAudio = containsAudios?.[containsAudios?.length - 1];
 

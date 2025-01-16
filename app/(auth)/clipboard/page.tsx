@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
 import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
@@ -10,8 +11,79 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+
+import { Label } from "@/components/ui/label";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Switch } from "@/components/ui/switch";
+
+function SettingsPopover({
+  pinyinView,
+  setPinyinView,
+  sentenceView,
+  setSentenceView,
+  hskView,
+  setHskView,
+}: any) {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <button className="w-12 justify-self-end">
+          <Icons.gear className="text-2xl" />
+        </button>
+        {/* <Button variant="outline">Open popover</Button> */}
+      </PopoverTrigger>
+      <PopoverContent className="w-80 dark:border-gray-900 border-gray-200 dark:bg-[rgb(21,22,23)] bg-gray-200 rounded-2xl">
+        <div className="grid gap-4">
+          <div className="space-y-2">
+            <h4 className="font-bold leading-none">Clipboard Settings</h4>
+          </div>
+          <div className="mt-4 space-y-4">
+            <div className="flex items-center space-x-2 justify-between">
+              <Label htmlFor="airplane-mode">Show Pinyin</Label>
+              <Switch
+                color="dark:bg-blue-500"
+                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+                checked={pinyinView}
+                onCheckedChange={() => {
+                  setPinyinView((prev: any) => !prev);
+                }}
+              />
+            </div>
+            <div className="flex items-center space-x-2 justify-between">
+              <Label htmlFor="airplane-mode">Show Sentences</Label>
+              <Switch
+                color="dark:bg-blue-500"
+                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+                checked={sentenceView}
+                onCheckedChange={() => {
+                  setSentenceView((prev: any) => !prev);
+                }}
+              />
+            </div>
+            <div className="flex items-center space-x-2 justify-between">
+              <Label htmlFor="airplane-mode">Show HSK </Label>
+              <Switch
+                color="dark:bg-blue-500"
+                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+                checked={hskView}
+                onCheckedChange={() => {
+                  setHskView((prev: any) => !prev);
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 const useTranslateTextMutation = () => {
   const token = useJwtToken();
@@ -58,16 +130,13 @@ function ReadModeItem({
   setFocused,
   focusedWord,
   setFocusedWord,
-}: {
-  text: string;
-  setWords: any;
-  translations: any;
-  setTranslations: any;
-  focused: any;
-  setFocused: any;
-  focusedWord: any;
-  setFocusedWord: any;
-}) {
+  pinyinView,
+  setPinyinView,
+  sentenceView,
+  setSentenceView,
+  hskView,
+  setHskView,
+}: any) {
   // const [isHovered, setIsHovered] = useState("");
   const { data: context, isLoading: isContextLoading } =
     useListDictionaryMeaningsQuery(text, {
@@ -89,7 +158,7 @@ function ReadModeItem({
   if (isContextLoading) {
     return (
       <p>
-        <Skeleton className={"h-12 bg-gray-300 rounded-xl"} />
+        <Skeleton className={"h-12 dark:bg-gray-700 bg-gray-300 rounded-xl"} />
       </p>
     );
   }
@@ -150,30 +219,33 @@ function ReadModeItem({
                 "inline-flex flex-col items-center",
 
                 "hover:text-black dark:hover:text-white dark:text-gray-300 text-gray-600",
-                focused
-                  ? focused === text
-                    ? "text-black dark:text-white"
-                    : "text-gray-600"
-                  : "",
+                // focused
+                //   ? focused === text
+                //     ? "text-black dark:text-white"
+                //     : "text-gray-600"
+                //   : "",
 
-                contextItem?.level && belt
-                  ? `border-b-[2px] ${belt?.border} border-opacity-50`
+                hskView && contextItem?.level && belt
+                  ? `border-b-[2px] ${belt?.border}`
                   : "",
                 "mx-[2px]"
               )}
             >
-              <span
-                className={cn(
-                  "text-sm",
-                  focused
-                    ? focused === text
-                      ? "dark:text-white text-black"
-                      : "text-gray-500"
-                    : ""
-                )}
-              >
-                {contextItem?.pinyin}
-              </span>
+              {pinyinView && (
+                <span
+                  className={cn(
+                    "text-xs",
+                    "lowercase"
+                    // focused
+                    //   ? focused === text
+                    //     ? "dark:text-white text-black"
+                    //     : "text-gray-500"
+                    //   : ""
+                  )}
+                >
+                  {contextItem?.pinyin}
+                </span>
+              )}
               <span>
                 {contextItem?.hanzi
                   ?.split("")
@@ -194,11 +266,11 @@ function ReadModeItem({
                       <span
                         className={cn(
                           focusedWord?.id === contextItem?.id ? color : "",
-                          focused
-                            ? focused === text
-                              ? "dark:text-white text-black"
-                              : "text-gray-500"
-                            : "",
+                          // focused
+                          //   ? focused === text
+                          //     ? "dark:text-white text-black"
+                          //     : "text-gray-500"
+                          //   : "",
                           focusedWord?.id === contextItem?.id ? color : "",
                           `${hoverColor}`,
                           "transition"
@@ -232,61 +304,67 @@ function ReadMode({
   setTranslations,
   focused,
   setFocused,
-}: {
-  state: string;
-  setWords: any;
-  translations: any;
-  setTranslations: any;
-  focused: any;
-  setFocused: any;
-}) {
+  pinyinView,
+  setPinyinView,
+  sentenceView,
+  setSentenceView,
+  hskView,
+  setHskView,
+}: any) {
   const [selected, setFocusedWord] = useState<any>(null);
   const currentTranslation = translations?.[focused];
   return (
     <div className="my-32 relative">
-      <div className="fixed top-[75px] max-w-4xl w-full z-30 dark:bg-black bg-white p-2">
-        <div>
-          <div className="h-20 w-full">
-            <h1 className="text-xs wrap">Sentence</h1>
+      {sentenceView && (
+        <div className="fixed top-[75px] max-w-4xl w-full z-30 dark:bg-black bg-white p-2">
+          <div>
+            <div className="h-20 w-full">
+              <h4 className="text-xs text-gray-500">Sentence</h4>
 
-            <div>
-              {/* <p>{currentTranslation?.pinyin}</p> */}
-              <p className="text-lg">{currentTranslation?.output}</p>
+              <div>
+                {/* <p>{currentTranslation?.pinyin}</p> */}
+                <p className="text-lg">{currentTranslation?.output}</p>
+              </div>
+            </div>
+
+            <div className="h-24 hidden sm:block mb-4">
+              <h4 className="text-xs text-gray-500">Word</h4>
+
+              {selected ? (
+                <div className="h-14 mt-2 w-full">
+                  <div className="flex justify-between items-center">
+                    <p className="space-x-2 text-[16px] font-extralight">
+                      <span>{selected?.hanzi}</span>
+
+                      <span className="text-red-400">{selected?.pinyin}</span>
+                    </p>
+
+                    {selected?.level && <p>HSK {selected?.level}</p>}
+                  </div>
+
+                  <p className="font-extralight">
+                    <span className="wrap">{selected?.en}</span>
+                  </p>
+                </div>
+              ) : (
+                <div className="h-14"></div>
+              )}
             </div>
           </div>
-
-          <div className="h-24 hidden sm:block mb-4">
-            <h4 className="text-xs text-gray-500">Word meaning</h4>
-
-            {selected ? (
-              <div className="h-14 mt-2 w-full">
-                <div className="flex justify-between items-center">
-                  <p className="space-x-2 text-[16px] font-extralight">
-                    <span>{selected?.hanzi}</span>
-
-                    <span className="text-red-400">{selected?.pinyin}</span>
-                  </p>
-
-                  {selected?.level && <p>HSK {selected?.level}</p>}
-                </div>
-
-                <p className="font-extralight">
-                  <span className="wrap">{selected?.en}</span>
-                </p>
-              </div>
-            ) : (
-              <div className="h-14"></div>
-            )}
-          </div>
         </div>
-      </div>
+      )}
 
-      <div className="overflow-y-auto mb-24 mt-68 text-3xl font-light dark:text-gray-200 block w-full outline-none resize-none bg-inherit overflow-hidden h-[881px]">
+      <div
+        className={cn(
+          "overflow-y-auto mb-24  text-2xl font-light dark:text-gray-200 block w-full outline-none resize-none bg-inherit overflow-hidden h-[881px]",
+          sentenceView && "mt-80"
+        )}
+      >
         <div className="space-y-8">
           {state
             .split("\n")
             .filter(Boolean)
-            .map((item) => {
+            .map((item: any) => {
               return (
                 <ReadModeItem
                   focusedWord={selected}
@@ -298,6 +376,13 @@ function ReadMode({
                   setWords={setWords}
                   key={item}
                   text={item}
+                  pinyinView={pinyinView}
+                  setPinyinView={setPinyinView}
+                  sentenceView={sentenceView}
+                  setSentenceView={setSentenceView}
+                  hskView={hskView}
+                  setHskView={setHskView}
+                  state={state}
                 />
               );
             })}
@@ -317,7 +402,7 @@ function EditMode({
   return (
     <textarea
       placeholder="Paste text here"
-      className="my-32 text-3xl font-light dark:text-gray-200 block w-full outline-none resize-none bg-inherit overflow-hidden h-[881px]"
+      className="my-32 text-2xl font-light dark:text-gray-200 block w-full outline-none resize-none bg-inherit overflow-hidden h-[881px]"
       value={state}
       onChange={(event) => {
         setState(event.target.value);
@@ -327,17 +412,19 @@ function EditMode({
 }
 
 export default function Clipboard() {
+  const defaultState = `他经历过中国的贫穷，所以他决心实施脱贫攻坚战略，带领中国人民摆脱绝对贫困
+他见识过西方的繁华，所以他带领中国人民奋发图强，走到了世界中央
+他愿意分享文明发展的成果，所以他和第三世界一起阔步向前
+他知道贪婪的觊觎一直都在，所以他把解放军建成世界一流军队`;
   const lang = languages[0];
   const [words, setWords] = useState({});
   const [focused, setFocused] = useState(null);
   const [translations, setTranslations] = useState({});
   const [mode, setMode] = useState("edit");
-  const [state, setState] = useState(
-    `他经历过中国的贫穷，所以他决心实施脱贫攻坚战略，带领中国人民摆脱绝对贫困
-他见识过西方的繁华，所以他带领中国人民奋发图强，走到了世界中央
-他愿意分享文明发展的成果，所以他和第三世界一起阔步向前
-他知道贪婪的觊觎一直都在，所以他把解放军建成世界一流军队`
-  );
+  const [state, setState] = useState(defaultState);
+  const [pinyinView, setPinyinView] = useState(false);
+  const [sentenceView, setSentenceView] = useState(false);
+  const [hskView, setHskView] = useState(false);
 
   const wordsList = Object.entries(words)
     .filter((item) => state?.includes(item?.[0]))
@@ -368,19 +455,34 @@ export default function Clipboard() {
               <p className="text-sm">Words</p>
             </div>
           </div>
-          <button
+
+          <SettingsPopover
+            pinyinView={pinyinView}
+            setPinyinView={setPinyinView}
+            sentenceView={sentenceView}
+            setSentenceView={setSentenceView}
+            hskView={hskView}
+            setHskView={setHskView}
+          />
+          {/* <button
             className="w-12  justify-self-end"
             onClick={() => {
               setState("");
             }}
           >
             <Icons.gear className="text-2xl" />
-          </button>
+          </button> */}
         </div>
       </header>
 
       {mode === "read" ? (
         <ReadMode
+          pinyinView={pinyinView}
+          setPinyinView={setPinyinView}
+          sentenceView={sentenceView}
+          setSentenceView={setSentenceView}
+          hskView={hskView}
+          setHskView={setHskView}
           focused={focused}
           setFocused={setFocused}
           state={state}
@@ -426,7 +528,7 @@ export default function Clipboard() {
           <button
             className="w-12  justify-self-end"
             onClick={() => {
-              setState("");
+              setState(defaultState);
             }}
           >
             <Icons.clipboard className="text-2xl" />

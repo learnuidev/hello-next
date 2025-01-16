@@ -9,7 +9,10 @@ interface Meanings {
   pinyin: string;
 }
 
-export const useListDictionaryMeaningsQuery = (hanzi: string) => {
+export const useListDictionaryMeaningsQuery = (
+  hanzi: string,
+  options = {} as any
+) => {
   const token = useJwtToken();
 
   const { data: hskWords } = useListHSKWordsQuery();
@@ -58,5 +61,6 @@ export const useListDictionaryMeaningsQuery = (hanzi: string) => {
         throw err;
       }
     },
+    ...options,
   });
 };

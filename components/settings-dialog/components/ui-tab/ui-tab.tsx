@@ -67,13 +67,11 @@ export function UiTab() {
           <div>
             <button
               onClick={() => {
-                setTheme(((prev: any) => {
-                  if (prev == "dark") {
-                    return "light";
-                  }
-
-                  return "dark";
-                }) as any);
+                if (theme === "dark") {
+                  setTheme("light");
+                } else {
+                  setTheme("dark");
+                }
               }}
             >
               {theme === "dark" ? <Sun /> : <Moon />}

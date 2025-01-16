@@ -42,6 +42,7 @@ import {
   faBold,
   faBoltLightning,
   faBookmark,
+  faBookOpen,
   faBoxArchive,
   faBrowser,
   faBullseye,
@@ -346,6 +347,7 @@ export const Icons = {
   paste: createFAIcon(faPaste),
   youtube: createFAIcon(faYoutube),
   clipboard: createFAIcon(faClipboard),
+  bookOpen: createFAIcon(faBookOpen),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

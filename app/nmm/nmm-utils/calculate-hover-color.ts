@@ -9,8 +9,8 @@ export const calculateHoverColor = (dict: any) => {
     case 4:
       return "hover:text-pink-400";
     case 5:
-      return "hover:text-white";
+      return "hover:dark:text-white hover:text-black";
     default:
-      return "hover:text-white";
+      return "hover:dark:text-white hover:text-black";
   }
 };

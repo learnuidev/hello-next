@@ -1,16 +1,74 @@
 "use client";
 import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
+import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
 import { languages } from "@/app/next/features/phrase/languages";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
+import { belts } from "@/app/nmm/utils";
 import { Icons } from "@/components/ui/icons.v2";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-function ReadModeItem({ text, setWords }: { text: string; setWords: any }) {
-  const [isHovered, setIsHovered] = useState("");
+export const useTranslateTextMutation = () => {
+  const token = useJwtToken();
+
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      sourceLang,
+      targetLang,
+      input,
+    }: {
+      sourceLang: string;
+      targetLang: string;
+      input: string;
+    }) => {
+      const res = await fetch(
+        `${siteConfig.apiUrlV2}/v1/translations/translate-text`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+
+          body: JSON.stringify({
+            sourceLang,
+            targetLang,
+            input,
+          }),
+        }
+      );
+
+      return res.json();
+    },
+  });
+};
+
+function ReadModeItem({
+  text,
+  setWords,
+  translations,
+  setTranslations,
+  focused,
+  setFocused,
+  focusedWord,
+  setFocusedWord,
+}: {
+  text: string;
+  setWords: any;
+  translations: any;
+  setTranslations: any;
+  focused: any;
+  setFocused: any;
+  focusedWord: any;
+  setFocusedWord: any;
+}) {
+  // const [isHovered, setIsHovered] = useState("");
   const { data: context, isLoading: isContextLoading } =
     useListDictionaryMeaningsQuery(text, {
       onSuccess: (data: any) => {
@@ -26,6 +84,8 @@ function ReadModeItem({ text, setWords }: { text: string; setWords: any }) {
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
 
+  const translateTextMutation = useTranslateTextMutation();
+
   if (isContextLoading) {
     return (
       <p>
@@ -35,24 +95,85 @@ function ReadModeItem({ text, setWords }: { text: string; setWords: any }) {
   }
   return (
     <>
-      <p className="">
+      <p
+        className={
+          focused
+            ? focused === text
+              ? "dark:text-white text-black"
+              : "text-gray-800"
+            : ""
+        }
+        onMouseEnter={() => {
+          setFocused(text);
+          if (!translations?.[text] && !translateTextMutation?.isLoading) {
+            translateTextMutation
+              .mutateAsync({
+                targetLang: "en",
+                sourceLang: "zh-CN",
+                input: text,
+              })
+              .then((resp) => {
+                setTranslations((prev: any) => {
+                  return {
+                    ...prev,
+                    [text]: resp,
+                  };
+                });
+              });
+          }
+        }}
+        onMouseLeave={() => {
+          setFocused(null);
+        }}
+      >
         {context?.map((contextItem: any) => {
+          const belt = belts?.find(
+            (belt) => belt?.hskLevel === contextItem?.level
+          );
           return (
             <span
+              onClick={() => {
+                setFocusedWord((prevContextItem: any) =>
+                  prevContextItem?.id !== contextItem?.id ? null : contextItem
+                );
+              }}
               onMouseEnter={() => {
-                setIsHovered(contextItem?.id);
+                setFocusedWord(contextItem);
+                // setIsHovered(contextItem?.id);
               }}
               onMouseLeave={() => {
-                setIsHovered("");
+                setFocusedWord(null);
+                // setIsHovered("");
               }}
               key={contextItem.id}
               className={cn(
                 "inline-flex flex-col items-center",
 
-                "hover:text-black dark:hover:text-white dark:text-gray-300 text-gray-600"
+                "hover:text-black dark:hover:text-white dark:text-gray-300 text-gray-600",
+                focused
+                  ? focused === text
+                    ? "text-black dark:text-white"
+                    : "text-gray-600"
+                  : "",
+
+                contextItem?.level && belt
+                  ? `border-b-[2px] ${belt?.border} border-opacity-50`
+                  : "",
+                "mx-[2px]"
               )}
             >
-              <span className="text-sm">{contextItem?.pinyin}</span>
+              <span
+                className={cn(
+                  "text-sm",
+                  focused
+                    ? focused === text
+                      ? "dark:text-white text-black"
+                      : "text-gray-500"
+                    : ""
+                )}
+              >
+                {contextItem?.pinyin}
+              </span>
               <span>
                 {contextItem?.hanzi
                   ?.split("")
@@ -72,8 +193,15 @@ function ReadModeItem({ text, setWords }: { text: string; setWords: any }) {
                     return (
                       <span
                         className={cn(
+                          focusedWord?.id === contextItem?.id ? color : "",
+                          focused
+                            ? focused === text
+                              ? "dark:text-white text-black"
+                              : "text-gray-500"
+                            : "",
+                          focusedWord?.id === contextItem?.id ? color : "",
                           `${hoverColor}`,
-                          isHovered === contextItem?.id ? color : ""
+                          "transition"
                         )}
                         key={`${idx}-${hanziItem}`}
                       >
@@ -97,32 +225,83 @@ function ReadModeItem({ text, setWords }: { text: string; setWords: any }) {
   );
 }
 
-function ReadMode({ state, setWords }: { state: string; setWords: any }) {
-  // const { data: context } = useListDictionaryMeaningsQuery(state, {
-  //   onSuccess: (data: any) => {
-  //     setWords((prev: any) => {
-  //       return {
-  //         ...prev,
-  //         [state]: data,
-  //       };
-  //     });
-  //   },
-  // });
+function ReadMode({
+  state,
+  setWords,
+  translations,
+  setTranslations,
+  focused,
+  setFocused,
+}: {
+  state: string;
+  setWords: any;
+  translations: any;
+  setTranslations: any;
+  focused: any;
+  setFocused: any;
+}) {
+  const [selected, setFocusedWord] = useState<any>(null);
+  const currentTranslation = translations?.[focused];
   return (
-    <div className="overflow-y-auto my-32 text-3xl font-light dark:text-gray-200 block w-full outline-none resize-none bg-inherit overflow-hidden h-[881px]">
-      {/* <div>
-        <code>
-          <pre>{JSON.stringify(context, null, 4)}</pre>
-        </code>
-      </div> */}
+    <div className="my-32 relative">
+      <div className="fixed top-[75px] max-w-4xl w-full z-30 dark:bg-black bg-white p-2">
+        <div>
+          <div className="h-24 w-full">
+            <h1 className="text-xs wrap">Sentence</h1>
 
-      <div className="space-y-8">
-        {state
-          .split("\n")
-          .filter(Boolean)
-          .map((item) => {
-            return <ReadModeItem setWords={setWords} key={item} text={item} />;
-          })}
+            <div>
+              {/* <p>{currentTranslation?.pinyin}</p> */}
+              <p className="text-lg">{currentTranslation?.output}</p>
+            </div>
+          </div>
+
+          <div className="h-16 hidden sm:block mb-4">
+            <h4 className="text-xs text-gray-500">Word meaning</h4>
+
+            {selected ? (
+              <div className="h-14 mt-2 w-full">
+                <div className="flex justify-between items-center">
+                  <p className="space-x-2 text-[16px] font-extralight">
+                    <span>{selected?.hanzi}</span>
+
+                    <span className="text-red-400">{selected?.pinyin}</span>
+                  </p>
+
+                  {selected?.level && <p>HSK {selected?.level}</p>}
+                </div>
+
+                <p className="font-extralight">
+                  <span className="truncate">{selected?.en}</span>
+                </p>
+              </div>
+            ) : (
+              <div className="h-14"></div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="overflow-y-auto mb-24 mt-64 text-3xl font-light dark:text-gray-200 block w-full outline-none resize-none bg-inherit overflow-hidden h-[881px]">
+        <div className="space-y-8">
+          {state
+            .split("\n")
+            .filter(Boolean)
+            .map((item) => {
+              return (
+                <ReadModeItem
+                  focusedWord={selected}
+                  setFocusedWord={setFocusedWord}
+                  focused={focused}
+                  setFocused={setFocused}
+                  translations={translations}
+                  setTranslations={setTranslations}
+                  setWords={setWords}
+                  key={item}
+                  text={item}
+                />
+              );
+            })}
+        </div>
       </div>
     </div>
   );
@@ -137,6 +316,7 @@ function EditMode({
 }) {
   return (
     <textarea
+      placeholder="Paste text here"
       className="my-32 text-3xl font-light dark:text-gray-200 block w-full outline-none resize-none bg-inherit overflow-hidden h-[881px]"
       value={state}
       onChange={(event) => {
@@ -149,6 +329,8 @@ function EditMode({
 export default function Clipboard() {
   const lang = languages[0];
   const [words, setWords] = useState({});
+  const [focused, setFocused] = useState(null);
+  const [translations, setTranslations] = useState({});
   const [mode, setMode] = useState("edit");
   const [state, setState] = useState(
     `他经历过中国的贫穷，所以他决心实施脱贫攻坚战略，带领中国人民摆脱绝对贫困
@@ -165,8 +347,6 @@ export default function Clipboard() {
   const uniqueWordsList = [
     ...new Set(wordsList?.map((item: any) => item?.pinyin).filter(Boolean)),
   ];
-
-  console.log("UNIQUE WORDS", uniqueWordsList);
 
   const totalWords = uniqueWordsList?.length || 0;
   return (
@@ -200,7 +380,14 @@ export default function Clipboard() {
       </header>
 
       {mode === "read" ? (
-        <ReadMode state={state} setWords={setWords} />
+        <ReadMode
+          focused={focused}
+          setFocused={setFocused}
+          state={state}
+          setWords={setWords}
+          translations={translations}
+          setTranslations={setTranslations}
+        />
       ) : (
         <EditMode state={state} setState={setState} />
       )}

@@ -246,7 +246,7 @@ function ReadMode({
     <div className="my-32 relative">
       <div className="fixed top-[75px] max-w-4xl w-full z-30 dark:bg-black bg-white p-2">
         <div>
-          <div className="h-24 w-full">
+          <div className="h-20 w-full">
             <h1 className="text-xs wrap">Sentence</h1>
 
             <div>
@@ -255,7 +255,7 @@ function ReadMode({
             </div>
           </div>
 
-          <div className="h-16 hidden sm:block mb-4">
+          <div className="h-24 hidden sm:block mb-4">
             <h4 className="text-xs text-gray-500">Word meaning</h4>
 
             {selected ? (
@@ -271,7 +271,7 @@ function ReadMode({
                 </div>
 
                 <p className="font-extralight">
-                  <span className="truncate">{selected?.en}</span>
+                  <span className="wrap">{selected?.en}</span>
                 </p>
               </div>
             ) : (
@@ -281,7 +281,7 @@ function ReadMode({
         </div>
       </div>
 
-      <div className="overflow-y-auto mb-24 mt-64 text-3xl font-light dark:text-gray-200 block w-full outline-none resize-none bg-inherit overflow-hidden h-[881px]">
+      <div className="overflow-y-auto mb-24 mt-68 text-3xl font-light dark:text-gray-200 block w-full outline-none resize-none bg-inherit overflow-hidden h-[881px]">
         <div className="space-y-8">
           {state
             .split("\n")

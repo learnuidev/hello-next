@@ -25,7 +25,7 @@ export function ApiKeysTab() {
         }}
       />
 
-      <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
+      <Card className="rounded border-gray-100 dark:border-black dark:bg-[#0b0b0f] shadow-sm  transition ">
         <CardHeader>
           <div className="flex justify-between items-center mb-4">
             <CardTitle>API Keys</CardTitle>

@@ -24,7 +24,7 @@ export function LearnTab() {
 
   return (
     <div className="space-y-4">
-      <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
+      <Card className="rounded border-gray-100 dark:border-black dark:bg-[#0b0b0f] shadow-sm  transition ">
         <CardHeader>
           <CardTitle>Learning Mode</CardTitle>
           <CardDescription className="text-gray-500 font-extralight">

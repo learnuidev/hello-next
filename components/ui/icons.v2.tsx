@@ -51,6 +51,7 @@ import {
   faCircleArrowDown,
   faCircleBolt,
   faCitrus,
+  faClipboard,
   faClock,
   faCloudArrowUp,
   faComputerMouse,
@@ -344,6 +345,7 @@ export const Icons = {
   link: createFAIcon(faLink),
   paste: createFAIcon(faPaste),
   youtube: createFAIcon(faYoutube),
+  clipboard: createFAIcon(faClipboard),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

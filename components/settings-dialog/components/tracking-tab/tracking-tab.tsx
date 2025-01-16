@@ -25,7 +25,7 @@ export function TrackingTab() {
   const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
 
   return (
-    <Card className="rounded border-black shadow-sm  transition bg-[#0b0b0f]">
+    <Card className="rounded border-gray-100 dark:border-black dark:bg-[#0b0b0f] shadow-sm  transition ">
       <CardHeader>
         <CardTitle>Tracking</CardTitle>
         <CardDescription className="text-gray-500 font-extralight">

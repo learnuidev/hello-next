@@ -45,7 +45,7 @@ export function SettingsDialogInner({
         onClick={() => {
           closeSettings();
         }}
-        className="sm:max-w-2xl border-gray-900 bg-black mt-[-100px]"
+        className="sm:max-w-2xl border-gray-900 bg-gray-50 dark:bg-black mt-[-100px]"
       >
         <div>
           <Tabs
@@ -57,28 +57,6 @@ export function SettingsDialogInner({
             className="px-0 mx-0"
           >
             <TabsList className="px-0 mx-0 space-x-4 md:space-x-8">
-              {/* <TabsTrigger
-                className={cn(
-                  "px-0 mx-0 space-x-2",
-                  tab === "profile" ? "text-white" : "text-gray-500",
-                  "transition"
-                )}
-                value="profile"
-              >
-                {tab === "profile" ? <Icons.userSolid /> : <Icons.user />}
-
-                <span>Profile</span>
-              </TabsTrigger> */}
-              {/* <TabsTrigger
-                className={cn(
-                  "px-0 mx-0 space-x-2",
-                  tab === "account" ? "text-white" : "text-gray-500",
-                  "transition"
-                )}
-                value="account"
-              >
-                <Icons.fingerPrint /> <span>Login and Security</span>
-              </TabsTrigger> */}
               <TabsTrigger
                 className={cn(
                   "px-0 mx-0 space-x-2",

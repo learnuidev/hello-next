@@ -93,6 +93,11 @@ export default function AppsPage() {
       title: "Translator",
       Icon: Icons.microphone,
     },
+    {
+      href: "/clipboard",
+      title: "Clipboard",
+      Icon: Icons.clipboard,
+    },
   ];
   return (
     <div className="mx-4 mt-16">

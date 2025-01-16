@@ -16,11 +16,11 @@ import "@/libs/cognito/init";
 import "@/libs/cognito/clientInit";
 import { Authenticated } from "@/components/Authenticated";
 
-import { ThemeProvider } from "next-themes";
 import { PostHogProvider } from "@/libs/posthog/posthog.provider";
 import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
 import { Suspense } from "react";
 import { SettingsDialog } from "@/components/settings-dialog/settings-dialog";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -46,45 +46,18 @@ export default function RootLayout({
           href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css"
           type="text/css"
         />
-
-        <style>
-          {`body {
-        margin: 0;
-        font-family: Helvetica, Arial, sans-serif;
-      }
-      #map {
-        // width: 100vw;
-        // height:650px;
-      }
-      .control-panel {
-        position: absolute;
-        top: 0;
-        right: 0;
-        max-width: 320px;
-        background: #fff;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        padding: 12px 24px;
-        margin: 20px;
-        font-size: 13px;
-        line-height: 2;
-        color: #6b6b76;
-        text-transform: uppercase;
-        outline: none;
-      }
-
-      .mapboxgl-ctrl-attrib-inner {
-        display: none;
-    }
-      
-      `}
-        </style>
       </head>
 
       <body className="dark:bg-[rgb(9,10,11)] bg-white">
         <Suspense>
           <PostHogProvider>
             <PostHogPageView />
-            <ThemeProvider attribute="class">
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
               <div
                 className={`${inter.className} bg-bkg text-content flex h-screen flex-col`}
               >

@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-export const useTranslateTextMutation = () => {
+const useTranslateTextMutation = () => {
   const token = useJwtToken();
 
   const queryClient = useQueryClient();

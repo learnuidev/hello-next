@@ -13,7 +13,7 @@ import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-
+import { chineseConverter } from "mandarino/src/utils/chinese-converter";
 import { Label } from "@/components/ui/label";
 
 import {
@@ -405,7 +405,7 @@ function EditMode({
       className="my-32 text-2xl font-light dark:text-gray-200 block w-full outline-none resize-none bg-inherit overflow-hidden h-[881px]"
       value={state}
       onChange={(event) => {
-        setState(event.target.value);
+        setState(chineseConverter(event.target.value));
       }}
     />
   );

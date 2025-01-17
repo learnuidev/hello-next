@@ -22,6 +22,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
+import { getHeightClass } from "../convos/play-v3/utils/get-height-class";
 
 function SettingsPopover({
   pinyinView,
@@ -313,17 +314,23 @@ function ReadMode({
 }: any) {
   const [selected, setFocusedWord] = useState<any>(null);
   const currentTranslation = translations?.[focused];
+
+  const height = getHeightClass(currentTranslation?.output?.length);
   return (
     <div className="my-32 relative">
       {sentenceView && (
         <div className="fixed top-[75px] max-w-4xl w-full z-30 dark:bg-black bg-white p-2">
           <div>
-            <div className="h-20 w-full">
-              <h4 className="text-xs text-gray-500">Sentence</h4>
-
-              <div>
-                {/* <p>{currentTranslation?.pinyin}</p> */}
-                <p className="text-lg">{currentTranslation?.output}</p>
+            <div className="sticky top-0 pt-4 px-2 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)]">
+              <div className="pb-4">
+                <h4 className="text-xs text-gray-500">Sentence</h4>
+                <div
+                  className={`${height} flex justify-between items-center mt-2 w-full`}
+                >
+                  <p className="space-x-2 text-[16px] font-extralight pb-[4px]">
+                    {currentTranslation?.output}
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -506,7 +513,7 @@ export default function Clipboard() {
           </button>
           {mode === "read" ? (
             <button
-              className="dark:bg-[rgb(31,32,33)]  bg-gray-100 px-8 py-2 rounded-full justify-self-center"
+              className="dark:bg-[rgb(31,32,33)]  bg-gray-100 px-4 sm:px-8 py-2 rounded-full justify-self-center"
               onClick={() => {
                 setMode("edit");
               }}
@@ -516,7 +523,7 @@ export default function Clipboard() {
             </button>
           ) : (
             <button
-              className="bg-rose-500 text-white  px-8 py-2 rounded-full justify-self-center"
+              className="bg-rose-500 text-white  px-4 sm:px-8 py-2 rounded-full justify-self-center"
               onClick={() => {
                 setMode("read");
               }}

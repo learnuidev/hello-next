@@ -17,10 +17,10 @@ export function NewConvoInput() {
     // 1. Split the story by new line
     return (
       story
-        .split("\n")
+        ?.split("\n")
         // 2. Filter out the empty string
-        .filter(Boolean)
-        .map((section) => {
+        ?.filter(Boolean)
+        ?.map((section) => {
           // 3. Added a section id
           const sectionId = crypto.randomUUID();
 

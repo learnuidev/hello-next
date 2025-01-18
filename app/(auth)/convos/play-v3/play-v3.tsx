@@ -57,7 +57,7 @@ function ActiveSubtitleDisplay({
           <div
             className={`${height} flex justify-between items-center mt-2 w-full`}
           >
-            <p className="space-x-2 text-[16px] font-extralight pb-[4px]">
+            <p className="space-x-2 text-black dark:text-gray-300 text-[16px] font-light pb-[4px]">
               {subtitleValue}
             </p>
           </div>
@@ -355,7 +355,11 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                                                   `${color} text-gray-300 ${hoverColor}`
                                               : `dark:text-gray-200 text-gray-800 ${hoverColor}`
                                       } ${hoverColor} ${color} text-2xl transition lowercase font-light`,
-                                      textSize?.[1]
+                                      textSize?.[1],
+                                      // TODO: Set learned view
+                                      true &&
+                                        learnedChar?.status === "forgotten" &&
+                                        "text-gray-300 dark:text-gray-600"
                                     )}
                                   >
                                     {val}
@@ -372,7 +376,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                               seek(timeStamp?.start || subtitle?.start);
                             }}
                             className={cn(
-                              "text-3xl font-light text-gray-300 hover:text-rose-400 text-left",
+                              "text-3xl font-light dark:text-gray-500 text-gray-700 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-black text-left",
 
                               textSize?.[1],
                               activeSubtitle?.sentence === subtitle?.sentence
@@ -382,7 +386,9 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                                 currentTime < subtitle.end
                                 ? "dark:text-white text-black"
                                 : "0",
-                              currentTime === 0 ? "text-gray-300" : ""
+                              currentTime === 0
+                                ? "dark:text-gray-400 text-gray-700"
+                                : ""
                             )}
                           >
                             {subtitle?.input || subtitle?.hanzi}

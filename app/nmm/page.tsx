@@ -1,18 +1,17 @@
 "use client";
-import React from "react";
 import { NavBar } from "@/components/navbar";
 
-import { useSearchParams } from "next/navigation";
-
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { NomadMethodBody } from "./nomad-method-body";
 
 export default function NomadMethodPage(props: any) {
-  const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "zh";
+  const lang = useGetCurrentLang();
 
   return (
     <div className="grow">
       <NavBar />
+
+      <p>{lang}</p>
 
       <NomadMethodBody lang={lang} />
     </div>

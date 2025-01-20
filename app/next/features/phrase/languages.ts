@@ -6,26 +6,31 @@ import romanianFlag from "./romanian.webp";
 
 export const languages = [
   {
+    shortId: "zh",
     id: "zh-CN",
     title: "Chinese",
     src: chineseFlag.src,
   },
   {
+    shortId: "en",
     id: "en",
     title: "English",
     src: ukFlag.src,
   },
   {
+    shortId: "fr",
     id: "fr-FR",
     title: "French",
     src: frenchFlag.src,
   },
   {
+    shortId: "es",
     id: "es-ES",
     title: "Spanish",
     src: spanishFlag.src,
   },
   {
+    shortId: "ro",
     id: "ro-RO",
     title: "Romaninan",
     src: romanianFlag.src,

@@ -21,6 +21,7 @@ import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
 import { Suspense } from "react";
 import { SettingsDialog } from "@/components/settings-dialog/settings-dialog";
 import { ThemeProvider } from "@/components/theme-provider";
+import { LanguageSelector } from "@/components/language-selector/language-selector";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -59,7 +60,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <div
-                className={`${inter.className} bg-bkg text-content flex h-screen flex-col`}
+                className={`${inter.className} bg-bkg text-content flex h-screen relative flex-col`}
               >
                 <div className="flex-1">
                   <QueryClientProvider>
@@ -67,6 +68,8 @@ export default function RootLayout({
                     <SettingsDialog />
                   </QueryClientProvider>
                 </div>
+
+                <LanguageSelector />
 
                 <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300 dark:text-gray-700">
                   {/* <FontAwesomeIcon icon={faScrewdriverWrench} />

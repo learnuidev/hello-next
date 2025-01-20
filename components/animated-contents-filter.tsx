@@ -43,7 +43,7 @@ export function AnimatedContentsFilter() {
             });
           }
         }}
-        className="cursor-pointer relative mx-auto flex w-fit h-12 items-center rounded-full border-2 border-black bg-[rgb(21,23,25)] p-1"
+        className="cursor-pointer relative mx-auto flex w-fit h-12 items-center rounded-full border-2 border-gray-200 dark:border-black dark:bg-[rgb(21,23,25)] bg-gray-100 p-1"
       >
         <Tab
           setPosition={setPosition}

@@ -31,6 +31,7 @@ import { NewContent } from "./new-content/new-content";
 import { NewConvo } from "./new-convo/new-convo";
 import { useContentTypeStore } from "./use-content-type-store";
 import { useViewModeStore } from "./new-convo/use-viewmode-store";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 type ContentType = {
   title: string;
@@ -47,13 +48,13 @@ function ContentsList() {
   const { data: conversations } = useListConversationsQuery();
 
   const query = useSearchQueryStore((state) => state.query2);
+  const lang = useGetCurrentLang();
 
   const searchTransacription = (content: ContentType, query: string) => {
     if (!content?.transcriptions?.length) {
       return false;
     }
 
-    // const foundTranscription = content?.transcriptions
     return true;
   };
 
@@ -80,6 +81,7 @@ function ContentsList() {
             searchTransacription(content, query)
           );
         })
+        ?.filter((item: any) => item?.lang === lang)
         ?.map((content: any) => {
           return {
             title: content?.title,
@@ -99,22 +101,12 @@ function ContentsList() {
     );
   }
 
-  // return (
-  //   <div className="text-white max-w-5xl mx-auto px-8">
-  //     <code>
-  //       <pre>{JSON.stringify(conversations, null, 2)}</pre>
-  //     </code>
-  //   </div>
-  // );
-
   return (
     <div className="max-w-5xl mx-auto px-8">
       {projects?.length > 0 && <HoverEffect items={[...projects]} />}
     </div>
   );
 }
-
-// useConvosStore
 
 function LessonCard({ lesson }: any) {
   const { data: allAnswers, isLoading } = useListAnswersQuery(
@@ -150,8 +142,6 @@ function LessonCard({ lesson }: any) {
 
   const firstUnCompletedLesson = uncompletedLessons?.[0];
 
-  //   const fistCompletedLesson = lesson?.transcriptions?.filter(lesson => completedLessons?.find(cl => cl?.))
-
   const percentCompleted = completedLessons?.length / totalLessonsLength || 0;
   return (
     <button
@@ -164,19 +154,6 @@ function LessonCard({ lesson }: any) {
       <h2 className="text-2xl">{lesson?.title}</h2>
       <p className="text-2xl">{formatPercentage(percentCompleted)}</p>
     </button>
-
-    // <Link
-    //   target="_blank"
-    //   href={
-    //     firstUnCompletedLesson
-    //       ? `/convos/${lesson?.id}/${firstUnCompletedLesson?.id}`
-    //       : `/convos/${lesson?.id}`
-    //   }
-    //   className="font-light flex justify-between items-center w-full px-4 md:px-32 md:mt-2"
-    // >
-    //   <h2 className="text-2xl">{lesson?.title}</h2>
-    //   <p className="text-2xl">{formatPercentage(percentCompleted)}</p>
-    // </Link>
   );
 }
 export default function Convos() {
@@ -249,15 +226,9 @@ export default function Convos() {
         <ConvoDetails lessonId={lessonId} />
       ) : (
         <div className="my-8 space-y-8">
-          {/* {contents?.length &&
-            contents?.map((lesson: any) => {
-              return <LessonCard key={lesson?.id} lesson={lesson} />;
-            })} */}
           <ContentsList />
         </div>
       )}
-
-      {/* <Wordle /> */}
     </main>
   );
 }

@@ -11,8 +11,6 @@ export default function NomadMethodPage(props: any) {
     <div className="grow">
       <NavBar />
 
-      <p>{lang}</p>
-
       <NomadMethodBody lang={lang} />
     </div>
   );

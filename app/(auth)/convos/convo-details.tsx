@@ -55,7 +55,11 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
     // return <AudioPlayer />;
 
-    return <PlayV3 contentId={lessonId} />;
+    return (
+      <div className="px-4 md:px-32">
+        <PlayV3 contentId={lessonId} />
+      </div>
+    );
   }
 
   if (viewType === "write") {

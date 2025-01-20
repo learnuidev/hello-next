@@ -80,12 +80,6 @@ export const TranscriptItem = ({
 
   const { data: contents } = useListCharactersQuery();
 
-  // const { data: grammars } = useListGrammarsQuery({ content: example?.input });
-
-  // const grammarContent = (
-  //   grammars as ListGrammarsResponse
-  // )?.grammarAnalysis?.find((grammar) => grammar?.input === example?.input);
-
   const content =
     contents?.find(
       (contentItem: any) =>
@@ -203,7 +197,7 @@ export const TranscriptItem = ({
             className={`${
               (example?.timestamp?.[0] || example?.start) < currentTime &&
               (example?.timestamp?.[1] || example?.end) > currentTime
-                ? "dark:text-gray-400"
+                ? "dark:text-gray-400 text-rose-400"
                 : "dark:text-gray-500 text-gray-500"
             } transition`}
           >
@@ -221,13 +215,6 @@ export const TranscriptItem = ({
 
   return (
     <div className="w-120 px-4">
-      {/* {editMode && (
-        <div>
-          <code>
-            <pre>{JSON.stringify(example, null, 2)}</pre>
-          </code>
-        </div>
-      )} */}
       <div className="flex items-center space-x-4">
         <div
           className={`${
@@ -269,7 +256,7 @@ export const TranscriptItem = ({
                         example?.end) > currentTime
                         ? "text-rose-400"
                         : "dark:text-gray-400 text-gray-300"
-                    } transition text-md text-left`}
+                    } transition text-md text-left text-gray-500`}
                   >
                     {example?.pinyin || example?.roman}
                   </p>
@@ -278,10 +265,6 @@ export const TranscriptItem = ({
                   {(example?.input || example?.hanzi || example?.nepali || "")
                     .split("")
                     .map((item: any, idx: any) => {
-                      // const component = components?.find(
-                      //   (char: any) => char?.hanzi === item
-                      // );
-
                       return (
                         <span
                           key={`${JSON.stringify(item)}-${idx}-${Math.random()}`}

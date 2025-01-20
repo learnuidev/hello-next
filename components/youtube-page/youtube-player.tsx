@@ -498,7 +498,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           <div
             className={`${isVideoHidden ? "col-span-12" : "md:col-span-4 col-span-12"} w-full`}
           >
-            <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md border border-gray-900 p-0 pb-16">
+            <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md border dark:border-gray-900 border-gray-200 p-0 pb-16">
               <div className="sm:space-y-8 mt-4 w-full">
                 {(transcriptions || [])
                   .filter((script: any) => {

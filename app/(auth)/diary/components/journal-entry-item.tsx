@@ -71,7 +71,7 @@ export const JournalEntryItem = ({
 
       <p
         className={cn(
-          "text-gray-300 font-extralight text-[16px]",
+          "text-gray-800 dark:text-gray-300 font-extralight text-[16px]",
           showFull ? "" : "line-clamp-2"
         )}
       >

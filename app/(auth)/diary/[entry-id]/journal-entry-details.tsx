@@ -67,7 +67,7 @@ function JournalDetailsBody({ entryId }: { entryId: string }) {
                       key={JSON.stringify(transcription)}
                       className={cn(
                         "text-center h-24",
-                        "text-gray-300",
+                        "dark:text-gray-300",
                         currentString
                           ? currentString === transcription?.hanzi
                             ? "dark:text-white"

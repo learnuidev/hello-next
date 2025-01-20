@@ -57,17 +57,17 @@ const FloatingNavbarComp = () => {
       <div
         className={cn("transition", "flex items-center w-full justify-center")}
       >
-        <div className="overflow-y-auto px-8 py-2 bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
+        <div className="overflow-y-auto px-8 py-2 dark:bg-black bg-gray-50 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
           <div className="space-x-6 md:space-x-8 flex justify-center items-center w-full ">
             <Link
               href={reviewUrlFn({ reviewMode: "all" })}
               className={`transition ${
                 reviewMode === "all"
                   ? "text-gray-800 dark:text-gray-300"
-                  : "text-gray-200 dark:text-gray-500"
+                  : "text-gray-500 dark:text-gray-500"
               } hover:text-gray-700 transition text-xl`}
             >
-              <Icons.globeAsia className="hover:text-white transition" />
+              <Icons.globeAsia className="hover:text-rose-400 dark:hover:text-white transition" />
             </Link>
 
             <Link
@@ -75,10 +75,10 @@ const FloatingNavbarComp = () => {
               className={`transition ${
                 !reviewMode
                   ? "text-gray-800 dark:text-gray-300"
-                  : "text-gray-200 dark:text-gray-500"
+                  : "text-gray-500 dark:text-gray-500"
               } hover:text-gray-700 transition text-xl`}
             >
-              <Icons.lightBulb className="hover:text-white transition" />
+              <Icons.lightBulb className="hover:text-rose-400 dark:hover:text-white transition" />
             </Link>
           </div>
 
@@ -93,7 +93,7 @@ const FloatingNavbarComp = () => {
     <div
       className={cn("transition", "flex items-center w-full justify-center")}
     >
-      <div className="overflow-y-auto px-8 py-2 bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
+      <div className="overflow-y-auto px-8 py-2 bg-gray-50 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
         <div className="space-x-6 md:space-x-8 flex justify-center items-center w-full ">
           {!["/", "/apps"]?.includes(routeName) && (
             <button
@@ -101,7 +101,7 @@ const FloatingNavbarComp = () => {
                 "text-xl",
                 readMode
                   ? "text-gray-800 dark:text-gray-300"
-                  : "text-gray-200 dark:text-gray-500"
+                  : "text-gray-500 dark:text-gray-500"
               )}
               onClick={() => {
                 setBrightMode((prev: any) => !prev);
@@ -117,13 +117,13 @@ const FloatingNavbarComp = () => {
             className={`transition ${
               routeName?.includes("/convos")
                 ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-200 dark:text-gray-500"
-            } hover:text-white transition text-xl`}
+                : "text-gray-500 dark:text-gray-500"
+            } hover:text-rose-400 dark:hover:text-white transition text-xl`}
           >
             {routeName?.includes("/convos") ? (
-              <Icons.contentSolid className="hover:text-white transition" />
+              <Icons.contentSolid className="hover:text-rose-400 dark:hover:text-white transition" />
             ) : (
-              <Icons.content className="hover:text-white transition" />
+              <Icons.content className="hover:text-rose-400 dark:hover:text-white transition" />
             )}
           </Link>
 
@@ -133,11 +133,11 @@ const FloatingNavbarComp = () => {
               className={cn(
                 routeName?.includes("/review")
                   ? "text-gray-800 dark:text-gray-300"
-                  : "text-gray-200 dark:text-gray-500",
+                  : "text-gray-500 dark:text-gray-500",
                 "transition text-xl "
               )}
             >
-              <Icons.playCircle className="hover:text-white transition" />
+              <Icons.playCircle className="hover:text-rose-400 dark:hover:text-white transition" />
             </Link>
           ) : null}
 
@@ -146,10 +146,10 @@ const FloatingNavbarComp = () => {
             className={`transition ${
               routeName === "/timeline"
                 ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-200 dark:text-gray-500"
+                : "text-gray-500 dark:text-gray-500"
             } hover:text-gray-700 transition text-xl`}
           >
-            <Icons.verticalStack className="hover:text-white transition" />
+            <Icons.verticalStack className="hover:text-rose-400 dark:hover:text-white transition" />
           </Link>
 
           {/* <Link
@@ -157,10 +157,10 @@ const FloatingNavbarComp = () => {
             className={`transition ${
               routeName === "/insights"
                 ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-200 dark:text-gray-500"
+                : "text-gray-500 dark:text-gray-500"
             } hover:text-gray-700 transition text-xl`}
           >
-            <Icons.chartColumn className="hover:text-white transition" />
+            <Icons.chartColumn className="hover:text-rose-400 dark:hover:text-white transition" />
           </Link> */}
 
           {/* {(!lang || lang === "zh") && (
@@ -169,10 +169,10 @@ const FloatingNavbarComp = () => {
               className={`transition ${
                 routeName === "/pinyin"
                   ? "text-gray-800 dark:text-gray-300"
-                  : "text-gray-200 dark:text-gray-500"
+                  : "text-gray-500 dark:text-gray-500"
               } hover:text-gray-700 transition text-xl`}
             >
-              <Icons.pinyinChart className="hover:text-white transition" />
+              <Icons.pinyinChart className="hover:text-rose-400 dark:hover:text-white transition" />
             </Link>
           )} */}
 
@@ -181,10 +181,10 @@ const FloatingNavbarComp = () => {
             className={`transition ${
               routeName === "/apps"
                 ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-200 dark:text-gray-500"
+                : "text-gray-500 dark:text-gray-500"
             } hover:text-gray-700 transition text-xl`}
           >
-            <Icons.apps className="hover:text-white transition" />
+            <Icons.apps className="hover:text-rose-400 dark:hover:text-white transition" />
           </Link>
 
           <Link
@@ -192,10 +192,10 @@ const FloatingNavbarComp = () => {
             className={`transition ${
               routeName === "/nmm"
                 ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-200 dark:text-gray-500"
+                : "text-gray-500 dark:text-gray-500"
             } hover:text-gray-700 transition text-xl`}
           >
-            <NomadIcon className="hover:text-white transition" />
+            <NomadIcon className="hover:text-rose-400 dark:hover:text-white transition" />
           </Link>
         </div>
 

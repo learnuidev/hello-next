@@ -11,11 +11,15 @@ import Link from "next/link";
 
 const PhraseActionButton = ({
   onClick,
+  onDoubleClick,
   children,
   href,
   as,
+  className,
 }: {
+  className?: string;
   onClick?: () => void;
+  onDoubleClick?: () => void;
   children: React.ReactNode;
   as?: string;
   href?: string;
@@ -24,7 +28,10 @@ const PhraseActionButton = ({
     return (
       <Link
         href={href || ""}
-        className={`text-xs p-2  w-8 h-8 ring-1 ring-gray-700 shadow-lg rounded-full flex items-center justify-center transition`}
+        className={cn(
+          `text-xs dark:text-white p-2  w-8 h-8 ring-1 ring-gray-300 dark:ring-gray-700  rounded-full flex items-center justify-center transition hover:shadow-lg dark:shadow-gray-400`,
+          className
+        )}
       >
         {children}
       </Link>
@@ -33,8 +40,10 @@ const PhraseActionButton = ({
   return (
     <button
       className={cn(
-        "text-[14px] border-[1px] border-gray-700 dark:hover:border-gray-500 w-8 h-8 rounded-full"
+        "text-[14px] border-[1px] dark:text-white border-gray-300 dark:border-gray-700  w-8 h-8 rounded-full hover:shadow-lg dark:shadow-gray-400",
+        className
       )}
+      onDoubleClick={onDoubleClick}
       onClick={onClick}
     >
       {children}
@@ -114,7 +123,7 @@ export function PhraseItem({
               <Icons.volume />
             </PhraseActionButton>
             <PhraseActionButton
-              onClick={() => {
+              onDoubleClick={() => {
                 deleteTranslationMutation.mutateAsync({ id: message?.id });
               }}
             >

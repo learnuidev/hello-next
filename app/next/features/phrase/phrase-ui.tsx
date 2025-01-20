@@ -118,7 +118,7 @@ export const PhraseUI = () => {
           </Link>
         </div>
         {/* Messages */}
-        <ScrollArea className="flex-1 p-4 dark:bg-[rgb(11,12,13)] pb-36 bg-black rounded w-full sm:max-w-3xl m-auto">
+        <ScrollArea className="flex-1 p-4 dark:bg-[rgb(11,12,13)] pb-36 bg-gray-50 rounded w-full sm:max-w-3xl m-auto">
           {translations?.length === 0 ? (
             <Nothing icon={Icons.ai} message={"Say something..."} />
           ) : (
@@ -153,7 +153,7 @@ export const PhraseUI = () => {
                 className="flex-1 py-0 dark:bg-[rgb(21,22,23)] border-transparent focus:border-transparent focus:ring-0 focus:outline-none resize-none"
               />
               <Button disabled={addTranslation.isLoading} type="submit">
-                <Icons.paperPlane className="text-xl dark:text-gray-600 dark:hover:text-white text-gray-700" />
+                <Icons.paperPlane className="text-xl dark:text-gray-300 dark:hover:text-white text-gray-700" />
               </Button>
             </form>
 
@@ -197,7 +197,9 @@ export const PhraseUI = () => {
                 <button
                   className={cn(
                     "text-xl border-[1px] border-gray-700 dark:hover:border-gray-500 w-10 h-10 rounded-full",
-                    showPinyin ? "dark:text-white text-black" : "text-gray-600"
+                    showPinyin
+                      ? "dark:text-white text-black"
+                      : "text-gray-600 dark:text-gray-400"
                   )}
                   onClick={() => {
                     setShowPinyin((showPinyin) => !showPinyin);

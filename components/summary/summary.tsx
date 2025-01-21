@@ -13,6 +13,7 @@ import { Editor } from "../Editor";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { create } from "zustand";
 import { Icons } from "../ui/icons.v2";
+import { AnimatedLoadingText } from "../animated-loading-text";
 
 export const useSummaryStore = create((set) => ({
   summary: "",
@@ -47,11 +48,18 @@ export function Summary({
   let meaningResponse = meaning as ListMeaningsResponse;
 
   if (isLoading) {
-    return null;
+    return (
+      <div className="my-4">
+        <AnimatedLoadingText
+          className="text-xl font-bold"
+          message="Generating summary..."
+        />
+      </div>
+    );
   }
 
   return (
-    <main className="">
+    <main className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-4">
       <div className="">
         <div className="">
           {meaningResponse?.summary && (

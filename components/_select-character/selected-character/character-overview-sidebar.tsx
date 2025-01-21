@@ -1,18 +1,16 @@
 "use client";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { GrammarAnalysis } from "../../grammar-analysis";
 import { CharacterSentences } from "../character-sentences";
 import { SelectedCharacterProps } from "../select-character.types";
 
-import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { useStoryStore } from "./story-store";
 
 import { create } from "zustand";
 
 const useSideBarViewType = create((set: any, get: any) => ({
-  sideBarView: "grammar",
+  sideBarView: "sentences",
   setSideBarView: (sideBarView: any) => set({ sideBarView }),
 }));
 
@@ -31,8 +29,8 @@ export const CharacterOverviewViewSidebar = (props: SelectedCharacterProps) => {
   }, [selectedComp?.story, setStory]);
 
   return (
-    <div className={"col-span-5 md:col-span-3"}>
-      <div className="space-x-4">
+    <div className={"col-span-5 md:col-span-3 hidden sm:block"}>
+      {/* <div className="space-x-4">
         <button
           className={cn(
             "text-sm transition",
@@ -59,13 +57,13 @@ export const CharacterOverviewViewSidebar = (props: SelectedCharacterProps) => {
         >
           Sentences
         </button>
-      </div>
-      {sideBarView === "grammar" && (
+      </div> */}
+      {/* {sideBarView === "grammar" && (
         <GrammarAnalysis
           contentId={selectedChar}
           lang={lang || selectedComp?.lang}
         />
-      )}
+      )} */}
       {sideBarView === "sentences" && (
         <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
           <div className="">

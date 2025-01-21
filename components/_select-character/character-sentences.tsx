@@ -24,6 +24,7 @@ import {
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useContentViewStore } from "./use-content-view-store";
+import { useListCharacterSentences } from "./use-list-character-sentences";
 
 const ContentSentences = ({
   characterId,
@@ -40,25 +41,7 @@ const ContentSentences = ({
 
   const lang = props?.lang || searchParamsLang;
 
-  const filteredContents = contents?.filter((content: any) => {
-    if (view === "all") {
-      // if (lang) {
-      //   return content?.lang === lang;
-      // }
-
-      return true;
-    }
-
-    return content?.title === view;
-  });
-
-  const allSentences = filteredContents
-    ?.map((content: any) => content?.transcriptions)
-    ?.flat()
-    ?.sort(
-      (a: any, b: any) => JSON.stringify(a)?.length - JSON.stringify(b)?.length
-    )
-    ?.filter((item: any) => JSON.stringify(item)?.includes(characterId));
+  const allSentences = useListCharacterSentences(characterId);
 
   const contentTitles = useMemo(
     () => [
@@ -255,6 +238,8 @@ export const CharacterSentences = (props: { characterId: string }) => {
 
   const { data: contents } = useListContentsQuery();
 
+  const allSentences = useListCharacterSentences(props.characterId);
+
   return (
     <div className="w-full">
       <Tabs
@@ -268,32 +253,34 @@ export const CharacterSentences = (props: { characterId: string }) => {
         }}
       >
         <div className="mt-2 flex justify-between items-center">
-          <TabsList className="space-x-8">
-            {(contents || [])?.length > 0 && (
+          {allSentences !== undefined && allSentences?.length > 0 && (
+            <TabsList className="space-x-8">
+              {(contents || [])?.length > 0 && (
+                <TabsTrigger
+                  value="content"
+                  className="px-0 dark:data-[state=active]:text-white data-[state=active]:text-black text-gray-700 dark:text-gray-400"
+                >
+                  <Icons.content className="text-2xl" />
+                </TabsTrigger>
+              )}
+
+              {uniqueAnswerIds?.length > 0 && (
+                <TabsTrigger
+                  value="answers"
+                  className="px-0 dark:data-[state=active]:text-white data-[state=active]:text-black text-gray-700 dark:text-gray-400"
+                >
+                  <Icons.info className="text-2xl" />
+                </TabsTrigger>
+              )}
+
               <TabsTrigger
-                value="content"
+                value="ai"
                 className="px-0 dark:data-[state=active]:text-white data-[state=active]:text-black text-gray-700 dark:text-gray-400"
               >
-                <Icons.content className="text-2xl" />
+                <Icons.ai className="text-2xl" />
               </TabsTrigger>
-            )}
-
-            {uniqueAnswerIds?.length > 0 && (
-              <TabsTrigger
-                value="answers"
-                className="px-0 dark:data-[state=active]:text-white data-[state=active]:text-black text-gray-700 dark:text-gray-400"
-              >
-                <Icons.info className="text-2xl" />
-              </TabsTrigger>
-            )}
-
-            <TabsTrigger
-              value="ai"
-              className="px-0 dark:data-[state=active]:text-white data-[state=active]:text-black text-gray-700 dark:text-gray-400"
-            >
-              <Icons.ai className="text-2xl" />
-            </TabsTrigger>
-          </TabsList>
+            </TabsList>
+          )}
 
           <div className="space-x-4"></div>
         </div>

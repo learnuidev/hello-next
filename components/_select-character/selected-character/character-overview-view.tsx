@@ -16,6 +16,7 @@ import { SelectedCharacterHeader } from "./selected-character-header";
 import { StoryEditor } from "./story-editor";
 import { useStoryStore } from "./story-store";
 import { useGetSelectedCharacterParams } from "./use-get-selected-character-params";
+import { CharacterSentences } from "../character-sentences";
 
 export const CharacterOverviewView = (props: SelectedCharacterProps) => {
   const { selectedComp, selectedChar, lang, characterId } = props;
@@ -53,14 +54,14 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
                       <TabsList className="space-x-8 overflow-y-auto">
                         <TabsTrigger
                           value="overview"
-                          className="px-0 data-[state=active]:text-rose-400 data-[state=active]:font-bold"
+                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
                         >
                           Overview
                         </TabsTrigger>
                         {selectedComp?.contentContext && (
                           <TabsTrigger
                             value="learning-context"
-                            className="px-0 data-[state=active]:text-rose-400 data-[state=active]:font-bold"
+                            className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
                           >
                             Learning Context
                           </TabsTrigger>
@@ -68,14 +69,20 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
 
                         <TabsTrigger
                           value="grammar-analysis"
-                          className="px-0 data-[state=active]:text-rose-400 data-[state=active]:font-bold"
+                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
                         >
                           Grammar
+                        </TabsTrigger>
+                        <TabsTrigger
+                          value="sentences"
+                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold block sm:hidden"
+                        >
+                          Sentences
                         </TabsTrigger>
                         {selectedComp?.story && (
                           <TabsTrigger
                             value="story"
-                            className="px-0 data-[state=active]:text-rose-400 data-[state=active]:font-bold"
+                            className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
                           >
                             Story
                           </TabsTrigger>
@@ -85,10 +92,13 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
                   </div>
 
                   <TabsContent value="overview">
-                    <div className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-4">
+                    {/* <div className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-4"> */}
+                    <div>
                       {variant ? (
-                        <div className="mt-6">
-                          <CharacterVariantSummary />
+                        <div className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-4">
+                          <div className="mt-6">
+                            <CharacterVariantSummary />
+                          </div>
                         </div>
                       ) : (
                         <Summary
@@ -109,6 +119,9 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
                       contentId={selectedChar}
                       lang={lang || selectedComp?.lang}
                     />
+                  </TabsContent>
+                  <TabsContent value="sentences">
+                    <CharacterSentences {...props} />
                   </TabsContent>
                   {selectedComp?.story && (
                     <TabsContent value="story">

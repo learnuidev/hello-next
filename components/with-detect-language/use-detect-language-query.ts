@@ -21,11 +21,12 @@ export const useDetectLanguageQuery = (content: string, lang?: string) => {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     onSuccess: (data) => {
-      if (lang) {
-        return;
-      } else {
-        router.push(`/nmm/${content}?lang=${data?.lang}`);
-      }
+      router.push(`/nmm/${content}?lang=${data?.lang}`);
+      // if (lang) {
+      //   return;
+      // } else {
+      //   router.push(`/nmm/${content}?lang=${data?.lang}`);
+      // }
     },
     queryFn: async () => {
       try {
@@ -34,6 +35,11 @@ export const useDetectLanguageQuery = (content: string, lang?: string) => {
             lang,
           } as DetectLanguageResponse;
         } else {
+          if (lang) {
+            return {
+              lang,
+            };
+          }
           const res = await fetch(`${siteConfig.apiUrlV2}/v1/detect-lanuage`, {
             method: "POST",
             headers: {

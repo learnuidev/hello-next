@@ -5,13 +5,6 @@ import { LanguageButton } from "../next/features/phrase/language-button";
 import { languages } from "../next/features/phrase/languages";
 import { useRouter } from "next/navigation";
 
-const languageMapper = {
-  "zh-CN": "zh",
-  "fr-FR": "fr",
-  "es-ES": "es",
-  "ro-RO": "ro",
-} as any;
-
 export default function LanguageSelector() {
   const setCurrentLang = useCurrentLangStore((state) => state.setCurrentLang);
   const router = useRouter();
@@ -28,7 +21,7 @@ export default function LanguageSelector() {
               <div
                 onClick={() => {
                   new Promise((resolve, reject) => {
-                    const langItem = languageMapper?.[lang.id];
+                    const langItem = lang.shortId;
                     setCurrentLang(langItem);
                     resolve(langItem);
                   }).then((langId: any) => {

@@ -3,6 +3,7 @@ import ukFlag from "./uk.png";
 import frenchFlag from "./fr.png";
 import spanishFlag from "./es.webp";
 import romanianFlag from "./romanian.webp";
+import japaneseFlag from "./jp.png";
 
 export const languages = [
   {
@@ -34,5 +35,11 @@ export const languages = [
     id: "ro-RO",
     title: "Romaninan",
     src: romanianFlag.src,
+  },
+  {
+    shortId: "ja",
+    id: "ja-JA",
+    title: "Japanese",
+    src: japaneseFlag.src,
   },
 ];

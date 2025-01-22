@@ -19,6 +19,9 @@ import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-chara
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
 
+  const resolvedLang =
+    currentPhrase?.lang || lang || selectedComp?.lang || currentPhrase?.lang;
+
   const componentId = useGetComponentId();
 
   const searchParams = useSearchParams();
@@ -30,7 +33,7 @@ export const SentenceItem = (props: any) => {
   const isSuperAdmin = useIsSuperAdmin();
 
   const { trackFunction } = useCanTrackFunction(currentPhrase, {
-    lang,
+    lang: resolvedLang,
   });
 
   const setIfExists = useSetIfExists();
@@ -43,10 +46,8 @@ export const SentenceItem = (props: any) => {
 
   const characterAnalytics = useGetCharacterAnalytics({
     characterId: currentPhrase?.hanzi || currentPhrase?.input,
-    lang: currentPhrase?.lang,
+    lang: resolvedLang,
   });
-
-  const resolvedLang = lang || selectedComp?.lang || currentPhrase?.lang;
 
   const Links = () => {
     const hanziOrInput = encodeURIComponent(unEncoded);

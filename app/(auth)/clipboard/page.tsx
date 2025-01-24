@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 import { getHeightClass } from "../convos/play-v3/utils/get-height-class";
+import { createIndexDBStore } from "@/libs/index-db/index-db";
 
 function SettingsPopover({
   pinyinView,
@@ -86,10 +87,28 @@ function SettingsPopover({
   );
 }
 
+const useTranslatedTextStore = createIndexDBStore({
+  name: "mandarino/translatedText",
+  handler: (set: any, get: any) => ({
+    dictionary: {},
+    getDictionary: (id: string) => get().dictionary?.[id],
+    setDictionary: (id: string, event: any) =>
+      set({
+        dictionary: {
+          ...get().dictionary,
+          [id]: event,
+        },
+      }),
+  }),
+});
+
 const useTranslateTextMutation = () => {
   const token = useJwtToken();
 
   const queryClient = useQueryClient();
+
+  const getDictionary = useTranslatedTextStore((state) => state.getDictionary);
+  const setDictionary = useTranslatedTextStore((state) => state.setDictionary);
 
   return useMutation({
     mutationFn: async ({
@@ -101,6 +120,15 @@ const useTranslateTextMutation = () => {
       targetLang: string;
       input: string;
     }) => {
+      const found = getDictionary(input);
+
+      if (found) {
+        console.log("FOUND translation", found);
+        return found;
+      }
+
+      console.log("Not found in cache, fetching translation");
+
       const res = await fetch(
         `${siteConfig.apiUrlV2}/v1/translations/translate-text`,
         {
@@ -117,7 +145,11 @@ const useTranslateTextMutation = () => {
         }
       );
 
-      return res.json();
+      const respJson = await res.json();
+
+      setDictionary(input, respJson);
+
+      return respJson;
     },
   });
 };

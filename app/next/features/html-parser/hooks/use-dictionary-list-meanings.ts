@@ -2,6 +2,8 @@ import { siteConfig } from "@/lib/config";
 import { useQuery } from "@tanstack/react-query";
 import { useJwtToken } from "./use-jwt-token";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+import { createIndexDBStore } from "@/libs/index-db/index-db";
+import { useDictionaryStore } from "./use-dictionary-store";
 
 interface Meanings {
   hanzi: string;
@@ -14,6 +16,11 @@ export const useListDictionaryMeaningsQuery = (
   options = {} as any
 ) => {
   const token = useJwtToken();
+
+  const getDictionary = useDictionaryStore((state) => state.getDictionary);
+  const setDictionary = useDictionaryStore((state) => state.setDictionary);
+
+  // const dictionaryList =
 
   const { data: hskWords } = useListHSKWordsQuery();
 
@@ -32,6 +39,15 @@ export const useListDictionaryMeaningsQuery = (
     refetchOnMount: false,
     queryFn: async () => {
       try {
+        const found = getDictionary(hanzi);
+
+        if (found) {
+          console.log("FOUND dictionary", found);
+          return found;
+        }
+
+        console.log("Not found in cache, fetching dictionary");
+
         const res = await fetch(
           `${siteConfig.apiUrlV2}/v1/dictionary/list-meanings`,
           {
@@ -47,7 +63,7 @@ export const useListDictionaryMeaningsQuery = (
 
         const respJson = (await res.json()) as Meanings[];
 
-        return respJson.map((item) => {
+        const respWithHsk = respJson.map((item) => {
           const hskLevel = hskWords?.find(
             (hskWord: any) => hskWord?.hanzi === item?.hanzi
           );
@@ -57,6 +73,12 @@ export const useListDictionaryMeaningsQuery = (
             ...item,
           };
         });
+
+        if (hskWords) {
+          setDictionary(hanzi, respWithHsk);
+        }
+
+        return respWithHsk;
       } catch (err) {
         throw err;
       }

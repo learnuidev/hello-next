@@ -21,6 +21,8 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
       (content: any) => content?.contentId
     ) || learnedCharacter?.contentContext?.[0];
 
+  console.log("CONTENT SEGMENT", contentSegment);
+
   const contentId = contentSegment?.contentId || "";
 
   const { data: relevantContent } = useGetContentQuery({ contentId });
@@ -66,7 +68,13 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
     (trans: any) => trans?.start < currentTime && trans?.end > currentTime
   );
 
-  return relevantContent ? (
+  console.log("AUDIO", relevantContent?.audio);
+  const isAudioVideoOrYoutube =
+    relevantContent?.audio?.includes("youtube") ||
+    relevantContent?.audio?.includes("mp4") ||
+    relevantContent?.audio?.includes("mp3");
+
+  return relevantContent && isAudioVideoOrYoutube ? (
     <article className="dark:bg-[rgb(14,15,16)] bg-gray-50 p-4 sm:p-8 rounded-2xl mt-2">
       <div className="mb-4">
         <Link

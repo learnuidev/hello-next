@@ -275,7 +275,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                               onClick={() => {
                                 setIfExists({ ...subtitle, contentId });
                               }}
-                              href={`/nmm/${subtitle?.input || subtitle.hanzi}?lang=${subtitle?.lang || "zh"}`}
+                              href={`/nmm/${encodeURIComponent(subtitle?.input || subtitle.hanzi)}?lang=${subtitle?.lang || "zh"}`}
                               target="_blank"
                               className={cn(
                                 subtitle?.pinyin
@@ -420,7 +420,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                               <Icons.loop />
                             </button>
                             <Link
-                              href={`/nmm/${subtitle?.input || subtitle.hanzi}?lang=${subtitle?.lang || "zh"}`}
+                              href={`/nmm/${encodeURIComponent(subtitle?.input || subtitle.hanzi)}?lang=${subtitle?.lang || "zh"}`}
                               target="_blank"
                               className={cn(
                                 "sm:text-2xl text-[16px] dark:hover:text-white hover:text-black text-gray-600"

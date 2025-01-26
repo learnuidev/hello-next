@@ -21,7 +21,10 @@ export const useDetectLanguageQuery = (content: string, lang?: string) => {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     onSuccess: (data) => {
-      router.push(`/nmm/${content}?lang=${data?.lang}`);
+      if (!lang) {
+        router.push(`/nmm/${content}?lang=${data?.lang}`);
+      }
+
       // if (lang) {
       //   return;
       // } else {

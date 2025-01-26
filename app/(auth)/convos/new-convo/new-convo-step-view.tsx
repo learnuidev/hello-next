@@ -397,6 +397,18 @@ export function StepView() {
             className="w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
           />
 
+          <div className="flex justify-center items-center flex-col w-full my-4">
+            <h4 className="dark:text-gray-600 text-[12px] mb-2">Source</h4>
+
+            <input
+              value={newConvo?.source}
+              className="w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
+              onChange={(event) => {
+                setConvo("source", event?.target?.value);
+              }}
+            />
+          </div>
+
           {newConvo.type === "text" && <NewConvoInput />}
 
           <div className="flex justify-center items-center flex-col w-full my-4">
@@ -466,6 +478,7 @@ export function StepView() {
                     type: newConvo?.type,
                     author: newConvo?.author,
                     location: newConvo?.location,
+                    source: newConvo?.source,
                     // title: string;
                     lang: newConvo?.lang,
                     audio: newConvo?.audio,

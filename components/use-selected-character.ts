@@ -27,6 +27,7 @@ import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { useGetLangParams } from "@/hooks/use-get-lang-params";
 
 export const useViewTypeStore = create(
   persist(
@@ -148,7 +149,7 @@ export function useSelectedCharacterData({
 
   // const [readMode, setReadMode] = useState(false);
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || selectedComp?.lang;
+  const lang = useGetLangParams() || selectedComp?.lang;
   const contentLang = searchParams.get("content") || "";
 
   const isAlreadyLearned = useMemo(

@@ -1,10 +1,11 @@
+import { useGetLangParams } from "@/hooks/use-get-lang-params";
 import { useSearchParams } from "next/navigation";
 
 export const useGetCoursesSearchParams = () => {
   const searchParams = useSearchParams();
 
   const date = searchParams.get("date") || "";
-  const langParams = searchParams.get("lang") || "";
+  const langParams = useGetLangParams();
   const mode = searchParams.get("mode") || "";
   const level = parseInt(searchParams.get("level") as string) || 1;
   const character = searchParams.get("character");

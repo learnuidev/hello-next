@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, KeyboardEvent } from "react";
 
 import { useDebouncedCallback } from "use-debounce";
@@ -11,6 +11,7 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { traditionalToSimplified } from "@/langs/chinese /traditiona-to-simplified";
 import { signOut } from "@/libs/cognito/auth";
+import { useGetLangParams } from "./use-get-lang-params";
 import { useIsDu } from "./use-is-du";
 import { useIsSearchTrackingEnabled } from "./use-is-search-tracking-enabled";
 
@@ -18,8 +19,7 @@ export const useHandleSearch = () => {
   const router = useRouter();
   const path = usePathname();
 
-  const searchParams = useSearchParams();
-  const lang = searchParams.get("lang");
+  const lang = useGetLangParams();
 
   // 1. State
   const querySync = useSearchQueryStore((state) => state.querySync);

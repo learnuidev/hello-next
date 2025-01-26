@@ -1,4 +1,5 @@
 import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
+import { useGetLangParams } from "@/hooks/use-get-lang-params";
 import { siteConfig } from "@/lib/config";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -11,6 +12,7 @@ export const useDetectLanguageQuery = (content: string, lang?: string) => {
   const token = useJwtToken();
 
   const router = useRouter();
+  const langParams = useGetLangParams();
 
   return useQuery<DetectLanguageResponse, Error>({
     queryKey: ["detect-content", content, lang],
@@ -21,7 +23,7 @@ export const useDetectLanguageQuery = (content: string, lang?: string) => {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     onSuccess: (data) => {
-      if (!lang) {
+      if (!langParams) {
         router.push(`/nmm/${content}?lang=${data?.lang}`);
       }
 

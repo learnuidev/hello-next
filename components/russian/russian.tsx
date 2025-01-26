@@ -1,17 +1,16 @@
 "use client";
-import React from "react";
 
 import { useState } from "react";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
 import { Icons } from "../ui/icons.v2";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { WordsList } from "../words-list";
+import { useGetLangParams } from "@/hooks/use-get-lang-params";
 import { russianAlphabets } from "@/langs/russian/russian-alphabets";
 import { russianWords } from "@/langs/russian/russian-words";
+import { WordsList } from "../words-list";
 
 const useIsLearned = ({ characterId }: { characterId: string }) => {
   const { data } = useListCharactersQuery();
@@ -41,8 +40,7 @@ const AlphabetItem = ({ prop, lang }: any) => {
 };
 
 const PageView = ({ view }: any) => {
-  const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "fa";
+  const lang = useGetLangParams() || "fa";
 
   switch (view) {
     case "alphabets":

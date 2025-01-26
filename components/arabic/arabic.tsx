@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 
 import { useState } from "react";
 
@@ -10,16 +9,16 @@ import { useSearchParams } from "next/navigation";
 import { Icons } from "../ui/icons.v2";
 
 // import { koreanWords } from "@/langs/korean/korean-words";
-import { ComponentItem } from "../component-item";
-import { WordItem } from "../word-item";
+import { useGetLangParams } from "@/hooks/use-get-lang-params";
 import { arabicAlphabets } from "@/langs/arabic/arabic-alphabets";
-import { arabicWords } from "@/langs/arabic/arabic-words";
 import { arabicComponents } from "@/langs/arabic/arabic-components";
+import { arabicWords } from "@/langs/arabic/arabic-words";
+import { ComponentItem } from "../component-item";
 import { WordsList } from "../words-list";
 
 const PageView = ({ view }: any) => {
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "ar";
+  const lang = useGetLangParams() || "ar";
 
   switch (view) {
     case "alphabets":

@@ -1,11 +1,12 @@
 import { useCurrentLangStore } from "@/components/language-selector/use-current-lang-store";
-import { useSearchParams } from "next/navigation";
+
+import { useGetLangParams } from "./use-get-lang-params";
 
 export const useGetCurrentLang = () => {
-  const searchParams = useSearchParams();
+  const langParams = useGetLangParams();
 
   const setCurrentLang = useCurrentLangStore((state) => state.currentLang);
-  const lang = setCurrentLang || searchParams.get("lang") || "zh";
+  const lang = setCurrentLang || langParams || "zh";
 
   return lang;
 };

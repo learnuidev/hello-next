@@ -19,6 +19,7 @@ import { WordsList } from "../words-list";
 import { vietnameseWords } from "@/langs/vietnamese/vietnamese-words";
 import { vietnameseComponents } from "@/langs/vietnamese/vietnamese-components";
 import { vietnameseAlphabets } from "@/langs/vietnamese/vietnamese-alphabets";
+import { useGetLangParams } from "@/hooks/use-get-lang-params";
 
 const useIsLearned = ({ characterId }: { characterId: string }) => {
   const { data } = useListCharactersQuery();
@@ -49,7 +50,7 @@ const AlphabetItem = ({ prop, lang }: any) => {
 
 const PageView = ({ view }: any) => {
   const searchParams = useSearchParams();
-  const lang = searchParams.get("lang") || "fa";
+  const lang = useGetLangParams() || "fa";
 
   switch (view) {
     case "alphabets":

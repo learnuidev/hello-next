@@ -6,11 +6,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { useGetHskWordHandler } from "@/app/(auth)/convos/ai";
 
+import { cleanString } from "@/data/convos/bm1/clean-string";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useGetLangParams } from "@/hooks/use-get-lang-params";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ScrollArea } from "./ui/scroll-area";
-import { cn } from "@/lib/utils";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { cleanString } from "@/data/convos/bm1/clean-string";
 
 export function GrammarAnalysis({
   contentId,
@@ -22,7 +23,7 @@ export function GrammarAnalysis({
   className?: string;
 }) {
   const searchParams = useSearchParams();
-  const learnedLang = searchParams.get("lang") || lang;
+  const learnedLang = useGetLangParams() || lang;
 
   const { data: grammarAnalysis, isLoading: isGrammarAnalysisLoading } =
     useListGrammarsQuery(

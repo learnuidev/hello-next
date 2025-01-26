@@ -9,7 +9,6 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useSearchQueryStore } from "@/components/search/state";
@@ -29,6 +28,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { PrecisionSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/search-results";
+import { useGetInsightSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/use-get-insight-search-results";
 import { ContentView } from "./content/content-view";
 import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
 import { calculateColor } from "./nmm-utils/calculate-color";
@@ -37,8 +38,6 @@ import { NomadMethodTabsContainer } from "./nomad-method-tabs-container";
 import { PreviewComponent } from "./preview-component";
 import { useGetSelectedBelt } from "./use-get-selected-belt";
 import { YctView } from "./yct/yct-view";
-import { PrecisionSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/search-results";
-import { useGetInsightSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/use-get-insight-search-results";
 
 export function NomadMethodMandarin() {
   const selectedBelt = useGetSelectedBelt();
@@ -135,8 +134,6 @@ export function NomadMethodMandarin() {
               </HskView>
             </TabsContent>
 
-            {/* ?.slice(selectedBelt?.minCharacterLevel, selectedBelt?.maxCharacterLevel) */}
-
             <TabsContent value="needs_review" className="my-4 md:my-8">
               <HskView type={viewType}>
                 <NmmListContainer>
@@ -168,39 +165,6 @@ export function NomadMethodMandarin() {
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-                    );
-
-                    return (
-                      <div key={`${prop.hanzi}-chars-${idx}`}>
-                        <Link
-                          href={`/nmm/${prop.hanzi}?lang=zh`}
-                          onClick={() => {
-                            // addHistoryMutation.mutate({
-                            //   pathName: routeName,
-                            //   input: prop.input,
-                            //   lang: "zh",
-                            //   contentId: prop.id,
-                            //   eventType: "CONTENT_VIEWED",
-                            // } as any);
-                          }}
-                          className={`${
-                            // learnedCharacters.includes(prop?.hanzi)
-                            learnedCharacters2?.find(
-                              (char: any) => char?.hanzi === prop?.hanzi
-                            )
-                              ? `hover:${color} text-gray-300`
-                              : lastAnswer?.totalCharacters?.includes(
-                                    prop?.hanzi
-                                  )
-                                ? "text-yellow-500"
-                                : selectedComp?.group
-                                  ? "text-slate-400"
-                                  : "dark:text-gray-500 text-gray-200"
-                          } dark:hover:text-white p-3 text-2xl md:text-2xl transition lowercase`}
-                        >
-                          {prop?.hanzi}
-                        </Link>
-                      </div>
                     );
                   })}
                 </NmmListContainer>

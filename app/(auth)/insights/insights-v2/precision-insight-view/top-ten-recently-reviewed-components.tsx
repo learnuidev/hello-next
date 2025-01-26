@@ -20,7 +20,7 @@ export const TopTenRecentlyReviewedComponents = () => {
           return (
             <Link
               key={"lang"}
-              href={`/nmm/${component?.hanzi}?lang=${component?.lang || "zh"}`}
+              href={`/nmm/${encodeURIComponent(component?.hanzi)}?lang=${component?.lang || "zh"}`}
               target="_blank"
               className="block"
             >

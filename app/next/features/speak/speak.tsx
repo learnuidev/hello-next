@@ -74,7 +74,7 @@ export const Speak = () => {
         {showPinyin && <p className="text-gray-500">{phrase?.pinyin}</p>}
         <Link
           className="text-4xl"
-          href={`/nmm/${phrase?.hanzi}`}
+          href={`/nmm/${encodeURIComponent(phrase?.hanzi)}`}
           target="_blank"
         >
           {cleanedHanzi?.split("").map((item: any, idx: any) => {

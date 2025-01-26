@@ -110,7 +110,7 @@ function SectionView({
               {viewPinyin && (
                 <Link
                   target="_blank"
-                  href={`/nmm/${item?.hanzi}?lang=zh`}
+                  href={`/nmm/${encodeURIComponent(item?.hanzi)}?lang=zh`}
                   className={cn(
                     section?.pinyin ? "text-gray-500" : "text-black",
                     "text-sm",

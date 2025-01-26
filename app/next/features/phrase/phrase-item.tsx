@@ -110,7 +110,7 @@ export function PhraseItem({
           <div className="flex justify-end space-x-2 mt-4">
             <PhraseActionButton
               as="link"
-              href={`/nmm/${isSourceSameAsTarget ? message?.input : formattedOutput}?lang=${speakLang === "zh-CN" ? "zh" : speakLang}`}
+              href={`/nmm/${encodeURIComponent(isSourceSameAsTarget ? message?.input : formattedOutput)}?lang=${speakLang === "zh-CN" ? "zh" : speakLang}`}
             >
               <Icons.magnifyingGlass />
             </PhraseActionButton>

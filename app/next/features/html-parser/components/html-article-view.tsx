@@ -143,7 +143,7 @@ function SectionView({ section, viewPinyin, setSelected }: any) {
                   </span>
                 )}
                 <Link
-                  href={`/nmm/${item?.hanzi}?lang=zh`}
+                  href={`/nmm/${encodeURIComponent(item?.hanzi)}?lang=zh`}
                   target="_blank"
                   className="text-lg sm:text-2xl"
                 >

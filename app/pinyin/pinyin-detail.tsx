@@ -99,7 +99,7 @@ export const PinyinDetail = () => {
               <Tooltip>
                 <TooltipTrigger className="p-3 hover:scale-125 transition">
                   <Link
-                    href={`/nmm/${prop.hanzi}?lang=zh`}
+                    href={`/nmm/${encodeURIComponent(prop.hanzi)}?lang=zh`}
                     className={`${(() => {
                       if (selectedLevel) {
                         if (selectedLevel?.level === 5 && !prop?.tone_level) {

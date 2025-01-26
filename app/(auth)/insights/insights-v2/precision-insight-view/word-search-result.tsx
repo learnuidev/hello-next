@@ -59,7 +59,7 @@ export function WordSearchResult() {
         return (
           <Link
             key={`${val}-${idx}`}
-            href={`/nmm/${comp?.hanzi}?lang=${comp?.lang || "zh"}`}
+            href={`/nmm/${encodeURIComponent(comp?.hanzi)}?lang=${comp?.lang || "zh"}`}
             target="_blank"
             className="block"
           >

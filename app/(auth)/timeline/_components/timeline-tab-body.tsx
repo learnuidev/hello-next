@@ -181,8 +181,8 @@ export const TimelineTabBody = ({
                           <Link
                             href={
                               item?.lang
-                                ? `/nmm/${item?.input || item?.hanzi}?lang=${item?.lang}`
-                                : `/nmm/${item?.input || item?.hanzi}`
+                                ? `/nmm/${encodeURIComponent(item?.input || item?.hanzi)}?lang=${item?.lang}`
+                                : `/nmm/${encodeURIComponent(item?.input || item?.hanzi)}`
                             }
                             // href={`/nmm/${item?.input || item?.hanzi?.trim("")}?lang=${item?.lang || "zh"}`}
                             className={cn(

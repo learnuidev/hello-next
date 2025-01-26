@@ -106,12 +106,12 @@ export const useHandleSearch = () => {
         const selectedChar = traditionalToSimplified(querySync);
 
         if (selectedChar === querySync) {
-          router.push(`/nmm/${querySync}`);
+          router.push(`/nmm/${encodeURIComponent(querySync)}`);
         } else {
-          router.push(`/nmm/${selectedChar}?lang=zh&trad=${querySync}`);
+          router.push(
+            `/nmm/${encodeURIComponent(selectedChar)}?lang=zh&trad=${querySync}`
+          );
         }
-
-        // router.push(`/nmm/${querySync}`);
       }
     }
   };

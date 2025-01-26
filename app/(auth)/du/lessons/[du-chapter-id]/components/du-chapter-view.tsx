@@ -559,7 +559,7 @@ export const DuLessonView = () => {
                         // onClick={() => {
                         //   alert(JSON.stringify(getHanzi(subtitle?.sentence)));
                         // }}
-                        href={`/nmm/${subtitle.hanzi}?lang=zh&context=${getHanzi(subtitle?.sentence)}`}
+                        href={`/nmm/${encodeURIComponent(subtitle.hanzi)}?lang=zh&context=${getHanzi(subtitle?.sentence)}`}
                         target="_blank"
                         className={cn(
                           subtitle?.pinyin ? "text-gray-500" : "text-black",

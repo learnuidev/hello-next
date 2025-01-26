@@ -108,7 +108,8 @@ export const TranscriptItem = ({
             });
           } else {
             router.push(
-              `/nmm/${transcription.hanzi || transcription.input}` + lang
+              `/nmm/${encodeURIComponent(transcription.hanzi || transcription.input || "")}` +
+                lang
                 ? `?lang=${lang}`
                 : ""
             );

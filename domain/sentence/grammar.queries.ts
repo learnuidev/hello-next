@@ -51,6 +51,10 @@ const listGrammars = async (
     },
     body: JSON.stringify(options),
   });
+
+  if (!res.ok) {
+    throw new Error(res.statusText);
+  }
   const resp = (await res.json()) as any;
 
   let newGrammarAnalysis;

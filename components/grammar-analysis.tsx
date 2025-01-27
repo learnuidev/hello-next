@@ -12,6 +12,8 @@ import { useGetLangParams } from "@/hooks/use-get-lang-params";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { ScrollArea } from "./ui/scroll-area";
+import { AnimatedLoadingText } from "./animated-loading-text";
+import { Nothing } from "@/app/nmm/nothing";
 
 export function GrammarAnalysis({
   contentId,
@@ -25,21 +27,24 @@ export function GrammarAnalysis({
   const searchParams = useSearchParams();
   const learnedLang = useGetLangParams() || lang;
 
-  const { data: grammarAnalysis, isLoading: isGrammarAnalysisLoading } =
-    useListGrammarsQuery(
-      {
-        sentenceId: contentId,
-        content: contentId,
-        lang: learnedLang,
-      },
-      {
-        enabled: Boolean(contentId),
-        refetchOnWindowFocus: false,
-        refetchOnFocus: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-      }
-    );
+  const {
+    data: grammarAnalysis,
+    isLoading: isGrammarAnalysisLoading,
+    isError,
+  } = useListGrammarsQuery(
+    {
+      sentenceId: contentId,
+      content: contentId,
+      lang: learnedLang,
+    },
+    {
+      enabled: Boolean(contentId),
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
 
   const router = useRouter();
 
@@ -86,6 +91,21 @@ export function GrammarAnalysis({
 
     if (!grammarAnalysisFinal?.length) {
       return null;
+    }
+
+    if (isGrammarAnalysisLoading) {
+      return (
+        <div className="my-4">
+          <AnimatedLoadingText
+            className="text-xl font-bold"
+            message="Generating grammar analysis..."
+          />
+        </div>
+      );
+    }
+
+    if (isError) {
+      return <Nothing message={"Error loading sentences"} />;
     }
 
     return (

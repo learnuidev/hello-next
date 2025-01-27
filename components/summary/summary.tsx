@@ -14,6 +14,7 @@ import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { create } from "zustand";
 import { Icons } from "../ui/icons.v2";
 import { AnimatedLoadingText } from "../animated-loading-text";
+import { Nothing } from "@/app/nmm/nothing";
 
 export const useSummaryStore = create((set) => ({
   summary: "",
@@ -40,7 +41,11 @@ export function Summary({
   const setSummary = useSummaryStore((state: any) => state.setSummary);
   const statusUrl = searchParams.get("status-url");
 
-  const { data: meaning, isLoading } = useListMeaningsQuery({
+  const {
+    data: meaning,
+    isLoading,
+    isError,
+  } = useListMeaningsQuery({
     content: characaterId,
     lang,
   });
@@ -56,6 +61,10 @@ export function Summary({
         />
       </div>
     );
+  }
+
+  if (isError) {
+    return <Nothing message={"Error loading summary"} />;
   }
 
   return (

@@ -25,6 +25,9 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useContentViewStore } from "./use-content-view-store";
 import { useListCharacterSentences } from "./use-list-character-sentences";
+import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
+import { AnimatedLoadingText } from "../animated-loading-text";
+import { Nothing } from "@/app/nmm/nothing";
 
 const ContentSentences = ({
   characterId,
@@ -226,7 +229,6 @@ export const CharacterSentences = (props: { characterId: string }) => {
     selectedChar,
     characterId,
     lang,
-    sentences,
   } = data;
   const discoverMutation = useDiscoverMutation();
 
@@ -239,6 +241,33 @@ export const CharacterSentences = (props: { characterId: string }) => {
   const { data: contents } = useListContentsQuery();
 
   const allSentences = useListCharacterSentences(props.characterId);
+
+  const contentLang = searchParams.get("content") || "";
+
+  const {
+    data: sentences,
+    isLoading,
+    isError,
+  } = useListSentencesQuery({
+    component: characterId,
+    lang,
+    contentLang,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="my-4">
+        <AnimatedLoadingText
+          className="text-xl font-bold"
+          message="Generating grammar analysis..."
+        />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <Nothing message={"Error loading sentences"} />;
+  }
 
   return (
     <div className="w-full">

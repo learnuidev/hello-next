@@ -10,7 +10,7 @@ export const Nothing = ({
   icon?: any;
   className?: string;
 }) => {
-  const Icon = icon ? icon : Icons.partySolid;
+  const Icon = icon ? icon : Icons.spaceStation;
   const defaultMessage = message || "Nothing here";
 
   return (

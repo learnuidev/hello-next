@@ -105,7 +105,7 @@ export function GrammarAnalysis({
     }
 
     if (isError) {
-      return <Nothing message={"Error loading sentences"} />;
+      return <Nothing message={"Error loading grammar"} />;
     }
 
     return (

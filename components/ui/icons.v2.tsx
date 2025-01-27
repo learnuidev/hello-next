@@ -47,6 +47,7 @@ import {
   faBrowser,
   faBullseye,
   faBullseyeArrow,
+  faCatSpace,
   faChartColumn,
   faCheckCircle,
   faCircleArrowDown,
@@ -348,6 +349,8 @@ export const Icons = {
   youtube: createFAIcon(faYoutube),
   clipboard: createFAIcon(faClipboard),
   bookOpen: createFAIcon(faBookOpen),
+  cat: createFAIcon(faCatSpace),
+  spaceStation: createFAIcon(faSpaceStationMoon),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

@@ -89,10 +89,6 @@ export function GrammarAnalysis({
 
     const getHskWordHandler = useGetHskWordHandler();
 
-    if (!grammarAnalysisFinal?.length) {
-      return null;
-    }
-
     if (isGrammarAnalysisLoading) {
       return (
         <div className="my-4">
@@ -106,6 +102,10 @@ export function GrammarAnalysis({
 
     if (isError) {
       return <Nothing message={"Error loading grammar"} />;
+    }
+
+    if (!grammarAnalysisFinal?.length) {
+      return null;
     }
 
     return (

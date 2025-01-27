@@ -243,6 +243,21 @@ export function GrammarAnalysis({
     );
   };
 
+  if (isGrammarAnalysisLoading) {
+    return (
+      <div className="my-4">
+        <AnimatedLoadingText
+          className="text-xl font-bold"
+          message="Generating grammar analysis..."
+        />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <Nothing message={"Error loading grammar"} />;
+  }
+
   return grammarAnalysis ? (
     <div>
       {isGrammarAnalysisLoading ? (

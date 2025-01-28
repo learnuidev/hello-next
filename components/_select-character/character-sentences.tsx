@@ -259,7 +259,7 @@ export const CharacterSentences = (props: { characterId: string }) => {
       <div className="my-4">
         <AnimatedLoadingText
           className="text-xl font-bold"
-          message="Generating grammar analysis..."
+          message="Generating setences..."
         />
       </div>
     );

@@ -195,7 +195,7 @@ function WeeklyReviewedCharactersChart() {
 }
 
 export function CharacterDiscoveryAreaChartV2() {
-  const [chartView, setChartView] = useState("character-learned");
+  const [chartView, setChartView] = useState("characters-learned");
 
   return (
     <div className="w-full dark:bg-black bg-gray-50 p-8">

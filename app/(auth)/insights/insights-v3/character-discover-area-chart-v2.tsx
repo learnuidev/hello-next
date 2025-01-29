@@ -1,6 +1,5 @@
 "use client";
 
-import { ChartTooltip } from "@/components/ui/chart";
 import {
   Select,
   SelectContent,
@@ -8,149 +7,63 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useTheme } from "next-themes";
 import { useState } from "react";
-import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { useGetTopTenIncorrect } from "../insights-v2/precision-insight-view/use-get-top-ten-incorrect";
+import { useGetTopTenRecentlyLearned } from "../insights-v2/precision-insight-view/use-get-top-ten-recently-learned";
+import { useGetTopTenRecentlyReviewed } from "../insights-v2/precision-insight-view/use-get-top-ten-recently-reviewed";
+import { useGetProgress } from "../insights-v2/use-get-progress";
 import { useListWeeklyLearnedCharacters } from "../use-list-weekly-learned-characters";
 import { useListWeeklyReviewedCharacters } from "../use-list-weekly-reviewed-characters";
+import { FancyAreaChart } from "./components/fancy-area-chart";
+import { TopTencorrectCharactersChart } from "./components/top-ten-incorrect-characters-chart";
+import { HSKProgressChart } from "./components/hsk-progress-chart";
+import { TopTenRecentlyLearnedComponents } from "../insights-v2/precision-insight-view/top-ten-recently-learned-components";
+import { TopTenRecentlyReviewedComponents } from "../insights-v2/precision-insight-view/top-ten-recently-reviewed-components";
+import { TopTenIncorrectComponents } from "../insights-v2/precision-insight-view/top-ten-incorrect-components";
 
-const CustomTooltip = ({ active, payload }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="rounded-lg border bg-background p-4 shadow-sm w-72">
-        <p className="text-sm font-extralight text-gray-400">
-          {payload[0].payload.date}
-        </p>
+const categories = [
+  { name: "Equipment", percentage: 35 },
+  { name: "Rent", percentage: 24 },
+  { name: "Travel", percentage: 22 },
+  { name: "Salary", percentage: 20 },
+  { name: "Furniture", percentage: 15 },
+  { name: "Software", percentage: 4 },
+  { name: "Transfer", percentage: 5 },
+  { name: "Meals", percentage: 4 },
+  { name: "Other", percentage: 2 },
+];
 
-        <p className="text-4xl">
-          {payload[0].value}
-
-          <span className="text-sm"> characters</span>
-        </p>
-      </div>
-    );
-    return (
-      <div className="rounded-lg border bg-background p-2 shadow-sm">
-        <div className="grid grid-cols-2 gap-2">
-          <div className="flex flex-col">
-            <span className="text-[0.70rem] uppercase text-muted-foreground">
-              Value
-            </span>
-            <span className="font-bold text-muted-foreground">
-              €{payload[0].value.toFixed(2)}
-            </span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[0.70rem] uppercase text-muted-foreground">
-              Date
-            </span>
-            <span className="font-bold text-muted-foreground">
-              {payload[0].payload.date}
-              {/* {new Date(payload[0].payload.date).toLocaleDateString("en-US", {
-                month: "short",
-                year: "numeric",
-              })} */}
-            </span>
-          </div>
-        </div>
-      </div>
-    );
-  }
-  return null;
-};
-
-function FancyAreaChart({
-  data,
+export function SimplePercentageTable({
   title,
+  data,
 }: {
   title: string;
-  data: { date: string; value: number }[];
+  data: { name: string; percentage: number }[];
 }) {
-  const { theme } = useTheme();
-  const total = data?.reduce((acc, curr) => {
-    return acc + curr?.value;
-  }, 0);
-
   return (
-    <div className="space-y-4">
-      <div className="mb-12">
-        <span className="text-lg dark:text-gray-400">{title}</span>
-        <h2 className="text-5xl font-mono dark:text-white">{total}</h2>
+    <div className="dark:bg-black bg-gray-50 rounded-lg p-4">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg">{title}</h2>
       </div>
+      <div className="space-y-2">
+        {data?.map((category) => (
+          <div key={category.name} className="flex flex-row items-center gap-4">
+            <div className="flex justify-between text-sm w-40 truncate">
+              <span>{category.name}</span>
+            </div>
+            <div className="h-2 w-full dark:bg-neutral-800 bg-neutral-200 overflow-hidden flex-grow">
+              <div
+                className={`h-full dark:bg-gray-200 bg-gray-800`}
+                style={{ width: `${category.percentage}%` }}
+              />
+            </div>
 
-      <div className="h-[250px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data}>
-            <defs>
-              <pattern
-                id="pattern"
-                patternUnits="userSpaceOnUse"
-                width="6"
-                height="6"
-                patternTransform="rotate(45)"
-              >
-                <line
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="6"
-                  stroke={
-                    theme === "dark"
-                      ? "rgba(255,255,255,0.1)"
-                      : "rgba(20,20,20,0.1)"
-                  }
-                  strokeWidth="2"
-                />
-              </pattern>
-              <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="0%"
-                  stopColor={
-                    theme === "dark"
-                      ? "rgba(255,255,255,0.05)"
-                      : "rgba(0,0,0,0.4)"
-                  }
-                />
-                <stop
-                  offset="100%"
-                  stopColor={
-                    theme === "dark" ? "rgba(255,255,255,0)" : "rgba(0,0,20,0)"
-                  }
-                />
-              </linearGradient>
-            </defs>
-            <XAxis
-              dataKey="date"
-              axisLine={false}
-              fontSize={12}
-              tickLine={false}
-              stroke="#666"
-            />
-            <YAxis
-              axisLine={false}
-              fontSize={12}
-              tickLine={false}
-              tickFormatter={(value) => `${value}`}
-              stroke="#666"
-            />
-            <ChartTooltip content={<CustomTooltip />} />
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke="white"
-              fill="url(#areaGradient)"
-              strokeWidth={2}
-              fillOpacity={1}
-            />
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke="transparent"
-              fill="url(#pattern)"
-              fillOpacity={0.5}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+            <p className="w-12">
+              {" "}
+              <span>{parseInt(`${category.percentage}`)}%</span>
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -189,43 +102,60 @@ function WeeklyReviewedCharactersChart() {
 export function CharacterDiscoveryAreaChartV2() {
   const [chartView, setChartView] = useState("characters-learned");
 
+  const progress = useGetProgress();
+  const topTenIncorrect = useGetTopTenIncorrect();
+  const topTenRecentlyReviewed = useGetTopTenRecentlyReviewed();
+  const topTenRecentlyLearned = useGetTopTenRecentlyLearned();
+
+  console.log("TOP INCORRECT", topTenIncorrect);
+
   return (
-    <div className="w-full dark:bg-black bg-gray-50 p-8">
-      <div className="flex items-center justify-between mb-8">
-        <Select
-          defaultValue="characters-learned"
-          value={chartView}
-          onValueChange={(value) => {
-            setChartView(value);
-          }}
-        >
-          <SelectTrigger className="w-[180px] bg-transparent dark:text-white dark:border-gray-800 px-2">
-            <SelectValue placeholder="Select metric" className="" />
-          </SelectTrigger>
-          <SelectContent className="mx-0">
-            <SelectItem value="characters-learned">
-              Characters Learned
-            </SelectItem>
-            <SelectItem value="characters-reviewed">
-              Characters Reviewed
-            </SelectItem>
-          </SelectContent>
-        </Select>
-        {/* <Select defaultValue="year">
-          <SelectTrigger className="w-[180px] bg-transparent text-white border-gray-800">
-            <SelectValue placeholder="Select period" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="year">July 2023 - July 2024</SelectItem>
-          </SelectContent>
-        </Select> */}
+    <>
+      <div className="w-full dark:bg-black bg-gray-50 p-8 rounded-2xl">
+        <div className="flex items-center justify-between mb-8">
+          <Select
+            defaultValue="characters-learned"
+            value={chartView}
+            onValueChange={(value) => {
+              setChartView(value);
+            }}
+          >
+            <SelectTrigger className="w-[180px] bg-transparent dark:text-white dark:border-gray-800 px-2">
+              <SelectValue placeholder="Select metric" className="" />
+            </SelectTrigger>
+            <SelectContent className="mx-0">
+              <SelectItem value="characters-learned">
+                Characters Learned
+              </SelectItem>
+              <SelectItem value="characters-reviewed">
+                Characters Reviewed
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {chartView === "characters-learned" ? (
+          <WeeklyLearnedCharactersChart />
+        ) : (
+          <WeeklyReviewedCharactersChart />
+        )}
       </div>
 
-      {chartView === "characters-learned" ? (
-        <WeeklyLearnedCharactersChart />
-      ) : (
-        <WeeklyReviewedCharactersChart />
-      )}
-    </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 mb-8">
+        <TopTencorrectCharactersChart />
+
+        <HSKProgressChart />
+        {/* <Assistant />
+            <Calendar hours={165.5} /> */}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 mb-8">
+        <TopTenRecentlyLearnedComponents />
+
+        <TopTenRecentlyReviewedComponents />
+
+        <TopTenIncorrectComponents />
+      </div>
+    </>
   );
 }

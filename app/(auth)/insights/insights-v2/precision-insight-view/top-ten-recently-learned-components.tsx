@@ -11,8 +11,8 @@ export const TopTenRecentlyLearnedComponents = () => {
   }
 
   return (
-    <div className="mx-auto w-80">
-      <p className="text-center font-normal text-[13px] text-[#808080] my-8 font-['Gill Sans']">
+    <div className="w-full bg-gray-50 dark:bg-black p-4">
+      <p className="text-lg mb-4 dark:text-gray-400">
         Recently Learned Components
       </p>
       <div className="space-y-2">
@@ -25,12 +25,14 @@ export const TopTenRecentlyLearnedComponents = () => {
               className="block"
             >
               <div className="flex justify-between">
-                <p className="text-left text-gray-300 font-extralight text-sm">
+                <p className="text-left dark:text-gray-300 font-extralight">
                   {component?.hanzi}{" "}
-                  <span className="text-gray-400">({component?.pinyin})</span>
+                  <span className="dark:text-gray-400">
+                    ({component?.pinyin})
+                  </span>
                 </p>
 
-                <div className="text-left text-gray-400">
+                <div className="text-left dark:text-gray-400">
                   {component?.totalAttempts ||
                     component?.en
                       ?.split("/")?.[0]

@@ -23,6 +23,7 @@ function ToAndFromDate() {
 }
 
 export default function InsightsNew() {
+  // return <Insights />;
   return (
     <div>
       {/* <div className="flex items-center justify-between mb-4">
@@ -38,8 +39,9 @@ export default function InsightsNew() {
       </div> */}
 
       <Tabs defaultValue="overview" className="p-0">
-        <div className="mt-8 flex justify-between items-center md:mx-12">
-          <TabsList className="space-x-8 dark:bg-black">
+        <div className="my-4 flex justify-between items-center md:mx-8">
+          <div></div>
+          {/* <TabsList className="space-x-8 dark:bg-black bg-white">
             <TabsTrigger
               value="overview"
               className="px-0 dark:data-[state=active]:text-white"
@@ -47,16 +49,16 @@ export default function InsightsNew() {
               Overview
             </TabsTrigger>
             <TabsTrigger
-              value="content"
+              value="characters"
               className="px-0 dark:data-[state=active]:text-white"
             >
               Characters
             </TabsTrigger>
-          </TabsList>
+          </TabsList> */}
 
           {/* <div className="space-x-4"></div> */}
           <div className="mx-4 md:mx-20 space-x-8 flex items-center">
-            <div className="text-gray-500 font-extralight hidden sm:block">
+            <div className="dark:text-gray-500 font-extralight hidden sm:block">
               <ToAndFromDate />
             </div>
 
@@ -64,11 +66,15 @@ export default function InsightsNew() {
           </div>
         </div>
 
-        <TabsContent value="overview" className="my-8">
+        <TabsContent value="overview" className="sm:mx-8">
           {/* <TimelineTabBody variant="all" /> */}
-          <div className="mx-0 sm:mx-8">
-            <CharacterDiscoveryAreaChartV2 />
-          </div>
+
+          <CharacterDiscoveryAreaChartV2 />
+        </TabsContent>
+        <TabsContent value="characters" className="sm:mx-8">
+          {/* <TimelineTabBody variant="all" /> */}
+
+          <CharacterDiscoveryAreaChartV2 />
         </TabsContent>
       </Tabs>
     </div>

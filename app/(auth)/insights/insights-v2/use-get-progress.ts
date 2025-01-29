@@ -27,15 +27,23 @@ function getHskCharacters(data: any) {
   ];
 }
 
-function getHskProgress(learnedCharacters: any, totalHskChars: any) {
+function getHskProgress(
+  learnedCharacters: any,
+  totalHskChars: any,
+  format = true
+) {
   const totalChineseChars =
     learnedCharacters?.filter((char: any) =>
       totalHskChars?.includes(char?.hanzi)
     ) || [];
 
-  return formatPercentage(
-    totalChineseChars?.length / totalHskChars?.length || 0
-  );
+  const rawProgress = totalChineseChars?.length / totalHskChars?.length || 0;
+
+  // if (format) {
+  //   return formatPercentage(rawProgress);
+  // }
+
+  return rawProgress * 100;
 }
 
 export const useGetProgress = () => {
@@ -57,7 +65,7 @@ export const useGetProgress = () => {
         hsk2level: level,
         id: `hsk-${level}`,
         title: `HSK Level ${level}`,
-        stat: getHskProgress(learnedCharacters, totalHskChars),
+        stat: getHskProgress(learnedCharacters, totalHskChars, false),
       };
     });
 
@@ -72,7 +80,7 @@ export const useGetProgress = () => {
       return {
         hsk3level: level,
         id: `hsk3-${level}`,
-        title: `New HSK Level ${level}`,
+        title: `Level ${level}`,
 
         stat: getHskProgress(learnedCharacters, totalHskChars),
       };

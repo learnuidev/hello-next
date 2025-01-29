@@ -4,19 +4,20 @@ import Link from "next/link";
 import { useGetTopTenRecentlyReviewed } from "./use-get-top-ten-recently-reviewed";
 
 export const TopTenRecentlyReviewedComponents = () => {
-  const topTenIncorrect = useGetTopTenRecentlyReviewed();
+  const topTenRecentlyReviewed = useGetTopTenRecentlyReviewed();
 
-  if (topTenIncorrect?.length === 0) {
+  if (topTenRecentlyReviewed?.length === 0) {
     return null;
   }
 
   return (
-    <div className="mx-auto w-80">
-      <p className="text-center font-normal text-[13px] text-[#808080] my-8 font-['Gill Sans']">
+    <div className="w-full bg-gray-50 dark:bg-black p-4">
+      <p className="text-lg mb-4 dark:text-gray-400">
+        {" "}
         Recently Reviewed Components
       </p>
       <div className="space-y-2">
-        {topTenIncorrect?.map((component: any) => {
+        {topTenRecentlyReviewed?.map((component: any) => {
           return (
             <Link
               key={"lang"}
@@ -25,12 +26,14 @@ export const TopTenRecentlyReviewedComponents = () => {
               className="block"
             >
               <div className="flex justify-between">
-                <p className="text-left text-gray-300 font-extralight text-sm">
+                <p className="text-left dark:text-gray-300 font-extralight">
                   {component?.hanzi}{" "}
-                  <span className="text-gray-400">({component?.pinyin})</span>
+                  <span className="dark:text-gray-400">
+                    ({component?.pinyin})
+                  </span>
                 </p>
 
-                <div className="text-left text-gray-400">
+                <div className="text-left dark:text-gray-400 font-extralight">
                   {component?.totalAttempts}
                 </div>
               </div>

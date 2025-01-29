@@ -1,5 +1,9 @@
-import { type ClassValue, clsx } from "clsx";
+import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export function groupBy(timestamps: any, res = { 0: [] } as any, idx = 0) {
   const firstTimeStamp = timestamps?.[0];
@@ -27,10 +31,6 @@ export function groupBy(timestamps: any, res = { 0: [] } as any, idx = 0) {
       }
     }
   }
-}
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
 }
 
 export function isValidUrl(url: string) {

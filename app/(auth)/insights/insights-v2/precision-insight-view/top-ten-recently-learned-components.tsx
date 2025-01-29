@@ -13,7 +13,7 @@ export const TopTenRecentlyLearnedComponents = () => {
   return (
     <div className="w-full bg-gray-50 dark:bg-black p-4">
       <p className="text-lg mb-4 dark:text-gray-400">
-        Recently Learned Components
+        Recently Learned Characters
       </p>
       <div className="space-y-2">
         {topTenRecentlyLearned?.map((component: any) => {

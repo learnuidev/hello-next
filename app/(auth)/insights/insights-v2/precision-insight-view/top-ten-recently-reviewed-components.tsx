@@ -14,7 +14,7 @@ export const TopTenRecentlyReviewedComponents = () => {
     <div className="w-full bg-gray-50 dark:bg-black p-4">
       <p className="text-lg mb-4 dark:text-gray-400">
         {" "}
-        Recently Reviewed Components
+        Recently Reviewed Characters
       </p>
       <div className="space-y-2">
         {topTenRecentlyReviewed?.map((component: any) => {

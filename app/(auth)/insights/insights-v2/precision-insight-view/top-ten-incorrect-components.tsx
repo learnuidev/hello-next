@@ -13,7 +13,7 @@ export const TopTenIncorrectComponents = () => {
   return (
     <div className="w-full bg-gray-50 dark:bg-black p-4">
       <p className="text-lg mb-4 dark:text-gray-400">
-        Top Incorrect Components
+        Top Incorrect Characters
       </p>
       <div className="space-y-2">
         {topTenIncorrect?.map((component: any) => {

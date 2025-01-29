@@ -15,6 +15,7 @@ import { useGetFromAndToDate } from "./use-get-from-date";
 import { CharacterLearnedBarChart } from "./CharacterLearnedBarChart";
 import { CharacterDiscoveryAreaChart } from "./CharacterDiscoveryAreaChart";
 import { CharacterDiscoveryAreaChartV2 } from "./insights-v3/character-discover-area-chart-v2";
+import { FloatingNavbar } from "@/components/floating-navbar";
 
 function ToAndFromDate() {
   const { fromDate, toDate } = useGetFromAndToDate();
@@ -38,7 +39,7 @@ export default function InsightsNew() {
         </div>
       </div> */}
 
-      <Tabs defaultValue="overview" className="p-0">
+      <Tabs defaultValue="overview" className="p-0 mb-16">
         <div className="my-4 flex justify-between items-center md:mx-8">
           <div></div>
           {/* <TabsList className="space-x-8 dark:bg-black bg-white">
@@ -77,6 +78,8 @@ export default function InsightsNew() {
           <CharacterDiscoveryAreaChartV2 />
         </TabsContent>
       </Tabs>
+
+      <FloatingNavbar />
     </div>
   );
 }

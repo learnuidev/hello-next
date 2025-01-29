@@ -47,6 +47,10 @@ export const TopTencorrectCharactersChart = () => {
     };
   });
 
+  if (!topTenIncorrect) {
+    return null;
+  }
+
   return (
     <div className="space-y-4">
       <div className="mb-12">

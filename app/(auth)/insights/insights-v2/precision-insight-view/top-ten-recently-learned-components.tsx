@@ -6,7 +6,7 @@ import { useGetTopTenRecentlyLearned } from "./use-get-top-ten-recently-learned"
 export const TopTenRecentlyLearnedComponents = () => {
   const topTenRecentlyLearned = useGetTopTenRecentlyLearned();
 
-  if (topTenRecentlyLearned?.length === 0) {
+  if (!topTenRecentlyLearned) {
     return null;
   }
 

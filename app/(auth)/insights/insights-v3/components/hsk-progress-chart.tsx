@@ -1,11 +1,7 @@
-import { useGetTopTenIncorrect } from "../../insights-v2/precision-insight-view/use-get-top-ten-incorrect";
-import { useListWeeklyLearnedCharacters } from "../../use-list-weekly-learned-characters";
-
 import { ChartTooltip } from "@/components/ui/chart";
 
-import { useTheme } from "next-themes";
 import Link from "next/link";
-import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { useGetProgress } from "../../insights-v2/use-get-progress";
 
 const CustomTooltip = ({ active, payload }: any) => {
@@ -28,8 +24,6 @@ const CustomTooltip = ({ active, payload }: any) => {
 };
 
 export const HSKProgressChart = () => {
-  const topTenIncorrect = useGetTopTenIncorrect();
-
   const progress = useGetProgress();
 
   const data = progress?.hskV3?.map((item) => {
@@ -37,11 +31,12 @@ export const HSKProgressChart = () => {
       ...item,
       date: item?.title,
       value: item?.stat,
-      // date: `${item?.hanzi || ""} (${item?.en?.split("/")?.[0]})`,
-      // hanzi: item?.hanzi,
-      // value: ((item?.totalIncorrect || 0) / (item?.totalAttempts || 1)) * 100,
     };
   });
+
+  if (progress?.isLoading) {
+    return null;
+  }
 
   return (
     <div className="space-y-4">

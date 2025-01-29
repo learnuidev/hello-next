@@ -49,7 +49,7 @@ function getHskProgress(
 export const useGetProgress = () => {
   const { data } = useListHSKWordsQuery();
 
-  const { data: learnedCharacters } = useListCharactersQuery();
+  const { data: learnedCharacters, isLoading } = useListCharactersQuery();
 
   const totalHskCharacters = getHskCharacters(data);
 
@@ -87,6 +87,7 @@ export const useGetProgress = () => {
     });
 
   return {
+    isLoading,
     overallHskProgress: getHskProgress(learnedCharacters, totalHskCharacters),
     totalHskChars: totalHskCharacters?.length,
 

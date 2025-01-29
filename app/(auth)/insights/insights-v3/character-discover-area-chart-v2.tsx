@@ -8,69 +8,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
-import { useGetTopTenIncorrect } from "../insights-v2/precision-insight-view/use-get-top-ten-incorrect";
-import { useGetTopTenRecentlyLearned } from "../insights-v2/precision-insight-view/use-get-top-ten-recently-learned";
-import { useGetTopTenRecentlyReviewed } from "../insights-v2/precision-insight-view/use-get-top-ten-recently-reviewed";
-import { useGetProgress } from "../insights-v2/use-get-progress";
+import { TopTenIncorrectComponents } from "../insights-v2/precision-insight-view/top-ten-incorrect-components";
+import { TopTenRecentlyLearnedComponents } from "../insights-v2/precision-insight-view/top-ten-recently-learned-components";
+import { TopTenRecentlyReviewedComponents } from "../insights-v2/precision-insight-view/top-ten-recently-reviewed-components";
 import { useListWeeklyLearnedCharacters } from "../use-list-weekly-learned-characters";
 import { useListWeeklyReviewedCharacters } from "../use-list-weekly-reviewed-characters";
 import { FancyAreaChart } from "./components/fancy-area-chart";
-import { TopTencorrectCharactersChart } from "./components/top-ten-incorrect-characters-chart";
 import { HSKProgressChart } from "./components/hsk-progress-chart";
-import { TopTenRecentlyLearnedComponents } from "../insights-v2/precision-insight-view/top-ten-recently-learned-components";
-import { TopTenRecentlyReviewedComponents } from "../insights-v2/precision-insight-view/top-ten-recently-reviewed-components";
-import { TopTenIncorrectComponents } from "../insights-v2/precision-insight-view/top-ten-incorrect-components";
+import { TopTencorrectCharactersChart } from "./components/top-ten-incorrect-characters-chart";
+import { AnimatedLoadingText } from "@/components/animated-loading-text";
 
-const categories = [
-  { name: "Equipment", percentage: 35 },
-  { name: "Rent", percentage: 24 },
-  { name: "Travel", percentage: 22 },
-  { name: "Salary", percentage: 20 },
-  { name: "Furniture", percentage: 15 },
-  { name: "Software", percentage: 4 },
-  { name: "Transfer", percentage: 5 },
-  { name: "Meals", percentage: 4 },
-  { name: "Other", percentage: 2 },
-];
-
-export function SimplePercentageTable({
-  title,
-  data,
-}: {
-  title: string;
-  data: { name: string; percentage: number }[];
-}) {
+function ChartLoadingText() {
   return (
-    <div className="dark:bg-black bg-gray-50 rounded-lg p-4">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg">{title}</h2>
-      </div>
-      <div className="space-y-2">
-        {data?.map((category) => (
-          <div key={category.name} className="flex flex-row items-center gap-4">
-            <div className="flex justify-between text-sm w-40 truncate">
-              <span>{category.name}</span>
-            </div>
-            <div className="h-2 w-full dark:bg-neutral-800 bg-neutral-200 overflow-hidden flex-grow">
-              <div
-                className={`h-full dark:bg-gray-200 bg-gray-800`}
-                style={{ width: `${category.percentage}%` }}
-              />
-            </div>
-
-            <p className="w-12">
-              {" "}
-              <span>{parseInt(`${category.percentage}`)}%</span>
-            </p>
-          </div>
-        ))}
-      </div>
+    <div className="h-[250px] flex justify-center">
+      <AnimatedLoadingText
+        message="Loading chart"
+        className="text-center text-2xl font-extralight"
+      />
     </div>
   );
 }
 
 function WeeklyLearnedCharactersChart() {
-  const { data: chartData } = useListWeeklyLearnedCharacters();
+  const { data: chartData, isLoading } = useListWeeklyLearnedCharacters();
 
   const data = chartData?.map((item) => {
     return {
@@ -79,11 +39,15 @@ function WeeklyLearnedCharactersChart() {
     };
   });
 
+  if (isLoading) {
+    return <ChartLoadingText />;
+  }
+
   return <FancyAreaChart title={"total characters learned"} data={data} />;
 }
 
 function WeeklyReviewedCharactersChart() {
-  const { data: chartData } = useListWeeklyReviewedCharacters();
+  const { data: chartData, isLoading } = useListWeeklyReviewedCharacters();
 
   const data = chartData?.map((item) => {
     return {
@@ -96,18 +60,15 @@ function WeeklyReviewedCharactersChart() {
     return acc + curr?.value;
   }, 0);
 
+  if (isLoading) {
+    return <ChartLoadingText />;
+  }
+
   return <FancyAreaChart title={"total characters reviewed"} data={data} />;
 }
 
 export function CharacterDiscoveryAreaChartV2() {
   const [chartView, setChartView] = useState("characters-learned");
-
-  const progress = useGetProgress();
-  const topTenIncorrect = useGetTopTenIncorrect();
-  const topTenRecentlyReviewed = useGetTopTenRecentlyReviewed();
-  const topTenRecentlyLearned = useGetTopTenRecentlyLearned();
-
-  console.log("TOP INCORRECT", topTenIncorrect);
 
   return (
     <>

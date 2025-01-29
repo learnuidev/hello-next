@@ -2,6 +2,7 @@
 "use client";
 
 import { NavBar } from "@/components/navbar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { InsightsFilters } from "./InsightsFilters";
 
@@ -24,7 +25,7 @@ function ToAndFromDate() {
 export default function InsightsNew() {
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      {/* <div className="flex items-center justify-between mb-4">
         <NavBar />
 
         <div className="mx-4 md:mx-20 space-x-8 flex items-center">
@@ -34,11 +35,42 @@ export default function InsightsNew() {
 
           <InsightsFilters />
         </div>
-      </div>
+      </div> */}
 
-      <div className="mx-0 sm:mx-8">
-        <CharacterDiscoveryAreaChartV2 />
-      </div>
+      <Tabs defaultValue="overview" className="p-0">
+        <div className="mt-8 flex justify-between items-center md:mx-12">
+          <TabsList className="space-x-8 dark:bg-black">
+            <TabsTrigger
+              value="overview"
+              className="px-0 dark:data-[state=active]:text-white"
+            >
+              Overview
+            </TabsTrigger>
+            <TabsTrigger
+              value="content"
+              className="px-0 dark:data-[state=active]:text-white"
+            >
+              Characters
+            </TabsTrigger>
+          </TabsList>
+
+          {/* <div className="space-x-4"></div> */}
+          <div className="mx-4 md:mx-20 space-x-8 flex items-center">
+            <div className="text-gray-500 font-extralight hidden sm:block">
+              <ToAndFromDate />
+            </div>
+
+            <InsightsFilters />
+          </div>
+        </div>
+
+        <TabsContent value="overview" className="my-8">
+          {/* <TimelineTabBody variant="all" /> */}
+          <div className="mx-0 sm:mx-8">
+            <CharacterDiscoveryAreaChartV2 />
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

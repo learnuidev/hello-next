@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  Area,
-  AreaChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
+import { ChartTooltip } from "@/components/ui/chart";
 import {
   Select,
   SelectContent,
@@ -17,10 +8,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTheme } from "next-themes";
+import { useState } from "react";
+import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { useListWeeklyLearnedCharacters } from "../use-list-weekly-learned-characters";
 import { useListWeeklyReviewedCharacters } from "../use-list-weekly-reviewed-characters";
-import { useState } from "react";
-import { useTheme } from "next-themes";
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {

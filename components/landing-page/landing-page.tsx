@@ -54,6 +54,16 @@ export const LandingPage = () => {
                     src="https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.us-east-1.amazonaws.com/learnuidev@gmail.com/01JJR5AJS9N2P1VW5KNJA6GGH7.png"
                     style={{ color: "transparent" }}
                   />
+                  <img
+                    alt="Mandarino search results page"
+                    // width="1141"
+                    height="641"
+                    decoding="async"
+                    data-nimg="1"
+                    className="max-h-[100%] block dark:hidden border border-border dark:[box-shadow:0px_80px_60px_0px_rgba(0,0,0,0.35),0px_35px_28px_0px_rgba(0,0,0,0.25),0px_18px_15px_0px_rgba(0,0,0,0.20),0px_10px_8px_0px_rgba(0,0,0,0.17),0px_5px_4px_0px_rgba(0,0,0,0.14),0px_2px_2px_0px_rgba(0,0,0,0.10)] [box-shadow:0px_82px_105px_0px_#E3E2DF7A,0px_29.93px_38.33px_0px_#E3E2DF54,0px_14.53px_18.61px_0px_#E3E2DF44,0px_7.12px_9.12px_0px_#E3E2DF36,0px_2.82px_3.61px_0px_#E3E2DF26]"
+                    src="https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.us-east-1.amazonaws.com/learnuidev@gmail.com/01JJSJ7J5QB40ZM8TVTCB06BWE.png"
+                    style={{ color: "transparent" }}
+                  />
                 </div>
               </div>
             </div>

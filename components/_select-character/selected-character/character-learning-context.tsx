@@ -72,7 +72,9 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
   const isAudioVideoOrYoutube =
     relevantContent?.audio?.includes("youtube") ||
     relevantContent?.audio?.includes("mp4") ||
-    relevantContent?.audio?.includes("mp3");
+    relevantContent?.audio?.includes("mp3") ||
+    relevantContent?.audio?.includes("m4a") ||
+    relevantContent?.audio?.includes("wav");
 
   return relevantContent && isAudioVideoOrYoutube ? (
     <article className="dark:bg-[rgb(14,15,16)] bg-gray-50 p-4 sm:p-8 rounded-2xl mt-2">

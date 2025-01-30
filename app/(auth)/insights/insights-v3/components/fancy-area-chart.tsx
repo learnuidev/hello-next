@@ -38,8 +38,10 @@ const CustomTooltip = ({ active, payload }: any) => {
 export function FancyAreaChart({
   data,
   title,
+  totalTime,
 }: {
   title: string;
+  totalTime?: string;
   data: { date: string; value: number }[];
 }) {
   const { theme } = useTheme();
@@ -51,7 +53,11 @@ export function FancyAreaChart({
     <div className="space-y-4">
       <div className="mb-12">
         <span className="text-lg dark:text-gray-400">{title}</span>
-        <h2 className="text-5xl font-mono dark:text-white">{total}</h2>
+        <h2 className="font-mono dark:text-white space-x-4">
+          <span className="text-5xl "> {total}</span>
+
+          <span className="text-xl"> {totalTime}</span>
+        </h2>
       </div>
 
       <div className="h-[250px]">

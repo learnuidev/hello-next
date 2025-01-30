@@ -17,35 +17,35 @@ const days = {
   6: "Sat",
 };
 
-export function countByDate({ toDate, fromDate, list }: any) {
+export function countByDate({ toDate, fromDate, list, studiedItems }: any) {
+  const filteredList = list?.filter((item: any) => {
+    const createdAt = new Date(item?.createdAt);
+
+    if (isThisWeek(createdAt)) {
+      // return isAfter(createdAt, fromDate);
+
+      const now = new Date();
+
+      const lastWeek = sub(now, {
+        years: 0,
+        months: 0,
+        weeks: 0,
+        days: 7,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+      });
+      return isAfter(createdAt, lastWeek);
+    } else {
+      return isAfter(createdAt, fromDate) && isBefore(createdAt, toDate);
+    }
+
+    // && isThisWeek(createdAt);
+  });
   const filteredCharacters = Object.entries(
     R.countBy(
       (x: any) => x.day,
-      list
-        ?.filter((item: any) => {
-          const createdAt = new Date(item?.createdAt);
-
-          if (isThisWeek(createdAt)) {
-            // return isAfter(createdAt, fromDate);
-
-            const now = new Date();
-
-            const lastWeek = sub(now, {
-              years: 0,
-              months: 0,
-              weeks: 0,
-              days: 7,
-              hours: 0,
-              minutes: 0,
-              seconds: 0,
-            });
-            return isAfter(createdAt, lastWeek);
-          } else {
-            return isAfter(createdAt, fromDate) && isBefore(createdAt, toDate);
-          }
-
-          // && isThisWeek(createdAt);
-        })
+      filteredList
         ?.map((item: any) => {
           const createdAt = new Date(item?.createdAt);
           const day = getDay(createdAt);
@@ -65,6 +65,8 @@ export function countByDate({ toDate, fromDate, list }: any) {
     };
   });
 
+  console.log("FILTERED CHARACTERS", filteredList);
+
   const data = Object.entries(days)?.map((day: any) => {
     const exist = filteredCharacters?.find((x) => x?.day === day[1]);
     if (exist) {
@@ -79,5 +81,6 @@ export function countByDate({ toDate, fromDate, list }: any) {
 
   return {
     data,
+    studiedItems: filteredList,
   };
 }

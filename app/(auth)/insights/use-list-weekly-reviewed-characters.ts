@@ -9,7 +9,7 @@ export function useListWeeklyReviewedCharacters() {
   const { data: learnedCharacters, isLoading: isLearnedCharactersLoading } =
     useListCharactersQuery();
 
-  const { data } = countByDate({
+  const { data, studiedItems } = countByDate({
     fromDate,
     toDate,
     list: (learnedCharacters || [])
@@ -20,5 +20,6 @@ export function useListWeeklyReviewedCharacters() {
   return {
     data,
     isLoading: isLearnedCharactersLoading,
+    studiedItems,
   };
 }

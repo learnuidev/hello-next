@@ -31,7 +31,7 @@ export function SearchHistoryResult() {
               className="block"
             >
               <div className="flex flex-col items-start w-full justify-between">
-                <h1 className="font-light text-lg sm:text-2xl text-gray-400">
+                <h1 className="font-light text-lg sm:text-2xl dark:text-gray-400">
                   {hanziOrInput}{" "}
                 </h1>
 

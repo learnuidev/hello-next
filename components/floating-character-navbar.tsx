@@ -4,19 +4,18 @@ import { SelectedCharacterProps } from "./_select-character/select-character.typ
 import { cn } from "@/lib/utils";
 import { Icons } from "./ui/icons.v2";
 
+import { useCharacterContextStore } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { getReviewDate } from "@/hooks/get-review-date";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import { SelectedCharacterContentsButton } from "./_select-character/selected-character-contents-button";
+import { SelectedCharacterStoryButton } from "./_select-character/selected-character-story-button";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 import { getReviewSearchParams } from "./settings-dialog/use-get-review-url";
-import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { TheDock } from "./the-dock";
-import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
-import { SelectedCharacterStoryButton } from "./_select-character/selected-character-story-button";
-import { SelectedCharacterContentsButton } from "./_select-character/selected-character-contents-button";
-import { useCharacterContextStore } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 
 const isMultiSentence = (str: string) => {
   const isHanziMultiSentence = str.split("。")?.length > 1;
@@ -51,9 +50,6 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
 
   const { data: components, isLoading } = useListComponents();
   const { data: chars } = useListCharactersQuery();
-  const hasAlreadyLearned = components?.find(
-    (item: any) => (item?.hanzi || item?.input) === characterId
-  );
 
   const character = chars?.find(
     (item: any) => (item?.hanzi || item?.input) === characterId
@@ -63,18 +59,11 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
   const brightMode = useBrightModeStore((state: any) => state.mode);
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
 
-  const pinyinOrRoman =
-    (hasAlreadyLearned && hasAlreadyLearned?.pinyin) ||
-    hasAlreadyLearned?.roman;
-
   const multiSentence = isMultiSentence(characterId);
-
-  const routeName = usePathname();
 
   const currentCharacter = selectedComp;
 
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
-  const isSuperAdmin = useIsSuperAdmin();
 
   const { data } = useListCharactersQuery();
 
@@ -143,8 +132,7 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
                 )}
               </button>
             )}
-            {!selectedComp2 ? null : characterId?.length >
-              3 ? null : isLoading || isAlreadyLearned ? null : (
+            {isAlreadyLearned ? null : (
               <button
                 className="text-xl text-black dark:text-white"
                 onClick={() => {
@@ -198,69 +186,24 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
               </button>
             )}
 
-            {characterId?.length <= 3 &&
-              !isLoading &&
-              isSuperAdmin &&
-              !selectedComp2 && (
-                <button
-                  className="text-xl text-black dark:text-white"
-                  disabled={
-                    discoverMutation.isLoading || discoverMutation.isSuccess
-                  }
-                  onClick={() => {
-                    discoverMutation
-                      .mutateAsync({
-                        hanzi: selectedComp?.hanzi || characterId,
-                        context,
-                      })
-                      .then((resp: any) => {
-                        toast(
-                          `Component Successfully discovered ${JSON.stringify(resp)}`
-                        );
-                      });
-                  }}
-                >
-                  {discoverMutation.isLoading ? (
-                    <Icons.spinner spinPulse />
-                  ) : (
-                    <Icons.language />
-                  )}
-                </button>
-              )}
-            {currentCharacter?.status === "forgotten" && (
+            {isAlreadyLearned && (
               <button
                 className="text-xl text-black dark:text-white"
                 disabled={deleteComponentMutation.isLoading}
-                onClick={() => {
-                  updateCharacterStatusMutation.mutateAsync({
-                    characterId: currentCharacter?.id,
-                    status: "DISCOVERED",
-                    forgottenAt: Date.now(),
-                    rightAt: Date.now(),
-                    statusHistory: (
-                      currentCharacter?.statusHistory || []
-                    ).concat({
-                      type: "status-change",
-                      createdAt: Date.now(),
-                      newStatus: "DISCOVERED",
-                      oldStatus: currentCharacter?.status,
-                    }),
-                    rightCount: (currentCharacter?.rightCount || 0) + 1,
-                  } as any);
-
-                  // deleteComponentMutation
-                  //   .mutateAsync({
-                  //     hanzi: hasAlreadyReviewed?.hanzi,
-                  //     id: hasAlreadyReviewed?.id,
-                  //   } as any)
-                  //   .then((resp: any) => {
-                  //     toast(`Component: ${selectedComp?.hanzi || characterId} Successfully deleted
-                  //     \n
-                  //     ${JSON.stringify(resp)}`);
-                  //   });
+                onDoubleClick={() => {
+                  deleteComponentMutation
+                    .mutateAsync({
+                      hanzi: currentCharacter?.hanzi,
+                      id: currentCharacter?.id,
+                    } as any)
+                    .then((resp: any) => {
+                      toast(`Component: ${selectedComp?.hanzi || characterId} Successfully deleted
+                      \n
+                      ${JSON.stringify(resp)}`);
+                    });
                 }}
               >
-                {updateCharacterStatusMutation.isLoading ? (
+                {deleteComponentMutation.isLoading ? (
                   <Icons.spinner spinPulse />
                 ) : (
                   <Icons.powerOff />

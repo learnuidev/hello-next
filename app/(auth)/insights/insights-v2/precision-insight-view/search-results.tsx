@@ -15,7 +15,11 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
     <div>
       <div className="space-x-8 mt-8 sm:mt-0">
         <button
-          className={view === "search" ? "text-white" : "text-gray-600"}
+          className={
+            view === "search"
+              ? "dark:text-white"
+              : "text-gray-300 dark:text-gray-600"
+          }
           onClick={() => {
             setView("search");
           }}
@@ -27,12 +31,20 @@ export const PrecisionSearchResults = ({ searchResults }: any) => {
           onClick={() => {
             setView("character");
           }}
-          className={view === "character" ? "text-white" : "text-gray-600"}
+          className={
+            view === "character"
+              ? "dark:text-white"
+              : "text-gray-300 dark:text-gray-600"
+          }
         >
           <Icons.compass className="text-2xl" />
         </button>
         <button
-          className={view === "word" ? "text-white" : "text-gray-600"}
+          className={
+            view === "word"
+              ? "dark:text-white"
+              : "text-gray-300 dark:text-gray-600"
+          }
           onClick={() => {
             setView("word");
           }}

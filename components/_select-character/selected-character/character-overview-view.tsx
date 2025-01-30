@@ -58,7 +58,7 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
                         >
                           Overview
                         </TabsTrigger>
-                        {selectedComp?.contentContext && (
+                        {selectedComp && (
                           <TabsTrigger
                             value="learning-context"
                             className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"

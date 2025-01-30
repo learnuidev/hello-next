@@ -144,7 +144,7 @@ export const TimelineTabBody = ({
                 ) : null}
                 <NmmListContainer>
                   {selectedGroup?.items
-                    ?.filter((item: any) => item?.hanzi?.length === 1)
+                    // ?.filter((item: any) => item?.hanzi?.length === 1)
                     ?.map((item: any, idx: any) => {
                       if (item?.status === "joined") {
                         return null;

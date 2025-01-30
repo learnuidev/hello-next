@@ -10,7 +10,7 @@ import { useGetInsightSearchResults } from "../(auth)/insights/insights-v2/preci
 import { PrecisionSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/search-results";
 import { useSearchQueryStore } from "@/components/search/state";
 
-export const ProfilePage = () => {
+export const ProfilePage = ({ hideSearch }: { hideSearch?: boolean }) => {
   const searchResults = useGetInsightSearchResults("all");
 
   const queryStrSync = useSearchQueryStore((state) => state.querySync);
@@ -18,7 +18,7 @@ export const ProfilePage = () => {
   if (queryStrSync) {
     return (
       <main className="bg-white dark:bg-[rgb(9,10,11)]">
-        <NavBar />
+        {hideSearch ? null : <NavBar />}
         <div className="mx-4 md:mx-48">
           <PrecisionSearchResults searchResults={searchResults} />
         </div>
@@ -27,7 +27,7 @@ export const ProfilePage = () => {
   }
   return (
     <main className="bg-white dark:bg-[rgb(9,10,11)]">
-      <NavBar />
+      {hideSearch ? null : <NavBar />}
       <ProfileBanner />
 
       <section className="flex flex-row justify-center items-center gap-x-16 gap-y-8 mt-16 flex-wrap">

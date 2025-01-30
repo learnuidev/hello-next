@@ -16,6 +16,7 @@ import { CharacterLearnedBarChart } from "./CharacterLearnedBarChart";
 import { CharacterDiscoveryAreaChart } from "./CharacterDiscoveryAreaChart";
 import { CharacterDiscoveryAreaChartV2 } from "./insights-v3/character-discover-area-chart-v2";
 import { FloatingNavbar } from "@/components/floating-navbar";
+import { ProfilePage } from "@/app/profile/profile-page";
 
 function ToAndFromDate() {
   const { fromDate, toDate } = useGetFromAndToDate();
@@ -41,8 +42,7 @@ export default function InsightsNew() {
 
       <Tabs defaultValue="overview" className="p-0 mb-16">
         <div className="my-4 flex justify-between items-center md:mx-8">
-          <div></div>
-          {/* <TabsList className="space-x-8 dark:bg-black bg-white">
+          <TabsList className="space-x-8 dark:bg-black bg-white">
             <TabsTrigger
               value="overview"
               className="px-0 dark:data-[state=active]:text-white"
@@ -55,7 +55,7 @@ export default function InsightsNew() {
             >
               Characters
             </TabsTrigger>
-          </TabsList> */}
+          </TabsList>
 
           {/* <div className="space-x-4"></div> */}
           <div className="mx-4 md:mx-20 space-x-8 flex items-center">
@@ -70,7 +70,7 @@ export default function InsightsNew() {
         <TabsContent value="overview" className="sm:mx-8">
           {/* <TimelineTabBody variant="all" /> */}
 
-          <CharacterDiscoveryAreaChartV2 />
+          <ProfilePage hideSearch />
         </TabsContent>
         <TabsContent value="characters" className="sm:mx-8">
           {/* <TimelineTabBody variant="all" /> */}

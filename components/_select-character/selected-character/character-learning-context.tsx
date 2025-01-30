@@ -118,11 +118,11 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
                   setIfExists({ ...currentTranscription, contentId });
                 }}
                 href={`/nmm/${encodeURIComponent(
-                  currentTranscription?.input
+                  currentTranscription?.input || currentTranscription?.hanzi
                 )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
                 target="_blank"
               >
-                {currentTranscription?.input}
+                {currentTranscription?.input || currentTranscription?.hanzi}
               </Link>
 
               <p className="text-gray-500">{currentTranscription?.en}</p>

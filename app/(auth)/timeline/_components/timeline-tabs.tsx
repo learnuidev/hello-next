@@ -8,36 +8,36 @@ export function TimelineTabs() {
   return (
     <Tabs defaultValue="all" className="p-0">
       <div className="mt-8 flex justify-between items-center md:mx-12">
-        <TabsList className="space-x-8">
+        <TabsList className="space-x-8 bg-white dark:bg-black">
           <TabsTrigger
             value="all"
-            className="px-0 data-[state=active]:text-yellow-500"
+            className="px-0 data-[state=active]:text-rose-500"
           >
             <Icons.globeAsia className="text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             value="search"
-            className="px-0 data-[state=active]:text-yellow-500"
+            className="px-0 data-[state=active]:text-rose-500"
           >
             <Icons.magnifyingGlass className="text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             value="track"
-            className="px-0 data-[state=active]:text-yellow-500"
+            className="px-0 data-[state=active]:text-rose-500"
           >
             <Icons.track className="text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             // value="learned"
             value="discovered"
-            className="px-0 data-[state=active]:text-yellow-500"
+            className="px-0 data-[state=active]:text-rose-500"
           >
             <Icons.lightBulb className="text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             // value="learned"
             value="reviewed"
-            className="px-0 data-[state=active]:text-yellow-500"
+            className="px-0 data-[state=active]:text-rose-500"
           >
             <Icons.play className="text-2xl" />
           </TabsTrigger>

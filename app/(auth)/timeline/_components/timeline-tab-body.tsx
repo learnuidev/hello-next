@@ -98,37 +98,39 @@ export const TimelineTabBody = ({
             }
           }}
         >
-          <div className="mt-0 md:mt-[-70px] ml-4 flex gap-4 md:mb-16 mb-4">
-            {langs?.map((lang: any) => {
-              return (
-                <button
-                  className={cn(
-                    focusLang
-                      ? focusLang === lang
-                        ? "text-white"
-                        : "text-gray-500"
-                      : "text-gray-300",
-                    "transition text-xl font-extralight hover:scale-125"
-                  )}
-                  onClick={() => {
-                    setFocusLang((prevLang: string) => {
-                      if (prevLang) {
-                        if (prevLang === lang) {
-                          return "";
+          {langs?.length < 2 ? null : (
+            <div className="mt-0 md:mt-[-70px] ml-4 flex gap-4 md:mb-16 mb-4">
+              {langs?.map((lang: any) => {
+                return (
+                  <button
+                    className={cn(
+                      focusLang
+                        ? focusLang === lang
+                          ? "text-white"
+                          : "text-gray-500"
+                        : "dark:text-gray-300",
+                      "transition text-xl font-extralight hover:scale-125"
+                    )}
+                    onClick={() => {
+                      setFocusLang((prevLang: string) => {
+                        if (prevLang) {
+                          if (prevLang === lang) {
+                            return "";
+                          }
+                          return lang;
+                        } else {
+                          return lang;
                         }
-                        return lang;
-                      } else {
-                        return lang;
-                      }
-                    });
-                  }}
-                  key={lang}
-                >
-                  {lang}
-                </button>
-              );
-            })}
-          </div>
+                      });
+                    }}
+                    key={lang}
+                  >
+                    {lang}
+                  </button>
+                );
+              })}
+            </div>
+          )}
           <div>
             {["discovered", "reviewed"]?.includes(variant) ? (
               <div>
@@ -195,7 +197,7 @@ export const TimelineTabBody = ({
                                   focusLang === item?.lang
                                   ? "text-white text-2xl"
                                   : "text-gray-700 text-2xl"
-                                : "text-gray-300 text-2xl"
+                                : "dark:text-gray-300 text-2xl"
                             )}
                           >
                             {item?.input || item?.hanzi?.trim("")}

@@ -85,7 +85,7 @@ export function CharacterDiscoveryAreaChartV2() {
 
   return (
     <>
-      <div className="w-full dark:bg-black bg-gray-50 py-8 rounded-2xl">
+      <div className="w-full dark:bg-[rgb(21,22,24)] bg-gray-50 py-8 rounded-2xl px-4">
         <div className="flex items-center justify-between mb-8">
           <Select
             defaultValue="characters-learned"

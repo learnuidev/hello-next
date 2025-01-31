@@ -41,7 +41,7 @@ function SettingsPopover({
         </button>
         {/* <Button variant="outline">Open popover</Button> */}
       </PopoverTrigger>
-      <PopoverContent className="w-80 dark:border-gray-900 border-gray-200 dark:bg-[rgb(21,22,23)] bg-gray-200 rounded-2xl">
+      <PopoverContent className="w-80 dark:border-gray-900 border-gray-100 dark:bg-[rgb(21,22,23)] bg-gray-100 rounded-2xl">
         <div className="grid gap-4">
           <div className="space-y-2">
             <h4 className="font-bold leading-none">Clipboard Settings</h4>
@@ -51,7 +51,7 @@ function SettingsPopover({
               <Label htmlFor="airplane-mode">Show Pinyin</Label>
               <Switch
                 color="dark:bg-blue-500"
-                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+                // className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
                 checked={pinyinView}
                 onCheckedChange={() => {
                   setPinyinView((prev: any) => !prev);
@@ -62,7 +62,7 @@ function SettingsPopover({
               <Label htmlFor="airplane-mode">Show Sentences</Label>
               <Switch
                 color="dark:bg-blue-500"
-                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+                // className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
                 checked={sentenceView}
                 onCheckedChange={() => {
                   setSentenceView((prev: any) => !prev);
@@ -73,7 +73,7 @@ function SettingsPopover({
               <Label htmlFor="airplane-mode">Show HSK </Label>
               <Switch
                 color="dark:bg-blue-500"
-                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+                // className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
                 checked={hskView}
                 onCheckedChange={() => {
                   setHskView((prev: any) => !prev);

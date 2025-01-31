@@ -5,39 +5,31 @@ import { Icons } from "@/components/ui/icons.v2";
 import { TimelineTabBody } from "./timeline-tab-body";
 
 export function TimelineTabs() {
+  const hoverColor = `dark:data-[state=active]:text-white data-[state=active]:text-black`;
   return (
     <Tabs defaultValue="all" className="p-0">
       <div className="mt-8 flex justify-between items-center md:mx-12">
         <TabsList className="space-x-8 bg-white dark:bg-black">
-          <TabsTrigger
-            value="all"
-            className="px-0 data-[state=active]:text-rose-500"
-          >
+          <TabsTrigger value="all" className={`px-0 ${hoverColor}`}>
             <Icons.globeAsia className="text-2xl" />
           </TabsTrigger>
-          <TabsTrigger
-            value="search"
-            className="px-0 data-[state=active]:text-rose-500"
-          >
+          <TabsTrigger value="search" className={`px-0 ${hoverColor}`}>
             <Icons.magnifyingGlass className="text-2xl" />
           </TabsTrigger>
-          <TabsTrigger
-            value="track"
-            className="px-0 data-[state=active]:text-rose-500"
-          >
+          <TabsTrigger value="track" className={`px-0 ${hoverColor}`}>
             <Icons.track className="text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             // value="learned"
             value="discovered"
-            className="px-0 data-[state=active]:text-rose-500"
+            className={`px-0 ${hoverColor}`}
           >
             <Icons.lightBulb className="text-2xl" />
           </TabsTrigger>
           <TabsTrigger
             // value="learned"
             value="reviewed"
-            className="px-0 data-[state=active]:text-rose-500"
+            className={`px-0 ${hoverColor}`}
           >
             <Icons.play className="text-2xl" />
           </TabsTrigger>

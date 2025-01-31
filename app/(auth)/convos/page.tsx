@@ -165,7 +165,7 @@ function LessonCard({ lesson }: any) {
   );
 }
 export default function Convos() {
-  const [contentViewType, setViewType] = useState("me");
+  const [contentViewType, setViewType] = useState("public");
   const [isTocHidden, setIsTocHidden] = useState(false);
   const lessonId = useConvosStore((state: any) => state?.convoId);
 
@@ -205,13 +205,11 @@ export default function Convos() {
     return <NewConvo />;
   };
 
-  console.log("VIEW MODE", viewMode);
-
   return viewMode === "convo/add" ? (
     <ContentViewMode />
   ) : (
     <main className="">
-      <div className="flex space-x-4">
+      <div className="flex space-x-4 px-4 md:px-8 mt-4">
         <button
           className={
             contentViewType === "public" ? "dark:text-white" : "text-gray-500"

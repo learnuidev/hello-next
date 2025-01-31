@@ -48,7 +48,10 @@ export function useListContentsQuery(options = {} as any) {
 }
 
 export const getContentQueryId = "get-content";
-export function useGetContentQuery(params: { contentId: string }) {
+export function useGetContentQuery(
+  params: { contentId: string },
+  opts = {} as any
+) {
   const { data: authUser } = useCurrentAuthUser({});
 
   const queryClient = useQueryClient();
@@ -77,6 +80,9 @@ export function useGetContentQuery(params: { contentId: string }) {
       // }
     },
     onSuccess: (data) => {
+      console.log("LOADED", data);
+      console.log("OPTIONS", opts);
+      opts?.onSuccess?.(data);
       queryClient.setQueryData([queryIds.listContents], (old: any) => {
         return (old || []).map((content: any) => {
           if (content?.id === data?.id) {

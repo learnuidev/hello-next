@@ -30,6 +30,7 @@ export const listContents = async (opts: { Authorization: string }) => {
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,
     },
+    body: JSON.stringify({}),
   });
   const resp = (await res.json()) as any;
 

@@ -11,6 +11,7 @@ import { YouTubePlayer } from "@/components/youtube-page/youtube-player";
 import { AI } from "./ai";
 import { PlayV3 } from "./play-v3/play-v3";
 import { isYoutube } from "./utils/is-youtube";
+import { ContentSettings } from "./content-settings";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const viewType = useConvosStore((state: any) => state?.viewType);
@@ -28,6 +29,10 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
 
   // const lesson2 = contentsArr?.find((content: any) => content?.id === lessonId);
+
+  if (viewType === "settings") {
+    return <ContentSettings />;
+  }
 
   // If the link contains yotube - then show youtube page
   if (viewType === "listen" && isYoutube(lesson2?.audio)) {

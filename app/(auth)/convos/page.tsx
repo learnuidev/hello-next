@@ -32,6 +32,7 @@ import { NewConvo } from "./new-convo/new-convo";
 import { useContentTypeStore } from "./use-content-type-store";
 import { useViewModeStore } from "./new-convo/use-viewmode-store";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useListPublishedContentsQuery } from "./[content-id]/hooks/use-list-published-contents-query";
 
 type ContentType = {
   title: string;
@@ -40,8 +41,15 @@ type ContentType = {
   type: string;
 };
 
-function ContentsList() {
-  const { data: contents, isLoading } = useListContentsQuery();
+function ContentsList({ contentViewType }: { contentViewType: string }) {
+  const { data: myContent, isLoading: isContentsLoading } =
+    useListContentsQuery();
+  const { data, isLoading: isPublicContentLoading } =
+    useListPublishedContentsQuery({});
+
+  const isLoading = isContentsLoading || isPublicContentLoading;
+
+  const contents = contentViewType === "public" ? data?.items : myContent;
 
   const contentType = useContentTypeStore((state) => state.contentType);
 
@@ -157,6 +165,7 @@ function LessonCard({ lesson }: any) {
   );
 }
 export default function Convos() {
+  const [contentViewType, setViewType] = useState("me");
   const [isTocHidden, setIsTocHidden] = useState(false);
   const lessonId = useConvosStore((state: any) => state?.convoId);
 
@@ -202,6 +211,28 @@ export default function Convos() {
     <ContentViewMode />
   ) : (
     <main className="">
+      <div className="flex space-x-4">
+        <button
+          className={
+            contentViewType === "public" ? "dark:text-white" : "text-gray-500"
+          }
+          onClick={() => {
+            setViewType("public");
+          }}
+        >
+          Public
+        </button>
+        <button
+          className={
+            contentViewType === "me" ? "dark:text-white" : "text-gray-500"
+          }
+          onClick={() => {
+            setViewType("me");
+          }}
+        >
+          Me
+        </button>
+      </div>
       {selectedChar ? null : lessonId && routeName?.includes("/convos") ? (
         <ConvosNavBar />
       ) : (
@@ -226,7 +257,7 @@ export default function Convos() {
         <ConvoDetails lessonId={lessonId} />
       ) : (
         <div className="my-8 space-y-8">
-          <ContentsList />
+          <ContentsList contentViewType={contentViewType} />
         </div>
       )}
     </main>

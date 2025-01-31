@@ -144,41 +144,51 @@ export const ConvosNavBar = () => {
             setViewType("write");
           }}
           className={`transition ${
-            viewType === "write" ? "text-gray-200" : "text-gray-800"
+            viewType === "write" ? "text-gray-200" : "dark:text-gray-500"
           } hover:text-white transition text-xl`}
         >
           <FontAwesomeIcon icon={faTypewriter} />
         </button>
-        <button
+        {/* <button
           onClick={() => {
             setViewType("speak");
           }}
           className={`transition ${
-            viewType === "speak" ? "text-gray-200" : "text-gray-800"
+            viewType === "speak" ? "text-gray-200" : "dark:text-gray-500"
           } hover:text-white transition text-xl`}
         >
-          <FontAwesomeIcon icon={faMicrophone} />
-        </button>
+          <Icons.microphone />
+        </button> */}
 
-        <button
+        {/* <button
           onClick={() => {
             setViewType("learn");
           }}
           className={`transition ${
-            viewType === "learn" ? "text-green-200" : "text-gray-800"
+            viewType === "learn" ? "text-green-200" : "dark:text-gray-500"
           } hover:text-green-500 transition text-xl`}
         >
-          <FontAwesomeIcon icon={faSeedling} />
-        </button>
+          <Icons.seedling />
+        </button> */}
         <button
           onClick={() => {
             setViewType("insights");
           }}
           className={`transition ${
-            viewType === "insights" ? "text-gray-200" : "text-gray-800"
+            viewType === "insights" ? "text-gray-200" : "dark:text-gray-500"
           } hover:text-white transition text-xl`}
         >
-          <FontAwesomeIcon icon={faChartColumn} />
+          <Icons.chartColumn />
+        </button>
+        <button
+          onClick={() => {
+            setViewType("settings");
+          }}
+          className={`transition ${
+            viewType === "settings" ? "text-gray-200" : "dark:text-gray-500"
+          } hover:text-white transition text-xl`}
+        >
+          <Icons.gear />
         </button>
       </div>
     </div>

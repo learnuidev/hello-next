@@ -216,6 +216,22 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
     seek(selectedWords?.start);
   }, 30);
 
+  // const searchParams = useSearchParams();
+
+  const start = searchParams.get("start");
+
+  useEffect(() => {
+    if (start) {
+      seek(start);
+
+      // try {
+      //   playerRef.current?.player?.player?.play();
+      // } catch (err) {
+      //   console.error(err);
+      // }
+    }
+  }, [start]);
+
   useEffect(() => {
     if (loop) {
       const selectedWords =

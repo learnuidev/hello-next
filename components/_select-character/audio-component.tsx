@@ -11,6 +11,7 @@ import { create } from "zustand";
 import useSound from "use-sound";
 import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const useMusicStore = create((set: any, get: any) => ({
   play: false,
@@ -45,6 +46,25 @@ export const AudioComponent = ({ currentPhrase, className }: any) => {
   );
 
   const [play, { stop, isPlaying }] = useSound(audioUrl) as any;
+
+  if (currentPhrase?.contentId) {
+    return (
+      <Link
+        href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start && currentPhrase?.start !== 0 && currentPhrase?.end !== 0 ? `?start=${currentPhrase?.start}` : ""}`}
+        target="_blank"
+        className={cn(
+          `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${
+            playMusic
+              ? `dark:text-white ring-slate-900/5 dark:ring-white`
+              : "ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"
+          } shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
+          className
+        )}
+      >
+        <PlayIcon className="ml-1" />
+      </Link>
+    );
+  }
 
   return (
     <button

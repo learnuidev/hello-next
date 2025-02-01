@@ -48,7 +48,7 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
           <article>
             <div>
               <div className="">
-                <Tabs defaultValue="overview">
+                <Tabs defaultValue="learning-context">
                   <div className="mt-4 overflow-y-auto">
                     {true && (
                       <TabsList className="space-x-8 overflow-y-auto">
@@ -108,11 +108,10 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
                       )}
                     </div>
                   </TabsContent>
-                  {selectedComp?.contentContext && (
-                    <TabsContent value="learning-context">
-                      <CharacterLearningContext selectedComp={selectedComp} />
-                    </TabsContent>
-                  )}
+
+                  <TabsContent value="learning-context">
+                    <CharacterLearningContext selectedComp={selectedComp} />
+                  </TabsContent>
 
                   <TabsContent value="grammar-analysis">
                     <GrammarAnalysis

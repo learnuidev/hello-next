@@ -5,11 +5,15 @@ import {
 import { isYoutube } from "@/app/(auth)/convos/utils/is-youtube";
 import { formatDate } from "@/components/settings-dialog/utils/format-date";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
-import { useGetContentQuery } from "@/domain/content/content.queries";
+import {
+  useGetContentQuery,
+  useListContentsQuery,
+} from "@/domain/content/content.queries";
 import { resolveLangCode } from "@/libs/openai/utils";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
+import { SentenceItem } from "../sentence-item";
 
 const CharacterLearningContextInner = ({ selectedComp }: any) => {
   const learnedCharacter = selectedComp;
@@ -183,11 +187,64 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
   );
 };
 
+const NoCharacterContextView = ({
+  characterId,
+  lang,
+  selectedComp,
+}: {
+  characterId: string;
+  lang: string;
+  selectedComp: any;
+}) => {
+  const { data } = useListContentsQuery();
+
+  const items = data
+    ?.filter((item: any) => {
+      return (
+        item?.transcriptions?.filter((item: any) =>
+          JSON.stringify(item?.hanzi || item?.input)?.includes(characterId)
+        ) && item?.lang === lang
+      );
+    })
+    ?.map((item) => {
+      return item?.transcriptions?.map((t) => {
+        return {
+          ...t,
+          contentId: item?.id,
+        };
+      });
+    })
+    ?.flat()
+    ?.filter((item) => JSON.stringify(item)?.includes(characterId));
+
+  return (
+    <div>
+      {items?.map((item: any) => {
+        return (
+          <SentenceItem
+            key={JSON.stringify(item)}
+            currentPhrase={item}
+            selectedComp={selectedComp}
+            selectedChar={characterId}
+            lang={item?.lang}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
 export const CharacterLearningContext = ({ selectedComp }: any) => {
   const learnedCharacter = selectedComp;
 
   if (!learnedCharacter?.contentContext?.length) {
-    return null;
+    return (
+      <NoCharacterContextView
+        lang={selectedComp?.lang}
+        characterId={selectedComp?.hanzi}
+        selectedComp={learnedCharacter}
+      />
+    );
   }
 
   return <CharacterLearningContextInner selectedComp={selectedComp} />;

@@ -21,7 +21,7 @@ import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-hist
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { Icons } from "../ui/icons.v2";
 import { KaraokeMode } from "./karaoke-mode";
 import { TranscriptItem } from "./youtube-transcript-item";
@@ -50,10 +50,25 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const updateContentMutation = useUpdateContentMutation();
 
+  const searchParams = useSearchParams();
+
+  const start = searchParams.get("start");
+
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;
+
+    if (start) {
+      playerRef.current.seekTo(start, "seconds");
+
+      try {
+        playerRef.current?.player?.player?.play();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
     // playerRef.current.seekTo(0, 'seconds')
-  }, []);
+  }, [start]);
 
   const [loopCounter, setLoopCounter] = useState(0);
 

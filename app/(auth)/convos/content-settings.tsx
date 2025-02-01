@@ -117,8 +117,6 @@ export const ContentSettings = () => {
       >
         Save
       </Button>
-
-      <div>{JSON.stringify(data, null, 2)}</div>
     </div>
   );
 };

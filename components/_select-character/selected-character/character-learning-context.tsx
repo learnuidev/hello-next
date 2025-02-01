@@ -219,7 +219,8 @@ const NoCharacterContextView = ({
     ?.filter(
       (item: any) =>
         JSON.stringify(item)?.includes(characterId) && item?.lang === lang
-    );
+    )
+    ?.slice(0, 30);
 
   return (
     <div>

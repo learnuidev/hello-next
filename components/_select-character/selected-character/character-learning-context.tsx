@@ -248,6 +248,14 @@ export const CharacterLearningContext = ({
   const lang = useGetCurrentLang();
   const learnedCharacter = selectedComp;
 
+  return (
+    <NoCharacterContextView
+      lang={selectedComp?.lang || lang}
+      characterId={characterId}
+      selectedComp={learnedCharacter}
+    />
+  );
+
   if (!learnedCharacter || !learnedCharacter?.contentContext?.length) {
     return (
       <NoCharacterContextView

@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { SentenceItem } from "../sentence-item";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { Nothing } from "@/app/nmm/nothing";
 
 const CharacterLearningContextInner = ({ selectedComp }: any) => {
   const learnedCharacter = selectedComp;
@@ -221,6 +222,10 @@ const NoCharacterContextView = ({
         JSON.stringify(item)?.includes(characterId) && item?.lang === lang
     )
     ?.slice(0, 30);
+
+  if (!items?.length) {
+    return <Nothing message="Nothing found" />;
+  }
 
   return (
     <div>

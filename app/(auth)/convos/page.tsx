@@ -209,7 +209,7 @@ export default function Convos() {
     <ContentViewMode />
   ) : (
     <main className="">
-      <div className="flex space-x-4 px-4 md:px-8 mt-4">
+      <div className="flex space-x-4 px-4 md:px-12 mt-4">
         <button
           className={
             contentViewType === "public" ? "dark:text-white" : "text-gray-500"

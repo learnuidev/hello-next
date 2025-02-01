@@ -466,7 +466,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             >
               <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] rounded-md border border-gray-900 w-full">
                 <div className="space-y-8">
-                  {(active
+                  {(active !== MAX_LIMIT
                     ? [Object.values(groupedTranscriptions)?.[0]]
                     : Object.values(groupedTranscriptions)
                   )?.map((transcriptions: any) => {

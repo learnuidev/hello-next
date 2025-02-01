@@ -466,18 +466,18 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             >
               <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] rounded-md border border-gray-900 w-full">
                 <div className="space-y-8">
-                  {Object.values(groupedTranscriptions)?.map(
-                    (transcriptions: any) => {
-                      const hanzis = transcriptions
-                        ?.map((t: any) => t?.hanzi)
-                        ?.join("");
-                      return (
-                        <div key={JSON.stringify(transcriptions)}>
-                          <div className="flex flex-wrap">
-                            {(active !== MAX_LIMIT
-                              ? group
-                              : transcriptions
-                            ).map((transcription: any) => {
+                  {(active
+                    ? [Object.values(groupedTranscriptions)?.[0]]
+                    : Object.values(groupedTranscriptions)
+                  )?.map((transcriptions: any) => {
+                    const hanzis = transcriptions
+                      ?.map((t: any) => t?.hanzi)
+                      ?.join("");
+                    return (
+                      <div key={JSON.stringify(transcriptions)}>
+                        <div className="flex flex-wrap">
+                          {(active !== MAX_LIMIT ? group : transcriptions).map(
+                            (transcription: any) => {
                               return (
                                 <span
                                   role="button"
@@ -506,62 +506,62 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                   {"  "}
                                 </span>
                               );
-                            })}
-                          </div>
+                            }
+                          )}
+                        </div>
 
-                          <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
-                            <Link
-                              // href=""
-                              target="_blank"
-                              href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                                hanzis
-                              )}&op=translate`}
-                              className="text-gray-500 hover:text-white"
-                            >
-                              <FontAwesomeIcon icon={faGoogle} />
-                            </Link>
+                        <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
+                          <Link
+                            // href=""
+                            target="_blank"
+                            href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                              hanzis
+                            )}&op=translate`}
+                            className="text-gray-500 hover:text-white"
+                          >
+                            <FontAwesomeIcon icon={faGoogle} />
+                          </Link>
 
-                            <Link
-                              // href=""
-                              href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                                hanzis
-                              )}`}
-                              className="text-gray-500 hover:text-white"
-                              target="_blank"
-                            >
-                              <FontAwesomeIcon icon={faLanguage} />
-                            </Link>
+                          <Link
+                            // href=""
+                            href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                              hanzis
+                            )}`}
+                            className="text-gray-500 hover:text-white"
+                            target="_blank"
+                          >
+                            <FontAwesomeIcon icon={faLanguage} />
+                          </Link>
 
-                            {/* <Link
+                          {/* <Link
                       href={`/nmm/${encodeURIComponent(hanzis)}${transcriptions?.[0]?.lang ? `?lang=${resolveLangCode(transcriptions?.[0]?.lang)}` : ""}`}
                       className="text-gray-500 hover:text-white"
                       target="_blank"
                     >
                       <Icons.mandarin />
                     </Link> */}
-                            <button
-                              onClick={() => {
-                                setToggleLoops(transcriptions);
-                              }}
-                            >
-                              <FontAwesomeIcon
-                                className={
-                                  toggleLoops?.find((item: any) =>
-                                    transcriptions?.find(
-                                      (x: any) => x.end === item?.end
-                                    )
+                          <button
+                            onClick={() => {
+                              setToggleLoops(transcriptions);
+                            }}
+                          >
+                            <FontAwesomeIcon
+                              className={
+                                toggleLoops?.find((item: any) =>
+                                  transcriptions?.find(
+                                    (x: any) => x.end === item?.end
                                   )
-                                    ? "text-white"
-                                    : "text-gray-500"
-                                }
-                                icon={faRepeat}
-                              />
-                            </button>
-                          </div>
+                                )
+                                  ? "text-white"
+                                  : "text-gray-500"
+                              }
+                              icon={faRepeat}
+                            />
+                          </button>
                         </div>
-                      );
-                    }
-                  )}
+                      </div>
+                    );
+                  })}
                 </div>
               </ScrollArea>
             </div>

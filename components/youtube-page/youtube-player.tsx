@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import ReactPlayer from "react-player";
@@ -30,9 +30,11 @@ import { useDebouncedCallback } from "use-debounce";
 import { ActiveTranscription } from "./active-transcription";
 import { useContentEditStore } from "./use-content-edit-store";
 import { useIsSmall } from "./utils/use-is-small";
+import { getActiveTranscriptions } from "./get-active-transcriptions";
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
+  const [active, setActive] = useState(false);
   const [toggleLoop, setToggleLoop] = useState<any>(null);
   const [toggleLoops, setToggleLoops] = useState<any>([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -248,6 +250,32 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const resetTimes = useContentEditStore((state) => state.resetTimes);
   const times = useContentEditStore((state) => state.times);
 
+  const group = useMemo(
+    () =>
+      getActiveTranscriptions({
+        currentTime,
+        transcriptions: transcriptions || [],
+      }),
+    [currentTime, transcriptions]
+  );
+
+  console.log("GRROUP", group);
+
+  const ActiveButton = () => {
+    return (
+      <div>
+        <button
+          className={active ? "dark:text-white" : "text-gray-500"}
+          onClick={() => {
+            setActive((prev) => !prev);
+          }}
+        >
+          Active
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className="grow flex flex-col items-center">
       <div className="space-x-4 sm:my-4 block z-50">
@@ -393,6 +421,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                 : "col-span-12 md:col-span-4"
             }
           >
+            <ActiveButton />
+
             <div
               className={`${
                 isVideoHidden
@@ -410,36 +440,39 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                       return (
                         <div key={JSON.stringify(transcriptions)}>
                           <div className="flex flex-wrap">
-                            {transcriptions.map((transcription: any) => {
-                              return (
-                                <span
-                                  role="button"
-                                  className={`${
-                                    transcription?.start < currentTime &&
-                                    transcription?.end > currentTime
-                                      ? "dark:text-white"
-                                      : "dark:text-gray-400 text-gray-300"
-                                  } transition block py-1 px-1`}
-                                  key={transcription?.hanzi}
-                                  onClick={() => {
-                                    playerRef.current.seekTo(
-                                      transcription?.start,
-                                      "seconds"
-                                    );
+                            {(active ? group : transcriptions).map(
+                              (transcription: any) => {
+                                return (
+                                  <span
+                                    role="button"
+                                    className={`${
+                                      transcription?.start < currentTime &&
+                                      transcription?.end > currentTime
+                                        ? "dark:text-white"
+                                        : "dark:text-gray-400 text-gray-300"
+                                    } transition block py-1 px-1`}
+                                    key={transcription?.hanzi}
+                                    onClick={() => {
+                                      playerRef.current.seekTo(
+                                        transcription?.start,
+                                        "seconds"
+                                      );
 
-                                    try {
-                                      playerRef.current?.player?.player?.play();
-                                    } catch (err) {
-                                      console.error(err);
-                                    }
-                                  }}
-                                >
-                                  {" "}
-                                  {transcription?.input || transcription?.hanzi}
-                                  {"  "}
-                                </span>
-                              );
-                            })}
+                                      try {
+                                        playerRef.current?.player?.player?.play();
+                                      } catch (err) {
+                                        console.error(err);
+                                      }
+                                    }}
+                                  >
+                                    {" "}
+                                    {transcription?.input ||
+                                      transcription?.hanzi}
+                                    {"  "}
+                                  </span>
+                                );
+                              }
+                            )}
                           </div>
 
                           <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
@@ -513,9 +546,10 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           <div
             className={`${isVideoHidden ? "col-span-12" : "md:col-span-4 col-span-12"} w-full`}
           >
+            <ActiveButton />
             <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md border dark:border-gray-900 border-gray-200 p-0 pb-16">
               <div className="sm:space-y-8 mt-4 w-full">
-                {(transcriptions || [])
+                {(active ? group : transcriptions || [])
                   .filter((script: any) => {
                     if (focusMode) {
                       return (

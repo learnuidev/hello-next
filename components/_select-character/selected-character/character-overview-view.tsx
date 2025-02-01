@@ -58,14 +58,14 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
                         >
                           Overview
                         </TabsTrigger>
-                        {selectedComp && (
-                          <TabsTrigger
-                            value="learning-context"
-                            className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
-                          >
-                            Learning Context
-                          </TabsTrigger>
-                        )}
+                        {/* {selectedComp && ( */}
+                        <TabsTrigger
+                          value="learning-context"
+                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
+                        >
+                          Learning Context
+                        </TabsTrigger>
+                        {/* )} */}
 
                         <TabsTrigger
                           value="grammar-analysis"
@@ -110,7 +110,10 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
                   </TabsContent>
 
                   <TabsContent value="learning-context">
-                    <CharacterLearningContext selectedComp={selectedComp} />
+                    <CharacterLearningContext
+                      selectedComp={selectedComp}
+                      characterId={characterId}
+                    />
                   </TabsContent>
 
                   <TabsContent value="grammar-analysis">

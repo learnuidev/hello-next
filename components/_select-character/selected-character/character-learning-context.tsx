@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { SentenceItem } from "../sentence-item";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 const CharacterLearningContextInner = ({ selectedComp }: any) => {
   const learnedCharacter = selectedComp;
@@ -199,13 +200,13 @@ const NoCharacterContextView = ({
   const { data } = useListContentsQuery();
 
   const items = data
-    ?.filter((item: any) => {
-      return (
-        item?.transcriptions?.filter((item: any) =>
-          JSON.stringify(item?.hanzi || item?.input)?.includes(characterId)
-        ) && item?.lang === lang
-      );
-    })
+    // ?.filter((item: any) => {
+    //   return (
+    //     item?.transcriptions?.filter((item: any) =>
+    //       JSON.stringify(item?.hanzi || item?.input)?.includes(characterId)
+    //     ) && item?.lang === lang
+    //   );
+    // })
     ?.map((item) => {
       return item?.transcriptions?.map((t) => {
         return {
@@ -215,10 +216,15 @@ const NoCharacterContextView = ({
       });
     })
     ?.flat()
-    ?.filter((item) => JSON.stringify(item)?.includes(characterId));
+    ?.filter(
+      (item: any) =>
+        JSON.stringify(item)?.includes(characterId) && item?.lang === lang
+    );
 
   return (
     <div>
+      {/* <h1>TODO: {characterId}</h1> */}
+
       {items?.map((item: any) => {
         return (
           <SentenceItem
@@ -234,14 +240,19 @@ const NoCharacterContextView = ({
   );
 };
 
-export const CharacterLearningContext = ({ selectedComp }: any) => {
+export const CharacterLearningContext = ({
+  selectedComp,
+
+  characterId,
+}: any) => {
+  const lang = useGetCurrentLang();
   const learnedCharacter = selectedComp;
 
-  if (!learnedCharacter?.contentContext?.length) {
+  if (!learnedCharacter || !learnedCharacter?.contentContext?.length) {
     return (
       <NoCharacterContextView
-        lang={selectedComp?.lang}
-        characterId={selectedComp?.hanzi}
+        lang={selectedComp?.lang || lang}
+        characterId={characterId}
         selectedComp={learnedCharacter}
       />
     );

@@ -3,14 +3,16 @@
 import { groupBy } from "ramda";
 
 export const getActiveTranscriptions = ({
+  limit,
   currentTime,
   transcriptions,
 }: {
+  limit: number;
   currentTime: number;
   transcriptions: any;
 }) => {
   const groupByMinute = groupBy(
-    (timestamp: any) => `${Math.floor(timestamp?.end / 60)}`
+    (timestamp: any) => `${Math.floor(timestamp?.end / limit)}`
   );
 
   console.log("CURRENT TIME", currentTime);

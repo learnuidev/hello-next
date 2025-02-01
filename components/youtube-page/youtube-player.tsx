@@ -32,9 +32,10 @@ import { useContentEditStore } from "./use-content-edit-store";
 import { useIsSmall } from "./utils/use-is-small";
 import { getActiveTranscriptions } from "./get-active-transcriptions";
 
+const MAX_LIMIT = 9000;
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(MAX_LIMIT);
   const [toggleLoop, setToggleLoop] = useState<any>(null);
   const [toggleLoops, setToggleLoops] = useState<any>([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -253,24 +254,57 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const group = useMemo(
     () =>
       getActiveTranscriptions({
+        limit: active,
         currentTime,
         transcriptions: transcriptions || [],
       }),
-    [currentTime, transcriptions]
+    [active, currentTime, transcriptions]
   );
 
   console.log("GRROUP", group);
 
   const ActiveButton = () => {
     return (
-      <div>
+      <div className="space-x-4 text-xl">
         <button
-          className={active ? "dark:text-white" : "text-gray-500"}
+          className={active === 30 ? "dark:text-white" : "text-gray-500"}
           onClick={() => {
-            setActive((prev) => !prev);
+            setActive(30);
           }}
         >
-          Active
+          30
+        </button>
+        <button
+          className={active === 60 ? "dark:text-white" : "text-gray-500"}
+          onClick={() => {
+            setActive(60);
+          }}
+        >
+          60
+        </button>
+        <button
+          className={active === 90 ? "dark:text-white" : "text-gray-500"}
+          onClick={() => {
+            setActive(90);
+          }}
+        >
+          90
+        </button>
+        <button
+          className={active === 120 ? "dark:text-white" : "text-gray-500"}
+          onClick={() => {
+            setActive(120);
+          }}
+        >
+          120
+        </button>
+        <button
+          className={active === 9000 ? "dark:text-white" : "text-gray-500"}
+          onClick={() => {
+            setActive(MAX_LIMIT);
+          }}
+        >
+          All
         </button>
       </div>
     );
@@ -440,39 +474,39 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                       return (
                         <div key={JSON.stringify(transcriptions)}>
                           <div className="flex flex-wrap">
-                            {(active ? group : transcriptions).map(
-                              (transcription: any) => {
-                                return (
-                                  <span
-                                    role="button"
-                                    className={`${
-                                      transcription?.start < currentTime &&
-                                      transcription?.end > currentTime
-                                        ? "dark:text-white"
-                                        : "dark:text-gray-400 text-gray-300"
-                                    } transition block py-1 px-1`}
-                                    key={transcription?.hanzi}
-                                    onClick={() => {
-                                      playerRef.current.seekTo(
-                                        transcription?.start,
-                                        "seconds"
-                                      );
+                            {(active !== MAX_LIMIT
+                              ? group
+                              : transcriptions
+                            ).map((transcription: any) => {
+                              return (
+                                <span
+                                  role="button"
+                                  className={`${
+                                    transcription?.start < currentTime &&
+                                    transcription?.end > currentTime
+                                      ? "dark:text-white"
+                                      : "dark:text-gray-400 text-gray-300"
+                                  } transition block py-1 px-1`}
+                                  key={transcription?.hanzi}
+                                  onClick={() => {
+                                    playerRef.current.seekTo(
+                                      transcription?.start,
+                                      "seconds"
+                                    );
 
-                                      try {
-                                        playerRef.current?.player?.player?.play();
-                                      } catch (err) {
-                                        console.error(err);
-                                      }
-                                    }}
-                                  >
-                                    {" "}
-                                    {transcription?.input ||
-                                      transcription?.hanzi}
-                                    {"  "}
-                                  </span>
-                                );
-                              }
-                            )}
+                                    try {
+                                      playerRef.current?.player?.player?.play();
+                                    } catch (err) {
+                                      console.error(err);
+                                    }
+                                  }}
+                                >
+                                  {" "}
+                                  {transcription?.input || transcription?.hanzi}
+                                  {"  "}
+                                </span>
+                              );
+                            })}
                           </div>
 
                           <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
@@ -549,7 +583,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             <ActiveButton />
             <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md border dark:border-gray-900 border-gray-200 p-0 pb-16">
               <div className="sm:space-y-8 mt-4 w-full">
-                {(active ? group : transcriptions || [])
+                {(active !== MAX_LIMIT ? group : transcriptions || [])
                   .filter((script: any) => {
                     if (focusMode) {
                       return (

@@ -15,7 +15,7 @@ import Link from "next/link";
 
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
-import { groupBy } from "@/lib/utils";
+import { cn, groupBy } from "@/lib/utils";
 
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
@@ -261,11 +261,9 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     [active, currentTime, transcriptions]
   );
 
-  console.log("GRROUP", group);
-
   const ActiveButton = () => {
     return (
-      <div className="space-x-4 text-xl">
+      <div className="space-x-4 sm:mt-0 mt-4 sm:text-xl flex justify-center">
         <button
           className={active === 30 ? "dark:text-white" : "text-gray-500"}
           onClick={() => {
@@ -312,95 +310,104 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   return (
     <div className="grow flex flex-col items-center">
-      <div className="space-x-4 sm:my-4 block z-50">
-        <button
-          className={viewMode === "karaoke" ? "text-white" : "text-gray-500"}
-          onClick={() => {
-            setViewMode((prev: any) => (prev === "karaoke" ? null : "karaoke"));
-            setIsVideoHidden((isHidden) =>
-              viewMode !== "karaoke" ? true : false
-            );
-          }}
-        >
-          <Icons.karaoke />
-        </button>
-        <button
-          className={viewMode === "para" ? "text-white" : "text-gray-500"}
-          onClick={() => {
-            setViewMode((prev: any) => (prev === "para" ? null : "para"));
-          }}
-        >
-          <Icons.glassesRound />
-        </button>
+      <div className="flex flex-col sm:flex-row justify-center items-center sm:justify-between w-full sm:px-12 mb-4">
+        <div className="space-x-4 sm:my-4 block z-50">
+          <button
+            className={
+              viewMode === "karaoke" ? "dark:text-white" : "text-gray-500"
+            }
+            onClick={() => {
+              setViewMode((prev: any) =>
+                prev === "karaoke" ? null : "karaoke"
+              );
+              setIsVideoHidden((isHidden) =>
+                viewMode !== "karaoke" ? true : false
+              );
+            }}
+          >
+            <Icons.karaoke />
+          </button>
+          <button
+            className={
+              viewMode === "para" ? "dark:text-white" : "text-gray-500"
+            }
+            onClick={() => {
+              setViewMode((prev: any) => (prev === "para" ? null : "para"));
+            }}
+          >
+            <Icons.glassesRound />
+          </button>
 
-        <button
-          className={isVideoHidden ? "text-white" : "text-gray-500"}
-          onClick={() => {
-            setIsVideoHidden((isHidden) => !isHidden);
-          }}
-        >
-          {isVideoHidden ? (
-            <FontAwesomeIcon icon={faVideo} />
-          ) : (
-            <FontAwesomeIcon icon={faVideoSlash} />
+          <button
+            className={isVideoHidden ? "dark:text-white" : "text-gray-500"}
+            onClick={() => {
+              setIsVideoHidden((isHidden) => !isHidden);
+            }}
+          >
+            {isVideoHidden ? (
+              <FontAwesomeIcon icon={faVideo} />
+            ) : (
+              <FontAwesomeIcon icon={faVideoSlash} />
+            )}
+          </button>
+
+          <button
+            className={editMode ? "dark:text-white" : "text-gray-500"}
+            onClick={() => {
+              setEditMode();
+            }}
+          >
+            <Icons.edit />
+          </button>
+
+          {editMode && (
+            <button
+              onClick={() => {
+                resetTimes();
+              }}
+            >
+              Reset
+            </button>
           )}
-        </button>
 
-        <button
-          className={editMode ? "text-white" : "text-gray-500"}
-          onClick={() => {
-            setEditMode();
-          }}
-        >
-          <Icons.edit />
-        </button>
+          {editMode && (
+            <button
+              onClick={() => {
+                const editedTranscriptions = {
+                  id: lesson?.id,
+                  transcriptions: lesson?.transcriptions?.map(
+                    (transcription: any) => {
+                      const time = times?.find(
+                        (t: any) => t?.id === transcription?.id
+                      ) as any;
+                      return {
+                        ...transcription,
+                        ...time,
+                      };
+                    }
+                  ),
+                };
 
-        {editMode && (
-          <button
-            onClick={() => {
-              resetTimes();
-            }}
-          >
-            Reset
-          </button>
-        )}
-
-        {editMode && (
-          <button
-            onClick={() => {
-              const editedTranscriptions = {
-                id: lesson?.id,
-                transcriptions: lesson?.transcriptions?.map(
-                  (transcription: any) => {
-                    const time = times?.find(
-                      (t: any) => t?.id === transcription?.id
-                    ) as any;
-                    return {
-                      ...transcription,
-                      ...time,
-                    };
-                  }
-                ),
-              };
-
-              updateContentMutation
-                .mutateAsync({
-                  ...editedTranscriptions,
-                })
-                .then((resp) => {
-                  setEditMode();
-                  // resetTimes();
-                });
-            }}
-          >
-            Save
-          </button>
-        )}
+                updateContentMutation
+                  .mutateAsync({
+                    ...editedTranscriptions,
+                  })
+                  .then((resp) => {
+                    setEditMode();
+                    // resetTimes();
+                  });
+              }}
+            >
+              Save
+            </button>
+          )}
+        </div>
+        <ActiveButton />
       </div>
 
-      <div className="grid grid-cols-12">
+      <div className="grid grid-cols-12 gap-4">
         <div
-          className={` ${isVideoHidden ? "hidden" : ""} md:col-span-8 col-span-12`}
+          className={` ${isVideoHidden ? "hidden" : ""} md:col-span-7 col-span-12`}
         >
           {/* <div className="block md:hidden">
             <ReactPlayer
@@ -437,7 +444,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             className={
               isVideoHidden
                 ? "col-span-12 mx-12 md:mx-32"
-                : "col-span-12 md:col-span-4"
+                : "col-span-12 md:col-span-5"
             }
           >
             <KaraokeMode
@@ -452,19 +459,27 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             className={
               isVideoHidden
                 ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
-                : "col-span-12 md:col-span-4"
+                : "col-span-12 md:col-span-5"
             }
           >
-            <ActiveButton />
+            {isVideoHidden && (
+              <div>
+                <ActiveTranscription
+                  currentTime={currentTime}
+                  transcriptions={transcriptions}
+                  contentId={contentId}
+                />
+              </div>
+            )}
 
             <div
               className={`${
                 isVideoHidden
-                  ? "md:col-span-8 col-span-12"
-                  : "md:col-span-4 col-span-12"
+                  ? "md:col-span-7 col-span-12"
+                  : "md:col-span-5 col-span-12"
               } w-full text-center`}
             >
-              <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] rounded-md border border-gray-900 w-full">
+              <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] rounded-md border border-gray-200 dark:border-gray-900 w-full">
                 <div className="space-y-8">
                   {(active !== MAX_LIMIT
                     ? [Object.values(groupedTranscriptions)?.[0]]
@@ -482,10 +497,12 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                 <span
                                   role="button"
                                   className={`${
-                                    transcription?.start < currentTime &&
-                                    transcription?.end > currentTime
-                                      ? "dark:text-white"
-                                      : "dark:text-gray-400 text-gray-300"
+                                    currentTime
+                                      ? transcription?.start < currentTime &&
+                                        transcription?.end > currentTime
+                                        ? "dark:text-white bg-yellow-200 dark:bg-black"
+                                        : "dark:text-gray-400"
+                                      : "text-gray-800"
                                   } transition block py-1 px-1`}
                                   key={transcription?.hanzi}
                                   onClick={() => {
@@ -517,7 +534,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                             href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
                               hanzis
                             )}&op=translate`}
-                            className="text-gray-500 hover:text-white"
+                            className="text-gray-500 hover:text-black dark:hover:text-white"
                           >
                             <FontAwesomeIcon icon={faGoogle} />
                           </Link>
@@ -527,7 +544,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                             href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
                               hanzis
                             )}`}
-                            className="text-gray-500 hover:text-white"
+                            className="text-gray-500 hover:text-black dark:hover:text-white"
                             target="_blank"
                           >
                             <FontAwesomeIcon icon={faLanguage} />
@@ -535,26 +552,31 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
                           {/* <Link
                       href={`/nmm/${encodeURIComponent(hanzis)}${transcriptions?.[0]?.lang ? `?lang=${resolveLangCode(transcriptions?.[0]?.lang)}` : ""}`}
-                      className="text-gray-500 hover:text-white"
+                      className="text-gray-500 hover:text-black dark:hover:text-white"
                       target="_blank"
                     >
                       <Icons.mandarin />
                     </Link> */}
                           <button
                             onClick={() => {
-                              setToggleLoops(transcriptions);
+                              if (toggleLoops?.length) {
+                                setToggleLoops([]);
+                              } else {
+                                setToggleLoops(transcriptions);
+                              }
                             }}
                           >
                             <FontAwesomeIcon
-                              className={
+                              className={cn(
+                                "hover:text-black dark:hover:text-white",
                                 toggleLoops?.find((item: any) =>
                                   transcriptions?.find(
                                     (x: any) => x.end === item?.end
                                   )
                                 )
-                                  ? "text-white"
+                                  ? "dark:text-white text-red-400"
                                   : "text-gray-500"
-                              }
+                              )}
                               icon={faRepeat}
                             />
                           </button>
@@ -565,24 +587,13 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                 </div>
               </ScrollArea>
             </div>
-
-            {isVideoHidden && (
-              <div>
-                <ActiveTranscription
-                  currentTime={currentTime}
-                  transcriptions={transcriptions}
-                  contentId={contentId}
-                />
-              </div>
-            )}
           </div>
         ) : transcriptions?.length ? (
           <div
-            className={`${isVideoHidden ? "col-span-12" : "md:col-span-4 col-span-12"} w-full`}
+            className={`${isVideoHidden ? "col-span-12" : "md:col-span-5 col-span-12"} w-full`}
           >
-            <ActiveButton />
             <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md border dark:border-gray-900 border-gray-200 p-0 pb-16">
-              <div className="sm:space-y-8 mt-4 w-full">
+              <div className="sm:space-y-8 w-full">
                 {(active !== MAX_LIMIT ? group : transcriptions || [])
                   .filter((script: any) => {
                     if (focusMode) {

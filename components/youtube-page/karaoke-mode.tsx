@@ -55,7 +55,7 @@ export function KaraokeMode({
     ?.slice(-1);
 
   return (
-    <div className="mt-4 w-[700px] bg-gradient-to-b from-black to-black flex flex-col justify-center p-4">
+    <div className="mt-4 bg-gradient-to-b from-black to-black flex flex-col justify-center p-4">
       <div className="w-full max-w-2xl bg-black/50 backdrop-blur-md rounded-xl p-4 shadow-2xl">
         {/* Past Lyrics */}
         <div

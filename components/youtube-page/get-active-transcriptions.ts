@@ -15,15 +15,15 @@ export const getActiveTranscriptions = ({
     (timestamp: any) => `${Math.floor(timestamp?.end / limit)}`
   );
 
-  console.log("CURRENT TIME", currentTime);
-  console.log("TRANSCRIPTIONS", transcriptions);
+  // console.log("CURRENT TIME", currentTime);
+  // console.log("TRANSCRIPTIONS", transcriptions);
 
   const groupTranscriptions = groupByMinute(transcriptions);
   const groupTranscriptionValues = Object.values(groupTranscriptions);
 
   console.log("group transcriptions", groupTranscriptions);
 
-  const res = groupTranscriptionValues?.find((group: any, idx) => {
+  const res = groupTranscriptionValues?.filter((group: any, idx) => {
     const minStartTime = Math.min(...group?.map((item: any) => item.start));
 
     const maxEndTime = Math.max(...group?.map((item: any) => item?.end));
@@ -32,8 +32,9 @@ export const getActiveTranscriptions = ({
       return idx === 0;
     }
 
-    return minStartTime <= currentTime && maxEndTime >= currentTime;
-  });
+    // return minStartTime <= currentTime && maxEndTime >= currentTime;
+    return maxEndTime >= currentTime;
+  })?.[0];
 
   console.log("");
 

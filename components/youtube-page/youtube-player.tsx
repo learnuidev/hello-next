@@ -270,7 +270,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             setActive(30);
           }}
         >
-          30
+          30s
         </button>
         <button
           className={active === 60 ? "dark:text-white" : "text-gray-500"}
@@ -278,7 +278,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             setActive(60);
           }}
         >
-          60
+          60s
         </button>
         <button
           className={active === 90 ? "dark:text-white" : "text-gray-500"}
@@ -286,7 +286,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             setActive(90);
           }}
         >
-          90
+          90s
         </button>
         <button
           className={active === 120 ? "dark:text-white" : "text-gray-500"}
@@ -294,7 +294,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             setActive(120);
           }}
         >
-          120
+          120s
         </button>
         <button
           className={active === 9000 ? "dark:text-white" : "text-gray-500"}

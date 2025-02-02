@@ -106,7 +106,6 @@ export const ContentSettings = () => {
           "mt-8 sm:w-24 uppercase w-full rounded-full"
         )}
         onClick={() => {
-          alert("save");
           return updateContentMutation.mutateAsync({
             id: content?.id || "",
             contentType,

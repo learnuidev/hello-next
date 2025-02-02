@@ -15,6 +15,7 @@ import {
   faTypewriter,
 } from "@fortawesome/sharp-solid-svg-icons";
 import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
+import { useGetContentQuery } from "@/domain/content/content.queries";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -111,6 +112,8 @@ export const ConvosNavBar = () => {
 
   const contentId = params["content-id"];
 
+  const { data: content } = useGetContentQuery({ contentId });
+
   const isAuthor = useIsContentAuthor(contentId);
 
   const router = useRouter();
@@ -130,18 +133,6 @@ export const ConvosNavBar = () => {
       <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
         <button
           onClick={() => {
-            setViewType("ai");
-          }}
-          className={`transition ${
-            viewType === "ai"
-              ? "text-black dark:text-gray-200"
-              : "text-gray-200 dark:text-gray-800"
-          } hover:text-black dark:hover:text-white transition text-xl`}
-        >
-          <Icons.ai />
-        </button>
-        <button
-          onClick={() => {
             setViewType("listen");
           }}
           className={`transition ${
@@ -152,18 +143,20 @@ export const ConvosNavBar = () => {
         >
           <Icons.musicNoteSolid />
         </button>
-        <button
-          onClick={() => {
-            setViewType("write");
-          }}
-          className={`transition ${
-            viewType === "write"
-              ? "text-black dark:text-gray-200"
-              : "dark:text-gray-800 text-gray-400"
-          } hover:text-black dark:hover:text-white transition text-xl`}
-        >
-          <FontAwesomeIcon icon={faTypewriter} />
-        </button>
+        {content?.lang === "zh" && (
+          <button
+            onClick={() => {
+              setViewType("write");
+            }}
+            className={`transition ${
+              viewType === "write"
+                ? "text-black dark:text-gray-200"
+                : "dark:text-gray-800 text-gray-400"
+            } hover:text-black dark:hover:text-white transition text-xl`}
+          >
+            <FontAwesomeIcon icon={faTypewriter} />
+          </button>
+        )}
         {/* <button
           onClick={() => {
             setViewType("speak");
@@ -185,18 +178,20 @@ export const ConvosNavBar = () => {
         >
           <Icons.seedling />
         </button> */}
-        <button
-          onClick={() => {
-            setViewType("insights");
-          }}
-          className={`transition ${
-            viewType === "insights"
-              ? "text-black dark:text-gray-200"
-              : "dark:text-gray-800 text-gray-400"
-          } hover:text-black dark:hover:text-white transition text-xl`}
-        >
-          <Icons.chartColumn />
-        </button>
+        {content?.lang === "zh" && (
+          <button
+            onClick={() => {
+              setViewType("insights");
+            }}
+            className={`transition ${
+              viewType === "insights"
+                ? "text-black dark:text-gray-200"
+                : "dark:text-gray-800 text-gray-400"
+            } hover:text-black dark:hover:text-white transition text-xl`}
+          >
+            <Icons.chartColumn />
+          </button>
+        )}
         {isAuthor && (
           <button
             onClick={() => {
@@ -211,6 +206,19 @@ export const ConvosNavBar = () => {
             <Icons.gear />
           </button>
         )}
+
+        <button
+          onClick={() => {
+            setViewType("ai");
+          }}
+          className={`transition ${
+            viewType === "ai"
+              ? "text-black dark:text-gray-200"
+              : "text-gray-200 dark:text-gray-800"
+          } hover:text-black dark:hover:text-white transition text-xl`}
+        >
+          <Icons.ai />
+        </button>
       </div>
     </div>
   );

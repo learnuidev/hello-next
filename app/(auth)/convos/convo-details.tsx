@@ -77,6 +77,9 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
 
   if (viewType === "write") {
+    if (lesson2?.lang !== "zh") {
+      return <Nothing message="Wordle is enabled only for Chinese" />;
+    }
     return (
       <div>
         {/* Write */}
@@ -101,6 +104,10 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
 
   if (viewType === "insights") {
+    if (lesson2?.lang !== "zh") {
+      return <Nothing message="Insights is enabled only for Chinese" />;
+    }
+
     return <ConvoInsights lessonId={lessonId} />;
   }
 

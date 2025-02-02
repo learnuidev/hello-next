@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 
 import { FilterSelect } from "@/app/nmm/filter-select";
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 export const ContentDropdown = ({
   onSelect,
@@ -13,7 +14,9 @@ export const ContentDropdown = ({
   onSelect: (val: string) => void;
   value: string;
 }) => {
-  const { data: contents } = useListContentsQuery();
+  const { data } = useListPublishedContentsQuery({});
+
+  const contents = data?.items;
 
   const contentTitles = useMemo(
     () => [

@@ -250,7 +250,7 @@ export function StepView() {
             }}
             autoFocus
             placeholder=""
-            className="w-full text-center text-3xl font-extralight focus:outline-0  p-2 border-0 border-none dark:text-gray-300"
+            className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0  p-2 border-0 border-none dark:text-gray-300"
           />
           <div className="grid md:grid-cols-3 grid-cols-1 w-full my-16 justify-around items-center">
             {contentTypes.map((item) => {
@@ -289,7 +289,7 @@ export function StepView() {
             }}
             autoFocus
             placeholder=""
-            className="w-full text-center text-3xl font-extralight focus:outline-0  p-2 border-0 border-none dark:text-gray-300"
+            className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0  p-2 border-0 border-none dark:text-gray-300"
           />
         </StepContainerVariant1>
       );
@@ -312,7 +312,7 @@ export function StepView() {
             }}
             autoFocus
             placeholder=""
-            className="w-full text-center text-3xl font-extralight focus:outline-0  p-2 border-0 border-none dark:text-gray-300"
+            className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0  p-2 border-0 border-none dark:text-gray-300"
           />
         </StepContainerVariant1>
       );
@@ -335,7 +335,7 @@ export function StepView() {
             }}
             autoFocus
             placeholder=""
-            className="w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
+            className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
           />
           <div className="flex justify-center w-full my-16 space-x-8">
             {["xiaoma", "mb", "yoyo", "ling ling", "mandarino"].map((item) => {
@@ -394,7 +394,7 @@ export function StepView() {
             }}
             autoFocus
             placeholder=""
-            className="w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
+            className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
           />
 
           <div className="flex justify-center items-center flex-col w-full my-4">
@@ -402,7 +402,7 @@ export function StepView() {
 
             <input
               value={newConvo?.source}
-              className="w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
+              className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
               onChange={(event) => {
                 setConvo("source", event?.target?.value);
               }}
@@ -446,7 +446,7 @@ export function StepView() {
             }}
             autoFocus
             placeholder=""
-            className="w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
+            className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
           />
         </StepContainerVariant1>
       );

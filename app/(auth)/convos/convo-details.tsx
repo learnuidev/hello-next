@@ -12,9 +12,13 @@ import { AI } from "./ai";
 import { PlayV3 } from "./play-v3/play-v3";
 import { isYoutube } from "./utils/is-youtube";
 import { ContentSettings } from "./content-settings";
+import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
+import { Nothing } from "@/app/nmm/nothing";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const viewType = useConvosStore((state: any) => state?.viewType);
+
+  const isAuthor = useIsContentAuthor(lessonId);
 
   const { data: lesson2, isLoading } = useGetContentQuery({
     contentId: lessonId,
@@ -31,6 +35,11 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   // const lesson2 = contentsArr?.find((content: any) => content?.id === lessonId);
 
   if (viewType === "settings") {
+    if (!isAuthor) {
+      return (
+        <Nothing message="You dont have the permission to view this page" />
+      );
+    }
     return <ContentSettings />;
   }
 
@@ -44,7 +53,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
   if (viewType === "ai") {
     return (
-      <div>
+      <div className="px-4 md:px-32">
         <AI lessonId={lessonId} />
       </div>
     );

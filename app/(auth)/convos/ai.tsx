@@ -28,7 +28,10 @@ function UserQueryUI({ message }: { message: Message }) {
 
   return (
     <div>
-      <h2 className="text-2xl font-extralight text-gray-500" key={message.id}>
+      <h2
+        className="text-2xl font-extralight dark:text-gray-500"
+        key={message.id}
+      >
         {/* {"> "} */}
         {message.content}
       </h2>
@@ -203,7 +206,10 @@ const AgentAnswer = ({
   const [showGenUI, setShowGenUI] = useState(false);
 
   return (
-    <div key={message.content} className="pt-4 pb-8 text-gray-300 text-lg">
+    <div
+      key={message.content}
+      className="pt-4 pb-8 dark:text-gray-300 text-gray-800 text-lg"
+    >
       {/* {threadId ? (
         <p className="font-extralight ">{message.content}</p>
       ) : (
@@ -452,9 +458,8 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
               //   }
             }}
           >
-            (
             <input
-              className="-ml-6 font-extralight text-2xl top-20 mb-8 mt-2 w-full bg-black rounded-full h-12 px-4 border-transparent focus:border-transparent focus:ring-0 border border-gray-900 shadow-xl !outline-none"
+              className="font-extralight text-2xl top-20 mb-8 mt-2 w-full bg-gray-100 dark:bg-black rounded-full h-12 px-4 border-transparent focus:border-transparent focus:ring-0 border border-gray-900 shadow-xl !outline-none"
               value={input}
               disabled={isLoading}
               placeholder="Ask me anything..."

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartColumn } from "@fortawesome/sharp-solid-svg-icons/faChartColumn";
 
 import { faXmark } from "@fortawesome/pro-light-svg-icons/faXmark";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
 import { useConvosStore } from "@/stores/convos-store";
 
@@ -14,6 +14,7 @@ import {
   faSeedling,
   faTypewriter,
 } from "@fortawesome/sharp-solid-svg-icons";
+import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -104,6 +105,14 @@ export const ConvosNavBar = () => {
   const setViewType = useConvosStore((state: any) => state?.setViewType);
   const viewType = useConvosStore((state: any) => state?.viewType);
 
+  const params = useParams() as {
+    "content-id": string;
+  };
+
+  const contentId = params["content-id"];
+
+  const isAuthor = useIsContentAuthor(contentId);
+
   const router = useRouter();
 
   return (
@@ -124,8 +133,10 @@ export const ConvosNavBar = () => {
             setViewType("ai");
           }}
           className={`transition ${
-            viewType === "ai" ? "text-gray-200" : "text-gray-800"
-          } hover:text-white transition text-xl`}
+            viewType === "ai"
+              ? "text-black dark:text-gray-200"
+              : "text-gray-200 dark:text-gray-800"
+          } hover:text-black dark:hover:text-white transition text-xl`}
         >
           <Icons.ai />
         </button>
@@ -134,8 +145,10 @@ export const ConvosNavBar = () => {
             setViewType("listen");
           }}
           className={`transition ${
-            viewType === "listen" ? "text-gray-200" : "text-gray-800"
-          } hover:text-white transition text-xl`}
+            viewType === "listen"
+              ? "text-black dark:text-gray-200"
+              : "text-gray-200 dark:text-gray-800"
+          } hover:text-black dark:hover:text-white transition text-xl`}
         >
           <Icons.musicNoteSolid />
         </button>
@@ -144,8 +157,10 @@ export const ConvosNavBar = () => {
             setViewType("write");
           }}
           className={`transition ${
-            viewType === "write" ? "text-gray-200" : "dark:text-gray-500"
-          } hover:text-white transition text-xl`}
+            viewType === "write"
+              ? "text-black dark:text-gray-200"
+              : "dark:text-gray-800 text-gray-400"
+          } hover:text-black dark:hover:text-white transition text-xl`}
         >
           <FontAwesomeIcon icon={faTypewriter} />
         </button>
@@ -154,8 +169,8 @@ export const ConvosNavBar = () => {
             setViewType("speak");
           }}
           className={`transition ${
-            viewType === "speak" ? "text-gray-200" : "dark:text-gray-500"
-          } hover:text-white transition text-xl`}
+            viewType === "speak" ? "text-black dark:text-gray-200" : "dark:text-gray-800 text-gray-400"
+          } hover:text-black dark:hover:text-white transition text-xl`}
         >
           <Icons.microphone />
         </button> */}
@@ -165,7 +180,7 @@ export const ConvosNavBar = () => {
             setViewType("learn");
           }}
           className={`transition ${
-            viewType === "learn" ? "text-green-200" : "dark:text-gray-500"
+            viewType === "learn" ? "text-green-200" : "dark:text-gray-800 text-gray-400"
           } hover:text-green-500 transition text-xl`}
         >
           <Icons.seedling />
@@ -175,21 +190,27 @@ export const ConvosNavBar = () => {
             setViewType("insights");
           }}
           className={`transition ${
-            viewType === "insights" ? "text-gray-200" : "dark:text-gray-500"
-          } hover:text-white transition text-xl`}
+            viewType === "insights"
+              ? "text-black dark:text-gray-200"
+              : "dark:text-gray-800 text-gray-400"
+          } hover:text-black dark:hover:text-white transition text-xl`}
         >
           <Icons.chartColumn />
         </button>
-        <button
-          onClick={() => {
-            setViewType("settings");
-          }}
-          className={`transition ${
-            viewType === "settings" ? "text-gray-200" : "dark:text-gray-500"
-          } hover:text-white transition text-xl`}
-        >
-          <Icons.gear />
-        </button>
+        {isAuthor && (
+          <button
+            onClick={() => {
+              setViewType("settings");
+            }}
+            className={`transition ${
+              viewType === "settings"
+                ? "text-black dark:text-gray-200"
+                : "dark:text-gray-800 text-gray-400"
+            } hover:text-black dark:hover:text-white transition text-xl`}
+          >
+            <Icons.gear />
+          </button>
+        )}
       </div>
     </div>
   );

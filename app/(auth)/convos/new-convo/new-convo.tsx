@@ -57,18 +57,14 @@ export function NewConvo({ type }: { type?: string }) {
                 onClick={() => {
                   setStep(item?.stepId);
                 }}
-                className={`mx-4 my-2 text-xl ${
-                  item?.stepId === step
-                    ? "dark:text-slate-200"
-                    : "dark:text-slate-500"
-                } dark:hover:text-white font-extralight`}
+                className={`mx-4 my-2 text-xl`}
               >
                 <div
                   className={` ${
                     item?.stepId === step
-                      ? "dark:bg-slate-200"
-                      : "dark:bg-slate-600"
-                  } h-2 w-2 rounded-full text`}
+                      ? "dark:bg-white bg-black"
+                      : "dark:bg-slate-600 bg-slate-200 "
+                  } h-2 w-2 rounded-full `}
                 ></div>
                 {/* {idx + 1} */}
               </button>

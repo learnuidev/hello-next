@@ -1,4 +1,5 @@
 import { currentAuthUser } from "@/libs/cognito/auth";
+import { isSuperAdmin } from "@/libs/constants/super-admin-emails";
 import { useQuery } from "@tanstack/react-query";
 import { queryIds } from "./queryIds";
 
@@ -12,10 +13,8 @@ export function useCurrentAuthUser(options = {}) {
   });
 }
 
-const superAdminEmail = "learnuidev@gmail.com";
-
 export const useIsSuperAdmin = () => {
   const { data } = useCurrentAuthUser();
 
-  return data?.email === superAdminEmail;
+  return isSuperAdmin(data?.email);
 };

@@ -1,7 +1,11 @@
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 import { awsConfig } from "../aws/aws.config";
+import {
+  isSuperAdmin,
+  superAdminEmails,
+} from "../constants/super-admin-emails";
 
-const adminEmails = ["learnuidev@gmail.com", "vishal.91@live.com"];
+// const superAdminEmails = ["learnuidev@gmail.com", "anairdna16@gmail.com"];
 
 // Verifier that expects valid access tokens:
 export const verifyJwt = async (
@@ -35,7 +39,7 @@ export const verifyJwt = async (
     // console.log("Token is valid. Payload:", payload);
 
     if (options?.isAdmin) {
-      return adminEmails?.includes(payload?.email);
+      return isSuperAdmin(payload?.email);
     }
 
     return true;

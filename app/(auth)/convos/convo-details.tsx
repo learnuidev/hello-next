@@ -14,11 +14,14 @@ import { isYoutube } from "./utils/is-youtube";
 import { ContentSettings } from "./content-settings";
 import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
 import { Nothing } from "@/app/nmm/nothing";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const viewType = useConvosStore((state: any) => state?.viewType);
 
   const isAuthor = useIsContentAuthor(lessonId);
+
+  const isSuperAdmin = useIsSuperAdmin();
 
   const { data: lesson2, isLoading } = useGetContentQuery({
     contentId: lessonId,
@@ -52,6 +55,13 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     );
   }
   if (viewType === "ai") {
+    if (!isSuperAdmin) {
+      if (!isAuthor) {
+        return (
+          <Nothing message="You dont have the permission to view this page" />
+        );
+      }
+    }
     return (
       <div className="px-4 md:px-32">
         <AI lessonId={lessonId} />

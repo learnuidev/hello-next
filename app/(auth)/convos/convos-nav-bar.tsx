@@ -16,6 +16,7 @@ import {
 } from "@fortawesome/sharp-solid-svg-icons";
 import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
 import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -118,6 +119,8 @@ export const ConvosNavBar = () => {
 
   const router = useRouter();
 
+  const isSuperAdmin = useIsSuperAdmin();
+
   return (
     <div className="z-50 flex justify-between items-center w-full md:mt-2 my-2 py-2">
       <button
@@ -138,7 +141,7 @@ export const ConvosNavBar = () => {
           className={`transition ${
             viewType === "listen"
               ? "text-black dark:text-gray-200"
-              : "text-gray-200 dark:text-gray-800"
+              : "text-gray-200 dark:text-gray-600"
           } hover:text-black dark:hover:text-white transition text-xl`}
         >
           <Icons.musicNoteSolid />
@@ -151,7 +154,7 @@ export const ConvosNavBar = () => {
             className={`transition ${
               viewType === "write"
                 ? "text-black dark:text-gray-200"
-                : "dark:text-gray-800 text-gray-400"
+                : "dark:text-gray-600 text-gray-400"
             } hover:text-black dark:hover:text-white transition text-xl`}
           >
             <FontAwesomeIcon icon={faTypewriter} />
@@ -162,7 +165,7 @@ export const ConvosNavBar = () => {
             setViewType("speak");
           }}
           className={`transition ${
-            viewType === "speak" ? "text-black dark:text-gray-200" : "dark:text-gray-800 text-gray-400"
+            viewType === "speak" ? "text-black dark:text-gray-200" : "dark:text-gray-600 text-gray-400"
           } hover:text-black dark:hover:text-white transition text-xl`}
         >
           <Icons.microphone />
@@ -173,7 +176,7 @@ export const ConvosNavBar = () => {
             setViewType("learn");
           }}
           className={`transition ${
-            viewType === "learn" ? "text-green-200" : "dark:text-gray-800 text-gray-400"
+            viewType === "learn" ? "text-green-200" : "dark:text-gray-600 text-gray-400"
           } hover:text-green-500 transition text-xl`}
         >
           <Icons.seedling />
@@ -186,7 +189,7 @@ export const ConvosNavBar = () => {
             className={`transition ${
               viewType === "insights"
                 ? "text-black dark:text-gray-200"
-                : "dark:text-gray-800 text-gray-400"
+                : "dark:text-gray-600 text-gray-400"
             } hover:text-black dark:hover:text-white transition text-xl`}
           >
             <Icons.chartColumn />
@@ -200,25 +203,27 @@ export const ConvosNavBar = () => {
             className={`transition ${
               viewType === "settings"
                 ? "text-black dark:text-gray-200"
-                : "dark:text-gray-800 text-gray-400"
+                : "dark:text-gray-600 text-gray-400"
             } hover:text-black dark:hover:text-white transition text-xl`}
           >
             <Icons.gear />
           </button>
         )}
 
-        <button
-          onClick={() => {
-            setViewType("ai");
-          }}
-          className={`transition ${
-            viewType === "ai"
-              ? "text-black dark:text-gray-200"
-              : "text-gray-200 dark:text-gray-800"
-          } hover:text-black dark:hover:text-white transition text-xl`}
-        >
-          <Icons.ai />
-        </button>
+        {isSuperAdmin && (
+          <button
+            onClick={() => {
+              setViewType("ai");
+            }}
+            className={`transition ${
+              viewType === "ai"
+                ? "text-black dark:text-gray-200"
+                : "text-gray-200 dark:text-gray-600"
+            } hover:text-black dark:hover:text-white transition text-xl`}
+          >
+            <Icons.ai />
+          </button>
+        )}
       </div>
     </div>
   );

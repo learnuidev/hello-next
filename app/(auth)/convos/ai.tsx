@@ -1,25 +1,20 @@
 "use client";
 
-import { NavBar } from "@/components/navbar";
-import { useEffect, useState } from "react";
-import { Message, useChat } from "ai/react";
-import { TextGenerateEffect } from "@/components/text-generate-effect";
+import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
+import { Editor } from "@/components/Editor";
+import { GenUI } from "@/components/gen-ui";
+import { Icons } from "@/components/ui/icons.v2";
+import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
+import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import {
   useAddThreadMutation,
   useUpdateThreadMessagesMutation,
 } from "@/domain/thread/thread.mutations";
 import { IThread, useListThreadsQuery } from "@/domain/thread/thread.queries";
+import { Message, useChat } from "ai/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { GenUI } from "@/components/gen-ui";
-import { Icons } from "@/components/ui/icons.v2";
-import { aiModels } from "@/libs/ai";
-import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
-import { useGetQueryClassifierQuery } from "@/domain/query-classifier/query-classifier.queries";
-import { useGetContentQuery } from "@/domain/content/content.queries";
-import { Editor } from "@/components/Editor";
-import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
-import { cn, removeNull } from "@/lib/utils";
-import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
+import { useEffect, useState } from "react";
 
 function UserQueryUI({ message }: { message: Message }) {
   //   const { data: queryClass } = useGetQueryClassifierQuery({
@@ -61,119 +56,6 @@ export const useGetHskWordHandler = () => {
 
     return hskLevel;
   };
-};
-
-const TableView = ({ content }: { content: string }) => {
-  const canViewAsTable = isSerializable(content);
-
-  const { data: hskWords } = useListHSKWordsQuery();
-
-  if (!canViewAsTable) {
-    return <div> Content Not Supported </div>;
-  }
-
-  const data = JSON.parse(content);
-
-  const formattedData = data?.map((item: any) => {
-    const hskLevel = hskWords?.find(
-      (hskWord: any) => hskWord?.hanzi === item?.input
-    );
-
-    const hskLevels = [
-      ...new Set(
-        hskWords
-          ?.filter((hskWord: any) => {
-            return item?.input?.includes(hskWord?.hanzi);
-          })
-          ?.map((hskWord: any) => hskWord?.level)
-      ),
-    ]?.join(", ");
-
-    return removeNull({
-      ...item,
-      hsk: hskLevel?.level || hskLevels,
-    });
-  });
-
-  const containsOnlyHsk = formattedData?.every(
-    (data: any) => data?.hsk !== 9000
-  );
-  const containsSomeHsk = formattedData?.some(
-    (data: any) => data?.hsk !== 9000
-  );
-
-  const tableHeaders = containsSomeHsk
-    ? [...Object.keys(formattedData?.[0]).filter((item) => item !== "lang")]
-    : ["en", "input", "roman"];
-
-  const colors = {
-    1: "text-white",
-    2: "text-white",
-    3: "text-white",
-    4: "text-white",
-    5: "text-white",
-    6: "text-white",
-    7: "text-white",
-    8: "text-white",
-    9: "text-white",
-    9000: "text-gray-300",
-  } as any;
-
-  const gridType = containsSomeHsk ? "grid-cols-4" : "grid-cols-3";
-
-  return (
-    <div className="">
-      <table className="flex flex-col">
-        <thead>
-          <tr
-            className={cn(
-              "grid items-center justify-center text-gray-400 gap-x-4",
-              gridType
-            )}
-          >
-            {tableHeaders?.map((header) => {
-              return (
-                <th key={header} scope="col" className="text-left">
-                  {header}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-
-        <tbody>
-          {formattedData?.map((item: any) => {
-            // const isInput =
-            return (
-              <tr
-                key={JSON.stringify(item)}
-                className={cn(
-                  colors?.[item?.hsk] || "text-white",
-                  `grid items-center justify-center gap-x-4`,
-                  gridType
-                )}
-              >
-                <th scope="row" className="text-left font-light">
-                  {item?.[tableHeaders?.[0]]}
-                </th>
-                <td className="text-left"> {item?.[tableHeaders?.[1]]}</td>
-                <td className="text-left"> {item?.[tableHeaders?.[2]]}</td>
-                {containsSomeHsk && (
-                  <td className="text-left">
-                    {" "}
-                    {item?.[tableHeaders?.[3]] === 9000
-                      ? null
-                      : item?.[tableHeaders?.[3]]}
-                  </td>
-                )}
-                {/* <td className="text-left"> {item?.[tableHeaders?.[3]]}</td> */}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
 };
 
 const AgentAnswer = ({

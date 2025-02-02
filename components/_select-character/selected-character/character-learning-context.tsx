@@ -16,6 +16,7 @@ import ReactPlayer from "react-player";
 import { SentenceItem } from "../sentence-item";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { Nothing } from "@/app/nmm/nothing";
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 const CharacterLearningContextInner = ({ selectedComp }: any) => {
   const learnedCharacter = selectedComp;
@@ -198,9 +199,9 @@ const NoCharacterContextView = ({
   lang: string;
   selectedComp: any;
 }) => {
-  const { data } = useListContentsQuery();
+  const { data } = useListPublishedContentsQuery({});
 
-  const items = data
+  const items = data?.items
     // ?.filter((item: any) => {
     //   return (
     //     item?.transcriptions?.filter((item: any) =>
@@ -208,8 +209,8 @@ const NoCharacterContextView = ({
     //     ) && item?.lang === lang
     //   );
     // })
-    ?.map((item) => {
-      return item?.transcriptions?.map((t) => {
+    ?.map((item: any) => {
+      return item?.transcriptions?.map((t: any) => {
         return {
           ...t,
           contentId: item?.id,

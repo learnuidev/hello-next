@@ -456,11 +456,12 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           </div>
         ) : viewMode === "para" ? (
           <div
-            className={
+            className={cn(
               isVideoHidden
                 ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
-                : "col-span-12 md:col-span-5"
-            }
+                : "col-span-12 md:col-span-5",
+              "pb-12"
+            )}
           >
             {isVideoHidden && (
               <div>
@@ -471,7 +472,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                 />
               </div>
             )}
-
             <div
               className={`${
                 isVideoHidden
@@ -479,7 +479,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                   : "md:col-span-5 col-span-12"
               } w-full text-center`}
             >
-              <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] rounded-md border border-gray-200 dark:border-gray-900 w-full">
+              <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] rounded-md border border-gray-200 dark:border-gray-900 w-full pb-8">
                 <div className="space-y-8">
                   {(active !== MAX_LIMIT
                     ? [Object.values(groupedTranscriptions)?.[0]]

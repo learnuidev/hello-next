@@ -4,8 +4,8 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 import { useSearchQueryStore } from "@/components/search/state";
-import { useListContentsQuery } from "@/domain/content/content.queries";
 import { filterNonHanYu } from "../nmm-utils/filter-non-hanyu";
 import { yctWords } from "./yct-words";
 
@@ -22,7 +22,9 @@ export const useGetYct = ({
 
   const { data: hskWords } = useListHSKWordsQuery();
 
-  const { data: contents } = useListContentsQuery();
+  const { data: contentItems } = useListPublishedContentsQuery({});
+
+  const contents = contentItems?.items;
 
   let characters = [] as any;
   let words = yctWords?.filter(

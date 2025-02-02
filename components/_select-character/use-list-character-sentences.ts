@@ -4,9 +4,12 @@ import { useListContentsQuery } from "@/domain/content/content.queries";
 
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useContentViewStore } from "./use-content-view-store";
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 export const useListCharacterSentences = (characterId: string) => {
-  const { data: contents } = useListContentsQuery();
+  const { data: contentItems } = useListPublishedContentsQuery({});
+
+  const contents = contentItems?.items;
   const searchParams = useSearchParams();
 
   const view = useContentViewStore((state) => state.view);

@@ -28,6 +28,7 @@ import { useReadModeStore } from "@/stores/use-readmode-store";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { useGetLangParams } from "@/hooks/use-get-lang-params";
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 export const useViewTypeStore = create(
   persist(
@@ -74,8 +75,10 @@ export function useSelectedCharacterData({
     }
   );
 
-  const { data: contents, isLoading: isContentsLoading } =
-    useListContentsQuery();
+  const { data: contentItems, isLoading: isContentsLoading } =
+    useListPublishedContentsQuery({});
+
+  const contents = contentItems?.items;
 
   const allContents = useMemo(
     () => contents?.map((content: any) => content?.transcriptions)?.flat(),

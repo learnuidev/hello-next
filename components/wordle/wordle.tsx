@@ -18,6 +18,7 @@ import {
 } from "@fortawesome/pro-thin-svg-icons";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import Link from "next/link";
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 function GameTile(props: any) {
   const { letter } = props;
@@ -64,7 +65,9 @@ export function Wordle() {
     }
   );
 
-  const { data: contents } = useListContentsQuery();
+  const { data: contentItems } = useListPublishedContentsQuery({});
+
+  const contents = contentItems?.items;
 
   const phraseId = params?.["phrase-id"]
     ? decodeURIComponent(params?.["phrase-id"])

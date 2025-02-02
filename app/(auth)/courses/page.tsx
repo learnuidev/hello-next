@@ -8,11 +8,14 @@ import { useListContentsQuery } from "@/domain/content/content.queries";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useGetCoursesSearchParams } from "./hooks/use-get-courses-search-params";
+import { useListPublishedContentsQuery } from "../convos/[content-id]/hooks/use-list-published-contents-query";
 
 export default function Courses() {
   const router = useRouter();
 
-  const { data } = useListContentsQuery();
+  const { data: contentItems } = useListPublishedContentsQuery({});
+
+  const data = contentItems?.items;
 
   const { tag, level } = useGetCoursesSearchParams();
 

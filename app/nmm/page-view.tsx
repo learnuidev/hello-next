@@ -16,6 +16,7 @@ import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { useSearchParams } from "next/navigation";
 import { calculateColor } from "./nmm-utils/calculate-color";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useListPublishedContentsQuery } from "../(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 export const PageView = ({
   view,
@@ -60,7 +61,9 @@ export const PageView = ({
     item?.hanzi?.includes(selectedId)
   );
 
-  const { data: contents } = useListContentsQuery();
+  const { data: contentItems } = useListPublishedContentsQuery({});
+
+  const contents = contentItems?.items;
 
   const allTranscriptions = contents
     ?.map((content: any) => content?.transcriptions)

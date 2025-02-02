@@ -28,13 +28,16 @@ import { useListCharacterSentences } from "./use-list-character-sentences";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { AnimatedLoadingText } from "../animated-loading-text";
 import { Nothing } from "@/app/nmm/nothing";
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 const ContentSentences = ({
   characterId,
 
   ...props
 }: SelectedCharacterProps) => {
-  const { data: contents } = useListContentsQuery();
+  const { data: contentItems } = useListPublishedContentsQuery({});
+
+  const contents = contentItems?.items;
   const searchParams = useSearchParams();
 
   const view = useContentViewStore((state) => state.view);
@@ -117,7 +120,9 @@ const ContentDropdown = ({
 
   ...props
 }: SelectedCharacterProps) => {
-  const { data: contents } = useListContentsQuery();
+  const { data: contentItems } = useListPublishedContentsQuery({});
+
+  const contents = contentItems?.items;
   const searchParams = useSearchParams();
 
   const view = useContentViewStore((state) => state.view);
@@ -238,7 +243,9 @@ export const CharacterSentences = (props: { characterId: string }) => {
 
   const sentenceView = searchParams.get("sentence-view") || "ai";
 
-  const { data: contents } = useListContentsQuery();
+  const { data: contentItems } = useListPublishedContentsQuery({});
+
+  const contents = contentItems?.items;
 
   const allSentences = useListCharacterSentences(props.characterId);
 

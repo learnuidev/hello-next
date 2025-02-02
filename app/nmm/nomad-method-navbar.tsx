@@ -27,6 +27,7 @@ import { useGetNmmParams } from "./use-get-nmm-params";
 import { useGetSelectedBelt } from "./use-get-selected-belt";
 import { useIsContent } from "../review/use-is-content";
 import { useGetReviewParams } from "../review/use-get-review-params";
+import { useListPublishedContentsQuery } from "../(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 export function NomadMethodNavbar() {
   const selectedBelt = useGetSelectedBelt();
@@ -64,7 +65,10 @@ export function NomadMethodNavbar() {
     ...(new Set(resolvedHskWords?.map((word: any) => word?.topic)) as any),
   ];
 
-  const { data: contents } = useListContentsQuery();
+  const { data: contentItems, isLoading: isContentsLoading } =
+    useListPublishedContentsQuery({});
+
+  const contents = contentItems?.items;
 
   const value = "hsk";
 

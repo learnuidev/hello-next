@@ -85,7 +85,7 @@ export const CharacterTitle = (props: any) => {
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
-      {brightMode ? (
+      {brightMode && (lang || meaning?.lang) === "zh" ? (
         pinyins?.length > 1 ? (
           <h2 className="text-gray-900 dark:text-gray-400  font-extralight">
             {pinyins?.map((pinyin, i, ctx) => {

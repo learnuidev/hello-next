@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
   const jwtToken = headersApi.get("authorization") || "";
 
-  const isVerified = await verifyJwt(jwtToken, { isAdmin: true });
+  const isVerified = await verifyJwt(jwtToken);
 
   if (isVerified) {
     const prompt = `

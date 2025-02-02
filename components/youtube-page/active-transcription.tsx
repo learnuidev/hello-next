@@ -19,7 +19,7 @@ export const ActiveTranscription = ({
   const setIfExists = useSetIfExists();
 
   return (
-    <div className="text-center my-4 h-8">
+    <div className="text-center my-2 mb-4 h-20">
       <p className="text-gray-400 text-sm sm:text-[16px]">
         {currentTranscription?.pinyin}
       </p>

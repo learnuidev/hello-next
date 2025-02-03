@@ -2,15 +2,9 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-interface TogglePublishContentRequestParams {
-  type: "publish" | "unpublish";
-  contentId: string;
-}
-
 export const publicContentsQueryKey = `list-published-contents`;
 export const useListPublishedContentsQuery = ({ key }: { key?: string }) => {
   const { data: authUser } = useCurrentAuthUser({});
-  const queryClient = useQueryClient();
 
   return useQuery({
     queryKey: [publicContentsQueryKey, authUser?.jwt],
@@ -33,7 +27,23 @@ export const useListPublishedContentsQuery = ({ key }: { key?: string }) => {
         }
 
         const respJson = await resp.json();
-        return respJson;
+        return {
+          ...respJson,
+          items: await Promise.all(
+            respJson?.items?.map(async (item: any) => {
+              if (item?.sourceUrl) {
+                const transcriptions = await fetch(item?.sourceUrl);
+                const transcriptionsJson = await transcriptions.json();
+                return {
+                  ...item,
+                  transcriptions: transcriptionsJson.transcriptions,
+                };
+              }
+
+              return item;
+            })
+          ),
+        };
       }
     },
   });

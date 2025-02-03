@@ -16,6 +16,7 @@ import { SelectedCharacterStoryButton } from "./_select-character/selected-chara
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 import { getReviewSearchParams } from "./settings-dialog/use-get-review-url";
 import { TheDock } from "./the-dock";
+import { useSelectedCharacterData } from "./use-selected-character";
 
 const isMultiSentence = (str: string) => {
   const isHanziMultiSentence = str.split("。")?.length > 1;
@@ -26,23 +27,26 @@ const isMultiSentence = (str: string) => {
 
   return isHanziMultiSentence;
 };
-export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
+export const FloatingCharacterNavbar = ({
+  characterId,
+}: {
+  characterId: string;
+}) => {
+  const { data: characterData } = useSelectedCharacterData({ characterId });
+
   const {
     selectedComp,
     setReadMode,
     readMode,
     isAlreadyLearned,
     addCharacterMutation,
-    selectedComp2,
     setView,
     view,
     lang,
-    characterId,
     selectedChar,
     firstLesson,
-    discoverMutation,
     deleteComponentMutation,
-  } = props;
+  } = characterData;
 
   const searchParams = useSearchParams();
 
@@ -212,10 +216,10 @@ export const FloatingCharacterNavbar = (props: SelectedCharacterProps) => {
             )}
 
             {learnedChar && characterId?.length === 1 && (
-              <SelectedCharacterStoryButton {...props} />
+              <SelectedCharacterStoryButton characterId={characterId} />
             )}
 
-            <SelectedCharacterContentsButton {...props} />
+            <SelectedCharacterContentsButton characterId={characterId} />
 
             {/* {characterId?.length === 1 && (
               <button

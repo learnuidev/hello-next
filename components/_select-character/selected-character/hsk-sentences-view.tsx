@@ -13,9 +13,12 @@ import { useReadModeStore } from "@/stores/use-readmode-store";
 import { useBrightModeStore } from "../../settings-dialog/use-bright-mode-store";
 import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
 import { useSlicedRelatedSentencesByCharacter } from "../use-sliced-related-sentences-by-character";
+import { useSelectedCharacterData } from "@/components/use-selected-character";
 
-export const HskSentenceView = (props: SelectedCharacterProps) => {
-  const { lang, characterId } = props;
+export const HskSentenceView = ({ characterId }: { characterId: string }) => {
+  const { data } = useSelectedCharacterData({ characterId });
+
+  const { lang } = data;
 
   const relatedHskWords = useRelatedHskWordsByCharacter({
     characterId,

@@ -78,7 +78,7 @@ export function useSelectedCharacterData({
   const { data: contentItems, isLoading: isContentsLoading } =
     useListPublishedContentsQuery({});
 
-  const contents = contentItems?.items;
+  const contents = useMemo(() => contentItems?.items, [contentItems]);
 
   const allContents = useMemo(
     () => contents?.map((content: any) => content?.transcriptions)?.flat(),

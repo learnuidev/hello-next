@@ -10,9 +10,16 @@ import { GoogleLink } from "./google-link";
 import { YablaLink } from "./yabla-link";
 import { HanbookLink } from "./hanbook-link";
 import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
+import { useSelectedCharacterData } from "@/components/use-selected-character";
 
-export const SelectedCharacterStats = (props: SelectedCharacterProps) => {
-  const { selectedComp, characterId, selectedComp2 } = props;
+export const SelectedCharacterStats = ({
+  characterId,
+}: {
+  characterId: string;
+}) => {
+  const { data } = useSelectedCharacterData({ characterId });
+
+  const { selectedComp, selectedComp2 } = data;
 
   const level = selectedComp?.level || selectedComp2?.level;
   const { data: chineseCharacters } = useListChineseCharactersQuery();

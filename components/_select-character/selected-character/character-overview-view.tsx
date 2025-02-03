@@ -17,9 +17,16 @@ import { StoryEditor } from "./story-editor";
 import { useStoryStore } from "./story-store";
 import { useGetSelectedCharacterParams } from "./use-get-selected-character-params";
 import { CharacterSentences } from "../character-sentences";
+import { useSelectedCharacterData } from "@/components/use-selected-character";
 
-export const CharacterOverviewView = (props: SelectedCharacterProps) => {
-  const { selectedComp, selectedChar, lang, characterId } = props;
+export const CharacterOverviewView = ({
+  characterId,
+}: {
+  characterId: string;
+}) => {
+  const { data } = useSelectedCharacterData({ characterId });
+
+  const { selectedComp, selectedChar, lang } = data;
 
   const { variant } = useGetSelectedCharacterParams();
 
@@ -41,7 +48,7 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
     >
       <div className={cn("col-span-5 row-span-2 overflow-hidden")}>
         <div className="dark:bg-[rgb(11,12,13)] bg-gray-50 sm:p-8 p-2 rounded-2xl">
-          <SelectedCharacterHeader {...props} />
+          <SelectedCharacterHeader characterId={characterId} />
         </div>
 
         <>
@@ -123,7 +130,7 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
                     />
                   </TabsContent>
                   <TabsContent value="sentences">
-                    <CharacterSentences {...props} />
+                    <CharacterSentences characterId={characterId} />
                   </TabsContent>
                   {selectedComp?.story && (
                     <TabsContent value="story">
@@ -141,7 +148,7 @@ export const CharacterOverviewView = (props: SelectedCharacterProps) => {
         </>
       </div>
 
-      <CharacterOverviewViewSidebar {...props} />
+      <CharacterOverviewViewSidebar characterId={characterId} />
     </div>
   );
 };

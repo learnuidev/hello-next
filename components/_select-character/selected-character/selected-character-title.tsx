@@ -5,10 +5,16 @@ import { SelectedCharacterProps } from "../select-character.types";
 import { CharacterTitle } from "../character-title";
 import { ZoomedCharacter } from "./zoomed-character";
 import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
+import { useSelectedCharacterData } from "@/components/use-selected-character";
 
-export const SelectedCharacterTitle = (props: SelectedCharacterProps) => {
-  const { selectedComp, selectedChar, lang, view, characterId, selectedComp2 } =
-    props;
+export const SelectedCharacterTitle = ({
+  characterId,
+}: {
+  characterId: string;
+}) => {
+  const { data } = useSelectedCharacterData({ characterId });
+
+  const { selectedComp, selectedChar, lang, view, selectedComp2 } = data;
 
   const { data: chineseCharacters } = useListChineseCharactersQuery();
 

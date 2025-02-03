@@ -8,14 +8,21 @@ import { useEffect } from "react";
 import { useStoryStore } from "./story-store";
 
 import { create } from "zustand";
+import { useSelectedCharacterData } from "@/components/use-selected-character";
 
 const useSideBarViewType = create((set: any, get: any) => ({
   sideBarView: "sentences",
   setSideBarView: (sideBarView: any) => set({ sideBarView }),
 }));
 
-export const CharacterOverviewViewSidebar = (props: SelectedCharacterProps) => {
-  const { selectedComp, selectedChar, lang, sentences } = props;
+export const CharacterOverviewViewSidebar = ({
+  characterId,
+}: {
+  characterId: string;
+}) => {
+  const { data: charData } = useSelectedCharacterData({ characterId });
+
+  const { selectedComp, selectedChar, lang, sentences } = charData;
 
   const sideBarView = useSideBarViewType((state) => state.sideBarView);
   const setSideBarView = useSideBarViewType((state) => state.setSideBarView);
@@ -70,17 +77,17 @@ export const CharacterOverviewViewSidebar = (props: SelectedCharacterProps) => {
             {" "}
             {sentences?.length > 7 ? (
               <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                <CharacterSentences {...props} />
+                <CharacterSentences characterId={characterId} />
               </ScrollArea>
             ) : (
               <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                <CharacterSentences {...props} />
+                <CharacterSentences characterId={characterId} />
               </ScrollArea>
             )}
           </div>
 
           <div className="md:hidden block">
-            <CharacterSentences {...props} />
+            <CharacterSentences characterId={characterId} />
           </div>
         </div>
       )}

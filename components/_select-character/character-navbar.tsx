@@ -13,9 +13,11 @@ import { useGetSimilarLookingCharacters } from "./selected-character/use-get-sim
 import { SelectedCharacterStoryButton } from "./selected-character-story-button";
 import { useRelatedHskWordsByCharacter } from "./use-filter-related-hsk-words-by-character";
 import { useSlicedRelatedSentencesByCharacter } from "./use-sliced-related-sentences-by-character";
+import { useSelectedCharacterData } from "../use-selected-character";
 
-export const CharacterNavbar = (props: SelectedCharacterProps) => {
-  const { lang, view, setView, characterId } = props;
+export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
+  const { data: characterData } = useSelectedCharacterData({ characterId });
+  const { lang, view, setView } = characterData;
   const router = useRouter();
 
   const { data: superComponents_ } = useListSuperComponentsQuery({

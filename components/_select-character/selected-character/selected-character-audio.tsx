@@ -10,12 +10,19 @@ import { AddAudioButtons } from "./add-audio-buttons";
 import { useListCharacterContentsQuery } from "@/domain/character-contents/use-list-character-contents-query";
 import { useAddCharacterContentMutation } from "@/domain/character-contents/use-add-character-contents-mutation";
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
+import { useSelectedCharacterData } from "@/components/use-selected-character";
 
-export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
-  const { selectedComp2, selectedComp } = props;
+export const SelectedCharacterAudio = ({
+  characterId,
+}: {
+  characterId: string;
+}) => {
+  const { data: charData } = useSelectedCharacterData({ characterId });
+
+  const { selectedComp2, selectedComp } = charData;
   const [uploadNew, setUploadNew] = useState(false);
 
-  const { data } = useListCharacterContentsQuery(props.characterId);
+  const { data } = useListCharacterContentsQuery(characterId);
 
   const containsAudios = data?.filter((item: any) =>
     ["wav", "mp3", "m4a"]?.includes(item?.extension)
@@ -37,7 +44,7 @@ export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
         <UploadFileButton
           onSuccess={(resp) => {
             addCharacterContentMutation.mutateAsync({
-              content: props.characterId,
+              content: characterId,
               ...resp,
             });
           }}
@@ -52,7 +59,7 @@ export const SelectedCharacterAudio = (props: SelectedCharacterProps) => {
         <UploadFileButton
           onSuccess={(resp) => {
             addCharacterContentMutation.mutateAsync({
-              content: props.characterId,
+              content: characterId,
               ...resp,
             });
           }}

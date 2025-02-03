@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { create } from "zustand";
 import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
+import { useSelectedCharacterData } from "@/components/use-selected-character";
 
 const genStoryApi = async (
   { hanzi, lang, options }: { hanzi: string; lang: string; options: any },
@@ -89,9 +90,10 @@ export const useStoryModeStore = create((set: any) => ({
   setStoryMode: (f: any) => set({ storyMode: f }),
 }));
 
-export const StoryView = (props: SelectedCharacterProps) => {
-  const { selectedComp, selectedChar, lang, characterId, selectedComp2 } =
-    props;
+export const StoryView = ({ characterId }: { characterId: string }) => {
+  const { data: characterData } = useSelectedCharacterData({ characterId });
+
+  const { selectedComp, selectedChar, lang, selectedComp2 } = characterData;
 
   // const [storyMode, setStoryMode] = useState("global");
   const storyMode = useStoryModeStore((state) => state.storyMode);

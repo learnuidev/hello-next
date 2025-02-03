@@ -22,7 +22,7 @@ import { PinyinCodes, useSelectedLevel } from "@/app/pinyin/pinyn-codes";
 import { SelectedCharacterProps } from "../select-character.types";
 import { SelectedCharacterTitle } from "./selected-character-title";
 
-export const PinyinView = (props: SelectedCharacterProps) => {
+export const PinyinView = (props: { characterId: string }) => {
   const { characterId } = props;
 
   const { data: components } = useListComponents();
@@ -64,7 +64,7 @@ export const PinyinView = (props: SelectedCharacterProps) => {
     <div>
       <main>
         <div className="mt-[32px] mb-32 sm:mb-44">
-          <SelectedCharacterTitle {...props} />
+          <SelectedCharacterTitle characterId={characterId} />
         </div>
 
         <section>

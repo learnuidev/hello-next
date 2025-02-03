@@ -15,9 +15,50 @@ import { HskSuperComponentsWordView } from "./hsk-super-components-view";
 import { SimilarCharactersView } from "./similar-characters-view";
 import { CharacterContent } from "./character-content/character-content";
 import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
+import {
+  useSelectedCharacterData,
+  useViewTypeStore,
+} from "@/components/use-selected-character";
+import { useMemo } from "react";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 
-export const SelectedCharacter = (props: SelectedCharacterProps) => {
-  const { selectedComp, lang, view, characterId, selectedComp2 } = props;
+export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
+  const { data: characters } = useListCharactersQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
+
+  const selectedComp = useMemo(
+    () =>
+      characters?.find(
+        (component: any) =>
+          (component?.hanzi || component?.item || component?.input) ===
+          characterId
+      ),
+    [characters, characterId]
+  );
+
+  const lang = useGetCurrentLang();
+
+  const views = useViewTypeStore((state: any) => state.views) as any;
+  const view = views?.[characterId] || "home";
+  // const setViews = useViewTypeStore((state) => state.setViews);
+  // const setView = (view: any) => {
+  //   return setViews(characterId, view);
+  // };
+
+  const { data: selectedComp2 } = useGetComponentQuery({
+    hanzi: characterId || "",
+  });
+
+  // const {   selectedComp2 } = data;
 
   const { data: chineseCharacters } = useListChineseCharactersQuery();
 
@@ -38,7 +79,7 @@ export const SelectedCharacter = (props: SelectedCharacterProps) => {
       return <HskSuperComponentsWordView componentId={characterId} />;
 
     case "pinyin":
-      return <PinyinView {...props} />;
+      return <PinyinView characterId={characterId} />;
 
     case "words":
       return <RelatedHskWords characterId={characterId} lang={lang} />;
@@ -50,16 +91,12 @@ export const SelectedCharacter = (props: SelectedCharacterProps) => {
         </div>
       );
     case "sentences": {
-      return <HskSentenceView {...props} />;
-      if (lang === "zh") {
-        // return <div>yooo</div>;
-        return <HskSentenceView {...props} />;
-      }
+      return <HskSentenceView characterId={characterId} />;
 
       return <RelatedWords lang={lang} characterId={characterId} />;
     }
     case "story":
-      return <StoryView {...props} />;
+      return <StoryView characterId={characterId} />;
 
     case "similar-looking-characters":
       return <SimilarCharactersView componentId={characterId} />;
@@ -67,6 +104,6 @@ export const SelectedCharacter = (props: SelectedCharacterProps) => {
       return <CharacterContent characterId={characterId} />;
 
     default:
-      return <CharacterOverviewView {...props} />;
+      return <CharacterOverviewView characterId={characterId} />;
   }
 };

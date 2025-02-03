@@ -5,7 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { NomadMethod } from "@/app/nmm/nomad-method";
 
 import { CharacterNavbar } from "./_select-character/character-navbar";
-import { useSelectedCharacterData } from "./use-selected-character";
+import {
+  useSelectedCharacterData,
+  useViewTypeStore,
+} from "./use-selected-character";
 
 import { FloatingCharacterNavbar } from "./floating-character-navbar";
 
@@ -18,19 +21,26 @@ export function SelectedCharacterContainer({
 }: {
   characterId: string;
 }) {
-  const { data } = useSelectedCharacterData({ characterId });
+  // const { data } = useSelectedCharacterData({ characterId });
 
   const searchParams = useSearchParams();
+  const setViews = useViewTypeStore((state) => state.setViews);
 
   const lang = useGetCurrentLang();
-  const { selectedChar, setView, view } = data;
+  // const { selectedChar, setView, view } = data;
+  const setView = (view: any) => {
+    return setViews(characterId, view);
+  };
+
+  const views = useViewTypeStore((state: any) => state.views) as any;
+  const view = views?.[characterId] || "home";
 
   const router = useRouter();
 
   if (view === "play") {
     return (
       <NomadMethod
-        selectedId={selectedChar}
+        selectedId={characterId}
         onClose={() => {
           setView("");
         }}
@@ -38,17 +48,17 @@ export function SelectedCharacterContainer({
     );
   }
 
-  const props = {
-    ...data,
-    characterId,
-  };
+  // const props = {
+  //   ...data,
+  //   characterId,
+  // };
 
   const ShowView = () => {
     if (listLanguagesShortCuts?.includes(characterId)) {
       return <LanguagesList characterId={characterId} />;
     }
 
-    return <SelectedCharacter {...props} />;
+    return <SelectedCharacter characterId={characterId} />;
   };
 
   return (
@@ -61,12 +71,12 @@ export function SelectedCharacterContainer({
       }}
     >
       <div className="px-4 md:px-12">
-        <CharacterNavbar {...props} />
+        <CharacterNavbar characterId={characterId} />
 
         <ShowView />
       </div>
 
-      <FloatingCharacterNavbar {...props} />
+      <FloatingCharacterNavbar characterId={characterId} />
     </div>
   );
 }

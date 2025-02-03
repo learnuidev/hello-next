@@ -13,26 +13,28 @@ export const useListPublishedContentsQuery = ({ key }: { key?: string }) => {
   const queryClient = useQueryClient();
 
   return useQuery({
-    queryKey: [publicContentsQueryKey],
+    queryKey: [publicContentsQueryKey, authUser?.jwt],
     queryFn: async () => {
-      const resp = await fetch(`${siteConfig.apiUrl}/v1/list-contents`, {
-        method: "POST",
+      if (authUser?.jwt) {
+        const resp = await fetch(`${siteConfig.apiUrl}/v1/list-contents`, {
+          method: "POST",
 
-        body: JSON.stringify({
-          type: "public",
-        }),
+          body: JSON.stringify({
+            type: "public",
+          }),
 
-        headers: {
-          Authorization: `${authUser?.jwt}`,
-        },
-      });
+          headers: {
+            Authorization: `${authUser?.jwt}`,
+          },
+        });
 
-      if (!resp.ok) {
-        throw new Error(resp?.statusText);
+        if (!resp.ok) {
+          throw new Error(resp?.statusText);
+        }
+
+        const respJson = await resp.json();
+        return respJson;
       }
-
-      const respJson = await resp.json();
-      return respJson;
     },
   });
 };

@@ -21,7 +21,7 @@ export const ActiveTranscription = ({
   return (
     <div className="text-center my-2 sm:mt-8 mt-4 mb-4 h-20">
       <p className="text-gray-400 text-sm sm:text-[16px]">
-        {currentTranscription?.pinyin}
+        {currentTranscription?.pinyin || currentTranscription?.roman}
       </p>
 
       <Link

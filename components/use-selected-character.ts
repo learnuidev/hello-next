@@ -78,6 +78,7 @@ export function useSelectedCharacterData({
   const { data: contentItems, isLoading: isContentsLoading } =
     useListPublishedContentsQuery({});
 
+  // MAJOR BUG IF NOT WRAPPED
   const contents = useMemo(() => contentItems?.items, [contentItems]);
 
   const allContents = useMemo(

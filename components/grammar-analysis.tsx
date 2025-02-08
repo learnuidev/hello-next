@@ -196,17 +196,19 @@ export function GrammarAnalysis({
                   key={analysis?.input}
                   className="flex items-start flex-col"
                 >
-                  <Link
-                    className="text-gray-800 dark:text-gray-400"
-                    href={
-                      resolvedLang
-                        ? `/nmm/${analysis?.input}?lang=${resolvedLang}`
-                        : `/nmm/${analysis?.input}`
-                    }
-                    // className="w-16"
-                  >
-                    {analysis?.roman}
-                  </Link>
+                  {!["fr", "es"]?.includes(lang || "") && (
+                    <Link
+                      className="text-gray-800 dark:text-gray-400"
+                      href={
+                        resolvedLang
+                          ? `/nmm/${analysis?.input}?lang=${resolvedLang}`
+                          : `/nmm/${analysis?.input}`
+                      }
+                      // className="w-16"
+                    >
+                      {analysis?.roman}
+                    </Link>
+                  )}
 
                   <Link
                     className="text-gray-300 font-light"

@@ -37,17 +37,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link
-          href="https://api.mapbox.com/mapbox-gl-js/v2.7.15/mapbox-gl.css"
-          rel="stylesheet"
-        />
-        <link
-          rel="stylesheet"
-          href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css"
-          type="text/css"
-        />
-      </head>
+      <head></head>
 
       <body className="dark:bg-[rgb(9,10,11)] bg-white">
         <Suspense>

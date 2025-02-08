@@ -55,7 +55,7 @@ export const CharacterOverviewView = ({
           <article>
             <div>
               <div className="">
-                <Tabs defaultValue="learning-context">
+                <Tabs defaultValue="overview">
                   <div className="mt-4 overflow-y-auto">
                     {true && (
                       <TabsList className="space-x-8 overflow-y-auto">

@@ -26,7 +26,6 @@ const listComponents = async (
   }
 ): Promise<IComponent[]> => {
   const res = await fetch(url, {
-    // const res = await fetch("/api/list-components", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,

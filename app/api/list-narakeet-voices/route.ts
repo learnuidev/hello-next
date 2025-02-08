@@ -1,5 +1,4 @@
 import { verifyJwt } from "@/libs/cognito/jwt";
-import { listTables } from "@/libs/dynamodb/list-tables";
 import { listVoices } from "@/libs/narakeet/narakeet";
 
 import { headers } from "next/headers";

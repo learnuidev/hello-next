@@ -6,7 +6,6 @@ import { siteConfig } from "@/lib/config";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import { ReactReader } from "react-reader";
 import { isAudio } from "../../convos/new-content/utils/is-audio";
 import ReactPlayer from "react-player";
 
@@ -63,17 +62,6 @@ export default function Assets() {
 
   const { data: userAsset, isError } = useGetUserAsset(params["asset-id"]);
 
-  if (userAsset?.extension === "epub") {
-    return (
-      <div style={{ height: "100vh" }}>
-        <ReactReader
-          url={userAsset?.sourceUrl || "https://www.google.com"}
-          location={location}
-          locationChanged={(epubcfi: string) => setLocation(epubcfi)}
-        />
-      </div>
-    );
-  }
   return (
     <main className="">
       <NavBar />

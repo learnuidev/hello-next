@@ -71,7 +71,7 @@ export function KaraokeMode({
         )}
 
         {/* Current Lyric */}
-        <div className="h-56 flex justify-center overflow-hidden my-4">
+        <div className="flex justify-center overflow-hidden my-4">
           {!isPlaying && currentTime === 0 ? (
             <button
               className="text-4xl mt-[-100px]"
@@ -134,40 +134,42 @@ export function KaraokeMode({
         </div>
 
         {/* Upcoming Lyrics */}
-        <div className="overflow-y-auto mt-4 flex flex-col items-center justify-center">
-          {transcriptions
-            ?.filter((trans: any) => {
-              return trans.start > currentTime;
-            })
-            ?.slice(0, 1)
-            .map((lyric: any, idx: any) => (
-              <div
-                key={JSON.stringify(lyric)}
-                className={cn(
-                  "text-white/50 text-lg cursor-pointer dark:hover:text-white/75 transition-colors flex flex-col items-center justify-center",
-                  idx === 0
-                    ? "text-gray-600"
-                    : idx === 1
-                      ? "text-gray-700"
-                      : "text-gray-800"
-                )}
-                onClick={() => {
-                  seekTo(lyric?.start);
-                }}
-              >
-                {/* <p>{lyric.roman}</p> */}
-                {lyric?.lang === "zh" && (
-                  <p className="text-xs font-light text-gray-400">
-                    {lyric?.pinyin || lyric?.roman}
-                  </p>
-                )}
-                <p>{lyric?.input || lyric?.hanzi}</p>
+        {currentTranscription?.lang === "zh" && (
+          <div className="overflow-y-auto mt-4 flex flex-col items-center justify-center">
+            {transcriptions
+              ?.filter((trans: any) => {
+                return trans.start > currentTime;
+              })
+              ?.slice(0, 1)
+              .map((lyric: any, idx: any) => (
+                <div
+                  key={JSON.stringify(lyric)}
+                  className={cn(
+                    "text-white/50 text-lg cursor-pointer dark:hover:text-white/75 transition-colors flex flex-col items-center justify-center",
+                    idx === 0
+                      ? "text-gray-600"
+                      : idx === 1
+                        ? "text-gray-700"
+                        : "text-gray-800"
+                  )}
+                  onClick={() => {
+                    seekTo(lyric?.start);
+                  }}
+                >
+                  {/* <p>{lyric.roman}</p> */}
+                  {lyric?.lang === "zh" && (
+                    <p className="text-xs font-light text-gray-400">
+                      {lyric?.pinyin || lyric?.roman}
+                    </p>
+                  )}
+                  <p>{lyric?.input || lyric?.hanzi}</p>
 
-                <p className="text-lg">{lyric?.en}</p>
-                {/* <p>{lyric?.input}</p> */}
-              </div>
-            ))}
-        </div>
+                  <p className="text-lg">{lyric?.en}</p>
+                  {/* <p>{lyric?.input}</p> */}
+                </div>
+              ))}
+          </div>
+        )}
       </div>
     </div>
   );

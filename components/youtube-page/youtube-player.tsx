@@ -449,7 +449,22 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           >
             <KaraokeMode
               isPlaying={isPlaying}
-              playerRef={playerRef}
+              seekTo={(time: number) => {
+                playerRef.current.seekTo(time, "seconds");
+
+                try {
+                  playerRef.current?.player?.player?.play();
+                } catch (err) {
+                  console.error(err);
+                }
+              }}
+              play={() => {
+                try {
+                  playerRef.current?.player?.player?.play();
+                } catch (err) {
+                  console.error(err);
+                }
+              }}
               transcriptions={transcriptions}
               currentTime={currentTime}
             />

@@ -24,15 +24,18 @@ const lyrics = [
 ];
 
 export function KaraokeMode({
-  playerRef,
+  // playerRef,
+  play,
+  seekTo,
   isPlaying,
   transcriptions,
   currentTime,
 }: {
+  play: any;
+  seekTo: any;
   transcriptions: any;
   isPlaying: any;
   currentTime: number;
-  playerRef: any;
 }) {
   const [currentLyricIndex, setCurrentLyricIndex] = useState(0);
 
@@ -54,6 +57,9 @@ export function KaraokeMode({
     })
     ?.slice(-1);
 
+  const romanOrPinyin =
+    currentTranscription?.pinyin || currentTranscription?.roman;
+
   return (
     <div className="mt-4 bg-gradient-to-b from-black to-black flex flex-col justify-center p-4">
       <div className="w-full max-w-2xl bg-black/50 backdrop-blur-md rounded-xl p-4 shadow-2xl">
@@ -67,13 +73,7 @@ export function KaraokeMode({
           {lastThreeLyrics.map((lyric: any, idx: any, ctx: any) => (
             <div
               onClick={() => {
-                playerRef.current.seekTo(lyric?.start, "seconds");
-
-                try {
-                  playerRef.current?.player?.player?.play();
-                } catch (err) {
-                  console.error(err);
-                }
+                seekTo(lyric?.start);
               }}
               key={JSON.stringify(lyric) + `${idx}`}
               className={cn(
@@ -96,16 +96,12 @@ export function KaraokeMode({
         </div>
 
         {/* Current Lyric */}
-        <div className="h-44 flex justify-center overflow-hidden my-4">
+        <div className="h-60 flex justify-center overflow-hidden my-4">
           {!isPlaying && currentTime === 0 ? (
             <button
               className="text-4xl mt-[-100px]"
               onClick={() => {
-                try {
-                  playerRef.current?.player?.player?.play();
-                } catch (err) {
-                  console.error(err);
-                }
+                play();
               }}
             >
               <Icons.play />
@@ -114,11 +110,12 @@ export function KaraokeMode({
             <button
               className="text-4xl"
               onClick={() => {
-                try {
-                  playerRef.current?.player?.player?.play();
-                } catch (err) {
-                  console.error(err);
-                }
+                // try {
+                //   playerRef.current?.player?.player?.play();
+                // } catch (err) {
+                //   console.error(err);
+                // }
+                play();
               }}
             >
               <Icons.music />
@@ -135,16 +132,26 @@ export function KaraokeMode({
               // animate={{ y: 0, opacity: 1 }}
               // exit={{ y: -50, opacity: 0 }}
               // transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="text-4xl font-bold text-center text-white w-[700px]"
+              className={cn(
+                "text-4xl font-bold text-center text-white w-[700px]",
+                romanOrPinyin?.length < 16 ? "text-4x" : "text-lg"
+              )}
             >
-              <p className="text-xl font-light text-gray-400">
-                {currentTranscription?.pinyin || currentTranscription?.roman}
-              </p>
-              <p>
+              {currentTranscription?.lang === "zh" && (
+                <p className={cn("text-xl font-light text-gray-400")}>
+                  {romanOrPinyin}
+                </p>
+              )}
+              <p
+                className={cn(
+                  "text-xl text-gray-400",
+                  romanOrPinyin?.length < 16 ? "text-4x" : "text-lg"
+                )}
+              >
                 {currentTranscription?.input || currentTranscription?.hanzi}
               </p>
 
-              <p className="text-xl text-gray-500">
+              <p className={cn("text-xl font-light text-gray-500")}>
                 {currentTranscription?.en}
               </p>
             </div>
@@ -153,7 +160,7 @@ export function KaraokeMode({
         </div>
 
         {/* Upcoming Lyrics */}
-        <div className="h-32 overflow-y-auto mt-4 flex flex-col items-center justify-center">
+        <div className="overflow-y-auto mt-4 flex flex-col items-center justify-center">
           {transcriptions
             ?.filter((trans: any) => {
               return trans.start > currentTime;
@@ -171,19 +178,15 @@ export function KaraokeMode({
                       : "text-gray-800"
                 )}
                 onClick={() => {
-                  playerRef.current.seekTo(lyric?.start, "seconds");
-
-                  try {
-                    playerRef.current?.player?.player?.play();
-                  } catch (err) {
-                    console.error(err);
-                  }
+                  seekTo(lyric?.start);
                 }}
               >
                 {/* <p>{lyric.roman}</p> */}
-                <p className="text-xs font-light text-gray-400">
-                  {lyric?.pinyin || lyric?.roman}
-                </p>
+                {lyric?.lang === "zh" && (
+                  <p className="text-xs font-light text-gray-400">
+                    {lyric?.pinyin || lyric?.roman}
+                  </p>
+                )}
                 <p>{lyric?.input || lyric?.hanzi}</p>
 
                 <p className="text-xs">{lyric?.en}</p>

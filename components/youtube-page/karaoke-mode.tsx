@@ -5,24 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Icons } from "../ui/icons.v2";
 
-const lyrics = [
-  "Is this the real life?",
-  "Is this just fantasy?",
-  "Caught in a landslide",
-  "No escape from reality",
-  "Open your eyes",
-  "Look up to the skies and see",
-  "I'm just a poor boy, I need no sympathy",
-  "Because I'm easy come, easy go",
-  "Little high, little low",
-  "Any way the wind blows doesn't really matter to me, to me",
-  "Mama, just killed a man",
-  "Put a gun against his head",
-  "Pulled my trigger, now he's dead",
-  "Mama, life had just begun",
-  "But now I've gone and thrown it all away",
-];
-
 export function KaraokeMode({
   // playerRef,
   play,
@@ -39,9 +21,9 @@ export function KaraokeMode({
 }) {
   const [currentLyricIndex, setCurrentLyricIndex] = useState(0);
 
-  const currentTranscription = transcriptions?.find(
-    (trans: any) => trans?.start < currentTime && trans?.end > currentTime
-  );
+  const currentTranscription =
+    transcriptions?.filter((trans: any) => trans?.end > currentTime)?.[0] ||
+    transcriptions?.[0];
 
   const currentTranscriptionIndex = transcriptions?.findIndex(
     (trans: any) => trans?.id === currentTranscription?.id
@@ -61,8 +43,8 @@ export function KaraokeMode({
     currentTranscription?.pinyin || currentTranscription?.roman;
 
   return (
-    <div className="mt-4 bg-gradient-to-b from-black to-black flex flex-col justify-center p-4">
-      <div className="w-full max-w-2xl bg-black/50 backdrop-blur-md rounded-xl p-4 shadow-2xl">
+    <div className="mt-4 bg-gradient-to-b from-black to-black flex flex-col justify-center items-center p-4">
+      <div className="w-full max-w-3xl bg-black/50 backdrop-blur-md rounded-xl p-4 shadow-2xl">
         {/* Past Lyrics */}
         <div
           className={cn(
@@ -79,15 +61,6 @@ export function KaraokeMode({
               className={cn(
                 "text-gray-600 text-lg cursor-pointer hover:text-white/75 transition-colors",
                 "text-gray-700"
-                // ctx?.length === 1
-                //   ? "text-gray-600"
-                //   : //   : ctx?.length === 2
-                //     //     ? "text-gray-600"
-                //     idx === 0
-                //     ? "text-gray-800"
-                //     : idx === 1
-                //       ? "text-gray-700"
-                //       : "text-gray-600"
               )}
             >
               {lyric?.input}
@@ -110,11 +83,6 @@ export function KaraokeMode({
             <button
               className="text-4xl"
               onClick={() => {
-                // try {
-                //   playerRef.current?.player?.player?.play();
-                // } catch (err) {
-                //   console.error(err);
-                // }
                 play();
               }}
             >

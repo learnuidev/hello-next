@@ -259,11 +259,13 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
     <div className="relative">
       <ContentDetailHeader content={content} />
 
-      <ActiveSubtitleDisplay
-        selectedWord={hovered}
-        selected={selected}
-        activeSubtitle={activeSubtitle}
-      />
+      {brightMode && lang !== "zh" ? null : (
+        <ActiveSubtitleDisplay
+          selectedWord={hovered}
+          selected={selected}
+          activeSubtitle={activeSubtitle}
+        />
+      )}
 
       <div></div>
 

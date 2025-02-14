@@ -2,24 +2,23 @@ import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { Icons } from "@/components/ui/icons.v2";
+import { KaraokeMode } from "@/components/youtube-page/karaoke-mode";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
-import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { groupBy } from "ramda";
 import { useCallback, useEffect, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import { useSetIfExists } from "../[content-id]/hooks/use-character-context-store";
 import { useMusicV2 } from "../_play-v2/use-music-v2";
-import { formatTime } from "../_play/utils";
+import { PlayerSettings } from "./player-settings";
 import { getHeightClass } from "./utils/get-height-class";
-import { useDebouncedCallback } from "use-debounce";
-import { groupBy } from "ramda";
-import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
-import { KaraokeMode } from "@/components/youtube-page/karaoke-mode";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -585,168 +584,29 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         )}
       </div>
 
-      <div className="w-full fixed bottom-0 py-4 px-4 z-30 m-auto bg-gray-50 dark:bg-[rgb(12,13,14)]">
-        <section className="flex items-center justify-between">
-          {editMode ? null : (
-            <div className="space-x-2">
-              <button
-                onClick={increaseFontSize}
-                className={cn(
-                  textSizeIndex === 3 ? "text-gray-400" : "",
-                  "text-2xl"
-                )}
-              >
-                A
-              </button>
-
-              <button
-                onClick={decreaseFontSize}
-                className={textSizeIndex === 0 ? "text-gray-400" : ""}
-              >
-                A
-              </button>
-            </div>
-          )}
-
-          <div className="sm:space-x-6 space-x-2 flex items-center">
-            <button
-              className="sm:text-2xl text-[16px]"
-              onClick={() => {
-                togglePlay();
-              }}
-            >
-              {isPlaying ? <Icons.pause /> : <Icons.play />}
-            </button>
-
-            <button
-              className={cn(
-                "sm:text-2xl text-[16px]",
-                loop ? "text-white" : "text-gray-600"
-              )}
-              disabled={!activeSubtitle}
-              onClick={() => {
-                setLoop((loop: any) => {
-                  if (loop) {
-                    return null;
-                  }
-
-                  return activeSubtitle?.input;
-                });
-              }}
-            >
-              <Icons.loop />
-            </button>
-
-            <p className="font-extralight sm:text-2xl text-[16px] text-center dark:text-slate-300 text-slate-600">
-              {formatTime(currentTime)}
-            </p>
-
-            <button
-              className="sm:text-2xl text-[16px]"
-              onClick={() => {
-                reset();
-              }}
-            >
-              <Icons.stop />
-            </button>
-          </div>
-
-          <div className="space-x-4 sm:space-x-8 flex items-center justify-start mr-8 sm:mr-60">
-            <UploadFileButton
-              icon={<Icons.upload className="text-[16px] sm:text-2xl" />}
-              types={["mp3", "m4a"]}
-              className="hidden sm:block"
-              onSuccess={(res) => {
-                return updateContentMutation.mutateAsync({
-                  id: content?.id || "",
-                  audio: res.sourceUrl,
-                  audioUploadBucketKey: res.uploadBucketKey,
-                  audioS3LinkAddedAt: Date.now(),
-                  updateContent: true,
-                });
-              }}
-            />
-
-            <button
-              onClick={() => {
-                setEditMode();
-              }}
-            >
-              <Icons.gear
-                className={cn(
-                  "sm:text-2xl text-[16px]",
-                  editMode ? "dark:text-white text-black" : "text-gray-400"
-                )}
-              />
-            </button>
-
-            {editMode && (
-              <button
-                onClick={() => {
-                  const editedTranscriptions = {
-                    id: content?.id,
-                    transcriptions: content?.transcriptions?.map(
-                      (transcription: any) => {
-                        const time = times?.find(
-                          (t: any) => t?.id === transcription?.id
-                        ) as any;
-                        return {
-                          ...transcription,
-                          ...time,
-                        };
-                      }
-                    ),
-                  };
-
-                  updateContentMutation
-                    .mutateAsync({
-                      ...editedTranscriptions,
-                    })
-                    .then((resp) => {
-                      setEditMode();
-                      // resetTimes();
-                    });
-                }}
-              >
-                {updateContentMutation?.isLoading ? "Saving..." : "Save"}
-              </button>
-            )}
-
-            <button onClick={() => {}}>
-              <Icons.chartColumn
-                className={cn(
-                  "sm:text-2xl text-[16px]",
-                  viewMode === "stats" ? "text-white" : "text-gray-400"
-                )}
-              />
-            </button>
-            <button
-              onClick={() => {
-                togglePinyin((pinyin) => !pinyin);
-              }}
-            >
-              <Icons.language
-                className={cn(
-                  "sm:text-2xl text-[16px]",
-                  viewPinyin ? "text-white" : "text-gray-400"
-                )}
-              />
-            </button>
-            <button
-              onClick={() => {
-                setBrightMode((mode: any) => !mode);
-              }}
-            >
-              <Icons.glassesRound
-                className={cn(
-                  "sm:text-2xl text-[16px]",
-                  brightMode ? "text-white" : "text-gray-400"
-                )}
-              />
-            </button>
-          </div>
-        </section>
-      </div>
+      <PlayerSettings
+        contentId={contentId}
+        editMode={editMode}
+        increaseFontSize={increaseFontSize}
+        decreaseFontSize={decreaseFontSize}
+        togglePlay={togglePlay}
+        isPlaying={isPlaying}
+        loop={loop}
+        activeSubtitle={activeSubtitle}
+        currentTime={currentTime}
+        setLoop={setLoop}
+        textSizeIndex={textSizeIndex}
+        reset={reset}
+        updateContentMutation={updateContentMutation}
+        setEditMode={setEditMode}
+        viewMode={viewMode}
+        brightMode={brightMode}
+        content={content}
+        times={times}
+        togglePinyin={togglePinyin}
+        viewPinyin={viewPinyin}
+        setBrightMode={setBrightMode}
+      />
     </div>
   );
 };

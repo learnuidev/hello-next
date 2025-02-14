@@ -43,33 +43,35 @@ export function KaraokeMode({
     currentTranscription?.pinyin || currentTranscription?.roman;
 
   return (
-    <div className="mt-4 bg-gradient-to-b from-black to-black flex flex-col justify-center items-center p-4">
-      <div className="w-full max-w-3xl bg-black/50 backdrop-blur-md rounded-xl p-4 shadow-2xl">
+    <div className="mt-4  flex flex-col justify-center items-center p-4">
+      <div className="w-full max-w-4xl  backdrop-blur-md rounded-xl p-4">
         {/* Past Lyrics */}
-        <div
-          className={cn(
-            "overflow-y-auto flex justify-center flex-col text-xs items-center",
-            "mb-24"
-          )}
-        >
-          {lastThreeLyrics.map((lyric: any, idx: any, ctx: any) => (
-            <div
-              onClick={() => {
-                seekTo(lyric?.start);
-              }}
-              key={JSON.stringify(lyric) + `${idx}`}
-              className={cn(
-                "text-gray-600 text-lg cursor-pointer hover:text-white/75 transition-colors",
-                "text-gray-700"
-              )}
-            >
-              {lyric?.input}
-            </div>
-          ))}
-        </div>
+        {true && (
+          <div
+            className={cn(
+              "overflow-y-auto flex justify-center flex-col text-xs items-center",
+              "mb-24"
+            )}
+          >
+            {lastThreeLyrics.map((lyric: any, idx: any, ctx: any) => (
+              <div
+                onClick={() => {
+                  seekTo(lyric?.start);
+                }}
+                key={JSON.stringify(lyric) + `${idx}`}
+                className={cn(
+                  "text-gray-600 text-lg cursor-pointer hover:text-white/75 transition-colors",
+                  "text-gray-700"
+                )}
+              >
+                {lyric?.input}
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Current Lyric */}
-        <div className="h-60 flex justify-center overflow-hidden my-4">
+        <div className="h-56 flex justify-center overflow-hidden my-4">
           {!isPlaying && currentTime === 0 ? (
             <button
               className="text-4xl mt-[-100px]"
@@ -112,14 +114,18 @@ export function KaraokeMode({
               )}
               <p
                 className={cn(
-                  "text-xl text-gray-400",
-                  romanOrPinyin?.length < 16 ? "text-4x" : "text-lg"
+                  " dark:text-gray-200 text-black",
+                  currentTranscription?.lang === "zh" ? "text-4xl" : "text-2xl"
                 )}
               >
                 {currentTranscription?.input || currentTranscription?.hanzi}
               </p>
 
-              <p className={cn("text-xl font-light text-gray-500")}>
+              <p
+                className={cn(
+                  "text-xl font-light dark:text-gray-400 text-black"
+                )}
+              >
                 {currentTranscription?.en}
               </p>
             </div>
@@ -138,7 +144,7 @@ export function KaraokeMode({
               <div
                 key={JSON.stringify(lyric)}
                 className={cn(
-                  "text-white/50 text-lg cursor-pointer hover:text-white/75 transition-colors flex flex-col items-center justify-center",
+                  "text-white/50 text-lg cursor-pointer dark:hover:text-white/75 transition-colors flex flex-col items-center justify-center",
                   idx === 0
                     ? "text-gray-600"
                     : idx === 1
@@ -157,7 +163,7 @@ export function KaraokeMode({
                 )}
                 <p>{lyric?.input || lyric?.hanzi}</p>
 
-                <p className="text-xs">{lyric?.en}</p>
+                <p className="text-lg">{lyric?.en}</p>
                 {/* <p>{lyric?.input}</p> */}
               </div>
             ))}

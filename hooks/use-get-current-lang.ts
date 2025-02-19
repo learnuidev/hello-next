@@ -2,11 +2,15 @@ import { useCurrentLangStore } from "@/components/language-selector/use-current-
 
 import { useGetLangParams } from "./use-get-lang-params";
 
-export const useGetCurrentLang = () => {
+export const useGetCurrentLang = ({ useParams } = { useParams: false }) => {
   const langParams = useGetLangParams();
 
-  const setCurrentLang = useCurrentLangStore((state) => state.currentLang);
-  const lang = setCurrentLang || langParams || "zh";
+  const currentLang = useCurrentLangStore((state) => state.currentLang);
+  const lang = currentLang || langParams || "zh";
+
+  if (useParams) {
+    return langParams;
+  }
 
   return lang;
 };

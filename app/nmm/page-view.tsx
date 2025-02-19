@@ -1,22 +1,17 @@
 "use client";
-import React from "react";
 
 import { Music } from "@/components/music";
 import { NomadMethod } from "./nomad-method";
 
-import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
+import { useListTonePairsQuery } from "@/domain/tone-pairs/tone-pairs.queries";
 
 import * as R from "ramda";
 
-import { useListContentsQuery } from "@/domain/content/content.queries";
-import { useListComponents } from "@/domain/lesson/component.queries";
 import { cleanString } from "@/data/convos/bm1/clean-string";
-import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
-import { useSearchParams } from "next/navigation";
-import { calculateColor } from "./nmm-utils/calculate-color";
-import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListPublishedContentsQuery } from "../(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
+import { calculateColor } from "./nmm-utils/calculate-color";
 
 export const PageView = ({
   view,
@@ -80,14 +75,6 @@ export const PageView = ({
   const selectedComp = components?.find(
     (component: any) => component?.hanzi === selectedId
   );
-
-  const searchParams = useSearchParams();
-  const lang = useGetCurrentLang();
-
-  const { data: sentences } = useListSentencesQuery({
-    component: selectedId,
-    lang,
-  });
 
   switch (view) {
     case "play":

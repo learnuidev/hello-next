@@ -162,7 +162,7 @@ export const TranscriptionsView = ({
                         textSize?.[1],
                         activeSubtitle?.sentence === subtitle?.sentence
                           ? "text-gray-400"
-                          : "text-gray-600",
+                          : " text-gray-600",
                         currentTime > subtitle?.start &&
                           currentTime < subtitle.end
                           ? "dark:text-white text-black"

@@ -2,16 +2,12 @@
   "aiProvider": "openai",
   "aiModel": "gpt-4o-mini",
   "sync": {
-    "type": "local"
+    "type": "remote"
   },
   "locale": {
-    "sourceEntry": "app",
+    "sourceEntries": ["app", "components"],
     "location": "locales",
     "sourceLanguage": "en",
-    "targetLanguages": [
-      "fr",
-      "es",
-      "zh"
-    ]
+    "targetLanguages": ["fr", "es", "zh"]
   }
 }

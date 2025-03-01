@@ -37,7 +37,7 @@ export default function FileUpload() {
           return (
             <Link href={`/file-system/${file?.fileId}`} key={file?.fileId}>
               <code key={file?.fileId}>
-                <pre>{JSON.stringify(files, null, 4)}</pre>
+                <pre>{JSON.stringify(file, null, 4)}</pre>
               </code>
             </Link>
           );

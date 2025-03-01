@@ -27,13 +27,25 @@ export default function FileItem() {
 
   const deleteMutation = useMutation(
     {
-      mutationFn: async ({ fileId }: { fileId: string }) => {
-        const files = await fetch(`${rootFileUrl}/files/${fileId}`, {
-          method: "DELETE",
+      mutationFn: async ({
+        fileId,
+        permanentlyDelete = true,
+      }: {
+        fileId: string;
+        permanentlyDelete?: boolean;
+      }) => {
+        const files = await fetch(`${rootFileUrl}/v1/delete-file`, {
+          method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          body: JSON.stringify({
+            fileId,
+            permanentlyDelete,
+          }),
         });
+
+        return files.json();
       },
 
       onSuccess: () => {

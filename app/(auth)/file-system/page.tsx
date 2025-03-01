@@ -1,30 +1,10 @@
 "use client";
-import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
-import { useQuery } from "@tanstack/react-query";
-import { rootFileUrl } from "./constants";
-import { UploadFileButtonNew } from "./upload-file-button-new";
 import Link from "next/link";
+import { useListFilesQuery } from "./hooks/use-list-files-query";
+import { UploadFileButtonNew } from "./upload-file-button-new";
 
 export default function FileUpload() {
-  const token = useJwtToken();
-
-  const { data: files } = useQuery({
-    queryKey: ["list-files", token],
-    queryFn: async () => {
-      const files = await fetch(`${rootFileUrl}/files`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const filesJson = await files.json();
-
-      if (!Array.isArray(filesJson)) {
-        return [];
-      }
-      return filesJson;
-    },
-  });
+  const { data: files } = useListFilesQuery();
   return (
     <main>
       <h1 className="font-bold text-center mt-16 text-3xl">yoo</h1>
@@ -33,7 +13,7 @@ export default function FileUpload() {
       <UploadFileButtonNew className="mb-4" />
 
       <div>
-        {files?.map((file: any) => {
+        {files?.files?.map((file: any) => {
           return (
             <Link href={`/file-system/${file?.fileId}`} key={file?.fileId}>
               <code key={file?.fileId}>

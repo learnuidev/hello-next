@@ -1,61 +1,16 @@
 "use client";
 
-import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { rootFileUrl } from "../constants";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useDeleteFileMutation } from "../hooks/use-delete-file-mutation";
+import { useGetFileQuery } from "../hooks/use-get-file-query";
 
 export default function FileItem() {
-  const token = useJwtToken();
   const params = useParams<{ "file-id": string }>();
   const fileId = params["file-id"];
-  const router = useRouter();
 
-  const { data: file } = useQuery({
-    queryKey: ["get-file", fileId],
-    queryFn: async () => {
-      const files = await fetch(`${rootFileUrl}/files/${fileId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  const { data: file } = useGetFileQuery({ fileId });
 
-      const filesJson = await files.json();
-      return filesJson;
-    },
-  });
-
-  const deleteMutation = useMutation(
-    {
-      mutationFn: async ({
-        fileId,
-        permanentlyDelete = true,
-      }: {
-        fileId: string;
-        permanentlyDelete?: boolean;
-      }) => {
-        const files = await fetch(`${rootFileUrl}/v1/delete-file`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            fileId,
-            permanentlyDelete,
-          }),
-        });
-
-        return files.json();
-      },
-
-      onSuccess: () => {
-        router.push(`/file-system`);
-      },
-    }
-    // {
-    //   onSuccess: () => {},
-    // }
-  );
+  const deleteFileMutation = useDeleteFileMutation();
 
   return (
     <div>
@@ -68,12 +23,12 @@ export default function FileItem() {
 
         <button
           onClick={() => {
-            deleteMutation.mutateAsync({
+            deleteFileMutation.mutateAsync({
               fileId,
             });
           }}
         >
-          {deleteMutation.isLoading ? "Deleting..." : "Delete"}
+          {deleteFileMutation.isLoading ? "Deleting..." : "Delete"}
         </button>
       </div>
     </div>

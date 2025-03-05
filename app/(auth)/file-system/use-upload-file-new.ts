@@ -3,6 +3,7 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import Axios from "axios";
 import { rootFileUrl } from "./constants";
 import { useQueryClient } from "@tanstack/react-query";
+import { listFilesQueryKey } from "./hooks/use-list-files-query";
 // import { useAddUserAssetMutation } from "@/domain/asset/asset.mutation";
 
 export interface UploadFileResponse {
@@ -87,7 +88,7 @@ export function useUploadFileNew() {
       headers: { ["Content-Type"]: contentType },
     });
 
-    queryClient.refetchQueries(["list-files", authUser?.jwt]);
+    queryClient.refetchQueries([listFilesQueryKey]);
   };
 
   return onUploadFileChange;

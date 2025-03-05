@@ -22,7 +22,7 @@ export default function FileItem() {
         </code>
 
         <button
-          onClick={() => {
+          onDoubleClick={() => {
             deleteFileMutation.mutateAsync({
               fileId,
             });

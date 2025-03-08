@@ -46,7 +46,7 @@ export function KaraokeMode({
     <div className="mt-4  flex flex-col justify-center items-center p-4">
       <div className="w-full max-w-4xl  backdrop-blur-md rounded-xl p-4">
         {/* Past Lyrics */}
-        {true && (
+        {false && (
           <div
             className={cn(
               "overflow-y-auto flex justify-center flex-col text-xs items-center",
@@ -134,8 +134,8 @@ export function KaraokeMode({
         </div>
 
         {/* Upcoming Lyrics */}
-        {/* {currentTranscription?.lang === "zh" && (
-          <div className="overflow-y-auto mt-4 flex flex-col items-center justify-center">
+        {currentTranscription?.lang === "zh" && (
+          <div className="overflow-y-auto mt-32 flex flex-col items-center justify-center">
             {transcriptions
               ?.filter((trans: any) => {
                 return trans.start > currentTime;
@@ -167,7 +167,7 @@ export function KaraokeMode({
                 </div>
               ))}
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );

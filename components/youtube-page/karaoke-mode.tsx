@@ -134,7 +134,7 @@ export function KaraokeMode({
         </div>
 
         {/* Upcoming Lyrics */}
-        {currentTranscription?.lang === "zh" && (
+        {/* {currentTranscription?.lang === "zh" && (
           <div className="overflow-y-auto mt-4 flex flex-col items-center justify-center">
             {transcriptions
               ?.filter((trans: any) => {
@@ -156,7 +156,6 @@ export function KaraokeMode({
                     seekTo(lyric?.start);
                   }}
                 >
-                  {/* <p>{lyric.roman}</p> */}
                   {lyric?.lang === "zh" && (
                     <p className="text-xs font-light text-gray-400">
                       {lyric?.pinyin || lyric?.roman}
@@ -165,11 +164,10 @@ export function KaraokeMode({
                   <p>{lyric?.input || lyric?.hanzi}</p>
 
                   <p className="text-lg">{lyric?.en}</p>
-                  {/* <p>{lyric?.input}</p> */}
                 </div>
               ))}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

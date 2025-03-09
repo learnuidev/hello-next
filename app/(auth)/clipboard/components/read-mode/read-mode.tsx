@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { getHeightClass } from "../../convos/play-v3/utils/get-height-class";
+import { getHeightClass } from "../../../convos/play-v3/utils/get-height-class";
 import { ReadModeHeader } from "./read-mode-header";
 import { ReadModeItem } from "./read-mode-item";
 

@@ -4,10 +4,7 @@ import { ClipboardFooter } from "./components/clipboard-footer";
 import { ClipboardHeader } from "./components/clipboard-header";
 import { EditMode } from "./components/edit-mode";
 import { ReadMode } from "./components/read-mode/read-mode";
-import {
-  _useClipboardState,
-  useClipboardState,
-} from "./hooks/_use-clipboard-state";
+import { _useClipboardState } from "./hooks/_use-clipboard-state";
 
 export default function Clipboard() {
   const {

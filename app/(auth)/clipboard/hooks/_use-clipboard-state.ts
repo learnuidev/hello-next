@@ -2,28 +2,9 @@
 
 import { languages } from "@/app/next/features/phrase/languages";
 import { useMemo, useState } from "react";
-import { defaultState } from "../constants/default-state";
 
-import { createIndexDBStore } from "@/libs/index-db/index-db";
 import { useClipboardFocus } from "./use-clipboard-focus";
-
-export const useClipboardStateStore = createIndexDBStore({
-  name: "clipboard/state-store-2",
-  handler: (set: any, get: any) => ({
-    state: defaultState,
-    setState: (f: any) =>
-      typeof f === "function"
-        ? set({ state: f(get().state) })
-        : set({ state: f }),
-  }),
-});
-
-export const useClipboardState = () => {
-  const state: any = useClipboardStateStore((state) => state.state);
-  const setState = useClipboardStateStore((state) => state.setState);
-
-  return { state, setState };
-};
+import { useClipboardState } from "./use-clipboard-state";
 
 export function _useClipboardState() {
   const lang = languages[0];

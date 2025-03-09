@@ -1,0 +1,59 @@
+export function ReadModeHeader({
+  height,
+  currentTranslation,
+  selected,
+}: {
+  height: string;
+  selected: {
+    pinyin: string;
+    hanzi: string;
+    level: number;
+    en: string;
+  };
+  currentTranslation: {
+    output: string;
+  };
+}) {
+  return (
+    <div className="fixed top-[75px] max-w-4xl w-full z-30 dark:bg-black bg-white p-2">
+      <div>
+        <div className="sticky top-0 pt-4 px-2 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)]">
+          <div className="pb-4">
+            <h4 className="text-xs text-gray-500">Sentence</h4>
+            <div
+              className={`${height} flex justify-between items-center mt-2 w-full`}
+            >
+              <p className="space-x-2 text-[16px] font-extralight pb-[4px]">
+                {currentTranslation?.output}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="h-24 hidden sm:block mb-4">
+          <h4 className="text-xs text-gray-500">Word</h4>
+
+          {selected ? (
+            <div className="h-14 mt-2 w-full">
+              <div className="flex justify-between items-center">
+                <p className="space-x-2 text-[16px] font-extralight">
+                  <span>{selected?.hanzi}</span>
+
+                  <span className="text-red-400">{selected?.pinyin}</span>
+                </p>
+
+                {selected?.level && <p>HSK {selected?.level}</p>}
+              </div>
+
+              <p className="font-extralight">
+                <span className="wrap">{selected?.en}</span>
+              </p>
+            </div>
+          ) : (
+            <div className="h-14"></div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

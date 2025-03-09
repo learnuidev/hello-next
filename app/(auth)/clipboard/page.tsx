@@ -7,7 +7,7 @@ import { ReadMode } from "./components/read-mode/read-mode";
 import {
   _useClipboardState,
   useClipboardState,
-} from "./hooks/use-clipboard-state";
+} from "./hooks/_use-clipboard-state";
 
 export default function Clipboard() {
   const {

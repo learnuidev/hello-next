@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useClipboardState } from "../hooks/use-clipboard-state";
+import { useClipboardState } from "../hooks/_use-clipboard-state";
 import { SettingsPopover } from "./settings-popover";
 
 export const ClipboardHeader = ({

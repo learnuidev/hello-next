@@ -7,7 +7,7 @@ import { useReadModeStore } from "./hooks/use-readmode-store";
 import {
   useClipboardFocus,
   useClipboardState,
-} from "../../hooks/use-clipboard-state";
+} from "../../hooks/_use-clipboard-state";
 
 export function ReadMode({
   setWords,

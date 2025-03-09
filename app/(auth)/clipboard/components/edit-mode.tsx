@@ -1,5 +1,5 @@
 import { chineseConverter } from "mandarino/src/utils/chinese-converter";
-import { useClipboardState } from "../hooks/use-clipboard-state";
+import { useClipboardState } from "../hooks/_use-clipboard-state";
 
 export function EditMode() {
   const { state, setState } = useClipboardState();

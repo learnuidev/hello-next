@@ -2,7 +2,7 @@
 
 import { Icons } from "@/components/ui/icons.v2";
 import { defaultState } from "../constants/default-state";
-import { useClipboardState } from "../hooks/use-clipboard-state";
+import { useClipboardState } from "../hooks/_use-clipboard-state";
 
 export function ClipboardFooter({
   mode,

@@ -7,13 +7,15 @@ import { useClipboardHskView } from "./use-clipboard-hsk-view";
 import { useClipboardPinyinView } from "./use-clipboard-pinyin-view";
 import { useClipboardState } from "./use-clipboard-state";
 import { useClipboardSentenceView } from "./use-clipboard-sentence-view";
+import { useClipboardViewMode } from "./use-clipboard-view-mode";
 
 export function _useClipboardState() {
   const [words, setWords] = useState({});
 
   const { focused, setFocused } = useClipboardFocus();
   const [translations, setTranslations] = useState({});
-  const [mode, setMode] = useState("edit");
+
+  const { mode, setMode } = useClipboardViewMode();
 
   const { state, setState } = useClipboardState();
 

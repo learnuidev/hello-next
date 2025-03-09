@@ -3,14 +3,11 @@
 import { Icons } from "@/components/ui/icons.v2";
 import { defaultState } from "../constants/default-state";
 import { useClipboardState } from "../hooks/use-clipboard-state";
+import { useClipboardViewMode } from "../hooks/use-clipboard-view-mode";
 
-export function ClipboardFooter({
-  mode,
-  setMode,
-}: {
-  mode: string;
-  setMode: (mode: string) => void;
-}) {
+export function ClipboardFooter() {
+  const { mode, setMode } = useClipboardViewMode();
+
   const { setState } = useClipboardState();
   return (
     <footer className="w-full max-w-4xl sm:pr-0 pr-12 fixed bottom-0 py-8 z-30 dark:bg-[rgb(9,10,11)]/75 bg-white/75 dark:bg-react/75 backdrop-blur-sm">

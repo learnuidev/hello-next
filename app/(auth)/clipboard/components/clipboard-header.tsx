@@ -1,14 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { useClipboardPinyinView } from "../hooks/use-clipboard-pinyin-view";
 import { useClipboardState } from "../hooks/use-clipboard-state";
 import { SettingsPopover } from "./settings-popover";
 
 export const ClipboardHeader = ({
   lang,
   totalWords,
-  pinyinView,
-  setPinyinView,
+  // pinyinView,
+  // setPinyinView,
   sentenceView,
   setSentenceView,
   hskView,
@@ -19,13 +20,14 @@ export const ClipboardHeader = ({
     title: string;
   };
   totalWords: number;
-  pinyinView: boolean;
-  setPinyinView: (view: boolean) => void;
+  // pinyinView: boolean;
+  // setPinyinView: (view: boolean) => void;
   sentenceView: boolean;
   setSentenceView: (view: boolean) => void;
   hskView: boolean;
   setHskView: (view: boolean) => void;
 }) => {
+  const { pinyinView, setPinyinView } = useClipboardPinyinView();
   const { setState } = useClipboardState();
 
   return (

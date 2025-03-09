@@ -1,9 +1,5 @@
 "use client";
 
-import { languages } from "@/app/next/features/phrase/languages";
-import { useMemo, useState } from "react";
-import { defaultState } from "../constants/default-state";
-
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
 export const useFocusedStore = createIndexDBStore({

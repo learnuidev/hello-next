@@ -7,19 +7,20 @@ import { useReadModeStore } from "./hooks/use-readmode-store";
 
 import { useClipboardFocus } from "../../hooks/use-clipboard-focus";
 import { useClipboardState } from "../../hooks/use-clipboard-state";
+import { useClipboardPinyinView } from "../../hooks/use-clipboard-pinyin-view";
 
 export function ReadMode({
   setWords,
   translations,
   setTranslations,
-  pinyinView,
-  setPinyinView,
   sentenceView,
   setSentenceView,
   hskView,
   setHskView,
 }: any) {
   const selected = useReadModeStore((state) => state.selected);
+
+  const { pinyinView, setPinyinView } = useClipboardPinyinView();
 
   const { focused } = useClipboardFocus();
 

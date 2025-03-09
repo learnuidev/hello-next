@@ -14,8 +14,7 @@ export default function Clipboard() {
     setTranslations,
     mode,
     setMode,
-    pinyinView,
-    setPinyinView,
+
     sentenceView,
     setSentenceView,
     hskView,
@@ -27,8 +26,6 @@ export default function Clipboard() {
       <ClipboardHeader
         lang={lang}
         totalWords={totalWords}
-        pinyinView={pinyinView}
-        setPinyinView={setPinyinView}
         sentenceView={sentenceView}
         setSentenceView={setSentenceView}
         hskView={hskView}
@@ -37,8 +34,6 @@ export default function Clipboard() {
 
       {mode === "read" ? (
         <ReadMode
-          pinyinView={pinyinView}
-          setPinyinView={setPinyinView}
           sentenceView={sentenceView}
           setSentenceView={setSentenceView}
           hskView={hskView}

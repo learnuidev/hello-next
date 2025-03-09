@@ -5,11 +5,14 @@ import { useClipboardHskView } from "../hooks/use-clipboard-hsk-view";
 import { useClipboardPinyinView } from "../hooks/use-clipboard-pinyin-view";
 import { useClipboardSentenceView } from "../hooks/use-clipboard-sentence-view";
 import { useClipboardState } from "../hooks/use-clipboard-state";
+import { useGetTotalWords } from "../hooks/use-get-total-words";
 import { SettingsPopover } from "./settings-popover";
 import { languages } from "@/app/next/features/phrase/languages";
 
-export const ClipboardHeader = ({ totalWords }: { totalWords: number }) => {
+export const ClipboardHeader = () => {
   const { sentenceView, setSentenceView } = useClipboardSentenceView();
+
+  const totalWords = useGetTotalWords();
 
   const { pinyinView, setPinyinView } = useClipboardPinyinView();
   const { setState } = useClipboardState();

@@ -1,7 +1,7 @@
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
-const useReadModeStore = createIndexDBStore({
-  name: "clipboard/read-mode-store",
+const useClipboardFocusedStore = createIndexDBStore({
+  name: "clipboard/focused",
   handler: (set: any, get: any) => ({
     selected: null,
     setFocusedWord: (f: any) =>
@@ -12,8 +12,10 @@ const useReadModeStore = createIndexDBStore({
 });
 
 export const useClipboardFocused = () => {
-  const focusedWord: any = useReadModeStore((state) => state.selected);
-  const setFocusedWord = useReadModeStore((state) => state.setFocusedWord);
+  const focusedWord: any = useClipboardFocusedStore((state) => state.selected);
+  const setFocusedWord = useClipboardFocusedStore(
+    (state) => state.setFocusedWord
+  );
 
   return { focusedWord, setFocusedWord };
 };

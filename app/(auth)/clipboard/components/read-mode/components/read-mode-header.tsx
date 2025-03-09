@@ -1,4 +1,4 @@
-import { useClipboardFocused } from "../hooks/use-readmode-store";
+import { useClipboardFocused } from "../hooks/use-clipboard-focused";
 
 export function ReadModeHeader({
   height,

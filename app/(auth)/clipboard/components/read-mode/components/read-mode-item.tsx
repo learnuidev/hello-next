@@ -7,7 +7,7 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { cn } from "@/lib/utils";
 import { useClipboardFocus } from "../../../hooks/use-clipboard-focus";
 import { useTranslateTextMutation } from "../../../hooks/use-translated-text-mutation";
-import { useClipboardFocused } from "../hooks/use-readmode-store";
+import { useClipboardFocused } from "../hooks/use-clipboard-focused";
 
 export function ReadModeItem({
   text,

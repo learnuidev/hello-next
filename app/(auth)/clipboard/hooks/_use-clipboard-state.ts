@@ -1,21 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { useClipboardFocus } from "./use-clipboard-focus";
 import { useClipboardHskView } from "./use-clipboard-hsk-view";
 import { useClipboardPinyinView } from "./use-clipboard-pinyin-view";
-import { useClipboardState } from "./use-clipboard-state";
 import { useClipboardSentenceView } from "./use-clipboard-sentence-view";
+import { useClipboardState } from "./use-clipboard-state";
+import { useClipboardTranslations } from "./use-clipboard-translations";
 import { useClipboardViewMode } from "./use-clipboard-view-mode";
 import { useClipboardWords } from "./use-clipboard-words";
 
 export function _useClipboardState() {
-  // const [words, setWords] = useState({});
   const { words, setWords } = useClipboardWords();
 
   const { focused, setFocused } = useClipboardFocus();
-  const [translations, setTranslations] = useState({});
+
+  const { translations, setTranslations } = useClipboardTranslations();
 
   const { mode, setMode } = useClipboardViewMode();
 

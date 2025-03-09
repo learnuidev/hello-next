@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { useClipboardState } from "../hooks/use-clipboard-state";
 import { SettingsPopover } from "./settings-popover";
 
 export const ClipboardHeader = ({
-  setState,
   lang,
   totalWords,
   pinyinView,
@@ -14,7 +14,6 @@ export const ClipboardHeader = ({
   hskView,
   setHskView,
 }: {
-  setState: (val: string) => void;
   lang: {
     src: string;
     title: string;
@@ -27,6 +26,8 @@ export const ClipboardHeader = ({
   hskView: boolean;
   setHskView: (view: boolean) => void;
 }) => {
+  const { setState } = useClipboardState();
+
   return (
     <header className="w-full max-w-4xl sm:pr-0 pr-12 fixed top-0 py-4 z-30 dark:bg-[rgb(9,10,11)]/75 bg-white/75 dark:bg-react/75 backdrop-blur-sm">
       <div className="grid grid-cols-3 justify-between w-full">

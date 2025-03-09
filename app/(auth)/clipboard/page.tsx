@@ -4,20 +4,19 @@ import { ClipboardFooter } from "./components/clipboard-footer";
 import { ClipboardHeader } from "./components/clipboard-header";
 import { EditMode } from "./components/edit-mode";
 import { ReadMode } from "./components/read-mode/read-mode";
-import { useClipboardState } from "./hooks/use-clipboard-state";
+import {
+  _useClipboardState,
+  useClipboardState,
+} from "./hooks/use-clipboard-state";
 
 export default function Clipboard() {
   const {
     lang,
     setWords,
-    focused,
-    setFocused,
     translations,
     setTranslations,
     mode,
     setMode,
-    state,
-    setState,
     pinyinView,
     setPinyinView,
     sentenceView,
@@ -25,11 +24,10 @@ export default function Clipboard() {
     hskView,
     setHskView,
     totalWords,
-  } = useClipboardState();
+  } = _useClipboardState();
   return (
     <main className="relative max-w-4xl mx-auto px-6">
       <ClipboardHeader
-        setState={setState}
         lang={lang}
         totalWords={totalWords}
         pinyinView={pinyinView}
@@ -48,18 +46,15 @@ export default function Clipboard() {
           setSentenceView={setSentenceView}
           hskView={hskView}
           setHskView={setHskView}
-          focused={focused}
-          setFocused={setFocused}
-          state={state}
           setWords={setWords}
           translations={translations}
           setTranslations={setTranslations}
         />
       ) : (
-        <EditMode state={state} setState={setState} />
+        <EditMode />
       )}
 
-      <ClipboardFooter mode={mode} setState={setState} setMode={setMode} />
+      <ClipboardFooter mode={mode} setMode={setMode} />
     </main>
   );
 }

@@ -2,16 +2,16 @@
 
 import { Icons } from "@/components/ui/icons.v2";
 import { defaultState } from "../constants/default-state";
+import { useClipboardState } from "../hooks/use-clipboard-state";
 
 export function ClipboardFooter({
   mode,
-  setState,
   setMode,
 }: {
   mode: string;
   setMode: (mode: string) => void;
-  setState: (state: string) => void;
 }) {
+  const { setState } = useClipboardState();
   return (
     <footer className="w-full max-w-4xl sm:pr-0 pr-12 fixed bottom-0 py-8 z-30 dark:bg-[rgb(9,10,11)]/75 bg-white/75 dark:bg-react/75 backdrop-blur-sm">
       <div className="grid grid-cols-3 justify-between w-full">

@@ -7,19 +7,20 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { cn } from "@/lib/utils";
 import { useTranslateTextMutation } from "../../../hooks/use-translated-text-mutation";
 import { useReadModeStore } from "../hooks/use-readmode-store";
+import { useClipboardFocus } from "../../../hooks/use-clipboard-state";
 
 export function ReadModeItem({
   text,
   setWords,
   translations,
   setTranslations,
-  focused,
-  setFocused,
+
   focusedWord,
-  // setFocusedWord,
   pinyinView,
   hskView,
 }: any) {
+  const { focused, setFocused } = useClipboardFocus();
+
   const setFocusedWord = useReadModeStore((state) => state.setFocusedWord);
   const { data: context, isLoading: isContextLoading } =
     useListDictionaryMeaningsQuery(text, {
@@ -45,6 +46,7 @@ export function ReadModeItem({
       </p>
     );
   }
+
   return (
     <>
       <p

@@ -1,12 +1,8 @@
 import { chineseConverter } from "mandarino/src/utils/chinese-converter";
+import { useClipboardState } from "../hooks/use-clipboard-state";
 
-export function EditMode({
-  state,
-  setState,
-}: {
-  state: string;
-  setState: (value: string) => void;
-}) {
+export function EditMode() {
+  const { state, setState } = useClipboardState();
   return (
     <textarea
       placeholder="Paste text here"

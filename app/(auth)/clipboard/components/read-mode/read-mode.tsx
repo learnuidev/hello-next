@@ -4,14 +4,15 @@ import { getHeightClass } from "../../../convos/play-v3/utils/get-height-class";
 import { ReadModeHeader } from "./components/read-mode-header";
 import { ReadModeItem } from "./components/read-mode-item";
 import { useReadModeStore } from "./hooks/use-readmode-store";
+import {
+  useClipboardFocus,
+  useClipboardState,
+} from "../../hooks/use-clipboard-state";
 
 export function ReadMode({
-  state,
   setWords,
   translations,
   setTranslations,
-  focused,
-  setFocused,
   pinyinView,
   setPinyinView,
   sentenceView,
@@ -20,6 +21,10 @@ export function ReadMode({
   setHskView,
 }: any) {
   const selected = useReadModeStore((state) => state.selected);
+
+  const { focused } = useClipboardFocus();
+
+  const { state } = useClipboardState();
 
   const currentTranslation = translations?.[focused];
 
@@ -49,8 +54,7 @@ export function ReadMode({
                 <ReadModeItem
                   focusedWord={selected}
                   // setFocusedWord={setFocusedWord}
-                  focused={focused}
-                  setFocused={setFocused}
+
                   translations={translations}
                   setTranslations={setTranslations}
                   setWords={setWords}

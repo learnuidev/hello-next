@@ -9,14 +9,11 @@ import { useClipboardFocus } from "../../hooks/use-clipboard-focus";
 import { useClipboardState } from "../../hooks/use-clipboard-state";
 import { useClipboardPinyinView } from "../../hooks/use-clipboard-pinyin-view";
 import { useClipboardHskView } from "../../hooks/use-clipboard-hsk-view";
+import { useClipboardSentenceView } from "../../hooks/use-clipboard-sentence-view";
 
-export function ReadMode({
-  setWords,
-  translations,
-  setTranslations,
-  sentenceView,
-  setSentenceView,
-}: any) {
+export function ReadMode({ setWords, translations, setTranslations }: any) {
+  const { sentenceView, setSentenceView } = useClipboardSentenceView();
+
   const selected = useReadModeStore((state) => state.selected);
 
   const { pinyinView, setPinyinView } = useClipboardPinyinView();

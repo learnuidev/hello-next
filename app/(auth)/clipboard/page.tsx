@@ -8,30 +8,21 @@ import { _useClipboardState } from "./hooks/_use-clipboard-state";
 
 export default function Clipboard() {
   const {
-    lang,
     setWords,
     translations,
     setTranslations,
     mode,
     setMode,
-
-    sentenceView,
-    setSentenceView,
+    // sentenceView,
+    // setSentenceView,
     totalWords,
   } = _useClipboardState();
   return (
     <main className="relative max-w-4xl mx-auto px-6">
-      <ClipboardHeader
-        lang={lang}
-        totalWords={totalWords}
-        sentenceView={sentenceView}
-        setSentenceView={setSentenceView}
-      />
+      <ClipboardHeader totalWords={totalWords} />
 
       {mode === "read" ? (
         <ReadMode
-          sentenceView={sentenceView}
-          setSentenceView={setSentenceView}
           setWords={setWords}
           translations={translations}
           setTranslations={setTranslations}

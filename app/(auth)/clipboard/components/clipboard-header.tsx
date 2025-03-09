@@ -3,29 +3,18 @@
 
 import { useClipboardHskView } from "../hooks/use-clipboard-hsk-view";
 import { useClipboardPinyinView } from "../hooks/use-clipboard-pinyin-view";
+import { useClipboardSentenceView } from "../hooks/use-clipboard-sentence-view";
 import { useClipboardState } from "../hooks/use-clipboard-state";
 import { SettingsPopover } from "./settings-popover";
+import { languages } from "@/app/next/features/phrase/languages";
 
-export const ClipboardHeader = ({
-  lang,
-  totalWords,
-  // pinyinView,
-  // setPinyinView,
-  sentenceView,
-  setSentenceView,
-}: {
-  lang: {
-    src: string;
-    title: string;
-  };
-  totalWords: number;
-  // pinyinView: boolean;
-  // setPinyinView: (view: boolean) => void;
-  sentenceView: boolean;
-  setSentenceView: (view: boolean) => void;
-}) => {
+export const ClipboardHeader = ({ totalWords }: { totalWords: number }) => {
+  const { sentenceView, setSentenceView } = useClipboardSentenceView();
+
   const { pinyinView, setPinyinView } = useClipboardPinyinView();
   const { setState } = useClipboardState();
+
+  const lang = languages[0];
 
   const { hskView, setHskView } = useClipboardHskView();
 

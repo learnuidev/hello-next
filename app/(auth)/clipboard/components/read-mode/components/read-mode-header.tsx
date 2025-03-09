@@ -1,4 +1,3 @@
-import { getHeightClass } from "@/app/(auth)/convos/play-v3/utils/get-height-class";
 import { useClipboardFocus } from "../../../hooks/use-clipboard-focus";
 import { useClipboardTranslations } from "../../../hooks/use-clipboard-translations";
 import { useClipboardFocused } from "../hooks/use-clipboard-focused";
@@ -12,17 +11,13 @@ export function ReadModeHeader() {
 
   const currentTranslation = translations?.[focused];
 
-  const height = getHeightClass(currentTranslation?.output?.length);
-
   return (
     <div className="fixed top-[75px] max-w-4xl w-full z-30 dark:bg-black bg-white p-2">
-      <div>
+      <div className="flex gap-2 flex-col">
         <div className="sticky top-0 pt-4 px-2 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)]">
           <div className="pb-4">
             <h4 className="text-xs text-gray-500">Sentence</h4>
-            <div
-              className={`${height} flex justify-between items-center mt-2 w-full`}
-            >
+            <div className={`flex justify-between items-center mt-2 w-full`}>
               <p className="space-x-2 text-[16px] font-extralight pb-[4px]">
                 {currentTranslation?.output}
               </p>
@@ -30,11 +25,11 @@ export function ReadModeHeader() {
           </div>
         </div>
 
-        <div className="h-24 hidden sm:block mb-4">
+        <div className="h-24 hidden sm:block dark:bg-[rgb(9,10,11)] bg-gray-50">
           <h4 className="text-xs text-gray-500">Word</h4>
 
           {selected ? (
-            <div className="h-14 mt-2 w-full">
+            <div className="mt-2 w-full">
               <div className="flex justify-between items-center">
                 <p className="space-x-2 text-[16px] font-extralight">
                   <span>{selected?.hanzi}</span>
@@ -50,7 +45,7 @@ export function ReadModeHeader() {
               </p>
             </div>
           ) : (
-            <div className="h-14"></div>
+            <div className=""></div>
           )}
         </div>
       </div>

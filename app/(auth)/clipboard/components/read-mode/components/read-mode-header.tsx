@@ -1,16 +1,18 @@
+import { getHeightClass } from "@/app/(auth)/convos/play-v3/utils/get-height-class";
+import { useClipboardFocus } from "../../../hooks/use-clipboard-focus";
+import { useClipboardTranslations } from "../../../hooks/use-clipboard-translations";
 import { useClipboardFocused } from "../hooks/use-clipboard-focused";
 
-export function ReadModeHeader({
-  height,
-  currentTranslation,
-}: {
-  height: string;
-
-  currentTranslation: {
-    output: string;
-  };
-}) {
+export function ReadModeHeader() {
   const { focusedWord: selected } = useClipboardFocused();
+
+  const { translations } = useClipboardTranslations();
+
+  const { focused } = useClipboardFocus();
+
+  const currentTranslation = translations?.[focused];
+
+  const height = getHeightClass(currentTranslation?.output?.length);
 
   return (
     <div className="fixed top-[75px] max-w-4xl w-full z-30 dark:bg-black bg-white p-2">

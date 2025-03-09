@@ -8,20 +8,19 @@ import { cn } from "@/lib/utils";
 import { useClipboardFocus } from "../../../hooks/use-clipboard-focus";
 import { useTranslateTextMutation } from "../../../hooks/use-translated-text-mutation";
 import { useClipboardFocused } from "../hooks/use-clipboard-focused";
+import { useClipboardTranslations } from "../../../hooks/use-clipboard-translations";
+import { useClipboardWords } from "../../../hooks/use-clipboard-words";
+import { useClipboardPinyinView } from "../../../hooks/use-clipboard-pinyin-view";
+import { useClipboardHskView } from "../../../hooks/use-clipboard-hsk-view";
 
-export function ReadModeItem({
-  text,
-  setWords,
-  translations,
-  setTranslations,
-
-  // focusedWord,
-  pinyinView,
-  hskView,
-}: any) {
+export function ReadModeItem({ text }: any) {
   const { focused, setFocused } = useClipboardFocus();
+  const { setWords } = useClipboardWords();
+  const { hskView } = useClipboardHskView();
 
+  const { pinyinView } = useClipboardPinyinView();
   const { focusedWord, setFocusedWord } = useClipboardFocused();
+  const { translations, setTranslations } = useClipboardTranslations();
 
   const { data: context, isLoading: isContextLoading } =
     useListDictionaryMeaningsQuery(text, {

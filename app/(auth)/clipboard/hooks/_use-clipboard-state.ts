@@ -5,24 +5,7 @@ import { useMemo, useState } from "react";
 import { defaultState } from "../constants/default-state";
 
 import { createIndexDBStore } from "@/libs/index-db/index-db";
-
-export const useFocusedStore = createIndexDBStore({
-  name: "clipboard/focused-store",
-  handler: (set: any, get: any) => ({
-    focused: null,
-    setFocused: (f: any) =>
-      typeof f === "function"
-        ? set({ focused: f(get().focused) })
-        : set({ focused: f }),
-  }),
-});
-
-export const useClipboardFocus = () => {
-  const focused: any = useFocusedStore((state) => state.focused);
-  const setFocused = useFocusedStore((state) => state.setFocused);
-
-  return { focused, setFocused };
-};
+import { useClipboardFocus } from "./use-clipboard-focus";
 
 export const useClipboardStateStore = createIndexDBStore({
   name: "clipboard/state-store-2",

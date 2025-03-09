@@ -4,10 +4,8 @@ import { getHeightClass } from "../../../convos/play-v3/utils/get-height-class";
 import { ReadModeHeader } from "./components/read-mode-header";
 import { ReadModeItem } from "./components/read-mode-item";
 import { useReadModeStore } from "./hooks/use-readmode-store";
-import {
-  useClipboardFocus,
-  useClipboardState,
-} from "../../hooks/_use-clipboard-state";
+import { useClipboardState } from "../../hooks/_use-clipboard-state";
+import { useClipboardFocus } from "../../hooks/use-clipboard-focus";
 
 export function ReadMode({
   setWords,

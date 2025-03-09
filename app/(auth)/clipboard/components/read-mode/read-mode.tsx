@@ -1,8 +1,9 @@
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+
 import { getHeightClass } from "../../../convos/play-v3/utils/get-height-class";
-import { ReadModeHeader } from "./read-mode-header";
-import { ReadModeItem } from "./read-mode-item";
+import { ReadModeHeader } from "./components/read-mode-header";
+import { ReadModeItem } from "./components/read-mode-item";
+import { useReadModeStore } from "./hooks/use-readmode-store";
 
 export function ReadMode({
   state,
@@ -18,7 +19,8 @@ export function ReadMode({
   hskView,
   setHskView,
 }: any) {
-  const [selected, setFocusedWord] = useState<any>(null);
+  const selected = useReadModeStore((state) => state.selected);
+
   const currentTranslation = translations?.[focused];
 
   const height = getHeightClass(currentTranslation?.output?.length);
@@ -46,7 +48,7 @@ export function ReadMode({
               return (
                 <ReadModeItem
                   focusedWord={selected}
-                  setFocusedWord={setFocusedWord}
+                  // setFocusedWord={setFocusedWord}
                   focused={focused}
                   setFocused={setFocused}
                   translations={translations}

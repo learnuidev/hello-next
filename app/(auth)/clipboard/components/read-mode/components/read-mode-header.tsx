@@ -4,12 +4,13 @@ export function ReadModeHeader({
   selected,
 }: {
   height: string;
-  selected: {
-    pinyin: string;
-    hanzi: string;
-    level: number;
-    en: string;
-  };
+  selected: any;
+  // selected: {
+  //   pinyin: string;
+  //   hanzi: string;
+  //   level: number;
+  //   en: string;
+  // };
   currentTranslation: {
     output: string;
   };

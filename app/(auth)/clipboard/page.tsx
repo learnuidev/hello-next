@@ -17,8 +17,6 @@ export default function Clipboard() {
 
     sentenceView,
     setSentenceView,
-    hskView,
-    setHskView,
     totalWords,
   } = _useClipboardState();
   return (
@@ -28,16 +26,12 @@ export default function Clipboard() {
         totalWords={totalWords}
         sentenceView={sentenceView}
         setSentenceView={setSentenceView}
-        hskView={hskView}
-        setHskView={setHskView}
       />
 
       {mode === "read" ? (
         <ReadMode
           sentenceView={sentenceView}
           setSentenceView={setSentenceView}
-          hskView={hskView}
-          setHskView={setHskView}
           setWords={setWords}
           translations={translations}
           setTranslations={setTranslations}

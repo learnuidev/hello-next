@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { useClipboardHskView } from "../hooks/use-clipboard-hsk-view";
 import { useClipboardPinyinView } from "../hooks/use-clipboard-pinyin-view";
 import { useClipboardState } from "../hooks/use-clipboard-state";
 import { SettingsPopover } from "./settings-popover";
@@ -12,8 +13,6 @@ export const ClipboardHeader = ({
   // setPinyinView,
   sentenceView,
   setSentenceView,
-  hskView,
-  setHskView,
 }: {
   lang: {
     src: string;
@@ -24,11 +23,11 @@ export const ClipboardHeader = ({
   // setPinyinView: (view: boolean) => void;
   sentenceView: boolean;
   setSentenceView: (view: boolean) => void;
-  hskView: boolean;
-  setHskView: (view: boolean) => void;
 }) => {
   const { pinyinView, setPinyinView } = useClipboardPinyinView();
   const { setState } = useClipboardState();
+
+  const { hskView, setHskView } = useClipboardHskView();
 
   return (
     <header className="w-full max-w-4xl sm:pr-0 pr-12 fixed top-0 py-4 z-30 dark:bg-[rgb(9,10,11)]/75 bg-white/75 dark:bg-react/75 backdrop-blur-sm">

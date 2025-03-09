@@ -8,6 +8,7 @@ import { useReadModeStore } from "./hooks/use-readmode-store";
 import { useClipboardFocus } from "../../hooks/use-clipboard-focus";
 import { useClipboardState } from "../../hooks/use-clipboard-state";
 import { useClipboardPinyinView } from "../../hooks/use-clipboard-pinyin-view";
+import { useClipboardHskView } from "../../hooks/use-clipboard-hsk-view";
 
 export function ReadMode({
   setWords,
@@ -15,8 +16,6 @@ export function ReadMode({
   setTranslations,
   sentenceView,
   setSentenceView,
-  hskView,
-  setHskView,
 }: any) {
   const selected = useReadModeStore((state) => state.selected);
 
@@ -25,6 +24,8 @@ export function ReadMode({
   const { focused } = useClipboardFocus();
 
   const { state } = useClipboardState();
+
+  const { hskView, setHskView } = useClipboardHskView();
 
   const currentTranslation = translations?.[focused];
 

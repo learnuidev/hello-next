@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { useClipboardFocus } from "./use-clipboard-focus";
 import { useClipboardState } from "./use-clipboard-state";
 import { useClipboardPinyinView } from "./use-clipboard-pinyin-view";
+import { useClipboardHskView } from "./use-clipboard-hsk-view";
 
 export function _useClipboardState() {
   const lang = languages[0];
@@ -20,7 +21,8 @@ export function _useClipboardState() {
   // const [pinyinView, setPinyinView] = useState(false);
   const { pinyinView, setPinyinView } = useClipboardPinyinView();
   const [sentenceView, setSentenceView] = useState(true);
-  const [hskView, setHskView] = useState(false);
+  // const [hskView, setHskView] = useState(false);
+  const { hskView, setHskView } = useClipboardHskView();
 
   const wordsList = Object.entries(words)
     .filter((item) => state?.includes(item?.[0]))

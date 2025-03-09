@@ -9,7 +9,6 @@ import { useClipboardViewMode } from "./hooks/use-clipboard-view-mode";
 
 export default function Clipboard() {
   const {
-    setWords,
     translations,
     setTranslations,
 
@@ -23,7 +22,6 @@ export default function Clipboard() {
 
       {mode === "read" ? (
         <ReadMode
-          setWords={setWords}
           translations={translations}
           setTranslations={setTranslations}
         />

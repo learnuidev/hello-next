@@ -8,9 +8,11 @@ import { useClipboardPinyinView } from "./use-clipboard-pinyin-view";
 import { useClipboardState } from "./use-clipboard-state";
 import { useClipboardSentenceView } from "./use-clipboard-sentence-view";
 import { useClipboardViewMode } from "./use-clipboard-view-mode";
+import { useClipboardWords } from "./use-clipboard-words";
 
 export function _useClipboardState() {
-  const [words, setWords] = useState({});
+  // const [words, setWords] = useState({});
+  const { words, setWords } = useClipboardWords();
 
   const { focused, setFocused } = useClipboardFocus();
   const [translations, setTranslations] = useState({});

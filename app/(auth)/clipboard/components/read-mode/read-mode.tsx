@@ -6,24 +6,20 @@ import { ReadModeItem } from "./components/read-mode-item";
 import { useReadModeStore } from "./hooks/use-readmode-store";
 
 import { useClipboardFocus } from "../../hooks/use-clipboard-focus";
-import { useClipboardState } from "../../hooks/use-clipboard-state";
-import { useClipboardPinyinView } from "../../hooks/use-clipboard-pinyin-view";
 import { useClipboardHskView } from "../../hooks/use-clipboard-hsk-view";
+import { useClipboardPinyinView } from "../../hooks/use-clipboard-pinyin-view";
 import { useClipboardSentenceView } from "../../hooks/use-clipboard-sentence-view";
+import { useClipboardState } from "../../hooks/use-clipboard-state";
+import { useClipboardWords } from "../../hooks/use-clipboard-words";
 
-export function ReadMode({ setWords, translations, setTranslations }: any) {
+export function ReadMode({ translations, setTranslations }: any) {
   const { sentenceView, setSentenceView } = useClipboardSentenceView();
-
+  const { setWords } = useClipboardWords();
   const selected = useReadModeStore((state) => state.selected);
-
   const { pinyinView, setPinyinView } = useClipboardPinyinView();
-
   const { focused } = useClipboardFocus();
-
   const { state } = useClipboardState();
-
   const { hskView, setHskView } = useClipboardHskView();
-
   const currentTranslation = translations?.[focused];
 
   const height = getHeightClass(currentTranslation?.output?.length);
@@ -51,8 +47,6 @@ export function ReadMode({ setWords, translations, setTranslations }: any) {
               return (
                 <ReadModeItem
                   focusedWord={selected}
-                  // setFocusedWord={setFocusedWord}
-
                   translations={translations}
                   setTranslations={setTranslations}
                   setWords={setWords}

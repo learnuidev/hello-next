@@ -25,7 +25,7 @@ export function ReadModeHeader() {
           </div>
         </div>
 
-        <div className="hidden sm:block pt-4 px-2 pb-[4px] dark:bg-[rgb(9,10,11)] bg-gray-50">
+        <div className="pt-4 px-2 pb-[4px] dark:bg-[rgb(9,10,11)] bg-gray-50">
           <h4 className="text-xs text-gray-500">Word</h4>
 
           {selected ? (

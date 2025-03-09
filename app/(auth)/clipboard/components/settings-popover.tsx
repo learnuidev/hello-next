@@ -9,22 +9,20 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
+import { useClipboardHskView } from "../hooks/use-clipboard-hsk-view";
+import { useClipboardPinyinView } from "../hooks/use-clipboard-pinyin-view";
+import { useClipboardSentenceView } from "../hooks/use-clipboard-sentence-view";
 
-export function SettingsPopover({
-  pinyinView,
-  setPinyinView,
-  sentenceView,
-  setSentenceView,
-  hskView,
-  setHskView,
-}: any) {
+export function SettingsPopover() {
+  const { pinyinView, setPinyinView } = useClipboardPinyinView();
+  const { sentenceView, setSentenceView } = useClipboardSentenceView();
+  const { hskView, setHskView } = useClipboardHskView();
   return (
     <Popover>
       <PopoverTrigger asChild>
         <button className="w-12 justify-self-end">
           <Icons.gear className="text-2xl" />
         </button>
-        {/* <Button variant="outline">Open popover</Button> */}
       </PopoverTrigger>
       <PopoverContent className="w-80 dark:border-gray-900 border-gray-100 dark:bg-[rgb(21,22,23)] bg-gray-100 rounded-2xl">
         <div className="grid gap-4">
@@ -36,7 +34,6 @@ export function SettingsPopover({
               <Label htmlFor="airplane-mode">Show Pinyin</Label>
               <Switch
                 color="dark:bg-blue-500"
-                // className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
                 checked={pinyinView}
                 onCheckedChange={() => {
                   setPinyinView((prev: any) => !prev);
@@ -47,7 +44,6 @@ export function SettingsPopover({
               <Label htmlFor="airplane-mode">Show Sentences</Label>
               <Switch
                 color="dark:bg-blue-500"
-                // className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
                 checked={sentenceView}
                 onCheckedChange={() => {
                   setSentenceView((prev: any) => !prev);
@@ -58,7 +54,6 @@ export function SettingsPopover({
               <Label htmlFor="airplane-mode">Show HSK </Label>
               <Switch
                 color="dark:bg-blue-500"
-                // className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
                 checked={hskView}
                 onCheckedChange={() => {
                   setHskView((prev: any) => !prev);

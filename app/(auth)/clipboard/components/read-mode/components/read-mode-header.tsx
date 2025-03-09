@@ -1,20 +1,17 @@
+import { useClipboardFocused } from "../hooks/use-readmode-store";
+
 export function ReadModeHeader({
   height,
   currentTranslation,
-  selected,
 }: {
   height: string;
-  selected: any;
-  // selected: {
-  //   pinyin: string;
-  //   hanzi: string;
-  //   level: number;
-  //   en: string;
-  // };
+
   currentTranslation: {
     output: string;
   };
 }) {
+  const { focusedWord: selected } = useClipboardFocused();
+
   return (
     <div className="fixed top-[75px] max-w-4xl w-full z-30 dark:bg-black bg-white p-2">
       <div>

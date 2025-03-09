@@ -5,9 +5,9 @@ import { belts } from "@/app/nmm/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { cn } from "@/lib/utils";
-import { useTranslateTextMutation } from "../../../hooks/use-translated-text-mutation";
-import { useReadModeStore } from "../hooks/use-readmode-store";
 import { useClipboardFocus } from "../../../hooks/use-clipboard-focus";
+import { useTranslateTextMutation } from "../../../hooks/use-translated-text-mutation";
+import { useClipboardFocused } from "../hooks/use-readmode-store";
 
 export function ReadModeItem({
   text,
@@ -15,13 +15,14 @@ export function ReadModeItem({
   translations,
   setTranslations,
 
-  focusedWord,
+  // focusedWord,
   pinyinView,
   hskView,
 }: any) {
   const { focused, setFocused } = useClipboardFocus();
 
-  const setFocusedWord = useReadModeStore((state) => state.setFocusedWord);
+  const { focusedWord, setFocusedWord } = useClipboardFocused();
+
   const { data: context, isLoading: isContextLoading } =
     useListDictionaryMeaningsQuery(text, {
       onSuccess: (data: any) => {

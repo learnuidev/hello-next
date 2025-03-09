@@ -1,25 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
+
 "use client";
 
-import { useClipboardHskView } from "../hooks/use-clipboard-hsk-view";
-import { useClipboardPinyinView } from "../hooks/use-clipboard-pinyin-view";
-import { useClipboardSentenceView } from "../hooks/use-clipboard-sentence-view";
+import { languages } from "@/app/next/features/phrase/languages";
 import { useClipboardState } from "../hooks/use-clipboard-state";
 import { useGetTotalWords } from "../hooks/use-get-total-words";
 import { SettingsPopover } from "./settings-popover";
-import { languages } from "@/app/next/features/phrase/languages";
 
 export const ClipboardHeader = () => {
-  const { sentenceView, setSentenceView } = useClipboardSentenceView();
-
   const totalWords = useGetTotalWords();
 
-  const { pinyinView, setPinyinView } = useClipboardPinyinView();
   const { setState } = useClipboardState();
 
   const lang = languages[0];
-
-  const { hskView, setHskView } = useClipboardHskView();
 
   return (
     <header className="w-full max-w-4xl sm:pr-0 pr-12 fixed top-0 py-4 z-30 dark:bg-[rgb(9,10,11)]/75 bg-white/75 dark:bg-react/75 backdrop-blur-sm">
@@ -40,14 +33,7 @@ export const ClipboardHeader = () => {
           </div>
         </div>
 
-        <SettingsPopover
-          pinyinView={pinyinView}
-          setPinyinView={setPinyinView}
-          sentenceView={sentenceView}
-          setSentenceView={setSentenceView}
-          hskView={hskView}
-          setHskView={setHskView}
-        />
+        <SettingsPopover />
       </div>
     </header>
   );

@@ -59,7 +59,7 @@ export default function RootLayout({
                   </QueryClientProvider>
                 </div>
 
-                <LanguageSelector />
+                {/* <LanguageSelector /> */}
 
                 <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300 dark:text-gray-700">
                   {/* <FontAwesomeIcon icon={faScrewdriverWrench} />

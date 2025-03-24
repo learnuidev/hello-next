@@ -8,14 +8,14 @@ interface DetectLanguageResponse {
   lang: string;
 }
 
-export const useDetectLanguageQuery = (content: string, lang?: string) => {
+export const useDetectLanguageQuery = (content: string) => {
   const token = useJwtToken();
 
   const router = useRouter();
   const langParams = useGetLangParams();
 
   return useQuery<DetectLanguageResponse, Error>({
-    queryKey: ["detect-content", content, lang],
+    queryKey: ["detect-content", content, langParams],
     enabled: Boolean(content),
     retry: false,
     refetchIntervalInBackground: false,
@@ -35,16 +35,11 @@ export const useDetectLanguageQuery = (content: string, lang?: string) => {
     },
     queryFn: async () => {
       try {
-        if (lang) {
+        if (langParams) {
           return {
-            lang,
+            lang: langParams,
           } as DetectLanguageResponse;
         } else {
-          if (lang) {
-            return {
-              lang,
-            };
-          }
           const res = await fetch(`${siteConfig.apiUrlV2}/v1/detect-lanuage`, {
             method: "POST",
             headers: {

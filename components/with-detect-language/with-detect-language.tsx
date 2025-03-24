@@ -3,6 +3,7 @@ import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { useDetectLanguageQuery } from "./use-detect-language-query";
 import Link from "next/link";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { AnimatedLoadingText } from "../animated-loading-text";
 
 const supportedLangs = [
   "fr",
@@ -32,17 +33,26 @@ export function WithDetectLanguage({
 }) {
   const lang = useGetCurrentLang();
 
-  const { data, isLoading } = useDetectLanguageQuery(content, lang);
+  const { data, isLoading } = useDetectLanguageQuery(content);
 
-  // if (isLoading) {
-  //   return <LottieLoadingAnimation />;
-  // }
+  if (isLoading) {
+    return (
+      <div className="w-full flex items-center justify-center mt-32">
+        <AnimatedLoadingText
+          className="text-xl font-extralight"
+          message="Detecting Language..."
+        />
+      </div>
+    );
+  }
 
   if (!data) {
     return null;
   }
 
-  if (data?.lang !== undefined && supportedLangs?.includes(data?.lang)) {
+  // if (data?.lang !== undefined && supportedLangs?.includes(data?.lang)) {
+
+  if (data?.lang !== undefined) {
     return children;
   }
 

@@ -21,6 +21,7 @@ import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { BookmarkButton } from "@/app/nmm/bookmark-button";
 import { useSearchParams } from "next/navigation";
 import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
+import { useCanTrackFunction } from "../use-can-track-function";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -60,6 +61,13 @@ export const CharacterTitle = (props: any) => {
     content: componentId,
     lang,
   });
+
+  const { trackFunction } = useCanTrackFunction(
+    { hanzi: characterId, input: characterId },
+    {
+      lang,
+    }
+  );
 
   const selectedCompInput = selectedComp?.hanzi || selectedCompInput2;
 
@@ -136,6 +144,7 @@ export const CharacterTitle = (props: any) => {
                   return (
                     <Link
                       onClick={() => {
+                        trackFunction();
                         if (meaning?.details) {
                           setIfExists({ ...meaning?.details });
                         }

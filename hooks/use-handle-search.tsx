@@ -14,6 +14,8 @@ import { signOut } from "@/libs/cognito/auth";
 import { useGetLangParams } from "./use-get-lang-params";
 import { useIsDu } from "./use-is-du";
 import { useIsSearchTrackingEnabled } from "./use-is-search-tracking-enabled";
+import { useListHistoryQuery } from "@/domain/history/history.queries";
+import { isToday } from "./is-today";
 
 export const useHandleSearch = () => {
   const router = useRouter();
@@ -52,6 +54,16 @@ export const useHandleSearch = () => {
   const langs = useListLanguages();
 
   const addHistoryMutation = useAddHistoryMutation();
+
+  const { data: history } = useListHistoryQuery();
+
+  console.log("HISTORY", history);
+
+  const alreadySearchedToday = history?.Items?.filter(
+    (item: any) => item?.input === querySync && isToday(history?.createdAt)
+  );
+
+  console.log("ALREADY SEARCHED", alreadySearchedToday);
 
   // TODO: Fix this
   const isSearchTrackingEnabled = useIsSearchTrackingEnabled();
@@ -95,7 +107,11 @@ export const useHandleSearch = () => {
         router.push(navigationUrl);
       } else {
         // Else perform search
-        if (isSearchTrackingEnabled && querySync?.toLowerCase() !== "ll") {
+        if (
+          isSearchTrackingEnabled &&
+          querySync?.toLowerCase() !== "ll" &&
+          alreadySearchedToday?.length === 0
+        ) {
           addHistoryMutation.mutate({
             input: querySync,
             lang,

@@ -1,22 +1,16 @@
-import {
-  useCharacterContextStore,
-  useSetIfExists,
-} from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
+import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 import { isYoutube } from "@/app/(auth)/convos/utils/is-youtube";
+import { Nothing } from "@/app/nmm/nothing";
 import { formatDate } from "@/components/settings-dialog/utils/format-date";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
-import {
-  useGetContentQuery,
-  useListContentsQuery,
-} from "@/domain/content/content.queries";
+import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { resolveLangCode } from "@/libs/openai/utils";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { SentenceItem } from "../sentence-item";
-import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
-import { Nothing } from "@/app/nmm/nothing";
-import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 const CharacterLearningContextInner = ({ selectedComp }: any) => {
   const learnedCharacter = selectedComp;
@@ -27,8 +21,6 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
     learnedCharacter?.contentContext?.find(
       (content: any) => content?.contentId
     ) || learnedCharacter?.contentContext?.[0];
-
-  console.log("CONTENT SEGMENT", contentSegment);
 
   const contentId = contentSegment?.contentId || "";
 
@@ -59,7 +51,6 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
   function playCurrentSegment() {
     const maxValue = Math.floor(Math.max(contentSegment?.start, 0));
 
-    console.log("seekTo", maxValue);
     playerRef?.current?.seekTo(maxValue);
 
     try {
@@ -75,7 +66,6 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
     (trans: any) => trans?.start < currentTime && trans?.end > currentTime
   );
 
-  console.log("AUDIO", relevantContent?.audio);
   const isAudioVideoOrYoutube =
     relevantContent?.audio?.includes("youtube") ||
     relevantContent?.audio?.includes("mp4") ||
@@ -190,25 +180,16 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
   );
 };
 
-const NoCharacterContextView = ({
-  characterId,
-  lang,
+export const CharacterLearningContext = ({
   selectedComp,
-}: {
-  characterId: string;
-  lang: string;
-  selectedComp: any;
-}) => {
+
+  characterId,
+}: any) => {
+  const lang = useGetCurrentLang();
+
   const { data } = useListPublishedContentsQuery({});
 
   const items = data?.items
-    // ?.filter((item: any) => {
-    //   return (
-    //     item?.transcriptions?.filter((item: any) =>
-    //       JSON.stringify(item?.hanzi || item?.input)?.includes(characterId)
-    //     ) && item?.lang === lang
-    //   );
-    // })
     ?.map((item: any) => {
       return item?.transcriptions?.map((t: any) => {
         return {
@@ -224,53 +205,34 @@ const NoCharacterContextView = ({
     )
     ?.slice(0, 30);
 
+  const learnedCharacter = selectedComp;
+
   if (!items?.length) {
     return <Nothing message="Nothing found" />;
   }
 
-  return (
-    <div>
-      {/* <h1>TODO: {characterId}</h1> */}
+  if (items?.length) {
+    return (
+      <div>
+        {/* <h1>TODO: {characterId}</h1> */}
 
-      {items?.map((item: any) => {
-        return (
-          <SentenceItem
-            key={JSON.stringify(item)}
-            currentPhrase={item}
-            selectedComp={selectedComp}
-            selectedChar={characterId}
-            lang={item?.lang}
-          />
-        );
-      })}
-    </div>
-  );
-};
-
-export const CharacterLearningContext = ({
-  selectedComp,
-
-  characterId,
-}: any) => {
-  const lang = useGetCurrentLang();
-  const learnedCharacter = selectedComp;
-
-  return (
-    <NoCharacterContextView
-      lang={selectedComp?.lang || lang}
-      characterId={characterId}
-      selectedComp={learnedCharacter}
-    />
-  );
+        {items?.map((item: any) => {
+          return (
+            <SentenceItem
+              key={JSON.stringify(item)}
+              currentPhrase={item}
+              selectedComp={selectedComp}
+              selectedChar={characterId}
+              lang={item?.lang}
+            />
+          );
+        })}
+      </div>
+    );
+  }
 
   if (!learnedCharacter || !learnedCharacter?.contentContext?.length) {
-    return (
-      <NoCharacterContextView
-        lang={selectedComp?.lang || lang}
-        characterId={characterId}
-        selectedComp={learnedCharacter}
-      />
-    );
+    return <Nothing message="Nothing found" />;
   }
 
   return <CharacterLearningContextInner selectedComp={selectedComp} />;

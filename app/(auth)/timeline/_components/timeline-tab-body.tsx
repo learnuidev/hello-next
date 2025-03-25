@@ -1,13 +1,5 @@
 "use client";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
-import { PreviewComponent } from "@/app/nmm/preview-component";
 import { calculateTotalTimeStudied } from "@/app/profile/hooks/use-get-total-time-studied";
 import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainer } from "@/components/nmm-list-container";
@@ -151,19 +143,12 @@ export const TimelineTabBody = ({
                       if (item?.status === "joined") {
                         return null;
                       }
+
                       return (
-                        <TooltipProvider
+                        <HanziLink
                           key={`${item?.input || item?.hanzi?.trim("")}-chars-${idx}`}
-                        >
-                          <Tooltip>
-                            <TooltipTrigger className="p-3 px-0 hover:scale-110 transition">
-                              <HanziLink character={item} />
-                            </TooltipTrigger>
-                            <TooltipContent className="bg-black border-gray-800">
-                              <PreviewComponent component={item} />
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                          character={item}
+                        />
                       );
                     })}
                 </NmmListContainer>
@@ -174,40 +159,31 @@ export const TimelineTabBody = ({
                   if (item?.status === "joined") {
                     return null;
                   }
+
                   return (
-                    <TooltipProvider
+                    <Link
                       key={`${item?.input || item?.hanzi?.trim("")}-chars-${idx}`}
+                      href={
+                        item?.lang
+                          ? `/nmm/${encodeURIComponent(item?.input || item?.hanzi)}?lang=${item?.lang}`
+                          : `/nmm/${encodeURIComponent(item?.input || item?.hanzi)}`
+                      }
+                      // href={`/nmm/${item?.input || item?.hanzi?.trim("")}?lang=${item?.lang || "zh"}`}
+                      className={cn(
+                        `py-4 pr-8 font-light`,
+                        `  dark:hover:text-white p-3 transition lowercase`,
+                        focusLang && langs?.length > 1
+                          ? // &&
+                            //   langs?.length !== 1 &&
+                            //   langs?.includes(focusLang)
+                            focusLang === item?.lang
+                            ? "text-white text-2xl"
+                            : "text-gray-700 text-2xl"
+                          : "dark:text-gray-300 text-2xl"
+                      )}
                     >
-                      <Tooltip>
-                        <TooltipTrigger className="p-3 px-0 hover:scale-110 transition">
-                          <Link
-                            href={
-                              item?.lang
-                                ? `/nmm/${encodeURIComponent(item?.input || item?.hanzi)}?lang=${item?.lang}`
-                                : `/nmm/${encodeURIComponent(item?.input || item?.hanzi)}`
-                            }
-                            // href={`/nmm/${item?.input || item?.hanzi?.trim("")}?lang=${item?.lang || "zh"}`}
-                            className={cn(
-                              `py-4 pr-8 font-light`,
-                              `  dark:hover:text-white p-3 transition lowercase`,
-                              focusLang && langs?.length > 1
-                                ? // &&
-                                  //   langs?.length !== 1 &&
-                                  //   langs?.includes(focusLang)
-                                  focusLang === item?.lang
-                                  ? "text-white text-2xl"
-                                  : "text-gray-700 text-2xl"
-                                : "dark:text-gray-300 text-2xl"
-                            )}
-                          >
-                            {item?.input || item?.hanzi?.trim("")}
-                          </Link>
-                        </TooltipTrigger>
-                        <TooltipContent className="bg-black border-gray-800">
-                          <PreviewComponent component={item} />
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                      {item?.input || item?.hanzi?.trim("")}
+                    </Link>
                   );
                 })}
               </div>

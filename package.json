@@ -134,7 +134,7 @@
     "@types/mapbox__mapbox-gl-geocoder": "^4.7.5",
     "@types/ramda": "^0.29.7",
     "@types/react-speech-recognition": "^3.9.4",
-    "mandarino": "^25.3.26",
+    "mandarino": "^25.3.2-6.12.38",
     "postcss-nesting": "^12.0.1"
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+import { mandarinoApi } from "mandarino";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,8 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Check, ChevronRight, Loader2 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Icons } from "@/components/ui/icons.v2";
+import { useMandarinoAi } from "@/hooks/use-ai-providers";
 
 type Provider = "openai" | "moonshot" | "deepseek" | "qwen" | "mistral";
 
@@ -29,10 +32,12 @@ export function ProviderForm() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [complete, setComplete] = useState(false);
+  const [error, setError] = useState(false);
   const [formData, setFormData] = useState<ProviderData>({
     variant: "openai",
     apiKey: "",
   });
+  const { variants, setVariants } = useMandarinoAi();
 
   const handleProviderChange = (value: Provider) => {
     setFormData({ ...formData, variant: value });
@@ -50,14 +55,26 @@ export function ProviderForm() {
     setStep(step - 1);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
+    setError(false);
+    setComplete(false);
     // Simulate API call
-    setTimeout(() => {
-      console.log("Saved provider data:", formData);
-      setLoading(false);
-      setComplete(true);
-    }, 1500);
+    const client = mandarinoApi({ ...formData, dangerouslyAllowBrowser: true });
+
+    client
+      .detectLanguage({ content: "hello world" })
+      .then((resp: any) => {
+        console.log("resp", resp);
+        // console.log("Saved provider data:", formData);
+        setLoading(false);
+        setComplete(true);
+        setVariants((prev: any) => prev.concat(formData));
+      })
+      .catch(() => {
+        setLoading(false);
+        setError(true);
+      });
   };
 
   const resetForm = () => {
@@ -80,7 +97,7 @@ export function ProviderForm() {
         </CardHeader>
 
         <AnimatePresence mode="wait">
-          {step === 1 && (
+          {!complete && step === 1 && (
             <motion.div
               key="step1"
               initial={{ opacity: 0, x: 20 }}
@@ -151,7 +168,7 @@ export function ProviderForm() {
             </motion.div>
           )}
 
-          {step === 2 && (
+          {!complete && step === 2 && (
             <motion.div
               key="step2"
               initial={{ opacity: 0, x: 20 }}
@@ -194,7 +211,7 @@ export function ProviderForm() {
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Saving...
+                      Validating...
                     </>
                   ) : (
                     "Save Provider"
@@ -204,6 +221,32 @@ export function ProviderForm() {
             </motion.div>
           )}
 
+          {error && (
+            <motion.div
+              key="error"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <CardContent className="pt-6 text-center">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+                  <Icons.xMark className="h-6 w-6 text-red-600" />
+                </div>
+                <h3 className="mb-2 text-lg font-medium">
+                  Provider Adding Failed
+                </h3>
+                <p className="mb-6 text-muted-foreground">
+                  Seems like the API for Your {formData.variant} provider has
+                  been configured incorrectly
+                </p>
+                <div className="rounded-md bg-muted p-4 text-left">
+                  <pre className="text-sm">
+                    {JSON.stringify(formData, null, 2)}
+                  </pre>
+                </div>
+              </CardContent>
+            </motion.div>
+          )}
           {complete && (
             <motion.div
               key="complete"
@@ -222,14 +265,17 @@ export function ProviderForm() {
                   Your {formData.variant} provider has been configured and is
                   ready to use.
                 </p>
-                <div className="rounded-md bg-muted p-4 text-left">
+                {/* <div className="rounded-md bg-muted p-4 text-left">
                   <pre className="text-sm">
                     {JSON.stringify(formData, null, 2)}
                   </pre>
-                </div>
+                </div> */}
               </CardContent>
-              <CardFooter className="flex justify-center border-t p-4">
+              <CardFooter className="flex justify-center border-t p-4 gap-4">
                 <Button onClick={resetForm}>Add Another Provider</Button>
+                <Button variant={"outline"} onClick={resetForm}>
+                  Close
+                </Button>
               </CardFooter>
             </motion.div>
           )}

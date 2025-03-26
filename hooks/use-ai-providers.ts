@@ -13,7 +13,7 @@ export const useMandarinoAiStore = createIndexDBStore({
 });
 
 export const useMandarinoAi = () => {
-  const variants = useMandarinoAiStore((state) => state.setVariants);
+  const variants = useMandarinoAiStore((state) => state.variants);
   const setVariants = useMandarinoAiStore((state) => state.setVariants);
 
   return { variants, setVariants };
@@ -38,11 +38,14 @@ export const useAiProviders = () => {
     if (!env) {
       return null;
     }
-    const client = mandarinoApi(env);
+    const mandarinoClient = mandarinoApi({
+      ...env,
+      dangerouslyAllowBrowser: true,
+    });
 
     return {
       ...item,
-      client,
+      mandarinoClient,
     };
   });
 

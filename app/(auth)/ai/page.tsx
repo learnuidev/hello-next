@@ -15,7 +15,7 @@ type ProviderData = {
 
 export default function AiProviders() {
   const [addVariant, setAddVariant] = useState(false);
-  const { variants } = useMandarinoAi() as any;
+  const { variants, setVariants } = useMandarinoAi() as any;
 
   return (
     <div>
@@ -47,14 +47,37 @@ export default function AiProviders() {
         <div className="mt-8">
           <ProviderForm />
         </div>
-      ) : variants?.length ? (
+      ) : !variants?.length ? (
         <Nothing message="No ai found" icon={Icons.ai} className="my-8 mt-16" />
       ) : (
-        variants?.map((variant: any) => {
-          <section>
-            <h2>{variant.provider}</h2>
-          </section>;
-        })
+        <div className="grid sm:grid-cols-2 p-4 grid-cols-1 gap-4">
+          {variants?.map((variant: any) => {
+            return (
+              <section
+                className=" bg-gray-50 p-4 rounded"
+                key={JSON.stringify(variant)}
+              >
+                <div className="flex justify-between items-center">
+                  <h2 className="font-bold">{variant?.variant}</h2>
+                  <button
+                    onClick={() => {
+                      setVariants((prev: any) =>
+                        prev.filter(
+                          (item: any) => item?.apiKey !== variant.apiKey
+                        )
+                      );
+                    }}
+                    className="text-xl text-gray-300 hover:text-black transtion"
+                  >
+                    <Icons.xMark />
+                  </button>
+                </div>
+
+                <p className="mt-4">{variant.apiKey?.slice(0, 16)}...</p>
+              </section>
+            );
+          })}
+        </div>
       )}
     </div>
   );

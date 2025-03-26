@@ -90,7 +90,9 @@ export const FloatingCharacterNavbar = ({
             <button
               className={cn(
                 "text-xl",
-                brightMode ? "dark:text-white text-black" : "dark:text-gray-500"
+                !brightMode
+                  ? "dark:text-white text-black"
+                  : "dark:text-gray-500 text-gray-300"
               )}
               onClick={() => {
                 setBrightMode((prev: any) => !prev);

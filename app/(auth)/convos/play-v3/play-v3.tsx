@@ -40,7 +40,7 @@ function ActiveSubtitleDisplay({
   selected,
   selectedWord,
 }: any) {
-  const subtitleValue = activeSubtitle?.en || selected?.en || "...";
+  const subtitleValue = selected?.en || activeSubtitle?.en || "...";
 
   return (
     <div className="mt-6 sticky top-0 m-auto bg-gray-50 dark:bg-[rgb(9,10,11)] z-50">

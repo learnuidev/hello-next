@@ -3,7 +3,7 @@ import { duChineseApiUrl } from "@/libs/du-chinese/du-chinese-api-url";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDuStore } from "../use-du-store";
 
-export const verifyUserQueryKey = "du-chinese/verify-user";
+const verifyUserQueryKey = "du-chinese/verify-user";
 export const useVerifyUser = ({ cookie }: { cookie?: string }) => {
   const { data: authUser } = useCurrentAuthUser({});
 

@@ -6,7 +6,7 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { listCharactersQueryId } from "./character.queries";
 
-export type AddCharacterParams = {
+type AddCharacterParams = {
   hanzi: string;
   // pinyin: string;
   // level?: number;
@@ -70,7 +70,7 @@ export function useAddCharacterMutation(options = {} as any) {
 
 // ====
 
-export type UpdateCharacterStatusParams = {
+type UpdateCharacterStatusParams = {
   characterId: string;
   status?: string;
 } & any;
@@ -133,7 +133,7 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
   );
 }
 
-export type UpdateCharacterStoryParams = {
+type UpdateCharacterStoryParams = {
   id: string;
   story: string;
   pinyin?: string | null;

@@ -35,7 +35,7 @@ type ListSavedLessonsResponse = {
   next_page_url: string | null;
 };
 
-export const listStudiedLessonsQueryKey = "du-chinese/list-studied-lessons";
+const listStudiedLessonsQueryKey = "du-chinese/list-studied-lessons";
 export const useListStudiedLessonsQuery = ({
   levels,
 }: {

@@ -13,7 +13,7 @@ import {
   course8,
   course9,
 } from "./pronounciation_data";
-export const pronunciationMasterclass = {
+const pronunciationMasterclass = {
   title: "Pronunciation Masterclass",
   appType: "speak",
   lessons: [

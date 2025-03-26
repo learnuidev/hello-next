@@ -16,7 +16,7 @@ import { Icons } from "../ui/icons.v2";
 import { AnimatedLoadingText } from "../animated-loading-text";
 import { Nothing } from "@/app/nmm/nothing";
 
-export const useSummaryStore = create((set) => ({
+const useSummaryStore = create((set) => ({
   summary: "",
   setSummary: (id: string) => set(() => ({ summary: id })),
 }));

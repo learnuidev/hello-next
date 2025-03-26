@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from "react";
 
-export interface FeatureContextValue {
+interface FeatureContextValue {
   rootUrl: string;
 }
 

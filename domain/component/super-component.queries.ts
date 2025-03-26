@@ -36,7 +36,7 @@ const listSuperComponents = async (
   return resp;
 };
 
-export const listQueryComponentsQueryId = "list-super-components";
+const listQueryComponentsQueryId = "list-super-components";
 
 export function useListSuperComponentsQuery(
   params = {} as { componentId: string },

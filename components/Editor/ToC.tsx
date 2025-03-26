@@ -1,7 +1,7 @@
 import { TextSelection } from "@tiptap/pm/state";
 
 /* eslint-disable */
-export const ToCItem = ({ item, onItemClick }: any) => {
+const ToCItem = ({ item, onItemClick }: any) => {
   return (
     <div
       className={`toc--item toc--item--level_${item.level}`}
@@ -25,7 +25,7 @@ export const ToCItem = ({ item, onItemClick }: any) => {
   );
 };
 
-export const ToCEmptyState = () => {
+const ToCEmptyState = () => {
   return (
     <div className="toc--empty_state">
       <p>Start editing your document to see the outline.</p>

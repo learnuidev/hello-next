@@ -9,7 +9,7 @@ import { getComponentQueryKey } from "./use-get-component-query";
 const url =
   "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/add-steps";
 
-export type AddStepParams = {
+type AddStepParams = {
   componentId: string;
 };
 

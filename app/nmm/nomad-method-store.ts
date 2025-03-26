@@ -12,7 +12,7 @@ import { create } from "zustand";
 // import { create } from 'zustand'
 // import { persist, createJSONStorage } from 'zustand/middleware'
 
-export const useCurrentStepStore = create(
+const useCurrentStepStore = create(
   persist(
     (set, get) => ({
       currentStepId: 0,

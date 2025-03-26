@@ -3,7 +3,7 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import Axios from "axios";
 import { useAddUserAssetMutation } from "@/domain/asset/asset.mutation";
 
-export interface UploadFileResponse {
+interface UploadFileResponse {
   id: string;
   contentType: string;
   extension: string;

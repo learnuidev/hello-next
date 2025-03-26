@@ -2,7 +2,7 @@
 
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
-export const useFocusedStore = createIndexDBStore({
+const useFocusedStore = createIndexDBStore({
   name: "clipboard/focused-store",
   handler: (set: any, get: any) => ({
     focused: null,

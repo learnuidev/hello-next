@@ -1,4 +1,4 @@
-export const yctLevel1 = [
+const yctLevel1 = [
   {
     input: "家",
     hanzi: "家",
@@ -748,7 +748,7 @@ export const yctLevel1 = [
   },
 ];
 
-export const yctLevel2 = [
+const yctLevel2 = [
   {
     input: "家",
     hanzi: "家",
@@ -2191,7 +2191,7 @@ export const yctLevel2 = [
   },
 ];
 
-export const yctLevel3 = [
+const yctLevel3 = [
   {
     input: "家",
     hanzi: "家",
@@ -4919,7 +4919,7 @@ export const yctLevel3 = [
   },
 ];
 
-export const yctLevel4 = [
+const yctLevel4 = [
   {
     input: "啊",
     hanzi: "啊",

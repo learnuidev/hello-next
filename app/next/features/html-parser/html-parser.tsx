@@ -11,7 +11,7 @@ import { useFeatureContext } from "../feature-context-provider";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/ui/icons.v2";
 
-export const _HtmlParser = () => {
+const _HtmlParser = () => {
   const { url, view } = useGetNextParams();
 
   // const router = useRouter();

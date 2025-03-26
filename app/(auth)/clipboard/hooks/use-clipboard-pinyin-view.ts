@@ -2,7 +2,7 @@
 
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
-export const usePinyinViewStore = createIndexDBStore({
+const usePinyinViewStore = createIndexDBStore({
   name: "clipboard/pinyin-view-store",
   handler: (set: any, get: any) => ({
     pinyinView: false,

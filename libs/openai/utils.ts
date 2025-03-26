@@ -1,4 +1,4 @@
-export const humanLangs = {
+const humanLangs = {
   ne: "Nepali",
   hi: "Hindi",
   nepali: "Nepali",
@@ -11,9 +11,9 @@ export const humanLangs = {
   mo: "Romanian (Moldova)",
 } as any;
 
-export const resolveHumanLangs = (lang: string) => humanLangs[lang] || lang;
+const resolveHumanLangs = (lang: string) => humanLangs[lang] || lang;
 
-export const langCodes = {
+const langCodes = {
   ne: "ne",
   hi: "hi",
   nepali: "ne",

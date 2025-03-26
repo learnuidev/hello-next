@@ -230,7 +230,7 @@ const getSuggestionItems = ({ query }: { query: string }) => {
   });
 };
 
-export const updateScrollView = (container: HTMLElement, item: HTMLElement) => {
+const updateScrollView = (container: HTMLElement, item: HTMLElement) => {
   const containerHeight = container.offsetHeight;
   const itemHeight = item ? item.offsetHeight : 0;
 

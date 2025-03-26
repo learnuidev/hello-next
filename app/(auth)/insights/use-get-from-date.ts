@@ -1,7 +1,7 @@
 import sub from "date-fns/sub";
 import { useInsightsState } from "./use-insights-state";
 
-export function getFromDate({ toDate }: { toDate: Date }) {
+function getFromDate({ toDate }: { toDate: Date }) {
   const fromDate = sub(toDate, {
     years: 0,
     months: 0,

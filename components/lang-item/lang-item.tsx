@@ -15,7 +15,7 @@ import { LangPageView } from "./lang-page-view";
 import { Icons } from "../ui/icons.v2";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
-export const useViewTypeStore = create(
+const useViewTypeStore = create(
   persist(
     (set: any, get: any) => ({
       view: "home",

@@ -9,11 +9,11 @@ export interface GetUploadUrlSuccess {
   assetUrl: string;
 }
 
-export interface GetHtmlTextParams {
+interface GetHtmlTextParams {
   url: string;
   selector: string;
   ai: boolean;
 }
-export interface GetHtmlTextSuccess {
+interface GetHtmlTextSuccess {
   data: string;
 }

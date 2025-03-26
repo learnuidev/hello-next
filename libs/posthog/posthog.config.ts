@@ -1,4 +1,4 @@
-export interface PosthogConfig {
+interface PosthogConfig {
   apiKey: string;
   apiHost: string;
 }

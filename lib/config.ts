@@ -1,4 +1,4 @@
-export interface IConfig {
+interface IConfig {
   awsRegion: string;
   userPoolId: string;
   userPoolWebClientId: string;
@@ -9,11 +9,11 @@ export interface IConfig {
   uploadBucketName: string;
 }
 
-export interface IMapBoxConfig {
+interface IMapBoxConfig {
   mapboxApiKey: string;
 }
 
-export const mapBoxConfig: IMapBoxConfig = {
+const mapBoxConfig: IMapBoxConfig = {
   mapboxApiKey: process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "",
 };
 

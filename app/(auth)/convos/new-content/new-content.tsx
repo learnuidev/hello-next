@@ -3,7 +3,7 @@
 import { NewContentHeader } from "./new-content-header";
 import { ContentStepView } from "./content-step-view";
 
-export const contentTypes = ["audio", "text", "video", "youtube", "website"];
+const contentTypes = ["audio", "text", "video", "youtube", "website"];
 
 export function NewContent() {
   return (

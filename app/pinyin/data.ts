@@ -45,7 +45,7 @@ const emptyVars = {
   üen: "",
 };
 
-export const allSounds = [
+const allSounds = [
   "zi",
   "ci",
   "si",

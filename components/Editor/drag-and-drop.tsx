@@ -4,7 +4,7 @@ import { NodeSelection, Plugin } from "@tiptap/pm/state";
 // @ts-ignore
 import { __serializeForClipboard, EditorView } from "@tiptap/pm/view";
 
-export interface DragHandleOptions {
+interface DragHandleOptions {
   /**
    * The width of the drag handle
    */

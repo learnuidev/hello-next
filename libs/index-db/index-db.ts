@@ -3,7 +3,7 @@ import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
 import { get, set, del } from "idb-keyval"; // can use anything: IndexedDB, Ionic Storage, etc.
 
 // Custom storage object
-export const indexDBStorage: StateStorage = {
+const indexDBStorage: StateStorage = {
   getItem: async (name: string): Promise<string | null> => {
     return (await get(name)) || null;
   },

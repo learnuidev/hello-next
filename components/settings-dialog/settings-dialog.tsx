@@ -20,7 +20,7 @@ import { ProfileTab } from "./components/profile-tab/profile-tab";
 import { TrackingTab } from "./components/tracking-tab/tracking-tab";
 import { UiTab } from "./components/ui-tab/ui-tab";
 
-export function SettingsDialogInner({
+function SettingsDialogInner({
   isOpen,
   closeSettings,
 }: {

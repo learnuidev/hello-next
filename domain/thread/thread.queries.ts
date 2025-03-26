@@ -15,7 +15,7 @@ export interface IThread {
   lang: string;
 }
 
-export interface ListThreadsSuccess {
+interface ListThreadsSuccess {
   Items: IThread[];
 }
 

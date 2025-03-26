@@ -2,7 +2,7 @@
 
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
-export const useSentenceViewStore = createIndexDBStore({
+const useSentenceViewStore = createIndexDBStore({
   name: "clipboard/sentence-view-store",
   handler: (set: any, get: any) => ({
     sentenceView: true,

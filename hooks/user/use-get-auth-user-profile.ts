@@ -4,7 +4,7 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { siteConfig } from "@/lib/config";
 
-export interface UserProfile {
+interface UserProfile {
   followingCount: number;
   likesCount: number;
   roles: string[];

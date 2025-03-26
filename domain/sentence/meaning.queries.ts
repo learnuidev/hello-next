@@ -7,7 +7,7 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 import { ListMeaningsResponse } from "./meanings.types";
 import { siteConfig } from "@/lib/config";
 
-export interface ListMeaningsParams {
+interface ListMeaningsParams {
   sentenceId?: string;
   content: string;
   lang: string;

@@ -7806,7 +7806,7 @@ export const cc = [
   },
 ];
 
-export const ccV2 = [
+const ccV2 = [
   {
     nepali: "क्",
     en: "k",

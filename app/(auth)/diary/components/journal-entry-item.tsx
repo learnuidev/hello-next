@@ -21,7 +21,7 @@ export const JournalEntryTitle = ({
     </Link>
   );
 };
-export const JournalEntryEmotions = ({
+const JournalEntryEmotions = ({
   journalEntry,
   showFull,
   className,

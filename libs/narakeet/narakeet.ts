@@ -1,10 +1,10 @@
 const { narakeetApi } = require("narakeet");
 
-export const narakeet = narakeetApi({
+const narakeet = narakeetApi({
   apiKey: process.env.NARAKEET_API_KEY,
 });
 
-export interface INarakeetVoice {
+interface INarakeetVoice {
   name: string;
   language: string;
   languageCode: string;

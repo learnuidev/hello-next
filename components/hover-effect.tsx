@@ -74,7 +74,7 @@ export const HoverEffect = ({
   );
 };
 
-export const Card = ({
+const Card = ({
   className,
   children,
 }: {
@@ -94,7 +94,7 @@ export const Card = ({
     </div>
   );
 };
-export const CardTitle = ({
+const CardTitle = ({
   className,
   children,
 }: {
@@ -112,7 +112,7 @@ export const CardTitle = ({
     </h4>
   );
 };
-export const CardDescription = ({
+const CardDescription = ({
   className,
   children,
 }: {

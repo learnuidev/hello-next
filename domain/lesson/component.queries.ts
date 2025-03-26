@@ -42,7 +42,7 @@ const listComponents = async (
   // return resp.sort((a: any, b: any) => (a.level || 0) - (b.level || 0));
 };
 
-export const listComponentsQueryKey = "list-components";
+const listComponentsQueryKey = "list-components";
 function useListComponentsQuery(
   params = {} as {
     journeyId?: string;

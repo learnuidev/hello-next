@@ -1,4 +1,4 @@
-export const europe = [
+const europe = [
   "MUSIC",
   "PARIS",
   "MINSK",
@@ -142,7 +142,7 @@ export const europe = [
   "TERMS",
 ];
 
-export const asia = [
+const asia = [
   "ADANA",
   "AMMAN",
   "AQABA",
@@ -189,7 +189,7 @@ export const asia = [
   "JAKAR",
 ];
 
-export const africa = [
+const africa = [
   "ACCRA",
   "ASWAN",
   "BAYDA",
@@ -212,7 +212,7 @@ export const africa = [
   "ZOMBA",
 ];
 
-export const south_america = [
+const south_america = [
   "ARAXÁ",
   "BÁHIA",
   "BAURU",
@@ -233,7 +233,7 @@ export const south_america = [
   "TUNJA",
 ];
 
-export const us = [
+const us = [
   "AKRON",
   "BAKER",
   "BELEN",
@@ -264,9 +264,9 @@ export const us = [
   "UTICA",
 ];
 
-export const canada = ["GASPÉ", "LEDUC", "ROUYN", "TABER", "TRAIL"];
+const canada = ["GASPÉ", "LEDUC", "ROUYN", "TABER", "TRAIL"];
 
-export const nepal = [
+const nepal = [
   "KASKI",
   "PARSA",
   "BANKE",
@@ -295,7 +295,7 @@ export const nepal = [
   "SUOMI",
 ];
 
-export const india = [
+const india = [
   "DELHI",
   "SURAT",
   "THANE",
@@ -346,7 +346,7 @@ export const india = [
   "தமிழ்",
 ];
 
-export const bhutan = ["JAKAR"];
+const bhutan = ["JAKAR"];
 
 export const world = [
   ...europe,

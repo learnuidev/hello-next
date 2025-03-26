@@ -4,7 +4,7 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useQuery } from "@tanstack/react-query";
 
-export const getJournalDetailsQueryKey = "get-journal-details";
+const getJournalDetailsQueryKey = "get-journal-details";
 
 export interface JournalTranslation {
   en: string;

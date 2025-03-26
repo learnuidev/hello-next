@@ -56,7 +56,7 @@ export type DuSection = {
   items: (DuCourse | DuLesson)[];
 };
 
-export type DuLevels =
+type DuLevels =
   | "newbie"
   | "elementary"
   | "intermediate"

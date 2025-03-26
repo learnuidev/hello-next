@@ -1,4 +1,4 @@
-export interface AWSConfig {
+interface AWSConfig {
   awsRegion: string;
   userPoolId: string;
   userPoolWebClientId: string;

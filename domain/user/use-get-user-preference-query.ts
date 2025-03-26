@@ -7,7 +7,7 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useSettingsDialogState } from "@/components/settings-dialog/settings-dialog.state";
 
-export interface ListMeaningsParams {
+interface ListMeaningsParams {
   sentenceId?: string;
   content: string;
   lang: string;

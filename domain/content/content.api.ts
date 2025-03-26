@@ -5,7 +5,7 @@ import { AddContentParams } from "./content.types";
 
 const addContentApi = `${siteConfig.apiUrl}/v1/add-content`;
 
-export const addContent = async (
+const addContent = async (
   params: AddContentParams,
   opts: {
     Authorization: string;

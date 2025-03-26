@@ -207,7 +207,7 @@ function applyProcess({ content, process, variables }: any) {
   }
 }
 
-export function postProcessPrimitive({ content, processes, variables }: any) {
+function postProcessPrimitive({ content, processes, variables }: any) {
   return processes.reduce((acc: any, process: any) => {
     return applyProcessPrimitive({ process, content: acc, variables });
   }, content);

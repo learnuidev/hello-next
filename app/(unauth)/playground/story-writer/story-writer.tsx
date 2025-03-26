@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { create } from "zustand";
 
-export const useStoryHistoryStore = create(
+const useStoryHistoryStore = create(
   persist(
     (set: any, get: any) => ({
       history: [],

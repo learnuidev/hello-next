@@ -85,7 +85,7 @@ const useGenStoryQuery = (
   });
 };
 
-export const useStoryModeStore = create((set: any) => ({
+const useStoryModeStore = create((set: any) => ({
   storyMode: "your-story",
   setStoryMode: (f: any) => set({ storyMode: f }),
 }));

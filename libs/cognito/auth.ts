@@ -159,4 +159,4 @@ const auth = {
   Auth,
 };
 
-export { auth };
+;

@@ -6,7 +6,7 @@ import {
   RedFireDuoTone,
 } from "@/components/ui/icons.v2";
 
-export const StatusIcons = {
+const StatusIcons = {
   needs_review: {
     title: "Needs Review",
     Icon: Icons.glassesRound,

@@ -1,4 +1,4 @@
-export const koreanComponents = [
+const koreanComponents = [
   "버",
   "리",
   "다",

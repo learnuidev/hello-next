@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { listFilesQueryKey } from "./hooks/use-list-files-query";
 // import { useAddUserAssetMutation } from "@/domain/asset/asset.mutation";
 
-export interface UploadFileResponse {
+interface UploadFileResponse {
   id: string;
   contentType: string;
   extension: string;

@@ -4,7 +4,7 @@ export const aiModels = {
   deepseekChat: "deepseek-chat",
 };
 
-export const aiModelsList = [
+const aiModelsList = [
   {
     id: aiModels.gpt35Turbo,
     title: "GPT 3.5",

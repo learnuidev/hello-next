@@ -7,7 +7,7 @@ import { listSentencesQueryKey } from "./sentence.queries";
 
 const addSentenceUrl = `${siteConfig.apiUrl}/v1/add-sentence`;
 
-export type AddSentenceParams = {
+type AddSentenceParams = {
   component: string;
   input: string;
 };

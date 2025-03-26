@@ -2556,7 +2556,7 @@ export const course9 = {
   lessons: [],
 };
 
-export const course10 = {
+const course10 = {
   id: "speak-chapter-10",
   title: "10. Moving Forward",
   lessons: [],
@@ -2576,7 +2576,7 @@ export const course10 = {
 //         )
 //     )
 
-export const pronounciationLessons = [
+const pronounciationLessons = [
   ...course.lessons,
   ...course2.lessons,
   ...course3.lessons,

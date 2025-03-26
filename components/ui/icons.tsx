@@ -66,7 +66,7 @@ export const Header = ({ children, className }: any) => {
 };
 
 
-export const SearchIcon = (props: any) => {
+const SearchIcon = (props: any) => {
   const isHeight =
     props.className && props?.className.includes("h-") ? "" : `h-6 w-6`;
   return (
@@ -110,7 +110,7 @@ export const PlaceIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faMapPin} />;
 };
 
-export const BackIcon = (props: any) => {
+const BackIcon = (props: any) => {
   const isHeight =
     props.className && props?.className.includes("h-") ? "" : `h-6 w-6`;
 
@@ -132,7 +132,7 @@ export const BackIcon = (props: any) => {
   );
 };
 
-export const VillageIcon = (props: any) => {
+const VillageIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faCow} />;
 };
 
@@ -143,14 +143,14 @@ export const NomadIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faPersonHiking} />;
 };
 
-export const TravellerIcon = (props: any) => {
+const TravellerIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faBackpack} />;
 };
 export const SceneIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faClapperboardPlay} />;
 };
 
-export const StoryIcon = (props: any) => {
+const StoryIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faWatermelonSlice} />;
 };
 
@@ -169,14 +169,14 @@ export const AnalyticsIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faChartSimple} />;
 };
 
-export const LearnIcon = (props: any) => {
+const LearnIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faAbacus} />;
 };
 
-export const GameIcon = (props: any) => {
+const GameIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faGameConsoleHandheld} />;
 };
-export const ConvosIcon = (props: any) => {
+const ConvosIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faComment} />;
 };
 
@@ -184,7 +184,7 @@ export const PinyinChartIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faTableTree} />;
 };
 
-export const MandarinoIcon = (props: any) => {
+const MandarinoIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faCitrus} />;
 };
 
@@ -204,10 +204,10 @@ export const PauseIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faPause} />;
 };
 
-export const MicIcon = (props: any) => {
+const MicIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faMicrophone} />;
 };
-export const ThoughtIcon = (props: any) => {
+const ThoughtIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faThoughtBubble} />;
 };
 export const CheckIcon = (props: any) => {
@@ -225,41 +225,41 @@ export const GradeFIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faFaceGrinBeamSweat} />;
 };
 
-export const FocusIcon = (props: any) => {
+const FocusIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faLightbulb} />;
 };
-export const MovieIcon = (props: any) => {
+const MovieIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faCameraMovie} />;
 };
-export const MoonIcon = (props: any) => {
+const MoonIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faMoonCloud} />;
 };
-export const SunRiseIcon = (props: any) => {
+const SunRiseIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faCloudsSun} />;
 };
-export const CloudyIcon = (props: any) => {
+const CloudyIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faCloudDrizzle} />;
 };
-export const AppStoreIcon = (props: any) => {
+const AppStoreIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faGrid2} />;
 };
-export const YoutubeIcon = (props: any) => {
+const YoutubeIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faYoutube} />;
 };
-export const SettingsIcon = (props: any) => {
+const SettingsIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faGear} />;
 };
 export const PlusIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faPlusLarge} />;
 };
-export const LearningIcon = (props: any) => {
+const LearningIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faBooks} />;
 };
-export const HskIcon = (props: any) => {
+const HskIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faCauldron} />;
 };
 
-export const PatraIcon = (props: any) => {
+const PatraIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faTicketAirline} />;
 };
 export const CCIcon = (props: any) => {

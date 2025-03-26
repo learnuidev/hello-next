@@ -13,7 +13,7 @@ import { useGetUserPreferenceQuery } from "../user/use-get-user-preference-query
 // const url = `${siteConfig?.apiUrl}/v1/list-hsk-words`;
 const url = `${siteConfig?.apiUrl}/v1/list-hsk-words/v3`;
 
-export async function listHSKWords(params: {}) {
+async function listHSKWords(params: {}) {
   const res = await fetch(`/api/list-hsk-words`, {
     method: "POST",
     headers: {

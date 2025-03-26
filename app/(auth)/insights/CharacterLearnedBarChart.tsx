@@ -50,7 +50,7 @@ const NewCharactersTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export const useGetLearnedData = () => {
+const useGetLearnedData = () => {
   const selectedData = useSelectedDataStore(
     (state: any) => state?.selectedData
   );

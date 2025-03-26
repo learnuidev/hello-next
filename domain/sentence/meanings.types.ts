@@ -1,11 +1,11 @@
-export interface HanziUseCase {
+interface HanziUseCase {
   en: string;
   hanzi: string;
   pinyin: string;
   explanation: string;
 }
 
-export interface MeaningItem {
+interface MeaningItem {
   explanation: string;
   meaning: string;
   use_cases: HanziUseCase[];

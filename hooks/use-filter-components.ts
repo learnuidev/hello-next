@@ -44,7 +44,7 @@ export const useFilteredComponents = (
   } as any;
 };
 
-export const filterComponentsExact = (components: any, query: any) => {
+const filterComponentsExact = (components: any, query: any) => {
   const humanizedQuery = getHumanPinyin({ pinyin: query });
 
   const filteredComponents = filterComponents({

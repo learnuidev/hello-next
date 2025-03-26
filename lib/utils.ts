@@ -33,7 +33,7 @@ export function groupBy(timestamps: any, res = { 0: [] } as any, idx = 0) {
   }
 }
 
-export function isValidUrl(url: string) {
+function isValidUrl(url: string) {
   try {
     new URL(url);
     return true;
@@ -42,7 +42,7 @@ export function isValidUrl(url: string) {
   }
 }
 
-export function getUrlFromString(str: string) {
+function getUrlFromString(str: string) {
   if (isValidUrl(str)) return str;
   try {
     if (str.includes(".") && !str.includes(" ")) {
@@ -54,7 +54,7 @@ export function getUrlFromString(str: string) {
 }
 
 // @ts-ignore
-export function parseTranscripts(res) {
+function parseTranscripts(res) {
   // @ts-ignore
   return res.transcript.segments.map((segment, idx) => {
     return {
@@ -67,7 +67,7 @@ export function parseTranscripts(res) {
   });
 }
 
-export function removeNull(obj: any) {
+function removeNull(obj: any) {
   // eslint-disable-next-line no-unused-vars
   return Object.fromEntries(Object.entries(obj).filter(([_, v]) => Boolean(v)));
 }

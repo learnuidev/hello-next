@@ -16,7 +16,7 @@ export const getNmmSearchParamsUrl = ({ tab, level, viewMode }: any) => {
   return urlSearchParams.toString();
 };
 
-export const useGetNmmUrl = () => {
+const useGetNmmUrl = () => {
   const { tab, level } = useGetNmmParams();
 
   return `/nmm?${getNmmSearchParamsUrl({ tab, level })}`;

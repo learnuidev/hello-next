@@ -1,5 +1,5 @@
 // https://paankopat.com/2023/03/25/j-chau-timi-lyrics-swoopna-suman-x-samir-shrestha/
-export const song = [
+const song = [
   {
     type: "Verse 1",
     lyrics: [
@@ -85,7 +85,7 @@ export const song = [
   },
 ];
 
-export const nepaliWords203Old = [
+const nepaliWords203Old = [
   {
     en: "I",
     nepali: "म",
@@ -8436,7 +8436,7 @@ export const nepaliWords203 = [
   return coll.findIndex((word) => word?.nepali === item?.nepali) === idx;
 });
 
-export const songWords = [
+const songWords = [
   {
     nepali: "ग",
   },
@@ -9344,7 +9344,7 @@ export const nepaliVowels = [
   },
 ];
 
-export const nepaliWords1 = nepaliConsonants.concat(nepaliVowels as any);
+const nepaliWords1 = nepaliConsonants.concat(nepaliVowels as any);
 
 // export const uniqueWords = songWords.filter(
 //   item => !nepaliWords1?.find(word => word?.nepali === item?.nepali)
@@ -9352,4 +9352,4 @@ export const nepaliWords1 = nepaliConsonants.concat(nepaliVowels as any);
 
 export const uniqueWords = dependentVowels as any;
 
-export const nepaliWords = nepaliWords1.concat(uniqueWords) as any;
+const nepaliWords = nepaliWords1.concat(uniqueWords) as any;

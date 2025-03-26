@@ -1,4 +1,4 @@
-export const calculateBorderColor = (dict: any) => {
+const calculateBorderColor = (dict: any) => {
   switch (parseInt(dict?.tone)) {
     case 1:
       return "border-red-400";
@@ -96,7 +96,7 @@ export const belts = [
   // },
 ];
 
-export const getHSKLevel = (level: number) => {
+const getHSKLevel = (level: number) => {
   const belt = belts?.find(
     (belt) =>
       belt?.minCharacterLevel <= level && belt?.maxCharacterLevel >= level

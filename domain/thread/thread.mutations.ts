@@ -8,7 +8,7 @@ import { listThreadsQueryId } from "./thread.queries";
 
 const addThreadUrl = `${siteConfig.apiUrl}/v1/add-thread`;
 
-export type AddThreadParams = {
+type AddThreadParams = {
   query: string;
   messages: any;
   id: string;
@@ -57,7 +57,7 @@ export function useAddThreadMutation(options = {} as any) {
 // ====
 const updateThreadMessagesUrl = `${siteConfig.apiUrl}/v1/update-messages`;
 
-export type UpdateThreadMessagesParams = {
+type UpdateThreadMessagesParams = {
   threadId: string;
   messages: any;
 };

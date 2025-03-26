@@ -112,7 +112,7 @@ export function AnimatedContentsFilter() {
   );
 }
 
-export function Tab({
+function Tab({
   id,
   children,
   onClick,

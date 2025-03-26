@@ -5,7 +5,7 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { listMeaningQueryKey } from "../sentence/meaning.queries";
 
-export type UpdateComponentSummaryParams = {
+type UpdateComponentSummaryParams = {
   id: string;
   summary: string;
 };

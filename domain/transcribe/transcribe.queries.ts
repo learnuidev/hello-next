@@ -8,7 +8,7 @@ const url = "http://127.0.0.1:5000/v2";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { create } from "zustand";
 
-export const useTranscriptionStore = create(
+const useTranscriptionStore = create(
   persist(
     (set: any, get: any) => ({
       transcriptions: [],
@@ -92,7 +92,7 @@ export function useTranscribeQuery(params: any, options: any) {
     }
   );
 }
-export function useTranscribeQueryV2(
+function useTranscribeQueryV2(
   params: {
     videoUrl: string;
   },

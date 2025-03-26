@@ -1,4 +1,4 @@
-export const japaneseComponents = [
+const japaneseComponents = [
   "放",
   "棄",
   "し",

@@ -14,7 +14,7 @@ import { ContentDropdown } from "./_select-character/content-dropdown";
 import { useLearningModeStore } from "./settings-dialog/learning-mode.store";
 import { DuNavbar } from "@/app/(auth)/du/components/du-navbar";
 
-export const ReviewNavBar = () => {
+const ReviewNavBar = () => {
   const routeName = usePathname();
 
   const viewType = useReviewStore((state: any) => state.viewType);
@@ -83,7 +83,7 @@ export const ReviewNavBar = () => {
     </>
   );
 };
-export const ContentsDropdown = () => {
+const ContentsDropdown = () => {
   const routeName = usePathname();
 
   const viewType = useReviewStore((state: any) => state.viewType);

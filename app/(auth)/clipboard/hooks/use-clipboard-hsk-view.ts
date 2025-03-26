@@ -2,7 +2,7 @@
 
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
-export const useHskViewStore = createIndexDBStore({
+const useHskViewStore = createIndexDBStore({
   name: "clipboard/hsk-view-store",
   handler: (set: any, get: any) => ({
     hskView: false,

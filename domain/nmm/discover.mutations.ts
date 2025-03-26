@@ -62,9 +62,9 @@ export function useDiscoverMutation(options = {} as any) {
   );
 }
 
-export const discoverHanziQueryId = "discover-hanzi";
+const discoverHanziQueryId = "discover-hanzi";
 
-export function useDiscoverHanziQuery(params: DiscoverParams) {
+function useDiscoverHanziQuery(params: DiscoverParams) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery({

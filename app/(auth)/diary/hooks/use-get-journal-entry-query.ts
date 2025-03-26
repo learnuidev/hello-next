@@ -5,7 +5,7 @@ import { siteConfig } from "@/lib/config";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { JournalEntry } from "./journal-entry.types";
 
-export const getJournalEntryQueryKey = "get-journal-entry";
+const getJournalEntryQueryKey = "get-journal-entry";
 
 export const useGetJournalEntryQuery = (entryId: string) => {
   const { data: authUser } = useCurrentAuthUser({});

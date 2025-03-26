@@ -180,7 +180,6 @@ const getTotalSeconds = (times) => {
 
 module.exports = {
   listSubtitles,
-  ,
 };
 
 // const id = "https://www.youtube.com/watch?v=87tHecsCjtE";

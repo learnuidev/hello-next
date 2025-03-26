@@ -101,7 +101,15 @@ export function GrammarAnalysis({
     }
 
     if (isError) {
-      return <Nothing message={"Error loading grammar"} />;
+      return (
+        <div>
+          <Nothing message={"Error loading grammar"} />
+
+          <div className="flex justify-center items-center">
+            <button onClick={() => {}}>Run in Client</button>
+          </div>
+        </div>
+      );
     }
 
     if (!grammarAnalysisFinal?.length) {

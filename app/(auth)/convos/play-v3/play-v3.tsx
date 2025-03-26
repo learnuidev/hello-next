@@ -46,8 +46,8 @@ function ActiveSubtitleDisplay({
     <div className="mt-6 sticky top-0 m-auto bg-gray-50 dark:bg-[rgb(9,10,11)] z-50">
       <div className="sticky top-0 pt-4 px-2 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)]">
         <div className="pb-4">
-          <h4 className="text-xs text-gray-500">Sentence meaning</h4>
-          <div className={`flex justify-between items-center mt-2 w-full`}>
+          <h4 className="text-xs text-gray-500 mb-4">Sentence meaning</h4>
+          <div className={`h-12 flex justify-between items-center mt-2 w-full`}>
             <p className="space-x-2 text-black dark:text-gray-300 text-[16px] font-light pb-[4px]">
               {subtitleValue}
             </p>

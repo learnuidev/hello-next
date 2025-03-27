@@ -144,23 +144,23 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (["p"]?.includes(event.key?.toLowerCase())) {
+      if (["p"]?.includes(event.key?.toLowerCase()) && !editMode) {
         event.preventDefault();
         togglePinyin((pinyin) => !pinyin);
       }
 
-      if (["-"]?.includes(event.key)) {
+      if (["-"]?.includes(event.key) && !editMode) {
         event.preventDefault();
 
         decreaseFontSize();
       }
-      if (["="]?.includes(event.key)) {
+      if (["="]?.includes(event.key) && !editMode) {
         event.preventDefault();
 
         increaseFontSize();
       }
 
-      if (["l"]?.includes(event.key?.toLowerCase())) {
+      if (["l"]?.includes(event.key?.toLowerCase()) && !editMode) {
         event.preventDefault();
 
         if (activeSubtitle?.input) {
@@ -172,12 +172,12 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         }
       }
 
-      if (event.code === "Space") {
+      if (event.code === "Space" && !editMode) {
         // Vishal 07-12-2024-10-20: prevents the browser from scrolling down
         event.preventDefault();
         togglePlay();
       }
-      if (event.code === "Escape") {
+      if (event.code === "Escape" && !editMode) {
         // Vishal 07-12-2024-10-30: prevents the browser from escaping fullscreen mode
         event.preventDefault();
         reset();
@@ -201,6 +201,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
     increaseFontSize,
     decreaseFontSize,
     activeSubtitle?.input,
+    editMode,
   ]);
 
   const debounceSeek = useDebouncedCallback((selectedWords: any) => {

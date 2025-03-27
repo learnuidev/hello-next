@@ -93,6 +93,7 @@ export const ContentSettings = () => {
             <SelectItem value="podcast">Podcast</SelectItem>
             <SelectItem value="news">News</SelectItem>
             <SelectItem value="essay">Essay</SelectItem>
+            <SelectItem value="story">Story</SelectItem>
             <SelectItem value="tweet">Tweet</SelectItem>
           </SelectContent>
         </Select>

@@ -17,6 +17,7 @@ import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 import { getReviewSearchParams } from "./settings-dialog/use-get-review-url";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
+import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
 
 const isMultiSentence = (str: string) => {
   const isHanziMultiSentence = str.split("。")?.length > 1;
@@ -42,6 +43,7 @@ export const FloatingCharacterNavbar = ({
     addCharacterMutation,
     setView,
     view,
+    selectedComp2,
     lang,
     selectedChar,
     firstLesson,
@@ -49,11 +51,16 @@ export const FloatingCharacterNavbar = ({
   } = characterData;
 
   const searchParams = useSearchParams();
+  const discoverMutation = useDiscoverMutation();
 
   const context = searchParams?.get("context");
 
   const { data: components, isLoading } = useListComponents();
   const { data: chars } = useListCharactersQuery();
+
+  const hasAlreadyLearned = components?.find(
+    (item: any) => (item?.hanzi || item?.input) === characterId
+  );
 
   const character = chars?.find(
     (item: any) => (item?.hanzi || item?.input) === characterId
@@ -191,6 +198,42 @@ export const FloatingCharacterNavbar = ({
                 )}
               </button>
             )}
+
+            {isLoading ||
+            selectedComp2?.updated_at ? null : !selectedComp2?.updated_at ||
+              !selectedComp2?.discovered_at ? (
+              // (selectedComp?.hanzi || characterId)?.length > 1 ? null : (
+              false ? null : hasAlreadyLearned?.discovered_at ? null : (
+                <button
+                  className="text-xl text-gray-400 hover:text-black"
+                  disabled={
+                    discoverMutation.isLoading || discoverMutation.isSuccess
+                  }
+                  onClick={() => {
+                    discoverMutation
+                      .mutateAsync({
+                        hanzi: selectedComp?.hanzi || characterId,
+                        // story: "todo",
+                      })
+                      .then((resp: any) => {
+                        toast(
+                          `Component Successfully discovered ${JSON.stringify(resp)}`
+                        );
+                      });
+                  }}
+                >
+                  {discoverMutation.isLoading ? (
+                    <Icons.spinner spinPulse />
+                  ) : discoverMutation.isSuccess ? (
+                    <Icons.checkCircle className="transition" />
+                  ) : (
+                    <Icons.language />
+                  )}
+
+                  {/* <span>{(selectedComp?.hanzi || characterId)?.length}</span> */}
+                </button>
+              )
+            ) : null}
 
             {isAlreadyLearned && (
               <button

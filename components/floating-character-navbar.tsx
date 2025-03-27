@@ -58,7 +58,7 @@ export const FloatingCharacterNavbar = ({
   const { data: components, isLoading } = useListComponents();
   const { data: chars } = useListCharactersQuery();
 
-  const hasAlreadyLearned = components?.find(
+  const hasAlreadyDiscovered = components?.find(
     (item: any) => (item?.hanzi || item?.input) === characterId
   );
 
@@ -199,8 +199,8 @@ export const FloatingCharacterNavbar = ({
               </button>
             )}
 
-            {isLoading ? null : hasAlreadyLearned?.discoveredAt ||
-              hasAlreadyLearned?.discovered_at ? null : (
+            {isLoading ? null : hasAlreadyDiscovered?.discoveredAt ||
+              hasAlreadyDiscovered?.discovered_at ? null : (
               <button
                 className="text-xl text-gray-400 hover:text-black"
                 disabled={

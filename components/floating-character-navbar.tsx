@@ -199,41 +199,37 @@ export const FloatingCharacterNavbar = ({
               </button>
             )}
 
-            {isLoading ||
-            selectedComp2?.updated_at ? null : !selectedComp2?.updated_at ||
-              !selectedComp2?.discovered_at ? (
-              // (selectedComp?.hanzi || characterId)?.length > 1 ? null : (
-              false ? null : hasAlreadyLearned?.discovered_at ? null : (
-                <button
-                  className="text-xl text-gray-400 hover:text-black"
-                  disabled={
-                    discoverMutation.isLoading || discoverMutation.isSuccess
-                  }
-                  onClick={() => {
-                    discoverMutation
-                      .mutateAsync({
-                        hanzi: selectedComp?.hanzi || characterId,
-                        // story: "todo",
-                      })
-                      .then((resp: any) => {
-                        toast(
-                          `Component Successfully discovered ${JSON.stringify(resp)}`
-                        );
-                      });
-                  }}
-                >
-                  {discoverMutation.isLoading ? (
-                    <Icons.spinner spinPulse />
-                  ) : discoverMutation.isSuccess ? (
-                    <Icons.checkCircle className="transition" />
-                  ) : (
-                    <Icons.language />
-                  )}
+            {isLoading ? null : hasAlreadyLearned?.discoveredAt ||
+              hasAlreadyLearned?.discovered_at ? null : (
+              <button
+                className="text-xl text-gray-400 hover:text-black"
+                disabled={
+                  discoverMutation.isLoading || discoverMutation.isSuccess
+                }
+                onClick={() => {
+                  discoverMutation
+                    .mutateAsync({
+                      hanzi: selectedComp?.hanzi || characterId,
+                      // story: "todo",
+                    })
+                    .then((resp: any) => {
+                      toast(
+                        `Component Successfully discovered ${JSON.stringify(resp)}`
+                      );
+                    });
+                }}
+              >
+                {discoverMutation.isLoading ? (
+                  <Icons.spinner spinPulse />
+                ) : discoverMutation.isSuccess ? (
+                  <Icons.checkCircle className="transition" />
+                ) : (
+                  <Icons.language />
+                )}
 
-                  {/* <span>{(selectedComp?.hanzi || characterId)?.length}</span> */}
-                </button>
-              )
-            ) : null}
+                {/* <span>{(selectedComp?.hanzi || characterId)?.length}</span> */}
+              </button>
+            )}
 
             {isAlreadyLearned && (
               <button

@@ -79,7 +79,9 @@ export const TranscriptionsView = ({
                           currentTime < subtitle.end
                           ? "dark:text-white text-black"
                           : "",
-                        currentTime === 0 ? "text-gray-300" : "",
+                        currentTime === 0
+                          ? "dark:text-gray-300 text-black"
+                          : "",
                         "text-start"
                       )}
                     >

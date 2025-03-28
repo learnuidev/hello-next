@@ -1307,7 +1307,7 @@ export const defaultData: any = [
     uang: "",
     ueng: "",
     // ü
-    üe: { value: "nue", levels: ["u:compound-final"] },
+    üe: { value: "nue", levels: ["ü:compound-final"] },
     üan: "",
     üen: "",
   },
@@ -1938,9 +1938,9 @@ export const defaultData: any = [
       levels: ["o", "u (wu)", "ü(yu)", "u:simple-final"],
     },
     // ü
-    üe: { value: "yue", levels: ["u:compound-final"] },
-    uan: { value: "yuan", levels: ["u:compound-final", "ü:nasal-final"] },
-    uen: { value: "yun", levels: ["u:compound-final", "ü:nasal-final"] },
+    üe: { value: "yue", levels: ["ü:compound-final"] },
+    uan: { value: "yuan", levels: ["ü:compound-final", "ü:nasal-final"] },
+    uen: { value: "yun", levels: ["ü:compound-final", "ü:nasal-final"] },
   },
 
   //   z

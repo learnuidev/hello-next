@@ -1,6 +1,6 @@
 "use client";
 
-export const legacyData: any = [
+export const defaultData: any = [
   // null
   {
     // A
@@ -2086,3 +2086,306 @@ export const legacyData: any = [
     üen: "",
   },
 ];
+
+export const characterDictionary: any = {
+  jiu: {
+    graph:
+      "就九旧酒久救究纠臼赳揪啾韭厩鸠咎舅灸鹫玖柩疚僦乆糺桕阄捄廐鬏乣丩樛轇廏揫㺵倃〩匶",
+  },
+  yi: {
+    initial: "null",
+    final: "yi",
+    value: "yi",
+    tones: ["yī", "yí", "yǐ", "yì"],
+    examples: [
+      {
+        tone: 1,
+        pinyin: "yī",
+        hanzi: "一",
+      },
+    ],
+    graph:
+      "一以已尾亦易意依亿衣益移伊疑医訳翌宜异疫艺怡刈议役乙抑翼壱胰裔屹彝翳义仪翊轶",
+
+    variants: [
+      {
+        en: "yī",
+        examples: [
+          {
+            discovered: false,
+            tone: 1,
+            pinyin: "yī",
+            hanzi: "一",
+            en: "one",
+          },
+        ],
+      },
+      {
+        en: "yǐ",
+        examples: [
+          {
+            discovered: false,
+            tone: 3,
+            pinyin: "yǐ",
+            hanzi: "以",
+            en: "to use / by means of",
+          },
+        ],
+      },
+    ],
+  },
+
+  er: {
+    graph: "二而儿尔耳児尓弐珥迩洱贰尒饵阿栭唲铒塔洏鸸弍佴咡鲕",
+    value: "er",
+    initial: "null",
+    final: "er",
+    // levels: ['e:compound-final', 'e:nasal-final'],
+    tones: ["ēr", "ér", "ěr", "èr"],
+    examples: [
+      {
+        tone: 4,
+        pinyin: "èr",
+        hanzi: "一",
+      },
+    ],
+    variants: [
+      {
+        en: "èr",
+        tone: 4,
+        examples: [
+          {
+            discovered: false,
+            tone: 4,
+            pinyin: "èr",
+            hanzi: "二",
+            en: "two",
+          },
+        ],
+      },
+      {
+        en: "ěr",
+        tone: 3,
+        examples: [
+          {
+            discovered: false,
+            tone: 3,
+            pinyin: "ěr",
+            hanzi: "二",
+            en: "two",
+          },
+        ],
+      },
+    ],
+  },
+
+  zhong: {
+    graph: "中种重众钟终踵衷忠仲锺盅肿冢狆螽忪伀",
+  },
+
+  san: {
+    graph: "三散伞叁繖潵糁弎鏾叄毵",
+  },
+  shi: {
+    graph:
+      "事是识識时時使十式市室士食認试試实實史石氏视視师師世失始產權施示湿濕势勢幹実诗詩柿饰飾拭虱蝨鰤",
+  },
+
+  gan: {
+    graph:
+      "赣贛感干幹敢赶趕甘苷柑秆稈肝擀杆桿亁竿肅咁淦酐绀紺疳矸橄縣尴尷語坩旰倝泔澉骭玕榦虷灨乹筸馬尲",
+  },
+  ban: {
+    graph:
+      "版板闆半办辦班般伴阪坂搬扮扳瓣绊絆違斑拌魯钣鈑颁頒戰從終瘢罷開舨漁姅攽",
+  },
+  mai: {
+    graph: "买卖埋麦迈脉霾",
+  },
+  liang: {
+    value: "liang",
+    initial: "l",
+    final: "ang",
+    tones: ["liǎng"],
+    examples: [
+      {
+        tone: 3,
+        pinyin: "liǎng",
+        hanzi: "两",
+      },
+    ],
+    variants: [
+      {
+        pinyin: "liǎng",
+        en: "liǎng",
+        hanzi: "两",
+        tone: 3,
+        examples: [
+          {
+            discovered: false,
+            tone: 3,
+            pinyin: "liǎng",
+            hanzi: "两",
+            en: "two",
+            examples: [
+              {
+                hanzi: "两杯水",
+                pinyin: "liǎng bēi shuǐ",
+                en: "two glasses of water",
+                topDownWords: [
+                  {
+                    hanzi: "杯／杯子",
+                    pinyin: "bēi / bēi zi",
+                    en: "glass / cup",
+                  },
+                ],
+              },
+              {
+                hanzi: "两杯咖啡",
+                pinyin: "liǎng bēi kā fēi",
+                en: "two cups of coffee",
+                topDownWords: [
+                  {
+                    hanzi: "咖啡",
+                    pinyin: "kā fēi",
+                    en: "coffee",
+                  },
+                ],
+              },
+              {
+                hanzi: "两杯可乐",
+                pinyin: "liǎng bēi kě lè",
+                en: "two glasses of cola",
+                topDownWords: [
+                  {
+                    hanzi: "可乐",
+                    pinyin: "kě lè",
+                    en: "cola",
+                  },
+                ],
+              },
+              {
+                hanzi: "两杯啤酒",
+                pinyin: "liǎng bēi pí jiǔ",
+                en: "two glasses of beer",
+                topDownWords: [
+                  {
+                    hanzi: "啤酒",
+                    pinyin: "pí jiǔ",
+                    en: "beer",
+                  },
+                ],
+              },
+              {
+                hanzi: "两杯红酒",
+                pinyin: "liǎng bēi hóng jiǔ",
+                en: "two glasses of red wine",
+                topDownWords: [
+                  {
+                    hanzi: "红酒",
+                    pinyin: "hóng jiǔ",
+                    en: "red wine",
+                  },
+                ],
+              },
+              {
+                hanzi: "你喜欢喝咖啡还是茶？",
+                pinyin: "nǐ xǐ huān hē kā fēi hái shì chá",
+                en: "Do you like to drink coffee or tea?",
+                topDownWords: [
+                  {
+                    hanzi: "还是",
+                    tones: [2, 4],
+                    pinyin: "hái shì",
+                    en: "or / still / nevertheless",
+                  },
+                  {
+                    hanzi: "喝",
+                    tone: 1,
+                    pinyin: "hē",
+                    en: "drink",
+                  },
+                ],
+              },
+              {
+                hanzi: "两个我都喜欢。",
+                pinyin: "liǎnɡ ɡè wǒ dōu xǐ huān",
+                en: "I like both of them.",
+                topDownWords: [
+                  {
+                    hanzi: "都",
+                    tone: 1,
+                    pinyin: "dōu",
+                    en: "both / all",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  ping: {
+    value: "ping",
+    initial: "p",
+    final: "eng",
+    tones: ["píng"],
+    examples: [
+      {
+        tone: 2,
+        pinyin: "píng",
+        hanzi: "瓶",
+      },
+    ],
+    variants: [
+      {
+        tone: 2,
+        pinyin: "píng",
+        en: "píng",
+        hanzi: "瓶",
+        examples: [
+          {
+            discovered: false,
+            tone: 2,
+            pinyin: "píng",
+            hanzi: "瓶",
+            en: "bottle",
+            examples: [
+              {
+                hanzi: "一瓶水",
+                pinyin: "yì píng shuǐ",
+                en: "one bottle of water",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+
+  xi: {
+    graph:
+      "西系繫係消關東细細昔喜洗陝休吸扱席析隙嬉希戏戲咥袭襲溪谿稀晰熄藍徙奚习習膝悉熹潟歇臨犀羲",
+  },
+
+  ren: {
+    graph:
+      "任縣人认認稔忍仁妊韧韌仞愛刃壬恁媒姙裡荏衽爾纫紉轫軔饪飪葚趙荵腍訒牣棯纴紝絍肕祍鵀麥禮讱",
+  },
+  cong: {
+    graph:
+      "从從丛叢従聪聰枞樅葱蔥璁鍐琮淙匆苁蓯囱囪骢驄悰怱賨熜瑽蠶鏦漎潀騘聡聦悤",
+  },
+
+  fa: {
+    graph: "法发発筏砝髪乏罚伐阀珐灋沷茷佱鍅橃䂲垡酦",
+  },
+
+  yuan: {
+    graph: "元原远员院源円愿园圆縁缘垣猿沅苑预案媛援圜冤袁怨渊烟爰鸢渕",
+  },
+  ge: {
+    graph: "各个格歌哥隔割蛤膈葛革铬阁咯嗰箇",
+  },
+};

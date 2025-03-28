@@ -11,6 +11,7 @@ import {
 } from "@tanstack/react-table";
 
 import { characterDictionary, defaultData } from "./data";
+// import { characterDictionary, defaultData } from "./___legacy_data.v1";
 
 import { PinyinDetail } from "./pinyin-detail";
 import { pinyinColumns } from "./pinyin-columns";
@@ -662,6 +663,19 @@ export function PinyinTable({
                       }}
                     >
                       u
+                    </button>
+                    <button
+                      className={`${
+                        filters.includes("ü:simple-final")
+                          ? "dark:text-slate-200 text-slate-700"
+                          : "dark:text-slate-500 text-slate-400"
+                      } transition`}
+                      onClick={() => {
+                        setFilter("ü:simple-final");
+                        setFilter("ü:compound-final");
+                      }}
+                    >
+                      ü
                     </button>
                     <button
                       className={`${

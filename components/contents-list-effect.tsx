@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Icons } from "./ui/icons.v2";
 import { useToast } from "@/hooks/use-toast";
+import { CardFooter } from "./ui/card";
 
 export const ContentsListEffect = ({
   items,
@@ -68,24 +69,11 @@ export const ContentsListEffect = ({
                 />
               )}
             </AnimatePresence>
-            <Card>
-              <div className="flex justify-between items-center">
+            <Card className="py-4 px-2">
+              <div className="flex justify-between items-center gap-4">
                 <Link href={item?.link}>
                   <CardTitle className="line-clamp-1">{item.title}</CardTitle>
                 </Link>
-                <p>
-                  {" "}
-                  <span>{item?.icon && <item.icon className="text-xl" />}</span>
-                </p>
-              </div>
-
-              <CardDescription className="flex justify-between dark:text-gray-500">
-                <p className="line-clamp-3">
-                  {" "}
-                  {item.description || item?.subtopic}{" "}
-                </p>
-                <p>{item?.lang}</p>
-
                 <button
                   disabled={toggleFavouritContentMutation.isLoading}
                   className="text-xl"
@@ -119,7 +107,17 @@ export const ContentsListEffect = ({
                 >
                   {isFavourited ? <Icons.heartSolid /> : <Icons.heart />}
                 </button>
-              </CardDescription>
+              </div>
+
+              <Link href={item?.link}>
+                <CardDescription className="flex justify-between dark:text-gray-500 flex-1 flex-grow">
+                  <p className="line-clamp-2">
+                    {" "}
+                    {item.description || item?.subtopic}{" "}
+                  </p>
+                  <p>{item?.lang}</p>
+                </CardDescription>
+              </Link>
             </Card>
           </div>
         );
@@ -143,7 +141,7 @@ export const Card = ({
       )}
     >
       <div className="relative z-50">
-        <div className="p-4">{children}</div>
+        <div className="px-4 pt-4 pb-2">{children}</div>
       </div>
     </div>
   );
@@ -156,12 +154,7 @@ export const CardTitle = ({
   children: React.ReactNode;
 }) => {
   return (
-    <h4
-      className={cn(
-        "dark:text-zinc-100 font-bold tracking-wide mt-4",
-        className
-      )}
-    >
+    <h4 className={cn("dark:text-zinc-100 font-bold tracking-wide", className)}>
       {children}
     </h4>
   );

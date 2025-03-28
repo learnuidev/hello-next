@@ -9,6 +9,7 @@ import {
   faArrowUpRightFromSquare,
   faBoltLightning as faBoltLightningSolid,
   faBookmark as faBookmarkSolid,
+  faHeart as faHeartSolid,
   faBrainCircuit,
   faCircleInfo,
   faFaceAngry as faFaceAngrySolid,
@@ -73,6 +74,7 @@ import {
   faGrid2,
   faGridRound2Plus,
   faGrinBeamSweat,
+  faHeart,
   faInfo,
   faInfoCircle,
   faItalic,
@@ -186,6 +188,8 @@ const createFAIcon = (icon: FontAwesomeIconProps["icon"]) => {
 };
 
 export const Icons = {
+  heart: createFAIcon(faHeart),
+  heartSolid: createFAIcon(faHeartSolid),
   magnifyingGlass: createFAIcon(faMagnifyingGlass),
   verticalStack: createFAIcon(faRectangleVerticalHistory),
   verticalStackSolid: createFAIcon(faRectangleVerticalHistorySolid),

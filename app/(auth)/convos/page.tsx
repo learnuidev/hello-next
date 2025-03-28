@@ -19,7 +19,7 @@ import { useSelectedCharacter } from "./use-selected-character";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
 import { formatPercentage } from "@/app/profile/utils/format-percentage";
-import { HoverEffect } from "@/components/hover-effect";
+
 import { useSearchQueryStore } from "@/components/search/state";
 import { PlusIcon } from "@/components/ui/icons";
 import { Icons } from "@/components/ui/icons.v2";
@@ -33,6 +33,8 @@ import { useContentTypeStore } from "./use-content-type-store";
 import { useViewModeStore } from "./new-convo/use-viewmode-store";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useListPublishedContentsQuery } from "./[content-id]/hooks/use-list-published-contents-query";
+import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query copy";
+import { ContentsListEffect } from "@/components/contents-list-effect";
 
 type ContentType = {
   title: string;
@@ -46,10 +48,17 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
     useListContentsQuery();
   const { data, isLoading: isPublicContentLoading } =
     useListPublishedContentsQuery({});
+  const { data: favouriteContents, isLoading: isFavouriteContentLoading } =
+    useListFavouriteContentsQuery({});
 
   const isLoading = isContentsLoading || isPublicContentLoading;
 
-  const contents = contentViewType === "public" ? data?.items : myContent;
+  const contents =
+    contentViewType === "public"
+      ? data?.items
+      : contentViewType === "favourites"
+        ? favouriteContents?.items
+        : myContent;
 
   const contentType = useContentTypeStore((state) => state.contentType);
 
@@ -92,6 +101,7 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
         ?.filter((item: any) => item?.lang === lang)
         ?.map((content: any) => {
           return {
+            id: content?.id,
             title: content?.title,
             description: content?.description || content?.title,
             link: `/convos/${content?.id}`,
@@ -103,6 +113,10 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
     return <LottieLoadingAnimation />;
   }
 
+  if (contentViewType === "favourites" && projects?.length === 0) {
+    return <Nothing message={`Nothing favourited`} icon={Icons.content} />;
+  }
+
   if (!projects?.length) {
     return (
       <Nothing message={`Nothing found for: ${query}`} icon={Icons.content} />
@@ -111,7 +125,7 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
 
   return (
     <div className="max-w-5xl mx-auto px-8">
-      {projects?.length > 0 && <HoverEffect items={[...projects]} />}
+      {projects?.length > 0 && <ContentsListEffect items={[...projects]} />}
     </div>
   );
 }
@@ -229,6 +243,18 @@ export default function Convos() {
           }}
         >
           Me
+        </button>
+        <button
+          className={
+            contentViewType === "favourites"
+              ? "dark:text-white"
+              : "text-gray-500"
+          }
+          onClick={() => {
+            setViewType("favourites");
+          }}
+        >
+          Favourites
         </button>
       </div>
       {selectedChar ? null : lessonId && routeName?.includes("/convos") ? (

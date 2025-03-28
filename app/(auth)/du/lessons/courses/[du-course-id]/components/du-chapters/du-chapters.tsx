@@ -6,7 +6,7 @@ import { useListStudiedLessonsQuery } from "@/app/(auth)/du/hooks/use-list-studi
 import { useUnfavouriteCourseMutation } from "@/app/(auth)/du/hooks/use-unfavourite-course-mutation";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { formatPercentage } from "@/app/profile/utils/format-percentage";
-import { HoverEffect } from "@/components/hover-effect";
+import { DuHoverEffect } from "@/components/du-hover-effect";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -164,7 +164,7 @@ export const DuChapters = () => {
       </div>
 
       <div className="mt-12">
-        <HoverEffect
+        <DuHoverEffect
           className="lg:grid-cols-4 w-full"
           items={
             data?.lessons?.map((lesson, idx) => {

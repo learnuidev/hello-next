@@ -1,5 +1,5 @@
 "use client";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/toaster";
 
 import "core-js/stable";
 import "regenerator-runtime/runtime";
@@ -73,8 +73,8 @@ export default function RootLayout({
               </div>
             </ThemeProvider>
           </PostHogProvider>
+          <Toaster />
         </Suspense>
-        <Toaster />
       </body>
     </html>
   );

@@ -21,26 +21,41 @@ export const ActiveTranscription = ({
 
   return (
     <div className="text-center my-2 sm:mt-8 mt-4 mb-4 h-20">
-      <p className="text-gray-400 text-sm sm:text-[16px]">
-        {currentTranscription?.pinyin || currentTranscription?.roman}
-      </p>
-
       <Link
+        target="_blank"
+        href={`/nmm/${encodeURIComponent(
+          currentTranscription?.input || currentTranscription?.hanzi
+        )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
+        className="text-gray-400 text-sm sm:text-[16px]"
+      >
+        {currentTranscription?.pinyin || currentTranscription?.roman}
+      </Link>
+
+      <p
         onClick={() => {
           setIfExists({ ...currentTranscription, contentId });
         }}
         className="text-xl sm:text-3xl font-extralight"
-        href={`/nmm/${encodeURIComponent(
-          currentTranscription?.input || currentTranscription?.hanzi
-        )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
-        target="_blank"
       >
         {(currentTranscription?.input || currentTranscription?.hanzi)
           ?.split("")
           ?.map((val: string, idx: number) => {
-            return <CharacterItem key={`${val}-${idx}`} val={val} />;
+            return (
+              <Link
+                onClick={() => {
+                  setIfExists({ ...currentTranscription, contentId });
+                }}
+                href={`/nmm/${encodeURIComponent(
+                  val
+                )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
+                target="_blank"
+                key={`${val}-${idx}`}
+              >
+                <CharacterItem val={val} />
+              </Link>
+            );
           })}
-      </Link>
+      </p>
 
       <p className="text-gray-500 text-sm sm:text-[16px]">
         {currentTranscription?.en}

@@ -21,6 +21,7 @@ import {
   useCharacterContextStore,
   useSetIfExists,
 } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
+import { CharacterItem } from "../_select-character/character-item";
 
 export const TranscriptItem = ({
   example,
@@ -284,6 +285,7 @@ export const TranscriptItem = ({
                           } transition text-md`}
                         >
                           {item}
+                          {/* <CharacterItem val={item} /> */}
                         </span>
                       );
                     })}

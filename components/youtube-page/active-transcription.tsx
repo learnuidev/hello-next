@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { resolveLangCode } from "@/libs/openai/utils";
+import { CharacterItem } from "../_select-character/character-item";
 
 export const ActiveTranscription = ({
   currentTime,
@@ -34,7 +35,11 @@ export const ActiveTranscription = ({
         )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
         target="_blank"
       >
-        {currentTranscription?.input || currentTranscription?.hanzi}
+        {(currentTranscription?.input || currentTranscription?.hanzi)
+          ?.split("")
+          ?.map((val: string, idx: number) => {
+            return <CharacterItem key={`${val}-${idx}`} val={val} />;
+          })}
       </Link>
 
       <p className="text-gray-500 text-sm sm:text-[16px]">

@@ -23,6 +23,77 @@ import { useSearchParams } from "next/navigation";
 import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { useCanTrackFunction } from "../use-can-track-function";
 
+const CharacterItem = ({ val, lang }: { val: any; lang: string }) => {
+  const { data: learnedCharacters2, isLoading: isCharactersLoading } =
+    useListCharactersQuery();
+  const searchParams = useSearchParams();
+
+  const context = searchParams?.get("context");
+
+  const pinyinInput = characterStore((state) => state.pinyin);
+  const setPinyin = characterStore((state) => state.setPinyin);
+
+  const componentId = useGetComponentId();
+
+  const character = useGetCharacter({ characterId: componentId });
+
+  const { speak } = useSpeak(lang);
+
+  const { data: components, isLoading: isComponentsLoading } =
+    useListComponents({ includeAll: true });
+
+  const { data: selectedComp } = useGetComponentQuery({
+    hanzi: componentId,
+  });
+
+  const { data: meaning, isLoading } = useListMeaningsQuery({
+    content: componentId,
+    lang,
+  });
+
+  // const brightMode = useReadModeStore((state) => state.readMode);
+
+  const brightMode = useBrightModeStore((state: any) => state.mode);
+
+  const StatusIcon = getStatusIcon(character?.status);
+
+  const learnedChar = learnedCharacters2?.find(
+    (char: any) => char?.hanzi === val
+  );
+  const comp = components?.find((char: any) => char?.hanzi === val);
+
+  const color = calculateColor({
+    tone: learnedChar?.tone_level || selectedComp?.tone_level,
+  });
+
+  const hoverColor = calculateHoverColor({
+    tone: learnedChar?.tone_level || comp?.tone_level,
+  });
+
+  return (
+    <Link
+      href={`/nmm/${val}?lang=zh${context ? `&context=${context}` : ""}`}
+      key={`${val}`}
+      className={`${
+        brightMode || isCharactersLoading
+          ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
+          : // learnedCharacters.includes(prop?.hanzi)
+            learnedChar
+            ? learnedChar?.status === "forgotten"
+              ? `text-gray-200 dark:text-gray-600 ${hoverColor}`
+              : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                //   ? "text-rose-500"
+                `${color} text-gray-300 ${hoverColor}`
+            : selectedComp?.length > 1 || selectedComp?.group
+              ? `dark:text-gray-500 text-gray-200 ${hoverColor}`
+              : `dark:text-gray-200 text-gray-800 ${hoverColor}`
+      } ${hoverColor} text-2xl transition lowercase font-light`}
+    >
+      {val}
+    </Link>
+  );
+};
+
 export const CharacterTitle = (props: any) => {
   const {
     lang,

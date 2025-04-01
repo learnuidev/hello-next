@@ -182,7 +182,7 @@ export const SentenceItem = (props: any) => {
                 }`}
               >
                 {/* {val} */}
-                <CharacterItem val={val} className="" />
+                <CharacterItem character={val} className="" />
                 {/* {currentPhrase?.input ? " " : ""} */}
               </span>
             );

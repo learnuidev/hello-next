@@ -6,22 +6,16 @@ import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 
-export const CharacterItem = ({
-  val,
-  className,
-}: {
-  val: any;
+interface ICharacterItem {
+  character: any;
   className?: string;
-}) => {
+}
+
+export const CharacterItem = ({ character, className }: ICharacterItem) => {
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersQuery();
-  const searchParams = useSearchParams();
-
-  const context = searchParams?.get("context");
 
   const componentId = useGetComponentId();
 
@@ -35,9 +29,9 @@ export const CharacterItem = ({
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const learnedChar = learnedCharacters2?.find(
-    (char: any) => char?.hanzi === val
+    (char: any) => char?.hanzi === character
   );
-  const comp = components?.find((char: any) => char?.hanzi === val);
+  const comp = components?.find((char: any) => char?.hanzi === character);
 
   const color = calculateColor({
     tone: learnedChar?.tone_level || selectedComp?.tone_level,
@@ -49,19 +43,15 @@ export const CharacterItem = ({
 
   return (
     <span
-      //   href={`/nmm/${val}?lang=zh${context ? `&context=${context}` : ""}`}
-      key={`${val}`}
+      key={`${character}`}
       className={cn(
         `${
           brightMode || isCharactersLoading
             ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
-            : // learnedCharacters.includes(prop?.hanzi)
-              learnedChar
+            : learnedChar
               ? learnedChar?.status === "forgotten"
                 ? `text-gray-200 dark:text-gray-600 ${hoverColor}`
-                : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
-                  //   ? "text-rose-500"
-                  `text-gray-300 ${color} ${hoverColor}`
+                : `text-gray-300 ${color} ${hoverColor}`
               : selectedComp?.length > 1 || selectedComp?.group
                 ? `dark:text-gray-500 text-gray-200 ${hoverColor}`
                 : `dark:text-gray-200 text-gray-800 ${hoverColor}`
@@ -69,7 +59,7 @@ export const CharacterItem = ({
         className
       )}
     >
-      {val}
+      {character}
     </span>
   );
 };

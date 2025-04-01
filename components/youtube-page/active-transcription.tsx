@@ -51,7 +51,7 @@ export const ActiveTranscription = ({
                 target="_blank"
                 key={`${val}-${idx}`}
               >
-                <CharacterItem val={val} />
+                <CharacterItem character={val} />
               </Link>
             );
           })}

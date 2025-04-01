@@ -285,7 +285,7 @@ export const TranscriptItem = ({
                           } transition text-md`}
                         >
                           {item}
-                          {/* <CharacterItem val={item} /> */}
+                          {/* <CharacterItem character={item} /> */}
                         </span>
                       );
                     })}

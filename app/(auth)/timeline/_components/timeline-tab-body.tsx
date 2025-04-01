@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { TimelineDatesDrawer } from "./timeline-dates-drawer";
 import { useTimelineState } from "./timeline.state";
+import { CharacterItem } from "@/components/_select-character/character-item";
 
 export const TimelineTabBody = ({
   variant,
@@ -182,7 +183,16 @@ export const TimelineTabBody = ({
                           : "dark:text-gray-300 text-2xl"
                       )}
                     >
-                      {item?.input || item?.hanzi?.trim("")}
+                      {(item?.input || item?.hanzi?.trim(""))
+                        ?.split("")
+                        ?.map((character: string, idx: number) => {
+                          return (
+                            <CharacterItem
+                              character={character}
+                              key={`timeline-tab-${idx}-${character}`}
+                            />
+                          );
+                        })}
                     </Link>
                   );
                 })}

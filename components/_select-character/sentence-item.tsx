@@ -142,51 +142,41 @@ export const SentenceItem = (props: any) => {
             </span>
           )}
         </Link>
-        <span className="text-gray-900 dark:text-gray-300 text-lg">
-          {(currentPhrase?.input
-            ? currentPhrase?.input.split(" ")
-            : currentPhrase?.hanzi?.split("")
-          )?.map((val: string, idy: number) => {
-            const color = calculateColor({
-              tone: selectedComp?.tone_level,
-            });
+        <span>
+          {(currentPhrase?.input || currentPhrase?.hanzi)
+            ?.split("")
+            ?.map((val: string, idy: number) => {
+              return (
+                <span
+                  key={`${val}-${idy}`}
+                  onClick={() => {
+                    const cleanedVal = val
+                      .replaceAll("!", "")
+                      ?.replaceAll(".", "")
+                      ?.replaceAll(",", "");
+                    // addHistoryMutation.mutate({
+                    //   hanzi: cleanedVal,
+                    //   lang: lang,
+                    //   pathName: routeName,
+                    //   contentId: selectedComp?.id || "",
+                    //   eventType: "CONTENT_VIEWED",
+                    // } as any);
 
-            return (
-              <span
-                key={`${val}-${idy}`}
-                onClick={() => {
-                  const cleanedVal = val
-                    .replaceAll("!", "")
-                    ?.replaceAll(".", "")
-                    ?.replaceAll(",", "");
-                  // addHistoryMutation.mutate({
-                  //   hanzi: cleanedVal,
-                  //   lang: lang,
-                  //   pathName: routeName,
-                  //   contentId: selectedComp?.id || "",
-                  //   eventType: "CONTENT_VIEWED",
-                  // } as any);
+                    setIfExists({ ...currentPhrase });
 
-                  setIfExists({ ...currentPhrase });
-
-                  router.push(
-                    resolvedLang
-                      ? `/nmm/${cleanedVal}?lang=${resolvedLang}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
-                      : `/nmm/${cleanedVal}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
-                  );
-                }}
-                className={`${
-                  selectedChar?.toLowerCase() === val?.toLowerCase()
-                    ? `${color} font-normal`
-                    : "text-gray-700 dark:text-gray-300"
-                }`}
-              >
-                {/* {val} */}
-                <CharacterItem character={val} className="" />
-                {/* {currentPhrase?.input ? " " : ""} */}
-              </span>
-            );
-          })}
+                    router.push(
+                      resolvedLang
+                        ? `/nmm/${cleanedVal}?lang=${resolvedLang}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
+                        : `/nmm/${cleanedVal}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
+                    );
+                  }}
+                >
+                  {/* {val} */}
+                  <CharacterItem character={val} />
+                  {/* {currentPhrase?.input ? " " : ""} */}
+                </span>
+              );
+            })}
         </span>
         {lang !== "en" && (
           <span className="text-[16px] dark:text-gray-500 text-gray-400">

@@ -15,6 +15,7 @@ import { GoogleLink } from "./selected-character/google-link";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
+import { CharacterItem } from "./character-item";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -180,8 +181,9 @@ export const SentenceItem = (props: any) => {
                     : "text-gray-700 dark:text-gray-300"
                 }`}
               >
-                {val}
-                {currentPhrase?.input ? " " : ""}
+                {/* {val} */}
+                <CharacterItem val={val} className="" />
+                {/* {currentPhrase?.input ? " " : ""} */}
               </span>
             );
           })}

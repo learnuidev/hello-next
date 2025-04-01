@@ -2,13 +2,13 @@
 
 import { GrammarAnalysis } from "../../grammar-analysis";
 import { Summary } from "../../summary/summary";
-import { SelectedCharacterProps } from "../select-character.types";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
+import { useSelectedCharacterData } from "@/components/use-selected-character";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
+import { CharacterSentences } from "../character-sentences";
 import { CharacterLearningContext } from "./character-learning-context";
 import { CharacterOverviewViewSidebar } from "./character-overview-sidebar";
 import { CharacterVariantSummary } from "./character-variant-summary";
@@ -16,8 +16,6 @@ import { SelectedCharacterHeader } from "./selected-character-header";
 import { StoryEditor } from "./story-editor";
 import { useStoryStore } from "./story-store";
 import { useGetSelectedCharacterParams } from "./use-get-selected-character-params";
-import { CharacterSentences } from "../character-sentences";
-import { useSelectedCharacterData } from "@/components/use-selected-character";
 
 export const CharacterOverviewView = ({
   characterId,
@@ -65,7 +63,6 @@ export const CharacterOverviewView = ({
                         >
                           Overview
                         </TabsTrigger>
-                        {/* {selectedComp && ( */}
                         <TabsTrigger
                           value="learning-context"
                           className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
@@ -99,7 +96,6 @@ export const CharacterOverviewView = ({
                   </div>
 
                   <TabsContent value="overview">
-                    {/* <div className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-4"> */}
                     <div>
                       {variant ? (
                         <div className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-4">

@@ -61,7 +61,7 @@ export const CharacterItem = ({
                 ? `text-gray-200 dark:text-gray-600 ${hoverColor}`
                 : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
                   //   ? "text-rose-500"
-                  `${color} text-gray-300 ${hoverColor}`
+                  `text-gray-300 ${color} ${hoverColor}`
               : selectedComp?.length > 1 || selectedComp?.group
                 ? `dark:text-gray-500 text-gray-200 ${hoverColor}`
                 : `dark:text-gray-200 text-gray-800 ${hoverColor}`

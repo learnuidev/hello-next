@@ -1,28 +1,23 @@
 "use client";
 
-import { SelectedCharacterProps } from "../select-character.types";
-
 import { RelatedWords } from "../related-words";
 
 import { RelatedHskWords } from "./related-hsk-words";
 
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
-import { PinyinView } from "./pinyin-view";
-import { StoryView } from "./story-view";
+import { useViewTypeStore } from "@/components/use-selected-character";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useMemo } from "react";
+import { CharacterContent } from "./character-content/character-content";
 import { CharacterOverviewView } from "./character-overview-view";
 import { HskSentenceView } from "./hsk-sentences-view";
 import { HskSuperComponentsWordView } from "./hsk-super-components-view";
+import { PinyinView } from "./pinyin-view";
 import { SimilarCharactersView } from "./similar-characters-view";
-import { CharacterContent } from "./character-content/character-content";
-import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
-import {
-  useSelectedCharacterData,
-  useViewTypeStore,
-} from "@/components/use-selected-character";
-import { useMemo } from "react";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
-import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
+import { StoryView } from "./story-view";
 
 export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
   const { data: characters } = useListCharactersQuery(
@@ -49,16 +44,10 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
 
   const views = useViewTypeStore((state: any) => state.views) as any;
   const view = views?.[characterId] || "home";
-  // const setViews = useViewTypeStore((state) => state.setViews);
-  // const setView = (view: any) => {
-  //   return setViews(characterId, view);
-  // };
 
   const { data: selectedComp2 } = useGetComponentQuery({
     hanzi: characterId || "",
   });
-
-  // const {   selectedComp2 } = data;
 
   const { data: chineseCharacters } = useListChineseCharactersQuery();
 

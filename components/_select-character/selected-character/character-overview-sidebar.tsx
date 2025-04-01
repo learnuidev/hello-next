@@ -2,13 +2,12 @@
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CharacterSentences } from "../character-sentences";
-import { SelectedCharacterProps } from "../select-character.types";
 
 import { useEffect } from "react";
 import { useStoryStore } from "./story-store";
 
-import { create } from "zustand";
 import { useSelectedCharacterData } from "@/components/use-selected-character";
+import { create } from "zustand";
 
 const useSideBarViewType = create((set: any, get: any) => ({
   sideBarView: "sentences",

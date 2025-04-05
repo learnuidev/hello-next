@@ -145,7 +145,7 @@ export const FloatingCharacterNavbar = ({
                 )}
               </button>
             )}
-            {hasAlreadyDiscovered?.group ? null : (
+            {isAlreadyLearned ? null : (
               <button
                 className="text-xl text-black dark:text-white"
                 onClick={() => {
@@ -199,8 +199,7 @@ export const FloatingCharacterNavbar = ({
               </button>
             )}
 
-            {isLoading ? null : hasAlreadyDiscovered?.discoveredAt ||
-              hasAlreadyDiscovered?.discovered_at ? null : (
+            {isLoading ? null : hasAlreadyDiscovered?.group ? null : (
               <button
                 className="text-xl text-gray-400 hover:text-black"
                 disabled={

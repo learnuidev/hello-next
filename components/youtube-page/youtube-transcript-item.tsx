@@ -120,7 +120,7 @@ export const TranscriptItem = ({
                   ?.sort((a: any, b: any) => a?.end - b?.end)
                   ?.map((x: any) => x?.hanzi || x?.input)
                   ?.join("")
-              : example?.hanzi || example?.input
+              : example?.input || example?.hanzi
           )}&op=translate`}
           className="text-gray-500 hover:text-white"
         >
@@ -135,7 +135,7 @@ export const TranscriptItem = ({
                     ?.sort((a: any, b: any) => a?.end - b?.end)
                     ?.map((x: any) => x?.hanzi || x?.input)
                     ?.join("")
-                : example?.hanzi || example?.input
+                : example?.input || example?.hanzi
             )}`}
             className="text-gray-500 hover:text-white"
             target="_blank"
@@ -155,7 +155,7 @@ export const TranscriptItem = ({
             //       ?.map((x: any) => x?.hanzi || x?.input)
             //       ?.join("")
             // :
-            example?.hanzi || example?.input
+            example?.input || example?.hanzi
           )}${example?.lang ? `?lang=${resolveLangCode(example?.lang)}` : ""}`}
           className="text-gray-500 hover:text-white"
           target="_blank"

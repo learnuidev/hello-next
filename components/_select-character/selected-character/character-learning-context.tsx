@@ -201,7 +201,9 @@ export const CharacterLearningContext = ({
     ?.flat()
     ?.filter(
       (item: any) =>
-        JSON.stringify(item)?.includes(characterId) && item?.lang === lang
+        (JSON.stringify(item?.hanzi)?.includes(characterId) ||
+          JSON.stringify(item?.input)?.includes(characterId)) &&
+        item?.lang === lang
     )
     ?.slice(0, 30);
 

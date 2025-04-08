@@ -183,9 +183,9 @@ module.exports = {
   getTotalSeconds,
 };
 
-// const id = "https://www.youtube.com/watch?v=87tHecsCjtE";
-// const lang = "zh-CN";
+const id = "https://www.youtube.com/watch?v=skRCg8giIKA";
+const lang = "zh-CN";
 
-// listSubtitles({ id, lang }).then((transcriptions) => {
-//   console.log(transcriptions);
-// });
+listSubtitles({ id, lang }).then((transcriptions) => {
+  console.log(transcriptions);
+});

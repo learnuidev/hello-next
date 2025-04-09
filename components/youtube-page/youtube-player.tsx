@@ -31,6 +31,7 @@ import { ActiveTranscription } from "./active-transcription";
 import { useContentEditStore } from "./use-content-edit-store";
 import { useIsSmall } from "./utils/use-is-small";
 import { getActiveTranscriptions } from "./get-active-transcriptions";
+import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 
 const MAX_LIMIT = 9000;
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
@@ -311,7 +312,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   return (
     <div className="grow flex flex-col items-center">
       <div className="flex flex-col sm:flex-row justify-center items-center sm:justify-between w-full sm:px-12 mb-4">
-        <div className="space-x-4 sm:my-4 block z-50">
+        <div className="space-x-4 sm:my-4 block z-50 flex">
           <button
             className={
               viewMode === "karaoke" ? "dark:text-white" : "text-gray-500"
@@ -401,6 +402,25 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
               Save
             </button>
           )}
+
+          {editMode && (
+            <UploadFileButton
+              icon={
+                <Icons.upload className="text-[16px] dark:hover:text-white transition" />
+              }
+              types={["mp3", "m4a", "mp4"]}
+              className="hidden sm:block"
+              onSuccess={(res) => {
+                return updateContentMutation.mutateAsync({
+                  id: contentId || "",
+                  audio: res.sourceUrl,
+                  audioUploadBucketKey: res.uploadBucketKey,
+                  audioS3LinkAddedAt: Date.now(),
+                  updateContent: true,
+                });
+              }}
+            />
+          )}
         </div>
         <ActiveButton />
       </div>
@@ -409,17 +429,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         <div
           className={` ${isVideoHidden ? "hidden" : ""} md:col-span-7 col-span-12`}
         >
-          {/* <div className="block md:hidden">
-            <ReactPlayer
-              ref={playerRef}
-              url={finalUrl}
-              playing={isPlaying}
-              width="100%"
-              height={"320px"}
-              controls={true}
-              onReady={onReady}
-            />
-          </div> */}
           <div className="">
             <ReactPlayer
               ref={playerRef}

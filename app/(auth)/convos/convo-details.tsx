@@ -15,6 +15,7 @@ import { ContentSettings } from "./content-settings";
 import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
 import { Nothing } from "@/app/nmm/nothing";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
+import { isVideoUrl } from "./utils/is-video-url";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const viewType = useConvosStore((state: any) => state?.viewType);
@@ -47,7 +48,10 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
 
   // If the link contains yotube - then show youtube page
-  if (viewType === "listen" && isYoutube(lesson2?.audio)) {
+  if (
+    viewType === "listen" &&
+    (isYoutube(lesson2?.audio) || isVideoUrl(lesson2?.audio))
+  ) {
     return (
       <div>
         <YouTubePlayer lessonId={lessonId} />

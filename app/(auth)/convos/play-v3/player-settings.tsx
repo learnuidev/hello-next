@@ -98,7 +98,7 @@ export const PlayerSettings = ({
         <div className="space-x-4 sm:space-x-8 flex items-center justify-start mr-8 sm:mr-60">
           <UploadFileButton
             icon={<Icons.upload className="text-[16px] sm:text-2xl" />}
-            types={["mp3", "m4a"]}
+            types={["mp3", "m4a", "mp4"]}
             className="hidden sm:block"
             onSuccess={(res) => {
               return updateContentMutation.mutateAsync({

@@ -33,7 +33,7 @@ export function WithDetectLanguage({
 }) {
   const lang = useGetCurrentLang();
 
-  const { data, isLoading } = useDetectLanguageQuery(content);
+  const { data, isLoading } = useDetectLanguageQuery(content, lang);
 
   if (isLoading) {
     return (

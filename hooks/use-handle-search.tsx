@@ -16,12 +16,14 @@ import { useIsDu } from "./use-is-du";
 import { useIsSearchTrackingEnabled } from "./use-is-search-tracking-enabled";
 import { useListHistoryQuery } from "@/domain/history/history.queries";
 import { isToday } from "./is-today";
+import { useGetCurrentLang } from "./use-get-current-lang";
 
 export const useHandleSearch = () => {
   const router = useRouter();
   const path = usePathname();
 
   const lang = useGetLangParams();
+  const _lang = useGetCurrentLang();
 
   // 1. State
   const querySync = useSearchQueryStore((state) => state.querySync);
@@ -122,7 +124,7 @@ export const useHandleSearch = () => {
         const selectedChar = traditionalToSimplified(querySync);
 
         if (selectedChar === querySync) {
-          router.push(`/nmm/${encodeURIComponent(querySync)}`);
+          router.push(`/nmm/${encodeURIComponent(querySync)}?lang=${_lang}`);
         } else {
           router.push(
             `/nmm/${encodeURIComponent(selectedChar)}?lang=zh&trad=${querySync}`

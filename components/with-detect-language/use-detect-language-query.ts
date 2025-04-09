@@ -8,14 +8,14 @@ interface DetectLanguageResponse {
   lang: string;
 }
 
-export const useDetectLanguageQuery = (content: string) => {
+export const useDetectLanguageQuery = (content: string, lang?: string) => {
   const token = useJwtToken();
 
   const router = useRouter();
   const langParams = useGetLangParams();
 
   return useQuery<DetectLanguageResponse, Error>({
-    queryKey: ["detect-content", content, langParams],
+    queryKey: ["detect-content", content, langParams, lang],
     enabled: Boolean(content),
     retry: false,
     refetchIntervalInBackground: false,
@@ -27,14 +27,19 @@ export const useDetectLanguageQuery = (content: string) => {
         router.push(`/nmm/${content}?lang=${data?.lang}`);
       }
 
-      // if (lang) {
-      //   return;
-      // } else {
-      //   router.push(`/nmm/${content}?lang=${data?.lang}`);
-      // }
+      if (lang) {
+        return;
+      } else {
+        router.push(`/nmm/${content}?lang=${data?.lang}`);
+      }
     },
     queryFn: async () => {
       try {
+        if (lang) {
+          return {
+            lang,
+          };
+        }
         if (langParams) {
           return {
             lang: langParams,

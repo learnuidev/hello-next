@@ -56,7 +56,7 @@ export const TimelineTabBody = ({
         <div className="ml-6 w-full hidden md:block">
           <aside className="fixed">
             <ScrollArea className="hidden md:block space-y-6 h-[400px] rounded-md">
-              <div className="flex flex-col w-32 items-center space-y-4 my-24">
+              <div className="flex flex-col w-32 px-2 items-center space-y-4 my-24">
                 {groups?.map((date: any) => {
                   return (
                     <div
@@ -69,7 +69,7 @@ export const TimelineTabBody = ({
                         selectedDate === date?.title
                           ? "font-normal"
                           : "text-gray-600"
-                      } font-extralight flex justify-between w-full items-center hover:scale-110 hover:text-white transition`}
+                      } font-extralight flex justify-between w-full items-center hover:scale-110 dark:hover:text-white hover:text-red-500 transition`}
                     >
                       <span className="block"> {date?.title} </span>
                       <span className="block text-xs px-2 font-bold">

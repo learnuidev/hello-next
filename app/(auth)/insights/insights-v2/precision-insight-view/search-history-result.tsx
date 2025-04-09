@@ -26,7 +26,7 @@ export function SearchHistoryResult() {
           return (
             <Link
               key={`${comp?.input}-${idx}`}
-              href={`/nmm/${encodeURIComponent(comp?.input)}${comp?.lang ? `lang?=${comp?.lang}` : ""}`}
+              href={`/nmm/${encodeURIComponent(comp?.input)}${comp?.lang ? `?lang=${comp?.lang}` : ""}`}
               target="_blank"
               className="block"
             >

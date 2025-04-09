@@ -28,7 +28,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { PrecisionSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/search-results";
+import { SearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/search-results";
 import { useGetInsightSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/use-get-insight-search-results";
 import { ContentView } from "./content/content-view";
 import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
@@ -118,7 +118,7 @@ export function NomadMethodMandarin() {
   if (queryStrSync) {
     return (
       <div className="mx-4 md:mx-48">
-        <PrecisionSearchResults searchResults={searchResults} />
+        <SearchResults searchResults={searchResults} />
       </div>
     );
   }

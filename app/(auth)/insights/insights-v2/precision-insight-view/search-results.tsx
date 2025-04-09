@@ -6,7 +6,7 @@ import { CharacterSearchResult } from "./character-search-result";
 import { WordSearchResult } from "./word-search-result";
 import { SearchHistoryResult } from "./search-history-result";
 
-export const PrecisionSearchResults = ({ searchResults }: any) => {
+export const SearchResults = ({ searchResults }: any) => {
   const [view, setView] = useState("search");
 
   // const finalView =

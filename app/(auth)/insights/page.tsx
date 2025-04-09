@@ -9,7 +9,7 @@ import { InsightsFilters } from "./InsightsFilters";
 import { useSearchQueryStore } from "@/components/search/state";
 import { formatDate } from "@/components/settings-dialog/utils/format-date";
 import { InsightsV2 } from "./insights-v2/insights-v2";
-import { PrecisionSearchResults } from "./insights-v2/precision-insight-view/search-results";
+import { SearchResults } from "./insights-v2/precision-insight-view/search-results";
 import { useGetInsightSearchResults } from "./insights-v2/precision-insight-view/use-get-insight-search-results";
 import { useGetFromAndToDate } from "./use-get-from-date";
 import { CharacterLearnedBarChart } from "./CharacterLearnedBarChart";
@@ -114,7 +114,7 @@ function Insights() {
         </div>
 
         {querySync?.length > 0 ? (
-          <PrecisionSearchResults searchResults={searchResults} />
+          <SearchResults searchResults={searchResults} />
         ) : (
           <InsightsV2 />
         )}

@@ -7,7 +7,7 @@ import {
   TwoSectionLayout,
   TwoSectionLayoutItem,
 } from "../components/two-section-layout";
-import { PrecisionSearchResults } from "./search-results";
+import { SearchResults } from "./search-results";
 import { TopTenIncorrectComponents } from "./top-ten-incorrect-components";
 import { TopTenRecentlyReviewedComponents } from "./top-ten-recently-reviewed-components";
 import { useGetInsightSearchResults } from "./use-get-insight-search-results";
@@ -37,7 +37,7 @@ export const PrecisionInsightView = () => {
       <PrecisionInsightHeaders />
 
       {filteredTotalAttempts?.length > 0 ? (
-        <PrecisionSearchResults searchResults={filteredTotalAttempts} />
+        <SearchResults searchResults={filteredTotalAttempts} />
       ) : (
         <TwoSectionLayout>
           <TwoSectionLayoutItem>

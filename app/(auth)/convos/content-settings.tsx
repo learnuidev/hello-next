@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -6,25 +7,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useDeleteContentMutation } from "@/domain/content/use-delete-content-mutation";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
+import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useGetContentId } from "./[content-id]/hooks/use-get-content-id";
-import { useGetContentQuery } from "@/domain/content/content.queries";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { siteConfig } from "@/lib/config";
-import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import {
-  publicContentsQueryKey,
-  useListPublishedContentsQuery,
-} from "./[content-id]/hooks/use-list-published-contents-query";
+import { useListPublishedContentsQuery } from "./[content-id]/hooks/use-list-published-contents-query";
 import { useTogglePublishContentMutation } from "./[content-id]/hooks/use-toggle-publish-content-mutation";
 
 export const ContentSettings = () => {
   const [contentType, setContentType] = useState("not-selected");
 
   const updateContentMutation = useUpdateContentMutation();
+  const deleteContentMutation = useDeleteContentMutation();
   const contentId = useGetContentId();
 
   const { data: content } = useGetContentQuery({ contentId });
@@ -35,8 +32,6 @@ export const ContentSettings = () => {
     (item: any) => item?.id === contentId
   );
 
-  console.log("CONTAINS PUBLISHED", containsPublished);
-
   const togglePublishContentMutation = useTogglePublishContentMutation();
 
   useEffect(() => {
@@ -44,6 +39,10 @@ export const ContentSettings = () => {
       setContentType(content?.contentType);
     }
   }, [content?.contentType]);
+
+  const router = useRouter();
+
+  console.log("CONTENT", content);
 
   return (
     <div className="px-4 md:px-32 md:mt-2">
@@ -116,6 +115,26 @@ export const ContentSettings = () => {
         }}
       >
         Save
+      </Button>
+
+      <Button
+        variant={"outline"}
+        disabled={deleteContentMutation.isLoading || containsPublished}
+        className={cn(
+          updateContentMutation?.isLoading ? "text-gray-500" : "",
+          "mt-8 sm:w-24 uppercase w-full rounded-full text-red-500"
+        )}
+        onDoubleClick={() => {
+          return deleteContentMutation
+            .mutateAsync({
+              id: content?.id || "",
+            })
+            .then((res) => {
+              router.push("/convos");
+            });
+        }}
+      >
+        Delete
       </Button>
     </div>
   );

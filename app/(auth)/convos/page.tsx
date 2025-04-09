@@ -24,7 +24,7 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { PlusIcon } from "@/components/ui/icons";
 import { Icons } from "@/components/ui/icons.v2";
 import { useListContentsQuery } from "@/domain/content/content.queries";
-import { useListConversationsQuery } from "@/domain/conversation/use-list-conversations-query";
+
 import { useIsNewContentFormEnabled } from "@/libs/posthog/hooks/use-is-new-content-form-enabled";
 import { NewContent } from "./new-content/new-content";
 
@@ -61,8 +61,6 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
         : myContent;
 
   const contentType = useContentTypeStore((state) => state.contentType);
-
-  const { data: conversations } = useListConversationsQuery();
 
   const query = useSearchQueryStore((state) => state.query2);
   const lang = useGetCurrentLang();

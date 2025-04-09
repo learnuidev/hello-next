@@ -170,8 +170,6 @@ export function PinyinTable({
   );
 
   const calcRowColor = (val: any, lesson?: any, querySync?: string) => {
-    // console.log("VAL", val);
-
     if (typeof val === "string") {
       return "text-gray-600";
     }
@@ -197,12 +195,6 @@ export function PinyinTable({
       if (groups?.includes(val?.value)) {
         return "text-white";
       }
-      // console.log("=======================================");
-      // console.log("FILTERED COMPONENTS", filteredComponents);
-      // console.log("CHINESE CHARS", chineseChars);
-      // console.log("VAL", val);
-      // console.log("IS HANZI", isHanzi);
-      // console.log("=======================================");
     }
 
     if (querySync && val?.value?.includes(querySync?.toLowerCase())) {

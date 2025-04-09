@@ -42,8 +42,6 @@ export const ContentSettings = () => {
 
   const router = useRouter();
 
-  console.log("CONTENT", content);
-
   return (
     <div className="px-4 md:px-32 md:mt-2">
       <div className="flex my-12 mb-24 items-center justify-between">

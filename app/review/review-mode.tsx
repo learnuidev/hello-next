@@ -135,8 +135,6 @@ export function ReviewMode(props: any) {
     isLoading: isUnreviewedCharactersLoading,
   } = useUnreviwedCharacters();
 
-  // console.log("UN REVIEWED CHARS", unReviewedCharacters);
-
   const isContent = useIsContent(hskMode);
   const isEntry = useIsEntry(entryId);
 
@@ -597,8 +595,6 @@ export function ReviewMode(props: any) {
                     const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
 
                     const ponderTime = getPonderTime(endTime);
-
-                    console.log("PONDER TIME", ponderTime);
 
                     updateCharacterStatusMutation
                       .mutateAsync({

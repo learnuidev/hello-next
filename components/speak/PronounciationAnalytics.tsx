@@ -308,8 +308,6 @@ export const PronounciationAnalytics = ({
               } text-4xl dark:hover:text-white shadow-md px-4 py-1 rounded-full`}
               onClick={() => {
                 setViewMode("lesson");
-                //
-                console.log("SHOW ANALYTICS");
               }}
             >
               <AnalyticsIcon />

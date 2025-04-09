@@ -126,18 +126,6 @@ export const MonthlyReview = () => {
 
                       const interval = intervalToDuration(intervalParams);
 
-                      // const days = Math.floor(
-                      //   Math.abs(startTime - endTime) / (36000 * 2000)
-                      // );
-
-                      if (groupTitle === "4/30/2024") {
-                        console.log("Start time", startTime);
-                        console.log("End time", endTime);
-                        console.log("GROUP TITLE", groupTitle);
-                        // console.log("interval", interval);
-                        console.log("interval-params", intervalParams);
-                      }
-
                       return (
                         <div
                           key={groupTitle}

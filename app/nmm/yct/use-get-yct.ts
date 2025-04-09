@@ -31,7 +31,6 @@ export const useGetYct = ({
     (item) => item?.level === selectedBelt?.hskLevel
   ) as any;
 
-  console.log("WORDS", words);
   let sentences = [] as any;
 
   if (viewType === "sentence") {
@@ -42,8 +41,6 @@ export const useGetYct = ({
         const containsWord = words?.filter((word: any) =>
           content?.input?.includes(word?.hanzi)
         );
-
-        console.log("CONTAINS WORD", containsWord);
 
         return content?.input && containsWord?.length > 0;
       })
@@ -74,8 +71,6 @@ export const useGetYct = ({
         };
       });
   }
-
-  console.log("SENTENCES", sentences);
 
   return {
     data: {

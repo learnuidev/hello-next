@@ -50,10 +50,10 @@ export const CharacterItem = ({ character, className }: ICharacterItem) => {
             ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
             : learnedChar
               ? learnedChar?.status === "forgotten"
-                ? `text-gray-200 dark:text-gray-600 ${hoverColor}`
+                ? `text-gray-300 dark:text-gray-600 ${hoverColor}`
                 : `text-gray-300 ${color} ${hoverColor}`
               : selectedComp?.length > 1 || selectedComp?.group
-                ? `dark:text-gray-500 text-gray-200 ${hoverColor}`
+                ? `dark:text-white text-black ${hoverColor}`
                 : `dark:text-gray-200 text-gray-800 ${hoverColor}`
         } ${hoverColor} text-2xl transition lowercase font-light`,
         className

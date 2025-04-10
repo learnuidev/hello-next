@@ -179,7 +179,7 @@ export const SentenceItem = (props: any) => {
             })}
         </span>
         {lang !== "en" && (
-          <span className="text-[16px] dark:text-gray-500 text-gray-400">
+          <span className="text-[16px] dark:text-gray-500 text-gray-600">
             {currentPhrase?.en || currentPhrase?.title}
           </span>
         )}

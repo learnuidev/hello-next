@@ -28,6 +28,7 @@ export function useShortCuts() {
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
   const setQuerySync = useSearchQueryStore((state) => state.setQuerySync);
+  const setQuery = useSearchQueryStore((state) => state.setQuery);
 
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
   // const reviewUrl = useGetReviewUrl({ reviewMode: "all" });
@@ -326,12 +327,8 @@ export function useShortCuts() {
 
     const onCopy = (event: any) => {
       const selection: any = document.getSelection();
-      // event.clipboardData.setData(
-      //   "text/plain",
-      //   selection.toString().toUpperCase()
-      // );
-      // alert(selection.toString());
       setQuerySync(selection?.toString());
+      setQuery(selection?.toString());
       event.preventDefault();
     };
 
@@ -361,5 +358,6 @@ export function useShortCuts() {
     isContent,
     reviewUrlFn,
     setQuerySync,
+    setQuery,
   ]);
 }

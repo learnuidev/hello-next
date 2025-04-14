@@ -331,6 +331,7 @@ export function useShortCuts() {
       setQuerySync(selection);
       setQuery(selection);
       setQuery2(selection);
+      event.clipboardData.setData("text/plain", selection.toString());
       event.preventDefault();
     };
 

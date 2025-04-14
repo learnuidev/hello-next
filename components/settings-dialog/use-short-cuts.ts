@@ -362,5 +362,6 @@ export function useShortCuts() {
     reviewUrlFn,
     setQuerySync,
     setQuery,
+    setQuery2,
   ]);
 }

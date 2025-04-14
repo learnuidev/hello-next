@@ -14,6 +14,7 @@ import {
 } from "./use-get-review-url";
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { useIsContent } from "@/app/review/use-is-content";
+import { useSearchQueryStore } from "../search/state";
 
 export function useShortCuts() {
   const setMode = useLearningModeStore((state) => state.setMode);
@@ -26,6 +27,7 @@ export function useShortCuts() {
   const { data: unReviewedCharacters } = useUnreviwedCharacters();
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
+  const setQuerySync = useSearchQueryStore((state) => state.setQuerySync);
 
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
   // const reviewUrl = useGetReviewUrl({ reviewMode: "all" });
@@ -321,8 +323,22 @@ export function useShortCuts() {
     }
 
     window.addEventListener("keydown", onKeyDown);
+
+    const onCopy = (event: any) => {
+      const selection: any = document.getSelection();
+      // event.clipboardData.setData(
+      //   "text/plain",
+      //   selection.toString().toUpperCase()
+      // );
+      // alert(selection.toString());
+      setQuerySync(selection?.toString());
+      event.preventDefault();
+    };
+
+    window.addEventListener("copy", onCopy);
     return () => {
       window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("copy", onCopy);
     };
   }, [
     mode,
@@ -342,5 +358,8 @@ export function useShortCuts() {
     view,
     reviewMode,
     entryId,
+    isContent,
+    reviewUrlFn,
+    setQuerySync,
   ]);
 }

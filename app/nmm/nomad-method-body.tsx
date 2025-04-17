@@ -4,7 +4,7 @@ import { Devanagari } from "@/components/devanagari/devanagari";
 import { NomadMethodMandarin } from "./nomad-method-mandarin";
 import { Japanese } from "@/components/japanese/japanese";
 import { Korean } from "@/components/korean/korean";
-import { Arabic } from "@/components/arabic/arabic";
+
 import { Persian } from "@/components/persian/persian";
 import { Spanish } from "@/components/spanish/spanish";
 import { French } from "@/components/french/french";
@@ -17,39 +17,6 @@ export function NomadMethodBody({ lang }: { lang: string }) {
   if (["ne", "nep", "nepali"]?.includes(lang)) {
     return <Devanagari />;
   }
-  // if (["ja", "japanese"]?.includes(lang)) {
-  //   return <Japanese />;
-  // }
-  // if (["ko", "korean"]?.includes(lang)) {
-  //   return <Korean />;
-  // }
-
-  // if (["es"]?.includes(lang)) {
-  //   return <Spanish />;
-  // }
-  // if (["ar"]?.includes(lang)) {
-  //   return <Arabic />;
-  // }
-
-  // if (["fa"]?.includes(lang)) {
-  //   return <Persian />;
-  // }
-
-  // if (["fr"]?.includes(lang)) {
-  //   return <French />;
-  // }
-
-  // if (["vi"]?.includes(lang)) {
-  //   return <Vietnamese />;
-  // }
-
-  // if (["ur"]?.includes(lang)) {
-  //   return <Urdu />;
-  // }
-
-  // if (["ru"]?.includes(lang)) {
-  //   return <Russian />;
-  // }
 
   if (!lang || ["zh", "zh-CN"]?.includes(lang)) {
     return <NomadMethodMandarin />;

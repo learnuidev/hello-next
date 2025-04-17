@@ -6,6 +6,8 @@ import romanianFlag from "./romanian.webp";
 import japaneseFlag from "./jp.png";
 import germanFlag from "./german.webp";
 import russianFlag from "./russian.webp";
+import iranFlag from "./fa.webp";
+import palestineFlag from "./ar.webp";
 
 export const languages = [
   {
@@ -55,5 +57,17 @@ export const languages = [
     id: "de-DE",
     title: "German",
     src: germanFlag.src,
+  },
+  {
+    shortId: "fa",
+    id: "fa-FA",
+    title: "Persian",
+    src: iranFlag.src,
+  },
+  {
+    shortId: "ar",
+    id: "ar-AR",
+    title: "Arabic",
+    src: palestineFlag.src,
   },
 ];

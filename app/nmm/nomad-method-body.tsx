@@ -8,8 +8,7 @@ import { Persian } from "@/components/persian/persian";
 import { Spanish } from "@/components/spanish/spanish";
 import { French } from "@/components/french/french";
 import { Vietnamese } from "@/components/vietnamese/vietnamese";
-import { Urdu } from "@/components/urdu/urdu";
-import { Russian } from "@/components/russian/russian";
+
 import { LangItem } from "@/components/lang-item/lang-item";
 
 export function NomadMethodBody({ lang }: { lang: string }) {

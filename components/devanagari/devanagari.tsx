@@ -23,7 +23,7 @@ import {
   WordIcon,
 } from "../ui/icons";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 const PageView = ({ view, setSelectedId }: any) => {
   const [viewMode, setViewMode] = useState("halant");
@@ -34,6 +34,8 @@ const PageView = ({ view, setSelectedId }: any) => {
   const [filterCharacter, setFilterCharacter] = useState("");
   const [filterZeroes, toggleFilterZeroes] = useState(true);
   const [sortByPopularity, toggleSortPopularity] = useState(true);
+
+  const router = useRouter();
 
   const searchParams = useSearchParams();
   const lang = useGetCurrentLang();
@@ -301,6 +303,7 @@ const PageView = ({ view, setSelectedId }: any) => {
                   key={JSON.stringify(prop)}
                   onClick={() => {
                     setSelectedId(prop.nepali);
+                    router.push(`/nmm/${prop.nepali}?lang=ne`);
                   }}
                   className={`${"dark:text-gray-500 text-gray-200"} dark:hover:text-white p-6 transition flex items-center flex-col grow`}
                 >
@@ -354,6 +357,7 @@ const PageView = ({ view, setSelectedId }: any) => {
                       key={JSON.stringify(variant)}
                       onClick={() => {
                         setFilterCharacter(variant?.nepali);
+                        router.push(`/nmm/${variant.nepali}?lang=ne`);
                       }}
                       className={`${
                         variant?.nepali === filterCharacter
@@ -378,6 +382,7 @@ const PageView = ({ view, setSelectedId }: any) => {
                         key={JSON.stringify(variant)}
                         onClick={() => {
                           setFilterCharacter(variant?.nepali);
+                          router.push(`/nmm/${variant.nepali}?lang=ne`);
                         }}
                         className={`${
                           variant?.nepali === filterCharacter
@@ -399,6 +404,7 @@ const PageView = ({ view, setSelectedId }: any) => {
                         key={JSON.stringify(variant)}
                         onClick={() => {
                           setFilterCharacter(variant?.nepali);
+                          router.push(`/nmm/${variant.nepali}?lang=ne`);
                         }}
                         className={`${
                           variant?.nepali === filterCharacter
@@ -421,6 +427,7 @@ const PageView = ({ view, setSelectedId }: any) => {
                   key={JSON.stringify(prop)}
                   onClick={() => {
                     setSelectedId(prop.nepali);
+                    router.push(`/nmm/${prop.nepali}?lang=ne`);
                   }}
                   className={`${
                     true

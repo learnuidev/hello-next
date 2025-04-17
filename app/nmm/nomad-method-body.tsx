@@ -3,7 +3,6 @@ import React from "react";
 import { Devanagari } from "@/components/devanagari/devanagari";
 import { NomadMethodMandarin } from "./nomad-method-mandarin";
 import { Japanese } from "@/components/japanese/japanese";
-import { Korean } from "@/components/korean/korean";
 
 import { Persian } from "@/components/persian/persian";
 import { Spanish } from "@/components/spanish/spanish";

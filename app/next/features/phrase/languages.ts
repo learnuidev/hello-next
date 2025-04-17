@@ -7,7 +7,7 @@ import japaneseFlag from "./jp.png";
 import germanFlag from "./german.webp";
 import russianFlag from "./russian.webp";
 import iranFlag from "./fa.webp";
-import palestineFlag from "./ar.webp";
+import palestineFlag from "./ar.png";
 
 export const languages = [
   {

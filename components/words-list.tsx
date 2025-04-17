@@ -1,10 +1,17 @@
 import { useSearchQueryStore } from "./search/state";
 import { WordItem } from "./word-item";
 import { useListFilteredWords } from "./use-list-filtered-words";
+import { useMemo } from "react";
 
 export const WordsList = ({ words, lang, showWords }: any) => {
+  const query = useSearchQueryStore((state) => state.query2);
+
+  const filteredWords = useMemo(
+    () => words?.filter((word: any) => JSON.stringify(word)?.includes(query)),
+    [query, words]
+  );
   if (showWords) {
-    return <WordsListRemote lang={lang} words={words} />;
+    return <WordsListRemote lang={lang} words={filteredWords} />;
   } else {
     return <WordsListLegacy lang={lang} />;
   }

@@ -8,6 +8,9 @@ import germanFlag from "./german.webp";
 import russianFlag from "./russian.webp";
 import iranFlag from "./fa.webp";
 import palestineFlag from "./ar.png";
+import nepaliFlag from "./ne.png";
+import indianFlag from "./hi.png";
+import pakistanFlag from "./pk.png";
 
 export const languages = [
   {
@@ -69,5 +72,23 @@ export const languages = [
     id: "ar-AR",
     title: "Arabic",
     src: palestineFlag.src,
+  },
+  {
+    shortId: "ne",
+    id: "ne-NE",
+    title: "Nepali",
+    src: nepaliFlag.src,
+  },
+  {
+    shortId: "hi",
+    id: "hi-HI",
+    title: "Hindi",
+    src: indianFlag.src,
+  },
+  {
+    shortId: "ur",
+    id: "ur-UR",
+    title: "Urdu",
+    src: pakistanFlag.src,
   },
 ];

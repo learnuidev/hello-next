@@ -17,8 +17,18 @@ export function ContentWithS3Translations() {
 
   const updateContentMutation = useUpdateContentMutation();
 
+  const filteredContents = ["1673347f-d7e8-5902-afd1-438886062473"];
+
   const contentsWithoutS3 =
-    contents?.filter((content) => !content?.sourceUrl) || [];
+    contents
+      ?.filter((content) => !content?.sourceUrl)
+      ?.filter((item) => {
+        if (filteredContents?.length) {
+          return filteredContents?.includes(item?.id);
+        }
+
+        return true;
+      }) || [];
 
   const uploadJsonHandlerAll = useGetUploadJsonHandler();
 

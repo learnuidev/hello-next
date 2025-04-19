@@ -101,7 +101,8 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
           return {
             id: content?.id,
             title: content?.title,
-            description: content?.description || content?.title,
+            description:
+              content?.summary || content?.description || content?.title,
             link: `/convos/${content?.id}`,
           };
         })

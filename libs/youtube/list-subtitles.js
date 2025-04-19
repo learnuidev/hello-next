@@ -96,20 +96,10 @@ const resolveTrack = ({ tracks, lang }) => {
   return zhTrack;
 };
 
-const listSubtitles = async ({ id, lang }) => {
+const genSubtitles = async ({ id, lang }) => {
   //   return ytdl.getInfo(id);
   const info = await ytdl.getInfo(id);
 
-  // return info.videoDetails;
-
-  const { title, description, author, thumbnails } = info.videoDetails;
-
-  // const tracks =
-  //   info.player_response.captions.playerCaptionsTracklistRenderer
-  //     .captionTracks;
-
-  // const { videoDetails } = info;
-  const { videoDetails, related_videos } = info;
   const tracks =
     info.player_response.captions.playerCaptionsTracklistRenderer.captionTracks;
   if (tracks && tracks.length) {
@@ -158,16 +148,31 @@ const listSubtitles = async ({ id, lang }) => {
       };
     });
 
-    return {
-      subtitles: newSubtitles,
-      title,
-      description,
-      author,
-      thumbnails,
-    };
+    return newSubtitles;
   } else {
     console.log("No captions found for this video");
   }
+};
+const listSubtitles = async ({ id, lang }) => {
+  const info = await ytdl.getInfo(id);
+
+  const { title, description, author, thumbnails } = info.videoDetails;
+
+  let subs = [];
+
+  try {
+    subs = await genSubtitles({ id, lang });
+  } catch (err) {
+    subs = [];
+  }
+
+  return {
+    subtitles: subs,
+    title,
+    description,
+    author,
+    thumbnails,
+  };
 };
 
 const getTotalSeconds = (times) => {
@@ -183,9 +188,9 @@ module.exports = {
   getTotalSeconds,
 };
 
-const id = "https://www.youtube.com/watch?v=skRCg8giIKA";
-const lang = "zh-CN";
+// const id = "https://www.youtube.com/watch?v=skRCg8giIKA";
+// const lang = "zh-CN";
 
-listSubtitles({ id, lang }).then((transcriptions) => {
-  console.log(transcriptions);
-});
+// listSubtitles({ id, lang }).then((transcriptions) => {
+//   console.log(transcriptions);
+// });

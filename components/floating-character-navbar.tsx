@@ -142,7 +142,7 @@ export const FloatingCharacterNavbar = ({
             >
               <Icons.play className="text-2xl" />
             </button>
-            {multiSentence && (
+            {/* {multiSentence && (
               <button
                 className="text-xl text-black dark:text-white"
                 onClick={() => {
@@ -159,7 +159,7 @@ export const FloatingCharacterNavbar = ({
                   <Icons.zoomIn className="text-2xl" />
                 )}
               </button>
-            )}
+            )} */}
             {isAlreadyLearned ? null : (
               <button
                 className="text-xl text-black dark:text-white"
@@ -214,7 +214,8 @@ export const FloatingCharacterNavbar = ({
               </button>
             )}
 
-            {isLoading ? null : hasAlreadyDiscovered?.group ? null : (
+            {characterId?.length > 1 ||
+            isLoading ? null : hasAlreadyDiscovered?.group ? null : (
               <button
                 className="text-xl text-gray-400 hover:text-black"
                 disabled={

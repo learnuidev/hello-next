@@ -4,8 +4,12 @@ import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token
 import { Editor } from "@/components/Editor";
 import { GenUI } from "@/components/gen-ui";
 import { Icons } from "@/components/ui/icons.v2";
-import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
+import {
+  useCurrentAuthUser,
+  useIsSuperAdmin,
+} from "@/domain/auth/auth.queries";
 import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import {
   useAddThreadMutation,
@@ -15,6 +19,7 @@ import { IThread, useListThreadsQuery } from "@/domain/thread/thread.queries";
 import { Message, useChat } from "ai/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useGetContentId } from "./[content-id]/hooks/use-get-content-id";
 
 function UserQueryUI({ message }: { message: Message }) {
   //   const { data: queryClass } = useGetQueryClassifierQuery({
@@ -77,6 +82,12 @@ const AgentAnswer = ({
     finishedMsgs?.length &&
       !!finishedMsgs?.find((msg: Message) => msg?.id === message?.id)
   );
+
+  const contentId = useGetContentId();
+
+  const isSuperAdmin = useIsSuperAdmin();
+
+  const updateContentMutation = useUpdateContentMutation();
 
   const [viewType, setViewType] = useState("editor");
 
@@ -165,6 +176,22 @@ const AgentAnswer = ({
         >
           <Icons.trash />
         </button>
+
+        {isSuperAdmin && (
+          <button
+            disabled={updateContentMutation?.isLoading}
+            onClick={() => {
+              return updateContentMutation.mutateAsync({
+                id: contentId,
+                summary: message.content,
+
+                updatedAt: Date.now(),
+              });
+            }}
+          >
+            Update summary
+          </button>
+        )}
       </div>
       {/* )} */}
 

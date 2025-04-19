@@ -2,17 +2,12 @@
 
 import "@/libs/cognito/init";
 
-import { useParams } from "next/navigation";
-
 import { ConvoDetails } from "../convo-details";
 import { ConvosNavBar } from "../convos-nav-bar";
+import { useGetContentId } from "./hooks/use-get-content-id";
 
 export default function ContentItem() {
-  const params = useParams() as {
-    "content-id": string;
-  };
-
-  const lessonId = params["content-id"];
+  const lessonId = useGetContentId();
 
   return (
     <main>

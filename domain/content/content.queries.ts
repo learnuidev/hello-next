@@ -25,15 +25,31 @@ type ListContentsResponse = {
   items: Content[];
 };
 
+const listContensRecursive = async (jwt: string, key?: string, res = []) => {
+  const resp = await listContents({ key }, { Authorization: jwt });
+
+  if (resp?.lastEvaulatedKey) {
+    return listContensRecursive(
+      jwt,
+      resp?.lastEvaulatedKey,
+      res.concat(resp?.items)
+    );
+  }
+
+  return {
+    items: res,
+  };
+};
+
 export function useListContentsQuery(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ListContentsResponse, Error>(
     [queryIds.listContents],
     async () => {
-      const response = await listContents({
-        Authorization: authUser?.jwt,
-      });
+      const response = await listContensRecursive(authUser?.jwt);
+
+      console.log("RESPONSE", response);
 
       return {
         ...response,

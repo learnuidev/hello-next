@@ -24,13 +24,18 @@ export const addContent = async (
 
 const listContentsApi = `${siteConfig.apiUrl}/v1/list-contents`;
 
-export const listContents = async (opts: { Authorization: string }) => {
+export const listContents = async (
+  { key }: { key?: string },
+  opts: { Authorization: string }
+) => {
   const res = await fetch(listContentsApi, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,
     },
-    body: JSON.stringify({}),
+    body: JSON.stringify({
+      key,
+    }),
   });
   const resp = (await res.json()) as any;
 

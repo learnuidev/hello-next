@@ -20,7 +20,7 @@ export function ContentWithS3Translations() {
   const filteredContents = ["1673347f-d7e8-5902-afd1-438886062473"];
 
   const contentsWithoutS3 =
-    contents
+    contents?.items
       ?.filter((content) => !content?.sourceUrl)
       ?.filter((item) => {
         if (filteredContents?.length) {

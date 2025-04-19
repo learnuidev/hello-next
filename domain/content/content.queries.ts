@@ -25,7 +25,11 @@ type ListContentsResponse = {
   items: Content[];
 };
 
-const listContensRecursive = async (jwt: string, key?: string, res = []) => {
+const listContensRecursive = async (
+  jwt: string,
+  key?: string,
+  res = []
+): Promise<ListContentsResponse> => {
   const resp = await listContents({ key }, { Authorization: jwt });
 
   if (resp?.lastEvaulatedKey) {

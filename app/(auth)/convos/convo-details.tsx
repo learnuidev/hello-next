@@ -36,8 +36,6 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     );
   }
 
-  // const lesson2 = contentsArr?.find((content: any) => content?.id === lessonId);
-
   if (viewType === "settings") {
     if (!isAuthor) {
       return (
@@ -74,15 +72,6 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
 
   if (viewType === "listen") {
-    // return (
-    //   <div className="font-light flex justify-between items-center w-full md:mt-12">
-    //     {/* <Play key={lessonId} lessonId={lessonId} /> */}
-    //     <PlayV2 contentId={lessonId} />
-    //   </div>
-    // );
-
-    // return <AudioPlayer />;
-
     return (
       <div className="px-4 md:px-32">
         <PlayV3 contentId={lessonId} />
@@ -128,16 +117,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   return (
     <div className="font-light flex justify-between items-center w-full px-4 md:px-32 md:mt-2">
       {" "}
-      {/* TODO{" "} */}
-      {/* <TabsContent value="account">
-        Make changes to your account here.
-      </TabsContent>
-      <TabsContent value="password">Change your password here.</TabsContent> */}
       <Tabs defaultValue={viewType}>
-        {/* <TabsList>
-          <TabsTrigger value="account">Account</TabsTrigger>
-          <TabsTrigger value="password">Password</TabsTrigger>
-        </TabsList> */}
         <TabsContent value="listen">
           Make changes to your account here.
         </TabsContent>

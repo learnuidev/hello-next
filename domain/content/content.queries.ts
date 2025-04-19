@@ -53,8 +53,6 @@ export function useListContentsQuery(options = {} as any) {
     async () => {
       const response = await listContensRecursive(authUser?.jwt);
 
-      console.log("RESPONSE", response);
-
       return {
         ...response,
         items: response?.items?.sort(
@@ -110,16 +108,17 @@ export function useGetContentQuery(
       // }
     },
     onSuccess: (data) => {
-      console.log("LOADED", data);
-      console.log("OPTIONS", opts);
       opts?.onSuccess?.(data);
       queryClient.setQueryData([queryIds.listContents], (old: any) => {
-        return (old || []).map((content: any) => {
-          if (content?.id === data?.id) {
-            return data;
-          }
-          return content;
-        });
+        return {
+          ...old,
+          items: (old?.items || []).map((content: any) => {
+            if (content?.id === data?.id) {
+              return data;
+            }
+            return content;
+          }),
+        };
       });
     },
 

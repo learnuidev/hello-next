@@ -59,13 +59,9 @@ export const useHandleSearch = () => {
 
   const { data: history } = useListHistoryQuery();
 
-  console.log("HISTORY", history);
-
   const alreadySearchedToday = history?.Items?.filter(
     (item: any) => item?.input === querySync && isToday(history?.createdAt)
   );
-
-  console.log("ALREADY SEARCHED", alreadySearchedToday);
 
   // TODO: Fix this
   const isSearchTrackingEnabled = useIsSearchTrackingEnabled();

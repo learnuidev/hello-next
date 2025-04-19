@@ -52,8 +52,6 @@ export function useUploadFile(cb?: any, ctx?: any, props?: any) {
 
     const { signedUrl: url, s3Key, assetUrl, id } = response;
 
-    console.log("RESPONSE", response);
-
     // const formData = new FormData();
     // formData.append("image", file);
 

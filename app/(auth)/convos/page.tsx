@@ -207,10 +207,7 @@ export default function Convos() {
     }
   };
 
-  console.log("process.env", process.env);
-
   const ContentViewMode = () => {
-    console.log("NEW CONTENT ENABLED", isNewContentEnabled);
     if (isNewContentEnabled) {
       return <NewContent />;
     }

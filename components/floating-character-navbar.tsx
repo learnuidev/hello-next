@@ -236,8 +236,6 @@ export const FloatingCharacterNavbar = ({
               >
                 {discoverMutation.isLoading ? (
                   <Icons.spinner spinPulse />
-                ) : discoverMutation.isSuccess ? (
-                  <Icons.checkCircle className="transition" />
                 ) : (
                   <Icons.language />
                 )}
@@ -264,6 +262,35 @@ export const FloatingCharacterNavbar = ({
                 }}
               >
                 {deleteComponentMutation.isLoading ? (
+                  <Icons.spinner spinPulse />
+                ) : (
+                  <Icons.trash />
+                )}
+              </button>
+            )}
+            {isAlreadyLearned && (
+              <button
+                className="text-xl text-black dark:text-white"
+                disabled={updateCharacterStatusMutation.isLoading}
+                onDoubleClick={() => {
+                  updateCharacterStatusMutation.mutateAsync({
+                    characterId: currentCharacter?.id,
+                    status: "DISCOVERED",
+                    forgottenAt: Date.now(),
+                    rightAt: Date.now(),
+                    statusHistory: (
+                      currentCharacter?.statusHistory || []
+                    ).concat({
+                      type: "status-change",
+                      createdAt: Date.now(),
+                      newStatus: "DISCOVERED",
+                      oldStatus: currentCharacter?.status,
+                    }),
+                    rightCount: (currentCharacter?.rightCount || 0) + 1,
+                  } as any);
+                }}
+              >
+                {updateCharacterStatusMutation.isLoading ? (
                   <Icons.spinner spinPulse />
                 ) : (
                   <Icons.powerOff />

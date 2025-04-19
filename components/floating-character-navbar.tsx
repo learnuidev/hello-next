@@ -268,7 +268,7 @@ export const FloatingCharacterNavbar = ({
                 )}
               </button>
             )}
-            {isAlreadyLearned && (
+            {isAlreadyLearned && currentCharacter?.status === "forgotten" && (
               <button
                 className="text-xl text-black dark:text-white"
                 disabled={updateCharacterStatusMutation.isLoading}

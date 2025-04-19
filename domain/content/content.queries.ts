@@ -6,7 +6,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { getContent, listContents } from "./content.api";
 
-type ListContentsResponse = {
+interface Content {
   id: string;
   sourceUrl?: string;
   uploadBucketKey?: string;
@@ -20,7 +20,10 @@ type ListContentsResponse = {
     id?: string;
     en?: string;
   }[];
-}[];
+}
+type ListContentsResponse = {
+  items: Content[];
+};
 
 export function useListContentsQuery(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
@@ -31,7 +34,14 @@ export function useListContentsQuery(options = {} as any) {
       const response = await listContents({
         Authorization: authUser?.jwt,
       });
-      return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
+
+      return {
+        ...response,
+        items: response?.items?.sort(
+          (a: any, b: any) => b?.createdAt - a?.createdAt
+        ),
+      };
+      // return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
       // }
     },
     {

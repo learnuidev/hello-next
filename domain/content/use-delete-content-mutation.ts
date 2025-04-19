@@ -53,13 +53,16 @@ export function useDeleteContentMutation(options = {} as any) {
         );
 
         queryClient.setQueryData([queryIds?.listContents], (old: any) => {
-          return old.map((item: any) => {
-            if (item?.id === data?.id) {
-              return data;
-            }
+          return {
+            ...old,
+            items: old?.items?.map((item: any) => {
+              if (item?.id === data?.id) {
+                return data;
+              }
 
-            return item;
-          });
+              return item;
+            }),
+          };
         });
 
         // queryClient.invalidateQueries([

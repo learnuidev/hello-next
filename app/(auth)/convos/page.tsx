@@ -58,7 +58,7 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
       ? data?.items
       : contentViewType === "favourites"
         ? favouriteContents?.items
-        : myContent;
+        : myContent?.items;
 
   const contentType = useContentTypeStore((state) => state.contentType);
 

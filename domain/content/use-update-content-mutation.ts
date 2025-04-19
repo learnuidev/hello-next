@@ -53,19 +53,17 @@ export function useUpdateContentMutation(options = {} as any) {
         );
 
         queryClient.setQueryData([queryIds?.listContents], (old: any) => {
-          return old.map((item: any) => {
-            if (item?.id === data?.id) {
-              return data;
-            }
+          return {
+            ...old,
+            items: old?.items?.map((item: any) => {
+              if (item?.id === data?.id) {
+                return data;
+              }
 
-            return item;
-          });
+              return item;
+            }),
+          };
         });
-
-        // queryClient.invalidateQueries([
-        //   queryIds?.listContents,
-        //   data?.journeyId,
-        // ]);
       },
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,

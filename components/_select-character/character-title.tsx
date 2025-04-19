@@ -148,6 +148,7 @@ export const CharacterTitle = (props: any) => {
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const StatusIcon = getStatusIcon(character?.status);
+  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
 
   const finalEnVal =
     englishMeanings?.length === 1
@@ -165,7 +166,7 @@ export const CharacterTitle = (props: any) => {
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
-      {brightMode && isNonRomanLang(lang || meaning?.lang) ? (
+      {showPinyin && isNonRomanLang(lang || meaning?.lang) ? (
         pinyins?.length > 1 ? (
           <h2 className="text-gray-900 dark:text-gray-400  font-extralight">
             {pinyins?.map((pinyin, i, ctx) => {

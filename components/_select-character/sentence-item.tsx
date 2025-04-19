@@ -32,6 +32,7 @@ export const SentenceItem = (props: any) => {
   const unEncoded = currentPhrase?.hanzi || currentPhrase?.input;
 
   const isSuperAdmin = useIsSuperAdmin();
+  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
 
   const { trackFunction } = useCanTrackFunction(currentPhrase, {
     lang: resolvedLang,
@@ -42,8 +43,6 @@ export const SentenceItem = (props: any) => {
   const router = useRouter();
 
   const deleteSentenceMutation = useDeleteSentenceMutation();
-
-  const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const characterAnalytics = useGetCharacterAnalytics({
     characterId: currentPhrase?.hanzi || currentPhrase?.input,
@@ -136,7 +135,7 @@ export const SentenceItem = (props: any) => {
             setIfExists({ ...currentPhrase });
           }}
         >
-          {brightMode && lang !== "en" && (
+          {showPinyin && lang !== "en" && (
             <span className="text-[16px] text-gray-600 dark:text-gray-400">
               {currentPhrase?.roman || currentPhrase?.pinyin}
             </span>

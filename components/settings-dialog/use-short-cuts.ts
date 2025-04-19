@@ -24,6 +24,7 @@ export function useShortCuts() {
   const setFocus = useViewType((state) => state.setFocus);
   const routeName = usePathname();
 
+  const setShowPinyin = useBrightModeStore((state: any) => state.setShowPinyin);
   const { data: unReviewedCharacters } = useUnreviwedCharacters();
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
@@ -122,9 +123,16 @@ export function useShortCuts() {
         event.preventDefault();
         router.push("/timeline");
       }
+
+      // if (["p"]?.includes(event.key)) {
+      //   event.preventDefault();
+      //   setShowPinyin((showPinyin: any) => !showPinyin);
+      // }
+
       if (["p"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
-        router.push("/pinyin");
+        setShowPinyin((showPinyin: any) => !showPinyin);
+        // router.push("/pinyin");
       }
       if (["e"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
@@ -363,5 +371,6 @@ export function useShortCuts() {
     setQuerySync,
     setQuery,
     setQuery2,
+    setShowPinyin,
   ]);
 }

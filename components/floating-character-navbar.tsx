@@ -69,6 +69,8 @@ export const FloatingCharacterNavbar = ({
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
+  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+  const setShowPinyin = useBrightModeStore((state: any) => state.setShowPinyin);
 
   const multiSentence = isMultiSentence(characterId);
 
@@ -107,6 +109,19 @@ export const FloatingCharacterNavbar = ({
               }}
             >
               <Icons.glassesRound />
+            </button>
+            <button
+              className={cn(
+                "text-xl",
+                showPinyin
+                  ? "dark:text-white text-black"
+                  : "dark:text-gray-500 text-gray-300"
+              )}
+              onClick={() => {
+                setShowPinyin((prev: any) => !prev);
+              }}
+            >
+              P
             </button>
 
             <button

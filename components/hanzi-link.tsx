@@ -70,6 +70,8 @@ export function HanziLink({
     type: "word",
   });
 
+  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+
   const lastAnswer = answers?.[answers?.length - 1];
 
   return (
@@ -79,7 +81,7 @@ export function HanziLink({
         className
       )}
     >
-      {brightMode && (
+      {showPinyin && (
         <p
           className={cn(
             "top-0 text-xs text-gray-400 w-24 text-center truncate",

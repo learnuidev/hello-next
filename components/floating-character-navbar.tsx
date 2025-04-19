@@ -18,6 +18,8 @@ import { getReviewSearchParams } from "./settings-dialog/use-get-review-url";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
+import { PinyinButton } from "./pinyin-button";
+import { BrightModeButton } from "./bright-mode-button";
 
 const isMultiSentence = (str: string) => {
   const isHanziMultiSentence = str.split("。")?.length > 1;
@@ -96,33 +98,9 @@ export const FloatingCharacterNavbar = ({
       <div className="flex items-center w-full justify-center">
         <div className="px-8  py-2 bg-gray-100 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
           <div className="space-x-8 flex justify-center items-center w-full">
-            <button
-              className={cn(
-                "text-xl",
-                !brightMode
-                  ? "dark:text-white text-black"
-                  : "dark:text-gray-500 text-gray-300"
-              )}
-              onClick={() => {
-                setBrightMode((prev: any) => !prev);
-                setReadMode(!readMode);
-              }}
-            >
-              <Icons.glassesRound />
-            </button>
-            <button
-              className={cn(
-                "text-xl",
-                showPinyin
-                  ? "dark:text-white text-black"
-                  : "dark:text-gray-500 text-gray-300"
-              )}
-              onClick={() => {
-                setShowPinyin((prev: any) => !prev);
-              }}
-            >
-              P
-            </button>
+            <BrightModeButton />
+
+            <PinyinButton />
 
             <button
               className="text-xl text-black dark:text-white"

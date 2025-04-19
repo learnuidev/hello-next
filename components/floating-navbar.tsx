@@ -21,6 +21,8 @@ import {
 } from "./settings-dialog/use-get-review-url";
 import { useIsDu } from "@/hooks/use-is-du";
 import { useIsDuLessons } from "@/hooks/use-is-du-lessons";
+import { BrightModeButton } from "./bright-mode-button";
+import { PinyinButton } from "./pinyin-button";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
@@ -95,22 +97,9 @@ const FloatingNavbarComp = () => {
     >
       <div className="overflow-y-auto px-8 py-2 bg-gray-50 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
         <div className="space-x-6 md:space-x-8 flex justify-center items-center w-full ">
-          {!["/", "/apps"]?.includes(routeName) && (
-            <button
-              className={cn(
-                "text-xl",
-                readMode
-                  ? "text-gray-800 dark:text-gray-300"
-                  : "text-gray-500 dark:text-gray-500"
-              )}
-              onClick={() => {
-                setBrightMode((prev: any) => !prev);
-                setReadMode(!readMode);
-              }}
-            >
-              <Icons.glassesRound />
-            </button>
-          )}
+          {!["/", "/apps"]?.includes(routeName) && <BrightModeButton />}
+
+          <PinyinButton />
 
           <Link
             href="/convos"

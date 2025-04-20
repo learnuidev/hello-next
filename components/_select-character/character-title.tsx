@@ -64,6 +64,7 @@ const CharacterItem = ({ val, lang }: { val: any; lang: string }) => {
   const comp = components?.find((char: any) => char?.hanzi === val);
 
   const color = calculateColor({
+    ...(learnedChar || selectedComp),
     tone: learnedChar?.tone_level || selectedComp?.tone_level,
   });
 
@@ -206,6 +207,7 @@ export const CharacterTitle = (props: any) => {
                 );
 
                 const color = calculateColor({
+                  ...(learnedChar || selectedComp),
                   tone: learnedChar?.tone_level || selectedComp?.tone_level,
                 });
 

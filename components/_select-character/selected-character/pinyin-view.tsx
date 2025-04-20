@@ -75,6 +75,7 @@ export const PinyinView = (props: { characterId: string }) => {
               );
 
               const color = calculateColor({
+                ...selectedComp,
                 tone: selectedComp?.tone_level,
               });
 

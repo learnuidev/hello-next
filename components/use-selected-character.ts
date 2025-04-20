@@ -171,7 +171,10 @@ export function useSelectedCharacterData({
 
   const toneLevel = (selectedComp || selectedComp2)?.tone_level;
 
-  const color = calculateColor({ tone: toneLevel });
+  const color = calculateColor({
+    ...(selectedComp || selectedComp2),
+    tone: toneLevel,
+  });
 
   const { data: sentences } = useListSentencesQuery({
     component: selectedChar,

@@ -47,6 +47,7 @@ export function HanziLink({
   );
 
   const color = calculateColor({
+    ...selectedComp,
     tone: selectedComp?.tone_level,
   });
 
@@ -157,6 +158,7 @@ export function HanziLink({
           );
 
           const color = calculateColor({
+            ...learnedChar,
             tone: learnedChar?.tone_level,
           });
 

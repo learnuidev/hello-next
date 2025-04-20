@@ -43,6 +43,7 @@ export function HanziLinkSentence({
   );
 
   const color = calculateColor({
+    ...selectedComp,
     tone: selectedComp?.tone_level,
   });
 
@@ -122,6 +123,7 @@ export function HanziLinkSentence({
           );
 
           const color = calculateColor({
+            ...learnedChar,
             tone: learnedChar?.tone_level,
           });
 

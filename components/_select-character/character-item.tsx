@@ -34,6 +34,7 @@ export const CharacterItem = ({ character, className }: ICharacterItem) => {
   const comp = components?.find((char: any) => char?.hanzi === character);
 
   const color = calculateColor({
+    ...(learnedChar || selectedComp),
     tone: learnedChar?.tone_level || selectedComp?.tone_level,
   });
 

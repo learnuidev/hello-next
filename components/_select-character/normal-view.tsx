@@ -54,6 +54,7 @@ export const NormalView = (props: SelectedCharacterProps) => {
                     ?.split("")
                     ?.map((val: string, idy: number) => {
                       const color = calculateColor({
+                        ...selectedComp,
                         tone: selectedComp?.tone_level,
                       });
 

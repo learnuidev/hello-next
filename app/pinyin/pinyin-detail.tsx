@@ -91,6 +91,7 @@ export const PinyinDetail = () => {
           );
 
           const color = calculateColor({
+            ...selectedComp,
             tone: selectedComp?.tone_level,
           });
 

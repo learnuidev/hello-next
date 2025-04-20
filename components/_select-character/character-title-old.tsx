@@ -47,6 +47,7 @@ export const CharacterTitle = (props: any) => {
   const brightMode = useReadModeStore((state) => state.readMode);
 
   const color = calculateColor({
+    ...selectedComp,
     tone: selectedComp?.tone_level,
   });
 
@@ -70,6 +71,7 @@ export const CharacterTitle = (props: any) => {
               const comp = components?.find((char: any) => char?.hanzi === val);
 
               const color = calculateColor({
+                ...learnedChar,
                 tone: learnedChar?.tone_level,
               });
               const hoverColor = calculateHoverColor({

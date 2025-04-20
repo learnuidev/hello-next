@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Icons } from "../ui/icons.v2";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 
 export function KaraokeMode({
   // playerRef,
@@ -38,6 +39,8 @@ export function KaraokeMode({
       return item?.start < currentTime && item?.end < currentTime;
     })
     ?.slice(-1);
+
+  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
 
   const romanOrPinyin =
     currentTranscription?.roman || currentTranscription?.pinyin;
@@ -107,9 +110,11 @@ export function KaraokeMode({
                 romanOrPinyin?.length < 16 ? "text-4x" : "text-lg"
               )}
             >
-              <p className={cn("text-xl font-light text-gray-400")}>
-                {romanOrPinyin}
-              </p>
+              {showPinyin && (
+                <p className={cn("text-xl font-light text-gray-400")}>
+                  {romanOrPinyin}
+                </p>
+              )}
 
               <p
                 className={cn(
@@ -133,7 +138,7 @@ export function KaraokeMode({
         </div>
 
         {/* Upcoming Lyrics */}
-        {currentTranscription?.lang === "zh" && (
+        {true && (
           <div className="overflow-y-auto mt-32 flex flex-col items-center justify-center">
             {transcriptions
               ?.filter((trans: any) => {
@@ -155,9 +160,9 @@ export function KaraokeMode({
                     seekTo(lyric?.start);
                   }}
                 >
-                  {lyric?.lang === "zh" && (
+                  {showPinyin && (
                     <p className="text-xs font-light text-gray-400">
-                      {lyric?.pinyin || lyric?.roman}
+                      {lyric?.roman || lyric?.pinyin}
                     </p>
                   )}
                   <p>{lyric?.input || lyric?.hanzi}</p>

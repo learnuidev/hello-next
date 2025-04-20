@@ -9,6 +9,7 @@ export const calculateColor = (dict: any) => {
     case 4:
       return "dark:text-pink-400 text-pink-400";
     case 5:
+    case 0:
       return "text-blue-500";
     default:
       return "";

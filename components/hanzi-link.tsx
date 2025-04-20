@@ -11,6 +11,7 @@ import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 import { cn } from "@/lib/utils";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { useCanTrackFunction } from "./use-can-track-function";
+import { CharacterItem } from "./_select-character/character-item";
 
 interface HSKCharacter {
   hanzi: string;
@@ -71,8 +72,6 @@ export function HanziLink({
   });
 
   const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
-
-  const lastAnswer = answers?.[answers?.length - 1];
 
   return (
     <div
@@ -146,7 +145,6 @@ export function HanziLink({
                         //   ? "dark:text-yellow-500"
                         "dark:text-gray-700 text-gray-200"
               } dark:hover:text-white text-xs transition lowercase text-center`
-              // "flex flex-col items-center"
             )}
           >
             {frequency}
@@ -162,29 +160,7 @@ export function HanziLink({
             tone: learnedChar?.tone_level,
           });
 
-          return (
-            <span
-              key={`${val}-${idx}`}
-              className={`${
-                brightMode || isCharactersLoading || isComponentsLoading
-                  ? // !selectedComp?.discoveredAt
-                    //   ? "text-gray-700"
-                    //   :
-                    "dark:text-gray-300 text-gray-700"
-                  : learnedChar
-                    ? learnedChar?.status === "forgotten"
-                      ? "dark:text-gray-900 text-gray-300"
-                      : `hover:${color} text-gray-300`
-                    : lastAnswer?.totalCharacters?.includes(character?.hanzi)
-                      ? "text-yellow-500"
-                      : selectedComp?.length > 1 || selectedComp?.group
-                        ? "dark:text-gray-300 text-gray-800"
-                        : "dark:text-gray-700 text-gray-200"
-              } dark:hover:text-white text-2xl transition lowercase w-full`}
-            >
-              {val}
-            </span>
-          );
+          return <CharacterItem character={val} key={`${val}-${idx}`} />;
         })}
 
         {character?.hskLevel && (

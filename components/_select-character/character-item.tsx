@@ -41,6 +41,12 @@ export const CharacterItem = ({ character, className }: ICharacterItem) => {
     tone: learnedChar?.tone_level || comp?.tone_level,
   });
 
+  if (character === "着") {
+    console.log("COLOR", color);
+    console.log("TONE LEVEL", selectedComp);
+    console.log("LEARNED CHAR", learnedChar);
+  }
+
   return (
     <span
       key={`${character}`}
@@ -50,7 +56,7 @@ export const CharacterItem = ({ character, className }: ICharacterItem) => {
             ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
             : learnedChar
               ? learnedChar?.status === "forgotten"
-                ? `text-gray-300 dark:text-gray-600 ${hoverColor}`
+                ? `text-gray-300 dark:text-gray-800 ${hoverColor}`
                 : `text-gray-300 ${color} ${hoverColor}`
               : selectedComp?.length > 1 || selectedComp?.group
                 ? `dark:text-white text-black ${hoverColor}`

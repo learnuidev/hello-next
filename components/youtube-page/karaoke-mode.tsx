@@ -67,7 +67,7 @@ export function KaraokeMode({
                   "text-gray-700"
                 )}
               >
-                {lyric?.input}
+                {lyric?.input || "n/a"}
               </div>
             ))}
           </div>
@@ -161,7 +161,7 @@ export function KaraokeMode({
                   }}
                 >
                   {showPinyin && (
-                    <p className="text-xs font-light text-gray-400">
+                    <p className="text-lg font-light text-gray-400">
                       {lyric?.roman || lyric?.pinyin}
                     </p>
                   )}

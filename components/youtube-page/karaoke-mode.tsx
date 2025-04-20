@@ -49,7 +49,7 @@ export function KaraokeMode({
     <div className="mt-4  flex flex-col justify-center items-center p-4">
       <div className="w-full max-w-4xl  backdrop-blur-md rounded-xl p-4">
         {/* Past Lyrics */}
-        {false && (
+        {true && (
           <div
             className={cn(
               "overflow-y-auto flex justify-center flex-col text-xs items-center",

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { resolveLangCode } from "@/libs/openai/utils";
 import { CharacterItem } from "../_select-character/character-item";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 
 export const ActiveTranscription = ({
   currentTime,
@@ -17,19 +18,23 @@ export const ActiveTranscription = ({
     (trans: any) => trans?.start < currentTime && trans?.end > currentTime
   );
 
+  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+
   const setIfExists = useSetIfExists();
 
   return (
     <div className="text-center my-2 sm:mt-8 mt-4 mb-4 h-20">
-      <Link
-        target="_blank"
-        href={`/nmm/${encodeURIComponent(
-          currentTranscription?.input || currentTranscription?.hanzi
-        )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
-        className="text-gray-400 text-sm sm:text-[16px]"
-      >
-        {currentTranscription?.pinyin || currentTranscription?.roman}
-      </Link>
+      {showPinyin && (
+        <Link
+          target="_blank"
+          href={`/nmm/${encodeURIComponent(
+            currentTranscription?.input || currentTranscription?.hanzi
+          )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
+          className="text-gray-400 text-sm sm:text-[16px]"
+        >
+          {currentTranscription?.roman || currentTranscription?.pinyin}
+        </Link>
+      )}
 
       <p
         onClick={() => {

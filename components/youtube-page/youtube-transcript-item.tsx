@@ -22,6 +22,7 @@ import {
   useSetIfExists,
 } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { CharacterItem } from "../_select-character/character-item";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 
 export const TranscriptItem = ({
   example,
@@ -214,6 +215,8 @@ export const TranscriptItem = ({
   const pinyinOrRoman = example?.pinyin ? "pinyin" : "roman";
   const hanziOrInput = example?.input ? "input" : "hanzi";
 
+  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+
   return (
     <div className="w-120 px-4">
       <div className="flex items-center space-x-4">
@@ -246,7 +249,7 @@ export const TranscriptItem = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="px-0 transition">
-                {(example?.pinyin || example?.roman) && (
+                {showPinyin && (example?.pinyin || example?.roman) && (
                   <p
                     className={`${
                       (timeStamp?.start ||
@@ -259,7 +262,7 @@ export const TranscriptItem = ({
                         : "dark:text-gray-400 text-gray-300"
                     } transition text-md text-left text-gray-500`}
                   >
-                    {example?.pinyin || example?.roman}
+                    {example?.roman || example?.pinyin}
                   </p>
                 )}
                 <div className="text-left">

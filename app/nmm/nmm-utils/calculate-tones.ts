@@ -10,8 +10,8 @@ export const calculateTones = (char: { pinyin: string }) => {
   const pinyin = char.pinyin;
   for (const key of Object.keys(tonesMap)) {
     for (const toneChar of key) {
-      if (pinyin.includes(toneChar)) {
-        return tonesMap[key];
+      if (pinyin?.includes(toneChar)) {
+        return tonesMap?.[key];
       }
     }
   }

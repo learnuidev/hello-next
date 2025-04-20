@@ -40,7 +40,7 @@ export function KaraokeMode({
     ?.slice(-1);
 
   const romanOrPinyin =
-    currentTranscription?.pinyin || currentTranscription?.roman;
+    currentTranscription?.roman || currentTranscription?.pinyin;
 
   return (
     <div className="mt-4  flex flex-col justify-center items-center p-4">
@@ -107,11 +107,10 @@ export function KaraokeMode({
                 romanOrPinyin?.length < 16 ? "text-4x" : "text-lg"
               )}
             >
-              {currentTranscription?.lang === "zh" && (
-                <p className={cn("text-xl font-light text-gray-400")}>
-                  {romanOrPinyin}
-                </p>
-              )}
+              <p className={cn("text-xl font-light text-gray-400")}>
+                {romanOrPinyin}
+              </p>
+
               <p
                 className={cn(
                   " dark:text-gray-200 text-black",

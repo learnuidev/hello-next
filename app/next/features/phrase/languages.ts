@@ -12,7 +12,14 @@ import nepaliFlag from "./ne.png";
 import indianFlag from "./hi.png";
 import pakistanFlag from "./pk.png";
 
-export const languages = [
+export interface ILanguage {
+  shortId: string;
+  id: string;
+  title: string;
+  src: string;
+}
+
+export const languages: ILanguage[] = [
   {
     shortId: "zh",
     id: "zh-CN",

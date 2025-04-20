@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { cn } from "@/lib/utils";
+import { ILanguage } from "./languages";
 
 export const LanguageButton = ({
   lang,
@@ -8,12 +9,9 @@ export const LanguageButton = ({
 }: {
   className?: string;
   onClick: () => void;
-  lang: {
-    id: string;
-    src: string;
-    title: string;
-  };
+  lang: ILanguage;
 }) => {
+  console.log("LANG", lang);
   return (
     <button key={lang.id} onClick={onClick} className={cn("text-white")}>
       <img src={lang.src} alt={lang.title} className="h-8" />

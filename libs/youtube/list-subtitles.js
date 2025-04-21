@@ -54,10 +54,23 @@ const getTrack = ({ tracks, lang }) => {
 
 const resolveTrack = ({ tracks, lang }) => {
   let zhTrack;
+
+  console.log("TRACKS", tracks);
+
   try {
-    zhTrack = getTrack({ lang: "zh-CN", tracks });
+    zhTrack = getTrack({ lang, tracks });
   } catch (err) {
     zhTrack = null;
+  }
+
+  console.log("TRACK", zhTrack);
+
+  if (!zhTrack) {
+    try {
+      zhTrack = getTrack({ lang: "zh-CN", tracks });
+    } catch (err) {
+      zhTrack = null;
+    }
   }
 
   if (!zhTrack) {
@@ -81,13 +94,13 @@ const resolveTrack = ({ tracks, lang }) => {
       zhTrack = null;
     }
   }
-  if (!zhTrack) {
-    try {
-      zhTrack = getTrack({ lang, tracks });
-    } catch (err) {
-      zhTrack = null;
-    }
-  }
+  // if (!zhTrack) {
+  //   try {
+  //     zhTrack = getTrack({ lang, tracks });
+  //   } catch (err) {
+  //     zhTrack = null;
+  //   }
+  // }
 
   if (!zhTrack) {
     zhTrack = tracks[0];
@@ -113,7 +126,12 @@ const genSubtitles = async ({ id, lang }) => {
     // console.log("LANG CODES", langCodes);
 
     let resolvedLang =
-      langCodes?.find((code) => "zh-Hans" === code) || langCodes?.[0] || lang;
+      langCodes?.find((code) => code?.includes(lang)) ||
+      langCodes?.find((code) => "zh-Hans" === code) ||
+      langCodes?.[0] ||
+      lang;
+
+    console.log("RESOLED LANG", resolvedLang);
 
     const zhTrack = resolveTrack({ lang: resolvedLang, tracks });
 
@@ -129,6 +147,8 @@ const genSubtitles = async ({ id, lang }) => {
 
     const tree = parser.parse(subtitles, "metadata");
 
+    console.log("TREE", tree);
+
     const newSubtitles = tree?.cues?.map((cue) => {
       const hanziProps =
         resolvedLang === "zh-CN"
@@ -141,7 +161,7 @@ const genSubtitles = async ({ id, lang }) => {
             };
 
       return {
-        lang: "zh",
+        lang,
         start: cue?.startTime,
         end: cue?.endTime,
         ...hanziProps,

@@ -26,7 +26,7 @@ export const UploadFileButton = (
     },
     props?.context,
     {
-      types: props?.types,
+      types: [...(props?.types || []), "webm"],
     }
   );
 

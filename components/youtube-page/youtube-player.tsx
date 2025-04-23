@@ -32,6 +32,7 @@ import { useContentEditStore } from "./use-content-edit-store";
 import { useIsSmall } from "./utils/use-is-small";
 import { getActiveTranscriptions } from "./get-active-transcriptions";
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
+import { isVideoUrl } from "@/app/(auth)/convos/utils/is-video-url";
 
 const MAX_LIMIT = 9000;
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
@@ -58,21 +59,39 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const start = searchParams.get("start");
 
+  const { data: lesson } = useGetContentQuery({ contentId: lessonId });
+
+  const finalUrl = lesson?.audio;
+
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;
 
     if (start) {
-      playerRef.current.seekTo(start, "seconds");
+      if (isVideoUrl(finalUrl)) {
+        if (`${currentTime}` !== `${start}`) {
+          playerRef.current.seekTo(start, "seconds");
 
-      try {
-        playerRef.current?.player?.player?.play();
-      } catch (err) {
-        console.error(err);
+          try {
+            playerRef.current?.player?.player?.play();
+          } catch (err) {
+            console.error(err);
+          }
+        }
+
+        // playerRef.current?.player?.player?.player?.play();
+        // console.log("PLAYER REF", playerRef);
+      } else {
+        playerRef.current.seekTo(start, "seconds");
+        try {
+          playerRef.current?.player?.player?.play();
+        } catch (err) {
+          console.error(err);
+        }
       }
     }
 
     // playerRef.current.seekTo(0, 'seconds')
-  }, [start]);
+  }, [start, finalUrl, currentTime]);
 
   const [loopCounter, setLoopCounter] = useState(0);
 
@@ -82,14 +101,11 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     genSents: false,
   });
 
-  const { data: lesson } = useGetContentQuery({ contentId: lessonId });
-
   const transcriptions = lesson?.transcriptions
     ? lesson?.transcriptions
     : transcriptionsData?.length
       ? transcriptionsData
       : lesson?.transcriptions;
-  const finalUrl = lesson?.audio;
 
   const togglePlay = useCallback(() => {
     // alert("yo");

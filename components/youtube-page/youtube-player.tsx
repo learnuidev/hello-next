@@ -68,7 +68,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
     if (start) {
       if (isVideoUrl(finalUrl)) {
-        if (`${currentTime}` !== `${start}`) {
+        if (!currentTime && `${currentTime}` !== `${start}`) {
           playerRef.current.seekTo(start, "seconds");
 
           try {

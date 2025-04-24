@@ -323,7 +323,8 @@ export const TranscriptItem = ({
           className="w-full"
           value={timeStamp?.[pinyinOrRoman] || example?.[pinyinOrRoman]}
           onChange={(event) => {
-            setTimer(pinyinOrRoman, event?.target?.value);
+            setTimer("pinyin", event?.target?.value);
+            setTimer("roman", event?.target?.value);
           }}
         />
       )}

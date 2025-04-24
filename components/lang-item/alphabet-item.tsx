@@ -6,6 +6,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { cn } from "@/lib/utils";
 
 const useIsLearned = ({ characterId }: { characterId: string }) => {
   const { data } = useListCharactersQuery();
@@ -21,11 +22,13 @@ export const AlphabetItem = ({ prop, lang }: any) => {
     <Link
       key={JSON.stringify(prop)}
       href={lang ? `/nmm/${prop.input}?lang=${lang}` : `/nmm/${prop.input}`}
-      className={`${data ? "dark:text-white" : "dark:text-gray-500 text-gray-200"} dark:hover:text-white p-6 flex items-center flex-col lowercase`}
+      className={cn(
+        data ? "dark:text-white" : "dark:text-gray-500 text-gray-200",
+        `dark:hover:text-white p-6 flex items-center flex-col lowercase`,
+        "dark:text-white text-gray-800 hover:scale-125 transition-all"
+      )}
     >
-      <span
-        className={`block text-sm ${data ? "dark:text-slate-300" : "dark:text-slate-600"}`}
-      >
+      <span className={`block text-sm dark:text-gray-300 text-gray-700`}>
         {prop?.roman}
       </span>
 

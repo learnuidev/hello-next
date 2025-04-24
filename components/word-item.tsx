@@ -74,15 +74,16 @@ export const WordItem = ({
             <span
               className={cn(
                 "block p-0 m-0 text-sm",
-                prop?.roman || prop?.pinyin ? "" : "text-black"
+                prop?.roman || prop?.pinyin ? "" : "text-black",
+                "text-gray-700 dark:text-gray-300"
               )}
             >
-              {prop?.roman || prop?.pinyin || "yo"}
+              {prop?.roman || prop?.pinyin || ""}
             </span>
           )
         ) : (
           <span className={cn("block p-0 m-0 text-sm", "text-black")}>
-            {prop?.roman || prop?.pinyin || "yo"}
+            {prop?.roman || prop?.pinyin || ""}
           </span>
         )}
         <span
@@ -96,8 +97,8 @@ export const WordItem = ({
             setShow(false);
           }}
           className={cn(
-            !prop?.level ? "dark:text-white text-gray-800" : "text-gray-400",
-            "w-full text-center text-2xl  hover:text-white transition"
+            "dark:text-gray-400 text-gray-700",
+            "w-full text-center text-2xl  dark:hover:text-white hover:text-black transition-all"
           )}
         >
           {" "}

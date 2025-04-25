@@ -25,7 +25,7 @@ export const StoryEditor = ({
   const storyId = crypto.randomUUID();
 
   return (
-    <div className="my-16 text-black dark:text-white justify-start w-full md:9/12 lg:w-7/12">
+    <div className="my-16 text-black dark:text-white justify-start w-full">
       <Editor
         readOnly={false}
         content={initStory || story}

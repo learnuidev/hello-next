@@ -4,97 +4,26 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { cn } from "@/lib/utils";
 
+import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
 import { getStatusIcon } from "@/app/(auth)/insights/insights-v2/precision-insight-view/status-icons";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
+import { BookmarkButton } from "@/app/nmm/bookmark-button";
 import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
 import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
-import { useGetCharacter } from "@/hooks/use-get-character";
-import { useReadModeStore } from "@/stores/use-readmode-store";
-import Link from "next/link";
-import { Icons } from "../ui/icons.v2";
-import { CharacterTrackButton } from "./selected-character/character-track-button";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
-import { useState } from "react";
-import { characterStore } from "./character-store";
-import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
-import { BookmarkButton } from "@/app/nmm/bookmark-button";
+import { useGetCharacter } from "@/hooks/use-get-character";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { Icons } from "../ui/icons.v2";
 import { useCanTrackFunction } from "../use-can-track-function";
+import { characterStore } from "./character-store";
+import { CharacterTrackButton } from "./selected-character/character-track-button";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
-
-const CharacterItem = ({ val, lang }: { val: any; lang: string }) => {
-  const { data: learnedCharacters2, isLoading: isCharactersLoading } =
-    useListCharactersQuery();
-  const searchParams = useSearchParams();
-
-  const context = searchParams?.get("context");
-
-  const pinyinInput = characterStore((state) => state.pinyin);
-  const setPinyin = characterStore((state) => state.setPinyin);
-
-  const componentId = useGetComponentId();
-
-  const character = useGetCharacter({ characterId: componentId });
-
-  const { speak } = useSpeak(lang);
-
-  const { data: components, isLoading: isComponentsLoading } =
-    useListComponents({ includeAll: true });
-
-  const { data: selectedComp } = useGetComponentQuery({
-    hanzi: componentId,
-  });
-
-  const { data: meaning, isLoading } = useListMeaningsQuery({
-    content: componentId,
-    lang,
-  });
-
-  // const brightMode = useReadModeStore((state) => state.readMode);
-
-  const brightMode = useBrightModeStore((state: any) => state.mode);
-
-  const StatusIcon = getStatusIcon(character?.status);
-
-  const learnedChar = learnedCharacters2?.find(
-    (char: any) => char?.hanzi === val
-  );
-  const comp = components?.find((char: any) => char?.hanzi === val);
-
-  const color = calculateColor({
-    ...(learnedChar || selectedComp),
-    tone: learnedChar?.tone_level || selectedComp?.tone_level,
-  });
-
-  const hoverColor = calculateHoverColor({
-    tone: learnedChar?.tone_level || comp?.tone_level,
-  });
-
-  return (
-    <Link
-      href={`/nmm/${val}?lang=zh${context ? `&context=${context}` : ""}`}
-      key={`${val}`}
-      className={`${
-        brightMode || isCharactersLoading
-          ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
-          : // learnedCharacters.includes(prop?.hanzi)
-            learnedChar
-            ? learnedChar?.status === "forgotten"
-              ? `text-gray-200 dark:text-gray-600 ${hoverColor}`
-              : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
-                //   ? "text-rose-500"
-                `${color} text-gray-300 ${hoverColor}`
-            : selectedComp?.length > 1 || selectedComp?.group
-              ? `dark:text-gray-500 text-gray-200 ${hoverColor}`
-              : `dark:text-gray-200 text-gray-800 ${hoverColor}`
-      } ${hoverColor} text-2xl transition lowercase font-light`}
-    >
-      {val}
-    </Link>
-  );
-};
+import { useCharacterEditStore } from "./use-character-edit-store";
+import { useState } from "react";
+import { useUpdateMeaningMutation } from "@/domain/sentence/use-update-meaning-mutation";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -107,10 +36,15 @@ export const CharacterTitle = (props: any) => {
     useListCharactersQuery();
   const searchParams = useSearchParams();
 
+  const [newPinyin, setNewPinyin] = useState("");
+
   const context = searchParams?.get("context");
 
   const pinyinInput = characterStore((state) => state.pinyin);
   const setPinyin = characterStore((state) => state.setPinyin);
+
+  const setEdit = useCharacterEditStore((state) => state.setEdit);
+  const edit = useCharacterEditStore((state) => state.edit);
 
   const componentId = useGetComponentId();
 
@@ -134,6 +68,8 @@ export const CharacterTitle = (props: any) => {
     content: componentId,
     lang,
   });
+
+  const updateMeaningMutation = useUpdateMeaningMutation();
 
   const { trackFunction } = useCanTrackFunction(
     { hanzi: characterId, input: characterId },
@@ -167,7 +103,15 @@ export const CharacterTitle = (props: any) => {
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
-      {showPinyin && isNonRomanLang(lang || meaning?.lang) ? (
+      {edit && meaning?.id ? (
+        <input
+          value={newPinyin || meaning?.details?.pinyin}
+          onChange={(event: any) => {
+            setNewPinyin(event?.target.value);
+          }}
+          className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full"
+        />
+      ) : showPinyin && isNonRomanLang(lang || meaning?.lang) ? (
         pinyins?.length > 1 ? (
           <h2 className="text-gray-900 dark:text-gray-400  font-extralight">
             {pinyins?.map((pinyin, i, ctx) => {
@@ -285,22 +229,67 @@ export const CharacterTitle = (props: any) => {
       </h2>
 
       <div className="space-x-4 flex">
-        <button
-          onClick={() => {
-            speak(selectedCompInput);
-          }}
-        >
-          <Icons.volume className="text-2xl" />
-        </button>
+        {!edit && (
+          <button
+            onClick={() => {
+              speak(selectedCompInput);
+            }}
+          >
+            <Icons.volume className="text-2xl" />
+          </button>
+        )}
 
-        <CharacterTrackButton />
+        {!edit && <CharacterTrackButton />}
 
-        <BookmarkButton
-          hanzi={characterId}
-          lang={lang}
-          en={finalEnVal}
-          pinyin={selectedPinyin}
-        />
+        {!edit && (
+          <BookmarkButton
+            hanzi={characterId}
+            lang={lang}
+            en={finalEnVal}
+            pinyin={selectedPinyin}
+          />
+        )}
+
+        {edit && meaning?.id ? (
+          <>
+            <button
+              onClick={() => {
+                setEdit(false);
+              }}
+            >
+              Cancel
+            </button>
+
+            <button
+              disabled={updateMeaningMutation?.isLoading}
+              onClick={() => {
+                updateMeaningMutation
+                  .mutateAsync({
+                    id: meaning?.id,
+                    details: {
+                      ...meaning?.details,
+                      pinyin: newPinyin || meaning?.details?.pinyin,
+                    },
+                  })
+                  .then((resp) => {
+                    setEdit(false);
+                  });
+              }}
+            >
+              Save
+            </button>
+          </>
+        ) : (
+          meaning?.id && (
+            <button
+              onClick={() => {
+                setEdit(true);
+              }}
+            >
+              <Icons.edit className="text-xl" />{" "}
+            </button>
+          )
+        )}
       </div>
     </div>
   );

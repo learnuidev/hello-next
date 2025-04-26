@@ -24,6 +24,7 @@ import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { useCharacterEditStore } from "./use-character-edit-store";
 import { useState } from "react";
 import { useUpdateMeaningMutation } from "@/domain/sentence/use-update-meaning-mutation";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -35,6 +36,8 @@ export const CharacterTitle = (props: any) => {
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersQuery();
   const searchParams = useSearchParams();
+
+  const isSuperAdmin = useIsSuperAdmin();
 
   const [newPinyin, setNewPinyin] = useState("");
 
@@ -103,7 +106,7 @@ export const CharacterTitle = (props: any) => {
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
-      {edit && meaning?.id ? (
+      {edit && meaning?.id && isSuperAdmin ? (
         <input
           value={newPinyin || meaning?.details?.pinyin}
           onChange={(event: any) => {
@@ -250,16 +253,8 @@ export const CharacterTitle = (props: any) => {
           />
         )}
 
-        {edit && meaning?.id ? (
-          <>
-            <button
-              onClick={() => {
-                setEdit(false);
-              }}
-            >
-              Cancel
-            </button>
-
+        {edit && meaning?.id && isSuperAdmin ? (
+          <div className="space-x-4">
             <button
               disabled={updateMeaningMutation?.isLoading}
               onClick={() => {
@@ -278,9 +273,18 @@ export const CharacterTitle = (props: any) => {
             >
               Save
             </button>
-          </>
+
+            <button
+              onClick={() => {
+                setEdit(false);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
         ) : (
-          meaning?.id && (
+          meaning?.id &&
+          isSuperAdmin && (
             <button
               onClick={() => {
                 setEdit(true);

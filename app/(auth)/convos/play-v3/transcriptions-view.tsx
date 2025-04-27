@@ -56,38 +56,39 @@ export const TranscriptionsView = ({
                     textSize?.[3]
                   )}
                 >
-                  {viewPinyin && ["zh", "zh-CN"].includes(subtitle.lang) && (
-                    <Link
-                      onClick={() => {
-                        setIfExists({ ...subtitle, contentId });
-                      }}
-                      href={`/nmm/${encodeURIComponent(subtitle?.input || subtitle.hanzi)}?lang=${subtitle?.lang || "zh"}`}
-                      target="_blank"
-                      className={cn(
-                        subtitle?.pinyin ? "text-gray-500" : "text-black",
-                        "text-sm",
-                        currentTime > subtitle?.start &&
-                          currentTime < subtitle.end
-                          ? "text-white "
-                          : "text-gray-500",
+                  {viewPinyin &&
+                    ["zh", "zh-CN", "ur"].includes(subtitle.lang) && (
+                      <Link
+                        onClick={() => {
+                          setIfExists({ ...subtitle, contentId });
+                        }}
+                        href={`/nmm/${encodeURIComponent(subtitle?.input || subtitle.hanzi)}?lang=${subtitle?.lang || "zh"}`}
+                        target="_blank"
+                        className={cn(
+                          subtitle?.pinyin ? "text-gray-500" : "text-black",
+                          "text-sm",
+                          currentTime > subtitle?.start &&
+                            currentTime < subtitle.end
+                            ? "text-white "
+                            : "text-gray-500",
 
-                        textSize?.[0],
-                        activeSubtitle?.sentence === subtitle?.sentence
-                          ? "text-gray-400"
-                          : "text-gray-600",
-                        currentTime > subtitle?.start &&
-                          currentTime < subtitle.end
-                          ? "dark:text-white text-black"
-                          : "",
-                        currentTime === 0
-                          ? "dark:text-gray-300 text-black"
-                          : "",
-                        "text-start"
-                      )}
-                    >
-                      {subtitle?.roman || subtitle?.pinyin || ""}
-                    </Link>
-                  )}
+                          textSize?.[0],
+                          activeSubtitle?.sentence === subtitle?.sentence
+                            ? "text-gray-400"
+                            : "text-gray-600",
+                          currentTime > subtitle?.start &&
+                            currentTime < subtitle.end
+                            ? "dark:text-white text-black"
+                            : "",
+                          currentTime === 0
+                            ? "dark:text-gray-300 text-black"
+                            : "",
+                          "text-start"
+                        )}
+                      >
+                        {subtitle?.roman || subtitle?.pinyin || ""}
+                      </Link>
+                    )}
 
                   {brightMode ? (
                     <div>

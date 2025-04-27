@@ -268,6 +268,14 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     (chapter: any) => chapter?.start < currentTime && chapter?.end > currentTime
   );
 
+  const finishedChapters = lesson?.chapters?.filter((chapter: any) => {
+    return currentTime > chapter?.start;
+  });
+
+  const lastFinishedChapter = finishedChapters?.[finishedChapters?.length - 1];
+
+  console.log("LAST FINISHED", lastFinishedChapter);
+
   const trans = useMemo(() => {
     if (chapterView) {
       const filteredTrans = transcriptions?.filter(
@@ -276,14 +284,25 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       );
 
       if (!filteredTrans?.length) {
-        return transcriptions;
+        return transcriptions?.filter(
+          (t: any) =>
+            t?.start >= lastFinishedChapter?.start &&
+            t?.end <= lastFinishedChapter?.end
+        );
       }
 
       return filteredTrans;
     }
 
     return transcriptions;
-  }, [chapterView, currentChapter?.end, currentChapter?.start, transcriptions]);
+  }, [
+    chapterView,
+    currentChapter?.end,
+    currentChapter?.start,
+    lastFinishedChapter?.end,
+    lastFinishedChapter?.start,
+    transcriptions,
+  ]);
 
   const groupedTranscriptions = groupBy(trans || []);
 
@@ -517,105 +536,150 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             />
           </div>
 
+          {lesson?.chapters && (
+            <div className={"flex justify-center items-center gap-4 mt-8"}>
+              {lesson?.chapters?.map((chapter: any) => {
+                return (
+                  <button
+                    key={chapter?.description}
+                    onClick={() => {
+                      seekAndPlay(chapter?.start);
+                    }}
+                    className={` h-4 w-4 rounded-full text dark:fill-white`}
+                  >
+                    <div
+                      className={` ${
+                        (chapter?.start > currentTime &&
+                          chapter?.end < currentTime) ||
+                        lastFinishedChapter?.start === chapter?.start
+                          ? "dark:bg-white bg-black"
+                          : "dark:bg-slate-600 bg-slate-200 "
+                      } h-2 w-2 rounded-full `}
+                    ></div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
           <ActiveTranscription
             currentTime={currentTime}
             transcriptions={transcriptions}
             contentId={contentId}
           />
 
-          {lesson?.chapters && (
+          {/* {lesson?.chapters && (
             <div className="flex flex-col justify-start w-full items-start space-y-4 mt-8 px-8">
-              {lesson?.chapters?.map((chapter: any) => {
-                return (
-                  <button
-                    onClick={() => {
-                      seekAndPlay(chapter?.start);
-                    }}
-                    className={cn(
-                      currentTime > chapter?.start && currentTime < chapter?.end
-                        ? "dark:text-white text-black"
-                        : "text-gray-500"
-                    )}
-                    key={chapter?.description}
-                  >
-                    {" "}
-                    {chapter?.title}{" "}
-                  </button>
-                );
-              })}
+              {lesson?.chapters
+                ?.filter((chapter: any) => {
+                  return chapter?.end >= currentTime;
+                })
+                ?.map((chapter: any) => {
+                  return (
+                    <button
+                      onClick={() => {
+                        seekAndPlay(chapter?.start);
+                      }}
+                      className={cn(
+                        currentTime > chapter?.start &&
+                          currentTime < chapter?.end
+                          ? "dark:text-white text-black"
+                          : "text-gray-500"
+                      )}
+                      key={chapter?.description}
+                    >
+                      {" "}
+                      {chapter?.title}{" "}
+                    </button>
+                  );
+                })}
             </div>
-          )}
+          )} */}
         </div>
 
-        {viewMode === "karaoke" ? (
-          <div
-            className={
-              isVideoHidden
-                ? "col-span-12 mx-12 md:mx-32"
-                : "col-span-12 md:col-span-5"
-            }
-          >
-            <KaraokeMode
-              isPlaying={isPlaying}
-              seekTo={(time: number) => {
-                playerRef.current.seekTo(time, "seconds");
-
-                try {
-                  playerRef.current?.player?.player?.play();
-                } catch (err) {
-                  console.error(err);
-                }
-              }}
-              play={() => {
-                try {
-                  playerRef.current?.player?.player?.play();
-                } catch (err) {
-                  console.error(err);
-                }
-              }}
-              transcriptions={transcriptions}
-              currentTime={currentTime}
-            />
-          </div>
-        ) : viewMode === "para" ? (
-          <div
-            className={cn(
-              isVideoHidden
-                ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
-                : "col-span-12 md:col-span-5",
-              "pb-12"
-            )}
-          >
-            {isVideoHidden && (
-              <div>
-                <ActiveTranscription
-                  currentTime={currentTime}
-                  transcriptions={transcriptions}
-                  contentId={contentId}
-                />
-              </div>
-            )}
+        <div
+          className={
+            isVideoHidden
+              ? "col-span-12 mx-12 md:mx-32"
+              : "col-span-12 md:col-span-5"
+          }
+        >
+          {lesson?.chapters && (
+            <h1 className="text-center mb-4">
+              {(currentChapter || lastFinishedChapter)?.title}
+            </h1>
+          )}
+          {viewMode === "karaoke" ? (
             <div
-              className={`${
+              className={
                 isVideoHidden
-                  ? "md:col-span-7 col-span-12"
-                  : "md:col-span-5 col-span-12"
-              } w-full text-center`}
+                  ? "col-span-12 mx-12 md:mx-32"
+                  : "col-span-12 md:col-span-5"
+              }
             >
-              <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] rounded-md border border-gray-200 dark:border-gray-900 w-full pb-8">
-                <div className="space-y-8">
-                  {(active !== MAX_LIMIT
-                    ? [Object.values(groupedTranscriptions)?.[0]]
-                    : Object.values(groupedTranscriptions)
-                  )?.map((transcriptions: any) => {
-                    const hanzis = transcriptions
-                      ?.map((t: any) => t?.hanzi)
-                      ?.join("");
-                    return (
-                      <div key={JSON.stringify(transcriptions)}>
-                        <div className="flex flex-wrap">
-                          {(active !== MAX_LIMIT ? group : transcriptions).map(
-                            (transcription: any) => {
+              <KaraokeMode
+                isPlaying={isPlaying}
+                seekTo={(time: number) => {
+                  playerRef.current.seekTo(time, "seconds");
+
+                  try {
+                    playerRef.current?.player?.player?.play();
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }}
+                play={() => {
+                  try {
+                    playerRef.current?.player?.player?.play();
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }}
+                transcriptions={transcriptions}
+                currentTime={currentTime}
+              />
+            </div>
+          ) : viewMode === "para" ? (
+            <div
+              className={cn(
+                isVideoHidden
+                  ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
+                  : "col-span-12 md:col-span-5",
+                "pb-12"
+              )}
+            >
+              {isVideoHidden && (
+                <div>
+                  <ActiveTranscription
+                    currentTime={currentTime}
+                    transcriptions={transcriptions}
+                    contentId={contentId}
+                  />
+                </div>
+              )}
+              <div
+                className={`${
+                  isVideoHidden
+                    ? "md:col-span-7 col-span-12"
+                    : "md:col-span-5 col-span-12"
+                } w-full text-center`}
+              >
+                <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] rounded-md border border-gray-200 dark:border-gray-900 w-full pb-8">
+                  <div className="space-y-8">
+                    {(active !== MAX_LIMIT
+                      ? [Object.values(groupedTranscriptions)?.[0]]
+                      : Object.values(groupedTranscriptions)
+                    )?.map((transcriptions: any) => {
+                      const hanzis = transcriptions
+                        ?.map((t: any) => t?.hanzi)
+                        ?.join("");
+                      return (
+                        <div key={JSON.stringify(transcriptions)}>
+                          <div className="flex flex-wrap">
+                            {(active !== MAX_LIMIT
+                              ? group
+                              : transcriptions
+                            ).map((transcription: any) => {
                               return (
                                 <span
                                   role="button"
@@ -646,124 +710,124 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                   {"  "}
                                 </span>
                               );
-                            }
-                          )}
-                        </div>
+                            })}
+                          </div>
 
-                        <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
-                          <Link
-                            // href=""
-                            target="_blank"
-                            href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                              hanzis
-                            )}&op=translate`}
-                            className="text-gray-500 hover:text-black dark:hover:text-white"
-                          >
-                            <FontAwesomeIcon icon={faGoogle} />
-                          </Link>
+                          <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
+                            <Link
+                              // href=""
+                              target="_blank"
+                              href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                                hanzis
+                              )}&op=translate`}
+                              className="text-gray-500 hover:text-black dark:hover:text-white"
+                            >
+                              <FontAwesomeIcon icon={faGoogle} />
+                            </Link>
 
-                          <Link
-                            // href=""
-                            href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                              hanzis
-                            )}`}
-                            className="text-gray-500 hover:text-black dark:hover:text-white"
-                            target="_blank"
-                          >
-                            <FontAwesomeIcon icon={faLanguage} />
-                          </Link>
+                            <Link
+                              // href=""
+                              href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                                hanzis
+                              )}`}
+                              className="text-gray-500 hover:text-black dark:hover:text-white"
+                              target="_blank"
+                            >
+                              <FontAwesomeIcon icon={faLanguage} />
+                            </Link>
 
-                          {/* <Link
+                            {/* <Link
                       href={`/nmm/${encodeURIComponent(hanzis)}${transcriptions?.[0]?.lang ? `?lang=${resolveLangCode(transcriptions?.[0]?.lang)}` : ""}`}
                       className="text-gray-500 hover:text-black dark:hover:text-white"
                       target="_blank"
                     >
                       <Icons.mandarin />
                     </Link> */}
-                          <button
-                            onClick={() => {
-                              if (toggleLoops?.length) {
-                                setToggleLoops([]);
-                              } else {
-                                setToggleLoops(transcriptions);
-                              }
-                            }}
-                          >
-                            <FontAwesomeIcon
-                              className={cn(
-                                "hover:text-black dark:hover:text-white",
-                                toggleLoops?.find((item: any) =>
-                                  transcriptions?.find(
-                                    (x: any) => x.end === item?.end
+                            <button
+                              onClick={() => {
+                                if (toggleLoops?.length) {
+                                  setToggleLoops([]);
+                                } else {
+                                  setToggleLoops(transcriptions);
+                                }
+                              }}
+                            >
+                              <FontAwesomeIcon
+                                className={cn(
+                                  "hover:text-black dark:hover:text-white",
+                                  toggleLoops?.find((item: any) =>
+                                    transcriptions?.find(
+                                      (x: any) => x.end === item?.end
+                                    )
                                   )
-                                )
-                                  ? "dark:text-white text-red-400"
-                                  : "text-gray-500"
-                              )}
-                              icon={faRepeat}
-                            />
-                          </button>
+                                    ? "dark:text-white text-red-400"
+                                    : "text-gray-500"
+                                )}
+                                icon={faRepeat}
+                              />
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
+                </ScrollArea>
+              </div>
+            </div>
+          ) : transcriptions?.length ? (
+            <div
+              className={`${isVideoHidden ? "col-span-12" : "md:col-span-5 col-span-12"} w-full`}
+            >
+              <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md border dark:border-gray-900 border-gray-200 p-0 pb-16">
+                <div className="sm:space-y-8 w-full">
+                  {(active !== MAX_LIMIT || chapterView
+                    ? group
+                    : transcriptions || []
+                  )
+                    .filter((script: any) => {
+                      if (focusMode) {
+                        return (
+                          (script?.timestamp?.[0] || script?.start) <
+                            currentTime &&
+                          (script?.timestamp?.[1] || script?.end) > currentTime
+                        );
+                      }
+
+                      return true;
+                    })
+                    .map((example: any, idx: any) => {
+                      // return "TODO";
+                      return (
+                        <TranscriptItem
+                          example={example}
+                          key={`${example?.hanzi}-${idx}`}
+                          toggleLoops={toggleLoops}
+                          setToggleLoops={setToggleLoops}
+                          currentTime={currentTime}
+                          focusMode={focusMode}
+                          isVideoHidden={isVideoHidden}
+                          playerRef={playerRef}
+                          learnedCharacters={learnedCharacters}
+                          lessonId={lessonId}
+                          // components={components}
+                        />
+                      );
+                    })}
                 </div>
               </ScrollArea>
+
+              {isVideoHidden && (
+                <div>
+                  <ActiveTranscription
+                    currentTime={currentTime}
+                    transcriptions={transcriptions}
+                    contentId={contentId}
+                  />
+                </div>
+              )}
             </div>
-          </div>
-        ) : transcriptions?.length ? (
-          <div
-            className={`${isVideoHidden ? "col-span-12" : "md:col-span-5 col-span-12"} w-full`}
-          >
-            <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md border dark:border-gray-900 border-gray-200 p-0 pb-16">
-              <div className="sm:space-y-8 w-full">
-                {(active !== MAX_LIMIT || chapterView
-                  ? group
-                  : transcriptions || []
-                )
-                  .filter((script: any) => {
-                    if (focusMode) {
-                      return (
-                        (script?.timestamp?.[0] || script?.start) <
-                          currentTime &&
-                        (script?.timestamp?.[1] || script?.end) > currentTime
-                      );
-                    }
-
-                    return true;
-                  })
-                  .map((example: any, idx: any) => {
-                    // return "TODO";
-                    return (
-                      <TranscriptItem
-                        example={example}
-                        key={`${example?.hanzi}-${idx}`}
-                        toggleLoops={toggleLoops}
-                        setToggleLoops={setToggleLoops}
-                        currentTime={currentTime}
-                        focusMode={focusMode}
-                        isVideoHidden={isVideoHidden}
-                        playerRef={playerRef}
-                        learnedCharacters={learnedCharacters}
-                        lessonId={lessonId}
-                        // components={components}
-                      />
-                    );
-                  })}
-              </div>
-            </ScrollArea>
-
-            {isVideoHidden && (
-              <div>
-                <ActiveTranscription
-                  currentTime={currentTime}
-                  transcriptions={transcriptions}
-                  contentId={contentId}
-                />
-              </div>
-            )}
-          </div>
-        ) : null}
+          ) : null}
+        </div>
       </div>
     </div>
   );

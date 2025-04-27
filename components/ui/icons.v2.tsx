@@ -83,6 +83,7 @@ import {
   faLightbulb,
   faLink,
   faList,
+  faList12,
   faLock,
   faMagicWandSparkles,
   faMagnifyingGlassChart,
@@ -355,6 +356,7 @@ export const Icons = {
   bookOpen: createFAIcon(faBookOpen),
   cat: createFAIcon(faCatSpace),
   spaceStation: createFAIcon(faSpaceStationMoon),
+  listView: createFAIcon(faList12),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

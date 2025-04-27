@@ -1,7 +1,6 @@
 "use client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChartColumn } from "@fortawesome/sharp-solid-svg-icons/faChartColumn";
 
 import { faXmark } from "@fortawesome/pro-light-svg-icons/faXmark";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -9,14 +8,10 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { useConvosStore } from "@/stores/convos-store";
 
 import { Icons } from "@/components/ui/icons.v2";
-import {
-  faMicrophone,
-  faSeedling,
-  faTypewriter,
-} from "@fortawesome/sharp-solid-svg-icons";
-import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
-import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
+import { useGetContentQuery } from "@/domain/content/content.queries";
+import { faTypewriter } from "@fortawesome/sharp-solid-svg-icons";
+import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -99,9 +94,6 @@ const options = [
 export const ConvosNavBar = () => {
   const routeName = usePathname();
 
-  // CONVOS
-  const lessonId = useConvosStore((state: any) => state?.convoId);
-  const setLessonId = useConvosStore((state: any) => state?.setConvoId);
   const removeLessonId = useConvosStore((state: any) => state?.removeConvoId);
 
   const setViewType = useConvosStore((state: any) => state?.setViewType);
@@ -160,27 +152,7 @@ export const ConvosNavBar = () => {
             <FontAwesomeIcon icon={faTypewriter} />
           </button>
         )}
-        {/* <button
-          onClick={() => {
-            setViewType("speak");
-          }}
-          className={`transition ${
-            viewType === "speak" ? "text-black dark:text-gray-200" : "dark:text-gray-600 text-gray-400"
-          } hover:text-black dark:hover:text-white transition text-xl`}
-        >
-          <Icons.microphone />
-        </button> */}
 
-        {/* <button
-          onClick={() => {
-            setViewType("learn");
-          }}
-          className={`transition ${
-            viewType === "learn" ? "text-green-200" : "dark:text-gray-600 text-gray-400"
-          } hover:text-green-500 transition text-xl`}
-        >
-          <Icons.seedling />
-        </button> */}
         {content?.lang === "zh" && (
           <button
             onClick={() => {

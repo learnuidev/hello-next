@@ -37,6 +37,7 @@ import { isVideoUrl } from "@/app/(auth)/convos/utils/is-video-url";
 const MAX_LIMIT = 9000;
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>(null);
+  const [chapterView, setChapterView] = useState(false);
   const [active, setActive] = useState(MAX_LIMIT);
   const [toggleLoop, setToggleLoop] = useState<any>(null);
   const [toggleLoops, setToggleLoops] = useState<any>([]);
@@ -63,19 +64,23 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const finalUrl = lesson?.audio;
 
+  const seekAndPlay = (time: any) => {
+    playerRef.current.seekTo(time, "seconds");
+
+    try {
+      playerRef.current?.player?.player?.play();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;
 
     if (start) {
       if (isVideoUrl(finalUrl)) {
         if (!currentTime && `${currentTime}` !== `${start}`) {
-          playerRef.current.seekTo(start, "seconds");
-
-          try {
-            playerRef.current?.player?.player?.play();
-          } catch (err) {
-            console.error(err);
-          }
+          seekAndPlay(start);
         }
 
         // playerRef.current?.player?.player?.player?.play();
@@ -259,7 +264,28 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     debounceSeek,
   ]);
 
-  const groupedTranscriptions = groupBy(transcriptions || []);
+  const currentChapter = lesson?.chapters?.find(
+    (chapter: any) => chapter?.start < currentTime && chapter?.end > currentTime
+  );
+
+  const trans = useMemo(() => {
+    if (chapterView) {
+      const filteredTrans = transcriptions?.filter(
+        (t: any) =>
+          t?.start >= currentChapter?.start && t?.end <= currentChapter?.end
+      );
+
+      if (!filteredTrans?.length) {
+        return transcriptions;
+      }
+
+      return filteredTrans;
+    }
+
+    return transcriptions;
+  }, [chapterView, currentChapter?.end, currentChapter?.start, transcriptions]);
+
+  const groupedTranscriptions = groupBy(trans || []);
 
   const isSmall = useIsSmall();
 
@@ -268,21 +294,39 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const resetTimes = useContentEditStore((state) => state.resetTimes);
   const times = useContentEditStore((state) => state.times);
 
-  const group = useMemo(
-    () =>
-      getActiveTranscriptions({
-        limit: active,
-        currentTime,
-        transcriptions: transcriptions || [],
-      }),
-    [active, currentTime, transcriptions]
-  );
+  const group = useMemo(() => {
+    if (chapterView) {
+      return trans;
+    }
+    return getActiveTranscriptions({
+      limit: active,
+      currentTime,
+      transcriptions: transcriptions || [],
+    });
+  }, [active, chapterView, currentTime, trans, transcriptions]);
 
   const ActiveButton = () => {
     return (
       <div className="space-x-4 sm:mt-0 mt-4 sm:text-xl flex justify-center">
+        {lesson?.chapters && (
+          <button
+            className={
+              chapterView ? "dark:text-white text-black" : "text-gray-500"
+            }
+            onClick={() => {
+              setChapterView((view) => !view);
+            }}
+          >
+            <Icons.listView />
+          </button>
+        )}
+
         <button
-          className={active === 30 ? "dark:text-white" : "text-gray-500"}
+          className={
+            !chapterView && active === 30
+              ? "dark:text-white text-black"
+              : "text-gray-500"
+          }
           onClick={() => {
             setActive(30);
           }}
@@ -290,7 +334,11 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           30s
         </button>
         <button
-          className={active === 60 ? "dark:text-white" : "text-gray-500"}
+          className={
+            !chapterView && active === 60
+              ? "dark:text-white text-black"
+              : "text-gray-500"
+          }
           onClick={() => {
             setActive(60);
           }}
@@ -298,7 +346,11 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           60s
         </button>
         <button
-          className={active === 90 ? "dark:text-white" : "text-gray-500"}
+          className={
+            !chapterView && active === 90
+              ? "dark:text-white text-black"
+              : "text-gray-500"
+          }
           onClick={() => {
             setActive(90);
           }}
@@ -306,7 +358,11 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           90s
         </button>
         <button
-          className={active === 120 ? "dark:text-white" : "text-gray-500"}
+          className={
+            !chapterView && active === 120
+              ? "dark:text-white text-black"
+              : "text-gray-500"
+          }
           onClick={() => {
             setActive(120);
           }}
@@ -314,7 +370,11 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           120s
         </button>
         <button
-          className={active === 9000 ? "dark:text-white" : "text-gray-500"}
+          className={
+            !chapterView && active === 9000
+              ? "dark:text-white text-black"
+              : "text-gray-500"
+          }
           onClick={() => {
             setActive(MAX_LIMIT);
           }}
@@ -462,6 +522,29 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             transcriptions={transcriptions}
             contentId={contentId}
           />
+
+          {lesson?.chapters && (
+            <div className="flex flex-col justify-start w-full items-start space-y-4 mt-8 px-8">
+              {lesson?.chapters?.map((chapter: any) => {
+                return (
+                  <button
+                    onClick={() => {
+                      seekAndPlay(chapter?.start);
+                    }}
+                    className={cn(
+                      currentTime > chapter?.start && currentTime < chapter?.end
+                        ? "dark:text-white text-black"
+                        : "text-gray-500"
+                    )}
+                    key={chapter?.description}
+                  >
+                    {" "}
+                    {chapter?.title}{" "}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {viewMode === "karaoke" ? (
@@ -634,7 +717,10 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           >
             <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md border dark:border-gray-900 border-gray-200 p-0 pb-16">
               <div className="sm:space-y-8 w-full">
-                {(active !== MAX_LIMIT ? group : transcriptions || [])
+                {(active !== MAX_LIMIT || chapterView
+                  ? group
+                  : transcriptions || []
+                )
                   .filter((script: any) => {
                     if (focusMode) {
                       return (

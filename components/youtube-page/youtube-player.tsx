@@ -800,6 +800,10 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             </div>
           ) : null}
         </div>
+
+        <p className="dark:text-black text-white">
+          todotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodo
+        </p>
       </div>
     </div>
   );

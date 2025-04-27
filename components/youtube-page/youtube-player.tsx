@@ -404,292 +404,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     );
   };
 
-  const VideoSidebar = () => (
-    <div
-      className={
-        isVideoHidden
-          ? "col-span-12 mx-12 md:mx-32"
-          : "col-span-12 md:col-span-5"
-      }
-    >
-      {lesson?.chapters && (
-        <h1 className="text-center mb-4">
-          {(currentChapter || lastFinishedChapter)?.title}
-        </h1>
-      )}
-      {viewMode === "karaoke" ? (
-        <div
-          className={
-            isVideoHidden
-              ? "col-span-12 mx-12 md:mx-32"
-              : "col-span-12 md:col-span-5"
-          }
-        >
-          <KaraokeMode
-            isPlaying={isPlaying}
-            seekTo={(time: number) => {
-              playerRef.current.seekTo(time, "seconds");
-
-              try {
-                playerRef.current?.player?.player?.play();
-              } catch (err) {
-                console.error(err);
-              }
-            }}
-            play={() => {
-              try {
-                playerRef.current?.player?.player?.play();
-              } catch (err) {
-                console.error(err);
-              }
-            }}
-            transcriptions={transcriptions}
-            currentTime={currentTime}
-          />
-        </div>
-      ) : viewMode === "para" ? (
-        <div
-          className={cn(
-            isVideoHidden
-              ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
-              : "col-span-12 md:col-span-5",
-            "pb-12"
-          )}
-        >
-          {isVideoHidden && (
-            <div>
-              <ActiveTranscription
-                currentTime={currentTime}
-                transcriptions={transcriptions}
-                contentId={contentId}
-              />
-            </div>
-          )}
-          <div
-            className={`${
-              isVideoHidden
-                ? "md:col-span-7 col-span-12"
-                : "md:col-span-5 col-span-12"
-            } w-full text-center`}
-          >
-            <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] rounded-md border border-gray-200 dark:border-gray-900 w-full pb-8">
-              <div className="space-y-8">
-                {(active !== MAX_LIMIT
-                  ? [Object.values(groupedTranscriptions)?.[0]]
-                  : Object.values(groupedTranscriptions)
-                )?.map((transcriptions: any) => {
-                  const hanzis = transcriptions
-                    ?.map((t: any) => t?.hanzi)
-                    ?.join("");
-                  return (
-                    <div key={JSON.stringify(transcriptions)}>
-                      <div className="flex flex-wrap">
-                        {(active !== MAX_LIMIT ? group : transcriptions).map(
-                          (transcription: any) => {
-                            return (
-                              <span
-                                role="button"
-                                className={`${
-                                  currentTime
-                                    ? transcription?.start < currentTime &&
-                                      transcription?.end > currentTime
-                                      ? "dark:text-white bg-yellow-200 dark:bg-black"
-                                      : "dark:text-gray-400"
-                                    : "text-gray-800"
-                                } transition block py-1 px-1`}
-                                key={transcription?.hanzi}
-                                onClick={() => {
-                                  playerRef.current.seekTo(
-                                    transcription?.start,
-                                    "seconds"
-                                  );
-
-                                  try {
-                                    playerRef.current?.player?.player?.play();
-                                  } catch (err) {
-                                    console.error(err);
-                                  }
-                                }}
-                              >
-                                {" "}
-                                {transcription?.input || transcription?.hanzi}
-                                {"  "}
-                              </span>
-                            );
-                          }
-                        )}
-                      </div>
-
-                      <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
-                        <Link
-                          // href=""
-                          target="_blank"
-                          href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                            hanzis
-                          )}&op=translate`}
-                          className="text-gray-500 hover:text-black dark:hover:text-white"
-                        >
-                          <FontAwesomeIcon icon={faGoogle} />
-                        </Link>
-
-                        <Link
-                          // href=""
-                          href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                            hanzis
-                          )}`}
-                          className="text-gray-500 hover:text-black dark:hover:text-white"
-                          target="_blank"
-                        >
-                          <FontAwesomeIcon icon={faLanguage} />
-                        </Link>
-
-                        {/* <Link
-              href={`/nmm/${encodeURIComponent(hanzis)}${transcriptions?.[0]?.lang ? `?lang=${resolveLangCode(transcriptions?.[0]?.lang)}` : ""}`}
-              className="text-gray-500 hover:text-black dark:hover:text-white"
-              target="_blank"
-            >
-              <Icons.mandarin />
-            </Link> */}
-                        <button
-                          onClick={() => {
-                            if (toggleLoops?.length) {
-                              setToggleLoops([]);
-                            } else {
-                              setToggleLoops(transcriptions);
-                            }
-                          }}
-                        >
-                          <FontAwesomeIcon
-                            className={cn(
-                              "hover:text-black dark:hover:text-white",
-                              toggleLoops?.find((item: any) =>
-                                transcriptions?.find(
-                                  (x: any) => x.end === item?.end
-                                )
-                              )
-                                ? "dark:text-white text-red-400"
-                                : "text-gray-500"
-                            )}
-                            icon={faRepeat}
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </ScrollArea>
-          </div>
-        </div>
-      ) : transcriptions?.length ? (
-        <div
-          className={`${isVideoHidden ? "col-span-12" : "md:col-span-5 col-span-12"} w-full`}
-        >
-          <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md border dark:border-gray-900 border-gray-200 p-0 pb-16">
-            <div className="sm:space-y-8 w-full">
-              {(active !== MAX_LIMIT || chapterView
-                ? group
-                : transcriptions || []
-              )
-                .filter((script: any) => {
-                  if (focusMode) {
-                    return (
-                      (script?.timestamp?.[0] || script?.start) < currentTime &&
-                      (script?.timestamp?.[1] || script?.end) > currentTime
-                    );
-                  }
-
-                  return true;
-                })
-                .map((example: any, idx: any) => {
-                  // return "TODO";
-                  return (
-                    <TranscriptItem
-                      example={example}
-                      key={`${example?.hanzi}-${idx}`}
-                      toggleLoops={toggleLoops}
-                      setToggleLoops={setToggleLoops}
-                      currentTime={currentTime}
-                      focusMode={focusMode}
-                      isVideoHidden={isVideoHidden}
-                      playerRef={playerRef}
-                      learnedCharacters={learnedCharacters}
-                      lessonId={lessonId}
-                      // components={components}
-                    />
-                  );
-                })}
-            </div>
-          </ScrollArea>
-
-          {isVideoHidden && (
-            <div>
-              <ActiveTranscription
-                currentTime={currentTime}
-                transcriptions={transcriptions}
-                contentId={contentId}
-              />
-            </div>
-          )}
-        </div>
-      ) : null}
-    </div>
-  );
-
-  const VideoPlayer = () => {
-    return (
-      <div
-        className={` ${isVideoHidden ? "hidden" : ""} md:col-span-7 col-span-12`}
-      >
-        <div className="">
-          <ReactPlayer
-            ref={playerRef}
-            url={finalUrl}
-            playing={isPlaying}
-            width="100%"
-            height={isSmall ? "200px" : "450px"}
-            controls
-            onReady={onReady}
-          />
-        </div>
-
-        {lesson?.chapters && (
-          <div className={"flex justify-center items-center gap-4 mt-8"}>
-            {lesson?.chapters?.map((chapter: any) => {
-              return (
-                <button
-                  key={chapter?.description}
-                  onClick={() => {
-                    seekAndPlay(chapter?.start);
-                  }}
-                  className={` h-4 w-4 rounded-full text dark:fill-white`}
-                >
-                  <div
-                    className={` ${
-                      (chapter?.start > currentTime &&
-                        chapter?.end < currentTime) ||
-                      lastFinishedChapter?.start === chapter?.start
-                        ? "dark:bg-white bg-black"
-                        : "dark:bg-slate-600 bg-slate-200 "
-                    } h-2 w-2 rounded-full `}
-                  ></div>
-                </button>
-              );
-            })}
-          </div>
-        )}
-
-        <ActiveTranscription
-          currentTime={currentTime}
-          transcriptions={transcriptions}
-          contentId={contentId}
-        />
-      </div>
-    );
-  };
-
-  const VideoTopBar = () => {
-    return (
+  return (
+    <div className="grow flex flex-col items-center">
       <div className="flex flex-col sm:flex-row justify-center items-center sm:justify-between w-full sm:px-12 mb-4">
         <div className="space-x-4 sm:my-4 block z-50 flex">
           <button
@@ -803,17 +519,287 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         </div>
         <ActiveButton />
       </div>
-    );
-  };
-
-  return (
-    <div className="grow flex flex-col items-center">
-      <VideoTopBar />
 
       <div className="grid grid-cols-12 gap-4">
-        <VideoPlayer />
+        <div
+          className={` ${isVideoHidden ? "hidden" : ""} md:col-span-7 col-span-12`}
+        >
+          <div className="">
+            <ReactPlayer
+              ref={playerRef}
+              url={finalUrl}
+              playing={isPlaying}
+              width="100%"
+              height={isSmall ? "200px" : "450px"}
+              controls
+              onReady={onReady}
+            />
+          </div>
 
-        <VideoSidebar />
+          {lesson?.chapters && (
+            <div className={"flex justify-center items-center gap-4 mt-8"}>
+              {lesson?.chapters?.map((chapter: any) => {
+                return (
+                  <button
+                    key={chapter?.description}
+                    onClick={() => {
+                      seekAndPlay(chapter?.start);
+                    }}
+                    className={` h-4 w-4 rounded-full text dark:fill-white`}
+                  >
+                    <div
+                      className={` ${
+                        (chapter?.start > currentTime &&
+                          chapter?.end < currentTime) ||
+                        lastFinishedChapter?.start === chapter?.start
+                          ? "dark:bg-white bg-black"
+                          : "dark:bg-slate-600 bg-slate-200 "
+                      } h-2 w-2 rounded-full `}
+                    ></div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          <ActiveTranscription
+            currentTime={currentTime}
+            transcriptions={transcriptions}
+            contentId={contentId}
+          />
+        </div>
+
+        <div
+          className={
+            isVideoHidden
+              ? "col-span-12 mx-12 md:mx-32"
+              : "col-span-12 md:col-span-5"
+          }
+        >
+          {lesson?.chapters && (
+            <h1 className="text-center mb-4">
+              {(currentChapter || lastFinishedChapter)?.title}
+            </h1>
+          )}
+          {viewMode === "karaoke" ? (
+            <div
+              className={
+                isVideoHidden
+                  ? "col-span-12 mx-12 md:mx-32"
+                  : "col-span-12 md:col-span-5"
+              }
+            >
+              <KaraokeMode
+                isPlaying={isPlaying}
+                seekTo={(time: number) => {
+                  playerRef.current.seekTo(time, "seconds");
+
+                  try {
+                    playerRef.current?.player?.player?.play();
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }}
+                play={() => {
+                  try {
+                    playerRef.current?.player?.player?.play();
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }}
+                transcriptions={transcriptions}
+                currentTime={currentTime}
+              />
+            </div>
+          ) : viewMode === "para" ? (
+            <div
+              className={cn(
+                isVideoHidden
+                  ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
+                  : "col-span-12 md:col-span-5",
+                "pb-12"
+              )}
+            >
+              {isVideoHidden && (
+                <div>
+                  <ActiveTranscription
+                    currentTime={currentTime}
+                    transcriptions={transcriptions}
+                    contentId={contentId}
+                  />
+                </div>
+              )}
+              <div
+                className={`${
+                  isVideoHidden
+                    ? "md:col-span-7 col-span-12"
+                    : "md:col-span-5 col-span-12"
+                } w-full text-center`}
+              >
+                <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] rounded-md border border-gray-200 dark:border-gray-900 w-full pb-8">
+                  <div className="space-y-8">
+                    {(active !== MAX_LIMIT
+                      ? [Object.values(groupedTranscriptions)?.[0]]
+                      : Object.values(groupedTranscriptions)
+                    )?.map((transcriptions: any) => {
+                      const hanzis = transcriptions
+                        ?.map((t: any) => t?.hanzi)
+                        ?.join("");
+                      return (
+                        <div key={JSON.stringify(transcriptions)}>
+                          <div className="flex flex-wrap">
+                            {(active !== MAX_LIMIT
+                              ? group
+                              : transcriptions
+                            ).map((transcription: any) => {
+                              return (
+                                <span
+                                  role="button"
+                                  className={`${
+                                    currentTime
+                                      ? transcription?.start < currentTime &&
+                                        transcription?.end > currentTime
+                                        ? "dark:text-white bg-yellow-200 dark:bg-black"
+                                        : "dark:text-gray-400"
+                                      : "text-gray-800"
+                                  } transition block py-1 px-1`}
+                                  key={transcription?.hanzi}
+                                  onClick={() => {
+                                    playerRef.current.seekTo(
+                                      transcription?.start,
+                                      "seconds"
+                                    );
+
+                                    try {
+                                      playerRef.current?.player?.player?.play();
+                                    } catch (err) {
+                                      console.error(err);
+                                    }
+                                  }}
+                                >
+                                  {" "}
+                                  {transcription?.input || transcription?.hanzi}
+                                  {"  "}
+                                </span>
+                              );
+                            })}
+                          </div>
+
+                          <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
+                            <Link
+                              // href=""
+                              target="_blank"
+                              href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                                hanzis
+                              )}&op=translate`}
+                              className="text-gray-500 hover:text-black dark:hover:text-white"
+                            >
+                              <FontAwesomeIcon icon={faGoogle} />
+                            </Link>
+
+                            <Link
+                              // href=""
+                              href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
+                                hanzis
+                              )}`}
+                              className="text-gray-500 hover:text-black dark:hover:text-white"
+                              target="_blank"
+                            >
+                              <FontAwesomeIcon icon={faLanguage} />
+                            </Link>
+
+                            {/* <Link
+                      href={`/nmm/${encodeURIComponent(hanzis)}${transcriptions?.[0]?.lang ? `?lang=${resolveLangCode(transcriptions?.[0]?.lang)}` : ""}`}
+                      className="text-gray-500 hover:text-black dark:hover:text-white"
+                      target="_blank"
+                    >
+                      <Icons.mandarin />
+                    </Link> */}
+                            <button
+                              onClick={() => {
+                                if (toggleLoops?.length) {
+                                  setToggleLoops([]);
+                                } else {
+                                  setToggleLoops(transcriptions);
+                                }
+                              }}
+                            >
+                              <FontAwesomeIcon
+                                className={cn(
+                                  "hover:text-black dark:hover:text-white",
+                                  toggleLoops?.find((item: any) =>
+                                    transcriptions?.find(
+                                      (x: any) => x.end === item?.end
+                                    )
+                                  )
+                                    ? "dark:text-white text-red-400"
+                                    : "text-gray-500"
+                                )}
+                                icon={faRepeat}
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </ScrollArea>
+              </div>
+            </div>
+          ) : transcriptions?.length ? (
+            <div
+              className={`${isVideoHidden ? "col-span-12" : "md:col-span-5 col-span-12"} w-full`}
+            >
+              <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md border dark:border-gray-900 border-gray-200 p-0 pb-16">
+                <div className="sm:space-y-8 w-full">
+                  {(active !== MAX_LIMIT || chapterView
+                    ? group
+                    : transcriptions || []
+                  )
+                    .filter((script: any) => {
+                      if (focusMode) {
+                        return (
+                          (script?.timestamp?.[0] || script?.start) <
+                            currentTime &&
+                          (script?.timestamp?.[1] || script?.end) > currentTime
+                        );
+                      }
+
+                      return true;
+                    })
+                    .map((example: any, idx: any) => {
+                      // return "TODO";
+                      return (
+                        <TranscriptItem
+                          example={example}
+                          key={`${example?.hanzi}-${idx}`}
+                          toggleLoops={toggleLoops}
+                          setToggleLoops={setToggleLoops}
+                          currentTime={currentTime}
+                          focusMode={focusMode}
+                          isVideoHidden={isVideoHidden}
+                          playerRef={playerRef}
+                          learnedCharacters={learnedCharacters}
+                          lessonId={lessonId}
+                          // components={components}
+                        />
+                      );
+                    })}
+                </div>
+              </ScrollArea>
+
+              {isVideoHidden && (
+                <div>
+                  <ActiveTranscription
+                    currentTime={currentTime}
+                    transcriptions={transcriptions}
+                    contentId={contentId}
+                  />
+                </div>
+              )}
+            </div>
+          ) : null}
+        </div>
       </div>
     </div>
   );

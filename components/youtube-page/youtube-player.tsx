@@ -33,6 +33,7 @@ import { useIsSmall } from "./utils/use-is-small";
 import { getActiveTranscriptions } from "./get-active-transcriptions";
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { isVideoUrl } from "@/app/(auth)/convos/utils/is-video-url";
+import { getYablaLink } from "./utils/get-yabla-link";
 
 const MAX_LIMIT = 9000;
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
@@ -82,9 +83,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         if (!currentTime && `${currentTime}` !== `${start}`) {
           seekAndPlay(start);
         }
-
-        // playerRef.current?.player?.player?.player?.play();
-        // console.log("PLAYER REF", playerRef);
       } else {
         playerRef.current.seekTo(start, "seconds");
         try {
@@ -94,8 +92,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         }
       }
     }
-
-    // playerRef.current.seekTo(0, 'seconds')
   }, [start, finalUrl, currentTime]);
 
   const [loopCounter, setLoopCounter] = useState(0);
@@ -113,17 +109,11 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       : lesson?.transcriptions;
 
   const togglePlay = useCallback(() => {
-    // alert("yo");
-    console.log("PLAYER REF", playerRef);
-    // conso le.log("PLAYER REF", playerRef?.current?.player?.player?.play());
-
     if (playerRef?.current?.player?.isPlaying) {
       playerRef?.current?.player?.player?.pause();
     } else {
       playerRef?.current?.player?.player.play();
     }
-
-    // playerRef?.current?.pause();
   }, [playerRef]);
 
   const seekBefore = useCallback(() => {
@@ -131,22 +121,29 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       (trans: any) => trans?.start < currentTime && trans?.end > currentTime
     );
 
-    const currentTranscriptionIndex = Math.max(
-      transcriptions?.findIndex(
-        (trans: any) => trans?.start === currentTranscription?.start
-      ),
-      0
-    );
+    console.log("CT", currentTranscription);
 
-    const prevIndex = Math.max(currentTranscriptionIndex - 1, 0);
-    const prevTranscription = transcriptions?.[prevIndex];
+    if (currentTranscription) {
+      const currentTranscriptionIndex = Math.max(
+        transcriptions?.findIndex(
+          (trans: any) => trans?.start === currentTranscription?.start
+        ),
+        0
+      );
 
-    playerRef.current.seekTo(prevTranscription?.start, "seconds");
+      console.log("CURR IDX", currentTranscriptionIndex);
 
-    try {
-      playerRef.current?.player?.player?.play();
-    } catch (err) {
-      console.error(err);
+      const prevIndex = Math.max(currentTranscriptionIndex - 1, 0);
+
+      const prevTranscription = transcriptions?.[prevIndex];
+
+      playerRef.current.seekTo(prevTranscription?.start, "seconds");
+
+      try {
+        playerRef.current?.player?.player?.play();
+      } catch (err) {
+        console.error(err);
+      }
     }
   }, [currentTime, transcriptions]);
 
@@ -188,13 +185,11 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       }
 
       if (event.code === "ArrowLeft") {
-        // alert(event.code);
         seekBefore();
         return null;
       }
 
       if (event.code === "ArrowRight") {
-        // alert(event.code);
         seekAfter();
         return null;
       }
@@ -225,7 +220,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   }, []);
 
   const debounceSeek = useDebouncedCallback((firstStart: any) => {
-    // seek(selectedWords?.start);
     playerRef.current.seekTo(firstStart, "seconds");
 
     for (const example of toggleLoops) {
@@ -273,8 +267,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   });
 
   const lastFinishedChapter = finishedChapters?.[finishedChapters?.length - 1];
-
-  console.log("LAST FINISHED", lastFinishedChapter);
 
   const trans = useMemo(() => {
     if (chapterView) {
@@ -490,7 +482,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                   })
                   .then((resp) => {
                     setEditMode();
-                    // resetTimes();
                   });
               }}
             >
@@ -687,7 +678,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
                           <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
                             <Link
-                              // href=""
                               target="_blank"
                               href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
                                 hanzis
@@ -698,23 +688,13 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                             </Link>
 
                             <Link
-                              // href=""
-                              href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                                hanzis
-                              )}`}
+                              href={getYablaLink(hanzis)}
                               className="text-gray-500 hover:text-black dark:hover:text-white"
                               target="_blank"
                             >
                               <FontAwesomeIcon icon={faLanguage} />
                             </Link>
 
-                            {/* <Link
-                      href={`/nmm/${encodeURIComponent(hanzis)}${transcriptions?.[0]?.lang ? `?lang=${resolveLangCode(transcriptions?.[0]?.lang)}` : ""}`}
-                      className="text-gray-500 hover:text-black dark:hover:text-white"
-                      target="_blank"
-                    >
-                      <Icons.mandarin />
-                    </Link> */}
                             <button
                               onClick={() => {
                                 if (toggleLoops?.length) {
@@ -768,7 +748,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                       return true;
                     })
                     .map((example: any, idx: any) => {
-                      // return "TODO";
                       return (
                         <TranscriptItem
                           example={example}
@@ -781,7 +760,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                           playerRef={playerRef}
                           learnedCharacters={learnedCharacters}
                           lessonId={lessonId}
-                          // components={components}
                         />
                       );
                     })}

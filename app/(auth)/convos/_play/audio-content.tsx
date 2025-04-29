@@ -27,6 +27,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { TranscriptItem } from "./transcript-item";
+import { getYablaLink } from "@/components/youtube-page/utils/get-yabla-link";
 
 export const Play = ({ lessonId }: { lessonId: string }) => {
   const [displayOptions, setDisplayOptions] = useState(false);
@@ -216,12 +217,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
             {/* {displayOptions ? ( */}
             {play && true ? (
               <div className="my-8 space-x-8">
-                <Link
-                  href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                    transcription?.hanzi
-                  )}`}
-                  target="_blank"
-                >
+                <Link href={getYablaLink(transcription?.hanzi)} target="_blank">
                   <FontAwesomeIcon icon={faSkyatlas} />
                 </Link>
 

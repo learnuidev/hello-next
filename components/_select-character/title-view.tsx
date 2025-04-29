@@ -12,6 +12,7 @@ import {
 } from "@/domain/sentence/grammar.queries";
 import { useSearchParams } from "next/navigation";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { getYablaLink } from "../youtube-page/utils/get-yabla-link";
 
 export const TitleView = ({
   selectedComp,
@@ -54,9 +55,7 @@ export const TitleView = ({
       >
         <Link
           target="_blank"
-          href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-            selectedChar
-          )}`}
+          href={getYablaLink(selectedChar)}
           className={`${color} space-x-2 text-xl md:text-4xl`}
         >
           {" "}

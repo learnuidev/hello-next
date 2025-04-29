@@ -3,19 +3,18 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
-import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence-mutation";
-import { useReadModeStore } from "@/stores/use-readmode-store";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { Icons } from "../ui/icons.v2";
 import { useCanTrackFunction } from "../use-can-track-function";
+import { getYablaLink } from "../youtube-page/utils/get-yabla-link";
 import { AudioComponent } from "./audio-component";
+import { CharacterItem } from "./character-item";
 import { GoogleLink } from "./selected-character/google-link";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
-import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
-import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
-import { CharacterItem } from "./character-item";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -128,9 +127,7 @@ export const SentenceItem = (props: any) => {
         {" "}
         <Link
           target="_blank"
-          href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-            currentPhrase?.hanzi
-          )}`}
+          href={getYablaLink(currentPhrase?.hanzi)}
           onClick={() => {
             setIfExists({ ...currentPhrase });
           }}

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { SelectedCharacterProps } from "./select-character.types";
 import { SentenceItem } from "./sentence-item";
+import { getYablaLink } from "../youtube-page/utils/get-yabla-link";
 
 export const NormalView = (props: SelectedCharacterProps) => {
   const {
@@ -39,12 +40,7 @@ export const NormalView = (props: SelectedCharacterProps) => {
             >
               <div role="button" className="pb-8 flex flex-col">
                 {" "}
-                <Link
-                  target="_blank"
-                  href={`https://chinese.yabla.com/chinese-english-pinyin-dictionary.php?define=${encodeURIComponent(
-                    char?.hanzi
-                  )}`}
-                >
+                <Link target="_blank" href={getYablaLink(char?.hanzi)}>
                   <span className="text-sm text-gray-500 dark:text-gray-400">
                     {currentPhrase?.pinyin || currentPhrase?.roman}
                   </span>

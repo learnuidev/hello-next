@@ -21,8 +21,6 @@ export const getActiveTranscriptions = ({
   const groupTranscriptions = groupByMinute(transcriptions);
   const groupTranscriptionValues = Object.values(groupTranscriptions);
 
-  console.log("group transcriptions", groupTranscriptions);
-
   const res = groupTranscriptionValues?.filter((group: any, idx) => {
     const minStartTime = Math.min(...group?.map((item: any) => item.start));
 

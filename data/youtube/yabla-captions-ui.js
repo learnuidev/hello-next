@@ -1,5 +1,5 @@
 // 2. Function to Update the res
-
+// 25-04-2025
 var CAPTIONS = [];
 
 const updateUI = () => {
@@ -41,3 +41,16 @@ const updateUI = () => {
   }
 };
 setInterval(updateUI, 5);
+
+// 30-04-2025
+(() => {
+  const captionCover = document.querySelector("#caption_cover");
+
+  captionCover.style.display = "none";
+  const captions = document.querySelector("#captions");
+
+  captions.style.display = "block";
+  captions.style.zIndex = 100;
+
+  captions.style.opacity = 1;
+})();

@@ -36,10 +36,13 @@ import { isVideoUrl } from "@/app/(auth)/convos/utils/is-video-url";
 import { getYablaLink } from "./utils/get-yabla-link";
 
 const MAX_LIMIT = 9000;
+const THIRTY = 30;
+const SIXTY = 60;
+const NINTY = 90;
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
-  const [viewMode, setViewMode] = useState<any>(null);
+  const [viewMode, setViewMode] = useState<any>("para");
   const [chapterView, setChapterView] = useState(false);
-  const [active, setActive] = useState(MAX_LIMIT);
+  const [active, setActive] = useState(NINTY);
   const [toggleLoop, setToggleLoop] = useState<any>(null);
   const [toggleLoops, setToggleLoops] = useState<any>([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -316,6 +319,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     });
   }, [active, chapterView, currentTime, trans, transcriptions]);
 
+  console.log("GROUP", group);
+
   const ActiveButton = () => {
     return (
       <div className="space-x-4 sm:mt-0 mt-4 sm:text-xl flex justify-center">
@@ -334,36 +339,36 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
         <button
           className={
-            !chapterView && active === 30
+            !chapterView && active === THIRTY
               ? "dark:text-white text-black"
               : "text-gray-500"
           }
           onClick={() => {
-            setActive(30);
+            setActive(THIRTY);
           }}
         >
           30s
         </button>
         <button
           className={
-            !chapterView && active === 60
+            !chapterView && active === SIXTY
               ? "dark:text-white text-black"
               : "text-gray-500"
           }
           onClick={() => {
-            setActive(60);
+            setActive(SIXTY);
           }}
         >
           60s
         </button>
         <button
           className={
-            !chapterView && active === 90
+            !chapterView && active === NINTY
               ? "dark:text-white text-black"
               : "text-gray-500"
           }
           onClick={() => {
-            setActive(90);
+            setActive(NINTY);
           }}
         >
           90s
@@ -395,6 +400,13 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       </div>
     );
   };
+
+  const paraTranscriptions =
+    active !== MAX_LIMIT
+      ? [Object.values(groupedTranscriptions)?.[0]]
+      : Object.values(groupedTranscriptions);
+
+  console.log("PARA TRANSCRIPIONS", paraTranscriptions);
 
   return (
     <div className="grow flex flex-col items-center">
@@ -629,10 +641,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
               >
                 <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] rounded-md border border-gray-200 dark:border-gray-900 w-full pb-8">
                   <div className="space-y-8">
-                    {(active !== MAX_LIMIT
-                      ? [Object.values(groupedTranscriptions)?.[0]]
-                      : Object.values(groupedTranscriptions)
-                    )?.map((transcriptions: any) => {
+                    {paraTranscriptions?.map((transcriptions: any) => {
                       const hanzis = transcriptions
                         ?.map((t: any) => t?.hanzi)
                         ?.join("");
@@ -654,7 +663,10 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                         : "dark:text-gray-400"
                                       : "text-gray-800"
                                   } transition block py-1 px-1`}
-                                  key={transcription?.hanzi}
+                                  key={
+                                    transcription?.id ||
+                                    `${transcription?.hanzi}-${transcription?.start}`
+                                  }
                                   onClick={() => {
                                     playerRef.current.seekTo(
                                       transcription?.start,

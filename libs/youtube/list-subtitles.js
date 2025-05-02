@@ -89,6 +89,13 @@ const resolveTrack = ({ tracks, lang }) => {
   }
   if (!zhTrack) {
     try {
+      zhTrack = getTrack({ lang: ".zh-Hans", tracks });
+    } catch (err) {
+      zhTrack = null;
+    }
+  }
+  if (!zhTrack) {
+    try {
       zhTrack = getTrack({ lang: "zh-Hant", tracks });
     } catch (err) {
       zhTrack = null;

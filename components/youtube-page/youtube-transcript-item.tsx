@@ -234,10 +234,10 @@ export const TranscriptItem = ({
               createdAt: Date.now(),
             });
 
-            playerRef.current.seekTo(
-              timeStamp?.start || example?.timestamp?.[0] || example?.start,
-              "seconds"
-            );
+            const startTime =
+              timeStamp?.start || example?.timestamp?.[0] || example?.start;
+
+            playerRef.current.seekTo(startTime, "seconds");
 
             try {
               playerRef.current?.player?.player?.play();

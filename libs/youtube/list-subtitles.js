@@ -130,8 +130,6 @@ const genSubtitles = async ({ id, lang }) => {
 
     const langCodes = tracks.map((track) => track.languageCode);
 
-    // console.log("LANG CODES", langCodes);
-
     let resolvedLang =
       langCodes?.find((code) => code?.includes(lang)) ||
       langCodes?.find((code) => "zh-Hans" === code) ||

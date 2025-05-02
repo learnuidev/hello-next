@@ -11,7 +11,6 @@ export const LanguageButton = ({
   onClick: () => void;
   lang: ILanguage;
 }) => {
-  console.log("LANG", lang);
   return (
     <button key={lang.id} onClick={onClick} className={cn("text-white")}>
       <img src={lang.src} alt={lang.title} className="h-8" />

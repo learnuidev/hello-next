@@ -73,11 +73,9 @@ async function getVideoInfo(title, id) {
     );
   }
 
-  // console.log("SUBS", subtitle);
-
   await writeFile(`./mao/${title}.json`, JSON.stringify(info));
   await writeFile(`./mao/${title}_info.json`, JSON.stringify(infoDetails));
-  // console.log("ID", tracks);
+
   return infoDetails;
 }
 

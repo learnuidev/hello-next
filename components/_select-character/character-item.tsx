@@ -42,12 +42,6 @@ export const CharacterItem = ({ character, className }: ICharacterItem) => {
     tone: learnedChar?.tone_level || comp?.tone_level,
   });
 
-  if (character === "着") {
-    console.log("COLOR", color);
-    console.log("TONE LEVEL", selectedComp);
-    console.log("LEARNED CHAR", learnedChar);
-  }
-
   return (
     <span
       key={`${character}`}

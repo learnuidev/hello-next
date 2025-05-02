@@ -30,12 +30,3 @@ const translate = async ({ text, targetLang = "en" }) => {
     output: data?.[0]?.[0],
   };
 };
-
-translateTo({
-  // text: "我是歆姐招的法务部的实习生",
-  // text: "你好！我的名字是",
-  text: "Bonjour",
-  targetLang: "zh-CN",
-}).then((data) => {
-  console.log("DATA", data);
-});

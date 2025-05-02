@@ -65,8 +65,6 @@ export function ProviderForm() {
     client
       .detectLanguage({ content: "hello world" })
       .then((resp: any) => {
-        console.log("resp", resp);
-        // console.log("Saved provider data:", formData);
         setLoading(false);
         setComplete(true);
         setVariants((prev: any) => prev.concat(formData));

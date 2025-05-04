@@ -136,7 +136,7 @@ export function ReviewCloze() {
         >
           <Icons.xMark />
         </button>
-        <h1 className="text-center">RevCloze</h1>
+        <h1 className="text-center">Recloze</h1>
         <div></div>
       </div>
 
@@ -153,12 +153,15 @@ export function ReviewCloze() {
                 }}
                 disabled={response?.type}
                 className={cn(
-                  "bg-purple-600 p-4",
-                  response?.answer === option
-                    ? response?.type === "correct"
-                      ? "bg-green-500"
-                      : "bg-red-500"
-                    : ""
+                  "bg-purple-600 p-4 hover:bg-purple-500 text-white",
+                  response
+                    ? response?.answer === option
+                      ? response?.type === "correct"
+                        ? "bg-green-500"
+                        : "bg-red-500 hover:bg-red-600"
+                      : "bg-purple-800 opacity-10 text-gray-200"
+                    : "",
+                  "transition"
                 )}
                 key={option}
               >

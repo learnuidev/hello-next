@@ -25,6 +25,7 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useSpeak } from "../(auth)/convos/_play/use-speak";
 import { useIsContent } from "./use-is-content";
 import { useIsEntry } from "./use-is-entry";
+import { useReviewModeView } from "./use-review-mode";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -43,7 +44,7 @@ const getPonderTime = (endTime: number) => {
   return ponderTime;
 };
 
-export function ReviewMode(props: any) {
+export function ReviewModeClassic(props: any) {
   const [reveal, setReveal] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [emotion, setEmotion] = useState("");
@@ -56,6 +57,7 @@ export function ReviewMode(props: any) {
   const { data: components } = useListComponents();
 
   const { data: allCharacters } = useListCharactersQuery();
+  const { setReviewMode } = useReviewModeView();
 
   const {
     data: learnedCharacters,
@@ -202,15 +204,18 @@ export function ReviewMode(props: any) {
   const ReviewHeader = () => {
     return (
       <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
-        <Link
-          href={
-            entryId
-              ? `/diary/${entryId}?view=insights`
-              : `/nmm${level ? `?level=${level}` : ""}`
-          }
+        <button
+          // href={
+          //   entryId
+          //     ? `/diary/${entryId}?view=insights`
+          //     : `/nmm${level ? `?level=${level}` : ""}`
+          // }
+          onClick={() => {
+            setReviewMode(null);
+          }}
         >
           <Icons.xMark className="text-xl" />
-        </Link>
+        </button>
 
         {/* <h1 className="text-2xl"></h1> */}
         <p className="text-gray-700 text-xl md:text-3xl">

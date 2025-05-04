@@ -79,8 +79,12 @@ export function ReviewCloze() {
       lang,
     });
 
-  const sentences = sentencesInitial?.filter((sent: any) =>
-    sent?.hanzi?.includes(relevantHanzi)
+  const sentences = useMemo(
+    () =>
+      sentencesInitial?.filter((sent: any) =>
+        sent?.hanzi?.includes(relevantHanzi)
+      ),
+    [relevantHanzi, sentencesInitial]
   );
 
   // const relevantHanzis = useMemo(

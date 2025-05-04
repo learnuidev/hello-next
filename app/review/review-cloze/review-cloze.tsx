@@ -73,11 +73,15 @@ export function ReviewCloze() {
 
   const relevantHanzi = relevantHskWord?.hanzi;
 
-  const { data: sentences, isLoading: isSentenceLoading } =
+  const { data: sentencesInitial, isLoading: isSentenceLoading } =
     useListSentencesQuery({
       component: relevantHanzi,
       lang,
     });
+
+  const sentences = sentencesInitial?.filter((sent: any) =>
+    sent?.hanzi?.includes(relevantHanzi)
+  );
 
   // const relevantHanzis = useMemo(
   //   () => relevantHskWords?.map((word: any) => word?.hanzi),
@@ -126,7 +130,7 @@ export function ReviewCloze() {
       </div>
     );
   }
-  if (!sentence) {
+  if (sentences && !sentence) {
     return (
       <div className="flex justify-center items-center flex-col mt-32">
         <h4 className="text-center mb-8">Nothing here</h4>

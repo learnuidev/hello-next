@@ -1,0 +1,192 @@
+"use client";
+
+import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
+import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
+import { reviewCounterStore } from "./review-counter-store";
+import { useGetReviewParams } from "./use-get-review-params";
+import { useUnreviwedCharacters } from "./use-unreviewed-characters";
+
+import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
+import { useSpeak } from "../(auth)/convos/_play/use-speak";
+import { useIsContent } from "./use-is-content";
+import { useIsEntry } from "./use-is-entry";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
+import { useRouter } from "next/navigation";
+
+const getEndTimeAndDiff = (startTime: number, endTime: number) => {
+  const diff = endTime - startTime;
+
+  return {
+    endTime,
+    timeTaken: diff,
+  };
+};
+
+const getPonderTime = (endTime: number) => {
+  const ponderEndTime = Date.now();
+
+  const { timeTaken: ponderTime } = getEndTimeAndDiff(endTime, ponderEndTime);
+
+  return ponderTime;
+};
+
+export const useGetCurrentReviewCharacter = () => {
+  const {
+    date,
+    level,
+    input,
+    entryId,
+    reviewMode,
+    mode: hskMode,
+    lang: langParams,
+    character: nextCharacter,
+    reviewSpeed,
+  } = useGetReviewParams();
+
+  const router = useRouter();
+
+  const { studyMode, character } = useGetReviewParams();
+
+  const mode = useLearningModeStore((state) => state.mode);
+
+  const reviewCounts = reviewCounterStore((state: any) => state?.reviewCounts);
+
+  const reviewCount = reviewCounts?.[date] || 0;
+
+  const { data: groups, isLoading: isLearnedCharactersLoading } =
+    useListLearnedCharactersByDate({ variant: "discovered" });
+
+  const group = groups?.find((group) => group?.title === date);
+
+  const groupItems = group?.items
+    // ?.filter((character: any) => character?.hanzi?.length === 1)
+    ?.sort((a: any, b: any) => {
+      return (a?.reviewHistory?.length || 0) - (b?.reviewHistory?.length || 0);
+    })
+    ?.filter((item: any) => {
+      if (langParams) {
+        return item?.lang === langParams;
+      }
+
+      return item?.hanzi?.length <= 3;
+
+      return true;
+    });
+
+  const { data: components } = useListComponents();
+
+  const {
+    understandingRate,
+    precisionRate,
+    totalCharacters,
+    uniqueComponentWords,
+    totalNewCharaters,
+    uniqueWords,
+    masteryRate,
+  } = useGetCharacterAnalytics({
+    characterId: input,
+    lang: "zh",
+  });
+
+  const { speak } = useSpeak();
+
+  const hasReviewedAll = input
+    ? uniqueComponentWords?.length <= reviewCount
+    : date
+      ? groupItems?.length <= reviewCount
+      : false;
+
+  const {
+    data: unReviewedCharacters,
+    isLoading: isUnreviewedCharactersLoading,
+  } = useUnreviwedCharacters();
+
+  const isContent = useIsContent(hskMode);
+  const isEntry = useIsEntry(entryId);
+
+  const currentCharacter = isEntry
+    ? reviewMode === "all"
+      ? unReviewedCharacters?.[reviewCount]
+      : unReviewedCharacters?.[0]
+    : isContent
+      ? reviewMode === "all"
+        ? unReviewedCharacters?.[reviewCount]
+        : unReviewedCharacters?.[0]
+      : date
+        ? unReviewedCharacters?.[reviewCount]
+        : reviewMode === "all"
+          ? unReviewedCharacters?.[reviewCount]
+          : unReviewedCharacters?.find(
+              (char: any) => char?.hanzi === nextCharacter
+            ) ||
+            // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
+            unReviewedCharacters?.[0];
+
+  const currentComponent = components?.find(
+    (component: any) => component?.hanzi === currentCharacter?.hanzi
+  );
+
+  const getUrl = () => {
+    const reviewSearchParamsUrl = getReviewSearchParams({
+      mode,
+      level,
+      studyMode,
+      date,
+      input,
+      reviewSpeed,
+      reviewMode,
+    });
+    // if (["hsk3", "hsk"]?.includes(mode)) {
+    //   return `/review?mode=${mode}&level=${level}&study-mode=${studyMode}&date=${date}`;
+    // }
+    return `/review?${reviewSearchParamsUrl}`;
+
+    // return `/review?date=${date}`;
+  };
+
+  const goToNextChar = () => {
+    const currentCharacterIndex = unReviewedCharacters?.findIndex(
+      (char: any) => char?.hanzi === character
+    );
+
+    const nextChar = unReviewedCharacters?.[currentCharacterIndex + 1];
+
+    if (nextChar?.hanzi) {
+      const url = getUrl();
+
+      if (url?.includes("&")) {
+        return router.push(`${url}`);
+      } else if (url?.includes("date") || url?.includes("input")) {
+        router.push(url);
+      } else {
+        router.push("/review");
+      }
+    }
+  };
+
+  const remainingItems = input
+    ? uniqueComponentWords?.length - reviewCount
+    : date
+      ? groupItems?.length - reviewCount
+      : reviewMode === "all"
+        ? unReviewedCharacters?.length - reviewCount
+        : unReviewedCharacters?.length;
+
+  const hasNoChars = !currentCharacter || hasReviewedAll;
+
+  const lang = currentCharacter?.lang || currentComponent?.lang;
+
+  return {
+    currentCharacter,
+    hasReviewedAll,
+    currentComponent,
+    goToNextChar,
+    isContent,
+    isEntry,
+    hasNoChars,
+    lang,
+
+    remainingItems,
+  };
+};

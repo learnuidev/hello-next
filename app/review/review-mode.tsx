@@ -5,24 +5,16 @@ import { useState } from "react";
 import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { Icons } from "@/components/ui/icons.v2";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
-import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
-import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { reviewCounterStore } from "./review-counter-store";
 import { useGetReviewParams } from "./use-get-review-params";
-import { useUnreviwedCharacters } from "./use-unreviewed-characters";
 
 import { SpeakComponent } from "@/components/_select-character/speak-component";
-import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
-import {
-  getReviewSearchParams,
-  getReviewUrl,
-} from "@/components/settings-dialog/use-get-review-url";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useSpeak } from "../(auth)/convos/_play/use-speak";
+import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
+import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
 import { useIsContent } from "./use-is-content";
 import { useIsEntry } from "./use-is-entry";
 import { useReviewModeView } from "./use-review-mode";
@@ -54,9 +46,6 @@ export function ReviewModeClassic(props: any) {
 
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
 
-  const { data: components } = useListComponents();
-
-  const { data: allCharacters } = useListCharactersQuery();
   const { setReviewMode } = useReviewModeView();
 
   const {
@@ -91,115 +80,22 @@ export function ReviewModeClassic(props: any) {
 
   const reviewCount = reviewCounts?.[date] || 0;
 
-  const { data: groups, isLoading: isLearnedCharactersLoading } =
-    useListLearnedCharactersByDate({ variant: "discovered" });
-
-  const group = groups?.find((group) => group?.title === date);
-
-  const groupItems = group?.items
-    // ?.filter((character: any) => character?.hanzi?.length === 1)
-    ?.sort((a: any, b: any) => {
-      return (a?.reviewHistory?.length || 0) - (b?.reviewHistory?.length || 0);
-    })
-    ?.filter((item: any) => {
-      if (langParams) {
-        return item?.lang === langParams;
-      }
-
-      return item?.hanzi?.length <= 3;
-
-      return true;
-    });
-
   const {
-    understandingRate,
-    precisionRate,
-    totalCharacters,
-    uniqueComponentWords,
-    totalNewCharaters,
-    uniqueWords,
-    masteryRate,
-  } = useGetCharacterAnalytics({
-    characterId: input,
-    lang: "zh",
-  });
-
-  const { speak } = useSpeak();
-
-  const hasReviewedAll = input
-    ? uniqueComponentWords?.length <= reviewCount
-    : date
-      ? groupItems?.length <= reviewCount
-      : false;
-
-  const {
-    data: unReviewedCharacters,
-    isLoading: isUnreviewedCharactersLoading,
-  } = useUnreviwedCharacters();
-
-  const isContent = useIsContent(hskMode);
-  const isEntry = useIsEntry(entryId);
-
-  const currentCharacter = isEntry
-    ? reviewMode === "all"
-      ? unReviewedCharacters?.[reviewCount]
-      : unReviewedCharacters?.[0]
-    : isContent
-      ? reviewMode === "all"
-        ? unReviewedCharacters?.[reviewCount]
-        : unReviewedCharacters?.[0]
-      : date
-        ? unReviewedCharacters?.[reviewCount]
-        : reviewMode === "all"
-          ? unReviewedCharacters?.[reviewCount]
-          : unReviewedCharacters?.find(
-              (char: any) => char?.hanzi === nextCharacter
-            ) ||
-            // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
-            unReviewedCharacters?.[0];
-
+    currentCharacter,
+    hasReviewedAll,
+    currentComponent,
+    goToNextChar,
+    remainingItems,
+    isContent,
+    isEntry,
+    lang,
+    hasNoChars,
+  } = useGetCurrentReviewCharacter();
   const diff = endTime - startTime;
 
-  const currentComponent = components?.find(
-    (component: any) => component?.hanzi === currentCharacter?.hanzi
-  );
-
-  const lang = currentCharacter?.lang || currentComponent?.lang;
-
-  const { studyMode, character } = useGetReviewParams();
-
-  const getUrl = () => {
-    const reviewSearchParamsUrl = getReviewSearchParams({
-      mode,
-      level,
-      studyMode,
-      date,
-      input,
-      reviewSpeed,
-      reviewMode,
-    });
-    // if (["hsk3", "hsk"]?.includes(mode)) {
-    //   return `/review?mode=${mode}&level=${level}&study-mode=${studyMode}&date=${date}`;
-    // }
-    return `/review?${reviewSearchParamsUrl}`;
-
-    // return `/review?date=${date}`;
-  };
-
-  if (isLoading || isLearnedCharactersLoading) {
+  if (isLoading) {
     return <div className="">...</div>;
   }
-
-  const remainingItems = input
-    ? uniqueComponentWords?.length - reviewCount
-    : date
-      ? groupItems?.length - reviewCount
-      : reviewMode === "all"
-        ? unReviewedCharacters?.length - reviewCount
-        : unReviewedCharacters?.length;
-
-  const hasNoChars =
-    (!currentCharacter || hasReviewedAll) && !isUnreviewedCharactersLoading;
 
   const ReviewHeader = () => {
     return (
@@ -244,26 +140,6 @@ export function ReviewModeClassic(props: any) {
             </button>
           )}
         </div>
-
-        {/* {hskMode?.includes("hsk") ? (
-          <button
-            className="flex items-center flex-col hover:text-white text-gray-400"
-            onClick={() => {
-              resetReviewCount();
-              router.push(`/review?view=hsk-level&mode=${hskMode}`);
-            }}
-          >
-            <p className="text-xl text-gray-500">HSK</p>
-
-            <span className="text-[10px] font-light uppercase">
-              Change level
-            </span>
-          </button>
-        ) : (
-          <Link href={`/review?view=cal`}>
-            <Icons.cal className="text-xl" />
-          </Link>
-        )} */}
       </div>
     );
   };
@@ -360,26 +236,6 @@ export function ReviewModeClassic(props: any) {
       </div>
     );
   }
-
-  const goToNextChar = () => {
-    const currentCharacterIndex = unReviewedCharacters?.findIndex(
-      (char: any) => char?.hanzi === character
-    );
-
-    const nextChar = unReviewedCharacters?.[currentCharacterIndex + 1];
-
-    if (nextChar?.hanzi) {
-      const url = getUrl();
-
-      if (url?.includes("&")) {
-        return router.push(`${url}`);
-      } else if (url?.includes("date") || url?.includes("input")) {
-        router.push(url);
-      } else {
-        router.push("/review");
-      }
-    }
-  };
 
   const isContentLessThanFive =
     (currentCharacter?.hanzi || currentCharacter?.input)?.length < 5;

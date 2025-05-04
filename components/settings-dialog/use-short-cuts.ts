@@ -131,8 +131,11 @@ export function useShortCuts() {
 
       if (["p"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
-        setShowPinyin((showPinyin: any) => !showPinyin);
-        // router.push("/pinyin");
+        if (routeName === "/") {
+          router.push("/pinyin");
+        } else {
+          setShowPinyin((showPinyin: any) => !showPinyin);
+        }
       }
       if (["e"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();

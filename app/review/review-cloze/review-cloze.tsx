@@ -46,6 +46,15 @@ export function ReviewCloze() {
   const relevantHskWords = useMemo(
     () =>
       shuffleArray(
+        hskWords?.filter((word: any) =>
+          JSON.stringify(word)?.includes(currentCharacter?.hanzi)
+        ) || []
+      ),
+    [currentCharacter?.hanzi, hskWords]
+  );
+  const irrelevantHskWords = useMemo(
+    () =>
+      shuffleArray(
         hskWords?.filter(
           (word: any) =>
             !JSON.stringify(word)?.includes(currentCharacter?.hanzi)
@@ -67,17 +76,21 @@ export function ReviewCloze() {
       lang,
     });
 
-  const relevantHanzis = useMemo(
-    () => relevantHskWords?.map((word: any) => word?.hanzi),
-    [relevantHskWords]
+  // const relevantHanzis = useMemo(
+  //   () => relevantHskWords?.map((word: any) => word?.hanzi),
+  //   [relevantHskWords]
+  // );
+  const irrelevantHanzis = useMemo(
+    () => irrelevantHskWords?.map((word: any) => word?.hanzi),
+    [irrelevantHskWords]
   );
 
   const randomThreeOptions = useMemo(
     () =>
       getThreeRandomWords(
-        relevantHanzis?.filter((item: any) => item !== relevantHanzi)
+        irrelevantHanzis?.filter((item: any) => item !== relevantHanzi)
       ),
-    [relevantHanzi, relevantHanzis]
+    [irrelevantHanzis, relevantHanzi]
   );
 
   const shuffledOptions = useMemo(
@@ -158,7 +171,7 @@ export function ReviewCloze() {
                   response
                     ? response?.answer === option
                       ? response?.type === "correct"
-                        ? "bg-green-500"
+                        ? "bg-green-500 hover:bg-green-600"
                         : "bg-red-500 hover:bg-red-600"
                       : "bg-purple-800 opacity-10 text-gray-200"
                     : "",

@@ -46,8 +46,9 @@ export function ReviewCloze() {
   const relevantHskWords = useMemo(
     () =>
       shuffleArray(
-        hskWords?.filter((word: any) =>
-          JSON.stringify(word)?.includes(currentCharacter?.hanzi)
+        hskWords?.filter(
+          (word: any) =>
+            !JSON.stringify(word)?.includes(currentCharacter?.hanzi)
         ) || []
       ),
     [currentCharacter?.hanzi, hskWords]

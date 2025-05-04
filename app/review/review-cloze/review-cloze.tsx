@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
 
 function getThreeRandomWords(words: any) {
   // Create a shallow copy and shuffle it
@@ -42,6 +43,8 @@ export function ReviewCloze() {
     lang,
     hasNoChars,
   } = useGetCurrentReviewCharacter();
+
+  // const contextSentences = useGetCharacterLearningContext({ lang, characterId: currentCharacter?.hanzi })
 
   const relevantHskWords = useMemo(
     () =>

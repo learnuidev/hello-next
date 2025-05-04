@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { SentenceItem } from "../sentence-item";
+import { useGetCharacterLearningContext } from "./use-get-character-learning-context";
 
 const CharacterLearningContextInner = ({ selectedComp }: any) => {
   const learnedCharacter = selectedComp;
@@ -189,23 +190,10 @@ export const CharacterLearningContext = ({
 
   const { data } = useListPublishedContentsQuery({});
 
-  const items = data?.items
-    ?.map((item: any) => {
-      return item?.transcriptions?.map((t: any) => {
-        return {
-          ...t,
-          contentId: item?.id,
-        };
-      });
-    })
-    ?.flat()
-    ?.filter(
-      (item: any) =>
-        (JSON.stringify(item?.hanzi)?.includes(characterId) ||
-          JSON.stringify(item?.input)?.includes(characterId)) &&
-        item?.lang === lang
-    )
-    ?.slice(0, 30);
+  const items = useGetCharacterLearningContext({ lang, characterId })?.slice(
+    0,
+    30
+  );
 
   const learnedCharacter = selectedComp;
 

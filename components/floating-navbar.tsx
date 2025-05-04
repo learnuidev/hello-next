@@ -54,6 +54,8 @@ const FloatingNavbarComp = () => {
     return null;
   }
 
+  const isChineseLang = lang === "zh";
+
   if (routeName?.includes("/review")) {
     return (
       <div
@@ -97,9 +99,11 @@ const FloatingNavbarComp = () => {
     >
       <div className="overflow-y-auto px-8 py-2 bg-gray-50 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
         <div className="space-x-6 md:space-x-8 flex justify-center items-center w-full ">
-          {!["/", "/apps"]?.includes(routeName) && <BrightModeButton />}
+          {!["/", "/apps"]?.includes(routeName) && isChineseLang && (
+            <BrightModeButton />
+          )}
 
-          <PinyinButton />
+          {isChineseLang && <PinyinButton />}
 
           <Link
             href="/convos"
@@ -116,7 +120,7 @@ const FloatingNavbarComp = () => {
             )}
           </Link>
 
-          {reviewList?.length > 1 && lang === "zh" ? (
+          {reviewList?.length > 1 && isChineseLang ? (
             <Link
               href={reviewUrl}
               className={cn(
@@ -152,7 +156,7 @@ const FloatingNavbarComp = () => {
             <Icons.chartColumn className="hover:text-rose-400 dark:hover:text-white transition" />
           </Link> */}
 
-          {/* {(!lang || lang === "zh") && (
+          {/* {(!lang || isChineseLang) && (
             <Link
               href="/pinyin"
               className={`transition ${

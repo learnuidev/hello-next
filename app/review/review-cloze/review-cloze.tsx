@@ -169,9 +169,19 @@ export function ReviewCloze() {
 
           {response && (
             <div>
-              {response?.type === "incorrect" && (
+              {response?.type === "incorrect" ? (
                 <p className="my-8 text-center">
                   Oops, your answer is incorrect. Correct answer is:{" "}
+                  <Link
+                    href={`/nmm/${relevantHanzi}?lang=${lang}`}
+                    target="_blank"
+                  >
+                    {relevantHanzi}
+                  </Link>
+                </p>
+              ) : (
+                <p className="my-8 text-center">
+                  Learn more:{" "}
                   <Link
                     href={`/nmm/${relevantHanzi}?lang=${lang}`}
                     target="_blank"

@@ -117,6 +117,7 @@ import {
   faTrash,
   faTree,
   faUser,
+  faVirus,
   faVolume,
   faWandMagic,
   faXmark,
@@ -357,6 +358,8 @@ export const Icons = {
   cat: createFAIcon(faCatSpace),
   spaceStation: createFAIcon(faSpaceStationMoon),
   listView: createFAIcon(faList12),
+
+  cloze: createFAIcon(faVirus),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

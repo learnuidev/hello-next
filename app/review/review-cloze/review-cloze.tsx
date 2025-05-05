@@ -166,7 +166,7 @@ export function ReviewCloze() {
       </div>
 
       {sentence && (
-        <div className="mt-32">
+        <div className="mt-24">
           {response ? (
             <Link
               target="_blank"

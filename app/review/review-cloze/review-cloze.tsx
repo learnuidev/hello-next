@@ -191,7 +191,7 @@ export function ReviewCloze() {
                 }}
                 disabled={response?.type}
                 className={cn(
-                  "bg-purple-600 p-4 hover:bg-purple-500 text-white text-lg",
+                  "bg-purple-600 p-2 hover:bg-purple-500 text-white text-lg",
                   response
                     ? response?.answer === option
                       ? response?.type === "correct"
@@ -221,7 +221,7 @@ export function ReviewCloze() {
                   </Link>
                 </p>
               ) : (
-                <p className="my-8 text-center">
+                <p className="my-8 text-center text-gray-500">
                   Learn more:{" "}
                   <Link
                     href={`/nmm/${relevantHanzi}?lang=${lang}`}

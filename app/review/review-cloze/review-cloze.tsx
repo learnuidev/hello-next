@@ -167,8 +167,10 @@ export function ReviewCloze() {
 
       {sentence && (
         <div>
-          {response && <p className="text-center mb-4">{sentence?.pinyin}</p>}
-          <h1 className="text-center mt-32 text-3xl">{sentenceHanzi}</h1>
+          {response && (
+            <p className="text-center mb-4 mt-32">{sentence?.pinyin}</p>
+          )}
+          <h1 className="text-center text-3xl">{sentenceHanzi}</h1>
           <p className="text-center mt-4">{sentence?.en}</p>
 
           <div className="grid grid-cols-2 gap-8 mt-12 max-w-xl m-auto">

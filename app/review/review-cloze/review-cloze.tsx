@@ -167,14 +167,18 @@ export function ReviewCloze() {
 
       {sentence && (
         <div className="mt-32">
-          {response && (
+          {response ? (
             <Link
               target="_blank"
               href={`/nmm/${sentenceHanzi}?lang=${lang || sentence?.lang}`}
-              className="text-center mb-4"
+              className="block text-center mb-4"
             >
               {sentence?.pinyin}
             </Link>
+          ) : (
+            <p className="block text-center mb-4 dark:text-black text-white">
+              ...
+            </p>
           )}
           <h1 className="text-center text-3xl">{sentenceHanzi}</h1>
           <p className="text-center mt-4">{sentence?.en}</p>

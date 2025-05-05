@@ -167,6 +167,7 @@ export function ReviewCloze() {
 
       {sentence && (
         <div>
+          {response && <p className="text-center mb-4">{sentence?.pinyin}</p>}
           <h1 className="text-center mt-32 text-3xl">{sentenceHanzi}</h1>
           <p className="text-center mt-4">{sentence?.en}</p>
 
@@ -178,7 +179,7 @@ export function ReviewCloze() {
                 }}
                 disabled={response?.type}
                 className={cn(
-                  "bg-purple-600 p-4 hover:bg-purple-500 text-white",
+                  "bg-purple-600 p-4 hover:bg-purple-500 text-white text-lg",
                   response
                     ? response?.answer === option
                       ? response?.type === "correct"

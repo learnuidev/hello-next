@@ -170,7 +170,7 @@ export function ReviewCloze() {
           {response ? (
             <Link
               target="_blank"
-              href={`/nmm/${sentenceHanzi}?lang=${lang || sentence?.lang}`}
+              href={`/nmm/${sentence?.hanzi || sentence?.input}?lang=${lang || sentence?.lang}`}
               className="block text-center mb-4"
             >
               {sentence?.pinyin}

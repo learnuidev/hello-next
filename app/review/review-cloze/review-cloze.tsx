@@ -161,12 +161,12 @@ export function ReviewCloze() {
         >
           <Icons.xMark />
         </button>
-        <h1 className="text-center">Recloze</h1>
+        <h1 className="text-center">cloze</h1>
         <div></div>
       </div>
 
       {sentence && (
-        <div className="mt-24">
+        <div className="mt-24 lg:mt-32">
           {response ? (
             <Link
               target="_blank"
@@ -183,7 +183,7 @@ export function ReviewCloze() {
           <h1 className="text-center text-3xl">{sentenceHanzi}</h1>
           <p className="text-center mt-4">{sentence?.en}</p>
 
-          <div className="grid grid-cols-2 gap-8 mt-12 max-w-xl m-auto">
+          <div className="grid grid-cols-2 gap-8 mt-12 max-w-xl m-auto lg:mt-24">
             {shuffledOptions?.map((option: string) => (
               <button
                 onClick={() => {

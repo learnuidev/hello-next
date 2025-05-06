@@ -42,6 +42,7 @@ export function ReviewCloze() {
     isEntry,
     lang,
     hasNoChars,
+    isLoading: isReviewCharactersLoading,
   } = useGetCurrentReviewCharacter();
 
   // const contextSentences = useGetCharacterLearningContext({ lang, characterId: currentCharacter?.hanzi })
@@ -127,14 +128,17 @@ export function ReviewCloze() {
     }
   };
 
-  if (isSentenceLoading) {
+  if (isSentenceLoading || isReviewCharactersLoading) {
     return (
       <div>
         <p className="text-center mt-32">Loading...</p>
       </div>
     );
   }
-  if (sentences && !sentence) {
+  if (
+    relevantHskWords &&
+    (clozeIndex > relevantHskWords?.length - 1 || !sentence)
+  ) {
     return (
       <div className="flex justify-center items-center flex-col mt-32">
         <h4 className="text-center mb-8">Nothing here</h4>

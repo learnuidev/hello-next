@@ -74,7 +74,8 @@ export const useGetCurrentReviewCharacter = () => {
       return true;
     });
 
-  const { data: components } = useListComponents();
+  const { data: components, isLoading: isComponentsLoading } =
+    useListComponents();
 
   const {
     understandingRate,
@@ -188,5 +189,6 @@ export const useGetCurrentReviewCharacter = () => {
     lang,
 
     remainingItems,
+    isLoading: isLearnedCharactersLoading || isComponentsLoading,
   };
 };

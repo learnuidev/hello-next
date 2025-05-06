@@ -143,14 +143,25 @@ export function ReviewCloze() {
       <div className="flex justify-center items-center flex-col mt-32">
         <h4 className="text-center mb-8">Nothing here</h4>
 
-        <button
-          onClick={() => {
-            setReviewMode("classic");
-          }}
-        >
-          {" "}
-          Back to classic mode
-        </button>
+        <div className="flex justify-between items-center gap-4">
+          <button
+            onClick={() => {
+              setClozeIndex(0);
+            }}
+          >
+            {" "}
+            Restart
+          </button>
+
+          <button
+            onClick={() => {
+              setReviewMode("classic");
+            }}
+          >
+            {" "}
+            Back to classic mode
+          </button>
+        </div>
       </div>
     );
   }

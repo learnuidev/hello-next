@@ -1,137 +1,14 @@
 import { Icons } from "@/components/ui/icons.v2";
-import { useHskLevel, useReviewModeView } from "../use-review-mode";
-import { useUnreviwedCharacters } from "../use-unreviewed-characters";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
-import { useGetCurrentReviewCharacter } from "../use-get-current-review-character";
-import { useMemo, useState } from "react";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
-
-const hskLevels = [
-  {
-    title: "HSK 1",
-    value: "1",
-  },
-  {
-    title: "HSK 2",
-    value: "2",
-  },
-  {
-    title: "HSK 3",
-    value: "3",
-  },
-  {
-    title: "HSK 4",
-    value: "4",
-  },
-  {
-    title: "HSK 5",
-    value: "5",
-  },
-  {
-    title: "HSK 6",
-    value: "6",
-  },
-  {
-    title: "HSK 7-9",
-    value: "9",
-  },
-  {
-    title: "All",
-    value: "0",
-  },
-];
-const HskLevelSelector = () => {
-  const {
-    currentCharacter,
-    hasReviewedAll,
-    currentComponent,
-    goToNextChar,
-    remainingItems,
-    isContent,
-    isEntry,
-    lang,
-    hasNoChars,
-    isLoading: isReviewCharactersLoading,
-  } = useGetCurrentReviewCharacter();
-
-  const { data: hskWords } = useListHSKWordsQuery();
-
-  const { hskLevel, setHskLevel } = useHskLevel();
-
-  const relevantHskWords = useMemo(
-    () =>
-      shuffleArray(
-        hskWords?.filter((word: any) =>
-          JSON.stringify(word)?.includes(currentCharacter?.hanzi)
-        ) || []
-      ),
-    [currentCharacter?.hanzi, hskWords]
-  );
-
-  const modifiedHskLevels = hskLevels.map((level) => {
-    const totalWords = relevantHskWords.filter((word: any) => {
-      return word?.hskLevel <= level.value;
-    })?.length;
-    return {
-      ...level,
-      title:
-        level.value === "0" ? level.title : `${level.title} (${totalWords})`,
-    };
-  });
-
-  return (
-    <Select
-      value={hskLevel}
-      onValueChange={(value) => {
-        setHskLevel(value);
-      }}
-    >
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select a level" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>HSK Level</SelectLabel>
-          {modifiedHskLevels.map((level) => {
-            return (
-              <SelectItem key={level.title} value={level.value}>
-                {level.title}
-              </SelectItem>
-            );
-          })}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  );
-};
-
-function getThreeRandomWords(words: any) {
-  // Create a shallow copy and shuffle it
-  const shuffled = words?.slice()?.sort(() => 0.5 - Math.random());
-  // Return the first three elements
-  return shuffled?.slice(0, 3) || [];
-}
-
-function shuffleArray(arr: any) {
-  const array = arr?.slice(); // Make a copy to avoid mutating the original
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]]; // Swap elements
-  }
-  return array;
-}
+import { useMemo, useState } from "react";
+import { useGetCurrentReviewCharacter } from "../use-get-current-review-character";
+import { useHskLevel, useReviewModeView } from "../use-review-mode";
+import { HskLevelSelector } from "./hsk-level-selector";
+import { getThreeRandomWords } from "./utils/get-three-random-words";
+import { shuffleArray } from "./utils/shuffle-array";
 
 export function ReviewCloze() {
   const [clozeIndex, setClozeIndex] = useState(0);
@@ -252,27 +129,42 @@ export function ReviewCloze() {
     (clozeIndex > relevantHskWords?.length - 1 || !sentence)
   ) {
     return (
-      <div className="flex justify-center items-center flex-col mt-32">
-        <h4 className="text-center mb-8">Nothing here</h4>
-
-        <div className="flex justify-between items-center gap-4">
+      <div>
+        <div className="flex justify-between items-center">
           <button
             onClick={() => {
-              setClozeIndex(0);
+              setReviewMode(null);
             }}
           >
-            {" "}
-            Restart
+            <Icons.xMark />
           </button>
+          <h1 className="text-center">cloze</h1>
 
-          <button
-            onClick={() => {
-              setReviewMode("classic");
-            }}
-          >
-            {" "}
-            Back to classic mode
-          </button>
+          <HskLevelSelector />
+        </div>
+
+        <div className="flex justify-center items-center flex-col mt-32">
+          <h4 className="text-center mb-8">Nothing here</h4>
+
+          <div className="flex justify-between items-center gap-4">
+            <button
+              onClick={() => {
+                setClozeIndex(0);
+              }}
+            >
+              {" "}
+              Restart
+            </button>
+
+            <button
+              onClick={() => {
+                setReviewMode("classic");
+              }}
+            >
+              {" "}
+              Back to classic mode
+            </button>
+          </div>
         </div>
       </div>
     );

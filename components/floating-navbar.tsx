@@ -77,7 +77,7 @@ const FloatingNavbarComp = () => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
-                    className={`transition ${
+                    className={`transition text-xl ${
                       reviewMode === "all"
                         ? "text-gray-800 dark:text-gray-300"
                         : "text-gray-500 dark:text-gray-500"
@@ -91,9 +91,9 @@ const FloatingNavbarComp = () => {
                     }}
                   >
                     {_reviewMode === "cloze" ? (
-                      <Icons.lightBulb className="hover:text-rose-400 dark:hover:text-white transition" />
+                      <Icons.arrowUp className="hover:text-rose-400 dark:hover:text-white transition" />
                     ) : (
-                      <Icons.cloze className="hover:text-rose-400 dark:hover:text-white transition" />
+                      <Icons.arrowDown className="hover:text-rose-400 dark:hover:text-white transition" />
                     )}
                   </button>
                 </TooltipTrigger>

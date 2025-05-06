@@ -1,5 +1,5 @@
 import { Icons } from "@/components/ui/icons.v2";
-import { useReviewModeView } from "../use-review-mode";
+import { useHskLevel, useReviewModeView } from "../use-review-mode";
 import { useUnreviwedCharacters } from "../use-unreviewed-characters";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useGetCurrentReviewCharacter } from "../use-get-current-review-character";
@@ -7,7 +7,115 @@ import { useMemo, useState } from "react";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
+
+const hskLevels = [
+  {
+    title: "HSK 1",
+    value: "1",
+  },
+  {
+    title: "HSK 2",
+    value: "2",
+  },
+  {
+    title: "HSK 3",
+    value: "3",
+  },
+  {
+    title: "HSK 4",
+    value: "4",
+  },
+  {
+    title: "HSK 5",
+    value: "5",
+  },
+  {
+    title: "HSK 6",
+    value: "6",
+  },
+  {
+    title: "HSK 7-9",
+    value: "9",
+  },
+  {
+    title: "All",
+    value: "0",
+  },
+];
+const HskLevelSelector = () => {
+  const {
+    currentCharacter,
+    hasReviewedAll,
+    currentComponent,
+    goToNextChar,
+    remainingItems,
+    isContent,
+    isEntry,
+    lang,
+    hasNoChars,
+    isLoading: isReviewCharactersLoading,
+  } = useGetCurrentReviewCharacter();
+
+  const { data: hskWords } = useListHSKWordsQuery();
+
+  const { hskLevel, setHskLevel } = useHskLevel();
+
+  const relevantHskWords = useMemo(
+    () =>
+      shuffleArray(
+        hskWords?.filter((word: any) =>
+          JSON.stringify(word)?.includes(currentCharacter?.hanzi)
+        ) || []
+      ),
+    [currentCharacter?.hanzi, hskWords]
+  );
+
+  const modifiedHskLevels = hskLevels.map((level) => {
+    const totalWords = relevantHskWords.filter((word: any) => {
+      return word?.hskLevel <= level.value;
+    })?.length;
+    return {
+      ...level,
+      title:
+        level.value === "0" ? level.title : `${level.title} (${totalWords})`,
+    };
+  });
+
+  return (
+    <Select
+      value={hskLevel}
+      onValueChange={(value) => {
+        setHskLevel(value);
+      }}
+    >
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select a level" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>HSK Level</SelectLabel>
+          {modifiedHskLevels.map((level) => {
+            return (
+              <SelectItem key={level.title} value={level.value}>
+                {level.title}
+              </SelectItem>
+            );
+          })}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+};
 
 function getThreeRandomWords(words: any) {
   // Create a shallow copy and shuffle it
@@ -45,16 +153,24 @@ export function ReviewCloze() {
     isLoading: isReviewCharactersLoading,
   } = useGetCurrentReviewCharacter();
 
-  // const contextSentences = useGetCharacterLearningContext({ lang, characterId: currentCharacter?.hanzi })
+  const { hskLevel, setHskLevel } = useHskLevel();
 
   const relevantHskWords = useMemo(
     () =>
       shuffleArray(
-        hskWords?.filter((word: any) =>
-          JSON.stringify(word)?.includes(currentCharacter?.hanzi)
-        ) || []
+        (
+          hskWords?.filter((word: any) =>
+            JSON.stringify(word)?.includes(currentCharacter?.hanzi)
+          ) || []
+        ).filter((word: any) => {
+          if (hskLevel == "0") {
+            return true;
+          }
+
+          return word.hskLevel <= hskLevel;
+        })
       ),
-    [currentCharacter?.hanzi, hskWords]
+    [currentCharacter?.hanzi, hskLevel, hskWords]
   );
   const irrelevantHskWords = useMemo(
     () =>
@@ -88,10 +204,6 @@ export function ReviewCloze() {
     [relevantHanzi, sentencesInitial]
   );
 
-  // const relevantHanzis = useMemo(
-  //   () => relevantHskWords?.map((word: any) => word?.hanzi),
-  //   [relevantHskWords]
-  // );
   const irrelevantHanzis = useMemo(
     () => irrelevantHskWords?.map((word: any) => word?.hanzi),
     [irrelevantHskWords]
@@ -177,7 +289,8 @@ export function ReviewCloze() {
           <Icons.xMark />
         </button>
         <h1 className="text-center">cloze</h1>
-        <div></div>
+
+        <HskLevelSelector />
       </div>
 
       {sentence && (

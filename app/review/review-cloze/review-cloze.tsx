@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Icons } from "@/components/ui/icons.v2";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
@@ -96,13 +97,13 @@ export function ReviewCloze({
 
   const relevantHanzi = relevantHskWord?.hanzi;
 
-  const { data, isLoading: isSentenceLoading } = useListSentencesQuery({
-    component: relevantHanzi,
-    lang,
-  });
+  const { data: sentencesInitial, isLoading: isSentenceLoading } =
+    useListSentencesQuery({
+      component: relevantHanzi,
+      lang,
+    });
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const sentencesInitial = data || [];
 
   const relevantContextSentences = useMemo(
     () =>
@@ -112,14 +113,12 @@ export function ReviewCloze({
     [contextSentences, relevantHanzi]
   );
 
-  console.log("relevantContextSentences", relevantContextSentences);
-
   const sentences = useMemo(
     () =>
-      [...relevantContextSentences, ...sentencesInitial]?.filter((sent: any) =>
+      sentencesInitial?.filter((sent: any) =>
         sent?.hanzi?.includes(relevantHanzi)
       ),
-    [relevantContextSentences, relevantHanzi, sentencesInitial]
+    [relevantHanzi, sentencesInitial]
   );
 
   const irrelevantHanzis = useMemo(
@@ -127,22 +126,27 @@ export function ReviewCloze({
     [irrelevantHskWords]
   );
 
+  const sentence = useMemo(
+    () => getThreeRandomWords(sentences)?.[questionIndex],
+    [sentences, questionIndex]
+  );
+
+  const futureSentence = useMemo(
+    () => getThreeRandomWords(sentences)?.[questionIndex + 1],
+    [sentences, questionIndex]
+  );
+
   const randomThreeOptions = useMemo(
     () =>
       getThreeRandomWords(
         irrelevantHanzis?.filter((item: any) => item !== relevantHanzi)
       ),
-    [irrelevantHanzis, relevantHanzi]
+    [irrelevantHanzis, relevantHanzi, questionIndex, sentence]
   );
 
   const shuffledOptions = useMemo(
     () => shuffleArray([...randomThreeOptions, relevantHanzi]),
-    [randomThreeOptions, relevantHanzi]
-  );
-
-  const sentence = useMemo(
-    () => getThreeRandomWords(sentences)?.[questionIndex],
-    [sentences, questionIndex]
+    [randomThreeOptions, relevantHanzi, questionIndex, sentence]
   );
 
   const sentenceHanzi = useMemo(
@@ -272,30 +276,35 @@ export function ReviewCloze({
                 </p>
               )}
 
-              <div className="flex justify-center items-center gap-4 mt-8">
+              <div className="flex justify-center items-center gap-8 mt-8">
                 <button
                   onClick={() => {
                     setReviewMode(null);
                   }}
+                  className="hover:scale-125 transition hover:font-bold"
                 >
-                  Quit
+                  <Icons.xMark className="text-2xl" />
                 </button>
-                <button
-                  onClick={() => {
-                    setQuestionIndex(questionIndex + 1);
-                    setResponse(null);
-                  }}
-                >
-                  Another
-                </button>
+                {futureSentence && (
+                  <button
+                    onClick={() => {
+                      setQuestionIndex(questionIndex + 1);
+                      setResponse(null);
+                    }}
+                    className="hover:scale-125 transition hover:font-bold"
+                  >
+                    <Icons.arrowDown className="text-2xl" />
+                  </button>
+                )}
                 <button
                   onClick={() => {
                     setClozeIndex(clozeIndex + 1);
                     setQuestionIndex(0);
                     setResponse(null);
                   }}
+                  className="hover:scale-125 transition hover:font-bold"
                 >
-                  Next
+                  <Icons.arrowRight className="text-2xl" />
                 </button>
               </div>
             </div>

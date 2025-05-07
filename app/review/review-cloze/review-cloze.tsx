@@ -4,11 +4,11 @@ import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { useGetCurrentReviewCharacter } from "../use-get-current-review-character";
 import { useHskLevel, useReviewModeView } from "../use-review-mode";
 import { HskLevelSelector } from "./hsk-level-selector";
 import { getThreeRandomWords } from "./utils/get-three-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
+import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
 
 const ClozeNavbar = ({ onClose }: { onClose?: () => void }) => {
   const { setReviewMode } = useReviewModeView();
@@ -53,20 +53,12 @@ export function ReviewCloze({
   const [response, setResponse] = useState<any>(null);
   const { setReviewMode } = useReviewModeView();
 
-  const { data: hskWords } = useListHSKWordsQuery();
+  const contextSentences = useGetCharacterLearningContext({
+    lang,
+    characterId: currentCharacter,
+  });
 
-  // const {
-  //   currentCharacter,
-  //   hasReviewedAll,
-  //   currentComponent,
-  //   goToNextChar,
-  //   remainingItems,
-  //   isContent,
-  //   isEntry,
-  //   lang,
-  //   hasNoChars,
-  //   isLoading: isReviewCharactersLoading,
-  // } = useGetCurrentReviewCharacter();
+  const { data: hskWords } = useListHSKWordsQuery();
 
   const { hskLevel, setHskLevel } = useHskLevel();
 
@@ -104,18 +96,30 @@ export function ReviewCloze({
 
   const relevantHanzi = relevantHskWord?.hanzi;
 
-  const { data: sentencesInitial, isLoading: isSentenceLoading } =
-    useListSentencesQuery({
-      component: relevantHanzi,
-      lang,
-    });
+  const { data, isLoading: isSentenceLoading } = useListSentencesQuery({
+    component: relevantHanzi,
+    lang,
+  });
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const sentencesInitial = data || [];
+
+  const relevantContextSentences = useMemo(
+    () =>
+      (contextSentences || [])?.filter((sentence: any) => {
+        return sentence?.hanzi?.includes(relevantHanzi);
+      }),
+    [contextSentences, relevantHanzi]
+  );
+
+  console.log("relevantContextSentences", relevantContextSentences);
 
   const sentences = useMemo(
     () =>
-      sentencesInitial?.filter((sent: any) =>
+      [...relevantContextSentences, ...sentencesInitial]?.filter((sent: any) =>
         sent?.hanzi?.includes(relevantHanzi)
       ),
-    [relevantHanzi, sentencesInitial]
+    [relevantContextSentences, relevantHanzi, sentencesInitial]
   );
 
   const irrelevantHanzis = useMemo(
@@ -137,8 +141,8 @@ export function ReviewCloze({
   );
 
   const sentence = useMemo(
-    () => getThreeRandomWords(sentences)?.[0],
-    [sentences]
+    () => getThreeRandomWords(sentences)?.[questionIndex],
+    [sentences, questionIndex]
   );
 
   const sentenceHanzi = useMemo(
@@ -176,6 +180,7 @@ export function ReviewCloze({
             <button
               onClick={() => {
                 setClozeIndex(0);
+                setQuestionIndex(0);
               }}
             >
               {" "}
@@ -218,7 +223,7 @@ export function ReviewCloze({
           <h1 className="text-center text-3xl">{sentenceHanzi}</h1>
           <p className="text-center mt-4">{sentence?.en}</p>
 
-          <div className="grid grid-cols-2 gap-8 mt-12 max-w-xl m-auto lg:mt-24">
+          <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">
             {shuffledOptions?.map((option: string) => (
               <button
                 onClick={() => {
@@ -226,15 +231,15 @@ export function ReviewCloze({
                 }}
                 disabled={response?.type}
                 className={cn(
-                  "bg-purple-600 p-2 hover:bg-purple-500 text-white text-lg",
+                  "border-orange-400 text-black  border-[2px] p-2 hover:bg-orange-500 hover:text-white hover:scale-110 dark:text-white text-lg",
                   response
                     ? response?.answer === option
                       ? response?.type === "correct"
-                        ? "bg-green-500 hover:bg-green-600"
+                        ? "bg-green-500 border-green-600 hover:bg-green-600"
                         : "bg-red-500 hover:bg-red-600"
-                      : "bg-purple-800 opacity-10 text-gray-200"
+                      : "bg-gray-800 opacity-10 text-gray-200"
                     : "",
-                  "transition"
+                  "transition rounded-full"
                 )}
                 key={option}
               >
@@ -277,7 +282,16 @@ export function ReviewCloze({
                 </button>
                 <button
                   onClick={() => {
+                    setQuestionIndex(questionIndex + 1);
+                    setResponse(null);
+                  }}
+                >
+                  Another
+                </button>
+                <button
+                  onClick={() => {
                     setClozeIndex(clozeIndex + 1);
+                    setQuestionIndex(0);
                     setResponse(null);
                   }}
                 >

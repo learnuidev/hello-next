@@ -9,6 +9,7 @@ import { ChangeMode } from "./change-mode";
 import { FloatingNavbar } from "@/components/floating-navbar";
 import { useReviewModeView } from "./use-review-mode";
 import { ReviewCloze } from "./review-cloze/review-cloze";
+import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
 
 function ReviewClassic() {
   const { view, mode } = useGetReviewParams();
@@ -73,6 +74,12 @@ function ReviewModeSelector() {
   );
 }
 function ReviewMode() {
+  const {
+    currentCharacter,
+    lang,
+    isLoading: isReviewCharactersLoading,
+  } = useGetCurrentReviewCharacter();
+
   const { reviewMode } = useReviewModeView();
 
   if (!reviewMode) {
@@ -80,7 +87,13 @@ function ReviewMode() {
   }
 
   if (reviewMode === "cloze") {
-    return <ReviewCloze />;
+    return (
+      <ReviewCloze
+        isLoading={isReviewCharactersLoading}
+        currentCharacter={currentCharacter?.hanzi}
+        lang={lang}
+      />
+    );
   }
 
   return <ReviewClassic />;

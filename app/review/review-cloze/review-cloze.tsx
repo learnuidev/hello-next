@@ -10,25 +10,63 @@ import { HskLevelSelector } from "./hsk-level-selector";
 import { getThreeRandomWords } from "./utils/get-three-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
 
-export function ReviewCloze() {
+const ClozeNavbar = ({ onClose }: { onClose?: () => void }) => {
+  const { setReviewMode } = useReviewModeView();
+  return (
+    <nav className="flex w-screen fixed top-4 left-0 items-center">
+      <div className="flex-1 flex justify-start px-4">
+        <button
+          onClick={() => {
+            if (onClose) {
+              onClose();
+            } else {
+              setReviewMode(null);
+            }
+          }}
+        >
+          <Icons.xMark className="text-2xl" />
+        </button>
+      </div>
+      <div className="flex-1 flex justify-center px-4">
+        <h1 className="text-center font-bold text-2xl">cloze</h1>
+      </div>
+      <div className="flex-1 flex justify-end px-4">
+        <HskLevelSelector />
+      </div>
+    </nav>
+  );
+};
+
+export function ReviewCloze({
+  currentCharacter,
+  lang,
+  isLoading,
+  onClose,
+}: {
+  currentCharacter: string;
+  lang: string;
+  isLoading?: boolean;
+  onClose?: () => void;
+}) {
   const [clozeIndex, setClozeIndex] = useState(0);
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [response, setResponse] = useState<any>(null);
   const { setReviewMode } = useReviewModeView();
 
   const { data: hskWords } = useListHSKWordsQuery();
 
-  const {
-    currentCharacter,
-    hasReviewedAll,
-    currentComponent,
-    goToNextChar,
-    remainingItems,
-    isContent,
-    isEntry,
-    lang,
-    hasNoChars,
-    isLoading: isReviewCharactersLoading,
-  } = useGetCurrentReviewCharacter();
+  // const {
+  //   currentCharacter,
+  //   hasReviewedAll,
+  //   currentComponent,
+  //   goToNextChar,
+  //   remainingItems,
+  //   isContent,
+  //   isEntry,
+  //   lang,
+  //   hasNoChars,
+  //   isLoading: isReviewCharactersLoading,
+  // } = useGetCurrentReviewCharacter();
 
   const { hskLevel, setHskLevel } = useHskLevel();
 
@@ -37,7 +75,7 @@ export function ReviewCloze() {
       shuffleArray(
         (
           hskWords?.filter((word: any) =>
-            JSON.stringify(word)?.includes(currentCharacter?.hanzi)
+            JSON.stringify(word)?.includes(currentCharacter)
           ) || []
         ).filter((word: any) => {
           if (hskLevel == "0") {
@@ -47,17 +85,16 @@ export function ReviewCloze() {
           return word.hskLevel <= hskLevel;
         })
       ),
-    [currentCharacter?.hanzi, hskLevel, hskWords]
+    [currentCharacter, hskLevel, hskWords]
   );
   const irrelevantHskWords = useMemo(
     () =>
       shuffleArray(
         hskWords?.filter(
-          (word: any) =>
-            !JSON.stringify(word)?.includes(currentCharacter?.hanzi)
+          (word: any) => !JSON.stringify(word)?.includes(currentCharacter)
         ) || []
       ),
-    [currentCharacter?.hanzi, hskWords]
+    [currentCharacter, hskWords]
   );
 
   const relevantHskWord = useMemo(
@@ -117,7 +154,7 @@ export function ReviewCloze() {
     }
   };
 
-  if (isSentenceLoading || isReviewCharactersLoading) {
+  if (isSentenceLoading || isLoading) {
     return (
       <div>
         <p className="text-center mt-32">Loading...</p>
@@ -130,18 +167,7 @@ export function ReviewCloze() {
   ) {
     return (
       <div>
-        <div className="flex justify-between items-center">
-          <button
-            onClick={() => {
-              setReviewMode(null);
-            }}
-          >
-            <Icons.xMark />
-          </button>
-          <h1 className="text-center">cloze</h1>
-
-          <HskLevelSelector />
-        </div>
+        <ClozeNavbar onClose={onClose} />
 
         <div className="flex justify-center items-center flex-col mt-32">
           <h4 className="text-center mb-8">Nothing here</h4>
@@ -171,19 +197,8 @@ export function ReviewCloze() {
   }
 
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center">
-        <button
-          onClick={() => {
-            setReviewMode(null);
-          }}
-        >
-          <Icons.xMark />
-        </button>
-        <h1 className="text-center">cloze</h1>
-
-        <HskLevelSelector />
-      </div>
+    <div className="px-8">
+      <ClozeNavbar onClose={onClose} />
 
       {sentence && (
         <div className="mt-24 lg:mt-32">

@@ -245,7 +245,7 @@ export function ReviewCloze({
                 }}
                 disabled={response?.type}
                 className={cn(
-                  "border-orange-400 text-black  border-[2px] p-2 hover:bg-orange-500 hover:text-white hover:scale-110 dark:text-white text-lg",
+                  "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg",
                   response
                     ? response?.answer === option
                       ? response?.type === "correct"
@@ -253,7 +253,10 @@ export function ReviewCloze({
                         : "bg-red-500 hover:bg-red-600"
                       : "bg-gray-800 opacity-10 text-gray-200"
                     : "",
-                  "transition rounded-full"
+                  "transition rounded-full",
+                  response
+                    ? ""
+                    : "hover:bg-orange-500 hover:text-white hover:scale-110"
                 )}
                 key={option}
               >

@@ -295,17 +295,7 @@ export function ReviewCloze({
                 >
                   <Icons.xMark className="text-2xl" />
                 </button>
-                {futureSentence && (
-                  <button
-                    onClick={() => {
-                      setQuestionIndex(questionIndex + 1);
-                      setResponse(null);
-                    }}
-                    className="hover:scale-125 transition hover:font-bold"
-                  >
-                    <Icons.arrowDown className="text-2xl" />
-                  </button>
-                )}
+
                 <button
                   onClick={() => {
                     setClozeIndex(clozeIndex + 1);
@@ -314,8 +304,20 @@ export function ReviewCloze({
                   }}
                   className="hover:scale-125 transition hover:font-bold"
                 >
-                  <Icons.arrowRight className="text-2xl" />
+                  <Icons.arrowDown className="text-2xl" />
                 </button>
+                {futureSentence && (
+                  <button
+                    onClick={() => {
+                      setQuestionIndex(questionIndex + 1);
+                      setResponse(null);
+                    }}
+                    className="hover:scale-125 transition hover:font-bold"
+                  >
+                    <Icons.arrowRight className="text-2xl" />
+                  </button>
+                )}
+
                 {sentence?.contentId && (
                   <Link
                     target="_blank"

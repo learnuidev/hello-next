@@ -108,21 +108,27 @@ export function ReviewCloze({
   const relevantContextSentences = useMemo(
     () =>
       (contextSentences || [])?.filter((sentence: any) => {
-        return sentence?.hanzi?.includes(relevantHanzi);
+        return (
+          (sentence?.hanzi || sentence?.input)?.includes(relevantHanzi) &&
+          sentence?.input?.length < 20
+        );
       }),
     [contextSentences, relevantHanzi]
   );
 
   const sentences = useMemo(
     () =>
-      sentencesInitial?.filter((sent: any) =>
-        sent?.hanzi?.includes(relevantHanzi)
+      [
+        ...(relevantContextSentences || []),
+        ...(sentencesInitial || []),
+      ]?.filter((sent: any) =>
+        (sent?.hanzi || sent?.input)?.includes(relevantHanzi)
       ),
     [relevantHanzi, sentencesInitial]
   );
 
   const irrelevantHanzis = useMemo(
-    () => irrelevantHskWords?.map((word: any) => word?.hanzi),
+    () => irrelevantHskWords?.map((word: any) => word?.hanzi || word?.input),
     [irrelevantHskWords]
   );
 
@@ -150,8 +156,9 @@ export function ReviewCloze({
   );
 
   const sentenceHanzi = useMemo(
-    () => sentence?.hanzi?.replace(relevantHanzi, " ____ "),
-    [relevantHanzi, sentence?.hanzi]
+    () =>
+      (sentence?.hanzi || sentence?.input)?.replace(relevantHanzi, " ____ "),
+    [relevantHanzi, sentence?.hanzi, sentence?.input]
   );
 
   const checkAnswer = (answer: string) => {
@@ -306,6 +313,15 @@ export function ReviewCloze({
                 >
                   <Icons.arrowRight className="text-2xl" />
                 </button>
+                {sentence?.contentId && (
+                  <Link
+                    target="_blank"
+                    href={`/convos/${sentence?.contentId}${sentence?.start ? `?start=${sentence?.start}` : ""}`}
+                    className="block hover:scale-125 transition hover:font-bold"
+                  >
+                    <Icons.play className="text-2xl" />
+                  </Link>
+                )}
               </div>
             </div>
           )}

@@ -10,6 +10,7 @@ import { HskLevelSelector } from "./hsk-level-selector";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
 import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
+import { CharacterItem } from "@/components/_select-character/character-item";
 
 const ClozeNavbar = ({ onClose }: { onClose?: () => void }) => {
   const { setReviewMode } = useReviewModeView();
@@ -234,7 +235,19 @@ export function ReviewCloze({
               ...
             </p>
           )}
-          <h1 className="text-center text-3xl">{sentenceHanzi}</h1>
+          <h1 className="text-center text-3xl">
+            {(response ? sentence?.hanzi || sentence?.input : sentenceHanzi)
+              .split("")
+              .map((item: string, idx: number) => {
+                return (
+                  <CharacterItem
+                    key={`review-cloze-${idx}-${item}`}
+                    character={item}
+                    className="text-center text-3xl font-light"
+                  />
+                );
+              })}
+          </h1>
           <p className="text-center mt-4">{sentence?.en}</p>
 
           <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">

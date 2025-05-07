@@ -143,16 +143,15 @@ export function useShortCuts() {
       }
 
       if (["b"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        if (routeName?.includes("/review") || entryId || isContent) {
-          if (reviewMode === "all") {
-            router.push(reviewUrlFn({ reviewMode: "" }));
-            return null;
-          } else {
-            router.push(reviewUrlFn({ reviewMode: "all" }));
-            return null;
-          }
-          alert("yo");
-        }
+        // if (routeName?.includes("/review") || entryId || isContent) {
+        //   if (reviewMode === "all") {
+        //     router.push(reviewUrlFn({ reviewMode: "" }));
+        //     return null;
+        //   } else {
+        //     router.push(reviewUrlFn({ reviewMode: "all" }));
+        //     return null;
+        //   }
+        // }
         event.preventDefault();
         setBrightMode((val: any) => !val);
         setReadMode(!readMode);

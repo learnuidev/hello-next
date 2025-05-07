@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useHskLevel, useReviewModeView } from "../use-review-mode";
 import { HskLevelSelector } from "./hsk-level-selector";
-import { getThreeRandomWords } from "./utils/get-three-random-words";
+import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
 import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
 
@@ -133,19 +133,20 @@ export function ReviewCloze({
   );
 
   const sentence = useMemo(
-    () => getThreeRandomWords(sentences)?.[questionIndex],
+    () => getRandomWords(sentences)?.[questionIndex],
     [sentences, questionIndex]
   );
 
   const futureSentence = useMemo(
-    () => getThreeRandomWords(sentences)?.[questionIndex + 1],
+    () => getRandomWords(sentences)?.[questionIndex + 1],
     [sentences, questionIndex]
   );
 
   const randomThreeOptions = useMemo(
     () =>
-      getThreeRandomWords(
-        irrelevantHanzis?.filter((item: any) => item !== relevantHanzi)
+      getRandomWords(
+        irrelevantHanzis?.filter((item: any) => item !== relevantHanzi),
+        3
       ),
     [irrelevantHanzis, relevantHanzi, questionIndex, sentence]
   );

@@ -240,11 +240,16 @@ export function ReviewCloze({
               .split("")
               .map((item: string, idx: number) => {
                 return (
-                  <CharacterItem
+                  <Link
+                    href={`/nmm/${item}${sentence?.lang ? `?lang=${sentence?.lang}` : ""}`}
                     key={`review-cloze-${idx}-${item}`}
-                    character={item}
-                    className="text-center text-3xl font-light"
-                  />
+                    target="_blank"
+                  >
+                    <CharacterItem
+                      character={item}
+                      className="text-center text-3xl font-light"
+                    />
+                  </Link>
                 );
               })}
           </h1>

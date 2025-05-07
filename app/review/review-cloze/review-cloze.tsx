@@ -118,11 +118,13 @@ export function ReviewCloze({
 
   const sentences = useMemo(
     () =>
-      [
-        ...(relevantContextSentences || []),
-        ...(sentencesInitial || []),
-      ]?.filter((sent: any) =>
-        (sent?.hanzi || sent?.input)?.includes(relevantHanzi)
+      getRandomWords(
+        [
+          ...(relevantContextSentences || []),
+          ...(sentencesInitial || []),
+        ]?.filter((sent: any) =>
+          (sent?.hanzi || sent?.input)?.includes(relevantHanzi)
+        )
       ),
     [relevantHanzi, sentencesInitial]
   );
@@ -133,12 +135,12 @@ export function ReviewCloze({
   );
 
   const sentence = useMemo(
-    () => getRandomWords(sentences)?.[questionIndex],
+    () => sentences?.[questionIndex],
     [sentences, questionIndex]
   );
 
   const futureSentence = useMemo(
-    () => getRandomWords(sentences)?.[questionIndex + 1],
+    () => sentences?.[questionIndex + 1],
     [sentences, questionIndex]
   );
 

@@ -18,6 +18,7 @@ import { HskSuperComponentsWordView } from "./hsk-super-components-view";
 import { PinyinView } from "./pinyin-view";
 import { SimilarCharactersView } from "./similar-characters-view";
 import { StoryView } from "./story-view";
+import { ReviewCloze } from "@/app/review/review-cloze/review-cloze";
 
 export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
   const { data: characters } = useListCharactersQuery(
@@ -50,10 +51,15 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
   });
 
   const { data: chineseCharacters } = useListChineseCharactersQuery();
+  const setViews = useViewTypeStore((state) => state.setViews);
 
   const offlineCharacter = chineseCharacters?.find(
     (char: any) => char?.hanzi === characterId || char?.input === characterId
   );
+
+  const setView = (view: any) => {
+    return setViews(characterId, view);
+  };
 
   const pinyinOrRoman =
     selectedComp?.pinyin ||
@@ -64,6 +70,16 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
     offlineCharacter?.roman;
 
   switch (view) {
+    case "review":
+      return (
+        <ReviewCloze
+          currentCharacter={characterId}
+          lang={lang}
+          onClose={() => {
+            setView("overview");
+          }}
+        />
+      );
     case "super-components":
       return <HskSuperComponentsWordView componentId={characterId} />;
 

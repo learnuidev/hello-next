@@ -71,12 +71,14 @@ export function SelectedCharacterContainer({
       }}
     >
       <div className="px-4 md:px-12">
-        <CharacterNavbar characterId={characterId} />
+        {view !== "review" && <CharacterNavbar characterId={characterId} />}
 
         <ShowView />
       </div>
 
-      <FloatingCharacterNavbar characterId={characterId} />
+      {view !== "review" && (
+        <FloatingCharacterNavbar characterId={characterId} />
+      )}
     </div>
   );
 }

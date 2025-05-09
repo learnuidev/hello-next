@@ -14,11 +14,14 @@ import { useGetUserPreferenceQuery } from "../user/use-get-user-preference-query
 const url = `${siteConfig?.apiUrl}/v1/list-hsk-words/v3`;
 const old_url = `/api/list-hsk-words`;
 
-export async function listHSKWords(params: {}) {
+export async function listHSKWords(
+  params: {},
+  { Authorization }: { Authorization: string }
+) {
   const res = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: ``,
+      Authorization,
     },
 
     body: JSON.stringify(params),
@@ -61,7 +64,10 @@ export function useListHSKWordsQuery(
       //   }
       // }
       // if (options.query) {
-      const response = await listHSKWords({ ...params, version });
+      const response = await listHSKWords(
+        { ...params, version },
+        { Authorization: authUser.jwt }
+      );
 
       return response;
     },

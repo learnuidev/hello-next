@@ -10,6 +10,7 @@ import { FloatingNavbar } from "@/components/floating-navbar";
 import { useReviewModeView } from "./use-review-mode";
 import { ReviewCloze } from "./review-cloze/review-cloze";
 import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
+import { useRouter } from "next/navigation";
 
 function ReviewClassic() {
   const { view, mode } = useGetReviewParams();
@@ -80,6 +81,8 @@ function ReviewMode() {
     isLoading: isReviewCharactersLoading,
   } = useGetCurrentReviewCharacter();
 
+  const router = useRouter();
+
   const { reviewMode } = useReviewModeView();
 
   if (!reviewMode) {
@@ -92,6 +95,9 @@ function ReviewMode() {
         isLoading={isReviewCharactersLoading}
         currentCharacter={currentCharacter?.hanzi}
         lang={lang}
+        onClose={() => {
+          router.push(`/nmm?lang=${lang}`);
+        }}
       />
     );
   }

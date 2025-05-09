@@ -100,18 +100,18 @@ export function ReviewModeClassic(props: any) {
   const ReviewHeader = () => {
     return (
       <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
-        <button
-          // href={
-          //   entryId
-          //     ? `/diary/${entryId}?view=insights`
-          //     : `/nmm${level ? `?level=${level}` : ""}`
-          // }
-          onClick={() => {
-            setReviewMode(null);
-          }}
+        <Link
+          href={
+            entryId
+              ? `/diary/${entryId}?view=insights`
+              : `/nmm${level ? `?level=${level}` : ""}`
+          }
+          // onClick={() => {
+          //   setReviewMode(null);
+          // }}
         >
-          <Icons.xMark className="text-xl" />
-        </button>
+          <Icons.xMark className="text-2xl" />
+        </Link>
 
         {/* <h1 className="text-2xl"></h1> */}
         <p className="text-gray-700 text-xl md:text-3xl">

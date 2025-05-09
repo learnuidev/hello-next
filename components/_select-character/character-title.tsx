@@ -40,6 +40,7 @@ export const CharacterTitle = (props: any) => {
   const isSuperAdmin = useIsSuperAdmin();
 
   const [newPinyin, setNewPinyin] = useState("");
+  const [newEn, setNewEn] = useState("");
 
   const context = searchParams?.get("context");
 
@@ -92,8 +93,8 @@ export const CharacterTitle = (props: any) => {
 
   const finalEnVal =
     englishMeanings?.length === 1
-      ? englishMeanings?.[0] || selectedComp?.en || meaning?.details?.en
-      : selectedComp?.en || meaning?.details?.en || englishMeanings?.[0];
+      ? meaning?.details?.en || englishMeanings?.[0] || selectedComp?.en
+      : meaning?.details?.en || selectedComp?.en || englishMeanings?.[0];
 
   const selectedPinyin = pinyins?.length
     ? pinyins?.join("/")
@@ -227,9 +228,19 @@ export const CharacterTitle = (props: any) => {
         </h1>
       )}
 
-      <h2 className="dark:text-gray-500 text-gray-900 font-light">
-        {finalEnVal?.split("/")?.slice(0, 4)?.join("/")}
-      </h2>
+      {edit && meaning?.id && isSuperAdmin ? (
+        <input
+          value={newPinyin || meaning?.details?.en}
+          onChange={(event: any) => {
+            setNewEn(event?.target.value);
+          }}
+          className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full"
+        />
+      ) : (
+        <h2 className="dark:text-gray-500 text-gray-900 font-light">
+          {finalEnVal?.split("/")?.slice(0, 4)?.join("/")}
+        </h2>
+      )}
 
       <div className="space-x-4 flex">
         {!edit && (
@@ -264,6 +275,7 @@ export const CharacterTitle = (props: any) => {
                     details: {
                       ...meaning?.details,
                       pinyin: newPinyin || meaning?.details?.pinyin,
+                      en: newEn || meaning?.details?.en,
                     },
                   })
                   .then((resp) => {

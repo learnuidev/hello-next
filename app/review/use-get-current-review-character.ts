@@ -106,23 +106,25 @@ export const useGetCurrentReviewCharacter = () => {
   const isContent = useIsContent(hskMode);
   const isEntry = useIsEntry(entryId);
 
-  const currentCharacter = isEntry
-    ? reviewMode === "all"
-      ? unReviewedCharacters?.[reviewCount]
-      : unReviewedCharacters?.[0]
-    : isContent
+  const currentCharacter = input
+    ? uniqueComponentWords?.[reviewCount]
+    : isEntry
       ? reviewMode === "all"
         ? unReviewedCharacters?.[reviewCount]
         : unReviewedCharacters?.[0]
-      : date
-        ? unReviewedCharacters?.[reviewCount]
-        : reviewMode === "all"
+      : isContent
+        ? reviewMode === "all"
           ? unReviewedCharacters?.[reviewCount]
-          : unReviewedCharacters?.find(
-              (char: any) => char?.hanzi === nextCharacter
-            ) ||
-            // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
-            unReviewedCharacters?.[0];
+          : unReviewedCharacters?.[0]
+        : date
+          ? unReviewedCharacters?.[reviewCount]
+          : reviewMode === "all"
+            ? unReviewedCharacters?.[reviewCount]
+            : unReviewedCharacters?.find(
+                (char: any) => char?.hanzi === nextCharacter
+              ) ||
+              // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
+              unReviewedCharacters?.[0];
 
   const currentComponent = components?.find(
     (component: any) => component?.hanzi === currentCharacter?.hanzi

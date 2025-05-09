@@ -130,7 +130,9 @@ export function useGetCharacterAnalytics({
 
       return comp;
     })
-    ?.filter(Boolean);
+    ?.filter(Boolean)
+    // @ts-ignore
+    ?.sort((a, b) => b?.next_review_date - a?.next_review_date);
 
   return {
     uniqueWords,

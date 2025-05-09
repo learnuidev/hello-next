@@ -230,7 +230,7 @@ export const CharacterTitle = (props: any) => {
 
       {edit && meaning?.id && isSuperAdmin ? (
         <input
-          value={newPinyin || meaning?.details?.en}
+          value={newEn || meaning?.details?.en}
           onChange={(event: any) => {
             setNewEn(event?.target.value);
           }}

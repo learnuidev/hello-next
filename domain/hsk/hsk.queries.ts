@@ -12,9 +12,10 @@ import { useGetUserPreferenceQuery } from "../user/use-get-user-preference-query
 // TODO: Move this to .env
 // const url = `${siteConfig?.apiUrl}/v1/list-hsk-words`;
 const url = `${siteConfig?.apiUrl}/v1/list-hsk-words/v3`;
+const old_url = `/api/list-hsk-words`;
 
 export async function listHSKWords(params: {}) {
-  const res = await fetch(`/api/list-hsk-words`, {
+  const res = await fetch(url, {
     method: "POST",
     headers: {
       Authorization: ``,

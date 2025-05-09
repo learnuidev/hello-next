@@ -12,7 +12,13 @@ import { shuffleArray } from "./utils/shuffle-array";
 import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
 import { CharacterItem } from "@/components/_select-character/character-item";
 
-const ClozeNavbar = ({ onClose }: { onClose?: () => void }) => {
+const ClozeNavbar = ({
+  onClose,
+  currentCharacter,
+}: {
+  onClose?: () => void;
+  currentCharacter: string;
+}) => {
   const { setReviewMode } = useReviewModeView();
   return (
     <nav className="flex w-screen fixed top-4 left-0 items-center">
@@ -33,7 +39,7 @@ const ClozeNavbar = ({ onClose }: { onClose?: () => void }) => {
         <h1 className="text-center font-bold text-2xl">cloze</h1>
       </div>
       <div className="flex-1 flex justify-end px-4">
-        <HskLevelSelector />
+        <HskLevelSelector currentCharacter={currentCharacter} />
       </div>
     </nav>
   );
@@ -44,11 +50,13 @@ export function ReviewCloze({
   lang,
   isLoading,
   onClose,
+  backButton: BackButton,
 }: {
   currentCharacter: string;
   lang: string;
   isLoading?: boolean;
   onClose?: () => void;
+  backButton?: any;
 }) {
   const [clozeIndex, setClozeIndex] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -186,7 +194,7 @@ export function ReviewCloze({
   ) {
     return (
       <div>
-        <ClozeNavbar onClose={onClose} />
+        <ClozeNavbar onClose={onClose} currentCharacter={currentCharacter} />
 
         <div className="flex justify-center items-center flex-col mt-32">
           <h4 className="text-center mb-8">Nothing here</h4>
@@ -202,14 +210,18 @@ export function ReviewCloze({
               Restart
             </button>
 
-            <button
-              onClick={() => {
-                setReviewMode("classic");
-              }}
-            >
-              {" "}
-              Back to classic mode
-            </button>
+            {BackButton ? (
+              <BackButton />
+            ) : (
+              <button
+                onClick={() => {
+                  setReviewMode("classic");
+                }}
+              >
+                {" "}
+                Back to classic mode
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -218,7 +230,7 @@ export function ReviewCloze({
 
   return (
     <div className="px-8">
-      <ClozeNavbar onClose={onClose} />
+      <ClozeNavbar onClose={onClose} currentCharacter={currentCharacter} />
 
       {sentence && (
         <div className="mt-24 lg:mt-32">

@@ -73,6 +73,17 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
     case "review":
       return (
         <ReviewCloze
+          backButton={() => {
+            return (
+              <button
+                onClick={() => {
+                  setView("overview");
+                }}
+              >
+                Back to overview
+              </button>
+            );
+          }}
           currentCharacter={characterId}
           lang={lang}
           onClose={() => {

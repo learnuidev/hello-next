@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/select";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useMemo } from "react";
-import { useGetCurrentReviewCharacter } from "../use-get-current-review-character";
 import { useHskLevel } from "../use-review-mode";
 import { shuffleArray } from "./utils/shuffle-array";
 
@@ -47,20 +46,11 @@ const hskLevels = [
     value: "0",
   },
 ];
-export const HskLevelSelector = () => {
-  const {
-    currentCharacter,
-    hasReviewedAll,
-    currentComponent,
-    goToNextChar,
-    remainingItems,
-    isContent,
-    isEntry,
-    lang,
-    hasNoChars,
-    isLoading: isReviewCharactersLoading,
-  } = useGetCurrentReviewCharacter();
-
+export const HskLevelSelector = ({
+  currentCharacter,
+}: {
+  currentCharacter: string;
+}) => {
   const { data: hskWords } = useListHSKWordsQuery();
 
   const { hskLevel, setHskLevel } = useHskLevel();
@@ -69,20 +59,25 @@ export const HskLevelSelector = () => {
     () =>
       shuffleArray(
         hskWords?.filter((word: any) =>
-          JSON.stringify(word)?.includes(currentCharacter?.hanzi)
+          JSON.stringify(word)?.includes(currentCharacter)
         ) || []
       ),
-    [currentCharacter?.hanzi, hskWords]
+    [currentCharacter, hskWords]
   );
 
   const modifiedHskLevels = hskLevels.map((level) => {
     const totalWords = relevantHskWords.filter((word: any) => {
       return word?.hskLevel <= level.value;
-    })?.length;
+    });
+
+    console.log("TOTAL WORDS", totalWords);
+    const totalWordsLength = totalWords?.length;
     return {
       ...level,
       title:
-        level.value === "0" ? level.title : `${level.title} (${totalWords})`,
+        level.value === "0"
+          ? level.title
+          : `${level.title} (${totalWordsLength})`,
     };
   });
 

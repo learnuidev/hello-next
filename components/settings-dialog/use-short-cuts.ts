@@ -142,7 +142,7 @@ export function useShortCuts() {
         router.push("/convos");
       }
 
-      if (["b"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+      if (["b", "m"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         // if (routeName?.includes("/review") || entryId || isContent) {
         //   if (reviewMode === "all") {
         //     router.push(reviewUrlFn({ reviewMode: "" }));

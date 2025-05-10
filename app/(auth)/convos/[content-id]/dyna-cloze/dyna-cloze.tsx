@@ -42,7 +42,7 @@ const DynaSentence = ({ sentence }: { sentence: any }) => {
         [
           ...new Set(
             shuffledGrammar
-              ?.filter((item: any) => item !== relevantHanzi)
+              ?.filter((item: any) => item.hanzi !== relevantHanzi)
               ?.map((item: any) => item?.hanzi)
           ),
         ],
@@ -50,6 +50,8 @@ const DynaSentence = ({ sentence }: { sentence: any }) => {
       ),
     [relevantHanzi, shuffledGrammar]
   );
+
+  console.log("RANDOM THREE OPTS", randomThreeOptions);
 
   const shuffledOptions = useMemo(
     () => shuffleArray([...randomThreeOptions, relevantHanzi]),
@@ -107,6 +109,24 @@ const DynaSentence = ({ sentence }: { sentence: any }) => {
           <pre>{JSON.stringify(grammar, null, 4)}</pre>
         </pre>
       </code> */}
+
+      <div className="flex justify-center items-center gap-8 my-8">
+        <button
+          onClick={() => {
+            setWordIndex(Math.min(wordIndex + 1, shuffledGrammar?.length - 1));
+          }}
+        >
+          Inc
+        </button>
+        <button
+          onClick={() => {
+            setWordIndex(0);
+            setResponse(null);
+          }}
+        >
+          Reset
+        </button>
+      </div>
     </div>
   );
 };
@@ -128,8 +148,8 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
   const { learned, setLearned, isLearned } = useDynaCloze(contentId);
 
   const sentence = useMemo(
-    () => content?.transcriptions?.[sentenceIndex],
-    [content?.transcriptions, sentenceIndex]
+    () => shuffledTranscriptions?.[sentenceIndex],
+    [sentenceIndex, shuffledTranscriptions]
   );
 
   return (

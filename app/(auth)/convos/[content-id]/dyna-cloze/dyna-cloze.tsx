@@ -51,8 +51,6 @@ const DynaSentence = ({ sentence }: { sentence: any }) => {
     [relevantHanzi, shuffledGrammar]
   );
 
-  console.log("RANDOM THREE OPTS", randomThreeOptions);
-
   const shuffledOptions = useMemo(
     () => shuffleArray([...randomThreeOptions, relevantHanzi]),
     [randomThreeOptions, relevantHanzi]
@@ -65,6 +63,14 @@ const DynaSentence = ({ sentence }: { sentence: any }) => {
       setResponse({ type: "incorrect", answer });
     }
   };
+
+  if (!grammar?.grammarAnalysis?.length) {
+    return (
+      <div>
+        <p className="text-center my-32">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -113,18 +119,18 @@ const DynaSentence = ({ sentence }: { sentence: any }) => {
       <div className="flex justify-center items-center gap-8 my-8">
         <button
           onClick={() => {
-            setWordIndex(Math.min(wordIndex + 1, shuffledGrammar?.length - 1));
-          }}
-        >
-          Inc
-        </button>
-        <button
-          onClick={() => {
             setWordIndex(0);
             setResponse(null);
           }}
         >
           Reset
+        </button>
+        <button
+          onClick={() => {
+            setWordIndex(Math.min(wordIndex + 1, shuffledGrammar?.length - 1));
+          }}
+        >
+          Inc
         </button>
       </div>
     </div>

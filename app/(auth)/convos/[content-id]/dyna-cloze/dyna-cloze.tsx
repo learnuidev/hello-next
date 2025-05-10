@@ -128,6 +128,7 @@ const DynaSentence = ({ sentence }: { sentence: any }) => {
         <button
           onClick={() => {
             setWordIndex(Math.min(wordIndex + 1, shuffledGrammar?.length - 1));
+            setResponse(null);
           }}
         >
           Inc

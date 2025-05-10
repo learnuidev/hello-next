@@ -138,6 +138,20 @@ export const ConvosNavBar = () => {
         >
           <Icons.musicNoteSolid />
         </button>
+
+        <button
+          onClick={() => {
+            setViewType("dynacloze");
+          }}
+          className={`transition ${
+            viewType === "dynacloze"
+              ? "text-black dark:text-gray-200"
+              : "text-gray-200 dark:text-gray-600"
+          } hover:text-black dark:hover:text-white transition text-xl`}
+        >
+          <Icons.play />
+        </button>
+
         {content?.lang === "zh" && (
           <button
             onClick={() => {

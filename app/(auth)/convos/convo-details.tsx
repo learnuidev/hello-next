@@ -16,6 +16,7 @@ import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
 import { Nothing } from "@/app/nmm/nothing";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { isVideoUrl } from "./utils/is-video-url";
+import { DynaCloze } from "./[content-id]/dyna-cloze/dyna-cloze";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const viewType = useConvosStore((state: any) => state?.viewType);
@@ -34,6 +35,10 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
         <LottieLoadingAnimation />
       </div>
     );
+  }
+
+  if (viewType === "dynacloze") {
+    return <DynaCloze contentId={lessonId} />;
   }
 
   if (viewType === "settings") {

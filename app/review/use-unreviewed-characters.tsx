@@ -18,6 +18,7 @@ import { useGetReviewParams } from "./use-get-review-params";
 import { useIsContent } from "./use-is-content";
 import { useIsEntry } from "./use-is-entry";
 import { useGetDiaryInsights } from "../(auth)/convos/use-get-diary-insights";
+import { useMemo } from "react";
 
 export function useUnreviwedCharacters() {
   const {
@@ -104,17 +105,14 @@ export function useUnreviwedCharacters() {
           (character: any) => character?.hanzi?.length === 1
         );
 
-  if (isEntry) {
-    const data = uniqueDiaryCharactersMemo
-      ?.filter((item: any) => {
-        const hskCharacter = hskWords?.find((word: any) =>
-          JSON.stringify(word)?.includes(item?.hanzi)
-        );
+  const contentData = useMemo(() => {
+    if (!isContent) {
+      return [];
+    }
 
-        return (
-          item?.isLearned && item?.status !== "forgotten"
-          // && hskCharacter?.hskLevel === level
-        );
+    const data = uniqueCharactersMemo
+      ?.filter((item: any) => {
+        return item?.isLearned && item?.status !== "forgotten";
       })
 
       ?.filter((character: any) => {
@@ -126,20 +124,23 @@ export function useUnreviwedCharacters() {
           : true;
       });
 
+    return reviewMode === "all"
+      ? data
+      : data?.sort(
+          (a: any, b: any) =>
+            (a.next_review_date || 0) - (b?.next_review_date || 0)
+        );
+  }, [isContent, reviewMode, uniqueCharactersMemo]);
+
+  if (isContent) {
     return {
-      data:
-        reviewMode === "all"
-          ? data
-          : data?.sort(
-              (a: any, b: any) =>
-                (a.next_review_date || 0) - (b?.next_review_date || 0)
-            ),
+      data: contentData,
       isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
     };
   }
 
-  if (isContent) {
-    const data = uniqueCharactersMemo
+  if (isEntry) {
+    const data = uniqueDiaryCharactersMemo
       ?.filter((item: any) => {
         const hskCharacter = hskWords?.find((word: any) =>
           JSON.stringify(word)?.includes(item?.hanzi)

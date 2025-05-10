@@ -1,15 +1,8 @@
-import { useListContentsQuery } from "@/domain/content/content.queries";
-import { useListPublishedContentsQuery } from "../(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
+import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useMemo } from "react";
 
 export const useIsContent = (mode: string) => {
-  const { data, isLoading: isContentLoading } = useListPublishedContentsQuery(
-    {}
-  );
+  const { data: content } = useGetContentQuery({ contentId: mode });
 
-  const contents = data?.items;
-
-  const content = contents?.find((content: any) => content?.id === mode);
-  const isContent = !!content;
-
-  return isContent;
+  return useMemo(() => !!content, [content]);
 };

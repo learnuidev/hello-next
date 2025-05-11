@@ -26,7 +26,13 @@ const DynaSentence = ({
     sentenceIndex,
     setResponse,
     response,
+    showEn,
+    setShowEn,
   } = useDyanStoreRuntime();
+
+  const toggleEn = () => {
+    return setShowEn(!showEn);
+  };
 
   const { data: grammar } = useListGrammarsQuery({
     sentenceId: sentence?.hanzi || sentence?.input,
@@ -84,10 +90,6 @@ const DynaSentence = ({
     }
   };
 
-  const showEn = useMemo(() => {
-    return sentenceIndex % 2 === 0;
-  }, [sentenceIndex, wordIndex]);
-
   if (!grammar?.grammarAnalysis?.length) {
     return (
       <div>
@@ -139,7 +141,10 @@ const DynaSentence = ({
             )}
             key={`dynacloze-${idx}-${option?.en}`}
           >
-            <span className="block">{showEn ? option?.en : option?.hanzi}</span>
+            <span className="block">
+              {showEn ? option?.en : option?.hanzi}{" "}
+              {response && <span>({showEn ? option?.hanzi : option?.en})</span>}
+            </span>
           </button>
         ))}
       </div>
@@ -160,7 +165,11 @@ const DynaSentence = ({
 
         <button
           onClick={() => {
-            setWordIndex(Math.min(wordIndex + 1, shuffledGrammar?.length - 1));
+            setWordIndex(
+              shuffledGrammar?.length - 1 === wordIndex + 1
+                ? 0
+                : Math.min(wordIndex + 1, shuffledGrammar?.length - 1)
+            );
             setResponse(null);
           }}
         >
@@ -178,6 +187,16 @@ const DynaSentence = ({
           }}
         >
           <Icons.arrowRight />
+        </button>
+      </div>
+
+      <div className="flex justify-center items-center mt-8">
+        <button
+          onClick={() => {
+            toggleEn();
+          }}
+        >
+          {showEn ? "Hide En" : "Show En"}
         </button>
       </div>
     </div>

@@ -12,7 +12,7 @@ export default function ContentItem() {
   return (
     <main>
       <div>
-        <div className="px-4 md:px-32">
+        <div className="px-4 md:px-12">
           <ConvosNavBar />
         </div>
 

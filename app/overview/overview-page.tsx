@@ -29,7 +29,7 @@ export const OverviewPage = () => {
     [profile?.email]
   );
 
-  const { recentlyWatched } = useRecentlyWatchedContent();
+  const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
 
   const topFiveRecentlyWatched = useMemo(
     () => recentlyWatched?.slice(0, TEN),
@@ -87,7 +87,7 @@ export const OverviewPage = () => {
 
       <section className="grid grid-cols-1 sm:grid-cols-12 mt-4 gap-12">
         <div className="sm:col-span-6 shadow-sm rounded-2xl p-4">
-          <h2 className="mb-4 text-xl dark:text-gray-500 font-bold underline">
+          <h2 className="mb-6 text-xl dark:text-gray-500 font-bold underline">
             facts
           </h2>
 
@@ -133,7 +133,7 @@ export const OverviewPage = () => {
         <div className="sm:col-span-1"></div>
 
         <div className="sm:col-span-5 shadow-sm rounded-2xl p-4">
-          <h2 className="mb-4 text-xl dark:text-gray-500 font-bold underline">
+          <h2 className="mb-6 text-xl dark:text-gray-500 font-bold underline">
             recently viewed content
           </h2>
           {topFiveRecentlyWatched?.length === 0 ? (
@@ -145,10 +145,16 @@ export const OverviewPage = () => {
               </p>
             </div>
           ) : (
-            <div>
+            <div className="flex flex-col gap-4">
               {topFiveRecentlyWatched?.map((content: any) => {
                 return (
-                  <Link key={content.id} href={`/convos/${content?.id}`}>
+                  <Link
+                    onClick={() => {
+                      setRecentlyWatched(content);
+                    }}
+                    key={content.id}
+                    href={`/convos/${content?.id}`}
+                  >
                     <span className="mr-2">
                       <ContentIcon content={content} />{" "}
                     </span>

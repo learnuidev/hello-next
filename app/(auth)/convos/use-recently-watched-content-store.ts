@@ -25,7 +25,7 @@ export const useRecentlyWatchedContent = () => {
   );
 
   const recentlyWatched = Object.values(_recentlyWatched)?.sort(
-    (a: any, b: any) => b?.createdAt - a?.createdAt
+    (a: any, b: any) => b?.watchedAt - a?.watchedAt
   );
 
   return { recentlyWatched, setRecentlyWatched };

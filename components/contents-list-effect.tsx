@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Icons } from "./ui/icons.v2";
 import { useToast } from "@/hooks/use-toast";
 import { CardFooter } from "./ui/card";
+import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watched-content-store";
 
 export const ContentsListEffect = ({
   items,
@@ -24,6 +25,8 @@ export const ContentsListEffect = ({
   className?: string;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const { setRecentlyWatched } = useRecentlyWatchedContent();
 
   const { toast } = useToast();
 
@@ -71,7 +74,12 @@ export const ContentsListEffect = ({
             </AnimatePresence>
             <Card className="py-4 px-2">
               <div className="flex justify-between items-center gap-4">
-                <Link href={item?.link}>
+                <Link
+                  href={item?.link}
+                  onClick={() => {
+                    setRecentlyWatched(item);
+                  }}
+                >
                   <CardTitle className="line-clamp-1">{item.title}</CardTitle>
                 </Link>
                 <button
@@ -109,7 +117,12 @@ export const ContentsListEffect = ({
                 </button>
               </div>
 
-              <Link href={item?.link}>
+              <Link
+                href={item?.link}
+                onClick={() => {
+                  setRecentlyWatched(item);
+                }}
+              >
                 <CardDescription className="flex justify-between dark:text-gray-500 flex-1 flex-grow">
                   <p className="line-clamp-2">
                     {" "}

@@ -1,12 +1,12 @@
 "use client";
 
 import { Authenticated } from "@/components/Authenticated";
-import { ProfilePage } from "./profile/profile-page";
+import { OverviewPage } from "./overview/overview-page";
 
 export default function Home() {
   return (
     <Authenticated>
-      <ProfilePage />
+      <OverviewPage />
     </Authenticated>
   );
 }

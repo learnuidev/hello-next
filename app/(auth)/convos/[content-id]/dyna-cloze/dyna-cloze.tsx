@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Icons } from "@/components/ui/icons.v2";
 import Link from "next/link";
 import { CharacterItem } from "@/components/_select-character/character-item";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 
 const DynaSentence = ({
   sentence,
@@ -34,6 +35,8 @@ const DynaSentence = ({
   const toggleEn = () => {
     return setShowEn(!showEn);
   };
+
+  const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const { data: grammar } = useListGrammarsQuery({
     sentenceId: sentence?.hanzi || sentence?.input,
@@ -109,28 +112,44 @@ const DynaSentence = ({
         ) : (
           <p className="mb-2 dark:text-black text-white text-lg"> ...</p>
         )}
-        <Link
-          href={`/convos/${contentId}?start=${sentence?.start}&view=listen`}
-          target="_blank"
-          className="block text-4xl"
-        >
-          {(response ? sentenceHanzi : sentenceHanziHidden)
-            .split("")
-            .map((item: string, idx: number) => {
-              return (
-                <Link
-                  href={`/nmm/${item}${sentence?.lang ? `?lang=${sentence?.lang}` : ""}`}
-                  key={`review-cloze-${idx}-${item}`}
-                  target="_blank"
-                >
+        {!brightMode ? (
+          <h1 className="block text-4xl">
+            {(response ? sentenceHanzi : sentenceHanziHidden)
+              .split("")
+              .map((item: string, idx: number) => {
+                return (
+                  <Link
+                    href={`/nmm/${item}${sentence?.lang ? `?lang=${sentence?.lang}` : ""}`}
+                    key={`review-cloze-${idx}-${item}`}
+                    target="_blank"
+                  >
+                    <CharacterItem
+                      character={item}
+                      className="text-center text-3xl font-light"
+                    />
+                  </Link>
+                );
+              })}
+          </h1>
+        ) : (
+          <Link
+            href={`/convos/${contentId}?start=${sentence?.start}&view=listen`}
+            target="_blank"
+            className="block text-4xl"
+          >
+            {(response ? sentenceHanzi : sentenceHanziHidden)
+              .split("")
+              .map((item: string, idx: number) => {
+                return (
                   <CharacterItem
+                    key={`review-cloze-${idx}-${item}`}
                     character={item}
                     className="text-center text-3xl font-light"
                   />
-                </Link>
-              );
-            })}
-        </Link>
+                );
+              })}
+          </Link>
+        )}
         <p className="mt-2">{sentence?.en}</p>
       </div>
 

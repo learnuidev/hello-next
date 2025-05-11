@@ -93,7 +93,7 @@ export const OverviewPage = () => {
   return (
     <div className="mx-2 sm:mx-12">
       {userEmailHandle && (
-        <div className="mt-8 mb-12 text-lg shadow-lg dark:shadow-[rgb(31,32,33)] rounded-2xl p-4 lg:p-8">
+        <div className="mt-8 mb-12 text-lg rounded-2xl p-4 lg:p-8">
           <p className="font-extralight">
             Yo <span className="font-bold">{userEmailHandle}</span>, here is
             your learning summary:{" "}

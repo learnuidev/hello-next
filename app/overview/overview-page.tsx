@@ -111,7 +111,7 @@ export const OverviewPage = () => {
           </h2>
 
           {lifeTimeCharacters && totalComponents ? (
-            <div className="flex gap-4 flex-col font-light text-sm lg:text-[16px]">
+            <div className="flex gap-4 flex-col font-light text-[16px]">
               <p>
                 <span className="mr-1">
                   <Icons.lightBulb />{" "}
@@ -170,7 +170,7 @@ export const OverviewPage = () => {
               </p>
             </div>
           ) : (
-            <div className="flex flex-col gap-4 text-sm lg:text-[16px]">
+            <div className="flex flex-col gap-4 text-[16px]">
               {topFiveRecentlyWatched?.map((content: any) => {
                 return (
                   <Link

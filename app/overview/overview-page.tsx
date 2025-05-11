@@ -93,8 +93,8 @@ export const OverviewPage = () => {
   return (
     <div className="mx-2 sm:mx-12">
       {userEmailHandle && (
-        <div className="mt-8 mb-12 sm:text-lg lg:text-2xl shadow-sm rounded-2xl p-4">
-          <p>
+        <div className="mt-8 mb-12 text-lg shadow-lg dark:shadow-[rgb(31,32,33)] rounded-2xl p-4 lg:p-8">
+          <p className="font-extralight">
             Yo <span className="font-bold">{userEmailHandle}</span>, here is
             your learning summary:{" "}
           </p>
@@ -102,13 +102,13 @@ export const OverviewPage = () => {
       )}
 
       <section className="grid grid-cols-1 sm:grid-cols-12 mt-4 gap-12">
-        <div className="sm:col-span-6 shadow-sm rounded-2xl p-4">
+        <div className="sm:col-span-6 shadow-lg dark:shadow-[rgb(31,32,33)] rounded-2xl p-4 lg:p-8">
           <h2 className="mb-6 text-xl dark:text-gray-500 font-bold underline">
             facts
           </h2>
 
           {lifeTimeCharacters && totalComponents ? (
-            <div className="flex gap-4 flex-col">
+            <div className="flex gap-4 flex-col font-light">
               <p>
                 <span>
                   <Icons.lightBulb />{" "}
@@ -154,7 +154,7 @@ export const OverviewPage = () => {
 
         <div className="sm:col-span-1"></div>
 
-        <div className="sm:col-span-5 shadow-sm rounded-2xl p-4">
+        <div className="sm:col-span-5 shadow-lg dark:shadow-[rgb(31,32,33)] rounded-2xl p-4 lg:p-8">
           <h2 className="mb-6 text-xl dark:text-gray-500 font-bold underline">
             recently viewed content
           </h2>

@@ -75,7 +75,9 @@ const FloatingNavbarComp = () => {
             <BrightModeButton />
           )}
 
-          {isChineseLang && <PinyinButton />}
+          {!["/", "/apps"]?.includes(routeName) && isChineseLang && (
+            <PinyinButton />
+          )}
 
           <Link
             href="/convos"

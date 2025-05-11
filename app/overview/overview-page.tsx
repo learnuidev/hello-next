@@ -10,6 +10,7 @@ import { formatPercentage } from "../profile/utils/format-percentage";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { Icons } from "@/components/ui/icons.v2";
 import { isYoutube } from "../(auth)/convos/utils/is-youtube";
+import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
 
 const TEN = 10;
 
@@ -28,6 +29,8 @@ export const OverviewPage = () => {
     () => profile?.email?.split("@")?.[0],
     [profile?.email]
   );
+
+  const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
 
   const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
 

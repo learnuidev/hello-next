@@ -1,13 +1,13 @@
 import { useListFavouriteContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-favourited-contents-query copy";
 import { useToggleFavouriteContentMutation } from "@/app/(auth)/convos/[content-id]/hooks/use-toggle-favourite-content-mutation";
+import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watched-content-store";
+import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 import { Icons } from "./ui/icons.v2";
-import { useToast } from "@/hooks/use-toast";
-import { CardFooter } from "./ui/card";
-import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watched-content-store";
 
 export const ContentsListEffect = ({
   items,
@@ -21,6 +21,7 @@ export const ContentsListEffect = ({
     link: string;
     subtopic?: string;
     lang?: string;
+    audio?: string;
   }[];
   className?: string;
 }) => {
@@ -34,6 +35,8 @@ export const ContentsListEffect = ({
 
   const { data: favouriteContents, isLoading: isFavouriteContentLoading } =
     useListFavouriteContentsQuery({});
+
+  const { data: userPreferences } = useGetUserPreferenceQuery();
 
   return (
     <div
@@ -120,6 +123,17 @@ export const ContentsListEffect = ({
               <Link
                 href={item?.link}
                 onClick={() => {
+                  // updateUserPreferenceMutation?.mutate({
+                  //   recentlyWatched: {
+                  //     ...userPreferences?.recentlyWatched,
+                  //     [item?.id]: {
+                  //       watchedAt: Date.now(),
+                  //       id: item?.id,
+                  //       title: item?.title,
+                  //       audio: item?.audio,
+                  //     },
+                  //   },
+                  // });
                   setRecentlyWatched(item);
                 }}
               >

@@ -13,6 +13,7 @@ interface UpdatePreferenceResponse {
   isNavigationEnabled?: boolean;
   isSearchEnabled?: boolean;
   learningMode?: string;
+  recentlyWatched?: any;
 }
 
 type UpdateUserPreferenceResponse = GetUserPreferenceResponse & {

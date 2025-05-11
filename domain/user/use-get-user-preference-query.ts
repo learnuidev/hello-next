@@ -20,6 +20,7 @@ export interface GetUserPreferenceResponse {
   isSearchEnabled?: boolean;
   learningMode?: string;
   automaticallyShowAndHideDock?: boolean;
+  recentlyWatched: any;
 }
 
 const getUserPrefrence = async (opts: {

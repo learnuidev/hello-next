@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/card";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
 import { useSettingsDialogState } from "../../settings-dialog.state";
 
 export function TrackingTab() {
@@ -21,8 +20,6 @@ export function TrackingTab() {
   const setUserPreferenceState = useSettingsDialogState(
     (state) => state.setUserPreferenceState
   );
-
-  const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
 
   return (
     <Card className="rounded border-gray-100 dark:border-black dark:bg-[#0b0b0f] shadow-sm  transition ">

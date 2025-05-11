@@ -7,6 +7,7 @@ import { getRandomWords } from "@/app/review/review-cloze/utils/get-random-words
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/ui/icons.v2";
 import Link from "next/link";
+import { CharacterItem } from "@/components/_select-character/character-item";
 
 const DynaSentence = ({
   sentence,
@@ -102,20 +103,35 @@ const DynaSentence = ({
     <div>
       <div className="text-center mt-24">
         {response ? (
-          <p className={"text-xl mb-4"}>
+          <p className={"text-lg mb-2"}>
             {sentence?.pinyin || sentence?.roman}
           </p>
         ) : (
-          <p className="mb-4 dark:text-black text-white"> ...</p>
+          <p className="mb-2 dark:text-black text-white text-lg"> ...</p>
         )}
         <Link
           href={`/convos/${contentId}?start=${sentence?.start}&view=listen`}
           target="_blank"
           className="block text-4xl"
         >
-          {response ? sentenceHanzi : sentenceHanziHidden}
+          {(response ? sentenceHanzi : sentenceHanziHidden)
+            .split("")
+            .map((item: string, idx: number) => {
+              return (
+                <Link
+                  href={`/nmm/${item}${sentence?.lang ? `?lang=${sentence?.lang}` : ""}`}
+                  key={`review-cloze-${idx}-${item}`}
+                  target="_blank"
+                >
+                  <CharacterItem
+                    character={item}
+                    className="text-center text-3xl font-light"
+                  />
+                </Link>
+              );
+            })}
         </Link>
-        <p className="mt-4 text-xl">{sentence?.en}</p>
+        <p className="mt-2">{sentence?.en}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">

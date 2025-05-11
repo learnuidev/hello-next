@@ -8,8 +8,18 @@ import { useGetTotalLifetimeCharacters } from "../profile/hooks/use-get-total-li
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { formatPercentage } from "../profile/utils/format-percentage";
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { Icons } from "@/components/ui/icons.v2";
+import { isYoutube } from "../(auth)/convos/utils/is-youtube";
 
 const TEN = 10;
+
+function ContentIcon({ content }: { content: any }) {
+  if (isYoutube(content?.audio)) {
+    return <Icons.youtube />;
+  }
+
+  return <Icons.music />;
+}
 
 export const OverviewPage = () => {
   const { data: profile } = useGetAuthUserProfileQuery();
@@ -86,26 +96,33 @@ export const OverviewPage = () => {
           ) : lifeTimeCharacters ? (
             <div className="flex gap-4 flex-col">
               <p>
+                <span>
+                  <Icons.lightBulb />{" "}
+                </span>
                 You have learned{" "}
                 <span className="font-bold">{lifeTimeCharacters}</span>{" "}
                 characters out of{" "}
-                <span className="font-bold">{totalComponentsLength}</span>, this
-                represents character learning percentage of{" "}
+                <span className="font-bold">{totalComponentsLength}</span>,
+                which represents a character learning percentage{" "}
                 <span className="font-bold">{characterLearningRatio}</span>
               </p>
 
               <p>
-                Out of <span className="font-bold">{lifeTimeCharacters}</span>{" "}
-                learned characters, you have reviewed{" "}
+                <span>
+                  <Icons.fire />{" "}
+                </span>
+                Out of the{" "}
+                <span className="font-bold">{lifeTimeCharacters}</span> learned
+                characters, you have reviewed{" "}
                 <span className="font-bold">
                   {totalReviedCharacters} ({characterReviewRatio})
-                </span>
-                characters and mastered{" "}
+                </span>{" "}
+                and mastered{" "}
                 <span className="font-bold">
                   {" "}
                   {masteredCharacters} ({characterMasteryRatio})
-                </span>{" "}
-                characters
+                </span>
+                .
               </p>
             </div>
           ) : (
@@ -117,7 +134,7 @@ export const OverviewPage = () => {
 
         <div className="sm:col-span-5 shadow-sm rounded-2xl p-4">
           <h2 className="mb-4 text-xl dark:text-gray-500 font-bold underline">
-            recently watched content
+            recently viewed content
           </h2>
           {topFiveRecentlyWatched?.length === 0 ? (
             <div>
@@ -132,6 +149,9 @@ export const OverviewPage = () => {
               {topFiveRecentlyWatched?.map((content: any) => {
                 return (
                   <Link key={content.id} href={`/convos/${content?.id}`}>
+                    <span className="mr-2">
+                      <ContentIcon content={content} />{" "}
+                    </span>
                     {content?.title}
                   </Link>
                 );

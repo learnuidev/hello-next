@@ -120,6 +120,9 @@ export function useShortCuts() {
         router.push(reviewUrl);
       }
       if (["l"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        if (routeName?.includes("/convos/")) {
+          return null;
+        }
         event.preventDefault();
         router.push("/timeline");
       }

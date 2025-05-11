@@ -1,14 +1,33 @@
 import { useGetContentQuery } from "@/domain/content/content.queries";
-import { useDynaCloze } from "./use-dyna-cloze";
+import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
 import { useMemo, useState } from "react";
 import { shuffleArray } from "@/app/review/review-cloze/utils/shuffle-array";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import { getRandomWords } from "@/app/review/review-cloze/utils/get-random-words";
 import { cn } from "@/lib/utils";
+import { Icons } from "@/components/ui/icons.v2";
+import Link from "next/link";
 
-const DynaSentence = ({ sentence }: { sentence: any }) => {
-  const [wordIndex, setWordIndex] = useState(0);
-  const [response, setResponse] = useState<any>(null);
+const DynaSentence = ({
+  sentence,
+  contentId,
+}: {
+  sentence: any;
+  contentId: string;
+}) => {
+  const { data: content, isLoading } = useGetContentQuery({
+    contentId,
+  });
+
+  const {
+    wordIndex,
+    setWordIndex,
+    setSentenceIndex,
+    sentenceIndex,
+    setResponse,
+    response,
+  } = useDyanStoreRuntime();
+
   const { data: grammar } = useListGrammarsQuery({
     sentenceId: sentence?.hanzi || sentence?.input,
     content: sentence?.hanzi || sentence?.input,
@@ -27,23 +46,24 @@ const DynaSentence = ({ sentence }: { sentence: any }) => {
     [shuffledGrammar, wordIndex]
   );
 
-  const sentenceHanziHidden = useMemo(() => {
-    return sentence?.hanzi?.replaceAll(
-      selectedGrammar?.hanzi,
-      ` ${"__"?.repeat(selectedGrammar?.hanzi?.length)} `
-    );
-  }, [selectedGrammar?.hanzi, sentence?.hanzi]);
+  const sentenceHanzi = useMemo(
+    () => sentence?.hanzi || sentence?.input,
+    [sentence?.hanzi, sentence?.input]
+  );
 
-  const relevantHanzi = selectedGrammar?.hanzi;
+  const sentenceHanziHidden = useMemo(() => {
+    return sentenceHanzi?.replaceAll(selectedGrammar?.hanzi, `____`);
+  }, [selectedGrammar?.hanzi, sentenceHanzi]);
+
+  const relevantHanzi = selectedGrammar?.en;
 
   const randomThreeOptions = useMemo(
     () =>
       getRandomWords(
         [
           ...new Set(
-            shuffledGrammar
-              ?.filter((item: any) => item.hanzi !== relevantHanzi)
-              ?.map((item: any) => item?.hanzi)
+            shuffledGrammar?.filter((item: any) => item.en !== relevantHanzi)
+            // ?.map((item: any) => item?.en)
           ),
         ],
         3
@@ -52,17 +72,21 @@ const DynaSentence = ({ sentence }: { sentence: any }) => {
   );
 
   const shuffledOptions = useMemo(
-    () => shuffleArray([...randomThreeOptions, relevantHanzi]),
-    [randomThreeOptions, relevantHanzi]
+    () => shuffleArray([...randomThreeOptions, selectedGrammar]),
+    [randomThreeOptions, selectedGrammar]
   );
 
-  const checkAnswer = (answer: string) => {
-    if (answer === relevantHanzi) {
+  const checkAnswer = (answer: any) => {
+    if (answer?.en === relevantHanzi) {
       setResponse({ type: "correct", answer });
     } else {
       setResponse({ type: "incorrect", answer });
     }
   };
+
+  const showEn = useMemo(() => {
+    return sentenceIndex % 2 === 0;
+  }, [sentenceIndex, wordIndex]);
 
   if (!grammar?.grammarAnalysis?.length) {
     return (
@@ -75,12 +99,25 @@ const DynaSentence = ({ sentence }: { sentence: any }) => {
   return (
     <div>
       <div className="text-center mt-24">
-        <h2 className="text-4xl">{sentenceHanziHidden}</h2>
+        {response ? (
+          <p className={"text-xl mb-4"}>
+            {sentence?.pinyin || sentence?.roman}
+          </p>
+        ) : (
+          <p className="mb-4 dark:text-black text-white"> ...</p>
+        )}
+        <Link
+          href={`/convos/${contentId}?start=${sentence?.start}&view=listen`}
+          target="_blank"
+          className="block text-4xl"
+        >
+          {response ? sentenceHanzi : sentenceHanziHidden}
+        </Link>
         <p className="mt-4 text-xl">{sentence?.en}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">
-        {shuffledOptions?.map((option: string, idx: number) => (
+        {shuffledOptions?.map((option: any, idx: number) => (
           <button
             onClick={() => {
               checkAnswer(option);
@@ -89,49 +126,56 @@ const DynaSentence = ({ sentence }: { sentence: any }) => {
             className={cn(
               "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg",
               response
-                ? response?.answer === option
+                ? response?.answer?.en === option?.en
                   ? response?.type === "correct"
                     ? "bg-green-500 border-green-600 hover:bg-green-600"
-                    : "bg-red-500 hover:bg-red-600"
+                    : "bg-red-500 hover:bg-red-600 border-red-500"
                   : "bg-gray-800 opacity-10 text-gray-200"
                 : "",
-              "transition rounded-full",
+              "transition",
               response
                 ? ""
                 : "hover:bg-orange-500 hover:text-white hover:scale-110"
             )}
-            key={`dynacloze-${idx}-${option}`}
+            key={`dynacloze-${idx}-${option?.en}`}
           >
-            {option}
+            <span className="block">{showEn ? option?.en : option?.hanzi}</span>
           </button>
         ))}
       </div>
-      {/* <code>
-        <pre>{JSON.stringify(sentence, null, 4)}</pre>
-      </code>
 
-      <code>
-        <pre>
-          <pre>{JSON.stringify(grammar, null, 4)}</pre>
-        </pre>
-      </code> */}
-
-      <div className="flex justify-center items-center gap-8 my-8">
+      <div className="flex justify-center items-center mt-32 gap-8">
         <button
           onClick={() => {
+            setSentenceIndex(Math.max(sentenceIndex - 1, 0));
+
             setWordIndex(0);
             setResponse(null);
           }}
         >
-          Reset
+          <Icons.arrowLeft />
         </button>
+
         <button
           onClick={() => {
             setWordIndex(Math.min(wordIndex + 1, shuffledGrammar?.length - 1));
             setResponse(null);
           }}
         >
-          Inc
+          <Icons.arrowDown />
+        </button>
+
+        <button
+          onClick={() => {
+            setSentenceIndex(
+              Math.min(sentenceIndex + 1, content?.transcriptions?.length - 1)
+            );
+
+            setWordIndex(0);
+            setResponse(null);
+          }}
+        >
+          <Icons.arrowRight />
         </button>
       </div>
     </div>
@@ -139,7 +183,7 @@ const DynaSentence = ({ sentence }: { sentence: any }) => {
 };
 
 export const DynaCloze = ({ contentId }: { contentId: string }) => {
-  const [sentenceIndex, setSentenceIndex] = useState(0);
+  const { sentenceIndex, setSentenceIndex } = useDyanStoreRuntime();
   const { data: content, isLoading } = useGetContentQuery({
     contentId,
   });
@@ -162,28 +206,7 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
   return (
     <div>
       <h1 className="text-center text-2xl">Dyna Cloze</h1>{" "}
-      <div>
-        <DynaSentence sentence={sentence} />
-      </div>
-      <div className="flex justify-center items-center mt-32 gap-8">
-        <button
-          onClick={() => {
-            setSentenceIndex(() => Math.max(sentenceIndex - 1, 0));
-          }}
-        >
-          Previous
-        </button>
-
-        <button
-          onClick={() => {
-            setSentenceIndex(() =>
-              Math.min(sentenceIndex + 1, content?.transcriptions?.length - 1)
-            );
-          }}
-        >
-          Next
-        </button>
-      </div>
+      <DynaSentence sentence={sentence} contentId={contentId} />
     </div>
   );
 };

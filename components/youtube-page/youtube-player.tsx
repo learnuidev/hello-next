@@ -124,8 +124,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       (trans: any) => trans?.start < currentTime && trans?.end > currentTime
     );
 
-    console.log("CT", currentTranscription);
-
     if (currentTranscription) {
       const currentTranscriptionIndex = Math.max(
         transcriptions?.findIndex(
@@ -133,8 +131,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         ),
         0
       );
-
-      console.log("CURR IDX", currentTranscriptionIndex);
 
       const prevIndex = Math.max(currentTranscriptionIndex - 1, 0);
 
@@ -177,6 +173,10 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     }
   }, [currentTime, transcriptions]);
 
+  const currentTranscription = transcriptions?.find(
+    (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+  );
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.code === "Space") {
@@ -196,17 +196,28 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         seekAfter();
         return null;
       }
+
+      if (["l"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+        setToggleLoops((val: any) => {
+          const exist = val?.find(
+            (item: any) => item?.end === currentTranscription?.end
+          );
+          if (exist) {
+            return val?.filter((item: any) => {
+              return item?.end !== currentTranscription?.end;
+            });
+          }
+          return val.concat(currentTranscription);
+        });
+        event.preventDefault();
+      }
     }
 
     window.addEventListener("keydown", onKeyDown);
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [togglePlay, seekBefore, seekAfter]);
-
-  const currentTranscription = transcriptions?.find(
-    (trans: any) => trans?.start < currentTime && trans?.end > currentTime
-  );
+  }, [togglePlay, seekBefore, seekAfter, currentTranscription]);
 
   const currentTranscriptionIndex = Math.max(
     transcriptions?.findIndex(
@@ -319,8 +330,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     });
   }, [active, chapterView, currentTime, trans, transcriptions]);
 
-  console.log("GROUP", group);
-
   const ActiveButton = () => {
     return (
       <div className="space-x-4 sm:mt-0 mt-4 sm:text-xl flex justify-center">
@@ -405,8 +414,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     active !== MAX_LIMIT
       ? [Object.values(groupedTranscriptions)?.[0]]
       : Object.values(groupedTranscriptions);
-
-  console.log("PARA TRANSCRIPIONS", paraTranscriptions);
 
   return (
     <div className="grow flex flex-col items-center">

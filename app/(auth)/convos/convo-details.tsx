@@ -17,8 +17,11 @@ import { Nothing } from "@/app/nmm/nothing";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { isVideoUrl } from "./utils/is-video-url";
 import { DynaCloze } from "./[content-id]/dyna-cloze/dyna-cloze";
+import { useSearchParams } from "next/navigation";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
+  const searchParams = useSearchParams();
+  const viewTypeSearchParams = searchParams.get("view");
   const viewType = useConvosStore((state: any) => state?.viewType);
 
   const isAuthor = useIsContentAuthor(lessonId);
@@ -52,7 +55,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
   // If the link contains yotube - then show youtube page
   if (
-    viewType === "listen" &&
+    (viewTypeSearchParams === "listen" || viewType === "listen") &&
     (isYoutube(lesson2?.audio) || isVideoUrl(lesson2?.audio))
   ) {
     return (
@@ -76,7 +79,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     );
   }
 
-  if (viewType === "listen") {
+  if (viewTypeSearchParams === "listen" || viewType === "listen") {
     return (
       <div className="px-4 md:px-32">
         <PlayV3 contentId={lessonId} />

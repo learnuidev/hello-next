@@ -11,6 +11,7 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { Icons } from "@/components/ui/icons.v2";
 import { isYoutube } from "../(auth)/convos/utils/is-youtube";
 import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
+import { SearchBar } from "@/components/search-bar";
 
 const TEN = 10;
 
@@ -95,6 +96,9 @@ export const OverviewPage = () => {
 
   return (
     <div className="mx-2 sm:mx-12 mb-32">
+      <div className="w-full flex justify-start">
+        <SearchBar />
+      </div>
       {userEmailHandle && (
         <div className="mt-8 sm:mb-8 lg:mb-12 text-lg rounded-2xl p-4 lg:p-8">
           <p className="font-extralight">

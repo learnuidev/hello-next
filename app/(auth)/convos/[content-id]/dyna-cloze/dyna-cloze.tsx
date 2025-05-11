@@ -36,6 +36,8 @@ const DynaSentence = ({
     return setShowEn(!showEn);
   };
 
+  const { learnMode, setLearnMode } = useDynaCloze(contentId);
+
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const { data: grammar } = useListGrammarsQuery({
@@ -186,7 +188,7 @@ const DynaSentence = ({
 
       <div className="flex justify-center items-center mt-32 gap-12 text-2xl">
         <button
-          disabled={wordIndex === 0}
+          disabled={sentenceIndex === 0}
           className={sentenceIndex === 0 ? "text-gray-500" : ""}
           onClick={() => {
             setSentenceIndex(Math.max(sentenceIndex - 1, 0));
@@ -225,13 +227,25 @@ const DynaSentence = ({
         </button>
       </div>
 
-      <div className="flex justify-center items-center mt-8">
+      <div className="flex justify-center items-center mt-8 gap-8">
         <button
           onClick={() => {
             toggleEn();
           }}
         >
           {showEn ? "Hide En" : "Show En"}
+        </button>
+
+        <button
+          onClick={() => {
+            if (learnMode === "stocastic") {
+              setLearnMode("timeline");
+            } else {
+              setLearnMode("stocastic");
+            }
+          }}
+        >
+          Study Mode: {learnMode}
         </button>
       </div>
     </div>
@@ -244,15 +258,19 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
     contentId,
   });
 
+  const { learnMode } = useDynaCloze(contentId);
+
   const shuffledTranscriptions = useMemo(() => {
     if (!content?.transcriptions) {
       return [];
     }
 
-    return shuffleArray(content?.transcriptions);
-  }, [content?.transcriptions]);
+    if (learnMode === "stocastic") {
+      return shuffleArray(content?.transcriptions);
+    }
 
-  const { learned, setLearned, isLearned } = useDynaCloze(contentId);
+    return content?.transcriptions;
+  }, [content?.transcriptions, learnMode]);
 
   const sentence = useMemo(
     () => shuffledTranscriptions?.[sentenceIndex],

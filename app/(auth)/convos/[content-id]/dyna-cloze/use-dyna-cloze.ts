@@ -5,8 +5,12 @@ import { create } from "zustand";
 
 const useDynaClozeStore = createIndexDBStore({
   name: "dynacloze",
+
   handler: (set: any, get: any) => ({
     learned: {},
+    learnMode: "stochastic",
+    setLearnMode: (f: "stocastic" | "timeline") => set({ learnMode: f }),
+
     setLearned: (f: any) =>
       typeof f === "function"
         ? set({ learned: f(get().learned) })
@@ -17,6 +21,9 @@ const useDynaClozeStore = createIndexDBStore({
 export const useDynaCloze = (contentId: string) => {
   const learned: any = useDynaClozeStore((state) => state.learned);
   const _setLearned = useDynaClozeStore((state) => state.setLearned);
+
+  const learnMode = useDynaClozeStore((state) => state.learnMode);
+  const setLearnMode = useDynaClozeStore((state) => state.setLearnMode);
 
   const setLearned = (key: string) => {
     _setLearned((learned: any) => {
@@ -34,6 +41,8 @@ export const useDynaCloze = (contentId: string) => {
   return {
     learned,
     setLearned,
+    learnMode,
+    setLearnMode,
     isLearned,
   };
 };

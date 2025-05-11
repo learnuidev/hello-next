@@ -21,8 +21,8 @@ import { useSearchParams } from "next/navigation";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const searchParams = useSearchParams();
-  const viewTypeSearchParams = searchParams.get("view");
-  const viewType = useConvosStore((state: any) => state?.viewType);
+
+  const viewType = searchParams.get("view") || "listen";
 
   const isAuthor = useIsContentAuthor(lessonId);
 
@@ -40,10 +40,6 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     );
   }
 
-  if (viewType === "dynacloze") {
-    return <DynaCloze contentId={lessonId} />;
-  }
-
   if (viewType === "settings") {
     if (!isAuthor) {
       return (
@@ -55,7 +51,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
   // If the link contains yotube - then show youtube page
   if (
-    (viewTypeSearchParams === "listen" || viewType === "listen") &&
+    viewType === "listen" &&
     (isYoutube(lesson2?.audio) || isVideoUrl(lesson2?.audio))
   ) {
     return (
@@ -79,7 +75,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     );
   }
 
-  if (viewTypeSearchParams === "listen" || viewType === "listen") {
+  if (viewType === "listen") {
     return (
       <div className="px-4 md:px-32">
         <PlayV3 contentId={lessonId} />
@@ -97,6 +93,10 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
         <Wordle />
       </div>
     );
+  }
+
+  if (viewType === "dynacloze") {
+    return <DynaCloze contentId={lessonId} />;
   }
 
   if (viewType === "speak") {

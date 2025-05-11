@@ -144,8 +144,10 @@ const DynaSentence = ({
         ))}
       </div>
 
-      <div className="flex justify-center items-center mt-32 gap-8">
+      <div className="flex justify-center items-center mt-32 gap-12 text-2xl">
         <button
+          disabled={wordIndex === 0}
+          className={sentenceIndex === 0 ? "text-gray-500" : ""}
           onClick={() => {
             setSentenceIndex(Math.max(sentenceIndex - 1, 0));
 
@@ -205,7 +207,7 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
 
   return (
     <div>
-      <h1 className="text-center text-2xl">Dyna Cloze</h1>{" "}
+      <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "}
       <DynaSentence sentence={sentence} contentId={contentId} />
     </div>
   );

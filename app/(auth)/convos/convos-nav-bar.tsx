@@ -3,7 +3,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faXmark } from "@fortawesome/pro-light-svg-icons/faXmark";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 
 import { useConvosStore } from "@/stores/convos-store";
 
@@ -12,6 +17,7 @@ import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { faTypewriter } from "@fortawesome/sharp-solid-svg-icons";
 import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
+import Link from "next/link";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -92,12 +98,12 @@ const options = [
 ];
 
 export const ConvosNavBar = () => {
-  const routeName = usePathname();
-
   const removeLessonId = useConvosStore((state: any) => state?.removeConvoId);
 
   const setViewType = useConvosStore((state: any) => state?.setViewType);
-  const viewType = useConvosStore((state: any) => state?.viewType);
+  const searchParams = useSearchParams();
+
+  const viewType = searchParams.get("view");
 
   const params = useParams() as {
     "content-id": string;
@@ -115,21 +121,20 @@ export const ConvosNavBar = () => {
 
   return (
     <div className="z-50 flex justify-between items-center w-full md:mt-2 my-2 py-2">
-      <button
+      <Link
+        href={`/convos`}
         className="text-3xl"
         onClick={() => {
           removeLessonId();
-          router.push(`/convos`);
+          // router.push(`/convos`);
         }}
       >
         <FontAwesomeIcon icon={faXmark} />
-      </button>
+      </Link>
 
       <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
-        <button
-          onClick={() => {
-            setViewType("listen");
-          }}
+        <Link
+          href={`/convos/${contentId}?view=listen&start=${searchParams.get("start") || 0}`}
           className={`transition ${
             viewType === "listen"
               ? "text-black dark:text-gray-200"
@@ -137,12 +142,13 @@ export const ConvosNavBar = () => {
           } hover:text-black dark:hover:text-white transition text-xl`}
         >
           <Icons.musicNoteSolid />
-        </button>
+        </Link>
 
-        <button
+        <Link
           onClick={() => {
             setViewType("dynacloze");
           }}
+          href={`/convos/${contentId}?view=dynacloze&start=${searchParams.get("start") || 0}`}
           className={`transition ${
             viewType === "dynacloze"
               ? "text-black dark:text-gray-200"
@@ -150,10 +156,11 @@ export const ConvosNavBar = () => {
           } hover:text-black dark:hover:text-white transition text-xl`}
         >
           <Icons.play />
-        </button>
+        </Link>
 
         {content?.lang === "zh" && (
-          <button
+          <Link
+            href={`/convos/${contentId}?view=write&start=${searchParams.get("start") || 0}`}
             onClick={() => {
               setViewType("write");
             }}
@@ -164,11 +171,12 @@ export const ConvosNavBar = () => {
             } hover:text-black dark:hover:text-white transition text-xl`}
           >
             <FontAwesomeIcon icon={faTypewriter} />
-          </button>
+          </Link>
         )}
 
         {content?.lang === "zh" && (
-          <button
+          <Link
+            href={`/convos/${contentId}?view=insights&start=${searchParams.get("start") || 0}`}
             onClick={() => {
               setViewType("insights");
             }}
@@ -179,13 +187,14 @@ export const ConvosNavBar = () => {
             } hover:text-black dark:hover:text-white transition text-xl`}
           >
             <Icons.chartColumn />
-          </button>
+          </Link>
         )}
         {isAuthor && (
-          <button
+          <Link
             onClick={() => {
               setViewType("settings");
             }}
+            href={`/convos/${contentId}?view=settings&start=${searchParams.get("start") || 0}`}
             className={`transition ${
               viewType === "settings"
                 ? "text-black dark:text-gray-200"
@@ -193,11 +202,12 @@ export const ConvosNavBar = () => {
             } hover:text-black dark:hover:text-white transition text-xl`}
           >
             <Icons.gear />
-          </button>
+          </Link>
         )}
 
         {isSuperAdmin && (
-          <button
+          <Link
+            href={`/convos/${contentId}?view=ai&start=${searchParams.get("start") || 0}`}
             onClick={() => {
               setViewType("ai");
             }}
@@ -208,7 +218,7 @@ export const ConvosNavBar = () => {
             } hover:text-black dark:hover:text-white transition text-xl`}
           >
             <Icons.ai />
-          </button>
+          </Link>
         )}
       </div>
     </div>

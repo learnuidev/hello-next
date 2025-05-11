@@ -112,6 +112,7 @@ import {
   faRobotAstromech,
   faRollerCoaster,
   faSeedling,
+  faShuffle,
   faSmile,
   faSpaceStationMoon,
   faStop,
@@ -366,6 +367,7 @@ export const Icons = {
   listView: createFAIcon(faList12),
 
   cloze: createFAIcon(faVirus),
+  shuffle: createFAIcon(faShuffle),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

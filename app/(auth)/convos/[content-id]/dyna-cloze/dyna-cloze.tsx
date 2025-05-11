@@ -237,6 +237,7 @@ const DynaSentence = ({
         </button>
 
         <button
+          className="text-2xl"
           onClick={() => {
             if (learnMode === "stocastic") {
               setLearnMode("timeline");
@@ -245,7 +246,7 @@ const DynaSentence = ({
             }
           }}
         >
-          Study Mode: {learnMode}
+          {learnMode === "timeline" ? <Icons.timeline /> : <Icons.shuffle />}
         </button>
       </div>
     </div>

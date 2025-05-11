@@ -8,7 +8,7 @@ const useDynaClozeStore = createIndexDBStore({
 
   handler: (set: any, get: any) => ({
     learned: {},
-    learnMode: "stochastic",
+    learnMode: "timeline",
     setLearnMode: (f: "stocastic" | "timeline") => set({ learnMode: f }),
 
     setLearned: (f: any) =>

@@ -75,11 +75,12 @@ const resolveTrack = ({ tracks, lang }) => {
 
   if (!zhTrack) {
     try {
-      zhTrack = getTrack({ lang: "zh", tracks });
+      zhTrack = getTrack({ lang: ".zh-Hans", tracks });
     } catch (err) {
       zhTrack = null;
     }
   }
+
   if (!zhTrack) {
     try {
       zhTrack = getTrack({ lang: "zh-Hans", tracks });
@@ -87,13 +88,15 @@ const resolveTrack = ({ tracks, lang }) => {
       zhTrack = null;
     }
   }
+
   if (!zhTrack) {
     try {
-      zhTrack = getTrack({ lang: ".zh-Hans", tracks });
+      zhTrack = getTrack({ lang: "zh", tracks });
     } catch (err) {
       zhTrack = null;
     }
   }
+
   if (!zhTrack) {
     try {
       zhTrack = getTrack({ lang: "zh-Hant", tracks });
@@ -138,7 +141,10 @@ const genSubtitles = async ({ id, lang }) => {
 
     console.log("RESOLED LANG", resolvedLang);
 
-    const zhTrack = resolveTrack({ lang: resolvedLang, tracks });
+    const zhTrack = resolveTrack({
+      lang: resolvedLang === "zh" ? "zh-Hans" : lang,
+      tracks,
+    });
 
     let subtitles;
 
@@ -151,8 +157,6 @@ const genSubtitles = async ({ id, lang }) => {
     }
 
     const tree = parser.parse(subtitles, "metadata");
-
-    console.log("TREE", tree);
 
     const newSubtitles = tree?.cues?.map((cue) => {
       const hanziProps =

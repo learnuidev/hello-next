@@ -178,7 +178,7 @@ const DynaSentence = ({
           >
             <span className="block">
               {showEn ? option?.en : option?.hanzi}{" "}
-              {response && <span>({showEn ? option?.hanzi : option?.en})</span>}
+              {/* {response && <span>({showEn ? option?.hanzi : option?.en})</span>} */}
             </span>
           </button>
         ))}

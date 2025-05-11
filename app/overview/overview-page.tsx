@@ -86,6 +86,10 @@ export const OverviewPage = () => {
     return (totalReviewCounts / reviewedCharacters?.length).toFixed(2);
   }, [reviewedCharacters]);
 
+  if (isCharactersLoading || isComponentsLoading) {
+    return <div className="text-center my-32"> loading facts... </div>;
+  }
+
   return (
     <div className="mx-2 sm:mx-12">
       {userEmailHandle && (
@@ -103,9 +107,7 @@ export const OverviewPage = () => {
             facts
           </h2>
 
-          {isCharactersLoading || isComponentsLoading ? (
-            <div className="text-center"> loading facts... </div>
-          ) : lifeTimeCharacters && totalComponents ? (
+          {lifeTimeCharacters && totalComponents ? (
             <div className="flex gap-4 flex-col">
               <p>
                 <span>

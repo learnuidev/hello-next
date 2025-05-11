@@ -35,18 +35,23 @@ export const OverviewPage = () => {
     () => recentlyWatched?.slice(0, TEN),
     [recentlyWatched]
   );
-  const { data: totalComponents } = useListComponents();
+  const { data: totalComponents, isLoading: isComponentsLoading } =
+    useListComponents();
 
   const { data: totalCharacters, isLoading: isCharactersLoading } =
     useListCharactersQuery();
   const lifeTimeCharacters = useGetTotalLifetimeCharacters();
 
-  const totalReviedCharacters = useMemo(
+  const reviewedCharacters = useMemo(
     () =>
       totalCharacters?.filter((character: any) => {
         return character?.reviewHistory?.length > 0;
-      })?.length || 0,
+      }) || [],
     [totalCharacters]
+  );
+  const totalReviedCharacters = useMemo(
+    () => reviewedCharacters?.length || 0,
+    [reviewedCharacters?.length]
   );
 
   const characterReviewRatio = formatPercentage(
@@ -74,6 +79,13 @@ export const OverviewPage = () => {
     masteredCharacters / lifeTimeCharacters
   );
 
+  const averageCharacterReview = useMemo(() => {
+    const totalReviewCounts = reviewedCharacters
+      ?.map((item) => item?.reviewHistory?.length)
+      ?.reduce((acc: any, curr: any) => acc + curr, 0);
+    return (totalReviewCounts / reviewedCharacters?.length).toFixed(2);
+  }, [reviewedCharacters]);
+
   return (
     <div className="mx-2 sm:mx-12">
       {userEmailHandle && (
@@ -91,9 +103,9 @@ export const OverviewPage = () => {
             facts
           </h2>
 
-          {isCharactersLoading ? (
+          {isCharactersLoading || isComponentsLoading ? (
             <div className="text-center"> loading facts... </div>
-          ) : lifeTimeCharacters ? (
+          ) : lifeTimeCharacters && totalComponents ? (
             <div className="flex gap-4 flex-col">
               <p>
                 <span>
@@ -123,6 +135,14 @@ export const OverviewPage = () => {
                   {masteredCharacters} ({characterMasteryRatio})
                 </span>
                 .
+              </p>
+              <p>
+                <span>
+                  <Icons.glassesRound />{" "}
+                </span>
+                You have reviewed an average of{" "}
+                <span className="font-bold">{averageCharacterReview}</span>{" "}
+                times per character.
               </p>
             </div>
           ) : (

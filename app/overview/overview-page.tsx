@@ -96,7 +96,7 @@ export const OverviewPage = () => {
   return (
     <div className="mx-2 sm:mx-12">
       {userEmailHandle && (
-        <div className="mt-8 mb-12 text-lg rounded-2xl p-4 lg:p-8">
+        <div className="mt-8 sm:mb-8 lg:mb-12 text-lg rounded-2xl p-4 lg:p-8">
           <p className="font-extralight">
             Yo <span className="font-bold">{userEmailHandle}</span>, here is
             your learning summary:{" "}
@@ -104,16 +104,16 @@ export const OverviewPage = () => {
         </div>
       )}
 
-      <section className="grid grid-cols-1 sm:grid-cols-12 mt-4 gap-12">
+      <section className="grid grid-cols-1 sm:grid-cols-12 mt-0 sm:mt-4 gap-4 lg:gap-12">
         <div className="sm:col-span-6 shadow-lg dark:shadow-[rgb(31,32,33)] rounded-2xl p-4 lg:p-8">
           <h2 className="mb-6 text-xl dark:text-gray-500 font-bold underline">
             facts
           </h2>
 
           {lifeTimeCharacters && totalComponents ? (
-            <div className="flex gap-4 flex-col font-light">
+            <div className="flex gap-4 flex-col font-light text-sm lg:text-[16px]">
               <p>
-                <span>
+                <span className="mr-1">
                   <Icons.lightBulb />{" "}
                 </span>
                 You have learned{" "}
@@ -125,7 +125,7 @@ export const OverviewPage = () => {
               </p>
 
               <p>
-                <span>
+                <span className="mr-1">
                   <Icons.fire />{" "}
                 </span>
                 Out of the{" "}
@@ -142,7 +142,7 @@ export const OverviewPage = () => {
                 .
               </p>
               <p>
-                <span>
+                <span className="mr-1">
                   <Icons.glassesRound />{" "}
                 </span>
                 You have reviewed an average of{" "}
@@ -170,7 +170,7 @@ export const OverviewPage = () => {
               </p>
             </div>
           ) : (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 text-sm lg:text-[16px]">
               {topFiveRecentlyWatched?.map((content: any) => {
                 return (
                   <Link
@@ -180,7 +180,7 @@ export const OverviewPage = () => {
                     key={content.id}
                     href={`/convos/${content?.id}`}
                   >
-                    <span className="mr-2">
+                    <span className="mr-1">
                       <ContentIcon content={content} />{" "}
                     </span>
                     {content?.title}

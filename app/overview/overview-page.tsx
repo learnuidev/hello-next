@@ -12,6 +12,7 @@ import { Icons } from "@/components/ui/icons.v2";
 import { isYoutube } from "../(auth)/convos/utils/is-youtube";
 import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
 import { SearchBar } from "@/components/search-bar";
+import { LottieLoadingAnimation } from "../nmm/lottie-loading-animation";
 
 const TEN = 10;
 
@@ -39,8 +40,8 @@ export const OverviewPage = () => {
     () => recentlyWatched?.slice(0, TEN),
     [recentlyWatched]
   );
-  const { data: totalComponents, isLoading: isComponentsLoading } =
-    useListComponents();
+  // const { data: totalComponents, isLoading: isComponentsLoading } =
+  //   useListComponents();
 
   const { data: totalCharacters, isLoading: isCharactersLoading } =
     useListCharactersQuery();
@@ -62,10 +63,11 @@ export const OverviewPage = () => {
     totalReviedCharacters / lifeTimeCharacters
   );
 
-  const totalComponentsLength = useMemo(
-    () => totalComponents?.length || 1,
-    [totalComponents?.length]
-  );
+  const totalComponentsLength = useMemo(() => 3200, []);
+  // const totalComponentsLength = useMemo(
+  //   () => totalComponents?.length || 1,
+  //   [totalComponents?.length]
+  // );
 
   const characterLearningRatio = formatPercentage(
     lifeTimeCharacters / totalComponentsLength
@@ -90,8 +92,14 @@ export const OverviewPage = () => {
     return (totalReviewCounts / reviewedCharacters?.length).toFixed(2);
   }, [reviewedCharacters]);
 
-  if (isCharactersLoading || isComponentsLoading) {
-    return <div className="text-center my-32"> loading facts... </div>;
+  if (isCharactersLoading) {
+    return (
+      <div className="text-center">
+        <div>
+          <LottieLoadingAnimation />
+        </div>{" "}
+      </div>
+    );
   }
 
   return (
@@ -114,7 +122,7 @@ export const OverviewPage = () => {
             facts
           </h2>
 
-          {lifeTimeCharacters && totalComponents ? (
+          {lifeTimeCharacters ? (
             <div className="max-w-xl flex gap-4 flex-col font-light text-[16px]">
               <p>
                 <span className="mr-1">

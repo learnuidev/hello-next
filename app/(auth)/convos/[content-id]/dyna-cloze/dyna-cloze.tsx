@@ -162,34 +162,66 @@ const DynaSentence = ({
       </div>
 
       <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">
-        {shuffledOptions?.map((option: any, idx: number) => (
-          <button
-            onClick={() => {
-              checkAnswer(option);
-            }}
-            disabled={response?.type}
-            className={cn(
-              "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg",
-              response
-                ? response?.answer?.en === option?.en
-                  ? response?.type === "correct"
-                    ? "bg-green-500 border-green-600 hover:bg-green-600"
-                    : "bg-red-500 hover:bg-red-600 border-red-500"
-                  : "bg-gray-800 opacity-10 text-gray-200 border-gray-500"
-                : "",
-              "transition",
-              response
-                ? ""
-                : "hover:bg-orange-500 hover:text-white hover:scale-110"
-            )}
-            key={`dynacloze-${idx}-${option?.en}`}
-          >
-            <span className="block">
-              {showEn ? option?.en : option?.hanzi}{" "}
-              {/* {response && <span>({showEn ? option?.hanzi : option?.en})</span>} */}
-            </span>
-          </button>
-        ))}
+        {shuffledOptions?.map((option: any, idx: number) => {
+          if (response) {
+            return (
+              <Link
+                target="_blank"
+                href={`/nmm/${option?.hanzi}?lang=${sentence?.lang}`}
+                // disabled={response?.type}
+                className={cn(
+                  "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",
+                  response
+                    ? response?.answer?.en === option?.en
+                      ? response?.type === "correct"
+                        ? "bg-green-500 border-green-600 hover:bg-green-600"
+                        : "bg-red-500 hover:bg-red-600 border-red-500"
+                      : "bg-gray-800 opacity-10 text-gray-200 border-gray-500"
+                    : "",
+                  "transition",
+                  response
+                    ? ""
+                    : "hover:bg-orange-500 hover:text-white hover:scale-110"
+                )}
+                key={`dynacloze-${idx}-${option?.en}`}
+              >
+                <span className="block">
+                  {showEn ? option?.en : option?.hanzi}{" "}
+                  {/* {response && <span>({showEn ? option?.hanzi : option?.en})</span>} */}
+                </span>
+              </Link>
+            );
+          } else {
+            return (
+              <button
+                onClick={() => {
+                  checkAnswer(option);
+                }}
+                disabled={response?.type}
+                className={cn(
+                  "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg",
+                  response
+                    ? response?.answer?.en === option?.en
+                      ? response?.type === "correct"
+                        ? "bg-green-500 border-green-600 hover:bg-green-600"
+                        : "bg-red-500 hover:bg-red-600 border-red-500"
+                      : "bg-gray-800 opacity-10 text-gray-200 border-gray-500"
+                    : "",
+                  "transition",
+                  response
+                    ? ""
+                    : "hover:bg-orange-500 hover:text-white hover:scale-110"
+                )}
+                key={`dynacloze-${idx}-${option?.en}`}
+              >
+                <span className="block">
+                  {showEn ? option?.en : option?.hanzi}{" "}
+                  {/* {response && <span>({showEn ? option?.hanzi : option?.en})</span>} */}
+                </span>
+              </button>
+            );
+          }
+        })}
       </div>
 
       <div className="flex justify-center items-center mt-32 gap-12 text-2xl">

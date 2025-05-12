@@ -108,9 +108,13 @@ const DynaSentence = ({
     <div>
       <div className="text-center mt-24">
         {response ? (
-          <p className={"text-lg mb-2"}>
+          <Link
+            target="_blank"
+            href={`/nmm/${sentenceHanzi}?lang=${sentence?.lang}`}
+            className={"block text-lg mb-2"}
+          >
             {sentence?.pinyin || sentence?.roman}
-          </p>
+          </Link>
         ) : (
           <p className="mb-2 dark:text-black text-white text-lg"> ...</p>
         )}

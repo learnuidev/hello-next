@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
+import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
 
 const DynaSentence = ({
   sentence,
@@ -46,12 +47,19 @@ const DynaSentence = ({
     lang: sentence?.lang,
   });
 
+  const { data: context, isLoading: isContextLoading } =
+    useListDictionaryMeaningsQuery(sentence?.hanzi || sentence?.input);
+
   const shuffledGrammar = useMemo(() => {
+    if (context && context?.length > 1) {
+      return shuffleArray(context);
+    }
     if (!grammar) {
       return [];
     }
+
     return shuffleArray(grammar?.grammarAnalysis);
-  }, [grammar]);
+  }, [grammar, context]);
 
   const selectedGrammar = useMemo(
     () => shuffledGrammar?.[wordIndex],
@@ -64,7 +72,7 @@ const DynaSentence = ({
   );
 
   const sentenceHanziHidden = useMemo(() => {
-    return sentenceHanzi?.replaceAll(selectedGrammar?.hanzi, `____`);
+    return sentenceHanzi?.replaceAll(selectedGrammar?.hanzi, `  _____  `);
   }, [selectedGrammar?.hanzi, sentenceHanzi]);
 
   const relevantHanzi = selectedGrammar?.en;
@@ -96,7 +104,11 @@ const DynaSentence = ({
     }
   };
 
-  if (!grammar?.grammarAnalysis?.length) {
+  if (
+    (!grammar?.grammarAnalysis?.length && !context?.length) ||
+    context?.length === 1 ||
+    isContextLoading
+  ) {
     return (
       <div>
         <p className="text-center my-32">Loading...</p>
@@ -106,7 +118,7 @@ const DynaSentence = ({
 
   return (
     <div>
-      <div className="text-center mt-24">
+      <div className="text-center mt-12 lg:mt-24 max-w-3xl m-auto">
         {response ? (
           <Link
             target="_blank"
@@ -119,7 +131,7 @@ const DynaSentence = ({
           <p className="mb-2 dark:text-black text-white text-lg"> ...</p>
         )}
         {!brightMode ? (
-          <h1 className="block text-4xl">
+          <h1 className="block lg:text-4xl text-2xl">
             {(response ? sentenceHanzi : sentenceHanziHidden)
               .split("")
               .map((item: string, idx: number) => {
@@ -141,7 +153,7 @@ const DynaSentence = ({
           <Link
             href={`/convos/${contentId}?start=${sentence?.start}&view=listen`}
             target="_blank"
-            className="block text-4xl"
+            className="block text-2xl lg:text-4xl"
           >
             {(response ? sentenceHanzi : sentenceHanziHidden)
               .split("")
@@ -150,13 +162,13 @@ const DynaSentence = ({
                   <CharacterItem
                     key={`review-cloze-${idx}-${item}`}
                     character={item}
-                    className="text-center text-3xl font-light"
+                    className="text-center text-xl lg:text-3xl font-light"
                   />
                 );
               })}
           </Link>
         )}
-        <p className="mt-2">{sentence?.en}</p>
+        <p className="mt-2 lg:text-xl text-md">{sentence?.en}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">
@@ -173,7 +185,7 @@ const DynaSentence = ({
                   ? response?.type === "correct"
                     ? "bg-green-500 border-green-600 hover:bg-green-600"
                     : "bg-red-500 hover:bg-red-600 border-red-500"
-                  : "bg-gray-800 opacity-10 text-gray-200"
+                  : "bg-gray-800 opacity-10 text-gray-200 border-gray-500"
                 : "",
               "transition",
               response

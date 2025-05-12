@@ -4,6 +4,7 @@ import { useJwtToken } from "./use-jwt-token";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 import { useDictionaryStore } from "./use-dictionary-store";
+import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
 
 interface Meanings {
   hanzi: string;
@@ -42,8 +43,7 @@ export const useListDictionaryMeaningsQuery = (
         const found = getDictionary(hanzi);
 
         if (found) {
-          console.log("FOUND dictionary", found);
-          return found;
+          return found?.filter((item: any) => filterNonHanYu(item?.hanzi));
         }
 
         console.log("Not found in cache, fetching dictionary");
@@ -63,16 +63,18 @@ export const useListDictionaryMeaningsQuery = (
 
         const respJson = (await res.json()) as Meanings[];
 
-        const respWithHsk = respJson.map((item) => {
-          const hskLevel = hskWords?.find(
-            (hskWord: any) => hskWord?.hanzi === item?.hanzi
-          );
+        const respWithHsk = respJson
+          .map((item) => {
+            const hskLevel = hskWords?.find(
+              (hskWord: any) => hskWord?.hanzi === item?.hanzi
+            );
 
-          return {
-            ...hskLevel,
-            ...item,
-          };
-        });
+            return {
+              ...hskLevel,
+              ...item,
+            };
+          })
+          .filter((item: any) => filterNonHanYu(item?.hanzi));
 
         if (hskWords) {
           setDictionary(hanzi, respWithHsk);

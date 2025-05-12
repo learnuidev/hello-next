@@ -100,7 +100,7 @@ export const OverviewPage = () => {
         <SearchBar />
       </div>
       {userEmailHandle && (
-        <div className="mt-8 sm:mb-8 lg:mb-12 text-lg rounded-2xl p-4 lg:p-8">
+        <div className="mt-8 mb-8 text-lg rounded-2xl py-4 lg:py-8">
           <p className="font-extralight">
             Yo <span className="font-bold">{userEmailHandle}</span>, here is
             your learning summary:{" "}
@@ -109,7 +109,7 @@ export const OverviewPage = () => {
       )}
 
       <section className="grid grid-cols-1 sm:grid-cols-12 mt-0 sm:mt-4 gap-4 lg:gap-12">
-        <div className="sm:col-span-7 shadow-lg dark:shadow-[rgb(31,32,33)] rounded-2xl p-4 lg:p-8">
+        <div className="sm:col-span-7  dark:bg-[rgb(11,12,13)] bg-gray-50 rounded-2xl p-4 lg:p-8">
           <h2 className="mb-6 text-xl dark:text-gray-500 font-bold underline">
             facts
           </h2>
@@ -161,7 +161,7 @@ export const OverviewPage = () => {
 
         {/* <div className="sm:col-span-1"></div> */}
 
-        <div className="sm:col-span-5 shadow-lg dark:shadow-[rgb(31,32,33)] rounded-2xl p-4 lg:p-8">
+        <div className="sm:col-span-5  dark:bg-[rgb(11,12,13)] bg-gray-50 rounded-2xl p-4 lg:p-8">
           <h2 className="mb-6 text-xl dark:text-gray-500 font-bold underline">
             recently viewed content
           </h2>

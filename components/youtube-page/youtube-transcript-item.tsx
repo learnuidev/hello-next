@@ -181,8 +181,8 @@ export const TranscriptItem = ({
           <FontAwesomeIcon
             className={
               toggleLoops?.find((item: any) => item?.end === example?.end)
-                ? "text-white"
-                : "text-gray-500"
+                ? "text-white dark:text-black"
+                : "dark:text-gray-500 text-gray-400"
             }
             icon={faRepeat}
           />

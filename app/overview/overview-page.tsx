@@ -109,13 +109,13 @@ export const OverviewPage = () => {
       )}
 
       <section className="grid grid-cols-1 sm:grid-cols-12 mt-0 sm:mt-4 gap-4 lg:gap-12">
-        <div className="sm:col-span-6 shadow-lg dark:shadow-[rgb(31,32,33)] rounded-2xl p-4 lg:p-8">
+        <div className="sm:col-span-7 shadow-lg dark:shadow-[rgb(31,32,33)] rounded-2xl p-4 lg:p-8">
           <h2 className="mb-6 text-xl dark:text-gray-500 font-bold underline">
             facts
           </h2>
 
           {lifeTimeCharacters && totalComponents ? (
-            <div className="flex gap-4 flex-col font-light text-[16px]">
+            <div className="max-w-xl flex gap-4 flex-col font-light text-[16px]">
               <p>
                 <span className="mr-1">
                   <Icons.lightBulb />{" "}
@@ -159,7 +159,7 @@ export const OverviewPage = () => {
           )}
         </div>
 
-        <div className="sm:col-span-1"></div>
+        {/* <div className="sm:col-span-1"></div> */}
 
         <div className="sm:col-span-5 shadow-lg dark:shadow-[rgb(31,32,33)] rounded-2xl p-4 lg:p-8">
           <h2 className="mb-6 text-xl dark:text-gray-500 font-bold underline">

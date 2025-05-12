@@ -1,16 +1,17 @@
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
-import { persist, createJSONStorage } from "zustand/middleware";
+import {
+  getUserPreferenceKey,
+  useGetUserPreferenceQuery,
+} from "@/domain/user/use-get-user-preference-query";
+import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
+import { useQueryClient } from "@tanstack/react-query";
 import { create } from "zustand";
 
 const useDynaClozeStore = createIndexDBStore({
   name: "dynacloze",
-
   handler: (set: any, get: any) => ({
     learned: {},
-    learnMode: "timeline",
-    setLearnMode: (f: "stocastic" | "timeline") => set({ learnMode: f }),
-
     setLearned: (f: any) =>
       typeof f === "function"
         ? set({ learned: f(get().learned) })
@@ -21,9 +22,20 @@ const useDynaClozeStore = createIndexDBStore({
 export const useDynaCloze = (contentId: string) => {
   const learned: any = useDynaClozeStore((state) => state.learned);
   const _setLearned = useDynaClozeStore((state) => state.setLearned);
+  const { data: userPreferences } = useGetUserPreferenceQuery();
+  const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
 
-  const learnMode = useDynaClozeStore((state) => state.learnMode);
-  const setLearnMode = useDynaClozeStore((state) => state.setLearnMode);
+  const queryClient = useQueryClient();
+
+  const learnMode = userPreferences?.clozeMode || "stocastic";
+  const setLearnMode = (mode: "stocastic" | "timeline") => {
+    queryClient.setQueryData([getUserPreferenceKey], (old: any) => {
+      return { ...old, clozeMode: mode };
+    });
+    updateUserPreferenceMutation?.mutate({
+      clozeMode: mode,
+    });
+  };
 
   const setLearned = (key: string) => {
     _setLearned((learned: any) => {

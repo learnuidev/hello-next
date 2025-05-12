@@ -1,14 +1,14 @@
-import { useGetContentQuery } from "@/domain/content/content.queries";
-import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
-import { useMemo, useState } from "react";
-import { shuffleArray } from "@/app/review/review-cloze/utils/shuffle-array";
-import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import { getRandomWords } from "@/app/review/review-cloze/utils/get-random-words";
-import { cn } from "@/lib/utils";
-import { Icons } from "@/components/ui/icons.v2";
-import Link from "next/link";
+import { shuffleArray } from "@/app/review/review-cloze/utils/shuffle-array";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { Icons } from "@/components/ui/icons.v2";
+import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useMemo } from "react";
+import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
 
 const DynaSentence = ({
   sentence,

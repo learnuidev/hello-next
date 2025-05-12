@@ -47,19 +47,13 @@ const DynaSentence = ({
     lang: sentence?.lang,
   });
 
-  const { data: context, isLoading: isContextLoading } =
-    useListDictionaryMeaningsQuery(sentence?.hanzi || sentence?.input);
-
   const shuffledGrammar = useMemo(() => {
-    if (context && context?.length > 1) {
-      return shuffleArray(context);
-    }
     if (!grammar) {
       return [];
     }
 
     return shuffleArray(grammar?.grammarAnalysis);
-  }, [grammar, context]);
+  }, [grammar]);
 
   const selectedGrammar = useMemo(
     () => shuffledGrammar?.[wordIndex],
@@ -104,11 +98,7 @@ const DynaSentence = ({
     }
   };
 
-  if (
-    (!grammar?.grammarAnalysis?.length && !context?.length) ||
-    context?.length === 1 ||
-    isContextLoading
-  ) {
+  if (!grammar?.grammarAnalysis?.length) {
     return (
       <div>
         <p className="text-center my-32">Loading...</p>

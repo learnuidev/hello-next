@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
+import { useGetDictionaryHandler } from "@/app/next/features/html-parser/hooks/use-get-dictionary-handler";
 
 // TODO: Move this to .env
 const url = `${siteConfig.apiUrl}/v1/list-grammars`;
@@ -39,7 +40,12 @@ function getAllSubstringIndices(mainString: string, subString: string) {
 }
 
 const listGrammars = async (
-  options: { sentenceId?: string; content: string; lang?: string },
+  options: {
+    sentenceId?: string;
+    content: string;
+    lang?: string;
+    grammarCache: any;
+  },
   opts: {
     Authorization: string;
   }
@@ -92,14 +98,29 @@ export function useListGrammarsQuery(
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
+  const getDictionaryHandler = useGetDictionaryHandler();
 
   return useQuery<ListGrammarsResponse, Error>({
     queryKey: [queryIds.listGrammars, params?.content],
     queryFn: async () => {
       if (Object.keys(params)?.length && params?.lang) {
-        const response = await listGrammars(params, {
-          Authorization: authUser?.jwt,
-        });
+        const content = params?.content || params?.sentenceId || "";
+
+        let grammarCache = null;
+
+        try {
+          grammarCache =
+            content?.length > 20 ? await getDictionaryHandler(content) : null;
+        } catch (err) {
+          grammarCache = null;
+        }
+
+        const response = await listGrammars(
+          { ...params, grammarCache },
+          {
+            Authorization: authUser?.jwt,
+          }
+        );
         return response as ListGrammarsResponse;
       }
     },

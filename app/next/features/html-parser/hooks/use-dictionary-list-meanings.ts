@@ -1,10 +1,7 @@
-import { siteConfig } from "@/lib/config";
-import { useQuery } from "@tanstack/react-query";
-import { useJwtToken } from "./use-jwt-token";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
-import { createIndexDBStore } from "@/libs/index-db/index-db";
-import { useDictionaryStore } from "./use-dictionary-store";
-import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
+import { useQuery } from "@tanstack/react-query";
+import { useGetDictionaryHandler } from "./use-get-dictionary-handler";
+import { useJwtToken } from "./use-jwt-token";
 
 interface Meanings {
   hanzi: string;
@@ -18,12 +15,9 @@ export const useListDictionaryMeaningsQuery = (
 ) => {
   const token = useJwtToken();
 
-  const getDictionary = useDictionaryStore((state) => state.getDictionary);
-  const setDictionary = useDictionaryStore((state) => state.setDictionary);
-
-  // const dictionaryList =
-
   const { data: hskWords } = useListHSKWordsQuery();
+
+  const getDictionaryHandler = useGetDictionaryHandler();
 
   return useQuery<Meanings[], Error>({
     queryKey: [
@@ -39,51 +33,7 @@ export const useListDictionaryMeaningsQuery = (
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     queryFn: async () => {
-      try {
-        const found = getDictionary(hanzi);
-
-        if (found) {
-          return found?.filter((item: any) => filterNonHanYu(item?.hanzi));
-        }
-
-        console.log("Not found in cache, fetching dictionary");
-
-        const res = await fetch(
-          `${siteConfig.apiUrlV2}/v1/dictionary/list-meanings`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              hanzi,
-            }),
-          }
-        );
-
-        const respJson = (await res.json()) as Meanings[];
-
-        const respWithHsk = respJson
-          .map((item) => {
-            const hskLevel = hskWords?.find(
-              (hskWord: any) => hskWord?.hanzi === item?.hanzi
-            );
-
-            return {
-              ...hskLevel,
-              ...item,
-            };
-          })
-          .filter((item: any) => filterNonHanYu(item?.hanzi));
-
-        if (hskWords) {
-          setDictionary(hanzi, respWithHsk);
-        }
-
-        return respWithHsk;
-      } catch (err) {
-        throw err;
-      }
+      return await getDictionaryHandler(hanzi);
     },
     ...options,
   });

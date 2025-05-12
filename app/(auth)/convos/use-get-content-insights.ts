@@ -1,26 +1,18 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
+import { useMemo, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { useSelectedCharacter } from "./use-selected-character";
-import { SelectedCharacterContainer } from "@/components/selected-character-container";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import Link from "next/link";
+import { useSelectedCharacter } from "./use-selected-character";
 
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
-import { Icons } from "@/components/ui/icons.v2";
-import { cn } from "@/lib/utils";
-
-import { create } from "zustand";
-import { HanziLink } from "@/components/hanzi-link";
-import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
 import { filterNonEnglishAlphabets } from "@/app/nmm/nmm-utils/filter-non-english-alphabets";
-import { NmmListContainer } from "@/components/nmm-list-container";
+import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
 import { useInsightsSettingsStore } from "./use-insights-settings-store";
 
 const getFrequency = ({ lesson, input }: any) => {

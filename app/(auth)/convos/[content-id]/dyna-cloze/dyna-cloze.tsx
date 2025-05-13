@@ -353,20 +353,15 @@ const DynaSentence = ({
           disabled={parentSentence ? false : sentenceIndex === 0}
           className={sentenceIndex === 0 ? "text-gray-500" : ""}
           onClick={() => {
+            setResponse(null);
             if (0 === sentenceIndex && parentSentence) {
               setParentSentenceIndex(Math.max(parentSentenceIndex - 1, 0));
-
-              // setShowParent(false);
               setWordIndex(0);
-              setResponse(null);
-
               return null;
             }
 
             setSentenceIndex(Math.max(sentenceIndex - 1, 0));
-
             setWordIndex(0);
-            setResponse(null);
           }}
         >
           <Icons.arrowLeft />
@@ -387,6 +382,7 @@ const DynaSentence = ({
 
         <button
           onClick={() => {
+            setResponse(null);
             if (maxIndex) {
               if (maxIndex === sentenceIndex) {
                 setParentSentenceIndex(
@@ -398,9 +394,6 @@ const DynaSentence = ({
 
                 setSentenceIndex(0);
                 setWordIndex(0);
-                setResponse(null);
-                // setShowParent(false);
-
                 return null;
               } else {
                 setSentenceIndex(Math.min(sentenceIndex + 1, maxIndex));
@@ -412,7 +405,6 @@ const DynaSentence = ({
             );
 
             setWordIndex(0);
-            setResponse(null);
           }}
         >
           <Icons.arrowRight />

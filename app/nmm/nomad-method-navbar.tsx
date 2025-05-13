@@ -205,13 +205,13 @@ export function NomadMethodNavbar() {
             <TabsList className="space-x-8">
               <TabsTrigger
                 value="core"
-                className="px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
+                className="px-0 data-[state=active]:text-black dark:data-[state=active]:text-white data-[state=inactive]:text-gray-600"
               >
                 <Icons.rocket className="text-xl md:text-2xl" />
               </TabsTrigger>
               <TabsTrigger
                 value="needs_review"
-                className="px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
+                className="px-0 data-[state=active]:text-black dark:data-[state=active]:text-white data-[state=inactive]:text-gray-600"
               >
                 <Icons.graduationCap className="text-xl md:text-2xl" />
               </TabsTrigger>
@@ -219,7 +219,7 @@ export function NomadMethodNavbar() {
                 // value="learned"
                 value="all"
                 className={cn(
-                  "px-0 data-[state=active]:text-white data-[state=inactive]:text-gray-600"
+                  "px-0 data-[state=active]:text-black dark:data-[state=active]:text-white data-[state=inactive]:text-gray-600"
                 )}
               >
                 <Icons.globeAsia className="text-xl md:text-2xl" />

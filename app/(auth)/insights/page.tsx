@@ -45,13 +45,13 @@ export default function InsightsNew() {
           <TabsList className="space-x-8 dark:bg-black bg-white">
             <TabsTrigger
               value="overview"
-              className="px-0 dark:data-[state=active]:text-white"
+              className="px-0 dark:data-[state=active]:text-white data-[state=active]:text-black"
             >
               Overview
             </TabsTrigger>
             <TabsTrigger
               value="characters"
-              className="px-0 dark:data-[state=active]:text-white"
+              className="px-0 dark:data-[state=active]:text-white data-[state=active]:text-black"
             >
               Characters
             </TabsTrigger>

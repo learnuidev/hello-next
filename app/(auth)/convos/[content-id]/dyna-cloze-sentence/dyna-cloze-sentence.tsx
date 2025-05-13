@@ -19,6 +19,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useReviewModeView } from "@/app/review/use-review-mode";
+import { useViewTypeStore } from "@/components/use-selected-character";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -460,6 +462,15 @@ export const DynaClozeSentence = ({
   const { setWordIndex, setSentenceIndex, sentenceIndex, wordIndex } =
     useDyanStoreRuntime();
 
+  const setViews = useViewTypeStore((state) => state.setViews);
+
+  // const { selectedChar, setView, view } = data;
+  const setView = () => {
+    return setViews(sentence?.hanzi || "", "");
+  };
+
+  const { setReviewMode } = useReviewModeView();
+
   const { data, isLoading } = useListMeaningsQuery({
     content: sentence?.hanzi || sentence?.input || "",
     lang: sentence?.lang,
@@ -481,7 +492,24 @@ export const DynaClozeSentence = ({
 
   return (
     <div>
-      <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "}
+      <nav className="flex w-screen fixed top-4 left-0 items-center">
+        <div className="flex-1 flex justify-start px-4 lg:px-12">
+          <button
+            onClick={() => {
+              setView();
+            }}
+          >
+            <Icons.xMark className="text-2xl" />
+          </button>
+        </div>
+        <div className="flex-1 flex justify-center px-4">
+          <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "}
+        </div>
+        <div className="flex-1 flex justify-end px-4">
+          {/* <HskLevelSelector currentCharacter={currentCharacter} /> */}
+        </div>
+      </nav>
+      {/* <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "} */}
       <WithMultiSentence sentence={finalSentence}>
         <DynaSentence
           sentence={finalSentence}

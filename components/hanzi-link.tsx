@@ -84,8 +84,8 @@ export function HanziLink({
       {showPinyin && (
         <p
           className={cn(
-            "top-0 text-xs text-gray-400 w-24 text-center truncate",
-            brightMode ? "text-gray-600" : "dark:text-gray-800 text-gray-200",
+            "top-0 text-xs text-black dark:text-gray-400 w-24 text-center truncate",
+
             className
           )}
         >

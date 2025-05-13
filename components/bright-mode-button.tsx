@@ -24,7 +24,7 @@ export const BrightModeButton = () => {
         setReadMode(!readMode);
       }}
     >
-      <Icons.glassesRound />
+      {!brightMode ? <Icons.glassesRoundSolid /> : <Icons.glassesRound />}
     </button>
   );
 };

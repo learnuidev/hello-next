@@ -1,6 +1,9 @@
 import { calculateTones } from "./calculate-tones";
 
 export const calculateColor = (dict: any) => {
+  if (!dict?.tone) {
+    return "dark:text-white text-black";
+  }
   switch (parseInt(dict?.tone || calculateTones(dict))) {
     case 1:
       return "dark:text-rose-400 text-rose-400";
@@ -11,8 +14,10 @@ export const calculateColor = (dict: any) => {
     case 4:
       return "dark:text-pink-400 text-pink-400";
     case 5:
-    case 0:
       return "text-blue-500";
+    case 0:
+      return "dark:text-white text-black";
+
     default:
       return "";
   }

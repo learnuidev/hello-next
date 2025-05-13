@@ -375,7 +375,7 @@ const DynaSentence = ({
         <button
           onClick={() => {
             setWordIndex(
-              shuffledGrammar?.length - 1 === wordIndex + 1
+              shuffledGrammar?.length === wordIndex + 1
                 ? 0
                 : Math.min(wordIndex + 1, shuffledGrammar?.length - 1)
             );

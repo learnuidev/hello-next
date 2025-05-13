@@ -19,6 +19,7 @@ import { PinyinView } from "./pinyin-view";
 import { SimilarCharactersView } from "./similar-characters-view";
 import { StoryView } from "./story-view";
 import { ReviewCloze } from "@/app/review/review-cloze/review-cloze";
+import { DynaClozeSentence } from "@/app/(auth)/convos/[content-id]/dyna-cloze-sentence/dyna-cloze-sentence";
 
 export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
   const { data: characters } = useListCharactersQuery(
@@ -70,7 +71,14 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
     offlineCharacter?.roman;
 
   switch (view) {
-    case "review":
+    case "review": {
+      if (characterId?.length > 2) {
+        return (
+          <DynaClozeSentence
+            sentence={{ hanzi: characterId, input: characterId, lang: lang }}
+          />
+        );
+      }
       return (
         <ReviewCloze
           backButton={() => {
@@ -91,6 +99,8 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
           }}
         />
       );
+    }
+
     case "super-components":
       return <HskSuperComponentsWordView componentId={characterId} />;
 

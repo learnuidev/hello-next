@@ -105,21 +105,22 @@ export const FloatingCharacterNavbar = ({
             <button
               className="text-xl text-black dark:text-white"
               onClick={() => {
-                if (characterId?.length <= 3) {
-                  setView("review");
-                  return null;
-                }
-                if (characterId?.length > 1) {
-                  router.push(`/review?input=${characterId}`);
-                } else {
-                  const { reviewDate, month, year } = getReviewDate(character);
+                setView("review");
+                // if (characterId?.length <= 3) {
+                //   setView("review");
+                //   return null;
+                // }
+                // if (characterId?.length > 1) {
+                //   router.push(`/review?input=${characterId}`);
+                // } else {
+                //   const { reviewDate, month, year } = getReviewDate(character);
 
-                  return router.push(
-                    `/review?${getReviewSearchParams({ date: reviewDate })}`
-                  );
+                //   return router.push(
+                //     `/review?${getReviewSearchParams({ date: reviewDate })}`
+                //   );
 
-                  setView("play");
-                }
+                //   setView("play");
+                // }
               }}
             >
               <Icons.play className="text-2xl" />

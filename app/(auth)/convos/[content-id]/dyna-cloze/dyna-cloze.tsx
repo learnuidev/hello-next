@@ -402,6 +402,9 @@ const DynaSentence = ({
                 // setShowParent(false);
 
                 return null;
+              } else {
+                setSentenceIndex(Math.min(sentenceIndex + 1, maxIndex));
+                return null;
               }
             }
             setSentenceIndex(

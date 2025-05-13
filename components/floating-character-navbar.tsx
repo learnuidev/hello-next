@@ -105,7 +105,7 @@ export const FloatingCharacterNavbar = ({
             <button
               className="text-xl text-black dark:text-white"
               onClick={() => {
-                if (characterId?.length === 1) {
+                if (characterId?.length <= 3) {
                   setView("review");
                   return null;
                 }

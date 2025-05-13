@@ -11,6 +11,12 @@ import { useMemo, useState } from "react";
 import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { getMulti } from "./utils/get-multi";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -38,7 +44,7 @@ function DynoSentenceInner({
   });
 
   const finalSentence = useMemo(() => {
-    return { ...sentence, ...data?.details };
+    return { ...data?.details, ...sentence };
   }, [data?.details, sentence]);
 
   if (isLoading) {
@@ -175,6 +181,10 @@ const DynaSentence = ({
   const replaceSelectedGrammar = (sentenceHanzi: string) => {
     return sentenceHanzi?.replaceAll(selectedGrammar?.hanzi, `  _____  `);
   };
+
+  const multiSentence = getMulti(
+    parentSentence?.hanzi || parentSentence?.input
+  );
 
   const sentenceHanziHidden = useMemo(() => {
     return replaceSelectedGrammar(sentenceHanzi);
@@ -337,10 +347,19 @@ const DynaSentence = ({
 
       <div className="flex justify-center items-center mt-32 gap-12 text-2xl">
         <button
-          disabled={sentenceIndex === 0}
+          disabled={parentSentence ? false : sentenceIndex === 0}
           className={sentenceIndex === 0 ? "text-gray-500" : ""}
           onClick={() => {
-            setShowParent(false);
+            if (0 === sentenceIndex && parentSentence) {
+              setParentSentenceIndex(Math.max(parentSentenceIndex - 1, 0));
+
+              // setShowParent(false);
+              setWordIndex(0);
+              setResponse(null);
+
+              return null;
+            }
+
             setSentenceIndex(Math.max(sentenceIndex - 1, 0));
 
             setWordIndex(0);
@@ -365,7 +384,6 @@ const DynaSentence = ({
 
         <button
           onClick={() => {
-            setShowParent(false);
             if (maxIndex) {
               if (maxIndex === sentenceIndex) {
                 setParentSentenceIndex(
@@ -378,6 +396,7 @@ const DynaSentence = ({
                 setSentenceIndex(0);
                 setWordIndex(0);
                 setResponse(null);
+                // setShowParent(false);
 
                 return null;
               }
@@ -428,13 +447,38 @@ const DynaSentence = ({
 
       {parentSentence && showParent && (
         <div className="text-center mt-12 max-w-3xl m-auto">
-          <p>
-            {replaceSelectedGrammar(
-              parentSentence?.hanzi || parentSentence?.input
-            )}
-          </p>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <p>
+                  {multiSentence?.map((sentenceItem, idx) => {
+                    return (
+                      <span key={sentenceItem}>
+                        <span
+                          className={
+                            sentenceItem === sentence?.hanzi
+                              ? "dark:text-white text-black"
+                              : "text-gray-400 dark:text-gray-700"
+                          }
+                        >
+                          {replaceSelectedGrammar(sentenceItem)}
+                        </span>
 
-          <p className="text-gray-500">{parentSentence?.en}</p>
+                        <span className="text-gray-400 dark:text-gray-700">
+                          {multiSentence?.length - 1 !== idx && "，"}
+                        </span>
+                      </span>
+                    );
+                  })}
+                </p>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="dark:text-gray-300 text-gray-700 text-xs z-50 max-w-3xl">
+                  {parentSentence?.en}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       )}
     </div>

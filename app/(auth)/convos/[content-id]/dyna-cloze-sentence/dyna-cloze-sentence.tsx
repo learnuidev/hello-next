@@ -38,27 +38,11 @@ function DynoSentenceInner({
   parentSentence,
   maxIndex,
 }: IDynoParams) {
-  const { data, isLoading } = useListMeaningsQuery({
-    content: sentence?.hanzi || sentence?.input || "",
-    lang: sentence?.lang,
-  });
-
-  const finalSentence = useMemo(() => {
-    return { ...data?.details, ...sentence };
-  }, [data?.details, sentence]);
-
-  if (isLoading) {
-    return (
-      <div>
-        <p className="text-center my-32">Loading...</p>
-      </div>
-    );
-  }
   return (
     <DynaSentence
       maxIndex={maxIndex}
       parentSentence={parentSentence}
-      sentence={finalSentence}
+      sentence={sentence}
       setWordIndex={setWordIndex}
       setSentenceIndex={setSentenceIndex}
       wordIndex={wordIndex}
@@ -476,14 +460,31 @@ export const DynaClozeSentence = ({
   const { setWordIndex, setSentenceIndex, sentenceIndex, wordIndex } =
     useDyanStoreRuntime();
 
+  const { data, isLoading } = useListMeaningsQuery({
+    content: sentence?.hanzi || sentence?.input || "",
+    lang: sentence?.lang,
+  });
+
+  const finalSentence = useMemo(() => {
+    return { ...data?.details, ...sentence };
+  }, [data?.details, sentence]);
+
   const { learnMode } = useDynaClozeSentence();
+
+  if (isLoading) {
+    return (
+      <div>
+        <p className="text-center my-32">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div>
       <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "}
-      <WithMultiSentence sentence={sentence}>
+      <WithMultiSentence sentence={finalSentence}>
         <DynaSentence
-          sentence={sentence}
+          sentence={finalSentence}
           setWordIndex={setWordIndex}
           setSentenceIndex={setSentenceIndex}
           wordIndex={wordIndex}

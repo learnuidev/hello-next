@@ -68,6 +68,8 @@ export const dynaStoreRuntime = create((set: any, get: any) => ({
   setSentenceIndex: (val: number) => set({ sentenceIndex: val }),
   showEn: false,
   setShowEn: (show: boolean) => set({ showEn: show }),
+  showParent: false,
+  setShowParent: (show: boolean) => set({ showParent: show }),
 }));
 
 export const useDyanStoreRuntime = () => {
@@ -79,6 +81,8 @@ export const useDyanStoreRuntime = () => {
   const setResponse = dynaStoreRuntime((state) => state.setResponse);
   const showEn = dynaStoreRuntime((state) => state.showEn);
   const setShowEn = dynaStoreRuntime((state) => state.setShowEn);
+  const showParent = dynaStoreRuntime((state) => state.showParent);
+  const setShowParent = dynaStoreRuntime((state) => state.setShowParent);
 
   return {
     wordIndex,
@@ -89,5 +93,7 @@ export const useDyanStoreRuntime = () => {
     response,
     showEn,
     setShowEn,
+    showParent,
+    setShowParent,
   };
 };

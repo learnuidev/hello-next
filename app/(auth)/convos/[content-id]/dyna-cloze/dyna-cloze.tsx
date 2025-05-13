@@ -7,34 +7,140 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
-import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
+import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
+import { getMulti } from "./utils/get-multi";
+
+interface IDynoParams {
+  parentSentence?: any;
+  sentence: any;
+  contentId: string;
+  setWordIndex: any;
+  setSentenceIndex: any;
+  wordIndex: number;
+  sentenceIndex: number;
+  maxIndex?: number;
+}
+function DynoSentenceInner({
+  sentence,
+  contentId,
+  setWordIndex,
+  setSentenceIndex,
+  wordIndex,
+  sentenceIndex,
+  parentSentence,
+  maxIndex,
+}: IDynoParams) {
+  const { data, isLoading } = useListMeaningsQuery({
+    content: sentence?.hanzi || sentence?.input || "",
+    lang: sentence?.lang,
+  });
+
+  const finalSentence = useMemo(() => {
+    return { ...sentence, ...data?.details };
+  }, [data?.details, sentence]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <p className="text-center my-32">Loading...</p>
+      </div>
+    );
+  }
+  return (
+    <DynaSentence
+      maxIndex={maxIndex}
+      parentSentence={parentSentence}
+      sentence={finalSentence}
+      contentId={contentId}
+      setWordIndex={setWordIndex}
+      setSentenceIndex={setSentenceIndex}
+      wordIndex={wordIndex}
+      sentenceIndex={sentenceIndex}
+    />
+  );
+}
+
+const WithMultiSentence = ({
+  contentId,
+  sentence,
+  children,
+}: {
+  contentId: string;
+  sentence: { hanzi?: string; input?: string; lang: string };
+  children: React.ReactNode;
+}) => {
+  const [wordIndex, setWordIndex] = useState(0);
+  const [sentenceIndex, setSentenceIndex] = useState(0);
+
+  console.log("SENTENCE", sentence);
+
+  const multiSentences = useMemo(() => {
+    return getMulti(sentence?.hanzi || sentence?.input || "")?.map((item) => {
+      return {
+        hanzi: item,
+        input: item,
+        lang: sentence.lang,
+      };
+    });
+  }, [sentence?.hanzi, sentence?.input, sentence.lang]);
+
+  const sentenceItem = useMemo(
+    () => multiSentences?.[sentenceIndex],
+    [sentenceIndex, multiSentences]
+  );
+
+  if (multiSentences?.length === 1) {
+    return children;
+  }
+
+  return (
+    <div>
+      <DynoSentenceInner
+        maxIndex={multiSentences?.length - 1}
+        parentSentence={sentence}
+        sentence={sentenceItem}
+        contentId={contentId}
+        setWordIndex={setWordIndex}
+        setSentenceIndex={setSentenceIndex}
+        wordIndex={wordIndex}
+        sentenceIndex={sentenceIndex}
+      />
+    </div>
+  );
+};
 
 const DynaSentence = ({
   sentence,
   contentId,
-}: {
-  sentence: any;
-  contentId: string;
-}) => {
+  maxIndex,
+  setWordIndex,
+  setSentenceIndex,
+  wordIndex,
+  sentenceIndex,
+  parentSentence,
+}: IDynoParams) => {
   const { data: content, isLoading } = useGetContentQuery({
     contentId,
   });
 
   const {
-    wordIndex,
-    setWordIndex,
-    setSentenceIndex,
-    sentenceIndex,
     setResponse,
     response,
     showEn,
     setShowEn,
+    showParent,
+    setShowParent,
+    sentenceIndex: parentSentenceIndex,
+    setSentenceIndex: setParentSentenceIndex,
   } = useDyanStoreRuntime();
 
   const toggleEn = () => {
     return setShowEn(!showEn);
+  };
+  const toggleParent = () => {
+    return setShowParent(!showParent);
   };
 
   const { learnMode, setLearnMode } = useDynaCloze(contentId);
@@ -65,9 +171,14 @@ const DynaSentence = ({
     [sentence?.hanzi, sentence?.input]
   );
 
-  const sentenceHanziHidden = useMemo(() => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const replaceSelectedGrammar = (sentenceHanzi: string) => {
     return sentenceHanzi?.replaceAll(selectedGrammar?.hanzi, `  _____  `);
-  }, [selectedGrammar?.hanzi, sentenceHanzi]);
+  };
+
+  const sentenceHanziHidden = useMemo(() => {
+    return replaceSelectedGrammar(sentenceHanzi);
+  }, [replaceSelectedGrammar, sentenceHanzi]);
 
   const relevantHanzi = selectedGrammar?.en;
 
@@ -113,7 +224,7 @@ const DynaSentence = ({
           <Link
             target="_blank"
             href={`/nmm/${sentenceHanzi}?lang=${sentence?.lang}`}
-            className={"block text-lg mb-2"}
+            className={"block lg:text-xl text-md mb-2"}
           >
             {sentence?.pinyin || sentence?.roman}
           </Link>
@@ -229,6 +340,7 @@ const DynaSentence = ({
           disabled={sentenceIndex === 0}
           className={sentenceIndex === 0 ? "text-gray-500" : ""}
           onClick={() => {
+            setShowParent(false);
             setSentenceIndex(Math.max(sentenceIndex - 1, 0));
 
             setWordIndex(0);
@@ -253,6 +365,23 @@ const DynaSentence = ({
 
         <button
           onClick={() => {
+            setShowParent(false);
+            if (maxIndex) {
+              if (maxIndex === sentenceIndex) {
+                setParentSentenceIndex(
+                  Math.min(
+                    parentSentenceIndex + 1,
+                    content?.transcriptions?.length - 1
+                  )
+                );
+
+                setSentenceIndex(0);
+                setWordIndex(0);
+                setResponse(null);
+
+                return null;
+              }
+            }
             setSentenceIndex(
               Math.min(sentenceIndex + 1, content?.transcriptions?.length - 1)
             );
@@ -266,6 +395,15 @@ const DynaSentence = ({
       </div>
 
       <div className="flex justify-center items-center mt-8 gap-8">
+        {parentSentence && (
+          <button
+            onClick={() => {
+              toggleParent();
+            }}
+          >
+            {showParent ? "Hide Parent" : "Show Parent"}
+          </button>
+        )}
         <button
           onClick={() => {
             toggleEn();
@@ -287,12 +425,25 @@ const DynaSentence = ({
           {learnMode === "timeline" ? <Icons.timeline /> : <Icons.shuffle />}
         </button>
       </div>
+
+      {parentSentence && showParent && (
+        <div className="text-center mt-12 max-w-3xl m-auto">
+          <p>
+            {replaceSelectedGrammar(
+              parentSentence?.hanzi || parentSentence?.input
+            )}
+          </p>
+
+          <p className="text-gray-500">{parentSentence?.en}</p>
+        </div>
+      )}
     </div>
   );
 };
 
 export const DynaCloze = ({ contentId }: { contentId: string }) => {
-  const { sentenceIndex, setSentenceIndex } = useDyanStoreRuntime();
+  const { setWordIndex, setSentenceIndex, sentenceIndex, wordIndex } =
+    useDyanStoreRuntime();
   const { data: content, isLoading } = useGetContentQuery({
     contentId,
   });
@@ -319,7 +470,16 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
   return (
     <div>
       <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "}
-      <DynaSentence sentence={sentence} contentId={contentId} />
+      <WithMultiSentence contentId={contentId} sentence={sentence}>
+        <DynaSentence
+          sentence={sentence}
+          contentId={contentId}
+          setWordIndex={setWordIndex}
+          setSentenceIndex={setSentenceIndex}
+          wordIndex={wordIndex}
+          sentenceIndex={sentenceIndex}
+        />
+      </WithMultiSentence>
     </div>
   );
 };

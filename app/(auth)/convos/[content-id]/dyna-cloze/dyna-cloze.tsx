@@ -179,7 +179,10 @@ const DynaSentence = ({
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const replaceSelectedGrammar = (sentenceHanzi: string) => {
-    return sentenceHanzi?.replaceAll(selectedGrammar?.hanzi, `  _____  `);
+    return sentenceHanzi?.replaceAll(
+      selectedGrammar?.hanzi,
+      `  ${"__".repeat(selectedGrammar?.hanzi?.length)}  `
+    );
   };
 
   const multiSentence = getMulti(

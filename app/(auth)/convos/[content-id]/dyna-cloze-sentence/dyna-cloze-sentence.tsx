@@ -43,7 +43,7 @@ function DynoSentenceInner({
   maxIndex,
 }: IDynoParams) {
   const { data, isLoading } = useListMeaningsQuery({
-    content: sentence?.hanzi || sentence?.input || "",
+    content: sentence?.input || sentence?.hanzi || "",
     lang: sentence?.lang,
   });
 
@@ -152,8 +152,8 @@ const DynaSentence = ({
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const { data: grammar } = useListGrammarsQuery({
-    sentenceId: sentence?.hanzi || sentence?.input,
-    content: sentence?.hanzi || sentence?.input,
+    sentenceId: sentence?.input || sentence?.hanzi,
+    content: sentence?.input || sentence?.hanzi,
     lang: sentence?.lang,
   });
 
@@ -166,7 +166,7 @@ const DynaSentence = ({
       grammar?.grammarAnalysis?.filter(
         (analysis) =>
           analysis?.input?.toLowerCase() !==
-          (sentence?.hanzi || sentence?.input)?.toLowerCase()
+          (sentence?.input || sentence?.hanzi)?.toLowerCase()
       )
     );
   }, [grammar, sentence?.hanzi, sentence?.input]);
@@ -177,20 +177,20 @@ const DynaSentence = ({
   );
 
   const sentenceHanzi = useMemo(
-    () => sentence?.hanzi || sentence?.input,
+    () => sentence?.input || sentence?.hanzi,
     [sentence?.hanzi, sentence?.input]
   );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const replaceSelectedGrammar = (sentenceHanzi: string) => {
     return sentenceHanzi?.replaceAll(
-      selectedGrammar?.hanzi || selectedGrammar?.input,
-      `  ${"__".repeat((selectedGrammar?.hanzi || selectedGrammar?.input)?.length)}  `
+      selectedGrammar?.input || selectedGrammar?.hanzi,
+      `  ${"__".repeat((selectedGrammar?.input || selectedGrammar?.hanzi)?.length)}  `
     );
   };
 
   const multiSentence = getMulti(
-    parentSentence?.hanzi || parentSentence?.input
+    parentSentence?.input || parentSentence?.hanzi
   );
 
   const sentenceHanziHidden = useMemo(() => {
@@ -318,7 +318,7 @@ const DynaSentence = ({
               >
                 <span className="block">
                   {/* {JSON.stringify(option)} */}
-                  {showEn ? option?.en : option?.hanzi || option?.input}{" "}
+                  {showEn ? option?.en : option?.input || option?.hanzi}{" "}
                   {/* {response && <span>({showEn ? option?.hanzi : option?.en})</span>} */}
                 </span>
               </Link>
@@ -347,7 +347,7 @@ const DynaSentence = ({
                 key={`dynacloze-${idx}-${option?.en}`}
               >
                 <span className="block">
-                  {showEn ? option?.en : option?.hanzi || option?.input}{" "}
+                  {showEn ? option?.en : option?.input || option?.hanzi}{" "}
                   {/* {response && <span>({showEn ? option?.hanzi : option?.en})</span>} */}
                 </span>
               </button>
@@ -497,13 +497,13 @@ export const DynaClozeSentence = ({
 
   // const { selectedChar, setView, view } = data;
   const setView = () => {
-    return setViews(sentence?.hanzi || "", "");
+    return setViews(sentence?.input || sentence?.hanzi || "", "");
   };
 
   const { setReviewMode } = useReviewModeView();
 
   const { data, isLoading } = useListMeaningsQuery({
-    content: sentence?.hanzi || sentence?.input || "",
+    content: sentence?.input || sentence?.hanzi || "",
     lang: sentence?.lang,
   });
 

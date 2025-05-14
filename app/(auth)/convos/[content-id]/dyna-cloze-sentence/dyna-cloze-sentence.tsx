@@ -40,11 +40,28 @@ function DynoSentenceInner({
   parentSentence,
   maxIndex,
 }: IDynoParams) {
+  const { data, isLoading } = useListMeaningsQuery({
+    content: sentence?.hanzi || sentence?.input || "",
+    lang: sentence?.lang,
+  });
+
+  const finalSentence = useMemo(() => {
+    return { ...data?.details, ...sentence };
+  }, [data?.details, sentence]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <p className="text-center my-32">Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <DynaSentence
       maxIndex={maxIndex}
       parentSentence={parentSentence}
-      sentence={sentence}
+      sentence={finalSentence}
       setWordIndex={setWordIndex}
       setSentenceIndex={setSentenceIndex}
       wordIndex={wordIndex}

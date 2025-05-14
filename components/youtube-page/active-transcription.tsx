@@ -59,6 +59,11 @@ export const ActiveTranscription = ({
         className="text-xl sm:text-3xl font-extralight"
       >
         {splittedStrings?.map((val: string, idx: number) => {
+          if (val === " ") {
+            return (
+              <span key={`active-transcription-${val}-${idx}`}>{val}</span>
+            );
+          }
           return (
             <Link
               onClick={() => {

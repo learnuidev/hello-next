@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/tooltip";
 import { useReviewModeView } from "@/app/review/use-review-mode";
 import { useViewTypeStore } from "@/components/use-selected-character";
+import { smartSplit } from "@/components/youtube-page/utils/smart-split";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -143,6 +145,8 @@ const DynaSentence = ({
     return setShowParent(!showParent);
   };
 
+  const lang = useGetCurrentLang();
+
   const { learnMode, setLearnMode } = useDynaClozeSentence();
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
@@ -158,8 +162,14 @@ const DynaSentence = ({
       return [];
     }
 
-    return shuffleArray(grammar?.grammarAnalysis);
-  }, [grammar]);
+    return shuffleArray(
+      grammar?.grammarAnalysis?.filter(
+        (analysis) =>
+          analysis?.input?.toLowerCase() !==
+          (sentence?.hanzi || sentence?.input)?.toLowerCase()
+      )
+    );
+  }, [grammar, sentence?.hanzi, sentence?.input]);
 
   const selectedGrammar = useMemo(
     () => shuffledGrammar?.[wordIndex],
@@ -174,8 +184,8 @@ const DynaSentence = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const replaceSelectedGrammar = (sentenceHanzi: string) => {
     return sentenceHanzi?.replaceAll(
-      selectedGrammar?.hanzi,
-      `  ${"__".repeat(selectedGrammar?.hanzi?.length)}  `
+      selectedGrammar?.hanzi || selectedGrammar?.input,
+      `  ${"__".repeat((selectedGrammar?.hanzi || selectedGrammar?.input)?.length)}  `
     );
   };
 
@@ -208,6 +218,8 @@ const DynaSentence = ({
     [randomThreeOptions, selectedGrammar]
   );
 
+  console.log("SHUFFLED OPTS", shuffledOptions);
+
   const checkAnswer = (answer: any) => {
     if (answer?.en === relevantHanzi) {
       setResponse({ type: "correct", answer });
@@ -225,7 +237,7 @@ const DynaSentence = ({
   }
 
   return (
-    <div>
+    <div className="mt-32">
       <div className="text-center mt-12 lg:mt-24 max-w-3xl m-auto">
         {response ? (
           <Link
@@ -240,22 +252,23 @@ const DynaSentence = ({
         )}
         {!brightMode ? (
           <h1 className="block lg:text-4xl text-2xl">
-            {(response ? sentenceHanzi : sentenceHanziHidden)
-              .split("")
-              .map((item: string, idx: number) => {
-                return (
-                  <Link
-                    href={`/nmm/${item}${sentence?.lang ? `?lang=${sentence?.lang}` : ""}`}
-                    key={`review-cloze-${idx}-${item}`}
-                    target="_blank"
-                  >
-                    <CharacterItem
-                      character={item}
-                      className="text-center text-3xl font-light"
-                    />
-                  </Link>
-                );
-              })}
+            {smartSplit({
+              input: response ? sentenceHanzi : sentenceHanziHidden,
+              lang,
+            }).map((item: string, idx: number) => {
+              return (
+                <Link
+                  href={`/nmm/${item}${sentence?.lang ? `?lang=${sentence?.lang}` : ""}`}
+                  key={`review-cloze-${idx}-${item}`}
+                  target="_blank"
+                >
+                  <CharacterItem
+                    character={item}
+                    className="text-center text-3xl font-light"
+                  />
+                </Link>
+              );
+            })}
           </h1>
         ) : (
           <Link
@@ -304,7 +317,8 @@ const DynaSentence = ({
                 key={`dynacloze-${idx}-${option?.en}`}
               >
                 <span className="block">
-                  {showEn ? option?.en : option?.hanzi}{" "}
+                  {/* {JSON.stringify(option)} */}
+                  {showEn ? option?.en : option?.hanzi || option?.input}{" "}
                   {/* {response && <span>({showEn ? option?.hanzi : option?.en})</span>} */}
                 </span>
               </Link>
@@ -333,7 +347,7 @@ const DynaSentence = ({
                 key={`dynacloze-${idx}-${option?.en}`}
               >
                 <span className="block">
-                  {showEn ? option?.en : option?.hanzi}{" "}
+                  {showEn ? option?.en : option?.hanzi || option?.input}{" "}
                   {/* {response && <span>({showEn ? option?.hanzi : option?.en})</span>} */}
                 </span>
               </button>

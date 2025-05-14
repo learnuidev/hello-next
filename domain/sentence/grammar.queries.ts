@@ -108,11 +108,13 @@ export function useListGrammarsQuery(
 
         let grammarCache = null;
 
-        try {
-          grammarCache =
-            content?.length > 20 ? await getDictionaryHandler(content) : null;
-        } catch (err) {
-          grammarCache = null;
+        if (params?.lang === "zh") {
+          try {
+            grammarCache =
+              content?.length > 20 ? await getDictionaryHandler(content) : null;
+          } catch (err) {
+            grammarCache = null;
+          }
         }
 
         const response = await listGrammars(

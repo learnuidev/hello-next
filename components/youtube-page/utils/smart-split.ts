@@ -9,5 +9,7 @@ export const smartSplit = ({
     return input?.split("");
   }
 
-  return input?.split(" ");
+  return input?.split(" ")?.reduce((acc: any, curr) => {
+    return acc.concat([curr?.toLowerCase(), " "]);
+  }, []);
 };

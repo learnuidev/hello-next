@@ -68,7 +68,7 @@ export const ActiveTranscription = ({
                 val
               )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
               target="_blank"
-              key={`${val}-${idx}`}
+              key={`active-transcription-${val}-${idx}`}
             >
               <HanziTooltip
                 component={{
@@ -84,8 +84,6 @@ export const ActiveTranscription = ({
               >
                 <CharacterItem character={val} />{" "}
               </HanziTooltip>
-
-              {currentTranscription?.lang === "zh" ? "" : " "}
             </Link>
           );
         })}

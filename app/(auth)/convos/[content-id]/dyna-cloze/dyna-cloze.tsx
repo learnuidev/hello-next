@@ -278,7 +278,6 @@ const DynaSentence = ({
                     character={item}
                     className="text-center text-3xl font-light"
                   />
-                  {lang === "zh" ? "" : " "}
                 </Link>
               );
             })}
@@ -311,7 +310,7 @@ const DynaSentence = ({
             return (
               <Link
                 target="_blank"
-                href={`/nmm/${option?.hanzi}?lang=${sentence?.lang}`}
+                href={`/nmm/${option?.input || option?.hanzi}?lang=${sentence?.lang}`}
                 // disabled={response?.type}
                 className={cn(
                   "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",

@@ -15,6 +15,7 @@ import { AudioComponent } from "./audio-component";
 import { CharacterItem } from "./character-item";
 import { GoogleLink } from "./selected-character/google-link";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
+import { smartSplit } from "../youtube-page/utils/smart-split";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -139,40 +140,42 @@ export const SentenceItem = (props: any) => {
           )}
         </Link>
         <span>
-          {(currentPhrase?.input || currentPhrase?.hanzi)
-            ?.split("")
-            ?.map((val: string, idy: number) => {
-              return (
-                <span
-                  key={`${val}-${idy}`}
-                  onClick={() => {
-                    const cleanedVal = val
-                      .replaceAll("!", "")
-                      ?.replaceAll(".", "")
-                      ?.replaceAll(",", "");
-                    // addHistoryMutation.mutate({
-                    //   hanzi: cleanedVal,
-                    //   lang: lang,
-                    //   pathName: routeName,
-                    //   contentId: selectedComp?.id || "",
-                    //   eventType: "CONTENT_VIEWED",
-                    // } as any);
+          {smartSplit({
+            input: currentPhrase?.input || currentPhrase?.hanzi,
+            lang: currentPhrase?.lang,
+          })?.map((val: string, idy: number) => {
+            return (
+              <span
+                key={`sentence-item-${val}-${idy}`}
+                onClick={() => {
+                  const cleanedVal = val
+                    .replaceAll("!", "")
+                    ?.replaceAll(".", "")
+                    ?.replaceAll(",", "");
 
-                    setIfExists({ ...currentPhrase });
+                  // addHistoryMutation.mutate({
+                  //   hanzi: cleanedVal,
+                  //   lang: lang,
+                  //   pathName: routeName,
+                  //   contentId: selectedComp?.id || "",
+                  //   eventType: "CONTENT_VIEWED",
+                  // } as any);
 
-                    router.push(
-                      resolvedLang
-                        ? `/nmm/${cleanedVal}?lang=${resolvedLang}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
-                        : `/nmm/${cleanedVal}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
-                    );
-                  }}
-                >
-                  {/* {val} */}
-                  <CharacterItem character={val} />
-                  {/* {currentPhrase?.input ? " " : ""} */}
-                </span>
-              );
-            })}
+                  setIfExists({ ...currentPhrase });
+
+                  router.push(
+                    resolvedLang
+                      ? `/nmm/${cleanedVal}?lang=${resolvedLang}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
+                      : `/nmm/${cleanedVal}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
+                  );
+                }}
+              >
+                {/* {val} */}
+                <CharacterItem character={val} />
+                {/* {currentPhrase?.input ? " " : ""} */}
+              </span>
+            );
+          })}
         </span>
         {lang !== "en" && (
           <span className="text-[16px] dark:text-gray-500 text-gray-600">

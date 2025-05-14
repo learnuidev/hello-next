@@ -8,6 +8,7 @@ import { useGetContentId } from "./hooks/use-get-content-id";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { FloatingNavbar } from "@/components/floating-navbar";
 
 export default function ContentItem() {
   const lessonId = useGetContentId();
@@ -34,6 +35,8 @@ export default function ContentItem() {
           <ConvoDetails lessonId={lessonId} />
         </div>
       </div>
+
+      <FloatingNavbar />
     </main>
   );
 }

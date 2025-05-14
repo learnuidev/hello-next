@@ -4,6 +4,8 @@ import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-chara
 import { resolveLangCode } from "@/libs/openai/utils";
 import { CharacterItem } from "../_select-character/character-item";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { smartSplit } from "./utils/smart-split";
+import { useMemo } from "react";
 
 export const ActiveTranscription = ({
   currentTime,
@@ -21,6 +23,17 @@ export const ActiveTranscription = ({
   const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
 
   const setIfExists = useSetIfExists();
+
+  const splittedStrings = useMemo(() => {
+    return smartSplit({
+      input: currentTranscription?.input || currentTranscription?.hanzi,
+      lang: currentTranscription?.lang,
+    });
+  }, [
+    currentTranscription?.hanzi,
+    currentTranscription?.input,
+    currentTranscription?.lang,
+  ]);
 
   return (
     <div className="text-center my-2 sm:mt-8 mt-4 mb-4 h-20">
@@ -42,24 +55,23 @@ export const ActiveTranscription = ({
         }}
         className="text-xl sm:text-3xl font-extralight"
       >
-        {(currentTranscription?.input || currentTranscription?.hanzi)
-          ?.split("")
-          ?.map((val: string, idx: number) => {
-            return (
-              <Link
-                onClick={() => {
-                  setIfExists({ ...currentTranscription, contentId });
-                }}
-                href={`/nmm/${encodeURIComponent(
-                  val
-                )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
-                target="_blank"
-                key={`${val}-${idx}`}
-              >
-                <CharacterItem character={val} />
-              </Link>
-            );
-          })}
+        {splittedStrings?.map((val: string, idx: number) => {
+          return (
+            <Link
+              onClick={() => {
+                setIfExists({ ...currentTranscription, contentId });
+              }}
+              href={`/nmm/${encodeURIComponent(
+                val
+              )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
+              target="_blank"
+              key={`${val}-${idx}`}
+            >
+              <CharacterItem character={val} />{" "}
+              {currentTranscription?.lang === "zh" ? "" : " "}
+            </Link>
+          );
+        })}
       </p>
 
       <p className="text-gray-500 text-sm sm:text-[16px]">

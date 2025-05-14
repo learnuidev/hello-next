@@ -2,21 +2,35 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { BookmarkButton } from "./bookmark-button";
 import { formatComponentName } from "./format-component-name";
+import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+
+interface IComp {
+  hanzi: string;
+  input?: string;
+  level?: number;
+  lang?: string;
+  pinyin?: string;
+  en: string;
+}
 
 export const PreviewComponent = (props: {
-  component: {
-    hanzi: string;
-    input?: string;
-    level?: number;
-    lang?: string;
-    pinyin?: string;
-    en: string;
-  };
+  character?: string;
+  lang?: string;
+  component: IComp;
 }) => {
   const { component } = props;
-  const { level, en, lang, pinyin } = component;
+  const { level, en, pinyin } = component;
 
-  const hanzi = (component?.hanzi || component?.input || "").trim();
+  const lang = useGetCurrentLang();
+
+  const hanzi = (component?.input || component?.hanzi || "").trim();
+
+  const { data: meaning } = useListMeaningsQuery({
+    sentenceId: props?.character || component?.input || "",
+    content: props?.character || component?.input || "",
+    lang: props?.lang || component?.lang || lang,
+  });
 
   const { data: sentences, isLoading } = useListSentencesQuery({
     component: hanzi,
@@ -28,15 +42,25 @@ export const PreviewComponent = (props: {
   const styleEn = "min-w-0 text-gray-500 font-extralight truncate text-[12px]";
   return (
     <div className="w-80">
-      <div className="flex w-full items-center justify-between my-2 space-x-8">
-        <div className="w-full items-center justify-between flex-row">
-          <div className="flex items-center justify-between w-full">
+      <div className="flex w-full items-start justify-between my-2 space-x-8">
+        <div className="w-full items-start justify-between flex-row">
+          <div className="flex items-start justify-between w-full">
             <div>
-              <h1 className="text-xl font-light">{hanzi}</h1>
-              {lang === "zh" && <h2 className={stylePinyin}>{pinyin}</h2>}
+              <h1 className="text-3xl font-light">
+                {props?.character || hanzi}
+              </h1>
+              {lang === "zh" && (
+                <h2 className={stylePinyin}>
+                  {meaning?.details?.roman ||
+                    meaning?.details?.pinyin ||
+                    pinyin}
+                </h2>
+              )}
 
               <h3 className={styleEn}>
-                {formatComponentName(component, 2) || component?.en}
+                {meaning?.details?.en ||
+                  formatComponentName(component, 2) ||
+                  component?.en}
               </h3>
             </div>
 

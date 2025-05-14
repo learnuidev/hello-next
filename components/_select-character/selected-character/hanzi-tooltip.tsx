@@ -8,26 +8,34 @@ import {
 } from "@/components/ui/tooltip";
 
 import { PreviewComponent } from "@/app/nmm/preview-component";
+import { cleanString } from "@/data/convos/bm1/clean-string";
 
 export const HanziTooltip = (props: {
   component: {
     hanzi: string;
+    input: string;
     level?: number;
     lang?: string;
     pinyin?: string;
     en: string;
   };
+  character: string;
+  lang: string;
   children: React.ReactNode;
 }) => {
-  const { component, children } = props;
+  const { component, children, character, lang } = props;
 
   return (
     <TooltipProvider>
       <Tooltip>
         {/* <TooltipTrigger className="hover:scale-125 transition"> */}
         <TooltipTrigger className="transition">{children}</TooltipTrigger>
-        <TooltipContent className="bg-black border-gray-800">
-          <PreviewComponent component={component} />
+        <TooltipContent className="dark:bg-black bg-white  border-gray-800">
+          <PreviewComponent
+            component={component}
+            character={cleanString(character)}
+            lang={lang}
+          />
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

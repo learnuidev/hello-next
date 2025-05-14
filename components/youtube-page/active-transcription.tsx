@@ -6,6 +6,7 @@ import { CharacterItem } from "../_select-character/character-item";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { smartSplit } from "./utils/smart-split";
 import { useMemo } from "react";
+import { HanziTooltip } from "../_select-character/selected-character/hanzi-tooltip";
 
 export const ActiveTranscription = ({
   currentTime,
@@ -34,6 +35,8 @@ export const ActiveTranscription = ({
     currentTranscription?.input,
     currentTranscription?.lang,
   ]);
+
+  // return "TODO";
 
   return (
     <div className="text-center my-2 sm:mt-8 mt-4 mb-4 h-20">
@@ -67,7 +70,21 @@ export const ActiveTranscription = ({
               target="_blank"
               key={`${val}-${idx}`}
             >
-              <CharacterItem character={val} />{" "}
+              <HanziTooltip
+                component={{
+                  hanzi: val,
+                  input: val,
+                  en: val || "",
+                  pinyin: val,
+                  lang: currentTranscription?.lang,
+                }}
+                character={val}
+                lang={currentTranscription?.lang}
+                key={JSON.stringify(val)}
+              >
+                <CharacterItem character={val} />{" "}
+              </HanziTooltip>
+
               {currentTranscription?.lang === "zh" ? "" : " "}
             </Link>
           );

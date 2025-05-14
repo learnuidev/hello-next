@@ -51,5 +51,8 @@ export const cleanString = (str: string) => {
     ?.replaceAll("w", "")
     ?.replaceAll("x", "")
     ?.replaceAll("y", "")
-    ?.replaceAll("x", "");
+    ?.replaceAll("x", "")
+    ?.replaceAll("'", "")
+    ?.replaceAll(",", "")
+    ?.replaceAll(`"`, "");
 };

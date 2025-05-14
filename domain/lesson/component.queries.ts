@@ -79,7 +79,7 @@ function useListComponentsQuery(
       // if (options.query) {
 
       if (components && !params?.forceReload) {
-        return components;
+        return components as IComponent[];
       }
       const response = await listComponents(
         { ...params, lang: currentLang },

@@ -21,7 +21,7 @@ import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-hist
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Icons } from "../ui/icons.v2";
 import { KaraokeMode } from "./karaoke-mode";
 import { TranscriptItem } from "./youtube-transcript-item";
@@ -108,6 +108,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     lang: "zh",
     genSents: false,
   });
+
+  const router = useRouter();
 
   const transcriptions = lesson?.transcriptions
     ? lesson?.transcriptions
@@ -679,6 +681,9 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                     `${transcription?.hanzi}-${transcription?.start}`
                                   }
                                   onClick={() => {
+                                    router.push(
+                                      `/convos/${lessonId}?start=${transcription?.start}`
+                                    );
                                     playerRef.current.seekTo(
                                       transcription?.start,
                                       "seconds"

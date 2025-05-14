@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { resolveLangCode } from "@/libs/openai/utils";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Icons } from "../ui/icons.v2";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -45,6 +45,7 @@ export const TranscriptItem = ({
 
   const times = useContentEditStore((state) => state.times);
   const setTimes = useContentEditStore((state) => state.setTimes);
+  const router = useRouter();
 
   const setTimer = (
     type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
@@ -236,6 +237,8 @@ export const TranscriptItem = ({
 
             const startTime =
               timeStamp?.start || example?.timestamp?.[0] || example?.start;
+
+            router.push(`/convos/${contentId}?start=${startTime}`);
 
             playerRef.current.seekTo(startTime, "seconds");
 

@@ -42,8 +42,8 @@ export const PreviewComponent = (props: {
   const styleEn = "min-w-0 text-gray-500 font-extralight truncate text-[12px]";
   return (
     <div className="w-80">
-      <div className="flex w-full items-start justify-between my-2 space-x-8">
-        <div className="w-full items-start justify-between flex-row">
+      <div className="flex w-full items-end justify-start my-2 space-x-8">
+        <div className="w-full items-start justify-start flex-row">
           <div className="flex items-start justify-between w-full">
             <div>
               <h1 className="text-3xl font-light">
@@ -57,11 +57,13 @@ export const PreviewComponent = (props: {
                 </h2>
               )}
 
-              <h3 className={styleEn}>
-                {meaning?.details?.en ||
-                  formatComponentName(component, 2) ||
-                  component?.en}
-              </h3>
+              {meaning?.details?.en && (
+                <h3 className={styleEn}>
+                  {meaning?.details?.en ||
+                    formatComponentName(component, 2) ||
+                    component?.en}
+                </h3>
+              )}
             </div>
 
             <BookmarkButton
@@ -86,11 +88,11 @@ export const PreviewComponent = (props: {
 
       {isLoading ? (
         <div className="space-y-4 mt-4">
-          <Skeleton className="h-14 w-full bg-gray-900" />
-          <Skeleton className="h-14 w-full bg-gray-900" />
+          <Skeleton className="h-14 w-full bg-gray-300 dark:bg-gray-900" />
+          <Skeleton className="h-14 w-full bg-gray-300 dark:bg-gray-900" />
         </div>
       ) : (
-        <div className="p-0 space-y-4 mt-8">
+        <div className="p-0 space-y-4 mt-4">
           {sentences
             ?.slice(0, 2)
             ?.map(
@@ -106,7 +108,9 @@ export const PreviewComponent = (props: {
               }) => {
                 return (
                   <section className="px-0 mx-0" key={sentence?.id}>
-                    <h4>{sentence?.hanzi || sentence?.input}</h4>
+                    <h4 className="font-medium">
+                      {sentence?.input || sentence?.hanzi}
+                    </h4>
                     {component?.lang === "zh" && (
                       <p className={stylePinyin}>{sentence?.pinyin}</p>
                     )}

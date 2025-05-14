@@ -30,10 +30,11 @@ export const HanziTooltip = (props: {
       <Tooltip>
         {/* <TooltipTrigger className="hover:scale-125 transition"> */}
         <TooltipTrigger className="transition">{children}</TooltipTrigger>
-        <TooltipContent className="dark:bg-black bg-white  border-gray-800">
+        <TooltipContent className="dark:bg-black bg-white flex justify-start flex-col w-80 text-left  border-gray-800">
+          {/* <p>yoo</p> */}
           <PreviewComponent
             component={component}
-            character={cleanString(character)}
+            character={character?.replaceAll(",", "")}
             lang={lang}
           />
         </TooltipContent>

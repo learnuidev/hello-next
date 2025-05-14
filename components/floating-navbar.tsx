@@ -71,9 +71,13 @@ const FloatingNavbarComp = () => {
     >
       <div className="overflow-y-auto px-8 py-2 bg-gray-50 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
         <div className="space-x-6 md:space-x-8 flex justify-center items-center w-full ">
-          {!["/", "/apps"]?.includes(routeName) && <BrightModeButton />}
+          {!["/", "/apps", "/convos"]?.includes(routeName) && isChineseLang && (
+            <BrightModeButton />
+          )}
 
-          {!["/", "/apps"]?.includes(routeName) && <PinyinButton />}
+          {!["/", "/apps", "/convos"]?.includes(routeName) && isChineseLang && (
+            <PinyinButton />
+          )}
 
           <Link
             href="/"

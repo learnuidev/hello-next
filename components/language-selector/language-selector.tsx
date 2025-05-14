@@ -14,7 +14,7 @@ export const LanguageSelector = () => {
 
   const router = useRouter();
 
-  if (pathName?.includes("/convos")) {
+  if (pathName?.includes("/convos") || pathName?.includes("/nmm/")) {
     return null;
   }
 

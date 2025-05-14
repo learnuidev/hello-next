@@ -262,7 +262,7 @@ const DynaSentence = ({
         ) : (
           <p className="mb-2 dark:text-black text-white text-lg"> ...</p>
         )}
-        {!brightMode ? (
+        {!brightMode || lang !== "zh" ? (
           <h1 className="block lg:text-4xl text-2xl">
             {smartSplit({
               input: response ? sentenceHanzi : sentenceHanziHidden,
@@ -287,7 +287,7 @@ const DynaSentence = ({
           <Link
             href={`/convos/${contentId}?start=${sentence?.start}&view=listen`}
             target="_blank"
-            className="block text-2xl lg:text-4xl"
+            className="block text-3xl"
           >
             {(response ? sentenceHanzi : sentenceHanziHidden)
               .split("")
@@ -296,7 +296,7 @@ const DynaSentence = ({
                   <CharacterItem
                     key={`review-cloze-${idx}-${item}`}
                     character={item}
-                    className="text-center text-3xl lg:text-4xl font-light"
+                    className="text-center font-light"
                   />
                 );
               })}

@@ -66,14 +66,7 @@ export const PreviewComponent = (props: {
               )}
             </div>
 
-            <BookmarkButton
-              {...{
-                hanzi,
-                en: en || component?.en,
-                pinyin: pinyin || component?.pinyin,
-                lang: "zh",
-              }}
-            />
+            {meaning && <BookmarkButton {...meaning.details} />}
           </div>
         </div>
 

@@ -40,8 +40,8 @@ export const OverviewPage = () => {
     () => recentlyWatched?.slice(0, TEN),
     [recentlyWatched]
   );
-  // const { data: totalComponents, isLoading: isComponentsLoading } =
-  //   useListComponents();
+  const { data: totalComponents, isLoading: isComponentsLoading } =
+    useListComponents();
 
   const { data: totalCharacters, isLoading: isCharactersLoading } =
     useListCharactersQuery();
@@ -63,11 +63,11 @@ export const OverviewPage = () => {
     totalReviedCharacters / lifeTimeCharacters
   );
 
-  const totalComponentsLength = useMemo(() => 3200, []);
-  // const totalComponentsLength = useMemo(
-  //   () => totalComponents?.length || 1,
-  //   [totalComponents?.length]
-  // );
+  // const totalComponentsLength = useMemo(() => 3200, []);
+  const totalComponentsLength = useMemo(
+    () => totalComponents?.length || 1,
+    [totalComponents?.length]
+  );
 
   const characterLearningRatio = formatPercentage(
     lifeTimeCharacters / totalComponentsLength
@@ -92,7 +92,7 @@ export const OverviewPage = () => {
     return (totalReviewCounts / reviewedCharacters?.length).toFixed(2);
   }, [reviewedCharacters]);
 
-  if (isCharactersLoading) {
+  if (isCharactersLoading || isComponentsLoading) {
     return (
       <div className="text-center">
         <div>

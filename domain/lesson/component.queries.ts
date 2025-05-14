@@ -6,8 +6,25 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
-// TODO: Move this to .env
-const url = `${siteConfig.apiUrl}/v1/list-components`;
+import { createIndexDBStore } from "@/libs/index-db/index-db";
+
+const useComponentsStore = createIndexDBStore({
+  name: "mando/components",
+  handler: (set: any, get: any) => ({
+    components: null,
+    setComponents: (f: any) =>
+      typeof f === "function"
+        ? set({ components: f(get().components) })
+        : set({ components: f }),
+  }),
+});
+
+export const useComponents = () => {
+  const components: any = useComponentsStore((state) => state.components);
+  const setComponents = useComponentsStore((state) => state.setComponents);
+
+  return { components, setComponents };
+};
 
 export interface IComponent {
   input: string;
@@ -25,7 +42,7 @@ const listComponents = async (
     Authorization: string;
   }
 ): Promise<IComponent[]> => {
-  const res = await fetch(url, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/list-components`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,
@@ -47,22 +64,31 @@ function useListComponentsQuery(
   params = {} as {
     journeyId?: string;
     lang?: string;
+    forceReload?: boolean;
   },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
   const currentLang = useGetCurrentLang();
 
+  const { components, setComponents } = useComponents();
+
   return useQuery(
-    [listComponentsQueryKey],
+    [listComponentsQueryKey, params?.forceReload],
     async () => {
       // if (options.query) {
+
+      if (components && !params?.forceReload) {
+        return components;
+      }
       const response = await listComponents(
         { ...params, lang: currentLang },
         {
           Authorization: authUser?.jwt,
         }
       );
+
+      setComponents(response);
 
       return response;
     },

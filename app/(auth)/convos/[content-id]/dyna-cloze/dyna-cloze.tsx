@@ -17,6 +17,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { smartSplit } from "@/components/youtube-page/utils/smart-split";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -154,8 +156,8 @@ const DynaSentence = ({
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const { data: grammar } = useListGrammarsQuery({
-    sentenceId: sentence?.hanzi || sentence?.input,
-    content: sentence?.hanzi || sentence?.input,
+    sentenceId: sentence?.input || sentence?.hanzi,
+    content: sentence?.input || sentence?.hanzi,
     lang: sentence?.lang,
   });
 
@@ -164,8 +166,18 @@ const DynaSentence = ({
       return [];
     }
 
-    return shuffleArray(grammar?.grammarAnalysis);
-  }, [grammar]);
+    return shuffleArray(
+      grammar?.grammarAnalysis?.length <= 2
+        ? grammar?.grammarAnalysis
+        : grammar?.grammarAnalysis?.filter(
+            (analysis) =>
+              analysis?.input?.toLowerCase() !==
+              (sentence?.input || sentence?.hanzi)?.toLowerCase()
+          )
+    );
+
+    // return shuffleArray(grammar?.grammarAnalysis);
+  }, [grammar, sentence?.hanzi, sentence?.input]);
 
   const selectedGrammar = useMemo(
     () => shuffledGrammar?.[wordIndex],
@@ -173,15 +185,15 @@ const DynaSentence = ({
   );
 
   const sentenceHanzi = useMemo(
-    () => sentence?.hanzi || sentence?.input,
+    () => sentence?.input || sentence?.hanzi,
     [sentence?.hanzi, sentence?.input]
   );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const replaceSelectedGrammar = (sentenceHanzi: string) => {
     return sentenceHanzi?.replaceAll(
-      selectedGrammar?.hanzi,
-      `  ${"__".repeat(selectedGrammar?.hanzi?.length)}  `
+      selectedGrammar?.input || selectedGrammar?.hanzi,
+      `  ${"__".repeat((selectedGrammar?.input || selectedGrammar?.hanzi)?.length)}  `
     );
   };
 
@@ -209,6 +221,8 @@ const DynaSentence = ({
     [relevantHanzi, shuffledGrammar]
   );
 
+  const lang = useGetCurrentLang();
+
   const shuffledOptions = useMemo(
     () => shuffleArray([...randomThreeOptions, selectedGrammar]),
     [randomThreeOptions, selectedGrammar]
@@ -233,35 +247,38 @@ const DynaSentence = ({
   return (
     <div>
       <div className="text-center mt-12 lg:mt-24 max-w-3xl m-auto">
-        {response ? (
+        {response &&
+        ["zh", "ur", "ar", "ja", "ko", "ne", "hi", "fa"]?.includes(lang) ? (
           <Link
             target="_blank"
             href={`/nmm/${sentenceHanzi}?lang=${sentence?.lang}`}
             className={"block lg:text-xl text-md mb-2"}
           >
-            {sentence?.pinyin || sentence?.roman}
+            {sentence?.roman || sentence?.pinyin}
           </Link>
         ) : (
           <p className="mb-2 dark:text-black text-white text-lg"> ...</p>
         )}
         {!brightMode ? (
           <h1 className="block lg:text-4xl text-2xl">
-            {(response ? sentenceHanzi : sentenceHanziHidden)
-              .split("")
-              .map((item: string, idx: number) => {
-                return (
-                  <Link
-                    href={`/nmm/${item}${sentence?.lang ? `?lang=${sentence?.lang}` : ""}`}
-                    key={`review-cloze-${idx}-${item}`}
-                    target="_blank"
-                  >
-                    <CharacterItem
-                      character={item}
-                      className="text-center text-3xl font-light"
-                    />
-                  </Link>
-                );
-              })}
+            {smartSplit({
+              input: response ? sentenceHanzi : sentenceHanziHidden,
+              lang,
+            }).map((item: string, idx: number) => {
+              return (
+                <Link
+                  href={`/nmm/${item}${sentence?.lang ? `?lang=${sentence?.lang}` : ""}`}
+                  key={`review-cloze-${idx}-${item}`}
+                  target="_blank"
+                >
+                  <CharacterItem
+                    character={item}
+                    className="text-center text-3xl font-light"
+                  />
+                  {lang === "zh" ? "" : " "}
+                </Link>
+              );
+            })}
           </h1>
         ) : (
           <Link
@@ -276,7 +293,7 @@ const DynaSentence = ({
                   <CharacterItem
                     key={`review-cloze-${idx}-${item}`}
                     character={item}
-                    className="text-center text-xl lg:text-3xl font-light"
+                    className="text-center text-3xl lg:text-4xl font-light"
                   />
                 );
               })}
@@ -310,7 +327,7 @@ const DynaSentence = ({
                 key={`dynacloze-${idx}-${option?.en}`}
               >
                 <span className="block">
-                  {showEn ? option?.en : option?.hanzi}{" "}
+                  {showEn ? option?.en : option?.hanzi || option?.input}{" "}
                   {/* {response && <span>({showEn ? option?.hanzi : option?.en})</span>} */}
                 </span>
               </Link>
@@ -339,7 +356,7 @@ const DynaSentence = ({
                 key={`dynacloze-${idx}-${option?.en}`}
               >
                 <span className="block">
-                  {showEn ? option?.en : option?.hanzi}{" "}
+                  {showEn ? option?.en : option?.hanzi || option?.input}{" "}
                   {/* {response && <span>({showEn ? option?.hanzi : option?.en})</span>} */}
                 </span>
               </button>

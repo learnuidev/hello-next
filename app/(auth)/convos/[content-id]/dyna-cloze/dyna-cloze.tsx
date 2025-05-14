@@ -7,7 +7,7 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { getMulti } from "./utils/get-multi";
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/tooltip";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -506,6 +507,22 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
   const { data: content, isLoading } = useGetContentQuery({
     contentId,
   });
+
+  const { currentTime, setCurrentTime: setTime } = useCurrentTime(contentId);
+
+  const currentTranscription = content?.transcriptions?.find(
+    (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+  );
+
+  const transcriptionIndex = content?.transcriptions?.findIndex(
+    (trans: any) => trans.start === currentTranscription?.start
+  );
+
+  useEffect(() => {
+    if (transcriptionIndex !== -1) {
+      setSentenceIndex(transcriptionIndex);
+    }
+  }, []);
 
   const { learnMode } = useDynaCloze(contentId);
 

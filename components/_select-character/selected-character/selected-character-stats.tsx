@@ -11,6 +11,7 @@ import { YablaLink } from "./yabla-link";
 import { HanbookLink } from "./hanbook-link";
 import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 import { useSelectedCharacterData } from "@/components/use-selected-character";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export const SelectedCharacterStats = ({
   characterId,
@@ -23,6 +24,8 @@ export const SelectedCharacterStats = ({
 
   const level = selectedComp?.level || selectedComp2?.level;
   const { data: chineseCharacters } = useListChineseCharactersQuery();
+
+  const lang = useGetCurrentLang();
 
   const offlineCharacter = chineseCharacters?.find(
     (char: any) => char?.hanzi === characterId || char?.input === characterId
@@ -78,8 +81,8 @@ export const SelectedCharacterStats = ({
 
       <div className="space-x-4 flex items-center px-2">
         <GoogleLink hanzi={characterId} />
-        <YablaLink hanzi={characterId} />
-        <HanbookLink hanzi={characterId} />
+        {lang === "zh" && <YablaLink hanzi={characterId} />}
+        {lang === "zh" && <HanbookLink hanzi={characterId} />}
       </div>
     </div>
   );

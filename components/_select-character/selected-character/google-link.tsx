@@ -1,6 +1,7 @@
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useMemo } from "react";
 
 export const GoogleLink = ({
   hanzi,
@@ -12,7 +13,7 @@ export const GoogleLink = ({
   return (
     <Link
       target="_blank"
-      href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+      href={`https://translate.google.com/?tl=en&text=${encodeURIComponent(
         hanzi
       )}&op=translate`}
       className={cn(

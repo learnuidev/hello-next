@@ -34,6 +34,7 @@ import { getActiveTranscriptions } from "./get-active-transcriptions";
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { isVideoUrl } from "@/app/(auth)/convos/utils/is-video-url";
 import { getYablaLink } from "./utils/get-yabla-link";
+import { useCurrentTime } from "./use-current-time-store";
 
 const MAX_LIMIT = 9000;
 const THIRTY = 30;
@@ -48,7 +49,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isVideoHidden, setIsVideoHidden] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
-  const [currentTime, setTime] = useState(0);
+
+  const { currentTime, setCurrentTime: setTime } = useCurrentTime(lessonId);
   const params = useParams<{ "content-id": string }>();
   const contentId = params["content-id"];
   const playerRef = useRef() as any;
@@ -63,6 +65,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const searchParams = useSearchParams();
 
   const start = searchParams.get("start");
+
+  console.log("START", start);
 
   const { data: lesson } = useGetContentQuery({ contentId: lessonId });
 
@@ -228,7 +232,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTime((seconds) => playerRef?.current?.getCurrentTime());
+      setTime(playerRef?.current?.getCurrentTime());
     }, 500);
     return () => clearInterval(interval);
   }, []);

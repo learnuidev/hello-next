@@ -41,7 +41,7 @@ function DynoSentenceInner({
   maxIndex,
 }: IDynoParams) {
   const { data, isLoading } = useListMeaningsQuery({
-    content: sentence?.hanzi || sentence?.input || "",
+    content: sentence?.input || sentence?.hanzi || "",
     lang: sentence?.lang,
   });
 
@@ -85,7 +85,7 @@ const WithMultiSentence = ({
   console.log("SENTENCE", sentence);
 
   const multiSentences = useMemo(() => {
-    return getMulti(sentence?.hanzi || sentence?.input || "")?.map((item) => {
+    return getMulti(sentence?.input || sentence?.hanzi || "")?.map((item) => {
       return {
         hanzi: item,
         input: item,
@@ -198,7 +198,7 @@ const DynaSentence = ({
   };
 
   const multiSentence = getMulti(
-    parentSentence?.hanzi || parentSentence?.input
+    parentSentence?.input || parentSentence?.hanzi
   );
 
   const sentenceHanziHidden = useMemo(() => {

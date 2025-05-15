@@ -1,5 +1,6 @@
 import { Label } from "@/components/ui/label";
 
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 import {
   Card,
   CardContent,
@@ -7,13 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSettingsDialogState } from "../../settings-dialog.state";
 
 export function LearnTab() {
-  const setMode = useLearningModeStore((state: any) => state.setMode);
-  const mode = useLearningModeStore((state: any) => state.mode);
+  const { mode, setMode } = useLearningMode();
 
   const userPreferenceState = useSettingsDialogState(
     (state) => state.userPreferenceState

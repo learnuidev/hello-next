@@ -4,10 +4,9 @@ import React from "react";
 
 import { useSearchQueryStore } from "@/components/search/state";
 
-import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
-
 import { NomadMethodTabsContainer } from "../nomad-method-tabs-container";
 import { YctViewType } from "./yct-view-type";
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 
 function Yct() {
   return (
@@ -38,7 +37,7 @@ export const YctView = ({
 }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
 
-  const mode = useLearningModeStore((state: any) => state.mode);
+  const { mode } = useLearningMode();
 
   if (mode === "yct") {
     return <Yct />;

@@ -1,18 +1,17 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
-import React from "react";
-import { SearchBar } from "./search-bar";
-import { FloatingNavbar } from "./floating-navbar";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { DuNavbar } from "@/app/(auth)/du/components/du-navbar";
 import { useReviewStore } from "@/app/review/review-store";
 import { cn } from "@/lib/utils";
-import { Icons } from "./ui/icons.v2";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { AnimatedContentsFilter } from "./animated-contents-filter";
+import { usePathname, useSearchParams } from "next/navigation";
 import { ContentDropdown } from "./_select-character/content-dropdown";
-import { useLearningModeStore } from "./settings-dialog/learning-mode.store";
-import { DuNavbar } from "@/app/(auth)/du/components/du-navbar";
+import { AnimatedContentsFilter } from "./animated-contents-filter";
+import { FloatingNavbar } from "./floating-navbar";
+import { SearchBar } from "./search-bar";
+import { useLearningMode } from "./settings-dialog/learning-mode.store";
+import { Icons } from "./ui/icons.v2";
 
 export const ReviewNavBar = () => {
   const routeName = usePathname();
@@ -86,13 +85,9 @@ export const ReviewNavBar = () => {
 export const ContentsDropdown = () => {
   const routeName = usePathname();
 
-  const viewType = useReviewStore((state: any) => state.viewType);
-  const setViewType = useReviewStore((state: any) => state.setViewType);
-
   const searchParams = useSearchParams();
 
-  const setMode = useLearningModeStore((state: any) => state.setMode);
-  const mode = useLearningModeStore((state: any) => state.mode);
+  const { mode, setMode } = useLearningMode();
 
   const view = searchParams?.get("view");
 

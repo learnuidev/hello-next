@@ -10,12 +10,12 @@ import { filterComponents } from "../nmm-utils/filter-components";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
-import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { filterNonHanYu } from "../nmm-utils/filter-non-hanyu";
+import { useGetSelectedBelt } from "../use-get-selected-belt";
 import { resolveHsk } from "./hsk-utils/resolve-hsk";
 import { useHskViewStore } from "./state";
-import { useGetSelectedBelt } from "../use-get-selected-belt";
 
 export const useGetHskCharacters = ({
   variant,
@@ -37,7 +37,7 @@ export const useGetHskCharacters = ({
 
   const { level } = useGetReviewParams();
 
-  const mode = useLearningModeStore((state: any) => state.mode);
+  const { mode } = useLearningMode();
 
   const hskView = (useHskViewStore((state) => state.view) as any)?.[
     selectedBelt?.hskLevel

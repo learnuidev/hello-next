@@ -1,5 +1,6 @@
 import { Label } from "@/components/ui/label";
 
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 import {
   Card,
   CardContent,
@@ -7,16 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useSettingsDialogState } from "../../settings-dialog.state";
-import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useSettingsDialogState } from "../../settings-dialog.state";
 
 export function UiTab() {
-  const setMode = useLearningModeStore((state: any) => state.setMode);
-  const mode = useLearningModeStore((state: any) => state.mode);
-
   const { theme, setTheme } = useTheme();
 
   const userPreferenceState = useSettingsDialogState(

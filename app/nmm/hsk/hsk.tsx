@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
 import { useSearchQueryStore } from "@/components/search/state";
-import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
-import { HskWordsView } from "./hsk-words-view";
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
+import React from "react";
 import { HskCharacterView } from "./hsk-character-view";
+import { HskWordsView } from "./hsk-words-view";
 
 export const HskView = ({
   children,
@@ -18,7 +18,7 @@ export const HskView = ({
 }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
 
-  const mode = useLearningModeStore((state: any) => state.mode);
+  const { mode } = useLearningMode();
 
   if (mode === "hsk" || mode === "hsk3") {
     if (type === "word" || type === "sentence") {

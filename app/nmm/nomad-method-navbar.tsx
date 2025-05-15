@@ -15,19 +15,17 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 import { cn } from "@/lib/utils";
 
-import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 
 import { useHskViewStore } from "./hsk/state";
 
-import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useListPublishedContentsQuery } from "../(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
+import { useIsContent } from "../review/use-is-content";
 import { FilterSelect } from "./filter-select";
 import { getNmmSearchParamsUrl } from "./get-nmm-params-url";
 import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
 import { useGetNmmParams } from "./use-get-nmm-params";
 import { useGetSelectedBelt } from "./use-get-selected-belt";
-import { useIsContent } from "../review/use-is-content";
-import { useGetReviewParams } from "../review/use-get-review-params";
-import { useListPublishedContentsQuery } from "../(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 export function NomadMethodNavbar() {
   const selectedBelt = useGetSelectedBelt();
@@ -36,7 +34,7 @@ export function NomadMethodNavbar() {
   const queryStr = useSearchQueryStore((state) => state.query);
 
   const { data: hskWords } = useListHSKWordsQuery();
-  const mode = useLearningModeStore((state: any) => state.mode);
+  const { mode } = useLearningMode();
 
   const viewType = useSearchQueryStore((state) => state.type);
   const setViewType = useSearchQueryStore((state) => state.setType);
@@ -275,25 +273,23 @@ export function NomadMethodNavbar() {
 
               {mode === "hsk" ? (
                 <div className="space-x-4">
-                  {(mode === "hsk3" ? belts : belts.slice(0, 6))?.map?.(
-                    (belt) => {
-                      return (
-                        <button
-                          key={belt?.fill}
-                          onClick={() => {
-                            router.push(
-                              `/nmm?${getNmmSearchParamsUrl({ level: belt?.hskLevel, tab, viewMode })}`
-                            );
-                          }}
-                          className={`${
-                            belt?.hskLevel === hskLevel
-                              ? belt?.fill
-                              : belt?.unselected
-                          } h-4 w-4 rounded-full text`}
-                        ></button>
-                      );
-                    }
-                  )}
+                  {belts.slice(0, 6)?.map?.((belt) => {
+                    return (
+                      <button
+                        key={belt?.fill}
+                        onClick={() => {
+                          router.push(
+                            `/nmm?${getNmmSearchParamsUrl({ level: belt?.hskLevel, tab, viewMode })}`
+                          );
+                        }}
+                        className={`${
+                          belt?.hskLevel === hskLevel
+                            ? belt?.fill
+                            : belt?.unselected
+                        } h-4 w-4 rounded-full text`}
+                      ></button>
+                    );
+                  })}
                 </div>
               ) : mode === "yct" ? (
                 <div className="space-x-4">

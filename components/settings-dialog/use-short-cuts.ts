@@ -1,26 +1,26 @@
 import { useEffect } from "react";
 
-import { useLearningModeStore } from "./learning-mode.store";
+import { useLearningMode } from "./learning-mode.store";
 
-import { usePathname, useRouter } from "next/navigation";
-import { useBrightModeStore } from "./use-bright-mode-store";
 import { useViewType } from "@/app/(auth)/convos/_play-v2/use-view-type";
+import { useGetReviewParams } from "@/app/review/use-get-review-params";
+import { useIsContent } from "@/app/review/use-is-content";
 import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 import { useReadModeStore } from "@/stores/use-readmode-store";
+import { usePathname, useRouter } from "next/navigation";
+import { useSearchQueryStore } from "../search/state";
+import { useBrightModeStore } from "./use-bright-mode-store";
 import {
   getReviewUrl,
   useGetReviewUrl,
   useGetReviewUrlFn,
 } from "./use-get-review-url";
-import { useGetReviewParams } from "@/app/review/use-get-review-params";
-import { useIsContent } from "@/app/review/use-is-content";
-import { useSearchQueryStore } from "../search/state";
 
 export function useShortCuts() {
-  const setMode = useLearningModeStore((state) => state.setMode);
   const readMode = useReadModeStore((state) => state.readMode);
   const setReadMode = useReadModeStore((state) => state.setReadMode);
-  const mode = useLearningModeStore((state) => state.mode);
+
+  const { mode, setMode } = useLearningMode();
   const setFocus = useViewType((state) => state.setFocus);
   const routeName = usePathname();
 

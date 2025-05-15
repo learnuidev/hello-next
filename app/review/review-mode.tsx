@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 import { Icons } from "@/components/ui/icons.v2";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
@@ -15,8 +15,6 @@ import { useGetReviewParams } from "./use-get-review-params";
 import { SpeakComponent } from "@/components/_select-character/speak-component";
 import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
 import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
-import { useIsContent } from "./use-is-content";
-import { useIsEntry } from "./use-is-entry";
 import { useReviewModeView } from "./use-review-mode";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
@@ -68,7 +66,7 @@ export function ReviewModeClassic(props: any) {
     reviewSpeed,
   } = useGetReviewParams();
 
-  const mode = useLearningModeStore((state) => state.mode);
+  const { mode } = useLearningMode();
 
   const reviewCounts = reviewCounterStore((state: any) => state?.reviewCounts);
   const setReviewCount = reviewCounterStore(

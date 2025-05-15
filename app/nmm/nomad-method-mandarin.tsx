@@ -12,7 +12,6 @@ import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useSearchQueryStore } from "@/components/search/state";
-import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { AllComponents } from "./all-components";
 import { HskView } from "./hsk/hsk";
@@ -49,7 +48,6 @@ export function NomadMethodMandarin() {
   const queryStrSync = useSearchQueryStore((state) => state.querySync);
   const setQuery = useSearchQueryStore((state) => state.setQuery);
   const { data: hskWords } = useListHSKWordsQuery();
-  const mode = useLearningModeStore((state: any) => state.mode);
 
   const addHistoryMutation = useAddHistoryMutation();
 

@@ -2,12 +2,11 @@
 import { TabsContent } from "@/components/ui/tabs";
 import React from "react";
 
-import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 
-import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 import { NomadMethodTabsContainer } from "../nomad-method-tabs-container";
 import { ContentViewType } from "./content-view-type";
-import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 function Content({ contentId }: { contentId: string }) {
   return (
@@ -34,7 +33,7 @@ export const ContentView = ({
   children: React.ReactNode;
   variant?: "all";
 }) => {
-  const mode = useLearningModeStore((state: any) => state.mode);
+  const { mode } = useLearningMode();
 
   const { data: contentItems, isLoading } = useListPublishedContentsQuery({});
 

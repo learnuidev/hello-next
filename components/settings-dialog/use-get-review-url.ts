@@ -1,9 +1,9 @@
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 
-import { useLearningModeStore } from "./learning-mode.store";
-import { getReviewDate } from "@/hooks/get-review-date";
 import { useDiaryParams } from "@/app/(auth)/diary/hooks/use-diary-params";
+import { getReviewDate } from "@/hooks/get-review-date";
+import { useLearningMode } from "./learning-mode.store";
 
 export const getReviewSearchParams = ({
   mode,
@@ -30,7 +30,7 @@ export const getReviewSearchParams = ({
 };
 
 export const useGetReviewUrl = ({ reviewMode } = {} as any) => {
-  const mode = useLearningModeStore((state) => state.mode);
+  const { mode } = useLearningMode();
 
   const { entryId } = useDiaryParams();
 
@@ -54,7 +54,7 @@ export const useGetReviewUrl = ({ reviewMode } = {} as any) => {
   })}`;
 };
 export const useGetReviewUrlFn = () => {
-  const mode = useLearningModeStore((state) => state.mode);
+  const { mode } = useLearningMode();
 
   const {
     level,

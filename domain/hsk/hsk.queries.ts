@@ -3,10 +3,10 @@ import { queryIds } from "./queryIds";
 
 import { useQuery } from "@tanstack/react-query";
 
-import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
+import { useCurrentAuthUser } from "../auth/auth.queries";
 
-import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 import { useGetUserPreferenceQuery } from "../user/use-get-user-preference-query";
 
 // TODO: Move this to .env
@@ -37,7 +37,7 @@ export function useListHSKWordsQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  const mode = useLearningModeStore((state: any) => state.mode);
+  const { mode } = useLearningMode();
 
   const { data: userPreference } = useGetUserPreferenceQuery();
 

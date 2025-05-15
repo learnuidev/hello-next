@@ -1,16 +1,29 @@
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import {
+  getUserPreferenceKey,
+  useGetUserPreferenceQuery,
+} from "@/domain/user/use-get-user-preference-query";
+import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
+import { useQueryClient } from "@tanstack/react-query";
 
-export const useLearningModeStore = create(
-  persist<any>(
-    (set) => ({
-      mode: "hsk",
-      setMode: (id: string) => set(() => ({ mode: id })),
-    }),
+export const useLearningMode = () => {
+  const { data: userPreferences } = useGetUserPreferenceQuery();
+  const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
 
-    {
-      name: "settings-store", // name of the item in the storage (must be unique)
-      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
-    }
-  )
-);
+  const queryClient = useQueryClient();
+
+  const setMode = (type: string) => {
+    queryClient.setQueryData([getUserPreferenceKey], (old: any) => {
+      return { ...old, activeContent: type };
+    });
+    updateUserPreferenceMutation?.mutate({
+      activeContent: type,
+    });
+  };
+
+  const mode = userPreferences?.activeContent || "nmm";
+
+  return {
+    mode,
+    setMode,
+  };
+};

@@ -15,6 +15,7 @@ interface UpdatePreferenceResponse {
   learningMode?: string;
   recentlyWatched?: any;
   clozeMode?: any;
+  activeContent?: string;
 }
 
 type UpdateUserPreferenceResponse = GetUserPreferenceResponse & {

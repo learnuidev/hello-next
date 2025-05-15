@@ -22,6 +22,7 @@ export interface GetUserPreferenceResponse {
   automaticallyShowAndHideDock?: boolean;
   recentlyWatched: any;
   clozeMode?: "stocastic" | "timeline";
+  activeContent?: string;
 }
 
 const getUserPrefrence = async (opts: {

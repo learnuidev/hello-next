@@ -1,6 +1,6 @@
 "use client";
 import { useSearchQueryStore } from "@/components/search/state";
-import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 import { TabsContent } from "@/components/ui/tabs";
 import React from "react";
 import { NomadMethodTabsContainer } from "../nomad-method-tabs-container";
@@ -33,7 +33,7 @@ export const XiaomaView = ({
 }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
 
-  const mode = useLearningModeStore((state: any) => state.mode);
+  const { mode } = useLearningMode();
 
   if (mode === "xiaoma") {
     return <Xiaoma />;

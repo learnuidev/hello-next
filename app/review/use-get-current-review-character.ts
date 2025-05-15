@@ -1,19 +1,19 @@
 "use client";
 
-import { useLearningModeStore } from "@/components/settings-dialog/learning-mode.store";
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import { reviewCounterStore } from "./review-counter-store";
 import { useGetReviewParams } from "./use-get-review-params";
 import { useUnreviwedCharacters } from "./use-unreviewed-characters";
 
 import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
+import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 import { useSpeak } from "../(auth)/convos/_play/use-speak";
 import { useIsContent } from "./use-is-content";
 import { useIsEntry } from "./use-is-entry";
-import { useListComponents } from "@/domain/lesson/component.queries";
-import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
-import { useRouter } from "next/navigation";
-import { useMemo } from "react";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -49,7 +49,7 @@ export const useGetCurrentReviewCharacter = () => {
 
   const { studyMode, character } = useGetReviewParams();
 
-  const mode = useLearningModeStore((state) => state.mode);
+  const { mode } = useLearningMode();
 
   const reviewCounts = reviewCounterStore((state: any) => state?.reviewCounts);
 

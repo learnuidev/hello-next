@@ -17,11 +17,9 @@ import { shuffleArray } from "./utils/shuffle-array";
 const ClozeNavbar = ({
   onClose,
   currentCharacter,
-  // contentId,
 }: {
   onClose?: () => void;
   currentCharacter: string;
-  // contentId: string;
 }) => {
   const { setReviewMode } = useReviewModeView();
   return (
@@ -51,14 +49,12 @@ const ClozeNavbar = ({
 };
 
 export function ReviewClozeContent({
-  // contentId,
   currentCharacter,
   lang,
   isLoading,
   onClose,
   backButton: BackButton,
 }: {
-  // contentId: string;
   currentCharacter: string;
   lang: string;
   isLoading?: boolean;
@@ -92,10 +88,7 @@ export function ReviewClozeContent({
   const sentences = useMemo(
     () =>
       getRandomWords(
-        [
-          ...(relevantContextSentences || []),
-          // ...(sentencesInitial || []),
-        ]?.filter((sent: any) =>
+        [...(relevantContextSentences || [])]?.filter((sent: any) =>
           (sent?.hanzi || sent?.input)?.includes(currentCharacter)
         )
       ),
@@ -152,7 +145,6 @@ export function ReviewClozeContent({
             shuffledGrammar?.filter(
               (item: any) => (item?.input || item.hanzi) !== relevantHanzi
             )
-            // ?.map((item: any) => item?.en)
           ),
         ],
         3
@@ -192,11 +184,7 @@ export function ReviewClozeContent({
   if (sentences?.length === 0) {
     return (
       <div>
-        <ClozeNavbar
-          // contentId={contentId}
-          onClose={onClose}
-          currentCharacter={currentCharacter}
-        />
+        <ClozeNavbar onClose={onClose} currentCharacter={currentCharacter} />
 
         <div className="flex justify-center items-center flex-col mt-32">
           <h4 className="text-center mb-8">Nothing here</h4>
@@ -223,11 +211,7 @@ export function ReviewClozeContent({
   if (questionIndex > relevantContextSentences?.length - 1) {
     return (
       <div>
-        <ClozeNavbar
-          // contentId={contentId}
-          onClose={onClose}
-          currentCharacter={currentCharacter}
-        />
+        <ClozeNavbar onClose={onClose} currentCharacter={currentCharacter} />
 
         <div className="flex justify-center items-center flex-col mt-32">
           <h4 className="text-center mb-8">Nothing here</h4>
@@ -263,11 +247,7 @@ export function ReviewClozeContent({
 
   return (
     <div className="px-8">
-      <ClozeNavbar
-        // contentId={contentId}
-        onClose={onClose}
-        currentCharacter={currentCharacter}
-      />
+      <ClozeNavbar onClose={onClose} currentCharacter={currentCharacter} />
 
       {sentence && (
         <div className="mt-24 lg:mt-32">
@@ -311,7 +291,6 @@ export function ReviewClozeContent({
                   <Link
                     target="_blank"
                     href={`/nmm/${option?.hanzi}?lang=${sentence?.lang}`}
-                    // disabled={response?.type}
                     className={cn(
                       "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",
                       response

@@ -125,11 +125,15 @@ export function useListGrammarsQuery(
         );
         return response as ListGrammarsResponse;
       }
+
+      return {
+        grammarAnalysis: [],
+      };
     },
 
     ...options,
     retry: false,
-    enabled: Boolean(params?.sentenceId || params?.content),
+    // enabled: Boolean(params?.sentenceId || params?.content),
     // cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
     refetchOnFocus: false,

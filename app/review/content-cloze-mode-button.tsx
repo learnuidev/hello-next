@@ -71,9 +71,9 @@ export const ContentClozeModeButton = ({
 
   const isContentMode = clozeContentMode === "content";
 
-  if (!contextSentences?.length) {
-    return null;
-  }
+  // if (!contextSentences?.length) {
+  //   return null;
+  // }
 
   return (
     <Button

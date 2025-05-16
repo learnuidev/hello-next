@@ -287,7 +287,7 @@ export function ReviewCloze({
                         : "bg-red-500 hover:bg-red-600"
                       : "bg-gray-800 opacity-10 text-gray-200"
                     : "",
-                  "transition rounded-full",
+                  "transition rounded-none",
                   response
                     ? ""
                     : "hover:bg-orange-500 hover:text-white hover:scale-110"

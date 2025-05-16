@@ -11,6 +11,8 @@ import { useReviewModeView } from "./use-review-mode";
 import { ReviewCloze } from "./review-cloze/review-cloze";
 import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
 import { useRouter } from "next/navigation";
+import { useIsContent } from "./use-is-content";
+import { ReviewClozeContent } from "./review-cloze-content/review-cloze-content";
 
 function ReviewClassic() {
   const { view, mode } = useGetReviewParams();
@@ -84,12 +86,28 @@ function ReviewMode() {
   const router = useRouter();
 
   const { reviewMode } = useReviewModeView();
+  const { mode, level, entryId } = useGetReviewParams();
+
+  const isContent = useIsContent(mode);
 
   if (!reviewMode) {
     return <ReviewModeSelector />;
   }
 
   if (reviewMode === "cloze") {
+    if (isContent) {
+      return (
+        <ReviewClozeContent
+          contentId={mode}
+          isLoading={isReviewCharactersLoading}
+          currentCharacter={currentCharacter?.hanzi}
+          lang={lang}
+          onClose={() => {
+            router.push(`/nmm?lang=${lang}`);
+          }}
+        />
+      );
+    }
     return (
       <ReviewCloze
         isLoading={isReviewCharactersLoading}

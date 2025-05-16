@@ -98,42 +98,30 @@ function ReviewMode() {
   }
 
   if (reviewMode === "cloze") {
-    if (isContent) {
-      if (clozeContentMode === "content") {
-        return (
-          <ReviewClozeContent
-            contentId={mode}
-            isLoading={isReviewCharactersLoading}
-            currentCharacter={currentCharacter?.hanzi}
-            lang={lang}
-            onClose={() => {
-              router.push(`/nmm?lang=${lang}`);
-            }}
-          />
-        );
-      } else {
-        return (
-          <ReviewCloze
-            isLoading={isReviewCharactersLoading}
-            currentCharacter={currentCharacter?.hanzi}
-            lang={lang}
-            onClose={() => {
-              router.push(`/nmm?lang=${lang}`);
-            }}
-          />
-        );
-      }
+    if (clozeContentMode === "content") {
+      return (
+        <ReviewClozeContent
+          // contentId={mode}
+          isLoading={isReviewCharactersLoading}
+          currentCharacter={currentCharacter?.hanzi}
+          lang={lang}
+          onClose={() => {
+            router.push(`/nmm?lang=${lang}`);
+          }}
+        />
+      );
+    } else {
+      return (
+        <ReviewCloze
+          isLoading={isReviewCharactersLoading}
+          currentCharacter={currentCharacter?.hanzi}
+          lang={lang}
+          onClose={() => {
+            router.push(`/nmm?lang=${lang}`);
+          }}
+        />
+      );
     }
-    return (
-      <ReviewCloze
-        isLoading={isReviewCharactersLoading}
-        currentCharacter={currentCharacter?.hanzi}
-        lang={lang}
-        onClose={() => {
-          router.push(`/nmm?lang=${lang}`);
-        }}
-      />
-    );
   }
 
   return <ReviewClassic />;

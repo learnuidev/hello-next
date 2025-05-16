@@ -16,11 +16,11 @@ import { ContentClozeModeButton } from "../content-cloze-mode-button";
 const ClozeNavbar = ({
   onClose,
   currentCharacter,
-  contentId,
+  // contentId,
 }: {
   onClose?: () => void;
   currentCharacter: string;
-  contentId: string;
+  // contentId: string;
 }) => {
   const { setReviewMode } = useReviewModeView();
   return (
@@ -42,7 +42,7 @@ const ClozeNavbar = ({
         <h1 className="text-center font-bold text-2xl">cloze</h1>
       </div>
       <div className="flex-1 flex justify-end px-4">
-        <ContentClozeModeButton contentId={contentId} />
+        <ContentClozeModeButton />
         {/* <HskLevelSelector currentCharacter={currentCharacter} /> */}
       </div>
     </nav>
@@ -50,14 +50,14 @@ const ClozeNavbar = ({
 };
 
 export function ReviewClozeContent({
-  contentId,
+  // contentId,
   currentCharacter,
   lang,
   isLoading,
   onClose,
   backButton: BackButton,
 }: {
-  contentId: string;
+  // contentId: string;
   currentCharacter: string;
   lang: string;
   isLoading?: boolean;
@@ -196,7 +196,7 @@ export function ReviewClozeContent({
     return (
       <div>
         <ClozeNavbar
-          contentId={contentId}
+          // contentId={contentId}
           onClose={onClose}
           currentCharacter={currentCharacter}
         />
@@ -233,10 +233,12 @@ export function ReviewClozeContent({
     );
   }
 
+  console.log("RESPONSE", response);
+
   return (
     <div className="px-8">
       <ClozeNavbar
-        contentId={contentId}
+        // contentId={contentId}
         onClose={onClose}
         currentCharacter={currentCharacter}
       />
@@ -287,7 +289,7 @@ export function ReviewClozeContent({
                     className={cn(
                       "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",
                       response
-                        ? response?.answer?.en === option?.en
+                        ? response?.answer === option?.hanzi
                           ? response?.type === "correct"
                             ? "bg-green-500 border-green-600 hover:bg-green-600"
                             : "bg-red-500 hover:bg-red-600 border-red-500"
@@ -298,7 +300,7 @@ export function ReviewClozeContent({
                         ? ""
                         : "hover:bg-orange-500 hover:text-white hover:scale-110"
                     )}
-                    key={`dynacloze-${idx}-${option?.en}`}
+                    key={`dynacloze-${idx}-${option?.en}-${option?.hanzi}`}
                   >
                     <span className="block">
                       {/* {JSON.stringify(option)} */}
@@ -319,7 +321,7 @@ export function ReviewClozeContent({
                     className={cn(
                       "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg",
                       response
-                        ? response?.answer?.en === option?.en
+                        ? response?.answer === option?.hanzi
                           ? response?.type === "correct"
                             ? "bg-green-500 border-green-600 hover:bg-green-600"
                             : "bg-red-500 hover:bg-red-600 border-red-500"

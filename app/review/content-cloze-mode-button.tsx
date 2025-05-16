@@ -47,15 +47,13 @@ export const ContentClozeModeButton = ({
 }) => {
   const { clozeContentMode, setClozeContentMode } = useClozeContentMode();
 
-  console.log("CLOZE CONTENTMODE", clozeContentMode);
-
   const { mode } = useGetReviewParams();
 
   const isContent = useIsContent(contentId || mode);
 
-  if (!isContent) {
-    return null;
-  }
+  // if (!isContent) {
+  //   return null;
+  // }
 
   const isContentMode = clozeContentMode === "content";
 

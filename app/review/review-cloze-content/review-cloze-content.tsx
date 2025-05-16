@@ -1,4 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { CharacterItem } from "@/components/_select-character/character-item";
+import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
 import { Icons } from "@/components/ui/icons.v2";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
@@ -6,11 +8,8 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useHskLevel, useReviewModeView } from "../use-review-mode";
-import { HskLevelSelector } from "./hsk-level-selector";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
-import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
-import { CharacterItem } from "@/components/_select-character/character-item";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 
 const ClozeNavbar = ({
@@ -61,12 +60,12 @@ export function ReviewClozeContent({
   onClose?: () => void;
   backButton?: any;
 }) {
-  const [wordIndex, setWordIndex] = useState(0);
+  const [showEn, setShowEn] = useState(false);
   const [clozeIndex, setClozeIndex] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
+  const [wordIndex, setWordIndex] = useState(0);
   const [response, setResponse] = useState<any>(null);
   const { setReviewMode } = useReviewModeView();
-  const [showEn, setShowEn] = useState(false);
 
   const contextSentences = useGetCharacterLearningContext({
     lang,
@@ -77,25 +76,21 @@ export function ReviewClozeContent({
 
   const { hskLevel, setHskLevel } = useHskLevel();
 
-  const relevantHanzi = currentCharacter;
-
   const { data: sentencesInitial, isLoading: isSentenceLoading } =
     useListSentencesQuery({
-      component: relevantHanzi,
+      component: currentCharacter,
       lang,
     });
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   const relevantContextSentences = useMemo(
     () =>
       (contextSentences || [])?.filter((sentence: any) => {
         return (
-          (sentence?.hanzi || sentence?.input)?.includes(relevantHanzi) &&
+          (sentence?.hanzi || sentence?.input)?.includes(currentCharacter) &&
           sentence?.input?.length < 20
         );
       }),
-    [contextSentences, relevantHanzi]
+    [contextSentences]
   );
 
   const sentences = useMemo(
@@ -105,10 +100,10 @@ export function ReviewClozeContent({
           ...(relevantContextSentences || []),
           ...(sentencesInitial || []),
         ]?.filter((sent: any) =>
-          (sent?.hanzi || sent?.input)?.includes(relevantHanzi)
+          (sent?.hanzi || sent?.input)?.includes(currentCharacter)
         )
       ),
-    [relevantHanzi, sentencesInitial]
+    [sentencesInitial]
   );
 
   const sentence = useMemo(
@@ -121,10 +116,10 @@ export function ReviewClozeContent({
     [sentences, questionIndex]
   );
 
-  const { data: grammar } = useListGrammarsQuery({
-    sentenceId: sentence?.hanzi || sentence?.input,
-    content: sentence?.hanzi || sentence?.input,
-    lang: lang,
+  const { data: grammar, isLoading: isGrammarLoading } = useListGrammarsQuery({
+    sentenceId: sentence?.input || sentence?.hanzi,
+    content: sentence?.input || sentence?.hanzi,
+    lang: sentence?.lang,
   });
 
   const shuffledGrammar = useMemo(() => {
@@ -146,6 +141,8 @@ export function ReviewClozeContent({
     [shuffledGrammar, wordIndex]
   );
 
+  const relevantHanzi = selectedGrammar?.hanzi;
+
   const randomThreeOptions = useMemo(
     () =>
       getRandomWords(
@@ -159,10 +156,9 @@ export function ReviewClozeContent({
       ),
     [relevantHanzi, shuffledGrammar]
   );
-
   const shuffledOptions = useMemo(
     () => shuffleArray([...randomThreeOptions, selectedGrammar]),
-    [randomThreeOptions, selectedGrammar]
+    [randomThreeOptions, relevantHanzi, questionIndex, sentence]
   );
 
   const sentenceHanzi = useMemo(
@@ -179,14 +175,13 @@ export function ReviewClozeContent({
     }
   };
 
-  if (isSentenceLoading || isLoading) {
+  if (isSentenceLoading || isLoading || isGrammarLoading) {
     return (
       <div>
         <p className="text-center mt-32">Loading...</p>
       </div>
     );
   }
-
   if (false) {
     return (
       <div>
@@ -300,7 +295,7 @@ export function ReviewClozeContent({
                 return (
                   <button
                     onClick={() => {
-                      checkAnswer(option);
+                      checkAnswer(option?.input || option?.hanzi);
                     }}
                     disabled={response?.type}
                     className={cn(
@@ -362,27 +357,38 @@ export function ReviewClozeContent({
                 >
                   <Icons.xMark className="text-2xl" />
                 </button>
-                {futureSentence && (
-                  <button
-                    onClick={() => {
-                      setQuestionIndex(questionIndex + 1);
-                      setResponse(null);
-                    }}
-                    className="hover:scale-125 transition hover:font-bold"
-                  >
-                    <Icons.arrowDown className="text-2xl" />
-                  </button>
-                )}
+
                 <button
                   onClick={() => {
-                    setClozeIndex(clozeIndex + 1);
-                    setQuestionIndex(0);
+                    setWordIndex(
+                      shuffledGrammar?.length === wordIndex + 1
+                        ? 0
+                        : Math.min(wordIndex + 1, shuffledGrammar?.length - 1)
+                    );
                     setResponse(null);
+                  }}
+                  className="hover:scale-125 transition hover:font-bold"
+                >
+                  <Icons.arrowDown className="text-2xl" />
+                </button>
+
+                <button
+                  onClick={() => {
+                    if (futureSentence) {
+                      setClozeIndex(clozeIndex + 1);
+                      setQuestionIndex(0);
+                      setWordIndex(0);
+                      setResponse(null);
+                    } else {
+                      setQuestionIndex(questionIndex + 1);
+                      setResponse(null);
+                    }
                   }}
                   className="hover:scale-125 transition hover:font-bold"
                 >
                   <Icons.arrowRight className="text-2xl" />
                 </button>
+
                 {sentence?.contentId && (
                   <Link
                     target="_blank"

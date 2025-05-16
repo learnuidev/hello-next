@@ -388,7 +388,7 @@ export function ReviewClozeContent({
 
                 <button
                   onClick={() => {
-                    if (futureSentence) {
+                    if (!futureSentence) {
                       setClozeIndex(clozeIndex + 1);
                       setQuestionIndex(0);
                       setWordIndex(0);

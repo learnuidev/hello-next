@@ -80,18 +80,13 @@ export function ReviewClozeContent({
 
   const { hskLevel, setHskLevel } = useHskLevel();
 
-  const { data: sentencesInitial, isLoading: isSentenceLoading } =
-    useListSentencesQuery({
-      component: currentCharacter,
-      lang,
-    });
-
   const relevantContextSentences = useMemo(
     () =>
       (contextSentences || [])?.filter((sentence: any) => {
         return (
           (sentence?.hanzi || sentence?.input)?.includes(currentCharacter) &&
-          sentence?.input?.length < 20
+          sentence?.input?.length < 20 &&
+          sentence?.input?.length > 2
         );
       }),
     [contextSentences]
@@ -102,12 +97,12 @@ export function ReviewClozeContent({
       getRandomWords(
         [
           ...(relevantContextSentences || []),
-          ...(sentencesInitial || []),
+          // ...(sentencesInitial || []),
         ]?.filter((sent: any) =>
           (sent?.hanzi || sent?.input)?.includes(currentCharacter)
         )
       ),
-    [sentencesInitial]
+    [relevantContextSentences, currentCharacter]
   );
 
   const sentence = useMemo(
@@ -181,14 +176,14 @@ export function ReviewClozeContent({
     }
   };
 
-  if (isSentenceLoading || isLoading || isGrammarLoading) {
+  if (isLoading || isGrammarLoading) {
     return (
       <div>
         <p className="text-center mt-32">Loading...</p>
       </div>
     );
   }
-  if (false) {
+  if (questionIndex > relevantContextSentences?.length - 1) {
     return (
       <div>
         <ClozeNavbar

@@ -23,8 +23,8 @@ export const clozeReviewTimerStore = create((set, get: any) => ({
 
 export const useClozeReviewTimer = (characterId: string) => {
   const review = clozeReviewTimerStore((state: any) => state.reviewCounts);
-  const startTime: any = review?.[characterId]?.startTime || 0;
-  const endTime: any = review?.[characterId]?.endTime || 0;
+  const startTime: any = review?.[characterId]?.startTime || Date.now();
+  const endTime: any = review?.[characterId]?.endTime || Date.now();
 
   const setReviewCount = clozeReviewTimerStore(
     (state: any) => state.setReviewCount

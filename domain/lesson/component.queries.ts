@@ -34,6 +34,7 @@ export interface IComponent {
   en: string;
   lang: string;
   id: string;
+  group?: string;
 }
 
 const listComponents = async (
@@ -60,7 +61,7 @@ const listComponents = async (
 };
 
 export const listComponentsQueryKey = "list-components";
-function useListComponentsQuery(
+export function useListComponentsQuery(
   params = {} as {
     journeyId?: string;
     lang?: string;

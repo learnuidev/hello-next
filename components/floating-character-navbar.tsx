@@ -1,25 +1,66 @@
-import { useListComponents } from "@/domain/lesson/component.queries";
-import { SelectedCharacterProps } from "./_select-character/select-character.types";
+import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 
-import { cn } from "@/lib/utils";
 import { Icons } from "./ui/icons.v2";
 
 import { useCharacterContextStore } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { getReviewDate } from "@/hooks/get-review-date";
+import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { SelectedCharacterContentsButton } from "./_select-character/selected-character-contents-button";
 import { SelectedCharacterStoryButton } from "./_select-character/selected-character-story-button";
-import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
-import { getReviewSearchParams } from "./settings-dialog/use-get-review-url";
+import { BrightModeButton } from "./bright-mode-button";
+import { PinyinButton } from "./pinyin-button";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
-import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
-import { PinyinButton } from "./pinyin-button";
-import { BrightModeButton } from "./bright-mode-button";
+
+const DiscoverButton = ({ characterId }: { characterId: string }) => {
+  const discoverMutation = useDiscoverMutation();
+  const { data: components, isLoading } = useListComponentsQuery();
+
+  const hasAlreadyDiscovered = components?.find(
+    (item: any) => (item?.hanzi || item?.input) === characterId
+  );
+
+  if (characterId?.length > 3 || isLoading) {
+    return null;
+  }
+
+  if (characterId?.length === 3 && hasAlreadyDiscovered?.group) {
+    return null;
+  }
+
+  if (hasAlreadyDiscovered) {
+    return null;
+  }
+
+  return (
+    <button
+      className="text-xl text-gray-400 hover:text-black"
+      disabled={discoverMutation.isLoading || discoverMutation.isSuccess}
+      onClick={() => {
+        discoverMutation
+          .mutateAsync({
+            hanzi: characterId,
+            // story: "todo",
+          })
+          .then((resp: any) => {
+            toast(`Component Successfully discovered ${JSON.stringify(resp)}`);
+          });
+      }}
+    >
+      {discoverMutation.isLoading ? (
+        <Icons.spinner spinPulse />
+      ) : (
+        <Icons.language />
+      )}
+
+      {/* <span>{(selectedComp?.hanzi || characterId)?.length}</span> */}
+    </button>
+  );
+};
 
 const isMultiSentence = (str: string) => {
   const isHanziMultiSentence = str.split("。")?.length > 1;
@@ -53,28 +94,15 @@ export const FloatingCharacterNavbar = ({
   } = characterData;
 
   const searchParams = useSearchParams();
-  const discoverMutation = useDiscoverMutation();
 
   const context = searchParams?.get("context");
 
-  const { data: components, isLoading } = useListComponents();
+  const { data: components, isLoading } = useListComponentsQuery();
   const { data: chars } = useListCharactersQuery();
 
   const hasAlreadyDiscovered = components?.find(
     (item: any) => (item?.hanzi || item?.input) === characterId
   );
-
-  const character = chars?.find(
-    (item: any) => (item?.hanzi || item?.input) === characterId
-  ) as any;
-  const router = useRouter();
-
-  const brightMode = useBrightModeStore((state: any) => state.mode);
-  const setBrightMode = useBrightModeStore((state: any) => state.setMode);
-  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
-  const setShowPinyin = useBrightModeStore((state: any) => state.setShowPinyin);
-
-  const multiSentence = isMultiSentence(characterId);
 
   const currentCharacter = selectedComp;
 
@@ -106,43 +134,11 @@ export const FloatingCharacterNavbar = ({
               className="text-xl text-black dark:text-white"
               onClick={() => {
                 setView("review");
-                // if (characterId?.length <= 3) {
-                //   setView("review");
-                //   return null;
-                // }
-                // if (characterId?.length > 1) {
-                //   router.push(`/review?input=${characterId}`);
-                // } else {
-                //   const { reviewDate, month, year } = getReviewDate(character);
-
-                //   return router.push(
-                //     `/review?${getReviewSearchParams({ date: reviewDate })}`
-                //   );
-
-                //   setView("play");
-                // }
               }}
             >
               <Icons.play className="text-2xl" />
             </button>
-            {/* {multiSentence && (
-              <button
-                className="text-xl text-black dark:text-white"
-                onClick={() => {
-                  if (view === "zoom") {
-                    setView("unzoom");
-                  } else {
-                    setView("zoom");
-                  }
-                }}
-              >
-                {view === "zoom" ? (
-                  <Icons.zoomOut className="text-2xl" />
-                ) : (
-                  <Icons.zoomIn className="text-2xl" />
-                )}
-              </button>
-            )} */}
+
             {isAlreadyLearned ? null : (
               <button
                 className="text-xl text-black dark:text-white"
@@ -197,35 +193,7 @@ export const FloatingCharacterNavbar = ({
               </button>
             )}
 
-            {characterId?.length > 1 ||
-            isLoading ? null : hasAlreadyDiscovered?.group ? null : (
-              <button
-                className="text-xl text-gray-400 hover:text-black"
-                disabled={
-                  discoverMutation.isLoading || discoverMutation.isSuccess
-                }
-                onClick={() => {
-                  discoverMutation
-                    .mutateAsync({
-                      hanzi: selectedComp?.hanzi || characterId,
-                      // story: "todo",
-                    })
-                    .then((resp: any) => {
-                      toast(
-                        `Component Successfully discovered ${JSON.stringify(resp)}`
-                      );
-                    });
-                }}
-              >
-                {discoverMutation.isLoading ? (
-                  <Icons.spinner spinPulse />
-                ) : (
-                  <Icons.language />
-                )}
-
-                {/* <span>{(selectedComp?.hanzi || characterId)?.length}</span> */}
-              </button>
-            )}
+            <DiscoverButton characterId={characterId} />
 
             {isAlreadyLearned && (
               <button
@@ -286,20 +254,6 @@ export const FloatingCharacterNavbar = ({
             )}
 
             <SelectedCharacterContentsButton characterId={characterId} />
-
-            {/* {characterId?.length === 1 && (
-              <button
-                className={cn(
-                  "text-xl transition",
-                  view === "pinyin" ? "text-white" : "text-gray-400"
-                )}
-                onClick={() => {
-                  setView("pinyin");
-                }}
-              >
-                <Icons.pinyinChart />
-              </button>
-            )} */}
           </div>
 
           <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />

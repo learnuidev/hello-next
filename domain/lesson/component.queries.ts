@@ -120,20 +120,21 @@ export function useListComponents(
   const includeDiscoverOnly = Boolean(options?.discoverOnly);
   return {
     data: data
+      // ?.filter((item: any) => {
+      //   return (item?.hanzi || item?.input)?.length === 1;
+      //   // if (options?.singleItemsOnly) {
+      //   //   return (item?.hanzi || item?.input)?.length === 1;
+      //   // } else {
+      //   //   return true;
+      //   // }
+      // })
       ?.filter((item: any) => {
-        return (item?.hanzi || item?.input)?.length === 1;
-        // if (options?.singleItemsOnly) {
-        //   return (item?.hanzi || item?.input)?.length === 1;
-        // } else {
-        //   return true;
-        // }
-      })
-      ?.filter((item: any) => {
-        if (options?.singleItemsOnly) {
-          return (item?.hanzi || item?.input)?.length === 1;
-        }
         if (options?.includeAll) {
           return true;
+        }
+
+        if (options?.singleItemsOnly) {
+          return (item?.hanzi || item?.input)?.length === 1;
         } else {
           return includeDiscoverOnly ? !item.level : item.level;
         }

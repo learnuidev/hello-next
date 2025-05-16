@@ -16,6 +16,7 @@ interface UpdatePreferenceResponse {
   recentlyWatched?: any;
   clozeMode?: any;
   activeContent?: string;
+  clozeContentMode?: "hsk" | "content";
 }
 
 type UpdateUserPreferenceResponse = GetUserPreferenceResponse & {

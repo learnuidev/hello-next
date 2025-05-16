@@ -23,6 +23,7 @@ export interface GetUserPreferenceResponse {
   recentlyWatched: any;
   clozeMode?: "stocastic" | "timeline";
   activeContent?: string;
+  clozeContentMode: "hsk" | "content";
 }
 
 const getUserPrefrence = async (opts: {

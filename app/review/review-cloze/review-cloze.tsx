@@ -11,6 +11,7 @@ import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
 import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
 import { CharacterItem } from "@/components/_select-character/character-item";
+import { ContentClozeModeButton } from "../content-cloze-mode-button";
 
 const ClozeNavbar = ({
   onClose,
@@ -39,7 +40,10 @@ const ClozeNavbar = ({
         <h1 className="text-center font-bold text-2xl">cloze</h1>
       </div>
       <div className="flex-1 flex justify-end px-4">
-        <HskLevelSelector currentCharacter={currentCharacter} />
+        <div className="flex gap-4 items-center flex-row">
+          <ContentClozeModeButton />
+          <HskLevelSelector currentCharacter={currentCharacter} />
+        </div>
       </div>
     </nav>
   );

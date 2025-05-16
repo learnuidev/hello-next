@@ -11,13 +11,16 @@ import { useHskLevel, useReviewModeView } from "../use-review-mode";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
+import { ContentClozeModeButton } from "../content-cloze-mode-button";
 
 const ClozeNavbar = ({
   onClose,
   currentCharacter,
+  contentId,
 }: {
   onClose?: () => void;
   currentCharacter: string;
+  contentId: string;
 }) => {
   const { setReviewMode } = useReviewModeView();
   return (
@@ -39,6 +42,7 @@ const ClozeNavbar = ({
         <h1 className="text-center font-bold text-2xl">cloze</h1>
       </div>
       <div className="flex-1 flex justify-end px-4">
+        <ContentClozeModeButton contentId={contentId} />
         {/* <HskLevelSelector currentCharacter={currentCharacter} /> */}
       </div>
     </nav>
@@ -187,7 +191,11 @@ export function ReviewClozeContent({
   if (false) {
     return (
       <div>
-        <ClozeNavbar onClose={onClose} currentCharacter={currentCharacter} />
+        <ClozeNavbar
+          contentId={contentId}
+          onClose={onClose}
+          currentCharacter={currentCharacter}
+        />
 
         <div className="flex justify-center items-center flex-col mt-32">
           <h4 className="text-center mb-8">Nothing here</h4>
@@ -223,7 +231,11 @@ export function ReviewClozeContent({
 
   return (
     <div className="px-8">
-      <ClozeNavbar onClose={onClose} currentCharacter={currentCharacter} />
+      <ClozeNavbar
+        contentId={contentId}
+        onClose={onClose}
+        currentCharacter={currentCharacter}
+      />
 
       {sentence && (
         <div className="mt-24 lg:mt-32">

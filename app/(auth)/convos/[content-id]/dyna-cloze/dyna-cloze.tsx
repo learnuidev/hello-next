@@ -20,6 +20,7 @@ import {
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
+import { YoutubeButton } from "@/components/youtube-page/youtube-button";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -82,8 +83,6 @@ const WithMultiSentence = ({
 }) => {
   const [wordIndex, setWordIndex] = useState(0);
   const [sentenceIndex, setSentenceIndex] = useState(0);
-
-  console.log("SENTENCE", sentence);
 
   const multiSentences = useMemo(() => {
     return getMulti(sentence?.input || sentence?.hanzi || "")?.map((item) => {
@@ -301,6 +300,15 @@ const DynaSentence = ({
               })}
           </Link>
         )}
+
+        <Link
+          target="_blank"
+          href={`/nmm/${sentenceHanzi}?lang=${sentence?.lang}`}
+          className={"block"}
+        >
+          <p className="mt-2 lg:text-xl text-md">{sentence?.en}</p>
+        </Link>
+
         <p className="mt-2 lg:text-xl text-md">{sentence?.en}</p>
       </div>
 
@@ -460,6 +468,14 @@ const DynaSentence = ({
         >
           {learnMode === "timeline" ? <Icons.timeline /> : <Icons.shuffle />}
         </button>
+
+        {content?.audio && (
+          <YoutubeButton
+            sentenceInput={sentence?.input || sentence?.hanzi}
+            contentId={contentId}
+            transcriptId={sentence?.id}
+          />
+        )}
       </div>
 
       {parentSentence && showParent && (

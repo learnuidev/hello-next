@@ -13,6 +13,7 @@ import { useGetCurrentReviewCharacter } from "./use-get-current-review-character
 import { useRouter } from "next/navigation";
 import { useIsContent } from "./use-is-content";
 import { ReviewClozeContent } from "./review-cloze-content/review-cloze-content";
+import { useClozeContentMode } from "./content-cloze-mode-button";
 
 function ReviewClassic() {
   const { view, mode } = useGetReviewParams();
@@ -90,23 +91,38 @@ function ReviewMode() {
 
   const isContent = useIsContent(mode);
 
+  const { clozeContentMode } = useClozeContentMode();
+
   if (!reviewMode) {
     return <ReviewModeSelector />;
   }
 
   if (reviewMode === "cloze") {
     if (isContent) {
-      return (
-        <ReviewClozeContent
-          contentId={mode}
-          isLoading={isReviewCharactersLoading}
-          currentCharacter={currentCharacter?.hanzi}
-          lang={lang}
-          onClose={() => {
-            router.push(`/nmm?lang=${lang}`);
-          }}
-        />
-      );
+      if (clozeContentMode === "content") {
+        return (
+          <ReviewClozeContent
+            contentId={mode}
+            isLoading={isReviewCharactersLoading}
+            currentCharacter={currentCharacter?.hanzi}
+            lang={lang}
+            onClose={() => {
+              router.push(`/nmm?lang=${lang}`);
+            }}
+          />
+        );
+      } else {
+        return (
+          <ReviewCloze
+            isLoading={isReviewCharactersLoading}
+            currentCharacter={currentCharacter?.hanzi}
+            lang={lang}
+            onClose={() => {
+              router.push(`/nmm?lang=${lang}`);
+            }}
+          />
+        );
+      }
     }
     return (
       <ReviewCloze

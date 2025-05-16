@@ -369,26 +369,26 @@ export function ReviewCloze({
                   <Icons.arrowRight className="text-2xl" />
                 </button>
               </div>
-
-              <div className="flex justify-center items-center mt-8 gap-8">
-                <button
-                  onClick={() => {
-                    toggleEn();
-                  }}
-                >
-                  {showEn ? "Hide En" : "Show En"}
-                </button>
-
-                {sentence?.contentId && (
-                  <YoutubeButton
-                    sentenceInput={sentence?.input || sentence?.hanzi}
-                    contentId={sentence?.contentId}
-                    transcriptId={sentence?.id}
-                  />
-                )}
-              </div>
             </div>
           )}
+
+          <div className="flex justify-center items-center mt-8 gap-8">
+            <button
+              onClick={() => {
+                toggleEn();
+              }}
+            >
+              {showEn ? "Hide En" : "Show En"}
+            </button>
+
+            {sentence?.contentId && (
+              <YoutubeButton
+                sentenceInput={sentence?.input || sentence?.hanzi}
+                contentId={sentence?.contentId}
+                transcriptId={sentence?.id}
+              />
+            )}
+          </div>
         </div>
       )}
     </div>

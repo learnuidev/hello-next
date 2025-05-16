@@ -16,6 +16,7 @@ import { SpeakComponent } from "@/components/_select-character/speak-component";
 import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
 import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
 import { useReviewModeView } from "./use-review-mode";
+import { useClozeReviewTimer } from "./cloze-review-timer-store";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -90,6 +91,15 @@ export function ReviewModeClassic(props: any) {
     hasNoChars,
   } = useGetCurrentReviewCharacter();
   const diff = endTime - startTime;
+
+  const {
+    startTime: _startTime,
+    endTime: _endTime,
+    resetTime,
+  } = useClozeReviewTimer(currentCharacter?.hanzi || currentCharacter?.input);
+
+  const _clozeTime = _endTime - _startTime;
+  const clozeTime = isNaN(_clozeTime) ? 0 : _clozeTime;
 
   if (isLoading) {
     return <div className="">...</div>;
@@ -352,12 +362,14 @@ export function ReviewModeClassic(props: any) {
                             nextReviewTime: option?.value,
                             timeTaken,
                             ponderTime,
+                            clozeTime,
                             mode,
                             emotion,
                           }),
                         } as any)
                         .then((res) => {
                           const startTime = Date.now();
+                          resetTime();
                           setReveal(false);
                           setShowOptions(false);
                           setStartTime(startTime);
@@ -414,12 +426,14 @@ export function ReviewModeClassic(props: any) {
                             nextReviewTime: option?.value,
                             timeTaken,
                             ponderTime,
+                            clozeTime,
                             mode,
                             emotion,
                           }),
                         } as any)
                         .then((res) => {
                           const startTime = Date.now();
+                          resetTime();
                           setReveal(false);
                           setShowCorrectOptions(false);
                           setStartTime(startTime);
@@ -473,12 +487,14 @@ export function ReviewModeClassic(props: any) {
                           nextReviewTime: "1m",
                           timeTaken,
                           ponderTime,
+                          clozeTime,
                           mode,
                           emotion,
                         }),
                       } as any)
                       .then((res) => {
                         const startTime = Date.now();
+                        resetTime();
                         setReveal(false);
                         setShowOptions(false);
                         setStartTime(startTime);
@@ -523,12 +539,14 @@ export function ReviewModeClassic(props: any) {
                         reviewDate: date,
                         timeTaken,
                         ponderTime,
+                        clozeTime,
                         mode,
                         emotion,
                       }),
                     } as any)
                     .then((res) => {
                       const startTime = Date.now();
+                      resetTime();
                       setReveal(false);
                       setStartTime(startTime);
                       setEndTime(startTime);

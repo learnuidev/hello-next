@@ -10,11 +10,23 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useClozeReviewTimer } from "./cloze-review-timer-store";
+import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
 
 export const ReviewNavbar = () => {
   const { setReviewMode, reviewMode: _reviewMode } = useReviewModeView();
 
   const { reviewMode } = useGetReviewParams();
+
+  const {
+    currentCharacter,
+    lang,
+    isLoading: isReviewCharactersLoading,
+  } = useGetCurrentReviewCharacter();
+
+  const { setStartTime, setEndTime } = useClozeReviewTimer(
+    currentCharacter?.hanzi || currentCharacter?.input
+  );
 
   return (
     <div
@@ -34,8 +46,10 @@ export const ReviewNavbar = () => {
                   onClick={() => {
                     if (_reviewMode === "cloze") {
                       setReviewMode("classic");
+                      setEndTime();
                     } else {
                       setReviewMode("cloze");
+                      setStartTime();
                     }
                   }}
                 >

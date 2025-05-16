@@ -13,6 +13,7 @@ import {
 import { useReviewModeView } from "../use-review-mode";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
+import { YoutubeButton } from "@/components/youtube-page/youtube-button";
 
 const ClozeNavbar = ({
   onClose,
@@ -162,9 +163,6 @@ export function ReviewClozeContent({
     [relevantHanzi, sentence?.hanzi, sentence?.input]
   );
 
-  console.log("isLoading ", isLoading);
-  console.log("isGrammarLoading ", isGrammarLoading);
-
   const checkAnswer = (answer: string) => {
     if (answer === relevantHanzi) {
       setResponse({ type: "correct", answer });
@@ -282,7 +280,14 @@ export function ReviewClozeContent({
                 );
               })}
           </h1>
-          <p className="text-center mt-4">{sentence?.en}</p>
+
+          <Link
+            target="_blank"
+            href={`/convos/${sentence?.contentId}${sentence?.start ? `?start=${sentence?.start}` : ""}`}
+            className="block"
+          >
+            <p className="text-center mt-4">{sentence?.en} </p>
+          </Link>
 
           <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">
             {shuffledOptions?.map((option: any, idx: number) => {
@@ -414,7 +419,7 @@ export function ReviewClozeContent({
                   <Icons.arrowRight className="text-2xl" />
                 </button>
 
-                {sentence?.contentId && (
+                {/* {sentence?.contentId && (
                   <Link
                     target="_blank"
                     href={`/convos/${sentence?.contentId}${sentence?.start ? `?start=${sentence?.start}` : ""}`}
@@ -422,6 +427,14 @@ export function ReviewClozeContent({
                   >
                     <Icons.play className="text-2xl" />
                   </Link>
+                )} */}
+
+                {sentence?.contentId && (
+                  <YoutubeButton
+                    sentenceInput={sentence?.input || sentence?.hanzi}
+                    contentId={sentence?.contentId}
+                    transcriptId={sentence?.id}
+                  />
                 )}
               </div>
             </div>

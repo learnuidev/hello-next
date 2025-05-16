@@ -1,7 +1,6 @@
 "use client";
 
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
-import { SelectedCharacterProps } from "../select-character.types";
 
 import { SelectedCharacterAudio } from "./selected-character-audio";
 import { SelectedCharacterStats } from "./selected-character-stats";

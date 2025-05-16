@@ -12,6 +12,7 @@ import { HanbookLink } from "./hanbook-link";
 import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 import { useSelectedCharacterData } from "@/components/use-selected-character";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { YoutubeLink } from "./youtube-link";
 
 export const SelectedCharacterStats = ({
   characterId,
@@ -83,6 +84,7 @@ export const SelectedCharacterStats = ({
         <GoogleLink hanzi={characterId} />
         {lang === "zh" && <YablaLink hanzi={characterId} />}
         {lang === "zh" && <HanbookLink hanzi={characterId} />}
+        <YoutubeLink characterId={characterId} />
       </div>
     </div>
   );

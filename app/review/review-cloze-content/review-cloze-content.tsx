@@ -76,10 +76,6 @@ export function ReviewClozeContent({
     characterId: currentCharacter,
   });
 
-  const { data: hskWords } = useListHSKWordsQuery();
-
-  const { hskLevel, setHskLevel } = useHskLevel();
-
   const relevantContextSentences = useMemo(
     () =>
       (contextSentences || [])?.filter((sentence: any) => {
@@ -89,9 +85,19 @@ export function ReviewClozeContent({
           sentence?.input?.length > 2
         );
       }),
-    [contextSentences]
+    [contextSentences, currentCharacter]
   );
 
+  // const sentences = useMemo(
+  //   () =>
+  //     [
+  //       ...(relevantContextSentences || []),
+  //       // ...(sentencesInitial || []),
+  //     ]?.filter((sent: any) =>
+  //       (sent?.hanzi || sent?.input)?.includes(currentCharacter)
+  //     ),
+  //   []
+  // );
   const sentences = useMemo(
     () =>
       getRandomWords(
@@ -102,7 +108,7 @@ export function ReviewClozeContent({
           (sent?.hanzi || sent?.input)?.includes(currentCharacter)
         )
       ),
-    [relevantContextSentences, currentCharacter]
+    [relevantContextSentences?.length, currentCharacter]
   );
 
   const sentence = useMemo(
@@ -140,7 +146,10 @@ export function ReviewClozeContent({
     [shuffledGrammar, wordIndex]
   );
 
-  const relevantHanzi = selectedGrammar?.hanzi;
+  const relevantHanzi = useMemo(
+    () => selectedGrammar?.hanzi,
+    [selectedGrammar?.hanzi]
+  );
 
   const randomThreeOptions = useMemo(
     () =>
@@ -164,7 +173,7 @@ export function ReviewClozeContent({
 
   const sentenceHanzi = useMemo(
     () =>
-      (sentence?.hanzi || sentence?.input)?.replace(relevantHanzi, " ____ "),
+      (sentence?.input || sentence?.hanzi)?.replace(relevantHanzi, " ____ "),
     [relevantHanzi, sentence?.hanzi, sentence?.input]
   );
 
@@ -248,7 +257,7 @@ export function ReviewClozeContent({
             </p>
           )}
           <h1 className="text-center text-3xl">
-            {(response ? sentence?.hanzi || sentence?.input : sentenceHanzi)
+            {(response ? sentence?.input || sentence?.hanzi : sentenceHanzi)
               .split("")
               .map((item: string, idx: number) => {
                 return (

@@ -12,6 +12,7 @@ import { shuffleArray } from "./utils/shuffle-array";
 import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { ContentClozeModeButton } from "../content-cloze-mode-button";
+import { YoutubeButton } from "@/components/youtube-page/youtube-button";
 
 const ClozeNavbar = ({
   onClose,
@@ -269,6 +270,15 @@ export function ReviewCloze({
                 );
               })}
           </h1>
+
+          <Link
+            target="_blank"
+            href={`/convos/${sentence?.contentId}${sentence?.start ? `?start=${sentence?.start}` : ""}`}
+            className="block"
+          >
+            <p className="text-center mt-4">{sentence?.en}</p>
+          </Link>
+
           <p className="text-center mt-4">{sentence?.en}</p>
 
           <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">
@@ -353,14 +363,13 @@ export function ReviewCloze({
                 >
                   <Icons.arrowRight className="text-2xl" />
                 </button>
+
                 {sentence?.contentId && (
-                  <Link
-                    target="_blank"
-                    href={`/convos/${sentence?.contentId}${sentence?.start ? `?start=${sentence?.start}` : ""}`}
-                    className="block hover:scale-125 transition hover:font-bold"
-                  >
-                    <Icons.play className="text-2xl" />
-                  </Link>
+                  <YoutubeButton
+                    sentenceInput={sentence?.input || sentence?.hanzi}
+                    contentId={sentence?.contentId}
+                    transcriptId={sentence?.id}
+                  />
                 )}
               </div>
             </div>

@@ -5,7 +5,7 @@ import { TimelineTabs } from "./_components/timeline-tabs";
 
 export default function Timeline() {
   return (
-    <main className="">
+    <main className="mb-32">
       <NavBar />
 
       <TimelineTabs />

@@ -8,6 +8,9 @@ import { useIsContent } from "./use-is-content";
 import { useGetReviewParams } from "./use-get-review-params";
 import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
+import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
 
 export const useClozeContentMode = (contentId?: string) => {
   const { data: userPreferences } = useGetUserPreferenceQuery();
@@ -49,6 +52,17 @@ export const ContentClozeModeButton = ({
 
   const { mode } = useGetReviewParams();
 
+  const {
+    currentCharacter,
+    lang,
+    isLoading: isReviewCharactersLoading,
+  } = useGetCurrentReviewCharacter();
+
+  const contextSentences = useGetCharacterLearningContext({
+    lang,
+    characterId: currentCharacter,
+  });
+
   const isContent = useIsContent(contentId || mode);
 
   // if (!isContent) {
@@ -56,6 +70,10 @@ export const ContentClozeModeButton = ({
   // }
 
   const isContentMode = clozeContentMode === "content";
+
+  if (!contextSentences?.length) {
+    return null;
+  }
 
   return (
     <Button

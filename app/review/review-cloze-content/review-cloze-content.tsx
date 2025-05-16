@@ -2,16 +2,17 @@
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
 import { Icons } from "@/components/ui/icons.v2";
-import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
-import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
+import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { useHskLevel, useReviewModeView } from "../use-review-mode";
+import {
+  ContentClozeModeButton,
+  useClozeContentMode,
+} from "../content-cloze-mode-button";
+import { useReviewModeView } from "../use-review-mode";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
-import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
-import { ContentClozeModeButton } from "../content-cloze-mode-button";
 
 const ClozeNavbar = ({
   onClose,
@@ -88,16 +89,6 @@ export function ReviewClozeContent({
     [contextSentences, currentCharacter]
   );
 
-  // const sentences = useMemo(
-  //   () =>
-  //     [
-  //       ...(relevantContextSentences || []),
-  //       // ...(sentencesInitial || []),
-  //     ]?.filter((sent: any) =>
-  //       (sent?.hanzi || sent?.input)?.includes(currentCharacter)
-  //     ),
-  //   []
-  // );
   const sentences = useMemo(
     () =>
       getRandomWords(
@@ -110,6 +101,8 @@ export function ReviewClozeContent({
       ),
     [relevantContextSentences?.length, currentCharacter]
   );
+
+  const { setClozeContentMode } = useClozeContentMode();
 
   const sentence = useMemo(
     () => sentences?.[questionIndex],
@@ -177,6 +170,9 @@ export function ReviewClozeContent({
     [relevantHanzi, sentence?.hanzi, sentence?.input]
   );
 
+  console.log("isLoading ", isLoading);
+  console.log("isGrammarLoading ", isGrammarLoading);
+
   const checkAnswer = (answer: string) => {
     if (answer === relevantHanzi) {
       setResponse({ type: "correct", answer });
@@ -192,6 +188,38 @@ export function ReviewClozeContent({
       </div>
     );
   }
+
+  if (sentences?.length === 0) {
+    return (
+      <div>
+        <ClozeNavbar
+          // contentId={contentId}
+          onClose={onClose}
+          currentCharacter={currentCharacter}
+        />
+
+        <div className="flex justify-center items-center flex-col mt-32">
+          <h4 className="text-center mb-8">Nothing here</h4>
+
+          <div className="flex justify-between items-center gap-4">
+            {BackButton ? (
+              <BackButton />
+            ) : (
+              <button
+                onClick={() => {
+                  setClozeContentMode("hsk");
+                }}
+              >
+                {" "}
+                Back to hsk mode
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (questionIndex > relevantContextSentences?.length - 1) {
     return (
       <div>
@@ -232,8 +260,6 @@ export function ReviewClozeContent({
       </div>
     );
   }
-
-  console.log("RESPONSE", response);
 
   return (
     <div className="px-8">

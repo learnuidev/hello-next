@@ -63,6 +63,7 @@ export function ReviewCloze({
   onClose?: () => void;
   backButton?: any;
 }) {
+  const [showEn, setShowEn] = useState(false);
   const [clozeIndex, setClozeIndex] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [response, setResponse] = useState<any>(null);
@@ -184,6 +185,10 @@ export function ReviewCloze({
     } else {
       setResponse({ type: "incorrect", answer });
     }
+  };
+
+  const toggleEn = () => {
+    return setShowEn(!showEn);
   };
 
   if (isSentenceLoading || isLoading) {
@@ -362,6 +367,16 @@ export function ReviewCloze({
                   className="hover:scale-125 transition hover:font-bold"
                 >
                   <Icons.arrowRight className="text-2xl" />
+                </button>
+              </div>
+
+              <div className="flex justify-center items-center mt-8 gap-8">
+                <button
+                  onClick={() => {
+                    toggleEn();
+                  }}
+                >
+                  {showEn ? "Hide En" : "Show En"}
                 </button>
 
                 {sentence?.contentId && (

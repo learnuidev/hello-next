@@ -308,8 +308,6 @@ const DynaSentence = ({
         >
           <p className="mt-2 lg:text-xl text-md">{sentence?.en}</p>
         </Link>
-
-        <p className="mt-2 lg:text-xl text-md">{sentence?.en}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">

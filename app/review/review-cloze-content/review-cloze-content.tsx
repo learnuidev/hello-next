@@ -138,6 +138,10 @@ export function ReviewClozeContent({
     [selectedGrammar?.hanzi]
   );
 
+  const toggleEn = () => {
+    return setShowEn(!showEn);
+  };
+
   const randomThreeOptions = useMemo(
     () =>
       getRandomWords(
@@ -418,16 +422,16 @@ export function ReviewClozeContent({
                 >
                   <Icons.arrowRight className="text-2xl" />
                 </button>
+              </div>
 
-                {/* {sentence?.contentId && (
-                  <Link
-                    target="_blank"
-                    href={`/convos/${sentence?.contentId}${sentence?.start ? `?start=${sentence?.start}` : ""}`}
-                    className="block hover:scale-125 transition hover:font-bold"
-                  >
-                    <Icons.play className="text-2xl" />
-                  </Link>
-                )} */}
+              <div className="flex justify-center items-center mt-8 gap-8">
+                <button
+                  onClick={() => {
+                    toggleEn();
+                  }}
+                >
+                  {showEn ? "Hide En" : "Show En"}
+                </button>
 
                 {sentence?.contentId && (
                   <YoutubeButton

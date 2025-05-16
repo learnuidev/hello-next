@@ -46,7 +46,7 @@ export const ActiveTranscription = ({
           href={`/nmm/${encodeURIComponent(
             currentTranscription?.input || currentTranscription?.hanzi
           )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
-          className="text-gray-400 text-sm sm:text-[16px]"
+          className="dark:text-gray-400 text-gray-800 text-sm sm:text-[16px]"
         >
           {currentTranscription?.roman || currentTranscription?.pinyin}
         </Link>

@@ -148,7 +148,9 @@ export function ReviewClozeContent({
       getRandomWords(
         [
           ...new Set(
-            shuffledGrammar?.filter((item: any) => item.en !== relevantHanzi)
+            shuffledGrammar?.filter(
+              (item: any) => (item?.input || item.hanzi) !== relevantHanzi
+            )
             // ?.map((item: any) => item?.en)
           ),
         ],

@@ -98,7 +98,7 @@ export function ReviewModeClassic(props: any) {
   } = useClozeReviewTimer(currentCharacter?.hanzi || currentCharacter?.input);
 
   const _clozeTime = _endTime - _startTime;
-  const clozeTime = isNaN(_clozeTime) ? 0 : Math.min(0, _clozeTime);
+  const clozeTime = isNaN(_clozeTime) ? 0 : Math.max(0, _clozeTime);
 
   const diff = endTime - startTime + _clozeTime;
 

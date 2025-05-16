@@ -6,6 +6,8 @@ import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-pre
 import { useQueryClient } from "@tanstack/react-query";
 import { useIsContent } from "./use-is-content";
 import { useGetReviewParams } from "./use-get-review-params";
+import { useMemo } from "react";
+import { Button } from "@/components/ui/button";
 
 export const useClozeContentMode = (contentId?: string) => {
   const { data: userPreferences } = useGetUserPreferenceQuery();
@@ -15,8 +17,13 @@ export const useClozeContentMode = (contentId?: string) => {
 
   const queryClient = useQueryClient();
 
-  const clozeContentMode =
-    userPreferences?.clozeContentMode || isContent ? "content" : "hsk";
+  const clozeContentMode = useMemo(() => {
+    if (userPreferences?.clozeContentMode) {
+      return userPreferences?.clozeContentMode;
+    }
+
+    return isContent ? "content" : "hsk";
+  }, [isContent, userPreferences?.clozeContentMode]);
 
   const setClozeContentMode = (contentMode: "hsk" | "content") => {
     queryClient.setQueryData([getUserPreferenceKey], (old: any) => {
@@ -27,7 +34,10 @@ export const useClozeContentMode = (contentId?: string) => {
     });
   };
 
-  return { setClozeContentMode, clozeContentMode };
+  return {
+    setClozeContentMode,
+    clozeContentMode: clozeContentMode,
+  };
 };
 
 export const ContentClozeModeButton = ({
@@ -37,6 +47,8 @@ export const ContentClozeModeButton = ({
 }) => {
   const { clozeContentMode, setClozeContentMode } = useClozeContentMode();
 
+  console.log("CLOZE CONTENTMODE", clozeContentMode);
+
   const { mode } = useGetReviewParams();
 
   const isContent = useIsContent(contentId || mode);
@@ -45,24 +57,21 @@ export const ContentClozeModeButton = ({
     return null;
   }
 
-  if (clozeContentMode === "content") {
-    return (
-      <button
-        onClick={() => {
-          setClozeContentMode("hsk");
-        }}
-      >
-        Switch to: HSK Mode
-      </button>
-    );
-  }
+  const isContentMode = clozeContentMode === "content";
+
   return (
-    <button
+    <Button
+      className="rounded-full"
+      variant={"outline"}
       onClick={() => {
-        setClozeContentMode("content");
+        if (isContentMode) {
+          setClozeContentMode("hsk");
+        } else {
+          setClozeContentMode("content");
+        }
       }}
     >
-      Switch to: Content Mode
-    </button>
+      {isContentMode ? "HSK Mode" : "Content Mode"}
+    </Button>
   );
 };

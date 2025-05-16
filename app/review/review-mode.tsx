@@ -90,7 +90,6 @@ export function ReviewModeClassic(props: any) {
     lang,
     hasNoChars,
   } = useGetCurrentReviewCharacter();
-  const diff = endTime - startTime;
 
   const {
     startTime: _startTime,
@@ -100,6 +99,8 @@ export function ReviewModeClassic(props: any) {
 
   const _clozeTime = _endTime - _startTime;
   const clozeTime = isNaN(_clozeTime) ? 0 : _clozeTime;
+
+  const diff = endTime - startTime + _clozeTime;
 
   if (isLoading) {
     return <div className="">...</div>;
@@ -678,7 +679,7 @@ export function ReviewModeClassic(props: any) {
 
       {updateCharacterStatusMutation?.isLoading
         ? null
-        : diff !== 0 && (
+        : reveal && (
             <div className="mt-16 text-[rgb(31,32,33)] font-extralight flex space-x-6 items-center justify-center">
               <Icons.clock className="text-3xl" />
               <p className="text-4xl text-center">{diff}ms</p>

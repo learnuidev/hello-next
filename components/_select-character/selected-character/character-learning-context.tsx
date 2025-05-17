@@ -1,5 +1,4 @@
 import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
-import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 import { isYoutube } from "@/app/(auth)/convos/utils/is-youtube";
 import { Nothing } from "@/app/nmm/nothing";
 import { formatDate } from "@/components/settings-dialog/utils/format-date";
@@ -8,7 +7,7 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { resolveLangCode } from "@/libs/openai/utils";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { SentenceItem } from "../sentence-item";
 import { useGetCharacterLearningContext } from "./use-get-character-learning-context";
@@ -188,25 +187,24 @@ export const CharacterLearningContext = ({
 }: any) => {
   const lang = useGetCurrentLang();
 
-  const { data } = useListPublishedContentsQuery({});
+  const items = useGetCharacterLearningContext({ lang, characterId });
 
-  const items = useGetCharacterLearningContext({ lang, characterId })?.slice(
-    0,
-    60
-  );
+  const slicedItems = useMemo(() => {
+    return items?.slice(0, 60);
+  }, [items]);
 
   const learnedCharacter = selectedComp;
 
-  if (!items?.length) {
+  if (!slicedItems?.length) {
     return <Nothing message="Nothing found" />;
   }
 
-  if (items?.length) {
+  if (slicedItems?.length) {
     return (
       <div>
         {/* <h1>TODO: {characterId}</h1> */}
 
-        {items?.map((item: any) => {
+        {slicedItems?.map((item: any) => {
           return (
             <SentenceItem
               key={JSON.stringify(item)}

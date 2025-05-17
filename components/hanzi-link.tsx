@@ -151,7 +151,8 @@ export function HanziLink({
                       : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
                         //   ? "dark:text-yellow-500"
                         "dark:text-gray-700 text-gray-200"
-              } dark:hover:text-white text-xs transition lowercase text-center`
+              } dark:hover:text-white text-xs transition lowercase text-center`,
+              sentences?.length > 0 ? "dark:text-white text-black" : ""
             )}
           >
             {frequency}

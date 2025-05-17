@@ -24,7 +24,8 @@ export function useGetCharacterLearningContext({
         (JSON.stringify(item?.hanzi)?.includes(characterId) ||
           JSON.stringify(item?.input)?.includes(characterId)) &&
         item?.lang === lang
-    );
+    )
+    ?.sort((a: any, b: any) => a?.hanzi?.length - b?.hanzi?.length);
 
   return items;
 }

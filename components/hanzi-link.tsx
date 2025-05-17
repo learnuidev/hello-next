@@ -91,7 +91,7 @@ export function HanziLink({
             "top-0 text-xs text-black dark:text-gray-400 w-24 text-center truncate",
 
             className,
-            sentences?.length > 0 ? "font-bold" : ""
+            sentences?.length > 0 ? "font-bold dark:text-white text-black" : ""
           )}
         >
           {character?.pinyin || selectedComp?.pinyin}

@@ -45,7 +45,7 @@ export function YoutubeButton({
   transcriptId,
   sentenceInput,
   className,
-  currentPhraseStr,
+  // currentPhraseStr,
 }: {
   contentId: string;
   transcriptId: string;
@@ -55,10 +55,10 @@ export function YoutubeButton({
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const currentPhrase = useMemo(
-    () => JSON.parse(currentPhraseStr || ""),
-    [currentPhraseStr]
-  );
+  // const currentPhrase = useMemo(
+  //   () => JSON.parse(currentPhraseStr || ""),
+  //   [currentPhraseStr]
+  // );
 
   // const { isPlaying, setIsPlaying } = useIsPlaying({ currentPhrase });
 
@@ -88,13 +88,13 @@ export function YoutubeButton({
 
   const currentTranscription = useMemo(
     () =>
-      currentPhrase ||
+      // currentPhrase ||
       transcriptions?.find(
         (trans: any) =>
           trans?.id === transcriptId ||
           (trans?.hanzi || trans?.input) === sentenceInput
       ),
-    [currentPhrase, transcriptions]
+    [transcriptions]
   );
 
   useEffect(() => {

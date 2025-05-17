@@ -80,7 +80,7 @@ export const SentenceItem = (props: any) => {
 
           {currentPhrase?.contentId && (
             <YoutubeButton
-              currentPhraseStr={JSON.stringify(currentPhrase)}
+              // currentPhraseStr={JSON.stringify(currentPhrase)}
               className="h-6 w-6 text-xs"
               contentId={currentPhrase?.contentId}
               transcriptId={"todo"}

@@ -62,14 +62,6 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
     return setViews(characterId, view);
   };
 
-  const pinyinOrRoman =
-    selectedComp?.pinyin ||
-    selectedComp?.roman ||
-    selectedComp2?.pinyin ||
-    selectedComp2?.roman ||
-    offlineCharacter?.pinyin ||
-    offlineCharacter?.roman;
-
   switch (view) {
     case "review": {
       if (characterId?.length > 2) {

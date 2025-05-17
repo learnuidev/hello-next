@@ -16,6 +16,7 @@ import { CharacterItem } from "./character-item";
 import { GoogleLink } from "./selected-character/google-link";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { smartSplit } from "../youtube-page/utils/smart-split";
+import { YoutubeButton } from "../youtube-page/youtube-button";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -50,6 +51,7 @@ export const SentenceItem = (props: any) => {
   });
 
   const Links = () => {
+    console.log("CURRENT PHRASE", currentPhrase);
     const hanziOrInput = encodeURIComponent(unEncoded);
     return (
       <div className="flex justify-between items-center w-full mt-2">
@@ -75,6 +77,16 @@ export const SentenceItem = (props: any) => {
         </div>
         <div className="flex gap-2 justify-end items-end w-full pr-2 mt-2 sm:mt-0">
           {/* {currentPhrase?.audio ? ( */}
+
+          {currentPhrase?.contentId && (
+            <YoutubeButton
+              currentPhrase={currentPhrase}
+              className="h-6 w-6 text-xs"
+              contentId={currentPhrase?.contentId}
+              transcriptId={"todo"}
+              sentenceInput={currentPhrase?.input || currentPhrase?.hanzi}
+            />
+          )}
 
           {/* ) : null} */}
           <AudioComponent

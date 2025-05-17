@@ -192,7 +192,7 @@ export const CharacterLearningContext = ({
 
   const items = useGetCharacterLearningContext({ lang, characterId })?.slice(
     0,
-    30
+    60
   );
 
   const learnedCharacter = selectedComp;

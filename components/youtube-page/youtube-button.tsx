@@ -7,15 +7,20 @@ import { useSearchParams } from "next/navigation";
 import { Icons } from "../ui/icons.v2";
 
 import { useCurrentTime } from "./use-current-time-store";
+import { cn } from "@/lib/utils";
 
 export function YoutubeButton({
   contentId,
   transcriptId,
   sentenceInput,
+  className,
+  currentPhrase,
 }: {
   contentId: string;
   transcriptId: string;
   sentenceInput: string;
+  className?: string;
+  currentPhrase?: any;
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -40,11 +45,13 @@ export function YoutubeButton({
 
   const transcriptions = lesson?.transcriptions || [];
 
-  const currentTranscription = transcriptions?.find(
-    (trans: any) =>
-      trans?.id === transcriptId ||
-      (trans?.hanzi || trans?.input) === sentenceInput
-  );
+  const currentTranscription =
+    currentPhrase ||
+    transcriptions?.find(
+      (trans: any) =>
+        trans?.id === transcriptId ||
+        (trans?.hanzi || trans?.input) === sentenceInput
+    );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -102,9 +109,9 @@ export function YoutubeButton({
         }}
       >
         {isPlaying ? (
-          <Icons.pause className="text-2xl" />
+          <Icons.pause className={cn("text-2xl", className)} />
         ) : (
-          <Icons.play className="text-2xl" />
+          <Icons.play className={cn("text-2xl", className)} />
         )}
       </button>
     </div>

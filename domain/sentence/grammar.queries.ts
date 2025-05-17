@@ -125,10 +125,6 @@ export function useListGrammarsQuery(
         );
         return response as ListGrammarsResponse;
       }
-
-      return {
-        grammarAnalysis: [],
-      };
     },
 
     ...options,

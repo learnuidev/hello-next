@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import ReactPlayer from "react-player";
@@ -9,14 +9,13 @@ import { Icons } from "../ui/icons.v2";
 import { useCurrentTime } from "./use-current-time-store";
 import { cn } from "@/lib/utils";
 
-import { persist, createJSONStorage } from "zustand/middleware";
 import { create } from "zustand";
 
 export const useIsPlayingStore = create((set: any, get: any) => ({
   isPlaying: {},
   setIsPlaying: (id: string, isPlaying: boolean) =>
     set({
-      convos: {
+      isPlaying: {
         ...get().isPlaying,
         [id]: isPlaying,
       },
@@ -28,7 +27,7 @@ const useIsPlaying = ({ currentPhrase }: { currentPhrase: string }) => {
 
   const _isPlaying: any = useIsPlayingStore((state) => state.isPlaying);
 
-  const isPlaying = _isPlaying?.[currentPhraseStr];
+  const isPlaying = _isPlaying?.[currentPhraseStr] || false;
   const _setIsPlaying = useIsPlayingStore((state) => state.setIsPlaying);
 
   const setIsPlaying = (playing: boolean) => {
@@ -77,15 +76,21 @@ export function YoutubeButton({
     }
   };
 
-  const transcriptions = lesson?.transcriptions || [];
+  const transcriptions = useMemo(
+    () => lesson?.transcriptions || [],
+    [lesson?.transcriptions]
+  );
 
-  const currentTranscription =
-    currentPhrase ||
-    transcriptions?.find(
-      (trans: any) =>
-        trans?.id === transcriptId ||
-        (trans?.hanzi || trans?.input) === sentenceInput
-    );
+  const currentTranscription = useMemo(
+    () =>
+      currentPhrase ||
+      transcriptions?.find(
+        (trans: any) =>
+          trans?.id === transcriptId ||
+          (trans?.hanzi || trans?.input) === sentenceInput
+      ),
+    [currentPhrase, transcriptions]
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {

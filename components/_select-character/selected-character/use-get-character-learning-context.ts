@@ -25,7 +25,10 @@ export function useGetCharacterLearningContext({
           JSON.stringify(item?.input)?.includes(characterId)) &&
         item?.lang === lang
     )
-    ?.sort((a: any, b: any) => a?.hanzi?.length - b?.hanzi?.length);
+    ?.sort(
+      (a: any, b: any) =>
+        (a?.hanzi || a?.input)?.length - (b?.hanzi || b?.input)?.length
+    );
 
   return items;
 }

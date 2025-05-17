@@ -55,7 +55,10 @@ export function YoutubeButton({
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const currentPhrase = useMemo(() => JSON.parse(currentPhraseStr || ""), []);
+  const currentPhrase = useMemo(
+    () => JSON.parse(currentPhraseStr || ""),
+    [currentPhraseStr]
+  );
 
   // const { isPlaying, setIsPlaying } = useIsPlaying({ currentPhrase });
 

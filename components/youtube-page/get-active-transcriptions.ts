@@ -15,9 +15,6 @@ export const getActiveTranscriptions = ({
     (timestamp: any) => `${Math.floor(timestamp?.end / limit)}`
   );
 
-  // console.log("CURRENT TIME", currentTime);
-  // console.log("TRANSCRIPTIONS", transcriptions);
-
   const groupTranscriptions = groupByMinute(transcriptions);
   const groupTranscriptionValues = Object.values(groupTranscriptions);
 

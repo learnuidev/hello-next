@@ -190,7 +190,7 @@ export const CharacterLearningContext = ({
   const items = useGetCharacterLearningContext({ lang, characterId });
 
   const slicedItems = useMemo(() => {
-    return items?.slice(0, 60);
+    return items?.slice(0, 30);
   }, [items]);
 
   const learnedCharacter = selectedComp;

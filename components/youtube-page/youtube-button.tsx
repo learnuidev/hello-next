@@ -104,6 +104,8 @@ export function YoutubeButton({
     return () => clearInterval(interval);
   }, []);
 
+  console.log("CURRENT TIME", currentTime);
+
   useEffect(() => {
     if (currentTime > currentTranscription?.end) {
       if (playerRef?.current?.player?.isPlaying) {

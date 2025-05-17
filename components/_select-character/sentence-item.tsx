@@ -51,7 +51,6 @@ export const SentenceItem = (props: any) => {
   });
 
   const Links = () => {
-    console.log("CURRENT PHRASE", currentPhrase);
     const hanziOrInput = encodeURIComponent(unEncoded);
     return (
       <div className="flex justify-between items-center w-full mt-2">

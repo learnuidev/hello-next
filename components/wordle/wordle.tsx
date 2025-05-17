@@ -383,8 +383,6 @@ export function Wordle() {
             (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
           );
 
-          console.log("CURRENT PHRASE INDEX", currentPhraseIndex);
-
           if (currentPhraseIndex !== -1) {
             const nextId =
               // @ts-ignore
@@ -418,8 +416,6 @@ export function Wordle() {
           const currentPhraseIndex = currentLesson?.transcriptions?.findIndex(
             (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
           );
-
-          console.log("CURRENT PHRASE ID", currentPhraseIndex);
 
           if (currentPhraseIndex !== -1) {
             const nextId =

@@ -26,7 +26,7 @@ export const RelatedHskWords = ({
   return (
     <NmmListContainer className="px-0">
       {filteredRelatedHskWords?.map((prop: any, idx: any) => {
-        const contentItem = contentItems?.filter((item: any) =>
+        const contentItem = (contentItems || [])?.filter((item: any) =>
           JSON.stringify(item)?.includes(prop?.hanzi || prop?.input)
         );
         return (

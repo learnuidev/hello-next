@@ -23,7 +23,8 @@ export const SelectedCharacterStats = ({
 
   const { selectedComp, selectedComp2 } = data;
 
-  const level = selectedComp?.level || selectedComp2?.level;
+  const level = selectedComp?.mandarinoIndex || selectedComp2?.mandarinoIndex;
+  // const level = selectedComp?.level || selectedComp2?.level;
   const { data: chineseCharacters } = useListChineseCharactersQuery();
 
   const lang = useGetCurrentLang();

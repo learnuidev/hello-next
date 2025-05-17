@@ -53,9 +53,9 @@ export function YoutubeButton({
   className?: string;
   currentPhrase?: any;
 }) {
-  // const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  const { isPlaying, setIsPlaying } = useIsPlaying({ currentPhrase });
+  // const { isPlaying, setIsPlaying } = useIsPlaying({ currentPhrase });
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(contentId);
 

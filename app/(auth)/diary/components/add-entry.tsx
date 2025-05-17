@@ -80,7 +80,7 @@ export const AddEntry = () => {
               </Button>
             )}
           </div>
-          <div>
+          <div className="flex flex-row gap-4">
             <Button
               onClick={() => {
                 fixGrammarMutation
@@ -94,7 +94,7 @@ export const AddEntry = () => {
               disabled={
                 text?.split(" ")?.length < 3 || fixGrammarMutation.isLoading
               }
-              className="mt-4"
+              className="mt-4 rounded-full"
             >
               {fixGrammarMutation.isLoading ? "Fixing..." : "Fix Grammar"}
             </Button>
@@ -112,7 +112,7 @@ export const AddEntry = () => {
               disabled={
                 text?.split(" ")?.length < 10 || addJournalMutation.isLoading
               }
-              className="mt-4"
+              className="mt-4 rounded-full"
             >
               {addJournalMutation.isLoading ? "Adding..." : "Add New Journal"}
             </Button>

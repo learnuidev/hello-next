@@ -45,15 +45,17 @@ export function YoutubeButton({
   transcriptId,
   sentenceInput,
   className,
-  currentPhrase,
+  currentPhraseStr,
 }: {
   contentId: string;
   transcriptId: string;
   sentenceInput: string;
   className?: string;
-  currentPhrase?: any;
+  currentPhraseStr?: string;
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
+
+  const currentPhrase = useMemo(() => JSON.parse(currentPhraseStr || ""), []);
 
   // const { isPlaying, setIsPlaying } = useIsPlaying({ currentPhrase });
 

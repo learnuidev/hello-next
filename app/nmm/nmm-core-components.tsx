@@ -107,60 +107,22 @@ export function NmmCoreComponents() {
       includeAll: true,
       singleItemsOnly: true,
     });
-  // const { data: componentsAll } = useListComponents({
-  //   includeAll: true,
-  // });
 
-  // const comps = isComponentsLoading ? chineseCharacters : componentsAll;
-
-  // const slicedComponents = queryStr
-  //   ? comps
-  //   : (isComponentsLoading ? chineseCharacters : components)?.slice(
-  //       selectedBelt?.minCharacterLevel,
-  //       selectedBelt?.maxCharacterLevel
-  //     );
-
-  // const filteredComponents = filterComponents({
-  //   components: slicedComponents,
-  //   query: queryStr,
-  //   characters: learnedCharacters2,
-  // });
-
-  // const { data: filteredComponents } = useListComponentsByBelt();
   const { data: chineseCharacters } = useListChineseCharactersQuery();
+
+  console.log("COMPS", components);
 
   const learnedComps =
     (isComponentsLoading ? chineseCharacters : components)
       ?.slice(selectedBelt?.minCharacterLevel, selectedBelt?.maxCharacterLevel)
-      // ?.filter((comp: any) => comp?.level < 100)
-      .filter((prop: any) => {
-        // const learnedChar = learnedCharacters2?.find(
-        //   (char: any) => char?.hanzi === prop?.hanzi
-        // );
 
-        // if (!brightMode && learnedChar?.status === "forgotten") {
-        //   return null;
-        // }
+      .filter((prop: any) => {
         if (!brightMode && prop?.status === "forgotten") {
           return null;
         }
 
         return true;
       }) || [];
-
-  // const learnedComps = filteredComponents
-  //   // ?.filter((comp: any) => comp?.level < 100)
-  //   .filter((prop: any) => {
-  //     const learnedChar = learnedCharacters2?.find(
-  //       (char: any) => char?.hanzi === prop?.hanzi
-  //     );
-
-  //     if (!brightMode && learnedChar?.status === "forgotten") {
-  //       return null;
-  //     }
-
-  //     return true;
-  //   });
 
   const sliced = slicedByLevels?.[level] || 100;
 

@@ -79,9 +79,9 @@ export function useListComponentsQuery(
     async () => {
       // if (options.query) {
 
-      if (components && !params?.forceReload) {
-        return components as IComponent[];
-      }
+      // if (components && !params?.forceReload) {
+      //   return components as IComponent[];
+      // }
       const response = await listComponents(
         { ...params, lang: currentLang },
         {
@@ -149,7 +149,10 @@ export function useListComponents(
           level: 10000 + idx,
         };
       })
-      .sort((a: any, b: any) => (a.level || 0) - (b.level || 0)),
+      // .sort((a: any, b: any) => (a.level || 0) - (b.level || 0)),
+      .sort(
+        (a: any, b: any) => (b?.mandarinoIndex || 0) - (a?.mandarinoIndex || 0)
+      ),
     ...rest,
   };
 }

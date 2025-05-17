@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { useCanTrackFunction } from "./use-can-track-function";
 import { CharacterItem } from "./_select-character/character-item";
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
+import { useListCharacterSentences } from "./_select-character/use-list-character-sentences";
 
 interface HSKCharacter {
   hanzi: string;
@@ -35,6 +37,8 @@ export function HanziLink({
 }) {
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
+
+  const sentences = useListCharacterSentences(character?.hanzi);
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
@@ -86,7 +90,8 @@ export function HanziLink({
           className={cn(
             "top-0 text-xs text-black dark:text-gray-400 w-24 text-center truncate",
 
-            className
+            className,
+            sentences?.length > 0 ? "font-bold" : ""
           )}
         >
           {character?.pinyin || selectedComp?.pinyin}
@@ -126,6 +131,7 @@ export function HanziLink({
                     //   ? "dark:text-yellow-500"
                     "dark:text-gray-700 text-gray-200"
           } dark:hover:text-white text-2xl md:text-2xl transition lowercase w-28 text-center`
+
           // "flex flex-col items-center"
         )}
       >

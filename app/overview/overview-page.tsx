@@ -41,7 +41,7 @@ export const OverviewPage = () => {
     [recentlyWatched]
   );
   const { data: totalComponents, isLoading: isComponentsLoading } =
-    useListComponents();
+    useListComponents({ singleItemsOnly: true });
 
   const { data: totalCharacters, isLoading: isCharactersLoading } =
     useListCharactersQuery();

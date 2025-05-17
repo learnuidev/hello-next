@@ -9,6 +9,38 @@ import { Icons } from "../ui/icons.v2";
 import { useCurrentTime } from "./use-current-time-store";
 import { cn } from "@/lib/utils";
 
+import { persist, createJSONStorage } from "zustand/middleware";
+import { create } from "zustand";
+
+export const useIsPlayingStore = create((set: any, get: any) => ({
+  isPlaying: {},
+  setIsPlaying: (id: string, isPlaying: boolean) =>
+    set({
+      convos: {
+        ...get().isPlaying,
+        [id]: isPlaying,
+      },
+    }),
+}));
+
+const useIsPlaying = ({ currentPhrase }: { currentPhrase: string }) => {
+  const currentPhraseStr = JSON.stringify(currentPhrase);
+
+  const _isPlaying: any = useIsPlayingStore((state) => state.isPlaying);
+
+  const isPlaying = _isPlaying?.[currentPhraseStr];
+  const _setIsPlaying = useIsPlayingStore((state) => state.setIsPlaying);
+
+  const setIsPlaying = (playing: boolean) => {
+    _setIsPlaying(currentPhraseStr, playing);
+  };
+
+  return {
+    isPlaying,
+    setIsPlaying,
+  };
+};
+
 export function YoutubeButton({
   contentId,
   transcriptId,
@@ -22,7 +54,9 @@ export function YoutubeButton({
   className?: string;
   currentPhrase?: any;
 }) {
-  const [isPlaying, setIsPlaying] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(false);
+
+  const { isPlaying, setIsPlaying } = useIsPlaying({ currentPhrase });
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(contentId);
 

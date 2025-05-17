@@ -40,6 +40,7 @@ const MAX_LIMIT = 9000;
 const THIRTY = 30;
 const SIXTY = 60;
 const NINTY = 90;
+
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>("para");
   const [chapterView, setChapterView] = useState(false);

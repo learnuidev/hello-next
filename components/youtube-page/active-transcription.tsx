@@ -7,6 +7,7 @@ import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { smartSplit } from "./utils/smart-split";
 import { useMemo } from "react";
 import { HanziTooltip } from "../_select-character/selected-character/hanzi-tooltip";
+import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
 
 export const ActiveTranscription = ({
   currentTime,
@@ -39,8 +40,8 @@ export const ActiveTranscription = ({
   // return "TODO";
 
   return (
-    <div className="text-center my-2 sm:mt-8 mt-4 mb-4 h-20">
-      {showPinyin && (
+    <div className="text-center sm:mt-8 mt-4 mb-4 h-20">
+      {showPinyin && isNonRomanLang(currentTranscription?.lang) && (
         <Link
           target="_blank"
           href={`/nmm/${encodeURIComponent(
@@ -56,7 +57,7 @@ export const ActiveTranscription = ({
         onClick={() => {
           setIfExists({ ...currentTranscription, contentId });
         }}
-        className="text-xl sm:text-3xl font-extralight"
+        className="text-lg sm:text-3xl font-extralight"
       >
         {splittedStrings?.map((val: string, idx: number) => {
           if (val === " ") {
@@ -73,6 +74,7 @@ export const ActiveTranscription = ({
                 val
               )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
               target="_blank"
+              className="text-xs"
               key={`active-transcription-${val}-${idx}`}
             >
               <HanziTooltip
@@ -94,9 +96,15 @@ export const ActiveTranscription = ({
         })}
       </p>
 
-      <p className="text-gray-500 text-sm sm:text-[16px]">
+      <Link
+        target="_blank"
+        href={`/nmm/${encodeURIComponent(
+          currentTranscription?.input || currentTranscription?.hanzi
+        )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
+        className="dark:text-gray-400 text-gray-800 text-sm sm:text-[16px]"
+      >
         {currentTranscription?.en}
-      </p>
+      </Link>
     </div>
   );
 };

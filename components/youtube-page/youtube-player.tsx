@@ -802,7 +802,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           ) : null}
         </div>
 
-        <p className="dark:text-black text-white hidden lg:block">
+        <p className="dark:text-[rgb(10,11,12)] text-white hidden lg:block">
           todotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodo
         </p>
       </div>

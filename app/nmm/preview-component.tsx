@@ -41,7 +41,7 @@ export const PreviewComponent = (props: {
 
   const styleEn = "min-w-0 text-gray-500 font-extralight truncate text-[12px]";
   return (
-    <div className="w-80">
+    <div className="">
       <div className="flex w-full items-end justify-start my-2 space-x-8">
         <div className="w-full items-start justify-start flex-row">
           <div className="flex items-start justify-between w-full">

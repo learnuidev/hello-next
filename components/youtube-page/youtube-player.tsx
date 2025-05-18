@@ -67,8 +67,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const start = searchParams.get("start");
 
-  console.log("START", start);
-
   const { data: lesson } = useGetContentQuery({ contentId: lessonId });
 
   const finalUrl = lesson?.audio;
@@ -534,7 +532,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             />
           )}
         </div>
-        <ActiveButton />
+        {viewMode === "karaoke" ? null : <ActiveButton />}
       </div>
 
       <div className="grid grid-cols-12 gap-4">
@@ -593,11 +591,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
               : "col-span-12 md:col-span-5"
           }
         >
-          {/* {lesson?.chapters && (
-            <h1 className="text-center mb-4">
-              {(currentChapter || lastFinishedChapter)?.title}
-            </h1>
-          )} */}
           {viewMode === "karaoke" ? (
             <div
               className={
@@ -607,6 +600,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
               }
             >
               <KaraokeMode
+                lang={lesson?.lang}
                 isPlaying={isPlaying}
                 seekTo={(time: number) => {
                   playerRef.current.seekTo(time, "seconds");

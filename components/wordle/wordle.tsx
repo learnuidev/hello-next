@@ -2,23 +2,20 @@
 
 // @ts-ignore
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import { useParams, useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 import {
   faArrowLeft,
   faArrowRight,
   faBadgeCheck,
-  faTick,
 } from "@fortawesome/pro-thin-svg-icons";
-import { useListContentsQuery } from "@/domain/content/content.queries";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 function GameTile(props: any) {
   const { letter } = props;
@@ -31,7 +28,6 @@ function GameTile(props: any) {
 
 function GameRow(props: any) {
   const { guess } = props;
-  console.log("GUESS", guess);
 
   return (
     <div className="flex justify-center mb-1">
@@ -134,8 +130,6 @@ export function Wordle() {
       )[0];
 
       if (firstUnanswered) {
-        console.log("FIRST ANSWERED", firstUnanswered);
-        // const firstUnansweredIndex
         const currentLessonStep =
           currentLesson?.transcriptions?.findIndex(
             (lesson: any) =>
@@ -160,8 +154,6 @@ export function Wordle() {
     2: [],
   });
 
-  console.log("GUESS HISTRT", guessHistory);
-
   const currentGuessHistory = (
     guessHistory?.[lessonIndex as string] || []
   )?.filter((hist: string) => {
@@ -178,12 +170,6 @@ export function Wordle() {
       ""
     );
 
-    // console.log("HISTORY", historyTrimmed);
-    // console.log("HISTORY", currentGuess);
-    // console.log("HISTORY SEC", secret);
-
-    // console.log("LESSON INDEX", lessonIndex);
-
     if (secret?.trim() === guessTrimmed?.trim() || secret === historyTrimmed) {
       // alert("You win");
 
@@ -198,7 +184,6 @@ export function Wordle() {
       alert("You lose");
       setGameStatus("lost");
     } else {
-      console.log("YOOOO", guessTrimmed);
       // 1. add the current guess to guessHistory
       setGuessHistory((prevHistory: any) => {
         return {
@@ -208,8 +193,6 @@ export function Wordle() {
           ),
         };
       });
-
-      console.log("YOOOO");
 
       // 2. reset currentGuess
       setCurrentGuess("");
@@ -225,35 +208,11 @@ export function Wordle() {
     }
   };
 
-  // const empties = Array(5 - currentGuessHistory.length).fill("     ");
-
-  const phraseItem =
-    currentPhrase?.hanzi || currentPhrase?.pinyin || currentPhrase?.input;
-
-  // if (phraseItem?.length > 20) {
-  //   return (
-  //     <div className="text-center my-32">
-  //       <h1 className="text-2xl font-semibold">Phrase too long</h1>
-
-  //       <p className="text-xs my-8 text-center px-80 text-gray-400 font-light">
-  //         {phraseItem}
-  //       </p>
-  //       <p className="text-gray-500 font-extralight">
-  //         Sentence must be 16 characters max
-  //       </p>
-  //     </div>
-  //   );
-  // }
-
   const currentLessonStep =
     // @ts-ignore
     currentLesson?.transcriptions?.findIndex(
       (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
     ) + 1;
-
-  // const hasAnswered =
-
-  console.log("ANSWERS", answers);
 
   const FinishButton = () => {
     return (
@@ -320,14 +279,11 @@ export function Wordle() {
                   (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
                 );
 
-              console.log("CURRENT PHASE INDEX", currentPhraseIndex);
-
               if (currentPhraseIndex !== -1) {
                 const nextId =
                   // @ts-ignore
                   currentLesson?.transcriptions?.[currentPhraseIndex + 1];
 
-                console.log("NEXT ID", nextId);
                 router.push(
                   // @ts-ignore
                   `/convos/${params?.["lessonId"] || _lessonId}?step=${currentPhraseIndex + 2}`
@@ -421,11 +377,6 @@ export function Wordle() {
             const nextId =
               // @ts-ignore
               currentLesson?.transcriptions?.[currentPhraseIndex + 1];
-
-            console.log("NEXT ID", nextId);
-
-            // @ts-ignore
-            console.log("next id", nextId.hanzi);
 
             setTranscriptionId(nextId?.id || nextId?.hanzi);
 

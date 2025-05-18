@@ -71,8 +71,6 @@ export function useUploadFileV2(cb?: any, ctx?: any, props?: any) {
         ...ctx,
       })
       .then(async (resp: UploadFileResponse) => {
-        console.log("UPLOADED", resp);
-
         if (e?.target?.value) {
           e.target.value = "";
         }

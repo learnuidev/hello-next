@@ -94,7 +94,7 @@ export function YoutubeButton({
           trans?.id === transcriptId ||
           (trans?.hanzi || trans?.input) === sentenceInput
       ),
-    [transcriptions]
+    [sentenceInput, transcriptId, transcriptions]
   );
 
   useEffect(() => {
@@ -104,8 +104,6 @@ export function YoutubeButton({
     return () => clearInterval(interval);
   }, []);
 
-  console.log("CURRENT TIME", currentTime);
-
   useEffect(() => {
     if (currentTime > currentTranscription?.end) {
       if (playerRef?.current?.player?.isPlaying) {
@@ -113,7 +111,7 @@ export function YoutubeButton({
         setIsPlaying(false);
       }
     }
-  }, [currentTime]);
+  }, [currentTime, currentTranscription?.end]);
 
   const togglePlay = useCallback(() => {
     if (playerRef?.current?.player?.isPlaying) {

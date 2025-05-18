@@ -266,6 +266,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
               play={() => {
                 togglePlay();
               }}
+              lang={lang}
               currentTime={currentTime}
               isPlaying={isPlaying}
               transcriptions={content?.transcriptions}

@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Icons } from "../ui/icons.v2";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { Icons } from "../ui/icons.v2";
+import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
+import { useMemo } from "react";
 
 export function KaraokeMode({
   // playerRef,
@@ -13,22 +13,18 @@ export function KaraokeMode({
   isPlaying,
   transcriptions,
   currentTime,
+  lang,
 }: {
   play: any;
   seekTo: any;
   transcriptions: any;
   isPlaying: any;
   currentTime: number;
+  lang: string;
 }) {
-  const [currentLyricIndex, setCurrentLyricIndex] = useState(0);
-
   const currentTranscription =
     transcriptions?.filter((trans: any) => trans?.end > currentTime)?.[0] ||
     transcriptions?.[0];
-
-  const currentTranscriptionIndex = transcriptions?.findIndex(
-    (trans: any) => trans?.id === currentTranscription?.id
-  );
 
   const isIntro = transcriptions?.[0]?.start > currentTime + 1;
 
@@ -45,15 +41,20 @@ export function KaraokeMode({
   const romanOrPinyin =
     currentTranscription?.roman || currentTranscription?.pinyin;
 
+  const isNonRomanContent = useMemo(() => {
+    return isNonRomanLang(lang);
+  }, [lang]);
+
   return (
-    <div className="mt-4  flex flex-col justify-center items-center p-4">
-      <div className="w-full max-w-4xl  backdrop-blur-md rounded-xl p-4">
+    <div className="mt-4 flex flex-col justify-center items-center">
+      <div className="w-full max-w-6xl  backdrop-blur-md rounded-xl">
         {/* Past Lyrics */}
         {true && (
           <div
             className={cn(
               "overflow-y-auto flex justify-center flex-col text-xs items-center",
-              "mb-24"
+              "mb-24",
+              "text-center"
             )}
           >
             {lastThreeLyrics.map((lyric: any, idx: any, ctx: any) => (
@@ -63,7 +64,7 @@ export function KaraokeMode({
                 }}
                 key={JSON.stringify(lyric) + `${idx}`}
                 className={cn(
-                  "text-gray-600 text-lg cursor-pointer hover:text-white/75 transition-colors",
+                  "text-gray-600 lg:text-lg text-sm cursor-pointer hover:text-white/75 transition-colors",
                   "text-gray-700"
                 )}
               >
@@ -98,20 +99,19 @@ export function KaraokeMode({
               </p>
             </button>
           ) : (
-            // <AnimatePresence mode="wait">
             <div
               key={JSON.stringify(currentTranscription)}
-              // initial={{ y: 50, opacity: 0.4 }}
-              // animate={{ y: 0, opacity: 1 }}
-              // exit={{ y: -50, opacity: 0 }}
-              // transition={{ duration: 0.5, ease: "easeInOut" }}
               className={cn(
-                "text-4xl font-bold text-center text-white w-[700px]",
+                "text-4xl font-bold text-center text-white",
                 romanOrPinyin?.length < 16 ? "text-4x" : "text-lg"
               )}
             >
-              {showPinyin && (
-                <p className={cn("text-xl font-light text-gray-400")}>
+              {isNonRomanContent && showPinyin && (
+                <p
+                  className={cn(
+                    "text-[16px] lg:text-xl font-light text-gray-400"
+                  )}
+                >
                   {romanOrPinyin}
                 </p>
               )}
@@ -119,7 +119,9 @@ export function KaraokeMode({
               <p
                 className={cn(
                   " dark:text-gray-200 text-black",
-                  currentTranscription?.lang === "zh" ? "text-4xl" : "text-2xl"
+                  currentTranscription?.lang === "zh"
+                    ? "text-4xl"
+                    : "lg:text-2xl text-[16px]"
                 )}
               >
                 {currentTranscription?.input || currentTranscription?.hanzi}
@@ -127,19 +129,18 @@ export function KaraokeMode({
 
               <p
                 className={cn(
-                  "text-xl font-light dark:text-gray-400 text-black"
+                  "text-[16px] lg:text-xl font-light dark:text-gray-400 text-black"
                 )}
               >
                 {currentTranscription?.en}
               </p>
             </div>
-            // </AnimatePresence>
           )}
         </div>
 
         {/* Upcoming Lyrics */}
         {true && (
-          <div className="overflow-y-auto mt-32 flex flex-col items-center justify-center">
+          <div className="overflow-y-auto mt-32 text-center flex flex-col items-center justify-center">
             {transcriptions
               ?.filter((trans: any) => {
                 return trans.start > currentTime;
@@ -160,14 +161,16 @@ export function KaraokeMode({
                     seekTo(lyric?.start);
                   }}
                 >
-                  {showPinyin && (
-                    <p className="text-lg font-light text-gray-400">
+                  {isNonRomanContent && showPinyin && (
+                    <p className="text-sm lg:text-lg font-light text-gray-400">
                       {lyric?.roman || lyric?.pinyin}
                     </p>
                   )}
-                  <p>{lyric?.input || lyric?.hanzi}</p>
+                  <p className="text-sm lg:text-lg">
+                    {lyric?.input || lyric?.hanzi}
+                  </p>
 
-                  <p className="text-lg">{lyric?.en}</p>
+                  <p className="lg:text-lg text-sm">{lyric?.en}</p>
                 </div>
               ))}
           </div>

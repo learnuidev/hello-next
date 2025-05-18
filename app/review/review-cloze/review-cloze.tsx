@@ -284,8 +284,6 @@ export function ReviewCloze({
             <p className="text-center mt-4">{sentence?.en}</p>
           </Link>
 
-          <p className="text-center mt-4">{sentence?.en}</p>
-
           <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">
             {shuffledOptions?.map((option: string) => (
               <button

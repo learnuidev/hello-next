@@ -20,6 +20,7 @@ import { SimilarCharactersView } from "./similar-characters-view";
 import { StoryView } from "./story-view";
 import { ReviewCloze } from "@/app/review/review-cloze/review-cloze";
 import { DynaClozeSentence } from "@/app/(auth)/convos/[content-id]/dyna-cloze-sentence/dyna-cloze-sentence";
+import { CharacterSearch } from "./character-search";
 
 export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
   const { data: characters } = useListCharactersQuery(
@@ -108,6 +109,9 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
           <CharacterAnalytics characterId={characterId} lang={lang} />
         </div>
       );
+
+    case "search":
+      return <CharacterSearch characterId={characterId} lang={lang} />;
     case "sentences": {
       return <HskSentenceView characterId={characterId} />;
 

@@ -14,6 +14,7 @@ import { SelectedCharacterStoryButton } from "./selected-character-story-button"
 import { useRelatedHskWordsByCharacter } from "./use-filter-related-hsk-words-by-character";
 import { useSlicedRelatedSentencesByCharacter } from "./use-sliced-related-sentences-by-character";
 import { useSelectedCharacterData } from "../use-selected-character";
+import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 
 export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
   const { data: characterData } = useSelectedCharacterData({ characterId });
@@ -36,6 +37,13 @@ export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
 
   const { data } = useListCharactersQuery();
 
+  const { data: groups } = useListLearnedCharactersByDate({
+    variant: "search",
+    query: characterId,
+  });
+
+  const filteredSearchResults = groups?.map((group) => group.items)?.flat();
+
   const learnedChar = data?.filter(
     (item: any) => (item?.input || item?.hanzi) === characterId
   )?.[0];
@@ -49,7 +57,7 @@ export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
   return (
     <div className="flex my-4 justify-start items-center w-full">
       <div className="flex jusify-between items-center space-x-32">
-        <div className="space-x-8 flex items-center">
+        <div className="space-x-6 lg:space-x-8 flex items-center">
           <button
             className={"text-xl"}
             onClick={() => {
@@ -85,6 +93,23 @@ export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
               }}
             >
               {view === "sentences" ? <Icons.treeSolid /> : <Icons.tree />}
+            </button>
+          )}
+
+          {filteredSearchResults?.length > 0 && (
+            <button
+              className={cn("text-xl transition", styleFn("sentences"))}
+              onClick={() => {
+                setView("search");
+              }}
+            >
+              <Icons.magnifyingGlass
+                className={
+                  view === "search"
+                    ? "dark:text-white text-black"
+                    : "text-gray-500"
+                }
+              />
             </button>
           )}
 

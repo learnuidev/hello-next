@@ -6,9 +6,10 @@ import { formatJournalDate } from "@/app/(auth)/diary/utils/format-journal-date"
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import { NoResultView } from "./no-result-view";
 
-export function SearchHistoryResult() {
+export function SearchHistoryResult({ query }: { query?: string }) {
   const { data: groups } = useListLearnedCharactersByDate({
     variant: "search",
+    query,
   });
 
   const filteredSearchResults = groups?.map((group) => group.items)?.flat();

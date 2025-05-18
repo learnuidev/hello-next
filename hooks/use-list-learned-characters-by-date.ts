@@ -12,6 +12,7 @@ import { getMonth, getYear } from "date-fns";
 import { groupBy } from "ramda";
 import { getReviewDate } from "./get-review-date";
 import { useGetAuthUserProfileQuery } from "./user/use-get-auth-user-profile";
+import { useMemo } from "react";
 
 export function useListLearnedCharactersByDate({
   variant,
@@ -29,7 +30,11 @@ export function useListLearnedCharactersByDate({
   }[];
 } {
   const { data: learnedCharacters, ...rest } = useListCharactersQuery();
-  const queryStr = useSearchQueryStore((state) => state.query2);
+  const _queryStr = useSearchQueryStore((state) => state.query2);
+
+  const queryStr = useMemo(() => {
+    return query || _queryStr;
+  }, [_queryStr, query]);
 
   const { data: components } = useListComponents({
     includeAll: true,

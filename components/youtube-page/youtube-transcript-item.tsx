@@ -23,6 +23,7 @@ import {
 } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { CharacterItem } from "../_select-character/character-item";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
 
 export const TranscriptItem = ({
   example,
@@ -252,22 +253,24 @@ export const TranscriptItem = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="px-0 transition">
-                {showPinyin && (example?.pinyin || example?.roman) && (
-                  <p
-                    className={`${
-                      (timeStamp?.start ||
-                        example?.timestamp?.[0] ||
-                        example?.start) < currentTime &&
-                      (timeStamp?.end ||
-                        example?.timestamp?.[1] ||
-                        example?.end) > currentTime
-                        ? "text-rose-400"
-                        : "dark:text-gray-400 text-gray-300"
-                    } transition text-md text-left text-gray-500`}
-                  >
-                    {example?.roman || example?.pinyin}
-                  </p>
-                )}
+                {isNonRomanLang(example?.lang) &&
+                  showPinyin &&
+                  (example?.pinyin || example?.roman) && (
+                    <p
+                      className={`${
+                        (timeStamp?.start ||
+                          example?.timestamp?.[0] ||
+                          example?.start) < currentTime &&
+                        (timeStamp?.end ||
+                          example?.timestamp?.[1] ||
+                          example?.end) > currentTime
+                          ? "text-rose-400"
+                          : "dark:text-gray-400 text-gray-300"
+                      } transition text-md text-left text-gray-500`}
+                    >
+                      {example?.roman || example?.pinyin}
+                    </p>
+                  )}
                 <div className="text-left">
                   {(example?.input || example?.hanzi || example?.nepali || "")
                     .split("")

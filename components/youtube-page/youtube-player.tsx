@@ -50,6 +50,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isVideoHidden, setIsVideoHidden] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
+  const editMode = useContentEditStore((state) => state.editMode);
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(lessonId);
   const params = useParams<{ "content-id": string }>();
@@ -184,7 +185,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.code === "Space") {
+      if (event.code === "Space" && !editMode) {
         // Vishal 07-12-2024-10-20: prevents the browser from scrolling down
 
         event.preventDefault();
@@ -192,12 +193,12 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         return null;
       }
 
-      if (event.code === "ArrowLeft") {
+      if (event.code === "ArrowLeft" && !editMode) {
         seekBefore();
         return null;
       }
 
-      if (event.code === "ArrowRight") {
+      if (event.code === "ArrowRight" && !editMode) {
         seekAfter();
         return null;
       }
@@ -222,7 +223,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [togglePlay, seekBefore, seekAfter, currentTranscription]);
+  }, [togglePlay, seekBefore, seekAfter, currentTranscription, editMode]);
 
   const currentTranscriptionIndex = Math.max(
     transcriptions?.findIndex(
@@ -319,7 +320,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const isSmall = useIsSmall();
 
-  const editMode = useContentEditStore((state) => state.editMode);
   const setEditMode = useContentEditStore((state) => state.setEditMode);
   const resetTimes = useContentEditStore((state) => state.resetTimes);
   const times = useContentEditStore((state) => state.times);
@@ -551,7 +551,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             />
           </div>
 
-          {lesson?.chapters && (
+          {/* {lesson?.chapters && (
             <div className={"flex justify-center items-center gap-4 mt-8"}>
               {lesson?.chapters?.map((chapter: any) => {
                 return (
@@ -575,7 +575,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                 );
               })}
             </div>
-          )}
+          )} */}
 
           <ActiveTranscription
             currentTime={currentTime}

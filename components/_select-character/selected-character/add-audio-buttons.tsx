@@ -17,7 +17,7 @@ export const AddAudioButtons = ({
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="flex space-x-8 items-center">
-      <UploadAudioButton currentPhrase={currentPhrase} />
+      <UploadAudioButton currentPhrase={currentPhrase} meaningId={meaningId} />
       <GenerateAudioDialog
         meaningId={meaningId}
         currentPhrase={currentPhrase}

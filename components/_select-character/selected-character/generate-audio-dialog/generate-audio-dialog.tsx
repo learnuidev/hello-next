@@ -115,6 +115,32 @@ export function GenerateAudioDialog({
     {
       onSuccess: (data: IGetAudioResourceResponse) => {
         setResourceStatus(data);
+        const audioUrl = (data as any)?.result;
+
+        if (audioUrl) {
+          uploadAudioMutation
+            .mutateAsync({
+              meaningId,
+              audioUrl,
+              component: currentPhrase?.hanzi,
+              componentId: currentPhrase?.id,
+            })
+            .then((resp) => {
+              setResourceStatus(null);
+              setAudioResource(null);
+              queryClient.invalidateQueries([
+                listMeaningQueryKey,
+                currentPhrase?.hanzi,
+                lang,
+              ]);
+              // queryClient.invalidateQueries([
+              //   getComponentQueryKey,
+              //   currentPhrase?.hanzi,
+              // ]);
+
+              closeDialog();
+            });
+        }
       },
     }
   );

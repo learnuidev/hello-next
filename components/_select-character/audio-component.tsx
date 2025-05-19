@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 import { PlayIcon } from "../ui/icons";
 
@@ -33,8 +33,9 @@ export const AudioComponent = ({
   audioUrl: _audioUrl,
   icon: Icon,
 }: any) => {
-  const playMusic = useMusicStore((state: any) => state.play);
-  const setPlay = useMusicStore((state: any) => state.setPlay);
+  const [playMusic, setPlay] = useState(false);
+  // const playMusic = useMusicStore((state: any) => state.play);
+  // const setPlay = useMusicStore((state: any) => state.setPlay);
 
   const { speak } = useSpeak(currentPhrase?.lang);
 

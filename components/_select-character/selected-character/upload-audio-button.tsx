@@ -5,12 +5,18 @@ import { useAddUserAssetMutation } from "@/domain/asset/asset.mutation";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useUpdateComponentMutation } from "@/domain/component/use-update-component-mutation";
 import { IComponent } from "@/domain/lesson/component.queries";
+import { useUpdateMeaningMutation } from "@/domain/sentence/use-update-meaning-mutation";
 import Axios from "axios";
 
-export const UploadAudioButton = (props: { currentPhrase: IComponent }) => {
+export const UploadAudioButton = (props: {
+  currentPhrase: IComponent;
+  meaningId?: string;
+}) => {
   function getFileExtension(file: any) {
     return file.name.split(".").pop().toLowerCase();
   }
+
+  const updateMeaningMutation = useUpdateMeaningMutation();
 
   const addUserAssetMutation = useAddUserAssetMutation();
 
@@ -50,10 +56,17 @@ export const UploadAudioButton = (props: { currentPhrase: IComponent }) => {
       .then(async () => {
         console.log("UPLOADED");
 
-        updateComponentMutation.mutateAsync({
-          id: props?.currentPhrase?.id,
-          audio: assetUrl,
-        });
+        if (props?.meaningId) {
+          updateMeaningMutation.mutateAsync({
+            id: props.meaningId,
+            audioUrl: assetUrl,
+          });
+        } else {
+          updateComponentMutation.mutateAsync({
+            id: props?.currentPhrase?.id,
+            audio: assetUrl,
+          });
+        }
 
         // Update Component
       });

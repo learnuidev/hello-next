@@ -163,7 +163,7 @@ export function ReviewClozeContent({
 
   const sentenceHanzi = useMemo(
     () =>
-      (sentence?.input || sentence?.hanzi)?.replace(relevantHanzi, " ____ "),
+      (sentence?.input || sentence?.hanzi)?.replaceAll(relevantHanzi, " ____ "),
     [relevantHanzi, sentence?.hanzi, sentence?.input]
   );
 

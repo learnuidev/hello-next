@@ -8,6 +8,7 @@ export const useUploadAudioMutation = () => {
 
   return useMutation({
     mutationFn: async (params: {
+      meaningId: string;
       audioUrl: string;
       component: string;
       componentId: string;

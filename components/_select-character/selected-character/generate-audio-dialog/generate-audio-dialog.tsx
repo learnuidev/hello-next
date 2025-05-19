@@ -15,6 +15,8 @@ import {
 import { Icons } from "@/components/ui/icons.v2";
 import { IComponent } from "@/domain/lesson/component.queries";
 import { getComponentQueryKey } from "@/domain/lesson/use-get-component-query";
+import { listMeaningQueryKey } from "@/domain/sentence/meaning.queries";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { IGetAudioResourceResponse } from "@/libs/narakeet/narakeet";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -64,12 +66,17 @@ export function GenerateAudioDialog({
   isOpen,
   openDialog,
   closeDialog,
+  meaningId,
+  children,
 }: {
   currentPhrase: IComponent;
   isOpen: boolean;
   openDialog: () => void;
   closeDialog: () => void;
+  meaningId: string;
+  children: React.ReactNode;
 }) {
+  const lang = useGetCurrentLang();
   const router = useRouter();
   const voiceItem = useTitaStore((state) => state?.voice);
   const setAudioResource = useTitaStore((state) => state.setAudioResource);
@@ -125,7 +132,7 @@ export function GenerateAudioDialog({
         }}
       >
         <button>
-          <Icons.ai /> Generate
+          <Icons.ai /> {children || "Generate"}
         </button>
       </DialogTrigger>
       <DialogContent
@@ -161,6 +168,7 @@ export function GenerateAudioDialog({
                       onClick={() => {
                         uploadAudioMutation
                           .mutateAsync({
+                            meaningId,
                             audioUrl,
                             component: currentPhrase?.hanzi,
                             componentId: currentPhrase?.id,
@@ -195,6 +203,7 @@ export function GenerateAudioDialog({
                     onClick={() => {
                       uploadAudioMutation
                         .mutateAsync({
+                          meaningId,
                           audioUrl,
                           component: currentPhrase?.hanzi,
                           componentId: currentPhrase?.id,
@@ -203,9 +212,14 @@ export function GenerateAudioDialog({
                           setResourceStatus(null);
                           setAudioResource(null);
                           queryClient.invalidateQueries([
-                            getComponentQueryKey,
+                            listMeaningQueryKey,
                             currentPhrase?.hanzi,
+                            lang,
                           ]);
+                          // queryClient.invalidateQueries([
+                          //   getComponentQueryKey,
+                          //   currentPhrase?.hanzi,
+                          // ]);
 
                           closeDialog();
                         });

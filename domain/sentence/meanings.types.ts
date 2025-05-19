@@ -25,4 +25,6 @@ export interface ListMeaningsResponse {
     en: string;
     roman: string;
   };
+
+  audioUrl?: string;
 }

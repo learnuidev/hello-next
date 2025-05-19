@@ -27,13 +27,19 @@ const useMusicStore = create((set: any, get: any) => ({
       : set({ results: f }),
 }));
 
-export const AudioComponent = ({ currentPhrase, className }: any) => {
+export const AudioComponent = ({
+  currentPhrase,
+  className,
+  audioUrl: _audioUrl,
+  icon: Icon,
+}: any) => {
   const playMusic = useMusicStore((state: any) => state.play);
   const setPlay = useMusicStore((state: any) => state.setPlay);
 
   const { speak } = useSpeak(currentPhrase?.lang);
 
   const audioUrl =
+    _audioUrl ||
     currentPhrase?.audio?.female ||
     currentPhrase?.audio?.male ||
     currentPhrase?.audio ||
@@ -68,14 +74,18 @@ export const AudioComponent = ({ currentPhrase, className }: any) => {
 
   return (
     <button
-      className={cn(
-        `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${
-          playMusic
-            ? `dark:text-white ring-slate-900/5 dark:ring-white`
-            : "ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"
-        } shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
-        className
-      )}
+      className={
+        Icon
+          ? ""
+          : cn(
+              `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${
+                playMusic
+                  ? `dark:text-white ring-slate-900/5 dark:ring-white`
+                  : "ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"
+              } shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
+              className
+            )
+      }
       onClick={() => {
         if (audioUrl) {
           if (playMusic && false) {

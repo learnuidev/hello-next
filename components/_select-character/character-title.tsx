@@ -25,6 +25,7 @@ import { useCharacterEditStore } from "./use-character-edit-store";
 import { useState } from "react";
 import { useUpdateMeaningMutation } from "@/domain/sentence/use-update-meaning-mutation";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
+import { AudioComponent } from "./audio-component";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -243,14 +244,23 @@ export const CharacterTitle = (props: any) => {
       )}
 
       <div className="space-x-4 flex">
-        {!edit && (
-          <button
-            onClick={() => {
-              speak(selectedCompInput);
-            }}
-          >
-            <Icons.volume className="text-2xl" />
-          </button>
+        {meaning?.audioUrl ? (
+          <AudioComponent
+            audioUrl={meaning?.audioUrl}
+            key={JSON.stringify(meaning?.audioUrl)}
+            currentPhrase={meaning?.details?.hanzi}
+            icon={<Icons.volume className="text-2xl" />}
+          />
+        ) : (
+          !edit && (
+            <button
+              onClick={() => {
+                speak(selectedCompInput);
+              }}
+            >
+              <Icons.volume className="text-2xl" />
+            </button>
+          )
         )}
 
         {!edit && <CharacterTrackButton />}

@@ -4,13 +4,14 @@ import { headers } from "next/headers";
 import { addUserAsset } from "@/domain/asset/add-user-asset.api";
 import { getUploadUrl } from "@/domain/asset/asset.api";
 import { updateComponent } from "@/domain/component/update-component.api";
+import { updateMeanings } from "@/domain/sentence/update-meanings.api";
 
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
   const headersApi = headers();
 
-  const { audioUrl, component, componentId } = await req.json();
+  const { audioUrl, component, componentId, meaningId } = await req.json();
 
   const jwtToken = headersApi.get("authorization") || "";
   const isVerified = await verifyJwt(jwtToken, { isAdmin: false });
@@ -58,18 +59,35 @@ export async function POST(req: Request) {
     });
 
     // 5. Edit component - TODO
-    const updatedComponent = await updateComponent(
-      {
-        id: componentId,
-        audio: assetUrl,
-      },
-      {
-        Authorization: jwtToken,
-      }
-    );
 
-    // 6. Return response
-    return Response.json(updatedComponent);
+    if (meaningId) {
+      const updatedMeaning = await updateMeanings(
+        {
+          id: meaningId,
+          audioUrl: assetUrl,
+        },
+        {
+          Authorization: jwtToken,
+        }
+      );
+
+      return Response.json(updatedMeaning);
+    }
+
+    if (componentId) {
+      const updatedComponent = await updateComponent(
+        {
+          id: componentId,
+          audio: assetUrl,
+        },
+        {
+          Authorization: jwtToken,
+        }
+      );
+
+      // 6. Return response
+      return Response.json(updatedComponent);
+    }
   } else {
     return Response.json({
       message: "Not authorized",

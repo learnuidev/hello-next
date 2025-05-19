@@ -74,7 +74,7 @@ export function GenerateAudioDialog({
   openDialog: () => void;
   closeDialog: () => void;
   meaningId: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }) {
   const lang = useGetCurrentLang();
   const router = useRouter();

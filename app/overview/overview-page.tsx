@@ -1,11 +1,17 @@
 "use client";
 
 import { useGetAuthUserProfileQuery } from "@/hooks/user/use-get-auth-user-profile";
+
+import { differenceInDays } from "date-fns";
+
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useRecentlyWatchedContent } from "../(auth)/convos/use-recently-watched-content-store";
 import { useGetTotalLifetimeCharacters } from "../profile/hooks/use-get-total-lifetime-characters";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import {
+  ICharacter,
+  useListCharactersQuery,
+} from "@/domain/lesson/character.queries";
 import { formatPercentage } from "../profile/utils/format-percentage";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { Icons } from "@/components/ui/icons.v2";
@@ -16,6 +22,124 @@ import { LottieLoadingAnimation } from "../nmm/lottie-loading-animation";
 
 const TEN = 10;
 
+function calculateTotalMasteryDate(character: ICharacter) {
+  const createdAt = character?.createdAt;
+  // const updatedAt = character?.updatedAt;
+  const reviewHistory = character?.reviewHistory?.map(
+    (item) => item?.createdAt
+  );
+
+  const startDate = new Date(createdAt);
+  // const startDate = new Date(Math.min(...reviewHistory));
+  const endDate = new Date(Math.max(...reviewHistory));
+  const totalDays = differenceInDays(endDate, startDate);
+
+  return totalDays;
+}
+
+function AverageMasteryDays({
+  masteredCharacters: _masteredCharacters,
+}: {
+  masteredCharacters: ICharacter[];
+}) {
+  const masteredCharacters = useMemo(() => {
+    return _masteredCharacters.filter(
+      (char) => char?.reviewHistory?.length > 0
+    );
+  }, [_masteredCharacters]);
+
+  const {
+    averageMasteryAttempts,
+    maxReviewedCharacters,
+    maxReviewAttempt,
+    minReviewedCharacters,
+    minReviewAttempt,
+    averageMasteryDays,
+  } = useMemo(() => {
+    const total = masteredCharacters?.length;
+
+    const totalDaysArray = masteredCharacters?.map(
+      (item) => item?.reviewHistory?.length || 0
+    );
+
+    const maxReviewAttempt = Math.max(...totalDaysArray);
+    const minReviewAttempt = Math.min(...totalDaysArray);
+
+    const maxReviewedCharacters = masteredCharacters?.filter(
+      (character) => character?.reviewHistory?.length === maxReviewAttempt
+    );
+    const minReviewedCharacters = masteredCharacters?.filter(
+      (character) => character?.reviewHistory?.length === minReviewAttempt
+    );
+
+    const totalMasteryDaysArray = masteredCharacters.map((character) =>
+      calculateTotalMasteryDate(character)
+    );
+
+    const totalMasteryDays =
+      totalMasteryDaysArray?.reduce((acc, curr: any) => acc + curr, 0) || 0;
+
+    const averageMasteryDays = (totalMasteryDays / total)?.toFixed(1);
+
+    const totalDays =
+      totalDaysArray?.reduce((acc, curr: any) => acc + curr, 0) || 0;
+
+    return {
+      averageMasteryAttempts: (totalDays / total).toFixed(1),
+      maxReviewedCharacters,
+      maxReviewAttempt,
+      minReviewAttempt,
+      minReviewedCharacters,
+      averageMasteryDays,
+    };
+  }, [masteredCharacters]);
+
+  const maximumReviwedHanzis = useMemo(() => {
+    return maxReviewedCharacters?.map((item) => item?.hanzi || item?.input);
+  }, [maxReviewedCharacters]);
+  const minimumReviwedHanzis = useMemo(() => {
+    return minReviewedCharacters?.map((item) => item?.hanzi || item?.input);
+  }, [minReviewedCharacters]);
+
+  return (
+    <div>
+      <p>
+        <span className="mr-1">
+          <Icons.fireDuoTone />{" "}
+        </span>
+        You took on average
+        <span className="font-bold"> {averageMasteryDays} </span>days to master
+        a character and it took{" "}
+        <span className="font-bold">{averageMasteryAttempts}</span> average
+        attempts.{" "}
+        <span className="font-bold">{maximumReviwedHanzis?.join(",")}</span>{" "}
+        took the most time to gain mastery with{" "}
+        <span className="font-bold">{maxReviewAttempt}</span> attempts.
+      </p>
+    </div>
+  );
+}
+
+function UserLearningSummary() {
+  const { data: profile } = useGetAuthUserProfileQuery();
+
+  const userEmailHandle = useMemo(
+    () => profile?.email?.split("@")?.[0],
+    [profile?.email]
+  );
+
+  if (userEmailHandle) {
+    return (
+      <div className="mt-8 mb-8 text-lg rounded-2xl py-4 lg:py-8">
+        <p className="font-extralight">
+          Yo <span className="font-bold">{userEmailHandle}</span>, here is your
+          learning summary:{" "}
+        </p>
+      </div>
+    );
+  }
+}
+
 function ContentIcon({ content }: { content: any }) {
   if (isYoutube(content?.audio)) {
     return <Icons.youtube />;
@@ -25,13 +149,6 @@ function ContentIcon({ content }: { content: any }) {
 }
 
 export const OverviewPage = () => {
-  const { data: profile } = useGetAuthUserProfileQuery();
-
-  const userEmailHandle = useMemo(
-    () => profile?.email?.split("@")?.[0],
-    [profile?.email]
-  );
-
   const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
 
   const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
@@ -77,12 +194,16 @@ export const OverviewPage = () => {
     return (
       totalCharacters?.filter(
         (character: any) => character?.status === "forgotten"
-      )?.length || 0
+      ) || []
     );
   }, [totalCharacters]);
 
+  const totalMasteredCharacters = useMemo(() => {
+    return masteredCharacters?.length || 0;
+  }, [masteredCharacters?.length]);
+
   const characterMasteryRatio = formatPercentage(
-    masteredCharacters / lifeTimeCharacters
+    totalMasteredCharacters / lifeTimeCharacters
   );
 
   const averageCharacterReview = useMemo(() => {
@@ -107,14 +228,7 @@ export const OverviewPage = () => {
       <div className="w-full flex justify-start">
         <SearchBar />
       </div>
-      {userEmailHandle && (
-        <div className="mt-8 mb-8 text-lg rounded-2xl py-4 lg:py-8">
-          <p className="font-extralight">
-            Yo <span className="font-bold">{userEmailHandle}</span>, here is
-            your learning summary:{" "}
-          </p>
-        </div>
-      )}
+      <UserLearningSummary />
 
       <section className="grid grid-cols-1 sm:grid-cols-12 mt-0 sm:mt-4 gap-4 lg:gap-12">
         <div className="sm:col-span-7  dark:bg-[rgb(11,12,13)] bg-gray-50 rounded-2xl p-4 lg:p-8">
@@ -149,7 +263,7 @@ export const OverviewPage = () => {
                 and mastered{" "}
                 <span className="font-bold">
                   {" "}
-                  {masteredCharacters} ({characterMasteryRatio})
+                  {totalMasteredCharacters} ({characterMasteryRatio})
                 </span>
                 .
               </p>
@@ -161,6 +275,8 @@ export const OverviewPage = () => {
                 <span className="font-bold">{averageCharacterReview}</span>{" "}
                 times per character.
               </p>
+
+              <AverageMasteryDays masteredCharacters={masteredCharacters} />
             </div>
           ) : (
             <div>Nothing here, yet. Please learn some characters first</div>

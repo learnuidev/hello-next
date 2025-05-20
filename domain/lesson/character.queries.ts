@@ -9,8 +9,8 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 const url =
   "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-characters";
 
-interface ICharacter {
-  reviewHistory?: {
+export interface ICharacter {
+  reviewHistory: {
     createdAt: number;
     timeTaken: number;
     ponderTime?: number;

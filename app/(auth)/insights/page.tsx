@@ -6,17 +6,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { InsightsFilters } from "./InsightsFilters";
 
+import { ProfilePage } from "@/app/profile/profile-page";
+import { FloatingNavbar } from "@/components/floating-navbar";
 import { useSearchQueryStore } from "@/components/search/state";
 import { formatDate } from "@/components/settings-dialog/utils/format-date";
+// import { CharacterLearnedOvertimeChart } from "./charts/character-mastered-overtime-area-chart";
 import { InsightsV2 } from "./insights-v2/insights-v2";
 import { SearchResults } from "./insights-v2/precision-insight-view/search-results";
 import { useGetInsightSearchResults } from "./insights-v2/precision-insight-view/use-get-insight-search-results";
-import { useGetFromAndToDate } from "./use-get-from-date";
-import { CharacterLearnedBarChart } from "./CharacterLearnedBarChart";
-import { CharacterDiscoveryAreaChart } from "./CharacterDiscoveryAreaChart";
 import { CharacterDiscoveryAreaChartV2 } from "./insights-v3/character-discover-area-chart-v2";
-import { FloatingNavbar } from "@/components/floating-navbar";
-import { ProfilePage } from "@/app/profile/profile-page";
+import { useGetFromAndToDate } from "./use-get-from-date";
+import { CharacterLearnedOvertimeChart } from "./charts/character-learned-overtime-area-chart";
+import { CharacterMasteredOvertimeChart } from "./charts/character-mastered-overtime-area-chart";
 
 function ToAndFromDate() {
   const { fromDate, toDate } = useGetFromAndToDate();
@@ -67,13 +68,22 @@ export default function InsightsNew() {
           </div>
         </div>
 
-        <TabsContent value="overview" className="sm:mx-8">
+        <TabsContent value="overview" className="sm:mx-8 flex gap-4 flex-col">
           {/* <TimelineTabBody variant="all" /> */}
+
+          <div className="grid grid-cols-2 gap-8">
+            <CharacterLearnedOvertimeChart />
+            <CharacterMasteredOvertimeChart />
+          </div>
 
           <ProfilePage hideSearch />
         </TabsContent>
-        <TabsContent value="characters" className="sm:mx-8">
+        <TabsContent value="characters" className="sm:mx-8 flex gap-4 flex-col">
           {/* <TimelineTabBody variant="all" /> */}
+          <div className="grid grid-cols-2 gap-8">
+            <CharacterLearnedOvertimeChart />
+            <CharacterMasteredOvertimeChart />
+          </div>
 
           <CharacterDiscoveryAreaChartV2 />
         </TabsContent>
@@ -103,10 +113,6 @@ function Insights() {
           <InsightsFilters />
         </div>
       </div>
-
-      {/* <div className="">
-        <CharacterLearnedBarChart />
-      </div> */}
 
       <main className="mx-4 md:mx-48">
         <div className="text-gray-500 font-extralight sm:hidden block text-center">

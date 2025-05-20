@@ -35,19 +35,108 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
+type ColorVariants = "bw" | "rouge";
+
+{
+  /* <defs>
+<pattern
+  id="pattern"
+  patternUnits="userSpaceOnUse"
+  width="6"
+  height="6"
+  patternTransform="rotate(45)"
+>
+  <line
+    x1="0"
+    y1="0"
+    x2="0"
+    y2="6"
+    stroke={
+      theme === "dark"
+        ? "rgba(255,255,255,0.1)"
+        : "rgba(20,20,20,0.1)"
+    }
+    strokeWidth="2"
+  />
+</pattern>
+<linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+  <stop
+    offset="0%"
+    stopColor={
+      theme === "dark"
+        ? "rgba(255,255,255,0.05)"
+        : "rgba(0,0,0,0.4)"
+    }
+  />
+  <stop
+    offset="100%"
+    stopColor={
+      theme === "dark" ? "rgba(255,255,255,0)" : "rgba(0,0,20,0)"
+    }
+  />
+</linearGradient>
+</defs> */
+}
+
+function calculateColor(variants: ColorVariants = "bw") {
+  if (variants === "rouge") {
+    return {
+      line: {
+        dark: "rgba(155,155,155,0.1)",
+        light: "rgba(40,50,60,0.1)",
+      },
+      stop: {
+        dark: {
+          0: "rgba(155,155,155,0.05)",
+          100: "rgba(155,155,155,0)",
+        },
+        light: {
+          0: "rgba(1,20,40,0.4)",
+          100: "rgba(40,20,30,0)",
+        },
+      },
+    };
+  }
+  return {
+    line: {
+      dark: "rgba(255,255,255,0.1)",
+      light: "rgba(20,20,20,0.1)",
+    },
+    stop: {
+      dark: {
+        0: "rgba(255,255,255,0.05)",
+        100: "rgba(255,255,255,0)",
+      },
+      light: {
+        0: "rgba(0,0,0,0.4)",
+        100: "rgba(0,0,20,0)",
+      },
+    },
+  };
+}
+
 export function FancyAreaChart({
   data,
   title,
   totalTime,
+  total: _total,
+
+  colorVariants,
 }: {
+  total?: number;
   title: string;
   totalTime?: string;
   data: { date: string; value: number }[];
+  colorVariants?: ColorVariants;
 }) {
   const { theme } = useTheme();
-  const total = data?.reduce((acc, curr) => {
-    return acc + curr?.value;
-  }, 0);
+  const total =
+    _total ||
+    data?.reduce((acc, curr) => {
+      return acc + curr?.value;
+    }, 0);
+
+  const { line, stop } = calculateColor(colorVariants);
 
   return (
     <div className="space-y-4">
@@ -76,27 +165,19 @@ export function FancyAreaChart({
                   y1="0"
                   x2="0"
                   y2="6"
-                  stroke={
-                    theme === "dark"
-                      ? "rgba(255,255,255,0.1)"
-                      : "rgba(20,20,20,0.1)"
-                  }
+                  stroke={theme === "dark" ? line.dark : line.light}
                   strokeWidth="2"
                 />
               </pattern>
               <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="0%"
-                  stopColor={
-                    theme === "dark"
-                      ? "rgba(255,255,255,0.05)"
-                      : "rgba(0,0,0,0.4)"
-                  }
+                  stopColor={theme === "dark" ? stop.dark[0] : stop.light[0]}
                 />
                 <stop
                   offset="100%"
                   stopColor={
-                    theme === "dark" ? "rgba(255,255,255,0)" : "rgba(0,0,20,0)"
+                    theme === "dark" ? stop.dark[100] : stop.light[100]
                   }
                 />
               </linearGradient>

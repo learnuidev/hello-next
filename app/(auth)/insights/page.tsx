@@ -71,19 +71,21 @@ export default function InsightsNew() {
         <TabsContent value="overview" className="sm:mx-8 flex gap-4 flex-col">
           {/* <TimelineTabBody variant="all" /> */}
 
-          <div className="grid grid-cols-2 gap-8">
+          <ProfilePage
+            hideSearch
+            profileClassName="md:mt-8 lg:mt-12"
+            className="mt-8 mb-12"
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8">
             <CharacterLearnedOvertimeChart />
             <CharacterMasteredOvertimeChart />
           </div>
-
-          <ProfilePage hideSearch />
         </TabsContent>
         <TabsContent value="characters" className="sm:mx-8 flex gap-4 flex-col">
           <CharacterDiscoveryAreaChartV2 />
         </TabsContent>
       </Tabs>
-
-      <FloatingNavbar />
     </div>
   );
 }

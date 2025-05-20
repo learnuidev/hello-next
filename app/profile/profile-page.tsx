@@ -9,8 +9,17 @@ import { NavBar } from "@/components/navbar";
 import { useGetInsightSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/use-get-insight-search-results";
 import { SearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/search-results";
 import { useSearchQueryStore } from "@/components/search/state";
+import { cn } from "@/lib/utils";
 
-export const ProfilePage = ({ hideSearch }: { hideSearch?: boolean }) => {
+export const ProfilePage = ({
+  hideSearch,
+  className,
+  profileClassName,
+}: {
+  hideSearch?: boolean;
+  className?: string;
+  profileClassName?: string;
+}) => {
   const searchResults = useGetInsightSearchResults("all");
 
   const queryStrSync = useSearchQueryStore((state) => state.querySync);
@@ -28,9 +37,14 @@ export const ProfilePage = ({ hideSearch }: { hideSearch?: boolean }) => {
   return (
     <main className="bg-white dark:bg-[rgb(9,10,11)]">
       {hideSearch ? null : <NavBar />}
-      <ProfileBanner />
+      <ProfileBanner className={profileClassName} />
 
-      <section className="flex flex-row justify-center items-center gap-x-16 gap-y-8 mt-16 flex-wrap">
+      <section
+        className={cn(
+          "flex flex-row justify-center items-center gap-x-16 gap-y-8 mt-16 flex-wrap",
+          className
+        )}
+      >
         <LifeTimeCharactersStats />
         <LifeTimeSentencesStats />
         <TimeStudiedStats />

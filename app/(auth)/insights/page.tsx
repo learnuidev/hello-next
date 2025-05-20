@@ -79,12 +79,6 @@ export default function InsightsNew() {
           <ProfilePage hideSearch />
         </TabsContent>
         <TabsContent value="characters" className="sm:mx-8 flex gap-4 flex-col">
-          {/* <TimelineTabBody variant="all" /> */}
-          <div className="grid grid-cols-2 gap-8">
-            <CharacterLearnedOvertimeChart />
-            <CharacterMasteredOvertimeChart />
-          </div>
-
           <CharacterDiscoveryAreaChartV2 />
         </TabsContent>
       </Tabs>

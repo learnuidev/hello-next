@@ -19,6 +19,7 @@ import { isYoutube } from "../(auth)/convos/utils/is-youtube";
 import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
 import { SearchBar } from "@/components/search-bar";
 import { LottieLoadingAnimation } from "../nmm/lottie-loading-animation";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 const TEN = 10;
 
@@ -42,6 +43,7 @@ function AverageMasteryDays({
 }: {
   masteredCharacters: ICharacter[];
 }) {
+  const lang = useGetCurrentLang();
   const masteredCharacters = useMemo(() => {
     return _masteredCharacters.filter(
       (char) => char?.reviewHistory?.length > 0
@@ -94,9 +96,15 @@ function AverageMasteryDays({
     };
   }, [masteredCharacters]);
 
-  const maximumReviwedHanzis = useMemo(() => {
-    return maxReviewedCharacters?.map((item) => item?.hanzi || item?.input);
+  const maximumReviwedHanzi = useMemo(() => {
+    const maxReviewChar = maxReviewedCharacters?.[0];
+    return maxReviewChar?.hanzi || maxReviewChar?.input || "";
   }, [maxReviewedCharacters]);
+
+  const maxReviewDay = useMemo(() => {
+    return calculateTotalMasteryDate(maxReviewedCharacters?.[0]);
+  }, [maxReviewedCharacters]);
+
   const minimumReviwedHanzis = useMemo(() => {
     return minReviewedCharacters?.map((item) => item?.hanzi || item?.input);
   }, [minReviewedCharacters]);
@@ -107,14 +115,22 @@ function AverageMasteryDays({
         <span className="mr-1">
           <Icons.fireDuoTone />{" "}
         </span>
-        You took on average
-        <span className="font-bold"> {averageMasteryDays} </span>days to master
-        a character and it took{" "}
-        <span className="font-bold">{averageMasteryAttempts}</span> average
-        attempts.{" "}
-        <span className="font-bold">{maximumReviwedHanzis?.join(",")}</span>{" "}
-        took the most time to gain mastery with{" "}
-        <span className="font-bold">{maxReviewAttempt}</span> attempts.
+        On average, it took you{" "}
+        <span className="font-bold"> {averageMasteryDays} </span> days and{" "}
+        <span className="font-bold">{averageMasteryAttempts} </span>
+        attempts to master each character. The character{" "}
+        <span className="font-bold">
+          <Link
+            target="_blank"
+            href={`/nmm/${encodeURIComponent(maximumReviwedHanzi)}?lang=${lang}`}
+          >
+            {maximumReviwedHanzi}
+          </Link>
+        </span>{" "}
+        required the most effort, taking{" "}
+        <span className="font-bold">{maxReviewAttempt}</span> attempts and{" "}
+        <span className="font-bold">{maxReviewDay}</span> days to achieve
+        mastery.
       </p>
     </div>
   );

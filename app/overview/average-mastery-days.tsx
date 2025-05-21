@@ -78,6 +78,18 @@ export function AverageMasteryDays({
     return minReviewedCharacters?.map((item) => item?.hanzi || item?.input);
   }, [minReviewedCharacters]);
 
+  if (
+    [
+      averageMasteryDays,
+      averageMasteryAttempts,
+      maximumReviwedHanzi,
+      maxReviewAttempt,
+      maxReviewDay,
+    ].includes(NaN)
+  ) {
+    return null;
+  }
+
   return (
     <div>
       <p>

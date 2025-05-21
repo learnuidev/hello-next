@@ -3,6 +3,9 @@
 import { Icons } from "@/components/ui/icons.v2";
 
 export function AverageCharacterReview({ averageCharacterReview }: any) {
+  if ([averageCharacterReview].includes(NaN)) {
+    return null;
+  }
   return (
     <p>
       <span className="mr-1">

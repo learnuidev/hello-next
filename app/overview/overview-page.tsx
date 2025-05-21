@@ -1,11 +1,9 @@
 "use client";
 
 import { SearchBar } from "@/components/search-bar";
-import { Icons } from "@/components/ui/icons.v2";
 import { LottieLoadingAnimation } from "../nmm/lottie-loading-animation";
 import { AverageMasteryDays } from "./average-mastery-days";
 import { AverageCharacterReview } from "./averate-character-review";
-import { CharacterMasteryRatio } from "./character-mastery-ratio";
 import { CharacterReviwedRatio } from "./character-review-ratio";
 import { LifeTimeLearningFact } from "./life-time-learning-fact";
 import { RecentlyViewedContent } from "./recently-viewed-content";
@@ -72,22 +70,6 @@ export const OverviewPage = () => {
                 characterMasteryRatio,
               ]?.includes(NaN) && (
                 <CharacterReviwedRatio
-                  lifeTimeCharacters={lifeTimeCharacters}
-                  totalReviedCharacters={totalReviedCharacters}
-                  characterReviewRatio={characterReviewRatio}
-                  totalMasteredCharacters={totalMasteredCharacters}
-                  characterMasteryRatio={characterMasteryRatio}
-                />
-              )}
-
-              {![
-                lifeTimeCharacters,
-                totalReviedCharacters,
-                characterReviewRatio,
-                totalMasteredCharacters,
-                characterMasteryRatio,
-              ]?.includes(NaN) && (
-                <CharacterMasteryRatio
                   lifeTimeCharacters={lifeTimeCharacters}
                   totalReviedCharacters={totalReviedCharacters}
                   characterReviewRatio={characterReviewRatio}

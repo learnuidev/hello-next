@@ -8,7 +8,8 @@ const usePublishedContentsStore = createIndexDBStore({
   name: "mando/publishedContents",
   handler: (set: any, get: any) => ({
     lastUpdated: null,
-    setLastUpdated: () => set({ lastUpdated: Date.now() }),
+    setLastUpdated: (val?: any) =>
+      set({ lastUpdated: val !== undefined ? val : Date.now() }),
     components: null,
     setComponents: (f: any) =>
       typeof f === "function"
@@ -17,7 +18,7 @@ const usePublishedContentsStore = createIndexDBStore({
   }),
 });
 
-export const useComponents = () => {
+export const useGetPublishedContents = () => {
   const components: any = usePublishedContentsStore(
     (state) => state.components
   );
@@ -38,7 +39,7 @@ export const useGetPublicContentsQueryKey = () => {
   const { data: authUser } = useCurrentAuthUser({});
 
   const { components, setComponents, lastUpdated, setLastUpdated } =
-    useComponents();
+    useGetPublishedContents();
 
   return [
     publicContentsQueryKey,
@@ -51,7 +52,7 @@ export const useListPublishedContentsQuery = ({ key }: { key?: string }) => {
   const { data: authUser } = useCurrentAuthUser({});
 
   const { components, setComponents, lastUpdated, setLastUpdated } =
-    useComponents();
+    useGetPublishedContents();
 
   const myQueryKey = useGetPublicContentsQueryKey();
 

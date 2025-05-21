@@ -15,6 +15,7 @@ import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { YoutubeLink } from "./youtube-link";
 import { useGetCharacter } from "@/hooks/use-get-character";
 import { calculateTotalMasteryDate } from "@/app/overview/utils/calculate-total-mastery-date";
+import { useMemo } from "react";
 
 export const SelectedCharacterStats = ({
   characterId,
@@ -25,9 +26,11 @@ export const SelectedCharacterStats = ({
 
   const selectedCharacter = useGetCharacter({ characterId });
 
-  const totalMasteryDays = selectedCharacter
-    ? calculateTotalMasteryDate(selectedCharacter)
-    : 0;
+  const totalMasteryDays = useMemo(
+    () =>
+      selectedCharacter ? calculateTotalMasteryDate(selectedCharacter) : 0,
+    [selectedCharacter]
+  );
 
   const { selectedComp, selectedComp2 } = data;
 

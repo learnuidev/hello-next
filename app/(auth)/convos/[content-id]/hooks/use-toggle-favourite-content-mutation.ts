@@ -1,7 +1,7 @@
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { favouriteContentsQueryKey } from "./use-list-favourited-contents-query copy";
+import { favouriteContentsQueryKey } from "./use-list-favourited-contents-query";
 
 interface ToggleFavouriteContentRequestParams {
   type: "favourite" | "unfavourite";

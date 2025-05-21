@@ -36,8 +36,9 @@ import { useContentTypeStore } from "./use-content-type-store";
 import { useViewModeStore } from "./new-convo/use-viewmode-store";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useListPublishedContentsQuery } from "./[content-id]/hooks/use-list-published-contents-query";
-import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query copy";
+// import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query.ts";
 import { ContentsListEffect } from "@/components/contents-list-effect";
+import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query";
 
 type ContentType = {
   title: string;

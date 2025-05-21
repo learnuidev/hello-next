@@ -7,10 +7,13 @@ import { siteConfig } from "@/lib/config";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 import { createIndexDBStore } from "@/libs/index-db/index-db";
+import { hasBeen } from "./utils/has-been";
 
 const useComponentsStore = createIndexDBStore({
   name: "mando/components",
   handler: (set: any, get: any) => ({
+    lastUpdated: null,
+    setLastUpdated: () => set({ lastUpdated: Date.now() }),
     components: null,
     setComponents: (f: any) =>
       typeof f === "function"
@@ -22,8 +25,10 @@ const useComponentsStore = createIndexDBStore({
 export const useComponents = () => {
   const components: any = useComponentsStore((state) => state.components);
   const setComponents = useComponentsStore((state) => state.setComponents);
+  const lastUpdated = useComponentsStore((state) => state.lastUpdated);
+  const setLastUpdated = useComponentsStore((state) => state.setLastUpdated);
 
-  return { components, setComponents };
+  return { components, setComponents, lastUpdated, setLastUpdated };
 };
 
 export interface IComponent {
@@ -72,16 +77,17 @@ export function useListComponentsQuery(
   const { data: authUser } = useCurrentAuthUser({});
   const currentLang = useGetCurrentLang();
 
-  const { components, setComponents } = useComponents();
+  const { components, setComponents, lastUpdated, setLastUpdated } =
+    useComponents();
 
   return useQuery(
-    [listComponentsQueryKey, params?.forceReload],
+    [listComponentsQueryKey, params?.forceReload, lastUpdated],
     async () => {
       // if (options.query) {
 
-      // if (components && !params?.forceReload) {
-      //   return components as IComponent[];
-      // }
+      if (components && lastUpdated && !hasBeen({ timestamp: lastUpdated })) {
+        return components as IComponent[];
+      }
       const response = await listComponents(
         { ...params, lang: currentLang },
         {
@@ -90,6 +96,7 @@ export function useListComponentsQuery(
       );
 
       setComponents(response);
+      setLastUpdated();
 
       return response;
     },

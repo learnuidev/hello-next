@@ -1,10 +1,40 @@
 "use client";
-import { queryIds } from "./queryIds";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { getContent, listContents } from "./content.api";
+
+import { hasBeen } from "@/domain/lesson/utils/has-been";
+import { createIndexDBStore } from "@/libs/index-db/index-db";
+
+const useListContentsStore = createIndexDBStore({
+  name: "mando/public-contents-2",
+  handler: (set: any, get: any) => ({
+    lastUpdated: null,
+    setLastUpdated: () => set({ lastUpdated: Date.now() }),
+    components: null,
+    setComponents: (f: any) =>
+      typeof f === "function"
+        ? set({ components: f(get().components) })
+        : set({ components: f }),
+  }),
+});
+
+export const useContentsStore = () => {
+  const components: any = useListContentsStore(
+    (state: any) => state.components
+  );
+  const setComponents = useListContentsStore(
+    (state: any) => state.setComponents
+  );
+  const lastUpdated = useListContentsStore((state: any) => state.lastUpdated);
+  const setLastUpdated = useListContentsStore(
+    (state: any) => state.setLastUpdated
+  );
+
+  return { components, setComponents, lastUpdated, setLastUpdated };
+};
 
 interface Content {
   id: string;
@@ -25,7 +55,7 @@ type ListContentsResponse = {
   items: Content[];
 };
 
-const listContensRecursive = async (
+const listContentsRecursive = async (
   jwt: string,
   key?: string,
   res = []
@@ -33,7 +63,7 @@ const listContensRecursive = async (
   const resp = await listContents({ key }, { Authorization: jwt });
 
   if (resp?.lastEvaulatedKey) {
-    return listContensRecursive(
+    return listContentsRecursive(
       jwt,
       resp?.lastEvaulatedKey,
       res.concat(resp?.items)
@@ -45,20 +75,52 @@ const listContensRecursive = async (
   };
 };
 
+export const listContentsQueryKey = "list-my-contents";
 export function useListContentsQuery(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery<ListContentsResponse, Error>(
-    [queryIds.listContents],
-    async () => {
-      const response = await listContensRecursive(authUser?.jwt);
+  const { components, setComponents, lastUpdated, setLastUpdated } =
+    useContentsStore();
 
-      return {
+  return useQuery<ListContentsResponse, Error>(
+    [
+      listContentsQueryKey,
+      options?.forceReload,
+      lastUpdated,
+      JSON.stringify(components),
+    ],
+    async () => {
+      console.log("LAST UPDATED", lastUpdated);
+      console.log("CONTENTS", components);
+      console.log(
+        "HAS BEEN 24 hours content queries",
+        hasBeen({ timestamp: lastUpdated || 0 })
+      );
+
+      if (
+        components &&
+        lastUpdated &&
+        !hasBeen({ timestamp: lastUpdated }) &&
+        !options?.forceReload
+      ) {
+        return components as ListContentsResponse;
+      }
+
+      const response = await listContentsRecursive(authUser?.jwt);
+
+      const finalResponse = {
         ...response,
         items: response?.items?.sort(
           (a: any, b: any) => b?.createdAt - a?.createdAt
         ),
       };
+
+      setComponents(finalResponse);
+      setLastUpdated();
+
+      console.log("YOOOO", lastUpdated);
+
+      return finalResponse;
       // return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
       // }
     },
@@ -109,7 +171,7 @@ export function useGetContentQuery(
     },
     onSuccess: (data) => {
       opts?.onSuccess?.(data);
-      queryClient.setQueryData([queryIds.listContents], (old: any) => {
+      queryClient.setQueryData([listContentsQueryKey, true], (old: any) => {
         return {
           ...old,
           items: (old?.items || []).map((content: any) => {

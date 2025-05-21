@@ -2,14 +2,52 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { createIndexDBStore } from "@/libs/index-db/index-db";
+import { hasBeen } from "@/domain/lesson/utils/has-been";
+
+const useListContentsStore = createIndexDBStore({
+  name: "mando/favourited-contents",
+  handler: (set: any, get: any) => ({
+    lastUpdated: null,
+    setLastUpdated: () => set({ lastUpdated: Date.now() }),
+    components: null,
+    setComponents: (f: any) =>
+      typeof f === "function"
+        ? set({ components: f(get().components) })
+        : set({ components: f }),
+  }),
+});
+
+export const useComponents = () => {
+  const components: any = useListContentsStore(
+    (state: any) => state.components
+  );
+  const setComponents = useListContentsStore(
+    (state: any) => state.setComponents
+  );
+  const lastUpdated = useListContentsStore((state: any) => state.lastUpdated);
+  const setLastUpdated = useListContentsStore(
+    (state: any) => state.setLastUpdated
+  );
+
+  return { components, setComponents, lastUpdated, setLastUpdated };
+};
+
 export const favouriteContentsQueryKey = `list-favourite-contents`;
 export const useListFavouriteContentsQuery = ({ key }: { key?: string }) => {
   const { data: authUser } = useCurrentAuthUser({});
+
+  const { components, setComponents, lastUpdated, setLastUpdated } =
+    useComponents();
 
   return useQuery({
     queryKey: [favouriteContentsQueryKey, authUser?.jwt],
     queryFn: async () => {
       if (authUser?.jwt) {
+        if (components && lastUpdated && !hasBeen({ timestamp: lastUpdated })) {
+          return components as any;
+        }
+
         const resp = await fetch(`${siteConfig.apiUrl}/v1/list-contents`, {
           method: "POST",
 
@@ -27,7 +65,7 @@ export const useListFavouriteContentsQuery = ({ key }: { key?: string }) => {
         }
 
         const respJson = await resp.json();
-        return {
+        const finalResponse = {
           ...respJson,
           items: await Promise.all(
             respJson?.items?.map(async (item: any) => {
@@ -44,6 +82,11 @@ export const useListFavouriteContentsQuery = ({ key }: { key?: string }) => {
             })
           ),
         };
+
+        setComponents(finalResponse);
+        setLastUpdated();
+
+        return finalResponse;
       }
     },
   });

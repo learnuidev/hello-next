@@ -23,7 +23,10 @@ import { formatPercentage } from "@/app/profile/utils/format-percentage";
 import { useSearchQueryStore } from "@/components/search/state";
 import { PlusIcon } from "@/components/ui/icons";
 import { Icons } from "@/components/ui/icons.v2";
-import { useListContentsQuery } from "@/domain/content/content.queries";
+import {
+  useContentsStore,
+  useListContentsQuery,
+} from "@/domain/content/content.queries";
 
 import { useIsNewContentFormEnabled } from "@/libs/posthog/hooks/use-is-new-content-form-enabled";
 import { NewContent } from "./new-content/new-content";
@@ -187,19 +190,8 @@ export default function Convos() {
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
-  const setSelectedChar = useSelectedCharacter(
-    (state: any) => state?.setCharacter
-  );
-
-  const { data: contents } = useListContentsQuery();
 
   const routeName = usePathname();
-
-  const router = useRouter();
-
-  // CONVOS
-
-  const setLessonId = useConvosStore((state: any) => state?.setConvoId);
 
   const isNewContentEnabled = useIsNewContentFormEnabled();
 
@@ -284,3 +276,7 @@ export default function Convos() {
     </main>
   );
 }
+
+// export default function Convos() {
+//   return <div> TODO </div>;
+// }

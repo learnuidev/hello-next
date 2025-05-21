@@ -5,7 +5,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { AddContentParams } from "./content.types";
 import { siteConfig } from "@/lib/config";
-import { getContentQueryId } from "./content.queries";
+import {
+  getContentQueryId,
+  useGetListContentsQueryKey,
+} from "./content.queries";
 
 type UpdateContentParams = {
   id: string;
@@ -31,6 +34,7 @@ const updateContent = async (
 export function useUpdateContentMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
+  const listContentsQueryKey = useGetListContentsQueryKey();
   return useMutation(
     async (params: UpdateContentParams) => {
       const response = await updateContent(params, {
@@ -52,7 +56,7 @@ export function useUpdateContentMutation(options = {} as any) {
           }
         );
 
-        queryClient.setQueryData([queryIds?.listContents], (old: any) => {
+        queryClient.setQueryData(listContentsQueryKey, (old: any) => {
           return {
             ...old,
             items: old?.items?.map((item: any) => {

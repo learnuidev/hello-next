@@ -5,7 +5,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { AddContentParams } from "./content.types";
 import { siteConfig } from "@/lib/config";
-import { getContentQueryId } from "./content.queries";
+import {
+  getContentQueryId,
+  useGetListContentsQueryKey,
+} from "./content.queries";
 
 type DeleteContentParams = {
   id: string;
@@ -31,6 +34,8 @@ const deleteContent = async (
 export function useDeleteContentMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
+
+  const listContentsQueryKey = useGetListContentsQueryKey();
   return useMutation(
     async (params: DeleteContentParams) => {
       const response = await deleteContent(params, {
@@ -52,7 +57,7 @@ export function useDeleteContentMutation(options = {} as any) {
           }
         );
 
-        queryClient.setQueryData([queryIds?.listContents], (old: any) => {
+        queryClient.setQueryData(listContentsQueryKey, (old: any) => {
           return {
             ...old,
             items: old?.items?.map((item: any) => {
@@ -64,11 +69,6 @@ export function useDeleteContentMutation(options = {} as any) {
             }),
           };
         });
-
-        // queryClient.invalidateQueries([
-        //   queryIds?.listContents,
-        //   data?.journeyId,
-        // ]);
       },
       cacheTime: 1000 * 60 * 300, // 30 minutes,
       refetchOnWindowFocus: false,

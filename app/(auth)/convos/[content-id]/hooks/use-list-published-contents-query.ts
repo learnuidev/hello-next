@@ -50,7 +50,6 @@ export const useListPublishedContentsQuery = ({ key }: { key?: string }) => {
       if (authUser?.jwt) {
         const hasBeen24Hours = hasBeen({ timestamp: lastUpdated || 0 });
 
-        console.log("HAS BEEN", hasBeen24Hours);
         if (components && lastUpdated && !hasBeen24Hours) {
           return components as any;
         }

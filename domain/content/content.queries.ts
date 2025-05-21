@@ -76,27 +76,31 @@ const listContentsRecursive = async (
 };
 
 export const listContentsQueryKey = "list-my-contents";
+
+export const useGetListContentsQueryKey = () => {
+  const { data: authUser } = useCurrentAuthUser({});
+
+  const { components, setComponents, lastUpdated, setLastUpdated } =
+    useContentsStore();
+
+  return [
+    listContentsQueryKey,
+    listContentsQueryKey,
+    lastUpdated,
+    JSON.stringify(components),
+  ];
+};
 export function useListContentsQuery(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
 
   const { components, setComponents, lastUpdated, setLastUpdated } =
     useContentsStore();
 
-  return useQuery<ListContentsResponse, Error>(
-    [
-      listContentsQueryKey,
-      options?.forceReload,
-      lastUpdated,
-      JSON.stringify(components),
-    ],
-    async () => {
-      console.log("LAST UPDATED", lastUpdated);
-      console.log("CONTENTS", components);
-      console.log(
-        "HAS BEEN 24 hours content queries",
-        hasBeen({ timestamp: lastUpdated || 0 })
-      );
+  const queryKey = useGetListContentsQueryKey();
 
+  return useQuery<ListContentsResponse, Error>(
+    queryKey,
+    async () => {
       if (
         components &&
         lastUpdated &&
@@ -117,8 +121,6 @@ export function useListContentsQuery(options = {} as any) {
 
       setComponents(finalResponse);
       setLastUpdated();
-
-      console.log("YOOOO", lastUpdated);
 
       return finalResponse;
       // return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);

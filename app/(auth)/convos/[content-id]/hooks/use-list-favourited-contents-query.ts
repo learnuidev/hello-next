@@ -9,7 +9,8 @@ const useListContentsStore = createIndexDBStore({
   name: "mando/favourited-contents",
   handler: (set: any, get: any) => ({
     lastUpdated: null,
-    setLastUpdated: () => set({ lastUpdated: Date.now() }),
+    setLastUpdated: (val?: any) =>
+      set({ lastUpdated: val !== undefined ? val : Date.now() }),
     components: null,
     setComponents: (f: any) =>
       typeof f === "function"
@@ -18,7 +19,7 @@ const useListContentsStore = createIndexDBStore({
   }),
 });
 
-export const useComponents = () => {
+export const useFavouriteContents = () => {
   const components: any = useListContentsStore(
     (state: any) => state.components
   );
@@ -39,7 +40,7 @@ export const useGetFavouritesContentsKey = () => {
   const { data: authUser } = useCurrentAuthUser({});
 
   const { components, setComponents, lastUpdated, setLastUpdated } =
-    useComponents();
+    useFavouriteContents();
   return [
     favouriteContentsQueryKey,
     authUser?.jwt,
@@ -51,7 +52,7 @@ export const useListFavouriteContentsQuery = ({ key }: { key?: string }) => {
   const { data: authUser } = useCurrentAuthUser({});
 
   const { components, setComponents, lastUpdated, setLastUpdated } =
-    useComponents();
+    useFavouriteContents();
 
   const queryKey = useGetFavouritesContentsKey();
 

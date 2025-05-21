@@ -1,7 +1,10 @@
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useGetFavouritesContentsKey } from "./use-list-favourited-contents-query";
+import {
+  useFavouriteContents,
+  useGetFavouritesContentsKey,
+} from "./use-list-favourited-contents-query";
 
 interface ToggleFavouriteContentRequestParams {
   type: "favourite" | "unfavourite";
@@ -11,6 +14,8 @@ interface ToggleFavouriteContentRequestParams {
 export const useToggleFavouriteContentMutation = () => {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
+
+  const { setLastUpdated } = useFavouriteContents();
 
   const favouriteContentsKey = useGetFavouritesContentsKey();
 
@@ -34,11 +39,31 @@ export const useToggleFavouriteContentMutation = () => {
       }
 
       const respJson = await resp.json();
-      return respJson;
+      return { ...respJson, contentId: params?.contentId };
     },
 
-    onSuccess: () => {
-      queryClient.refetchQueries(favouriteContentsKey);
+    onSuccess: (updatedContent) => {
+      console.log("");
+
+      // setLastUpdated(null);
+      queryClient.setQueryData(favouriteContentsKey, (data: any) => {
+        return {
+          ...data,
+          items: updatedContent?.createdAt
+            ? data?.items?.concat({
+                ...updatedContent,
+                id: updatedContent?.contentId,
+              })
+            : data?.items?.filter((item: any) => {
+                if (item?.id === updatedContent?.contentId) {
+                  return updatedContent?.deletedAt ? false : true;
+                }
+
+                return true;
+              }),
+        };
+      });
+      // queryClient.refetchQueries(favouriteContentsKey);
     },
   });
 };

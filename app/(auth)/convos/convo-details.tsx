@@ -18,6 +18,7 @@ import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { isVideoUrl } from "./utils/is-video-url";
 import { DynaCloze } from "./[content-id]/dyna-cloze/dyna-cloze";
 import { useSearchParams } from "next/navigation";
+import { FloatingNavbar } from "@/components/floating-navbar";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const searchParams = useSearchParams();
@@ -57,6 +58,8 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     return (
       <div>
         <YouTubePlayer lessonId={lessonId} />
+
+        <FloatingNavbar />
       </div>
     );
   }

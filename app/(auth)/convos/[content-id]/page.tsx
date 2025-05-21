@@ -35,8 +35,6 @@ export default function ContentItem() {
           <ConvoDetails lessonId={lessonId} />
         </div>
       </div>
-
-      <FloatingNavbar />
     </main>
   );
 }

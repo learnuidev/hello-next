@@ -93,7 +93,7 @@ export const SelectedCharacterStats = ({
               <p className="text-black dark:text-white">{level}</p>
             </div>
           )}
-          {totalMasteryDays && (
+          {totalMasteryDays === 0 ? null : (
             <div className="text-slate-500  text-extralight flex space-x-2 items-center">
               <Icons.fireDuoTone />
               <p className="text-black dark:text-white">{totalMasteryDays}d</p>

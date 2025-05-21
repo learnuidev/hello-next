@@ -32,20 +32,31 @@ export const useComponents = () => {
   return { components, setComponents, lastUpdated, setLastUpdated };
 };
 
-export const publicContentsQueryKey = `list-published-contents`;
+const publicContentsQueryKey = `list-published-contents`;
+
+export const useGetPublicContentsQueryKey = () => {
+  const { data: authUser } = useCurrentAuthUser({});
+
+  const { components, setComponents, lastUpdated, setLastUpdated } =
+    useComponents();
+
+  return [
+    publicContentsQueryKey,
+    authUser?.jwt,
+    lastUpdated,
+    JSON.stringify(components),
+  ];
+};
 export const useListPublishedContentsQuery = ({ key }: { key?: string }) => {
   const { data: authUser } = useCurrentAuthUser({});
 
   const { components, setComponents, lastUpdated, setLastUpdated } =
     useComponents();
 
+  const myQueryKey = useGetPublicContentsQueryKey();
+
   return useQuery({
-    queryKey: [
-      publicContentsQueryKey,
-      authUser?.jwt,
-      lastUpdated,
-      JSON.stringify(components),
-    ],
+    queryKey: myQueryKey,
     queryFn: async () => {
       if (authUser?.jwt) {
         const hasBeen24Hours = hasBeen({ timestamp: lastUpdated || 0 });

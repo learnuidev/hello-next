@@ -71,25 +71,29 @@ export const SelectedCharacterStats = ({
           {relatedHskWords?.length > 0 && (
             <div className="text-slate-500  text-extralight flex space-x-2 items-center">
               <Icons.word />
-              <p>{relatedHskWords?.length}</p>
+              <p className="text-black dark:text-white">
+                {relatedHskWords?.length}
+              </p>
             </div>
           )}
           {totalRelatedSentences > 0 && (
             <div className="text-slate-500  text-extralight flex space-x-2 items-center">
               <Icons.sentence />
-              <p>{totalRelatedSentences}</p>
+              <p className="text-black dark:text-white">
+                {totalRelatedSentences}
+              </p>
             </div>
           )}
           {level && (
             <div className="text-slate-500  text-extralight flex space-x-2 items-center">
               <Icons.earthAsia />
-              <p>{level}</p>
+              <p className="text-black dark:text-white">{level}</p>
             </div>
           )}
           {totalMasteryDays && (
             <div className="text-slate-500  text-extralight flex space-x-2 items-center">
               <Icons.fireDuoTone />
-              <p>{totalMasteryDays}d</p>
+              <p className="text-black dark:text-white">{totalMasteryDays}d</p>
             </div>
           )}
         </div>

@@ -144,11 +144,6 @@ export function ReviewCloze({
     [relevantHanzi, sentencesInitial]
   );
 
-  const irrelevantHanzis = useMemo(
-    () => irrelevantHskWords?.map((word: any) => word?.hanzi || word?.input),
-    [irrelevantHskWords]
-  );
-
   const sentence = useMemo(
     () => sentences?.[questionIndex],
     [sentences, questionIndex]
@@ -162,14 +157,16 @@ export function ReviewCloze({
   const randomThreeOptions = useMemo(
     () =>
       getRandomWords(
-        irrelevantHanzis?.filter((item: any) => item !== relevantHanzi),
+        irrelevantHskWords?.filter(
+          (item: any) => (item?.hanzi || item?.input) !== relevantHanzi
+        ),
         3
       ),
-    [irrelevantHanzis, relevantHanzi, questionIndex, sentence]
+    [irrelevantHskWords, relevantHanzi, questionIndex, sentence]
   );
 
   const shuffledOptions = useMemo(
-    () => shuffleArray([...randomThreeOptions, relevantHanzi]),
+    () => shuffleArray([...randomThreeOptions, relevantHskWord]),
     [randomThreeOptions, relevantHanzi, questionIndex, sentence]
   );
 
@@ -285,16 +282,16 @@ export function ReviewCloze({
           </Link>
 
           <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">
-            {shuffledOptions?.map((option: string) => (
+            {shuffledOptions?.map((option: any, idx: number) => (
               <button
                 onClick={() => {
-                  checkAnswer(option);
+                  checkAnswer(option?.input || option?.hanzi);
                 }}
                 disabled={response?.type}
                 className={cn(
                   "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg",
                   response
-                    ? response?.answer === option
+                    ? response?.answer === (option?.input || option?.hanzi)
                       ? response?.type === "correct"
                         ? "bg-green-500 border-green-600 hover:bg-green-600"
                         : "bg-red-500 hover:bg-red-600"
@@ -305,9 +302,9 @@ export function ReviewCloze({
                     ? ""
                     : "hover:bg-orange-500 hover:text-white hover:scale-110"
                 )}
-                key={option}
+                key={`review-cloze-${option?.input || option?.hanzi}-${idx}-review-cloze`}
               >
-                {option}
+                {showEn ? option?.en : option?.input || option?.hanzi}
               </button>
             ))}
           </div>

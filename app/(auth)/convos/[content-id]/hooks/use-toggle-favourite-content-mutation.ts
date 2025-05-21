@@ -1,7 +1,7 @@
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { favouriteContentsQueryKey } from "./use-list-favourited-contents-query";
+import { useGetFavouritesContentsKey } from "./use-list-favourited-contents-query";
 
 interface ToggleFavouriteContentRequestParams {
   type: "favourite" | "unfavourite";
@@ -11,6 +11,8 @@ interface ToggleFavouriteContentRequestParams {
 export const useToggleFavouriteContentMutation = () => {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
+
+  const favouriteContentsKey = useGetFavouritesContentsKey();
 
   return useMutation({
     mutationFn: async (params: ToggleFavouriteContentRequestParams) => {
@@ -36,7 +38,7 @@ export const useToggleFavouriteContentMutation = () => {
     },
 
     onSuccess: () => {
-      queryClient.refetchQueries([favouriteContentsQueryKey]);
+      queryClient.refetchQueries(favouriteContentsKey);
     },
   });
 };

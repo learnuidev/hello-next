@@ -33,15 +33,30 @@ export const useComponents = () => {
   return { components, setComponents, lastUpdated, setLastUpdated };
 };
 
-export const favouriteContentsQueryKey = `list-favourite-contents`;
+const favouriteContentsQueryKey = `list-favourite-contents`;
+
+export const useGetFavouritesContentsKey = () => {
+  const { data: authUser } = useCurrentAuthUser({});
+
+  const { components, setComponents, lastUpdated, setLastUpdated } =
+    useComponents();
+  return [
+    favouriteContentsQueryKey,
+    authUser?.jwt,
+    lastUpdated,
+    JSON.stringify(components),
+  ];
+};
 export const useListFavouriteContentsQuery = ({ key }: { key?: string }) => {
   const { data: authUser } = useCurrentAuthUser({});
 
   const { components, setComponents, lastUpdated, setLastUpdated } =
     useComponents();
 
+  const queryKey = useGetFavouritesContentsKey();
+
   return useQuery({
-    queryKey: [favouriteContentsQueryKey, authUser?.jwt],
+    queryKey,
     queryFn: async () => {
       if (authUser?.jwt) {
         if (components && lastUpdated && !hasBeen({ timestamp: lastUpdated })) {

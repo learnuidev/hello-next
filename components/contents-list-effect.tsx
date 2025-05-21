@@ -1,4 +1,4 @@
-import { useListFavouriteContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-favourited-contents-query copy";
+import { useListFavouriteContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-favourited-contents-query";
 import { useToggleFavouriteContentMutation } from "@/app/(auth)/convos/[content-id]/hooks/use-toggle-favourite-content-mutation";
 import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watched-content-store";
 import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";

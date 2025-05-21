@@ -20,23 +20,9 @@ import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-pre
 import { SearchBar } from "@/components/search-bar";
 import { LottieLoadingAnimation } from "../nmm/lottie-loading-animation";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { calculateTotalMasteryDate } from "./utils/calculate-total-mastery-date";
 
 const TEN = 10;
-
-function calculateTotalMasteryDate(character: ICharacter) {
-  const createdAt = character?.createdAt;
-  // const updatedAt = character?.updatedAt;
-  const reviewHistory = character?.reviewHistory?.map(
-    (item) => item?.createdAt
-  );
-
-  const startDate = new Date(createdAt);
-  // const startDate = new Date(Math.min(...reviewHistory));
-  const endDate = new Date(Math.max(...reviewHistory));
-  const totalDays = differenceInDays(endDate, startDate);
-
-  return totalDays;
-}
 
 function AverageMasteryDays({
   masteredCharacters: _masteredCharacters,

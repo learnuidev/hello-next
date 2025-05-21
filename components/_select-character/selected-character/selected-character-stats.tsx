@@ -13,6 +13,8 @@ import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-charact
 import { useSelectedCharacterData } from "@/components/use-selected-character";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { YoutubeLink } from "./youtube-link";
+import { useGetCharacter } from "@/hooks/use-get-character";
+import { calculateTotalMasteryDate } from "@/app/overview/utils/calculate-total-mastery-date";
 
 export const SelectedCharacterStats = ({
   characterId,
@@ -20,6 +22,12 @@ export const SelectedCharacterStats = ({
   characterId: string;
 }) => {
   const { data } = useSelectedCharacterData({ characterId });
+
+  const selectedCharacter = useGetCharacter({ characterId });
+
+  const totalMasteryDays = selectedCharacter
+    ? calculateTotalMasteryDate(selectedCharacter)
+    : 0;
 
   const { selectedComp, selectedComp2 } = data;
 
@@ -76,6 +84,12 @@ export const SelectedCharacterStats = ({
             <div className="text-slate-500  text-extralight flex space-x-2 items-center">
               <Icons.earthAsia />
               <p>{level}</p>
+            </div>
+          )}
+          {totalMasteryDays && (
+            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+              <Icons.fireDuoTone />
+              <p>{totalMasteryDays}d</p>
             </div>
           )}
         </div>

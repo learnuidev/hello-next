@@ -7,7 +7,13 @@ import SpeechRecognition, {
 
 // import "regenerator-runtime/runtime";
 
-const Dictaphone = () => {
+const langMapper: any = {
+  fr: "fr-FR",
+  zh: "zh-CN",
+};
+
+export const useDictaphone = (lang: string) => {
+  const langInput = langMapper[lang] || langMapper.zh;
   const {
     transcript,
     listening,
@@ -16,6 +22,39 @@ const Dictaphone = () => {
     ...rest
   } = useSpeechRecognition({ transcribing: true });
 
+  const startListening = () => {
+    SpeechRecognition.startListening?.({
+      language: langInput,
+      continuous: true,
+    });
+  };
+
+  const stopListening = () => {
+    SpeechRecognition.stopListening();
+  };
+
+  return {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+    ...rest,
+    startListening,
+    stopListening,
+  };
+};
+
+const Dictaphone = () => {
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+    startListening,
+    stopListening,
+    ...rest
+  } = useDictaphone("zh");
+
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesnt support speech recognition.</span>;
   }
@@ -23,23 +62,8 @@ const Dictaphone = () => {
   return (
     <div>
       <p>Microphone: {listening ? "on" : "off"}</p>
-      <button
-        onClick={() => {
-          SpeechRecognition.startListening?.({
-            language: "zh-CN",
-            continuous: true,
-          });
-        }}
-      >
-        Start
-      </button>
-      <button
-        onClick={() => {
-          SpeechRecognition.stopListening();
-        }}
-      >
-        Stop
-      </button>
+      <button onClick={startListening}>Start</button>
+      <button onClick={stopListening}>Stop</button>
       <button onClick={resetTranscript}>Reset</button>
       <p>{transcript}</p>
 

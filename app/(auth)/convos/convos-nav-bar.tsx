@@ -157,6 +157,19 @@ export const ConvosNavBar = () => {
         >
           <Icons.play />
         </Link>
+        <Link
+          onClick={() => {
+            setViewType("speak");
+          }}
+          href={`/convos/${contentId}?view=speak&start=${searchParams.get("start") || 0}`}
+          className={`transition ${
+            viewType === "speak"
+              ? "text-black dark:text-gray-200"
+              : "text-gray-200 dark:text-gray-600"
+          } hover:text-black dark:hover:text-white transition text-xl`}
+        >
+          <Icons.microphone />
+        </Link>
 
         {content?.lang === "zh" && (
           <Link

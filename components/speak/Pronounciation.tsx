@@ -46,39 +46,8 @@ export const Pronounciation = ({ lessonId }: any) => {
 
   const lesson = currentLesson?.lessons?.[lessonIndex] as any;
 
-  // const {
-  //   transcript,
-  //   transcripts,
-  //   listening,
-  //   startListening,
-  //   stopListening,
-  //   resetTranscript,
-  //   browserSupportsSpeechRecognition,
-  // } = useSpeechRecognition({
-  //   lang: "",
-  //   onTranslated: (resp: any) => {
-  //     console.log("TRANSLATIONS", resp);
-  //     setResults((prevResult: any) => {
-  //       return {
-  //         ...prevResult,
-  //         [lesson.id]: resp,
-  //       };
-  //     });
-
-  //     setLessonHistories({
-  //       lessonId: lesson?.id,
-  //       time: new Date().getTime(),
-  //       answer: resp,
-  //     });
-  //   },
-  // });
-
   const isCorrect = () => {
     return lesson?.hanziV2?.replace(", ", "").replace("?", "");
-    // return (
-    //   res.transcript === lesson?.hanzi ||
-    //   lesson?.alternateAnswers?.includes(res.transcript)
-    // )
   };
 
   const calcConfidenceColor = (

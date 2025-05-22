@@ -19,6 +19,7 @@ import { isVideoUrl } from "./utils/is-video-url";
 import { DynaCloze } from "./[content-id]/dyna-cloze/dyna-cloze";
 import { useSearchParams } from "next/navigation";
 import { FloatingNavbar } from "@/components/floating-navbar";
+import { Speak } from "./[content-id]/speak/speak";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const searchParams = useSearchParams();
@@ -103,11 +104,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
 
   if (viewType === "speak") {
-    return (
-      <div className="font-light flex justify-between items-center w-full px-4 md:px-32 md:mt-2">
-        Speak
-      </div>
-    );
+    return <Speak contentId={lessonId} />;
   }
   if (viewType === "learn") {
     return (

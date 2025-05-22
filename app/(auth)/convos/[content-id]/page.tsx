@@ -17,12 +17,15 @@ export default function ContentItem() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const startTimeParam = searchParams.get("start");
+  const view = searchParams.get("view");
 
   useEffect(() => {
     if (currentTime && !startTimeParam) {
-      router.push(`/convos/${lessonId}?start=${currentTime}`);
+      router.push(
+        `/convos/${lessonId}?start=${currentTime}${view ? `&view=${view}` : ``}`
+      );
     }
-  }, [currentTime, lessonId, router, startTimeParam]);
+  }, [currentTime, lessonId, router, startTimeParam, view]);
 
   return (
     <main>

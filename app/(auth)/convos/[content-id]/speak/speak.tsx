@@ -100,7 +100,18 @@ export const Speak = ({ contentId }: { contentId: string }) => {
             </Link>
           </p>
 
-          <p className="mt-12">{transcript || "..."}</p>
+          <p className="mt-12">
+            {transcript ? (
+              <Link
+                target="_blank"
+                href={`/nmm/${transcript}?lang=${content?.lang}`}
+              >
+                {transcript}
+              </Link>
+            ) : (
+              "..."
+            )}
+          </p>
         </div>
 
         <div className="flex justify-center items-center gap-12 text-2xl my-24">

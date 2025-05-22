@@ -9,6 +9,7 @@ import { shuffleArray } from "@/app/review/review-cloze/utils/shuffle-array";
 import { useDictaphone } from "@/components/speak/useSpeechRecognition_v2";
 import { Icons } from "@/components/ui/icons.v2";
 import { YoutubeButton } from "@/components/youtube-page/youtube-button";
+import Link from "next/link";
 
 export const Speak = ({ contentId }: { contentId: string }) => {
   const [historyTimeline, setHistoryTimeline] = useState<string[]>([]);
@@ -90,7 +91,14 @@ export const Speak = ({ contentId }: { contentId: string }) => {
 
         <div className="text-center text-xl mt-20">
           <p className="mb-4">{sentence?.en}</p>
-          <p className="text-4xl">{sentence?.hanzi || sentence?.input}</p>
+          <p className="text-4xl">
+            <Link
+              target="_blank"
+              href={`/nmm/${sentence?.hanzi || sentence?.input}?lang=${content?.lang}`}
+            >
+              {sentence?.hanzi || sentence?.input}
+            </Link>
+          </p>
 
           <p className="mt-12">{transcript || "..."}</p>
         </div>

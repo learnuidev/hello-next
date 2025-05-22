@@ -700,8 +700,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                     }
                                   }}
                                 >
-                                  {" "}
-                                  {isActiveTranscription
+                                  {transcriptionInput}
+                                  {/* {isActiveTranscription
                                     ? smartSplit({
                                         input: transcriptionInput,
                                         lang: lesson?.lang,
@@ -714,8 +714,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                           />
                                         );
                                       })
-                                    : transcriptionInput}
-                                  {"  "}
+                                    : transcriptionInput} */}
                                 </span>
                               );
                             })}

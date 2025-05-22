@@ -16,6 +16,7 @@ import {
 } from "@fortawesome/pro-thin-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import { useGetContentQuery } from "@/domain/content/content.queries";
 
 function GameTile(props: any) {
   const { letter } = props;
@@ -61,9 +62,13 @@ export function Wordle() {
     }
   );
 
+  const { data: _currentLesson } = useGetContentQuery({ contentId: lessonId });
+
+  const currentLesson: any = _currentLesson;
+
   const { data: contentItems } = useListPublishedContentsQuery({});
 
-  const contents = contentItems?.items;
+  const contents = currentLesson?.transcriptions;
 
   const phraseId = params?.["phrase-id"]
     ? decodeURIComponent(params?.["phrase-id"])
@@ -76,30 +81,12 @@ export function Wordle() {
     lessonId || params?.["lessonId"] || "lesson11"
   );
 
-  const [lessonIndex, setTranscriptionId] = useState<any>(() => {
-    const currentLesson = contents?.find(
-      (lesson: any) => lesson?.id === _lessonId
-    );
-
-    const firstPhraseId =
-      currentLesson?.transcriptions?.[0]?.id ||
-      currentLesson?.transcriptions?.[0]?.hanzi;
-
-    // 1. first find the phrase id - if found then return
-    // 2. if not found then find the first phrase of the current lesson and return it
-    return (phraseId || firstPhraseId) as any;
-  });
+  const [lessonIndex, setTranscriptionId] = useState<any>(0);
   // const [secret, setSecret] = useState("我爱中文啊");
 
   const addAnswerMutation = useAddAnswerMutation();
 
-  const currentLesson = contents?.find(
-    (lesson: any) => lesson?.id === _lessonId
-  );
-
-  const currentPhrase = currentLesson?.transcriptions?.find(
-    (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
-  );
+  const currentPhrase = currentLesson?.transcriptions?.[lessonIndex];
 
   useEffect(() => {
     if (lessonIndexParams !== null) {
@@ -208,11 +195,7 @@ export function Wordle() {
     }
   };
 
-  const currentLessonStep =
-    // @ts-ignore
-    currentLesson?.transcriptions?.findIndex(
-      (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
-    ) + 1;
+  const currentLessonStep = lessonIndex + 1;
 
   const FinishButton = () => {
     return (
@@ -327,26 +310,7 @@ export function Wordle() {
         className="col-span-1 hidden md:block md:text-2xl dark:text-gray-600"
         disabled={currentLessonStep === 1}
         onClick={() => {
-          const currentLesson = contents?.find(
-            (lesson: any) => lesson?.id === _lessonId
-          );
-
-          const currentPhrase = currentLesson?.transcriptions?.find(
-            (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
-          );
-
-          const currentPhraseIndex = currentLesson?.transcriptions?.findIndex(
-            (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
-          );
-
-          if (currentPhraseIndex !== -1) {
-            const nextId =
-              // @ts-ignore
-              currentLesson?.transcriptions?.[currentPhraseIndex - 1];
-
-            setTranscriptionId(nextId?.id || nextId?.hanzi);
-          } else {
-          }
+          setTranscriptionId(Math.max(0, lessonIndex - 1));
 
           setCurrentGuess("");
           setGameStatus("");
@@ -362,32 +326,9 @@ export function Wordle() {
       <button
         className="col-span-1 hidden md:block md:text-2xl dark:text-gray-600"
         onClick={() => {
-          const currentLesson = contents?.find(
-            (lesson: any) => lesson?.id === _lessonId
+          setTranscriptionId(
+            Math.min(lessonIndex + 1, currentLesson?.transcriptions?.length - 1)
           );
-
-          const currentPhrase = currentLesson?.transcriptions?.find(
-            (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
-          );
-          const currentPhraseIndex = currentLesson?.transcriptions?.findIndex(
-            (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
-          );
-
-          if (currentPhraseIndex !== -1) {
-            const nextId =
-              // @ts-ignore
-              currentLesson?.transcriptions?.[currentPhraseIndex + 1];
-
-            setTranscriptionId(nextId?.id || nextId?.hanzi);
-
-            if (params?.["lessonId"]) {
-              router.push(
-                `/convos/${params?.["lessonId"] || _lessonId}/${nextId?.id}`
-              );
-            }
-          } else {
-            setGameStatus("finish");
-          }
 
           setCurrentGuess("");
           setGameStatus("");
@@ -400,14 +341,6 @@ export function Wordle() {
 
   return (
     <div>
-      {/* <header className="flex w-80 mx-auto mt-10 mb-8">
-        <h1 className={"grow font-bold text-center text-sm text-gray-300"}>
-          {" "}
-          <span>拼音猜成语</span>{" "}
-          <span className="text-gray-200">[worldle]</span>{" "}
-        </h1>
-      </header> */}
-
       <main className="py-12 flex items-center justify-center flex-col">
         <div className="flex flex-col md:flex-row justify-between items-center w-full px-4 md:px-32">
           {answers?.find(

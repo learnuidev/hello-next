@@ -2,342 +2,38 @@
 
 // @ts-ignore
 
-import { useEffect, useState } from "react";
-
-import { useAddAnswerMutation } from "@/domain/lesson/answer.mutations";
-import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-
-import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
-import {
-  faArrowLeft,
-  faArrowRight,
-  faBadgeCheck,
-} from "@fortawesome/pro-thin-svg-icons";
+import { faBadgeCheck } from "@fortawesome/pro-thin-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import { useGetContentQuery } from "@/domain/content/content.queries";
+import {
+  FinishButton,
+  GameRow,
+  NextLessonButton,
+  PreviousLessonButton,
+  WinButton,
+} from "./wordle.core";
 
-function GameTile(props: any) {
-  const { letter } = props;
-  return (
-    <div className="w-14 h-14 border-solid border-2 flex items-center justify-center mx-0.5 text-lg font-bold uppercase">
-      {letter}
-    </div>
-  );
-}
+import { useWordleState } from "./use-wordle-state";
 
-function GameRow(props: any) {
-  const { guess } = props;
-
-  return (
-    <div className="flex justify-center mb-1">
-      {guess.split("").map((letter: string, idx: number) => {
-        return <GameTile letter={letter} key={`${idx}-${letter}-${idx}`} />;
-      })}
-      {/* <input value={guess} /> */}
-    </div>
-  );
-}
-
-export function Wordle() {
-  const searchParams = useSearchParams();
-
-  const lessonIndexParams = searchParams.get("step") || null;
-  const params = useParams() as {
-    lessonId: string;
-    "phrase-id": string;
-    "content-id": string;
-  };
-
-  const lessonId = params["content-id"];
-
-  const { data: answers } = useListAnswersQuery(
-    { journeyId: lessonId },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
-
-  const { data: _currentLesson } = useGetContentQuery({ contentId: lessonId });
-
-  const currentLesson: any = _currentLesson;
-
-  const { data: contentItems } = useListPublishedContentsQuery({});
-
-  const contents = currentLesson?.transcriptions;
-
-  const phraseId = params?.["phrase-id"]
-    ? decodeURIComponent(params?.["phrase-id"])
-    : null;
-
-  const router = useRouter();
-  const [currentGuess, setCurrentGuess] = useState("");
-  const [gameStatus, setGameStatus] = useState("");
-  const [_lessonId, setLessonId] = useState(
-    lessonId || params?.["lessonId"] || "lesson11"
-  );
-
-  const [lessonIndex, setTranscriptionId] = useState<any>(0);
-  // const [secret, setSecret] = useState("我爱中文啊");
-
-  const addAnswerMutation = useAddAnswerMutation();
-
-  const currentPhrase = currentLesson?.transcriptions?.[lessonIndex];
-
-  useEffect(() => {
-    if (lessonIndexParams !== null) {
-      const currentLesson = contents?.find(
-        (lesson: any) => lesson?.id === _lessonId
-      );
-
-      // setTranscriptionId(lessonIndexParams);
-
-      // @ts-ignore
-      const nextId = currentLesson?.transcriptions?.[lessonIndexParams - 1];
-
-      setTranscriptionId(nextId?.id || nextId?.hanzi);
-
-      return;
-      // return null;
-    } else {
-      const currentLesson = contents?.find(
-        (lesson: any) => lesson?.id === _lessonId
-      );
-
-      const answerHanzis = answers?.map((answer: any) => answer?.hanzi);
-
-      const firstUnanswered = currentLesson?.transcriptions?.filter(
-        (transcription: any) => {
-          return !answerHanzis?.includes(transcription?.hanzi);
-        }
-      )[0];
-
-      if (firstUnanswered) {
-        const currentLessonStep =
-          currentLesson?.transcriptions?.findIndex(
-            (lesson: any) =>
-              (lesson?.id || lesson?.hanzi) === firstUnanswered?.hanzi
-          ) + 1;
-
-        router.push(
-          `/convos/${params?.["lessonId"] || _lessonId}?step=${currentLessonStep !== 0 ? currentLessonStep : currentLessonStep + 1}`
-        );
-      }
-    }
-  }, [contents, _lessonId, answers, lessonIndexParams, router, params]);
-
-  const totalLessons = currentLesson?.transcriptions?.length;
-
-  const secret = currentPhrase?.hanzi || currentPhrase?.input;
-
-  // 1. game state
-  const [guessHistory, setGuessHistory] = useState<any>({
-    0: [],
-    1: [],
-    2: [],
-  });
-
-  const currentGuessHistory = (
-    guessHistory?.[lessonIndex as string] || []
-  )?.filter((hist: string) => {
-    return (currentPhrase?.hanzi || currentPhrase?.input)?.includes(hist);
-  });
-
-  // 3.1 handles submittion
-  const handleEnter = () => {
-    // check if the currentGuess has 5 chars
-    const guessTrimmed = currentGuess;
-
-    const historyTrimmed = [...currentGuessHistory, guessTrimmed]?.reduce(
-      (acc, curr) => `${acc}${curr}`,
-      ""
-    );
-
-    if (secret?.trim() === guessTrimmed?.trim() || secret === historyTrimmed) {
-      // alert("You win");
-
-      setGameStatus("win");
-      setGuessHistory((prevHistory: any) => {
-        return {
-          ...prevHistory,
-          [lessonIndex]: currentGuessHistory.concat(guessTrimmed as any),
-        };
-      });
-    } else if (guessHistory?.[lessonIndex as string]?.length >= 5) {
-      alert("You lose");
-      setGameStatus("lost");
-    } else {
-      // 1. add the current guess to guessHistory
-      setGuessHistory((prevHistory: any) => {
-        return {
-          ...prevHistory,
-          [lessonIndex]: (currentGuessHistory || []).concat(
-            guessTrimmed as any
-          ),
-        };
-      });
-
-      // 2. reset currentGuess
-      setCurrentGuess("");
-    }
-  };
-
-  const handleKeyup = (event: any) => {
-    if (event.key === "Enter") {
-      handleEnter();
-    } else {
-      // handleChar();
-      setCurrentGuess(event.target.value);
-    }
-  };
-
-  const currentLessonStep = lessonIndex + 1;
-
-  const FinishButton = () => {
-    return (
-      <div className="text-center transition">
-        <button
-          onClick={() => {
-            const guessTrimmed = currentGuess;
-            const historyTrimmed = [
-              ...currentGuessHistory,
-              guessTrimmed,
-            ]?.reduce((acc, curr) => `${acc}${curr}`, "");
-
-            return addAnswerMutation
-
-              .mutateAsync({
-                // @ts-ignore
-                hanzi: secret,
-                answer: historyTrimmed,
-                lessonId: _lessonId,
-                // @ts-ignore
-                phraseId: currentPhrase?.id,
-                status: "incorrect",
-                guessHistory: guessHistory?.[lessonIndex as string],
-              })
-              .then((res) => {
-                const lessonIdx = contents?.findIndex(
-                  (lesson: any) => lesson?.id === lessonIndex
-                );
-
-                if (lessonIdx !== -1) {
-                  // @ts-ignore
-                  const nextId = contents?.[lessonIdx + 1];
-
-                  nextId?.id && setTranscriptionId(nextId?.id);
-                } else {
-                  setGameStatus("finish");
-                }
-                // setTranscriptionId((prevIndex) => prevIndex + 1);
-                setCurrentGuess("");
-                setGameStatus("");
-              });
-          }}
-        >
-          Continue
-        </button>
-      </div>
-    );
-  };
-
-  const WinButton = () => {
-    return (
-      <div className="text-center transition mt-8">
-        <button
-          onClick={() => {
-            const guessTrimmed = currentGuess;
-            const historyTrimmed = [
-              ...currentGuessHistory,
-              guessTrimmed,
-            ]?.reduce((acc, curr) => `${acc}${curr}`, "");
-
-            const goToNextChallenge = () => {
-              const currentPhraseIndex =
-                currentLesson?.transcriptions?.findIndex(
-                  (lesson: any) => (lesson?.id || lesson?.hanzi) === lessonIndex
-                );
-
-              if (currentPhraseIndex !== -1) {
-                const nextId =
-                  // @ts-ignore
-                  currentLesson?.transcriptions?.[currentPhraseIndex + 1];
-
-                router.push(
-                  // @ts-ignore
-                  `/convos/${params?.["lessonId"] || _lessonId}?step=${currentPhraseIndex + 2}`
-                );
-
-                // setTranscriptionId(nextId?.id || nextId?.hanzi);
-              } else {
-                setGameStatus("finish");
-              }
-
-              setCurrentGuess("");
-              setGameStatus("");
-            };
-
-            return addAnswerMutation
-
-              .mutateAsync({
-                // @ts-ignore
-                hanzi: secret,
-                answer: historyTrimmed,
-                lessonId: _lessonId,
-                // @ts-ignore
-                phraseId: currentPhrase?.id,
-                status: "correct",
-                guessHistory: guessHistory?.[lessonIndex as string],
-              })
-              .then((res) => {
-                goToNextChallenge();
-              });
-          }}
-        >
-          {addAnswerMutation?.isLoading ? "Loading 。。。" : "Continue"}
-        </button>
-      </div>
-    );
-  };
-
-  const PreviousLessonButton = () => {
-    return (
-      <button
-        className="col-span-1 hidden md:block md:text-2xl dark:text-gray-600"
-        disabled={currentLessonStep === 1}
-        onClick={() => {
-          setTranscriptionId(Math.max(0, lessonIndex - 1));
-
-          setCurrentGuess("");
-          setGameStatus("");
-        }}
-      >
-        <FontAwesomeIcon icon={faArrowLeft} />
-      </button>
-    );
-  };
-
-  const NextLessonButton = () => {
-    return (
-      <button
-        className="col-span-1 hidden md:block md:text-2xl dark:text-gray-600"
-        onClick={() => {
-          setTranscriptionId(
-            Math.min(lessonIndex + 1, currentLesson?.transcriptions?.length - 1)
-          );
-
-          setCurrentGuess("");
-          setGameStatus("");
-        }}
-      >
-        <FontAwesomeIcon icon={faArrowRight} />
-      </button>
-    );
-  };
+export function Wordle({ contentId }: { contentId: string }) {
+  const {
+    currentLessonStep,
+    previousLessonHandler,
+    currentPhrase,
+    inputKeyDownHandler,
+    gameStatus,
+    currentGuess,
+    handleKeyup,
+    winHandler,
+    addAnswerMutation,
+    nextLessonHandler,
+    currentGuessHistory,
+    secret,
+    retryHandler,
+    finishHandler,
+    answers,
+    totalLessons,
+  } = useWordleState({ contentId });
 
   return (
     <div>
@@ -365,10 +61,12 @@ export function Wordle() {
             {currentLessonStep} / {totalLessons}
           </div>
         </div>
-        <p></p>
 
         <div className="grid grid-cols-12 w-full px-4 md:px-32 justify-end items-center">
-          <PreviousLessonButton />
+          <PreviousLessonButton
+            disabled={currentLessonStep === 1}
+            onClick={previousLessonHandler}
+          />
           <div className="col-span-10">
             <div className="mt-16 text-center space-y-2 mx-0 lg:mx-32">
               <p className="text-lg text-gray-400 dark:text-gray-500 font-extralight">
@@ -382,9 +80,6 @@ export function Wordle() {
               >
                 {currentPhrase?.hanzi || currentPhrase?.input}
               </Link>
-              {/* <p className="text-lg  text-gray-700 font-extralight dark:text-gray-700">
-                {currentPhrase?.pinyin || currentPhrase?.roman}
-              </p> */}
             </div>
 
             <div className="flex justify-center w-full my-16 flex-col items-center">
@@ -393,32 +88,18 @@ export function Wordle() {
                 disabled={gameStatus === "win"}
                 className="text-center h-14 border-solid border-b-2 w-[320px] md:w-[660px] text-2xl px-2 focus:outline-none active:outline-none dark:border-gray-900"
                 value={currentGuess}
-                onKeyDown={(event: any) => {
-                  if (event.key === "ArrowUp") {
-                    const guessHistoryItem =
-                      guessHistory?.[lessonIndex as string];
-                    const lastGuess =
-                      guessHistoryItem?.[guessHistoryItem?.length - 1];
-
-                    setCurrentGuess(lastGuess);
-                    return null;
-                  }
-
-                  if (event.key === "Enter") {
-                    handleEnter();
-                  } else {
-                    setCurrentGuess(event.target.value);
-                  }
-                }}
-                onChange={(event) => {
-                  handleKeyup(event);
-                }}
+                onKeyDown={inputKeyDownHandler}
+                onChange={handleKeyup}
               />
-              {gameStatus === "win" && <WinButton />}
+              {gameStatus === "win" && (
+                <WinButton onClick={winHandler}>
+                  {addAnswerMutation?.isLoading ? "Loading 。。。" : "Continue"}
+                </WinButton>
+              )}
             </div>
           </div>
 
-          <NextLessonButton />
+          <NextLessonButton onClick={nextLessonHandler} />
         </div>
 
         <div className="w-80">
@@ -435,52 +116,12 @@ export function Wordle() {
           </div>
 
           <div className="text-center transition mt-8">
-            <button
-              onClick={() => {
-                const guessTrimmed = currentGuess;
-                const historyTrimmed = [
-                  ...currentGuessHistory,
-                  guessTrimmed,
-                ]?.reduce((acc, curr) => `${acc}${curr}`, "");
-
-                return addAnswerMutation
-                  .mutateAsync({
-                    // @ts-ignore
-                    hanzi: secret,
-                    answer: historyTrimmed,
-                    lessonId: _lessonId,
-                    // @ts-ignore
-                    phraseId: currentPhrase?.id,
-                    status: "incorrect",
-                    guessHistory: guessHistory?.[lessonIndex as string],
-                  })
-                  .then((res) => {
-                    const lessonIdx = contents?.findIndex(
-                      (lesson: any) => lesson?.id === lessonIndex
-                    );
-
-                    if (lessonIdx !== -1) {
-                      // @ts-ignore
-                      const nextId = contents?.[lessonIdx + 1];
-
-                      nextId?.id && setTranscriptionId(nextId?.id);
-                    } else {
-                      setGameStatus("finish");
-                    }
-
-                    setCurrentGuess("");
-                    setGameStatus("");
-                    setGuessHistory({});
-                  });
-              }}
-            >
-              Retry
-            </button>
+            <button onClick={retryHandler}>Retry</button>
           </div>
         </>
       )}
 
-      {gameStatus === "finish" && <FinishButton />}
+      {gameStatus === "finish" && <FinishButton onClick={finishHandler} />}
     </div>
   );
 }

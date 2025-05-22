@@ -93,7 +93,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     return (
       <div>
         {/* Write */}
-        <Wordle />
+        <Wordle contentId={lessonId} />
       </div>
     );
   }

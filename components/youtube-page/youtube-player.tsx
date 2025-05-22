@@ -35,6 +35,8 @@ import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { isVideoUrl } from "@/app/(auth)/convos/utils/is-video-url";
 import { getYablaLink } from "./utils/get-yabla-link";
 import { useCurrentTime } from "./use-current-time-store";
+import { smartSplit } from "./utils/smart-split";
+import { CharacterItem } from "../_select-character/character-item";
 
 const MAX_LIMIT = 9000;
 const THIRTY = 30;
@@ -653,6 +655,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                       const hanzis = transcriptions
                         ?.map((t: any) => t?.hanzi)
                         ?.join("");
+
                       return (
                         <div key={JSON.stringify(transcriptions)}>
                           <div className="flex flex-wrap">
@@ -660,13 +663,19 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                               ? group
                               : transcriptions
                             ).map((transcription: any) => {
+                              const isActiveTranscription =
+                                transcription?.start < currentTime &&
+                                transcription?.end > currentTime;
+
+                              const transcriptionInput =
+                                transcription?.input || transcription?.hanzi;
+
                               return (
                                 <span
                                   role="button"
                                   className={`${
                                     currentTime
-                                      ? transcription?.start < currentTime &&
-                                        transcription?.end > currentTime
+                                      ? isActiveTranscription
                                         ? "dark:text-white bg-yellow-200 dark:bg-black"
                                         : "dark:text-gray-400"
                                       : ""
@@ -692,7 +701,20 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                   }}
                                 >
                                   {" "}
-                                  {transcription?.input || transcription?.hanzi}
+                                  {isActiveTranscription
+                                    ? smartSplit({
+                                        input: transcriptionInput,
+                                        lang: lesson?.lang,
+                                      })?.map((item: string, idx: number) => {
+                                        return (
+                                          <CharacterItem
+                                            disableClass
+                                            key={`${idx}-youtube-player-active-transcription-${item}-${idx}`}
+                                            character={item}
+                                          />
+                                        );
+                                      })
+                                    : transcriptionInput}
                                   {"  "}
                                 </span>
                               );
@@ -753,6 +775,16 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             <div
               className={`${isVideoHidden ? "col-span-12" : "md:col-span-5 col-span-12"} w-full`}
             >
+              {isVideoHidden && (
+                <div>
+                  <ActiveTranscription
+                    currentTime={currentTime}
+                    transcriptions={transcriptions}
+                    contentId={contentId}
+                  />
+                </div>
+              )}
+
               <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md shadow-lg dark:shadow-gray-900 p-0 pb-16">
                 <div className="sm:space-y-8 w-full">
                   {(active !== MAX_LIMIT || chapterView
@@ -788,16 +820,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                     })}
                 </div>
               </ScrollArea>
-
-              {isVideoHidden && (
-                <div>
-                  <ActiveTranscription
-                    currentTime={currentTime}
-                    transcriptions={transcriptions}
-                    contentId={contentId}
-                  />
-                </div>
-              )}
             </div>
           ) : null}
         </div>

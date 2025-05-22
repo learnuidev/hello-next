@@ -11,9 +11,14 @@ import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 interface ICharacterItem {
   character: any;
   className?: string;
+  disableClass?: boolean;
 }
 
-export const CharacterItem = ({ character, className }: ICharacterItem) => {
+export const CharacterItem = ({
+  character,
+  className,
+  disableClass,
+}: ICharacterItem) => {
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersQuery();
 
@@ -56,7 +61,10 @@ export const CharacterItem = ({ character, className }: ICharacterItem) => {
               : selectedComp?.length > 1 || selectedComp?.group
                 ? `dark:text-white text-black ${hoverColor}`
                 : `dark:text-gray-200 text-gray-800 ${hoverColor}`
-        } ${hoverColor} lg:text-2xl text-xl transition lowercase font-light`,
+        } ${hoverColor}`,
+        disableClass
+          ? ""
+          : "lg:text-2xl text-xl transition lowercase font-light",
         className
       )}
     >

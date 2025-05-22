@@ -5,6 +5,8 @@ import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { Icons } from "../ui/icons.v2";
 import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
 import { useMemo } from "react";
+import { smartSplit } from "./utils/smart-split";
+import { CharacterItem } from "../_select-character/character-item";
 
 export function KaraokeMode({
   // playerRef,
@@ -124,7 +126,19 @@ export function KaraokeMode({
                     : "lg:text-2xl text-[16px]"
                 )}
               >
-                {currentTranscription?.input || currentTranscription?.hanzi}
+                {smartSplit({
+                  input:
+                    currentTranscription?.input || currentTranscription?.hanzi,
+                  lang,
+                })?.map((item: string, idx: number) => {
+                  return (
+                    <CharacterItem
+                      disableClass
+                      key={`${idx}-youtube-player-active-transcription-${item}-${idx}`}
+                      character={item}
+                    />
+                  );
+                })}
               </p>
 
               <p

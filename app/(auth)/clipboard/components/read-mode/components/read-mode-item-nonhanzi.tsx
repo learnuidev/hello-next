@@ -31,7 +31,7 @@ function WordItem({ word }: { word: string }) {
       className={cn(
         focusedWord === data
           ? "dark:text-white text-black"
-          : "dark:text-gray-300 text-gray-400",
+          : "dark:text-gray-300 text-gray-800",
         "transition"
       )}
       onClick={() => {

@@ -4,6 +4,7 @@ import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 import { useDiaryParams } from "@/app/(auth)/diary/hooks/use-diary-params";
 import { getReviewDate } from "@/hooks/get-review-date";
 import { useLearningMode } from "./learning-mode.store";
+import { useParams } from "next/navigation";
 
 export const getReviewSearchParams = ({
   mode,
@@ -32,6 +33,9 @@ export const getReviewSearchParams = ({
 export const useGetReviewUrl = ({ reviewMode } = {} as any) => {
   const { mode } = useLearningMode();
 
+  const params = useParams();
+  const contentId = params["content-id"];
+
   const { entryId } = useDiaryParams();
 
   const { level, reviewSpeed } = useGetReviewParams();
@@ -45,7 +49,7 @@ export const useGetReviewUrl = ({ reviewMode } = {} as any) => {
   // return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi, date: reviewDate })}`;
 
   return `/review?${getReviewSearchParams({
-    mode,
+    mode: contentId || mode,
     entryId,
     level,
     character: unReviewedCharacters?.[0]?.hanzi,

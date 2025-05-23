@@ -47,6 +47,8 @@ export function ReadModeItem({ text }: any) {
     );
   }
 
+  console.log("context", context);
+
   return (
     <>
       <p
@@ -114,8 +116,9 @@ export function ReadModeItem({ text }: any) {
                   {contextItem?.pinyin}
                 </span>
               )}
+
               <span>
-                {contextItem?.hanzi
+                {(contextItem?.hanzi || contextItem?.input)
                   ?.split("")
                   .map((hanziItem: string, idx: number) => {
                     const comp = components?.find(

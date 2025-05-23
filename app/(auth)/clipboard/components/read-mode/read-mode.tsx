@@ -5,10 +5,16 @@ import { ReadModeItem } from "./components/read-mode-item";
 
 import { useClipboardSentenceView } from "../../hooks/use-clipboard-sentence-view";
 import { useClipboardState } from "../../hooks/use-clipboard-state";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useMemo } from "react";
 
 export function ReadMode() {
   const { sentenceView } = useClipboardSentenceView();
   const { state } = useClipboardState();
+
+  const sentencesList = useMemo(() => {
+    return state.split("\n").filter(Boolean);
+  }, [state]);
 
   return (
     <div className="my-32 relative">
@@ -21,12 +27,9 @@ export function ReadMode() {
         )}
       >
         <div className="space-y-8">
-          {state
-            .split("\n")
-            .filter(Boolean)
-            .map((item: any) => {
-              return <ReadModeItem key={item} text={item} />;
-            })}
+          {sentencesList.map((item: any) => {
+            return <ReadModeItem key={item} text={item} />;
+          })}
         </div>
       </div>
     </div>

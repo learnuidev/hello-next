@@ -6,13 +6,14 @@ import { languages } from "@/app/next/features/phrase/languages";
 import { useClipboardState } from "../hooks/use-clipboard-state";
 import { useGetTotalWords } from "../hooks/use-get-total-words";
 import { SettingsPopover } from "./settings-popover";
+import { useGetCurrentLangFlag } from "@/components/language-selector/use-get-current-lang-flag";
 
 export const ClipboardHeader = () => {
   const totalWords = useGetTotalWords();
 
   const { setState } = useClipboardState();
 
-  const lang = languages[0];
+  const lang = useGetCurrentLangFlag();
 
   return (
     <header className="w-full max-w-4xl sm:pr-0 pr-12 fixed top-0 py-4 z-30 dark:bg-[rgb(9,10,11)]/75 bg-white/75 dark:bg-react/75 backdrop-blur-sm">

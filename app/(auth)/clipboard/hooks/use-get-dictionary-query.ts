@@ -22,8 +22,8 @@ export const useGetDictionaryQuery = (lang: string, word: string) => {
           (val: any) => val?.input === word || val?.hanzi === word
         );
 
-        if (item) {
-          return item;
+        if (item?.[0]) {
+          return item?.[0];
         }
         const res = await fetch(
           `${siteConfig.apiUrlV2}/v1/dictionary/add-to-dictionary`,

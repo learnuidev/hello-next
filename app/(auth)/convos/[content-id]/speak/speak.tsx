@@ -10,6 +10,7 @@ import { useDictaphone } from "@/components/speak/useSpeechRecognition_v2";
 import { Icons } from "@/components/ui/icons.v2";
 import { YoutubeButton } from "@/components/youtube-page/youtube-button";
 import Link from "next/link";
+import { useSetIfExists } from "../hooks/use-character-context-store";
 
 export const Speak = ({ contentId }: { contentId: string }) => {
   const [historyTimeline, setHistoryTimeline] = useState<string[]>([]);
@@ -18,6 +19,8 @@ export const Speak = ({ contentId }: { contentId: string }) => {
   const { data: content, isLoading } = useGetContentQuery({
     contentId,
   });
+
+  const setIfExists = useSetIfExists();
 
   const {
     transcript,
@@ -103,6 +106,15 @@ export const Speak = ({ contentId }: { contentId: string }) => {
           <p className="mt-12">
             {transcript ? (
               <Link
+                onClick={() => {
+                  setIfExists({
+                    contentId,
+                    hanzi: transcript,
+                    input: transcript,
+                    lang: content.lang,
+                    source: "speak/transcript",
+                  });
+                }}
                 target="_blank"
                 href={`/nmm/${transcript}?lang=${content?.lang}`}
               >

@@ -13,17 +13,13 @@ import { useReadModeStore } from "@/stores/use-readmode-store";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
 import { FloatingDuNavbar } from "@/app/(auth)/du/components/floating-du-navbar";
-import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { useReviewModeView } from "@/app/review/use-review-mode";
 import { useIsDu } from "@/hooks/use-is-du";
 import { useIsDuLessons } from "@/hooks/use-is-du-lessons";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import { BrightModeButton } from "./bright-mode-button";
 import { PinyinButton } from "./pinyin-button";
-import {
-  useGetReviewUrl,
-  useGetReviewUrlFn,
-} from "./settings-dialog/use-get-review-url";
+import { useGetReviewUrl } from "./settings-dialog/use-get-review-url";
 
 import { ReviewNavbar } from "@/app/review/review-navbar";
 
@@ -31,13 +27,10 @@ const FloatingNavbarComp = () => {
   const routeName = usePathname();
   const reviewUrl = useGetReviewUrl();
 
-  const { setReviewMode, reviewMode: _reviewMode } = useReviewModeView();
+  const { reviewMode: _reviewMode } = useReviewModeView();
 
   const isDuExact = useIsDu(true);
   const isDu = useIsDu(false);
-
-  const reviewUrlFn = useGetReviewUrlFn();
-  const { reviewMode } = useGetReviewParams();
 
   const { data: reviewList } = useListCharacterReviewList();
 

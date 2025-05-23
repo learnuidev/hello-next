@@ -4,10 +4,12 @@ import { useCurrentLangStore } from "@/components/language-selector/use-current-
 import { LanguageButton } from "../next/features/phrase/language-button";
 import { languages } from "../next/features/phrase/languages";
 import { useRouter } from "next/navigation";
+import { usePreviousPathnameStore } from "@/components/language-selector/use-previous-path-name-store";
 
 export default function LanguageSelector() {
   const setCurrentLang = useCurrentLangStore((state) => state.setCurrentLang);
   const router = useRouter();
+  const { setPreviousPath, previousPath } = usePreviousPathnameStore();
   return (
     <main className="items-center flex justify-center">
       <div>
@@ -25,7 +27,8 @@ export default function LanguageSelector() {
                     setCurrentLang(langItem);
                     resolve(langItem);
                   }).then((langId: any) => {
-                    router.push(`/nmm?lang=${langId}`);
+                    router.push(previousPath);
+                    setPreviousPath(null);
                   });
                 }}
                 key={JSON.stringify(lang)}

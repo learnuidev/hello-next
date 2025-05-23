@@ -3,11 +3,14 @@ import { useCurrentLangStore } from "./use-current-lang-store";
 import { languages } from "@/app/next/features/phrase/languages";
 import { usePathname, useRouter } from "next/navigation";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { usePreviousPathnameStore } from "./use-previous-path-name-store";
 
 export const LanguageSelector = () => {
   const currentLang = useGetCurrentLang();
 
   const pathName = usePathname();
+
+  const { setPreviousPath } = usePreviousPathnameStore();
 
   const language =
     languages?.find((lang) => lang?.shortId === currentLang) || languages?.[0];
@@ -23,6 +26,8 @@ export const LanguageSelector = () => {
       <LanguageButton
         lang={language}
         onClick={() => {
+          console.log("PATH NAME");
+          setPreviousPath(pathName);
           router.push(`/language-selector`);
         }}
       />

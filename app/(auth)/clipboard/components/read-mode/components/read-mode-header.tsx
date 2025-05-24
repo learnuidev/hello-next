@@ -13,6 +13,8 @@ export function ReadModeHeader() {
 
   const currentTranslation = translations?.[focused];
 
+  console.log("SELECTED", selected);
+
   return (
     <div className="fixed top-[75px] max-w-4xl w-full z-30 dark:bg-black bg-white py-2">
       <div className="flex gap-2 flex-col">
@@ -34,17 +36,17 @@ export function ReadModeHeader() {
 
           {selected ? (
             <div className="mt-2 w-full">
-              {lang === "zh" && (
-                <div className="flex justify-between items-center">
-                  <p className="space-x-2 text-[16px] font-extralight">
-                    <span>{selected?.hanzi}</span>
+              <div className="flex justify-between items-center">
+                <p className="space-x-2 text-[16px] font-extralight">
+                  <span>{selected?.hanzi || selected?.input}</span>
 
-                    <span className="text-red-400">{selected?.pinyin}</span>
-                  </p>
+                  <span className="text-red-400">
+                    {selected?.pinyin || selected?.roman}
+                  </span>
+                </p>
 
-                  {selected?.level && <p>HSK {selected?.level}</p>}
-                </div>
-              )}
+                {selected?.level && <p>HSK {selected?.level}</p>}
+              </div>
 
               <p className="font-extralight">
                 <span className="wrap">{selected?.en}</span>

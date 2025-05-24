@@ -2,6 +2,7 @@ import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useClipboardFocus } from "../../../hooks/use-clipboard-focus";
 import { useClipboardTranslations } from "../../../hooks/use-clipboard-translations";
 import { useClipboardFocused } from "../hooks/use-clipboard-focused";
+import { cn } from "@/lib/utils";
 
 export function ReadModeHeader() {
   const { focusedWord: selected } = useClipboardFocused();
@@ -20,7 +21,10 @@ export function ReadModeHeader() {
           <div className="pb-4">
             <h4 className="text-xs text-gray-500">Sentence</h4>
             <div
-              className={`flex justify-between items-center mt-2 w-full h-16`}
+              className={cn(
+                `flex justify-between items-center mt-2 w-full`,
+                currentTranslation?.output?.length > 200 ? "h-32" : "h-16"
+              )}
             >
               <p className="space-x-2 text-[16px] font-extralight pb-[4px]">
                 {currentTranslation?.output}

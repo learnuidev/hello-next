@@ -9,6 +9,7 @@ export const addToDictionary = async ({
   word: string;
   token: string;
 }) => {
+  console.log("YOOO CALLED");
   const res = await fetch(
     `${siteConfig.apiUrlV2}/v1/dictionary/add-to-dictionary`,
     {

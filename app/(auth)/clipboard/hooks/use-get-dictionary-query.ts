@@ -20,10 +20,7 @@ export const useGetDictionaryQuery = (lang: string, word: string) => {
       if (data?.length > 0) {
         const item = data?.filter(
           (val: any) =>
-            val?.input === word?.toLowerCase() ||
-            val?.hanzi === word?.toLowerCase() ||
-            val?.input?.toLowerCase()?.includes(word?.toLowerCase()) ||
-            word?.toLowerCase()?.includes(val?.input?.toLowerCase())
+            val?.id?.split("#")?.[0]?.toLowerCase() === word?.toLowerCase()
         );
 
         if (item?.[0]) {

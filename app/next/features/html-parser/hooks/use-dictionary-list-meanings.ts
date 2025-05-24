@@ -48,29 +48,36 @@ export const useListDictionaryMeaningsQuery = (
 
       console.log("YOOO");
 
-      let res = [];
+      if (data?.length > 0) {
+        let res = [];
 
-      const words = hanzi?.split(" ");
+        const words = hanzi?.split(" ");
 
-      for (const word of words) {
-        const item = data?.filter(
-          (val: any) => val?.input === word || val?.hanzi === word
-        )?.[0];
+        for (const word of words) {
+          // const item = data?.filter(
+          //   (val: any) => val?.input === word || val?.hanzi === word
+          // )?.[0];
 
-        if (item) {
-          res.push(item);
-        } else {
-          const resp = await addToDictionary({
-            lang,
-            word,
-            token,
-          });
+          const item = data?.filter(
+            (val: any) =>
+              val?.id?.split("#")?.[0]?.toLowerCase() === word?.toLowerCase()
+          )?.[0];
 
-          res.push(resp);
+          if (item) {
+            res.push(item);
+          } else {
+            const resp = await addToDictionary({
+              lang,
+              word,
+              token,
+            });
+
+            res.push(resp);
+          }
         }
-      }
 
-      return res?.filter(Boolean);
+        return res?.filter(Boolean);
+      }
     },
     ...options,
   });

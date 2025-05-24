@@ -511,7 +511,7 @@ export const DynaClozeSentence = ({
 
   // const { selectedChar, setView, view } = data;
   const setView = () => {
-    return setViews(sentence?.input || sentence?.hanzi || "", "");
+    return setViews(_sentence?.input || _sentence?.hanzi || "", "");
   };
 
   const { setReviewMode } = useReviewModeView();

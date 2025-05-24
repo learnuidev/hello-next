@@ -64,12 +64,15 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
   if (viewType === "clipboard" && lesson2.lang !== "zh") {
     if (lesson2 && lesson2?.transcriptions?.length > 0) {
-      return (
-        <Clipboard
-          lang={lesson2.lang}
-          content={currentTranscription?.input || currentTranscription?.hanzi}
-        />
-      );
+      const transcriptionStr = Object.entries(
+        groupBySectionId(lesson2?.transcriptions || [])
+      )
+        .map((item: any) =>
+          item?.[1].map((v: any) => v?.input || v?.hanzi)?.join(".")
+        )
+        .join("\n\n");
+
+      return <Clipboard lang={lesson2.lang} content={transcriptionStr} />;
     } else {
       return (
         <Nothing message="Please add some content before viewing this page" />

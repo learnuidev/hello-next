@@ -27,8 +27,15 @@ export function ReadMode({ lang }: { lang: string }) {
         )}
       >
         <div className="space-y-8">
-          {sentencesList.map((item: any) => {
-            return <ReadModeItem key={item} text={item} lang={lang} />;
+          {sentencesList.map((item: any, sentenceIndex: number) => {
+            return (
+              <ReadModeItem
+                sentenceIndex={sentenceIndex}
+                key={`${item}-${sentenceIndex}-read-mode`}
+                text={item}
+                lang={lang}
+              />
+            );
           })}
         </div>
       </div>

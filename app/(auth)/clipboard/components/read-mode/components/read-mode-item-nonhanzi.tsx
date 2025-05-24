@@ -11,8 +11,18 @@ import { useGetDictionaryQuery } from "../../../hooks/use-get-dictionary-query";
 import { useTranslateTextMutation } from "../../../hooks/use-translated-text-mutation";
 import { useClipboardFocused } from "../hooks/use-clipboard-focused";
 
-function WordItem({ word, lang }: { word: string; lang: string }) {
-  const { focused, setFocused } = useClipboardFocus();
+function WordItem({
+  word,
+  lang,
+  sentence,
+  sentenceIndex,
+}: {
+  word: string;
+  lang: string;
+  sentence: string;
+  sentenceIndex: number;
+}) {
+  const { focused, setFocused, focusedIndex } = useClipboardFocus();
   const { setWords } = useClipboardWords();
   const { hskView } = useClipboardHskView();
 
@@ -25,7 +35,7 @@ function WordItem({ word, lang }: { word: string; lang: string }) {
   return (
     <span
       className={cn(
-        focusedWord === data
+        focusedWord === data && focusedIndex === sentenceIndex
           ? "dark:text-white text-black bg-yellow-200 dark:bg-red-500"
           : "dark:text-gray-300 text-gray-800",
         "transition"
@@ -52,11 +62,14 @@ function WordItem({ word, lang }: { word: string; lang: string }) {
 export function ReadModeItemNonHanzi({
   text,
   lang,
+  sentenceIndex,
 }: {
   text: string;
   lang: string;
+  sentenceIndex: number;
 }) {
-  const { focused, setFocused } = useClipboardFocus();
+  const { focused, setFocused, focusedIndex, setFocusedIndex } =
+    useClipboardFocus();
   const { setWords } = useClipboardWords();
   const { hskView } = useClipboardHskView();
 
@@ -100,6 +113,7 @@ export function ReadModeItemNonHanzi({
             : ""
         }
         onMouseEnter={() => {
+          setFocusedIndex(sentenceIndex);
           setFocused(text);
           if (!translateTextMutation?.isLoading) {
             translateTextMutation
@@ -120,11 +134,14 @@ export function ReadModeItemNonHanzi({
         }}
         onMouseLeave={() => {
           setFocused(null);
+          setFocusedIndex(null);
         }}
       >
         {text.split(" ").map((item: string, idx: number) => {
           return (
             <WordItem
+              sentenceIndex={sentenceIndex}
+              sentence={text}
               key={`${JSON.stringify(item)}-${idx}-readmode-nonhanzi`}
               lang={lang}
               word={item}

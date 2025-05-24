@@ -16,9 +16,11 @@ import { useClipboardFocused } from "../hooks/use-clipboard-focused";
 export function ReadModeItemHanzi({
   text,
   lang,
+  sentenceIndex,
 }: {
   text: string;
   lang: string;
+  sentenceIndex: number;
 }) {
   const { focused, setFocused } = useClipboardFocus();
   const { setWords } = useClipboardWords();

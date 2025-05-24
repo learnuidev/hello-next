@@ -23,6 +23,7 @@ import { useReviewModeView } from "@/app/review/use-review-mode";
 import { useViewTypeStore } from "@/components/use-selected-character";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -486,12 +487,25 @@ const DynaSentence = ({
 };
 
 export const DynaClozeSentence = ({
-  sentence,
+  sentence: _sentence,
 }: {
   sentence: { hanzi?: string; input?: string; lang: string };
 }) => {
   const { setWordIndex, setSentenceIndex, sentenceIndex, wordIndex } =
     useDyanStoreRuntime();
+
+  const { data: sentences } = useListSentencesQuery({
+    component: _sentence?.hanzi || _sentence?.input,
+    lang: _sentence?.lang,
+  });
+
+  console.log("SENTENCE INDEX", sentenceIndex);
+
+  const sentencesShuffled = useMemo(() => {
+    return [_sentence, ...shuffleArray(sentences || [])];
+  }, [_sentence, sentences]);
+
+  const sentence = sentencesShuffled?.[sentenceIndex];
 
   const setViews = useViewTypeStore((state) => state.setViews);
 
@@ -510,6 +524,8 @@ export const DynaClozeSentence = ({
   const finalSentence = useMemo(() => {
     return { ...data?.details, ...sentence };
   }, [data?.details, sentence]);
+
+  const maxIndex = sentencesShuffled?.length - 1;
 
   const { learnMode } = useDynaClozeSentence();
 
@@ -543,6 +559,7 @@ export const DynaClozeSentence = ({
       {/* <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "} */}
       <WithMultiSentence sentence={finalSentence}>
         <DynaSentence
+          maxIndex={maxIndex}
           sentence={finalSentence}
           setWordIndex={setWordIndex}
           setSentenceIndex={setSentenceIndex}

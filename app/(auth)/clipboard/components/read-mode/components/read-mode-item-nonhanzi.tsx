@@ -1,23 +1,20 @@
 import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { cn } from "@/lib/utils";
 import { useClipboardFocus } from "../../../hooks/use-clipboard-focus";
 import { useClipboardHskView } from "../../../hooks/use-clipboard-hsk-view";
 import { useClipboardPinyinView } from "../../../hooks/use-clipboard-pinyin-view";
 import { useClipboardTranslations } from "../../../hooks/use-clipboard-translations";
 import { useClipboardWords } from "../../../hooks/use-clipboard-words";
+import { useGetDictionaryQuery } from "../../../hooks/use-get-dictionary-query";
 import { useTranslateTextMutation } from "../../../hooks/use-translated-text-mutation";
 import { useClipboardFocused } from "../hooks/use-clipboard-focused";
-import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
-import { useGetDictionaryQuery } from "../../../hooks/use-get-dictionary-query";
-import { cn } from "@/lib/utils";
 
-function WordItem({ word }: { word: string }) {
+function WordItem({ word, lang }: { word: string; lang: string }) {
   const { focused, setFocused } = useClipboardFocus();
   const { setWords } = useClipboardWords();
   const { hskView } = useClipboardHskView();
-
-  const lang = useGetCurrentLang();
 
   const { pinyinView } = useClipboardPinyinView();
   const { focusedWord, setFocusedWord } = useClipboardFocused();
@@ -52,11 +49,16 @@ function WordItem({ word }: { word: string }) {
   );
 }
 
-export function ReadModeItemNonHanzi({ text }: any) {
+export function ReadModeItemNonHanzi({
+  text,
+  lang,
+}: {
+  text: string;
+  lang: string;
+}) {
   const { focused, setFocused } = useClipboardFocus();
   const { setWords } = useClipboardWords();
   const { hskView } = useClipboardHskView();
-  const lang = useGetCurrentLang();
 
   const { pinyinView } = useClipboardPinyinView();
   const { focusedWord, setFocusedWord } = useClipboardFocused();
@@ -124,6 +126,7 @@ export function ReadModeItemNonHanzi({ text }: any) {
           return (
             <WordItem
               key={`${JSON.stringify(item)}-${idx}-readmode-nonhanzi`}
+              lang={lang}
               word={item}
             />
           );

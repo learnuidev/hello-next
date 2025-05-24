@@ -5,11 +5,16 @@ import { LanguageButton } from "../next/features/phrase/language-button";
 import { languages } from "../next/features/phrase/languages";
 import { useRouter } from "next/navigation";
 import { usePreviousPathnameStore } from "@/components/language-selector/use-previous-path-name-store";
+import { useClipboardViewMode } from "../(auth)/clipboard/hooks/use-clipboard-view-mode";
+import { useClipboardState } from "../(auth)/clipboard/hooks/use-clipboard-state";
 
 export default function LanguageSelector() {
   const setCurrentLang = useCurrentLangStore((state) => state.setCurrentLang);
   const router = useRouter();
   const { setPreviousPath, previousPath } = usePreviousPathnameStore();
+
+  const { mode, setMode } = useClipboardViewMode();
+  const { state, setState } = useClipboardState();
   return (
     <main className="items-center flex justify-center">
       <div>
@@ -27,7 +32,11 @@ export default function LanguageSelector() {
                     setCurrentLang(langItem);
                     resolve(langItem);
                   }).then((langId: any) => {
+                    if (previousPath === "/clipboard") {
+                      setMode("edit");
+                    }
                     router.push(previousPath);
+
                     setPreviousPath(null);
                   });
                 }}

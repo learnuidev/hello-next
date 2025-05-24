@@ -8,7 +8,7 @@ import { useClipboardState } from "../../hooks/use-clipboard-state";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useMemo } from "react";
 
-export function ReadMode() {
+export function ReadMode({ lang }: { lang: string }) {
   const { sentenceView } = useClipboardSentenceView();
   const { state } = useClipboardState();
 
@@ -28,7 +28,7 @@ export function ReadMode() {
       >
         <div className="space-y-8">
           {sentencesList.map((item: any) => {
-            return <ReadModeItem key={item} text={item} />;
+            return <ReadModeItem key={item} text={item} lang={lang} />;
           })}
         </div>
       </div>

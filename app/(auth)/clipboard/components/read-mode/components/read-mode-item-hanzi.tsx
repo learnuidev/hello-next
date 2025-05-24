@@ -13,7 +13,13 @@ import { useClipboardWords } from "../../../hooks/use-clipboard-words";
 import { useTranslateTextMutation } from "../../../hooks/use-translated-text-mutation";
 import { useClipboardFocused } from "../hooks/use-clipboard-focused";
 
-export function ReadModeItemHanzi({ text }: any) {
+export function ReadModeItemHanzi({
+  text,
+  lang,
+}: {
+  text: string;
+  lang: string;
+}) {
   const { focused, setFocused } = useClipboardFocus();
   const { setWords } = useClipboardWords();
   const { hskView } = useClipboardHskView();

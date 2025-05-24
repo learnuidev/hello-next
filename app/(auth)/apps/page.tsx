@@ -8,6 +8,8 @@ import { DuChineseIcon } from "../du/components/duchinese-icon";
 import { useSettingsDialogState } from "@/components/settings-dialog/settings-dialog.state";
 import { useGetReviewUrl } from "@/components/settings-dialog/use-get-review-url";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
+import { useClipboardViewMode } from "../clipboard/hooks/use-clipboard-view-mode";
+import { useClipboardState } from "../clipboard/hooks/use-clipboard-state";
 
 function AppLinkItem({
   href,
@@ -42,6 +44,9 @@ function AppLinkItem({
 export default function AppsPage() {
   const setOpen = useSettingsDialogState((state) => state.setIsOpen);
   const { data: reviewList } = useListCharacterReviewList();
+
+  const { mode, setMode } = useClipboardViewMode();
+  const { state, setState } = useClipboardState();
 
   const reviewUrl = useGetReviewUrl();
   const apps = [
@@ -97,6 +102,9 @@ export default function AppsPage() {
       href: "/clipboard",
       title: "Clipboard",
       Icon: Icons.clipboard,
+      onClick: () => {
+        setMode("edit");
+      },
     },
   ];
   return (

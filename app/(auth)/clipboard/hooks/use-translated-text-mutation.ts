@@ -48,7 +48,9 @@ export const useTranslateTextMutation = () => {
 
       const respJson = await res.json();
 
-      setDictionary(input, respJson);
+      if (res.status !== 400) {
+        setDictionary(input, respJson);
+      }
 
       return respJson;
     },

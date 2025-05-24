@@ -25,7 +25,6 @@ function WordItem({ word }: { word: string }) {
 
   const { data } = useGetDictionaryQuery(lang, word);
 
-  console.log("data", data);
   return (
     <span
       className={cn(
@@ -55,6 +54,7 @@ export function ReadModeItemNonHanzi({ text }: any) {
   const { focused, setFocused } = useClipboardFocus();
   const { setWords } = useClipboardWords();
   const { hskView } = useClipboardHskView();
+  const lang = useGetCurrentLang();
 
   const { pinyinView } = useClipboardPinyinView();
   const { focusedWord, setFocusedWord } = useClipboardFocused();
@@ -85,8 +85,6 @@ export function ReadModeItemNonHanzi({ text }: any) {
     );
   }
 
-  console.log("context", context);
-
   return (
     <>
       <p
@@ -99,11 +97,12 @@ export function ReadModeItemNonHanzi({ text }: any) {
         }
         onMouseEnter={() => {
           setFocused(text);
-          if (!translations?.[text] && !translateTextMutation?.isLoading) {
+          if (!translateTextMutation?.isLoading) {
+            console.log("translations?.[text]", translations?.[text]);
             translateTextMutation
               .mutateAsync({
                 targetLang: "en",
-                sourceLang: "zh-CN",
+                sourceLang: lang,
                 input: text,
               })
               .then((resp) => {

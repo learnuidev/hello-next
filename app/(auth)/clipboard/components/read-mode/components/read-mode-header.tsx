@@ -13,8 +13,6 @@ export function ReadModeHeader() {
 
   const currentTranslation = translations?.[focused];
 
-  console.log("SELECTED", selected);
-
   return (
     <div className="fixed top-[75px] max-w-4xl w-full z-30 dark:bg-black bg-white py-2">
       <div className="flex gap-2 flex-col">

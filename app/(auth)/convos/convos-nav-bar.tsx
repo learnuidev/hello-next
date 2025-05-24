@@ -18,6 +18,7 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import { faTypewriter } from "@fortawesome/sharp-solid-svg-icons";
 import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
 import Link from "next/link";
+import { useClipboardViewMode } from "../clipboard/hooks/use-clipboard-view-mode";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -99,6 +100,7 @@ const options = [
 
 export const ConvosNavBar = () => {
   const removeLessonId = useConvosStore((state: any) => state?.removeConvoId);
+  const { mode, setMode } = useClipboardViewMode();
 
   const setViewType = useConvosStore((state: any) => state?.setViewType);
   const searchParams = useSearchParams();
@@ -157,6 +159,22 @@ export const ConvosNavBar = () => {
         >
           <Icons.play />
         </Link>
+        {content?.lang !== "zh" && (
+          <Link
+            onClick={() => {
+              setViewType("clipboard");
+              setMode("edit");
+            }}
+            href={`/convos/${contentId}?view=clipboard&start=${searchParams.get("start") || 0}`}
+            className={`transition ${
+              viewType === "clipboard"
+                ? "text-black dark:text-gray-200"
+                : "text-gray-200 dark:text-gray-600"
+            } hover:text-black dark:hover:text-white transition text-xl`}
+          >
+            <Icons.clipboard />
+          </Link>
+        )}
         <Link
           onClick={() => {
             setViewType("speak");

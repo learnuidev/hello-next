@@ -2,6 +2,7 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 
 import { useConvosStore } from "@/stores/convos-store";
 import { ConvoInsights } from "./convo-insights";
+import { groupBy } from "ramda";
 
 import { Wordle } from "@/components/wordle/wordle";
 import { useGetContentQuery } from "@/domain/content/content.queries";
@@ -20,6 +21,7 @@ import { DynaCloze } from "./[content-id]/dyna-cloze/dyna-cloze";
 import { useSearchParams } from "next/navigation";
 import { FloatingNavbar } from "@/components/floating-navbar";
 import { Speak } from "./[content-id]/speak/speak";
+import { Clipboard } from "../clipboard/clipboard";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const searchParams = useSearchParams();
@@ -29,6 +31,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const isAuthor = useIsContentAuthor(lessonId);
 
   const isSuperAdmin = useIsSuperAdmin();
+  const groupBySectionId = groupBy((item: any) => item.sectionId);
 
   const { data: lesson2, isLoading } = useGetContentQuery({
     contentId: lessonId,
@@ -49,6 +52,21 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
       );
     }
     return <ContentSettings />;
+  }
+
+  console.log("LESSON 2", groupBySectionId(lesson2?.transcriptions || []));
+
+  if (viewType === "clipboard" && lesson2.lang !== "zh") {
+    if (lesson2 && lesson2?.transcriptions?.length > 0) {
+      const transcriptionStr = Object.entries(
+        groupBySectionId(lesson2?.transcriptions || [])
+      )
+        .map((item: any) =>
+          item?.[1].map((v: any) => v?.input || v?.hanzi)?.join(".")
+        )
+        .join("\n\n");
+      return <Clipboard lang={lesson2.lang} content={transcriptionStr} />;
+    }
   }
 
   // If the link contains yotube - then show youtube page

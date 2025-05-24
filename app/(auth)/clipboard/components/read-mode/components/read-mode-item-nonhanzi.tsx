@@ -98,7 +98,6 @@ export function ReadModeItemNonHanzi({ text }: any) {
         onMouseEnter={() => {
           setFocused(text);
           if (!translateTextMutation?.isLoading) {
-            console.log("translations?.[text]", translations?.[text]);
             translateTextMutation
               .mutateAsync({
                 targetLang: "en",

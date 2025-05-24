@@ -16,7 +16,7 @@ export function ReadModeHeader() {
   return (
     <div className="fixed top-[75px] max-w-4xl w-full z-30 dark:bg-black bg-white py-2">
       <div className="flex gap-2 flex-col">
-        <div className="sticky top-0 pt-4 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)]">
+        <div className="sticky top-0 pt-4 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)] px-2">
           <div className="pb-4">
             <h4 className="text-xs text-gray-500">Sentence</h4>
             <div
@@ -29,7 +29,7 @@ export function ReadModeHeader() {
           </div>
         </div>
 
-        <div className="pt-4 pb-[4px] dark:bg-[rgb(9,10,11)] bg-gray-50">
+        <div className="pt-4 pb-[4px] dark:bg-[rgb(9,10,11)] bg-gray-50 px-2">
           <h4 className="text-xs text-gray-500">Word</h4>
 
           {selected ? (
@@ -38,7 +38,7 @@ export function ReadModeHeader() {
                 <p className="space-x-2 text-[16px] font-extralight">
                   <span>{selected?.hanzi || selected?.input}</span>
 
-                  <span className="text-red-400">
+                  <span className="text-red-400 font-bold">
                     {selected?.pinyin || selected?.roman}
                   </span>
                 </p>
@@ -46,7 +46,7 @@ export function ReadModeHeader() {
                 {selected?.level && <p>HSK {selected?.level}</p>}
               </div>
 
-              <p className="font-extralight">
+              <p className="">
                 <span className="wrap">{selected?.en}</span>
               </p>
             </div>

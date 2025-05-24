@@ -29,7 +29,7 @@ function WordItem({ word }: { word: string }) {
     <span
       className={cn(
         focusedWord === data
-          ? "dark:text-white text-black"
+          ? "dark:text-white text-black bg-yellow-200 dark:bg-red-500"
           : "dark:text-gray-300 text-gray-800",
         "transition"
       )}
@@ -45,7 +45,9 @@ function WordItem({ word }: { word: string }) {
         setFocusedWord(null);
       }}
     >
-      {word}{" "}
+      {" "}
+      {word}
+      {"   "}
     </span>
   );
 }

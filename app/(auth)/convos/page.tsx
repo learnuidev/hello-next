@@ -39,6 +39,7 @@ import { useListPublishedContentsQuery } from "./[content-id]/hooks/use-list-pub
 // import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query.ts";
 import { ContentsListEffect } from "@/components/contents-list-effect";
 import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query";
+import { useRecentlyWatchedContent } from "./use-recently-watched-content-store";
 
 type ContentType = {
   title: string;
@@ -55,14 +56,20 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
   const { data: favouriteContents, isLoading: isFavouriteContentLoading } =
     useListFavouriteContentsQuery({});
 
+  const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
+
+  console.log("RECENRLY WATCHED", recentlyWatched);
+
   const isLoading = isContentsLoading || isPublicContentLoading;
 
   const contents =
-    contentViewType === "public"
-      ? data?.items
-      : contentViewType === "favourites"
-        ? favouriteContents?.items
-        : myContent?.items;
+    contentViewType === "history"
+      ? recentlyWatched
+      : contentViewType === "public"
+        ? data?.items
+        : contentViewType === "favourites"
+          ? favouriteContents?.items
+          : myContent?.items;
 
   const contentType = useContentTypeStore((state) => state.contentType);
 
@@ -100,7 +107,13 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
             searchTransacription(content, query)
           );
         })
-        ?.filter((item: any) => item?.lang === lang)
+        ?.filter((item: any) => {
+          if (contentViewType === "history") {
+            return true;
+          }
+
+          return item?.lang === lang;
+        })
         ?.map((content: any) => {
           return {
             id: content?.id,
@@ -183,7 +196,7 @@ function LessonCard({ lesson }: any) {
   );
 }
 export default function Convos() {
-  const [contentViewType, setViewType] = useState("public");
+  const [contentViewType, setViewType] = useState("history");
   const [isTocHidden, setIsTocHidden] = useState(false);
   const lessonId = useConvosStore((state: any) => state?.convoId);
 
@@ -233,6 +246,16 @@ export default function Convos() {
           }}
         >
           Me
+        </button>
+        <button
+          className={
+            contentViewType === "history" ? "dark:text-white" : "text-gray-500"
+          }
+          onClick={() => {
+            setViewType("history");
+          }}
+        >
+          History
         </button>
         <button
           className={

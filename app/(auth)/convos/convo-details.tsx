@@ -22,6 +22,7 @@ import { useSearchParams } from "next/navigation";
 import { FloatingNavbar } from "@/components/floating-navbar";
 import { Speak } from "./[content-id]/speak/speak";
 import { Clipboard } from "../clipboard/clipboard";
+import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const searchParams = useSearchParams();
@@ -36,6 +37,13 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const { data: lesson2, isLoading } = useGetContentQuery({
     contentId: lessonId,
   });
+
+  const { currentTime, setCurrentTime: setTime } = useCurrentTime(lessonId);
+
+  const currentTranscription =
+    lesson2?.transcriptions?.find(
+      (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+    ) || lesson2?.transcriptions?.[0];
 
   if (isLoading) {
     return (
@@ -56,14 +64,12 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
   if (viewType === "clipboard" && lesson2.lang !== "zh") {
     if (lesson2 && lesson2?.transcriptions?.length > 0) {
-      const transcriptionStr = Object.entries(
-        groupBySectionId(lesson2?.transcriptions || [])
-      )
-        .map((item: any) =>
-          item?.[1].map((v: any) => v?.input || v?.hanzi)?.join(".")
-        )
-        .join("\n\n");
-      return <Clipboard lang={lesson2.lang} content={transcriptionStr} />;
+      return (
+        <Clipboard
+          lang={lesson2.lang}
+          content={currentTranscription?.input || currentTranscription?.hanzi}
+        />
+      );
     } else {
       return (
         <Nothing message="Please add some content before viewing this page" />

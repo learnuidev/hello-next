@@ -54,8 +54,6 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     return <ContentSettings />;
   }
 
-  console.log("LESSON 2", groupBySectionId(lesson2?.transcriptions || []));
-
   if (viewType === "clipboard" && lesson2.lang !== "zh") {
     if (lesson2 && lesson2?.transcriptions?.length > 0) {
       const transcriptionStr = Object.entries(
@@ -66,6 +64,10 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
         )
         .join("\n\n");
       return <Clipboard lang={lesson2.lang} content={transcriptionStr} />;
+    } else {
+      return (
+        <Nothing message="Please add some content before viewing this page" />
+      );
     }
   }
 

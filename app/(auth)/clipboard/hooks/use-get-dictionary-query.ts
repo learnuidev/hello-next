@@ -17,14 +17,21 @@ export const useGetDictionaryQuery = (lang: string, word: string) => {
   return useQuery<any>({
     queryKey: [getDictionaryQueryKey, lang, word, JSON.stringify(data)],
     queryFn: async () => {
-      if (data) {
+      if (data?.length > 0) {
         const item = data?.filter(
-          (val: any) => val?.input === word || val?.hanzi === word
+          (val: any) =>
+            val?.input === word?.toLowerCase() ||
+            val?.hanzi === word?.toLowerCase() ||
+            val?.input?.toLowerCase()?.includes(word?.toLowerCase()) ||
+            word?.toLowerCase()?.includes(val?.input?.toLowerCase())
         );
 
         if (item?.[0]) {
+          console.log("FOUND", item?.[0]);
           return item?.[0];
         }
+
+        console.log("NOT FOUND", word);
         const res = await fetch(
           `${siteConfig.apiUrlV2}/v1/dictionary/add-to-dictionary`,
           {

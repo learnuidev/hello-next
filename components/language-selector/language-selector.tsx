@@ -9,7 +9,7 @@ export const LanguageSelector = () => {
 
   const pathName = usePathname();
 
-  const { setPreviousPath } = usePreviousPathnameStore();
+  const { setPreviousPath, previousPath } = usePreviousPathnameStore();
 
   const language = useGetCurrentLangFlag();
 
@@ -24,9 +24,14 @@ export const LanguageSelector = () => {
       <LanguageButton
         lang={language}
         onClick={() => {
-          console.log("PATH NAME");
-          setPreviousPath(pathName);
-          router.push(`/language-selector`);
+          if (previousPath) {
+            router.push(previousPath);
+            setPreviousPath(null);
+            return;
+          } else {
+            setPreviousPath(pathName);
+            router.push(`/language-selector`);
+          }
         }}
       />
     </div>

@@ -8,8 +8,8 @@ export default function NomadMethodPage(props: any) {
   const componentId = useGetComponentId();
 
   return (
-    <WithDetectLanguage content={componentId}>
-      <SelectedCharacterContainer characterId={componentId} />
-    </WithDetectLanguage>
+    // <WithDetectLanguage content={componentId}>
+    <SelectedCharacterContainer characterId={componentId} />
+    // </WithDetectLanguage>
   );
 }

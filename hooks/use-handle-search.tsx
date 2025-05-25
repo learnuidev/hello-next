@@ -22,8 +22,9 @@ export const useHandleSearch = () => {
   const router = useRouter();
   const path = usePathname();
 
-  const lang = useGetLangParams();
-  const _lang = useGetCurrentLang();
+  const _lang = useGetLangParams();
+  const _langState = useGetCurrentLang();
+  const lang = _lang || _langState;
 
   // 1. State
   const querySync = useSearchQueryStore((state) => state.querySync);
@@ -120,10 +121,10 @@ export const useHandleSearch = () => {
         const selectedChar = traditionalToSimplified(querySync);
 
         if (selectedChar === querySync) {
-          router.push(`/nmm/${encodeURIComponent(querySync)}`);
+          router.push(`/nmm/${encodeURIComponent(querySync)}?lang=${lang}`);
         } else {
           router.push(
-            `/nmm/${encodeURIComponent(selectedChar)}?lang=zh&trad=${querySync}`
+            `/nmm/${encodeURIComponent(selectedChar)}?lang=${lang}&trad=${querySync}`
           );
         }
       }

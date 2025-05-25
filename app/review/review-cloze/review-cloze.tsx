@@ -21,9 +21,11 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 const ClozeNavbar = ({
   onClose,
   currentCharacter,
+  totalSentences,
 }: {
   onClose?: () => void;
   currentCharacter: string;
+  totalSentences: number;
 }) => {
   const { setReviewMode } = useReviewModeView();
   return (
@@ -42,7 +44,9 @@ const ClozeNavbar = ({
         </button>
       </div>
       <div className="flex-1 flex justify-center px-4">
-        <h1 className="text-center font-bold text-2xl">cloze</h1>
+        <h1 className="text-center font-bold text-2xl">
+          cloze ({totalSentences})
+        </h1>
       </div>
       <div className="flex-1 flex justify-end px-4">
         <div className="flex gap-4 items-center flex-row">
@@ -75,14 +79,14 @@ export function ReviewCloze({
 
   const { mode } = useLearningMode();
 
-  const isContent = useIsContent(mode);
-
-  const { data: content } = useGetContentQuery({ contentId: mode });
-
   const contextSentences = useGetCharacterLearningContext({
     lang,
     characterId: currentCharacter,
   });
+
+  const isContent = useIsContent(mode);
+
+  const { data: content } = useGetContentQuery({ contentId: mode });
 
   const contentSentences = useMemo(
     () =>
@@ -225,7 +229,11 @@ export function ReviewCloze({
   ) {
     return (
       <div>
-        <ClozeNavbar onClose={onClose} currentCharacter={currentCharacter} />
+        <ClozeNavbar
+          totalSentences={sentences?.length}
+          onClose={onClose}
+          currentCharacter={currentCharacter}
+        />
 
         <div className="flex justify-center items-center flex-col mt-32">
           <h4 className="text-center mb-8">Nothing here</h4>
@@ -261,7 +269,11 @@ export function ReviewCloze({
 
   return (
     <div className="px-8">
-      <ClozeNavbar onClose={onClose} currentCharacter={currentCharacter} />
+      <ClozeNavbar
+        totalSentences={sentences?.length}
+        onClose={onClose}
+        currentCharacter={currentCharacter}
+      />
 
       {sentence && (
         <div className="mt-24 lg:mt-32">

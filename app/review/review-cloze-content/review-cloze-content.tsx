@@ -14,13 +14,21 @@ import { useReviewModeView } from "../use-review-mode";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
 import { YoutubeButton } from "@/components/youtube-page/youtube-button";
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
+import { useIsContent } from "../use-is-content";
+import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useSearchParams } from "next/navigation";
 
 const ClozeNavbar = ({
   onClose,
   currentCharacter,
+  totalSentences,
+  contentSentences,
 }: {
   onClose?: () => void;
   currentCharacter: string;
+  contentSentences: number;
+  totalSentences: number;
 }) => {
   const { setReviewMode } = useReviewModeView();
   return (
@@ -39,7 +47,9 @@ const ClozeNavbar = ({
         </button>
       </div>
       <div className="flex-1 flex justify-center px-4">
-        <h1 className="text-center font-bold text-2xl">cloze</h1>
+        <h1 className="text-center font-bold text-2xl">
+          cloze [{contentSentences} + {totalSentences}]
+        </h1>
       </div>
       <div className="flex-1 flex justify-end px-4">
         <ContentClozeModeButton />
@@ -74,6 +84,27 @@ export function ReviewClozeContent({
     characterId: currentCharacter,
   });
 
+  // const { mode } = useLearningMode();
+
+  const searchParams = useSearchParams();
+  const mode = searchParams.get("mode") || "";
+
+  const isContent = useIsContent(mode);
+
+  const { data: content } = useGetContentQuery({ contentId: mode });
+
+  const contentSentences = useMemo(
+    () =>
+      isContent
+        ? content?.transcriptions?.filter((transcription: any) => {
+            return (transcription?.hanzi || transcription?.input)?.includes(
+              currentCharacter
+            );
+          })
+        : [],
+    [isContent, content]
+  );
+
   const relevantContextSentences = useMemo(
     () =>
       (contextSentences || [])?.filter((sentence: any) => {
@@ -87,13 +118,15 @@ export function ReviewClozeContent({
   );
 
   const sentences = useMemo(
-    () =>
-      getRandomWords(
+    () => [
+      ...contentSentences,
+      ...getRandomWords(
         [...(relevantContextSentences || [])]?.filter((sent: any) =>
           (sent?.hanzi || sent?.input)?.includes(currentCharacter)
         )
       ),
-    [relevantContextSentences?.length, currentCharacter]
+    ],
+    [relevantContextSentences?.length, currentCharacter, contentSentences]
   );
 
   const { setClozeContentMode } = useClozeContentMode();
@@ -186,7 +219,12 @@ export function ReviewClozeContent({
   if (sentences?.length === 0) {
     return (
       <div>
-        <ClozeNavbar onClose={onClose} currentCharacter={currentCharacter} />
+        <ClozeNavbar
+          totalSentences={sentences?.length}
+          contentSentences={contentSentences?.length}
+          onClose={onClose}
+          currentCharacter={currentCharacter}
+        />
 
         <div className="flex justify-center items-center flex-col mt-32">
           <h4 className="text-center mb-8">Nothing here</h4>
@@ -213,7 +251,12 @@ export function ReviewClozeContent({
   if (questionIndex > relevantContextSentences?.length - 1) {
     return (
       <div>
-        <ClozeNavbar onClose={onClose} currentCharacter={currentCharacter} />
+        <ClozeNavbar
+          totalSentences={sentences?.length}
+          contentSentences={contentSentences?.length}
+          onClose={onClose}
+          currentCharacter={currentCharacter}
+        />
 
         <div className="flex justify-center items-center flex-col mt-32">
           <h4 className="text-center mb-8">Nothing here</h4>
@@ -249,7 +292,12 @@ export function ReviewClozeContent({
 
   return (
     <div className="px-8">
-      <ClozeNavbar onClose={onClose} currentCharacter={currentCharacter} />
+      <ClozeNavbar
+        totalSentences={sentences?.length}
+        contentSentences={contentSentences?.length}
+        onClose={onClose}
+        currentCharacter={currentCharacter}
+      />
 
       {sentence && (
         <div className="mt-24 lg:mt-32">

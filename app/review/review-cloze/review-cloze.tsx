@@ -13,6 +13,10 @@ import { useGetCharacterLearningContext } from "@/components/_select-character/s
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { ContentClozeModeButton } from "../content-cloze-mode-button";
 import { YoutubeButton } from "@/components/youtube-page/youtube-button";
+import { useIsContent } from "../use-is-content";
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
+import { useGetContent } from "@/app/nmm/content/use-get-content";
+import { useGetContentQuery } from "@/domain/content/content.queries";
 
 const ClozeNavbar = ({
   onClose,
@@ -69,10 +73,28 @@ export function ReviewCloze({
   const [response, setResponse] = useState<any>(null);
   const { setReviewMode } = useReviewModeView();
 
+  const { mode } = useLearningMode();
+
+  const isContent = useIsContent(mode);
+
+  const { data: content } = useGetContentQuery({ contentId: mode });
+
   const contextSentences = useGetCharacterLearningContext({
     lang,
     characterId: currentCharacter,
   });
+
+  const contentSentences = useMemo(
+    () =>
+      isContent
+        ? content?.transcriptions?.filter((transcription: any) => {
+            return (transcription?.hanzi || transcription?.input)?.includes(
+              currentCharacter
+            );
+          })
+        : [],
+    [isContent, content]
+  );
 
   const { data: hskWords } = useListHSKWordsQuery();
 
@@ -132,8 +154,9 @@ export function ReviewCloze({
   );
 
   const sentences = useMemo(
-    () =>
-      getRandomWords(
+    () => [
+      ...contentSentences,
+      ...getRandomWords(
         [
           ...(relevantContextSentences || []),
           ...(sentencesInitial || []),
@@ -141,7 +164,8 @@ export function ReviewCloze({
           (sent?.hanzi || sent?.input)?.includes(relevantHanzi)
         )
       ),
-    [relevantHanzi, sentencesInitial]
+    ],
+    [relevantHanzi, sentencesInitial, contentSentences]
   );
 
   const sentence = useMemo(

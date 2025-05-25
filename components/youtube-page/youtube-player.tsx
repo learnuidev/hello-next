@@ -84,6 +84,18 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     }
   };
 
+  useEffect(() => {
+    if (!currentTime && start && isVideoUrl(finalUrl)) {
+      playerRef.current.seekTo(start, "seconds");
+
+      try {
+        playerRef.current?.player?.player?.play();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }, [currentTime, finalUrl, start]);
+
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;
 
@@ -94,6 +106,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         }
       } else {
         playerRef.current.seekTo(start, "seconds");
+
         try {
           playerRef.current?.player?.player?.play();
         } catch (err) {

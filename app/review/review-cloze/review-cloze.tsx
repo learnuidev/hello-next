@@ -91,11 +91,18 @@ export function ReviewCloze({
   const contentSentences = useMemo(
     () =>
       isContent
-        ? content?.transcriptions?.filter((transcription: any) => {
-            return (transcription?.hanzi || transcription?.input)?.includes(
-              currentCharacter
-            );
-          })
+        ? content?.transcriptions
+            ?.filter((transcription: any) => {
+              return (transcription?.hanzi || transcription?.input)?.includes(
+                currentCharacter
+              );
+            })
+            .map((item: any) => {
+              return {
+                ...item,
+                contentId: mode,
+              };
+            })
         : [],
     [isContent, content]
   );

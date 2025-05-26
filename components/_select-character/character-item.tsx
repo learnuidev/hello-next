@@ -22,18 +22,18 @@ function calculatePopularityColor(comp: any) {
   }
 
   if (mandarinoIndex > 30) {
-    return "text-gray-700";
-  }
-
-  if (mandarinoIndex > 8) {
     return "text-gray-500";
   }
 
+  // if (mandarinoIndex > 8) {
+  //   return "text-gray-500";
+  // }
+
   if (mandarinoIndex > 5) {
-    return "text-gray-400";
+    return "text-gray-300";
   }
 
-  return "text-gray-300";
+  return "text-gray-200";
 }
 
 export const CharacterItem = ({

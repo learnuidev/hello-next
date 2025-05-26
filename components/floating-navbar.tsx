@@ -22,6 +22,7 @@ import { PinyinButton } from "./pinyin-button";
 import { useGetReviewUrl } from "./settings-dialog/use-get-review-url";
 
 import { ReviewNavbar } from "@/app/review/review-navbar";
+import { CommonCharacterButton } from "./common-character-button";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
@@ -65,11 +66,11 @@ const FloatingNavbarComp = () => {
       <div className="overflow-y-auto px-8 py-2 bg-gray-50 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
         <div className="space-x-6 md:space-x-8 flex justify-center items-center w-full ">
           {!["/", "/apps", "/convos"]?.includes(routeName) && isChineseLang && (
-            <BrightModeButton />
-          )}
-
-          {!["/", "/apps", "/convos"]?.includes(routeName) && isChineseLang && (
-            <PinyinButton />
+            <>
+              <CommonCharacterButton />
+              <BrightModeButton />
+              <PinyinButton />
+            </>
           )}
 
           <Link

@@ -3,6 +3,7 @@ import { Icons } from "./ui/icons.v2";
 
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
+import { useCommonCharacterMode } from "@/stores/use-common-character-mode-store";
 
 export const BrightModeButton = () => {
   const readMode = useReadModeStore((state) => state.readMode);
@@ -10,6 +11,8 @@ export const BrightModeButton = () => {
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
+
+  const { setCommonCharacterMode } = useCommonCharacterMode();
 
   return (
     <button
@@ -22,6 +25,7 @@ export const BrightModeButton = () => {
       onClick={() => {
         setBrightMode((prev: any) => !prev);
         setReadMode(!readMode);
+        setCommonCharacterMode(false);
       }}
     >
       {!brightMode ? <Icons.glassesRoundSolid /> : <Icons.glassesRound />}

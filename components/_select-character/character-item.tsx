@@ -7,6 +7,7 @@ import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id
 import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
 import { cn } from "@/lib/utils";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { useCommonCharacterMode } from "@/stores/use-common-character-mode-store";
 
 interface ICharacterItem {
   character: any;
@@ -47,6 +48,8 @@ export const CharacterItem = ({
     tone: learnedChar?.tone_level || comp?.tone_level,
   });
 
+  const { commonCharacterMode } = useCommonCharacterMode();
+
   return (
     <span
       key={`${character}`}
@@ -65,6 +68,7 @@ export const CharacterItem = ({
         disableClass
           ? ""
           : "lg:text-2xl text-xl transition lowercase font-light",
+        commonCharacterMode ? "text-orange-200" : "",
         className
       )}
     >

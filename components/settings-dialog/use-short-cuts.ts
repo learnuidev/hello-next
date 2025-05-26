@@ -96,10 +96,10 @@ export function useShortCuts() {
         router.push("/diary");
       }
 
-      if (["m"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        setMode("nmm");
-      }
+      // if (["m"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+      //   event.preventDefault();
+      //   setMode("nmm");
+      // }
       if (["x"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         setMode("xiaoma");
@@ -149,32 +149,14 @@ export function useShortCuts() {
       }
 
       if (["b"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        // if (routeName?.includes("/review") || entryId || isContent) {
-        //   if (reviewMode === "all") {
-        //     router.push(reviewUrlFn({ reviewMode: "" }));
-        //     return null;
-        //   } else {
-        //     router.push(reviewUrlFn({ reviewMode: "all" }));
-        //     return null;
-        //   }
-        // }
         event.preventDefault();
         setCommonCharacterMode(false);
         setBrightMode((val: any) => !val);
         setReadMode(!readMode);
         setFocus((focus: string) => (focus === "hanzi" ? "en" : "hanzi"));
-        // setView((prev: string) => (prev === "focus" ? "default" : "focus"));
       }
       if (["m"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        // if (routeName?.includes("/review") || entryId || isContent) {
-        //   if (reviewMode === "all") {
-        //     router.push(reviewUrlFn({ reviewMode: "" }));
-        //     return null;
-        //   } else {
-        //     router.push(reviewUrlFn({ reviewMode: "all" }));
-        //     return null;
-        //   }
-        // }
+        console.log("yoo");
         event.preventDefault();
         setCommonCharacterMode();
       }

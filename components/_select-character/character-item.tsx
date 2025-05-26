@@ -15,6 +15,33 @@ interface ICharacterItem {
   disableClass?: boolean;
 }
 
+function calculatePopularityColor(comp: any) {
+  const mandarinoIndex = comp?.mandarinoIndex;
+  if (mandarinoIndex > 100) {
+    return "dark:text-white text-black";
+  }
+
+  if (mandarinoIndex > 40) {
+    return "dark:text-gray-400 text-gray-700";
+  }
+  if (mandarinoIndex > 30) {
+    return "dark:text-gray-400 text-gray-700";
+  }
+
+  if (mandarinoIndex > 10) {
+    return "dark:text-gray-600 text-gray-500";
+  }
+
+  if (mandarinoIndex > 8) {
+    return "dark:text-gray-600 text-gray-500";
+  }
+  if (mandarinoIndex > 5) {
+    return "dark:text-gray-700 text-gray-400";
+  }
+
+  return "dark:text-gray-800 text-gray-300";
+}
+
 export const CharacterItem = ({
   character,
   className,
@@ -37,7 +64,14 @@ export const CharacterItem = ({
   const learnedChar = learnedCharacters2?.find(
     (char: any) => char?.hanzi === character
   );
+
+  console.log("SELECT COMP", selectedComp);
+
   const comp = components?.find((char: any) => char?.hanzi === character);
+
+  const popularityColor = calculatePopularityColor(comp);
+
+  console.log("LEARNED CHAR", comp);
 
   const color = calculateColor({
     ...(learnedChar || selectedComp),
@@ -50,13 +84,15 @@ export const CharacterItem = ({
 
   const { commonCharacterMode } = useCommonCharacterMode();
 
+  console.log("LOGGED", commonCharacterMode);
+
   return (
     <span
       key={`${character}`}
       className={cn(
         `${
           commonCharacterMode
-            ? "text-orange-200"
+            ? popularityColor
             : brightMode || isCharactersLoading
               ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
               : learnedChar

@@ -19,7 +19,7 @@ export const CommonCharacterButton = () => {
         setCommonCharacterMode();
       }}
     >
-      {!commonCharacterMode ? <Icons.fireDuoTone /> : <Icons.fireDuoTone />}
+      {commonCharacterMode ? <Icons.fireDuoTone /> : <Icons.fireDuoTone />}
     </button>
   );
 };

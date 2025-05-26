@@ -5,7 +5,7 @@ import { useReadModeStore } from "./use-readmode-store";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 
 export const useCommonCharacterModeStore = create((set: any, get: any) => ({
-  commonCharaterMode: false,
+  commonCharacterMode: false,
   setCommonCharacterMode: (f: any) =>
     typeof f === "function"
       ? set({ commonCharacterMode: f(get().commonCharacterMode) })
@@ -18,7 +18,7 @@ export function useCommonCharacterMode() {
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
 
   const commonCharacterMode = useCommonCharacterModeStore(
-    (state) => state.commonCharaterMode
+    (state) => state.commonCharacterMode
   );
   const _setCommonCharacterMode = useCommonCharacterModeStore(
     (state) => state.setCommonCharacterMode

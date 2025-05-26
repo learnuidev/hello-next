@@ -10,14 +10,18 @@ export function calculateTotalMasteryDate(character: ICharacter) {
 
   const startDate = new Date(createdAt);
   // const startDate = new Date(Math.min(...reviewHistory));
+
+  const today = new Date(Date.now());
   const endDate =
-    reviewHistory?.length > 0
-      ? new Date(Math.max(...reviewHistory))
-      : new Date(Date.now());
-  const totalDays = differenceInDays(endDate, startDate);
+    reviewHistory?.length > 0 ? new Date(Math.max(...reviewHistory)) : today;
+  let totalDays = differenceInDays(endDate, startDate);
 
   if (isNaN(totalDays)) {
     return 0;
+  }
+
+  if (totalDays === 0) {
+    totalDays = differenceInDays(today, startDate);
   }
 
   return totalDays;

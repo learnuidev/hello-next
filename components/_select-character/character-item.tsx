@@ -59,13 +59,9 @@ export const CharacterItem = ({
     (char: any) => char?.hanzi === character
   );
 
-  console.log("SELECT COMP", selectedComp);
-
   const comp = components?.find((char: any) => char?.hanzi === character);
 
   const popularityColor = calculatePopularityColor(comp);
-
-  console.log("LEARNED CHAR", comp);
 
   const color = calculateColor({
     ...(learnedChar || selectedComp),
@@ -77,8 +73,6 @@ export const CharacterItem = ({
   });
 
   const { commonCharacterMode } = useCommonCharacterMode();
-
-  console.log("LOGGED", commonCharacterMode);
 
   return (
     <span

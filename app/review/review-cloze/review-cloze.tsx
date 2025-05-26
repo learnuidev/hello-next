@@ -17,6 +17,7 @@ import { useIsContent } from "../use-is-content";
 import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 import { useGetContent } from "@/app/nmm/content/use-get-content";
 import { useGetContentQuery } from "@/domain/content/content.queries";
+import { ReviewItemHanzi } from "../review-cloze-content/review-item-hanzi";
 
 const ClozeNavbar = ({
   onClose,
@@ -299,24 +300,13 @@ export function ReviewCloze({
               ...
             </p>
           )}
-          <h1 className="text-center text-3xl">
-            {(response ? sentence?.hanzi || sentence?.input : sentenceHanzi)
-              .split("")
-              .map((item: string, idx: number) => {
-                return (
-                  <Link
-                    href={`/nmm/${item}${sentence?.lang ? `?lang=${sentence?.lang}` : ""}`}
-                    key={`review-cloze-${idx}-${item}`}
-                    target="_blank"
-                  >
-                    <CharacterItem
-                      character={item}
-                      className="text-center text-3xl font-light"
-                    />
-                  </Link>
-                );
-              })}
-          </h1>
+
+          <ReviewItemHanzi
+            input={
+              response ? sentence?.input || sentence?.hanzi : sentenceHanzi
+            }
+            lang={sentence?.lang}
+          />
 
           <Link
             target="_blank"

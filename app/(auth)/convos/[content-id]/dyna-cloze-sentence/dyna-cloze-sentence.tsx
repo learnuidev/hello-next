@@ -1,9 +1,20 @@
+import { ReviewItemHanzi } from "@/app/review/review-cloze-content/review-item-hanzi";
 import { getRandomWords } from "@/app/review/review-cloze/utils/get-random-words";
 import { shuffleArray } from "@/app/review/review-cloze/utils/shuffle-array";
-import { CharacterItem } from "@/components/_select-character/character-item";
+import { useReviewModeView } from "@/app/review/use-review-mode";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { Icons } from "@/components/ui/icons.v2";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useViewTypeStore } from "@/components/use-selected-character";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
+import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
+import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -11,19 +22,7 @@ import {
   useDyanStoreRuntime,
   useDynaClozeSentence,
 } from "./use-dyna-cloze-sentence";
-import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { getMulti } from "./utils/get-multi";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useReviewModeView } from "@/app/review/use-review-mode";
-import { useViewTypeStore } from "@/components/use-selected-character";
-import { smartSplit } from "@/components/youtube-page/utils/smart-split";
-import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
-import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -251,45 +250,12 @@ const DynaSentence = ({
         ) : (
           <p className="mb-2 dark:text-black text-white text-lg"> ...</p>
         )}
-        {!brightMode ? (
-          <h1 className="block lg:text-4xl text-2xl">
-            {smartSplit({
-              input: response ? sentenceHanzi : sentenceHanziHidden,
-              lang,
-            }).map((item: string, idx: number) => {
-              return (
-                <Link
-                  href={`/nmm/${item}${sentence?.lang ? `?lang=${sentence?.lang}` : ""}`}
-                  key={`review-cloze-${idx}-${item}`}
-                  target="_blank"
-                >
-                  <CharacterItem
-                    character={item}
-                    className="text-center text-3xl font-light"
-                  />
-                </Link>
-              );
-            })}
-          </h1>
-        ) : (
-          <Link
-            href={`/nmm/${sentence?.hanzi}`}
-            target="_blank"
-            className="block text-2xl lg:text-4xl"
-          >
-            {(response ? sentenceHanzi : sentenceHanziHidden)
-              .split("")
-              .map((item: string, idx: number) => {
-                return (
-                  <CharacterItem
-                    key={`review-cloze-${idx}-${item}`}
-                    character={item}
-                    className="text-center text-xl lg:text-3xl font-light"
-                  />
-                );
-              })}
-          </Link>
-        )}
+
+        <ReviewItemHanzi
+          input={response ? sentenceHanzi : sentenceHanziHidden}
+          lang={sentence?.lang}
+        />
+
         <p className="mt-2 lg:text-xl text-md">{sentence?.en}</p>
       </div>
 

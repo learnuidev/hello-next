@@ -21,6 +21,7 @@ import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
 import { YoutubeButton } from "@/components/youtube-page/youtube-button";
+import { ReviewItemHanzi } from "@/app/review/review-cloze-content/review-item-hanzi";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -261,45 +262,11 @@ const DynaSentence = ({
         ) : (
           <p className="mb-2 dark:text-black text-white text-lg"> ...</p>
         )}
-        {!brightMode || lang !== "zh" ? (
-          <h1 className="block lg:text-4xl text-2xl">
-            {smartSplit({
-              input: response ? sentenceHanzi : sentenceHanziHidden,
-              lang,
-            }).map((item: string, idx: number) => {
-              return (
-                <Link
-                  href={`/nmm/${item}${sentence?.lang ? `?lang=${sentence?.lang}` : ""}`}
-                  key={`review-cloze-${idx}-${item}`}
-                  target="_blank"
-                >
-                  <CharacterItem
-                    character={item}
-                    className="text-center text-3xl font-light"
-                  />
-                </Link>
-              );
-            })}
-          </h1>
-        ) : (
-          <Link
-            href={`/convos/${contentId}?start=${sentence?.start}&view=listen`}
-            target="_blank"
-            className="block text-3xl"
-          >
-            {(response ? sentenceHanzi : sentenceHanziHidden)
-              .split("")
-              .map((item: string, idx: number) => {
-                return (
-                  <CharacterItem
-                    key={`review-cloze-${idx}-${item}`}
-                    character={item}
-                    className="text-center font-light"
-                  />
-                );
-              })}
-          </Link>
-        )}
+
+        <ReviewItemHanzi
+          input={response ? sentenceHanzi : sentenceHanziHidden}
+          lang={sentence?.lang}
+        />
 
         <Link
           target="_blank"

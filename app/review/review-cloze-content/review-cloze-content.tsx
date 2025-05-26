@@ -128,11 +128,11 @@ export function ReviewClozeContent({
   const sentences = useMemo(
     () => [
       ...contentSentences?.filter((sent: any) =>
-        (sent?.hanzi || sent?.input)?.includes(currentCharacter)
+        (sent?.input || sent?.hanzi)?.includes(currentCharacter)
       ),
       ...getRandomWords(
         [...(relevantContextSentences || [])]?.filter((sent: any) =>
-          (sent?.hanzi || sent?.input)?.includes(currentCharacter)
+          (sent?.input || sent?.hanzi)?.includes(currentCharacter)
         )
       ),
     ],

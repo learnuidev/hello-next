@@ -156,10 +156,10 @@ export function ReviewCloze({
 
   const relevantContextSentences = useMemo(
     () =>
-      (contextSentences || [])?.filter((sentence: any) => {
+      (contextSentences || [])?.filter((sent: any) => {
         return (
-          (sentence?.hanzi || sentence?.input)?.includes(relevantHanzi) &&
-          sentence?.input?.length < 20
+          (sent?.input || sent?.hanzi)?.includes(relevantHanzi) &&
+          sent?.input?.length < 20
         );
       }),
     [contextSentences, relevantHanzi]
@@ -168,14 +168,14 @@ export function ReviewCloze({
   const sentences = useMemo(
     () => [
       ...contentSentences?.filter((sent: any) =>
-        (sent?.hanzi || sent?.input)?.includes(relevantHanzi)
+        (sent?.input || sent?.hanzi)?.includes(relevantHanzi)
       ),
       ...getRandomWords(
         [
           ...(relevantContextSentences || []),
           ...(sentencesInitial || []),
         ]?.filter((sent: any) =>
-          (sent?.hanzi || sent?.input)?.includes(relevantHanzi)
+          (sent?.input || sent?.hanzi)?.includes(relevantHanzi)
         )
       ),
     ],

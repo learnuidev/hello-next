@@ -79,14 +79,22 @@ export const SelectedCharacterStats = ({
               </p>
             </div>
           )}
-          {totalRelatedSentences > 0 && (
+          {selectedCharacter && (
+            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+              <Icons.play />
+              <p className="text-black dark:text-white">
+                {selectedCharacter?.reviewHistory?.length || 0}
+              </p>
+            </div>
+          )}
+          {/* {totalRelatedSentences > 0 && (
             <div className="text-slate-500  text-extralight flex space-x-2 items-center">
               <Icons.sentence />
               <p className="text-black dark:text-white">
                 {totalRelatedSentences}
               </p>
             </div>
-          )}
+          )} */}
           {level && (
             <div className="text-slate-500  text-extralight flex space-x-2 items-center">
               <Icons.earthAsia />

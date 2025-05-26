@@ -394,5 +394,6 @@ export function useShortCuts() {
     setQuery,
     setQuery2,
     setShowPinyin,
+    setCommonCharacterMode,
   ]);
 }

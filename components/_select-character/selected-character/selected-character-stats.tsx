@@ -71,6 +71,13 @@ export const SelectedCharacterStats = ({
     <div className="flex justify-between items-center">
       {multiSentence ? null : (
         <div className="flex items-center space-x-4">
+          {level && (
+            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+              <Icons.earthAsia />
+              <p className="text-black dark:text-white">{level}</p>
+            </div>
+          )}
+
           {relatedHskWords?.length > 0 && (
             <div className="text-slate-500  text-extralight flex space-x-2 items-center">
               <Icons.word />
@@ -95,12 +102,7 @@ export const SelectedCharacterStats = ({
               </p>
             </div>
           )} */}
-          {level && (
-            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-              <Icons.earthAsia />
-              <p className="text-black dark:text-white">{level}</p>
-            </div>
-          )}
+
           {totalMasteryDays === 0 ? null : (
             <div className="text-slate-500  text-extralight flex space-x-2 items-center">
               <Icons.fireDuoTone />

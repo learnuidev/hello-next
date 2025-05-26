@@ -18,7 +18,7 @@ interface ICharacterItem {
 function calculatePopularityColor(comp: any) {
   const mandarinoIndex = comp?.mandarinoIndex;
   if (mandarinoIndex > 100) {
-    return "dark:text-black text-white";
+    return "dark:text-gray-800 text-gray-200";
   }
 
   if (mandarinoIndex > 30) {

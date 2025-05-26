@@ -18,28 +18,22 @@ interface ICharacterItem {
 function calculatePopularityColor(comp: any) {
   const mandarinoIndex = comp?.mandarinoIndex;
   if (mandarinoIndex > 100) {
-    return "dark:text-white text-black";
+    return "dark:text-black text-white";
   }
 
-  if (mandarinoIndex > 40) {
-    return "dark:text-gray-400 text-gray-700";
-  }
   if (mandarinoIndex > 30) {
-    return "dark:text-gray-400 text-gray-700";
-  }
-
-  if (mandarinoIndex > 10) {
-    return "dark:text-gray-600 text-gray-500";
-  }
-
-  if (mandarinoIndex > 8) {
-    return "dark:text-gray-600 text-gray-500";
-  }
-  if (mandarinoIndex > 5) {
     return "dark:text-gray-700 text-gray-400";
   }
 
-  return "dark:text-gray-800 text-gray-300";
+  if (mandarinoIndex > 8) {
+    return "dark:text-gray-500 text-gray-600";
+  }
+
+  if (mandarinoIndex > 5) {
+    return "dark:text-gray-400 text-gray-700";
+  }
+
+  return "dark:text-gray-300 text-gray-800";
 }
 
 export const CharacterItem = ({

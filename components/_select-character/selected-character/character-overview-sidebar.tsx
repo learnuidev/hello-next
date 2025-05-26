@@ -26,14 +26,6 @@ export const CharacterOverviewViewSidebar = ({
   const sideBarView = useSideBarViewType((state) => state.sideBarView);
   const setSideBarView = useSideBarViewType((state) => state.setSideBarView);
 
-  const setStory = useStoryStore((state: any) => state.setStory);
-
-  useEffect(() => {
-    if (selectedComp?.story) {
-      setStory(selectedComp?.story);
-    }
-  }, [selectedComp?.story, setStory]);
-
   return (
     <div className={"col-span-5 md:col-span-3 hidden sm:block"}>
       {/* <div className="space-x-4">

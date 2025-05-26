@@ -28,16 +28,6 @@ export const CharacterOverviewView = ({
 
   const { variant } = useGetSelectedCharacterParams();
 
-  const story = useStoryStore((state: any) => state.story);
-
-  const setStory = useStoryStore((state: any) => state.setStory);
-
-  useEffect(() => {
-    if (selectedComp?.story) {
-      setStory(selectedComp?.story);
-    }
-  }, [selectedComp?.story, setStory]);
-
   return (
     <div
       className={
@@ -131,9 +121,9 @@ export const CharacterOverviewView = ({
                   {selectedComp?.story && (
                     <TabsContent value="story">
                       <StoryEditor
+                        story={selectedComp?.story}
                         key={selectedComp?.story}
                         selectedChar={selectedComp}
-                        story={story}
                       />
                     </TabsContent>
                   )}

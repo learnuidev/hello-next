@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Icons } from "../../ui/icons.v2";
 
@@ -14,15 +14,17 @@ export const StoryEditor = ({
   story: initStory,
   disableSave,
 }: any) => {
-  const story = useStoryStore((state: any) => state.story);
-
-  // const pinyinInput = characterStore((state) => state.pinyin);
-
-  const setStory = useStoryStore((state: any) => state.setStory);
+  const [story, setStory] = useState("");
 
   const updateStoryMutation = useUpdateCharacterStoryMutation();
 
   const storyId = crypto.randomUUID();
+
+  useEffect(() => {
+    if (initStory) {
+      setStory(initStory);
+    }
+  }, [initStory, setStory]);
 
   return (
     <div className="my-16 text-black dark:text-white justify-start w-full">

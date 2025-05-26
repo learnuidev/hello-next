@@ -55,20 +55,22 @@ export const CharacterItem = ({
       key={`${character}`}
       className={cn(
         `${
-          brightMode || isCharactersLoading
-            ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
-            : learnedChar
-              ? learnedChar?.status === "forgotten"
-                ? `text-gray-300 dark:text-gray-800 ${hoverColor}`
-                : `text-gray-300 ${color} ${hoverColor}`
-              : selectedComp?.length > 1 || selectedComp?.group
-                ? `dark:text-white text-black ${hoverColor}`
-                : `dark:text-gray-200 text-gray-800 ${hoverColor}`
+          commonCharacterMode
+            ? "text-orange-200"
+            : brightMode || isCharactersLoading
+              ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
+              : learnedChar
+                ? learnedChar?.status === "forgotten"
+                  ? `text-gray-300 dark:text-gray-800 ${hoverColor}`
+                  : `text-gray-300 ${color} ${hoverColor}`
+                : selectedComp?.length > 1 || selectedComp?.group
+                  ? `dark:text-white text-black ${hoverColor}`
+                  : `dark:text-gray-200 text-gray-800 ${hoverColor}`
         } ${hoverColor}`,
         disableClass
           ? ""
           : "lg:text-2xl text-xl transition lowercase font-light",
-        commonCharacterMode ? "text-orange-200" : "",
+
         className
       )}
     >

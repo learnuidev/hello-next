@@ -25,8 +25,11 @@ export function useCommonCharacterMode() {
   );
 
   const setCommonCharacterMode = (val?: boolean) => {
-    setBrightMode(false);
-    setReadMode(false);
+    if (val !== false) {
+      setBrightMode(false);
+      setReadMode(false);
+    }
+
     _setCommonCharacterMode((mode: any) => {
       if (typeof val === "boolean") {
         return val;

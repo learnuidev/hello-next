@@ -1,12 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import { Icons } from "@/components/ui/icons.v2";
-import { SelectedCharacterProps } from "../select-character.types";
-
-import { AudioComponent } from "../audio-component";
-
-import { SubComponentsView } from "./subcomponents-view";
+import { useEffect } from "react";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { StoryEditor } from "./story-editor";
@@ -17,12 +12,12 @@ import {
   useIsSuperAdmin,
 } from "@/domain/auth/auth.queries";
 
+import { useSelectedCharacterData } from "@/components/use-selected-character";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { create } from "zustand";
-import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
-import { useSelectedCharacterData } from "@/components/use-selected-character";
 
 const genStoryApi = async (
   { hanzi, lang, options }: { hanzi: string; lang: string; options: any },
@@ -147,109 +142,55 @@ export const StoryView = ({ characterId }: { characterId: string }) => {
 
   return (
     <div>
-      <div>
-        {/* {selectedChar?.length > 3 && ( */}
-        <div className="flex items-center justify-between mb-8 mt-4 mr-0 sm:mr-32">
-          <div className="flex flex-col items-start space-y-2">
-            <h2 className="text-gray-400 font-extralight">{pinyinOrRoman}</h2>
-
-            <h1 className="text-4xl my-0 py-0 font-extralight">
-              {selectedComp?.hanzi || selectedChar}
-            </h1>
-
-            <h2 className="text-gray-500 font-light">{selectedCompEn}</h2>
-          </div>
-
-          {level && (
-            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-              <Icons.earthAsia />
-              <p>{level}</p>
-            </div>
+      <div className="space-x-4 my-8">
+        <button
+          className={cn(
+            storyMode === "your-story" ? "text-white" : "text-gray-400",
+            "space-x-2"
           )}
+          onClick={() => {
+            setStoryMode("your-story");
+          }}
+        >
+          <Icons.book />
 
-          {selectedComp?.audio ? (
-            <AudioComponent currentPhrase={selectedComp} />
-          ) : null}
-        </div>
-        {/* )} */}
+          <span>Your Story</span>
+        </button>
 
-        {/* <p>{JSON.stringify(selectedComp2, null, 2)}</p> */}
-
-        {selected && (
-          <div className="font-light flex space-x-4 items-center text-gray-400 mb-2">
-            {toneLevel && (
-              <div className="flex space-x-2 items-center">
-                <Icons.musicNote />
-                <p>{toneLevel}</p>
-              </div>
-            )}
-            {initial && (
-              <div className="flex space-x-2 items-center">
-                <p>initial - </p>
-                <p>{initial}</p>
-              </div>
-            )}
-            {final && (
-              <div className="flex space-x-2 items-center">
-                <p>final - </p>
-                <p>{final}</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        <SubComponentsView lang={lang} characterId={characterId} />
-
-        <div className="space-x-4 my-8">
+        {isSuperAdmin && (
           <button
             className={cn(
-              storyMode === "your-story" ? "text-white" : "text-gray-400",
+              storyMode === "global" ? "text-white" : "text-gray-400",
               "space-x-2"
             )}
             onClick={() => {
-              setStoryMode("your-story");
+              setStoryMode("global");
             }}
           >
-            <Icons.book />
-
-            <span>Your Story</span>
+            <Icons.globeAsia />
+            <span>Hanzi Hero</span>
           </button>
-
-          {isSuperAdmin && (
-            <button
-              className={cn(
-                storyMode === "global" ? "text-white" : "text-gray-400",
-                "space-x-2"
-              )}
-              onClick={() => {
-                setStoryMode("global");
-              }}
-            >
-              <Icons.globeAsia />
-              <span>Global</span>
-            </button>
-          )}
-        </div>
-
-        {storyMode === "global" && isSuperAdmin ? (
-          <div key="global">
-            <StoryEditor
-              disableSave={true}
-              key={componentWithStory?.story}
-              selectedChar={selectedComp}
-              story={componentWithStory?.story}
-            />
-          </div>
-        ) : (
-          <div key="your-story">
-            <StoryEditor
-              key={selectedComp2?.story}
-              selectedChar={selectedComp}
-              story={story}
-            />
-          </div>
         )}
       </div>
+
+      {storyMode === "global" && isSuperAdmin ? (
+        <div key="global">
+          <StoryEditor
+            disableSave={true}
+            key={componentWithStory?.story}
+            selectedChar={selectedComp}
+            story={componentWithStory?.story}
+          />
+        </div>
+      ) : (
+        <div key="your-story">
+          <StoryEditor
+            key={selectedComp2?.story}
+            selectedChar={selectedComp}
+            story={story}
+          />
+        </div>
+      )}
     </div>
   );
 };

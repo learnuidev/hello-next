@@ -16,6 +16,7 @@ import { SelectedCharacterHeader } from "./selected-character-header";
 import { StoryEditor } from "./story-editor";
 import { useStoryStore } from "./story-store";
 import { useGetSelectedCharacterParams } from "./use-get-selected-character-params";
+import { StoryView } from "./story-view";
 
 export const CharacterOverviewView = ({
   characterId,
@@ -120,11 +121,12 @@ export const CharacterOverviewView = ({
                   </TabsContent>
                   {selectedComp?.story && (
                     <TabsContent value="story">
-                      <StoryEditor
+                      <StoryView characterId={characterId} />
+                      {/* <StoryEditor
                         story={selectedComp?.story}
                         key={selectedComp?.story}
                         selectedChar={selectedComp}
-                      />
+                      /> */}
                     </TabsContent>
                   )}
                 </Tabs>

@@ -49,7 +49,9 @@ export const useGetCurrentReviewCharacter = () => {
 
   const { studyMode, character } = useGetReviewParams();
 
-  const { mode } = useLearningMode();
+  const { mode: _mode } = useLearningMode();
+
+  const mode = hskMode || _mode;
 
   const reviewCounts = reviewCounterStore((state: any) => state?.reviewCounts);
 

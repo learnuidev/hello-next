@@ -368,7 +368,7 @@ export function ReviewModeClassic(props: any) {
                             timeTaken,
                             ponderTime,
                             clozeTime,
-                            mode,
+                            mode: hskMode || mode,
                             emotion,
                           }),
                         } as any)
@@ -432,7 +432,7 @@ export function ReviewModeClassic(props: any) {
                             timeTaken,
                             ponderTime,
                             clozeTime,
-                            mode,
+                            mode: hskMode || mode,
                             emotion,
                           }),
                         } as any)
@@ -493,7 +493,7 @@ export function ReviewModeClassic(props: any) {
                           timeTaken,
                           ponderTime,
                           clozeTime,
-                          mode,
+                          mode: hskMode || mode,
                           emotion,
                         }),
                       } as any)
@@ -545,7 +545,7 @@ export function ReviewModeClassic(props: any) {
                         timeTaken,
                         ponderTime,
                         clozeTime,
-                        mode,
+                        mode: hskMode || mode,
                         emotion,
                       }),
                     } as any)

@@ -123,7 +123,7 @@ export const FloatingCharacterNavbar = ({
   );
 
   return (
-    <TheDock isAutomatic={isAutomatic} className="bottom-4">
+    <TheDock isAutomatic={false} className="bottom-4">
       <div className="flex items-center w-full justify-center">
         <div className="px-8  py-2 bg-gray-100 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
           <div className="space-x-8 flex justify-center items-center w-full">

@@ -3,7 +3,7 @@ import { Icons } from "./ui/icons.v2";
 
 import Link from "next/link";
 
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { NomadIcon } from "./ui/icons";
 
 import { TheDock } from "@/components/the-dock";
@@ -23,12 +23,19 @@ import { useGetReviewUrl } from "./settings-dialog/use-get-review-url";
 
 import { ReviewNavbar } from "@/app/review/review-navbar";
 import { CommonCharacterButton } from "./common-character-button";
+import { useGetContentQuery } from "@/domain/content/content.queries";
+import { isNonRomanLang } from "./_select-character/utils/is-non-roman-lang";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
   const reviewUrl = useGetReviewUrl();
 
   const { reviewMode: _reviewMode } = useReviewModeView();
+
+  const params = useParams<{ "content-id": string }>();
+  const contentId = params?.["content-id"];
+
+  const { data: content } = useGetContentQuery({ contentId: contentId || "" });
 
   const isDuExact = useIsDu(true);
   const isDu = useIsDu(false);
@@ -67,9 +74,9 @@ const FloatingNavbarComp = () => {
         <div className="space-x-6 md:space-x-8 flex justify-center items-center w-full ">
           {!["/", "/apps", "/convos"]?.includes(routeName) && isChineseLang && (
             <>
-              <CommonCharacterButton />
-              <BrightModeButton />
-              <PinyinButton />
+              {content?.lang === "zh" && <CommonCharacterButton />}
+              {content?.lang === "zh" && <BrightModeButton />}
+              {isNonRomanLang(content?.lang) && <PinyinButton />}
             </>
           )}
 
@@ -189,7 +196,7 @@ export const FloatingNavbar = () => {
     <TheDock
       className="bottom-2"
       innerClassName={isReviewUrl ? "sm:block" : ""}
-      isAutomatic={isAutomatic}
+      isAutomatic={false}
     >
       <FloatingNavbarComp />
     </TheDock>

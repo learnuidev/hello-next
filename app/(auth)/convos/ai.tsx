@@ -1,7 +1,6 @@
 "use client";
 
 import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
-import { Editor } from "@/components/Editor";
 import { GenUI } from "@/components/gen-ui";
 import { Icons } from "@/components/ui/icons.v2";
 import {
@@ -114,10 +113,15 @@ const AgentAnswer = ({
       )} */}
 
       <div className="overflow-auto">
-        <Editor
+        {/* <Editor
           className="font-light md:w-8/12 w-full"
           content={message.content}
-        />
+        /> */}
+
+        <p
+          className="font-light md:w-8/12 w-full"
+          dangerouslySetInnerHTML={{ __html: message.content }}
+        ></p>
       </div>
 
       {/* <TextGenerateEffect

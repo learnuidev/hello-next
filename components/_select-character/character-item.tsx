@@ -78,7 +78,9 @@ export const CharacterItem = ({
           commonCharacterMode
             ? hasHskword
               ? popularityColor
-              : "text-yellow-500"
+              : "。？，"?.includes(character)
+                ? "dark:text-white text-black"
+                : "text-yellow-500"
             : brightMode || isCharactersLoading
               ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
               : learnedChar

@@ -19,6 +19,7 @@ import { useIsContent } from "../use-is-content";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useSearchParams } from "next/navigation";
 import { ReviewItemHanzi } from "./review-item-hanzi";
+import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 
 const ClozeNavbar = ({
   onClose,
@@ -85,6 +86,13 @@ export function ReviewClozeContent({
     characterId: currentCharacter,
   });
 
+  const { data: _aiSentences } = useListSentencesQuery({
+    component: currentCharacter,
+    lang,
+  });
+
+  const aiSentences = _aiSentences || [];
+
   // const { mode } = useLearningMode();
 
   const searchParams = useSearchParams();
@@ -135,8 +143,14 @@ export function ReviewClozeContent({
           (sent?.input || sent?.hanzi)?.includes(currentCharacter)
         )
       ),
+      ...aiSentences,
     ],
-    [relevantContextSentences?.length, currentCharacter, contentSentences]
+    [
+      relevantContextSentences?.length,
+      currentCharacter,
+      contentSentences,
+      aiSentences,
+    ]
   );
 
   const { setClozeContentMode } = useClozeContentMode();
@@ -258,7 +272,7 @@ export function ReviewClozeContent({
     );
   }
 
-  if (questionIndex > relevantContextSentences?.length - 1) {
+  if (questionIndex > sentences?.length - 1) {
     return (
       <div>
         <ClozeNavbar

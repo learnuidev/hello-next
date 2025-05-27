@@ -55,6 +55,8 @@ export const CharacterItem = ({
 
   const comp = components?.[character];
 
+  const hasHskword = comp?.hskWords > 0;
+
   const popularityColor = calculatePopularityColor(comp);
 
   const color = calculateColor({
@@ -74,7 +76,9 @@ export const CharacterItem = ({
       className={cn(
         `${
           commonCharacterMode
-            ? popularityColor
+            ? hasHskword
+              ? popularityColor
+              : "text-yellow-500"
             : brightMode || isCharactersLoading
               ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
               : learnedChar

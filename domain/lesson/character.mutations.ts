@@ -117,6 +117,18 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
           options?.onSuccess(data);
         }
 
+        queryClient.setQueryData([listCharactersQueryMapId], (old: any) => {
+          return {
+            ...old,
+            [data?.hanzi]: data,
+          };
+          // return old.map((char: any) => {
+          //   if (char?.hanzi === data?.hanzi) {
+          //     return data;
+          //   }
+          //   return char;
+          // });
+        });
         queryClient.setQueryData([listCharactersQueryId], (old: any) => {
           return old.map((char: any) => {
             if (char?.hanzi === data?.hanzi) {

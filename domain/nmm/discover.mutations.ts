@@ -3,7 +3,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { getComponentQueryKey } from "../lesson/use-get-component-query";
-import { listComponentsQueryKey } from "../lesson/component.queries";
+import {
+  listComponentsQueryKey,
+  listComponentsQueryMapKey,
+} from "../lesson/component.queries";
 const url =
   "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/discover";
 
@@ -47,6 +50,7 @@ export function useDiscoverMutation(options = {} as any) {
         }
 
         queryClient.refetchQueries([listComponentsQueryKey, true]);
+        queryClient.refetchQueries([listComponentsQueryMapKey, true]);
 
         queryClient.setQueryData(
           [getComponentQueryKey, data?.hanzi, authUser?.jwt],

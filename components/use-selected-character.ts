@@ -59,6 +59,12 @@ export function useSelectedCharacterData({
   // const [view, setView] = useState("home");
   const routeName = usePathname();
 
+  const { data } = useGetComponentQuery({
+    hanzi: characterId,
+  });
+
+  console.log("DATA", data);
+
   const addHistoryMutation = useAddHistoryMutation();
 
   const addCharacterMutation = useAddCharacterMutation();

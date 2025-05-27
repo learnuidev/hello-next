@@ -16,6 +16,7 @@ import { PinyinButton } from "./pinyin-button";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
 import { CommonCharacterButton } from "./common-character-button";
+import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -25,6 +26,10 @@ const DiscoverButton = ({ characterId }: { characterId: string }) => {
     (item: any) => (item?.hanzi || item?.input) === characterId
   );
 
+  const { data } = useGetComponentQuery({
+    hanzi: characterId,
+  });
+
   if (characterId?.length > 3 || isLoading) {
     return null;
   }
@@ -33,7 +38,7 @@ const DiscoverButton = ({ characterId }: { characterId: string }) => {
     return null;
   }
 
-  if (hasAlreadyDiscovered) {
+  if (data) {
     return null;
   }
 

@@ -64,6 +64,17 @@ export function useDiscoverMutation(options = {} as any) {
             };
           }
         );
+        console.log("TODO");
+
+        setComponents(
+          components.map((comp: any) => {
+            if (comp?.hanzi === data?.hanzi) {
+              return data;
+            }
+
+            return comp;
+          })
+        );
 
         queryClient.setQueryData(
           [getComponentQueryKey, data?.hanzi, authUser?.jwt],

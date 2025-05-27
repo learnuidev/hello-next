@@ -153,17 +153,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
   return (
     <div className="font-light flex justify-between items-center w-full px-4 md:px-32 md:mt-2">
-      {" "}
-      <Tabs defaultValue={viewType}>
-        <TabsContent value="listen">
-          Make changes to your account here.
-        </TabsContent>
-        <TabsContent value="listen"> Listen </TabsContent>
-        <TabsContent value="write">Write</TabsContent>
-        <TabsContent value="speak"> Speak </TabsContent>
-        <TabsContent value="learn">Learn</TabsContent>
-        <TabsContent value="insights">Insights</TabsContent>
-      </Tabs>
+      <div></div>
     </div>
   );
 };

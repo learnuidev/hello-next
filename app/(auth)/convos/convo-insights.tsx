@@ -18,6 +18,7 @@ import { useGetContentInsights } from "./use-get-content-insights";
 import { useInsightsSettingsStore } from "./use-insights-settings-store";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { useGetContentInsightsNew } from "./use-get-content-insights.new";
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 
 const getFrequency = ({ lesson, input }: any) => {
   const transcriptions = lesson?.transcriptions?.filter(
@@ -57,13 +58,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
   // } = useGetContentInsights({ lessonId });
 
   if (isLoading || !data) {
-    return (
-      <div className=" px-4 md:px-32 my-4 md:my-8">
-        <div className="text-center my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
-          ...
-        </div>
-      </div>
-    );
+    return <LottieLoadingAnimation />;
   }
 
   const {

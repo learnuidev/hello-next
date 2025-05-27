@@ -1,12 +1,12 @@
 "use client";
 
-import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useMemo, useState } from "react";
 
-import { useRouter } from "next/navigation";
-
 import { useGetContentQuery } from "@/domain/content/content.queries";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import {
+  useListCharactersMapQuery,
+  useListCharactersQuery,
+} from "@/domain/lesson/character.queries";
 import { useSelectedCharacter } from "./use-selected-character";
 
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
@@ -26,108 +26,95 @@ const getFrequency = ({ lesson, input }: any) => {
 };
 
 export function useGetContentInsights({ lessonId }: { lessonId: string }) {
-  const [isTocHidden, setIsTocHidden] = useState(false);
-
-  const viewType = useInsightsSettingsStore((state) => state.type);
-  const setViewType = useInsightsSettingsStore((state) => state.setType);
-  const setSortType = useInsightsSettingsStore((state) => state.setSortType);
   const sortType = useInsightsSettingsStore((state) => state.sortType);
 
-  const selectedChar = useSelectedCharacter((state: any) => state?.character);
-
   const { data: hskWords } = useListHSKWordsQuery();
-
-  const router = useRouter();
 
   const { data: lesson } = useGetContentQuery({ contentId: lessonId });
 
   const lang = lesson?.lang || lesson?.transcriptions?.[0]?.lang;
 
-  const { data: learnedCharacters } = useListCharactersQuery();
-
-  const { data: allAnswers, isLoading } = useListAnswersQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+  const { data: learnedCharacters } = useListCharactersMapQuery();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const uniqueCharacters =
-    lang === "zh"
-      ? [
-          // @ts-ignore
-          ...new Set(
-            lesson?.transcriptions
-              // allLessonAnswers
-              ?.map(
-                (answer: { hanzi: string; input: string }) =>
-                  answer?.hanzi || answer?.input
-              )
-              ?.join("")
-          ),
-        ]
-          .join("")
-          ?.toLocaleLowerCase()
-          ?.split("")
-          ?.filter(filterNonHanYu)
-      : lang === "en"
+  const uniqueCharacters = useMemo(
+    () =>
+      lang === "zh"
         ? [
+            // @ts-ignore
             ...new Set(
               lesson?.transcriptions
                 // allLessonAnswers
                 ?.map(
                   (answer: { hanzi: string; input: string }) =>
-                    answer?.hanzi || answer?.input?.split(" ")
+                    answer?.hanzi || answer?.input
                 )
-                ?.flat()
-                ?.map((word: string) => {
-                  let newWord = word
-                    ?.replaceAll(", ", "")
-                    ?.replaceAll(":", "")
-                    ?.replaceAll("-", "")
-                    ?.replaceAll("?", "")
-                    ?.replaceAll(",", "");
-
-                  const indexOfSingleQuote = newWord?.indexOf("'");
-
-                  console.log("indexOfSingleQuote", indexOfSingleQuote);
-
-                  if (
-                    indexOfSingleQuote === 0 ||
-                    indexOfSingleQuote + 1 === newWord?.length
-                  ) {
-                    newWord = newWord?.replaceAll("'", "");
-                  }
-
-                  return newWord;
-                })
-                ?.filter(Boolean)
+                ?.join("")
             ),
           ]
-        : [
-            ...new Set(
-              lesson?.transcriptions
-                // allLessonAnswers
-                ?.map(
-                  (answer: { hanzi: string; input: string }) =>
-                    answer?.hanzi || answer?.input?.split(" ")
-                )
-                ?.flat()
-                .map(filterNonEnglishAlphabets)
-            ),
-          ];
+            .join("")
+            ?.toLocaleLowerCase()
+            ?.split("")
+            ?.filter(filterNonHanYu)
+        : lang === "en"
+          ? [
+              ...new Set(
+                lesson?.transcriptions
+                  // allLessonAnswers
+                  ?.map(
+                    (answer: { hanzi: string; input: string }) =>
+                      answer?.hanzi || answer?.input?.split(" ")
+                  )
+                  ?.flat()
+                  ?.map((word: string) => {
+                    let newWord = word
+                      ?.replaceAll(", ", "")
+                      ?.replaceAll(":", "")
+                      ?.replaceAll("-", "")
+                      ?.replaceAll("?", "")
+                      ?.replaceAll(",", "");
 
-  const totalNewCharaters = uniqueCharacters?.filter((char: any) => {
-    const isLearned = learnedCharacters?.find(
-      (item: any) => (item?.hanzi || item?.input) === char
-    );
+                    const indexOfSingleQuote = newWord?.indexOf("'");
 
-    return !!isLearned;
-  })?.length;
+                    console.log("indexOfSingleQuote", indexOfSingleQuote);
+
+                    if (
+                      indexOfSingleQuote === 0 ||
+                      indexOfSingleQuote + 1 === newWord?.length
+                    ) {
+                      newWord = newWord?.replaceAll("'", "");
+                    }
+
+                    return newWord;
+                  })
+                  ?.filter(Boolean)
+              ),
+            ]
+          : [
+              ...new Set(
+                lesson?.transcriptions
+                  // allLessonAnswers
+                  ?.map(
+                    (answer: { hanzi: string; input: string }) =>
+                      answer?.hanzi || answer?.input?.split(" ")
+                  )
+                  ?.flat()
+                  .map(filterNonEnglishAlphabets)
+              ),
+            ],
+    [lang, lesson?.transcriptions]
+  );
+
+  const totalNewCharaters = useMemo(
+    () =>
+      uniqueCharacters?.filter((char: any) => {
+        const isLearned =
+          learnedCharacters?.[char?.hanzi || char?.input || char];
+
+        return !!isLearned;
+      })?.length,
+    [learnedCharacters, uniqueCharacters]
+  );
 
   const uniqueCharactersMemo = useMemo(() => {
     const res = uniqueCharacters?.map((char: any, idx: number) => {
@@ -136,9 +123,7 @@ export function useGetContentInsights({ lessonId }: { lessonId: string }) {
         input: char?.hanzi || char?.input || char,
       });
 
-      const isLearned = learnedCharacters?.find(
-        (item: any) => (item?.hanzi || item?.input) === char
-      );
+      const isLearned = learnedCharacters?.[char?.hanzi || char?.input || char];
 
       return {
         input: char,
@@ -210,11 +195,15 @@ export function useGetContentInsights({ lessonId }: { lessonId: string }) {
     );
   }, [hskWords, lesson, sortType]);
 
-  const understandingRate = Intl.NumberFormat("en-GB", {
-    style: "percent",
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 2,
-  }).format(totalNewCharaters / uniqueCharacters?.length);
+  const understandingRate = useMemo(
+    () =>
+      Intl.NumberFormat("en-GB", {
+        style: "percent",
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 2,
+      }).format(totalNewCharaters / uniqueCharacters?.length),
+    [totalNewCharaters, uniqueCharacters?.length]
+  );
 
   return {
     uniqueCharacters,

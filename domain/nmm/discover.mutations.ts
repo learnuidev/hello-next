@@ -6,6 +6,7 @@ import { getComponentQueryKey } from "../lesson/use-get-component-query";
 import {
   listComponentsQueryKey,
   listComponentsQueryMapKey,
+  useComponents,
 } from "../lesson/component.queries";
 const url =
   "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/discover";
@@ -34,6 +35,8 @@ const discover = async (
 
 export function useDiscoverMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
+  const { components, setComponents, lastUpdated, setLastUpdated } =
+    useComponents();
   const queryClient = useQueryClient();
   return useMutation(
     async (params: DiscoverParams) => {
@@ -51,6 +54,16 @@ export function useDiscoverMutation(options = {} as any) {
 
         queryClient.refetchQueries([listComponentsQueryKey, true]);
         queryClient.refetchQueries([listComponentsQueryMapKey, true]);
+
+        queryClient.setQueriesData(
+          [listComponentsQueryKey, true, lastUpdated],
+          (props: any) => {
+            return {
+              ...props,
+              [data?.hanzi || data?.input]: data,
+            };
+          }
+        );
 
         queryClient.setQueryData(
           [getComponentQueryKey, data?.hanzi, authUser?.jwt],

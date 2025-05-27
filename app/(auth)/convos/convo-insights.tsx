@@ -17,6 +17,7 @@ import { create } from "zustand";
 import { useGetContentInsights } from "./use-get-content-insights";
 import { useInsightsSettingsStore } from "./use-insights-settings-store";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
+import { useGetContentInsightsNew } from "./use-get-content-insights.new";
 
 const getFrequency = ({ lesson, input }: any) => {
   const transcriptions = lesson?.transcriptions?.filter(
@@ -36,33 +37,26 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
 
-  const { data: lesson } = useGetContentQuery({ contentId: lessonId });
+  const { data: lesson, isLoading } = useGetContentQuery({
+    contentId: lessonId,
+  });
 
   const lang = lesson?.lang || lesson?.transcriptions?.[0]?.lang;
 
   const { data: learnedCharacters } = useListCharactersQuery();
 
-  const { data: allAnswers, isLoading } = useListAnswersQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
 
-  const {
-    understandingRate,
-    filteredHskWords,
-    uniqueCharactersMemo,
-    totalNewCharaters,
-    uniqueCharacters,
-  } = useGetContentInsights({ lessonId });
+  const { data } = useGetContentInsightsNew({ lessonId });
+  // const {
+  //   understandingRate,
+  //   filteredHskWords,
+  //   uniqueCharactersMemo,
+  //   totalNewCharaters,
+  //   uniqueCharacters,
+  // } = useGetContentInsights({ lessonId });
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return (
       <div className=" px-4 md:px-32 my-4 md:my-8">
         <div className="text-center my-2 flex justify-start items-center text-2xl text-gray-700 flex-wrap">
@@ -71,6 +65,14 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
       </div>
     );
   }
+
+  const {
+    understandingRate,
+    filteredHskWords,
+    uniqueCharactersMemo,
+    totalNewCharaters,
+    uniqueCharacters,
+  } = data;
 
   return selectedChar ? (
     <SelectedCharacterContainer characterId={selectedChar} />

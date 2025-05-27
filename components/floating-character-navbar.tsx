@@ -20,25 +20,21 @@ import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
-  const { data: components, isLoading } = useListComponentsQuery();
+  const { data: components } = useListComponentsQuery();
 
-  const hasAlreadyDiscovered = components?.find(
-    (item: any) => (item?.hanzi || item?.input) === characterId
-  );
-
-  const { data } = useGetComponentQuery({
+  const { data, isLoading } = useGetComponentQuery({
     hanzi: characterId,
   });
 
-  if (characterId?.length > 3 || isLoading) {
+  if (characterId?.length > 3) {
     return null;
   }
 
-  if (characterId?.length === 3 && hasAlreadyDiscovered?.group) {
+  if (characterId?.length === 3 && data?.group) {
     return null;
   }
 
-  if (data) {
+  if (data || isLoading) {
     return null;
   }
 

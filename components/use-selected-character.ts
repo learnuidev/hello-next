@@ -7,11 +7,9 @@ import * as R from "ramda";
 
 import { usePathname, useSearchParams } from "next/navigation";
 
-import { useListContentsQuery } from "@/domain/content/content.queries";
-
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useListCharactersMapQuery } from "@/domain/lesson/character.queries";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 
@@ -23,12 +21,12 @@ import { useDeleteComponentMutation } from "@/domain/lesson/component.mutations"
 
 import { SelectedCharacterProps } from "./_select-character/select-character.types";
 
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
+import { useGetLangParams } from "@/hooks/use-get-lang-params";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { useGetLangParams } from "@/hooks/use-get-lang-params";
-import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 export const useViewTypeStore = create(
   persist(
@@ -120,7 +118,7 @@ export function useSelectedCharacterData({
     [relevantAnswers]
   );
 
-  const { data: characters } = useListCharactersQuery(
+  const { data: characters } = useListCharactersMapQuery(
     {},
     {
       refetchOnWindowFocus: false,
@@ -135,12 +133,7 @@ export function useSelectedCharacterData({
   // });
 
   const selectedComp = useMemo(
-    () =>
-      characters?.find(
-        (component: any) =>
-          (component?.hanzi || component?.item || component?.input) ===
-          selectedChar
-      ),
+    () => characters?.[selectedChar],
     [characters, selectedChar]
   );
 
@@ -157,10 +150,7 @@ export function useSelectedCharacterData({
   const contentLang = searchParams.get("content") || "";
 
   const isAlreadyLearned = useMemo(
-    () =>
-      characters?.find((character) => {
-        return (character?.hanzi || character?.input) === selectedChar;
-      }),
+    () => characters?.[selectedChar],
     [characters, selectedChar]
   );
 

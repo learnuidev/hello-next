@@ -56,7 +56,7 @@ export function useDiscoverMutation(options = {} as any) {
         queryClient.refetchQueries([listComponentsQueryMapKey, true]);
 
         queryClient.setQueriesData(
-          [listComponentsQueryKey, true, lastUpdated],
+          [listComponentsQueryMapKey, undefined, lastUpdated],
           (props: any) => {
             return {
               ...props,

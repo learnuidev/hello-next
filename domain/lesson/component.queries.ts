@@ -126,15 +126,8 @@ export function useListComponents(
 
   const includeDiscoverOnly = Boolean(options?.discoverOnly);
   return {
-    data: data
-      // ?.filter((item: any) => {
-      //   return (item?.hanzi || item?.input)?.length === 1;
-      //   // if (options?.singleItemsOnly) {
-      //   //   return (item?.hanzi || item?.input)?.length === 1;
-      //   // } else {
-      //   //   return true;
-      //   // }
-      // })
+    data: (data || [])
+
       ?.filter((item: any) => {
         if (options?.includeAll) {
           return true;

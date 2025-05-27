@@ -39,7 +39,7 @@ const DiscoverButton = ({ characterId }: { characterId: string }) => {
 
   return (
     <button
-      className="text-xl text-gray-400 hover:text-black"
+      className="text-xl text-gray-400 hover:text-black dark:hover:text-white"
       disabled={discoverMutation.isLoading || discoverMutation.isSuccess}
       onClick={() => {
         discoverMutation

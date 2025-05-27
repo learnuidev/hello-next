@@ -1,10 +1,8 @@
 "use client";
 
-import { NmmListContainer } from "@/components/nmm-list-container";
-import { WordItem } from "../../word-item";
-
-import { useListSuperComponentsQuery } from "@/domain/component/super-component.queries";
 import { HanziLink } from "@/components/hanzi-link";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
+import { useListSuperComponentsQuery } from "@/domain/component/super-component.queries";
 
 export const HskSuperComponentsWordView = ({
   componentId,
@@ -20,7 +18,7 @@ export const HskSuperComponentsWordView = ({
   console.log("SUPER COMPS", superComponents);
 
   return (
-    <NmmListContainer>
+    <NmmListContainerAll>
       {superComponents
 
         ?.sort((a: any, b: any) => (a?.level || 20000) - (b?.level || 20000))
@@ -29,6 +27,6 @@ export const HskSuperComponentsWordView = ({
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
           );
         })}
-    </NmmListContainer>
+    </NmmListContainerAll>
   );
 };

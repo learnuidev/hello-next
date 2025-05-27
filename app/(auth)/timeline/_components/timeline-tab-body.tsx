@@ -12,6 +12,7 @@ import { useState } from "react";
 import { TimelineDatesDrawer } from "./timeline-dates-drawer";
 import { useTimelineState } from "./timeline.state";
 import { CharacterItem } from "@/components/_select-character/character-item";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 
 export const TimelineTabBody = ({
   variant,
@@ -137,7 +138,7 @@ export const TimelineTabBody = ({
                     </div>
                   </div>
                 ) : null}
-                <NmmListContainer>
+                <NmmListContainerAll>
                   {selectedGroup?.items
                     // ?.filter((item: any) => item?.hanzi?.length === 1)
                     ?.map((item: any, idx: any) => {
@@ -152,7 +153,7 @@ export const TimelineTabBody = ({
                         />
                       );
                     })}
-                </NmmListContainer>
+                </NmmListContainerAll>
               </div>
             ) : (
               <div className="flex flex-wrap flex-row w-full mb-32">

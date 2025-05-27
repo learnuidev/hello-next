@@ -4,14 +4,12 @@ import { useSearchQueryStore } from "@/components/search/state";
 
 import { HanziLink } from "@/components/hanzi-link";
 
-import { NmmListContainer } from "@/components/nmm-list-container";
-import { NmmListContainerSentence } from "@/components/nmm-list-container-sentence";
-
-import { useListComponents } from "@/domain/lesson/component.queries";
-import { useGetXiaoma } from "./use-get-xiaoma";
-import { useGetSelectedBelt } from "../use-get-selected-belt";
 import { HanziLinkSentence } from "@/components/hanzi-link-sentence";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { useGetSelectedBelt } from "../use-get-selected-belt";
+import { useGetXiaoma } from "./use-get-xiaoma";
 
 export function XiaomaViewType({
   variant,
@@ -53,7 +51,7 @@ export function XiaomaViewType({
 
   if (viewType === "character") {
     return (
-      <NmmListContainer>
+      <NmmListContainerAll>
         {xiaomaCharacters.map((prop: any, idx: number) => {
           const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
           return (
@@ -63,19 +61,19 @@ export function XiaomaViewType({
             />
           );
         })}
-      </NmmListContainer>
+      </NmmListContainerAll>
     );
   }
 
   if (viewType === "word") {
     return (
-      <NmmListContainer>
+      <NmmListContainerAll>
         {xiaomaWords?.map((prop: any, idx: number) => {
           return (
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
           );
         })}
-      </NmmListContainer>
+      </NmmListContainerAll>
     );
   }
 }

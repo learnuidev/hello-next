@@ -6,11 +6,11 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useMemo } from "react";
 
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
-import { NmmListContainer } from "@/components/nmm-list-container";
 
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
+import { useGetSelectedBelt } from "../use-get-selected-belt";
 import { resolveHsk } from "./hsk-utils/resolve-hsk";
 import { useHskViewStore } from "./state";
-import { useGetSelectedBelt } from "../use-get-selected-belt";
 
 export const HskWordsView = ({ variant }: { variant?: "all" }) => {
   const queryStr = useSearchQueryStore((state) => state.query);
@@ -46,7 +46,7 @@ export const HskWordsView = ({ variant }: { variant?: "all" }) => {
 
   return (
     <div>
-      <NmmListContainer>
+      <NmmListContainerAll>
         {filteredWords?.map((prop: any, idx: number) => {
           return (
             <div key={`${prop.hanzi}-chars-${idx}`} className="relative">
@@ -54,7 +54,7 @@ export const HskWordsView = ({ variant }: { variant?: "all" }) => {
             </div>
           );
         })}
-      </NmmListContainer>
+      </NmmListContainerAll>
     </div>
   );
 };

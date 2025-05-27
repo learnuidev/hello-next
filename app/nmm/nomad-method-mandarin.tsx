@@ -20,7 +20,7 @@ import { NmmCoreComponents } from "./nmm-core-components";
 import { XiaomaView } from "./xiaoma/xiaoma-view";
 
 import { HanziLink } from "@/components/hanzi-link";
-import { NmmListContainer } from "@/components/nmm-list-container";
+// import { NmmListContainer } from "@/components/nmm-list-container";
 import {
   Tooltip,
   TooltipContent,
@@ -37,6 +37,7 @@ import { NomadMethodTabsContainer } from "./nomad-method-tabs-container";
 import { PreviewComponent } from "./preview-component";
 import { useGetSelectedBelt } from "./use-get-selected-belt";
 import { YctView } from "./yct/yct-view";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 
 export function NomadMethodMandarin() {
   const selectedBelt = useGetSelectedBelt();
@@ -134,7 +135,7 @@ export function NomadMethodMandarin() {
 
             <TabsContent value="needs_review" className="my-4 md:my-8">
               <HskView type={viewType}>
-                <NmmListContainer>
+                <NmmListContainerAll>
                   {(queryStr
                     ? filteredComponents
                     : learnedCharacters2?.filter(
@@ -165,7 +166,7 @@ export function NomadMethodMandarin() {
                       </TooltipProvider>
                     );
                   })}
-                </NmmListContainer>
+                </NmmListContainerAll>
               </HskView>
             </TabsContent>
 

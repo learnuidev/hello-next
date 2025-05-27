@@ -12,12 +12,13 @@ import Link from "next/link";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 import { Icons } from "@/components/ui/icons.v2";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { cn } from "@/lib/utils";
 
 import { HanziLink } from "@/components/hanzi-link";
 import { create } from "zustand";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
-import { NmmListContainer } from "../nmm-list-container";
+// import { NmmListContainerAll } from "../nmm-list-container";
 import { useInsightsSettingsStore } from "@/app/(auth)/convos/use-insights-settings-store";
 import { useMemo } from "react";
 
@@ -151,7 +152,7 @@ export function CharacterAnalytics({
 
         {viewType === "character" && (
           <div className="my-8">
-            <NmmListContainer className="md:mx-0">
+            <NmmListContainerAll>
               {uniqueWords?.map((char: any, idx: number) => {
                 if (!char) {
                   return null;
@@ -182,69 +183,23 @@ export function CharacterAnalytics({
                     />
                   );
                 }
-
-                return (
-                  <Link
-                    href={`/nmm/${char}${lang ? `?lang=${lang}` : ""}`}
-                    // onClick={() => {
-                    //   setSelectedChar(char);
-                    // }}
-                    className={`p-2 ${
-                      // ""
-                      isLearned
-                        ? "text-gray-700 dark:text-gray-300"
-                        : "text-gray-400 dark:text-gray-500"
-                    }`}
-                    // className="p-2"
-                    key={`${idx}-${char}-${idx}`}
-                  >
-                    {" "}
-                    {char}
-                  </Link>
-                );
               })}
-            </NmmListContainer>
+            </NmmListContainerAll>
           </div>
         )}
 
         {viewType === "word" && (
           <div className="my-8">
-            <NmmListContainer className="md:mx-0">
+            <NmmListContainerAll className="md:mx-0">
               {filteredHskWords?.map((char: any, idx: number) => {
-                const isLearned = learnedCharacters?.[char];
-
                 return (
                   <HanziLink
                     character={char}
                     key={`${char?.hanzi}-chars-${idx}`}
-                    // className={
-                    //   isLearned
-                    //     ? "text-gray-700 dark:text-gray-300"
-                    //     : "text-gray-400 dark:text-gray-500"
-                    // }
                   />
                 );
-                return (
-                  <Link
-                    href={`/nmm/${char}${lang ? `?lang=${lang}` : ""}`}
-                    // onClick={() => {
-                    //   setSelectedChar(char);
-                    // }}
-                    className={`p-2 ${
-                      // ""
-                      isLearned
-                        ? "text-gray-700 dark:text-gray-300"
-                        : "text-gray-400 dark:text-gray-500"
-                    }`}
-                    // className="p-2"
-                    key={`${idx}-${char?.hanzi}-${idx}`}
-                  >
-                    {" "}
-                    {char?.hanzi}
-                  </Link>
-                );
               })}
-            </NmmListContainer>
+            </NmmListContainerAll>
           </div>
         )}
       </div>

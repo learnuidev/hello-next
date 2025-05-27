@@ -4,12 +4,12 @@ import { useSearchQueryStore } from "@/components/search/state";
 
 import { HanziLink } from "@/components/hanzi-link";
 
-import { NmmListContainer } from "@/components/nmm-list-container";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { NmmListContainerSentence } from "@/components/nmm-list-container-sentence";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useGetSelectedBelt } from "../use-get-selected-belt";
 import { useGetYct } from "./use-get-yct";
-import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 
 export function YctViewType({
   variant,
@@ -48,7 +48,7 @@ export function YctViewType({
 
   if (viewType === "character") {
     return (
-      <NmmListContainer>
+      <NmmListContainerAll>
         {xiaomaCharacters.map((prop: any, idx: number) => {
           const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
           return (
@@ -58,19 +58,19 @@ export function YctViewType({
             />
           );
         })}
-      </NmmListContainer>
+      </NmmListContainerAll>
     );
   }
 
   if (viewType === "word") {
     return (
-      <NmmListContainer>
+      <NmmListContainerAll>
         {xiaomaWords?.map((prop: any, idx: number) => {
           return (
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
           );
         })}
-      </NmmListContainer>
+      </NmmListContainerAll>
     );
   }
 }

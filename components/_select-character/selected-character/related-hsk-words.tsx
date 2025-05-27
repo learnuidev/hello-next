@@ -1,10 +1,10 @@
 "use client";
 
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 import { HanziLink } from "@/components/hanzi-link";
-import { NmmListContainer } from "@/components/nmm-list-container";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { RelatedWords } from "../related-words";
 import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
-import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 export const RelatedHskWords = ({
   characterId,
@@ -24,7 +24,7 @@ export const RelatedHskWords = ({
   }
 
   return (
-    <NmmListContainer className="px-0">
+    <NmmListContainerAll className="px-0">
       {filteredRelatedHskWords?.map((prop: any, idx: any) => {
         const contentItem = (contentItems?.items || [])?.filter((item: any) =>
           JSON.stringify(item?.hanzi || item?.input)?.includes(
@@ -44,6 +44,6 @@ export const RelatedHskWords = ({
           />
         );
       })}
-    </NmmListContainer>
+    </NmmListContainerAll>
   );
 };

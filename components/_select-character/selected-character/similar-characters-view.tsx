@@ -3,6 +3,7 @@
 import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainer } from "@/components/nmm-list-container";
 import { useGetSimilarLookingCharacters } from "./use-get-similar-looking-characters";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 
 export const SimilarCharactersView = ({
   componentId,
@@ -12,7 +13,7 @@ export const SimilarCharactersView = ({
   const similarLookingCharacters = useGetSimilarLookingCharacters(componentId);
 
   return (
-    <NmmListContainer className="px-0">
+    <NmmListContainerAll className="px-0">
       {similarLookingCharacters
         ?.filter((prop) => {
           return prop?.hanzi !== componentId;
@@ -22,6 +23,6 @@ export const SimilarCharactersView = ({
             <HanziLink character={prop} key={`${prop.hanzi}-chars-${idx}`} />
           );
         })}
-    </NmmListContainer>
+    </NmmListContainerAll>
   );
 };

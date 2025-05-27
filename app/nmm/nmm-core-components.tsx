@@ -7,7 +7,7 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
 import { HanziLink } from "@/components/hanzi-link";
-import { NmmListContainer } from "@/components/nmm-list-container";
+// import { NmmListContainer } from "@/components/nmm-list-container";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { motion } from "framer-motion";
@@ -28,6 +28,7 @@ import { useGetSelectedBelt } from "./use-get-selected-belt";
 import { useGetNmmParams } from "./use-get-nmm-params";
 import { useScroll } from "react-spring";
 import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 // import { useScroll } from "framer-motion";
 
 export function NmmCoreComponents() {
@@ -133,7 +134,7 @@ export function NmmCoreComponents() {
   // return "TODO";
   return (
     <div className="mb-24">
-      <NmmListContainer>
+      <NmmListContainerAll>
         {learnedComps?.slice(0, sliced).map((prop: any, idx: number) => {
           return (
             <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
@@ -148,7 +149,7 @@ export function NmmCoreComponents() {
             </TooltipProvider>
           );
         })}
-      </NmmListContainer>
+      </NmmListContainerAll>
 
       {learnedComps?.length < sliced ? null : (
         <div className="flex justify-center items-center mb-24 mt-12">

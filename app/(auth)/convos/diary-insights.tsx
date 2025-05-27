@@ -15,6 +15,7 @@ import { create } from "zustand";
 import { useGetJournalDetailsQuery } from "../diary/hooks/use-get-journal-details-query";
 import { useGetDiaryInsights } from "./use-get-diary-insights";
 import { useInsightsSettingsStore } from "./use-insights-settings-store";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 
 const getFrequency = ({ lesson, input }: any) => {
   const transcriptions = lesson?.transcriptions?.filter(
@@ -154,7 +155,7 @@ export function DiaryInsights({ entryId }: { entryId: string }) {
 
         {viewType === "character" && (
           <div className="my-8">
-            <NmmListContainer>
+            <NmmListContainerAll>
               {uniqueCharactersMemo.map((char: any, idx: number) => {
                 if (char.isLearned) {
                   return (
@@ -187,13 +188,13 @@ export function DiaryInsights({ entryId }: { entryId: string }) {
                   );
                 }
               })}
-            </NmmListContainer>
+            </NmmListContainerAll>
           </div>
         )}
 
         {viewType === "word" && (
           <div className="my-8">
-            <NmmListContainer className="gap-4">
+            <NmmListContainerAll className="gap-4">
               {filteredHskWords?.map((char: any, idx: number) => {
                 return (
                   <HanziLink
@@ -209,7 +210,7 @@ export function DiaryInsights({ entryId }: { entryId: string }) {
                   />
                 );
               })}
-            </NmmListContainer>
+            </NmmListContainerAll>
           </div>
         )}
       </div>

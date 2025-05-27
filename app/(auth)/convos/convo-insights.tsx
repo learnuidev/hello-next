@@ -12,10 +12,11 @@ import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 
 import { HanziLink } from "@/components/hanzi-link";
-import { NmmListContainer } from "@/components/nmm-list-container";
+// import { NmmListContainer } from "@/components/nmm-list-container";
 import { create } from "zustand";
 import { useGetContentInsights } from "./use-get-content-insights";
 import { useInsightsSettingsStore } from "./use-insights-settings-store";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 
 const getFrequency = ({ lesson, input }: any) => {
   const transcriptions = lesson?.transcriptions?.filter(
@@ -153,7 +154,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
 
         {viewType === "character" && (
           <div className="my-8">
-            <NmmListContainer>
+            <NmmListContainerAll>
               {uniqueCharactersMemo.map((char: any, idx: number) => {
                 if (char.isLearned) {
                   return (
@@ -186,13 +187,13 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                   );
                 }
               })}
-            </NmmListContainer>
+            </NmmListContainerAll>
           </div>
         )}
 
         {viewType === "word" && (
           <div className="my-8">
-            <NmmListContainer className="gap-4">
+            <NmmListContainerAll className="gap-4">
               {filteredHskWords?.map((char: any, idx: number) => {
                 return (
                   <HanziLink
@@ -208,7 +209,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                   />
                 );
               })}
-            </NmmListContainer>
+            </NmmListContainerAll>
           </div>
         )}
       </div>

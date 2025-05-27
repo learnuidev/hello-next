@@ -118,7 +118,7 @@ export const Speak = ({ contentId }: { contentId: string }) => {
                 target="_blank"
                 href={`/nmm/${transcript}?lang=${content?.lang}`}
               >
-                {transcript}
+                {transcript?.split("")?.filter(Boolean)?.join("")}
               </Link>
             ) : (
               "..."

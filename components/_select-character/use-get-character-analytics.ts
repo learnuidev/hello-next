@@ -2,12 +2,16 @@
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import {
+  useListCharactersMapQuery,
+  useListCharactersQuery,
+} from "@/domain/lesson/character.queries";
 
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 import { filterNonEnglishAlphabets } from "@/app/nmm/nmm-utils/filter-non-english-alphabets";
 import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
+import { useMemo } from "react";
 
 export function useGetCharacterAnalytics({
   characterId,
@@ -16,71 +20,68 @@ export function useGetCharacterAnalytics({
   characterId: string;
   lang: string;
 }) {
-  const { data: hskWords } = useListHSKWordsQuery();
+  const { data: learnedCharacters } = useListCharactersMapQuery();
 
-  const { data: learnedCharacters } = useListCharactersQuery();
-
-  const { data: allAnswers, isLoading } = useListAnswersQuery(
-    {},
-    {
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
+  const uniqueWords = useMemo(
+    () =>
+      lang === "zh"
+        ? [
+            ...new Set(
+              characterId
+                ?.split("")
+                .join("")
+                ?.toLocaleLowerCase()
+                ?.split("")
+                ?.filter(filterNonHanYu)
+            ),
+          ]
+        : [
+            ...new Set(
+              [...characterId?.split("")].map(filterNonEnglishAlphabets)
+            ),
+          ],
+    [characterId, lang]
   );
 
-  const uniqueWords =
-    lang === "zh"
-      ? [
-          ...new Set(
-            characterId
-              ?.split("")
-              .join("")
-              ?.toLocaleLowerCase()
-              ?.split("")
-              ?.filter(filterNonHanYu)
-          ),
-        ]
-      : [
-          ...new Set(
-            [...characterId?.split("")].map(filterNonEnglishAlphabets)
-          ),
-        ];
+  const totalLearnedCharaters = useMemo(
+    () =>
+      uniqueWords?.filter((char) => {
+        const isLearned = learnedCharacters?.[char];
 
-  const totalLearnedCharaters = uniqueWords?.filter((char) => {
-    const isLearned = learnedCharacters?.find(
-      (item: any) => (item?.hanzi || item?.input) === char
-    );
-
-    return !!isLearned;
-  })?.length;
-
-  const newCharaters = uniqueWords?.filter((char) => {
-    const isLearned = learnedCharacters?.find(
-      (item: any) => (item?.hanzi || item?.input) === char
-    );
-
-    return !isLearned;
-  });
-
-  const totalLearnedCharacters = uniqueWords
-    ?.map((char) => {
-      const isLearned = learnedCharacters?.find(
-        (item: any) => item?.hanzi === char
-      );
-
-      return isLearned;
-    })
-    ?.filter(Boolean);
-
-  const totalMasteredCharacters = totalLearnedCharacters?.filter(
-    (item: any) => item?.status === "forgotten"
+        return !!isLearned;
+      })?.length,
+    [learnedCharacters, uniqueWords]
   );
 
-  if (characterId === "各地的气候都不一样。") {
-    console.log("TOTAL MASTERED", totalMasteredCharacters);
-  }
+  const newCharaters = useMemo(
+    () =>
+      uniqueWords?.filter((char) => {
+        const isLearned = learnedCharacters?.[char];
+
+        return !isLearned;
+      }),
+    [learnedCharacters, uniqueWords]
+  );
+
+  const totalLearnedCharacters = useMemo(
+    () =>
+      uniqueWords
+        ?.map((char) => {
+          const isLearned = learnedCharacters?.[char];
+
+          return isLearned;
+        })
+        ?.filter(Boolean),
+    [learnedCharacters, uniqueWords]
+  );
+
+  const totalMasteredCharacters = useMemo(
+    () =>
+      totalLearnedCharacters?.filter(
+        (item: any) => item?.status === "forgotten"
+      ),
+    [totalLearnedCharacters]
+  );
 
   const understandingRate = Intl.NumberFormat("en-GB", {
     style: "percent",
@@ -98,19 +99,22 @@ export function useGetCharacterAnalytics({
     (character: any) => character?.reviewHistory?.length > 0
   );
 
-  const averagePrecisionRate =
-    totalReviewedCharacters
-      ?.map((char) => {
-        const totalReviews = char?.reviewHistory?.length || 1;
-        const totalIncorrectReviews =
-          char?.reviewHistory?.filter(
-            (reviewItem) => reviewItem?.outcome === "incorrect"
-          )?.length || 0;
+  const averagePrecisionRate = useMemo(
+    () =>
+      totalReviewedCharacters
+        ?.map((char) => {
+          const totalReviews = char?.reviewHistory?.length || 1;
+          const totalIncorrectReviews =
+            char?.reviewHistory?.filter(
+              (reviewItem: any) => reviewItem?.outcome === "incorrect"
+            )?.length || 0;
 
-        return totalIncorrectReviews / totalReviews;
-      })
-      .reduce((acc, curr) => acc + curr, 0) /
-    (totalReviewedCharacters?.length || 1);
+          return totalIncorrectReviews / totalReviews;
+        })
+        .reduce((acc, curr) => acc + curr, 0) /
+      (totalReviewedCharacters?.length || 1),
+    [totalReviewedCharacters]
+  );
 
   const precisionRate = Intl.NumberFormat("en-GB", {
     style: "percent",
@@ -118,21 +122,23 @@ export function useGetCharacterAnalytics({
     maximumFractionDigits: 1,
   }).format(averagePrecisionRate);
 
-  const uniqueComponentWords = uniqueWords
-    ?.map((word) => {
-      const comp = learnedCharacters?.find(
-        (item: any) => (item?.hanzi || item?.input) === word
-      );
+  const uniqueComponentWords = useMemo(
+    () =>
+      uniqueWords
+        ?.map((word) => {
+          const comp = learnedCharacters?.[word];
 
-      if (!comp) {
-        return null;
-      }
+          if (!comp) {
+            return null;
+          }
 
-      return comp;
-    })
-    ?.filter(Boolean)
-    // @ts-ignore
-    ?.sort((a, b) => b?.next_review_date - a?.next_review_date);
+          return comp;
+        })
+        ?.filter(Boolean)
+        // @ts-ignore
+        ?.sort((a, b) => b?.next_review_date - a?.next_review_date),
+    [learnedCharacters, uniqueWords]
+  );
 
   return {
     uniqueWords,

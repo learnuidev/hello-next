@@ -163,3 +163,60 @@ export function useListComponents(
     ...rest,
   };
 }
+
+export const listComponentsQueryMapKey = "list-components-map";
+export function useListComponentsMapQuery(
+  params = {} as {
+    journeyId?: string;
+    lang?: string;
+    forceReload?: boolean;
+  },
+  options = {} as any
+) {
+  const { data: authUser } = useCurrentAuthUser({});
+  const currentLang = useGetCurrentLang();
+
+  const { components, setComponents, lastUpdated, setLastUpdated } =
+    useComponents();
+
+  return useQuery(
+    [listComponentsQueryMapKey, params?.forceReload, lastUpdated],
+    async () => {
+      // if (options.query) {
+
+      if (components && lastUpdated && !hasBeen({ timestamp: lastUpdated })) {
+        return components?.reduce((acc: any, curr: any) => {
+          return {
+            ...acc,
+            [curr?.hanzi]: curr,
+          };
+        }, {}) as Record<string, IComponent>;
+      }
+      const response = await listComponents(
+        { ...params, lang: currentLang },
+        {
+          Authorization: authUser?.jwt,
+        }
+      );
+
+      setComponents(response);
+      setLastUpdated();
+
+      return response?.reduce((acc, curr) => {
+        return {
+          ...acc,
+          [curr?.hanzi]: curr,
+        };
+      }, {}) as any;
+    },
+    {
+      ...options,
+      enabled: Boolean(authUser?.jwt),
+
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
+}

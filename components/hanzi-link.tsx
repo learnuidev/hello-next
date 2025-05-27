@@ -1,8 +1,14 @@
 "use client";
 import React, { useEffect, useMemo } from "react";
 
-import { useListComponents } from "@/domain/lesson/component.queries";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import {
+  useListComponents,
+  useListComponentsMapQuery,
+} from "@/domain/lesson/component.queries";
+import {
+  useListCharactersMapQuery,
+  useListCharactersQuery,
+} from "@/domain/lesson/character.queries";
 
 import Link from "next/link";
 
@@ -34,17 +40,14 @@ export function HanziLink({
   enableTracking?: boolean;
 }) {
   const { data: components, isLoading: isComponentsLoading } =
-    useListComponents({ includeAll: true });
+    useListComponentsMapQuery();
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const selectedComp = useMemo(
-    () =>
-      components?.find(
-        (component: any) => component?.hanzi === character?.hanzi
-      ),
+    () => components?.[character?.hanzi],
     [components, character]
-  );
+  ) as any;
 
   const color = calculateColor({
     ...selectedComp,
@@ -52,11 +55,9 @@ export function HanziLink({
   });
 
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
-    useListCharactersQuery();
+    useListCharactersMapQuery();
 
-  const learnedChar = learnedCharacters2?.find(
-    (char: any) => char?.hanzi === character?.hanzi
-  );
+  const learnedChar = learnedCharacters2?.[character?.hanzi];
 
   const { data: answers } = useListAnswersQuery(
     {},
@@ -153,14 +154,7 @@ export function HanziLink({
         )}
 
         {character?.hanzi?.split("")?.map((val, idx) => {
-          const learnedChar = learnedCharacters2?.find(
-            (char: any) => char?.hanzi === val
-          );
-
-          const color = calculateColor({
-            ...learnedChar,
-            tone: learnedChar?.tone_level,
-          });
+          const learnedChar = learnedCharacters2?.[val];
 
           return <CharacterItem character={val} key={`${val}-${idx}`} />;
         })}

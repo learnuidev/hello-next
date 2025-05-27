@@ -98,3 +98,38 @@ export function useListCharactersQuery(
     }
   );
 }
+
+export const listCharactersQueryMapId = "list-characters-map";
+export function useListCharactersMapQuery(
+  params = {} as { journeyId?: string },
+  options = {} as any
+) {
+  const { data: authUser } = useCurrentAuthUser({});
+
+  return useQuery(
+    [listCharactersQueryMapId],
+    async () => {
+      // if (options.query) {
+      const response = await listCharacters(params, {
+        Authorization: authUser?.jwt,
+      });
+
+      return response?.reduce((acc, curr) => {
+        return {
+          ...acc,
+          [curr?.hanzi]: curr,
+        };
+      }, {}) as any;
+      // }
+    },
+    {
+      ...options,
+      enabled: Boolean(authUser?.jwt),
+      cacheTime: 1000 * 60 * 300, // 30 minutes,
+      refetchOnWindowFocus: false,
+      refetchOnFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
+  );
+}

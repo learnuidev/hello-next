@@ -1,6 +1,12 @@
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useListComponents } from "@/domain/lesson/component.queries";
+import {
+  useListCharactersMapQuery,
+  useListCharactersQuery,
+} from "@/domain/lesson/character.queries";
+import {
+  useListComponents,
+  useListComponentsMapQuery,
+} from "@/domain/lesson/component.queries";
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
@@ -25,10 +31,6 @@ function calculatePopularityColor(comp: any) {
     return "text-gray-500";
   }
 
-  // if (mandarinoIndex > 8) {
-  //   return "text-gray-500";
-  // }
-
   if (mandarinoIndex > 5) {
     return "text-gray-300";
   }
@@ -42,30 +44,22 @@ export const CharacterItem = ({
   disableClass,
 }: ICharacterItem) => {
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
-    useListCharactersQuery();
-
-  const componentId = useGetComponentId();
+    useListCharactersMapQuery();
 
   const { data: components, isLoading: isComponentsLoading } =
-    useListComponents({ includeAll: true });
-
-  const { data: selectedComp } = useGetComponentQuery({
-    hanzi: componentId,
-  });
+    useListComponentsMapQuery();
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
-  const learnedChar = learnedCharacters2?.find(
-    (char: any) => char?.hanzi === character
-  );
+  const learnedChar = learnedCharacters2?.[character];
 
-  const comp = components?.find((char: any) => char?.hanzi === character);
+  const comp = components?.[character];
 
   const popularityColor = calculatePopularityColor(comp);
 
   const color = calculateColor({
-    ...(learnedChar || selectedComp),
-    tone: learnedChar?.tone_level || selectedComp?.tone_level,
+    ...learnedChar,
+    tone: learnedChar?.tone_level,
   });
 
   const hoverColor = calculateHoverColor({
@@ -87,9 +81,7 @@ export const CharacterItem = ({
                 ? learnedChar?.status === "forgotten"
                   ? `text-gray-300 dark:text-gray-800 ${hoverColor}`
                   : `text-gray-300 ${color} ${hoverColor}`
-                : selectedComp?.length > 1 || selectedComp?.group
-                  ? `dark:text-white text-black ${hoverColor}`
-                  : `dark:text-gray-200 text-gray-800 ${hoverColor}`
+                : `dark:text-gray-200 text-gray-800 ${hoverColor}`
         } ${hoverColor}`,
         disableClass
           ? ""

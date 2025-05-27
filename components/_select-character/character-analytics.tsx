@@ -3,7 +3,10 @@
 import { SelectedCharacterContainer } from "@/components/selected-character-container";
 import { useSelectedCharacter } from "../../app/(auth)/convos/use-selected-character";
 
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import {
+  useListCharactersMapQuery,
+  useListCharactersQuery,
+} from "@/domain/lesson/character.queries";
 import Link from "next/link";
 
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
@@ -16,6 +19,7 @@ import { create } from "zustand";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { NmmListContainer } from "../nmm-list-container";
 import { useInsightsSettingsStore } from "@/app/(auth)/convos/use-insights-settings-store";
+import { useMemo } from "react";
 
 export function CharacterAnalytics({
   characterId,
@@ -31,21 +35,27 @@ export function CharacterAnalytics({
 
   const { data: hskWords } = useListHSKWordsQuery();
 
-  const { data: learnedCharacters } = useListCharactersQuery();
+  const { data: learnedCharacters } = useListCharactersMapQuery();
 
-  const filteredHskWords = hskWords
-    ?.filter((word: any) => {
-      return characterId?.includes(word?.hanzi);
-    })
-    .map((item: any) => {
-      const wordIndex = characterId?.indexOf(item?.hanzi || item?.input);
+  const filteredHskWords = useMemo(
+    () =>
+      hskWords
+        ?.filter((word: any) => {
+          return characterId?.includes(word?.hanzi);
+        })
+        .map((item: any) => {
+          const wordIndex = characterId?.indexOf(item?.hanzi || item?.input);
 
-      return {
-        ...item,
-        wordIndex: wordIndex || 0,
-      };
-    })
-    ?.sort((first: any, second: any) => first?.wordIndex - second?.wordIndex);
+          return {
+            ...item,
+            wordIndex: wordIndex || 0,
+          };
+        })
+        ?.sort(
+          (first: any, second: any) => first?.wordIndex - second?.wordIndex
+        ),
+    [characterId, hskWords]
+  );
 
   const {
     understandingRate,
@@ -146,9 +156,7 @@ export function CharacterAnalytics({
                 if (!char) {
                   return null;
                 }
-                const isLearned = learnedCharacters?.find(
-                  (item: any) => (item?.hanzi || item?.input) === char
-                );
+                const isLearned = learnedCharacters?.[char];
 
                 if (isLearned) {
                   return (
@@ -203,9 +211,7 @@ export function CharacterAnalytics({
           <div className="my-8">
             <NmmListContainer className="md:mx-0">
               {filteredHskWords?.map((char: any, idx: number) => {
-                const isLearned = learnedCharacters?.find(
-                  (item: any) => (item?.hanzi || item?.input) === char
-                );
+                const isLearned = learnedCharacters?.[char];
 
                 return (
                   <HanziLink

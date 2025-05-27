@@ -133,5 +133,6 @@ export const filterNonHanYu = (hanzi: string): boolean =>
     "_",
     "=",
     "\\",
+    "%",
     ...Object.keys(characterMap),
   ]?.includes(hanzi?.toLowerCase());

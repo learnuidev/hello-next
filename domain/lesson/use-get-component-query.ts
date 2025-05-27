@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
+import { useComponents } from "./component.queries";
 
 interface IGetComponentParams {
   componentId?: string;
@@ -33,6 +34,8 @@ export function useGetComponentQuery(
   params = {} as IGetComponentParams,
   options = {} as any
 ) {
+  const { components, setComponents, lastUpdated, setLastUpdated } =
+    useComponents();
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery(
@@ -47,6 +50,14 @@ export function useGetComponentQuery(
     },
     {
       ...options,
+      onSuccess: (data) => {
+        console.log("GET COMP SUCCESS", data);
+        setComponents(
+          components.map((comp: any) => {
+            return comp?.hanzi === data?.hanzi ? data : comp;
+          })
+        );
+      },
       enabled: Boolean(authUser?.jwt),
 
       refetchOnWindowFocus: false,

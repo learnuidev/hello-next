@@ -63,8 +63,6 @@ export function useSelectedCharacterData({
     hanzi: characterId,
   });
 
-  console.log("DATA", data);
-
   const addHistoryMutation = useAddHistoryMutation();
 
   const addCharacterMutation = useAddCharacterMutation();

@@ -157,7 +157,7 @@ export const CharacterTitle = (props: any) => {
                     href={`/nmm/${item}?lang=zh${context ? `&context=${context}` : ""}`}
                   >
                     <CharacterItem
-                      disableForgotten
+                      // disableForgotten
                       className="text-4xl"
                       disableClass
                       character={item}

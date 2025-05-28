@@ -124,6 +124,14 @@ export function YoutubeButton({
   }, [playerRef]);
 
   const playSound = () => {
+    seekAndPlay(currentTranscription?.start);
+
+    // console.log(
+    //   `     currentTime > currentTranscription?.start &&
+    //   currentTime < currentTranscription?.end`,
+    //   currentTime > currentTranscription?.start &&
+    //     currentTime < currentTranscription?.end
+    // );
     if (
       currentTime > currentTranscription?.start &&
       currentTime < currentTranscription?.end

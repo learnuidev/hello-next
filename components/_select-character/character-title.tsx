@@ -158,8 +158,6 @@ export const CharacterTitle = (props: any) => {
                   >
                     <CharacterItem
                       // disableForgotten
-                      className="text-4xl"
-                      disableClass
                       character={item}
                     />
                   </Link>

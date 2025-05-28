@@ -26,6 +26,8 @@ import { useState } from "react";
 import { useUpdateMeaningMutation } from "@/domain/sentence/use-update-meaning-mutation";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { AudioComponent } from "./audio-component";
+import { smartSplit } from "../youtube-page/utils/smart-split";
+import { CharacterItem } from "./character-item";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -83,7 +85,7 @@ export const CharacterTitle = (props: any) => {
     }
   );
 
-  const selectedCompInput = selectedComp?.hanzi || selectedCompInput2;
+  const selectedCompInput = characterId;
 
   // const brightMode = useReadModeStore((state) => state.readMode);
 
@@ -145,67 +147,25 @@ export const CharacterTitle = (props: any) => {
 
       {(lang || meaning?.lang) === "zh" ? (
         <div className="flex justify-between items-center w-full">
-          <div className="space-x-4 flex items-center">
-            <div>
-              {selectedCompInput?.split("")?.map((val: any, idx: any) => {
-                const learnedChar = learnedCharacters2?.find(
-                  (char: any) => char?.hanzi === val
-                );
-                const comp = components?.find(
-                  (char: any) => char?.hanzi === val
-                );
-
-                const color = calculateColor({
-                  ...(learnedChar || selectedComp),
-                  tone: learnedChar?.tone_level || selectedComp?.tone_level,
-                });
-
-                const hoverColor = calculateHoverColor({
-                  tone: learnedChar?.tone_level || comp?.tone_level,
-                });
-
-                if (selectedCompInput?.length > 1) {
-                  return (
-                    <Link
-                      onClick={() => {
-                        trackFunction();
-                        if (meaning?.details) {
-                          setIfExists({ ...meaning?.details });
-                        }
-                      }}
-                      href={`/nmm/${val}?lang=zh${context ? `&context=${context}` : ""}`}
-                      key={`${val}-${idx}`}
-                      className={`${
-                        brightMode || isCharactersLoading
-                          ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
-                          : // learnedCharacters.includes(prop?.hanzi)
-                            learnedChar
-                            ? learnedChar?.status === "forgotten"
-                              ? `text-gray-200 dark:text-gray-600 ${hoverColor}`
-                              : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
-                                //   ? "text-rose-500"
-                                `${color} text-gray-300 ${hoverColor}`
-                            : selectedComp?.length > 1 || selectedComp?.group
-                              ? `dark:text-gray-500 text-gray-200 ${hoverColor}`
-                              : `dark:text-gray-200 text-gray-800 ${hoverColor}`
-                      } ${hoverColor} text-2xl transition lowercase font-light`}
-                    >
-                      {val}
-                    </Link>
-                  );
-                }
-
+          <div>
+            {smartSplit({ input: selectedCompInput, lang })?.map(
+              (item: string, idx: number) => {
                 return (
                   <Link
-                    href={`/nmm/${val}?lang=zh${context ? `&context=${context}` : ""}`}
-                    key={`${val}-${idx}`}
-                    className={`${color} text-3xl sm:text-4xl transition lowercase font-light`}
+                    className="text-2xl"
+                    key={`character-title-${item}`}
+                    href={`/nmm/${item}?lang=zh${context ? `&context=${context}` : ""}`}
                   >
-                    {val}
+                    <CharacterItem
+                      disableForgotten
+                      className="text-4xl"
+                      disableClass
+                      character={item}
+                    />
                   </Link>
                 );
-              })}
-            </div>
+              }
+            )}
           </div>
 
           <div>

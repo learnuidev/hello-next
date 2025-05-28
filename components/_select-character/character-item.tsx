@@ -19,6 +19,7 @@ interface ICharacterItem {
   character: any;
   className?: string;
   disableClass?: boolean;
+  disableForgotten?: boolean;
 }
 
 function calculatePopularityColor(comp: any) {
@@ -42,6 +43,7 @@ export const CharacterItem = ({
   character,
   className,
   disableClass,
+  disableForgotten,
 }: ICharacterItem) => {
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersMapQuery();
@@ -84,9 +86,11 @@ export const CharacterItem = ({
             : brightMode || isCharactersLoading
               ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
               : learnedChar
-                ? learnedChar?.status === "forgotten"
-                  ? `text-gray-300 dark:text-gray-800 ${hoverColor}`
-                  : `text-gray-300 ${color} ${hoverColor}`
+                ? disableForgotten
+                  ? `text-gray-300 ${color} ${hoverColor}`
+                  : learnedChar?.status === "forgotten"
+                    ? `text-gray-300 dark:text-gray-800 ${hoverColor}`
+                    : `text-gray-300 ${color} ${hoverColor}`
                 : `dark:text-gray-200 text-gray-800 ${hoverColor}`
         } ${hoverColor}`,
         disableClass

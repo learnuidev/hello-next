@@ -153,7 +153,7 @@ export const CharacterTitle = (props: any) => {
                 return (
                   <Link
                     className="text-2xl"
-                    key={`character-title-${item}`}
+                    key={`character-title-${item}-${idx}-${idx}`}
                     href={`/nmm/${item}?lang=zh${context ? `&context=${context}` : ""}`}
                   >
                     <CharacterItem

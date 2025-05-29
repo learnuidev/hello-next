@@ -19,7 +19,7 @@ export const ActiveTranscription = ({
   contentId: string;
 }) => {
   const currentTranscription = transcriptions?.find(
-    (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+    (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
   );
 
   const showPinyin = useBrightModeStore((state: any) => state.showPinyin);

@@ -142,7 +142,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const seekBefore = useCallback(() => {
     const currentTranscription = transcriptions?.find(
-      (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
     );
 
     if (currentTranscription) {
@@ -169,7 +169,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const seekAfter = useCallback(() => {
     const currentTranscription = transcriptions?.find(
-      (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
     );
 
     const currentTranscriptionIndex = Math.max(
@@ -195,7 +195,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   }, [currentTime, transcriptions]);
 
   const currentTranscription = transcriptions?.find(
-    (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+    (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
   );
 
   useEffect(() => {

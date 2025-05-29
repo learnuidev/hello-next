@@ -9,6 +9,7 @@ import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useCurrentTime } from "../youtube-page/use-current-time-store";
 
 export const useWordleState = ({
   contentId: lessonId,
@@ -16,6 +17,11 @@ export const useWordleState = ({
   contentId: string;
 }) => {
   const searchParams = useSearchParams();
+
+  const { currentTime, setCurrentTime: setTime } = useCurrentTime(
+    lessonId,
+    true
+  );
 
   const lessonIndexParams = searchParams.get("step") || null;
   const params = useParams() as {
@@ -52,6 +58,20 @@ export const useWordleState = ({
   );
 
   const [lessonIndex, setTranscriptionId] = useState<any>(0);
+
+  useEffect(() => {
+    const currentTranscription = currentLesson?.transcriptions?.find(
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+    );
+
+    const transcriptionIndex = currentLesson?.transcriptions?.findIndex(
+      (trans: any) => trans.start === currentTranscription?.start
+    );
+
+    if (transcriptionIndex !== -1) {
+      setTranscriptionId(transcriptionIndex);
+    }
+  }, [currentLesson?.transcriptions, currentTime]);
 
   const addAnswerMutation = useAddAnswerMutation();
 

@@ -45,7 +45,7 @@ export const Speak = ({ contentId }: { contentId: string }) => {
   );
 
   const currentTranscription = content?.transcriptions?.find(
-    (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+    (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
   );
 
   const transcriptionIndex = content?.transcriptions?.findIndex(

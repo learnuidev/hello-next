@@ -42,7 +42,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
   const currentTranscription =
     lesson2?.transcriptions?.find(
-      (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
     ) || lesson2?.transcriptions?.[0];
 
   if (isLoading) {

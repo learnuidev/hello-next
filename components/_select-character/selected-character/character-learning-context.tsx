@@ -63,7 +63,7 @@ const CharacterLearningContextInner = ({ selectedComp }: any) => {
   const transcriptions = relevantContent?.transcriptions;
 
   const currentTranscription = transcriptions?.find(
-    (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+    (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
   );
 
   const isAudioVideoOrYoutube =

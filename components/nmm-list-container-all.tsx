@@ -1,4 +1,6 @@
 import { cn } from "@/lib/utils";
+import { useIsSmall } from "./youtube-page/utils/use-is-small";
+import { NmmListContainer } from "./nmm-list-container";
 
 export const NmmListContainerAll = ({
   children,
@@ -7,6 +9,14 @@ export const NmmListContainerAll = ({
   children: React.ReactNode;
   className?: string;
 }) => {
+  const isSmall = useIsSmall();
+
+  if (isSmall) {
+    return (
+      <NmmListContainer className={className}>{children}</NmmListContainer>
+    );
+  }
+
   return (
     <div
       className={cn(

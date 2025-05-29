@@ -1,27 +1,25 @@
+import { ReviewItemHanzi } from "@/app/review/review-cloze-content/review-item-hanzi";
 import { getRandomWords } from "@/app/review/review-cloze/utils/get-random-words";
 import { shuffleArray } from "@/app/review/review-cloze/utils/shuffle-array";
-import { CharacterItem } from "@/components/_select-character/character-item";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { Icons } from "@/components/ui/icons.v2";
-import { useGetContentQuery } from "@/domain/content/content.queries";
-import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
-import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
-import { getMulti } from "./utils/get-multi";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { smartSplit } from "@/components/youtube-page/utils/smart-split";
-import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
 import { YoutubeButton } from "@/components/youtube-page/youtube-button";
-import { ReviewItemHanzi } from "@/app/review/review-cloze-content/review-item-hanzi";
+import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
+import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
+import { getMulti } from "./utils/get-multi";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -493,7 +491,7 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(contentId);
 
   const currentTranscription = content?.transcriptions?.find(
-    (trans: any) => trans?.start < currentTime && trans?.end > currentTime
+    (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
   );
 
   const transcriptionIndex = content?.transcriptions?.findIndex(
@@ -504,7 +502,7 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
     if (transcriptionIndex !== -1) {
       setSentenceIndex(transcriptionIndex);
     }
-  }, []);
+  }, [setSentenceIndex, transcriptionIndex]);
 
   const { learnMode } = useDynaCloze(contentId);
 

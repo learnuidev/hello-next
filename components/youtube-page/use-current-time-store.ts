@@ -15,7 +15,7 @@ const useCurrentTimeStore = createIndexDBStore({
   }),
 });
 
-export const useCurrentTime = (id: string) => {
+export const useCurrentTime = (id: string, useParams?: boolean) => {
   const searchParams = useSearchParams();
 
   const start: any = searchParams.get("start") || 0;
@@ -28,7 +28,7 @@ export const useCurrentTime = (id: string) => {
   };
 
   return {
-    currentTime: start ? parseFloat(start) : currentTime,
+    currentTime: useParams && start ? parseFloat(start) : currentTime,
     setCurrentTime,
   };
 };

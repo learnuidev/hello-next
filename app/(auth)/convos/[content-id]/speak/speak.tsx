@@ -39,7 +39,10 @@ export const Speak = ({ contentId }: { contentId: string }) => {
     }
   }, [historyTimeline, transcript]);
 
-  const { currentTime, setCurrentTime: setTime } = useCurrentTime(contentId);
+  const { currentTime, setCurrentTime: setTime } = useCurrentTime(
+    contentId,
+    true
+  );
 
   const currentTranscription = content?.transcriptions?.find(
     (trans: any) => trans?.start < currentTime && trans?.end > currentTime

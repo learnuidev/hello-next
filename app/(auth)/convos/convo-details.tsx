@@ -148,7 +148,12 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
       return <Nothing message="Insights is enabled only for Chinese" />;
     }
 
-    return <ConvoInsights lessonId={lessonId} />;
+    return (
+      <>
+        <ConvoInsights lessonId={lessonId} />
+        <FloatingNavbar />
+      </>
+    );
   }
 
   return (

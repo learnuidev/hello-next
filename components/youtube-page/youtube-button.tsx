@@ -92,7 +92,8 @@ export function YoutubeButton({
       transcriptions?.find(
         (trans: any) =>
           trans?.id === transcriptId ||
-          (trans?.hanzi || trans?.input) === sentenceInput
+          (trans?.hanzi || trans?.input) === sentenceInput ||
+          (trans?.hanzi || trans?.input)?.includes(sentenceInput)
       ),
     [sentenceInput, transcriptId, transcriptions]
   );
@@ -141,6 +142,10 @@ export function YoutubeButton({
       seekAndPlay(currentTranscription?.start);
     }
   };
+
+  if (!currentTranscription) {
+    return null;
+  }
 
   return (
     <div>

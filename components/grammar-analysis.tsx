@@ -127,6 +127,9 @@ export function GrammarAnalysis({
         <h4 className="font-bold text-xl">Grammar Analysis</h4>
         <div className={cn(divStyles, className)}>
           {grammarAnalysisFinal?.map((analysis) => {
+            if (!analysis?.pinyin) {
+              return null;
+            }
             const resolvedLang = lang || analysis?.lang;
             if (analysis?.hanzi) {
               const hskWord = getHskWordHandler(analysis);

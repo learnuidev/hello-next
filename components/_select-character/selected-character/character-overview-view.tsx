@@ -17,6 +17,7 @@ import { StoryEditor } from "./story-editor";
 import { useStoryStore } from "./story-store";
 import { useGetSelectedCharacterParams } from "./use-get-selected-character-params";
 import { StoryView } from "./story-view";
+import { AdvancedSearchView } from "./advanced-search-view/advanced-search-view";
 
 export const CharacterOverviewView = ({
   characterId,
@@ -82,6 +83,13 @@ export const CharacterOverviewView = ({
                             Story
                           </TabsTrigger>
                         )}
+
+                        <TabsTrigger
+                          value="search"
+                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
+                        >
+                          Advanced Search
+                        </TabsTrigger>
                       </TabsList>
                     )}
                   </div>
@@ -129,6 +137,10 @@ export const CharacterOverviewView = ({
                       /> */}
                     </TabsContent>
                   )}
+
+                  <TabsContent value="search">
+                    <AdvancedSearchView characterId={characterId} lang={lang} />
+                  </TabsContent>
                 </Tabs>
               </div>
             </div>

@@ -14,7 +14,7 @@ import { useCanTrackFunction } from "../use-can-track-function";
 import { getYablaLink } from "../youtube-page/utils/get-yabla-link";
 import { AudioComponent } from "./audio-component";
 import { CharacterItem } from "./character-item";
-import { GoogleLink } from "./selected-character/google-link";
+import { GoogleTranslateLink } from "./selected-character/google-translate-link";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { smartSplit } from "../youtube-page/utils/smart-split";
 import { YoutubeButton } from "../youtube-page/youtube-button";
@@ -106,7 +106,10 @@ export const SentenceItem = (props: any) => {
             <Icons.magnifyingGlass />
           </Link>
 
-          <GoogleLink hanzi={unEncoded} className={"h-6 w-6 text-xs"} />
+          <GoogleTranslateLink
+            hanzi={unEncoded}
+            className={"h-6 w-6 text-xs"}
+          />
 
           {isSuperAdmin && currentPhrase?.id && (
             <button

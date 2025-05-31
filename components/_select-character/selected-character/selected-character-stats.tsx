@@ -6,7 +6,7 @@ import { SelectedCharacterProps } from "../select-character.types";
 import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
 
 import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
-import { GoogleLink } from "./google-link";
+import { GoogleTranslateLink } from "./google-translate-link";
 import { YablaLink } from "./yabla-link";
 import { HanbookLink } from "./hanbook-link";
 import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
@@ -113,7 +113,7 @@ export const SelectedCharacterStats = ({
       )}
 
       <div className="space-x-4 flex items-center px-2">
-        <GoogleLink hanzi={characterId} />
+        <GoogleTranslateLink hanzi={characterId} />
         {lang === "zh" && <YablaLink hanzi={characterId} />}
         {lang === "zh" && <HanbookLink hanzi={characterId} />}
         <YoutubeLink characterId={characterId} />

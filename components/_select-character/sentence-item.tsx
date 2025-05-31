@@ -8,6 +8,7 @@ import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence-mutation";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { chineseConverter } from "mandarino/src/utils/chinese-converter";
 import { Icons } from "../ui/icons.v2";
 import { useCanTrackFunction } from "../use-can-track-function";
 import { getYablaLink } from "../youtube-page/utils/get-yabla-link";
@@ -98,7 +99,7 @@ export const SentenceItem = (props: any) => {
               setIfExists({ ...currentPhrase });
               trackFunction();
             }}
-            href={`/nmm/${encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input)}${resolvedLang ? `?lang=${resolvedLang}` : ``}`}
+            href={`/nmm/${chineseConverter(encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input))}${resolvedLang ? `?lang=${resolvedLang}` : ``}`}
             // href={`/nmm/${resolvedLang ? `?lang=${resolvedLang}` : ``}`}
             className={`text-xs bg-white dark:bg-black p-2 w-6 h-6 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
           >
@@ -152,17 +153,21 @@ export const SentenceItem = (props: any) => {
         </Link>
         <span>
           {smartSplit({
-            input: currentPhrase?.input || currentPhrase?.hanzi,
+            input: chineseConverter(
+              currentPhrase?.input || currentPhrase?.hanzi
+            ),
             lang: currentPhrase?.lang,
           })?.map((val: string, idy: number) => {
             return (
               <span
                 key={`sentence-item-${val}-${idy}`}
                 onClick={() => {
-                  const cleanedVal = val
-                    .replaceAll("!", "")
-                    ?.replaceAll(".", "")
-                    ?.replaceAll(",", "");
+                  const cleanedVal = chineseConverter(
+                    val
+                      .replaceAll("!", "")
+                      ?.replaceAll(".", "")
+                      ?.replaceAll(",", "")
+                  );
 
                   // addHistoryMutation.mutate({
                   //   hanzi: cleanedVal,

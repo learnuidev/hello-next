@@ -7,7 +7,9 @@ import "regenerator-runtime/runtime";
 import { QueryClientProvider } from "@/libs/react-query";
 import "./globals.css";
 import "./zhongwen.css";
-import "../libs/sentry/sentry-init";
+// import "../libs/sentry/sentry-init";
+import "../instrumentation-client";
+import "../instrumentation";
 
 import { Inter } from "next/font/google";
 

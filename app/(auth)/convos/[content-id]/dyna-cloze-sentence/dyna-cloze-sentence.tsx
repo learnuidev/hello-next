@@ -23,6 +23,9 @@ import {
   useDynaClozeSentence,
 } from "./use-dyna-cloze-sentence";
 import { getMulti } from "./utils/get-multi";
+import { TheDock } from "@/components/the-dock";
+import { WordleSentence } from "@/components/wordle/wordle-sentence";
+import { SpeakSentence } from "../speak/speak-sentence";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -457,6 +460,7 @@ export const DynaClozeSentence = ({
 }: {
   sentence: { hanzi?: string; input?: string; lang: string };
 }) => {
+  const [viewMode, setViewMode] = useState("dynocloze");
   const { setWordIndex, setSentenceIndex, sentenceIndex, wordIndex } =
     useDyanStoreRuntime();
 
@@ -464,8 +468,6 @@ export const DynaClozeSentence = ({
     component: _sentence?.hanzi || _sentence?.input,
     lang: _sentence?.lang,
   });
-
-  console.log("SENTENCE INDEX", sentenceIndex);
 
   const sentencesShuffled = useMemo(() => {
     return [_sentence, ...shuffleArray(sentences || [])];
@@ -495,6 +497,8 @@ export const DynaClozeSentence = ({
 
   const { learnMode } = useDynaClozeSentence();
 
+  console.log("SENTENCE", sentence);
+
   if (isLoading) {
     return (
       <div>
@@ -523,16 +527,67 @@ export const DynaClozeSentence = ({
         </div>
       </nav>
       {/* <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "} */}
-      <WithMultiSentence sentence={finalSentence}>
-        <DynaSentence
-          maxIndex={maxIndex}
-          sentence={finalSentence}
-          setWordIndex={setWordIndex}
-          setSentenceIndex={setSentenceIndex}
-          wordIndex={wordIndex}
-          sentenceIndex={sentenceIndex}
-        />
-      </WithMultiSentence>
+      {viewMode === "dynocloze" ? (
+        <WithMultiSentence sentence={finalSentence}>
+          <DynaSentence
+            maxIndex={maxIndex}
+            sentence={finalSentence}
+            setWordIndex={setWordIndex}
+            setSentenceIndex={setSentenceIndex}
+            wordIndex={wordIndex}
+            sentenceIndex={sentenceIndex}
+          />
+        </WithMultiSentence>
+      ) : viewMode === "wordle" ? (
+        <WordleSentence currentPhrase={sentence} />
+      ) : (
+        viewMode === "speak" && <SpeakSentence sentence={sentence} />
+      )}
+
+      <TheDock isAutomatic={false} className="bottom-4">
+        <div className="flex items-center w-full justify-center">
+          <div className="px-8  py-2 bg-gray-100 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
+            <div className="space-x-8 flex justify-center items-center w-full">
+              <button
+                className={
+                  viewMode === "dynocloze"
+                    ? "dark:text-white text-black"
+                    : "text-gray-500"
+                }
+                onClick={() => {
+                  setViewMode("dynocloze");
+                }}
+              >
+                <Icons.play className="text-2xl" />
+              </button>
+              <button
+                className={
+                  viewMode === "speak"
+                    ? "dark:text-white text-black"
+                    : "text-gray-500"
+                }
+                onClick={() => {
+                  setViewMode("speak");
+                }}
+              >
+                <Icons.microphone className="text-2xl" />
+              </button>
+              <button
+                className={
+                  viewMode === "wordle"
+                    ? "dark:text-white text-black"
+                    : "text-gray-500"
+                }
+                onClick={() => {
+                  setViewMode("wordle");
+                }}
+              >
+                <Icons.typeWriter className="text-2xl" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </TheDock>
     </div>
   );
 };

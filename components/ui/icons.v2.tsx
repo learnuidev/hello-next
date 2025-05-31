@@ -4,6 +4,7 @@ import {
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
 import { faBook, faSpinner } from "@fortawesome/sharp-solid-svg-icons";
+import { faTypewriter } from "@fortawesome/sharp-solid-svg-icons";
 
 import {
   faArrowUpRightFromSquare,
@@ -146,8 +147,6 @@ import {
 import { faCitrus as faCitrusSolid } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
 import { faLightbulb as faLightbulbSolid } from "@fortawesome/sharp-solid-svg-icons/faLightbulb";
 import { faPlay } from "@fortawesome/sharp-solid-svg-icons/faPlay";
-
-// import { faXmark } from "@fortawesome/sharp-solid-svg-icons/faXmark";
 
 import { faChartColumn as faChartColumnSolid } from "@fortawesome/sharp-solid-svg-icons/faChartColumn";
 import { faPause } from "@fortawesome/sharp-solid-svg-icons/faPause";
@@ -369,6 +368,7 @@ export const Icons = {
 
   cloze: createFAIcon(faVirus),
   shuffle: createFAIcon(faShuffle),
+  typeWriter: createFAIcon(faTypewriter),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

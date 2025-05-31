@@ -1,24 +1,16 @@
 "use client";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import { faXmark } from "@fortawesome/pro-light-svg-icons/faXmark";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { useConvosStore } from "@/stores/convos-store";
 
 import { Icons } from "@/components/ui/icons.v2";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useGetContentQuery } from "@/domain/content/content.queries";
-import { faTypewriter } from "@fortawesome/sharp-solid-svg-icons";
-import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
+
 import Link from "next/link";
 import { useClipboardViewMode } from "../clipboard/hooks/use-clipboard-view-mode";
+import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -131,7 +123,7 @@ export const ConvosNavBar = () => {
           // router.push(`/convos`);
         }}
       >
-        <FontAwesomeIcon icon={faXmark} />
+        <Icons.xMark />
       </Link>
 
       <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
@@ -201,7 +193,7 @@ export const ConvosNavBar = () => {
                 : "dark:text-gray-600 text-gray-400"
             } hover:text-black dark:hover:text-white transition text-xl`}
           >
-            <FontAwesomeIcon icon={faTypewriter} />
+            <Icons.typeWriter />
           </Link>
         )}
 

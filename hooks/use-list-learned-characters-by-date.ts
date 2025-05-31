@@ -13,12 +13,20 @@ import { groupBy } from "ramda";
 import { getReviewDate } from "./get-review-date";
 import { useGetAuthUserProfileQuery } from "./user/use-get-auth-user-profile";
 import { useMemo } from "react";
+import { useListBookmarksQuery } from "@/domain/bookmark/use-list-bookmarks-query";
 
 export function useListLearnedCharactersByDate({
   variant,
   query,
 }: {
-  variant: "all" | "search" | "track" | "click" | "discovered" | "reviewed";
+  variant:
+    | "all"
+    | "search"
+    | "track"
+    | "click"
+    | "discovered"
+    | "reviewed"
+    | "bookmarked";
   query?: string;
 }): {
   isLoading: boolean;
@@ -39,6 +47,8 @@ export function useListLearnedCharactersByDate({
   const { data: components } = useListComponents({
     includeAll: true,
   });
+
+  const { data: bookmarks } = useListBookmarksQuery();
 
   const totalAttempts = useListAttempts();
 
@@ -68,6 +78,9 @@ export function useListLearnedCharactersByDate({
 
       case "reviewed":
         return totalAttempts;
+
+      case "bookmarked":
+        return bookmarks;
 
       default:
         return [...(learnedCharacters || [])];

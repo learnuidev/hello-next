@@ -17,7 +17,14 @@ import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 export const TimelineTabBody = ({
   variant,
 }: {
-  variant: "all" | "search" | "track" | "click" | "discovered" | "reviewed";
+  variant:
+    | "all"
+    | "search"
+    | "track"
+    | "click"
+    | "discovered"
+    | "reviewed"
+    | "bookmarked";
 }) => {
   const focusLang = useTimelineState((state: any) => state.focusLang);
   const setFocusLang = useTimelineState((state: any) => state.setFocusLang);

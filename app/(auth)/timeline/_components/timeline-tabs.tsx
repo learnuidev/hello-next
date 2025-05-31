@@ -33,6 +33,13 @@ export function TimelineTabs() {
           >
             <Icons.play className="text-2xl" />
           </TabsTrigger>
+          <TabsTrigger
+            // value="learned"
+            value="bookmarked"
+            className={`px-0 ${hoverColor}`}
+          >
+            <Icons.bookmark className="text-2xl" />
+          </TabsTrigger>
         </TabsList>
 
         <div className="space-x-4"></div>
@@ -52,6 +59,9 @@ export function TimelineTabs() {
       </TabsContent>
       <TabsContent value="reviewed" className="my-8">
         <TimelineTabBody variant="reviewed" />
+      </TabsContent>
+      <TabsContent value="bookmarked" className="my-8">
+        <TimelineTabBody variant="bookmarked" />
       </TabsContent>
     </Tabs>
   );

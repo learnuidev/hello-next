@@ -5,7 +5,7 @@ import { resolveLangCode } from "@/libs/openai/utils";
 import { CharacterItem } from "../_select-character/character-item";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { smartSplit } from "./utils/smart-split";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { HanziTooltip } from "../_select-character/selected-character/hanzi-tooltip";
 import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
 
@@ -36,6 +36,23 @@ export const ActiveTranscription = ({
     currentTranscription?.input,
     currentTranscription?.lang,
   ]);
+
+  const getHref = useCallback(
+    ({ val }: any) => {
+      try {
+        return `/nmm/${encodeURIComponent(
+          val
+        )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`;
+      } catch (err) {
+        console.log(`===== Error ======`);
+        console.log("VAL", val);
+        console.log("currentTranscription", currentTranscription);
+        console.log(`===== Error ======`);
+        return `/nmm`;
+      }
+    },
+    [currentTranscription]
+  );
 
   // return "TODO";
 
@@ -70,9 +87,7 @@ export const ActiveTranscription = ({
               onClick={() => {
                 setIfExists({ ...currentTranscription, contentId });
               }}
-              href={`/nmm/${encodeURIComponent(
-                val
-              )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
+              href={getHref({ val })}
               target="_blank"
               className="text-xs"
               key={`active-transcription-${val}-${idx}`}

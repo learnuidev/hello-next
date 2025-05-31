@@ -151,22 +151,22 @@ export const ConvosNavBar = () => {
         >
           <Icons.play />
         </Link>
-        {content?.lang !== "zh" && (
-          <Link
-            onClick={() => {
-              setViewType("clipboard");
-              setMode("edit");
-            }}
-            href={`/convos/${contentId}?view=clipboard&start=${searchParams.get("start") || 0}`}
-            className={`transition ${
-              viewType === "clipboard"
-                ? "text-black dark:text-gray-200"
-                : "text-gray-200 dark:text-gray-600"
-            } hover:text-black dark:hover:text-white transition text-xl`}
-          >
-            <Icons.clipboard />
-          </Link>
-        )}
+        {/* {content?.lang !== "zh" && ( */}
+        <Link
+          onClick={() => {
+            setViewType("clipboard");
+            setMode("edit");
+          }}
+          href={`/convos/${contentId}?view=clipboard&start=${searchParams.get("start") || 0}`}
+          className={`transition ${
+            viewType === "clipboard"
+              ? "text-black dark:text-gray-200"
+              : "text-gray-200 dark:text-gray-600"
+          } hover:text-black dark:hover:text-white transition text-xl`}
+        >
+          <Icons.clipboard />
+        </Link>
+        {/* )} */}
         <Link
           onClick={() => {
             setViewType("speak");

@@ -62,7 +62,8 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     return <ContentSettings />;
   }
 
-  if (viewType === "clipboard" && lesson2.lang !== "zh") {
+  // if (viewType === "clipboard" && lesson2.lang !== "zh") {
+  if (viewType === "clipboard") {
     if (lesson2 && lesson2?.transcriptions?.length > 0) {
       const transcriptionStr = Object.entries(
         groupBySectionId(lesson2?.transcriptions || [])

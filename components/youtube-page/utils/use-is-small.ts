@@ -5,6 +5,6 @@ export const useIsSmall = () => {
 
   console.log("size", size);
 
-  const isSmall = size?.x < 600;
+  const isSmall = size?.x < 700;
   return isSmall;
 };

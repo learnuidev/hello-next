@@ -11,16 +11,10 @@ export const NmmListContainerAll = ({
   className?: string;
 }) => {
   const isSmall = useIsSmall();
-  const dimensions = useGetDimensions();
 
   if (isSmall) {
     return (
       <>
-        <p>
-          <code>
-            <pre>{JSON.stringify(dimensions, null, 4)}</pre>
-          </code>
-        </p>
         <NmmListContainer className={className}>{children}</NmmListContainer>
       </>
     );
@@ -28,12 +22,6 @@ export const NmmListContainerAll = ({
 
   return (
     <>
-      <p>
-        <code>
-          <pre>{JSON.stringify(dimensions, null, 4)}</pre>
-        </code>
-      </p>
-
       <div
         className={cn(
           "my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start",

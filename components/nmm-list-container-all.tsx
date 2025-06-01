@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useIsSmall } from "./youtube-page/utils/use-is-small";
 import { NmmListContainer } from "./nmm-list-container";
+import { useGetDimensions } from "./youtube-page/utils/use-get-dimensions";
 
 export const NmmListContainerAll = ({
   children,
@@ -10,21 +11,37 @@ export const NmmListContainerAll = ({
   className?: string;
 }) => {
   const isSmall = useIsSmall();
+  const dimensions = useGetDimensions();
 
   if (isSmall) {
     return (
-      <NmmListContainer className={className}>{children}</NmmListContainer>
+      <>
+        <p>
+          <code>
+            <pre>{JSON.stringify(dimensions, null, 4)}</pre>
+          </code>
+        </p>
+        <NmmListContainer className={className}>{children}</NmmListContainer>
+      </>
     );
   }
 
   return (
-    <div
-      className={cn(
-        "my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start",
-        className
-      )}
-    >
-      {children}
-    </div>
+    <>
+      <p>
+        <code>
+          <pre>{JSON.stringify(dimensions, null, 4)}</pre>
+        </code>
+      </p>
+
+      <div
+        className={cn(
+          "my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start",
+          className
+        )}
+      >
+        {children}
+      </div>
+    </>
   );
 };

@@ -1,8 +1,10 @@
-import { useSize } from "@/hooks/use-size";
+import { useGetDimensions } from "./use-get-dimensions";
 
 export const useIsSmall = () => {
-  const size = useSize();
+  const size = useGetDimensions();
 
-  const isSmall = size?.[0] < 600;
+  console.log("size", size);
+
+  const isSmall = size?.x < 600;
   return isSmall;
 };

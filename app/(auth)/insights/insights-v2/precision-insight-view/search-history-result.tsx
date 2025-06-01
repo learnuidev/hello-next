@@ -3,7 +3,10 @@
 import Link from "next/link";
 
 import { formatJournalDate } from "@/app/(auth)/diary/utils/format-journal-date";
+import { formatLearnedDate } from "@/hooks/format-learned-date";
+import { useGetCharacter } from "@/hooks/use-get-character";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
+import { isSameDay } from "date-fns";
 import { NoResultView } from "./no-result-view";
 
 export function SearchHistoryResult({ query }: { query?: string }) {
@@ -11,6 +14,10 @@ export function SearchHistoryResult({ query }: { query?: string }) {
     variant: "search",
     query,
   });
+
+  const character = useGetCharacter({ characterId: query || "" });
+
+  const charaterCreatedAt = character?.createdAt || 0;
 
   const filteredSearchResults = groups?.map((group) => group.items)?.flat();
 
@@ -24,6 +31,10 @@ export function SearchHistoryResult({ query }: { query?: string }) {
         {filteredSearchResults?.map((comp, idx: any) => {
           const hanziOrInput = comp?.input || comp?.hanzi;
 
+          const timeLearned = formatLearnedDate(
+            Math.abs(comp?.createdAt - charaterCreatedAt)
+          );
+
           return (
             <Link
               key={`${comp?.input}-${idx}`}
@@ -31,6 +42,15 @@ export function SearchHistoryResult({ query }: { query?: string }) {
               target="_blank"
               className="block"
             >
+              {character && isSameDay(charaterCreatedAt, comp?.createdAt) ? (
+                <p className="text-gray-500 font-extralight text-sm">
+                  You searched for this query{" "}
+                  <span className="font-bold"> {timeLearned} </span> before
+                  learning <span className="font-bold">{character?.hanzi}</span>
+                </p>
+              ) : (
+                ""
+              )}
               <div className="flex flex-col items-start w-full justify-between">
                 <h1 className="font-light text-lg sm:text-2xl dark:text-gray-400">
                   {hanziOrInput}{" "}

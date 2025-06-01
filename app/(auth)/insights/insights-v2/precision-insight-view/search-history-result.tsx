@@ -31,9 +31,9 @@ export function SearchHistoryResult({ query }: { query?: string }) {
         {filteredSearchResults?.map((comp, idx: any) => {
           const hanziOrInput = comp?.input || comp?.hanzi;
 
-          const timeLearned = formatLearnedDate(
-            Math.abs(comp?.createdAt - charaterCreatedAt)
-          );
+          const originalDiff = comp?.createdAt - charaterCreatedAt;
+
+          const timeLearned = formatLearnedDate(Math.abs(originalDiff));
 
           return (
             <Link
@@ -45,8 +45,9 @@ export function SearchHistoryResult({ query }: { query?: string }) {
               {character && isSameDay(charaterCreatedAt, comp?.createdAt) ? (
                 <p className="font-extralight text-sm">
                   You searched for this query{" "}
-                  <span className="font-bold"> {timeLearned} </span> before
-                  learning <span className="font-bold">{character?.hanzi}</span>
+                  <span className="font-bold"> {timeLearned} </span>{" "}
+                  {originalDiff < 0 ? "before" : "after"} learning{" "}
+                  <span className="font-bold">{character?.hanzi}</span>
                 </p>
               ) : (
                 ""

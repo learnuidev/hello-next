@@ -11,6 +11,7 @@ import { useGetHskCharacters } from "./use-get-hsk-characters";
 import { Nothing } from "../nothing";
 import { useGetNmmParams } from "../use-get-nmm-params";
 import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 
 export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
   const { data: components } = useListComponents({ includeAll: true });
@@ -65,7 +66,7 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
 
   return (
     <div>
-      <NmmListContainer className="mb-24">
+      <NmmListContainerAll className="mb-24">
         {filteredComponents?.slice(0, sliced).map((prop: any, idx: number) => {
           const comp = comps?.find((c: any) => c?.hanzi === prop?.hanzi);
 
@@ -79,7 +80,7 @@ export const HskCharacterView = ({ variant }: { variant?: "all" }) => {
             </div>
           );
         })}
-      </NmmListContainer>
+      </NmmListContainerAll>
 
       {filteredComponents?.length < sliced ? null : (
         <div className="flex justify-center items-center mb-24 mt-12">

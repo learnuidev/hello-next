@@ -43,7 +43,7 @@ export function SearchHistoryResult({ query }: { query?: string }) {
               className="block"
             >
               {character && isSameDay(charaterCreatedAt, comp?.createdAt) ? (
-                <p className="text-gray-500 font-extralight text-sm">
+                <p className="font-extralight text-sm">
                   You searched for this query{" "}
                   <span className="font-bold"> {timeLearned} </span> before
                   learning <span className="font-bold">{character?.hanzi}</span>

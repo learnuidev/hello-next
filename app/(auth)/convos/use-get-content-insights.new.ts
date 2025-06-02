@@ -123,6 +123,12 @@ export function useGetContentInsightsNew({ lessonId }: { lessonId: string }) {
         return !!isLearned;
       })?.length;
 
+      const totalMasteryCharaters = uniqueCharacters?.filter((char: any) => {
+        const isLearned = learnedCharacters?.[char];
+
+        return isLearned?.status?.toLowerCase() === "forgotten";
+      })?.length;
+
       const uniqueCharactersMemo = (() => {
         const res = uniqueCharacters?.map((char: any, idx: number) => {
           const frequency = getFrequency({
@@ -208,12 +214,19 @@ export function useGetContentInsightsNew({ lessonId }: { lessonId: string }) {
         maximumFractionDigits: 2,
       }).format(totalNewCharaters / uniqueCharacters?.length);
 
+      const masteryRate = Intl.NumberFormat("en-GB", {
+        style: "percent",
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 2,
+      }).format(totalMasteryCharaters / uniqueCharacters?.length);
+
       return {
         uniqueCharacters,
         understandingRate,
         totalNewCharaters,
         filteredHskWords,
         uniqueCharactersMemo,
+        masteryRate,
       } as any;
     },
   });

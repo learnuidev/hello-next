@@ -10,12 +10,11 @@ import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 
 import { HanziLink } from "@/components/hanzi-link";
-import { NmmListContainer } from "@/components/nmm-list-container";
-import { create } from "zustand";
+
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { useGetJournalDetailsQuery } from "../diary/hooks/use-get-journal-details-query";
 import { useGetDiaryInsights } from "./use-get-diary-insights";
 import { useInsightsSettingsStore } from "./use-insights-settings-store";
-import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 
 const getFrequency = ({ lesson, input }: any) => {
   const transcriptions = lesson?.transcriptions?.filter(

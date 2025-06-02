@@ -12,7 +12,6 @@ import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 
 import { HanziLink } from "@/components/hanzi-link";
-// import { NmmListContainer } from "@/components/nmm-list-container";
 import { create } from "zustand";
 import { useGetContentInsights } from "./use-get-content-insights";
 import { useInsightsSettingsStore } from "./use-insights-settings-store";
@@ -62,6 +61,7 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
   }
 
   const {
+    masteryRate,
     understandingRate,
     filteredHskWords,
     uniqueCharactersMemo,
@@ -90,11 +90,21 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
               </h2>
             </div>
 
-            <h2 className="text-4xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
-              <span className="dark:text-gray-300 text-gray-900">
-                {understandingRate}
-              </span>
-            </h2>
+            <div className="flex gap-8 my-4 text-2xl">
+              <h2 className="font-extralight text-gray-500 dark:text-gray-300 space-x-2">
+                <Icons.fire />
+                <span className="dark:text-gray-300 text-gray-900">
+                  {masteryRate}
+                </span>
+              </h2>
+
+              <h2 className="font-extralight text-gray-500 dark:text-gray-300 space-x-2">
+                <Icons.lightBulb />
+                <span className="dark:text-gray-300 text-gray-900">
+                  {understandingRate}
+                </span>
+              </h2>
+            </div>
           </div>
         </div>
 

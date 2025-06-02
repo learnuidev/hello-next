@@ -1,23 +1,22 @@
 "use client";
 
-import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-
 import { SelectedCharacterContainer } from "@/components/selected-character-container";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import Link from "next/link";
 import { useSelectedCharacter } from "./use-selected-character";
 
-import { Icons } from "@/components/ui/icons.v2";
+import {
+  GreenLightbulbDuoTone,
+  Icons,
+  RedFireDuoTone,
+} from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { HanziLink } from "@/components/hanzi-link";
-import { create } from "zustand";
-import { useGetContentInsights } from "./use-get-content-insights";
-import { useInsightsSettingsStore } from "./use-insights-settings-store";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { useGetContentInsightsNew } from "./use-get-content-insights.new";
-import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { useInsightsSettingsStore } from "./use-insights-settings-store";
 
 const getFrequency = ({ lesson, input }: any) => {
   const transcriptions = lesson?.transcriptions?.filter(
@@ -92,14 +91,14 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
 
             <div className="flex gap-8 my-4 text-2xl">
               <h2 className="font-extralight text-gray-500 dark:text-gray-300 space-x-2">
-                <Icons.fire />
+                <RedFireDuoTone />
                 <span className="dark:text-gray-300 text-gray-900">
                   {masteryRate}
                 </span>
               </h2>
 
               <h2 className="font-extralight text-gray-500 dark:text-gray-300 space-x-2">
-                <Icons.lightBulb />
+                <GreenLightbulbDuoTone />
                 <span className="dark:text-gray-300 text-gray-900">
                   {understandingRate}
                 </span>

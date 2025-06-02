@@ -61,26 +61,26 @@ export function useShortCuts() {
 
       if (
         event.key === "h" &&
-        (event.metaKey || event.ctrlKey) &&
-        event.shiftKey
+        (event.metaKey || event.ctrlKey)
+        // && event.shiftKey
       ) {
         event.preventDefault();
         router.push("/");
         return null;
       }
 
-      if (event.key === "h" && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        // router.push("/");
-        // router.push("/nmm");
-        setMode(mode === "hsk" ? "hsk3" : "hsk");
+      // if (event.key === "h" && (event.metaKey || event.ctrlKey)) {
+      //   event.preventDefault();
+      //   // router.push("/");
+      //   // router.push("/nmm");
+      //   setMode(mode === "hsk" ? "hsk3" : "hsk");
 
-        if (routeName?.includes("/review")) {
-          router.push(
-            `/review?level=${level}&mode=${mode === "hsk" ? "hsk3" : "hsk"}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}${view ? `&view=${view}` : ``}`
-          );
-        }
-      }
+      //   if (routeName?.includes("/review")) {
+      //     router.push(
+      //       `/review?level=${level}&mode=${mode === "hsk" ? "hsk3" : "hsk"}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}${view ? `&view=${view}` : ``}`
+      //     );
+      //   }
+      // }
 
       if (["u"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();

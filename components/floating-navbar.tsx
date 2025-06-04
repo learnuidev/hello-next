@@ -76,9 +76,10 @@ const FloatingNavbarComp = () => {
             <>
               {content?.lang === "zh" && <CommonCharacterButton />}
               {content?.lang === "zh" && <BrightModeButton />}
-              {isNonRomanLang(content?.lang) && <PinyinButton />}
             </>
           )}
+
+          {isNonRomanLang(content?.lang) && <PinyinButton />}
 
           <Link
             href="/"
@@ -192,6 +193,7 @@ export const FloatingNavbar = () => {
   const isReviewUrl = routeName?.includes("/review");
 
   const isAutomatic = useShowAutomaticallyTheDock();
+
   return (
     <TheDock
       className="bottom-2"

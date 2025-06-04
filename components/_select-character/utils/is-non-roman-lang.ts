@@ -8,6 +8,7 @@ const nonRomanLanguages = [
   "ar",
   "fa",
   "ur",
+  "kz",
 ];
 
 export const isNonRomanLang = (lang: string) =>

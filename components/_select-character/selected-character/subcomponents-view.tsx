@@ -13,6 +13,7 @@ import { koreanComponents2 } from "@/langs/korean/korean-components";
 import { persianAlphabets } from "@/langs/persian/persian-alphabets";
 import { russianAlphabets } from "@/langs/russian/russian-alphabets";
 import { urduAlphabets } from "@/langs/urdu/urdu-alphabets";
+import { kazakhAlphabets } from "@/langs/kazak/kazak-alphabets";
 
 interface SelectedCharacterProps {
   characterId: string;
@@ -144,6 +145,35 @@ const RussianSubComponentView = ({
     </SubComponentContainer>
   );
 };
+
+const KazakSubComponentView = ({
+  characterId,
+  lang,
+}: SelectedCharacterProps) => {
+  const subComponents = characterId.split("")?.map((comp: any) => {
+    const alphabet = kazakhAlphabets?.find((item) => item?.input === comp);
+    return {
+      ...alphabet,
+    };
+  });
+  return (
+    <SubComponentContainer>
+      {subComponents?.map((item: any) => {
+        return (
+          <Link
+            key={item?.input}
+            className="space-x-2 flex"
+            href={`/nmm/${item?.input}?lang=${lang}`}
+          >
+            <p>{item?.input}</p>
+            <p className="text-gray-400">{item?.roman}</p>
+          </Link>
+        );
+      })}
+    </SubComponentContainer>
+  );
+};
+
 const JapaneseSubComponentView = ({
   characterId,
   lang,
@@ -256,6 +286,9 @@ export const SubComponentsView = (props: SelectedCharacterProps) => {
   }
   if (props.lang === "ko") {
     return <KoreanSubComponentView {...props} />;
+  }
+  if (props.lang === "kz") {
+    return <KazakSubComponentView {...props} />;
   }
 
   if (props.lang === "ar" && props?.characterId?.length > 1) {

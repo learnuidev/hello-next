@@ -6,6 +6,7 @@ import { romanianAlphabets } from "./romanian/romanian-alphabets";
 import { russianAlphabets } from "./russian/russian-alphabets";
 import { urduAlphabets } from "./urdu/urdu-alphabets";
 import { hindiAlphabets } from "./hindi/hindi-alphabets";
+import { kazakhAlphabets } from "./kazak/kazak-alphabets";
 
 export const alphabetsDict = {
   hi: hindiAlphabets,
@@ -15,4 +16,5 @@ export const alphabetsDict = {
   ro: romanianAlphabets,
   ur: urduAlphabets,
   ru: russianAlphabets,
+  kz: kazakhAlphabets,
 } as any;

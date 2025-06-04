@@ -72,8 +72,6 @@ export const useSpeak = (
 
   const [voicesList, setVoicesList] = useState<any>({});
 
-  // console.log("VOICES LIST", voicesList);
-
   const selecectedVoice = voicesList?.[lang]?.filter(
     (voice: any) =>
       // this works for chrome

@@ -6,7 +6,7 @@ export const useGetCurrentLang = ({ useParams } = { useParams: false }) => {
   const langParams = useGetLangParams();
 
   const currentLang = useCurrentLangStore((state) => state.currentLang);
-  const lang = currentLang || langParams || "zh";
+  const lang = langParams || currentLang || "zh";
 
   if (useParams) {
     return langParams;

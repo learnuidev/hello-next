@@ -78,8 +78,6 @@ export const TranscriptItem = ({
 
   const router = useRouter();
 
-  console.log("PINYIN", pinyinMode);
-
   const pinyinOrRoman = transcription?.pinyin ? "pinyin" : "roman";
 
   if (audioUrl) {

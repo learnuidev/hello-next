@@ -43,8 +43,6 @@ export const useToggleFavouriteContentMutation = () => {
     },
 
     onSuccess: (updatedContent) => {
-      console.log("");
-
       // setLastUpdated(null);
       queryClient.setQueryData(favouriteContentsKey, (data: any) => {
         return {

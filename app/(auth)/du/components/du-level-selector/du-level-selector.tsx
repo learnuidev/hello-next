@@ -16,7 +16,6 @@ export const DuLevelSelector = () => {
               id={level?.id}
               checked={levels?.includes(level?.id)}
               onCheckedChange={(event) => {
-                console.log("EVENT", event);
                 setLevels((prev: any) => {
                   if (event) {
                     return prev?.concat(level?.id);

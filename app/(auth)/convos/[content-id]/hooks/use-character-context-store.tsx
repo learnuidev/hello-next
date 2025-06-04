@@ -18,13 +18,11 @@ export const useSetIfExists = () => {
   const setContext = useCharacterContextStore((state) => state.setContext);
 
   const setIfExists = (evt: any) => {
-    console.log("EVT", evt);
     const exists = context?.filter(
       (ctx: any) => (ctx?.input || ctx?.hanzi) === (evt?.input || evt?.hanzi)
     )?.[0];
 
     if (exists) {
-      console.log("EXISTS", exists);
       // return setContext(context);
       return null;
     }

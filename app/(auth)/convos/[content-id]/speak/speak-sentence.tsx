@@ -97,7 +97,6 @@ export const SpeakSentence = ({ sentence }: { sentence: any }) => {
       "我想要听",
     ];
 
-    console.log("lowerCasedTranscript", lowerCasedTranscript);
     if (
       iwantToWatchOrListen?.filter((item) =>
         lowerCasedTranscript?.includes(item)

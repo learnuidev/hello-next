@@ -90,8 +90,6 @@ export function useGetContentInsightsNew({ lessonId }: { lessonId: string }) {
 
                       const indexOfSingleQuote = newWord?.indexOf("'");
 
-                      console.log("indexOfSingleQuote", indexOfSingleQuote);
-
                       if (
                         indexOfSingleQuote === 0 ||
                         indexOfSingleQuote + 1 === newWord?.length

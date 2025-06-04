@@ -35,8 +35,6 @@ export function NmmCoreComponents() {
   const searchParams = useSearchParams();
   const { scrollYProgress } = useScroll();
 
-  console.log("SCROLL Y PROGRESS", scrollYProgress);
-
   const searchQueryParams = searchParams.get("query") || "";
   const routeName = usePathname();
   const queryStr = useSearchQueryStore((state) => state.query);

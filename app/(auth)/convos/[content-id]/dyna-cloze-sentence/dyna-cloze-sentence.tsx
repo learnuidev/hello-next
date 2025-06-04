@@ -85,8 +85,6 @@ const WithMultiSentence = ({
   const [wordIndex, setWordIndex] = useState(0);
   const [sentenceIndex, setSentenceIndex] = useState(0);
 
-  console.log("SENTENCE", sentence);
-
   const multiSentences = useMemo(() => {
     return getMulti(sentence?.hanzi || sentence?.input || "")?.map((item) => {
       return {
@@ -220,8 +218,6 @@ const DynaSentence = ({
     () => shuffleArray([...randomThreeOptions, selectedGrammar]),
     [randomThreeOptions, selectedGrammar]
   );
-
-  console.log("SHUFFLED OPTS", shuffledOptions);
 
   const checkAnswer = (answer: any) => {
     if (answer?.en === relevantHanzi) {
@@ -496,8 +492,6 @@ export const DynaClozeSentence = ({
   const maxIndex = sentencesShuffled?.length - 1;
 
   const { learnMode } = useDynaClozeSentence();
-
-  console.log("SENTENCE", sentence);
 
   if (isLoading) {
     return (

@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { useCanTrackFunction } from "./use-can-track-function";
 import { CharacterItem } from "./_select-character/character-item";
+import { smartSplit } from "./youtube-page/utils/smart-split";
 
 interface HSKCharacter {
   input?: string;
@@ -156,12 +157,12 @@ export function HanziLink({
           </sub>
         )}
 
-        {character?.input ||
-          character?.hanzi?.split("")?.map((val, idx) => {
-            const learnedChar = learnedCharacters2?.[val];
-
-            return <CharacterItem character={val} key={`${val}-${idx}`} />;
-          })}
+        {smartSplit({
+          input: character?.input || character?.hanzi,
+          lang: lang || "",
+        })?.map((val: any, idx: any) => {
+          return <CharacterItem character={val} key={`${val}-${idx}`} />;
+        })}
 
         {character?.hskLevel && (
           <sub className="dark:text-gray-700 text-xs pl-[2px]">

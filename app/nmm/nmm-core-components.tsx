@@ -120,7 +120,7 @@ export function NmmCoreComponents() {
           return null;
         }
 
-        return true;
+        return prop?.hanzi?.length === 1;
       }) || [];
 
   const sliced = slicedByLevels?.[level] || 100;

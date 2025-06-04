@@ -268,7 +268,7 @@ const DynaSentence = ({
             return (
               <Link
                 target="_blank"
-                href={`/nmm/${option?.hanzi}?lang=${sentence?.lang}`}
+                href={`/nmm/${option?.hanzi || option?.input}?lang=${sentence?.lang}`}
                 // disabled={response?.type}
                 className={cn(
                   "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",

@@ -32,7 +32,12 @@ export const AlphabetItem = ({ prop, lang }: any) => {
         {prop?.roman}
       </span>
 
-      <span className="text-4xl"> {prop.input}</span>
+      <span
+        className={cn("text-4xl", prop?.unique && "font-bold text-yellow-400")}
+      >
+        {" "}
+        {prop.input}
+      </span>
       <span className="text-sm trim text-gray-600">
         {" "}
         {prop?.sound?.split(" ")?.[0]}

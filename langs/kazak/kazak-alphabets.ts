@@ -1,10 +1,10 @@
 export const kazakhAlphabets = [
   { en: "a", input: "а", roman: "a", lang: "kz" },
-  { en: "ä", input: "ә", roman: "ä", lang: "kz" },
+  { en: "ä", input: "ә", roman: "ä", lang: "kk", unique: true }, // unique
   { en: "b", input: "б", roman: "b", lang: "kz" },
   { en: "v", input: "в", roman: "v", lang: "kz" },
   { en: "g", input: "г", roman: "g", lang: "kz" },
-  { en: "ğ", input: "ғ", roman: "ğ", lang: "kz" },
+  { en: "ğ", input: "ғ", roman: "ğ", lang: "kk", unique: true }, // unique
   { en: "d", input: "д", roman: "d", lang: "kz" },
   { en: "e", input: "е", roman: "e", lang: "kz" },
   { en: "yo", input: "ё", roman: "yo", lang: "kz" },
@@ -13,30 +13,30 @@ export const kazakhAlphabets = [
   { en: "i", input: "и", roman: "i", lang: "kz" },
   { en: "y", input: "й", roman: "y", lang: "kz" },
   { en: "k", input: "к", roman: "k", lang: "kz" },
-  { en: "q", input: "қ", roman: "q", lang: "kz" },
+  { en: "q", input: "қ", roman: "q", lang: "kk", unique: true }, // unique
   { en: "l", input: "л", roman: "l", lang: "kz" },
   { en: "m", input: "м", roman: "m", lang: "kz" },
   { en: "n", input: "н", roman: "n", lang: "kz" },
-  { en: "ŋ", input: "ң", roman: "ng", lang: "kz" },
+  { en: "ŋ", input: "ң", roman: "ng", lang: "kk", unique: true }, // unique
   { en: "o", input: "о", roman: "o", lang: "kz" },
-  { en: "ö", input: "ө", roman: "ö", lang: "kz" },
+  { en: "ö", input: "ө", roman: "ö", lang: "kk", unique: true }, // unique
   { en: "p", input: "п", roman: "p", lang: "kz" },
   { en: "r", input: "р", roman: "r", lang: "kz" },
   { en: "s", input: "с", roman: "s", lang: "kz" },
   { en: "t", input: "т", roman: "t", lang: "kz" },
   { en: "u", input: "у", roman: "u", lang: "kz" },
-  { en: "ū", input: "ұ", roman: "ū", lang: "kz" },
-  { en: "ü", input: "ү", roman: "ü", lang: "kz" },
+  { en: "ū", input: "ұ", roman: "ū", lang: "kk", unique: true }, // unique
+  { en: "ü", input: "ү", roman: "ü", lang: "kk", unique: true }, // unique
   { en: "f", input: "ф", roman: "f", lang: "kz" },
   { en: "h", input: "х", roman: "h", lang: "kz" },
-  { en: "h", input: "һ", roman: "h", lang: "kz" },
+  { en: "h", input: "һ", roman: "h", lang: "kk", unique: true }, // unique
   { en: "ts", input: "ц", roman: "ts", lang: "kz" },
   { en: "ch", input: "ч", roman: "ch", lang: "kz" },
   { en: "sh", input: "ш", roman: "sh", lang: "kz" },
   { en: "shch", input: "щ", roman: "shch", lang: "kz" },
   { en: "hard sign", input: "ъ", roman: "hard sign", lang: "kz" },
   { en: "y", input: "ы", roman: "y", lang: "kz" },
-  { en: "i", input: "і", roman: "i", lang: "kz" },
+  { en: "i", input: "і", roman: "i", lang: "kk", unique: true }, // unique
   { en: "soft sign", input: "ь", roman: "soft sign", lang: "kz" },
   { en: "e", input: "э", roman: "e", lang: "kz" },
   { en: "yu", input: "ю", roman: "yu", lang: "kz" },

@@ -20,6 +20,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
 import { getMulti } from "./utils/get-multi";
+import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -248,8 +249,7 @@ const DynaSentence = ({
   return (
     <div>
       <div className="text-center mt-12 lg:mt-24 max-w-3xl m-auto">
-        {response &&
-        ["zh", "ur", "ar", "ja", "ko", "ne", "hi", "fa"]?.includes(lang) ? (
+        {response && isNonRomanLang(lang) ? (
           <Link
             target="_blank"
             href={`/nmm/${sentenceHanzi}?lang=${sentence?.lang}`}

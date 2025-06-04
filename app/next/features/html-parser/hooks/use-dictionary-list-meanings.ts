@@ -14,15 +14,18 @@ interface Meanings {
 
 export const useListDictionaryMeaningsQuery = (
   hanzi: string,
+  lang?: string,
   options = {} as any
 ) => {
   const token = useJwtToken();
 
-  const lang = useGetCurrentLang();
+  const _lang = useGetCurrentLang();
+
+  const finalLang = lang || _lang;
 
   const { data: hskWords } = useListHSKWordsQuery();
 
-  const { data } = useListDictionaryQuery(lang);
+  const { data } = useListDictionaryQuery(finalLang);
 
   const getDictionaryHandler = useGetDictionaryHandler();
 
@@ -31,7 +34,7 @@ export const useListDictionaryMeaningsQuery = (
       "list-dictionary-meanings",
       token,
       hanzi,
-      lang,
+      finalLang,
       JSON.stringify(hskWords),
       JSON.stringify(data),
     ],
@@ -67,7 +70,7 @@ export const useListDictionaryMeaningsQuery = (
             res.push(item);
           } else {
             const resp = await addToDictionary({
-              lang,
+              lang: finalLang,
               word,
               token,
             });

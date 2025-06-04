@@ -14,6 +14,7 @@ import { ConvoDetails } from "../convo-details";
 import { ConvosNavBar } from "../convos-nav-bar";
 import { useGetContentId } from "./hooks/use-get-content-id";
 import { useRecentlyWatchedContent } from "../use-recently-watched-content-store";
+import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
 
 function RemoveIfExistsButton({ contentId }: { contentId: string }) {
   const { recentlyWatched, setRecentlyWatched, isLoading } =

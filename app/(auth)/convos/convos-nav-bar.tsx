@@ -197,21 +197,21 @@ export const ConvosNavBar = () => {
           </Link>
         )}
 
-        {content?.lang === "zh" && (
-          <Link
-            href={`/convos/${contentId}?view=insights&start=${searchParams.get("start") || 0}`}
-            onClick={() => {
-              setViewType("insights");
-            }}
-            className={`transition ${
-              viewType === "insights"
-                ? "text-black dark:text-gray-200"
-                : "dark:text-gray-600 text-gray-400"
-            } hover:text-black dark:hover:text-white transition text-xl`}
-          >
-            <Icons.chartColumn />
-          </Link>
-        )}
+        {/* {content?.lang === "zh" && ( */}
+        <Link
+          href={`/convos/${contentId}?view=insights&start=${searchParams.get("start") || 0}`}
+          onClick={() => {
+            setViewType("insights");
+          }}
+          className={`transition ${
+            viewType === "insights"
+              ? "text-black dark:text-gray-200"
+              : "dark:text-gray-600 text-gray-400"
+          } hover:text-black dark:hover:text-white transition text-xl`}
+        >
+          <Icons.chartColumn />
+        </Link>
+        {/* )} */}
         {isAuthor && (
           <Link
             onClick={() => {

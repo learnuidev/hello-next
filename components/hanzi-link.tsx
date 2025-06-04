@@ -20,10 +20,12 @@ import { useCanTrackFunction } from "./use-can-track-function";
 import { CharacterItem } from "./_select-character/character-item";
 
 interface HSKCharacter {
+  input?: string;
   hanzi: string;
   hskLevel?: number;
   pinyin: string;
   en?: string;
+  roman?: string;
 }
 
 export function HanziLink({
@@ -45,7 +47,7 @@ export function HanziLink({
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const selectedComp = useMemo(
-    () => components?.[character?.hanzi],
+    () => components?.[character?.input || character?.hanzi],
     [components, character]
   ) as any;
 
@@ -57,7 +59,8 @@ export function HanziLink({
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersMapQuery();
 
-  const learnedChar = learnedCharacters2?.[character?.hanzi];
+  const learnedChar =
+    learnedCharacters2?.[character?.input || character?.hanzi];
 
   const { data: answers } = useListAnswersQuery(
     {},
@@ -90,12 +93,12 @@ export function HanziLink({
             className
           )}
         >
-          {character?.pinyin || selectedComp?.pinyin}
+          {character?.pinyin || selectedComp?.pinyin || character?.roman}
         </p>
       )}
       <Link
         href={
-          `/nmm/${character?.hanzi}?lang=zh` +
+          `/nmm/${character?.input || character?.hanzi}?lang=${lang || "zh"}` +
           (character?.hskLevel ? `&hsk=${character?.hskLevel}` : ``) +
           (lang ? `&content=${lang}` : ``) +
           ""
@@ -123,7 +126,7 @@ export function HanziLink({
                   : `hover:${color} text-gray-300`
                 : selectedComp?.length > 1 || selectedComp?.group
                   ? "dark:text-gray-500 text-gray-200"
-                  : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                  : // : lastAnswer?.totalCharacters?.includes(character?.input || character?.hanzi)
                     //   ? "dark:text-yellow-500"
                     "dark:text-gray-700 text-gray-200"
           } dark:hover:text-white text-2xl md:text-2xl transition lowercase w-28 text-center`
@@ -143,7 +146,7 @@ export function HanziLink({
                       : `hover:${color} text-gray-300`
                     : selectedComp?.length > 1 || selectedComp?.group
                       ? "dark:text-gray-500 text-gray-200"
-                      : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
+                      : // : lastAnswer?.totalCharacters?.includes(character?.input || character?.hanzi)
                         //   ? "dark:text-yellow-500"
                         "dark:text-gray-700 text-gray-200"
               } dark:hover:text-white text-xs transition lowercase text-center`
@@ -153,11 +156,12 @@ export function HanziLink({
           </sub>
         )}
 
-        {character?.hanzi?.split("")?.map((val, idx) => {
-          const learnedChar = learnedCharacters2?.[val];
+        {character?.input ||
+          character?.hanzi?.split("")?.map((val, idx) => {
+            const learnedChar = learnedCharacters2?.[val];
 
-          return <CharacterItem character={val} key={`${val}-${idx}`} />;
-        })}
+            return <CharacterItem character={val} key={`${val}-${idx}`} />;
+          })}
 
         {character?.hskLevel && (
           <sub className="dark:text-gray-700 text-xs pl-[2px]">

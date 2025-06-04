@@ -145,9 +145,9 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
 
   if (viewType === "insights") {
-    if (lesson2?.lang !== "zh") {
-      return <Nothing message="Insights is enabled only for Chinese" />;
-    }
+    // if (lesson2?.lang !== "zh") {
+    //   return <Nothing message="Insights is enabled only for Chinese" />;
+    // }
 
     return (
       <>

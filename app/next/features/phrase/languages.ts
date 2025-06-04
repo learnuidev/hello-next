@@ -8,6 +8,7 @@ import germanFlag from "./german.webp";
 import russianFlag from "./russian.webp";
 import iranFlag from "./fa.webp";
 import palestineFlag from "./ar.png";
+import kazakFlag from "./kazak.webp";
 import nepaliFlag from "./ne.png";
 import indianFlag from "./hi.png";
 import pakistanFlag from "./pk.png";
@@ -97,5 +98,11 @@ export const languages: ILanguage[] = [
     id: "ur-UR",
     title: "Urdu",
     src: pakistanFlag.src,
+  },
+  {
+    shortId: "kz",
+    id: "kz-KZ",
+    title: "Kakaz",
+    src: kazakFlag.src,
   },
 ];

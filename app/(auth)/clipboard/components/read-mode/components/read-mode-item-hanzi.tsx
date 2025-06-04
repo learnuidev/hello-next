@@ -31,7 +31,7 @@ export function ReadModeItemHanzi({
   const { translations, setTranslations } = useClipboardTranslations();
 
   const { data: context, isLoading: isContextLoading } =
-    useListDictionaryMeaningsQuery(text, {
+    useListDictionaryMeaningsQuery(text, lang, {
       onSuccess: (data: any) => {
         setWords((prev: any) => {
           return {

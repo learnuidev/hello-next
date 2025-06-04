@@ -1,4 +1,8 @@
-import { faGoogle, faYoutube } from "@fortawesome/free-brands-svg-icons";
+import {
+  faGoogle,
+  faMicrosoft,
+  faYoutube,
+} from "@fortawesome/free-brands-svg-icons";
 import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
@@ -369,6 +373,7 @@ export const Icons = {
   cloze: createFAIcon(faVirus),
   shuffle: createFAIcon(faShuffle),
   typeWriter: createFAIcon(faTypewriter),
+  bing: createFAIcon(faMicrosoft),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

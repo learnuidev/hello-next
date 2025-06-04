@@ -171,6 +171,7 @@ export function useGetContentQuery(
 
       // }
     },
+    retry: false,
     onSuccess: (data) => {
       opts?.onSuccess?.(data);
       queryClient.setQueryData([listContentsQueryKey, true], (old: any) => {

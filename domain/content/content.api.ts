@@ -54,6 +54,12 @@ export const getContent = async (
 
     body: JSON.stringify(params),
   });
+
+  if (!res.ok) {
+    throw new Error(
+      res.status === 404 ? "Content doesnt exist" : "Server error"
+    );
+  }
   const resp = (await res.json()) as any;
 
   return resp;

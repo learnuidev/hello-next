@@ -5,10 +5,12 @@ export const Nothing = ({
   message,
   icon,
   className,
+  children,
 }: {
   message?: string;
   icon?: any;
   className?: string;
+  children?: React.ReactNode;
 }) => {
   const Icon = icon ? icon : Icons.spaceStation;
   const defaultMessage = message || "Nothing here";
@@ -19,6 +21,7 @@ export const Nothing = ({
       <h2 className="font-extralight text-xl sm:text-3xl mt-4 text-gray-400">
         {defaultMessage}
       </h2>
+      {children}
     </div>
   );
 };

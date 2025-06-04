@@ -188,16 +188,6 @@ const ConvoInsightsNoNChinese = ({
   );
 };
 
-const getFrequency = ({ lesson, input }: any) => {
-  const transcriptions = lesson?.transcriptions?.filter(
-    (transcription: any) => {
-      return (transcription?.hanzi || transcription?.input)?.includes(input);
-    }
-  );
-
-  return transcriptions?.length;
-};
-
 export function ConvoInsights({ lessonId }: { lessonId: string }) {
   const viewType = useInsightsSettingsStore((state) => state.type);
 
@@ -247,7 +237,11 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                     return (
                       <HanziLink
                         frequency={char?.frequency}
-                        character={char}
+                        character={{
+                          ...char,
+                          input: char?.hanzi || char?.input,
+                          hanzi: char?.hanzi || char?.input,
+                        }}
                         key={`${char?.hanzi}-chars-${idx}`}
                         lang={lang}
                       />
@@ -258,8 +252,8 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                         lang={lang}
                         frequency={char?.frequency}
                         character={{
-                          input: char?.input,
-                          hanzi: char?.input,
+                          input: char?.hanzi || char?.input,
+                          hanzi: char?.hanzi || char?.input,
                           hskLevel: 9,
                           pinyin: "",
                           en: "",

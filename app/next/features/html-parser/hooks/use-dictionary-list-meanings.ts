@@ -49,9 +49,7 @@ export const useListDictionaryMeaningsQuery = (
         return await getDictionaryHandler(hanzi);
       }
 
-      console.log("YOOO");
-
-      if (data?.length > 0) {
+      if (Array.isArray(data)) {
         let res = [];
 
         const words = hanzi?.split(" ");

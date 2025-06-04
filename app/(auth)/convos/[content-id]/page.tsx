@@ -13,6 +13,28 @@ import { useEffect } from "react";
 import { ConvoDetails } from "../convo-details";
 import { ConvosNavBar } from "../convos-nav-bar";
 import { useGetContentId } from "./hooks/use-get-content-id";
+import { useRecentlyWatchedContent } from "../use-recently-watched-content-store";
+
+function RemoveIfExistsButton({ contentId }: { contentId: string }) {
+  const { recentlyWatched, setRecentlyWatched, isLoading } =
+    useRecentlyWatchedContent();
+
+  const containsRecentlyWatched = recentlyWatched?.find(
+    (item: any) => item?.id === contentId
+  );
+
+  if (containsRecentlyWatched) {
+    return (
+      <button
+        onClick={() => {
+          setRecentlyWatched(contentId, "remove");
+        }}
+      >
+        {isLoading ? "Removing..." : "Remove from history"}{" "}
+      </button>
+    );
+  }
+}
 
 function WithContentItem({ children }: { children: React.ReactNode }) {
   const contentId = useGetContentId();
@@ -33,8 +55,10 @@ function WithContentItem({ children }: { children: React.ReactNode }) {
     return (
       <div>
         <Nothing icon={Icons.cat} message={error?.message}>
-          <div className="mt-12">
+          <div className="mt-12 flex gap-8 justify-center">
             <Link href="/convos"> Back</Link>
+
+            <RemoveIfExistsButton contentId={contentId} />
           </div>
         </Nothing>
       </div>

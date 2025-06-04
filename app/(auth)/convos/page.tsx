@@ -58,8 +58,6 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
 
   const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
 
-  console.log("RECENRLY WATCHED", recentlyWatched);
-
   const isLoading = isContentsLoading || isPublicContentLoading;
 
   const contents =

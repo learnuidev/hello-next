@@ -19,7 +19,7 @@ import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { useGetContentInsightsNew } from "./use-get-content-insights.new";
 import { useInsightsSettingsStore } from "./use-insights-settings-store";
 import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
@@ -28,6 +28,7 @@ import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import Link from "next/link";
 import { ActiveTranscription } from "@/components/youtube-page/active-transcription";
+import { isVideoUrl } from "./utils/is-video-url";
 
 const ConvoContextDialog = ({
   isOpen,
@@ -69,6 +70,36 @@ const ConvoContextDialog = ({
     }
   };
 
+  const firstTimestamp = filteredTimestamps?.[0];
+
+  const start = firstTimestamp?.start;
+
+  const onReady = useCallback(() => {
+    const timeToStart = 7 * 60 + 12.6;
+
+    if (start) {
+      if (isVideoUrl(data?.audio)) {
+        if (!currentTime && `${currentTime}` !== `${start}`) {
+          seekAndPlay(start);
+        }
+      } else {
+        playerRef.current.seekTo(start, "seconds");
+
+        try {
+          playerRef.current?.player?.player?.play();
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    }
+  }, [start, data?.audio, currentTime]);
+
+  // useEffect(() => {
+  //   if (firstTimestamp) {
+  //     seekAndPlay(firstTimestamp?.start);
+  //   }
+  // }, [firstTimestamp]);
+
   return (
     <Dialog open={isOpen}>
       <DialogContent
@@ -84,7 +115,7 @@ const ConvoContextDialog = ({
           width="100%"
           height={isSmall ? "200px" : "450px"}
           controls
-          //  onReady={onReady}
+          onReady={onReady}
         />
 
         <ActiveTranscription

@@ -29,21 +29,21 @@ const getFrequency = ({ lesson, input }: any) => {
   return transcriptions?.length;
 };
 
-export function useGetContentInsightsNew({ lessonId }: { lessonId: string }) {
+export function useGetContentInsightsNew({ contentId }: { contentId: string }) {
   const sortType = useInsightsSettingsStore((state) => state.sortType);
 
   const { data: hskWords } = useListHSKWordsQuery();
 
   // const router = useRouter();
 
-  const { data: lesson } = useGetContentQuery({ contentId: lessonId });
+  const { data: lesson } = useGetContentQuery({ contentId });
 
   const { data: learnedCharacters } = useListCharactersMapQuery();
 
   return useQuery({
     queryKey: [
       "get-content-insights",
-      lessonId,
+      contentId,
       JSON.stringify(lesson),
       JSON.stringify(learnedCharacters),
       sortType,

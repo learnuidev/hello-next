@@ -35,12 +35,14 @@ export function HanziLink({
   frequency = 0,
   lang,
   enableTracking = false,
+  onClick,
 }: {
   character: HSKCharacter;
   className?: string;
   frequency?: number;
   lang?: string;
   enableTracking?: boolean;
+  onClick?: any;
 }) {
   const { data: components, isLoading: isComponentsLoading } =
     useListComponentsMapQuery();
@@ -99,12 +101,17 @@ export function HanziLink({
       )}
       <Link
         href={
-          `/nmm/${character?.input || character?.hanzi}?lang=${lang || "zh"}` +
-          (character?.hskLevel ? `&hsk=${character?.hskLevel}` : ``) +
-          (lang ? `&content=${lang}` : ``) +
-          ""
+          onClick
+            ? ""
+            : `/nmm/${character?.input || character?.hanzi}?lang=${lang || "zh"}` +
+              (character?.hskLevel ? `&hsk=${character?.hskLevel}` : ``) +
+              (lang ? `&content=${lang}` : ``) +
+              ""
         }
         onClick={() => {
+          if (onClick) {
+            onClick();
+          }
           if (enableTracking) {
             trackFunction();
           }

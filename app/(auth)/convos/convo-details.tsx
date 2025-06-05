@@ -151,7 +151,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
     return (
       <>
-        <ConvoInsights lessonId={lessonId} />
+        <ConvoInsights contentId={lessonId} />
         <FloatingNavbar />
       </>
     );

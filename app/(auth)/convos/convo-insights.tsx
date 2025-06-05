@@ -11,6 +11,7 @@ import {
   RedFireDuoTone,
 } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { HanziLink } from "@/components/hanzi-link";
@@ -18,6 +19,131 @@ import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { useGetContentInsightsNew } from "./use-get-content-insights.new";
 import { useInsightsSettingsStore } from "./use-insights-settings-store";
 import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
+import { useEffect, useRef, useState } from "react";
+import ReactPlayer from "react-player";
+import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
+import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
+import { formatTime } from "./_play/utils";
+import { smartSplit } from "@/components/youtube-page/utils/smart-split";
+import { CharacterItem } from "@/components/_select-character/character-item";
+import Link from "next/link";
+
+const ConvoContextDialog = ({
+  isOpen,
+  selected,
+  contentId,
+  closeDialog,
+}: {
+  isOpen: boolean;
+  selected: any;
+  contentId: string;
+  closeDialog: () => void;
+}) => {
+  const { data } = useGetContentQuery({ contentId });
+
+  const playerRef = useRef() as any;
+
+  const filteredTimestamps = data?.transcriptions?.filter((item: any) =>
+    (item?.hanzi || item?.input)?.includes(selected?.hanzi || selected?.input)
+  );
+
+  const { currentTime, setCurrentTime: setTime } = useCurrentTime(contentId);
+
+  const isSmall = useIsSmall();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(playerRef?.current?.getCurrentTime());
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
+
+  const seekAndPlay = (time: any) => {
+    playerRef.current.seekTo(time, "seconds");
+
+    try {
+      playerRef.current?.player?.player?.play();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen}>
+      <DialogContent
+        onClick={() => {
+          closeDialog();
+        }}
+        className="sm:max-w-2xl border-gray-900 bg-gray-50 dark:bg-black mt-[-100px]"
+      >
+        <ReactPlayer
+          ref={playerRef}
+          url={data?.audio || ""}
+          //  playing={isPlaying}
+          width="100%"
+          height={isSmall ? "200px" : "450px"}
+          controls
+          //  onReady={onReady}
+        />
+
+        <div>
+          <Link
+            target="_blank"
+            href={`/nmm/${selected?.input || selected?.hanzi}?lang=${data?.lang}`}
+          >
+            Selected: {selected?.input || selected?.hanzi}
+          </Link>
+        </div>
+
+        <div>
+          {filteredTimestamps?.slice(0, 5).map((item: any) => {
+            return (
+              <button
+                className="block w-full"
+                onClick={() => {
+                  seekAndPlay(item?.start);
+                }}
+                key={JSON.stringify(item)}
+              >
+                <div className="flex justify-between items-center flex-row w-full">
+                  <p>
+                    <span className="text-gray-500">
+                      {formatTime(item?.start)}
+                    </span>{" "}
+                    {smartSplit({ input: item?.input, lang: data?.lang })?.map(
+                      (character: any, idx: number) => {
+                        return (
+                          <CharacterItem
+                            character={character}
+                            key={`timeline-tab-${idx}-${character}`}
+                          />
+                        );
+                      }
+                    )}
+                  </p>
+
+                  <div>
+                    <Link
+                      target="_blank"
+                      href={`/nmm/${item?.input}?lang=${data?.lang}`}
+                    >
+                      <Icons.magnifyingGlass />
+                    </Link>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+        <div>
+          {filteredTimestamps?.length > 5 && (
+            <p>...{filteredTimestamps?.length - 1}+ more</p>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const ConvoInsightsHeader = ({
   totalCharacters,
@@ -188,18 +314,19 @@ const ConvoInsightsNoNChinese = ({
   );
 };
 
-export function ConvoInsights({ lessonId }: { lessonId: string }) {
+export function ConvoInsights({ contentId }: { contentId: string }) {
   const viewType = useInsightsSettingsStore((state) => state.type);
+  const [selected, setSelected] = useState(null);
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
 
   const { data: lesson, isLoading } = useGetContentQuery({
-    contentId: lessonId,
+    contentId: contentId,
   });
 
   const lang = lesson?.lang || lesson?.transcriptions?.[0]?.lang;
 
-  const { data } = useGetContentInsightsNew({ lessonId });
+  const { data } = useGetContentInsightsNew({ contentId });
 
   if (isLoading || !data) {
     return <LottieLoadingAnimation />;
@@ -217,8 +344,16 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
   return selectedChar ? (
     <SelectedCharacterContainer characterId={selectedChar} />
   ) : (
-    <ConvoInsightsNoNChinese contentId={lessonId}>
+    <ConvoInsightsNoNChinese contentId={contentId}>
       <div className="w-full px-4 my-4 md:my-8">
+        <ConvoContextDialog
+          selected={selected}
+          contentId={contentId}
+          isOpen={!!selected}
+          closeDialog={() => {
+            setSelected(null);
+          }}
+        />
         <div>
           <ConvoInsightsHeader
             totalCharacters={uniqueCharacters?.length}
@@ -236,6 +371,9 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                   if (char.isLearned) {
                     return (
                       <HanziLink
+                        onClick={() => {
+                          setSelected(char);
+                        }}
                         frequency={char?.frequency}
                         character={{
                           ...char,
@@ -247,17 +385,21 @@ export function ConvoInsights({ lessonId }: { lessonId: string }) {
                       />
                     );
                   } else {
+                    const newChar: any = {
+                      input: char?.hanzi || char?.input,
+                      hanzi: char?.hanzi || char?.input,
+                      hskLevel: 9,
+                      pinyin: "",
+                      en: "",
+                    };
                     return (
                       <HanziLink
+                        onClick={() => {
+                          setSelected(newChar);
+                        }}
                         lang={lang}
                         frequency={char?.frequency}
-                        character={{
-                          input: char?.hanzi || char?.input,
-                          hanzi: char?.hanzi || char?.input,
-                          hskLevel: 9,
-                          pinyin: "",
-                          en: "",
-                        }}
+                        character={newChar}
                         key={`${char?.input}-chars-${idx}`}
                       />
                     );

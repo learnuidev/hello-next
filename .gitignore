@@ -49,3 +49,7 @@ traverse/*
 
 venv
 __pycache__
+
+
+# Youtube
+*-base.js

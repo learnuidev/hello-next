@@ -8,15 +8,18 @@ import { smartSplit } from "./utils/smart-split";
 import { useCallback, useMemo } from "react";
 import { HanziTooltip } from "../_select-character/selected-character/hanzi-tooltip";
 import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
+import { cn } from "@/lib/utils";
 
 export const ActiveTranscription = ({
   currentTime,
   transcriptions,
   contentId,
+  className,
 }: {
   currentTime: number;
   transcriptions: any;
   contentId: string;
+  className?: string;
 }) => {
   const currentTranscription = transcriptions?.find(
     (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
@@ -57,7 +60,7 @@ export const ActiveTranscription = ({
   // return "TODO";
 
   return (
-    <div className="text-center sm:mt-8 mt-4 mb-4 h-20">
+    <div className={cn("text-center sm:mt-8 mt-4 mb-4 h-20", className)}>
       {showPinyin && isNonRomanLang(currentTranscription?.lang) && (
         <Link
           target="_blank"

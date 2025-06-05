@@ -27,6 +27,7 @@ import { formatTime } from "./_play/utils";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import Link from "next/link";
+import { ActiveTranscription } from "@/components/youtube-page/active-transcription";
 
 const ConvoContextDialog = ({
   isOpen,
@@ -74,7 +75,7 @@ const ConvoContextDialog = ({
         onClick={() => {
           closeDialog();
         }}
-        className="sm:max-w-2xl border-gray-900 bg-gray-50 dark:bg-black mt-[-100px]"
+        className="sm:max-w-2xl border-gray-900 bg-gray-50 dark:bg-black"
       >
         <ReactPlayer
           ref={playerRef}
@@ -86,6 +87,13 @@ const ConvoContextDialog = ({
           //  onReady={onReady}
         />
 
+        <ActiveTranscription
+          className="h-12 mb-4 mt-0"
+          currentTime={currentTime}
+          transcriptions={data?.transcriptions}
+          contentId={contentId}
+        />
+
         <div>
           <Link
             target="_blank"
@@ -95,8 +103,8 @@ const ConvoContextDialog = ({
           </Link>
         </div>
 
-        <div>
-          {filteredTimestamps?.slice(0, 5).map((item: any) => {
+        <div className="flex flex-col gap-4">
+          {filteredTimestamps?.slice(0, 3).map((item: any) => {
             return (
               <button
                 className="block w-full"
@@ -114,6 +122,7 @@ const ConvoContextDialog = ({
                       (character: any, idx: number) => {
                         return (
                           <CharacterItem
+                            className="text-[16px]"
                             character={character}
                             key={`timeline-tab-${idx}-${character}`}
                           />
@@ -136,8 +145,8 @@ const ConvoContextDialog = ({
           })}
         </div>
         <div>
-          {filteredTimestamps?.length > 5 && (
-            <p>...{filteredTimestamps?.length - 1}+ more</p>
+          {filteredTimestamps?.length > 3 && (
+            <p>...{filteredTimestamps?.length - 3}+ more</p>
           )}
         </div>
       </DialogContent>

@@ -88,7 +88,7 @@ const ConvoContextDialog = ({
         />
 
         <ActiveTranscription
-          className="h-12 mb-4 mt-0"
+          className="h-12 mb-4 mt-0 sm:mt-0 sm:pt-0"
           currentTime={currentTime}
           transcriptions={data?.transcriptions}
           contentId={contentId}

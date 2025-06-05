@@ -346,14 +346,16 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
   ) : (
     <ConvoInsightsNoNChinese contentId={contentId}>
       <div className="w-full px-4 my-4 md:my-8">
-        <ConvoContextDialog
-          selected={selected}
-          contentId={contentId}
-          isOpen={!!selected}
-          closeDialog={() => {
-            setSelected(null);
-          }}
-        />
+        {selected && (
+          <ConvoContextDialog
+            selected={selected}
+            contentId={contentId}
+            isOpen={!!selected}
+            closeDialog={() => {
+              setSelected(null);
+            }}
+          />
+        )}
         <div>
           <ConvoInsightsHeader
             totalCharacters={uniqueCharacters?.length}

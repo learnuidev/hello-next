@@ -9,21 +9,16 @@ import { faLanguage, faRepeat } from "@fortawesome/pro-thin-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
+import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
+import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { resolveLangCode } from "@/libs/openai/utils";
 import { useParams, useRouter } from "next/navigation";
-import { Icons } from "../ui/icons.v2";
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-import { useContentEditStore } from "./use-content-edit-store";
-import {
-  useCharacterContextStore,
-  useSetIfExists,
-} from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
-import { CharacterItem } from "../_select-character/character-item";
-import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { Icons } from "../ui/icons.v2";
+import { useContentEditStore } from "./use-content-edit-store";
 
 export const TranscriptItem = ({
   example,
@@ -34,10 +29,13 @@ export const TranscriptItem = ({
   isVideoHidden,
   playerRef,
   learnedCharacters,
+  lessonId,
   // components,
 }: any) => {
   const params = useParams<{ "content-id": string }>();
   const contentId = params["content-id"];
+
+  const { data } = useGetContentQuery({ contentId: lessonId });
 
   const setIfExists = useSetIfExists();
 
@@ -53,11 +51,49 @@ export const TranscriptItem = ({
     newValue?: string
   ) => {
     const offset = newValue || currentTime - 0.2;
+
     setTimes((prev: any) => {
-      const exists = prev?.find((item: any) => item?.id === example?.id);
+      const predicateFn = (item: any) => item?.id === example?.id;
+      const exists = prev?.find(predicateFn);
+
+      let updated = prev;
+
+      // const currIndex = prev?.findIndex(predicateFn);
+
+      const currIndex = data?.transcriptions?.findIndex(predicateFn);
+      const isLast = data?.transcriptions?.length - 1 === currIndex;
+
+      console.log("EXIISTS", currIndex);
+      console.log("isLast", isLast);
+
+      if (!isLast && type === "end") {
+        const nextIndex = currIndex + 1;
+        const nextExample = data?.transcriptions?.[nextIndex];
+        const nextExists = prev?.find(
+          (item: any) => item?.id === nextExample?.id
+        );
+
+        if (nextExists) {
+          updated = updated.map((item: any) => {
+            if (item?.id === nextExample?.id) {
+              return {
+                ...nextExists,
+                ["start"]: offset,
+              };
+            }
+
+            return item;
+          });
+        } else {
+          updated = updated.concat({
+            id: nextExample?.id,
+            start: offset,
+          });
+        }
+      }
 
       if (exists) {
-        return prev.map((item: any) => {
+        updated = updated.map((item: any) => {
           if (item?.id === example?.id) {
             return {
               ...exists,
@@ -67,16 +103,14 @@ export const TranscriptItem = ({
 
           return item;
         });
-        // return prev.concat({
-        //   ...exists,
-        //   start: currentTime,
-        // });
       }
 
-      return prev.concat({
+      updated = updated.concat({
         id: example?.id,
         [type]: offset,
       });
+
+      return updated;
     });
   };
 

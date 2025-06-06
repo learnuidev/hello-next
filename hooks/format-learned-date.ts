@@ -8,7 +8,7 @@ type TimeParts = {
 
 export function msToTimeParts(ms: number): TimeParts {
   const start = 0;
-  const end = ms;
+  const end = ms || Date.now();
 
   const duration = intervalToDuration({ start, end });
 
@@ -26,11 +26,6 @@ export function msToTimeParts(ms: number): TimeParts {
 
   return result;
 }
-
-// Example usage:
-console.log(msToTimeParts(3661000)); // { hours: 1, minutes: 1, seconds: 1 }
-console.log(msToTimeParts(61000)); // { minutes: 1, seconds: 1 }
-console.log(msToTimeParts(5000)); // { seconds: 5 }
 
 export function formatLearnedDate(time: number) {
   const { hours, minutes, seconds } = msToTimeParts(time);

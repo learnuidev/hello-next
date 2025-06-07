@@ -376,6 +376,7 @@ export function ReviewModeClassic(props: any) {
           {overConfidentWarning ? (
             <>
               <button
+                className="text-xl"
                 onClick={() => {
                   handleMastery();
                 }}
@@ -384,6 +385,7 @@ export function ReviewModeClassic(props: any) {
               </button>
 
               <button
+                className="text-xl"
                 onClick={() => {
                   setOverConfidenceWarning(null);
                 }}

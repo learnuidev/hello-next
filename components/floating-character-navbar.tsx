@@ -230,8 +230,8 @@ export const FloatingCharacterNavbar = ({
                   updateCharacterStatusMutation.mutateAsync({
                     characterId: currentCharacter?.id,
                     status: "DISCOVERED",
-                    forgottenAt: Date.now(),
-                    rightAt: Date.now(),
+                    next_review_date: Date.now(),
+                    rediscoveredAt: Date.now(),
                     statusHistory: (
                       currentCharacter?.statusHistory || []
                     ).concat({

@@ -42,6 +42,9 @@ export function ReviewModeClassic(props: any) {
   const [showCorrectOptions, setShowCorrectOptions] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
   const [endTime, setEndTime] = useState(Date.now());
+  const [overConfidentWarning, setOverConfidenceWarning] = useState<
+    null | string
+  >(null);
 
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
 
@@ -260,6 +263,44 @@ export function ReviewModeClassic(props: any) {
   const characterHanziOrInput =
     currentCharacter?.hanzi || currentCharacter?.input;
 
+  const handleMastery = () => {
+    const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
+
+    const ponderTime = getPonderTime(endTime);
+
+    updateCharacterStatusMutation
+      .mutateAsync({
+        characterId: currentCharacter?.id,
+        status: "forgotten",
+        forgottenAt: Date.now(),
+        rightAt: Date.now(),
+        rightCount: (currentCharacter?.rightCount || 0) + 1,
+        reviewHistory: (currentCharacter?.reviewHistory || []).concat({
+          outcome: "correct",
+          createdAt: Date.now(),
+          startTime: startTime,
+          endTime: endTime,
+          reviewDate: date,
+          timeTaken,
+          ponderTime,
+          clozeTime,
+          mode: hskMode || mode,
+          emotion,
+        }),
+      } as any)
+      .then((res) => {
+        const startTime = Date.now();
+        resetTime();
+        setReveal(false);
+        setStartTime(startTime);
+        setEndTime(startTime);
+        setReviewCount(reviewCount + 1);
+        setEmotion("");
+        goToNextChar();
+        setOverConfidenceWarning(null);
+      });
+  };
+
   return (
     <div className="grow text-center">
       <ReviewHeader />
@@ -326,9 +367,31 @@ export function ReviewModeClassic(props: any) {
         </div>
       )}
 
+      {overConfidentWarning && (
+        <p className=" text-gray-500">{overConfidentWarning} </p>
+      )}
+
       {updateCharacterStatusMutation?.isLoading ? null : (
         <div className="space-x-12 sm:space-x-16 md:space-x-24 my-8 md:text-5xl sm:text-3xl text-2xl">
-          {showOptions ? (
+          {overConfidentWarning ? (
+            <>
+              <button
+                onClick={() => {
+                  handleMastery();
+                }}
+              >
+                Yes I am sure
+              </button>
+
+              <button
+                onClick={() => {
+                  setOverConfidenceWarning(null);
+                }}
+              >
+                No, I am not sure
+              </button>
+            </>
+          ) : showOptions ? (
             <>
               {[
                 { title: "1m", value: "1m" },
@@ -523,42 +586,17 @@ export function ReviewModeClassic(props: any) {
               <button
                 disabled={updateCharacterStatusMutation?.isLoading}
                 onClick={() => {
-                  const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
+                  if (currentCharacter?.reviewHistory === undefined) {
+                    setOverConfidenceWarning(
+                      "You have not reviewed this character at all, are you sure you want to forget it"
+                    );
+                  }
 
-                  const ponderTime = getPonderTime(endTime);
-
-                  updateCharacterStatusMutation
-                    .mutateAsync({
-                      characterId: currentCharacter?.id,
-                      status: "forgotten",
-                      forgottenAt: Date.now(),
-                      rightAt: Date.now(),
-                      rightCount: (currentCharacter?.rightCount || 0) + 1,
-                      reviewHistory: (
-                        currentCharacter?.reviewHistory || []
-                      ).concat({
-                        outcome: "correct",
-                        createdAt: Date.now(),
-                        startTime: startTime,
-                        endTime: endTime,
-                        reviewDate: date,
-                        timeTaken,
-                        ponderTime,
-                        clozeTime,
-                        mode: hskMode || mode,
-                        emotion,
-                      }),
-                    } as any)
-                    .then((res) => {
-                      const startTime = Date.now();
-                      resetTime();
-                      setReveal(false);
-                      setStartTime(startTime);
-                      setEndTime(startTime);
-                      setReviewCount(reviewCount + 1);
-                      setEmotion("");
-                      goToNextChar();
-                    });
+                  if (currentCharacter?.reviewHistory?.length < 8) {
+                    setOverConfidenceWarning(
+                      "You have not reviewed this less than 8 times. This might indicate you have recency bias.. are you sure you want to forget it"
+                    );
+                  }
                 }}
               >
                 <Icons.fire />

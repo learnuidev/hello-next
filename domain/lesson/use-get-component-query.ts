@@ -51,7 +51,6 @@ export function useGetComponentQuery(
     {
       ...options,
       onSuccess: (data) => {
-        console.log("GET COMP SUCCESS", data);
         setComponents(
           components.map((comp: any) => {
             return comp?.hanzi === data?.hanzi ? data : comp;

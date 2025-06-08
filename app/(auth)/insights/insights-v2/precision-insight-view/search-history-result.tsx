@@ -8,12 +8,15 @@ import { useGetCharacter } from "@/hooks/use-get-character";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import { isSameDay } from "date-fns";
 import { NoResultView } from "./no-result-view";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 export function SearchHistoryResult({ query }: { query?: string }) {
   const { data: groups } = useListLearnedCharactersByDate({
     variant: "search",
     query,
   });
+
+  const lang = useGetCurrentLang();
 
   const character = useGetCharacter({ characterId: query || "" });
 
@@ -38,7 +41,7 @@ export function SearchHistoryResult({ query }: { query?: string }) {
           return (
             <Link
               key={`${comp?.input}-${idx}`}
-              href={`/nmm/${encodeURIComponent(comp?.input)}${comp?.lang ? `?lang=${comp?.lang}` : ""}`}
+              href={`/nmm/${encodeURIComponent(comp?.input)}${`?lang=${comp?.lang || lang}`}`}
               target="_blank"
               className="block"
             >

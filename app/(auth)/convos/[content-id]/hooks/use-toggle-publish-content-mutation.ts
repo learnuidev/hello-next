@@ -1,10 +1,7 @@
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  useGetPublicContentsQueryKey,
-  useGetPublishedContents,
-} from "./use-list-published-contents-query";
+import { useGetPublicContentsQueryKey } from "./use-list-published-contents-query";
 
 interface TogglePublishContentRequestParams {
   type: "publish" | "unpublish";
@@ -14,7 +11,6 @@ interface TogglePublishContentRequestParams {
 export const useTogglePublishContentMutation = () => {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
-  const { setLastUpdated } = useGetPublishedContents();
 
   const publicContentsQueryKey = useGetPublicContentsQueryKey();
 
@@ -42,7 +38,7 @@ export const useTogglePublishContentMutation = () => {
     },
 
     onSuccess: (data: any) => {
-      setLastUpdated(null);
+      // setLastUpdated(null);
       queryClient.refetchQueries(publicContentsQueryKey);
     },
   });

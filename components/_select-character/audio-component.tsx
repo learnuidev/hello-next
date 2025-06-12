@@ -12,6 +12,8 @@ import useSound from "use-sound";
 import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watched-content-store";
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 const useMusicStore = create((set: any, get: any) => ({
   play: false,
@@ -39,6 +41,10 @@ export const AudioComponent = ({
 
   const { speak } = useSpeak(currentPhrase?.lang);
 
+  const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
+
+  const { data: publishedContents } = useListPublishedContentsQuery({});
+
   const audioUrl =
     _audioUrl ||
     currentPhrase?.audio?.female ||
@@ -57,6 +63,15 @@ export const AudioComponent = ({
   if (currentPhrase?.contentId) {
     return (
       <Link
+        onClick={() => {
+          const contentItem = publishedContents?.find(
+            (content: any) => content?.id === currentPhrase?.contentId
+          );
+
+          if (contentItem) {
+            setRecentlyWatched(contentItem);
+          }
+        }}
         href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start && currentPhrase?.start !== 0 && currentPhrase?.end !== 0 ? `?start=${currentPhrase?.start}` : ""}`}
         target="_blank"
         className={cn(

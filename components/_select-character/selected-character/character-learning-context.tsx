@@ -11,6 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { SentenceItem } from "../sentence-item";
 import { useGetCharacterLearningContext } from "./use-get-character-learning-context";
+import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watched-content-store";
 
 const CharacterLearningContextInner = ({ selectedComp }: any) => {
   const learnedCharacter = selectedComp;

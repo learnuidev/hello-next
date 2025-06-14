@@ -1,4 +1,5 @@
 import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
+import { useMemo } from "react";
 
 export function useGetCharacterLearningContext({
   lang,
@@ -9,26 +10,30 @@ export function useGetCharacterLearningContext({
 }) {
   const { data } = useListPublishedContentsQuery({});
 
-  const items = data?.items
-    ?.map((item: any) => {
-      return item?.transcriptions?.map((t: any) => {
-        return {
-          ...t,
-          contentId: item?.id,
-        };
-      });
-    })
-    ?.flat()
-    ?.filter(
-      (item: any) =>
-        (JSON.stringify(item?.hanzi)?.includes(characterId) ||
-          JSON.stringify(item?.input)?.includes(characterId)) &&
-        item?.lang === lang
-    )
-    ?.sort(
-      (a: any, b: any) =>
-        (a?.hanzi || a?.input)?.length - (b?.hanzi || b?.input)?.length
-    );
+  const items = useMemo(
+    () =>
+      data?.items
+        ?.map((item: any) => {
+          return item?.transcriptions?.map((t: any) => {
+            return {
+              ...t,
+              contentId: item?.id,
+            };
+          });
+        })
+        ?.flat()
+        ?.filter(
+          (item: any) =>
+            (JSON.stringify(item?.hanzi)?.includes(characterId) ||
+              JSON.stringify(item?.input)?.includes(characterId)) &&
+            item?.lang === lang
+        )
+        ?.sort(
+          (a: any, b: any) =>
+            (a?.hanzi || a?.input)?.length - (b?.hanzi || b?.input)?.length
+        ),
+    [characterId, data?.items, lang]
+  );
 
   return items;
 }

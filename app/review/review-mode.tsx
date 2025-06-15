@@ -592,12 +592,14 @@ export function ReviewModeClassic(props: any) {
                     setOverConfidenceWarning(
                       "You have not reviewed this character at all, are you sure you want to forget it"
                     );
-                  }
-
-                  if (currentCharacter?.reviewHistory?.length < 8) {
+                    return null;
+                  } else if (currentCharacter?.reviewHistory?.length < 8) {
                     setOverConfidenceWarning(
                       "You have not reviewed this less than 8 times. This might indicate you have recency bias.. are you sure you want to forget it"
                     );
+                    return null;
+                  } else {
+                    handleMastery();
                   }
                 }}
               >

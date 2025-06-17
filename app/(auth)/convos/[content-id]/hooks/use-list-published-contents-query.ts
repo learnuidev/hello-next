@@ -9,13 +9,14 @@ export const useGetPublicContentsQueryKey = () => {
 
   return [publicContentsQueryKey, authUser?.jwt];
 };
+
 export const useListPublishedContentsQuery = ({ key }: { key?: string }) => {
   const { data: authUser } = useCurrentAuthUser({});
 
   const myQueryKey = useGetPublicContentsQueryKey();
 
   return useQuery({
-    queryKey: myQueryKey,
+    queryKey: [publicContentsQueryKey, authUser?.jwt],
     queryFn: async () => {
       if (authUser?.jwt) {
         const resp = await fetch(`${siteConfig.apiUrl}/v1/list-contents`, {
@@ -57,5 +58,6 @@ export const useListPublishedContentsQuery = ({ key }: { key?: string }) => {
         return response;
       }
     },
+    staleTime: 300000,
   });
 };

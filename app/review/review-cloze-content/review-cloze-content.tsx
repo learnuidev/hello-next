@@ -62,20 +62,20 @@ const ClozeNavbar = ({
   );
 };
 
-const useClozeIndexStore = create((set: any, get: any) => ({
-  clozeIndex: 0,
-  setClozeIndex: (clozeIndex: any) => set({ clozeIndex }),
-}));
+// const useClozeIndexStore = create((set: any, get: any) => ({
+//   clozeIndex: 0,
+//   setClozeIndex: (clozeIndex: any) => set({ clozeIndex }),
+// }));
 
-const useQuestionIndexStore = create((set: any, get: any) => ({
-  questionIndex: 0,
-  setQuestionIndex: (questionIndex: any) => set({ questionIndex }),
-}));
+// const useQuestionIndexStore = create((set: any, get: any) => ({
+//   questionIndex: 0,
+//   setQuestionIndex: (questionIndex: any) => set({ questionIndex }),
+// }));
 
-const useWordIndexStore = create((set: any, get: any) => ({
-  wordIndex: 0,
-  setWordIndex: (wordIndex: any) => set({ wordIndex }),
-}));
+// const useWordIndexStore = create((set: any, get: any) => ({
+//   wordIndex: 0,
+//   setWordIndex: (wordIndex: any) => set({ wordIndex }),
+// }));
 
 export function ReviewClozeContent({
   currentCharacter,
@@ -91,19 +91,19 @@ export function ReviewClozeContent({
   backButton?: any;
 }) {
   const [showEn, setShowEn] = useState(false);
-  const clozeIndex = useClozeIndexStore((state) => state.clozeIndex);
-  const setClozeIndex = useClozeIndexStore((state) => state.setClozeIndex);
-  // const [clozeIndex, setClozeIndex] = useState(0);
+  // const clozeIndex = useClozeIndexStore((state) => state.clozeIndex);
+  // const setClozeIndex = useClozeIndexStore((state) => state.setClozeIndex);
+  const [clozeIndex, setClozeIndex] = useState(0);
 
-  const questionIndex = useQuestionIndexStore((state) => state.questionIndex);
-  const setQuestionIndex = useQuestionIndexStore(
-    (state) => state.setQuestionIndex
-  );
-  // const [questionIndex, setQuestionIndex] = useState(0);
+  // const questionIndex = useQuestionIndexStore((state) => state.questionIndex);
+  // const setQuestionIndex = useQuestionIndexStore(
+  //   (state) => state.setQuestionIndex
+  // );
+  const [questionIndex, setQuestionIndex] = useState(0);
 
-  const wordIndex = useWordIndexStore((state) => state.wordIndex);
-  const setWordIndex = useWordIndexStore((state) => state.setWordIndex);
-  // const [wordIndex, setWordIndex] = useState(0);
+  // const wordIndex = useWordIndexStore((state) => state.wordIndex);
+  // const setWordIndex = useWordIndexStore((state) => state.setWordIndex);
+  const [wordIndex, setWordIndex] = useState(0);
   const [response, setResponse] = useState<any>(null);
   const { setReviewMode } = useReviewModeView();
 

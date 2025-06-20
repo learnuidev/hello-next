@@ -63,8 +63,6 @@ const resolveTrack = ({ tracks, lang }) => {
     zhTrack = null;
   }
 
-  console.log("TRACK", zhTrack);
-
   if (!zhTrack) {
     try {
       zhTrack = getTrack({ lang: "zh-CN", tracks });
@@ -104,6 +102,14 @@ const resolveTrack = ({ tracks, lang }) => {
       zhTrack = null;
     }
   }
+  if (!zhTrack) {
+    try {
+      zhTrack = getTrack({ lang: "zh-TW", tracks });
+    } catch (err) {
+      zhTrack = null;
+    }
+  }
+
   // if (!zhTrack) {
   //   try {
   //     zhTrack = getTrack({ lang, tracks });
@@ -115,6 +121,8 @@ const resolveTrack = ({ tracks, lang }) => {
   if (!zhTrack) {
     zhTrack = tracks[0];
   }
+
+  console.log("TRACK", zhTrack);
 
   return zhTrack;
 };
@@ -155,6 +163,8 @@ const genSubtitles = async ({ id, lang }) => {
     } catch (err) {
       subtitles = null;
     }
+
+    console.log("SUBS", subtitles);
 
     const tree = parser.parse(subtitles, "metadata");
 
@@ -217,7 +227,7 @@ module.exports = {
   getTotalSeconds,
 };
 
-// const id = "https://www.youtube.com/watch?v=skRCg8giIKA";
+// const id = "https://www.youtube.com/watch?v=MBi3kVvZJZY";
 // const lang = "zh-CN";
 
 // listSubtitles({ id, lang }).then((transcriptions) => {

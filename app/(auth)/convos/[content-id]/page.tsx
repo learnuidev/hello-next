@@ -82,6 +82,8 @@ export default function ContentItem() {
 
   const { data } = useListPublishedContentsQuery({});
 
+  const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
+
   const editMode = useContentEditStore((state) => state.editMode);
 
   const currentIndex = data?.items?.findIndex(
@@ -91,16 +93,19 @@ export default function ContentItem() {
   const goToNext = useCallback(() => {
     const nextLesson = data?.items?.[currentIndex + 1];
     if (nextLesson) {
+      setRecentlyWatched(nextLesson);
+
       router.push(`/convos/${nextLesson.id}`);
     }
-  }, [currentIndex, data?.items, router]);
+  }, [currentIndex, data?.items, router, setRecentlyWatched]);
 
   const goToBefore = useCallback(() => {
     const nextLesson = data?.items?.[currentIndex - 1];
     if (nextLesson) {
+      setRecentlyWatched(nextLesson);
       router.push(`/convos/${nextLesson.id}`);
     }
-  }, [currentIndex, data?.items, router]);
+  }, [currentIndex, data?.items, router, setRecentlyWatched]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {

@@ -5,7 +5,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { getContent, listContents } from "./content.api";
 
-import { hasBeen } from "@/domain/lesson/utils/has-been";
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
 const useListContentsStore = createIndexDBStore({
@@ -20,21 +19,6 @@ const useListContentsStore = createIndexDBStore({
         : set({ components: f }),
   }),
 });
-
-export const useContentsStore = () => {
-  const components: any = useListContentsStore(
-    (state: any) => state.components
-  );
-  const setComponents = useListContentsStore(
-    (state: any) => state.setComponents
-  );
-  const lastUpdated = useListContentsStore((state: any) => state.lastUpdated);
-  const setLastUpdated = useListContentsStore(
-    (state: any) => state.setLastUpdated
-  );
-
-  return { components, setComponents, lastUpdated, setLastUpdated };
-};
 
 interface Content {
   id: string;
@@ -80,36 +64,16 @@ export const listContentsQueryKey = "list-my-contents";
 export const useGetListContentsQueryKey = () => {
   const { data: authUser } = useCurrentAuthUser({});
 
-  const { components, setComponents, lastUpdated, setLastUpdated } =
-    useContentsStore();
-
-  return [
-    listContentsQueryKey,
-    listContentsQueryKey,
-    lastUpdated,
-    JSON.stringify(components),
-  ];
+  return [listContentsQueryKey, authUser?.jwt];
 };
 export function useListContentsQuery(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
-
-  const { components, setComponents, lastUpdated, setLastUpdated } =
-    useContentsStore();
 
   const queryKey = useGetListContentsQueryKey();
 
   return useQuery<ListContentsResponse, Error>(
     queryKey,
     async () => {
-      if (
-        components &&
-        lastUpdated &&
-        !hasBeen({ timestamp: lastUpdated }) &&
-        !options?.forceReload
-      ) {
-        return components as ListContentsResponse;
-      }
-
       const response = await listContentsRecursive(authUser?.jwt);
 
       const finalResponse = {
@@ -118,9 +82,6 @@ export function useListContentsQuery(options = {} as any) {
           (a: any, b: any) => b?.createdAt - a?.createdAt
         ),
       };
-
-      setComponents(finalResponse);
-      setLastUpdated();
 
       return finalResponse;
       // return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);

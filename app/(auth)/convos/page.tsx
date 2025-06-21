@@ -23,19 +23,16 @@ import { formatPercentage } from "@/app/profile/utils/format-percentage";
 import { useSearchQueryStore } from "@/components/search/state";
 import { PlusIcon } from "@/components/ui/icons";
 import { Icons } from "@/components/ui/icons.v2";
-import {
-  useContentsStore,
-  useListContentsQuery,
-} from "@/domain/content/content.queries";
+import { useListContentsQuery } from "@/domain/content/content.queries";
 
 import { useIsNewContentFormEnabled } from "@/libs/posthog/hooks/use-is-new-content-form-enabled";
 import { NewContent } from "./new-content/new-content";
 
-import { NewConvo } from "./new-convo/new-convo";
-import { useContentTypeStore } from "./use-content-type-store";
-import { useViewModeStore } from "./new-convo/use-viewmode-store";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useListPublishedContentsQuery } from "./[content-id]/hooks/use-list-published-contents-query";
+import { NewConvo } from "./new-convo/new-convo";
+import { useViewModeStore } from "./new-convo/use-viewmode-store";
+import { useContentTypeStore } from "./use-content-type-store";
 // import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query.ts";
 import { ContentsListEffect } from "@/components/contents-list-effect";
 import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query";

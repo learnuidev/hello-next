@@ -54,6 +54,7 @@ export const useRecentlyWatchedContent = () => {
           ..._recentlyWatched,
           [item?.id]: {
             watchedAt: Date.now(),
+            totalWatched: (_recentlyWatched?.[item?.id]?.totalWatched || 0) + 1,
             id: item?.id,
             title: item?.title,
             audio: item?.audio,

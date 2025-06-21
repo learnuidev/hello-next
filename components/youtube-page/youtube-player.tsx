@@ -37,6 +37,7 @@ import { getYablaLink } from "./utils/get-yabla-link";
 import { useCurrentTime } from "./use-current-time-store";
 import { smartSplit } from "./utils/smart-split";
 import { CharacterItem } from "../_select-character/character-item";
+import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
 const MAX_LIMIT = 9000;
 const THIRTY = 30;
@@ -198,6 +199,26 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
   );
 
+  const { data } = useListPublishedContentsQuery({});
+
+  const currentIndex = data?.items?.findIndex(
+    (item: any) => item?.id === lessonId
+  );
+
+  const goToNext = () => {
+    const nextLesson = data?.items?.[currentIndex + 1];
+    if (nextLesson) {
+      router.push(`/convos/${nextLesson.id}`);
+    }
+  };
+
+  const goToBefore = () => {
+    const nextLesson = data?.items?.[currentIndex - 1];
+    if (nextLesson) {
+      router.push(`/convos/${nextLesson.id}`);
+    }
+  };
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.code === "Space" && !editMode) {
@@ -205,6 +226,15 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
         event.preventDefault();
         togglePlay();
+        return null;
+      }
+
+      if (event.code === "ArrowDown" && "editMode") {
+        goToNext();
+        return null;
+      }
+      if (event.code === "ArrowUp" && "editMode") {
+        goToBefore();
         return null;
       }
 

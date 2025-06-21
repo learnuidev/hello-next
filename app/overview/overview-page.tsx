@@ -9,6 +9,7 @@ import { LifeTimeLearningFact } from "./life-time-learning-fact";
 import { RecentlyViewedContent } from "./recently-viewed-content";
 import { useGetFacts } from "./use-get-facts";
 import { UserLearningSummary } from "./user-learning-summary";
+import { Personalization } from "@/features/personalization/personalization";
 
 export const OverviewPage = () => {
   const {
@@ -39,6 +40,7 @@ export const OverviewPage = () => {
       <div className="w-full flex justify-start">
         <SearchBar />
       </div>
+
       <UserLearningSummary />
 
       <section className="grid grid-cols-1 sm:grid-cols-12 mt-0 sm:mt-4 gap-4 lg:gap-12">
@@ -91,6 +93,8 @@ export const OverviewPage = () => {
 
         <RecentlyViewedContent />
       </section>
+
+      {/* <Personalization /> */}
     </div>
   );
 };

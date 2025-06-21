@@ -9,12 +9,14 @@ import { useCurrentTime } from "@/components/youtube-page/use-current-time-store
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { ConvoDetails } from "../convo-details";
 import { ConvosNavBar } from "../convos-nav-bar";
 import { useGetContentId } from "./hooks/use-get-content-id";
 import { useRecentlyWatchedContent } from "../use-recently-watched-content-store";
 import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
+import { useListPublishedContentsQuery } from "./hooks/use-list-published-contents-query";
+import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 
 function RemoveIfExistsButton({ contentId }: { contentId: string }) {
   const { recentlyWatched, setRecentlyWatched, isLoading } =
@@ -77,6 +79,46 @@ export default function ContentItem() {
   const router = useRouter();
   const startTimeParam = searchParams.get("start");
   const view = searchParams.get("view");
+
+  const { data } = useListPublishedContentsQuery({});
+
+  const editMode = useContentEditStore((state) => state.editMode);
+
+  const currentIndex = data?.items?.findIndex(
+    (item: any) => item?.id === lessonId
+  );
+
+  const goToNext = useCallback(() => {
+    const nextLesson = data?.items?.[currentIndex + 1];
+    if (nextLesson) {
+      router.push(`/convos/${nextLesson.id}`);
+    }
+  }, [currentIndex, data?.items, router]);
+
+  const goToBefore = useCallback(() => {
+    const nextLesson = data?.items?.[currentIndex - 1];
+    if (nextLesson) {
+      router.push(`/convos/${nextLesson.id}`);
+    }
+  }, [currentIndex, data?.items, router]);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.code === "ArrowDown" && "editMode") {
+        goToNext();
+        return null;
+      }
+      if (event.code === "ArrowUp" && "editMode") {
+        goToBefore();
+        return null;
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [editMode, goToNext, goToBefore]);
 
   useEffect(() => {
     if (currentTime && !startTimeParam) {

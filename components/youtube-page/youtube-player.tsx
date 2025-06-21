@@ -26,18 +26,15 @@ import { Icons } from "../ui/icons.v2";
 import { KaraokeMode } from "./karaoke-mode";
 import { TranscriptItem } from "./youtube-transcript-item";
 
+import { isVideoUrl } from "@/app/(auth)/convos/utils/is-video-url";
+import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { useDebouncedCallback } from "use-debounce";
 import { ActiveTranscription } from "./active-transcription";
-import { useContentEditStore } from "./use-content-edit-store";
-import { useIsSmall } from "./utils/use-is-small";
 import { getActiveTranscriptions } from "./get-active-transcriptions";
-import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
-import { isVideoUrl } from "@/app/(auth)/convos/utils/is-video-url";
-import { getYablaLink } from "./utils/get-yabla-link";
+import { useContentEditStore } from "./use-content-edit-store";
 import { useCurrentTime } from "./use-current-time-store";
-import { smartSplit } from "./utils/smart-split";
-import { CharacterItem } from "../_select-character/character-item";
-import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
+import { getYablaLink } from "./utils/get-yabla-link";
+import { useIsSmall } from "./utils/use-is-small";
 
 const MAX_LIMIT = 9000;
 const THIRTY = 30;
@@ -199,26 +196,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
   );
 
-  const { data } = useListPublishedContentsQuery({});
-
-  const currentIndex = data?.items?.findIndex(
-    (item: any) => item?.id === lessonId
-  );
-
-  const goToNext = () => {
-    const nextLesson = data?.items?.[currentIndex + 1];
-    if (nextLesson) {
-      router.push(`/convos/${nextLesson.id}`);
-    }
-  };
-
-  const goToBefore = () => {
-    const nextLesson = data?.items?.[currentIndex - 1];
-    if (nextLesson) {
-      router.push(`/convos/${nextLesson.id}`);
-    }
-  };
-
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.code === "Space" && !editMode) {
@@ -226,15 +203,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
         event.preventDefault();
         togglePlay();
-        return null;
-      }
-
-      if (event.code === "ArrowDown" && "editMode") {
-        goToNext();
-        return null;
-      }
-      if (event.code === "ArrowUp" && "editMode") {
-        goToBefore();
         return null;
       }
 

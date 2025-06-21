@@ -9,7 +9,7 @@ import { useViewModeStore } from "./use-viewmode-store";
 import Editor from "@monaco-editor/react";
 
 import { useAddContentMutation } from "@/domain/content/content.mutations";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import {
   StepContainerVariant1,
@@ -25,6 +25,8 @@ import {
 } from "@/domain/subtitle/subtitle.queries";
 import { NewConvoInput } from "./new-convo-input";
 
+import { WebVTTParser } from "webvtt-parser";
+
 const contentTypes = [
   "audio",
   "text",
@@ -36,10 +38,38 @@ const contentTypes = [
   "file",
 ];
 
+function parseVTT(_vttString: string, lang: string) {
+  const vttString = `
+WEBVTT
+
+${_vttString?.replaceAll(",", ".")}
+  `;
+  const parser = new WebVTTParser();
+  const tree = parser.parse(vttString, "metadata");
+
+  console.log("TREE", tree);
+
+  const cues = tree.cues.map((rawSub: any) => {
+    const { id, startTime, endTime, text } = rawSub;
+    const tags = /<(v|c).*?>|<\/c>/g;
+
+    return {
+      id: crypto.randomUUID(),
+      start: startTime,
+      end: endTime,
+      input: text?.replace(tags, ""),
+      lang: lang,
+    } as any;
+  });
+
+  return cues;
+}
+
 export function StepView() {
   const [resultView, setResultView] = useState("");
   const [showJSON, setShowJSON] = useState(false);
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
+  const fileInputRef = useRef(null);
 
   const newConvo = useNewConvoStore((state) => state.convo) as any;
   const setConvo = useNewConvoStore((state) => state.setConvo);
@@ -117,8 +147,18 @@ export function StepView() {
   const onFileChange = (e: any) => {
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0], "UTF-8");
+
     fileReader.onload = (e) => {
-      setConvo("transcriptions", JSON.parse(e?.target?.result as any));
+      const result = e?.target?.result as any;
+
+      try {
+        setConvo("transcriptions", JSON.parse(result as any));
+      } catch (err) {
+        const res = parseVTT(result, newConvo?.lang);
+        setConvo("transcriptions", res);
+      }
+      // @ts-ignore
+      fileInputRef.current.value = "";
     };
   };
 
@@ -418,6 +458,7 @@ export function StepView() {
 
             <div>
               <input
+                ref={fileInputRef}
                 type="file"
                 className="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                 onChange={onFileChange}

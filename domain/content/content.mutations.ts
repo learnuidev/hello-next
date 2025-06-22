@@ -28,32 +28,30 @@ export function useAddContentMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
   const listContentsQueryKey = useGetListContentsQueryKey();
-  return useMutation(
-    async (params: AddContentParams) => {
+  return useMutation({
+    mutationFn: async (params: AddContentParams) => {
       const response = await addContent(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
-        }
+    ...options,
+    onSuccess: (data) => {
+      if (options?.onSucess) {
+        options?.onSuccess(data);
+      }
 
-        queryClient.setQueryData(listContentsQueryKey, (old: any) => {
-          return {
-            ...old,
-            items: [data, ...old?.items],
-          };
-        });
-      },
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+      queryClient.setQueryData(listContentsQueryKey, (old: any) => {
+        return {
+          ...old,
+          items: [data, ...old?.items],
+        };
+      });
+    },
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

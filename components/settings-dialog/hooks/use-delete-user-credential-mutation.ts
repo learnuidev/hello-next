@@ -26,22 +26,20 @@ export const useDeleteUserCredentialMutation = (options = {} as any) => {
   const { data: authUser } = useCurrentAuthUser({});
 
   const queryClient = useQueryClient();
-  return useMutation(
-    async (params: { credentialId: string }) => {
+  return useMutation({
+    mutationFn: async (params: { credentialId: string }) => {
       const response = await deleteUserCredential(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
-        }
+    ...options,
+    onSuccess: (data) => {
+      if (options?.onSucess) {
+        options?.onSuccess(data);
+      }
 
-        queryClient.invalidateQueries([listUserCredentialsQueryId]);
-      },
-    }
-  );
+      queryClient.invalidateQueries([listUserCredentialsQueryId] as any);
+    },
+  });
 };

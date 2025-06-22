@@ -49,9 +49,9 @@ export function useListHSKWordsQuery(
       : 2
     : initVersion;
 
-  return useQuery(
-    [queryIds.listHSKWords, authUser?.jwt, version],
-    async () => {
+  return useQuery({
+    queryKey: [queryIds.listHSKWords, authUser?.jwt, version],
+    queryFn: async () => {
       // if (!authUser?.jwt) {
       //   if (version === 2) {
       //     return hsk2WordBank;
@@ -64,14 +64,13 @@ export function useListHSKWordsQuery(
 
       return response;
     },
-    {
-      ...options,
-      enabled: Boolean(version),
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    enabled: Boolean(version),
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

@@ -16,7 +16,7 @@ import { TextAlign } from "@tiptap/extension-text-align";
 // import UploadImagesPlugin from "@/ui/editor/plugins/upload-images";
 // import UpdatedImage from "./updated-image";
 // import CustomKeymap from "./custom-keymap";
-import DragAndDrop from "./drag-and-drop";
+// import DragAndDrop from "./drag-and-drop";
 
 export const defaultExtensions = [
   StarterKit.configure({
@@ -143,5 +143,5 @@ export const defaultExtensions = [
     transformCopiedText: true,
   }),
   //   CustomKeymap,
-  DragAndDrop,
+  // DragAndDrop,
 ];

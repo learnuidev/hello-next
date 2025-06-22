@@ -26,7 +26,7 @@ export const useExtractImageMutation = () => {
         listCharacterContentsQueryKey,
         authUser?.jwt,
         resp?.content,
-      ]);
+      ] as any);
     },
   });
 };

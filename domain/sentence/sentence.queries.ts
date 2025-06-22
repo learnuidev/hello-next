@@ -40,9 +40,9 @@ export function useListSentencesQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery(
-    [queryIds.list_sentences, params?.component, params?.lang],
-    async () => {
+  return useQuery({
+    queryKey: [queryIds.list_sentences, params?.component, params?.lang],
+    queryFn: async () => {
       if (params?.component && params.lang) {
         const response = await listSentences(params, {
           Authorization: authUser?.jwt,
@@ -50,15 +50,13 @@ export function useListSentencesQuery(
         return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
       }
     },
-    {
-      ...options,
-      retry: false,
-      // enabled: Boolean(authUser?.jwt),
-      // cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+    ...options,
+    retry: false,
+    // enabled: Boolean(authUser?.jwt),
+    // cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

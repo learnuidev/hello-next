@@ -14,21 +14,20 @@ const search = async (query: string) => {
 };
 
 export function useSearchQuery(options: any) {
-  return useQuery(
-    [queryIds.search, options?.query],
-    async () => {
+  return useQuery({
+    queryKey: [queryIds.search, options?.query],
+    queryFn: async () => {
       if (options.query) {
         const response = await search(options.query);
         return response;
       }
     },
-    {
-      ...options,
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

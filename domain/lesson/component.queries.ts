@@ -80,9 +80,9 @@ export function useListComponentsQuery(
   const { components, setComponents, lastUpdated, setLastUpdated } =
     useComponents();
 
-  return useQuery(
-    [listComponentsQueryKey, params?.forceReload, lastUpdated],
-    async () => {
+  return useQuery({
+    queryKey: [listComponentsQueryKey, params?.forceReload, lastUpdated],
+    queryFn: async () => {
       // if (options.query) {
 
       if (components && lastUpdated && !hasBeen({ timestamp: lastUpdated })) {
@@ -100,16 +100,15 @@ export function useListComponentsQuery(
 
       return response;
     },
-    {
-      ...options,
-      enabled: Boolean(authUser?.jwt),
 
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+    ...options,
+    enabled: Boolean(authUser?.jwt),
+
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }
 
 export function useListComponents(
@@ -126,7 +125,7 @@ export function useListComponents(
 
   const includeDiscoverOnly = Boolean(options?.discoverOnly);
   return {
-    data: (data || [])
+    data: ((data || []) as any)
 
       ?.filter((item: any) => {
         if (options?.includeAll) {
@@ -172,9 +171,9 @@ export function useListComponentsMapQuery(
   const { components, setComponents, lastUpdated, setLastUpdated } =
     useComponents();
 
-  return useQuery(
-    [listComponentsQueryMapKey, params?.forceReload, lastUpdated],
-    async () => {
+  return useQuery({
+    queryKey: [listComponentsQueryMapKey, params?.forceReload, lastUpdated],
+    queryFn: async () => {
       // if (options.query) {
 
       if (components && lastUpdated && !hasBeen({ timestamp: lastUpdated })) {
@@ -202,14 +201,13 @@ export function useListComponentsMapQuery(
         };
       }, {}) as any;
     },
-    {
-      ...options,
-      enabled: Boolean(authUser?.jwt),
 
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+    ...options,
+    enabled: Boolean(authUser?.jwt),
+
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

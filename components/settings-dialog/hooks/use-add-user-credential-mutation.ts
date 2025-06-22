@@ -29,22 +29,20 @@ export const useAddUserCredentialMutation = (options = {} as any) => {
   const { data: authUser } = useCurrentAuthUser({});
 
   const queryClient = useQueryClient();
-  return useMutation(
-    async (params: AddCredentialParams) => {
+  return useMutation({
+    mutationFn: async (params: AddCredentialParams) => {
       const response = await addUserCredential(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
-        }
+    ...options,
+    onSuccess: (data) => {
+      if (options?.onSucess) {
+        options?.onSuccess(data);
+      }
 
-        queryClient.invalidateQueries([listUserCredentialsQueryId]);
-      },
-    }
-  );
+      queryClient.invalidateQueries([listUserCredentialsQueryId] as any);
+    },
+  });
 };

@@ -30,31 +30,29 @@ const updateComponentSummary = async (
 export function useUpdateComponentSummaryMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
-  return useMutation(
-    async (params: UpdateComponentSummaryParams) => {
+  return useMutation({
+    mutationFn: async (params: UpdateComponentSummaryParams) => {
       const response = await updateComponentSummary(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
-        }
+    ...options,
+    onSuccess: (data: any) => {
+      if (options?.onSucess) {
+        options?.onSuccess(data);
+      }
 
-        queryClient.invalidateQueries([
-          listMeaningQueryKey,
-          data?.sentenceId,
-          data?.lang,
-        ]);
-      },
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+      queryClient.invalidateQueries([
+        listMeaningQueryKey,
+        data?.sentenceId,
+        data?.lang,
+      ] as any);
+    },
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

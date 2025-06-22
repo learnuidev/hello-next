@@ -38,9 +38,9 @@ export function useGetComponentQuery(
     useComponents();
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery(
-    [getComponentQueryKey, params?.hanzi, authUser?.jwt],
-    async () => {
+  return useQuery({
+    queryKey: [getComponentQueryKey, params?.hanzi, authUser?.jwt],
+    queryFn: async () => {
       // if (options.query) {
       const response = await getComponent(params, {
         Authorization: authUser?.jwt,
@@ -48,21 +48,20 @@ export function useGetComponentQuery(
 
       return response;
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        setComponents(
-          components.map((comp: any) => {
-            return comp?.hanzi === data?.hanzi ? data : comp;
-          })
-        );
-      },
-      enabled: Boolean(authUser?.jwt),
 
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+    ...options,
+    onSuccess: (data: any) => {
+      setComponents(
+        components.map((comp: any) => {
+          return comp?.hanzi === data?.hanzi ? data : comp;
+        })
+      );
+    },
+    enabled: Boolean(authUser?.jwt),
+
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

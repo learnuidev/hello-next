@@ -26,14 +26,13 @@ import { Nothing } from "./nothing";
 import { PreviewComponent } from "./preview-component";
 import { useGetSelectedBelt } from "./use-get-selected-belt";
 import { useGetNmmParams } from "./use-get-nmm-params";
-import { useScroll } from "react-spring";
+
 import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 // import { useScroll } from "framer-motion";
 
 export function NmmCoreComponents() {
   const searchParams = useSearchParams();
-  const { scrollYProgress } = useScroll();
 
   const searchQueryParams = searchParams.get("query") || "";
   const routeName = usePathname();

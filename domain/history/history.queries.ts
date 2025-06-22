@@ -29,7 +29,7 @@ export function useListHistoryQuery() {
       };
     },
     enabled: Boolean(authUser?.jwt),
-    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    // cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
     // refetchOnFocus: false,
     refetchOnMount: false,

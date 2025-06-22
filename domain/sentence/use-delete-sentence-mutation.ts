@@ -30,22 +30,23 @@ const deleteSentence = async (
 export function useDeleteSentenceMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
-  return useMutation(
-    async (params: DeleteSentenceParams) => {
+  return useMutation({
+    mutationFn: async (params: DeleteSentenceParams) => {
       const response = await deleteSentence(params, {
         Authorization: authUser?.jwt,
       });
       return { ...response, componentId: params?.component };
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
-        }
+    ...options,
+    onSuccess: (data: any) => {
+      if (options?.onSucess) {
+        options?.onSuccess(data);
+      }
 
-        queryClient.refetchQueries([listSentencesQueryKey, data?.componentId]);
-      },
-    }
-  );
+      queryClient.refetchQueries([
+        listSentencesQueryKey,
+        data?.componentId,
+      ] as any);
+    },
+  });
 }

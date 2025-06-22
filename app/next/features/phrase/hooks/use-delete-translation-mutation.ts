@@ -10,7 +10,7 @@ export const useDeleteTranslationMutation = (contextId: string) => {
 
   return useMutation({
     onSuccess: () => {
-      queryClient.refetchQueries([listTranslationsQueryKey, contextId]);
+      queryClient.refetchQueries([listTranslationsQueryKey, contextId] as any);
     },
     mutationFn: async (props: { id: string }) => {
       const res = await fetch(`${siteConfig.apiUrlV2}/v1/delete-translation`, {

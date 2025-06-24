@@ -70,6 +70,7 @@ export function useUploadFile(cb?: any, ctx?: any, props?: any) {
         uploadBucketKey: s3Key,
         ...ctx,
       })
+      // @ts-ignore
       .then(async (resp: UploadFileResponse) => {
         console.log("UPLOADED", resp);
 

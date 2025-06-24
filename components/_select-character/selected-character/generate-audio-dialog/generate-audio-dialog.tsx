@@ -128,6 +128,7 @@ export function GenerateAudioDialog({
             .then((resp) => {
               setResourceStatus(null);
               setAudioResource(null);
+              // @ts-ignore
               queryClient.invalidateQueries([
                 listMeaningQueryKey,
                 currentPhrase?.hanzi,
@@ -203,6 +204,7 @@ export function GenerateAudioDialog({
                             // alert(JSON.stringify(resp));
                             setResourceStatus(null);
                             setAudioResource(null);
+                            // @ts-ignore
                             queryClient.invalidateQueries([
                               getComponentQueryKey,
                               currentPhrase?.hanzi,
@@ -237,6 +239,7 @@ export function GenerateAudioDialog({
                         .then((resp) => {
                           setResourceStatus(null);
                           setAudioResource(null);
+                          // @ts-ignore
                           queryClient.invalidateQueries([
                             listMeaningQueryKey,
                             currentPhrase?.hanzi,

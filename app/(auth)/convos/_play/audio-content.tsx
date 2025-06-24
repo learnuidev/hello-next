@@ -39,7 +39,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   const { data: hskWords } = useListHSKWordsQuery();
 
-  const { data } = useListSpeakQuery();
+  const { data } = useListSpeakQuery() as any;
 
   const lessonsArr = data?.lessons;
 

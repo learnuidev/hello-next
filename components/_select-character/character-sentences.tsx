@@ -385,13 +385,16 @@ export const CharacterSentences = (props: { characterId: string }) => {
                                 );
 
                                 if (hanz?.pinyin === "??") {
-                                  return discoverMutation
-                                    .mutateAsync({
-                                      hanzi: hanz?.hanzi,
-                                    })
-                                    .then((resp) => {
-                                      console.log("Discovered!!");
-                                    });
+                                  return (
+                                    discoverMutation
+                                      // @ts-ignore
+                                      .mutateAsync({
+                                        hanzi: hanz?.hanzi,
+                                      })
+                                      .then((resp) => {
+                                        console.log("Discovered!!");
+                                      })
+                                  );
                                 }
                               }}
                               className={`text-sm ${
@@ -418,13 +421,16 @@ export const CharacterSentences = (props: { characterId: string }) => {
                                 );
 
                                 if (hanz?.pinyin === "??") {
-                                  return discoverMutation
-                                    .mutateAsync({
-                                      hanzi: hanz?.hanzi,
-                                    })
-                                    .then((resp) => {
-                                      console.log("Discovered!!");
-                                    });
+                                  return (
+                                    discoverMutation
+                                      // @ts-ignore
+                                      .mutateAsync({
+                                        hanzi: hanz?.hanzi,
+                                      })
+                                      .then((resp) => {
+                                        console.log("Discovered!!");
+                                      })
+                                  );
                                 }
                               }}
                             >

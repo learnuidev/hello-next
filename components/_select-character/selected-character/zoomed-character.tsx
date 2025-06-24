@@ -26,6 +26,7 @@ const ZoomedCharacterItem = ({
         <button
           disabled={addCharacterMutation.isPending}
           onClick={() => {
+            // @ts-ignore
             addCharacterMutation?.mutateAsync({
               lang: sentence?.lang,
               status: "DISCOVERED",

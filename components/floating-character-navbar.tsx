@@ -44,6 +44,7 @@ const DiscoverButton = ({ characterId }: { characterId: string }) => {
       disabled={discoverMutation.isPending || discoverMutation.isSuccess}
       onClick={() => {
         discoverMutation
+          // @ts-ignore
           .mutateAsync({
             hanzi: characterId,
             // story: "todo",

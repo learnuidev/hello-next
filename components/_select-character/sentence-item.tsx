@@ -119,6 +119,7 @@ export const SentenceItem = (props: any) => {
               }
               className={`text-xs bg-white dark:bg-black p-2 w-6 h-6 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
               onDoubleClick={() => {
+                // @ts-ignore
                 deleteSentenceMutation?.mutateAsync({
                   id: currentPhrase?.id,
                   component: componentId,

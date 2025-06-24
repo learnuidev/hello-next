@@ -157,10 +157,14 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
           const text = state.doc.textBetween(from, to, "");
           alert(text);
 
-          return addSentenceMutation.mutateAsync({
-            component: decodeURIComponent(params?.["component-id"]),
-            input: text,
-          });
+          return (
+            addSentenceMutation
+              // @ts-ignore
+              .mutateAsync({
+                component: decodeURIComponent(params?.["component-id"]),
+                input: text,
+              })
+          );
         },
         // text: "Add",
       },

@@ -74,6 +74,7 @@ export function DeleteApiKeyDialog({
               type="submit"
               onClick={() => {
                 deleteUserCredentialMutation
+                  // @ts-ignore
                   .mutateAsync({
                     credentialId: credential?.id || "",
                   })

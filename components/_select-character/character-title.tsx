@@ -238,6 +238,7 @@ export const CharacterTitle = (props: any) => {
               disabled={updateMeaningMutation.isPending}
               onClick={() => {
                 updateMeaningMutation
+                  // @ts-ignore
                   .mutateAsync({
                     id: meaning?.id,
                     details: {

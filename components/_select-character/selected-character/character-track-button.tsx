@@ -28,6 +28,7 @@ export const CharacterTrackButton = () => {
         }
         disabled={updateCharacterMutation.isPending}
         onClick={() => {
+          // @ts-ignore
           updateCharacterMutation.mutateAsync({
             characterId: characterItem?.id,
             track: !Boolean(characterItem?.track),

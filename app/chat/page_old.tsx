@@ -165,14 +165,17 @@ export default function Home() {
 
   useEffect(() => {
     const updateThreadAsyncFunction = async () => {
-      return updateThreadMutation
-        .mutateAsync({
-          threadId: searchParams.get("thread") || "",
-          messages,
-        })
-        .then((resp) => {
-          alert("updated");
-        });
+      return (
+        updateThreadMutation
+          // @ts-ignore
+          .mutateAsync({
+            threadId: searchParams.get("thread") || "",
+            messages,
+          })
+          .then((resp) => {
+            alert("updated");
+          })
+      );
     };
 
     if (updateThread) {
@@ -221,13 +224,15 @@ export default function Home() {
                 handleSubmit(event);
                 // handleSubmit(event);
                 // handleSubmit(event);
+
                 addThreadMutation
+                  // @ts-ignore
                   .mutateAsync({
                     id: threadId,
                     query: input,
                     messages: messages,
                   })
-                  .then((resp) => {
+                  .then((resp: any) => {
                     // handleSubmit(event);
                     router.push(`/chat?thread=${resp.id}`);
                   });

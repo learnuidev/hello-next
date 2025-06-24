@@ -46,6 +46,7 @@ export const UploadAudioButton = (props: {
     });
 
     addUserAssetMutation
+      // @ts-ignore
       .mutateAsync({
         id,
         contentType,
@@ -57,11 +58,13 @@ export const UploadAudioButton = (props: {
         console.log("UPLOADED");
 
         if (props?.meaningId) {
+          // @ts-ignore
           updateMeaningMutation.mutateAsync({
             id: props.meaningId,
             audioUrl: assetUrl,
           });
         } else {
+          // @ts-ignore
           updateComponentMutation.mutateAsync({
             id: props?.currentPhrase?.id,
             audio: assetUrl,

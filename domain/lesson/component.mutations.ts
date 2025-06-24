@@ -47,6 +47,7 @@ export function useDeleteComponentMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
+      // @ts-ignore
       queryClient.invalidateQueries([listCharactersQueryId]);
     },
 

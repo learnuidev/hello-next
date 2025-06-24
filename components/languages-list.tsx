@@ -18,9 +18,7 @@ export const useListLanguages = () => {
 
   const langs = [
     ...(new Set(
-      [...(characters || []), ...(components || [])]?.map(
-        (x: { lang: string }) => x?.lang
-      )
+      [...(characters || []), ...(components || [])]?.map((x) => x?.lang)
     ) as any),
   ]
     ?.filter(Boolean)

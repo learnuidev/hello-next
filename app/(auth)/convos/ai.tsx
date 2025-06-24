@@ -190,7 +190,7 @@ const AgentAnswer = ({
                 summary: message.content,
 
                 updatedAt: Date.now(),
-              });
+              } as any);
             }}
           >
             Update summary

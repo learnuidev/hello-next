@@ -49,6 +49,17 @@ export interface IContent {
   author: string;
   lang: string;
   audio: string;
+  userId: string;
+  chapters: {
+    title: string;
+    input: string;
+    roman: string;
+    lit: string;
+    hanzi?: string;
+    pinyin?: string;
+    id?: string;
+    en?: string;
+  }[];
   transcriptions: {
     hanzi: string;
     start: number;

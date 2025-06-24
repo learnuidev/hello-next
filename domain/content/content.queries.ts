@@ -25,7 +25,18 @@ interface Content {
   sourceUrl?: string;
   uploadBucketKey?: string;
   title: string;
+  userId: string;
+
   transcriptions: {
+    input: string;
+    roman: string;
+    lit: string;
+    hanzi?: string;
+    pinyin?: string;
+    id?: string;
+    en?: string;
+  }[];
+  chapters: {
     input: string;
     roman: string;
     lit: string;
@@ -108,7 +119,7 @@ export function useGetContentQuery(
 
   const queryClient = useQueryClient();
 
-  return useQuery({
+  return useQuery<IContent, any, any>({
     // @ts-ignore
     queryKey: [getContentQueryId, params.contentId],
     queryFn: async () => {

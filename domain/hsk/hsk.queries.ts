@@ -49,7 +49,7 @@ export function useListHSKWordsQuery(
       : 2
     : initVersion;
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [queryIds.listHSKWords, authUser?.jwt, version],
     queryFn: async () => {
       // if (!authUser?.jwt) {

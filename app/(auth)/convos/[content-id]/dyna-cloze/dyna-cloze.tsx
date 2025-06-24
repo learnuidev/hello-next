@@ -486,7 +486,7 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
     useDyanStoreRuntime();
   const { data: content, isLoading } = useGetContentQuery({
     contentId,
-  });
+  }) as any;
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(
     contentId,

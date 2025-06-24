@@ -72,7 +72,7 @@ export function useListCharactersQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery<any, any, any>({
+  return useQuery<ICharacter[], Error>({
     queryKey: [listCharactersQueryId],
     queryFn: async () => {
       // if (options.query) {

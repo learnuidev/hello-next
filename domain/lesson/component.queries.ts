@@ -80,7 +80,7 @@ export function useListComponentsQuery(
   const { components, setComponents, lastUpdated, setLastUpdated } =
     useComponents();
 
-  return useQuery<any, any, any>({
+  return useQuery({
     queryKey: [listComponentsQueryKey, params?.forceReload, lastUpdated],
     queryFn: async () => {
       // if (options.query) {
@@ -151,7 +151,7 @@ export function useListComponents(
       // .sort((a: any, b: any) => (a.level || 0) - (b.level || 0)),
       .sort(
         (a: any, b: any) => (b?.mandarinoIndex || 0) - (a?.mandarinoIndex || 0)
-      ),
+      ) as IComponent[],
     ...rest,
   };
 }

@@ -86,7 +86,7 @@ export const ContentsListEffect = ({
                   <CardTitle className="line-clamp-1">{item.title}</CardTitle>
                 </Link>
                 <button
-                  disabled={toggleFavouritContentMutation.isLoading}
+                  disabled={toggleFavouritContentMutation.isPending}
                   className="text-xl"
                   onClick={() => {
                     if (isFavourited) {

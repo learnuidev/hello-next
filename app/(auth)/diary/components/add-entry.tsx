@@ -59,7 +59,7 @@ export const AddEntry = () => {
           onChange={(event) => {
             setText(event.target.value);
           }}
-          disabled={addJournalMutation.isLoading}
+          disabled={addJournalMutation.isPending}
           placeholder="Type your thoughts here..."
           className="p-4 w-full h-[260px] rounded-xl focus-visible:outline-none focus-visible:ring-ring"
         />
@@ -72,7 +72,7 @@ export const AddEntry = () => {
                   setShowGrammar(!showGrammar);
                 }}
                 // disabled={
-                //   text?.split(" ")?.length < 20 || fixGrammarMutation.isLoading
+                //   text?.split(" ")?.length < 20 || fixGrammarMutation.isPending
                 // }
                 className="mt-4"
               >
@@ -92,11 +92,11 @@ export const AddEntry = () => {
                   });
               }}
               disabled={
-                text?.split(" ")?.length < 3 || fixGrammarMutation.isLoading
+                text?.split(" ")?.length < 3 || fixGrammarMutation.isPending
               }
               className="mt-4 rounded-full"
             >
-              {fixGrammarMutation.isLoading ? "Fixing..." : "Fix Grammar"}
+              {fixGrammarMutation.isPending ? "Fixing..." : "Fix Grammar"}
             </Button>
             <Button
               onClick={() => {
@@ -110,11 +110,11 @@ export const AddEntry = () => {
                   });
               }}
               disabled={
-                text?.split(" ")?.length < 10 || addJournalMutation.isLoading
+                text?.split(" ")?.length < 10 || addJournalMutation.isPending
               }
               className="mt-4 rounded-full"
             >
-              {addJournalMutation.isLoading ? "Adding..." : "Add New Journal"}
+              {addJournalMutation.isPending ? "Adding..." : "Add New Journal"}
             </Button>
           </div>
         </div>
@@ -123,7 +123,7 @@ export const AddEntry = () => {
           <textarea
             value={correctedGrammar}
             readOnly
-            disabled={addJournalMutation.isLoading}
+            disabled={addJournalMutation.isPending}
             placeholder="Type your thoughts here..."
             className="mt-8 p-4 w-full h-[220px] rounded-xl focus-visible:outline-none focus-visible:ring-ring"
           />

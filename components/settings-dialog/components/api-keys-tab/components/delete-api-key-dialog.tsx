@@ -83,7 +83,7 @@ export function DeleteApiKeyDialog({
                   });
               }}
             >
-              {deleteUserCredentialMutation?.isLoading
+              {deleteUserCredentialMutation.isPending
                 ? "Revoking..."
                 : "Revoke"}
             </Button>

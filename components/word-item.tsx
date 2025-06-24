@@ -53,7 +53,7 @@ export const WordItem = ({
         href={`/nmm/${prop?.input || prop?.hanzi}?lang=${prop?.lang || lang}`}
         key={JSON.stringify(prop)}
         onClick={() => {
-          if (!addHistoryMutation?.isLoading) {
+          if (!addHistoryMutation.isPending) {
             // addHistoryMutation.mutate({
             //   // pathName: routeName,
             //   hanzi: prop?.input || prop?.hanzi,

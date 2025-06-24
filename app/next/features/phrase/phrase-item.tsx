@@ -127,7 +127,7 @@ export function PhraseItem({
                 deleteTranslationMutation.mutateAsync({ id: message?.id });
               }}
             >
-              {deleteTranslationMutation.isLoading ? (
+              {deleteTranslationMutation.isPending ? (
                 <Icons.loadingSpinner spinPulse />
               ) : (
                 <Icons.trash />

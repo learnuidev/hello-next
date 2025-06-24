@@ -56,7 +56,7 @@ export function SentencesList({ lang }: { lang: string }) {
             href={`/nmm/${prop?.input || prop?.hanzi}?lang=${prop?.lang || lang}`}
             key={JSON.stringify(prop)}
             onClick={() => {
-              if (!addHistoryMutation?.isLoading) {
+              if (!addHistoryMutation.isPending) {
                 // addHistoryMutation.mutate({
                 //   // pathName: routeName,
                 //   input: prop?.input || prop?.hanzi,

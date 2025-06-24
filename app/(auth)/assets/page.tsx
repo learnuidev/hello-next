@@ -115,7 +115,7 @@ export default function Assets() {
                           });
                       }}
                     >
-                      {deleteUserAssetMutation?.isLoading ? (
+                      {deleteUserAssetMutation.isPending ? (
                         <Icons.spinner spinPulse />
                       ) : (
                         "Delete"

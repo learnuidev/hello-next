@@ -175,7 +175,7 @@ export function GenerateAudioDialog({
           <NarakeetVoicesList />
 
           <div className="mt-8">
-            {startGeneratingAudioMutation?.isLoading ? (
+            {startGeneratingAudioMutation.isPending ? (
               <p>Generating...</p>
             ) : !data ? (
               <div> </div>

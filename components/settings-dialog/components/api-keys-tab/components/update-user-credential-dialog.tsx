@@ -208,7 +208,7 @@ export function UpdateUserCredentialDialog({
                     });
                 }}
               >
-                {updateUserCredentialMutation?.isLoading
+                {updateUserCredentialMutation.isPending
                   ? "Updating..."
                   : "Update"}
               </Button>

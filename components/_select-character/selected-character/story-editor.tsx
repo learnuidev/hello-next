@@ -52,7 +52,7 @@ export const StoryEditor = ({
               });
           }}
         >
-          {updateStoryMutation.isLoading ? (
+          {updateStoryMutation.isPending ? (
             <Icons.spinner spinPulse />
           ) : false ? (
             <Icons.checkCircle className="transition" />

@@ -18,13 +18,13 @@ export function FeatureContextProvider({
   );
 }
 
-function _useFeatureContext() {
+function useFeatureContextInner() {
   const phraseContext = useContext(FeatureContext);
   return phraseContext;
 }
 
 export function useFeatureContext() {
-  const ctx = _useFeatureContext();
+  const ctx = useFeatureContextInner();
   return {
     rootUrl: ctx?.rootUrl || "",
   };

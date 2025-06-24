@@ -69,7 +69,7 @@ export function ReadModeItemHanzi({
         }
         onMouseEnter={() => {
           setFocused(text);
-          if (!translations?.[text] && !translateTextMutation?.isLoading) {
+          if (!translations?.[text] && !translateTextMutation.isPending) {
             translateTextMutation
               .mutateAsync({
                 targetLang: "en",

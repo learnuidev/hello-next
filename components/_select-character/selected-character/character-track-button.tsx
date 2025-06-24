@@ -26,7 +26,7 @@ export const CharacterTrackButton = () => {
         className={
           characterItem?.track ? "dark:text-white text-black" : "text-gray-700"
         }
-        disabled={updateCharacterMutation?.isLoading}
+        disabled={updateCharacterMutation.isPending}
         onClick={() => {
           updateCharacterMutation.mutateAsync({
             characterId: characterItem?.id,
@@ -36,7 +36,7 @@ export const CharacterTrackButton = () => {
           // speak(selectedCompInput);
         }}
       >
-        {updateCharacterMutation?.isLoading ? (
+        {updateCharacterMutation.isPending ? (
           <Icons.spinner className="dark:text-white text-black" spinPulse />
         ) : (
           <Icons.track className="text-2xl" />

@@ -42,6 +42,26 @@ export const listContents = async (
   return resp;
 };
 
+export interface IContent {
+  id: string;
+  title: string;
+  description: string;
+  author: string;
+  lang: string;
+  audio: string;
+  transcriptions: {
+    hanzi: string;
+    start: number;
+    end: number;
+    id: string;
+    input: string;
+    roman: string;
+    pinyin: string;
+    lang: string;
+    sentence?: string;
+  }[];
+}
+
 export const getContent = async (
   params: { contentId: string },
   opts: { Authorization: string }
@@ -62,5 +82,17 @@ export const getContent = async (
   }
   const resp = (await res.json()) as any;
 
-  return resp;
+  return {
+    ...resp,
+    transcriptions: resp?.transcriptions?.map((transcription: any) => {
+      if (!transcription?.start) {
+        return {
+          ...transcription,
+          start: 0,
+          end: 0,
+        };
+      }
+      return transcription;
+    }),
+  } as IContent;
 };

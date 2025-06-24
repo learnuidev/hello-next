@@ -183,7 +183,7 @@ const AgentAnswer = ({
 
         {isSuperAdmin && (
           <button
-            disabled={updateContentMutation?.isLoading}
+            disabled={updateContentMutation.isPending}
             onClick={() => {
               return updateContentMutation.mutateAsync({
                 id: contentId,

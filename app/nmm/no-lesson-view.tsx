@@ -43,8 +43,8 @@ export const NoLessonView = ({
 
           <div className="flex items-center w-full justify-center">
             <button
-              disabled={addStepsMutation?.isLoading}
-              className={addStepsMutation?.isLoading ? "text-gray-400" : ""}
+              disabled={addStepsMutation.isPending}
+              className={addStepsMutation.isPending ? "text-gray-400" : ""}
               onClick={() => {
                 addStepsMutation
                   ?.mutateAsync({
@@ -60,7 +60,7 @@ export const NoLessonView = ({
                   });
               }}
             >
-              {addStepsMutation?.isLoading ? "Creating" : "Create one"}
+              {addStepsMutation.isPending ? "Creating" : "Create one"}
             </button>
           </div>
         </div>

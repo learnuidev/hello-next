@@ -27,7 +27,7 @@ export const BookmarkButton = (props: {
   return (
     <button
       disabled={
-        deleteBookMarkMutation?.isLoading || addBookMarkMutation?.isLoading
+        deleteBookMarkMutation.isPending || addBookMarkMutation.isPending
       }
       onClick={() => {
         if (bookmarked) {
@@ -46,7 +46,7 @@ export const BookmarkButton = (props: {
       }}
       className={cn("text-xl", className)}
     >
-      {deleteBookMarkMutation?.isLoading || addBookMarkMutation?.isLoading ? (
+      {deleteBookMarkMutation.isPending || addBookMarkMutation.isPending ? (
         <Icons.spinner spinPulse />
       ) : bookmarked ? (
         <Icons.bookmarkSolid />

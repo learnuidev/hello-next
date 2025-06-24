@@ -305,7 +305,7 @@ export function ReviewModeClassic(props: any) {
     <div className="grow text-center">
       <ReviewHeader />
 
-      {updateCharacterStatusMutation?.isLoading ||
+      {updateCharacterStatusMutation.isPending ||
       !characterHanziOrInput ? null : (
         <div>
           {isParagraph ? (
@@ -316,7 +316,7 @@ export function ReviewModeClassic(props: any) {
         </div>
       )}
 
-      {updateCharacterStatusMutation?.isLoading ||
+      {updateCharacterStatusMutation.isPending ||
       isRefetching ||
       !characterHanziOrInput ? (
         <div className="my-32">
@@ -371,7 +371,7 @@ export function ReviewModeClassic(props: any) {
         <p className=" text-gray-500">{overConfidentWarning} </p>
       )}
 
-      {updateCharacterStatusMutation?.isLoading ? null : (
+      {updateCharacterStatusMutation.isPending ? null : (
         <div className="space-x-12 sm:space-x-16 md:space-x-24 my-8 md:text-5xl sm:text-3xl text-2xl">
           {overConfidentWarning ? (
             <>
@@ -404,7 +404,7 @@ export function ReviewModeClassic(props: any) {
                 return (
                   <button
                     key={JSON.stringify(option)}
-                    disabled={updateCharacterStatusMutation?.isLoading}
+                    disabled={updateCharacterStatusMutation.isPending}
                     className="hover:text-rose-400 font-extralight"
                     onClick={() => {
                       const { timeTaken } = getEndTimeAndDiff(
@@ -469,7 +469,7 @@ export function ReviewModeClassic(props: any) {
                 return (
                   <button
                     key={JSON.stringify(option)}
-                    disabled={updateCharacterStatusMutation?.isLoading}
+                    disabled={updateCharacterStatusMutation.isPending}
                     className="hover:text-rose-400 font-extralight"
                     onClick={() => {
                       const { timeTaken } = getEndTimeAndDiff(
@@ -525,7 +525,7 @@ export function ReviewModeClassic(props: any) {
           ) : reveal ? (
             <>
               <button
-                disabled={updateCharacterStatusMutation?.isLoading}
+                disabled={updateCharacterStatusMutation.isPending}
                 className="hover:text-green-400"
                 onClick={() => {
                   setShowCorrectOptions(true);
@@ -534,7 +534,7 @@ export function ReviewModeClassic(props: any) {
                 <Icons.check />
               </button>
               <button
-                disabled={updateCharacterStatusMutation?.isLoading}
+                disabled={updateCharacterStatusMutation.isPending}
                 onClick={() => {
                   if (reviewSpeed) {
                     const { timeTaken } = getEndTimeAndDiff(startTime, endTime);
@@ -589,7 +589,7 @@ export function ReviewModeClassic(props: any) {
               </button>
 
               <button
-                disabled={updateCharacterStatusMutation?.isLoading}
+                disabled={updateCharacterStatusMutation.isPending}
                 onClick={() => {
                   if (currentCharacter?.reviewHistory === undefined) {
                     setOverConfidenceWarning(
@@ -612,7 +612,7 @@ export function ReviewModeClassic(props: any) {
           ) : isRefetching ? null : (
             <>
               <button
-                disabled={updateCharacterStatusMutation?.isLoading}
+                disabled={updateCharacterStatusMutation.isPending}
                 onClick={() => {
                   setReveal(true);
                   setEndTime(Date.now());
@@ -624,7 +624,7 @@ export function ReviewModeClassic(props: any) {
           )}
         </div>
       )}
-      {updateCharacterStatusMutation?.isLoading ? null : (
+      {updateCharacterStatusMutation.isPending ? null : (
         <div className="space-x-12 mt-12 text-3xl">
           {
             // showOptions ? (
@@ -652,7 +652,7 @@ export function ReviewModeClassic(props: any) {
             //       return (
             //         <button
             //           key={JSON.stringify(option)}
-            //           disabled={updateCharacterStatusMutation?.isLoading}
+            //           disabled={updateCharacterStatusMutation.isPending}
             //           className="hover:text-rose-400 font-extralight"
             //           onClick={() => {
             //             setEmotion(option.value);
@@ -706,7 +706,7 @@ export function ReviewModeClassic(props: any) {
                   return (
                     <button
                       key={JSON.stringify(option)}
-                      disabled={updateCharacterStatusMutation?.isLoading}
+                      disabled={updateCharacterStatusMutation.isPending}
                       className={cn("hover:text-rose-400 font-extralight")}
                       onClick={() => {
                         setEmotion(option.value);
@@ -726,7 +726,7 @@ export function ReviewModeClassic(props: any) {
         </div>
       )}
 
-      {updateCharacterStatusMutation?.isLoading
+      {updateCharacterStatusMutation.isPending
         ? null
         : reveal && (
             <div className="mt-16 text-[rgb(31,32,33)] font-extralight flex space-x-6 items-center justify-center">

@@ -114,7 +114,7 @@ export const SentenceItem = (props: any) => {
           {isSuperAdmin && currentPhrase?.id && (
             <button
               disabled={
-                deleteSentenceMutation?.isLoading ||
+                deleteSentenceMutation.isPending ||
                 deleteSentenceMutation.isSuccess
               }
               className={`text-xs bg-white dark:bg-black p-2 w-6 h-6 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
@@ -125,7 +125,7 @@ export const SentenceItem = (props: any) => {
                 });
               }}
             >
-              {deleteSentenceMutation?.isLoading ? (
+              {deleteSentenceMutation.isPending ? (
                 <Icons.spinner spinPulse />
               ) : (
                 <Icons.trash />

@@ -10,8 +10,6 @@ export const TextContent = () => {
     <div className="flex flex-col justify-end items-center gap-4 w-full">
       <textarea
         value={contextText}
-        //   readOnly
-        // disabled={addJournalMutation.isLoading}
         onChange={(event) => {
           setContextText(event.target.value);
         }}

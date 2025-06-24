@@ -12,6 +12,7 @@ import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { useRouter } from "next/navigation";
+import { IContent } from "@/domain/content/content.api";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -256,13 +257,15 @@ export const AudioPlayer = () => {
   const [viewMode, setViewMode] = useState("core");
 
   const { contentId } = useContentItemParams();
-  const { data: content } = useGetContentQuery({ contentId });
+  const { data } = useGetContentQuery({ contentId });
+
+  const content = data as IContent;
 
   const { isPlaying, togglePlay, seek, currentTime, reset } = useMusicV2({
     url: content?.audio || "",
   });
 
-  const activeSubtitle = content?.transcriptions?.find(
+  const activeSubtitle: any = content?.transcriptions?.find(
     (subtitle: any) =>
       currentTime > subtitle?.start && currentTime < subtitle.end
   );
@@ -378,7 +381,7 @@ export const AudioPlayer = () => {
             audioUploadBucketKey: res.uploadBucketKey,
             audioS3LinkAddedAt: Date.now(),
             updateContent: true,
-          });
+          } as any);
         }}
       />
       {/* )} */}
@@ -404,14 +407,14 @@ export const AudioPlayer = () => {
             updateContentMutation
               .mutateAsync({
                 ...editedTranscriptions,
-              })
+              } as any)
               .then((resp) => {
                 setEditMode();
                 // resetTimes();
               });
           }}
         >
-          {updateContentMutation?.isLoading ? "Saving..." : "Save"}
+          {updateContentMutation.isPending ? "Saving..." : "Save"}
         </button>
       )}
 

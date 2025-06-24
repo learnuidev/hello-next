@@ -100,7 +100,7 @@ export function Summary({
                     });
                 }}
               >
-                {updateSummaryMutation.isLoading ? (
+                {updateSummaryMutation.isPending ? (
                   <Icons.spinner spinPulse />
                 ) : false ? (
                   <Icons.checkCircle className="transition" />

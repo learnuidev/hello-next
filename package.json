@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@11labs/react": "^0.0.4",
+    "@ai-sdk/deepseek": "^0.2.14",
+    "@ai-sdk/openai": "^1.3.22",
     "@codesandbox/sandpack-react": "2.20.00",
     "@distube/ytdl-core": "^4.15.1",
     "@fortawesome/fontawesome-svg-core": "6.7.2",

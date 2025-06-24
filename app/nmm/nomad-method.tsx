@@ -76,7 +76,7 @@ export function NomadMethod({
     );
   }
 
-  if (addStepsMutation?.isLoading || isFetching) {
+  if (addStepsMutation.isPending || isFetching) {
     // load lottile files here
     return <LottieLoadingAnimation />;
   }

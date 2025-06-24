@@ -90,7 +90,7 @@ export const JournalEntryItem = ({
             }}
             className="text-gray-500"
           >
-            {deleteJournalMutation?.isLoading ? (
+            {deleteJournalMutation.isPending ? (
               <Icons.spinner spinPulse />
             ) : (
               <Icons.trash />

@@ -3,7 +3,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
-import { getContent, listContents } from "./content.api";
+import { getContent, IContent, listContents } from "./content.api";
 
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
@@ -115,25 +115,11 @@ export function useGetContentQuery(
       const response = await getContent(params, {
         Authorization: authUser?.jwt,
       });
-      return {
-        ...response,
-        transcriptions: response?.transcriptions?.map((transcription: any) => {
-          if (!transcription?.start) {
-            return {
-              ...transcription,
-              start: 0,
-              end: 0,
-            };
-          }
-          return transcription;
-        }),
-      };
-
-      // }
+      return response;
     },
     retry: false,
     // @ts-ignore
-    onSuccess: (data: any) => {
+    onSuccess: (data: IContent) => {
       opts?.onSuccess?.(data);
       queryClient.setQueryData([listContentsQueryKey, true], (old: any) => {
         return {

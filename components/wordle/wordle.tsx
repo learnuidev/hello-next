@@ -93,7 +93,7 @@ export function Wordle({ contentId }: { contentId: string }) {
               />
               {gameStatus === "win" && (
                 <WinButton onClick={winHandler}>
-                  {addAnswerMutation?.isLoading ? "Loading 。。。" : "Continue"}
+                  {addAnswerMutation.isPending ? "Loading 。。。" : "Continue"}
                 </WinButton>
               )}
             </div>

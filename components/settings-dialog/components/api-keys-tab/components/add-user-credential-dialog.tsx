@@ -219,7 +219,7 @@ export function AddUserCredentialDialog({
                     });
                 }}
               >
-                {addUserCredentialMutation?.isLoading
+                {addUserCredentialMutation.isPending
                   ? "Creating..."
                   : "Create secret key"}
               </Button>

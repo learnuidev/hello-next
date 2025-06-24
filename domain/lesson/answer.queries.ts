@@ -101,7 +101,7 @@ export function useListAnswersQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [queryIds.listAnswers, params?.journeyId],
     queryFn: async () => {
       // if (options.query) {

@@ -46,7 +46,7 @@ export function useListSuperComponentsQuery(
 
   const { data: chineseCharacters } = useListComponents();
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [
       listQueryComponentsQueryId,
       params?.componentId,

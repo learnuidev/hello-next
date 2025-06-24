@@ -57,7 +57,7 @@ function useFilterComponents(query: string) {
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: ["filter-components", query],
     queryFn: async () => {
       if (!query) {

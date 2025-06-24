@@ -38,7 +38,7 @@ export const useListUserCredentialsQuery = () => {
 
   const queryClient = useQueryClient();
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [listUserCredentialsQueryId, authUser?.jwt],
     queryFn: async () => {
       return listUserCredentials({ Authorization: authUser?.jwt });

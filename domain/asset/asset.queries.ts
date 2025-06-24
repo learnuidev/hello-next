@@ -18,7 +18,7 @@ export function useGetUploadUrlQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [queryIds.getUploadUrl, params.contentType, params.extension],
     queryFn: async () => {
       // if (options.query) {

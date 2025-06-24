@@ -37,7 +37,7 @@ export const listThreadsQueryId = "list-threads";
 export function useListThreadsQuery(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryId: [listThreadsQueryId],
     queryFn: async () => {
       if (authUser?.jwt) {

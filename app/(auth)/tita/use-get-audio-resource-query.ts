@@ -16,7 +16,7 @@ export const useGetAudioResourceQuery = (
 
   const resourceStatus = useTitaStore((state) => state.resourceStatus) as any;
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [
       "get-audio-resource",
       authUser?.jwt,

@@ -14,7 +14,7 @@ export const useListFavouriteContentsQuery = ({ key }: { key?: string }) => {
 
   const queryKey = useGetFavouritesContentsKey();
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey,
     queryFn: async () => {
       if (authUser?.jwt) {

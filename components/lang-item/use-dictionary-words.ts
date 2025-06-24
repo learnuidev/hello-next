@@ -17,7 +17,7 @@ export const useListDictionaryWords = (lang: string) => {
   const { data: characters } = useListCharactersQuery();
   const { data: components } = useListComponents();
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: ["list-dictionary-words", lang, query],
     queryFn: async () => {
       const dictionaryWords = wordsDict[lang];
@@ -25,7 +25,10 @@ export const useListDictionaryWords = (lang: string) => {
       const dataToShow = filterWordsByQuery(dictionaryWords, query);
 
       return dataToShow?.map((prop: any) => {
-        const character = [...(characters || []), ...(components || [])]
+        const character = [
+          ...((characters as any) || []),
+          ...(components || []),
+        ]
           ?.filter(
             (char: any) =>
               (char?.input || char?.hanzi) === (prop?.input || prop?.hanzi)

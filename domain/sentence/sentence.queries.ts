@@ -40,7 +40,7 @@ export function useListSentencesQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [queryIds.list_sentences, params?.component, params?.lang],
     queryFn: async () => {
       if (params?.component && params.lang) {

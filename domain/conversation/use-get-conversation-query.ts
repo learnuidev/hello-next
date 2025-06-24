@@ -32,7 +32,7 @@ export function useGetConversationQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<any, any, any>({
     ...options,
     queryKey: ["get-conversation", params.conversationId],
     queryFn: async () => {

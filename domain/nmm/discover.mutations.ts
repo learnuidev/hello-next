@@ -95,7 +95,7 @@ export const discoverHanziQueryId = "discover-hanzi";
 export function useDiscoverHanziQuery(params: DiscoverParams) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [discoverHanziQueryId, params.hanzi],
     queryFn: async () => {
       if (authUser?.jwt && params?.hanzi) {

@@ -12,7 +12,7 @@ import ReactPlayer from "react-player";
 const useGetUserAsset = (id: string) => {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: ["get-user-asset", authUser?.jwt],
     queryFn: async () => {
       const resp = await fetch(`${siteConfig.apiUrl}/v1/get-user-asset`, {

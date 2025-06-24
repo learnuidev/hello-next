@@ -72,7 +72,7 @@ export function useListCharactersQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [listCharactersQueryId],
     queryFn: async () => {
       // if (options.query) {
@@ -102,7 +102,7 @@ export function useListCharactersMapQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [listCharactersQueryMapId],
     queryFn: async () => {
       // if (options.query) {

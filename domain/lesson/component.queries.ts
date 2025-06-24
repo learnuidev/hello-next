@@ -80,7 +80,7 @@ export function useListComponentsQuery(
   const { components, setComponents, lastUpdated, setLastUpdated } =
     useComponents();
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [listComponentsQueryKey, params?.forceReload, lastUpdated],
     queryFn: async () => {
       // if (options.query) {
@@ -171,7 +171,7 @@ export function useListComponentsMapQuery(
   const { components, setComponents, lastUpdated, setLastUpdated } =
     useComponents();
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [listComponentsQueryMapKey, params?.forceReload, lastUpdated],
     queryFn: async () => {
       // if (options.query) {

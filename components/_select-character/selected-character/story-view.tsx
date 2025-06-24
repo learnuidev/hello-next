@@ -55,7 +55,7 @@ const useGenStoryQuery = (
   { enabled }: { enabled: boolean }
 ) => {
   const { data: authUser } = useCurrentAuthUser({});
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: ["gen-story", authUser?.jwt, hanzi],
     retry: false,
 

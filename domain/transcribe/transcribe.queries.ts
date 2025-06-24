@@ -27,7 +27,7 @@ export function useTranscribeQuery(params: any, options: any) {
   const setTranscription = useTranscriptionStore(
     (state) => state.setTranscription
   );
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [queryIds.transcribe, params?.mediaUrl],
     queryFn: async () => {
       if (params?.mediaUrl) {
@@ -97,7 +97,7 @@ export function useTranscribeQueryV2(
   },
   options: any
 ) {
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [queryIds.transcribeV2, params?.videoUrl],
     queryFn: async () => {
       if (params.videoUrl) {

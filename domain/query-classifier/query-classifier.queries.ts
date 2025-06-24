@@ -30,7 +30,7 @@ export function useGetQueryClassifierQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [classifyQueryId, query],
     queryFn: async () => {
       //   if (authUser?.jwt) {

@@ -45,7 +45,7 @@ export const useGetContent = ({
         JSON.stringify(contents),
       ];
 
-  return useQuery({
+  return useQuery<any, any, any>({
     // @ts-ignore
     queryKey: queryKey,
 
@@ -170,7 +170,7 @@ export const useGetContent = ({
     },
 
     refetchOnWindowFocus: false,
-    refetchOnFocus: false,
+    // refetchOnFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
   });

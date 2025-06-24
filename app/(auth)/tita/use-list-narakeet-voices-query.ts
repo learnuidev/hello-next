@@ -207,7 +207,7 @@ const cachedVoices = [
 export const useListNarakeetVoicesQuery = ({ lang }: { lang: string }) => {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: ["list-narakeet-voices", authUser?.jwt, lang],
     queryFn: async () => {
       if (lang === "cmn-CN") {

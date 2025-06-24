@@ -24,7 +24,7 @@ export const useGetXiaoma = ({
 
   const { data: course1 } = useListSpeakQuery();
 
-  return useQuery({
+  return useQuery<any, any, any>({
     // @ts-ignore
     queryKey: [
       "list-xiaoma-content",
@@ -139,9 +139,8 @@ export const useGetXiaoma = ({
         xiaomaSentences,
       };
     },
-
     refetchOnWindowFocus: false,
-    refetchOnFocus: false,
+    // refetchOnFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
   });

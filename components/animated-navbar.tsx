@@ -100,10 +100,10 @@ function Tab({
   );
 }
 
-function Cursor({ position }: { position: ICursorPosition }) {
+function Cursor({ position }: { position: any }) {
   return (
     <motion.div
-      animate={!!position}
+      animate={position}
       initial={{
         opacity: 0,
       }}

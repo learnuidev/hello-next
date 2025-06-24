@@ -7,7 +7,7 @@ export const maxDuration = 60;
 // export const runtime = "edge";
 
 export async function POST(req: Request) {
-  const headersApi = headers();
+  const headersApi = await headers();
 
   const { lang } = await req.json();
 

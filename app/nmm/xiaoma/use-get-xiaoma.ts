@@ -70,7 +70,10 @@ export const useGetXiaoma = ({
                 (component: any) => component?.hanzi === val
               );
 
-              return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
+              return (
+                selectedComp &&
+                selectedComp?.level <= selectedBelt?.maxCharacterLevel
+              );
             });
           })
           ?.filter((prop: any, idx: any, coll: any) => {

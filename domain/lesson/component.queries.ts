@@ -44,6 +44,7 @@ export interface IComponent {
   level: number;
   hskLevel: number;
   steps: any;
+  audio: string;
 }
 
 const listComponents = async (
@@ -84,7 +85,7 @@ export function useListComponentsQuery(
   const { components, setComponents, lastUpdated, setLastUpdated } =
     useComponents();
 
-  return useQuery({
+  return useQuery<IComponent[]>({
     queryKey: [listComponentsQueryKey, params?.forceReload, lastUpdated],
     queryFn: async () => {
       // if (options.query) {

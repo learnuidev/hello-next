@@ -6,6 +6,17 @@ import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 
+interface ISentence {
+  id: string;
+  input: string;
+  hanzi: string;
+  pinyin: string;
+  roman: string;
+  en: string;
+  explanation: string;
+  createdAt: number;
+  lang: string;
+}
 const listSentences = async (
   options: { component?: string; lang?: string },
   opts: {
@@ -40,7 +51,7 @@ export function useListSentencesQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery<any, any, any>({
+  return useQuery<ISentence[]>({
     queryKey: [queryIds.list_sentences, params?.component, params?.lang],
     queryFn: async () => {
       if (params?.component && params.lang) {

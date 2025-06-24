@@ -46,7 +46,7 @@ export const StoryEditor = ({
                 id: selectedChar?.id,
                 story: story,
                 // pinyin: !!pinyinInput ? pinyinInput : null,
-              })
+              } as any)
               .then(() => {
                 console.log("Story Successfully Updated");
               });

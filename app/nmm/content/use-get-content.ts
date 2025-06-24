@@ -93,7 +93,10 @@ export const useGetContent = ({
                 return true;
               }
 
-              return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
+              return (
+                selectedComp &&
+                selectedComp?.level <= selectedBelt?.maxCharacterLevel
+              );
             });
           })
           ?.filter((prop: any, idx: any, coll: any) => {

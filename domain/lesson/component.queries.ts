@@ -41,6 +41,9 @@ export interface IComponent {
   id: string;
   group?: string;
   tone_level: number;
+  level: number;
+  hskLevel: number;
+  steps: any;
 }
 
 const listComponents = async (

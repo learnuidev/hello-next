@@ -71,9 +71,9 @@ export function useListContentsQuery(options = {} as any) {
 
   const queryKey = useGetListContentsQueryKey();
 
-  return useQuery<ListContentsResponse, Error>(
-    queryKey,
-    async () => {
+  return useQuery<ListContentsResponse, Error>({
+    queryKey: queryKey,
+    queryFn: async () => {
       const response = await listContentsRecursive(authUser?.jwt);
 
       const finalResponse = {
@@ -87,17 +87,16 @@ export function useListContentsQuery(options = {} as any) {
       // return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
       // }
     },
-    {
-      ...options,
-      enabled: Boolean(authUser?.jwt),
-      // enabled: Boolean(journeyId),
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    enabled: Boolean(authUser?.jwt),
+    // enabled: Boolean(journeyId),
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }
 
 export const getContentQueryId = "get-content";
@@ -133,7 +132,8 @@ export function useGetContentQuery(
       // }
     },
     retry: false,
-    onSuccess: (data) => {
+    // @ts-ignore
+    onSuccess: (data: any) => {
       opts?.onSuccess?.(data);
       queryClient.setQueryData([listContentsQueryKey, true], (old: any) => {
         return {

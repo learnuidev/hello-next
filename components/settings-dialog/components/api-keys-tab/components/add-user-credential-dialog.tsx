@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
@@ -202,6 +204,7 @@ export function AddUserCredentialDialog({
                 }
                 onClick={() => {
                   addUserCredentialMutation
+
                     .mutateAsync({
                       title: title || getName(permissionType),
                       scopes: getScopes(permissionType, scopes),

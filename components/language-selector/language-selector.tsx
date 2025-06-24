@@ -1,3 +1,5 @@
+"use client";
+
 import { LanguageButton } from "@/app/next/features/phrase/language-button";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { usePathname, useRouter } from "next/navigation";

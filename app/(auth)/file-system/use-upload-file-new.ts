@@ -88,6 +88,7 @@ export function useUploadFileNew() {
       headers: { ["Content-Type"]: contentType },
     });
 
+    // @ts-ignore
     queryClient.refetchQueries([listFilesQueryKey]);
   };
 

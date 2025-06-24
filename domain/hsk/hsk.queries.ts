@@ -13,7 +13,18 @@ import { useGetUserPreferenceQuery } from "../user/use-get-user-preference-query
 // const url = `${siteConfig?.apiUrl}/v1/list-hsk-words`;
 const url = `${siteConfig?.apiUrl}/v1/list-hsk-words/v3`;
 
-export async function listHSKWords(params: {}) {
+interface HskWord {
+  id: string;
+  level: number;
+  hanzi: string;
+  pinyin: string;
+  en: string;
+  input: string;
+  roman: string;
+  hskLevel: number;
+}
+
+export async function listHSKWords(params: {}): Promise<HskWord[]> {
   const res = await fetch(`/api/list-hsk-words`, {
     method: "POST",
     headers: {

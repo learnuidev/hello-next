@@ -134,10 +134,12 @@ export function ReadModeItemHanzi({
                     );
 
                     const color = calculateColor({
+                      // @ts-ignore
                       tone: comp?.tone_level,
                     });
 
                     const hoverColor = calculateHoverColor({
+                      // @ts-ignore
                       tone: comp?.tone_level,
                     });
 

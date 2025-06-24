@@ -103,7 +103,7 @@ function Tab({
 function Cursor({ position }: { position: ICursorPosition }) {
   return (
     <motion.div
-      animate={position}
+      animate={!!position}
       initial={{
         opacity: 0,
       }}
@@ -111,4 +111,3 @@ function Cursor({ position }: { position: ICursorPosition }) {
     />
   );
 }
-  

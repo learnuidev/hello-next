@@ -40,6 +40,7 @@ export interface IComponent {
   lang: string;
   id: string;
   group?: string;
+  tone_level: number;
 }
 
 const listComponents = async (

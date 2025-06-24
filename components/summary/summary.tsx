@@ -90,14 +90,17 @@ export function Summary({
               <button
                 className="my-12"
                 onClick={() => {
-                  return updateSummaryMutation
-                    .mutateAsync({
-                      id: meaningResponse?.id,
-                      summary,
-                    })
-                    .then(() => {
-                      console.log("Summary Successfully Updated");
-                    });
+                  return (
+                    updateSummaryMutation
+                      // @ts-ignore
+                      .mutateAsync({
+                        id: meaningResponse?.id,
+                        summary,
+                      })
+                      .then(() => {
+                        console.log("Summary Successfully Updated");
+                      })
+                  );
                 }}
               >
                 {updateSummaryMutation.isPending ? (

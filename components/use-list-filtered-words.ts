@@ -48,7 +48,7 @@ export const useListFilteredWords = ({
     );
   };
 
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: ["list-filtered-words-list", lang, query],
     queryFn: async () => {
       if (query) {

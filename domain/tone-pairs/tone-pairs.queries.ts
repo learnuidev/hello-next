@@ -13,7 +13,7 @@ const listTonePairs = async () => {
 };
 
 export function useListTonePairsQuery(options: any) {
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: [queryIds.listTonePairs],
     queryFn: async () => {
       // if (options.query) {

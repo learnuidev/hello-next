@@ -45,7 +45,7 @@ export const useGetContent = ({
         JSON.stringify(contents),
       ];
 
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     // @ts-ignore
     queryKey: queryKey,
 

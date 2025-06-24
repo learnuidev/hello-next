@@ -20,7 +20,7 @@ export const listBookmarksQueryKey = "list-bookmarks";
 export const useListBookmarksQuery = () => {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: [listBookmarksQueryKey, authUser?.jwt],
     queryFn: async () => {
       const resp = await listBookmarks({

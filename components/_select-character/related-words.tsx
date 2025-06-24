@@ -25,7 +25,7 @@ const listRelatedWords = async ({ characterId, lang }: ListRelatedWords) => {
 };
 
 const useListRelatedWords = ({ characterId, lang }: ListRelatedWords) => {
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: ["list-related-words", characterId, lang],
     queryFn: async () => {
       const relatedWords = await listRelatedWords({ characterId, lang });
@@ -37,7 +37,7 @@ const useListRelatedWords = ({ characterId, lang }: ListRelatedWords) => {
 const useListSimilarWords = ({ characterId, lang }: ListRelatedWords) => {
   const words = wordsDict[lang] || [];
 
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: ["list-similar-words", characterId, lang],
     queryFn: async () => {
       const relatedWords = await listRelatedWords({ characterId, lang });

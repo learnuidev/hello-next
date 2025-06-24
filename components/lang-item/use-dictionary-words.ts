@@ -17,7 +17,7 @@ export const useListDictionaryWords = (lang: string) => {
   const { data: characters } = useListCharactersQuery();
   const { data: components } = useListComponents();
 
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: ["list-dictionary-words", lang, query],
     queryFn: async () => {
       const dictionaryWords = wordsDict[lang];

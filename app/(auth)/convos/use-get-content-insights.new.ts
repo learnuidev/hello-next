@@ -40,7 +40,7 @@ export function useGetContentInsightsNew({ contentId }: { contentId: string }) {
 
   const { data: learnedCharacters } = useListCharactersMapQuery();
 
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: [
       "get-content-insights",
       contentId,

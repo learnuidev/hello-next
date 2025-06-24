@@ -34,7 +34,7 @@ export function useListParseQuery(
   const startTime = Date.now();
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: [queryIds.parseQuery, params?.content],
     queryFn: async () => {
       // if (options.query) {

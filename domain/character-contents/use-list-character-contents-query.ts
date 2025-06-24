@@ -7,7 +7,7 @@ export const listCharacterContentsQueryKey = "list-character-contents";
 export const useListCharacterContentsQuery = (content: string) => {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: [listCharacterContentsQueryKey, authUser?.jwt, content],
     queryFn: async () => {
       const res = await fetch(

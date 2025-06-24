@@ -15,7 +15,7 @@ const useLearnedSentences = (lang: string) => {
   const { data } = useListCharactersQuery();
   const query = useSearchQueryStore((state) => state.query);
 
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: ["list-learned-sentences", lang, JSON.stringify(data), query],
     queryFn: async () => {
       const words = [...((data as any) || [])]

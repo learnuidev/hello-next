@@ -176,7 +176,7 @@ export function useListComponentsMapQuery(
   const { components, setComponents, lastUpdated, setLastUpdated } =
     useComponents();
 
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: [listComponentsQueryMapKey, params?.forceReload, lastUpdated],
     queryFn: async () => {
       // if (options.query) {

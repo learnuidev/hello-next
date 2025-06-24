@@ -51,7 +51,7 @@ export function useListSubComponentsQuery(
 
   const { data: chineseCharacters } = useListChineseCharactersQuery();
 
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: [queryIds.listSubComponents, params?.componentId],
     queryFn: async () => {
       // if (options.query) {

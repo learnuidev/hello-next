@@ -19,7 +19,7 @@ export function useListSpeakQuery(
   params = {} as { content: string; version?: number },
   options = {} as any
 ) {
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: ["s3/list-speak"],
     queryFn: async () => {
       const response = await listSpeak({ ...params });

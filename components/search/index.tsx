@@ -128,7 +128,7 @@ export function SearchPage() {
     {
       enabled: Boolean(searchQuery),
     }
-  );
+  ) as any;
 
   return (
     <div className="grow mx-4 md:mx-24 flex flex-col">

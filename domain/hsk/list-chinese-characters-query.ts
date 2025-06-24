@@ -19,7 +19,7 @@ export function useListChineseCharactersQuery(
   params = {} as { content: string; version?: number },
   options = {} as any
 ) {
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: ["s3/list-chinese-characters"],
     queryFn: async () => {
       const response = await listChineseCharacters({ ...params });

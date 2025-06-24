@@ -161,6 +161,7 @@ export function Register() {
                   onClick={(event) => {
                     event.preventDefault();
 
+                    // @ts-ignore
                     useSignupMutation.mutate({
                       username: email,
                       password,
@@ -480,6 +481,7 @@ export function Register() {
               <button
                 onClick={(event) => {
                   event.preventDefault();
+                  // @ts-ignore
                   useSignupMutation.mutate({
                     email,
                     password,

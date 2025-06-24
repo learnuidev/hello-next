@@ -9,7 +9,7 @@ export const listHistoryQueryId = "list-history";
 export function useListHistoryQuery() {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery<any, any, any>({
+  return useQuery<any>({
     queryKey: [listHistoryQueryId],
     queryFn: async () => {
       const res = await fetch(`${siteConfig.apiUrl}/v1/list-history`, {

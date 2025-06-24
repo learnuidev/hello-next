@@ -18,6 +18,7 @@ export const useFilteredComponents = (
   const { data: learnedCharacters2, isLoading: isLearnedCharactersLoading } =
     useListCharactersQuery();
 
+  // @ts-ignore
   const humanizedQuery = getHumanPinyin({ pinyin: query });
 
   const filteredComponents = filterComponents({
@@ -45,6 +46,7 @@ export const useFilteredComponents = (
 };
 
 export const filterComponentsExact = (components: any, query: any) => {
+  // @ts-ignore
   const humanizedQuery = getHumanPinyin({ pinyin: query });
 
   const filteredComponents = filterComponents({

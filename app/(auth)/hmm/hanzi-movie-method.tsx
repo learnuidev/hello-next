@@ -10,7 +10,7 @@ import { firstLesson } from "./first-lesson";
 export function HanziMovieMethod() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [mediaIndex, setMediaIndex] = useState(0);
-  const playerRef = useRef() as any;
+  const playerRef = useRef(null) as any;
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
 
   const onReady = useCallback(() => {
@@ -38,7 +38,7 @@ export function HanziMovieMethod() {
   const { data: queryResult } = useSearchQuery({
     // queryId: queryId,
     query: firstLesson?.lessons[lessonIndex]?.gifSearchTerm,
-  });
+  }) as any;
   const { data: queryResult2 } = useSearchQuery({
     // queryId: queryId,
     query: firstLesson?.lessons[lessonIndex]?.gifSearchTerm2,

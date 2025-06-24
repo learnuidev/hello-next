@@ -15,7 +15,7 @@ import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watc
 
 const CharacterLearningContextInner = ({ selectedComp }: any) => {
   const learnedCharacter = selectedComp;
-  const playerRef = useRef() as any;
+  const playerRef = useRef(null) as any;
   const [currentTime, setTime] = useState(0);
 
   const contentSegment =

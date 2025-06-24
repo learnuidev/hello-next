@@ -14,7 +14,7 @@ const search = async (query: string) => {
 };
 
 export function useSearchQuery(options: any) {
-  return useQuery({
+  return useQuery<any, any, any>({
     queryKey: [queryIds.search, options?.query],
     queryFn: async () => {
       if (options.query) {

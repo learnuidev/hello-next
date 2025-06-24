@@ -210,7 +210,7 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
                   updateContentMutation
                     .mutateAsync({
                       ...editedTranscriptions,
-                    })
+                    } as any)
                     .then((resp) => {
                       setEditMode();
                       // resetTimes();
@@ -229,7 +229,7 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
                   audioUploadBucketKey: res.uploadBucketKey,
                   audioS3LinkAddedAt: Date.now(),
                   updateContent: true,
-                });
+                } as any);
               }}
             />
           </div>

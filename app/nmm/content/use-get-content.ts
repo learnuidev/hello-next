@@ -45,7 +45,7 @@ export const useGetContent = ({
         JSON.stringify(contents),
       ];
 
-  return useQuery({
+  return useQuery<any>({
     // @ts-ignore
     queryKey: queryKey,
 
@@ -93,7 +93,10 @@ export const useGetContent = ({
                 return true;
               }
 
-              return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
+              return (
+                selectedComp &&
+                selectedComp?.level <= selectedBelt?.maxCharacterLevel
+              );
             });
           })
           ?.filter((prop: any, idx: any, coll: any) => {
@@ -170,7 +173,7 @@ export const useGetContent = ({
     },
 
     refetchOnWindowFocus: false,
-    refetchOnFocus: false,
+    // refetchOnFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
   });

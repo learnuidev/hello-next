@@ -51,9 +51,9 @@ export function useListSubComponentsQuery(
 
   const { data: chineseCharacters } = useListChineseCharactersQuery();
 
-  return useQuery(
-    [queryIds.listSubComponents, params?.componentId],
-    async () => {
+  return useQuery<any>({
+    queryKey: [queryIds.listSubComponents, params?.componentId],
+    queryFn: async () => {
       // if (options.query) {
       const response = await listSubComponents(
         params,
@@ -66,15 +66,14 @@ export function useListSubComponentsQuery(
       return response?.sort((a: any, b: any) => a?.createdAt - b?.createdAt);
       // }
     },
-    {
-      ...options,
-      enabled: Boolean(authUser?.jwt),
-      // enabled: Boolean(journeyId),
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    enabled: Boolean(authUser?.jwt),
+    // enabled: Boolean(journeyId),
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

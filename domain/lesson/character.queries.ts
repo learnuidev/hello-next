@@ -4,10 +4,7 @@ import { queryIds } from "./queryIds";
 import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
-
-// TODO: Move this to .env
-const url =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-characters";
+import { siteConfig } from "@/lib/config";
 
 export interface ICharacter {
   reviewHistory: {
@@ -54,7 +51,7 @@ const listCharacters = async (
     Authorization: string;
   }
 ): Promise<ICharacter[]> => {
-  const res = await fetch(url, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/list-characters`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,
@@ -75,9 +72,9 @@ export function useListCharactersQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery(
-    [listCharactersQueryId],
-    async () => {
+  return useQuery<ICharacter[], Error>({
+    queryKey: [listCharactersQueryId],
+    queryFn: async () => {
       // if (options.query) {
       const response = await listCharacters(params, {
         Authorization: authUser?.jwt,
@@ -87,16 +84,15 @@ export function useListCharactersQuery(
       );
       // }
     },
-    {
-      ...options,
-      enabled: Boolean(authUser?.jwt),
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    enabled: Boolean(authUser?.jwt),
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }
 
 export const listCharactersQueryMapId = "list-characters-map";
@@ -106,9 +102,9 @@ export function useListCharactersMapQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery(
-    [listCharactersQueryMapId],
-    async () => {
+  return useQuery<any>({
+    queryKey: [listCharactersQueryMapId],
+    queryFn: async () => {
       // if (options.query) {
       const response = await listCharacters(params, {
         Authorization: authUser?.jwt,
@@ -122,14 +118,13 @@ export function useListCharactersMapQuery(
       }, {}) as any;
       // }
     },
-    {
-      ...options,
-      enabled: Boolean(authUser?.jwt),
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    enabled: Boolean(authUser?.jwt),
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

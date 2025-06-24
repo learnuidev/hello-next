@@ -43,7 +43,7 @@ const ConvoContextDialog = ({
 }) => {
   const { data } = useGetContentQuery({ contentId });
 
-  const playerRef = useRef() as any;
+  const playerRef = useRef(null) as any;
 
   const filteredTimestamps = data?.transcriptions?.filter((item: any) =>
     (item?.hanzi || item?.input)?.includes(selected?.hanzi || selected?.input)
@@ -303,7 +303,7 @@ const ConvoInsightsNoNChinese = ({
 }) => {
   const { data, isLoading } = useGetContentQuery({
     contentId,
-  });
+  }) as any;
 
   const transcriptionStr = data?.transcriptions
     ?.map((item: any) => item?.input)
@@ -362,7 +362,7 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
 
   const { data: lesson, isLoading } = useGetContentQuery({
     contentId: contentId,
-  });
+  }) as any;
 
   const lang = lesson?.lang || lesson?.transcriptions?.[0]?.lang;
 

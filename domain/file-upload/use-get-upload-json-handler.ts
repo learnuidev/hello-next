@@ -57,22 +57,26 @@ export function useGetUploadJsonHandler(cb?: any) {
       body: JSON.stringify(json),
     });
 
-    return addUserAssetMutation
-      .mutateAsync({
-        id,
-        name: fileName,
-        size: fileSize,
-        contentType,
-        extension,
-        sourceUrl: assetUrl,
-        uploadBucketKey: s3Key,
-      })
-      .then(async (resp: UploadFileResponse) => {
-        if (cb) {
-          return cb(resp);
-        }
-        return resp;
-      });
+    return (
+      addUserAssetMutation
+        // @ts-ignore
+        .mutateAsync({
+          id,
+          name: fileName,
+          size: fileSize,
+          contentType,
+          extension,
+          sourceUrl: assetUrl,
+          uploadBucketKey: s3Key,
+        })
+        // @ts-ignore
+        .then(async (resp: UploadFileResponse) => {
+          if (cb) {
+            return cb(resp);
+          }
+          return resp;
+        })
+    );
   };
 
   return onUploadFileChange;

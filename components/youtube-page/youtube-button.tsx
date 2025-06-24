@@ -64,7 +64,7 @@ export function YoutubeButton({
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(contentId);
 
-  const playerRef = useRef() as any;
+  const playerRef = useRef(null) as any;
   const searchParams = useSearchParams();
   const start = searchParams.get("start");
   const { data: lesson } = useGetContentQuery({ contentId: contentId });

@@ -1,14 +1,13 @@
-import { aiModels } from "@/libs/ai";
-
-import { OpenAIStream, StreamingTextResponse } from "ai";
-import OpenAI from "openai";
+import { streamText } from "ai";
 
 import { verifyJwt } from "@/libs/cognito/jwt";
 import { deepseekConfig } from "@/libs/deepseek/deepseek-config";
 import { headers } from "next/headers";
 
-const openai = new OpenAI({
-  apiKey: deepseekConfig.apiKey,
+import { createDeepSeek } from "@ai-sdk/deepseek";
+
+const deepseek = createDeepSeek({
+  apiKey: deepseekConfig.apiKey ?? "",
   baseURL: "https://api.deepseek.com",
 });
 
@@ -18,7 +17,7 @@ export const runtime = "edge";
 export async function POST(req: Request) {
   const { messages, context } = await req.json();
 
-  const headersApi = headers();
+  const headersApi = await headers();
 
   const jwtToken = headersApi.get("authorization") || "";
 
@@ -44,17 +43,15 @@ export async function POST(req: Request) {
       content: prompt,
     };
 
-    const response = await openai.chat.completions.create({
-      model: aiModels.deepseekChat,
-      stream: true,
-      messages: [firstMessage, ...messages],
+    const { textStream } = await streamText({
+      model: deepseek("deepseek-chat"),
+      messages: messages,
     });
 
-    // Convert the response into a friendly text-stream
-    const stream = OpenAIStream(response);
-
-    // Respond with the stream
-    return new StreamingTextResponse(stream);
+    // Return the stream as a Response
+    return new Response(textStream, {
+      headers: { "Content-Type": "text/plain" },
+    });
   } else {
     return Response.json({
       message: "Not authorized",

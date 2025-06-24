@@ -115,7 +115,7 @@ export function ReadModeItemNonHanzi({
         onMouseEnter={() => {
           setFocusedIndex(sentenceIndex);
           setFocused(text);
-          if (!translateTextMutation?.isLoading) {
+          if (!translateTextMutation.isPending) {
             translateTextMutation
               .mutateAsync({
                 targetLang: "en",

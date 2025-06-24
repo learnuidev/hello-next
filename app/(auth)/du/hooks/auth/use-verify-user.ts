@@ -37,7 +37,11 @@ export const useReverifyUserHandler = () => {
   const cookie = useDuStore((state) => state.cookie);
 
   return () => {
-    queryClient.invalidateQueries([verifyUserQueryKey, authUser?.jwt, cookie]);
+    queryClient.invalidateQueries([
+      verifyUserQueryKey,
+      authUser?.jwt,
+      cookie,
+    ] as any);
   };
 };
 

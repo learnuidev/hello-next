@@ -48,12 +48,12 @@ export const useListFilteredWords = ({
     );
   };
 
-  return useQuery({
+  return useQuery<any>({
     queryKey: ["list-filtered-words-list", lang, query],
     queryFn: async () => {
       if (query) {
         return Promise.resolve(
-          [...(characters || []), ...words]
+          [...((characters as any) || []), ...words]
             ?.filter(filterWord)
             ?.sort((a: any, b: any) => a?.input?.length - b?.input?.length)
         );

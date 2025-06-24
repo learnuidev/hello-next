@@ -24,7 +24,9 @@ export const ContentSettings = () => {
   const deleteContentMutation = useDeleteContentMutation();
   const contentId = useGetContentId();
 
-  const { data: content } = useGetContentQuery({ contentId });
+  const { data: contentData } = useGetContentQuery({ contentId });
+
+  const content = contentData as any;
 
   const { data } = useListPublishedContentsQuery({});
 
@@ -47,9 +49,9 @@ export const ContentSettings = () => {
       <div className="flex my-12 mb-24 items-center justify-between">
         <h3 className="text-3xl font-extralight">Settings</h3>
         <Button
-          disabled={togglePublishContentMutation.isLoading}
+          disabled={togglePublishContentMutation.isPending}
           className={cn(
-            togglePublishContentMutation.isLoading ? "text-gray-500" : "",
+            togglePublishContentMutation.isPending ? "text-gray-500" : "",
             "rounded-none uppercase"
           )}
           onClick={() => {
@@ -98,18 +100,17 @@ export const ContentSettings = () => {
 
       <Button
         variant={"outline"}
-        disabled={updateContentMutation?.isLoading}
+        disabled={updateContentMutation.isPending}
         className={cn(
-          updateContentMutation?.isLoading ? "text-gray-500" : "",
+          updateContentMutation.isPending ? "text-gray-500" : "",
           "mt-8 sm:w-24 uppercase w-full rounded-full"
         )}
         onClick={() => {
           return updateContentMutation.mutateAsync({
             id: content?.id || "",
             contentType,
-
             updatedAt: Date.now(),
-          });
+          } as any);
         }}
       >
         Save
@@ -117,16 +118,16 @@ export const ContentSettings = () => {
 
       <Button
         variant={"outline"}
-        disabled={deleteContentMutation.isLoading || containsPublished}
+        disabled={deleteContentMutation.isPending || containsPublished}
         className={cn(
-          updateContentMutation?.isLoading ? "text-gray-500" : "",
+          updateContentMutation?.isPending ? "text-gray-500" : "",
           "mt-8 sm:w-24 uppercase w-full rounded-full text-red-500"
         )}
         onDoubleClick={() => {
           return deleteContentMutation
             .mutateAsync({
               id: content?.id || "",
-            })
+            } as any)
             .then((res) => {
               router.push("/convos");
             });

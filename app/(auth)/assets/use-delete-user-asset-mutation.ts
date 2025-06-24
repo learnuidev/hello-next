@@ -27,7 +27,10 @@ export const useDeleteUserAssetMutation = () => {
       return audioResp.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries([listUserAssetsQueryKey, authUser?.jwt]);
+      queryClient.invalidateQueries([
+        listUserAssetsQueryKey,
+        authUser?.jwt,
+      ] as any);
     },
   });
 };

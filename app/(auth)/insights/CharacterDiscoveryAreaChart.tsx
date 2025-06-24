@@ -122,7 +122,7 @@ export const CharacterDiscoveryAreaChart = () => {
       refetchOnMount: false,
       refetchOnReconnect: false,
     }
-  );
+  ) as any;
 
   const newData = answers?.map((curr: any, idx: number, ctx: any) => {
     return {

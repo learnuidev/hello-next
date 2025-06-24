@@ -40,6 +40,11 @@ export interface IComponent {
   lang: string;
   id: string;
   group?: string;
+  tone_level: number;
+  level: number;
+  hskLevel: number;
+  steps: any;
+  audio: string;
 }
 
 const listComponents = async (
@@ -80,9 +85,9 @@ export function useListComponentsQuery(
   const { components, setComponents, lastUpdated, setLastUpdated } =
     useComponents();
 
-  return useQuery(
-    [listComponentsQueryKey, params?.forceReload, lastUpdated],
-    async () => {
+  return useQuery<IComponent[]>({
+    queryKey: [listComponentsQueryKey, params?.forceReload, lastUpdated],
+    queryFn: async () => {
       // if (options.query) {
 
       if (components && lastUpdated && !hasBeen({ timestamp: lastUpdated })) {
@@ -100,16 +105,15 @@ export function useListComponentsQuery(
 
       return response;
     },
-    {
-      ...options,
-      enabled: Boolean(authUser?.jwt),
 
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+    ...options,
+    enabled: Boolean(authUser?.jwt),
+
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }
 
 export function useListComponents(
@@ -126,7 +130,7 @@ export function useListComponents(
 
   const includeDiscoverOnly = Boolean(options?.discoverOnly);
   return {
-    data: (data || [])
+    data: ((data || []) as any)
 
       ?.filter((item: any) => {
         if (options?.includeAll) {
@@ -152,7 +156,7 @@ export function useListComponents(
       // .sort((a: any, b: any) => (a.level || 0) - (b.level || 0)),
       .sort(
         (a: any, b: any) => (b?.mandarinoIndex || 0) - (a?.mandarinoIndex || 0)
-      ),
+      ) as IComponent[],
     ...rest,
   };
 }
@@ -172,9 +176,9 @@ export function useListComponentsMapQuery(
   const { components, setComponents, lastUpdated, setLastUpdated } =
     useComponents();
 
-  return useQuery(
-    [listComponentsQueryMapKey, params?.forceReload, lastUpdated],
-    async () => {
+  return useQuery<any>({
+    queryKey: [listComponentsQueryMapKey, params?.forceReload, lastUpdated],
+    queryFn: async () => {
       // if (options.query) {
 
       if (components && lastUpdated && !hasBeen({ timestamp: lastUpdated })) {
@@ -202,14 +206,13 @@ export function useListComponentsMapQuery(
         };
       }, {}) as any;
     },
-    {
-      ...options,
-      enabled: Boolean(authUser?.jwt),
 
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+    ...options,
+    enabled: Boolean(authUser?.jwt),
+
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

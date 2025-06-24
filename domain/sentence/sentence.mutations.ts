@@ -32,29 +32,27 @@ const addSentence = async (
 export function useAddSentenceMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
-  return useMutation(
-    async (params: AddSentenceParams) => {
+  return useMutation({
+    mutationFn: async (params: AddSentenceParams) => {
       const response = await addSentence(params, {
         Authorization: authUser?.jwt,
       });
       return { ...response, componentId: params?.component };
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
+    ...options,
+    onSuccess: (data: any) => {
+      if (options?.onSucess) {
+        options?.onSuccess(data);
+      }
+
+      queryClient.setQueryData(
+        [listSentencesQueryKey, data?.componentId] as any,
+        (old: any) => {
+          return [data, ...old];
         }
+      );
 
-        queryClient.setQueryData(
-          [listSentencesQueryKey, data?.componentId],
-          (old: any) => {
-            return [data, ...old];
-          }
-        );
-
-        // queryClient.refetchQueries([listSentencesQueryKey, data?.componentId]);
-      },
-    }
-  );
+      // queryClient.refetchQueries([listSentencesQueryKey, data?.componentId]);
+    },
+  });
 }

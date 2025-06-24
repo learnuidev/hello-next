@@ -34,24 +34,22 @@ const addThread = async (
 export function useAddThreadMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
-  return useMutation(
-    async (params: AddThreadParams) => {
+  return useMutation({
+    mutationFn: async (params: AddThreadParams) => {
       const response = await addThread(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
-        }
+    ...options,
+    onSuccess: (data) => {
+      if (options?.onSucess) {
+        options?.onSuccess(data);
+      }
 
-        queryClient.invalidateQueries([listThreadsQueryId]);
-      },
-    }
-  );
+      // queryClient.invalidateQueries([listThreadsQueryId]);
+    },
+  });
 }
 
 // ====
@@ -82,22 +80,20 @@ const updateThreadMessages = async (
 export function useUpdateThreadMessagesMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
-  return useMutation(
-    async (params: UpdateThreadMessagesParams) => {
+  return useMutation({
+    mutationFn: async (params: UpdateThreadMessagesParams) => {
       const response = await updateThreadMessages(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
-        }
+    ...options,
+    onSuccess: (data) => {
+      if (options?.onSucess) {
+        options?.onSuccess(data);
+      }
 
-        queryClient.invalidateQueries([listThreadsQueryId]);
-      },
-    }
-  );
+      // queryClient.invalidateQueries([listThreadsQueryId]);
+    },
+  });
 }

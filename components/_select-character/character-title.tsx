@@ -235,9 +235,10 @@ export const CharacterTitle = (props: any) => {
         {edit && meaning?.id && isSuperAdmin ? (
           <div className="space-x-4">
             <button
-              disabled={updateMeaningMutation?.isLoading}
+              disabled={updateMeaningMutation.isPending}
               onClick={() => {
                 updateMeaningMutation
+                  // @ts-ignore
                   .mutateAsync({
                     id: meaning?.id,
                     details: {

@@ -46,30 +46,28 @@ const addCharacter = async (
 export function useAddCharacterMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
-  return useMutation(
-    async (params: AddCharacterParams) => {
+  return useMutation({
+    mutationFn: async (params: AddCharacterParams) => {
       const response = await addCharacter(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
-        }
+    ...options,
+    onSuccess: (data: any) => {
+      if (options?.onSucess) {
+        options?.onSuccess(data);
+      }
 
-        queryClient.invalidateQueries([listCharactersQueryId]);
-        queryClient.invalidateQueries([listCharactersQueryMapId]);
-      },
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+      queryClient.invalidateQueries([listCharactersQueryId] as any);
+      queryClient.invalidateQueries([listCharactersQueryMapId] as any);
+    },
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }
 
 // ====
@@ -103,50 +101,48 @@ const updateChracterStatus = async (
 export function useUpdateCharacterStatusMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
-  return useMutation(
-    async (params: UpdateCharacterStatusParams) => {
+  return useMutation({
+    mutationFn: async (params: UpdateCharacterStatusParams) => {
       const response = await updateChracterStatus(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
-        }
+    ...options,
+    onSuccess: (data: any) => {
+      if (options?.onSucess) {
+        options?.onSuccess(data);
+      }
 
-        queryClient.setQueryData([listCharactersQueryMapId], (old: any) => {
-          return {
-            ...old,
-            [data?.hanzi]: data,
-          };
-          // return old.map((char: any) => {
-          //   if (char?.hanzi === data?.hanzi) {
-          //     return data;
-          //   }
-          //   return char;
-          // });
+      queryClient.setQueryData([listCharactersQueryMapId], (old: any) => {
+        return {
+          ...old,
+          [data?.hanzi]: data,
+        };
+        // return old.map((char: any) => {
+        //   if (char?.hanzi === data?.hanzi) {
+        //     return data;
+        //   }
+        //   return char;
+        // });
+      });
+      queryClient.setQueryData([listCharactersQueryId], (old: any) => {
+        return old.map((char: any) => {
+          if (char?.hanzi === data?.hanzi) {
+            return data;
+          }
+          return char;
         });
-        queryClient.setQueryData([listCharactersQueryId], (old: any) => {
-          return old.map((char: any) => {
-            if (char?.hanzi === data?.hanzi) {
-              return data;
-            }
-            return char;
-          });
-        });
+      });
 
-        // queryClient.refetchQueries([listCharactersQueryId]);
-      },
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+      // queryClient.refetchQueries([listCharactersQueryId]);
+    },
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }
 
 export type UpdateCharacterStoryParams = {
@@ -175,27 +171,25 @@ const updateChracterStory = async (
 export function useUpdateCharacterStoryMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
-  return useMutation(
-    async (params: UpdateCharacterStoryParams) => {
+  return useMutation({
+    mutationFn: async (params: UpdateCharacterStoryParams) => {
       const response = await updateChracterStory(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
-        }
+    ...options,
+    onSuccess: (data) => {
+      if (options?.onSucess) {
+        options?.onSuccess(data);
+      }
 
-        queryClient.invalidateQueries([listCharactersQueryId]);
-      },
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+      queryClient.invalidateQueries([listCharactersQueryId] as any);
+    },
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

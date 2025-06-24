@@ -248,7 +248,7 @@ export const Dropzone = ({ className }: DropzoneProps) => {
                     handleSubmit();
                   }}
                 >
-                  {addUserAssetMutation.isLoading ? (
+                  {addUserAssetMutation.isPending ? (
                     <Icons.spinner
                       spinPulse
                       className="w-5 h-5 fill-white hover:fill-secondary-400 transition-colors"

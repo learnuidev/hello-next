@@ -15,10 +15,10 @@ const useLearnedSentences = (lang: string) => {
   const { data } = useListCharactersQuery();
   const query = useSearchQueryStore((state) => state.query);
 
-  return useQuery({
+  return useQuery<any>({
     queryKey: ["list-learned-sentences", lang, JSON.stringify(data), query],
     queryFn: async () => {
-      const words = [...(data || [])]
+      const words = [...((data as any) || [])]
         ?.filter((item: any) => item?.lang === lang)
         ?.filter(
           (item: any) =>
@@ -56,7 +56,7 @@ export function SentencesList({ lang }: { lang: string }) {
             href={`/nmm/${prop?.input || prop?.hanzi}?lang=${prop?.lang || lang}`}
             key={JSON.stringify(prop)}
             onClick={() => {
-              if (!addHistoryMutation?.isLoading) {
+              if (!addHistoryMutation.isPending) {
                 // addHistoryMutation.mutate({
                 //   // pathName: routeName,
                 //   input: prop?.input || prop?.hanzi,

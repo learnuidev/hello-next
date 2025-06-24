@@ -70,6 +70,7 @@ export const useGetLearnedData = () => {
   );
 
   const newData = answers
+    // @ts-ignore
     ?.filter((answer: any) => {
       const createdAt = new Date(answer?.createdAt);
 

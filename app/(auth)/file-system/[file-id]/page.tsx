@@ -28,7 +28,7 @@ export default function FileItem() {
             });
           }}
         >
-          {deleteFileMutation.isLoading ? "Deleting..." : "Delete"}
+          {deleteFileMutation.isPending ? "Deleting..." : "Delete"}
         </button>
       </div>
     </div>

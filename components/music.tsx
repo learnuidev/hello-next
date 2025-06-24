@@ -22,7 +22,7 @@ const useMusicStore = create((set: any, get: any) => ({
 
 export const useMusic = (props: any) => {
   const [play, setPlay] = useState(false);
-  let audio = useRef() as any;
+  let audio = useRef(null) as any;
   const [currentTime, setTime] = useState(0);
   // const play = useMusicStore((state: any) => state.play)
   // const setPlay = useMusicStore((state: any) => state.setPlay)

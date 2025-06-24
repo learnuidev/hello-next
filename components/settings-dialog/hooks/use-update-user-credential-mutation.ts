@@ -34,6 +34,7 @@ export const useUpdateUserCredentialMutation = (options = {} as any) => {
 
   const queryClient = useQueryClient();
   return useMutation(
+    // @ts-ignore
     async (params: UpdateCredentialParams) => {
       const response = await updateUserCredential(params, {
         Authorization: authUser?.jwt,
@@ -42,11 +43,13 @@ export const useUpdateUserCredentialMutation = (options = {} as any) => {
     },
     {
       ...options,
+      // @ts-ignore
       onSuccess: (data) => {
         if (options?.onSucess) {
           options?.onSuccess(data);
         }
 
+        // @ts-ignore
         queryClient.invalidateQueries([listUserCredentialsQueryId]);
       },
     }

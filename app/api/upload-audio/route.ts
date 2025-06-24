@@ -9,7 +9,7 @@ import { updateMeanings } from "@/domain/sentence/update-meanings.api";
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
-  const headersApi = headers();
+  const headersApi = await headers();
 
   const { audioUrl, component, componentId, meaningId } = await req.json();
 

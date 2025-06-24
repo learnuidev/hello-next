@@ -41,9 +41,10 @@ const DiscoverButton = ({ characterId }: { characterId: string }) => {
   return (
     <button
       className="text-xl text-gray-400 hover:text-black dark:hover:text-white"
-      disabled={discoverMutation.isLoading || discoverMutation.isSuccess}
+      disabled={discoverMutation.isPending || discoverMutation.isSuccess}
       onClick={() => {
         discoverMutation
+          // @ts-ignore
           .mutateAsync({
             hanzi: characterId,
             // story: "todo",
@@ -53,7 +54,7 @@ const DiscoverButton = ({ characterId }: { characterId: string }) => {
           });
       }}
     >
-      {discoverMutation.isLoading ? (
+      {discoverMutation.isPending ? (
         <Icons.spinner spinPulse />
       ) : (
         <Icons.language />
@@ -158,7 +159,7 @@ export const FloatingCharacterNavbar = ({
                   });
                 }}
               >
-                {addCharacterMutation.isLoading ? (
+                {addCharacterMutation.isPending ? (
                   <Icons.spinner spinPulse />
                 ) : (
                   <Icons.lightBulb className="text-2xl" />
@@ -168,7 +169,7 @@ export const FloatingCharacterNavbar = ({
             {!isAlreadyLearned ||
             currentCharacter?.status === "forgotten" ? null : (
               <button
-                disabled={updateCharacterStatusMutation?.isLoading}
+                disabled={updateCharacterStatusMutation.isPending}
                 className="text-xl text-black dark:text-white"
                 onClick={() => {
                   updateCharacterStatusMutation.mutateAsync({
@@ -188,7 +189,7 @@ export const FloatingCharacterNavbar = ({
                   } as any);
                 }}
               >
-                {updateCharacterStatusMutation.isLoading ? (
+                {updateCharacterStatusMutation.isPending ? (
                   <Icons.spinner className="text-2xl" spinPulse />
                 ) : (
                   <Icons.fire className="text-2xl" />
@@ -201,7 +202,7 @@ export const FloatingCharacterNavbar = ({
             {isAlreadyLearned && (
               <button
                 className="text-xl text-black dark:text-white"
-                disabled={deleteComponentMutation.isLoading}
+                disabled={deleteComponentMutation.isPending}
                 onDoubleClick={() => {
                   deleteComponentMutation
                     .mutateAsync({
@@ -215,7 +216,7 @@ export const FloatingCharacterNavbar = ({
                     });
                 }}
               >
-                {deleteComponentMutation.isLoading ? (
+                {deleteComponentMutation.isPending ? (
                   <Icons.spinner spinPulse />
                 ) : (
                   <Icons.trash />
@@ -225,7 +226,7 @@ export const FloatingCharacterNavbar = ({
             {isAlreadyLearned && currentCharacter?.status === "forgotten" && (
               <button
                 className="text-xl text-black dark:text-white"
-                disabled={updateCharacterStatusMutation.isLoading}
+                disabled={updateCharacterStatusMutation.isPending}
                 onDoubleClick={() => {
                   updateCharacterStatusMutation.mutateAsync({
                     characterId: currentCharacter?.id,
@@ -244,7 +245,7 @@ export const FloatingCharacterNavbar = ({
                   } as any);
                 }}
               >
-                {updateCharacterStatusMutation.isLoading ? (
+                {updateCharacterStatusMutation.isPending ? (
                   <Icons.spinner spinPulse />
                 ) : (
                   <Icons.powerOff />

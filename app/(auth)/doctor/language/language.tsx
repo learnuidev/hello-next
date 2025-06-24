@@ -26,7 +26,7 @@ export function Language() {
     if (componentsWithoutLang !== undefined) {
       return Promise.all(
         componentsWithoutLang?.map(async (char) => {
-          return updateComponentMutation.mutateAsync(char);
+          return updateComponentMutation.mutateAsync(char as any);
         })
       );
     }

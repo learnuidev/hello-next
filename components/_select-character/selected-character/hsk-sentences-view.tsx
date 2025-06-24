@@ -91,7 +91,7 @@ export const HskSentenceView = ({ characterId }: { characterId: string }) => {
                 key={JSON.stringify(prop)}
                 className="font-extralight text-xl"
                 onClick={() => {
-                  if (!addHistoryMutation?.isLoading) {
+                  if (!addHistoryMutation.isPending) {
                     // addHistoryMutation.mutate({
                     //   // pathName: routeName,
                     //   hanzi: prop?.input || prop?.hanzi,

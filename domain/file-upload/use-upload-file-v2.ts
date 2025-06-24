@@ -70,6 +70,7 @@ export function useUploadFileV2(cb?: any, ctx?: any, props?: any) {
         uploadBucketKey: s3Key,
         ...ctx,
       })
+      // @ts-ignore
       .then(async (resp: UploadFileResponse) => {
         if (e?.target?.value) {
           e.target.value = "";

@@ -58,7 +58,7 @@ const useWriteStoryQuery = (params: IMandarinoStory) => {
   const { narrator, nomad, theme, destination, location, components } = params;
   const { data: authUser } = useCurrentAuthUser({});
   const setHistory = useStoryHistoryStore((state) => state.setHistory);
-  return useQuery({
+  return useQuery<any>({
     queryKey: ["write-story", ...Object.values(params).filter(Boolean)],
     queryFn: async () => {
       const story = await getStory(params, {

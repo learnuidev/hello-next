@@ -41,6 +41,7 @@ export default function Doctor() {
     if (characterWithOutGroupAndToneLevel !== undefined) {
       return Promise.all(
         characterWithOutGroupAndToneLevel?.map(async (char) => {
+          // @ts-ignore
           return updateCharacter.mutateAsync(char);
         })
       );

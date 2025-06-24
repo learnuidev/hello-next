@@ -1,8 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+
 import { useGetNextParams } from "../../hooks/use-get-next-params";
 import { HtmlAnalyticsView } from "./components/html-analytics-view";
 import { HtmlArticleView } from "./components/html-article-view";
@@ -11,14 +10,8 @@ import { useFeatureContext } from "../feature-context-provider";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/ui/icons.v2";
 
-export const _HtmlParser = () => {
+export const HtmlParserInner = () => {
   const { url, view } = useGetNextParams();
-
-  // const router = useRouter();
-
-  // useEffect(() => {
-  //   router.push(`/next?feature-id=html-parser&url=${url}`);
-  // }, [router, url]);
 
   if (view === "analytics") {
     return <HtmlAnalyticsView />;
@@ -95,7 +88,7 @@ export const HtmlParser = () => {
         </div>
       </div>
 
-      <_HtmlParser />
+      <HtmlParserInner />
     </div>
   );
 };

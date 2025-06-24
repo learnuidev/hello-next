@@ -9,10 +9,10 @@ export const useLearnedWords = (lang: string) => {
   const { data } = useListCharactersQuery();
   const query = useSearchQueryStore((state) => state.query);
 
-  return useQuery({
+  return useQuery<any>({
     queryKey: ["list-learned-words", lang, JSON.stringify(data), query],
     queryFn: async () => {
-      const words = [...(data || [])]
+      const words = [...((data as any) || [])]
         ?.filter((item: any) => item?.lang === lang)
         ?.filter(
           (item: any) =>
@@ -24,8 +24,4 @@ export const useLearnedWords = (lang: string) => {
       return dataToShow;
     },
   });
-
-  const words = [...(data || [])]
-    ?.filter((item: any) => item?.lang === lang)
-    ?.filter((item: any) => (item?.input || item?.hanzi)?.length < 20);
 };

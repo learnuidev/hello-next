@@ -86,33 +86,20 @@ export const PreviewComponent = (props: {
         </div>
       ) : (
         <div className="p-0 space-y-4 mt-4">
-          {sentences
-            ?.slice(0, 2)
-            ?.map(
-              (sentence: {
-                id: string;
-                input?: string;
-                hanzi: string;
-                pinyin: string;
-                en: string;
-                explanation: string;
-                createdAt: number;
-                lang?: "zh" | "es" | "ml";
-              }) => {
-                return (
-                  <section className="px-0 mx-0" key={sentence?.id}>
-                    <h4 className="font-medium">
-                      {sentence?.input || sentence?.hanzi}
-                    </h4>
-                    {component?.lang === "zh" && (
-                      <p className={stylePinyin}>{sentence?.pinyin}</p>
-                    )}
-                    <p className={styleEn}>{sentence?.en}</p>
-                    {/* <p className="text-gray-500 text-xs">{sentence?.explanation}</p> */}
-                  </section>
-                );
-              }
-            )}
+          {sentences?.slice(0, 2)?.map((sentence) => {
+            return (
+              <section className="px-0 mx-0" key={sentence?.id}>
+                <h4 className="font-medium">
+                  {sentence?.input || sentence?.hanzi}
+                </h4>
+                {component?.lang === "zh" && (
+                  <p className={stylePinyin}>{sentence?.pinyin}</p>
+                )}
+                <p className={styleEn}>{sentence?.en}</p>
+                {/* <p className="text-gray-500 text-xs">{sentence?.explanation}</p> */}
+              </section>
+            );
+          })}
         </div>
       )}
     </div>

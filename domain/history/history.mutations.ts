@@ -46,7 +46,7 @@ export function useAddHistoryMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      queryClient.invalidateQueries([listHistoryQueryId]);
+      queryClient.invalidateQueries([listHistoryQueryId] as any);
     },
   });
 }

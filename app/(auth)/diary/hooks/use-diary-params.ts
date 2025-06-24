@@ -1,3 +1,5 @@
+"use client";
+
 import { useParams, useSearchParams } from "next/navigation";
 
 export const useDiaryParams = () => {

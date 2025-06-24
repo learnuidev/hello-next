@@ -16,7 +16,7 @@ const useMusicStore = create((set: any, get: any) => ({
 }));
 
 export const useMusicV2 = ({ url }: { url: string }) => {
-  let audio = useRef() as any;
+  let audio = useRef(null) as any;
 
   const play = useMusicStore((state: any) => state.play);
   const setPlay = useMusicStore((state: any) => state.setPlay);

@@ -9,7 +9,10 @@ export const useUnfavouriteCourseMutation = () => {
 
   return useMutation({
     onSuccess: () => {
-      queryClient.refetchQueries([listSavedLessonsQueryKey, authUser?.jwt]);
+      queryClient.refetchQueries([
+        listSavedLessonsQueryKey,
+        authUser?.jwt,
+      ] as any);
     },
     mutationFn: async ({
       courseId,

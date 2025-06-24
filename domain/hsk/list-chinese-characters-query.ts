@@ -19,20 +19,19 @@ export function useListChineseCharactersQuery(
   params = {} as { content: string; version?: number },
   options = {} as any
 ) {
-  return useQuery(
-    ["s3/list-chinese-characters"],
-    async () => {
+  return useQuery<any>({
+    queryKey: ["s3/list-chinese-characters"],
+    queryFn: async () => {
       const response = await listChineseCharacters({ ...params });
 
       return response;
     },
-    {
-      ...options,
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

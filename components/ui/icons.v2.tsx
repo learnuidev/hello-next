@@ -193,7 +193,7 @@ import {
 
 const createFAIcon = (icon: FontAwesomeIconProps["icon"]) => {
   return function FAIcon(props: any) {
-    return <FontAwesomeIcon icon={icon} {...props} />;
+    return <FontAwesomeIcon icon={icon} className={props?.className} />;
   };
 };
 

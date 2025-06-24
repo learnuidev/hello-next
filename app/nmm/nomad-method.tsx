@@ -5,7 +5,7 @@ import { useListComponents } from "@/domain/lesson/component.queries";
 import { initCharacter, useCharacterStore } from "./nomad-method-store";
 
 import { useAddStepsMutation } from "@/domain/lesson/step.mutations";
-import { ComponentForm } from "./component-form";
+
 import { ComponentReview } from "./component-review";
 import { LessonAddSuccessView } from "./lesson-add-success-view";
 import { LottieLoadingAnimation } from "./lottie-loading-animation";
@@ -76,7 +76,7 @@ export function NomadMethod({
     );
   }
 
-  if (addStepsMutation?.isLoading || isFetching) {
+  if (addStepsMutation.isPending || isFetching) {
     // load lottile files here
     return <LottieLoadingAnimation />;
   }
@@ -110,15 +110,4 @@ export function NomadMethod({
       />
     );
   }
-
-  return (
-    <ComponentForm
-      setViewSuccessBanner={setViewSuccessBanner}
-      setShowYay={setShowYay}
-      selectedId={selectedId}
-      onClose={onClose}
-      lessonIndex={lessonIndex}
-      setLessonIndex={setLessonIndex}
-    />
-  );
 }

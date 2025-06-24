@@ -6,6 +6,17 @@ import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 
+interface ISentence {
+  id: string;
+  input: string;
+  hanzi: string;
+  pinyin: string;
+  roman: string;
+  en: string;
+  explanation: string;
+  createdAt: number;
+  lang: string;
+}
 const listSentences = async (
   options: { component?: string; lang?: string },
   opts: {
@@ -40,9 +51,9 @@ export function useListSentencesQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery(
-    [queryIds.list_sentences, params?.component, params?.lang],
-    async () => {
+  return useQuery<ISentence[]>({
+    queryKey: [queryIds.list_sentences, params?.component, params?.lang],
+    queryFn: async () => {
       if (params?.component && params.lang) {
         const response = await listSentences(params, {
           Authorization: authUser?.jwt,
@@ -50,15 +61,13 @@ export function useListSentencesQuery(
         return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
       }
     },
-    {
-      ...options,
-      retry: false,
-      // enabled: Boolean(authUser?.jwt),
-      // cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+    ...options,
+    retry: false,
+    // enabled: Boolean(authUser?.jwt),
+    // cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

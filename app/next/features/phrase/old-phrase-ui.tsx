@@ -173,7 +173,7 @@ export const PhraseUI = () => {
                   queryClient.refetchQueries([
                     listTranslationsQueryKey,
                     contextId,
-                  ]);
+                  ] as any);
                 });
               }
 
@@ -193,7 +193,7 @@ export const PhraseUI = () => {
             }
           }}
         >
-          {addTranslation?.isLoading ? (
+          {addTranslation?.isPending ? (
             <Icons.loadingSpinner spinPulse />
           ) : listening ? (
             <Icons.stop />

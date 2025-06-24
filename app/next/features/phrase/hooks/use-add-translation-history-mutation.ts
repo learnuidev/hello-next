@@ -10,7 +10,7 @@ export const useAddTranslationHistoryMutation = () => {
 
   return useMutation({
     onSuccess: () => {
-      queryClient.refetchQueries([listTranslationHistoryQueryKey]);
+      queryClient.refetchQueries([listTranslationHistoryQueryKey] as any);
     },
     mutationFn: async ({
       sourceLang,

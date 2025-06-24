@@ -4,10 +4,7 @@ import { queryIds } from "./queryIds";
 import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
-
-// TODO: Move this to .env
-const url =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/list-answers";
+import { siteConfig } from "@/lib/config";
 
 const listAnswers = async (
   options: { journeyId?: string },
@@ -15,7 +12,7 @@ const listAnswers = async (
     Authorization: string;
   }
 ) => {
-  const res = await fetch(url, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/list-answers`, {
     method: "POST",
     headers: {
       // 'Access-Control-Allow-Origin': "*",
@@ -104,9 +101,9 @@ export function useListAnswersQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery(
-    [queryIds.listAnswers, params?.journeyId],
-    async () => {
+  return useQuery<any>({
+    queryKey: [queryIds.listAnswers, params?.journeyId],
+    queryFn: async () => {
       // if (options.query) {
       const response = await listAnswers(params, {
         Authorization: authUser?.jwt,
@@ -114,15 +111,14 @@ export function useListAnswersQuery(
       return response?.sort((a: any, b: any) => a?.createdAt - b?.createdAt);
       // }
     },
-    {
-      ...options,
-      enabled: Boolean(authUser?.jwt),
-      // enabled: Boolean(journeyId),
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      // refetchOnWindowFocus: false,
-      // refetchOnFocus: false,
-      // refetchOnMount: false,
-      // refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    enabled: Boolean(authUser?.jwt),
+    // enabled: Boolean(journeyId),
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    // refetchOnWindowFocus: false,
+    // refetchOnFocus: false,
+    // refetchOnMount: false,
+    // refetchOnReconnect: false,
+  });
 }

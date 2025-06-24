@@ -5,16 +5,15 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import posthog from "posthog-js";
+import { siteConfig } from "@/lib/config";
 
 // TODO: Move this to .env
-const url =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/parse";
 
 async function parse(
   params: { content: string },
   opts: { Authorization: string }
 ) {
-  const res = await fetch(url, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/parse`, {
     method: "POST",
     headers: {
       // 'Access-Control-Allow-Origin': "*",
@@ -35,9 +34,9 @@ export function useListParseQuery(
   const startTime = Date.now();
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery(
-    [queryIds.parseQuery, params?.content],
-    async () => {
+  return useQuery<any>({
+    queryKey: [queryIds.parseQuery, params?.content],
+    queryFn: async () => {
       // if (options.query) {
       const response = await parse(params, {
         Authorization: authUser?.jwt,
@@ -54,14 +53,13 @@ export function useListParseQuery(
       });
       return response;
     },
-    {
-      ...options,
-      enabled: Boolean(authUser?.jwt) && Boolean(params?.content),
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    enabled: Boolean(authUser?.jwt) && Boolean(params?.content),
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

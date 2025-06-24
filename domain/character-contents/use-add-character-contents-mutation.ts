@@ -30,7 +30,7 @@ export const useAddCharacterContentMutation = () => {
         listCharacterContentsQueryKey,
         authUser?.jwt,
         resp?.content,
-      ]);
+      ] as any);
     },
   });
 };

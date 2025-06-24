@@ -24,8 +24,9 @@ const ZoomedCharacterItem = ({
         <p> {sentence?.input}</p>
 
         <button
-          disabled={addCharacterMutation.isLoading}
+          disabled={addCharacterMutation.isPending}
           onClick={() => {
+            // @ts-ignore
             addCharacterMutation?.mutateAsync({
               lang: sentence?.lang,
               status: "DISCOVERED",
@@ -35,7 +36,7 @@ const ZoomedCharacterItem = ({
             });
           }}
         >
-          {addCharacterMutation.isLoading ? (
+          {addCharacterMutation.isPending ? (
             <Icons.spinner spinPulse />
           ) : addCharacterMutation.isSuccess ? (
             <Icons.checkCircle className="transition" />

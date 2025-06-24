@@ -8,27 +8,28 @@ import { listUserAssetsQueryKey } from "./use-list-user-assets";
 export function useAddUserAssetMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
-  return useMutation(
-    async (params: AddUserAssetParams) => {
+  return useMutation({
+    mutationFn: async (params: AddUserAssetParams) => {
       const response = await addUserAsset(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
-        }
+    ...options,
+    onSuccess: (data) => {
+      if (options?.onSucess) {
+        options?.onSuccess(data);
+      }
 
-        queryClient.invalidateQueries([listUserAssetsQueryKey, authUser?.jwt]);
-      },
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+      queryClient.invalidateQueries([
+        listUserAssetsQueryKey,
+        authUser?.jwt,
+      ] as any);
+    },
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

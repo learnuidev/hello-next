@@ -9,7 +9,7 @@ export const listHistoryQueryId = "list-history";
 export function useListHistoryQuery() {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery({
+  return useQuery<any>({
     queryKey: [listHistoryQueryId],
     queryFn: async () => {
       const res = await fetch(`${siteConfig.apiUrl}/v1/list-history`, {
@@ -29,7 +29,7 @@ export function useListHistoryQuery() {
       };
     },
     enabled: Boolean(authUser?.jwt),
-    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    // cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
     // refetchOnFocus: false,
     refetchOnMount: false,

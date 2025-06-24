@@ -5,7 +5,10 @@ import {
   useIsSuperAdmin,
 } from "@/domain/auth/auth.queries";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import {
+  ICharacter,
+  useListCharactersQuery,
+} from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 
 export function CharacterAndToneLevel() {
@@ -18,14 +21,14 @@ export function CharacterAndToneLevel() {
   const characterWithOutGroupAndToneLevel = characters
     ?.filter((char) => !char?.tone_level && char?.hanzi?.length === 1)
     .map((char) => {
-      const comp = components?.find((c) => c?.hanzi === char?.hanzi);
+      const comp = components?.find((c: any) => c?.hanzi === char?.hanzi);
       return {
         characterId: char.id,
         hanzi: char.hanzi,
         lang: char?.lang || comp?.lang,
         tone_level: comp?.tone_level,
         group: char.group || comp?.group,
-      };
+      } as any;
     })
     ?.filter((char) => char?.lang === "zh")
     ?.slice(0, 100);

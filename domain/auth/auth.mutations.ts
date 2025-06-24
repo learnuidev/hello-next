@@ -10,9 +10,12 @@ import {
 } from "@/libs/cognito/auth";
 
 export function useSignUp(options: any) {
-  return useMutation(signUp, {
+  return useMutation({
+    mutationFn: signUp,
+
     ...options,
-    onSuccess: (data, variables, context): void => {
+
+    onSuccess: (data: any, variables: any, context: any): void => {
       options?.onSuccess?.(data, variables, context);
     },
     onError: (data, variables, context): void => {
@@ -22,7 +25,8 @@ export function useSignUp(options: any) {
 }
 
 export function useSignUpPasswordless(options: any) {
-  return useMutation(signUpPasswordLess, {
+  return useMutation({
+    mutationFn: signUpPasswordLess,
     ...options,
     onSuccess: (data, variables, context): void => {
       options?.onSuccess?.(data, variables, context);
@@ -34,7 +38,8 @@ export function useSignUpPasswordless(options: any) {
 }
 
 export function useSignInPasswordless(options: any) {
-  return useMutation(signInPasswordLess, {
+  return useMutation({
+    mutationFn: signInPasswordLess,
     ...options,
     onSuccess: (data, variables, context): void => {
       options?.onSuccess?.(data, variables, context);
@@ -45,7 +50,8 @@ export function useSignInPasswordless(options: any) {
   });
 }
 export function useSignIn(options: any) {
-  return useMutation(signIn, {
+  return useMutation({
+    mutationFn: signIn,
     ...options,
     onSuccess: (data, variables, context): void => {
       options?.onSuccess?.(data, variables, context);
@@ -57,7 +63,8 @@ export function useSignIn(options: any) {
 }
 
 export function useConfirmSignUp(options: any) {
-  return useMutation(confirmSignUp, {
+  return useMutation({
+    mutationFn: confirmSignUp,
     onSuccess: (data, variables, context): void => {
       options?.onSuccess?.(data, variables, context);
     },
@@ -65,7 +72,8 @@ export function useConfirmSignUp(options: any) {
 }
 
 export function useConfirmSignInPasswordless(options: any) {
-  return useMutation(confirmSignInPasswordless, {
+  return useMutation({
+    mutationFn: confirmSignInPasswordless,
     onSuccess: (data, variables, context): void => {
       options?.onSuccess?.(data, variables, context);
     },
@@ -73,7 +81,8 @@ export function useConfirmSignInPasswordless(options: any) {
 }
 
 export function useResendCode(options: any) {
-  return useMutation(resendCode, {
+  return useMutation({
+    mutationFn: resendCode,
     onSuccess: (data, variables, context): void => {
       options?.onSuccess?.(data, variables, context);
     },

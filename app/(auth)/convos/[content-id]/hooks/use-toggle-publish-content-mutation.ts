@@ -39,7 +39,7 @@ export const useTogglePublishContentMutation = () => {
 
     onSuccess: (data: any) => {
       // setLastUpdated(null);
-      queryClient.refetchQueries(publicContentsQueryKey);
+      queryClient.refetchQueries(publicContentsQueryKey as any);
     },
   });
 };

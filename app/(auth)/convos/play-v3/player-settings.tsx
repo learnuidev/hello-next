@@ -152,7 +152,7 @@ export const PlayerSettings = ({
                   });
               }}
             >
-              {updateContentMutation?.isLoading ? "Saving..." : "Save"}
+              {updateContentMutation.isPending ? "Saving..." : "Save"}
             </button>
           )}
 

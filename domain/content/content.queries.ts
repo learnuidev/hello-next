@@ -3,7 +3,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
-import { getContent, listContents } from "./content.api";
+import { getContent, IContent, listContents } from "./content.api";
 
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
@@ -25,7 +25,18 @@ interface Content {
   sourceUrl?: string;
   uploadBucketKey?: string;
   title: string;
+  userId: string;
+
   transcriptions: {
+    input: string;
+    roman: string;
+    lit: string;
+    hanzi?: string;
+    pinyin?: string;
+    id?: string;
+    en?: string;
+  }[];
+  chapters: {
     input: string;
     roman: string;
     lit: string;
@@ -71,9 +82,9 @@ export function useListContentsQuery(options = {} as any) {
 
   const queryKey = useGetListContentsQueryKey();
 
-  return useQuery<ListContentsResponse, Error>(
-    queryKey,
-    async () => {
+  return useQuery<ListContentsResponse, Error>({
+    queryKey: queryKey,
+    queryFn: async () => {
       const response = await listContentsRecursive(authUser?.jwt);
 
       const finalResponse = {
@@ -87,17 +98,16 @@ export function useListContentsQuery(options = {} as any) {
       // return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
       // }
     },
-    {
-      ...options,
-      enabled: Boolean(authUser?.jwt),
-      // enabled: Boolean(journeyId),
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    enabled: Boolean(authUser?.jwt),
+    // enabled: Boolean(journeyId),
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }
 
 export const getContentQueryId = "get-content";
@@ -109,31 +119,18 @@ export function useGetContentQuery(
 
   const queryClient = useQueryClient();
 
-  return useQuery({
+  return useQuery<IContent, any, any>({
     // @ts-ignore
     queryKey: [getContentQueryId, params.contentId],
     queryFn: async () => {
       const response = await getContent(params, {
         Authorization: authUser?.jwt,
       });
-      return {
-        ...response,
-        transcriptions: response?.transcriptions?.map((transcription: any) => {
-          if (!transcription?.start) {
-            return {
-              ...transcription,
-              start: 0,
-              end: 0,
-            };
-          }
-          return transcription;
-        }),
-      };
-
-      // }
+      return response;
     },
     retry: false,
-    onSuccess: (data) => {
+    // @ts-ignore
+    onSuccess: (data: IContent) => {
       opts?.onSuccess?.(data);
       queryClient.setQueryData([listContentsQueryKey, true], (old: any) => {
         return {

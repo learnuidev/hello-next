@@ -116,7 +116,7 @@ export const TranscriptItem = ({
 
   const timeStamp = times?.find((time: any) => time?.id === example?.id) as any;
 
-  const { data: contents } = useListCharactersQuery();
+  const { data: contents } = useListCharactersQuery() as any;
 
   const content =
     contents?.find(

@@ -30,7 +30,7 @@ export const PinyinView = (props: { characterId: string }) => {
 
   const selectedComp = components?.find(
     (component: any) => component?.hanzi === characterId
-  );
+  ) as any;
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 

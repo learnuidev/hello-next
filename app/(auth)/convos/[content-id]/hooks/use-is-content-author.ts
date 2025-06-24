@@ -1,4 +1,3 @@
-import { useGetContent } from "@/app/nmm/content/use-get-content";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 

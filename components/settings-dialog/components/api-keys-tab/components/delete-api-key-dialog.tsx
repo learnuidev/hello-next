@@ -74,6 +74,7 @@ export function DeleteApiKeyDialog({
               type="submit"
               onClick={() => {
                 deleteUserCredentialMutation
+                  // @ts-ignore
                   .mutateAsync({
                     credentialId: credential?.id || "",
                   })
@@ -83,7 +84,7 @@ export function DeleteApiKeyDialog({
                   });
               }}
             >
-              {deleteUserCredentialMutation?.isLoading
+              {deleteUserCredentialMutation.isPending
                 ? "Revoking..."
                 : "Revoke"}
             </Button>

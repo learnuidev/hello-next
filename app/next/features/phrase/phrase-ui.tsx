@@ -99,6 +99,7 @@ export const PhraseUI = () => {
         setInputTranscript("");
         resetTranscript();
 
+        // @ts-ignore
         queryClient.refetchQueries([listTranslationsQueryKey, contextId]);
       });
     }
@@ -152,7 +153,7 @@ export const PhraseUI = () => {
                 placeholder="Type a message..."
                 className="flex-1 py-0 dark:bg-[rgb(21,22,23)] border-transparent focus:border-transparent focus:ring-0 focus:outline-none resize-none"
               />
-              <Button disabled={addTranslation.isLoading} type="submit">
+              <Button disabled={addTranslation.isPending} type="submit">
                 <Icons.paperPlane className="text-xl dark:text-gray-300 dark:hover:text-white text-gray-700" />
               </Button>
             </form>
@@ -212,7 +213,7 @@ export const PhraseUI = () => {
                     "text-xl border-[1px] dark:border-gray-700 dark:hover:border-gray-500 w-10 h-10 rounded-full",
                     listening ? "text-red-500" : ""
                   )}
-                  disabled={addTranslation.isLoading}
+                  disabled={addTranslation.isPending}
                   onClick={() => {
                     if (listening) {
                       SpeechRecognition.stopListening();
@@ -226,6 +227,7 @@ export const PhraseUI = () => {
                           setInputTranscript("");
                           resetTranscript();
 
+                          // @ts-ignore
                           queryClient.refetchQueries([
                             listTranslationsQueryKey,
                             contextId,
@@ -241,7 +243,7 @@ export const PhraseUI = () => {
                     }
                   }}
                 >
-                  {addTranslation?.isLoading ? (
+                  {addTranslation?.isPending ? (
                     <Icons.loadingSpinner spinPulse />
                   ) : listening ? (
                     <Icons.stop />

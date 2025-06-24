@@ -12,23 +12,21 @@ export function useUpdateMeaningMutation(options = {} as any) {
 
   const queryClient = useQueryClient();
 
-  return useMutation(
-    async (params: any) => {
+  return useMutation({
+    mutationFn: async (params: any) => {
       const response = await updateMeanings(params, {
         Authorization: authUser?.jwt,
       });
 
       return response as UpdateMeaningResponse;
     },
-    {
-      onSuccess: (data: UpdateMeaningResponse) => {
-        queryClient.refetchQueries([
-          listMeaningQueryKey,
-          data.sentenceId,
-          data.lang,
-        ]);
-      },
-      ...options,
-    }
-  );
+    onSuccess: (data: UpdateMeaningResponse) => {
+      queryClient.refetchQueries([
+        listMeaningQueryKey,
+        data.sentenceId,
+        data.lang,
+      ] as any);
+    },
+    ...options,
+  });
 }

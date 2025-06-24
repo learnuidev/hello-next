@@ -57,17 +57,19 @@ export const TheDock = ({
                 y: 80,
                 filter: "blur(800px)",
               }}
-              animate={{
-                opacity: 1,
-                scale: 1.15,
-                y: -5,
-                filter: "blur(0px)",
-                transition: {
-                  duration: 0.1,
-                  ease: "easeOut",
-                  type: "just",
-                },
-              }}
+              animate={
+                {
+                  opacity: 1,
+                  scale: 1.15,
+                  y: -5,
+                  filter: "blur(0px)",
+                  transition: {
+                    duration: 0.1,
+                    ease: "easeOut",
+                    type: "just",
+                  },
+                } as any
+              }
               className={cn(
                 "transition",
 

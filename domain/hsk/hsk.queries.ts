@@ -13,7 +13,18 @@ import { useGetUserPreferenceQuery } from "../user/use-get-user-preference-query
 // const url = `${siteConfig?.apiUrl}/v1/list-hsk-words`;
 const url = `${siteConfig?.apiUrl}/v1/list-hsk-words/v3`;
 
-export async function listHSKWords(params: {}) {
+interface HskWord {
+  id: string;
+  level: number;
+  hanzi: string;
+  pinyin: string;
+  en: string;
+  input: string;
+  roman: string;
+  hskLevel: number;
+}
+
+export async function listHSKWords(params: {}): Promise<HskWord[]> {
   const res = await fetch(`/api/list-hsk-words`, {
     method: "POST",
     headers: {
@@ -49,9 +60,9 @@ export function useListHSKWordsQuery(
       : 2
     : initVersion;
 
-  return useQuery(
-    [queryIds.listHSKWords, authUser?.jwt, version],
-    async () => {
+  return useQuery<any>({
+    queryKey: [queryIds.listHSKWords, authUser?.jwt, version],
+    queryFn: async () => {
       // if (!authUser?.jwt) {
       //   if (version === 2) {
       //     return hsk2WordBank;
@@ -64,14 +75,13 @@ export function useListHSKWordsQuery(
 
       return response;
     },
-    {
-      ...options,
-      enabled: Boolean(version),
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    enabled: Boolean(version),
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

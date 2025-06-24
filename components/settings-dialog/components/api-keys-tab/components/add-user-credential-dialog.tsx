@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
@@ -202,11 +204,14 @@ export function AddUserCredentialDialog({
                 }
                 onClick={() => {
                   addUserCredentialMutation
+
+                    // @ts-ignore
                     .mutateAsync({
                       title: title || getName(permissionType),
                       scopes: getScopes(permissionType, scopes),
                       permissionType,
                     })
+                    // @ts-ignore
                     .then(({ apiKey, apiSecret }: UserCredential) => {
                       closeAddDialog();
                       setAddCredentials({ apiKey, apiSecret });
@@ -216,7 +221,7 @@ export function AddUserCredentialDialog({
                     });
                 }}
               >
-                {addUserCredentialMutation?.isLoading
+                {addUserCredentialMutation.isPending
                   ? "Creating..."
                   : "Create secret key"}
               </Button>

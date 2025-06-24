@@ -215,21 +215,24 @@ export const useWordleState = ({
       setGameStatus("");
     };
 
-    return addAnswerMutation
+    return (
+      addAnswerMutation
 
-      .mutateAsync({
         // @ts-ignore
-        hanzi: secret,
-        answer: historyTrimmed,
-        lessonId: _lessonId,
-        // @ts-ignore
-        phraseId: currentPhrase?.id,
-        status: "correct",
-        guessHistory: guessHistory?.[lessonIndex as string],
-      })
-      .then((res) => {
-        goToNextChallenge();
-      });
+        .mutateAsync({
+          // @ts-ignore
+          hanzi: secret,
+          answer: historyTrimmed,
+          lessonId: _lessonId,
+          // @ts-ignore
+          phraseId: currentPhrase?.id,
+          status: "correct",
+          guessHistory: guessHistory?.[lessonIndex as string],
+        })
+        .then((res) => {
+          goToNextChallenge();
+        })
+    );
   };
 
   const previousLessonHandler = () => {
@@ -246,35 +249,38 @@ export const useWordleState = ({
       ""
     );
 
-    return addAnswerMutation
+    return (
+      addAnswerMutation
 
-      .mutateAsync({
         // @ts-ignore
-        hanzi: secret,
-        answer: historyTrimmed,
-        lessonId: _lessonId,
-        // @ts-ignore
-        phraseId: currentPhrase?.id,
-        status: "incorrect",
-        guessHistory: guessHistory?.[lessonIndex as string],
-      })
-      .then((res) => {
-        const lessonIdx = contents?.findIndex(
-          (lesson: any) => lesson?.id === lessonIndex
-        );
-
-        if (lessonIdx !== -1) {
+        .mutateAsync({
           // @ts-ignore
-          const nextId = contents?.[lessonIdx + 1];
+          hanzi: secret,
+          answer: historyTrimmed,
+          lessonId: _lessonId,
+          // @ts-ignore
+          phraseId: currentPhrase?.id,
+          status: "incorrect",
+          guessHistory: guessHistory?.[lessonIndex as string],
+        })
+        .then((res) => {
+          const lessonIdx = contents?.findIndex(
+            (lesson: any) => lesson?.id === lessonIndex
+          );
 
-          nextId?.id && setTranscriptionId(nextId?.id);
-        } else {
-          setGameStatus("finish");
-        }
-        // setTranscriptionId((prevIndex) => prevIndex + 1);
-        setCurrentGuess("");
-        setGameStatus("");
-      });
+          if (lessonIdx !== -1) {
+            // @ts-ignore
+            const nextId = contents?.[lessonIdx + 1];
+
+            nextId?.id && setTranscriptionId(nextId?.id);
+          } else {
+            setGameStatus("finish");
+          }
+          // setTranscriptionId((prevIndex) => prevIndex + 1);
+          setCurrentGuess("");
+          setGameStatus("");
+        })
+    );
   };
 
   const retryHandler = () => {
@@ -284,35 +290,38 @@ export const useWordleState = ({
       ""
     );
 
-    return addAnswerMutation
-      .mutateAsync({
+    return (
+      addAnswerMutation
         // @ts-ignore
-        hanzi: secret,
-        answer: historyTrimmed,
-        lessonId: _lessonId,
-        // @ts-ignore
-        phraseId: currentPhrase?.id,
-        status: "incorrect",
-        guessHistory: guessHistory?.[lessonIndex as string],
-      })
-      .then((res) => {
-        const lessonIdx = contents?.findIndex(
-          (lesson: any) => lesson?.id === lessonIndex
-        );
-
-        if (lessonIdx !== -1) {
+        .mutateAsync({
           // @ts-ignore
-          const nextId = contents?.[lessonIdx + 1];
+          hanzi: secret,
+          answer: historyTrimmed,
+          lessonId: _lessonId,
+          // @ts-ignore
+          phraseId: currentPhrase?.id,
+          status: "incorrect",
+          guessHistory: guessHistory?.[lessonIndex as string],
+        })
+        .then((res) => {
+          const lessonIdx = contents?.findIndex(
+            (lesson: any) => lesson?.id === lessonIndex
+          );
 
-          nextId?.id && setTranscriptionId(nextId?.id);
-        } else {
-          setGameStatus("finish");
-        }
+          if (lessonIdx !== -1) {
+            // @ts-ignore
+            const nextId = contents?.[lessonIdx + 1];
 
-        setCurrentGuess("");
-        setGameStatus("");
-        setGuessHistory({});
-      });
+            nextId?.id && setTranscriptionId(nextId?.id);
+          } else {
+            setGameStatus("finish");
+          }
+
+          setCurrentGuess("");
+          setGameStatus("");
+          setGuessHistory({});
+        })
+    );
   };
 
   const nextLessonHandler = () => {

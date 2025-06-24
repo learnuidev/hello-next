@@ -9,7 +9,7 @@ import { headers } from "next/headers";
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
-  const headersApi = headers();
+  const headersApi = await headers();
 
   const { statusUrl } = await req.json();
 

@@ -38,7 +38,7 @@ export function Login() {
       setAuthUser(data);
       // setViewtype(RegistrationViewTypes.confirmLogin);
 
-      queryClient?.invalidateQueries([authQueryIds?.currentAuthUser]);
+      queryClient?.invalidateQueries([authQueryIds?.currentAuthUser] as any);
 
       if (routeName === "/login") {
         router.push("/");
@@ -119,10 +119,12 @@ export function Login() {
                 onClick={(event) => {
                   event.preventDefault();
 
-                  useSignInMutation.mutate({
-                    username,
-                    password,
-                  });
+                  useSignInMutation
+                    // @ts-ignore
+                    .mutate({
+                      username,
+                      password,
+                    });
                 }}
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >

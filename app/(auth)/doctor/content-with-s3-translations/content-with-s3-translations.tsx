@@ -40,13 +40,17 @@ export function ContentWithS3Translations() {
             json: content,
             name: content?.title || "",
           }).then((res: UploadFileResponse) => {
-            return updateContentMutation.mutateAsync({
-              id: content?.id || "",
-              sourceUrl: res.sourceUrl,
-              uploadBucketKey: res.uploadBucketKey,
-              s3LinkAddedAt: Date.now(),
-              updateContent: true,
-            });
+            return (
+              updateContentMutation
+                // @ts-ignore
+                .mutateAsync({
+                  id: content?.id || "",
+                  sourceUrl: res.sourceUrl,
+                  uploadBucketKey: res.uploadBucketKey,
+                  s3LinkAddedAt: Date.now(),
+                  updateContent: true,
+                })
+            );
           });
         })
       );

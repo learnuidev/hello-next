@@ -1,6 +1,6 @@
 #zhongwen-window {
   background: white !important;
-  text: black !importanat;
+  color: black !important;
   border-color: rgb(212, 212, 212) !important;
   padding: 16px;
   -webkit-box-shadow: 21px -26px 131px -68px rgba(0, 0, 0, 0.75) !important;
@@ -60,7 +60,7 @@
 .dark {
   #zhongwen-window {
     background: black !important;
-    text: white !importanat;
+    color: white !important;
     border-color: black !important;
     padding: 16px;
     -webkit-box-shadow: 21px -26px 131px -68px rgba(0, 0, 0, 0.75) !important;

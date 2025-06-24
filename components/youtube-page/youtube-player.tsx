@@ -55,7 +55,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(lessonId);
   const params = useParams<{ "content-id": string }>();
   const contentId = params["content-id"];
-  const playerRef = useRef() as any;
+  const playerRef = useRef(null) as any;
   const setRepeatHistories = useRepeatHistoryStore(
     (state: any) => state.setHistory
   );
@@ -120,7 +120,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     component: lessonId,
     lang: "zh",
     genSents: false,
-  });
+  }) as any;
 
   const router = useRouter();
 
@@ -516,7 +516,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                 updateContentMutation
                   .mutateAsync({
                     ...editedTranscriptions,
-                  })
+                  } as any)
                   .then((resp) => {
                     setEditMode();
                   });
@@ -540,7 +540,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                   audioUploadBucketKey: res.uploadBucketKey,
                   audioS3LinkAddedAt: Date.now(),
                   updateContent: true,
-                });
+                } as any);
               }}
             />
           )}

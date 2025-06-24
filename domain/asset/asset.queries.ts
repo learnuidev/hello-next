@@ -18,9 +18,9 @@ export function useGetUploadUrlQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery(
-    [queryIds.getUploadUrl, params.contentType, params.extension],
-    async () => {
+  return useQuery<any>({
+    queryKey: [queryIds.getUploadUrl, params.contentType, params.extension],
+    queryFn: async () => {
       // if (options.query) {
       const response = await getUploadUrl(params, {
         Authorization: authUser?.jwt,
@@ -28,19 +28,18 @@ export function useGetUploadUrlQuery(
       return response;
       // }
     },
-    {
-      ...options,
-      enabled:
-        Boolean(params.contentType) &&
-        Boolean(params.extension) &&
-        Boolean(authUser.jwt),
-      // enabled: Boolean(authUser?.jwt),
-      // enabled: Boolean(journeyId),
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    enabled:
+      Boolean(params.contentType) &&
+      Boolean(params.extension) &&
+      Boolean(authUser.jwt),
+    // enabled: Boolean(authUser?.jwt),
+    // enabled: Boolean(journeyId),
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

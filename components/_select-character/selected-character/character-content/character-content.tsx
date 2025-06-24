@@ -41,7 +41,7 @@ function ImageItem({ item }: any) {
             }}
             className="absolute bottom-12 text-2xl right-8 text-black"
           >
-            {extractImageMutation.isLoading ? (
+            {extractImageMutation.isPending ? (
               <Icons.spinner spinPulse />
             ) : (
               <Icons.magicWand />

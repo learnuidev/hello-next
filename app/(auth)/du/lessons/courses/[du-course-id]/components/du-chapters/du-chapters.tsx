@@ -148,8 +148,8 @@ export const DuChapters = () => {
               }}
               className="space-x-2 border-[1px] rounded-full px-4 py-[5.5px]"
             >
-              {unfavouriteCourseMutation?.isLoading ||
-              favouriteCourseMutation?.isLoading ? (
+              {unfavouriteCourseMutation.isPending ||
+              favouriteCourseMutation.isPending ? (
                 <Icons.spinner spinPulse />
               ) : (
                 <>

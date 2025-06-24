@@ -67,7 +67,7 @@ export const Phrase = () => {
           {" "}
           <Icons.commentQuote className="text-3xl lg:text-5xl" />
           <span className="">
-            {addTranslationHistoryMutation?.isLoading
+            {addTranslationHistoryMutation.isPending
               ? "Starting..."
               : "New Chat"}
           </span>

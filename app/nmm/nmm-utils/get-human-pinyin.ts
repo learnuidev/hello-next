@@ -1,6 +1,7 @@
+import { IComponent } from "@/domain/lesson/component.queries";
 import { characterMap } from "../character-map";
 
-export const getHumanPinyin = (comp: { pinyin: string }) => {
+export const getHumanPinyin = (comp: IComponent) => {
   return comp?.pinyin
     ?.split("")
     ?.map((item) => {

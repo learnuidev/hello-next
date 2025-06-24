@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { queryIds } from "./queryIds";
 
 export function useCurrentAuthUser(options = {}) {
-  return useQuery({
+  return useQuery<any>({
     queryKey: [queryIds.currentAuthUser],
 
     queryFn: currentAuthUser,

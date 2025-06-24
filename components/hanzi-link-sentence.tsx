@@ -40,7 +40,7 @@ export function HanziLinkSentence({
         (component: any) => component?.hanzi === character?.hanzi
       ),
     [components, character]
-  );
+  ) as any;
 
   const color = calculateColor({
     ...selectedComp,

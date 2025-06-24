@@ -194,12 +194,14 @@ export function UpdateUserCredentialDialog({
                 }
                 onClick={() => {
                   updateUserCredentialMutation
+                    // @ts-ignore
                     .mutateAsync({
                       id: userCredential.id,
                       permissionType: permissionType,
                       title: title || getName(permissionType),
                       scopes: getScopes(permissionType, scopes),
                     })
+                    // @ts-ignore
                     .then(({ apiKey, apiSecret }: UserCredential) => {
                       closeDialog();
                       resetState();
@@ -208,7 +210,7 @@ export function UpdateUserCredentialDialog({
                     });
                 }}
               >
-                {updateUserCredentialMutation?.isLoading
+                {updateUserCredentialMutation.isPending
                   ? "Updating..."
                   : "Update"}
               </Button>

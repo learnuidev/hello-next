@@ -27,9 +27,9 @@ export function useTranscribeQuery(params: any, options: any) {
   const setTranscription = useTranscriptionStore(
     (state) => state.setTranscription
   );
-  return useQuery(
-    [queryIds.transcribe, params?.mediaUrl],
-    async () => {
+  return useQuery<any>({
+    queryKey: [queryIds.transcribe, params?.mediaUrl],
+    queryFn: async () => {
       if (params?.mediaUrl) {
         const response = await fetch(url, {
           method: "POST",
@@ -82,15 +82,14 @@ export function useTranscribeQuery(params: any, options: any) {
         };
       }
     },
-    {
-      ...options,
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+
+    ...options,
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }
 export function useTranscribeQueryV2(
   params: {
@@ -98,7 +97,7 @@ export function useTranscribeQueryV2(
   },
   options: any
 ) {
-  return useQuery({
+  return useQuery<any>({
     queryKey: [queryIds.transcribeV2, params?.videoUrl],
     queryFn: async () => {
       if (params.videoUrl) {

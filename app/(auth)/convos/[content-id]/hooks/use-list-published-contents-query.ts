@@ -15,7 +15,7 @@ export const useListPublishedContentsQuery = ({ key }: { key?: string }) => {
 
   const myQueryKey = useGetPublicContentsQueryKey();
 
-  return useQuery({
+  return useQuery<any>({
     queryKey: [publicContentsQueryKey, authUser?.jwt],
     queryFn: async () => {
       if (authUser?.jwt) {

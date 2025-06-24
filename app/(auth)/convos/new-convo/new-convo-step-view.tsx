@@ -196,7 +196,7 @@ export function StepView() {
         extension,
         sourceUrl: assetUrl,
         uploadBucketKey: s3Key,
-      })
+      } as any)
       .then(async () => {
         alert("DONE");
       });
@@ -524,7 +524,7 @@ export function StepView() {
                     lang: newConvo?.lang,
                     audio: newConvo?.audio,
                     transcriptions: newConvo?.transcriptions,
-                  });
+                  } as any);
                 }}
               >
                 add new convo

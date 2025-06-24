@@ -128,6 +128,7 @@ export function GenerateAudioDialog({
             .then((resp) => {
               setResourceStatus(null);
               setAudioResource(null);
+              // @ts-ignore
               queryClient.invalidateQueries([
                 listMeaningQueryKey,
                 currentPhrase?.hanzi,
@@ -175,7 +176,7 @@ export function GenerateAudioDialog({
           <NarakeetVoicesList />
 
           <div className="mt-8">
-            {startGeneratingAudioMutation?.isLoading ? (
+            {startGeneratingAudioMutation.isPending ? (
               <p>Generating...</p>
             ) : !data ? (
               <div> </div>
@@ -203,6 +204,7 @@ export function GenerateAudioDialog({
                             // alert(JSON.stringify(resp));
                             setResourceStatus(null);
                             setAudioResource(null);
+                            // @ts-ignore
                             queryClient.invalidateQueries([
                               getComponentQueryKey,
                               currentPhrase?.hanzi,
@@ -237,6 +239,7 @@ export function GenerateAudioDialog({
                         .then((resp) => {
                           setResourceStatus(null);
                           setAudioResource(null);
+                          // @ts-ignore
                           queryClient.invalidateQueries([
                             listMeaningQueryKey,
                             currentPhrase?.hanzi,

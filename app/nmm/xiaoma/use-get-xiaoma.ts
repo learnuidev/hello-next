@@ -24,7 +24,7 @@ export const useGetXiaoma = ({
 
   const { data: course1 } = useListSpeakQuery();
 
-  return useQuery({
+  return useQuery<any>({
     // @ts-ignore
     queryKey: [
       "list-xiaoma-content",
@@ -70,7 +70,10 @@ export const useGetXiaoma = ({
                 (component: any) => component?.hanzi === val
               );
 
-              return selectedComp?.level <= selectedBelt?.maxCharacterLevel;
+              return (
+                selectedComp &&
+                selectedComp?.level <= selectedBelt?.maxCharacterLevel
+              );
             });
           })
           ?.filter((prop: any, idx: any, coll: any) => {
@@ -139,9 +142,8 @@ export const useGetXiaoma = ({
         xiaomaSentences,
       };
     },
-
     refetchOnWindowFocus: false,
-    refetchOnFocus: false,
+    // refetchOnFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
   });

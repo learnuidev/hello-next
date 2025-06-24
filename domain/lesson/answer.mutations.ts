@@ -3,10 +3,7 @@ import { queryIds } from "./queryIds";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
-
-// TODO: Move this to .env
-const url =
-  "https://ocdi1u27uf.execute-api.us-east-1.amazonaws.com/dev/v1/add-answer";
+import { siteConfig } from "@/lib/config";
 
 const addAnswer = async (
   options: {
@@ -21,7 +18,7 @@ const addAnswer = async (
     Authorization: string;
   }
 ) => {
-  const res = await fetch(url, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/add-answer`, {
     method: "POST",
     headers: {
       Authorization: `${opts?.Authorization}`,
@@ -35,8 +32,8 @@ const addAnswer = async (
 export function useAddAnswerMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
-  return useMutation(
-    async (params: {
+  return useMutation({
+    mutationFn: async (params: {
       hanzi: string;
       answer: string;
       lessonId: string;
@@ -49,20 +46,21 @@ export function useAddAnswerMutation(options = {} as any) {
       });
       return response;
     },
-    {
-      ...options,
-      onSuccess: (data) => {
-        if (options?.onSucess) {
-          options?.onSuccess(data);
-        }
+    ...options,
+    onSuccess: (data: any) => {
+      if (options?.onSucess) {
+        options?.onSuccess(data);
+      }
 
-        queryClient.invalidateQueries([queryIds?.listAnswers, data?.journeyId]);
-      },
-      cacheTime: 1000 * 60 * 300, // 30 minutes,
-      refetchOnWindowFocus: false,
-      refetchOnFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    }
-  );
+      queryClient.invalidateQueries([
+        queryIds?.listAnswers,
+        data?.journeyId,
+      ] as any);
+    },
+    cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
 }

@@ -1,12 +1,11 @@
 import { useListFavouriteContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-favourited-contents-query";
 import { useToggleFavouriteContentMutation } from "@/app/(auth)/convos/[content-id]/hooks/use-toggle-favourite-content-mutation";
 import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watched-content-store";
-import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Icons } from "./ui/icons.v2";
 
 export const ContentsListEffect = ({
@@ -27,11 +26,8 @@ export const ContentsListEffect = ({
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const { setRecentlyWatched } = useRecentlyWatchedContent();
-
-  const { data: userPreferences } = useGetUserPreferenceQuery();
-
-  const recentlyWatched = userPreferences?.recentlyWatched || {};
+  const { setRecentlyWatched, recentlyWatchedMap } =
+    useRecentlyWatchedContent();
 
   const { toast } = useToast();
 
@@ -52,9 +48,7 @@ export const ContentsListEffect = ({
           (content: any) => content?.id === item.id
         );
 
-        const totalWatched = (recentlyWatched?.[item?.id] as any)?.totalWatched;
-
-        console.log("recently watched", recentlyWatched);
+        const totalWatched = recentlyWatchedMap?.[item?.id]?.totalWatched;
 
         return (
           <div

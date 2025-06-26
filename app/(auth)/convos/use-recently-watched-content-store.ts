@@ -71,6 +71,7 @@ export const useRecentlyWatchedContent = () => {
   return {
     recentlyWatched,
     setRecentlyWatched,
+    recentlyWatchedMap: _recentlyWatched,
     isLoading: updateUserPreferenceMutation.isPending,
   };
 };

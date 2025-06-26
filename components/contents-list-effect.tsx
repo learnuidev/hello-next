@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Icons } from "./ui/icons.v2";
 
 export const ContentsListEffect = ({
@@ -29,14 +29,16 @@ export const ContentsListEffect = ({
 
   const { setRecentlyWatched } = useRecentlyWatchedContent();
 
+  const { data: userPreferences } = useGetUserPreferenceQuery();
+
+  const recentlyWatched = userPreferences?.recentlyWatched || {};
+
   const { toast } = useToast();
 
   const toggleFavouritContentMutation = useToggleFavouriteContentMutation();
 
   const { data: favouriteContents, isLoading: isFavouriteContentLoading } =
     useListFavouriteContentsQuery({});
-
-  const { data: userPreferences } = useGetUserPreferenceQuery();
 
   return (
     <div
@@ -45,10 +47,14 @@ export const ContentsListEffect = ({
         className
       )}
     >
-      {items.map((item, idx) => {
+      {items.map((item: any, idx) => {
         const isFavourited = favouriteContents?.items?.find(
           (content: any) => content?.id === item.id
         );
+
+        const totalWatched = (recentlyWatched?.[item?.id] as any)?.totalWatched;
+
+        console.log("recently watched", recentlyWatched);
 
         return (
           <div
@@ -118,6 +124,12 @@ export const ContentsListEffect = ({
                 >
                   {isFavourited ? <Icons.heartSolid /> : <Icons.heart />}
                 </button>
+              </div>
+
+              <div className="flex items-center gap-2 mt-2 text-gray-400">
+                <p>
+                  {totalWatched || 0} {totalWatched > 1 ? "views" : "view"}
+                </p>
               </div>
 
               <Link

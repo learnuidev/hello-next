@@ -3,24 +3,12 @@
 ol,
 ul {
   width: 100% !important;
-  padding: 0rem 0.8rem !important;
+  padding: 0rem 1.8rem !important;
 }
 
 li {
   width: 100% !important;
   padding: 0.2rem 0rem !important;
-}
-
-.ProseMirror {
-  padding: 0rem 4rem;
-  /* padding-right: 0rem !important; */
-  /* padding-left: 0rem !important; */
-  /* background-color: black; */
-  /* color: white; */
-
-  > * + * {
-    margin-top: 0.75em;
-  }
 }
 
 .table-of-content {
@@ -64,18 +52,6 @@ li {
 }
 
 .ProseMirror {
-  /* padding-right: 0rem; */
-  padding-right: 0rem !important;
-  padding-left: 0rem !important;
-  /* background-color: black; */
-  /* color: white; */
-
-  > * + * {
-    margin-top: 0.75em;
-  }
-}
-
-.ProseMirror {
   /* @apply p-12 px-8 sm:px-12; */
 
   &:focus {
@@ -111,14 +87,6 @@ li {
       font-size: 1rem;
       font-weight: 800;
     }
-  }
-}
-
-.ProseMirror {
-  @apply px-8 sm:px-12;
-
-  &:focus {
-    outline: none;
   }
 }
 

@@ -68,7 +68,7 @@ export function Summary({
   }
 
   return (
-    <main className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-4">
+    <main className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 rounded-2xl mt-4">
       <div className="">
         <div className="">
           {meaningResponse?.summary && (

@@ -63,23 +63,23 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
 
   // if (viewType === "clipboard" && lesson2.lang !== "zh") {
-  if (viewType === "clipboard") {
-    if (lesson2 && lesson2?.transcriptions?.length > 0) {
-      const transcriptionStr = Object.entries(
-        groupBySectionId(lesson2?.transcriptions || [])
-      )
-        .map((item: any) =>
-          item?.[1].map((v: any) => v?.input || v?.hanzi)?.join(".")
-        )
-        .join("\n\n");
+  // if (viewType === "clipboard") {
+  //   if (lesson2 && lesson2?.transcriptions?.length > 0) {
+  //     const transcriptionStr = Object.entries(
+  //       groupBySectionId(lesson2?.transcriptions || [])
+  //     )
+  //       .map((item: any) =>
+  //         item?.[1].map((v: any) => v?.input || v?.hanzi)?.join(".")
+  //       )
+  //       .join("\n\n");
 
-      return <Clipboard lang={lesson2.lang} content={transcriptionStr} />;
-    } else {
-      return (
-        <Nothing message="Please add some content before viewing this page" />
-      );
-    }
-  }
+  //     return <Clipboard lang={lesson2.lang} content={transcriptionStr} />;
+  //   } else {
+  //     return (
+  //       <Nothing message="Please add some content before viewing this page" />
+  //     );
+  //   }
+  // }
 
   // If the link contains yotube - then show youtube page
   if (
@@ -158,8 +158,10 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
 
   return (
-    <div className="font-light flex justify-between items-center w-full px-4 md:px-32 md:mt-2">
-      <div></div>
+    <div>
+      <YouTubePlayer lessonId={lessonId} />
+
+      <FloatingNavbar />
     </div>
   );
 };

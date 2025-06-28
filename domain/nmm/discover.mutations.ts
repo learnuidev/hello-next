@@ -21,7 +21,7 @@ const discover = async (
     Authorization: string;
   }
 ) => {
-  const res = await fetch(`${siteConfig.apiUrl}/v1/discover"`, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/discover`, {
     method: "POST",
     headers: {
       Authorization: `${opts?.Authorization}`,

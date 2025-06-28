@@ -48,25 +48,25 @@ export function useUpdateContentMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      queryClient.setQueriesData(
-        [getContentQueryId, data?.id] as any,
-        (old: any) => {
-          return data;
-        }
-      );
+      // queryClient.setQueriesData(
+      //   [getContentQueryId, data?.id] as any,
+      //   (old: any) => {
+      //     return data;
+      //   }
+      // );
 
-      queryClient.setQueryData(listContentsQueryKey, (old: any) => {
-        return {
-          ...old,
-          items: old?.items?.map((item: any) => {
-            if (item?.id === data?.id) {
-              return data;
-            }
+      // queryClient.setQueryData(listContentsQueryKey, (old: any) => {
+      //   return {
+      //     ...old,
+      //     items: old?.items?.map((item: any) => {
+      //       if (item?.id === data?.id) {
+      //         return data;
+      //       }
 
-            return item;
-          }),
-        };
-      });
+      //       return item;
+      //     }),
+      //   };
+      // });
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

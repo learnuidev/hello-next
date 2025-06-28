@@ -152,7 +152,7 @@ export const ConvosNavBar = () => {
           <Icons.play />
         </Link>
         {/* {content?.lang !== "zh" && ( */}
-        <Link
+        {/* <Link
           onClick={() => {
             setViewType("clipboard");
             setMode("edit");
@@ -165,7 +165,7 @@ export const ConvosNavBar = () => {
           } hover:text-black dark:hover:text-white transition text-xl`}
         >
           <Icons.clipboard />
-        </Link>
+        </Link> */}
         {/* )} */}
         <Link
           onClick={() => {

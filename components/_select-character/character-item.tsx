@@ -90,7 +90,7 @@ export const CharacterItem = ({
                   ? `text-gray-300 ${color} ${hoverColor}`
                   : learnedChar?.status === "forgotten"
                     ? // ? `text-gray-300 dark:text-gray-800 ${hoverColor}`
-                      `text-gray-500 ${hoverColor}`
+                      `text-gray-200 dark:text-gray-500 ${hoverColor}`
                     : `text-gray-300 ${color} ${hoverColor}`
                 : `dark:text-gray-200 text-gray-800 ${hoverColor}`
         } ${hoverColor}`,

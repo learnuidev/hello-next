@@ -50,36 +50,36 @@ export function useDiscoverMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      queryClient.refetchQueries([listComponentsQueryKey, true] as any);
-      queryClient.refetchQueries([listComponentsQueryMapKey, true] as any);
+      // queryClient.refetchQueries([listComponentsQueryKey, true] as any);
+      // queryClient.refetchQueries([listComponentsQueryMapKey, true] as any);
 
-      queryClient.setQueriesData(
-        [listComponentsQueryMapKey, undefined, lastUpdated] as any,
-        (props: any) => {
-          return {
-            ...props,
-            [data?.hanzi || data?.input]: data,
-          };
-        }
-      );
-      console.log("TODO");
+      // queryClient.setQueriesData(
+      //   [listComponentsQueryMapKey, undefined, lastUpdated] as any,
+      //   (props: any) => {
+      //     return {
+      //       ...props,
+      //       [data?.hanzi || data?.input]: data,
+      //     };
+      //   }
+      // );
+      // console.log("TODO");
 
-      setComponents(
-        components.map((comp: any) => {
-          if (comp?.hanzi === data?.hanzi) {
-            return data;
-          }
+      // setComponents(
+      //   components.map((comp: any) => {
+      //     if (comp?.hanzi === data?.hanzi) {
+      //       return data;
+      //     }
 
-          return comp;
-        })
-      );
+      //     return comp;
+      //   })
+      // );
 
-      queryClient.setQueryData(
-        [getComponentQueryKey, data?.hanzi, authUser?.jwt],
-        (old: any) => {
-          return data;
-        }
-      );
+      // queryClient.setQueryData(
+      //   [getComponentQueryKey, data?.hanzi, authUser?.jwt],
+      //   (old: any) => {
+      //     return data;
+      //   }
+      // );
 
       // queryClient.invalidateQueries([
       //   getComponentQueryKey,

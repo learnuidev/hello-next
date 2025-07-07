@@ -18,6 +18,7 @@ import { useLearningMode } from "@/components/settings-dialog/learning-mode.stor
 import { useGetContent } from "@/app/nmm/content/use-get-content";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { ReviewItemHanzi } from "../review-cloze-content/review-item-hanzi";
+import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 
 const ClozeNavbar = ({
   onClose,
@@ -77,6 +78,7 @@ export function ReviewCloze({
   const [questionIndex, setQuestionIndex] = useState(0);
   const [response, setResponse] = useState<any>(null);
   const { setReviewMode } = useReviewModeView();
+  const [wordIndex, setWordIndex] = useState(0);
 
   const { mode } = useLearningMode();
 
@@ -144,11 +146,11 @@ export function ReviewCloze({
     [clozeIndex, relevantHskWords]
   );
 
-  const relevantHanzi = relevantHskWord?.hanzi;
+  const _relevantHanzi = relevantHskWord?.hanzi;
 
   const { data: sentencesInitial, isLoading: isSentenceLoading } =
     useListSentencesQuery({
-      component: relevantHanzi,
+      component: _relevantHanzi,
       lang,
     });
 
@@ -158,33 +160,63 @@ export function ReviewCloze({
     () =>
       (contextSentences || [])?.filter((sent: any) => {
         return (
-          (sent?.input || sent?.hanzi)?.includes(relevantHanzi) &&
+          (sent?.input || sent?.hanzi)?.includes(_relevantHanzi) &&
           sent?.input?.length < 20
         );
       }),
-    [contextSentences, relevantHanzi]
+    [contextSentences, _relevantHanzi]
   );
 
   const sentences = useMemo(
     () => [
       ...contentSentences?.filter((sent: any) =>
-        (sent?.input || sent?.hanzi)?.includes(relevantHanzi)
+        (sent?.input || sent?.hanzi)?.includes(_relevantHanzi)
       ),
       ...getRandomWords(
         [
           ...(relevantContextSentences || []),
           ...(sentencesInitial || []),
         ]?.filter((sent: any) =>
-          (sent?.input || sent?.hanzi)?.includes(relevantHanzi)
+          (sent?.input || sent?.hanzi)?.includes(_relevantHanzi)
         )
       ),
     ],
-    [relevantHanzi, sentencesInitial, contentSentences]
+    [_relevantHanzi, sentencesInitial, contentSentences]
   );
 
   const sentence = useMemo(
     () => sentences?.[questionIndex],
     [sentences, questionIndex]
+  );
+
+  const { data: grammar, isLoading: isGrammarLoading } = useListGrammarsQuery({
+    sentenceId: sentence?.input || sentence?.hanzi,
+    content: sentence?.input || sentence?.hanzi,
+    lang: sentence?.lang,
+  });
+
+  const shuffledGrammar = useMemo(() => {
+    if (!grammar) {
+      return [];
+    }
+
+    return shuffleArray(
+      grammar?.grammarAnalysis?.filter(
+        (analysis) =>
+          analysis?.input?.toLowerCase() !==
+          (sentence?.input || sentence?.hanzi)?.toLowerCase()
+      )
+    );
+  }, [grammar, sentence?.hanzi, sentence?.input]);
+
+  const selectedGrammar = useMemo(
+    () => shuffledGrammar?.[wordIndex],
+    [shuffledGrammar, wordIndex]
+  );
+
+  const relevantHanzi = useMemo(
+    () => selectedGrammar?.hanzi,
+    [selectedGrammar?.hanzi]
   );
 
   const futureSentence = useMemo(
@@ -195,17 +227,22 @@ export function ReviewCloze({
   const randomThreeOptions = useMemo(
     () =>
       getRandomWords(
-        irrelevantHskWords?.filter(
-          (item: any) => (item?.hanzi || item?.input) !== relevantHanzi
-        ),
+        [
+          ...new Set(
+            shuffledGrammar?.filter(
+              (item: any) =>
+                (item?.input || item.hanzi) !==
+                (selectedGrammar?.input || selectedGrammar?.hanzi)
+            )
+          ),
+        ],
         3
       ),
-    [irrelevantHskWords, relevantHanzi, questionIndex, sentence]
+    [relevantHanzi, shuffledGrammar]
   );
-
   const shuffledOptions = useMemo(
-    () => shuffleArray([...randomThreeOptions, relevantHskWord]),
-    [randomThreeOptions, relevantHanzi, questionIndex, sentence]
+    () => shuffleArray([...randomThreeOptions, selectedGrammar]),
+    [randomThreeOptions, _relevantHanzi, questionIndex, sentence]
   );
 
   const sentenceHanzi = useMemo(
@@ -226,7 +263,7 @@ export function ReviewCloze({
     return setShowEn(!showEn);
   };
 
-  if (isSentenceLoading || isLoading) {
+  if (isSentenceLoading || isLoading || isGrammarLoading) {
     return (
       <div>
         <p className="text-center mt-32">Loading...</p>
@@ -380,7 +417,11 @@ export function ReviewCloze({
                 {futureSentence && (
                   <button
                     onClick={() => {
-                      setQuestionIndex(questionIndex + 1);
+                      setWordIndex(
+                        shuffledGrammar?.length === wordIndex + 1
+                          ? 0
+                          : Math.min(wordIndex + 1, shuffledGrammar?.length - 1)
+                      );
                       setResponse(null);
                     }}
                     className="hover:scale-125 transition hover:font-bold"
@@ -388,9 +429,22 @@ export function ReviewCloze({
                     <Icons.arrowDown className="text-2xl" />
                   </button>
                 )}
+                {futureSentence && (
+                  <button
+                    onClick={() => {
+                      setWordIndex(0);
+                      setResponse(null);
+                      setQuestionIndex(questionIndex + 1);
+                    }}
+                    className="hover:scale-125 transition hover:font-bold"
+                  >
+                    <Icons.shuffle className="text-2xl" />
+                  </button>
+                )}
                 <button
                   onClick={() => {
                     setClozeIndex(clozeIndex + 1);
+                    setWordIndex(0);
                     setQuestionIndex(0);
                     setResponse(null);
                   }}

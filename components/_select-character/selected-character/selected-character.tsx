@@ -21,6 +21,8 @@ import { StoryView } from "./story-view";
 import { ReviewCloze } from "@/app/review/review-cloze/review-cloze";
 import { DynaClozeSentence } from "@/app/(auth)/convos/[content-id]/dyna-cloze-sentence/dyna-cloze-sentence";
 import { CharacterSearch } from "./character-search";
+import { useClozeContentMode } from "@/app/review/content-cloze-mode-button";
+import { ReviewClozeContent } from "@/app/review/review-cloze-content/review-cloze-content";
 
 export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
   const { data: characters } = useListCharactersQuery(
@@ -54,6 +56,7 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
 
   const { data: chineseCharacters } = useListChineseCharactersQuery();
   const setViews = useViewTypeStore((state) => state.setViews);
+  const { clozeContentMode } = useClozeContentMode();
 
   const offlineCharacter = chineseCharacters?.find(
     (char: any) => char?.hanzi === characterId || char?.input === characterId
@@ -72,26 +75,50 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
           />
         );
       }
-      return (
-        <ReviewCloze
-          backButton={() => {
-            return (
-              <button
-                onClick={() => {
-                  setView("overview");
-                }}
-              >
-                Back to overview
-              </button>
-            );
-          }}
-          currentCharacter={characterId}
-          lang={lang}
-          onClose={() => {
-            setView("overview");
-          }}
-        />
-      );
+
+      if (clozeContentMode === "content") {
+        return (
+          <ReviewClozeContent
+            backButton={() => {
+              return (
+                <button
+                  onClick={() => {
+                    setView("overview");
+                  }}
+                >
+                  Back to overview
+                </button>
+              );
+            }}
+            currentCharacter={characterId}
+            lang={lang}
+            onClose={() => {
+              setView("overview");
+            }}
+          />
+        );
+      } else {
+        return (
+          <ReviewCloze
+            backButton={() => {
+              return (
+                <button
+                  onClick={() => {
+                    setView("overview");
+                  }}
+                >
+                  Back to overview
+                </button>
+              );
+            }}
+            currentCharacter={characterId}
+            lang={lang}
+            onClose={() => {
+              setView("overview");
+            }}
+          />
+        );
+      }
     }
 
     case "super-components":

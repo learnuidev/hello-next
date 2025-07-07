@@ -28,7 +28,7 @@ export function Summary({
   characterId: string;
   showMeanings: boolean;
 }) {
-  const characaterId = useGetCharacterId();
+  const _characterId = useGetCharacterId();
 
   const lang = useGetCurrentLang();
 
@@ -46,7 +46,7 @@ export function Summary({
     isLoading,
     isError,
   } = useListMeaningsQuery({
-    content: characaterId,
+    content: _characterId,
     lang,
   });
 

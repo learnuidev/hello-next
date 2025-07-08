@@ -26,7 +26,7 @@ export function ReadMode({ lang }: { lang: string }) {
           sentenceView && "mt-80"
         )}
       >
-        <div className="space-y-8">
+        <div className="space-y-8 mt-32">
           {sentencesList.map((item: any, sentenceIndex: number) => {
             return (
               <ReadModeItem

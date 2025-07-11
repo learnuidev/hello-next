@@ -110,8 +110,8 @@ export const PhraseUI = () => {
       {/* Chat area */}
       <div className="relative flex-1 flex flex-col dark:bg-[rgb(11,12,13)]">
         <div className="flex justify-between dark:border-gray-700 border-b px-4 py-0 items-center">
-          <h2 className="dark:bg-[rgb(11,12,13)] text-xs font-light dark:text-gray-400 truncate">
-            {contextId}
+          <h2 className="dark:bg-[rgb(11,12,13)] text-xs dark:text-gray-400 truncate font-bold">
+            {translationContext?.title || contextId}
           </h2>
 
           <Link href={`${rootUrl}?feature-id=phrase`} className="text-xl block">

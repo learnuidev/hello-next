@@ -9,6 +9,7 @@ import { useFeatureContext } from "../feature-context-provider";
 export const NewPhrase = ({ cancelNewChat }: { cancelNewChat: () => void }) => {
   const [sourceLang, setSourceLang] = useState("en");
   const [targetLang, setTargetLang] = useState("zh-CN");
+  const [title, setTitle] = useState("");
 
   const { rootUrl } = useFeatureContext();
 
@@ -25,6 +26,20 @@ export const NewPhrase = ({ cancelNewChat }: { cancelNewChat: () => void }) => {
       >
         <Icons.xMark />{" "}
       </button>
+
+      <section className="flex justify-center items-center flex-col">
+        <h2 className="text-center text-2xl font-extralight mt-12">title</h2>
+
+        <input
+          onChange={(event) => {
+            setTitle(event?.target?.value);
+          }}
+          value={title}
+          autoFocus
+          placeholder=""
+          className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full max-w-3xl m-auto text-center text-3xl font-extralight focus:outline-0  p-2 border-0 border-none dark:text-gray-300"
+        />
+      </section>
 
       <section>
         <h2 className="text-center text-2xl font-extralight mt-12">
@@ -75,6 +90,7 @@ export const NewPhrase = ({ cancelNewChat }: { cancelNewChat: () => void }) => {
           onClick={() => {
             addTranslationHistoryMutation
               .mutateAsync({
+                title,
                 sourceLang,
                 targetLang,
               })

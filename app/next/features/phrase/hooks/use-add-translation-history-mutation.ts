@@ -15,9 +15,11 @@ export const useAddTranslationHistoryMutation = () => {
     mutationFn: async ({
       sourceLang,
       targetLang,
+      title,
     }: {
       sourceLang: string;
       targetLang: string;
+      title: string;
     }) => {
       const res = await fetch(
         `${siteConfig.apiUrlV2}/v1/add-translation-history`,
@@ -30,6 +32,7 @@ export const useAddTranslationHistoryMutation = () => {
           body: JSON.stringify({
             sourceLang,
             targetLang,
+            title,
           }),
         }
       );

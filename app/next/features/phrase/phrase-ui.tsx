@@ -153,8 +153,12 @@ export const PhraseUI = () => {
                 placeholder="Type a message..."
                 className="flex-1 py-0 dark:bg-[rgb(21,22,23)] border-transparent focus:border-transparent focus:ring-0 focus:outline-none resize-none"
               />
-              <Button disabled={addTranslation.isPending} type="submit">
-                <Icons.paperPlane className="text-xl dark:text-gray-300 dark:hover:text-white text-gray-700" />
+              <Button
+                disabled={addTranslation.isPending}
+                type="submit"
+                className="dark:bg-black bg-white hover:bg-gray-200"
+              >
+                <Icons.paperPlane className="text-xl dark:text-gray-300  dark:hover:text-white text-gray-700" />
               </Button>
             </form>
 

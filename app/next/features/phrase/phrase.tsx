@@ -114,21 +114,18 @@ export const Phrase = () => {
                     href={`${rootUrl}t?feature-id=phrase&contextId=${history?.id}`}
                     className="flex justify-between items-center"
                   >
-                    <div>
-                      <p className="truncate text-sm">
-                        {" "}
-                        <span>{history?.data?.title}</span>
-                      </p>
-                      <p className="mt-2 font-light text-gray-400 text-sm truncate capitalize">
-                        {" "}
-                        <span>{formatJournalDate(history?.createdAt)}</span>
-                      </p>
-                    </div>
+                    <p className="text-sm ">
+                      <span>{history?.title || "No title..."}</span>
+                    </p>
                   </Link>
 
-                  <p className="font-extralight text-sm dark:text-gray-500">
-                    <span>{history?.title || "No title..."}</span>
-                  </p>
+                  <div>
+                    <p className="mt-2 font-light text-gray-500 text-xs truncate capitalize">
+                      {" "}
+                      <span>{formatJournalDate(history?.createdAt)}</span>
+                    </p>
+                  </div>
+
                   <div className="mt-4 flex space-x-4">
                     <img
                       src={sourceLangSrc?.src}

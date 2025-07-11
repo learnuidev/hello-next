@@ -21,23 +21,25 @@ export const useAddTranslationHistoryMutation = () => {
       targetLang: string;
       title: string;
     }) => {
-      const res = await fetch(
-        `${siteConfig.apiUrlV2}/v1/add-translation-history`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      if (title) {
+        const res = await fetch(
+          `${siteConfig.apiUrlV2}/v1/add-translation-history`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
 
-          body: JSON.stringify({
-            sourceLang,
-            targetLang,
-            title,
-          }),
-        }
-      );
+            body: JSON.stringify({
+              sourceLang,
+              targetLang,
+              title,
+            }),
+          }
+        );
 
-      return res.json();
+        return res.json();
+      }
     },
   });
 };

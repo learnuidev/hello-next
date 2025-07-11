@@ -85,27 +85,29 @@ export const NewPhrase = ({ cancelNewChat }: { cancelNewChat: () => void }) => {
         </div>
       </section>
 
-      <div className="flex justify-center items-center mt-12">
-        <button
-          disabled={!title}
-          onClick={() => {
-            addTranslationHistoryMutation
-              .mutateAsync({
-                title,
-                sourceLang,
-                targetLang,
-              })
-              .then((resp) => {
-                cancelNewChat();
-                router.push(
-                  `${rootUrl}?feature-id=phrase&contextId=${resp?.id}`
-                );
-              });
-          }}
-        >
-          Add
-        </button>
-      </div>
+      {title && (
+        <div className="flex justify-center items-center mt-12">
+          <button
+            disabled={!title}
+            onClick={() => {
+              addTranslationHistoryMutation
+                .mutateAsync({
+                  title,
+                  sourceLang,
+                  targetLang,
+                })
+                .then((resp) => {
+                  cancelNewChat();
+                  router.push(
+                    `${rootUrl}?feature-id=phrase&contextId=${resp?.id}`
+                  );
+                });
+            }}
+          >
+            Add
+          </button>
+        </div>
+      )}
     </div>
   );
 };

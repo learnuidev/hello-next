@@ -87,6 +87,7 @@ export const NewPhrase = ({ cancelNewChat }: { cancelNewChat: () => void }) => {
 
       <div className="flex justify-center items-center mt-12">
         <button
+          disabled={!title}
           onClick={() => {
             addTranslationHistoryMutation
               .mutateAsync({

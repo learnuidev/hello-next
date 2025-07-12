@@ -27,6 +27,7 @@ interface HSKCharacter {
   pinyin: string;
   en?: string;
   roman?: string;
+  lang: string;
 }
 
 export function HanziLink({
@@ -166,7 +167,7 @@ export function HanziLink({
 
         {smartSplit({
           input: character?.input || character?.hanzi,
-          lang: lang || "",
+          lang: lang || character?.lang || "",
         })?.map((val: any, idx: any) => {
           return <CharacterItem character={val} key={`${val}-${idx}`} />;
         })}

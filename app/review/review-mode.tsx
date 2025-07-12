@@ -17,6 +17,7 @@ import { getReviewSearchParams } from "@/components/settings-dialog/use-get-revi
 import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
 import { useReviewModeView } from "./use-review-mode";
 import { useClozeReviewTimer } from "./cloze-review-timer-store";
+import { usePreviousPathnameStore } from "@/components/language-selector/use-previous-path-name-store";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -94,6 +95,8 @@ export function ReviewModeClassic(props: any) {
     hasNoChars,
   } = useGetCurrentReviewCharacter();
 
+  const { setPreviousPath, previousPath } = usePreviousPathnameStore();
+
   const {
     startTime: _startTime,
     endTime: _endTime,
@@ -118,10 +121,17 @@ export function ReviewModeClassic(props: any) {
       <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
         <Link
           href={
-            entryId
-              ? `/diary/${entryId}?view=insights`
-              : `/nmm${level ? `?level=${level}` : ""}`
+            previousPath
+              ? previousPath
+              : entryId
+                ? `/diary/${entryId}?view=insights`
+                : `/nmm${level ? `?level=${level}` : ""}`
           }
+          // href={
+          //   entryId
+          //     ? `/diary/${entryId}?view=insights`
+          //     : `/nmm${level ? `?level=${level}` : ""}`
+          // }
           // onClick={() => {
           //   setReviewMode(null);
           // }}

@@ -7,7 +7,7 @@ import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.muta
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { SelectedCharacterContentsButton } from "./_select-character/selected-character-contents-button";
 import { SelectedCharacterStoryButton } from "./_select-character/selected-character-story-button";
@@ -17,6 +17,7 @@ import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
 import { CommonCharacterButton } from "./common-character-button";
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
+import { usePreviousPathnameStore } from "./language-selector/use-previous-path-name-store";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -108,6 +109,11 @@ export const FloatingCharacterNavbar = ({
   );
 
   const currentCharacter = selectedComp;
+  const { setPreviousPath, previousPath } = usePreviousPathnameStore();
+  const pathName = usePathname();
+
+  // const searchParams = useSearchParams();
+  const fullUrl = `${window.location.pathname}?${searchParams.toString()}`;
 
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
 
@@ -124,6 +130,8 @@ export const FloatingCharacterNavbar = ({
     JSON.stringify(item)?.includes(firstLesson?.hanzi || selectedChar)
   );
 
+  const router = useRouter();
+
   return (
     <TheDock isAutomatic={false} className="bottom-4">
       <div className="flex items-center w-full justify-center">
@@ -137,6 +145,13 @@ export const FloatingCharacterNavbar = ({
             <button
               className="text-xl text-black dark:text-white"
               onClick={() => {
+                // if (characterId?.length > 1) {
+                //   setPreviousPath(`${pathName}${lang ? `?lang=${lang}` : ""}`);
+                //   router.push(`/review?input=${characterId}`);
+                // } else {
+                //   setView("review");
+                // }
+
                 setView("review");
               }}
             >

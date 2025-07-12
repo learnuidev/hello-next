@@ -3,7 +3,12 @@ import { Icons } from "./ui/icons.v2";
 
 import Link from "next/link";
 
-import { useParams, usePathname } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { NomadIcon } from "./ui/icons";
 
 import { TheDock } from "@/components/the-dock";
@@ -25,6 +30,7 @@ import { ReviewNavbar } from "@/app/review/review-navbar";
 import { CommonCharacterButton } from "./common-character-button";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { isNonRomanLang } from "./_select-character/utils/is-non-roman-lang";
+import { usePreviousPathnameStore } from "./language-selector/use-previous-path-name-store";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
@@ -46,9 +52,17 @@ const FloatingNavbarComp = () => {
 
   const isDuLessons = useIsDuLessons();
 
+  const pathName = usePathname();
+
   const setBrightMode = useBrightModeStore((state: any) => state.setMode);
   const setReadMode = useReadModeStore((state) => state.setReadMode);
   const readMode = useReadModeStore((state) => state.readMode);
+
+  const router = useRouter();
+
+  const { setPreviousPath, previousPath } = usePreviousPathnameStore();
+
+  const searchParams = useSearchParams();
 
   if (isDu) {
     if (isDuExact) {
@@ -111,8 +125,14 @@ const FloatingNavbarComp = () => {
           </Link>
 
           {reviewList?.length > 1 && isChineseLang ? (
-            <Link
-              href={reviewUrl}
+            <button
+              // href={reviewUrl}
+              onClick={() => {
+                router.push(reviewUrl);
+                setPreviousPath(
+                  `${pathName}?start=${searchParams.get("start") || 0}`
+                );
+              }}
               className={cn(
                 routeName?.includes("/review")
                   ? "text-gray-800 dark:text-gray-300"
@@ -121,7 +141,7 @@ const FloatingNavbarComp = () => {
               )}
             >
               <Icons.playCircle className="hover:text-rose-400 dark:hover:text-white transition" />
-            </Link>
+            </button>
           ) : null}
 
           <Link

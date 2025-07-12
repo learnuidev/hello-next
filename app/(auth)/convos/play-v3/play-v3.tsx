@@ -115,6 +115,75 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
   const setTimer = (
     type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
+    example: any,
+    newValue?: string
+  ) => {
+    const offset = newValue || currentTime - 0.2;
+
+    setTimes((prev: any) => {
+      const predicateFn = (item: any) => item?.id === example?.id;
+      const exists = prev?.find(predicateFn);
+
+      let updated = prev;
+
+      // const currIndex = prev?.findIndex(predicateFn);
+
+      const currIndex = content?.transcriptions?.findIndex(predicateFn);
+      const isLast = content?.transcriptions?.length - 1 === currIndex;
+
+      console.log("EXIISTS", currIndex);
+      console.log("isLast", isLast);
+
+      if (!isLast && type === "end") {
+        const nextIndex = currIndex + 1;
+        const nextExample = content?.transcriptions?.[nextIndex];
+        const nextExists = prev?.find(
+          (item: any) => item?.id === nextExample?.id
+        );
+
+        if (nextExists) {
+          updated = updated.map((item: any) => {
+            if (item?.id === nextExample?.id) {
+              return {
+                ...nextExists,
+                ["start"]: offset,
+              };
+            }
+
+            return item;
+          });
+        } else {
+          updated = updated.concat({
+            id: nextExample?.id,
+            start: offset,
+          });
+        }
+      }
+
+      if (exists) {
+        updated = updated.map((item: any) => {
+          if (item?.id === example?.id) {
+            return {
+              ...exists,
+              [type]: offset,
+            };
+          }
+
+          return item;
+        });
+      }
+
+      updated = updated.concat({
+        id: example?.id,
+        [type]: offset,
+      });
+
+      return updated;
+    });
+  };
+
+  const setTimer2 = (
+    type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
     section: any,
     newValue?: string
   ) => {

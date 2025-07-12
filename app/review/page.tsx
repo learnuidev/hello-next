@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { useIsContent } from "./use-is-content";
 import { ReviewClozeContent } from "./review-cloze-content/review-cloze-content";
 import { useClozeContentMode } from "./content-cloze-mode-button";
+import { usePreviousPathnameStore } from "@/components/language-selector/use-previous-path-name-store";
 
 function ReviewClassic() {
   const { view, mode } = useGetReviewParams();
@@ -85,6 +86,7 @@ function ReviewMode() {
   } = useGetCurrentReviewCharacter();
 
   const router = useRouter();
+  const { setPreviousPath, previousPath } = usePreviousPathnameStore();
 
   const { reviewMode } = useReviewModeView();
   const { mode, level, entryId } = useGetReviewParams();
@@ -106,7 +108,11 @@ function ReviewMode() {
           currentCharacter={currentCharacter?.hanzi}
           lang={lang}
           onClose={() => {
-            router.push(`/nmm?lang=${lang}`);
+            if (previousPath) {
+              router.push(previousPath);
+            } else {
+              router.push(`/nmm?lang=${lang}`);
+            }
           }}
         />
       );

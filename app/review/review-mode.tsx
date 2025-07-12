@@ -18,6 +18,7 @@ import { useGetCurrentReviewCharacter } from "./use-get-current-review-character
 import { useReviewModeView } from "./use-review-mode";
 import { useClozeReviewTimer } from "./cloze-review-timer-store";
 import { usePreviousPathnameStore } from "@/components/language-selector/use-previous-path-name-store";
+import { BackButton } from "./back-button";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -119,25 +120,13 @@ export function ReviewModeClassic(props: any) {
   const ReviewHeader = () => {
     return (
       <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
-        <Link
+        <BackButton
           href={
-            previousPath
-              ? previousPath
-              : entryId
-                ? `/diary/${entryId}?view=insights`
-                : `/nmm${level ? `?level=${level}` : ""}`
+            entryId
+              ? `/diary/${entryId}?view=insights`
+              : `/nmm${level ? `?level=${level}` : ""}`
           }
-          // href={
-          //   entryId
-          //     ? `/diary/${entryId}?view=insights`
-          //     : `/nmm${level ? `?level=${level}` : ""}`
-          // }
-          // onClick={() => {
-          //   setReviewMode(null);
-          // }}
-        >
-          <Icons.xMark className="text-2xl" />
-        </Link>
+        />
 
         {/* <h1 className="text-2xl"></h1> */}
         <p className="text-gray-700 text-xl md:text-3xl">

@@ -157,7 +157,7 @@ export const StoryView = ({ characterId }: { characterId: string }) => {
           <span>Your Story</span>
         </button>
 
-        {isSuperAdmin && (
+        {/* {isSuperAdmin && (
           <button
             className={cn(
               storyMode === "global" ? "text-white" : "text-gray-400",
@@ -170,10 +170,18 @@ export const StoryView = ({ characterId }: { characterId: string }) => {
             <Icons.globeAsia />
             <span>Hanzi Hero</span>
           </button>
-        )}
+        )} */}
       </div>
 
-      {storyMode === "global" && isSuperAdmin ? (
+      <div key="your-story">
+        <StoryEditor
+          key={selectedComp2?.story}
+          selectedChar={selectedComp}
+          story={story}
+        />
+      </div>
+
+      {/* {storyMode === "global" && isSuperAdmin ? (
         <div key="global">
           <StoryEditor
             disableSave={true}
@@ -190,7 +198,7 @@ export const StoryView = ({ characterId }: { characterId: string }) => {
             story={story}
           />
         </div>
-      )}
+      )} */}
     </div>
   );
 };

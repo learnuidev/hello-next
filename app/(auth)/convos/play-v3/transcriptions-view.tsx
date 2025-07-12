@@ -216,7 +216,26 @@ export const TranscriptionsView = ({
 
                 {editMode && (
                   <div className="flex flex-col">
-                    {(timeStamp?.roman || subtitle?.roman) &&
+                    {editMode && (
+                      <input
+                        className="w-full"
+                        value={timeStamp?.pinyin}
+                        onChange={(event) => {
+                          setTimer("pinyin", event?.target?.value);
+                        }}
+                      />
+                    )}
+                    {editMode && (
+                      <input
+                        className="w-full"
+                        value={timeStamp?.roman}
+                        onChange={(event) => {
+                          setTimer("roman", event?.target?.value);
+                        }}
+                      />
+                    )}
+
+                    {/* {(timeStamp?.roman || subtitle?.roman) &&
                       editMode &&
                       ["zh", "zh-CN"]?.includes(subtitle.lang) && (
                         <textarea
@@ -226,7 +245,17 @@ export const TranscriptionsView = ({
                             setTimer("roman", subtitle, event?.target?.value);
                           }}
                         />
-                      )}
+                      )} */}
+
+                    {(timeStamp?.hanzi || subtitle?.hanzi) && editMode && (
+                      <input
+                        className="w-full"
+                        value={timeStamp?.hanzi || subtitle?.hanzi}
+                        onChange={(event) => {
+                          setTimer("hanzi", event?.target?.value);
+                        }}
+                      />
+                    )}
 
                     {(timeStamp?.input || subtitle?.input) && editMode && (
                       <textarea

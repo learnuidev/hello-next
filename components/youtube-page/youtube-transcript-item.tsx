@@ -361,9 +361,17 @@ export const TranscriptItem = ({
       {editMode && (
         <input
           className="w-full"
-          value={timeStamp?.[pinyinOrRoman] || example?.[pinyinOrRoman]}
+          value={timeStamp?.["pinyin"]}
           onChange={(event) => {
             setTimer("pinyin", event?.target?.value);
+          }}
+        />
+      )}
+      {editMode && (
+        <input
+          className="w-full"
+          value={timeStamp?.["roman"]}
+          onChange={(event) => {
             setTimer("roman", event?.target?.value);
           }}
         />

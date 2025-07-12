@@ -217,22 +217,28 @@ export const TranscriptionsView = ({
                 {editMode && (
                   <div className="flex flex-col">
                     {editMode && (
-                      <input
-                        className="w-full"
-                        value={timeStamp?.pinyin}
-                        onChange={(event) => {
-                          setTimer("pinyin", event?.target?.value);
-                        }}
-                      />
+                      <div className="w-full">
+                        <p>pinyin</p>
+                        <input
+                          className="w-full mb-4 focus-visible:outline-none focus-visible:ring-ring"
+                          value={timeStamp?.pinyin || subtitle?.pinyin}
+                          onChange={(event) => {
+                            setTimer("pinyin", event?.target?.value);
+                          }}
+                        />
+                      </div>
                     )}
                     {editMode && (
-                      <input
-                        className="w-full"
-                        value={timeStamp?.roman}
-                        onChange={(event) => {
-                          setTimer("roman", event?.target?.value);
-                        }}
-                      />
+                      <div>
+                        <p>roman</p>
+                        <input
+                          className="w-full mb-4 focus-visible:outline-none focus-visible:ring-ring"
+                          value={timeStamp?.roman || subtitle?.roman}
+                          onChange={(event) => {
+                            setTimer("roman", event?.target?.value);
+                          }}
+                        />
+                      </div>
                     )}
 
                     {/* {(timeStamp?.roman || subtitle?.roman) &&
@@ -248,23 +254,29 @@ export const TranscriptionsView = ({
                       )} */}
 
                     {(timeStamp?.hanzi || subtitle?.hanzi) && editMode && (
-                      <input
-                        className="w-full"
-                        value={timeStamp?.hanzi || subtitle?.hanzi}
-                        onChange={(event) => {
-                          setTimer("hanzi", event?.target?.value);
-                        }}
-                      />
+                      <div>
+                        <p>hanzi</p>
+                        <input
+                          className="w-full mb-4 focus-visible:outline-none focus-visible:ring-ring"
+                          value={timeStamp?.hanzi || subtitle?.hanzi}
+                          onChange={(event) => {
+                            setTimer("hanzi", event?.target?.value);
+                          }}
+                        />
+                      </div>
                     )}
 
                     {(timeStamp?.input || subtitle?.input) && editMode && (
-                      <textarea
-                        className="my-4 focus-visible:outline-none focus-visible:ring-ring"
-                        value={timeStamp?.input || subtitle?.input}
-                        onChange={(event) => {
-                          setTimer("input", subtitle, event?.target?.value);
-                        }}
-                      />
+                      <div>
+                        <p>input</p>
+                        <textarea
+                          className="w-full mb-4 focus-visible:outline-none focus-visible:ring-ring"
+                          value={timeStamp?.input || subtitle?.input}
+                          onChange={(event) => {
+                            setTimer("input", subtitle, event?.target?.value);
+                          }}
+                        />
+                      </div>
                     )}
 
                     {editMode && (

@@ -27,7 +27,7 @@ interface HSKCharacter {
   pinyin: string;
   en?: string;
   roman?: string;
-  lang: string;
+  lang?: string;
 }
 
 export function HanziLink({

@@ -13,16 +13,20 @@ import { cn } from "@/lib/utils";
 import { getStatusIcon } from "./status-icons";
 import { NoResultView } from "./no-result-view";
 
-export function CharacterSearchResult({ searchResults }: any) {
+export function CharacterSearchResult({
+  searchResults,
+  className,
+  nothingClassName,
+}: any) {
   const groupByHanzi = groupBy((val: any) => val.hanzi);
   const groupedByHanzi = groupByHanzi(searchResults) as any;
 
   if (!Object.entries(groupedByHanzi)?.length) {
-    return <NoResultView />;
+    return <NoResultView className={nothingClassName} />;
   }
 
   return (
-    <section className="space-y-12 mt-12 pb-32">
+    <section className={cn("space-y-12 mt-12 pb-32", className)}>
       {Object.entries(groupedByHanzi)?.map(([k, val]: any, idx) => {
         const comp = val?.[0];
 

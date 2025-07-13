@@ -22,6 +22,7 @@ import { Suspense } from "react";
 import { SettingsDialog } from "@/components/settings-dialog/settings-dialog";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageSelector } from "@/components/language-selector/language-selector";
+import { SearchDialog } from "@/components/search-dialog/search-dialog";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -56,6 +57,7 @@ export default function RootLayout({
                   <QueryClientProvider>
                     <Authenticated>{children}</Authenticated>
                     <SettingsDialog />
+                    <SearchDialog />
                   </QueryClientProvider>
                 </div>
 

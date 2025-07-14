@@ -43,9 +43,9 @@ const NINTY = 90;
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [viewMode, setViewMode] = useState<any>("para");
-  const [chapterView, setChapterView] = useState(false);
   const [active, setActive] = useState(NINTY);
   const [toggleLoop, setToggleLoop] = useState<any>(null);
+  const [qaMode, setQaMode] = useState(false);
   const [toggleLoops, setToggleLoops] = useState<any>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isVideoHidden, setIsVideoHidden] = useState(false);
@@ -302,32 +302,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const lastFinishedChapter = finishedChapters?.[finishedChapters?.length - 1];
 
   const trans = useMemo(() => {
-    if (chapterView) {
-      const filteredTrans = transcriptions?.filter(
-        (t: any) =>
-          t?.start >= currentChapter?.start && t?.end <= currentChapter?.end
-      );
-
-      if (!filteredTrans?.length) {
-        return transcriptions?.filter(
-          (t: any) =>
-            t?.start >= lastFinishedChapter?.start &&
-            t?.end <= lastFinishedChapter?.end
-        );
-      }
-
-      return filteredTrans;
-    }
-
     return transcriptions;
-  }, [
-    chapterView,
-    currentChapter?.end,
-    currentChapter?.start,
-    lastFinishedChapter?.end,
-    lastFinishedChapter?.start,
-    transcriptions,
-  ]);
+  }, [transcriptions]);
 
   const groupedTranscriptions = groupBy(trans || []);
 
@@ -338,37 +314,19 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const times = useContentEditStore((state) => state.times);
 
   const group = useMemo(() => {
-    if (chapterView) {
-      return trans;
-    }
     return getActiveTranscriptions({
       limit: active,
       currentTime,
       transcriptions: transcriptions || [],
     });
-  }, [active, chapterView, currentTime, trans, transcriptions]);
+  }, [active, currentTime, transcriptions]);
 
   const ActiveButton = () => {
     return (
       <div className="space-x-4 sm:mt-0 mt-4 sm:text-xl flex justify-center">
-        {lesson?.chapters && (
-          <button
-            className={
-              chapterView ? "dark:text-white text-black" : "text-gray-500"
-            }
-            onClick={() => {
-              setChapterView((view) => !view);
-            }}
-          >
-            <Icons.listView />
-          </button>
-        )}
-
         <button
           className={
-            !chapterView && active === THIRTY
-              ? "dark:text-white text-black"
-              : "text-gray-500"
+            active === THIRTY ? "dark:text-white text-black" : "text-gray-500"
           }
           onClick={() => {
             setActive(THIRTY);
@@ -378,9 +336,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         </button>
         <button
           className={
-            !chapterView && active === SIXTY
-              ? "dark:text-white text-black"
-              : "text-gray-500"
+            active === SIXTY ? "dark:text-white text-black" : "text-gray-500"
           }
           onClick={() => {
             setActive(SIXTY);
@@ -390,9 +346,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         </button>
         <button
           className={
-            !chapterView && active === NINTY
-              ? "dark:text-white text-black"
-              : "text-gray-500"
+            active === NINTY ? "dark:text-white text-black" : "text-gray-500"
           }
           onClick={() => {
             setActive(NINTY);
@@ -402,9 +356,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         </button>
         <button
           className={
-            !chapterView && active === 120
-              ? "dark:text-white text-black"
-              : "text-gray-500"
+            active === 120 ? "dark:text-white text-black" : "text-gray-500"
           }
           onClick={() => {
             setActive(120);
@@ -414,9 +366,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         </button>
         <button
           className={
-            !chapterView && active === 9000
-              ? "dark:text-white text-black"
-              : "text-gray-500"
+            active === 9000 ? "dark:text-white text-black" : "text-gray-500"
           }
           onClick={() => {
             setActive(MAX_LIMIT);
@@ -483,6 +433,14 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             }}
           >
             <Icons.edit />
+          </button>
+          <button
+            className={qaMode ? "dark:text-white" : "text-gray-500"}
+            onClick={() => {
+              setQaMode(!qaMode);
+            }}
+          >
+            <Icons.qa />
           </button>
 
           {editMode && (
@@ -653,14 +611,53 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                   />
                 </div>
               )}
+
+              {qaMode && lesson?.questions?.length > 0 && (
+                <div className="">
+                  <ScrollArea className="space-y-4 h-[350px] rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8">
+                    <div className={"flex flex-col gap-4"}>
+                      {lesson.questions.map((question: any) => {
+                        return (
+                          <button
+                            key={question.description}
+                            onClick={() => {
+                              seekAndPlay(question.start);
+                            }}
+                            className="text-left"
+                          >
+                            <div
+                              className={` ${
+                                question.start <= currentTime &&
+                                question.end >= currentTime
+                                  ? "dark:text-white text-black"
+                                  : " text-gray-500"
+                              }`}
+                            >
+                              {question.title}
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </ScrollArea>
+                </div>
+              )}
               <div
-                className={`${
-                  isVideoHidden
-                    ? "md:col-span-7 col-span-12"
-                    : "md:col-span-5 col-span-12"
-                } w-full text-center`}
+                className={cn(
+                  `${
+                    isVideoHidden
+                      ? "md:col-span-7 col-span-12"
+                      : "md:col-span-5 col-span-12"
+                  } w-full text-center`,
+                  qaMode ? "mt-8" : ""
+                )}
               >
-                <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8">
+                <ScrollArea
+                  className={cn(
+                    `space-y-4 rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8`,
+                    qaMode ? "h-[350px]" : "h-[400px] sm:h-[640px]"
+                  )}
+                >
                   <div className="space-y-8">
                     {paraTranscriptions?.map((transcriptions: any) => {
                       const hanzis = transcriptions
@@ -797,10 +794,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
               <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md shadow-lg dark:shadow-gray-900 p-0 pb-16">
                 <div className="sm:space-y-8 w-full">
-                  {(active !== MAX_LIMIT || chapterView
-                    ? group
-                    : transcriptions || []
-                  )
+                  {(active !== MAX_LIMIT ? group : transcriptions || [])
                     .filter((script: any) => {
                       if (focusMode) {
                         return (
@@ -834,8 +828,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           ) : null}
         </div>
 
-        <p className="dark:text-[rgb(10,11,12)] text-white hidden lg:block">
-          todotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodo
+        <p className="dark:text-[rgb(10,11,12)] text-white">
+          todotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodo
         </p>
       </div>
     </div>

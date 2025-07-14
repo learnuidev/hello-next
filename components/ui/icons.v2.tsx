@@ -374,6 +374,7 @@ export const Icons = {
   shuffle: createFAIcon(faShuffle),
   typeWriter: createFAIcon(faTypewriter),
   bing: createFAIcon(faMicrosoft),
+  qa: createFAIcon(faMessageQuote),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

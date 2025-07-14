@@ -202,12 +202,12 @@ const ConvoInsightsHeader = ({
         <div className="flex justify-start space-x-4 sm:space-x-16">
           <h2 className="text-xl sm:text-4xl my-4 font-extralight text-gray-800 dark:text-gray-300">
             {/* {uniqueCharacters?.length}{" "} */}
-            {totalCharacters}
+            {totalCharacters}{" "}
             <span className="text-sm md:text-xl">total chars </span>
           </h2>
           <h2 className="text-xl sm:text-4xl my-4 font-extralight text-gray-800 dark:text-gray-300 space-x-2">
             <span className="text-yellow-500">
-              {newCharacters}
+              {newCharacters}{" "}
               {/* {uniqueCharacters?.length - totalNewCharaters} */}
             </span>
             <span className="text-sm md:text-xl">new chars </span>

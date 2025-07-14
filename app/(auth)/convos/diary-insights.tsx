@@ -81,6 +81,7 @@ export function DiaryInsights({ entryId }: { entryId: string }) {
               <h2 className="text-xl flex flex-col items-center my-4 font-extralight text-gray-500 dark:text-gray-300">
                 <span> {uniqueCharacters?.length}</span>
                 <span className="text-sm text-gray-400 uppercase">
+                  {" "}
                   total chars{" "}
                 </span>
               </h2>

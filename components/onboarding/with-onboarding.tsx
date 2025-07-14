@@ -12,7 +12,7 @@ export const WithOnboarding = ({ children }: { children: React.ReactNode }) => {
 
   const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
 
-  const { data: userPreferences } = useGetUserPreferenceQuery();
+  const { data: userPreferences, isLoading } = useGetUserPreferenceQuery();
 
   const targetLanguage = userPreferences?.targetLanguage;
   const sourceLanguage = userPreferences?.sourceLanguage;
@@ -32,6 +32,10 @@ export const WithOnboarding = ({ children }: { children: React.ReactNode }) => {
         queryClient.refetchQueries([getUserPreferenceKey]);
       });
   };
+
+  if (isLoading) {
+    return;
+  }
 
   if (targetLanguage && sourceLanguage) {
     return children;

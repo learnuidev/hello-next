@@ -125,10 +125,11 @@ const FloatingNavbarComp = () => {
           </Link>
 
           {reviewList?.length > 1 && isChineseLang ? (
-            <button
-              // href={reviewUrl}
+            <Link
+              href={reviewUrl}
+              target="_blank"
               onClick={() => {
-                router.push(reviewUrl);
+                // router.push(reviewUrl);
                 setPreviousPath(
                   `${pathName}?start=${searchParams.get("start") || 0}`
                 );
@@ -141,7 +142,7 @@ const FloatingNavbarComp = () => {
               )}
             >
               <Icons.playCircle className="hover:text-rose-400 dark:hover:text-white transition" />
-            </button>
+            </Link>
           ) : null}
 
           <Link

@@ -17,6 +17,8 @@ interface UpdatePreferenceResponse {
   clozeMode?: any;
   activeContent?: string;
   clozeContentMode?: "hsk" | "content";
+  targetLanguage?: string;
+  sourceLanguage?: string;
 }
 
 type UpdateUserPreferenceResponse = GetUserPreferenceResponse & {

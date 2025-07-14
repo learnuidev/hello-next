@@ -24,6 +24,8 @@ export interface GetUserPreferenceResponse {
   clozeMode?: "stocastic" | "timeline";
   activeContent?: string;
   clozeContentMode: "hsk" | "content";
+  targetLanguage?: string;
+  sourceLanguage?: string;
 }
 
 const getUserPrefrence = async (opts: {

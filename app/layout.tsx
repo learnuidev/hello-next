@@ -23,6 +23,7 @@ import { SettingsDialog } from "@/components/settings-dialog/settings-dialog";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageSelector } from "@/components/language-selector/language-selector";
 import { SearchDialog } from "@/components/search-dialog/search-dialog";
+import { WithOnboarding } from "@/components/onboarding/with-onboarding";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -55,7 +56,9 @@ export default function RootLayout({
               >
                 <div className="flex-1">
                   <QueryClientProvider>
-                    <Authenticated>{children}</Authenticated>
+                    <Authenticated>
+                      <WithOnboarding>{children}</WithOnboarding>
+                    </Authenticated>
                     <SettingsDialog />
                     <SearchDialog />
                   </QueryClientProvider>

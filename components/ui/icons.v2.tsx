@@ -130,6 +130,7 @@ import {
   faVirus,
   faVolume,
   faWandMagic,
+  faWaveformLines,
   faXmark,
 } from "@fortawesome/pro-thin-svg-icons";
 
@@ -375,6 +376,7 @@ export const Icons = {
   typeWriter: createFAIcon(faTypewriter),
   bing: createFAIcon(faMicrosoft),
   qa: createFAIcon(faMessageQuote),
+  speechify: createFAIcon(faWaveformLines),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

@@ -18,6 +18,7 @@ import { useSelectedCharacterData } from "./use-selected-character";
 import { CommonCharacterButton } from "./common-character-button";
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { usePreviousPathnameStore } from "./language-selector/use-previous-path-name-store";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -130,6 +131,8 @@ export const FloatingCharacterNavbar = ({
     JSON.stringify(item)?.includes(firstLesson?.hanzi || selectedChar)
   );
 
+  const isSuperAdmin = useIsSuperAdmin();
+
   const router = useRouter();
 
   return (
@@ -238,35 +241,37 @@ export const FloatingCharacterNavbar = ({
                 )}
               </button>
             )}
-            {isAlreadyLearned && currentCharacter?.status === "forgotten" && (
-              <button
-                className="text-xl text-black dark:text-white"
-                disabled={updateCharacterStatusMutation.isPending}
-                onDoubleClick={() => {
-                  updateCharacterStatusMutation.mutateAsync({
-                    characterId: currentCharacter?.id,
-                    status: "DISCOVERED",
-                    next_review_date: Date.now(),
-                    rediscoveredAt: Date.now(),
-                    statusHistory: (
-                      currentCharacter?.statusHistory || []
-                    ).concat({
-                      type: "status-change",
-                      createdAt: Date.now(),
-                      newStatus: "DISCOVERED",
-                      oldStatus: currentCharacter?.status,
-                    }),
-                    rightCount: (currentCharacter?.rightCount || 0) + 1,
-                  } as any);
-                }}
-              >
-                {updateCharacterStatusMutation.isPending ? (
-                  <Icons.spinner spinPulse />
-                ) : (
-                  <Icons.powerOff />
-                )}
-              </button>
-            )}
+            {isSuperAdmin &&
+              isAlreadyLearned &&
+              currentCharacter?.status === "forgotten" && (
+                <button
+                  className="text-xl text-black dark:text-white"
+                  disabled={updateCharacterStatusMutation.isPending}
+                  onDoubleClick={() => {
+                    updateCharacterStatusMutation.mutateAsync({
+                      characterId: currentCharacter?.id,
+                      status: "DISCOVERED",
+                      next_review_date: Date.now(),
+                      rediscoveredAt: Date.now(),
+                      statusHistory: (
+                        currentCharacter?.statusHistory || []
+                      ).concat({
+                        type: "status-change",
+                        createdAt: Date.now(),
+                        newStatus: "DISCOVERED",
+                        oldStatus: currentCharacter?.status,
+                      }),
+                      rightCount: (currentCharacter?.rightCount || 0) + 1,
+                    } as any);
+                  }}
+                >
+                  {updateCharacterStatusMutation.isPending ? (
+                    <Icons.spinner spinPulse />
+                  ) : (
+                    <Icons.powerOff />
+                  )}
+                </button>
+              )}
 
             {learnedChar && characterId?.length === 1 && (
               <SelectedCharacterStoryButton characterId={characterId} />

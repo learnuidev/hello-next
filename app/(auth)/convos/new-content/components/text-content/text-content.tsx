@@ -17,13 +17,23 @@ export const TextContent = () => {
         className="p-4 max-w-8xl w-full h-[260px] sm:h-[600px] rounded-xl focus-visible:outline-none focus-visible:ring-ring"
       />
 
-      <button
-        onClick={() => {
-          setContentType("");
-        }}
-      >
-        Cancel
-      </button>
+      <div className="flex gap-4">
+        <button
+          onClick={() => {
+            setContentType("");
+          }}
+        >
+          Add
+        </button>
+
+        <button
+          onClick={() => {
+            setContentType("");
+          }}
+        >
+          Cancel
+        </button>
+      </div>
     </div>
   );
 };

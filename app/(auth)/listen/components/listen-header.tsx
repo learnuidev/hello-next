@@ -12,11 +12,22 @@ import { useListenState } from "../hooks/use-listen-state";
 import { ContentType, FilterType } from "../listen.types";
 
 export function ListenHeader() {
-  const { contentType, setContentType, filterType, setFilterType } =
-    useListenState();
+  const {
+    contentType,
+    setContentType,
+    filterType,
+    setFilterType,
+    addNewContent,
+    setAddNewContent,
+  } = useListenState();
   return (
     <header className="flex justify-between items-center">
-      <div className="text-xl">
+      <div
+        className="text-xl"
+        onClick={() => {
+          setAddNewContent(!addNewContent);
+        }}
+      >
         <Icons.speechify /> <span> Listen</span>
       </div>
 

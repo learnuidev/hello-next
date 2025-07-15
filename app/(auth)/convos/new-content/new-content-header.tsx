@@ -5,7 +5,7 @@ import { CloseIcon } from "@/components/ui/icons";
 import { StepTitleContainer, useNewConvoStore } from "@/components/step";
 import { useViewModeStore } from "../new-convo/use-viewmode-store";
 
-export function NewContentHeader() {
+export function NewContentHeader({ onClose }: { onClose?: () => void }) {
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
 
   const step = useNewConvoStore((state) => state.step);
@@ -17,6 +17,9 @@ export function NewContentHeader() {
         <button
           className="text-xl md:text-4xl dark:hover:text-white px-4 py-[8px] dark:text-slate-600 shadow-md rounded-full"
           onClick={() => {
+            if (onClose) {
+              onClose();
+            }
             setViewMode("");
           }}
         >
@@ -55,7 +58,6 @@ export function NewContentHeader() {
                     : "dark:bg-slate-600 bg-slate-300"
                 } h-2 w-2 rounded-full text`}
               ></div>
-              {/* {idx + 1} */}
             </button>
           );
         })}

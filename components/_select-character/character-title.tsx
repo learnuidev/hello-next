@@ -138,11 +138,18 @@ export const CharacterTitle = (props: any) => {
               (item: string, idx: number) => {
                 return (
                   <Link
-                    className="text-2xl"
+                    className={
+                      selectedCompInput?.length < 4 ? "text-5xl" : "text-2xl"
+                    }
                     key={`character-title-${item}-${idx}-${idx}`}
                     href={`/nmm/${item}?lang=zh${context ? `&context=${context}` : ""}`}
                   >
                     <CharacterItem
+                      className={
+                        selectedCompInput?.length < 8
+                          ? "lg:text-4xl text-4xl"
+                          : "text-2xl"
+                      }
                       // disableForgotten
                       character={item}
                     />

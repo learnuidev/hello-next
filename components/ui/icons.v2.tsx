@@ -119,6 +119,7 @@ import {
   faRollerCoaster,
   faSeedling,
   faShuffle,
+  faSignalSlash,
   faSmile,
   faSpaceStationMoon,
   faStop,
@@ -377,6 +378,7 @@ export const Icons = {
   bing: createFAIcon(faMicrosoft),
   qa: createFAIcon(faMessageQuote),
   speechify: createFAIcon(faWaveformLines),
+  signalSlash: createFAIcon(faSignalSlash),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

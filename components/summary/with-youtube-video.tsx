@@ -51,7 +51,7 @@ export const WithYoutubeVideo = ({
       />
 
       <button
-        className="mt-4"
+        className="mt-4 text-gray-500"
         onClick={() => {
           setAddVideoUrl(true);
         }}

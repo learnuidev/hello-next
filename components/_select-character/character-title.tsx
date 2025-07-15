@@ -1,6 +1,4 @@
-import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useListComponents } from "@/domain/lesson/component.queries";
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { cn } from "@/lib/utils";
 
@@ -9,25 +7,25 @@ import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
 import { getStatusIcon } from "@/app/(auth)/insights/insights-v2/precision-insight-view/status-icons";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 import { BookmarkButton } from "@/app/nmm/bookmark-button";
-import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
+import { useUpdateMeaningMutation } from "@/domain/sentence/use-update-meaning-mutation";
 import { useGetCharacter } from "@/hooks/use-get-character";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+
 import { Icons } from "../ui/icons.v2";
-import { useCanTrackFunction } from "../use-can-track-function";
+import { smartSplit } from "../youtube-page/utils/smart-split";
+import { AudioComponent } from "./audio-component";
+import { CharacterItem } from "./character-item";
 import { characterStore } from "./character-store";
 import { CharacterTrackButton } from "./selected-character/character-track-button";
-import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { useCharacterEditStore } from "./use-character-edit-store";
-import { useState } from "react";
-import { useUpdateMeaningMutation } from "@/domain/sentence/use-update-meaning-mutation";
-import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
-import { AudioComponent } from "./audio-component";
-import { smartSplit } from "../youtube-page/utils/smart-split";
-import { CharacterItem } from "./character-item";
+import { isNonRomanLang } from "./utils/is-non-roman-lang";
+import { useYoutubeVideoUrl } from "../summary/with-youtube-video";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -48,7 +46,6 @@ export const CharacterTitle = (props: any) => {
   const context = searchParams?.get("context");
 
   const pinyinInput = characterStore((state) => state.pinyin);
-  const setPinyin = characterStore((state) => state.setPinyin);
 
   const setEdit = useCharacterEditStore((state) => state.setEdit);
   const edit = useCharacterEditStore((state) => state.edit);
@@ -64,9 +61,6 @@ export const CharacterTitle = (props: any) => {
 
   const { speak } = useSpeak(lang);
 
-  const { data: components, isLoading: isComponentsLoading } =
-    useListComponents({ includeAll: true });
-
   const { data: selectedComp } = useGetComponentQuery({
     hanzi: componentId,
   });
@@ -78,18 +72,10 @@ export const CharacterTitle = (props: any) => {
 
   const updateMeaningMutation = useUpdateMeaningMutation();
 
-  const { trackFunction } = useCanTrackFunction(
-    { hanzi: characterId, input: characterId },
-    {
-      lang,
-    }
-  );
+  const { videoUrl, setVideoUrl, addVideoUrl, setAddVideoUrl } =
+    useYoutubeVideoUrl();
 
   const selectedCompInput = characterId;
-
-  // const brightMode = useReadModeStore((state) => state.readMode);
-
-  const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const StatusIcon = getStatusIcon(character?.status);
   const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
@@ -201,7 +187,7 @@ export const CharacterTitle = (props: any) => {
         </h2>
       )}
 
-      <div className="space-x-4 flex">
+      <div className="space-x-4 flex items-center">
         {meaning?.audioUrl ? (
           <AudioComponent
             audioUrl={meaning?.audioUrl}
@@ -220,9 +206,7 @@ export const CharacterTitle = (props: any) => {
             </button>
           )
         )}
-
         {!edit && <CharacterTrackButton />}
-
         {!edit && (
           <BookmarkButton
             hanzi={characterId}
@@ -275,6 +259,14 @@ export const CharacterTitle = (props: any) => {
             </button>
           )
         )}
+
+        <button
+          onClick={() => {
+            setAddVideoUrl((prev: boolean) => !prev);
+          }}
+        >
+          <Icons.youtube className="text-xl" />
+        </button>
       </div>
     </div>
   );

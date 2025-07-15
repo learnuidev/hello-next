@@ -11,6 +11,35 @@ import ReactPlayer from "react-player";
 import { Icons } from "../ui/icons.v2";
 import { parseYoutubeUrl } from "./parse-youtube-url";
 
+import { create } from "zustand";
+
+const useYoutubeVideoStore = create((set: any, get: any) => ({
+  videoUrl: "",
+  setVideoUrl: (f: any) =>
+    typeof f === "function"
+      ? set({ videoUrl: f(get().videoUrl) })
+      : set({ videoUrl: f }),
+  addVideoUrl: false,
+  setAddVideoUrl: (f: any) =>
+    typeof f === "function"
+      ? set({ addVideoUrl: f(get().addVideoUrl) })
+      : set({ addVideoUrl: f }),
+}));
+
+export const useYoutubeVideoUrl = () => {
+  const videoUrl = useYoutubeVideoStore((state) => state.videoUrl);
+  const setVideoUrl = useYoutubeVideoStore((state) => state.setVideoUrl);
+
+  const addVideoUrl = useYoutubeVideoStore((state) => state.addVideoUrl);
+  const setAddVideoUrl = useYoutubeVideoStore((state) => state.setAddVideoUrl);
+
+  return {
+    videoUrl,
+    setVideoUrl,
+    addVideoUrl,
+    setAddVideoUrl,
+  };
+};
 export const WithYoutubeVideo = ({
   characterId,
   lang,
@@ -18,8 +47,8 @@ export const WithYoutubeVideo = ({
   characterId: string;
   lang: string;
 }) => {
-  const [addVideoUrl, setAddVideoUrl] = useState(false);
-  const [videoUrl, setVideoUrl] = useState("");
+  const { videoUrl, setVideoUrl, addVideoUrl, setAddVideoUrl } =
+    useYoutubeVideoUrl();
 
   const updateSummaryMutation = useUpdateComponentSummaryMutation();
 
@@ -36,7 +65,7 @@ export const WithYoutubeVideo = ({
     if (meaning?.youtubeUrl) {
       setVideoUrl(meaning?.youtubeUrl);
     }
-  }, [meaning?.youtubeUrl]);
+  }, [meaning?.youtubeUrl, setVideoUrl]);
 
   let meaningResponse = meaning as ListMeaningsResponse;
 
@@ -47,21 +76,10 @@ export const WithYoutubeVideo = ({
           className="aspect-video"
           url={parseYoutubeUrl(meaningResponse?.youtubeUrl).data}
           width={"100%"}
-          // width={isSmall ? "100%" : "600px"}
           height={"100%"}
           controls
         />
       </div>
-
-      <button
-        className="mt-4 text-gray-500"
-        onClick={() => {
-          setAddVideoUrl(true);
-        }}
-      >
-        {" "}
-        <Icons.edit />
-      </button>
     </div>
   ) : addVideoUrl ? (
     <div>
@@ -96,7 +114,6 @@ export const WithYoutubeVideo = ({
           Add
         </button>
         <button
-          disabled={!videoUrl}
           onClick={() => {
             setAddVideoUrl(false);
           }}
@@ -105,15 +122,5 @@ export const WithYoutubeVideo = ({
         </button>
       </div>
     </div>
-  ) : (
-    <div>
-      <button
-        onClick={() => {
-          setAddVideoUrl(true);
-        }}
-      >
-        <Icons.youtube />
-      </button>
-    </div>
-  );
+  ) : null;
 };

@@ -260,13 +260,15 @@ export const CharacterTitle = (props: any) => {
           )
         )}
 
-        <button
-          onClick={() => {
-            setAddVideoUrl((prev: boolean) => !prev);
-          }}
-        >
-          <Icons.youtube className="text-xl" />
-        </button>
+        {isSuperAdmin && (
+          <button
+            onClick={() => {
+              setAddVideoUrl((prev: boolean) => !prev);
+            }}
+          >
+            <Icons.youtube className="text-xl" />
+          </button>
+        )}
       </div>
     </div>
   );

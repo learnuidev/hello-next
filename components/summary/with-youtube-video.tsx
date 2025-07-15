@@ -6,7 +6,7 @@ import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { useUpdateComponentSummaryMutation } from "@/domain/component-summary/update-component-summary";
 import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { Icons } from "../ui/icons.v2";
 
@@ -31,16 +31,35 @@ export const WithYoutubeVideo = ({
     lang,
   });
 
+  useEffect(() => {
+    if (meaning?.youtubeUrl) {
+      setVideoUrl(meaning?.youtubeUrl);
+    }
+  }, [meaning?.youtubeUrl]);
+
   let meaningResponse = meaning as ListMeaningsResponse;
 
-  return meaningResponse?.youtubeUrl ? (
-    <ReactPlayer
-      className="aspect-video"
-      url={meaningResponse?.youtubeUrl}
-      // width={isSmall ? "100%" : "600px"}
-      height={"100%"}
-      controls
-    />
+  return meaningResponse?.youtubeUrl && !addVideoUrl ? (
+    <div>
+      <ReactPlayer
+        className="aspect-video"
+        url={meaningResponse?.youtubeUrl}
+        width={"100%"}
+        // width={isSmall ? "100%" : "600px"}
+        height={"100%"}
+        controls
+      />
+
+      <button
+        className="mt-4"
+        onClick={() => {
+          setAddVideoUrl(true);
+        }}
+      >
+        {" "}
+        <Icons.edit />
+      </button>
+    </div>
   ) : addVideoUrl ? (
     <div>
       <input
@@ -62,6 +81,7 @@ export const WithYoutubeVideo = ({
                 youtubeUrl: videoUrl,
               })
               .then(() => {
+                setAddVideoUrl(false);
                 console.log("Summary Successfully Updated");
               });
           }}

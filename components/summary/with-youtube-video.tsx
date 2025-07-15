@@ -41,14 +41,16 @@ export const WithYoutubeVideo = ({
 
   return meaningResponse?.youtubeUrl && !addVideoUrl ? (
     <div>
-      <ReactPlayer
-        className="aspect-video"
-        url={meaningResponse?.youtubeUrl}
-        width={"100%"}
-        // width={isSmall ? "100%" : "600px"}
-        height={"100%"}
-        controls
-      />
+      <div className="border rounded-lg overflow-hidden">
+        <ReactPlayer
+          className="aspect-video"
+          url={meaningResponse?.youtubeUrl}
+          width={"100%"}
+          // width={isSmall ? "100%" : "600px"}
+          height={"100%"}
+          controls
+        />
+      </div>
 
       <button
         className="mt-4 text-gray-500"

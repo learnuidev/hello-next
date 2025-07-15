@@ -1,6 +1,7 @@
 import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
 import { useQuery } from "@tanstack/react-query";
 import { ListenMedia } from "../listen.types";
+import { listenApiUrl } from "../constants";
 
 const mockListenMedia: ListenMedia[] = [
   {
@@ -36,6 +37,21 @@ const mockListenMedia: ListenMedia[] = [
     userId: "user_003",
   },
 ];
+
+const listMedia = async (jwt: string): Promise<ListenMedia[]> => {
+  const resp = await fetch(`${listenApiUrl}/v1/list-media`, {
+    method: "POST",
+
+    body: JSON.stringify({}),
+    headers: {
+      Authorization: jwt,
+    },
+  });
+
+  const mediaList = await resp.json();
+
+  return mediaList as ListenMedia[];
+};
 
 const listMediaMock = async (): Promise<ListenMedia[]> => {
   return mockListenMedia;

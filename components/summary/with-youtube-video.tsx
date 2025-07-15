@@ -9,6 +9,7 @@ import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { Icons } from "../ui/icons.v2";
+import { parseYoutubeUrl } from "./parse-youtube-url";
 
 export const WithYoutubeVideo = ({
   characterId,
@@ -44,7 +45,7 @@ export const WithYoutubeVideo = ({
       <div className="border rounded-lg overflow-hidden">
         <ReactPlayer
           className="aspect-video"
-          url={meaningResponse?.youtubeUrl}
+          url={parseYoutubeUrl(meaningResponse?.youtubeUrl).data}
           width={"100%"}
           // width={isSmall ? "100%" : "600px"}
           height={"100%"}
@@ -76,16 +77,20 @@ export const WithYoutubeVideo = ({
         <button
           disabled={!videoUrl}
           onClick={() => {
-            updateSummaryMutation
-              // @ts-ignore
-              .mutateAsync({
-                id: meaningResponse?.id,
-                youtubeUrl: videoUrl,
-              })
-              .then(() => {
-                setAddVideoUrl(false);
-                console.log("Summary Successfully Updated");
-              });
+            const parsed = parseYoutubeUrl(videoUrl);
+
+            if (parsed.data) {
+              updateSummaryMutation
+                // @ts-ignore
+                .mutateAsync({
+                  id: meaningResponse?.id,
+                  youtubeUrl: parsed.data,
+                })
+                .then(() => {
+                  setAddVideoUrl(false);
+                  console.log("Summary Successfully Updated");
+                });
+            }
           }}
         >
           Add

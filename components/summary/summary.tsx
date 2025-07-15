@@ -3,18 +3,19 @@
 
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
-import { useGetCharacterId } from "@/hooks/use-get-character-id";
 import { useUpdateComponentSummaryMutation } from "@/domain/component-summary/update-component-summary";
 import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
+import { useGetCharacterId } from "@/hooks/use-get-character-id";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Editor } from "../Editor";
 
+import { Nothing } from "@/app/nmm/nothing";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { create } from "zustand";
-import { Icons } from "../ui/icons.v2";
 import { AnimatedLoadingText } from "../animated-loading-text";
-import { Nothing } from "@/app/nmm/nothing";
+import { Icons } from "../ui/icons.v2";
+import { WithYoutubeVideo } from "./with-youtube-video";
 
 export const useSummaryStore = create((set) => ({
   summary: "",
@@ -69,6 +70,8 @@ export function Summary({
 
   return (
     <main className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 rounded-2xl mt-4">
+      <WithYoutubeVideo characterId={_characterId} lang={lang} />
+
       <div className="">
         <div className="">
           {meaningResponse?.summary && (

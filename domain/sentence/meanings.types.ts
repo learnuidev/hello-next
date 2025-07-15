@@ -26,5 +26,7 @@ export interface ListMeaningsResponse {
     roman: string;
   };
 
+  youtubeUrl?: string;
+
   audioUrl?: string;
 }

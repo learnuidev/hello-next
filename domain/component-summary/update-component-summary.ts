@@ -8,6 +8,7 @@ import { listMeaningQueryKey } from "../sentence/meaning.queries";
 export type UpdateComponentSummaryParams = {
   id: string;
   summary: string;
+  youtubeUrl?: string;
 };
 
 const updateComponentSummary = async (

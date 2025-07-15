@@ -56,9 +56,7 @@ export default function RootLayout({
               >
                 <div className="flex-1">
                   <QueryClientProvider>
-                    <Authenticated>
-                      <WithOnboarding>{children}</WithOnboarding>
-                    </Authenticated>
+                    <Authenticated>{children}</Authenticated>
                     <SettingsDialog />
                     <SearchDialog />
                   </QueryClientProvider>

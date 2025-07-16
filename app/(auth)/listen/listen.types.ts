@@ -7,7 +7,12 @@ export type ContentType =
   | "music";
 export type FilterType = "date-added" | "date-listened" | "alphabetical";
 
-export type ListenMediaStatus = "file-added" | "transcript-generated";
+export type ListenMediaStatus =
+  | "file-added"
+  | "generating-transcript"
+  | "transcript-generated"
+  | "translating-transcript"
+  | "transcript-translated";
 
 export type ListenMedia = {
   type: ContentType;
@@ -15,6 +20,7 @@ export type ListenMedia = {
   createdAt: number;
   id: string;
   text: string;
+  audioUrl?: string;
   progress: number;
   lastListened?: number;
   status: ListenMediaStatus;

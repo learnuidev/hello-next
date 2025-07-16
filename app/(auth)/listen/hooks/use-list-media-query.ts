@@ -38,11 +38,14 @@ const mockListenMedia: ListenMedia[] = [
   },
 ];
 
-const listMedia = async (jwt: string): Promise<ListenMedia[]> => {
-  const resp = await fetch(`${listenApiUrl}/v1/list-media`, {
+const listMedias = async (
+  jwt: string,
+  lastEvaulatedKey?: string
+): Promise<ListenMedia[]> => {
+  const resp = await fetch(`${listenApiUrl}/v1/list-medias`, {
     method: "POST",
 
-    body: JSON.stringify({}),
+    body: JSON.stringify({ lastEvaulatedKey }),
     headers: {
       Authorization: jwt,
     },
@@ -50,12 +53,11 @@ const listMedia = async (jwt: string): Promise<ListenMedia[]> => {
 
   const mediaList = await resp.json();
 
-  return mediaList as ListenMedia[];
+  return mediaList.items as ListenMedia[];
 };
 
 const listMediaMock = async (): Promise<ListenMedia[]> => {
   return mockListenMedia;
-  // return [];
 };
 
 export const useListMediaQuery = () => {
@@ -64,7 +66,7 @@ export const useListMediaQuery = () => {
   return useQuery({
     queryKey: ["list-media", jwt],
     queryFn: async () => {
-      const media = await listMediaMock();
+      const media = await listMedias(jwt);
 
       return media;
     },

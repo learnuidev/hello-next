@@ -24,11 +24,13 @@ export default function MediaDetails() {
 
   const currentTimeInThousand = currentTime * 1000;
 
-  const currentChunk = data?.mediaFile?.speechMarks?.chunks?.find(
-    (chunk) =>
-      chunk?.startTime <= currentTimeInThousand &&
-      chunk?.endTime >= currentTimeInThousand
-  );
+  const currentChunk = currentTime
+    ? data?.mediaFile?.speechMarks?.chunks?.find(
+        (chunk) =>
+          chunk?.startTime <= currentTimeInThousand &&
+          chunk?.endTime >= currentTimeInThousand
+      )
+    : null;
 
   const currentTranslation = currentChunk
     ? data?.mediaFile?.translations?.find(

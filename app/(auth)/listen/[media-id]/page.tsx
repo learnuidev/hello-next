@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import { useGetMediaQuery } from "../hooks/use-get-media-query";
 import { useMediaParams } from "./hooks/use-media-params";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 export default function MediaDetails() {
@@ -21,6 +21,56 @@ export default function MediaDetails() {
     }, 500);
     return () => clearInterval(interval);
   }, []);
+
+  const togglePlay = useCallback(() => {
+    if (playerRef?.current?.player?.isPlaying) {
+      playerRef?.current?.player?.player?.pause();
+    } else {
+      playerRef?.current?.player?.player.play();
+    }
+  }, [playerRef]);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.code === "Space") {
+        // Vishal 07-12-2024-10-20: prevents the browser from scrolling down
+
+        event.preventDefault();
+        togglePlay();
+        return null;
+      }
+
+      // if (event.code === "ArrowLeft" && !editMode) {
+      //   seekBefore();
+      //   return null;
+      // }
+
+      // if (event.code === "ArrowRight" && !editMode) {
+      //   seekAfter();
+      //   return null;
+      // }
+
+      // if (["l"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
+      //   setToggleLoops((val: any) => {
+      //     const exist = val?.find(
+      //       (item: any) => item?.end === currentTranscription?.end
+      //     );
+      //     if (exist) {
+      //       return val?.filter((item: any) => {
+      //         return item?.end !== currentTranscription?.end;
+      //       });
+      //     }
+      //     return val.concat(currentTranscription);
+      //   });
+      //   event.preventDefault();
+      // }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [togglePlay]);
 
   const currentTimeInThousand = currentTime * 1000;
 
@@ -65,8 +115,8 @@ export default function MediaDetails() {
         {/* <div>{JSON.stringify(currentTranslation, null, 4)}</div> */}
       </header>
 
-      <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
-        <div className="p-6 sm:px-16 sm:py-12  rounded">
+      <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:min-h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
+        <div className="p-2 sm:px-12 sm:py-12  rounded">
           <p className="text-xl leading-[36px]">
             {data?.text?.split("").map((item, idx) => {
               return (
@@ -107,40 +157,92 @@ export default function MediaDetails() {
           </p>
         </div>
 
-        <div className="p-6 sm:px-16 sm:py-12 rounded">
-          <p className="text-xl leading-[36px]">
-            {data?.mediaFile?.translations?.map((item) => {
-              return (
-                <span
-                  onClick={() => {
+        <div className="p-2 sm:px-12 sm:py-12 rounded">
+          <p className="text-xl leading-[36px] transition-all">
+            {data?.mediaFile?.translations
+              ?.filter((item, idx, ctx) => {
+                if (ctx?.length < 20) {
+                  return true;
+                }
+
+                const findChunks = data?.mediaFile?.speechMarks?.chunks?.filter(
+                  (chunk) => {
+                    return (
+                      item?.startChunkIndex <= chunk?.start &&
+                      item?.endChunkIndex >= chunk?.end
+                    );
+                  }
+                );
+
+                const haveAlreadyPlayed = ctx
+                  .filter((val) => {
                     const findChunks =
                       data?.mediaFile?.speechMarks?.chunks?.filter((chunk) => {
                         return (
-                          item?.startChunkIndex <= chunk?.start &&
-                          item?.endChunkIndex >= chunk?.end
+                          val?.startChunkIndex <= chunk?.start &&
+                          val?.endChunkIndex >= chunk?.end
                         );
                       });
 
-                    console.log("CHUNKS", findChunks);
-                    if (findChunks?.length > 0) {
-                      seekAndPlay(findChunks?.[0]?.startTime / 1000);
-                    }
-                  }}
-                  className={cn(
-                    "transition-all",
-                    currentTranslation
-                      ? JSON.stringify(item) ===
-                        JSON.stringify(currentTranslation)
-                        ? "dark:text-white text-black"
-                        : "dark:text-gray-500"
-                      : ""
-                  )}
-                  key={JSON.stringify(item)}
-                >
-                  {item?.en}{" "}
-                </span>
-              );
-            })}
+                    return (
+                      findChunks?.[findChunks?.length - 1]?.startTime / 1000 <=
+                      currentTime
+                    );
+                  })
+                  .slice(-5);
+
+                const isInLastFive = haveAlreadyPlayed.find(
+                  (v) => JSON.stringify(v) === JSON.stringify(item)
+                );
+
+                if (isInLastFive) {
+                  return true;
+                }
+
+                if (findChunks?.length > 0) {
+                  return !(
+                    findChunks?.[findChunks?.length - 1]?.startTime / 1000 <=
+                    currentTime
+                  );
+                }
+
+                return true;
+              })
+              ?.slice(0, 12)
+              ?.map((item) => {
+                return (
+                  <span
+                    onClick={() => {
+                      const findChunks =
+                        data?.mediaFile?.speechMarks?.chunks?.filter(
+                          (chunk) => {
+                            return (
+                              item?.startChunkIndex <= chunk?.start &&
+                              item?.endChunkIndex >= chunk?.end
+                            );
+                          }
+                        );
+
+                      console.log("CHUNKS", findChunks);
+                      if (findChunks?.length > 0) {
+                        seekAndPlay(findChunks?.[0]?.startTime / 1000);
+                      }
+                    }}
+                    className={cn(
+                      "transition-all",
+                      currentTranslation
+                        ? JSON.stringify(item) ===
+                          JSON.stringify(currentTranslation)
+                          ? "dark:text-white text-black"
+                          : "dark:text-gray-500"
+                        : ""
+                    )}
+                    key={JSON.stringify(item)}
+                  >
+                    {item?.en}{" "}
+                  </span>
+                );
+              })}
           </p>
         </div>
       </section>

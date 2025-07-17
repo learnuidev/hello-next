@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { useListenState } from "../hooks/use-listen-state";
 import { ContentType, FilterType } from "../listen.types";
+import { useNewConvoStore } from "@/components/step";
 
 export function ListenHeader() {
   const {
@@ -20,12 +21,15 @@ export function ListenHeader() {
     addNewContent,
     setAddNewContent,
   } = useListenState();
+
+  const setStep = useNewConvoStore((state) => state.setStep);
   return (
     <header className="flex justify-between items-center">
       <div
         className="text-xl"
         onClick={() => {
           setAddNewContent(!addNewContent);
+          setStep("content");
         }}
       >
         <Icons.speechify /> <span> Listen</span>

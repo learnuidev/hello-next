@@ -17,7 +17,7 @@ export const useNewConvoStore = create(
   persist(
     (set: any, get: any) => ({
       step: "content",
-      setStep: (step: any) => set({ step }),
+      setStep: (step: "content" | "details" | "preview") => set({ step }),
       convo: {
         id: "mandarino#resource#" + new Date().getTime(),
         type: "",

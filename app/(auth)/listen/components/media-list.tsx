@@ -28,10 +28,13 @@ export const MediaList = () => {
   if (data?.length === 0) {
     return (
       <div className="flex justify-center items-center flex-col">
-        <Icons.signalSlash className="text-7xl mt-32" />
+        <Icons.signalSlash className="text-5xl mt-32" />
 
-        <p className="mt-4">Nothing found.</p>
-        <p> Try adjusting your filter or add new media.</p>
+        <p className="mt-8 text-gray-400 font-light">Nothing found.</p>
+        <p className="text-gray-500">
+          {" "}
+          Try adjusting your filter or add new media.
+        </p>
       </div>
     );
   }

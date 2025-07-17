@@ -53,7 +53,7 @@ export default function MediaDetails() {
         )}
       </header>
 
-      <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] gap-4 p-4 justify-start">
+      <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
         <div className="p-6 sm:px-16 sm:py-12  rounded">
           <p className="text-xl leading-[36px]">
             {data?.text?.split("").map((item, idx) => {
@@ -62,14 +62,14 @@ export default function MediaDetails() {
                   className={cn(
                     currentChunk
                       ? currentChunk?.start >= idx || currentChunk?.end >= idx
-                        ? "text-white"
-                        : "text-gray-300"
-                      : "text-white",
+                        ? "dark:text-white text-black"
+                        : "dark:text-gray-300 text-gray-500"
+                      : "dark:text-white text-black",
 
                     currentTranslation
                       ? currentTranslation?.startChunkIndex < idx &&
                         currentTranslation?.endChunkIndex > idx
-                        ? "bg-gray-700"
+                        ? "dark:bg-gray-700 bg-green-300"
                         : "text-gray-500"
                       : ""
                   )}
@@ -89,8 +89,8 @@ export default function MediaDetails() {
                 <span
                   className={cn(
                     JSON.stringify(item) === JSON.stringify(currentTranslation)
-                      ? "text-white"
-                      : "text-gray-400"
+                      ? "dark:text-white text-black"
+                      : "dark:text-gray-400 text-gray-700"
                   )}
                   key={JSON.stringify(item)}
                 >

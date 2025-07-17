@@ -94,7 +94,7 @@ export const useGetMediaQuery = (id: string) => {
   const jwt = useJwtToken();
 
   return useQuery({
-    queryKey: ["list-media", jwt],
+    queryKey: ["get-media", jwt],
     queryFn: async () => {
       const media = await getMedia(jwt, id);
 

@@ -39,8 +39,10 @@ export const MediaList = () => {
     );
   }
 
+  console.log("DATA", data);
+
   return (
-    <section className="grid grid-cols-5 gap-4 mt-12">
+    <section className="grid grid-cols-2 sm:grid-cols-5 gap-4 mt-12">
       {data?.map((item) => {
         return (
           <Link

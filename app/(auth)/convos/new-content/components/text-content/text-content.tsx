@@ -1,10 +1,19 @@
+import {
+  AddNewMediaParams,
+  useAddNewMediaMutation,
+} from "@/app/(auth)/listen/hooks/use-add-new-media-mutation";
 import { contentTextStore, contentTypeStore } from "../../new-content-store";
 
 export const TextContent = () => {
+  const contentType = contentTypeStore((state) => state.type);
   const setContentType = contentTypeStore((state) => state.setType);
+
+  console.log("content type", contentType);
 
   const contextText = contentTextStore((state) => state.text) || "";
   const setContextText = contentTextStore((state) => state.setText);
+
+  const addNewMedia = useAddNewMediaMutation();
 
   return (
     <div className="flex flex-col justify-end items-center gap-4 w-full">
@@ -17,13 +26,33 @@ export const TextContent = () => {
         className="p-4 max-w-8xl w-full h-[260px] sm:h-[600px] rounded-xl focus-visible:outline-none focus-visible:ring-ring"
       />
 
-      <button
-        onClick={() => {
-          setContentType("");
-        }}
-      >
-        Cancel
-      </button>
+      <div className="flex gap-4">
+        <button
+          onClick={() => {
+            addNewMedia
+              .mutateAsync({
+                text: contextText,
+                type: contentType,
+              } as AddNewMediaParams)
+              .then(() => {
+                setContentType("");
+              })
+              .catch((err) => {
+                alert("err yo");
+              });
+          }}
+        >
+          {addNewMedia.isPending ? "Adding..." : "Add"}
+        </button>
+
+        <button
+          onClick={() => {
+            setContentType("");
+          }}
+        >
+          Cancel
+        </button>
+      </div>
     </div>
   );
 };

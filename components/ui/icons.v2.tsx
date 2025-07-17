@@ -119,6 +119,7 @@ import {
   faRollerCoaster,
   faSeedling,
   faShuffle,
+  faSignalSlash,
   faSmile,
   faSpaceStationMoon,
   faStop,
@@ -130,6 +131,7 @@ import {
   faVirus,
   faVolume,
   faWandMagic,
+  faWaveformLines,
   faXmark,
 } from "@fortawesome/pro-thin-svg-icons";
 
@@ -375,6 +377,8 @@ export const Icons = {
   typeWriter: createFAIcon(faTypewriter),
   bing: createFAIcon(faMicrosoft),
   qa: createFAIcon(faMessageQuote),
+  speechify: createFAIcon(faWaveformLines),
+  signalSlash: createFAIcon(faSignalSlash),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

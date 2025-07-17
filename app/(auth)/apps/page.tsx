@@ -106,6 +106,11 @@ export default function AppsPage() {
         setMode("edit");
       },
     },
+    {
+      href: "/listen",
+      title: "Listen",
+      Icon: Icons.speechify,
+    },
   ];
   return (
     <div className="mx-4 mt-16">

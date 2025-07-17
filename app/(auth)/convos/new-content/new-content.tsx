@@ -5,10 +5,10 @@ import { ContentStepView } from "./content-step-view";
 
 export const contentTypes = ["audio", "text", "video", "youtube", "website"];
 
-export function NewContent() {
+export function NewContent({ onClose }: { onClose?: () => void }) {
   return (
     <div className="w-full">
-      <NewContentHeader />
+      {/* <NewContentHeader onClose={onClose} /> */}
       <ContentStepView />
     </div>
   );

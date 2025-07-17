@@ -5,6 +5,8 @@ import { useJwtToken } from "./use-jwt-token";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { addToDictionary } from "@/app/(auth)/clipboard/hooks/add-to-dictionary";
 import { useListDictionaryQuery } from "@/app/(auth)/clipboard/hooks/use-list-dictionary-query";
+import { useGetContentId } from "@/app/(auth)/convos/[content-id]/hooks/use-get-content-id";
+import { removeNull } from "@/lib/utils";
 
 interface Meanings {
   hanzi: string;
@@ -24,6 +26,8 @@ export const useListDictionaryMeaningsQuery = (
   const finalLang = lang || _lang;
 
   const { data: hskWords } = useListHSKWordsQuery();
+
+  const contentId = useGetContentId();
 
   const { data } = useListDictionaryQuery(finalLang);
 
@@ -71,6 +75,7 @@ export const useListDictionaryMeaningsQuery = (
               lang: finalLang,
               word,
               token,
+              context: contentId ? { contentId } : null,
             });
 
             res.push(resp);

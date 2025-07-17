@@ -310,7 +310,7 @@ const ConvoInsightsNoNChinese = ({
     ?.join(" ");
 
   const { data: _context, isLoading: isContextLoading } =
-    useListDictionaryMeaningsQuery(transcriptionStr, data?.lang);
+    useListDictionaryMeaningsQuery(transcriptionStr, data?.lang, contentId);
 
   const context = [
     ...new Set(_context?.map((item) => JSON.stringify(item))),

@@ -69,5 +69,12 @@ export function parseTranscripts(res) {
 
 export function removeNull(obj: any) {
   // eslint-disable-next-line no-unused-vars
-  return Object.fromEntries(Object.entries(obj).filter(([_, v]) => Boolean(v)));
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, v]) => {
+      if (typeof v === "number" || typeof v === "boolean") {
+        return true;
+      }
+      return Boolean(v);
+    })
+  );
 }

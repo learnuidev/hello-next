@@ -36,20 +36,105 @@ import { useCurrentTime } from "./use-current-time-store";
 import { getYablaLink } from "./utils/get-yabla-link";
 import { useIsSmall } from "./utils/use-is-small";
 
+import { persist, createJSONStorage } from "zustand/middleware";
+import { create } from "zustand";
+
+interface ViewModeState {
+  viewMode: string;
+  setViewMode: (mode: any) => void;
+
+  active: number;
+  setActive: (active: number) => void;
+
+  toggleLoop: any | null;
+  setToggleLoop: (toggleLoop: any | null) => void;
+
+  toggleLoops: any[];
+  setToggleLoops: (toggleLoops: any[]) => void;
+
+  qaMode: boolean;
+  setQaMode: (qaMode: boolean) => void;
+
+  isPlaying: boolean;
+  setIsPlaying: (isPlaying: boolean) => void;
+
+  isVideoHidden: boolean;
+  setIsVideoHidden: (isVideoHidden: boolean) => void;
+
+  focusMode: boolean;
+  setFocusMode: (focusMode: boolean) => void;
+}
+
 const MAX_LIMIT = 9000;
 const THIRTY = 30;
 const SIXTY = 60;
 const NINTY = 90;
 
+const useViewModeStore = create(
+  persist(
+    (set: any, get: any) => ({
+      viewMode: "para",
+      setViewMode: (mode: any) =>
+        typeof mode === "function"
+          ? set({ viewMode: mode(get().mode) })
+          : set({ viewMode: mode }),
+
+      active: NINTY,
+      setActive: (active: any) => set({ active }),
+
+      toggleLoop: null,
+      setToggleLoop: (toggleLoop: any) => set({ toggleLoop }),
+
+      toggleLoops: [],
+      setToggleLoops: (toggleLoops: any) => set({ toggleLoops }),
+
+      qaMode: false,
+      setQaMode: (qaMode: any) => set({ qaMode }),
+
+      isPlaying: false,
+      setIsPlaying: (isPlaying: any) => set({ isPlaying }),
+
+      isVideoHidden: false,
+      setIsVideoHidden: (isVideoHidden: any) =>
+        typeof isVideoHidden === "function"
+          ? set({ viewMode: isVideoHidden(get().isVideoHidden) })
+          : set({ isVideoHidden }),
+
+      focusMode: false,
+      setFocusMode: (focusMode: any) => set({ focusMode }),
+    }),
+    {
+      name: "mandarino/youtube-view-mode",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
+
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
-  const [viewMode, setViewMode] = useState<any>("para");
-  const [active, setActive] = useState(NINTY);
-  const [toggleLoop, setToggleLoop] = useState<any>(null);
-  const [qaMode, setQaMode] = useState(false);
-  const [toggleLoops, setToggleLoops] = useState<any>([]);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isVideoHidden, setIsVideoHidden] = useState(false);
-  const [focusMode, setFocusMode] = useState(false);
+  const viewMode = useViewModeStore((state) => state.viewMode);
+  const setViewMode = useViewModeStore((state) => state.setViewMode);
+
+  const active = useViewModeStore((state) => state.active);
+  const setActive = useViewModeStore((state) => state.setActive);
+
+  const toggleLoop = useViewModeStore((state) => state.toggleLoop);
+  const setToggleLoop = useViewModeStore((state) => state.setToggleLoop);
+
+  const toggleLoops: any = useViewModeStore((state) => state.toggleLoops);
+  const setToggleLoops = useViewModeStore((state) => state.setToggleLoops);
+
+  const qaMode = useViewModeStore((state) => state.qaMode);
+  const setQaMode = useViewModeStore((state) => state.setQaMode);
+
+  const isPlaying = useViewModeStore((state) => state.isPlaying);
+  const setIsPlaying = useViewModeStore((state) => state.setIsPlaying);
+
+  const isVideoHidden = useViewModeStore((state) => state.isVideoHidden);
+  const setIsVideoHidden = useViewModeStore((state) => state.setIsVideoHidden);
+
+  const focusMode = useViewModeStore((state) => state.focusMode);
+  const setFocusMode = useViewModeStore((state) => state.setFocusMode);
+
   const editMode = useContentEditStore((state) => state.editMode);
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(lessonId);
@@ -395,7 +480,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
               setViewMode((prev: any) =>
                 prev === "karaoke" ? null : "karaoke"
               );
-              setIsVideoHidden((isHidden) =>
+              setIsVideoHidden((isHidden: any) =>
                 viewMode !== "karaoke" ? true : false
               );
             }}
@@ -416,7 +501,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           <button
             className={isVideoHidden ? "dark:text-white" : "text-gray-500"}
             onClick={() => {
-              setIsVideoHidden((isHidden) => !isHidden);
+              setIsVideoHidden((isHidden: any) => !isHidden);
             }}
           >
             {isVideoHidden ? (

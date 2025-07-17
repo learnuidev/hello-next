@@ -24,6 +24,16 @@ export default function MediaDetails() {
 
   const currentTimeInThousand = currentTime * 1000;
 
+  const seekAndPlay = (time: any) => {
+    playerRef.current.seekTo(time, "seconds");
+
+    try {
+      playerRef.current?.player?.player?.play();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const currentChunk = currentTime
     ? data?.mediaFile?.speechMarks?.chunks?.find(
         (chunk) =>
@@ -61,6 +71,18 @@ export default function MediaDetails() {
             {data?.text?.split("").map((item, idx) => {
               return (
                 <span
+                  onClick={() => {
+                    const currentChunkItem =
+                      data?.mediaFile?.speechMarks?.chunks?.find(
+                        (chunk) => chunk?.start <= idx && chunk?.end >= idx
+                      );
+
+                    if (currentChunkItem) {
+                      // alert(idx);
+                      // alert(JSON.stringify(currentChunkItem));
+                      seekAndPlay(currentChunkItem.startTime / 1000);
+                    }
+                  }}
                   className={cn(
                     "transition-all",
                     currentTranslation
@@ -90,6 +112,20 @@ export default function MediaDetails() {
             {data?.mediaFile?.translations?.map((item) => {
               return (
                 <span
+                  onClick={() => {
+                    const findChunks =
+                      data?.mediaFile?.speechMarks?.chunks?.filter((chunk) => {
+                        return (
+                          item?.startChunkIndex <= chunk?.start &&
+                          item?.endChunkIndex >= chunk?.end
+                        );
+                      });
+
+                    console.log("CHUNKS", findChunks);
+                    if (findChunks?.length > 0) {
+                      seekAndPlay(findChunks?.[0]?.startTime / 1000);
+                    }
+                  }}
                   className={cn(
                     "transition-all",
                     currentTranslation

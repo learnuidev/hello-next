@@ -15,7 +15,7 @@ interface StatusHistoryEntry {
   createdAt: number;
 }
 
-interface SpeechMarkChunk {
+export interface SpeechMarkChunk {
   start: number;
   end: number;
   startTime: number;

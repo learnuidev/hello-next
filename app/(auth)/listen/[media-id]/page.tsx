@@ -1,11 +1,36 @@
 "use client";
 
 import ReactPlayer from "react-player";
-import { useGetMediaQuery } from "../hooks/use-get-media-query";
+import {
+  SpeechMarkChunk,
+  useGetMediaQuery,
+} from "../hooks/use-get-media-query";
 import { useMediaParams } from "./hooks/use-media-params";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
 import { useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
+
+function filterRange(currentChunk?: SpeechMarkChunk | null) {
+  const interval = 400;
+
+  if (!currentChunk) {
+    return {
+      min: 0,
+      max: 400,
+    };
+  }
+
+  const { end } = currentChunk;
+
+  // Round up to nearest multiple of interval
+  const max = Math.ceil(end / interval) * interval;
+  const min = max - interval;
+
+  return {
+    max,
+    min,
+  };
+}
 
 export default function MediaDetails() {
   const { mediaId } = useMediaParams();
@@ -14,6 +39,22 @@ export default function MediaDetails() {
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(mediaId);
   const playerRef = useRef(null) as any;
+
+  const currentChunk = currentTime
+    ? data?.mediaFile?.speechMarks?.chunks?.find(
+        (chunk) =>
+          chunk?.startTime <= currentTimeInThousand &&
+          chunk?.endTime >= currentTimeInThousand
+      )
+    : null;
+
+  const currentTranslation = currentChunk
+    ? data?.mediaFile?.translations?.find(
+        (translation) =>
+          translation?.startChunkIndex <= currentChunk?.start &&
+          translation?.endChunkIndex >= currentChunk?.end
+      )
+    : null;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,6 +71,8 @@ export default function MediaDetails() {
     }
   }, [playerRef]);
 
+  function seekBefore() {}
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.code === "Space") {
@@ -40,10 +83,10 @@ export default function MediaDetails() {
         return null;
       }
 
-      // if (event.code === "ArrowLeft" && !editMode) {
-      //   seekBefore();
-      //   return null;
-      // }
+      if (event.code === "ArrowLeft") {
+        seekBefore();
+        return null;
+      }
 
       // if (event.code === "ArrowRight" && !editMode) {
       //   seekAfter();
@@ -70,7 +113,7 @@ export default function MediaDetails() {
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [togglePlay]);
+  }, [togglePlay, seekBefore]);
 
   const currentTimeInThousand = currentTime * 1000;
 
@@ -84,21 +127,7 @@ export default function MediaDetails() {
     }
   };
 
-  const currentChunk = currentTime
-    ? data?.mediaFile?.speechMarks?.chunks?.find(
-        (chunk) =>
-          chunk?.startTime <= currentTimeInThousand &&
-          chunk?.endTime >= currentTimeInThousand
-      )
-    : null;
-
-  const currentTranslation = currentChunk
-    ? data?.mediaFile?.translations?.find(
-        (translation) =>
-          translation?.startChunkIndex <= currentChunk?.start &&
-          translation?.endChunkIndex >= currentChunk?.end
-      )
-    : null;
+  console.log("current chunk", currentChunk);
   return (
     <main className="max-w-6xl m-auto p-4">
       <header className="mb-8">
@@ -118,7 +147,13 @@ export default function MediaDetails() {
       <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:min-h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
         <div className="p-2 sm:px-12 sm:py-12  rounded">
           <p className="text-xl leading-[36px]">
-            {data?.text?.split("").map((item, idx) => {
+            {data?.text?.split("").map((item, idx, ctx) => {
+              if (ctx?.length > 400) {
+                const range = filterRange(currentChunk);
+                if (!(idx >= range.min && idx <= range.max)) {
+                  return null;
+                }
+              }
               return (
                 <span
                   onClick={() => {

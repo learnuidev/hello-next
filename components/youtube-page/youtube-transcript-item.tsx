@@ -19,6 +19,7 @@ import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { Icons } from "../ui/icons.v2";
 import { useContentEditStore } from "./use-content-edit-store";
+import { europeanLangs } from "@/libs/constants/european-langs";
 
 export const TranscriptItem = ({
   example,
@@ -358,33 +359,40 @@ export const TranscriptItem = ({
       </div>
       <div className="mt-4"> </div>
 
-      {editMode && (
-        <input
-          className="w-full"
-          value={timeStamp?.["pinyin"] || example?.pinyin}
-          onChange={(event) => {
-            setTimer("pinyin", event?.target?.value);
-          }}
-        />
-      )}
-      {editMode && (
-        <input
-          className="w-full"
-          value={timeStamp?.["roman"] || example?.roman}
-          onChange={(event) => {
-            setTimer("roman", event?.target?.value);
-          }}
-        />
-      )}
-      {(timeStamp?.hanzi || example?.hanzi) && editMode && (
-        <input
-          className="w-full"
-          value={timeStamp?.hanzi || example?.hanzi}
-          onChange={(event) => {
-            setTimer("hanzi", event?.target?.value);
-          }}
-        />
-      )}
+      {europeanLangs?.includes(example?.lang)
+        ? null
+        : editMode && (
+            <input
+              className="w-full"
+              value={timeStamp?.["pinyin"] || example?.pinyin}
+              onChange={(event) => {
+                setTimer("pinyin", event?.target?.value);
+              }}
+            />
+          )}
+      {europeanLangs?.includes(example?.lang)
+        ? null
+        : editMode && (
+            <input
+              className="w-full"
+              value={timeStamp?.["roman"] || example?.roman}
+              onChange={(event) => {
+                setTimer("roman", event?.target?.value);
+              }}
+            />
+          )}
+      {europeanLangs?.includes(example?.lang)
+        ? null
+        : (timeStamp?.hanzi || example?.hanzi) &&
+          editMode && (
+            <input
+              className="w-full"
+              value={timeStamp?.hanzi || example?.hanzi}
+              onChange={(event) => {
+                setTimer("hanzi", event?.target?.value);
+              }}
+            />
+          )}
       {(timeStamp?.input || example?.input) && editMode && (
         <input
           className="w-full"

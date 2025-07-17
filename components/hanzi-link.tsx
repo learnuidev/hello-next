@@ -19,8 +19,7 @@ import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { useCanTrackFunction } from "./use-can-track-function";
 import { CharacterItem } from "./_select-character/character-item";
 import { smartSplit } from "./youtube-page/utils/smart-split";
-
-const european = ["es", "fr", "ml", "no", "da", "it", "po"];
+import { europeanLangs } from "@/libs/constants/european-langs";
 
 interface HSKCharacter {
   input?: string;
@@ -86,7 +85,7 @@ export function HanziLink({
 
   return (
     <div className={cn("p-2 md:p-3 flex flex-col items-center justify-center")}>
-      {character?.lang && european?.includes(character?.lang)
+      {character?.lang && europeanLangs?.includes(character?.lang)
         ? null
         : showPinyin && (
             <p

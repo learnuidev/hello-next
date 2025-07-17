@@ -2,6 +2,7 @@
 
 import ReactPlayer from "react-player";
 import {
+  MediaTranslation,
   SpeechMarkChunk,
   useGetMediaQuery,
 } from "../hooks/use-get-media-query";
@@ -32,6 +33,28 @@ function filterRange(currentChunk?: SpeechMarkChunk | null) {
   };
 }
 
+function averageEnSize(translations: MediaTranslation[]) {
+  const total = translations.reduce((acc, curr) => acc + curr?.en?.length, 0);
+
+  return total / translations?.length;
+}
+
+function getMaxAndMinTranslationsSlice(
+  translations: MediaTranslation[],
+  index: number
+) {
+  const averageSize = averageEnSize(translations);
+
+  console.log("AVG SIZE", averageSize);
+  const chunkSize = Math.floor(500 / averageSize);
+  const chunkIndex = Math.floor(index / chunkSize);
+
+  return {
+    min: chunkIndex * chunkSize,
+    max: (chunkIndex + 1) * chunkSize,
+  };
+}
+
 export default function MediaDetails() {
   const { mediaId } = useMediaParams();
 
@@ -58,6 +81,19 @@ export default function MediaDetails() {
       )
     : null;
 
+  const currentTranslationIndex = currentTranslation
+    ? data?.mediaFile?.translations?.findIndex(
+        (val) => val === currentTranslation
+      ) || 0
+    : 0;
+
+  console.log("CURRENT T INDEX", currentTranslationIndex);
+
+  const maxMinTranslationsSlice = getMaxAndMinTranslationsSlice(
+    data?.mediaFile?.translations || [],
+    currentTranslationIndex
+  );
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(playerRef?.current?.getCurrentTime());
@@ -73,7 +109,9 @@ export default function MediaDetails() {
     }
   }, [playerRef]);
 
-  function seekBefore() {}
+  const seekBefore = useCallback(() => {
+    return true;
+  }, []);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -127,7 +165,6 @@ export default function MediaDetails() {
     }
   };
 
-  console.log("current chunk", currentChunk);
   return (
     <main className="max-w-6xl m-auto p-4">
       <header className="mb-8">
@@ -195,55 +232,7 @@ export default function MediaDetails() {
         <div className="p-2 sm:px-12 sm:py-12 rounded">
           <p className="text-xl leading-[36px] transition-all">
             {data?.mediaFile?.translations
-              ?.filter((item, idx, ctx) => {
-                if (ctx?.length < 20) {
-                  return true;
-                }
-
-                const findChunks = data?.mediaFile?.speechMarks?.chunks?.filter(
-                  (chunk) => {
-                    return (
-                      item?.startChunkIndex <= chunk?.start &&
-                      item?.endChunkIndex >= chunk?.end
-                    );
-                  }
-                );
-
-                const haveAlreadyPlayed = ctx
-                  .filter((val) => {
-                    const findChunks =
-                      data?.mediaFile?.speechMarks?.chunks?.filter((chunk) => {
-                        return (
-                          val?.startChunkIndex <= chunk?.start &&
-                          val?.endChunkIndex >= chunk?.end
-                        );
-                      });
-
-                    return (
-                      findChunks?.[findChunks?.length - 1]?.startTime / 1000 <=
-                      currentTime
-                    );
-                  })
-                  .slice(-5);
-
-                const isInLastFive = haveAlreadyPlayed.find(
-                  (v) => JSON.stringify(v) === JSON.stringify(item)
-                );
-
-                if (isInLastFive) {
-                  return true;
-                }
-
-                if (findChunks?.length > 0) {
-                  return !(
-                    findChunks?.[findChunks?.length - 1]?.startTime / 1000 <=
-                    currentTime
-                  );
-                }
-
-                return true;
-              })
-              ?.slice(0, 12)
+              ?.slice(maxMinTranslationsSlice.min, maxMinTranslationsSlice.max)
               ?.map((item) => {
                 return (
                   <span

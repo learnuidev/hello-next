@@ -34,7 +34,7 @@ interface SpeechMarks {
   value: string;
 }
 
-interface Translation {
+export interface MediaTranslation {
   input: string;
   pinyin: string;
   endChunkIndex: number;
@@ -48,7 +48,7 @@ interface Translation {
 interface MediaFile {
   lastUpdated: number;
   speechMarks: SpeechMarks;
-  translations: Translation[];
+  translations: MediaTranslation[];
   audioFormat: string;
   signedUrl: string;
   billableCharactersCount: number;

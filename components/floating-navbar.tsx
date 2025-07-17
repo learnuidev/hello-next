@@ -124,7 +124,7 @@ const FloatingNavbarComp = () => {
             )}
           </Link>
 
-          {reviewList?.length > 1 && isChineseLang ? (
+          {reviewList?.length > 1 ? (
             <Link
               href={reviewUrl}
               target="_blank"

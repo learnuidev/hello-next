@@ -40,6 +40,8 @@ export default function MediaDetails() {
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(mediaId);
   const playerRef = useRef(null) as any;
 
+  const currentTimeInThousand = currentTime * 1000;
+
   const currentChunk = currentTime
     ? data?.mediaFile?.speechMarks?.chunks?.find(
         (chunk) =>
@@ -114,8 +116,6 @@ export default function MediaDetails() {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [togglePlay, seekBefore]);
-
-  const currentTimeInThousand = currentTime * 1000;
 
   const seekAndPlay = (time: any) => {
     playerRef.current.seekTo(time, "seconds");

@@ -336,12 +336,19 @@ const ConvoInsightsNoNChinese = ({
     );
   }
 
+  console.log("CONTEXT", context);
+
   return (
     <div className="my-8">
       <NmmListContainerAll className="gap-4">
         {context?.map((char: any, idx: number) => {
           return (
             <HanziLink
+              className={
+                char?.context?.contentId === contentId
+                  ? "text-yellow-500 dark:text-yellow-500 "
+                  : ""
+              }
               lang={data?.lang}
               frequency={char?.frequency}
               character={char}

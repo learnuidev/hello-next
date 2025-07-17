@@ -20,6 +20,8 @@ import { useCanTrackFunction } from "./use-can-track-function";
 import { CharacterItem } from "./_select-character/character-item";
 import { smartSplit } from "./youtube-page/utils/smart-split";
 
+const european = ["es", "fr", "ml", "no", "da", "it", "po"];
+
 interface HSKCharacter {
   input?: string;
   hanzi: string;
@@ -83,23 +85,18 @@ export function HanziLink({
   const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
 
   return (
-    <div
-      className={cn(
-        "p-2 md:p-3 flex flex-col items-center justify-center",
-        className
-      )}
-    >
-      {showPinyin && (
-        <p
-          className={cn(
-            "top-0 text-xs text-black dark:text-gray-400 w-24 text-center truncate",
-
-            className
+    <div className={cn("p-2 md:p-3 flex flex-col items-center justify-center")}>
+      {character?.lang && european?.includes(character?.lang)
+        ? null
+        : showPinyin && (
+            <p
+              className={cn(
+                "top-0 text-xs text-black dark:text-gray-400 w-24 text-center truncate"
+              )}
+            >
+              {character?.pinyin || selectedComp?.pinyin || character?.roman}
+            </p>
           )}
-        >
-          {character?.pinyin || selectedComp?.pinyin || character?.roman}
-        </p>
-      )}
       <Link
         href={
           onClick
@@ -169,7 +166,13 @@ export function HanziLink({
           input: character?.input || character?.hanzi,
           lang: lang || character?.lang || "",
         })?.map((val: any, idx: any) => {
-          return <CharacterItem character={val} key={`${val}-${idx}`} />;
+          return (
+            <CharacterItem
+              className={className}
+              character={val}
+              key={`${val}-${idx}`}
+            />
+          );
         })}
 
         {character?.hskLevel && (

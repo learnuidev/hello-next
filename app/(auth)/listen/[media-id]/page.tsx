@@ -46,7 +46,7 @@ function getMaxAndMinTranslationsSlice(
   const averageSize = averageEnSize(translations);
 
   console.log("AVG SIZE", averageSize);
-  const chunkSize = Math.floor(500 / averageSize);
+  const chunkSize = Math.ceil(500 / averageSize);
   const chunkIndex = Math.floor(index / chunkSize);
 
   return {

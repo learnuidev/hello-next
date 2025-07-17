@@ -51,6 +51,8 @@ export default function MediaDetails() {
             controls
           />
         )}
+
+        {/* <div>{JSON.stringify(currentTranslation, null, 4)}</div> */}
       </header>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
@@ -60,16 +62,17 @@ export default function MediaDetails() {
               return (
                 <span
                   className={cn(
-                    currentChunk
-                      ? currentChunk?.start >= idx || currentChunk?.end >= idx
-                        ? "dark:text-white text-black"
-                        : "dark:text-gray-300 text-gray-500"
-                      : "dark:text-white text-black",
-
+                    "transition-all",
                     currentTranslation
-                      ? currentTranslation?.startChunkIndex < idx &&
-                        currentTranslation?.endChunkIndex > idx
-                        ? "dark:bg-gray-700 bg-green-300"
+                      ? currentTranslation?.startChunkIndex <= idx &&
+                        currentTranslation?.endChunkIndex >= idx
+                        ? "text-white dark:text-gray-500 dark:bg-[rgb(14,15,16)] bg-gray-200"
+                        : "text-gray-500"
+                      : "",
+
+                    currentChunk
+                      ? currentChunk?.start >= idx && currentChunk?.end >= idx
+                        ? "text-black  dark:text-white"
                         : "text-gray-500"
                       : ""
                   )}
@@ -88,9 +91,13 @@ export default function MediaDetails() {
               return (
                 <span
                   className={cn(
-                    JSON.stringify(item) === JSON.stringify(currentTranslation)
-                      ? "dark:text-white text-black"
-                      : "dark:text-gray-400 text-gray-700"
+                    "transition-all",
+                    currentTranslation
+                      ? JSON.stringify(item) ===
+                        JSON.stringify(currentTranslation)
+                        ? "dark:text-white text-black"
+                        : "dark:text-gray-500"
+                      : ""
                   )}
                   key={JSON.stringify(item)}
                 >

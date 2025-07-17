@@ -519,14 +519,16 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           >
             <Icons.edit />
           </button>
-          <button
-            className={qaMode ? "dark:text-white" : "text-gray-500"}
-            onClick={() => {
-              setQaMode(!qaMode);
-            }}
-          >
-            <Icons.qa />
-          </button>
+          {lesson?.questions?.length > 0 && (
+            <button
+              className={qaMode ? "dark:text-white" : "text-gray-500"}
+              onClick={() => {
+                setQaMode(!qaMode);
+              }}
+            >
+              <Icons.qa />
+            </button>
+          )}
 
           {editMode && (
             <button

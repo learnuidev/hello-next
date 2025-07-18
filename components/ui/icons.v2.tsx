@@ -89,6 +89,7 @@ import {
   faLanguage,
   faLayerGroup,
   faLightbulb,
+  faLightbulbOn,
   faLink,
   faList,
   faList12,
@@ -102,6 +103,7 @@ import {
   faMicrophone,
   faMicrophoneStand,
   faMobile,
+  faMoon,
   faMusic,
   faNotebook,
   faPaperPlaneTop,
@@ -133,6 +135,7 @@ import {
   faWandMagic,
   faWaveformLines,
   faXmark,
+  faGear as faGearLight,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -379,6 +382,9 @@ export const Icons = {
   qa: createFAIcon(faMessageQuote),
   speechify: createFAIcon(faWaveformLines),
   signalSlash: createFAIcon(faSignalSlash),
+  moon: createFAIcon(faMoon),
+  lightBulbOn: createFAIcon(faLightbulbOn),
+  gearLight: createFAIcon(faGearLight),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

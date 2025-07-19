@@ -7,6 +7,7 @@ import { addToDictionary } from "@/app/(auth)/clipboard/hooks/add-to-dictionary"
 import { useListDictionaryQuery } from "@/app/(auth)/clipboard/hooks/use-list-dictionary-query";
 import { useGetContentId } from "@/app/(auth)/convos/[content-id]/hooks/use-get-content-id";
 import { removeNull } from "@/lib/utils";
+import { useMediaParams } from "@/app/(auth)/listen/[media-id]/hooks/use-media-params";
 
 interface Meanings {
   hanzi: string;
@@ -20,6 +21,8 @@ export const useListDictionaryMeaningsQuery = (
   options = {} as any
 ) => {
   const token = useJwtToken();
+
+  const { mediaId } = useMediaParams();
 
   const _lang = useGetCurrentLang();
 
@@ -75,7 +78,7 @@ export const useListDictionaryMeaningsQuery = (
               lang: finalLang,
               word,
               token,
-              context: contentId ? { contentId } : null,
+              context: contentId ? { contentId } : mediaId ? { mediaId } : null,
             });
 
             res.push(resp);

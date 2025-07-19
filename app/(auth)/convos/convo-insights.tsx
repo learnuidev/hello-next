@@ -2,32 +2,31 @@
 
 import { SelectedCharacterContainer } from "@/components/selected-character-container";
 import { useGetContentQuery } from "@/domain/content/content.queries";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useSelectedCharacter } from "./use-selected-character";
 
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   GreenLightbulbDuoTone,
   Icons,
   RedFireDuoTone,
 } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
-import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 
+import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { CharacterItem } from "@/components/_select-character/character-item";
 import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
-import { useGetContentInsightsNew } from "./use-get-content-insights.new";
-import { useInsightsSettingsStore } from "./use-insights-settings-store";
-import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
+import { ActiveTranscription } from "@/components/youtube-page/active-transcription";
+import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
+import { smartSplit } from "@/components/youtube-page/utils/smart-split";
+import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
-import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
-import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
 import { formatTime } from "./_play/utils";
-import { smartSplit } from "@/components/youtube-page/utils/smart-split";
-import { CharacterItem } from "@/components/_select-character/character-item";
-import Link from "next/link";
-import { ActiveTranscription } from "@/components/youtube-page/active-transcription";
+import { useGetContentInsightsNew } from "./use-get-content-insights.new";
+import { useInsightsSettingsStore } from "./use-insights-settings-store";
 import { isVideoUrl } from "./utils/is-video-url";
 
 const ConvoContextDialog = ({

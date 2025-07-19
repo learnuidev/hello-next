@@ -11,10 +11,11 @@ import { useGetMediaQuery } from "../hooks/use-get-media-query";
 import { useMediaState } from "./hooks/use-media-state";
 import { useContainsHumanMode } from "./hooks/use-contains-human-mode";
 import { MediaSettingsDialog } from "./components/media-settings-dialog/media-settings-dialog";
+import useSound from "use-sound";
+import { ListenAnalytics } from "./components/listen-analytics/listen-analytics";
 
-function ListenAnalytics() {
-  return <main className="max-w-6xl m-auto p-4">todo</main>;
-}
+const switchUrl = `https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.us-east-1.amazonaws.com/learnuidev@gmail.com/01JH6X1JMEACXMV4CY8ZSHTC0D.m4a`;
+
 function ListenSettings() {
   const { mediaId } = useMediaParams();
   return (
@@ -56,6 +57,8 @@ export default function MediaDetails() {
 
   const { theme, setTheme } = useTheme();
 
+  const [playSwitch] = useSound(switchUrl);
+
   const { mode, setMode } = useMediaState();
 
   const containsHumanMode = useContainsHumanMode(mediaId);
@@ -82,6 +85,7 @@ export default function MediaDetails() {
           </RoundButton>
           <RoundButton
             onClick={() => {
+              playSwitch();
               if (theme === "dark") {
                 setTheme("light");
               } else {

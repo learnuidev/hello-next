@@ -208,6 +208,7 @@ export function Reader() {
             height={"40px"}
             width={"100%"}
             controls
+            playbackRate={containsHumanMode && mode === "ai" ? 0.8 : 1}
           />
         )}
 

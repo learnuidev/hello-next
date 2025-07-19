@@ -83,9 +83,12 @@ export function Reader() {
 
   const textItem = containsHumanMode
     ? mode === "ai"
-      ? data?.text
+      ? data?.text?.split("").filter(Boolean).join("")
       : data?.mediaFile?.humanAudioTimestamps?.text
-    : data?.text;
+          ?.split("")
+          .filter(Boolean)
+          .join("")
+    : data?.text?.split("").filter(Boolean).join("");
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(mediaId);
   const playerRef = useRef(null) as any;

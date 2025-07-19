@@ -109,11 +109,15 @@ export const useGetMediaQuery = (id: string) => {
   const jwt = useJwtToken();
 
   return useQuery({
-    queryKey: ["get-media", jwt],
+    queryKey: ["get-media", jwt, id],
     queryFn: async () => {
       const media = await getMedia(jwt, id);
 
       return media;
     },
+
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
 };

@@ -79,16 +79,16 @@ export function Reader() {
       : data?.mediaFile?.humanAudioTimestamps?.words
     : data?.mediaFile?.speechMarks?.chunks;
 
-  // const textItem = data?.text;
+  const textItem = data?.text;
 
-  const textItem = containsHumanMode
-    ? mode === "ai"
-      ? data?.text?.split("").filter(Boolean).join("")
-      : data?.mediaFile?.humanAudioTimestamps?.text
-          ?.split("")
-          .filter(Boolean)
-          .join("")
-    : data?.text?.split("").filter(Boolean).join("");
+  // const textItem = containsHumanMode
+  //   ? mode === "ai"
+  //     ? data?.text?.split("").filter(Boolean).join("")
+  //     : data?.mediaFile?.humanAudioTimestamps?.text
+  //         ?.split("")
+  //         .filter(Boolean)
+  //         .join("")
+  //   : data?.text?.split("").filter(Boolean).join("");
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(mediaId);
   const playerRef = useRef(null) as any;

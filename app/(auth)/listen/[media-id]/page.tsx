@@ -10,6 +10,7 @@ import { useMediaParams } from "./hooks/use-media-params";
 import { useGetMediaQuery } from "../hooks/use-get-media-query";
 import { useMediaState } from "./hooks/use-media-state";
 import { useContainsHumanMode } from "./hooks/use-contains-human-mode";
+import { MediaSettingsDialog } from "./components/media-settings-dialog/media-settings-dialog";
 
 function ListenAnalytics() {
   return <main className="max-w-6xl m-auto p-4">todo</main>;
@@ -62,6 +63,13 @@ export default function MediaDetails() {
   return (
     <div className="relative">
       <ListenViewType view={view} />
+
+      <MediaSettingsDialog
+        isOpen={showMenu}
+        closeDialog={() => {
+          setShowMenu(false);
+        }}
+      />
 
       <div className="absolute right-20 top-56">
         <div className="flex flex-col gap-8">

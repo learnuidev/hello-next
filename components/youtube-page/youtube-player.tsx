@@ -74,10 +74,10 @@ const useViewModeStore = create(
   persist(
     (set: any, get: any) => ({
       viewMode: "para",
-      setViewMode: (mode: any) =>
-        typeof mode === "function"
-          ? set({ viewMode: mode(get().mode) })
-          : set({ viewMode: mode }),
+      setViewMode: (viewMode: any) =>
+        typeof viewMode === "function"
+          ? set({ viewMode: viewMode(get().viewMode) })
+          : set({ viewMode }),
 
       active: NINTY,
       setActive: (active: any) => set({ active }),
@@ -86,7 +86,10 @@ const useViewModeStore = create(
       setToggleLoop: (toggleLoop: any) => set({ toggleLoop }),
 
       toggleLoops: [],
-      setToggleLoops: (toggleLoops: any) => set({ toggleLoops }),
+      setToggleLoops: (toggleLoops: any) =>
+        typeof toggleLoops === "function"
+          ? set({ toggleLoops: toggleLoops(get().toggleLoops) })
+          : set({ toggleLoops }),
 
       qaMode: false,
       setQaMode: (qaMode: any) => set({ qaMode }),
@@ -111,13 +114,16 @@ const useViewModeStore = create(
 );
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
-  const [viewMode, setViewMode] = useState<any>("para");
+  const viewMode = useViewModeStore((state) => state.viewMode);
+  const setViewMode = useViewModeStore((state) => state.setViewMode);
 
   const active = useViewModeStore((state) => state.active);
   const setActive = useViewModeStore((state) => state.setActive);
 
   const toggleLoop = useViewModeStore((state) => state.toggleLoop);
   const setToggleLoop = useViewModeStore((state) => state.setToggleLoop);
+
+  // const [toggleLoops, setToggleLoops] = useState<any>([]);
 
   const toggleLoops: any = useViewModeStore((state) => state.toggleLoops);
   const setToggleLoops = useViewModeStore((state) => state.setToggleLoops);

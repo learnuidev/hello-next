@@ -14,14 +14,13 @@ import {
 import { useMediaParams } from "../hooks/use-media-params";
 import { useMediaState } from "../hooks/use-media-state";
 import { useContainsHumanMode } from "../hooks/use-contains-human-mode";
+import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 
-function filterRange(currentChunk?: SpeechMarkChunk | null) {
-  const interval = 400;
-
+function filterRange(interval: number, currentChunk?: SpeechMarkChunk | null) {
   if (!currentChunk) {
     return {
       min: 0,
-      max: 400,
+      max: interval,
     };
   }
 
@@ -45,11 +44,14 @@ function averageEnSize(translations: MediaTranslation[]) {
 
 function getMaxAndMinTranslationsSlice(
   translations: MediaTranslation[],
-  index: number
+  index: number,
+  isSmall: boolean
 ) {
   const averageSize = averageEnSize(translations);
 
-  const chunkSize = Math.ceil(500 / averageSize);
+  const batchSize = isSmall ? 120 : 500;
+
+  const chunkSize = Math.ceil(batchSize / averageSize);
   const chunkIndex = Math.floor(index / chunkSize);
 
   return {
@@ -60,6 +62,8 @@ function getMaxAndMinTranslationsSlice(
 
 export function Reader() {
   const { mediaId } = useMediaParams();
+
+  const isSmall = useIsSmall();
 
   const { data } = useGetMediaQuery(mediaId);
 
@@ -122,7 +126,8 @@ export function Reader() {
 
   const maxMinTranslationsSlice = getMaxAndMinTranslationsSlice(
     data?.mediaFile?.translations || [],
-    currentTranslationIndex
+    currentTranslationIndex,
+    isSmall
   );
 
   useEffect(() => {
@@ -198,6 +203,8 @@ export function Reader() {
     }
   };
 
+  const interval = isSmall ? 80 : 400;
+
   return (
     <main className="max-w-6xl m-auto p-4">
       <header className="mb-8">
@@ -217,10 +224,10 @@ export function Reader() {
 
       <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:min-h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
         <div className="p-2 sm:px-12 sm:py-12  rounded">
-          <p className="text-xl leading-[36px]">
+          <p className="text-lg sm:text-xl sm:leading-[36px]">
             {textItem?.split("").map((item, idx, ctx) => {
-              if (ctx?.length > 400) {
-                const range = filterRange(currentChunk);
+              if (ctx?.length > interval) {
+                const range = filterRange(interval, currentChunk);
                 if (!(idx >= range.min && idx <= range.max)) {
                   return null;
                 }
@@ -263,7 +270,7 @@ export function Reader() {
         </div>
 
         <div className="p-2 sm:px-12 sm:py-12 rounded">
-          <p className="text-xl leading-[36px] transition-all">
+          <p className="text-lg sm:text-xl sm:leading-[36px] transition-all">
             {data?.mediaFile?.translations
               ?.slice(maxMinTranslationsSlice.min, maxMinTranslationsSlice.max)
               ?.map((item) => {

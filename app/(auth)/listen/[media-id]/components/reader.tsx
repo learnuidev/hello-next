@@ -12,6 +12,8 @@ import {
 } from "../../hooks/use-get-media-query";
 
 import { useMediaParams } from "../hooks/use-media-params";
+import { useMediaState } from "../hooks/use-media-state";
+import { useContainsHumanMode } from "../hooks/use-contains-human-mode";
 
 function filterRange(currentChunk?: SpeechMarkChunk | null) {
   const interval = 400;
@@ -47,7 +49,6 @@ function getMaxAndMinTranslationsSlice(
 ) {
   const averageSize = averageEnSize(translations);
 
-  console.log("AVG SIZE", averageSize);
   const chunkSize = Math.ceil(500 / averageSize);
   const chunkIndex = Math.floor(index / chunkSize);
 
@@ -62,17 +63,44 @@ export function Reader() {
 
   const { data } = useGetMediaQuery(mediaId);
 
+  const containsHumanMode = useContainsHumanMode(mediaId);
+
+  const { mode, setMode } = useMediaState();
+
+  const audioUrl = containsHumanMode
+    ? mode === "ai"
+      ? data?.mediaFile?.audioUrl
+      : data?.customAudioUrl
+    : data?.mediaFile?.audioUrl;
+
+  const mediaChunks = containsHumanMode
+    ? mode === "ai"
+      ? data?.mediaFile?.speechMarks?.chunks
+      : data?.mediaFile?.humanAudioTimestamps?.words
+    : data?.mediaFile?.speechMarks?.chunks;
+
+  // const textItem = data?.text;
+
+  const textItem = containsHumanMode
+    ? mode === "ai"
+      ? data?.text
+      : data?.mediaFile?.humanAudioTimestamps?.text
+    : data?.text;
+
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(mediaId);
   const playerRef = useRef(null) as any;
 
   const currentTimeInThousand = currentTime * 1000;
 
   const currentChunk = currentTime
-    ? data?.mediaFile?.speechMarks?.chunks?.find(
+    ? mediaChunks?.find(
         (chunk) =>
           chunk?.startTime <= currentTimeInThousand &&
           chunk?.endTime >= currentTimeInThousand
-      )
+      ) ||
+      mediaChunks?.filter(
+        (chunk) => chunk?.endTime > currentTimeInThousand
+      )?.[0]
     : null;
 
   const currentTranslation = currentChunk
@@ -88,8 +116,6 @@ export function Reader() {
         (val) => val === currentTranslation
       ) || 0
     : 0;
-
-  console.log("CURRENT T INDEX", currentTranslationIndex);
 
   const maxMinTranslationsSlice = getMaxAndMinTranslationsSlice(
     data?.mediaFile?.translations || [],
@@ -175,7 +201,7 @@ export function Reader() {
         {data?.mediaFile?.audioUrl && (
           <ReactPlayer
             ref={playerRef}
-            url={data?.mediaFile?.audioUrl}
+            url={audioUrl}
             height={"40px"}
             width={"100%"}
             controls
@@ -188,7 +214,7 @@ export function Reader() {
       <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:min-h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
         <div className="p-2 sm:px-12 sm:py-12  rounded">
           <p className="text-xl leading-[36px]">
-            {data?.text?.split("").map((item, idx, ctx) => {
+            {textItem?.split("").map((item, idx, ctx) => {
               if (ctx?.length > 400) {
                 const range = filterRange(currentChunk);
                 if (!(idx >= range.min && idx <= range.max)) {
@@ -198,10 +224,9 @@ export function Reader() {
               return (
                 <span
                   onClick={() => {
-                    const currentChunkItem =
-                      data?.mediaFile?.speechMarks?.chunks?.find(
-                        (chunk) => chunk?.start <= idx && chunk?.end >= idx
-                      );
+                    const currentChunkItem = mediaChunks?.find(
+                      (chunk) => chunk?.start <= idx && chunk?.end >= idx
+                    );
 
                     if (currentChunkItem) {
                       // alert(idx);
@@ -241,18 +266,14 @@ export function Reader() {
                 return (
                   <span
                     onClick={() => {
-                      const findChunks =
-                        data?.mediaFile?.speechMarks?.chunks?.filter(
-                          (chunk) => {
-                            return (
-                              item?.startChunkIndex <= chunk?.start &&
-                              item?.endChunkIndex >= chunk?.end
-                            );
-                          }
+                      const findChunks = mediaChunks?.filter((chunk) => {
+                        return (
+                          item?.startChunkIndex <= chunk?.start &&
+                          item?.endChunkIndex >= chunk?.end
                         );
+                      });
 
-                      console.log("CHUNKS", findChunks);
-                      if (findChunks?.length > 0) {
+                      if (findChunks && findChunks?.length > 0) {
                         seekAndPlay(findChunks?.[0]?.startTime / 1000);
                       }
                     }}

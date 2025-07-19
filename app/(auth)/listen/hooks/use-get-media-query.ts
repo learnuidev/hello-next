@@ -45,8 +45,21 @@ export interface MediaTranslation {
   updatedAt: number;
 }
 
+type HumanAudioTimestampWord = SpeechMarkChunk & {
+  speaker_id: string;
+};
+
+interface HumanAudioTimestamps {
+  words: HumanAudioTimestampWord[];
+  additional_formats: null;
+  language_code: string;
+  text: string;
+  language_probability: number;
+}
+
 interface MediaFile {
   lastUpdated: number;
+  humanAudioTimestamps: HumanAudioTimestamps;
   speechMarks: SpeechMarks;
   translations: MediaTranslation[];
   audioFormat: string;
@@ -70,6 +83,8 @@ interface MediaDetails {
   statusHistory: StatusHistoryEntry[];
   type: string;
   mediaFile: MediaFile;
+  customAudioUrl: string;
+  customAudioId: string;
 }
 
 const getMedia = async (

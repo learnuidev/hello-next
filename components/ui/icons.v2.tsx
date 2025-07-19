@@ -136,6 +136,8 @@ import {
   faWaveformLines,
   faXmark,
   faGear as faGearLight,
+  faRobot,
+  faUserAstronaut,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -385,6 +387,8 @@ export const Icons = {
   moon: createFAIcon(faMoon),
   lightBulbOn: createFAIcon(faLightbulbOn),
   gearLight: createFAIcon(faGearLight),
+  astronaut: createFAIcon(faUserAstronaut),
+  robot2: createFAIcon(faRobot),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

@@ -97,7 +97,7 @@ const useViewModeStore = create(
       isVideoHidden: false,
       setIsVideoHidden: (isVideoHidden: any) =>
         typeof isVideoHidden === "function"
-          ? set({ viewMode: isVideoHidden(get().isVideoHidden) })
+          ? set({ isVideoHidden: isVideoHidden(get().isVideoHidden) })
           : set({ isVideoHidden }),
 
       focusMode: false,
@@ -111,8 +111,7 @@ const useViewModeStore = create(
 );
 
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
-  const viewMode = useViewModeStore((state) => state.viewMode);
-  const setViewMode = useViewModeStore((state) => state.setViewMode);
+  const [viewMode, setViewMode] = useState<any>("para");
 
   const active = useViewModeStore((state) => state.active);
   const setActive = useViewModeStore((state) => state.setActive);

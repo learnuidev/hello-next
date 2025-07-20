@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -11,7 +12,7 @@ function BooksList() {
 
   console.log("data?.items", data?.items);
 
-  if (data?.items?.length === 0) {
+  if (!data?.items || data?.items?.length === 0) {
     return null;
   }
   return (
@@ -33,7 +34,15 @@ function BooksList() {
               </div>
               <div className="flex flex-col justify-between">
                 <div className="flex justify-center items-center">
-                  <IconType type={"text"} />
+                  {item?.coverPhotoUrl ? (
+                    <img
+                      className="h-20"
+                      alt="photo-preview"
+                      src={item?.coverPhotoUrl}
+                    />
+                  ) : (
+                    <IconType type={"text"} />
+                  )}
                 </div>
                 <div className="truncate mt-6 text-center overflow-hidden">
                   <p className="text-xl">{item.title}</p>
@@ -75,7 +84,7 @@ function IconType({ type }: { type: ContentType }) {
 function ContentList() {
   const { data } = useListMediaQuery();
 
-  if (data?.length === 0) {
+  if (!data || data?.length === 0) {
     return null;
   }
 

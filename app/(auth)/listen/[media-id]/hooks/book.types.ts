@@ -9,6 +9,15 @@ export interface AddBookRequestParams {
   lang: string;
 }
 
+export interface UpdateBookRequestParams {
+  bookId: string;
+  title?: string;
+  author?: string;
+  chapters?: ChapterRequest[];
+  lang?: string;
+  coverPhotoId?: string;
+}
+
 export interface Chapter {
   id: string;
   title: string;
@@ -21,6 +30,8 @@ export interface AudioBook {
   title: string;
   author: string;
   userId: string;
+  coverPhotoId?: string;
+  coverPhotoUrl?: string;
   chapters: Chapter[];
 }
 

@@ -59,14 +59,17 @@ export const getUploadUrl = async (
 export const UploadAudioButtonListen = ({
   mediaId,
   text,
+  className,
 }: {
   mediaId: string;
   text?: string;
+  className?: string;
 }) => {
   const updateMediaMutation = useUpdateMediaMutation();
 
   return (
     <UploadMediaButton
+      className="w-full"
       text={text}
       onUploadSuccess={({ id }) => {
         updateMediaMutation.mutateAsync({

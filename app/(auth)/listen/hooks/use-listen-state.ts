@@ -2,6 +2,20 @@
 
 import { create } from "zustand";
 import { ContentType, FilterType } from "../listen.types";
+import { persist, createJSONStorage } from "zustand/middleware";
+
+const usePlaySpeedStore = create(
+  persist(
+    (set: any, get: any) => ({
+      playbackRate: 0.8,
+      setPlaybackRate: (playbackRate: number) => set({ playbackRate }),
+    }),
+    {
+      name: "mandarino/playback-speed", // name of the item in the storage (must be unique)
+      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+    }
+  )
+);
 
 const useListenStore = create((set: any, get: any) => ({
   addNew: false,
@@ -37,6 +51,9 @@ export const useListenState = () => {
   const addNewBook = useListenStore((state) => state.addNewBook);
   const setAddNewBook = useListenStore((state) => state.setAddNewBook);
 
+  const playbackRate = usePlaySpeedStore((state) => state.playbackRate);
+  const setPlaybackRate = usePlaySpeedStore((state) => state.setPlaybackRate);
+
   return {
     // Content type state and actions
     contentType,
@@ -57,5 +74,9 @@ export const useListenState = () => {
     // Add new book
     addNewBook,
     setAddNewBook,
+
+    // playback speed
+    playbackRate,
+    setPlaybackRate,
   };
 };

@@ -15,6 +15,7 @@ import { useMediaParams } from "../hooks/use-media-params";
 import { useMediaState } from "../hooks/use-media-state";
 import { useContainsHumanMode } from "../hooks/use-contains-human-mode";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
+import { useListenState } from "../../hooks/use-listen-state";
 
 function filterRange(interval: number, currentChunk?: SpeechMarkChunk | null) {
   if (!currentChunk) {
@@ -62,6 +63,8 @@ function getMaxAndMinTranslationsSlice(
 
 export function Reader() {
   const { mediaId } = useMediaParams();
+
+  const { playbackRate } = useListenState();
 
   const isSmall = useIsSmall();
 
@@ -215,7 +218,8 @@ export function Reader() {
             height={"40px"}
             width={"100%"}
             controls
-            playbackRate={containsHumanMode && mode === "ai" ? 0.8 : 1}
+            playbackRate={playbackRate}
+            // playbackRate={containsHumanMode && mode === "ai" ? 0.8 : 1}
           />
         )}
 

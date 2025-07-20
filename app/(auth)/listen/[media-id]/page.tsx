@@ -13,28 +13,29 @@ import { useContainsHumanMode } from "./hooks/use-contains-human-mode";
 import { MediaSettingsDialog } from "./components/media-settings-dialog/media-settings-dialog";
 import useSound from "use-sound";
 import { ListenAnalytics } from "./components/listen-analytics/listen-analytics";
+import { MediaLinksDialog } from "./components/media-links-dialog/media-links-dialog";
 
 const switchUrl = `https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.us-east-1.amazonaws.com/learnuidev@gmail.com/01JH6X1JMEACXMV4CY8ZSHTC0D.m4a`;
 
-function ListenSettings() {
-  const { mediaId } = useMediaParams();
-  return (
-    <main className="max-w-6xl m-auto p-4">
-      <section className="mt-[72px] h-auto sm:min-h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
-        <h2 className="text-2xl text-center pt-8"> Settings</h2>
+// function ListenSettings() {
+//   const { mediaId } = useMediaParams();
+//   return (
+//     <main className="max-w-6xl m-auto p-4">
+//       <section className="mt-[72px] h-auto sm:min-h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
+//         <h2 className="text-2xl text-center pt-8"> Settings</h2>
 
-        <div>
-          <h3 className="mt-4 px-12">
-            <UploadAudioButtonListen
-              mediaId={mediaId}
-              text={"Add a new audio"}
-            />
-          </h3>
-        </div>
-      </section>
-    </main>
-  );
-}
+//         <div>
+//           <h3 className="mt-4 px-12">
+//             <UploadAudioButtonListen
+//               mediaId={mediaId}
+//               text={"Add a new audio"}
+//             />
+//           </h3>
+//         </div>
+//       </section>
+//     </main>
+//   );
+// }
 
 function ListenViewType({ view }: { view: string }) {
   switch (view) {
@@ -43,8 +44,8 @@ function ListenViewType({ view }: { view: string }) {
       return <Reader />;
     case "analytics":
       return <ListenAnalytics />;
-    case "settings":
-      return <ListenSettings />;
+    // case "settings":
+    //   return <ListenSettings />;
   }
 }
 export default function MediaDetails() {
@@ -54,6 +55,7 @@ export default function MediaDetails() {
   const { data } = useGetMediaQuery(mediaId);
 
   const [showMenu, setShowMenu] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   const { theme, setTheme } = useTheme();
 
@@ -67,10 +69,17 @@ export default function MediaDetails() {
     <div className="relative">
       <ListenViewType view={view} />
 
-      <MediaSettingsDialog
+      <MediaLinksDialog
         isOpen={showMenu}
         closeDialog={() => {
           setShowMenu(false);
+        }}
+      />
+      <MediaSettingsDialog
+        mediaId={mediaId}
+        isOpen={showSettings}
+        closeDialog={() => {
+          setShowSettings(false);
         }}
       />
 
@@ -110,7 +119,9 @@ export default function MediaDetails() {
           </RoundButton>
           <RoundButton
             onClick={() => {
-              setView((prev) => (prev === "settings" ? "reader" : "settings"));
+              setShowSettings((showSettings) => !showSettings);
+
+              // setView((prev) => (prev === "settings" ? "reader" : "settings"));
             }}
           >
             <Icons.gearLight className="text-2xl" />

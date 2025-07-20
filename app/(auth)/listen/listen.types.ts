@@ -25,4 +25,5 @@ export type ListenMedia = {
   lastListened?: number;
   status: ListenMediaStatus;
   userId: string;
+  lang: string;
 };

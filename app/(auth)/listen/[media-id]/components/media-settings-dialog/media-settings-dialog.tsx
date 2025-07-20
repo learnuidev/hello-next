@@ -33,12 +33,11 @@ export function MediaSettingsDialog({
             </div>
             <Slider
               className="mt-4"
-              min={0.1}
-              max={3}
+              min={0.5}
+              max={2.5}
               value={[playbackRate]}
               step={0.1}
               onValueChange={(value) => {
-                console.log("VAL", value);
                 setPlaybackRate(value[0]);
               }}
             />

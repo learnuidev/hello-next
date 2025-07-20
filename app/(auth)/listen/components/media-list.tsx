@@ -1,8 +1,24 @@
 import { Icons } from "@/components/ui/icons.v2";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useListBooksQuery } from "../[media-id]/hooks/use-list-books-query";
 import { useListMediaQuery } from "../hooks/use-list-media-query";
 import { ContentType } from "../listen.types";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+
+function BooksList() {
+  const { data } = useListBooksQuery();
+
+  if (data?.items?.length === 0) {
+    return null;
+  }
+  return (
+    <div className="max-w-6xl mx-auto">
+      <h2 className="text-2xl">Your Books List</h2>
+
+      <div>{JSON.stringify(data?.items?.[0], null, 4)}</div>
+    </div>
+  );
+}
 
 function IconType({ type }: { type: ContentType }) {
   const className = "dark:text-[rgb(41,42,43)] text-gray-400 text-7xl mt-4";
@@ -51,6 +67,8 @@ export const MediaList = () => {
           )}
         />
       </div>
+
+      <BooksList />
       <div className="max-w-6xl mx-auto">
         <h2 className="text-2xl">Your Reading List</h2>
         <section className="grid grid-cols-2 sm:grid-cols-4 gap-y-12 gap-x-6 mt-12">

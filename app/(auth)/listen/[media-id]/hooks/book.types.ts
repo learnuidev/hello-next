@@ -1,5 +1,4 @@
 export interface ChapterRequest {
-  id: string;
   title: string;
   chapterNumber: string;
 }
@@ -7,6 +6,7 @@ export interface AddBookRequestParams {
   title: string;
   author: string;
   chapters: ChapterRequest[];
+  lang: string;
 }
 
 export interface Chapter {
@@ -16,6 +16,8 @@ export interface Chapter {
   createdAt: number;
 }
 export interface AudioBook {
+  id: string;
+  lang: string;
   title: string;
   author: string;
   userId: string;

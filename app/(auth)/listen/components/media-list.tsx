@@ -12,10 +12,40 @@ function BooksList() {
     return null;
   }
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto mb-20">
       <h2 className="text-2xl">Your Books List</h2>
 
-      <div>{JSON.stringify(data?.items?.[0], null, 4)}</div>
+      <section className="grid grid-cols-2 sm:grid-cols-4 gap-y-12 gap-x-6 mt-12">
+        {data?.items?.map((item) => {
+          return (
+            <Link
+              href={`/listen/books/${item.id}`}
+              key={item.id}
+              className="h-64 px-8 py-4 rounded-xl bg-gray-50 dark:bg-[rgb(21,22,23)] relative block"
+            >
+              <div className="flex justify-between items-center text-gray-500">
+                <div></div>
+
+                <p>{item?.lang || "n/a"}</p>
+              </div>
+              <div className="flex flex-col justify-between">
+                <div className="flex justify-center items-center">
+                  <IconType type={"text"} />
+                </div>
+                <div className="truncate mt-6 text-center overflow-hidden">
+                  <p className="text-xl">{item.title}</p>
+                </div>
+
+                <p className="text-center text-gray-500 mt-4">
+                  {item?.chapters?.length} chapters
+                </p>
+              </div>
+            </Link>
+          );
+        })}{" "}
+      </section>
+
+      {/* <div>{JSON.stringify(data?.items?.[0], null, 4)}</div> */}
     </div>
   );
 }
@@ -37,6 +67,49 @@ function IconType({ type }: { type: ContentType }) {
   if (type === "text") {
     return <Icons.book className={className} />;
   }
+}
+
+function ContentList() {
+  const { data } = useListMediaQuery();
+
+  if (data?.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="max-w-6xl mx-auto">
+      <h2 className="text-2xl">Your Reading List</h2>
+      <section className="grid grid-cols-2 sm:grid-cols-4 gap-y-12 gap-x-6 mt-12">
+        {data?.map((item) => {
+          return (
+            <Link
+              href={`/listen/${item.id}`}
+              key={item.id}
+              className="h-64 px-8 py-4 rounded-xl bg-gray-50 dark:bg-[rgb(21,22,23)] relative block"
+            >
+              <div className="flex justify-between items-center text-gray-500">
+                <div></div>
+
+                <p>{item?.lang || "n/a"}</p>
+              </div>
+              <div className="flex flex-col justify-between">
+                <div className="flex justify-center items-center">
+                  <IconType type={item.type} />
+                </div>
+                <div className="truncate mt-6 text-center overflow-hidden">
+                  <p className="text-xl">{item.text}</p>
+                </div>
+
+                <p className="text-center text-gray-500 mt-4">
+                  {item?.text?.length} chars
+                </p>
+              </div>
+            </Link>
+          );
+        })}{" "}
+      </section>
+    </div>
+  );
 }
 
 export const MediaList = () => {
@@ -69,38 +142,7 @@ export const MediaList = () => {
       </div>
 
       <BooksList />
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-2xl">Your Reading List</h2>
-        <section className="grid grid-cols-2 sm:grid-cols-4 gap-y-12 gap-x-6 mt-12">
-          {data?.map((item) => {
-            return (
-              <Link
-                href={`/listen/${item.id}`}
-                key={item.id}
-                className="h-64 px-8 py-4 rounded-xl bg-gray-50 dark:bg-[rgb(21,22,23)] relative block"
-              >
-                <div className="flex justify-between items-center text-gray-500">
-                  <div></div>
-
-                  <p>{item?.lang || "n/a"}</p>
-                </div>
-                <div className="flex flex-col justify-between">
-                  <div className="flex justify-center items-center">
-                    <IconType type={item.type} />
-                  </div>
-                  <div className="truncate mt-6 text-center overflow-hidden">
-                    <p className="text-xl">{item.text}</p>
-                  </div>
-
-                  <p className="text-center text-gray-500 mt-4">
-                    {item?.text?.length} chars
-                  </p>
-                </div>
-              </Link>
-            );
-          })}{" "}
-        </section>
-      </div>
+      <ContentList />
     </div>
   );
 };

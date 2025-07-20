@@ -3,7 +3,7 @@ import { listenApiUrl } from "../../constants";
 import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
 import { AddBookRequestParams, AudioBook } from "./book.types";
 
-export const useAddBooksMutation = () => {
+export const useAddBookMutation = () => {
   const jwt = useJwtToken();
 
   const queryClient = useQueryClient();
@@ -12,6 +12,7 @@ export const useAddBooksMutation = () => {
       title,
       author,
       chapters,
+      lang,
     }: AddBookRequestParams): Promise<AudioBook> => {
       const resp = await fetch(`${listenApiUrl}/v1/add-book`, {
         method: "POST",
@@ -23,6 +24,7 @@ export const useAddBooksMutation = () => {
           title,
           author,
           chapters,
+          lang,
         }),
       });
 

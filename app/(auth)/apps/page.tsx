@@ -82,12 +82,6 @@ export default function AppsPage() {
     },
 
     {
-      href: "/du",
-      title: "Du Chinese",
-      Icon: DuChineseIcon,
-    },
-
-    {
       href: "/web",
       title: "Web 4.0",
       Icon: Icons.browser,
@@ -110,6 +104,13 @@ export default function AppsPage() {
       href: "/listen",
       title: "Listen",
       Icon: Icons.speechify,
+      isNew: true,
+    },
+
+    {
+      href: "/du",
+      title: "Du Chinese",
+      Icon: DuChineseIcon,
     },
   ];
   return (

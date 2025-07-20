@@ -203,7 +203,7 @@ export function Reader() {
     }
   };
 
-  const interval = isSmall ? 80 : 400;
+  const interval = isSmall ? 80 : data?.lang === "zh" ? 400 : 500;
 
   return (
     <main className="max-w-6xl m-auto p-4">
@@ -224,7 +224,7 @@ export function Reader() {
 
       <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:min-h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
         <div className="p-2 sm:px-12 sm:py-12  rounded">
-          <p className="text-lg sm:text-xl sm:leading-[36px]">
+          <p className="text-lg sm:text-xl sm:leading-[36px] text-justify">
             {textItem?.split("").map((item, idx, ctx) => {
               if (ctx?.length > interval) {
                 const range = filterRange(interval, currentChunk);

@@ -4,8 +4,12 @@ import { create } from "zustand";
 import { ContentType, FilterType } from "../listen.types";
 
 const useListenStore = create((set: any, get: any) => ({
+  addNew: false,
+  setAddNew: (addNew: boolean) => set({ addNew }),
   addNewContent: false,
   setAddNewContent: (addNewContent: boolean) => set({ addNewContent }),
+  addNewBook: false,
+  setAddNewBook: (addNewBook: boolean) => set({ addNewBook }),
   contentType: "all",
   setContentType: (contentType: ContentType) => set({ contentType }),
   resetContentType: () => set({ contentType: "all" }),
@@ -27,6 +31,12 @@ export const useListenState = () => {
   const addNewContent = useListenStore((state) => state.addNewContent);
   const setAddNewContent = useListenStore((state) => state.setAddNewContent);
 
+  const addNew = useListenStore((state) => state.addNew);
+  const setAddNew = useListenStore((state) => state.setAddNew);
+
+  const addNewBook = useListenStore((state) => state.addNewBook);
+  const setAddNewBook = useListenStore((state) => state.setAddNewBook);
+
   return {
     // Content type state and actions
     contentType,
@@ -36,8 +46,16 @@ export const useListenState = () => {
     filterType,
     setFilterType,
 
+    // add new
+    addNew,
+    setAddNew,
+
     // Add new content
     addNewContent,
     setAddNewContent,
+
+    // Add new book
+    addNewBook,
+    setAddNewBook,
   };
 };

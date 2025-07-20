@@ -20,7 +20,13 @@ export function ListenHeader() {
     setFilterType,
     addNewContent,
     setAddNewContent,
+    addNew,
+    setAddNew,
+    setAddNewBook,
+    addNewBook,
   } = useListenState();
+
+  console.log("ADD NEW", addNew);
 
   const setStep = useNewConvoStore((state) => state.setStep);
   return (
@@ -28,7 +34,10 @@ export function ListenHeader() {
       <div
         className="text-xl"
         onClick={() => {
-          setAddNewContent(!addNewContent);
+          setAddNew(!addNew);
+          setAddNewContent(false);
+          setAddNewBook(false);
+
           setStep("content");
         }}
       >

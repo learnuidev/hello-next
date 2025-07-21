@@ -74,6 +74,8 @@ export const useNewChapterSectionsState = () => {
     (state) => state.setEditSection
   );
 
+  const resetState = useNewChapterSectionsStore((state) => state.resetState);
+
   return {
     title,
     setTitle,
@@ -84,5 +86,7 @@ export const useNewChapterSectionsState = () => {
     removeSection,
     editSection,
     setEditSection,
+
+    resetState,
   };
 };

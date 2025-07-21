@@ -4,8 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 // import { ListenMedia } from "../listen.types";
 // import { listenApiUrl } from "../constants";
 
-interface ChapterSections {
-  yoo: any;
+interface ChapterSection {
+  id: string;
+  title: string;
+  sectionNumber: number;
 }
 
 const listChapterSections = async ({
@@ -16,7 +18,7 @@ const listChapterSections = async ({
   jwt: string;
   chapterId: string;
   lastEvaulatedKey?: string;
-}): Promise<ChapterSections> => {
+}): Promise<ChapterSection[]> => {
   const resp = await fetch(`${listenApiUrl}/v1/list-chapter-sections`, {
     method: "POST",
 
@@ -28,7 +30,7 @@ const listChapterSections = async ({
 
   const mediaList = await resp.json();
 
-  return mediaList.items as ChapterSections;
+  return mediaList.items as ChapterSection[];
 };
 
 export const useListChapterSectionsQuery = (chapterId: string) => {

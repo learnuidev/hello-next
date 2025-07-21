@@ -11,7 +11,6 @@ import {
   useGetMediaQuery,
 } from "../../hooks/use-get-media-query";
 
-import { useMediaParams } from "../hooks/use-media-params";
 import { useMediaState } from "../hooks/use-media-state";
 import { useContainsHumanMode } from "../hooks/use-contains-human-mode";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
@@ -61,9 +60,15 @@ function getMaxAndMinTranslationsSlice(
   };
 }
 
-export function Reader() {
-  const { mediaId } = useMediaParams();
-
+export function Reader({
+  mediaId,
+  playNext,
+  autoPlay = false,
+}: {
+  mediaId: string;
+  playNext?: () => void;
+  autoPlay?: boolean;
+}) {
   const { playbackRate } = useListenState();
 
   const isSmall = useIsSmall();
@@ -154,6 +159,18 @@ export function Reader() {
     return true;
   }, []);
 
+  const onReady = useCallback(() => {
+    const timeToStart = 7 * 60 + 12.6;
+
+    if (autoPlay) {
+      try {
+        playerRef.current?.player?.player?.play();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.code === "Space") {
@@ -213,6 +230,13 @@ export function Reader() {
       <header className="mb-8">
         {data?.mediaFile?.audioUrl && (
           <ReactPlayer
+            onEnded={() => {
+              if (playNext) {
+                playNext();
+              }
+              console.log("play ended");
+            }}
+            onReady={onReady}
             ref={playerRef}
             url={audioUrl}
             height={"40px"}

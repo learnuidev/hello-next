@@ -7,11 +7,31 @@ import { useBookParams } from "../hooks/use-book-params";
 import { useListChapterSectionsQuery } from "./hooks/use-list-chapter-sections-query";
 import { useNewChapterSectionsState } from "../../../hooks/use-new-chapter-sections-state";
 import { useListMediaQuery } from "../../../hooks/use-list-media-query";
+import { useAddChapterSectionsMutation } from "./hooks/use-add-chapter-sections-mutation";
+import { useGetBookQuery } from "../../../[media-id]/hooks/use-get-book-query";
+
+const useGetChapter = ({
+  bookId,
+  chapterId,
+}: {
+  bookId: string;
+  chapterId: string;
+}) => {
+  const { data, isLoading, isError } = useGetBookQuery(bookId);
+
+  return {
+    isLoading,
+    isError,
+    data: data?.chapters?.find((chapter) => chapter?.id === chapterId),
+  };
+};
 
 export default function ChapterItem() {
   const { bookId, chapterId } = useBookParams();
 
   const { data } = useListChapterSectionsQuery(chapterId);
+
+  const { data: chapter } = useGetChapter({ bookId, chapterId });
 
   const {
     editSection,
@@ -19,9 +39,12 @@ export default function ChapterItem() {
     addNewSection,
     removeSection,
     sections,
+    resetState,
   } = useNewChapterSectionsState();
 
   const { data: mediaList } = useListMediaQuery();
+
+  const addChapterSectionMutation = useAddChapterSectionsMutation();
 
   //   const { data: book, isLoading } = useGetBookQuery(bookId);
 
@@ -41,7 +64,7 @@ export default function ChapterItem() {
 
   return (
     <div className="max-w-6xl mx-auto mt-12">
-      <div className="mb-12">
+      <div className="mb-12 flex justify-between items-center">
         <Link
           href={`/listen/books/${bookId}`}
           className="flex gap-4 items-center text-xl"
@@ -50,28 +73,49 @@ export default function ChapterItem() {
 
           <span>Back</span>
         </Link>
-      </div>
-      <h1 className="text-2xl lg:text-4xl font-bold">Chapter title</h1>
 
-      <div className="mt-12">
         <button
           onClick={() => {
             setEditSection(!editSection);
           }}
         >
-          Add section
+          <Icons.plusIcon className={"text-2xl lg:text-4xl"} />
         </button>
+      </div>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl lg:text-4xl font-bold">{chapter?.title}</h1>
+
+        <Link href={`/listen/books/${bookId}/${chapterId}/${data?.[0]?.id}`}>
+          <Icons.play className={"text-2xl lg:text-4xl"} />
+        </Link>
       </div>
 
       {editSection && (
         <div className="mt-8">
-          <h4 className="text-xl mb-8">Add Sections</h4>
+          <h4 className="text-xl mb-8">{}</h4>
 
           <div>
             <code>
               <pre>{JSON.stringify(sections, null, 4)}</pre>
             </code>
           </div>
+
+          <button
+            className="my-8"
+            onClick={() => {
+              addChapterSectionMutation
+                .mutateAsync({
+                  chapterId,
+                  sections,
+                })
+                .then((resp) => {
+                  resetState();
+                });
+              alert("save");
+            }}
+          >
+            Save
+          </button>
 
           <div className="flex gap-4 flex-col justify-start mt-4">
             {mediaList?.map((item) => {
@@ -105,10 +149,19 @@ export default function ChapterItem() {
         </div>
       )}
 
-      <div className="mt-12">
-        <code>
-          <pre>{JSON.stringify(data, null, 4)}</pre>
-        </code>
+      <div className="mt-12 space-y-8">
+        {data?.map((section) => {
+          return (
+            <div key={section?.id}>
+              <Link
+                href={`/listen/books/${bookId}/${chapterId}/${section?.id}`}
+                className="text-2xl dark:text-gray-400 dark:hover:text-white transitiona-all"
+              >
+                {section?.title?.slice(0, 32)}...
+              </Link>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

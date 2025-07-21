@@ -38,10 +38,12 @@ const switchUrl = `https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.us-e
 // }
 
 function ListenViewType({ view }: { view: string }) {
+  const { mediaId } = useMediaParams();
+
   switch (view) {
     case "reader":
     default:
-      return <Reader />;
+      return <Reader mediaId={mediaId} />;
     case "analytics":
       return <ListenAnalytics />;
     // case "settings":

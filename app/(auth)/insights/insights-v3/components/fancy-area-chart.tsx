@@ -16,7 +16,7 @@ const categories = [
   { name: "Other", percentage: 2 },
 ];
 
-const CustomTooltip = ({ active, payload }: any) => {
+const CustomTooltip = ({ active, payload, tooltipTitle }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="rounded-lg border bg-background p-4 shadow-sm w-72">
@@ -27,7 +27,7 @@ const CustomTooltip = ({ active, payload }: any) => {
         <p className="text-4xl">
           {payload[0].value}
 
-          <span className="text-sm"> characters</span>
+          <span className="text-sm"> {tooltipTitle || "characters"}</span>
         </p>
       </div>
     );
@@ -120,6 +120,7 @@ export function FancyAreaChart({
   title,
   totalTime,
   total: _total,
+  tooltipTitle,
 
   colorVariants,
 }: {
@@ -128,6 +129,7 @@ export function FancyAreaChart({
   totalTime?: string;
   data: { date: string; value: number }[];
   colorVariants?: ColorVariants;
+  tooltipTitle?: string;
 }) {
   const { theme } = useTheme();
   const total =
@@ -196,7 +198,9 @@ export function FancyAreaChart({
               tickFormatter={(value) => `${value}`}
               stroke="#666"
             />
-            <ChartTooltip content={<CustomTooltip />} />
+            <ChartTooltip
+              content={<CustomTooltip tooltipTitle={tooltipTitle} />}
+            />
             <Area
               type="monotone"
               dataKey="value"

@@ -26,21 +26,8 @@ function ToAndFromDate() {
 }
 
 export default function InsightsNew() {
-  // return <Insights />;
   return (
     <div>
-      {/* <div className="flex items-center justify-between mb-4">
-        <NavBar />
-
-        <div className="mx-4 md:mx-20 space-x-8 flex items-center">
-          <div className="text-gray-500 font-extralight hidden sm:block">
-            <ToAndFromDate />
-          </div>
-
-          <InsightsFilters />
-        </div>
-      </div> */}
-
       <Tabs defaultValue="overview" className="p-0 mb-16">
         <div className="my-4 flex justify-between items-center md:mx-8">
           <TabsList className="space-x-8 dark:bg-black bg-white">

@@ -15,6 +15,7 @@ import { useMediaState } from "../hooks/use-media-state";
 import { useContainsHumanMode } from "../hooks/use-contains-human-mode";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { useListenState } from "../../hooks/use-listen-state";
+import { useMediaStatsState } from "../hooks/use-media-stats-state";
 
 function filterRange(interval: number, currentChunk?: SpeechMarkChunk | null) {
   if (!currentChunk) {
@@ -158,6 +159,8 @@ export function Reader({
   const seekBefore = useCallback(() => {
     return true;
   }, []);
+
+  const { history, setHistory } = useMediaStatsState(mediaId);
 
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;
@@ -313,6 +316,15 @@ export function Reader({
                             )}
                             key={JSON.stringify(item)}
                             onClick={() => {
+                              setHistory({
+                                mediaId,
+                                startTime: item?.startTime,
+                                endTime: item?.endTime,
+                                startIndex: item?.start,
+                                endIndex: item?.end,
+                                input: item?.value,
+                                addedAt: Date.now(),
+                              });
                               if (currentChunkItem) {
                                 // alert(idx);
                                 // alert(JSON.stringify(currentChunkItem));

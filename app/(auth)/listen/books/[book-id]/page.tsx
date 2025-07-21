@@ -7,13 +7,43 @@ import { useGetBookQuery } from "../../[media-id]/hooks/use-get-book-query";
 import { useUpdateBookMutation } from "../../[media-id]/hooks/use-update-book-mutation";
 import { useBookParams } from "./hooks/use-book-params";
 import { Icons } from "@/components/ui/icons.v2";
+import { useNewBookState } from "../../hooks/use-new-book-state";
+import { useEffect } from "react";
+import { cn } from "@/lib/utils";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 
 export default function MediaDetails() {
   const { bookId } = useBookParams();
 
   const { data: book, isLoading } = useGetBookQuery(bookId);
 
+  const isSuperAdmin = useIsSuperAdmin();
+
+  const {
+    editChapter,
+    setEditChapter,
+    setChapters,
+    addNewChapter,
+    chapters,
+    updateChapter,
+    removeChapter,
+    resetState,
+  } = useNewBookState();
+
   const updateBookMutation = useUpdateBookMutation();
+
+  useEffect(() => {
+    if (editChapter && book?.chapters) {
+      setChapters(
+        book?.chapters.map((chapter) => {
+          return {
+            ...chapter,
+            isNew: false,
+          };
+        })
+      );
+    }
+  }, [book?.chapters, editChapter, setChapters]);
 
   if (isLoading) {
     return null;
@@ -28,13 +58,26 @@ export default function MediaDetails() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto mt-12">
-      <div className="mb-12">
+    <div className="max-w-6xl mx-auto mt-12 px-4">
+      <div className="mb-12 flex justify-between items-center">
         <Link href={`/listen`} className="flex gap-4 items-center text-xl">
           <Icons.back />
 
           <span>Back</span>
         </Link>
+
+        <button
+          onClick={() => {
+            setEditChapter(!editChapter);
+          }}
+          className="transition-all"
+        >
+          {editChapter ? (
+            <Icons.xMark className={"text-2xl lg:text-4xl"} />
+          ) : (
+            <Icons.plusIcon className={"text-2xl lg:text-4xl"} />
+          )}
+        </button>
       </div>
       <h1 className="text-2xl lg:text-4xl font-bold">{book.title}</h1>
 
@@ -50,7 +93,7 @@ export default function MediaDetails() {
             }}
           />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             <img
               className="aspect-square"
               src={book?.coverPhotoUrl}
@@ -61,17 +104,93 @@ export default function MediaDetails() {
               <h4 className="text-2xl">Chapters</h4>
 
               <div className="mt-8 space-y-4">
-                {book?.chapters?.map((chapter) => {
-                  return (
-                    <Link
-                      className="block"
-                      href={`/listen/books/${book?.id}/${chapter?.id}`}
-                      key={chapter?.id}
+                {editChapter ? (
+                  <div>
+                    <div className="flex flex-col space-y-4">
+                      {chapters?.map(
+                        (chapter: {
+                          id: string;
+                          title: string;
+                          chapterNumber: number;
+                        }) => {
+                          return (
+                            <div
+                              key={chapter?.id}
+                              className="flex flex-row gap-8"
+                            >
+                              <input
+                                value={chapter?.title}
+                                onChange={(event) => {
+                                  updateChapter({
+                                    ...chapter,
+                                    title: event.target.value,
+                                  });
+                                }}
+                                placeholder="Chapter title"
+                                className={cn(
+                                  "border-none dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300  dark:text-gray-300 placeholder:text-gray-600 border-2 focus:border-none px-2 focus:outline-none active:outline-none py-2",
+                                  "w-full text-xl px-4 bg-gray-100 dark:bg-[rgb(31,32,33)]"
+                                )}
+                              />
+
+                              <button
+                                onClick={() => {
+                                  removeChapter(chapter.id);
+                                }}
+                              >
+                                <Icons.xMark />
+                              </button>
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+
+                    <button
+                      className="mt-12 w-full"
+                      onClick={() => {
+                        addNewChapter();
+                      }}
                     >
-                      <p>{chapter?.title}</p>
-                    </Link>
-                  );
-                })}
+                      <Icons.plusIcon /> <span> Add a chapter </span>
+                    </button>
+
+                    <button
+                      className="w-full mt-12"
+                      onClick={() => {
+                        updateBookMutation
+                          .mutateAsync({
+                            bookId: book.id,
+                            chapters,
+                          })
+                          .then((resp) => {
+                            resetState();
+                            setEditChapter(false);
+                          });
+                      }}
+                    >
+                      {updateBookMutation.isPending ? "Updating..." : "Update"}
+                    </button>
+
+                    {isSuperAdmin && (
+                      <code>
+                        <pre>{JSON.stringify(chapters, null, 4)}</pre>
+                      </code>
+                    )}
+                  </div>
+                ) : (
+                  book?.chapters?.map((chapter) => {
+                    return (
+                      <Link
+                        className="block"
+                        href={`/listen/books/${book?.id}/${chapter?.id}`}
+                        key={chapter?.id}
+                      >
+                        <p>{chapter?.title}</p>
+                      </Link>
+                    );
+                  })
+                )}
               </div>
             </div>
           </div>

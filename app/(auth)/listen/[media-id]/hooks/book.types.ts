@@ -1,6 +1,8 @@
 export interface ChapterRequest {
   title: string;
   chapterNumber: string;
+  id: string;
+  isNew: boolean;
 }
 export interface AddBookRequestParams {
   title: string;

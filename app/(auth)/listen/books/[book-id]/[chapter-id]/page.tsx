@@ -138,7 +138,6 @@ export default function ChapterItem() {
                 .then((resp) => {
                   resetState();
                 });
-              alert("save");
             }}
           >
             Save

@@ -3,6 +3,8 @@
 import { create } from "zustand";
 
 const useNewBookStore = create((set: any, get: any) => ({
+  editChapter: false,
+  setEditChapter: (editChapter: boolean) => set({ editChapter }),
   title: "",
   setTitle: (title: string) => set({ title }),
   lang: "",
@@ -11,12 +13,14 @@ const useNewBookStore = create((set: any, get: any) => ({
   setAuthor: (author: string) => set({ author }),
 
   chapters: [],
+  setChapters: (chapters: any) => set({ chapters }),
   addNewChapter: () => {
     const oldChapters = get().chapters;
 
     const _newChapter = {
       title: "",
-      id: crypto.randomUUID(),
+      id: `temp_${crypto.randomUUID()}`,
+      isNew: true,
       chapterNumber: oldChapters?.length + 1,
     };
 
@@ -53,7 +57,8 @@ const useNewBookStore = create((set: any, get: any) => ({
     set({ chapters: updatedChapters });
   },
 
-  resetState: () => set({ title: "", author: "", chapters: [] }),
+  resetState: () =>
+    set({ title: "", author: "", chapters: [], editChapter: false }),
 }));
 
 export const useNewBookState = () => {
@@ -66,9 +71,14 @@ export const useNewBookState = () => {
   const resetState = useNewBookStore((state) => state.resetState);
 
   const chapters = useNewBookStore((state) => state.chapters);
+
+  const setChapters = useNewBookStore((state) => state.setChapters);
   const addNewChapter = useNewBookStore((state) => state.addNewChapter);
   const updateChapter = useNewBookStore((state) => state.updateChapter);
   const removeChapter = useNewBookStore((state) => state.removeChapter);
+
+  const editChapter = useNewBookStore((state) => state.editChapter);
+  const setEditChapter = useNewBookStore((state) => state.setEditChapter);
 
   return {
     title,
@@ -83,8 +93,13 @@ export const useNewBookState = () => {
     resetState,
 
     chapters,
+    setChapters,
     addNewChapter,
     updateChapter,
     removeChapter,
+
+    // edit
+    editChapter,
+    setEditChapter,
   };
 };

@@ -4,9 +4,7 @@ import { useMediaParams } from "../../hooks/use-media-params";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { HanziLink } from "@/components/hanzi-link";
 
-export function ListenAnalytics() {
-  const { mediaId } = useMediaParams();
-
+export function ListenAnalytics({ mediaId }: { mediaId: string }) {
   const { data } = useGetMediaQuery(mediaId);
 
   const wordsRaw = [

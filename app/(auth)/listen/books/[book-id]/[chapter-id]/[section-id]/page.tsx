@@ -8,6 +8,7 @@ import { useBookState } from "../hooks/use-book-state";
 import Link from "next/link";
 import { useGetBookQuery } from "@/app/(auth)/listen/[media-id]/hooks/use-get-book-query";
 import { useEffect, useState } from "react";
+import { MediaPlayer } from "@/app/(auth)/listen/[media-id]/components/media-player";
 
 export default function SectionReader() {
   const { sectionId, bookId, chapterId } = useBookParams();
@@ -80,7 +81,7 @@ export default function SectionReader() {
 
   return (
     <div>
-      <Reader
+      <MediaPlayer
         autoPlay
         mediaId={sectionId}
         playNext={() => {
@@ -101,7 +102,7 @@ export default function SectionReader() {
             setShowEndPage(true);
           }
         }}
-      />{" "}
+      />
     </div>
   );
 }

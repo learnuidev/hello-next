@@ -4,12 +4,15 @@ import { Reader } from "@/app/(auth)/listen/[media-id]/components/reader";
 import { useBookParams } from "../../hooks/use-book-params";
 import { useRouter } from "next/navigation";
 import { useListChapterSectionsQuery } from "../hooks/use-list-chapter-sections-query";
+import { useBookState } from "../hooks/use-book-state";
 import Link from "next/link";
 import { useGetBookQuery } from "@/app/(auth)/listen/[media-id]/hooks/use-get-book-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function SectionReader() {
   const { sectionId, bookId, chapterId } = useBookParams();
+
+  const [showEndPage, setShowEndPage] = useState(false);
 
   // const { setShowEndPage, showEndPage } = useBookState();
 
@@ -44,7 +47,7 @@ export default function SectionReader() {
   //   }
   // }, [showEndPage, nextChapter, router, bookId, setShowEndPage]);
 
-  if (!nextChapter) {
+  if (showEndPage && !nextChapter) {
     return (
       <main className="flex justify-center items-center flex-col">
         <h4 className="mt-32">You have finished reading this chapter </h4>
@@ -61,7 +64,15 @@ export default function SectionReader() {
             </Link>
           )} */}
 
-          <Link href="/listen"> Back to bookshelf </Link>
+          <Link
+            // onClick={() => {
+            //   setShowEndPage(false);
+            // }}
+            href="/listen"
+          >
+            {" "}
+            Back to bookshelf{" "}
+          </Link>
         </div>
       </main>
     );
@@ -86,6 +97,8 @@ export default function SectionReader() {
               `/listen/books/${bookId}/${nextChapter?.id}?autoPlay=true`
             );
             return;
+          } else {
+            setShowEndPage(true);
           }
         }}
       />{" "}

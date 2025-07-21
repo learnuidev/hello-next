@@ -9,6 +9,8 @@ import { useNewChapterSectionsState } from "../../../hooks/use-new-chapter-secti
 import { useListMediaQuery } from "../../../hooks/use-list-media-query";
 import { useAddChapterSectionsMutation } from "./hooks/use-add-chapter-sections-mutation";
 import { useGetBookQuery } from "../../../[media-id]/hooks/use-get-book-query";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 const useGetChapter = ({
   bookId,
@@ -29,7 +31,11 @@ const useGetChapter = ({
 export default function ChapterItem() {
   const { bookId, chapterId } = useBookParams();
 
-  const { data } = useListChapterSectionsQuery(chapterId);
+  const searchParams = useSearchParams();
+
+  const autoPlay = searchParams?.get("autoPlay");
+
+  const { data, isLoading } = useListChapterSectionsQuery(chapterId);
 
   const { data: chapter } = useGetChapter({ bookId, chapterId });
 
@@ -45,6 +51,16 @@ export default function ChapterItem() {
   const { data: mediaList } = useListMediaQuery();
 
   const addChapterSectionMutation = useAddChapterSectionsMutation();
+
+  const firstSectionId = data?.[0]?.id;
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (autoPlay && firstSectionId) {
+      router.push(`/listen/books/${bookId}/${chapterId}/${firstSectionId}`);
+    }
+  }, [autoPlay, bookId, chapterId, firstSectionId, router]);
 
   //   const { data: book, isLoading } = useGetBookQuery(bookId);
 
@@ -62,6 +78,10 @@ export default function ChapterItem() {
   //     );
   //   }
 
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <div className="max-w-6xl mx-auto mt-12">
       <div className="mb-12 flex justify-between items-center">
@@ -78,16 +98,23 @@ export default function ChapterItem() {
           onClick={() => {
             setEditSection(!editSection);
           }}
+          className="transition-all"
         >
-          <Icons.plusIcon className={"text-2xl lg:text-4xl"} />
+          {editSection ? (
+            <Icons.xMark className={"text-2xl lg:text-4xl"} />
+          ) : (
+            <Icons.plusIcon className={"text-2xl lg:text-4xl"} />
+          )}
         </button>
       </div>
       <div className="flex justify-between items-center">
         <h1 className="text-2xl lg:text-4xl font-bold">{chapter?.title}</h1>
 
-        <Link href={`/listen/books/${bookId}/${chapterId}/${data?.[0]?.id}`}>
-          <Icons.play className={"text-2xl lg:text-4xl"} />
-        </Link>
+        {data?.[0]?.id && (
+          <Link href={`/listen/books/${bookId}/${chapterId}/${data?.[0]?.id}`}>
+            <Icons.play className={"text-2xl lg:text-4xl"} />
+          </Link>
+        )}
       </div>
 
       {editSection && (
@@ -150,18 +177,27 @@ export default function ChapterItem() {
       )}
 
       <div className="mt-12 space-y-8">
-        {data?.map((section) => {
-          return (
-            <div key={section?.id}>
-              <Link
-                href={`/listen/books/${bookId}/${chapterId}/${section?.id}`}
-                className="text-2xl dark:text-gray-400 dark:hover:text-white transitiona-all"
-              >
-                {section?.title?.slice(0, 32)}...
-              </Link>
-            </div>
-          );
-        })}
+        {data && data?.length > 0 ? (
+          data?.map((section) => {
+            return (
+              <div key={section?.id}>
+                <Link
+                  href={`/listen/books/${bookId}/${chapterId}/${section?.id}`}
+                  className="text-2xl dark:text-gray-400 dark:hover:text-white transitiona-all"
+                >
+                  {section?.title?.slice(0, 32)}...
+                </Link>
+              </div>
+            );
+          })
+        ) : (
+          <div className="text-center mt-24 lg:mt-44">
+            <Icons.spaceStation className="text-4xl mb-4" />
+            <p className="text-center text-2xl text-gray-500">
+              Nothing here. Please add some sections
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

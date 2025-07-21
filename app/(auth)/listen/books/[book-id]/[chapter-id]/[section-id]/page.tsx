@@ -4,14 +4,14 @@ import { Reader } from "@/app/(auth)/listen/[media-id]/components/reader";
 import { useBookParams } from "../../hooks/use-book-params";
 import { useRouter } from "next/navigation";
 import { useListChapterSectionsQuery } from "../hooks/use-list-chapter-sections-query";
-import { useBookState } from "../hooks/use-book-state";
 import Link from "next/link";
 import { useGetBookQuery } from "@/app/(auth)/listen/[media-id]/hooks/use-get-book-query";
+import { useEffect } from "react";
 
 export default function SectionReader() {
   const { sectionId, bookId, chapterId } = useBookParams();
 
-  const { setShowEndPage, showEndPage } = useBookState();
+  // const { setShowEndPage, showEndPage } = useBookState();
 
   const { data: book } = useGetBookQuery(bookId);
 
@@ -37,13 +37,20 @@ export default function SectionReader() {
 
   const router = useRouter();
 
-  if (showEndPage) {
+  // useEffect(() => {
+  //   if (showEndPage && nextChapter) {
+  //     setShowEndPage(false);
+  //     router.push(`/listen/books/${bookId}/${nextChapter?.id}?autoPlay=true`);
+  //   }
+  // }, [showEndPage, nextChapter, router, bookId, setShowEndPage]);
+
+  if (!nextChapter) {
     return (
       <main className="flex justify-center items-center flex-col">
         <h4 className="mt-32">You have finished reading this chapter </h4>
 
         <div className="flex gap-4 mt-8">
-          {nextChapter && (
+          {/* {nextChapter && (
             <Link
               onClick={() => {
                 setShowEndPage(false);
@@ -52,17 +59,9 @@ export default function SectionReader() {
             >
               Go to next Chapter{" "}
             </Link>
-          )}
+          )} */}
 
-          <Link
-            onClick={() => {
-              setShowEndPage(false);
-            }}
-            href="/listen"
-          >
-            {" "}
-            Back to bookshelf{" "}
-          </Link>
+          <Link href="/listen"> Back to bookshelf </Link>
         </div>
       </main>
     );
@@ -78,8 +77,15 @@ export default function SectionReader() {
             router.push(
               `/listen/books/${bookId}/${chapterId}/${nextSection.id}`
             );
-          } else {
-            setShowEndPage(true);
+
+            return;
+          }
+
+          if (nextChapter) {
+            router.push(
+              `/listen/books/${bookId}/${nextChapter?.id}?autoPlay=true`
+            );
+            return;
           }
         }}
       />{" "}

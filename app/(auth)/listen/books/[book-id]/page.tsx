@@ -50,12 +50,30 @@ export default function MediaDetails() {
             }}
           />
         ) : (
-          <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2">
             <img
               className="aspect-square"
               src={book?.coverPhotoUrl}
               alt="book photo"
             />
+
+            <div>
+              <h4 className="text-2xl">Chapters</h4>
+
+              <div className="mt-8 space-y-4">
+                {book?.chapters?.map((chapter) => {
+                  return (
+                    <Link
+                      className="block"
+                      href={`/listen/books/${book?.id}/${chapter?.id}`}
+                      key={chapter?.id}
+                    >
+                      <p>{chapter?.title}</p>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         )}
       </section>

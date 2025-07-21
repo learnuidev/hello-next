@@ -255,81 +255,82 @@ export function Reader({
           {data?.mediaFile?.translations
             ?.slice(maxMinTranslationsSlice.min, maxMinTranslationsSlice.max)
             ?.map((item) => {
-              return (
-                <p
-                  onClick={() => {
-                    const findChunks = mediaChunks?.filter((chunk) => {
-                      return (
-                        item?.startChunkIndex <= chunk?.start &&
-                        item?.endChunkIndex >= chunk?.end
-                      );
-                    });
+              const currentChunkItem = mediaChunks?.filter(
+                (chunk) =>
+                  item?.startChunkIndex <= chunk?.start &&
+                  chunk?.end <= item?.endChunkIndex
+              );
 
-                    if (findChunks && findChunks?.length > 0) {
-                      seekAndPlay(findChunks?.[0]?.startTime / 1000);
-                    }
-                  }}
-                  className={cn(
-                    "text-lg sm:text-xl sm:leading-[36px] text-justify",
-                    "transition-all",
-                    currentTranslation
-                      ? JSON.stringify(item) ===
-                        JSON.stringify(currentTranslation)
-                        ? "dark:text-white text-black"
-                        : "dark:text-gray-500"
-                      : ""
+              return (
+                <div key={JSON.stringify(item)}>
+                  {containsHumanMode && mode === "human" ? (
+                    <p
+                      onClick={() => {
+                        const findChunks = mediaChunks?.filter((chunk) => {
+                          return (
+                            item?.startChunkIndex <= chunk?.start &&
+                            item?.endChunkIndex >= chunk?.end
+                          );
+                        });
+
+                        if (findChunks && findChunks?.length > 0) {
+                          seekAndPlay(findChunks?.[0]?.startTime / 1000);
+                        }
+                      }}
+                      className={cn(
+                        "text-lg sm:text-xl sm:leading-[36px] text-justify",
+                        "transition-all",
+                        currentTranslation
+                          ? JSON.stringify(item) ===
+                            JSON.stringify(currentTranslation)
+                            ? "dark:text-white text-black"
+                            : "dark:text-gray-500"
+                          : ""
+                      )}
+                    >
+                      {item?.input}
+                    </p>
+                  ) : (
+                    <p className="text-lg sm:text-xl sm:leading-[36px] text-justify">
+                      {" "}
+                      {currentChunkItem?.map((item) => {
+                        return (
+                          <span
+                            className={cn(
+                              "transition-all",
+                              currentTranslation
+                                ? currentTranslation?.startChunkIndex <=
+                                    item?.start &&
+                                  currentTranslation?.endChunkIndex >= item?.end
+                                  ? "text-white dark:text-gray-500 dark:bg-[rgb(14,15,16)] bg-gray-200"
+                                  : "text-gray-500"
+                                : "",
+
+                              currentChunk
+                                ? currentChunk?.start >= item?.start &&
+                                  currentChunk?.end >= item?.end
+                                  ? "text-black  dark:text-white"
+                                  : "text-gray-500"
+                                : ""
+                            )}
+                            key={JSON.stringify(item)}
+                            onClick={() => {
+                              if (currentChunkItem) {
+                                // alert(idx);
+                                // alert(JSON.stringify(currentChunkItem));
+                                seekAndPlay(item?.startTime / 1000);
+                              }
+                            }}
+                          >
+                            {item?.value}
+                          </span>
+                        );
+                      })}
+                    </p>
                   )}
-                  key={JSON.stringify(item)}
-                >
-                  {" "}
-                  {item?.input}{" "}
-                </p>
+                </div>
               );
             })}
-
-          {/* <p className="text-lg sm:text-xl sm:leading-[36px] text-justify">
-            {textItem?.split("").map((item, idx, ctx) => {
-              if (ctx?.length > interval) {
-                const range = filterRange(interval, currentChunk);
-                if (!(idx >= range.min && idx <= range.max)) {
-                  return null;
-                }
-              }
-              return (
-                <span
-                  onClick={() => {
-                    const currentChunkItem = mediaChunks?.find(
-                      (chunk) => chunk?.start <= idx && chunk?.end >= idx
-                    );
-
-                    if (currentChunkItem) {
-                      // alert(idx);
-                      // alert(JSON.stringify(currentChunkItem));
-                      seekAndPlay(currentChunkItem.startTime / 1000);
-                    }
-                  }}
-                  className={cn(
-                    "transition-all",
-                    currentTranslation
-                      ? currentTranslation?.startChunkIndex <= idx &&
-                        currentTranslation?.endChunkIndex >= idx
-                        ? "text-white dark:text-gray-500 dark:bg-[rgb(14,15,16)] bg-gray-200"
-                        : "text-gray-500"
-                      : "",
-
-                    currentChunk
-                      ? currentChunk?.start >= idx && currentChunk?.end >= idx
-                        ? "text-black  dark:text-white"
-                        : "text-gray-500"
-                      : ""
-                  )}
-                  key={`listen-${item}-${idx}`}
-                >
-                  {item}
-                </span>
-              );
-            })}
-          </p> */}
         </div>
 
         <div className="p-2 sm:px-12 sm:py-12 rounded">

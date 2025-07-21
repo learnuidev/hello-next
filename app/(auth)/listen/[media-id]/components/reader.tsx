@@ -251,8 +251,43 @@ export function Reader({
       </header>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:min-h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
-        <div className="p-2 sm:px-12 sm:py-12  rounded">
-          <p className="text-lg sm:text-xl sm:leading-[36px] text-justify">
+        <div className="p-2 sm:px-12 sm:py-12 rounded flex gap-4 flex-col">
+          {data?.mediaFile?.translations
+            ?.slice(maxMinTranslationsSlice.min, maxMinTranslationsSlice.max)
+            ?.map((item) => {
+              return (
+                <p
+                  onClick={() => {
+                    const findChunks = mediaChunks?.filter((chunk) => {
+                      return (
+                        item?.startChunkIndex <= chunk?.start &&
+                        item?.endChunkIndex >= chunk?.end
+                      );
+                    });
+
+                    if (findChunks && findChunks?.length > 0) {
+                      seekAndPlay(findChunks?.[0]?.startTime / 1000);
+                    }
+                  }}
+                  className={cn(
+                    "text-lg sm:text-xl sm:leading-[36px] text-justify",
+                    "transition-all",
+                    currentTranslation
+                      ? JSON.stringify(item) ===
+                        JSON.stringify(currentTranslation)
+                        ? "dark:text-white text-black"
+                        : "dark:text-gray-500"
+                      : ""
+                  )}
+                  key={JSON.stringify(item)}
+                >
+                  {" "}
+                  {item?.input}{" "}
+                </p>
+              );
+            })}
+
+          {/* <p className="text-lg sm:text-xl sm:leading-[36px] text-justify">
             {textItem?.split("").map((item, idx, ctx) => {
               if (ctx?.length > interval) {
                 const range = filterRange(interval, currentChunk);
@@ -294,7 +329,7 @@ export function Reader({
                 </span>
               );
             })}
-          </p>
+          </p> */}
         </div>
 
         <div className="p-2 sm:px-12 sm:py-12 rounded">

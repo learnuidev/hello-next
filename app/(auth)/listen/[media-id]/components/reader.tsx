@@ -243,11 +243,8 @@ export function Reader({
             width={"100%"}
             controls
             playbackRate={playbackRate}
-            // playbackRate={containsHumanMode && mode === "ai" ? 0.8 : 1}
           />
         )}
-
-        {/* <div>{JSON.stringify(currentTranslation, null, 4)}</div> */}
       </header>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:min-h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
@@ -278,25 +275,26 @@ export function Reader({
                         }
                       }}
                       className={cn(
-                        "text-lg sm:text-xl sm:leading-[36px] text-justify",
+                        "dark:hover:text-white hover:text-black",
+                        "text-[16px] sm:text-xl sm:leading-[36px] text-justify",
                         "transition-all",
                         currentTranslation
                           ? JSON.stringify(item) ===
                             JSON.stringify(currentTranslation)
                             ? "dark:text-white text-black"
-                            : "dark:text-gray-500"
+                            : "dark:text-gray-500 text-gray-400"
                           : ""
                       )}
                     >
                       {item?.input}
                     </p>
                   ) : (
-                    <p className="text-lg sm:text-xl sm:leading-[36px] text-justify">
-                      {" "}
+                    <p className="text-[16px] sm:text-xl sm:leading-[36px] text-justify">
                       {currentChunkItem?.map((item) => {
                         return (
                           <span
                             className={cn(
+                              "dark:hover:text-white hover:text-black",
                               "transition-all",
                               currentTranslation
                                 ? currentTranslation?.startChunkIndex <=
@@ -334,7 +332,7 @@ export function Reader({
         </div>
 
         <div className="p-2 sm:px-12 sm:py-12 rounded">
-          <p className="text-lg sm:text-xl sm:leading-[36px] transition-all">
+          <p className="text-[16px] sm:text-xl sm:leading-[36px] transition-all">
             {data?.mediaFile?.translations
               ?.slice(maxMinTranslationsSlice.min, maxMinTranslationsSlice.max)
               ?.map((item) => {
@@ -358,7 +356,7 @@ export function Reader({
                         ? JSON.stringify(item) ===
                           JSON.stringify(currentTranslation)
                           ? "dark:text-white text-black"
-                          : "dark:text-gray-500"
+                          : "dark:text-gray-500 text-gray-400"
                         : ""
                     )}
                     key={JSON.stringify(item)}

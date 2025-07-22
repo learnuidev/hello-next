@@ -7,41 +7,18 @@ import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-chara
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence-mutation";
-import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { cn } from "@/lib/utils";
 import { chineseConverter } from "mandarino/src/utils/chinese-converter";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { Icons } from "../ui/icons.v2";
 import { useCanTrackFunction } from "../use-can-track-function";
 import { getYablaLink } from "../youtube-page/utils/get-yabla-link";
-import { AudioComponent } from "./audio-component";
-import { CharacterItem } from "./character-item";
-import { GoogleTranslateLink } from "./selected-character/google-translate-link";
-import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { smartSplit } from "../youtube-page/utils/smart-split";
 import { YoutubeButton } from "../youtube-page/youtube-button";
-import { useGetAudioMutation } from "@/hooks/use-get-audio-mutation";
-import { cn } from "@/lib/utils";
-import useSound from "use-sound";
-import { useEffect, useState } from "react";
-
-function PlayBtn({ audioUrl }: { audioUrl: string }) {
-  const [play, { stop, isPlaying }] = useSound(audioUrl) as any;
-
-  return (
-    <button
-      onClick={() => {
-        if (audioUrl) {
-          play();
-        }
-      }}
-      className={cn(
-        `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${"ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"} shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
-        "h-6 w-6 text-xs"
-      )}
-    >
-      <Icons.play className="ml-1" />
-    </button>
-  );
-}
+import { CharacterItem } from "./character-item";
+import { PlayButtonV2 } from "./play-button-v2";
+import { GoogleTranslateLink } from "./selected-character/google-translate-link";
+import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -74,13 +51,6 @@ export const SentenceItem = (props: any) => {
     characterId: currentPhrase?.hanzi || currentPhrase?.input,
     lang: resolvedLang,
   });
-
-  const getAudioMutation = useGetAudioMutation();
-
-  const [audioUrl, setAudioUrl] = useState("");
-  const [isClicked, setIsClicked] = useState(false);
-
-  const [play, { stop, isPlaying }] = useSound(audioUrl) as any;
 
   const Links = () => {
     const hanziOrInput = encodeURIComponent(unEncoded);
@@ -121,45 +91,15 @@ export const SentenceItem = (props: any) => {
 
           {/* ) : null} */}
 
-          {audioUrl ? (
-            <PlayBtn audioUrl={audioUrl} />
-          ) : (
-            <button
-              onClick={() => {
-                if (audioUrl) {
-                  play();
-                } else {
-                  setIsClicked(true);
-                  getAudioMutation
-                    .mutateAsync({
-                      text: currentPhrase?.input || currentPhrase?.hanzi,
-                      lang: lang || currentPhrase?.lang,
-                    })
-                    .then((resp) => {
-                      const audio = new Audio(resp.audioUrl);
-                      audio.play();
-
-                      setAudioUrl(resp.audioUrl);
-                    });
-                }
-              }}
-              className={cn(
-                `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${"ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"} shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
-                "h-6 w-6 text-xs"
-              )}
-            >
-              {getAudioMutation?.isPending ? (
-                <Icons.spinner className="ml-1" spinPulse />
-              ) : (
-                <Icons.play className="ml-1" />
-              )}
-            </button>
-          )}
-          {/* {isClicked && audioUrl && <PlayBtn audioUrl={audioUrl} />} */}
-          {/* <AudioComponent
-            currentPhrase={currentPhrase}
-            className="h-6 w-6 text-xs"
-          /> */}
+          <PlayButtonV2
+            text={currentPhrase?.input || currentPhrase?.hanzi}
+            lang={lang || currentPhrase?.lang}
+            className={cn(
+              `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${"ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"} shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
+              "h-6 w-6 text-xs",
+              "ml-1"
+            )}
+          />
 
           <Link
             onClick={() => {

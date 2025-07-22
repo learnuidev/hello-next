@@ -17,16 +17,15 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 
+import { useYoutubeVideoUrl } from "../summary/with-youtube-video";
 import { Icons } from "../ui/icons.v2";
 import { smartSplit } from "../youtube-page/utils/smart-split";
-import { AudioComponent } from "./audio-component";
 import { CharacterItem } from "./character-item";
 import { characterStore } from "./character-store";
+import { PlayButtonV2 } from "./play-button-v2";
 import { CharacterTrackButton } from "./selected-character/character-track-button";
 import { useCharacterEditStore } from "./use-character-edit-store";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
-import { useYoutubeVideoUrl } from "../summary/with-youtube-video";
-import { useGetAudioQuery } from "@/hooks/use-get-audio-query";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -94,11 +93,6 @@ export const CharacterTitle = (props: any) => {
       meaning?.details?.pinyin;
 
   const setIfExists = useSetIfExists();
-
-  const { data: audio, isLoading: isAudioLoading } = useGetAudioQuery({
-    text: selectedCompInput,
-    lang,
-  });
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
@@ -201,26 +195,12 @@ export const CharacterTitle = (props: any) => {
       )}
 
       <div className="space-x-4 flex items-center">
-        {isAudioLoading ? (
-          <Icons.spinner className="text-2xl" spinPulse />
-        ) : audio?.audioUrl ? (
-          <AudioComponent
-            audioUrl={audio?.audioUrl}
-            key={JSON.stringify(audio?.audioUrl)}
-            currentPhrase={selectedCompInput}
-            icon={<Icons.volume className="text-2xl" />}
-          />
-        ) : (
-          !edit && (
-            <button
-              onClick={() => {
-                speak(selectedCompInput);
-              }}
-            >
-              <Icons.volume className="text-2xl" />
-            </button>
-          )
-        )}
+        <PlayButtonV2
+          text={selectedCompInput}
+          lang={lang}
+          className="text-2xl"
+        />
+
         {!edit && <CharacterTrackButton />}
         {!edit && (
           <BookmarkButton

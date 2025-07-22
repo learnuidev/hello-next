@@ -26,17 +26,6 @@ import { useEffect, useState } from "react";
 function PlayBtn({ audioUrl }: { audioUrl: string }) {
   const [play, { stop, isPlaying }] = useSound(audioUrl) as any;
 
-  useEffect(() => {
-    if (audioUrl && !isPlaying) {
-      play();
-    }
-  }, [audioUrl, isPlaying, play]);
-
-  return null;
-}
-function PlayBtn2({ audioUrl }: { audioUrl: string }) {
-  const [play, { stop, isPlaying }] = useSound(audioUrl) as any;
-
   return (
     <button
       onClick={() => {
@@ -133,7 +122,7 @@ export const SentenceItem = (props: any) => {
           {/* ) : null} */}
 
           {audioUrl ? (
-            <PlayBtn2 audioUrl={audioUrl} />
+            <PlayBtn audioUrl={audioUrl} />
           ) : (
             <button
               onClick={() => {
@@ -147,7 +136,9 @@ export const SentenceItem = (props: any) => {
                       lang: lang || currentPhrase?.lang,
                     })
                     .then((resp) => {
-                      console.log("RESP", resp);
+                      const audio = new Audio(resp.audioUrl);
+                      audio.play();
+
                       setAudioUrl(resp.audioUrl);
                     });
                 }
@@ -157,10 +148,14 @@ export const SentenceItem = (props: any) => {
                 "h-6 w-6 text-xs"
               )}
             >
-              <Icons.play className="ml-1" />
+              {getAudioMutation?.isPending ? (
+                <Icons.spinner className="ml-1" spinPulse />
+              ) : (
+                <Icons.play className="ml-1" />
+              )}
             </button>
           )}
-          {isClicked && audioUrl && <PlayBtn audioUrl={audioUrl} />}
+          {/* {isClicked && audioUrl && <PlayBtn audioUrl={audioUrl} />} */}
           {/* <AudioComponent
             currentPhrase={currentPhrase}
             className="h-6 w-6 text-xs"

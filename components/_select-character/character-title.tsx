@@ -95,7 +95,10 @@ export const CharacterTitle = (props: any) => {
 
   const setIfExists = useSetIfExists();
 
-  const { data: audio } = useGetAudioQuery({ text: selectedCompInput, lang });
+  const { data: audio, isLoading: isAudioLoading } = useGetAudioQuery({
+    text: selectedCompInput,
+    lang,
+  });
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
@@ -198,7 +201,9 @@ export const CharacterTitle = (props: any) => {
       )}
 
       <div className="space-x-4 flex items-center">
-        {audio?.audioUrl ? (
+        {isAudioLoading ? (
+          <Icons.spinner className="text-2xl" spinPulse />
+        ) : audio?.audioUrl ? (
           <AudioComponent
             audioUrl={audio?.audioUrl}
             key={JSON.stringify(audio?.audioUrl)}

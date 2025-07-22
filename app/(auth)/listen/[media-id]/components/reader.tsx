@@ -10,12 +10,14 @@ import {
   SpeechMarkChunk,
   useGetMediaQuery,
 } from "../../hooks/use-get-media-query";
+import { motion } from "framer-motion";
 
 import { useMediaState } from "../hooks/use-media-state";
 import { useContainsHumanMode } from "../hooks/use-contains-human-mode";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { useListenState } from "../../hooks/use-listen-state";
 import { useMediaStatsState } from "../hooks/use-media-stats-state";
+import { useCountdown } from "@/hooks/use-countdown/use-countdown";
 
 function filterRange(interval: number, currentChunk?: SpeechMarkChunk | null) {
   if (!currentChunk) {
@@ -139,6 +141,23 @@ export function Reader({
     isSmall
   );
 
+  const {
+    count,
+    startCountdown,
+    stopCountdown,
+    resetCountdown,
+    isCountdownRunning,
+  } = useCountdown({
+    countStart: 2,
+    intervalMs: 1000,
+
+    onCountdownEnd: () => {
+      if (playNext) {
+        playNext();
+      }
+    },
+  });
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(playerRef?.current?.getCurrentTime());
@@ -229,13 +248,14 @@ export function Reader({
   const interval = isSmall ? 80 : data?.lang === "zh" ? 400 : 500;
 
   return (
-    <main className="max-w-6xl m-auto p-4">
+    <main className="max-w-6xl m-auto p-4 relative">
       <header className="mb-8">
         {data?.mediaFile?.audioUrl && (
           <ReactPlayer
             onEnded={() => {
               if (playNext) {
-                playNext();
+                startCountdown();
+                // playNext();
               }
               console.log("play ended");
             }}
@@ -380,6 +400,42 @@ export function Reader({
           </p>
         </div>
       </section>
+
+      {isCountdownRunning && (
+        <motion.div
+          initial={{ opacity: 0 }} // Start fully transparent
+          animate={{ opacity: 1 }} // Animate to fully visible
+          transition={{ duration: 0.5 }} // Duration in seconds
+          className="fade-in transition-all fixed bottom-4 right-4 z-50 dark:bg-black dark:text-white bg-white text-black shadow-sm p-4 w-80"
+        >
+          <h4 className="text-gray-500"> Playing next chapter in...</h4>
+
+          <p className="text-3xl">{count + 1}</p>
+
+          <div className="mt-2 flex gap-4">
+            {playNext && (
+              <button
+                onClick={() => {
+                  if (playNext) {
+                    playNext();
+                  }
+                }}
+              >
+                Play Next
+              </button>
+            )}
+
+            <button
+              onClick={() => {
+                seekAndPlay(0);
+                resetCountdown();
+              }}
+            >
+              Repeat
+            </button>
+          </div>
+        </motion.div>
+      )}
     </main>
   );
 }

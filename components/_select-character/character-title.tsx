@@ -26,6 +26,7 @@ import { CharacterTrackButton } from "./selected-character/character-track-butto
 import { useCharacterEditStore } from "./use-character-edit-store";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { useYoutubeVideoUrl } from "../summary/with-youtube-video";
+import { useGetAudioQuery } from "@/hooks/use-get-audio-query";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -93,6 +94,8 @@ export const CharacterTitle = (props: any) => {
       meaning?.details?.pinyin;
 
   const setIfExists = useSetIfExists();
+
+  const { data: audio } = useGetAudioQuery({ text: selectedCompInput, lang });
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
@@ -176,7 +179,7 @@ export const CharacterTitle = (props: any) => {
             "my-0 py-0 font-extralight"
           )}
         >
-          {selectedCompInput}
+          {/* {selectedCompInput} */}
         </h1>
       )}
 
@@ -195,11 +198,11 @@ export const CharacterTitle = (props: any) => {
       )}
 
       <div className="space-x-4 flex items-center">
-        {meaning?.audioUrl ? (
+        {audio?.audioUrl ? (
           <AudioComponent
-            audioUrl={meaning?.audioUrl}
-            key={JSON.stringify(meaning?.audioUrl)}
-            currentPhrase={meaning?.details?.hanzi}
+            audioUrl={audio?.audioUrl}
+            key={JSON.stringify(audio?.audioUrl)}
+            currentPhrase={selectedCompInput}
             icon={<Icons.volume className="text-2xl" />}
           />
         ) : (

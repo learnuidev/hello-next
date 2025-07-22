@@ -18,6 +18,41 @@ import { GoogleTranslateLink } from "./selected-character/google-translate-link"
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { smartSplit } from "../youtube-page/utils/smart-split";
 import { YoutubeButton } from "../youtube-page/youtube-button";
+import { useGetAudioMutation } from "@/hooks/use-get-audio-mutation";
+import { cn } from "@/lib/utils";
+import useSound from "use-sound";
+import { useEffect, useState } from "react";
+
+function PlayBtn({ audioUrl }: { audioUrl: string }) {
+  const [play, { stop, isPlaying }] = useSound(audioUrl) as any;
+
+  useEffect(() => {
+    if (audioUrl && !isPlaying) {
+      play();
+    }
+  }, [audioUrl, isPlaying, play]);
+
+  return null;
+}
+function PlayBtn2({ audioUrl }: { audioUrl: string }) {
+  const [play, { stop, isPlaying }] = useSound(audioUrl) as any;
+
+  return (
+    <button
+      onClick={() => {
+        if (audioUrl) {
+          play();
+        }
+      }}
+      className={cn(
+        `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${"ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"} shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
+        "h-6 w-6 text-xs"
+      )}
+    >
+      <Icons.play className="ml-1" />
+    </button>
+  );
+}
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -50,6 +85,13 @@ export const SentenceItem = (props: any) => {
     characterId: currentPhrase?.hanzi || currentPhrase?.input,
     lang: resolvedLang,
   });
+
+  const getAudioMutation = useGetAudioMutation();
+
+  const [audioUrl, setAudioUrl] = useState("");
+  const [isClicked, setIsClicked] = useState(false);
+
+  const [play, { stop, isPlaying }] = useSound(audioUrl) as any;
 
   const Links = () => {
     const hanziOrInput = encodeURIComponent(unEncoded);
@@ -89,10 +131,40 @@ export const SentenceItem = (props: any) => {
           )}
 
           {/* ) : null} */}
-          <AudioComponent
+
+          {audioUrl ? (
+            <PlayBtn2 audioUrl={audioUrl} />
+          ) : (
+            <button
+              onClick={() => {
+                if (audioUrl) {
+                  play();
+                } else {
+                  setIsClicked(true);
+                  getAudioMutation
+                    .mutateAsync({
+                      text: currentPhrase?.input || currentPhrase?.hanzi,
+                      lang: lang || currentPhrase?.lang,
+                    })
+                    .then((resp) => {
+                      console.log("RESP", resp);
+                      setAudioUrl(resp.audioUrl);
+                    });
+                }
+              }}
+              className={cn(
+                `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${"ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"} shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
+                "h-6 w-6 text-xs"
+              )}
+            >
+              <Icons.play className="ml-1" />
+            </button>
+          )}
+          {isClicked && audioUrl && <PlayBtn audioUrl={audioUrl} />}
+          {/* <AudioComponent
             currentPhrase={currentPhrase}
             className="h-6 w-6 text-xs"
-          />
+          /> */}
 
           <Link
             onClick={() => {

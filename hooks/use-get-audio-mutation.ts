@@ -1,18 +1,12 @@
 import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { getAudioApi } from "./get-audio.api";
+import { GetAudioRequest } from "./audio.types";
 
-export const useGetAudioQuery = ({
-  text,
-  lang,
-}: {
-  text: string;
-  lang: string;
-}) => {
+export const useGetAudioMutation = () => {
   const jwt = useJwtToken();
-  return useQuery({
-    queryKey: ["use-get-audio", text, lang],
-    queryFn: async () => {
+  return useMutation({
+    mutationFn: async ({ text, lang }: GetAudioRequest) => {
       const audio = await getAudioApi({ text, lang }, { jwt });
 
       return audio;

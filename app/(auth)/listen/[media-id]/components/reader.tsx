@@ -250,24 +250,21 @@ export function Reader({
   return (
     <main className="max-w-6xl m-auto p-4 relative">
       <header className="mb-8">
-        {data?.mediaFile?.audioUrl && (
-          <ReactPlayer
-            onEnded={() => {
-              if (playNext) {
-                startCountdown();
-                // playNext();
-              }
-              console.log("play ended");
-            }}
-            onReady={onReady}
-            ref={playerRef}
-            url={audioUrl}
-            height={"40px"}
-            width={"100%"}
-            controls
-            playbackRate={playbackRate}
-          />
-        )}
+        <ReactPlayer
+          onEnded={() => {
+            if (playNext) {
+              startCountdown();
+            }
+            console.log("play ended");
+          }}
+          onReady={onReady}
+          ref={playerRef}
+          url={audioUrl}
+          height={"40px"}
+          width={"100%"}
+          controls
+          playbackRate={playbackRate}
+        />
       </header>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:min-h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">

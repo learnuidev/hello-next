@@ -92,8 +92,8 @@ export function YoutubeButton({
       transcriptions?.find(
         (trans: any) =>
           trans?.id === transcriptId ||
-          (trans?.hanzi || trans?.input) === sentenceInput ||
-          (trans?.hanzi || trans?.input)?.includes(sentenceInput)
+          (trans?.input || trans?.hanzi) === sentenceInput ||
+          (trans?.input || trans?.hanzi)?.includes(sentenceInput)
       ),
     [sentenceInput, transcriptId, transcriptions]
   );

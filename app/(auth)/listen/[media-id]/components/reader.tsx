@@ -52,7 +52,7 @@ function getMaxAndMinTranslationsSlice(
 ) {
   const averageSize = averageEnSize(translations);
 
-  const batchSize = isSmall ? 120 : 500;
+  const batchSize = isSmall ? 160 : 500;
 
   const chunkSize = Math.ceil(batchSize / averageSize);
   const chunkIndex = Math.floor(index / chunkSize);
@@ -280,7 +280,8 @@ export function Reader({
 
               return (
                 <div key={JSON.stringify(item)}>
-                  {containsHumanMode && mode === "human" ? (
+                  {/* {containsHumanMode && mode === "human" ? ( */}
+                  {false ? (
                     <p
                       onClick={() => {
                         const findChunks = mediaChunks?.filter((chunk) => {

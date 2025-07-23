@@ -141,7 +141,7 @@ export const CharacterTitle = (props: any) => {
                     selectedCompInput?.length < 4 ? "text-5xl" : "text-2xl"
                   }
                   key={`character-title-${item}-${idx}-${idx}`}
-                  href={`/nmm/${item}?lang=zh${context ? `&context=${context}` : ""}`}
+                  href={`/nmm/${item}?lang=${lang || "zh"}${context ? `&context=${context}` : ""}`}
                 >
                   <CharacterItem
                     className={

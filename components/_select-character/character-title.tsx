@@ -131,54 +131,39 @@ export const CharacterTitle = (props: any) => {
         )
       ) : null}
 
-      {(lang || meaning?.lang) === "zh" ? (
-        <div className="flex justify-between items-center w-full">
-          <div>
-            {smartSplit({ input: selectedCompInput, lang })?.map(
-              (item: string, idx: number) => {
-                return (
-                  <Link
+      <div className="flex justify-between items-center w-full">
+        <div>
+          {smartSplit({ input: selectedCompInput, lang })?.map(
+            (item: string, idx: number) => {
+              return (
+                <Link
+                  className={
+                    selectedCompInput?.length < 4 ? "text-5xl" : "text-2xl"
+                  }
+                  key={`character-title-${item}-${idx}-${idx}`}
+                  href={`/nmm/${item}?lang=zh${context ? `&context=${context}` : ""}`}
+                >
+                  <CharacterItem
                     className={
-                      selectedCompInput?.length < 4 ? "text-5xl" : "text-2xl"
+                      selectedCompInput?.length < 8
+                        ? "lg:text-4xl text-4xl"
+                        : "text-2xl"
                     }
-                    key={`character-title-${item}-${idx}-${idx}`}
-                    href={`/nmm/${item}?lang=zh${context ? `&context=${context}` : ""}`}
-                  >
-                    <CharacterItem
-                      className={
-                        selectedCompInput?.length < 8
-                          ? "lg:text-4xl text-4xl"
-                          : "text-2xl"
-                      }
-                      // disableForgotten
-                      character={item}
-                    />
-                  </Link>
-                );
-              }
-            )}
-          </div>
-
-          <div>
-            {selectedCompInput?.length < 4 && (
-              <StatusIcon.Icon className="text-2xl" />
-            )}
-          </div>
-        </div>
-      ) : lang === "zh" && multiSentence ? (
-        <h1 className="text-xl my-0 py-0 font-extralight">
-          {selectedCompInput}
-        </h1>
-      ) : (
-        <h1
-          className={cn(
-            selectedCompInput?.length < 16 ? "text-2xl md:text-4xl" : "text-xl",
-            "my-0 py-0 font-extralight"
+                    // disableForgotten
+                    character={item}
+                  />
+                </Link>
+              );
+            }
           )}
-        >
-          {/* {selectedCompInput} */}
-        </h1>
-      )}
+        </div>
+
+        <div>
+          {selectedCompInput?.length < 4 && (
+            <StatusIcon.Icon className="text-2xl" />
+          )}
+        </div>
+      </div>
 
       {edit && meaning?.id && isSuperAdmin ? (
         <input

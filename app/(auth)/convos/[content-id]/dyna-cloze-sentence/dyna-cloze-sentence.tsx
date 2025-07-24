@@ -26,6 +26,7 @@ import { getMulti } from "./utils/get-multi";
 import { TheDock } from "@/components/the-dock";
 import { WordleSentence } from "@/components/wordle/wordle-sentence";
 import { SpeakSentence } from "../speak/speak-sentence";
+import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -409,6 +410,8 @@ const DynaSentence = ({
         >
           {learnMode === "timeline" ? <Icons.timeline /> : <Icons.shuffle />}
         </button>
+
+        <PlayButtonV2 text={sentenceHanzi} lang={lang} className="text-2xl" />
       </div>
 
       {parentSentence && showParent && (

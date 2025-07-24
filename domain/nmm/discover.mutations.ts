@@ -50,18 +50,29 @@ export function useDiscoverMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      // queryClient.refetchQueries([listComponentsQueryKey, true] as any);
-      // queryClient.refetchQueries([listComponentsQueryMapKey, true] as any);
+      queryClient.refetchQueries({ queryKey: [listComponentsQueryKey, true] });
+      queryClient.refetchQueries({
+        queryKey: [listComponentsQueryMapKey, true],
+      });
 
-      // queryClient.setQueriesData(
-      //   [listComponentsQueryMapKey, undefined, lastUpdated] as any,
-      //   (props: any) => {
-      //     return {
-      //       ...props,
-      //       [data?.hanzi || data?.input]: data,
-      //     };
-      //   }
-      // );
+      queryClient.setQueriesData(
+        {
+          queryKey: [listComponentsQueryMapKey, undefined, lastUpdated],
+
+          // updater: (props: any) => {
+          //   return {
+          //     ...props,
+          //     [data?.hanzi || data?.input]: data,
+          //   } as any;
+          // },
+        },
+        (props: any) => {
+          return {
+            ...props,
+            [data?.hanzi || data?.input]: data,
+          } as any;
+        }
+      );
       // console.log("TODO");
 
       // setComponents(

@@ -305,7 +305,7 @@ const ConvoInsightsNoNChinese = ({
   }) as any;
 
   const transcriptionStr = data?.transcriptions
-    ?.map((item: any) => item?.input)
+    ?.map((item: any) => item?.input?.replaceAll("¿", "")?.replaceAll("¡", ""))
     ?.join(" ");
 
   const { data: _context, isLoading: isContextLoading } =

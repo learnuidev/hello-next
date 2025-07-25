@@ -117,7 +117,12 @@ export function useListLearnedCharactersByDate({
         year,
       };
     })
-    ?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
+    ?.sort((a: any, b: any) => {
+      if (["search", "click", "track"].includes(variant)) {
+        return b?.lastSeen - a?.lastSeen;
+      }
+      return b?.createdAt - a?.createdAt;
+    });
 
   const groupByDate = groupBy((item: any) => item?.date);
 

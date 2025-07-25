@@ -23,9 +23,7 @@ export function useListHistoryQuery() {
 
       return {
         ...resp,
-        Items: resp?.Items?.sort(
-          (a: any, b: any) => b?.createdAt - a?.createdAt
-        ),
+        Items: resp?.Items?.sort((a: any, b: any) => b?.lastSeen - a?.lastSeen),
       };
     },
     enabled: Boolean(authUser?.jwt),

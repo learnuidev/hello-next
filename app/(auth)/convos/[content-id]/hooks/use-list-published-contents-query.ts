@@ -2,6 +2,7 @@ import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 
 const publicContentsQueryKey = `list-published-contents`;
 
@@ -85,8 +86,10 @@ export const useListRemotePublishedContentsQuery = ({
 };
 
 export const useListPublishedContentsQuery = ({ key }: { key?: string }) => {
-  const { data, ...rest } = useListRemotePublishedContentsQuery({ key });
+  const { data, isLoading } = useListRemotePublishedContentsQuery({ key });
   const contents: any = usePublishedContentsStore((state) => state.contents);
 
-  return { data: data || contents, ...rest };
+  return useMemo(() => {
+    return { data: data || contents, isLoading: isLoading };
+  }, [contents, data, isLoading]);
 };

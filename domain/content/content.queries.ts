@@ -6,6 +6,7 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 import { getContent, IContent, listContents } from "./content.api";
 
 import { createIndexDBStore } from "@/libs/index-db/index-db";
+import { useMemo } from "react";
 
 const useContentsStore = createIndexDBStore({
   name: "list-contents",
@@ -113,10 +114,12 @@ export function useListRemoteContentsQuery(options = {} as any) {
 }
 
 export const useListContentsQuery = (options = {} as any) => {
-  const { data, ...rest } = useListRemoteContentsQuery(options);
+  const { data, isLoading } = useListRemoteContentsQuery(options);
   const contents: any = useContentsStore((state) => state.contents);
 
-  return { data: data || contents, ...rest };
+  return useMemo(() => {
+    return { data: data || contents, isLoading: isLoading };
+  }, [contents, data, isLoading]);
 };
 
 export const getContentQueryId = "get-content";

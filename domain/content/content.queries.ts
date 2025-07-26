@@ -7,16 +7,14 @@ import { getContent, IContent, listContents } from "./content.api";
 
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
-const useListContentsStore = createIndexDBStore({
-  name: "mando/public-contents-2",
+const useContentsStore = createIndexDBStore({
+  name: "list-contents",
   handler: (set: any, get: any) => ({
-    lastUpdated: null,
-    setLastUpdated: () => set({ lastUpdated: Date.now() }),
-    components: null,
-    setComponents: (f: any) =>
+    contents: null,
+    setContents: (f: any) =>
       typeof f === "function"
-        ? set({ components: f(get().components) })
-        : set({ components: f }),
+        ? set({ contents: f(get().contents) })
+        : set({ contents: f }),
   }),
 });
 
@@ -77,10 +75,12 @@ export const useGetListContentsQueryKey = () => {
 
   return [listContentsQueryKey, authUser?.jwt];
 };
-export function useListContentsQuery(options = {} as any) {
+export function useListRemoteContentsQuery(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
 
   const queryKey = useGetListContentsQueryKey();
+
+  const setContents: any = useContentsStore((state) => state.setContents);
 
   return useQuery<ListContentsResponse, Error>({
     queryKey: queryKey,
@@ -93,6 +93,8 @@ export function useListContentsQuery(options = {} as any) {
           (a: any, b: any) => b?.createdAt - a?.createdAt
         ),
       };
+
+      setContents(finalResponse);
 
       return finalResponse;
       // return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
@@ -109,6 +111,13 @@ export function useListContentsQuery(options = {} as any) {
     refetchOnReconnect: false,
   });
 }
+
+export const useListContentsQuery = (options = {} as any) => {
+  const { data, ...rest } = useListRemoteContentsQuery(options);
+  const contents: any = useContentsStore((state) => state.contents);
+
+  return { data: data || contents, ...rest };
+};
 
 export const getContentQueryId = "get-content";
 export function useGetContentQuery(

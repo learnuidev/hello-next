@@ -77,8 +77,7 @@ export function useSelectedCharacterData({
     }
   );
 
-  const { data: contentItems, isLoading: isContentsLoading } =
-    useListPublishedContentsQuery({});
+  const { data: contentItems } = useListPublishedContentsQuery({});
 
   // MAJOR BUG IF NOT WRAPPED
   const contents = useMemo(() => contentItems?.items, [contentItems]);
@@ -201,7 +200,7 @@ export function useSelectedCharacterData({
   } as SelectedCharacterProps;
 
   return {
-    isLoading: isLoading || isContentsLoading,
+    isLoading: isLoading,
     data: props,
   };
 }

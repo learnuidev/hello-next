@@ -63,8 +63,7 @@ export function NomadMethodNavbar() {
     ...(new Set(resolvedHskWords?.map((word: any) => word?.topic)) as any),
   ];
 
-  const { data: contentItems, isLoading: isContentsLoading } =
-    useListPublishedContentsQuery({});
+  const { data: contentItems } = useListPublishedContentsQuery({});
 
   const contents = contentItems?.items;
 

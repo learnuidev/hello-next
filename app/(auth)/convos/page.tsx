@@ -46,16 +46,12 @@ type ContentType = {
 };
 
 function ContentsList({ contentViewType }: { contentViewType: string }) {
-  const { data: myContent, isLoading: isContentsLoading } =
-    useListContentsQuery();
-  const { data, isLoading: isPublicContentLoading } =
-    useListPublishedContentsQuery({});
+  const { data: myContent } = useListContentsQuery();
+  const { data } = useListPublishedContentsQuery({});
   const { data: favouriteContents, isLoading: isFavouriteContentLoading } =
     useListFavouriteContentsQuery({});
 
   const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
-
-  const isLoading = isContentsLoading || isPublicContentLoading;
 
   const contents =
     contentViewType === "history"
@@ -121,7 +117,7 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
         })
     : [];
 
-  if (isLoading) {
+  if (!myContent) {
     return <LottieLoadingAnimation />;
   }
 

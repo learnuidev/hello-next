@@ -1,8 +1,20 @@
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { siteConfig } from "@/lib/config";
+import { createIndexDBStore } from "@/libs/index-db/index-db";
 import { useQuery } from "@tanstack/react-query";
 
 const publicContentsQueryKey = `list-published-contents`;
+
+const usePublishedContentsStore = createIndexDBStore({
+  name: publicContentsQueryKey,
+  handler: (set: any, get: any) => ({
+    contents: null,
+    setContents: (f: any) =>
+      typeof f === "function"
+        ? set({ contents: f(get().contents) })
+        : set({ contents: f }),
+  }),
+});
 
 export const useGetPublicContentsQueryKey = () => {
   const { data: authUser } = useCurrentAuthUser({});
@@ -10,10 +22,18 @@ export const useGetPublicContentsQueryKey = () => {
   return [publicContentsQueryKey, authUser?.jwt];
 };
 
-export const useListPublishedContentsQuery = ({ key }: { key?: string }) => {
+export const useListRemotePublishedContentsQuery = ({
+  key,
+}: {
+  key?: string;
+}) => {
   const { data: authUser } = useCurrentAuthUser({});
 
   const myQueryKey = useGetPublicContentsQueryKey();
+
+  const setContents: any = usePublishedContentsStore(
+    (state) => state.setContents
+  );
 
   return useQuery<any>({
     queryKey: [publicContentsQueryKey, authUser?.jwt],
@@ -55,9 +75,18 @@ export const useListPublishedContentsQuery = ({ key }: { key?: string }) => {
           ),
         };
 
+        setContents(response);
+
         return response;
       }
     },
     staleTime: 300000,
   });
+};
+
+export const useListPublishedContentsQuery = ({ key }: { key?: string }) => {
+  const { data, ...rest } = useListRemotePublishedContentsQuery({ key });
+  const contents: any = usePublishedContentsStore((state) => state.contents);
+
+  return { data: data || contents, ...rest };
 };

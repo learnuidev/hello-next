@@ -64,9 +64,6 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   const lesson = course5.lessons[lessonIndex] || null;
 
-  // const { data: contentsArr } = useListContentsQuery();
-
-  // const { data: contentsArr } = useListContentsQuery();
   const { data: lesson2 } = useGetContentQuery({ contentId: lessonId });
 
   const lesson1 =

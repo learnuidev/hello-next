@@ -245,6 +245,8 @@ export function Reader({
     }
   };
 
+  console.log("data", data);
+
   const interval = isSmall ? 80 : data?.lang === "zh" ? 400 : 500;
 
   return (
@@ -278,6 +280,8 @@ export function Reader({
                   chunk?.end <= item?.endChunkIndex
               );
 
+              console.log("CHUNK ITEM", currentChunkItem);
+
               return (
                 <div key={JSON.stringify(item)}>
                   {/* {containsHumanMode && mode === "human" ? ( */}
@@ -310,7 +314,7 @@ export function Reader({
                       {item?.input}
                     </p>
                   ) : (
-                    <p className="text-[16px] sm:text-xl sm:leading-[36px] text-justify">
+                    <p className="text-[16px] sm:text-xl sm:leading-[36px]">
                       {currentChunkItem?.map((item) => {
                         return (
                           <span
@@ -351,6 +355,7 @@ export function Reader({
                             }}
                           >
                             {item?.value}
+                            {data?.lang !== "zh" && " "}
                           </span>
                         );
                       })}

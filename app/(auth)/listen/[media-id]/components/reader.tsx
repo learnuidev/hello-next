@@ -245,8 +245,6 @@ export function Reader({
     }
   };
 
-  console.log("data", data);
-
   const interval = isSmall ? 80 : data?.lang === "zh" ? 400 : 500;
 
   return (
@@ -279,8 +277,6 @@ export function Reader({
                   item?.startChunkIndex <= chunk?.start &&
                   chunk?.end <= item?.endChunkIndex
               );
-
-              console.log("CHUNK ITEM", currentChunkItem);
 
               return (
                 <div key={JSON.stringify(item)}>

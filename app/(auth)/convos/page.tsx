@@ -37,6 +37,7 @@ import { useContentTypeStore } from "./use-content-type-store";
 import { ContentsListEffect } from "@/components/contents-list-effect";
 import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query";
 import { useRecentlyWatchedContent } from "./use-recently-watched-content-store";
+import { createIndexDBStore } from "@/libs/index-db/index-db";
 
 type ContentType = {
   title: string;
@@ -186,8 +187,28 @@ function LessonCard({ lesson }: any) {
     </button>
   );
 }
+
+const useViewTypeStore = createIndexDBStore({
+  name: "view-type",
+  handler: (set: any, get: any) => ({
+    viewType: "history",
+    setViewType: (f: any) =>
+      typeof f === "function"
+        ? set({ viewType: f(get().viewType) })
+        : set({ viewType: f }),
+  }),
+});
+
+const useViewType = () => {
+  const viewType = useViewTypeStore((state) => state.viewType);
+  const setViewType = useViewTypeStore((state) => state.setViewType);
+
+  return [viewType, setViewType] as any;
+};
+
 export default function Convos() {
-  const [contentViewType, setViewType] = useState("history");
+  const [contentViewType, setViewType] = useViewType();
+  // const [contentViewType, setViewType] = useState("history");
   const [isTocHidden, setIsTocHidden] = useState(false);
   const lessonId = useConvosStore((state: any) => state?.convoId);
 

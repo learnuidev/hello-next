@@ -204,19 +204,20 @@ export const SentenceItem = (props: any) => {
             );
           })}
         </span>
-        {lang !== "en" && currentPhrase?.contentId ? (
-          <Link
-            target="_blank"
-            className="text-[16px] dark:text-gray-500 text-gray-600"
-            href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start && `?start=${currentPhrase?.start}`}`}
-          >
-            {currentPhrase?.en || currentPhrase?.title}
-          </Link>
-        ) : (
-          <span className="text-[16px] dark:text-gray-500 text-gray-600">
-            {currentPhrase?.en || currentPhrase?.title}
-          </span>
-        )}
+        {lang !== "en" &&
+          (currentPhrase?.contentId ? (
+            <Link
+              target="_blank"
+              className="text-[16px] dark:text-gray-500 text-gray-600"
+              href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start && `?start=${currentPhrase?.start}`}`}
+            >
+              {currentPhrase?.en || currentPhrase?.title}
+            </Link>
+          ) : (
+            <span className="text-[16px] dark:text-gray-500 text-gray-600">
+              {currentPhrase?.en || currentPhrase?.title}
+            </span>
+          ))}
       </div>
 
       <Links />

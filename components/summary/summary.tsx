@@ -119,7 +119,7 @@ export function Summary({
       </div>
 
       {isLoading ? null : (
-        <p className="mb-32 text-center text-gray-500">
+        <p className="my-32 text-center text-gray-500">
           <strong> Note: </strong>The summary and sentences above were generated
           by AI and may contain inaccuracies.{" "}
         </p>

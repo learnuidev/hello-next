@@ -138,7 +138,7 @@ const nonHanYuChars = [
   "」",
   "�",
   "�",
-  "^"
+  "^",
   ...Object.keys(characterMap),
 ];
 

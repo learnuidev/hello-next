@@ -9,6 +9,8 @@ import {
 import { Icons } from "@/components/ui/icons.v2";
 import { openInNewWindow } from "./utils/open-in-new-window";
 import { getSelectedText } from "./utils/get-selected-text";
+import { useAddHistoryMutation } from "@/domain/history/history.mutations";
+import { useIsSearchTrackingEnabled } from "@/hooks/use-is-search-tracking-enabled";
 
 export function MandoContextMenu({
   children,
@@ -17,13 +19,25 @@ export function MandoContextMenu({
   children: React.ReactNode;
   lang: string;
 }) {
+  const addHistoryMutation = useAddHistoryMutation();
+  const isSearchTrackingEnabled = useIsSearchTrackingEnabled();
+
   return (
     <ContextMenu>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
       <ContextMenuContent className="w-64">
         <ContextMenuItem
           onClick={() => {
-            openInNewWindow(`/nmm/${getSelectedText()}?lang=${lang}`);
+            const selectedText = getSelectedText();
+            if (isSearchTrackingEnabled) {
+              addHistoryMutation.mutate({
+                input: selectedText,
+                lang,
+                eventType: "SEARCH",
+              } as any);
+            }
+
+            openInNewWindow(`/nmm/${selectedText}?lang=${lang}`);
           }}
         >
           <Icons.magnifyingGlass /> <span className="pl-4">Search</span>

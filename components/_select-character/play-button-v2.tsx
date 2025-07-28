@@ -41,7 +41,11 @@ function PlayBtnInner({
       }}
       className={className}
     >
-      {isPlaying ? <Icons.pause /> : <Icons.play className="ml-1" />}
+      {isPlaying ? (
+        <Icons.pause className="ml-1" />
+      ) : (
+        <Icons.play className="ml-1" />
+      )}
     </button>
   );
 }
@@ -81,7 +85,7 @@ export function PlayButtonV2({
       {getAudioMutation?.isPending ? (
         <Icons.spinner spinPulse />
       ) : (
-        <Icons.play />
+        <Icons.play className="ml-1" />
       )}
     </button>
   );

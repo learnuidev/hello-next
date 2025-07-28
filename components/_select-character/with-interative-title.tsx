@@ -77,12 +77,15 @@ export const WithInteractiveTitle = ({
                   >
                     <CharacterItem
                       className={cn(
+                        "transition-all",
                         // text?.length < 8 ? "lg:text-4xl text-4xl" : "text-2xl",
                         isPlaying
                           ? currentTime >= startTime && currentTime <= endTime
                             ? "dark:text-white text-black"
-                            : "dark:text-gray-800 text-gray-500"
+                            : "dark:text-gray-700 text-gray-300"
                           : "",
+
+                        "dark:hover:text-white hover:text-black",
                         className
                       )}
                       // disableForgotten

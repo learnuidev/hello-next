@@ -63,6 +63,16 @@ function PlayBtnInner({
     }
   }, []);
 
+  const togglePlay = useCallback(() => {
+    if (playerRef?.current?.player?.isPlaying) {
+      setIsPlaying(false);
+      playerRef?.current?.player?.player?.pause();
+    } else {
+      setIsPlaying(true);
+      playerRef?.current?.player?.player.play();
+    }
+  }, [playerRef, setIsPlaying]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(playerRef?.current?.getCurrentTime());
@@ -74,7 +84,7 @@ function PlayBtnInner({
     <>
       <button
         onClick={() => {
-          play();
+          togglePlay();
         }}
         className={className}
       >

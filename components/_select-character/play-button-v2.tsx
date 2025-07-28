@@ -12,6 +12,7 @@ import {
   TextToSpeechProviders,
 } from "./selected-character.constants";
 import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
+import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
 
 function PlayBtnInner({
   audioUrl,
@@ -29,6 +30,8 @@ function PlayBtnInner({
   // const [play, { stop, isPlaying, ...rest }] = useSound(audioUrl) as any;
   const playerRef = useRef(null) as any;
   const autoPlay = true;
+
+  const { playbackRate } = useListenState();
   // const [isPlaying, setIsPlaying] = useState(false);
 
   const id = `${text}#${lang}#${provider}`;
@@ -72,6 +75,7 @@ function PlayBtnInner({
       </button>
       <div className="hidden">
         <ReactPlayer
+          playbackRate={playbackRate}
           onEnded={() => {
             setIsPlaying(false);
             console.log("play ended");

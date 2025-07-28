@@ -14,7 +14,7 @@ import { useUpdateMeaningMutation } from "@/domain/sentence/use-update-meaning-m
 import { useGetCharacter } from "@/hooks/use-get-character";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 
 import { useYoutubeVideoUrl } from "../summary/with-youtube-video";
@@ -94,6 +94,8 @@ export const CharacterTitle = (props: any) => {
       selectedComp?.pinyin ||
       meaning?.details?.pinyin;
 
+  const customRef: any = useRef(null) as any;
+
   const setIfExists = useSetIfExists();
 
   return (
@@ -135,10 +137,13 @@ export const CharacterTitle = (props: any) => {
 
       <div className="flex justify-between items-center w-full">
         <WithInteractiveTitle
+          customRef={customRef}
           text={selectedCompInput}
           lang={lang}
           provider={textToSpeechProviders.speechify}
-          className=""
+          className={
+            selectedCompInput?.length < 8 ? "lg:text-4xl text-4xl" : "text-2xl"
+          }
         >
           <div>
             {smartSplit({ input: selectedCompInput, lang })?.map(
@@ -190,6 +195,7 @@ export const CharacterTitle = (props: any) => {
 
       <div className="space-x-4 flex items-center">
         <PlayButtonV2
+          customRef={customRef}
           text={selectedCompInput}
           lang={lang}
           className="text-2xl"

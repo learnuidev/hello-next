@@ -13,9 +13,10 @@ const useYoutubeRefStore = create<YoutubeState>((set) => ({
 }));
 
 export const useYoutubeRefState = () => {
-  const playerRef: any = useYoutubeRefStore((state) => state.youtubeRef);
+  const _playerRef: any = useYoutubeRefStore((state) => state.youtubeRef);
 
-  const seekAndPlay = (time: any) => {
+  const seekAndPlay = (time: any, ref?: any) => {
+    const playerRef = ref || _playerRef;
     playerRef?.current.seekTo(time, "seconds");
 
     try {
@@ -26,7 +27,7 @@ export const useYoutubeRefState = () => {
   };
 
   return {
-    youtubeRef: playerRef,
+    youtubeRef: _playerRef,
     seekAndPlay,
   };
 };

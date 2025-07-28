@@ -19,6 +19,9 @@ import { CharacterItem } from "./character-item";
 import { PlayButtonV2 } from "./play-button-v2";
 import { GoogleTranslateLink } from "./selected-character/google-translate-link";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
+import { WithInteractiveTitle } from "./with-interative-title";
+import { textToSpeechProviders } from "./selected-character.constants";
+import { useRef } from "react";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -52,7 +55,9 @@ export const SentenceItem = (props: any) => {
     lang: resolvedLang,
   });
 
-  const Links = () => {
+  const customRef: any = useRef(null) as any;
+
+  const Links = ({ customRef }: { customRef?: string }) => {
     const hanziOrInput = encodeURIComponent(unEncoded);
     return (
       <div className="flex justify-between items-center w-full mt-2">
@@ -92,6 +97,7 @@ export const SentenceItem = (props: any) => {
           {/* ) : null} */}
 
           <PlayButtonV2
+            customRef={customRef}
             text={currentPhrase?.input || currentPhrase?.hanzi}
             lang={lang || currentPhrase?.lang}
             className={cn(
@@ -162,48 +168,56 @@ export const SentenceItem = (props: any) => {
             </span>
           )}
         </Link>
-        <span>
-          {smartSplit({
-            input: chineseConverter(
-              currentPhrase?.input || currentPhrase?.hanzi
-            ),
-            lang: currentPhrase?.lang,
-          })?.map((val: string, idy: number) => {
-            return (
-              <span
-                key={`sentence-item-${val}-${idy}`}
-                onClick={() => {
-                  const cleanedVal = chineseConverter(
-                    val
-                      .replaceAll("!", "")
-                      ?.replaceAll(".", "")
-                      ?.replaceAll(",", "")
-                  );
+        <WithInteractiveTitle
+          customRef={customRef}
+          text={chineseConverter(currentPhrase?.input || currentPhrase?.hanzi)}
+          lang={currentPhrase?.lang}
+          provider={textToSpeechProviders.speechify}
+          className={"text-xl"}
+        >
+          <span>
+            {smartSplit({
+              input: chineseConverter(
+                currentPhrase?.input || currentPhrase?.hanzi
+              ),
+              lang: currentPhrase?.lang,
+            })?.map((val: string, idy: number) => {
+              return (
+                <span
+                  key={`sentence-item-${val}-${idy}`}
+                  onClick={() => {
+                    const cleanedVal = chineseConverter(
+                      val
+                        .replaceAll("!", "")
+                        ?.replaceAll(".", "")
+                        ?.replaceAll(",", "")
+                    );
 
-                  // addHistoryMutation.mutate({
-                  //   hanzi: cleanedVal,
-                  //   lang: lang,
-                  //   pathName: routeName,
-                  //   contentId: selectedComp?.id || "",
-                  //   eventType: "CONTENT_VIEWED",
-                  // } as any);
+                    // addHistoryMutation.mutate({
+                    //   hanzi: cleanedVal,
+                    //   lang: lang,
+                    //   pathName: routeName,
+                    //   contentId: selectedComp?.id || "",
+                    //   eventType: "CONTENT_VIEWED",
+                    // } as any);
 
-                  setIfExists({ ...currentPhrase });
+                    setIfExists({ ...currentPhrase });
 
-                  router.push(
-                    resolvedLang
-                      ? `/nmm/${cleanedVal}?lang=${resolvedLang}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
-                      : `/nmm/${cleanedVal}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
-                  );
-                }}
-              >
-                {/* {val} */}
-                <CharacterItem character={val} />
-                {/* {currentPhrase?.input ? " " : ""} */}
-              </span>
-            );
-          })}
-        </span>
+                    router.push(
+                      resolvedLang
+                        ? `/nmm/${cleanedVal}?lang=${resolvedLang}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
+                        : `/nmm/${cleanedVal}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
+                    );
+                  }}
+                >
+                  {/* {val} */}
+                  <CharacterItem character={val} />
+                  {/* {currentPhrase?.input ? " " : ""} */}
+                </span>
+              );
+            })}
+          </span>
+        </WithInteractiveTitle>
         {lang !== "en" &&
           (currentPhrase?.contentId ? (
             <Link
@@ -220,7 +234,7 @@ export const SentenceItem = (props: any) => {
           ))}
       </div>
 
-      <Links />
+      <Links customRef={customRef} />
     </div>
   );
 };

@@ -21,12 +21,14 @@ function PlayBtnInner({
   text,
   lang,
   provider,
+  customRef,
 }: {
   audioUrl: string;
   className?: string;
   text: string;
   lang: string;
   provider: TextToSpeechProviders;
+  customRef?: any;
 }) {
   // const [play, { stop, isPlaying, ...rest }] = useSound(audioUrl) as any;
   // const playerRef = useRef(null) as any;
@@ -38,7 +40,9 @@ function PlayBtnInner({
   const id = `${text}#${lang}#${provider}`;
   const { isPlaying, setIsPlaying } = useIsPlayingState(id);
 
-  const { seekAndPlay, youtubeRef: playerRef } = useYoutubeRefState();
+  const { seekAndPlay, youtubeRef: _playerRef } = useYoutubeRefState();
+
+  const playerRef = customRef || _playerRef;
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(id);
 
@@ -115,10 +119,12 @@ export function PlayButtonV2({
   text,
   lang,
   className,
+  customRef,
 }: {
   text: string;
   lang: string;
   className?: string;
+  customRef?: any;
 }) {
   const getAudioMutation = useGetAudioMutation();
 
@@ -134,6 +140,7 @@ export function PlayButtonV2({
 
   return audioUrl ? (
     <PlayBtnInner
+      customRef={customRef}
       provider={provider}
       text={text}
       lang={lang}

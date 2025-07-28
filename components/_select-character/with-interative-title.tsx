@@ -14,17 +14,21 @@ export const WithInteractiveTitle = ({
   provider,
   children,
   className,
+  customRef,
 }: {
   text: string;
   lang: string;
   provider: TextToSpeechProviders;
   children: React.ReactNode;
   className?: string;
+  customRef?: any;
 }) => {
   const id = `${text}#${lang}#${provider}`;
   const { currentTime, setCurrentTime } = useCurrentTime(id);
 
-  const { seekAndPlay, youtubeRef: playerRef } = useYoutubeRefState();
+  const { seekAndPlay, youtubeRef } = useYoutubeRefState();
+
+  const playerRef = customRef || youtubeRef;
 
   const { isPlaying, setIsPlaying } = useIsPlayingState(id);
   const { characterSound } = useCharacterSoundState({
@@ -64,12 +68,13 @@ export const WithInteractiveTitle = ({
                   >
                     <CharacterItem
                       className={cn(
-                        text?.length < 8 ? "lg:text-4xl text-4xl" : "text-2xl",
+                        // text?.length < 8 ? "lg:text-4xl text-4xl" : "text-2xl",
                         isPlaying
                           ? currentTime >= startTime && currentTime <= endTime
                             ? "dark:text-white text-black"
                             : "dark:text-gray-800 text-gray-500"
-                          : ""
+                          : "",
+                        className
                       )}
                       // disableForgotten
                       character={item}

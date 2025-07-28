@@ -59,7 +59,7 @@ function PlayBtnInner({
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(playerRef?.current?.getCurrentTime());
-    }, 500);
+    }, 5);
     return () => clearInterval(interval);
   }, []);
 

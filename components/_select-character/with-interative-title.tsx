@@ -6,6 +6,7 @@ import Link from "next/link";
 import { smartSplit } from "../youtube-page/utils/smart-split";
 import { cn } from "@/lib/utils";
 import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
+import { useYoutubeRefState } from "./use-youtube-ref-state";
 
 export const WithInteractiveTitle = ({
   text,
@@ -21,7 +22,9 @@ export const WithInteractiveTitle = ({
   className?: string;
 }) => {
   const id = `${text}#${lang}#${provider}`;
-  const { currentTime } = useCurrentTime(id);
+  const { currentTime, setCurrentTime } = useCurrentTime(id);
+
+  const { seekAndPlay, youtubeRef: playerRef } = useYoutubeRefState();
 
   const { isPlaying, setIsPlaying } = useIsPlayingState(id);
   const { characterSound } = useCharacterSoundState({
@@ -42,8 +45,14 @@ export const WithInteractiveTitle = ({
 
         return (
           <Link
-            href={`/nmm/${item?.value}?lang=${lang}`}
+            href={isPlaying ? "" : `/nmm/${item?.value}?lang=${lang}`}
             key={`smart-character-outer-${JSON.stringify(item)}`}
+            onClick={() => {
+              if (isPlaying) {
+                seekAndPlay(startTime);
+                // setCurrentTime(startTime);
+              }
+            }}
           >
             {smartSplit({ input: item?.value, lang })?.map(
               (item: string, idx: number) => {

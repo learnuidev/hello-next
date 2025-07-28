@@ -13,6 +13,7 @@ import {
 } from "./selected-character.constants";
 import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
 import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
+import { useYoutubeRefState } from "./use-youtube-ref-state";
 
 function PlayBtnInner({
   audioUrl,
@@ -28,7 +29,7 @@ function PlayBtnInner({
   provider: TextToSpeechProviders;
 }) {
   // const [play, { stop, isPlaying, ...rest }] = useSound(audioUrl) as any;
-  const playerRef = useRef(null) as any;
+  // const playerRef = useRef(null) as any;
   const autoPlay = true;
 
   const { playbackRate } = useListenState();
@@ -36,6 +37,8 @@ function PlayBtnInner({
 
   const id = `${text}#${lang}#${provider}`;
   const { isPlaying, setIsPlaying } = useIsPlayingState(id);
+
+  const { seekAndPlay, youtubeRef: playerRef } = useYoutubeRefState();
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(id);
 

@@ -26,6 +26,8 @@ import { PlayButtonV2 } from "./play-button-v2";
 import { CharacterTrackButton } from "./selected-character/character-track-button";
 import { useCharacterEditStore } from "./use-character-edit-store";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
+import { WithInteractiveTitle } from "./with-interative-title";
+import { textToSpeechProviders } from "./selected-character.constants";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -132,31 +134,38 @@ export const CharacterTitle = (props: any) => {
       ) : null}
 
       <div className="flex justify-between items-center w-full">
-        <div>
-          {smartSplit({ input: selectedCompInput, lang })?.map(
-            (item: string, idx: number) => {
-              return (
-                <Link
-                  className={
-                    selectedCompInput?.length < 4 ? "text-5xl" : "text-2xl"
-                  }
-                  key={`character-title-${item}-${idx}-${idx}`}
-                  href={`/nmm/${item}?lang=${lang || "zh"}${context ? `&context=${context}` : ""}`}
-                >
-                  <CharacterItem
+        <WithInteractiveTitle
+          text={selectedCompInput}
+          lang={lang}
+          provider={textToSpeechProviders.speechify}
+          className=""
+        >
+          <div>
+            {smartSplit({ input: selectedCompInput, lang })?.map(
+              (item: string, idx: number) => {
+                return (
+                  <Link
                     className={
-                      selectedCompInput?.length < 8
-                        ? "lg:text-4xl text-4xl"
-                        : "text-2xl"
+                      selectedCompInput?.length < 4 ? "text-5xl" : "text-2xl"
                     }
-                    // disableForgotten
-                    character={item}
-                  />
-                </Link>
-              );
-            }
-          )}
-        </div>
+                    key={`character-title-${item}-${idx}-${idx}`}
+                    href={`/nmm/${item}?lang=${lang || "zh"}${context ? `&context=${context}` : ""}`}
+                  >
+                    <CharacterItem
+                      className={
+                        selectedCompInput?.length < 8
+                          ? "lg:text-4xl text-4xl"
+                          : "text-2xl"
+                      }
+                      // disableForgotten
+                      character={item}
+                    />
+                  </Link>
+                );
+              }
+            )}
+          </div>
+        </WithInteractiveTitle>
 
         <div>
           {selectedCompInput?.length < 4 && (

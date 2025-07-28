@@ -1,36 +1,90 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-
-import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
-import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
-import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
-import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence-mutation";
-import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
-import { chineseConverter } from "mandarino/src/utils/chinese-converter";
-import { Icons } from "../ui/icons.v2";
-import { useCanTrackFunction } from "../use-can-track-function";
-import { getYablaLink } from "../youtube-page/utils/get-yabla-link";
-import { AudioComponent } from "./audio-component";
-import { CharacterItem } from "./character-item";
-import { GoogleTranslateLink } from "./selected-character/google-translate-link";
-import { useGetCharacterAnalytics } from "./use-get-character-analytics";
-import { smartSplit } from "../youtube-page/utils/smart-split";
-import { YoutubeButton } from "../youtube-page/youtube-button";
 import { useGetAudioMutation } from "@/hooks/use-get-audio-mutation";
 import { cn } from "@/lib/utils";
-import useSound from "use-sound";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import ReactPlayer from "react-player";
+import { Icons } from "../ui/icons.v2";
+import { useCurrentTime } from "../youtube-page/use-current-time-store";
+import { useCharacterSoundState } from "./use-character-sound-state";
+import {
+  textToSpeechProviders,
+  TextToSpeechProviders,
+} from "./selected-character.constants";
+import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
 
 function PlayBtnInner({
   audioUrl,
   className,
+  text,
+  lang,
+  provider,
 }: {
   audioUrl: string;
   className?: string;
+  text: string;
+  lang: string;
+  provider: TextToSpeechProviders;
 }) {
-  const [play, { stop, isPlaying, ...rest }] = useSound(audioUrl) as any;
+  // const [play, { stop, isPlaying, ...rest }] = useSound(audioUrl) as any;
+  const playerRef = useRef(null) as any;
+  const autoPlay = true;
+  // const [isPlaying, setIsPlaying] = useState(false);
+
+  const id = `${text}#${lang}#${provider}`;
+  const { isPlaying, setIsPlaying } = useIsPlayingState(id);
+
+  const { currentTime, setCurrentTime: setTime } = useCurrentTime(id);
+
+  const play = () => {
+    playerRef.current?.player?.player?.play();
+    setIsPlaying(true);
+  };
+
+  const onReady = useCallback(() => {
+    const timeToStart = 7 * 60 + 12.6;
+
+    if (autoPlay) {
+      try {
+        play();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(playerRef?.current?.getCurrentTime());
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <>
+      <button
+        onClick={() => {
+          play();
+        }}
+        className={className}
+      >
+        {isPlaying ? <Icons.pause /> : <Icons.play className="ml-1" />}
+      </button>
+      <div className="hidden">
+        <ReactPlayer
+          onEnded={() => {
+            setIsPlaying(false);
+            console.log("play ended");
+          }}
+          onReady={onReady}
+          ref={playerRef}
+          url={audioUrl}
+          height={"0px"}
+          width={"0px"}
+        />
+      </div>
+    </>
+  );
 
   return (
     <button
@@ -61,10 +115,24 @@ export function PlayButtonV2({
 }) {
   const getAudioMutation = useGetAudioMutation();
 
+  const provider = textToSpeechProviders.speechify;
+
+  const { setCharacterSound } = useCharacterSoundState({
+    input: text,
+    lang,
+    provider,
+  });
+
   const [audioUrl, setAudioUrl] = useState("");
 
   return audioUrl ? (
-    <PlayBtnInner className={className} audioUrl={audioUrl} />
+    <PlayBtnInner
+      provider={provider}
+      text={text}
+      lang={lang}
+      className={className}
+      audioUrl={audioUrl}
+    />
   ) : (
     <button
       onClick={() => {
@@ -74,9 +142,7 @@ export function PlayButtonV2({
             lang: lang,
           })
           .then((resp) => {
-            const audio = new Audio(resp.audioUrl);
-            audio.play();
-
+            setCharacterSound(resp);
             setAudioUrl(resp.audioUrl);
           });
       }}

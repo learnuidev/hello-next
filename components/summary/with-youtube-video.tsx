@@ -70,7 +70,7 @@ export const WithYoutubeVideo = ({
   let meaningResponse = meaning as ListMeaningsResponse;
 
   return meaningResponse?.youtubeUrl && !addVideoUrl ? (
-    <div>
+    <div className="mb-8">
       <div className="border rounded-lg overflow-hidden">
         <ReactPlayer
           className="aspect-video"

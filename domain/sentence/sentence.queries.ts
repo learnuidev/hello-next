@@ -62,7 +62,8 @@ export function useListSentencesQuery(
       }
     },
     ...options,
-    retry: false,
+    retry: 2,
+    // retry: false,
     // enabled: Boolean(authUser?.jwt),
     // cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

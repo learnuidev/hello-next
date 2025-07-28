@@ -7,6 +7,8 @@ import { smartSplit } from "../youtube-page/utils/smart-split";
 import { cn } from "@/lib/utils";
 import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
 import { useYoutubeRefState } from "./use-youtube-ref-state";
+import { openInNewWindow } from "@/app/review/review-cloze-content/utils/open-in-new-window";
+import { useRouter } from "next/navigation";
 
 export const WithInteractiveTitle = ({
   text,
@@ -37,6 +39,8 @@ export const WithInteractiveTitle = ({
     provider,
   });
 
+  const router = useRouter();
+
   if (!characterSound?.speechMarks?.chunks) {
     return children;
   }
@@ -47,14 +51,19 @@ export const WithInteractiveTitle = ({
         const startTime = item?.startTime / 1000;
         const endTime = item?.endTime / 1000;
 
+        const link = isPlaying ? "" : `/nmm/${item?.value}?lang=${lang}`;
+
         return (
-          <Link
-            href={isPlaying ? "" : `/nmm/${item?.value}?lang=${lang}`}
+          <span
+            // href={link}
             key={`smart-character-outer-${JSON.stringify(item)}`}
             onClick={() => {
               if (isPlaying) {
-                seekAndPlay(startTime);
+                seekAndPlay(startTime, playerRef);
                 // setCurrentTime(startTime);
+              } else {
+                router.push(link);
+                // openInNewWindow(link);
               }
             }}
           >
@@ -83,7 +92,7 @@ export const WithInteractiveTitle = ({
                 );
               }
             )}{" "}
-          </Link>
+          </span>
         );
       })}
       {/* <code>

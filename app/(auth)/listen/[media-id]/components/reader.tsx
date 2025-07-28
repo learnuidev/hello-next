@@ -18,6 +18,7 @@ import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { useListenState } from "../../hooks/use-listen-state";
 import { useMediaStatsState } from "../hooks/use-media-stats-state";
 import { useCountdown } from "@/hooks/use-countdown/use-countdown";
+import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 
 function filterRange(interval: number, currentChunk?: SpeechMarkChunk | null) {
   if (!currentChunk) {
@@ -267,22 +268,113 @@ export function Reader({
         />
       </header>
 
-      <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:min-h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
-        <div className="p-2 sm:px-12 sm:py-12 rounded flex gap-4 flex-col">
-          {data?.mediaFile?.translations
-            ?.slice(maxMinTranslationsSlice.min, maxMinTranslationsSlice.max)
-            ?.map((item) => {
-              const currentChunkItem = mediaChunks?.filter(
-                (chunk) =>
-                  item?.startChunkIndex <= chunk?.start &&
-                  chunk?.end <= item?.endChunkIndex
-              );
+      <MandoContextMenu lang={data?.lang || ""}>
+        <section className="grid grid-cols-1 sm:grid-cols-2 h-auto sm:min-h-[800px] rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">
+          <div className="p-2 sm:px-12 sm:py-12 rounded flex gap-4 flex-col">
+            {data?.mediaFile?.translations
+              ?.slice(maxMinTranslationsSlice.min, maxMinTranslationsSlice.max)
+              ?.map((item) => {
+                const currentChunkItem = mediaChunks?.filter(
+                  (chunk) =>
+                    item?.startChunkIndex <= chunk?.start &&
+                    chunk?.end <= item?.endChunkIndex
+                );
 
-              return (
-                <div key={JSON.stringify(item)}>
-                  {/* {containsHumanMode && mode === "human" ? ( */}
-                  {false ? (
-                    <p
+                return (
+                  <div key={JSON.stringify(item)}>
+                    {/* {containsHumanMode && mode === "human" ? ( */}
+                    {false ? (
+                      <p
+                        onClick={() => {
+                          const findChunks = mediaChunks?.filter((chunk) => {
+                            return (
+                              item?.startChunkIndex <= chunk?.start &&
+                              item?.endChunkIndex >= chunk?.end
+                            );
+                          });
+
+                          if (findChunks && findChunks?.length > 0) {
+                            seekAndPlay(findChunks?.[0]?.startTime / 1000);
+                          }
+                        }}
+                        className={cn(
+                          "dark:hover:text-white hover:text-black",
+                          "text-[16px] sm:text-xl sm:leading-[36px] text-justify",
+                          "transition-all",
+                          currentTranslation
+                            ? JSON.stringify(item) ===
+                              JSON.stringify(currentTranslation)
+                              ? "dark:text-white text-black"
+                              : "dark:text-gray-500 text-gray-400"
+                            : ""
+                        )}
+                      >
+                        {item?.input}
+                      </p>
+                    ) : (
+                      <p className="text-[16px] sm:text-xl sm:leading-[36px]">
+                        {currentChunkItem?.map((item) => {
+                          return (
+                            <span
+                              className={cn(
+                                "dark:hover:text-white hover:text-black",
+                                "transition-all",
+                                currentTranslation
+                                  ? currentTranslation?.startChunkIndex <=
+                                      item?.start &&
+                                    currentTranslation?.endChunkIndex >=
+                                      item?.end
+                                    ? "text-white dark:text-gray-500 dark:bg-[rgb(14,15,16)] bg-gray-200"
+                                    : "text-gray-500"
+                                  : "",
+
+                                currentChunk
+                                  ? currentChunk?.start >= item?.start &&
+                                    currentChunk?.end >= item?.end
+                                    ? "text-black  dark:text-white"
+                                    : "text-gray-500"
+                                  : ""
+                              )}
+                              key={JSON.stringify(item)}
+                              onClick={() => {
+                                setHistory({
+                                  mediaId,
+                                  startTime: item?.startTime,
+                                  endTime: item?.endTime,
+                                  startIndex: item?.start,
+                                  endIndex: item?.end,
+                                  input: item?.value,
+                                  addedAt: Date.now(),
+                                });
+                                if (currentChunkItem) {
+                                  // alert(idx);
+                                  // alert(JSON.stringify(currentChunkItem));
+                                  seekAndPlay(item?.startTime / 1000);
+                                }
+                              }}
+                            >
+                              {item?.value}
+                              {data?.lang !== "zh" && " "}
+                            </span>
+                          );
+                        })}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+          </div>
+
+          <div className="p-2 sm:px-12 sm:py-12 rounded">
+            <p className="text-[16px] sm:text-xl sm:leading-[36px] transition-all">
+              {data?.mediaFile?.translations
+                ?.slice(
+                  maxMinTranslationsSlice.min,
+                  maxMinTranslationsSlice.max
+                )
+                ?.map((item) => {
+                  return (
+                    <span
                       onClick={() => {
                         const findChunks = mediaChunks?.filter((chunk) => {
                           return (
@@ -296,8 +388,6 @@ export function Reader({
                         }
                       }}
                       className={cn(
-                        "dark:hover:text-white hover:text-black",
-                        "text-[16px] sm:text-xl sm:leading-[36px] text-justify",
                         "transition-all",
                         currentTranslation
                           ? JSON.stringify(item) ===
@@ -306,99 +396,16 @@ export function Reader({
                             : "dark:text-gray-500 text-gray-400"
                           : ""
                       )}
+                      key={JSON.stringify(item)}
                     >
-                      {item?.input}
-                    </p>
-                  ) : (
-                    <p className="text-[16px] sm:text-xl sm:leading-[36px]">
-                      {currentChunkItem?.map((item) => {
-                        return (
-                          <span
-                            className={cn(
-                              "dark:hover:text-white hover:text-black",
-                              "transition-all",
-                              currentTranslation
-                                ? currentTranslation?.startChunkIndex <=
-                                    item?.start &&
-                                  currentTranslation?.endChunkIndex >= item?.end
-                                  ? "text-white dark:text-gray-500 dark:bg-[rgb(14,15,16)] bg-gray-200"
-                                  : "text-gray-500"
-                                : "",
-
-                              currentChunk
-                                ? currentChunk?.start >= item?.start &&
-                                  currentChunk?.end >= item?.end
-                                  ? "text-black  dark:text-white"
-                                  : "text-gray-500"
-                                : ""
-                            )}
-                            key={JSON.stringify(item)}
-                            onClick={() => {
-                              setHistory({
-                                mediaId,
-                                startTime: item?.startTime,
-                                endTime: item?.endTime,
-                                startIndex: item?.start,
-                                endIndex: item?.end,
-                                input: item?.value,
-                                addedAt: Date.now(),
-                              });
-                              if (currentChunkItem) {
-                                // alert(idx);
-                                // alert(JSON.stringify(currentChunkItem));
-                                seekAndPlay(item?.startTime / 1000);
-                              }
-                            }}
-                          >
-                            {item?.value}
-                            {data?.lang !== "zh" && " "}
-                          </span>
-                        );
-                      })}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
-        </div>
-
-        <div className="p-2 sm:px-12 sm:py-12 rounded">
-          <p className="text-[16px] sm:text-xl sm:leading-[36px] transition-all">
-            {data?.mediaFile?.translations
-              ?.slice(maxMinTranslationsSlice.min, maxMinTranslationsSlice.max)
-              ?.map((item) => {
-                return (
-                  <span
-                    onClick={() => {
-                      const findChunks = mediaChunks?.filter((chunk) => {
-                        return (
-                          item?.startChunkIndex <= chunk?.start &&
-                          item?.endChunkIndex >= chunk?.end
-                        );
-                      });
-
-                      if (findChunks && findChunks?.length > 0) {
-                        seekAndPlay(findChunks?.[0]?.startTime / 1000);
-                      }
-                    }}
-                    className={cn(
-                      "transition-all",
-                      currentTranslation
-                        ? JSON.stringify(item) ===
-                          JSON.stringify(currentTranslation)
-                          ? "dark:text-white text-black"
-                          : "dark:text-gray-500 text-gray-400"
-                        : ""
-                    )}
-                    key={JSON.stringify(item)}
-                  >
-                    {item?.en}{" "}
-                  </span>
-                );
-              })}
-          </p>
-        </div>
-      </section>
+                      {item?.en}{" "}
+                    </span>
+                  );
+                })}
+            </p>
+          </div>
+        </section>
+      </MandoContextMenu>
 
       {isCountdownRunning && (
         <motion.div

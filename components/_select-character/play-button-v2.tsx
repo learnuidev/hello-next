@@ -76,15 +76,11 @@ function PlayBtnInner({
   useEffect(() => {
     const interval = setInterval(() => {
       if (currentTime !== playerRef?.current?.getCurrentTime()) {
-        console.log("LOGGED");
-
         setTime(playerRef?.current?.getCurrentTime());
       }
     }, 5);
     return () => clearInterval(interval);
   }, [currentTime, playerRef, setTime]);
-
-  console.log("yoo");
 
   return (
     <>

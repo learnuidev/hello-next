@@ -125,13 +125,13 @@ export default function ContentItem() {
     };
   }, [editMode, goToNext, goToBefore]);
 
-  useEffect(() => {
-    if (currentTime && !startTimeParam) {
-      router.push(
-        `/convos/${lessonId}?start=${currentTime}${view ? `&view=${view}` : ``}`
-      );
-    }
-  }, [currentTime, lessonId, router, startTimeParam, view]);
+  // useEffect(() => {
+  //   if (currentTime && !startTimeParam) {
+  //     router.push(
+  //       `/convos/${lessonId}?start=${currentTime}${view ? `&view=${view}` : ``}`
+  //     );
+  //   }
+  // }, [currentTime, lessonId, router, startTimeParam, view]);
 
   return (
     <WithContentItem>

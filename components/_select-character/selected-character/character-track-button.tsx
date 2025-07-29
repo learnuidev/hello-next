@@ -15,17 +15,13 @@ export const CharacterTrackButton = () => {
   const trackableCharacters = useListTrackableCharactersQuery();
   const isContentTrackingEnabled = useIsContentTrackingEnabled();
 
-  //   console.log("TRACKABLE CHARACTERS", trackableCharacters);
-
   const updateCharacterMutation = useUpdateCharacterStatusMutation();
 
   return (
     isContentTrackingEnabled &&
     characterItem?.id && (
       <button
-        className={
-          characterItem?.track ? "dark:text-white text-black" : "text-gray-700"
-        }
+        className={characterItem?.track ? "text-blue-500" : "text-gray-700"}
         disabled={updateCharacterMutation.isPending}
         onClick={() => {
           // @ts-ignore

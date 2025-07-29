@@ -28,6 +28,7 @@ import { useCharacterEditStore } from "./use-character-edit-store";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
 import { textToSpeechProviders } from "./selected-character.constants";
+import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -97,6 +98,12 @@ export const CharacterTitle = (props: any) => {
   const customRef: any = useRef(null) as any;
 
   const setIfExists = useSetIfExists();
+
+  const { data: relatedHskWords } = useListRelatedHSKWords(characterId);
+
+  console.log("RELATED", relatedHskWords);
+
+  const isHsk = relatedHskWords?.find((word) => word?.hanzi === characterId);
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
@@ -172,9 +179,11 @@ export const CharacterTitle = (props: any) => {
           </div>
         </WithInteractiveTitle>
 
-        <div>
-          {selectedCompInput?.length < 4 && (
-            <StatusIcon.Icon className="text-2xl" />
+        <div className="text-2xl">
+          {isHsk ? (
+            <p>HSK {isHsk?.hskLevel} </p>
+          ) : (
+            selectedCompInput?.length < 4 && <StatusIcon.Icon />
           )}
         </div>
       </div>
@@ -201,7 +210,7 @@ export const CharacterTitle = (props: any) => {
           className="text-2xl"
         />
 
-        {/* {!edit && <CharacterTrackButton />} */}
+        {!edit && <CharacterTrackButton />}
         {!edit && (
           <BookmarkButton
             hanzi={characterId}

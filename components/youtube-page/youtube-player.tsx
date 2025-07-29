@@ -337,10 +337,12 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTime(playerRef?.current?.getCurrentTime());
-    }, 500);
+      if (playerRef?.current?.getCurrentTime() !== currentTime) {
+        setTime(playerRef?.current?.getCurrentTime());
+      }
+    }, 5);
     return () => clearInterval(interval);
-  }, []);
+  }, [currentTime, setTime]);
 
   const debounceSeek = useDebouncedCallback((firstStart: any) => {
     playerRef.current.seekTo(firstStart, "seconds");

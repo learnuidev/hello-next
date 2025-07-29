@@ -57,10 +57,17 @@ export const ActiveTranscription = ({
     [currentTranscription]
   );
 
-  // return "TODO";
-
   return (
-    <div className={cn("text-center sm:mt-8 mt-4 mb-4 h-20", className)}>
+    <div
+      className={cn(
+        "text-center sm:mt-8 mt-4 mb-4 h-20",
+
+        currentTranscription?.en?.length > 200 && "h-40 lg:h-20",
+        currentTranscription?.en?.length > 350 && "lg:h-40 h-80",
+
+        className
+      )}
+    >
       {showPinyin && isNonRomanLang(currentTranscription?.lang) && (
         <Link
           target="_blank"

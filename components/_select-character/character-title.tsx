@@ -203,12 +203,14 @@ export const CharacterTitle = (props: any) => {
       )}
 
       <div className="space-x-4 flex items-center">
-        <PlayButtonV2
-          customRef={customRef}
-          text={selectedCompInput}
-          lang={lang}
-          className="text-2xl"
-        />
+        {!edit && (
+          <PlayButtonV2
+            customRef={customRef}
+            text={selectedCompInput}
+            lang={lang}
+            className="text-2xl"
+          />
+        )}
 
         {!edit && <CharacterTrackButton />}
         {!edit && (
@@ -218,6 +220,16 @@ export const CharacterTitle = (props: any) => {
             en={finalEnVal}
             pinyin={selectedPinyin}
           />
+        )}
+
+        {!edit && isSuperAdmin && (
+          <button
+            onClick={() => {
+              setAddVideoUrl((prev: boolean) => !prev);
+            }}
+          >
+            <Icons.youtube className="text-xl" />
+          </button>
         )}
 
         {edit && meaning?.id && isSuperAdmin ? (
@@ -262,16 +274,6 @@ export const CharacterTitle = (props: any) => {
               <Icons.edit className="text-xl" />{" "}
             </button>
           )
-        )}
-
-        {isSuperAdmin && (
-          <button
-            onClick={() => {
-              setAddVideoUrl((prev: boolean) => !prev);
-            }}
-          >
-            <Icons.youtube className="text-xl" />
-          </button>
         )}
       </div>
     </div>

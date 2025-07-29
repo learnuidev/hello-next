@@ -353,8 +353,23 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     }
   }, 30);
 
+  const transcriptionIds = lesson?.transcriptions?.map(
+    (item: { id: string }) => item?.id
+  );
+
+  const _toggleLoops = useMemo(
+    () =>
+      toggleLoops.filter((item: any) => {
+        if (!item) {
+          return false;
+        }
+
+        return transcriptionIds.includes(item.id);
+      }),
+    [toggleLoops, transcriptionIds]
+  );
+
   useEffect(() => {
-    const _toggleLoops = toggleLoops.filter(Boolean);
     if (_toggleLoops?.length) {
       const lastEnd = Math.max(..._toggleLoops?.map((x: any) => x?.end));
       const firstStart = Math.min(..._toggleLoops?.map((x: any) => x?.start));
@@ -371,6 +386,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     setLoopCounter,
     currentTime,
     debounceSeek,
+    _toggleLoops,
   ]);
 
   const currentChapter = lesson?.chapters?.find(
@@ -781,9 +797,9 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                     `${transcription?.hanzi}-${transcription?.start}`
                                   }
                                   onClick={() => {
-                                    router.push(
-                                      `/convos/${lessonId}?start=${transcription?.start}`
-                                    );
+                                    // router.push(
+                                    //   `/convos/${lessonId}?start=${transcription?.start}`
+                                    // );
                                     playerRef.current.seekTo(
                                       transcription?.start,
                                       "seconds"

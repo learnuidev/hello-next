@@ -123,8 +123,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const toggleLoop = useViewModeStore((state) => state.toggleLoop);
   const setToggleLoop = useViewModeStore((state) => state.setToggleLoop);
 
-  // const [toggleLoops, setToggleLoops] = useState<any>([]);
-
   const toggleLoops: any = useViewModeStore((state) => state.toggleLoops);
   const setToggleLoops = useViewModeStore((state) => state.setToggleLoops);
 
@@ -335,15 +333,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     0
   );
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (playerRef?.current?.getCurrentTime() !== currentTime) {
-        setTime(playerRef?.current?.getCurrentTime());
-      }
-    }, 5);
-    return () => clearInterval(interval);
-  }, [currentTime, setTime]);
-
   const debounceSeek = useDebouncedCallback((firstStart: any) => {
     playerRef.current.seekTo(firstStart, "seconds");
 
@@ -365,9 +354,10 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   }, 30);
 
   useEffect(() => {
-    if (toggleLoops?.length) {
-      const lastEnd = Math.max(...toggleLoops?.map((x: any) => x?.end));
-      const firstStart = Math.min(...toggleLoops?.map((x: any) => x?.start));
+    const _toggleLoops = toggleLoops.filter(Boolean);
+    if (_toggleLoops?.length) {
+      const lastEnd = Math.max(..._toggleLoops?.map((x: any) => x?.end));
+      const firstStart = Math.min(..._toggleLoops?.map((x: any) => x?.start));
 
       if (currentTime > lastEnd) {
         debounceSeek(firstStart);
@@ -606,6 +596,10 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         >
           <div className="">
             <ReactPlayer
+              progressInterval={1}
+              onProgress={(value) => {
+                setTime(value.playedSeconds);
+              }}
               ref={playerRef}
               url={finalUrl}
               playing={isPlaying}

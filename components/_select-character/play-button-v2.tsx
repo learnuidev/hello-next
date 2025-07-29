@@ -1,18 +1,18 @@
 "use client";
 
+import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
 import { useGetAudioMutation } from "@/hooks/use-get-audio-mutation";
 import { cn } from "@/lib/utils";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import ReactPlayer from "react-player";
 import { Icons } from "../ui/icons.v2";
 import { useCurrentTime } from "../youtube-page/use-current-time-store";
-import { useCharacterSoundState } from "./use-character-sound-state";
+import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
 import {
   textToSpeechProviders,
   TextToSpeechProviders,
 } from "./selected-character.constants";
-import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
-import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
+import { useCharacterSoundState } from "./use-character-sound-state";
 import { useYoutubeRefState } from "./use-youtube-ref-state";
 
 function PlayBtnInner({
@@ -30,17 +30,14 @@ function PlayBtnInner({
   provider: TextToSpeechProviders;
   customRef?: any;
 }) {
-  // const [play, { stop, isPlaying, ...rest }] = useSound(audioUrl) as any;
-  // const playerRef = useRef(null) as any;
   const autoPlay = true;
 
   const { playbackRate } = useListenState();
-  // const [isPlaying, setIsPlaying] = useState(false);
 
   const id = `${text}#${lang}#${provider}`;
   const { isPlaying, setIsPlaying } = useIsPlayingState(id);
 
-  const { seekAndPlay, youtubeRef: _playerRef } = useYoutubeRefState();
+  const { youtubeRef: _playerRef } = useYoutubeRefState();
 
   const playerRef = customRef || _playerRef;
 
@@ -73,15 +70,6 @@ function PlayBtnInner({
     }
   }, [playerRef, setIsPlaying]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (currentTime !== playerRef?.current?.getCurrentTime()) {
-        setTime(playerRef?.current?.getCurrentTime());
-      }
-    }, 5);
-    return () => clearInterval(interval);
-  }, [currentTime, playerRef, setTime]);
-
   return (
     <>
       <button
@@ -97,7 +85,17 @@ function PlayBtnInner({
           playbackRate={playbackRate}
           onEnded={() => {
             setIsPlaying(false);
-            console.log("play ended");
+          }}
+          onPlay={() => {
+            setIsPlaying(true);
+          }}
+          onPause={() => {
+            setIsPlaying(false);
+          }}
+          progressInterval={1}
+          onProgress={(value) => {
+            console.log("VALUE", value);
+            setTime(value.playedSeconds);
           }}
           onReady={onReady}
           ref={playerRef}
@@ -107,23 +105,6 @@ function PlayBtnInner({
         />
       </div>
     </>
-  );
-
-  return (
-    <button
-      onClick={() => {
-        if (audioUrl) {
-          play();
-        }
-      }}
-      className={className}
-    >
-      {isPlaying ? (
-        <Icons.pause className="ml-1" />
-      ) : (
-        <Icons.play className="ml-1" />
-      )}
-    </button>
   );
 }
 

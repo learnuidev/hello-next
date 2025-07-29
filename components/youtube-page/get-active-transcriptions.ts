@@ -31,8 +31,6 @@ export const getActiveTranscriptions = ({
     return maxEndTime >= currentTime;
   })?.[0];
 
-  console.log("");
-
   if (!res) {
     return [];
   }

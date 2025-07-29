@@ -1,11 +1,9 @@
 "use client";
 
-import { SelectedCharacterProps } from "../select-character.types";
-
+import { useSelectedCharacterData } from "@/components/use-selected-character";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 import { CharacterTitle } from "../character-title";
 import { ZoomedCharacter } from "./zoomed-character";
-import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
-import { useSelectedCharacterData } from "@/components/use-selected-character";
 
 export const SelectedCharacterTitle = ({
   characterId,

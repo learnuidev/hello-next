@@ -201,7 +201,7 @@ export const CharacterTitle = (props: any) => {
           className="text-2xl"
         />
 
-        {!edit && <CharacterTrackButton />}
+        {/* {!edit && <CharacterTrackButton />} */}
         {!edit && (
           <BookmarkButton
             hanzi={characterId}

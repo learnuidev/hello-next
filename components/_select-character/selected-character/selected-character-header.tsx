@@ -15,7 +15,7 @@ export const SelectedCharacterHeader = (props: { characterId: string }) => {
   return (
     <>
       <SelectedCharacterTitle characterId={characterId} />
-      <SelectedCharacterAudio characterId={characterId} />
+      {/* <SelectedCharacterAudio characterId={characterId} /> */}
       <SelectedCharacterStats characterId={characterId} />
       <SubComponentsView lang={lang} characterId={characterId} />
     </>

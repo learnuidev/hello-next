@@ -180,7 +180,7 @@ export const CharacterTitle = (props: any) => {
         </WithInteractiveTitle>
 
         <div className="text-2xl">
-          {isHsk ? (
+          {isHsk && typeof isHsk?.hskLevel === "number" ? (
             <p>HSK {isHsk?.hskLevel} </p>
           ) : (
             selectedCompInput?.length < 4 && <StatusIcon.Icon />

@@ -12,7 +12,16 @@ export function useListUserPlansQuery() {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
-    queryFn: async (): Promise<ProductsListResponse> => {
+    queryFn: async (): Promise<
+      {
+        createdAt: number;
+        id: string;
+        userId: string;
+        productName: "Mandarino Free" | "Mandarino Pro";
+        productId: string;
+        userStatus: "Free" | "Pro";
+      }[]
+    > => {
       const res = await fetch(`/api/list-user-plans`, {
         method: "GET",
         headers: {

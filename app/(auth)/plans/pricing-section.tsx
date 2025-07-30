@@ -12,6 +12,10 @@ import { Check, Star, Zap } from "lucide-react";
 import { useListProductsQuery } from "./hooks/use-list-products-query";
 import { useListUserPlansQuery } from "./hooks/use-list-user-plans-query";
 import { formatPrice } from "./utils/format-price";
+import Link from "next/link";
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { useGetAuthUserProfileQuery } from "@/hooks/user/use-get-auth-user-profile";
+import { cn } from "@/lib/utils";
 
 export function PricingSection() {
   const { data: products, isLoading } = useListProductsQuery();
@@ -21,6 +25,27 @@ export function PricingSection() {
   const proProduct = products?.result?.items?.find(
     (item) => item?.name === "Mandarino Pro"
   );
+  const freeProduct = products?.result?.items?.find(
+    (item) => item?.name === "Mandarino Free"
+  );
+
+  const { data: authUserProfile } = useGetAuthUserProfileQuery();
+
+  const isProMember = userPlans?.find(
+    (plan: any) => plan?.productId === proProduct?.id
+  );
+  const isFreeMember = userPlans?.find(
+    (plan: any) => plan?.productId === freeProduct?.id
+  );
+
+  if (isLoading) {
+    return (
+      <div>
+        <LottieLoadingAnimation />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-[rgb(11,12,13)] dark:to-[rgb(21,22,23)] py-16 px-4">
       <div className="max-w-6xl mx-auto">
@@ -36,65 +61,91 @@ export function PricingSection() {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div
+          className={cn(
+            "grid gap-8 mx-auto",
+            isProMember
+              ? "md:grid-cols-1 max-w-2xl"
+              : "md:grid-cols-2 max-w-4xl"
+          )}
+        >
           {/* Free Plan */}
-          <Card className="relative h-full flex flex-col border-2 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 hover:shadow-lg dark:hover:shadow-2xl bg-white dark:bg-[rgb(29,30,31)]">
-            <CardHeader className="text-center pb-8">
-              <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Star className="w-6 h-6 text-slate-600 dark:text-slate-300" />
-              </div>
-              <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white">
-                Mandarino Free
-              </CardTitle>
-              <CardDescription className="text-slate-600 dark:text-slate-400 mt-2">
-                Perfect for getting started and trying out our platform
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-center pb-8 flex-grow">
-              <div className="mb-8">
-                <span className="text-5xl font-bold text-slate-900 dark:text-white">
-                  $0
-                </span>
-                <span className="text-slate-600 dark:text-slate-400 ml-2">
-                  /month
-                </span>
-              </div>
-              <ul className="space-y-4 text-left">
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 dark:text-green-400 mr-3 flex-shrink-0" />
-                  <span className="text-slate-700 dark:text-slate-300">
-                    1 month free trial
+          {isProMember ? null : (
+            <Card className="relative h-full flex flex-col border-2 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 hover:shadow-lg dark:hover:shadow-2xl bg-white dark:bg-[rgb(29,30,31)]">
+              <CardHeader className="text-center pb-8">
+                <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Star className="w-6 h-6 text-slate-600 dark:text-slate-300" />
+                </div>
+                <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white">
+                  {/* Mandarino Free */}
+                  {freeProduct?.name}
+                </CardTitle>
+                <CardDescription className="text-slate-600 dark:text-slate-400 mt-2">
+                  Perfect for getting started and trying out our platform
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center pb-8 flex-grow">
+                <div className="mb-8">
+                  <span className="text-5xl font-bold text-slate-900 dark:text-white">
+                    $0
                   </span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 dark:text-green-400 mr-3 flex-shrink-0" />
-                  <span className="text-slate-700 dark:text-slate-300">
-                    Basic features included
+                  <span className="text-slate-600 dark:text-slate-400 ml-2">
+                    /month
                   </span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 dark:text-green-400 mr-3 flex-shrink-0" />
-                  <span className="text-slate-700 dark:text-slate-300">
-                    Community support
-                  </span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-green-500 dark:text-green-400 mr-3 flex-shrink-0" />
-                  <span className="text-slate-700 dark:text-slate-300">
-                    Up to 3 projects
-                  </span>
-                </li>
-              </ul>
-            </CardContent>
-            <CardFooter>
-              <Button
-                variant="outline"
-                className="w-full h-12 text-base font-semibold bg-transparent border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700"
-              >
-                Get Started Free
-              </Button>
-            </CardFooter>
-          </Card>
+                </div>
+                <ul className="space-y-4 text-left">
+                  <li className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 dark:text-green-400 mr-3 flex-shrink-0" />
+                    <span className="text-slate-700 dark:text-slate-300">
+                      1 month free trial
+                    </span>
+                  </li>
+                  <li className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 dark:text-green-400 mr-3 flex-shrink-0" />
+                    <span className="text-slate-700 dark:text-slate-300">
+                      Basic features included
+                    </span>
+                  </li>
+                  <li className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 dark:text-green-400 mr-3 flex-shrink-0" />
+                    <span className="text-slate-700 dark:text-slate-300">
+                      Community support
+                    </span>
+                  </li>
+                  <li className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 dark:text-green-400 mr-3 flex-shrink-0" />
+                    <span className="text-slate-700 dark:text-slate-300">
+                      Up to 3 projects
+                    </span>
+                  </li>
+                </ul>
+              </CardContent>
+              <CardFooter>
+                {isFreeMember ? (
+                  <Button
+                    disabled
+                    className="w-full h-12 text-base font-semibold bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white"
+                  >
+                    Selected
+                  </Button>
+                ) : (
+                  <Link
+                    href={{
+                      pathname: `/checkout`,
+                      query: {
+                        productId: freeProduct?.id,
+                        customerEmail: authUserProfile?.email,
+                        products: [freeProduct?.id || ""],
+                      },
+                    }}
+                    className="w-full h-12 text-base font-semibold bg-transparent border-2 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 rounded-md flex items-center justify-center transition-colors"
+                  >
+                    Get Started Free
+                  </Link>
+                )}
+              </CardFooter>
+            </Card>
+          )}
 
           {/* Pro Plan */}
           <Card className="relative h-full flex flex-col border-2 border-emerald-200 dark:border-emerald-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-300 hover:shadow-xl dark:hover:shadow-2xl shadow-lg dark:shadow-emerald-900/20 bg-white dark:bg-[rgb(24,25,26)]">
@@ -167,9 +218,28 @@ export function PricingSection() {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full h-12 text-base font-semibold bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white">
-                Get Pro Access
-              </Button>
+              {isProMember ? (
+                <Button
+                  disabled
+                  className="w-full h-12 text-base font-semibold bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white"
+                >
+                  Selected
+                </Button>
+              ) : (
+                <Link
+                  href={{
+                    pathname: `/checkout`,
+                    query: {
+                      productId: proProduct?.id,
+                      customerEmail: authUserProfile?.email,
+                      products: [proProduct?.id || ""],
+                    },
+                  }}
+                  className="w-full h-12 text-base font-semibold bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white rounded-md flex items-center justify-center transition-colors"
+                >
+                  Get Pro Access
+                </Link>
+              )}
             </CardFooter>
           </Card>
         </div>

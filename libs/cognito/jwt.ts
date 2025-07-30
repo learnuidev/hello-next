@@ -42,7 +42,7 @@ export const verifyJwt = async (
       return isSuperAdmin(payload?.email);
     }
 
-    return true;
+    return payload;
   } catch {
     console.log("Token not valid!");
     return false;

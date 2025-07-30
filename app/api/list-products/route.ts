@@ -1,31 +1,22 @@
 import { verifyJwt } from "@/libs/cognito/jwt";
-import { listVoices } from "@/libs/narakeet/narakeet";
-
 import { headers } from "next/headers";
+import { polarApi } from "@/libs/polar/polar-api";
 
 export const maxDuration = 60;
-// export const runtime = "edge";
 
-export async function POST(req: Request) {
+export async function GET(req: Request) {
   const headersApi = await headers();
-
-  const { lang } = await req.json();
 
   const jwtToken = headersApi.get("authorization") || "";
   const isVerified = await verifyJwt(jwtToken, { isAdmin: false });
 
   if (isVerified) {
-    let resp = await listVoices();
+    const products = await polarApi.products.list({});
 
-    if (lang) {
-      resp = resp?.filter((item) => item?.languageCode === lang);
-    }
-
-    return Response.json(resp);
+    return Response.json(products);
   } else {
     return Response.json({
       message: "Not authorized",
     });
-    // throw new Error("Unauthorized");
   }
 }

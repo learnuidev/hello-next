@@ -64,9 +64,7 @@ export function PricingSection() {
         <div
           className={cn(
             "grid gap-8 mx-auto",
-            isProMember
-              ? "md:grid-cols-1 max-w-2xl"
-              : "md:grid-cols-2 max-w-4xl"
+            isProMember ? "md:grid-cols-1 max-w-md" : "md:grid-cols-2 max-w-4xl"
           )}
         >
           {/* Free Plan */}

@@ -41,7 +41,7 @@ export const WithInteractiveTitle = ({
 
   const router = useRouter();
 
-  if (!characterSound?.speechMarks?.chunks) {
+  if (!characterSound?.speechMarks?.chunks || !isPlaying) {
     return children;
   }
 

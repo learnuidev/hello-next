@@ -326,14 +326,14 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     };
   }, [togglePlay, seekBefore, seekAfter, currentTranscription, editMode]);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (currentTime !== playerRef?.current?.getCurrentTime()) {
-  //       setTime(playerRef?.current?.getCurrentTime());
-  //     }
-  //   }, 5);
-  //   return () => clearInterval(interval);
-  // }, [currentTime, playerRef, setTime]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (currentTime !== playerRef?.current?.getCurrentTime()) {
+        setTime(playerRef?.current?.getCurrentTime());
+      }
+    }, 5);
+    return () => clearInterval(interval);
+  }, [currentTime, playerRef, setTime]);
 
   const currentTranscriptionIndex = Math.max(
     transcriptions?.findIndex(
@@ -362,16 +362,31 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     }
   }, 30);
 
-  useEffect(() => {
-    const _toggleLoops = toggleLoops.filter(Boolean);
-    if (_toggleLoops?.length) {
-      const lastEnd = Math.max(..._toggleLoops?.map((x: any) => x?.end));
-      const firstStart = Math.min(..._toggleLoops?.map((x: any) => x?.start));
+  const transcriptionIds = lesson?.transcriptions?.map(
+    (item: { id: string }) => item?.id
+  );
 
-      if (currentTime > lastEnd) {
-        debounceSeek(firstStart);
-      }
+  const _toggleLoops = useMemo(
+    () =>
+      toggleLoops.filter((item: any) => {
+        if (!item) {
+          return false;
+        }
+
+        return transcriptionIds.includes(item.id);
+      }),
+    [toggleLoops, transcriptionIds]
+  );
+
+  useEffect(() => {
+    // if (_toggleLoops?.length) {
+    const lastEnd = Math.max(..._toggleLoops?.map((x: any) => x?.end));
+    const firstStart = Math.min(..._toggleLoops?.map((x: any) => x?.start));
+
+    if (currentTime > lastEnd) {
+      debounceSeek(firstStart);
     }
+    // }
   }, [
     contentId,
     setRepeatHistories,
@@ -380,6 +395,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     setLoopCounter,
     currentTime,
     debounceSeek,
+    _toggleLoops,
   ]);
 
   const currentChapter = lesson?.chapters?.find(
@@ -605,10 +621,10 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         >
           <div className="">
             <ReactPlayer
-              progressInterval={50}
-              onProgress={(value) => {
-                setTime(value.playedSeconds);
-              }}
+              // progressInterval={50}
+              // onProgress={(value) => {
+              //   setTime(value.playedSeconds);
+              // }}
               ref={playerRef}
               url={finalUrl}
               playing={isPlaying}
@@ -790,9 +806,9 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                     `${transcription?.hanzi}-${transcription?.start}`
                                   }
                                   onClick={() => {
-                                    router.push(
-                                      `/convos/${lessonId}?start=${transcription?.start}`
-                                    );
+                                    // router.push(
+                                    //   `/convos/${lessonId}?start=${transcription?.start}`
+                                    // );
                                     playerRef.current.seekTo(
                                       transcription?.start,
                                       "seconds"

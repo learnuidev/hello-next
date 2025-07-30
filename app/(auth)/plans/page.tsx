@@ -8,34 +8,9 @@ import { ProductsListResponse } from "@polar-sh/sdk/models/operations/productsli
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { PricingSection } from "./pricing-section";
+import { useListProductsQuery } from "./hooks/use-list-products-query";
+import { formatPrice } from "./utils/format-price";
 // import type { ProductsListResponse } from "@polar-sh/sdk/types/operations";
-
-function useListProductsQuery() {
-  const jwtToken = useJwtToken();
-  return useQuery({
-    queryKey: ["polar/list-products"],
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    queryFn: async (): Promise<ProductsListResponse> => {
-      const res = await fetch(`/api/list-products`, {
-        method: "GET",
-        headers: {
-          Authorization: jwtToken,
-        },
-      });
-
-      return res.json();
-    },
-  });
-}
-
-const priceFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  minimumFractionDigits: 2, // Ensures at least two decimal places
-  maximumFractionDigits: 2, // Ensures at most two decimal places
-});
 
 function useListUserPlansQuery() {
   const jwtToken = useJwtToken();
@@ -73,7 +48,7 @@ export default function ProductsList() {
   }
 
   return (
-    <div className="m-8">
+    <div className="">
       <PricingSection />
       <h1 className="text-3xl font-bold mb-8 text-center">Plans</h1>
 
@@ -94,11 +69,11 @@ export default function ProductsList() {
                 </p>
 
                 <p className="text-center text-7xl mt-12">
-                  {priceFormatter.format(
+                  {formatPrice(
                     product.prices[0].amountType === "free"
                       ? 0
                       : (product.prices[0].amountType === "fixed" &&
-                          product.prices[0].priceAmount / 100) ||
+                          product.prices[0].priceAmount) ||
                           0
                   )}
                 </p>

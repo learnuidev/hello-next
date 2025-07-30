@@ -101,8 +101,6 @@ export const CharacterTitle = (props: any) => {
 
   const { data: relatedHskWords } = useListRelatedHSKWords(characterId);
 
-  console.log("RELATED", relatedHskWords);
-
   const isHsk = relatedHskWords?.find((word) => word?.hanzi === characterId);
 
   return (

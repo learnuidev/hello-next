@@ -149,7 +149,7 @@ export function useSelectedCharacterData({
 
   // const [readMode, setReadMode] = useState(false);
   const searchParams = useSearchParams();
-  const lang = useGetLangParams() || selectedComp?.lang;
+  const lang = (useGetLangParams() || selectedComp?.lang)?.split("-")?.[0];
   const contentLang = searchParams.get("content") || "";
 
   const isAlreadyLearned = useMemo(

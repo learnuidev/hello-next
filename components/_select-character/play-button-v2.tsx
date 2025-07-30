@@ -94,7 +94,6 @@ function PlayBtnInner({
           }}
           progressInterval={1}
           onProgress={(value) => {
-            console.log("VALUE", value);
             setTime(value.playedSeconds);
           }}
           onReady={onReady}

@@ -326,6 +326,15 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     };
   }, [togglePlay, seekBefore, seekAfter, currentTranscription, editMode]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (currentTime !== playerRef?.current?.getCurrentTime()) {
+        setTime(playerRef?.current?.getCurrentTime());
+      }
+    }, 5);
+    return () => clearInterval(interval);
+  }, [currentTime, playerRef, setTime]);
+
   const currentTranscriptionIndex = Math.max(
     transcriptions?.findIndex(
       (trans: any) => trans?.start === currentTranscription?.start
@@ -612,10 +621,10 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         >
           <div className="">
             <ReactPlayer
-              progressInterval={1}
-              onProgress={(value) => {
-                setTime(value.playedSeconds);
-              }}
+              // progressInterval={1}
+              // onProgress={(value) => {
+              //   setTime(value.playedSeconds);
+              // }}
               ref={playerRef}
               url={finalUrl}
               playing={isPlaying}

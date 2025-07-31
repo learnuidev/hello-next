@@ -198,7 +198,10 @@ export function PinyinTable({
     }
 
     if (querySync && val?.value?.includes(querySync?.toLowerCase())) {
-      return "text-white";
+      return "dark:text-white text-black";
+    }
+    if (querySync && !val?.value?.includes(querySync?.toLowerCase())) {
+      return "dark:text-gray-800 text-gray-100";
     }
 
     const containsGroup = filteredComponents?.filter(

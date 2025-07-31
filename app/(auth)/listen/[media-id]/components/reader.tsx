@@ -273,11 +273,20 @@ export function Reader({
           <div className="p-2 sm:px-12 sm:py-12 rounded flex gap-4 flex-col">
             {data?.mediaFile?.translations
               ?.slice(maxMinTranslationsSlice.min, maxMinTranslationsSlice.max)
-              ?.map((item) => {
+              ?.map((item, idx) => {
+                const slicedInput = item?.input?.slice(0, -1);
+                const startIndex =
+                  item?.startChunkIndex === -1
+                    ? data?.text?.indexOf(slicedInput)
+                    : item?.startChunkIndex;
+                const endChunkIndex =
+                  item?.startChunkIndex === -1
+                    ? startIndex + slicedInput?.length
+                    : item?.endChunkIndex;
+
                 const currentChunkItem = mediaChunks?.filter(
                   (chunk) =>
-                    item?.startChunkIndex <= chunk?.start &&
-                    chunk?.end <= item?.endChunkIndex
+                    startIndex <= chunk?.start && chunk?.end <= endChunkIndex
                 );
 
                 return (

@@ -42,7 +42,7 @@ export const PreviewComponent = (props: {
 
   const styleEn = "min-w-0 text-gray-500 font-extralight truncate text-[16px]";
   return (
-    <div className="w-80 lg:w-96">
+    <div className="">
       <div className="flex w-full items-start justify-start my-2 space-x-8">
         <div className="text-start w-full">
           <div>
@@ -88,7 +88,7 @@ export const PreviewComponent = (props: {
                   {component?.lang === "zh" && (
                     <p className={stylePinyin}>{sentence?.pinyin}</p>
                   )}
-                  <h4 className="text-2xl">
+                  <h4 className="text-xl">
                     {sentence?.input || sentence?.hanzi}
                   </h4>
                   <p className={styleEn}>{sentence?.en}</p>

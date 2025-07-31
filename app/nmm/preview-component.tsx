@@ -4,6 +4,7 @@ import { BookmarkButton } from "./bookmark-button";
 import { formatComponentName } from "./format-component-name";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface IComp {
   hanzi: string;
@@ -37,36 +38,28 @@ export const PreviewComponent = (props: {
     lang: lang || "zh",
   });
 
-  const stylePinyin = "font-extralight text-gray-400";
+  const stylePinyin = "font-light text-gray-400 text-[16px]";
 
-  const styleEn = "min-w-0 text-gray-500 font-extralight truncate text-[12px]";
+  const styleEn = "min-w-0 text-gray-500 font-extralight truncate text-[16px]";
   return (
-    <div className="">
-      <div className="flex w-full items-end justify-start my-2 space-x-8">
-        <div className="w-full items-start justify-start flex-row">
-          <div className="flex items-start justify-between w-full">
-            <div>
-              <h1 className="text-3xl font-light">
-                {props?.character || hanzi}
-              </h1>
-              {lang === "zh" && (
-                <h2 className={stylePinyin}>
-                  {meaning?.details?.roman ||
-                    meaning?.details?.pinyin ||
-                    pinyin}
-                </h2>
-              )}
+    <div className="w-80 lg:w-96">
+      <div className="flex w-full items-start justify-start my-2 space-x-8">
+        <div className="text-start w-full">
+          <div>
+            <h1 className="text-3xl font-light">{props?.character || hanzi}</h1>
+            {lang === "zh" && (
+              <h2 className={stylePinyin}>
+                {meaning?.details?.roman || meaning?.details?.pinyin || pinyin}
+              </h2>
+            )}
 
-              {meaning?.details?.en && (
-                <h3 className={styleEn}>
-                  {meaning?.details?.en ||
-                    formatComponentName(component, 2) ||
-                    component?.en}
-                </h3>
-              )}
-            </div>
-
-            {meaning && <BookmarkButton {...meaning.details} />}
+            {meaning?.details?.en && (
+              <h3 className={styleEn}>
+                {meaning?.details?.en ||
+                  formatComponentName(component, 2) ||
+                  component?.en}
+              </h3>
+            )}
           </div>
         </div>
 
@@ -76,6 +69,8 @@ export const PreviewComponent = (props: {
           ) : (
             <h2 className={stylePinyin}>{lang}</h2>
           )}
+
+          <BookmarkButton hanzi={hanzi} lang={lang} />
         </div>
       </div>
 
@@ -85,22 +80,24 @@ export const PreviewComponent = (props: {
           <Skeleton className="h-14 w-full bg-gray-300 dark:bg-gray-900" />
         </div>
       ) : (
-        <div className="p-0 space-y-4 mt-4">
-          {sentences?.slice(0, 2)?.map((sentence) => {
-            return (
-              <section className="px-0 mx-0" key={sentence?.id}>
-                <h4 className="font-medium">
-                  {sentence?.input || sentence?.hanzi}
-                </h4>
-                {component?.lang === "zh" && (
-                  <p className={stylePinyin}>{sentence?.pinyin}</p>
-                )}
-                <p className={styleEn}>{sentence?.en}</p>
-                {/* <p className="text-gray-500 text-xs">{sentence?.explanation}</p> */}
-              </section>
-            );
-          })}
-        </div>
+        <ScrollArea className="space-y-6 w-full h-[300px] rounded-md pb-12">
+          <div className="p-0 space-y-8 mt-4">
+            {sentences?.map((sentence) => {
+              return (
+                <section className="text-start px-0 mx-0" key={sentence?.id}>
+                  {component?.lang === "zh" && (
+                    <p className={stylePinyin}>{sentence?.pinyin}</p>
+                  )}
+                  <h4 className="text-2xl">
+                    {sentence?.input || sentence?.hanzi}
+                  </h4>
+                  <p className={styleEn}>{sentence?.en}</p>
+                  {/* <p className="text-gray-500 text-xs">{sentence?.explanation}</p> */}
+                </section>
+              );
+            })}
+          </div>
+        </ScrollArea>
       )}
     </div>
   );

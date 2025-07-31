@@ -131,7 +131,7 @@ export const PinyinDetail = () => {
                     {prop?.hanzi}
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent className="bg-black border-gray-800">
+                <TooltipContent className="dark:bg-black bg-white border-gray-800">
                   <PreviewComponent component={prop} />
                 </TooltipContent>
               </Tooltip>

@@ -41,7 +41,11 @@ export const WithInteractiveTitle = ({
 
   const router = useRouter();
 
-  if (!characterSound?.speechMarks?.chunks || !isPlaying) {
+  if (!characterSound?.speechMarks?.chunks) {
+    return children;
+  }
+
+  if (!isPlaying && lang !== "zh") {
     return children;
   }
 

@@ -56,7 +56,7 @@ export function useListMeaningsQuery(
     },
 
     ...options,
-    retry: false,
+    retry: 2,
     enabled: Boolean(params.content) && Boolean(params.lang),
     // cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

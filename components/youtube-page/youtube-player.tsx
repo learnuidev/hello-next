@@ -40,7 +40,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import {
   useContextPlayContextState,
-  usePlayHistoryState,
+  usePlayHistoryStore,
 } from "./hooks/use-play-history-state";
 
 interface ViewModeState {
@@ -218,7 +218,9 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const { contextId, setNewContextId } = useContextPlayContextState();
 
-  const { history, setHistory } = usePlayHistoryState({ contentId: lessonId });
+  // const { history, setHistory } = usePlayHistoryState({ contentId: lessonId });
+
+  const setHistory = usePlayHistoryStore((state) => state.setHistory);
 
   const transcriptions = lesson?.transcriptions
     ? lesson?.transcriptions

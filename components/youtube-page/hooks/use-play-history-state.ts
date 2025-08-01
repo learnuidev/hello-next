@@ -19,7 +19,7 @@ export const useContextPlayContextState = () => {
   };
 };
 
-const usePlayHistoryStore = createIndexDBStore({
+export const usePlayHistoryStore = createIndexDBStore({
   name: "content/play-history-store-v2",
   handler: (set: any, get: any) => ({
     history: [],

@@ -123,13 +123,17 @@ export function FancyAreaChart({
   tooltipTitle,
 
   colorVariants,
+  children,
+  hideXAxis = false,
 }: {
   total?: number;
-  title: string;
+  title?: string;
   totalTime?: string;
   data: { date: string; value: number }[];
   colorVariants?: ColorVariants;
   tooltipTitle?: string;
+  children?: React.ReactNode;
+  hideXAxis?: boolean;
 }) {
   const { theme } = useTheme();
   const total =
@@ -142,14 +146,18 @@ export function FancyAreaChart({
 
   return (
     <div className="space-y-4">
-      <div className="mb-12">
-        <span className="text-lg dark:text-gray-400">{title}</span>
-        <h2 className="font-mono dark:text-white space-x-4">
-          <span className="text-5xl "> {total}</span>
+      {children ? (
+        children
+      ) : (
+        <div className="mb-12">
+          <span className="text-lg dark:text-gray-400">{title}</span>
+          <h2 className="font-mono dark:text-white space-x-4">
+            <span className="text-5xl "> {total}</span>
 
-          <span className="text-xl"> {totalTime}</span>
-        </h2>
-      </div>
+            <span className="text-xl"> {totalTime}</span>
+          </h2>
+        </div>
+      )}
 
       <div className="h-[250px]">
         <ResponsiveContainer width="100%" height="100%">
@@ -184,13 +192,15 @@ export function FancyAreaChart({
                 />
               </linearGradient>
             </defs>
-            <XAxis
-              dataKey="date"
-              axisLine={false}
-              fontSize={12}
-              tickLine={false}
-              stroke="#666"
-            />
+            {hideXAxis ? null : (
+              <XAxis
+                dataKey="date"
+                axisLine={false}
+                fontSize={12}
+                tickLine={false}
+                stroke="#666"
+              />
+            )}
             <YAxis
               axisLine={false}
               fontSize={12}

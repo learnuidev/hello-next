@@ -10,12 +10,11 @@ import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { useState } from "react";
 import { useGetContentInsightsNew } from "../use-get-content-insights.new";
 import { useInsightsSettingsStore } from "../use-insights-settings-store";
-import { RepeatHistoryChart } from "./repeat-histories-chart";
-import { ConvoInsightsNoNChinese } from "./convo-insights-non-chinese";
 import { ConvoContextDialog } from "./convo-context-dialog";
-import { ConvoInsightsHeader } from "./convo-insights-header";
-import { ConvoInsightsFilter } from "./convo-insights-filter";
 import { ConvoInsightOverview } from "./convo-insight-overview";
+import { ConvoInsightsFilter } from "./convo-insights-filter";
+import { ConvoInsightsHeader } from "./convo-insights-header";
+import { ConvoInsightsNoNChinese } from "./convo-insights-non-chinese";
 import { TotalPlaysChart } from "./total-plays-chart";
 
 export function ConvoInsights({ contentId }: { contentId: string }) {
@@ -52,7 +51,7 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
       <ConvoInsightOverview contentId={contentId} />
 
       <TotalPlaysChart contentId={contentId} />
-      <RepeatHistoryChart contentId={contentId} />
+
       <ConvoInsightsNoNChinese contentId={contentId}>
         <div className="w-full px-4 my-4 md:my-8">
           {selected && (

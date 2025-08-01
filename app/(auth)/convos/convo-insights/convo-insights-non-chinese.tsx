@@ -50,7 +50,8 @@ export const ConvoInsightsNoNChinese = ({
   }
 
   return (
-    <div className="my-8">
+    <div className="my-8 bg-[rgb(11,12,13)] py-12">
+      <h4 className="text-center text-2xl">Content Dictionary</h4>
       <NmmListContainerAll className="gap-4">
         {context?.map((char: any, idx: number) => {
           return (

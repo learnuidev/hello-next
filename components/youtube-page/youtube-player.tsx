@@ -634,6 +634,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
               // progressInterval={50}
               onProgress={(value) => {
                 setHistory({
+                  transcriptionId: currentTranscription?.id,
                   contextId,
                   contentId: lessonId,
                   createdAt: Date.now(),

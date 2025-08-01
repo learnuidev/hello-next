@@ -25,25 +25,25 @@ interface GetContentAnalyticsRespose {
   repeatsPerTranscription: ContentRepeatPerTranscription[];
 }
 
-function useGetContentAnalyticsQuery({ contentId }: { contentId: string }) {
-  const token = useJwtToken();
-  return useQuery({
-    queryKey: ["list-content-analytics", contentId],
-    queryFn: async (): Promise<GetContentAnalyticsRespose> => {
-      const resp = await fetch(`${listenApiUrl}/v1/get-content-analytics`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ contentId }),
-      });
+// function useGetContentAnalyticsQuery({ contentId }: { contentId: string }) {
+//   const token = useJwtToken();
+//   return useQuery({
+//     queryKey: ["list-content-analytics", contentId],
+//     queryFn: async (): Promise<GetContentAnalyticsRespose> => {
+//       const resp = await fetch(`${listenApiUrl}/v1/get-content-analytics`, {
+//         method: "POST",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//         body: JSON.stringify({ contentId }),
+//       });
 
-      const respJson = await resp.json();
+//       const respJson = await resp.json();
 
-      return respJson;
-    },
-  });
-}
+//       return respJson;
+//     },
+//   });
+// }
 
 export const useGetContentInsightsRaw = ({
   contentId,
@@ -149,7 +149,7 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
   const { totalPlays, totalRepeats, totalTimePlayed, data } =
     useGetContentInsightsRaw({ contentId });
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const removeContentHistory = usePlayHistoryStore(
     (state) => state.removeHistoryForContentId
@@ -158,50 +158,40 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
   return useQuery({
     queryKey: ["upsert-content-analytics", contentId],
     refetchInterval: 1000 * 60 * 1,
-    queryFn: async (): Promise<GetContentAnalyticsRespose | undefined> => {
-      if (
-        totalPlays !== 0 ||
-        totalPlays !== 0 ||
-        totalTimePlayed !== 0 ||
-        data?.length !== 0
-      ) {
-        const resp = await fetch(
-          `${listenApiUrl}/v1/upsert-content-analytics`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              contentId,
-              totalPlays,
-              totalRepeats,
-              totalTimePlayed,
-              repeatsPerTranscription: data?.map((item) => {
-                return {
-                  input: item?.input,
-                  transcriptionId: item?.transcriptionId,
-                  totalRepeats: item?.value,
-                };
-              }),
-            }),
-          }
-        );
+    queryFn: async (): Promise<GetContentAnalyticsRespose> => {
+      const resp = await fetch(`${listenApiUrl}/v1/upsert-content-analytics`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          contentId,
+          totalPlays,
+          totalRepeats,
+          totalTimePlayed,
+          repeatsPerTranscription: data?.map((item) => {
+            return {
+              input: item?.input,
+              transcriptionId: item?.transcriptionId,
+              totalRepeats: item?.value,
+            };
+          }),
+        }),
+      });
 
-        if (!resp?.ok) {
-          throw new Error("Error");
-        }
-
-        const respJson = await resp.json();
-
-        removeContentHistory(contentId);
-
-        queryClient.refetchQueries({
-          queryKey: ["list-content-analytics", contentId],
-        });
-
-        return respJson;
+      if (!resp?.ok) {
+        throw new Error("Error");
       }
+
+      const respJson = await resp.json();
+
+      removeContentHistory(contentId);
+
+      // queryClient.refetchQueries({
+      //   queryKey: ["list-content-analytics", contentId],
+      // });
+
+      return respJson;
     },
   });
 }
@@ -251,11 +241,13 @@ function aggregateRepeats(
 }
 
 export const useGetContentInsights = ({ contentId }: { contentId: string }) => {
-  const { data: contentAnalytics } = useGetContentAnalyticsQuery({ contentId });
+  // const { data: contentAnalytics } = useGetContentAnalyticsQuery({ contentId });
 
   const { data: content } = useGetContentQuery({ contentId });
 
-  const { data } = useUpsertContentAnalyticsQuery({ contentId });
+  const { data: contentAnalytics } = useUpsertContentAnalyticsQuery({
+    contentId,
+  });
 
   const contentAnalyticsRaw = useGetContentInsightsRaw({ contentId });
 

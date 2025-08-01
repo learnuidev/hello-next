@@ -23,6 +23,16 @@ export const usePlayHistoryStore = createIndexDBStore({
   name: "content/play-history-store-v2",
   handler: (set: any, get: any) => ({
     history: [],
+
+    removeHistoryForContentId: (contentId: string) => {
+      const oldHistory = get().history;
+
+      const historyWithContentIdRemoved = oldHistory?.filter(
+        (item: any) => item?.contentId !== contentId
+      );
+
+      set({ history: historyWithContentIdRemoved });
+    },
     setHistory: (f: any) => {
       const oldHistory = get().history;
       if (typeof f === "function") {

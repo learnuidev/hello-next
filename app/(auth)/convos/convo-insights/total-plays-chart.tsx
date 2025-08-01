@@ -8,9 +8,11 @@ import { FancyAreaChart } from "../../insights/insights-v3/components/fancy-area
 import { useGetContentInsights } from "./hooks/use-content-insights";
 
 export const TotalPlaysChart = ({ contentId }: { contentId: string }) => {
-  const { data, totalRepeats, totalTimePlayed } = useGetContentInsights({
+  const props = useGetContentInsights({
     contentId,
   });
+
+  const { data, totalRepeats, totalTimePlayed } = props;
 
   return (
     <section className="my-[72px] h-auto rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">

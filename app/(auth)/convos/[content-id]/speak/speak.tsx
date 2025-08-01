@@ -12,6 +12,7 @@ import { YoutubeButton } from "@/components/youtube-page/youtube-button";
 import Link from "next/link";
 import { useSetIfExists } from "../hooks/use-character-context-store";
 import { useRouter, useSearchParams } from "next/navigation";
+import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 
 export const Speak = ({ contentId }: { contentId: string }) => {
   const [historyTimeline, setHistoryTimeline] = useState<string[]>([]);
@@ -109,11 +110,13 @@ export const Speak = ({ contentId }: { contentId: string }) => {
 
   const spacedRemovedTranscript = useMemo(
     () =>
-      transcript
-        ?.split("")
-        ?.filter((item) => item !== " ")
-        ?.join(""),
-    [transcript]
+      content?.lang === "zh"
+        ? transcript
+            ?.split("")
+            ?.filter((item) => item !== " ")
+            ?.join("")
+        : transcript,
+    [content?.lang, transcript]
   );
 
   useEffect(() => {
@@ -207,7 +210,7 @@ export const Speak = ({ contentId }: { contentId: string }) => {
               target="_blank"
               href={`/nmm/${sentence?.hanzi || sentence?.input}?lang=${content?.lang}`}
             >
-              {sentence?.hanzi || sentence?.input}
+              {sentence?.input || sentence?.hanzi}
             </Link>
           </p>
 
@@ -225,26 +228,36 @@ export const Speak = ({ contentId }: { contentId: string }) => {
                 }}
                 className={
                   spacedRemovedTranscript ===
-                  (sentence?.hanzi || sentence?.input)
+                  (sentence?.input || sentence?.hanzi)
                     ? "text-green-500"
                     : ""
                 }
                 target="_blank"
                 href={`/nmm/${transcript}?lang=${content?.lang}`}
               >
-                {spacedRemovedTranscript?.split("").map((item, idx: number) => {
-                  const char = (sentence?.hanzi || sentence?.input)?.[idx];
-                  return (
-                    <span
-                      className={
-                        char === item ? "text-green-400" : "text-yellow-400"
-                      }
-                      key={`speak-response-${item}-${idx}-speak`}
-                    >
-                      {item}
-                    </span>
-                  );
-                })}
+                {smartSplit({
+                  input: spacedRemovedTranscript,
+                  lang: content?.lang,
+                })
+                  ?.filter((item: any) => item !== " ")
+                  .map((item: any, idx: number) => {
+                    const char =
+                      content?.lang === "zh"
+                        ? (sentence?.input || sentence?.hanzi)?.[idx]
+                        : sentence?.input?.split(" ")?.[idx]?.toLowerCase();
+
+                    return (
+                      <span
+                        className={
+                          char === item ? "text-green-400" : "text-yellow-400"
+                        }
+                        key={`speak-response-${item}-${idx}-speak`}
+                      >
+                        {item}
+                        {content?.lang === "zh" ? "" : " "}
+                      </span>
+                    );
+                  })}
               </Link>
             ) : (
               "..."

@@ -6,7 +6,7 @@ import { FancyAreaChart } from "../../../insights/insights-v3/components/fancy-a
 import { useRepeatHistoryStore } from "../../_play/use-repeat-history";
 
 const createdAtFormatter = (item: any) =>
-  parseInt(`${item?.createdAt}`?.slice(0, -1));
+  parseInt(`${item?.createdAt}`?.slice(0, -2));
 
 export const useListRepeatHistory = ({ contentId }: { contentId: string }) => {
   const repeatHistories = useRepeatHistoryStore((state: any) => state.history);

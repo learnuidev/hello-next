@@ -345,13 +345,15 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const debounceSeek = useDebouncedCallback((firstStart: any) => {
     playerRef.current.seekTo(firstStart, "seconds");
 
+    const createdAt = Date.now();
+
     for (const example of toggleLoops) {
       setRepeatHistories({
         contentId: contentId,
         ...example,
         input: example?.input || example?.hanzi,
         roman: example?.roman || example?.pinyin,
-        createdAt: Date.now(),
+        createdAt,
       });
     }
 

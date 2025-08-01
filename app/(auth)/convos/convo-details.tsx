@@ -1,7 +1,7 @@
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 
 import { useConvosStore } from "@/stores/convos-store";
-import { ConvoInsights } from "./convo-insights";
+import { ConvoInsights } from "./convo-insights/convo-insights";
 import { groupBy } from "ramda";
 
 import { Wordle } from "@/components/wordle/wordle";

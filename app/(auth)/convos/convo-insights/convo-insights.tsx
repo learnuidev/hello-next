@@ -15,6 +15,7 @@ import { ConvoInsightsNoNChinese } from "./convo-insights-non-chinese";
 import { ConvoContextDialog } from "./convo-context-dialog";
 import { ConvoInsightsHeader } from "./convo-insights-header";
 import { ConvoInsightsFilter } from "./convo-insights-filter";
+import { ConvoInsightOverview } from "./convo-insight-overview";
 
 export function ConvoInsights({ contentId }: { contentId: string }) {
   const viewType = useInsightsSettingsStore((state) => state.type);
@@ -46,7 +47,8 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
   return selectedChar ? (
     <SelectedCharacterContainer characterId={selectedChar} />
   ) : (
-    <div className="max-w-6xl m-auto">
+    <div className="max-w-6xl m-auto mt-12">
+      <ConvoInsightOverview contentId={contentId} />
       <RepeatHistoryChart contentId={contentId} />
       <ConvoInsightsNoNChinese contentId={contentId}>
         <div className="w-full px-4 my-4 md:my-8">

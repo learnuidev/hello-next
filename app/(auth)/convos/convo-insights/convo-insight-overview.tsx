@@ -1,7 +1,10 @@
 "use client";
 
 import { InsightItem } from "@/app/(auth)/insights/insights-v2/components/insight-item";
-import { secondsToTimestamp } from "@/app/profile/utils/seconds-to-timestamp";
+import {
+  secondsToTimestamp,
+  secondsToTimestampV2,
+} from "@/app/profile/utils/seconds-to-timestamp";
 import { useListRepeatHistory } from "./hooks/use-list-repeat-history";
 import { usePlayHistoryState } from "@/components/youtube-page/hooks/use-play-history-state";
 import { groupBy } from "ramda";
@@ -9,7 +12,7 @@ import { groupBy } from "ramda";
 export const ConvoInsightOverview = ({ contentId }: { contentId: string }) => {
   const history = useListRepeatHistory({ contentId });
 
-  const totalTimeReviewed = secondsToTimestamp(
+  const totalTimeReviewed = secondsToTimestampV2(
     history
       .map((item: any) => (item.end - item.start) * 1000)
       .reduce((acc: any, curr: any) => acc + curr, 0)
@@ -33,7 +36,7 @@ export const ConvoInsightOverview = ({ contentId }: { contentId: string }) => {
     })
     .reduce((acc, curr) => acc + curr, 0);
 
-  const totalTimePlayed = secondsToTimestamp(_totalTimePlayed);
+  const totalTimePlayed = secondsToTimestampV2(_totalTimePlayed);
 
   const insightsList = [
     {

@@ -1,7 +1,7 @@
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
 export const useRepeatHistoryStore = createIndexDBStore({
-  name: "mandarino/repeat-history",
+  name: "mandarino/repeat-history-v2",
   handler: (set: any, get: any) => ({
     history: [],
     setHistory: (event: any) => set({ history: get().history.concat(event) }),

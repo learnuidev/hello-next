@@ -107,6 +107,7 @@ export const useGetContentInsightsRaw = ({
 
         return {
           value,
+          input: currentTranscription?.input,
           date: currentTranscription?.input || transcriptionId,
           transcriptionId,
         };
@@ -178,6 +179,7 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
               totalTimePlayed,
               repeatsPerTranscription: data?.map((item) => {
                 return {
+                  input: item?.input,
                   transcriptionId: item?.transcriptionId,
                   totalRepeats: item?.value,
                 };
@@ -266,6 +268,7 @@ export const useGetContentInsights = ({ contentId }: { contentId: string }) => {
     );
 
     return {
+      input: transcriptionItem?.input,
       date: transcriptionItem?.input || item.transcriptionId,
       value: item?.totalRepeats,
     };

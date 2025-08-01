@@ -18,23 +18,6 @@ export const TotalPlaysChart = ({ contentId }: { contentId: string }) => {
 
       <FancyAreaChart hideXAxis={false} tooltipTitle={"repeats"} data={data}>
         <div></div>
-        {/* <div className="mb-12 flex gap-8 items-center flex-row">
-          <div>
-            <span className="text-lg dark:text-gray-400">
-              Total Minutes Played
-            </span>
-            <h2 className="font-mono dark:text-white space-x-4">
-              <span className="text-3xl "> {totalTimePlayed}</span>
-            </h2>
-          </div>
-
-          <div>
-            <span className="text-lg dark:text-gray-400">Total Repeats</span>
-            <h2 className="font-mono dark:text-white space-x-4">
-              <span className="text-3xl ">{totalRepeats}</span>
-            </h2>
-          </div>
-        </div> */}
       </FancyAreaChart>
     </section>
   );

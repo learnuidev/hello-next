@@ -111,7 +111,7 @@ export const Phrase = () => {
                   className="block h-18 p-4 col-span-2 lg:col-span-2 shadow-2 shadow-sm dark:shadow-gray-800 shadow-gray-200 rounded-2xl"
                 >
                   <Link
-                    href={`${rootUrl}t?feature-id=phrase&contextId=${history?.id}`}
+                    href={`${rootUrl}?feature-id=phrase&contextId=${history?.id}`}
                     className="flex justify-between items-center"
                   >
                     <p className="text-sm ">

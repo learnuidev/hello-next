@@ -16,6 +16,7 @@ import { ConvoContextDialog } from "./convo-context-dialog";
 import { ConvoInsightsHeader } from "./convo-insights-header";
 import { ConvoInsightsFilter } from "./convo-insights-filter";
 import { ConvoInsightOverview } from "./convo-insight-overview";
+import { TotalPlaysChart } from "./total-plays-chart";
 
 export function ConvoInsights({ contentId }: { contentId: string }) {
   const viewType = useInsightsSettingsStore((state) => state.type);
@@ -49,6 +50,8 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
   ) : (
     <div className="max-w-6xl m-auto mt-12">
       <ConvoInsightOverview contentId={contentId} />
+
+      <TotalPlaysChart contentId={contentId} />
       <RepeatHistoryChart contentId={contentId} />
       <ConvoInsightsNoNChinese contentId={contentId}>
         <div className="w-full px-4 my-4 md:my-8">

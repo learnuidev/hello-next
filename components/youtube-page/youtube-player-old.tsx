@@ -36,12 +36,8 @@ import { useCurrentTime } from "./use-current-time-store";
 import { getYablaLink } from "./utils/get-yabla-link";
 import { useIsSmall } from "./utils/use-is-small";
 
+import { persist, createJSONStorage } from "zustand/middleware";
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-import {
-  useContextPlayContextState,
-  usePlayHistoryStore,
-} from "./hooks/use-play-history-state";
 
 interface ViewModeState {
   viewMode: string;
@@ -126,6 +122,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const toggleLoop = useViewModeStore((state) => state.toggleLoop);
   const setToggleLoop = useViewModeStore((state) => state.setToggleLoop);
+
+  // const [toggleLoops, setToggleLoops] = useState<any>([]);
 
   const toggleLoops: any = useViewModeStore((state) => state.toggleLoops);
   const setToggleLoops = useViewModeStore((state) => state.setToggleLoops);
@@ -215,8 +213,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   }) as any;
 
   const router = useRouter();
-  const { contextId, setNewContextId } = useContextPlayContextState();
-  const setHistory = usePlayHistoryStore((state) => state.setHistory);
+
   const transcriptions = lesson?.transcriptions
     ? lesson?.transcriptions
     : transcriptionsData?.length
@@ -337,6 +334,13 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     ),
     0
   );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(playerRef?.current?.getCurrentTime());
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
 
   const debounceSeek = useDebouncedCallback((firstStart: any) => {
     playerRef.current.seekTo(firstStart, "seconds");
@@ -600,20 +604,6 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         >
           <div className="">
             <ReactPlayer
-              // progressInterval={50}
-              onProgress={(value) => {
-                setHistory({
-                  transcriptionId: currentTranscription?.id,
-                  contextId,
-                  contentId: lessonId,
-                  createdAt: Date.now(),
-                  progressTime: value.playedSeconds,
-                });
-                setTime(value.playedSeconds);
-              }}
-              onPlay={() => {
-                setNewContextId();
-              }}
               ref={playerRef}
               url={finalUrl}
               playing={isPlaying}
@@ -795,18 +785,9 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                     `${transcription?.hanzi}-${transcription?.start}`
                                   }
                                   onClick={() => {
-                                    setRepeatHistories({
-                                      contentId: contentId,
-                                      ...transcription,
-                                      input:
-                                        transcription?.input ||
-                                        transcription?.hanzi,
-                                      roman:
-                                        transcription?.roman ||
-                                        transcription?.pinyin,
-                                      createdAt: Date.now(),
-                                    });
-
+                                    router.push(
+                                      `/convos/${lessonId}?start=${transcription?.start}`
+                                    );
                                     playerRef.current.seekTo(
                                       transcription?.start,
                                       "seconds"

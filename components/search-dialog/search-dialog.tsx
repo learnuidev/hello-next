@@ -37,7 +37,6 @@ export function SearchDialogInner({
     }
   }, [components, searchInput]);
 
-  console.log("search results", searchResults);
   return (
     <Dialog open={isOpen}>
       <DialogContent

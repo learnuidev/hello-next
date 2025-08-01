@@ -809,6 +809,19 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                     // router.push(
                                     //   `/convos/${lessonId}?start=${transcription?.start}`
                                     // );
+
+                                    setRepeatHistories({
+                                      contentId: contentId,
+                                      ...transcription,
+                                      input:
+                                        transcription?.input ||
+                                        transcription?.hanzi,
+                                      roman:
+                                        transcription?.roman ||
+                                        transcription?.pinyin,
+                                      createdAt: Date.now(),
+                                    });
+
                                     playerRef.current.seekTo(
                                       transcription?.start,
                                       "seconds"

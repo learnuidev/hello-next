@@ -36,8 +36,12 @@ import { useCurrentTime } from "./use-current-time-store";
 import { getYablaLink } from "./utils/get-yabla-link";
 import { useIsSmall } from "./utils/use-is-small";
 
-import { persist, createJSONStorage } from "zustand/middleware";
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+import {
+  useContextPlayContextState,
+  usePlayHistoryState,
+} from "./hooks/use-play-history-state";
 
 interface ViewModeState {
   viewMode: string;
@@ -211,6 +215,10 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   }) as any;
 
   const router = useRouter();
+
+  const { contextId, setNewContextId } = useContextPlayContextState();
+
+  const { history, setHistory } = usePlayHistoryState({ contentId: lessonId });
 
   const transcriptions = lesson?.transcriptions
     ? lesson?.transcriptions
@@ -625,7 +633,16 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             <ReactPlayer
               // progressInterval={50}
               onProgress={(value) => {
+                setHistory({
+                  contextId,
+                  contentId: lessonId,
+                  createdAt: Date.now(),
+                  progressTime: value.playedSeconds,
+                });
                 setTime(value.playedSeconds);
+              }}
+              onPlay={() => {
+                setNewContextId();
               }}
               ref={playerRef}
               url={finalUrl}
@@ -811,6 +828,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                     // router.push(
                                     //   `/convos/${lessonId}?start=${transcription?.start}`
                                     // );
+
+                                    // setNewContextId();
 
                                     setRepeatHistories({
                                       contentId: contentId,

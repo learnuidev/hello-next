@@ -20,6 +20,7 @@ import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { Icons } from "../ui/icons.v2";
 import { useContentEditStore } from "./use-content-edit-store";
 import { europeanLangs } from "@/libs/constants/european-langs";
+import { useContextPlayContextState } from "./hooks/use-play-history-state";
 
 export const TranscriptItem = ({
   example,
@@ -254,6 +255,8 @@ export const TranscriptItem = ({
 
   const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
 
+  const { contextId, setNewContextId } = useContextPlayContextState();
+
   return (
     <div className="w-120 px-4">
       <div className="flex items-center space-x-4">
@@ -263,6 +266,7 @@ export const TranscriptItem = ({
           } w-full ${focusMode || isVideoHidden ? "" : ""}`}
           role="button"
           onClick={() => {
+            // setNewContextId();
             setRepeatHistories({
               contentId: contentId,
               ...example,

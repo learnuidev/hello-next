@@ -6,6 +6,8 @@ import { useListAttempts } from "@/app/(auth)/insights/insights-v2/use-list-atte
 import { useListCorrect } from "@/app/(auth)/insights/insights-v2/use-list-correct";
 import { useListErrors } from "@/app/(auth)/insights/insights-v2/use-list-errors";
 import { useGetInsightParams } from "@/app/(auth)/insights/insights-v2/use-get-insight-params";
+import { useListRepeatHistory } from "./hooks/use-list-repeat-history";
+import { secondsToTimestamp } from "@/app/profile/utils/seconds-to-timestamp";
 
 export const ConvoInsightOverview = ({ contentId }: { contentId: string }) => {
   const totalErrors = useListErrors();
@@ -13,28 +15,30 @@ export const ConvoInsightOverview = ({ contentId }: { contentId: string }) => {
   const totalCorrect = useListCorrect();
   const failureRate = useGetFailureRate();
 
-  const { filter, view } = useGetInsightParams();
+  const history = useListRepeatHistory({ contentId });
+
+  console.log("HISTORY", history);
+
+  const totalTimeReviewed = secondsToTimestamp(
+    history
+      .map((item: any) => (item.end - item.start) * 1000)
+      .reduce((acc: any, curr: any) => acc + curr, 0)
+  );
 
   const insightsList = [
     {
       id: "total",
-      stat: totalAttempts?.filter((item) => item?.totalAttempts)?.length || 0,
-      title: "Total Attempts",
+      stat: totalTimeReviewed,
+      title: "Total Minutes Played",
     },
-    { id: "correct", stat: totalCorrect?.length || 0, title: "Correct" },
-    { id: "incorrect", stat: totalErrors?.length || 0, title: "Incorrect" },
-    {
-      id: "failure-rate",
-      stat: failureRate,
-      title: "Failure Rate",
-    },
+    { id: "correct", stat: history?.length || 0, title: "Total Repeats" },
   ];
 
   return (
-    <section className="grid grid-cols-3 md:grid-cols-4 gap-4 mt-8 md:mt-0 md:mb-16 justify-center items-center">
+    <section className="grid grid-cols-2 gap-4 mt-8 md:mt-0 md:mb-16 justify-center items-center">
       {insightsList.map((item) => (
         <InsightItem
-          href={`/insights?view=${view}&filter=${item?.id}`}
+          // href={`/insights?view=${view}&filter=${item?.id}`}
           key={item.id}
           id={item.id}
           stat={item.stat}

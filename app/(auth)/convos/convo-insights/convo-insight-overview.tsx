@@ -3,12 +3,18 @@
 import { InsightItem } from "@/app/(auth)/insights/insights-v2/components/insight-item";
 import { useGetContentInsights } from "./hooks/use-content-insights";
 
-export const ConvoInsightOverview = ({ contentId }: { contentId: string }) => {
+export const ConvoInsightOverview = ({
+  contentId,
+  data,
+}: {
+  contentId: string;
+  data?: { id: string; stat: number | string; title: string }[];
+}) => {
   const { totalRepeats, totalTimePlayed } = useGetContentInsights({
     contentId,
   });
 
-  const insightsList = [
+  const insightsList = data || [
     {
       id: "total-time-played",
       stat: totalTimePlayed,

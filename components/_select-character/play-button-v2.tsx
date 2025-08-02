@@ -14,6 +14,10 @@ import {
 } from "./selected-character.constants";
 import { useCharacterSoundState } from "./use-character-sound-state";
 import { useYoutubeRefState } from "./use-youtube-ref-state";
+import {
+  useContextPlayContextState,
+  usePlayHistoryStore,
+} from "../youtube-page/hooks/use-play-history-state";
 
 function PlayBtnInner({
   audioUrl,
@@ -33,6 +37,10 @@ function PlayBtnInner({
   const autoPlay = true;
 
   const { playbackRate } = useListenState();
+
+  const setHistory = usePlayHistoryStore((state) => state.setHistory);
+  // const [isPlaying, setIsPlaying] = useState(false);
+  const { contextId, setNewContextId } = useContextPlayContextState();
 
   const id = `${text}#${lang}#${provider}`;
   const { isPlaying, setIsPlaying } = useIsPlayingState(id);
@@ -88,6 +96,7 @@ function PlayBtnInner({
           }}
           onPlay={() => {
             setIsPlaying(true);
+            setNewContextId();
           }}
           onPause={() => {
             setIsPlaying(false);
@@ -95,6 +104,14 @@ function PlayBtnInner({
           progressInterval={1}
           onProgress={(value) => {
             setTime(value.playedSeconds);
+
+            setHistory({
+              transcriptionId: `${text}`,
+              contextId,
+              contentId: `${text}`,
+              createdAt: Date.now(),
+              progressTime: value.playedSeconds,
+            });
           }}
           onReady={onReady}
           ref={playerRef}

@@ -3,22 +3,19 @@
 import { SelectedCharacterContainer } from "@/components/selected-character-container";
 import { useSelectedCharacter } from "../../app/(auth)/convos/use-selected-character";
 
-import {
-  useListCharactersMapQuery,
-  useListCharactersQuery,
-} from "@/domain/lesson/character.queries";
-import Link from "next/link";
+import { useListCharactersMapQuery } from "@/domain/lesson/character.queries";
 
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
-import { Icons } from "@/components/ui/icons.v2";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
+import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 
 import { HanziLink } from "@/components/hanzi-link";
-import { create } from "zustand";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
-// import { NmmListContainerAll } from "../nmm-list-container";
+
+import { ConvoInsightOverview } from "@/app/(auth)/convos/convo-insights/convo-insight-overview";
+import { useGetContentInsights } from "@/app/(auth)/convos/convo-insights/hooks/use-content-insights";
 import { useInsightsSettingsStore } from "@/app/(auth)/convos/use-insights-settings-store";
 import { useMemo } from "react";
 
@@ -29,6 +26,10 @@ export function CharacterAnalytics({
   characterId: string;
   lang: string;
 }) {
+  const { totalTimePlayed, totalPlays } = useGetContentInsights({
+    contentId: characterId,
+  });
+
   const viewType = useInsightsSettingsStore((state) => state.type);
   const setViewType = useInsightsSettingsStore((state) => state.setType);
 
@@ -84,6 +85,20 @@ export function CharacterAnalytics({
     <SelectedCharacterContainer characterId={selectedChar} />
   ) : (
     <div className="w-full px-4 my-4 md:my-8">
+      {totalPlays > 0 && (
+        <ConvoInsightOverview
+          contentId={characterId}
+          data={[
+            {
+              id: "total-time-played-ca",
+              stat: totalTimePlayed,
+              title: "Total Minutes Played",
+            },
+
+            { id: "total-plays-ca", stat: totalPlays, title: "Total Plays" },
+          ]}
+        />
+      )}
       <div>
         <div className="flex flex-row justify-between w-full">
           <div className="flex justify-start space-x-4 sm:space-x-16">

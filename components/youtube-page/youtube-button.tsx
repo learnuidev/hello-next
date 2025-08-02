@@ -129,6 +129,7 @@ export function YoutubeButton({
               if (playerRef?.current?.player?.isPlaying) {
                 playerRef?.current?.player?.player?.pause();
                 setIsPlaying(false);
+                setTime(currentTranscription?.start);
                 seek(currentTranscription?.start);
               }
             } else {

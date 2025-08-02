@@ -186,7 +186,7 @@ export const CharacterTitle = (props: any) => {
         </div>
       </div>
 
-      {edit && meaning?.id && isSuperAdmin ? (
+      {lang === "en" ? null : edit && meaning?.id && isSuperAdmin ? (
         <input
           value={newEn || meaning?.details?.en}
           onChange={(event: any) => {

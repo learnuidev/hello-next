@@ -162,11 +162,14 @@ export const SentenceItem = (props: any) => {
             setIfExists({ ...currentPhrase });
           }}
         >
-          {showPinyin && lang !== "en" && (
-            <span className="text-[16px] text-gray-600 dark:text-gray-400">
-              {currentPhrase?.roman || currentPhrase?.pinyin}
-            </span>
-          )}
+          {currentPhrase?.lang === "en"
+            ? null
+            : showPinyin &&
+              lang !== "en" && (
+                <span className="text-[16px] text-gray-600 dark:text-gray-400">
+                  {currentPhrase?.roman || currentPhrase?.pinyin}
+                </span>
+              )}
         </Link>
         <WithInteractiveTitle
           customRef={customRef}
@@ -218,20 +221,22 @@ export const SentenceItem = (props: any) => {
             })}
           </span>
         </WithInteractiveTitle>
-        {lang !== "en" &&
-          (currentPhrase?.contentId ? (
-            <Link
-              target="_blank"
-              className="text-[16px] dark:text-gray-500 text-gray-600"
-              href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start && `?start=${currentPhrase?.start}`}`}
-            >
-              {currentPhrase?.en || currentPhrase?.title}
-            </Link>
-          ) : (
-            <span className="text-[16px] dark:text-gray-500 text-gray-600">
-              {currentPhrase?.en || currentPhrase?.title}
-            </span>
-          ))}
+        {currentPhrase?.lang === "en"
+          ? null
+          : lang !== "en" &&
+            (currentPhrase?.contentId ? (
+              <Link
+                target="_blank"
+                className="text-[16px] dark:text-gray-500 text-gray-600"
+                href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start && `?start=${currentPhrase?.start}`}`}
+              >
+                {currentPhrase?.en || currentPhrase?.title}
+              </Link>
+            ) : (
+              <span className="text-[16px] dark:text-gray-500 text-gray-600">
+                {currentPhrase?.en || currentPhrase?.title}
+              </span>
+            ))}
       </div>
 
       <Links customRef={customRef} />

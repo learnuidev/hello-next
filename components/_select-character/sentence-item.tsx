@@ -84,7 +84,7 @@ export const SentenceItem = (props: any) => {
         <div className="flex gap-2 justify-end items-end w-full pr-2 mt-2 sm:mt-0">
           {/* {currentPhrase?.audio ? ( */}
 
-          {currentPhrase?.contentId && (
+          {currentPhrase?.contentId ? (
             <YoutubeButton
               // currentPhraseStr={JSON.stringify(currentPhrase)}
               className="h-6 w-6 text-xs"
@@ -92,20 +92,20 @@ export const SentenceItem = (props: any) => {
               transcriptId={"todo"}
               sentenceInput={currentPhrase?.input || currentPhrase?.hanzi}
             />
+          ) : (
+            <PlayButtonV2
+              customRef={customRef}
+              text={currentPhrase?.input || currentPhrase?.hanzi}
+              lang={lang || currentPhrase?.lang}
+              className={cn(
+                `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${"ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"} shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
+                "h-6 w-6 text-xs",
+                "ml-1"
+              )}
+            />
           )}
 
           {/* ) : null} */}
-
-          <PlayButtonV2
-            customRef={customRef}
-            text={currentPhrase?.input || currentPhrase?.hanzi}
-            lang={lang || currentPhrase?.lang}
-            className={cn(
-              `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${"ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"} shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
-              "h-6 w-6 text-xs",
-              "ml-1"
-            )}
-          />
 
           <Link
             onClick={() => {

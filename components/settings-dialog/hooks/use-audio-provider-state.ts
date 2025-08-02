@@ -8,6 +8,12 @@ const useAudioProviderStore = createIndexDBStore({
   }),
 });
 
+export const officialAudioProviders = [
+  { id: "narakeet", title: "Narakeet" },
+  { id: "speechify", title: "Speechify" },
+  { id: "minimax", title: "Minimax" },
+];
+
 export const useAudioProviderState = () => {
   const provider: any = useAudioProviderStore((state) => state.provider);
   const setProvider = useAudioProviderStore((state) => state.setProvider);

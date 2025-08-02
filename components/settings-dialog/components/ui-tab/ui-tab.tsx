@@ -12,7 +12,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useSettingsDialogState } from "../../settings-dialog.state";
-import { useAudioProviderState } from "../../hooks/use-audio-provider-state";
+import {
+  officialAudioProviders,
+  useAudioProviderState,
+} from "../../hooks/use-audio-provider-state";
 
 export function UiTab() {
   const { theme, setTheme } = useTheme();
@@ -88,28 +91,19 @@ export function UiTab() {
           </CardDescription>
         </CardHeader>
         <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
-          <div>
-            <div className="flex z-50 items-center space-x-2">
-              <Checkbox
-                checked={provider === "speechify"}
-                onCheckedChange={(event) => {
-                  setProvider("speechify");
-                }}
-              />
-              <Label htmlFor="airplane-mode">Speechify</Label>
+          {officialAudioProviders.map((providerItem) => (
+            <div key={providerItem.id}>
+              <div className="flex z-50 items-center space-x-2">
+                <Checkbox
+                  checked={provider === providerItem.id}
+                  onCheckedChange={(event) => {
+                    setProvider(providerItem.id);
+                  }}
+                />
+                <Label htmlFor="airplane-mode">{providerItem.title}</Label>
+              </div>
             </div>
-          </div>
-          <div>
-            <div className="flex z-50 items-center space-x-2">
-              <Checkbox
-                checked={provider === "minimax"}
-                onCheckedChange={(event) => {
-                  setProvider("minimax");
-                }}
-              />
-              <Label htmlFor="airplane-mode">Minimax</Label>
-            </div>
-          </div>
+          ))}
         </CardContent>
       </Card>
     </div>

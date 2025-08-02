@@ -45,7 +45,6 @@ export function YoutubeButton({
   transcriptId,
   sentenceInput,
   className,
-  // currentPhraseStr,
 }: {
   contentId: string;
   transcriptId: string;
@@ -54,15 +53,6 @@ export function YoutubeButton({
   currentPhraseStr?: string;
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
-
-  // const currentPhrase = useMemo(
-  //   () => JSON.parse(currentPhraseStr || ""),
-  //   [currentPhraseStr]
-  // );
-
-  // const { isPlaying, setIsPlaying } = useIsPlaying({ currentPhrase });
-
-  console.log("is playing", isPlaying);
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(contentId);
 

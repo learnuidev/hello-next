@@ -10,6 +10,10 @@ import { useCurrentTime } from "./use-current-time-store";
 import { cn } from "@/lib/utils";
 
 import { create } from "zustand";
+import {
+  useContextPlayContextState,
+  usePlayHistoryStore,
+} from "./hooks/use-play-history-state";
 
 export const useIsPlayingStore = create((set: any, get: any) => ({
   isPlaying: {},
@@ -52,7 +56,9 @@ export function YoutubeButton({
   className?: string;
   currentPhraseStr?: string;
 }) {
+  const setHistory = usePlayHistoryStore((state) => state.setHistory);
   const [isPlaying, setIsPlaying] = useState(false);
+  const { contextId, setNewContextId } = useContextPlayContextState();
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(contentId);
 
@@ -133,8 +139,18 @@ export function YoutubeButton({
                 seek(currentTranscription?.start);
               }
             } else {
+              setHistory({
+                transcriptionId: currentTranscription?.id,
+                contextId,
+                contentId,
+                createdAt: Date.now(),
+                progressTime: value.playedSeconds,
+              });
               setTime(value.playedSeconds);
             }
+          }}
+          onPlay={() => {
+            setNewContextId();
           }}
           ref={playerRef}
           url={finalUrl}

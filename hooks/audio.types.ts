@@ -28,4 +28,5 @@ export type GetAudioResponse = {
 export interface GetAudioRequest {
   text: string;
   lang: string;
+  provider?: string;
 }

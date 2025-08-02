@@ -62,8 +62,11 @@ export function YoutubeButton({
   const { data: lesson } = useGetContentQuery({ contentId: contentId });
   const finalUrl = lesson?.audio;
 
-  const seekAndPlay = (time: any) => {
+  const seek = (time: any) => {
     playerRef.current.seekTo(time, "seconds");
+  };
+  const seekAndPlay = (time: any) => {
+    seek(time);
 
     try {
       playerRef.current?.player?.player?.play();
@@ -126,10 +129,11 @@ export function YoutubeButton({
               if (playerRef?.current?.player?.isPlaying) {
                 playerRef?.current?.player?.player?.pause();
                 setIsPlaying(false);
+                seek(currentTranscription?.start);
               }
+            } else {
+              setTime(value.playedSeconds);
             }
-
-            setTime(value.playedSeconds);
           }}
           ref={playerRef}
           url={finalUrl}

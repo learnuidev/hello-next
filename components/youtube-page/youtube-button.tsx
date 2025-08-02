@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import ReactPlayer from "react-player";
@@ -62,6 +62,8 @@ export function YoutubeButton({
 
   // const { isPlaying, setIsPlaying } = useIsPlaying({ currentPhrase });
 
+  console.log("is playing", isPlaying);
+
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(contentId);
 
   const playerRef = useRef(null) as any;
@@ -98,22 +100,6 @@ export function YoutubeButton({
     [sentenceInput, transcriptId, transcriptions]
   );
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(playerRef?.current?.getCurrentTime());
-    }, 500);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (currentTime > currentTranscription?.end) {
-      if (playerRef?.current?.player?.isPlaying) {
-        playerRef?.current?.player?.player?.pause();
-        setIsPlaying(false);
-      }
-    }
-  }, [currentTime, currentTranscription?.end]);
-
   const togglePlay = useCallback(() => {
     if (playerRef?.current?.player?.isPlaying) {
       playerRef?.current?.player?.player?.pause();
@@ -127,12 +113,6 @@ export function YoutubeButton({
   const playSound = () => {
     seekAndPlay(currentTranscription?.start);
 
-    // console.log(
-    //   `     currentTime > currentTranscription?.start &&
-    //   currentTime < currentTranscription?.end`,
-    //   currentTime > currentTranscription?.start &&
-    //     currentTime < currentTranscription?.end
-    // );
     if (
       currentTime > currentTranscription?.start &&
       currentTime < currentTranscription?.end
@@ -151,6 +131,16 @@ export function YoutubeButton({
     <div>
       <div className="hidden">
         <ReactPlayer
+          onProgress={(value) => {
+            if (currentTime > currentTranscription?.end) {
+              if (playerRef?.current?.player?.isPlaying) {
+                playerRef?.current?.player?.player?.pause();
+                setIsPlaying(false);
+              }
+            }
+
+            setTime(value.playedSeconds);
+          }}
           ref={playerRef}
           url={finalUrl}
           playing={isPlaying}

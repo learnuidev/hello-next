@@ -66,7 +66,7 @@ export function KaraokeMode({
                 }}
                 key={JSON.stringify(lyric) + `${idx}`}
                 className={cn(
-                  "text-gray-600 lg:text-lg text-sm cursor-pointer hover:text-white/75 transition-colors",
+                  "text-gray-600 lg:text-lg text-sm cursor-pointer hover:text-pink-500 dark:hover:text-white/75 transition-colors",
                   "text-gray-700"
                 )}
               >

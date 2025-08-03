@@ -57,7 +57,11 @@ export function useListLearnedCharactersByDate({
   const getResolvedChars = () => {
     switch (variant) {
       case "all":
-        return [...(learnedCharacters || []), ...(data?.Items || [])];
+        return [
+          ...(learnedCharacters || []),
+          ...(data?.Items || []),
+          ...(bookmarks || []),
+        ];
       case "search":
         return (
           data?.Items?.filter((event: any) => event?.eventType === "SEARCH") ||

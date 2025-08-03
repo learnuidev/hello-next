@@ -1,6 +1,5 @@
 import { Label } from "@/components/ui/label";
 
-import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 import {
   Card,
   CardContent,
@@ -12,10 +11,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useSettingsDialogState } from "../../settings-dialog.state";
-import {
-  officialAudioProviders,
-  useAudioProviderState,
-} from "../../hooks/use-audio-provider-state";
 
 export function UiTab() {
   const { theme, setTheme } = useTheme();
@@ -26,8 +21,6 @@ export function UiTab() {
   const setUserPreferenceState = useSettingsDialogState(
     (state) => state.setUserPreferenceState
   );
-
-  const { provider, setProvider } = useAudioProviderState();
 
   return (
     <div className="space-y-4">
@@ -80,30 +73,6 @@ export function UiTab() {
               {theme === "dark" ? <Sun /> : <Moon />}
             </button>
           </div>
-        </CardContent>
-      </Card>
-
-      <Card className="rounded border-gray-100 dark:border-black dark:bg-[#0b0b0f] shadow-sm  transition ">
-        <CardHeader>
-          <CardTitle>Audio Provider</CardTitle>
-          <CardDescription className="text-gray-500 font-extralight">
-            Set your AI audio provider
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
-          {officialAudioProviders.map((providerItem) => (
-            <div key={providerItem.id}>
-              <div className="flex z-50 items-center space-x-2">
-                <Checkbox
-                  checked={provider === providerItem.id}
-                  onCheckedChange={(event) => {
-                    setProvider(providerItem.id);
-                  }}
-                />
-                <Label htmlFor="airplane-mode">{providerItem.title}</Label>
-              </div>
-            </div>
-          ))}
         </CardContent>
       </Card>
     </div>

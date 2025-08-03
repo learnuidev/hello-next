@@ -8,7 +8,10 @@ import { cn } from "@/lib/utils";
 import { Icons } from "../ui/icons.v2";
 import { useSettingsDialogState } from "./settings-dialog.state";
 
-import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
+import {
+  useCurrentAuthUser,
+  useIsSuperAdmin,
+} from "@/domain/auth/auth.queries";
 
 import { useShortCuts } from "./use-short-cuts";
 
@@ -19,6 +22,8 @@ import { LoginAndSecurityTab } from "./components/login-and-security-tab/login-a
 import { ProfileTab } from "./components/profile-tab/profile-tab";
 import { TrackingTab } from "./components/tracking-tab/tracking-tab";
 import { UiTab } from "./components/ui-tab/ui-tab";
+import { isSuperAdmin } from "@/libs/constants/super-admin-emails";
+import { ListenTab } from "./components/listen-tab/listen-tab";
 
 export function SettingsDialogInner({
   isOpen,
@@ -36,6 +41,8 @@ export function SettingsDialogInner({
   const setUserPreferenceState = useSettingsDialogState(
     (state) => state.setUserPreferenceState
   );
+
+  const isSuperAdmin = useIsSuperAdmin();
 
   const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
 
@@ -96,14 +103,31 @@ export function SettingsDialogInner({
               <TabsTrigger
                 className={cn(
                   "px-0 mx-0 space-x-2",
-                  tab === "api-keys" ? "text-white" : "text-gray-500",
+                  tab === "listen" ? "text-white" : "text-gray-500",
                   "transition"
                 )}
-                value="api-keys"
+                value="listen"
               >
-                {tab === "api-keys" ? <Icons.lockSolid /> : <Icons.lock />}
-                <span>API Keys</span>
+                {tab === "listen" ? (
+                  <Icons.musicNoteSolid />
+                ) : (
+                  <Icons.musicNote />
+                )}
+                <span>Listen</span>
               </TabsTrigger>
+              {/* {isSuperAdmin && (
+                <TabsTrigger
+                  className={cn(
+                    "px-0 mx-0 space-x-2",
+                    tab === "api-keys" ? "text-white" : "text-gray-500",
+                    "transition"
+                  )}
+                  value="api-keys"
+                >
+                  {tab === "api-keys" ? <Icons.lockSolid /> : <Icons.lock />}
+                  <span>API Keys</span>
+                </TabsTrigger>
+              )} */}
             </TabsList>
             <TabsContent value="profile" className="mt-8">
               <ProfileTab />
@@ -117,9 +141,12 @@ export function SettingsDialogInner({
             <TabsContent value="learn" className="mt-8">
               <LearnTab />
             </TabsContent>
-            <TabsContent value="api-keys" className="mt-8">
-              <ApiKeysTab />
+            <TabsContent value="listen" className="mt-8">
+              <ListenTab />
             </TabsContent>
+            {/* <TabsContent value="api-keys" className="mt-8">
+              <ApiKeysTab />
+            </TabsContent> */}
             <TabsContent value="app" className="mt-8">
               <UiTab />
             </TabsContent>

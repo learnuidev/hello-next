@@ -4,7 +4,12 @@ import { create } from "zustand";
 
 const useContentPlayContextStore = create((set: any, get: any) => ({
   contextId: crypto.randomUUID(),
-  setNewContextId: () => set({ contextId: crypto.randomUUID() }),
+  setNewContextId: () => {
+    const newContextId = crypto.randomUUID();
+    set({ contextId: newContextId });
+
+    return newContextId;
+  },
 }));
 
 export const useContextPlayContextState = () => {

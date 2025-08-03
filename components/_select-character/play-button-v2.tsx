@@ -90,12 +90,20 @@ function PlayBtnInner({
         contextId,
         contentId: `${text}`,
         createdAt: Date.now(),
-        progressTime: currentTime,
+        progressTime: playerRef?.current?.player?.prevPlayed,
       });
     },
     onPlay: () => {
       setIsPlaying(true);
-      setNewContextId();
+      const newContextId = setNewContextId();
+
+      setHistory({
+        transcriptionId: `${text}`,
+        contextId: newContextId,
+        contentId: `${text}`,
+        createdAt: Date.now(),
+        progressTime: 0,
+      });
     },
     onPause: () => {
       setIsPlaying(false);

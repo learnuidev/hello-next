@@ -60,7 +60,6 @@ export function SettingsDialogInner({
           <Tabs
             onValueChange={(value) => {
               setCurrentTab(value);
-              console.log("YO", value);
             }}
             defaultValue={tab}
             className="px-0 mx-0"

@@ -20,6 +20,7 @@ import {
 } from "../youtube-page/hooks/use-play-history-state";
 
 function PlayBtnInner({
+  defaultPlaybackRef,
   audioUrl,
   className,
   text,
@@ -33,6 +34,7 @@ function PlayBtnInner({
   lang: string;
   provider: TextToSpeechProviders;
   customRef?: any;
+  defaultPlaybackRef?: boolean;
 }) {
   const autoPlay = true;
 
@@ -78,6 +80,40 @@ function PlayBtnInner({
     }
   }, [playerRef, setIsPlaying]);
 
+  let playerProps = {
+    playbackRate: playbackRate,
+    onEnded: () => {
+      setIsPlaying(false);
+    },
+    onPlay: () => {
+      setIsPlaying(true);
+      setNewContextId();
+    },
+    onPause: () => {
+      setIsPlaying(false);
+    },
+
+    onProgress: (value: any) => {
+      setTime(value.playedSeconds);
+      setHistory({
+        transcriptionId: `${text}`,
+        contextId,
+        contentId: `${text}`,
+        createdAt: Date.now(),
+        progressTime: value.playedSeconds,
+      });
+    },
+    onReady: onReady,
+    ref: playerRef,
+    url: audioUrl,
+    height: "0px",
+    width: "0px",
+  } as any;
+
+  if (!defaultPlaybackRef) {
+    playerProps.progressInterval = 1;
+  }
+
   return (
     <>
       <button
@@ -89,42 +125,14 @@ function PlayBtnInner({
         {isPlaying ? <Icons.pause /> : <Icons.play className="ml-1" />}
       </button>
       <div className="hidden">
-        <ReactPlayer
-          playbackRate={playbackRate}
-          onEnded={() => {
-            setIsPlaying(false);
-          }}
-          onPlay={() => {
-            setIsPlaying(true);
-            setNewContextId();
-          }}
-          onPause={() => {
-            setIsPlaying(false);
-          }}
-          progressInterval={1}
-          onProgress={(value) => {
-            setTime(value.playedSeconds);
-
-            setHistory({
-              transcriptionId: `${text}`,
-              contextId,
-              contentId: `${text}`,
-              createdAt: Date.now(),
-              progressTime: value.playedSeconds,
-            });
-          }}
-          onReady={onReady}
-          ref={playerRef}
-          url={audioUrl}
-          height={"0px"}
-          width={"0px"}
-        />
+        <ReactPlayer {...playerProps} />
       </div>
     </>
   );
 }
 
 export function PlayButtonV2({
+  defaultPlaybackRef,
   text,
   lang,
   className,
@@ -134,6 +142,7 @@ export function PlayButtonV2({
   lang: string;
   className?: string;
   customRef?: any;
+  defaultPlaybackRef?: boolean;
 }) {
   const getAudioMutation = useGetAudioMutation();
 
@@ -149,6 +158,7 @@ export function PlayButtonV2({
 
   return audioUrl ? (
     <PlayBtnInner
+      defaultPlaybackRef={defaultPlaybackRef}
       customRef={customRef}
       provider={provider}
       text={text}

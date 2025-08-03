@@ -19,6 +19,9 @@ import { useJournalDetailStore } from "./use-journal-detail-store";
 import { useSpeak } from "../../convos/_play/use-speak";
 import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
 import { JournalEntryActionButtons } from "./journal-entry-action-buttons";
+import { WithInteractiveTitle } from "@/components/_select-character/with-interative-title";
+import { useRef } from "react";
+import { textToSpeechProviders } from "@/components/_select-character/selected-character.constants";
 
 function JournalDetailsBody({ entryId }: { entryId: string }) {
   const { data: journalDetails } = useGetJournalDetailsQuery(entryId);
@@ -120,6 +123,7 @@ export function JournalEntryDetails() {
   const showHanzi = useJournalDetailStore((state) => state.showHanzi);
   const setShowHanzi = useJournalDetailStore((state) => state.setShowHanzi);
   const { data: journalDetails } = useGetJournalDetailsQuery(entryId);
+  const customRef: any = useRef(null) as any;
 
   const { data: journalEntry } = useGetJournalEntryQuery(entryId);
 
@@ -129,6 +133,8 @@ export function JournalEntryDetails() {
   if (!journalEntry) {
     return null;
   }
+
+  console.log("journal entry", journalDetails);
 
   const hanzi =
     journalDetails?.translations
@@ -154,11 +160,22 @@ export function JournalEntryDetails() {
         </Link>
       </div>
 
+      {/* <WithInteractiveTitle
+        customRef={customRef}
+        text={hanzi}
+        lang={"zh"}
+        provider={textToSpeechProviders.speechify}
+        className={cn(
+          hanzi?.length < 8 ? "lg:text-4xl text-4xl" : "text-2xl",
+          "my-8 text-sm"
+        )}
+      > */}
       <div className="mt-8">
         <JournalDetailsBody entryId={entryId} />
       </div>
+      {/* </WithInteractiveTitle> */}
 
-      <JournalEntryActionButtons entryId={entryId} />
+      <JournalEntryActionButtons customRef={customRef} entryId={entryId} />
 
       <div className="">
         {journalEntry?.emotions?.split(", ").map((emotion) => {

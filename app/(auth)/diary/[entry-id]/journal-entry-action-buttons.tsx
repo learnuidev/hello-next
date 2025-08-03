@@ -8,8 +8,15 @@ import { useGetJournalDetailsQuery } from "../hooks/use-get-journal-details-quer
 import { useGetJournalEntryQuery } from "../hooks/use-get-journal-entry-query";
 import { useJournalDetailStore } from "./use-journal-detail-store";
 import { useEntryParams } from "./use-entry-params";
+import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 
-export function JournalEntryActionButtons({ entryId }: { entryId: string }) {
+export function JournalEntryActionButtons({
+  entryId,
+  customRef,
+}: {
+  customRef?: any;
+  entryId: string;
+}) {
   const showHanzi = useJournalDetailStore((state) => state.showHanzi);
   const setShowHanzi = useJournalDetailStore((state) => state.setShowHanzi);
   const { data: journalDetails } = useGetJournalDetailsQuery(entryId);
@@ -49,22 +56,32 @@ export function JournalEntryActionButtons({ entryId }: { entryId: string }) {
           >
             <Icons.language className="text-2xl" />
           </button>
-          {/* {showHanzi && ( */}
-          <button
-            className={cn(
-              "mt-[-4px]",
-              "dark:text-gray-400 text-gray-600 hover:dark:text-white hover:text-gray-800"
-            )}
-            onClick={() => {
-              if (isSpeaking) {
-                stopSpeaking();
-              } else {
-                speak(hanzi);
-              }
-            }}
-          >
-            {isSpeaking ? <Icons.pause /> : <Icons.play />}
-          </button>
+
+          {customRef ? (
+            <PlayButtonV2
+              defaultPlaybackRef
+              customRef={customRef}
+              text={hanzi}
+              lang={"zh"}
+              className="text-[16px]"
+            />
+          ) : (
+            <button
+              className={cn(
+                "mt-[-4px]",
+                "dark:text-gray-400 text-gray-600 hover:dark:text-white hover:text-gray-800"
+              )}
+              onClick={() => {
+                if (isSpeaking) {
+                  stopSpeaking();
+                } else {
+                  speak(hanzi);
+                }
+              }}
+            >
+              {isSpeaking ? <Icons.pause /> : <Icons.play />}
+            </button>
+          )}
         </div>
       )}
       {/* )} */}

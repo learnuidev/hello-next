@@ -10,6 +10,7 @@ import { useGetReviewUrl } from "@/components/settings-dialog/use-get-review-url
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { useClipboardViewMode } from "../clipboard/hooks/use-clipboard-view-mode";
 import { useClipboardState } from "../clipboard/hooks/use-clipboard-state";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 
 function AppLinkItem({
   href,
@@ -47,6 +48,7 @@ export default function AppsPage() {
 
   const { mode, setMode } = useClipboardViewMode();
   const { state, setState } = useClipboardState();
+  const isSuperAdmin = useIsSuperAdmin();
 
   const reviewUrl = useGetReviewUrl();
   const apps = [
@@ -85,6 +87,7 @@ export default function AppsPage() {
       href: "/web",
       title: "Web 4.0",
       Icon: Icons.browser,
+      hidden: true,
     },
 
     {
@@ -96,6 +99,8 @@ export default function AppsPage() {
       href: "/clipboard",
       title: "Clipboard",
       Icon: Icons.clipboard,
+      // hidden: !isSuperAdmin,
+      hidden: true,
       onClick: () => {
         setMode("edit");
       },

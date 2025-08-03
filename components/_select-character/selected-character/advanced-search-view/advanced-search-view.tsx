@@ -1,8 +1,9 @@
 import { BingLink } from "../../bing-link";
+import { BibilliLink } from "../billibilli-link/billibilli-link";
 import { GoogleLink } from "../google-link";
 import { GoogleTranslateLink } from "../google-translate-link";
 import { HanbookLink } from "../hanbook-link";
-import { OwadLink } from "../owad-link";
+// import { OwadLink } from "../billibilli-link";
 import { YablaLink } from "../yabla-link";
 import { YoutubeLink } from "../youtube-link";
 
@@ -28,7 +29,7 @@ export const AdvancedSearchView = ({
         {lang === "zh" && <HanbookLink hanzi={characterId} />}
 
         <YoutubeLink characterId={characterId} />
-        {lang === "zh" && <OwadLink hanzi={characterId} />}
+        {lang === "zh" && <BibilliLink hanzi={characterId} />}
       </div>
     </div>
   );

@@ -297,19 +297,15 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
   );
 
-  const toggleLoopHandler = () => {
+  const toggleLoopHandler = useCallback(() => {
     setToggleLoops((val: any) => {
-      const exist = val?.find(
-        (item: any) => item?.end === currentTranscription?.end
-      );
+      const exist = val?.[0];
       if (exist) {
-        return val?.filter((item: any) => {
-          return item?.end !== currentTranscription?.end;
-        });
+        return [];
       }
       return val.concat({ ...currentTranscription, contentId: lessonId });
     });
-  };
+  }, [currentTranscription, lessonId, setToggleLoops]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -996,7 +992,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                   `transition  hover:text-rose-400 dark:hover:text-white text-xl`,
                   toggleLoops?.length > 0
                     ? "dark:text-white text-black"
-                    : "text-gray-500"
+                    : "dark:text-gray-500 text-gray-300"
                 )}
               >
                 <Icons.loop className="transition" />
@@ -1007,7 +1003,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
               </p>
 
               <button
-                className="sm:text-2xl text-[16px] w-4"
+                className="sm:text-2xl text-[16px] w-4 dark:text-white text-black"
                 onClick={() => {
                   togglePlay();
                 }}

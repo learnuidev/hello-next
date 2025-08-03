@@ -84,6 +84,14 @@ function PlayBtnInner({
     playbackRate: playbackRate,
     onEnded: () => {
       setIsPlaying(false);
+
+      setHistory({
+        transcriptionId: `${text}`,
+        contextId,
+        contentId: `${text}`,
+        createdAt: Date.now(),
+        progressTime: currentTime,
+      });
     },
     onPlay: () => {
       setIsPlaying(true);
@@ -96,15 +104,7 @@ function PlayBtnInner({
     onProgress: (value: any) => {
       setTime(value.playedSeconds);
     },
-    onEnd: () => {
-      setHistory({
-        transcriptionId: `${text}`,
-        contextId,
-        contentId: `${text}`,
-        createdAt: Date.now(),
-        progressTime: currentTime,
-      });
-    },
+
     onReady: onReady,
     ref: playerRef,
     url: audioUrl,

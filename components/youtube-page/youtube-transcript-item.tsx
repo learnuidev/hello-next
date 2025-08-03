@@ -15,12 +15,16 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { resolveLangCode } from "@/libs/openai/utils";
 import { useParams, useRouter } from "next/navigation";
-import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
+import {
+  isNonRomanLang,
+  isRomanLang,
+} from "../_select-character/utils/is-non-roman-lang";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { Icons } from "../ui/icons.v2";
 import { useContentEditStore } from "./use-content-edit-store";
 import { europeanLangs } from "@/libs/constants/european-langs";
 import { useContextPlayContextState } from "./hooks/use-play-history-state";
+import { cn } from "@/lib/utils";
 
 export const TranscriptItem = ({
   example,
@@ -314,26 +318,30 @@ export const TranscriptItem = ({
                   {(example?.input || example?.hanzi || example?.nepali || "")
                     .split("")
                     .map((item: any, idx: any) => {
+                      const isInTimeRange =
+                        (timeStamp?.start ??
+                          example?.timestamp?.[0] ??
+                          example?.start) < currentTime &&
+                        (timeStamp?.end ??
+                          example?.timestamp?.[1] ??
+                          example?.end) > currentTime;
+
+                      const isLearned = learnedCharacters?.find(
+                        (char: any) => char?.hanzi === item
+                      );
+
                       return (
                         <span
                           key={`${JSON.stringify(item)}-${idx}-${Math.random()}`}
-                          className={`${
-                            (timeStamp?.start ||
-                              example?.timestamp?.[0] ||
-                              example?.start) < currentTime &&
-                            (timeStamp?.end ||
-                              example?.timestamp?.[1] ||
-                              example?.end) > currentTime
-                              ? "text-rose-400"
-                              : learnedCharacters?.find(
-                                    (char: any) => char?.hanzi === item
-                                  )
-                                ? "dark:text-gray-200"
-                                : "dark:text-gray-300 text-gray-300"
-                          } transition text-md`}
+                          className={cn("transition text-md", {
+                            "text-rose-400": isInTimeRange,
+                            "dark:text-gray-200": !isInTimeRange && isLearned,
+                            "dark:text-gray-300 text-black":
+                              !isInTimeRange && !isLearned,
+                            "text-xl": isRomanLang(example?.lang),
+                          })}
                         >
                           {item}
-                          {/* <CharacterItem character={item} /> */}
                         </span>
                       );
                     })}

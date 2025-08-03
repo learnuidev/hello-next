@@ -178,7 +178,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                 eventType: "speech/repeat",
                 eventTime: new Date().getTime(),
                 startTime: transcription.start,
-                hanzi: transcription.hanzi || transcription?.input,
+                hanzi: transcription?.input || transcription.hanzi,
                 pinyin: transcription.pinyin,
                 en: transcription.en,
                 step: transcription.step,

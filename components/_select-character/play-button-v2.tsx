@@ -95,12 +95,14 @@ function PlayBtnInner({
 
     onProgress: (value: any) => {
       setTime(value.playedSeconds);
+    },
+    onEnd: () => {
       setHistory({
         transcriptionId: `${text}`,
         contextId,
         contentId: `${text}`,
         createdAt: Date.now(),
-        progressTime: value.playedSeconds,
+        progressTime: currentTime,
       });
     },
     onReady: onReady,
@@ -110,9 +112,9 @@ function PlayBtnInner({
     width: "0px",
   } as any;
 
-  // if (!defaultPlaybackRef) {
-  //   playerProps.progressInterval = 1;
-  // }
+  if (!defaultPlaybackRef) {
+    playerProps.progressInterval = 1;
+  }
 
   return (
     <>

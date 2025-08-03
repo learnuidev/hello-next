@@ -7,6 +7,7 @@ import {
   usePlayHistoryState,
   usePlayHistoryStore,
 } from "@/components/youtube-page/hooks/use-play-history-state";
+import { useWordsClickedHistoryState } from "@/components/youtube-page/hooks/use-words-clicked-history-state";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { siteConfig } from "@/lib/config";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -243,6 +244,8 @@ function aggregateRepeats(
 export const useGetContentInsights = ({ contentId }: { contentId: string }) => {
   // const { data: contentAnalytics } = useGetContentAnalyticsQuery({ contentId });
 
+  const { words } = useWordsClickedHistoryState({ contentId });
+
   const { data: content } = useGetContentQuery({ contentId });
 
   const { data: contentAnalytics } = useUpsertContentAnalyticsQuery({
@@ -278,5 +281,6 @@ export const useGetContentInsights = ({ contentId }: { contentId: string }) => {
     ),
 
     data: dataFinal,
+    words,
   };
 };

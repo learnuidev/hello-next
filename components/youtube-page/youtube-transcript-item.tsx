@@ -25,6 +25,8 @@ import { useContentEditStore } from "./use-content-edit-store";
 import { europeanLangs } from "@/libs/constants/european-langs";
 import { useContextPlayContextState } from "./hooks/use-play-history-state";
 import { cn } from "@/lib/utils";
+import { smartSplit } from "./utils/smart-split";
+import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
 
 export const TranscriptItem = ({
   example,
@@ -40,6 +42,8 @@ export const TranscriptItem = ({
 }: any) => {
   const params = useParams<{ "content-id": string }>();
   const contentId = params["content-id"];
+
+  const setWords = useWordsClickedHistoryStore((state) => state.setHistory);
 
   const { data } = useGetContentQuery({ contentId: lessonId });
 
@@ -315,36 +319,44 @@ export const TranscriptItem = ({
                     </p>
                   )}
                 <div className="text-left">
-                  {(example?.input || example?.hanzi || example?.nepali || "")
-                    .split("")
-                    .map((item: any, idx: any) => {
-                      const isInTimeRange =
-                        (timeStamp?.start ??
-                          example?.timestamp?.[0] ??
-                          example?.start) < currentTime &&
-                        (timeStamp?.end ??
-                          example?.timestamp?.[1] ??
-                          example?.end) > currentTime;
+                  {smartSplit({
+                    input: example?.input || example?.hanzi,
+                    lang: example?.lang,
+                  }).map((item: any, idx: any) => {
+                    const isInTimeRange =
+                      (timeStamp?.start ??
+                        example?.timestamp?.[0] ??
+                        example?.start) < currentTime &&
+                      (timeStamp?.end ??
+                        example?.timestamp?.[1] ??
+                        example?.end) > currentTime;
 
-                      const isLearned = learnedCharacters?.find(
-                        (char: any) => char?.hanzi === item
-                      );
+                    const isLearned = learnedCharacters?.find(
+                      (char: any) => char?.hanzi === item
+                    );
 
-                      return (
-                        <span
-                          key={`${JSON.stringify(item)}-${idx}-${Math.random()}`}
-                          className={cn("transition text-md", {
-                            "text-rose-400": isInTimeRange,
-                            "dark:text-gray-200": !isInTimeRange && isLearned,
-                            "dark:text-gray-300 text-black":
-                              !isInTimeRange && !isLearned,
-                            "text-xl": isRomanLang(example?.lang),
-                          })}
-                        >
-                          {item}
-                        </span>
-                      );
-                    })}
+                    return (
+                      <span
+                        key={`${JSON.stringify(item)}-${idx}-${Math.random()}`}
+                        className={cn("transition text-md", {
+                          "text-rose-400": isInTimeRange,
+                          "dark:text-gray-200": !isInTimeRange && isLearned,
+                          "dark:text-gray-300 text-black":
+                            !isInTimeRange && !isLearned,
+                          "text-xl": isRomanLang(example?.lang),
+                        })}
+                        onClick={() => {
+                          setWords({
+                            word: item,
+                            transcriptionId: example?.id,
+                            contentId: lessonId,
+                          });
+                        }}
+                      >
+                        {item}
+                      </span>
+                    );
+                  })}
                 </div>
               </TooltipTrigger>
               <TooltipContent className="bg-black border-gray-800 p-4">

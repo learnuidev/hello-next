@@ -45,6 +45,8 @@ import {
 import { FloatingNavbar } from "../floating-navbar";
 import { TheDock } from "../the-dock";
 import { formatTime } from "@/app/(auth)/convos/_play/utils";
+import { smartSplit } from "./utils/smart-split";
+import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
 
 interface ViewModeState {
   viewMode: string;
@@ -401,6 +403,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   });
 
   const lastFinishedChapter = finishedChapters?.[finishedChapters?.length - 1];
+
+  const setWords = useWordsClickedHistoryStore((state) => state.setHistory);
 
   const trans = useMemo(() => {
     return transcriptions;
@@ -842,7 +846,26 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                       }
                                     }}
                                   >
-                                    {transcriptionInput}
+                                    {smartSplit({
+                                      input: transcriptionInput,
+                                      lang: lesson?.lang,
+                                    })?.map((item: string, idx: number) => {
+                                      return (
+                                        <span
+                                          onClick={() => {
+                                            setWords({
+                                              word: item,
+                                              transcriptionId:
+                                                transcription?.id,
+                                              contentId: lessonId,
+                                            });
+                                          }}
+                                          key={`para-mode-${item}-${idx}-${transcriptionInput}`}
+                                        >
+                                          {item}
+                                        </span>
+                                      );
+                                    })}
                                     {/* {isActiveTranscription
                                     ? smartSplit({
                                         input: transcriptionInput,

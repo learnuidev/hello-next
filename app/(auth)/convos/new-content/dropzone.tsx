@@ -132,6 +132,16 @@ export const Dropzone = ({ className }: DropzoneProps) => {
 
   console.log("content type", contentType);
 
+  return (
+    <div
+      onClick={() => {
+        // setContentType("");
+      }}
+    >
+      <TextContent />
+    </div>
+  );
+
   if (contentType === "youtube") {
     return (
       <div

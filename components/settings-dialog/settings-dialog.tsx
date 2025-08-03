@@ -24,6 +24,7 @@ import { TrackingTab } from "./components/tracking-tab/tracking-tab";
 import { UiTab } from "./components/ui-tab/ui-tab";
 import { isSuperAdmin } from "@/libs/constants/super-admin-emails";
 import { ListenTab } from "./components/listen-tab/listen-tab";
+import { ScrollArea } from "../ui/scroll-area";
 
 export function SettingsDialogInner({
   isOpen,
@@ -52,7 +53,8 @@ export function SettingsDialogInner({
         onClick={() => {
           closeSettings();
         }}
-        className="sm:max-w-2xl border-gray-900 bg-gray-50 dark:bg-black mt-[-100px]"
+        // className="fixed inset-0 h-screen w-screen max-w-none rounded-none"
+        className="min-w-2xl sm:max-w-2xl border-gray-900 bg-gray-50 dark:bg-black mt-0 sm:mt-[-100px]"
       >
         <div>
           <Tabs
@@ -152,7 +154,8 @@ export function SettingsDialogInner({
             </TabsContent>
           </Tabs>
         </div>
-        <DialogFooter>
+
+        <DialogFooter className="flex gap-2">
           <Button
             type="submit"
             onClick={() => {

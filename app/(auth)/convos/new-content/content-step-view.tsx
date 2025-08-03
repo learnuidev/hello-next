@@ -11,6 +11,8 @@ export const contentTypes = ["audio", "text", "video", "youtube", "website"];
 export const ContentStepView = () => {
   const step = useNewConvoStore((state) => state.step);
 
+  return <ContentType />;
+
   switch (step) {
     case "content":
       return <ContentType />;

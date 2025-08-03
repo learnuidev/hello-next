@@ -3,6 +3,7 @@ import {
   useAddNewMediaMutation,
 } from "@/app/(auth)/listen/hooks/use-add-new-media-mutation";
 import { contentTextStore, contentTypeStore } from "../../new-content-store";
+import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
 
 export const TextContent = () => {
   const contentType = contentTypeStore((state) => state.type);
@@ -12,6 +13,15 @@ export const TextContent = () => {
 
   const contextText = contentTextStore((state) => state.text) || "";
   const setContextText = contentTextStore((state) => state.setText);
+
+  const {
+    addNewContent,
+    setAddNewContent,
+    setAddNewBook,
+    addNew,
+    setAddNew,
+    addNewBook,
+  } = useListenState();
 
   const addNewMedia = useAddNewMediaMutation();
 
@@ -47,6 +57,11 @@ export const TextContent = () => {
 
         <button
           onClick={() => {
+            setAddNew(!addNew);
+            setAddNewContent(false);
+            setAddNewBook(false);
+
+            setAddNewContent(false);
             setContentType("");
           }}
         >

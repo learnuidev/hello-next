@@ -14,43 +14,51 @@ export function AddNewContent() {
     addNewBook,
   } = useListenState();
 
-  if (addNewContent) {
-    return (
-      <NewContent
-        onClose={() => {
-          setAddNewContent(false);
-        }}
-      />
-    );
-  }
+  return (
+    <NewContent
+      onClose={() => {
+        setAddNewContent(false);
+      }}
+    />
+  );
 
-  if (addNewBook) {
-    return <AddNewBook />;
-  }
+  // if (addNewContent) {
+  //   return (
+  //     <NewContent
+  //       onClose={() => {
+  //         setAddNewContent(false);
+  //       }}
+  //     />
+  //   );
+  // }
 
-  if (addNew) {
-    return (
-      <div className="mx-4 md:mx-32">
-        <h4 className="text-center mt-32"> What would you like to add </h4>
+  // if (addNewBook) {
+  //   return <AddNewBook />;
+  // }
 
-        <div className="flex justify-center items-center gap-8 text-2xl mt-32">
-          <button
-            onClick={() => {
-              setAddNewBook(true);
-            }}
-          >
-            New Book
-          </button>
+  // if (addNew) {
+  //   return (
+  //     <div className="mx-4 md:mx-32">
+  //       <h4 className="text-center mt-32"> What would you like to add </h4>
 
-          <button
-            onClick={() => {
-              setAddNewContent(true);
-            }}
-          >
-            New Content
-          </button>
-        </div>
-      </div>
-    );
-  }
+  //       <div className="flex justify-center items-center gap-8 text-2xl mt-32">
+  //         <button
+  //           onClick={() => {
+  //             setAddNewBook(true);
+  //           }}
+  //         >
+  //           New Book
+  //         </button>
+
+  //         <button
+  //           onClick={() => {
+  //             setAddNewContent(true);
+  //           }}
+  //         >
+  //           New Content
+  //         </button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 }

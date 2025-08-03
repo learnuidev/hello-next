@@ -362,6 +362,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       setRepeatHistories({
         contentId: contentId,
         ...example,
+        hanzi: example?.input || example?.hanzi,
         input: example?.input || example?.hanzi,
         roman: example?.roman || example?.pinyin,
         createdAt: Date.now(),

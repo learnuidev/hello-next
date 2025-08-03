@@ -98,7 +98,7 @@ export const TranscriptItem = ({
               eventType: "speech/repeat",
               eventTime: new Date().getTime(),
               startTime: transcription.start,
-              hanzi: transcription.hanzi,
+              hanzi: transcription.hanzi || transcription?.input,
               pinyin: transcription.pinyin,
               en: transcription.en,
               step: transcription.step,

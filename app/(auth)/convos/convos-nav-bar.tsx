@@ -130,7 +130,7 @@ export const ConvosNavBar = () => {
         <Link
           href={`/convos/${contentId}?view=listen&start=${searchParams.get("start") || 0}`}
           className={`transition ${
-            viewType === "listen"
+            !viewType || viewType === "listen"
               ? "text-black dark:text-gray-200"
               : "text-gray-200 dark:text-gray-600"
           } hover:text-black dark:hover:text-white transition text-xl`}

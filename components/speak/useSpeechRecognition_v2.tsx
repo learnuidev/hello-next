@@ -10,6 +10,10 @@ import SpeechRecognition, {
 const langMapper: any = {
   fr: "fr-FR",
   zh: "zh-CN",
+  es: "es-ES",
+  it: "it-IT",
+  ro: "ro-RO",
+  en: "en-US",
 };
 
 export const useDictaphone = (lang: string) => {

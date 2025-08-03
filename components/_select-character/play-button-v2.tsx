@@ -110,9 +110,9 @@ function PlayBtnInner({
     width: "0px",
   } as any;
 
-  if (!defaultPlaybackRef) {
-    playerProps.progressInterval = 1;
-  }
+  // if (!defaultPlaybackRef) {
+  //   playerProps.progressInterval = 1;
+  // }
 
   return (
     <>

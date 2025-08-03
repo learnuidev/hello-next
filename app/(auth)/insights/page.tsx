@@ -6,18 +6,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { InsightsFilters } from "./InsightsFilters";
 
-import { ProfilePage } from "@/app/profile/profile-page";
-import { FloatingNavbar } from "@/components/floating-navbar";
+import { InsightsOverview } from "@/app/insights-overview/insights-overview";
 import { useSearchQueryStore } from "@/components/search/state";
 import { formatDate } from "@/components/settings-dialog/utils/format-date";
 // import { CharacterLearnedOvertimeChart } from "./charts/character-mastered-overtime-area-chart";
+import { CharacterLearnedOvertimeChart } from "./charts/character-learned-overtime-area-chart";
+import { CharacterMasteredOvertimeChart } from "./charts/character-mastered-overtime-area-chart";
 import { InsightsV2 } from "./insights-v2/insights-v2";
 import { SearchResults } from "./insights-v2/precision-insight-view/search-results";
 import { useGetInsightSearchResults } from "./insights-v2/precision-insight-view/use-get-insight-search-results";
 import { CharacterDiscoveryAreaChartV2 } from "./insights-v3/character-discover-area-chart-v2";
 import { useGetFromAndToDate } from "./use-get-from-date";
-import { CharacterLearnedOvertimeChart } from "./charts/character-learned-overtime-area-chart";
-import { CharacterMasteredOvertimeChart } from "./charts/character-mastered-overtime-area-chart";
 
 function ToAndFromDate() {
   const { fromDate, toDate } = useGetFromAndToDate();
@@ -58,7 +57,7 @@ export default function InsightsNew() {
         <TabsContent value="overview" className="sm:mx-8 flex gap-4 flex-col">
           {/* <TimelineTabBody variant="all" /> */}
 
-          <ProfilePage
+          <InsightsOverview
             hideSearch
             profileClassName="md:mt-8 lg:mt-12"
             className="mt-8 mb-12"

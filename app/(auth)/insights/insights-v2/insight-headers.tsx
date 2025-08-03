@@ -5,7 +5,7 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useGetInsightParams } from "@/app/(auth)/insights/insights-v2/use-get-insight-params";
 import { useListErrors } from "@/app/(auth)/insights/insights-v2/use-list-errors";
 import { useGetFailureRate } from "@/app/(auth)/insights/insights-v2/use-get-failure-rate";
-import { useGetTotalLifetimeCharacters } from "@/app/profile/hooks/use-get-total-lifetime-characters";
+import { useGetTotalLifetimeCharacters } from "@/app/insights-overview/hooks/use-get-total-lifetime-characters";
 import { useGetProgress } from "./use-get-progress";
 
 export const InsightHeaders = () => {

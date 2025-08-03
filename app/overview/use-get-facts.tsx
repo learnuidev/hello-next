@@ -3,8 +3,8 @@
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { createContext, useContext, useMemo } from "react";
-import { useGetTotalLifetimeCharacters } from "../profile/hooks/use-get-total-lifetime-characters";
-import { formatPercentage } from "../profile/utils/format-percentage";
+import { useGetTotalLifetimeCharacters } from "../insights-overview/hooks/use-get-total-lifetime-characters";
+import { formatPercentage } from "../insights-overview/utils/format-percentage";
 
 export function useGetFacts() {
   const { data: totalComponents, isLoading: isComponentsLoading } =

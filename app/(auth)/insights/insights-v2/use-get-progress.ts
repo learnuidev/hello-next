@@ -1,4 +1,4 @@
-import { formatPercentage } from "@/app/profile/utils/format-percentage";
+import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { IStatItem } from "@/app/profile/components/profile-stats-item";
+import { IStatItem } from "@/app/insights-overview/components/profile-stats-item";
 import Link from "next/link";
 
 export const InsightItem = ({

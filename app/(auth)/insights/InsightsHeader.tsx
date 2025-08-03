@@ -20,7 +20,7 @@ import {
   faPenLine,
 } from "@fortawesome/pro-thin-svg-icons";
 import { useCharactersDiscovered } from "./use-characters-discovered";
-import { formatPercentage } from "@/app/profile/utils/format-percentage";
+import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
 
 export function InsightsHeader() {
   const { data: charactersDiscovered } = useCharactersDiscovered();

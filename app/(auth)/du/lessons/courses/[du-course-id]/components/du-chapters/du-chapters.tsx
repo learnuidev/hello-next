@@ -5,7 +5,7 @@ import { useListSavedLessonsQuery } from "@/app/(auth)/du/hooks/use-list-saved-l
 import { useListStudiedLessonsQuery } from "@/app/(auth)/du/hooks/use-list-studied-lessons-query";
 import { useUnfavouriteCourseMutation } from "@/app/(auth)/du/hooks/use-unfavourite-course-mutation";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
-import { formatPercentage } from "@/app/profile/utils/format-percentage";
+import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
 import { DuHoverEffect } from "@/components/du-hover-effect";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";

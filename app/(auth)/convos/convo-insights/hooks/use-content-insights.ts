@@ -2,7 +2,7 @@
 
 import { listenApiUrl } from "@/app/(auth)/listen/constants";
 import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
-import { secondsToTimestampV2 } from "@/app/profile/utils/seconds-to-timestamp";
+import { secondsToTimestampV2 } from "@/app/insights-overview/utils/seconds-to-timestamp";
 import {
   usePlayHistoryState,
   usePlayHistoryStore,

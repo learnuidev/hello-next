@@ -1,6 +1,6 @@
 "use client";
 
-import { calculateTotalTimeStudied } from "@/app/profile/hooks/use-get-total-time-studied";
+import { calculateTotalTimeStudied } from "@/app/insights-overview/hooks/use-get-total-time-studied";
 import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainer } from "@/components/nmm-list-container";
 import { Icons } from "@/components/ui/icons.v2";

@@ -18,7 +18,7 @@ import { useSelectedCharacter } from "./use-selected-character";
 
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
-import { formatPercentage } from "@/app/profile/utils/format-percentage";
+import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
 
 import { useSearchQueryStore } from "@/components/search/state";
 import { PlusIcon } from "@/components/ui/icons";

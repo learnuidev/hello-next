@@ -17,7 +17,7 @@ import { FancyAreaChart } from "./components/fancy-area-chart";
 import { HSKProgressChart } from "./components/hsk-progress-chart";
 import { TopTencorrectCharactersChart } from "./components/top-ten-incorrect-characters-chart";
 import { AnimatedLoadingText } from "@/components/animated-loading-text";
-import { calculateTotalTimeStudied } from "@/app/profile/hooks/use-get-total-time-studied";
+import { calculateTotalTimeStudied } from "@/app/insights-overview/hooks/use-get-total-time-studied";
 
 function ChartLoadingText() {
   return (

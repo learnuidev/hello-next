@@ -8,7 +8,7 @@ import { ProfileBanner } from "./components/profile-banner";
 import { TimeStudiedStats } from "./components/time-studied-stats";
 import { TotalActiveDaysStats } from "./components/total-active-days-stats";
 
-export const ProfilePage = ({
+export const InsightsOverview = ({
   hideSearch,
   className,
   profileClassName,

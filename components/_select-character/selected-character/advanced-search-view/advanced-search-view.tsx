@@ -29,7 +29,7 @@ export const AdvancedSearchView = ({
         {lang === "zh" && <HanbookLink hanzi={characterId} />}
 
         <YoutubeLink characterId={characterId} />
-        {lang === "zh" && <BibilliLink hanzi={characterId} />}
+        <BibilliLink hanzi={characterId} />
       </div>
     </div>
   );

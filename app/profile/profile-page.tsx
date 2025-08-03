@@ -1,15 +1,12 @@
 import { FloatingNavbar } from "@/components/floating-navbar";
 import { LifeTimeSentencesStats } from "./components/life-time-sentences-stats";
 
+import { NavBar } from "@/components/navbar";
+import { cn } from "@/lib/utils";
+import { LifeTimeCharactersStats } from "./components/life-time-characters-stats";
 import { ProfileBanner } from "./components/profile-banner";
 import { TimeStudiedStats } from "./components/time-studied-stats";
 import { TotalActiveDaysStats } from "./components/total-active-days-stats";
-import { LifeTimeCharactersStats } from "./components/life-time-characters-stats";
-import { NavBar } from "@/components/navbar";
-import { useGetInsightSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/use-get-insight-search-results";
-import { SearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/search-results";
-import { useSearchQueryStore } from "@/components/search/state";
-import { cn } from "@/lib/utils";
 
 export const ProfilePage = ({
   hideSearch,
@@ -20,20 +17,6 @@ export const ProfilePage = ({
   className?: string;
   profileClassName?: string;
 }) => {
-  const searchResults = useGetInsightSearchResults("all");
-
-  const queryStrSync = useSearchQueryStore((state) => state.querySync);
-
-  if (queryStrSync) {
-    return (
-      <main className="bg-white dark:bg-[rgb(9,10,11)]">
-        {hideSearch ? null : <NavBar />}
-        <div className="mx-4 md:mx-48">
-          <SearchResults searchResults={searchResults} />
-        </div>
-      </main>
-    );
-  }
   return (
     <main className="bg-white dark:bg-[rgb(9,10,11)]">
       {hideSearch ? null : <NavBar />}
@@ -50,12 +33,6 @@ export const ProfilePage = ({
         <TimeStudiedStats />
         <TotalActiveDaysStats />
       </section>
-
-      {/* <section>
-        <code>
-          <pre>{JSON.stringify(timeStudied, null, 2)}</pre>
-        </code>
-      </section> */}
 
       <FloatingNavbar />
     </main>

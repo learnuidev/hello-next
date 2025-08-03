@@ -42,6 +42,9 @@ import {
   useContextPlayContextState,
   usePlayHistoryStore,
 } from "./hooks/use-play-history-state";
+import { FloatingNavbar } from "../floating-navbar";
+import { TheDock } from "../the-dock";
+import { formatTime } from "@/app/(auth)/convos/_play/utils";
 
 interface ViewModeState {
   viewMode: string;
@@ -127,7 +130,12 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const toggleLoop = useViewModeStore((state) => state.toggleLoop);
   const setToggleLoop = useViewModeStore((state) => state.setToggleLoop);
 
-  const toggleLoops: any = useViewModeStore((state) => state.toggleLoops);
+  const _toggleLoops: any = useViewModeStore((state) => state.toggleLoops);
+
+  const toggleLoops = useMemo(
+    () => _toggleLoops?.filter((loop: any) => loop?.contentId === lessonId),
+    [_toggleLoops, lessonId]
+  );
   const setToggleLoops = useViewModeStore((state) => state.setToggleLoops);
 
   const qaMode = useViewModeStore((state) => state.qaMode);
@@ -289,6 +297,20 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
   );
 
+  const toggleLoopHandler = () => {
+    setToggleLoops((val: any) => {
+      const exist = val?.find(
+        (item: any) => item?.end === currentTranscription?.end
+      );
+      if (exist) {
+        return val?.filter((item: any) => {
+          return item?.end !== currentTranscription?.end;
+        });
+      }
+      return val.concat({ ...currentTranscription, contentId: lessonId });
+    });
+  };
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.code === "Space" && !editMode) {
@@ -310,17 +332,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       }
 
       if (["l"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        setToggleLoops((val: any) => {
-          const exist = val?.find(
-            (item: any) => item?.end === currentTranscription?.end
-          );
-          if (exist) {
-            return val?.filter((item: any) => {
-              return item?.end !== currentTranscription?.end;
-            });
-          }
-          return val.concat(currentTranscription);
-        });
+        toggleLoopHandler();
         event.preventDefault();
       }
     }
@@ -329,7 +341,14 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [togglePlay, seekBefore, seekAfter, currentTranscription, editMode]);
+  }, [
+    togglePlay,
+    seekBefore,
+    seekAfter,
+    currentTranscription,
+    editMode,
+    toggleLoopHandler,
+  ]);
 
   const currentTranscriptionIndex = Math.max(
     transcriptions?.findIndex(
@@ -470,161 +489,169 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       : Object.values(groupedTranscriptions);
 
   return (
-    <div className="grow flex flex-col items-center">
-      <div className="flex flex-col sm:flex-row justify-center items-center sm:justify-between w-full sm:px-12 mb-4">
-        <div className="space-x-4 sm:my-4 block z-50 flex">
-          <button
-            className={
-              viewMode === "karaoke" ? "dark:text-white" : "text-gray-500"
-            }
-            onClick={() => {
-              setViewMode((prev: any) =>
-                prev === "karaoke" ? null : "karaoke"
-              );
-              setIsVideoHidden((isHidden: any) =>
-                viewMode !== "karaoke" ? true : false
-              );
-            }}
-          >
-            <Icons.karaoke />
-          </button>
-          <button
-            className={
-              viewMode === "para" ? "dark:text-white" : "text-gray-500"
-            }
-            onClick={() => {
-              setViewMode((prev: any) => (prev === "para" ? null : "para"));
-            }}
-          >
-            <Icons.glassesRound />
-          </button>
-
-          <button
-            className={isVideoHidden ? "dark:text-white" : "text-gray-500"}
-            onClick={() => {
-              setIsVideoHidden((isHidden: any) => !isHidden);
-            }}
-          >
-            {isVideoHidden ? (
-              <FontAwesomeIcon icon={faVideo} />
-            ) : (
-              <FontAwesomeIcon icon={faVideoSlash} />
-            )}
-          </button>
-
-          <button
-            className={editMode ? "dark:text-white" : "text-gray-500"}
-            onClick={() => {
-              setEditMode();
-            }}
-          >
-            <Icons.edit />
-          </button>
-          {lesson?.questions?.length > 0 && (
+    <>
+      <div className="grow flex flex-col items-center">
+        <div className="flex flex-col sm:flex-row justify-center items-center sm:justify-between w-full sm:px-12 mb-4">
+          <div className="space-x-4 sm:my-4 block z-50 flex">
             <button
-              className={qaMode ? "dark:text-white" : "text-gray-500"}
-              onClick={() => {
-                setQaMode(!qaMode);
-              }}
-            >
-              <Icons.qa />
-            </button>
-          )}
-
-          {editMode && (
-            <button
-              onClick={() => {
-                resetTimes();
-              }}
-            >
-              Reset
-            </button>
-          )}
-
-          {editMode && (
-            <button
-              onClick={() => {
-                const editedTranscriptions = {
-                  id: lesson?.id,
-                  transcriptions: lesson?.transcriptions?.map(
-                    (transcription: any) => {
-                      const time = times?.find(
-                        (t: any) => t?.id === transcription?.id
-                      ) as any;
-                      return {
-                        ...transcription,
-                        ...time,
-                      };
-                    }
-                  ),
-                };
-
-                updateContentMutation
-                  .mutateAsync({
-                    ...editedTranscriptions,
-                  } as any)
-                  .then((resp) => {
-                    setEditMode();
-                  });
-              }}
-            >
-              Save
-            </button>
-          )}
-
-          {editMode && (
-            <UploadFileButton
-              icon={
-                <Icons.upload className="text-[16px] dark:hover:text-white transition" />
+              className={
+                viewMode === "karaoke" ? "dark:text-white" : "text-gray-500"
               }
-              types={["mp3", "m4a", "mp4"]}
-              className="hidden sm:block"
-              onSuccess={(res) => {
-                return updateContentMutation.mutateAsync({
-                  id: contentId || "",
-                  audio: res.sourceUrl,
-                  audioUploadBucketKey: res.uploadBucketKey,
-                  audioS3LinkAddedAt: Date.now(),
-                  updateContent: true,
-                } as any);
+              onClick={() => {
+                setViewMode((prev: any) =>
+                  prev === "karaoke" ? null : "karaoke"
+                );
+                setIsVideoHidden((isHidden: any) =>
+                  viewMode !== "karaoke" ? true : false
+                );
               }}
-            />
-          )}
-        </div>
-        {viewMode === "karaoke" ? null : <ActiveButton />}
-      </div>
+            >
+              <Icons.karaoke />
+            </button>
+            <button
+              className={
+                viewMode === "para" ? "dark:text-white" : "text-gray-500"
+              }
+              onClick={() => {
+                setViewMode((prev: any) => (prev === "para" ? null : "para"));
+              }}
+            >
+              <Icons.glassesRound />
+            </button>
 
-      <div className="grid grid-cols-12 gap-4">
-        <div
-          className={` ${isVideoHidden ? "hidden" : ""} md:col-span-7 col-span-12`}
-        >
-          <div className="">
-            <ReactPlayer
-              // progressInterval={50}
-              onProgress={(value) => {
-                setHistory({
-                  transcriptionId: currentTranscription?.id,
-                  contextId,
-                  contentId: lessonId,
-                  createdAt: Date.now(),
-                  progressTime: value.playedSeconds,
-                });
-                setTime(value.playedSeconds);
+            <button
+              className={isVideoHidden ? "dark:text-white" : "text-gray-500"}
+              onClick={() => {
+                setIsVideoHidden((isHidden: any) => !isHidden);
               }}
-              onPlay={() => {
-                setNewContextId();
+            >
+              {isVideoHidden ? (
+                <FontAwesomeIcon icon={faVideo} />
+              ) : (
+                <FontAwesomeIcon icon={faVideoSlash} />
+              )}
+            </button>
+
+            <button
+              className={editMode ? "dark:text-white" : "text-gray-500"}
+              onClick={() => {
+                setEditMode();
               }}
-              ref={playerRef}
-              url={finalUrl}
-              playing={isPlaying}
-              width="100%"
-              height={isSmall ? "200px" : "450px"}
-              controls
-              onReady={onReady}
-            />
+            >
+              <Icons.edit />
+            </button>
+            {lesson?.questions?.length > 0 && (
+              <button
+                className={qaMode ? "dark:text-white" : "text-gray-500"}
+                onClick={() => {
+                  setQaMode(!qaMode);
+                }}
+              >
+                <Icons.qa />
+              </button>
+            )}
+
+            {editMode && (
+              <button
+                onClick={() => {
+                  resetTimes();
+                }}
+              >
+                Reset
+              </button>
+            )}
+
+            {editMode && (
+              <button
+                onClick={() => {
+                  const editedTranscriptions = {
+                    id: lesson?.id,
+                    transcriptions: lesson?.transcriptions?.map(
+                      (transcription: any) => {
+                        const time = times?.find(
+                          (t: any) => t?.id === transcription?.id
+                        ) as any;
+                        return {
+                          ...transcription,
+                          ...time,
+                        };
+                      }
+                    ),
+                  };
+
+                  updateContentMutation
+                    .mutateAsync({
+                      ...editedTranscriptions,
+                    } as any)
+                    .then((resp) => {
+                      setEditMode();
+                    });
+                }}
+              >
+                Save
+              </button>
+            )}
+
+            {editMode && (
+              <UploadFileButton
+                icon={
+                  <Icons.upload className="text-[16px] dark:hover:text-white transition" />
+                }
+                types={["mp3", "m4a", "mp4"]}
+                className="hidden sm:block"
+                onSuccess={(res) => {
+                  return updateContentMutation.mutateAsync({
+                    id: contentId || "",
+                    audio: res.sourceUrl,
+                    audioUploadBucketKey: res.uploadBucketKey,
+                    audioS3LinkAddedAt: Date.now(),
+                    updateContent: true,
+                  } as any);
+                }}
+              />
+            )}
           </div>
+          {viewMode === "karaoke" ? null : <ActiveButton />}
+        </div>
 
-          {/* {lesson?.chapters && (
+        <div className="grid grid-cols-12 gap-4">
+          <div
+            className={` ${isVideoHidden ? "hidden" : ""} md:col-span-7 col-span-12`}
+          >
+            <div className="">
+              <ReactPlayer
+                // progressInterval={50}
+                onProgress={(value) => {
+                  setHistory({
+                    transcriptionId: currentTranscription?.id,
+                    contextId,
+                    contentId: lessonId,
+                    createdAt: Date.now(),
+                    progressTime: value.playedSeconds,
+                  });
+                  setTime(value.playedSeconds);
+                }}
+                onPlay={() => {
+                  setIsPlaying(true);
+                  setNewContextId();
+                }}
+                onPause={() => {
+                  setIsPlaying(false);
+                }}
+                onEnded={() => {
+                  setIsPlaying(false);
+                }}
+                ref={playerRef}
+                url={finalUrl}
+                playing={isPlaying}
+                width="100%"
+                height={isSmall ? "200px" : "450px"}
+                controls
+                onReady={onReady}
+              />
+            </div>
+
+            {/* {lesson?.chapters && (
             <div className={"flex justify-center items-center gap-4 mt-8"}>
               {lesson?.chapters?.map((chapter: any) => {
                 return (
@@ -650,177 +677,177 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
             </div>
           )} */}
 
-          <ActiveTranscription
-            currentTime={currentTime}
-            transcriptions={transcriptions}
-            contentId={contentId}
-          />
-        </div>
+            <ActiveTranscription
+              currentTime={currentTime}
+              transcriptions={transcriptions}
+              contentId={contentId}
+            />
+          </div>
 
-        <div
-          className={
-            isVideoHidden
-              ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
-              : "col-span-12 md:col-span-5"
-          }
-        >
-          {viewMode === "karaoke" ? (
-            <div
-              className={
-                isVideoHidden
-                  ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
-                  : "col-span-12 md:col-span-5"
-              }
-            >
-              <KaraokeMode
-                lang={lesson?.lang}
-                isPlaying={isPlaying}
-                seekTo={(time: number) => {
-                  playerRef.current.seekTo(time, "seconds");
+          <div
+            className={
+              isVideoHidden
+                ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
+                : "col-span-12 md:col-span-5"
+            }
+          >
+            {viewMode === "karaoke" ? (
+              <div
+                className={
+                  isVideoHidden
+                    ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
+                    : "col-span-12 md:col-span-5"
+                }
+              >
+                <KaraokeMode
+                  lang={lesson?.lang}
+                  isPlaying={isPlaying}
+                  seekTo={(time: number) => {
+                    playerRef.current.seekTo(time, "seconds");
 
-                  try {
-                    playerRef.current?.player?.player?.play();
-                  } catch (err) {
-                    console.error(err);
-                  }
-                }}
-                play={() => {
-                  try {
-                    playerRef.current?.player?.player?.play();
-                  } catch (err) {
-                    console.error(err);
-                  }
-                }}
-                transcriptions={transcriptions}
-                currentTime={currentTime}
-              />
-            </div>
-          ) : viewMode === "para" ? (
-            <div
-              className={cn(
-                isVideoHidden
-                  ? "col-span-12 mx-0 sm:mx-12 md:mx-32"
-                  : "col-span-12 md:col-span-5",
-                "pb-12"
-              )}
-            >
-              {isVideoHidden && (
-                <div>
-                  <ActiveTranscription
-                    currentTime={currentTime}
-                    transcriptions={transcriptions}
-                    contentId={contentId}
-                  />
-                </div>
-              )}
-
-              {qaMode && lesson?.questions?.length > 0 && (
-                <div className="">
-                  <ScrollArea className="space-y-4 h-[350px] rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8">
-                    <div className={"flex flex-col gap-4"}>
-                      {lesson.questions.map((question: any) => {
-                        return (
-                          <button
-                            key={question.description}
-                            onClick={() => {
-                              seekAndPlay(question.start);
-                            }}
-                            className="text-left"
-                          >
-                            <div
-                              className={` ${
-                                question.start <= currentTime &&
-                                question.end >= currentTime
-                                  ? "dark:text-white text-black"
-                                  : " text-gray-500"
-                              }`}
-                            >
-                              {question.title}
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </ScrollArea>
-                </div>
-              )}
+                    try {
+                      playerRef.current?.player?.player?.play();
+                    } catch (err) {
+                      console.error(err);
+                    }
+                  }}
+                  play={() => {
+                    try {
+                      playerRef.current?.player?.player?.play();
+                    } catch (err) {
+                      console.error(err);
+                    }
+                  }}
+                  transcriptions={transcriptions}
+                  currentTime={currentTime}
+                />
+              </div>
+            ) : viewMode === "para" ? (
               <div
                 className={cn(
-                  `${
-                    isVideoHidden
-                      ? "md:col-span-7 col-span-12"
-                      : "md:col-span-5 col-span-12"
-                  } w-full text-center`,
-                  qaMode ? "mt-8" : ""
+                  isVideoHidden
+                    ? "col-span-12 mx-0 sm:mx-12 md:mx-32"
+                    : "col-span-12 md:col-span-5",
+                  "pb-12"
                 )}
               >
-                <ScrollArea
+                {isVideoHidden && (
+                  <div>
+                    <ActiveTranscription
+                      currentTime={currentTime}
+                      transcriptions={transcriptions}
+                      contentId={contentId}
+                    />
+                  </div>
+                )}
+
+                {qaMode && lesson?.questions?.length > 0 && (
+                  <div className="">
+                    <ScrollArea className="space-y-4 h-[350px] rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8">
+                      <div className={"flex flex-col gap-4"}>
+                        {lesson.questions.map((question: any) => {
+                          return (
+                            <button
+                              key={question.description}
+                              onClick={() => {
+                                seekAndPlay(question.start);
+                              }}
+                              className="text-left"
+                            >
+                              <div
+                                className={` ${
+                                  question.start <= currentTime &&
+                                  question.end >= currentTime
+                                    ? "dark:text-white text-black"
+                                    : " text-gray-500"
+                                }`}
+                              >
+                                {question.title}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </ScrollArea>
+                  </div>
+                )}
+                <div
                   className={cn(
-                    `space-y-4 rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8`,
-                    qaMode ? "h-[350px]" : "h-[400px] sm:h-[640px]"
+                    `${
+                      isVideoHidden
+                        ? "md:col-span-7 col-span-12"
+                        : "md:col-span-5 col-span-12"
+                    } w-full text-center`,
+                    qaMode ? "mt-8" : ""
                   )}
                 >
-                  <div className="space-y-8">
-                    {paraTranscriptions?.map((transcriptions: any) => {
-                      const hanzis = transcriptions
-                        ?.map((t: any) => t?.hanzi)
-                        ?.join("");
+                  <ScrollArea
+                    className={cn(
+                      `space-y-4 rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8`,
+                      qaMode ? "h-[350px]" : "h-[400px] sm:h-[640px]"
+                    )}
+                  >
+                    <div className="space-y-8">
+                      {paraTranscriptions?.map((transcriptions: any) => {
+                        const hanzis = transcriptions
+                          ?.map((t: any) => t?.hanzi)
+                          ?.join("");
 
-                      return (
-                        <div key={JSON.stringify(transcriptions)}>
-                          <div className="flex flex-wrap">
-                            {(active !== MAX_LIMIT
-                              ? group
-                              : transcriptions
-                            ).map((transcription: any) => {
-                              const isActiveTranscription =
-                                transcription?.start < currentTime &&
-                                transcription?.end > currentTime;
+                        return (
+                          <div key={JSON.stringify(transcriptions)}>
+                            <div className="flex flex-wrap">
+                              {(active !== MAX_LIMIT
+                                ? group
+                                : transcriptions
+                              ).map((transcription: any) => {
+                                const isActiveTranscription =
+                                  transcription?.start < currentTime &&
+                                  transcription?.end > currentTime;
 
-                              const transcriptionInput =
-                                transcription?.input || transcription?.hanzi;
+                                const transcriptionInput =
+                                  transcription?.input || transcription?.hanzi;
 
-                              return (
-                                <span
-                                  role="button"
-                                  className={`${
-                                    currentTime
-                                      ? isActiveTranscription
-                                        ? "dark:text-white bg-yellow-200 dark:bg-black"
-                                        : "dark:text-gray-400"
-                                      : ""
-                                  } transition block py-1 px-1`}
-                                  key={
-                                    transcription?.id ||
-                                    `${transcription?.hanzi}-${transcription?.start}`
-                                  }
-                                  onClick={() => {
-                                    setRepeatHistories({
-                                      contentId: contentId,
-                                      ...transcription,
-                                      input:
-                                        transcription?.input ||
-                                        transcription?.hanzi,
-                                      roman:
-                                        transcription?.roman ||
-                                        transcription?.pinyin,
-                                      createdAt: Date.now(),
-                                    });
-
-                                    playerRef.current.seekTo(
-                                      transcription?.start,
-                                      "seconds"
-                                    );
-
-                                    try {
-                                      playerRef.current?.player?.player?.play();
-                                    } catch (err) {
-                                      console.error(err);
+                                return (
+                                  <span
+                                    role="button"
+                                    className={`${
+                                      currentTime
+                                        ? isActiveTranscription
+                                          ? "dark:text-white bg-yellow-200 dark:bg-black"
+                                          : "dark:text-gray-400"
+                                        : ""
+                                    } transition block py-1 px-1`}
+                                    key={
+                                      transcription?.id ||
+                                      `${transcription?.hanzi}-${transcription?.start}`
                                     }
-                                  }}
-                                >
-                                  {transcriptionInput}
-                                  {/* {isActiveTranscription
+                                    onClick={() => {
+                                      setRepeatHistories({
+                                        contentId: contentId,
+                                        ...transcription,
+                                        input:
+                                          transcription?.input ||
+                                          transcription?.hanzi,
+                                        roman:
+                                          transcription?.roman ||
+                                          transcription?.pinyin,
+                                        createdAt: Date.now(),
+                                      });
+
+                                      playerRef.current.seekTo(
+                                        transcription?.start,
+                                        "seconds"
+                                      );
+
+                                      try {
+                                        playerRef.current?.player?.player?.play();
+                                      } catch (err) {
+                                        console.error(err);
+                                      }
+                                    }}
+                                  >
+                                    {transcriptionInput}
+                                    {/* {isActiveTranscription
                                     ? smartSplit({
                                         input: transcriptionInput,
                                         lang: lesson?.lang,
@@ -834,115 +861,166 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                         );
                                       })
                                     : transcriptionInput} */}
-                                </span>
-                              );
-                            })}
-                          </div>
+                                  </span>
+                                );
+                              })}
+                            </div>
 
-                          <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
-                            <Link
-                              target="_blank"
-                              href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                                hanzis
-                              )}&op=translate`}
-                              className="text-gray-500 hover:text-black dark:hover:text-white"
-                            >
-                              <FontAwesomeIcon icon={faGoogle} />
-                            </Link>
+                            <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
+                              <Link
+                                target="_blank"
+                                href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                                  hanzis
+                                )}&op=translate`}
+                                className="text-gray-500 hover:text-black dark:hover:text-white"
+                              >
+                                <FontAwesomeIcon icon={faGoogle} />
+                              </Link>
 
-                            <Link
-                              href={getYablaLink(hanzis)}
-                              className="text-gray-500 hover:text-black dark:hover:text-white"
-                              target="_blank"
-                            >
-                              <FontAwesomeIcon icon={faLanguage} />
-                            </Link>
+                              <Link
+                                href={getYablaLink(hanzis)}
+                                className="text-gray-500 hover:text-black dark:hover:text-white"
+                                target="_blank"
+                              >
+                                <FontAwesomeIcon icon={faLanguage} />
+                              </Link>
 
-                            <button
-                              onClick={() => {
-                                if (toggleLoops?.length) {
-                                  setToggleLoops([]);
-                                } else {
-                                  setToggleLoops(transcriptions);
-                                }
-                              }}
-                            >
-                              <FontAwesomeIcon
-                                className={cn(
-                                  "hover:text-black dark:hover:text-white",
-                                  toggleLoops?.find((item: any) =>
-                                    transcriptions?.find(
-                                      (x: any) => x.end === item?.end
+                              <button
+                                onClick={() => {
+                                  if (toggleLoops?.length) {
+                                    setToggleLoops([]);
+                                  } else {
+                                    setToggleLoops(transcriptions);
+                                  }
+                                }}
+                              >
+                                <FontAwesomeIcon
+                                  className={cn(
+                                    "hover:text-black dark:hover:text-white",
+                                    toggleLoops?.find((item: any) =>
+                                      transcriptions?.find(
+                                        (x: any) => x.end === item?.end
+                                      )
                                     )
-                                  )
-                                    ? "dark:text-white text-red-400"
-                                    : "text-gray-500"
-                                )}
-                                icon={faRepeat}
-                              />
-                            </button>
+                                      ? "dark:text-white text-red-400"
+                                      : "text-gray-500"
+                                  )}
+                                  icon={faRepeat}
+                                />
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
+                  </ScrollArea>
+                </div>
+              </div>
+            ) : transcriptions?.length ? (
+              <div
+                className={`${isVideoHidden ? "col-span-12" : "md:col-span-5 col-span-12"} w-full`}
+              >
+                {isVideoHidden && (
+                  <div>
+                    <ActiveTranscription
+                      currentTime={currentTime}
+                      transcriptions={transcriptions}
+                      contentId={contentId}
+                    />
+                  </div>
+                )}
+
+                <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md shadow-lg dark:shadow-gray-900 p-0 pb-16">
+                  <div className="sm:space-y-8 w-full">
+                    {(active !== MAX_LIMIT ? group : transcriptions || [])
+                      .filter((script: any) => {
+                        if (focusMode) {
+                          return (
+                            (script?.timestamp?.[0] || script?.start) <
+                              currentTime &&
+                            (script?.timestamp?.[1] || script?.end) >
+                              currentTime
+                          );
+                        }
+
+                        return true;
+                      })
+                      .map((example: any, idx: any) => {
+                        return (
+                          <TranscriptItem
+                            example={example}
+                            key={`${example?.hanzi}-${idx}`}
+                            toggleLoops={toggleLoops}
+                            setToggleLoops={setToggleLoops}
+                            currentTime={currentTime}
+                            focusMode={focusMode}
+                            isVideoHidden={isVideoHidden}
+                            playerRef={playerRef}
+                            learnedCharacters={learnedCharacters}
+                            lessonId={lessonId}
+                          />
+                        );
+                      })}
                   </div>
                 </ScrollArea>
               </div>
-            </div>
-          ) : transcriptions?.length ? (
-            <div
-              className={`${isVideoHidden ? "col-span-12" : "md:col-span-5 col-span-12"} w-full`}
-            >
-              {isVideoHidden && (
-                <div>
-                  <ActiveTranscription
-                    currentTime={currentTime}
-                    transcriptions={transcriptions}
-                    contentId={contentId}
-                  />
-                </div>
-              )}
+            ) : null}
+          </div>
 
-              <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md shadow-lg dark:shadow-gray-900 p-0 pb-16">
-                <div className="sm:space-y-8 w-full">
-                  {(active !== MAX_LIMIT ? group : transcriptions || [])
-                    .filter((script: any) => {
-                      if (focusMode) {
-                        return (
-                          (script?.timestamp?.[0] || script?.start) <
-                            currentTime &&
-                          (script?.timestamp?.[1] || script?.end) > currentTime
-                        );
-                      }
-
-                      return true;
-                    })
-                    .map((example: any, idx: any) => {
-                      return (
-                        <TranscriptItem
-                          example={example}
-                          key={`${example?.hanzi}-${idx}`}
-                          toggleLoops={toggleLoops}
-                          setToggleLoops={setToggleLoops}
-                          currentTime={currentTime}
-                          focusMode={focusMode}
-                          isVideoHidden={isVideoHidden}
-                          playerRef={playerRef}
-                          learnedCharacters={learnedCharacters}
-                          lessonId={lessonId}
-                        />
-                      );
-                    })}
-                </div>
-              </ScrollArea>
-            </div>
-          ) : null}
+          <p className="dark:text-[rgb(10,11,12)] text-white">
+            todotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodo
+          </p>
         </div>
-
-        <p className="dark:text-[rgb(10,11,12)] text-white">
-          todotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodo
-        </p>
       </div>
-    </div>
+
+      {/* <FloatingNavbar /> */}
+
+      <TheDock
+        className="bottom-2"
+        // innerClassName={isReviewUrl ? "sm:block" : ""}
+        isAutomatic={false}
+      >
+        <div
+          className={cn(
+            "transition",
+            "flex items-center w-full justify-center"
+          )}
+        >
+          <div className="overflow-y-auto px-8 py-2 bg-gray-50 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
+            <div className="space-x-6 md:space-x-4 flex justify-center items-center w-full">
+              <button
+                onClick={() => {
+                  toggleLoopHandler();
+                }}
+                className={cn(
+                  `transition  hover:text-rose-400 dark:hover:text-white text-xl`,
+                  toggleLoops?.length > 0
+                    ? "dark:text-white text-black"
+                    : "text-gray-500"
+                )}
+              >
+                <Icons.loop className="transition" />
+              </button>
+
+              <p className="font-extralight w-28 text-xl text-center dark:text-slate-300 text-slate-600">
+                {formatTime(currentTime)}
+              </p>
+
+              <button
+                className="sm:text-2xl text-[16px] w-4"
+                onClick={() => {
+                  togglePlay();
+                }}
+              >
+                {isPlaying ? <Icons.pause /> : <Icons.play />}
+              </button>
+            </div>
+
+            <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+          </div>
+        </div>
+        {/* <FloatingNavbarComp /> */}
+      </TheDock>
+    </>
   );
 }

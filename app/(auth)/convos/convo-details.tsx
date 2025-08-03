@@ -90,7 +90,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
       <div>
         <YouTubePlayer lessonId={lessonId} />
 
-        <FloatingNavbar />
+        {/* <FloatingNavbar /> */}
       </div>
     );
   }
@@ -161,7 +161,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     <div>
       <YouTubePlayer lessonId={lessonId} />
 
-      <FloatingNavbar />
+      {/* <FloatingNavbar /> */}
     </div>
   );
 };

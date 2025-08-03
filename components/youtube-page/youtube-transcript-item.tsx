@@ -212,7 +212,7 @@ export const TranscriptItem = ({
                   return item?.end !== example?.end;
                 });
               }
-              return val.concat(example);
+              return val.concat({ ...example, contentId: lessonId });
             });
           }}
         >

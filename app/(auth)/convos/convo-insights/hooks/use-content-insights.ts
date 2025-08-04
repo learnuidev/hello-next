@@ -60,6 +60,8 @@ export const useGetContentInsightsRaw = ({
 
   const groupedByContextId = groupbyContextId(playedHistory);
 
+  console.log("groupedByContextId", groupedByContextId);
+
   const playedFrequency = useMemo(() => {
     return groupByIdentity(
       Object.values(groupedByContextId)
@@ -96,6 +98,8 @@ export const useGetContentInsightsRaw = ({
     );
   }, [content?.transcriptions, groupByIdentity, groupedByContextId]);
 
+  console.log("playedFrequency", playedFrequency);
+
   const data = useMemo(
     () =>
       Object.entries(playedFrequency)?.map((item) => {
@@ -124,6 +128,8 @@ export const useGetContentInsightsRaw = ({
     [data]
   );
 
+  console.log("DATA", data);
+
   const _totalTimePlayed = Object.values(groupedByContextId)
     .map((histories) => {
       const progressTimes =
@@ -149,6 +155,8 @@ export const useGetContentInsightsRaw = ({
 function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
   const { totalPlays, totalRepeats, totalTimePlayed, data } =
     useGetContentInsightsRaw({ contentId });
+
+  console.log("DATA", data);
 
   // const queryClient = useQueryClient();
 
@@ -186,6 +194,7 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
 
       const respJson = await resp.json();
 
+      console.log("REMOVE", contentId);
       removeContentHistory(contentId);
 
       // queryClient.refetchQueries({

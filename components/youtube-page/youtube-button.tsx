@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { create } from "zustand";
 import {
   useContextPlayContextState,
+  usePlayHistoryState,
   usePlayHistoryStore,
 } from "./hooks/use-play-history-state";
 
@@ -57,6 +58,9 @@ export function YoutubeButton({
   currentPhraseStr?: string;
 }) {
   const setHistory = usePlayHistoryStore((state) => state.setHistory);
+  const { history } = usePlayHistoryState({ contentId });
+
+  console.log("HISTORY", history);
   const [isPlaying, setIsPlaying] = useState(false);
   const { contextId, setNewContextId } = useContextPlayContextState();
 
@@ -126,6 +130,11 @@ export function YoutubeButton({
     return null;
   }
 
+  console.log(
+    "currentTranscription?.end - currentTranscription?.start",
+    currentTranscription?.end - currentTranscription?.start
+  );
+
   return (
     <div>
       <div className="hidden">
@@ -150,7 +159,7 @@ export function YoutubeButton({
             }
           }}
           onPlay={() => {
-            setNewContextId();
+            const contextId = setNewContextId();
 
             setHistory({
               transcriptionId: currentTranscription?.id,
@@ -160,13 +169,13 @@ export function YoutubeButton({
               progressTime: currentTranscription?.start,
             });
           }}
-          onEnded={() => {
+          onPause={() => {
             setHistory({
               transcriptionId: currentTranscription?.id,
               contextId,
               contentId,
               createdAt: Date.now(),
-              progressTime: currentTime,
+              progressTime: currentTranscription?.end,
             });
           }}
           ref={playerRef}

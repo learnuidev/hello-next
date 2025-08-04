@@ -16,6 +16,7 @@ import { YoutubeLink } from "./youtube-link";
 import { useGetCharacter } from "@/hooks/use-get-character";
 import { calculateTotalMasteryDate } from "@/app/overview/utils/calculate-total-mastery-date";
 import { useMemo } from "react";
+import { BibilliLink } from "./billibilli-link/billibilli-link";
 
 export const SelectedCharacterStats = ({
   characterId,
@@ -116,7 +117,10 @@ export const SelectedCharacterStats = ({
         <GoogleTranslateLink hanzi={characterId} />
         {lang === "zh" && <YablaLink hanzi={characterId} />}
         {lang === "zh" && <HanbookLink hanzi={characterId} />}
-        <YoutubeLink characterId={characterId} />
+        {lang !== "zh" && <YoutubeLink characterId={characterId} />}
+        {lang === "zh" && (
+          <BibilliLink className="text-2xl" hanzi={characterId} />
+        )}
       </div>
     </div>
   );

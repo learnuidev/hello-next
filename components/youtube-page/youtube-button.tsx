@@ -139,18 +139,35 @@ export function YoutubeButton({
                 seek(currentTranscription?.start);
               }
             } else {
-              setHistory({
-                transcriptionId: currentTranscription?.id,
-                contextId,
-                contentId,
-                createdAt: Date.now(),
-                progressTime: value.playedSeconds,
-              });
+              // setHistory({
+              //   transcriptionId: currentTranscription?.id,
+              //   contextId,
+              //   contentId,
+              //   createdAt: Date.now(),
+              //   progressTime: value.playedSeconds,
+              // });
               setTime(value.playedSeconds);
             }
           }}
           onPlay={() => {
             setNewContextId();
+
+            setHistory({
+              transcriptionId: currentTranscription?.id,
+              contextId,
+              contentId,
+              createdAt: Date.now(),
+              progressTime: currentTranscription?.start,
+            });
+          }}
+          onEnded={() => {
+            setHistory({
+              transcriptionId: currentTranscription?.id,
+              contextId,
+              contentId,
+              createdAt: Date.now(),
+              progressTime: currentTime,
+            });
           }}
           ref={playerRef}
           url={finalUrl}

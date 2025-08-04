@@ -230,7 +230,7 @@ export const SentenceItem = (props: any) => {
                 }}
                 target="_blank"
                 className="text-[16px] dark:text-gray-500 text-gray-600"
-                href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start && `?start=${currentPhrase?.start}`}`}
+                href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start ? `?start=${currentPhrase?.start}` : ""}`}
               >
                 {currentPhrase?.en || currentPhrase?.title}
               </Link>

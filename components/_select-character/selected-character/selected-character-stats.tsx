@@ -69,33 +69,34 @@ export const SelectedCharacterStats = ({
   // const
 
   return (
-    <div className="flex justify-between items-center">
-      {multiSentence ? null : (
-        <div className="flex items-center space-x-4">
-          {level && (
-            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-              <Icons.earthAsia />
-              <p className="text-black dark:text-white">{level}</p>
-            </div>
-          )}
+    <div className="text-gray-500 flex space-x-4 my-4 overflow-y-auto pb-4">
+      <div className="flex justify-between items-center">
+        {multiSentence ? null : (
+          <div className="flex items-center space-x-4">
+            {level && (
+              <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+                <Icons.earthAsia />
+                <p className="text-black dark:text-white">{level}</p>
+              </div>
+            )}
 
-          {relatedHskWords?.length > 0 && (
-            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-              <Icons.word />
-              <p className="text-black dark:text-white">
-                {relatedHskWords?.length}
-              </p>
-            </div>
-          )}
-          {selectedCharacter && (
-            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-              <Icons.play />
-              <p className="text-black dark:text-white">
-                {selectedCharacter?.reviewHistory?.length || 0}
-              </p>
-            </div>
-          )}
-          {/* {totalRelatedSentences > 0 && (
+            {relatedHskWords?.length > 0 && (
+              <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+                <Icons.word />
+                <p className="text-black dark:text-white">
+                  {relatedHskWords?.length}
+                </p>
+              </div>
+            )}
+            {selectedCharacter && (
+              <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+                <Icons.play />
+                <p className="text-black dark:text-white">
+                  {selectedCharacter?.reviewHistory?.length || 0}
+                </p>
+              </div>
+            )}
+            {/* {totalRelatedSentences > 0 && (
             <div className="text-slate-500  text-extralight flex space-x-2 items-center">
               <Icons.sentence />
               <p className="text-black dark:text-white">
@@ -104,23 +105,26 @@ export const SelectedCharacterStats = ({
             </div>
           )} */}
 
-          {totalMasteryDays === 0 ? null : (
-            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-              <Icons.fireDuoTone />
-              <p className="text-black dark:text-white">{totalMasteryDays}d</p>
-            </div>
+            {totalMasteryDays === 0 ? null : (
+              <div className="text-slate-500  text-extralight flex space-x-2 items-center">
+                <Icons.fireDuoTone />
+                <p className="text-black dark:text-white">
+                  {totalMasteryDays}d
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="space-x-4 flex items-center px-2">
+          <GoogleTranslateLink hanzi={characterId} />
+          {lang === "zh" && <YablaLink hanzi={characterId} />}
+          {lang === "zh" && <HanbookLink hanzi={characterId} />}
+          {lang !== "zh" && <YoutubeLink characterId={characterId} />}
+          {lang === "zh" && (
+            <BibilliLink className="text-2xl" hanzi={characterId} />
           )}
         </div>
-      )}
-
-      <div className="space-x-4 flex items-center px-2">
-        <GoogleTranslateLink hanzi={characterId} />
-        {lang === "zh" && <YablaLink hanzi={characterId} />}
-        {lang === "zh" && <HanbookLink hanzi={characterId} />}
-        {lang !== "zh" && <YoutubeLink characterId={characterId} />}
-        {lang === "zh" && (
-          <BibilliLink className="text-2xl" hanzi={characterId} />
-        )}
       </div>
     </div>
   );

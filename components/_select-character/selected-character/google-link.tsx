@@ -14,12 +14,9 @@ export const GoogleLink = ({
     <Link
       target="_blank"
       href={`https://www.google.com/search?q=${encodeURIComponent(hanzi)}`}
-      className={cn(
-        `text-sm bg-white dark:bg-black p-2 w-[36px] h-[36px] ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`,
-        className
-      )}
+      className={cn(className)}
     >
-      <Icons.google />
+      <Icons.google className="text-xl" />
     </Link>
   );
 };

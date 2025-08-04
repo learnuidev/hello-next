@@ -23,7 +23,7 @@ export const BibilliLink = ({
         className
       )}
     >
-      <img src={billiBilli.src} alt="billi-billi" />
+      <img width={100} src={billiBilli.src} alt="billi-billi" />
     </Link>
   );
 };

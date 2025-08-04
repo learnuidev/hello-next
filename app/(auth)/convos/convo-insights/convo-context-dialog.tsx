@@ -15,6 +15,11 @@ import { useCallback, useEffect, useRef } from "react";
 import ReactPlayer from "react-player";
 import { formatTime } from "../_play/utils";
 import { isVideoUrl } from "../utils/is-video-url";
+import { useWordsClickedHistoryStore } from "@/components/youtube-page/hooks/use-words-clicked-history-state";
+import {
+  useContextPlayContextState,
+  usePlayHistoryStore,
+} from "@/components/youtube-page/hooks/use-play-history-state";
 
 export const ConvoContextDialog = ({
   isOpen,
@@ -29,6 +34,8 @@ export const ConvoContextDialog = ({
 }) => {
   const { data } = useGetContentQuery({ contentId });
 
+  const setWords = useWordsClickedHistoryStore((state) => state.setHistory);
+
   const playerRef = useRef(null) as any;
 
   const filteredTimestamps = data?.transcriptions?.filter((item: any) =>
@@ -39,12 +46,12 @@ export const ConvoContextDialog = ({
 
   const isSmall = useIsSmall();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(playerRef?.current?.getCurrentTime());
-    }, 500);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setTime(playerRef?.current?.getCurrentTime());
+  //   }, 500);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const seekAndPlay = (time: any) => {
     playerRef.current.seekTo(time, "seconds");
@@ -80,6 +87,13 @@ export const ConvoContextDialog = ({
     }
   }, [start, data?.audio, currentTime]);
 
+  const { contextId, setNewContextId } = useContextPlayContextState();
+  const setHistory = usePlayHistoryStore((state) => state.setHistory);
+
+  const currentTranscription = data?.transcriptions?.find(
+    (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+  );
+
   // useEffect(() => {
   //   if (firstTimestamp) {
   //     seekAndPlay(firstTimestamp?.start);
@@ -102,6 +116,22 @@ export const ConvoContextDialog = ({
           height={isSmall ? "200px" : "450px"}
           controls
           onReady={onReady}
+          onPlay={() => {
+            setNewContextId();
+          }}
+          onProgress={(value) => {
+            if (currentTranscription) {
+              setHistory({
+                transcriptionId: currentTranscription?.id,
+                contextId,
+                contentId,
+                createdAt: Date.now(),
+                progressTime: value.playedSeconds,
+              });
+            }
+
+            setTime(value.playedSeconds);
+          }}
         />
 
         <ActiveTranscription
@@ -142,6 +172,13 @@ export const ConvoContextDialog = ({
                             className="text-[16px]"
                             character={character}
                             key={`timeline-tab-${idx}-${character}`}
+                            onClick={() => {
+                              setWords({
+                                word: character,
+                                transcriptionId: item?.id,
+                                contentId,
+                              });
+                            }}
                           />
                         );
                       }

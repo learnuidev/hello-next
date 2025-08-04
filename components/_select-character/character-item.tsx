@@ -20,6 +20,7 @@ interface ICharacterItem {
   className?: string;
   disableClass?: boolean;
   disableForgotten?: boolean;
+  onClick?: () => void;
 }
 
 function calculatePopularityColor(comp: any) {
@@ -40,6 +41,7 @@ function calculatePopularityColor(comp: any) {
 }
 
 export const CharacterItem = ({
+  onClick,
   character,
   className,
   disableClass,
@@ -74,6 +76,11 @@ export const CharacterItem = ({
 
   return (
     <span
+      onClick={() => {
+        if (onClick) {
+          onClick();
+        }
+      }}
       key={`${character}`}
       className={cn(
         `${

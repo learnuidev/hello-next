@@ -1,14 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
+import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watched-content-store";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence-mutation";
 import { cn } from "@/lib/utils";
 import { chineseConverter } from "mandarino/src/utils/chinese-converter";
+import { useRef } from "react";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { Icons } from "../ui/icons.v2";
 import { useCanTrackFunction } from "../use-can-track-function";
@@ -17,11 +19,10 @@ import { smartSplit } from "../youtube-page/utils/smart-split";
 import { YoutubeButton } from "../youtube-page/youtube-button";
 import { CharacterItem } from "./character-item";
 import { PlayButtonV2 } from "./play-button-v2";
+import { textToSpeechProviders } from "./selected-character.constants";
 import { GoogleTranslateLink } from "./selected-character/google-translate-link";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { WithInteractiveTitle } from "./with-interative-title";
-import { textToSpeechProviders } from "./selected-character.constants";
-import { useRef } from "react";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -31,9 +32,7 @@ export const SentenceItem = (props: any) => {
 
   const componentId = useGetComponentId();
 
-  const searchParams = useSearchParams();
-
-  const context = searchParams?.get("context");
+  const { setRecentlyWatched } = useRecentlyWatchedContent();
 
   const unEncoded = currentPhrase?.hanzi || currentPhrase?.input;
 
@@ -226,6 +225,9 @@ export const SentenceItem = (props: any) => {
           : lang !== "en" &&
             (currentPhrase?.contentId ? (
               <Link
+                onClick={() => {
+                  setRecentlyWatched({ id: currentPhrase?.contentId });
+                }}
                 target="_blank"
                 className="text-[16px] dark:text-gray-500 text-gray-600"
                 href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start && `?start=${currentPhrase?.start}`}`}

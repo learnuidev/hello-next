@@ -6,7 +6,7 @@ import { useMemo } from "react";
 
 const publicContentsQueryKey = `list-published-contents`;
 
-const usePublishedContentsStore = createIndexDBStore({
+export const usePublishedContentsStore = createIndexDBStore({
   name: publicContentsQueryKey,
   handler: (set: any, get: any) => ({
     contents: null,

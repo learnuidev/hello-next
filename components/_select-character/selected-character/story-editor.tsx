@@ -29,6 +29,7 @@ export const StoryEditor = ({
   return (
     <div className="my-16 text-black dark:text-white justify-start w-full">
       <Editor
+        key={initStory || story}
         readOnly={false}
         content={initStory || story}
         onUpdate={(val: any) => {

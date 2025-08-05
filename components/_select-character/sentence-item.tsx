@@ -19,11 +19,10 @@ import { smartSplit } from "../youtube-page/utils/smart-split";
 import { YoutubeButton } from "../youtube-page/youtube-button";
 import { CharacterItem } from "./character-item";
 import { PlayButtonV2 } from "./play-button-v2";
-import { textToSpeechProviders } from "./selected-character.constants";
 import { GoogleTranslateLink } from "./selected-character/google-translate-link";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
-import { WithInteractiveTitle } from "./with-interative-title";
 import { isRomanLang } from "./utils/is-non-roman-lang";
+import { WithInteractiveTitle } from "./with-interative-title";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -175,7 +174,6 @@ export const SentenceItem = (props: any) => {
           customRef={customRef}
           text={chineseConverter(currentPhrase?.input || currentPhrase?.hanzi)}
           lang={currentPhrase?.lang}
-          provider={textToSpeechProviders.speechify}
           className={"text-xl"}
         >
           <span>

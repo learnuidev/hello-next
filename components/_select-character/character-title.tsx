@@ -1,6 +1,5 @@
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
-import { cn } from "@/lib/utils";
 
 import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
@@ -17,6 +16,7 @@ import { useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 
+import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
 import { useYoutubeVideoUrl } from "../summary/with-youtube-video";
 import { Icons } from "../ui/icons.v2";
 import { smartSplit } from "../youtube-page/utils/smart-split";
@@ -27,8 +27,6 @@ import { CharacterTrackButton } from "./selected-character/character-track-butto
 import { useCharacterEditStore } from "./use-character-edit-store";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
-import { textToSpeechProviders } from "./selected-character.constants";
-import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -145,7 +143,6 @@ export const CharacterTitle = (props: any) => {
           customRef={customRef}
           text={selectedCompInput}
           lang={lang}
-          provider={textToSpeechProviders.speechify}
           className={
             selectedCompInput?.length < 8 ? "lg:text-4xl text-4xl" : "text-2xl"
           }

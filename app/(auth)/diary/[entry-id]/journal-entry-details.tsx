@@ -1,10 +1,13 @@
 "use client";
 
+import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
 import { Badge } from "@/components/ui/badge";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { groupBy } from "ramda";
+import { useRef } from "react";
+import { useSpeak } from "../../convos/_play/use-speak";
 import {
   JournalEntryDate,
   JournalEntryTitle,
@@ -14,14 +17,9 @@ import {
   useGetJournalDetailsQuery,
 } from "../hooks/use-get-journal-details-query";
 import { useGetJournalEntryQuery } from "../hooks/use-get-journal-entry-query";
+import { JournalEntryActionButtons } from "./journal-entry-action-buttons";
 import { useEntryParams } from "./use-entry-params";
 import { useJournalDetailStore } from "./use-journal-detail-store";
-import { useSpeak } from "../../convos/_play/use-speak";
-import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
-import { JournalEntryActionButtons } from "./journal-entry-action-buttons";
-import { WithInteractiveTitle } from "@/components/_select-character/with-interative-title";
-import { useRef } from "react";
-import { textToSpeechProviders } from "@/components/_select-character/selected-character.constants";
 
 function JournalDetailsBody({ entryId }: { entryId: string }) {
   const { data: journalDetails } = useGetJournalDetailsQuery(entryId);

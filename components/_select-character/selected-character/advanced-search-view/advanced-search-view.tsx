@@ -26,8 +26,6 @@ export const AdvancedSearchView = ({
 
         <YoutubeLink className="text-2xl" characterId={characterId} />
         <BibilliLink className="text-2xl" hanzi={characterId} />
-
-        <YoutubeLink characterId={characterId} />
       </div>
     </div>
   );

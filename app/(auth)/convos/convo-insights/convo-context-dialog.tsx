@@ -2,7 +2,7 @@
 
 import { useGetContentQuery } from "@/domain/content/content.queries";
 
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Icons } from "@/components/ui/icons.v2";
 
 import { CharacterItem } from "@/components/_select-character/character-item";
@@ -20,6 +20,8 @@ import {
   useContextPlayContextState,
   usePlayHistoryStore,
 } from "@/components/youtube-page/hooks/use-play-history-state";
+import { ScrollArea } from "@/components/ui/scroll-area";
+// import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 export const ConvoContextDialog = ({
   isOpen,
@@ -39,7 +41,7 @@ export const ConvoContextDialog = ({
   const playerRef = useRef(null) as any;
 
   const filteredTimestamps = data?.transcriptions?.filter((item: any) =>
-    (item?.hanzi || item?.input)?.includes(selected?.hanzi || selected?.input)
+    (item?.input || item?.hanzi)?.includes(selected?.input || selected?.hanzi)
   );
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(contentId);
@@ -102,6 +104,18 @@ export const ConvoContextDialog = ({
 
   return (
     <Dialog open={isOpen}>
+      <DialogHeader>
+        <div>
+          <Link
+            target="_blank"
+            className="text-white"
+            href={`/nmm/${selected?.input || selected?.hanzi}?lang=${data?.lang}`}
+          >
+            Selected: {selected?.input || selected?.hanzi}
+          </Link>
+        </div>
+      </DialogHeader>
+
       <DialogContent
         onClick={() => {
           closeDialog();
@@ -144,65 +158,71 @@ export const ConvoContextDialog = ({
         <div>
           <Link
             target="_blank"
+            className="text-gray-500"
             href={`/nmm/${selected?.input || selected?.hanzi}?lang=${data?.lang}`}
           >
             Selected: {selected?.input || selected?.hanzi}
           </Link>
         </div>
 
-        <div className="flex flex-col gap-4">
-          {filteredTimestamps?.slice(0, 3).map((item: any) => {
-            return (
-              <button
-                className="block w-full"
-                onClick={() => {
-                  seekAndPlay(item?.start);
-                }}
-                key={JSON.stringify(item)}
-              >
-                <div className="flex justify-between items-center flex-row w-full">
-                  <p>
-                    <span className="text-gray-500">
-                      {formatTime(item?.start)}
-                    </span>{" "}
-                    {smartSplit({ input: item?.input, lang: data?.lang })?.map(
-                      (character: any, idx: number) => {
-                        return (
-                          <CharacterItem
-                            className="text-[16px]"
-                            character={character}
-                            key={`timeline-tab-${idx}-${character}`}
-                            onClick={() => {
-                              setWords({
-                                word: character,
-                                transcriptionId: item?.id,
-                                contentId,
-                              });
-                            }}
-                          />
-                        );
-                      }
-                    )}
-                  </p>
+        <ScrollArea className="space-y-6 w-full h-[200px] rounded-md">
+          <div className="flex flex-col gap-4">
+            {filteredTimestamps?.map((item: any) => {
+              return (
+                <button
+                  className="block w-full"
+                  onClick={() => {
+                    seekAndPlay(item?.start);
+                  }}
+                  key={JSON.stringify(item)}
+                >
+                  <div className="flex justify-between items-center gap-4 flex-row w-full">
+                    <p className="flex flex-wrap items-center flex-row gap-4">
+                      <span className="text-gray-500">
+                        {formatTime(item?.start)}
+                      </span>{" "}
+                      <span>
+                        {smartSplit({
+                          input: item?.input,
+                          lang: data?.lang,
+                        })?.map((character: any, idx: number) => {
+                          return (
+                            <CharacterItem
+                              className="text-[16px]"
+                              character={character}
+                              key={`timeline-tab-${idx}-${character}`}
+                              onClick={() => {
+                                setWords({
+                                  word: character,
+                                  transcriptionId: item?.id,
+                                  contentId,
+                                });
+                              }}
+                            />
+                          );
+                        })}
+                      </span>
+                    </p>
 
-                  <div>
-                    <Link
-                      target="_blank"
-                      href={`/nmm/${item?.input}?lang=${data?.lang}`}
-                    >
-                      <Icons.magnifyingGlass />
-                    </Link>
+                    <div>
+                      <Link
+                        target="_blank"
+                        href={`/nmm/${item?.input}?lang=${data?.lang}`}
+                      >
+                        <Icons.magnifyingGlass />
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-        <div>
+                </button>
+              );
+            })}
+          </div>
+        </ScrollArea>
+        {/* <div>
           {filteredTimestamps?.length > 3 && (
             <p>...{filteredTimestamps?.length - 3}+ more</p>
           )}
-        </div>
+        </div> */}
       </DialogContent>
     </Dialog>
   );

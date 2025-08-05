@@ -226,8 +226,6 @@ export const HtmlArticleView = () => {
     };
   }, [togglePinyin]);
 
-  // console.log("DATA WITH CTX", dataWithContext);
-
   // if (!url) {
   //   return <Nothing message="Please provide a url" />;
   // }

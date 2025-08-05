@@ -6,6 +6,8 @@ import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
+import { useState } from "react";
+import { ConvoContextDialog } from "./convo-context-dialog";
 
 export const ConvoInsightsNoNChinese = ({
   contentId,
@@ -14,6 +16,7 @@ export const ConvoInsightsNoNChinese = ({
   contentId: string;
   children: React.ReactNode;
 }) => {
+  const [selected, setSelected] = useState(null);
   const { data, isLoading } = useGetContentQuery({
     contentId,
   }) as any;
@@ -52,6 +55,17 @@ export const ConvoInsightsNoNChinese = ({
   return (
     <div className="my-8 bg-gray-50 dark:bg-[rgb(11,12,13)] py-12">
       <h4 className="text-center text-2xl">Content Dictionary</h4>
+
+      {selected && (
+        <ConvoContextDialog
+          selected={selected}
+          contentId={contentId}
+          isOpen={!!selected}
+          closeDialog={() => {
+            setSelected(null);
+          }}
+        />
+      )}
       <NmmListContainerAll className="gap-4">
         {context?.map((char: any, idx: number) => {
           return (
@@ -61,6 +75,9 @@ export const ConvoInsightsNoNChinese = ({
                   ? "text-yellow-500 dark:text-yellow-500 "
                   : ""
               }
+              onClick={() => {
+                setSelected(char);
+              }}
               lang={data?.lang}
               frequency={char?.frequency}
               character={char}

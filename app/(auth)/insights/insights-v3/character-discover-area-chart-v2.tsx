@@ -61,8 +61,6 @@ function WeeklyReviewedCharactersChart() {
     };
   });
 
-  console.log("CHART DATA", chartData);
-
   const totalCharactersLearned = data?.reduce((acc, curr) => {
     return acc + curr?.value;
   }, 0);

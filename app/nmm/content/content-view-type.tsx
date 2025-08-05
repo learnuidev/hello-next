@@ -33,8 +33,6 @@ export function ContentViewType({
   const words = data?.words || [];
   const sentences = data?.sentences || [];
 
-  // console.log("DATA", data);
-
   const { data: componentsAll } = useListComponents({
     includeAll: true,
   });

@@ -47,8 +47,10 @@ type ContentType = {
 };
 
 function ContentsList({ contentViewType }: { contentViewType: string }) {
-  const { data: myContent } = useListContentsQuery();
-  const { data } = useListPublishedContentsQuery({});
+  const { data: myContent, isLoading } = useListContentsQuery();
+  const { data, isLoading: isPublishedLoading } = useListPublishedContentsQuery(
+    {}
+  );
   const { data: favouriteContents, isLoading: isFavouriteContentLoading } =
     useListFavouriteContentsQuery({});
 
@@ -123,7 +125,7 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
         })
     : [];
 
-  if (!myContent) {
+  if (isLoading || isFavouriteContentLoading || isPublishedLoading) {
     return <LottieLoadingAnimation />;
   }
 

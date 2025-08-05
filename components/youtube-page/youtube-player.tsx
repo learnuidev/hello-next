@@ -779,13 +779,15 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                         ? "md:col-span-7 col-span-12"
                         : "md:col-span-5 col-span-12"
                     } w-full text-center`,
-                    qaMode ? "mt-8" : ""
+                    qaMode && lesson?.questions?.length > 0 ? "mt-8" : ""
                   )}
                 >
                   <ScrollArea
                     className={cn(
                       `space-y-4 rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8`,
-                      qaMode ? "h-[350px]" : "h-[400px] sm:h-[640px]"
+                      qaMode && lesson?.questions?.length > 0
+                        ? "h-[350px]"
+                        : "h-[400px] sm:h-[640px]"
                     )}
                   >
                     <div className="space-y-8">

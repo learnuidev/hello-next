@@ -23,6 +23,7 @@ import { textToSpeechProviders } from "./selected-character.constants";
 import { GoogleTranslateLink } from "./selected-character/google-translate-link";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { WithInteractiveTitle } from "./with-interative-title";
+import { isRomanLang } from "./utils/is-non-roman-lang";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -161,7 +162,7 @@ export const SentenceItem = (props: any) => {
             setIfExists({ ...currentPhrase });
           }}
         >
-          {currentPhrase?.lang === "en"
+          {currentPhrase?.lang === "en" || isRomanLang(currentPhrase?.lang)
             ? null
             : showPinyin &&
               lang !== "en" && (

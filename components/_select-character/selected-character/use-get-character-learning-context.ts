@@ -11,6 +11,7 @@ export function useGetCharacterLearningContext({
 }) {
   const data: any = useContentsStore((state) => state.contents);
 
+  console.log("data", data);
   const items = useMemo(
     () =>
       data?.items
@@ -25,8 +26,10 @@ export function useGetCharacterLearningContext({
         ?.flat()
         ?.filter(
           (item: any) =>
-            (item?.hanzi?.toLowerCase()?.includes(characterId) ||
-              item?.input?.toLowerCase()?.includes(characterId)) &&
+            (item?.hanzi?.toLowerCase()?.includes(characterId?.toLowerCase()) ||
+              item?.input
+                ?.toLowerCase()
+                ?.includes(characterId?.toLowerCase())) &&
             item?.lang === lang
         )
         ?.sort(

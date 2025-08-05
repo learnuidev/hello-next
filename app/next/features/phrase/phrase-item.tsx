@@ -14,6 +14,7 @@ import { useRef } from "react";
 import { chineseConverter } from "mandarino/src/utils/chinese-converter";
 import { textToSpeechProviders } from "@/components/_select-character/selected-character.constants";
 import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
+import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 
 const PhraseActionButton = ({
   onClick,
@@ -33,6 +34,8 @@ const PhraseActionButton = ({
   if (as === "link") {
     return (
       <Link
+        onDoubleClick={onDoubleClick}
+        onClick={onClick}
         href={href || ""}
         className={cn(
           `text-xs dark:text-white p-2  w-8 h-8 ring-1 ring-gray-300 dark:ring-gray-700  rounded-full flex items-center justify-center transition hover:shadow-lg dark:shadow-gray-400`,
@@ -66,6 +69,7 @@ export function PhraseItem({
   idx: any;
   showPinyin: boolean;
 }) {
+  const addHistoryMutation = useAddHistoryMutation();
   const customRef: any = useRef(null) as any;
   const lang = message?.targetLang;
   const sourceLang = message?.sourceLang;
@@ -124,6 +128,15 @@ export function PhraseItem({
 
           <div className="flex justify-end space-x-2 mt-4">
             <PhraseActionButton
+              onClick={() => {
+                addHistoryMutation.mutate({
+                  input: isSourceSameAsTarget
+                    ? message?.input
+                    : formattedOutput,
+                  lang: speakLang === "zh-CN" ? "zh" : speakLang,
+                  eventType: "SEARCH",
+                } as any);
+              }}
               as="link"
               href={`/nmm/${encodeURIComponent(isSourceSameAsTarget ? message?.input : formattedOutput)}?lang=${speakLang === "zh-CN" ? "zh" : speakLang}`}
             >

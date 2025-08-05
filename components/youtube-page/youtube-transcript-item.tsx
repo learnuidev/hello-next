@@ -1,9 +1,3 @@
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faLanguage, faRepeat } from "@fortawesome/pro-thin-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +7,8 @@ import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-chara
 import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { cn } from "@/lib/utils";
+import { europeanLangs } from "@/libs/constants/european-langs";
 import { resolveLangCode } from "@/libs/openai/utils";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -21,12 +17,10 @@ import {
 } from "../_select-character/utils/is-non-roman-lang";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { Icons } from "../ui/icons.v2";
-import { useContentEditStore } from "./use-content-edit-store";
-import { europeanLangs } from "@/libs/constants/european-langs";
 import { useContextPlayContextState } from "./hooks/use-play-history-state";
-import { cn } from "@/lib/utils";
-import { smartSplit } from "./utils/smart-split";
 import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
+import { useContentEditStore } from "./use-content-edit-store";
+import { smartSplit } from "./utils/smart-split";
 
 export const TranscriptItem = ({
   example,
@@ -169,7 +163,7 @@ export const TranscriptItem = ({
                   ?.join("")
               : example?.input || example?.hanzi
           )}&op=translate`}
-          className="text-gray-500 hover:text-white"
+          className="text-gray-500 hover:text-red-500 dark:hover:text-white"
         >
           <FontAwesomeIcon icon={faGoogle} />
         </Link>
@@ -184,7 +178,7 @@ export const TranscriptItem = ({
                     ?.join("")
                 : example?.input || example?.hanzi
             )}`}
-            className="text-gray-500 hover:text-white"
+            className="text-gray-500 hover:text-red-500 dark:hover:text-white"
             target="_blank"
           >
             <FontAwesomeIcon icon={faLanguage} />
@@ -204,7 +198,7 @@ export const TranscriptItem = ({
             // :
             example?.input || example?.hanzi
           )}${example?.lang ? `?lang=${resolveLangCode(example?.lang)}` : ""}`}
-          className="text-gray-500 hover:text-white"
+          className="text-gray-500 hover:text-red-500 dark:hover:text-white"
           target="_blank"
         >
           <Icons.mandarin />
@@ -297,77 +291,62 @@ export const TranscriptItem = ({
             }
           }}
         >
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger className="px-0 transition">
-                {isNonRomanLang(example?.lang) &&
-                  showPinyin &&
-                  (example?.pinyin || example?.roman) && (
-                    <p
-                      className={`${
-                        (timeStamp?.start ||
-                          example?.timestamp?.[0] ||
-                          example?.start) < currentTime &&
-                        (timeStamp?.end ||
-                          example?.timestamp?.[1] ||
-                          example?.end) > currentTime
-                          ? "text-rose-400"
-                          : "dark:text-gray-400 text-gray-300"
-                      } transition text-md text-left text-gray-500`}
-                    >
-                      {example?.roman || example?.pinyin}
-                    </p>
-                  )}
-                <div className="text-left">
-                  {smartSplit({
-                    input: example?.input || example?.hanzi,
-                    lang: example?.lang,
-                  }).map((item: any, idx: any) => {
-                    const isInTimeRange =
-                      (timeStamp?.start ??
-                        example?.timestamp?.[0] ??
-                        example?.start) < currentTime &&
-                      (timeStamp?.end ??
-                        example?.timestamp?.[1] ??
-                        example?.end) > currentTime;
+          {isNonRomanLang(example?.lang) &&
+            showPinyin &&
+            (example?.pinyin || example?.roman) && (
+              <p
+                className={`${
+                  (timeStamp?.start ||
+                    example?.timestamp?.[0] ||
+                    example?.start) < currentTime &&
+                  (timeStamp?.end || example?.timestamp?.[1] || example?.end) >
+                    currentTime
+                    ? "text-rose-400"
+                    : "dark:text-gray-400 text-gray-300"
+                } transition text-md text-left text-gray-500`}
+              >
+                {example?.roman || example?.pinyin}
+              </p>
+            )}
+          <div className="text-left">
+            {smartSplit({
+              input: example?.input || example?.hanzi,
+              lang: example?.lang,
+            }).map((item: any, idx: any) => {
+              const isInTimeRange =
+                (timeStamp?.start ??
+                  example?.timestamp?.[0] ??
+                  example?.start) < currentTime &&
+                (timeStamp?.end ?? example?.timestamp?.[1] ?? example?.end) >
+                  currentTime;
 
-                    const isLearned = learnedCharacters?.find(
-                      (char: any) => char?.hanzi === item
-                    );
+              const isLearned = learnedCharacters?.find(
+                (char: any) => char?.hanzi === item
+              );
 
-                    return (
-                      <span
-                        key={`${JSON.stringify(item)}-${idx}-${Math.random()}`}
-                        className={cn("transition text-md", {
-                          "text-rose-400": isInTimeRange,
-                          "dark:text-gray-200": !isInTimeRange && isLearned,
-                          "dark:text-gray-300 text-black":
-                            !isInTimeRange && !isLearned,
-                          "text-xl": isRomanLang(example?.lang),
-                        })}
-                        onClick={() => {
-                          setWords({
-                            word: item,
-                            transcriptionId: example?.id,
-                            contentId: lessonId,
-                          });
-                        }}
-                      >
-                        {item}
-                      </span>
-                    );
+              return (
+                <span
+                  key={`${JSON.stringify(item)}-${idx}-${Math.random()}`}
+                  className={cn("transition text-md", {
+                    "text-rose-400": isInTimeRange,
+                    "dark:text-gray-200": !isInTimeRange && isLearned,
+                    "dark:text-gray-300 text-black":
+                      !isInTimeRange && !isLearned,
+                    "text-xl": isRomanLang(example?.lang),
                   })}
-                </div>
-              </TooltipTrigger>
-              <TooltipContent className="bg-black border-gray-800 p-4">
-                <Explanations />
-
-                <div className="mt-4">
-                  <ConfigButtons />
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                  onClick={() => {
+                    setWords({
+                      word: item,
+                      transcriptionId: example?.id,
+                      contentId: lessonId,
+                    });
+                  }}
+                >
+                  {item}
+                </span>
+              );
+            })}
+          </div>
 
           <Explanations />
         </div>

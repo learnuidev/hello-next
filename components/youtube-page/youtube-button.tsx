@@ -60,7 +60,6 @@ export function YoutubeButton({
   const setHistory = usePlayHistoryStore((state) => state.setHistory);
   const { history } = usePlayHistoryState({ contentId });
 
-  console.log("HISTORY", history);
   const [isPlaying, setIsPlaying] = useState(false);
   const { contextId, setNewContextId } = useContextPlayContextState();
 

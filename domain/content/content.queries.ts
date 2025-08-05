@@ -8,8 +8,8 @@ import { getContent, IContent, listContents } from "./content.api";
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 import { useMemo } from "react";
 
-const useContentsStore = createIndexDBStore({
-  name: "list-contents",
+export const useContentsStore = createIndexDBStore({
+  name: "list-content-v2",
   handler: (set: any, get: any) => ({
     contents: null,
     setContents: (f: any) =>
@@ -76,12 +76,12 @@ export const useGetListContentsQueryKey = () => {
 
   return [listContentsQueryKey, authUser?.jwt];
 };
-export function useListRemoteContentsQuery(options = {} as any) {
+export function useListContentsQuery(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
 
   const queryKey = useGetListContentsQueryKey();
 
-  const setContents: any = useContentsStore((state) => state.setContents);
+  // const setContents: any = useContentsStore((state) => state.setContents);
 
   return useQuery<ListContentsResponse, Error>({
     queryKey: queryKey,
@@ -95,7 +95,7 @@ export function useListRemoteContentsQuery(options = {} as any) {
         ),
       };
 
-      setContents(finalResponse);
+      // setContents(finalResponse);
 
       return finalResponse;
       // return response?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
@@ -113,8 +113,8 @@ export function useListRemoteContentsQuery(options = {} as any) {
   });
 }
 
-export const useListContentsQuery = (options = {} as any) => {
-  const { data, isLoading } = useListRemoteContentsQuery(options);
+const useListContentsQueryOld = (options = {} as any) => {
+  const { data, isLoading } = useListContentsQuery(options);
   const contents: any = useContentsStore((state) => state.contents);
 
   return useMemo(() => {
@@ -129,6 +129,8 @@ export function useGetContentQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
+  const setContents: any = useContentsStore((state) => state.setContents);
+
   const queryClient = useQueryClient();
 
   return useQuery<IContent, any, any>({
@@ -137,6 +139,17 @@ export function useGetContentQuery(
     queryFn: async () => {
       const response = await getContent(params, {
         Authorization: authUser?.jwt,
+      });
+
+      setContents((prevContent: any) => {
+        const updatedItems = (prevContent?.items || [])
+          ?.filter((c: any) => c?.id !== response?.id)
+          .concat(response);
+
+        return {
+          ...prevContent,
+          items: updatedItems,
+        };
       });
       return response;
     },

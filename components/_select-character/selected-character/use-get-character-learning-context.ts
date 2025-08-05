@@ -1,4 +1,5 @@
 import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
+import { useContentsStore } from "@/domain/content/content.queries";
 import { useMemo } from "react";
 
 export function useGetCharacterLearningContext({
@@ -8,7 +9,7 @@ export function useGetCharacterLearningContext({
   lang: string;
   characterId: string;
 }) {
-  const { data } = useListPublishedContentsQuery({});
+  const data: any = useContentsStore((state) => state.contents);
 
   const items = useMemo(
     () =>
@@ -24,8 +25,8 @@ export function useGetCharacterLearningContext({
         ?.flat()
         ?.filter(
           (item: any) =>
-            (JSON.stringify(item?.hanzi)?.includes(characterId) ||
-              JSON.stringify(item?.input)?.includes(characterId)) &&
+            (item?.hanzi?.toLowerCase()?.includes(characterId) ||
+              item?.input?.toLowerCase()?.includes(characterId)) &&
             item?.lang === lang
         )
         ?.sort(

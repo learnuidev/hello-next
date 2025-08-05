@@ -76,6 +76,11 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
     return true;
   };
 
+  console.log("contents", contents);
+
+  console.log("content type", contentType);
+  console.log("query", query);
+
   const projects = contents
     ? contents
         ?.filter((content: any) => {
@@ -125,6 +130,8 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
   if (contentViewType === "favourites" && projects?.length === 0) {
     return <Nothing message={`Nothing favourited`} icon={Icons.content} />;
   }
+
+  console.log("PROJECTS", projects);
 
   if (!projects?.length) {
     return (

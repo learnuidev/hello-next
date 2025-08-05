@@ -18,6 +18,7 @@ import {
   useContextPlayContextState,
   usePlayHistoryStore,
 } from "../youtube-page/hooks/use-play-history-state";
+import { useAudioProviderState } from "../settings-dialog/hooks/use-audio-provider-state";
 
 function PlayBtnInner({
   defaultPlaybackRef,
@@ -156,7 +157,8 @@ export function PlayButtonV2({
 }) {
   const getAudioMutation = useGetAudioMutation();
 
-  const provider = textToSpeechProviders.speechify;
+  // const provider = textToSpeechProviders.narakeet;
+  const { provider, setProvider } = useAudioProviderState();
 
   const { setCharacterSound } = useCharacterSoundState({
     input: text,

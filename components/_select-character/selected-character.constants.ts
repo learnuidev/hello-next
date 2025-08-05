@@ -1,4 +1,4 @@
-export type TextToSpeechProviders = "narakeet" | "speechify";
+export type TextToSpeechProviders = "narakeet" | "speechify" | "minimax";
 
 export const textToSpeechProviders: Record<
   TextToSpeechProviders,
@@ -6,4 +6,5 @@ export const textToSpeechProviders: Record<
 > = {
   narakeet: "narakeet",
   speechify: "speechify",
+  minimax: "minimax",
 };

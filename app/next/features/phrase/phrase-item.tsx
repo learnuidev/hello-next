@@ -8,6 +8,12 @@ import { useDeleteTranslationMutation } from "./hooks/use-delete-translation-mut
 import { usePhraseParams } from "./hooks/use-phrase-params";
 import { useGetTranslationHistory } from "./hooks/use-get-translation-history";
 import Link from "next/link";
+import { WithInteractiveTitle } from "@/components/_select-character/with-interative-title";
+import { useRef } from "react";
+
+import { chineseConverter } from "mandarino/src/utils/chinese-converter";
+import { textToSpeechProviders } from "@/components/_select-character/selected-character.constants";
+import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 
 const PhraseActionButton = ({
   onClick,
@@ -60,6 +66,7 @@ export function PhraseItem({
   idx: any;
   showPinyin: boolean;
 }) {
+  const customRef: any = useRef(null) as any;
   const lang = message?.targetLang;
   const sourceLang = message?.sourceLang;
   const { contextId } = usePhraseParams();
@@ -99,12 +106,20 @@ export function PhraseItem({
             {showPinyin && (
               <p className="text-gray-400 font-extralight">{message?.pinyin}</p>
             )}
-            <p className="text-xl sm:text-xl font-extralight">
-              {isSourceSameAsTarget ? message?.input : formattedOutput}
-            </p>
-            <p className="text-gray-500 mt-2">
-              {isSourceSameAsTarget ? formattedOutput : message.input}
-            </p>
+
+            <WithInteractiveTitle
+              customRef={customRef}
+              text={chineseConverter(formattedOutput)}
+              lang={sourceLang}
+              // provider={textToSpeechProviders.minimax}
+              // className={"text-xl"}
+              className="text-xl sm:text-xl font-extralight"
+            >
+              <p className="text-2xl sm:text-2xl font-extralight">
+                {formattedOutput}
+              </p>
+            </WithInteractiveTitle>
+            <p className="text-gray-500 mt-2">{message?.input}</p>
           </div>
 
           <div className="flex justify-end space-x-2 mt-4">
@@ -116,11 +131,21 @@ export function PhraseItem({
             </PhraseActionButton>
 
             <PhraseActionButton
-              onClick={() => {
-                speak(isSourceSameAsTarget ? message?.input : formattedOutput);
-              }}
+            // onClick={() => {
+            //   speak(isSourceSameAsTarget ? message?.input : formattedOutput);
+            // }}
             >
-              <Icons.volume />
+              <PlayButtonV2
+                customRef={customRef}
+                text={formattedOutput}
+                lang={sourceLang}
+                // className={cn(
+                //   `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${"ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"} shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
+                //   "h-6 w-6 text-xs",
+                //   "ml-1"
+                // )}
+              />
+              {/* <Icons.volume /> */}
             </PhraseActionButton>
             <PhraseActionButton
               onDoubleClick={() => {

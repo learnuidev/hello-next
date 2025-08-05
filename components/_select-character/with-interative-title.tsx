@@ -9,22 +9,23 @@ import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
 import { useYoutubeRefState } from "./use-youtube-ref-state";
 import { openInNewWindow } from "@/app/review/review-cloze-content/utils/open-in-new-window";
 import { useRouter } from "next/navigation";
+import { useAudioProviderState } from "../settings-dialog/hooks/use-audio-provider-state";
 
 export const WithInteractiveTitle = ({
   text,
   lang,
-  provider,
+
   children,
   className,
   customRef,
 }: {
   text: string;
   lang: string;
-  provider: TextToSpeechProviders;
   children: React.ReactNode;
   className?: string;
   customRef?: any;
 }) => {
+  const { provider, setProvider } = useAudioProviderState();
   const id = `${text}#${lang}#${provider}`;
   const { currentTime, setCurrentTime } = useCurrentTime(id);
 

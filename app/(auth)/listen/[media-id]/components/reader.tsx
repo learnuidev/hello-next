@@ -246,7 +246,7 @@ export function Reader({
     }
   };
 
-  const interval = isSmall ? 80 : data?.lang === "zh" ? 400 : 500;
+  // const interval = isSmall ? 80 : data?.lang === "zh" ? 400 : 500;
 
   return (
     <main className="max-w-6xl m-auto p-4 relative">
@@ -375,7 +375,7 @@ export function Reader({
           </div>
 
           <div className="p-2 sm:px-12 sm:py-12 rounded">
-            <p className="text-[16px] sm:text-xl sm:leading-[36px] transition-all">
+            <div className="flex flex-col gap-4 text-[16px] sm:text-xl transition-all">
               {data?.mediaFile?.translations
                 ?.slice(
                   maxMinTranslationsSlice.min,
@@ -383,7 +383,7 @@ export function Reader({
                 )
                 ?.map((item) => {
                   return (
-                    <span
+                    <p
                       onClick={() => {
                         const findChunks = mediaChunks?.filter((chunk) => {
                           return (
@@ -408,10 +408,10 @@ export function Reader({
                       key={JSON.stringify(item)}
                     >
                       {item?.en}{" "}
-                    </span>
+                    </p>
                   );
                 })}
-            </p>
+            </div>
           </div>
         </section>
       </MandoContextMenu>

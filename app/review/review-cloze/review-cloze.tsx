@@ -465,14 +465,6 @@ export function ReviewCloze({
               {showEn ? "Hide En" : "Show En"}
             </button>
 
-            {sentence?.contentId && (
-              <YoutubeButton
-                sentenceInput={sentence?.input || sentence?.hanzi}
-                contentId={sentence?.contentId}
-                transcriptId={sentence?.id}
-              />
-            )}
-
             {sentence?.contentId ? (
               <YoutubeButton
                 sentenceInput={sentence?.input || sentence?.hanzi}

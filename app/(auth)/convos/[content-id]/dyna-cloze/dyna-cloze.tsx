@@ -17,10 +17,11 @@ import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
 import { getMulti } from "./utils/get-multi";
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
+import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -150,6 +151,8 @@ const DynaSentence = ({
   const toggleParent = () => {
     return setShowParent(!showParent);
   };
+
+  const customRef = useRef(null) as any;
 
   const { learnMode, setLearnMode } = useDynaCloze(contentId);
 
@@ -432,11 +435,18 @@ const DynaSentence = ({
           {learnMode === "timeline" ? <Icons.timeline /> : <Icons.shuffle />}
         </button>
 
-        {content?.audio && (
+        {content?.audio ? (
           <YoutubeButton
             sentenceInput={sentence?.input || sentence?.hanzi}
             contentId={contentId}
             transcriptId={sentence?.id}
+          />
+        ) : (
+          <PlayButtonV2
+            customRef={customRef}
+            text={sentence?.input || sentence?.hanzi}
+            lang={sentence?.lang}
+            className={cn("text-xl")}
           />
         )}
       </div>

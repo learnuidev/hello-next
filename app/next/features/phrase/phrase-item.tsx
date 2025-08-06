@@ -114,7 +114,7 @@ export function PhraseItem({
             <WithInteractiveTitle
               customRef={customRef}
               text={chineseConverter(formattedOutput)}
-              lang={sourceLang}
+              lang={lang}
               // provider={textToSpeechProviders.minimax}
               // className={"text-xl"}
               className="text-xl sm:text-xl font-extralight"
@@ -151,7 +151,7 @@ export function PhraseItem({
               <PlayButtonV2
                 customRef={customRef}
                 text={formattedOutput}
-                lang={sourceLang}
+                lang={lang}
                 // className={cn(
                 //   `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${"ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"} shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
                 //   "h-6 w-6 text-xs",

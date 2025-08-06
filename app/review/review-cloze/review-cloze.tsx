@@ -1,24 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
+import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 import { Icons } from "@/components/ui/icons.v2";
+import { YoutubeButton } from "@/components/youtube-page/youtube-button";
+import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { ContentClozeModeButton } from "../content-cloze-mode-button";
+import { ReviewItemHanzi } from "../review-cloze-content/review-item-hanzi";
+import { useIsContent } from "../use-is-content";
 import { useHskLevel, useReviewModeView } from "../use-review-mode";
 import { HskLevelSelector } from "./hsk-level-selector";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
-import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
-import { CharacterItem } from "@/components/_select-character/character-item";
-import { ContentClozeModeButton } from "../content-cloze-mode-button";
-import { YoutubeButton } from "@/components/youtube-page/youtube-button";
-import { useIsContent } from "../use-is-content";
-import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
-import { useGetContent } from "@/app/nmm/content/use-get-content";
-import { useGetContentQuery } from "@/domain/content/content.queries";
-import { ReviewItemHanzi } from "../review-cloze-content/review-item-hanzi";
-import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 
 const ClozeNavbar = ({
   onClose,
@@ -73,6 +72,7 @@ export function ReviewCloze({
   onClose?: () => void;
   backButton?: any;
 }) {
+  const customRef = useRef(null) as any;
   const [showEn, setShowEn] = useState(false);
   const [clozeIndex, setClozeIndex] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -470,6 +470,21 @@ export function ReviewCloze({
                 sentenceInput={sentence?.input || sentence?.hanzi}
                 contentId={sentence?.contentId}
                 transcriptId={sentence?.id}
+              />
+            )}
+
+            {sentence?.contentId ? (
+              <YoutubeButton
+                sentenceInput={sentence?.input || sentence?.hanzi}
+                contentId={sentence?.contentId}
+                transcriptId={sentence?.id}
+              />
+            ) : (
+              <PlayButtonV2
+                customRef={customRef}
+                text={sentence?.input || sentence?.hanzi}
+                lang={sentence?.lang}
+                className={cn("text-xl")}
               />
             )}
           </div>

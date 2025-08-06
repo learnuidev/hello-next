@@ -4,14 +4,17 @@ import { useMemo } from "react";
 
 export function useGetCharacterLearningContext({
   lang,
-  characterId,
+  characterId: _characterId,
 }: {
   lang: string;
-  characterId: string;
+  characterId: any;
 }) {
+  const characterId =
+    typeof _characterId === "string"
+      ? _characterId
+      : _characterId?.hanzi || _characterId?.input;
   const data: any = useContentsStore((state) => state.contents);
 
-  console.log("data", data);
   const items = useMemo(
     () =>
       data?.items

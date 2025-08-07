@@ -34,7 +34,7 @@ export function useDeleteHistoryMutation(options = {} as any) {
       queryClient.setQueryData([listHistoryQueryId], (value: any) => {
         return {
           ...value,
-          Items: value?.Items?.filter((hist: any) => hist !== params?.id),
+          Items: value?.Items?.filter((hist: any) => hist?.id !== params?.id),
         };
       });
       const response = await deleteHistory(params, {

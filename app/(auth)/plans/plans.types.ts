@@ -4,7 +4,7 @@ export interface UserPlan {
   userId: string;
   productName: "Mandarino Free" | "Mandarino Pro";
   productId: string;
-  userStatus: "Free" | "Pro";
+  userStatus: "Free User" | "Pro User";
   isExpired?: boolean;
   daysTillExpiry?: number;
 }

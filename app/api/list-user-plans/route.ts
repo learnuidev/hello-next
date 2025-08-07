@@ -21,7 +21,7 @@ export async function GET(req: Request) {
 
       userPlan.productId = order.product.id;
       userPlan.userStatus =
-        order.product.name === "Mandarino Pro" ? "Pro" : "Free";
+        order.product.name === "Mandarino Pro" ? "Pro User" : "Free User";
 
       const isExpired = isFreePlanExpired(userPlan);
 

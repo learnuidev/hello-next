@@ -2,8 +2,8 @@
 
 import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
 
-import { ProductsListResponse } from "@polar-sh/sdk/models/operations/productslist.js";
 import { useQuery } from "@tanstack/react-query";
+import { UserPlan } from "../plans.types";
 
 export function useListUserPlansQuery() {
   const jwtToken = useJwtToken();
@@ -12,16 +12,7 @@ export function useListUserPlansQuery() {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
-    queryFn: async (): Promise<
-      {
-        createdAt: number;
-        id: string;
-        userId: string;
-        productName: "Mandarino Free" | "Mandarino Pro";
-        productId: string;
-        userStatus: "Free" | "Pro";
-      }[]
-    > => {
+    queryFn: async (): Promise<UserPlan[]> => {
       const res = await fetch(`/api/list-user-plans`, {
         method: "GET",
         headers: {
@@ -29,7 +20,9 @@ export function useListUserPlansQuery() {
         },
       });
 
-      return res.json();
+      const plans = (await res.json()) as UserPlan[];
+
+      return plans;
     },
   });
 }

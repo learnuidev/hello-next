@@ -2,6 +2,8 @@ import { verifyJwt } from "@/libs/cognito/jwt";
 import { headers } from "next/headers";
 import { listUserPlansApi } from "./list-user-plans.api";
 import { polarApi } from "@/libs/polar/polar-api";
+import { isFreePlanExpired } from "@/app/(auth)/plans/utils/is-free-plan-expired";
+import { UserPlan } from "@/app/(auth)/plans/plans.types";
 
 export const maxDuration = 60;
 
@@ -20,9 +22,16 @@ export async function GET(req: Request) {
       userPlan.productId = order.product.id;
       userPlan.userStatus =
         order.product.name === "Mandarino Pro" ? "Pro" : "Free";
+
+      const isExpired = isFreePlanExpired(userPlan);
+
+      if (isExpired) {
+        userPlan.isExpired = isExpired.isExpired;
+        userPlan.daysTillExpiry = isExpired.daysTillExpiry;
+      }
     }
 
-    return Response.json(userPlans);
+    return Response.json(userPlans as UserPlan[]);
   } else {
     return Response.json({
       message: "Not authorized",

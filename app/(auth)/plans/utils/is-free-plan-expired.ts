@@ -1,5 +1,5 @@
 import { addDays, isAfter, differenceInDays } from "date-fns";
-import { UserPlan } from "../plans.types";
+import { UserPlan, userPlanStatus } from "../plans.types";
 
 type FreePlanStatus = {
   isExpired: boolean;
@@ -7,7 +7,7 @@ type FreePlanStatus = {
 };
 
 export function isFreePlanExpired(plan: UserPlan): FreePlanStatus | null {
-  if (plan.userStatus !== "Free") {
+  if (plan.userStatus !== userPlanStatus.free) {
     return null;
   }
 

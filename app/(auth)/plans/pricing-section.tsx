@@ -16,6 +16,7 @@ import Link from "next/link";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { useGetAuthUserProfileQuery } from "@/hooks/user/use-get-auth-user-profile";
 import { cn } from "@/lib/utils";
+import { productNames } from "./plans.types";
 
 export function PricingSection() {
   const { data: products, isLoading } = useListProductsQuery();
@@ -23,10 +24,10 @@ export function PricingSection() {
     useListUserPlansQuery();
 
   const proProduct = products?.result?.items?.find(
-    (item) => item?.name === "Mandarino Pro"
+    (item) => item?.name === productNames.pro
   );
   const freeProduct = products?.result?.items?.find(
-    (item) => item?.name === "Mandarino Free"
+    (item) => item?.name === productNames.free
   );
 
   const { data: authUserProfile } = useGetAuthUserProfileQuery();

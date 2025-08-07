@@ -9,7 +9,6 @@ import { LifeTimeLearningFact } from "./life-time-learning-fact";
 import { RecentlyViewedContent } from "./recently-viewed-content";
 import { useGetFacts } from "./use-get-facts";
 import { UserLearningSummary } from "./user-learning-summary";
-import { Personalization } from "@/features/personalization/personalization";
 
 export const OverviewPage = () => {
   const {

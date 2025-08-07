@@ -11,7 +11,7 @@ const formatISODate = (isoDate: string) => {
 export const ProfileBanner = ({ className }: { className?: string }) => {
   const { data: profile } = useGetAuthUserProfileQuery();
 
-  const memberPlanType = useGetActiveUserPlan();
+  const { data: memberPlanType } = useGetActiveUserPlan();
 
   return (
     <section

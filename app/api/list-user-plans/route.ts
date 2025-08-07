@@ -3,7 +3,11 @@ import { headers } from "next/headers";
 import { listUserPlansApi } from "./list-user-plans.api";
 import { polarApi } from "@/libs/polar/polar-api";
 import { isFreePlanExpired } from "@/app/(auth)/plans/utils/is-free-plan-expired";
-import { UserPlan } from "@/app/(auth)/plans/plans.types";
+import {
+  productNames,
+  UserPlan,
+  userPlanStatus,
+} from "@/app/(auth)/plans/plans.types";
 
 export const maxDuration = 60;
 
@@ -21,11 +25,13 @@ export async function GET(req: Request) {
 
       userPlan.productId = order.product.id;
       userPlan.userStatus =
-        order.product.name === "Mandarino Pro" ? "Pro User" : "Free User";
+        order.product.name === productNames.pro
+          ? userPlanStatus.pro
+          : userPlanStatus.free;
 
       const isExpired = isFreePlanExpired(userPlan);
 
-      if (isExpired) {
+      if (userPlan?.userStatus === userPlanStatus.free && isExpired) {
         userPlan.isExpired = isExpired.isExpired;
         userPlan.daysTillExpiry = isExpired.daysTillExpiry;
       }

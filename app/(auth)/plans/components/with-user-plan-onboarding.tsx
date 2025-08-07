@@ -26,7 +26,6 @@ export const WithUserPlanOnboarding = ({
         <h1 className="text-3xl">You dont have a plan.</h1>
 
         <p className="mt-4 text-xl">
-          {" "}
           Please <Link href="/plans"> Upgrade </Link> to continue.
         </p>
       </div>

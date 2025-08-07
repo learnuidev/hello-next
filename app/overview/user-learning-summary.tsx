@@ -10,7 +10,7 @@ function PlansBanner() {
   const { data: memberPlanType } = useGetActiveUserPlan();
 
   if (memberPlanType?.userStatus === userPlanStatus.pro) {
-    return <p> {userPlanStatus.pro} </p>;
+    return <p className="font-bold text-pink-500"> {userPlanStatus.pro} </p>;
   }
 
   if (
@@ -19,8 +19,7 @@ function PlansBanner() {
   ) {
     return (
       <p>
-        {userPlanStatus.free} (you have {memberPlanType?.daysTillExpiry} days
-        remaining){" "}
+        {userPlanStatus.free} ({memberPlanType?.daysTillExpiry} days remaining){" "}
       </p>
     );
   }

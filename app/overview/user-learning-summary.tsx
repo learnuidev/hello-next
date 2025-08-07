@@ -4,7 +4,20 @@ import { useGetAuthUserProfileQuery } from "@/hooks/user/use-get-auth-user-profi
 
 import { useMemo } from "react";
 import { useGetActiveUserPlan } from "../(auth)/plans/hooks/use-get-active-user-plan";
-import { userPlanStatus } from "../(auth)/plans/plans.types";
+import { UserPlan, userPlanStatus } from "../(auth)/plans/plans.types";
+import { cn } from "@/lib/utils";
+
+function determineColor(memberPlanType: UserPlan) {
+  if (memberPlanType?.daysTillExpiry) {
+    if (memberPlanType?.daysTillExpiry < 30) {
+      return "text-green-500";
+    }
+
+    if (memberPlanType?.daysTillExpiry < 7) {
+      return "text-orange-500";
+    }
+  }
+}
 
 function PlansBanner() {
   const { data: memberPlanType } = useGetActiveUserPlan();
@@ -19,7 +32,10 @@ function PlansBanner() {
   ) {
     return (
       <p>
-        {userPlanStatus.free} ({memberPlanType?.daysTillExpiry} days remaining){" "}
+        <span className={cn(determineColor(memberPlanType), "font-bold")}>
+          {userPlanStatus.free}{" "}
+        </span>
+        <span>({memberPlanType?.daysTillExpiry} days remaining) </span>
       </p>
     );
   }

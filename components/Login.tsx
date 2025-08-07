@@ -38,7 +38,9 @@ export function Login() {
       setAuthUser(data);
       // setViewtype(RegistrationViewTypes.confirmLogin);
 
-      queryClient?.invalidateQueries([authQueryIds?.currentAuthUser] as any);
+      queryClient.invalidateQueries({
+        queryKey: [authQueryIds?.currentAuthUser],
+      });
 
       if (routeName === "/login") {
         router.push("/");

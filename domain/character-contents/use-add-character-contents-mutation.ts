@@ -26,11 +26,9 @@ export const useAddCharacterContentMutation = () => {
       return resp;
     },
     onSuccess: (resp: any) => {
-      queryClient.invalidateQueries([
-        listCharacterContentsQueryKey,
-        authUser?.jwt,
-        resp?.content,
-      ] as any);
+      queryClient.invalidateQueries({
+        queryKey: [listCharacterContentsQueryKey, authUser?.jwt, resp?.content],
+      });
     },
   });
 };

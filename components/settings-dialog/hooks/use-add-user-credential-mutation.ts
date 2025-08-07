@@ -42,7 +42,7 @@ export const useAddUserCredentialMutation = (options = {} as any) => {
         options?.onSuccess(data);
       }
 
-      queryClient.invalidateQueries([listUserCredentialsQueryId] as any);
+      queryClient.invalidateQueries({ queryKey: [listUserCredentialsQueryId] });
     },
   });
 };

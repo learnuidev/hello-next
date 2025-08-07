@@ -128,16 +128,13 @@ export function GenerateAudioDialog({
             .then((resp) => {
               setResourceStatus(null);
               setAudioResource(null);
-              // @ts-ignore
-              queryClient.invalidateQueries([
-                listMeaningQueryKey,
-                currentPhrase?.hanzi,
-                lang,
-              ]);
-              // queryClient.invalidateQueries([
-              //   getComponentQueryKey,
-              //   currentPhrase?.hanzi,
-              // ]);
+
+              queryClient.invalidateQueries({
+                queryKey: [listMeaningQueryKey, currentPhrase?.hanzi, lang],
+              });
+              queryClient.invalidateQueries({
+                queryKey: [getComponentQueryKey, currentPhrase?.hanzi],
+              });
 
               closeDialog();
             });
@@ -204,11 +201,13 @@ export function GenerateAudioDialog({
                             // alert(JSON.stringify(resp));
                             setResourceStatus(null);
                             setAudioResource(null);
-                            // @ts-ignore
-                            queryClient.invalidateQueries([
-                              getComponentQueryKey,
-                              currentPhrase?.hanzi,
-                            ]);
+
+                            queryClient.invalidateQueries({
+                              queryKey: [
+                                getComponentQueryKey,
+                                currentPhrase?.hanzi,
+                              ],
+                            });
 
                             closeDialog();
                           });
@@ -239,16 +238,20 @@ export function GenerateAudioDialog({
                         .then((resp) => {
                           setResourceStatus(null);
                           setAudioResource(null);
-                          // @ts-ignore
-                          queryClient.invalidateQueries([
-                            listMeaningQueryKey,
-                            currentPhrase?.hanzi,
-                            lang,
-                          ]);
-                          // queryClient.invalidateQueries([
-                          //   getComponentQueryKey,
-                          //   currentPhrase?.hanzi,
-                          // ]);
+
+                          queryClient.invalidateQueries({
+                            queryKey: [
+                              listMeaningQueryKey,
+                              currentPhrase?.hanzi,
+                              lang,
+                            ],
+                          });
+                          queryClient.invalidateQueries({
+                            queryKey: [
+                              getComponentQueryKey,
+                              currentPhrase?.hanzi,
+                            ],
+                          });
 
                           closeDialog();
                         });

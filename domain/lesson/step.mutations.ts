@@ -43,7 +43,9 @@ export function useAddStepsMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      queryClient.invalidateQueries([getComponentQueryKey, data?.hanzi] as any);
+      queryClient.invalidateQueries({
+        queryKey: [getComponentQueryKey, data?.hanzi],
+      });
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

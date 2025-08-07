@@ -24,7 +24,9 @@ export function useUpdateComponentMutation(options = {} as any) {
         (old: any) => [data, ...old]
       );
 
-      // queryClient.invalidateQueries([getComponentQueryKey, data?.hanzi]);
+      queryClient.invalidateQueries({
+        queryKey: [getComponentQueryKey, data?.hanzi],
+      });
     },
   });
 }

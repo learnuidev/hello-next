@@ -22,8 +22,9 @@ export const UploadFileButton = (
       // alert(JSON.stringify(resp));
       props?.onSuccess !== undefined && props?.onSuccess(resp);
 
-      // @ts-ignore
-      queryClient.invalidateQueries([listUserAssetsQueryKey, authUser?.jwt]);
+      queryClient.invalidateQueries({
+        queryKey: [listUserAssetsQueryKey, authUser?.jwt],
+      });
     },
     props?.context,
     {

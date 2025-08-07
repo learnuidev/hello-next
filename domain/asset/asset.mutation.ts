@@ -21,10 +21,9 @@ export function useAddUserAssetMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      queryClient.invalidateQueries([
-        listUserAssetsQueryKey,
-        authUser?.jwt,
-      ] as any);
+      queryClient.invalidateQueries({
+        queryKey: [listUserAssetsQueryKey, authUser?.jwt],
+      });
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

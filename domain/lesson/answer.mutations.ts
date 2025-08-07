@@ -52,10 +52,9 @@ export function useAddAnswerMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      queryClient.invalidateQueries([
-        queryIds?.listAnswers,
-        data?.journeyId,
-      ] as any);
+      queryClient.invalidateQueries({
+        queryKey: [queryIds?.listAnswers, data?.journeyId],
+      });
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

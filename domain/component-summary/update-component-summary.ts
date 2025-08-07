@@ -44,11 +44,9 @@ export function useUpdateComponentSummaryMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      queryClient.invalidateQueries([
-        listMeaningQueryKey,
-        data?.sentenceId,
-        data?.lang,
-      ] as any);
+      queryClient.invalidateQueries({
+        queryKey: [listMeaningQueryKey, data?.sentenceId, data?.lang],
+      });
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

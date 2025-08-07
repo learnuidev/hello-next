@@ -13,6 +13,7 @@ import { TimelineDatesDrawer } from "./timeline-dates-drawer";
 import { useTimelineState } from "./timeline.state";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
+import { useDeleteHistoryMutation } from "@/domain/history/delete-history.mutation";
 
 export const TimelineTabBody = ({
   variant,
@@ -28,6 +29,8 @@ export const TimelineTabBody = ({
 }) => {
   const focusLang = useTimelineState((state: any) => state.focusLang);
   const setFocusLang = useTimelineState((state: any) => state.setFocusLang);
+
+  const deleteHistoryMutation = useDeleteHistoryMutation();
 
   const { data: groups, isLoading: isLearnedCharactersLoading } =
     useListLearnedCharactersByDate({ variant });
@@ -161,45 +164,63 @@ export const TimelineTabBody = ({
                 </NmmListContainerAll>
               </div>
             ) : (
-              <div className="flex flex-wrap flex-row w-full mb-32">
+              <div
+                className={cn(
+                  "flex flex-wrap flex-row w-full mb-32",
+                  ["search"]?.includes(variant) && "gap-4"
+                )}
+              >
                 {selectedGroup?.items?.map((item: any, idx: any) => {
                   if (item?.status === "joined") {
                     return null;
                   }
 
                   return (
-                    <Link
+                    <div
                       key={`${item?.input || item?.hanzi?.trim("")}-chars-${idx}`}
-                      href={
-                        item?.lang
-                          ? `/nmm/${encodeURIComponent(item?.input || item?.hanzi)}?lang=${item?.lang}`
-                          : `/nmm/${encodeURIComponent(item?.input || item?.hanzi)}`
-                      }
-                      // href={`/nmm/${item?.input || item?.hanzi?.trim("")}?lang=${item?.lang || "zh"}`}
-                      className={cn(
-                        `py-4 pr-8 font-light`,
-                        `  dark:hover:text-white p-3 transition lowercase`,
-                        focusLang && langs?.length > 1
-                          ? // &&
-                            //   langs?.length !== 1 &&
-                            //   langs?.includes(focusLang)
-                            focusLang === item?.lang
-                            ? "text-white text-2xl"
-                            : "text-gray-700 text-2xl"
-                          : "dark:text-gray-300 text-2xl"
-                      )}
                     >
-                      {(item?.input || item?.hanzi?.trim(""))
-                        ?.split("")
-                        ?.map((character: string, idx: number) => {
-                          return (
-                            <CharacterItem
-                              character={character}
-                              key={`timeline-tab-${idx}-${character}`}
-                            />
-                          );
-                        })}
-                    </Link>
+                      <Link
+                        href={
+                          item?.lang
+                            ? `/nmm/${encodeURIComponent(item?.input || item?.hanzi)}?lang=${item?.lang}`
+                            : `/nmm/${encodeURIComponent(item?.input || item?.hanzi)}`
+                        }
+                        // href={`/nmm/${item?.input || item?.hanzi?.trim("")}?lang=${item?.lang || "zh"}`}
+                        className={cn(
+                          `py-4 pr-8 font-light`,
+                          `  dark:hover:text-white p-3 transition lowercase`,
+                          focusLang && langs?.length > 1
+                            ? // &&
+                              //   langs?.length !== 1 &&
+                              //   langs?.includes(focusLang)
+                              focusLang === item?.lang
+                              ? "text-white text-2xl"
+                              : "text-gray-700 text-2xl"
+                            : "dark:text-gray-300 text-2xl"
+                        )}
+                      >
+                        {(item?.input || item?.hanzi?.trim(""))
+                          ?.split("")
+                          ?.map((character: string, idx: number) => {
+                            return (
+                              <CharacterItem
+                                character={character}
+                                key={`timeline-tab-${idx}-${character}`}
+                              />
+                            );
+                          })}
+                      </Link>
+
+                      {item?.eventType && ["search"]?.includes(variant) && (
+                        <button
+                          onClick={() => {
+                            deleteHistoryMutation.mutate(item);
+                          }}
+                        >
+                          <Icons.xMark />{" "}
+                        </button>
+                      )}
+                    </div>
                   );
                 })}
               </div>

@@ -59,8 +59,8 @@ export function useAddCharacterMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      queryClient.invalidateQueries([listCharactersQueryId] as any);
-      queryClient.invalidateQueries([listCharactersQueryMapId] as any);
+      queryClient.invalidateQueries({ queryKey: [listCharactersQueryId] });
+      queryClient.invalidateQueries({ queryKey: [listCharactersQueryMapId] });
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
@@ -184,7 +184,7 @@ export function useUpdateCharacterStoryMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      queryClient.invalidateQueries([listCharactersQueryId] as any);
+      queryClient.invalidateQueries({ queryKey: [listCharactersQueryId] });
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

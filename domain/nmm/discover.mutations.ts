@@ -92,11 +92,9 @@ export function useDiscoverMutation(options = {} as any) {
       //   }
       // );
 
-      // queryClient.invalidateQueries([
-      //   getComponentQueryKey,
-      //   data?.hanzi,
-      //   authUser?.jwt,
-      // ]);
+      queryClient.invalidateQueries({
+        queryKey: [getComponentQueryKey, data?.hanzi, authUser?.jwt],
+      });
     },
   });
 }

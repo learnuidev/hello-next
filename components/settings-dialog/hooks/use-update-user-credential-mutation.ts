@@ -49,8 +49,9 @@ export const useUpdateUserCredentialMutation = (options = {} as any) => {
           options?.onSuccess(data);
         }
 
-        // @ts-ignore
-        queryClient.invalidateQueries([listUserCredentialsQueryId]);
+        queryClient.invalidateQueries({
+          queryKey: [listUserCredentialsQueryId],
+        });
       },
     }
   );

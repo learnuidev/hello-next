@@ -48,7 +48,7 @@ export function useDeleteComponentMutation(options = {} as any) {
       }
 
       // @ts-ignore
-      queryClient.invalidateQueries([listCharactersQueryId]);
+      queryClient.invalidateQueries({ queryKey: [listCharactersQueryId] });
     },
 
     ...options,

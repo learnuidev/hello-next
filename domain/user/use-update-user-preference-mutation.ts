@@ -47,7 +47,7 @@ export const useUpdateUserPrefenceMutation = () => {
       return resp;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries([getUserPreferenceKey] as any);
+      queryClient.invalidateQueries({ queryKey: [getUserPreferenceKey] });
     },
 
     // ...opts,

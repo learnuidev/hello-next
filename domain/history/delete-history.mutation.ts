@@ -6,19 +6,15 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { listHistoryQueryId } from "./history.queries";
 
-type AddHistoryParams = {
-  hanzi: string;
-  contentId: string;
-  eventType: string;
-};
+type DeleteHistoryParams = any;
 
-const addHistory = async (
-  params: AddHistoryParams,
+const deleteHistory = async (
+  params: DeleteHistoryParams,
   opts: {
     Authorization: string;
   }
 ) => {
-  const res = await fetch(`${siteConfig.apiUrl}/v1/add-history`, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/delete-history`, {
     method: "POST",
     headers: {
       Authorization: `${opts?.Authorization}`,
@@ -29,14 +25,22 @@ const addHistory = async (
   return resp;
 };
 
-export function useAddHistoryMutation(options = {} as any) {
+export function useDeleteHistoryMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: async (params: AddHistoryParams) => {
-      const response = await addHistory(params, {
+    mutationFn: async (params: DeleteHistoryParams) => {
+      queryClient.setQueryData([listHistoryQueryId], (value: any) => {
+        return {
+          ...value,
+          Items: value?.Items?.filter((hist: any) => hist !== params?.id),
+        };
+      });
+      const response = await deleteHistory(params, {
         Authorization: authUser?.jwt,
       });
+
       return response;
     },
 

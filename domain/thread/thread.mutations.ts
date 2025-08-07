@@ -47,7 +47,7 @@ export function useAddThreadMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      // queryClient.invalidateQueries([listThreadsQueryId]);
+      queryClient.invalidateQueries({ queryKey: [listThreadsQueryId] });
     },
   });
 }
@@ -93,7 +93,7 @@ export function useUpdateThreadMessagesMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      // queryClient.invalidateQueries([listThreadsQueryId]);
+      queryClient.invalidateQueries({ queryKey: [listThreadsQueryId] });
     },
   });
 }

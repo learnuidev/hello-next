@@ -3,6 +3,7 @@ import { BibilliLink } from "../billibilli-link/billibilli-link";
 import { GoogleLink } from "../google-link";
 import { GoogleTranslateLink } from "../google-translate-link";
 import { HanbookLink } from "../hanbook-link";
+import { SpanishDictLink } from "../spanish-dict-link/spanish-dict-link";
 import { YablaLink } from "../yabla-link";
 import { YoutubeLink } from "../youtube-link";
 
@@ -26,6 +27,10 @@ export const AdvancedSearchView = ({
 
         <YoutubeLink className="text-2xl" characterId={characterId} />
         <BibilliLink className="text-2xl" hanzi={characterId} />
+
+        {lang === "es" && (
+          <SpanishDictLink className="text-2xl" text={characterId} />
+        )}
       </div>
     </div>
   );

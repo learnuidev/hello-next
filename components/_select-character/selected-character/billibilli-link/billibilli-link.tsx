@@ -1,9 +1,5 @@
-import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useMemo } from "react";
-
-import billiBilli from "./billi.png";
 
 const BilliBilliIcon = () => {
   return (

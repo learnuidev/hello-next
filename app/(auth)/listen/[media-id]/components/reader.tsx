@@ -259,6 +259,7 @@ export function Reader({
             }
             console.log("play ended");
           }}
+          progressInterval={20}
           onProgress={(value) => {
             setTime(value.playedSeconds);
           }}

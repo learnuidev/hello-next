@@ -58,13 +58,13 @@ export function useGetUserPreferenceQuery(options = {} as any) {
       const response = await getUserPrefrence({
         Authorization: authUser?.jwt,
       });
+
+      setUserPreferenceState(response);
+
       return response as GetUserPreferenceResponse;
     },
 
     ...options,
-    onSuccess: (val: any) => {
-      setUserPreferenceState(val);
-    },
     retry: false,
     enabled: Boolean(authUser?.jwt),
     // cacheTime: 1000 * 60 * 300, // 30 minutes,

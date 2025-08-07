@@ -10,6 +10,7 @@ import {
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSettingsDialogState } from "../../settings-dialog.state";
+import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
 
 export function TrackingTab() {
   const tab = useSettingsDialogState((state) => state.tab);
@@ -20,6 +21,8 @@ export function TrackingTab() {
   const setUserPreferenceState = useSettingsDialogState(
     (state) => state.setUserPreferenceState
   );
+
+  const { data: userPreference } = useGetUserPreferenceQuery();
 
   return (
     <Card className="rounded border-gray-100 dark:border-black dark:bg-[#0b0b0f] shadow-sm  transition ">

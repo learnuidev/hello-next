@@ -65,7 +65,7 @@ const listContentsRecursive = async (
   }
 
   return {
-    items: res,
+    items: res.concat(resp?.items),
   };
 };
 

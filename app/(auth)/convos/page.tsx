@@ -78,11 +78,6 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
     return true;
   };
 
-  console.log("contents", contents);
-
-  console.log("content type", contentType);
-  console.log("query", query);
-
   const projects = contents
     ? contents
         ?.filter((content: any) => {

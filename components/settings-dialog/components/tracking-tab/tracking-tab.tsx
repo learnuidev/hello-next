@@ -10,7 +10,6 @@ import {
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSettingsDialogState } from "../../settings-dialog.state";
-import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
 
 export function TrackingTab() {
   const tab = useSettingsDialogState((state) => state.tab);
@@ -22,8 +21,6 @@ export function TrackingTab() {
     (state) => state.setUserPreferenceState
   );
 
-  const { data: userPreference } = useGetUserPreferenceQuery();
-
   return (
     <Card className="rounded border-gray-100 dark:border-black dark:bg-[#0b0b0f] shadow-sm  transition ">
       <CardHeader>
@@ -33,26 +30,24 @@ export function TrackingTab() {
         </CardDescription>
       </CardHeader>
       <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
-        {/* <div>
-      <div className="flex z-50 items-center space-x-2">
-        <Checkbox
-          id="navigation"
-          checked={Boolean(
-            userPreferenceState.isNavigationEnabled
-          )}
-          onCheckedChange={(event) => {
-            setUserPreferenceState({
-              isNavigationEnabled: event,
-            });
-          }}
-        />
-        <Label htmlFor="airplane-mode">Navigation</Label>
-      </div>
+        <div>
+          <div className="flex z-50 items-center space-x-2">
+            <Checkbox
+              id="navigation"
+              checked={Boolean(userPreferenceState.isNavigationEnabled)}
+              onCheckedChange={(event) => {
+                setUserPreferenceState({
+                  isNavigationEnabled: event,
+                });
+              }}
+            />
+            <Label htmlFor="airplane-mode">Navigation</Label>
+          </div>
 
-      <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-        Track navigation through out the app
-      </p>
-    </div> */}
+          <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
+            Track navigation through out the app
+          </p>
+        </div>
         <div>
           <div className="flex z-50 items-center space-x-2">
             <Checkbox

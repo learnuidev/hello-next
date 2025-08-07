@@ -23,6 +23,7 @@ import { GoogleTranslateLink } from "./selected-character/google-translate-link"
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { isRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
+import { useCanTrackNavigationFunction } from "../use-can-track-navigation-function";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -42,6 +43,8 @@ export const SentenceItem = (props: any) => {
   const { trackFunction } = useCanTrackFunction(currentPhrase, {
     lang: resolvedLang,
   });
+
+  const { trackNavigationFunction } = useCanTrackNavigationFunction();
 
   const setIfExists = useSetIfExists();
 
@@ -194,13 +197,11 @@ export const SentenceItem = (props: any) => {
                         ?.replaceAll(",", "")
                     );
 
-                    // addHistoryMutation.mutate({
-                    //   hanzi: cleanedVal,
-                    //   lang: lang,
-                    //   pathName: routeName,
-                    //   contentId: selectedComp?.id || "",
-                    //   eventType: "CONTENT_VIEWED",
-                    // } as any);
+                    trackNavigationFunction({
+                      hanzi: cleanedVal,
+                      input: cleanedVal,
+                      lang: lang || currentPhrase?.lang,
+                    } as any);
 
                     setIfExists({ ...currentPhrase });
 

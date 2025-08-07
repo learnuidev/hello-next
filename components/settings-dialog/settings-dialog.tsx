@@ -83,11 +83,7 @@ export function SettingsDialogInner({
                 )}
                 value="tracking"
               >
-                {tab === "tracking" ? (
-                  <Icons.verticalStackSolid />
-                ) : (
-                  <Icons.verticalStack />
-                )}
+                <Icons.track />
                 <span>Tracking</span>
               </TabsTrigger>
               <TabsTrigger

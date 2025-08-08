@@ -358,7 +358,7 @@ export function ReviewClozeContent({
           {response ? (
             <Link
               target="_blank"
-              href={`/nmm/${sentence?.hanzi || sentence?.input}?lang=${lang || sentence?.lang}`}
+              href={`/nmm/${sentence?.input || sentence?.hanzi}?lang=${lang || sentence?.lang}`}
               className="block text-center mb-4"
             >
               {sentence?.pinyin}
@@ -390,7 +390,7 @@ export function ReviewClozeContent({
                 return (
                   <Link
                     target="_blank"
-                    href={`/nmm/${option?.hanzi}?lang=${sentence?.lang}`}
+                    href={`/nmm/${option?.input || option?.hanzi}?lang=${sentence?.lang}`}
                     className={cn(
                       "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",
                       response

@@ -12,6 +12,7 @@ import kazakFlag from "./kazak.webp";
 import nepaliFlag from "./ne.png";
 import indianFlag from "./hi.png";
 import pakistanFlag from "./pk.png";
+import koreanFlag from "./ko.webp";
 
 export interface ILanguage {
   shortId: string;
@@ -104,5 +105,11 @@ export const languages: ILanguage[] = [
     id: "kz-KZ",
     title: "Kakaz",
     src: kazakFlag.src,
+  },
+  {
+    shortId: "ko",
+    id: "ko-KO",
+    title: "Korean",
+    src: koreanFlag.src,
   },
 ];

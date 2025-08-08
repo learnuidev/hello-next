@@ -79,7 +79,7 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
       }
 
       if (clozeContentMode === "content") {
-        console.log("CLOZE");
+        console.log("CLOZE 2");
         return (
           <ReviewClozeContent
             backButton={() => {

@@ -251,9 +251,6 @@ export function ReviewClozeContent({
     [relevantHanzi, sentence?.hanzi, sentence?.input]
   );
 
-  // console.log("relevant hanzi", relevantHanzi);
-  // console.log("sentence hanzi", sentenceHanzi);
-
   const checkAnswer = (answer: string) => {
     if (answer === relevantHanzi) {
       setResponse({ type: "correct", answer });
@@ -394,7 +391,7 @@ export function ReviewClozeContent({
                     className={cn(
                       "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",
                       response
-                        ? response?.answer === option?.hanzi
+                        ? response?.answer === (option?.input || option?.hanzi)
                           ? response?.type === "correct"
                             ? "bg-green-500 border-green-600 hover:bg-green-600"
                             : "bg-red-500 hover:bg-red-600 border-red-500"
@@ -426,7 +423,7 @@ export function ReviewClozeContent({
                     className={cn(
                       "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg",
                       response
-                        ? response?.answer === option?.hanzi
+                        ? response?.answer === option?.input
                           ? response?.type === "correct"
                             ? "bg-green-500 border-green-600 hover:bg-green-600"
                             : "bg-red-500 hover:bg-red-600 border-red-500"

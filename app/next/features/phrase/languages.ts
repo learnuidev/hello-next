@@ -12,7 +12,8 @@ import kazakFlag from "./kazak.webp";
 import nepaliFlag from "./ne.png";
 import indianFlag from "./hi.png";
 import pakistanFlag from "./pk.png";
-import koreanFlag from "./ko.webp";
+// import koreanFlag from "./ko.webp";
+import koreanFlag from "./nko.png";
 
 export interface ILanguage {
   shortId: string;

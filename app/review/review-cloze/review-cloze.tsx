@@ -18,6 +18,7 @@ import { useHskLevel, useReviewModeView } from "../use-review-mode";
 import { HskLevelSelector } from "./hsk-level-selector";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
+import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
 
 const ClozeNavbar = ({
   onClose,
@@ -353,7 +354,7 @@ export function ReviewCloze({
             <p className="text-center mt-4">{sentence?.en}</p>
           </Link>
 
-          <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">
+          <DynoOptionsContainer>
             {shuffledOptions?.map((option: any, idx: number) => (
               <button
                 onClick={() => {
@@ -379,7 +380,7 @@ export function ReviewCloze({
                 {showEn ? option?.en : option?.input || option?.hanzi}
               </button>
             ))}
-          </div>
+          </DynoOptionsContainer>
 
           {response && (
             <div>
@@ -441,17 +442,28 @@ export function ReviewCloze({
                     <Icons.shuffle className="text-2xl" />
                   </button>
                 )}
+                {/* {futureSentence && ( */}
                 <button
                   onClick={() => {
-                    setClozeIndex(clozeIndex + 1);
-                    setWordIndex(0);
-                    setQuestionIndex(0);
-                    setResponse(null);
+                    if (!futureSentence) {
+                      setClozeIndex(clozeIndex + 1);
+                      setQuestionIndex(0);
+                      setWordIndex(0);
+                      setResponse(null);
+                    } else {
+                      setQuestionIndex(questionIndex + 1);
+                      setResponse(null);
+                    }
+                    // setClozeIndex(clozeIndex + 1);
+                    // setWordIndex(0);
+                    // setQuestionIndex(0);
+                    // setResponse(null);
                   }}
                   className="hover:scale-125 transition hover:font-bold"
                 >
                   <Icons.arrowRight className="text-2xl" />
                 </button>
+                {/* )} */}
               </div>
             </div>
           )}

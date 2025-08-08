@@ -68,7 +68,7 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
 
   switch (view) {
     case "review": {
-      if (characterId?.length > 2) {
+      if (characterId?.length > 4) {
         return (
           <DynaClozeSentence
             sentence={{ hanzi: characterId, input: characterId, lang: lang }}

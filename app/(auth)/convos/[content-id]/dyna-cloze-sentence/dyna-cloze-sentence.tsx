@@ -27,6 +27,7 @@ import { TheDock } from "@/components/the-dock";
 import { WordleSentence } from "@/components/wordle/wordle-sentence";
 import { SpeakSentence } from "../speak/speak-sentence";
 import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
+import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -58,7 +59,7 @@ function DynoSentenceInner({
   if (isLoading) {
     return (
       <div>
-        <p className="text-center my-32">Loading...</p>
+        <p className="text-center my-32">Loading meanings...</p>
       </div>
     );
   }
@@ -87,13 +88,15 @@ const WithMultiSentence = ({
   const [sentenceIndex, setSentenceIndex] = useState(0);
 
   const multiSentences = useMemo(() => {
-    return getMulti(sentence?.hanzi || sentence?.input || "")?.map((item) => {
-      return {
-        hanzi: item,
-        input: item,
-        lang: sentence.lang,
-      };
-    });
+    return getMulti(sentence?.hanzi || sentence?.input || "")
+      ?.map((item) => {
+        return {
+          hanzi: item,
+          input: item,
+          lang: sentence.lang,
+        };
+      })
+      ?.filter((item) => !!item?.hanzi);
   }, [sentence?.hanzi, sentence?.input, sentence.lang]);
 
   const sentenceItem = useMemo(
@@ -153,7 +156,7 @@ const DynaSentence = ({
 
   const brightMode = useBrightModeStore((state: any) => state.mode);
 
-  const { data: grammar } = useListGrammarsQuery({
+  const { data: grammar, isLoading } = useListGrammarsQuery({
     sentenceId: sentence?.input || sentence?.hanzi,
     content: sentence?.input || sentence?.hanzi,
     lang: sentence?.lang,
@@ -228,10 +231,10 @@ const DynaSentence = ({
     }
   };
 
-  if (!grammar?.grammarAnalysis?.length) {
+  if (isLoading) {
     return (
       <div>
-        <p className="text-center my-32">Loading...</p>
+        <p className="text-center my-32">Loading grammar...</p>
       </div>
     );
   }
@@ -259,7 +262,7 @@ const DynaSentence = ({
         <p className="mt-2 lg:text-xl text-md">{sentence?.en}</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">
+      <DynoOptionsContainer>
         {shuffledOptions?.map((option: any, idx: number) => {
           if (response) {
             return (
@@ -321,7 +324,7 @@ const DynaSentence = ({
             );
           }
         })}
-      </div>
+      </DynoOptionsContainer>
 
       <div className="flex justify-center items-center mt-32 gap-12 text-2xl">
         <button

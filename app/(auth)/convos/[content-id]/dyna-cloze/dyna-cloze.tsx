@@ -22,6 +22,7 @@ import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
 import { getMulti } from "./utils/get-multi";
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
+import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -278,7 +279,7 @@ const DynaSentence = ({
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">
+      <DynoOptionsContainer>
         {shuffledOptions?.map((option: any, idx: number) => {
           if (response) {
             return (
@@ -339,7 +340,7 @@ const DynaSentence = ({
             );
           }
         })}
-      </div>
+      </DynoOptionsContainer>
 
       <div className="flex justify-center items-center mt-32 gap-12 text-2xl">
         <button

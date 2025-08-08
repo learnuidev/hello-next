@@ -21,6 +21,7 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useSearchParams } from "next/navigation";
 import { ReviewItemHanzi } from "./review-item-hanzi";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
+import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
 
 const ClozeNavbar = ({
   onClose,
@@ -380,7 +381,7 @@ export function ReviewClozeContent({
             <p className="text-center mt-4">{sentence?.en} </p>
           </Link>
 
-          <div className="grid grid-cols-2 gap-8 mt-12 max-w-md m-auto lg:mt-24">
+          <DynoOptionsContainer>
             {shuffledOptions?.map((option: any, idx: number) => {
               if (response) {
                 return (
@@ -443,7 +444,7 @@ export function ReviewClozeContent({
                 );
               }
             })}
-          </div>
+          </DynoOptionsContainer>
 
           {response && (
             <div>

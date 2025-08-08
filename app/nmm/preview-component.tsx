@@ -86,7 +86,9 @@ export const PreviewComponent = (props: {
               return (
                 <section className="text-start px-0 mx-0" key={sentence?.id}>
                   {component?.lang === "zh" && (
-                    <p className={stylePinyin}>{sentence?.pinyin}</p>
+                    <p className={stylePinyin}>
+                      {sentence?.roman || sentence?.pinyin}
+                    </p>
                   )}
                   <h4 className="text-xl">
                     {sentence?.input || sentence?.hanzi}

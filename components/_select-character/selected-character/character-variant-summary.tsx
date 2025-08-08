@@ -31,7 +31,7 @@ export const CharacterVariantSummary = () => {
                       return (
                         <div key={JSON.stringify(sentence)}>
                           <p className="font-light text-gray-300">
-                            {sentence?.pinyin}
+                            {sentence?.roman || sentence?.pinyin}
                           </p>
                           <p className="text-2xl">{sentence?.hanzi}</p>
                           <p className="font-extralight text-gray-400">
@@ -66,7 +66,7 @@ export const CharacterVariantSummary = () => {
                       key={JSON.stringify(sentence)}
                       className="flex items-center flex-col"
                     >
-                      <p>{sentence?.pinyin}</p>
+                      <p>{sentence?.roman || sentence?.pinyin}</p>
                       <p className="text-2xl">{sentence?.hanzi}</p>
                       <p>{sentence?.en}</p>
                     </div>

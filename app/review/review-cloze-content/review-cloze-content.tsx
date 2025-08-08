@@ -361,7 +361,7 @@ export function ReviewClozeContent({
               href={`/nmm/${sentence?.input || sentence?.hanzi}?lang=${lang || sentence?.lang}`}
               className="block text-center mb-4"
             >
-              {sentence?.pinyin}
+              {sentence?.roman || sentence?.pinyin}
             </Link>
           ) : (
             <p className="block text-center mb-4 dark:text-black text-white">

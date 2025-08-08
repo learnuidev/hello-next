@@ -50,6 +50,10 @@ export const WithInteractiveTitle = ({
     return children;
   }
 
+  if (provider !== "speechify") {
+    return children;
+  }
+
   return (
     <div className={className}>
       {characterSound?.speechMarks?.chunks?.map((item: any) => {

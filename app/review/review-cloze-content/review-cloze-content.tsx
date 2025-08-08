@@ -134,7 +134,7 @@ export function ReviewClozeContent({
       isContent
         ? content?.transcriptions
             ?.filter((transcription: any) => {
-              return (transcription?.hanzi || transcription?.input)?.includes(
+              return (transcription?.input || transcription?.hanzi)?.includes(
                 currentCharacter
               );
             })
@@ -152,7 +152,7 @@ export function ReviewClozeContent({
     () =>
       (contextSentences || [])?.filter((sentence: any) => {
         return (
-          (sentence?.hanzi || sentence?.input)?.includes(currentCharacter) &&
+          (sentence?.input || sentence?.hanzi)?.includes(currentCharacter) &&
           sentence?.input?.length < 20 &&
           sentence?.input?.length > 2
         );
@@ -218,7 +218,7 @@ export function ReviewClozeContent({
   );
 
   const relevantHanzi = useMemo(
-    () => selectedGrammar?.hanzi,
+    () => selectedGrammar?.input || selectedGrammar?.hanzi,
     [selectedGrammar?.hanzi]
   );
 
@@ -250,6 +250,9 @@ export function ReviewClozeContent({
       (sentence?.input || sentence?.hanzi)?.replaceAll(relevantHanzi, " ____ "),
     [relevantHanzi, sentence?.hanzi, sentence?.input]
   );
+
+  // console.log("relevant hanzi", relevantHanzi);
+  // console.log("sentence hanzi", sentenceHanzi);
 
   const checkAnswer = (answer: string) => {
     if (answer === relevantHanzi) {

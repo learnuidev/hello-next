@@ -216,7 +216,7 @@ export function ReviewCloze({
   );
 
   const relevantHanzi = useMemo(
-    () => selectedGrammar?.hanzi,
+    () => selectedGrammar?.input || selectedGrammar?.hanzi,
     [selectedGrammar?.hanzi]
   );
 

@@ -305,7 +305,7 @@ export const TranscriptItem = ({
                     : "dark:text-gray-400 text-gray-300"
                 } transition text-md text-left text-gray-500`}
               >
-                {example?.roman || example?.pinyin}
+                {example?.lang === "zh" ? example?.pinyin : example?.roman}
               </p>
             )}
           <div className="text-left">
@@ -362,7 +362,7 @@ export const TranscriptItem = ({
       </div>
       <div className="mt-4"> </div>
 
-      {europeanLangs?.includes(example?.lang)
+      {example?.lang !== "zh"
         ? null
         : editMode && (
             <input
@@ -373,7 +373,7 @@ export const TranscriptItem = ({
               }}
             />
           )}
-      {europeanLangs?.includes(example?.lang)
+      {europeanLangs?.includes(example?.lang) || example.lang === "zh"
         ? null
         : editMode && (
             <input

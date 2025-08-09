@@ -76,7 +76,9 @@ export const ActiveTranscription = ({
           )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
           className="dark:text-gray-400 text-gray-800 text-sm sm:text-[16px]"
         >
-          {currentTranscription?.roman || currentTranscription?.pinyin}
+          {currentTranscription?.lang === "zh"
+            ? currentTranscription?.pinyin
+            : currentTranscription?.roman}
         </Link>
       )}
 

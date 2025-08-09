@@ -41,7 +41,9 @@ export function KaraokeMode({
   const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
 
   const romanOrPinyin =
-    currentTranscription?.roman || currentTranscription?.pinyin;
+    currentTranscription?.lang === "zh"
+      ? currentTranscription?.pinyin
+      : currentTranscription?.roman;
 
   const isNonRomanContent = useMemo(() => {
     return isNonRomanLang(lang);

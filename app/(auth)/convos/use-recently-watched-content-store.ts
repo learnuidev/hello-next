@@ -1,13 +1,11 @@
+import { useListContentsQuery } from "@/domain/content/content.queries";
 import {
   getUserPreferenceKey,
   useGetUserPreferenceQuery,
 } from "@/domain/user/use-get-user-preference-query";
 import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  useListPublishedContentsQuery,
-  usePublishedContentsStore,
-} from "./[content-id]/hooks/use-list-published-contents-query";
+import { useListPublishedContentsQuery } from "./[content-id]/hooks/use-list-published-contents-query";
 
 const removeFromHistory = (recentlyWatched: any, item: any) => {
   return Object.fromEntries(
@@ -25,7 +23,7 @@ export const useRecentlyWatchedContent = () => {
 
   const { data: publishedContents } = useListPublishedContentsQuery({});
 
-  const contents: any = usePublishedContentsStore((state) => state.contents);
+  const { data: contents } = useListContentsQuery();
 
   const _recentlyWatched = userPreferences?.recentlyWatched || {};
 

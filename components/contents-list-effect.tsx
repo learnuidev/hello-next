@@ -75,74 +75,61 @@ export const ContentsListEffect = ({
                 />
               )}
             </AnimatePresence>
-            <Card className="py-4 px-2">
-              <div className="flex justify-between items-center gap-4">
-                <Link
-                  href={item?.link}
-                  onClick={() => {
-                    setRecentlyWatched(item);
-                  }}
-                >
-                  <CardTitle className="line-clamp-1">{item.title}</CardTitle>
-                </Link>
-                <button
-                  disabled={toggleFavouritContentMutation.isPending}
-                  className="text-xl"
-                  onClick={() => {
-                    if (isFavourited) {
-                      toggleFavouritContentMutation
-                        .mutateAsync({
-                          type: "unfavourite",
-                          contentId: item?.id,
-                        })
-                        .then(() => {
-                          toast({
-                            title: "Success",
-                            description: "Content successfully unfavourited",
-                          });
-                        });
-                    } else {
-                      toggleFavouritContentMutation
-                        .mutateAsync({
-                          type: "favourite",
-                          contentId: item?.id,
-                        })
-                        .then(() => {
-                          toast({
-                            title: "Success",
-                            description: "Content successfully favourited",
-                          });
-                        });
-                    }
-                  }}
-                >
-                  {isFavourited ? <Icons.heartSolid /> : <Icons.heart />}
-                </button>
-              </div>
-
-              <div className="flex items-center gap-2 mt-2 text-gray-400">
-                <p>
-                  {totalWatched || 0} {totalWatched > 1 ? "views" : "view"}
-                </p>
-              </div>
-
-              <Link
-                href={item?.link}
-                onClick={() => {
-                  // updateUserPreferenceMutation?.mutate({
-                  //   recentlyWatched: {
-                  //     ...userPreferences?.recentlyWatched,
-                  //     [item?.id]: {
-                  //       watchedAt: Date.now(),
-                  //       id: item?.id,
-                  //       title: item?.title,
-                  //       audio: item?.audio,
-                  //     },
-                  //   },
-                  // });
+            <Link
+              href={item?.link}
+              onClick={(event) => {
+                if (!event.defaultPrevented) {
                   setRecentlyWatched(item);
-                }}
-              >
+                }
+              }}
+              className="z-10"
+            >
+              <Card className="py-4 px-2">
+                <div className="flex justify-between items-center gap-4">
+                  <CardTitle className="line-clamp-1">{item.title}</CardTitle>
+
+                  <button
+                    disabled={toggleFavouritContentMutation.isPending}
+                    className="text-xl z-50"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      if (isFavourited) {
+                        toggleFavouritContentMutation
+                          .mutateAsync({
+                            type: "unfavourite",
+                            contentId: item?.id,
+                          })
+                          .then(() => {
+                            toast({
+                              title: "Success",
+                              description: "Content successfully unfavourited",
+                            });
+                          });
+                      } else {
+                        toggleFavouritContentMutation
+                          .mutateAsync({
+                            type: "favourite",
+                            contentId: item?.id,
+                          })
+                          .then(() => {
+                            toast({
+                              title: "Success",
+                              description: "Content successfully favourited",
+                            });
+                          });
+                      }
+                    }}
+                  >
+                    {isFavourited ? <Icons.heartSolid /> : <Icons.heart />}
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-2 mt-2 text-gray-400">
+                  <p>
+                    {totalWatched || 0} {totalWatched > 1 ? "views" : "view"}
+                  </p>
+                </div>
+
                 <CardDescription className="flex justify-between dark:text-gray-500 flex-1 flex-grow">
                   <p className="line-clamp-2">
                     {" "}
@@ -150,8 +137,8 @@ export const ContentsListEffect = ({
                   </p>
                   <p>{item?.lang}</p>
                 </CardDescription>
-              </Link>
-            </Card>
+              </Card>
+            </Link>
           </div>
         );
       })}

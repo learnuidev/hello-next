@@ -30,7 +30,7 @@ function RemoveIfExistsButton({ contentId }: { contentId: string }) {
     return (
       <button
         onClick={() => {
-          setRecentlyWatched(contentId, "remove");
+          setRecentlyWatched({ id: contentId }, "remove");
         }}
       >
         {isLoading ? "Removing..." : "Remove from history"}{" "}

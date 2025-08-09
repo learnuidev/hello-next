@@ -7,10 +7,10 @@ import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-pre
 import { useQueryClient } from "@tanstack/react-query";
 import { useListPublishedContentsQuery } from "./[content-id]/hooks/use-list-published-contents-query";
 
-const removeFromHistory = (recentlyWatched: any, item: any) => {
+const removeFromHistory = (recentlyWatched: any, id: string) => {
   return Object.fromEntries(
     Object.entries(recentlyWatched)?.filter((val) => {
-      return val?.[0] !== item;
+      return val?.[0] !== id;
     })
   );
 };
@@ -38,14 +38,23 @@ export const useRecentlyWatchedContent = () => {
       );
     }
 
+    if (action === "remove") {
+      queryClient.setQueryData([getUserPreferenceKey], (old: any) => {
+        return {
+          ...old,
+          recentlyWatched: removeFromHistory(old?.recentlyWatched, item?.id),
+        };
+      });
+
+      updateUserPreferenceMutation?.mutate({
+        recentlyWatched: removeFromHistory(_recentlyWatched, item?.id),
+      });
+
+      return;
+    }
+
     if (item?.id && contentItem?.id) {
       queryClient.setQueryData([getUserPreferenceKey], (old: any) => {
-        if (action === "remove") {
-          return {
-            ...old,
-            recentlyWatched: removeFromHistory(old?.recentlyWatched, item),
-          };
-        }
         return {
           ...old,
           recentlyWatched: {
@@ -63,26 +72,20 @@ export const useRecentlyWatchedContent = () => {
         };
       });
 
-      if (action === "remove") {
-        updateUserPreferenceMutation?.mutate({
-          recentlyWatched: removeFromHistory(_recentlyWatched, contentItem),
-        });
-      } else {
-        updateUserPreferenceMutation?.mutate({
-          recentlyWatched: {
-            ..._recentlyWatched,
-            [item?.id || contentItem?.id]: {
-              watchedAt: Date.now(),
-              totalWatched:
-                (_recentlyWatched?.[item?.id || contentItem?.id]
-                  ?.totalWatched || 0) + 1,
-              id: item?.id,
-              title: item?.title || contentItem?.title,
-              audio: item?.audio || contentItem?.title,
-            },
+      updateUserPreferenceMutation?.mutate({
+        recentlyWatched: {
+          ..._recentlyWatched,
+          [item?.id || contentItem?.id]: {
+            watchedAt: Date.now(),
+            totalWatched:
+              (_recentlyWatched?.[item?.id || contentItem?.id]?.totalWatched ||
+                0) + 1,
+            id: item?.id,
+            title: item?.title || contentItem?.title,
+            audio: item?.audio || contentItem?.title,
           },
-        });
-      }
+        },
+      });
     }
   };
 

@@ -29,6 +29,11 @@ export function useListUserPreferenceContentsQuery() {
   );
 
   return useQuery({
+    refetchOnWindowFocus: false,
+    // refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    retry: false,
     queryKey: [
       "use-list-user-preference-contents-query",
       JSON.stringify(contentIdsNotInContentItems),

@@ -5,3 +5,8 @@ export const contentTypes = [
   { id: "essay", title: "Essay" },
   { id: "travel", title: "Travel" },
 ];
+
+export const contentFormats = [
+  { id: "youtube", title: "Youtube" },
+  { id: "text", title: "Text" },
+];

@@ -2,14 +2,21 @@ import React from "react";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import Editor from "@monaco-editor/react";
+import { cn } from "@/lib/utils";
 
 type ReactChildrenProps = {
   children: React.ReactNode;
+  className?: string;
 };
 
-export const StepTitleContainer = ({ children }: ReactChildrenProps) => {
+export const StepTitleContainer = ({
+  children,
+  className,
+}: ReactChildrenProps) => {
   return (
-    <div className="flex items-center w-full justify-center">{children} </div>
+    <div className={cn("flex items-center w-full justify-center", className)}>
+      {children}{" "}
+    </div>
   );
 };
 

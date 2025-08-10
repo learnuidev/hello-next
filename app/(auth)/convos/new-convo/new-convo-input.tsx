@@ -65,7 +65,7 @@ export function NewConvoInput() {
           );
           setConvo("input", event?.target?.value);
         }}
-        autoFocus
+        // autoFocus
         placeholder=""
         className="p-4 max-w-8xl w-full h-[260px] sm:h-[600px] rounded-xl focus-visible:outline-none focus-visible:ring-ring"
         // className="w-full text-center font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"

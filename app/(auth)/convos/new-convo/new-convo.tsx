@@ -26,27 +26,14 @@ export function NewConvo({ type }: { type?: string }) {
           </button>
         </div>
 
-        <StepTitleContainer>
+        <StepTitleContainer className="flex flex-wrap">
           {[
-            {
-              stepId: "type",
-            },
-            {
-              stepId: "title",
-            },
-            {
-              stepId: "location",
-            },
             {
               stepId: "lang",
             },
             {
               stepId: "audio",
             },
-            {
-              stepId: "author",
-            },
-
             {
               stepId: "summary",
             },

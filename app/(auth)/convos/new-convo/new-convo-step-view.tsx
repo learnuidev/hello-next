@@ -26,8 +26,10 @@ import {
 import { NewConvoInput } from "./new-convo-input";
 
 import { WebVTTParser } from "webvtt-parser";
-import { contentTypes } from "../constants/content-types";
+import { contentFormats, contentTypes } from "../constants/content-types";
 import { useGetVideoByIdQuery } from "@/domain/youtube/get-video-by-id";
+import { cn } from "@/lib/utils";
+import { languages } from "@/app/next/features/phrase/languages";
 
 function parseVTT(_vttString: string, lang: string) {
   const vttString = `
@@ -265,129 +267,125 @@ export function StepView() {
   };
 
   switch (step) {
-    case "type":
-      return (
-        <StepContainerVariant1>
-          <StepTitle>type</StepTitle>
-          <input
-            value={newConvo?.type}
-            onChange={(event) => {
-              setConvo("type", event?.target?.value);
-            }}
-            onKeyDown={(event) => {
-              if (event?.keyCode === 13) {
-                if (newConvo.type) {
-                  setStep("title");
-                }
-              }
-            }}
-            autoFocus
-            placeholder=""
-            className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0  p-2 border-0 border-none dark:text-gray-300"
-          />
-          <div className="grid md:grid-cols-3 grid-cols-1 w-full my-16 justify-around items-center">
-            {contentTypes.map((item) => {
-              return (
-                <button
-                  key="item"
-                  onClick={() => {
-                    setConvo("type", item.id);
-                  }}
-                  className="text-center text-3xl font-extralight focus:outline-0 dark:bg-black  p-2 border-0 border-none dark:text-gray-500 dark:hover:text-gray-300"
-                >
-                  {" "}
-                  {item.title}
-                </button>
-              );
-            })}
-          </div>
-        </StepContainerVariant1>
-      );
-    case "title":
-      return (
-        <StepContainerVariant1>
-          <StepTitle>title of the conversation</StepTitle>
-
-          <input
-            onChange={(event) => {
-              setConvo("title", event?.target?.value);
-            }}
-            value={newConvo?.title}
-            onKeyDown={(event) => {
-              if (event?.keyCode === 13) {
-                if (newConvo.title) {
-                  setStep("lang");
-                }
-              }
-            }}
-            autoFocus
-            placeholder=""
-            className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0  p-2 border-0 border-none dark:text-gray-300"
-          />
-        </StepContainerVariant1>
-      );
     case "lang":
       return (
-        <StepContainerVariant1>
-          <StepTitle>language of the content</StepTitle>
+        <>
+          <StepContainerVariant1>
+            <StepTitle>language of the content</StepTitle>
 
-          <input
-            onChange={(event) => {
-              setConvo("lang", event?.target?.value);
-            }}
-            value={newConvo?.lang}
-            onKeyDown={(event) => {
-              if (event?.keyCode === 13) {
-                if (newConvo.title) {
-                  setStep("level");
-                }
-              }
-            }}
-            autoFocus
-            placeholder=""
-            className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0  p-2 border-0 border-none dark:text-gray-300"
-          />
-        </StepContainerVariant1>
+            <div className="grid md:grid-cols-3 grid-cols-1 w-full my-16 justify-around items-center">
+              {languages.map((item) => {
+                return (
+                  <button
+                    key={`content-format-${JSON.stringify(item)}`}
+                    onClick={() => {
+                      setConvo("lang", item.id);
+                    }}
+                    className={cn(
+                      "text-center text-3xl font-extralight focus:outline-0 dark:bg-black  p-2 border-0 border-none dark:text-gray-500 dark:hover:text-gray-300",
+                      newConvo?.lang === item?.id
+                        ? "dark:text-white text-black"
+                        : "text-gray-500"
+                    )}
+                  >
+                    {" "}
+                    {item.title}
+                  </button>
+                );
+              })}
+            </div>
+          </StepContainerVariant1>
+
+          <StepContainerVariant1>
+            <StepTitle>type</StepTitle>
+            <div className="flex w-full my-16 justify-around items-center">
+              {contentFormats.map((item) => {
+                return (
+                  <button
+                    key={`content-format-${JSON.stringify(item)}`}
+                    onClick={() => {
+                      setConvo("type", item.id);
+                    }}
+                    className={cn(
+                      "text-center text-3xl font-extralight focus:outline-0 dark:bg-black  p-2 border-0 border-none dark:text-gray-500 dark:hover:text-gray-300",
+                      newConvo?.type === item?.id
+                        ? "dark:text-white text-black"
+                        : "text-gray-500"
+                    )}
+                  >
+                    {" "}
+                    {item.title}
+                  </button>
+                );
+              })}
+            </div>
+          </StepContainerVariant1>
+
+          <StepContainerVariant1>
+            <StepTitle>Content Type</StepTitle>
+            <div className="grid md:grid-cols-3 grid-cols-1 w-full my-16 justify-around items-center">
+              {contentTypes.map((item) => {
+                return (
+                  <button
+                    key={`content-format-${JSON.stringify(item)}`}
+                    onClick={() => {
+                      setConvo("contentType", item.id);
+                    }}
+                    className={cn(
+                      "text-center text-3xl font-extralight focus:outline-0 dark:bg-black  p-2 border-0 border-none dark:text-gray-500 dark:hover:text-gray-300",
+                      newConvo?.contentType === item?.id
+                        ? "dark:text-white text-black"
+                        : "text-gray-500"
+                    )}
+                  >
+                    {" "}
+                    {item.title}
+                  </button>
+                );
+              })}
+            </div>
+          </StepContainerVariant1>
+        </>
       );
 
-    case "author":
-      return (
-        <StepContainerVariant1>
-          <StepTitle>author</StepTitle>
-          <input
-            value={newConvo?.author}
-            onChange={(event) => {
-              setConvo("author", event?.target?.value);
-            }}
-            onKeyDown={(event) => {
-              if (event?.keyCode === 13) {
-                if (newConvo.author) {
-                  setStep("location");
-                }
-              }
-            }}
-            autoFocus
-            placeholder=""
-            className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
-          />
-          <div className="flex justify-center w-full my-16 space-x-8">
-            {["xiaoma", "mb", "yoyo", "ling ling", "mandarino"].map((item) => {
-              return (
-                <button
-                  key="item"
-                  onClick={() => {
-                    setConvo("author", item);
-                  }}
-                  className="text-center text-3xl font-extralight focus:outline-0 dark:bg-black  p-2 border-0 border-none dark:text-gray-500 dark:hover:text-gray-300"
-                >
-                  {" "}
-                  {item}
-                </button>
-              );
-            })}
-          </div>
-        </StepContainerVariant1>
-      );
+    // case "author":
+    //   return (
+    //     <StepContainerVariant1>
+    //       <StepTitle>author</StepTitle>
+    //       <input
+    //         value={newConvo?.author}
+    //         onChange={(event) => {
+    //           setConvo("author", event?.target?.value);
+    //         }}
+    //         onKeyDown={(event) => {
+    //           if (event?.keyCode === 13) {
+    //             if (newConvo.author) {
+    //               setStep("location");
+    //             }
+    //           }
+    //         }}
+    //         autoFocus
+    //         placeholder=""
+    //         className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
+    //       />
+    //       <div className="flex justify-center w-full my-16 space-x-8">
+    //         {["xiaoma", "mb", "yoyo", "ling ling", "mandarino"].map((item) => {
+    //           return (
+    //             <button
+    //               key="item"
+    //               onClick={() => {
+    //                 setConvo("author", item);
+    //               }}
+    //               className="text-center text-3xl font-extralight focus:outline-0 dark:bg-black  p-2 border-0 border-none dark:text-gray-500 dark:hover:text-gray-300"
+    //             >
+    //               {" "}
+    //               {item}
+    //             </button>
+    //           );
+    //         })}
+    //       </div>
+    //     </StepContainerVariant1>
+    //   );
 
     case "audio": {
       if (newConvo.type === "file") {
@@ -425,13 +423,53 @@ export function StepView() {
                 }
               }
             }}
-            autoFocus
+            // autoFocus
             placeholder=""
             className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
           />
 
           <div className="flex justify-center items-center flex-col w-full my-4">
-            <h4 className="dark:text-gray-600 text-[12px] mb-2">Source</h4>
+            <StepTitle>title of the conversation</StepTitle>
+
+            <input
+              onChange={(event) => {
+                setConvo("title", event?.target?.value);
+              }}
+              value={newConvo?.title}
+              onKeyDown={(event) => {
+                if (event?.keyCode === 13) {
+                  if (newConvo.title) {
+                    setStep("lang");
+                  }
+                }
+              }}
+              autoFocus
+              placeholder=""
+              className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0  p-2 border-0 border-none dark:text-gray-300"
+            />
+          </div>
+          <div className="flex justify-center items-center flex-col w-full my-4">
+            <StepTitle>author</StepTitle>
+            <input
+              value={newConvo?.author}
+              onChange={(event) => {
+                setConvo("author", event?.target?.value);
+              }}
+              onKeyDown={(event) => {
+                if (event?.keyCode === 13) {
+                  if (newConvo.author) {
+                    setStep("location");
+                  }
+                }
+              }}
+              autoFocus
+              placeholder=""
+              className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
+            />
+          </div>
+
+          <div className="flex justify-center items-center flex-col w-full my-4">
+            <StepTitle>source</StepTitle>
 
             <input
               value={newConvo?.source}
@@ -442,7 +480,7 @@ export function StepView() {
             />
           </div>
 
-          {newConvo.type === "text" && <NewConvoInput />}
+          <NewConvoInput />
 
           <div className="flex justify-center items-center flex-col w-full my-4">
             <button className="dark:text-gray-600 text-[12px] mb-2">
@@ -462,28 +500,28 @@ export function StepView() {
       );
     }
 
-    case "location":
-      return (
-        <StepContainerVariant1>
-          <StepTitle>location of the conversation</StepTitle>
-          <input
-            value={newConvo?.location}
-            onChange={(event) => {
-              setConvo("location", event?.target?.value);
-            }}
-            onKeyDown={(event) => {
-              if (event?.keyCode === 13) {
-                if (newConvo.location) {
-                  setStep("summary");
-                }
-              }
-            }}
-            autoFocus
-            placeholder=""
-            className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
-          />
-        </StepContainerVariant1>
-      );
+    // case "location":
+    //   return (
+    //     <StepContainerVariant1>
+    //       <StepTitle>location of the conversation</StepTitle>
+    //       <input
+    //         value={newConvo?.location}
+    //         onChange={(event) => {
+    //           setConvo("location", event?.target?.value);
+    //         }}
+    //         onKeyDown={(event) => {
+    //           if (event?.keyCode === 13) {
+    //             if (newConvo.location) {
+    //               setStep("summary");
+    //             }
+    //           }
+    //         }}
+    //         autoFocus
+    //         placeholder=""
+    //         className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-center text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
+    //       />
+    //     </StepContainerVariant1>
+    //   );
 
     default:
       return (
@@ -514,6 +552,7 @@ export function StepView() {
                     location: newConvo?.location,
                     source: newConvo?.source,
                     // title: string;
+                    contentType: newConvo?.contentType,
                     lang: newConvo?.lang,
                     audio: newConvo?.audio,
                     transcriptions: newConvo?.transcriptions,

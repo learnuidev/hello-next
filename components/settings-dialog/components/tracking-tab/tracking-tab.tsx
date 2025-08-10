@@ -63,7 +63,7 @@ export function TrackingTab() {
           </div>
 
           <p className="text-gray-400 font-extralight text-[10px] mt-[2px]">
-            Track which content you&apos;ve interacted with
+            Track the content you&apos;ve learned
           </p>
         </div>
         <div>

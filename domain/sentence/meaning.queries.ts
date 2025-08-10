@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 
@@ -41,6 +41,7 @@ export function useListMeaningsQuery(
   params = {} as ListMeaningsParams,
   options = {} as any
 ) {
+  const queryClient = useQueryClient();
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ListMeaningsResponse, Error>({
@@ -48,9 +49,15 @@ export function useListMeaningsQuery(
 
     queryFn: async () => {
       if (params.lang) {
-        const response = await listMeanings(params, {
+        const response = (await listMeanings(params, {
           Authorization: authUser?.jwt,
-        });
+        })) as ListMeaningsResponse;
+
+        if (!response.meanings) {
+          queryClient.refetchQueries({
+            queryKey: [listMeaningQueryKey, params.content, params?.lang],
+          });
+        }
         return response as ListMeaningsResponse;
       }
     },

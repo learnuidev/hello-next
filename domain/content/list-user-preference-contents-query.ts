@@ -13,7 +13,7 @@ export function useListUserPreferenceContentsQuery() {
 
   const jwtToken = useJwtToken();
 
-  const userPreferenceContentIds = Object.keys(data?.recentlyWatched);
+  const userPreferenceContentIds = Object.keys(data?.recentlyWatched || {});
 
   const contents: any = useContentsStore((state) => state.contents);
   const setContents: any = useContentsStore((state) => state.setContents);
@@ -34,6 +34,10 @@ export function useListUserPreferenceContentsQuery() {
       JSON.stringify(contentIdsNotInContentItems),
     ],
     queryFn: async () => {
+      console.log(
+        "contentIdsNotInContentItems",
+        contentIdsNotInContentItems?.length
+      );
       if (contentIdsNotInContentItems?.length > 0) {
         const resp = await listContents(
           { contentIds: contentIdsNotInContentItems },

@@ -60,7 +60,11 @@ export function UserLearningSummary() {
   if (userEmailHandle) {
     return (
       <div className="mt-8 mb-8 text-lg rounded-2xl py-4 lg:py-8">
-        <div className="flex justify-between items-center">
+        <div
+          className="flex 
+
+        sm:justify-between sm:items-center flex-col-reverse sm:flex-row gap-4"
+        >
           <p className="font-extralight">
             Yo <span className="font-bold">{userEmailHandle}</span>, here is
             your learning summary:{" "}

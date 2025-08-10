@@ -62,3 +62,22 @@ export function parseYoutubeUrl(
 ): SafeParseReturnType<string, string> {
   return youtubeUrlSchema.safeParse(normalizeYoutubeUrl(src));
 }
+
+export function extractYoutubeVideoIdAndTime(rawYoutubeUrl: string) {
+  try {
+    const url = new URL(rawYoutubeUrl);
+
+    const videoId = url.searchParams.get("v");
+    const time = url.searchParams.get("t");
+
+    return {
+      videoId,
+      time,
+    };
+  } catch {
+    return {
+      videoId: null,
+      time: null,
+    };
+  }
+}

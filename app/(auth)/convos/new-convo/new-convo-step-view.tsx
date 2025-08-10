@@ -27,6 +27,7 @@ import { NewConvoInput } from "./new-convo-input";
 
 import { WebVTTParser } from "webvtt-parser";
 import { contentTypes } from "../constants/content-types";
+import { useGetVideoByIdQuery } from "@/domain/youtube/get-video-by-id";
 
 function parseVTT(_vttString: string, lang: string) {
   const vttString = `
@@ -66,6 +67,8 @@ export function StepView() {
   const setConvo2 = useNewConvoStore((state) => state.setConvo2);
   const step = useNewConvoStore((state) => state.step);
   const setStep = useNewConvoStore((state) => state.setStep);
+
+  const { data: youtubeVideo } = useGetVideoByIdQuery(newConvo?.audio);
 
   const { data: subtitles, isLoading: isSubtitlesLoading } =
     useListSubtitlesQuery(

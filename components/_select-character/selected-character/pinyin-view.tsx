@@ -21,6 +21,7 @@ import { PreviewComponent } from "@/app/nmm/preview-component";
 import { PinyinCodes, useSelectedLevel } from "@/app/pinyin/pinyn-codes";
 import { SelectedCharacterProps } from "../select-character.types";
 import { SelectedCharacterTitle } from "./selected-character-title";
+import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
 export const PinyinView = (props: { characterId: string }) => {
   const { characterId } = props;
@@ -28,9 +29,11 @@ export const PinyinView = (props: { characterId: string }) => {
   const { data: components } = useListComponents();
   const selectedLevel = useSelectedLevel((state) => state.selectedLevel) as any;
 
-  const selectedComp = components?.find(
-    (component: any) => component?.hanzi === characterId
-  ) as any;
+  const { data: _selectedComp } = useListMeaningsQuery({
+    content: characterId,
+    lang: "zh",
+  });
+  const selectedComp: any = _selectedComp?.details;
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 

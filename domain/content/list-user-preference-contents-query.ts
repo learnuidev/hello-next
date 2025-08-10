@@ -13,20 +13,22 @@ export function useListUserPreferenceContentsQuery() {
 
   const jwtToken = useJwtToken();
 
-  const userPreferenceContentIds = Object.keys(data?.recentlyWatched || {});
+  const userPreferenceContentIds =
+    Object.keys(data?.recentlyWatched || {}) || [];
 
   const contents: any = useContentsStore((state) => state.contents);
   const setContents: any = useContentsStore((state) => state.setContents);
 
   const contentItems = contents?.items;
 
-  const contentIdsNotInContentItems = userPreferenceContentIds.filter(
-    (contentId) => {
-      const item = contentItems?.find((val: any) => val?.id === contentId);
+  const contentIdsNotInContentItems =
+    userPreferenceContentIds?.length === 0
+      ? userPreferenceContentIds
+      : userPreferenceContentIds.filter((contentId) => {
+          const item = contentItems?.find((val: any) => val?.id === contentId);
 
-      return !item;
-    }
-  );
+          return !item;
+        });
 
   return useQuery({
     refetchOnWindowFocus: false,

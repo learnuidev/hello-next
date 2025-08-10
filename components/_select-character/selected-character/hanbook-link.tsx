@@ -6,6 +6,9 @@ export const HanbookLink = ({ hanzi }: { hanzi: string }) => {
   const { data } = useListComponentVariantsQuery({ hanzi });
   const hanbookId = data?.[0]?.hanbookId;
 
+  // Disable for now
+  return null;
+
   if (!hanbookId) {
     return null;
   }

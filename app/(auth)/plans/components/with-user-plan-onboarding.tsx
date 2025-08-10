@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { useGetActiveUserPlan } from "../hooks/use-get-active-user-plan";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useListUserPreferenceContentsQuery } from "@/domain/content/list-user-preference-contents-query";
 
 export const WithUserPlanOnboarding = ({
   children,
@@ -9,6 +10,8 @@ export const WithUserPlanOnboarding = ({
   children: ReactNode;
 }) => {
   const { data: userPlan, isLoading } = useGetActiveUserPlan();
+
+  const { data } = useListUserPreferenceContentsQuery();
 
   const pathName = usePathname();
 

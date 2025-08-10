@@ -19,7 +19,7 @@ export const useContentsStore = createIndexDBStore({
   }),
 });
 
-interface Content {
+export interface Content {
   id: string;
   sourceUrl?: string;
   uploadBucketKey?: string;

@@ -32,6 +32,10 @@ const listMeanings = async (
   }
   const resp = (await res.json()) as ListMeaningsResponse;
 
+  // if (!resp?.details) {
+  //   return listMeanings(options, opts);
+  // }
+
   return resp;
 };
 
@@ -53,12 +57,12 @@ export function useListMeaningsQuery(
           Authorization: authUser?.jwt,
         })) as ListMeaningsResponse;
 
-        if (!response.meanings) {
+        if (!response.details) {
           queryClient.refetchQueries({
             queryKey: [listMeaningQueryKey, params.content, params?.lang],
           });
         }
-        return response as ListMeaningsResponse;
+        return response;
       }
     },
 
@@ -68,7 +72,7 @@ export function useListMeaningsQuery(
     // cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
     refetchOnFocus: false,
-    refetchOnMount: false,
+    // refetchOnMount: false,
     refetchOnReconnect: false,
   });
 }

@@ -21,8 +21,6 @@ export function useListUserPreferenceContentsQuery() {
 
   const contentItems = contents?.items;
 
-  console.log("content items", contentItems);
-
   const contentIdsNotInContentItems =
     userPreferenceContentIds?.length === 0
       ? userPreferenceContentIds
@@ -43,10 +41,6 @@ export function useListUserPreferenceContentsQuery() {
       JSON.stringify(contentIdsNotInContentItems),
     ],
     queryFn: async () => {
-      console.log(
-        "contentIdsNotInContentItems",
-        contentIdsNotInContentItems?.length
-      );
       if (contentIdsNotInContentItems?.length > 0) {
         const resp = await listContents(
           { contentIds: contentIdsNotInContentItems?.slice(0, 100) },

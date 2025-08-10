@@ -38,6 +38,8 @@ import { ContentsListEffect } from "@/components/contents-list-effect";
 import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query";
 import { useRecentlyWatchedContent } from "./use-recently-watched-content-store";
 import { createIndexDBStore } from "@/libs/index-db/index-db";
+import { useContentType } from "./hooks/use-content-type";
+import { contentTypes } from "./constants/content-types";
 
 type ContentType = {
   title: string;
@@ -65,7 +67,11 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
           ? favouriteContents?.items
           : myContent?.items;
 
-  const contentType = useContentTypeStore((state) => state.contentType);
+  const { contentType } = useContentType();
+
+  console.log("CONTENT TYPE", contentType);
+
+  // const contentType = useContentTypeStore((state) => state.contentType);
 
   const query = useSearchQueryStore((state) => state.query2);
   const lang = useGetCurrentLang();
@@ -78,47 +84,53 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
     return true;
   };
 
-  const projects = contents
-    ? contents
-        ?.filter((content: any) => {
-          if (!query) {
-            if (contentType) {
-              if (contentType === "all") {
-                return true;
-              }
-              return contentType === content?.type;
-            }
+  const filteredByLang = (contents || [])?.filter((item: any) => {
+    if (contentViewType === "history") {
+      return true;
+    }
 
+    return item?.lang === lang;
+  });
+
+  console.log("c", filteredByLang);
+
+  const projects = filteredByLang
+    ?.filter((content: any) => {
+      if (!query) {
+        if (contentType) {
+          if (contentType === "all") {
             return true;
           }
 
-          return JSON.stringify(content)
-            ?.toLowerCase()
-            ?.includes(query?.toLowerCase());
-
+          // console.log("content", content);
           return (
-            content?.title?.toLowerCase()?.includes(query?.toLowerCase()) &&
-            searchTransacription(content, query)
+            contentType === content?.type ||
+            contentType === content?.contentType
           );
-        })
-        ?.filter((item: any) => {
-          if (contentViewType === "history") {
-            return true;
-          }
+        }
 
-          return item?.lang === lang;
-        })
-        ?.map((content: any) => {
-          return {
-            id: content?.id,
-            title: content?.title,
-            description:
-              content?.summary || content?.description || content?.title,
-            link: `/convos/${content?.id}`,
-            ...content,
-          };
-        })
-    : [];
+        return true;
+      }
+
+      return JSON.stringify(content)
+        ?.toLowerCase()
+        ?.includes(query?.toLowerCase());
+
+      return (
+        content?.title?.toLowerCase()?.includes(query?.toLowerCase()) &&
+        searchTransacription(content, query)
+      );
+    })
+
+    ?.map((content: any) => {
+      return {
+        id: content?.id,
+        title: content?.title,
+        description: content?.summary || content?.description || content?.title,
+        link: `/convos/${content?.id}`,
+        ...content,
+      };
+    });
 
   if (isLoading || isFavouriteContentLoading || isPublishedLoading) {
     return <LottieLoadingAnimation />;
@@ -128,11 +140,16 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
     return <Nothing message={`Nothing favourited`} icon={Icons.content} />;
   }
 
-  console.log("PROJECTS", projects);
+  const selectedContent = contentTypes?.find(
+    (content) => content.id === contentType
+  );
 
   if (!projects?.length) {
     return (
-      <Nothing message={`Nothing found for: ${query}`} icon={Icons.content} />
+      <Nothing
+        message={`Nothing found for: ${query || selectedContent?.title}`}
+        icon={Icons.content}
+      />
     );
   }
 
@@ -212,7 +229,7 @@ const useViewType = () => {
 
 export default function Convos() {
   const [contentViewType, setViewType] = useViewType();
-  // const [contentViewType, setViewType] = useState("history");
+
   const [isTocHidden, setIsTocHidden] = useState(false);
   const lessonId = useConvosStore((state: any) => state?.convoId);
 

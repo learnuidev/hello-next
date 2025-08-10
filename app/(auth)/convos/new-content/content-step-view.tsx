@@ -6,8 +6,6 @@ import { ContentDetails } from "./content-details";
 import { ContentPreview } from "./content-preview";
 import { ContentType } from "./content-type";
 
-export const contentTypes = ["audio", "text", "video", "youtube", "website"];
-
 export const ContentStepView = () => {
   const step = useNewConvoStore((state) => state.step);
 

@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { useGetContentId } from "./[content-id]/hooks/use-get-content-id";
 import { useListPublishedContentsQuery } from "./[content-id]/hooks/use-list-published-contents-query";
 import { useTogglePublishContentMutation } from "./[content-id]/hooks/use-toggle-publish-content-mutation";
+import { contentTypes } from "./constants/content-types";
 
 export const ContentSettings = () => {
   const [contentType, setContentType] = useState("not-selected");
@@ -88,12 +89,23 @@ export const ContentSettings = () => {
           </SelectTrigger>
           <SelectContent className="mx-0">
             <SelectItem value="not-selected">Not Selected</SelectItem>
-            <SelectItem value="music">Music</SelectItem>
+            {contentTypes.map((contentType) => {
+              return (
+                <SelectItem
+                  key={JSON.stringify(contentType)}
+                  value={contentType.id}
+                >
+                  {contentType.title}
+                </SelectItem>
+              );
+            })}
+
+            {/* <SelectItem value="music">Music</SelectItem>
             <SelectItem value="podcast">Podcast</SelectItem>
             <SelectItem value="news">News</SelectItem>
             <SelectItem value="essay">Essay</SelectItem>
             <SelectItem value="story">Story</SelectItem>
-            <SelectItem value="tweet">Tweet</SelectItem>
+            <SelectItem value="tweet">Tweet</SelectItem> */}
           </SelectContent>
         </Select>
       </div>

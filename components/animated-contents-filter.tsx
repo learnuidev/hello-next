@@ -1,15 +1,10 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { contentTypes } from "@/app/(auth)/convos/constants/content-types";
+import { useContentType } from "@/app/(auth)/convos/hooks/use-content-type";
 import { useContentTypeStore } from "@/app/(auth)/convos/use-content-type-store";
-import {
-  getUserPreferenceKey,
-  useGetUserPreferenceQuery,
-} from "@/domain/user/use-get-user-preference-query";
-import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
-import { useQueryClient } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { useRef, useState } from "react";
 
 interface ICursorPosition {
   left: number;
@@ -28,24 +23,7 @@ export function AnimatedContentsFilter() {
     {}
   );
 
-  const queryClient = useQueryClient();
-
-  // const setContentType = useContentTypeStore((state) => state.setContentType);
-  // const contentType = useContentTypeStore((state) => state.contentType);
-
-  const { data: userPreferences } = useGetUserPreferenceQuery();
-  const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
-
-  const setContentType = (type: string) => {
-    queryClient.setQueryData([getUserPreferenceKey], (old: any) => {
-      return { ...old, activeContent: type };
-    });
-    updateUserPreferenceMutation?.mutate({
-      activeContent: type,
-    });
-  };
-
-  const contentType = userPreferences?.activeContent;
+  const { contentType, setContentType } = useContentType();
 
   return (
     <div
@@ -77,56 +55,22 @@ export function AnimatedContentsFilter() {
         >
           All
         </Tab>
-        {/* <Tab
-          id={"audio"}
-          setPosition={setPosition}
-          setPositions={setPositions}
-          onClick={() => {
-            setContentType("audio");
-          }}
-        >
-          Audio
-        </Tab> */}
-        <Tab
-          id={"youtube"}
-          setPosition={setPosition}
-          setPositions={setPositions}
-          onClick={() => {
-            setContentType("youtube");
-          }}
-        >
-          YouTube
-        </Tab>
-        <Tab
-          id={"text"}
-          setPosition={setPosition}
-          setPositions={setPositions}
-          onClick={() => {
-            setContentType("text");
-          }}
-        >
-          Text
-        </Tab>
-        <Tab
-          id={"story"}
-          setPosition={setPosition}
-          setPositions={setPositions}
-          onClick={() => {
-            setContentType("story");
-          }}
-        >
-          Story
-        </Tab>
-        <Tab
-          id={"convo"}
-          setPosition={setPosition}
-          setPositions={setPositions}
-          onClick={() => {
-            setContentType("convo");
-          }}
-        >
-          Convo
-        </Tab>
+
+        {contentTypes.map((contentType) => {
+          return (
+            <Tab
+              key={`contents-filter-${JSON.stringify(contentType)}`}
+              id={contentType.id}
+              setPosition={setPosition}
+              setPositions={setPositions}
+              onClick={() => {
+                setContentType(contentType.id);
+              }}
+            >
+              {contentType.title}
+            </Tab>
+          );
+        })}
 
         <Cursor position={position} />
       </div>

@@ -26,17 +26,7 @@ import {
 import { NewConvoInput } from "./new-convo-input";
 
 import { WebVTTParser } from "webvtt-parser";
-
-const contentTypes = [
-  "audio",
-  "text",
-  "convo",
-  // "story",
-  // "movie",
-  "youtube",
-  // "tutorial",
-  "file",
-];
+import { contentTypes } from "../constants/content-types";
 
 function parseVTT(_vttString: string, lang: string) {
   const vttString = `
@@ -298,12 +288,12 @@ export function StepView() {
                 <button
                   key="item"
                   onClick={() => {
-                    setConvo("type", item);
+                    setConvo("type", item.id);
                   }}
                   className="text-center text-3xl font-extralight focus:outline-0 dark:bg-black  p-2 border-0 border-none dark:text-gray-500 dark:hover:text-gray-300"
                 >
                   {" "}
-                  {item}
+                  {item.title}
                 </button>
               );
             })}

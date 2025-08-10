@@ -47,6 +47,7 @@ import { TheDock } from "../the-dock";
 import { formatTime } from "@/app/(auth)/convos/_play/utils";
 import { smartSplit } from "./utils/smart-split";
 import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
+import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 
 interface ViewModeState {
   viewMode: string;
@@ -483,6 +484,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       </div>
     );
   };
+
+  const isAutomatic = useShowAutomaticallyTheDock();
 
   const paraTranscriptions =
     active !== MAX_LIMIT
@@ -1000,7 +1003,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       <TheDock
         className="bottom-2"
         // innerClassName={isReviewUrl ? "sm:block" : ""}
-        isAutomatic={false}
+        isAutomatic={isAutomatic}
       >
         <div
           className={cn(

@@ -538,7 +538,7 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
   );
 
   return (
-    <div>
+    <div className="mb-32">
       <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "}
       <WithMultiSentence contentId={contentId} sentence={sentence}>
         <DynaSentence

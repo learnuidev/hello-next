@@ -342,7 +342,7 @@ export function ReviewClozeContent({
   }
 
   return (
-    <div className="px-8">
+    <div className="mb-32 px-8">
       <ClozeNavbar
         totalSentences={sentences?.length}
         contentSentences={contentSentences?.length}

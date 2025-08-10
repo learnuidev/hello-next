@@ -28,6 +28,7 @@ import { WordleSentence } from "@/components/wordle/wordle-sentence";
 import { SpeakSentence } from "../speak/speak-sentence";
 import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
+import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -486,6 +487,8 @@ export const DynaClozeSentence = ({
 
   const { setReviewMode } = useReviewModeView();
 
+  const isAutomatic = useShowAutomaticallyTheDock();
+
   const { data, isLoading } = useListMeaningsQuery({
     content: sentence?.input || sentence?.hanzi || "",
     lang: sentence?.lang,
@@ -508,7 +511,7 @@ export const DynaClozeSentence = ({
   }
 
   return (
-    <div>
+    <div className="mb-32">
       <nav className="flex w-screen fixed top-4 left-0 items-center">
         <div className="flex-1 flex justify-start px-4 lg:px-12">
           <button
@@ -544,7 +547,7 @@ export const DynaClozeSentence = ({
         viewMode === "speak" && <SpeakSentence sentence={sentence} />
       )}
 
-      <TheDock isAutomatic={false} className="bottom-4">
+      <TheDock isAutomatic={isAutomatic} className="bottom-4">
         <div className="flex items-center w-full justify-center">
           <div className="px-8  py-2 bg-gray-100 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
             <div className="space-x-8 flex justify-center items-center w-full">

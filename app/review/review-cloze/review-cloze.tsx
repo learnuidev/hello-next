@@ -316,7 +316,7 @@ export function ReviewCloze({
   }
 
   return (
-    <div className="px-8">
+    <div className="mb-32 px-8">
       <ClozeNavbar
         totalSentences={sentences?.length}
         onClose={onClose}

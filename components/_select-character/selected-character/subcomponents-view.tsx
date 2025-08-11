@@ -35,6 +35,7 @@ const HanziSubComponentsView = ({
   const { data: components } = useListComponents();
   const { data: sub_components, isLoading } = useListSubComponentsQuery({
     componentId: characterId,
+    lang,
   });
 
   if (characterId?.length === 1) {

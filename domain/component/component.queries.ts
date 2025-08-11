@@ -7,44 +7,42 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { useListChineseCharactersQuery } from "../hsk/list-chinese-characters-query";
 
+interface ListSubComponentsQuery {
+  componentId: string;
+  lang: string;
+}
+
+interface SubComponentsResponse {
+  id: string;
+  subComponents: { hanzi: string; en: string }[];
+}
 const listSubComponents = async (
-  { componentId }: { componentId: string },
+  { componentId, lang }: ListSubComponentsQuery,
   opts: {
     Authorization: string;
   },
   chineseCharacters: any
-) => {
-  try {
-    const res = await fetch(`${siteConfig.apiUrl}/v1/list-sub-components`, {
-      method: "POST",
-      headers: {
-        // 'Access-Control-Allow-Origin': "*",
-        Authorization: `Bearer ${opts?.Authorization}`,
-      },
-      body: JSON.stringify({
-        componentId,
-      }),
-    });
-    let resp = (await res.json()) as any;
+): Promise<SubComponentsResponse> => {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/list-sub-components`, {
+    method: "POST",
+    headers: {
+      // 'Access-Control-Allow-Origin': "*",
+      Authorization: `Bearer ${opts?.Authorization}`,
+    },
+    body: JSON.stringify({
+      componentId,
+    }),
+  });
 
-    if (!resp) {
-      resp = chineseCharacters?.find(
-        (comp: any) => comp?.hanzi === componentId
-      )?.subComponents;
-    }
-
-    return resp;
-  } catch (err) {
-    let resp = chineseCharacters?.find(
-      (comp: any) => comp?.hanzi === componentId
-    )?.subComponents;
-
-    return resp || [];
+  if (!res.ok) {
+    throw new Error("Not found");
   }
+  let resp = (await res.json()) as any;
+  return resp;
 };
 
 export function useListSubComponentsQuery(
-  params = {} as { componentId: string },
+  params = {} as ListSubComponentsQuery,
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
@@ -63,7 +61,9 @@ export function useListSubComponentsQuery(
         chineseCharacters
       );
 
-      return response?.sort((a: any, b: any) => a?.createdAt - b?.createdAt);
+      return response?.subComponents.sort(
+        (a: any, b: any) => a?.createdAt - b?.createdAt
+      );
       // }
     },
 

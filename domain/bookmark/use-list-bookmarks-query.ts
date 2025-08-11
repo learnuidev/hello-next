@@ -4,7 +4,19 @@ import { siteConfig } from "@/lib/config";
 import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 
-const listBookmarks = async (opts: { Authorization: string }) => {
+interface IBookMark {
+  createdAt: number;
+  en: string;
+  hanzi: string;
+  input: string;
+  id: string;
+  lang: string;
+  userId: string;
+}
+
+const listBookmarks = async (opts: {
+  Authorization: string;
+}): Promise<IBookMark[]> => {
   const res = await fetch(`${siteConfig.apiUrl}/v1/list-bookmarks`, {
     method: "POST",
     headers: {
@@ -20,7 +32,7 @@ export const listBookmarksQueryKey = "list-bookmarks";
 export const useListBookmarksQuery = () => {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery<any>({
+  return useQuery({
     queryKey: [listBookmarksQueryKey, authUser?.jwt],
     queryFn: async () => {
       const resp = await listBookmarks({

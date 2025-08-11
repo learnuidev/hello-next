@@ -15,6 +15,8 @@ import { useRelatedHskWordsByCharacter } from "./use-filter-related-hsk-words-by
 import { useSlicedRelatedSentencesByCharacter } from "./use-sliced-related-sentences-by-character";
 import { useSelectedCharacterData } from "../use-selected-character";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
+import { useListBookmarksQuery } from "@/domain/bookmark/use-list-bookmarks-query";
+import { useListBookmarks } from "./hooks/use-list-bookmarks";
 
 export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
   const { data: characterData } = useSelectedCharacterData({ characterId });
@@ -43,6 +45,8 @@ export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
   });
 
   const filteredSearchResults = groups?.map((group) => group.items)?.flat();
+
+  const filteredBookMarks = useListBookmarks(characterId);
 
   const learnedChar = data?.filter(
     (item: any) => (item?.input || item?.hanzi) === characterId
@@ -110,6 +114,20 @@ export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
                     : "text-gray-500"
                 }
               />
+            </button>
+          )}
+          {filteredBookMarks?.length > 0 && (
+            <button
+              className={cn("text-xl transition", styleFn("sentences"))}
+              onClick={() => {
+                setView("bookmark");
+              }}
+            >
+              {view === "bookmark" ? (
+                <Icons.bookmarkSolid className={"dark:text-white text-black"} />
+              ) : (
+                <Icons.bookmark className={"text-gray-500"} />
+              )}
             </button>
           )}
 

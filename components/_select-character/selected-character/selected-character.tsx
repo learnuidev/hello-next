@@ -23,6 +23,7 @@ import { DynaClozeSentence } from "@/app/(auth)/convos/[content-id]/dyna-cloze-s
 import { CharacterSearch } from "./character-search";
 import { useClozeContentMode } from "@/app/review/content-cloze-mode-button";
 import { ReviewClozeContent } from "@/app/review/review-cloze-content/review-cloze-content";
+import { CharacterBookmark } from "./character-bookmark";
 
 export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
   const { data: characters } = useListCharactersQuery(
@@ -142,6 +143,8 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
 
     case "search":
       return <CharacterSearch characterId={characterId} lang={lang} />;
+    case "bookmark":
+      return <CharacterBookmark characterId={characterId} lang={lang} />;
     case "sentences": {
       return <HskSentenceView characterId={characterId} />;
 

@@ -31,6 +31,7 @@ const listSubComponents = async (
     },
     body: JSON.stringify({
       componentId,
+      lang,
     }),
   });
 

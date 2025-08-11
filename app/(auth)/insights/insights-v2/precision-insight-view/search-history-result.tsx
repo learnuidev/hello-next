@@ -42,7 +42,6 @@ export function SearchHistoryResult({ query }: { query?: string }) {
             <Link
               key={`${comp?.input}-${idx}`}
               href={`/nmm/${encodeURIComponent(comp?.input)}${`?lang=${comp?.lang || lang}`}`}
-              target="_blank"
               className="block"
             >
               {character && isSameDay(charaterCreatedAt, comp?.createdAt) ? (

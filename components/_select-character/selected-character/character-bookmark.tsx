@@ -30,8 +30,7 @@ export const CharacterBookmark = ({
           return (
             <Link
               key={`${comp?.input}-${idx}`}
-              href={`/nmm/${encodeURIComponent(comp?.input)}${`?lang=${comp?.lang || lang}`}`}
-              target="_blank"
+              href={`/nmm/${encodeURIComponent(hanziOrInput)}${`?lang=${comp?.lang || lang}`}`}
               className="block"
             >
               <div className="flex flex-col items-start w-full justify-between">

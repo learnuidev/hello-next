@@ -20,12 +20,11 @@ export function SearchResult({
 
   const currentDecodedQuery = decodeURIComponent(query || "");
 
-  const { data: meaning } = useListMeaningsQuery({
+  const { data: meaningResponse } = useListMeaningsQuery({
     content: currentDecodedQuery,
     lang,
   });
 
-  const meaningResponse = meaning as ListMeaningsResponse;
   return (
     <div className="px-4 md:px-40">
       <div className="flex justify-between items-center w-full mt-4 md:mt-12">

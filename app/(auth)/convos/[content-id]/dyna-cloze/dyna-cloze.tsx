@@ -23,6 +23,7 @@ import { getMulti } from "./utils/get-multi";
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -44,14 +45,16 @@ function DynoSentenceInner({
   parentSentence,
   maxIndex,
 }: IDynoParams) {
-  const { data, isLoading } = useListMeaningsQuery({
+  const { data, isLoading } = useListDiscoveryQuery({
     content: sentence?.input || sentence?.hanzi || "",
     lang: sentence?.lang,
   });
 
+  const meanings = data || {};
+
   const finalSentence = useMemo(() => {
-    return { ...data?.details, ...sentence };
-  }, [data?.details, sentence]);
+    return { ...meanings, ...sentence };
+  }, [meanings, sentence]);
 
   if (isLoading) {
     return (

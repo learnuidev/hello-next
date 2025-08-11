@@ -43,15 +43,13 @@ export function Summary({
   const statusUrl = searchParams.get("status-url");
 
   const {
-    data: meaning,
+    data: meaningResponse,
     isLoading,
     isError,
   } = useListMeaningsQuery({
     content: _characterId,
     lang,
   });
-
-  let meaningResponse = meaning as ListMeaningsResponse;
 
   if (isLoading) {
     return (

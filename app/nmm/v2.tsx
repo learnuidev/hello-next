@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 function CharacterSummary({ characterId }: { characterId: string }) {
   const lang = useGetCurrentLang();
 
-  const { data: meaning, isLoading } = useListMeaningsQuery({
+  const { data: meaningResponse, isLoading } = useListMeaningsQuery({
     content: characterId,
     lang,
   });
@@ -20,8 +20,6 @@ function CharacterSummary({ characterId }: { characterId: string }) {
     useGetComponentQuery({
       componentId: characterId,
     });
-
-  const meaningResponse = meaning as ListMeaningsResponse;
 
   if (isLoading) {
     return (

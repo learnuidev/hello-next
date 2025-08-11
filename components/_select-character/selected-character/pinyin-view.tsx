@@ -22,6 +22,7 @@ import { PinyinCodes, useSelectedLevel } from "@/app/pinyin/pinyn-codes";
 import { SelectedCharacterProps } from "../select-character.types";
 import { SelectedCharacterTitle } from "./selected-character-title";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 
 export const PinyinView = (props: { characterId: string }) => {
   const { characterId } = props;
@@ -33,7 +34,11 @@ export const PinyinView = (props: { characterId: string }) => {
     content: characterId,
     lang: "zh",
   });
-  const selectedComp: any = _selectedComp?.details;
+  const { data: meaningDiscovery } = useListDiscoveryQuery({
+    content: characterId,
+    lang: "zh",
+  });
+  const selectedComp: any = meaningDiscovery;
 
   const { data: learnedCharacters2 } = useListCharactersQuery();
 

@@ -5,6 +5,7 @@ import { formatComponentName } from "./format-component-name";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 
 interface IComp {
   hanzi: string;
@@ -27,8 +28,7 @@ export const PreviewComponent = (props: {
 
   const hanzi = (component?.input || component?.hanzi || "").trim();
 
-  const { data: meaning } = useListMeaningsQuery({
-    sentenceId: props?.character || component?.input || "",
+  const { data: meaning } = useListDiscoveryQuery({
     content: props?.character || component?.input || "",
     lang: props?.lang || component?.lang || lang,
   });
@@ -49,13 +49,13 @@ export const PreviewComponent = (props: {
             <h1 className="text-3xl font-light">{props?.character || hanzi}</h1>
             {lang === "zh" && (
               <h2 className={stylePinyin}>
-                {meaning?.details?.roman || meaning?.details?.pinyin || pinyin}
+                {meaning?.roman || meaning?.pinyin || pinyin}
               </h2>
             )}
 
-            {meaning?.details?.en && (
+            {meaning?.en && (
               <h3 className={styleEn}>
-                {meaning?.details?.en ||
+                {meaning?.en ||
                   formatComponentName(component, 2) ||
                   component?.en}
               </h3>

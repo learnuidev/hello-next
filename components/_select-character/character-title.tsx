@@ -8,14 +8,15 @@ import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id
 import { BookmarkButton } from "@/app/nmm/bookmark-button";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
-import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
-import { useUpdateMeaningMutation } from "@/domain/sentence/use-update-meaning-mutation";
+
 import { useGetCharacter } from "@/hooks/use-get-character";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
+import { useUpdateDiscoveryMutation } from "@/domain/sentence/use-update-discovery-mutation";
 import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
 import { useYoutubeVideoUrl } from "../summary/with-youtube-video";
 import { Icons } from "../ui/icons.v2";
@@ -66,12 +67,13 @@ export const CharacterTitle = (props: any) => {
     hanzi: componentId,
   });
 
-  const { data: meaning, isLoading } = useListMeaningsQuery({
-    content: componentId,
-    lang,
-  });
+  const { data: meaningDiscovery, isLoading: isMeaningDiscoveryLoading } =
+    useListDiscoveryQuery({
+      content: componentId,
+      lang,
+    });
 
-  const updateMeaningMutation = useUpdateMeaningMutation();
+  const updateMeaningMutation = useUpdateDiscoveryMutation();
 
   const { videoUrl, setVideoUrl, addVideoUrl, setAddVideoUrl } =
     useYoutubeVideoUrl();
@@ -83,15 +85,15 @@ export const CharacterTitle = (props: any) => {
 
   const finalEnVal =
     englishMeanings?.length === 1
-      ? meaning?.details?.en || englishMeanings?.[0] || selectedComp?.en
-      : meaning?.details?.en || selectedComp?.en || englishMeanings?.[0];
+      ? meaningDiscovery?.en || englishMeanings?.[0] || selectedComp?.en
+      : meaningDiscovery?.en || selectedComp?.en || englishMeanings?.[0];
 
   const selectedPinyin = pinyins?.length
     ? pinyins?.join("/")
     : pinyins?.[0] ||
       pinyinInput ||
       selectedComp?.pinyin ||
-      meaning?.details?.pinyin;
+      meaningDiscovery?.pinyin;
 
   const customRef: any = useRef(null) as any;
 
@@ -103,15 +105,15 @@ export const CharacterTitle = (props: any) => {
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
-      {edit && meaning?.id && isSuperAdmin ? (
+      {edit && meaningDiscovery?.id && isSuperAdmin ? (
         <input
-          value={newPinyin || meaning?.details?.pinyin}
+          value={newPinyin || meaningDiscovery?.pinyin}
           onChange={(event: any) => {
             setNewPinyin(event?.target.value);
           }}
           className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full"
         />
-      ) : showPinyin && isNonRomanLang(lang || meaning?.lang) ? (
+      ) : showPinyin && isNonRomanLang(lang || meaningDiscovery?.lang) ? (
         pinyins?.length > 1 ? (
           <h2 className="text-gray-900 dark:text-gray-400  font-extralight">
             {pinyins?.map((pinyin, i, ctx) => {
@@ -132,8 +134,8 @@ export const CharacterTitle = (props: any) => {
             {pinyins?.[0] ||
               pinyinInput ||
               selectedComp?.pinyin ||
-              meaning?.details?.pinyin ||
-              meaning?.details?.roman}
+              meaningDiscovery?.pinyin ||
+              meaningDiscovery?.roman}
           </h2>
         )
       ) : null}
@@ -183,9 +185,9 @@ export const CharacterTitle = (props: any) => {
         </div>
       </div>
 
-      {lang === "en" ? null : edit && meaning?.id && isSuperAdmin ? (
+      {lang === "en" ? null : edit && meaningDiscovery?.id && isSuperAdmin ? (
         <input
-          value={newEn || meaning?.details?.en}
+          value={newEn || meaningDiscovery?.en}
           onChange={(event: any) => {
             setNewEn(event?.target.value);
           }}
@@ -227,7 +229,7 @@ export const CharacterTitle = (props: any) => {
           </button>
         )}
 
-        {edit && meaning?.id && isSuperAdmin ? (
+        {edit && meaningDiscovery?.id && isSuperAdmin ? (
           <div className="space-x-4">
             <button
               disabled={updateMeaningMutation.isPending}
@@ -235,12 +237,9 @@ export const CharacterTitle = (props: any) => {
                 updateMeaningMutation
                   // @ts-ignore
                   .mutateAsync({
-                    id: meaning?.id,
-                    details: {
-                      ...meaning?.details,
-                      pinyin: newPinyin || meaning?.details?.pinyin,
-                      en: newEn || meaning?.details?.en,
-                    },
+                    id: meaningDiscovery?.id,
+                    pinyin: newPinyin || meaningDiscovery?.pinyin,
+                    en: newEn || meaningDiscovery?.en,
                   })
                   .then((resp) => {
                     setEdit(false);
@@ -259,7 +258,7 @@ export const CharacterTitle = (props: any) => {
             </button>
           </div>
         ) : (
-          meaning?.id &&
+          meaningDiscovery?.id &&
           isSuperAdmin && (
             <button
               onClick={() => {

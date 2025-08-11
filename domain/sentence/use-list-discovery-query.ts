@@ -4,22 +4,30 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 
-import { ListMeaningsResponse } from "./meanings.types";
 import { siteConfig } from "@/lib/config";
 
-export interface ListMeaningsParams {
-  sentenceId?: string;
+export interface ListDiscoveryParams {
   content: string;
   lang: string;
 }
 
-const listMeanings = async (
+export interface ListDiscoveryResponse {
+  id: string;
+  pinyin: string;
+  hanzi: string;
+  input: string;
+  lang: string;
+  en: string;
+  roman: string;
+}
+
+const listDiscovery = async (
   options: { sentenceId?: string; content: string; lang: string },
   opts: {
     Authorization: string;
   }
-): Promise<ListMeaningsResponse> => {
-  const res = await fetch(`${siteConfig.apiUrl}/v1/list-meanings`, {
+): Promise<ListDiscoveryResponse> => {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/list-discovery`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,
@@ -30,34 +38,29 @@ const listMeanings = async (
   if (!res.ok) {
     throw new Error(res.statusText);
   }
-  const resp = (await res.json()) as ListMeaningsResponse;
-
-  // if (!resp?.details) {
-  //   return listMeanings(options, opts);
-  // }
+  const resp = await res.json();
 
   return resp;
 };
 
-export const listMeaningQueryKey = "list-meanings";
+export const listDiscoveryQueryKey = "list-discovery";
 
-export function useListMeaningsQuery(
-  params = {} as ListMeaningsParams,
+export function useListDiscoveryQuery(
+  params = {} as ListDiscoveryParams,
   options = {} as any
 ) {
+  const queryClient = useQueryClient();
   const { data: authUser } = useCurrentAuthUser({});
 
-  return useQuery<ListMeaningsResponse, Error>({
-    queryKey: [listMeaningQueryKey, params.content, params?.lang],
+  return useQuery<ListDiscoveryResponse, Error>({
+    queryKey: [listDiscoveryQueryKey, params.content, params?.lang],
 
-    queryFn: async () => {
-      if (params.lang) {
-        const response = (await listMeanings(params, {
-          Authorization: authUser?.jwt,
-        })) as ListMeaningsResponse;
+    queryFn: async (): Promise<ListDiscoveryResponse> => {
+      const response = await listDiscovery(params, {
+        Authorization: authUser?.jwt,
+      });
 
-        return response;
-      }
+      return response;
     },
 
     ...options,

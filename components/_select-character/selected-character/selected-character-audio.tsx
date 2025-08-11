@@ -14,6 +14,7 @@ import { useSelectedCharacterData } from "@/components/use-selected-character";
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { GenerateAudioDialog } from "./generate-audio-dialog/generate-audio-dialog";
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 
 export const SelectedCharacterAudio = ({
   characterId,
@@ -34,7 +35,12 @@ export const SelectedCharacterAudio = ({
     lang,
   });
 
-  const selectedComp2: any = meanings?.details;
+  const { data: meaningDiscovery } = useListDiscoveryQuery({
+    content: characterId || "",
+    lang,
+  });
+
+  const selectedComp2: any = meaningDiscovery;
 
   const containsAudios = meanings?.audioUrl;
   const containsAudio = containsAudios?.[containsAudios?.length - 1];

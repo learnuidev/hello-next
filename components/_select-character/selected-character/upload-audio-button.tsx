@@ -5,7 +5,7 @@ import { useAddUserAssetMutation } from "@/domain/asset/asset.mutation";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useUpdateComponentMutation } from "@/domain/component/use-update-component-mutation";
 import { IComponent } from "@/domain/lesson/component.queries";
-import { useUpdateMeaningMutation } from "@/domain/sentence/use-update-meaning-mutation";
+import { useUpdateDiscoveryMutation } from "@/domain/sentence/use-update-discovery-mutation";
 import Axios from "axios";
 
 export const UploadAudioButton = (props: {
@@ -16,7 +16,7 @@ export const UploadAudioButton = (props: {
     return file.name.split(".").pop().toLowerCase();
   }
 
-  const updateMeaningMutation = useUpdateMeaningMutation();
+  const updateMeaningMutation = useUpdateDiscoveryMutation();
 
   const addUserAssetMutation = useAddUserAssetMutation();
 

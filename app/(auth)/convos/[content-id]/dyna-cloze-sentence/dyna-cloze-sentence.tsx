@@ -29,6 +29,7 @@ import { SpeakSentence } from "../speak/speak-sentence";
 import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -48,14 +49,14 @@ function DynoSentenceInner({
   parentSentence,
   maxIndex,
 }: IDynoParams) {
-  const { data, isLoading } = useListMeaningsQuery({
+  const { data, isLoading } = useListDiscoveryQuery({
     content: sentence?.input || sentence?.hanzi || "",
     lang: sentence?.lang,
   });
 
   const finalSentence = useMemo(() => {
-    return { ...data?.details, ...sentence };
-  }, [data?.details, sentence]);
+    return { ...(data || {}), ...sentence };
+  }, [data, sentence]);
 
   if (isLoading) {
     return (
@@ -489,14 +490,14 @@ export const DynaClozeSentence = ({
 
   const isAutomatic = useShowAutomaticallyTheDock();
 
-  const { data, isLoading } = useListMeaningsQuery({
+  const { data, isLoading } = useListDiscoveryQuery({
     content: sentence?.input || sentence?.hanzi || "",
     lang: sentence?.lang,
   });
 
   const finalSentence = useMemo(() => {
-    return { ...data?.details, ...sentence };
-  }, [data?.details, sentence]);
+    return { ...(data || {}), ...sentence };
+  }, [data, sentence]);
 
   const maxIndex = sentencesShuffled?.length - 1;
 

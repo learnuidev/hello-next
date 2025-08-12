@@ -74,7 +74,10 @@ function ImageItem({ item }: any) {
 
 export const CharacterContent = ({ characterId }: { characterId: string }) => {
   const [showMeta, setShowMeta] = useState(false);
-  const { data } = useListCharacterContentsQuery(characterId);
+  const { data } = useListCharacterContentsQuery({
+    content: characterId,
+    fetchType: "content",
+  });
   const isSuperAdmin = useIsSuperAdmin();
 
   const addCharacterContentMutation = useAddCharacterContentMutation();

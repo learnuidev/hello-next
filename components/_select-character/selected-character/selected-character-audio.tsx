@@ -26,7 +26,10 @@ export const SelectedCharacterAudio = ({
 
   const [uploadNew, setUploadNew] = useState(false);
 
-  const { data } = useListCharacterContentsQuery(characterId);
+  const { data } = useListCharacterContentsQuery({
+    content: characterId,
+    fetchType: "content",
+  });
 
   const lang = useGetCurrentLang();
 

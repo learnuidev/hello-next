@@ -279,11 +279,11 @@ export function StepView() {
                   <button
                     key={`content-format-${JSON.stringify(item)}`}
                     onClick={() => {
-                      setConvo("lang", item.id);
+                      setConvo("lang", item.shortId);
                     }}
                     className={cn(
                       "text-center text-3xl font-extralight focus:outline-0 dark:bg-black  p-2 border-0 border-none dark:text-gray-500 dark:hover:text-gray-300",
-                      newConvo?.lang === item?.id
+                      newConvo?.lang === item?.shortId
                         ? "dark:text-white text-black"
                         : "text-gray-500"
                     )}

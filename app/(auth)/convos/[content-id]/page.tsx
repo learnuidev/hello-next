@@ -5,18 +5,15 @@ import "@/libs/cognito/init";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
 import { Icons } from "@/components/ui/icons.v2";
-import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
+import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { ConvoDetails } from "../convo-details";
 import { ConvosNavBar } from "../convos-nav-bar";
-import { useGetContentId } from "./hooks/use-get-content-id";
 import { useRecentlyWatchedContent } from "../use-recently-watched-content-store";
-import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
-import { useListPublishedContentsQuery } from "./hooks/use-list-published-contents-query";
-import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
+import { useGetContentId } from "./hooks/use-get-content-id";
+import { useGo } from "./hooks/use-go";
 
 function RemoveIfExistsButton({ contentId }: { contentId: string }) {
   const { recentlyWatched, setRecentlyWatched, isLoading } =
@@ -74,38 +71,9 @@ function WithContentItem({ children }: { children: React.ReactNode }) {
 export default function ContentItem() {
   const lessonId = useGetContentId();
 
-  const { currentTime, setCurrentTime: setTime } = useCurrentTime(lessonId);
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const startTimeParam = searchParams.get("start");
-  const view = searchParams.get("view");
-
-  const { data } = useListPublishedContentsQuery({});
-
-  const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
-
   const editMode = useContentEditStore((state) => state.editMode);
 
-  const currentIndex = data?.items?.findIndex(
-    (item: any) => item?.id === lessonId
-  );
-
-  const goToNext = useCallback(() => {
-    const nextLesson = data?.items?.[currentIndex + 1];
-    if (nextLesson) {
-      setRecentlyWatched(nextLesson);
-
-      router.push(`/convos/${nextLesson.id}`);
-    }
-  }, [currentIndex, data?.items, router, setRecentlyWatched]);
-
-  const goToBefore = useCallback(() => {
-    const nextLesson = data?.items?.[currentIndex - 1];
-    if (nextLesson) {
-      setRecentlyWatched(nextLesson);
-      router.push(`/convos/${nextLesson.id}`);
-    }
-  }, [currentIndex, data?.items, router, setRecentlyWatched]);
+  const { goToBefore, goToNext } = useGo();
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {

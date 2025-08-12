@@ -138,6 +138,10 @@ import {
   faGear as faGearLight,
   faRobot,
   faUserAstronaut,
+  faRotateLeft,
+  faRotateRight,
+  faBackward,
+  faForward,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -389,6 +393,10 @@ export const Icons = {
   gearLight: createFAIcon(faGearLight),
   astronaut: createFAIcon(faUserAstronaut),
   robot2: createFAIcon(faRobot),
+  rotateLeft: createFAIcon(faRotateLeft),
+  rotateRight: createFAIcon(faRotateRight),
+  backward: createFAIcon(faBackward),
+  forward: createFAIcon(faForward),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

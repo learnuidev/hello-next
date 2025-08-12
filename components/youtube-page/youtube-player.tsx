@@ -48,6 +48,7 @@ import { formatTime } from "@/app/(auth)/convos/_play/utils";
 import { smartSplit } from "./utils/smart-split";
 import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
+import { useGo } from "@/app/(auth)/convos/[content-id]/hooks/use-go";
 
 interface ViewModeState {
   viewMode: string;
@@ -154,6 +155,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const setFocusMode = useViewModeStore((state) => state.setFocusMode);
 
   const editMode = useContentEditStore((state) => state.editMode);
+
+  const { goToBefore, goToNext } = useGo();
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(lessonId);
   const params = useParams<{ "content-id": string }>();
@@ -1012,23 +1015,51 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           )}
         >
           <div className="overflow-y-auto px-8 py-2 bg-gray-50 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
-            <div className="space-x-6 md:space-x-4 flex justify-center items-center w-full">
+            <div className="space-x-4 flex justify-center items-center w-full">
               <button
                 onClick={() => {
                   toggleLoopHandler();
                 }}
                 className={cn(
-                  `transition  hover:text-rose-400 dark:hover:text-white text-xl`,
+                  `text-xl`,
                   toggleLoops?.length > 0
                     ? "dark:text-white text-black"
                     : "dark:text-gray-500 text-gray-300"
                 )}
               >
                 <Icons.loop className="transition" />
+
+                {toggleLoops?.length > 1 && (
+                  <sub className="text-[10px] font-extralight">
+                    {toggleLoops?.length}
+                  </sub>
+                )}
               </button>
 
-              <p className="font-extralight w-28 text-xl text-center dark:text-slate-300 text-slate-600">
-                {formatTime(currentTime)}
+              <button
+                onClick={() => {
+                  goToBefore();
+                }}
+                className={cn(
+                  `text-xl dark:hover:text-white hover:text-black text-gray-500`
+                )}
+              >
+                <Icons.backward className="transition" />
+              </button>
+
+              <button
+                onClick={() => {
+                  goToNext();
+                }}
+                className={cn(
+                  `text-xl dark:hover:text-white hover:text-black text-gray-500`
+                )}
+              >
+                <Icons.forward className="transition" />
+              </button>
+
+              <p className="font-extralight w-20 text-xl text-center dark:text-slate-300 text-slate-600">
+                {formatTime(isNaN(currentTime) ? 0 : currentTime)}
               </p>
 
               <button
@@ -1038,6 +1069,27 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                 }}
               >
                 {isPlaying ? <Icons.pause /> : <Icons.play />}
+              </button>
+
+              <button
+                onClick={() => {
+                  seekBefore();
+                }}
+                className={cn(
+                  `text-xl dark:hover:text-white hover:text-black text-gray-500`
+                )}
+              >
+                <Icons.rotateLeft className="transition" />
+              </button>
+              <button
+                onClick={() => {
+                  seekAfter();
+                }}
+                className={cn(
+                  `text-xl dark:hover:text-white hover:text-black text-gray-500`
+                )}
+              >
+                <Icons.rotateRight className="transition" />
               </button>
             </div>
 

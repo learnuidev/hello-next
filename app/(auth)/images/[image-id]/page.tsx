@@ -4,11 +4,20 @@ import { useExtractImageQuery } from "@/domain/character-contents/use-extract-im
 import { useGetImageParams } from "./hooks/use-get-image-params";
 import Link from "next/link";
 import { Icons } from "@/components/ui/icons.v2";
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 
 export default function ImageDetails() {
   const { imageId } = useGetImageParams();
 
-  const { data } = useExtractImageQuery(imageId);
+  const { data, isLoading } = useExtractImageQuery(imageId);
+
+  if (isLoading) {
+    return (
+      <div>
+        <LottieLoadingAnimation />
+      </div>
+    );
+  }
 
   return (
     <div className="p-8">

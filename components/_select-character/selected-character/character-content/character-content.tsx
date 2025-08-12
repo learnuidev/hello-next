@@ -15,7 +15,7 @@ function ImageItem({ item }: any) {
   const [showMeta, setShowMetaData] = useState(false);
 
   return (
-    <>
+    <Link href={`/images/${item?.id}`}>
       <div className="mb-4 relative">
         <img
           onClick={() => {
@@ -68,7 +68,7 @@ function ImageItem({ item }: any) {
           })}
         </div>
       )}
-    </>
+    </Link>
   );
 }
 

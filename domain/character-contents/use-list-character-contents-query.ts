@@ -1,39 +1,12 @@
 import { siteConfig } from "@/lib/config";
 import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
+import {
+  CharacterContents,
+  ListCharacterContentsQuery,
+} from "./character-contents.types";
 
 export const listCharacterContentsQueryKey = "list-character-contents";
-
-interface ListCharacterContentsQuery {
-  content?: string;
-  fetchType: "content" | "user";
-}
-
-type ImageDetail = {
-  en: string;
-  hanzi: string;
-  pinyin: string;
-};
-
-type ImageMetadata = {
-  createdAt: number;
-  details: ImageDetail[];
-};
-
-type CharacterContents = {
-  content: string;
-  imageMetadata: ImageMetadata;
-  userIdAndContent: string;
-  userId: string;
-  updatedAt: number;
-  extension: string;
-  createdAt: number;
-  uploadBucketKey: string;
-  id: string;
-  name: string;
-  contentType: string;
-  sourceUrl: string;
-};
 
 const listCharacterContentsApi = async (
   params: ListCharacterContentsQuery,

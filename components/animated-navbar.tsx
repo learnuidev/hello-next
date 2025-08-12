@@ -83,8 +83,6 @@ function Tab({
 
         const data: DOMRect = ref.current.getBoundingClientRect();
 
-        console.log("data", data);
-
         const { width } = data;
 
         setPosition({

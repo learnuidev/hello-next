@@ -19,8 +19,6 @@ export function useGo() {
 
   const { data } = useListPublishedContentsQuery({});
 
-  console.log("data", data);
-
   const sameLangContents = useMemo(() => {
     return data?.items?.filter(
       (contentItem: any) => contentItem?.lang === content?.lang

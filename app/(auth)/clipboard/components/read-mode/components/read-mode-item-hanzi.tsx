@@ -55,8 +55,6 @@ export function ReadModeItemHanzi({
     );
   }
 
-  console.log("context", context);
-
   return (
     <>
       <p

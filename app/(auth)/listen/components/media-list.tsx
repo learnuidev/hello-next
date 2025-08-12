@@ -10,8 +10,6 @@ import { SearchMedia } from "./search-media";
 function BooksList() {
   const { data } = useListBooksQuery();
 
-  console.log("data?.items", data?.items);
-
   if (!data?.items || data?.items?.length === 0) {
     return null;
   }

@@ -120,7 +120,7 @@ export const ConvoContextDialog = ({
         onClick={() => {
           closeDialog();
         }}
-        className="sm:max-w-2xl border-gray-900 bg-gray-50 dark:bg-black"
+        className="sm:max-w-2xl border-gray-900 bg-gray-50 dark:bg-black opacity-80"
       >
         <ReactPlayer
           ref={playerRef}

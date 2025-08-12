@@ -69,8 +69,6 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
 
   const { contentType } = useContentType();
 
-  console.log("CONTENT TYPE", contentType);
-
   // const contentType = useContentTypeStore((state) => state.contentType);
 
   const query = useSearchQueryStore((state) => state.query2);
@@ -92,8 +90,6 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
     return item?.lang === lang;
   });
 
-  console.log("c", filteredByLang);
-
   const projects = filteredByLang
     ?.filter((content: any) => {
       if (!query) {
@@ -102,7 +98,6 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
             return true;
           }
 
-          // console.log("content", content);
           return (
             contentType === content?.type ||
             contentType === content?.contentType
@@ -147,7 +142,7 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
   if (!projects?.length) {
     return (
       <Nothing
-        message={`Nothing found for: ${query || selectedContent?.title}`}
+        message={`Nothing found for: ${query || selectedContent?.title || contentType}`}
         icon={Icons.content}
       />
     );

@@ -221,6 +221,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           console.error(err);
         }
       }
+    } else {
+      seekAndPlay(0);
     }
   }, [start, finalUrl, currentTime]);
 
@@ -1126,7 +1128,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           transition={{ duration: 0.5 }} // Duration in seconds
           className="fade-in transition-all fixed bottom-4 right-4 z-50 dark:bg-black dark:text-white bg-white text-black shadow-sm p-4 w-80"
         >
-          <h4 className="text-gray-500"> Playing next chapter in...</h4>
+          <h4 className="text-gray-500"> Playing next content in...</h4>
 
           <p className="text-3xl">{count + 1}</p>
 

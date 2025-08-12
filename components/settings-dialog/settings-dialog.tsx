@@ -110,7 +110,7 @@ export function SettingsDialogInner({
                 ) : (
                   <Icons.musicNote />
                 )}
-                <span>Listen</span>
+                <span>Content</span>
               </TabsTrigger>
               {/* {isSuperAdmin && (
                 <TabsTrigger

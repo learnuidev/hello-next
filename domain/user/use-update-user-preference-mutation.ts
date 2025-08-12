@@ -19,6 +19,7 @@ interface UpdatePreferenceResponse {
   clozeContentMode?: "hsk" | "content";
   targetLanguage?: string;
   sourceLanguage?: string;
+  autoPlayContent?: boolean;
 }
 
 type UpdateUserPreferenceResponse = GetUserPreferenceResponse & {

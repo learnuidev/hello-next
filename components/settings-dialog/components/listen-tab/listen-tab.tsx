@@ -36,6 +36,33 @@ export function ListenTab() {
     <div className="space-y-4">
       <Card className="rounded border-gray-100 dark:border-black dark:bg-[#0b0b0f] shadow-sm  transition ">
         <CardHeader>
+          <CardTitle>Automatic Playback</CardTitle>
+          <CardDescription className="text-gray-500 font-extralight">
+            Turn automatic playback on or off
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
+          <div className="flex z-50 items-center space-x-2">
+            <Checkbox
+              checked={userPreferenceState?.autoPlayContent}
+              onCheckedChange={(event) => {
+                setUserPreferenceState({
+                  autoPlayContent: !userPreferenceState?.autoPlayContent
+                    ? true
+                    : false,
+                });
+                // setUserPreferenceState
+                // setProvider(providerItem.id);
+              }}
+            />
+            <Label htmlFor="airplane-mode">
+              {userPreferenceState?.autoPlayContent ? "Enabled" : "Disabled"}
+            </Label>
+          </div>
+        </CardContent>
+      </Card>
+      <Card className="rounded border-gray-100 dark:border-black dark:bg-[#0b0b0f] shadow-sm  transition ">
+        <CardHeader>
           <CardTitle>Audio Provider</CardTitle>
           <CardDescription className="text-gray-500 font-extralight">
             Set your AI audio provider

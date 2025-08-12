@@ -26,6 +26,7 @@ export interface GetUserPreferenceResponse {
   clozeContentMode: "hsk" | "content";
   targetLanguage?: string;
   sourceLanguage?: string;
+  autoPlayContent?: boolean;
 }
 
 const getUserPrefrence = async (opts: {

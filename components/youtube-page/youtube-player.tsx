@@ -53,6 +53,7 @@ import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-s
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import { useGo } from "@/app/(auth)/convos/[content-id]/hooks/use-go";
 import { useCountdown } from "@/hooks/use-countdown/use-countdown";
+import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
 
 interface ViewModeState {
   viewMode: string;
@@ -131,6 +132,8 @@ const useViewModeStore = create(
 export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const viewMode = useViewModeStore((state) => state.viewMode);
   const setViewMode = useViewModeStore((state) => state.setViewMode);
+
+  const { data: userPreference } = useGetUserPreferenceQuery();
 
   const active = useViewModeStore((state) => state.active);
   const setActive = useViewModeStore((state) => state.setActive);
@@ -241,7 +244,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     resetCountdown,
     isCountdownRunning,
   } = useCountdown({
-    countStart: 2,
+    countStart: 4,
     intervalMs: 1000,
 
     onCountdownEnd: () => {
@@ -667,7 +670,10 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                   setIsPlaying(false);
                 }}
                 onEnded={() => {
-                  startCountdown();
+                  if (userPreference?.autoPlayContent) {
+                    startCountdown();
+                  }
+
                   setIsPlaying(false);
                 }}
                 ref={playerRef}
@@ -1148,6 +1154,13 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
               }}
             >
               Repeat
+            </button>
+            <button
+              onClick={() => {
+                resetCountdown();
+              }}
+            >
+              Cancel
             </button>
           </div>
         </motion.div>

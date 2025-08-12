@@ -6,9 +6,7 @@ import Link from "next/link";
 export default function Images() {
   const { data } = useListCharacterContentsQuery({ fetchType: "user" });
   return (
-    <div>
-      <h1>Images Page</h1>
-
+    <div className="p-8">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {data?.map((content) => {
           if (content?.sourceUrl && content?.contentType?.includes("image")) {

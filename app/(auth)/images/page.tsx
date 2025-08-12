@@ -1,5 +1,6 @@
 "use client";
 
+import { SearchInput } from "@/components/search-input";
 import { useListCharacterContentsQuery } from "@/domain/character-contents/use-list-character-contents-query";
 import Link from "next/link";
 
@@ -7,6 +8,9 @@ export default function Images() {
   const { data } = useListCharacterContentsQuery({ fetchType: "user" });
   return (
     <div className="p-8">
+      <div className="mb-12">
+        <SearchInput />
+      </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {data?.map((content) => {
           if (content?.sourceUrl && content?.contentType?.includes("image")) {

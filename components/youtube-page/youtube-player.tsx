@@ -4,6 +4,9 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import ReactPlayer from "react-player";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
+
+import { motion } from "framer-motion";
+
 import {
   faLanguage,
   faRepeat,
@@ -49,6 +52,7 @@ import { smartSplit } from "./utils/smart-split";
 import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import { useGo } from "@/app/(auth)/convos/[content-id]/hooks/use-go";
+import { useCountdown } from "@/hooks/use-countdown/use-countdown";
 
 interface ViewModeState {
   viewMode: string;
@@ -227,6 +231,21 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     lang: "zh",
     genSents: false,
   }) as any;
+
+  const {
+    count,
+    startCountdown,
+    stopCountdown,
+    resetCountdown,
+    isCountdownRunning,
+  } = useCountdown({
+    countStart: 2,
+    intervalMs: 1000,
+
+    onCountdownEnd: () => {
+      goToNext();
+    },
+  });
 
   const router = useRouter();
   const { contextId, setNewContextId } = useContextPlayContextState();
@@ -496,7 +515,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       : Object.values(groupedTranscriptions);
 
   return (
-    <>
+    <div className="relative">
       <div className="grow flex flex-col items-center">
         <div className="flex flex-col sm:flex-row justify-center items-center sm:justify-between w-full sm:px-12 mb-4">
           <div className="space-x-4 sm:my-4 block z-50 flex">
@@ -646,6 +665,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                   setIsPlaying(false);
                 }}
                 onEnded={() => {
+                  startCountdown();
                   setIsPlaying(false);
                 }}
                 ref={playerRef}
@@ -1098,6 +1118,38 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
         </div>
         {/* <FloatingNavbarComp /> */}
       </TheDock>
-    </>
+
+      {isCountdownRunning && (
+        <motion.div
+          initial={{ opacity: 0 }} // Start fully transparent
+          animate={{ opacity: 1 }} // Animate to fully visible
+          transition={{ duration: 0.5 }} // Duration in seconds
+          className="fade-in transition-all fixed bottom-4 right-4 z-50 dark:bg-black dark:text-white bg-white text-black shadow-sm p-4 w-80"
+        >
+          <h4 className="text-gray-500"> Playing next chapter in...</h4>
+
+          <p className="text-3xl">{count + 1}</p>
+
+          <div className="mt-2 flex gap-4">
+            <button
+              onClick={() => {
+                goToNext();
+              }}
+            >
+              Play Next
+            </button>
+
+            <button
+              onClick={() => {
+                seekAndPlay(0);
+                resetCountdown();
+              }}
+            >
+              Repeat
+            </button>
+          </div>
+        </motion.div>
+      )}
+    </div>
   );
 }

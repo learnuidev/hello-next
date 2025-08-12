@@ -35,7 +35,7 @@ export function useUploadFile(cb?: any, ctx?: any, props?: any) {
     console.log({ extension, contentType });
 
     if (props?.types && !props?.types?.includes(extension)) {
-      alert("Incorrect file type");
+      alert("Incorrect file type yo");
       e.target.value = "";
 
       return null;

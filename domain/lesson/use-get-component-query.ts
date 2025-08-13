@@ -58,6 +58,7 @@ export function useGetComponentQuery(
       );
     },
     enabled: Boolean(authUser?.jwt),
+    retry: false,
 
     refetchOnWindowFocus: false,
     refetchOnFocus: false,

@@ -9,11 +9,26 @@ import { useRecentlyWatchedContent } from "../../use-recently-watched-content-st
 import { useGetContentId } from "./use-get-content-id";
 import { useListPublishedContentsQuery } from "./use-list-published-contents-query";
 import { useGetContentQuery } from "@/domain/content/content.queries";
+import {
+  useGetContentInsightsRaw,
+  useUpsertContentAnalyticsMutation,
+} from "../../convo-insights/hooks/use-content-insights";
 
 export function useGo() {
   const lessonId = useGetContentId();
 
   const { data: content } = useGetContentQuery({ contentId: lessonId });
+
+  const {
+    totalPlays,
+    totalRepeats,
+    totalTimePlayed,
+    data: insightsData,
+  } = useGetContentInsightsRaw({ contentId: lessonId });
+
+  const updateContentInsightsMutation = useUpsertContentAnalyticsMutation({
+    contentId: lessonId,
+  });
 
   const router = useRouter();
 
@@ -32,6 +47,12 @@ export function useGo() {
   );
 
   const goToNext = useCallback(() => {
+    updateContentInsightsMutation.mutateAsync({
+      totalPlays,
+      totalRepeats,
+      totalTimePlayed,
+      data: insightsData,
+    });
     const nextLesson = sameLangContents?.[currentIndex + 1];
     if (nextLesson) {
       setRecentlyWatched(nextLesson);
@@ -43,9 +64,25 @@ export function useGo() {
 
       router.push(`/convos/${nextLesson.id}`);
     }
-  }, [currentIndex, router, sameLangContents, setRecentlyWatched]);
+  }, [
+    currentIndex,
+    insightsData,
+    router,
+    sameLangContents,
+    setRecentlyWatched,
+    totalPlays,
+    totalRepeats,
+    totalTimePlayed,
+    updateContentInsightsMutation,
+  ]);
 
   const goToBefore = useCallback(() => {
+    updateContentInsightsMutation.mutateAsync({
+      totalPlays,
+      totalRepeats,
+      totalTimePlayed,
+      data: insightsData,
+    });
     const previousLesson = sameLangContents?.[currentIndex - 1];
     if (previousLesson) {
       setRecentlyWatched(previousLesson);
@@ -55,7 +92,17 @@ export function useGo() {
       setRecentlyWatched(previousLesson);
       router.push(`/convos/${previousLesson.id}`);
     }
-  }, [currentIndex, router, sameLangContents, setRecentlyWatched]);
+  }, [
+    currentIndex,
+    insightsData,
+    router,
+    sameLangContents,
+    setRecentlyWatched,
+    totalPlays,
+    totalRepeats,
+    totalTimePlayed,
+    updateContentInsightsMutation,
+  ]);
 
   return {
     goToBefore,

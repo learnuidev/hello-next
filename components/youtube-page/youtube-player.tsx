@@ -54,6 +54,8 @@ import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-
 import { useGo } from "@/app/(auth)/convos/[content-id]/hooks/use-go";
 import { useCountdown } from "@/hooks/use-countdown/use-countdown";
 import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
+import { useQueryClient } from "@tanstack/react-query";
+import { useUpsertContentAnalyticsMutation } from "@/app/(auth)/convos/convo-insights/hooks/use-content-insights";
 
 interface ViewModeState {
   viewMode: string;
@@ -166,6 +168,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const { goToBefore, goToNext } = useGo();
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(lessonId);
+
   const params = useParams<{ "content-id": string }>();
   const contentId = params["content-id"];
   const playerRef = useRef(null) as any;
@@ -180,6 +183,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const searchParams = useSearchParams();
 
   const start = searchParams.get("start");
+
+  const queryClient = useQueryClient();
 
   const { data: lesson } = useGetContentQuery({ contentId: lessonId });
 
@@ -673,6 +678,12 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                   if (userPreference?.autoPlayContent) {
                     startCountdown();
                   }
+
+                  console.log("yooo");
+
+                  queryClient.invalidateQueries({
+                    queryKey: ["upsert-content-analytics", lessonId],
+                  });
 
                   setIsPlaying(false);
                 }}

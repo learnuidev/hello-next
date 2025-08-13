@@ -10,7 +10,7 @@ import {
 import { useWordsClickedHistoryState } from "@/components/youtube-page/hooks/use-words-clicked-history-state";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { siteConfig } from "@/lib/config";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { groupBy } from "ramda";
 import { useMemo } from "react";
 
@@ -160,6 +160,7 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
     queryKey: ["upsert-content-analytics", contentId],
     refetchInterval: 1000 * 60 * 1,
     queryFn: async (): Promise<GetContentAnalyticsRespose> => {
+      console.log("yoooooo logged");
       const resp = await fetch(`${listenApiUrl}/v1/upsert-content-analytics`, {
         method: "POST",
         headers: {
@@ -191,6 +192,55 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
       // queryClient.refetchQueries({
       //   queryKey: ["list-content-analytics", contentId],
       // });
+
+      return respJson;
+    },
+  });
+}
+export function useUpsertContentAnalyticsMutation({
+  contentId,
+}: {
+  contentId: string;
+}) {
+  const removeContentHistory = usePlayHistoryStore(
+    (state) => state.removeHistoryForContentId
+  );
+  const token = useJwtToken();
+  return useMutation({
+    mutationFn: async ({
+      totalPlays,
+      totalRepeats,
+      totalTimePlayed,
+      data,
+    }: any): Promise<GetContentAnalyticsRespose> => {
+      console.log("yoooooo logged");
+      const resp = await fetch(`${listenApiUrl}/v1/upsert-content-analytics`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          contentId,
+          totalPlays,
+          totalRepeats,
+          totalTimePlayed,
+          repeatsPerTranscription: data?.map((item: any) => {
+            return {
+              input: item?.input,
+              transcriptionId: item?.transcriptionId,
+              totalRepeats: item?.value,
+            };
+          }),
+        }),
+      });
+
+      if (!resp?.ok) {
+        throw new Error("Error");
+      }
+
+      const respJson = await resp.json();
+
+      removeContentHistory(contentId);
 
       return respJson;
     },

@@ -16,6 +16,7 @@ import { useMusicV2 } from "../_play-v2/use-music-v2";
 import { PlayerSettings } from "./player-settings";
 import { TranscriptionsView } from "./transcriptions-view";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
+import { useFocusMode } from "./hooks/use-focus-mode";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -62,7 +63,8 @@ function ActiveSubtitleDisplay({
 export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const { data: content } = useGetContentQuery({ contentId });
   const [selected, setSelected] = useState<any>(null);
-  const [focusMode, setFocusMode] = useState<any>(null);
+  // const [focusMode, setFocusMode] = useState<any>(null);
+  const { focusMode, setFocusMode } = useFocusMode(contentId);
   const [loop, setLoop] = useState<any>(null);
   const [viewPinyin, togglePinyin] = useState(false);
 

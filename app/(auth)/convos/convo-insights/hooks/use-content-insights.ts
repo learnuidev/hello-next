@@ -17,6 +17,8 @@ import { siteConfig } from "@/lib/config";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { groupBy } from "ramda";
 import { useMemo } from "react";
+import { useFocusMode } from "../../play-v3/hooks/use-focus-mode";
+import { useFocusIndex } from "../../play-v3/hooks/use-focus-index";
 
 interface ContentRepeatPerTranscription {
   transcriptionId: string;
@@ -163,6 +165,9 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
 
   // const queryClient = useQueryClient();
 
+  const { focusMode, setFocusMode } = useFocusMode(contentId);
+  const { focusIndex, setFocusIndex } = useFocusIndex(contentId);
+
   const removeContentHistory = usePlayHistoryStore(
     (state) => state.removeHistoryForContentId
   );
@@ -186,6 +191,8 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
           totalRepeats,
           totalTimePlayed,
           repeatsPerWord: repeatsPerWord,
+          focusMode,
+          focusIndex,
           repeatsPerTranscription: data?.map((item) => {
             return {
               input: item?.input,
@@ -227,6 +234,9 @@ export function useUpsertContentAnalyticsMutation({
     (state) => state.removeHistoryForContentId
   );
 
+  const { focusMode, setFocusMode } = useFocusMode(contentId);
+  const { focusIndex, setFocusIndex } = useFocusIndex(contentId);
+
   const token = useJwtToken();
   return useMutation({
     mutationFn: async ({
@@ -251,6 +261,8 @@ export function useUpsertContentAnalyticsMutation({
           totalRepeats,
           totalTimePlayed,
           repeatsPerWord,
+          focusMode,
+          focusIndex,
           repeatsPerTranscription: data?.map((item: any) => {
             return {
               input: item?.input,

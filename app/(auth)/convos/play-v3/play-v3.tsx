@@ -17,6 +17,7 @@ import { PlayerSettings } from "./player-settings";
 import { TranscriptionsView } from "./transcriptions-view";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 import { useFocusMode } from "./hooks/use-focus-mode";
+import { useFocusIndex } from "./hooks/use-focus-index";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -63,8 +64,8 @@ function ActiveSubtitleDisplay({
 export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const { data: content } = useGetContentQuery({ contentId });
   const [selected, setSelected] = useState<any>(null);
-  // const [focusMode, setFocusMode] = useState<any>(null);
   const { focusMode, setFocusMode } = useFocusMode(contentId);
+  const { focusIndex, setFocusIndex } = useFocusIndex(contentId);
   const [loop, setLoop] = useState<any>(null);
   const [viewPinyin, togglePinyin] = useState(false);
 
@@ -246,11 +247,11 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       }
 
       if (event.code === "ArrowLeft" && !editMode) {
-        setFocusMode(Math.max(0, focusMode - 1));
+        setFocusIndex(Math.max(0, focusIndex - 1));
       }
       if (event.code === "ArrowRight" && !editMode) {
-        setFocusMode(
-          Math.min(content?.transcriptions?.length - 1, focusMode + 1)
+        setFocusIndex(
+          Math.min(content?.transcriptions?.length - 1, focusIndex + 1)
         );
       }
 
@@ -327,8 +328,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       (item: any) => item?.start < currentTime
     )?.[0] || content?.transcriptions?.[0];
 
-  const karaokeMode =
-    typeof focusMode === "number" || (brightMode && lang !== "zh");
+  const karaokeMode = focusMode === true || (brightMode && lang !== "zh");
 
   return (
     <MandoContextMenu lang={content?.lang || ""}>
@@ -352,8 +352,9 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                 play={() => {
                   togglePlay();
                 }}
+                isFocusKaraokeMode={karaokeMode}
+                contentId={contentId}
                 lang={lang}
-                focusMode={focusMode}
                 currentTime={currentTime}
                 isPlaying={isPlaying}
                 transcriptions={content?.transcriptions}
@@ -387,8 +388,6 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         <PlayerSettings
           contentId={contentId}
           editMode={editMode}
-          focusMode={focusMode}
-          setFocusMode={setFocusMode}
           increaseFontSize={increaseFontSize}
           decreaseFontSize={decreaseFontSize}
           togglePlay={togglePlay}

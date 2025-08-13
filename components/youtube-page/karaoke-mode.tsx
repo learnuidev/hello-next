@@ -7,6 +7,7 @@ import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
 import { useMemo } from "react";
 import { smartSplit } from "./utils/smart-split";
 import { CharacterItem } from "../_select-character/character-item";
+import { useFocusIndex } from "@/app/(auth)/convos/play-v3/hooks/use-focus-index";
 
 function CurrentTranscriptionViewer({
   currentTranscription,
@@ -154,7 +155,8 @@ export function KaraokeMode({
   isPlaying,
   transcriptions,
   currentTime,
-  focusMode,
+  isFocusKaraokeMode,
+  contentId,
   lang,
   audio,
 }: {
@@ -166,14 +168,15 @@ export function KaraokeMode({
   lang: string;
   focusMode?: any;
   audio?: any;
+  contentId?: string;
+  isFocusKaraokeMode?: boolean;
 }) {
-  const isFocusMode = typeof focusMode === "number" && !audio;
-  const currentTranscription = isFocusMode
-    ? transcriptions?.[focusMode]
+  const { focusIndex, setFocusIndex } = useFocusIndex(contentId || "");
+
+  const currentTranscription = isFocusKaraokeMode
+    ? transcriptions?.[focusIndex]
     : transcriptions?.filter((trans: any) => trans?.end > currentTime)?.[0] ||
       transcriptions?.[0];
-
-  console.log("CURR T", currentTranscription);
 
   const isIntro = transcriptions?.[0]?.start > currentTime + 1;
 
@@ -196,7 +199,7 @@ export function KaraokeMode({
     return isNonRomanLang(lang);
   }, [lang]);
 
-  if (isFocusMode) {
+  if (isFocusKaraokeMode) {
     return (
       <div className="mt-32">
         <KaraokeContainer>

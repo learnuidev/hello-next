@@ -19,7 +19,7 @@ export const useFocusMode = (contentId: string) => {
   const focusModes: any = useFocusModesStore((state) => state.focusModes);
   const setFocusModes = useFocusModesStore((state) => state.setFocusModes);
 
-  const focusMode = focusModes?.[contentId] || false;
+  const focusMode = focusModes?.[contentId];
   const setFocusMode = (f: any) => {
     if (typeof f === "function") {
       setFocusModes(contentId, f(focusMode));

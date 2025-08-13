@@ -2,6 +2,8 @@ import { Icons } from "@/components/ui/icons.v2";
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { cn } from "@/lib/utils";
 import { formatTime } from "../_play/utils";
+import { useFocusMode } from "./hooks/use-focus-mode";
+import { useFocusIndex } from "./hooks/use-focus-index";
 
 export const PlayerSettings = ({
   contentId,
@@ -25,9 +27,10 @@ export const PlayerSettings = ({
   togglePinyin,
   viewPinyin,
   setBrightMode,
-  setFocusMode,
-  focusMode,
 }: any) => {
+  const { focusMode, setFocusMode } = useFocusMode(contentId);
+  const { focusIndex, setFocusIndex } = useFocusIndex(contentId);
+
   return (
     <div className="w-full fixed bottom-0 py-4 px-4 z-30 m-auto bg-gray-50 dark:bg-[rgb(12,13,14)]">
       <section className="flex items-center justify-between">
@@ -184,9 +187,7 @@ export const PlayerSettings = ({
           </button>
           <button
             onClick={() => {
-              setFocusMode((mode: any) =>
-                typeof mode === "number" ? null : 0
-              );
+              setFocusMode(!focusMode);
             }}
           >
             <Icons.bullsEyeArrow

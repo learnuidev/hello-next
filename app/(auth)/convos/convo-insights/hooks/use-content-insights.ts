@@ -19,39 +19,10 @@ import { groupBy } from "ramda";
 import { useMemo } from "react";
 import { useFocusMode } from "../../play-v3/hooks/use-focus-mode";
 import { useFocusIndex } from "../../play-v3/hooks/use-focus-index";
-
-interface ContentRepeatPerTranscription {
-  transcriptionId: string;
-  input: string;
-  totalRepeats: 0;
-}
-interface GetContentAnalyticsRespose {
-  totalRepeats: number;
-  totalTimePlayed: number;
-  totalPlays: number;
-  repeatsPerTranscription: ContentRepeatPerTranscription[];
-  repeatsPerWord: { word: string; frequency: number }[];
-}
-
-// function useGetContentAnalyticsQuery({ contentId }: { contentId: string }) {
-//   const token = useJwtToken();
-//   return useQuery({
-//     queryKey: ["list-content-analytics", contentId],
-//     queryFn: async (): Promise<GetContentAnalyticsRespose> => {
-//       const resp = await fetch(`${listenApiUrl}/v1/get-content-analytics`, {
-//         method: "POST",
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//         body: JSON.stringify({ contentId }),
-//       });
-
-//       const respJson = await resp.json();
-
-//       return respJson;
-//     },
-//   });
-// }
+import {
+  ContentRepeatPerTranscription,
+  GetContentAnalyticsRespose,
+} from "./convo-insights.types";
 
 export const useGetContentInsightsRaw = ({
   contentId,

@@ -72,7 +72,7 @@ function ImageItem({ item }: any) {
   );
 }
 
-const imageFormats = ["png", "jpg", "jpeg", "heic"];
+const imageFormats = ["png", "jpg", "jpeg", "gif", "webp"];
 
 export const CharacterContent = ({ characterId }: { characterId: string }) => {
   const [showMeta, setShowMeta] = useState(false);

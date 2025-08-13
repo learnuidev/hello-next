@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { smartSplit } from "./utils/smart-split";
 import { CharacterItem } from "../_select-character/character-item";
 import { useFocusIndex } from "@/app/(auth)/convos/play-v3/hooks/use-focus-index";
+import Link from "next/link";
 
 function CurrentTranscriptionViewer({
   currentTranscription,
@@ -25,9 +26,13 @@ function CurrentTranscriptionViewer({
       )}
     >
       {isNonRomanContent && showPinyin && (
-        <p className={cn("text-[16px] lg:text-xl font-light text-gray-400")}>
+        <Link
+          target="_blank"
+          href={`/nmm/${currentTranscription?.input || currentTranscription?.hanzi}?lang=${lang}`}
+          className={cn("text-[16px] lg:text-xl font-light text-gray-400")}
+        >
           {romanOrPinyin}
-        </p>
+        </Link>
       )}
 
       <p

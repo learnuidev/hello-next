@@ -118,6 +118,9 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
   const setIfExists = useSetIfExists();
 
+  const lang = useGetCurrentLang();
+  const karaokeMode = focusMode === true || (brightMode && lang !== "zh");
+
   const setTimer = (
     type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
     example: any,
@@ -247,12 +250,16 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       }
 
       if (event.code === "ArrowLeft" && !editMode) {
-        setFocusIndex(Math.max(0, focusIndex - 1));
+        if (karaokeMode) {
+          setFocusIndex(Math.max(0, focusIndex - 1));
+        }
       }
       if (event.code === "ArrowRight" && !editMode) {
-        setFocusIndex(
-          Math.min(content?.transcriptions?.length - 1, focusIndex + 1)
-        );
+        if (karaokeMode) {
+          setFocusIndex(
+            Math.min(content?.transcriptions?.length - 1, focusIndex + 1)
+          );
+        }
       }
 
       if (event.code === "Space" && !editMode) {
@@ -277,6 +284,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [
+    karaokeMode,
     togglePlay,
     togglePinyin,
     reset,
@@ -294,8 +302,6 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   // const searchParams = useSearchParams();
 
   const start = searchParams.get("start");
-
-  const lang = useGetCurrentLang();
 
   useEffect(() => {
     if (start) {
@@ -327,8 +333,6 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
     content?.transcriptions?.filter(
       (item: any) => item?.start < currentTime
     )?.[0] || content?.transcriptions?.[0];
-
-  const karaokeMode = focusMode === true || (brightMode && lang !== "zh");
 
   return (
     <MandoContextMenu lang={content?.lang || ""}>

@@ -342,7 +342,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       <div></div>
 
       <div className="relative space-y-8">
-        {typeof focusMode === "number" || (brightMode && lang !== "zh") ? (
+        {karaokeMode ? (
           <div>
             <KaraokeMode
               play={() => {

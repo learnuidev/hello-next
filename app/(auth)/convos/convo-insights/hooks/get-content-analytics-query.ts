@@ -4,12 +4,16 @@ import { listenApiUrl } from "@/app/(auth)/listen/constants";
 import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
 import { useQuery } from "@tanstack/react-query";
 import { GetContentAnalyticsRespose } from "./convo-insights.types";
+import { useFocusMode } from "../../play-v3/hooks/use-focus-mode";
+import { useFocusIndex } from "../../play-v3/hooks/use-focus-index";
 
 export function useGetContentAnalyticsQuery({
   contentId,
 }: {
   contentId: string;
 }) {
+  const { setFocusMode } = useFocusMode(contentId);
+  const { setFocusIndex } = useFocusIndex(contentId);
   const token = useJwtToken();
   return useQuery({
     queryKey: ["get-content-analytics", contentId],
@@ -31,7 +35,10 @@ export function useGetContentAnalyticsQuery({
         throw new Error("Error");
       }
 
-      const respJson = await resp.json();
+      const respJson = (await resp.json()) as GetContentAnalyticsRespose;
+
+      setFocusMode(respJson.focusMode);
+      setFocusIndex(respJson.focusIndex);
 
       return respJson;
     },

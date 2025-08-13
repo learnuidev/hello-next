@@ -20,9 +20,9 @@ export const useFocusMode = (contentId: string) => {
   const focusModes: any = useFocusModesStore((state) => state.focusModes);
   const setFocusModes = useFocusModesStore((state) => state.setFocusModes);
 
-  const { data } = useGetContentAnalyticsQuery({ contentId });
+  // const { data } = useGetContentAnalyticsQuery({ contentId });
 
-  const focusMode = data?.focusMode || focusModes?.[contentId];
+  const focusMode = focusModes?.[contentId];
   const setFocusMode = (mode: any) => {
     setFocusModes(contentId, mode);
   };

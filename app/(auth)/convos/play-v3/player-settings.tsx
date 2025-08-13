@@ -67,8 +67,10 @@ export const PlayerSettings = ({
           <div className="sm:space-x-6 space-x-8 flex items-center">
             <button
               className="text-2xl"
-              onClick={() => {
-                setFocusIndex(Math.max(0, focusIndex - 1));
+              onClick={async () => {
+                await setFocusIndex(Math.max(0, focusIndex - 1));
+
+                await upsertContentAnalyticsHandler();
               }}
             >
               <Icons.arrowLeft />
@@ -76,10 +78,12 @@ export const PlayerSettings = ({
 
             <button
               className={cn("text-2xl")}
-              onClick={() => {
-                setFocusIndex(
+              onClick={async () => {
+                await setFocusIndex(
                   Math.min(content?.transcriptions?.length - 1, focusIndex + 1)
                 );
+
+                await upsertContentAnalyticsHandler();
               }}
             >
               <Icons.arrowRight />

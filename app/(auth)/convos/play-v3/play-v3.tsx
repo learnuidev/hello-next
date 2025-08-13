@@ -15,6 +15,7 @@ import { useSetIfExists } from "../[content-id]/hooks/use-character-context-stor
 import { useMusicV2 } from "../_play-v2/use-music-v2";
 import { PlayerSettings } from "./player-settings";
 import { TranscriptionsView } from "./transcriptions-view";
+import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -328,84 +329,86 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
     typeof focusMode === "number" || (brightMode && lang !== "zh");
 
   return (
-    <div className="relative">
-      <ContentDetailHeader content={content} />
+    <MandoContextMenu lang={content?.lang || ""}>
+      <div className="relative">
+        <ContentDetailHeader content={content} />
 
-      {karaokeMode ? null : brightMode && lang !== "zh" ? null : (
-        <ActiveSubtitleDisplay
-          selectedWord={hovered}
-          selected={selected}
-          activeSubtitle={activeSubtitle}
-        />
-      )}
-
-      <div></div>
-
-      <div className="relative space-y-8">
-        {karaokeMode ? (
-          <div>
-            <KaraokeMode
-              play={() => {
-                togglePlay();
-              }}
-              lang={lang}
-              focusMode={focusMode}
-              currentTime={currentTime}
-              isPlaying={isPlaying}
-              transcriptions={content?.transcriptions}
-              seekTo={(start: number) => {
-                seek(start);
-              }}
-            />
-          </div>
-        ) : (
-          <TranscriptionsView
-            contentId={contentId}
-            setSelected={setSelected}
-            textSize={textSize}
-            viewPinyin={viewPinyin}
-            setIfExists={setIfExists}
-            currentTime={currentTime}
+        {karaokeMode ? null : brightMode && lang !== "zh" ? null : (
+          <ActiveSubtitleDisplay
+            selectedWord={hovered}
+            selected={selected}
             activeSubtitle={activeSubtitle}
-            brightMode={brightMode}
-            isCharactersLoading={isCharactersLoading}
-            learnedCharacters2={learnedCharacters2}
-            components={components}
-            loop={loop}
-            setLoop={setLoop}
-            seek={seek}
-            editMode={editMode}
-            setTimer={setTimer}
           />
         )}
-      </div>
 
-      <PlayerSettings
-        contentId={contentId}
-        editMode={editMode}
-        focusMode={focusMode}
-        setFocusMode={setFocusMode}
-        increaseFontSize={increaseFontSize}
-        decreaseFontSize={decreaseFontSize}
-        togglePlay={togglePlay}
-        isPlaying={isPlaying}
-        loop={loop}
-        activeSubtitle={activeSubtitle}
-        currentTime={currentTime}
-        setLoop={setLoop}
-        textSizeIndex={textSizeIndex}
-        reset={reset}
-        updateContentMutation={updateContentMutation}
-        setEditMode={setEditMode}
-        viewMode={viewMode}
-        brightMode={brightMode}
-        content={content}
-        times={times}
-        togglePinyin={togglePinyin}
-        viewPinyin={viewPinyin}
-        setBrightMode={setBrightMode}
-        audio={content?.audio}
-      />
-    </div>
+        <div></div>
+
+        <div className="relative space-y-8">
+          {karaokeMode ? (
+            <div>
+              <KaraokeMode
+                play={() => {
+                  togglePlay();
+                }}
+                lang={lang}
+                focusMode={focusMode}
+                currentTime={currentTime}
+                isPlaying={isPlaying}
+                transcriptions={content?.transcriptions}
+                seekTo={(start: number) => {
+                  seek(start);
+                }}
+              />
+            </div>
+          ) : (
+            <TranscriptionsView
+              contentId={contentId}
+              setSelected={setSelected}
+              textSize={textSize}
+              viewPinyin={viewPinyin}
+              setIfExists={setIfExists}
+              currentTime={currentTime}
+              activeSubtitle={activeSubtitle}
+              brightMode={brightMode}
+              isCharactersLoading={isCharactersLoading}
+              learnedCharacters2={learnedCharacters2}
+              components={components}
+              loop={loop}
+              setLoop={setLoop}
+              seek={seek}
+              editMode={editMode}
+              setTimer={setTimer}
+            />
+          )}
+        </div>
+
+        <PlayerSettings
+          contentId={contentId}
+          editMode={editMode}
+          focusMode={focusMode}
+          setFocusMode={setFocusMode}
+          increaseFontSize={increaseFontSize}
+          decreaseFontSize={decreaseFontSize}
+          togglePlay={togglePlay}
+          isPlaying={isPlaying}
+          loop={loop}
+          activeSubtitle={activeSubtitle}
+          currentTime={currentTime}
+          setLoop={setLoop}
+          textSizeIndex={textSizeIndex}
+          reset={reset}
+          updateContentMutation={updateContentMutation}
+          setEditMode={setEditMode}
+          viewMode={viewMode}
+          brightMode={brightMode}
+          content={content}
+          times={times}
+          togglePinyin={togglePinyin}
+          viewPinyin={viewPinyin}
+          setBrightMode={setBrightMode}
+          audio={content?.audio}
+        />
+      </div>
+    </MandoContextMenu>
   );
 };

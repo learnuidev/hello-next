@@ -390,6 +390,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         </div>
 
         <PlayerSettings
+          isFocusKaraokeMode={karaokeMode}
           contentId={contentId}
           editMode={editMode}
           increaseFontSize={increaseFontSize}

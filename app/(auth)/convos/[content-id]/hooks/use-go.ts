@@ -14,6 +14,8 @@ import {
   useUpsertContentAnalyticsMutation,
 } from "../../convo-insights/hooks/use-content-insights";
 import { useWordsClickedHistoryState } from "@/components/youtube-page/hooks/use-words-clicked-history-state";
+import { useFocusMode } from "../../play-v3/hooks/use-focus-mode";
+import { useFocusIndex } from "../../play-v3/hooks/use-focus-index";
 
 export function useGo() {
   const contentId = useGetContentId();
@@ -28,6 +30,9 @@ export function useGo() {
   } = useGetContentInsightsRaw({ contentId });
 
   const { words } = useWordsClickedHistoryState({ contentId });
+
+  const { focusMode, setFocusMode } = useFocusMode(contentId);
+  const { focusIndex, setFocusIndex } = useFocusIndex(contentId);
 
   const updateContentInsightsMutation = useUpsertContentAnalyticsMutation({
     contentId,
@@ -55,6 +60,8 @@ export function useGo() {
       totalRepeats,
       totalTimePlayed,
       data: insightsData,
+      focusMode,
+      focusIndex,
       words,
     });
     const nextLesson = sameLangContents?.[currentIndex + 1];
@@ -70,6 +77,8 @@ export function useGo() {
     }
   }, [
     currentIndex,
+    focusIndex,
+    focusMode,
     insightsData,
     router,
     sameLangContents,
@@ -84,6 +93,8 @@ export function useGo() {
   const goToBefore = useCallback(() => {
     updateContentInsightsMutation.mutateAsync({
       totalPlays,
+      focusMode,
+      focusIndex,
       totalRepeats,
       totalTimePlayed,
       data: insightsData,
@@ -100,6 +111,8 @@ export function useGo() {
     }
   }, [
     currentIndex,
+    focusIndex,
+    focusMode,
     insightsData,
     router,
     sameLangContents,

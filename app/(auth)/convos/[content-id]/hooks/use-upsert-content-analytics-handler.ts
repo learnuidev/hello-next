@@ -9,6 +9,8 @@ import {
   useGetContentInsightsRaw,
   useUpsertContentAnalyticsMutation,
 } from "../../convo-insights/hooks/use-content-insights";
+import { useFocusMode } from "../../play-v3/hooks/use-focus-mode";
+import { useFocusIndex } from "../../play-v3/hooks/use-focus-index";
 
 export function useUpsetContentAnalyticsHandler(contentId: string) {
   const {
@@ -20,6 +22,9 @@ export function useUpsetContentAnalyticsHandler(contentId: string) {
 
   const { words } = useWordsClickedHistoryState({ contentId });
 
+  const { focusMode, setFocusMode } = useFocusMode(contentId);
+  const { focusIndex, setFocusIndex } = useFocusIndex(contentId);
+
   const updateContentInsightsMutation = useUpsertContentAnalyticsMutation({
     contentId,
   });
@@ -27,12 +32,16 @@ export function useUpsetContentAnalyticsHandler(contentId: string) {
   const upsertContentAnalyticsHandler = useCallback(() => {
     updateContentInsightsMutation.mutateAsync({
       totalPlays,
+      focusMode,
+      focusIndex,
       totalRepeats,
       totalTimePlayed,
       data: insightsData,
       words,
     });
   }, [
+    focusIndex,
+    focusMode,
     insightsData,
     totalPlays,
     totalRepeats,

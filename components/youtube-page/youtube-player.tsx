@@ -39,23 +39,21 @@ import { useCurrentTime } from "./use-current-time-store";
 import { getYablaLink } from "./utils/get-yabla-link";
 import { useIsSmall } from "./utils/use-is-small";
 
+import { useGo } from "@/app/(auth)/convos/[content-id]/hooks/use-go";
+import { formatTime } from "@/app/(auth)/convos/_play/utils";
+import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
+import { useCountdown } from "@/hooks/use-countdown/use-countdown";
+import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
+import { useQueryClient } from "@tanstack/react-query";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { TheDock } from "../the-dock";
 import {
   useContextPlayContextState,
   usePlayHistoryStore,
 } from "./hooks/use-play-history-state";
-import { FloatingNavbar } from "../floating-navbar";
-import { TheDock } from "../the-dock";
-import { formatTime } from "@/app/(auth)/convos/_play/utils";
-import { smartSplit } from "./utils/smart-split";
 import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
-import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
-import { useGo } from "@/app/(auth)/convos/[content-id]/hooks/use-go";
-import { useCountdown } from "@/hooks/use-countdown/use-countdown";
-import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
-import { useQueryClient } from "@tanstack/react-query";
-import { useUpsertContentAnalyticsMutation } from "@/app/(auth)/convos/convo-insights/hooks/use-content-insights";
+import { smartSplit } from "./utils/smart-split";
 
 interface ViewModeState {
   viewMode: string;

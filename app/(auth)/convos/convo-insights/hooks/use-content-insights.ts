@@ -205,9 +205,6 @@ export function useUpsertContentAnalyticsMutation({
     (state) => state.removeHistoryForContentId
   );
 
-  const { focusMode, setFocusMode } = useFocusMode(contentId);
-  const { focusIndex, setFocusIndex } = useFocusIndex(contentId);
-
   const token = useJwtToken();
   return useMutation({
     mutationFn: async ({
@@ -216,9 +213,9 @@ export function useUpsertContentAnalyticsMutation({
       totalTimePlayed,
       data,
       words,
+      focusMode,
+      focusIndex,
     }: any): Promise<GetContentAnalyticsRespose> => {
-      console.log("yoooooo logged");
-
       const repeatsPerWord = calculateTotalWordsFrequency(words);
 
       const resp = await fetch(`${listenApiUrl}/v1/upsert-content-analytics`, {

@@ -91,7 +91,7 @@ export const CharacterContent = ({ characterId }: { characterId: string }) => {
               ...resp,
             });
           }}
-          types={["jpg", "png"]}
+          types={["jpg", "png", "heic"]}
         />
 
         {isSuperAdmin && (

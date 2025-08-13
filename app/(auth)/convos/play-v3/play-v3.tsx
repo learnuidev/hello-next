@@ -18,6 +18,7 @@ import { TranscriptionsView } from "./transcriptions-view";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 import { useFocusMode } from "./hooks/use-focus-mode";
 import { useFocusIndex } from "./hooks/use-focus-index";
+import { useGetContentAnalyticsQuery } from "../convo-insights/hooks/get-content-analytics-query";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -81,6 +82,8 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const searchParams = useSearchParams();
 
   const seekValue = searchParams?.get("seek");
+
+  const { data } = useGetContentAnalyticsQuery({ contentId });
 
   const [hovered, setHovered] = useState({});
 

@@ -32,7 +32,7 @@ export const useExtractImageMutation = () => {
     },
     onSuccess: (resp: any) => {
       queryClient.invalidateQueries({
-        queryKey: [listCharacterContentsQueryKey, authUser?.jwt, resp?.content],
+        queryKey: [listCharacterContentsQueryKey, resp?.content],
       });
     },
   });

@@ -30,7 +30,7 @@ export const useListCharacterContentsQuery = (
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery({
-    queryKey: [listCharacterContentsQueryKey, params.content, params.fetchType],
+    queryKey: [listCharacterContentsQueryKey, params.content],
     queryFn: async () => {
       const resp = await listCharacterContentsApi(params, {
         jwt: authUser.jwt,

@@ -19,6 +19,7 @@ import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-contex
 import { useFocusMode } from "./hooks/use-focus-mode";
 import { useFocusIndex } from "./hooks/use-focus-index";
 import { useGetContentAnalyticsQuery } from "../convo-insights/hooks/get-content-analytics-query";
+import { useUpsetContentAnalyticsHandler } from "../[content-id]/hooks/use-upsert-content-analytics-handler";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -95,6 +96,9 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const resetTimes = useContentEditStore((state) => state.resetTimes);
   const times = useContentEditStore((state) => state.times);
   const setTimes = useContentEditStore((state) => state.setTimes);
+
+  const { upsertContentAnalyticsHandler } =
+    useUpsetContentAnalyticsHandler(contentId);
 
   const audioUrl = content?.audio;
   const { isPlaying, togglePlay, seek, currentTime, reset } = useMusicV2({
@@ -254,14 +258,21 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
       if (event.code === "ArrowLeft" && !editMode) {
         if (karaokeMode) {
-          setFocusIndex(Math.max(0, focusIndex - 1));
+          const newFocusIndex = Math.max(0, focusIndex - 1);
+          setFocusIndex(newFocusIndex);
+
+          upsertContentAnalyticsHandler({ focusIndex: newFocusIndex });
         }
       }
       if (event.code === "ArrowRight" && !editMode) {
         if (karaokeMode) {
-          setFocusIndex(
-            Math.min(content?.transcriptions?.length - 1, focusIndex + 1)
+          const newFocusIndex = Math.min(
+            content?.transcriptions?.length - 1,
+            focusIndex + 1
           );
+          setFocusIndex(newFocusIndex);
+
+          upsertContentAnalyticsHandler({ focusIndex: newFocusIndex });
         }
       }
 

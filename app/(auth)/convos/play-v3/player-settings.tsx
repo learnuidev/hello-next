@@ -68,7 +68,10 @@ export const PlayerSettings = ({
             <button
               className="text-2xl"
               onClick={() => {
-                setFocusIndex(Math.max(0, focusIndex - 1));
+                const newFocusIndex = Math.max(0, focusIndex - 1);
+                setFocusIndex(newFocusIndex);
+
+                upsertContentAnalyticsHandler({ focusIndex: newFocusIndex });
               }}
             >
               <Icons.arrowLeft />
@@ -77,9 +80,13 @@ export const PlayerSettings = ({
             <button
               className={cn("text-2xl")}
               onClick={() => {
-                setFocusIndex(
-                  Math.min(content?.transcriptions?.length - 1, focusIndex + 1)
+                const newFocusIndex = Math.min(
+                  content?.transcriptions?.length - 1,
+                  focusIndex + 1
                 );
+                setFocusIndex(newFocusIndex);
+
+                upsertContentAnalyticsHandler({ focusIndex: newFocusIndex });
               }}
             >
               <Icons.arrowRight />

@@ -20,13 +20,11 @@ export const useFocusIndex = (contentId: string) => {
   const focusIndexes: any = useFocusIndexStore((state) => state.focusIndexes);
   const setFocusIndexes = useFocusIndexStore((state) => state.setFocusIndexes);
 
-  const { upsertContentAnalyticsHandler } =
-    useUpsetContentAnalyticsHandler(contentId);
-
   const focusIndex = focusIndexes?.[contentId] || 0;
   const setFocusIndex = (index: any) => {
-    upsertContentAnalyticsHandler({ focusIndex: index });
+    // upsertContentAnalyticsHandler({ focusIndex: index });
     setFocusIndexes(contentId, index);
+    return index;
   };
 
   return { focusIndex, setFocusIndex };

@@ -29,26 +29,30 @@ export function useUpsetContentAnalyticsHandler(contentId: string) {
     contentId,
   });
 
-  const upsertContentAnalyticsHandler = useCallback(() => {
-    updateContentInsightsMutation.mutateAsync({
-      totalPlays,
-      focusMode,
+  const upsertContentAnalyticsHandler = useCallback(
+    (props?: any) => {
+      updateContentInsightsMutation.mutateAsync({
+        totalPlays,
+        focusMode,
+        focusIndex,
+        totalRepeats,
+        totalTimePlayed,
+        data: insightsData,
+        words,
+        ...props,
+      });
+    },
+    [
       focusIndex,
+      focusMode,
+      insightsData,
+      totalPlays,
       totalRepeats,
       totalTimePlayed,
-      data: insightsData,
+      updateContentInsightsMutation,
       words,
-    });
-  }, [
-    focusIndex,
-    focusMode,
-    insightsData,
-    totalPlays,
-    totalRepeats,
-    totalTimePlayed,
-    updateContentInsightsMutation,
-    words,
-  ]);
+    ]
+  );
 
   return {
     upsertContentAnalyticsHandler,

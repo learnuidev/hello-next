@@ -5,6 +5,7 @@ import { formatTime } from "../_play/utils";
 import { useFocusMode } from "./hooks/use-focus-mode";
 import { useFocusIndex } from "./hooks/use-focus-index";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { useUpsetContentAnalyticsHandler } from "../[content-id]/hooks/use-upsert-content-analytics-handler";
 
 export const PlayerSettings = ({
   contentId,
@@ -32,6 +33,9 @@ export const PlayerSettings = ({
 }: any) => {
   const { focusMode, setFocusMode } = useFocusMode(contentId);
   const { focusIndex, setFocusIndex } = useFocusIndex(contentId);
+
+  const { upsertContentAnalyticsHandler } =
+    useUpsetContentAnalyticsHandler(contentId);
 
   const setShowPinyin = useBrightModeStore((state: any) => state.setShowPinyin);
 
@@ -263,6 +267,7 @@ export const PlayerSettings = ({
             </button>
             <button
               onClick={() => {
+                upsertContentAnalyticsHandler();
                 setFocusMode(!focusMode);
               }}
             >

@@ -9,14 +9,19 @@ import { smartSplit } from "./utils/smart-split";
 import { CharacterItem } from "../_select-character/character-item";
 import { useFocusIndex } from "@/app/(auth)/convos/play-v3/hooks/use-focus-index";
 import Link from "next/link";
+import { useUpsetContentAnalyticsHandler } from "@/app/(auth)/convos/[content-id]/hooks/use-upsert-content-analytics-handler";
 
 function CurrentTranscriptionViewer({
+  contentId,
   currentTranscription,
   showPinyin,
   romanOrPinyin,
   isNonRomanContent,
   lang,
 }: any) {
+  const { upsertContentAnalyticsHandler } =
+    useUpsetContentAnalyticsHandler(contentId);
+
   return (
     <div
       key={JSON.stringify(currentTranscription)}
@@ -28,6 +33,9 @@ function CurrentTranscriptionViewer({
       {isNonRomanContent && showPinyin && (
         <Link
           target="_blank"
+          onClick={() => {
+            upsertContentAnalyticsHandler();
+          }}
           href={`/nmm/${currentTranscription?.input || currentTranscription?.hanzi}?lang=${lang}`}
           className={cn("text-[16px] lg:text-xl font-light text-gray-400")}
         >
@@ -211,6 +219,7 @@ export function KaraokeMode({
           {/* Current Lyric */}
           <ActiveKaraokeContainer>
             <CurrentTranscriptionViewer
+              contentId={contentId}
               currentTranscription={currentTranscription}
               showPinyin={showPinyin}
               romanOrPinyin={romanOrPinyin}

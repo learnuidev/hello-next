@@ -72,6 +72,8 @@ function ImageItem({ item }: any) {
   );
 }
 
+const imageFormats = ["png", "jpg", "jpeg", "heic"];
+
 export const CharacterContent = ({ characterId }: { characterId: string }) => {
   const [showMeta, setShowMeta] = useState(false);
   const { data } = useListCharacterContentsQuery({
@@ -91,7 +93,7 @@ export const CharacterContent = ({ characterId }: { characterId: string }) => {
               ...resp,
             });
           }}
-          types={["jpg", "png", "heic"]}
+          types={imageFormats}
         />
 
         {isSuperAdmin && (
@@ -114,7 +116,7 @@ export const CharacterContent = ({ characterId }: { characterId: string }) => {
       ) : (
         <section className="grid grid-cols-4 py-10 md:py-20 gap-4">
           {data?.map((item: any) => {
-            if (["png", "jpg", "jpeg"]?.includes(item?.extension)) {
+            if (imageFormats?.includes(item?.extension)) {
               return <ImageItem item={item} key={item.id} />;
             }
           })}

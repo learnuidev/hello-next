@@ -13,9 +13,9 @@ export const TotalPlaysChart = ({ contentId }: { contentId: string }) => {
 
   const { data: content } = useGetContentQuery({ contentId });
 
-  const { data, totalRepeats, totalTimePlayed, words } = props;
+  const { data, totalRepeats, totalTimePlayed, words, repeatsPerWord } = props;
 
-  const wordsUnique = calculateTotalWordsFrequency(words);
+  const wordsUnique = calculateTotalWordsFrequency(words, repeatsPerWord);
 
   return (
     <>

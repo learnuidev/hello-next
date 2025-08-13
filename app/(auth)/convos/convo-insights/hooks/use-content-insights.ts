@@ -28,6 +28,7 @@ interface GetContentAnalyticsRespose {
   totalTimePlayed: number;
   totalPlays: number;
   repeatsPerTranscription: ContentRepeatPerTranscription[];
+  repeatsPerWord: { word: string; frequency: number }[];
 }
 
 // function useGetContentAnalyticsQuery({ contentId }: { contentId: string }) {
@@ -359,5 +360,7 @@ export const useGetContentInsights = ({ contentId }: { contentId: string }) => {
 
     data: dataFinal,
     words,
+
+    repeatsPerWord: contentAnalytics?.repeatsPerWord || [],
   };
 };

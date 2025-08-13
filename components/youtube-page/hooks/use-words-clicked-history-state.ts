@@ -54,8 +54,34 @@ interface TotalWordsFrequency {
   frequency: number;
   // id: string;
 }
+
+function aggregateWordRepeats(arr1: any, arr2: any) {
+  const map = new Map();
+
+  // Helper to add or update entries in the map
+  function addToMap(arr: any) {
+    arr.forEach((item: any) => {
+      const key = item.word;
+      if (map.has(key)) {
+        map.set(key, {
+          word: key,
+          frequency: map.get(key).frequency + item.frequency,
+        });
+      } else {
+        map.set(key, { ...item });
+      }
+    });
+  }
+
+  addToMap(arr1);
+  addToMap(arr2);
+
+  return Array.from(map.values());
+}
+
 export const calculateTotalWordsFrequency = (
-  words: any
+  words: any,
+  remoteWords?: any
 ): TotalWordsFrequency[] => {
   const wordsUnique = [...new Set(words?.map((word: any) => word?.word))]
     .map((wordItem) => {
@@ -69,6 +95,10 @@ export const calculateTotalWordsFrequency = (
       };
     })
     ?.sort((a, b) => b?.frequency - a?.frequency);
+
+  if (remoteWords) {
+    return aggregateWordRepeats(words, remoteWords) as TotalWordsFrequency[];
+  }
 
   return wordsUnique as TotalWordsFrequency[];
 };

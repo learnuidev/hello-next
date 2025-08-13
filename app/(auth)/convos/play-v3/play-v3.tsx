@@ -61,6 +61,7 @@ function ActiveSubtitleDisplay({
 export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const { data: content } = useGetContentQuery({ contentId });
   const [selected, setSelected] = useState<any>(null);
+  const [focusMode, setFocusMode] = useState<any>(null);
   const [loop, setLoop] = useState<any>(null);
   const [viewPinyin, togglePinyin] = useState(false);
 
@@ -241,6 +242,15 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         }
       }
 
+      if (event.code === "ArrowLeft" && !editMode) {
+        setFocusMode(Math.max(0, focusMode - 1));
+      }
+      if (event.code === "ArrowRight" && !editMode) {
+        setFocusMode(
+          Math.min(content?.transcriptions?.length - 1, focusMode + 1)
+        );
+      }
+
       if (event.code === "Space" && !editMode) {
         // Vishal 07-12-2024-10-20: prevents the browser from scrolling down
         event.preventDefault();
@@ -314,11 +324,14 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       (item: any) => item?.start < currentTime
     )?.[0] || content?.transcriptions?.[0];
 
+  const karaokeMode =
+    typeof focusMode === "number" || (brightMode && lang !== "zh");
+
   return (
     <div className="relative">
       <ContentDetailHeader content={content} />
 
-      {brightMode && lang !== "zh" ? null : (
+      {karaokeMode ? null : brightMode && lang !== "zh" ? null : (
         <ActiveSubtitleDisplay
           selectedWord={hovered}
           selected={selected}
@@ -329,13 +342,14 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       <div></div>
 
       <div className="relative space-y-8">
-        {brightMode && lang !== "zh" ? (
+        {typeof focusMode === "number" || (brightMode && lang !== "zh") ? (
           <div>
             <KaraokeMode
               play={() => {
                 togglePlay();
               }}
               lang={lang}
+              focusMode={focusMode}
               currentTime={currentTime}
               isPlaying={isPlaying}
               transcriptions={content?.transcriptions}
@@ -369,6 +383,8 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       <PlayerSettings
         contentId={contentId}
         editMode={editMode}
+        focusMode={focusMode}
+        setFocusMode={setFocusMode}
         increaseFontSize={increaseFontSize}
         decreaseFontSize={decreaseFontSize}
         togglePlay={togglePlay}
@@ -388,6 +404,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         togglePinyin={togglePinyin}
         viewPinyin={viewPinyin}
         setBrightMode={setBrightMode}
+        audio={content?.audio}
       />
     </div>
   );

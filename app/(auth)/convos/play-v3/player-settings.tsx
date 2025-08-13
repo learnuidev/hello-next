@@ -25,6 +25,8 @@ export const PlayerSettings = ({
   togglePinyin,
   viewPinyin,
   setBrightMode,
+  setFocusMode,
+  focusMode,
 }: any) => {
   return (
     <div className="w-full fixed bottom-0 py-4 px-4 z-30 m-auto bg-gray-50 dark:bg-[rgb(12,13,14)]">
@@ -164,7 +166,7 @@ export const PlayerSettings = ({
             <Icons.language
               className={cn(
                 "sm:text-2xl text-[16px]",
-                viewPinyin ? "text-white" : "text-gray-400"
+                viewPinyin ? "dark:text-white text-black" : "text-gray-400"
               )}
             />
           </button>
@@ -176,7 +178,23 @@ export const PlayerSettings = ({
             <Icons.glassesRound
               className={cn(
                 "sm:text-2xl text-[16px]",
-                brightMode ? "text-white" : "text-gray-400"
+                brightMode ? "dark:text-white text-black" : "text-gray-400"
+              )}
+            />
+          </button>
+          <button
+            onClick={() => {
+              setFocusMode((mode: any) =>
+                typeof mode === "number" ? null : 0
+              );
+            }}
+          >
+            <Icons.bullsEyeArrow
+              className={cn(
+                "sm:text-2xl text-[16px]",
+                typeof focusMode === "number"
+                  ? "dark:text-white text-black"
+                  : "text-gray-400"
               )}
             />
           </button>

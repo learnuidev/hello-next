@@ -11,4 +11,7 @@ export interface GetContentAnalyticsRespose {
   totalPlays: number;
   repeatsPerTranscription: ContentRepeatPerTranscription[];
   repeatsPerWord: { word: string; frequency: number }[];
+
+  focusMode: boolean;
+  focusIndex: number;
 }

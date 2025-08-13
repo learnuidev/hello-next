@@ -136,7 +136,7 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
 
   // const queryClient = useQueryClient();
 
-  const { focusMode, setFocusMode } = useFocusMode(contentId);
+  const { focusMode } = useFocusMode(contentId);
   const { focusIndex, setFocusIndex } = useFocusIndex(contentId);
 
   const removeContentHistory = usePlayHistoryStore(

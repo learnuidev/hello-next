@@ -1,4 +1,5 @@
 import { createIndexDBStore } from "@/libs/index-db/index-db";
+import { useGetContentAnalyticsQuery } from "../../convo-insights/hooks/get-content-analytics-query";
 
 const useFocusIndexStore = createIndexDBStore({
   name: "content/play-v3.use-focus-index",
@@ -19,13 +20,11 @@ export const useFocusIndex = (contentId: string) => {
   const focusIndexes: any = useFocusIndexStore((state) => state.focusIndexes);
   const setFocusIndexes = useFocusIndexStore((state) => state.setFocusIndexes);
 
-  const focusIndex = focusIndexes?.[contentId] || 0;
-  const setFocusIndex = (f: any) => {
-    if (typeof f === "function") {
-      setFocusIndexes(contentId, f(focusIndex));
-    } else {
-      setFocusIndexes(contentId, f);
-    }
+  const { data } = useGetContentAnalyticsQuery({ contentId });
+
+  const focusIndex = data?.focusIndex || focusIndexes?.[contentId] || 0;
+  const setFocusIndex = (index: any) => {
+    setFocusIndexes(contentId, index);
   };
 
   return { focusIndex, setFocusIndex };

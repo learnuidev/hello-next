@@ -1,4 +1,5 @@
 import { createIndexDBStore } from "@/libs/index-db/index-db";
+import { useGetContentAnalyticsQuery } from "../../convo-insights/hooks/get-content-analytics-query";
 
 const useFocusModesStore = createIndexDBStore({
   name: "content/play-v3.use-focus-mode",
@@ -19,13 +20,11 @@ export const useFocusMode = (contentId: string) => {
   const focusModes: any = useFocusModesStore((state) => state.focusModes);
   const setFocusModes = useFocusModesStore((state) => state.setFocusModes);
 
-  const focusMode = focusModes?.[contentId];
-  const setFocusMode = (f: any) => {
-    if (typeof f === "function") {
-      setFocusModes(contentId, f(focusMode));
-    } else {
-      setFocusModes(contentId, f);
-    }
+  const { data } = useGetContentAnalyticsQuery({ contentId });
+
+  const focusMode = data?.focusMode || focusModes?.[contentId];
+  const setFocusMode = (mode: any) => {
+    setFocusModes(contentId, mode);
   };
 
   return { focusMode, setFocusMode };

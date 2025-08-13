@@ -11,6 +11,7 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import Link from "next/link";
 import { useClipboardViewMode } from "../clipboard/hooks/use-clipboard-view-mode";
 import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
+import { useUpsetContentAnalyticsHandler } from "./[content-id]/hooks/use-upsert-content-analytics-handler";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -109,9 +110,10 @@ export const ConvosNavBar = () => {
 
   const isAuthor = useIsContentAuthor(contentId);
 
-  const router = useRouter();
-
   const isSuperAdmin = useIsSuperAdmin();
+
+  const { upsertContentAnalyticsHandler } =
+    useUpsetContentAnalyticsHandler(contentId);
 
   return (
     <div className="z-50 flex justify-between items-center w-full md:mt-2 my-2 py-2">
@@ -121,6 +123,7 @@ export const ConvosNavBar = () => {
         onClick={() => {
           removeLessonId();
           // router.push(`/convos`);
+          upsertContentAnalyticsHandler();
         }}
       >
         <Icons.xMark />

@@ -4,6 +4,7 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import { FancyAreaChart } from "../../insights/insights-v3/components/fancy-area-chart";
 import { useGetContentInsights } from "./hooks/use-content-insights";
 import Link from "next/link";
+import { calculateTotalWordsFrequency } from "@/components/youtube-page/hooks/use-words-clicked-history-state";
 
 export const TotalPlaysChart = ({ contentId }: { contentId: string }) => {
   const props = useGetContentInsights({
@@ -14,18 +15,7 @@ export const TotalPlaysChart = ({ contentId }: { contentId: string }) => {
 
   const { data, totalRepeats, totalTimePlayed, words } = props;
 
-  const wordsUnique = [...new Set(words?.map((word: any) => word?.word))]
-    .map((wordItem) => {
-      const totalWords: any = words?.filter(
-        (item: any) => item?.word === wordItem
-      );
-      return {
-        word: wordItem,
-        frequency: totalWords?.length || 1,
-        id: totalWords?.[0]?.id,
-      };
-    })
-    ?.sort((a, b) => b?.frequency - a?.frequency);
+  const wordsUnique = calculateTotalWordsFrequency(words);
 
   return (
     <>
@@ -50,7 +40,7 @@ export const TotalPlaysChart = ({ contentId }: { contentId: string }) => {
                 <Link
                   href={`/nmm/${word?.word}?lang=${content?.lang}`}
                   target="_blank"
-                  key={totalWords?.id}
+                  key={JSON.stringify(totalWords)}
                   style={{
                     fontSize: `${Math.max(Math.min(80, word?.frequency * 8), 16)}px`,
                     // fontSize: `80px`,

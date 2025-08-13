@@ -13,21 +13,24 @@ import {
   useGetContentInsightsRaw,
   useUpsertContentAnalyticsMutation,
 } from "../../convo-insights/hooks/use-content-insights";
+import { useWordsClickedHistoryState } from "@/components/youtube-page/hooks/use-words-clicked-history-state";
 
 export function useGo() {
-  const lessonId = useGetContentId();
+  const contentId = useGetContentId();
 
-  const { data: content } = useGetContentQuery({ contentId: lessonId });
+  const { data: content } = useGetContentQuery({ contentId });
 
   const {
     totalPlays,
     totalRepeats,
     totalTimePlayed,
     data: insightsData,
-  } = useGetContentInsightsRaw({ contentId: lessonId });
+  } = useGetContentInsightsRaw({ contentId });
+
+  const { words } = useWordsClickedHistoryState({ contentId });
 
   const updateContentInsightsMutation = useUpsertContentAnalyticsMutation({
-    contentId: lessonId,
+    contentId,
   });
 
   const router = useRouter();
@@ -43,7 +46,7 @@ export function useGo() {
   const { setRecentlyWatched } = useRecentlyWatchedContent();
 
   const currentIndex = sameLangContents?.findIndex(
-    (item: any) => item?.id === lessonId
+    (item: any) => item?.id === contentId
   );
 
   const goToNext = useCallback(() => {
@@ -52,6 +55,7 @@ export function useGo() {
       totalRepeats,
       totalTimePlayed,
       data: insightsData,
+      words,
     });
     const nextLesson = sameLangContents?.[currentIndex + 1];
     if (nextLesson) {
@@ -74,6 +78,7 @@ export function useGo() {
     totalRepeats,
     totalTimePlayed,
     updateContentInsightsMutation,
+    words,
   ]);
 
   const goToBefore = useCallback(() => {
@@ -82,6 +87,7 @@ export function useGo() {
       totalRepeats,
       totalTimePlayed,
       data: insightsData,
+      words,
     });
     const previousLesson = sameLangContents?.[currentIndex - 1];
     if (previousLesson) {
@@ -102,6 +108,7 @@ export function useGo() {
     totalRepeats,
     totalTimePlayed,
     updateContentInsightsMutation,
+    words,
   ]);
 
   return {

@@ -7,7 +7,11 @@ import {
   usePlayHistoryState,
   usePlayHistoryStore,
 } from "@/components/youtube-page/hooks/use-play-history-state";
-import { useWordsClickedHistoryState } from "@/components/youtube-page/hooks/use-words-clicked-history-state";
+import {
+  calculateTotalWordsFrequency,
+  useWordsClickedHistoryState,
+  useWordsClickedHistoryStore,
+} from "@/components/youtube-page/hooks/use-words-clicked-history-state";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { siteConfig } from "@/lib/config";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -150,6 +154,12 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
   const { totalPlays, totalRepeats, totalTimePlayed, data } =
     useGetContentInsightsRaw({ contentId });
 
+  const removeWordsHistoryForContentId = useWordsClickedHistoryStore(
+    (state) => state.removeHistoryForContentId
+  );
+
+  const { words } = useWordsClickedHistoryState({ contentId });
+
   // const queryClient = useQueryClient();
 
   const removeContentHistory = usePlayHistoryStore(
@@ -161,6 +171,9 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
     refetchInterval: 1000 * 60 * 1,
     queryFn: async (): Promise<GetContentAnalyticsRespose> => {
       console.log("yoooooo logged");
+
+      const repeatsPerWord = calculateTotalWordsFrequency(words);
+
       const resp = await fetch(`${listenApiUrl}/v1/upsert-content-analytics`, {
         method: "POST",
         headers: {
@@ -171,6 +184,7 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
           totalPlays,
           totalRepeats,
           totalTimePlayed,
+          repeatsPerWord: repeatsPerWord,
           repeatsPerTranscription: data?.map((item) => {
             return {
               input: item?.input,
@@ -186,6 +200,8 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
       }
 
       const respJson = await resp.json();
+
+      removeWordsHistoryForContentId(contentId);
 
       removeContentHistory(contentId);
 
@@ -205,6 +221,11 @@ export function useUpsertContentAnalyticsMutation({
   const removeContentHistory = usePlayHistoryStore(
     (state) => state.removeHistoryForContentId
   );
+
+  const removeWordsHistoryForContentId = useWordsClickedHistoryStore(
+    (state) => state.removeHistoryForContentId
+  );
+
   const token = useJwtToken();
   return useMutation({
     mutationFn: async ({
@@ -212,8 +233,12 @@ export function useUpsertContentAnalyticsMutation({
       totalRepeats,
       totalTimePlayed,
       data,
+      words,
     }: any): Promise<GetContentAnalyticsRespose> => {
       console.log("yoooooo logged");
+
+      const repeatsPerWord = calculateTotalWordsFrequency(words);
+
       const resp = await fetch(`${listenApiUrl}/v1/upsert-content-analytics`, {
         method: "POST",
         headers: {
@@ -224,6 +249,7 @@ export function useUpsertContentAnalyticsMutation({
           totalPlays,
           totalRepeats,
           totalTimePlayed,
+          repeatsPerWord,
           repeatsPerTranscription: data?.map((item: any) => {
             return {
               input: item?.input,
@@ -240,6 +266,7 @@ export function useUpsertContentAnalyticsMutation({
 
       const respJson = await resp.json();
 
+      removeWordsHistoryForContentId(contentId);
       removeContentHistory(contentId);
 
       return respJson;

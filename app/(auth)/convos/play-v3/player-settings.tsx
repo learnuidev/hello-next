@@ -60,9 +60,9 @@ export const PlayerSettings = ({
         )}
 
         {isFocusKaraokeMode ? (
-          <div className="sm:space-x-6 space-x-2 flex items-center">
+          <div className="sm:space-x-6 space-x-8 flex items-center">
             <button
-              className="sm:text-2xl text-[16px]"
+              className="text-2xl"
               onClick={() => {
                 setFocusIndex(Math.max(0, focusIndex - 1));
               }}
@@ -71,7 +71,7 @@ export const PlayerSettings = ({
             </button>
 
             <button
-              className={cn("sm:text-2xl text-[16px]")}
+              className={cn("text-2xl")}
               onClick={() => {
                 setFocusIndex(
                   Math.min(content?.transcriptions?.length - 1, focusIndex + 1)

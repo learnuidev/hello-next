@@ -31,6 +31,8 @@ export const PlayerSettings = ({
   setBrightMode,
   isFocusKaraokeMode,
   audioUrl,
+  seekBefore,
+  seekAfter,
 }: any) => {
   const { focusMode, setFocusMode } = useFocusMode(contentId);
   const { focusIndex, setFocusIndex } = useFocusIndex(contentId);
@@ -111,7 +113,7 @@ export const PlayerSettings = ({
                   ? "dark:text-white text-black font-bold"
                   : "dark:text-gray-600 text-gray-300"
               )}
-              disabled={!activeSubtitle}
+              // disabled={!activeSubtitle}
               onClick={() => {
                 setLoop((loop: any) => {
                   if (loop) {
@@ -137,10 +139,26 @@ export const PlayerSettings = ({
             >
               <Icons.stop />
             </button>
+            <button
+              className="sm:text-2xl text-[16px] dark:hover:text-white hover:text-black text-gray-500"
+              onClick={() => {
+                seekBefore();
+              }}
+            >
+              <Icons.rotateLeft />
+            </button>
+            <button
+              className="sm:text-2xl text-[16px] dark:hover:text-white hover:text-black text-gray-500"
+              onClick={() => {
+                seekAfter();
+              }}
+            >
+              <Icons.rotateRight />
+            </button>
           </div>
         )}
 
-        {isFocusKaraokeMode ? (
+        {isFocusKaraokeMode && !audioUrl ? (
           <div className="space-x-4 sm:space-x-8 flex items-center justify-start mr-8 sm:mr-60">
             <button
               onClick={() => {

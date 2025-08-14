@@ -476,6 +476,8 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         </div>
 
         <PlayerSettings
+          seekBefore={seekBefore}
+          seekAfter={seekAfter}
           audioUrl={audioUrl}
           isFocusKaraokeMode={karaokeMode}
           contentId={contentId}

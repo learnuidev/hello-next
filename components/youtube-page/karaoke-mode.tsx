@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useUpsetContentAnalyticsHandler } from "@/app/(auth)/convos/[content-id]/hooks/use-upsert-content-analytics-handler";
 
 function CurrentTranscriptionViewer({
+  seekTo,
   contentId,
   currentTranscription,
   showPinyin,
@@ -44,6 +45,11 @@ function CurrentTranscriptionViewer({
       )}
 
       <p
+        onClick={() => {
+          if (typeof currentTranscription?.start === "number") {
+            seekTo(currentTranscription?.start);
+          }
+        }}
         className={cn(
           " dark:text-gray-200 text-black",
           currentTranscription?.lang === "zh"
@@ -222,6 +228,7 @@ export function KaraokeMode({
           {/* Current Lyric */}
           <ActiveKaraokeContainer>
             <CurrentTranscriptionViewer
+              seekTo={seekTo}
               contentId={contentId}
               currentTranscription={currentTranscription}
               showPinyin={showPinyin}
@@ -264,6 +271,7 @@ export function KaraokeMode({
           </button>
         ) : (
           <CurrentTranscriptionViewer
+            seekTo={seekTo}
             currentTranscription={currentTranscription}
             showPinyin={showPinyin}
             romanOrPinyin={romanOrPinyin}

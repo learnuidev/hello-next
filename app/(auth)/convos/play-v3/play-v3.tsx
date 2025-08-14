@@ -126,9 +126,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const setIfExists = useSetIfExists();
 
   const lang = useGetCurrentLang();
-  const karaokeMode = audioUrl
-    ? brightMode
-    : focusMode === true || (brightMode && lang !== "zh");
+  const karaokeMode = focusMode === true || (brightMode && lang !== "zh");
 
   const setTimer = (
     type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",

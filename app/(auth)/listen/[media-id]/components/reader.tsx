@@ -317,7 +317,7 @@ export function Reader({
                           }}
                           className={cn(
                             "dark:hover:text-white hover:text-black",
-                            "text-[16px] sm:text-xl sm:leading-[36px] text-justify",
+                            "text-[16px] sm:text-xl sm:leading-[36px]",
                             "transition-all",
                             currentTranslation
                               ? JSON.stringify(item) ===

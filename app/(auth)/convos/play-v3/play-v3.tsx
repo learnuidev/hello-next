@@ -226,6 +226,66 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
     });
   };
 
+  const transcriptions = content?.transcriptions;
+
+  const seekBefore = useCallback(() => {
+    const currentTranscription = transcriptions?.find(
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+    );
+
+    if (currentTranscription) {
+      const currentTranscriptionIndex = Math.max(
+        transcriptions?.findIndex(
+          (trans: any) => trans?.start === currentTranscription?.start
+        ),
+        0
+      );
+
+      const prevIndex = Math.max(currentTranscriptionIndex - 1, 0);
+
+      const prevTranscription = transcriptions?.[prevIndex];
+
+      seek(prevTranscription?.start);
+
+      // playerRef.current.seekTo(prevTranscription?.start, "seconds");
+
+      // try {
+      //   playerRef.current?.player?.player?.play();
+      // } catch (err) {
+      //   console.error(err);
+      // }
+    }
+  }, [currentTime, transcriptions]);
+
+  const seekAfter = useCallback(() => {
+    const currentTranscription = transcriptions?.find(
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+    );
+
+    const currentTranscriptionIndex = Math.max(
+      transcriptions?.findIndex(
+        (trans: any) => trans?.start === currentTranscription?.start
+      ),
+      0
+    );
+
+    const nextIndex = Math.min(
+      currentTranscriptionIndex + 1,
+      transcriptions?.length - 1
+    );
+    const nextTranscription = transcriptions?.[nextIndex];
+
+    seek(nextTranscription?.start);
+
+    // playerRef.current.seekTo(nextTranscription?.start, "seconds");
+
+    // try {
+    //   playerRef.current?.player?.player?.play();
+    // } catch (err) {
+    //   console.error(err);
+    // }
+  }, [currentTime, transcriptions]);
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (["p"]?.includes(event.key?.toLowerCase()) && !editMode) {
@@ -257,15 +317,19 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
       }
 
       if (event.code === "ArrowLeft" && !editMode) {
-        if (karaokeMode) {
+        if (karaokeMode && !audioUrl) {
           const newFocusIndex = Math.max(0, focusIndex - 1);
           setFocusIndex(newFocusIndex);
 
           upsertContentAnalyticsHandler({ focusIndex: newFocusIndex });
         }
+
+        if (audioUrl) {
+          seekBefore();
+        }
       }
       if (event.code === "ArrowRight" && !editMode) {
-        if (karaokeMode) {
+        if (karaokeMode && !audioUrl) {
           const newFocusIndex = Math.min(
             content?.transcriptions?.length - 1,
             focusIndex + 1
@@ -273,6 +337,10 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
           setFocusIndex(newFocusIndex);
 
           upsertContentAnalyticsHandler({ focusIndex: newFocusIndex });
+        }
+
+        if (audioUrl) {
+          seekAfter();
         }
       }
 
@@ -307,6 +375,9 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
     decreaseFontSize,
     activeSubtitle?.input,
     editMode,
+    audioUrl,
+    seekBefore,
+    seekAfter,
   ]);
 
   const debounceSeek = useDebouncedCallback((selectedWords: any) => {
@@ -370,6 +441,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                 play={() => {
                   togglePlay();
                 }}
+                audioUrl={audioUrl}
                 isFocusKaraokeMode={karaokeMode}
                 contentId={contentId}
                 lang={lang}
@@ -404,6 +476,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         </div>
 
         <PlayerSettings
+          audioUrl={audioUrl}
           isFocusKaraokeMode={karaokeMode}
           contentId={contentId}
           editMode={editMode}

@@ -163,6 +163,7 @@ function UpcomingLyrics({
 
 export function KaraokeMode({
   // playerRef,
+  audioUrl,
   play,
   seekTo,
   isPlaying,
@@ -183,13 +184,15 @@ export function KaraokeMode({
   audio?: any;
   contentId?: string;
   isFocusKaraokeMode?: boolean;
+  audioUrl?: string;
 }) {
   const { focusIndex, setFocusIndex } = useFocusIndex(contentId || "");
 
-  const currentTranscription = isFocusKaraokeMode
-    ? transcriptions?.[focusIndex]
-    : transcriptions?.filter((trans: any) => trans?.end > currentTime)?.[0] ||
-      transcriptions?.[0];
+  const currentTranscription =
+    isFocusKaraokeMode && !audioUrl
+      ? transcriptions?.[focusIndex]
+      : transcriptions?.filter((trans: any) => trans?.end > currentTime)?.[0] ||
+        transcriptions?.[0];
 
   const isIntro = transcriptions?.[0]?.start > currentTime + 1;
 
@@ -212,7 +215,7 @@ export function KaraokeMode({
     return isNonRomanLang(lang);
   }, [lang]);
 
-  if (isFocusKaraokeMode) {
+  if (isFocusKaraokeMode && !audioUrl) {
     return (
       <div className="mt-32">
         <KaraokeContainer>

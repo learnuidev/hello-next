@@ -30,6 +30,7 @@ export const PlayerSettings = ({
   viewPinyin,
   setBrightMode,
   isFocusKaraokeMode,
+  audioUrl,
 }: any) => {
   const { focusMode, setFocusMode } = useFocusMode(contentId);
   const { focusIndex, setFocusIndex } = useFocusIndex(contentId);
@@ -63,7 +64,7 @@ export const PlayerSettings = ({
           </div>
         )}
 
-        {isFocusKaraokeMode ? (
+        {isFocusKaraokeMode && !audioUrl ? (
           <div className="sm:space-x-6 space-x-8 flex items-center">
             <button
               className="text-2xl"

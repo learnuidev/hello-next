@@ -10,6 +10,7 @@ import { CharacterItem } from "../_select-character/character-item";
 import { useFocusIndex } from "@/app/(auth)/convos/play-v3/hooks/use-focus-index";
 import Link from "next/link";
 import { useUpsetContentAnalyticsHandler } from "@/app/(auth)/convos/[content-id]/hooks/use-upsert-content-analytics-handler";
+import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 
 function CurrentTranscriptionViewer({
   seekTo,
@@ -24,61 +25,63 @@ function CurrentTranscriptionViewer({
     useUpsetContentAnalyticsHandler(contentId);
 
   return (
-    <div
-      key={JSON.stringify(currentTranscription)}
-      className={cn(
-        "text-4xl font-bold text-center text-white",
-        romanOrPinyin?.length < 16 ? "text-4x" : "text-lg"
-      )}
-    >
-      {isNonRomanContent && showPinyin && (
-        <Link
-          target="_blank"
+    <MandoContextMenu lang={currentTranscription?.lang || ""}>
+      <div
+        key={JSON.stringify(currentTranscription)}
+        className={cn(
+          "text-4xl font-bold text-center text-white",
+          romanOrPinyin?.length < 16 ? "text-4x" : "text-lg"
+        )}
+      >
+        {isNonRomanContent && showPinyin && (
+          <Link
+            target="_blank"
+            onClick={() => {
+              upsertContentAnalyticsHandler();
+            }}
+            href={`/nmm/${currentTranscription?.input || currentTranscription?.hanzi}?lang=${lang}`}
+            className={cn("text-[16px] lg:text-xl font-light text-gray-400")}
+          >
+            {romanOrPinyin}
+          </Link>
+        )}
+
+        <p
           onClick={() => {
-            upsertContentAnalyticsHandler();
+            if (typeof currentTranscription?.start === "number") {
+              seekTo(currentTranscription?.start);
+            }
           }}
-          href={`/nmm/${currentTranscription?.input || currentTranscription?.hanzi}?lang=${lang}`}
-          className={cn("text-[16px] lg:text-xl font-light text-gray-400")}
+          className={cn(
+            " dark:text-gray-200 text-black",
+            currentTranscription?.lang === "zh"
+              ? "text-4xl"
+              : "lg:text-2xl text-[16px]"
+          )}
         >
-          {romanOrPinyin}
-        </Link>
-      )}
+          {smartSplit({
+            input: currentTranscription?.input || currentTranscription?.hanzi,
+            lang,
+          })?.map((item: string, idx: number) => {
+            return (
+              <CharacterItem
+                disableClass
+                key={`${idx}-youtube-player-active-transcription-${item}-${idx}`}
+                character={item}
+              />
+            );
+          })}
+        </p>
 
-      <p
-        onClick={() => {
-          if (typeof currentTranscription?.start === "number") {
-            seekTo(currentTranscription?.start);
-          }
-        }}
-        className={cn(
-          " dark:text-gray-200 text-black",
-          currentTranscription?.lang === "zh"
-            ? "text-4xl"
-            : "lg:text-2xl text-[16px]"
-        )}
-      >
-        {smartSplit({
-          input: currentTranscription?.input || currentTranscription?.hanzi,
-          lang,
-        })?.map((item: string, idx: number) => {
-          return (
-            <CharacterItem
-              disableClass
-              key={`${idx}-youtube-player-active-transcription-${item}-${idx}`}
-              character={item}
-            />
-          );
-        })}
-      </p>
-
-      <p
-        className={cn(
-          "text-[16px] lg:text-xl font-light dark:text-gray-400 text-black"
-        )}
-      >
-        {currentTranscription?.en}
-      </p>
-    </div>
+        <p
+          className={cn(
+            "text-[16px] lg:text-xl font-light dark:text-gray-400 text-black"
+          )}
+        >
+          {currentTranscription?.en}
+        </p>
+      </div>
+    </MandoContextMenu>
   );
 }
 

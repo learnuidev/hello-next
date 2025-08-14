@@ -291,21 +291,23 @@ export const PlayerSettings = ({
                 )}
               />
             </button>
-            <button
-              onClick={() => {
-                upsertContentAnalyticsHandler();
-                setFocusMode(!focusMode);
-              }}
-            >
-              <Icons.bullsEyeArrow
-                className={cn(
-                  "sm:text-2xl text-[16px]",
-                  typeof focusMode === "number"
-                    ? "dark:text-white text-black"
-                    : "text-gray-400"
-                )}
-              />
-            </button>
+            {audioUrl ? null : (
+              <button
+                onClick={() => {
+                  upsertContentAnalyticsHandler();
+                  setFocusMode(!focusMode);
+                }}
+              >
+                <Icons.bullsEyeArrow
+                  className={cn(
+                    "sm:text-2xl text-[16px]",
+                    typeof focusMode === "number"
+                      ? "dark:text-white text-black"
+                      : "text-gray-400"
+                  )}
+                />
+              </button>
+            )}
           </div>
         )}
       </section>

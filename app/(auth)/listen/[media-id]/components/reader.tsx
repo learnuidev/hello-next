@@ -301,7 +301,7 @@ export function Reader({
                   return (
                     <div key={JSON.stringify(item)}>
                       {/* {containsHumanMode && mode === "human" ? ( */}
-                      {false ? (
+                      {true ? (
                         <p
                           onClick={() => {
                             const findChunks = mediaChunks?.filter((chunk) => {

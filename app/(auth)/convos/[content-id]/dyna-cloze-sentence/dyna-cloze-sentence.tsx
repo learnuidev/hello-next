@@ -22,7 +22,7 @@ import {
   useDyanStoreRuntime,
   useDynaClozeSentence,
 } from "./use-dyna-cloze-sentence";
-import { getMulti } from "./utils/get-multi";
+import { getMulti, isMulti } from "./utils/get-multi";
 import { TheDock } from "@/components/the-dock";
 import { WordleSentence } from "@/components/wordle/wordle-sentence";
 import { SpeakSentence } from "../speak/speak-sentence";
@@ -503,7 +503,9 @@ export const DynaClozeSentence = ({
 
   const { learnMode } = useDynaClozeSentence();
 
-  if (isLoading) {
+  const isMultiSent = isMulti(sentence?.input || sentence?.hanzi);
+
+  if (isLoading && !isMultiSent) {
     return (
       <div>
         <p className="text-center my-32">Loading...</p>

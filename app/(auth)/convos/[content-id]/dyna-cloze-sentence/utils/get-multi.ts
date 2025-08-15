@@ -4,3 +4,7 @@ export const getMulti = (val: string) =>
     ?.split("，")
     ?.map((x) => x.split("。"))
     ?.flat();
+
+export const isMulti = (val: string) => {
+  return getMulti(val)?.length > 1;
+};

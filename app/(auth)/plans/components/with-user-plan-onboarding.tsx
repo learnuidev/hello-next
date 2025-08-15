@@ -11,8 +11,6 @@ export const WithUserPlanOnboarding = ({
 }) => {
   const { data: userPlan, isLoading } = useGetActiveUserPlan();
 
-  const { data } = useListUserPreferenceContentsQuery();
-
   const pathName = usePathname();
 
   if (pathName === "/plans") {

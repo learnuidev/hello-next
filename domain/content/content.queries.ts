@@ -9,7 +9,7 @@ import { createIndexDBStore } from "@/libs/index-db/index-db";
 import { useMemo } from "react";
 
 export const useContentsStore = createIndexDBStore({
-  name: "list-content-v2",
+  name: "list-content-v3",
   handler: (set: any, get: any) => ({
     contents: null,
     setContents: (f: any) =>

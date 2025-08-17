@@ -1,14 +1,16 @@
 /* TOC */
 
-ol,
-ul {
-  width: 100% !important;
-  padding: 0rem 1.8rem !important;
-}
+.ProseMirror {
+  ol,
+  ul {
+    width: 100% !important;
+    padding: 0rem 1.8rem !important;
+  }
 
-li {
-  width: 100% !important;
-  padding: 0.2rem 0rem !important;
+  li {
+    width: 100% !important;
+    padding: 0.2rem 0rem !important;
+  }
 }
 
 .table-of-content {

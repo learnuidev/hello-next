@@ -5,7 +5,9 @@ export const whiteListUrls = [
   "/blog",
   "/why",
   "/learn",
-  // "/nmm",
-  // "/insights",
   "/pinyin",
+
+  "/terms",
+  "/privacy",
+  "/guidelines",
 ];

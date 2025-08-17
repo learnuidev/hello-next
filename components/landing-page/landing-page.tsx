@@ -3,6 +3,7 @@ import { FeaturesList } from "@/app/why/features-list";
 import { WhyMandarinoBanner } from "@/app/why/why-mandarino-banner";
 import { MandarinoBanner } from "./mandarino-banner";
 import { LandingNavbar } from "./landing-navbar";
+import Link from "next/link";
 
 export const LandingPage = () => {
   return (
@@ -76,6 +77,13 @@ export const LandingPage = () => {
         <WhyMandarinoBanner />
         <FeaturesList />
       </main>
+
+      <div className="text-center my-8 text-gray-500">
+        <Link href="/terms" className="text-xs">
+          {" "}
+          Terms & Conditions{" "}
+        </Link>
+      </div>
     </div>
   );
 };

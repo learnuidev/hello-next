@@ -86,7 +86,7 @@ export default function Terms() {
 
         <p className="dark:text-gray-300 font-light">
           <span>
-            Please dont upload content that that violates Mandarino's{" "}
+            Please dont upload content that that violates Mandarino&apos;s{" "}
           </span>{" "}
           <Link href="/guidelines" className="underline">
             Community Guidelines.

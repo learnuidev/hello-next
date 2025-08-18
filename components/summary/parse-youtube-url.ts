@@ -26,7 +26,7 @@ const youtubeUrlSchema = z.string().refine(
  * @param rawYoutubeUrl The original YouTube URL to normalize.
  * @returns The normalized YouTube watch URL, or the original string if invalid.
  */
-function normalizeYoutubeUrl(rawYoutubeUrl: string): string {
+export function normalizeYoutubeUrl(rawYoutubeUrl: string): string {
   try {
     const url = new URL(rawYoutubeUrl);
 

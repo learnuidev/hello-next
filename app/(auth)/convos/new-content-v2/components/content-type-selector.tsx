@@ -23,7 +23,7 @@ export const ContentTypeSelector = () => {
           setConvo("contentType", value);
         }}
       >
-        <SelectTrigger className="sm:w-4/12 w-full h-12 bg-transparent dark:text-white dark:border-gray-800 px-2">
+        <SelectTrigger className="w-full h-12 bg-transparent dark:text-white dark:border-gray-800 px-2">
           <SelectValue placeholder="Select content type" className="" />
         </SelectTrigger>
         <SelectContent className="mx-0">

@@ -40,7 +40,8 @@ import { useRecentlyWatchedContent } from "./use-recently-watched-content-store"
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 import { useContentType } from "./hooks/use-content-type";
 import { contentTypes } from "./constants/content-types";
-import { NewConvoV2 } from "./new-convo-v2/new-convo-v2";
+import { NewContentV2 } from "./new-content-v2/new-convo-v2";
+// import { NewConvoV2 } from "./new-content-v2/new-convo-v2";
 
 type ContentType = {
   title: string;
@@ -248,7 +249,7 @@ export default function Convos() {
       return <NewContent />;
     }
 
-    return <NewConvoV2 />;
+    return <NewContentV2 />;
   };
 
   return viewMode === "convo/add" ? (

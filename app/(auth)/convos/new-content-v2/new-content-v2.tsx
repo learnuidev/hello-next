@@ -47,41 +47,43 @@ export const NewContentV2 = () => {
           <Icons.eye className="text-2xl" />
         </button>
       </div>
-      <Tabs
-        defaultValue={contentTypesV2.youtube.id}
-        value={newConvo.value}
-        onValueChange={(value) => {
-          setConvo("type", value);
-        }}
-        className="bg-none"
-      >
-        <TabsList className="bg-white dark:bg-[rgb(9,10,11)] gap-8 p-0">
-          {contentTypesListV2.map((contentType) => {
-            return (
-              <TabsTrigger
-                className="px-0 data-[state=active]:shadow-none"
-                key={contentType.id}
-                value={contentType.id}
-              >
-                {contentType.title}
-              </TabsTrigger>
-            );
-          })}
-        </TabsList>
+      {showPreview ? null : (
+        <Tabs
+          defaultValue={contentTypesV2.youtube.id}
+          value={newConvo.value}
+          onValueChange={(value) => {
+            setConvo("type", value);
+          }}
+          className="bg-none"
+        >
+          <TabsList className="bg-white dark:bg-[rgb(9,10,11)] gap-8 p-0">
+            {contentTypesListV2.map((contentType) => {
+              return (
+                <TabsTrigger
+                  className="px-0 data-[state=active]:shadow-none"
+                  key={contentType.id}
+                  value={contentType.id}
+                >
+                  {contentType.title}
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
 
-        <div className="mt-8">
-          {contentTypesListV2.map((contentType) => {
-            return (
-              <TabsContent
-                value={contentType.id}
-                key={`tab-body-${contentType.id}`}
-              >
-                <contentType.Component />
-              </TabsContent>
-            );
-          })}
-        </div>
-      </Tabs>
+          <div className="mt-8">
+            {contentTypesListV2.map((contentType) => {
+              return (
+                <TabsContent
+                  value={contentType.id}
+                  key={`tab-body-${contentType.id}`}
+                >
+                  <contentType.Component />
+                </TabsContent>
+              );
+            })}
+          </div>
+        </Tabs>
+      )}
 
       {showPreview && (
         <div className="my-12">

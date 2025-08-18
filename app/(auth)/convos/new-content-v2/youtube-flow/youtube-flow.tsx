@@ -4,6 +4,7 @@ import { YoutubeInput } from "./components/youtube-input";
 import { useGetVideoByIdQuery } from "@/domain/youtube/get-video-by-id";
 import ReactPlayer from "react-player";
 import { normalizeYoutubeUrl } from "@/components/summary/parse-youtube-url";
+import { YoutubeTranscriptionsInput } from "./components/youtube-transcriptions-input";
 
 export const YoutubeFlow = () => {
   const setConvo = useNewConvoStore((state) => state.setConvo);
@@ -24,10 +25,12 @@ export const YoutubeFlow = () => {
           <YoutubeInput />
         </div>
 
-        <div className="w-full">
+        {/* <div className="w-full">
           {youtubeVideoDetails && <ReactPlayer url={normalizedUrl} />}
-        </div>
+        </div> */}
       </div>
+
+      <YoutubeTranscriptionsInput />
     </div>
   );
 };

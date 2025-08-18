@@ -6,6 +6,7 @@ import { chineseConverter } from "mandarino/src/utils/chinese-converter";
 import { useState } from "react";
 
 import { StepTitle, useNewConvoStore } from "@/components/step";
+import { Label } from "@/components/ui/label";
 
 export function NewConvoInput() {
   const [showJSON, setShowJSON] = useState(false);
@@ -50,7 +51,7 @@ export function NewConvoInput() {
 
   return (
     <>
-      <StepTitle>add text here</StepTitle>
+      <Label className=" text-gray-500 mb-4 block">Add text here</Label>
       <textarea
         value={newConvo?.input}
         onChange={(event) => {

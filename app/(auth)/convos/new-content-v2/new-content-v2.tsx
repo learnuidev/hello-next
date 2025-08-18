@@ -5,10 +5,13 @@ import { NewConvo } from "../new-convo/new-convo";
 import { useViewModeStore } from "../new-convo/use-viewmode-store";
 import { Icons } from "@/components/ui/icons.v2";
 import { useNewConvoStore } from "@/components/step";
+import { useState } from "react";
 
 export const NewContentV2 = () => {
   const isNewContentEnabled = useIsNewContentFormEnabled();
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
+
+  const [showPreview, setShowPreview] = useState(false);
 
   const setConvo = useNewConvoStore((state) => state.setConvo);
   const newConvo = useNewConvoStore((state) => state.convo) as any;
@@ -37,7 +40,7 @@ export const NewContentV2 = () => {
         <button
           className="inline-flex gap-4 items-center"
           onClick={() => {
-            alert("yoo");
+            setShowPreview(!showPreview);
           }}
         >
           <span>Preview </span>
@@ -79,6 +82,14 @@ export const NewContentV2 = () => {
           })}
         </div>
       </Tabs>
+
+      {showPreview && (
+        <div className="my-12">
+          <code>
+            <pre>{JSON.stringify(newConvo, null, 4)}</pre>
+          </code>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,25 +1,11 @@
-// import { AudioFlow } from "./audio-flow/audio-flow";
-// import { TextFlow } from "./text-flow/text-flow";
-// import { VideoFlow } from "./video-flow/video-flow";
-// import { YoutubeFlow } from "./youtube-flow/youtube-flow";
-
 import { AudioFlow } from "../audio-flow/audio-flow";
+import {
+  ContentV2Variants,
+  ContentV2WithComponent,
+} from "../new-content-v2.types";
 import { TextFlow } from "../text-flow/text-flow";
 import { VideoFlow } from "../video-flow/video-flow";
 import { YoutubeFlow } from "../youtube-flow/youtube-flow";
-
-type ContentVariants = "youtube" | "audio" | "video" | "text" | "bilibili";
-
-export interface IContent {
-  id: string;
-  type: "youtube" | "audio" | "video" | "text" | "bilibili";
-}
-
-type ContentType = {
-  id: string;
-  title: string;
-  Component: React.ComponentType;
-};
 
 export const contentTypesListV2 = [
   {
@@ -45,11 +31,11 @@ export const contentTypesListV2 = [
 ];
 
 export const contentTypesV2 = contentTypesListV2.reduce<
-  Record<ContentVariants, ContentType>
+  Record<ContentV2Variants, ContentV2WithComponent>
 >(
   (acc, type) => {
-    acc[type.id as ContentVariants] = type;
+    acc[type.id as ContentV2Variants] = type;
     return acc;
   },
-  {} as Record<ContentVariants, ContentType>
+  {} as Record<ContentV2Variants, ContentV2WithComponent>
 );

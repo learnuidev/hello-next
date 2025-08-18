@@ -1,4 +1,5 @@
 import { AudioFlow } from "../audio-flow/audio-flow";
+import { BilibiliFlow } from "../bilibili-flow/bilibili-flow";
 import {
   ContentV2Variants,
   ContentV2WithComponent,
@@ -27,6 +28,11 @@ export const contentTypesListV2 = [
     id: "text",
     title: "Text",
     Component: TextFlow,
+  },
+  {
+    id: "bilibili",
+    title: "bilibili",
+    Component: BilibiliFlow,
   },
 ];
 

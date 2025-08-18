@@ -6,12 +6,10 @@ import { useViewModeStore } from "../new-convo/use-viewmode-store";
 import { Icons } from "@/components/ui/icons.v2";
 
 export const NewContentV2 = () => {
-  // come back to this later
   const isNewContentEnabled = useIsNewContentFormEnabled();
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
 
-  console.log("NEW CONTENT", isNewContentEnabled);
-
+  // come back to this later
   if (!isNewContentEnabled && false) {
     return <NewConvo />;
   }

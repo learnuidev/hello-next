@@ -1,16 +1,13 @@
 import { useNewConvoStore } from "@/components/step";
-import { ContentTypeSelector } from "../components/content-type-selector";
-import { YoutubeInput } from "./components/youtube-input";
+import { Input } from "@/components/ui/input";
 
-export const YoutubeFlow = () => {
+export const YoutubeInput = () => {
   const setConvo = useNewConvoStore((state) => state.setConvo);
   const newConvo = useNewConvoStore((state) => state.convo) as any;
 
   return (
     <div>
-      <ContentTypeSelector />
-
-      <YoutubeInput />
+      <Input placeholder="Enter a YouTube URL" />
     </div>
   );
 };

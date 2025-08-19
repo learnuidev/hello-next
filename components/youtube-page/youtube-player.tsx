@@ -188,8 +188,12 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const finalUrl = lesson?.audio;
 
-  const seekAndPlay = (time: any) => {
+  const seek = (time: any) => {
     playerRef.current.seekTo(time, "seconds");
+  };
+
+  const seekAndPlay = (time: any) => {
+    seek(time);
 
     try {
       playerRef.current?.player?.player?.play();
@@ -425,6 +429,12 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
     currentTime,
     debounceSeek,
   ]);
+
+  useEffect(() => {
+    if (currentTime) {
+      seek(currentTime);
+    }
+  }, []);
 
   const currentChapter = lesson?.chapters?.find(
     (chapter: any) => chapter?.start < currentTime && chapter?.end > currentTime

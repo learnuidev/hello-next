@@ -175,6 +175,19 @@ export function Reader({
 
   const { history, setHistory } = useMediaStatsState(mediaId);
 
+  const seek = (time: any) => {
+    playerRef.current.seekTo(time, "seconds");
+  };
+  const seekAndPlay = (time: any) => {
+    seek(time);
+
+    try {
+      playerRef.current?.player?.player?.play();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;
 
@@ -184,6 +197,12 @@ export function Reader({
       } catch (err) {
         console.error(err);
       }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (currentTime) {
+      seek(currentTime);
     }
   }, []);
 
@@ -233,16 +252,6 @@ export function Reader({
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [seekBefore, togglePlay, setMinMax, maxNumber, totalDataText?.length]);
-
-  const seekAndPlay = (time: any) => {
-    playerRef.current.seekTo(time, "seconds");
-
-    try {
-      playerRef.current?.player?.player?.play();
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const slicedData = totalDataText?.slice(minMax.min, minMax.max);
 

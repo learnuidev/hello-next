@@ -14,8 +14,6 @@ export const YoutubeFlow = () => {
 
   const normalizedUrl = normalizeYoutubeUrl(newConvo?.audio);
 
-  console.log("youtube video", youtubeVideoDetails);
-
   return (
     <div>
       <div className="flex gap-8 flex-col sm:flex-row">

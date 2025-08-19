@@ -9,8 +9,6 @@ export const YoutubeInput = () => {
 
   const { data: youtubeVideoDetails } = useGetVideoByIdQuery(newConvo?.audio);
 
-  console.log("youtube video", youtubeVideoDetails);
-
   return (
     <div className="my-8">
       <Label className=" text-gray-500 mb-4 block">Youtube Url</Label>

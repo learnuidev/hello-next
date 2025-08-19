@@ -245,9 +245,9 @@ export default function Convos() {
   };
 
   const ContentViewMode = () => {
-    if (isNewContentEnabled) {
-      return <NewContent />;
-    }
+    // if (isNewContentEnabled) {
+    //   return <NewContent />;
+    // }
 
     return <NewContentV2 />;
   };

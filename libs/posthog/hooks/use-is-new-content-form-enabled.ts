@@ -6,5 +6,7 @@ export const useIsNewContentFormEnabled = () => {
     posthogFeatureFlags.newContentForm
   );
 
+  console.log("isNewContentEnabled ", isNewContentEnabled);
+
   return !!isNewContentEnabled;
 };

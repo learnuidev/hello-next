@@ -17,7 +17,7 @@ export const NewContentV2 = () => {
   const newConvo = useNewConvoStore((state) => state.convo) as any;
 
   // come back to this later
-  if (!isNewContentEnabled && false) {
+  if (!isNewContentEnabled) {
     return <NewConvo />;
   }
 

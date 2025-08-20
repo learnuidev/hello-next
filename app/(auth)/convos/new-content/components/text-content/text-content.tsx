@@ -4,6 +4,7 @@ import {
 } from "@/app/(auth)/listen/hooks/use-add-new-media-mutation";
 import { contentTextStore, contentTypeStore } from "../../new-content-store";
 import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
+import { useRouter } from "next/navigation";
 
 export const TextContent = () => {
   const contentType = contentTypeStore((state) => state.type);
@@ -22,6 +23,8 @@ export const TextContent = () => {
     setAddNew,
     addNewBook,
   } = useListenState();
+
+  const router = useRouter();
 
   const addNewMedia = useAddNewMediaMutation();
 
@@ -44,8 +47,11 @@ export const TextContent = () => {
                 text: contextText,
                 type: contentType,
               } as AddNewMediaParams)
-              .then(() => {
+              .then((resp) => {
+                setContextText("");
+
                 setContentType("");
+                router.push(`/listen/${resp.id}`);
               })
               .catch((err) => {
                 alert("err yo");

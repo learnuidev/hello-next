@@ -582,7 +582,7 @@ export function PinyinTable({
   };
 
   return (
-    <div className="margin-auto w-full my-2 text-center flex flex-col items-center justify-center">
+    <div className="margin-auto w-full my-2 text-center flex flex-col items-center justify-center mb-32">
       <div className="w-full">
         {selectedPinyin ? (
           <PinyinDetail />

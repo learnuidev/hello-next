@@ -9,6 +9,7 @@ import { useCallback, useMemo } from "react";
 import { HanziTooltip } from "../_select-character/selected-character/hanzi-tooltip";
 import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
 import { cn } from "@/lib/utils";
+import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 
 export const ActiveTranscription = ({
   currentTime,
@@ -58,17 +59,72 @@ export const ActiveTranscription = ({
   );
 
   return (
-    <div
-      className={cn(
-        "text-center sm:mt-8 mt-4 mb-4 h-20",
+    <MandoContextMenu lang={currentTranscription?.lang}>
+      <div
+        className={cn(
+          "text-center sm:mt-8 mt-4 mb-4 h-20",
 
-        currentTranscription?.en?.length > 200 && "h-40 lg:h-20",
-        currentTranscription?.en?.length > 350 && "lg:h-40 h-80",
+          currentTranscription?.en?.length > 200 && "h-40 lg:h-20",
+          currentTranscription?.en?.length > 350 && "lg:h-40 h-80",
 
-        className
-      )}
-    >
-      {showPinyin && isNonRomanLang(currentTranscription?.lang) && (
+          className
+        )}
+      >
+        {showPinyin && isNonRomanLang(currentTranscription?.lang) && (
+          <Link
+            target="_blank"
+            href={`/nmm/${encodeURIComponent(
+              currentTranscription?.input || currentTranscription?.hanzi
+            )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
+            className="dark:text-gray-400 text-gray-800 text-sm sm:text-[16px]"
+          >
+            {currentTranscription?.lang === "zh"
+              ? currentTranscription?.pinyin
+              : currentTranscription?.roman}
+          </Link>
+        )}
+
+        <p
+          onClick={() => {
+            setIfExists({ ...currentTranscription, contentId });
+          }}
+          className="text-lg sm:text-3xl font-extralight"
+        >
+          {splittedStrings?.map((val: string, idx: number) => {
+            if (val === " ") {
+              return (
+                <span key={`active-transcription-${val}-${idx}`}>{val}</span>
+              );
+            }
+            return (
+              <Link
+                onClick={() => {
+                  setIfExists({ ...currentTranscription, contentId });
+                }}
+                href={getHref({ val })}
+                target="_blank"
+                className="text-xs"
+                key={`active-transcription-${val}-${idx}`}
+              >
+                <HanziTooltip
+                  component={{
+                    hanzi: val,
+                    input: val,
+                    en: val || "",
+                    pinyin: val,
+                    lang: currentTranscription?.lang,
+                  }}
+                  character={val}
+                  lang={currentTranscription?.lang}
+                  key={JSON.stringify(val)}
+                >
+                  <CharacterItem character={val} />{" "}
+                </HanziTooltip>
+              </Link>
+            );
+          })}
+        </p>
+
         <Link
           target="_blank"
           href={`/nmm/${encodeURIComponent(
@@ -76,62 +132,9 @@ export const ActiveTranscription = ({
           )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
           className="dark:text-gray-400 text-gray-800 text-sm sm:text-[16px]"
         >
-          {currentTranscription?.lang === "zh"
-            ? currentTranscription?.pinyin
-            : currentTranscription?.roman}
+          {currentTranscription?.en}
         </Link>
-      )}
-
-      <p
-        onClick={() => {
-          setIfExists({ ...currentTranscription, contentId });
-        }}
-        className="text-lg sm:text-3xl font-extralight"
-      >
-        {splittedStrings?.map((val: string, idx: number) => {
-          if (val === " ") {
-            return (
-              <span key={`active-transcription-${val}-${idx}`}>{val}</span>
-            );
-          }
-          return (
-            <Link
-              onClick={() => {
-                setIfExists({ ...currentTranscription, contentId });
-              }}
-              href={getHref({ val })}
-              target="_blank"
-              className="text-xs"
-              key={`active-transcription-${val}-${idx}`}
-            >
-              <HanziTooltip
-                component={{
-                  hanzi: val,
-                  input: val,
-                  en: val || "",
-                  pinyin: val,
-                  lang: currentTranscription?.lang,
-                }}
-                character={val}
-                lang={currentTranscription?.lang}
-                key={JSON.stringify(val)}
-              >
-                <CharacterItem character={val} />{" "}
-              </HanziTooltip>
-            </Link>
-          );
-        })}
-      </p>
-
-      <Link
-        target="_blank"
-        href={`/nmm/${encodeURIComponent(
-          currentTranscription?.input || currentTranscription?.hanzi
-        )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
-        className="dark:text-gray-400 text-gray-800 text-sm sm:text-[16px]"
-      >
-        {currentTranscription?.en}
-      </Link>
-    </div>
+      </div>
+    </MandoContextMenu>
   );
 };

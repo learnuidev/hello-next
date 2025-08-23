@@ -1,8 +1,8 @@
 import { Icons } from "@/components/ui/icons.v2";
 import { useState } from "react";
 
-import { NewConvoInput } from "../../../new-convo/new-convo-input";
-import { UploadSubtitlesInput } from "../../components/upload-subtitles-input";
+import { NewConvoInput } from "../../new-convo/new-convo-input";
+import { UploadSubtitlesInput } from "./upload-subtitles-input";
 
 const CancelTranscriptionView = ({ onClick }: { onClick: () => void }) => {
   return (
@@ -17,7 +17,7 @@ const CancelTranscriptionView = ({ onClick }: { onClick: () => void }) => {
   );
 };
 
-export const YoutubeTranscriptionsInput = () => {
+export const TranscriptionsInput = () => {
   const [transcriptionView, setTranscriptionView] = useState<
     "add-text" | "add-file" | null
   >(null);

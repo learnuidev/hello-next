@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { isAudio } from "../../convos/new-content/utils/is-audio";
 import ReactPlayer from "react-player";
+import { useGetUserAssetQuery, UserAsset } from "./use-get-user-asset-query";
 
 const useGetUserAsset = (id: string) => {
   const { data: authUser } = useCurrentAuthUser({});
@@ -33,11 +34,7 @@ const useGetUserAsset = (id: string) => {
   });
 };
 
-function RenderContent({
-  userAsset,
-}: {
-  userAsset: { extension: string; sourceUrl: string };
-}) {
+function RenderContent({ userAsset }: { userAsset: UserAsset | undefined }) {
   if (isAudio(userAsset?.sourceUrl)) {
     return (
       <ReactPlayer
@@ -60,7 +57,7 @@ export default function Assets() {
   const id = "01J2F7D814JVWWRST573NJT39S";
   const [location, setLocation] = useState<string | number>(0);
 
-  const { data: userAsset, isError } = useGetUserAsset(params["asset-id"]);
+  const { data: userAsset, isError } = useGetUserAssetQuery(params["asset-id"]);
 
   return (
     <main className="">

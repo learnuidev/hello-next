@@ -1,3 +1,28 @@
+// allow users to upload audio
+
+import { useNewConvoStore } from "@/components/step";
+import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
+import { LangAndContentTypeSelector } from "../components/lang-content-type-selector";
+import { ContentTitleInput } from "../components/content-title-input";
+
 export const AudioFlow = () => {
-  return <div> Audio Flow </div>;
+  const setConvo = useNewConvoStore((state) => state.setConvo);
+
+  return (
+    <div>
+      <ContentTitleInput />
+      <div className="w-full">
+        <LangAndContentTypeSelector />
+      </div>
+
+      <UploadFileButton
+        className="mt-12"
+        types={["mp3", "m4a", "webm"]}
+        onSuccess={(newAudio) => {
+          setConvo("title", newAudio.name || "");
+          setConvo("audioId", newAudio.id);
+        }}
+      />
+    </div>
+  );
 };

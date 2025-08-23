@@ -49,8 +49,8 @@ export const NewContentV2 = () => {
       </div>
       {showPreview ? null : (
         <Tabs
-          defaultValue={contentTypesV2.youtube.id}
-          value={newConvo.value}
+          defaultValue={newConvo.type || contentTypesV2.youtube.id}
+          value={newConvo.type}
           onValueChange={(value) => {
             setConvo("type", value);
           }}

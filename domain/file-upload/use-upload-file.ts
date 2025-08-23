@@ -5,6 +5,7 @@ import { useAddUserAssetMutation } from "@/domain/asset/asset.mutation";
 
 export interface UploadFileResponse {
   id: string;
+  name: string;
   contentType: string;
   extension: string;
   sourceUrl: string;

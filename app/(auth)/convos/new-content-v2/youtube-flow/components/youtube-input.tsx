@@ -25,7 +25,7 @@ export const YoutubeInput = () => {
           }
         }}
         placeholder="Youtube URL or ID"
-        className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full text-3xl font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
+        className="bg-gray-100 dark:bg-[rgb(21,22,23)] w-full font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
       />
     </div>
   );

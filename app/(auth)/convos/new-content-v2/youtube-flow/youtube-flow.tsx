@@ -1,9 +1,8 @@
 import { useNewConvoStore } from "@/components/step";
-import { ContentTypeSelector } from "../components/content-type-selector";
-import { YoutubeInput } from "./components/youtube-input";
-import { useGetVideoByIdQuery } from "@/domain/youtube/get-video-by-id";
-import ReactPlayer from "react-player";
 import { normalizeYoutubeUrl } from "@/components/summary/parse-youtube-url";
+import { useGetVideoByIdQuery } from "@/domain/youtube/get-video-by-id";
+import { LangAndContentTypeSelector } from "../components/lang-content-type-selector";
+import { YoutubeInput } from "./components/youtube-input";
 import { YoutubeTranscriptionsInput } from "./components/youtube-transcriptions-input";
 
 export const YoutubeFlow = () => {
@@ -18,7 +17,7 @@ export const YoutubeFlow = () => {
     <div>
       <div className="flex gap-8 flex-col sm:flex-row">
         <div className="w-full">
-          <ContentTypeSelector />
+          <LangAndContentTypeSelector />
 
           <YoutubeInput />
         </div>

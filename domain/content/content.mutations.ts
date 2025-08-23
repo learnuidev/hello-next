@@ -6,6 +6,8 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 import { AddContentParams } from "./content.types";
 import { siteConfig } from "@/lib/config";
 import { useGetListContentsQueryKey } from "./content.queries";
+import { useRouter } from "next/navigation";
+import { IContent } from "./content.api";
 
 const addContent = async (
   params: AddContentParams,
@@ -26,6 +28,7 @@ const addContent = async (
 
 export function useAddContentMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
+  const router = useRouter();
   const queryClient = useQueryClient();
   const listContentsQueryKey = useGetListContentsQueryKey();
   return useMutation({
@@ -36,7 +39,7 @@ export function useAddContentMutation(options = {} as any) {
       return response;
     },
     ...options,
-    onSuccess: (data) => {
+    onSuccess: (data: IContent) => {
       if (options?.onSucess) {
         options?.onSuccess(data);
       }
@@ -47,6 +50,8 @@ export function useAddContentMutation(options = {} as any) {
           items: [data, ...old?.items],
         };
       });
+
+      router.push(`/convos/${data?.id}`);
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

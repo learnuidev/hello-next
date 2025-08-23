@@ -5,6 +5,7 @@ import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { LangAndContentTypeSelector } from "../components/lang-content-type-selector";
 import { ContentTitleInput } from "../components/content-title-input";
 import { AudioPreview } from "./components/audio-preview";
+import { TranscriptionsInput } from "../components/transcriptions-input";
 
 export const AudioFlow = () => {
   const setConvo = useNewConvoStore((state) => state.setConvo);
@@ -27,6 +28,8 @@ export const AudioFlow = () => {
       />
 
       {newConvo?.audioId && <AudioPreview userAssetId={newConvo.audioId} />}
+
+      <TranscriptionsInput />
     </div>
   );
 };

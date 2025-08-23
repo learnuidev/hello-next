@@ -5,6 +5,8 @@ import { LangAndContentTypeSelector } from "../components/lang-content-type-sele
 import { YoutubeInput } from "./components/youtube-input";
 import { TranscriptionsInput } from "../components/transcriptions-input";
 
+import { ContentTitleInput } from "../components/content-title-input";
+
 export const YoutubeFlow = () => {
   const setConvo = useNewConvoStore((state) => state.setConvo);
   const newConvo = useNewConvoStore((state) => state.convo) as any;
@@ -15,6 +17,8 @@ export const YoutubeFlow = () => {
 
   return (
     <div>
+      <ContentTitleInput />
+
       <div className="flex gap-8 flex-col sm:flex-row">
         <div className="w-full">
           <LangAndContentTypeSelector />

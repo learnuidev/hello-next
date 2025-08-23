@@ -14,6 +14,7 @@ import indianFlag from "./hi.png";
 import pakistanFlag from "./pk.png";
 // import koreanFlag from "./ko.webp";
 import koreanFlag from "./nko.png";
+import italianFlag from "./it.png";
 
 export interface ILanguage {
   shortId: string;
@@ -112,5 +113,11 @@ export const languages: ILanguage[] = [
     id: "ko-KO",
     title: "Korean",
     src: koreanFlag.src,
+  },
+  {
+    shortId: "it",
+    id: "it-IT",
+    title: "Italian",
+    src: italianFlag.src,
   },
 ];

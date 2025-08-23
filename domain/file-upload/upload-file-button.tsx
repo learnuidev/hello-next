@@ -17,7 +17,7 @@ export const UploadFileButton = (
 ) => {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
-  const onUploadFileChange = useUploadFile(
+  const { onUploadFileChange, isUploading, percentCompleted } = useUploadFile(
     (resp: UploadFileResponse) => {
       // alert(JSON.stringify(resp));
       props?.onSuccess !== undefined && props?.onSuccess(resp);
@@ -32,6 +32,15 @@ export const UploadFileButton = (
     }
   );
 
+  if (isUploading) {
+    return (
+      <div className={cn("text-gray-400 dark:text-gray-700", props.className)}>
+        <p>Uploading: </p>
+
+        <p className="mt-8">Upload progress: {`${percentCompleted}%`}</p>
+      </div>
+    );
+  }
   return (
     <div
       className={cn(

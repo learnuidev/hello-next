@@ -2,6 +2,7 @@ import { getUploadUrl } from "@/domain/asset/asset.api";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import Axios from "axios";
 import { useAddUserAssetMutation } from "@/domain/asset/asset.mutation";
+import { useState } from "react";
 
 export interface UploadFileResponse {
   id: string;
@@ -17,6 +18,8 @@ export interface UploadFileResponse {
 }
 
 export function useUploadFile(cb?: any, ctx?: any, props?: any) {
+  const [percentCompleted, setPercentCompleted] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
   function getFileExtension(file: any) {
     return file.name.split(".").pop().toLowerCase();
   }
@@ -28,6 +31,8 @@ export function useUploadFile(cb?: any, ctx?: any, props?: any) {
   const onUploadFileChange = async (e: any) => {
     const file = e?.target?.files?.[0] || e;
     const extension = getFileExtension(file) || "";
+
+    setIsUploading(true);
 
     const contentType = file.type || "";
     const fileName = file.name || "";
@@ -60,6 +65,15 @@ export function useUploadFile(cb?: any, ctx?: any, props?: any) {
 
     Axios.put(url, file, {
       headers: { ["Content-Type"]: contentType },
+      onUploadProgress: (progressEvent: any) => {
+        const percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+
+        setPercentCompleted(percentCompleted);
+        // Do something with percentCompleted, e.g., update a progress bar
+        console.log(`Upload progress: ${percentCompleted}%`);
+      },
     });
 
     addUserAssetMutation
@@ -76,6 +90,7 @@ export function useUploadFile(cb?: any, ctx?: any, props?: any) {
       // @ts-ignore
       .then(async (resp: UploadFileResponse) => {
         console.log("UPLOADED", resp);
+        setIsUploading(false);
 
         if (e?.target?.value) {
           e.target.value = "";
@@ -85,5 +100,5 @@ export function useUploadFile(cb?: any, ctx?: any, props?: any) {
       });
   };
 
-  return onUploadFileChange;
+  return { onUploadFileChange, percentCompleted, isUploading };
 }

@@ -51,7 +51,7 @@ export const TranscriptionsInput = () => {
   }
 
   return (
-    <div className="flex gap-8">
+    <div className="flex gap-4 sm:gap-8 flex-col sm:flex-row items-center">
       <button
         onClick={() => {
           setTranscriptionView("add-text");
@@ -60,7 +60,7 @@ export const TranscriptionsInput = () => {
         <Icons.plusIcon /> <span>Add subtitles text</span>
       </button>
 
-      <p className="my-4">Or</p>
+      <p className="sm:my-4 my-0 text-gray-500">or</p>
 
       <button
         onClick={() => {

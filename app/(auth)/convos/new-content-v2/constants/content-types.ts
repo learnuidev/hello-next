@@ -29,11 +29,11 @@ export const contentTypesListV2 = [
     title: "Text",
     Component: TextFlow,
   },
-  {
-    id: "bilibili",
-    title: "bilibili",
-    Component: BilibiliFlow,
-  },
+  // {
+  //   id: "bilibili",
+  //   title: "bilibili",
+  //   Component: BilibiliFlow,
+  // },
 ];
 
 export const contentTypesV2 = contentTypesListV2.reduce<

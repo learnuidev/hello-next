@@ -1,9 +1,5 @@
-export type ContentV2Variants =
-  | "youtube"
-  | "audio"
-  | "video"
-  | "text"
-  | "bilibili";
+export type ContentV2Variants = "youtube" | "audio" | "video" | "text";
+// | "bilibili";
 
 export interface IContentV2 {
   id: string;

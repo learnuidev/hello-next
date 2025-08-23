@@ -16,11 +16,25 @@ const baseSchema = z.object({
   author: z.string(),
 });
 
+const thumbnailImageSchema = z.object({
+  url: z.string().url(),
+  width: z.number(),
+  height: z.number(),
+});
+
+const thumbnailsSchema = z.object({
+  default: thumbnailImageSchema,
+  medium: thumbnailImageSchema,
+  high: thumbnailImageSchema,
+  standard: thumbnailImageSchema,
+  maxres: thumbnailImageSchema,
+});
+
 // Specialized child schemas:
 const youtubeSchema = baseSchema.extend({
   type: z.literal("youtube"),
   audio: z.string(),
-  thumbnails: z.array(z.string()).optional(), // assuming array of URLs
+  thumbnails: thumbnailsSchema,
   description: z.string(),
   transcriptions: z.any(), // could refine further if you know the structure
 });

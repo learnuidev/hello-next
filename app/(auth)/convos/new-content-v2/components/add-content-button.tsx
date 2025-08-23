@@ -11,14 +11,15 @@ export const AddContentButton = () => {
 
   return (
     <Button
+      className="w-full sm:w-40 my-8"
       onClick={() => {
         const contentInput = validateContentInput(newConvo);
 
         if (contentInput?.error?.issues) {
-          alert(JSON.stringify(contentInput.error!.issues));
+          console.log("contentInput.error!.issues", contentInput.error!.issues);
         } else {
           if (contentInput.success) {
-            addContentMutation.mutateAsync(contentInput.data as any);
+            // addContentMutation.mutateAsync(contentInput.data as any);
             console.log("Content is valid", contentInput.data);
           }
         }

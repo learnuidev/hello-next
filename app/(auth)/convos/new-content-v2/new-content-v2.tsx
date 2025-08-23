@@ -6,6 +6,7 @@ import { useViewModeStore } from "../new-convo/use-viewmode-store";
 import { Icons } from "@/components/ui/icons.v2";
 import { useNewConvoStore } from "@/components/step";
 import { useState } from "react";
+import { AddContentButton } from "./components/add-content-button";
 
 export const NewContentV2 = () => {
   const isNewContentEnabled = useIsNewContentFormEnabled();
@@ -92,6 +93,8 @@ export const NewContentV2 = () => {
           </code>
         </div>
       )}
+
+      <AddContentButton />
     </div>
   );
 };

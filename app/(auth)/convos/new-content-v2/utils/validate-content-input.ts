@@ -42,12 +42,13 @@ const youtubeSchema = baseSchema.extend({
 const videoSchema = baseSchema.extend({
   type: z.literal("video"),
   videoId: z.string(),
-  transcriptions: z.any(),
+  transcriptions: z.any()?.optional(),
 });
 
 const audioSchema = baseSchema.extend({
   type: z.literal("audio"),
   audioId: z.string(),
+  transcriptions: z.any()?.optional(),
 });
 
 const textSchema = baseSchema.extend({
@@ -104,6 +105,7 @@ export function validateContentInput(data: any) {
 
   if (type === "audio") {
     mandatory.audioId = data.audioId;
+    mandatory.transcriptions = data.transcriptions;
   }
 
   if (type === "text") {

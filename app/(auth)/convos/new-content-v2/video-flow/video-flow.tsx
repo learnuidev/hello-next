@@ -5,6 +5,7 @@ import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { LangAndContentTypeSelector } from "../components/lang-content-type-selector";
 import { ContentTitleInput } from "../components/content-title-input";
 import { VideoPreview } from "./components/video-preview";
+import { TranscriptionsInput } from "../components/transcriptions-input";
 
 export const VideoFlow = () => {
   const setConvo = useNewConvoStore((state) => state.setConvo);
@@ -29,6 +30,8 @@ export const VideoFlow = () => {
       </UploadFileButton>
 
       {newConvo?.videoId && <VideoPreview userAssetId={newConvo.videoId} />}
+
+      <TranscriptionsInput />
     </div>
   );
 };

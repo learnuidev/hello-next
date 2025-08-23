@@ -12,12 +12,15 @@ export const AddContentButton = () => {
   return (
     <Button
       onClick={() => {
-        try {
-          const contentInput = validateContentInput(newConvo);
+        const contentInput = validateContentInput(newConvo);
 
-          console.log("CONTENT IS SAFE", contentInput);
-        } catch (err) {
-          alert(JSON.stringify(err));
+        if (contentInput?.error?.issues) {
+          alert(JSON.stringify(contentInput.error!.issues));
+        } else {
+          if (contentInput.success) {
+            addContentMutation.mutateAsync(contentInput.data as any);
+            console.log("Content is valid", contentInput.data);
+          }
         }
       }}
     >

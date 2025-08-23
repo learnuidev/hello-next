@@ -49,10 +49,22 @@ export const contentSchema = z.discriminatedUnion("type", [
   textSchema,
 ]);
 
+// Custom error map to override specific errors
+const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
+  if (issue.code === "invalid_union_discriminator") {
+    // You can include ctx.data to show the received value
+    return {
+      message:
+        `Type is not valid. Allowed: youtube, video, audio, text. ` +
+        `Received: ${ctx.data?.type ?? "unknown"}`,
+    };
+  }
+  // Optionally handle other errors or fallback
+  return { message: ctx.defaultError };
+};
+
 export function validateContentInput(data: any) {
   const { location, type, contentType, lang, title, input, author } = data;
-
-  console.log("data", data);
 
   let mandatory: any = {
     location,
@@ -84,5 +96,5 @@ export function validateContentInput(data: any) {
     mandatory.input = data.input;
   }
 
-  return contentSchema.parse(removeNull(mandatory));
+  return contentSchema.safeParse(mandatory, { errorMap: customErrorMap });
 }

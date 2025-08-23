@@ -8,6 +8,7 @@ import { siteConfig } from "@/lib/config";
 import { useGetListContentsQueryKey } from "./content.queries";
 import { useRouter } from "next/navigation";
 import { IContent } from "./content.api";
+import { useNewConvoStore } from "@/components/step";
 
 const addContent = async (
   params: AddContentParams,
@@ -28,6 +29,8 @@ const addContent = async (
 
 export function useAddContentMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
+
+  const resetConvo = useNewConvoStore((state) => state.resetConvo);
   const router = useRouter();
   const queryClient = useQueryClient();
   const listContentsQueryKey = useGetListContentsQueryKey();
@@ -50,6 +53,8 @@ export function useAddContentMutation(options = {} as any) {
           items: [data, ...old?.items],
         };
       });
+
+      resetConvo();
 
       router.push(`/convos/${data?.id}`);
     },

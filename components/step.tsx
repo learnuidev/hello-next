@@ -20,24 +20,36 @@ export const StepTitleContainer = ({
   );
 };
 
+const initConvo = {
+  id: "mandarino#resource#" + new Date().getTime(),
+  type: "",
+  author: "",
+  location: "",
+  level: 1,
+  course: "",
+  title: "",
+  audio: "",
+
+  safeLang: "en",
+  targetLang: "zh",
+};
+
 export const useNewConvoStore = create(
   persist(
     (set: any, get: any) => ({
       step: "content",
       setStep: (step: "content" | "details" | "preview" | any) => set({ step }),
       convo: {
+        ...initConvo,
         id: "mandarino#resource#" + new Date().getTime(),
-        type: "",
-        author: "",
-        location: "",
-        level: 1,
-        course: "",
-        title: "",
-        audio: "",
-
-        safeLang: "en",
-        targetLang: "zh",
       },
+      resetConvo: () =>
+        set({
+          convo: {
+            ...initConvo,
+            id: "mandarino#resource#" + new Date().getTime(),
+          },
+        }),
       setConvo2: (value: any) => set({ convo: value }),
       setConvo: (key: any, value: any) =>
         set({ convo: { ...get().convo, [key]: value } }),

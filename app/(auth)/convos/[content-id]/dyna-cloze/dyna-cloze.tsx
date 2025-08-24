@@ -50,6 +50,12 @@ function DynoSentenceInner({
     lang: sentence?.lang,
   });
 
+  const { data: grammar, isLoading: isLoadingGrammar } = useListGrammarsQuery({
+    sentenceId: sentence?.input || sentence?.hanzi,
+    content: sentence?.input || sentence?.hanzi,
+    lang: sentence?.lang,
+  });
+
   const meanings = data || {};
 
   const finalSentence = useMemo(() => {

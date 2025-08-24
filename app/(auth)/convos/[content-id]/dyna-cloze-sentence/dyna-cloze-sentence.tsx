@@ -534,11 +534,9 @@ export const DynaClozeSentence = ({
         <div className="flex-1 flex justify-center px-4">
           <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "}
         </div>
-        <div className="flex-1 flex justify-end px-4">
-          {/* <HskLevelSelector currentCharacter={currentCharacter} /> */}
-        </div>
+        <div className="flex-1 flex justify-end px-4"></div>
       </nav>
-      {/* <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "} */}
+
       {viewMode === "dynocloze" ? (
         <WithMultiSentence sentence={finalSentence}>
           <DynaSentence

@@ -31,12 +31,14 @@ const sizes = {
 
 function ContentDetailHeader({ content }: any) {
   return (
-    <div className="text-gray-400">
-      <Link href="/convos" className="hover:text-white">
+    <div className="dark:text-gray-400 text-black">
+      <Link href="/convos" className="dark:hover:text-white hover:text-red-400">
         Courses
       </Link>
       {" / "}
-      <span className="hover:text-white">{content?.title}</span>
+      <span className="dark:hover:text-white hover:text-red-400">
+        {content?.title}
+      </span>
     </div>
   );
 }
@@ -80,7 +82,7 @@ function FocusMode(props: {
 
   if (currentTranscription?.lang === "zh") {
     return (
-      <div className="text-center mt-32">
+      <div className="text-center mt-32 max-w-5xl mx-auto">
         {/* <code>
           <pre>{JSON.stringify(currentTranscription, null, 4)}</pre>
         </code>{" "} */}

@@ -53,6 +53,7 @@ function FocusMode(props: {
   contentId?: string;
   isFocusKaraokeMode?: boolean;
   audioUrl?: string;
+  viewPinyin: boolean;
 }) {
   const {
     // playerRef,
@@ -66,6 +67,7 @@ function FocusMode(props: {
     contentId,
     lang,
     audio,
+    viewPinyin,
   } = props;
 
   const { focusIndex, setFocusIndex } = useFocusIndex(contentId || "");
@@ -87,13 +89,13 @@ function FocusMode(props: {
           onClick={() => {
             seekTo(currentTranscription?.start);
           }}
-          className="mb-32 text-xl sm:text-3xl"
+          className="mb-32 text-lg sm:text-2xl"
         >
           {currentTranscription?.en}
         </p>
 
         <p className="text-xl sm:text-3xl">{currentTranscription?.input}</p>
-        <p>{currentTranscription?.pinyin}</p>
+        {viewPinyin && <p>{currentTranscription?.pinyin}</p>}
       </div>
     );
   }
@@ -526,6 +528,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                 play={() => {
                   togglePlay();
                 }}
+                viewPinyin={viewPinyin}
                 audioUrl={audioUrl}
                 isFocusKaraokeMode={karaokeMode}
                 contentId={contentId}

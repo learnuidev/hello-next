@@ -20,6 +20,7 @@ import { useFocusMode } from "./hooks/use-focus-mode";
 import { useFocusIndex } from "./hooks/use-focus-index";
 import { useGetContentAnalyticsQuery } from "../convo-insights/hooks/get-content-analytics-query";
 import { useUpsetContentAnalyticsHandler } from "../[content-id]/hooks/use-upsert-content-analytics-handler";
+import { cn } from "@/lib/utils";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -40,22 +41,105 @@ function ContentDetailHeader({ content }: any) {
   );
 }
 
+function FocusMode(props: {
+  play: any;
+  seekTo: any;
+  transcriptions: any;
+  isPlaying: any;
+  currentTime: number;
+  lang: string;
+  focusMode?: any;
+  audio?: any;
+  contentId?: string;
+  isFocusKaraokeMode?: boolean;
+  audioUrl?: string;
+}) {
+  const {
+    // playerRef,
+    audioUrl,
+    play,
+    seekTo,
+    isPlaying,
+    transcriptions,
+    currentTime,
+    isFocusKaraokeMode,
+    contentId,
+    lang,
+    audio,
+  } = props;
+
+  const { focusIndex, setFocusIndex } = useFocusIndex(contentId || "");
+
+  const currentTranscription =
+    isFocusKaraokeMode && !audioUrl
+      ? transcriptions?.[focusIndex]
+      : transcriptions?.filter((trans: any) => trans?.end > currentTime)?.[0] ||
+        transcriptions?.[0];
+
+  if (currentTranscription?.lang === "zh") {
+    return (
+      <div className="text-center mt-32">
+        {/* <code>
+          <pre>{JSON.stringify(currentTranscription, null, 4)}</pre>
+        </code>{" "} */}
+
+        <p
+          onClick={() => {
+            seekTo(currentTranscription?.start);
+          }}
+          className="mb-32 text-xl sm:text-3xl"
+        >
+          {currentTranscription?.en}
+        </p>
+
+        <p className="text-xl sm:text-3xl">{currentTranscription?.input}</p>
+        <p>{currentTranscription?.pinyin}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="text-center mt-32">
+      <p>{currentTranscription?.roman}</p>
+      <p>{currentTranscription?.input}</p>
+    </div>
+  );
+}
+
 function ActiveSubtitleDisplay({
   activeSubtitle,
   selected,
   selectedWord,
+  viewPinyin,
 }: any) {
   const subtitleValue = selected?.en || activeSubtitle?.en || "...";
 
   return (
-    <div className="mt-6 sticky top-0 m-auto bg-gray-50 dark:bg-[rgb(9,10,11)] z-50">
-      <div className="sticky top-0 pt-4 px-2 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)]">
+    <div className="mt-6 sticky top-0 m-auto bg-gray-50 dark:bg-[rgb(9,10,11)] z-50 rounded-full">
+      <div className="sticky top-0 pt-4 px-2 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)] rounded-xl">
         <div className="pb-4">
-          <h4 className="text-xs text-gray-500 mb-4">Sentence meaning</h4>
-          <div className={`h-12 flex justify-between items-center mt-2 w-full`}>
-            <p className="space-x-2 text-black dark:text-gray-300 text-[16px] font-light pb-[4px]">
-              {subtitleValue}
-            </p>
+          <div
+            className={cn(
+              `${viewPinyin ? `h-60 sm:h-40` : `h-32 sm:h-16`} flex justify-between items-center mt-2 w-full rounded-full`,
+              `text-[14px] sm:text-[16px] `
+            )}
+          >
+            <div>
+              {viewPinyin && (
+                <p className="space-x-2 dark:text-gray-300 text-gray-600 font-light pb-[4px]">
+                  {selected?.pinyin ||
+                    activeSubtitle?.pinyin ||
+                    activeSubtitle?.roman}
+                </p>
+              )}
+              <p
+                className={cn(
+                  "space-x-2 text-black dark:text-gray-300 font-light pb-[4px]"
+                )}
+              >
+                {subtitleValue}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -427,6 +511,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         {karaokeMode ? null : brightMode && lang !== "zh" ? null : (
           <ActiveSubtitleDisplay
             selectedWord={hovered}
+            viewPinyin={viewPinyin}
             selected={selected}
             activeSubtitle={activeSubtitle}
           />
@@ -437,7 +522,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         <div className="relative space-y-8">
           {karaokeMode ? (
             <div>
-              <KaraokeMode
+              <FocusMode
                 play={() => {
                   togglePlay();
                 }}

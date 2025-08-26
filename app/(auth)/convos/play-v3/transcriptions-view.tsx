@@ -56,40 +56,6 @@ export const TranscriptionsView = ({
                     textSize?.[3]
                   )}
                 >
-                  {viewPinyin &&
-                    ["zh", "zh-CN", "ur"].includes(subtitle.lang) && (
-                      <Link
-                        onClick={() => {
-                          setIfExists({ ...subtitle, contentId });
-                        }}
-                        href={`/nmm/${encodeURIComponent(subtitle?.input || subtitle.hanzi)}?lang=${subtitle?.lang || "zh"}`}
-                        target="_blank"
-                        className={cn(
-                          subtitle?.pinyin ? "text-gray-500" : "text-black",
-                          "text-sm",
-                          currentTime > subtitle?.start &&
-                            currentTime < subtitle.end
-                            ? "text-white "
-                            : "text-gray-500",
-
-                          textSize?.[0],
-                          activeSubtitle?.sentence === subtitle?.sentence
-                            ? "text-gray-400"
-                            : "text-gray-600",
-                          currentTime > subtitle?.start &&
-                            currentTime < subtitle.end
-                            ? "dark:text-white text-black"
-                            : "",
-                          currentTime === 0
-                            ? "dark:text-gray-300 text-black"
-                            : "",
-                          "text-start"
-                        )}
-                      >
-                        {subtitle?.roman || subtitle?.pinyin || ""}
-                      </Link>
-                    )}
-
                   {brightMode ? (
                     <div>
                       {(subtitle?.input || subtitle?.hanzi)
@@ -163,16 +129,18 @@ export const TranscriptionsView = ({
                         "text-3xl font-light dark:text-gray-500 text-gray-700 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-black text-left",
 
                         textSize?.[1],
-                        activeSubtitle?.sentence === subtitle?.sentence
-                          ? "text-gray-400"
-                          : " text-gray-600",
+                        // activeSubtitle?.sentence === subtitle?.sentence
+                        //   ? "text-gray-400"
+                        //   : " text-gray-600",
                         currentTime > subtitle?.start &&
                           currentTime < subtitle.end
-                          ? "dark:text-white text-black"
-                          : "0",
+                          ? "text-red-400"
+                          : "",
                         currentTime === 0
                           ? "dark:text-gray-400 text-gray-700"
                           : ""
+
+                        // "sm:text-3xl text-[16px]"
                       )}
                     >
                       {subtitle?.input || subtitle?.hanzi}

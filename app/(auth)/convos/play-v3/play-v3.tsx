@@ -21,6 +21,8 @@ import { useFocusIndex } from "./hooks/use-focus-index";
 import { useGetContentAnalyticsQuery } from "../convo-insights/hooks/get-content-analytics-query";
 import { useUpsetContentAnalyticsHandler } from "../[content-id]/hooks/use-upsert-content-analytics-handler";
 import { cn } from "@/lib/utils";
+import { smartSplit } from "@/components/youtube-page/utils/smart-split";
+import { CharacterItem } from "@/components/_select-character/character-item";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -87,17 +89,33 @@ function FocusMode(props: {
           <pre>{JSON.stringify(currentTranscription, null, 4)}</pre>
         </code>{" "} */}
 
+        <p className="text-xl sm:text-3xl">
+          {smartSplit({
+            input: currentTranscription?.input || currentTranscription?.hanzi,
+            lang,
+          })?.map((item: string, idx: number) => {
+            return (
+              <CharacterItem
+                disableClass
+                key={`${idx}-youtube-player-active-transcription-${item}-${idx}`}
+                character={item}
+              />
+            );
+          })}
+        </p>
+
+        {viewPinyin && <p>{currentTranscription?.pinyin}</p>}
+
         <p
           onClick={() => {
             seekTo(currentTranscription?.start);
           }}
-          className="mb-32 text-lg sm:text-2xl"
+          className="mt-32 text-lg sm:text-2xl"
         >
           {currentTranscription?.en}
         </p>
 
-        <p className="text-xl sm:text-3xl">{currentTranscription?.input}</p>
-        {viewPinyin && <p>{currentTranscription?.pinyin}</p>}
+        {/* <p className="text-xl sm:text-3xl">{currentTranscription?.input}</p> */}
       </div>
     );
   }

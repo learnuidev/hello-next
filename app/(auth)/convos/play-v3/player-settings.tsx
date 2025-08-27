@@ -200,12 +200,10 @@ export const PlayerSettings = ({
                 setFocusMode(!focusMode);
               }}
             >
-              <Icons.bullsEyeArrow
+              <Icons.karaoke
                 className={cn(
                   "sm:text-2xl text-[16px]",
-                  typeof focusMode === "number"
-                    ? "dark:text-white text-black"
-                    : "text-gray-400"
+                  focusMode ? "dark:text-white text-black" : "text-gray-400"
                 )}
               />
             </button>
@@ -301,12 +299,10 @@ export const PlayerSettings = ({
                 upsertContentAnalyticsHandler({ focusMode: !focusMode });
               }}
             >
-              <Icons.bullsEyeArrow
+              <Icons.karaoke
                 className={cn(
                   "sm:text-2xl text-[16px]",
-                  typeof focusMode === "number"
-                    ? "dark:text-white text-black"
-                    : "text-gray-400"
+                  focusMode ? "dark:text-white text-black" : "text-gray-400"
                 )}
               />
             </button>

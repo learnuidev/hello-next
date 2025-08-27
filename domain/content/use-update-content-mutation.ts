@@ -48,12 +48,15 @@ export function useUpdateContentMutation(options = {} as any) {
         options?.onSuccess(data);
       }
 
-      // queryClient.setQueriesData(
-      //   [getContentQueryId, data?.id] as any,
-      //   (old: any) => {
+      queryClient.refetchQueries({ queryKey: [getContentQueryId, data?.id] });
+
+      // queryClient.setQueriesData({
+      //   queryKey: [getContentQueryId, data?.id],
+
+      //   updater: (prev: any) => {
       //     return data;
-      //   }
-      // );
+      //   },
+      // });
 
       // queryClient.setQueryData(listContentsQueryKey, (old: any) => {
       //   return {

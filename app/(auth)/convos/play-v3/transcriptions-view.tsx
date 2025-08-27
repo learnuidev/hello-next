@@ -6,6 +6,7 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { groupBy } from "ramda";
+import { SubtitleInputEditor } from "./subtitle-input-editor";
 
 export const TranscriptionsView = ({
   contentId,
@@ -196,55 +197,37 @@ export const TranscriptionsView = ({
                         />
                       </div>
                     )}
-                    {editMode && (
-                      <div>
-                        <p>roman</p>
-                        <input
-                          className="w-full mb-4 focus-visible:outline-none focus-visible:ring-ring"
-                          value={timeStamp?.roman || subtitle?.roman}
-                          onChange={(event) => {
-                            setTimer("roman", event?.target?.value);
-                          }}
-                        />
-                      </div>
-                    )}
-
-                    {/* {(timeStamp?.roman || subtitle?.roman) &&
-                      editMode &&
-                      ["zh", "zh-CN"]?.includes(subtitle.lang) && (
-                        <textarea
-                          className=""
-                          value={timeStamp?.roman || subtitle?.roman}
-                          onChange={(event) => {
-                            setTimer("roman", subtitle, event?.target?.value);
-                          }}
-                        />
-                      )} */}
+                    {subtitle?.lang === "zh"
+                      ? null
+                      : editMode && (
+                          <div>
+                            <p>roman</p>
+                            <input
+                              className="w-full mb-4 focus-visible:outline-none focus-visible:ring-ring"
+                              value={timeStamp?.roman || subtitle?.roman}
+                              onChange={(event) => {
+                                setTimer("roman", event?.target?.value);
+                              }}
+                            />
+                          </div>
+                        )}
 
                     {(timeStamp?.hanzi || subtitle?.hanzi) && editMode && (
-                      <div>
-                        <p>hanzi</p>
-                        <input
-                          className="w-full mb-4 focus-visible:outline-none focus-visible:ring-ring"
-                          value={timeStamp?.hanzi || subtitle?.hanzi}
-                          onChange={(event) => {
-                            setTimer("hanzi", event?.target?.value);
-                          }}
-                        />
-                      </div>
+                      <SubtitleInputEditor
+                        attribute="hanzi"
+                        title="hanzi"
+                        setTimer={setTimer}
+                        subtitle={timeStamp || subtitle}
+                      />
                     )}
 
                     {(timeStamp?.input || subtitle?.input) && editMode && (
-                      <div>
-                        <p>input</p>
-                        <textarea
-                          className="w-full mb-4 focus-visible:outline-none focus-visible:ring-ring"
-                          value={timeStamp?.input || subtitle?.input}
-                          onChange={(event) => {
-                            setTimer("input", subtitle, event?.target?.value);
-                          }}
-                        />
-                      </div>
+                      <SubtitleInputEditor
+                        attribute="input"
+                        title="input"
+                        setTimer={setTimer}
+                        subtitle={timeStamp || subtitle}
+                      />
                     )}
 
                     {editMode && (

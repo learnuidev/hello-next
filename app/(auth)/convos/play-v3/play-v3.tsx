@@ -23,6 +23,7 @@ import { useUpsetContentAnalyticsHandler } from "../[content-id]/hooks/use-upser
 import { cn } from "@/lib/utils";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { CharacterItem } from "@/components/_select-character/character-item";
+import { SubtitleInputEditor } from "./subtitle-input-editor";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -58,6 +59,8 @@ function FocusMode(props: {
   isFocusKaraokeMode?: boolean;
   audioUrl?: string;
   viewPinyin: boolean;
+  setTimer: any;
+  editMode: any;
 }) {
   const {
     // playerRef,
@@ -72,6 +75,8 @@ function FocusMode(props: {
     lang,
     audio,
     viewPinyin,
+    setTimer,
+    editMode,
   } = props;
 
   const { focusIndex, setFocusIndex } = useFocusIndex(contentId || "");
@@ -89,31 +94,61 @@ function FocusMode(props: {
           <pre>{JSON.stringify(currentTranscription, null, 4)}</pre>
         </code>{" "} */}
 
-        <p className="text-xl sm:text-3xl">
-          {smartSplit({
-            input: currentTranscription?.input || currentTranscription?.hanzi,
-            lang,
-          })?.map((item: string, idx: number) => {
-            return (
-              <CharacterItem
-                disableClass
-                key={`${idx}-youtube-player-active-transcription-${item}-${idx}`}
-                character={item}
-              />
-            );
-          })}
-        </p>
+        {editMode ? (
+          <SubtitleInputEditor
+            attribute="input"
+            title="input"
+            className="text-xl sm:text-3xl text-center"
+            setTimer={setTimer}
+            subtitle={currentTranscription}
+          />
+        ) : (
+          <p className="text-xl sm:text-3xl">
+            {smartSplit({
+              input: currentTranscription?.input || currentTranscription?.hanzi,
+              lang,
+            })?.map((item: string, idx: number) => {
+              return (
+                <CharacterItem
+                  disableClass
+                  key={`${idx}-youtube-player-active-transcription-${item}-${idx}`}
+                  character={item}
+                />
+              );
+            })}
+          </p>
+        )}
 
-        {viewPinyin && <p>{currentTranscription?.pinyin}</p>}
+        {editMode ? (
+          <SubtitleInputEditor
+            className="text-xl sm:text-3xl text-center"
+            attribute="pinyin"
+            title="pinyin"
+            setTimer={setTimer}
+            subtitle={currentTranscription}
+          />
+        ) : (
+          viewPinyin && <p>{currentTranscription?.pinyin}</p>
+        )}
 
-        <p
-          onClick={() => {
-            seekTo(currentTranscription?.start);
-          }}
-          className="mt-32 text-lg sm:text-2xl"
-        >
-          {currentTranscription?.en}
-        </p>
+        {editMode ? (
+          <SubtitleInputEditor
+            className="text-xl sm:text-3xl text-center"
+            attribute="en"
+            title="English"
+            setTimer={setTimer}
+            subtitle={currentTranscription}
+          />
+        ) : (
+          <p
+            onClick={() => {
+              seekTo(currentTranscription?.start);
+            }}
+            className="mt-32 text-lg sm:text-2xl"
+          >
+            {currentTranscription?.en}
+          </p>
+        )}
 
         {/* <p className="text-xl sm:text-3xl">{currentTranscription?.input}</p> */}
       </div>
@@ -548,6 +583,8 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                 play={() => {
                   togglePlay();
                 }}
+                editMode={editMode}
+                setTimer={setTimer}
                 viewPinyin={viewPinyin}
                 audioUrl={audioUrl}
                 isFocusKaraokeMode={karaokeMode}

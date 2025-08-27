@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { groupBy } from "ramda";
 import { SubtitleInputEditor } from "./subtitle-input-editor";
+import { smartSplit } from "@/components/youtube-page/utils/smart-split";
+import { CharacterItem } from "@/components/_select-character/character-item";
 
 export const TranscriptionsView = ({
   contentId,
@@ -57,97 +59,40 @@ export const TranscriptionsView = ({
                     textSize?.[3]
                   )}
                 >
-                  {brightMode ? (
-                    <div>
-                      {(subtitle?.input || subtitle?.hanzi)
-                        ?.split("")
-                        ?.map((val: any, idx: any) => {
-                          const learnedChar = learnedCharacters2?.find(
-                            (char: any) => char?.hanzi === val
-                          );
-                          const comp = components?.find(
-                            (char: any) => char?.hanzi === val
-                          );
-
-                          const color = calculateColor({
-                            tone: learnedChar?.tone_level,
-                          });
-
-                          const hoverColor = calculateHoverColor({
-                            tone: learnedChar?.tone_level || comp?.tone_level,
-                          });
-
-                          return (
-                            <span
-                              onClick={() => {
-                                if (loop) {
-                                  setLoop(subtitle.input);
-                                }
-                                seek(timeStamp?.start || subtitle?.start);
-                              }}
-                              key={`${val}-${idx}`}
-                              className={cn(
-                                `${
-                                  currentTime > subtitle?.start &&
-                                  currentTime < subtitle.end
-                                    ? brightMode
-                                      ? learnedChar?.status === "forgotten"
-                                        ? "text-gray-200 dark:text-gray-600"
-                                        : `${color} ${hoverColor}`
-                                      : `dark:text-white text-black ${color} ${hoverColor}`
-                                    : !brightMode || isCharactersLoading
-                                      ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
-                                      : // learnedCharacters.includes(prop?.hanzi)
-                                        learnedChar
-                                        ? learnedChar?.status === "forgotten"
-                                          ? `text-gray-200 dark:text-gray-600 ${hoverColor}`
-                                          : // : lastAnswer?.totalCharacters?.includes(character?.hanzi)
-                                            //   ? "text-rose-500"
-                                            `${color} text-gray-300 ${hoverColor}`
-                                        : `dark:text-gray-200 text-gray-800 ${hoverColor}`
-                                } ${hoverColor} ${color} text-2xl transition lowercase font-light`,
-                                textSize?.[1],
-                                // TODO: Set learned view
-                                true &&
-                                  learnedChar?.status === "forgotten" &&
-                                  "text-gray-300 dark:text-gray-600"
-                              )}
-                            >
-                              {val}
-                            </span>
-                          );
-                        })}
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        if (loop) {
-                          setLoop(subtitle.input);
-                        }
-                        seek(timeStamp?.start || subtitle?.start);
-                      }}
-                      className={cn(
-                        "text-3xl font-light dark:text-gray-500 text-gray-700 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-black text-left",
-
-                        textSize?.[1],
-                        // activeSubtitle?.sentence === subtitle?.sentence
-                        //   ? "text-gray-400"
-                        //   : " text-gray-600",
-                        currentTime > subtitle?.start &&
-                          currentTime < subtitle.end
-                          ? "text-red-400"
-                          : "",
-                        currentTime === 0
-                          ? "dark:text-gray-400 text-gray-700"
-                          : ""
-
-                        // "sm:text-3xl text-[16px]"
-                      )}
-                    >
-                      {subtitle?.input || subtitle?.hanzi}
-                      {"   "}
-                    </button>
-                  )}
+                  <span
+                    onClick={() => {
+                      if (loop) {
+                        setLoop(subtitle.input);
+                      }
+                      seek(timeStamp?.start || subtitle?.start);
+                    }}
+                    className={cn(
+                      "text-[16px]",
+                      currentTime > subtitle?.start &&
+                        currentTime < subtitle.end
+                        ? "text-red-400 dark:text-white"
+                        : "text-gray-500"
+                    )}
+                  >
+                    {smartSplit({
+                      input: subtitle?.input || subtitle?.hanzi,
+                      lang: subtitle?.lang,
+                    })?.map((character: any, idx: number) => {
+                      return (
+                        <CharacterItem
+                          className={cn(
+                            "text-[16px]",
+                            currentTime > subtitle?.start &&
+                              currentTime < subtitle.end
+                              ? "text-red-400 dark:text-white"
+                              : ""
+                          )}
+                          character={character}
+                          key={`timeline-tab-${idx}-${character}-transcriptions-view`}
+                        />
+                      );
+                    })}
+                  </span>
                 </span>
 
                 {viewPinyin && !["zh", "zh-CN"]?.includes(subtitle.lang) && (

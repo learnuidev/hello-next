@@ -17,7 +17,6 @@ import {
 } from "../_select-character/utils/is-non-roman-lang";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { Icons } from "../ui/icons.v2";
-import { useContextPlayContextState } from "./hooks/use-play-history-state";
 import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
 import { useContentEditStore } from "./use-content-edit-store";
 import { smartSplit } from "./utils/smart-split";
@@ -250,14 +249,7 @@ export const TranscriptItem = ({
     );
   };
 
-  const exampleKeys = Object.keys(example);
-
-  const pinyinOrRoman = example?.pinyin ? "pinyin" : "roman";
-  const hanziOrInput = example?.input ? "input" : "hanzi";
-
   const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
-
-  const { contextId, setNewContextId } = useContextPlayContextState();
 
   return (
     <div className="w-120 px-4">

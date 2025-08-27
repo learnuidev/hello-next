@@ -19,6 +19,7 @@ import { CommonCharacterButton } from "./common-character-button";
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { usePreviousPathnameStore } from "./language-selector/use-previous-path-name-store";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
+import { PreviewButton } from "./settings-dialog/preview-button";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -140,8 +141,9 @@ export const FloatingCharacterNavbar = ({
       <div className="flex items-center w-full justify-center">
         <div className="px-8  py-2 bg-gray-100 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
           <div className="space-x-8 flex justify-center items-center w-full">
-            <CommonCharacterButton />
-            <BrightModeButton />
+            <PreviewButton />
+            {/* <CommonCharacterButton /> */}
+            {/* <BrightModeButton /> */}
 
             <PinyinButton />
 

@@ -3,19 +3,12 @@ import { Icons } from "./ui/icons.v2";
 
 import Link from "next/link";
 
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { NomadIcon } from "./ui/icons";
 
 import { TheDock } from "@/components/the-dock";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
-import { useReadModeStore } from "@/stores/use-readmode-store";
-import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
 import { FloatingDuNavbar } from "@/app/(auth)/du/components/floating-du-navbar";
 import { useReviewModeView } from "@/app/review/use-review-mode";
@@ -27,9 +20,9 @@ import { PinyinButton } from "./pinyin-button";
 import { useGetReviewUrl } from "./settings-dialog/use-get-review-url";
 
 import { ReviewNavbar } from "@/app/review/review-navbar";
-import { CommonCharacterButton } from "./common-character-button";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { isNonRomanLang } from "./_select-character/utils/is-non-roman-lang";
+import { CommonCharacterButton } from "./common-character-button";
 import { usePreviousPathnameStore } from "./language-selector/use-previous-path-name-store";
 
 const FloatingNavbarComp = () => {
@@ -53,12 +46,6 @@ const FloatingNavbarComp = () => {
   const isDuLessons = useIsDuLessons();
 
   const pathName = usePathname();
-
-  const setBrightMode = useBrightModeStore((state: any) => state.setMode);
-  const setReadMode = useReadModeStore((state) => state.setReadMode);
-  const readMode = useReadModeStore((state) => state.readMode);
-
-  const router = useRouter();
 
   const { setPreviousPath, previousPath } = usePreviousPathnameStore();
 

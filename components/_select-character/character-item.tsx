@@ -1,19 +1,10 @@
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
-import {
-  useListCharactersMapQuery,
-  useListCharactersQuery,
-} from "@/domain/lesson/character.queries";
-import {
-  useListComponents,
-  useListComponentsMapQuery,
-} from "@/domain/lesson/component.queries";
-import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
+import { useListCharactersMapQuery } from "@/domain/lesson/character.queries";
+import { useListComponentsMapQuery } from "@/domain/lesson/component.queries";
 
-import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
 import { cn } from "@/lib/utils";
-import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
-import { useCommonCharacterMode } from "@/stores/use-common-character-mode-store";
+import { usePreviewMode } from "../settings-dialog/use-preview-mode";
 
 interface ICharacterItem {
   character: any;
@@ -53,7 +44,11 @@ export const CharacterItem = ({
   const { data: components, isLoading: isComponentsLoading } =
     useListComponentsMapQuery();
 
-  const brightMode = useBrightModeStore((state: any) => state.mode);
+  // const brightMode = useBrightModeStore((state: any) => state.mode);
+
+  const { currentMode } = usePreviewMode();
+
+  const brightMode = currentMode?.current === "focus";
 
   const learnedChar = learnedCharacters2?.[character];
 
@@ -72,7 +67,7 @@ export const CharacterItem = ({
     tone: learnedChar?.tone_level || comp?.tone_level,
   });
 
-  const { commonCharacterMode } = useCommonCharacterMode();
+  const commonCharacterMode = currentMode?.current === "melanin";
 
   return (
     <span
@@ -83,28 +78,18 @@ export const CharacterItem = ({
       }}
       key={`${character}`}
       className={cn(
-        `${
-          commonCharacterMode
-            ? hasHskword
-              ? popularityColor
-              : "。？，"?.includes(character)
-                ? "dark:text-white text-black"
-                : "text-yellow-500"
-            : brightMode || isCharactersLoading
-              ? `dark:text-gray-300 text-gray-700 ${hoverColor}`
-              : learnedChar
-                ? disableForgotten
-                  ? `text-gray-300 ${color} ${hoverColor}`
-                  : learnedChar?.status === "forgotten"
-                    ? // ? `text-gray-300 dark:text-gray-800 ${hoverColor}`
-                      `text-gray-200 dark:text-gray-500 ${hoverColor}`
-                    : `text-gray-300 ${color} ${hoverColor}`
-                : `dark:text-gray-200 text-gray-800 ${hoverColor}`
-        } ${hoverColor}`,
-        disableClass
-          ? ""
-          : "lg:text-2xl text-xl transition lowercase font-light",
+        "lg:text-2xl text-xl transition lowercase font-light",
 
+        commonCharacterMode && hasHskword
+          ? popularityColor
+          : "。？，"?.includes(character)
+            ? "dark:text-white text-black"
+            : "",
+
+        brightMode &&
+          (learnedChar?.status === "forgotten"
+            ? `text-gray-300 dark:text-gray-800 ${hoverColor}`
+            : `${color} ${hoverColor}`),
         className
       )}
     >

@@ -103,14 +103,14 @@ function FocusMode(props: {
             subtitle={currentTranscription}
           />
         ) : (
-          <p className="text-xl sm:text-3xl">
+          <p className="text-xl sm:text-4xl">
             {smartSplit({
               input: currentTranscription?.input || currentTranscription?.hanzi,
               lang,
             })?.map((item: string, idx: number) => {
               return (
                 <CharacterItem
-                  disableClass
+                  className="text-xl sm:text-3xl lg:text-4xl"
                   key={`${idx}-youtube-player-active-transcription-${item}-${idx}`}
                   character={item}
                 />

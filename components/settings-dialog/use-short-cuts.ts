@@ -6,6 +6,7 @@ import { useViewType } from "@/app/(auth)/convos/_play-v2/use-view-type";
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { useIsContent } from "@/app/review/use-is-content";
 import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
+import { useCommonCharacterMode } from "@/stores/use-common-character-mode-store";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { usePathname, useRouter } from "next/navigation";
 import { useSearchQueryStore } from "../search/state";
@@ -15,7 +16,7 @@ import {
   useGetReviewUrl,
   useGetReviewUrlFn,
 } from "./use-get-review-url";
-import { useCommonCharacterMode } from "@/stores/use-common-character-mode-store";
+import { usePreviewMode } from "./use-preview-mode";
 
 export function useShortCuts() {
   const readMode = useReadModeStore((state) => state.readMode);
@@ -30,13 +31,12 @@ export function useShortCuts() {
   const setShowPinyin = useBrightModeStore((state: any) => state.setShowPinyin);
   const { data: unReviewedCharacters } = useUnreviwedCharacters();
 
-  const brightMode = useBrightModeStore((state: any) => state.mode);
   const setQuerySync = useSearchQueryStore((state) => state.setQuerySync);
   const setQuery = useSearchQueryStore((state) => state.setQuery);
   const setQuery2 = useSearchQueryStore((state) => state.setQuery2);
 
-  const setBrightMode = useBrightModeStore((state: any) => state.setMode);
-  // const reviewUrl = useGetReviewUrl({ reviewMode: "all" });
+  const { setNextMode } = usePreviewMode();
+
   const reviewUrl = useGetReviewUrl();
   const reviewUrlFn = useGetReviewUrlFn();
   const {
@@ -69,19 +69,6 @@ export function useShortCuts() {
         return null;
       }
 
-      // if (event.key === "h" && (event.metaKey || event.ctrlKey)) {
-      //   event.preventDefault();
-      //   // router.push("/");
-      //   // router.push("/nmm");
-      //   setMode(mode === "hsk" ? "hsk3" : "hsk");
-
-      //   if (routeName?.includes("/review")) {
-      //     router.push(
-      //       `/review?level=${level}&mode=${mode === "hsk" ? "hsk3" : "hsk"}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}${view ? `&view=${view}` : ``}`
-      //     );
-      //   }
-      // }
-
       if (["u"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         router.push("/du");
@@ -96,10 +83,6 @@ export function useShortCuts() {
         router.push("/diary");
       }
 
-      // if (["m"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-      //   event.preventDefault();
-      //   setMode("nmm");
-      // }
       if (["x"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         setMode("xiaoma");
@@ -151,14 +134,11 @@ export function useShortCuts() {
       if (["b"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         setCommonCharacterMode(false);
-        setBrightMode((val: any) => !val);
-        setReadMode(!readMode);
-        setFocus((focus: string) => (focus === "hanzi" ? "en" : "hanzi"));
+        setNextMode();
       }
       if (["m"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        console.log("yoo");
         event.preventDefault();
-        setCommonCharacterMode();
+        setNextMode();
       }
 
       if (["1"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
@@ -171,18 +151,10 @@ export function useShortCuts() {
         });
 
         if (routeName?.includes("/nmm")) {
-          // router.push(
-          //   `/nmm?level=${1}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
-
           router.push(`/nmm?${reviewUrl}`);
         }
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
-
-          // router.push(
-          //   `/review?level=${1}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
         }
 
         return;
@@ -197,16 +169,10 @@ export function useShortCuts() {
         });
 
         if (routeName?.includes("/nmm")) {
-          // router.push(
-          //   `/nmm?level=${2}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
           router.push(`/nmm?${reviewUrl}`);
         }
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
-          // router.push(
-          //   `/review?level=${2}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
         }
 
         return;
@@ -221,16 +187,10 @@ export function useShortCuts() {
         });
 
         if (routeName?.includes("/nmm")) {
-          // router.push(
-          //   `/nmm?level=${3}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
           router.push(`/nmm?${reviewUrl}`);
         }
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
-          // router.push(
-          //   `/review?level=${3}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
         }
 
         return;
@@ -244,16 +204,10 @@ export function useShortCuts() {
           reviewMode,
         });
         if (routeName?.includes("/nmm")) {
-          // router.push(
-          //   `/nmm?level=${4}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
           router.push(`/nmm?${reviewUrl}`);
         }
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
-          // router.push(
-          //   `/review?level=${4}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
         }
 
         return;
@@ -267,16 +221,10 @@ export function useShortCuts() {
           reviewMode,
         });
         if (routeName?.includes("/nmm")) {
-          // router.push(
-          //   `/nmm?level=${5}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
           router.push(`/nmm?${reviewUrl}`);
         }
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
-          // router.push(
-          //   `/review?level=${5}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
         }
 
         return;
@@ -291,16 +239,10 @@ export function useShortCuts() {
         });
 
         if (routeName?.includes("/nmm")) {
-          // router.push(
-          //   `/nmm?level=${6}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
           router.push(`/nmm?${reviewUrl}`);
         }
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
-          // router.push(
-          //   `/review?level=${6}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
         }
 
         return;
@@ -320,16 +262,10 @@ export function useShortCuts() {
         });
 
         if (routeName?.includes("/nmm")) {
-          // router.push(
-          //   `/nmm?level=${9}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
           router.push(`/nmm?${reviewUrl}`);
         }
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
-          // router.push(
-          //   `/review?level=${9}&mode=${viewMode}&entry-id=${entryId}&study-mode=${studyMode}${reviewMode ? `&review-mode=${reviewMode}` : ``}`
-          // );
         }
 
         return;
@@ -355,8 +291,6 @@ export function useShortCuts() {
   }, [
     mode,
     setMode,
-    setBrightMode,
-    brightMode,
     router,
     unReviewedCharacters,
     setFocus,
@@ -377,5 +311,6 @@ export function useShortCuts() {
     setQuery2,
     setShowPinyin,
     setCommonCharacterMode,
+    setNextMode,
   ]);
 }

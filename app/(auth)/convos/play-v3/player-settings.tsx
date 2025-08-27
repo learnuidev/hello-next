@@ -6,6 +6,7 @@ import { useFocusMode } from "./hooks/use-focus-mode";
 import { useFocusIndex } from "./hooks/use-focus-index";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useUpsetContentAnalyticsHandler } from "../[content-id]/hooks/use-upsert-content-analytics-handler";
+import { PreviewButton } from "@/components/settings-dialog/preview-button";
 
 export const PlayerSettings = ({
   contentId,
@@ -175,7 +176,7 @@ export const PlayerSettings = ({
                 P
               </div>
             </button>
-            <button
+            {/* <button
               onClick={() => {
                 setBrightMode((mode: any) => !mode);
               }}
@@ -186,7 +187,14 @@ export const PlayerSettings = ({
                   brightMode ? "dark:text-white text-black" : "text-gray-400"
                 )}
               />
-            </button>
+            </button> */}
+
+            <PreviewButton
+              className={cn(
+                "sm:text-2xl text-[16px]",
+                brightMode ? "dark:text-white text-black" : "text-gray-400"
+              )}
+            />
             <button
               onClick={() => {
                 setFocusMode(!focusMode);
@@ -279,18 +287,13 @@ export const PlayerSettings = ({
                 P
               </div>
             </button>
-            <button
-              onClick={() => {
-                setBrightMode((mode: any) => !mode);
-              }}
-            >
-              <Icons.glassesRound
-                className={cn(
-                  "sm:text-2xl text-[16px]",
-                  brightMode ? "dark:text-white text-black" : "text-gray-400"
-                )}
-              />
-            </button>
+
+            <PreviewButton
+              className={cn(
+                "sm:text-2xl text-[16px]",
+                brightMode ? "dark:text-white text-black" : "text-gray-400"
+              )}
+            />
 
             <button
               onClick={() => {

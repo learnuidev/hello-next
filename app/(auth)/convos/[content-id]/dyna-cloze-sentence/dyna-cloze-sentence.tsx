@@ -2,7 +2,6 @@ import { ReviewItemHanzi } from "@/app/review/review-cloze-content/review-item-h
 import { getRandomWords } from "@/app/review/review-cloze/utils/get-random-words";
 import { shuffleArray } from "@/app/review/review-cloze/utils/shuffle-array";
 import { useReviewModeView } from "@/app/review/use-review-mode";
-import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { Icons } from "@/components/ui/icons.v2";
 import {
   Tooltip,
@@ -161,8 +160,6 @@ const DynaSentence = ({
   const lang = useGetCurrentLang();
 
   const { learnMode, setLearnMode } = useDynaClozeSentence();
-
-  const brightMode = useBrightModeStore((state: any) => state.mode);
 
   const { data: grammar, isLoading } = useListGrammarsQuery({
     sentenceId: sentence?.input || sentence?.hanzi,

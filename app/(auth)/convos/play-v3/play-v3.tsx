@@ -32,6 +32,13 @@ const sizes = {
   3: ["text-[16px]", "text-4xl", "my-12", "px-[4px]"],
 } as any;
 
+const textSizesV2 = {
+  0: "text-xs sm:text-xl lg:text-2xl",
+  1: "text-sm sm:text-2xl lg:text-3xl",
+  2: "text-lg sm:text-3xl lg:text-4xl",
+  3: "text-xl sm:text-4xl lg:text-5xl",
+} as any;
+
 function ContentDetailHeader({ content }: any) {
   return (
     <div className="dark:text-gray-400 text-black">
@@ -61,6 +68,7 @@ function FocusMode(props: {
   viewPinyin: boolean;
   setTimer: any;
   editMode: any;
+  textSize: string;
 }) {
   const {
     // playerRef,
@@ -77,6 +85,7 @@ function FocusMode(props: {
     viewPinyin,
     setTimer,
     editMode,
+    textSize,
   } = props;
 
   const { focusIndex, setFocusIndex } = useFocusIndex(contentId || "");
@@ -103,14 +112,14 @@ function FocusMode(props: {
             subtitle={currentTranscription}
           />
         ) : (
-          <p className="text-xl sm:text-4xl">
+          <p>
             {smartSplit({
               input: currentTranscription?.input || currentTranscription?.hanzi,
               lang,
             })?.map((item: string, idx: number) => {
               return (
                 <CharacterItem
-                  className="text-xl sm:text-3xl lg:text-4xl"
+                  className={cn(textSize)}
                   key={`${idx}-youtube-player-active-transcription-${item}-${idx}`}
                   character={item}
                 />
@@ -263,6 +272,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   );
 
   const textSize = sizes?.[textSizeIndex] || sizes?.[1];
+  const textSizeV2 = textSizesV2?.[textSizeIndex];
 
   const setIfExists = useSetIfExists();
 
@@ -583,6 +593,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
                 play={() => {
                   togglePlay();
                 }}
+                textSize={textSizeV2}
                 editMode={editMode}
                 setTimer={setTimer}
                 viewPinyin={viewPinyin}

@@ -19,7 +19,7 @@ import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-contex
 import { useFocusMode } from "./hooks/use-focus-mode";
 import { useFocusIndex } from "./hooks/use-focus-index";
 import { useGetContentAnalyticsQuery } from "../convo-insights/hooks/get-content-analytics-query";
-import { useUpsetContentAnalyticsHandler } from "../[content-id]/hooks/use-upsert-content-analytics-handler";
+// import { useUpsetContentAnalyticsHandler } from "../[content-id]/hooks/use-upsert-content-analytics-handler";
 import { cn } from "@/lib/utils";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { CharacterItem } from "@/components/_select-character/character-item";
@@ -238,8 +238,8 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const times = useContentEditStore((state) => state.times);
   const setTimes = useContentEditStore((state) => state.setTimes);
 
-  const { upsertContentAnalyticsHandler } =
-    useUpsetContentAnalyticsHandler(contentId);
+  // const { upsertContentAnalyticsHandler } =
+  //   useUpsetContentAnalyticsHandler(contentId);
 
   const audioUrl = content?.audio;
   const { isPlaying, togglePlay, seek, currentTime, reset } = useMusicV2({
@@ -462,7 +462,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
           const newFocusIndex = Math.max(0, focusIndex - 1);
           setFocusIndex(newFocusIndex);
 
-          upsertContentAnalyticsHandler({ focusIndex: newFocusIndex });
+          // upsertContentAnalyticsHandler({ focusIndex: newFocusIndex });
         }
 
         if (audioUrl) {
@@ -477,7 +477,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
           );
           setFocusIndex(newFocusIndex);
 
-          upsertContentAnalyticsHandler({ focusIndex: newFocusIndex });
+          // upsertContentAnalyticsHandler({ focusIndex: newFocusIndex });
         }
 
         if (audioUrl) {

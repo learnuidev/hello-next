@@ -124,7 +124,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const [loop, setLoop] = useState<any>(null);
   const [isReady, setIsReady] = useState(false);
 
-  const { currentTime, setCurrentTime } = useCurrentTime(content.id);
+  const { currentTime = 0, setCurrentTime } = useCurrentTime(content.id);
 
   const playerRef = useRef<any>(null);
 

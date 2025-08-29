@@ -249,7 +249,7 @@ export const TranscriptItem = ({
     );
   };
 
-  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   return (
     <div className="w-120 px-4">

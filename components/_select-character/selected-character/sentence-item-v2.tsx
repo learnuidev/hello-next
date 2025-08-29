@@ -16,7 +16,7 @@ export const SentenceItemV2 = ({
   en: string;
   className?: string;
 }) => {
-  const brightMode = useBrightModeStore((state: any) => state.mode);
+  const brightMode = useBrightModeStore((state) => state.mode);
   const readMode = useReadModeStore((state) => state.readMode);
   return (
     <Link href={href} className={cn("font-extralight text-xl", className)}>

@@ -38,7 +38,7 @@ export const SentenceItem = (props: any) => {
   const unEncoded = currentPhrase?.hanzi || currentPhrase?.input;
 
   const isSuperAdmin = useIsSuperAdmin();
-  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   const { trackFunction } = useCanTrackFunction(currentPhrase, {
     lang: resolvedLang,

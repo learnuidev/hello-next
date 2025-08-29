@@ -15,7 +15,7 @@ export const useCommonCharacterModeStore = create((set: any, get: any) => ({
 export function useCommonCharacterMode() {
   const setReadMode = useReadModeStore((state) => state.setReadMode);
 
-  const setBrightMode = useBrightModeStore((state: any) => state.setMode);
+  const setBrightMode = useBrightModeStore((state) => state.setMode);
 
   const commonCharacterMode = useCommonCharacterModeStore(
     (state) => state.commonCharacterMode

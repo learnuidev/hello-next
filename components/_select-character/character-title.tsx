@@ -81,7 +81,7 @@ export const CharacterTitle = (props: any) => {
   const selectedCompInput = characterId;
 
   const StatusIcon = getStatusIcon(character?.status);
-  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   const finalEnVal =
     englishMeanings?.length === 1

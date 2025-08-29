@@ -96,7 +96,7 @@ export const useGetHskCharacters = ({
   //     selectedBelt?.maxCharacterLevel
   //   );
 
-  const brightMode = useBrightModeStore((state: any) => state.mode);
+  const brightMode = useBrightModeStore((state) => state.mode);
 
   const filteredComponents = filterComponents({
     components: slicedComponents,

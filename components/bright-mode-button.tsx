@@ -9,8 +9,8 @@ export const BrightModeButton = () => {
   const readMode = useReadModeStore((state) => state.readMode);
   const setReadMode = useReadModeStore((state) => state.setReadMode);
 
-  const brightMode = useBrightModeStore((state: any) => state.mode);
-  const setBrightMode = useBrightModeStore((state: any) => state.setMode);
+  const brightMode = useBrightModeStore((state) => state.mode);
+  const setBrightMode = useBrightModeStore((state) => state.setMode);
 
   const { setCommonCharacterMode } = useCommonCharacterMode();
 

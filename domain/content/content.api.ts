@@ -43,6 +43,30 @@ export const listContents = async (
   return resp;
 };
 
+interface ContentChapter {
+  title: string;
+  input: string;
+  roman: string;
+  lit: string;
+  hanzi?: string;
+  pinyin?: string;
+  id?: string;
+  en?: string;
+}
+
+export interface ContentTranscription {
+  hanzi: string;
+  start: number;
+  end: number;
+  id: string;
+  input: string;
+  roman: string;
+  pinyin: string;
+  lang: string;
+  sentence?: string;
+  en: string;
+}
+
 export interface IContent {
   id: string;
   title: string;
@@ -51,27 +75,8 @@ export interface IContent {
   lang: string;
   audio: string;
   userId: string;
-  chapters: {
-    title: string;
-    input: string;
-    roman: string;
-    lit: string;
-    hanzi?: string;
-    pinyin?: string;
-    id?: string;
-    en?: string;
-  }[];
-  transcriptions: {
-    hanzi: string;
-    start: number;
-    end: number;
-    id: string;
-    input: string;
-    roman: string;
-    pinyin: string;
-    lang: string;
-    sentence?: string;
-  }[];
+  chapters: ContentChapter[];
+  transcriptions: ContentTranscription[];
 }
 
 export const getContent = async (

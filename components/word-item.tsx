@@ -45,7 +45,7 @@ export const WordItem = ({
   };
 
   const addHistoryMutation = useAddHistoryMutation();
-  const brightMode = useBrightModeStore((state: any) => state.mode);
+  const brightMode = useBrightModeStore((state) => state.mode);
 
   return (
     <div>

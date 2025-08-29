@@ -41,7 +41,7 @@ export const PlayerSettings = ({
   const { upsertContentAnalyticsHandler } =
     useUpsetContentAnalyticsHandler(contentId);
 
-  const setShowPinyin = useBrightModeStore((state: any) => state.setShowPinyin);
+  const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
 
   return (
     <div className="w-full fixed bottom-0 py-4 px-4 z-30 m-auto bg-gray-50 dark:bg-[rgb(12,13,14)]">

@@ -32,7 +32,7 @@ export function HanziLinkSentence({
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
 
-  const brightMode = useBrightModeStore((state: any) => state.mode);
+  const brightMode = useBrightModeStore((state) => state.mode);
 
   const selectedComp = useMemo(
     () =>

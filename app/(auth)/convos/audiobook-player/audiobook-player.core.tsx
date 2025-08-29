@@ -12,15 +12,16 @@ import { useDebouncedCallback } from "use-debounce";
 import { cn } from "@/lib/utils";
 import { useListenState } from "../../listen/hooks/use-listen-state";
 import { PinyinButton } from "@/components/pinyin-button";
-import { IContent } from "@/domain/content/content.api";
+import { ContentTranscription, IContent } from "@/domain/content/content.api";
 
+interface CurrentTranscriptionProps {
+  currentTranscription: ContentTranscription;
+  seekAndPlay: (time: number) => void;
+}
 function EnView({
   currentTranscription,
   seekAndPlay,
-}: {
-  currentTranscription: any;
-  seekAndPlay: any;
-}) {
+}: CurrentTranscriptionProps) {
   console.log("currentTranscription", currentTranscription);
   return (
     <p
@@ -36,11 +37,7 @@ function EnView({
 function NormalView({
   currentTranscription,
   seekAndPlay,
-}: {
-  currentTranscription: any;
-  seekAndPlay: any;
-}) {
-  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+}: CurrentTranscriptionProps) {
   return (
     <div>
       <EnView
@@ -51,7 +48,6 @@ function NormalView({
       <p className="mt-12 sm:mt-32 text-2xl sm:text-4xl">
         {currentTranscription?.input}
       </p>
-      {/* {showPinyin && <p>{currentTranscription?.pinyin}</p>} */}
     </div>
   );
 }
@@ -59,10 +55,7 @@ function NormalView({
 function PinyinView({
   currentTranscription,
   seekAndPlay,
-}: {
-  currentTranscription: any;
-  seekAndPlay: any;
-}) {
+}: CurrentTranscriptionProps) {
   const { data } = useListDictionaryMeaningsQuery(
     currentTranscription?.input,
     currentTranscription?.lang
@@ -104,15 +97,11 @@ function PinyinView({
 function CurrentTranscriptionView({
   currentTranscription,
   seekAndPlay,
-}: {
-  currentTranscription: any;
-  seekAndPlay: any;
-}) {
-  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+}: CurrentTranscriptionProps) {
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   return (
     <div className="text-center mt-24 max-w-5xl mx-auto">
-      {/* {showPinyin && currentTranscription?.input?.length < 70 ? ( */}
       {showPinyin ? (
         <PinyinView
           currentTranscription={currentTranscription}
@@ -133,6 +122,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [loop, setLoop] = useState<any>(null);
+  const [isReady, setIsReady] = useState(false);
 
   const { currentTime, setCurrentTime } = useCurrentTime(content.id);
 
@@ -140,19 +130,19 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
 
   const transcriptions = content?.transcriptions || [];
 
-  const seek = (time: any) => {
+  const seek = (time: number) => {
     playerRef.current.seekTo(time, "seconds");
   };
 
   const seekBefore = useCallback(() => {
     const currentTranscription = transcriptions?.find(
-      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+      (trans) => trans?.start <= currentTime && trans?.end >= currentTime
     );
 
     if (currentTranscription) {
       const currentTranscriptionIndex = Math.max(
         transcriptions?.findIndex(
-          (trans: any) => trans?.start === currentTranscription?.start
+          (trans) => trans?.start === currentTranscription?.start
         ),
         0
       );
@@ -167,12 +157,12 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
 
   const seekAfter = useCallback(() => {
     const currentTranscription = transcriptions?.find(
-      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+      (trans) => trans?.start <= currentTime && trans?.end >= currentTime
     );
 
     const currentTranscriptionIndex = Math.max(
       transcriptions?.findIndex(
-        (trans: any) => trans?.start === currentTranscription?.start
+        (trans) => trans?.start === currentTranscription?.start
       ),
       0
     );
@@ -194,7 +184,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
     playerRef.current?.player?.player?.pause();
   };
 
-  const seekAndPlay = (time: any) => {
+  const seekAndPlay = (time: number) => {
     seek(time);
     play();
   };
@@ -216,12 +206,12 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const editMode = useContentEditStore((state) => state.editMode);
 
   const currentTranscription = content?.transcriptions?.find(
-    (transcription: any) =>
+    (transcription) =>
       transcription?.start <= currentTime && transcription?.end >= currentTime
   );
 
-  const setShowPinyin = useBrightModeStore((state: any) => state.setShowPinyin);
-  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+  const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   const togglePinyin = () => {
     setShowPinyin(!showPinyin);
@@ -270,14 +260,14 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
     };
   }, [seekBefore, seekAfter]);
 
-  const debounceSeek = useDebouncedCallback((firstStart: any) => {
+  const debounceSeek = useDebouncedCallback((firstStart: number) => {
     seekAndPlay(firstStart);
   }, 30);
 
   useEffect(() => {
     if (loop) {
       const selectedWords = content?.transcriptions?.find(
-        (word: any) => word?.input === loop
+        (word) => word?.input === loop
       );
 
       if (selectedWords?.start && currentTime > selectedWords?.end) {
@@ -285,6 +275,12 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
       }
     }
   }, [currentTime, content?.transcriptions, loop, debounceSeek]);
+
+  useEffect(() => {
+    if (isReady) {
+      seek(currentTime);
+    }
+  }, [isReady]);
 
   if (!content) {
     return;
@@ -301,10 +297,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
           width="100%"
           height="50px"
           onReady={(data) => {
-            if (currentTime && !playing) {
-              seekAndPlay(currentTime);
-            }
-
+            setIsReady(true);
             setDuration(data.getDuration());
           }}
           playing={false}
@@ -324,7 +317,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 : "dark:text-gray-600 text-gray-300"
             )}
             onClick={() => {
-              setLoop((loop: any) => {
+              setLoop((loop: string) => {
                 if (loop) {
                   return null;
                 }

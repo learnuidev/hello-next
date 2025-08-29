@@ -44,8 +44,6 @@ export const CharacterItem = ({
   const { data: components, isLoading: isComponentsLoading } =
     useListComponentsMapQuery();
 
-  // const brightMode = useBrightModeStore((state: any) => state.mode);
-
   const { currentMode } = usePreviewMode();
 
   const brightMode = currentMode?.current === "focus";

@@ -49,7 +49,7 @@ export function HanziLink({
   const { data: components, isLoading: isComponentsLoading } =
     useListComponentsMapQuery();
 
-  const brightMode = useBrightModeStore((state: any) => state.mode);
+  const brightMode = useBrightModeStore((state) => state.mode);
 
   const selectedComp = useMemo(
     () => components?.[character?.input || character?.hanzi],
@@ -81,7 +81,7 @@ export function HanziLink({
     type: "word",
   });
 
-  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   return (
     <div className={cn("p-2 md:p-3 flex flex-col items-center justify-center")}>

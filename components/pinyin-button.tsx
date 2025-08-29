@@ -3,8 +3,8 @@ import { cn } from "@/lib/utils";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
 export const PinyinButton = ({ className }: { className?: string }) => {
-  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
-  const setShowPinyin = useBrightModeStore((state: any) => state.setShowPinyin);
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
+  const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
 
   return (
     <button

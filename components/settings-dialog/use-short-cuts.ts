@@ -28,7 +28,7 @@ export function useShortCuts() {
   const setFocus = useViewType((state) => state.setFocus);
   const routeName = usePathname();
 
-  const setShowPinyin = useBrightModeStore((state: any) => state.setShowPinyin);
+  const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
   const { data: unReviewedCharacters } = useUnreviwedCharacters();
 
   const setQuerySync = useSearchQueryStore((state) => state.setQuerySync);

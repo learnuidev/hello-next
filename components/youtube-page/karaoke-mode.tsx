@@ -213,7 +213,7 @@ export function KaraokeMode({
     })
     ?.slice(-1);
 
-  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   const romanOrPinyin =
     currentTranscription?.lang === "zh"

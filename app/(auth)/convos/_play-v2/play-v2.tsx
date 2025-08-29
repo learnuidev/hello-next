@@ -20,8 +20,8 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
   const { data: content } = useGetContentQuery({ contentId });
 
   const audioUrl = content?.audio?.slow || content?.audio;
-  const brightMode = useBrightModeStore((state: any) => state.mode);
-  const setBrightMode = useBrightModeStore((state: any) => state.setMode);
+  const brightMode = useBrightModeStore((state) => state.mode);
+  const setBrightMode = useBrightModeStore((state) => state.setMode);
   const view = useViewType((state: any) => state.view);
   const focus = useViewType((state: any) => state.focus);
   const setView = useViewType((state: any) => state.setView);

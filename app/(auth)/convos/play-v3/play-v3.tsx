@@ -227,8 +227,8 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents({ includeAll: true });
 
-  const brightMode = useBrightModeStore((state: any) => state.mode);
-  const setBrightMode = useBrightModeStore((state: any) => state.setMode);
+  const brightMode = useBrightModeStore((state) => state.mode);
+  const setBrightMode = useBrightModeStore((state) => state.setMode);
 
   const searchParams = useSearchParams();
 

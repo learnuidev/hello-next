@@ -26,7 +26,7 @@ export const ActiveTranscription = ({
     (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
   );
 
-  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   const setIfExists = useSetIfExists();
 

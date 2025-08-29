@@ -46,7 +46,7 @@ export function NmmCoreComponents() {
 
   const [slicedByLevels, setSliced] = useState<any>({});
   const { data: authUser } = useCurrentAuthUser({});
-  const brightMode = useBrightModeStore((state: any) => state.mode);
+  const brightMode = useBrightModeStore((state) => state.mode);
 
   const addHistoryMutation = useAddHistoryMutation();
 

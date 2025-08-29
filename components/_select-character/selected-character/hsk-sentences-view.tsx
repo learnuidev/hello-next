@@ -24,7 +24,7 @@ export const HskSentenceView = ({ characterId }: { characterId: string }) => {
     characterId,
   });
 
-  const brightMode = useBrightModeStore((state: any) => state.mode);
+  const brightMode = useBrightModeStore((state) => state.mode);
 
   const pagination = usePaginationStore((state) => state.pagination);
   const setPagination = usePaginationStore((state) => state.setPagination);

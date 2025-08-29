@@ -12,7 +12,7 @@ import { useBrightModeStore } from "../../settings-dialog/use-bright-mode-store"
 import { useCanTrackFunction } from "@/components/use-can-track-function";
 
 function SentenceViewItem({ prop }: { prop: any }) {
-  const brightMode = useBrightModeStore((state: any) => state.mode);
+  const brightMode = useBrightModeStore((state) => state.mode);
 
   const shows = useShowsStore((state) => state.shows) as any;
   const setShows = useShowsStore((state) => state.setShows) as any;
@@ -85,7 +85,7 @@ export const SentencesViewV2 = ({
 }: {
   relatedSentences: any;
 }) => {
-  const brightMode = useBrightModeStore((state: any) => state.mode);
+  const brightMode = useBrightModeStore((state) => state.mode);
 
   const pagination = usePaginationStore((state) => state.pagination);
   const setPagination = usePaginationStore((state) => state.setPagination);

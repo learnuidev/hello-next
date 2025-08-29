@@ -23,6 +23,7 @@ import { FloatingNavbar } from "@/components/floating-navbar";
 import { Speak } from "./[content-id]/speak/speak";
 import { Clipboard } from "../clipboard/clipboard";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
+import { AudiobookPlayer } from "./audiobook-player/audiobook-player";
 
 export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   const searchParams = useSearchParams();
@@ -110,8 +111,9 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
 
   if (viewType === "listen") {
+    return <AudiobookPlayer contentId={lessonId} />;
     return (
-      <div className="px-4 md:px-32">
+      <div className="px-4 md:px-12">
         <PlayV3 contentId={lessonId} />
       </div>
     );

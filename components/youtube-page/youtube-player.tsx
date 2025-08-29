@@ -165,7 +165,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const { goToBefore, goToNext } = useGo();
 
-  const { currentTime, setCurrentTime: setTime } = useCurrentTime(lessonId);
+  const { currentTime, setCurrentTime } = useCurrentTime(lessonId);
 
   const params = useParams<{ "content-id": string }>();
   const contentId = params["content-id"];
@@ -673,7 +673,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                     createdAt: Date.now(),
                     progressTime: value.playedSeconds,
                   });
-                  setTime(value.playedSeconds);
+                  setCurrentTime(value.playedSeconds);
                 }}
                 onPlay={() => {
                   setIsPlaying(true);

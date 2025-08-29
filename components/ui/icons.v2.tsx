@@ -396,7 +396,9 @@ export const Icons = {
   rotateLeft: createFAIcon(faRotateLeft),
   rotateRight: createFAIcon(faRotateRight),
   backward: createFAIcon(faBackward),
+  rewind: createFAIcon(faBackward),
   forward: createFAIcon(faForward),
+  fastForward: createFAIcon(faForward),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

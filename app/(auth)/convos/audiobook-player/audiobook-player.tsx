@@ -42,14 +42,15 @@ function NormalView({
   const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
   return (
     <div>
-      {showPinyin && <p>{currentTranscription?.pinyin}</p>}
-      <p className="mb-12 sm:mb-32 text-2xl sm:text-4xl">
-        {currentTranscription?.input}
-      </p>
       <EnView
         currentTranscription={currentTranscription}
         seekAndPlay={seekAndPlay}
       />
+
+      <p className="mt-12 sm:mt-32 text-2xl sm:text-4xl">
+        {currentTranscription?.input}
+      </p>
+      {/* {showPinyin && <p>{currentTranscription?.pinyin}</p>} */}
     </div>
   );
 }
@@ -68,8 +69,12 @@ function PinyinView({
 
   return (
     <div>
+      <EnView
+        currentTranscription={currentTranscription}
+        seekAndPlay={seekAndPlay}
+      />
       {data ? (
-        <div className="mb-12 sm:mb-32">
+        <div className="mt-12 sm:mt-32">
           {data?.map((item) => {
             return (
               <span
@@ -86,15 +91,11 @@ function PinyinView({
           })}
         </div>
       ) : (
-        <div>
+        <div className="mb-32">
           <p>{currentTranscription?.pinyin}</p>
-          <p className="mb-32 text-4xl">{currentTranscription?.input}</p>
+          <p className="text-4xl">{currentTranscription?.input}</p>
         </div>
       )}
-      <EnView
-        currentTranscription={currentTranscription}
-        seekAndPlay={seekAndPlay}
-      />
     </div>
   );
 }
@@ -110,7 +111,8 @@ function CurrentTranscriptionView({
 
   return (
     <div className="text-center mt-24 max-w-5xl mx-auto">
-      {showPinyin && currentTranscription?.input?.length < 70 ? (
+      {/* {showPinyin && currentTranscription?.input?.length < 70 ? ( */}
+      {showPinyin ? (
         <PinyinView
           currentTranscription={currentTranscription}
           seekAndPlay={seekAndPlay}

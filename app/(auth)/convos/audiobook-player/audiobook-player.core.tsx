@@ -2,7 +2,7 @@ import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode
 import { Icons } from "@/components/ui/icons.v2";
 import { Slider } from "@/components/ui/slider";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
-import { useGetContentQuery } from "@/domain/content/content.queries";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { formatTime } from "../_play/utils";
@@ -12,6 +12,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { cn } from "@/lib/utils";
 import { useListenState } from "../../listen/hooks/use-listen-state";
 import { PinyinButton } from "@/components/pinyin-button";
+import { IContent } from "@/domain/content/content.api";
 
 function EnView({
   currentTranscription,
@@ -127,7 +128,7 @@ function CurrentTranscriptionView({
   );
 }
 
-export const AudiobookPlayerCore = ({ content }: { content: any }) => {
+export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const { playbackRate } = useListenState();
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
@@ -275,9 +276,9 @@ export const AudiobookPlayerCore = ({ content }: { content: any }) => {
 
   useEffect(() => {
     if (loop) {
-      const selectedWords =
-        content?.transcriptions?.find((word: any) => word?.input === loop) ||
-        [];
+      const selectedWords = content?.transcriptions?.find(
+        (word: any) => word?.input === loop
+      );
 
       if (selectedWords?.start && currentTime > selectedWords?.end) {
         debounceSeek(selectedWords?.start);

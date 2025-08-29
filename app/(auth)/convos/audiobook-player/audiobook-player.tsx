@@ -1,18 +1,119 @@
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { Icons } from "@/components/ui/icons.v2";
+import { Slider } from "@/components/ui/slider";
+import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
 import { useGetContentQuery } from "@/domain/content/content.queries";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { formatTime } from "../_play/utils";
-import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
-import { ActiveTranscription } from "@/components/youtube-page/active-transcription";
-import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
-import { Slider } from "@/components/ui/slider";
+import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
+import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
+import { useDebouncedCallback } from "use-debounce";
+import { cn } from "@/lib/utils";
 
-function NormalView({ currentTranscription }: { currentTranscription: any }) {
+function EnView({
+  currentTranscription,
+  seekAndPlay,
+}: {
+  currentTranscription: any;
+  seekAndPlay: any;
+}) {
+  return (
+    <p
+      onClick={() => {
+        seekAndPlay(currentTranscription.start);
+      }}
+      className="text-xl"
+    >
+      {currentTranscription?.en}
+    </p>
+  );
+}
+function NormalView({
+  currentTranscription,
+  seekAndPlay,
+}: {
+  currentTranscription: any;
+  seekAndPlay: any;
+}) {
   return (
     <div>
       <p className="mb-32 text-4xl">{currentTranscription?.input}</p>
-      <p className="text-xl">{currentTranscription?.en}</p>
+      <EnView
+        currentTranscription={currentTranscription}
+        seekAndPlay={seekAndPlay}
+      />
+    </div>
+  );
+}
+
+function PinyinView({
+  currentTranscription,
+  seekAndPlay,
+}: {
+  currentTranscription: any;
+  seekAndPlay: any;
+}) {
+  const { data } = useListDictionaryMeaningsQuery(
+    currentTranscription?.input,
+    currentTranscription?.lang
+  );
+
+  return (
+    <div>
+      {data ? (
+        <div className="mb-32">
+          {data?.map((item) => {
+            return (
+              <span
+                className="inline-flex flex-col items-center p-2 justify-center"
+                key={JSON.stringify(item)}
+              >
+                <span className="text-sm dark:text-gray-400 text-gray-800">
+                  {item?.pinyin}
+                </span>
+
+                <span className="text-3xl">{item?.hanzi}</span>
+              </span>
+            );
+          })}
+        </div>
+      ) : (
+        <div>
+          <p>{currentTranscription?.pinyin}</p>
+          <p className="mb-32 text-4xl">{currentTranscription?.input}</p>
+        </div>
+      )}
+      <EnView
+        currentTranscription={currentTranscription}
+        seekAndPlay={seekAndPlay}
+      />
+    </div>
+  );
+}
+
+function CurrentTranscriptionView({
+  currentTranscription,
+  seekAndPlay,
+}: {
+  currentTranscription: any;
+  seekAndPlay: any;
+}) {
+  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+
+  return (
+    <div className="text-center mt-24 max-w-5xl mx-auto">
+      {showPinyin ? (
+        <PinyinView
+          currentTranscription={currentTranscription}
+          seekAndPlay={seekAndPlay}
+        />
+      ) : (
+        <NormalView
+          currentTranscription={currentTranscription}
+          seekAndPlay={seekAndPlay}
+        />
+      )}
     </div>
   );
 }
@@ -20,19 +121,60 @@ function NormalView({ currentTranscription }: { currentTranscription: any }) {
 export const AudiobookPlayer = ({ contentId }: { contentId: string }) => {
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
+  const [loop, setLoop] = useState<any>(null);
 
   const { data: content } = useGetContentQuery({ contentId });
   const { currentTime, setCurrentTime } = useCurrentTime(contentId);
 
   const playerRef = useRef<any>(null);
 
-  const handlePrevious = () => {};
-  const handlePause = () => {};
-  const handleNext = () => {};
+  const transcriptions = content?.transcriptions || [];
 
   const seek = (time: any) => {
     playerRef.current.seekTo(time, "seconds");
   };
+
+  const seekBefore = useCallback(() => {
+    const currentTranscription = transcriptions?.find(
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+    );
+
+    if (currentTranscription) {
+      const currentTranscriptionIndex = Math.max(
+        transcriptions?.findIndex(
+          (trans: any) => trans?.start === currentTranscription?.start
+        ),
+        0
+      );
+
+      const prevIndex = Math.max(currentTranscriptionIndex - 1, 0);
+
+      const prevTranscription = transcriptions?.[prevIndex];
+
+      seek(prevTranscription?.start);
+    }
+  }, [currentTime, transcriptions]);
+
+  const seekAfter = useCallback(() => {
+    const currentTranscription = transcriptions?.find(
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+    );
+
+    const currentTranscriptionIndex = Math.max(
+      transcriptions?.findIndex(
+        (trans: any) => trans?.start === currentTranscription?.start
+      ),
+      0
+    );
+
+    const nextIndex = Math.min(
+      currentTranscriptionIndex + 1,
+      transcriptions?.length - 1
+    );
+    const nextTranscription = transcriptions?.[nextIndex];
+
+    seek(nextTranscription?.start);
+  }, [currentTime, transcriptions]);
 
   const play = () => {
     playerRef.current?.player?.player?.play();
@@ -57,15 +199,82 @@ export const AudiobookPlayer = ({ contentId }: { contentId: string }) => {
 
   const handleSeekChange = (event: number[]) => {
     seekAndPlay(event[0]);
-    console.log("event", event);
   };
+
+  const audioUrl = content?.audio;
+
+  const editMode = useContentEditStore((state) => state.editMode);
 
   const currentTranscription = content?.transcriptions?.find(
     (transcription: any) =>
       transcription?.start <= currentTime && transcription?.end >= currentTime
   );
 
+  const setShowPinyin = useBrightModeStore((state: any) => state.setShowPinyin);
   const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
+
+  const togglePinyin = () => {
+    setShowPinyin(!showPinyin);
+  };
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (["p"]?.includes(event.key?.toLowerCase()) && !editMode) {
+        event.preventDefault();
+        togglePinyin();
+      }
+
+      if (["l"]?.includes(event.key?.toLowerCase()) && !editMode) {
+        event.preventDefault();
+
+        if (currentTranscription?.input) {
+          if (loop) {
+            setLoop(null);
+          } else {
+            setLoop(currentTranscription?.input);
+          }
+        }
+      }
+
+      if (event.code === "ArrowLeft" && !editMode) {
+        if (audioUrl) {
+          seekBefore();
+        }
+      }
+      if (event.code === "ArrowRight" && !editMode) {
+        if (audioUrl) {
+          seekAfter();
+        }
+      }
+
+      if (event.code === "Space") {
+        // Vishal 07-12-2024-10-20: prevents the browser from scrolling down
+        event.preventDefault();
+        handlePlayPause();
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [seekBefore, seekAfter]);
+
+  const debounceSeek = useDebouncedCallback((firstStart: any) => {
+    seekAndPlay(firstStart);
+  }, 30);
+
+  useEffect(() => {
+    if (loop) {
+      const selectedWords =
+        content?.transcriptions?.find((word: any) => word?.input === loop) ||
+        [];
+
+      if (selectedWords?.start && currentTime > selectedWords?.end) {
+        debounceSeek(selectedWords?.start);
+      }
+    }
+  }, [currentTime, content?.transcriptions, loop, debounceSeek]);
 
   if (!content) {
     return;
@@ -81,29 +290,41 @@ export const AudiobookPlayer = ({ contentId }: { contentId: string }) => {
           width="100%"
           height="50px"
           onReady={(data) => {
+            if (currentTime && !playing) {
+              seekAndPlay(currentTime);
+            }
+
             setDuration(data.getDuration());
-            // console.log("DATA", );
           }}
           playing={false}
           controls={false}
           ref={playerRef}
           onProgress={(value) => {
-            // setHistory({
-            //   transcriptionId: currentTranscription?.id,
-            //   contextId,
-            //   contentId: lessonId,
-            //   createdAt: Date.now(),
-            //   progressTime: value.playedSeconds,
-            // });
             setCurrentTime(value.playedSeconds);
           }}
         />
 
         <div className="flex items-center justify-center gap-4 mt-4">
           <button
-            onClick={handlePrevious}
-            className="p-2 rounded-full hover:bg-gray-200"
+            className={cn(
+              "text-2xl",
+              loop
+                ? "dark:text-white text-black font-bold"
+                : "dark:text-gray-600 text-gray-300"
+            )}
+            onClick={() => {
+              setLoop((loop: any) => {
+                if (loop) {
+                  return null;
+                }
+
+                return currentTranscription?.input;
+              });
+            }}
           >
+            <Icons.loop />
+          </button>
+          <button onClick={seekBefore} className="p-2 rounded-full ">
             <Icons.rewind className="text-2xl" />
           </button>
 
@@ -115,10 +336,7 @@ export const AudiobookPlayer = ({ contentId }: { contentId: string }) => {
             )}
           </button>
 
-          <button
-            onClick={handleNext}
-            className="p-2 rounded-full hover:bg-gray-200"
-          >
+          <button onClick={seekAfter} className="p-2 rounded-full ">
             <Icons.fastForward className="text-2xl" />
           </button>
         </div>
@@ -137,9 +355,12 @@ export const AudiobookPlayer = ({ contentId }: { contentId: string }) => {
         </div>
       </div>
 
-      <div className="text-center mt-24 max-w-5xl mx-auto">
-        <NormalView currentTranscription={currentTranscription} />
-      </div>
+      {currentTranscription && (
+        <CurrentTranscriptionView
+          seekAndPlay={seekAndPlay}
+          currentTranscription={currentTranscription}
+        />
+      )}
     </div>
   );
 };

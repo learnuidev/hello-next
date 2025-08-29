@@ -10,6 +10,8 @@ import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { useDebouncedCallback } from "use-debounce";
 import { cn } from "@/lib/utils";
+import { useListenState } from "../../listen/hooks/use-listen-state";
+import { PinyinButton } from "@/components/pinyin-button";
 
 function EnView({
   currentTranscription,
@@ -18,12 +20,13 @@ function EnView({
   currentTranscription: any;
   seekAndPlay: any;
 }) {
+  console.log("currentTranscription", currentTranscription);
   return (
     <p
       onClick={() => {
         seekAndPlay(currentTranscription.start);
       }}
-      className="text-xl"
+      className="text-[16px] sm:text-xl"
     >
       {currentTranscription?.en}
     </p>
@@ -36,9 +39,13 @@ function NormalView({
   currentTranscription: any;
   seekAndPlay: any;
 }) {
+  const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
   return (
     <div>
-      <p className="mb-32 text-4xl">{currentTranscription?.input}</p>
+      {showPinyin && <p>{currentTranscription?.pinyin}</p>}
+      <p className="mb-12 sm:mb-32 text-2xl sm:text-4xl">
+        {currentTranscription?.input}
+      </p>
       <EnView
         currentTranscription={currentTranscription}
         seekAndPlay={seekAndPlay}
@@ -62,18 +69,18 @@ function PinyinView({
   return (
     <div>
       {data ? (
-        <div className="mb-32">
+        <div className="mb-12 sm:mb-32">
           {data?.map((item) => {
             return (
               <span
-                className="inline-flex flex-col items-center p-2 justify-center"
+                className="inline-flex flex-col items-center py-[2px] p-2 justify-center"
                 key={JSON.stringify(item)}
               >
                 <span className="text-sm dark:text-gray-400 text-gray-800">
                   {item?.pinyin}
                 </span>
 
-                <span className="text-3xl">{item?.hanzi}</span>
+                <span className="text-xl sm:text-3xl">{item?.hanzi}</span>
               </span>
             );
           })}
@@ -103,7 +110,7 @@ function CurrentTranscriptionView({
 
   return (
     <div className="text-center mt-24 max-w-5xl mx-auto">
-      {showPinyin ? (
+      {showPinyin && currentTranscription?.input?.length < 70 ? (
         <PinyinView
           currentTranscription={currentTranscription}
           seekAndPlay={seekAndPlay}
@@ -119,6 +126,7 @@ function CurrentTranscriptionView({
 }
 
 export const AudiobookPlayer = ({ contentId }: { contentId: string }) => {
+  const { playbackRate } = useListenState();
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [loop, setLoop] = useState<any>(null);
@@ -284,6 +292,7 @@ export const AudiobookPlayer = ({ contentId }: { contentId: string }) => {
     <div>
       <div className="w-full max-w-3xl mx-auto p-4">
         <ReactPlayer
+          playbackRate={playbackRate}
           url={content?.audio}
           onPlay={() => setPlaying(true)}
           onPause={() => setPlaying(false)}
@@ -339,6 +348,8 @@ export const AudiobookPlayer = ({ contentId }: { contentId: string }) => {
           <button onClick={seekAfter} className="p-2 rounded-full ">
             <Icons.fastForward className="text-2xl" />
           </button>
+
+          <PinyinButton className="text-2xl" />
         </div>
 
         <div className="flex items-center gap-4 mt-4">

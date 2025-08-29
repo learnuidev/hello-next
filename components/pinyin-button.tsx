@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 
-export const PinyinButton = () => {
+export const PinyinButton = ({ className }: { className?: string }) => {
   const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
   const setShowPinyin = useBrightModeStore((state: any) => state.setShowPinyin);
 
@@ -12,7 +12,9 @@ export const PinyinButton = () => {
         "text-xl",
         showPinyin
           ? "dark:text-white text-black"
-          : "dark:text-gray-500 text-gray-300"
+          : "dark:text-gray-500 text-gray-300",
+
+        className
       )}
       onClick={() => {
         setShowPinyin((prev: any) => !prev);

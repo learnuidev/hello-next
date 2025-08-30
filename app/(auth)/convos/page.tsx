@@ -2,12 +2,12 @@
 "use client";
 
 import "@/libs/cognito/init";
-// import Link from "next/link";
 
 import { useState } from "react";
 
 import { NavBar } from "@/components/navbar";
 import { usePathname, useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
@@ -38,6 +38,7 @@ import { contentTypes } from "./constants/content-types";
 import { useContentType } from "./hooks/use-content-type";
 import { NewContentV2 } from "./new-content-v2/new-content-v2";
 import { useRecentlyWatchedContent } from "./use-recently-watched-content-store";
+import { useToggleFavouriteContentMutation } from "./[content-id]/hooks/use-toggle-favourite-content-mutation";
 // import { NewConvoV2 } from "./new-content-v2/new-convo-v2";
 
 type ContentType = {
@@ -54,6 +55,9 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
   );
   const { data: favouriteContents, isLoading: isFavouriteContentLoading } =
     useListFavouriteContentsQuery({});
+
+  const { toast } = useToast();
+  const toggleFavouritContentMutation = useToggleFavouriteContentMutation();
 
   const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
 
@@ -154,12 +158,58 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
       <section className="">
         <div className="mt-4 grid grid-cols-3 sm:grid-cols-6 gap-4 gap-y-4 lg:gap-8">
           {projects?.map((item: any) => {
+            const isFavourited = favouriteContents?.items?.find(
+              (content: any) => content?.id === item.id
+            );
             return (
               <div
                 key={JSON.stringify(item)}
                 className="block col-span-3 lg:col-span-2"
               >
-                <Link href={`/convos/${item?.id}`} className="block">
+                <Link
+                  href={`/convos/${item?.id}`}
+                  className="block relative"
+                  onClick={(event) => {
+                    if (!event.defaultPrevented) {
+                      console.log("yoo");
+                      setRecentlyWatched(item);
+                    }
+                  }}
+                >
+                  <button
+                    disabled={toggleFavouritContentMutation.isPending}
+                    className="text-xl z-50 absolute right-2 top-2"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      if (isFavourited) {
+                        toggleFavouritContentMutation
+                          .mutateAsync({
+                            type: "unfavourite",
+                            contentId: item?.id,
+                          })
+                          .then(() => {
+                            toast({
+                              title: "Success",
+                              description: "Content successfully unfavourited",
+                            });
+                          });
+                      } else {
+                        toggleFavouritContentMutation
+                          .mutateAsync({
+                            type: "favourite",
+                            contentId: item?.id,
+                          })
+                          .then(() => {
+                            toast({
+                              title: "Success",
+                              description: "Content successfully favourited",
+                            });
+                          });
+                      }
+                    }}
+                  >
+                    {isFavourited ? <Icons.heartSolid /> : <Icons.heart />}
+                  </button>
                   <img
                     className="object-cover rounded-xl w-full aspect-video"
                     src={item?.thumbnails?.maxres?.url || defaultPic}
@@ -182,7 +232,6 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
           })}
         </div>
       </section>
-      {/* {projects?.length > 0 && <ContentsListEffect items={[...projects]} />} */}
     </div>
   );
 }

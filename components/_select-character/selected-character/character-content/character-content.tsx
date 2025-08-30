@@ -8,6 +8,7 @@ import { useListCharacterContentsQuery } from "@/domain/character-contents/use-l
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import Link from "next/link";
 import { useState } from "react";
+import { imageFormats } from "./image-formats";
 
 function ImageItem({ item }: any) {
   const extractImageMutation = useExtractImageMutation();
@@ -71,8 +72,6 @@ function ImageItem({ item }: any) {
     </Link>
   );
 }
-
-const imageFormats = ["png", "jpg", "jpeg", "gif", "webp"];
 
 export const CharacterContent = ({ characterId }: { characterId: string }) => {
   const [showMeta, setShowMeta] = useState(false);

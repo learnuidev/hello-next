@@ -40,13 +40,17 @@ export function useUploadFile(cb?: any, ctx?: any, props?: any) {
 
     console.log({ extension, contentType });
 
-    if (props?.types && !props?.types?.includes(extension)) {
-      alert(
-        `Incorrect file type. Only the following are supported: ${JSON.stringify(props?.types || [])}`
-      );
-      e.target.value = "";
+    if (props?.types?.includes("*")) {
+      console.log("Wild card");
+    } else {
+      if (props?.types && !props?.types?.includes(extension)) {
+        alert(
+          `Incorrect file type. Only the following are supported: ${JSON.stringify(props?.types || [])}`
+        );
+        e.target.value = "";
 
-      return null;
+        return null;
+      }
     }
 
     console.log("FILE", file);

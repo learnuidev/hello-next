@@ -11,6 +11,7 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { Nothing } from "@/app/nmm/nothing";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { Icons } from "@/components/ui/icons.v2";
+import { imageFormats } from "@/components/_select-character/selected-character/character-content/image-formats";
 
 export default function Assets() {
   const { data: userAssets, isError } = useListUserAssets();
@@ -60,7 +61,7 @@ export default function Assets() {
       <section className="px-4 md:px-12">
         <h1 className="text-2xl my-8"> Assets</h1>
 
-        <UploadFileButton className="mb-4" />
+        <UploadFileButton types={["*"]} className="mb-4" />
 
         <div className="flex items-center justify-between mb-8">
           <section className="flex justify-start items-center w-full gap-8">

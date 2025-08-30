@@ -16,9 +16,9 @@ import { ConvoDetails } from "./convo-details";
 import { ConvosNavBar } from "./convos-nav-bar";
 import { useSelectedCharacter } from "./use-selected-character";
 
+import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
-import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
 
 import { useSearchQueryStore } from "@/components/search/state";
 import { PlusIcon } from "@/components/ui/icons";
@@ -26,21 +26,18 @@ import { Icons } from "@/components/ui/icons.v2";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 
 import { useIsNewContentFormEnabled } from "@/libs/posthog/hooks/use-is-new-content-form-enabled";
-import { NewContent } from "./new-content/new-content";
 
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useListPublishedContentsQuery } from "./[content-id]/hooks/use-list-published-contents-query";
-import { NewConvo } from "./new-convo/new-convo";
 import { useViewModeStore } from "./new-convo/use-viewmode-store";
-import { useContentTypeStore } from "./use-content-type-store";
 // import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query.ts";
-import { ContentsListEffect } from "@/components/contents-list-effect";
-import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query";
-import { useRecentlyWatchedContent } from "./use-recently-watched-content-store";
 import { createIndexDBStore } from "@/libs/index-db/index-db";
-import { useContentType } from "./hooks/use-content-type";
+import Link from "next/link";
+import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query";
 import { contentTypes } from "./constants/content-types";
+import { useContentType } from "./hooks/use-content-type";
 import { NewContentV2 } from "./new-content-v2/new-content-v2";
+import { useRecentlyWatchedContent } from "./use-recently-watched-content-store";
 // import { NewConvoV2 } from "./new-content-v2/new-convo-v2";
 
 type ContentType = {
@@ -150,9 +147,42 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
     );
   }
 
+  const defaultPic = `https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png`;
+
   return (
     <div className="max-w-5xl mx-auto px-8">
-      {projects?.length > 0 && <ContentsListEffect items={[...projects]} />}
+      <section className="">
+        <div className="mt-4 grid grid-cols-3 sm:grid-cols-6 gap-4 gap-y-4 lg:gap-8">
+          {projects?.map((item: any) => {
+            return (
+              <div
+                key={JSON.stringify(item)}
+                className="block col-span-3 lg:col-span-2"
+              >
+                <Link href={`/convos/${item?.id}`} className="block">
+                  <img
+                    className="object-cover rounded-xl w-full aspect-video"
+                    src={item?.thumbnails?.maxres?.url || defaultPic}
+                    alt={item?.title}
+                  />
+                </Link>
+
+                <div>
+                  <p className="mt-2 truncate">
+                    {" "}
+                    <span>{item?.title}</span>
+                  </p>
+                  <p className="font-light text-gray-400 text-sm capitalize">
+                    {" "}
+                    <span>{item?.lang}</span>
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+      {/* {projects?.length > 0 && <ContentsListEffect items={[...projects]} />} */}
     </div>
   );
 }
@@ -330,7 +360,3 @@ export default function Convos() {
     </main>
   );
 }
-
-// export default function Convos() {
-//   return <div> TODO </div>;
-// }

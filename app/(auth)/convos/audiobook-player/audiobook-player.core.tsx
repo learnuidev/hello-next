@@ -291,6 +291,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
       <div className="w-full max-w-3xl mx-auto p-4">
         <ReactPlayer
           playbackRate={playbackRate}
+          progressInterval={100}
           url={content?.audio}
           onPlay={() => setPlaying(true)}
           onPause={() => setPlaying(false)}
@@ -353,6 +354,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
             min={0}
             max={duration}
             step={1}
+            value={[currentTime]}
             defaultValue={[currentTime]}
             onValueChange={handleSeekChange}
             className="w-full"

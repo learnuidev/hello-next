@@ -13,16 +13,20 @@ import { cn } from "@/lib/utils";
 import { useListenState } from "../../listen/hooks/use-listen-state";
 import { PinyinButton } from "@/components/pinyin-button";
 import { ContentTranscription, IContent } from "@/domain/content/content.api";
+import { ChinglishButton } from "@/components/chinglish-button";
+import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 
 interface CurrentTranscriptionProps {
   currentTranscription: ContentTranscription;
   seekAndPlay: (time: number) => void;
+  containsChinglish: boolean;
 }
 function EnView({
   currentTranscription,
   seekAndPlay,
+  containsChinglish,
 }: CurrentTranscriptionProps) {
-  console.log("currentTranscription", currentTranscription);
+  const { showChinglish } = useChinglishState();
   return (
     <p
       onClick={() => {
@@ -30,17 +34,21 @@ function EnView({
       }}
       className="text-[16px] sm:text-xl"
     >
-      {currentTranscription?.en}
+      {showChinglish && containsChinglish
+        ? currentTranscription?.chinglish
+        : currentTranscription?.en}
     </p>
   );
 }
 function NormalView({
   currentTranscription,
   seekAndPlay,
+  containsChinglish,
 }: CurrentTranscriptionProps) {
   return (
     <div>
       <EnView
+        containsChinglish={containsChinglish}
         currentTranscription={currentTranscription}
         seekAndPlay={seekAndPlay}
       />
@@ -55,6 +63,7 @@ function NormalView({
 function PinyinView({
   currentTranscription,
   seekAndPlay,
+  containsChinglish,
 }: CurrentTranscriptionProps) {
   const { data } = useListDictionaryMeaningsQuery(
     currentTranscription?.input,
@@ -64,6 +73,7 @@ function PinyinView({
   return (
     <div>
       <EnView
+        containsChinglish={containsChinglish}
         currentTranscription={currentTranscription}
         seekAndPlay={seekAndPlay}
       />
@@ -96,6 +106,7 @@ function PinyinView({
 
 function CurrentTranscriptionView({
   currentTranscription,
+  containsChinglish,
   seekAndPlay,
 }: CurrentTranscriptionProps) {
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
@@ -104,11 +115,13 @@ function CurrentTranscriptionView({
     <div className="text-center mt-24 max-w-5xl mx-auto">
       {showPinyin ? (
         <PinyinView
+          containsChinglish={containsChinglish}
           currentTranscription={currentTranscription}
           seekAndPlay={seekAndPlay}
         />
       ) : (
         <NormalView
+          containsChinglish={containsChinglish}
           currentTranscription={currentTranscription}
           seekAndPlay={seekAndPlay}
         />
@@ -286,6 +299,8 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
     return;
   }
 
+  const containsChinglish = !!transcriptions?.[0]?.chinglish;
+
   return (
     <div>
       <div className="w-full max-w-3xl mx-auto p-4">
@@ -346,6 +361,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
           </button>
 
           <PinyinButton className="text-2xl" />
+          {containsChinglish && <ChinglishButton className="text-2xl" />}
         </div>
 
         <div className="flex items-center gap-4 mt-4">
@@ -365,6 +381,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
 
       {currentTranscription && (
         <CurrentTranscriptionView
+          containsChinglish={containsChinglish}
           seekAndPlay={seekAndPlay}
           currentTranscription={currentTranscription}
         />

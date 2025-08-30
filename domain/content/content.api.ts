@@ -65,6 +65,7 @@ export interface ContentTranscription {
   lang: string;
   sentence?: string;
   en: string;
+  chinglish?: string;
 }
 
 export interface IContent {

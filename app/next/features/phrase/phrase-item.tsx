@@ -20,6 +20,7 @@ import { useAudioProviderState } from "@/components/settings-dialog/hooks/use-au
 import { useYoutubeRefState } from "@/components/_select-character/use-youtube-ref-state";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { CharacterItem } from "@/components/_select-character/character-item";
+import { useIsPlayingState } from "@/components/youtube-page/use-is-playing-state";
 
 const PhraseActionButton = ({
   onClick,
@@ -100,6 +101,8 @@ export function PhraseItem({
 
   const { currentTime, setCurrentTime, duration } = useCurrentTime(id);
 
+  const { isPlaying, setIsPlaying } = useIsPlayingState(id);
+
   const { seekAndPlay, youtubeRef } = useYoutubeRefState();
 
   const deleteTranslationMutation = useDeleteTranslationMutation(contextId);
@@ -131,7 +134,7 @@ export function PhraseItem({
               className="text-xl sm:text-xl font-extralight"
             >
               <p className="text-2xl sm:text-2xl font-extralight">
-                {lang === "zh-CN"
+                {isPlaying && lang === "zh-CN"
                   ? smartSplit({
                       input: formattedOutput,
                       lang: "zh",

@@ -10,8 +10,6 @@ import { Icons } from "../ui/icons.v2";
 import { hiraganaAlphabets } from "@/langs/japanese/hiragana-alphabets";
 import { japaneseComponents2 } from "@/langs/japanese/japanese-components";
 import { japaneseWords } from "@/langs/japanese/japanese-words";
-import { ComponentItem } from "../component-item";
-import { WordItem } from "../word-item";
 import { WordsList } from "../words-list";
 import { ComponentItemV2 } from "../component-item.v2";
 
@@ -59,21 +57,6 @@ const PageView = ({ view }: any) => {
       );
     case "words":
       return <WordsList words={japaneseWords} lang={lang} />;
-      return (
-        <>
-          <div className="mx-4 my-4 md:mx-16 text-black dark:text-white flex flex-wrap items-center justify-between">
-            {japaneseWords.map((prop: any) => {
-              return (
-                <WordItem
-                  lang={lang}
-                  component={prop}
-                  key={JSON.stringify(prop)}
-                />
-              );
-            })}
-          </div>
-        </>
-      );
 
     default:
       return null;

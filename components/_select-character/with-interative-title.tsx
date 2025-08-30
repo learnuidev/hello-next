@@ -27,7 +27,7 @@ export const WithInteractiveTitle = ({
 }) => {
   const { provider, setProvider } = useAudioProviderState();
   const id = `${text}#${lang}#${provider}`;
-  const { currentTime, setCurrentTime } = useCurrentTime(id);
+  const { currentTime, setCurrentTime, duration } = useCurrentTime(id);
 
   const { seekAndPlay, youtubeRef } = useYoutubeRefState();
 

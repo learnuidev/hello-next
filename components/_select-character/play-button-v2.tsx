@@ -52,15 +52,26 @@ function PlayBtnInner({
 
   const playerRef = customRef || _playerRef;
 
-  const { currentTime, setCurrentTime: setTime } = useCurrentTime(id);
+  const {
+    currentTime,
+    setCurrentTime: setTime,
+    setDuration,
+  } = useCurrentTime(id);
 
   const play = () => {
     playerRef.current?.player?.player?.play();
     setIsPlaying(true);
   };
 
-  const onReady = useCallback(() => {
+  const onReady = useCallback((data: any) => {
     const timeToStart = 7 * 60 + 12.6;
+
+    setDuration(data.getDuration());
+
+    // onReady={(data) => {
+    //   setIsReady(true);
+
+    // }}
 
     if (autoPlay) {
       try {

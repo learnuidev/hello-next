@@ -15,6 +15,11 @@ import { chineseConverter } from "mandarino/src/utils/chinese-converter";
 import { textToSpeechProviders } from "@/components/_select-character/selected-character.constants";
 import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
+import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
+import { useAudioProviderState } from "@/components/settings-dialog/hooks/use-audio-provider-state";
+import { useYoutubeRefState } from "@/components/_select-character/use-youtube-ref-state";
+import { smartSplit } from "@/components/youtube-page/utils/smart-split";
+import { CharacterItem } from "@/components/_select-character/character-item";
 
 const PhraseActionButton = ({
   onClick,
@@ -79,8 +84,6 @@ export function PhraseItem({
 
   const isSourceSameAsTarget = sourceLang === translationContext?.targetLang;
 
-  console.log("ctx", translationContext);
-
   const speakLang = isSourceSameAsTarget ? sourceLang : lang;
 
   const { speak } = useSpeak(speakLang, {
@@ -90,6 +93,14 @@ export function PhraseItem({
   const formattedOutput = message?.output
     ?.replaceAll(/&quot;/g, '"')
     ?.replaceAll(/&#39;/g, "'");
+
+  const _text = chineseConverter(formattedOutput);
+  const { provider, setProvider } = useAudioProviderState();
+  const id = `${_text}#${lang}#${provider}`;
+
+  const { currentTime, setCurrentTime, duration } = useCurrentTime(id);
+
+  const { seekAndPlay, youtubeRef } = useYoutubeRefState();
 
   const deleteTranslationMutation = useDeleteTranslationMutation(contextId);
   return (
@@ -120,7 +131,42 @@ export function PhraseItem({
               className="text-xl sm:text-xl font-extralight"
             >
               <p className="text-2xl sm:text-2xl font-extralight">
-                {formattedOutput}
+                {lang === "zh-CN"
+                  ? smartSplit({
+                      input: formattedOutput,
+                      lang: "zh",
+                    }).map((character: any, idx: any) => {
+                      const startTime =
+                        (duration / (formattedOutput?.length - 1)) * idx;
+
+                      const endTime =
+                        (duration / (formattedOutput?.length - 1)) * (idx + 1);
+                      return (
+                        <CharacterItem
+                          className={
+                            currentTime >= startTime && currentTime <= endTime
+                              ? "dark:text-white text-black"
+                              : "text-gray-500"
+                          }
+                          character={character}
+                          key={`timeline-tab-${idx}-${character}`}
+                          onClick={() => {
+                            if (duration) {
+                              console.log("START TIME", startTime);
+
+                              seekAndPlay(startTime, customRef);
+                            }
+
+                            // setWords({
+                            //   word: character,
+                            //   transcriptionId: item?.id,
+                            //   contentId,
+                            // });
+                          }}
+                        />
+                      );
+                    })
+                  : formattedOutput}
               </p>
             </WithInteractiveTitle>
             <p className="text-gray-500 mt-2">{message?.input}</p>

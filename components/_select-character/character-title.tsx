@@ -28,6 +28,11 @@ import { CharacterTrackButton } from "./selected-character/character-track-butto
 import { useCharacterEditStore } from "./use-character-edit-store";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
+import { useCurrentTime } from "../youtube-page/use-current-time-store";
+import { useAudioProviderState } from "../settings-dialog/hooks/use-audio-provider-state";
+import { useYoutubeRefState } from "./use-youtube-ref-state";
+import { cn } from "@/lib/utils";
+import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -97,9 +102,15 @@ export const CharacterTitle = (props: any) => {
 
   const customRef: any = useRef(null) as any;
 
-  const setIfExists = useSetIfExists();
-
   const { data: relatedHskWords } = useListRelatedHSKWords(characterId);
+
+  const { provider, setProvider } = useAudioProviderState();
+  const id = `${selectedCompInput}#${lang}#${provider}`;
+  const { currentTime, setCurrentTime, duration } = useCurrentTime(id);
+
+  const { seekAndPlay, youtubeRef } = useYoutubeRefState();
+
+  const { isPlaying, setIsPlaying } = useIsPlayingState(id);
 
   const isHsk = relatedHskWords?.find((word) => word?.hanzi === characterId);
 
@@ -152,6 +163,50 @@ export const CharacterTitle = (props: any) => {
           <div>
             {smartSplit({ input: selectedCompInput, lang })?.map(
               (item: string, idx: number) => {
+                const startTime =
+                  (duration / (selectedCompInput?.length - 1)) * idx;
+
+                const endTime =
+                  (duration / (selectedCompInput?.length - 1)) * (idx + 1);
+
+                if (isPlaying) {
+                  return (
+                    <span
+                      className={
+                        selectedCompInput?.length < 4 ? "text-5xl" : "text-2xl"
+                      }
+                      key={`character-title-${item}-${idx}-${idx}`}
+                    >
+                      <CharacterItem
+                        className={cn(
+                          selectedCompInput?.length < 8
+                            ? "lg:text-4xl text-4xl"
+                            : "text-2xl",
+
+                          currentTime >= startTime && currentTime <= endTime
+                            ? "dark:text-white text-black"
+                            : "text-gray-500"
+                        )}
+                        onClick={() => {
+                          if (duration) {
+                            console.log("START TIME", startTime);
+
+                            seekAndPlay(startTime, customRef);
+                          }
+
+                          // setWords({
+                          //   word: character,
+                          //   transcriptionId: item?.id,
+                          //   contentId,
+                          // });
+                        }}
+                        // disableForgotten
+                        character={item}
+                      />
+                    </span>
+                  );
+                }
+
                 return (
                   <Link
                     className={
@@ -166,6 +221,19 @@ export const CharacterTitle = (props: any) => {
                           ? "lg:text-4xl text-4xl"
                           : "text-2xl"
                       }
+                      onClick={() => {
+                        if (duration) {
+                          console.log("START TIME", startTime);
+
+                          seekAndPlay(startTime, customRef);
+                        }
+
+                        // setWords({
+                        //   word: character,
+                        //   transcriptionId: item?.id,
+                        //   contentId,
+                        // });
+                      }}
                       // disableForgotten
                       character={item}
                     />

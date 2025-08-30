@@ -9,7 +9,7 @@ export const ContentItemV2 = () => {
   const { data: content } = useGetContentQuery({ contentId });
 
   if (content?.audio?.includes("https://www.youtube.com")) {
-    return <YouTubePlayer lessonId={contentId} />;
+    return <YouTubePlayer contentId={contentId} />;
   }
 
   return <PlayV2 contentId={contentId} />;

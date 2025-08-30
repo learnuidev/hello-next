@@ -25,26 +25,26 @@ import { Clipboard } from "../clipboard/clipboard";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
 import { AudiobookPlayer } from "./audiobook-player/audiobook-player";
 
-export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
+export const ConvoDetails = ({ contentId }: { contentId: string }) => {
   const searchParams = useSearchParams();
 
   const viewType = searchParams.get("view") || "listen";
 
-  const isAuthor = useIsContentAuthor(lessonId);
+  const isAuthor = useIsContentAuthor(contentId);
 
   const isSuperAdmin = useIsSuperAdmin();
   const groupBySectionId = groupBy((item: any) => item.sectionId);
 
-  const { data: lesson2, isLoading } = useGetContentQuery({
-    contentId: lessonId,
+  const { data: content, isLoading } = useGetContentQuery({
+    contentId: contentId,
   });
 
-  const { currentTime, setCurrentTime: setTime } = useCurrentTime(lessonId);
+  const { currentTime, setCurrentTime: setTime } = useCurrentTime(contentId);
 
   const currentTranscription =
-    lesson2?.transcriptions?.find(
+    content?.transcriptions?.find(
       (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
-    ) || lesson2?.transcriptions?.[0];
+    ) || content?.transcriptions?.[0];
 
   if (isLoading) {
     return (
@@ -63,18 +63,18 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     return <ContentSettings />;
   }
 
-  // if (viewType === "clipboard" && lesson2.lang !== "zh") {
+  // if (viewType === "clipboard" && content.lang !== "zh") {
   // if (viewType === "clipboard") {
-  //   if (lesson2 && lesson2?.transcriptions?.length > 0) {
+  //   if (content && content?.transcriptions?.length > 0) {
   //     const transcriptionStr = Object.entries(
-  //       groupBySectionId(lesson2?.transcriptions || [])
+  //       groupBySectionId(content?.transcriptions || [])
   //     )
   //       .map((item: any) =>
   //         item?.[1].map((v: any) => v?.input || v?.hanzi)?.join(".")
   //       )
   //       .join("\n\n");
 
-  //     return <Clipboard lang={lesson2.lang} content={transcriptionStr} />;
+  //     return <Clipboard lang={content.lang} content={transcriptionStr} />;
   //   } else {
   //     return (
   //       <Nothing message="Please add some content before viewing this page" />
@@ -85,11 +85,11 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   // If the link contains yotube - then show youtube page
   if (
     viewType === "listen" &&
-    (isYoutube(lesson2?.audio) || isVideoUrl(lesson2?.audio))
+    (isYoutube(content?.audio) || isVideoUrl(content?.audio))
   ) {
     return (
       <div>
-        <YouTubePlayer lessonId={lessonId} />
+        <YouTubePlayer contentId={contentId} />
 
         {/* <FloatingNavbar /> */}
       </div>
@@ -105,38 +105,41 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
     }
     return (
       <div className="px-4 md:px-32">
-        <AI lessonId={lessonId} />
+        <AI contentId={contentId} />
       </div>
     );
   }
 
   if (viewType === "listen") {
-    return <AudiobookPlayer contentId={lessonId} />;
+    // if (content?.lang === "zh") {
+    return <AudiobookPlayer contentId={contentId} />;
+    // }
+
     return (
       <div className="px-4 md:px-12">
-        <PlayV3 contentId={lessonId} />
+        <PlayV3 contentId={contentId} />
       </div>
     );
   }
 
   if (viewType === "write") {
-    if (lesson2?.lang !== "zh") {
+    if (content?.lang !== "zh") {
       return <Nothing message="Wordle is enabled only for Chinese" />;
     }
     return (
       <div>
         {/* Write */}
-        <Wordle contentId={lessonId} />
+        <Wordle contentId={contentId} />
       </div>
     );
   }
 
   if (viewType === "dynacloze") {
-    return <DynaCloze contentId={lessonId} />;
+    return <DynaCloze contentId={contentId} />;
   }
 
   if (viewType === "speak") {
-    return <Speak contentId={lessonId} />;
+    return <Speak contentId={contentId} />;
   }
   if (viewType === "learn") {
     return (
@@ -147,13 +150,13 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
   }
 
   if (viewType === "insights") {
-    // if (lesson2?.lang !== "zh") {
+    // if (content?.lang !== "zh") {
     //   return <Nothing message="Insights is enabled only for Chinese" />;
     // }
 
     return (
       <>
-        <ConvoInsights contentId={lessonId} />
+        <ConvoInsights contentId={contentId} />
         <FloatingNavbar />
       </>
     );
@@ -161,7 +164,7 @@ export const ConvoDetails = ({ lessonId }: { lessonId: string }) => {
 
   return (
     <div>
-      <YouTubePlayer lessonId={lessonId} />
+      <YouTubePlayer contentId={contentId} />
 
       {/* <FloatingNavbar /> */}
     </div>

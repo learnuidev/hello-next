@@ -247,8 +247,8 @@ function LessonCard({ lesson }: any) {
     }
   );
 
-  const lessonId = useConvosStore((state: any) => state?.convoId);
-  const setLessonId = useConvosStore((state: any) => state?.setConvoId);
+  const contentId = useConvosStore((state: any) => state?.convoId);
+  const setcontentId = useConvosStore((state: any) => state?.setConvoId);
 
   const router = useRouter();
 
@@ -274,7 +274,7 @@ function LessonCard({ lesson }: any) {
   return (
     <button
       onClick={() => {
-        setLessonId(lesson?.id);
+        setcontentId(lesson?.id);
         router.push(`/convos/${lesson?.id}`);
       }}
       className="px-4 md:px-32 font-light flex justify-between items-center w-full md:mt-2"
@@ -307,7 +307,7 @@ export default function Convos() {
   const [contentViewType, setViewType] = useViewType();
 
   const [isTocHidden, setIsTocHidden] = useState(false);
-  const lessonId = useConvosStore((state: any) => state?.convoId);
+  const contentId = useConvosStore((state: any) => state?.convoId);
 
   const viewMode = useViewModeStore((state: any) => state.viewMode);
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
@@ -379,13 +379,13 @@ export default function Convos() {
           Favourites
         </button>
       </div>
-      {selectedChar ? null : lessonId && routeName?.includes("/convos") ? (
+      {selectedChar ? null : contentId && routeName?.includes("/convos") ? (
         <ConvosNavBar />
       ) : (
         <NavBar />
       )}
 
-      {selectedChar ? null : lessonId &&
+      {selectedChar ? null : contentId &&
         routeName?.includes("/convos") ? null : (
         <div className="px-4 md:px-8 mt-4">
           <button
@@ -399,8 +399,8 @@ export default function Convos() {
         </div>
       )}
 
-      {lessonId ? (
-        <ConvoDetails lessonId={lessonId} />
+      {contentId ? (
+        <ConvoDetails contentId={contentId} />
       ) : (
         <div className="my-8 space-y-8">
           <ContentsList contentViewType={contentViewType} />

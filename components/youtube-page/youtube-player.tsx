@@ -24,7 +24,7 @@ import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-hist
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { useListComponents } from "@/domain/lesson/component.queries";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Icons } from "../ui/icons.v2";
 import { KaraokeMode } from "./karaoke-mode";
 import { TranscriptItem } from "./youtube-transcript-item";
@@ -129,7 +129,7 @@ const useViewModeStore = create(
   )
 );
 
-export function YouTubePlayer({ lessonId }: { lessonId: string }) {
+export function YouTubePlayer({ contentId }: { contentId: string }) {
   const viewMode = useViewModeStore((state) => state.viewMode);
   const setViewMode = useViewModeStore((state) => state.setViewMode);
 
@@ -144,8 +144,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const _toggleLoops: any = useViewModeStore((state) => state.toggleLoops);
 
   const toggleLoops = useMemo(
-    () => _toggleLoops?.filter((loop: any) => loop?.contentId === lessonId),
-    [_toggleLoops, lessonId]
+    () => _toggleLoops?.filter((loop: any) => loop?.contentId === contentId),
+    [_toggleLoops, contentId]
   );
   const setToggleLoops = useViewModeStore((state) => state.setToggleLoops);
 
@@ -165,10 +165,8 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const { goToBefore, goToNext } = useGo();
 
-  const { currentTime, setCurrentTime } = useCurrentTime(lessonId);
+  const { currentTime, setCurrentTime } = useCurrentTime(contentId);
 
-  const params = useParams<{ "content-id": string }>();
-  const contentId = params["content-id"];
   const playerRef = useRef(null) as any;
   const setRepeatHistories = useRepeatHistoryStore(
     (state: any) => state.setHistory
@@ -184,7 +182,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
 
   const queryClient = useQueryClient();
 
-  const { data: lesson } = useGetContentQuery({ contentId: lessonId });
+  const { data: lesson } = useGetContentQuery({ contentId: contentId });
 
   const finalUrl = lesson?.audio;
 
@@ -239,7 +237,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
   const [loopCounter, setLoopCounter] = useState(0);
 
   const { data: transcriptionsData } = useListSentencesQuery({
-    component: lessonId,
+    component: contentId,
     lang: "zh",
     genSents: false,
   }) as any;
@@ -340,9 +338,9 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
       if (exist) {
         return [];
       }
-      return val.concat({ ...currentTranscription, contentId: lessonId });
+      return val.concat({ ...currentTranscription, contentId: contentId });
     });
-  }, [currentTranscription, lessonId, setToggleLoops]);
+  }, [currentTranscription, contentId, setToggleLoops]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -669,7 +667,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                   setHistory({
                     transcriptionId: currentTranscription?.id,
                     contextId,
-                    contentId: lessonId,
+                    contentId: contentId,
                     createdAt: Date.now(),
                     progressTime: value.playedSeconds,
                   });
@@ -690,7 +688,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                   console.log("yooo");
 
                   queryClient.invalidateQueries({
-                    queryKey: ["upsert-content-analytics", lessonId],
+                    queryKey: ["upsert-content-analytics", contentId],
                   });
 
                   setIsPlaying(false);
@@ -913,7 +911,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                                               word: item,
                                               transcriptionId:
                                                 transcription?.id,
-                                              contentId: lessonId,
+                                              contentId: contentId,
                                             });
                                           }}
                                           key={`para-mode-${item}-${idx}-${transcriptionInput}`}
@@ -1032,7 +1030,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
                             isVideoHidden={isVideoHidden}
                             playerRef={playerRef}
                             learnedCharacters={learnedCharacters}
-                            lessonId={lessonId}
+                            contentId={contentId}
                           />
                         );
                       })}

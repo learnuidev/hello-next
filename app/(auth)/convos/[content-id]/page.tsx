@@ -69,7 +69,7 @@ function WithContentItem({ children }: { children: React.ReactNode }) {
 }
 
 export default function ContentItem() {
-  const lessonId = useGetContentId();
+  const contentId = useGetContentId();
 
   const editMode = useContentEditStore((state) => state.editMode);
 
@@ -93,14 +93,6 @@ export default function ContentItem() {
     };
   }, [editMode, goToNext, goToBefore]);
 
-  // useEffect(() => {
-  //   if (currentTime && !startTimeParam) {
-  //     router.push(
-  //       `/convos/${lessonId}?start=${currentTime}${view ? `&view=${view}` : ``}`
-  //     );
-  //   }
-  // }, [currentTime, lessonId, router, startTimeParam, view]);
-
   return (
     <WithContentItem>
       <main>
@@ -110,7 +102,7 @@ export default function ContentItem() {
           </div>
 
           <div className="mb-24">
-            <ConvoDetails lessonId={lessonId} />
+            <ConvoDetails contentId={contentId} />
           </div>
         </div>
       </main>

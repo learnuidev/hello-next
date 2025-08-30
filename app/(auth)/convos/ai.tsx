@@ -204,7 +204,7 @@ const AgentAnswer = ({
   );
 };
 
-export const AI = ({ lessonId }: { lessonId: string }) => {
+export const AI = ({ contentId }: { contentId: string }) => {
   const [isTocHidden, setIsTocHidden] = useState(false);
   const [updateThread, setUpdateThread] = useState(false);
   const [finishedMsgs, setFinishedMsgs] = useState([]);
@@ -212,7 +212,7 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
   const [cachedMessages, setCachedMessages] = useState([]);
   const router = useRouter();
 
-  const { data: lesson2 } = useGetContentQuery({ contentId: lessonId });
+  const { data: lesson2 } = useGetContentQuery({ contentId: contentId });
 
   const { data: authUser } = useCurrentAuthUser({});
 
@@ -246,10 +246,6 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
     api: "/api/question-answer",
     body: {
       context: JSON.stringify(lesson2),
-      //   aiContext: {
-      //     model: aiModels.gpt35Turbo,
-      //     threadId,
-      //   },
     },
     headers: {
       Authorization: `${jwt}`,
@@ -260,72 +256,25 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
 
       const msgs = JSON.parse(localStorage.getItem("messages") || "") as any;
       const input = JSON.parse(localStorage.getItem("query") || "") as any;
-
-      // if (threadId) {
-      //   setUpdateThread(true);
-      // }
-
-      // if (msgs?.length) {
-      //   addThreadMutation
-      //     .mutateAsync({
-      //       id: threadId,
-      //       query: input,
-      //       messages: msgs,
-      //     })
-      //     .then((resp) => {
-      //       router.push(`/chat?thread=${resp.id}`);
-      //     });
-      // }
     },
   } as any);
 
   const updateMessages = (newMessages: any) => {
-    // if (newMessages?.length > 0) {
-    localStorage.setItem(lessonId, JSON.stringify(messages));
+    localStorage.setItem(contentId, JSON.stringify(messages));
     setMessages(newMessages);
-    // }
   };
 
   useEffect(() => {
-    const msgs = JSON.parse(localStorage.getItem(lessonId) as any) || [];
+    const msgs = JSON.parse(localStorage.getItem(contentId) as any) || [];
 
-    if (
-      msgs?.length
-      //   && JSON.stringify(msgs) !== localStorage.getItem(lessonId)
-    ) {
+    if (msgs?.length) {
       setMessages(msgs);
     }
-  }, [lessonId, setMessages]);
-
-  //   useEffect(() => {
-  //     const updateThreadAsyncFunction = async () => {
-  //       return updateThreadMutation
-  //         .mutateAsync({
-  //           threadId: searchParams.get("thread") || "",
-  //           messages,
-  //         })
-  //         .then((resp) => {
-  //           alert("updated");
-  //         });
-  //     };
-
-  //     if (updateThread) {
-  //       setUpdateThread(() => {
-  //         updateThreadAsyncFunction();
-  //         return false;
-  //       });
-  //     }
-  //   }, [messages, searchParams, updateThread, updateThreadMutation]);
-
-  //   useEffect(() => {
-  //     if (thread && thread?.messages) {
-  //       setMessages(thread?.messages);
-  //     }
-  //   }, [setMessages, thread]);
+  }, [contentId, setMessages]);
 
   useEffect(() => {
     if (messages?.length > 0) {
-      localStorage.setItem(lessonId, JSON.stringify(messages));
+      localStorage.setItem(contentId, JSON.stringify(messages));
 
       setCachedMessages(() => messages as any);
     }
@@ -333,7 +282,7 @@ export const AI = ({ lessonId }: { lessonId: string }) => {
     if (input) {
       localStorage.setItem("query", JSON.stringify(input));
     }
-  }, [messages, input, lessonId]);
+  }, [messages, input, contentId]);
 
   const toggleIsHidden = () => {
     if (isTocHidden) {

@@ -15,6 +15,7 @@ import { PinyinButton } from "@/components/pinyin-button";
 import { ContentTranscription, IContent } from "@/domain/content/content.api";
 import { ChinglishButton } from "@/components/chinglish-button";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
+import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 
 interface CurrentTranscriptionProps {
   currentTranscription: ContentTranscription;
@@ -77,7 +78,7 @@ function PinyinView({
         currentTranscription={currentTranscription}
         seekAndPlay={seekAndPlay}
       />
-      {data ? (
+      {currentTranscription?.lang === "zh" && data ? (
         <div className="mt-12 sm:mt-32">
           {data?.map((item) => {
             return (
@@ -96,8 +97,22 @@ function PinyinView({
         </div>
       ) : (
         <div className="mt-32">
-          <p>{currentTranscription?.pinyin}</p>
-          <p className="text-4xl">{currentTranscription?.input}</p>
+          {isNonRomanLang(currentTranscription?.lang) ? null : (
+            <p>
+              {currentTranscription?.lang === "zh"
+                ? currentTranscription?.pinyin
+                : currentTranscription?.roman}
+            </p>
+          )}
+          <p
+            className={cn(
+              currentTranscription?.lang === "zh"
+                ? "text-2xl sm:text-4xl"
+                : "text-[16px] sm:text-xl"
+            )}
+          >
+            {currentTranscription?.input}
+          </p>
         </div>
       )}
     </div>

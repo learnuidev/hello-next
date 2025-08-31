@@ -60,7 +60,7 @@ function NormalView({
         seekAndPlay={seekAndPlay}
       />
 
-      <p className="mt-12 sm:mt-32 text-lg sm:text-4xl">
+      <p className="mt-12 sm:mt-16 text-lg sm:text-3xl">
         {currentTranscription?.input}
       </p>
     </div>
@@ -80,14 +80,14 @@ function PinyinView({
   const { selected, setSelected } = useSelectedItem();
 
   return (
-    <div>
+    <div className="max-w-4xl mx-auto">
       <EnView
         containsChinglish={containsChinglish}
         currentTranscription={currentTranscription}
         seekAndPlay={seekAndPlay}
       />
       {currentTranscription?.lang === "zh" && data ? (
-        <div className="mt-4 sm:mt-32">
+        <div className="mt-4 sm:mt-16">
           {data?.map((item) => {
             return (
               <span
@@ -111,7 +111,7 @@ function PinyinView({
           })}
         </div>
       ) : (
-        <div className="mt-32">
+        <div className="mt-16">
           {isNonRomanLang(currentTranscription?.lang) ? null : (
             <p>
               {currentTranscription?.lang === "zh"
@@ -122,7 +122,7 @@ function PinyinView({
           <p
             className={cn(
               currentTranscription?.lang === "zh"
-                ? "text-2xl sm:text-4xl"
+                ? "text-lg sm:text-3xl"
                 : "text-[16px] sm:text-xl"
             )}
           >

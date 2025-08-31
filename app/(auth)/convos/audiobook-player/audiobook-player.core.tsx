@@ -43,15 +43,19 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
     <MandoContextMenu lang={content?.lang || ""}>
       <div className="relative">
         <div className="flex flex-col sm:flex-row gap-8 sm:px-8 scroll-px-80">
-          {currentTranscription && (
+          {currentTranscription ? (
             <CurrentTranscriptionView
               containsChinglish={containsChinglish}
               seekAndPlay={seekAndPlay}
               currentTranscription={currentTranscription}
             />
+          ) : (
+            <div className=" dark:text-black text-white text-center mt-8 sm:mt-24 min-w-5xl mx-auto">
+              ...
+            </div>
           )}
 
-          {currentTranscription && selected && (
+          {selected && (
             <MiniDictionary selected={selected} lang={content?.lang} />
           )}
         </div>

@@ -29,6 +29,40 @@ function EnView({
     </p>
   );
 }
+
+function InputView({
+  currentTranscription,
+  seekAndPlay,
+  containsChinglish,
+}: CurrentTranscriptionProps) {
+  const { selected, setSelected } = useSelectedItem();
+
+  return (
+    <p
+      className={cn(
+        currentTranscription?.lang === "zh"
+          ? "text-lg sm:text-3xl"
+          : "text-[16px] sm:text-xl"
+      )}
+    >
+      {smartSplit({
+        input: currentTranscription?.input,
+        lang: currentTranscription?.lang,
+      })?.map((item: any, idx: any) => {
+        return (
+          <span key={`${item}-pinin-view-${idx}`}>
+            <CharacterItem
+              character={item}
+              onClick={() => {
+                setSelected(item);
+              }}
+            />
+          </span>
+        );
+      })}
+    </p>
+  );
+}
 function NormalView({
   currentTranscription,
   seekAndPlay,
@@ -42,9 +76,13 @@ function NormalView({
         seekAndPlay={seekAndPlay}
       />
 
-      <p className="mt-12 sm:mt-16 text-lg sm:text-3xl">
-        {currentTranscription?.input}
-      </p>
+      <div className="mt-4 sm:mt-16">
+        <InputView
+          containsChinglish={containsChinglish}
+          currentTranscription={currentTranscription}
+          seekAndPlay={seekAndPlay}
+        />
+      </div>
     </div>
   );
 }
@@ -101,29 +139,11 @@ function PinyinView({
                 : currentTranscription?.roman}
             </p>
           ) : null}
-          <p
-            className={cn(
-              currentTranscription?.lang === "zh"
-                ? "text-lg sm:text-3xl"
-                : "text-[16px] sm:text-xl"
-            )}
-          >
-            {smartSplit({
-              input: currentTranscription?.input,
-              lang: currentTranscription?.lang,
-            })?.map((item: any, idx: any) => {
-              return (
-                <span key={`${item}-pinin-view-${idx}`}>
-                  <CharacterItem
-                    character={item}
-                    onClick={() => {
-                      setSelected(item);
-                    }}
-                  />
-                </span>
-              );
-            })}
-          </p>
+          <InputView
+            containsChinglish={containsChinglish}
+            currentTranscription={currentTranscription}
+            seekAndPlay={seekAndPlay}
+          />
         </div>
       )}
     </div>

@@ -79,18 +79,18 @@ function PinyinView({
         seekAndPlay={seekAndPlay}
       />
       {currentTranscription?.lang === "zh" && data ? (
-        <div className="mt-12 sm:mt-32">
+        <div className="mt-4 sm:mt-32">
           {data?.map((item) => {
             return (
               <span
-                className="inline-flex flex-col items-center py-[2px] p-2 justify-center"
+                className="inline-flex flex-col items-center p-[2px] py-[0px] sm:p-2 justify-center"
                 key={JSON.stringify(item)}
               >
                 <span className="text-sm dark:text-gray-400 text-gray-800">
                   {item?.pinyin}
                 </span>
 
-                <span className="text-xl sm:text-3xl">{item?.hanzi}</span>
+                <span className="text-lg sm:text-3xl">{item?.hanzi}</span>
               </span>
             );
           })}
@@ -127,7 +127,7 @@ function CurrentTranscriptionView({
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   return (
-    <div className="text-center mt-24 max-w-5xl mx-auto">
+    <div className="text-center mt-8 sm:mt-24 max-w-5xl mx-auto">
       {showPinyin ? (
         <PinyinView
           containsChinglish={containsChinglish}
@@ -317,83 +317,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const containsChinglish = !!transcriptions?.[0]?.chinglish;
 
   return (
-    <div>
-      <div className="w-full max-w-3xl mx-auto p-4">
-        <ReactPlayer
-          playbackRate={playbackRate}
-          progressInterval={100}
-          url={content?.audio}
-          onPlay={() => setPlaying(true)}
-          onPause={() => setPlaying(false)}
-          width="100%"
-          height="50px"
-          onReady={(data) => {
-            setIsReady(true);
-            setDuration(data.getDuration());
-          }}
-          playing={false}
-          controls={false}
-          ref={playerRef}
-          onProgress={(value) => {
-            setCurrentTime(value.playedSeconds);
-          }}
-        />
-
-        <div className="flex items-center justify-center gap-4 mt-4">
-          <button
-            className={cn(
-              "text-2xl",
-              loop
-                ? "dark:text-white text-black font-bold"
-                : "dark:text-gray-600 text-gray-300"
-            )}
-            onClick={() => {
-              setLoop((loop: string) => {
-                if (loop) {
-                  return null;
-                }
-
-                return currentTranscription?.input;
-              });
-            }}
-          >
-            <Icons.loop />
-          </button>
-          <button onClick={seekBefore} className="p-2 rounded-full ">
-            <Icons.rewind className="text-2xl" />
-          </button>
-
-          <button onClick={handlePlayPause} className="p-3 rounded-full">
-            {playing ? (
-              <Icons.pause className="text-4xl" />
-            ) : (
-              <Icons.play className="text-4xl" />
-            )}
-          </button>
-
-          <button onClick={seekAfter} className="p-2 rounded-full ">
-            <Icons.fastForward className="text-2xl" />
-          </button>
-
-          <PinyinButton className="text-2xl" />
-          {containsChinglish && <ChinglishButton className="text-2xl" />}
-        </div>
-
-        <div className="flex items-center gap-4 mt-4">
-          <span className="text-sm">{formatTime(currentTime)}</span>
-          <Slider
-            min={0}
-            max={duration}
-            step={1}
-            value={[currentTime]}
-            defaultValue={[currentTime]}
-            onValueChange={handleSeekChange}
-            className="w-full"
-          />
-          <span className="text-sm">{formatTime(duration)}</span>
-        </div>
-      </div>
-
+    <div className="relative">
       {currentTranscription && (
         <CurrentTranscriptionView
           containsChinglish={containsChinglish}
@@ -401,6 +325,84 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
           currentTranscription={currentTranscription}
         />
       )}
+
+      <div className="fixed bottom-2 w-full">
+        <div className="w-full max-w-3xl mx-auto p-4">
+          <ReactPlayer
+            playbackRate={playbackRate}
+            progressInterval={100}
+            url={content?.audio}
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
+            width="100%"
+            height="50px"
+            onReady={(data) => {
+              setIsReady(true);
+              setDuration(data.getDuration());
+            }}
+            playing={false}
+            controls={false}
+            ref={playerRef}
+            onProgress={(value) => {
+              setCurrentTime(value.playedSeconds);
+            }}
+          />
+
+          <div className="flex items-center justify-center sm:gap-8 gap-4 mt-4">
+            <button
+              className={cn(
+                "text-xl",
+                loop
+                  ? "dark:text-white text-black font-bold"
+                  : "dark:text-gray-600 text-gray-300"
+              )}
+              onClick={() => {
+                setLoop((loop: string) => {
+                  if (loop) {
+                    return null;
+                  }
+
+                  return currentTranscription?.input;
+                });
+              }}
+            >
+              <Icons.loop />
+            </button>
+            <button onClick={seekBefore} className="p-2 rounded-full ">
+              <Icons.rotateLeft className="text-xl" />
+            </button>
+
+            <button onClick={handlePlayPause} className="rounded-full">
+              {playing ? (
+                <Icons.pause className="text-2xl" />
+              ) : (
+                <Icons.play className="text-2xl" />
+              )}
+            </button>
+
+            <button onClick={seekAfter} className="rounded-full ">
+              <Icons.rotateRight className="text-xl" />
+            </button>
+
+            <PinyinButton className="text-2xl" />
+            {containsChinglish && <ChinglishButton className="text-2xl" />}
+          </div>
+
+          <div className="flex items-center gap-4 mt-4">
+            <span className="text-sm">{formatTime(currentTime)}</span>
+            <Slider
+              min={0}
+              max={duration}
+              step={1}
+              value={[currentTime]}
+              defaultValue={[currentTime]}
+              onValueChange={handleSeekChange}
+              className="w-full"
+            />
+            <span className="text-sm">{formatTime(duration)}</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -231,7 +231,7 @@ export const ConvosNavBar = () => {
           </Link>
         )}
 
-        {isSuperAdmin && (
+        {/* {isSuperAdmin && (
           <Link
             href={`/convos/${contentId}?view=ai&start=${searchParams.get("start") || 0}`}
             onClick={() => {
@@ -245,7 +245,7 @@ export const ConvosNavBar = () => {
           >
             <Icons.ai />
           </Link>
-        )}
+        )} */}
       </div>
     </div>
   );

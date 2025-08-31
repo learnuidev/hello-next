@@ -19,6 +19,7 @@ export interface ListDiscoveryResponse {
   lang: string;
   en: string;
   roman: string;
+  explanation?: string;
 }
 
 const listDiscovery = async (

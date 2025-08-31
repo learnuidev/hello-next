@@ -3,19 +3,24 @@ import { Icons } from "@/components/ui/icons.v2";
 import { Slider } from "@/components/ui/slider";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
 
+import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
+import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
+import { ChinglishButton } from "@/components/chinglish-button";
+import { PinyinButton } from "@/components/pinyin-button";
+import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
+import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
+import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
+import { ContentTranscription, IContent } from "@/domain/content/content.api";
+import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
+import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
-import { formatTime } from "../_play/utils";
-import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
-import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { useDebouncedCallback } from "use-debounce";
-import { cn } from "@/lib/utils";
 import { useListenState } from "../../listen/hooks/use-listen-state";
-import { PinyinButton } from "@/components/pinyin-button";
-import { ContentTranscription, IContent } from "@/domain/content/content.api";
-import { ChinglishButton } from "@/components/chinglish-button";
-import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
-import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
+import { formatTime } from "../_play/utils";
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
+import { AnimatedLoadingText } from "@/components/animated-loading-text";
+import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 
 interface CurrentTranscriptionProps {
   currentTranscription: ContentTranscription;
@@ -71,6 +76,8 @@ function PinyinView({
     currentTranscription?.lang
   );
 
+  const { selected, setSelected } = useSelectedItem();
+
   return (
     <div>
       <EnView
@@ -83,6 +90,13 @@ function PinyinView({
           {data?.map((item) => {
             return (
               <span
+                onClick={() => {
+                  if (selected === item?.hanzi) {
+                    setSelected(null);
+                  } else {
+                    setSelected(item.hanzi);
+                  }
+                }}
                 className="inline-flex flex-col items-center p-[2px] py-[0px] sm:p-2 justify-center"
                 key={JSON.stringify(item)}
               >
@@ -145,12 +159,93 @@ function CurrentTranscriptionView({
   );
 }
 
+function MiniDictionary({
+  lang,
+  selected,
+}: {
+  lang: string;
+  selected: string;
+}) {
+  const { data: sentences } = useListSentencesQuery({
+    component: selected,
+    lang,
+  });
+
+  const { setSelected } = useSelectedItem();
+
+  const { data, isLoading: isMeaningDiscoveryLoading } = useListDiscoveryQuery({
+    content: selected,
+    lang,
+  });
+
+  const pinyinOrRoman = data?.pinyin || data?.roman;
+
+  return (
+    <div className="w-full sm:w-96 bg-gray-50 dark:bg-[rgb(13,14,15)] rounded p-4 sm:p-8">
+      <div className="flex justify-between items-center">
+        <h4 className="text-2xl font-bold">
+          {" "}
+          {selected} {pinyinOrRoman ? `(${pinyinOrRoman})` : null}{" "}
+        </h4>
+
+        <button
+          onClick={() => {
+            setSelected(null);
+          }}
+        >
+          <Icons.xMark className="text-2xl" />
+        </button>
+      </div>
+
+      {isMeaningDiscoveryLoading ? (
+        <div className="my-4">
+          <AnimatedLoadingText
+            className="text-xl my-8"
+            message="loading dictionary..."
+          />
+        </div>
+      ) : (
+        <>
+          <p className="text-gray-400 font-light text-xl">{data?.en}</p>
+
+          <p className="text-sm mt-4 text-gray-500">
+            {data?.explanation
+              ? `${data?.explanation?.split(".")?.[0]}.`
+              : null}
+          </p>
+        </>
+      )}
+
+      <div className="mt-8">
+        <div className="space-y-4">
+          {sentences?.slice(0, 3)?.map((sentence) => {
+            return (
+              <div key={sentence.id}>
+                {lang === "zh" && isNonRomanLang(lang) && (
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {sentence?.pinyin || sentence?.roman}
+                  </p>
+                )}
+                <p className={"text-2xl"}>
+                  {sentence?.hanzi || sentence?.input}
+                </p>
+                <p className="text-gray-500">{sentence?.en}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const { playbackRate } = useListenState();
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [loop, setLoop] = useState<any>(null);
   const [isReady, setIsReady] = useState(false);
+  const { selected, setSelected } = useSelectedItem();
 
   const { currentTime = 0, setCurrentTime } = useCurrentTime(content.id);
 
@@ -318,13 +413,19 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
 
   return (
     <div className="relative">
-      {currentTranscription && (
-        <CurrentTranscriptionView
-          containsChinglish={containsChinglish}
-          seekAndPlay={seekAndPlay}
-          currentTranscription={currentTranscription}
-        />
-      )}
+      <div className="flex flex-col sm:flex-row gap-8 sm:px-8 scroll-px-80">
+        {currentTranscription && (
+          <CurrentTranscriptionView
+            containsChinglish={containsChinglish}
+            seekAndPlay={seekAndPlay}
+            currentTranscription={currentTranscription}
+          />
+        )}
+
+        {selected && (
+          <MiniDictionary selected={selected} lang={content?.lang} />
+        )}
+      </div>
 
       <div className="fixed bottom-2 w-full">
         <div className="w-full max-w-3xl mx-auto p-4 py-2">

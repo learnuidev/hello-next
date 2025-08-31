@@ -54,7 +54,7 @@ function NormalView({
         seekAndPlay={seekAndPlay}
       />
 
-      <p className="mt-12 sm:mt-32 text-2xl sm:text-4xl">
+      <p className="mt-12 sm:mt-32 text-lg sm:text-4xl">
         {currentTranscription?.input}
       </p>
     </div>
@@ -327,7 +327,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
       )}
 
       <div className="fixed bottom-2 w-full">
-        <div className="w-full max-w-3xl mx-auto p-4">
+        <div className="w-full max-w-3xl mx-auto p-4 py-2">
           <ReactPlayer
             playbackRate={playbackRate}
             progressInterval={100}
@@ -348,7 +348,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
             }}
           />
 
-          <div className="flex items-center justify-center sm:gap-8 gap-4 mt-4">
+          <div className="flex items-center justify-center sm:gap-8 gap-4">
             <button
               className={cn(
                 "text-xl",
@@ -388,7 +388,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
             {containsChinglish && <ChinglishButton className="text-2xl" />}
           </div>
 
-          <div className="flex items-center gap-4 mt-4">
+          <div className="flex items-center gap-4">
             <span className="text-sm">{formatTime(currentTime)}</span>
             <Slider
               min={0}

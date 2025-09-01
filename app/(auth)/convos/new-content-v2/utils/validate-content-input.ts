@@ -27,7 +27,7 @@ const thumbnailsSchema = z.object({
   medium: thumbnailImageSchema,
   high: thumbnailImageSchema,
   standard: thumbnailImageSchema,
-  maxres: thumbnailImageSchema,
+  maxres: thumbnailImageSchema.optional(),
 });
 
 // Specialized child schemas:

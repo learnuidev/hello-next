@@ -212,7 +212,14 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
                   </button>
                   <img
                     className="object-cover rounded-xl w-full aspect-video"
-                    src={item?.thumbnails?.maxres?.url || defaultPic}
+                    src={
+                      item?.thumbnails?.maxres?.url ||
+                      item?.thumbnails?.standard?.url ||
+                      item?.thumbnails?.high?.url ||
+                      item?.thumbnails?.medium?.url ||
+                      item?.thumbnails?.default?.url ||
+                      defaultPic
+                    }
                     alt={item?.title}
                   />
                 </Link>

@@ -9,6 +9,7 @@ import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { ContentTranscription } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
+import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 
 function EnView({
   currentTranscription,
@@ -54,7 +55,13 @@ function InputView({
             <CharacterItem
               character={item}
               onClick={() => {
-                setSelected(item);
+                const selectedText = getSelectedText();
+
+                if (selectedText) {
+                  setSelected(selectedText);
+                } else {
+                  setSelected(item);
+                }
               }}
             />
           </span>
@@ -112,7 +119,10 @@ function PinyinView({
             return (
               <span
                 onClick={() => {
-                  if (selected === item?.hanzi) {
+                  const selectedText = getSelectedText();
+                  if (selectedText) {
+                    setSelected(selectedText);
+                  } else if (selected === item?.hanzi) {
                     setSelected(null);
                   } else {
                     setSelected(item.hanzi);

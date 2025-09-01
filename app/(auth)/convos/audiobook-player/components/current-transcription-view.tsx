@@ -107,7 +107,7 @@ function PinyinView({
   const { selected, setSelected } = useSelectedItem();
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-7xl mx-auto">
       <EnView
         containsChinglish={containsChinglish}
         currentTranscription={currentTranscription}
@@ -168,7 +168,7 @@ export function CurrentTranscriptionView({
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   return (
-    <div className="text-center mt-8 sm:mt-24 max-w-5xl mx-auto">
+    <div className="text-center mt-8 sm:mt-24 max-w-7xl mx-auto">
       {showPinyin ? (
         <PinyinView
           containsChinglish={containsChinglish}

@@ -67,6 +67,8 @@ export const CharacterItem = ({
 
   const commonCharacterMode = currentMode?.current === "melanin";
 
+  console.log("CURRENT MODE", currentMode);
+
   return (
     <span
       onClick={() => {
@@ -88,6 +90,8 @@ export const CharacterItem = ({
           (learnedChar?.status === "forgotten"
             ? `text-gray-300 dark:text-gray-800 ${hoverColor}`
             : `${color} ${hoverColor}`),
+
+        currentMode.current === "normal" && "dark:text-white text-black",
         className
       )}
     >

@@ -18,11 +18,12 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
-import { getMulti } from "./utils/get-multi";
+
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
+import { getMulti } from "../dyna-cloze-sentence/utils/get-multi";
 
 interface IDynoParams {
   parentSentence?: any;

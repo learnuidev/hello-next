@@ -5,7 +5,7 @@ import { Icons } from "@/components/ui/icons.v2";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { create } from "zustand";
 import {
   ContentClozeModeButton,
@@ -22,6 +22,13 @@ import { useSearchParams } from "next/navigation";
 import { ReviewItemHanzi } from "./review-item-hanzi";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
+import {
+  isMulti,
+  getMulti,
+} from "@/app/(auth)/convos/[content-id]/dyna-cloze-sentence/utils/get-multi";
+import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
+import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 
 const ClozeNavbar = ({
   onClose,
@@ -91,6 +98,7 @@ export function ReviewClozeContent({
   onClose?: () => void;
   backButton?: any;
 }) {
+  const customRef = useRef(null) as any;
   const [showEn, setShowEn] = useState(false);
   // const clozeIndex = useClozeIndexStore((state) => state.clozeIndex);
   // const setClozeIndex = useClozeIndexStore((state) => state.setClozeIndex);
@@ -162,7 +170,7 @@ export function ReviewClozeContent({
 
   const sentences = useMemo(
     () => [
-      ...contentSentences?.filter((sent: any) =>
+      ...(contentSentences || [])?.filter((sent: any) =>
         (sent?.input || sent?.hanzi)?.includes(currentCharacter)
       ),
       ...getRandomWords(
@@ -182,10 +190,35 @@ export function ReviewClozeContent({
 
   const { setClozeContentMode } = useClozeContentMode();
 
-  const sentence = useMemo(
+  const _sentence = useMemo(
     () => sentences?.[questionIndex],
     [sentences, questionIndex]
   );
+
+  const isMultiSent = isMulti(_sentence?.input || _sentence?.hanzi);
+
+  console.log("IS MULTI SENT", isMultiSent);
+
+  const multiSent = getMulti(_sentence?.input || _sentence?.hanzi)?.filter(
+    (sent) => sent?.includes(currentCharacter)
+  );
+
+  const initSentence = isMultiSent
+    ? {
+        ..._sentence,
+        hanzi: multiSent?.[0],
+        input: multiSent?.[0],
+      }
+    : _sentence;
+
+  const { data: sentence } = useListDiscoveryQuery({
+    content: initSentence?.hanzi,
+    lang,
+  });
+
+  console.log("MULT SENT", multiSent);
+
+  console.log("SENTENCE", sentence);
 
   const futureSentence = useMemo(
     () => sentences?.[questionIndex + 1],
@@ -375,7 +408,7 @@ export function ReviewClozeContent({
 
           <Link
             target="_blank"
-            href={`/convos/${sentence?.contentId}${sentence?.start ? `?start=${sentence?.start}` : ""}`}
+            href={`/convos/${initSentence?.contentId}${initSentence?.start ? `?start=${initSentence?.start}` : ""}`}
             className="block"
           >
             <p className="text-center mt-4">{sentence?.en} </p>
@@ -523,12 +556,21 @@ export function ReviewClozeContent({
               {showEn ? "Hide En" : "Show En"}
             </button>
 
-            {sentence?.contentId && (
-              <YoutubeButton
-                sentenceInput={sentence?.input || sentence?.hanzi}
-                contentId={sentence?.contentId}
-                transcriptId={sentence?.id}
+            {isMultiSent ? (
+              <PlayButtonV2
+                customRef={customRef}
+                text={sentence?.input || sentence?.hanzi}
+                lang={sentence?.lang}
+                className={cn("text-xl")}
               />
+            ) : (
+              initSentence?.contentId && (
+                <YoutubeButton
+                  sentenceInput={sentence?.input || sentence?.hanzi}
+                  contentId={initSentence?.contentId}
+                  transcriptId={sentence?.id}
+                />
+              )
             )}
           </div>
         </div>

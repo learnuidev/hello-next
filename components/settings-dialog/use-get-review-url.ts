@@ -5,6 +5,7 @@ import { useDiaryParams } from "@/app/(auth)/diary/hooks/use-diary-params";
 import { getReviewDate } from "@/hooks/get-review-date";
 import { useLearningMode } from "./learning-mode.store";
 import { useParams } from "next/navigation";
+import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
 
 export const getReviewSearchParams = ({
   mode,

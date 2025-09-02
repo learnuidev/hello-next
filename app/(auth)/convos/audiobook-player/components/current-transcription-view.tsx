@@ -10,6 +10,7 @@ import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { cn } from "@/lib/utils";
 import { useSegmentTextQuery } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
+import { isChinesePunctuation } from "@/lib/is-chinese-punctuation";
 
 function EnView({
   currentTranscription,
@@ -148,7 +149,9 @@ function PinyinView({
                 key={`${JSON.stringify(item)}-${idx}${_data ? "perm" : "tempo"}`}
               >
                 <span className="text-sm dark:text-gray-400 text-gray-800">
-                  {item?.pinyin}
+                  {isChinesePunctuation(item?.input || item?.hanzi)
+                    ? ""
+                    : item?.pinyin}
                 </span>
 
                 <span
@@ -158,7 +161,27 @@ function PinyinView({
                       : "text-[16px] sm:text-xl"
                   }
                 >
-                  {item?.hanzi || item?.input}
+                  {smartSplit({
+                    input: item?.hanzi || item?.input,
+                    lang: currentTranscription?.lang,
+                  })?.map((item: any, idx: any) => {
+                    return (
+                      <span key={`${item}-pinin-view-${idx}`}>
+                        <CharacterItem
+                          character={item}
+                          onClick={() => {
+                            const selectedText = getSelectedText();
+
+                            if (selectedText && selectedText?.length < 36) {
+                              setSelected(selectedText);
+                            } else {
+                              setSelected(item);
+                            }
+                          }}
+                        />
+                      </span>
+                    );
+                  })}
                 </span>
               </span>
             );

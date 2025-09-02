@@ -5,6 +5,7 @@ import { useListComponentsMapQuery } from "@/domain/lesson/component.queries";
 import { calculateHoverColor } from "@/app/nmm/nmm-utils/calculate-hover-color";
 import { cn } from "@/lib/utils";
 import { usePreviewMode } from "../settings-dialog/use-preview-mode";
+import { isChinesePunctuation } from "@/lib/is-chinese-punctuation";
 
 interface ICharacterItem {
   character: any;
@@ -67,8 +68,6 @@ export const CharacterItem = ({
 
   const commonCharacterMode = currentMode?.current === "melanin";
 
-  console.log("CURRENT MODE", currentMode);
-
   return (
     <span
       onClick={() => {
@@ -82,7 +81,7 @@ export const CharacterItem = ({
 
         commonCharacterMode && hasHskword
           ? popularityColor
-          : "。？，"?.includes(character)
+          : isChinesePunctuation(character)
             ? "dark:text-white text-black"
             : "",
 

@@ -58,9 +58,7 @@ const ClozeNavbar = ({
         </button>
       </div>
       <div className="flex-1 flex justify-center px-4">
-        <h1 className="text-center font-bold text-2xl">
-          cloze [{contentSentences} + {totalSentences}]
-        </h1>
+        <h1 className="text-center font-bold text-2xl">dynacloze</h1>
       </div>
       <div className="flex-1 flex justify-end px-4">
         <ContentClozeModeButton />

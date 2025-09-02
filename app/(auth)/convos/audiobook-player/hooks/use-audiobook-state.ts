@@ -7,6 +7,7 @@ import { IContent } from "@/domain/content/content.api";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
+import { useSearchParams } from "next/navigation";
 
 export const useAudioBookState = (content: IContent) => {
   const { playbackRate } = useListenState();
@@ -17,6 +18,10 @@ export const useAudioBookState = (content: IContent) => {
   const { selected, setSelected } = useSelectedItem();
 
   const { currentTime = 0, setCurrentTime } = useCurrentTime(content.id);
+
+  const searchParams = useSearchParams();
+
+  const start = searchParams.get("start");
 
   const playerRef = useRef<any>(null);
 
@@ -211,5 +216,6 @@ export const useAudioBookState = (content: IContent) => {
     seekAfter,
     currentTime,
     handleSeekChange,
+    start,
   };
 };

@@ -1,15 +1,15 @@
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 
 import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
+import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
-import { ContentTranscription } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
+import { useSegmentTextQuery } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
-import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 
 function EnView({
   currentTranscription,
@@ -57,7 +57,7 @@ function InputView({
               onClick={() => {
                 const selectedText = getSelectedText();
 
-                if (selectedText) {
+                if (selectedText && selectedText?.length < 36) {
                   setSelected(selectedText);
                 } else {
                   setSelected(item);
@@ -99,10 +99,19 @@ function PinyinView({
   seekAndPlay,
   containsChinglish,
 }: CurrentTranscriptionProps) {
-  const { data } = useListDictionaryMeaningsQuery(
+  const { data: _data } = useListDictionaryMeaningsQuery(
     currentTranscription?.input,
     currentTranscription?.lang
   );
+
+  const { data: _segmentedData } = useSegmentTextQuery({
+    text: currentTranscription?.input,
+    lang: currentTranscription?.lang,
+  });
+
+  const data = _data || _segmentedData;
+
+  console.log("API DATA", _data);
 
   const { selected, setSelected } = useSelectedItem();
 
@@ -114,28 +123,43 @@ function PinyinView({
         seekAndPlay={seekAndPlay}
       />
       {currentTranscription?.lang === "zh" && data ? (
-        <div className="mt-4 sm:mt-16">
-          {data?.map((item) => {
+        <div className="mt-4 sm:mt-16 gap-0 space-y-0">
+          {data?.map((item, idx) => {
             return (
               <span
                 onClick={() => {
                   const selectedText = getSelectedText();
-                  if (selectedText) {
+                  if (selectedText && selectedText?.length < 36) {
                     setSelected(selectedText);
-                  } else if (selected === item?.hanzi) {
+                  } else if (selected === (item?.hanzi || item?.input)) {
                     setSelected(null);
                   } else {
-                    setSelected(item.hanzi);
+                    setSelected(item.hanzi || item?.input);
                   }
                 }}
-                className="inline-flex flex-col items-center p-[2px] py-[0px] sm:p-2 justify-center"
-                key={JSON.stringify(item)}
+                className={cn(
+                  "inline-flex flex-col items-center justify-center",
+
+                  ["，", "。"]?.includes(item?.input)
+                    ? ""
+                    : "px-[2px] py-[0px] sm:px-[4px]",
+                  "leading-none"
+                )}
+                key={`${JSON.stringify(item)}-${idx}${_data ? "perm" : "tempo"}`}
               >
                 <span className="text-sm dark:text-gray-400 text-gray-800">
                   {item?.pinyin}
                 </span>
 
-                <span className="text-lg sm:text-3xl">{item?.hanzi}</span>
+                <span
+                  className={
+                    currentTranscription?.lang === "zh"
+                      ? "text-lg sm:text-xl lg:text-2xl"
+                      : "text-[16px] sm:text-xl"
+                  }
+                >
+                  {item?.hanzi || item?.input}
+                </span>
               </span>
             );
           })}

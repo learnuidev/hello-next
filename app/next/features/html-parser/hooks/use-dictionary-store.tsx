@@ -7,7 +7,7 @@ interface Meanings {
 }
 
 export const useDictionaryStore = createIndexDBStore({
-  name: "mandarino/dictionary-store-v2",
+  name: "mandarino/dictionary-store-v3",
   handler: (set: any, get: any) => ({
     dictionary: {},
     getDictionary: (id: string) => get().dictionary?.[id],

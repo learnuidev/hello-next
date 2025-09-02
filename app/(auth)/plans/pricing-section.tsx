@@ -20,7 +20,7 @@ import { productNames } from "./plans.types";
 
 export function PricingSection() {
   const { data: products, isLoading } = useListProductsQuery();
-  const { data: userPlans, isLoading: isPlansLoading } =
+  const { data: userPlans = [], isLoading: isPlansLoading } =
     useListUserPlansQuery();
 
   const proProduct = products?.result?.items?.find(

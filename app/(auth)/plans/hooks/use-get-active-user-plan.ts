@@ -5,7 +5,7 @@ export const useGetActiveUserPlan = (): {
   isLoading: boolean;
   data: UserPlan | null;
 } => {
-  const { data: userPlans, isLoading } = useListUserPlansQuery();
+  const { data: userPlans = [], isLoading } = useListUserPlansQuery();
 
   const isPro = userPlans?.find(
     (plan) => plan.productName === productNames.pro

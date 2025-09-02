@@ -1,66 +1,52 @@
-import { siteConfig } from "@/lib/config";
-import { useQuery } from "@tanstack/react-query";
-import { useJwtToken } from "./use-jwt-token";
-import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
-import { createIndexDBStore } from "@/libs/index-db/index-db";
-import { useDictionaryStore } from "./use-dictionary-store";
+import { useListDictionaryQuery } from "@/app/(auth)/clipboard/hooks/use-list-dictionary-query";
 import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
+import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+import { segmentText } from "@/libs/utils/segment-text";
+import { useDictionaryStore } from "./use-dictionary-store";
+import { useJwtToken } from "./use-jwt-token";
 
-interface Meanings {
-  hanzi: string;
-  en: string;
-  pinyin: string;
-}
-
-export const useGetDictionaryHandler = () => {
-  const token = useJwtToken();
+export const useGetDictionaryHandler = (lang: string) => {
+  const { data: dictionaryItems } = useListDictionaryQuery(lang);
 
   const getDictionary = useDictionaryStore((state) => state.getDictionary);
   const setDictionary = useDictionaryStore((state) => state.setDictionary);
 
   const { data: hskWords } = useListHSKWordsQuery();
 
-  const getDictionaryHandler = async (hanzi: string) => {
+  const getDictionaryHandler = async (text: string, lang: string) => {
     try {
-      const found = getDictionary(hanzi);
+      // const found = getDictionary(text);
 
-      if (found) {
-        return found?.filter((item: any) => filterNonHanYu(item?.hanzi));
-      }
+      // if (found) {
+      //   return found?.filter((item: any) =>
+      //     filterNonHanYu(item?.hanzi || item?.input)
+      //   );
+      // }
 
       console.log("Not found in cache, fetching dictionary");
 
-      const res = await fetch(
-        `${siteConfig.apiUrlV2}/v1/dictionary/list-meanings`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            hanzi,
-          }),
-        }
-      );
+      const respJson = await segmentText({ text, lang });
 
-      const respJson = (await res.json()) as Meanings[];
+      console.log("DICT ITEMS", dictionaryItems);
 
-      const respWithHsk = respJson
-        .map((item) => {
-          const hskLevel = hskWords?.find(
-            (hskWord: any) => hskWord?.hanzi === item?.hanzi
-          );
+      // return respJson;
 
-          return {
-            ...hskLevel,
-            ...item,
-          };
-        })
-        .filter((item: any) => filterNonHanYu(item?.hanzi));
+      const respWithHsk = respJson.map((item) => {
+        const hskLevel = hskWords?.find(
+          (hskWord: any) => hskWord?.hanzi === item?.input
+        );
 
-      if (hskWords) {
-        setDictionary(hanzi, respWithHsk);
-      }
+        return {
+          // ...dictItem,
+          ...hskLevel,
+          ...item,
+        };
+      });
+      // .filter((item: any) => filterNonHanYu(item?.input));
+
+      // if (hskWords) {
+      //   setDictionary(text, respWithHsk);
+      // }
 
       return respWithHsk;
     } catch (err) {

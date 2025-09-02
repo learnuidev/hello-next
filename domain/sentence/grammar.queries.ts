@@ -3,12 +3,8 @@ import { queryIds } from "./queryIds";
 
 import { useQuery } from "@tanstack/react-query";
 
-import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
-import { useGetDictionaryHandler } from "@/app/next/features/html-parser/hooks/use-get-dictionary-handler";
-
-// TODO: Move this to .env
-const url = `${siteConfig.apiUrl}/v1/list-grammars`;
+import { useCurrentAuthUser } from "../auth/auth.queries";
 
 export interface ListGrammarsResponse {
   id: string;
@@ -98,7 +94,6 @@ export function useListGrammarsQuery(
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
-  const getDictionaryHandler = useGetDictionaryHandler();
 
   return useQuery<ListGrammarsResponse, Error>({
     queryKey: [queryIds.listGrammars, params?.content],

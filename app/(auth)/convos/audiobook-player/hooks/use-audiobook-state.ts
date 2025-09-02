@@ -17,11 +17,15 @@ export const useAudioBookState = (content: IContent) => {
   const [isReady, setIsReady] = useState(false);
   const { selected, setSelected } = useSelectedItem();
 
-  const { currentTime = 0, setCurrentTime } = useCurrentTime(content.id);
-
   const searchParams = useSearchParams();
 
   const start = searchParams.get("start");
+
+  const { currentTime: _currentTime = 0, setCurrentTime } = useCurrentTime(
+    content.id
+  );
+
+  const currentTime = start || _currentTime;
 
   const playerRef = useRef<any>(null);
 

@@ -71,7 +71,7 @@ export const useAudioBookState = (content: IContent) => {
 
   const seekAfter = useCallback(() => {
     const currentTranscription = transcriptions?.find(
-      (trans) => trans?.start <= currentTime && trans?.end >= currentTime
+      (trans) => trans?.start <= currentTime && trans?.end > currentTime
     );
 
     const currentTranscriptionIndex = Math.max(

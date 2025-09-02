@@ -27,8 +27,6 @@ export const useGetDictionaryHandler = (lang: string) => {
 
       const respJson = await segmentText({ text, lang });
 
-      console.log("DICT ITEMS", dictionaryItems);
-
       // return respJson;
 
       const respWithHsk = respJson.map((item) => {

@@ -112,8 +112,6 @@ function PinyinView({
 
   const data = _data || _segmentedData;
 
-  console.log("API DATA", _data);
-
   const { selected, setSelected } = useSelectedItem();
 
   return (

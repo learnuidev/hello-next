@@ -1,4 +1,5 @@
 export function isSentence(str: string) {
+  return true;
   str = str.trim();
 
   // English / Latin script: starts with capital A–Z, ends with ., ?, !

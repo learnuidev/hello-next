@@ -7,11 +7,10 @@ import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roma
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
+import { formatRoman } from "@/lib/format-roman";
 import { cn } from "@/lib/utils";
 import { useSegmentTextQuery } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
-import { isChinesePunctuation } from "@/lib/is-chinese-punctuation";
-import { formatRoman } from "@/lib/format-roman";
 
 function EnView({
   currentTranscription,

@@ -10,9 +10,9 @@ export const formatRoman = (item: {
     return item.input;
   }
 
-  if (isChinesePunctuation(item?.input || item?.hanzi || "")) {
-    return item?.input || item?.hanzi;
-  }
+  // if (isChinesePunctuation(item?.input || item?.hanzi || "")) {
+  //   return item?.input || item?.hanzi;
+  // }
 
   return item?.pinyin || item?.roman;
 };

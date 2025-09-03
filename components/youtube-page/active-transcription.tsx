@@ -69,7 +69,7 @@ export const ActiveTranscription = ({
           containsChinglish={containsChinglish}
           seekAndPlay={seekAndPlay}
           currentTranscription={currentTranscription}
-          className="mb-4 sm:mb-8"
+          className="mb-4 sm:mb-8 sm:mt-8 mt-4"
         />
       ) : (
         <div className="text-center sm:mt-8 mt-4 mb-2 h-20"></div>

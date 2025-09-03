@@ -91,8 +91,6 @@ function ReaderView({
 
   const { selected, setSelected } = useSelectedItem();
 
-  console.log("DATA", data);
-
   return (
     <div className={cn(defautClassName, className)}>
       <div className={cn(defautClassName, className)}>
@@ -214,6 +212,7 @@ export function PinyinView({
     <div>
       {currentTranscription?.lang === "zh" && data ? (
         <ReaderView
+          className={className}
           data={data}
           containsChinglish={containsChinglish}
           currentTranscription={currentTranscription}
@@ -254,7 +253,9 @@ export function CurrentTranscriptionView({
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   return (
-    <div className="text-center mt-8 sm:mt-24 max-w-7xl mx-auto">
+    <div
+      className={cn("text-center mt-8 sm:mt-24 max-w-7xl mx-auto", className)}
+    >
       {showPinyin ? (
         <div className="max-w-7xl mx-auto">
           <PinyinView

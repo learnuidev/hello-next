@@ -58,6 +58,8 @@ import { ChinglishButton } from "../chinglish-button";
 import { PinyinButton } from "../pinyin-button";
 import { MiniDictionary } from "@/app/(auth)/convos/audiobook-player/components/mini-dictionary";
 import { useSelectedItem } from "./use-selected-item";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 
 interface ViewModeState {
   viewMode: string;
@@ -155,6 +157,8 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
   const qaMode = useViewModeStore((state) => state.qaMode);
   const setQaMode = useViewModeStore((state) => state.setQaMode);
+
+  const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
 
   const isPlaying = useViewModeStore((state) => state.isPlaying);
   const setIsPlaying = useViewModeStore((state) => state.setIsPlaying);
@@ -346,6 +350,13 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
     });
   }, [currentTranscription, contentId, setToggleLoops]);
 
+  const toggleKaraokeMode = () => {
+    setViewMode((prev: any) => (prev === "karaoke" ? null : "karaoke"));
+    setIsVideoHidden((isHidden: any) =>
+      viewMode !== "karaoke" ? true : false
+    );
+  };
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.code === "Space" && !editMode) {
@@ -363,6 +374,37 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
       if (event.code === "ArrowRight" && !editMode) {
         seekAfter();
+        return null;
+      }
+
+      if (event.code === "KeyP" && !editMode) {
+        setShowPinyin((showPinyin: any) => !showPinyin);
+
+        return null;
+      }
+      if (event.code === "KeyC" && !editMode) {
+        setShowChinglish((prev: any) => !prev);
+
+        return null;
+      }
+      if (event.code === "KeyE" && !editMode) {
+        setEditMode();
+
+        return null;
+      }
+      if (event.code === "KeyR" && !editMode) {
+        setViewMode((prev: any) => (prev === "para" ? null : "para"));
+
+        return null;
+      }
+      if (event.code === "KeyK" && !editMode) {
+        toggleKaraokeMode();
+
+        return null;
+      }
+      if (event.code === "KeyV" && !editMode) {
+        setIsVideoHidden((isHidden: any) => !isHidden);
+
         return null;
       }
 
@@ -534,6 +576,8 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
       ? [Object.values(groupedTranscriptions)?.[0]]
       : Object.values(groupedTranscriptions);
 
+  const { showChinglish, setShowChinglish } = useChinglishState();
+
   const containsChinglish = !!transcriptions?.[0]?.chinglish;
   const { selected, setSelected } = useSelectedItem();
 
@@ -547,12 +591,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                 viewMode === "karaoke" ? "dark:text-white" : "text-gray-500"
               }
               onClick={() => {
-                setViewMode((prev: any) =>
-                  prev === "karaoke" ? null : "karaoke"
-                );
-                setIsVideoHidden((isHidden: any) =>
-                  viewMode !== "karaoke" ? true : false
-                );
+                toggleKaraokeMode();
               }}
             >
               <Icons.karaoke />

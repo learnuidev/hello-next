@@ -1,8 +1,7 @@
 "use client";
 
 import { contentTypes } from "@/app/(auth)/convos/constants/content-types";
-import { useAtiveContent } from "@/app/(auth)/convos/hooks/use-active-content";
-import { useContentType } from "@/app/(auth)/convos/hooks/use-content-type";
+import { useContentViewType } from "@/app/(auth)/convos/hooks/use-content-view-type";
 import { useContentTypeStore } from "@/app/(auth)/convos/use-content-type-store";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
@@ -24,7 +23,7 @@ export function AnimatedContentsFilter() {
     {}
   );
 
-  const { activeContent, setActiveContent } = useAtiveContent();
+  const { contentViewType, setContentViewType } = useContentViewType();
 
   return (
     <div
@@ -33,8 +32,8 @@ export function AnimatedContentsFilter() {
     >
       <div
         onMouseLeave={() => {
-          if (activeContent && positions?.[activeContent]) {
-            setPosition(positions?.[activeContent]);
+          if (contentViewType && positions?.[contentViewType]) {
+            setPosition(positions?.[contentViewType]);
           } else {
             setPosition((prevPos) => {
               return {
@@ -51,7 +50,7 @@ export function AnimatedContentsFilter() {
           setPositions={setPositions}
           id={"all"}
           onClick={() => {
-            setActiveContent("all");
+            setContentViewType("all");
           }}
         >
           All
@@ -65,7 +64,7 @@ export function AnimatedContentsFilter() {
               setPosition={setPosition}
               setPositions={setPositions}
               onClick={() => {
-                setActiveContent(contentType.id);
+                setContentViewType(contentType.id);
               }}
             >
               {contentType.title}

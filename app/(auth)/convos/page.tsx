@@ -6,8 +6,8 @@ import "@/libs/cognito/init";
 import { useState } from "react";
 
 import { NavBar } from "@/components/navbar";
-import { usePathname, useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { usePathname, useRouter } from "next/navigation";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
@@ -34,11 +34,11 @@ import { useViewModeStore } from "./new-convo/use-viewmode-store";
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 import Link from "next/link";
 import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query";
+import { useToggleFavouriteContentMutation } from "./[content-id]/hooks/use-toggle-favourite-content-mutation";
 import { contentTypes } from "./constants/content-types";
-import { useContentType } from "./hooks/use-content-type";
+import { useContentViewType } from "./hooks/use-content-view-type";
 import { NewContentV2 } from "./new-content-v2/new-content-v2";
 import { useRecentlyWatchedContent } from "./use-recently-watched-content-store";
-import { useToggleFavouriteContentMutation } from "./[content-id]/hooks/use-toggle-favourite-content-mutation";
 // import { NewConvoV2 } from "./new-content-v2/new-convo-v2";
 
 type ContentType = {
@@ -70,9 +70,7 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
           ? favouriteContents?.items
           : myContent?.items;
 
-  const { contentType } = useContentType();
-
-  // const contentType = useContentTypeStore((state) => state.contentType);
+  const { contentViewType: contentType } = useContentViewType();
 
   const query = useSearchQueryStore((state) => state.query2);
   const lang = useGetCurrentLang();

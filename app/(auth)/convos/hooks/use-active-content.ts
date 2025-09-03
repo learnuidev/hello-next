@@ -5,7 +5,7 @@ import {
 import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
 import { useQueryClient } from "@tanstack/react-query";
 
-export const useAtiveContent = () => {
+export const useActiveContent = () => {
   const queryClient = useQueryClient();
 
   // const setContentType = useContentTypeStore((state) => state.setContentType);

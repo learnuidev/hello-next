@@ -5,7 +5,7 @@ import {
 import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
 import { useQueryClient } from "@tanstack/react-query";
 
-export const useContentType = () => {
+export const useContentViewType = () => {
   const queryClient = useQueryClient();
 
   // const setContentType = useContentTypeStore((state) => state.setContentType);
@@ -14,7 +14,7 @@ export const useContentType = () => {
   const { data: userPreferences } = useGetUserPreferenceQuery();
   const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
 
-  const setContentType = (type: string) => {
+  const setContentViewType = (type: string) => {
     queryClient.setQueryData([getUserPreferenceKey], (old: any) => {
       return { ...old, contentViewType: type };
     });
@@ -26,7 +26,7 @@ export const useContentType = () => {
   const contentViewType = userPreferences?.contentViewType;
 
   return {
-    contentType: contentViewType,
-    setContentType,
+    contentViewType,
+    setContentViewType,
   };
 };

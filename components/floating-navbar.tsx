@@ -29,6 +29,8 @@ const FloatingNavbarComp = () => {
   const routeName = usePathname();
   const reviewUrl = useGetReviewUrl();
 
+  console.log("review url", reviewUrl);
+
   const { reviewMode: _reviewMode } = useReviewModeView();
 
   const params = useParams<{ "content-id": string }>();

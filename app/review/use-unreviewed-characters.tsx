@@ -36,8 +36,6 @@ export function useUnreviwedCharacters() {
   const { data: hskCharacters, isLoading: isHskCharactersLoading } =
     useGetHskCharacters({ getAll: true });
 
-  console.log("HSK CHARS", hskCharacters);
-
   const isContent = useIsContent(mode);
   const isEntry = useIsEntry(entryId);
 
@@ -135,7 +133,6 @@ export function useUnreviwedCharacters() {
   }, [isContent, reviewMode, uniqueCharactersMemo]);
 
   if (["hsk", "hsk3"]?.includes(mode)) {
-    console.log("hskCharacters", hskCharacters);
     const data = (
       reviewMode === "all"
         ? hskCharacters?.filter((item: any) => {

@@ -18,10 +18,9 @@ export async function signUp({
         ...otherAttributes,
       },
     });
-    console.log(`User signed up successfully`, user);
+
     return user;
   } catch (error) {
-    console.log("error signing up:", error);
     throw error;
   }
 }
@@ -33,28 +32,22 @@ export async function signUpPasswordLess({ email }: { email: string }) {
       username: email,
       password,
     });
-    console.log(`User signed up successfully`, user);
+
     return user;
   } catch (error) {
-    console.log("error signing up:", error);
     throw error;
   }
 }
 
-// window.signUpPasswordLess = signUpPasswordLess;
-
 export async function signInPasswordLess({ email }: { email: string }) {
   try {
     const cognitoUser = await Auth.signIn(email);
-    console.log(cognitoUser);
-    // window.authUser2 = cognitoUser;
+
     return cognitoUser;
   } catch (error: any) {
     alert(error?.message);
   }
 }
-
-// window.signIn2 = signInPasswordLess;
 
 export async function confirmSignUp({
   username,
@@ -84,14 +77,12 @@ export async function confirmSignInPasswordless({
       authUser,
       code
     );
-    console.log(challengeResult);
+
     return challengeResult;
   } catch (error) {
     alert("Too many failed attempts. Please try again.");
   }
 }
-
-// window.answerCustomChallenge = confirmSignInPasswordless;
 
 function formatUser(user: any) {
   const { refreshToken, idToken } = user.getSignInUserSession();
@@ -145,15 +136,11 @@ export async function currentAuthUser() {
   try {
     const user = await Auth.currentAuthenticatedUser();
 
-    // window.authUser = user;
-
     return formatUser(user);
   } catch (err) {
     throw err;
   }
 }
-
-// window.currentAuthUser = currentAuthUser;
 
 const auth = {
   Auth,

@@ -122,8 +122,6 @@ const resolveTrack = ({ tracks, lang }) => {
     zhTrack = tracks[0];
   }
 
-  console.log("TRACK", zhTrack);
-
   return zhTrack;
 };
 
@@ -147,8 +145,6 @@ const genSubtitles = async ({ id, lang }) => {
       langCodes?.[0] ||
       lang;
 
-    console.log("RESOLED LANG", resolvedLang);
-
     const zhTrack = resolveTrack({
       lang: resolvedLang === "zh" ? "zh-Hans" : lang,
       tracks,
@@ -163,8 +159,6 @@ const genSubtitles = async ({ id, lang }) => {
     } catch (err) {
       subtitles = null;
     }
-
-    console.log("SUBS", subtitles);
 
     const tree = parser.parse(subtitles, "metadata");
 

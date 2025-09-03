@@ -118,16 +118,10 @@ function applyProcess({ content, process, variables }: any) {
         }
 
         if (process.object) {
-          console.log("PROCESSS=====");
           return content?.map((item: any) => {
             let objectKeys = Object.keys(process.object) || [];
 
-            console.log("KEYS", objectKeys);
             return objectKeys.reduce((acc, objectKey) => {
-              console.log("NEW ITEM", {
-                content: item,
-                processes: process.object?.[objectKey]?.processes,
-              });
               const newItem = postProcessPrimitive({
                 content: item,
 

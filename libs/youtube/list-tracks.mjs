@@ -31,7 +31,3 @@ export const listTracks = ({ id, lang }) => {
 let id = "https://www.youtube.com/watch?v=7McMpWMuw9Q";
 id = "https://www.youtube.com/watch?v=zqdqxu93eIs";
 const lang = "zh-CN";
-
-listTracks({ id, lang }).then((transcriptions) => {
-  console.log(transcriptions);
-});

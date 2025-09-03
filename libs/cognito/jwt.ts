@@ -36,7 +36,6 @@ export const verifyJwt = async (
 
   try {
     const payload = (await verifier.verify(token)) as any;
-    // console.log("Token is valid. Payload:", payload);
 
     if (options?.isAdmin) {
       return isSuperAdmin(payload?.email);

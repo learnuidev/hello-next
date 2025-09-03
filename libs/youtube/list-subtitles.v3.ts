@@ -25,8 +25,6 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
         tracks.map((t: any) => t?.name?.simpleText).join(", ")
       );
 
-      // console.log("TRACKS", tracks);
-
       let zhTrack;
       try {
         zhTrack = getTrack({ lang, tracks });
@@ -50,8 +48,6 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
       const spanishCode = "es";
       const spanishTrack = getTrack({ lang: "es", tracks });
       // const  =
-
-      // console.log("RES", await res.json());
 
       let subtitles;
 
@@ -113,73 +109,8 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
           };
         }, {});
       });
-
-      // console.log("RES", res);
-      // return res;
-
-      // const lyrics = subtitles
-      //   ? (subtitles || "")?.split("\n").filter(Boolean).slice(3)
-      //   : [];
-      // const englishLyrics = englishSubtitles
-      //   .split("\n")
-      //   .filter(Boolean)
-      //   .slice(3);
-
-      // const frenchLyrics = frenchSubtitles.split("\n").filter(Boolean).slice(3);
-      // const spanishLyrics = spanishSubtitles
-      //   .split("\n")
-      //   .filter(Boolean)
-      //   .slice(3);
-
-      // return (lyrics?.length ? lyrics : englishLyrics).reduce(
-      //   (acc: any, curr: any, idx: any) => {
-      //     if (idx % 2 === 0) {
-      //       const timestamp = curr;
-      //       const value = lyrics[idx + 1] || "";
-
-      //       const englishValue = englishLyrics[idx + 1];
-      //       const frenchValue = frenchLyrics[idx + 1];
-      //       const spanishValue = spanishLyrics[idx + 1];
-
-      //       const startTimes = timestamp.split(" ")[0].split(":") || [];
-      //       const start = getTotalSeconds(startTimes);
-
-      //       const endTimes = timestamp.split(" ")[2].split(":") || [];
-
-      //       const end = getTotalSeconds(endTimes);
-
-      //       const hanziProps =
-      //         lang === "zh-CN"
-      //           ? {
-      //               hanzi: value,
-      //               pinyin: "",
-      //               en: englishValue,
-      //               fr: frenchValue,
-      //               es: spanishValue,
-      //             }
-      //           : {};
-
-      //       return acc.concat({
-      //         lang,
-      //         start,
-      //         end,
-      //         ...hanziProps,
-      //       });
-      //     }
-
-      //     return acc;
-      //   },
-      //   []
-      // );
     } else {
       console.log("No captions found for this video");
     }
   });
 };
-
-// const id = "https://www.youtube.com/watch?v=7McMpWMuw9Q";
-// const lang = "zh-CN";
-
-// listSubtitles({ id, lang }).then((transcriptions) => {
-//   console.log(transcriptions);
-// });

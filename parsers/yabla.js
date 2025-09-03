@@ -21,9 +21,7 @@ const updateRes = () => {
       en,
       time,
     });
-  } catch (err) {
-    // console.log("")
-  }
+  } catch (err) {}
 };
 setInterval(updateRes, 5);
 

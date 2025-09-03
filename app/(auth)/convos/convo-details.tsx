@@ -1,29 +1,25 @@
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-
-import { useConvosStore } from "@/stores/convos-store";
-import { ConvoInsights } from "./convo-insights/convo-insights";
 import { groupBy } from "ramda";
+import { ConvoInsights } from "./convo-insights/convo-insights";
 
 import { Wordle } from "@/components/wordle/wordle";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
-import { YouTubePlayer } from "@/components/youtube-page/youtube-player";
-import { AI } from "./ai";
-import { PlayV3 } from "./play-v3/play-v3";
-import { isYoutube } from "./utils/is-youtube";
-import { ContentSettings } from "./content-settings";
-import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
 import { Nothing } from "@/app/nmm/nothing";
-import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
-import { isVideoUrl } from "./utils/is-video-url";
-import { DynaCloze } from "./[content-id]/dyna-cloze/dyna-cloze";
-import { useSearchParams } from "next/navigation";
 import { FloatingNavbar } from "@/components/floating-navbar";
-import { Speak } from "./[content-id]/speak/speak";
-import { Clipboard } from "../clipboard/clipboard";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
+import { YouTubePlayer } from "@/components/youtube-page/youtube-player";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
+import { useSearchParams } from "next/navigation";
+import { DynaCloze } from "./[content-id]/dyna-cloze/dyna-cloze";
+import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
+import { Speak } from "./[content-id]/speak/speak";
+import { AI } from "./ai";
 import { AudiobookPlayer } from "./audiobook-player/audiobook-player";
+import { ContentSettings } from "./content-settings";
+import { PlayV3 } from "./play-v3/play-v3";
+import { isVideoUrl } from "./utils/is-video-url";
+import { isYoutube } from "./utils/is-youtube";
 
 export const ConvoDetails = ({ contentId }: { contentId: string }) => {
   const searchParams = useSearchParams();

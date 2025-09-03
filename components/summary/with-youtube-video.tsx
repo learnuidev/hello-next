@@ -106,7 +106,6 @@ export const WithYoutubeVideo = ({
                 })
                 .then(() => {
                   setAddVideoUrl(false);
-                  console.log("Summary Successfully Updated");
                 });
             }
           }}

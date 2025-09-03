@@ -685,8 +685,6 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                     startCountdown();
                   }
 
-                  console.log("yooo");
-
                   queryClient.invalidateQueries({
                     queryKey: ["upsert-content-analytics", contentId],
                   });

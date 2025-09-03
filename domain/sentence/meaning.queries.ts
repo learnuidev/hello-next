@@ -39,7 +39,6 @@ const listMeanings = async (
   }
 ): Promise<ListMeaningsResponse> => {
   try {
-    console.log("is being called");
     const res = await fetch(`${siteConfig.apiUrl}/v1/list-meanings`, {
       method: "POST",
       headers: {
@@ -48,10 +47,7 @@ const listMeanings = async (
       body: JSON.stringify(options),
     });
 
-    console.log("RES", res);
-
     if (!res.ok) {
-      console.log("NOT OK");
       throw new Error(res.statusText);
     }
 
@@ -77,10 +73,8 @@ const listMeanings = async (
     return resp as ListMeaningsResponse;
   } catch (err: any) {
     if (err.message === "Failed to fetch" && !options?.poll) {
-      console.log("FAILED TO FETCH ACTIVATE ASYNC");
       return listMeanings({ ...options, type: "async" }, opts);
     }
-    console.log("ERR yo", err?.message);
 
     throw err;
   }

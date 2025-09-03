@@ -66,9 +66,6 @@ export const TranscriptItem = ({
       const currIndex = data?.transcriptions?.findIndex(predicateFn);
       const isLast = data?.transcriptions?.length - 1 === currIndex;
 
-      console.log("EXIISTS", currIndex);
-      console.log("isLast", isLast);
-
       if (!isLast && type === "end") {
         const nextIndex = currIndex + 1;
         const nextExample = data?.transcriptions?.[nextIndex];

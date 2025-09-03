@@ -129,11 +129,6 @@ export function YoutubeButton({
     return null;
   }
 
-  console.log(
-    "currentTranscription?.end - currentTranscription?.start",
-    currentTranscription?.end - currentTranscription?.start
-  );
-
   return (
     <div>
       <div className="hidden">

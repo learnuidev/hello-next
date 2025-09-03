@@ -73,7 +73,6 @@ export function useDiscoverMutation(options = {} as any) {
           } as any;
         }
       );
-      // console.log("TODO");
 
       // setComponents(
       //   components.map((comp: any) => {

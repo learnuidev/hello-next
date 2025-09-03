@@ -32,16 +32,12 @@ export function useUploadFileV2(cb?: any, ctx?: any, props?: any) {
     const fileName = file.name || "";
     const fileSize = file.size || 0;
 
-    console.log({ extension, contentType });
-
     if (props?.types && !props?.types?.includes(extension)) {
       alert("Incorrect file type");
       e.target.value = "";
 
       return null;
     }
-
-    console.log("FILE", file);
 
     const response = (await getUploadUrl(
       { extension, contentType },

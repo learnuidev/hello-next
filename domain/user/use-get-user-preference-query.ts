@@ -27,6 +27,7 @@ export interface GetUserPreferenceResponse {
   targetLanguage?: string;
   sourceLanguage?: string;
   autoPlayContent?: boolean;
+  contentViewType?: string;
 }
 
 const getUserPrefrence = async (opts: {

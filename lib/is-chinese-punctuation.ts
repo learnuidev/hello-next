@@ -12,6 +12,7 @@ export const chinesePunctuations = [
   "–",
   "～",
   "！",
+  "，",
 ];
 
 export function isChinesePunctuation(character: string) {

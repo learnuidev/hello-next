@@ -60,6 +60,7 @@ import { MiniDictionary } from "@/app/(auth)/convos/audiobook-player/components/
 import { useSelectedItem } from "./use-selected-item";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "../settings-dialog/use-chinglish-state";
+import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 
 interface ViewModeState {
   viewMode: string;
@@ -885,102 +886,103 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                     qaMode && content?.questions?.length > 0 ? "mt-8" : ""
                   )}
                 >
-                  {selected ? (
-                    <MiniDictionary
-                      className="sm:mt-0 mt-0"
-                      selected={selected}
-                      lang={content?.lang}
-                    />
-                  ) : (
-                    <ScrollArea
-                      className={cn(
-                        `space-y-4 rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8`,
-                        qaMode && content?.questions?.length > 0
-                          ? "h-[350px]"
-                          : "h-[400px] sm:h-[640px]"
-                      )}
-                    >
-                      <div className="space-y-8">
-                        {paraTranscriptions?.map((transcriptions: any) => {
-                          const hanzis = transcriptions
-                            ?.map((t: any) => t?.hanzi)
-                            ?.join("");
+                  <MandoContextMenu lang={content?.lang || ""}>
+                    {selected ? (
+                      <MiniDictionary
+                        className="sm:mt-0 mt-0"
+                        selected={selected}
+                        lang={content?.lang}
+                      />
+                    ) : (
+                      <ScrollArea
+                        className={cn(
+                          `space-y-4 rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8`,
+                          qaMode && content?.questions?.length > 0
+                            ? "h-[350px]"
+                            : "h-[400px] sm:h-[640px]"
+                        )}
+                      >
+                        <div className="space-y-8">
+                          {paraTranscriptions?.map((transcriptions: any) => {
+                            const hanzis = transcriptions
+                              ?.map((t: any) => t?.hanzi)
+                              ?.join("");
 
-                          return (
-                            <div key={JSON.stringify(transcriptions)}>
-                              <div className="flex flex-wrap">
-                                {(active !== MAX_LIMIT
-                                  ? group
-                                  : transcriptions
-                                ).map((transcription: any) => {
-                                  const isActiveTranscription =
-                                    transcription?.start < currentTime &&
-                                    transcription?.end > currentTime;
+                            return (
+                              <div key={JSON.stringify(transcriptions)}>
+                                <div className="flex flex-wrap">
+                                  {(active !== MAX_LIMIT
+                                    ? group
+                                    : transcriptions
+                                  ).map((transcription: any) => {
+                                    const isActiveTranscription =
+                                      transcription?.start < currentTime &&
+                                      transcription?.end > currentTime;
 
-                                  const transcriptionInput =
-                                    transcription?.input ||
-                                    transcription?.hanzi;
+                                    const transcriptionInput =
+                                      transcription?.input ||
+                                      transcription?.hanzi;
 
-                                  return (
-                                    <span
-                                      role="button"
-                                      className={`${
-                                        currentTime
-                                          ? isActiveTranscription
-                                            ? "dark:text-white bg-yellow-200 dark:bg-black"
-                                            : "dark:text-gray-400"
-                                          : ""
-                                      } transition block py-1 px-1`}
-                                      key={
-                                        transcription?.id ||
-                                        `${transcription?.hanzi}-${transcription?.start}`
-                                      }
-                                      onClick={() => {
-                                        setRepeatHistories({
-                                          contentId: contentId,
-                                          ...transcription,
-                                          input:
-                                            transcription?.input ||
-                                            transcription?.hanzi,
-                                          roman:
-                                            transcription?.roman ||
-                                            transcription?.pinyin,
-                                          createdAt: Date.now(),
-                                        });
-
-                                        playerRef.current.seekTo(
-                                          transcription?.start,
-                                          "seconds"
-                                        );
-
-                                        try {
-                                          playerRef.current?.player?.player?.play();
-                                        } catch (err) {
-                                          console.error(err);
+                                    return (
+                                      <span
+                                        role="button"
+                                        className={`${
+                                          currentTime
+                                            ? isActiveTranscription
+                                              ? "dark:text-white bg-yellow-200 dark:bg-black"
+                                              : "dark:text-gray-400"
+                                            : ""
+                                        } transition block py-1 px-1`}
+                                        key={
+                                          transcription?.id ||
+                                          `${transcription?.hanzi}-${transcription?.start}`
                                         }
-                                      }}
-                                    >
-                                      {smartSplit({
-                                        input: transcriptionInput,
-                                        lang: content?.lang,
-                                      })?.map((item: string, idx: number) => {
-                                        return (
-                                          <span
-                                            onClick={() => {
-                                              setWords({
-                                                word: item,
-                                                transcriptionId:
-                                                  transcription?.id,
-                                                contentId: contentId,
-                                              });
-                                            }}
-                                            key={`para-mode-${item}-${idx}-${transcriptionInput}`}
-                                          >
-                                            {item}
-                                          </span>
-                                        );
-                                      })}
-                                      {/* {isActiveTranscription
+                                        onClick={() => {
+                                          setRepeatHistories({
+                                            contentId: contentId,
+                                            ...transcription,
+                                            input:
+                                              transcription?.input ||
+                                              transcription?.hanzi,
+                                            roman:
+                                              transcription?.roman ||
+                                              transcription?.pinyin,
+                                            createdAt: Date.now(),
+                                          });
+
+                                          playerRef.current.seekTo(
+                                            transcription?.start,
+                                            "seconds"
+                                          );
+
+                                          try {
+                                            playerRef.current?.player?.player?.play();
+                                          } catch (err) {
+                                            console.error(err);
+                                          }
+                                        }}
+                                      >
+                                        {smartSplit({
+                                          input: transcriptionInput,
+                                          lang: content?.lang,
+                                        })?.map((item: string, idx: number) => {
+                                          return (
+                                            <span
+                                              onClick={() => {
+                                                setWords({
+                                                  word: item,
+                                                  transcriptionId:
+                                                    transcription?.id,
+                                                  contentId: contentId,
+                                                });
+                                              }}
+                                              key={`para-mode-${item}-${idx}-${transcriptionInput}`}
+                                            >
+                                              {item}
+                                            </span>
+                                          );
+                                        })}
+                                        {/* {isActiveTranscription
                                     ? smartSplit({
                                         input: transcriptionInput,
                                         lang: lesson?.lang,
@@ -994,60 +996,61 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                                         );
                                       })
                                     : transcriptionInput} */}
-                                    </span>
-                                  );
-                                })}
-                              </div>
+                                      </span>
+                                    );
+                                  })}
+                                </div>
 
-                              <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
-                                <Link
-                                  target="_blank"
-                                  href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                                    hanzis
-                                  )}&op=translate`}
-                                  className="text-gray-500 hover:text-black dark:hover:text-white"
-                                >
-                                  <FontAwesomeIcon icon={faGoogle} />
-                                </Link>
+                                <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
+                                  <Link
+                                    target="_blank"
+                                    href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                                      hanzis
+                                    )}&op=translate`}
+                                    className="text-gray-500 hover:text-black dark:hover:text-white"
+                                  >
+                                    <FontAwesomeIcon icon={faGoogle} />
+                                  </Link>
 
-                                <Link
-                                  href={getYablaLink(hanzis)}
-                                  className="text-gray-500 hover:text-black dark:hover:text-white"
-                                  target="_blank"
-                                >
-                                  <FontAwesomeIcon icon={faLanguage} />
-                                </Link>
+                                  <Link
+                                    href={getYablaLink(hanzis)}
+                                    className="text-gray-500 hover:text-black dark:hover:text-white"
+                                    target="_blank"
+                                  >
+                                    <FontAwesomeIcon icon={faLanguage} />
+                                  </Link>
 
-                                <button
-                                  onClick={() => {
-                                    if (toggleLoops?.length) {
-                                      setToggleLoops([]);
-                                    } else {
-                                      setToggleLoops(transcriptions);
-                                    }
-                                  }}
-                                >
-                                  <FontAwesomeIcon
-                                    className={cn(
-                                      "hover:text-black dark:hover:text-white",
-                                      toggleLoops?.find((item: any) =>
-                                        transcriptions?.find(
-                                          (x: any) => x.end === item?.end
+                                  <button
+                                    onClick={() => {
+                                      if (toggleLoops?.length) {
+                                        setToggleLoops([]);
+                                      } else {
+                                        setToggleLoops(transcriptions);
+                                      }
+                                    }}
+                                  >
+                                    <FontAwesomeIcon
+                                      className={cn(
+                                        "hover:text-black dark:hover:text-white",
+                                        toggleLoops?.find((item: any) =>
+                                          transcriptions?.find(
+                                            (x: any) => x.end === item?.end
+                                          )
                                         )
-                                      )
-                                        ? "dark:text-white text-red-400"
-                                        : "text-gray-500"
-                                    )}
-                                    icon={faRepeat}
-                                  />
-                                </button>
+                                          ? "dark:text-white text-red-400"
+                                          : "text-gray-500"
+                                      )}
+                                      icon={faRepeat}
+                                    />
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </ScrollArea>
-                  )}
+                            );
+                          })}
+                        </div>
+                      </ScrollArea>
+                    )}
+                  </MandoContextMenu>
                 </div>
               </div>
             ) : transcriptions?.length ? (

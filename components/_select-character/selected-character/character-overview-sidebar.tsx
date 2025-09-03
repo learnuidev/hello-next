@@ -10,6 +10,7 @@ import { useSelectedCharacterData } from "@/components/use-selected-character";
 import { create } from "zustand";
 import { cn } from "@/lib/utils";
 import { CharacterSentenceTransformations } from "../character-sentence-transformations";
+import { isSentence } from "@/libs/utils/is-sentence";
 
 const useSideBarViewType = create((set: any, get: any) => ({
   sideBarView: "sentences",
@@ -28,36 +29,40 @@ export const CharacterOverviewViewSidebar = ({
   const sideBarView = useSideBarViewType((state) => state.sideBarView);
   const setSideBarView = useSideBarViewType((state) => state.setSideBarView);
 
+  const _isSentence = isSentence(characterId);
+
   return (
     <div className={"col-span-5 md:col-span-3 hidden sm:block"}>
-      <div className="space-x-4">
-        <button
-          className={cn(
-            "text-sm transition",
-            sideBarView === "sentences"
-              ? "dark:text-white text-black"
-              : "text-gray-500"
-          )}
-          onClick={() => {
-            setSideBarView("sentences");
-          }}
-        >
-          Sentences
-        </button>
-        <button
-          className={cn(
-            "text-sm transition",
-            sideBarView === "sentence-transformations"
-              ? "dark:text-white text-black"
-              : "text-gray-500"
-          )}
-          onClick={() => {
-            setSideBarView("sentence-transformations");
-          }}
-        >
-          Transformations
-        </button>
-      </div>
+      {_isSentence && (
+        <div className="space-x-4">
+          <button
+            className={cn(
+              "text-sm transition",
+              sideBarView === "sentences"
+                ? "dark:text-white text-black"
+                : "text-gray-500"
+            )}
+            onClick={() => {
+              setSideBarView("sentences");
+            }}
+          >
+            Sentences
+          </button>
+          <button
+            className={cn(
+              "text-sm transition",
+              sideBarView === "sentence-transformations"
+                ? "dark:text-white text-black"
+                : "text-gray-500"
+            )}
+            onClick={() => {
+              setSideBarView("sentence-transformations");
+            }}
+          >
+            橘子变化
+          </button>
+        </div>
+      )}
 
       {sideBarView === "sentences" && (
         <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
@@ -80,7 +85,7 @@ export const CharacterOverviewViewSidebar = ({
         </div>
       )}
 
-      {sideBarView === "sentence-transformations" && (
+      {_isSentence && sideBarView === "sentence-transformations" && (
         <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
           <div className="">
             {" "}

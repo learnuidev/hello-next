@@ -641,6 +641,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
           )} */}
 
           <ActiveTranscription
+            seekAndPlay={seekAndPlay}
             currentTime={currentTime}
             transcriptions={transcriptions}
             contentId={contentId}
@@ -697,6 +698,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
               {isVideoHidden && (
                 <div>
                   <ActiveTranscription
+                    seekAndPlay={seekAndPlay}
                     currentTime={currentTime}
                     transcriptions={transcriptions}
                     contentId={contentId}
@@ -877,6 +879,7 @@ export function YouTubePlayer({ lessonId }: { lessonId: string }) {
               {isVideoHidden && (
                 <div>
                   <ActiveTranscription
+                    seekAndPlay={seekAndPlay}
                     currentTime={currentTime}
                     transcriptions={transcriptions}
                     contentId={contentId}

@@ -21,14 +21,14 @@ export const ActiveTranscription = ({
   contentId,
   className,
   seekAndPlay,
-  containsChinglish,
+  containsChinglish = false,
 }: {
   seekAndPlay: (value: number) => void;
   currentTime: number;
   transcriptions: any;
   contentId: string;
   className?: string;
-  containsChinglish: boolean;
+  containsChinglish?: boolean;
 }) => {
   const currentTranscription = transcriptions?.find(
     (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime

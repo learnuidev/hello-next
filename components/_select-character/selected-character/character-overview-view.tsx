@@ -19,6 +19,7 @@ import { useGetSelectedCharacterParams } from "./use-get-selected-character-para
 import { StoryView } from "./story-view";
 import { AdvancedSearchView } from "./advanced-search-view/advanced-search-view";
 import { CharacterSentenceTransformations } from "../character-sentence-transformations";
+import { isSentence } from "@/libs/utils/is-sentence";
 
 export const CharacterOverviewView = ({
   characterId,
@@ -30,6 +31,8 @@ export const CharacterOverviewView = ({
   const { selectedComp, selectedChar, lang } = data;
 
   const { variant } = useGetSelectedCharacterParams();
+
+  const _isSentence = isSentence(characterId);
 
   return (
     <div
@@ -76,12 +79,14 @@ export const CharacterOverviewView = ({
                         >
                           Sentences
                         </TabsTrigger>
-                        <TabsTrigger
-                          value="sentence-transformations"
-                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold block sm:hidden"
-                        >
-                          Transformations
-                        </TabsTrigger>
+                        {_isSentence && (
+                          <TabsTrigger
+                            value="sentence-transformations"
+                            className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold block sm:hidden"
+                          >
+                            橘子变化
+                          </TabsTrigger>
+                        )}
                         {selectedComp?.story && (
                           <TabsTrigger
                             value="story"
@@ -134,12 +139,14 @@ export const CharacterOverviewView = ({
                   <TabsContent value="sentences">
                     <CharacterSentences characterId={characterId} />
                   </TabsContent>
-                  <TabsContent value="sentence-transformations">
-                    <CharacterSentenceTransformations
-                      lang={lang}
-                      characterId={characterId}
-                    />
-                  </TabsContent>
+                  {_isSentence && (
+                    <TabsContent value="sentence-transformations">
+                      <CharacterSentenceTransformations
+                        lang={lang}
+                        characterId={characterId}
+                      />
+                    </TabsContent>
+                  )}
                   {selectedComp?.story && (
                     <TabsContent value="story">
                       <StoryView characterId={characterId} />

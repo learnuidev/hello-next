@@ -29,6 +29,7 @@ import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { AnimatedLoadingText } from "../animated-loading-text";
 import { Nothing } from "@/app/nmm/nothing";
 import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
+import { isSentence } from "@/libs/utils/is-sentence";
 
 const ContentSentences = ({
   characterId,
@@ -250,6 +251,8 @@ export const CharacterSentences = (props: { characterId: string }) => {
   const allSentences = useListCharacterSentences(props.characterId);
 
   const contentLang = searchParams.get("content") || "";
+
+  const _isSentence = isSentence(props.characterId);
 
   const {
     data: sentences,

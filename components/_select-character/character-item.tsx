@@ -90,7 +90,8 @@ export const CharacterItem = ({
             ? `text-gray-300 dark:text-gray-800 ${hoverColor}`
             : `${color} ${hoverColor}`),
 
-        currentMode.current === "normal" && "dark:text-white text-black",
+        currentMode.current === "normal" &&
+          `dark:text-white text-black ${hoverColor}`,
         className
       )}
     >

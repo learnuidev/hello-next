@@ -1,0 +1,282 @@
+import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
+
+import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
+import { getStatusIcon } from "@/app/(auth)/insights/insights-v2/precision-insight-view/status-icons";
+import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
+import { BookmarkButton } from "@/app/nmm/bookmark-button";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
+import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
+
+import { useGetCharacter } from "@/hooks/use-get-character";
+import { useRef, useState } from "react";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+
+import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
+import { useUpdateDiscoveryMutation } from "@/domain/sentence/use-update-discovery-mutation";
+import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
+import { formatRoman } from "@/lib/format-roman";
+import { cn } from "@/lib/utils";
+import { useSegmentTextQuery } from "@/libs/utils/segment-text";
+import { useAudioProviderState } from "../settings-dialog/hooks/use-audio-provider-state";
+import { useYoutubeVideoUrl } from "../summary/with-youtube-video";
+import { Icons } from "../ui/icons.v2";
+import { useCurrentTime } from "../youtube-page/use-current-time-store";
+import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
+import { smartSplit } from "../youtube-page/utils/smart-split";
+import { CharacterItem } from "./character-item";
+import { characterStore } from "./character-store";
+import { PlayButtonV2 } from "./play-button-v2";
+import { CharacterTrackButton } from "./selected-character/character-track-button";
+import { useCharacterEditStore } from "./use-character-edit-store";
+import { useYoutubeRefState } from "./use-youtube-ref-state";
+import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
+import { openInNewWindow } from "@/app/review/review-cloze-content/utils/open-in-new-window";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
+import { useRouter } from "next/navigation";
+
+export const CharacterTitleV2 = (props: any) => {
+  const {
+    lang,
+    multiSentence,
+    characterId,
+    selectedCompInput: selectedCompInput2,
+  } = props;
+
+  const isSuperAdmin = useIsSuperAdmin();
+
+  const [newPinyin, setNewPinyin] = useState("");
+  const [newEn, setNewEn] = useState("");
+
+  const pinyinInput = characterStore((state) => state.pinyin);
+
+  const setEdit = useCharacterEditStore((state) => state.setEdit);
+  const edit = useCharacterEditStore((state) => state.edit);
+
+  const componentId = useGetComponentId();
+
+  const { data } = useListComponentVariantsQuery({ hanzi: characterId });
+
+  const character = useGetCharacter({ characterId: componentId });
+
+  const pinyins = data?.map((val) => val?.pinyin) || [];
+  const englishMeanings = data?.map((val) => val?.en) || [];
+
+  const { speak } = useSpeak(lang);
+
+  const { data: selectedComp } = useGetComponentQuery({
+    hanzi: componentId,
+  });
+
+  const { data: meaningDiscovery, isLoading: isMeaningDiscoveryLoading } =
+    useListDiscoveryQuery({
+      content: componentId,
+      lang,
+    });
+
+  const updateMeaningMutation = useUpdateDiscoveryMutation();
+
+  const { videoUrl, setVideoUrl, addVideoUrl, setAddVideoUrl } =
+    useYoutubeVideoUrl();
+
+  const selectedCompInput = characterId;
+
+  const StatusIcon = getStatusIcon(character?.status);
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
+
+  const finalEnVal =
+    englishMeanings?.length === 1
+      ? meaningDiscovery?.en || englishMeanings?.[0] || selectedComp?.en
+      : meaningDiscovery?.en || selectedComp?.en || englishMeanings?.[0];
+
+  const selectedPinyin = pinyins?.length
+    ? pinyins?.join("/")
+    : pinyins?.[0] ||
+      pinyinInput ||
+      selectedComp?.pinyin ||
+      meaningDiscovery?.pinyin;
+
+  const customRef: any = useRef(null) as any;
+
+  const { data: relatedHskWords } = useListRelatedHSKWords(characterId);
+
+  const { provider, setProvider } = useAudioProviderState();
+  const id = `${selectedCompInput}#${lang}#${provider}`;
+  const { currentTime, setCurrentTime, duration } = useCurrentTime(id);
+
+  const { seekAndPlay, youtubeRef } = useYoutubeRefState();
+
+  const { isPlaying, setIsPlaying } = useIsPlayingState(id);
+
+  const isHsk = relatedHskWords?.find((word) => word?.hanzi === characterId);
+
+  const { data: _data } = useListDictionaryMeaningsQuery(
+    selectedCompInput,
+    lang
+  );
+
+  const { data: _segmentedData } = useSegmentTextQuery({
+    text: selectedCompInput,
+    lang,
+  });
+
+  const router = useRouter();
+
+  const segmentedData = _data || _segmentedData;
+
+  return (
+    <div className="flex flex-col items-start space-y-2 w-full">
+      {edit && meaningDiscovery?.id && isSuperAdmin ? (
+        <input
+          value={newPinyin || meaningDiscovery?.pinyin}
+          onChange={(event: any) => {
+            setNewPinyin(event?.target.value);
+          }}
+          className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full"
+        />
+      ) : (
+        <div>
+          {segmentedData?.map((item, idx) => {
+            return (
+              <span
+                className={cn(
+                  "inline-flex flex-col items-center justify-center",
+
+                  ["，", "。"]?.includes(item?.input)
+                    ? ""
+                    : idx === 0
+                      ? "pr-[2px] sm:pr-[4px]"
+                      : "px-[2px] py-[0px] sm:px-[4px]",
+
+                  "leading-none",
+                  "py-[0px]"
+                )}
+                key={`${JSON.stringify(item)}-${idx}-${idx}`}
+              >
+                {showPinyin && (
+                  <span className="text-sm dark:text-gray-400 text-gray-800">
+                    {formatRoman(item)}
+                  </span>
+                )}
+
+                <span
+                  className={"text-[16px] sm:text-xl"}
+                  onClick={() => {
+                    const selectedText = getSelectedText();
+
+                    if (selectedText && selectedText?.length < 36) {
+                      router.push(getNmmLink({ id: selectedText, lang }));
+                      // setSelected(selectedText);
+                    } else {
+                      router.push(
+                        getNmmLink({ id: item?.hanzi || item?.input, lang })
+                      );
+                      // setSelected(item);
+                    }
+                  }}
+                >
+                  {smartSplit({
+                    input: item?.hanzi || item?.input,
+                    lang: lang,
+                  })?.map((item: any, idx: any) => {
+                    return (
+                      <span key={`${item}-pinin-view-${idx}`}>
+                        <CharacterItem character={item} onClick={() => {}} />
+                      </span>
+                    );
+                  })}
+                </span>
+              </span>
+            );
+          })}
+        </div>
+      )}
+
+      {lang === "en" ? null : edit && meaningDiscovery?.id && isSuperAdmin ? (
+        <input
+          value={newEn || meaningDiscovery?.en}
+          onChange={(event: any) => {
+            setNewEn(event?.target.value);
+          }}
+          className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full"
+        />
+      ) : (
+        <h2 className="dark:text-gray-500 text-gray-900 font-light">
+          {finalEnVal?.split("/")?.slice(0, 4)?.join("/")}
+        </h2>
+      )}
+
+      <div className="space-x-4 flex items-center">
+        {!edit && (
+          <PlayButtonV2
+            customRef={customRef}
+            text={selectedCompInput}
+            lang={lang}
+            className="text-2xl"
+          />
+        )}
+
+        {!edit && <CharacterTrackButton />}
+        {!edit && (
+          <BookmarkButton
+            hanzi={characterId}
+            lang={lang}
+            en={finalEnVal}
+            pinyin={selectedPinyin}
+          />
+        )}
+
+        {!edit && isSuperAdmin && (
+          <button
+            onClick={() => {
+              setAddVideoUrl((prev: boolean) => !prev);
+            }}
+          >
+            <Icons.youtube className="text-xl" />
+          </button>
+        )}
+
+        {edit && meaningDiscovery?.id && isSuperAdmin ? (
+          <div className="space-x-4">
+            <button
+              disabled={updateMeaningMutation.isPending}
+              onClick={() => {
+                updateMeaningMutation
+                  // @ts-ignore
+                  .mutateAsync({
+                    id: meaningDiscovery?.id,
+                    pinyin: newPinyin || meaningDiscovery?.pinyin,
+                    en: newEn || meaningDiscovery?.en,
+                  })
+                  .then((resp) => {
+                    setEdit(false);
+                  });
+              }}
+            >
+              Save
+            </button>
+
+            <button
+              onClick={() => {
+                setEdit(false);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        ) : (
+          meaningDiscovery?.id &&
+          isSuperAdmin && (
+            <button
+              onClick={() => {
+                setEdit(true);
+              }}
+            >
+              <Icons.edit className="text-xl" />{" "}
+            </button>
+          )
+        )}
+      </div>
+    </div>
+  );
+};

@@ -4,6 +4,7 @@ import { useSelectedCharacterData } from "@/components/use-selected-character";
 import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 import { CharacterTitle } from "../character-title";
 import { ZoomedCharacter } from "./zoomed-character";
+import { CharacterTitleV2 } from "../character-title.v2";
 
 export const SelectedCharacterTitle = ({
   characterId,
@@ -49,7 +50,7 @@ export const SelectedCharacterTitle = ({
     </div>
   ) : (
     <div className="flex items-center justify-between mb-4 mt-4">
-      <CharacterTitle
+      <CharacterTitleV2
         pinyinOrRoman={pinyinOrRoman}
         multiSentence={multiSentence}
         characterId={characterId}

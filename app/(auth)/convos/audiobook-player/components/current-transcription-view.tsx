@@ -72,7 +72,7 @@ function InputView({
   );
 }
 
-function ReaderView({
+export function ReaderView({
   currentTranscription,
   className,
   data,

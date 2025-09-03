@@ -11,6 +11,7 @@ import { create } from "zustand";
 import { cn } from "@/lib/utils";
 import { CharacterSentenceTransformations } from "../character-sentence-transformations";
 import { isSentence } from "@/libs/utils/is-sentence";
+import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 
 const useSideBarViewType = create((set: any, get: any) => ({
   sideBarView: "sentences",
@@ -32,85 +33,87 @@ export const CharacterOverviewViewSidebar = ({
   const _isSentence = isSentence(characterId);
 
   return (
-    <div className={"col-span-5 md:col-span-3 hidden sm:block"}>
-      {_isSentence && (
-        <div className="space-x-4 mb-4">
-          <button
-            className={cn(
-              "text-sm transition",
-              sideBarView === "sentences"
-                ? "dark:text-white text-black"
-                : "text-gray-500"
-            )}
-            onClick={() => {
-              setSideBarView("sentences");
-            }}
-          >
-            Sentences
-          </button>
-          <button
-            className={cn(
-              "text-sm transition",
-              sideBarView === "sentence-transformations"
-                ? "dark:text-white text-black"
-                : "text-gray-500"
-            )}
-            onClick={() => {
-              setSideBarView("sentence-transformations");
-            }}
-          >
-            句子变换
-          </button>
-        </div>
-      )}
-
-      {sideBarView === "sentences" && (
-        <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
-          <div className="">
-            {" "}
-            {sentences?.length > 7 ? (
-              <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                <CharacterSentences characterId={characterId} />
-              </ScrollArea>
-            ) : (
-              <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                <CharacterSentences characterId={characterId} />
-              </ScrollArea>
-            )}
+    <MandoContextMenu lang={lang}>
+      <div className={"col-span-5 md:col-span-3 hidden sm:block"}>
+        {_isSentence && (
+          <div className="space-x-4 mb-4">
+            <button
+              className={cn(
+                "text-sm transition",
+                sideBarView === "sentences"
+                  ? "dark:text-white text-black"
+                  : "text-gray-500"
+              )}
+              onClick={() => {
+                setSideBarView("sentences");
+              }}
+            >
+              Sentences
+            </button>
+            <button
+              className={cn(
+                "text-sm transition",
+                sideBarView === "sentence-transformations"
+                  ? "dark:text-white text-black"
+                  : "text-gray-500"
+              )}
+              onClick={() => {
+                setSideBarView("sentence-transformations");
+              }}
+            >
+              句子变换
+            </button>
           </div>
+        )}
 
-          <div className="md:hidden block">
-            <CharacterSentences characterId={characterId} />
-          </div>
-        </div>
-      )}
+        {sideBarView === "sentences" && (
+          <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
+            <div className="">
+              {" "}
+              {sentences?.length > 7 ? (
+                <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                  <CharacterSentences characterId={characterId} />
+                </ScrollArea>
+              ) : (
+                <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                  <CharacterSentences characterId={characterId} />
+                </ScrollArea>
+              )}
+            </div>
 
-      {_isSentence && sideBarView === "sentence-transformations" && (
-        <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
-          <div className="">
-            {" "}
-            {sentences?.length > 7 ? (
-              <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                <CharacterSentenceTransformations
-                  lang={lang}
-                  characterId={characterId}
-                />
-              </ScrollArea>
-            ) : (
-              <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                <CharacterSentenceTransformations
-                  lang={lang}
-                  characterId={characterId}
-                />
-              </ScrollArea>
-            )}
+            <div className="md:hidden block">
+              <CharacterSentences characterId={characterId} />
+            </div>
           </div>
+        )}
 
-          <div className="md:hidden block">
-            <CharacterSentences characterId={characterId} />
+        {_isSentence && sideBarView === "sentence-transformations" && (
+          <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
+            <div className="">
+              {" "}
+              {sentences?.length > 7 ? (
+                <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                  <CharacterSentenceTransformations
+                    lang={lang}
+                    characterId={characterId}
+                  />
+                </ScrollArea>
+              ) : (
+                <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                  <CharacterSentenceTransformations
+                    lang={lang}
+                    characterId={characterId}
+                  />
+                </ScrollArea>
+              )}
+            </div>
+
+            <div className="md:hidden block">
+              <CharacterSentences characterId={characterId} />
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </MandoContextMenu>
   );
 };

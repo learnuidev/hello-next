@@ -84,7 +84,7 @@ export const CharacterOverviewView = ({
                             value="sentence-transformations"
                             className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold block sm:hidden"
                           >
-                            橘子变化
+                            句子变化
                           </TabsTrigger>
                         )}
                         {selectedComp?.story && (

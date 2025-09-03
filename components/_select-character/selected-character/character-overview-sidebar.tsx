@@ -59,7 +59,7 @@ export const CharacterOverviewViewSidebar = ({
               setSideBarView("sentence-transformations");
             }}
           >
-            橘子变化
+            句子变化
           </button>
         </div>
       )}

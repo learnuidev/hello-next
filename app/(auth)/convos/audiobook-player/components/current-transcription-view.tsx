@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { useSegmentTextQuery } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { isChinesePunctuation } from "@/lib/is-chinese-punctuation";
+import { formatRoman } from "@/lib/format-roman";
 
 function EnView({
   currentTranscription,
@@ -90,6 +91,8 @@ function ReaderView({
 
   const { selected, setSelected } = useSelectedItem();
 
+  console.log("DATA", data);
+
   return (
     <div className={cn(defautClassName, className)}>
       <div className={cn(defautClassName, className)}>
@@ -118,7 +121,7 @@ function ReaderView({
             >
               {showPinyin && (
                 <span className="text-sm dark:text-gray-400 text-gray-800">
-                  {item?.pinyin || item?.roman || item?.input}
+                  {formatRoman(item)}
                 </span>
               )}
 

@@ -6,13 +6,16 @@ import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export function MiniDictionary({
   lang,
   selected,
+  className,
 }: {
   lang: string;
   selected: string;
+  className?: string;
 }) {
   const [seeMore, setSeeMore] = useState(false);
   const { data: sentences, isLoading: isSentencesLoading } =
@@ -31,7 +34,12 @@ export function MiniDictionary({
   const pinyinOrRoman = data?.pinyin || data?.roman;
 
   return (
-    <div className="w-full sm:max-w-[600px] bg-gray-50 dark:bg-[rgb(13,14,15)] rounded p-4 sm:p-8 sm:mt-20 mt-0">
+    <div
+      className={cn(
+        " bg-gray-50 dark:bg-[rgb(13,14,15)] rounded p-4 sm:p-8",
+        className ? "" : "w-full sm:max-w-[600px] sm:mt-20 mt-0"
+      )}
+    >
       <div className="flex justify-between items-center">
         <h4 className="text-2xl font-bold"> {selected} </h4>
 

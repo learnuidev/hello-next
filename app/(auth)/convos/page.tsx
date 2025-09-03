@@ -162,6 +162,7 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
             const isFavourited = favouriteContents?.items?.find(
               (content: any) => content?.id === item.id
             );
+
             return (
               <div
                 key={JSON.stringify(item)}
@@ -214,11 +215,12 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
                   <img
                     className="object-cover rounded-xl w-full aspect-video"
                     src={
-                      item?.thumbnails?.maxres?.url ||
                       item?.thumbnails?.standard?.url ||
                       item?.thumbnails?.high?.url ||
                       item?.thumbnails?.medium?.url ||
                       item?.thumbnails?.default?.url ||
+                      item?.thumbnails?.maxres?.url ||
+                      item?.thumbnails?.[0]?.url ||
                       defaultPic
                     }
                     alt={item?.title}

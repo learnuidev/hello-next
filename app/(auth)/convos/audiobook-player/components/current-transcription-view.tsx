@@ -71,34 +71,125 @@ function InputView({
     </p>
   );
 }
+
+function ReaderView({
+  currentTranscription,
+  className,
+  data,
+}: CurrentTranscriptionProps & {
+  data: {
+    input: string;
+    hanzi: string;
+    pinyin?: string;
+    roman?: string;
+  }[];
+}) {
+  const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
+
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
+
+  const { selected, setSelected } = useSelectedItem();
+
+  return (
+    <div className={cn(defautClassName, className)}>
+      <div className={cn(defautClassName, className)}>
+        {data?.map((item, idx) => {
+          return (
+            <span
+              onClick={() => {
+                const selectedText = getSelectedText();
+                if (selectedText && selectedText?.length < 36) {
+                  setSelected(selectedText);
+                } else if (selected === (item?.hanzi || item?.input)) {
+                  setSelected(null);
+                } else {
+                  setSelected(item.hanzi || item?.input);
+                }
+              }}
+              className={cn(
+                "inline-flex flex-col items-center justify-center",
+
+                ["，", "。"]?.includes(item?.input)
+                  ? ""
+                  : "px-[2px] py-[0px] sm:px-[4px]",
+                "leading-none"
+              )}
+              key={`${JSON.stringify(item)}-${idx}-${idx}`}
+            >
+              {showPinyin && (
+                <span className="text-sm dark:text-gray-400 text-gray-800">
+                  {item?.pinyin || item?.roman || item?.input}
+                </span>
+              )}
+
+              <span
+                className={
+                  currentTranscription?.lang === "zh"
+                    ? "text-lg sm:text-xl lg:text-2xl"
+                    : "text-[16px] sm:text-xl"
+                }
+              >
+                {smartSplit({
+                  input: item?.hanzi || item?.input,
+                  lang: currentTranscription?.lang,
+                })?.map((item: any, idx: any) => {
+                  return (
+                    <span key={`${item}-pinin-view-${idx}`}>
+                      <CharacterItem
+                        character={item}
+                        onClick={() => {
+                          const selectedText = getSelectedText();
+
+                          if (selectedText && selectedText?.length < 36) {
+                            setSelected(selectedText);
+                          } else {
+                            setSelected(item);
+                          }
+                        }}
+                      />
+                    </span>
+                  );
+                })}
+              </span>
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 function NormalView({
   currentTranscription,
   seekAndPlay,
   containsChinglish,
+  className,
 }: CurrentTranscriptionProps) {
+  const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
+
   return (
     <div>
-      <EnView
-        containsChinglish={containsChinglish}
-        currentTranscription={currentTranscription}
-        seekAndPlay={seekAndPlay}
-      />
-
-      <div className="mt-4 sm:mt-16">
+      <div className={cn(defautClassName, className)}>
         <InputView
           containsChinglish={containsChinglish}
           currentTranscription={currentTranscription}
           seekAndPlay={seekAndPlay}
         />
       </div>
+
+      <EnView
+        containsChinglish={containsChinglish}
+        currentTranscription={currentTranscription}
+        seekAndPlay={seekAndPlay}
+      />
     </div>
   );
 }
 
-function PinyinView({
+export function PinyinView({
   currentTranscription,
   seekAndPlay,
   containsChinglish,
+  className,
 }: CurrentTranscriptionProps) {
   const { data: _data } = useListDictionaryMeaningsQuery(
     currentTranscription?.input,
@@ -114,79 +205,19 @@ function PinyinView({
 
   const { selected, setSelected } = useSelectedItem();
 
+  const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
+
   return (
-    <div className="max-w-7xl mx-auto">
-      <EnView
-        containsChinglish={containsChinglish}
-        currentTranscription={currentTranscription}
-        seekAndPlay={seekAndPlay}
-      />
+    <div>
       {currentTranscription?.lang === "zh" && data ? (
-        <div className="mt-4 sm:mt-16 gap-0 space-y-0">
-          {data?.map((item, idx) => {
-            return (
-              <span
-                onClick={() => {
-                  const selectedText = getSelectedText();
-                  if (selectedText && selectedText?.length < 36) {
-                    setSelected(selectedText);
-                  } else if (selected === (item?.hanzi || item?.input)) {
-                    setSelected(null);
-                  } else {
-                    setSelected(item.hanzi || item?.input);
-                  }
-                }}
-                className={cn(
-                  "inline-flex flex-col items-center justify-center",
-
-                  ["，", "。"]?.includes(item?.input)
-                    ? ""
-                    : "px-[2px] py-[0px] sm:px-[4px]",
-                  "leading-none"
-                )}
-                key={`${JSON.stringify(item)}-${idx}${_data ? "perm" : "tempo"}`}
-              >
-                <span className="text-sm dark:text-gray-400 text-gray-800">
-                  {isChinesePunctuation(item?.input || item?.hanzi)
-                    ? ""
-                    : item?.pinyin}
-                </span>
-
-                <span
-                  className={
-                    currentTranscription?.lang === "zh"
-                      ? "text-lg sm:text-xl lg:text-2xl"
-                      : "text-[16px] sm:text-xl"
-                  }
-                >
-                  {smartSplit({
-                    input: item?.hanzi || item?.input,
-                    lang: currentTranscription?.lang,
-                  })?.map((item: any, idx: any) => {
-                    return (
-                      <span key={`${item}-pinin-view-${idx}`}>
-                        <CharacterItem
-                          character={item}
-                          onClick={() => {
-                            const selectedText = getSelectedText();
-
-                            if (selectedText && selectedText?.length < 36) {
-                              setSelected(selectedText);
-                            } else {
-                              setSelected(item);
-                            }
-                          }}
-                        />
-                      </span>
-                    );
-                  })}
-                </span>
-              </span>
-            );
-          })}
-        </div>
+        <ReaderView
+          data={data}
+          containsChinglish={containsChinglish}
+          currentTranscription={currentTranscription}
+          seekAndPlay={seekAndPlay}
+        />
       ) : (
-        <div className="mt-16">
+        <div className={cn(defautClassName, className)}>
           {isNonRomanLang(currentTranscription?.lang) ? (
             <p>
               {currentTranscription?.lang === "zh"
@@ -201,6 +232,12 @@ function PinyinView({
           />
         </div>
       )}
+
+      <EnView
+        containsChinglish={containsChinglish}
+        currentTranscription={currentTranscription}
+        seekAndPlay={seekAndPlay}
+      />
     </div>
   );
 }
@@ -209,22 +246,27 @@ export function CurrentTranscriptionView({
   currentTranscription,
   containsChinglish,
   seekAndPlay,
+  className,
 }: CurrentTranscriptionProps) {
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   return (
     <div className="text-center mt-8 sm:mt-24 max-w-7xl mx-auto">
       {showPinyin ? (
-        <PinyinView
-          containsChinglish={containsChinglish}
-          currentTranscription={currentTranscription}
-          seekAndPlay={seekAndPlay}
-        />
+        <div className="max-w-7xl mx-auto">
+          <PinyinView
+            containsChinglish={containsChinglish}
+            currentTranscription={currentTranscription}
+            seekAndPlay={seekAndPlay}
+            className={className}
+          />
+        </div>
       ) : (
         <NormalView
           containsChinglish={containsChinglish}
           currentTranscription={currentTranscription}
           seekAndPlay={seekAndPlay}
+          className={className}
         />
       )}
     </div>

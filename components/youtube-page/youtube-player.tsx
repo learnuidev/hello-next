@@ -54,6 +54,10 @@ import {
 } from "./hooks/use-play-history-state";
 import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
 import { smartSplit } from "./utils/smart-split";
+import { ChinglishButton } from "../chinglish-button";
+import { PinyinButton } from "../pinyin-button";
+import { MiniDictionary } from "@/app/(auth)/convos/audiobook-player/components/mini-dictionary";
+import { useSelectedItem } from "./use-selected-item";
 
 interface ViewModeState {
   viewMode: string;
@@ -182,9 +186,9 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
   const queryClient = useQueryClient();
 
-  const { data: lesson } = useGetContentQuery({ contentId: contentId });
+  const { data: content } = useGetContentQuery({ contentId: contentId });
 
-  const finalUrl = lesson?.audio;
+  const finalUrl = content?.audio;
 
   const seek = (time: any) => {
     playerRef.current.seekTo(time, "seconds");
@@ -260,11 +264,11 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
   const router = useRouter();
   const { contextId, setNewContextId } = useContextPlayContextState();
   const setHistory = usePlayHistoryStore((state) => state.setHistory);
-  const transcriptions = lesson?.transcriptions
-    ? lesson?.transcriptions
+  const transcriptions = content?.transcriptions
+    ? content?.transcriptions
     : transcriptionsData?.length
       ? transcriptionsData
-      : lesson?.transcriptions;
+      : content?.transcriptions;
 
   const togglePlay = useCallback(() => {
     if (playerRef?.current?.player?.isPlaying) {
@@ -434,11 +438,11 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
     }
   }, []);
 
-  const currentChapter = lesson?.chapters?.find(
+  const currentChapter = content?.chapters?.find(
     (chapter: any) => chapter?.start < currentTime && chapter?.end > currentTime
   );
 
-  const finishedChapters = lesson?.chapters?.filter((chapter: any) => {
+  const finishedChapters = content?.chapters?.filter((chapter: any) => {
     return currentTime > chapter?.start;
   });
 
@@ -530,6 +534,9 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
       ? [Object.values(groupedTranscriptions)?.[0]]
       : Object.values(groupedTranscriptions);
 
+  const containsChinglish = !!transcriptions?.[0]?.chinglish;
+  const { selected, setSelected } = useSelectedItem();
+
   return (
     <div className="relative">
       <div className="grow flex flex-col items-center">
@@ -582,7 +589,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
             >
               <Icons.edit />
             </button>
-            {lesson?.questions?.length > 0 && (
+            {content?.questions?.length > 0 && (
               <button
                 className={qaMode ? "dark:text-white" : "text-gray-500"}
                 onClick={() => {
@@ -592,6 +599,10 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                 <Icons.qa />
               </button>
             )}
+
+            {containsChinglish && <ChinglishButton className="text-lg" />}
+
+            <PinyinButton className="text-lg" />
 
             {editMode && (
               <button
@@ -607,8 +618,8 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
               <button
                 onClick={() => {
                   const editedTranscriptions = {
-                    id: lesson?.id,
-                    transcriptions: lesson?.transcriptions?.map(
+                    id: content?.id,
+                    transcriptions: content?.transcriptions?.map(
                       (transcription: any) => {
                         const time = times?.find(
                           (t: any) => t?.id === transcription?.id
@@ -728,6 +739,8 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
           )} */}
 
             <ActiveTranscription
+              containsChinglish={containsChinglish}
+              seekAndPlay={seekAndPlay}
               currentTime={currentTime}
               transcriptions={transcriptions}
               contentId={contentId}
@@ -750,7 +763,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                 }
               >
                 <KaraokeMode
-                  lang={lesson?.lang}
+                  lang={content?.lang}
                   isPlaying={isPlaying}
                   seekTo={(time: number) => {
                     playerRef.current.seekTo(time, "seconds");
@@ -784,6 +797,8 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                 {isVideoHidden && (
                   <div>
                     <ActiveTranscription
+                      containsChinglish={containsChinglish}
+                      seekAndPlay={seekAndPlay}
                       currentTime={currentTime}
                       transcriptions={transcriptions}
                       contentId={contentId}
@@ -791,11 +806,11 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                   </div>
                 )}
 
-                {qaMode && lesson?.questions?.length > 0 && (
+                {qaMode && content?.questions?.length > 0 && (
                   <div className="">
                     <ScrollArea className="space-y-4 h-[350px] rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8">
                       <div className={"flex flex-col gap-4"}>
-                        {lesson.questions.map((question: any) => {
+                        {content.questions.map((question: any) => {
                           return (
                             <button
                               key={question.description}
@@ -827,98 +842,106 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                       isVideoHidden
                         ? "md:col-span-7 col-span-12"
                         : "md:col-span-5 col-span-12"
-                    } w-full text-center`,
-                    qaMode && lesson?.questions?.length > 0 ? "mt-8" : ""
+                    } w-full`,
+                    qaMode && content?.questions?.length > 0 ? "mt-8" : ""
                   )}
                 >
-                  <ScrollArea
-                    className={cn(
-                      `space-y-4 rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8`,
-                      qaMode && lesson?.questions?.length > 0
-                        ? "h-[350px]"
-                        : "h-[400px] sm:h-[640px]"
-                    )}
-                  >
-                    <div className="space-y-8">
-                      {paraTranscriptions?.map((transcriptions: any) => {
-                        const hanzis = transcriptions
-                          ?.map((t: any) => t?.hanzi)
-                          ?.join("");
+                  {selected ? (
+                    <MiniDictionary
+                      className="sm:mt-0 mt-0"
+                      selected={selected}
+                      lang={content?.lang}
+                    />
+                  ) : (
+                    <ScrollArea
+                      className={cn(
+                        `space-y-4 rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8`,
+                        qaMode && content?.questions?.length > 0
+                          ? "h-[350px]"
+                          : "h-[400px] sm:h-[640px]"
+                      )}
+                    >
+                      <div className="space-y-8">
+                        {paraTranscriptions?.map((transcriptions: any) => {
+                          const hanzis = transcriptions
+                            ?.map((t: any) => t?.hanzi)
+                            ?.join("");
 
-                        return (
-                          <div key={JSON.stringify(transcriptions)}>
-                            <div className="flex flex-wrap">
-                              {(active !== MAX_LIMIT
-                                ? group
-                                : transcriptions
-                              ).map((transcription: any) => {
-                                const isActiveTranscription =
-                                  transcription?.start < currentTime &&
-                                  transcription?.end > currentTime;
+                          return (
+                            <div key={JSON.stringify(transcriptions)}>
+                              <div className="flex flex-wrap">
+                                {(active !== MAX_LIMIT
+                                  ? group
+                                  : transcriptions
+                                ).map((transcription: any) => {
+                                  const isActiveTranscription =
+                                    transcription?.start < currentTime &&
+                                    transcription?.end > currentTime;
 
-                                const transcriptionInput =
-                                  transcription?.input || transcription?.hanzi;
+                                  const transcriptionInput =
+                                    transcription?.input ||
+                                    transcription?.hanzi;
 
-                                return (
-                                  <span
-                                    role="button"
-                                    className={`${
-                                      currentTime
-                                        ? isActiveTranscription
-                                          ? "dark:text-white bg-yellow-200 dark:bg-black"
-                                          : "dark:text-gray-400"
-                                        : ""
-                                    } transition block py-1 px-1`}
-                                    key={
-                                      transcription?.id ||
-                                      `${transcription?.hanzi}-${transcription?.start}`
-                                    }
-                                    onClick={() => {
-                                      setRepeatHistories({
-                                        contentId: contentId,
-                                        ...transcription,
-                                        input:
-                                          transcription?.input ||
-                                          transcription?.hanzi,
-                                        roman:
-                                          transcription?.roman ||
-                                          transcription?.pinyin,
-                                        createdAt: Date.now(),
-                                      });
-
-                                      playerRef.current.seekTo(
-                                        transcription?.start,
-                                        "seconds"
-                                      );
-
-                                      try {
-                                        playerRef.current?.player?.player?.play();
-                                      } catch (err) {
-                                        console.error(err);
+                                  return (
+                                    <span
+                                      role="button"
+                                      className={`${
+                                        currentTime
+                                          ? isActiveTranscription
+                                            ? "dark:text-white bg-yellow-200 dark:bg-black"
+                                            : "dark:text-gray-400"
+                                          : ""
+                                      } transition block py-1 px-1`}
+                                      key={
+                                        transcription?.id ||
+                                        `${transcription?.hanzi}-${transcription?.start}`
                                       }
-                                    }}
-                                  >
-                                    {smartSplit({
-                                      input: transcriptionInput,
-                                      lang: lesson?.lang,
-                                    })?.map((item: string, idx: number) => {
-                                      return (
-                                        <span
-                                          onClick={() => {
-                                            setWords({
-                                              word: item,
-                                              transcriptionId:
-                                                transcription?.id,
-                                              contentId: contentId,
-                                            });
-                                          }}
-                                          key={`para-mode-${item}-${idx}-${transcriptionInput}`}
-                                        >
-                                          {item}
-                                        </span>
-                                      );
-                                    })}
-                                    {/* {isActiveTranscription
+                                      onClick={() => {
+                                        setRepeatHistories({
+                                          contentId: contentId,
+                                          ...transcription,
+                                          input:
+                                            transcription?.input ||
+                                            transcription?.hanzi,
+                                          roman:
+                                            transcription?.roman ||
+                                            transcription?.pinyin,
+                                          createdAt: Date.now(),
+                                        });
+
+                                        playerRef.current.seekTo(
+                                          transcription?.start,
+                                          "seconds"
+                                        );
+
+                                        try {
+                                          playerRef.current?.player?.player?.play();
+                                        } catch (err) {
+                                          console.error(err);
+                                        }
+                                      }}
+                                    >
+                                      {smartSplit({
+                                        input: transcriptionInput,
+                                        lang: content?.lang,
+                                      })?.map((item: string, idx: number) => {
+                                        return (
+                                          <span
+                                            onClick={() => {
+                                              setWords({
+                                                word: item,
+                                                transcriptionId:
+                                                  transcription?.id,
+                                                contentId: contentId,
+                                              });
+                                            }}
+                                            key={`para-mode-${item}-${idx}-${transcriptionInput}`}
+                                          >
+                                            {item}
+                                          </span>
+                                        );
+                                      })}
+                                      {/* {isActiveTranscription
                                     ? smartSplit({
                                         input: transcriptionInput,
                                         lang: lesson?.lang,
@@ -932,59 +955,60 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                                         );
                                       })
                                     : transcriptionInput} */}
-                                  </span>
-                                );
-                              })}
-                            </div>
+                                    </span>
+                                  );
+                                })}
+                              </div>
 
-                            <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
-                              <Link
-                                target="_blank"
-                                href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                                  hanzis
-                                )}&op=translate`}
-                                className="text-gray-500 hover:text-black dark:hover:text-white"
-                              >
-                                <FontAwesomeIcon icon={faGoogle} />
-                              </Link>
+                              <div className="px-2 pt-2 space-x-4 flex flex-row items-center">
+                                <Link
+                                  target="_blank"
+                                  href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
+                                    hanzis
+                                  )}&op=translate`}
+                                  className="text-gray-500 hover:text-black dark:hover:text-white"
+                                >
+                                  <FontAwesomeIcon icon={faGoogle} />
+                                </Link>
 
-                              <Link
-                                href={getYablaLink(hanzis)}
-                                className="text-gray-500 hover:text-black dark:hover:text-white"
-                                target="_blank"
-                              >
-                                <FontAwesomeIcon icon={faLanguage} />
-                              </Link>
+                                <Link
+                                  href={getYablaLink(hanzis)}
+                                  className="text-gray-500 hover:text-black dark:hover:text-white"
+                                  target="_blank"
+                                >
+                                  <FontAwesomeIcon icon={faLanguage} />
+                                </Link>
 
-                              <button
-                                onClick={() => {
-                                  if (toggleLoops?.length) {
-                                    setToggleLoops([]);
-                                  } else {
-                                    setToggleLoops(transcriptions);
-                                  }
-                                }}
-                              >
-                                <FontAwesomeIcon
-                                  className={cn(
-                                    "hover:text-black dark:hover:text-white",
-                                    toggleLoops?.find((item: any) =>
-                                      transcriptions?.find(
-                                        (x: any) => x.end === item?.end
+                                <button
+                                  onClick={() => {
+                                    if (toggleLoops?.length) {
+                                      setToggleLoops([]);
+                                    } else {
+                                      setToggleLoops(transcriptions);
+                                    }
+                                  }}
+                                >
+                                  <FontAwesomeIcon
+                                    className={cn(
+                                      "hover:text-black dark:hover:text-white",
+                                      toggleLoops?.find((item: any) =>
+                                        transcriptions?.find(
+                                          (x: any) => x.end === item?.end
+                                        )
                                       )
-                                    )
-                                      ? "dark:text-white text-red-400"
-                                      : "text-gray-500"
-                                  )}
-                                  icon={faRepeat}
-                                />
-                              </button>
+                                        ? "dark:text-white text-red-400"
+                                        : "text-gray-500"
+                                    )}
+                                    icon={faRepeat}
+                                  />
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </ScrollArea>
+                          );
+                        })}
+                      </div>
+                    </ScrollArea>
+                  )}
                 </div>
               </div>
             ) : transcriptions?.length ? (
@@ -994,6 +1018,8 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                 {isVideoHidden && (
                   <div>
                     <ActiveTranscription
+                      containsChinglish={containsChinglish}
+                      seekAndPlay={seekAndPlay}
                       currentTime={currentTime}
                       transcriptions={transcriptions}
                       contentId={contentId}

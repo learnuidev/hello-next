@@ -17,6 +17,7 @@ import { useSelectedCharacterData } from "../use-selected-character";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import { useListBookmarksQuery } from "@/domain/bookmark/use-list-bookmarks-query";
 import { useListBookmarks } from "./hooks/use-list-bookmarks";
+import { SelectedCharacterContentsButton } from "./selected-character-contents-button";
 
 export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
   const { data: characterData } = useSelectedCharacterData({ characterId });
@@ -188,6 +189,7 @@ export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
               <Icons.pinyinChart />
             </button>
           )}
+          <SelectedCharacterContentsButton characterId={characterId} />
         </div>
       </div>
     </div>

@@ -34,6 +34,7 @@ import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-sel
 import { openInNewWindow } from "@/app/review/review-cloze-content/utils/open-in-new-window";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import { useRouter } from "next/navigation";
+import { isNonRomanLang } from "./utils/is-non-roman-lang";
 
 export const CharacterTitleV2 = (props: any) => {
   const {
@@ -136,6 +137,11 @@ export const CharacterTitleV2 = (props: any) => {
         />
       ) : (
         <div>
+          {isNonRomanLang(lang) && !data && (
+            <p className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full">
+              {meaningDiscovery?.pinyin}{" "}
+            </p>
+          )}
           {segmentedData?.map((item, idx) => {
             return (
               <span
@@ -153,8 +159,8 @@ export const CharacterTitleV2 = (props: any) => {
                 )}
                 key={`${JSON.stringify(item)}-${idx}-${idx}`}
               >
-                {showPinyin && (
-                  <span className="text-sm dark:text-gray-400 text-gray-800">
+                {isNonRomanLang(lang) && showPinyin && (
+                  <span className="text-sm dark:text-gray-400 text-gray-800 lowercase">
                     {formatRoman(item)}
                   </span>
                 )}

@@ -8,6 +8,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
 import { useSearchParams } from "next/navigation";
+import { useReadModeState } from "@/components/read-mode-button";
+import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 
 export const useAudioBookState = (content: IContent) => {
   const { playbackRate } = useListenState();
@@ -111,6 +113,8 @@ export const useAudioBookState = (content: IContent) => {
     }
   };
 
+  const { setReadMode, readMode } = useReadModeState();
+
   const handleSeekChange = (event: number[]) => {
     seekAndPlay(event[0]);
   };
@@ -131,11 +135,21 @@ export const useAudioBookState = (content: IContent) => {
     setShowPinyin(!showPinyin);
   };
 
+  const { showChinglish, setShowChinglish } = useChinglishState();
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (["p"]?.includes(event.key?.toLowerCase()) && !editMode) {
         event.preventDefault();
         togglePinyin();
+      }
+      if (["r"]?.includes(event.key?.toLowerCase()) && !editMode) {
+        event.preventDefault();
+        setReadMode(!readMode);
+      }
+      if (["c"]?.includes(event.key?.toLowerCase()) && !editMode) {
+        event.preventDefault();
+        setShowChinglish(!showChinglish);
       }
 
       if (["l"]?.includes(event.key?.toLowerCase()) && !editMode) {

@@ -37,6 +37,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
 import Link from "next/link";
+import { useReadModeState } from "../read-mode-button";
 
 export const CharacterTitleV2 = (props: any) => {
   const {
@@ -88,6 +89,7 @@ export const CharacterTitleV2 = (props: any) => {
 
   const StatusIcon = getStatusIcon(character?.status);
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
+  const { readMode } = useReadModeState();
 
   const finalEnVal =
     englishMeanings?.length === 1
@@ -139,7 +141,7 @@ export const CharacterTitleV2 = (props: any) => {
           }}
           className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full"
         />
-      ) : showPinyin ? (
+      ) : readMode ? (
         <div className="flex justify-between items-center w-full">
           <div>
             {isNonRomanLang(lang) && !data && (

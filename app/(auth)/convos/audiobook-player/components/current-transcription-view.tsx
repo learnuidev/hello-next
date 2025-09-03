@@ -11,6 +11,7 @@ import { formatRoman } from "@/lib/format-roman";
 import { cn } from "@/lib/utils";
 import { useSegmentTextQuery } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
+import { useReadModeState } from "@/components/read-mode-button";
 
 function EnView({
   currentTranscription,
@@ -166,8 +167,16 @@ function NormalView({
 }: CurrentTranscriptionProps) {
   const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
 
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
+
   return (
     <div>
+      {showPinyin && (
+        <p className="text-sm dark:text-gray-400 text-gray-800">
+          {currentTranscription?.pinyin || currentTranscription?.roman}
+        </p>
+      )}
+
       <div className={cn(defautClassName, className)}>
         <InputView
           containsChinglish={containsChinglish}
@@ -250,12 +259,13 @@ export function CurrentTranscriptionView({
   className,
 }: CurrentTranscriptionProps) {
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
+  const { readMode } = useReadModeState();
 
   return (
     <div
       className={cn("text-center mt-8 sm:mt-24 max-w-7xl mx-auto", className)}
     >
-      {showPinyin ? (
+      {readMode ? (
         <div className="max-w-7xl mx-auto">
           <PinyinView
             containsChinglish={containsChinglish}

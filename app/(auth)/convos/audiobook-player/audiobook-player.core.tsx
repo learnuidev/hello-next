@@ -11,6 +11,7 @@ import { formatTime } from "../_play/utils";
 import { CurrentTranscriptionView } from "./components/current-transcription-view";
 import { MiniDictionary } from "./components/mini-dictionary";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
+import { ReadModeButton } from "@/components/read-mode-button";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -120,6 +121,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               </button>
 
               <PinyinButton className="text-2xl" />
+              <ReadModeButton className="text-2xl" />
               {containsChinglish && <ChinglishButton className="text-2xl" />}
             </div>
 

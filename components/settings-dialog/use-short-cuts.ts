@@ -17,6 +17,7 @@ import {
   useGetReviewUrlFn,
 } from "./use-get-review-url";
 import { usePreviewMode } from "./use-preview-mode";
+import { useReadModeState } from "../read-mode-button";
 
 export function useShortCuts() {
   const readMode = useReadModeStore((state) => state.readMode);
@@ -30,6 +31,9 @@ export function useShortCuts() {
 
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
   const { data: unReviewedCharacters } = useUnreviwedCharacters();
+
+  const { setReadMode: setReadModeV2, readMode: readModeV2 } =
+    useReadModeState();
 
   const setQuerySync = useSearchQueryStore((state) => state.setQuerySync);
   const setQuery = useSearchQueryStore((state) => state.setQuery);
@@ -100,11 +104,11 @@ export function useShortCuts() {
         event.preventDefault();
         router.push("/tita");
       }
-      if (["r"]?.includes(event.key) && event.ctrlKey) {
-        event.preventDefault();
+      // if (["r"]?.includes(event.key) && event.ctrlKey) {
+      //   event.preventDefault();
 
-        router.push(reviewUrl);
-      }
+      //   router.push(reviewUrl);
+      // }
       if (["l"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         if (routeName?.includes("/convos/")) {
           return null;
@@ -129,6 +133,11 @@ export function useShortCuts() {
       if (["e"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         router.push("/convos");
+      }
+
+      if (["r"]?.includes(event.key) && event.ctrlKey) {
+        event.preventDefault();
+        setReadModeV2(!readModeV2);
       }
 
       if (["b"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {

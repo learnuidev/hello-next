@@ -36,6 +36,8 @@ export function useUnreviwedCharacters() {
   const { data: hskCharacters, isLoading: isHskCharactersLoading } =
     useGetHskCharacters({ getAll: true });
 
+  console.log("HSK CHARS", hskCharacters);
+
   const isContent = useIsContent(mode);
   const isEntry = useIsEntry(entryId);
 
@@ -132,6 +134,30 @@ export function useUnreviwedCharacters() {
         );
   }, [isContent, reviewMode, uniqueCharactersMemo]);
 
+  if (["hsk", "hsk3"]?.includes(mode)) {
+    console.log("hskCharacters", hskCharacters);
+    const data = (
+      reviewMode === "all"
+        ? hskCharacters?.filter((item: any) => {
+            return item?.journeyId;
+          })
+        : hskCharacters?.filter((item: any) => {
+            const unreviewedCharacter = unReviewedCharacters?.find(
+              (char: any) => char?.hanzi === item?.hanzi
+            );
+
+            return unreviewedCharacter && item?.hskLevel == level;
+          })
+    )?.sort(
+      (a: any, b: any) => (a.next_review_date || 0) - (b?.next_review_date || 0)
+    );
+
+    return {
+      data: data,
+      isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
+    };
+  }
+
   if (isContent) {
     return {
       data: contentData,
@@ -169,29 +195,6 @@ export function useUnreviwedCharacters() {
               (a: any, b: any) =>
                 (a.next_review_date || 0) - (b?.next_review_date || 0)
             ),
-      isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
-    };
-  }
-
-  if (["hsk", "hsk3"]?.includes(mode)) {
-    const data = (
-      reviewMode === "all"
-        ? hskCharacters?.filter((item: any) => {
-            return item?.journeyId;
-          })
-        : hskCharacters?.filter((item: any) => {
-            const unreviewedCharacter = unReviewedCharacters?.find(
-              (char: any) => char?.hanzi === item?.hanzi
-            );
-
-            return unreviewedCharacter && item?.hskLevel == level;
-          })
-    )?.sort(
-      (a: any, b: any) => (a.next_review_date || 0) - (b?.next_review_date || 0)
-    );
-
-    return {
-      data,
       isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
     };
   }

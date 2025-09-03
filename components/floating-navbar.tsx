@@ -111,7 +111,7 @@ const FloatingNavbarComp = () => {
             )}
           </Link>
 
-          {contentId && reviewList?.length > 1 ? (
+          {reviewList?.length > 1 ? (
             <Link
               href={reviewUrl}
               target="_blank"

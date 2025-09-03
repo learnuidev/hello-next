@@ -34,7 +34,7 @@ export const CharacterOverviewViewSidebar = ({
   return (
     <div className={"col-span-5 md:col-span-3 hidden sm:block"}>
       {_isSentence && (
-        <div className="space-x-4">
+        <div className="space-x-4 mb-4">
           <button
             className={cn(
               "text-sm transition",

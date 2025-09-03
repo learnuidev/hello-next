@@ -11,7 +11,7 @@ export const formatRoman = (item: {
   }
 
   if (isChinesePunctuation(item?.input || item?.hanzi || "")) {
-    return item?.input || item?.hanzi;
+    return "";
   }
 
   return item?.pinyin || item?.roman;

@@ -30,8 +30,6 @@ export const UploadAudioButton = (props: {
 
     const contentType = file.type || "";
 
-    console.log({ extension, contentType });
-
     const response = (await getUploadUrl(
       { extension, contentType },
       {
@@ -55,8 +53,6 @@ export const UploadAudioButton = (props: {
         uploadBucketKey: s3Key,
       })
       .then(async () => {
-        console.log("UPLOADED");
-
         if (props?.meaningId) {
           // @ts-ignore
           updateMeaningMutation.mutateAsync({

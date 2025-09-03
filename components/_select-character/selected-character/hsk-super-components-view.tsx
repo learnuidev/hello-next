@@ -15,8 +15,6 @@ export const HskSuperComponentsWordView = ({
 
   const superComponents = superComponents_ as any;
 
-  console.log("SUPER COMPS", superComponents);
-
   return (
     <NmmListContainerAll>
       {superComponents

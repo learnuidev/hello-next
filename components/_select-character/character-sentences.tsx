@@ -391,9 +391,6 @@ export const CharacterSentences = (props: { characterId: string }) => {
                                       .mutateAsync({
                                         hanzi: hanz?.hanzi,
                                       })
-                                      .then((resp) => {
-                                        console.log("Discovered!!");
-                                      })
                                   );
                                 }
                               }}
@@ -426,9 +423,6 @@ export const CharacterSentences = (props: { characterId: string }) => {
                                       // @ts-ignore
                                       .mutateAsync({
                                         hanzi: hanz?.hanzi,
-                                      })
-                                      .then((resp) => {
-                                        console.log("Discovered!!");
                                       })
                                   );
                                 }

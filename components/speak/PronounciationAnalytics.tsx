@@ -40,7 +40,6 @@ import { useSpeakStore } from "./useSpeakStore";
 const columnHelper = createColumnHelper<any>();
 
 function downloadObjectAsJson(exportObj: any, exportName: any) {
-  console.log(exportObj);
   var dataStr =
     "data:text/json;charset=utf-8," +
     encodeURIComponent(JSON.stringify(exportObj));
@@ -95,18 +94,6 @@ const calcOutcome = (
     .filter((item: any) => ![", ", "？", "，"].includes(item))
     .join("");
 
-  console.log("ANS", answer);
-
-  // if (
-  //   answer !== expAns.trim() &&
-  //   !lesson?.alternateAnswers?.includes(answer) &&
-  //   !expAns.includes(answer)
-  // ) {
-  //   return <GradeFIcon />
-  // }
-
-  // return <GradeAIcon />
-
   if (
     answer !== expAns.trim() &&
     !lesson?.alternateAnswers?.includes(answer) &&
@@ -131,17 +118,10 @@ export const PronounciationAnalytics = ({
   const lessons = useSpeakStore((state: any) => state.lessons);
   const params = useParams();
   const lessonId = params?.speak_id;
-  // const lessonId = params?.speak_id
-
-  // alert(lessonId)
-
-  console.log("IDX", lessonIndex);
 
   const course = lessons?.find((lesson: any) => lessonId == lesson?.id);
 
   const lesson = course?.lessons[lessonIndex] || null;
-  console.log("LESSSSSON", lesson);
-  console.log("HIST", lessonHistories);
 
   const calcConfidenceColor = (val: any, answer: any, expectedAnswer: any) => {
     const expAns = expectedAnswer
@@ -154,9 +134,6 @@ export const PronounciationAnalytics = ({
       .filter((item: any) => ![", ", "？", "，"].includes(item))
       .join("");
 
-    console.log("ANS", answer);
-
-    console.log("expAns", expAns);
     if (
       answer !== expAns.trim() &&
       !lesson?.alternateAnswers?.includes(answer) &&
@@ -174,10 +151,6 @@ export const PronounciationAnalytics = ({
       return "dark:text-orange-300 text-orange-600";
     }
   };
-
-  console.log("LESSON HISTORIES", lessonHistories);
-
-  console.log("LESSON ID", lessonId);
 
   const lessonHistory = useMemo(() => {
     return (lessonHistories || [])
@@ -265,8 +238,6 @@ export const PronounciationAnalytics = ({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  console.log("LESSON", lesson);
-
   if (!lessonHistory.length) {
     return (
       <div className="pt-44 text-center w-full">
@@ -279,8 +250,6 @@ export const PronounciationAnalytics = ({
           className="text-3xl my-2 dark:text-gray-500"
           onClick={() => {
             setViewMode("lesson");
-            //
-            console.log("SHOW ANALYTICS");
           }}
         >
           <CloseIcon />
@@ -353,16 +322,11 @@ export const PronounciationAnalytics = ({
                   {row.getVisibleCells().map((cell) => {
                     const val = cell.getValue() as any;
 
-                    console.log("CELL", cell);
-
                     if (cell.id?.includes("outcome")) {
                       const res = cell?.row?.original;
                       return (
                         <td
-                          onClick={() => {
-                            // setSelectedPinyin(cell.getValue())
-                            console.log(cell.getValue());
-                          }}
+                          onClick={() => {}}
                           role="button"
                           key={cell.id}
                           // className={`text-2xl `}
@@ -380,14 +344,9 @@ export const PronounciationAnalytics = ({
                       );
                     }
 
-                    // console.log('ROW', row)
-                    // const char = characterDictionary[val?.value || val]
                     return (
                       <td
-                        onClick={() => {
-                          // setSelectedPinyin(cell.getValue())
-                          console.log(cell.getValue());
-                        }}
+                        onClick={() => {}}
                         role="button"
                         key={cell.id}
                         className={`px-8 py-4 md:px-12 font-extralight hover:bg-gray-200 dark:hover:bg-gray-800 dark:hover:text-white hover:text-gray-800 ${

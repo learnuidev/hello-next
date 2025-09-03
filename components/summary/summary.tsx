@@ -4,7 +4,6 @@
 import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 
 import { useUpdateComponentSummaryMutation } from "@/domain/component-summary/update-component-summary";
-import { ListMeaningsResponse } from "@/domain/sentence/meanings.types";
 import { useGetCharacterId } from "@/hooks/use-get-character-id";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useSearchParams } from "next/navigation";
@@ -77,9 +76,7 @@ export function Summary({
               readOnly={false}
               content={meaningResponse?.summary || summary}
               onUpdate={(val: any) => {
-                // console.log("VAL", val);
                 setSummary(val);
-                // updateSummaryMutation.mutate
               }}
             />
           )}
@@ -97,9 +94,6 @@ export function Summary({
                       .mutateAsync({
                         id: meaningResponse?.id,
                         summary,
-                      })
-                      .then(() => {
-                        console.log("Summary Successfully Updated");
                       })
                   );
                 }}

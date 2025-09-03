@@ -43,7 +43,6 @@ export const verifyJwt = async (
 
     return payload;
   } catch {
-    console.log("Token not valid!");
     return false;
   }
 };

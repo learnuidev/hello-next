@@ -56,7 +56,6 @@ export const Pronounciation = ({ lessonId }: any) => {
     expectedAnswer: any,
     alternateAnswers = []
   ) => {
-    console.log("ANSWER", answer);
     // alert('answer', answer)
     // alert(answer)
     // alert(expectedAnswer)
@@ -161,7 +160,7 @@ export const Pronounciation = ({ lessonId }: any) => {
               })}
             </Header>
           )}
-          <Header className="md:mx-32 my-4 text-black text-xl dark:text-gray-400 text-gray-600">
+          <Header className="md:mx-32 my-4  text-xl dark:text-gray-400 text-gray-600">
             {lesson?.en}
           </Header>
         </div>
@@ -254,7 +253,7 @@ export const Pronounciation = ({ lessonId }: any) => {
           />
         ) : null} */}
         {lesson?.type === "quiz/multiple-choice" ? (
-          <div className="absolute bottom-40 space-x-8 text-4xl mt-16 space-x-8 ">
+          <div className="absolute bottom-40 space-x-8 text-4xl mt-16 ">
             {lesson?.options?.map((option: any) => {
               return (
                 <button
@@ -288,12 +287,7 @@ export const Pronounciation = ({ lessonId }: any) => {
             <div>
               <Link
                 href="/speak"
-                className="text-xl md:text-4xl dark:hover:text-white shadow-md md:px-4 py-1 rounded-full dark:text-slate-600 shadow-md rounded-full"
-                // onClick={() => {
-                //   setViewMode('')
-                //   setLesson('')
-                //   console.log('SHOW ANALYTICS')
-                // }}
+                className="text-xl md:text-4xl dark:hover:text-white md:px-4 py-1 dark:text-slate-600 shadow-md rounded-full"
               >
                 <CloseIcon />
               </Link>
@@ -301,18 +295,17 @@ export const Pronounciation = ({ lessonId }: any) => {
 
             <div className="mr-[-72px] space-x-2">
               <button
-                className="dark:hover:text-white shadow-md px-4 py-1 rounded-full dark:text-gray-600 shadow-md px-4 py-1 rounded-full"
+                className="dark:hover:text-white dark:text-gray-600 shadow-md px-4 py-1 rounded-full"
                 onClick={() => {
                   setLessonIndex((idx) =>
                     idx === 0 ? course?.lessons?.length + 2 : idx - 1
                   );
                 }}
-                // disabled={lessonIndex === 0}
               >
                 <PrevIcon className="text-4xl" />
               </button>
               <button
-                className="dark:hover:text-white shadow-md px-4 py-1 rounded-full dark:text-gray-600 shadow-md px-4 py-1 rounded-full"
+                className="dark:hover:text-white  dark:text-gray-600 shadow-md px-4 py-1 rounded-full"
                 onClick={() => {
                   setLessonIndex((idx) => idx + 1);
                 }}
@@ -323,7 +316,7 @@ export const Pronounciation = ({ lessonId }: any) => {
 
             <div>
               <button
-                className="text-4xl dark:hover:text-white shadow-md px-4 py-1 rounded-full dark:text-gray-600 shadow-md px-4 py-1 rounded-full"
+                className="text-4xl dark:hover:text-white dark:text-gray-600 shadow-md px-4 py-1 rounded-full"
                 onClick={() => {
                   setViewMode("pinyin");
                 }}
@@ -331,7 +324,7 @@ export const Pronounciation = ({ lessonId }: any) => {
                 <PinyinChartIcon />
               </button>
               <button
-                className="text-4xl dark:hover:text-white shadow-md px-4 py-1 rounded-full dark:text-gray-600 shadow-md px-4 py-1 rounded-full"
+                className="text-4xl dark:hover:text-white shadow-md dark:text-gray-600 px-4 py-1 rounded-full"
                 onClick={() => {
                   setViewMode("analytics");
                 }}
@@ -343,8 +336,6 @@ export const Pronounciation = ({ lessonId }: any) => {
         </div>
         {lesson?.hanziV2 === selectedChar?.hanziV2 ? (
           <div className="">
-            {/* {selectedChar?.selected} */}
-            {/* {JSON.stringify(dictionary?.[selectedChar?.selected])} */}
             <p>{}</p>
           </div>
         ) : null}

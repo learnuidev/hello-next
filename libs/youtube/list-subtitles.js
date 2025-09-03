@@ -55,8 +55,6 @@ const getTrack = ({ tracks, lang }) => {
 const resolveTrack = ({ tracks, lang }) => {
   let zhTrack;
 
-  console.log("TRACKS", tracks);
-
   try {
     zhTrack = getTrack({ lang, tracks });
   } catch (err) {
@@ -132,11 +130,6 @@ const genSubtitles = async ({ id, lang }) => {
   const tracks =
     info.player_response.captions.playerCaptionsTracklistRenderer.captionTracks;
   if (tracks && tracks.length) {
-    console.log(
-      "Found captions for",
-      tracks.map((t) => t?.name?.simpleText).join(", ")
-    );
-
     const langCodes = tracks.map((track) => track.languageCode);
 
     let resolvedLang =
@@ -183,7 +176,6 @@ const genSubtitles = async ({ id, lang }) => {
 
     return newSubtitles;
   } else {
-    console.log("No captions found for this video");
   }
 };
 const listSubtitles = async ({ id, lang }) => {
@@ -220,10 +212,3 @@ module.exports = {
   listSubtitles,
   getTotalSeconds,
 };
-
-// const id = "https://www.youtube.com/watch?v=MBi3kVvZJZY";
-// const lang = "zh-CN";
-
-// listSubtitles({ id, lang }).then((transcriptions) => {
-//   console.log(transcriptions);
-// });

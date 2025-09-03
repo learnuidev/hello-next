@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Icons } from "../../ui/icons.v2";
 
-import { Editor } from "../../Editor";
-import { useStoryStore } from "./story-store";
 import { useUpdateCharacterStoryMutation } from "@/domain/lesson/character.mutations";
-import { characterStore } from "../character-store";
+import { Editor } from "../../Editor";
 
 export const StoryEditor = ({
   selectedChar,
@@ -42,15 +40,10 @@ export const StoryEditor = ({
         <button
           className="my-12"
           onClick={() => {
-            return updateStoryMutation
-              .mutateAsync({
-                id: selectedChar?.id,
-                story: story,
-                // pinyin: !!pinyinInput ? pinyinInput : null,
-              } as any)
-              .then(() => {
-                console.log("Story Successfully Updated");
-              });
+            return updateStoryMutation.mutateAsync({
+              id: selectedChar?.id,
+              story: story,
+            } as any);
           }}
         >
           {updateStoryMutation.isPending ? (

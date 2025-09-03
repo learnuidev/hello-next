@@ -169,7 +169,6 @@ export function AddUserCredentialDialog({
                                   description={permission.description}
                                   onSelectedScope={(id) => {
                                     manageScope(id);
-                                    console.log("TODO");
                                   }}
                                   selectedScopes={scopes}
                                   scopesList={permission.scopesList}

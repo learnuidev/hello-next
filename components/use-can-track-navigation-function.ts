@@ -18,7 +18,7 @@ export const useCanTrackNavigationFunction = (metadata = {} as any) => {
         ...metadata,
       } as any);
     } else {
-      console.log("Navigation tracking not enabled");
+      console.warn("Navigation tracking not enabled");
     }
   };
 

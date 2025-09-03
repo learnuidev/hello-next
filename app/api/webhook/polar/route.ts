@@ -16,12 +16,12 @@ export const POST = Webhooks({
   },
 
   onSubscriptionCanceled: async (payload) => {
-    console.log("SUBSCRIPTION CANCELLED");
-    console.log("PAYLOAD", payload);
+    console.log("subscription cancelled");
+    console.log("payload", payload);
   },
 
   onSubscriptionCreated: async (payload) => {
-    console.log("SUBSCRIPTION CREATED");
-    console.log("PAYLOAD", payload);
+    console.log("subscription created");
+    console.log("payload", payload);
   },
 });

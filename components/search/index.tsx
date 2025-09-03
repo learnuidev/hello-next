@@ -113,7 +113,6 @@ export function SearchPage() {
   const searchQuery = searchParams.get("query");
 
   useEffect(() => {
-    console.log("TODO: Search Query");
     if (searchQuery) {
       posthog.capture("search/query", {
         query: searchQuery,

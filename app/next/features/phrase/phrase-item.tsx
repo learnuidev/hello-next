@@ -155,8 +155,6 @@ export function PhraseItem({
                           key={`timeline-tab-${idx}-${character}`}
                           onClick={() => {
                             if (duration) {
-                              console.log("START TIME", startTime);
-
                               seekAndPlay(startTime, customRef);
                             }
 

@@ -14,12 +14,8 @@ async function listSentences({
   content: string;
   language: string;
 }) {
-  console.log(`Generating grammar for: ${content}`);
-
   const prompt = determineAnalysisPrompt({ language });
-  console.log("list-grammar-analysis/lang", language);
 
-  console.log("PROMPT", prompt);
   const chatCompletion = await openai.chat.completions.create({
     messages: [
       {
@@ -53,8 +49,6 @@ export async function listGrammarAnaysis({
     const sents = await listSentences({ content, language });
 
     const t1 = performance.now();
-
-    console.log(`Call to listGrammarAnalysis took ${t1 - t0} milliseconds.`);
 
     return sents;
   } catch (err) {

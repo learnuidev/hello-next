@@ -98,15 +98,6 @@ export const PhraseUI = () => {
     ...rest
   } = props;
 
-  // const randomDataIndex = useMemo(() => getRandomNumber(9), []);
-
-  const component = topTenIncorrect?.[randomDataIndex]?.hanzi;
-
-  console.log(
-    "HANZI",
-    topTenIncorrect?.[randomDataIndex]?.hanzi || topTenIncorrect?.[0]?.hanzi
-  );
-
   const phrase = translations?.[index];
 
   const { speak } = useSpeak(sourceLang, {

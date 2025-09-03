@@ -1,17 +1,7 @@
 export async function copyTextToClipboard(text: string) {
   if (navigator.clipboard) {
-    // Use the Clipboard API for modern browsers
-    return navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        console.log("Text copied to clipboard");
-        return null;
-      })
-      .catch((err) => {
-        console.error("Failed to copy: ", err);
-      });
+    return navigator.clipboard.writeText(text);
   } else {
     return null;
-    // Fallback for older browsers
   }
 }

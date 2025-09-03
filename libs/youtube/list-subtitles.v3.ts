@@ -20,11 +20,6 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
       info.player_response.captions.playerCaptionsTracklistRenderer
         .captionTracks;
     if (tracks && tracks.length) {
-      console.log(
-        "Found captions for",
-        tracks.map((t: any) => t?.name?.simpleText).join(", ")
-      );
-
       let zhTrack;
       try {
         zhTrack = getTrack({ lang, tracks });
@@ -110,7 +105,6 @@ export const listSubtitles = ({ id, lang }: { id: string; lang: string }) => {
         }, {});
       });
     } else {
-      console.log("No captions found for this video");
     }
   });
 };

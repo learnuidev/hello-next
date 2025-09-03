@@ -108,8 +108,6 @@ export function NmmCoreComponents() {
 
   const { data: chineseCharacters } = useListChineseCharactersQuery();
 
-  console.log("COMPS", components);
-
   const learnedComps =
     (isComponentsLoading ? chineseCharacters : components)
       ?.slice(selectedBelt?.minCharacterLevel, selectedBelt?.maxCharacterLevel)

@@ -35,7 +35,6 @@ export const useSpeakStore = create(
       lessons: [...pronunciationMasterclass.lessons],
       setLesson: (event: any) => set({ lessons: get().lessons.concat(event) }),
       setSpeak: (lessonId: string, event: any) => {
-        console.log("YO");
         const updatedLessons = get().lessons.map((lesson: any) => {
           if (lesson.id === lessonId) {
             const newLesson = {
@@ -50,13 +49,11 @@ export const useSpeakStore = create(
               type: "quiz",
             };
 
-            console.log("NEW LESSON", newLesson);
             const updatedLesson = {
               ...lesson,
               lessons: lesson?.lessons?.concat(newLesson),
             };
 
-            console.log("UPDATED LESSON", updatedLesson);
             return updatedLesson;
           }
 
@@ -65,7 +62,6 @@ export const useSpeakStore = create(
         return set({ lessons: updatedLessons });
       },
       removeLesson: (lessonId: string, speakId: string) => {
-        console.log("YO");
         const updatedLessons = get().lessons.map((lesson: any) => {
           if (lesson.id === lessonId) {
             const updatedLesson = {
@@ -73,7 +69,6 @@ export const useSpeakStore = create(
               lessons: lesson?.lessons?.filter((l: any) => l.id !== speakId),
             };
 
-            console.log("UPDATED LESSON", updatedLesson);
             return updatedLesson;
           }
 

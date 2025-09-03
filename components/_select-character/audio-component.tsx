@@ -64,7 +64,6 @@ export const AudioComponent = ({
     return (
       <Link
         onClick={() => {
-          console.log("publishedContents", publishedContents);
           const contentItem = publishedContents?.items?.find(
             (content: any) => content?.id === currentPhrase?.contentId
           );

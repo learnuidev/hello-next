@@ -71,7 +71,6 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
     case "review": {
       const isChinese = lang === "zh" && characterId?.length > 4;
       if (isChinese || characterId?.length > 12) {
-        console.log("SENT");
         return (
           <DynaClozeSentence
             sentence={{ hanzi: characterId, input: characterId, lang: lang }}
@@ -80,7 +79,6 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
       }
 
       if (clozeContentMode === "content") {
-        console.log("CLOZE 2");
         return (
           <ReviewClozeContent
             backButton={() => {

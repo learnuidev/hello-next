@@ -68,10 +68,8 @@ const listSubtitlesRaw = ({ id, lang }) => {
 
         return res;
       } else {
-        console.log("Could not find captions for", lang);
       }
     } else {
-      console.log("No captions found for this video");
     }
   });
 };
@@ -94,8 +92,6 @@ const listSubtitles = ({ id, lang }) => {
   return listSubtitlesRaw({ id, lang }).then((subtitles) => {
     const subtitlesAll = subtitles.split("\n").filter(Boolean);
     const lyrics = subtitlesAll.slice(3);
-
-    console.log("SUB TITLES ALL", subtitlesAll?.slice(0, 20));
 
     return lyrics.reduce((acc, curr, idx) => {
       if (idx % 2 === 0) {
@@ -125,10 +121,3 @@ const listSubtitles = ({ id, lang }) => {
 const id = "https://www.youtube.com/watch?v=Jxj-kwTQTCs";
 
 const lang = "zh-Hant";
-
-listSubtitlesRaw({
-  id,
-  lang,
-}).then((sub) => {
-  console.log("sub", sub?.split("\n")?.slice(0, 200));
-});

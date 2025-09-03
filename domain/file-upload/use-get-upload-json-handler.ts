@@ -36,8 +36,6 @@ export function useGetUploadJsonHandler(cb?: any) {
 
     const extension = "json";
 
-    console.log({ extension, contentType });
-
     const response = (await getUploadUrl(
       { extension, contentType },
       {

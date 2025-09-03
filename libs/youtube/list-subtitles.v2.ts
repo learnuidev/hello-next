@@ -10,11 +10,6 @@ export const listSubtitlesRaw = ({ id, lang }: any) => {
       info.player_response.captions.playerCaptionsTracklistRenderer
         .captionTracks;
     if (tracks && tracks.length) {
-      console.log(
-        "Found captions for",
-        tracks.map((t: any) => t.name.simpleText).join(", ")
-      );
-
       const track = tracks.find((t: any) => t.languageCode === lang);
       if (track) {
         const output = `${info.videoDetails.title}.${track.languageCode}.${format}`;
@@ -23,10 +18,8 @@ export const listSubtitlesRaw = ({ id, lang }: any) => {
 
         return res;
       } else {
-        console.log("Could not find captions for", lang);
       }
     } else {
-      console.log("No captions found for this video");
     }
   });
 };

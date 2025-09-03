@@ -189,8 +189,6 @@ export const CharacterTitle = (props: any) => {
                         )}
                         onClick={() => {
                           if (duration) {
-                            console.log("START TIME", startTime);
-
                             seekAndPlay(startTime, customRef);
                           }
 
@@ -223,8 +221,6 @@ export const CharacterTitle = (props: any) => {
                       }
                       onClick={() => {
                         if (duration) {
-                          console.log("START TIME", startTime);
-
                           seekAndPlay(startTime, customRef);
                         }
 

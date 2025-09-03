@@ -1,17 +1,16 @@
-import "regenerator-runtime";
+import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
+import { useGetTopTenIncorrect } from "@/app/(auth)/insights/insights-v2/precision-insight-view/use-get-top-ten-incorrect";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
-import { useGetTopTenIncorrect } from "@/app/(auth)/insights/insights-v2/precision-insight-view/use-get-top-ten-incorrect";
+import "regenerator-runtime";
 
-import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { Icons } from "@/components/ui/icons.v2";
-import { cn } from "@/lib/utils";
-import { useMemo, useState } from "react";
-import Link from "next/link";
-import { Icon } from "@radix-ui/react-select";
 import { cleanString } from "@/data/convos/bm1/clean-string";
+import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useState } from "react";
 
 function getRandomNumber(n: number) {
   return Math.floor(Math.random() * (n + 1));
@@ -32,14 +31,8 @@ export const Speak = () => {
     ...rest
   } = useSpeechRecognition({ transcribing: true });
 
-  // const randomDataIndex = useMemo(() => getRandomNumber(9), []);
-
   const component = topTenIncorrect?.[randomDataIndex]?.hanzi;
 
-  console.log(
-    "HANZI",
-    topTenIncorrect?.[randomDataIndex]?.hanzi || topTenIncorrect?.[0]?.hanzi
-  );
   const { data } = useListSentencesQuery(
     {
       component: topTenIncorrect?.[randomDataIndex]?.hanzi,
@@ -48,11 +41,6 @@ export const Speak = () => {
       enabled: Boolean(topTenIncorrect?.[randomDataIndex]?.hanzi),
     }
   );
-
-  // const randomPhraseIndex = useMemo(
-  //   () => getRandomNumber(data?.length - 1),
-  //   [data]
-  // );
 
   const phrase = data?.[index];
 

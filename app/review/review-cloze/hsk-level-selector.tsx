@@ -70,7 +70,6 @@ export const HskLevelSelector = ({
       return word?.hskLevel <= level.value;
     });
 
-    console.log("TOTAL WORDS", totalWords);
     const totalWordsLength = totalWords?.length;
     return {
       ...level,

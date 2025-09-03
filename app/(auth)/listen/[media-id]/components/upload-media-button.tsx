@@ -66,8 +66,6 @@ export const UploadMediaButton = ({
 
     const contentType = file.type || "";
 
-    console.log({ extension, contentType });
-
     const response = (await getUploadUrl(
       { extension, contentType },
       {
@@ -92,7 +90,6 @@ export const UploadMediaButton = ({
       })
       .then(async (asset: any) => {
         onUploadSuccess(asset);
-        console.log("UPLOADED");
 
         // @ts-ignore
         fileInputRef.current.value = "";

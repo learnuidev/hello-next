@@ -19,8 +19,6 @@ export function useGetContentAnalyticsQuery({
     queryKey: ["get-content-analytics", contentId],
     refetchInterval: 1000 * 60 * 1,
     queryFn: async (): Promise<GetContentAnalyticsRespose> => {
-      console.log("yoooooo logged");
-
       const resp = await fetch(`${listenApiUrl}/v1/get-content-analytics`, {
         method: "POST",
         headers: {

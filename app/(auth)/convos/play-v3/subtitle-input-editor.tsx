@@ -27,7 +27,6 @@ export const SubtitleInputEditor = ({
     (time: any) => time?.id === subtitle?.id
   ) as any;
 
-  console.log("SUB TITLE", subtitle?.[attribute]);
   return (
     <div>
       <p>{title}</p>

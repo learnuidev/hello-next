@@ -70,8 +70,6 @@ export const DuChapters = () => {
 
   const isSaved = useIsSaved(course?.id || 0);
 
-  // console.log("COURSE", course);
-
   if (!course) {
     return <LottieLoadingAnimation />;
   }

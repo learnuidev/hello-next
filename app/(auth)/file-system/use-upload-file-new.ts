@@ -71,10 +71,6 @@ export function useUploadFileNew() {
     const fileName = file.name || "";
     const fileSize = file.size || 0;
 
-    console.log({ extension, contentType });
-
-    console.log("FILE", file);
-
     const response = await getUploadUrl(
       { fileName, contentType, fileSize, extension },
       {

@@ -26,8 +26,6 @@ export function ListenHeader() {
     addNewBook,
   } = useListenState();
 
-  console.log("ADD NEW", addNew);
-
   const setStep = useNewConvoStore((state) => state.setStep);
   return (
     <header className="flex justify-between items-center">

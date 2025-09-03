@@ -101,9 +101,6 @@ export const useSpeak = (
 
     utter.onend = (event) => {
       resetState();
-      console.log(
-        `Utterance has finished being spoken after ${event.elapsedTime} seconds.`
-      );
     };
 
     utter.rate = opts?.utterRate || 0.6;

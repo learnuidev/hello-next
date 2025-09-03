@@ -147,8 +147,6 @@ function useUpsertContentAnalyticsQuery({ contentId }: { contentId: string }) {
     queryKey: ["upsert-content-analytics", contentId],
     refetchInterval: 1000 * 60 * 1,
     queryFn: async (): Promise<GetContentAnalyticsRespose> => {
-      console.log("yoooooo logged");
-
       const repeatsPerWord = calculateTotalWordsFrequency(words);
 
       const resp = await fetch(`${listenApiUrl}/v1/upsert-content-analytics`, {

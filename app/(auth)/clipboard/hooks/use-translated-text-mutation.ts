@@ -24,11 +24,8 @@ export const useTranslateTextMutation = () => {
       const found = getDictionary(input);
 
       if (found) {
-        console.log("FOUND translation", found);
         return found;
       }
-
-      console.log("Not found in cache, fetching translation");
 
       const res = await fetch(
         `${siteConfig.apiUrlV2}/v1/translations/translate-text`,

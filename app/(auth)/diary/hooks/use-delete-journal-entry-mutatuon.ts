@@ -28,7 +28,6 @@ export const useDeleteJournalEntryMutation = () => {
     },
 
     onSuccess: (data: JournalEntry) => {
-      console.log("DELETED", data);
       queryClient.setQueryData(
         [listJournalEntriesQueryKey, authUser?.jwt],
         (old: any) => {

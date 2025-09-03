@@ -171,7 +171,6 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
                   className="block relative"
                   onClick={(event) => {
                     if (!event.defaultPrevented) {
-                      console.log("yoo");
                       setRecentlyWatched(item);
                     }
                   }}

@@ -12,8 +12,6 @@ ${_vttString?.replaceAll(",", ".")}
   const parser = new WebVTTParser();
   const tree = parser.parse(vttString, "metadata");
 
-  console.log("TREE", tree);
-
   const cues = tree.cues.map((rawSub: any) => {
     const { id, startTime, endTime, text } = rawSub;
     const tags = /<(v|c).*?>|<\/c>/g;

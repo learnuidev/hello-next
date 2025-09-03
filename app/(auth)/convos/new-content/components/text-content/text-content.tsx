@@ -10,8 +10,6 @@ export const TextContent = () => {
   const contentType = contentTypeStore((state) => state.type);
   const setContentType = contentTypeStore((state) => state.setType);
 
-  console.log("content type", contentType);
-
   const contextText = contentTextStore((state) => state.text) || "";
   const setContextText = contentTextStore((state) => state.setText);
 

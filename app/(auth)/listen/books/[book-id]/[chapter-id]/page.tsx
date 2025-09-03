@@ -152,8 +152,6 @@ export default function ChapterItem() {
                       (section: any) => section?.mediaId === item?.id
                     );
 
-                    console.log("HAS SECTION", hasSection);
-
                     if (hasSection) {
                       removeSection(hasSection?.id);
                     } else {

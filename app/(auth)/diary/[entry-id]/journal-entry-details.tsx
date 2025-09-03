@@ -37,8 +37,6 @@ function JournalDetailsBody({ entryId }: { entryId: string }) {
     lang: "zh",
   });
 
-  // console.log("CHARACTER ANALYTICS", characterAnalytics);
-
   if (!journalDetails) {
     return <div className="text-lg">{journalEntry?.text}</div>;
   }
@@ -131,8 +129,6 @@ export function JournalEntryDetails() {
   if (!journalEntry) {
     return null;
   }
-
-  console.log("journal entry", journalDetails);
 
   const hanzi =
     journalDetails?.translations

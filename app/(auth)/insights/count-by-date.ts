@@ -65,8 +65,6 @@ export function countByDate({ toDate, fromDate, list, studiedItems }: any) {
     };
   });
 
-  console.log("FILTERED CHARACTERS", filteredList);
-
   const data = Object.entries(days)?.map((day: any) => {
     const exist = filteredCharacters?.find((x) => x?.day === day[1]);
     if (exist) {

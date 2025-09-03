@@ -292,13 +292,8 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
       let updated = prev;
 
-      // const currIndex = prev?.findIndex(predicateFn);
-
       const currIndex = content?.transcriptions?.findIndex(predicateFn);
       const isLast = content?.transcriptions?.length - 1 === currIndex;
-
-      console.log("EXIISTS", currIndex);
-      console.log("isLast", isLast);
 
       if (!isLast && type === "end") {
         const nextIndex = currIndex + 1;

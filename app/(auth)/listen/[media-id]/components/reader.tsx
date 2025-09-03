@@ -266,7 +266,6 @@ export function Reader({
             if (playNext) {
               startCountdown();
             }
-            console.log("play ended");
           }}
           progressInterval={20}
           onProgress={(value) => {

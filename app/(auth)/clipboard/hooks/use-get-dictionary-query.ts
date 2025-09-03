@@ -24,7 +24,6 @@ export const useGetDictionaryQuery = (lang: string, word: string) => {
         );
 
         if (item?.[0]) {
-          console.log("FOUND", item?.[0]);
           return item?.[0];
         }
 

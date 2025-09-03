@@ -2,7 +2,6 @@
 
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
-import { SelectedCharacterAudio } from "./selected-character-audio";
 import { SelectedCharacterStats } from "./selected-character-stats";
 import { SelectedCharacterTitle } from "./selected-character-title";
 import { SubComponentsView } from "./subcomponents-view";
@@ -15,7 +14,6 @@ export const SelectedCharacterHeader = (props: { characterId: string }) => {
   return (
     <>
       <SelectedCharacterTitle characterId={characterId} />
-      {/* <SelectedCharacterAudio characterId={characterId} /> */}
       <SelectedCharacterStats characterId={characterId} />
       <SubComponentsView lang={lang} characterId={characterId} />
     </>

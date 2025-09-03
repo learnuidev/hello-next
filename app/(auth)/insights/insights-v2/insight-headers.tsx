@@ -37,8 +37,6 @@ export const InsightHeaders = () => {
     return character?.story?.length > 10 || characterIsObject;
   })?.length;
 
-  console.log("progress", progress);
-
   const insightsList = [
     {
       id: "components",

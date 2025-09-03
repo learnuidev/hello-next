@@ -46,13 +46,19 @@ export function useListSentencesQuery(
     lang?: string;
     genSents?: boolean;
     contentLang?: string;
+    format?: "transformation";
   },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ISentence[]>({
-    queryKey: [queryIds.list_sentences, params?.component, params?.lang],
+    queryKey: [
+      queryIds.list_sentences,
+      params?.component,
+      params?.lang,
+      params?.format,
+    ],
     queryFn: async () => {
       if (params?.component && params.lang) {
         const response = await listSentences(params, {

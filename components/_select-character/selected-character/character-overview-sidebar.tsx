@@ -8,6 +8,8 @@ import { useStoryStore } from "./story-store";
 
 import { useSelectedCharacterData } from "@/components/use-selected-character";
 import { create } from "zustand";
+import { cn } from "@/lib/utils";
+import { CharacterSentenceTransformations } from "../character-sentence-transformations";
 
 const useSideBarViewType = create((set: any, get: any) => ({
   sideBarView: "sentences",
@@ -28,20 +30,7 @@ export const CharacterOverviewViewSidebar = ({
 
   return (
     <div className={"col-span-5 md:col-span-3 hidden sm:block"}>
-      {/* <div className="space-x-4">
-        <button
-          className={cn(
-            "text-sm transition",
-            sideBarView === "grammar"
-              ? "dark:text-white text-black"
-              : "text-gray-500"
-          )}
-          onClick={() => {
-            setSideBarView("grammar");
-          }}
-        >
-          Grammar
-        </button>
+      <div className="space-x-4">
         <button
           className={cn(
             "text-sm transition",
@@ -55,13 +44,21 @@ export const CharacterOverviewViewSidebar = ({
         >
           Sentences
         </button>
-      </div> */}
-      {/* {sideBarView === "grammar" && (
-        <GrammarAnalysis
-          contentId={selectedChar}
-          lang={lang || selectedComp?.lang}
-        />
-      )} */}
+        <button
+          className={cn(
+            "text-sm transition",
+            sideBarView === "sentence-transformations"
+              ? "dark:text-white text-black"
+              : "text-gray-500"
+          )}
+          onClick={() => {
+            setSideBarView("sentence-transformations");
+          }}
+        >
+          Transformations
+        </button>
+      </div>
+
       {sideBarView === "sentences" && (
         <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
           <div className="">
@@ -73,6 +70,33 @@ export const CharacterOverviewViewSidebar = ({
             ) : (
               <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
                 <CharacterSentences characterId={characterId} />
+              </ScrollArea>
+            )}
+          </div>
+
+          <div className="md:hidden block">
+            <CharacterSentences characterId={characterId} />
+          </div>
+        </div>
+      )}
+
+      {sideBarView === "sentence-transformations" && (
+        <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
+          <div className="">
+            {" "}
+            {sentences?.length > 7 ? (
+              <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                <CharacterSentenceTransformations
+                  lang={lang}
+                  characterId={characterId}
+                />
+              </ScrollArea>
+            ) : (
+              <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                <CharacterSentenceTransformations
+                  lang={lang}
+                  characterId={characterId}
+                />
               </ScrollArea>
             )}
           </div>

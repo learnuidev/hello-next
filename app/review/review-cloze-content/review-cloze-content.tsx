@@ -195,28 +195,26 @@ export function ReviewClozeContent({
 
   const isMultiSent = isMulti(_sentence?.input || _sentence?.hanzi);
 
-  console.log("IS MULTI SENT", isMultiSent);
-
   const multiSent = getMulti(_sentence?.input || _sentence?.hanzi)?.filter(
     (sent) => sent?.includes(currentCharacter)
   );
 
-  const initSentence = isMultiSent
-    ? {
-        ..._sentence,
-        hanzi: multiSent?.[0],
-        input: multiSent?.[0],
-      }
-    : _sentence;
+  const initSentence = useMemo(
+    () =>
+      isMultiSent
+        ? {
+            ..._sentence,
+            hanzi: multiSent?.[0],
+            input: multiSent?.[0],
+          }
+        : { _sentence, hanzi: multiSent?.[0], input: multiSent?.[0] },
+    [isMultiSent, _aiSentences, multiSent]
+  );
 
   const { data: sentence } = useListDiscoveryQuery({
-    content: initSentence?.hanzi,
+    content: initSentence?.hanzi || initSentence.input,
     lang,
   });
-
-  console.log("MULT SENT", multiSent);
-
-  console.log("SENTENCE", sentence);
 
   const futureSentence = useMemo(
     () => sentences?.[questionIndex + 1],

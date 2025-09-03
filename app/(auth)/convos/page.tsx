@@ -39,6 +39,7 @@ import { contentTypes } from "./constants/content-types";
 import { useContentViewType } from "./hooks/use-content-view-type";
 import { NewContentV2 } from "./new-content-v2/new-content-v2";
 import { useRecentlyWatchedContent } from "./use-recently-watched-content-store";
+import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 // import { NewConvoV2 } from "./new-content-v2/new-convo-v2";
 
 type ContentType = {
@@ -60,6 +61,8 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
   const toggleFavouritContentMutation = useToggleFavouriteContentMutation();
 
   const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
+
+  const { mode, setMode } = useLearningMode();
 
   const contents =
     contentViewType === "history"
@@ -170,6 +173,7 @@ function ContentsList({ contentViewType }: { contentViewType: string }) {
                   onClick={(event) => {
                     if (!event.defaultPrevented) {
                       setRecentlyWatched(item);
+                      setMode(item.id);
                     }
                   }}
                 >

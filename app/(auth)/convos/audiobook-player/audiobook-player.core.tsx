@@ -41,25 +41,26 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   }
 
   return (
-    <div className="relative">
-      <div className="flex flex-col sm:flex-row gap-8 sm:px-8 scroll-px-80">
-        {currentTranscription ? (
-          <CurrentTranscriptionView
-            containsChinglish={containsChinglish}
-            seekAndPlay={seekAndPlay}
-            currentTranscription={currentTranscription}
-          />
-        ) : (
-          <div className=" dark:text-black text-white text-center mt-8 sm:mt-24 min-w-5xl mx-auto">
-            ...
-          </div>
-        )}
+    <MandoContextMenu lang={content?.lang || ""}>
+      <div className="relative">
+        <div className="flex flex-col sm:flex-row gap-8 sm:px-8 scroll-px-80">
+          {currentTranscription ? (
+            <CurrentTranscriptionView
+              containsChinglish={containsChinglish}
+              seekAndPlay={seekAndPlay}
+              currentTranscription={currentTranscription}
+            />
+          ) : (
+            <div className=" dark:text-black text-white text-center mt-8 sm:mt-24 min-w-5xl mx-auto">
+              ...
+            </div>
+          )}
 
-        {selected && (
-          <MiniDictionary selected={selected} lang={content?.lang} />
-        )}
-      </div>
-      <MandoContextMenu lang={content?.lang || ""}>
+          {selected && (
+            <MiniDictionary selected={selected} lang={content?.lang} />
+          )}
+        </div>
+
         <div className="fixed bottom-2 w-full">
           <div className="w-full max-w-3xl mx-auto p-4 py-2">
             <ReactPlayer
@@ -137,7 +138,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
             </div>
           </div>
         </div>
-      </MandoContextMenu>
-    </div>
+      </div>
+    </MandoContextMenu>
   );
 };

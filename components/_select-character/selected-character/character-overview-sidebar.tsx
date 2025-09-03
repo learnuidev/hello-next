@@ -33,8 +33,8 @@ export const CharacterOverviewViewSidebar = ({
   const _isSentence = isSentence(characterId);
 
   return (
-    <MandoContextMenu lang={lang}>
-      <div className={"col-span-5 md:col-span-3 hidden sm:block"}>
+    <div className={"col-span-5 md:col-span-3 hidden sm:block"}>
+      <MandoContextMenu lang={lang}>
         {_isSentence && (
           <div className="space-x-4 mb-4">
             <button
@@ -113,7 +113,7 @@ export const CharacterOverviewViewSidebar = ({
             </div>
           </div>
         )}
-      </div>
-    </MandoContextMenu>
+      </MandoContextMenu>
+    </div>
   );
 };

@@ -1,6 +1,5 @@
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 
-import { useSpeak } from "@/app/(auth)/convos/_play/use-speak";
 import { getStatusIcon } from "@/app/(auth)/insights/insights-v2/precision-insight-view/status-icons";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 import { BookmarkButton } from "@/app/nmm/bookmark-button";
@@ -12,17 +11,23 @@ import { useRef, useState } from "react";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 
 import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
+import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { useUpdateDiscoveryMutation } from "@/domain/sentence/use-update-discovery-mutation";
 import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
 import { formatRoman } from "@/lib/format-roman";
 import { cn } from "@/lib/utils";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import { useSegmentTextQuery } from "@/libs/utils/segment-text";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useReadModeState } from "../read-mode-button";
 import { useAudioProviderState } from "../settings-dialog/hooks/use-audio-provider-state";
 import { useYoutubeVideoUrl } from "../summary/with-youtube-video";
 import { Icons } from "../ui/icons.v2";
 import { useCurrentTime } from "../youtube-page/use-current-time-store";
 import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
+import { useSelectedItem } from "../youtube-page/use-selected-item";
 import { smartSplit } from "../youtube-page/utils/smart-split";
 import { CharacterItem } from "./character-item";
 import { characterStore } from "./character-store";
@@ -30,14 +35,8 @@ import { PlayButtonV2 } from "./play-button-v2";
 import { CharacterTrackButton } from "./selected-character/character-track-button";
 import { useCharacterEditStore } from "./use-character-edit-store";
 import { useYoutubeRefState } from "./use-youtube-ref-state";
-import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
-import { openInNewWindow } from "@/app/review/review-cloze-content/utils/open-in-new-window";
-import { getNmmLink } from "@/libs/utils/get-nmm-link";
-import { useRouter, useSearchParams } from "next/navigation";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
-import Link from "next/link";
-import { useReadModeState } from "../read-mode-button";
 
 export const CharacterTitleV2 = (props: any) => {
   const {
@@ -105,6 +104,8 @@ export const CharacterTitleV2 = (props: any) => {
 
   const customRef: any = useRef(null) as any;
 
+  const { selected, setSelected } = useSelectedItem();
+
   const { data: relatedHskWords } = useListRelatedHSKWords(characterId);
 
   const { provider, setProvider } = useAudioProviderState();
@@ -144,11 +145,15 @@ export const CharacterTitleV2 = (props: any) => {
       ) : readMode ? (
         <div className="flex justify-between items-center w-full">
           <div>
-            {isNonRomanLang(lang) && !data && (
-              <p className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full">
-                {meaningDiscovery?.pinyin}{" "}
-              </p>
-            )}
+            {_data
+              ? null
+              : showPinyin &&
+                isNonRomanLang(lang) &&
+                (meaningDiscovery?.pinyin || meaningDiscovery?.roman) && (
+                  <p className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full">
+                    {meaningDiscovery?.pinyin || meaningDiscovery?.roman}{" "}
+                  </p>
+                )}
             {segmentedData?.map((item, idx) => {
               return (
                 <span
@@ -166,11 +171,14 @@ export const CharacterTitleV2 = (props: any) => {
                   )}
                   key={`${JSON.stringify(item)}-${idx}-${idx}`}
                 >
-                  {isNonRomanLang(lang) && showPinyin && (
-                    <span className="text-sm dark:text-gray-400 text-gray-800 lowercase">
-                      {formatRoman(item)}
-                    </span>
-                  )}
+                  {item?.pinyin || item?.roman
+                    ? isNonRomanLang(lang) &&
+                      showPinyin && (
+                        <span className="text-sm dark:text-gray-400 text-gray-800 lowercase">
+                          {formatRoman(item)}
+                        </span>
+                      )
+                    : null}
 
                   <span
                     onClick={() => {
@@ -220,46 +228,82 @@ export const CharacterTitleV2 = (props: any) => {
           </div>
         </div>
       ) : (
-        <div className="flex justify-between items-center w-full">
-          <WithInteractiveTitle
-            customRef={customRef}
-            text={selectedCompInput}
-            lang={lang}
-            className={
-              selectedCompInput?.length < 8
-                ? "lg:text-4xl text-4xl"
-                : "text-2xl"
-            }
-          >
-            <div>
-              {smartSplit({ input: selectedCompInput, lang })?.map(
-                (item: string, idx: number) => {
-                  const startTime =
-                    (duration / (selectedCompInput?.length - 1)) * idx;
+        <div className="w-full">
+          {showPinyin &&
+            isNonRomanLang(lang) &&
+            (meaningDiscovery?.pinyin || meaningDiscovery?.roman) && (
+              <p className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full">
+                {meaningDiscovery?.pinyin || meaningDiscovery?.roman}{" "}
+              </p>
+            )}
 
-                  const endTime =
-                    (duration / (selectedCompInput?.length - 1)) * (idx + 1);
+          <div className="flex justify-between items-center w-full">
+            <WithInteractiveTitle
+              customRef={customRef}
+              text={selectedCompInput}
+              lang={lang}
+              className={
+                selectedCompInput?.length < 8
+                  ? "lg:text-4xl text-4xl"
+                  : "text-2xl"
+              }
+            >
+              <div>
+                {smartSplit({ input: selectedCompInput, lang })?.map(
+                  (item: string, idx: number) => {
+                    const startTime =
+                      (duration / (selectedCompInput?.length - 1)) * idx;
 
-                  if (isPlaying) {
+                    const endTime =
+                      (duration / (selectedCompInput?.length - 1)) * (idx + 1);
+
+                    if (isPlaying) {
+                      return (
+                        <span
+                          className={
+                            selectedCompInput?.length < 4
+                              ? "text-5xl"
+                              : "text-2xl"
+                          }
+                          key={`character-title-${item}-${idx}-${idx}`}
+                        >
+                          <CharacterItem
+                            className={cn(
+                              selectedCompInput?.length < 8
+                                ? "lg:text-4xl text-4xl"
+                                : "text-2xl",
+
+                              currentTime >= startTime && currentTime <= endTime
+                                ? "dark:text-white text-black"
+                                : "text-gray-500"
+                            )}
+                            onClick={() => {
+                              if (duration) {
+                                seekAndPlay(startTime, customRef);
+                              }
+                            }}
+                            character={item}
+                          />
+                        </span>
+                      );
+                    }
+
                     return (
-                      <span
+                      <Link
                         className={
                           selectedCompInput?.length < 4
                             ? "text-5xl"
                             : "text-2xl"
                         }
                         key={`character-title-${item}-${idx}-${idx}`}
+                        href={`/nmm/${item}?lang=${lang || "zh"}${context ? `&context=${context}` : ""}`}
                       >
                         <CharacterItem
-                          className={cn(
+                          className={
                             selectedCompInput?.length < 8
                               ? "lg:text-4xl text-4xl"
-                              : "text-2xl",
-
-                            currentTime >= startTime && currentTime <= endTime
-                              ? "dark:text-white text-black"
-                              : "text-gray-500"
-                          )}
+                              : "text-2xl"
+                          }
                           onClick={() => {
                             if (duration) {
                               seekAndPlay(startTime, customRef);
@@ -274,51 +318,20 @@ export const CharacterTitleV2 = (props: any) => {
                           // disableForgotten
                           character={item}
                         />
-                      </span>
+                      </Link>
                     );
                   }
+                )}
+              </div>
+            </WithInteractiveTitle>
 
-                  return (
-                    <Link
-                      className={
-                        selectedCompInput?.length < 4 ? "text-5xl" : "text-2xl"
-                      }
-                      key={`character-title-${item}-${idx}-${idx}`}
-                      href={`/nmm/${item}?lang=${lang || "zh"}${context ? `&context=${context}` : ""}`}
-                    >
-                      <CharacterItem
-                        className={
-                          selectedCompInput?.length < 8
-                            ? "lg:text-4xl text-4xl"
-                            : "text-2xl"
-                        }
-                        onClick={() => {
-                          if (duration) {
-                            seekAndPlay(startTime, customRef);
-                          }
-
-                          // setWords({
-                          //   word: character,
-                          //   transcriptionId: item?.id,
-                          //   contentId,
-                          // });
-                        }}
-                        // disableForgotten
-                        character={item}
-                      />
-                    </Link>
-                  );
-                }
+            <div className="text-2xl">
+              {isHsk && typeof isHsk?.hskLevel === "number" ? (
+                <p>HSK {isHsk?.hskLevel} </p>
+              ) : (
+                selectedCompInput?.length < 4 && <StatusIcon.Icon />
               )}
             </div>
-          </WithInteractiveTitle>
-
-          <div className="text-2xl">
-            {isHsk && typeof isHsk?.hskLevel === "number" ? (
-              <p>HSK {isHsk?.hskLevel} </p>
-            ) : (
-              selectedCompInput?.length < 4 && <StatusIcon.Icon />
-            )}
           </div>
         </div>
       )}

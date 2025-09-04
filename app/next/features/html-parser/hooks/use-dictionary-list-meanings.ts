@@ -13,6 +13,7 @@ interface Meanings {
   input: string;
   en: string;
   pinyin: string;
+  roman?: string;
 }
 
 export const useListDictionaryMeaningsQuery = (

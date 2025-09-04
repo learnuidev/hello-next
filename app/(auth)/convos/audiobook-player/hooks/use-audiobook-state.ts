@@ -225,7 +225,7 @@ export const useAudioBookState = (content: IContent) => {
         }
       }
 
-      if (event.code === "Space") {
+      if (event.code === "Space" && !editMode) {
         // Vishal 07-12-2024-10-20: prevents the browser from scrolling down
         event.preventDefault();
         handlePlayPause();

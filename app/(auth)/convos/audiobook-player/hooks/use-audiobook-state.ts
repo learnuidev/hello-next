@@ -10,6 +10,7 @@ import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
 import { useSearchParams } from "next/navigation";
 import { useReadModeState } from "@/components/read-mode-button";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
+import { usePreviewMode } from "@/components/settings-dialog/use-preview-mode";
 
 export const useAudioBookState = (content: IContent) => {
   const { playbackRate } = useListenState();
@@ -131,6 +132,8 @@ export const useAudioBookState = (content: IContent) => {
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
+  const { setNextMode } = usePreviewMode();
+
   const togglePinyin = () => {
     setShowPinyin(!showPinyin);
   };
@@ -150,6 +153,10 @@ export const useAudioBookState = (content: IContent) => {
       if (["c"]?.includes(event.key?.toLowerCase()) && !editMode) {
         event.preventDefault();
         setShowChinglish(!showChinglish);
+      }
+      if (["m"]?.includes(event.key?.toLowerCase()) && !editMode) {
+        event.preventDefault();
+        setNextMode();
       }
 
       if (["l"]?.includes(event.key?.toLowerCase()) && !editMode) {

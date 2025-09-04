@@ -9,6 +9,7 @@ import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 import { useCommonCharacterMode } from "@/stores/use-common-character-mode-store";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { usePathname, useRouter } from "next/navigation";
+import { useReadModeState } from "../read-mode-button";
 import { useSearchQueryStore } from "../search/state";
 import { useBrightModeStore } from "./use-bright-mode-store";
 import {
@@ -17,7 +18,6 @@ import {
   useGetReviewUrlFn,
 } from "./use-get-review-url";
 import { usePreviewMode } from "./use-preview-mode";
-import { useReadModeState } from "../read-mode-button";
 
 export function useShortCuts() {
   const readMode = useReadModeStore((state) => state.readMode);
@@ -100,15 +100,6 @@ export function useShortCuts() {
         router.push("/nmm");
       }
 
-      if (["t"]?.includes(event.key) && event.ctrlKey) {
-        event.preventDefault();
-        router.push("/tita");
-      }
-      // if (["r"]?.includes(event.key) && event.ctrlKey) {
-      //   event.preventDefault();
-
-      //   router.push(reviewUrl);
-      // }
       if (["l"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         if (routeName?.includes("/convos/")) {
           return null;
@@ -116,11 +107,6 @@ export function useShortCuts() {
         event.preventDefault();
         router.push("/timeline");
       }
-
-      // if (["p"]?.includes(event.key)) {
-      //   event.preventDefault();
-      //   setShowPinyin((showPinyin: any) => !showPinyin);
-      // }
 
       if (["p"]?.includes(event.key) && event.metaKey) {
         event.preventDefault();
@@ -321,5 +307,7 @@ export function useShortCuts() {
     setShowPinyin,
     setCommonCharacterMode,
     setNextMode,
+    setReadModeV2,
+    readModeV2,
   ]);
 }

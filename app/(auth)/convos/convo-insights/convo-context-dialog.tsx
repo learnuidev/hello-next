@@ -153,7 +153,7 @@ export const ConvoContextDialog = ({
           currentTime={currentTime}
           transcriptions={data?.transcriptions}
           contentId={contentId}
-          seekAndPlay={seekAndPlay}
+          // seekAndPlay={seekAndPlay}
         />
 
         <div>

@@ -28,7 +28,15 @@ export const CurrentTranscriptionEditor = ({
   const updateContentMutation = useUpdateContentMutation();
 
   const setTimer = (
-    type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
+    type:
+      | "start"
+      | "end"
+      | "pinyin"
+      | "hanzi"
+      | "roman"
+      | "en"
+      | "input"
+      | "chinglish",
     newValue?: string
   ) => {
     const offset = newValue || currentTime - 0.2;
@@ -155,6 +163,16 @@ export const CurrentTranscriptionEditor = ({
             }}
           />
         )}
+        {(timeStamp?.chinglish || currentTranscription?.chinglish) &&
+          editMode && (
+            <textarea
+              className="w-full"
+              value={timeStamp?.chinglish || currentTranscription?.chinglish}
+              onChange={(event) => {
+                setTimer("chinglish", event?.target?.value);
+              }}
+            />
+          )}
       </div>
       <div className="mt-4 flex gap-8">
         <button

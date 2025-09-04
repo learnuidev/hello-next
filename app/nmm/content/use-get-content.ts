@@ -6,7 +6,10 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 import { useQuery } from "@tanstack/react-query";
 import { useSearchQueryStore } from "@/components/search/state";
-import { useListContentsQuery } from "@/domain/content/content.queries";
+import {
+  useGetContentQuery,
+  useListContentsQuery,
+} from "@/domain/content/content.queries";
 import { filterNonHanYu } from "../nmm-utils/filter-non-hanyu";
 import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 
@@ -26,6 +29,8 @@ export const useGetContent = ({
   const { data: contentItems } = useListPublishedContentsQuery({});
 
   const contents = contentItems?.items;
+
+  const { data: content } = useGetContentQuery({ contentId });
 
   const { data: components } = useListComponents({ includeAll: true });
 
@@ -50,8 +55,6 @@ export const useGetContent = ({
     queryKey: queryKey,
 
     queryFn: async () => {
-      const content = contents?.find((c: any) => c?.id === contentId);
-
       let xiaomaSentences = [] as any;
 
       if (viewType === "sentence" || viewType === "word") {

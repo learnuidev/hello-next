@@ -4,7 +4,7 @@ import React from "react";
 
 import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 
-import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
+import { useGetContentQuery } from "@/domain/content/content.queries";
 import { NomadMethodTabsContainer } from "../nomad-method-tabs-container";
 import { ContentViewType } from "./content-view-type";
 
@@ -35,10 +35,7 @@ export const ContentView = ({
 }) => {
   const { mode } = useLearningMode();
 
-  const { data: contentItems, isLoading } = useListPublishedContentsQuery({});
-
-  const contents = contentItems?.items;
-  const content = contents?.find((c: any) => c?.id === mode);
+  const { data: content, isLoading } = useGetContentQuery({ contentId: mode });
 
   if (isLoading) return children;
 

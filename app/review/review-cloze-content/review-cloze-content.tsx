@@ -207,7 +207,7 @@ export function ReviewClozeContent({
             hanzi: multiSent?.[0],
             input: multiSent?.[0],
           }
-        : { _sentence, hanzi: multiSent?.[0], input: multiSent?.[0] },
+        : { ..._sentence, hanzi: multiSent?.[0], input: multiSent?.[0] },
     [isMultiSent, _aiSentences, multiSent]
   );
 

@@ -1,7 +1,7 @@
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 
 const useSelectedStore = createIndexDBStore({
-  name: "content/current-time",
+  name: "content/use-selected",
   handler: (set: any, get: any) => ({
     selected: null,
     setSelected: (selected: any) =>

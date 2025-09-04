@@ -779,8 +779,8 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
           )} */}
 
             <ActiveTranscription
-              containsChinglish={containsChinglish}
-              seekAndPlay={seekAndPlay}
+              // containsChinglish={containsChinglish}
+              // seekAndPlay={seekAndPlay}
               currentTime={currentTime}
               transcriptions={transcriptions}
               contentId={contentId}
@@ -837,8 +837,8 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                 {isVideoHidden && (
                   <div>
                     <ActiveTranscription
-                      containsChinglish={containsChinglish}
-                      seekAndPlay={seekAndPlay}
+                      // containsChinglish={containsChinglish}
+                      // seekAndPlay={seekAndPlay}
                       currentTime={currentTime}
                       transcriptions={transcriptions}
                       contentId={contentId}
@@ -1060,8 +1060,8 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                 {isVideoHidden && (
                   <div>
                     <ActiveTranscription
-                      containsChinglish={containsChinglish}
-                      seekAndPlay={seekAndPlay}
+                      // containsChinglish={containsChinglish}
+                      // seekAndPlay={seekAndPlay}
                       currentTime={currentTime}
                       transcriptions={transcriptions}
                       contentId={contentId}

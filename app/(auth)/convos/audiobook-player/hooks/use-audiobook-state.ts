@@ -11,6 +11,7 @@ import { useSearchParams } from "next/navigation";
 import { useReadModeState } from "@/components/read-mode-button";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { usePreviewMode } from "@/components/settings-dialog/use-preview-mode";
+import { isVideoUrl } from "../../utils/is-video-url";
 
 export const useAudioBookState = (content: IContent) => {
   const { playbackRate } = useListenState();
@@ -22,15 +23,35 @@ export const useAudioBookState = (content: IContent) => {
 
   const searchParams = useSearchParams();
 
-  const start = searchParams.get("start");
+  const start: any = searchParams.get("start");
 
   const { currentTime: _currentTime = 0, setCurrentTime } = useCurrentTime(
     content.id
   );
 
-  const currentTime = start || _currentTime;
+  const currentTime = _currentTime;
 
   const playerRef = useRef<any>(null);
+
+  const seek = useCallback((time: number) => {
+    playerRef.current.seekTo(time, "seconds");
+  }, []);
+
+  const play = useCallback(() => {
+    playerRef.current?.player?.player?.play();
+  }, []);
+
+  function pause() {
+    playerRef.current?.player?.player?.pause();
+  }
+
+  const seekAndPlay = useCallback(
+    (time: number) => {
+      seek(time);
+      play();
+    },
+    [seek, play]
+  );
 
   // TODO: move this at api level
   const transcriptions = (content?.transcriptions || [])?.map(
@@ -47,9 +68,31 @@ export const useAudioBookState = (content: IContent) => {
     }
   );
 
-  const seek = (time: number) => {
-    playerRef.current.seekTo(time, "seconds");
-  };
+  const finalUrl = content?.audio;
+
+  const onReady = useCallback(
+    (data: any) => {
+      if (!isReady) {
+        setDuration(data.getDuration());
+        const timeToStart = 7 * 60 + 12.6;
+
+        if (start) {
+          if (isVideoUrl(finalUrl)) {
+            if (!currentTime && `${currentTime}` !== `${start}`) {
+              seekAndPlay(start);
+            }
+          } else {
+            seekAndPlay(start);
+          }
+        } else {
+          seekAndPlay(0);
+        }
+
+        setIsReady(true);
+      }
+    },
+    [isReady, start, finalUrl, currentTime, seekAndPlay]
+  );
 
   const seekBefore = useCallback(() => {
     const currentTranscription = transcriptions?.find(
@@ -72,6 +115,18 @@ export const useAudioBookState = (content: IContent) => {
     }
   }, [currentTime, transcriptions]);
 
+  useEffect(() => {
+    if (!currentTime && start && isVideoUrl(finalUrl)) {
+      playerRef.current.seekTo(start, "seconds");
+
+      try {
+        playerRef.current?.player?.player?.play();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }, [currentTime, finalUrl, start]);
+
   const seekAfter = useCallback(() => {
     const currentTranscription = transcriptions?.find(
       (trans) => trans?.start <= currentTime && trans?.end > currentTime
@@ -91,28 +146,15 @@ export const useAudioBookState = (content: IContent) => {
     const nextTranscription = transcriptions?.[nextIndex];
 
     seek(nextTranscription?.start);
-  }, [currentTime, transcriptions]);
+  }, [currentTime, seek, transcriptions]);
 
-  const play = () => {
-    playerRef.current?.player?.player?.play();
-  };
-
-  const pause = () => {
-    playerRef.current?.player?.player?.pause();
-  };
-
-  const seekAndPlay = (time: number) => {
-    seek(time);
-    play();
-  };
-
-  const handlePlayPause = () => {
+  const handlePlayPause = useCallback(() => {
     if (!playing) {
       play();
     } else {
       pause();
     }
-  };
+  }, [play, playing]);
 
   const { setReadMode, readMode } = useReadModeState();
 
@@ -134,6 +176,7 @@ export const useAudioBookState = (content: IContent) => {
 
   const { setNextMode } = usePreviewMode();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const togglePinyin = () => {
     setShowPinyin(!showPinyin);
   };
@@ -256,5 +299,6 @@ export const useAudioBookState = (content: IContent) => {
     currentTime,
     handleSeekChange,
     start,
+    onReady,
   };
 };

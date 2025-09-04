@@ -34,6 +34,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
     seekAfter,
     currentTime,
     handleSeekChange,
+    onReady,
     start,
   } = useAudioBookState(content);
 
@@ -72,10 +73,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               onPause={() => setPlaying(false)}
               width="100%"
               height="50px"
-              onReady={(data) => {
-                setIsReady(true);
-                setDuration(data.getDuration());
-              }}
+              onReady={onReady}
               playing={false}
               controls={false}
               ref={playerRef}

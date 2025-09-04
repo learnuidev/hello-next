@@ -193,7 +193,21 @@ export const useAudioBookState = (content: IContent) => {
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [seekBefore, seekAfter]);
+  }, [
+    seekBefore,
+    seekAfter,
+    editMode,
+    togglePinyin,
+    setReadMode,
+    readMode,
+    setShowChinglish,
+    showChinglish,
+    setNextMode,
+    currentTranscription?.input,
+    loop,
+    audioUrl,
+    handlePlayPause,
+  ]);
 
   const debounceSeek = useDebouncedCallback((firstStart: number) => {
     seekAndPlay(firstStart);

@@ -61,6 +61,7 @@ import { useSelectedItem } from "./use-selected-item";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
+import { ContentEditButton } from "./content-edit-button";
 
 interface ViewModeState {
   viewMode: string;
@@ -621,14 +622,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
               )}
             </button>
 
-            <button
-              className={editMode ? "dark:text-white" : "text-gray-500"}
-              onClick={() => {
-                setEditMode();
-              }}
-            >
-              <Icons.edit />
-            </button>
+            <ContentEditButton />
             {content?.questions?.length > 0 && (
               <button
                 className={qaMode ? "dark:text-white" : "text-gray-500"}

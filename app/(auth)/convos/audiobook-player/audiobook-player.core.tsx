@@ -12,6 +12,9 @@ import { CurrentTranscriptionView } from "./components/current-transcription-vie
 import { MiniDictionary } from "./components/mini-dictionary";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
 import { ReadModeButton } from "@/components/read-mode-button";
+import { ContentEditButton } from "@/components/youtube-page/content-edit-button";
+import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
+import { CurrentTranscriptionEditor } from "./components/current-transcription-editor";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -38,6 +41,8 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
     start,
   } = useAudioBookState(content);
 
+  const editMode = useContentEditStore((state) => state.editMode);
+
   if (!content) {
     return;
   }
@@ -46,7 +51,12 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
     <MandoContextMenu lang={content?.lang || ""}>
       <div className="relative">
         <div className="flex flex-col sm:flex-row gap-8 sm:px-8 scroll-px-80">
-          {currentTranscription ? (
+          {editMode && currentTranscription ? (
+            <CurrentTranscriptionEditor
+              currentTranscription={currentTranscription}
+              contentId={content.id}
+            />
+          ) : currentTranscription ? (
             <CurrentTranscriptionView
               containsChinglish={containsChinglish}
               seekAndPlay={seekAndPlay}
@@ -83,6 +93,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
             />
 
             <div className="flex items-center justify-center sm:gap-8 gap-4">
+              <ContentEditButton />
               <button
                 className={cn(
                   "text-xl",

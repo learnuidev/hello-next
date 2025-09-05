@@ -10,6 +10,7 @@ type AddHistoryParams = {
   hanzi: string;
   contentId: string;
   eventType: string;
+  context?: any;
 };
 
 const addHistory = async (

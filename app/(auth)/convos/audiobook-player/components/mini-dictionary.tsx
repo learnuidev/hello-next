@@ -7,16 +7,24 @@ import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useSearchHistory } from "../hooks/use-search-history";
 
 export function MiniDictionary({
   lang,
   selected,
   className,
+  contentId,
 }: {
-  lang: string;
   selected: string;
   className?: string;
+  contentId: string;
+  lang: string;
 }) {
+  const { searchHistory, addSearchHistory } = useSearchHistory({
+    contentId,
+    lang,
+  });
+
   const [seeMore, setSeeMore] = useState(false);
   const { data: sentences, isLoading: isSentencesLoading } =
     useListSentencesQuery({
@@ -30,6 +38,55 @@ export function MiniDictionary({
     content: selected,
     lang,
   });
+
+  const currentIndex = searchHistory?.findIndex(
+    (item: any) => item?.input === selected
+  );
+
+  const isFirstIndex = currentIndex === 0;
+  const isLastIndex = currentIndex === searchHistory?.length - 1;
+
+  const setPrevious = () => {
+    if (searchHistory?.length === 1) {
+      return;
+    }
+    const currentIndex = searchHistory?.findIndex(
+      (item: any) => item?.input === selected
+    );
+
+    if (currentIndex === 0 || currentIndex === -1) {
+      return;
+    }
+
+    const prevIndex = currentIndex - 1;
+
+    const searchItem = searchHistory?.[prevIndex];
+
+    if (searchItem?.input) {
+      setSelected(searchItem?.input);
+    }
+  };
+
+  const setNext = () => {
+    if (searchHistory?.length === 1) {
+      return;
+    }
+    const currentIndex = searchHistory?.findIndex(
+      (item: any) => item?.input === selected
+    );
+
+    if (currentIndex === -1) {
+      return;
+    }
+
+    const nextIndex = currentIndex + 1;
+
+    const searchItem = searchHistory?.[nextIndex];
+
+    if (searchItem?.input) {
+      setSelected(searchItem?.input);
+    }
+  };
 
   const pinyinOrRoman = data?.pinyin || data?.roman;
 
@@ -142,6 +199,29 @@ export function MiniDictionary({
           </button>
         )}
       </div>
+
+      {searchHistory?.length > 0 && (
+        <div className="mt-4 flex gap-4 text-lg">
+          <button
+            disabled={isFirstIndex}
+            className={isFirstIndex ? "text-gray-500" : ""}
+            onClick={() => {
+              setPrevious();
+            }}
+          >
+            <Icons.back />
+          </button>
+          <button
+            disabled={isLastIndex}
+            className={isLastIndex ? "text-gray-500" : ""}
+            onClick={() => {
+              setNext();
+            }}
+          >
+            <Icons.front />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

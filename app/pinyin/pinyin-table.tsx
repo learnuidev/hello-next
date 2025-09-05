@@ -1,6 +1,6 @@
 "use client";
-import React, { useMemo } from "react";
 import { groupBy } from "ramda";
+import React, { useMemo } from "react";
 
 import { usePinyinChartStore } from "./state";
 
@@ -11,21 +11,37 @@ import {
 } from "@tanstack/react-table";
 
 import { characterDictionary, defaultData } from "./data";
-// import { characterDictionary, defaultData } from "./___legacy_data.v1";
 
-import { PinyinDetail } from "./pinyin-detail";
-import { pinyinColumns } from "./pinyin-columns";
-import { useListComponents } from "@/domain/lesson/component.queries";
 import { useSearchQueryStore } from "@/components/search/state";
+import { useListComponents } from "@/domain/lesson/component.queries";
+import { pinyinColumns } from "./pinyin-columns";
+import { PinyinDetail } from "./pinyin-detail";
 
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useQuery } from "@tanstack/react-query";
-import { getGroup } from "../(auth)/hmm/get-group";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 import { cn } from "@/lib/utils";
+import { useRouter, useSearchParams } from "next/navigation";
 import { filterComponents } from "../nmm/nmm-utils/filter-components";
 import { getHumanPinyin } from "../nmm/nmm-utils/get-human-pinyin";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
+
+import { characterMap } from "@/app/nmm/character-map";
+
+export const getGroup = (comp: { pinyin: string }) => {
+  return comp?.pinyin
+    ?.split("")
+    ?.map((item) => {
+      const char = characterMap[item];
+
+      if (char) {
+        return char;
+      }
+
+      return item;
+    })
+    ?.join("")
+    ?.toLowerCase();
+};
 
 const totalCharacters = defaultData
   ?.map((val: any) => Object.values(val))

@@ -142,6 +142,7 @@ import {
   faRotateRight,
   faBackward,
   faForward,
+  faChevronRight,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -228,6 +229,7 @@ export const Icons = {
   analyze: createFAIcon(faMagnifyingGlassChart),
   calculatorSimple: createFAIcon(faCalculatorSimple),
   back: createFAIcon(faChevronLeft),
+  front: createFAIcon(faChevronRight),
   lightBulb: createFAIcon(faLightbulb),
   lightBulbSolid: createFAIcon(faLightbulbSolid),
 

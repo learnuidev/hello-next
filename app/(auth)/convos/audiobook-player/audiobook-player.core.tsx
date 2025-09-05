@@ -61,6 +61,8 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               containsChinglish={containsChinglish}
               seekAndPlay={seekAndPlay}
               currentTranscription={currentTranscription}
+              contentId={content.id}
+              lang={content.lang}
             />
           ) : (
             <div className=" dark:text-black text-white text-center mt-8 sm:mt-24 min-w-5xl mx-auto">
@@ -69,7 +71,11 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
           )}
 
           {selected && (
-            <MiniDictionary selected={selected} lang={content?.lang} />
+            <MiniDictionary
+              contentId={content?.id}
+              selected={selected}
+              lang={content?.lang}
+            />
           )}
         </div>
 

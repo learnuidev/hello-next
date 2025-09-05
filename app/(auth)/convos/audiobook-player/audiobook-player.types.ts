@@ -5,4 +5,6 @@ export interface CurrentTranscriptionProps {
   seekAndPlay: (time: number) => void;
   containsChinglish: boolean;
   className?: string;
+  contentId: string;
+  lang: string;
 }

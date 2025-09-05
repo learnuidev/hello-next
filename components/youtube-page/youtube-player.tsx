@@ -923,6 +923,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                   <MandoContextMenu lang={content?.lang || ""}>
                     {selected ? (
                       <MiniDictionary
+                        contentId={content?.id}
                         className="sm:mt-0 mt-0"
                         selected={selected}
                         lang={content?.lang}

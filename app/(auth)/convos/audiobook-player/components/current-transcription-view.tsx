@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { useSegmentTextQuery } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useReadModeState } from "@/components/read-mode-button";
+import { useSearchHistory } from "../hooks/use-search-history";
 
 function EnView({
   currentTranscription,
@@ -37,8 +38,15 @@ function InputView({
   currentTranscription,
   seekAndPlay,
   containsChinglish,
+  contentId,
+  lang,
 }: CurrentTranscriptionProps) {
   const { selected, setSelected } = useSelectedItem();
+
+  const { searchHistory, addSearchHistory } = useSearchHistory({
+    contentId,
+    lang,
+  });
 
   return (
     <p
@@ -61,8 +69,16 @@ function InputView({
 
                 if (selectedText && selectedText?.length < 36) {
                   setSelected(selectedText);
+                  addSearchHistory({
+                    input: selectedText,
+                    transcriptionId: currentTranscription.id,
+                  });
                 } else {
                   setSelected(item);
+                  addSearchHistory({
+                    input: item,
+                    transcriptionId: currentTranscription.id,
+                  });
                 }
               }}
             />
@@ -77,6 +93,8 @@ export function ReaderView({
   currentTranscription,
   className,
   data,
+  contentId,
+  lang,
 }: CurrentTranscriptionProps & {
   data: {
     input: string;
@@ -91,6 +109,11 @@ export function ReaderView({
 
   const { selected, setSelected } = useSelectedItem();
 
+  const { searchHistory, addSearchHistory } = useSearchHistory({
+    contentId,
+    lang,
+  });
+
   return (
     <div className={cn(defautClassName, className)}>
       <div className={cn(defautClassName, className)}>
@@ -101,10 +124,18 @@ export function ReaderView({
                 const selectedText = getSelectedText();
                 if (selectedText && selectedText?.length < 36) {
                   setSelected(selectedText);
+                  addSearchHistory({
+                    input: selectedText,
+                    transcriptionId: currentTranscription.id,
+                  });
                 } else if (selected === (item?.hanzi || item?.input)) {
                   setSelected(null);
                 } else {
                   setSelected(item.hanzi || item?.input);
+                  addSearchHistory({
+                    input: item.hanzi || item?.input,
+                    transcriptionId: currentTranscription.id,
+                  });
                 }
               }}
               className={cn(
@@ -164,6 +195,8 @@ function NormalView({
   seekAndPlay,
   containsChinglish,
   className,
+  contentId,
+  lang,
 }: CurrentTranscriptionProps) {
   const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
 
@@ -182,6 +215,8 @@ function NormalView({
           containsChinglish={containsChinglish}
           currentTranscription={currentTranscription}
           seekAndPlay={seekAndPlay}
+          contentId={contentId}
+          lang={lang}
         />
       </div>
 
@@ -189,6 +224,8 @@ function NormalView({
         containsChinglish={containsChinglish}
         currentTranscription={currentTranscription}
         seekAndPlay={seekAndPlay}
+        contentId={contentId}
+        lang={lang}
       />
     </div>
   );
@@ -199,6 +236,8 @@ export function PinyinView({
   seekAndPlay,
   containsChinglish,
   className,
+  contentId,
+  lang,
 }: CurrentTranscriptionProps) {
   const { data: _data } = useListDictionaryMeaningsQuery(
     currentTranscription?.input,
@@ -225,6 +264,8 @@ export function PinyinView({
           containsChinglish={containsChinglish}
           currentTranscription={currentTranscription}
           seekAndPlay={seekAndPlay}
+          contentId={contentId}
+          lang={lang}
         />
       ) : (
         <div className={cn(defautClassName, className)}>
@@ -239,6 +280,8 @@ export function PinyinView({
             containsChinglish={containsChinglish}
             currentTranscription={currentTranscription}
             seekAndPlay={seekAndPlay}
+            contentId={contentId}
+            lang={lang}
           />
         </div>
       )}
@@ -247,6 +290,8 @@ export function PinyinView({
         containsChinglish={containsChinglish}
         currentTranscription={currentTranscription}
         seekAndPlay={seekAndPlay}
+        contentId={contentId}
+        lang={lang}
       />
     </div>
   );
@@ -257,6 +302,8 @@ export function CurrentTranscriptionView({
   containsChinglish,
   seekAndPlay,
   className,
+  contentId,
+  lang,
 }: CurrentTranscriptionProps) {
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
   const { readMode } = useReadModeState();
@@ -272,6 +319,8 @@ export function CurrentTranscriptionView({
             currentTranscription={currentTranscription}
             seekAndPlay={seekAndPlay}
             className={className}
+            contentId={contentId}
+            lang={lang}
           />
         </div>
       ) : (
@@ -280,6 +329,8 @@ export function CurrentTranscriptionView({
           currentTranscription={currentTranscription}
           seekAndPlay={seekAndPlay}
           className={className}
+          contentId={contentId}
+          lang={lang}
         />
       )}
     </div>

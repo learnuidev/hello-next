@@ -13,6 +13,7 @@ export const ActiveTranscription = ({
   className,
   seekAndPlay,
   containsChinglish = false,
+  lang,
 }: {
   seekAndPlay: (value: number) => void;
   currentTime: number;
@@ -20,6 +21,7 @@ export const ActiveTranscription = ({
   contentId: string;
   className?: string;
   containsChinglish?: boolean;
+  lang: string;
 }) => {
   const currentTranscription = transcriptions?.find(
     (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
@@ -61,6 +63,8 @@ export const ActiveTranscription = ({
           seekAndPlay={seekAndPlay}
           currentTranscription={currentTranscription}
           className="mb-4 sm:mb-8 sm:mt-8 mt-4"
+          contentId={contentId}
+          lang={lang}
         />
       ) : (
         <div className="text-center sm:mt-8 mt-4 mb-2 h-20"></div>

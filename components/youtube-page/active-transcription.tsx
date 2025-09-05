@@ -48,10 +48,6 @@ export const ActiveTranscription = ({
           val
         )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`;
       } catch (err) {
-        console.log(`===== Error ======`);
-        console.log("VAL", val);
-        console.log("currentTranscription", currentTranscription);
-        console.log(`===== Error ======`);
         return `/nmm`;
       }
     },

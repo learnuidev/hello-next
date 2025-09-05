@@ -5,11 +5,15 @@ export const smartSplit = ({
   input: string;
   lang: string;
 }) => {
-  if (lang === "zh") {
-    return input?.split("");
-  }
+  try {
+    if (lang === "zh") {
+      return (input || "")?.split("");
+    }
 
-  return input?.split(" ")?.reduce((acc: any, curr) => {
-    return acc.concat([curr?.toLowerCase(), " "]);
-  }, []);
+    return input?.split(" ")?.reduce((acc: any, curr) => {
+      return acc.concat([curr?.toLowerCase(), " "]);
+    }, []);
+  } catch (err) {
+    return [""];
+  }
 };

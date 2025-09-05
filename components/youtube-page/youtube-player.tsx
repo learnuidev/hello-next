@@ -504,6 +504,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
   const setEditMode = useContentEditStore((state) => state.setEditMode);
   const resetTimes = useContentEditStore((state) => state.resetTimes);
+  const setTimes = useContentEditStore((state) => state.setTimes);
   const times = useContentEditStore((state) => state.times);
 
   const group = useMemo(() => {
@@ -513,6 +514,23 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
       transcriptions: transcriptions || [],
     });
   }, [active, currentTime, transcriptions]);
+
+  const addTranscription = () => {
+    setTimes((prev: any) =>
+      prev.concat({
+        id: crypto.randomUUID(),
+        contentId: content.id,
+        hanzi: "hanzi",
+        pinyin: "pinyin",
+        chinglish: "chinglish",
+        input: "input",
+        roman: "roman",
+        lang: content.lang,
+        start: 0,
+        end: 0,
+      })
+    );
+  };
 
   const ActiveButton = () => {
     return (
@@ -583,6 +601,15 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
   const containsChinglish = !!transcriptions?.[0]?.chinglish;
   const { selected, setSelected } = useSelectedItem();
 
+  const newTranscriptions = times.filter(
+    (time: any) => time.contentId === content.id
+  );
+  const transcriptionsView =
+    active !== MAX_LIMIT ? group : transcriptions || [];
+  const filteredTranscriptions = editMode
+    ? transcriptionsView.concat(newTranscriptions)
+    : transcriptionsView;
+
   return (
     <div className="relative">
       <div className="grow flex flex-col items-center">
@@ -651,19 +678,32 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
             {editMode && (
               <button
                 onClick={() => {
+                  const updatedTranscriptions = content?.transcriptions?.map(
+                    (transcription: any) => {
+                      const time = times?.find(
+                        (t: any) => t?.id === transcription?.id
+                      ) as any;
+                      return {
+                        ...transcription,
+                        ...time,
+                      };
+                    }
+                  );
+
+                  const newTranscriptions =
+                    times
+                      .filter((time: any) => {
+                        return time.contentId === content.id;
+                      })
+                      ?.map((item: any) => {
+                        const { contentId, ...rest } = item;
+
+                        return rest;
+                      }) || [];
                   const editedTranscriptions = {
                     id: content?.id,
-                    transcriptions: content?.transcriptions?.map(
-                      (transcription: any) => {
-                        const time = times?.find(
-                          (t: any) => t?.id === transcription?.id
-                        ) as any;
-                        return {
-                          ...transcription,
-                          ...time,
-                        };
-                      }
-                    ),
+                    transcriptions:
+                      updatedTranscriptions.concat(newTranscriptions),
                   };
 
                   updateContentMutation
@@ -903,7 +943,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                               ?.join("");
 
                             return (
-                              <div key={JSON.stringify(transcriptions)}>
+                              <div>
                                 <div className="flex flex-wrap">
                                   {(active !== MAX_LIMIT
                                     ? group
@@ -1065,7 +1105,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
                 <ScrollArea className="space-y-4 h-[400px] sm:h-[640px] w-full rounded-md shadow-lg dark:shadow-gray-900 p-0 pb-16">
                   <div className="sm:space-y-8 w-full">
-                    {(active !== MAX_LIMIT ? group : transcriptions || [])
+                    {filteredTranscriptions
                       .filter((script: any) => {
                         if (focusMode) {
                           return (
@@ -1078,11 +1118,11 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
                         return true;
                       })
-                      .map((example: any, idx: any) => {
+                      .map((transcription: any, idx: any) => {
                         return (
                           <TranscriptItem
-                            example={example}
-                            key={`${example?.hanzi}-${idx}`}
+                            example={transcription}
+                            key={`${transcription?.id}-${idx}`}
                             toggleLoops={toggleLoops}
                             setToggleLoops={setToggleLoops}
                             currentTime={currentTime}
@@ -1094,6 +1134,18 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                           />
                         );
                       })}
+
+                    {editMode ? (
+                      <button
+                        onClick={() => {
+                          addTranscription();
+                        }}
+                        className="text-center w-full"
+                      >
+                        {" "}
+                        Add Transcription{" "}
+                      </button>
+                    ) : null}
                   </div>
                 </ScrollArea>
               </div>

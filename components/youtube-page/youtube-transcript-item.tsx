@@ -49,6 +49,10 @@ export const TranscriptItem = ({
   const setTimes = useContentEditStore((state) => state.setTimes);
   const router = useRouter();
 
+  const deleteTranscription = (id: string) => {
+    setTimes((prev: any) => prev.filter((item: any) => item.id !== id));
+  };
+
   const setTimer = (
     type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
     newValue?: string
@@ -58,6 +62,21 @@ export const TranscriptItem = ({
     setTimes((prev: any) => {
       const predicateFn = (item: any) => item?.id === example?.id;
       const exists = prev?.find(predicateFn);
+
+      if (exists && exists?.contentId) {
+        const updated = prev.map((item: any) => {
+          if (item?.id === example?.id) {
+            return {
+              ...exists,
+              [type]: offset,
+            };
+          }
+
+          return item;
+        });
+
+        return updated;
+      }
 
       let updated = prev;
 
@@ -223,6 +242,22 @@ export const TranscriptItem = ({
             icon={faRepeat}
           />
         </button>
+        {editMode && (
+          <button
+            onClick={() => {
+              deleteTranscription(example.id);
+            }}
+          >
+            <Icons.trash
+              className={
+                toggleLoops?.find((item: any) => item?.end === example?.end)
+                  ? "dark:text-white text-black"
+                  : "dark:text-gray-500 text-gray-400"
+              }
+              icon={faRepeat}
+            />
+          </button>
+        )}
       </div>
     );
   };
@@ -315,7 +350,7 @@ export const TranscriptItem = ({
 
               return (
                 <span
-                  key={`${JSON.stringify(item)}-${idx}-${Math.random()}`}
+                  key={`${JSON.stringify(item)}-${idx}-${Math.random()}-todo`}
                   className={cn("transition text-md", {
                     "text-rose-400": isInTimeRange,
                     "dark:text-gray-200": !isInTimeRange && isLearned,

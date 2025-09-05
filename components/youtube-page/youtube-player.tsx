@@ -942,7 +942,9 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                               ?.join("");
 
                             return (
-                              <div>
+                              <div
+                                key={`${JSON.stringify(transcriptions)}-${JSON.stringify(hanzis)}`}
+                              >
                                 <div className="flex flex-wrap">
                                   {(active !== MAX_LIMIT
                                     ? group

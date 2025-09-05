@@ -30,15 +30,14 @@ export const TranscriptItem = ({
   isVideoHidden,
   playerRef,
   learnedCharacters,
-  lessonId,
+  contentId,
   // components,
 }: any) => {
   const params = useParams<{ "content-id": string }>();
-  const contentId = params["content-id"];
 
   const setWords = useWordsClickedHistoryStore((state) => state.setHistory);
 
-  const { data } = useGetContentQuery({ contentId: lessonId });
+  const { data } = useGetContentQuery({ contentId });
 
   const setIfExists = useSetIfExists();
 
@@ -53,11 +52,15 @@ export const TranscriptItem = ({
     setTimes((prev: any) => prev.filter((item: any) => item.id !== id));
   };
 
+  const finalTranscriptions = editMode
+    ? data?.transcriptions
+    : data?.transcriptions;
+
   const setTimer = (
     type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
     newValue?: string
   ) => {
-    const offset = newValue || currentTime - 0.2;
+    const offset = newValue || playerRef?.current?.getCurrentTime();
 
     setTimes((prev: any) => {
       const predicateFn = (item: any) => item?.id === example?.id;
@@ -80,14 +83,13 @@ export const TranscriptItem = ({
 
       let updated = prev;
 
-      // const currIndex = prev?.findIndex(predicateFn);
+      const currIndex = finalTranscriptions?.findIndex(predicateFn);
 
-      const currIndex = data?.transcriptions?.findIndex(predicateFn);
-      const isLast = data?.transcriptions?.length - 1 === currIndex;
+      const isLast = finalTranscriptions?.length - 1 === currIndex;
 
       if (!isLast && type === "end") {
         const nextIndex = currIndex + 1;
-        const nextExample = data?.transcriptions?.[nextIndex];
+        const nextExample = finalTranscriptions?.[nextIndex];
         const nextExists = prev?.find(
           (item: any) => item?.id === nextExample?.id
         );
@@ -229,7 +231,7 @@ export const TranscriptItem = ({
                   return item?.end !== example?.end;
                 });
               }
-              return val.concat({ ...example, contentId: lessonId });
+              return val.concat({ ...example, contentId });
             });
           }}
         >
@@ -362,7 +364,7 @@ export const TranscriptItem = ({
                     setWords({
                       word: item,
                       transcriptionId: example?.id,
-                      contentId: lessonId,
+                      contentId,
                     });
                   }}
                 >

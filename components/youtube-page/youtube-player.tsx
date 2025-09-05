@@ -519,6 +519,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
     setTimes((prev: any) =>
       prev.concat({
         id: crypto.randomUUID(),
+        temporary: true,
         contentId: content.id,
         pinyin: "pinyin",
         chinglish: "chinglish",
@@ -695,7 +696,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                         return time.contentId === content.id;
                       })
                       ?.map((item: any) => {
-                        const { contentId, ...rest } = item;
+                        const { contentId, temporary, ...rest } = item;
 
                         return rest;
                       }) || [];
@@ -765,7 +766,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                   setIsPlaying(false);
                 }}
                 onEnded={() => {
-                  if (userPreference?.autoPlayContent) {
+                  if (userPreference?.autoPlayContent && !editMode) {
                     startCountdown();
                   }
 

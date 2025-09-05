@@ -520,7 +520,6 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
       prev.concat({
         id: crypto.randomUUID(),
         contentId: content.id,
-        hanzi: "hanzi",
         pinyin: "pinyin",
         chinglish: "chinglish",
         input: "input",

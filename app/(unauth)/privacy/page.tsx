@@ -31,7 +31,7 @@ export default function Terms() {
         <h2 className="font-bold my-8 text-xl">Information we collect</h2>
 
         <p className="dark:text-gray-300 font-light">
-          When you use the Service, Duolingo may collect the following personal
+          When you use the Service, Mandarino may collect the following personal
           information about you.
         </p>
 

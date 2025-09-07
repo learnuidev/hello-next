@@ -41,28 +41,28 @@ import { useIsSmall } from "./utils/use-is-small";
 
 import { useGo } from "@/app/(auth)/convos/[content-id]/hooks/use-go";
 import { formatTime } from "@/app/(auth)/convos/_play/utils";
+import { MiniDictionary } from "@/app/(auth)/convos/audiobook-player/components/mini-dictionary";
+import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
 import { useCountdown } from "@/hooks/use-countdown/use-countdown";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import { useQueryClient } from "@tanstack/react-query";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { ChinglishButton } from "../chinglish-button";
+import { PinyinButton } from "../pinyin-button";
+import { PreviewButton } from "../settings-dialog/preview-button";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 import { TheDock } from "../the-dock";
+import { ContentEditButton } from "./content-edit-button";
 import {
   useContextPlayContextState,
   usePlayHistoryStore,
 } from "./hooks/use-play-history-state";
 import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
-import { smartSplit } from "./utils/smart-split";
-import { ChinglishButton } from "../chinglish-button";
-import { PinyinButton } from "../pinyin-button";
-import { MiniDictionary } from "@/app/(auth)/convos/audiobook-player/components/mini-dictionary";
 import { useSelectedItem } from "./use-selected-item";
-import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
-import { useChinglishState } from "../settings-dialog/use-chinglish-state";
-import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
-import { ContentEditButton } from "./content-edit-button";
-import { BrightModeButton } from "../bright-mode-button";
+import { smartSplit } from "./utils/smart-split";
 
 interface ViewModeState {
   viewMode: string;
@@ -666,7 +666,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
             <PinyinButton className="text-lg" />
 
-            {content?.lang === "zh" && <BrightModeButton />}
+            <PreviewButton />
 
             {editMode && (
               <button

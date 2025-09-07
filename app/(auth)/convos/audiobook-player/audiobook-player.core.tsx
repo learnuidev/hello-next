@@ -4,18 +4,18 @@ import { Slider } from "@/components/ui/slider";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 import { ChinglishButton } from "@/components/chinglish-button";
 import { PinyinButton } from "@/components/pinyin-button";
+import { ReadModeButton } from "@/components/read-mode-button";
+import { PreviewButton } from "@/components/settings-dialog/preview-button";
+import { ContentEditButton } from "@/components/youtube-page/content-edit-button";
+import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { IContent } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
 import ReactPlayer from "react-player";
 import { formatTime } from "../_play/utils";
+import { CurrentTranscriptionEditor } from "./components/current-transcription-editor";
 import { CurrentTranscriptionView } from "./components/current-transcription-view";
 import { MiniDictionary } from "./components/mini-dictionary";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
-import { ReadModeButton } from "@/components/read-mode-button";
-import { ContentEditButton } from "@/components/youtube-page/content-edit-button";
-import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
-import { CurrentTranscriptionEditor } from "./components/current-transcription-editor";
-import { BrightModeButton } from "@/components/bright-mode-button";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -138,9 +138,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
 
               <PinyinButton className="text-2xl" />
               <ReadModeButton className="text-2xl" />
-              {content?.lang === "zh" && (
-                <BrightModeButton className="text-2xl" />
-              )}
+              <PreviewButton />
               {containsChinglish && <ChinglishButton className="text-2xl" />}
             </div>
 

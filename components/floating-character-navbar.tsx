@@ -3,24 +3,20 @@ import { useListComponentsQuery } from "@/domain/lesson/component.queries";
 import { Icons } from "./ui/icons.v2";
 
 import { useCharacterContextStore } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { SelectedCharacterContentsButton } from "./_select-character/selected-character-contents-button";
-import { SelectedCharacterStoryButton } from "./_select-character/selected-character-story-button";
-import { BrightModeButton } from "./bright-mode-button";
+import { isNonRomanLang } from "./_select-character/utils/is-non-roman-lang";
+import { usePreviousPathnameStore } from "./language-selector/use-previous-path-name-store";
 import { PinyinButton } from "./pinyin-button";
+import { PreviewButton } from "./settings-dialog/preview-button";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
-import { CommonCharacterButton } from "./common-character-button";
-import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
-import { usePreviousPathnameStore } from "./language-selector/use-previous-path-name-store";
-import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
-import { PreviewButton } from "./settings-dialog/preview-button";
-import { isNonRomanLang } from "./_select-character/utils/is-non-roman-lang";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -147,8 +143,6 @@ export const FloatingCharacterNavbar = ({
             {/* <BrightModeButton /> */}
 
             {isNonRomanLang(lang) && <PinyinButton />}
-
-            {lang === "zh" && <BrightModeButton />}
 
             <button
               className="text-xl text-black dark:text-white"

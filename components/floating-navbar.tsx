@@ -24,6 +24,7 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import { isNonRomanLang } from "./_select-character/utils/is-non-roman-lang";
 import { CommonCharacterButton } from "./common-character-button";
 import { usePreviousPathnameStore } from "./language-selector/use-previous-path-name-store";
+import { PreviewButton } from "./settings-dialog/preview-button";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
@@ -79,6 +80,8 @@ const FloatingNavbarComp = () => {
               {content?.lang === "zh" && <BrightModeButton />}
             </>
           )}
+
+          <PreviewButton />
 
           {isNonRomanLang(content?.lang) && <PinyinButton />}
 

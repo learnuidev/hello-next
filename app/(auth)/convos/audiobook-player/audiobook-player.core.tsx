@@ -138,8 +138,9 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
 
               <PinyinButton className="text-2xl" />
               <ReadModeButton className="text-2xl" />
-              <PreviewButton />
+
               {containsChinglish && <ChinglishButton className="text-2xl" />}
+              <PreviewButton />
             </div>
 
             <div className="flex items-center gap-4">

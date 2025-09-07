@@ -148,6 +148,8 @@ export const FloatingCharacterNavbar = ({
 
             {isNonRomanLang(lang) && <PinyinButton />}
 
+            {lang === "zh" && <BrightModeButton />}
+
             <button
               className="text-xl text-black dark:text-white"
               onClick={() => {

@@ -15,6 +15,7 @@ import { ReadModeButton } from "@/components/read-mode-button";
 import { ContentEditButton } from "@/components/youtube-page/content-edit-button";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { CurrentTranscriptionEditor } from "./components/current-transcription-editor";
+import { BrightModeButton } from "@/components/bright-mode-button";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -137,6 +138,9 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
 
               <PinyinButton className="text-2xl" />
               <ReadModeButton className="text-2xl" />
+              {content?.lang === "zh" && (
+                <BrightModeButton className="text-2xl" />
+              )}
               {containsChinglish && <ChinglishButton className="text-2xl" />}
             </div>
 

@@ -5,7 +5,7 @@ import { useReadModeStore } from "@/stores/use-readmode-store";
 import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
 import { useCommonCharacterMode } from "@/stores/use-common-character-mode-store";
 
-export const BrightModeButton = () => {
+export const BrightModeButton = ({ className }: { className?: string }) => {
   const readMode = useReadModeStore((state) => state.readMode);
   const setReadMode = useReadModeStore((state) => state.setReadMode);
 
@@ -20,7 +20,9 @@ export const BrightModeButton = () => {
         "text-xl",
         !brightMode
           ? "dark:text-white text-black"
-          : "dark:text-gray-500 text-gray-300"
+          : "dark:text-gray-500 text-gray-300",
+
+        className
       )}
       onClick={() => {
         setBrightMode((prev: any) => !prev);

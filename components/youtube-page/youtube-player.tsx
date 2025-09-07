@@ -62,6 +62,7 @@ import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 import { ContentEditButton } from "./content-edit-button";
+import { BrightModeButton } from "../bright-mode-button";
 
 interface ViewModeState {
   viewMode: string;
@@ -664,6 +665,8 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
             {containsChinglish && <ChinglishButton className="text-lg" />}
 
             <PinyinButton className="text-lg" />
+
+            {content?.lang === "zh" && <BrightModeButton />}
 
             {editMode && (
               <button

@@ -12,7 +12,7 @@ export function isFreePlanExpired(plan: UserPlan): FreePlanStatus | null {
   }
 
   const createdDate = new Date(plan.createdAt);
-  const expiryDate = addDays(createdDate, 30);
+  const expiryDate = addDays(createdDate, 7);
   const currentDate = new Date();
   const isExpired = isAfter(currentDate, expiryDate);
 

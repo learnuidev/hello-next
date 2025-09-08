@@ -1,3 +1,4 @@
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,20 +9,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Check, Star, Zap } from "lucide-react";
-import { useListProductsQuery } from "./hooks/use-list-products-query";
-import { useListUserPlansQuery } from "./hooks/use-list-user-plans-query";
-import { formatPrice } from "./utils/format-price";
-import Link from "next/link";
-import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { useGetAuthUserProfileQuery } from "@/hooks/user/use-get-auth-user-profile";
 import { cn } from "@/lib/utils";
+import { Check, Star, Zap } from "lucide-react";
+import Link from "next/link";
+import { useGetMemberType } from "./hooks/use-get-member-type";
+import { useListProductsQuery } from "./hooks/use-list-products-query";
 import { productNames } from "./plans.types";
+import { formatPrice } from "./utils/format-price";
 
 export function PricingSection() {
   const { data: products, isLoading } = useListProductsQuery();
-  const { data: userPlans = [], isLoading: isPlansLoading } =
-    useListUserPlansQuery();
 
   const proProduct = products?.result?.items?.find(
     (item) => item?.name === productNames.pro
@@ -32,12 +30,10 @@ export function PricingSection() {
 
   const { data: authUserProfile } = useGetAuthUserProfileQuery();
 
-  const isProMember = userPlans?.find(
-    (plan: any) => plan?.productId === proProduct?.id
-  );
-  const isFreeMember = userPlans?.find(
-    (plan: any) => plan?.productId === freeProduct?.id
-  );
+  const memberType = useGetMemberType();
+
+  const isProMember = memberType === "pro";
+  const isFreeMember = memberType === "free";
 
   if (isLoading) {
     return (

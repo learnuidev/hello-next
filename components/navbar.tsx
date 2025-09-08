@@ -109,6 +109,18 @@ export const ContentsDropdown = () => {
 export const NavBar = ({ autoFocus }: { autoFocus?: boolean }) => {
   const routeName = usePathname();
 
+  if (routeName?.includes("/convos")) {
+    return (
+      <div className="relative">
+        <div className="flex lg:justify-between lg:items-center w-full px-4 md:px-12 flex-col lg:flex-row">
+          <SearchBar autoFocus={autoFocus} />
+
+          <AnimatedContentsFilter />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative">
       <div className="flex justify-between items-center w-full px-4 md:px-12">

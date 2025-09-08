@@ -66,6 +66,7 @@ export interface ContentTranscription {
   sentence?: string;
   en: string;
   chinglish?: string;
+  words?: { id?: string; input?: string; start?: number; end?: number }[];
 }
 
 export interface IContent {

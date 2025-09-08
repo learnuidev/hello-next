@@ -29,24 +29,13 @@ export function msToTimeParts(ms: number): TimeParts {
 
 export function formatLearnedDate(time: number) {
   const { hours, minutes, seconds } = msToTimeParts(time);
-  let format = ``;
 
-  if (hours) {
-    format = format + `${hours}` + (hours > 1 ? "hrs" : "hr");
-  }
+  const parts = [];
+  if (hours) parts.push(`${hours} ${hours > 1 ? "hrs" : "hr"}`);
+  if (minutes) parts.push(`${minutes} ${minutes > 1 ? "minutes" : "minute"}`);
+  if (seconds) parts.push(`${seconds} ${seconds > 1 ? "seconds" : "second"}`);
 
-  if (minutes) {
-    format =
-      format +
-      (hours !== undefined && hours > 0 ? ", " : "") +
-      minutes +
-      (minutes > 1 ? " minutes" : " minute");
-  }
-
-  if (seconds) {
-    format =
-      format + " and " + seconds + (seconds > 1 ? " seconds" : " second");
-  }
-
-  return format;
+  if (parts.length === 0) return "0 seconds"; // if everything is zero
+  if (parts.length === 1) return parts;
+  return parts.slice(0, -1).join(", ") + " and " + parts[parts.length - 1];
 }

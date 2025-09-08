@@ -200,7 +200,7 @@ export function MiniDictionary({
         )}
       </div>
 
-      {searchHistory?.length > 0 && (
+      {searchHistory?.length > 1 && (
         <div className="mt-4 flex gap-4 text-lg">
           <button
             disabled={isFirstIndex}

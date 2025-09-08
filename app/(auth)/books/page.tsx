@@ -349,7 +349,7 @@ export default function BooksPage() {
 
       {/* Main content */}
       <div className="md:ml-64">
-        <div className="pt-24 pl-20 max-w-4xl mx-auto">
+        <div className="pt-24 px-4 sm:px-0 lg:pl-20 max-w-4xl mx-auto">
           <div>
             <h1 className="text-2xl lg:text-3xl font-bold mb-2 m:mb-4 leading-relaxed">
               {sampleBook.title}
@@ -367,10 +367,10 @@ export default function BooksPage() {
               return (
                 <div key={JSON.stringify(section)}>
                   <div className="mb-12">
-                    <p className="uppercase text-mid-grey mb-4 select-none text-sm font-medium font-cera-pro mb-4">
+                    <p className="uppercase text-mid-grey text-sm font-medium font-cera-pro mb-4">
                       {section.type} {section.index}
                     </p>
-                    <h3 className="font-bold inline transition select-none font-cera-pro text-2xl text-midnight">
+                    <h3 className="font-bold inline transition font-cera-pro text-2xl text-midnight">
                       {section.title}
                     </h3>
                   </div>

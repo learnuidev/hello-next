@@ -5,9 +5,9 @@ import { AnimatedLoadingText } from "@/components/animated-loading-text";
 import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { useSearchHistory } from "../hooks/use-search-history";
+import { useState } from "react";
+import { useContentSearchHistory } from "../hooks/use-content-search-history";
 
 export function MiniDictionary({
   lang,
@@ -20,7 +20,7 @@ export function MiniDictionary({
   contentId: string;
   lang: string;
 }) {
-  const { searchHistory, addSearchHistory } = useSearchHistory({
+  const { searchHistory, addSearchHistory } = useContentSearchHistory({
     contentId,
     lang,
   });

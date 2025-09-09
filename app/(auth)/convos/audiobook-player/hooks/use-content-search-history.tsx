@@ -1,7 +1,7 @@
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useListHistoryQuery } from "@/domain/history/history.queries";
 
-export const useSearchHistory = ({
+export const useContentSearchHistory = ({
   contentId,
   lang,
 }: {

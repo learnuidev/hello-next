@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { useSegmentTextQuery } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useReadModeState } from "@/components/read-mode-button";
-import { useSearchHistory } from "../hooks/use-search-history";
+import { useContentSearchHistory } from "../hooks/use-content-search-history";
 
 function EnView({
   currentTranscription,
@@ -43,7 +43,7 @@ function InputView({
 }: CurrentTranscriptionProps) {
   const { selected, setSelected } = useSelectedItem();
 
-  const { searchHistory, addSearchHistory } = useSearchHistory({
+  const { searchHistory, addSearchHistory } = useContentSearchHistory({
     contentId,
     lang,
   });
@@ -109,7 +109,7 @@ export function ReaderView({
 
   const { selected, setSelected } = useSelectedItem();
 
-  const { searchHistory, addSearchHistory } = useSearchHistory({
+  const { searchHistory, addSearchHistory } = useContentSearchHistory({
     contentId,
     lang,
   });

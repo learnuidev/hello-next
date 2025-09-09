@@ -96,13 +96,15 @@ const WithMultiSentence = ({
   const [sentenceIndex, setSentenceIndex] = useState(0);
 
   const multiSentences = useMemo(() => {
-    return getMulti(sentence?.input || sentence?.hanzi || "")?.map((item) => {
-      return {
-        hanzi: item,
-        input: item,
-        lang: sentence.lang,
-      };
-    });
+    return getMulti(sentence?.input || sentence?.hanzi || "")
+      ?.map((item) => {
+        return {
+          hanzi: item,
+          input: item,
+          lang: sentence.lang,
+        };
+      })
+      ?.filter((item) => item?.hanzi);
   }, [sentence?.hanzi, sentence?.input, sentence.lang]);
 
   const sentenceItem = useMemo(
@@ -543,6 +545,8 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
     () => shuffledTranscriptions?.[sentenceIndex],
     [sentenceIndex, shuffledTranscriptions]
   );
+
+  console.log("sentence", sentence);
 
   return (
     <div className="mb-32">

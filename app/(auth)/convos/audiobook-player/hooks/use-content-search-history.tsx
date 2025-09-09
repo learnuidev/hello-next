@@ -15,18 +15,18 @@ export const useContentSearchHistory = ({
 
   const addSearchHistory = (props: { input: string } & any) => {
     addHistoryMutation.mutate({
-      ...props,
       input: props.input,
       lang: content?.lang,
       eventType: "SEARCH",
-      context: {
+      [contentId]: {
+        transcriptionId: props?.transcriptionId,
         contentId,
       },
     } as any);
   };
 
   const searchHistory = data?.Items?.filter(
-    (item: any) => item?.context?.contentId === contentId
+    (item: any) => item?.[contentId]
   )?.sort((a: any, b: any) => (a?.lastSeen || 0) - (b?.lastSeen || 0));
 
   return {

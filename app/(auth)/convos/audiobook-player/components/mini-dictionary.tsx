@@ -8,6 +8,7 @@ import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-quer
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useContentSearchHistory } from "../hooks/use-content-search-history";
+import { useDeleteHistoryMutation } from "@/domain/history/delete-history.mutation";
 
 export function MiniDictionary({
   lang,
@@ -24,6 +25,8 @@ export function MiniDictionary({
     contentId,
   });
 
+  const deleteHistoryMutation = useDeleteHistoryMutation();
+
   const [seeMore, setSeeMore] = useState(false);
   const { data: sentences, isLoading: isSentencesLoading } =
     useListSentencesQuery({
@@ -38,6 +41,9 @@ export function MiniDictionary({
     lang,
   });
 
+  const currentSearchItem = searchHistory?.find(
+    (item: any) => item?.input === selected
+  );
   const currentIndex = searchHistory?.findIndex(
     (item: any) => item?.input === selected
   );
@@ -199,28 +205,46 @@ export function MiniDictionary({
         )}
       </div>
 
-      {searchHistory?.length > 1 && (
-        <div className="mt-4 flex gap-4 text-lg">
+      <div className="flex justify-between items-center">
+        {searchHistory?.length > 1 && (
+          <div className="mt-4 flex gap-4 text-lg">
+            <button
+              disabled={isFirstIndex}
+              className={isFirstIndex ? "text-gray-500" : ""}
+              onClick={() => {
+                setPrevious();
+              }}
+            >
+              <Icons.back />
+            </button>
+            <button
+              disabled={isLastIndex}
+              className={isLastIndex ? "text-gray-500" : ""}
+              onClick={() => {
+                setNext();
+              }}
+            >
+              <Icons.front />
+            </button>
+          </div>
+        )}
+
+        {currentSearchItem && (
           <button
-            disabled={isFirstIndex}
-            className={isFirstIndex ? "text-gray-500" : ""}
-            onClick={() => {
-              setPrevious();
+            className={cn(
+              { "text-gray-500": isLastIndex },
+              "hover:text-red-500"
+            )}
+            onDoubleClick={() => {
+              deleteHistoryMutation.mutateAsync(currentSearchItem).then(() => {
+                setPrevious();
+              });
             }}
           >
-            <Icons.back />
+            <Icons.trash />
           </button>
-          <button
-            disabled={isLastIndex}
-            className={isLastIndex ? "text-gray-500" : ""}
-            onClick={() => {
-              setNext();
-            }}
-          >
-            <Icons.front />
-          </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

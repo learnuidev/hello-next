@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useContentSearchHistory } from "../hooks/use-content-search-history";
 import { useDeleteHistoryMutation } from "@/domain/history/delete-history.mutation";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
+import Link from "next/link";
 
 export function MiniDictionary({
   lang,
@@ -103,7 +105,11 @@ export function MiniDictionary({
       )}
     >
       <div className="flex justify-between items-center">
-        <h4 className="text-2xl font-bold"> {selected} </h4>
+        <h4 className="text-2xl font-bold">
+          <Link target="_blank" href={getNmmLink({ id: selected, lang })}>
+            {selected}
+          </Link>
+        </h4>
 
         <button
           onClick={() => {

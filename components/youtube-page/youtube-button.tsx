@@ -63,13 +63,13 @@ export function YoutubeButton({
   const [isPlaying, setIsPlaying] = useState(false);
   const { contextId, setNewContextId } = useContextPlayContextState();
 
-  const { currentTime, setCurrentTime: setTime } = useCurrentTime(contentId);
+  const { currentTime, setCurrentTime: setTime } = useCurrentTime(transcriptId);
 
   const playerRef = useRef(null) as any;
   const searchParams = useSearchParams();
   const start = searchParams.get("start");
-  const { data: lesson } = useGetContentQuery({ contentId: contentId });
-  const finalUrl = lesson?.audio;
+  const { data: content } = useGetContentQuery({ contentId: contentId });
+  const finalUrl = content?.audio;
 
   const seek = (time: any) => {
     playerRef.current.seekTo(time, "seconds");
@@ -86,8 +86,8 @@ export function YoutubeButton({
   };
 
   const transcriptions = useMemo(
-    () => lesson?.transcriptions || [],
-    [lesson?.transcriptions]
+    () => content?.transcriptions || [],
+    [content?.transcriptions]
   );
 
   const currentTranscription = useMemo(

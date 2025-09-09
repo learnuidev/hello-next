@@ -14,6 +14,7 @@ import { useRef } from "react";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { Icons } from "../ui/icons.v2";
 import { useCanTrackFunction } from "../use-can-track-function";
+import { useCanTrackNavigationFunction } from "../use-can-track-navigation-function";
 import { getYablaLink } from "../youtube-page/utils/get-yabla-link";
 import { smartSplit } from "../youtube-page/utils/smart-split";
 import { YoutubeButton } from "../youtube-page/youtube-button";
@@ -23,7 +24,6 @@ import { GoogleTranslateLink } from "./selected-character/google-translate-link"
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { isRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
-import { useCanTrackNavigationFunction } from "../use-can-track-navigation-function";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -84,14 +84,11 @@ export const SentenceItem = (props: any) => {
           </p>
         </div>
         <div className="flex gap-2 justify-end items-end w-full pr-2 mt-2 sm:mt-0">
-          {/* {currentPhrase?.audio ? ( */}
-
-          {currentPhrase?.contentId ? (
+          {currentPhrase?.contentId && currentPhrase?.id ? (
             <YoutubeButton
-              // currentPhraseStr={JSON.stringify(currentPhrase)}
               className="h-6 w-6 text-xs"
               contentId={currentPhrase?.contentId}
-              transcriptId={"todo"}
+              transcriptId={currentPhrase?.id}
               sentenceInput={currentPhrase?.input || currentPhrase?.hanzi}
             />
           ) : (
@@ -107,15 +104,12 @@ export const SentenceItem = (props: any) => {
             />
           )}
 
-          {/* ) : null} */}
-
           <Link
             onClick={() => {
               setIfExists({ ...currentPhrase });
               trackFunction();
             }}
             href={`/nmm/${chineseConverter(encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input))}${resolvedLang ? `?lang=${resolvedLang}` : ``}`}
-            // href={`/nmm/${resolvedLang ? `?lang=${resolvedLang}` : ``}`}
             className={`text-xs bg-white dark:bg-black p-2 w-6 h-6 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
           >
             <Icons.magnifyingGlass />
@@ -126,7 +120,7 @@ export const SentenceItem = (props: any) => {
             className={"h-6 w-6 text-xs"}
           />
 
-          {isSuperAdmin && currentPhrase?.id && (
+          {isSuperAdmin && currentPhrase?.id && !currentPhrase?.contentId && (
             <button
               disabled={
                 deleteSentenceMutation.isPending ||
@@ -212,9 +206,7 @@ export const SentenceItem = (props: any) => {
                     );
                   }}
                 >
-                  {/* {val} */}
                   <CharacterItem character={val} />
-                  {/* {currentPhrase?.input ? " " : ""} */}
                 </span>
               );
             })}

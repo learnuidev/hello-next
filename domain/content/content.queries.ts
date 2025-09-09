@@ -141,17 +141,34 @@ export function useGetContentQuery(
         Authorization: authUser?.jwt,
       });
 
+      const updatedResponse = {
+        ...response,
+        transcriptions: response?.transcriptions?.map(
+          (transcriptionItem, idx: number, ctx) => {
+            if (idx === 0) {
+              return {
+                ...transcriptionItem,
+                start: transcriptionItem?.start,
+                end: transcriptionItem?.end || ctx?.[idx + 1]?.start,
+              };
+            }
+
+            return transcriptionItem;
+          }
+        ),
+      };
+
       setContents((prevContent: any) => {
         const updatedItems = (prevContent?.items || [])
-          ?.filter((c: any) => c?.id !== response?.id)
-          .concat(response);
+          ?.filter((c: any) => c?.id !== updatedResponse?.id)
+          .concat(updatedResponse);
 
         return {
           ...prevContent,
           items: updatedItems,
         };
       });
-      return response;
+      return updatedResponse;
     },
     retry: false,
     // @ts-ignore

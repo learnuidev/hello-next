@@ -22,7 +22,6 @@ export function MiniDictionary({
 }) {
   const { searchHistory, addSearchHistory } = useContentSearchHistory({
     contentId,
-    lang,
   });
 
   const [seeMore, setSeeMore] = useState(false);

@@ -1,14 +1,15 @@
+import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useListHistoryQuery } from "@/domain/history/history.queries";
 
 export const useContentSearchHistory = ({
   contentId,
-  lang,
 }: {
   contentId: string;
-  lang: string;
 }) => {
   const addHistoryMutation = useAddHistoryMutation();
+
+  const { data: content } = useGetContentQuery({ contentId });
 
   const { data } = useListHistoryQuery();
 
@@ -16,7 +17,7 @@ export const useContentSearchHistory = ({
     addHistoryMutation.mutate({
       ...props,
       input: props.input,
-      lang,
+      lang: content?.lang,
       eventType: "SEARCH",
       context: {
         contentId,

@@ -546,8 +546,6 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
     [sentenceIndex, shuffledTranscriptions]
   );
 
-  console.log("sentence", sentence);
-
   return (
     <div className="mb-32">
       <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "}

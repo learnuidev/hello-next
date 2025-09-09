@@ -12,6 +12,7 @@ import { useReadModeState } from "@/components/read-mode-button";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { usePreviewMode } from "@/components/settings-dialog/use-preview-mode";
 import { isVideoUrl } from "../../utils/is-video-url";
+import { useSearchOnlyPinyinState } from "@/components/search-only-pinyin-button";
 
 export const useAudioBookState = (content: IContent) => {
   const { playbackRate } = useListenState();
@@ -176,15 +177,25 @@ export const useAudioBookState = (content: IContent) => {
 
   const { setNextMode } = usePreviewMode();
 
+  const { setShowSearchOnlyPinyin, showSearchOnlyPinyin } =
+    useSearchOnlyPinyinState();
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const togglePinyin = () => {
     setShowPinyin(!showPinyin);
   };
+  const toggleSearchPinyin = useCallback(() => {
+    setShowSearchOnlyPinyin(!showSearchOnlyPinyin);
+  }, [setShowSearchOnlyPinyin, showSearchOnlyPinyin]);
 
   const { showChinglish, setShowChinglish } = useChinglishState();
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
+      if (["s"]?.includes(event.key?.toLowerCase()) && !editMode) {
+        event.preventDefault();
+        toggleSearchPinyin();
+      }
       if (["p"]?.includes(event.key?.toLowerCase()) && !editMode) {
         event.preventDefault();
         togglePinyin();
@@ -250,6 +261,7 @@ export const useAudioBookState = (content: IContent) => {
     loop,
     audioUrl,
     handlePlayPause,
+    toggleSearchPinyin,
   ]);
 
   const debounceSeek = useDebouncedCallback((firstStart: number) => {

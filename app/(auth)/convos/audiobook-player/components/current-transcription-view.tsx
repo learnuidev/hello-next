@@ -4,6 +4,7 @@ import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/
 import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
+import { useReadModeState } from "@/components/read-mode-button";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
@@ -11,8 +12,8 @@ import { formatRoman } from "@/lib/format-roman";
 import { cn } from "@/lib/utils";
 import { useSegmentTextQuery } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
-import { useReadModeState } from "@/components/read-mode-button";
 import { useContentSearchHistory } from "../hooks/use-content-search-history";
+import { useSearchOnlyPinyinState } from "@/components/search-only-pinyin-button";
 
 function EnView({
   currentTranscription,
@@ -39,13 +40,11 @@ function InputView({
   seekAndPlay,
   containsChinglish,
   contentId,
-  lang,
 }: CurrentTranscriptionProps) {
   const { selected, setSelected } = useSelectedItem();
 
   const { searchHistory, addSearchHistory } = useContentSearchHistory({
     contentId,
-    lang,
   });
 
   return (
@@ -94,7 +93,6 @@ export function ReaderView({
   className,
   data,
   contentId,
-  lang,
 }: CurrentTranscriptionProps & {
   data: {
     input: string;
@@ -109,15 +107,21 @@ export function ReaderView({
 
   const { selected, setSelected } = useSelectedItem();
 
+  const { setShowSearchOnlyPinyin, showSearchOnlyPinyin } =
+    useSearchOnlyPinyinState();
+
   const { searchHistory, addSearchHistory } = useContentSearchHistory({
     contentId,
-    lang,
   });
 
   return (
     <div className={cn(defautClassName, className)}>
       <div className={cn(defautClassName, className)}>
         {data?.map((item, idx) => {
+          const containsHistory = searchHistory?.find(
+            (historyItem: any) =>
+              historyItem?.input === item?.hanzi || item?.input
+          );
           return (
             <span
               onClick={() => {
@@ -148,11 +152,30 @@ export function ReaderView({
               )}
               key={`${JSON.stringify(item)}-${idx}-${idx}`}
             >
-              {showPinyin && (
-                <span className="text-sm dark:text-gray-400 text-gray-800">
-                  {formatRoman(item)}
-                </span>
-              )}
+              {showPinyin &&
+                (showSearchOnlyPinyin ? (
+                  <span
+                    className={cn(
+                      "text-sm ",
+
+                      containsHistory
+                        ? "dark:text-gray-400 text-gray-800"
+                        : "dark:text-black text-white"
+                    )}
+                  >
+                    {containsHistory ? formatRoman(item) : ".."}
+                  </span>
+                ) : (
+                  <span
+                    className={cn(
+                      "text-sm ",
+
+                      "dark:text-gray-400 text-gray-800"
+                    )}
+                  >
+                    {formatRoman(item)}
+                  </span>
+                ))}
 
               <span
                 className={

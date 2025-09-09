@@ -16,6 +16,7 @@ import { CurrentTranscriptionEditor } from "./components/current-transcription-e
 import { CurrentTranscriptionView } from "./components/current-transcription-view";
 import { MiniDictionary } from "./components/mini-dictionary";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
+import { SearchOnlyPinyinButton } from "@/components/search-only-pinyin-button";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -136,7 +137,9 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 <Icons.rotateRight className="text-xl" />
               </button>
 
+              <SearchOnlyPinyinButton className="text-2xl" />
               <PinyinButton className="text-2xl" />
+
               <ReadModeButton className="text-2xl" />
 
               {containsChinglish && <ChinglishButton className="text-2xl" />}

@@ -132,20 +132,30 @@ export function ReaderView({
                   seekAndPlay(item?.start);
                 }
                 const selectedText = getSelectedText();
+
+                const containsSelectedHistory = searchHistory?.find(
+                  (historyItem: any) => historyItem?.input === selectedText
+                );
                 if (selectedText && selectedText?.length < 36) {
                   setSelected(selectedText);
-                  addSearchHistory({
-                    input: selectedText,
-                    transcriptionId: currentTranscription.id,
-                  });
+
+                  if (!containsSelectedHistory) {
+                    addSearchHistory({
+                      input: selectedText,
+                      transcriptionId: currentTranscription.id,
+                    });
+                  }
                 } else if (selected === (item?.hanzi || item?.input)) {
                   setSelected(null);
                 } else {
                   setSelected(item.hanzi || item?.input);
-                  addSearchHistory({
-                    input: item.hanzi || item?.input,
-                    transcriptionId: currentTranscription.id,
-                  });
+
+                  if (!containsHistory) {
+                    addSearchHistory({
+                      input: item.hanzi || item?.input,
+                      transcriptionId: currentTranscription.id,
+                    });
+                  }
                 }
               }}
               className={cn(

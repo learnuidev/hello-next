@@ -278,7 +278,10 @@ export function PinyinView({
 }: CurrentTranscriptionProps) {
   const { data: _data } = useListDictionaryMeaningsQuery(
     currentTranscription?.input,
-    currentTranscription?.lang
+    currentTranscription?.lang,
+    {
+      words: currentTranscription?.words,
+    }
   );
 
   const { data: _segmentedData } = useSegmentTextQuery({
@@ -286,7 +289,7 @@ export function PinyinView({
     lang: currentTranscription?.lang,
   });
 
-  const data = _data || _segmentedData;
+  const data = _data || currentTranscription?.words || _segmentedData;
 
   const { selected, setSelected } = useSelectedItem();
 

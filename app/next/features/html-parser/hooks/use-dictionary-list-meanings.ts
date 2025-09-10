@@ -66,7 +66,7 @@ export const useListDictionaryMeaningsQuery = (
           )?.[0];
 
           if (item) {
-            res.push(item);
+            res.push({ ...item, start: word?.start, end: word?.end });
           } else {
             const resp = await addToDictionary({
               lang: finalLang,
@@ -75,7 +75,7 @@ export const useListDictionaryMeaningsQuery = (
               context: contentId ? { contentId } : mediaId ? { mediaId } : null,
             });
 
-            res.push(resp);
+            res.push({ ...resp, start: word?.start, end: word?.end });
           }
         }
 

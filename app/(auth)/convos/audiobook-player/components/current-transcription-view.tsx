@@ -5,6 +5,7 @@ import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-sel
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 import { useReadModeState } from "@/components/read-mode-button";
+import { useSearchOnlyPinyinState } from "@/components/search-only-pinyin-button";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
@@ -13,7 +14,6 @@ import { cn } from "@/lib/utils";
 import { useSegmentTextQuery } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useContentSearchHistory } from "../hooks/use-content-search-history";
-import { useSearchOnlyPinyinState } from "@/components/search-only-pinyin-button";
 
 function EnView({
   currentTranscription,
@@ -91,6 +91,7 @@ function InputView({
 export function ReaderView({
   currentTranscription,
   className,
+  seekAndPlay,
   data,
   contentId,
 }: CurrentTranscriptionProps & {
@@ -99,6 +100,8 @@ export function ReaderView({
     hanzi: string;
     pinyin?: string;
     roman?: string;
+    start?: number;
+    end?: number;
   }[];
 }) {
   const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
@@ -125,6 +128,9 @@ export function ReaderView({
           return (
             <span
               onClick={() => {
+                if (item?.start) {
+                  seekAndPlay(item?.start);
+                }
                 const selectedText = getSelectedText();
                 if (selectedText && selectedText?.length < 36) {
                   setSelected(selectedText);

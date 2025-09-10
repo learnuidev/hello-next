@@ -145,8 +145,6 @@ export function ReaderView({
                       transcriptionId: currentTranscription.id,
                     });
                   }
-                } else if (selected === (item?.hanzi || item?.input)) {
-                  setSelected(null);
                 } else {
                   setSelected(item.hanzi || item?.input);
 

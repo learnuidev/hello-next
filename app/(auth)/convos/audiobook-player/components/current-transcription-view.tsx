@@ -68,16 +68,16 @@ function InputView({
 
                 if (selectedText && selectedText?.length < 36) {
                   setSelected(selectedText);
-                  addSearchHistory({
-                    input: selectedText,
-                    transcriptionId: currentTranscription.id,
-                  });
+                  // addSearchHistory({
+                  //   input: selectedText,
+                  //   transcriptionId: currentTranscription.id,
+                  // });
                 } else {
                   setSelected(item);
-                  addSearchHistory({
-                    input: item,
-                    transcriptionId: currentTranscription.id,
-                  });
+                  // addSearchHistory({
+                  //   input: item,
+                  //   transcriptionId: currentTranscription.id,
+                  // });
                 }
               }}
             />

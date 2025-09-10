@@ -18,26 +18,43 @@ export async function GET(req: Request) {
   const isVerified = await verifyJwt(jwtToken, { isAdmin: false });
 
   if (isVerified) {
-    const userPlans = (await listUserPlansApi(isVerified.email)) as any;
+    let userPlans;
+    userPlans = (await listUserPlansApi(isVerified.email)) as any;
 
-    for (const userPlan of userPlans) {
-      const order = await polarApi.orders.get({ id: userPlan.id });
+    try {
+      for (const userPlan of userPlans) {
+        const order = await polarApi.orders.get({ id: userPlan.id });
 
-      userPlan.productId = order.product.id;
-      userPlan.userStatus =
-        order.product.name === productNames.pro
-          ? userPlanStatus.pro
-          : userPlanStatus.free;
+        userPlan.productId = order.product.id;
+        userPlan.userStatus =
+          order.product.name === productNames.pro
+            ? userPlanStatus.pro
+            : userPlanStatus.free;
 
-      const isExpired = isFreePlanExpired(userPlan);
+        const isExpired = isFreePlanExpired(userPlan);
 
-      if (userPlan?.userStatus === userPlanStatus.free && isExpired) {
-        userPlan.isExpired = isExpired.isExpired;
-        userPlan.daysTillExpiry = isExpired.daysTillExpiry;
+        if (userPlan?.userStatus === userPlanStatus.free && isExpired) {
+          userPlan.isExpired = isExpired.isExpired;
+          userPlan.daysTillExpiry = isExpired.daysTillExpiry;
+        }
       }
-    }
 
-    return Response.json(userPlans as UserPlan[]);
+      return Response.json(userPlans as UserPlan[]);
+    } catch (err) {
+      return Response.json(
+        (userPlans || [])?.map((plan: any) => {
+          return {
+            ...plan,
+            productId: plan?.id,
+            userStatus:
+              plan?.productName === "Mandarino Pro"
+                ? userPlanStatus.pro
+                : userPlanStatus.free,
+            ...isFreePlanExpired(plan),
+          };
+        })
+      );
+    }
   } else {
     return Response.json({
       message: "Not authorized",

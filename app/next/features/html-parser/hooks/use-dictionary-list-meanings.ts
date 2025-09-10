@@ -54,7 +54,7 @@ export const useListDictionaryMeaningsQuery = (
     refetchOnMount: false,
     queryFn: async () => {
       if (finalLang === "zh" && data?.length > 0) {
-        const items = await getDictionaryHandler(hanzi, finalLang);
+        const items = await getDictionaryHandler(hanzi, finalLang, options);
         // return items;
 
         let res = [];

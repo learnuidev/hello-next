@@ -64,7 +64,7 @@ export function NewConvoInput() {
             "transcriptions",
             sections.map((section) => section.transcriptions)?.flat()
           );
-          setConvo("input", event?.target?.value);
+          setConvo("input", sents);
         }}
         // autoFocus
         placeholder=""

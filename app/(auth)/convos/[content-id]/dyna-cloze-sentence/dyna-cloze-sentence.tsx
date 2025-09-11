@@ -29,6 +29,8 @@ import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
+import { AnimatedLoadingText } from "@/components/animated-loading-text";
+import { DynaClozeLoader } from "../dyna-cloze/dynacloze-loader";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -493,7 +495,7 @@ export const DynaClozeSentence = ({
 
   const isAutomatic = useShowAutomaticallyTheDock();
 
-  const { data, isLoading } = useListDiscoveryQuery({
+  const { data, isLoading: isLoadingDiscovery } = useListDiscoveryQuery({
     content: sentence?.input || sentence?.hanzi || "",
     lang: sentence?.lang,
   });
@@ -508,12 +510,8 @@ export const DynaClozeSentence = ({
 
   const isMultiSent = isMulti(sentence?.input || sentence?.hanzi);
 
-  if (isLoading && !isMultiSent) {
-    return (
-      <div>
-        <p className="text-center my-32">Loading...</p>
-      </div>
-    );
+  if (isLoadingDiscovery) {
+    return <DynaClozeLoader message="Discoverying..." />;
   }
 
   return (

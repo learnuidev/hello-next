@@ -24,6 +24,8 @@ import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { getMulti } from "../dyna-cloze-sentence/utils/get-multi";
+import { AnimatedLoadingText } from "@/components/animated-loading-text";
+import { DynaClozeLoader } from "./dynacloze-loader";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -45,7 +47,7 @@ function DynoSentenceInner({
   parentSentence,
   maxIndex,
 }: IDynoParams) {
-  const { data, isLoading } = useListDiscoveryQuery({
+  const { data, isLoading: isLoadingDiscovery } = useListDiscoveryQuery({
     content: sentence?.input || sentence?.hanzi || "",
     lang: sentence?.lang,
   });
@@ -62,12 +64,11 @@ function DynoSentenceInner({
     return { ...meanings, ...sentence };
   }, [meanings, sentence]);
 
-  if (isLoading) {
-    return (
-      <div>
-        <p className="text-center my-32">Loading...</p>
-      </div>
-    );
+  if (isLoadingDiscovery) {
+    return <DynaClozeLoader message="Discoverying..." />;
+  }
+  if (isLoadingGrammar) {
+    return <DynaClozeLoader message="Loading grammars..." />;
   }
   return (
     <DynaSentence
@@ -168,7 +169,7 @@ const DynaSentence = ({
 
   const { learnMode, setLearnMode } = useDynaCloze(contentId);
 
-  const { data: grammar } = useListGrammarsQuery({
+  const { data: grammar, isLoading: isGrammarLoading } = useListGrammarsQuery({
     sentenceId: sentence?.input || sentence?.hanzi,
     content: sentence?.input || sentence?.hanzi,
     lang: sentence?.lang,
@@ -251,12 +252,8 @@ const DynaSentence = ({
     }
   };
 
-  if (!grammar?.grammarAnalysis?.length) {
-    return (
-      <div>
-        <p className="text-center my-32">Loading...</p>
-      </div>
-    );
+  if (isGrammarLoading) {
+    return <DynaClozeLoader message="Loading grammars..." />;
   }
 
   return (

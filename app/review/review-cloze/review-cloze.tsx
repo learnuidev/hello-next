@@ -19,6 +19,8 @@ import { HskLevelSelector } from "./hsk-level-selector";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
 import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
+import { AnimatedLoadingText } from "@/components/animated-loading-text";
+import { DynaClozeLoader } from "@/app/(auth)/convos/[content-id]/dyna-cloze/dynacloze-loader";
 
 const ClozeNavbar = ({
   onClose,
@@ -264,13 +266,18 @@ export function ReviewCloze({
     return setShowEn(!showEn);
   };
 
-  if (isSentenceLoading || isLoading || isGrammarLoading) {
-    return (
-      <div>
-        <p className="text-center mt-32">Loading...</p>
-      </div>
-    );
+  if (isLoading) {
+    return <DynaClozeLoader message="Loading..." />;
   }
+
+  if (isSentenceLoading) {
+    return <DynaClozeLoader message="Loading sentences..." />;
+  }
+
+  if (isGrammarLoading) {
+    return <DynaClozeLoader message="Loading grammars..." />;
+  }
+
   if (
     relevantHskWords &&
     (clozeIndex > relevantHskWords?.length - 1 || !sentence)

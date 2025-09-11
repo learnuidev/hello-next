@@ -20,6 +20,7 @@ import { ContentSettings } from "./content-settings";
 import { PlayV3 } from "./play-v3/play-v3";
 import { isVideoUrl } from "./utils/is-video-url";
 import { isYoutube } from "./utils/is-youtube";
+import { DynaSelector } from "./[content-id]/dyna-cloze/dyna-selector";
 
 export const ConvoDetails = ({ contentId }: { contentId: string }) => {
   const searchParams = useSearchParams();
@@ -131,7 +132,7 @@ export const ConvoDetails = ({ contentId }: { contentId: string }) => {
   }
 
   if (viewType === "dynacloze") {
-    return <DynaCloze contentId={contentId} />;
+    return <DynaSelector contentId={contentId} />;
   }
 
   if (viewType === "speak") {

@@ -1,34 +1,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { CharacterItem } from "@/components/_select-character/character-item";
+import {
+  getMulti,
+  isMulti,
+} from "@/app/(auth)/convos/[content-id]/dyna-cloze-sentence/utils/get-multi";
+import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
+import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
 import { Icons } from "@/components/ui/icons.v2";
+import { YoutubeButton } from "@/components/youtube-page/youtube-button";
+import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
+import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
-import { create } from "zustand";
 import {
   ContentClozeModeButton,
   useClozeContentMode,
 } from "../content-cloze-mode-button";
+import { useIsContent } from "../use-is-content";
 import { useReviewModeView } from "../use-review-mode";
+import { ReviewItemHanzi } from "./review-item-hanzi";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
-import { YoutubeButton } from "@/components/youtube-page/youtube-button";
-import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
-import { useIsContent } from "../use-is-content";
-import { useGetContentQuery } from "@/domain/content/content.queries";
-import { useSearchParams } from "next/navigation";
-import { ReviewItemHanzi } from "./review-item-hanzi";
-import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
-import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
-import {
-  isMulti,
-  getMulti,
-} from "@/app/(auth)/convos/[content-id]/dyna-cloze-sentence/utils/get-multi";
-import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
-import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
-import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
+import { AnimatedLoadingText } from "@/components/animated-loading-text";
+import { DynaClozeLoader } from "@/app/(auth)/convos/[content-id]/dyna-cloze/dynacloze-loader";
 
 const ClozeNavbar = ({
   onClose,
@@ -68,21 +66,6 @@ const ClozeNavbar = ({
   );
 };
 
-// const useClozeIndexStore = create((set: any, get: any) => ({
-//   clozeIndex: 0,
-//   setClozeIndex: (clozeIndex: any) => set({ clozeIndex }),
-// }));
-
-// const useQuestionIndexStore = create((set: any, get: any) => ({
-//   questionIndex: 0,
-//   setQuestionIndex: (questionIndex: any) => set({ questionIndex }),
-// }));
-
-// const useWordIndexStore = create((set: any, get: any) => ({
-//   wordIndex: 0,
-//   setWordIndex: (wordIndex: any) => set({ wordIndex }),
-// }));
-
 export function ReviewClozeContent({
   currentCharacter,
   lang,
@@ -98,18 +81,11 @@ export function ReviewClozeContent({
 }) {
   const customRef = useRef(null) as any;
   const [showEn, setShowEn] = useState(false);
-  // const clozeIndex = useClozeIndexStore((state) => state.clozeIndex);
-  // const setClozeIndex = useClozeIndexStore((state) => state.setClozeIndex);
+
   const [clozeIndex, setClozeIndex] = useState(0);
 
-  // const questionIndex = useQuestionIndexStore((state) => state.questionIndex);
-  // const setQuestionIndex = useQuestionIndexStore(
-  //   (state) => state.setQuestionIndex
-  // );
   const [questionIndex, setQuestionIndex] = useState(0);
 
-  // const wordIndex = useWordIndexStore((state) => state.wordIndex);
-  // const setWordIndex = useWordIndexStore((state) => state.setWordIndex);
   const [wordIndex, setWordIndex] = useState(0);
   const [response, setResponse] = useState<any>(null);
   const { setReviewMode } = useReviewModeView();
@@ -125,8 +101,6 @@ export function ReviewClozeContent({
   });
 
   const aiSentences = _aiSentences || [];
-
-  // const { mode } = useLearningMode();
 
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode") || "";
@@ -211,10 +185,11 @@ export function ReviewClozeContent({
     [isMultiSent, _aiSentences, multiSent]
   );
 
-  const { data: sentence } = useListDiscoveryQuery({
-    content: initSentence?.hanzi || initSentence.input,
-    lang,
-  });
+  const { data: sentence, isLoading: isSentenceLoading } =
+    useListDiscoveryQuery({
+      content: initSentence?.hanzi || initSentence.input,
+      lang,
+    });
 
   const futureSentence = useMemo(
     () => sentences?.[questionIndex + 1],
@@ -288,12 +263,15 @@ export function ReviewClozeContent({
     }
   };
 
-  if (isLoading || isGrammarLoading) {
-    return (
-      <div>
-        <p className="text-center mt-32">Loading...</p>
-      </div>
-    );
+  if (isSentenceLoading) {
+    return <DynaClozeLoader message="Loading sentences..." />;
+  }
+
+  if (isLoading) {
+    return <DynaClozeLoader message="Loading..." />;
+  }
+  if (isGrammarLoading) {
+    return <DynaClozeLoader message="Loading grammars..." />;
   }
 
   if (sentences?.length === 0) {

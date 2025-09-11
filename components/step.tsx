@@ -22,7 +22,8 @@ export const StepTitleContainer = ({
 
 const initConvo = {
   id: "mandarino#resource#" + new Date().getTime(),
-  type: "",
+  type: "youtube",
+  contentType: "music",
   author: "",
   location: "",
   level: 1,

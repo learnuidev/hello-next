@@ -17,6 +17,10 @@ import { CurrentTranscriptionView } from "./components/current-transcription-vie
 import { MiniDictionary } from "./components/mini-dictionary";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
 import { SearchOnlyPinyinButton } from "@/components/search-only-pinyin-button";
+import {
+  useContextPlayContextState,
+  usePlayHistoryStore,
+} from "@/components/youtube-page/hooks/use-play-history-state";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -42,6 +46,9 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
     onReady,
     start,
   } = useAudioBookState(content);
+
+  const setHistory = usePlayHistoryStore((state) => state.setHistory);
+  const { contextId, setNewContextId } = useContextPlayContextState();
 
   const editMode = useContentEditStore((state) => state.editMode);
 
@@ -87,7 +94,11 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               playbackRate={playbackRate}
               progressInterval={100}
               url={content?.audio}
-              onPlay={() => setPlaying(true)}
+              onPlay={() => {
+                setNewContextId();
+
+                setPlaying(true);
+              }}
               onPause={() => setPlaying(false)}
               width="100%"
               height="50px"
@@ -96,6 +107,14 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               controls={false}
               ref={playerRef}
               onProgress={(value) => {
+                setHistory({
+                  transcriptionId: currentTranscription?.id,
+                  contextId,
+                  contentId: content.id,
+                  createdAt: Date.now(),
+                  progressTime: value.playedSeconds,
+                });
+
                 setCurrentTime(value.playedSeconds);
               }}
             />
@@ -110,12 +129,12 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                     : "dark:text-gray-600 text-gray-300"
                 )}
                 onClick={() => {
-                  setLoop((loop: string) => {
+                  setLoop((loop: any) => {
                     if (loop) {
                       return null;
                     }
 
-                    return currentTranscription?.input;
+                    return currentTranscription;
                   });
                 }}
               >

@@ -13,6 +13,7 @@ import { useChinglishState } from "@/components/settings-dialog/use-chinglish-st
 import { usePreviewMode } from "@/components/settings-dialog/use-preview-mode";
 import { isVideoUrl } from "../../utils/is-video-url";
 import { useSearchOnlyPinyinState } from "@/components/search-only-pinyin-button";
+import { useRepeatHistoryStore } from "../../_play/use-repeat-history";
 
 export const useAudioBookState = (content: IContent) => {
   const { playbackRate } = useListenState();
@@ -97,13 +98,13 @@ export const useAudioBookState = (content: IContent) => {
 
   const seekBefore = useCallback(() => {
     const currentTranscription = transcriptions?.find(
-      (trans) => trans?.start <= currentTime && trans?.end >= currentTime
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
     );
 
     if (currentTranscription) {
       const currentTranscriptionIndex = Math.max(
         transcriptions?.findIndex(
-          (trans) => trans?.start === currentTranscription?.start
+          (trans: any) => trans?.start === currentTranscription?.start
         ),
         0
       );
@@ -112,8 +113,33 @@ export const useAudioBookState = (content: IContent) => {
 
       const prevTranscription = transcriptions?.[prevIndex];
 
-      seek(prevTranscription?.start);
+      playerRef.current.seekTo(prevTranscription?.start, "seconds");
     }
+  }, [currentTime, transcriptions]);
+
+  const setRepeatHistories = useRepeatHistoryStore(
+    (state: any) => state.setHistory
+  );
+
+  const seekAfter = useCallback(() => {
+    const currentTranscription = transcriptions?.find(
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+    );
+
+    const currentTranscriptionIndex = Math.max(
+      transcriptions?.findIndex(
+        (trans: any) => trans?.start === currentTranscription?.start
+      ),
+      0
+    );
+
+    const nextIndex = Math.min(
+      currentTranscriptionIndex + 1,
+      transcriptions?.length - 1
+    );
+    const nextTranscription = transcriptions?.[nextIndex];
+
+    playerRef.current.seekTo(nextTranscription?.start, "seconds");
   }, [currentTime, transcriptions]);
 
   useEffect(() => {
@@ -127,27 +153,6 @@ export const useAudioBookState = (content: IContent) => {
       }
     }
   }, [currentTime, finalUrl, start]);
-
-  const seekAfter = useCallback(() => {
-    const currentTranscription = transcriptions?.find(
-      (trans) => trans?.start <= currentTime && trans?.end > currentTime
-    );
-
-    const currentTranscriptionIndex = Math.max(
-      transcriptions?.findIndex(
-        (trans) => trans?.start === currentTranscription?.start
-      ),
-      0
-    );
-
-    const nextIndex = Math.min(
-      currentTranscriptionIndex + 1,
-      transcriptions?.length - 1
-    );
-    const nextTranscription = transcriptions?.[nextIndex];
-
-    seek(nextTranscription?.start);
-  }, [currentTime, seek, transcriptions]);
 
   const handlePlayPause = useCallback(() => {
     if (!playing) {
@@ -220,7 +225,7 @@ export const useAudioBookState = (content: IContent) => {
           if (loop) {
             setLoop(null);
           } else {
-            setLoop(currentTranscription?.input);
+            setLoop(currentTranscription);
           }
         }
       }
@@ -265,13 +270,24 @@ export const useAudioBookState = (content: IContent) => {
   ]);
 
   const debounceSeek = useDebouncedCallback((firstStart: number) => {
+    if (loop) {
+      setRepeatHistories({
+        contentId: content.id,
+        ...loop,
+        hanzi: loop?.input || loop?.hanzi,
+        input: loop?.input || loop?.hanzi,
+        roman: loop?.roman || loop?.pinyin,
+        createdAt: Date.now(),
+      });
+    }
+
     seekAndPlay(firstStart);
   }, 30);
 
   useEffect(() => {
     if (loop) {
       const selectedWords = transcriptions?.find(
-        (word) => word?.input === loop
+        (word) => word?.input === loop?.input
       );
 
       if (selectedWords?.start && currentTime > selectedWords?.end) {

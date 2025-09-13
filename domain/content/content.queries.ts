@@ -170,6 +170,8 @@ export function useGetContentQuery(
       });
       return updatedResponse;
     },
+    ...opts,
+
     retry: false,
     // @ts-ignore
     onSuccess: (data: IContent) => {

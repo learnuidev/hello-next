@@ -14,6 +14,36 @@ import { ConvosNavBar } from "../convos-nav-bar";
 import { useRecentlyWatchedContent } from "../use-recently-watched-content-store";
 import { useGetContentId } from "./hooks/use-get-content-id";
 import { useGo } from "./hooks/use-go";
+import { AnimatedLoadingText } from "@/components/animated-loading-text";
+
+const statusMessages = {
+  GENERATING_SENTENCES: "Generating Sentences",
+  SENTENCES_GENERATED: "Sentences Generated",
+  GENERATING_TRANSLATIONS: "Generating Translations",
+  TRANSLATED: "Translated",
+  GENERATING_AUDIO_AND_SENTENCES: "Generating Audio and Sentences",
+  AUDIO_AND_SENTENCES_GENERATED: "Audio and Sentences Generated",
+  UPLOADING_AUDIO_AND_SENTENCES: "UPLOADING_AUDIO_AND_SENTENCES",
+} as any;
+
+function WithConvoStatusLoading({ contentId }: { contentId: string }) {
+  const { data: content, isLoading } = useGetContentQuery(
+    {
+      contentId: contentId,
+    },
+    {
+      refetchInterval: 3000,
+    }
+  );
+
+  return (
+    <div className="text-2xl flex justify-center my-32">
+      <AnimatedLoadingText
+        message={statusMessages?.[content.status] || "Saved Initial Data"}
+      />
+    </div>
+  );
+}
 
 function RemoveIfExistsButton({ contentId }: { contentId: string }) {
   const { recentlyWatched, setRecentlyWatched, isLoading } =
@@ -71,6 +101,10 @@ function WithContentItem({ children }: { children: React.ReactNode }) {
 export default function ContentItem() {
   const contentId = useGetContentId();
 
+  const { data: content, isLoading } = useGetContentQuery({
+    contentId: contentId,
+  });
+
   const editMode = useContentEditStore((state) => state.editMode);
 
   const { goToBefore, goToNext } = useGo();
@@ -102,7 +136,12 @@ export default function ContentItem() {
           </div>
 
           <div className="mb-24">
-            <ConvoDetails contentId={contentId} />
+            {["audio", "text"]?.includes(content?.type) &&
+            !["TRANSLATED", "PUBLISHED"]?.includes(content?.status) ? (
+              <WithConvoStatusLoading contentId={contentId} />
+            ) : (
+              <ConvoDetails contentId={contentId} />
+            )}
           </div>
         </div>
       </main>

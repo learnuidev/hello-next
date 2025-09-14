@@ -97,10 +97,6 @@ export const useAudioBookState = (content: IContent) => {
   );
 
   const seekBefore = useCallback(() => {
-    const currentTranscription = transcriptions?.find(
-      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
-    );
-
     if (currentTranscription) {
       const currentTranscriptionIndex = Math.max(
         transcriptions?.findIndex(
@@ -113,7 +109,10 @@ export const useAudioBookState = (content: IContent) => {
 
       const prevTranscription = transcriptions?.[prevIndex];
 
-      playerRef.current.seekTo(prevTranscription?.start, "seconds");
+      playerRef.current.seekTo(
+        loop?.start || prevTranscription?.start,
+        "seconds"
+      );
     }
   }, [currentTime, transcriptions]);
 
@@ -122,10 +121,6 @@ export const useAudioBookState = (content: IContent) => {
   );
 
   const seekAfter = useCallback(() => {
-    const currentTranscription = transcriptions?.find(
-      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
-    );
-
     const currentTranscriptionIndex = Math.max(
       transcriptions?.findIndex(
         (trans: any) => trans?.start === currentTranscription?.start
@@ -139,7 +134,10 @@ export const useAudioBookState = (content: IContent) => {
     );
     const nextTranscription = transcriptions?.[nextIndex];
 
-    playerRef.current.seekTo(nextTranscription?.start, "seconds");
+    playerRef.current.seekTo(
+      loop?.start || nextTranscription?.start,
+      "seconds"
+    );
   }, [currentTime, transcriptions]);
 
   useEffect(() => {

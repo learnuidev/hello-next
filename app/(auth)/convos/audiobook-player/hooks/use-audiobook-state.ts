@@ -172,10 +172,12 @@ export const useAudioBookState = (content: IContent) => {
 
   const editMode = useContentEditStore((state) => state.editMode);
 
-  const currentTranscription = transcriptions?.find(
-    (transcription) =>
-      transcription?.start <= currentTime && transcription?.end >= currentTime
-  );
+  const currentTranscription =
+    loop ||
+    transcriptions?.find(
+      (transcription) =>
+        transcription?.start <= currentTime && transcription?.end >= currentTime
+    );
 
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
   const showPinyin = useBrightModeStore((state) => state.showPinyin);

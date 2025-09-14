@@ -108,14 +108,11 @@ export function useShortCuts() {
         router.push("/timeline");
       }
 
-      if (["p"]?.includes(event.key) && event.metaKey) {
-        event.preventDefault();
-        router.push("/pinyin");
-      }
-      if (["p"]?.includes(event.key) && event.ctrlKey) {
+      if (["p"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         setShowPinyin((showPinyin: any) => !showPinyin);
       }
+
       if (["e"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         router.push("/convos");

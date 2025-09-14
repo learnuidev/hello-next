@@ -209,7 +209,11 @@ export const useAudioBookState = (content: IContent) => {
         event.preventDefault();
         setReadMode(!readMode);
       }
-      if (["c"]?.includes(event.key?.toLowerCase()) && !editMode) {
+      if (
+        ["c"]?.includes(event.key?.toLowerCase()) &&
+        !editMode &&
+        !(event.metaKey || event.ctrlKey)
+      ) {
         event.preventDefault();
         setShowChinglish(!showChinglish);
       }

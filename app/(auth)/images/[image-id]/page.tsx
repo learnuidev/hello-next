@@ -39,7 +39,7 @@ export default function ImageDetails() {
                 className="block text-[14px]"
               >
                 <p>{metadata?.pinyin}</p>
-                <p>{metadata?.hanzi || metadata?.input}</p>
+                <p className="text-2xl">{metadata?.hanzi || metadata?.input}</p>
                 <p className="text-gray-400">{metadata?.en}</p>
               </Link>
             );

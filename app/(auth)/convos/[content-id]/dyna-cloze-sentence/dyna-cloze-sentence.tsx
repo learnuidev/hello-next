@@ -430,7 +430,12 @@ const DynaSentence = ({
                 <p>
                   {multiSentence?.map((sentenceItem, idx) => {
                     return (
-                      <span key={sentenceItem}>
+                      <span
+                        key={sentenceItem}
+                        onClick={() => {
+                          setSentenceIndex(idx);
+                        }}
+                      >
                         <span
                           className={
                             sentenceItem === sentence?.hanzi

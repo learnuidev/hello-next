@@ -13,6 +13,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CurrentTranscriptionView } from "../../convos/audiobook-player/components/current-transcription-view";
+import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 
 //
 // ----------------------------
@@ -298,52 +299,54 @@ export default function ImageDetails() {
   const details = data?.imageMetadata?.details || [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
-      <Header />
+    <MandoContextMenu lang={"zh"}>
+      <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
+        <Header />
 
-      <div className="container mx-auto px-6 py-8 grid lg:grid-cols-2 gap-8 items-start">
-        <div className="space-y-4">
-          <ImagePreview src={data?.sourceUrl} />
-          <ImageInfo imageId={imageId} count={details.length} />
-        </div>
-
-        <div className="space-y-4">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-foreground mb-2">
-              Extracted Content
-            </h2>
-            <p className="text-muted-foreground">
-              Click on any item to learn more about the characters and their
-              meanings.
-            </p>
+        <div className="container mx-auto px-6 py-8 grid lg:grid-cols-2 gap-8 items-start">
+          <div className="space-y-4">
+            <ImagePreview src={data?.sourceUrl} />
+            <ImageInfo imageId={imageId} count={details.length} />
           </div>
 
-          <div className="space-y-3">
-            {details.length > 0 ? (
-              details.map((metadata, idx) => (
-                <ExtractedItem
-                  key={idx}
-                  metadata={metadata}
-                  onFocus={() => openExplorer(idx)}
-                />
-              ))
-            ) : (
-              <EmptyFallback />
-            )}
+          <div className="space-y-4">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-foreground mb-2">
+                Extracted Content
+              </h2>
+              <p className="text-muted-foreground">
+                Click on any item to learn more about the characters and their
+                meanings.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {details.length > 0 ? (
+                details.map((metadata, idx) => (
+                  <ExtractedItem
+                    key={idx}
+                    metadata={metadata}
+                    onFocus={() => openExplorer(idx)}
+                  />
+                ))
+              ) : (
+                <EmptyFallback />
+              )}
+            </div>
           </div>
         </div>
+
+        {isExplorerOpen && (
+          <Explorer
+            onClose={() => setIsExplorerOpen(false)}
+            onPrev={goToPrevious}
+            onNext={goToNext}
+            index={currentIndex}
+            total={total}
+            current={currentItem}
+          />
+        )}
       </div>
-
-      {isExplorerOpen && (
-        <Explorer
-          onClose={() => setIsExplorerOpen(false)}
-          onPrev={goToPrevious}
-          onNext={goToNext}
-          index={currentIndex}
-          total={total}
-          current={currentItem}
-        />
-      )}
-    </div>
+    </MandoContextMenu>
   );
 }

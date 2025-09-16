@@ -24,7 +24,7 @@ export default function ImageDetails() {
       <Link href="/images" className="mb-8 block">
         <Icons.back className="text-2xl" />
       </Link>
-      <div className="flex justify-between gap-8 flex-col sm:flex-row">
+      <div className="flex justify-between gap-8 flex-col sm:flex-row items-start">
         <img
           className="h-80 max-w-2xl m-auto rounded-lg"
           src={data?.sourceUrl}

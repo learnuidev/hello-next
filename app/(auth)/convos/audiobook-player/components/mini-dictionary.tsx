@@ -20,11 +20,11 @@ export function MiniDictionary({
 }: {
   selected: string;
   className?: string;
-  contentId: string;
+  contentId?: string;
   lang: string;
 }) {
   const { searchHistory, addSearchHistory } = useContentSearchHistory({
-    contentId,
+    contentId: contentId || "",
   });
 
   const deleteHistoryMutation = useDeleteHistoryMutation();
@@ -101,7 +101,7 @@ export function MiniDictionary({
     <div
       className={cn(
         " bg-gray-50 dark:bg-[rgb(13,14,15)] rounded p-4 sm:p-8",
-        className ? "" : "w-full sm:max-w-[600px] sm:mt-20 mt-0"
+        className || "w-full sm:max-w-[600px] sm:mt-20 mt-0"
       )}
     >
       <div className="flex justify-between items-center">
@@ -130,6 +130,11 @@ export function MiniDictionary({
             className="text-xl my-8"
             message="loading dictionary..."
           />
+
+          <div className="text-gray-50 dark:text-[rgb(13,14,15)]">
+            ppppppppppppppppppppppppppppppppppppppppppppppppppp
+            pppppppppppppppppppppppp ppppppp ppppppppp
+          </div>
         </div>
       ) : (
         <>

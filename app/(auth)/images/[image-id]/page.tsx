@@ -14,6 +14,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CurrentTranscriptionView } from "../../convos/audiobook-player/components/current-transcription-view";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
+import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
+import { MiniDictionary } from "../../convos/audiobook-player/components/mini-dictionary";
 
 //
 // ----------------------------
@@ -202,6 +204,8 @@ function Explorer({
   total: number;
   current: any;
 }) {
+  const { selected, setSelected } = useSelectedItem();
+
   return (
     <div className="fixed inset-0 z-50 bg-background">
       <div className="sticky top-0 bg-background/95 backdrop-blur-md border-b">
@@ -240,36 +244,46 @@ function Explorer({
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-8">
-        <div className="max-w-4xl mx-auto">
-          <Card className="shadow-xl">
-            <CardContent className="p-12">
-              <div className="text-center space-y-8">
-                <CurrentTranscriptionView
-                  containsChinglish={false}
-                  currentTranscription={{
-                    ...current,
-                    input: current?.input || current?.hanzi,
-                    lang: "zh",
-                  }}
-                  lang={"zh"}
-                />
-                <div className="pt-8">
-                  <Link
-                    target="_blank"
-                    href={getNmmLink({
-                      id: current?.hanzi || current?.input,
+      <div className="flex gap-8 flex-col sm:flex-row px-6">
+        <div className="w-full py-8">
+          <div className="max-w-4xl mx-auto">
+            <Card className="shadow-xl">
+              <CardContent className="p-12">
+                <div className="text-center space-y-8">
+                  <CurrentTranscriptionView
+                    containsChinglish={false}
+                    currentTranscription={{
+                      ...current,
+                      input: current?.input || current?.hanzi,
                       lang: "zh",
-                    })}
-                    className="inline-flex items-center gap-2 text-primary hover:text-primary/80"
-                  >
-                    Learn more <Icons.externalLink className="w-4 h-4" />
-                  </Link>
+                    }}
+                    lang={"zh"}
+                  />
+                  <div className="pt-8">
+                    <Link
+                      target="_blank"
+                      href={getNmmLink({
+                        id: current?.hanzi || current?.input,
+                        lang: "zh",
+                      })}
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary/80"
+                    >
+                      Learn more <Icons.externalLink className="w-4 h-4" />
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
         </div>
+
+        {selected && (
+          <MiniDictionary
+            className="my-8 w-full sm:max-w-[600px]"
+            selected={selected}
+            lang={"zh"}
+          />
+        )}
       </div>
     </div>
   );

@@ -2,9 +2,9 @@ import { ContentTranscription } from "@/domain/content/content.api";
 
 export interface CurrentTranscriptionProps {
   currentTranscription: ContentTranscription;
-  seekAndPlay: (time: number) => void;
+  seekAndPlay?: (time: number) => void;
   containsChinglish: boolean;
   className?: string;
-  contentId: string;
+  contentId?: string;
   lang: string;
 }

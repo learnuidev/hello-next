@@ -24,7 +24,7 @@ function EnView({
   return (
     <p
       onClick={() => {
-        seekAndPlay(currentTranscription.start);
+        if (seekAndPlay) seekAndPlay(currentTranscription.start);
       }}
       className="text-[16px] sm:text-xl"
     >
@@ -42,10 +42,6 @@ function InputView({
   contentId,
 }: CurrentTranscriptionProps) {
   const { selected, setSelected } = useSelectedItem();
-
-  const { searchHistory, addSearchHistory } = useContentSearchHistory({
-    contentId,
-  });
 
   return (
     <p
@@ -114,7 +110,7 @@ export function ReaderView({
     useSearchOnlyPinyinState();
 
   const { searchHistory, addSearchHistory } = useContentSearchHistory({
-    contentId,
+    contentId: contentId || "",
   });
 
   return (
@@ -128,7 +124,7 @@ export function ReaderView({
           return (
             <span
               onClick={() => {
-                if (item?.start) {
+                if (item?.start && seekAndPlay) {
                   seekAndPlay(item?.start);
                 }
                 const selectedText = getSelectedText();

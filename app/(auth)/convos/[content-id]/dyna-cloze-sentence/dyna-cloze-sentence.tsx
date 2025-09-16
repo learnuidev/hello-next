@@ -22,6 +22,7 @@ import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { DynaClozeLoader } from "../dyna-cloze/dynacloze-loader";
 import { SpeakSentence } from "../speak/speak-sentence";
 import {
   useDyanStoreRuntime,
@@ -65,7 +66,7 @@ function DynoSentenceInner({
   if (isLoading) {
     return (
       <div>
-        <p className="text-center my-32">Loading meanings...</p>
+        <DynaClozeLoader message="Loading meanings..." />
       </div>
     );
   }
@@ -238,7 +239,7 @@ const DynaSentence = ({
   if (isLoading) {
     return (
       <div>
-        <p className="text-center my-32">Loading grammar...</p>
+        <DynaClozeLoader message="Loading grammar.." />
       </div>
     );
   }

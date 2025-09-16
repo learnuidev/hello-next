@@ -35,7 +35,7 @@ export default function ImageDetails() {
             return (
               <Link
                 key={JSON.stringify(metadata)}
-                href={`/nmm/${metadata?.hanzi}?lang=zh`}
+                href={`/nmm/${metadata?.hanzi || metadata?.input}?lang=zh`}
                 className="block text-[14px]"
               >
                 <p>{metadata?.pinyin}</p>

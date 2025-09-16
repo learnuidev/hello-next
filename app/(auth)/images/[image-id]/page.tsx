@@ -178,7 +178,7 @@ function EmptyFallback() {
           <div className="text-4xl mb-4">📝</div>
           <h3 className="font-semibold mb-2">No content extracted</h3>
           <p className="text-sm">
-            This image doesn't contain any extractable text or characters.
+            {`This image doesn't contain any extractable text or characters.`}
           </p>
         </div>
       </CardContent>

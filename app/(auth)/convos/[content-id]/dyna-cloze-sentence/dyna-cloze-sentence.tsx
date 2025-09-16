@@ -2,6 +2,9 @@ import { ReviewItemHanzi } from "@/app/review/review-cloze-content/review-item-h
 import { getRandomWords } from "@/app/review/review-cloze/utils/get-random-words";
 import { shuffleArray } from "@/app/review/review-cloze/utils/shuffle-array";
 import { useReviewModeView } from "@/app/review/use-review-mode";
+import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
+import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
+import { TheDock } from "@/components/the-dock";
 import { Icons } from "@/components/ui/icons.v2";
 import {
   Tooltip,
@@ -10,27 +13,21 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useViewTypeStore } from "@/components/use-selected-character";
+import { WordleSentence } from "@/components/wordle/wordle-sentence";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
-import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { SpeakSentence } from "../speak/speak-sentence";
 import {
   useDyanStoreRuntime,
   useDynaClozeSentence,
 } from "./use-dyna-cloze-sentence";
 import { getMulti, isMulti } from "./utils/get-multi";
-import { TheDock } from "@/components/the-dock";
-import { WordleSentence } from "@/components/wordle/wordle-sentence";
-import { SpeakSentence } from "../speak/speak-sentence";
-import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
-import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
-import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
-import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
-import { AnimatedLoadingText } from "@/components/animated-loading-text";
-import { DynaClozeLoader } from "../dyna-cloze/dynacloze-loader";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -495,14 +492,14 @@ export const DynaClozeSentence = ({
 
   const isAutomatic = useShowAutomaticallyTheDock();
 
-  const { data, isLoading: isLoadingDiscovery } = useListDiscoveryQuery({
-    content: sentence?.input || sentence?.hanzi || "",
-    lang: sentence?.lang,
-  });
+  // const { data, isLoading: isLoadingDiscovery } = useListDiscoveryQuery({
+  //   content: sentence?.input || sentence?.hanzi || "",
+  //   lang: sentence?.lang,
+  // });
 
-  const finalSentence = useMemo(() => {
-    return { ...(data || {}), ...sentence };
-  }, [data, sentence]);
+  // const finalSentence = useMemo(() => {
+  //   return { ...(data || {}), ...sentence };
+  // }, [data, sentence]);
 
   const maxIndex = sentencesShuffled?.length - 1;
 
@@ -510,9 +507,9 @@ export const DynaClozeSentence = ({
 
   const isMultiSent = isMulti(sentence?.input || sentence?.hanzi);
 
-  if (isLoadingDiscovery) {
-    return <DynaClozeLoader message="Discoverying..." />;
-  }
+  // if (isLoadingDiscovery) {
+  //   return <DynaClozeLoader message="Discoverying..." />;
+  // }
 
   return (
     <div className="mb-32">
@@ -533,10 +530,10 @@ export const DynaClozeSentence = ({
       </nav>
 
       {viewMode === "dynocloze" ? (
-        <WithMultiSentence sentence={finalSentence}>
+        <WithMultiSentence sentence={sentence}>
           <DynaSentence
             maxIndex={maxIndex}
-            sentence={finalSentence}
+            sentence={sentence}
             setWordIndex={setWordIndex}
             setSentenceIndex={setSentenceIndex}
             wordIndex={wordIndex}

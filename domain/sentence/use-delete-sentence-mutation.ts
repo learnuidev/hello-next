@@ -44,16 +44,17 @@ export function useDeleteSentenceMutation(options = {} as any) {
       }
 
       if (data?.component?.includes("#transformation")) {
-        queryClient.refetchQueries([
-          listSentencesQueryKey,
-          data?.componentId,
-          "transformation",
-        ] as any);
+        queryClient.refetchQueries({
+          queryKey: [
+            listSentencesQueryKey,
+            data?.componentId,
+            "transformation",
+          ],
+        });
       } else {
-        queryClient.refetchQueries([
-          listSentencesQueryKey,
-          data?.componentId,
-        ] as any);
+        queryClient.refetchQueries({
+          queryKey: [listSentencesQueryKey, data?.componentId],
+        });
       }
     },
   });

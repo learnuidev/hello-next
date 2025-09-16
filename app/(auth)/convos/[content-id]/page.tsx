@@ -37,10 +37,14 @@ function WithConvoStatusLoading({ contentId }: { contentId: string }) {
   );
 
   return (
-    <div className="text-2xl flex justify-center my-32">
+    <div className="flex justify-center flex-col items-center my-32">
       <AnimatedLoadingText
         message={statusMessages?.[content.status] || "Saved Initial Data"}
       />
+
+      {content?.progress && (
+        <p className="mt-8 text-light"> Progress: {content?.progress || 0}% </p>
+      )}
     </div>
   );
 }

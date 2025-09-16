@@ -15,6 +15,7 @@ import { useRecentlyWatchedContent } from "../use-recently-watched-content-store
 import { useGetContentId } from "./hooks/use-get-content-id";
 import { useGo } from "./hooks/use-go";
 import { AnimatedLoadingText } from "@/components/animated-loading-text";
+import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
 
 const statusMessages = {
   GENERATING_SENTENCES: "Generating Sentences",
@@ -43,7 +44,9 @@ function WithConvoStatusLoading({ contentId }: { contentId: string }) {
       />
 
       {content?.progress && (
-        <p className="mt-8 text-light"> Progress: {content?.progress || 0}% </p>
+        <p className="mt-8 text-light">
+          Progress: {formatPercentage(content?.progress || 0)}
+        </p>
       )}
     </div>
   );

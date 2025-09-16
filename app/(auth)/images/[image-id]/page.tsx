@@ -24,16 +24,33 @@ export default function ImageDetails() {
       <Link href="/images" className="mb-8 block">
         <Icons.back className="text-2xl" />
       </Link>
-      <img
-        className="h-auto max-w-5xl m-auto rounded-lg"
-        src={data?.sourceUrl}
-      />
+      <div className="flex justify-between gap-8 flex-col sm:flex-row">
+        <img
+          className="h-80 max-w-2xl m-auto rounded-lg"
+          src={data?.sourceUrl}
+        />
 
-      <div>
+        <div className="space-y-8 px-4 mt-4 w-full">
+          {data?.imageMetadata?.details?.map((metadata: any) => {
+            return (
+              <Link
+                key={JSON.stringify(metadata)}
+                href={`/nmm/${metadata?.hanzi}?lang=zh`}
+                className="block text-[14px]"
+              >
+                <p>{metadata?.pinyin}</p>
+                <p>{metadata?.hanzi || metadata?.input}</p>
+                <p className="text-gray-400">{metadata?.en}</p>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+      {/* <div>
         <code>
           <pre>{JSON.stringify(data, null, 4)}</pre>
         </code>
-      </div>
+      </div> */}
     </div>
   );
 }

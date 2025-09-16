@@ -1,9 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Nothing } from "@/app/nmm/nothing";
-import { Icons } from "@/components/ui/icons.v2";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useAddCharacterContentMutation } from "@/domain/character-contents/use-add-character-contents-mutation";
-import { useExtractImageMutation } from "@/domain/character-contents/use-extract-image-mutation";
 import { useListCharacterContentsQuery } from "@/domain/character-contents/use-list-character-contents-query";
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import Link from "next/link";
@@ -11,8 +9,6 @@ import { useState } from "react";
 import { imageFormats } from "./image-formats";
 
 function ImageItem({ item }: any) {
-  const extractImageMutation = useExtractImageMutation();
-
   const [showMeta, setShowMetaData] = useState(false);
 
   return (
@@ -28,27 +24,6 @@ function ImageItem({ item }: any) {
           alt={item?.name}
           src={item?.sourceUrl}
         />
-
-        {!item?.imageMetadata && (
-          <button
-            onClick={() => {
-              extractImageMutation
-                .mutateAsync({
-                  id: item?.id,
-                })
-                .then(() => {
-                  alert("done");
-                });
-            }}
-            className="absolute bottom-12 text-2xl right-8 text-black"
-          >
-            {extractImageMutation.isPending ? (
-              <Icons.spinner spinPulse />
-            ) : (
-              <Icons.magicWand />
-            )}
-          </button>
-        )}
       </div>
 
       {showMeta && (

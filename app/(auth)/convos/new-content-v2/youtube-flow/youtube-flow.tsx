@@ -6,12 +6,19 @@ import { YoutubeInput } from "./components/youtube-input";
 import { TranscriptionsInput } from "../components/transcriptions-input";
 
 import { ContentTitleInput } from "../components/content-title-input";
+import { useListYoutubeTranscriptionsQuery } from "@/domain/youtube/list-youtube-transcriptions";
 
 export const YoutubeFlow = () => {
   const setConvo = useNewConvoStore((state) => state.setConvo);
   const newConvo = useNewConvoStore((state) => state.convo) as any;
 
+  console.log("yoo", newConvo);
+
   const { data: youtubeVideoDetails } = useGetVideoByIdQuery(newConvo?.audio);
+  const { data: transcripts } = useListYoutubeTranscriptionsQuery({
+    url: newConvo?.audio,
+    lang: newConvo?.lang,
+  });
 
   const normalizedUrl = normalizeYoutubeUrl(newConvo?.audio);
 

@@ -2,12 +2,18 @@ import { useNewConvoStore } from "@/components/step";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useGetVideoByIdQuery } from "@/domain/youtube/get-video-by-id";
+import { useListYoutubeTranscriptionsQuery } from "@/domain/youtube/list-youtube-transcriptions";
 
 export const YoutubeInput = () => {
   const setConvo = useNewConvoStore((state) => state.setConvo);
   const newConvo = useNewConvoStore((state) => state.convo) as any;
 
   const { data: youtubeVideoDetails } = useGetVideoByIdQuery(newConvo?.audio);
+
+  const { data: transcripts } = useListYoutubeTranscriptionsQuery({
+    url: newConvo?.audio,
+    lang: newConvo?.lang,
+  });
 
   return (
     <div className="my-8">

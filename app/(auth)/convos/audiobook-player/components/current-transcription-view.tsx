@@ -135,21 +135,21 @@ export function ReaderView({
                 if (selectedText && selectedText?.length < 36) {
                   setSelected(selectedText);
 
-                  if (!containsSelectedHistory) {
-                    addSearchHistory({
-                      input: selectedText,
-                      transcriptionId: currentTranscription.id,
-                    });
-                  }
+                  // if (!containsSelectedHistory) {
+                  //   addSearchHistory({
+                  //     input: selectedText,
+                  //     transcriptionId: currentTranscription.id,
+                  //   });
+                  // }
                 } else {
                   setSelected(item.hanzi || item?.input);
 
-                  if (!containsHistory) {
-                    addSearchHistory({
-                      input: item.hanzi || item?.input,
-                      transcriptionId: currentTranscription.id,
-                    });
-                  }
+                  // if (!containsHistory) {
+                  //   addSearchHistory({
+                  //     input: item.hanzi || item?.input,
+                  //     transcriptionId: currentTranscription.id,
+                  //   });
+                  // }
                 }
               }}
               className={cn(

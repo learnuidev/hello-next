@@ -35,7 +35,7 @@ const listDictionary = async (
 
   const resJson = await res.json();
 
-  return resJson?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
+  return resJson;
 };
 
 const listDictionaryRecursive = async (
@@ -68,5 +68,9 @@ export const useListDictionaryQuery = (lang: string) => {
 
       return resJson?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
     },
+    refetchOnWindowFocus: false,
+    // refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
 };

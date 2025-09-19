@@ -3,6 +3,21 @@ import { siteConfig } from "@/lib/config";
 import { useQuery } from "@tanstack/react-query";
 // import { useJwtToken } from "../../html-parser/hooks/use-jwt-token";
 
+type DictionaryItem = {
+  context: {
+    contentId: string;
+  };
+  discovered_at: number;
+  createdAt: number;
+  pinyin: string;
+  en: string;
+  id: string;
+  lang: string;
+  hanzi: string;
+  author: string;
+  explanation: string;
+};
+
 const listDictionary = async (
   { key, lang }: { key?: string; lang: string },
   { token }: { token: string }
@@ -28,7 +43,7 @@ const listDictionaryRecursive = async (
   jwt: string,
   key?: string,
   res = []
-) => {
+): Promise<DictionaryItem[]> => {
   const resp = await listDictionary({ key, lang }, { token: jwt });
 
   if (resp?.key) {

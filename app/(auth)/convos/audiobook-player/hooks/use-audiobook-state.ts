@@ -274,16 +274,16 @@ export const useAudioBookState = (content: IContent) => {
   ]);
 
   const debounceSeek = useDebouncedCallback((firstStart: number) => {
-    if (loop) {
-      setRepeatHistories({
-        contentId: content.id,
-        ...loop,
-        hanzi: loop?.input || loop?.hanzi,
-        input: loop?.input || loop?.hanzi,
-        roman: loop?.roman || loop?.pinyin,
-        createdAt: Date.now(),
-      });
-    }
+    // if (loop) {
+    //   setRepeatHistories({
+    //     contentId: content.id,
+    //     ...loop,
+    //     hanzi: loop?.input || loop?.hanzi,
+    //     input: loop?.input || loop?.hanzi,
+    //     roman: loop?.roman || loop?.pinyin,
+    //     createdAt: Date.now(),
+    //   });
+    // }
 
     seekAndPlay(firstStart);
   }, 30);

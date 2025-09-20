@@ -107,13 +107,13 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               controls={false}
               ref={playerRef}
               onProgress={(value) => {
-                setHistory({
-                  transcriptionId: currentTranscription?.id,
-                  contextId,
-                  contentId: content.id,
-                  createdAt: Date.now(),
-                  progressTime: value.playedSeconds,
-                });
+                // setHistory({
+                //   transcriptionId: currentTranscription?.id,
+                //   contextId,
+                //   contentId: content.id,
+                //   createdAt: Date.now(),
+                //   progressTime: value.playedSeconds,
+                // });
 
                 setCurrentTime(value.playedSeconds);
               }}

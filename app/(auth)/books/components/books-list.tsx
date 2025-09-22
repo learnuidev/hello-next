@@ -47,7 +47,6 @@ export function BooksList() {
     return null;
   }
 
-  console.log("QUERY", queryStr);
   return (
     <div className="max-w-6xl mx-auto mb-20">
       <h2 className="text-2xl">Your Books List</h2>

@@ -21,6 +21,8 @@ export default function MediaDetails() {
 
   const { data: book, isLoading } = useGetBookQuery(bookId);
 
+  console.log("book", book);
+
   const { data: contents } = useListContentsQuery();
 
   const isSuperAdmin = useIsSuperAdmin();
@@ -231,6 +233,8 @@ export default function MediaDetails() {
                     );
                   })
                 )}
+
+                <button> Start Reading</button>
               </div>
 
               {editChapter && (

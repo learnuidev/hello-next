@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { listenApiUrl } from "../../constants";
 import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
 import { AudioBook, ListBooksResponse } from "./book.types";
+import { imageToColor } from "../utils/image-to-color";
 
 export const useGetBookQuery = (bookId: string) => {
   const jwt = useJwtToken();
@@ -21,6 +22,16 @@ export const useGetBookQuery = (bookId: string) => {
       });
 
       const respJson = await resp.json();
+
+      if (respJson.coverPhotoUrl) {
+        try {
+          const dominantColor = await imageToColor(respJson.coverPhotoUrl);
+
+          respJson.dominantColor = dominantColor;
+        } catch (err) {
+          console.log("Error converting image to color", err);
+        }
+      }
 
       return respJson;
     },

@@ -76,6 +76,7 @@
     "@types/node": "20.6.0",
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
+    "@webgpu/types": "^0.1.65",
     "ai": "4.3.16",
     "autoprefixer": "10.4.15",
     "aws-amplify": "^5.3.11",

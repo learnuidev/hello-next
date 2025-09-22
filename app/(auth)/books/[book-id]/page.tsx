@@ -87,6 +87,14 @@ export default function MediaDetails() {
     );
   }
 
+  const buttonStyle = {
+    backgroundColor: `${book.dominantColor}`,
+    padding: "8px 4px",
+    borderRadius: "8px",
+  };
+
+  console.log("button style", buttonStyle);
+
   return (
     <div className="max-w-6xl mx-auto mt-12 px-4">
       <div className="mb-12 flex justify-between items-center">
@@ -234,7 +242,7 @@ export default function MediaDetails() {
                   })
                 )}
 
-                <button> Start Reading</button>
+                <button style={buttonStyle}> Start Reading</button>
               </div>
 
               {editChapter && (

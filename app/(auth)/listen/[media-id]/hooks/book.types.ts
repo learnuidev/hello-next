@@ -42,6 +42,7 @@ export interface AudioBook {
   coverPhotoUrl?: string;
   chapters: Chapter[];
   sections: any[];
+  dominantColor?: string;
 }
 
 export interface ListBooksResponse {

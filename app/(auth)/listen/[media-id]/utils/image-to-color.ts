@@ -1,9 +1,16 @@
 "use client";
 
+// @ts-ignore
+import _types from "@webgpu/types";
+
 interface ImageToColorOptions {
   sampleSize?: number;
-  //   @ts-ignore
+
   format?: GPUTextureFormat;
+}
+
+function formatRgbA({ avgR, avgG, avgB, avgA }: any) {
+  return `rgba(${(avgR * 255).toFixed(0)},${(avgG * 255).toFixed(0)},${(avgB * 255).toFixed(0)},${avgA.toFixed(0)})`;
 }
 
 async function imageToColorWebGL(
@@ -14,13 +21,13 @@ async function imageToColorWebGL(
 
   try {
     // Check if WebGPU is supported
-    //   @ts-ignore
+
     if (!navigator.gpu) {
       throw new Error("WebGPU is not supported in this browser");
     }
 
     // Request adapter and device
-    //   @ts-ignore
+
     const adapter = await navigator.gpu.requestAdapter();
     if (!adapter) {
       throw new Error("No appropriate GPUAdapter found");
@@ -79,7 +86,8 @@ async function imageToColorWebGL(
     const avgA = totalA / sampleCount / 255;
 
     // Return formatted rgba string with 4 decimal places
-    return `rgba(${avgR.toFixed(4)},${avgG.toFixed(4)},${avgB.toFixed(4)},${avgA.toFixed(4)})`;
+    return formatRgbA({ avgR, avgG, avgB, avgA });
+    return `rgba(${(avgR * 255).toFixed(4)},${(avgG * 255).toFixed(4)},${(avgB * 255).toFixed(4)},${avgA.toFixed(4)})`;
   } catch (error) {
     console.error("Error processing image:", error);
     throw error;
@@ -94,12 +102,10 @@ async function imageToColorWebGPU(
   const { sampleSize = 10, format = "rgba8unorm" } = options;
 
   try {
-    //   @ts-ignore
     if (!navigator.gpu) {
       throw new Error("WebGPU is not supported in this browser");
     }
 
-    //   @ts-ignore
     const adapter = await navigator.gpu.requestAdapter();
     if (!adapter) {
       throw new Error("No appropriate GPUAdapter found");
@@ -122,7 +128,7 @@ async function imageToColorWebGPU(
     const texture = device.createTexture({
       size: [imageBitmap.width, imageBitmap.height],
       format,
-      //   @ts-ignore
+
       usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.RENDER_ATTACHMENT,
     });
 
@@ -137,7 +143,7 @@ async function imageToColorWebGPU(
     const outputBufferSize = imageBitmap.width * imageBitmap.height * 4;
     const outputBuffer = device.createBuffer({
       size: outputBufferSize,
-      //   @ts-ignore
+
       usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
     });
 
@@ -224,7 +230,7 @@ async function imageToColorWebGPU(
     device.queue.submit([commandEncoder.finish()]);
 
     // Map buffer and read data
-    //   @ts-ignore
+
     await outputBuffer.mapAsync(GPUMapMode.READ);
     const arrayBuffer = outputBuffer.getMappedRange();
     const data = new Float32Array(arrayBuffer);
@@ -256,7 +262,9 @@ async function imageToColorWebGPU(
     texture.destroy();
     outputBuffer.destroy();
 
-    return `rgba(${avgR.toFixed(4)},${avgG.toFixed(4)},${avgB.toFixed(4)},${avgA.toFixed(4)})`;
+    // return `rgba(${avgR.toFixed(4)},${avgG.toFixed(4)},${avgB.toFixed(4)},${avgA.toFixed(4)})`;
+    return formatRgbA({ avgR, avgG, avgB, avgA });
+    // return `rgba(${(avgR * 255).toFixed(4)},${(avgG * 255).toFixed(4)},${(avgB * 255).toFixed(4)},${avgA.toFixed(4)})`;
   } catch (error) {
     console.error("Error processing image with WebGPU:", error);
     // Fallback to canvas method

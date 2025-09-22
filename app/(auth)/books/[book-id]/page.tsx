@@ -88,7 +88,7 @@ export default function MediaDetails() {
   return (
     <div className="max-w-6xl mx-auto mt-12 px-4">
       <div className="mb-12 flex justify-between items-center">
-        <Link href={`/listen`} className="flex gap-4 items-center text-xl">
+        <Link href={`/books`} className="flex gap-4 items-center text-xl">
           <Icons.back />
 
           <span>Back</span>

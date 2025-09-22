@@ -89,9 +89,23 @@ export const useRecentlyWatchedContent = () => {
     }
   };
 
-  const recentlyWatched = Object.values(_recentlyWatched)?.sort(
-    (a: any, b: any) => b?.watchedAt - a?.watchedAt
-  );
+  const contentItems = [
+    ...(publishedContents?.items || []),
+    ...(contents?.items || []),
+  ];
+
+  const recentlyWatched = Object.values(_recentlyWatched)
+    .map((watched: any) => {
+      const contentItem = contentItems?.find((content) => {
+        return content?.id === watched?.id;
+      });
+
+      return {
+        ...contentItem,
+        ...watched,
+      };
+    })
+    ?.sort((a: any, b: any) => b?.watchedAt - a?.watchedAt);
 
   return {
     recentlyWatched,

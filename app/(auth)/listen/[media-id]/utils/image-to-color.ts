@@ -57,12 +57,9 @@ async function imageToColorWebGL(
     canvas.height = imageBitmap.height;
     ctx.drawImage(imageBitmap, 0, 0);
 
-    console.log("BIT MAP", imageBitmap);
     // Get image data
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
-
-    console.log("image data", imageData);
 
     // Calculate average color with sampling
     let totalR = 0,

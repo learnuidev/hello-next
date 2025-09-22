@@ -7,7 +7,8 @@ export interface ChapterRequest {
 export interface AddBookRequestParams {
   title: string;
   author: string;
-  chapters: ChapterRequest[];
+  chapters?: ChapterRequest[];
+  coverPhotoId?: string;
   lang: string;
 }
 
@@ -35,6 +36,7 @@ export interface AudioBook {
   coverPhotoId?: string;
   coverPhotoUrl?: string;
   chapters: Chapter[];
+  sections: any[];
 }
 
 export interface ListBooksResponse {

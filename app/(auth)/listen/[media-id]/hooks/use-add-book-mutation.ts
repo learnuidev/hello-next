@@ -11,7 +11,7 @@ export const useAddBookMutation = () => {
     mutationFn: async ({
       title,
       author,
-      chapters,
+      coverPhotoId,
       lang,
     }: AddBookRequestParams): Promise<AudioBook> => {
       const resp = await fetch(`${listenApiUrl}/v1/add-book`, {
@@ -23,7 +23,7 @@ export const useAddBookMutation = () => {
         body: JSON.stringify({
           title,
           author,
-          chapters,
+          coverPhotoId,
           lang,
         }),
       });

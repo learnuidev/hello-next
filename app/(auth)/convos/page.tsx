@@ -5,7 +5,7 @@ import "@/libs/cognito/init";
 import { useState } from "react";
 
 import { NavBar } from "@/components/navbar";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useConvosStore } from "@/stores/convos-store";
 import { ConvoDetails } from "./convo-details";
@@ -22,6 +22,7 @@ import { useIsProMember } from "../plans/hooks/use-is-pro-member";
 import { ContentsList } from "./contents-list";
 import { NewContentV2 } from "./new-content-v2/new-content-v2";
 import { useIsFreeMember } from "../plans/hooks/use-is-free-member";
+import { NewBook } from "./new-book/new-book";
 
 const useViewTypeStore = createIndexDBStore({
   name: "view-type",
@@ -39,6 +40,54 @@ const useViewType = () => {
   const setViewType = useViewTypeStore((state) => state.setViewType);
 
   return [viewType, setViewType] as any;
+};
+
+const ContentViewMode = () => {
+  // const [addMode, setAddMode] = useState("");
+  // if (isNewContentEnabled) {
+  //   return <NewContent />;
+  // }
+
+  const searchParams = useSearchParams();
+
+  const addMode = searchParams.get("variant");
+
+  const router = useRouter();
+
+  if (!addMode) {
+    return (
+      <div className="flex justify-center items-center flex-col mt-32">
+        <h1 className="text-2xl">What would you like to add</h1>
+
+        <div className="flex gap-8 mt-12 text-xl">
+          <button
+            onClick={() => {
+              router.push(`/convos?type=add&variant=book`);
+              // setAddMode("book");
+            }}
+          >
+            Book
+          </button>
+          <button
+            onClick={() => {
+              router.push(`/convos?type=add&variant=content`);
+              // setAddMode("content");
+            }}
+          >
+            Content
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (addMode === "content") {
+    return <NewContentV2 />;
+  }
+
+  if (addMode === "book") {
+    return <NewBook />;
+  }
 };
 
 export default function Convos() {
@@ -59,22 +108,23 @@ export default function Convos() {
 
   const isNewContentEnabled = useIsNewContentFormEnabled();
 
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const addMode = searchParams.get("type");
+
+  const isAdd = addMode === "add";
+
   const toggleIsHidden = () => {
     if (isTocHidden) {
     }
   };
 
-  const ContentViewMode = () => {
-    // if (isNewContentEnabled) {
-    //   return <NewContent />;
-    // }
+  if (isAdd) {
+    return <ContentViewMode />;
+  }
 
-    return <NewContentV2 />;
-  };
-
-  return viewMode === "convo/add" ? (
-    <ContentViewMode />
-  ) : (
+  return (
     <main className="">
       <div className="flex space-x-4 px-4 md:px-12 mt-4">
         <button
@@ -135,7 +185,8 @@ export default function Convos() {
                 <button
                   className="text-xl dark:hover:text-white md:px-4 py-1 dark:text-slate-600 shadow-md rounded-full"
                   onClick={() => {
-                    setViewMode("convo/add");
+                    router.push(`/convos?type=add`);
+                    // setViewMode("convo/add");
                   }}
                 >
                   <PlusIcon />

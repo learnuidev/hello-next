@@ -143,7 +143,7 @@ export const MediaList = () => {
     <div className="mb-32">
       <SearchMedia />
 
-      {/* <BooksList /> */}
+      <BooksList />
       <ContentList />
     </div>
   );

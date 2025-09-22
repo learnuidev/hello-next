@@ -7,10 +7,12 @@ import { Icons } from "@/components/ui/icons.v2";
 import { useNewConvoStore } from "@/components/step";
 import { useState } from "react";
 import { AddContentButton } from "./components/add-content-button";
+import { useRouter } from "next/navigation";
 
 export const NewContentV2 = () => {
   const isNewContentEnabled = useIsNewContentFormEnabled();
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
+  const router = useRouter();
 
   const [showPreview, setShowPreview] = useState(false);
 
@@ -28,7 +30,8 @@ export const NewContentV2 = () => {
         <button
           className="text-xl md:text-4xl dark:hover:text-white dark:text-slate-600 shadow-md rounded-full"
           onClick={() => {
-            setViewMode("");
+            router.push(`/convos`);
+            // setViewMode("");
           }}
         >
           <Icons.xMark />

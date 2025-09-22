@@ -11,6 +11,8 @@ const useNewBookStore = create((set: any, get: any) => ({
   setLang: (lang: string) => set({ lang }),
   author: "",
   setAuthor: (author: string) => set({ author }),
+  coverPhotoId: "",
+  setCoverPhotoId: (coverPhotoId: string) => set({ coverPhotoId }),
 
   chapters: [],
   setChapters: (chapters: any) => set({ chapters }),
@@ -58,7 +60,14 @@ const useNewBookStore = create((set: any, get: any) => ({
   },
 
   resetState: () =>
-    set({ title: "", author: "", chapters: [], editChapter: false }),
+    set({
+      title: "",
+      author: "",
+      lang: "",
+      coverPhotoId: "",
+      chapters: [],
+      editChapter: false,
+    }),
 }));
 
 export const useNewBookState = () => {
@@ -79,6 +88,9 @@ export const useNewBookState = () => {
 
   const editChapter = useNewBookStore((state) => state.editChapter);
   const setEditChapter = useNewBookStore((state) => state.setEditChapter);
+
+  const coverPhotoId = useNewBookStore((state) => state.coverPhotoId);
+  const setCoverPhotoId = useNewBookStore((state) => state.setCoverPhotoId);
 
   return {
     title,
@@ -101,5 +113,9 @@ export const useNewBookState = () => {
     // edit
     editChapter,
     setEditChapter,
+
+    // cover image id
+    coverPhotoId,
+    setCoverPhotoId,
   };
 };

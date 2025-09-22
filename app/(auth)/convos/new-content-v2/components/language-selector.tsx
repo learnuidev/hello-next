@@ -9,7 +9,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export const LanguageSelector = () => {
+export const LanguageSelector = ({
+  value,
+  setValue,
+}: {
+  value?: string;
+  setValue?: (lang: string) => void;
+}) => {
   const setConvo = useNewConvoStore((state) => state.setConvo);
   const newConvo = useNewConvoStore((state) => state.convo) as any;
 
@@ -18,9 +24,13 @@ export const LanguageSelector = () => {
       <Label className=" text-gray-500 mb-4 block">Language</Label>
       <Select
         defaultValue="characters-learned"
-        value={newConvo?.lang}
+        value={value || newConvo?.lang}
         onValueChange={(value) => {
-          setConvo("lang", value);
+          if (setValue) {
+            setValue(value);
+          } else {
+            setConvo("lang", value);
+          }
         }}
       >
         <SelectTrigger className="w-full h-12 bg-transparent dark:text-white dark:border-gray-800 px-2">

@@ -31,10 +31,6 @@ export function BooksList() {
 
   const queryStr = useSearchQueryStore((state) => state.querySync);
 
-  if (!data?.items || data?.items?.length === 0) {
-    return null;
-  }
-
   const filteredItems = useMemo(() => {
     return data?.items?.filter((item) => {
       if (!queryStr) {
@@ -46,6 +42,10 @@ export function BooksList() {
         ?.includes(queryStr?.toLowerCase());
     });
   }, [queryStr, data]);
+
+  if (!data?.items || data?.items?.length === 0) {
+    return null;
+  }
 
   console.log("QUERY", queryStr);
   return (

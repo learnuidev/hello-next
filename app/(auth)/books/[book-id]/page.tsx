@@ -14,6 +14,7 @@ import { UploadMediaButton } from "../../listen/[media-id]/components/upload-med
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { SearchInput } from "@/components/search-input";
 import { useSearchQueryStore } from "@/components/search/state";
+import { useAddBookSectionsMutation } from "../../listen/[media-id]/hooks/use-add-book-sections-mutation";
 
 export default function MediaDetails() {
   const { bookId } = useBookParams();
@@ -44,6 +45,8 @@ export default function MediaDetails() {
   } = useNewBookState();
 
   const updateBookMutation = useUpdateBookMutation();
+
+  const addBookSectionsMutation = useAddBookSectionsMutation();
 
   useEffect(() => {
     if (editChapter && book?.sections) {
@@ -186,18 +189,27 @@ export default function MediaDetails() {
                     <button
                       className="w-full mt-12"
                       onClick={() => {
-                        updateBookMutation
-                          .mutateAsync({
-                            bookId: book.id,
-                            chapters,
-                          })
-                          .then((resp) => {
-                            resetState();
-                            setEditChapter(false);
-                          });
+                        if (sections?.length > 0) {
+                          addBookSectionsMutation
+                            .mutateAsync({
+                              bookId: book.id,
+                              sectionIds: sections?.map((item: any, idx) => {
+                                return {
+                                  id: item?.id,
+                                  sectionNumber: idx + 1,
+                                };
+                              }),
+                            })
+                            .then((resp) => {
+                              resetState();
+                              setEditChapter(false);
+                            });
+                        }
                       }}
                     >
-                      {updateBookMutation.isPending ? "Updating..." : "Update"}
+                      {addBookSectionsMutation.isPending
+                        ? "Updating..."
+                        : "Update"}
                     </button>
 
                     {/* {isSuperAdmin && (
@@ -207,11 +219,11 @@ export default function MediaDetails() {
                     )} */}
                   </div>
                 ) : (
-                  book?.chapters?.map((chapter) => {
+                  book?.sections?.map((chapter) => {
                     return (
                       <Link
                         className="block"
-                        href={`/listen/books/${book?.id}/${chapter?.id}`}
+                        href={`/convos/${chapter?.id}`}
                         key={chapter?.id}
                       >
                         <p>{chapter?.title}</p>

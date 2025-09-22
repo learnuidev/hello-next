@@ -20,6 +20,11 @@ export interface UpdateBookRequestParams {
   lang?: string;
   coverPhotoId?: string;
 }
+export type AddBookSectionsParams = {
+  bookId: string;
+  sectionIds: any[];
+  sectionId?: string;
+} & any;
 
 export interface Chapter {
   id: string;

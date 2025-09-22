@@ -12,8 +12,6 @@ export const YoutubeFlow = () => {
   const setConvo = useNewConvoStore((state) => state.setConvo);
   const newConvo = useNewConvoStore((state) => state.convo) as any;
 
-  console.log("yoo", newConvo);
-
   const { data: youtubeVideoDetails } = useGetVideoByIdQuery(newConvo?.audio);
   const { data: transcripts } = useListYoutubeTranscriptionsQuery({
     url: newConvo?.audio,

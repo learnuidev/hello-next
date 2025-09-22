@@ -57,9 +57,12 @@ async function imageToColorWebGL(
     canvas.height = imageBitmap.height;
     ctx.drawImage(imageBitmap, 0, 0);
 
+    console.log("BIT MAP", imageBitmap);
     // Get image data
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
+
+    console.log("image data", imageData);
 
     // Calculate average color with sampling
     let totalR = 0,
@@ -87,7 +90,6 @@ async function imageToColorWebGL(
 
     // Return formatted rgba string with 4 decimal places
     return formatRgbA({ avgR, avgG, avgB, avgA });
-    return `rgba(${(avgR * 255).toFixed(4)},${(avgG * 255).toFixed(4)},${(avgB * 255).toFixed(4)},${avgA.toFixed(4)})`;
   } catch (error) {
     console.error("Error processing image:", error);
     throw error;
@@ -262,9 +264,7 @@ async function imageToColorWebGPU(
     texture.destroy();
     outputBuffer.destroy();
 
-    // return `rgba(${avgR.toFixed(4)},${avgG.toFixed(4)},${avgB.toFixed(4)},${avgA.toFixed(4)})`;
     return formatRgbA({ avgR, avgG, avgB, avgA });
-    // return `rgba(${(avgR * 255).toFixed(4)},${(avgG * 255).toFixed(4)},${(avgB * 255).toFixed(4)},${avgA.toFixed(4)})`;
   } catch (error) {
     console.error("Error processing image with WebGPU:", error);
     // Fallback to canvas method
@@ -277,9 +277,10 @@ export const imageToColor = async (
   options: ImageToColorOptions = {}
 ) => {
   try {
+    console.info("SUCCESS");
     return await imageToColorWebGL(imageUrl, options);
   } catch (err) {
-    console.log(`Error when trying with web gl. Trying with webgpu`);
+    console.warn(`Error when trying with web gl. Trying with webgpu`);
     return await imageToColorWebGPU(imageUrl, options);
   }
 };

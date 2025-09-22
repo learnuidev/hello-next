@@ -29,7 +29,7 @@ export const useGetBookQuery = (bookId: string) => {
 
           respJson.dominantColor = dominantColor;
         } catch (err) {
-          console.log("Error converting image to color", err);
+          console.error("Error converting image to color", err);
         }
       }
 

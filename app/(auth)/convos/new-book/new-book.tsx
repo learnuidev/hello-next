@@ -33,10 +33,6 @@ export function NewBook() {
 
   const router = useRouter();
 
-  //   const { setAddNew } = useListenState();
-
-  console.log("coverPhotoId", coverPhotoId);
-
   const addBookMutation = useAddBookMutation();
 
   return (

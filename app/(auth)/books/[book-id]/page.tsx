@@ -21,8 +21,6 @@ export default function MediaDetails() {
 
   const { data: book, isLoading } = useGetBookQuery(bookId);
 
-  console.log("book", book);
-
   const { data: contents } = useListContentsQuery();
 
   const isSuperAdmin = useIsSuperAdmin();
@@ -92,8 +90,6 @@ export default function MediaDetails() {
     padding: "8px 4px",
     borderRadius: "8px",
   };
-
-  console.log("button style", buttonStyle);
 
   return (
     <div className="max-w-6xl mx-auto mt-12 px-4">

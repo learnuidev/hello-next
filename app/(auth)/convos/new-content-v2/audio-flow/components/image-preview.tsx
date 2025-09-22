@@ -4,8 +4,6 @@ import ReactPlayer from "react-player";
 export const ImagePreview = ({ userAssetId }: { userAssetId: string }) => {
   const { data } = useGetUserAssetQuery(userAssetId);
 
-  console.log("DATA");
-
   return (
     <div className="my-8">
       <img src={data?.sourceUrl} className="aspect-square" />

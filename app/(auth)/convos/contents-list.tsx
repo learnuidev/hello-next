@@ -194,6 +194,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
                   <img
                     className="object-cover rounded-xl w-full aspect-video"
                     src={
+                      item?.coverPhotoUrl ||
                       item?.thumbnails?.standard?.url ||
                       item?.thumbnails?.high?.url ||
                       item?.thumbnails?.medium?.url ||

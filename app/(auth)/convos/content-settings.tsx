@@ -20,6 +20,7 @@ import { contentTypes } from "./constants/content-types";
 
 export const ContentSettings = () => {
   const [contentType, setContentType] = useState("not-selected");
+  const [contentTitle, setContentTitle] = useState("");
 
   const updateContentMutation = useUpdateContentMutation();
   const deleteContentMutation = useDeleteContentMutation();
@@ -38,10 +39,13 @@ export const ContentSettings = () => {
   const togglePublishContentMutation = useTogglePublishContentMutation();
 
   useEffect(() => {
+    if (content.title) {
+      setContentTitle(content?.title);
+    }
     if (content?.contentType) {
       setContentType(content?.contentType);
     }
-  }, [content?.contentType]);
+  }, [content?.contentType, content?.title]);
 
   const router = useRouter();
 
@@ -72,8 +76,19 @@ export const ContentSettings = () => {
           {containsPublished ? "Unpublish" : "Publish"}
         </Button>
       </div>
+      <div className="my-4 mb-8">
+        <Label className="text-[16px] text-gray-500 block">Content Name</Label>
+        <input
+          className="w-full h-12 text-2xl bg-transparent dark:text-white dark:border-gray-800 px-2"
+          value={contentTitle}
+          onChange={(event) => {
+            setContentTitle(event.target.value);
+          }}
+          placeholder="Content title"
+        />
+      </div>
       <div className="my-4">
-        <Label className="text-xl text-gray-500 mb-4 block">
+        <Label className="text-[16px] text-gray-500 mb-4 block">
           {" "}
           Content Type{" "}
         </Label>
@@ -121,11 +136,12 @@ export const ContentSettings = () => {
           return updateContentMutation.mutateAsync({
             id: content?.id || "",
             contentType,
+            title: contentTitle,
             updatedAt: Date.now(),
           } as any);
         }}
       >
-        Save
+        {updateContentMutation?.isPending ? "Saving..." : "Save"}
       </Button>
 
       <Button

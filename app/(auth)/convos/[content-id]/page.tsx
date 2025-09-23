@@ -16,6 +16,7 @@ import { useGetContentId } from "./hooks/use-get-content-id";
 import { useGo } from "./hooks/use-go";
 import { AnimatedLoadingText } from "@/components/animated-loading-text";
 import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
+import { WithConvoStatusLoading } from "./with-convo-status-loading";
 
 const statusMessages = {
   GENERATING_SENTENCES: "Generating Sentences",
@@ -26,31 +27,6 @@ const statusMessages = {
   AUDIO_AND_SENTENCES_GENERATED: "Audio and Sentences Generated",
   UPLOADING_AUDIO_AND_SENTENCES: "UPLOADING_AUDIO_AND_SENTENCES",
 } as any;
-
-function WithConvoStatusLoading({ contentId }: { contentId: string }) {
-  const { data: content, isLoading } = useGetContentQuery(
-    {
-      contentId: contentId,
-    },
-    {
-      refetchInterval: 3000,
-    }
-  );
-
-  return (
-    <div className="flex justify-center flex-col items-center my-32">
-      <AnimatedLoadingText
-        message={statusMessages?.[content.status] || "Saved Initial Data"}
-      />
-
-      {content?.progress && (
-        <p className="mt-8 text-light">
-          Progress: {formatPercentage(content?.progress || 0)}
-        </p>
-      )}
-    </div>
-  );
-}
 
 function RemoveIfExistsButton({ contentId }: { contentId: string }) {
   const { recentlyWatched, setRecentlyWatched, isLoading } =

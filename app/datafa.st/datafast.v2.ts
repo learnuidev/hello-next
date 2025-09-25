@@ -15,12 +15,11 @@ import { isBot } from "./utils/environment-detection/is-bot";
 import { isLocalhost } from "./utils/environment-detection/is-local-host";
 import { getConfig } from "./utils/get-config";
 import { createIdGenerator } from "./utils/id-generation/create-id-generator";
+import { getTrackingConfig } from "./utils/tracking-configuration/get-tracking-config";
+import { shouldEnableTracking } from "./utils/tracking-configuration/should-enable-tracking";
 
 function dataFast(): void {
   "use strict";
-
-  // ========== CONFIGURATION & INITIALIZATION ==========
-  const { currentScript, dataPrefix, getScriptAttribute } = getConfig();
 
   // ========== ID GENERATION ==========
   const getOrCreateVisitorId = createIdGenerator(
@@ -34,66 +33,6 @@ function dataFast(): void {
     "sxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",
     1 / 48
   );
-
-  // ========== TRACKING CONFIGURATION ==========
-  const getTrackingConfig = (): TrackingConfig => {
-    const allowFileProtocol =
-      getScriptAttribute(`${dataPrefix}allow-file-protocol`) === "true";
-    const allowLocalhost =
-      getScriptAttribute(`${dataPrefix}allow-localhost`) === "true";
-    const debugMode = getScriptAttribute(`${dataPrefix}debug`) === "true";
-    const websiteId = getScriptAttribute(`${dataPrefix}website-id`);
-    const trackingDomain = getScriptAttribute(`${dataPrefix}domain`);
-
-    const isSelfHosted = !currentScript?.src.includes("datafa.st");
-    const apiBaseUrl =
-      getScriptAttribute(`${dataPrefix}api-url`) || window.location.origin;
-    const apiEndpoint = isSelfHosted
-      ? new URL("/api/events", apiBaseUrl).href
-      : "https://datafa.st/api/events";
-
-    return {
-      allowFileProtocol,
-      allowLocalhost,
-      debugMode,
-      websiteId,
-      trackingDomain,
-      apiEndpoint,
-    };
-  };
-
-  const shouldEnableTracking = (config: TrackingConfig): TrackingStatus => {
-    // Check for bots
-    if (isBot()) {
-      return { enabled: false, reason: "Tracking disabled - bot detected" };
-    }
-
-    // Check environment restrictions
-    if (
-      (isLocalhost(window.location.hostname) && !config.allowLocalhost) ||
-      (window.location.protocol === "file:" && !config.allowFileProtocol)
-    ) {
-      return {
-        enabled: false,
-        reason:
-          window.location.protocol === "file:"
-            ? "Tracking disabled on file protocol (use data-allow-file-protocol='true' to enable)"
-            : "Tracking disabled on localhost (use data-allow-localhost='true' to enable)",
-      };
-    }
-
-    // Disable in iframes (unless debug mode)
-    if (window !== window.parent && !config.debugMode) {
-      return { enabled: false, reason: "Tracking disabled inside an iframe" };
-    }
-
-    // Validate required configuration
-    if (!config.websiteId || !config.trackingDomain) {
-      return { enabled: false, reason: "Missing website ID or domain" };
-    }
-
-    return { enabled: true, reason: "" };
-  };
 
   // ========== DATA COLLECTION ==========
   const collectAdClickIds = (url: URL): AdClickIds => {

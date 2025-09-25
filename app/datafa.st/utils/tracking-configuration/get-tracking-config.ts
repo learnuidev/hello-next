@@ -1,10 +1,10 @@
-import { Config, TrackingConfig } from "../../datafast.types";
-import { getConfig } from "../get-config";
+import { TrackingConfig } from "../../datafast.types";
 
 export const getTrackingConfig = (): TrackingConfig => {
-  const config = getConfig();
-
-  const { currentScript, dataPrefix, getScriptAttribute } = config;
+  const currentScript = document.currentScript as HTMLScriptElement;
+  const dataPrefix = "data-";
+  const getScriptAttribute = currentScript.getAttribute.bind(currentScript);
+  const baseApiUrl = "https://datafa.st/api/events";
 
   const allowFileProtocol =
     getScriptAttribute(`${dataPrefix}allow-file-protocol`) === "true";
@@ -19,7 +19,7 @@ export const getTrackingConfig = (): TrackingConfig => {
     getScriptAttribute(`${dataPrefix}api-url`) || window.location.origin;
   const apiEndpoint = isSelfHosted
     ? new URL("/api/events", apiBaseUrl).href
-    : "https://datafa.st/api/events";
+    : baseApiUrl;
 
   return {
     allowFileProtocol,

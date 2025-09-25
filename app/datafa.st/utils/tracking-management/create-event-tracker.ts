@@ -1,3 +1,4 @@
+import { dataTypes } from "../../constants/data-types";
 import {
   BaseData,
   EventCallback,
@@ -46,7 +47,7 @@ export const createEventTracker = (
       return pageviewState;
     }
 
-    baseData.type = "pageview";
+    baseData.type = dataTypes.pageView;
     sendEvent(baseData, callback, apiEndpoint, trackingDomain);
 
     // Store pageview state
@@ -78,7 +79,7 @@ export const createEventTracker = (
       return;
     }
 
-    baseData.type = "payment";
+    baseData.type = dataTypes.payment;
 
     const providerData: PaymentProviderData = {
       stripe: { stripe_session_id: sessionId },

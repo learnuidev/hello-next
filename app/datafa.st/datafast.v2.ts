@@ -3,7 +3,6 @@
 import {
   AdClickIds,
   BaseData,
-  Config,
   EventCallback,
   PageviewState,
   PaymentProvider,
@@ -11,13 +10,11 @@ import {
   TrackingConfig,
   TrackingStatus,
 } from "./datafast.types";
-import { getCookie } from "./utils/cookie-management/get-cookie";
 import { setCookie } from "./utils/cookie-management/set-cookie";
 import { isBot } from "./utils/environment-detection/is-bot";
 import { isLocalhost } from "./utils/environment-detection/is-local-host";
 import { getConfig } from "./utils/get-config";
-
-// ========== MAIN FUNCTION ==========
+import { createIdGenerator } from "./utils/id-generation/create-id-generator";
 
 function dataFast(): void {
   "use strict";
@@ -25,30 +22,7 @@ function dataFast(): void {
   // ========== CONFIGURATION & INITIALIZATION ==========
   const { currentScript, dataPrefix, getScriptAttribute } = getConfig();
 
-  // ========== COOKIE MANAGEMENT ==========
-
   // ========== ID GENERATION ==========
-  const generateUUID = (template: string): string =>
-    template.replace(/[xy]/g, (char) => {
-      const randomValue = (16 * Math.random()) | 0;
-      return (char === "x" ? randomValue : (randomValue & 3) | 8).toString(16);
-    });
-
-  const createIdGenerator = (
-    cookieName: string,
-    template: string,
-    expirationDays: number
-  ): (() => string) => {
-    return (): string => {
-      let id = getCookie(cookieName);
-      if (!id) {
-        id = generateUUID(template);
-        setCookie(cookieName, id, expirationDays, null);
-      }
-      return id;
-    };
-  };
-
   const getOrCreateVisitorId = createIdGenerator(
     "datafast_visitor_id",
     "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",

@@ -1,16 +1,7 @@
 // ========== TYPE DEFINITIONS ==========
 
-import {
-  BaseData,
-  EventCallback,
-  PageviewState,
-  PaymentProvider,
-  PaymentProviderData,
-} from "./datafast.types";
-import { setCookie } from "./utils/cookie-management/set-cookie";
+import { BaseData, EventCallback, PageviewState } from "./datafast.types";
 import { collectBaseData } from "./utils/data-collection/collect-base-data";
-import { isBot } from "./utils/environment-detection/is-bot";
-// import { createEventTracker } from "./utils/event-management/create-event-tracker";
 import { sendEvent } from "./utils/event-management/send-event";
 import { validateCustomEventData } from "./utils/event-validation/validate-custom-event-data";
 import { createIdGenerator } from "./utils/id-generation/create-id-generator";
@@ -25,18 +16,17 @@ import { setupHistoryTracking } from "./utils/tracking-management/setup-history-
 function dataFast(): void {
   "use strict";
 
-  // ========== ID GENERATION ==========
-  const getOrCreateSessionId = createIdGenerator(
-    "datafast_session_id",
-    "sxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",
-    1 / 48
-  );
-
   // ========== MAIN INITIALIZATION ==========
 
   const config = getTrackingConfig();
   const trackingStatus = shouldEnableTracking(config);
   const { enabled: trackingEnabled, reason: disabledReason } = trackingStatus;
+
+  const getOrCreateSessionId = createIdGenerator(
+    "datafast_session_id",
+    "sxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",
+    1 / 48
+  );
 
   // Process queued calls
   const queuedCalls: any[][] = (

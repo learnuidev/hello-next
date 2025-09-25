@@ -13,18 +13,18 @@ import { Inter } from "next/font/google";
 
 import "../lib/font-awesome/init";
 
-import "@/libs/cognito/init";
-import "@/libs/cognito/clientInit";
 import { Authenticated } from "@/components/Authenticated";
+import "@/libs/cognito/clientInit";
+import "@/libs/cognito/init";
 
-import { PostHogProvider } from "@/libs/posthog/posthog.provider";
-import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
-import { Suspense } from "react";
-import { SettingsDialog } from "@/components/settings-dialog/settings-dialog";
-import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageSelector } from "@/components/language-selector/language-selector";
 import { SearchDialog } from "@/components/search-dialog/search-dialog";
-import { WithOnboarding } from "@/components/onboarding/with-onboarding";
+import { SettingsDialog } from "@/components/settings-dialog/settings-dialog";
+import { ThemeProvider } from "@/components/theme-provider";
+import { MandoDatafastProvider } from "@/libs/datafa.st/mando-datafast-provider";
+import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
+import { PostHogProvider } from "@/libs/posthog/posthog.provider";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -65,7 +65,9 @@ export default function RootLayout({
               >
                 <div className="flex-1">
                   <QueryClientProvider>
-                    <Authenticated>{children}</Authenticated>
+                    <Authenticated>
+                      <MandoDatafastProvider>{children}</MandoDatafastProvider>
+                    </Authenticated>
                     <SettingsDialog />
                     <SearchDialog />
                   </QueryClientProvider>
@@ -85,6 +87,7 @@ export default function RootLayout({
               </div>
             </ThemeProvider>
           </PostHogProvider>
+
           <Toaster />
         </Suspense>
       </body>

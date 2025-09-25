@@ -1,19 +1,15 @@
 // ========== TYPE DEFINITIONS ==========
 
 import {
-  AdClickIds,
   BaseData,
   EventCallback,
   PageviewState,
   PaymentProvider,
   PaymentProviderData,
-  TrackingConfig,
-  TrackingStatus,
 } from "./datafast.types";
 import { setCookie } from "./utils/cookie-management/set-cookie";
+import { collectBaseData } from "./utils/data-collection/collect-base-data";
 import { isBot } from "./utils/environment-detection/is-bot";
-import { isLocalhost } from "./utils/environment-detection/is-local-host";
-import { getConfig } from "./utils/get-config";
 import { createIdGenerator } from "./utils/id-generation/create-id-generator";
 import { getTrackingConfig } from "./utils/tracking-configuration/get-tracking-config";
 import { shouldEnableTracking } from "./utils/tracking-configuration/should-enable-tracking";
@@ -22,67 +18,11 @@ function dataFast(): void {
   "use strict";
 
   // ========== ID GENERATION ==========
-  const getOrCreateVisitorId = createIdGenerator(
-    "datafast_visitor_id",
-    "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",
-    365
-  );
-
   const getOrCreateSessionId = createIdGenerator(
     "datafast_session_id",
     "sxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",
     1 / 48
   );
-
-  // ========== DATA COLLECTION ==========
-  const collectAdClickIds = (url: URL): AdClickIds => {
-    const clickIdParams = {
-      fbclid: url.searchParams.get("fbclid"),
-      gclid: url.searchParams.get("gclid"),
-      gclsrc: url.searchParams.get("gclsrc"),
-      wbraid: url.searchParams.get("wbraid"),
-      gbraid: url.searchParams.get("gbraid"),
-      li_fat_id: url.searchParams.get("li_fat_id"),
-      msclkid: url.searchParams.get("msclkid"),
-      ttclid: url.searchParams.get("ttclid"),
-      twclid: url.searchParams.get("twclid"),
-    };
-
-    return Object.entries(clickIdParams)
-      .filter(([_, value]) => value)
-      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
-  };
-
-  const collectBaseData = (
-    websiteId: string | null,
-    trackingDomain: string | null
-  ): BaseData | null => {
-    const currentUrl = window.location.href;
-    if (!currentUrl) {
-      console.warn(
-        "DataFast: Unable to collect href. This may indicate incorrect script implementation or browser issues."
-      );
-      return null;
-    }
-
-    if (!websiteId || !trackingDomain) {
-      return null;
-    }
-
-    const url = new URL(currentUrl);
-    const adClickIds = collectAdClickIds(url);
-
-    return {
-      websiteId,
-      domain: trackingDomain,
-      href: currentUrl,
-      referrer: document.referrer || null,
-      viewport: { width: window.innerWidth, height: window.innerHeight },
-      visitorId: getOrCreateVisitorId(),
-      sessionId: getOrCreateSessionId(),
-      adClickIds: Object.keys(adClickIds).length > 0 ? adClickIds : undefined,
-    };
-  };
 
   // ========== EVENT VALIDATION ==========
   const sanitizeValue = (value: any): string => {
@@ -596,7 +536,11 @@ function dataFast(): void {
 
     // Create trackers
     const baseDataCollector = (): BaseData | null =>
-      collectBaseData(config.websiteId, config.trackingDomain);
+      collectBaseData(
+        config.websiteId,
+        config.trackingDomain,
+        getOrCreateSessionId
+      );
 
     const eventSender = (eventData: BaseData, callback?: EventCallback): void =>
       sendEvent(eventData, callback, config.apiEndpoint, config.trackingDomain);

@@ -1,4 +1,4 @@
-!(function () {
+function dataFast() {
   "use strict";
 
   const currentScript = document.currentScript,
@@ -850,4 +850,4 @@
       schedulePageview();
     }
   });
-})();
+}

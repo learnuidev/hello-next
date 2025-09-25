@@ -1,4 +1,9 @@
-import { BaseData, EventCallback } from "../../datafast.types";
+import { identity } from "ramda";
+import {
+  BaseData,
+  DatafastIdentity,
+  EventCallback,
+} from "../../datafast.types";
 import { setCookie } from "../cookie-management/set-cookie";
 import { isBot } from "../environment-detection/is-bot";
 
@@ -7,7 +12,8 @@ export const sendEvent = (
   callback: EventCallback | undefined,
   apiEndpoint: string,
   trackingDomain: string | null,
-  getOrCreateSessionId: () => string
+  getOrCreateSessionId: () => string,
+  identity: DatafastIdentity
 ): void => {
   if (localStorage.getItem("datafast_ignore") === "true") {
     console.log("DataFast: Tracking disabled via localStorage flag");
@@ -42,5 +48,5 @@ export const sendEvent = (
     }
   };
 
-  xhr.send(JSON.stringify(eventData));
+  xhr.send(JSON.stringify({ ...eventData, ...identity }));
 };

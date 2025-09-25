@@ -1,11 +1,12 @@
-import { BaseData } from "../../datafast.types";
+import { BaseData, DatafastIdentity } from "../../datafast.types";
 import { createIdGenerator } from "../id-generation/create-id-generator";
 import { collectAdClickIds } from "./collect-add-click-ids";
 
 export const collectBaseData = (
   websiteId: string | null,
   trackingDomain: string | null,
-  getOrCreateSessionId: () => string
+  getOrCreateSessionId: () => string,
+  identity: DatafastIdentity
 ): BaseData | null => {
   const getOrCreateVisitorId = createIdGenerator(
     "datafast_visitor_id",

@@ -1,6 +1,11 @@
 // ========== TYPE DEFINITIONS ==========
 
-import { BaseData, EventCallback, PageviewState } from "./datafast.types";
+import {
+  BaseData,
+  EventCallback,
+  IDatafastInput,
+  PageviewState,
+} from "./datafast.types";
 import { collectBaseData } from "./utils/data-collection/collect-base-data";
 import { sendEvent } from "./utils/event-management/send-event";
 import { validateCustomEventData } from "./utils/event-validation/validate-custom-event-data";
@@ -13,20 +18,21 @@ import { createPaymentDetector } from "./utils/tracking-management/create-paymen
 import { initializeScrollTracking } from "./utils/tracking-management/initialize-scroll-tracking";
 import { setupHistoryTracking } from "./utils/tracking-management/setup-history-tracking";
 
-export function dataFast({
-  apiKey,
-  domain,
-}: {
-  domain?: string;
-  apiKey?: string;
-}):
+export type IDatafast =
   | undefined
   | {
       datafast: (eventName: string, eventData?: any) => void;
-    } {
+    };
+
+export function dataFast({
+  apiKey,
+  domain,
+  apiUrl,
+  identity,
+}: IDatafastInput): IDatafast {
   // ========== MAIN INITIALIZATION ==========
 
-  const config = getTrackingConfig({ apiKey, domain });
+  const config = getTrackingConfig({ apiKey, domain, apiUrl, identity });
   const trackingStatus = shouldEnableTracking(config);
   const { enabled: trackingEnabled, reason: disabledReason } = trackingStatus;
 
@@ -64,7 +70,8 @@ export function dataFast({
     collectBaseData(
       config.websiteId,
       config.trackingDomain,
-      getOrCreateSessionId
+      getOrCreateSessionId,
+      identity
     );
 
   const eventSender = (eventData: BaseData, callback?: EventCallback): void =>
@@ -73,7 +80,8 @@ export function dataFast({
       callback,
       config.apiEndpoint,
       config.trackingDomain,
-      getOrCreateSessionId
+      getOrCreateSessionId,
+      identity
     );
 
   const eventTracker = createEventTracker(

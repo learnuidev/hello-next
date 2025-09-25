@@ -59,3 +59,14 @@ export type PaymentProvider = keyof PaymentProviderData;
 export interface EventCallback {
   (response: { status: number }): void;
 }
+
+export interface DatafastIdentity {
+  email: string;
+}
+
+export interface IDatafastInput {
+  domain: string;
+  apiKey: string;
+  apiUrl: string;
+  identity: DatafastIdentity;
+}

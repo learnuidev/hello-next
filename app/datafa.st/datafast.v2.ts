@@ -13,12 +13,20 @@ import { createPaymentDetector } from "./utils/tracking-management/create-paymen
 import { initializeScrollTracking } from "./utils/tracking-management/initialize-scroll-tracking";
 import { setupHistoryTracking } from "./utils/tracking-management/setup-history-tracking";
 
-function dataFast(): void {
-  "use strict";
-
+export function dataFast({
+  apiKey,
+  domain,
+}: {
+  domain?: string;
+  apiKey?: string;
+}):
+  | undefined
+  | {
+      datafast: (eventName: string, eventData?: any) => void;
+    } {
   // ========== MAIN INITIALIZATION ==========
 
-  const config = getTrackingConfig();
+  const config = getTrackingConfig({ apiKey, domain });
   const trackingStatus = shouldEnableTracking(config);
   const { enabled: trackingEnabled, reason: disabledReason } = trackingStatus;
 
@@ -208,9 +216,6 @@ function dataFast(): void {
 
   // Initial pageview
   triggerPageview();
-}
 
-// Export for module usage
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = dataFast;
+  return { datafast };
 }

@@ -41,13 +41,13 @@ export default function RootLayout({
   return (
     <html>
       <head>
-        <Script
+        {/* <Script
           src="https://datafa.st/js/script.js"
           data-website-id="68d4c2a24b0000c1caa0dde9"
           data-domain="mandarino.io"
           strategy="afterInteractive"
           defer
-        />
+        /> */}
       </head>
 
       <body className="dark:bg-[rgb(9,10,11)] bg-white text-black dark:text-white">

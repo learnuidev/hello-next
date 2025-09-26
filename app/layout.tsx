@@ -21,10 +21,11 @@ import { LanguageSelector } from "@/components/language-selector/language-select
 import { SearchDialog } from "@/components/search-dialog/search-dialog";
 import { SettingsDialog } from "@/components/settings-dialog/settings-dialog";
 import { ThemeProvider } from "@/components/theme-provider";
-import { MandoDatafastProvider } from "@/libs/datafa.st/mando-datafast-provider";
+// import { MandoDatafastProvider } from "@/libs/datafa.st/mando-datafast-provider";
 import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
 import { PostHogProvider } from "@/libs/posthog/posthog.provider";
 import { Suspense } from "react";
+import { MandoAdaptiveProvider } from "@/libs/adaptive/mando-datafast-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -66,7 +67,7 @@ export default function RootLayout({
                 <div className="flex-1">
                   <QueryClientProvider>
                     <Authenticated>
-                      <MandoDatafastProvider>{children}</MandoDatafastProvider>
+                      <MandoAdaptiveProvider>{children}</MandoAdaptiveProvider>
                     </Authenticated>
                     <SettingsDialog />
                     <SearchDialog />

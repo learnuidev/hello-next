@@ -1,9 +1,10 @@
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 
-import { AdaptiveProvider } from "adaptive-engine/dist/index";
+// import { AdaptiveProvider } from "adaptive-engine/dist/index";
 import { adaptiveAppConfig } from "./adaptive-app-config";
+import { AdaptiveProvider } from "./adaptive-provider";
 
-export const MandoDatafastProvider = ({
+export const MandoAdaptiveProvider = ({
   children,
 }: {
   children: React.ReactNode;

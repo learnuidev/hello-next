@@ -20,6 +20,8 @@ import { Icons } from "../ui/icons.v2";
 import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
 import { useContentEditStore } from "./use-content-edit-store";
 import { smartSplit } from "./utils/smart-split";
+import { useAdaptive } from "@/libs/adaptive/adaptive-provider";
+import { mandoEventIds } from "@/libs/adaptive/mando-event-ids";
 
 export const TranscriptItem = ({
   example,
@@ -34,6 +36,8 @@ export const TranscriptItem = ({
   // components,
 }: any) => {
   const params = useParams<{ "content-id": string }>();
+
+  const { adaptive } = useAdaptive();
 
   const setWords = useWordsClickedHistoryStore((state) => state.setHistory);
 
@@ -294,6 +298,11 @@ export const TranscriptItem = ({
           } w-full ${focusMode || isVideoHidden ? "" : ""}`}
           role="button"
           onClick={() => {
+            adaptive(mandoEventIds.clickedOnTranscript.id, {
+              contentId,
+              transcriptId: example?.id,
+              input: example?.input || example?.hanzi,
+            });
             // setNewContextId();
             setRepeatHistories({
               contentId: contentId,

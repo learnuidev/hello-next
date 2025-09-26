@@ -22,6 +22,7 @@ import { useContentViewType } from "./hooks/use-content-view-type";
 import { useRecentlyWatchedContent } from "./use-recently-watched-content-store";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useAdaptive } from "@/libs/adaptive/adaptive-provider";
+import { mandoEventIds } from "@/libs/adaptive/mando-event-ids";
 
 type ContentType = {
   title: string;
@@ -156,7 +157,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
                   href={`/convos/${item?.id}`}
                   className="block relative"
                   onClick={(event) => {
-                    adaptive?.("content-viewed", {
+                    adaptive?.(mandoEventIds.contentViewed.id, {
                       contentId: item?.id,
                       email: authUser?.email || "",
                     });

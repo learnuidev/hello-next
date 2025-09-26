@@ -1,6 +1,7 @@
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
-import { dataFastAppConfig } from "./datafast-app-config";
-import { DatafastProvider } from "./datafast-provider";
+
+import { AdaptiveProvider } from "adaptive-engine/dist/index";
+import { adaptiveAppConfig } from "./adaptive-app-config";
 
 export const MandoDatafastProvider = ({
   children,
@@ -9,15 +10,15 @@ export const MandoDatafastProvider = ({
 }) => {
   const { data: authUser } = useCurrentAuthUser();
   return (
-    <DatafastProvider
+    <AdaptiveProvider
       domain={new URL(window.location.href)?.host || "*"}
-      apiKey={dataFastAppConfig.apiKey}
-      apiUrl={dataFastAppConfig.apiUrl}
+      apiKey={adaptiveAppConfig.apiKey}
+      apiUrl={adaptiveAppConfig.apiUrl}
       identity={{
         email: authUser?.email || "",
       }}
     >
       {children}
-    </DatafastProvider>
+    </AdaptiveProvider>
   );
 };

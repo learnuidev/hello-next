@@ -1,6 +1,7 @@
 import React, { createContext, useContext } from "react";
 
 import { adaptive, IAdaptive, IAdaptiveInput } from "adaptive-engine";
+import { AdapiveIdentityProvider } from "./adaptive-identity-provider";
 
 export const AdaptiveContext = createContext<IAdaptive | undefined>(undefined);
 
@@ -32,7 +33,7 @@ export const AdaptiveProvider = ({
 
   return (
     <AdaptiveContext.Provider value={selfHostedDataFast}>
-      {children}
+      <AdapiveIdentityProvider>{children}</AdapiveIdentityProvider>
     </AdaptiveContext.Provider>
   );
 };

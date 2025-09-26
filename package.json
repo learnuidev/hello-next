@@ -78,7 +78,7 @@
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
     "@webgpu/types": "^0.1.65",
-    "adaptive-engine": "^2025.9.2-6.1.39",
+    "adaptive-engine": "^2025.9.2-6.1.59",
     "ai": "4.3.16",
     "autoprefixer": "10.4.15",
     "aws-amplify": "^5.3.11",

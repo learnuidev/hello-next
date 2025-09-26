@@ -12,6 +12,10 @@ export const AdapiveIdentityProvider = ({
   const { data } = useQuery({
     queryKey: ["identify"],
     queryFn: identify,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchIntervalInBackground: false,
   });
 
   console.log("IDENTITY", data);

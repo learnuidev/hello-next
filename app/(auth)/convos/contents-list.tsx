@@ -20,8 +20,8 @@ import { useToggleFavouriteContentMutation } from "./[content-id]/hooks/use-togg
 import { contentTypes } from "./constants/content-types";
 import { useContentViewType } from "./hooks/use-content-view-type";
 import { useRecentlyWatchedContent } from "./use-recently-watched-content-store";
-import { useDatafast } from "@/libs/datafa.st/datafast-provider";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
+import { useAdaptive } from "@/libs/adaptive/adaptive-provider";
 
 type ContentType = {
   title: string;
@@ -44,7 +44,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
   const toggleFavouritContentMutation = useToggleFavouriteContentMutation();
 
   const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
-  const { datafast } = useDatafast();
+  const { adaptive } = useAdaptive();
 
   const { mode, setMode } = useLearningMode();
 
@@ -156,7 +156,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
                   href={`/convos/${item?.id}`}
                   className="block relative"
                   onClick={(event) => {
-                    datafast?.("content-viewed", {
+                    adaptive?.("content-viewed", {
                       contentId: item?.id,
                       email: authUser?.email || "",
                     });

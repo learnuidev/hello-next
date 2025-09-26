@@ -7,7 +7,7 @@ export const AdaptiveContext = createContext<IAdaptive | undefined>(undefined);
 export const useAdaptive = () => {
   const context = useContext(AdaptiveContext);
   if (!context) {
-    throw new Error("useAdaptive must be used within a DatafastProvider");
+    throw new Error("useAdaptive must be used within a AdaptiveProvider");
   }
   return context;
 };
@@ -27,7 +27,7 @@ export const AdaptiveProvider = ({
   });
 
   if (!selfHostedDataFast) {
-    throw new Error("AdaptivefastProvider: Failed to initialize adaptive");
+    throw new Error("AdaptiveProvider: Failed to initialize adaptive");
   }
 
   return (

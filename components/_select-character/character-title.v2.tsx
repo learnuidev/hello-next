@@ -84,7 +84,8 @@ export const CharacterTitleV2 = (props: any) => {
   const { videoUrl, setVideoUrl, addVideoUrl, setAddVideoUrl } =
     useYoutubeVideoUrl();
 
-  const selectedCompInput = characterId;
+  const selectedCompInput =
+    lang === "zh" ? meaningDiscovery?.hanzi || characterId : characterId;
 
   const StatusIcon = getStatusIcon(character?.status);
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
@@ -103,8 +104,6 @@ export const CharacterTitleV2 = (props: any) => {
       meaningDiscovery?.pinyin;
 
   const customRef: any = useRef(null) as any;
-
-  const { selected, setSelected } = useSelectedItem();
 
   const { data: relatedHskWords } = useListRelatedHSKWords(characterId);
 

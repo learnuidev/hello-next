@@ -37,6 +37,7 @@ import { useCharacterEditStore } from "./use-character-edit-store";
 import { useYoutubeRefState } from "./use-youtube-ref-state";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
+import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 
 export const CharacterTitleV2 = (props: any) => {
   const {
@@ -132,298 +133,196 @@ export const CharacterTitleV2 = (props: any) => {
   const segmentedData = _data || _segmentedData;
 
   return (
-    <div className="flex flex-col items-start space-y-2 w-full">
-      {edit && meaningDiscovery?.id && isSuperAdmin ? (
-        <input
-          value={newPinyin || meaningDiscovery?.pinyin}
-          onChange={(event: any) => {
-            setNewPinyin(event?.target.value);
-          }}
-          className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full"
-        />
-      ) : readMode ? (
-        <div className="flex justify-between items-center w-full">
-          <div>
-            {_data
-              ? null
-              : showPinyin &&
-                isNonRomanLang(lang) &&
-                (meaningDiscovery?.pinyin || meaningDiscovery?.roman) && (
-                  <p className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full">
-                    {meaningDiscovery?.pinyin || meaningDiscovery?.roman}{" "}
-                  </p>
-                )}
-            {segmentedData ? (
-              segmentedData.map((item, idx) => {
-                return (
-                  <span
-                    className={cn(
-                      "inline-flex flex-col items-center justify-center",
-
-                      ["，", "。"]?.includes(item?.input)
-                        ? ""
-                        : idx === 0
-                          ? "pr-[2px] sm:pr-[4px]"
-                          : "px-[2px] py-[0px] sm:px-[4px]",
-
-                      "leading-none",
-                      "py-[0px]"
-                    )}
-                    key={`${JSON.stringify(item)}-${idx}-${idx}`}
-                  >
-                    {item?.pinyin || item?.roman
-                      ? isNonRomanLang(lang) &&
-                        showPinyin && (
-                          <span className="text-sm dark:text-gray-400 text-gray-800 lowercase">
-                            {formatRoman(item)}
-                          </span>
-                        )
-                      : null}
-
+    <MandoContextMenu lang={lang}>
+      <div className="flex flex-col items-start space-y-2 w-full">
+        {edit && meaningDiscovery?.id && isSuperAdmin ? (
+          <input
+            value={newPinyin || meaningDiscovery?.pinyin}
+            onChange={(event: any) => {
+              setNewPinyin(event?.target.value);
+            }}
+            className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full"
+          />
+        ) : readMode ? (
+          <div className="flex justify-between items-center w-full">
+            <div>
+              {_data
+                ? null
+                : showPinyin &&
+                  isNonRomanLang(lang) &&
+                  (meaningDiscovery?.pinyin || meaningDiscovery?.roman) && (
+                    <p className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full">
+                      {meaningDiscovery?.pinyin || meaningDiscovery?.roman}{" "}
+                    </p>
+                  )}
+              {segmentedData ? (
+                segmentedData.map((item, idx) => {
+                  return (
                     <span
-                      onClick={() => {
-                        const selectedText = getSelectedText();
+                      className={cn(
+                        "inline-flex flex-col items-center justify-center",
 
-                        if (selectedText && selectedText?.length < 36) {
-                          router.push(getNmmLink({ id: selectedText, lang }));
-                          // setSelected(selectedText);
-                        } else {
-                          router.push(
-                            getNmmLink({ id: item?.hanzi || item?.input, lang })
-                          );
-                          // setSelected(item);
-                        }
-                      }}
+                        ["，", "。"]?.includes(item?.input)
+                          ? ""
+                          : idx === 0
+                            ? "pr-[2px] sm:pr-[4px]"
+                            : "px-[2px] py-[0px] sm:px-[4px]",
+
+                        "leading-none",
+                        "py-[0px]"
+                      )}
+                      key={`${JSON.stringify(item)}-${idx}-${idx}`}
                     >
-                      {smartSplit({
-                        input: item?.hanzi || item?.input,
-                        lang: lang,
-                      })?.map((item: any, idx: any) => {
-                        return (
-                          <span key={`${item}-pinin-view-${idx}`}>
-                            <CharacterItem
-                              className={
-                                selectedCompInput?.length < 8
-                                  ? "lg:text-4xl text-4xl"
-                                  : "text-2xl"
-                              }
-                              character={item}
-                              onClick={() => {}}
-                            />
-                          </span>
-                        );
-                      })}
-                    </span>
-                  </span>
-                );
-              })
-            ) : (
-              <div className="flex justify-between items-center w-full">
-                <WithInteractiveTitle
-                  customRef={customRef}
-                  text={selectedCompInput}
-                  lang={lang}
-                  className={
-                    selectedCompInput?.length < 8
-                      ? "lg:text-4xl text-4xl"
-                      : "text-2xl"
-                  }
-                >
-                  <div>
-                    {smartSplit({ input: selectedCompInput, lang })?.map(
-                      (item: string, idx: number) => {
-                        const startTime =
-                          (duration / (selectedCompInput?.length - 1)) * idx;
+                      {item?.pinyin || item?.roman
+                        ? isNonRomanLang(lang) &&
+                          showPinyin && (
+                            <span className="text-sm dark:text-gray-400 text-gray-800 lowercase">
+                              {formatRoman(item)}
+                            </span>
+                          )
+                        : null}
 
-                        const endTime =
-                          (duration / (selectedCompInput?.length - 1)) *
-                          (idx + 1);
+                      <span
+                        onClick={() => {
+                          const selectedText = getSelectedText();
 
-                        if (isPlaying) {
+                          if (selectedText && selectedText?.length < 36) {
+                            router.push(getNmmLink({ id: selectedText, lang }));
+                            // setSelected(selectedText);
+                          } else {
+                            router.push(
+                              getNmmLink({
+                                id: item?.hanzi || item?.input,
+                                lang,
+                              })
+                            );
+                            // setSelected(item);
+                          }
+                        }}
+                      >
+                        {smartSplit({
+                          input: item?.hanzi || item?.input,
+                          lang: lang,
+                        })?.map((item: any, idx: any) => {
                           return (
-                            <span
+                            <span key={`${item}-pinin-view-${idx}`}>
+                              <CharacterItem
+                                className={
+                                  selectedCompInput?.length < 8
+                                    ? "lg:text-4xl text-4xl"
+                                    : "text-2xl"
+                                }
+                                character={item}
+                                onClick={() => {}}
+                              />
+                            </span>
+                          );
+                        })}
+                      </span>
+                    </span>
+                  );
+                })
+              ) : (
+                <div className="flex justify-between items-center w-full">
+                  <WithInteractiveTitle
+                    customRef={customRef}
+                    text={selectedCompInput}
+                    lang={lang}
+                    className={
+                      selectedCompInput?.length < 8
+                        ? "lg:text-4xl text-4xl"
+                        : "text-2xl"
+                    }
+                  >
+                    <div>
+                      {smartSplit({ input: selectedCompInput, lang })?.map(
+                        (item: string, idx: number) => {
+                          const startTime =
+                            (duration / (selectedCompInput?.length - 1)) * idx;
+
+                          const endTime =
+                            (duration / (selectedCompInput?.length - 1)) *
+                            (idx + 1);
+
+                          if (isPlaying) {
+                            return (
+                              <span
+                                className={
+                                  selectedCompInput?.length < 4
+                                    ? "text-5xl"
+                                    : "text-2xl"
+                                }
+                                key={`character-title-${item}-${idx}-${idx}`}
+                              >
+                                <CharacterItem
+                                  className={cn(
+                                    selectedCompInput?.length < 8
+                                      ? "lg:text-4xl text-4xl"
+                                      : "text-2xl",
+
+                                    currentTime >= startTime &&
+                                      currentTime <= endTime
+                                      ? "dark:text-white text-black"
+                                      : "text-gray-500"
+                                  )}
+                                  onClick={() => {
+                                    if (duration) {
+                                      seekAndPlay(startTime, customRef);
+                                    }
+
+                                    // setWords({
+                                    //   word: character,
+                                    //   transcriptionId: item?.id,
+                                    //   contentId,
+                                    // });
+                                  }}
+                                  // disableForgotten
+                                  character={item}
+                                />
+                              </span>
+                            );
+                          }
+
+                          return (
+                            <Link
                               className={
                                 selectedCompInput?.length < 4
                                   ? "text-5xl"
                                   : "text-2xl"
                               }
                               key={`character-title-${item}-${idx}-${idx}`}
+                              href={`/nmm/${item}?lang=${lang || "zh"}${context ? `&context=${context}` : ""}`}
                             >
                               <CharacterItem
-                                className={cn(
+                                className={
                                   selectedCompInput?.length < 8
                                     ? "lg:text-4xl text-4xl"
-                                    : "text-2xl",
-
-                                  currentTime >= startTime &&
-                                    currentTime <= endTime
-                                    ? "dark:text-white text-black"
-                                    : "text-gray-500"
-                                )}
+                                    : "text-2xl"
+                                }
                                 onClick={() => {
                                   if (duration) {
                                     seekAndPlay(startTime, customRef);
                                   }
-
-                                  // setWords({
-                                  //   word: character,
-                                  //   transcriptionId: item?.id,
-                                  //   contentId,
-                                  // });
                                 }}
-                                // disableForgotten
                                 character={item}
                               />
-                            </span>
+                            </Link>
                           );
                         }
+                      )}
+                    </div>
+                  </WithInteractiveTitle>
 
-                        return (
-                          <Link
-                            className={
-                              selectedCompInput?.length < 4
-                                ? "text-5xl"
-                                : "text-2xl"
-                            }
-                            key={`character-title-${item}-${idx}-${idx}`}
-                            href={`/nmm/${item}?lang=${lang || "zh"}${context ? `&context=${context}` : ""}`}
-                          >
-                            <CharacterItem
-                              className={
-                                selectedCompInput?.length < 8
-                                  ? "lg:text-4xl text-4xl"
-                                  : "text-2xl"
-                              }
-                              onClick={() => {
-                                if (duration) {
-                                  seekAndPlay(startTime, customRef);
-                                }
-                              }}
-                              character={item}
-                            />
-                          </Link>
-                        );
-                      }
+                  <div className="text-2xl">
+                    {isHsk && typeof isHsk?.hskLevel === "number" ? (
+                      <p>HSK {isHsk?.hskLevel} </p>
+                    ) : (
+                      selectedCompInput?.length < 4 && <StatusIcon.Icon />
                     )}
                   </div>
-                </WithInteractiveTitle>
-
-                <div className="text-2xl">
-                  {isHsk && typeof isHsk?.hskLevel === "number" ? (
-                    <p>HSK {isHsk?.hskLevel} </p>
-                  ) : (
-                    selectedCompInput?.length < 4 && <StatusIcon.Icon />
-                  )}
                 </div>
-              </div>
-            )}
-          </div>
-
-          <div className="text-2xl">
-            {isHsk && typeof isHsk?.hskLevel === "number" ? (
-              <p>HSK {isHsk?.hskLevel} </p>
-            ) : (
-              selectedCompInput?.length < 4 && <StatusIcon.Icon />
-            )}
-          </div>
-        </div>
-      ) : (
-        <div className="w-full">
-          {showPinyin &&
-            isNonRomanLang(lang) &&
-            (meaningDiscovery?.pinyin || meaningDiscovery?.roman) && (
-              <p className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full">
-                {meaningDiscovery?.pinyin || meaningDiscovery?.roman}{" "}
-              </p>
-            )}
-
-          <div className="flex justify-between items-center w-full">
-            <WithInteractiveTitle
-              customRef={customRef}
-              text={selectedCompInput}
-              lang={lang}
-              className={
-                selectedCompInput?.length < 8
-                  ? "lg:text-4xl text-4xl"
-                  : "text-2xl"
-              }
-            >
-              <div>
-                {smartSplit({ input: selectedCompInput, lang })?.map(
-                  (item: string, idx: number) => {
-                    const startTime =
-                      (duration / (selectedCompInput?.length - 1)) * idx;
-
-                    const endTime =
-                      (duration / (selectedCompInput?.length - 1)) * (idx + 1);
-
-                    if (isPlaying) {
-                      return (
-                        <span
-                          className={
-                            selectedCompInput?.length < 4
-                              ? "text-5xl"
-                              : "text-2xl"
-                          }
-                          key={`character-title-${item}-${idx}-${idx}`}
-                        >
-                          <CharacterItem
-                            className={cn(
-                              selectedCompInput?.length < 8
-                                ? "lg:text-4xl text-4xl"
-                                : "text-2xl",
-
-                              currentTime >= startTime && currentTime <= endTime
-                                ? "dark:text-white text-black"
-                                : "text-gray-500"
-                            )}
-                            onClick={() => {
-                              if (duration) {
-                                seekAndPlay(startTime, customRef);
-                              }
-                            }}
-                            character={item}
-                          />
-                        </span>
-                      );
-                    }
-
-                    return (
-                      <Link
-                        className={
-                          selectedCompInput?.length < 4
-                            ? "text-5xl"
-                            : "text-2xl"
-                        }
-                        key={`character-title-${item}-${idx}-${idx}`}
-                        href={`/nmm/${item}?lang=${lang || "zh"}${context ? `&context=${context}` : ""}`}
-                      >
-                        <CharacterItem
-                          className={
-                            selectedCompInput?.length < 8
-                              ? "lg:text-4xl text-4xl"
-                              : "text-2xl"
-                          }
-                          onClick={() => {
-                            if (duration) {
-                              seekAndPlay(startTime, customRef);
-                            }
-
-                            // setWords({
-                            //   word: character,
-                            //   transcriptionId: item?.id,
-                            //   contentId,
-                            // });
-                          }}
-                          // disableForgotten
-                          character={item}
-                        />
-                      </Link>
-                    );
-                  }
-                )}
-              </div>
-            </WithInteractiveTitle>
+              )}
+            </div>
 
             <div className="text-2xl">
               {isHsk && typeof isHsk?.hskLevel === "number" ? (
@@ -433,94 +332,203 @@ export const CharacterTitleV2 = (props: any) => {
               )}
             </div>
           </div>
-        </div>
-      )}
-
-      {lang === "en" ? null : edit && meaningDiscovery?.id && isSuperAdmin ? (
-        <input
-          value={newEn || meaningDiscovery?.en}
-          onChange={(event: any) => {
-            setNewEn(event?.target.value);
-          }}
-          className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full"
-        />
-      ) : (
-        <h2 className="dark:text-gray-500 text-gray-900 font-light">
-          {finalEnVal?.split("/")?.slice(0, 4)?.join("/")}
-        </h2>
-      )}
-
-      <div className="space-x-4 flex items-center">
-        {!edit && (
-          <PlayButtonV2
-            customRef={customRef}
-            text={selectedCompInput}
-            lang={lang}
-            className="text-2xl"
-          />
-        )}
-
-        {!edit && <CharacterTrackButton />}
-        {!edit && (
-          <BookmarkButton
-            hanzi={characterId}
-            lang={lang}
-            en={finalEnVal}
-            pinyin={selectedPinyin}
-          />
-        )}
-
-        {!edit && isSuperAdmin && (
-          <button
-            onClick={() => {
-              setAddVideoUrl((prev: boolean) => !prev);
-            }}
-          >
-            <Icons.youtube className="text-xl" />
-          </button>
-        )}
-
-        {edit && meaningDiscovery?.id && isSuperAdmin ? (
-          <div className="space-x-4">
-            <button
-              disabled={updateMeaningMutation.isPending}
-              onClick={() => {
-                updateMeaningMutation
-                  // @ts-ignore
-                  .mutateAsync({
-                    id: meaningDiscovery?.id,
-                    pinyin: newPinyin || meaningDiscovery?.pinyin,
-                    en: newEn || meaningDiscovery?.en,
-                  })
-                  .then((resp) => {
-                    setEdit(false);
-                  });
-              }}
-            >
-              Save
-            </button>
-
-            <button
-              onClick={() => {
-                setEdit(false);
-              }}
-            >
-              Cancel
-            </button>
-          </div>
         ) : (
-          meaningDiscovery?.id &&
-          isSuperAdmin && (
+          <div className="w-full">
+            {showPinyin &&
+              isNonRomanLang(lang) &&
+              (meaningDiscovery?.pinyin || meaningDiscovery?.roman) && (
+                <p className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full">
+                  {meaningDiscovery?.pinyin || meaningDiscovery?.roman}{" "}
+                </p>
+              )}
+
+            <div className="flex justify-between items-center w-full">
+              <WithInteractiveTitle
+                customRef={customRef}
+                text={selectedCompInput}
+                lang={lang}
+                className={
+                  selectedCompInput?.length < 8
+                    ? "lg:text-4xl text-4xl"
+                    : "text-2xl"
+                }
+              >
+                <div>
+                  {smartSplit({ input: selectedCompInput, lang })?.map(
+                    (item: string, idx: number) => {
+                      const startTime =
+                        (duration / (selectedCompInput?.length - 1)) * idx;
+
+                      const endTime =
+                        (duration / (selectedCompInput?.length - 1)) *
+                        (idx + 1);
+
+                      if (isPlaying) {
+                        return (
+                          <span
+                            className={
+                              selectedCompInput?.length < 4
+                                ? "text-5xl"
+                                : "text-2xl"
+                            }
+                            key={`character-title-${item}-${idx}-${idx}`}
+                          >
+                            <CharacterItem
+                              className={cn(
+                                selectedCompInput?.length < 8
+                                  ? "lg:text-4xl text-4xl"
+                                  : "text-2xl",
+
+                                currentTime >= startTime &&
+                                  currentTime <= endTime
+                                  ? "dark:text-white text-black"
+                                  : "text-gray-500"
+                              )}
+                              onClick={() => {
+                                if (duration) {
+                                  seekAndPlay(startTime, customRef);
+                                }
+                              }}
+                              character={item}
+                            />
+                          </span>
+                        );
+                      }
+
+                      return (
+                        <Link
+                          className={
+                            selectedCompInput?.length < 4
+                              ? "text-5xl"
+                              : "text-2xl"
+                          }
+                          key={`character-title-${item}-${idx}-${idx}`}
+                          href={`/nmm/${item}?lang=${lang || "zh"}${context ? `&context=${context}` : ""}`}
+                        >
+                          <CharacterItem
+                            className={
+                              selectedCompInput?.length < 8
+                                ? "lg:text-4xl text-4xl"
+                                : "text-2xl"
+                            }
+                            onClick={() => {
+                              if (duration) {
+                                seekAndPlay(startTime, customRef);
+                              }
+
+                              // setWords({
+                              //   word: character,
+                              //   transcriptionId: item?.id,
+                              //   contentId,
+                              // });
+                            }}
+                            // disableForgotten
+                            character={item}
+                          />
+                        </Link>
+                      );
+                    }
+                  )}
+                </div>
+              </WithInteractiveTitle>
+
+              <div className="text-2xl">
+                {isHsk && typeof isHsk?.hskLevel === "number" ? (
+                  <p>HSK {isHsk?.hskLevel} </p>
+                ) : (
+                  selectedCompInput?.length < 4 && <StatusIcon.Icon />
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {lang === "en" ? null : edit && meaningDiscovery?.id && isSuperAdmin ? (
+          <input
+            value={newEn || meaningDiscovery?.en}
+            onChange={(event: any) => {
+              setNewEn(event?.target.value);
+            }}
+            className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full"
+          />
+        ) : (
+          <h2 className="dark:text-gray-500 text-gray-900 font-light">
+            {finalEnVal?.split("/")?.slice(0, 4)?.join("/")}
+          </h2>
+        )}
+
+        <div className="space-x-4 flex items-center">
+          {!edit && (
+            <PlayButtonV2
+              customRef={customRef}
+              text={selectedCompInput}
+              lang={lang}
+              className="text-2xl"
+            />
+          )}
+
+          {!edit && <CharacterTrackButton />}
+          {!edit && (
+            <BookmarkButton
+              hanzi={characterId}
+              lang={lang}
+              en={finalEnVal}
+              pinyin={selectedPinyin}
+            />
+          )}
+
+          {!edit && isSuperAdmin && (
             <button
               onClick={() => {
-                setEdit(true);
+                setAddVideoUrl((prev: boolean) => !prev);
               }}
             >
-              <Icons.edit className="text-xl" />{" "}
+              <Icons.youtube className="text-xl" />
             </button>
-          )
-        )}
+          )}
+
+          {edit && meaningDiscovery?.id && isSuperAdmin ? (
+            <div className="space-x-4">
+              <button
+                disabled={updateMeaningMutation.isPending}
+                onClick={() => {
+                  updateMeaningMutation
+                    // @ts-ignore
+                    .mutateAsync({
+                      id: meaningDiscovery?.id,
+                      pinyin: newPinyin || meaningDiscovery?.pinyin,
+                      en: newEn || meaningDiscovery?.en,
+                    })
+                    .then((resp) => {
+                      setEdit(false);
+                    });
+                }}
+              >
+                Save
+              </button>
+
+              <button
+                onClick={() => {
+                  setEdit(false);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            meaningDiscovery?.id &&
+            isSuperAdmin && (
+              <button
+                onClick={() => {
+                  setEdit(true);
+                }}
+              >
+                <Icons.edit className="text-xl" />{" "}
+              </button>
+            )
+          )}
+        </div>
       </div>
-    </div>
+    </MandoContextMenu>
   );
 };

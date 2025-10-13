@@ -63,10 +63,10 @@ export const ActiveTranscription = ({
     <MandoContextMenu lang={currentTranscription?.lang}>
       <div
         className={cn(
-          "text-center sm:mt-8 mt-4 mb-4 h-36",
+          "text-center sm:mt-8 mt-4 lg:h-40",
 
-          currentTranscription?.en?.length > 200 && "h-40 lg:h-20",
-          currentTranscription?.en?.length > 350 && "lg:h-40 h-80",
+          currentTranscription?.en?.length > 200 && "",
+          currentTranscription?.en?.length > 350 && "",
 
           className
         )}

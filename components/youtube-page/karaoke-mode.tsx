@@ -44,7 +44,7 @@ function CurrentTranscriptionViewer({
               upsertContentAnalyticsHandler();
             }}
             href={`/nmm/${currentTranscription?.input || currentTranscription?.hanzi}?lang=${lang}`}
-            className={cn("text-[16px] lg:text-xl font-light text-gray-400")}
+            className={cn("text-[16px] lg:text-xl font-light")}
           >
             {romanOrPinyin}
           </Link>
@@ -79,7 +79,7 @@ function CurrentTranscriptionViewer({
 
         <p
           className={cn(
-            "text-[16px] lg:text-xl font-light dark:text-gray-400 text-black"
+            "text-[16px] lg:text-xl font-light dark:text-gray-400 text-black mt-12"
           )}
         >
           {containsChinglish && showChinglish

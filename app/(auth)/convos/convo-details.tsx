@@ -81,8 +81,8 @@ export const ConvoDetails = ({ contentId }: { contentId: string }) => {
 
   // If the link contains yotube - then show youtube page
   if (
-    viewType === "listen" &&
-    (isYoutube(content?.audio) || isVideoUrl(content?.audio))
+    viewType === "listen"
+    // (isYoutube(content?.audio) || isVideoUrl(content?.audio))
   ) {
     return (
       <div>

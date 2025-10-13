@@ -10,21 +10,26 @@ import { HanziTooltip } from "../_select-character/selected-character/hanzi-tool
 import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
 import { cn } from "@/lib/utils";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
+import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 
 export const ActiveTranscription = ({
   currentTime,
   transcriptions,
   contentId,
   className,
+  containsChinglish,
 }: {
   currentTime: number;
   transcriptions: any;
   contentId: string;
   className?: string;
+  containsChinglish?: boolean;
 }) => {
   const currentTranscription = transcriptions?.find(
     (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
   );
+
+  const { showChinglish, setShowChinglish } = useChinglishState();
 
   const showPinyin = useBrightModeStore((state: any) => state.showPinyin);
 
@@ -58,7 +63,7 @@ export const ActiveTranscription = ({
     <MandoContextMenu lang={currentTranscription?.lang}>
       <div
         className={cn(
-          "text-center sm:mt-8 mt-4 mb-4 h-20",
+          "text-center sm:mt-8 mt-4 mb-4 h-36",
 
           currentTranscription?.en?.length > 200 && "h-40 lg:h-20",
           currentTranscription?.en?.length > 350 && "lg:h-40 h-80",
@@ -128,7 +133,9 @@ export const ActiveTranscription = ({
           )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`}
           className="dark:text-gray-400 text-gray-800 text-sm sm:text-[16px]"
         >
-          {currentTranscription?.en}
+          {containsChinglish && showChinglish
+            ? currentTranscription?.chinglish
+            : currentTranscription?.en}
         </Link>
       </div>
     </MandoContextMenu>

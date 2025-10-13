@@ -63,6 +63,7 @@ import {
 import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
 import { useSelectedItem } from "./use-selected-item";
 import { smartSplit } from "./utils/smart-split";
+import { isYoutube } from "@/app/(auth)/convos/utils/is-youtube";
 
 interface ViewModeState {
   viewMode: string;
@@ -223,25 +224,30 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
     }
   }, [currentTime, finalUrl, start]);
 
+  const isYoutubeVideo =
+    isYoutube(content?.audio) || isVideoUrl(content?.audio);
+
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;
 
-    if (start) {
-      if (isVideoUrl(finalUrl)) {
-        if (!currentTime && `${currentTime}` !== `${start}`) {
-          seekAndPlay(start);
+    if (isYoutubeVideo) {
+      if (start) {
+        if (isVideoUrl(finalUrl)) {
+          if (!currentTime && `${currentTime}` !== `${start}`) {
+            seekAndPlay(start);
+          }
+        } else {
+          playerRef.current.seekTo(start, "seconds");
+
+          try {
+            playerRef.current?.player?.player?.play();
+          } catch (err) {
+            console.error(err);
+          }
         }
       } else {
-        playerRef.current.seekTo(start, "seconds");
-
-        try {
-          playerRef.current?.player?.player?.play();
-        } catch (err) {
-          console.error(err);
-        }
+        seekAndPlay(0);
       }
-    } else {
-      seekAndPlay(0);
     }
   }, [start, finalUrl, currentTime]);
 
@@ -746,7 +752,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
         <div className="grid grid-cols-12 gap-4">
           <div
-            className={` ${isVideoHidden ? "hidden" : ""} md:col-span-7 col-span-12`}
+            className={` ${isVideoHidden || !isYoutubeVideo ? "hidden" : ""} md:col-span-7 col-span-12`}
           >
             <div className="">
               <ReactPlayer
@@ -816,7 +822,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
           )} */}
 
             <ActiveTranscription
-              // containsChinglish={containsChinglish}
+              containsChinglish={containsChinglish}
               // seekAndPlay={seekAndPlay}
               currentTime={currentTime}
               transcriptions={transcriptions}
@@ -826,7 +832,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
           <div
             className={
-              isVideoHidden
+              isVideoHidden || !isYoutubeVideo
                 ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
                 : "col-span-12 md:col-span-5"
             }
@@ -834,7 +840,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
             {viewMode === "karaoke" ? (
               <div
                 className={
-                  isVideoHidden
+                  isVideoHidden || !isYoutubeVideo
                     ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
                     : "col-span-12 md:col-span-5"
                 }
@@ -842,6 +848,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                 <KaraokeMode
                   lang={content?.lang}
                   isPlaying={isPlaying}
+                  containsChinglish={containsChinglish}
                   seekTo={(time: number) => {
                     playerRef.current.seekTo(time, "seconds");
 
@@ -874,7 +881,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                 {isVideoHidden && (
                   <div>
                     <ActiveTranscription
-                      // containsChinglish={containsChinglish}
+                      containsChinglish={containsChinglish}
                       // seekAndPlay={seekAndPlay}
                       currentTime={currentTime}
                       transcriptions={transcriptions}
@@ -1100,7 +1107,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                 {isVideoHidden && (
                   <div>
                     <ActiveTranscription
-                      // containsChinglish={containsChinglish}
+                      containsChinglish={containsChinglish}
                       // seekAndPlay={seekAndPlay}
                       currentTime={currentTime}
                       transcriptions={transcriptions}

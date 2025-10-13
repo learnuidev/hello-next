@@ -11,6 +11,7 @@ import { useFocusIndex } from "@/app/(auth)/convos/play-v3/hooks/use-focus-index
 import Link from "next/link";
 import { useUpsetContentAnalyticsHandler } from "@/app/(auth)/convos/[content-id]/hooks/use-upsert-content-analytics-handler";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
+import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 
 function CurrentTranscriptionViewer({
   seekTo,
@@ -19,10 +20,13 @@ function CurrentTranscriptionViewer({
   showPinyin,
   romanOrPinyin,
   isNonRomanContent,
+  containsChinglish,
   lang,
 }: any) {
   const { upsertContentAnalyticsHandler } =
     useUpsetContentAnalyticsHandler(contentId);
+
+  const { showChinglish, setShowChinglish } = useChinglishState();
 
   return (
     <MandoContextMenu lang={currentTranscription?.lang || ""}>
@@ -78,7 +82,9 @@ function CurrentTranscriptionViewer({
             "text-[16px] lg:text-xl font-light dark:text-gray-400 text-black"
           )}
         >
-          {currentTranscription?.en}
+          {containsChinglish && showChinglish
+            ? currentTranscription?.chinglish
+            : currentTranscription?.en}
         </p>
       </div>
     </MandoContextMenu>
@@ -182,6 +188,7 @@ export function KaraokeMode({
   contentId,
   lang,
   audio,
+  containsChinglish,
 }: {
   play: any;
   seekTo: any;
@@ -194,6 +201,7 @@ export function KaraokeMode({
   contentId?: string;
   isFocusKaraokeMode?: boolean;
   audioUrl?: string;
+  containsChinglish?: boolean;
 }) {
   const { focusIndex, setFocusIndex } = useFocusIndex(contentId || "");
 
@@ -279,18 +287,19 @@ export function KaraokeMode({
             showPinyin={showPinyin}
             romanOrPinyin={romanOrPinyin}
             isNonRomanContent={isNonRomanContent}
+            containsChinglish={containsChinglish}
             lang={lang}
           />
         )}
       </ActiveKaraokeContainer>
 
-      <UpcomingLyrics
+      {/* <UpcomingLyrics
         transcriptions={transcriptions}
         currentTime={currentTime}
         isNonRomanContent={isNonRomanContent}
         showPinyin={showPinyin}
         seekTo={seekTo}
-      />
+      /> */}
     </KaraokeContainer>
   );
 }

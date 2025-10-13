@@ -12,6 +12,8 @@ import Link from "next/link";
 import { useUpsetContentAnalyticsHandler } from "@/app/(auth)/convos/[content-id]/hooks/use-upsert-content-analytics-handler";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 import { useChinglishState } from "../settings-dialog/use-chinglish-state";
+import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
+import { useSelectedItem } from "./use-selected-item";
 
 function CurrentTranscriptionViewer({
   seekTo,
@@ -25,6 +27,8 @@ function CurrentTranscriptionViewer({
 }: any) {
   const { upsertContentAnalyticsHandler } =
     useUpsetContentAnalyticsHandler(contentId);
+
+  const { selected, setSelected } = useSelectedItem();
 
   const { showChinglish, setShowChinglish } = useChinglishState();
 
@@ -54,6 +58,30 @@ function CurrentTranscriptionViewer({
           onClick={() => {
             if (typeof currentTranscription?.start === "number") {
               seekTo(currentTranscription?.start);
+            }
+
+            const selectedText = getSelectedText();
+
+            if (selectedText && selectedText?.length < 36) {
+              setSelected(selectedText);
+
+              // if (!containsSelectedHistory) {
+              //   addSearchHistory({
+              //     input: selectedText,
+              //     transcriptionId: currentTranscription.id,
+              //   });
+              // }
+            } else {
+              setSelected(
+                currentTranscription.hanzi || currentTranscription?.input
+              );
+
+              // if (!containsHistory) {
+              //   addSearchHistory({
+              //     input: item.hanzi || item?.input,
+              //     transcriptionId: currentTranscription.id,
+              //   });
+              // }
             }
           }}
           className={cn(

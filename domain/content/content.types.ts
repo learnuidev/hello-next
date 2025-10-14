@@ -1,10 +1,12 @@
 export type AddContentParams = {
-  type: "convo" | "story" | "movie" | "music" | "tutorial";
-  author: string;
-  location: string;
-  title: string;
-  audio: string;
-  transcriptions: any;
-  lang: string;
+  type: "text" | "website" | "audio" | "youtube";
+  contentType: "convo" | "story" | "movie" | "music" | "tutorial" | "news";
+  author?: string;
+  location?: string;
+  title?: string;
+  audio?: string;
+  transcriptions?: any;
+  lang?: string;
   contentUrl?: string;
+  websiteUrl?: string;
 } & any;

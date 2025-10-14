@@ -17,6 +17,8 @@ import { useIsSearchTrackingEnabled } from "./use-is-search-tracking-enabled";
 import { useListHistoryQuery } from "@/domain/history/history.queries";
 import { isToday } from "./is-today";
 import { useGetCurrentLang } from "./use-get-current-lang";
+import { isLongText, isWebsite } from "@/lib/utils";
+import { useAddContentMutation } from "@/domain/content/content.mutations";
 
 export const useHandleSearch = () => {
   const router = useRouter();
@@ -55,10 +57,13 @@ export const useHandleSearch = () => {
   };
 
   const langs = useListLanguages();
+  const langItem = useGetCurrentLang();
 
   const addHistoryMutation = useAddHistoryMutation();
 
   const { data: history } = useListHistoryQuery();
+
+  const addContentMutation = useAddContentMutation();
 
   const alreadySearchedToday = history?.Items?.filter(
     (item: any) => item?.input === querySync && isToday(history?.createdAt)
@@ -79,6 +84,48 @@ export const useHandleSearch = () => {
       const langSelected = langs?.find(
         (lang) => lang?.id === querySync?.toLowerCase()
       );
+
+      const _isWebsite = isWebsite(querySync);
+
+      console.log("is website", _isWebsite);
+      console.log("LANG SELECTED", langItem);
+
+      // return;
+
+      if (_isWebsite && langItem) {
+        const newContent: any = {
+          type: "website",
+          contentType: "news",
+          websiteUrl: querySync,
+          lang: langItem,
+        };
+        console.log("add new content", newContent);
+
+        addContentMutation.mutateAsync(newContent).then((resp) => {
+          return router.push(`/convos/${resp?.id}`);
+        });
+        return null;
+      }
+
+      const _isLongText = isLongText(querySync);
+
+      if (_isLongText && langItem) {
+        console.log("IS WEBSITE", _isWebsite);
+        console.log("IS LONG TEXT", _isLongText);
+        const newContent: any = {
+          type: "text",
+          contentType: "news",
+          input: querySync,
+          title: querySync?.split(`\n`)?.[0]?.slice(0, 42) || "todo",
+          lang: langItem,
+        };
+        console.log("add new content", newContent);
+
+        addContentMutation.mutateAsync(newContent).then((resp) => {
+          return router.push(`/convos/${resp?.id}`);
+        });
+        return null;
+      }
 
       if (langSelected) {
         setQuery("");

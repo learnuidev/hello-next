@@ -67,6 +67,73 @@ export function parseTranscripts(res) {
   });
 }
 
+export function isWebsite(url: string): boolean {
+  if (!url || typeof url !== "string") return false;
+
+  try {
+    const urlObj = new URL(url);
+
+    // Check for common web protocols
+    const webProtocols = ["http:", "https:"];
+    if (!webProtocols.includes(urlObj.protocol)) {
+      return false;
+    }
+
+    // Check for common website domains/TLDS
+    const websiteTlds = [
+      ".com",
+      ".org",
+      ".net",
+      ".edu",
+      ".gov",
+      ".io",
+      ".co",
+      ".ai",
+      ".dev",
+      ".app",
+      ".shop",
+      ".tech",
+      ".info",
+      ".biz",
+      ".me",
+      ".xyz",
+      ".online",
+      ".site",
+      ".website",
+      ".space",
+      ".store",
+      ".life",
+      ".blog",
+      ".news",
+    ];
+
+    const hostname = urlObj.hostname.toLowerCase();
+
+    // Exclude obvious non-website patterns
+    const excludedPatterns = [
+      /^(localhost|127\.0\.0\.1|0\.0\.0\.0|::1)/,
+      /\.(local|internal|corp|test|dev|staging)$/i,
+      /^(10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|192\.168\.)/,
+    ];
+
+    if (excludedPatterns.some((pattern) => pattern.test(hostname))) {
+      return false;
+    }
+
+    // Check if it looks like a website (has a valid TLD or common website pattern)
+    return (
+      websiteTlds.some((tld) => hostname.includes(tld)) ||
+      (hostname.includes(".") &&
+        !hostname.endsWith(".local") &&
+        !hostname.endsWith(".internal"))
+    );
+  } catch (e) {
+    return false;
+  }
+}
+
+export const isLongText = (text: string) => text?.length > 100;
+
 export function removeNull(obj: any) {
   // eslint-disable-next-line no-unused-vars
   return Object.fromEntries(

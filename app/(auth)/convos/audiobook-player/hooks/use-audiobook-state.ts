@@ -62,7 +62,7 @@ export const useAudioBookState = (content: IContent) => {
         return {
           ...item,
           start: item?.start === 0 ? 0.1 : item?.start,
-          end: ctx?.[idx + 1]?.start,
+          end: item?.end || ctx?.[idx + 1]?.start,
         };
       }
 

@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "server": "flask run"
   },
   "dependencies": {
@@ -75,8 +75,8 @@
     "@tsparticles/slim": "^3.3.0",
     "@types/mapbox-gl": "^2.7.15",
     "@types/node": "20.6.0",
-    "@types/react": "19.1.8",
-    "@types/react-dom": "19.1.6",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
     "@webgpu/types": "^0.1.65",
     "adaptive.fyi": "^2025.9.3-0.13.35",
     "ai": "4.3.16",
@@ -96,7 +96,7 @@
     "elevenlabs": "^1.50.2",
     "encoding": "^0.1.13",
     "eslint": "8.49.0",
-    "eslint-config-next": "15.3.4",
+    "eslint-config-next": "15.5.5",
     "framer-motion": "12.18.1",
     "idb-keyval": "^6.2.1",
     "lodash.map": "^4.6.0",
@@ -104,7 +104,7 @@
     "lottie-react": "2.4.1",
     "lucide-react": "0.522.0",
     "narakeet": "^11.8.202-4.22.54",
-    "next": "15.3.4",
+    "next": "15.5.5",
     "next-absolute-url": "^1.2.2",
     "next-themes": "^0.2.1",
     "node-fetch": "^3.3.2",
@@ -113,8 +113,8 @@
     "postcss": "8.4.29",
     "posthog-js": "^1.110.0",
     "ramda": "^0.29.1",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
     "react-dropzone": "^14.3.5",
     "react-markdown": "^9.0.1",
     "react-player": "^2.13.0",
@@ -138,6 +138,7 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
     "@types/chance": "^1.1.5",
     "@types/mapbox__mapbox-gl-geocoder": "^4.7.5",
     "@types/ramda": "^0.29.7",
@@ -147,7 +148,7 @@
     "postcss-nesting": "^12.0.1"
   },
   "overrides": {
-    "@types/react": "19.1.8",
-    "@types/react-dom": "19.1.6"
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2"
   }
 }

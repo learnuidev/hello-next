@@ -23,6 +23,7 @@ import { ContentsList } from "./contents-list";
 import { NewContentV2 } from "./new-content-v2/new-content-v2";
 import { useIsFreeMember } from "../plans/hooks/use-is-free-member";
 import { NewBook } from "./new-book/new-book";
+import { FloatingNavbar } from "@/components/floating-navbar";
 
 const useViewTypeStore = createIndexDBStore({
   name: "view-type",
@@ -125,7 +126,7 @@ export default function Convos() {
   }
 
   return (
-    <main className="">
+    <main className="mb-32">
       <div className="flex space-x-4 px-4 md:px-12 mt-4">
         <button
           className={
@@ -201,6 +202,8 @@ export default function Convos() {
           <ContentsList contentViewType={contentViewType} />
         </div>
       )}
+
+      <FloatingNavbar />
     </main>
   );
 }

@@ -291,7 +291,7 @@ export const TranscriptItem = ({
 
   return (
     <div className="w-120 px-4">
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 flex-col lg:flex-row">
         <div
           className={`${
             focusMode ? "text-center" : "text-left"
@@ -386,7 +386,7 @@ export const TranscriptItem = ({
           <Explanations />
         </div>
 
-        <div>
+        <div className="flex justify-between w-full lg:flex-col lg:items-end items-center">
           <ConfigButtons />
 
           <div className="flex text-gray-400 text-[12px] items-center justify-end space-x-2">

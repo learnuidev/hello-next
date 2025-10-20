@@ -30,7 +30,7 @@ export const DuLogin = () => {
         autoFocus
         rows={8}
         placeholder=""
-        className="mt-8 sm:w-[655px] w-full font-extralight focus:outline-0 p-2 border-0 border-none dark:text-gray-300"
+        className="mt-8 sm:w-[655px] w-full font-extralight focus:outline-0 p-2 border-0 border-none dark:text-gray-300 bg-gray-50 dark:bg-[rgb(13,14,15)]"
       />
 
       <button

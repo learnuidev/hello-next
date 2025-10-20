@@ -97,7 +97,7 @@ export function useShortCuts() {
       }
       if (["o"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
-        router.push("/nmm");
+        router.push("/convos");
       }
 
       if (["l"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
@@ -142,9 +142,6 @@ export function useShortCuts() {
           reviewMode,
         });
 
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?${reviewUrl}`);
-        }
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
         }
@@ -160,9 +157,6 @@ export function useShortCuts() {
           reviewMode,
         });
 
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?${reviewUrl}`);
-        }
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
         }
@@ -178,9 +172,6 @@ export function useShortCuts() {
           reviewMode,
         });
 
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?${reviewUrl}`);
-        }
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
         }
@@ -195,9 +186,7 @@ export function useShortCuts() {
           studyMode,
           reviewMode,
         });
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?${reviewUrl}`);
-        }
+
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
         }
@@ -212,9 +201,7 @@ export function useShortCuts() {
           studyMode,
           reviewMode,
         });
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?${reviewUrl}`);
-        }
+
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
         }
@@ -230,9 +217,6 @@ export function useShortCuts() {
           reviewMode,
         });
 
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?${reviewUrl}`);
-        }
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
         }
@@ -253,9 +237,6 @@ export function useShortCuts() {
           reviewMode,
         });
 
-        if (routeName?.includes("/nmm")) {
-          router.push(`/nmm?${reviewUrl}`);
-        }
         if (routeName?.includes("/review")) {
           router.push(`/review?${reviewUrl}`);
         }

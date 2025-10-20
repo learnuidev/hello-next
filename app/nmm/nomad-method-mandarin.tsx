@@ -17,10 +17,10 @@ import { AllComponents } from "./all-components";
 import { HskView } from "./hsk/hsk";
 import { useHskViewStore } from "./hsk/state";
 import { NmmCoreComponents } from "./nmm-core-components";
-import { XiaomaView } from "./xiaoma/xiaoma-view";
 
 import { HanziLink } from "@/components/hanzi-link";
 // import { NmmListContainer } from "@/components/nmm-list-container";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import {
   Tooltip,
   TooltipContent,
@@ -29,15 +29,12 @@ import {
 } from "@/components/ui/tooltip";
 import { SearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/search-results";
 import { useGetInsightSearchResults } from "../(auth)/insights/insights-v2/precision-insight-view/use-get-insight-search-results";
-import { ContentView } from "./content/content-view";
 import { resolveHsk } from "./hsk/hsk-utils/resolve-hsk";
 import { calculateColor } from "./nmm-utils/calculate-color";
 import { filterComponents } from "./nmm-utils/filter-components";
 import { NomadMethodTabsContainer } from "./nomad-method-tabs-container";
 import { PreviewComponent } from "./preview-component";
 import { useGetSelectedBelt } from "./use-get-selected-belt";
-import { YctView } from "./yct/yct-view";
-import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 
 export function NomadMethodMandarin() {
   const selectedBelt = useGetSelectedBelt();
@@ -123,61 +120,55 @@ export function NomadMethodMandarin() {
   }
 
   return (
-    <ContentView>
-      <YctView>
-        <XiaomaView>
-          <NomadMethodTabsContainer>
-            <TabsContent value="core" className="my-4 md:my-8">
-              <HskView type={viewType}>
-                <NmmCoreComponents />
-              </HskView>
-            </TabsContent>
+    <NomadMethodTabsContainer>
+      <TabsContent value="core" className="my-4 md:my-8">
+        <HskView type={viewType}>
+          <NmmCoreComponents />
+        </HskView>
+      </TabsContent>
 
-            <TabsContent value="needs_review" className="my-4 md:my-8">
-              <HskView type={viewType}>
-                <NmmListContainerAll>
-                  {(queryStr
-                    ? filteredComponents
-                    : learnedCharacters2?.filter(
-                        (character: any) =>
-                          character?.status === "needs_review" &&
-                          character?.level >= selectedBelt?.minCharacterLevel &&
-                          character?.level <= selectedBelt?.maxCharacterLevel
-                      )
-                  )?.map((prop: any, idx: number) => {
-                    const selectedComp = components?.find(
-                      (component: any) => component?.hanzi === prop?.hanzi
-                    );
+      <TabsContent value="needs_review" className="my-4 md:my-8">
+        <HskView type={viewType}>
+          <NmmListContainerAll>
+            {(queryStr
+              ? filteredComponents
+              : learnedCharacters2?.filter(
+                  (character: any) =>
+                    character?.status === "needs_review" &&
+                    character?.level >= selectedBelt?.minCharacterLevel &&
+                    character?.level <= selectedBelt?.maxCharacterLevel
+                )
+            )?.map((prop: any, idx: number) => {
+              const selectedComp = components?.find(
+                (component: any) => component?.hanzi === prop?.hanzi
+              );
 
-                    const color = calculateColor({
-                      tone: selectedComp?.tone_level,
-                    });
+              const color = calculateColor({
+                tone: selectedComp?.tone_level,
+              });
 
-                    return (
-                      <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
-                        <Tooltip>
-                          <TooltipTrigger className="hover:scale-125 transition">
-                            <HanziLink character={prop} />
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-black border-gray-800">
-                            <PreviewComponent component={prop} />
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    );
-                  })}
-                </NmmListContainerAll>
-              </HskView>
-            </TabsContent>
+              return (
+                <TooltipProvider key={`${prop.hanzi}-chars-${idx}`}>
+                  <Tooltip>
+                    <TooltipTrigger className="hover:scale-125 transition">
+                      <HanziLink character={prop} />
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-black border-gray-800">
+                      <PreviewComponent component={prop} />
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              );
+            })}
+          </NmmListContainerAll>
+        </HskView>
+      </TabsContent>
 
-            <TabsContent value="all" className="my-4 md:my-8">
-              <HskView variant="all" type={viewType}>
-                <AllComponents />
-              </HskView>
-            </TabsContent>
-          </NomadMethodTabsContainer>
-        </XiaomaView>
-      </YctView>
-    </ContentView>
+      <TabsContent value="all" className="my-4 md:my-8">
+        <HskView variant="all" type={viewType}>
+          <AllComponents />
+        </HskView>
+      </TabsContent>
+    </NomadMethodTabsContainer>
   );
 }

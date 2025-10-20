@@ -60,7 +60,7 @@ export function WithDetectLanguage({
     <>
       <Nothing message="Language not supported." />
 
-      <Link href="/nmm" className="text-center block">
+      <Link href="/convos" className="text-center block">
         Back
       </Link>
     </>

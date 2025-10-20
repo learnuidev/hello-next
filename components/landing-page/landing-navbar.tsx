@@ -43,16 +43,6 @@ export const LandingNavbar = () => {
             <Icons.glassesRound />
             <p>Learn</p>
           </Link>
-          <Link
-            href={"/nmm"}
-            className={cn(
-              `flex items-center text-sm space-x-2 transition hover:text-rose-400`,
-              routeName === "/nmm" ? "text-rose-400" : "text-gray-500"
-            )}
-          >
-            <Icons.planet />
-            <p>Playground</p>
-          </Link>
         </div>
       </div>
       <div className="hidden md:block">

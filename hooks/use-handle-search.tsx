@@ -1,5 +1,6 @@
 "use client";
 
+import { chineseConverter } from "mandarino/src/utils/chinese-converter";
 import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, KeyboardEvent } from "react";
 
@@ -9,16 +10,15 @@ import { getNavigationUrl } from "@/components/_search/get-navigation-url";
 import { useListLanguages } from "@/components/languages-list";
 import { useSearchQueryStore } from "@/components/search/state";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
-import { traditionalToSimplified } from "@/langs/chinese /traditiona-to-simplified";
+import { useAddContentMutation } from "@/domain/content/content.mutations";
+import { useListHistoryQuery } from "@/domain/history/history.queries";
+import { isLongText, isWebsite } from "@/lib/utils";
 import { signOut } from "@/libs/cognito/auth";
+import { isToday } from "./is-today";
+import { useGetCurrentLang } from "./use-get-current-lang";
 import { useGetLangParams } from "./use-get-lang-params";
 import { useIsDu } from "./use-is-du";
 import { useIsSearchTrackingEnabled } from "./use-is-search-tracking-enabled";
-import { useListHistoryQuery } from "@/domain/history/history.queries";
-import { isToday } from "./is-today";
-import { useGetCurrentLang } from "./use-get-current-lang";
-import { isLongText, isWebsite } from "@/lib/utils";
-import { useAddContentMutation } from "@/domain/content/content.mutations";
 
 export const useHandleSearch = () => {
   const router = useRouter();
@@ -165,7 +165,7 @@ export const useHandleSearch = () => {
           } as any);
         }
 
-        const selectedChar = traditionalToSimplified(querySync);
+        const selectedChar = chineseConverter(querySync);
 
         if (selectedChar === querySync) {
           router.push(`/nmm/${encodeURIComponent(querySync)}?lang=${lang}`);

@@ -92,7 +92,7 @@ export const NMMV2 = ({ characterId }: { characterId: string }) => {
             <button
               className="mr-8"
               onClick={() => {
-                router.push("/nmm");
+                router.push("/convos");
               }}
             >
               <Icons.back className="hover:text-white text-gray-400 text-xl" />
@@ -107,7 +107,7 @@ export const NMMV2 = ({ characterId }: { characterId: string }) => {
             <button
               className="mr-8"
               onClick={() => {
-                router.push("/nmm");
+                router.push("/convos");
               }}
             >
               <Icons.back className="hover:text-white text-gray-400 text-xl" />

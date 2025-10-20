@@ -95,7 +95,7 @@ export const ContentsDropdown = () => {
 
   return (
     <>
-      {routeName === "/" || routeName === "/nmm" ? (
+      {routeName === "/" ? (
         <ContentDropdown
           value={mode}
           onSelect={(val) => {

@@ -1,21 +1,10 @@
 "use client";
-import React from "react";
-import { Devanagari } from "@/components/devanagari/devanagari";
-import { NomadMethodMandarin } from "./nomad-method-mandarin";
-import { Japanese } from "@/components/japanese/japanese";
 
-import { Persian } from "@/components/persian/persian";
-import { Spanish } from "@/components/spanish/spanish";
-import { French } from "@/components/french/french";
-import { Vietnamese } from "@/components/vietnamese/vietnamese";
+import { NomadMethodMandarin } from "./nomad-method-mandarin";
 
 import { LangItem } from "@/components/lang-item/lang-item";
 
 export function NomadMethodBody({ lang }: { lang: string }) {
-  if (["ne", "nep", "nepali"]?.includes(lang)) {
-    return <Devanagari />;
-  }
-
   if (!lang || ["zh", "zh-CN"]?.includes(lang)) {
     return <NomadMethodMandarin />;
   }

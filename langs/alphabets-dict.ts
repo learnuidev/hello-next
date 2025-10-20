@@ -1,4 +1,3 @@
-import { nepaliConsonants, nepaliVowels } from "@/components/devanagari/data";
 import { arabicAlphabets } from "./arabic/arabic-alphabets";
 import { koreanAlphabets } from "./korean/korean-alphabets";
 import { persianAlphabets } from "./persian/persian-alphabets";

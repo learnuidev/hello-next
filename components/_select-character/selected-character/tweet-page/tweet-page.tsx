@@ -1,7 +1,14 @@
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import ReactPlayer from "react-player";
 import { JSX, useEffect, useState } from "react";
-import { Heart, MessageCircle, Repeat2, Bookmark, Eye } from "lucide-react";
+import {
+  Heart,
+  MessageCircle,
+  Repeat2,
+  Bookmark,
+  Eye,
+  ExternalLink,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const formatNumber = (num: number) => {
@@ -43,6 +50,7 @@ type Tweet = {
   extendedEntities?: {
     media?: TweetMediaItem[];
   };
+  url?: string;
 };
 
 type Transcription = {
@@ -130,71 +138,87 @@ const renderTextWithHighlights = (
   return <>{parts}</>;
 };
 
-// Author card component
-const AuthorCard = ({ author }: { author?: TweetAuthor }) => {
-  if (!author) return null;
-  return (
-    <div className="mb-6 rounded-2xl bg-white dark:bg-neutral-900 shadow-sm border border-gray-200 dark:border-neutral-800 p-4 flex items-center gap-4">
-      <img
-        src={author.profilePicture}
-        alt={author.name}
-        className="w-14 h-14 rounded-full object-cover"
-      />
-      <div className="flex-1 min-w-0">
-        <div className="font-semibold text-lg">{author.name}</div>
-        <div className="text-sm text-gray-500 dark:text-gray-400">
-          @{author.userName}
-        </div>
-        <div className="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
-          {author.description}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Stats component
-const TweetStats = ({ tweet }: { tweet?: Tweet }) => {
+// Combined AuthorCard and TweetStats component
+const TweetAuthorAndStats = ({ tweet }: { tweet?: Tweet }) => {
   if (!tweet) return null;
+
   return (
-    <div className="mb-6 grid grid-cols-2 md:grid-cols-4 gap-3">
-      <div className="rounded-2xl bg-white dark:bg-neutral-900 shadow-sm border border-gray-200 dark:border-neutral-800 p-3 flex items-center gap-3">
-        <Heart className="w-5 h-5 text-red-500" />
-        <div>
-          <div className="text-sm text-gray-500 dark:text-gray-400">Likes</div>
-          <div className="font-semibold">
-            {formatNumber(tweet.likeCount || 0)}
-          </div>
-        </div>
-      </div>
-      <div className="rounded-2xl bg-white dark:bg-neutral-900 shadow-sm border border-gray-200 dark:border-neutral-800 p-3 flex items-center gap-3">
-        <MessageCircle className="w-5 h-5 text-blue-500" />
-        <div>
+    <div className="mb-6 rounded-2xl bg-white dark:bg-neutral-900 shadow-sm border border-gray-200 dark:border-neutral-800 p-4 flex flex-col gap-4">
+      {/* Author Section */}
+      <div className="flex items-center gap-4">
+        <img
+          src={tweet.author?.profilePicture}
+          alt={tweet.author?.name}
+          className="w-14 h-14 rounded-full object-cover"
+        />
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold text-lg">{tweet.author?.name}</div>
           <div className="text-sm text-gray-500 dark:text-gray-400">
-            Replies
+            @{tweet.author?.userName}
           </div>
-          <div className="font-semibold">
-            {formatNumber(tweet.replyCount || 0)}
+          {tweet.author?.description && (
+            <div className="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
+              {tweet.author.description}
+            </div>
+          )}
+        </div>
+        {tweet.url && (
+          <a
+            href={tweet.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-auto p-2 rounded-full hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors"
+            aria-label="View original tweet"
+          >
+            <ExternalLink className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+          </a>
+        )}
+      </div>
+
+      {/* Stats Section */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="rounded-xl bg-gray-50 dark:bg-neutral-800 p-3 flex items-center gap-3">
+          <Heart className="w-5 h-5 text-gray-800 dark:text-gray-200" />
+          <div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              Likes
+            </div>
+            <div className="font-semibold">
+              {formatNumber(tweet.likeCount || 0)}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="rounded-2xl bg-white dark:bg-neutral-900 shadow-sm border border-gray-200 dark:border-neutral-800 p-3 flex items-center gap-3">
-        <Repeat2 className="w-5 h-5 text-green-500" />
-        <div>
-          <div className="text-sm text-gray-500 dark:text-gray-400">
-            Retweets
-          </div>
-          <div className="font-semibold">
-            {formatNumber(tweet.retweetCount || 0)}
+        <div className="rounded-xl bg-gray-50 dark:bg-neutral-800 p-3 flex items-center gap-3">
+          <MessageCircle className="w-5 h-5 text-gray-800 dark:text-gray-200" />
+          <div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              Replies
+            </div>
+            <div className="font-semibold">
+              {formatNumber(tweet.replyCount || 0)}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="rounded-2xl bg-white dark:bg-neutral-900 shadow-sm border border-gray-200 dark:border-neutral-800 p-3 flex items-center gap-3">
-        <Eye className="w-5 h-5 text-purple-500" />
-        <div>
-          <div className="text-sm text-gray-500 dark:text-gray-400">Views</div>
-          <div className="font-semibold">
-            {formatNumber(tweet.viewCount || 0)}
+        <div className="rounded-xl bg-gray-50 dark:bg-neutral-800 p-3 flex items-center gap-3">
+          <Repeat2 className="w-5 h-5 text-gray-800 dark:text-gray-200" />
+          <div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              Retweets
+            </div>
+            <div className="font-semibold">
+              {formatNumber(tweet.retweetCount || 0)}
+            </div>
+          </div>
+        </div>
+        <div className="rounded-xl bg-gray-50 dark:bg-neutral-800 p-3 flex items-center gap-3">
+          <Eye className="w-5 h-5 text-gray-800 dark:text-gray-200" />
+          <div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              Views
+            </div>
+            <div className="font-semibold">
+              {formatNumber(tweet.viewCount || 0)}
+            </div>
           </div>
         </div>
       </div>
@@ -288,8 +312,7 @@ export function TweetPage({ contentId }: { contentId: string }) {
         className="text-lg"
       />
 
-      <AuthorCard author={data?.tweet?.author} />
-      <TweetStats tweet={data?.tweet} />
+      <TweetAuthorAndStats tweet={data?.tweet} />
       <TweetMediaGrid media={data?.tweet?.extendedEntities?.media} />
     </div>
   );

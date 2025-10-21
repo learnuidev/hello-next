@@ -120,7 +120,7 @@ export default function ContentItem() {
 
           <div className="mb-24">
             {content?.lang === "zh" &&
-            ["audio", "text", "website"]?.includes(content?.type) &&
+            ["audio", "text", "website", "tweet"]?.includes(content?.type) &&
             !["TRANSLATED", "PUBLISHED"]?.includes(content?.status) ? (
               <WithConvoStatusLoading contentId={contentId} />
             ) : (

@@ -21,6 +21,7 @@ import { PlayV3 } from "./play-v3/play-v3";
 import { isVideoUrl } from "./utils/is-video-url";
 import { isYoutube } from "./utils/is-youtube";
 import { DynaSelector } from "./[content-id]/dyna-cloze/dyna-selector";
+import { TweetPage } from "@/components/_select-character/selected-character/tweet-page/tweet-page";
 
 export const ConvoDetails = ({ contentId }: { contentId: string }) => {
   const searchParams = useSearchParams();
@@ -60,6 +61,15 @@ export const ConvoDetails = ({ contentId }: { contentId: string }) => {
     return <ContentSettings />;
   }
 
+  if (viewType === "listen" && content?.type === "tweet") {
+    return (
+      <div>
+        <TweetPage contentId={contentId} />
+
+        <FloatingNavbar />
+      </div>
+    );
+  }
   // if (viewType === "clipboard" && content.lang !== "zh") {
   // if (viewType === "clipboard") {
   //   if (content && content?.transcriptions?.length > 0) {
@@ -80,6 +90,7 @@ export const ConvoDetails = ({ contentId }: { contentId: string }) => {
   // }
 
   // If the link contains yotube - then show youtube page
+
   if (
     viewType === "listen" &&
     (isYoutube(content?.audio) || isVideoUrl(content?.audio))

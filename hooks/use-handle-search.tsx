@@ -12,7 +12,7 @@ import { useSearchQueryStore } from "@/components/search/state";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useAddContentMutation } from "@/domain/content/content.mutations";
 import { useListHistoryQuery } from "@/domain/history/history.queries";
-import { isLongText, isWebsite } from "@/lib/utils";
+import { isLongText, isTwitterUrl, isWebsite } from "@/lib/utils";
 import { signOut } from "@/libs/cognito/auth";
 import { isToday } from "./is-today";
 import { useGetCurrentLang } from "./use-get-current-lang";
@@ -86,6 +86,23 @@ export const useHandleSearch = () => {
       );
 
       const _isWebsite = isWebsite(querySync);
+
+      const _isTweet = isTwitterUrl(querySync);
+
+      if (_isTweet) {
+        const newContent: any = {
+          type: "tweet",
+          contentType: "news",
+          websiteUrl: querySync,
+          lang: langItem,
+        };
+        console.log("add new content", newContent);
+
+        addContentMutation.mutateAsync(newContent).then((resp) => {
+          return router.push(`/convos/${resp?.id}`);
+        });
+        return null;
+      }
 
       console.log("is website", _isWebsite);
       console.log("LANG SELECTED", langItem);

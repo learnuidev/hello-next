@@ -145,3 +145,11 @@ export function removeNull(obj: any) {
     })
   );
 }
+
+// write a function to check if a given string is a valid twitter url
+// sample url: https://x.com/yuxiyou/status/1675507655618727936
+export function isTwitterUrl(url: string) {
+  const twitterRegex =
+    /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/[a-zA-Z0-9_]+\/status\/\d+$/;
+  return twitterRegex.test(url);
+}

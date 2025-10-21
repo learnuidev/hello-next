@@ -2,6 +2,7 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import ReactPlayer from "react-player";
 import { JSX, useEffect, useState } from "react";
 import { Heart, MessageCircle, Repeat2, Bookmark, Eye } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const formatNumber = (num: number) => {
   if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
@@ -83,7 +84,7 @@ const AudioPlayer = ({
 }) => {
   if (!audioUrl) return null;
   return (
-    <div className="mb-6 rounded-2xl bg-white dark:bg-neutral-900 shadow-sm border border-gray-200 dark:border-neutral-800 p-4">
+    <div className="mb-6">
       <ReactPlayer
         url={audioUrl}
         controls
@@ -128,63 +129,6 @@ const renderTextWithHighlights = (
     parts.push(<span key="text-end">{text.slice(last)}</span>);
   return <>{parts}</>;
 };
-
-// Transcription cards component
-const TranscriptionCards = ({
-  transcription,
-  activeRange,
-}: {
-  transcription?: Transcription;
-  activeRange?: { start: number; end: number } | null;
-}) => (
-  <div className="grid gap-4 md:grid-cols-2 mb-6">
-    <div className="rounded-2xl bg-white dark:bg-neutral-900 shadow-sm border border-gray-200 dark:border-neutral-800 p-4">
-      <div className="text-lg">
-        {renderTextWithHighlights(
-          transcription?.en || "",
-          activeRange ? [activeRange] : []
-        )}
-      </div>
-    </div>
-    <div className="rounded-2xl bg-white dark:bg-neutral-900 shadow-sm border border-gray-200 dark:border-neutral-800 p-4">
-      <div className="text-lg">
-        {renderTextWithHighlights(
-          transcription?.pinyin || "",
-          activeRange ? [activeRange] : []
-        )}
-      </div>
-    </div>
-  </div>
-);
-
-// Hanzi highlights component
-const HanziHighlights = ({
-  words,
-  activeIndex,
-}: {
-  words: TranscriptionWord[];
-  activeIndex: number | null;
-}) => (
-  <div className="mb-6 rounded-2xl bg-white dark:bg-neutral-900 shadow-sm border border-gray-200 dark:border-neutral-800 p-4">
-    <div className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-2">
-      Hanzi
-    </div>
-    <div className="text-3xl md:text-4xl tracking-wider leading-relaxed">
-      {words.map((w, idx) => (
-        <span
-          key={idx}
-          className={
-            activeIndex === idx
-              ? "bg-yellow-300 dark:bg-yellow-500 text-black rounded px-1"
-              : ""
-          }
-        >
-          {w.input}
-        </span>
-      ))}
-    </div>
-  </div>
-);
 
 // Author card component
 const AuthorCard = ({ author }: { author?: TweetAuthor }) => {
@@ -280,6 +224,33 @@ const TweetMediaGrid = ({ media }: { media?: TweetMediaItem[] }) => {
   );
 };
 
+// TranscriptionText component
+const TranscriptionText = ({
+  transcriptions,
+  currentId,
+  className,
+}: {
+  transcriptions?: { id: string | number; input?: string; en?: string }[];
+  currentId?: string | number;
+  className?: string;
+}) => {
+  if (!transcriptions?.length) return null;
+  return (
+    <div className={cn("my-12", className)}>
+      {transcriptions.map((t) => (
+        <span
+          key={t.id}
+          className={cn(
+            currentId === t.id ? "dark:text-white text-black" : "text-gray-500"
+          )}
+        >
+          {t.input ?? t.en}{" "}
+        </span>
+      ))}
+    </div>
+  );
+};
+
 // Main TweetPage component using the reusable components
 export function TweetPage({ contentId }: { contentId: string }) {
   const { data } = useGetContentQuery({ contentId });
@@ -289,38 +260,34 @@ export function TweetPage({ contentId }: { contentId: string }) {
   const transcription = data?.transcriptions?.[0];
   const words = transcription?.words || [];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!words.length) return;
-      const idx = words.findIndex(
-        (w: any) => playedSeconds >= w.start && playedSeconds < w.end
-      );
-      setActiveIndex(idx);
-    }, 100);
-    return () => clearInterval(interval);
-  }, [playedSeconds, words]);
-
   const handleProgress = (state: { playedSeconds: number }) => {
     setPlayedSeconds(state.playedSeconds);
   };
 
-  const activeRange =
-    activeIndex !== null && words[activeIndex]
-      ? {
-          start: words[activeIndex].startIndex,
-          end: words[activeIndex].endIndex,
-        }
-      : null;
+  const currentTranscription = data?.transcriptions?.find(
+    (t: any) => t.start <= playedSeconds && t.end >= playedSeconds
+  );
 
   return (
     <div className="max-w-3xl mx-auto px-4 md:px-6 py-8 text-gray-900 dark:text-gray-100">
       <TweetHeader createdAt={data?.tweet?.createdAt} />
       <AudioPlayer audioUrl={data?.audio} onProgress={handleProgress} />
-      <TranscriptionCards
-        transcription={transcription}
-        activeRange={activeRange}
+
+      <TranscriptionText
+        transcriptions={data?.transcriptions}
+        currentId={currentTranscription?.id}
+        className="text-lg lg:text-2xl"
       />
-      <HanziHighlights words={words} activeIndex={activeIndex} />
+
+      <TranscriptionText
+        transcriptions={data?.transcriptions?.map((t: any) => ({
+          id: t.id,
+          en: t.en,
+        }))}
+        currentId={currentTranscription?.id}
+        className="text-lg"
+      />
+
       <AuthorCard author={data?.tweet?.author} />
       <TweetStats tweet={data?.tweet} />
       <TweetMediaGrid media={data?.tweet?.extendedEntities?.media} />

@@ -19,7 +19,7 @@ export const getLearnUrl = (query: string) => {
       "mao's",
     ]?.includes(lang?.toLowerCase())
   ) {
-    return `/nmm`;
+    return `/`;
   }
   if (["ar", "arabic"]?.includes(lang?.toLowerCase())) {
     return `/nmm?lang=ar`;

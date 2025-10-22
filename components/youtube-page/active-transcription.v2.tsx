@@ -49,7 +49,7 @@ export const ActiveTranscription = ({
           val
         )}${currentTranscription?.lang ? `?lang=${resolveLangCode(currentTranscription?.lang)}` : ""}`;
       } catch (err) {
-        return `/nmm`;
+        return `/`;
       }
     },
     [currentTranscription]

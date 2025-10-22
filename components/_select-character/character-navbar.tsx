@@ -66,7 +66,7 @@ export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
           <button
             className={"text-xl"}
             onClick={() => {
-              router.push(`/nmm${lang ? `?lang=${lang}` : ""}`);
+              router.push(`/${lang ? `?lang=${lang}` : ""}`);
             }}
           >
             <Icons.xMark className="text-2xl" />

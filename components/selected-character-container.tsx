@@ -54,7 +54,7 @@ export function SelectedCharacterContainer({
       className="relative w-full"
       onKeyDown={(event) => {
         if (event.key === "Escape") {
-          router.push(`/nmm${lang ? `?lang=${lang}` : ""}`);
+          router.push(`/${lang ? `?lang=${lang}` : ""}`);
         }
       }}
     >

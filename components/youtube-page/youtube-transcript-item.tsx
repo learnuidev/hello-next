@@ -386,7 +386,7 @@ export const TranscriptItem = ({
           <Explanations />
         </div>
 
-        <div className="flex justify-between w-full lg:flex-col lg:items-end items-center">
+        <div className="mt-4 lg:mt-0 flex justify-between w-full lg:w-auto lg:flex-col lg:items-end items-center">
           <ConfigButtons />
 
           <div className="flex text-gray-400 text-[12px] items-center justify-end space-x-2">

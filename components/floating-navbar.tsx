@@ -84,7 +84,7 @@ const FloatingNavbarComp = () => {
 
           <PreviewButton />
 
-          <ReadModeButton />
+          {isNonRomanLang(content?.lang) && <ReadModeButton />}
           {isNonRomanLang(content?.lang) && <PinyinButton />}
 
           <Link

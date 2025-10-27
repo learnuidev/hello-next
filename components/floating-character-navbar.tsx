@@ -17,6 +17,7 @@ import { PinyinButton } from "./pinyin-button";
 import { PreviewButton } from "./settings-dialog/preview-button";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
+import { ReadModeButton } from "./read-mode-button";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -138,6 +139,7 @@ export const FloatingCharacterNavbar = ({
       <div className="flex items-center w-full justify-center">
         <div className="px-8  py-2 bg-gray-100 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
           <div className="space-x-8 flex justify-center items-center w-full">
+            <ReadModeButton />
             <PreviewButton />
             {/* <CommonCharacterButton /> */}
             {/* <BrightModeButton /> */}

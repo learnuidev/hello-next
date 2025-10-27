@@ -25,6 +25,7 @@ import { isNonRomanLang } from "./_select-character/utils/is-non-roman-lang";
 import { CommonCharacterButton } from "./common-character-button";
 import { usePreviousPathnameStore } from "./language-selector/use-previous-path-name-store";
 import { PreviewButton } from "./settings-dialog/preview-button";
+import { ReadModeButton } from "./read-mode-button";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
@@ -83,6 +84,7 @@ const FloatingNavbarComp = () => {
 
           <PreviewButton />
 
+          {isNonRomanLang(content?.lang) && <ReadModeButton />}
           {isNonRomanLang(content?.lang) && <PinyinButton />}
 
           <Link

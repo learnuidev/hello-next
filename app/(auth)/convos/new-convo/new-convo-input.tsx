@@ -68,7 +68,7 @@ export function NewConvoInput() {
         }}
         // autoFocus
         placeholder=""
-        className="p-4 max-w-8xl w-full h-[260px] sm:h-[600px] rounded-xl focus-visible:outline-none focus-visible:ring-ring"
+        className="bg-gray-50 dark:bg-[rgb(12,13,14)] p-4 max-w-8xl w-full h-[260px] sm:h-[600px] rounded-xl focus-visible:outline-none focus-visible:ring-ring"
         // className="w-full text-center font-extralight focus:outline-0   p-2 border-0 border-none dark:text-gray-300"
       />
       <div className="my-8">

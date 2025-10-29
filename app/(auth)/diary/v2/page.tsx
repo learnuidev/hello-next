@@ -413,6 +413,28 @@ export default function Diary() {
                   {/* Corrections list */}
                   <div className="space-y-2">
                     {filteredTrackedCorrections
+                      .filter((c) => c.status === activeTab).length === 0 && editor?.getText()?.trim() && activeTab === "pending" ? (
+                      <div className="flex flex-col items-center py-6">
+                        <div className="w-10 h-10 bg-gray-800/50 rounded-full flex items-center justify-center mb-2">
+                          <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <p className="text-sm text-gray-400">No pending suggestions</p>
+                        <p className="text-xs text-gray-500 mt-1">Keep writing or check applied/denied tabs</p>
+                      </div>
+                    ) : filteredTrackedCorrections
+                      .filter((c) => c.status === activeTab).length === 0 && editor?.getText()?.trim() && (activeTab === "applied" || activeTab === "denied") ? (
+                      <div className="flex flex-col items-center py-6">
+                        <div className="w-10 h-10 bg-gray-800/50 rounded-full flex items-center justify-center mb-2">
+                          <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                          </svg>
+                        </div>
+                        <p className="text-sm text-gray-400">No {activeTab} corrections</p>
+                        <p className="text-xs text-gray-500 mt-1">Switch to another tab to see more</p>
+                      </div>
+                    ) : filteredTrackedCorrections
                       .filter((c) => c.status === activeTab)
 
                       .slice(0, 5)
@@ -519,9 +541,21 @@ export default function Diary() {
                     )}
                   </div>
                 </div>
+              ) : !editor?.getText()?.trim() ? (
+                <div className="flex flex-col items-center py-8">
+                  <div className="w-12 h-12 bg-blue-900/30 rounded-full flex items-center justify-center mb-3">
+                    <svg className="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </div>
+                  <p className="text-sm font-medium text-gray-100">Start writing</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Your corrections will appear here
+                  </p>
+                </div>
               ) : (
                 <div className="flex flex-col items-center py-8">
-                  <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mb-3">
+                  <div className="w-12 h-12 bg-green-900/30 rounded-full flex items-center justify-center mb-3">
                     <CheckCircle className="h-6 w-6 text-green-500" />
                   </div>
                   <p className="text-sm font-medium text-gray-100">Perfect!</p>

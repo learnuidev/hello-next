@@ -7,7 +7,13 @@ import { useMutation } from "@tanstack/react-query";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
 
@@ -45,7 +51,7 @@ const useListCorrectionsMutation = () => {
   });
 };
 
-type CorrectionStatus = 'pending' | 'applied' | 'denied';
+type CorrectionStatus = "pending" | "applied" | "denied";
 
 type TrackedCorrection = CorrectionDetail & {
   id: string;
@@ -60,13 +66,16 @@ type CacheEntry = {
 };
 
 export default function Diary() {
-  const [corrections, setCorrections] = useState<ListCorrectionsResponse | null>(null);
+  const [corrections, setCorrections] =
+    useState<ListCorrectionsResponse | null>(null);
   const [isCorrectionPanelOpen, setIsCorrectionPanelOpen] = useState(false);
-  const [trackedCorrections, setTrackedCorrections] = useState<TrackedCorrection[]>([]);
-  const [activeTab, setActiveTab] = useState<CorrectionStatus>('pending');
+  const [trackedCorrections, setTrackedCorrections] = useState<
+    TrackedCorrection[]
+  >([]);
+  const [activeTab, setActiveTab] = useState<CorrectionStatus>("pending");
   const [contentCache, setContentCache] = useState<CacheEntry[]>([]);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   const correctionsMutation = useListCorrectionsMutation();
 
   const editor = useEditor({
@@ -75,12 +84,12 @@ export default function Diary() {
     content: "",
     onUpdate: ({ editor }) => {
       const content = editor.getText();
-      
+
       // Clear existing timer
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
       }
-      
+
       // Set new timer to check for corrections after user stops typing
       debounceTimerRef.current = setTimeout(() => {
         if (shouldAnalyzeContent(content)) {
@@ -98,7 +107,7 @@ export default function Diary() {
     },
     onKeyDown: ({ event }) => {
       // Trigger correction immediately when Enter is pressed
-      if (event.key === 'Enter') {
+      if (event.key === "Enter") {
         const content = editor.getText();
         if (shouldAnalyzeContent(content)) {
           // Check cache first
@@ -116,26 +125,32 @@ export default function Diary() {
   });
 
   const [usingCachedResult, setUsingCachedResult] = useState(false);
-  
-  const handleCorrectionResponse = (response: ListCorrectionsResponse, content?: string, isFromCache: boolean = false) => {
+
+  const handleCorrectionResponse = (
+    response: ListCorrectionsResponse,
+    content?: string,
+    isFromCache: boolean = false
+  ) => {
     setCorrections(response);
     setUsingCachedResult(isFromCache);
-    
+
     // Only open panel if there are actual corrections to make
     if (response.details.length > 0) {
       setIsCorrectionPanelOpen(true);
-      
+
       // Add new corrections to tracked list with pending status
-      const newTrackedCorrections: TrackedCorrection[] = response.details.map((detail, index) => ({
-        ...detail,
-        id: `${Date.now()}-${index}`,
-        status: 'pending' as CorrectionStatus,
-        timestamp: new Date()
-      }));
-      
-      setTrackedCorrections(prev => [...newTrackedCorrections, ...prev]);
+      const newTrackedCorrections: TrackedCorrection[] = response.details.map(
+        (detail, index) => ({
+          ...detail,
+          id: `${Date.now()}-${index}`,
+          status: "pending" as CorrectionStatus,
+          timestamp: new Date(),
+        })
+      );
+
+      setTrackedCorrections((prev) => [...newTrackedCorrections, ...prev]);
     }
-    
+
     // Add to cache if content is provided and not from cache
     if (content && !isFromCache) {
       addToCache(content, response);
@@ -146,7 +161,7 @@ export default function Diary() {
     // Update corrections when mutation succeeds
     if (correctionsMutation.isSuccess && correctionsMutation.data) {
       // Get the content that was analyzed
-      const content = editor?.getText() || '';
+      const content = editor?.getText() || "";
       handleCorrectionResponse(correctionsMutation.data, content, false);
     }
   }, [correctionsMutation.isSuccess, correctionsMutation.data, editor]);
@@ -158,17 +173,21 @@ export default function Diary() {
     }
   };
 
-  const applySingleChange = (correctionId: string, original: string, corrected: string) => {
+  const applySingleChange = (
+    correctionId: string,
+    original: string,
+    corrected: string
+  ) => {
     if (editor) {
       const currentText = editor.getText();
       const correctedText = currentText.replace(original, corrected);
       editor.chain().focus().setContent(correctedText, false).run();
-      
+
       // Update the status of this correction to applied
-      setTrackedCorrections(prev => 
-        prev.map(c => 
-          c.id === correctionId 
-            ? { ...c, status: 'applied', timestamp: new Date() }
+      setTrackedCorrections((prev) =>
+        prev.map((c) =>
+          c.id === correctionId
+            ? { ...c, status: "applied", timestamp: new Date() }
             : c
         )
       );
@@ -177,10 +196,10 @@ export default function Diary() {
 
   const denyCorrection = (correctionId: string) => {
     // Update the status of this correction to denied
-    setTrackedCorrections(prev => 
-      prev.map(c => 
-        c.id === correctionId 
-          ? { ...c, status: 'denied', timestamp: new Date() }
+    setTrackedCorrections((prev) =>
+      prev.map((c) =>
+        c.id === correctionId
+          ? { ...c, status: "denied", timestamp: new Date() }
           : c
       )
     );
@@ -191,34 +210,36 @@ export default function Diary() {
     const diff = now.getTime() - date.getTime();
     const seconds = Math.floor(diff / 1000);
     const minutes = Math.floor(seconds / 60);
-    
-    if (minutes < 1) return 'just now';
-    if (minutes === 1) return '1 min ago';
+
+    if (minutes < 1) return "just now";
+    if (minutes === 1) return "1 min ago";
     if (minutes < 60) return `${minutes} mins ago`;
-    
+
     const hours = Math.floor(minutes / 60);
-    if (hours === 1) return '1 hour ago';
+    if (hours === 1) return "1 hour ago";
     if (hours < 24) return `${hours} hours ago`;
-    
+
     const days = Math.floor(hours / 24);
-    if (days === 1) return '1 day ago';
+    if (days === 1) return "1 day ago";
     return `${days} days ago`;
   };
 
   // Normalize content for better caching (remove extra whitespace, normalize line breaks)
   const normalizeContent = (content: string): string => {
     return content
-      .replace(/\s+/g, ' ') // Replace multiple whitespace with single space
-      .replace(/\n\s*\n/g, '\n\n') // Normalize multiple line breaks
+      .replace(/\s+/g, " ") // Replace multiple whitespace with single space
+      .replace(/\n\s*\n/g, "\n\n") // Normalize multiple line breaks
       .trim(); // Remove leading/trailing whitespace
   };
 
   // Check if content is already in cache (and not expired)
-  const getCachedCorrection = (content: string): ListCorrectionsResponse | null => {
+  const getCachedCorrection = (
+    content: string
+  ): ListCorrectionsResponse | null => {
     const normalized = normalizeContent(content);
     const now = new Date();
     const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes cache TTL
-    
+
     for (const entry of contentCache) {
       if (
         normalizeContent(entry.content) === normalized &&
@@ -227,16 +248,16 @@ export default function Diary() {
         return entry.response;
       }
     }
-    
+
     return null;
   };
 
   // Add content to cache
   const addToCache = (content: string, response: ListCorrectionsResponse) => {
-    setContentCache(prev => [
+    setContentCache((prev) => [
       { content, timestamp: new Date(), response },
       // Keep only last 10 cached entries to prevent memory bloat
-      ...prev.slice(0, 9)
+      ...prev.slice(0, 9),
     ]);
   };
 
@@ -244,7 +265,9 @@ export default function Diary() {
   const shouldAnalyzeContent = (content: string): boolean => {
     const normalized = normalizeContent(content);
     // Only analyze if there are at least 10 words
-    return normalized.split(/\s+/).filter(word => word.length > 0).length >= 10;
+    return (
+      normalized.split(/\s+/).filter((word) => word.length > 0).length >= 10
+    );
   };
 
   return (
@@ -262,63 +285,95 @@ export default function Diary() {
             {/* Header */}
             <div className="px-5 py-4 border-b border-gray-100/80 flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-semibold text-gray-900">Corrections</h3>
-                <p className="text-xs text-gray-500 mt-0.5">AI-powered writing assistant</p>
+                <h3 className="text-sm font-semibold text-gray-900">
+                  Corrections
+                </h3>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  AI-powered writing assistant
+                </p>
               </div>
-              <button 
+              <button
                 onClick={() => setIsCorrectionPanelOpen(false)}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
-            
+
             {/* Content */}
             <div className="px-5 py-4">
               {correctionsMutation.isPending ? (
                 <div className="flex flex-col items-center justify-center py-12">
                   <Loader2 className="h-6 w-6 animate-spin text-blue-500 mb-3" />
-                  <span className="text-sm text-gray-600">Analyzing text...</span>
+                  <span className="text-sm text-gray-600">
+                    Analyzing text...
+                  </span>
                 </div>
               ) : correctionsMutation.isError ? (
                 <div className="flex flex-col items-center py-8">
                   <AlertCircle className="h-8 w-8 text-red-400 mb-2" />
-                  <span className="text-sm text-gray-600">Unable to analyze</span>
+                  <span className="text-sm text-gray-600">
+                    Unable to analyze
+                  </span>
                 </div>
               ) : trackedCorrections.length > 0 ? (
                 <div>
                   {/* Apply all button */}
                   <button
-                    onClick={() => corrections && applyCorrection(corrections.correction)}
+                    onClick={() =>
+                      corrections && applyCorrection(corrections.correction)
+                    }
                     className="w-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2.5 px-4 rounded-xl transition-colors mb-4 flex items-center justify-center"
                   >
                     Apply All Changes ({corrections?.details.length || 0})
                   </button>
-                  
+
                   {/* Cache indicator */}
                   {usingCachedResult && (
                     <div className="flex items-center gap-2 text-xs text-gray-500 mb-4">
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                      <svg
+                        className="w-3 h-3"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                       <span>Using cached results</span>
                     </div>
                   )}
-                  
+
                   {/* Tabs */}
                   <div className="flex border-b border-gray-100 mb-4">
-                    {(['pending', 'applied', 'denied'] as CorrectionStatus[]).map((status) => {
-                      const count = trackedCorrections.filter(c => c.status === status).length;
+                    {(
+                      ["pending", "applied", "denied"] as CorrectionStatus[]
+                    ).map((status) => {
+                      const count = trackedCorrections.filter(
+                        (c) => c.status === status
+                      ).length;
                       return (
                         <button
                           key={status}
                           onClick={() => setActiveTab(status)}
                           className={`flex-1 py-2 text-xs font-medium transition-colors relative ${
                             activeTab === status
-                              ? 'text-blue-600 border-b-2 border-blue-600'
-                              : 'text-gray-500 hover:text-gray-700'
+                              ? "text-blue-600 border-b-2 border-blue-600"
+                              : "text-gray-500 hover:text-gray-700"
                           }`}
                         >
                           <span className="capitalize">{status}</span>
@@ -331,63 +386,88 @@ export default function Diary() {
                       );
                     })}
                   </div>
-                  
+
                   {/* Corrections list */}
                   <div className="space-y-2">
                     {trackedCorrections
-                      .filter(c => c.status === activeTab)
+                      .filter((c) => c.status === activeTab)
                       .slice(0, 5)
                       .map((correction) => (
-                        <div 
-                          key={correction.id} 
+                        <div
+                          key={correction.id}
                           className={`rounded-lg p-3 border transition-all ${
-                            correction.status === 'applied' 
-                              ? 'bg-green-50/70 border-green-200 opacity-75' 
-                              : correction.status === 'denied'
-                              ? 'bg-red-50/70 border-red-200 opacity-75'
-                              : 'bg-gray-50/70 border-gray-200 hover:border-blue-200 cursor-pointer'
+                            correction.status === "applied"
+                              ? "bg-green-50/70 border-green-200 opacity-75"
+                              : correction.status === "denied"
+                                ? "bg-red-50/70 border-red-200 opacity-75"
+                                : "bg-gray-50/70 border-gray-200 hover:border-blue-200 cursor-pointer"
                           }`}
                           onClick={() => {
-                            if (correction.status === 'pending') {
-                              applySingleChange(correction.id, correction.original, correction.correction);
+                            if (correction.status === "pending") {
+                              applySingleChange(
+                                correction.id,
+                                correction.original,
+                                correction.correction
+                              );
                             }
                           }}
                         >
                           <div className="flex items-start gap-3">
                             <div className="flex-shrink-0 mt-0.5">
-                              {correction.status === 'applied' ? (
+                              {correction.status === "applied" ? (
                                 <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
-                                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                  <svg
+                                    className="w-3 h-3 text-white"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                  >
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                      clipRule="evenodd"
+                                    />
                                   </svg>
                                 </div>
-                              ) : correction.status === 'denied' ? (
+                              ) : correction.status === "denied" ? (
                                 <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
-                                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                  <svg
+                                    className="w-3 h-3 text-white"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                  >
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                      clipRule="evenodd"
+                                    />
                                   </svg>
                                 </div>
                               ) : (
                                 <div className="w-5 h-5 rounded-full bg-gray-300 flex items-center justify-center">
-                                  <span className="text-xs text-gray-600">!</span>
+                                  <span className="text-xs text-gray-600">
+                                    !
+                                  </span>
                                 </div>
                               )}
                             </div>
-                            
+
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm text-gray-500 line-through truncate">{correction.original}</p>
-                              <p className="text-sm text-gray-800 truncate">{correction.correction}</p>
+                              <p className="text-sm text-gray-500 line-through truncate">
+                                {correction.original}
+                              </p>
+                              <p className="text-sm text-gray-800 truncate">
+                                {correction.correction}
+                              </p>
                               <p className="text-xs text-gray-400 mt-1">
-                                {correction.status === 'applied' 
+                                {correction.status === "applied"
                                   ? `Applied ${formatTime(correction.timestamp)}`
-                                  : correction.status === 'denied'
-                                  ? `Denied ${formatTime(correction.timestamp)}`
-                                  : 'Click to apply'
-                                }
+                                  : correction.status === "denied"
+                                    ? `Denied ${formatTime(correction.timestamp)}`
+                                    : "Click to apply"}
                               </p>
                             </div>
-                            
-                            {correction.status === 'pending' && (
+
+                            {correction.status === "pending" && (
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -401,10 +481,15 @@ export default function Diary() {
                           </div>
                         </div>
                       ))}
-                    
-                    {trackedCorrections.filter(c => c.status === activeTab).length > 5 && (
+
+                    {trackedCorrections.filter((c) => c.status === activeTab)
+                      .length > 5 && (
                       <p className="text-xs text-gray-400 text-center py-2">
-                        +{trackedCorrections.filter(c => c.status === activeTab).length - 5} more
+                        +
+                        {trackedCorrections.filter(
+                          (c) => c.status === activeTab
+                        ).length - 5}{" "}
+                        more
                       </p>
                     )}
                   </div>
@@ -415,26 +500,43 @@ export default function Diary() {
                     <CheckCircle className="h-6 w-6 text-green-500" />
                   </div>
                   <p className="text-sm font-medium text-gray-900">Perfect!</p>
-                  <p className="text-xs text-gray-500 mt-1">No corrections needed</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    No corrections needed
+                  </p>
                 </div>
               )}
             </div>
           </div>
         </div>
       )}
-      
+
       {/* Toggle button when panel is closed */}
-      {!isCorrectionPanelOpen && correctionsMutation.isSuccess && corrections && corrections.details.length > 0 && (
-        <button 
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-blue-500 hover:bg-blue-600 text-white shadow-lg transition-all hover:scale-105 flex items-center justify-center"
-          onClick={() => setIsCorrectionPanelOpen(true)}
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full">{corrections.details.length}</span>
-        </button>
-      )}
+      {!isCorrectionPanelOpen &&
+        correctionsMutation.isSuccess &&
+        corrections &&
+        corrections.details.length > 0 && (
+          <button
+            className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-blue-500 hover:bg-blue-600 text-white shadow-lg transition-all hover:scale-105 flex items-center justify-center"
+            onClick={() => setIsCorrectionPanelOpen(true)}
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full">
+              {corrections.details.length}
+            </span>
+          </button>
+        )}
     </div>
   );
 }

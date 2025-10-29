@@ -68,12 +68,15 @@ type CacheEntry = {
 export default function Diary() {
   const [corrections, setCorrections] =
     useState<ListCorrectionsResponse | null>(null);
-  const [isCorrectionPanelOpen, setIsCorrectionPanelOpen] = useState(true);
+  const [isCorrectionPanelOpen, setIsCorrectionPanelOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [activeTab, setActiveTab] = useState<CorrectionStatus>("pending");
   const [trackedCorrections, setTrackedCorrections] = useState<
     TrackedCorrection[]
   >([]);
-  const [activeTab, setActiveTab] = useState<CorrectionStatus>("pending");
   const [contentCache, setContentCache] = useState<CacheEntry[]>([]);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuAnimating, setIsMobileMenuAnimating] = useState(false);
   const [usingCachedResult, setUsingCachedResult] = useState(false);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -179,8 +182,42 @@ export default function Diary() {
       // Get the content that was analyzed
       const content = editor?.getText() || "";
       handleCorrectionResponse(correctionsMutation.data, content, false);
+
+      // Auto-open mobile corrections panel when new corrections are available
+      if (isMobile && correctionsMutation.data.details.length > 0) {
+        setIsMobileMenuOpen(true);
+      }
     }
-  }, [correctionsMutation.isSuccess, correctionsMutation.data, editor]);
+  }, [
+    correctionsMutation.isSuccess,
+    correctionsMutation.data,
+    editor,
+    isMobile,
+  ]);
+
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Handle mobile menu animation
+  const toggleMobileMenu = () => {
+    if (isMobileMenuAnimating) return;
+
+    setIsMobileMenuAnimating(true);
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+
+    setTimeout(() => {
+      setIsMobileMenuAnimating(false);
+    }, 300); // Match animation duration
+  };
 
   const applyCorrection = (correction: string) => {
     if (editor) {
@@ -305,29 +342,17 @@ export default function Diary() {
   console.log("filteredTrackedCorrections", filteredTrackedCorrections);
 
   return (
-    <div className="flex max-w-7xl m-auto mt-12 px-4 gap-6">
+    <div className="flex flex-col md:flex-row max-w-7xl m-auto mt-12 px-4 gap-6">
       {/* Main editor area */}
       <div className="flex-1">
-        <h1 className="font-bold mb-16 text-2xl">the diary</h1>
-        <EditorContent editor={editor} />
-      </div>
+        <div className="flex justify-between items-center mb-6 md:mb-16">
+          <h1 className="font-bold text-2xl md:text-3xl">the diary</h1>
 
-      {/* Corrections sidebar */}
-      <div className="w-80">
-        <div className="bg-[rgb(10,11,12)]/95 backdrop-blur-md border border-gray-700/60 rounded-2xl shadow-xl h-fit sticky top-4 overflow-hidden dark:bg-[rgb(10,11,12)]/95 dark:border-gray-700/60">
-          {/* Header */}
-          <div className="px-5 py-4 border-b border-gray-700/80 flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-semibold text-gray-100">
-                Corrections
-              </h3>
-              <p className="text-xs text-gray-400 mt-0.5">
-                AI-powered writing assistant
-              </p>
-            </div>
+          {/* Mobile corrections button */}
+          {isMobile && (
             <button
-              onClick={() => setIsCorrectionPanelOpen(false)}
-              className="text-gray-400 hover:text-gray-300 transition-colors"
+              onClick={toggleMobileMenu}
+              className="relative p-3 bg-[rgb(10,11,12)]/95 text-white rounded-full shadow-lg md:hidden border border-gray-700/60"
             >
               <svg
                 className="w-5 h-5"
@@ -339,48 +364,102 @@ export default function Diary() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
                 />
               </svg>
+
+              {/* Badge for pending corrections count */}
+              {filteredTrackedCorrections.filter((c) => c.status === "pending")
+                .length > 0 && (
+                <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
+                  {
+                    filteredTrackedCorrections.filter(
+                      (c) => c.status === "pending"
+                    ).length
+                  }
+                </span>
+              )}
             </button>
-          </div>
+          )}
+        </div>
+        <EditorContent editor={editor} />
+      </div>
 
-          {/* Content */}
-          <div className="px-5 py-4">
-            {correctionsMutation.isPending ? (
-              <div className="flex flex-col items-center justify-center py-12">
-                <Loader2 className="h-6 w-6 animate-spin text-blue-500 mb-3" />
-                <span className="text-sm text-gray-300">Analyzing text...</span>
-              </div>
-            ) : correctionsMutation.isError ? (
-              <div className="flex flex-col items-center py-8">
-                <AlertCircle className="h-8 w-8 text-red-400 mb-2" />
-                <span className="text-sm text-gray-300">Unable to analyze</span>
-              </div>
-            ) : filteredTrackedCorrections.length > 0 ? (
+      {/* Desktop sidebar */}
+      {!isMobile && (
+        <div className="w-80">
+          <div className="bg-[rgb(10,11,12)]/95 backdrop-blur-md border border-gray-700/60 rounded-2xl shadow-xl h-fit sticky top-4 overflow-hidden">
+            {/* Header */}
+            <div className="px-5 py-4 border-b border-gray-700/80 flex items-center justify-between">
               <div>
-                {/* Cache indicator */}
-                {usingCachedResult && (
-                  <div className="flex items-center gap-2 text-xs text-gray-400 mb-4">
-                    <svg
-                      className="w-3 h-3"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span>Using cached results</span>
-                  </div>
-                )}
+                <h3 className="text-sm font-semibold text-gray-100">
+                  Corrections
+                </h3>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  AI-powered writing assistant
+                </p>
+              </div>
+              <button
+                onClick={() => setIsCorrectionPanelOpen(false)}
+                className="text-gray-400 hover:text-gray-300 transition-colors"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
 
-                {/* Tabs */}
-                <div className="flex border-b border-gray-700 mb-4">
-                  {(["pending", "applied", "denied"] as CorrectionStatus[]).map(
-                    (status) => {
+            {/* Content */}
+            <div className="px-5 py-4">
+              {correctionsMutation.isPending ? (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <Loader2 className="h-6 w-6 animate-spin text-blue-500 mb-3" />
+                  <span className="text-sm text-gray-300">
+                    Analyzing text...
+                  </span>
+                </div>
+              ) : correctionsMutation.isError ? (
+                <div className="flex flex-col items-center py-8">
+                  <AlertCircle className="h-8 w-8 text-red-400 mb-2" />
+                  <span className="text-sm text-gray-300">
+                    Unable to analyze
+                  </span>
+                </div>
+              ) : filteredTrackedCorrections.length > 0 ? (
+                <div>
+                  {/* Cache indicator */}
+                  {usingCachedResult && (
+                    <div className="flex items-center gap-2 text-xs text-gray-400 mb-4">
+                      <svg
+                        className="w-3 h-3"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <span>Using cached results</span>
+                    </div>
+                  )}
+
+                  {/* Tabs */}
+                  <div className="flex border-b border-gray-700 mb-4">
+                    {(
+                      ["pending", "applied", "denied"] as CorrectionStatus[]
+                    ).map((status) => {
                       const count = filteredTrackedCorrections.filter(
                         (c) => c.status === status
                       ).length;
@@ -402,182 +481,250 @@ export default function Diary() {
                           )}
                         </button>
                       );
-                    }
-                  )}
-                </div>
+                    })}
+                  </div>
 
-                {/* Corrections list */}
-                <div className="space-y-2">
-                  {filteredTrackedCorrections.filter(
-                    (c) => c.status === activeTab
-                  ).length === 0 &&
-                  editor?.getText()?.trim() &&
-                  activeTab === "pending" ? (
-                    <div className="flex flex-col items-center py-6">
-                      <div className="w-10 h-10 bg-gray-800/50 rounded-full flex items-center justify-center mb-2">
-                        <svg
-                          className="h-5 w-5 text-gray-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                      </div>
-                      <p className="text-sm text-gray-400">
-                        No pending suggestions
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Keep writing or check applied/denied tabs
-                      </p>
-                    </div>
-                  ) : filteredTrackedCorrections.filter(
+                  {/* Corrections list */}
+                  <div className="space-y-2">
+                    {filteredTrackedCorrections.filter(
                       (c) => c.status === activeTab
                     ).length === 0 &&
                     editor?.getText()?.trim() &&
-                    (activeTab === "applied" || activeTab === "denied") ? (
-                    <div className="flex flex-col items-center py-6">
-                      <div className="w-10 h-10 bg-gray-800/50 rounded-full flex items-center justify-center mb-2">
-                        <svg
-                          className="h-5 w-5 text-gray-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                          />
-                        </svg>
+                    activeTab === "pending" ? (
+                      <div className="flex flex-col items-center py-6">
+                        <div className="w-10 h-10 bg-gray-800/50 rounded-full flex items-center justify-center mb-2">
+                          <svg
+                            className="h-5 w-5 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                        </div>
+                        <p className="text-sm text-gray-400">
+                          No pending suggestions
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Keep writing or check applied/denied tabs
+                        </p>
                       </div>
-                      <p className="text-sm text-gray-400">
-                        No {activeTab} corrections
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Switch to another tab to see more
-                      </p>
-                    </div>
-                  ) : (
-                    filteredTrackedCorrections
-                      .filter((c) => c.status === activeTab)
+                    ) : filteredTrackedCorrections.filter(
+                        (c) => c.status === activeTab
+                      ).length === 0 &&
+                      editor?.getText()?.trim() &&
+                      (activeTab === "applied" || activeTab === "denied") ? (
+                      <div className="flex flex-col items-center py-6">
+                        <div className="w-10 h-10 bg-gray-800/50 rounded-full flex items-center justify-center mb-2">
+                          <svg
+                            className="h-5 w-5 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                            />
+                          </svg>
+                        </div>
+                        <p className="text-sm text-gray-400">
+                          No {activeTab} corrections
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Switch to another tab to see more
+                        </p>
+                      </div>
+                    ) : (
+                      filteredTrackedCorrections
+                        .filter((c) => c.status === activeTab)
 
-                      .slice(0, 5)
-                      .map((correction) => (
-                        <div
-                          key={correction.id}
-                          className={`rounded-lg p-3 border transition-all ${
-                            correction.status === "applied"
-                              ? "bg-green-900/30 border-green-700/50 opacity-75"
-                              : correction.status === "denied"
-                                ? "bg-red-900/30 border-red-700/50 opacity-75"
-                                : "bg-gray-800/50 border-gray-700 hover:border-blue-600/50 cursor-pointer"
-                          }`}
-                          onClick={() => {
-                            if (correction.status === "pending") {
-                              applySingleChange(
-                                correction.id,
-                                correction.original,
-                                correction.correction
-                              );
-                            }
-                          }}
-                        >
-                          <div className="flex items-start gap-3">
-                            <div className="flex-shrink-0 mt-0.5">
-                              {correction.status === "applied" ? (
-                                <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
-                                  <svg
-                                    className="w-3 h-3 text-white"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                </div>
-                              ) : correction.status === "denied" ? (
-                                <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
-                                  <svg
-                                    className="w-3 h-3 text-white"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                </div>
-                              ) : (
-                                <div className="w-5 h-5 rounded-full bg-gray-300 flex items-center justify-center">
-                                  <span className="text-xs text-gray-600">
-                                    !
-                                  </span>
-                                </div>
+                        .slice(0, 5)
+                        .map((correction) => (
+                          <div
+                            key={correction.id}
+                            className={`rounded-lg p-3 border transition-all ${
+                              correction.status === "applied"
+                                ? "bg-green-900/30 border-green-700/50 opacity-75"
+                                : correction.status === "denied"
+                                  ? "bg-red-900/30 border-red-700/50 opacity-75"
+                                  : "bg-gray-800/50 border-gray-700 hover:border-blue-600/50 cursor-pointer"
+                            }`}
+                            onClick={() => {
+                              if (correction.status === "pending") {
+                                applySingleChange(
+                                  correction.id,
+                                  correction.original,
+                                  correction.correction
+                                );
+                              }
+                            }}
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className="flex-shrink-0 mt-0.5">
+                                {correction.status === "applied" ? (
+                                  <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                                    <svg
+                                      className="w-3 h-3 text-white"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                  </div>
+                                ) : correction.status === "denied" ? (
+                                  <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
+                                    <svg
+                                      className="w-3 h-3 text-white"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                  </div>
+                                ) : (
+                                  <div className="w-5 h-5 rounded-full bg-gray-300 flex items-center justify-center">
+                                    <span className="text-xs text-gray-600">
+                                      !
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm text-gray-400 line-through truncate">
+                                  {correction.original}
+                                </p>
+                                <p className="text-sm text-gray-200 truncate">
+                                  {correction.correction}
+                                </p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  {correction.status === "applied"
+                                    ? `Applied ${formatTime(correction.timestamp)}`
+                                    : correction.status === "denied"
+                                      ? `Denied ${formatTime(correction.timestamp)}`
+                                      : "Click to apply"}
+                                </p>
+                              </div>
+
+                              {correction.status === "pending" && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    denyCorrection(correction.id);
+                                  }}
+                                  className="text-xs text-gray-400 hover:text-red-400 flex-shrink-0"
+                                >
+                                  Deny
+                                </button>
                               )}
                             </div>
-
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm text-gray-400 line-through truncate">
-                                {correction.original}
-                              </p>
-                              <p className="text-sm text-gray-200 truncate">
-                                {correction.correction}
-                              </p>
-                              <p className="text-xs text-gray-500 mt-1">
-                                {correction.status === "applied"
-                                  ? `Applied ${formatTime(correction.timestamp)}`
-                                  : correction.status === "denied"
-                                    ? `Denied ${formatTime(correction.timestamp)}`
-                                    : "Click to apply"}
-                              </p>
-                            </div>
-
-                            {correction.status === "pending" && (
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  denyCorrection(correction.id);
-                                }}
-                                className="text-xs text-gray-400 hover:text-red-400 flex-shrink-0"
-                              >
-                                Deny
-                              </button>
-                            )}
                           </div>
-                        </div>
-                      ))
-                  )}
+                        ))
+                    )}
 
-                  {filteredTrackedCorrections.filter(
-                    (c) => c.status === activeTab
-                  ).length > 5 && (
-                    <p className="text-xs text-gray-500 text-center py-2">
-                      +
-                      {filteredTrackedCorrections.filter(
-                        (c) => c.status === activeTab
-                      ).length - 5}{" "}
-                      more
-                    </p>
-                  )}
+                    {filteredTrackedCorrections.filter(
+                      (c) => c.status === activeTab
+                    ).length > 5 && (
+                      <p className="text-xs text-gray-500 text-center py-2">
+                        +
+                        {filteredTrackedCorrections.filter(
+                          (c) => c.status === activeTab
+                        ).length - 5}{" "}
+                        more
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ) : !editor?.getText()?.trim() ? (
-              <div className="flex flex-col items-center py-8">
-                <div className="w-12 h-12 bg-blue-900/30 rounded-full flex items-center justify-center mb-3">
+              ) : !editor?.getText()?.trim() ? (
+                <div className="flex flex-col items-center py-8">
+                  <div className="w-12 h-12 bg-blue-900/30 rounded-full flex items-center justify-center mb-3">
+                    <svg
+                      className="h-6 w-6 text-blue-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-sm font-medium text-gray-100">
+                    Start writing
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Your corrections will appear here
+                  </p>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center py-8">
+                  <div className="w-12 h-12 bg-green-900/30 rounded-full flex items-center justify-center mb-3">
+                    <CheckCircle className="h-6 w-6 text-green-500" />
+                  </div>
+                  <p className="text-sm font-medium text-gray-100">Perfect!</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    No corrections needed
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile sidebar */}
+      {isMobile && (
+        <>
+          {/* Backdrop */}
+          <div
+            className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300 ${
+              isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+            onClick={toggleMobileMenu}
+          />
+
+          {/* Mobile corrections panel */}
+          <div
+            className={`fixed top-0 right-0 h-full w-full sm:w-80 bg-[rgb(10,11,12)]/95 backdrop-blur-md border-l border-gray-700/60 shadow-2xl z-50 transform transition-transform duration-300 ease-in-out overflow-hidden ${
+              isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
+            {/* Mobile header */}
+            <div className="sticky top-0 bg-[rgb(10,11,12)]/95 border-b border-gray-700/80 z-10">
+              <div className="px-4 py-4 flex items-center justify-between">
+                <div>
+                  <h3 className="text-base font-semibold text-gray-100">
+                    Corrections
+                  </h3>
+                  <p className="text-sm text-gray-400 mt-0.5">
+                    AI-powered writing assistant
+                  </p>
+                </div>
+                <button
+                  onClick={toggleMobileMenu}
+                  className="text-gray-400 hover:text-gray-300 transition-colors p-1"
+                >
                   <svg
-                    className="h-6 w-6 text-blue-400"
+                    className="w-6 h-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -586,31 +733,334 @@ export default function Diary() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
-                </div>
-                <p className="text-sm font-medium text-gray-100">
-                  Start writing
-                </p>
-                <p className="text-xs text-gray-400 mt-1">
-                  Your corrections will appear here
-                </p>
+                </button>
               </div>
-            ) : (
-              <div className="flex flex-col items-center py-8">
-                <div className="w-12 h-12 bg-green-900/30 rounded-full flex items-center justify-center mb-3">
-                  <CheckCircle className="h-6 w-6 text-green-500" />
+            </div>
+
+            {/* Mobile content */}
+            <div className="px-4 py-4 h-full overflow-y-auto pb-20">
+              {/* Apply all button */}
+              {filteredTrackedCorrections.filter((c) => c.status === "pending")
+                .length > 0 && (
+                <div className="mb-4">
+                  <button
+                    onClick={() => {
+                      filteredTrackedCorrections
+                        .filter((c) => c.status === "pending")
+                        .forEach((correction) => {
+                          applySingleChange(
+                            correction.id,
+                            correction.original,
+                            correction.correction
+                          );
+                        });
+                    }}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    Apply All (
+                    {
+                      filteredTrackedCorrections.filter(
+                        (c) => c.status === "pending"
+                      ).length
+                    }
+                    )
+                  </button>
                 </div>
-                <p className="text-sm font-medium text-gray-100">Perfect!</p>
-                <p className="text-xs text-gray-400 mt-1">
-                  No corrections needed
-                </p>
-              </div>
-            )}
+              )}
+
+              {/* Deny all button */}
+              {filteredTrackedCorrections.filter((c) => c.status === "pending")
+                .length > 0 && (
+                <div className="mb-6">
+                  <button
+                    onClick={() => {
+                      filteredTrackedCorrections
+                        .filter((c) => c.status === "pending")
+                        .forEach((correction) => {
+                          denyCorrection(correction.id);
+                        });
+                    }}
+                    className="w-full bg-gray-700 hover:bg-gray-600 text-gray-300 py-2 px-4 rounded-lg text-sm transition-colors"
+                  >
+                    Reject All
+                  </button>
+                </div>
+              )}
+
+              {/* Content based on state */}
+              {correctionsMutation.isPending ? (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-blue-500 mb-4" />
+                  <span className="text-base text-gray-300">
+                    Analyzing text...
+                  </span>
+                </div>
+              ) : correctionsMutation.isError ? (
+                <div className="flex flex-col items-center py-8">
+                  <AlertCircle className="h-12 w-12 text-red-400 mb-3" />
+                  <span className="text-base text-gray-300">
+                    Unable to analyze
+                  </span>
+                </div>
+              ) : filteredTrackedCorrections.length > 0 ? (
+                <div>
+                  {/* Cache indicator */}
+                  {usingCachedResult && (
+                    <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
+                      <svg
+                        className="w-4 h-4"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <span>Using cached results</span>
+                    </div>
+                  )}
+
+                  {/* Tabs */}
+                  <div className="flex border-b border-gray-700 mb-6">
+                    {(
+                      ["pending", "applied", "denied"] as CorrectionStatus[]
+                    ).map((status) => {
+                      const count = filteredTrackedCorrections.filter(
+                        (c) => c.status === status
+                      ).length;
+                      return (
+                        <button
+                          key={status}
+                          onClick={() => setActiveTab(status)}
+                          className={`flex-1 py-3 text-sm font-medium transition-colors relative ${
+                            activeTab === status
+                              ? "text-blue-400 border-b-2 border-blue-400"
+                              : "text-gray-400 hover:text-gray-200"
+                          }`}
+                        >
+                          <span className="capitalize">{status}</span>
+                          {count > 0 && (
+                            <span className="ml-1 inline-flex items-center justify-center w-5 h-5 text-sm rounded-full bg-gray-700 text-gray-300">
+                              {count}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Corrections list */}
+                  <div className="space-y-3">
+                    {filteredTrackedCorrections.filter(
+                      (c) => c.status === activeTab
+                    ).length === 0 &&
+                    editor?.getText()?.trim() &&
+                    activeTab === "pending" ? (
+                      <div className="flex flex-col items-center py-8">
+                        <div className="w-16 h-16 bg-gray-800/50 rounded-full flex items-center justify-center mb-4">
+                          <svg
+                            className="h-8 w-8 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                        </div>
+                        <p className="text-base text-gray-400">
+                          No pending suggestions
+                        </p>
+                        <p className="text-sm text-gray-500 mt-2">
+                          Keep writing or check applied/denied tabs
+                        </p>
+                      </div>
+                    ) : filteredTrackedCorrections.filter(
+                        (c) => c.status === activeTab
+                      ).length === 0 &&
+                      editor?.getText()?.trim() &&
+                      (activeTab === "applied" || activeTab === "denied") ? (
+                      <div className="flex flex-col items-center py-8">
+                        <div className="w-16 h-16 bg-gray-800/50 rounded-full flex items-center justify-center mb-4">
+                          <svg
+                            className="h-8 w-8 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                            />
+                          </svg>
+                        </div>
+                        <p className="text-base text-gray-400">
+                          No {activeTab} corrections
+                        </p>
+                        <p className="text-sm text-gray-500 mt-2">
+                          Switch to another tab to see more
+                        </p>
+                      </div>
+                    ) : (
+                      filteredTrackedCorrections
+                        .filter((c) => c.status === activeTab)
+                        .map((correction) => (
+                          <div
+                            key={correction.id}
+                            className={`rounded-xl p-4 border transition-all ${
+                              correction.status === "applied"
+                                ? "bg-green-900/30 border-green-700/50 opacity-75"
+                                : correction.status === "denied"
+                                  ? "bg-red-900/30 border-red-700/50 opacity-75"
+                                  : "bg-gray-800/50 border-gray-700 hover:border-blue-600/50 cursor-pointer"
+                            }`}
+                            onClick={() => {
+                              if (correction.status === "pending") {
+                                applySingleChange(
+                                  correction.id,
+                                  correction.original,
+                                  correction.correction
+                                );
+                              }
+                            }}
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className="flex-shrink-0 mt-1">
+                                {correction.status === "applied" ? (
+                                  <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+                                    <svg
+                                      className="w-4 h-4 text-white"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                  </div>
+                                ) : correction.status === "denied" ? (
+                                  <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center">
+                                    <svg
+                                      className="w-4 h-4 text-white"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                  </div>
+                                ) : (
+                                  <div className="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center">
+                                    <span className="text-sm text-gray-300">
+                                      !
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+
+                              <div className="flex-1 min-w-0">
+                                <p className="text-base text-gray-400 line-through mb-1">
+                                  {correction.original}
+                                </p>
+                                <p className="text-base text-gray-200 mb-2">
+                                  {correction.correction}
+                                </p>
+                                <p className="text-sm text-gray-500">
+                                  {correction.status === "applied"
+                                    ? `Applied ${formatTime(correction.timestamp)}`
+                                    : correction.status === "denied"
+                                      ? `Denied ${formatTime(correction.timestamp)}`
+                                      : "Tap to apply"}
+                                </p>
+                              </div>
+
+                              {correction.status === "pending" && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    denyCorrection(correction.id);
+                                  }}
+                                  className="text-sm text-gray-400 hover:text-red-400 flex-shrink-0 py-1 px-2 border border-gray-600 rounded-md"
+                                >
+                                  Reject
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        ))
+                    )}
+                  </div>
+                </div>
+              ) : !editor?.getText()?.trim() ? (
+                <div className="flex flex-col items-center py-12">
+                  <div className="w-20 h-20 bg-blue-900/30 rounded-full flex items-center justify-center mb-6">
+                    <svg
+                      className="h-10 w-10 text-blue-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-lg font-medium text-gray-100 mb-2">
+                    Start writing
+                  </p>
+                  <p className="text-base text-gray-400 text-center px-8">
+                    Your corrections will appear here as you type
+                  </p>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center py-12">
+                  <div className="w-20 h-20 bg-green-900/30 rounded-full flex items-center justify-center mb-6">
+                    <CheckCircle className="h-10 w-10 text-green-500" />
+                  </div>
+                  <p className="text-lg font-medium text-gray-100 mb-2">
+                    Perfect!
+                  </p>
+                  <p className="text-base text-gray-400">
+                    No corrections needed
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }

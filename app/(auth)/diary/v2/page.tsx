@@ -74,6 +74,7 @@ export default function Diary() {
   >([]);
   const [activeTab, setActiveTab] = useState<CorrectionStatus>("pending");
   const [contentCache, setContentCache] = useState<CacheEntry[]>([]);
+  const [usingCachedResult, setUsingCachedResult] = useState(false);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const correctionsMutation = useListCorrectionsMutation();
@@ -92,16 +93,28 @@ export default function Diary() {
 
       // Set new timer to check for corrections after user stops typing
       debounceTimerRef.current = setTimeout(() => {
+        console.log(
+          "Debounced update triggered, content length:",
+          content.length
+        );
         if (shouldAnalyzeContent(content)) {
+          console.log("Content passed analysis check");
           // Check cache first
           const cachedResponse = getCachedCorrection(content);
           if (cachedResponse) {
+            console.log("Using cached response");
             // Use cached response
             handleCorrectionResponse(cachedResponse, content, true);
           } else {
+            console.log(
+              "Making API call for content:",
+              content.substring(0, 50) + "..."
+            );
             // Make API call
             correctionsMutation.mutate({ content });
           }
+        } else {
+          console.log("Content too short to analyze");
         }
       }, 1000);
     },
@@ -109,22 +122,29 @@ export default function Diary() {
       // Trigger correction immediately when Enter is pressed
       if (event.key === "Enter") {
         const content = editor.getText();
+        console.log("Enter key pressed, content length:", content.length);
         if (shouldAnalyzeContent(content)) {
+          console.log("Content passed analysis check on Enter");
           // Check cache first
           const cachedResponse = getCachedCorrection(content);
           if (cachedResponse) {
+            console.log("Using cached response on Enter");
             // Use cached response
             handleCorrectionResponse(cachedResponse, content, true);
           } else {
+            console.log(
+              "Making API call on Enter for content:",
+              content.substring(0, 50) + "..."
+            );
             // Make API call
             correctionsMutation.mutate({ content });
           }
+        } else {
+          console.log("Content too short to analyze on Enter");
         }
       }
     },
   });
-
-  const [usingCachedResult, setUsingCachedResult] = useState(false);
 
   const handleCorrectionResponse = (
     response: ListCorrectionsResponse,
@@ -236,10 +256,22 @@ export default function Diary() {
   const getCachedCorrection = (
     content: string
   ): ListCorrectionsResponse | null => {
-    const normalized = normalizeContent(content);
+    // Use exact match first for better precision
     const now = new Date();
     const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes cache TTL
 
+    // First check for exact match
+    for (const entry of contentCache) {
+      if (
+        entry.content === content &&
+        now.getTime() - entry.timestamp.getTime() < CACHE_TTL_MS
+      ) {
+        return entry.response;
+      }
+    }
+
+    // Then check for normalized match only if exact match not found
+    const normalized = normalizeContent(content);
     for (const entry of contentCache) {
       if (
         normalizeContent(entry.content) === normalized &&
@@ -264,11 +296,17 @@ export default function Diary() {
   // Check if content is meaningful enough to analyze
   const shouldAnalyzeContent = (content: string): boolean => {
     const normalized = normalizeContent(content);
-    // Only analyze if there are at least 10 words
+    // Only analyze if there are at least 5 words (lowered from 10)
     return (
-      normalized.split(/\s+/).filter((word) => word.length > 0).length >= 10
+      normalized.split(/\s+/).filter((word) => word.length > 0).length >= 5
     );
   };
+
+  const filteredTrackedCorrections = trackedCorrections.filter(
+    (item) => item?.original !== item?.correction
+  );
+
+  console.log("filteredTrackedCorrections", filteredTrackedCorrections);
 
   return (
     <div className="flex max-w-7xl m-auto mt-12 px-4 gap-6">
@@ -328,7 +366,7 @@ export default function Diary() {
                     Unable to analyze
                   </span>
                 </div>
-              ) : trackedCorrections.length > 0 ? (
+              ) : filteredTrackedCorrections.length > 0 ? (
                 <div>
                   {/* Apply all button */}
                   <button
@@ -363,7 +401,7 @@ export default function Diary() {
                     {(
                       ["pending", "applied", "denied"] as CorrectionStatus[]
                     ).map((status) => {
-                      const count = trackedCorrections.filter(
+                      const count = filteredTrackedCorrections.filter(
                         (c) => c.status === status
                       ).length;
                       return (
@@ -389,8 +427,9 @@ export default function Diary() {
 
                   {/* Corrections list */}
                   <div className="space-y-2">
-                    {trackedCorrections
+                    {filteredTrackedCorrections
                       .filter((c) => c.status === activeTab)
+
                       .slice(0, 5)
                       .map((correction) => (
                         <div
@@ -482,11 +521,12 @@ export default function Diary() {
                         </div>
                       ))}
 
-                    {trackedCorrections.filter((c) => c.status === activeTab)
-                      .length > 5 && (
+                    {filteredTrackedCorrections.filter(
+                      (c) => c.status === activeTab
+                    ).length > 5 && (
                       <p className="text-xs text-gray-400 text-center py-2">
                         +
-                        {trackedCorrections.filter(
+                        {filteredTrackedCorrections.filter(
                           (c) => c.status === activeTab
                         ).length - 5}{" "}
                         more

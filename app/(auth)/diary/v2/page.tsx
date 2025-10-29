@@ -368,16 +368,6 @@ export default function Diary() {
                 </div>
               ) : filteredTrackedCorrections.length > 0 ? (
                 <div>
-                  {/* Apply all button */}
-                  <button
-                    onClick={() =>
-                      corrections && applyCorrection(corrections.correction)
-                    }
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2.5 px-4 rounded-xl transition-colors mb-4 flex items-center justify-center"
-                  >
-                    Apply All Changes ({corrections?.details.length || 0})
-                  </button>
-
                   {/* Cache indicator */}
                   {usingCachedResult && (
                     <div className="flex items-center gap-2 text-xs text-gray-500 mb-4">

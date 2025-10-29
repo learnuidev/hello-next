@@ -68,7 +68,7 @@ type CacheEntry = {
 export default function Diary() {
   const [corrections, setCorrections] =
     useState<ListCorrectionsResponse | null>(null);
-  const [isCorrectionPanelOpen, setIsCorrectionPanelOpen] = useState(false);
+  const [isCorrectionPanelOpen, setIsCorrectionPanelOpen] = useState(true);
   const [trackedCorrections, setTrackedCorrections] = useState<
     TrackedCorrection[]
   >([]);
@@ -155,22 +155,17 @@ export default function Diary() {
     setCorrections(response);
     setUsingCachedResult(isFromCache);
 
-    // Only open panel if there are actual corrections to make
-    if (response.details.length > 0) {
-      setIsCorrectionPanelOpen(true);
+    // Add new corrections to tracked list with pending status
+    const newTrackedCorrections: TrackedCorrection[] = response.details.map(
+      (detail, index) => ({
+        ...detail,
+        id: `${Date.now()}-${index}`,
+        status: "pending" as CorrectionStatus,
+        timestamp: new Date(),
+      })
+    );
 
-      // Add new corrections to tracked list with pending status
-      const newTrackedCorrections: TrackedCorrection[] = response.details.map(
-        (detail, index) => ({
-          ...detail,
-          id: `${Date.now()}-${index}`,
-          status: "pending" as CorrectionStatus,
-          timestamp: new Date(),
-        })
-      );
-
-      setTrackedCorrections((prev) => [...newTrackedCorrections, ...prev]);
-    }
+    setTrackedCorrections((prev) => [...newTrackedCorrections, ...prev]);
 
     // Add to cache if content is provided and not from cache
     if (content && !isFromCache) {
@@ -318,22 +313,21 @@ export default function Diary() {
       </div>
 
       {/* Corrections sidebar */}
-      {isCorrectionPanelOpen && (
-        <div className="w-80">
-          <div className="bg-white/80 backdrop-blur-md border border-gray-200/60 rounded-2xl shadow-xl h-fit sticky top-4 overflow-hidden">
+      <div className="w-80">
+        <div className="bg-[rgb(10,11,12)]/95 backdrop-blur-md border border-gray-700/60 rounded-2xl shadow-xl h-fit sticky top-4 overflow-hidden dark:bg-[rgb(10,11,12)]/95 dark:border-gray-700/60">
             {/* Header */}
-            <div className="px-5 py-4 border-b border-gray-100/80 flex items-center justify-between">
+            <div className="px-5 py-4 border-b border-gray-700/80 flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-semibold text-gray-900">
+                <h3 className="text-sm font-semibold text-gray-100">
                   Corrections
                 </h3>
-                <p className="text-xs text-gray-500 mt-0.5">
+                <p className="text-xs text-gray-400 mt-0.5">
                   AI-powered writing assistant
                 </p>
               </div>
               <button
                 onClick={() => setIsCorrectionPanelOpen(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-gray-400 hover:text-gray-300 transition-colors"
               >
                 <svg
                   className="w-5 h-5"
@@ -356,14 +350,14 @@ export default function Diary() {
               {correctionsMutation.isPending ? (
                 <div className="flex flex-col items-center justify-center py-12">
                   <Loader2 className="h-6 w-6 animate-spin text-blue-500 mb-3" />
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-300">
                     Analyzing text...
                   </span>
                 </div>
               ) : correctionsMutation.isError ? (
                 <div className="flex flex-col items-center py-8">
                   <AlertCircle className="h-8 w-8 text-red-400 mb-2" />
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-300">
                     Unable to analyze
                   </span>
                 </div>
@@ -371,7 +365,7 @@ export default function Diary() {
                 <div>
                   {/* Cache indicator */}
                   {usingCachedResult && (
-                    <div className="flex items-center gap-2 text-xs text-gray-500 mb-4">
+                    <div className="flex items-center gap-2 text-xs text-gray-400 mb-4">
                       <svg
                         className="w-3 h-3"
                         fill="currentColor"
@@ -388,7 +382,7 @@ export default function Diary() {
                   )}
 
                   {/* Tabs */}
-                  <div className="flex border-b border-gray-100 mb-4">
+                  <div className="flex border-b border-gray-700 mb-4">
                     {(
                       ["pending", "applied", "denied"] as CorrectionStatus[]
                     ).map((status) => {
@@ -401,13 +395,13 @@ export default function Diary() {
                           onClick={() => setActiveTab(status)}
                           className={`flex-1 py-2 text-xs font-medium transition-colors relative ${
                             activeTab === status
-                              ? "text-blue-600 border-b-2 border-blue-600"
-                              : "text-gray-500 hover:text-gray-700"
+                              ? "text-blue-400 border-b-2 border-blue-400"
+                              : "text-gray-400 hover:text-gray-200"
                           }`}
                         >
                           <span className="capitalize">{status}</span>
                           {count > 0 && (
-                            <span className="ml-1 inline-flex items-center justify-center w-4 h-4 text-xs rounded-full bg-gray-100 text-gray-600">
+                            <span className="ml-1 inline-flex items-center justify-center w-4 h-4 text-xs rounded-full bg-gray-700 text-gray-300">
                               {count}
                             </span>
                           )}
@@ -427,10 +421,10 @@ export default function Diary() {
                           key={correction.id}
                           className={`rounded-lg p-3 border transition-all ${
                             correction.status === "applied"
-                              ? "bg-green-50/70 border-green-200 opacity-75"
+                              ? "bg-green-900/30 border-green-700/50 opacity-75"
                               : correction.status === "denied"
-                                ? "bg-red-50/70 border-red-200 opacity-75"
-                                : "bg-gray-50/70 border-gray-200 hover:border-blue-200 cursor-pointer"
+                                ? "bg-red-900/30 border-red-700/50 opacity-75"
+                                : "bg-gray-800/50 border-gray-700 hover:border-blue-600/50 cursor-pointer"
                           }`}
                           onClick={() => {
                             if (correction.status === "pending") {
@@ -482,13 +476,13 @@ export default function Diary() {
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm text-gray-500 line-through truncate">
+                              <p className="text-sm text-gray-400 line-through truncate">
                                 {correction.original}
                               </p>
-                              <p className="text-sm text-gray-800 truncate">
+                              <p className="text-sm text-gray-200 truncate">
                                 {correction.correction}
                               </p>
-                              <p className="text-xs text-gray-400 mt-1">
+                              <p className="text-xs text-gray-500 mt-1">
                                 {correction.status === "applied"
                                   ? `Applied ${formatTime(correction.timestamp)}`
                                   : correction.status === "denied"
@@ -503,7 +497,7 @@ export default function Diary() {
                                   e.stopPropagation();
                                   denyCorrection(correction.id);
                                 }}
-                                className="text-xs text-gray-400 hover:text-red-500 flex-shrink-0"
+                                className="text-xs text-gray-400 hover:text-red-400 flex-shrink-0"
                               >
                                 Deny
                               </button>
@@ -515,7 +509,7 @@ export default function Diary() {
                     {filteredTrackedCorrections.filter(
                       (c) => c.status === activeTab
                     ).length > 5 && (
-                      <p className="text-xs text-gray-400 text-center py-2">
+                      <p className="text-xs text-gray-500 text-center py-2">
                         +
                         {filteredTrackedCorrections.filter(
                           (c) => c.status === activeTab
@@ -530,8 +524,8 @@ export default function Diary() {
                   <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mb-3">
                     <CheckCircle className="h-6 w-6 text-green-500" />
                   </div>
-                  <p className="text-sm font-medium text-gray-900">Perfect!</p>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-sm font-medium text-gray-100">Perfect!</p>
+                  <p className="text-xs text-gray-400 mt-1">
                     No corrections needed
                   </p>
                 </div>
@@ -539,35 +533,8 @@ export default function Diary() {
             </div>
           </div>
         </div>
-      )}
 
-      {/* Toggle button when panel is closed */}
-      {!isCorrectionPanelOpen &&
-        correctionsMutation.isSuccess &&
-        corrections &&
-        corrections.details.length > 0 && (
-          <button
-            className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-blue-500 hover:bg-blue-600 text-white shadow-lg transition-all hover:scale-105 flex items-center justify-center"
-            onClick={() => setIsCorrectionPanelOpen(true)}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-            <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full">
-              {corrections.details.length}
-            </span>
-          </button>
-        )}
+      
     </div>
   );
 }

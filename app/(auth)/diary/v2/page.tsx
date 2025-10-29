@@ -19,8 +19,8 @@ import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
 
 interface ListCorrectionsRequest {
   content: string;
-  sourceLang: string;
-  targetLang: string;
+  sourceLang?: string;
+  targetLang?: string;
 }
 
 type CorrectionDetail = {
@@ -118,7 +118,8 @@ export default function Diary() {
         }
       }, 1000);
     },
-    onKeyDown: ({ event }) => {
+    // @ts-ignore
+    onKeyDown: ({ event }: any) => {
       // Trigger correction immediately when Enter is pressed
       if (event.key === "Enter") {
         const content = editor.getText();

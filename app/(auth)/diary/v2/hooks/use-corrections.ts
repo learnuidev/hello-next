@@ -13,9 +13,12 @@ import {
   shouldAnalyzeContent,
   CacheEntry,
 } from "../correction-cache";
+import { useCorrectionSettingsStore } from "../stores/useCorrectionSettingsStore";
 
 export const useListCorrectionsMutation = () => {
   const jwt = useJwtToken();
+
+  const { sourceLang, targetLang } = useCorrectionSettingsStore();
 
   return useMutation({
     mutationFn: async ({ content }: ListCorrectionsRequest) => {
@@ -24,7 +27,7 @@ export const useListCorrectionsMutation = () => {
         headers: {
           Authorization: `${jwt}`,
         },
-        body: JSON.stringify({ content, sourceLang: "en", targetLang: "zh" }),
+        body: JSON.stringify({ content, sourceLang, targetLang }),
       });
 
       return (await response.json()) as ListCorrectionsResponse;
@@ -33,8 +36,11 @@ export const useListCorrectionsMutation = () => {
 };
 
 export const useCorrections = (editor: Editor | null) => {
-  const [corrections, setCorrections] = useState<ListCorrectionsResponse | null>(null);
-  const [trackedCorrections, setTrackedCorrections] = useState<TrackedCorrection[]>([]);
+  const [corrections, setCorrections] =
+    useState<ListCorrectionsResponse | null>(null);
+  const [trackedCorrections, setTrackedCorrections] = useState<
+    TrackedCorrection[]
+  >([]);
   const [contentCache, setContentCache] = useState<CacheEntry[]>([]);
   const [usingCachedResult, setUsingCachedResult] = useState(false);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -42,7 +48,11 @@ export const useCorrections = (editor: Editor | null) => {
   const correctionsMutation = useListCorrectionsMutation();
 
   const handleCorrectionResponse = useCallback(
-    (response: ListCorrectionsResponse, content?: string, isFromCache: boolean = false) => {
+    (
+      response: ListCorrectionsResponse,
+      content?: string,
+      isFromCache: boolean = false
+    ) => {
       setCorrections(response);
       setUsingCachedResult(isFromCache);
 
@@ -78,7 +88,10 @@ export const useCorrections = (editor: Editor | null) => {
 
     // Set new timer to check for corrections after user stops typing
     debounceTimerRef.current = setTimeout(() => {
-      console.log("Debounced update triggered, content length:", content.length);
+      console.log(
+        "Debounced update triggered, content length:",
+        content.length
+      );
       if (shouldAnalyzeContent(content)) {
         console.log("Content passed analysis check");
         // Check cache first
@@ -88,7 +101,10 @@ export const useCorrections = (editor: Editor | null) => {
           // Use cached response
           handleCorrectionResponse(cachedResponse, content, true);
         } else {
-          console.log("Making API call for content:", content.substring(0, 50) + "...");
+          console.log(
+            "Making API call for content:",
+            content.substring(0, 50) + "..."
+          );
           // Make API call
           correctionsMutation.mutate({ content });
         }
@@ -112,7 +128,10 @@ export const useCorrections = (editor: Editor | null) => {
         // Use cached response
         handleCorrectionResponse(cachedResponse, content, true);
       } else {
-        console.log("Making API call on Enter for content:", content.substring(0, 50) + "...");
+        console.log(
+          "Making API call on Enter for content:",
+          content.substring(0, 50) + "..."
+        );
         // Make API call
         correctionsMutation.mutate({ content });
       }
@@ -121,12 +140,15 @@ export const useCorrections = (editor: Editor | null) => {
     }
   }, [editor, contentCache, handleCorrectionResponse, correctionsMutation]);
 
-  const applyCorrection = useCallback((correction: string) => {
-    if (editor) {
-      // Use commands.setContent to properly update the editor
-      editor.chain().focus().setContent(correction, false).run();
-    }
-  }, [editor]);
+  const applyCorrection = useCallback(
+    (correction: string) => {
+      if (editor) {
+        // Use commands.setContent to properly update the editor
+        editor.chain().focus().setContent(correction, false).run();
+      }
+    },
+    [editor]
+  );
 
   const applySingleChange = useCallback(
     (correctionId: string, original: string, corrected: string) => {

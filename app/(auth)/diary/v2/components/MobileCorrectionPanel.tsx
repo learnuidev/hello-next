@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Editor } from "@tiptap/react";
 import { TrackedCorrection } from "../types";
 import { CorrectionPanelHeader } from "./CorrectionPanelHeader";
 import { CorrectionPanelContent } from "./CorrectionPanelContent";
+import { SettingsPanel } from "./SettingsPanel";
 
 interface MobileCorrectionPanelProps {
   correctionsMutation: any;
@@ -30,6 +32,8 @@ export const MobileCorrectionPanel = ({
   isMobileMenuAnimating,
   toggleMobileMenu,
 }: MobileCorrectionPanelProps) => {
+  const [showSettings, setShowSettings] = useState(false);
+
   const handleApplyAll = () => {
     filteredTrackedCorrections
       .filter((c) => c.status === "pending")
@@ -48,6 +52,10 @@ export const MobileCorrectionPanel = ({
       .forEach((correction) => {
         denyCorrection(correction.id);
       });
+  };
+
+  const toggleSettings = () => {
+    setShowSettings(!showSettings);
   };
 
   const pendingCount = filteredTrackedCorrections.filter((c) => c.status === "pending").length;
@@ -70,27 +78,33 @@ export const MobileCorrectionPanel = ({
         }`}
       >
         <CorrectionPanelHeader
-          title="Corrections"
-          subtitle="AI-powered writing assistant"
+          title={showSettings ? "Settings" : "Corrections"}
+          subtitle={showSettings ? "Language settings for corrections" : "AI-powered writing assistant"}
           isMobile={true}
           onClose={toggleMobileMenu}
+          onToggleSettings={toggleSettings}
+          showSettingsButton={!showSettings}
         />
         
-        <CorrectionPanelContent
-          correctionsMutation={correctionsMutation}
-          filteredTrackedCorrections={filteredTrackedCorrections}
-          usingCachedResult={usingCachedResult}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          editor={editor}
-          applySingleChange={applySingleChange}
-          denyCorrection={denyCorrection}
-          isMobile={true}
-          showApplyAllButton={showActionButtons}
-          showRejectAllButton={showActionButtons}
-          onApplyAll={handleApplyAll}
-          onRejectAll={handleRejectAll}
-        />
+        {showSettings ? (
+          <SettingsPanel isMobile={true} onBack={toggleSettings} />
+        ) : (
+          <CorrectionPanelContent
+            correctionsMutation={correctionsMutation}
+            filteredTrackedCorrections={filteredTrackedCorrections}
+            usingCachedResult={usingCachedResult}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            editor={editor}
+            applySingleChange={applySingleChange}
+            denyCorrection={denyCorrection}
+            isMobile={true}
+            showApplyAllButton={showActionButtons}
+            showRejectAllButton={showActionButtons}
+            onApplyAll={handleApplyAll}
+            onRejectAll={handleRejectAll}
+          />
+        )}
       </div>
     </>
   );

@@ -70,7 +70,7 @@ export default function Diary() {
   ]);
 
   return (
-    <div className="flex flex-col md:flex-row max-w-7xl m-auto mt-12 px-4 gap-6">
+    <div className="flex flex-col md:flex-row max-w-7xl m-auto mt-12 px-4 gap-6 bg-white dark:bg-transparent">
       {/* Main editor area */}
       <div className="flex-1">
         <div className="flex justify-between items-center mb-6 md:mb-16">
@@ -87,7 +87,9 @@ export default function Diary() {
             />
           )}
         </div>
-        <EditorContent editor={editor} />
+        <div className="bg-white dark:bg-transparent rounded-lg shadow-md text-xl shadow-gray-200 dark:shadow-[rgb(13,14,15)]  p-4">
+          <EditorContent editor={editor} placeholder="Record something" />
+        </div>
       </div>
 
       {/* Desktop sidebar */}

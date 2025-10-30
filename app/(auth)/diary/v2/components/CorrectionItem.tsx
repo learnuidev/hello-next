@@ -20,14 +20,19 @@ export const CorrectionItem = ({ correction, isMobile = false, onApply, onDeny }
     onDeny(correction.id);
   };
 
+  const paddingClass = isMobile ? "p-4" : "p-3";
+  const textClass = isMobile ? "text-base" : "text-sm";
+  const buttonText = isMobile ? "Reject" : "Deny";
+  const clickAction = isMobile ? "Tap to apply" : "Click to apply";
+
   return (
     <div
-      className={`rounded-lg p-3 border transition-all ${
+      className={`rounded-lg ${paddingClass} border transition-all ${
         correction.status === "applied"
-          ? "bg-green-900/30 border-green-700/50 opacity-75"
+          ? "bg-green-100 dark:bg-green-900/30 border-green-200 dark:border-green-700/50 opacity-75"
           : correction.status === "denied"
-            ? "bg-red-900/30 border-red-700/50 opacity-75"
-            : "dark:bg-gray-800/50 border-gray-700 hover:border-blue-600/50 cursor-pointer"
+            ? "bg-red-100 dark:bg-red-900/30 border-red-200 dark:border-red-700/50 opacity-75"
+            : "bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600/50 cursor-pointer"
       }`}
       onClick={handleClick}
     >
@@ -62,34 +67,34 @@ export const CorrectionItem = ({ correction, isMobile = false, onApply, onDeny }
               </svg>
             </div>
           ) : (
-            <div className="w-5 h-5 rounded-full bg-gray-300 flex items-center justify-center">
-              <span className="text-xs text-gray-600">!</span>
+            <div className="w-5 h-5 rounded-full bg-gray-400 dark:bg-gray-500 flex items-center justify-center">
+              <span className="text-xs text-gray-100 dark:text-gray-300">!</span>
             </div>
           )}
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="text-sm text-gray-600 dark:text-gray-400 line-through truncate">
+          <p className={`${textClass} text-gray-500 dark:text-gray-400 line-through truncate`}>
             {correction.original}
           </p>
-          <p className="text-sm text-gray-200 truncate">
+          <p className={`${textClass} text-gray-900 dark:text-gray-200 truncate`}>
             {correction.correction}
           </p>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className={`text-xs text-gray-500 dark:text-gray-500 mt-1`}>
             {correction.status === "applied"
               ? `Applied ${formatTime(correction.timestamp)}`
               : correction.status === "denied"
                 ? `Denied ${formatTime(correction.timestamp)}`
-                : "Click to apply"}
+                : clickAction}
           </p>
         </div>
 
         {correction.status === "pending" && (
           <button
             onClick={handleDenyClick}
-            className="text-xs text-gray-600 dark:text-gray-400 hover:text-red-400 flex-shrink-0"
+            className={`text-xs text-gray-500 dark:text-gray-400 hover:text-red-500 flex-shrink-0 ${isMobile ? 'py-1 px-2 border border-gray-300 dark:border-gray-600 rounded-md' : ''}`}
           >
-            Deny
+            {buttonText}
           </button>
         )}
       </div>

@@ -7,7 +7,7 @@ export const MobileMenuButton = ({ toggleMobileMenu, pendingCorrectionsCount }: 
   return (
     <button
       onClick={toggleMobileMenu}
-      className="relative p-3 bg-[rgb(10,11,12)]/95 text-white rounded-full shadow-lg md:hidden border border-gray-700/60"
+      className="relative p-3 bg-gray-900 dark:bg-[rgb(10,11,12)]/95 text-white rounded-full shadow-lg md:hidden border border-gray-700/60 dark:border-gray-700/60"
     >
       <svg
         className="w-5 h-5"

@@ -53,7 +53,6 @@ export const CorrectionPanelContent = ({
     return "bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600/50 cursor-pointer";
   };
 
-  const iconSize = isMobile ? { w: 6, h: 4 } : { w: 5, h: 3 };
   const textSize = isMobile ? "text-base" : "text-sm";
   const spacing = isMobile ? "space-y-3" : "space-y-2";
 
@@ -106,7 +105,7 @@ export const CorrectionPanelContent = ({
           className={`flex flex-col items-center justify-center py-${isMobile ? 12 : 8}`}
         >
           <Loader2
-            className={`h-${isMobile ? 8 : 6} w-${isMobile ? 8 : 6} animate-spin text-blue-500 mb-${isMobile ? 4 : 3}`}
+            className={`${isMobile ? "h-8 w-8" : "h-6 w-6"} animate-spin text-blue-500 mb-${isMobile ? 4 : 3}`}
           />
           <span className={`${textSize} text-gray-600 dark:text-gray-300`}>
             Checking for corrections...
@@ -115,7 +114,7 @@ export const CorrectionPanelContent = ({
       ) : correctionsMutation.isError ? (
         <div className={`flex flex-col items-center py-${isMobile ? 8 : 6}`}>
           <AlertCircle
-            className={`h-${isMobile ? 12 : 8} w-${isMobile ? 12 : 8} text-red-400 mb-${isMobile ? 3 : 2}`}
+            className={`${isMobile ? "h-12 w-12" : "h-8 w-8"} text-red-400 mb-${isMobile ? 3 : 2}`}
           />
           <span className={`${textSize} text-gray-600 dark:text-gray-300`}>
             Unable to analyze
@@ -129,7 +128,7 @@ export const CorrectionPanelContent = ({
               className={`flex items-center gap-2 ${isMobile ? "text-sm" : "text-xs"} text-gray-500 dark:text-gray-400 mb-${isMobile ? 6 : 4}`}
             >
               <svg
-                className={`w-${isMobile ? 4 : 3} h-${isMobile ? 4 : 3}`}
+                className={`${isMobile ? "w-4 h-4" : "w-3 h-3"}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -161,10 +160,10 @@ export const CorrectionPanelContent = ({
                 className={`flex flex-col items-center py-${isMobile ? 8 : 6}`}
               >
                 <div
-                  className={`w-${isMobile ? 16 : 10} h-${isMobile ? 16 : 10} bg-gray-100 dark:bg-gray-800/50 rounded-full flex items-center justify-center mb-${isMobile ? 4 : 2}`}
+                  className={`${isMobile ? "w-16 h-16" : "w-10 h-10"} bg-gray-100 dark:bg-gray-800/50 rounded-full flex items-center justify-center mb-${isMobile ? 4 : 2}`}
                 >
                   <svg
-                    className={`h-${isMobile ? 8 : 5} w-${isMobile ? 8 : 5} text-gray-500 dark:text-gray-400`}
+                    className={`${isMobile ? "h-8 w-8" : "h-5 w-5"} text-gray-500 dark:text-gray-400`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -194,10 +193,10 @@ export const CorrectionPanelContent = ({
                 className={`flex flex-col items-center py-${isMobile ? 8 : 6}`}
               >
                 <div
-                  className={`w-${isMobile ? 16 : 10} h-${isMobile ? 16 : 10} bg-gray-100 dark:bg-gray-800/50 rounded-full flex items-center justify-center mb-${isMobile ? 4 : 2}`}
+                  className={`${isMobile ? "w-16 h-16" : "w-10 h-10"} bg-gray-100 dark:bg-gray-800/50 rounded-full flex items-center justify-center mb-${isMobile ? 4 : 2}`}
                 >
                   <svg
-                    className={`h-${isMobile ? 8 : 5} w-${isMobile ? 8 : 5} text-gray-500 dark:text-gray-400`}
+                    className={`${isMobile ? "h-8 w-8" : "h-5 w-5"} text-gray-500 dark:text-gray-400`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -241,10 +240,10 @@ export const CorrectionPanelContent = ({
                       <div className="flex-shrink-0 mt-1">
                         {correction.status === "applied" ? (
                           <div
-                            className={`w-${iconSize.w} h-${iconSize.h} rounded-full bg-green-500 flex items-center justify-center`}
+                            className={`${isMobile ? "w-6 h-6" : "w-5 h-5"} rounded-full bg-green-500 flex items-center justify-center`}
                           >
                             <svg
-                              className={`w-${iconSize.w - 2} h-${iconSize.h - 1} text-white`}
+                              className={`${isMobile ? "w-4 h-4" : "w-3 h-3"} text-white`}
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -257,10 +256,10 @@ export const CorrectionPanelContent = ({
                           </div>
                         ) : correction.status === "denied" ? (
                           <div
-                            className={`w-${iconSize.w} h-${iconSize.h} rounded-full bg-red-500 flex items-center justify-center`}
+                            className={`${isMobile ? "w-6 h-6" : "w-5 h-5"} rounded-full bg-red-500 flex items-center justify-center`}
                           >
                             <svg
-                              className={`w-${iconSize.w - 2} h-${iconSize.h - 1} text-white`}
+                              className={`${isMobile ? "w-4 h-4" : "w-3 h-3"} text-white`}
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -273,7 +272,7 @@ export const CorrectionPanelContent = ({
                           </div>
                         ) : (
                           <div
-                            className={`w-${iconSize.w} h-${iconSize.h} rounded-full bg-gray-400 dark:bg-gray-500 flex items-center justify-center`}
+                            className={`${isMobile ? "w-6 h-6" : "w-5 h-5"} rounded-full bg-gray-400 dark:bg-gray-500 flex items-center justify-center`}
                           >
                             <span
                               className={`text-xs text-gray-100 dark:text-gray-300`}
@@ -340,10 +339,10 @@ export const CorrectionPanelContent = ({
       ) : !editor?.getText()?.trim() ? (
         <div className={`flex flex-col items-center py-${isMobile ? 12 : 8}`}>
           <div
-            className={`w-${isMobile ? 20 : 12} h-${isMobile ? 20 : 12} bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-${isMobile ? 6 : 3}`}
+            className={`${isMobile ? "w-20 h-20" : "w-12 h-12"} bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-${isMobile ? 6 : 3}`}
           >
             <svg
-              className={`h-${isMobile ? 10 : 6} w-${isMobile ? 10 : 6} text-blue-500`}
+              className={`${isMobile ? "h-10 w-10" : "h-6 w-6"} text-blue-500`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -370,10 +369,10 @@ export const CorrectionPanelContent = ({
       ) : (
         <div className={`flex flex-col items-center py-${isMobile ? 12 : 8}`}>
           <div
-            className={`w-${isMobile ? 20 : 12} h-${isMobile ? 20 : 12} bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-${isMobile ? 6 : 3}`}
+            className={`${isMobile ? "w-20 h-20" : "w-12 h-12"} bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-${isMobile ? 6 : 3}`}
           >
             <CheckCircle
-              className={`h-${isMobile ? 10 : 6} w-${isMobile ? 10 : 6} text-green-500`}
+              className={`${isMobile ? "h-10 w-10" : "h-6 w-6"} text-green-500`}
             />
           </div>
           <p

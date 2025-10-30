@@ -87,7 +87,7 @@ export default function Diary() {
             />
           )}
         </div>
-        <div className="bg-white dark:bg-transparent rounded-lg shadow-md text-xl shadow-gray-200 dark:shadow-[rgb(13,14,15)]  p-4">
+        <div className="lg:text-xl text-[16px]">
           <EditorContent editor={editor} placeholder="Record something" />
         </div>
       </div>

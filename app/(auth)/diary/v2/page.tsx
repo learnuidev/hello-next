@@ -88,7 +88,11 @@ export default function Diary() {
           )}
         </div>
         <div className="lg:text-xl text-[16px]">
-          <EditorContent editor={editor} placeholder="Record something" />
+          <EditorContent
+            autoFocus
+            editor={editor}
+            placeholder="Record something"
+          />
         </div>
       </div>
 

@@ -1,21 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
 import { defaultExtensions } from "@/components/Editor/extensions";
 import { useMutation } from "@tanstack/react-query";
 import { EditorContent, useEditor } from "@tiptap/react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 interface ListCorrectionsRequest {
   content: string;
@@ -339,8 +329,6 @@ export default function Diary() {
     (item) => item?.original !== item?.correction
   );
 
-  console.log("filteredTrackedCorrections", filteredTrackedCorrections);
-
   return (
     <div className="flex flex-col md:flex-row max-w-7xl m-auto mt-12 px-4 gap-6">
       {/* Main editor area */}
@@ -388,20 +376,20 @@ export default function Diary() {
       {/* Desktop sidebar */}
       {!isMobile && (
         <div className="w-80">
-          <div className="bg-[rgb(10,11,12)]/95 backdrop-blur-md border border-gray-700/60 rounded-2xl shadow-xl h-fit sticky top-4 overflow-hidden">
+          <div className="dark:bg-[rgb(10,11,12)]/95 backdrop-blur-md border border-gray-700/60 rounded-2xl shadow-xl h-fit sticky top-4 overflow-hidden">
             {/* Header */}
             <div className="px-5 py-4 border-b border-gray-700/80 flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-semibold text-gray-100">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                   Corrections
                 </h3>
-                <p className="text-xs text-gray-400 mt-0.5">
+                <p className="text-xs  dark:text-gray-400 text-gray-700 mt-0.5">
                   AI-powered writing assistant
                 </p>
               </div>
               <button
                 onClick={() => setIsCorrectionPanelOpen(false)}
-                className="text-gray-400 hover:text-gray-300 transition-colors"
+                className="text-gray-600 dark:text-gray-400 hover:text-gray-300 transition-colors"
               >
                 <svg
                   className="w-5 h-5"
@@ -439,7 +427,7 @@ export default function Diary() {
                 <div>
                   {/* Cache indicator */}
                   {usingCachedResult && (
-                    <div className="flex items-center gap-2 text-xs text-gray-400 mb-4">
+                    <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400 mb-4">
                       <svg
                         className="w-3 h-3"
                         fill="currentColor"
@@ -470,12 +458,12 @@ export default function Diary() {
                           className={`flex-1 py-2 text-xs font-medium transition-colors relative ${
                             activeTab === status
                               ? "text-blue-400 border-b-2 border-blue-400"
-                              : "text-gray-400 hover:text-gray-200"
+                              : "text-gray-600 dark:text-gray-400 hover:text-gray-200"
                           }`}
                         >
                           <span className="capitalize">{status}</span>
                           {count > 0 && (
-                            <span className="ml-1 inline-flex items-center justify-center w-4 h-4 text-xs rounded-full bg-gray-700 text-gray-300">
+                            <span className="ml-1 inline-flex items-center justify-center w-4 h-4 text-xs rounded-full dark:bg-gray-700 text-gray-300">
                               {count}
                             </span>
                           )}
@@ -492,9 +480,9 @@ export default function Diary() {
                     editor?.getText()?.trim() &&
                     activeTab === "pending" ? (
                       <div className="flex flex-col items-center py-6">
-                        <div className="w-10 h-10 bg-gray-800/50 rounded-full flex items-center justify-center mb-2">
+                        <div className="w-10 h-10 dark:bg-gray-800/50 rounded-full flex items-center justify-center mb-2">
                           <svg
-                            className="h-5 w-5 text-gray-400"
+                            className="h-5 w-5 text-gray-600 dark:text-gray-400"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -507,7 +495,7 @@ export default function Diary() {
                             />
                           </svg>
                         </div>
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
                           No pending suggestions
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
@@ -520,9 +508,9 @@ export default function Diary() {
                       editor?.getText()?.trim() &&
                       (activeTab === "applied" || activeTab === "denied") ? (
                       <div className="flex flex-col items-center py-6">
-                        <div className="w-10 h-10 bg-gray-800/50 rounded-full flex items-center justify-center mb-2">
+                        <div className="w-10 h-10 dark:bg-gray-800/50 rounded-full flex items-center justify-center mb-2">
                           <svg
-                            className="h-5 w-5 text-gray-400"
+                            className="h-5 w-5 text-gray-600 dark:text-gray-400"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -535,7 +523,7 @@ export default function Diary() {
                             />
                           </svg>
                         </div>
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
                           No {activeTab} corrections
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
@@ -555,7 +543,7 @@ export default function Diary() {
                                 ? "bg-green-900/30 border-green-700/50 opacity-75"
                                 : correction.status === "denied"
                                   ? "bg-red-900/30 border-red-700/50 opacity-75"
-                                  : "bg-gray-800/50 border-gray-700 hover:border-blue-600/50 cursor-pointer"
+                                  : "dark:bg-gray-800/50 border-gray-700 hover:border-blue-600/50 cursor-pointer"
                             }`}
                             onClick={() => {
                               if (correction.status === "pending") {
@@ -607,7 +595,7 @@ export default function Diary() {
                               </div>
 
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm text-gray-400 line-through truncate">
+                                <p className="text-sm text-gray-600 dark:text-gray-400 line-through truncate">
                                   {correction.original}
                                 </p>
                                 <p className="text-sm text-gray-200 truncate">
@@ -628,7 +616,7 @@ export default function Diary() {
                                     e.stopPropagation();
                                     denyCorrection(correction.id);
                                   }}
-                                  className="text-xs text-gray-400 hover:text-red-400 flex-shrink-0"
+                                  className="text-xs text-gray-600 dark:text-gray-400 hover:text-red-400 flex-shrink-0"
                                 >
                                   Deny
                                 </button>
@@ -668,10 +656,10 @@ export default function Diary() {
                       />
                     </svg>
                   </div>
-                  <p className="text-sm font-medium text-gray-100">
+                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                     Start writing
                   </p>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                     Your corrections will appear here
                   </p>
                 </div>
@@ -680,8 +668,10 @@ export default function Diary() {
                   <div className="w-12 h-12 bg-green-900/30 rounded-full flex items-center justify-center mb-3">
                     <CheckCircle className="h-6 w-6 text-green-500" />
                   </div>
-                  <p className="text-sm font-medium text-gray-100">Perfect!</p>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                    Perfect!
+                  </p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                     No corrections needed
                   </p>
                 </div>
@@ -712,16 +702,16 @@ export default function Diary() {
             <div className="sticky top-0 bg-[rgb(10,11,12)]/95 border-b border-gray-700/80 z-10">
               <div className="px-4 py-4 flex items-center justify-between">
                 <div>
-                  <h3 className="text-base font-semibold text-gray-100">
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">
                     Corrections
                   </h3>
-                  <p className="text-sm text-gray-400 mt-0.5">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">
                     AI-powered writing assistant
                   </p>
                 </div>
                 <button
                   onClick={toggleMobileMenu}
-                  className="text-gray-400 hover:text-gray-300 transition-colors p-1"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-300 transition-colors p-1"
                 >
                   <svg
                     className="w-6 h-6"
@@ -796,7 +786,7 @@ export default function Diary() {
                           denyCorrection(correction.id);
                         });
                     }}
-                    className="w-full bg-gray-700 hover:bg-gray-600 text-gray-300 py-2 px-4 rounded-lg text-sm transition-colors"
+                    className="w-full dark:bg-gray-700 hover:bg-gray-600 text-gray-300 py-2 px-4 rounded-lg text-sm transition-colors"
                   >
                     Reject All
                   </button>
@@ -822,7 +812,7 @@ export default function Diary() {
                 <div>
                   {/* Cache indicator */}
                   {usingCachedResult && (
-                    <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
+                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-6">
                       <svg
                         className="w-4 h-4"
                         fill="currentColor"
@@ -853,12 +843,12 @@ export default function Diary() {
                           className={`flex-1 py-3 text-sm font-medium transition-colors relative ${
                             activeTab === status
                               ? "text-blue-400 border-b-2 border-blue-400"
-                              : "text-gray-400 hover:text-gray-200"
+                              : "text-gray-600 dark:text-gray-400 hover:text-gray-200"
                           }`}
                         >
                           <span className="capitalize">{status}</span>
                           {count > 0 && (
-                            <span className="ml-1 inline-flex items-center justify-center w-5 h-5 text-sm rounded-full bg-gray-700 text-gray-300">
+                            <span className="ml-1 inline-flex items-center justify-center w-5 h-5 text-sm rounded-full dark:bg-gray-700 text-gray-300">
                               {count}
                             </span>
                           )}
@@ -875,9 +865,9 @@ export default function Diary() {
                     editor?.getText()?.trim() &&
                     activeTab === "pending" ? (
                       <div className="flex flex-col items-center py-8">
-                        <div className="w-16 h-16 bg-gray-800/50 rounded-full flex items-center justify-center mb-4">
+                        <div className="w-16 h-16 dark:bg-gray-800/50 rounded-full flex items-center justify-center mb-4">
                           <svg
-                            className="h-8 w-8 text-gray-400"
+                            className="h-8 w-8 text-gray-600 dark:text-gray-400"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -890,7 +880,7 @@ export default function Diary() {
                             />
                           </svg>
                         </div>
-                        <p className="text-base text-gray-400">
+                        <p className="text-base text-gray-600 dark:text-gray-400">
                           No pending suggestions
                         </p>
                         <p className="text-sm text-gray-500 mt-2">
@@ -903,9 +893,9 @@ export default function Diary() {
                       editor?.getText()?.trim() &&
                       (activeTab === "applied" || activeTab === "denied") ? (
                       <div className="flex flex-col items-center py-8">
-                        <div className="w-16 h-16 bg-gray-800/50 rounded-full flex items-center justify-center mb-4">
+                        <div className="w-16 h-16 dark:bg-gray-800/50 rounded-full flex items-center justify-center mb-4">
                           <svg
-                            className="h-8 w-8 text-gray-400"
+                            className="h-8 w-8 text-gray-600 dark:text-gray-400"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -918,7 +908,7 @@ export default function Diary() {
                             />
                           </svg>
                         </div>
-                        <p className="text-base text-gray-400">
+                        <p className="text-base text-gray-600 dark:text-gray-400">
                           No {activeTab} corrections
                         </p>
                         <p className="text-sm text-gray-500 mt-2">
@@ -936,7 +926,7 @@ export default function Diary() {
                                 ? "bg-green-900/30 border-green-700/50 opacity-75"
                                 : correction.status === "denied"
                                   ? "bg-red-900/30 border-red-700/50 opacity-75"
-                                  : "bg-gray-800/50 border-gray-700 hover:border-blue-600/50 cursor-pointer"
+                                  : "dark:bg-gray-800/50 border-gray-700 hover:border-blue-600/50 cursor-pointer"
                             }`}
                             onClick={() => {
                               if (correction.status === "pending") {
@@ -988,7 +978,7 @@ export default function Diary() {
                               </div>
 
                               <div className="flex-1 min-w-0">
-                                <p className="text-base text-gray-400 line-through mb-1">
+                                <p className="text-base text-gray-600 dark:text-gray-400 line-through mb-1">
                                   {correction.original}
                                 </p>
                                 <p className="text-base text-gray-200 mb-2">
@@ -1009,7 +999,7 @@ export default function Diary() {
                                     e.stopPropagation();
                                     denyCorrection(correction.id);
                                   }}
-                                  className="text-sm text-gray-400 hover:text-red-400 flex-shrink-0 py-1 px-2 border border-gray-600 rounded-md"
+                                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-red-400 flex-shrink-0 py-1 px-2 border border-gray-600 rounded-md"
                                 >
                                   Reject
                                 </button>
@@ -1037,10 +1027,10 @@ export default function Diary() {
                       />
                     </svg>
                   </div>
-                  <p className="text-lg font-medium text-gray-100 mb-2">
+                  <p className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
                     Start writing
                   </p>
-                  <p className="text-base text-gray-400 text-center px-8">
+                  <p className="text-base text-gray-600 dark:text-gray-400 text-center px-8">
                     Your corrections will appear here as you type
                   </p>
                 </div>
@@ -1049,10 +1039,10 @@ export default function Diary() {
                   <div className="w-20 h-20 bg-green-900/30 rounded-full flex items-center justify-center mb-6">
                     <CheckCircle className="h-10 w-10 text-green-500" />
                   </div>
-                  <p className="text-lg font-medium text-gray-100 mb-2">
+                  <p className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
                     Perfect!
                   </p>
-                  <p className="text-base text-gray-400">
+                  <p className="text-base text-gray-600 dark:text-gray-400">
                     No corrections needed
                   </p>
                 </div>

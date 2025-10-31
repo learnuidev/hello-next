@@ -24,7 +24,7 @@ export default function Diary() {
   } = useCorrectionPanel();
 
   const editor = useEditor({
-    autofocus: false,
+    autofocus: true,
     extensions: [...defaultExtensions],
     content: "",
   });

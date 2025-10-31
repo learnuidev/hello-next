@@ -108,12 +108,7 @@ export const defaultExtensions = [
   //     },
   //   }),
   Placeholder.configure({
-    placeholder: ({ node }) => {
-      if (node.type.name === "heading") {
-        return `Heading ${node.attrs.level}`;
-      }
-      return "";
-    },
+    placeholder: "Type of paste your text here...",
     includeChildren: true,
   }),
   // TextAlign,

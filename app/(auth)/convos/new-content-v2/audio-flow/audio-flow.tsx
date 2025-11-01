@@ -20,7 +20,7 @@ export const AudioFlow = () => {
 
       <UploadFileButton
         className="mt-12"
-        types={["mp3", "m4a", "webm"]}
+        types={["mp3", "m4a", "webm", "wav"]}
         onSuccess={(newAudio) => {
           setConvo("title", newAudio.name || "");
           setConvo("audioId", newAudio.id);

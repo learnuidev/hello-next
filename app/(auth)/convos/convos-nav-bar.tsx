@@ -145,7 +145,7 @@ export const ConvosNavBar = () => {
           onClick={() => {
             setViewType("dynacloze");
           }}
-          href={`/convos/${contentId}?view=dynacloze&start=${searchParams.get("start") || 0}`}
+          href={`/convos/${contentId}?view=dynacloze${searchParams.get("start") ? `&start=${searchParams.get("start")}` : ""}`}
           className={`transition ${
             viewType === "dynacloze"
               ? "text-black dark:text-gray-200"

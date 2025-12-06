@@ -105,7 +105,7 @@
     "lucide-react": "0.522.0",
     "mandarino": "2025.10.2-9.14.19",
     "narakeet": "^11.8.202-4.22.54",
-    "next": "15.5.5",
+    "next": "15.5.7",
     "next-absolute-url": "^1.2.2",
     "next-themes": "^0.2.1",
     "node-fetch": "^3.3.2",

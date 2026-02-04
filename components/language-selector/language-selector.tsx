@@ -26,14 +26,15 @@ export const LanguageSelector = () => {
       <LanguageButton
         lang={language}
         onClick={() => {
-          if (previousPath) {
-            router.push(previousPath);
-            setPreviousPath(null);
-            return;
-          } else {
-            setPreviousPath(pathName);
-            router.push(`/language-selector`);
-          }
+          router.push(`/language-selector`);
+          // if (previousPath) {
+          //   router.push(previousPath);
+          //   setPreviousPath(null);
+          //   return;
+          // } else {
+          //   setPreviousPath(pathName);
+          //   router.push(`/language-selector`);
+          // }
         }}
       />
     </div>

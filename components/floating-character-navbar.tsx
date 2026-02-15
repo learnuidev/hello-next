@@ -126,9 +126,15 @@ export const FloatingCharacterNavbar = ({
   const isAutomatic = useShowAutomaticallyTheDock();
 
   const characterContext = useCharacterContextStore((state) => state.context);
-  const contentContext = characterContext?.filter((item) =>
-    JSON.stringify(item)?.includes(firstLesson?.hanzi || selectedChar)
-  );
+  const contentContext = [
+    ...new Set(
+      characterContext
+        ?.filter((item) =>
+          JSON.stringify(item)?.includes(firstLesson?.hanzi || selectedChar)
+        )
+        .map((item) => JSON.stringify(item))
+    ),
+  ]?.map((item) => JSON.parse(item));
 
   const isSuperAdmin = useIsSuperAdmin();
 

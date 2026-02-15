@@ -205,17 +205,19 @@ export const CharacterLearningContext = ({
       <div>
         {/* <h1>TODO: {characterId}</h1> */}
 
-        {slicedItems?.map((item: any) => {
-          return (
-            <SentenceItem
-              key={JSON.stringify(item)}
-              currentPhrase={item}
-              selectedComp={selectedComp}
-              selectedChar={characterId}
-              lang={item?.lang}
-            />
-          );
-        })}
+        {[...slicedItems, ...learnedCharacter?.contentContext]?.map(
+          (item: any) => {
+            return (
+              <SentenceItem
+                key={JSON.stringify(item)}
+                currentPhrase={item}
+                selectedComp={selectedComp}
+                selectedChar={characterId}
+                lang={item?.lang}
+              />
+            );
+          }
+        )}
       </div>
     );
   }

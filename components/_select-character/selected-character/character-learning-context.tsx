@@ -190,11 +190,22 @@ export const CharacterLearningContext = ({
 
   const items = useGetCharacterLearningContext({ lang, characterId });
 
-  const slicedItems = useMemo(() => {
-    return items?.slice(0, 30);
-  }, [items]);
-
   const learnedCharacter = selectedComp;
+
+  const contentContext = [
+    ...new Set(
+      (learnedCharacter?.contentContext).map((item: any) =>
+        JSON.stringify(item)
+      )
+    ),
+  ]?.map((item: any) => JSON.parse(item));
+
+  const slicedItems = useMemo(() => {
+    if (contentContext) {
+      return contentContext;
+    }
+    return items?.slice(0, 10);
+  }, [items, contentContext]);
 
   if (!slicedItems?.length) {
     return <Nothing message="Nothing found" />;
@@ -205,19 +216,17 @@ export const CharacterLearningContext = ({
       <div>
         {/* <h1>TODO: {characterId}</h1> */}
 
-        {[...slicedItems, ...learnedCharacter?.contentContext]?.map(
-          (item: any) => {
-            return (
-              <SentenceItem
-                key={JSON.stringify(item)}
-                currentPhrase={item}
-                selectedComp={selectedComp}
-                selectedChar={characterId}
-                lang={item?.lang}
-              />
-            );
-          }
-        )}
+        {slicedItems?.map((item: any) => {
+          return (
+            <SentenceItem
+              key={JSON.stringify(item)}
+              currentPhrase={item}
+              selectedComp={selectedComp}
+              selectedChar={characterId}
+              lang={item?.lang}
+            />
+          );
+        })}
       </div>
     );
   }

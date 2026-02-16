@@ -194,14 +194,14 @@ export const CharacterLearningContext = ({
 
   const contentContext = [
     ...new Set(
-      (learnedCharacter?.contentContext).map((item: any) =>
+      (learnedCharacter?.contentContext || []).map((item: any) =>
         JSON.stringify(item)
       )
     ),
   ]?.map((item: any) => JSON.parse(item));
 
   const slicedItems = useMemo(() => {
-    if (contentContext) {
+    if (contentContext?.length > 0) {
       return contentContext;
     }
     return items?.slice(0, 10);

@@ -105,18 +105,6 @@ export default function AppsPage() {
         setMode("edit");
       },
     },
-    {
-      href: "/listen",
-      title: "Listen",
-      Icon: Icons.speechify,
-      isNew: true,
-    },
-
-    {
-      href: "/du",
-      title: "Du Chinese",
-      Icon: DuChineseIcon,
-    },
   ];
   return (
     <div className="mx-4 mt-16">

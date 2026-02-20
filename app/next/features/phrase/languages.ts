@@ -105,7 +105,7 @@ export const languages: ILanguage[] = [
   {
     shortId: "kz",
     id: "kz-KZ",
-    title: "Kakaz",
+    title: "Kazak",
     src: kazakFlag.src,
   },
   {

@@ -1,11 +1,10 @@
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 
+import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watched-content-store";
 import { useDiaryParams } from "@/app/(auth)/diary/hooks/use-diary-params";
-import { getReviewDate } from "@/hooks/get-review-date";
-import { useLearningMode } from "./learning-mode.store";
 import { useParams } from "next/navigation";
-import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
+import { useLearningMode } from "./learning-mode.store";
 
 export const getReviewSearchParams = ({
   mode,
@@ -43,20 +42,18 @@ export const useGetReviewUrl = ({ reviewMode } = {} as any) => {
 
   const { data: unReviewedCharacters } = useUnreviwedCharacters();
 
-  const unReviewedCharacter = unReviewedCharacters?.[0];
+  const { recentlyWatched } = useRecentlyWatchedContent();
 
-  const { reviewDate, month, year } = getReviewDate(unReviewedCharacter);
-
-  // return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi, date: reviewDate })}`;
-
-  return `/review?${getReviewSearchParams({
-    mode: contentId || mode,
+  const inputParams = {
+    mode: recentlyWatched?.[0]?.id || contentId || mode,
     entryId,
     level,
     character: unReviewedCharacters?.[0]?.hanzi,
     reviewSpeed,
     reviewMode,
-  })}`;
+  };
+
+  return `/review?${getReviewSearchParams(inputParams)}`;
 };
 export const useGetReviewUrlFn = () => {
   const { mode } = useLearningMode();
@@ -69,12 +66,6 @@ export const useGetReviewUrlFn = () => {
   } = useGetReviewParams();
 
   const { data: unReviewedCharacters } = useUnreviwedCharacters();
-
-  const unReviewedCharacter = unReviewedCharacters?.[0];
-
-  const { reviewDate, month, year } = getReviewDate(unReviewedCharacter);
-
-  // return `/review?${getReviewSearchParams({ mode, level, character: unReviewedCharacters?.[0]?.hanzi, date: reviewDate })}`;
 
   return ({ reviewMode, character, input } = {} as any) =>
     `/review?${getReviewSearchParams({

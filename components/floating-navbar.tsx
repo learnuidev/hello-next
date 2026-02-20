@@ -121,7 +121,6 @@ const FloatingNavbarComp = () => {
               href={reviewUrl}
               target="_blank"
               onClick={() => {
-                // router.push(reviewUrl);
                 setPreviousPath(
                   `${pathName}?start=${searchParams.get("start") || 0}`
                 );

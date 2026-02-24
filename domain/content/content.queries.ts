@@ -6,7 +6,6 @@ import { useCurrentAuthUser } from "../auth/auth.queries";
 import { getContent, IContent, listContents } from "./content.api";
 
 import { createIndexDBStore } from "@/libs/index-db/index-db";
-import { useMemo } from "react";
 
 export const useContentsStore = createIndexDBStore({
   name: "list-content-v3",
@@ -81,8 +80,6 @@ export function useListContentsQuery(options = {} as any) {
 
   const queryKey = useGetListContentsQueryKey();
 
-  // const setContents: any = useContentsStore((state) => state.setContents);
-
   return useQuery<ListContentsResponse, Error>({
     queryKey: queryKey,
     queryFn: async () => {
@@ -112,15 +109,6 @@ export function useListContentsQuery(options = {} as any) {
     refetchOnReconnect: false,
   });
 }
-
-const useListContentsQueryOld = (options = {} as any) => {
-  const { data, isLoading } = useListContentsQuery(options);
-  const contents: any = useContentsStore((state) => state.contents);
-
-  return useMemo(() => {
-    return { data: data || contents, isLoading: isLoading };
-  }, [contents, data, isLoading]);
-};
 
 export const getContentQueryId = "get-content";
 export function useGetContentQuery(

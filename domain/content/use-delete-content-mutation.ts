@@ -1,14 +1,9 @@
 "use client";
-import { queryIds } from "./queryIds";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useCurrentAuthUser } from "../auth/auth.queries";
-import { AddContentParams } from "./content.types";
 import { siteConfig } from "@/lib/config";
-import {
-  getContentQueryId,
-  useGetListContentsQueryKey,
-} from "./content.queries";
+import { useMutation } from "@tanstack/react-query";
+import { useCurrentAuthUser } from "../auth/auth.queries";
+import { useContentsStore } from "./content.queries";
 
 type DeleteContentParams = {
   id: string;
@@ -33,11 +28,19 @@ const deleteContent = async (
 
 export function useDeleteContentMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
-  const queryClient = useQueryClient();
 
-  const listContentsQueryKey = useGetListContentsQueryKey();
+  const setContents: any = useContentsStore((state) => state.setContents);
+
   return useMutation({
     mutationFn: async (params: DeleteContentParams) => {
+      setContents((prevContent: any) => {
+        return {
+          ...prevContent,
+          items: prevContent?.items?.filter(
+            (item: any) => item.id !== params.id
+          ),
+        };
+      });
       const response = await deleteContent(params, {
         Authorization: authUser?.jwt,
       });

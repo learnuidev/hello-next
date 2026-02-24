@@ -17,6 +17,10 @@ export const TotalPlaysChart = ({ contentId }: { contentId: string }) => {
 
   const wordsUnique = calculateTotalWordsFrequency(words, repeatsPerWord);
 
+  if (!totalRepeats) {
+    return null;
+  }
+
   return (
     <>
       <section className="my-[72px] h-auto rounded-2xl dark:bg-[rgb(21,22,23)] bg-gray-100 gap-4 p-4 justify-start">

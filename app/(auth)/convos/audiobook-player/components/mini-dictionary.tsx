@@ -131,10 +131,7 @@ export function MiniDictionary({
             message="loading dictionary..."
           />
 
-          <div className="text-gray-50 dark:text-[rgb(13,14,15)]">
-            ppppppppppppppppppppppppppppppppppppppppppppppppppp
-            pppppppppppppppppppppppp ppppppp ppppppppp
-          </div>
+          <div className="text-gray-50 dark:text-[rgb(13,14,15)] w-[400px]"></div>
         </div>
       ) : (
         <>
@@ -156,10 +153,7 @@ export function MiniDictionary({
             </div>
           )}
 
-          <div className="text-gray-50 dark:text-[rgb(13,14,15)]">
-            ppppppppppppppppppppppppppppppppppppppppppppppppppp
-            pppppppppppppppppppppppp ppppppp ppppppppp
-          </div>
+          <div className="text-gray-50 dark:text-[rgb(13,14,15)] w-[400px]"></div>
         </>
       )}
 

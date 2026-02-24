@@ -5,22 +5,144 @@ import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-contex
 import { ChinglishButton } from "@/components/chinglish-button";
 import { PinyinButton } from "@/components/pinyin-button";
 import { ReadModeButton } from "@/components/read-mode-button";
+import { SearchOnlyPinyinButton } from "@/components/search-only-pinyin-button";
+import {
+  ParagraphButton,
+  useParagraphMode,
+} from "@/components/settings-dialog/paragraph-button";
 import { PreviewButton } from "@/components/settings-dialog/preview-button";
 import { ContentEditButton } from "@/components/youtube-page/content-edit-button";
+import {
+  useContextPlayContextState,
+  usePlayHistoryStore,
+} from "@/components/youtube-page/hooks/use-play-history-state";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
-import { IContent } from "@/domain/content/content.api";
+import { ContentTranscription, IContent } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
+import { splitEvery } from "ramda";
 import ReactPlayer from "react-player";
 import { formatTime } from "../_play/utils";
 import { CurrentTranscriptionEditor } from "./components/current-transcription-editor";
 import { CurrentTranscriptionView } from "./components/current-transcription-view";
 import { MiniDictionary } from "./components/mini-dictionary";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
-import { SearchOnlyPinyinButton } from "@/components/search-only-pinyin-button";
-import {
-  useContextPlayContextState,
-  usePlayHistoryStore,
-} from "@/components/youtube-page/hooks/use-play-history-state";
+import { smartSplit } from "@/components/youtube-page/utils/smart-split";
+import { CharacterItem } from "@/components/_select-character/character-item";
+import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
+import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
+
+const ParagraphView = ({
+  content,
+  currentTranscription,
+  currentTime,
+  seek,
+  isPlaying,
+}: {
+  currentTranscription: ContentTranscription;
+  content: IContent;
+  currentTime: number;
+  isPlaying: boolean;
+  seek: (time: number) => void;
+}) => {
+  const { selected, setSelected } = useSelectedItem();
+
+  return (
+    <div className={cn("px-4 pb-24", selected ? "" : "lg:px-48")}>
+      <div className="sticky top-0 pt-4 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)] px-4">
+        <div className="pb-4">
+          <div
+            className={cn(
+              `flex justify-between items-center mt-2 w-full`,
+              "h-32"
+            )}
+          >
+            <p className="space-x-2 font-extralight pb-[4px] overflow text-[20px]">
+              {currentTranscription?.en}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="">
+        <div>
+          {Object.entries(splitEvery(5, content?.transcriptions) as any)?.map(
+            (val: any) => {
+              const transcriptions = val[1];
+              return (
+                <div key={JSON.stringify(val)}>
+                  <div className="">
+                    <div className="text-2xl gap-4">
+                      <div className="py-4">
+                        {transcriptions?.map(
+                          (transcription: ContentTranscription) => {
+                            return (
+                              <span
+                                key={JSON.stringify(transcription)}
+                                onClick={() => {
+                                  seek(transcription?.start);
+                                }}
+                                className={cn(
+                                  "text-center h-24",
+                                  isPlaying
+                                    ? transcription.start < currentTime &&
+                                      transcription.end > currentTime
+                                      ? "dark:text-white text-black bg-yellow-200 dark:bg-black"
+                                      : "text-gray-500"
+                                    : "dark:text-white text-black"
+                                )}
+                              >
+                                {smartSplit({
+                                  input: transcription?.input,
+                                  lang: transcription?.lang,
+                                })?.map((item: any, idx: any) => {
+                                  return (
+                                    <span key={`${item}-pinin-view-${idx}`}>
+                                      <CharacterItem
+                                        className={cn(
+                                          isPlaying
+                                            ? transcription.start <
+                                                currentTime &&
+                                              transcription.end > currentTime
+                                              ? " bg-red-200 dark:bg-red-500"
+                                              : ""
+                                            : ""
+                                        )}
+                                        character={item}
+                                        onClick={() => {
+                                          const selectedText =
+                                            getSelectedText();
+
+                                          if (
+                                            selectedText &&
+                                            selectedText?.length < 36
+                                          ) {
+                                            setSelected(selectedText);
+                                          } else {
+                                            setSelected(item);
+                                          }
+                                        }}
+                                      />
+                                    </span>
+                                  );
+                                })}
+
+                                {/* {transcription?.input || transcription?.hanzi} */}
+                              </span>
+                            );
+                          }
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -45,7 +167,10 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
     handleSeekChange,
     onReady,
     start,
+    seek,
   } = useAudioBookState(content);
+
+  const { paragraphMode } = useParagraphMode();
 
   const setHistory = usePlayHistoryStore((state) => state.setHistory);
   const { contextId, setNewContextId } = useContextPlayContextState();
@@ -65,6 +190,14 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               currentTranscription={currentTranscription}
               contentId={content.id}
             />
+          ) : paragraphMode ? (
+            <ParagraphView
+              content={content}
+              currentTranscription={currentTranscription}
+              currentTime={currentTime}
+              seek={seek}
+              isPlaying
+            />
           ) : currentTranscription ? (
             <CurrentTranscriptionView
               containsChinglish={containsChinglish}
@@ -80,11 +213,14 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
           )}
 
           {selected && (
-            <MiniDictionary
-              contentId={content?.id}
-              selected={selected}
-              lang={content?.lang}
-            />
+            <div className="w-full">
+              <MiniDictionary
+                contentId={content?.id}
+                selected={selected}
+                lang={content?.lang}
+                className={paragraphMode ? "" : "sm:mt-20"}
+              />
+            </div>
           )}
         </div>
 
@@ -107,19 +243,11 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               controls={false}
               ref={playerRef}
               onProgress={(value) => {
-                // setHistory({
-                //   transcriptionId: currentTranscription?.id,
-                //   contextId,
-                //   contentId: content.id,
-                //   createdAt: Date.now(),
-                //   progressTime: value.playedSeconds,
-                // });
-
                 setCurrentTime(value.playedSeconds);
               }}
             />
 
-            <div className="flex items-center justify-center sm:gap-8 gap-4">
+            <div className="flex items-center justify-center sm:gap-8 gap-4 bg-gray-50 dark:bg-black p-4 rounded-2xl shadow-sm mb-4">
               <ContentEditButton />
               <button
                 className={cn(
@@ -163,6 +291,8 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
 
               {containsChinglish && <ChinglishButton className="text-2xl" />}
               <PreviewButton />
+
+              <ParagraphButton />
             </div>
 
             <div className="flex items-center gap-4">

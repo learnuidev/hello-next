@@ -243,17 +243,6 @@ export const PlayV2 = ({ contentId }: { contentId: string }) => {
               }}
             >
               {isPlaying ? <Icons.pause /> : <Icons.play />}
-              {/* {isPlaying ? (
-                <div>
-                  <div className="flex space-x-1" aria-hidden="true">
-                    <div className="w-1 h-4 bg-white animate-wave1"></div>
-                    <div className="w-1 h-4 bg-white animate-wave2"></div>
-                    <div className="w-1 h-4 bg-white animate-wave3"></div>
-                  </div>
-                </div>
-              ) : (
-                <Icons.play />
-              )} */}
             </button>
             <button
               className="text-2xl"

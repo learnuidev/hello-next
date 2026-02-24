@@ -101,7 +101,7 @@ export function MiniDictionary({
     <div
       className={cn(
         " bg-gray-50 dark:bg-[rgb(13,14,15)] rounded p-4 sm:p-8",
-        className || "w-full sm:max-w-[600px] sm:mt-20 mt-0"
+        className || "w-full sm:max-w-[600px] mt-0 sticky top-0"
       )}
     >
       <div className="flex justify-between items-center">
@@ -155,6 +155,11 @@ export function MiniDictionary({
               </p>
             </div>
           )}
+
+          <div className="text-gray-50 dark:text-[rgb(13,14,15)]">
+            ppppppppppppppppppppppppppppppppppppppppppppppppppp
+            pppppppppppppppppppppppp ppppppp ppppppppp
+          </div>
         </>
       )}
 

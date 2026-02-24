@@ -332,5 +332,6 @@ export const useAudioBookState = (content: IContent) => {
     handleSeekChange,
     start,
     onReady,
+    seek,
   };
 };

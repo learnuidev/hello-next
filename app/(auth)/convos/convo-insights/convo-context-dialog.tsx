@@ -75,6 +75,26 @@ export const ConvoContextDialog = ({
   const onReady = useCallback(() => {
     const timeToStart = 7 * 60 + 12.6;
 
+    if (isYoutube(data?.audio)) {
+      if (start) {
+        if (isVideoUrl(data?.audio)) {
+          if (!currentTime && `${currentTime}` !== `${start}`) {
+            seekAndPlay(start);
+          }
+        } else {
+          playerRef.current.seekTo(start, "seconds");
+
+          try {
+            playerRef.current?.player?.player?.play();
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      } else {
+        seekAndPlay(0);
+      }
+    }
+
     if (start) {
       if (isVideoUrl(data?.audio)) {
         if (!currentTime && `${currentTime}` !== `${start}`) {
@@ -89,7 +109,25 @@ export const ConvoContextDialog = ({
           console.error(err);
         }
       }
+    } else {
+      seekAndPlay(0);
     }
+
+    // if (start) {
+    //   if (isVideoUrl(data?.audio)) {
+    //     if (!currentTime && `${currentTime}` !== `${start}`) {
+    //       seekAndPlay(start);
+    //     }
+    //   } else {
+    //     playerRef.current.seekTo(start, "seconds");
+
+    //     try {
+    //       playerRef.current?.player?.player?.play();
+    //     } catch (err) {
+    //       console.error(err);
+    //     }
+    //   }
+    // }
   }, [start, data?.audio, currentTime]);
 
   const { contextId, setNewContextId } = useContextPlayContextState();

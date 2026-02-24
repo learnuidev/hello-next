@@ -21,6 +21,7 @@ import {
   usePlayHistoryStore,
 } from "@/components/youtube-page/hooks/use-play-history-state";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { isYoutube } from "../utils/is-youtube";
 // import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 export const ConvoContextDialog = ({
@@ -35,6 +36,8 @@ export const ConvoContextDialog = ({
   closeDialog: () => void;
 }) => {
   const { data } = useGetContentQuery({ contentId });
+
+  const isYoutubeOrVideo = isYoutube(data?.audio) || isVideoUrl(data?.audio);
 
   const setWords = useWordsClickedHistoryStore((state) => state.setHistory);
 
@@ -127,7 +130,7 @@ export const ConvoContextDialog = ({
           url={data?.audio || ""}
           //  playing={isPlaying}
           width="100%"
-          height={isSmall ? "200px" : "450px"}
+          height={!isYoutubeOrVideo ? "50px" : isSmall ? "200px" : "450px"}
           controls
           onReady={onReady}
           onPlay={() => {

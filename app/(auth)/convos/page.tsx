@@ -72,7 +72,6 @@ const ContentViewMode = () => {
           <button
             onClick={() => {
               router.push(`/convos?type=add&variant=content`);
-              // setAddMode("content");
             }}
           >
             Content

@@ -119,12 +119,6 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
           ...old,
           [data?.hanzi]: data,
         };
-        // return old.map((char: any) => {
-        //   if (char?.hanzi === data?.hanzi) {
-        //     return data;
-        //   }
-        //   return char;
-        // });
       });
       queryClient.setQueryData([listCharactersQueryId], (old: any) => {
         return old.map((char: any) => {
@@ -134,8 +128,6 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
           return char;
         });
       });
-
-      // queryClient.refetchQueries([listCharactersQueryId]);
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

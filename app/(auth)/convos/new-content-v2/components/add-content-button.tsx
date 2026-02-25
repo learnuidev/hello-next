@@ -1,7 +1,6 @@
 import { useNewConvoStore } from "@/components/step";
 import { Button } from "@/components/ui/button";
 import { useAddContentMutation } from "@/domain/content/content.mutations";
-import { removeNull } from "@/lib/utils";
 import { validateContentInput } from "../utils/validate-content-input";
 
 export const AddContentButton = () => {
@@ -12,6 +11,7 @@ export const AddContentButton = () => {
   return (
     <Button
       className="w-full sm:w-40 my-8"
+      disabled={addContentMutation.isPending}
       onClick={() => {
         const contentInput = validateContentInput(newConvo);
 

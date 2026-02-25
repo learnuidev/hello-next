@@ -1,27 +1,26 @@
-import { useListComponentsQuery } from "@/domain/lesson/component.queries";
-
 import { Icons } from "./ui/icons.v2";
 
 import { useCharacterContextStore } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
-import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
+import {
+  useAddCharacterMutation,
+  useUpdateCharacterStatusMutation,
+} from "@/domain/lesson/character.mutations";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { isNonRomanLang } from "./_select-character/utils/is-non-roman-lang";
-import { usePreviousPathnameStore } from "./language-selector/use-previous-path-name-store";
 import { PinyinButton } from "./pinyin-button";
+import { ReadModeButton } from "./read-mode-button";
 import { PreviewButton } from "./settings-dialog/preview-button";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
-import { ReadModeButton } from "./read-mode-button";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
-  const { data: components } = useListComponentsQuery();
 
   const { data, isLoading } = useGetComponentQuery({
     hanzi: characterId,
@@ -42,13 +41,12 @@ const DiscoverButton = ({ characterId }: { characterId: string }) => {
   return (
     <button
       className="text-xl text-gray-400 hover:text-black dark:hover:text-white"
-      disabled={discoverMutation.isPending || discoverMutation.isSuccess}
+      disabled={discoverMutation.isPending}
       onClick={() => {
         discoverMutation
           // @ts-ignore
           .mutateAsync({
             hanzi: characterId,
-            // story: "todo",
           })
           .then((resp: any) => {
             toast(`Component Successfully discovered ${JSON.stringify(resp)}`);
@@ -60,21 +58,10 @@ const DiscoverButton = ({ characterId }: { characterId: string }) => {
       ) : (
         <Icons.language />
       )}
-
-      {/* <span>{(selectedComp?.hanzi || characterId)?.length}</span> */}
     </button>
   );
 };
 
-const isMultiSentence = (str: string) => {
-  const isHanziMultiSentence = str.split("。")?.length > 1;
-
-  if (!isHanziMultiSentence) {
-    return str.split(".")?.length > 1;
-  }
-
-  return isHanziMultiSentence;
-};
 export const FloatingCharacterNavbar = ({
   characterId,
 }: {
@@ -87,7 +74,6 @@ export const FloatingCharacterNavbar = ({
     setReadMode,
     readMode,
     isAlreadyLearned,
-    addCharacterMutation,
     setView,
     view,
     selectedComp2,
@@ -97,31 +83,17 @@ export const FloatingCharacterNavbar = ({
     deleteComponentMutation,
   } = characterData;
 
+  const addCharacterMutation = useAddCharacterMutation();
+
   const searchParams = useSearchParams();
 
   const context = searchParams?.get("context");
 
-  const { data: components, isLoading } = useListComponentsQuery();
-  const { data: chars } = useListCharactersQuery();
-
-  const hasAlreadyDiscovered = components?.find(
-    (item: any) => (item?.hanzi || item?.input) === characterId
-  );
-
   const currentCharacter = selectedComp;
-  const { setPreviousPath, previousPath } = usePreviousPathnameStore();
-  const pathName = usePathname();
-
-  // const searchParams = useSearchParams();
-  const fullUrl = `${window.location.pathname}?${searchParams.toString()}`;
 
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
 
   const { data } = useListCharactersQuery();
-
-  const learnedChar = data?.filter(
-    (item: any) => (item?.input || item?.hanzi) === characterId
-  )?.[0];
 
   const isAutomatic = useShowAutomaticallyTheDock();
 
@@ -138,8 +110,6 @@ export const FloatingCharacterNavbar = ({
 
   const isSuperAdmin = useIsSuperAdmin();
 
-  const router = useRouter();
-
   return (
     <TheDock isAutomatic={isAutomatic} className="bottom-4">
       <div className="flex items-center w-full justify-center">
@@ -147,21 +117,12 @@ export const FloatingCharacterNavbar = ({
           <div className="space-x-8 flex justify-center items-center w-full">
             <ReadModeButton />
             <PreviewButton />
-            {/* <CommonCharacterButton /> */}
-            {/* <BrightModeButton /> */}
 
             {isNonRomanLang(lang) && <PinyinButton />}
 
             <button
               className="text-xl text-black dark:text-white"
               onClick={() => {
-                // if (characterId?.length > 1) {
-                //   setPreviousPath(`${pathName}${lang ? `?lang=${lang}` : ""}`);
-                //   router.push(`/review?input=${characterId}`);
-                // } else {
-                //   setView("review");
-                // }
-
                 setView("review");
               }}
             >
@@ -171,6 +132,7 @@ export const FloatingCharacterNavbar = ({
             {isAlreadyLearned ? null : (
               <button
                 className="text-xl text-black dark:text-white"
+                disabled={addCharacterMutation.isPending}
                 onClick={() => {
                   addCharacterMutation?.mutateAsync({
                     lang: lang,
@@ -181,7 +143,7 @@ export const FloatingCharacterNavbar = ({
                     story: "todo",
                     hanzi: firstLesson?.hanzi || selectedChar,
                     journeyId: firstLesson?.id || "default",
-                  });
+                  } as any);
                 }}
               >
                 {addCharacterMutation.isPending ? (
@@ -279,12 +241,6 @@ export const FloatingCharacterNavbar = ({
                   )}
                 </button>
               )}
-
-            {/* {learnedChar && characterId?.length === 1 && (
-              <SelectedCharacterStoryButton characterId={characterId} />
-            )} */}
-
-            {/* <SelectedCharacterContentsButton characterId={characterId} /> */}
           </div>
 
           <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />

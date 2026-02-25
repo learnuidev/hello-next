@@ -70,7 +70,7 @@ export const TimelineTabBody = ({
     (item: any) => item?.status === "joined"
   );
 
-  if (isLearnedCharactersLoading) {
+  if (isLearnedCharactersLoading && groups?.length === 0) {
     return <div className="text-center my-16"> Loading ...</div>;
   }
 

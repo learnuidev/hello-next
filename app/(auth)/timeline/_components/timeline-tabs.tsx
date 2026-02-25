@@ -7,7 +7,7 @@ import { TimelineTabBody } from "./timeline-tab-body";
 export function TimelineTabs() {
   const hoverColor = `dark:data-[state=active]:text-white data-[state=active]:text-black`;
   return (
-    <Tabs defaultValue="all" className="p-0">
+    <Tabs defaultValue="search" className="p-0">
       <div className="mt-8 flex justify-between items-center md:mx-12">
         <TabsList className="space-x-8 bg-white dark:bg-black">
           <TabsTrigger value="all" className={`px-0 ${hoverColor}`}>

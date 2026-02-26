@@ -183,81 +183,86 @@ export function ContentFormByType({
           return null;
         }
 
+        if (getVideoByIdMutation.isPending) {
+          return (
+            <div className="flex flex-col items-center justify-center py-12 space-y-3">
+              <Loader2 className="w-8 h-8 animate-spin text-red-500" />
+              <p className="text-sm text-muted-foreground">
+                Loading video details...
+              </p>
+            </div>
+          );
+        }
+
+        if (!youtubeVideoData) {
+          return null;
+        }
+
         return (
           <div className="space-y-4">
-            {getVideoByIdMutation.isPending ? (
-              <div className="flex flex-col items-center justify-center py-12 space-y-3">
-                <Loader2 className="w-8 h-8 animate-spin text-red-500" />
-                <p className="text-sm text-muted-foreground">
-                  Loading video details...
-                </p>
+            <div className="space-y-4">
+              <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-red-500/10 to-orange-500/10 dark:from-red-500/20 dark:to-orange-500/20 border border-red-200/50 dark:border-red-800/50">
+                {youtubeVideoData.thumbnails?.maxres?.url ? (
+                  <img
+                    src={youtubeVideoData.thumbnails.maxres.url}
+                    alt={youtubeVideoData.title}
+                    className="w-full aspect-video object-cover"
+                  />
+                ) : youtubeVideoData.thumbnails?.high?.url ? (
+                  <img
+                    src={youtubeVideoData.thumbnails.high.url}
+                    alt={youtubeVideoData.title}
+                    className="w-full aspect-video object-cover"
+                  />
+                ) : (
+                  <div className="w-full aspect-video flex items-center justify-center bg-gradient-to-br from-red-500/20 to-orange-500/20">
+                    <Youtube className="w-16 h-16 text-red-500" />
+                  </div>
+                )}
               </div>
-            ) : (
-              <>
-                {youtubeVideoData && (
-                  <div className="space-y-4">
-                    <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-red-500/10 to-orange-500/10 dark:from-red-500/20 dark:to-orange-500/20 border border-red-200/50 dark:border-red-800/50">
-                      {youtubeVideoData.thumbnails?.maxres?.url ? (
-                        <img
-                          src={youtubeVideoData.thumbnails.maxres.url}
-                          alt={youtubeVideoData.title}
-                          className="w-full aspect-video object-cover"
-                        />
-                      ) : youtubeVideoData.thumbnails?.high?.url ? (
-                        <img
-                          src={youtubeVideoData.thumbnails.high.url}
-                          alt={youtubeVideoData.title}
-                          className="w-full aspect-video object-cover"
-                        />
-                      ) : (
-                        <div className="w-full aspect-video flex items-center justify-center bg-gradient-to-br from-red-500/20 to-orange-500/20">
-                          <Youtube className="w-16 h-16 text-red-500" />
-                        </div>
-                      )}
-                    </div>
 
-                    <div className="space-y-3">
-                      <div>
-                        <h3 className="text-xl font-semibold mb-1">
-                          {youtubeVideoData.title}
-                        </h3>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <span className="font-medium">
-                            {youtubeVideoData.author}
-                          </span>
-                        </div>
-                      </div>
+              <div className="space-y-3">
+                <div>
+                  <h3 className="text-xl font-semibold mb-1">
+                    {youtubeVideoData.title}
+                  </h3>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span className="font-medium">
+                      {youtubeVideoData.author}
+                    </span>
+                  </div>
+                </div>
 
-                      {youtubeVideoData.description && (
-                        <div className="p-4 bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/30 dark:to-slate-950/30 rounded-lg border border-gray-200/50 dark:border-gray-800/50">
-                          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-h-[300px] overflow-y-auto whitespace-pre-wrap">
-                            {youtubeVideoData.description}
-                          </p>
-                        </div>
-                      )}
-
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
-                        <Youtube className="w-4 h-4" />
-                        <span className="truncate">{formData.url}</span>
-                      </div>
-                    </div>
+                {youtubeVideoData.description && (
+                  <div className="p-4 bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/30 dark:to-slate-950/30 rounded-lg border border-gray-200/50 dark:border-gray-800/50">
+                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-h-[300px] overflow-y-auto whitespace-pre-wrap">
+                      {youtubeVideoData.description}
+                    </p>
                   </div>
                 )}
 
-                <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/5">
-                  <ReactPlayer
-                    url={formData.url}
-                    width="100%"
-                    height="100%"
-                    controls
-                  />
+                <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
+                  <Youtube className="w-4 h-4" />
+                  <span className="truncate">{formData.url}</span>
                 </div>
-              </>
-            )}
+              </div>
+            </div>
+
+            <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/5">
+              <ReactPlayer
+                url={formData.url}
+                width="100%"
+                height="100%"
+                controls
+              />
+            </div>
           </div>
         );
 
       case "text":
+        if (!formData.text) {
+          return null;
+        }
         return (
           <div className="space-y-4">
             {formData.title && (
@@ -270,33 +275,40 @@ export function ContentFormByType({
         );
 
       case "website":
+        if (parseHtmlMutation.isPending) {
+          return (
+            <div className="flex flex-col items-center justify-center py-12 space-y-3">
+              <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+              <p className="text-sm text-muted-foreground">
+                Parsing website...
+              </p>
+            </div>
+          );
+        }
+
+        if (!formData.text) {
+          return null;
+        }
+
         return (
           <div className="space-y-4">
-            {parseHtmlMutation.isPending ? (
-              <div className="flex flex-col items-center justify-center py-12 space-y-3">
-                <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
-                <p className="text-sm text-muted-foreground">
-                  Parsing website...
-                </p>
-              </div>
-            ) : (
-              <>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Globe className="w-4 h-4" />
-                  <span className="truncate">{formData.url}</span>
-                </div>
-                <div className="p-4 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/30 dark:to-blue-950/30 rounded-xl border border-purple-200/50 dark:border-purple-800/50">
-                  <p className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-h-[500px] overflow-y-auto">
-                    {formData.text || "No content extracted yet"}
-                  </p>
-                </div>
-              </>
-            )}
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Globe className="w-4 h-4" />
+              <span className="truncate">{formData.url}</span>
+            </div>
+            <div className="p-4 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/30 dark:to-blue-950/30 rounded-xl border border-purple-200/50 dark:border-purple-800/50">
+              <p className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-h-[500px] overflow-y-auto">
+                {formData.text}
+              </p>
+            </div>
           </div>
         );
 
       case "audio":
-        const fileUrl = formData.file ? URL.createObjectURL(formData.file) : "";
+        if (!formData.file) {
+          return null;
+        }
+        const fileUrl = URL.createObjectURL(formData.file);
         return (
           <div className="space-y-4">
             <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-xl border border-green-200/50 dark:border-green-800/50">
@@ -312,21 +324,19 @@ export function ContentFormByType({
                 </p>
               </div>
             </div>
-            {fileUrl && (
-              <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/5">
-                <ReactPlayer
-                  url={fileUrl}
-                  width="100%"
-                  height="100%"
-                  controls
-                  config={{
-                    file: {
-                      forceAudio: true,
-                    },
-                  }}
-                />
-              </div>
-            )}
+            <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/5">
+              <ReactPlayer
+                url={fileUrl}
+                width="100%"
+                height="100%"
+                controls
+                config={{
+                  file: {
+                    forceAudio: true,
+                  },
+                }}
+              />
+            </div>
           </div>
         );
     }

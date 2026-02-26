@@ -8,7 +8,18 @@ import { useAddContentV2Mutation } from "@/domain/content-service/use-add-conten
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import { Youtube, FileText, Globe, Mic, Loader2, Upload } from "lucide-react";
+
+interface FormData {
+  title?: string;
+  url?: string;
+  text?: string;
+  file?: File;
+}
 
 export function ContentFormByType({
   contentType,
@@ -16,35 +27,224 @@ export function ContentFormByType({
   contentType: ContentV2Type;
 }) {
   const router = useRouter();
-
   const addContentV2Mutation = useAddContentV2Mutation();
+  const [formData, setFormData] = useState<FormData>({});
+
+  const handleSubmit = async () => {
+    try {
+      const resp = await addContentV2Mutation.mutateAsync({
+        type: contentType,
+        title: formData.title,
+        text: formData.text,
+      });
+      router.push(`/contents/${resp.pk}`);
+    } catch (error) {
+      console.error("Error creating content:", error);
+    }
+  };
+
+  const getFormContent = () => {
+    switch (contentType) {
+      case "youtube":
+        return (
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 rounded-xl bg-red-500/10">
+                <Youtube className="w-6 h-6 text-red-500" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold">Import from YouTube</h3>
+                <p className="text-sm text-muted-foreground">Paste a YouTube video URL to import its content</p>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="youtube-url">YouTube URL</Label>
+              <Input
+                id="youtube-url"
+                type="url"
+                placeholder="https://www.youtube.com/watch?v=..."
+                value={formData.url || ""}
+                onChange={(e) => setFormData({ ...formData, url: e.target.value })}
+                className="h-12"
+              />
+              <p className="text-xs text-muted-foreground">Supports standard YouTube and short URLs</p>
+            </div>
+          </div>
+        );
+
+      case "text":
+        return (
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 rounded-xl bg-blue-500/10">
+                <FileText className="w-6 h-6 text-blue-500" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold">Text Content</h3>
+                <p className="text-sm text-muted-foreground">Write or paste your content directly</p>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="text-title">Title (Optional)</Label>
+              <Input
+                id="text-title"
+                type="text"
+                placeholder="Give your content a title..."
+                value={formData.title || ""}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                className="h-12"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="text-content">Content</Label>
+              <textarea
+                id="text-content"
+                placeholder="Enter your text content here..."
+                value={formData.text || ""}
+                onChange={(e) => setFormData({ ...formData, text: e.target.value })}
+                className="flex min-h-[200px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm resize-y"
+              />
+            </div>
+          </div>
+        );
+
+      case "website":
+        return (
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 rounded-xl bg-purple-500/10">
+                <Globe className="w-6 h-6 text-purple-500" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold">Import from Website</h3>
+                <p className="text-sm text-muted-foreground">Enter a website URL to extract its content</p>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="website-url">Website URL</Label>
+              <Input
+                id="website-url"
+                type="url"
+                placeholder="https://example.com/article"
+                value={formData.url || ""}
+                onChange={(e) => setFormData({ ...formData, url: e.target.value })}
+                className="h-12"
+              />
+              <p className="text-xs text-muted-foreground">Enter the full URL of the webpage you want to import</p>
+            </div>
+          </div>
+        );
+
+      case "audio":
+        return (
+          <div className="space-y-4">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 rounded-xl bg-green-500/10">
+                <Mic className="w-6 h-6 text-green-500" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold">Audio Content</h3>
+                <p className="text-sm text-muted-foreground">Upload an audio file to transcribe and process</p>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="audio-title">Title (Optional)</Label>
+              <Input
+                id="audio-title"
+                type="text"
+                placeholder="Give your audio a title..."
+                value={formData.title || ""}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                className="h-12"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="audio-file">Audio File</Label>
+              <div className="flex items-center justify-center w-full">
+                <label
+                  htmlFor="audio-file"
+                  className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl cursor-pointer bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <Upload className="w-10 h-10 mb-3 text-gray-400" />
+                    {formData.file ? (
+                      <p className="text-sm text-foreground font-medium">{formData.file.name}</p>
+                    ) : (
+                      <>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          <span className="font-semibold">Click to upload</span> or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">MP3, WAV, OGG (MAX. 50MB)</p>
+                      </>
+                    )}
+                  </div>
+                  <input
+                    id="audio-file"
+                    type="file"
+                    className="hidden"
+                    accept="audio/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setFormData({ ...formData, file });
+                      }
+                    }}
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+        );
+    }
+  };
 
   return (
-    <div>
-      <div className="my-8">
-        <p>Content Type: {contentType}</p>
-      </div>
+    <div className="w-full max-w-2xl mx-auto p-6">
+      <Card className="border-gray-200 dark:border-gray-800 shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-2xl">Create Content</CardTitle>
+          <CardDescription>
+            {contentType === "youtube" && "Import content from a YouTube video"}
+            {contentType === "text" && "Write or paste text content"}
+            {contentType === "website" && "Import content from a website"}
+            {contentType === "audio" && "Upload and process audio content"}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {getFormContent()}
 
-      <div className="my-8">
-        <Button
-          onClick={() => {
-            addContentV2Mutation
-              .mutateAsync({
-                audioId: "todo",
-                transcriptId: "todo",
-                title: "New Content",
-                type: contentType,
-                text: "你好兄弟",
-              })
-              .then((resp) => {
-                router.push(`/contents/${resp.pk}`);
-              });
-          }}
-        >
-          {" "}
-          Add Content{" "}
-        </Button>
-      </div>
+          <div className="flex gap-3 mt-8 pt-6 border-t border-gray-200 dark:border-gray-800">
+            <Button
+              variant="outline"
+              onClick={() => router.back()}
+              className="flex-1"
+              disabled={addContentV2Mutation.isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={addContentV2Mutation.isPending}
+              className="flex-1"
+            >
+              {addContentV2Mutation.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                "Create Content"
+              )}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

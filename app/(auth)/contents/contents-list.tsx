@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { useListContentsV2Query } from "@/domain/content-service/use-list-contents-v2.query";
 
@@ -21,22 +22,17 @@ export function ContentsV2List({
         <Button
           onClick={() => {
             handleAddNewContent();
-            // addContentV2Mutation
-            //   .mutateAsync({
-            //     audioId: "todo",
-            //     transcriptId: "todo",
-            //     title: "New Content",
-            //     type: "text",
-            //     text: "你好兄弟",
-            //   })
-            //   .then((resp) => {
-            //     setNewContent(resp);
-            //   });
           }}
         >
           {" "}
           Add Content{" "}
         </Button>
+        {/* <SendSMSButton
+          {...{
+            phone: "",
+            message: "Hello from Mandarino",
+          }}
+        /> */}
       </div>
 
       <div className="mt-4">

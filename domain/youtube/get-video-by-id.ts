@@ -5,7 +5,7 @@ import {
   extractYoutubeVideoIdAndTime,
   parseYoutubeUrl,
 } from "@/components/summary/parse-youtube-url";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 interface YoutubeVideo {
   videoId: string;
@@ -78,6 +78,19 @@ export const useGetVideoByIdQuery = (url: string) => {
         setConvo("description", youtubeVideo.description);
         setConvo("thumbnails", youtubeVideo.thumbnails);
         setConvo("author", youtubeVideo.author);
+        return youtubeVideo;
+      }
+    },
+  });
+};
+
+export const useGetVideoByIdMutation = (url: string) => {
+  const jwtToken = useJwtToken();
+  return useMutation({
+    mutationFn: async () => {
+      if (url) {
+        const youtubeVideo = await getVideoById({ url, jwt: jwtToken });
+
         return youtubeVideo;
       }
     },

@@ -1,7 +1,6 @@
 import { siteConfig } from "@/lib/config";
 import { useMutation } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
-import { ContentV2 } from "./content-v2.types";
 
 interface ParseHtmlRequest {
   websiteUrl: string;

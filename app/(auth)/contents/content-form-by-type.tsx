@@ -298,10 +298,27 @@ export function ContentFormByType({
               <Globe className="w-4 h-4" />
               <span className="truncate">{formData.url}</span>
             </div>
-            <div className="p-4 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/30 dark:to-blue-950/30 rounded-xl border border-purple-200/50 dark:border-purple-800/50">
-              <p className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-h-[500px] overflow-y-auto">
-                {formData.text}
-              </p>
+            <textarea
+              placeholder="Edit the extracted content..."
+              value={formData.text || ""}
+              onChange={(e) =>
+                setFormData({ ...formData, text: e.target.value })
+              }
+              className="w-full min-h-[200px] max-h-[500px] resize-y rounded-xl border border-input bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/30 dark:to-blue-950/30 px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            />
+            <div className="flex justify-end">
+              <Button
+                onClick={handleSubmit}
+                disabled={addContentV2Mutation.isPending}
+                size="lg"
+                className="px-6"
+              >
+                {addContentV2Mutation.isPending ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  "Add"
+                )}
+              </Button>
             </div>
           </div>
         );
@@ -463,20 +480,7 @@ export function ContentFormByType({
                   className="h-14 text-base"
                 />
               </div>
-              {formData.text ? (
-                <Button
-                  onClick={handleSubmit}
-                  disabled={addContentV2Mutation.isPending}
-                  size="lg"
-                  className="h-14 px-6"
-                >
-                  {addContentV2Mutation.isPending ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                  ) : (
-                    <Send className="w-5 h-5" />
-                  )}
-                </Button>
-              ) : formData.url ? (
+              {formData.url && !formData.text && (
                 <Button
                   onClick={() => validateAndFetchWebsite(formData.url || "")}
                   disabled={parseHtmlMutation.isPending}
@@ -489,18 +493,8 @@ export function ContentFormByType({
                     <Globe className="w-5 h-5" />
                   )}
                 </Button>
-              ) : null}
+              )}
             </div>
-            {formData.text && (
-              <textarea
-                placeholder="Edit the extracted content..."
-                value={formData.text || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, text: e.target.value })
-                }
-                className="w-full min-h-[100px] max-h-[300px] resize-y rounded-md border border-input bg-background px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              />
-            )}
           </div>
         );
 

@@ -103,7 +103,9 @@ export function ContentFormByType({
       setFormData({ ...formData, url: cleanedUrl });
 
       try {
-        const videoData = await getVideoByIdMutation.mutateAsync({ url: cleanedUrl });
+        const videoData = await getVideoByIdMutation.mutateAsync({
+          url: cleanedUrl,
+        });
         if (videoData) {
           setYoutubeVideoData(videoData);
           setFormData((prev) => ({
@@ -310,25 +312,22 @@ export function ContentFormByType({
         }
         const fileUrl = URL.createObjectURL(formData.file);
         return (
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-xl border border-green-200/50 dark:border-green-800/50">
-              <div className="p-2 rounded-full bg-green-500/10">
-                <Mic className="w-5 h-5 text-green-500" />
+          <div className="space-y-4 pt-8 px-4 bg-gray-50">
+            <div className="flex items-center gap-3 bg-gradient-to-br  dark:from-green-950/30 dark:to-emerald-950/30 rounded-xl border border-green-200/50 dark:border-green-800/50">
+              <div className="p-2 rounded-full ">
+                <Mic className="w-5 h-5" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-medium truncate">
-                  {formData.title || "Untitled Audio"}
-                </p>
-                <p className="text-sm text-muted-foreground truncate">
-                  {formData.file?.name}
+                  {formData.title || formData.file?.name || "Untitled Audio"}
                 </p>
               </div>
             </div>
-            <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/5">
+            <div className="aspect-audio w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/5">
               <ReactPlayer
                 url={fileUrl}
                 width="100%"
-                height="100%"
+                height="50px"
                 controls
                 config={{
                   file: {
@@ -370,7 +369,11 @@ export function ContentFormByType({
               </div>
               <Button
                 onClick={() => {
-                  if (youtubeUrlError === null && formData.url && !youtubeVideoData) {
+                  if (
+                    youtubeUrlError === null &&
+                    formData.url &&
+                    !youtubeVideoData
+                  ) {
                     validateAndFetchYoutubeVideo(formData.url);
                   } else {
                     handleSubmit();
@@ -535,7 +538,11 @@ export function ContentFormByType({
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      setFormData({ ...formData, file });
+                      setFormData({ ...formData, file, title: file.name });
+                    }
+
+                    if (e?.target?.value) {
+                      e.target.value = "";
                     }
                   }}
                 />

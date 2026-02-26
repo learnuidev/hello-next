@@ -35,4 +35,5 @@ export const awsConfig: IConfig = {
 export const siteConfig = {
   apiUrl: process.env.NEXT_PUBLIC_API_URL || "",
   apiUrlV2: process.env.NEXT_PUBLIC_API_URL_V2 || "",
+  contentApi: process.env.NEXT_PUBLIC_CONTENT_SERVICE || "",
 };

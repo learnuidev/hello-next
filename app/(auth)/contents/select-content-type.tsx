@@ -37,11 +37,7 @@ export function SelectContentType({
 }) {
   return (
     <div className="w-full max-w-2xl mx-auto px-6">
-      <h2 className="text-center text-2xl font-bold mb-8">
-        Select a Content Type
-      </h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {CONTENT_TYPES.map((contentType) => {
           const Icon = contentType.icon;
           return (

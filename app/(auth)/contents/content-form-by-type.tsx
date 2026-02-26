@@ -4,10 +4,14 @@ import { ContentV2Type } from "@/domain/content-service/content-v2.types";
 import { useAddContentV2Mutation } from "@/domain/content-service/use-add-content-v2.mutation";
 import { useParseHtmlMutation } from "@/domain/content-service/use-parse-html.mutation";
 import { useGetVideoByIdMutation } from "@/domain/youtube/get-video-by-id";
-import { normalizeYoutubeUrl } from "@/components/summary/parse-youtube-url";
+import {
+  normalizeYoutubeUrl,
+  parseYoutubeUrl,
+} from "@/components/summary/parse-youtube-url";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Send,
   FileText,
@@ -20,7 +24,6 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ReactPlayer from "react-player";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface FormData {
   title?: string;
@@ -53,6 +56,7 @@ export function ContentFormByType({
   const [formData, setFormData] = useState<FormData>({});
   const [youtubeVideoData, setYoutubeVideoData] =
     useState<YoutubeVideoData | null>(null);
+  const [youtubeUrlError, setYoutubeUrlError] = useState<string | null>(null);
   const getVideoByIdMutation = useGetVideoByIdMutation(formData.url || "");
 
   const handleSubmit = async () => {
@@ -77,10 +81,22 @@ export function ContentFormByType({
   };
 
   const handleYoutubeUrlChange = async (url: string) => {
-    const cleanedUrl = normalizeYoutubeUrl(url);
-    setFormData({ ...formData, url: cleanedUrl });
+    setYoutubeUrlError(null);
+    setFormData({ ...formData, url });
     setYoutubeVideoData(null);
-    if (cleanedUrl && contentType === "youtube") {
+
+    if (!url) return;
+
+    if (contentType === "youtube") {
+      const validation = parseYoutubeUrl(url);
+      if (!validation.success) {
+        setYoutubeUrlError("Invalid YouTube URL");
+        return;
+      }
+
+      const cleanedUrl = normalizeYoutubeUrl(url);
+      setFormData({ ...formData, url: cleanedUrl });
+
       try {
         const videoData = await getVideoByIdMutation.mutateAsync();
         if (videoData) {
@@ -117,39 +133,37 @@ export function ContentFormByType({
   const getMessageContent = () => {
     if (!hasContent()) {
       return (
-        <div className="flex items-center justify-center h-full min-h-[400px]">
-          <div className="text-center space-y-4">
-            <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-blue-500/10 dark:from-purple-500/20 dark:to-blue-500/20">
-              {contentType === "youtube" && (
-                <Youtube className="w-12 h-12 text-red-500" />
-              )}
-              {contentType === "text" && (
-                <FileText className="w-12 h-12 text-blue-500" />
-              )}
-              {contentType === "website" && (
-                <Globe className="w-12 h-12 text-purple-500" />
-              )}
-              {contentType === "audio" && (
-                <Mic className="w-12 h-12 text-green-500" />
-              )}
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-1">
-                {contentType === "youtube" && "Enter a YouTube URL"}
-                {contentType === "text" && "Start typing your content"}
-                {contentType === "website" && "Enter a website URL"}
-                {contentType === "audio" && "Upload an audio file"}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {contentType === "youtube" &&
-                  "Paste the link to import video content"}
-                {contentType === "text" && "Write or paste your text below"}
-                {contentType === "website" &&
-                  "Paste the link to extract webpage content"}
-                {contentType === "audio" &&
-                  "Select a file to transcribe and process"}
-              </p>
-            </div>
+        <div className="text-center space-y-4">
+          <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-purple-500/10 to-blue-500/10 dark:from-purple-500/20 dark:to-blue-500/20">
+            {contentType === "youtube" && (
+              <Youtube className="w-12 h-12 text-red-500" />
+            )}
+            {contentType === "text" && (
+              <FileText className="w-12 h-12 text-blue-500" />
+            )}
+            {contentType === "website" && (
+              <Globe className="w-12 h-12 text-purple-500" />
+            )}
+            {contentType === "audio" && (
+              <Mic className="w-12 h-12 text-green-500" />
+            )}
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-1">
+              {contentType === "youtube" && "Enter a YouTube URL"}
+              {contentType === "text" && "Start typing your content"}
+              {contentType === "website" && "Enter a website URL"}
+              {contentType === "audio" && "Upload an audio file"}
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {contentType === "youtube" &&
+                "Paste the link to import video content"}
+              {contentType === "text" && "Write or paste your text below"}
+              {contentType === "website" &&
+                "Paste the link to extract webpage content"}
+              {contentType === "audio" &&
+                "Select a file to transcribe and process"}
+            </p>
           </div>
         </div>
       );
@@ -157,6 +171,10 @@ export function ContentFormByType({
 
     switch (contentType) {
       case "youtube":
+        if (youtubeUrlError) {
+          return null;
+        }
+
         return (
           <div className="space-y-4">
             {getVideoByIdMutation.isPending ? (
@@ -310,29 +328,42 @@ export function ContentFormByType({
     switch (contentType) {
       case "youtube":
         return (
-          <div className="flex items-end gap-2">
-            <div className="flex-1">
-              <Input
-                type="url"
-                placeholder="Paste YouTube URL..."
-                value={formData.url || ""}
-                onChange={(e) => handleYoutubeUrlChange(e.target.value)}
-                disabled={getVideoByIdMutation.isPending}
-                className="h-14 text-base"
-              />
+          <div className="space-y-2">
+            <div className="flex items-end gap-2">
+              <div className="flex-1">
+                <Input
+                  type="url"
+                  placeholder="Paste YouTube URL..."
+                  value={formData.url || ""}
+                  onChange={(e) => handleYoutubeUrlChange(e.target.value)}
+                  disabled={getVideoByIdMutation.isPending}
+                  className={
+                    youtubeUrlError
+                      ? "border-red-500 h-14 text-base"
+                      : "h-14 text-base"
+                  }
+                />
+              </div>
+              <Button
+                onClick={handleSubmit}
+                disabled={
+                  !formData.url ||
+                  youtubeUrlError !== null ||
+                  addContentV2Mutation.isPending
+                }
+                size="lg"
+                className="h-14 px-6"
+              >
+                {addContentV2Mutation.isPending ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <Send className="w-5 h-5" />
+                )}
+              </Button>
             </div>
-            <Button
-              onClick={handleSubmit}
-              disabled={!formData.url || addContentV2Mutation.isPending}
-              size="lg"
-              className="h-14 px-6"
-            >
-              {addContentV2Mutation.isPending ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <Send className="w-5 h-5" />
-              )}
-            </Button>
+            {youtubeUrlError && (
+              <p className="text-sm text-red-500">{youtubeUrlError}</p>
+            )}
           </div>
         );
 
@@ -479,31 +510,10 @@ export function ContentFormByType({
   };
 
   return (
-    <div className="flex h-[calc(100vh-4rem)]">
-      <div className="flex-1 flex flex-col max-w-3xl mx-auto w-full">
-        <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="p-4 flex items-center justify-between">
-            <Button variant="ghost" size="sm" onClick={() => router.back()}>
-              ← Back
-            </Button>
-            <h1 className="text-lg font-semibold capitalize">
-              {contentType === "youtube" && "YouTube Import"}
-              {contentType === "text" && "Text Content"}
-              {contentType === "website" && "Website Import"}
-              {contentType === "audio" && "Audio Upload"}
-            </h1>
-            <div className="w-16" />
-          </div>
-        </div>
+    <div className="space-y-4">
+      <div>{getInputArea()}</div>
 
-        <ScrollArea className="flex-1">
-          <div className="p-6">{getMessageContent()}</div>
-        </ScrollArea>
-
-        <div className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4">
-          <div className="max-w-3xl mx-auto">{getInputArea()}</div>
-        </div>
-      </div>
+      {getMessageContent()}
     </div>
   );
 }

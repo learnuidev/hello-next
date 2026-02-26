@@ -52,7 +52,7 @@ export function AddNewContentForm({
 
           {contentType && (
             <div className="max-w-4xl mx-auto">
-              <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/50 dark:to-slate-950/50 border border-gray-200/50 dark:border-gray-800/50">
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/50 dark:to-slate-950/50 border border-gray-200/50 dark:border-gray-800/50 mb-4">
                 {(() => {
                   const {
                     icon: Icon,

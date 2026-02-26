@@ -84,10 +84,10 @@ export const useGetVideoByIdQuery = (url: string) => {
   });
 };
 
-export const useGetVideoByIdMutation = (url: string) => {
+export const useGetVideoByIdMutation = () => {
   const jwtToken = useJwtToken();
   return useMutation({
-    mutationFn: async () => {
+    mutationFn: async ({ url }: { url: string }) => {
       if (url) {
         const youtubeVideo = await getVideoById({ url, jwt: jwtToken });
 

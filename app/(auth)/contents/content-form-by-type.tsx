@@ -57,7 +57,7 @@ export function ContentFormByType({
   const [youtubeVideoData, setYoutubeVideoData] =
     useState<YoutubeVideoData | null>(null);
   const [youtubeUrlError, setYoutubeUrlError] = useState<string | null>(null);
-  const getVideoByIdMutation = useGetVideoByIdMutation(formData.url || "");
+  const getVideoByIdMutation = useGetVideoByIdMutation();
 
   const handleSubmit = async () => {
     try {
@@ -80,9 +80,14 @@ export function ContentFormByType({
     }
   };
 
-  const handleYoutubeUrlChange = async (url: string) => {
+  const handleYoutubeUrlChange = (url: string) => {
     setYoutubeUrlError(null);
     setFormData({ ...formData, url });
+    setYoutubeVideoData(null);
+  };
+
+  const validateAndFetchYoutubeVideo = async (url: string) => {
+    setYoutubeUrlError(null);
     setYoutubeVideoData(null);
 
     if (!url) return;
@@ -98,7 +103,7 @@ export function ContentFormByType({
       setFormData({ ...formData, url: cleanedUrl });
 
       try {
-        const videoData = await getVideoByIdMutation.mutateAsync();
+        const videoData = await getVideoByIdMutation.mutateAsync({ url: cleanedUrl });
         if (videoData) {
           setYoutubeVideoData(videoData);
           setFormData((prev) => ({
@@ -114,8 +119,11 @@ export function ContentFormByType({
     }
   };
 
-  const handleWebsiteUrlChange = async (url: string) => {
+  const handleWebsiteUrlChange = (url: string) => {
     setFormData({ ...formData, url, text: undefined });
+  };
+
+  const validateAndFetchWebsite = async (url: string) => {
     if (url && contentType === "website") {
       try {
         const result = await parseHtmlMutation.mutateAsync({ websiteUrl: url });
@@ -336,6 +344,12 @@ export function ContentFormByType({
                   placeholder="Paste YouTube URL..."
                   value={formData.url || ""}
                   onChange={(e) => handleYoutubeUrlChange(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      validateAndFetchYoutubeVideo(formData.url || "");
+                    }
+                  }}
                   disabled={getVideoByIdMutation.isPending}
                   className={
                     youtubeUrlError
@@ -345,7 +359,13 @@ export function ContentFormByType({
                 />
               </div>
               <Button
-                onClick={handleSubmit}
+                onClick={() => {
+                  if (youtubeUrlError === null && formData.url && !youtubeVideoData) {
+                    validateAndFetchYoutubeVideo(formData.url);
+                  } else {
+                    handleSubmit();
+                  }
+                }}
                 disabled={
                   !formData.url ||
                   youtubeUrlError !== null ||
@@ -419,11 +439,17 @@ export function ContentFormByType({
                 placeholder="Paste website URL..."
                 value={formData.url || ""}
                 onChange={(e) => handleWebsiteUrlChange(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    validateAndFetchWebsite(formData.url || "");
+                  }
+                }}
                 disabled={parseHtmlMutation.isPending}
                 className="h-14 text-base"
               />
             </div>
-            {formData.text && (
+            {formData.text ? (
               <Button
                 onClick={handleSubmit}
                 disabled={addContentV2Mutation.isPending}
@@ -436,7 +462,20 @@ export function ContentFormByType({
                   <Send className="w-5 h-5" />
                 )}
               </Button>
-            )}
+            ) : formData.url ? (
+              <Button
+                onClick={() => validateAndFetchWebsite(formData.url || "")}
+                disabled={parseHtmlMutation.isPending}
+                size="lg"
+                className="h-14 px-6"
+              >
+                {parseHtmlMutation.isPending ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <Globe className="w-5 h-5" />
+                )}
+              </Button>
+            ) : null}
           </div>
         );
 

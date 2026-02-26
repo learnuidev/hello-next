@@ -445,50 +445,62 @@ export function ContentFormByType({
 
       case "website":
         return (
-          <div className="flex items-end gap-2">
-            <div className="flex-1">
-              <Input
-                type="url"
-                placeholder="Paste website URL..."
-                value={formData.url || ""}
-                onChange={(e) => handleWebsiteUrlChange(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    validateAndFetchWebsite(formData.url || "");
-                  }
-                }}
-                disabled={parseHtmlMutation.isPending}
-                className="h-14 text-base"
-              />
+          <div className="space-y-3">
+            <div className="flex items-end gap-2">
+              <div className="flex-1">
+                <Input
+                  type="url"
+                  placeholder="Paste website URL..."
+                  value={formData.url || ""}
+                  onChange={(e) => handleWebsiteUrlChange(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      validateAndFetchWebsite(formData.url || "");
+                    }
+                  }}
+                  disabled={parseHtmlMutation.isPending}
+                  className="h-14 text-base"
+                />
+              </div>
+              {formData.text ? (
+                <Button
+                  onClick={handleSubmit}
+                  disabled={addContentV2Mutation.isPending}
+                  size="lg"
+                  className="h-14 px-6"
+                >
+                  {addContentV2Mutation.isPending ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <Send className="w-5 h-5" />
+                  )}
+                </Button>
+              ) : formData.url ? (
+                <Button
+                  onClick={() => validateAndFetchWebsite(formData.url || "")}
+                  disabled={parseHtmlMutation.isPending}
+                  size="lg"
+                  className="h-14 px-6"
+                >
+                  {parseHtmlMutation.isPending ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <Globe className="w-5 h-5" />
+                  )}
+                </Button>
+              ) : null}
             </div>
-            {formData.text ? (
-              <Button
-                onClick={handleSubmit}
-                disabled={addContentV2Mutation.isPending}
-                size="lg"
-                className="h-14 px-6"
-              >
-                {addContentV2Mutation.isPending ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <Send className="w-5 h-5" />
-                )}
-              </Button>
-            ) : formData.url ? (
-              <Button
-                onClick={() => validateAndFetchWebsite(formData.url || "")}
-                disabled={parseHtmlMutation.isPending}
-                size="lg"
-                className="h-14 px-6"
-              >
-                {parseHtmlMutation.isPending ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <Globe className="w-5 h-5" />
-                )}
-              </Button>
-            ) : null}
+            {formData.text && (
+              <textarea
+                placeholder="Edit the extracted content..."
+                value={formData.text || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, text: e.target.value })
+                }
+                className="w-full min-h-[100px] max-h-[300px] resize-y rounded-md border border-input bg-background px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              />
+            )}
           </div>
         );
 

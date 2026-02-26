@@ -42,22 +42,32 @@ export function AddNewContentForm({
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto mt-16">
         <div className="p-6 space-y-6">
-          {!contentType && <SelectContentType setContentType={setContentType} />}
-          
+          {!contentType && (
+            <div className="mt-32">
+              <SelectContentType setContentType={setContentType} />
+            </div>
+          )}
+
           {contentType && (
-            <>
+            <div className="max-w-4xl mx-auto">
               <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/50 dark:to-slate-950/50 border border-gray-200/50 dark:border-gray-800/50">
                 {(() => {
-                  const { icon: Icon, title, color } = getContentTypeInfo(contentType);
+                  const {
+                    icon: Icon,
+                    title,
+                    color,
+                  } = getContentTypeInfo(contentType);
                   return (
                     <>
                       <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-800">
                         <Icon className={`w-5 h-5 ${color}`} />
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-medium">Selected content type</p>
+                        <p className="text-sm font-medium">
+                          Selected content type
+                        </p>
                         <p className="text-sm text-muted-foreground">{title}</p>
                       </div>
                       <button
@@ -72,7 +82,7 @@ export function AddNewContentForm({
               </div>
 
               <ContentFormByType contentType={contentType} />
-            </>
+            </div>
           )}
         </div>
       </div>

@@ -21,6 +21,7 @@ import {
   X,
   Youtube,
   Upload,
+  Captions,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ReactPlayer from "react-player";
@@ -30,6 +31,7 @@ interface FormData {
   url?: string;
   text?: string;
   file?: File;
+  subtitles?: File;
 }
 
 interface YoutubeVideoData {
@@ -58,6 +60,69 @@ function AddButton({
         {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : "Add"}
       </Button>
     </div>
+  );
+}
+
+function SubtitlesDisplay({ subtitles }: { subtitles: File }) {
+  return (
+    <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
+      <Captions className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+      <div className="flex-1">
+        <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+          Subtitles attached
+        </p>
+        <p className="text-xs text-blue-700 dark:text-blue-300">
+          {subtitles.name}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function SubtitlesInput({
+  subtitles,
+  onChange,
+}: {
+  subtitles?: File;
+  onChange: (file: File | undefined) => void;
+}) {
+  return (
+    <label className="block">
+      <div className="flex items-center gap-2 p-3 rounded-lg border border-dashed border-input bg-muted/50 hover:bg-muted transition-colors cursor-pointer">
+        <Captions className="w-5 h-5 text-muted-foreground" />
+        <span className="text-sm">
+          {subtitles
+            ? `Subtitles: ${subtitles.name}`
+            : "Add subtitles (.vtt or .srt)"}
+        </span>
+        {subtitles && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onChange(undefined);
+            }}
+            className="ml-auto"
+          >
+            <X className="w-4 h-4 text-muted-foreground hover:text-foreground" />
+          </button>
+        )}
+      </div>
+      <input
+        type="file"
+        className="hidden"
+        accept=".vtt,.srt"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) {
+            onChange(file);
+          }
+          if (e?.target?.value) {
+            e.target.value = "";
+          }
+        }}
+      />
+    </label>
   );
 }
 
@@ -239,6 +304,7 @@ export function ContentFormByType({
                     </span>
                   </div>
                 </div>
+                {formData.subtitles && <SubtitlesDisplay subtitles={formData.subtitles} />}
               </div>
             </div>
 
@@ -335,6 +401,7 @@ export function ContentFormByType({
                 }}
               />
             </div>
+            {formData.subtitles && <SubtitlesDisplay subtitles={formData.subtitles} />}
             <AddButton
               onClick={handleSubmit}
               isPending={addContentV2Mutation.isPending}
@@ -391,6 +458,12 @@ export function ContentFormByType({
             </div>
             {youtubeUrlError && (
               <p className="text-sm text-red-500">{youtubeUrlError}</p>
+            )}
+            {youtubeVideoData && (
+              <SubtitlesInput
+                subtitles={formData.subtitles}
+                onChange={(file) => setFormData({ ...formData, subtitles: file })}
+              />
             )}
           </div>
         );
@@ -516,6 +589,12 @@ export function ContentFormByType({
                 }}
               />
             </label>
+            {formData.file && (
+              <SubtitlesInput
+                subtitles={formData.subtitles}
+                onChange={(file) => setFormData({ ...formData, subtitles: file })}
+              />
+            )}
           </div>
         );
     }

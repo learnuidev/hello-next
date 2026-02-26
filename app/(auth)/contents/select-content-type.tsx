@@ -41,7 +41,7 @@ export function SelectContentType({
         Select a Content Type
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-16">
         {CONTENT_TYPES.map((contentType) => {
           const Icon = contentType.icon;
           return (

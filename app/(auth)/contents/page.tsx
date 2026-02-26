@@ -16,29 +16,39 @@ function AddNewContentForm({
 }: {
   handleCancelAddContent: () => void;
 }) {
-  const [content, setNewContent] = useState<ContentV2 | null>(null);
   const [contentType, setContentType] = useState<ContentV2Type | null>(null);
 
   const addContentV2Mutation = useAddContentV2Mutation();
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold text-center">Add New Content</h1>
-
-      <div className="my-8">
-        <button onClick={handleCancelAddContent}>
-          <Icons.xMark className="text-3xl" />
-        </button>
-      </div>
-
       {contentType ? (
-        <ContentFormByType contentType={contentType} />
+        <div>
+          <div className="flex justify-between items-center">
+            <button
+              onClick={() => {
+                setContentType(null);
+              }}
+            >
+              <Icons.back className="text-xl" />
+            </button>
+          </div>
+
+          <ContentFormByType contentType={contentType} />
+        </div>
       ) : (
-        <SelectContentType
-          setContentType={(contentType: ContentV2Type) => {
-            setContentType(contentType);
-          }}
-        />
+        <div>
+          <div className="flex justify-between items-center">
+            <button onClick={handleCancelAddContent}>
+              <Icons.xMark className="text-xl" />
+            </button>
+          </div>
+          <SelectContentType
+            setContentType={(contentType: ContentV2Type) => {
+              setContentType(contentType);
+            }}
+          />
+        </div>
       )}
     </div>
   );

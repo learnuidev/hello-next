@@ -2,6 +2,7 @@
 
 import { ContentV2Type } from "@/domain/content-service/content-v2.types";
 import { useAddContentV2Mutation } from "@/domain/content-service/use-add-content-v2.mutation";
+import { useParseHtmlMutation } from "@/domain/content-service/use-parse-html.mutation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -48,6 +49,7 @@ export function ContentFormByType({
 }) {
   const router = useRouter();
   const addContentV2Mutation = useAddContentV2Mutation();
+  const parseHtmlMutation = useParseHtmlMutation();
   const [formData, setFormData] = useState<FormData>({});
   const [previewOpen, setPreviewOpen] = useState(false);
 
@@ -61,6 +63,18 @@ export function ContentFormByType({
       router.push(`/contents/${resp.pk}`);
     } catch (error) {
       console.error("Error creating content:", error);
+    }
+  };
+
+  const handleWebsiteUrlChange = async (url: string) => {
+    setFormData({ ...formData, url });
+    if (url && contentType === "website") {
+      try {
+        const result = await parseHtmlMutation.mutateAsync({ websiteUrl: url });
+        setFormData({ ...formData, url, text: result.html });
+      } catch (error) {
+        console.error("Error parsing website:", error);
+      }
     }
   };
 
@@ -121,9 +135,17 @@ export function ContentFormByType({
                 </p>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground">
-              This URL will be processed to extract content from the webpage.
-            </p>
+            {formData.text ? (
+              <div className="mt-4 p-4 bg-white dark:bg-gray-900 rounded-lg max-h-[400px] overflow-y-auto">
+                <p className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                  {formData.text}
+                </p>
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                This URL will be processed to extract content from the webpage.
+              </p>
+            )}
           </div>
         );
 
@@ -268,11 +290,16 @@ export function ContentFormByType({
                 type="url"
                 placeholder="https://example.com/article"
                 value={formData.url || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, url: e.target.value })
-                }
+                onChange={(e) => handleWebsiteUrlChange(e.target.value)}
+                disabled={parseHtmlMutation.isPending}
                 className="h-12"
               />
+              {parseHtmlMutation.isPending && (
+                <p className="text-xs text-muted-foreground flex items-center gap-2">
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                  Parsing website content...
+                </p>
+              )}
               <p className="text-xs text-muted-foreground">
                 Enter the full URL of the webpage you want to import
               </p>

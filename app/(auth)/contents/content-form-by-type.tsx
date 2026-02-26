@@ -45,6 +45,22 @@ interface YoutubeVideoData {
   };
 }
 
+function AddButton({
+  onClick,
+  isPending,
+}: {
+  onClick: () => void;
+  isPending: boolean;
+}) {
+  return (
+    <div className="flex justify-end">
+      <Button onClick={onClick} disabled={isPending} size="lg" className="px-6">
+        {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : "Add"}
+      </Button>
+    </div>
+  );
+}
+
 export function ContentFormByType({
   contentType,
 }: {
@@ -203,24 +219,13 @@ export function ContentFormByType({
         return (
           <div className="space-y-4">
             <div className="space-y-4">
-              <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-red-500/10 to-orange-500/10 dark:from-red-500/20 dark:to-orange-500/20 border border-red-200/50 dark:border-red-800/50">
-                {youtubeVideoData.thumbnails?.maxres?.url ? (
-                  <img
-                    src={youtubeVideoData.thumbnails.maxres.url}
-                    alt={youtubeVideoData.title}
-                    className="w-full aspect-video object-cover"
-                  />
-                ) : youtubeVideoData.thumbnails?.high?.url ? (
-                  <img
-                    src={youtubeVideoData.thumbnails.high.url}
-                    alt={youtubeVideoData.title}
-                    className="w-full aspect-video object-cover"
-                  />
-                ) : (
-                  <div className="w-full aspect-video flex items-center justify-center bg-gradient-to-br from-red-500/20 to-orange-500/20">
-                    <Youtube className="w-16 h-16 text-red-500" />
-                  </div>
-                )}
+              <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/5">
+                <ReactPlayer
+                  url={formData.url}
+                  width="100%"
+                  height="100%"
+                  controls
+                />
               </div>
 
               <div className="space-y-3">
@@ -234,30 +239,13 @@ export function ContentFormByType({
                     </span>
                   </div>
                 </div>
-
-                {youtubeVideoData.description && (
-                  <div className="p-4 bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/30 dark:to-slate-950/30 rounded-lg border border-gray-200/50 dark:border-gray-800/50">
-                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed max-h-[300px] overflow-y-auto whitespace-pre-wrap">
-                      {youtubeVideoData.description}
-                    </p>
-                  </div>
-                )}
-
-                <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
-                  <Youtube className="w-4 h-4" />
-                  <span className="truncate">{formData.url}</span>
-                </div>
               </div>
             </div>
 
-            <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/5">
-              <ReactPlayer
-                url={formData.url}
-                width="100%"
-                height="100%"
-                controls
-              />
-            </div>
+            <AddButton
+              onClick={handleSubmit}
+              isPending={addContentV2Mutation.isPending}
+            />
           </div>
         );
 
@@ -273,6 +261,10 @@ export function ContentFormByType({
             <p className="whitespace-pre-wrap text-gray-700 dark:text-gray-300 leading-relaxed">
               {formData.text}
             </p>
+            <AddButton
+              onClick={handleSubmit}
+              isPending={addContentV2Mutation.isPending}
+            />
           </div>
         );
 
@@ -306,20 +298,10 @@ export function ContentFormByType({
               }
               className="w-full min-h-[200px] max-h-[500px] resize-y rounded-xl border border-input bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/30 dark:to-blue-950/30 px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
-            <div className="flex justify-end">
-              <Button
-                onClick={handleSubmit}
-                disabled={addContentV2Mutation.isPending}
-                size="lg"
-                className="px-6"
-              >
-                {addContentV2Mutation.isPending ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  "Add"
-                )}
-              </Button>
-            </div>
+            <AddButton
+              onClick={handleSubmit}
+              isPending={addContentV2Mutation.isPending}
+            />
           </div>
         );
 
@@ -353,6 +335,10 @@ export function ContentFormByType({
                 }}
               />
             </div>
+            <AddButton
+              onClick={handleSubmit}
+              isPending={addContentV2Mutation.isPending}
+            />
           </div>
         );
     }
@@ -384,32 +370,24 @@ export function ContentFormByType({
                   }
                 />
               </div>
-              <Button
-                onClick={() => {
-                  if (
-                    youtubeUrlError === null &&
-                    formData.url &&
-                    !youtubeVideoData
-                  ) {
-                    validateAndFetchYoutubeVideo(formData.url);
-                  } else {
-                    handleSubmit();
+              {formData.url && !youtubeVideoData && (
+                <Button
+                  onClick={() => validateAndFetchYoutubeVideo(formData.url!)}
+                  disabled={
+                    !formData.url ||
+                    youtubeUrlError !== null ||
+                    getVideoByIdMutation.isPending
                   }
-                }}
-                disabled={
-                  !formData.url ||
-                  youtubeUrlError !== null ||
-                  addContentV2Mutation.isPending
-                }
-                size="lg"
-                className="h-14 px-6"
-              >
-                {addContentV2Mutation.isPending ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <Send className="w-5 h-5" />
-                )}
-              </Button>
+                  size="lg"
+                  className="h-14 px-6"
+                >
+                  {getVideoByIdMutation.isPending ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <Youtube className="w-5 h-5" />
+                  )}
+                </Button>
+              )}
             </div>
             {youtubeUrlError && (
               <p className="text-sm text-red-500">{youtubeUrlError}</p>
@@ -429,34 +407,20 @@ export function ContentFormByType({
               }
               className="h-12"
             />
-            <div className="flex items-end gap-2">
-              <textarea
-                placeholder="Type your content here..."
-                value={formData.text || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, text: e.target.value })
+            <textarea
+              placeholder="Type your content here..."
+              value={formData.text || ""}
+              onChange={(e) =>
+                setFormData({ ...formData, text: e.target.value })
+              }
+              className="flex-1 min-h-[80px] max-h-[200px] resize-y w-full rounded-md border border-input bg-background px-4 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey && formData.text) {
+                  e.preventDefault();
+                  handleSubmit();
                 }
-                className="flex-1 min-h-[80px] max-h-[200px] resize-none rounded-md border border-input bg-background px-4 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey && formData.text) {
-                    e.preventDefault();
-                    handleSubmit();
-                  }
-                }}
-              />
-              <Button
-                onClick={handleSubmit}
-                disabled={!formData.text || addContentV2Mutation.isPending}
-                size="lg"
-                className="h-14 px-6 shrink-0"
-              >
-                {addContentV2Mutation.isPending ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <Send className="w-5 h-5" />
-                )}
-              </Button>
-            </div>
+              }}
+            />
           </div>
         );
 
@@ -510,62 +474,48 @@ export function ContentFormByType({
               }
               className="h-12"
             />
-            <div className="flex items-end gap-2">
-              <label className="flex-1">
-                <div className="flex items-center justify-center h-14 px-4 rounded-md border-2 border-dashed border-input bg-background hover:bg-accent/50 transition-colors cursor-pointer">
-                  {formData.file ? (
-                    <div className="flex items-center gap-2 w-full">
-                      <Mic className="w-5 h-5 text-green-500 shrink-0" />
-                      <span className="truncate text-sm">
-                        {formData.file.name}
-                      </span>
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setFormData({ ...formData, file: undefined });
-                        }}
-                        className="ml-auto shrink-0"
-                      >
-                        <X className="w-4 h-4 text-muted-foreground hover:text-foreground" />
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Upload className="w-5 h-5 shrink-0" />
-                      <span className="text-sm">Upload audio file</span>
-                    </div>
-                  )}
-                </div>
-                <input
-                  type="file"
-                  className="hidden"
-                  accept="audio/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      setFormData({ ...formData, file, title: file.name });
-                    }
-
-                    if (e?.target?.value) {
-                      e.target.value = "";
-                    }
-                  }}
-                />
-              </label>
-              <Button
-                onClick={handleSubmit}
-                disabled={!formData.file || addContentV2Mutation.isPending}
-                size="lg"
-                className="h-14 px-6 shrink-0"
-              >
-                {addContentV2Mutation.isPending ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
+            <label className="block">
+              <div className="flex items-center justify-center h-14 px-4 rounded-md border-2 border-dashed border-input bg-background hover:bg-accent/50 transition-colors cursor-pointer">
+                {formData.file ? (
+                  <div className="flex items-center gap-2 w-full">
+                    <Mic className="w-5 h-5 text-green-500 shrink-0" />
+                    <span className="truncate text-sm">
+                      {formData.file.name}
+                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setFormData({ ...formData, file: undefined });
+                      }}
+                      className="ml-auto shrink-0"
+                    >
+                      <X className="w-4 h-4 text-muted-foreground hover:text-foreground" />
+                    </button>
+                  </div>
                 ) : (
-                  <Send className="w-5 h-5" />
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Upload className="w-5 h-5 shrink-0" />
+                    <span className="text-sm">Upload audio file</span>
+                  </div>
                 )}
-              </Button>
-            </div>
+              </div>
+              <input
+                type="file"
+                className="hidden"
+                accept="audio/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setFormData({ ...formData, file, title: file.name });
+                  }
+
+                  if (e?.target?.value) {
+                    e.target.value = "";
+                  }
+                }}
+              />
+            </label>
           </div>
         );
     }

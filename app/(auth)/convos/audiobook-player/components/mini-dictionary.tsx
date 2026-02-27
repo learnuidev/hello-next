@@ -12,6 +12,10 @@ import { useDeleteHistoryMutation } from "@/domain/history/delete-history.mutati
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import Link from "next/link";
 
+import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
+import { useAddContentUnknownMutation } from "@/domain/content-unknowns/use-add-content-unknown.mutation";
+import { useRemoveContentUnknownMutation } from "@/domain/content-unknowns/use-remove-content-unknown.mutation";
+
 export function MiniDictionary({
   lang,
   selected,
@@ -26,6 +30,15 @@ export function MiniDictionary({
   const { searchHistory, addSearchHistory } = useContentSearchHistory({
     contentId: contentId || "",
   });
+
+  const addContentUnknownMutation = useAddContentUnknownMutation();
+  const removeContentUnknownMutation = useRemoveContentUnknownMutation();
+
+  const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
+
+  const containsUnknown = contentUnknowns?.items?.find(
+    (item) => item.input === selected
+  );
 
   const deleteHistoryMutation = useDeleteHistoryMutation();
 
@@ -105,11 +118,47 @@ export function MiniDictionary({
       )}
     >
       <div className="flex justify-between items-center">
-        <h4 className="text-2xl font-bold">
-          <Link target="_blank" href={getNmmLink({ id: selected, lang })}>
-            {selected}
-          </Link>
-        </h4>
+        <div className="flex gap-4">
+          <h4 className="text-2xl font-bold">
+            <Link target="_blank" href={getNmmLink({ id: selected, lang })}>
+              {selected}
+            </Link>
+          </h4>
+
+          {containsUnknown ? (
+            <button
+              disabled={removeContentUnknownMutation.isPending}
+              onClick={() => {
+                removeContentUnknownMutation.mutateAsync({
+                  id: containsUnknown.id,
+                  contentId: contentId || "",
+                });
+              }}
+            >
+              {removeContentUnknownMutation.isPending ? (
+                <Icons.loadingSpinner />
+              ) : (
+                <Icons.bookmarkSolid />
+              )}
+            </button>
+          ) : (
+            <button
+              disabled={addContentUnknownMutation.isPending}
+              onClick={() => {
+                addContentUnknownMutation.mutateAsync({
+                  input: selected,
+                  contentId: contentId || "",
+                });
+              }}
+            >
+              {addContentUnknownMutation.isPending ? (
+                <Icons.loadingSpinner />
+              ) : (
+                <Icons.bookmark />
+              )}
+            </button>
+          )}
+        </div>
 
         <button
           onClick={() => {

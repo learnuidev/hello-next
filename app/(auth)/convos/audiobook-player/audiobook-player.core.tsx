@@ -30,6 +30,7 @@ import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
+import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 
 const ParagraphView = ({
   content,
@@ -45,6 +46,8 @@ const ParagraphView = ({
   seek: (time: number) => void;
 }) => {
   const { selected, setSelected } = useSelectedItem();
+
+  const { data: contentUnknowns } = useListContentUnknownsQuery(content.id);
 
   return (
     <div className={cn("px-4 pb-24", selected ? "" : "lg:px-48")}>
@@ -95,6 +98,11 @@ const ParagraphView = ({
                                   input: transcription?.input,
                                   lang: transcription?.lang,
                                 })?.map((item: any, idx: any) => {
+                                  console.log("ITEM", item);
+                                  const containsInUnknown =
+                                    contentUnknowns?.items?.find((val) =>
+                                      val?.input?.includes(item)
+                                    );
                                   return (
                                     <span key={`${item}-pinin-view-${idx}`}>
                                       <CharacterItem
@@ -105,7 +113,10 @@ const ParagraphView = ({
                                               transcription.end > currentTime
                                               ? " bg-red-200 dark:bg-red-500"
                                               : ""
-                                            : ""
+                                            : "",
+
+                                          containsInUnknown &&
+                                            "font-light dark:!text-pink-300 !text-pink-500"
                                         )}
                                         character={item}
                                         onClick={() => {

@@ -41,7 +41,7 @@ export const Authenticated = (props: any) => {
   }
 
   if (isLoading) {
-    return <div></div>;
+    return <div>Loading...</div>;
   }
 
   if (routeName === "/") {

@@ -64,9 +64,10 @@ export const useListDictionaryQuery = (lang: string) => {
   return useQuery<any>({
     queryKey: [listDictionaryQueryKey, lang],
     queryFn: async () => {
-      const resJson = await listDictionaryRecursive(lang, token);
+      return [];
+      // const resJson = await listDictionaryRecursive(lang, token);
 
-      return resJson?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
+      // return resJson?.sort((a: any, b: any) => b?.createdAt - a?.createdAt);
     },
     refetchOnWindowFocus: false,
     // refetchOnFocus: false,

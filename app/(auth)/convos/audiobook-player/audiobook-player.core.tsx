@@ -195,41 +195,53 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   return (
     <MandoContextMenu lang={content?.lang || ""}>
       <div className="relative">
-        <div className="flex flex-col sm:flex-row gap-8 sm:px-8 scroll-px-80">
-          {editMode && currentTranscription ? (
-            <CurrentTranscriptionEditor
-              currentTranscription={currentTranscription}
-              contentId={content.id}
-            />
-          ) : paragraphMode ? (
-            <ParagraphView
-              content={content}
-              currentTranscription={currentTranscription}
-              currentTime={currentTime}
-              seek={seek}
-              isPlaying
-            />
-          ) : currentTranscription ? (
-            <CurrentTranscriptionView
-              containsChinglish={containsChinglish}
-              seekAndPlay={seekAndPlay}
-              currentTranscription={currentTranscription}
-              contentId={content.id}
-              lang={content.lang}
-            />
-          ) : (
-            <div className=" dark:text-black text-white text-center mt-8 sm:mt-24 min-w-5xl mx-auto">
-              ...
-            </div>
-          )}
+        <div
+          className={cn("grid grid-cols-12 gap-8 sm:px-8 scroll-px-80 w-full")}
+        >
+          <div
+            className={cn(
+              selected ? "md:col-span-8 col-span-12" : "col-span-12"
+            )}
+          >
+            {editMode && currentTranscription ? (
+              <CurrentTranscriptionEditor
+                currentTranscription={currentTranscription}
+                contentId={content.id}
+              />
+            ) : paragraphMode ? (
+              <ParagraphView
+                content={content}
+                currentTranscription={currentTranscription}
+                currentTime={currentTime}
+                seek={seek}
+                isPlaying
+              />
+            ) : currentTranscription ? (
+              <CurrentTranscriptionView
+                containsChinglish={containsChinglish}
+                seekAndPlay={seekAndPlay}
+                currentTranscription={currentTranscription}
+                contentId={content.id}
+                lang={content.lang}
+              />
+            ) : (
+              <div className=" dark:text-black text-white text-center mt-8 sm:mt-24 min-w-5xl mx-auto">
+                ...
+              </div>
+            )}
+          </div>
 
           {selected && (
-            <div className="w-full">
+            <div
+              className={cn(
+                "w-full",
+                selected ? " md:col-span-4 col-span-12" : "col-span-12"
+              )}
+            >
               <MiniDictionary
                 contentId={content?.id}
                 selected={selected}
                 lang={content?.lang}
-                className={paragraphMode ? "" : "sm:mt-20"}
               />
             </div>
           )}

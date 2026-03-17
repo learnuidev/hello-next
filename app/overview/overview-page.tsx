@@ -24,16 +24,6 @@ export const OverviewPage = () => {
     masteredCharacters,
   } = useGetFacts();
 
-  if (isLoading) {
-    return (
-      <div className="text-center">
-        <div>
-          <LottieLoadingAnimation />
-        </div>{" "}
-      </div>
-    );
-  }
-
   return (
     <div className="mx-2 sm:mx-12 mb-32">
       <div className="w-full flex justify-start">
@@ -48,7 +38,13 @@ export const OverviewPage = () => {
             facts
           </h2>
 
-          {lifeTimeCharacters ? (
+          {isLoading ? (
+            <div className="text-center">
+              <div>
+                <LottieLoadingAnimation />
+              </div>
+            </div>
+          ) : lifeTimeCharacters ? (
             <div className="max-w-xl flex gap-4 flex-col font-light text-[16px]">
               {![
                 lifeTimeCharacters,

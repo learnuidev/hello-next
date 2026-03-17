@@ -234,9 +234,10 @@ function NormalView({
   const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
 
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
+  const showEn = useBrightModeStore((state) => state.showEn);
 
   return (
-    <div>
+    <div className="max-w-3xl mx-auto">
       {showPinyin && (
         <p className="text-sm dark:text-gray-400 text-gray-800">
           {currentTranscription?.pinyin || currentTranscription?.roman}
@@ -253,13 +254,15 @@ function NormalView({
         />
       </div>
 
-      <EnView
-        containsChinglish={containsChinglish}
-        currentTranscription={currentTranscription}
-        seekAndPlay={seekAndPlay}
-        contentId={contentId}
-        lang={lang}
-      />
+      {showEn && (
+        <EnView
+          containsChinglish={containsChinglish}
+          currentTranscription={currentTranscription}
+          seekAndPlay={seekAndPlay}
+          contentId={contentId}
+          lang={lang}
+        />
+      )}
     </div>
   );
 }
@@ -341,13 +344,10 @@ export function CurrentTranscriptionView({
   contentId,
   lang,
 }: CurrentTranscriptionProps) {
-  const showPinyin = useBrightModeStore((state) => state.showPinyin);
   const { readMode } = useReadModeState();
 
   return (
-    <div
-      className={cn("text-center mt-8 sm:mt-24 max-w-7xl mx-auto", className)}
-    >
+    <div className={cn("text-center mt-24 max-w-7xl mx-auto", className)}>
       {readMode ? (
         <div className="max-w-7xl mx-auto">
           <PinyinView

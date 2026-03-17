@@ -2,9 +2,11 @@ import { Icons } from "@/components/ui/icons.v2";
 import { Slider } from "@/components/ui/slider";
 
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
+import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
+import { CharacterItem } from "@/components/_select-character/character-item";
 import { ChinglishButton } from "@/components/chinglish-button";
+import { EnButton } from "@/components/en-button";
 import { PinyinButton } from "@/components/pinyin-button";
-import { ReadModeButton } from "@/components/read-mode-button";
 import { SearchOnlyPinyinButton } from "@/components/search-only-pinyin-button";
 import {
   ParagraphButton,
@@ -17,6 +19,9 @@ import {
   usePlayHistoryStore,
 } from "@/components/youtube-page/hooks/use-play-history-state";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
+import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
+import { smartSplit } from "@/components/youtube-page/utils/smart-split";
+import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 import { ContentTranscription, IContent } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
 import { splitEvery } from "ramda";
@@ -26,11 +31,6 @@ import { CurrentTranscriptionEditor } from "./components/current-transcription-e
 import { CurrentTranscriptionView } from "./components/current-transcription-view";
 import { MiniDictionary } from "./components/mini-dictionary";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
-import { smartSplit } from "@/components/youtube-page/utils/smart-split";
-import { CharacterItem } from "@/components/_select-character/character-item";
-import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
-import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
-import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 
 const ParagraphView = ({
   content,
@@ -111,7 +111,7 @@ const ParagraphView = ({
                                             ? transcription.start <
                                                 currentTime &&
                                               transcription.end > currentTime
-                                              ? " bg-red-200 dark:bg-red-500"
+                                              ? " bg-red-200 dark:bg-red-800"
                                               : ""
                                             : "",
 
@@ -208,7 +208,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 currentTranscription={currentTranscription}
                 contentId={content.id}
               />
-            ) : paragraphMode ? (
+            ) : paragraphMode === "paragraph" ? (
               <ParagraphView
                 content={content}
                 currentTranscription={currentTranscription}
@@ -309,8 +309,9 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
 
               <SearchOnlyPinyinButton className="text-2xl" />
               <PinyinButton className="text-2xl" />
+              <EnButton className="text-2xl" />
 
-              <ReadModeButton className="text-2xl" />
+              {/* <ReadModeButton className="text-2xl" /> */}
 
               {containsChinglish && <ChinglishButton className="text-2xl" />}
               <PreviewButton />

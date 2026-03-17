@@ -6,12 +6,13 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
+import { TweetPage } from "@/components/_select-character/selected-character/tweet-page/tweet-page";
 import { FloatingNavbar } from "@/components/floating-navbar";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
 import { YouTubePlayer } from "@/components/youtube-page/youtube-player";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useSearchParams } from "next/navigation";
-import { DynaCloze } from "./[content-id]/dyna-cloze/dyna-cloze";
+import { DynaSelector } from "./[content-id]/dyna-cloze/dyna-selector";
 import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
 import { Speak } from "./[content-id]/speak/speak";
 import { AI } from "./ai";
@@ -20,8 +21,6 @@ import { ContentSettings } from "./content-settings";
 import { PlayV3 } from "./play-v3/play-v3";
 import { isVideoUrl } from "./utils/is-video-url";
 import { isYoutube } from "./utils/is-youtube";
-import { DynaSelector } from "./[content-id]/dyna-cloze/dyna-selector";
-import { TweetPage } from "@/components/_select-character/selected-character/tweet-page/tweet-page";
 
 export const ConvoDetails = ({ contentId }: { contentId: string }) => {
   const searchParams = useSearchParams();
@@ -98,8 +97,6 @@ export const ConvoDetails = ({ contentId }: { contentId: string }) => {
     return (
       <div>
         <YouTubePlayer contentId={contentId} />
-
-        {/* <FloatingNavbar /> */}
       </div>
     );
   }
@@ -119,15 +116,13 @@ export const ConvoDetails = ({ contentId }: { contentId: string }) => {
   }
 
   if (viewType === "listen") {
-    // if (content?.lang === "zh") {
     return <AudiobookPlayer contentId={contentId} />;
-    // }
 
-    return (
-      <div className="px-4 md:px-12">
-        <PlayV3 contentId={contentId} />
-      </div>
-    );
+    // return (
+    //   <div className="px-4 md:px-12">
+    //     <PlayV3 contentId={contentId} />
+    //   </div>
+    // );
   }
 
   if (viewType === "write") {

@@ -5,41 +5,44 @@ import { Icons } from "../ui/icons.v2";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-export const isParagraphModeStore = create(
+type ParagraphMode = "focus" | "paragraph";
+
+interface ParagraphModeStore {
+  paragraphMode: ParagraphMode;
+  setParagraphMode: (mode: ParagraphMode) => void;
+}
+
+export const isParagraphModeStore = create<ParagraphModeStore>()(
   persist(
     (set, get: any) => ({
-      paragraphMode: false,
+      paragraphMode: "focus",
 
-      toggleParagraphMode: () => {
-        const mode = get().paragraphMode;
-
-        set({ paragraphMode: !get().paragraphMode });
+      setParagraphMode: (mode: ParagraphMode) => {
+        set({ paragraphMode: mode });
       },
     }),
 
     {
-      name: "preview-mode", // name of the item in the storage (must be unique)
+      name: "preview-mode-v3", // name of the item in the storage (must be unique)
       storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
     }
   )
 );
 
 export const useParagraphMode = () => {
-  const paragraphMode = isParagraphModeStore(
-    (state: any) => state.paragraphMode
-  );
-  const toggleParagraphMode = isParagraphModeStore(
-    (state: any) => state.toggleParagraphMode
+  const paragraphMode = isParagraphModeStore((state) => state.paragraphMode);
+  const setParagraphMode = isParagraphModeStore(
+    (state) => state.setParagraphMode
   );
 
   return {
     paragraphMode,
-    toggleParagraphMode,
+    setParagraphMode,
   };
 };
 
 export const ParagraphButton = ({ className }: { className?: string }) => {
-  const { paragraphMode, toggleParagraphMode } = useParagraphMode();
+  const { paragraphMode, setParagraphMode } = useParagraphMode();
 
   return (
     <button
@@ -49,10 +52,14 @@ export const ParagraphButton = ({ className }: { className?: string }) => {
         className
       )}
       onClick={() => {
-        toggleParagraphMode();
+        if (paragraphMode === "focus") {
+          setParagraphMode("paragraph");
+        } else if (paragraphMode === "paragraph") {
+          setParagraphMode("focus");
+        }
       }}
     >
-      <Icons.paragraph />
+      {paragraphMode === "focus" ? <Icons.karaoke /> : <Icons.paragraph />}
     </button>
   );
 };

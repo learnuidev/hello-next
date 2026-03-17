@@ -51,7 +51,7 @@ const ParagraphView = ({
 
   return (
     <div className={cn("px-4 pb-24", selected ? "" : "lg:px-48")}>
-      <div className="sticky top-0 pt-4 pb-[4px] bg-gray-50 dark:bg-[rgb(9,10,11)] px-4">
+      <div className="sticky top-0 pt-4 sm:pt-12 pb-[4px] sm:pb-12 bg-gray-50 dark:bg-[rgb(9,10,11)]">
         <div className="pb-4">
           <div
             className={cn(
@@ -59,7 +59,7 @@ const ParagraphView = ({
               "h-32"
             )}
           >
-            <p className="space-x-2 font-extralight pb-[4px] overflow text-[20px]">
+            <p className="space-x-2 font-extralight pb-[4px] overflow sm:text-[20px] text-sm">
               {currentTranscription?.en}
             </p>
           </div>
@@ -74,7 +74,7 @@ const ParagraphView = ({
               return (
                 <div key={JSON.stringify(val)}>
                   <div className="">
-                    <div className="text-2xl gap-4">
+                    <div className="text-sm sm:text-2xl gap-4">
                       <div className="py-4">
                         {transcriptions?.map(
                           (transcription: ContentTranscription) => {
@@ -98,7 +98,6 @@ const ParagraphView = ({
                                   input: transcription?.input,
                                   lang: transcription?.lang,
                                 })?.map((item: any, idx: any) => {
-                                  console.log("ITEM", item);
                                   const containsInUnknown =
                                     contentUnknowns?.items?.find((val) =>
                                       val?.input?.includes(item)
@@ -107,6 +106,7 @@ const ParagraphView = ({
                                     <span key={`${item}-pinin-view-${idx}`}>
                                       <CharacterItem
                                         className={cn(
+                                          "text-xs sm:text-2xl",
                                           isPlaying
                                             ? transcription.start <
                                                 currentTime &&

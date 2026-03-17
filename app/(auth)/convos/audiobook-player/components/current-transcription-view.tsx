@@ -237,9 +237,9 @@ function NormalView({
   const showEn = useBrightModeStore((state) => state.showEn);
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto text-start">
       {showPinyin && (
-        <p className="text-sm dark:text-gray-400 text-gray-800">
+        <p className="text-sm dark:text-gray-400 text-gray-800 mb-8">
           {currentTranscription?.pinyin || currentTranscription?.roman}
         </p>
       )}

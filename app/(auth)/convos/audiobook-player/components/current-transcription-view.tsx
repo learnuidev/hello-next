@@ -1,6 +1,5 @@
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 
-import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
 import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
@@ -162,30 +161,17 @@ export function ReaderView({
               )}
               key={`${JSON.stringify(item)}-${idx}-${idx}`}
             >
-              {showPinyin &&
-                (showSearchOnlyPinyin ? (
-                  <span
-                    className={cn(
-                      "text-sm ",
+              {showPinyin && (
+                <span
+                  className={cn(
+                    "text-sm ",
 
-                      containsHistory
-                        ? "dark:text-gray-400 text-gray-800"
-                        : "dark:text-black text-white"
-                    )}
-                  >
-                    {containsHistory ? formatRoman(item) : ".."}
-                  </span>
-                ) : (
-                  <span
-                    className={cn(
-                      "text-sm ",
-
-                      "dark:text-gray-400 text-gray-800"
-                    )}
-                  >
-                    {formatRoman(item)}
-                  </span>
-                ))}
+                    "dark:text-gray-400 text-gray-800"
+                  )}
+                >
+                  {formatRoman(item)}
+                </span>
+              )}
 
               <span
                 className={
@@ -275,22 +261,13 @@ export function PinyinView({
   contentId,
   lang,
 }: CurrentTranscriptionProps) {
-  const { data: _data } = useListDictionaryMeaningsQuery(
-    currentTranscription?.input,
-    currentTranscription?.lang,
-    {
-      words: currentTranscription?.words,
-    }
-  );
-
   const { data: _segmentedData } = useSegmentTextQuery({
     text: currentTranscription?.input,
     lang: currentTranscription?.lang,
   });
 
-  const data = _data || currentTranscription?.words || _segmentedData;
-
-  const { selected, setSelected } = useSelectedItem();
+  const data: any = currentTranscription?.words || _segmentedData;
+  const showEn = useBrightModeStore((state) => state.showEn);
 
   const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
 
@@ -325,13 +302,15 @@ export function PinyinView({
         </div>
       )}
 
-      <EnView
-        containsChinglish={containsChinglish}
-        currentTranscription={currentTranscription}
-        seekAndPlay={seekAndPlay}
-        contentId={contentId}
-        lang={lang}
-      />
+      {showEn && (
+        <EnView
+          containsChinglish={containsChinglish}
+          currentTranscription={currentTranscription}
+          seekAndPlay={seekAndPlay}
+          contentId={contentId}
+          lang={lang}
+        />
+      )}
     </div>
   );
 }
@@ -347,7 +326,12 @@ export function CurrentTranscriptionView({
   const { readMode } = useReadModeState();
 
   return (
-    <div className={cn("text-center mt-24 max-w-7xl mx-auto", className)}>
+    <div
+      className={cn(
+        "text-center mt-4 lg:mt-24 max-w-7xl lg:mx-auto mx-4",
+        className
+      )}
+    >
       {readMode ? (
         <div className="max-w-7xl mx-auto">
           <PinyinView

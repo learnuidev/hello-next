@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import pinyin from "pinyin";
 
 interface SegmentTextInput {
   text: string;
@@ -8,15 +9,26 @@ export async function segmentText({ text, lang }: SegmentTextInput) {
   const segmenter = new Intl.Segmenter(lang, { granularity: "word" });
 
   const segments = segmenter.segment(text);
+
   let res = [];
 
   for (const segment of segments) {
     res.push({
-      input: segment.segment,
-      startIndex: segment.index,
-      endIndex: segment.index + segment.segment.length,
-      lang,
-      id: crypto.randomUUID(),
+      ...{
+        input: segment.segment,
+        startIndex: segment.index,
+        endIndex: segment.index + segment.segment.length,
+
+        lang,
+        id: crypto.randomUUID(),
+      },
+      ...(lang === "zh"
+        ? {
+            pinyin: pinyin(segment.segment)
+              .map((item) => item[0])
+              .join(""),
+          }
+        : {}),
     });
   }
 

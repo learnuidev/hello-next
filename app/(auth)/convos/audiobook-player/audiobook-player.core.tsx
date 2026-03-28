@@ -31,6 +31,7 @@ import { CurrentTranscriptionEditor } from "./components/current-transcription-e
 import { CurrentTranscriptionView } from "./components/current-transcription-view";
 import { MiniDictionary } from "./components/mini-dictionary";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
+import { ReadModeButton } from "@/components/read-mode-button";
 
 const ParagraphView = ({
   content,
@@ -59,7 +60,7 @@ const ParagraphView = ({
               "h-32"
             )}
           >
-            <p className="space-x-2 font-extralight pb-[4px] overflow sm:text-[20px] text-sm">
+            <p className="space-x-2 font-extralight pb-[4px] overflow sm:text-xl text-sm">
               {currentTranscription?.en}
             </p>
           </div>
@@ -71,6 +72,16 @@ const ParagraphView = ({
           {Object.entries(splitEvery(5, content?.transcriptions) as any)?.map(
             (val: any) => {
               const transcriptions = val[1];
+
+              const containsTranscription = transcriptions.filter(
+                (transcription: any) =>
+                  transcription.start < currentTime &&
+                  transcription.end > currentTime
+              );
+
+              if (containsTranscription?.length === 0) {
+                return;
+              }
               return (
                 <div key={JSON.stringify(val)}>
                   <div className="">
@@ -103,16 +114,19 @@ const ParagraphView = ({
                                       val?.input?.includes(item)
                                     );
                                   return (
-                                    <span key={`${item}-pinin-view-${idx}`}>
+                                    <span
+                                      key={`${item}-pinin-view-${idx}`}
+                                      className="py-2 sm:leading-relaxed leading-loose"
+                                    >
                                       <CharacterItem
                                         className={cn(
-                                          "text-xs sm:text-2xl",
+                                          "text-lg sm:text-2xl",
                                           isPlaying
                                             ? transcription.start <
                                                 currentTime &&
                                               transcription.end > currentTime
-                                              ? " bg-red-200 dark:bg-red-800"
-                                              : ""
+                                              ? "   !dark:text-white"
+                                              : "dark:text-gray-500"
                                             : "",
 
                                           containsInUnknown &&
@@ -136,8 +150,6 @@ const ParagraphView = ({
                                     </span>
                                   );
                                 })}
-
-                                {/* {transcription?.input || transcription?.hanzi} */}
                               </span>
                             );
                           }
@@ -307,13 +319,19 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 <Icons.rotateRight className="text-xl" />
               </button>
 
-              <SearchOnlyPinyinButton className="text-2xl" />
-              <PinyinButton className="text-2xl" />
-              <EnButton className="text-2xl" />
+              {/* <SearchOnlyPinyinButton className="text-2xl" /> */}
 
-              {/* <ReadModeButton className="text-2xl" /> */}
+              {paragraphMode === "paragraph" ? null : (
+                <>
+                  <PinyinButton className="text-2xl" />
+                  <EnButton className="text-2xl" />
+                  {/* <ReadModeButton className="text-2xl" /> */}
+                  {containsChinglish && (
+                    <ChinglishButton className="text-2xl" />
+                  )}
+                </>
+              )}
 
-              {containsChinglish && <ChinglishButton className="text-2xl" />}
               <PreviewButton />
 
               <ParagraphButton />

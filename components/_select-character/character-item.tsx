@@ -92,6 +92,7 @@ export const CharacterItem = ({
 
         currentMode.current === "normal" &&
           `dark:text-white text-black ${hoverColor}`,
+
         className
       )}
     >

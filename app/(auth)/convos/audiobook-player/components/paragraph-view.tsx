@@ -57,9 +57,9 @@ export const ParagraphView = ({
               const containsTranscription =
                 minTrans <= currentTime && maxTrans >= currentTime;
 
-              if (!containsTranscription) {
-                return;
-              }
+              //   if (!containsTranscription) {
+              //     return;
+              //   }
               return (
                 <div key={JSON.stringify(val)}>
                   <div className="">

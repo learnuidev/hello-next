@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { useSegmentTextQuery } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useContentSearchHistory } from "../hooks/use-content-search-history";
+import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 
 function EnView({
   currentTranscription,
@@ -42,6 +43,8 @@ function InputView({
 }: CurrentTranscriptionProps) {
   const { selected, setSelected } = useSelectedItem();
 
+  const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
+
   return (
     <p
       className={cn(
@@ -54,10 +57,18 @@ function InputView({
         input: currentTranscription?.input,
         lang: currentTranscription?.lang,
       })?.map((item: any, idx: any) => {
+        const containsInUnknown = contentUnknowns?.items?.find((val) =>
+          val?.input?.includes(item)
+        );
+
         return (
           <span key={`${item}-pinin-view-${idx}`}>
             <CharacterItem
               character={item}
+              className={
+                containsInUnknown &&
+                "font-light dark:!text-pink-300 !text-pink-500"
+              }
               onClick={() => {
                 const selectedText = getSelectedText();
 
@@ -99,6 +110,7 @@ export function ReaderView({
     end?: number;
   }[];
 }) {
+  const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
   const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
 
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
@@ -133,22 +145,8 @@ export function ReaderView({
                 );
                 if (selectedText && selectedText?.length < 36) {
                   setSelected(selectedText);
-
-                  // if (!containsSelectedHistory) {
-                  //   addSearchHistory({
-                  //     input: selectedText,
-                  //     transcriptionId: currentTranscription.id,
-                  //   });
-                  // }
                 } else {
                   setSelected(item.hanzi || item?.input);
-
-                  // if (!containsHistory) {
-                  //   addSearchHistory({
-                  //     input: item.hanzi || item?.input,
-                  //     transcriptionId: currentTranscription.id,
-                  //   });
-                  // }
                 }
               }}
               className={cn(
@@ -184,10 +182,18 @@ export function ReaderView({
                   input: item?.hanzi || item?.input,
                   lang: currentTranscription?.lang,
                 })?.map((item: any, idx: any) => {
+                  const containsInUnknown = contentUnknowns?.items?.find(
+                    (val) => val?.input?.includes(item)
+                  );
+
                   return (
                     <span key={`${item}-pinin-view-${idx}`}>
                       <CharacterItem
                         character={item}
+                        className={
+                          containsInUnknown &&
+                          "font-light dark:!text-pink-300 !text-pink-500"
+                        }
                         onClick={() => {
                           const selectedText = getSelectedText();
 

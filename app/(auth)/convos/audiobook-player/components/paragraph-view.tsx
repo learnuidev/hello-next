@@ -41,7 +41,7 @@ export const ParagraphView = ({
         </div>
       </div>
 
-      <div className="">
+      <div className="pb-32">
         <div>
           {Object.entries(splitEvery(5, content?.transcriptions) as any)?.map(
             (val: any) => {
@@ -77,7 +77,7 @@ export const ParagraphView = ({
                                   isPlaying
                                     ? transcription.start < currentTime &&
                                       transcription.end > currentTime
-                                      ? "dark:text-white text-black bg-yellow-200 dark:bg-black"
+                                      ? "dark:text-white text-black bg-yellow-200 dark:bg-[rgb(9,10,11)]"
                                       : "text-gray-500"
                                     : "dark:text-white text-black"
                                 )}

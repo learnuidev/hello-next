@@ -25,7 +25,7 @@ export const ParagraphView = ({
   const { data: contentUnknowns } = useListContentUnknownsQuery(content.id);
 
   return (
-    <div className={cn("px-4 pb-24", selected ? "" : "lg:px-48")}>
+    <div className={cn("px-4 pb-24")}>
       <div className="sticky top-0 pt-4 sm:pt-12 pb-[4px] sm:pb-12 bg-gray-50 dark:bg-[rgb(9,10,11)]">
         <div className="pb-4">
           <div
@@ -47,30 +47,33 @@ export const ParagraphView = ({
             (val: any) => {
               const transcriptions = val[1];
 
-              const containsTranscription = transcriptions.filter(
-                (transcription: any) =>
-                  transcription.start < currentTime &&
-                  transcription.end > currentTime
+              const maxTrans = Math.max(
+                ...transcriptions.map((t: any) => t.end)
+              );
+              const minTrans = Math.min(
+                ...transcriptions.map((t: any) => t.start)
               );
 
-              if (containsTranscription?.length === 0) {
+              const containsTranscription =
+                minTrans <= currentTime && maxTrans >= currentTime;
+
+              if (!containsTranscription) {
                 return;
               }
               return (
                 <div key={JSON.stringify(val)}>
                   <div className="">
                     <div className="text-sm sm:text-2xl gap-4">
-                      <div className="py-4">
+                      <div className="py-4 sm:space-y-8 space-y-2">
                         {transcriptions?.map(
                           (transcription: ContentTranscription) => {
                             return (
-                              <span
+                              <p
                                 key={JSON.stringify(transcription)}
                                 onClick={() => {
                                   seek(transcription?.start);
                                 }}
                                 className={cn(
-                                  "text-center h-24",
                                   isPlaying
                                     ? transcription.start < currentTime &&
                                       transcription.end > currentTime
@@ -124,7 +127,7 @@ export const ParagraphView = ({
                                     </span>
                                   );
                                 })}
-                              </span>
+                              </p>
                             );
                           }
                         )}

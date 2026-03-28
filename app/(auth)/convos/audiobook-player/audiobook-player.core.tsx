@@ -69,11 +69,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
         <div
           className={cn("grid grid-cols-12 gap-8 sm:px-8 scroll-px-80 w-full")}
         >
-          <div
-            className={cn(
-              selected ? "md:col-span-8 col-span-12" : "col-span-12"
-            )}
-          >
+          <div className={cn("md:col-span-8 col-span-12")}>
             {editMode && currentTranscription ? (
               <CurrentTranscriptionEditor
                 currentTranscription={currentTranscription}
@@ -102,20 +98,15 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
             )}
           </div>
 
-          {selected && (
-            <div
-              className={cn(
-                "w-full",
-                selected ? " md:col-span-4 col-span-12" : "col-span-12"
-              )}
-            >
+          <div className={cn("w-full", " md:col-span-4 col-span-12")}>
+            {selected && (
               <MiniDictionary
                 contentId={content?.id}
                 selected={selected}
                 lang={content?.lang}
               />
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         <div className="fixed bottom-2 w-full">

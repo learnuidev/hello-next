@@ -22,15 +22,14 @@ import ReactPlayer from "react-player";
 import { formatTime } from "../_play/utils";
 import { CurrentTranscriptionEditor } from "./components/current-transcription-editor";
 import { CurrentTranscriptionView } from "./components/current-transcription-view";
-import { MiniDictionary } from "./components/mini-dictionary";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
 import { ParagraphView } from "./components/paragraph-view";
 import { ReadModeButton } from "@/components/read-mode-button";
+import { CharacterMenuBar } from "./components/character-menu-bar";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
     seekAndPlay,
-    selected,
     setLoop,
     loop,
     setIsReady,
@@ -66,6 +65,11 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
 
   return (
     <MandoContextMenu lang={content?.lang || ""}>
+      <CharacterMenuBar
+        seekAndPlay={seekAndPlay}
+        contentId={content.id}
+        lang={content.lang}
+      />
       <div className="relative">
         <div
           className={cn("grid grid-cols-12 gap-8 sm:px-8 scroll-px-80 w-full")}
@@ -96,16 +100,6 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               <div className=" dark:text-black text-white text-center mt-8 sm:mt-24 min-w-5xl mx-auto">
                 ...
               </div>
-            )}
-          </div>
-
-          <div className={cn("w-full", " md:col-span-4 col-span-12")}>
-            {selected && (
-              <MiniDictionary
-                contentId={content?.id}
-                selected={selected}
-                lang={content?.lang}
-              />
             )}
           </div>
         </div>

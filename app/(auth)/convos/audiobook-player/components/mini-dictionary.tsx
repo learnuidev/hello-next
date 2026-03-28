@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 import { useAddContentUnknownMutation } from "@/domain/content-unknowns/use-add-content-unknown.mutation";
 import { useRemoveContentUnknownMutation } from "@/domain/content-unknowns/use-remove-content-unknown.mutation";
+import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 
 export function MiniDictionary({
   lang,
@@ -50,6 +51,8 @@ export function MiniDictionary({
     });
 
   const { setSelected } = useSelectedItem();
+
+  const { hideMenuBar } = useCharacterMenuBarStore();
 
   const { data, isLoading: isMeaningDiscoveryLoading } = useListDiscoveryQuery({
     content: selected,
@@ -163,6 +166,7 @@ export function MiniDictionary({
         <button
           onClick={() => {
             setSelected(null);
+            hideMenuBar();
           }}
         >
           <Icons.xMark className="text-2xl" />

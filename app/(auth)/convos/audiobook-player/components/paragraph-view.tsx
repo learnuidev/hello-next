@@ -6,6 +6,7 @@ import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-
 import { ContentTranscription, IContent } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
 import { splitEvery } from "ramda";
+import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 
 export const ParagraphView = ({
   content,
@@ -23,6 +24,8 @@ export const ParagraphView = ({
   const { selected, setSelected } = useSelectedItem();
 
   const { data: contentUnknowns } = useListContentUnknownsQuery(content.id);
+
+  const { setShowMenuBar } = useCharacterMenuBarStore();
 
   return (
     <div className={cn("px-4 pb-24")}>
@@ -94,6 +97,26 @@ export const ParagraphView = ({
                                     <span
                                       key={`${item}-pinin-view-${idx}`}
                                       className="py-2 sm:leading-relaxed leading-loose"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        const selectedText = getSelectedText();
+
+                                        const text =
+                                          selectedText &&
+                                          selectedText?.length < 36
+                                            ? selectedText
+                                            : item;
+
+                                        setShowMenuBar({
+                                          text,
+                                          position: {
+                                            x: e.clientX,
+                                            y: e.clientY,
+                                          },
+                                          startTime:
+                                            transcription?.start ?? null,
+                                        });
+                                      }}
                                     >
                                       <CharacterItem
                                         className={cn(
@@ -110,19 +133,6 @@ export const ParagraphView = ({
                                             "font-light dark:!text-pink-300 !text-pink-500"
                                         )}
                                         character={item}
-                                        onClick={() => {
-                                          const selectedText =
-                                            getSelectedText();
-
-                                          if (
-                                            selectedText &&
-                                            selectedText?.length < 36
-                                          ) {
-                                            setSelected(selectedText);
-                                          } else {
-                                            setSelected(item);
-                                          }
-                                        }}
                                       />
                                     </span>
                                   );

@@ -14,6 +14,7 @@ import { useSegmentTextQuery } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useContentSearchHistory } from "../hooks/use-content-search-history";
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
+import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 
 function EnView({
   currentTranscription,
@@ -41,9 +42,8 @@ function InputView({
   containsChinglish,
   contentId,
 }: CurrentTranscriptionProps) {
-  const { selected, setSelected } = useSelectedItem();
-
   const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
+  const { setShowMenuBar } = useCharacterMenuBarStore();
 
   return (
     <p
@@ -62,22 +62,28 @@ function InputView({
         );
 
         return (
-          <span key={`${item}-pinin-view-${idx}`}>
+          <span
+            key={`${item}-pinin-view-${idx}`}
+            onClick={(e) => {
+              const selectedText = getSelectedText();
+              const text =
+                selectedText && selectedText?.length < 36
+                  ? selectedText
+                  : item;
+
+              setShowMenuBar({
+                text,
+                position: { x: e.clientX, y: e.clientY },
+                startTime: null,
+              });
+            }}
+          >
             <CharacterItem
               character={item}
               className={
                 containsInUnknown &&
                 "font-light dark:!text-pink-300 !text-pink-500"
               }
-              onClick={() => {
-                const selectedText = getSelectedText();
-
-                if (selectedText && selectedText?.length < 36) {
-                  setSelected(selectedText);
-                } else {
-                  setSelected(item);
-                }
-              }}
             />
           </span>
         );
@@ -109,6 +115,8 @@ export function ReaderView({
 
   const { selected, setSelected } = useSelectedItem();
 
+  const { setShowMenuBar } = useCharacterMenuBarStore();
+
   const { setShowSearchOnlyPinyin, showSearchOnlyPinyin } =
     useSearchOnlyPinyinState();
 
@@ -126,20 +134,19 @@ export function ReaderView({
           );
           return (
             <span
-              onClick={() => {
-                if (item?.start && seekAndPlay) {
-                  seekAndPlay(item?.start);
-                }
+              onClick={(e) => {
                 const selectedText = getSelectedText();
 
-                const containsSelectedHistory = searchHistory?.find(
-                  (historyItem: any) => historyItem?.input === selectedText
-                );
-                if (selectedText && selectedText?.length < 36) {
-                  setSelected(selectedText);
-                } else {
-                  setSelected(item.hanzi || item?.input);
-                }
+                const text =
+                  selectedText && selectedText?.length < 36
+                    ? selectedText
+                    : item.hanzi || item?.input;
+
+                setShowMenuBar({
+                  text,
+                  position: { x: e.clientX, y: e.clientY },
+                  startTime: item?.start ?? null,
+                });
               }}
               className={cn(
                 "inline-flex flex-col items-center justify-center",
@@ -173,28 +180,19 @@ export function ReaderView({
                 {smartSplit({
                   input: item?.hanzi || item?.input,
                   lang: currentTranscription?.lang,
-                })?.map((item: any, idx: any) => {
+                })?.map((charItem: any, charIdx: any) => {
                   const containsInUnknown = contentUnknowns?.items?.find(
-                    (val) => val?.input?.includes(item)
+                    (val) => val?.input?.includes(charItem)
                   );
 
                   return (
-                    <span key={`${item}-pinin-view-${idx}`}>
+                    <span key={`${charItem}-pinin-view-${charIdx}`}>
                       <CharacterItem
-                        character={item}
+                        character={charItem}
                         className={
                           containsInUnknown &&
                           "font-light dark:!text-pink-300 !text-pink-500"
                         }
-                        onClick={() => {
-                          const selectedText = getSelectedText();
-
-                          if (selectedText && selectedText?.length < 36) {
-                            setSelected(selectedText);
-                          } else {
-                            setSelected(item);
-                          }
-                        }}
                       />
                     </span>
                   );

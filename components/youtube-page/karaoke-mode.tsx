@@ -64,24 +64,10 @@ function CurrentTranscriptionViewer({
 
             if (selectedText && selectedText?.length < 36) {
               setSelected(selectedText);
-
-              // if (!containsSelectedHistory) {
-              //   addSearchHistory({
-              //     input: selectedText,
-              //     transcriptionId: currentTranscription.id,
-              //   });
-              // }
             } else {
               setSelected(
                 currentTranscription.hanzi || currentTranscription?.input
               );
-
-              // if (!containsHistory) {
-              //   addSearchHistory({
-              //     input: item.hanzi || item?.input,
-              //     transcriptionId: currentTranscription.id,
-              //   });
-              // }
             }
           }}
           className={cn(

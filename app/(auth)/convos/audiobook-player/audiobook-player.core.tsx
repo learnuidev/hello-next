@@ -25,6 +25,7 @@ import { CurrentTranscriptionView } from "./components/current-transcription-vie
 import { MiniDictionary } from "./components/mini-dictionary";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
 import { ParagraphView } from "./components/paragraph-view";
+import { ReadModeButton } from "@/components/read-mode-button";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -175,7 +176,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 <>
                   <PinyinButton className="text-2xl" />
                   <EnButton className="text-2xl" />
-                  {/* <ReadModeButton className="text-2xl" /> */}
+                  <ReadModeButton className="text-2xl" />
                   {containsChinglish && (
                     <ChinglishButton className="text-2xl" />
                   )}

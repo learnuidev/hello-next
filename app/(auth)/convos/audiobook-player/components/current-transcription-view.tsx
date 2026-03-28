@@ -223,9 +223,9 @@ function NormalView({
   const showEn = useBrightModeStore((state) => state.showEn);
 
   return (
-    <div className="max-w-3xl mx-auto text-start">
+    <div className="text-start">
       {showPinyin && (
-        <p className="text-sm dark:text-gray-400 text-gray-800 mb-8">
+        <p className="text-sm dark:text-gray-400 text-gray-800">
           {currentTranscription?.pinyin || currentTranscription?.roman}
         </p>
       )}
@@ -326,14 +326,9 @@ export function CurrentTranscriptionView({
   const { readMode } = useReadModeState();
 
   return (
-    <div
-      className={cn(
-        "text-center mt-4 lg:mt-24 max-w-7xl lg:mx-auto mx-4",
-        className
-      )}
-    >
+    <div className={cn("mt-4 lg:mt-24 max-w-7xl mx-4", className)}>
       {readMode ? (
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl">
           <PinyinView
             containsChinglish={containsChinglish}
             currentTranscription={currentTranscription}

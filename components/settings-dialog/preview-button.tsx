@@ -4,11 +4,11 @@ import { Icons } from "../ui/icons.v2";
 
 function RenderIcon({ currentMode }: any) {
   if (currentMode.current === "focus") {
-    return <Icons.glassesRoundSolid />;
+    return <Icons.magnifyingGlass />;
   }
 
   if (currentMode.current === "normal") {
-    return <Icons.language />;
+    return <Icons.bookOpen />;
   }
 
   if (currentMode.current === "melanin") {

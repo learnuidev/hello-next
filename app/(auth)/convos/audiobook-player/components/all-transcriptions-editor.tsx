@@ -221,9 +221,8 @@ export const AllTranscriptionsEditor = ({
         <label className="text-xs dark:text-gray-500 text-gray-400 w-14 shrink-0">
           {label}
         </label>
-        <input
-          type="text"
-          className="flex-1 text-sm border rounded px-2 py-1 dark:bg-black dark:border-gray-700"
+        <textarea
+          className="flex-1 text-sm border rounded px-2 py-1 dark:bg-black dark:border-gray-700 resize-y min-h-[2rem]"
           value={value || ""}
           onChange={(e) => updateLocalField(index, field, e.target.value)}
           placeholder={label}

@@ -108,6 +108,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
         <div className="fixed bottom-2 w-full">
           <div className="w-full max-w-3xl mx-auto p-4 py-2">
             <ReactPlayer
+              key={content?.audio}
               playbackRate={playbackRate}
               progressInterval={100}
               url={content?.audio}

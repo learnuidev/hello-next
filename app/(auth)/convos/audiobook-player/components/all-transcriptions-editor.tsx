@@ -36,11 +36,7 @@ export const AllTranscriptionsEditor = ({
   const transcriptions: LocalTranscription[] =
     localTranscriptions || content.transcriptions || [];
 
-  const updateLocalField = (
-    index: number,
-    field: string,
-    value: any
-  ) => {
+  const updateLocalField = (index: number, field: string, value: any) => {
     setLocalTranscriptions((prev) => {
       const current = prev || content.transcriptions || [];
       return current.map((item: LocalTranscription, i: number) =>
@@ -100,9 +96,8 @@ export const AllTranscriptionsEditor = ({
         roman: [first.roman, second.roman].filter(Boolean).join(" "),
         hanzi: [first.hanzi, second.hanzi].filter(Boolean).join(""),
         chinglish:
-          [first.chinglish, second.chinglish]
-            .filter(Boolean)
-            .join(" ") || undefined,
+          [first.chinglish, second.chinglish].filter(Boolean).join(" ") ||
+          undefined,
       };
 
       return [
@@ -116,8 +111,7 @@ export const AllTranscriptionsEditor = ({
   const handleAddBefore = (index: number) => {
     const trans = transcriptions[index];
     const prevEnd = index > 0 ? transcriptions[index - 1].end : 0;
-    const midTime =
-      Math.round(((prevEnd + trans.start) / 2) * 10) / 10;
+    const midTime = Math.round(((prevEnd + trans.start) / 2) * 10) / 10;
 
     const newId = `new-${Date.now()}`;
     const newTrans: LocalTranscription = {
@@ -145,8 +139,7 @@ export const AllTranscriptionsEditor = ({
       index < transcriptions.length - 1
         ? transcriptions[index + 1].start
         : trans.end + 5;
-    const midTime =
-      Math.round(((trans.end + nextStart) / 2) * 10) / 10;
+    const midTime = Math.round(((trans.end + nextStart) / 2) * 10) / 10;
 
     const newId = `new-${Date.now()}`;
     const newTrans: LocalTranscription = {
@@ -234,10 +227,7 @@ export const AllTranscriptionsEditor = ({
   return (
     <div className="flex flex-col lg:mt-16 mt-8 mb-80 max-h-[70vh] overflow-y-auto">
       <div className="flex gap-4 mb-4 sticky top-0 bg-white dark:bg-black z-10 py-2">
-        <button
-          className="px-4 py-1 border rounded"
-          onClick={handleCancel}
-        >
+        <button className="px-4 py-1 border rounded" onClick={handleCancel}>
           Cancel
         </button>
         <button
@@ -303,9 +293,7 @@ export const AllTranscriptionsEditor = ({
                   />
                   <button
                     className="text-xs px-2 py-1 border rounded dark:border-gray-700 dark:text-gray-400 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
-                    onClick={() =>
-                      updateLocalField(index, "end", currentTime)
-                    }
+                    onClick={() => updateLocalField(index, "end", currentTime)}
                     title="Set to current time"
                   >
                     Now

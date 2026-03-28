@@ -20,7 +20,7 @@ import { IContent } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
 import ReactPlayer from "react-player";
 import { formatTime } from "../_play/utils";
-import { CurrentTranscriptionEditor } from "./components/current-transcription-editor";
+import { AllTranscriptionsEditor } from "./components/all-transcriptions-editor";
 import { CurrentTranscriptionView } from "./components/current-transcription-view";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
 import { ParagraphView } from "./components/paragraph-view";
@@ -75,10 +75,11 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
           className={cn("grid grid-cols-12 gap-8 sm:px-8 scroll-px-80 w-full")}
         >
           <div className={cn("md:col-span-8 col-span-12")}>
-            {editMode && currentTranscription ? (
-              <CurrentTranscriptionEditor
-                currentTranscription={currentTranscription}
+            {editMode ? (
+              <AllTranscriptionsEditor
                 contentId={content.id}
+                currentTime={currentTime}
+                seekAndPlay={seekAndPlay}
               />
             ) : paragraphMode === "paragraph" ? (
               <ParagraphView

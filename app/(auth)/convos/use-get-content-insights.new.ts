@@ -1,26 +1,23 @@
 "use client";
 
-import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import { useMemo, useState } from "react";
-
-import { useRouter } from "next/navigation";
-
 import { useGetContentQuery } from "@/domain/content/content.queries";
-import {
-  useListCharactersMapQuery,
-  useListCharactersQuery,
-} from "@/domain/lesson/character.queries";
-import { useSelectedCharacter } from "./use-selected-character";
+import { useListCharactersMapQuery } from "@/domain/lesson/character.queries";
 
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 
 import { filterNonEnglishAlphabets } from "@/app/nmm/nmm-utils/filter-non-english-alphabets";
 import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
-import { useInsightsSettingsStore } from "./use-insights-settings-store";
 import { useQuery } from "@tanstack/react-query";
+import { useInsightsSettingsStore } from "./use-insights-settings-store";
 
-const getFrequency = ({ lesson, input }: any) => {
-  const transcriptions = lesson?.transcriptions?.filter(
+export const getFrequency = ({
+  content,
+  input,
+}: {
+  content: any;
+  input: any;
+}) => {
+  const transcriptions = content?.transcriptions?.filter(
     (transcription: any) => {
       return (transcription?.hanzi || transcription?.input)?.includes(input);
     }
@@ -130,7 +127,7 @@ export function useGetContentInsightsNew({ contentId }: { contentId: string }) {
       const uniqueCharactersMemo = (() => {
         const res = uniqueCharacters?.map((char: any, idx: number) => {
           const frequency = getFrequency({
-            lesson,
+            content: lesson,
             input: char?.hanzi || char?.input || char,
           });
 
@@ -167,7 +164,7 @@ export function useGetContentInsightsNew({ contentId }: { contentId: string }) {
           })
           ?.map((char: any, idx: number) => {
             const frequency = getFrequency({
-              lesson,
+              content: lesson,
               input: char?.hanzi || char?.input,
             });
 

@@ -12,7 +12,7 @@ export function EnView({
       onClick={() => {
         if (seekAndPlay) seekAndPlay(currentTranscription.start);
       }}
-      className="text-[16px] sm:text-xl"
+      className="text-[16px] sm:text-xl dark:text-gray-600 font-extralight"
     >
       {showChinglish && containsChinglish
         ? currentTranscription?.chinglish

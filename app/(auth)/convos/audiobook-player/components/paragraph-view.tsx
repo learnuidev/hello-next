@@ -7,6 +7,8 @@ import { ContentTranscription, IContent } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
 import { splitEvery } from "ramda";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
+import { useMemo } from "react";
+import { getActiveTranscriptions } from "@/components/youtube-page/get-active-transcriptions";
 
 export const ParagraphView = ({
   content,
@@ -27,6 +29,16 @@ export const ParagraphView = ({
 
   const { setShowMenuBar } = useCharacterMenuBarStore();
 
+  const active = 60;
+
+  const group = useMemo(() => {
+    return getActiveTranscriptions({
+      limit: active,
+      currentTime,
+      transcriptions: content?.transcriptions || [],
+    });
+  }, [active, currentTime, content?.transcriptions]);
+
   return (
     <div className={cn("px-4 pb-24")}>
       <div className="sticky top-0 pt-4 sm:pt-12 pb-[4px] sm:pb-12 bg-gray-50 dark:bg-[rgb(9,10,11)]">
@@ -46,108 +58,82 @@ export const ParagraphView = ({
 
       <div className="pb-32">
         <div>
-          {Object.entries(splitEvery(5, content?.transcriptions) as any)?.map(
-            (val: any) => {
-              const transcriptions = val[1];
+          <div>
+            <div className="">
+              <div className="text-sm sm:text-2xl gap-4">
+                <div className="py-4 sm:space-y-8 space-y-2">
+                  {group?.map((transcription: ContentTranscription) => {
+                    return (
+                      <p
+                        key={JSON.stringify(transcription)}
+                        onClick={() => {
+                          seek(transcription?.start);
+                        }}
+                        className={cn(
+                          isPlaying
+                            ? transcription.start < currentTime &&
+                              transcription.end > currentTime
+                              ? "dark:text-white text-black bg-yellow-200 dark:bg-[rgb(9,10,11)]"
+                              : "text-gray-500"
+                            : "dark:text-white text-black"
+                        )}
+                      >
+                        {smartSplit({
+                          input: transcription?.input,
+                          lang: transcription?.lang,
+                        })?.map((item: any, idx: any) => {
+                          const containsInUnknown =
+                            contentUnknowns?.items?.find((val) =>
+                              val?.input?.includes(item)
+                            );
+                          return (
+                            <span
+                              key={`${item}-pinin-view-${idx}`}
+                              className="py-2 sm:leading-relaxed leading-loose"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const selectedText = getSelectedText();
 
-              const maxTrans = Math.max(
-                ...transcriptions.map((t: any) => t.end)
-              );
-              const minTrans = Math.min(
-                ...transcriptions.map((t: any) => t.start)
-              );
+                                const text =
+                                  selectedText && selectedText?.length < 36
+                                    ? selectedText
+                                    : item;
 
-              const containsTranscription =
-                minTrans <= currentTime && maxTrans >= currentTime;
-
-              if (!containsTranscription) {
-                return;
-              }
-              return (
-                <div key={JSON.stringify(val)}>
-                  <div className="">
-                    <div className="text-sm sm:text-2xl gap-4">
-                      <div className="py-4 sm:space-y-8 space-y-2">
-                        {transcriptions?.map(
-                          (transcription: ContentTranscription) => {
-                            return (
-                              <p
-                                key={JSON.stringify(transcription)}
-                                onClick={() => {
-                                  seek(transcription?.start);
-                                }}
+                                setShowMenuBar({
+                                  text,
+                                  position: {
+                                    x: e.clientX,
+                                    y: e.clientY,
+                                  },
+                                  startTime: transcription?.start ?? null,
+                                });
+                              }}
+                            >
+                              <CharacterItem
                                 className={cn(
+                                  "text-lg sm:text-2xl",
                                   isPlaying
                                     ? transcription.start < currentTime &&
                                       transcription.end > currentTime
-                                      ? "dark:text-white text-black bg-yellow-200 dark:bg-[rgb(9,10,11)]"
-                                      : "text-gray-500"
-                                    : "dark:text-white text-black"
+                                      ? "   !dark:text-white"
+                                      : "dark:text-gray-500"
+                                    : "",
+
+                                  containsInUnknown &&
+                                    "font-light dark:!text-pink-300 !text-pink-500"
                                 )}
-                              >
-                                {smartSplit({
-                                  input: transcription?.input,
-                                  lang: transcription?.lang,
-                                })?.map((item: any, idx: any) => {
-                                  const containsInUnknown =
-                                    contentUnknowns?.items?.find((val) =>
-                                      val?.input?.includes(item)
-                                    );
-                                  return (
-                                    <span
-                                      key={`${item}-pinin-view-${idx}`}
-                                      className="py-2 sm:leading-relaxed leading-loose"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        const selectedText = getSelectedText();
-
-                                        const text =
-                                          selectedText &&
-                                          selectedText?.length < 36
-                                            ? selectedText
-                                            : item;
-
-                                        setShowMenuBar({
-                                          text,
-                                          position: {
-                                            x: e.clientX,
-                                            y: e.clientY,
-                                          },
-                                          startTime:
-                                            transcription?.start ?? null,
-                                        });
-                                      }}
-                                    >
-                                      <CharacterItem
-                                        className={cn(
-                                          "text-lg sm:text-2xl",
-                                          isPlaying
-                                            ? transcription.start <
-                                                currentTime &&
-                                              transcription.end > currentTime
-                                              ? "   !dark:text-white"
-                                              : "dark:text-gray-500"
-                                            : "",
-
-                                          containsInUnknown &&
-                                            "font-light dark:!text-pink-300 !text-pink-500"
-                                        )}
-                                        character={item}
-                                      />
-                                    </span>
-                                  );
-                                })}
-                              </p>
-                            );
-                          }
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                                character={item}
+                              />
+                            </span>
+                          );
+                        })}
+                      </p>
+                    );
+                  })}
                 </div>
-              );
-            }
-          )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

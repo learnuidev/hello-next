@@ -16,6 +16,11 @@ import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-
 import { useAddContentUnknownMutation } from "@/domain/content-unknowns/use-add-content-unknown.mutation";
 import { useRemoveContentUnknownMutation } from "@/domain/content-unknowns/use-remove-content-unknown.mutation";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
+import { useGetContentQuery } from "@/domain/content/content.queries";
+import {
+  getFrequency,
+  useGetContentInsightsNew,
+} from "../../use-get-content-insights.new";
 
 export function MiniDictionary({
   lang,
@@ -36,6 +41,20 @@ export function MiniDictionary({
   const removeContentUnknownMutation = useRemoveContentUnknownMutation();
 
   const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
+  const { data: contentInsights } = useGetContentInsightsNew({
+    contentId: contentId || "",
+  });
+  const { data: content } = useGetContentQuery({
+    contentId: contentId || "",
+  });
+
+  const frequency = getFrequency({ content: content, input: selected });
+
+  console.log("CONTENT INSIGHTS", contentInsights);
+
+  const timesMentioned = contentInsights?.filteredHskWords?.find(
+    (word: any) => word?.hanzi === selected
+  );
 
   const containsUnknown = contentUnknowns?.items?.find(
     (item) => item.input === selected
@@ -160,6 +179,13 @@ export function MiniDictionary({
                 <Icons.bookmark />
               )}
             </button>
+          )}
+
+          {frequency > 0 && (
+            <span className="my-2 dark:text-gray-500">
+              <span className="font-semibold text-rose-500">{frequency}</span>{" "}
+              mentions
+            </span>
           )}
         </div>
 

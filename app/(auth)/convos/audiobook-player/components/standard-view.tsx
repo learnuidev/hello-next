@@ -21,7 +21,7 @@ export function StandardView({
   return (
     <div className="text-start">
       {showPinyin && (
-        <p className="text-sm dark:text-gray-400 text-gray-800">
+        <p className=" dark:text-gray-500 text-gray-800 mb-4">
           {currentTranscription?.pinyin || currentTranscription?.roman}
         </p>
       )}

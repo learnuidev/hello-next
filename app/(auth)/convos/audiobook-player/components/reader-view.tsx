@@ -4,7 +4,6 @@ import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-sel
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 import { useSearchOnlyPinyinState } from "@/components/search-only-pinyin-button";
-import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 import { formatRoman } from "@/lib/format-roman";
@@ -16,7 +15,7 @@ import { useContentSearchHistory } from "../hooks/use-content-search-history";
 import { EnView } from "./en-view";
 import { InputView } from "./input-view";
 
-function ReaderViewInner({
+function ReaderViewChinese({
   currentTranscription,
   className,
   seekAndPlay,
@@ -37,7 +36,7 @@ function ReaderViewInner({
 
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
-  const { selected, setSelected } = useSelectedItem();
+  const { text: selected } = useCharacterMenuBarStore();
 
   const { setShowMenuBar } = useCharacterMenuBarStore();
 
@@ -52,10 +51,8 @@ function ReaderViewInner({
     <div className={cn(defautClassName, className)}>
       <div className={cn(defautClassName, className)}>
         {data?.map((item, idx) => {
-          const containsHistory = searchHistory?.find(
-            (historyItem: any) =>
-              historyItem?.input === item?.hanzi || item?.input
-          );
+          const isSelected =
+            selected && selected === (item?.hanzi || item?.input);
           return (
             <span
               onClick={(e) => {
@@ -87,7 +84,7 @@ function ReaderViewInner({
                   className={cn(
                     "text-sm ",
 
-                    "dark:text-gray-400 text-gray-800"
+                    "dark:text-gray-500 text-gray-800"
                   )}
                 >
                   {formatRoman(item)}
@@ -113,10 +110,15 @@ function ReaderViewInner({
                     <span key={`${charItem}-pinin-view-${charIdx}`}>
                       <CharacterItem
                         character={charItem}
-                        className={
-                          containsInUnknown &&
-                          "font-light dark:!text-pink-300 !text-pink-500"
-                        }
+                        className={cn(
+                          "!text-3xl",
+                          isSelected
+                            ? "dark:bg-emerald-600 bg-emerald-300"
+                            : "",
+                          !isSelected &&
+                            containsInUnknown &&
+                            "font-light dark:!text-pink-300 !text-pink-500"
+                        )}
                       />
                     </span>
                   );
@@ -151,7 +153,7 @@ export function ReaderView({
   return (
     <div>
       {currentTranscription?.lang === "zh" && data ? (
-        <ReaderViewInner
+        <ReaderViewChinese
           className={className}
           data={data}
           containsChinglish={containsChinglish}

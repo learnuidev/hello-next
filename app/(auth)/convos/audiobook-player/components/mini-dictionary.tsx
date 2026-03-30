@@ -1,4 +1,5 @@
 import { Icons } from "@/components/ui/icons.v2";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 import { AnimatedLoadingText } from "@/components/animated-loading-text";
@@ -79,6 +80,7 @@ export function MiniDictionary({
   const deleteHistoryMutation = useDeleteHistoryMutation();
 
   const [seeMore, setSeeMore] = useState(false);
+  const [seeAllMentions, setSeeAllMentions] = useState(false);
   const { data: sentences, isLoading: isSentencesLoading } =
     useListSentencesQuery({
       component: selected,
@@ -254,89 +256,101 @@ export function MiniDictionary({
 
       {seeMore && (
         <div className="mt-8">
-          <h4 className="font-bold mb-4 uppercase text-rose-400">
-            Example Sentences
-          </h4>
-          {isSentencesLoading ? (
-            <div className="my-4">
-              <AnimatedLoadingText
-                className="text-xl my-8"
-                message="loading sentences..."
-              />
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {sentences?.slice(0, 3)?.map((sentence) => {
-                return (
-                  <div key={sentence.id}>
-                    {lang === "zh" && isNonRomanLang(lang) && (
-                      <p className="text-gray-600 dark:text-gray-400">
-                        {sentence?.pinyin || sentence?.roman}
-                      </p>
-                    )}
-                    <p
-                      className={
-                        lang === "zh" ? "text-2xl" : "text-[16px] sm:text-xl"
-                      }
-                    >
-                      {sentence?.hanzi || sentence?.input}
-                    </p>
-                    <p className="text-gray-500">{sentence?.en}</p>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+          <Tabs defaultValue="mentions">
+            <TabsList className="space-x-4 bg-white dark:bg-black">
+              <TabsTrigger value="mentions">
+                Mentions
+              </TabsTrigger>
+              <TabsTrigger value="sentences">
+                Example Sentences
+              </TabsTrigger>
+            </TabsList>
 
-          {mentionedTranscriptions && mentionedTranscriptions.length > 0 && (
-            <div className="mt-8">
-              <h4 className="font-bold mb-4 uppercase text-blue-400">
-                Mentions in This Content
-              </h4>
-              <div className="space-y-4">
-                {mentionedTranscriptions
-                  ?.slice(0, 3)
-                  ?.map(
-                    (transcription: ContentTranscription, index: number) => {
-                      return (
-                        <div
-                          key={transcription.id + "-" + index}
-                          className="flex gap-3 items-center"
-                        >
-                          <div className="flex-shrink-0">
-                            {seekAndPlay && (
-                              <button
-                                // className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
-                                onClick={() => seekAndPlay(transcription.start)}
-                                title="Play from this time"
+            <TabsContent value="mentions" className="mt-6">
+              {mentionedTranscriptions && mentionedTranscriptions.length > 0 ? (
+                <div className="space-y-4">
+                  {(seeAllMentions ? mentionedTranscriptions : mentionedTranscriptions.slice(0, 3))
+                    ?.map(
+                      (transcription: ContentTranscription, index: number) => {
+                        return (
+                          <div
+                            key={transcription.id + "-" + index}
+                            className="flex gap-3 items-center"
+                          >
+                            <div className="flex-shrink-0">
+                              {seekAndPlay && (
+                                <button
+                                  onClick={() => seekAndPlay(transcription.start)}
+                                  title="Play from this time"
+                                >
+                                  <Icons.play className="w-4 h-4" />
+                                </button>
+                              )}
+                            </div>
+                            <div className="flex-1">
+                              <p
+                                className={
+                                  lang === "zh"
+                                    ? "text-xl"
+                                    : "text-[14px] sm:text-lg"
+                                }
                               >
-                                <Icons.play className="w-4 h-4" />
-                              </button>
-                            )}
+                                {transcription?.hanzi || transcription?.input}
+                              </p>
+                            </div>
                           </div>
-                          <div className="flex-1">
-                            <p
-                              className={
-                                lang === "zh"
-                                  ? "text-xl"
-                                  : "text-[14px] sm:text-lg"
-                              }
-                            >
-                              {transcription?.hanzi || transcription?.input}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    }
+                        );
+                      }
+                    )}
+                  {mentionedTranscriptions.length > 3 && (
+                    <button
+                      onClick={() => setSeeAllMentions(!seeAllMentions)}
+                      className="text-sm text-blue-500 hover:text-blue-600 cursor-pointer"
+                    >
+                      {seeAllMentions ? "Show less" : `+${mentionedTranscriptions.length - 3} more mentions`}
+                    </button>
                   )}
-                {mentionedTranscriptions.length > 3 && (
-                  <p className="text-sm text-gray-400 dark:text-gray-500">
-                    +{mentionedTranscriptions.length - 3} more mentions
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
+                </div>
+              ) : (
+                <p className="text-gray-500">No mentions in this content</p>
+              )}
+            </TabsContent>
+
+            <TabsContent value="sentences" className="mt-6">
+              {isSentencesLoading ? (
+                <div className="my-4">
+                  <AnimatedLoadingText
+                    className="text-xl my-8"
+                    message="loading sentences..."
+                  />
+                </div>
+              ) : sentences && sentences.length > 0 ? (
+                <div className="space-y-4">
+                  {sentences?.slice(0, 3)?.map((sentence) => {
+                    return (
+                      <div key={sentence.id}>
+                        {lang === "zh" && isNonRomanLang(lang) && (
+                          <p className="text-gray-600 dark:text-gray-400">
+                            {sentence?.pinyin || sentence?.roman}
+                          </p>
+                        )}
+                        <p
+                          className={
+                            lang === "zh" ? "text-2xl" : "text-[16px] sm:text-xl"
+                          }
+                        >
+                          {sentence?.hanzi || sentence?.input}
+                        </p>
+                        <p className="text-gray-500">{sentence?.en}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-gray-500">No example sentences available</p>
+              )}
+            </TabsContent>
+          </Tabs>
         </div>
       )}
 

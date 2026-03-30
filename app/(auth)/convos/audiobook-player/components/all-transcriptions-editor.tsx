@@ -4,7 +4,7 @@ import { useContentEditStore } from "@/components/youtube-page/use-content-edit-
 import { ContentTranscription } from "@/domain/content/content.api";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { formatTime } from "../../_play/utils";
 
 type LocalTranscription = ContentTranscription & { _isNew?: boolean };
@@ -33,10 +33,27 @@ export const AllTranscriptionsEditor = ({
     "settings"
   );
   const [viewMode, setViewMode] = useState<"current" | "all">("current");
+  const [autoScrollWhilePlaying, setAutoScrollWhilePlaying] = useState(true);
 
   const transcriptionRefs = useRef<{ [key: string]: HTMLDivElement | null }>(
     {}
   );
+
+  useEffect(() => {
+    if (!autoScrollWhilePlaying || !content) return;
+
+    const transcriptions = localTranscriptions || content.transcriptions || [];
+    const currentIndex = transcriptions.findIndex(
+      (t: LocalTranscription) => currentTime >= t.start && currentTime < t.end
+    );
+
+    if (currentIndex !== -1) {
+      const ref = transcriptionRefs.current[`trans-${currentIndex}`];
+      if (ref) {
+        ref.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, [currentTime, autoScrollWhilePlaying, localTranscriptions, content]);
 
   if (!content || !editMode) {
     return null;
@@ -226,12 +243,12 @@ export const AllTranscriptionsEditor = ({
   }) => {
     if (!value && !transcriptions[index]?._isNew) return null;
     return (
-      <div className="flex items-start gap-3">
-        <label className="text-xs font-medium text-gray-600 dark:text-gray-400 w-16 shrink-0 pt-2">
+      <div className="flex items-start gap-4">
+        <label className="text-xs font-medium text-gray-400 dark:text-gray-500 w-20 shrink-0 pt-2.5">
           {label}
         </label>
         <textarea
-          className="flex-1 text-sm border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 dark:bg-gray-900 resize-y min-h-[2.5rem] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
+          className="flex-1 text-sm border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2.5 dark:bg-gray-900 resize-y min-h-[2.5rem] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all leading-relaxed"
           value={value || ""}
           onChange={(e) => updateLocalField(index, field, e.target.value)}
           placeholder={label}
@@ -246,15 +263,15 @@ export const AllTranscriptionsEditor = ({
 
   return (
     <div className="flex flex-col  mb-80 h-[75vh] overflow-hidden">
-      <div className="flex gap-4 mb-6 sticky top-0 bg-white dark:bg-black z-10 py-3 px-4 border-b dark:border-gray-800">
+      <div className="flex gap-4 mb-8 sticky top-0 bg-white dark:bg-black z-10 py-4 px-4 border-b border-gray-100 dark:border-gray-800">
         <button
-          className="px-5 py-2 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
+          className="px-6 py-2.5 border border-gray-200 dark:border-gray-800 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900 transition-all font-light text-sm"
           onClick={handleCancel}
         >
           Cancel
         </button>
         <button
-          className="px-5 py-2 border rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 py-2.5 border border-blue-500 bg-blue-500 text-white rounded-xl hover:bg-blue-600 hover:border-blue-600 transition-all font-light text-sm disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleSave}
           disabled={updateContentMutation.isPending}
         >
@@ -264,7 +281,7 @@ export const AllTranscriptionsEditor = ({
 
       <div className="flex gap-6 h-full px-4">
         <div className="w-[70%] overflow-y-auto pr-4">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-6">
             {transcriptions.map((transcription, index) => {
               return (
                 <div
@@ -272,17 +289,17 @@ export const AllTranscriptionsEditor = ({
                   ref={(el) => {
                     transcriptionRefs.current[`trans-${index}`] = el;
                   }}
-                  className="flex flex-col gap-3 border border-gray-200 dark:border-gray-800 rounded-xl p-5 bg-white dark:bg-gray-900/50 hover:shadow-md dark:hover:shadow-lg transition-shadow"
+                  className="flex flex-col gap-4 border border-gray-100 dark:border-gray-800 rounded-2xl p-7 bg-white dark:bg-gray-900/50 hover:shadow-lg hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-300"
                 >
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <div className="flex items-center gap-2">
-                      <label className="text-xs font-medium text-gray-600 dark:text-gray-400 w-10">
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <div className="flex items-center gap-3">
+                      <label className="text-xs font-medium text-gray-400 dark:text-gray-500 w-10">
                         Start
                       </label>
                       <input
                         type="number"
                         step="0.1"
-                        className="w-28 text-sm border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-32 text-sm border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2.5 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                         value={transcription.start}
                         onChange={(e) =>
                           updateLocalField(
@@ -293,7 +310,7 @@ export const AllTranscriptionsEditor = ({
                         }
                       />
                       <button
-                        className="text-xs px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        className="text-xs px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 transition-all"
                         onClick={() =>
                           updateLocalField(index, "start", currentTime)
                         }
@@ -302,14 +319,14 @@ export const AllTranscriptionsEditor = ({
                         Now
                       </button>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <label className="text-xs font-medium text-gray-600 dark:text-gray-400 w-10">
+                    <div className="flex items-center gap-3">
+                      <label className="text-xs font-medium text-gray-400 dark:text-gray-500 w-10">
                         End
                       </label>
                       <input
                         type="number"
                         step="0.1"
-                        className="w-28 text-sm border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-32 text-sm border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2.5 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                         value={transcription.end}
                         onChange={(e) =>
                           updateLocalField(
@@ -320,7 +337,7 @@ export const AllTranscriptionsEditor = ({
                         }
                       />
                       <button
-                        className="text-xs px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        className="text-xs px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 transition-all"
                         onClick={() =>
                           updateLocalField(index, "end", currentTime)
                         }
@@ -330,13 +347,13 @@ export const AllTranscriptionsEditor = ({
                       </button>
                     </div>
                     <button
-                      className="text-xs px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
+                      className="text-xs px-5 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 transition-all font-light"
                       onClick={() => seekAndPlay(transcription.start)}
                       title="Play from this time"
                     >
                       Play
                     </button>
-                    <span className="text-sm text-gray-500 dark:text-gray-500 font-medium">
+                    <span className="text-sm text-gray-400 dark:text-gray-500 font-light">
                       {formatTime(transcription.start)} -{" "}
                       {formatTime(transcription.end)}
                     </span>
@@ -381,23 +398,23 @@ export const AllTranscriptionsEditor = ({
                     />
                   </div>
 
-                  <div className="flex items-center gap-2 flex-wrap pt-2 border-t border-gray-100 dark:border-gray-800">
+                  <div className="flex items-center gap-3 flex-wrap pt-4 border-t border-gray-100 dark:border-gray-800">
                     <button
-                      className="text-xs px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
+                      className="text-xs px-5 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 transition-all font-light"
                       onClick={() => handleAddBefore(index)}
                       title="Add new transcription before"
                     >
                       + Before
                     </button>
                     <button
-                      className="text-xs px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
+                      className="text-xs px-5 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 transition-all font-light"
                       onClick={() => handleAddAfter(index)}
                       title="Add new transcription after"
                     >
                       + After
                     </button>
                     <button
-                      className="text-xs px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
+                      className="text-xs px-5 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 transition-all font-light"
                       onClick={() => handleSplit(index)}
                       title="Split at midpoint"
                     >
@@ -405,7 +422,7 @@ export const AllTranscriptionsEditor = ({
                     </button>
                     {index > 0 && (
                       <button
-                        className="text-xs px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
+                        className="text-xs px-5 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 transition-all font-light"
                         onClick={() => handleMerge(index, "up")}
                         title="Merge with transcription above"
                       >
@@ -414,7 +431,7 @@ export const AllTranscriptionsEditor = ({
                     )}
                     {index < transcriptions.length - 1 && (
                       <button
-                        className="text-xs px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
+                        className="text-xs px-5 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 transition-all font-light"
                         onClick={() => handleMerge(index, "down")}
                         title="Merge with transcription below"
                       >
@@ -422,7 +439,7 @@ export const AllTranscriptionsEditor = ({
                       </button>
                     )}
                     <button
-                      className="text-xs px-4 py-2 border border-red-200 dark:border-red-900 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors font-medium ml-auto"
+                      className="text-xs px-5 py-2.5 border border-red-200 dark:border-red-900 rounded-xl text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950 hover:border-red-300 dark:hover:border-red-800 transition-all font-light ml-auto"
                       onClick={() => handleDelete(index)}
                       title="Delete this transcription"
                     >
@@ -435,23 +452,23 @@ export const AllTranscriptionsEditor = ({
           </div>
         </div>
 
-        <div className="w-[30%] border-l border-gray-200 dark:border-gray-800 flex flex-col shrink-0 bg-gray-50 dark:bg-gray-900/30">
-          <div className="flex border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+        <div className="w-[30%] border-l border-gray-100 dark:border-gray-800 flex flex-col shrink-0 bg-white dark:bg-gray-900">
+          <div className="flex gap-1 p-2 bg-gray-50 dark:bg-gray-950/50">
             <button
-              className={`flex-1 py-3 px-5 text-sm font-medium transition-colors ${
+              className={`flex-1 py-3 px-6 text-sm font-light transition-all duration-300 rounded-xl ${
                 activeTab === "settings"
-                  ? "border-b-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400"
-                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm"
+                  : "text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
               }`}
               onClick={() => setActiveTab("settings")}
             >
               Settings
             </button>
             <button
-              className={`flex-1 py-3 px-5 text-sm font-medium transition-colors ${
+              className={`flex-1 py-3 px-6 text-sm font-light transition-all duration-300 rounded-xl ${
                 activeTab === "suggestions"
-                  ? "border-b-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400"
-                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm"
+                  : "text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
               }`}
               onClick={() => setActiveTab("suggestions")}
             >
@@ -459,45 +476,73 @@ export const AllTranscriptionsEditor = ({
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-6">
+          <div className="flex-1 overflow-y-auto p-8">
             {activeTab === "settings" ? (
-              <div className="flex flex-col gap-6">
-                <div>
-                  <label className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-3 block">
+              <div className="flex flex-col gap-10">
+                <div className="space-y-4">
+                  <label className="text-lg font-light text-gray-800 dark:text-gray-200 tracking-wide">
+                    Auto Scroll
+                  </label>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 font-light leading-relaxed">
+                    Automatically scroll to the current transcription while playing
+                  </p>
+                  <button
+                    onClick={() => setAutoScrollWhilePlaying(!autoScrollWhilePlaying)}
+                    className={`relative w-16 h-8 rounded-full transition-all duration-300 ${
+                      autoScrollWhilePlaying
+                        ? "bg-blue-500"
+                        : "bg-gray-300 dark:bg-gray-600"
+                    }`}
+                  >
+                    <span
+                      className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-lg transition-all duration-300 ${
+                        autoScrollWhilePlaying ? "left-9" : "left-1"
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  <label className="text-lg font-light text-gray-800 dark:text-gray-200 tracking-wide">
                     View Mode
                   </label>
-                  <div className="flex gap-3">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 font-light leading-relaxed">
+                    Choose how transcriptions are displayed
+                  </p>
+                  <div className="flex gap-4">
                     <button
-                      className={`flex-1 py-3 px-4 text-sm border rounded-lg transition-all ${
+                      className={`flex-1 py-4 px-5 text-sm border-2 rounded-2xl transition-all duration-300 ${
                         viewMode === "current"
-                          ? "bg-blue-600 text-white border-blue-600 shadow-md"
-                          : "border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800"
+                          ? "border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/20"
+                          : "border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600"
                       }`}
                       onClick={() => setViewMode("current")}
                     >
-                      Current Transcription
+                      Current
                     </button>
                     <button
-                      className={`flex-1 py-3 px-4 text-sm border rounded-lg transition-all ${
+                      className={`flex-1 py-4 px-5 text-sm border-2 rounded-2xl transition-all duration-300 ${
                         viewMode === "all"
-                          ? "bg-blue-600 text-white border-blue-600 shadow-md"
-                          : "border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800"
+                          ? "border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/20"
+                          : "border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600"
                       }`}
                       onClick={() => setViewMode("all")}
                     >
-                      All Transcriptions
+                      All
                     </button>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col gap-4">
-                <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900 rounded-xl p-4">
-                  <p className="text-sm text-amber-800 dark:text-amber-200 font-medium">
-                    You still have {problemTranscriptions.length} transcription
-                    {problemTranscriptions.length !== 1 ? "s" : ""} with issues
-                  </p>
-                </div>
+              <div className="flex flex-col gap-6">
+                {problemTranscriptions.length > 0 && (
+                  <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 rounded-2xl p-6">
+                    <p className="text-sm text-amber-800 dark:text-amber-200 font-light">
+                      {problemTranscriptions.length} transcription
+                      {problemTranscriptions.length !== 1 ? "s" : ""} need attention
+                    </p>
+                  </div>
+                )}
                 <div className="flex flex-col gap-3">
                   {problemTranscriptions.map((transcription, index) => {
                     const originalIndex = transcriptions.findIndex(
@@ -512,25 +557,26 @@ export const AllTranscriptionsEditor = ({
                     return (
                       <button
                         key={transcription.id}
-                        className="text-left p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-white dark:hover:bg-gray-800 hover:shadow-md transition-all text-sm group"
+                        className="text-left p-5 border border-gray-200 dark:border-gray-800 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:shadow-lg hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-300 group"
                         onClick={() => scrollToTranscription(originalIndex)}
                       >
-                        <div className="font-semibold text-gray-800 dark:text-gray-200 mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <div className="font-light text-gray-900 dark:text-gray-100 mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                           {formatTime(transcription.start)} -{" "}
                           {formatTime(transcription.end)}
                         </div>
-                        <div className="text-xs text-red-600 dark:text-red-400 font-medium">
+                        <div className="text-xs text-amber-600 dark:text-amber-400 font-light">
                           Missing {issueType}
                         </div>
                       </button>
                     );
                   })}
                   {problemTranscriptions.length === 0 && (
-                    <div className="text-center py-8">
-                      <p className="text-sm text-green-600 dark:text-green-400 font-medium mb-2">
-                        ✓ No issues found
+                    <div className="text-center py-12">
+                      <div className="text-4xl mb-4">✓</div>
+                      <p className="text-sm text-green-600 dark:text-green-400 font-light mb-2">
+                        All good
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-500">
+                      <p className="text-xs text-gray-400 dark:text-gray-500 font-light">
                         All transcriptions have valid time ranges
                       </p>
                     </div>

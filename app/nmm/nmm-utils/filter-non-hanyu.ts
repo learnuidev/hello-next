@@ -1,6 +1,6 @@
 import { characterMap } from "../character-map";
 
-const nonHanYuChars = [
+export const nonHanYuChars = [
   "？",
   "0",
   "1",

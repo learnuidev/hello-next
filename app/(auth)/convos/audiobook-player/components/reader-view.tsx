@@ -1,4 +1,5 @@
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import pinyin from "pinyin";
 
 import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { CharacterItem } from "@/components/_select-character/character-item";
@@ -14,10 +15,15 @@ import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useContentSearchHistory } from "../hooks/use-content-search-history";
 import { EnView } from "./en-view";
 import { InputView } from "./input-view";
+import {
+  filterNonHanYu,
+  nonHanYuChars,
+} from "@/app/nmm/nmm-utils/filter-non-hanyu";
 
 function ReaderViewChinese({
   currentTranscription,
   className,
+  currentTime,
   seekAndPlay,
   data,
   contentId,
@@ -27,12 +33,12 @@ function ReaderViewChinese({
     hanzi: string;
     pinyin?: string;
     roman?: string;
-    start?: number;
-    end?: number;
+    start: number;
+    end: number;
   }[];
 }) {
   const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
-  const defautClassName = "mb-4 gap-0 space-y-0";
+  const defautClassName = "py-2 gap-0 space-y-0";
 
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
@@ -53,6 +59,7 @@ function ReaderViewChinese({
         {data?.map((item, idx) => {
           const isSelected =
             selected && selected === (item?.hanzi || item?.input);
+
           return (
             <span
               onClick={(e) => {
@@ -92,11 +99,11 @@ function ReaderViewChinese({
               )}
 
               <span
-                className={
+                className={cn(
                   currentTranscription?.lang === "zh"
                     ? "text-lg sm:text-xl lg:text-2xl"
                     : "text-[16px] sm:text-xl"
-                }
+                )}
               >
                 {smartSplit({
                   input: item?.hanzi || item?.input,
@@ -117,7 +124,12 @@ function ReaderViewChinese({
                             : "",
                           !isSelected &&
                             containsInUnknown &&
-                            "font-light dark:!text-pink-300 !text-pink-500"
+                            "font-light dark:!text-pink-300 !text-pink-500",
+
+                          currentTime > item?.start &&
+                            currentTime < item?.end &&
+                            !nonHanYuChars.includes(charItem) &&
+                            "underline underline-offset-8"
                         )}
                       />
                     </span>
@@ -133,6 +145,7 @@ function ReaderViewChinese({
 }
 
 export function ReaderView({
+  currentTime,
   hideEnglish = false,
   currentTranscription,
   seekAndPlay,
@@ -146,7 +159,17 @@ export function ReaderView({
     lang: currentTranscription?.lang,
   });
 
-  const data: any = currentTranscription?.words || _segmentedData;
+  const data: any =
+    currentTranscription?.words?.map((word) => {
+      const pinyinItem = pinyin(word?.input || "")
+        .map((item) => item[0])
+        .join("");
+      return {
+        ...word,
+        pinyin: pinyinItem,
+      };
+    }) || _segmentedData;
+
   const showEn = useBrightModeStore((state) => state.showEn);
 
   const defautClassName = "mb-4  gap-0 space-y-0";
@@ -155,6 +178,7 @@ export function ReaderView({
     <div>
       {currentTranscription?.lang === "zh" && data ? (
         <ReaderViewChinese
+          currentTime={currentTime}
           className={className}
           data={data}
           containsChinglish={containsChinglish}
@@ -173,6 +197,7 @@ export function ReaderView({
             </p>
           ) : null}
           <InputView
+            currentTime={currentTime}
             containsChinglish={containsChinglish}
             currentTranscription={currentTranscription}
             seekAndPlay={seekAndPlay}
@@ -186,6 +211,7 @@ export function ReaderView({
         ? null
         : showEn && (
             <EnView
+              currentTime={currentTime}
               containsChinglish={containsChinglish}
               currentTranscription={currentTranscription}
               seekAndPlay={seekAndPlay}

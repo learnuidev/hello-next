@@ -70,6 +70,7 @@ export const ParagraphView = ({
                     if (readMode) {
                       return (
                         <ReaderView
+                          currentTime={currentTime}
                           hideEnglish
                           currentTranscription={transcription}
                           containsChinglish={false}

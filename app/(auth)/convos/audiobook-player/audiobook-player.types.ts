@@ -8,4 +8,5 @@ export interface CurrentTranscriptionProps {
   contentId?: string;
   lang: string;
   hideEnglish?: boolean;
+  currentTime: number;
 }

@@ -85,7 +85,7 @@ export const ParagraphView = ({
                             isPlaying
                               ? transcription.start < currentTime &&
                                 transcription.end > currentTime
-                                ? "dark:text-white text-black bg-yellow-200 dark:bg-[rgb(9,10,11)]"
+                                ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
                                 : "!text-gray-500 opacity-50"
                               : "dark:text-white text-black"
                           )}

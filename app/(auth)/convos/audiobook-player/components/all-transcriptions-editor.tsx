@@ -506,7 +506,7 @@ export const AllTranscriptionsEditor = ({
                     Smart Set
                   </label>
                   <p className="text-sm text-gray-500 dark:text-[rgb(140,140,140)] font-light leading-relaxed">
-                    Automatically set adjacent transcriptions' start/end times
+                    Automatically set adjacent transcriptions start/end times
                   </p>
                   <button
                     onClick={() => setSmartSet(!smartSet)}

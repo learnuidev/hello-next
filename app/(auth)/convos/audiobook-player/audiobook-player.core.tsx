@@ -5,10 +5,8 @@ import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-contex
 import { ChinglishButton } from "@/components/chinglish-button";
 import { EnButton } from "@/components/en-button";
 import { PinyinButton } from "@/components/pinyin-button";
-import {
-  ParagraphButton,
-  useParagraphMode,
-} from "@/components/settings-dialog/paragraph-button";
+import { ReadModeButton } from "@/components/read-mode-button";
+
 import { PreviewButton } from "@/components/settings-dialog/preview-button";
 import { ContentEditButton } from "@/components/youtube-page/content-edit-button";
 import {
@@ -21,11 +19,10 @@ import { cn } from "@/lib/utils";
 import ReactPlayer from "react-player";
 import { formatTime } from "../_play/utils";
 import { AllTranscriptionsEditor } from "./components/all-transcriptions-editor";
-import { CurrentTranscriptionView } from "./components/current-transcription-view";
-import { useAudioBookState } from "./hooks/use-audiobook-state";
-import { ParagraphView } from "./components/paragraph-view";
-import { ReadModeButton } from "@/components/read-mode-button";
 import { CharacterMenuBar } from "./components/character-menu-bar";
+import { ParagraphView } from "./components/paragraph-view";
+import { useAudioBookState } from "./hooks/use-audiobook-state";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -52,9 +49,8 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
     seek,
   } = useAudioBookState(content);
 
-  const { paragraphMode } = useParagraphMode();
+  const showEn = useBrightModeStore((state) => state.showEn);
 
-  const setHistory = usePlayHistoryStore((state) => state.setHistory);
   const { contextId, setNewContextId } = useContextPlayContextState();
 
   const editMode = useContentEditStore((state) => state.editMode);
@@ -92,7 +88,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   currentTime={currentTime}
                   seekAndPlay={seekAndPlay}
                 />
-              ) : paragraphMode === "paragraph" ? (
+              ) : (
                 <ParagraphView
                   content={content}
                   currentTranscription={currentTranscription}
@@ -100,19 +96,6 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   seek={seek}
                   isPlaying
                 />
-              ) : currentTranscription ? (
-                <CurrentTranscriptionView
-                  currentTime={currentTime}
-                  containsChinglish={containsChinglish}
-                  seekAndPlay={seekAndPlay}
-                  currentTranscription={currentTranscription}
-                  contentId={content.id}
-                  lang={content.lang}
-                />
-              ) : (
-                <div className=" dark:text-black text-white text-center mt-8 sm:mt-24 min-w-5xl mx-auto">
-                  ...
-                </div>
               )}
             </div>
           </div>
@@ -179,22 +162,18 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 <Icons.rotateRight className="text-xl" />
               </button>
 
-              {/* <SearchOnlyPinyinButton className="text-2xl" /> */}
-
               <>
                 <PinyinButton className="text-2xl" />
-                {paragraphMode === "paragraph" ? null : (
-                  <>
-                    <EnButton className="text-2xl" />
-                  </>
-                )}
+
+                <EnButton className="text-2xl" />
+
                 <ReadModeButton className="text-2xl" />
-                {containsChinglish && <ChinglishButton className="text-2xl" />}
+                {showEn && containsChinglish && (
+                  <ChinglishButton className="text-2xl" />
+                )}
               </>
 
               <PreviewButton />
-
-              <ParagraphButton />
             </div>
 
             <div className="flex items-center gap-4">

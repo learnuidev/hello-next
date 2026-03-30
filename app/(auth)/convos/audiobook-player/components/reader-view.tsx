@@ -38,7 +38,7 @@ function ReaderViewChinese({
   }[];
 }) {
   const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
-  const defautClassName = "py-2 gap-0 space-y-0";
+  const defautClassName = "gap-0 space-y-0";
 
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
 

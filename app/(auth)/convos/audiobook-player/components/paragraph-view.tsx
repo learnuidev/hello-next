@@ -1,16 +1,16 @@
 import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { CharacterItem } from "@/components/_select-character/character-item";
-import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
+import { useReadModeState } from "@/components/read-mode-button";
+import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
+import { getActiveTranscriptions } from "@/components/youtube-page/get-active-transcriptions";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 import { ContentTranscription, IContent } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
-import { splitEvery } from "ramda";
-import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useMemo } from "react";
-import { getActiveTranscriptions } from "@/components/youtube-page/get-active-transcriptions";
+import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { ReaderView } from "./reader-view";
-import { useReadModeState } from "@/components/read-mode-button";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 
 export const ParagraphView = ({
   content,
@@ -25,13 +25,15 @@ export const ParagraphView = ({
   isPlaying: boolean;
   seek: (time: number) => void;
 }) => {
-  const { selected, setSelected } = useSelectedItem();
+  const showEn = useBrightModeStore((state) => state.showEn);
 
   const { data: contentUnknowns } = useListContentUnknownsQuery(content.id);
 
   const { setShowMenuBar } = useCharacterMenuBarStore();
 
-  const active = 30;
+  const active = 16;
+
+  const { showChinglish, setShowChinglish } = useChinglishState();
 
   const group = useMemo(() => {
     return getActiveTranscriptions({
@@ -45,7 +47,7 @@ export const ParagraphView = ({
 
   return (
     <div className={cn("px-4 pb-24")}>
-      <div className="sticky top-0 pt-4 sm:pt-12 pb-[4px] sm:pb-12 bg-gray-50 dark:bg-[rgb(9,10,11)]">
+      <div className="sticky top-0 py-4 bg-gray-50 dark:bg-[rgb(9,10,11)]">
         <div className="pb-4">
           <div
             className={cn(
@@ -54,7 +56,11 @@ export const ParagraphView = ({
             )}
           >
             <p className="space-x-2 font-extralight pb-[4px] overflow sm:text-xl text-sm">
-              {currentTranscription?.en}
+              {showEn
+                ? showChinglish
+                  ? currentTranscription?.chinglish || currentTranscription?.en
+                  : currentTranscription?.en
+                : null}
             </p>
           </div>
         </div>

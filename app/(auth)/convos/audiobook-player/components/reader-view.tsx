@@ -1,0 +1,193 @@
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+
+import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
+import { CharacterItem } from "@/components/_select-character/character-item";
+import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
+import { useSearchOnlyPinyinState } from "@/components/search-only-pinyin-button";
+import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
+import { smartSplit } from "@/components/youtube-page/utils/smart-split";
+import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
+import { formatRoman } from "@/lib/format-roman";
+import { cn } from "@/lib/utils";
+import { useSegmentTextQuery } from "@/libs/utils/segment-text";
+import { CurrentTranscriptionProps } from "../audiobook-player.types";
+import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
+import { useContentSearchHistory } from "../hooks/use-content-search-history";
+import { EnView } from "./en-view";
+import { InputView } from "./input-view";
+
+function ReaderViewInner({
+  currentTranscription,
+  className,
+  seekAndPlay,
+  data,
+  contentId,
+}: CurrentTranscriptionProps & {
+  data: {
+    input: string;
+    hanzi: string;
+    pinyin?: string;
+    roman?: string;
+    start?: number;
+    end?: number;
+  }[];
+}) {
+  const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
+  const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
+
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
+
+  const { selected, setSelected } = useSelectedItem();
+
+  const { setShowMenuBar } = useCharacterMenuBarStore();
+
+  const { setShowSearchOnlyPinyin, showSearchOnlyPinyin } =
+    useSearchOnlyPinyinState();
+
+  const { searchHistory, addSearchHistory } = useContentSearchHistory({
+    contentId: contentId || "",
+  });
+
+  return (
+    <div className={cn(defautClassName, className)}>
+      <div className={cn(defautClassName, className)}>
+        {data?.map((item, idx) => {
+          const containsHistory = searchHistory?.find(
+            (historyItem: any) =>
+              historyItem?.input === item?.hanzi || item?.input
+          );
+          return (
+            <span
+              onClick={(e) => {
+                const selectedText = getSelectedText();
+
+                const text =
+                  selectedText && selectedText?.length < 36
+                    ? selectedText
+                    : item.hanzi || item?.input;
+
+                setShowMenuBar({
+                  text,
+                  position: { x: e.clientX, y: e.clientY },
+                  startTime: item?.start ?? null,
+                });
+              }}
+              className={cn(
+                "inline-flex flex-col items-center justify-center",
+
+                ["，", "。"]?.includes(item?.input)
+                  ? ""
+                  : "px-[2px] py-[0px] sm:px-[4px]",
+                "leading-none"
+              )}
+              key={`${JSON.stringify(item)}-${idx}-${idx}`}
+            >
+              {showPinyin && (
+                <span
+                  className={cn(
+                    "text-sm ",
+
+                    "dark:text-gray-400 text-gray-800"
+                  )}
+                >
+                  {formatRoman(item)}
+                </span>
+              )}
+
+              <span
+                className={
+                  currentTranscription?.lang === "zh"
+                    ? "text-lg sm:text-xl lg:text-2xl"
+                    : "text-[16px] sm:text-xl"
+                }
+              >
+                {smartSplit({
+                  input: item?.hanzi || item?.input,
+                  lang: currentTranscription?.lang,
+                })?.map((charItem: any, charIdx: any) => {
+                  const containsInUnknown = contentUnknowns?.items?.find(
+                    (val) => val?.input?.includes(charItem)
+                  );
+
+                  return (
+                    <span key={`${charItem}-pinin-view-${charIdx}`}>
+                      <CharacterItem
+                        character={charItem}
+                        className={
+                          containsInUnknown &&
+                          "font-light dark:!text-pink-300 !text-pink-500"
+                        }
+                      />
+                    </span>
+                  );
+                })}
+              </span>
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export function ReaderView({
+  currentTranscription,
+  seekAndPlay,
+  containsChinglish,
+  className,
+  contentId,
+  lang,
+}: CurrentTranscriptionProps) {
+  const { data: _segmentedData } = useSegmentTextQuery({
+    text: currentTranscription?.input,
+    lang: currentTranscription?.lang,
+  });
+
+  const data: any = currentTranscription?.words || _segmentedData;
+  const showEn = useBrightModeStore((state) => state.showEn);
+
+  const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
+
+  return (
+    <div>
+      {currentTranscription?.lang === "zh" && data ? (
+        <ReaderViewInner
+          className={className}
+          data={data}
+          containsChinglish={containsChinglish}
+          currentTranscription={currentTranscription}
+          seekAndPlay={seekAndPlay}
+          contentId={contentId}
+          lang={lang}
+        />
+      ) : (
+        <div className={cn(defautClassName, className)}>
+          {isNonRomanLang(currentTranscription?.lang) ? (
+            <p>
+              {currentTranscription?.lang === "zh"
+                ? currentTranscription?.pinyin
+                : currentTranscription?.roman}
+            </p>
+          ) : null}
+          <InputView
+            containsChinglish={containsChinglish}
+            currentTranscription={currentTranscription}
+            seekAndPlay={seekAndPlay}
+            contentId={contentId}
+            lang={lang}
+          />
+        </div>
+      )}
+
+      {showEn && (
+        <EnView
+          containsChinglish={containsChinglish}
+          currentTranscription={currentTranscription}
+          seekAndPlay={seekAndPlay}
+          contentId={contentId}
+          lang={lang}
+        />
+      )}
+    </div>
+  );
+}

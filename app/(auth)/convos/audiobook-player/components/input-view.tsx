@@ -1,0 +1,61 @@
+import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
+import { CharacterItem } from "@/components/_select-character/character-item";
+import { smartSplit } from "@/components/youtube-page/utils/smart-split";
+import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
+import { cn } from "@/lib/utils";
+import { CurrentTranscriptionProps } from "../audiobook-player.types";
+import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
+
+export function InputView({
+  currentTranscription,
+  seekAndPlay,
+  containsChinglish,
+  contentId,
+}: CurrentTranscriptionProps) {
+  const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
+  const { setShowMenuBar } = useCharacterMenuBarStore();
+
+  return (
+    <p
+      className={cn(
+        currentTranscription?.lang === "zh"
+          ? "text-lg sm:text-3xl"
+          : "text-[16px] sm:text-xl"
+      )}
+    >
+      {smartSplit({
+        input: currentTranscription?.input,
+        lang: currentTranscription?.lang,
+      })?.map((item: any, idx: any) => {
+        const containsInUnknown = contentUnknowns?.items?.find((val) =>
+          val?.input?.includes(item)
+        );
+
+        return (
+          <span
+            key={`${item}-pinin-view-${idx}`}
+            onClick={(e) => {
+              const selectedText = getSelectedText();
+              const text =
+                selectedText && selectedText?.length < 36 ? selectedText : item;
+
+              setShowMenuBar({
+                text,
+                position: { x: e.clientX, y: e.clientY },
+                startTime: null,
+              });
+            }}
+          >
+            <CharacterItem
+              character={item}
+              className={
+                containsInUnknown &&
+                "font-light dark:!text-pink-300 !text-pink-500 text-2xl"
+              }
+            />
+          </span>
+        );
+      })}
+    </p>
+  );
+}

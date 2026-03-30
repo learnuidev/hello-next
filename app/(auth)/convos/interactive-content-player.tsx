@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import ReactPlayer from "react-player";
+import { motion, AnimatePresence } from "framer-motion";
 import { IContent } from "@/domain/content/content.api";
 import {
   PlayIcon,
@@ -13,6 +14,9 @@ import {
 export function InteractiveContentPlayer({ content }: { content: IContent }) {
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [currentTranscription, setCurrentTranscription] = useState<
+    (typeof content.transcriptions)[0] | null
+  >(null);
   const playerRef = useRef<ReactPlayer>(null);
 
   const getCurrentTranscription = () => {
@@ -32,9 +36,11 @@ export function InteractiveContentPlayer({ content }: { content: IContent }) {
 
   const handleProgress = ({ playedSeconds }: { playedSeconds: number }) => {
     setCurrentTime(playedSeconds);
+    const transcription = getCurrentTranscription();
+    if (transcription?.id !== currentTranscription?.id) {
+      setCurrentTranscription(transcription || null);
+    }
   };
-
-  const currentTranscription = getCurrentTranscription();
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -42,12 +48,17 @@ export function InteractiveContentPlayer({ content }: { content: IContent }) {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  return (
-    <main className="relative bg-black">
-      <div className="text-white/30 text-center text-sm font-mono tracking-wider">
-        {formatTime(currentTime)}
-      </div>
+  const getProgressWithinLine = () => {
+    if (!currentTranscription) return 0;
+    const duration = currentTranscription.end - currentTranscription.start;
+    const elapsed = currentTime - currentTranscription.start;
+    return Math.min(Math.max(elapsed / duration, 0), 1);
+  };
 
+  const progress = getProgressWithinLine();
+
+  return (
+    <main className="relative min-h-screen bg-black overflow-hidden">
       <div className="hidden">
         <ReactPlayer
           ref={playerRef}
@@ -58,29 +69,67 @@ export function InteractiveContentPlayer({ content }: { content: IContent }) {
         />
       </div>
 
-      <div className="relative flex flex-col items-center justify-center px-6 py-16">
+      <div className="relative flex flex-col items-center justify-center min-h-screen px-6 py-16">
         <div className="w-full max-w-2xl">
-          {currentTranscription && (
-            <div className="space-y-8">
-              <div className="text-center">
-                <div className="text-white text-3xl md:text-4xl font-light leading-relaxed tracking-wide mb-6">
-                  {currentTranscription.input}
-                </div>
+          <h1 className="text-white/90 text-xl font-light tracking-tight text-center mb-4">
+            {content.title}
+          </h1>
 
-                <div className="text-white/50 text-lg md:text-xl font-light leading-relaxed mb-4">
-                  {currentTranscription.pinyin}
-                </div>
+          <div className="h-96 relative flex items-center justify-center">
+            <AnimatePresence mode="wait">
+              {currentTranscription && (
+                <motion.div
+                  key={currentTranscription.id}
+                  initial={{ y: 100, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -100, opacity: 0 }}
+                  transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="text-center space-y-8 w-full"
+                >
+                  <div className="text-white/30 text-sm font-mono tracking-wider">
+                    {formatTime(currentTime)}
+                  </div>
 
-                <div className="text-white/40 text-base md:text-lg font-light leading-relaxed">
-                  {currentTranscription.roman}
-                </div>
+                  <motion.div
+                    className="text-white text-3xl md:text-4xl font-light leading-relaxed tracking-wide"
+                    style={{
+                      y: progress * -50,
+                      opacity: 1 - progress * 0.3,
+                    }}
+                  >
+                    {currentTranscription.input}
+                  </motion.div>
 
-                <div className="text-white/30 text-base md:text-lg font-light leading-relaxed mt-6">
-                  {currentTranscription.en}
-                </div>
-              </div>
-            </div>
-          )}
+                  <motion.div
+                    className="text-white/50 text-lg md:text-xl font-light leading-relaxed"
+                    style={{
+                      opacity: 1 - progress * 0.5,
+                    }}
+                  >
+                    {currentTranscription.pinyin}
+                  </motion.div>
+
+                  <motion.div
+                    className="text-white/40 text-base md:text-lg font-light leading-relaxed"
+                    style={{
+                      opacity: 1 - progress * 0.7,
+                    }}
+                  >
+                    {currentTranscription.roman}
+                  </motion.div>
+
+                  <motion.div
+                    className="text-white/30 text-base md:text-lg font-light leading-relaxed mt-6"
+                    style={{
+                      opacity: 1 - progress * 0.8,
+                    }}
+                  >
+                    {currentTranscription.en}
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
 

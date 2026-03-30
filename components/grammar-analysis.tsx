@@ -4,16 +4,59 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { useGetHskWordHandler } from "@/app/(auth)/convos/ai";
-
+import { Nothing } from "@/app/nmm/nothing";
 import { cleanString } from "@/data/convos/bm1/clean-string";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useGetLangParams } from "@/hooks/use-get-lang-params";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { ScrollArea } from "./ui/scroll-area";
 import { AnimatedLoadingText } from "./animated-loading-text";
-import { Nothing } from "@/app/nmm/nothing";
+import { ScrollArea } from "./ui/scroll-area";
+
+import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+import { Message } from "ai/react";
+
+function UserQueryUI({ message }: { message: Message }) {
+  //   const { data: queryClass } = useGetQueryClassifierQuery({
+  //     query: message?.content,
+  //   });
+
+  return (
+    <div>
+      <h2
+        className="text-2xl font-extralight dark:text-gray-500"
+        key={message.id}
+      >
+        {/* {"> "} */}
+        {message.content}
+      </h2>
+
+      {/* <h3>{JSON.stringify(queryClass)}</h3> */}
+
+      {/* <p className="text-gray-500">{queryClass as string}</p> */}
+    </div>
+  );
+}
+
+function isSerializable(content: string) {
+  try {
+    return Array.isArray(JSON.parse(content));
+  } catch (err) {
+    return false;
+  }
+}
+
+export const useGetHskWordHandler = () => {
+  const { data: hskWords } = useListHSKWordsQuery();
+
+  return (item: any) => {
+    const hskLevel = hskWords?.find(
+      (hskWord: any) => hskWord?.hanzi === (item?.input || item?.hanzi)
+    );
+
+    return hskLevel;
+  };
+};
 
 export function GrammarAnalysis({
   contentId,

@@ -14,16 +14,12 @@ import { useSelectedCharacter } from "./use-selected-character";
 
 import { PlusIcon } from "@/components/ui/icons";
 
-import { useIsNewContentFormEnabled } from "@/libs/posthog/hooks/use-is-new-content-form-enabled";
-
-import { useViewModeStore } from "./new-convo/use-viewmode-store";
+import { FloatingNavbar } from "@/components/floating-navbar";
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 import { useIsProMember } from "../plans/hooks/use-is-pro-member";
 import { ContentsList } from "./contents-list";
-import { NewContentV2 } from "./new-content-v2/new-content-v2";
-import { useIsFreeMember } from "../plans/hooks/use-is-free-member";
 import { NewBook } from "./new-book/new-book";
-import { FloatingNavbar } from "@/components/floating-navbar";
+import { NewContentV2 } from "./new-content-v2/new-content-v2";
 
 const useViewTypeStore = createIndexDBStore({
   name: "view-type",
@@ -44,11 +40,6 @@ const useViewType = () => {
 };
 
 const ContentViewMode = () => {
-  // const [addMode, setAddMode] = useState("");
-  // if (isNewContentEnabled) {
-  //   return <NewContent />;
-  // }
-
   const searchParams = useSearchParams();
 
   const addMode = searchParams.get("variant");
@@ -64,7 +55,6 @@ const ContentViewMode = () => {
           <button
             onClick={() => {
               router.push(`/convos?type=add&variant=book`);
-              // setAddMode("book");
             }}
           >
             Book
@@ -94,19 +84,12 @@ export default function Convos() {
   const [contentViewType, setViewType] = useViewType();
 
   const isProMember = useIsProMember();
-  const isFreeMember = useIsFreeMember();
 
-  const [isTocHidden, setIsTocHidden] = useState(false);
   const contentId = useConvosStore((state: any) => state?.convoId);
-
-  const viewMode = useViewModeStore((state: any) => state.viewMode);
-  const setViewMode = useViewModeStore((state: any) => state.setViewMode);
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
 
   const routeName = usePathname();
-
-  const isNewContentEnabled = useIsNewContentFormEnabled();
 
   const router = useRouter();
 
@@ -114,11 +97,6 @@ export default function Convos() {
   const addMode = searchParams.get("type");
 
   const isAdd = addMode === "add";
-
-  const toggleIsHidden = () => {
-    if (isTocHidden) {
-    }
-  };
 
   if (isAdd) {
     return <ContentViewMode />;

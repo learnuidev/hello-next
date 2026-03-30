@@ -18,7 +18,6 @@ import { Speak } from "./[content-id]/speak/speak";
 import { AI } from "./ai";
 import { AudiobookPlayer } from "./audiobook-player/audiobook-player";
 import { ContentSettings } from "./content-settings";
-import { PlayV3 } from "./play-v3/play-v3";
 import { isVideoUrl } from "./utils/is-video-url";
 import { isYoutube } from "./utils/is-youtube";
 
@@ -101,28 +100,11 @@ export const ConvoDetails = ({ contentId }: { contentId: string }) => {
     );
   }
   if (viewType === "ai") {
-    if (!isSuperAdmin) {
-      if (!isAuthor) {
-        return (
-          <Nothing message="You dont have the permission to view this page" />
-        );
-      }
-    }
-    return (
-      <div className="px-4 md:px-32">
-        <AI contentId={contentId} />
-      </div>
-    );
+    return <AI contentId={contentId} />;
   }
 
   if (viewType === "listen") {
     return <AudiobookPlayer contentId={contentId} />;
-
-    // return (
-    //   <div className="px-4 md:px-12">
-    //     <PlayV3 contentId={contentId} />
-    //   </div>
-    // );
   }
 
   if (viewType === "write") {

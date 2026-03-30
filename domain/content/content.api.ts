@@ -75,7 +75,7 @@ export interface IContent {
   description: string;
   author: string;
   lang: string;
-  audio: string;
+  audio: string; // audio url, can be youtube url, mp3, mp4
   userId: string;
   chapters: ContentChapter[];
   transcriptions: ContentTranscription[];

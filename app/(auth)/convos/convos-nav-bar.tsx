@@ -154,22 +154,7 @@ export const ConvosNavBar = () => {
         >
           <Icons.play />
         </Link>
-        {/* {content?.lang !== "zh" && ( */}
-        {/* <Link
-          onClick={() => {
-            setViewType("clipboard");
-            setMode("edit");
-          }}
-          href={`/convos/${contentId}?view=clipboard&start=${searchParams.get("start") || 0}`}
-          className={`transition ${
-            viewType === "clipboard"
-              ? "text-black dark:text-gray-200"
-              : "text-gray-200 dark:text-gray-600"
-          } hover:text-black dark:hover:text-white transition text-xl`}
-        >
-          <Icons.clipboard />
-        </Link> */}
-        {/* )} */}
+
         <Link
           onClick={() => {
             setViewType("speak");
@@ -200,7 +185,6 @@ export const ConvosNavBar = () => {
           </Link>
         )}
 
-        {/* {content?.lang === "zh" && ( */}
         <Link
           href={`/convos/${contentId}?view=insights&start=${searchParams.get("start") || 0}`}
           onClick={() => {
@@ -214,7 +198,7 @@ export const ConvosNavBar = () => {
         >
           <Icons.chartColumn />
         </Link>
-        {/* )} */}
+
         {isAuthor && (
           <Link
             onClick={() => {
@@ -231,21 +215,19 @@ export const ConvosNavBar = () => {
           </Link>
         )}
 
-        {/* {isSuperAdmin && (
-          <Link
-            href={`/convos/${contentId}?view=ai&start=${searchParams.get("start") || 0}`}
-            onClick={() => {
-              setViewType("ai");
-            }}
-            className={`transition ${
-              viewType === "ai"
-                ? "text-black dark:text-gray-200"
-                : "text-gray-200 dark:text-gray-600"
-            } hover:text-black dark:hover:text-white transition text-xl`}
-          >
-            <Icons.ai />
-          </Link>
-        )} */}
+        <Link
+          href={`/convos/${contentId}?view=ai&start=${searchParams.get("start") || 0}`}
+          onClick={() => {
+            setViewType("ai");
+          }}
+          className={`transition ${
+            viewType === "ai"
+              ? "text-black dark:text-gray-200"
+              : "text-gray-200 dark:text-gray-600"
+          } hover:text-black dark:hover:text-white transition text-xl`}
+        >
+          <Icons.ai />
+        </Link>
       </div>
     </div>
   );

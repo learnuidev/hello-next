@@ -14,6 +14,7 @@ import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-contex
 import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { useSelectedItem } from "./use-selected-item";
+import { TextPercentageColorizerV2 } from "../text-percentage-colorizer-v2";
 
 function CurrentTranscriptionViewer({
   seekTo,
@@ -23,6 +24,7 @@ function CurrentTranscriptionViewer({
   romanOrPinyin,
   isNonRomanContent,
   containsChinglish,
+  currentTime,
   lang,
 }: any) {
   const { upsertContentAnalyticsHandler } =
@@ -48,13 +50,41 @@ function CurrentTranscriptionViewer({
               upsertContentAnalyticsHandler();
             }}
             href={`/nmm/${currentTranscription?.input || currentTranscription?.hanzi}?lang=${lang}`}
-            className={cn("text-[16px] lg:text-xl font-light")}
+            className={cn(
+              "text-[16px] font-light dark:text-gray-500 mb-4 block"
+            )}
           >
-            {romanOrPinyin}
+            {currentTranscription?.pinyin || currentTranscription?.roman}
           </Link>
         )}
 
-        <p
+        <div
+          onClick={() => {
+            if (typeof currentTranscription?.start === "number") {
+              seekTo(currentTranscription?.start);
+            }
+
+            const selectedText = getSelectedText();
+
+            if (selectedText && selectedText?.length < 36) {
+              setSelected(selectedText);
+            } else {
+              setSelected(
+                currentTranscription.hanzi || currentTranscription?.input
+              );
+            }
+          }}
+        >
+          <TextPercentageColorizerV2
+            className={"text-4xl"}
+            text={currentTranscription.input}
+            startTime={currentTranscription.start}
+            endTime={currentTranscription.end}
+            currentTime={currentTime}
+          />
+        </div>
+
+        {/* <p
           onClick={() => {
             if (typeof currentTranscription?.start === "number") {
               seekTo(currentTranscription?.start);
@@ -89,11 +119,11 @@ function CurrentTranscriptionViewer({
               />
             );
           })}
-        </p>
+        </p> */}
 
         <p
           className={cn(
-            "text-[16px] lg:text-xl font-light dark:text-gray-400 text-black mt-12"
+            "text-[16px] lg:text-xl font-extralight dark:text-gray-500 text-black mt-12"
           )}
         >
           {containsChinglish && showChinglish
@@ -253,6 +283,7 @@ export function KaraokeMode({
           {/* Current Lyric */}
           <ActiveKaraokeContainer>
             <CurrentTranscriptionViewer
+              currentTime={currentTime}
               seekTo={seekTo}
               contentId={contentId}
               currentTranscription={currentTranscription}
@@ -296,6 +327,7 @@ export function KaraokeMode({
           </button>
         ) : (
           <CurrentTranscriptionViewer
+            currentTime={currentTime}
             seekTo={seekTo}
             currentTranscription={currentTranscription}
             showPinyin={showPinyin}

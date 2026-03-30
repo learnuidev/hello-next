@@ -756,7 +756,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
           >
             <div className="">
               <ReactPlayer
-                // progressInterval={50}
+                progressInterval={50}
                 onProgress={(value) => {
                   setHistory({
                     transcriptionId: currentTranscription?.id,

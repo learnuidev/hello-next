@@ -263,7 +263,7 @@ export const AllTranscriptionsEditor = ({
       </div>
 
       <div className="flex gap-6 h-full px-4">
-        <div className="w-[50%] overflow-y-auto pr-4">
+        <div className="w-[70%] overflow-y-auto pr-4">
           <div className="flex flex-col gap-4">
             {transcriptions.map((transcription, index) => {
               return (
@@ -512,23 +512,28 @@ export const AllTranscriptionsEditor = ({
                     return (
                       <button
                         key={transcription.id}
-                        className="text-left p-2 border dark:border-gray-800 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-sm"
+                        className="text-left p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-white dark:hover:bg-gray-800 hover:shadow-md transition-all text-sm group"
                         onClick={() => scrollToTranscription(originalIndex)}
                       >
-                        <div className="font-medium mb-1">
+                        <div className="font-semibold text-gray-800 dark:text-gray-200 mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                           {formatTime(transcription.start)} -{" "}
                           {formatTime(transcription.end)}
                         </div>
-                        <div className="text-xs text-red-600 dark:text-red-400">
+                        <div className="text-xs text-red-600 dark:text-red-400 font-medium">
                           Missing {issueType}
                         </div>
                       </button>
                     );
                   })}
                   {problemTranscriptions.length === 0 && (
-                    <p className="text-sm text-gray-500 dark:text-gray-500 text-center py-4">
-                      No issues found
-                    </p>
+                    <div className="text-center py-8">
+                      <p className="text-sm text-green-600 dark:text-green-400 font-medium mb-2">
+                        ✓ No issues found
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-500">
+                        All transcriptions have valid time ranges
+                      </p>
+                    </div>
                   )}
                 </div>
               </div>

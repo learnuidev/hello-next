@@ -4,7 +4,7 @@ import { useContentEditStore } from "@/components/youtube-page/use-content-edit-
 import { ContentTranscription } from "@/domain/content/content.api";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { formatTime } from "../../_play/utils";
 
 type LocalTranscription = ContentTranscription & { _isNew?: boolean };
@@ -28,6 +28,11 @@ export const AllTranscriptionsEditor = ({
   const [localTranscriptions, setLocalTranscriptions] = useState<
     LocalTranscription[] | null
   >(null);
+
+  const [activeTab, setActiveTab] = useState<"settings" | "suggestions">("settings");
+  const [viewMode, setViewMode] = useState<"current" | "all">("current");
+
+  const transcriptionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   if (!content || !editMode) {
     return null;
@@ -197,6 +202,13 @@ export const AllTranscriptionsEditor = ({
     setEditMode(false);
   };
 
+  const scrollToTranscription = (index: number) => {
+    const ref = transcriptionRefs.current[`trans-${index}`];
+    if (ref) {
+      ref.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
   const TextField = ({
     label,
     field,
@@ -224,8 +236,12 @@ export const AllTranscriptionsEditor = ({
     );
   };
 
+  const problemTranscriptions = transcriptions.filter(
+    (transcription) => transcription.start === 0 || transcription.end === 0
+  );
+
   return (
-    <div className="flex flex-col lg:mt-16 mt-8 mb-80 max-h-[70vh] overflow-y-auto">
+    <div className="flex flex-col lg:mt-16 mt-8 mb-80 max-h-[70vh] overflow-hidden">
       <div className="flex gap-4 mb-4 sticky top-0 bg-white dark:bg-black z-10 py-2">
         <button className="px-4 py-1 border rounded" onClick={handleCancel}>
           Cancel
@@ -239,14 +255,19 @@ export const AllTranscriptionsEditor = ({
         </button>
       </div>
 
-      <div className="flex flex-col gap-3">
-        {transcriptions.map((transcription, index) => {
-          return (
-            <div
-              key={transcription.id + "-" + index}
-              className="flex flex-col gap-1.5 border dark:border-gray-800 rounded-lg p-3"
-            >
-              <div className="flex items-center gap-2 flex-wrap">
+      <div className="flex gap-4 h-full">
+        <div className="flex-1 overflow-y-auto">
+          <div className="flex flex-col gap-3">
+            {transcriptions.map((transcription, index) => {
+              return (
+                <div
+                  key={transcription.id + "-" + index}
+                  ref={(el) => {
+                    transcriptionRefs.current[`trans-${index}`] = el;
+                  }}
+                  className="flex flex-col gap-1.5 border dark:border-gray-800 rounded-lg p-3"
+                >
+                <div className="flex items-center gap-2 flex-wrap">
                 <div className="flex items-center gap-1">
                   <label className="text-xs dark:text-gray-500 text-gray-400 w-8">
                     Start
@@ -403,6 +424,103 @@ export const AllTranscriptionsEditor = ({
           );
         })}
       </div>
+      </div>
+
+      <div className="w-80 border-l dark:border-gray-800 flex flex-col shrink-0">
+        <div className="flex border-b dark:border-gray-800">
+          <button
+            className={`flex-1 py-2 px-4 text-sm ${
+              activeTab === "settings"
+                ? "border-b-2 border-blue-600 dark:border-blue-500 font-medium"
+                : "text-gray-500 dark:text-gray-400"
+            }`}
+            onClick={() => setActiveTab("settings")}
+          >
+            Settings
+          </button>
+          <button
+            className={`flex-1 py-2 px-4 text-sm ${
+              activeTab === "suggestions"
+                ? "border-b-2 border-blue-600 dark:border-blue-500 font-medium"
+                : "text-gray-500 dark:text-gray-400"
+            }`}
+            onClick={() => setActiveTab("suggestions")}
+          >
+            Suggestions
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-4">
+          {activeTab === "settings" ? (
+            <div className="flex flex-col gap-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block">View Mode</label>
+                <div className="flex gap-2">
+                  <button
+                    className={`flex-1 py-2 px-3 text-sm border rounded ${
+                      viewMode === "current"
+                        ? "bg-blue-600 text-white border-blue-600"
+                        : "dark:border-gray-700"
+                    }`}
+                    onClick={() => setViewMode("current")}
+                  >
+                    Current Transcription
+                  </button>
+                  <button
+                    className={`flex-1 py-2 px-3 text-sm border rounded ${
+                      viewMode === "all"
+                        ? "bg-blue-600 text-white border-blue-600"
+                        : "dark:border-gray-700"
+                    }`}
+                    onClick={() => setViewMode("all")}
+                  >
+                    All Transcriptions
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-3">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                You still have {problemTranscriptions.length} transcription{problemTranscriptions.length !== 1 ? "s" : ""} with issues
+              </p>
+              <div className="flex flex-col gap-2">
+                {problemTranscriptions.map((transcription, index) => {
+                  const originalIndex = transcriptions.findIndex(
+                    (t) => t.id === transcription.id
+                  );
+                  const issueType =
+                    transcription.start === 0 && transcription.end === 0
+                      ? "Start & End"
+                      : transcription.start === 0
+                      ? "Start"
+                      : "End";
+                  return (
+                    <button
+                      key={transcription.id}
+                      className="text-left p-2 border dark:border-gray-800 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-sm"
+                      onClick={() => scrollToTranscription(originalIndex)}
+                    >
+                      <div className="font-medium mb-1">
+                        {formatTime(transcription.start)} - {formatTime(transcription.end)}
+                      </div>
+                      <div className="text-xs text-red-600 dark:text-red-400">
+                        Missing {issueType}
+                      </div>
+                    </button>
+                  );
+                })}
+                {problemTranscriptions.length === 0 && (
+                  <p className="text-sm text-gray-500 dark:text-gray-500 text-center py-4">
+                    No issues found
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
     </div>
   );
 };

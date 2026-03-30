@@ -7,4 +7,5 @@ export interface CurrentTranscriptionProps {
   className?: string;
   contentId?: string;
   lang: string;
+  hideEnglish?: boolean;
 }

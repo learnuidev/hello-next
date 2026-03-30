@@ -32,7 +32,7 @@ function ReaderViewChinese({
   }[];
 }) {
   const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
-  const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
+  const defautClassName = "mb-4 gap-0 space-y-0";
 
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
@@ -133,6 +133,7 @@ function ReaderViewChinese({
 }
 
 export function ReaderView({
+  hideEnglish = false,
   currentTranscription,
   seekAndPlay,
   containsChinglish,
@@ -148,7 +149,7 @@ export function ReaderView({
   const data: any = currentTranscription?.words || _segmentedData;
   const showEn = useBrightModeStore((state) => state.showEn);
 
-  const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
+  const defautClassName = "mb-4  gap-0 space-y-0";
 
   return (
     <div>
@@ -181,15 +182,17 @@ export function ReaderView({
         </div>
       )}
 
-      {showEn && (
-        <EnView
-          containsChinglish={containsChinglish}
-          currentTranscription={currentTranscription}
-          seekAndPlay={seekAndPlay}
-          contentId={contentId}
-          lang={lang}
-        />
-      )}
+      {hideEnglish
+        ? null
+        : showEn && (
+            <EnView
+              containsChinglish={containsChinglish}
+              currentTranscription={currentTranscription}
+              seekAndPlay={seekAndPlay}
+              contentId={contentId}
+              lang={lang}
+            />
+          )}
     </div>
   );
 }

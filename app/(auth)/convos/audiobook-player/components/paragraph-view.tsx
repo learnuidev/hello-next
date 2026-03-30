@@ -9,6 +9,8 @@ import { splitEvery } from "ramda";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useMemo } from "react";
 import { getActiveTranscriptions } from "@/components/youtube-page/get-active-transcriptions";
+import { ReaderView } from "./reader-view";
+import { useReadModeState } from "@/components/read-mode-button";
 
 export const ParagraphView = ({
   content,
@@ -29,7 +31,7 @@ export const ParagraphView = ({
 
   const { setShowMenuBar } = useCharacterMenuBarStore();
 
-  const active = 60;
+  const active = 30;
 
   const group = useMemo(() => {
     return getActiveTranscriptions({
@@ -38,6 +40,8 @@ export const ParagraphView = ({
       transcriptions: content?.transcriptions || [],
     });
   }, [active, currentTime, content?.transcriptions]);
+
+  const { readMode } = useReadModeState();
 
   return (
     <div className={cn("px-4 pb-24")}>
@@ -63,6 +67,26 @@ export const ParagraphView = ({
               <div className="text-sm sm:text-2xl gap-4">
                 <div className="py-4 sm:space-y-8 space-y-2">
                   {group?.map((transcription: ContentTranscription) => {
+                    if (readMode) {
+                      return (
+                        <ReaderView
+                          hideEnglish
+                          currentTranscription={transcription}
+                          containsChinglish={false}
+                          className={cn(
+                            isPlaying
+                              ? transcription.start < currentTime &&
+                                transcription.end > currentTime
+                                ? "dark:text-white text-black bg-yellow-200 dark:bg-[rgb(9,10,11)]"
+                                : "!text-gray-500 opacity-50"
+                              : "dark:text-white text-black"
+                          )}
+                          contentId={content?.id}
+                          lang={content?.lang}
+                        />
+                      );
+                    }
+
                     return (
                       <p
                         key={JSON.stringify(transcription)}

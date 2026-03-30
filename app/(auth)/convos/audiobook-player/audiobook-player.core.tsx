@@ -168,16 +168,16 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
 
               {/* <SearchOnlyPinyinButton className="text-2xl" /> */}
 
-              {paragraphMode === "paragraph" ? null : (
-                <>
-                  <PinyinButton className="text-2xl" />
-                  <EnButton className="text-2xl" />
-                  <ReadModeButton className="text-2xl" />
-                  {containsChinglish && (
-                    <ChinglishButton className="text-2xl" />
-                  )}
-                </>
-              )}
+              <>
+                <PinyinButton className="text-2xl" />
+                {paragraphMode === "paragraph" ? null : (
+                  <>
+                    <EnButton className="text-2xl" />
+                  </>
+                )}
+                <ReadModeButton className="text-2xl" />
+                {containsChinglish && <ChinglishButton className="text-2xl" />}
+              </>
 
               <PreviewButton />
 

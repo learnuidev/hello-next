@@ -13,7 +13,7 @@ export function StandardView({
   contentId,
   lang,
 }: CurrentTranscriptionProps) {
-  const defautClassName = "mb-4 sm:mb-16 gap-0 space-y-0";
+  const defautClassName = "mb-4 gap-0 space-y-0";
 
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
   const showEn = useBrightModeStore((state) => state.showEn);

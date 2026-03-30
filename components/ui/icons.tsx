@@ -53,6 +53,8 @@ import { faTicketAirline } from "@fortawesome/sharp-solid-svg-icons/faTicketAirl
 import { faPersonHiking } from "@fortawesome/sharp-solid-svg-icons/faPersonHiking";
 import { faWatermelonSlice } from "@fortawesome/sharp-solid-svg-icons/faWatermelonSlice";
 import { faLock } from "@fortawesome/sharp-solid-svg-icons/faLock";
+import { faBackward } from "@fortawesome/sharp-solid-svg-icons/faBackward";
+import { faForward } from "@fortawesome/sharp-solid-svg-icons/faForward";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -267,6 +269,12 @@ export const CCIcon = (props: any) => {
 };
 export const LockClosedIcon = (props: any) => {
   return <FontAwesomeIcon {...props} icon={faLock} />;
+};
+export const RewindIcon = (props: any) => {
+  return <FontAwesomeIcon {...props} icon={faBackward} />;
+};
+export const FastForwardIcon = (props: any) => {
+  return <FontAwesomeIcon {...props} icon={faForward} />;
 };
 
 export const Lightning = (props: { className?: string }) => {

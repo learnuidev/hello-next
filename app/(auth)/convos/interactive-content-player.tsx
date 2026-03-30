@@ -10,6 +10,7 @@ import {
   RewindIcon,
   FastForwardIcon,
 } from "@/components/ui/icons";
+import { TextPercentageColorizerV2 } from "@/components/text-percentage-colorizer-v2";
 
 export function InteractiveContentPlayer({ content }: { content: IContent }) {
   const [playing, setPlaying] = useState(false);
@@ -56,7 +57,7 @@ export function InteractiveContentPlayer({ content }: { content: IContent }) {
   const progress = getProgressWithinLine();
 
   return (
-    <main className="relative  bg-black overflow-hidden">
+    <main className="relative   overflow-hidden">
       <div className="hidden">
         <ReactPlayer
           ref={playerRef}
@@ -79,8 +80,13 @@ export function InteractiveContentPlayer({ content }: { content: IContent }) {
                 <div className="text-white/40 text-base md:text-lg font-light leading-relaxed">
                   {currentTranscription.roman}
                 </div>
-                <div className="text-white text-3xl md:text-4xl font-light leading-relaxed tracking-wide">
-                  {currentTranscription.input}
+                <div className="text-3xl md:text-4xl font-light leading-relaxed tracking-wide">
+                  <TextPercentageColorizerV2
+                    text={currentTranscription.input}
+                    startTime={currentTranscription.start}
+                    endTime={currentTranscription.end}
+                    currentTime={currentTime}
+                  />
                 </div>
 
                 <div className="text-white/30 text-base md:text-lg font-light leading-relaxed mt-6">

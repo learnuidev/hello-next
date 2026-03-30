@@ -249,7 +249,7 @@ export const AllTranscriptionsEditor = ({
           {label}
         </label>
         <textarea
-          className="flex-1 text-sm border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl px-4 py-2.5 dark:bg-[rgb(9,10,11)] resize-y min-h-[2.5rem] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all leading-relaxed"
+          className="flex-1 text-lg border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl px-4 py-2.5 dark:bg-[rgb(9,10,11)] resize-y min-h-[2.5rem] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all leading-relaxed"
           value={value || ""}
           onChange={(e) => updateLocalField(index, field, e.target.value)}
           placeholder={label}
@@ -300,7 +300,7 @@ export const AllTranscriptionsEditor = ({
                       <input
                         type="number"
                         step="0.1"
-                        className="w-32 text-sm border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl px-4 py-2.5 dark:bg-[rgb(9,10,11)] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                        className="w-40 text-lg border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl px-4 py-2.5 dark:bg-[rgb(9,10,11)] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                         value={transcription.start}
                         onChange={(e) =>
                           updateLocalField(
@@ -327,7 +327,7 @@ export const AllTranscriptionsEditor = ({
                       <input
                         type="number"
                         step="0.1"
-                        className="w-32 text-sm border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl px-4 py-2.5 dark:bg-[rgb(9,10,11)] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                        className="w-40 text-lg border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl px-4 py-2.5 dark:bg-[rgb(9,10,11)] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                         value={transcription.end}
                         onChange={(e) =>
                           updateLocalField(
@@ -454,7 +454,7 @@ export const AllTranscriptionsEditor = ({
         </div>
 
         <div className="w-[30%] border-l border-gray-100 dark:border-[rgb(25,26,30)] flex flex-col shrink-0 bg-white dark:bg-[rgb(9,10,11)] h-full overflow-hidden">
-          <div className="flex gap-1 p-2 bg-gray-50 dark:bg-[rgb(12,13,15)] flex-shrink-0">
+          <div className="flex gap-1 p-2 bg-gray-50 dark:bg-[rgb(12,13,15)] flex-shrink-0 relative z-20">
             <button
               className={`flex-1 py-3 px-6 text-sm font-light transition-all duration-300 rounded-xl ${
                 activeTab === "settings"

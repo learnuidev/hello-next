@@ -91,6 +91,7 @@ export function CharacterMenuBar({
         contentId={contentId}
         selected={text}
         lang={lang}
+        seekAndPlay={seekAndPlay}
       />
     </div>
   );

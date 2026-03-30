@@ -11,12 +11,14 @@ import { useContentSearchHistory } from "../hooks/use-content-search-history";
 import { useDeleteHistoryMutation } from "@/domain/history/delete-history.mutation";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import Link from "next/link";
+import { formatTime } from "../../_play/utils";
 
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 import { useAddContentUnknownMutation } from "@/domain/content-unknowns/use-add-content-unknown.mutation";
 import { useRemoveContentUnknownMutation } from "@/domain/content-unknowns/use-remove-content-unknown.mutation";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useGetContentQuery } from "@/domain/content/content.queries";
+import { ContentTranscription } from "@/domain/content/content.api";
 import {
   getFrequency,
   useGetContentInsightsNew,
@@ -27,11 +29,13 @@ export function MiniDictionary({
   selected,
   className,
   contentId,
+  seekAndPlay,
 }: {
   selected: string;
   className?: string;
   contentId?: string;
   lang: string;
+  seekAndPlay?: (time: number) => void;
 }) {
   const { searchHistory, addSearchHistory } = useContentSearchHistory({
     contentId: contentId || "",
@@ -54,6 +58,18 @@ export function MiniDictionary({
 
   const timesMentioned = contentInsights?.filteredHskWords?.find(
     (word: any) => word?.hanzi === selected
+  );
+
+  const mentionedTranscriptions = content?.transcriptions?.filter(
+    (transcription: ContentTranscription) => {
+      const searchableFields = [
+        transcription.input,
+        transcription.hanzi,
+        transcription.pinyin,
+        transcription.roman,
+      ].filter(Boolean);
+      return searchableFields.some((field) => field?.includes(selected));
+    }
   );
 
   const containsUnknown = contentUnknowns?.items?.find(
@@ -269,6 +285,56 @@ export function MiniDictionary({
                   </div>
                 );
               })}
+            </div>
+          )}
+
+          {mentionedTranscriptions && mentionedTranscriptions.length > 0 && (
+            <div className="mt-8">
+              <h4 className="font-bold mb-4 uppercase text-blue-400">
+                Mentions in This Content
+              </h4>
+              <div className="space-y-4">
+                {mentionedTranscriptions
+                  ?.slice(0, 3)
+                  ?.map(
+                    (transcription: ContentTranscription, index: number) => {
+                      return (
+                        <div
+                          key={transcription.id + "-" + index}
+                          className="flex gap-3 items-center"
+                        >
+                          <div className="flex-shrink-0">
+                            {seekAndPlay && (
+                              <button
+                                // className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+                                onClick={() => seekAndPlay(transcription.start)}
+                                title="Play from this time"
+                              >
+                                <Icons.play className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <p
+                              className={
+                                lang === "zh"
+                                  ? "text-xl"
+                                  : "text-[14px] sm:text-lg"
+                              }
+                            >
+                              {transcription?.hanzi || transcription?.input}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    }
+                  )}
+                {mentionedTranscriptions.length > 3 && (
+                  <p className="text-sm text-gray-400 dark:text-gray-500">
+                    +{mentionedTranscriptions.length - 3} more mentions
+                  </p>
+                )}
+              </div>
             </div>
           )}
         </div>

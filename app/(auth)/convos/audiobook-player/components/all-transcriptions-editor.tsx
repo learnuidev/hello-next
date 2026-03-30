@@ -37,6 +37,8 @@ export const AllTranscriptionsEditor = ({
   const [viewMode, setViewMode] = useState<"current" | "all">("current");
   const { autoScrollWhilePlaying, setAutoScrollWhilePlaying } = useAutoScroll();
   const { smartSet, setSmartSet } = useSmartSet();
+  const [expandedWords, setExpandedWords] = useState<Set<number>>(new Set());
+  const [searchQuery, setSearchQuery] = useState("");
 
   const transcriptionRefs = useRef<{ [key: string]: HTMLDivElement | null }>(
     {}
@@ -58,12 +60,33 @@ export const AllTranscriptionsEditor = ({
     }
   }, [currentTime, autoScrollWhilePlaying, localTranscriptions, content]);
 
+  const transcriptions: LocalTranscription[] =
+    useMemo(() => localTranscriptions || content?.transcriptions || [], [localTranscriptions, content]);
+
+  const filteredTranscriptions = useMemo(() => {
+    if (!searchQuery.trim()) return transcriptions;
+
+    const query = searchQuery.toLowerCase();
+    return transcriptions.filter((transcription) => {
+      const searchableFields = [
+        transcription.input,
+        transcription.en,
+        transcription.pinyin,
+        transcription.roman,
+        transcription.hanzi,
+        transcription.chinglish,
+        transcription.words?.map((w) => w.input).join(" "),
+      ].filter(Boolean);
+
+      return searchableFields.some((field) =>
+        field?.toLowerCase().includes(query)
+      );
+    });
+  }, [transcriptions, searchQuery]);
+
   if (!content || !editMode) {
     return null;
   }
-
-  const transcriptions: LocalTranscription[] =
-    localTranscriptions || content.transcriptions || [];
 
   const updateLocalField = (index: number, field: string, value: any) => {
     setLocalTranscriptions((prev) => {
@@ -279,6 +302,67 @@ export const AllTranscriptionsEditor = ({
     );
   };
 
+  const updateWordField = (
+    transcriptionIndex: number,
+    wordIndex: number,
+    field: string,
+    value: any
+  ) => {
+    setLocalTranscriptions((prev) => {
+      const current = prev || content.transcriptions || [];
+      const updated = [...current];
+      const transcription = { ...updated[transcriptionIndex] };
+      const words = transcription.words ? [...transcription.words] : [];
+      words[wordIndex] = { ...words[wordIndex], [field]: value };
+      transcription.words = words;
+      updated[transcriptionIndex] = transcription;
+      return updated;
+    });
+  };
+
+  const handleAddWord = (transcriptionIndex: number) => {
+    setLocalTranscriptions((prev) => {
+      const current = prev || content.transcriptions || [];
+      const updated = [...current];
+      const transcription = { ...updated[transcriptionIndex] };
+      const words = transcription.words ? [...transcription.words] : [];
+      words.push({
+        id: `word-${Date.now()}`,
+        input: "",
+        start: 0,
+        end: 0,
+      });
+      transcription.words = words;
+      updated[transcriptionIndex] = transcription;
+      return updated;
+    });
+  };
+
+  const handleDeleteWord = (transcriptionIndex: number, wordIndex: number) => {
+    setLocalTranscriptions((prev) => {
+      const current = prev || content.transcriptions || [];
+      const updated = [...current];
+      const transcription = { ...updated[transcriptionIndex] };
+      const words = transcription.words ? [...transcription.words] : [];
+      words.splice(wordIndex, 1);
+      transcription.words = words;
+      updated[transcriptionIndex] = transcription;
+      return updated;
+    });
+  };
+
+  const toggleWordsExpanded = (index: number) => {
+    setExpandedWords((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
+  };
+
   const problemTranscriptions = transcriptions.filter(
     (transcription) => transcription.start === 0 || transcription.end === 0
   );
@@ -303,13 +387,30 @@ export const AllTranscriptionsEditor = ({
 
       <div className="flex gap-6 h-full px-4">
         <div className="w-[70%] overflow-y-auto pr-4">
+          <div className="mb-6 sticky top-0 bg-white dark:bg-[rgb(9,10,11)] z-5 pt-2">
+            <input
+              type="text"
+              placeholder="Search transcriptions (input, English, pinyin, hanzi, etc.)"
+              className="w-full text-sm border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl px-4 py-2.5 dark:bg-[rgb(9,10,11)] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
+              <div className="text-xs text-gray-500 dark:text-[rgb(140,140,140)] mt-2">
+                Showing {filteredTranscriptions.length} of {transcriptions.length} transcriptions
+              </div>
+            )}
+          </div>
           <div className="flex flex-col gap-6 pb-20">
-            {transcriptions.map((transcription, index) => {
+            {filteredTranscriptions.map((transcription) => {
+              const originalIndex = transcriptions.findIndex(
+                (t) => t.id === transcription.id
+              );
               return (
                 <div
-                  key={transcription.id + "-" + index}
+                  key={transcription.id + "-" + originalIndex}
                   ref={(el) => {
-                    transcriptionRefs.current[`trans-${index}`] = el;
+                    transcriptionRefs.current[`trans-${originalIndex}`] = el;
                   }}
                   className="flex flex-col gap-4 border border-gray-100 dark:border-[rgb(20,21,24)] rounded-2xl p-7 bg-white dark:bg-[rgb(12,13,15)]/50 hover:shadow-lg hover:border-gray-200 dark:hover:border-[rgb(25,26,30)] transition-all duration-300"
                 >
@@ -325,7 +426,7 @@ export const AllTranscriptionsEditor = ({
                         value={transcription.start}
                         onChange={(e) =>
                           updateLocalField(
-                            index,
+                            originalIndex,
                             "start",
                             parseFloat(e.target.value) || 0
                           )
@@ -334,7 +435,7 @@ export const AllTranscriptionsEditor = ({
                       <button
                         className="text-xs px-4 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all"
                         onClick={() =>
-                          updateLocalField(index, "start", currentTime)
+                          updateLocalField(originalIndex, "start", currentTime)
                         }
                         title="Set to current time"
                       >
@@ -352,7 +453,7 @@ export const AllTranscriptionsEditor = ({
                         value={transcription.end}
                         onChange={(e) =>
                           updateLocalField(
-                            index,
+                            originalIndex,
                             "end",
                             parseFloat(e.target.value) || 0
                           )
@@ -361,7 +462,7 @@ export const AllTranscriptionsEditor = ({
                       <button
                         className="text-xs px-4 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all"
                         onClick={() =>
-                          updateLocalField(index, "end", currentTime)
+                          updateLocalField(originalIndex, "end", currentTime)
                         }
                         title="Set to current time"
                       >
@@ -386,75 +487,161 @@ export const AllTranscriptionsEditor = ({
                       label="Input"
                       field="input"
                       value={transcription.input}
-                      index={index}
+                      index={originalIndex}
                     />
                     <TextField
                       label="English"
                       field="en"
                       value={transcription.en}
-                      index={index}
+                      index={originalIndex}
                     />
                     <TextField
                       label="Pinyin"
                       field="pinyin"
                       value={transcription.pinyin}
-                      index={index}
+                      index={originalIndex}
                     />
                     <TextField
                       label="Roman"
                       field="roman"
                       value={transcription.roman}
-                      index={index}
+                      index={originalIndex}
                     />
                     <TextField
                       label="Hanzi"
                       field="hanzi"
                       value={transcription.hanzi}
-                      index={index}
+                      index={originalIndex}
                     />
                     <TextField
                       label="Chinglish"
                       field="chinglish"
                       value={transcription.chinglish}
-                      index={index}
+                      index={originalIndex}
                     />
+                  </div>
+
+                  <div className="flex flex-col gap-3">
+                    <button
+                      className="text-xs px-4 py-2 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-lg text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] transition-all font-light w-fit"
+                      onClick={() => toggleWordsExpanded(originalIndex)}
+                    >
+                      {expandedWords.has(originalIndex) ? "Hide Words" : "Show Words"} ({transcription.words?.length || 0})
+                    </button>
+                    {expandedWords.has(originalIndex) && (
+                      <div className="flex flex-col gap-3 border border-gray-100 dark:border-[rgb(20,21,24)] rounded-xl p-4 bg-gray-50 dark:bg-[rgb(10,11,13)]">
+                        {transcription.words?.map((word, wordIndex) => (
+                          <div
+                            key={word.id || wordIndex}
+                            className="flex flex-col gap-2 p-3 bg-white dark:bg-[rgb(12,13,15)] rounded-lg border border-gray-100 dark:border-[rgb(20,21,24)]"
+                          >
+                            <div className="flex gap-2 items-center">
+                              <div className="flex-1">
+                                <label className="text-xs text-gray-400 dark:text-[rgb(120,120,120)] mb-1 block">
+                                  Word
+                                </label>
+                                <input
+                                  type="text"
+                                  className="w-full text-sm border border-gray-200 dark:border-[rgb(20,21,24)] rounded-lg px-3 py-1.5 dark:bg-[rgb(9,10,11)] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                  value={word.input || ""}
+                                  onChange={(e) =>
+                                    updateWordField(originalIndex, wordIndex, "input", e.target.value)
+                                  }
+                                />
+                              </div>
+                              <div className="w-24">
+                                <label className="text-xs text-gray-400 dark:text-[rgb(120,120,120)] mb-1 block">
+                                  Start
+                                </label>
+                                <input
+                                  type="number"
+                                  step="0.1"
+                                  className="w-full text-sm border border-gray-200 dark:border-[rgb(20,21,24)] rounded-lg px-3 py-1.5 dark:bg-[rgb(9,10,11)] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                  value={word.start || 0}
+                                  onChange={(e) =>
+                                    updateWordField(
+                                      originalIndex,
+                                      wordIndex,
+                                      "start",
+                                      parseFloat(e.target.value) || 0
+                                    )
+                                  }
+                                />
+                              </div>
+                              <div className="w-24">
+                                <label className="text-xs text-gray-400 dark:text-[rgb(120,120,120)] mb-1 block">
+                                  End
+                                </label>
+                                <input
+                                  type="number"
+                                  step="0.1"
+                                  className="w-full text-sm border border-gray-200 dark:border-[rgb(20,21,24)] rounded-lg px-3 py-1.5 dark:bg-[rgb(9,10,11)] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                  value={word.end || 0}
+                                  onChange={(e) =>
+                                    updateWordField(
+                                      originalIndex,
+                                      wordIndex,
+                                      "end",
+                                      parseFloat(e.target.value) || 0
+                                    )
+                                  }
+                                />
+                              </div>
+                              <button
+                                className="text-xs px-3 py-1.5 border border-red-200 dark:border-red-900/50 rounded-lg text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all font-light mt-5"
+                                onClick={() => handleDeleteWord(originalIndex, wordIndex)}
+                                title="Delete word"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                        <button
+                          className="text-xs px-4 py-2 border border-dashed border-gray-300 dark:border-[rgb(30,31,35)] rounded-lg text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-400 dark:hover:border-[rgb(40,41,45)] transition-all font-light"
+                          onClick={() => handleAddWord(originalIndex)}
+                        >
+                          + Add Word
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex items-center gap-3 flex-wrap pt-4 border-t border-gray-100 dark:border-[rgb(20,21,24)]">
                     <button
                       className="text-xs px-5 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all font-light"
-                      onClick={() => handleAddBefore(index)}
+                      onClick={() => handleAddBefore(originalIndex)}
                       title="Add new transcription before"
                     >
                       + Before
                     </button>
                     <button
                       className="text-xs px-5 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all font-light"
-                      onClick={() => handleAddAfter(index)}
+                      onClick={() => handleAddAfter(originalIndex)}
                       title="Add new transcription after"
                     >
                       + After
                     </button>
                     <button
                       className="text-xs px-5 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all font-light"
-                      onClick={() => handleSplit(index)}
+                      onClick={() => handleSplit(originalIndex)}
                       title="Split at midpoint"
                     >
                       Split
                     </button>
-                    {index > 0 && (
+                    {originalIndex > 0 && (
                       <button
                         className="text-xs px-5 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all font-light"
-                        onClick={() => handleMerge(index, "up")}
+                        onClick={() => handleMerge(originalIndex, "up")}
                         title="Merge with transcription above"
                       >
                         Merge Up
                       </button>
                     )}
-                    {index < transcriptions.length - 1 && (
+                    {originalIndex < transcriptions.length - 1 && (
                       <button
                         className="text-xs px-5 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all font-light"
-                        onClick={() => handleMerge(index, "down")}
+                        onClick={() => handleMerge(originalIndex, "down")}
                         title="Merge with transcription below"
                       >
                         Merge Down
@@ -462,7 +649,7 @@ export const AllTranscriptionsEditor = ({
                     )}
                     <button
                       className="text-xs px-5 py-2.5 border border-red-200 dark:border-red-900/50 rounded-xl text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 hover:border-red-300 dark:hover:border-red-800/50 transition-all font-light ml-auto"
-                      onClick={() => handleDelete(index)}
+                      onClick={() => handleDelete(originalIndex)}
                       title="Delete this transcription"
                     >
                       Delete

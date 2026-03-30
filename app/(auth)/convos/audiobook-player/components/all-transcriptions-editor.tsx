@@ -222,12 +222,12 @@ export const AllTranscriptionsEditor = ({
   }) => {
     if (!value && !transcriptions[index]?._isNew) return null;
     return (
-      <div className="flex items-center gap-2">
-        <label className="text-xs dark:text-gray-500 text-gray-400 w-14 shrink-0">
+      <div className="flex items-start gap-3">
+        <label className="text-xs font-medium text-gray-600 dark:text-gray-400 w-16 shrink-0 pt-2">
           {label}
         </label>
         <textarea
-          className="flex-1 text-sm border rounded px-2 py-1 dark:bg-black dark:border-gray-700 resize-y min-h-[2rem]"
+          className="flex-1 text-sm border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 dark:bg-gray-900 resize-y min-h-[2.5rem] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
           value={value || ""}
           onChange={(e) => updateLocalField(index, field, e.target.value)}
           placeholder={label}
@@ -241,13 +241,13 @@ export const AllTranscriptionsEditor = ({
   );
 
   return (
-    <div className="flex flex-col lg:mt-16 mt-8 mb-80 max-h-[70vh] overflow-hidden">
-      <div className="flex gap-4 mb-4 sticky top-0 bg-white dark:bg-black z-10 py-2">
-        <button className="px-4 py-1 border rounded" onClick={handleCancel}>
+    <div className="flex flex-col lg:mt-16 mt-8 mb-80 h-[75vh] overflow-hidden">
+      <div className="flex gap-4 mb-6 sticky top-0 bg-white dark:bg-black z-10 py-3 px-4 border-b dark:border-gray-800">
+        <button className="px-5 py-2 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors" onClick={handleCancel}>
           Cancel
         </button>
         <button
-          className="px-4 py-1 border rounded bg-blue-600 text-white"
+          className="px-5 py-2 border rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleSave}
           disabled={updateContentMutation.isPending}
         >
@@ -255,9 +255,9 @@ export const AllTranscriptionsEditor = ({
         </button>
       </div>
 
-      <div className="flex gap-4 h-full">
-        <div className="flex-1 overflow-y-auto">
-          <div className="flex flex-col gap-3">
+      <div className="flex gap-6 h-full px-4">
+        <div className="w-[50%] overflow-y-auto pr-4">
+          <div className="flex flex-col gap-4">
             {transcriptions.map((transcription, index) => {
               return (
                 <div
@@ -265,17 +265,17 @@ export const AllTranscriptionsEditor = ({
                   ref={(el) => {
                     transcriptionRefs.current[`trans-${index}`] = el;
                   }}
-                  className="flex flex-col gap-1.5 border dark:border-gray-800 rounded-lg p-3"
+                  className="flex flex-col gap-3 border border-gray-200 dark:border-gray-800 rounded-xl p-5 bg-white dark:bg-gray-900/50 hover:shadow-md dark:hover:shadow-lg transition-shadow"
                 >
-                <div className="flex items-center gap-2 flex-wrap">
-                <div className="flex items-center gap-1">
-                  <label className="text-xs dark:text-gray-500 text-gray-400 w-8">
+                <div className="flex items-center gap-3 flex-wrap">
+                <div className="flex items-center gap-2">
+                  <label className="text-xs font-medium text-gray-600 dark:text-gray-400 w-10">
                     Start
                   </label>
                   <input
                     type="number"
                     step="0.1"
-                    className="w-24 text-sm border rounded px-2 py-1 dark:bg-black dark:border-gray-700"
+                    className="w-28 text-sm border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     value={transcription.start}
                     onChange={(e) =>
                       updateLocalField(
@@ -286,7 +286,7 @@ export const AllTranscriptionsEditor = ({
                     }
                   />
                   <button
-                    className="text-xs px-2 py-1 border rounded dark:border-gray-700 dark:text-gray-400 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className="text-xs px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                     onClick={() =>
                       updateLocalField(index, "start", currentTime)
                     }
@@ -295,14 +295,14 @@ export const AllTranscriptionsEditor = ({
                     Now
                   </button>
                 </div>
-                <div className="flex items-center gap-1">
-                  <label className="text-xs dark:text-gray-500 text-gray-400 w-8">
+                <div className="flex items-center gap-2">
+                  <label className="text-xs font-medium text-gray-600 dark:text-gray-400 w-10">
                     End
                   </label>
                   <input
                     type="number"
                     step="0.1"
-                    className="w-24 text-sm border rounded px-2 py-1 dark:bg-black dark:border-gray-700"
+                    className="w-28 text-sm border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     value={transcription.end}
                     onChange={(e) =>
                       updateLocalField(
@@ -313,7 +313,7 @@ export const AllTranscriptionsEditor = ({
                     }
                   />
                   <button
-                    className="text-xs px-2 py-1 border rounded dark:border-gray-700 dark:text-gray-400 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className="text-xs px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                     onClick={() => updateLocalField(index, "end", currentTime)}
                     title="Set to current time"
                   >
@@ -321,13 +321,13 @@ export const AllTranscriptionsEditor = ({
                   </button>
                 </div>
                 <button
-                  className="text-xs px-2 py-1 border rounded dark:border-gray-700 dark:text-gray-400 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="text-xs px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
                   onClick={() => seekAndPlay(transcription.start)}
                   title="Play from this time"
                 >
                   Play
                 </button>
-                <span className="text-xs dark:text-gray-600 text-gray-400">
+                <span className="text-sm text-gray-500 dark:text-gray-500 font-medium">
                   {formatTime(transcription.start)} -{" "}
                   {formatTime(transcription.end)}
                 </span>
@@ -372,23 +372,23 @@ export const AllTranscriptionsEditor = ({
                 />
               </div>
 
-              <div className="flex items-center gap-1 flex-wrap mt-1">
+              <div className="flex items-center gap-2 flex-wrap pt-2 border-t border-gray-100 dark:border-gray-800">
                 <button
-                  className="text-xs px-2 py-1 border rounded dark:border-gray-700 dark:text-gray-400 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="text-xs px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
                   onClick={() => handleAddBefore(index)}
                   title="Add new transcription before"
                 >
                   + Before
                 </button>
                 <button
-                  className="text-xs px-2 py-1 border rounded dark:border-gray-700 dark:text-gray-400 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="text-xs px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
                   onClick={() => handleAddAfter(index)}
                   title="Add new transcription after"
                 >
                   + After
                 </button>
                 <button
-                  className="text-xs px-2 py-1 border rounded dark:border-gray-700 dark:text-gray-400 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="text-xs px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
                   onClick={() => handleSplit(index)}
                   title="Split at midpoint"
                 >
@@ -396,7 +396,7 @@ export const AllTranscriptionsEditor = ({
                 </button>
                 {index > 0 && (
                   <button
-                    className="text-xs px-2 py-1 border rounded dark:border-gray-700 dark:text-gray-400 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className="text-xs px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
                     onClick={() => handleMerge(index, "up")}
                     title="Merge with transcription above"
                   >
@@ -405,7 +405,7 @@ export const AllTranscriptionsEditor = ({
                 )}
                 {index < transcriptions.length - 1 && (
                   <button
-                    className="text-xs px-2 py-1 border rounded dark:border-gray-700 dark:text-gray-400 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className="text-xs px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
                     onClick={() => handleMerge(index, "down")}
                     title="Merge with transcription below"
                   >
@@ -413,7 +413,7 @@ export const AllTranscriptionsEditor = ({
                   </button>
                 )}
                 <button
-                  className="text-xs px-2 py-1 border rounded dark:border-red-800 dark:text-red-400 text-red-500 hover:bg-red-50 dark:hover:bg-red-950"
+                  className="text-xs px-4 py-2 border border-red-200 dark:border-red-900 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors font-medium ml-auto"
                   onClick={() => handleDelete(index)}
                   title="Delete this transcription"
                 >
@@ -426,23 +426,23 @@ export const AllTranscriptionsEditor = ({
       </div>
       </div>
 
-      <div className="w-80 border-l dark:border-gray-800 flex flex-col shrink-0">
-        <div className="flex border-b dark:border-gray-800">
+      <div className="w-[30%] border-l border-gray-200 dark:border-gray-800 flex flex-col shrink-0 bg-gray-50 dark:bg-gray-900/30">
+        <div className="flex border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
           <button
-            className={`flex-1 py-2 px-4 text-sm ${
+            className={`flex-1 py-3 px-5 text-sm font-medium transition-colors ${
               activeTab === "settings"
-                ? "border-b-2 border-blue-600 dark:border-blue-500 font-medium"
-                : "text-gray-500 dark:text-gray-400"
+                ? "border-b-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400"
+                : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
             }`}
             onClick={() => setActiveTab("settings")}
           >
             Settings
           </button>
           <button
-            className={`flex-1 py-2 px-4 text-sm ${
+            className={`flex-1 py-3 px-5 text-sm font-medium transition-colors ${
               activeTab === "suggestions"
-                ? "border-b-2 border-blue-600 dark:border-blue-500 font-medium"
-                : "text-gray-500 dark:text-gray-400"
+                ? "border-b-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400"
+                : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
             }`}
             onClick={() => setActiveTab("suggestions")}
           >
@@ -450,7 +450,7 @@ export const AllTranscriptionsEditor = ({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-6">
           {activeTab === "settings" ? (
             <div className="flex flex-col gap-4">
               <div>

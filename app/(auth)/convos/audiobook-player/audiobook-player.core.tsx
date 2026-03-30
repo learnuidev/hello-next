@@ -71,39 +71,51 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
         lang={content.lang}
       />
       <div className="relative">
-        <div
-          className={cn("grid grid-cols-12 gap-8 sm:px-8 scroll-px-80 w-full")}
-        >
-          <div className={cn("md:col-span-8 col-span-12")}>
-            {editMode ? (
-              <AllTranscriptionsEditor
-                contentId={content.id}
-                currentTime={currentTime}
-                seekAndPlay={seekAndPlay}
-              />
-            ) : paragraphMode === "paragraph" ? (
-              <ParagraphView
-                content={content}
-                currentTranscription={currentTranscription}
-                currentTime={currentTime}
-                seek={seek}
-                isPlaying
-              />
-            ) : currentTranscription ? (
-              <CurrentTranscriptionView
-                containsChinglish={containsChinglish}
-                seekAndPlay={seekAndPlay}
-                currentTranscription={currentTranscription}
-                contentId={content.id}
-                lang={content.lang}
-              />
-            ) : (
-              <div className=" dark:text-black text-white text-center mt-8 sm:mt-24 min-w-5xl mx-auto">
-                ...
-              </div>
-            )}
+        {editMode ? (
+          <div className={cn("sm:px-8  w-full")}>
+            <AllTranscriptionsEditor
+              contentId={content.id}
+              currentTime={currentTime}
+              seekAndPlay={seekAndPlay}
+            />
           </div>
-        </div>
+        ) : (
+          <div
+            className={cn(
+              "grid grid-cols-12 gap-8 sm:px-8 scroll-px-80 w-full"
+            )}
+          >
+            <div className={cn("md:col-span-8 col-span-12")}>
+              {editMode ? (
+                <AllTranscriptionsEditor
+                  contentId={content.id}
+                  currentTime={currentTime}
+                  seekAndPlay={seekAndPlay}
+                />
+              ) : paragraphMode === "paragraph" ? (
+                <ParagraphView
+                  content={content}
+                  currentTranscription={currentTranscription}
+                  currentTime={currentTime}
+                  seek={seek}
+                  isPlaying
+                />
+              ) : currentTranscription ? (
+                <CurrentTranscriptionView
+                  containsChinglish={containsChinglish}
+                  seekAndPlay={seekAndPlay}
+                  currentTranscription={currentTranscription}
+                  contentId={content.id}
+                  lang={content.lang}
+                />
+              ) : (
+                <div className=" dark:text-black text-white text-center mt-8 sm:mt-24 min-w-5xl mx-auto">
+                  ...
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="fixed bottom-2 w-full">
           <div className="w-full max-w-3xl mx-auto p-4 py-2">

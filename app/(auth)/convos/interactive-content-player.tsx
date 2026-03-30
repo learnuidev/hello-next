@@ -37,9 +37,7 @@ export function InteractiveContentPlayer({ content }: { content: IContent }) {
   const handleProgress = ({ playedSeconds }: { playedSeconds: number }) => {
     setCurrentTime(playedSeconds);
     const transcription = getCurrentTranscription();
-    if (transcription?.id !== currentTranscription?.id) {
-      setCurrentTranscription(transcription || null);
-    }
+    setCurrentTranscription(transcription || null);
   };
 
   const formatTime = (seconds: number) => {
@@ -52,13 +50,13 @@ export function InteractiveContentPlayer({ content }: { content: IContent }) {
     if (!currentTranscription) return 0;
     const duration = currentTranscription.end - currentTranscription.start;
     const elapsed = currentTime - currentTranscription.start;
-    return Math.min(Math.max(elapsed / duration, 0), 1);
+    return Math.min(Math.max(elapsed / Math.max(duration, 0.1), 0), 1);
   };
 
   const progress = getProgressWithinLine();
 
   return (
-    <main className="relative min-h-screen bg-black overflow-hidden">
+    <main className="relative  bg-black overflow-hidden">
       <div className="hidden">
         <ReactPlayer
           ref={playerRef}
@@ -66,69 +64,30 @@ export function InteractiveContentPlayer({ content }: { content: IContent }) {
           playing={playing}
           onProgress={handleProgress}
           onEnded={() => setPlaying(false)}
+          progressInterval={50}
         />
       </div>
 
-      <div className="relative flex flex-col items-center justify-center min-h-screen px-6 py-16">
+      <div className="relative flex flex-col items-center px-6 py-16">
         <div className="w-full max-w-2xl">
-          <h1 className="text-white/90 text-xl font-light tracking-tight text-center mb-4">
-            {content.title}
-          </h1>
+          <div className="h-96 relative flex items-center justify-center overflow-hidden">
+            {currentTranscription && (
+              <div
+                key={currentTranscription.id}
+                className="text-center  w-full absolute"
+              >
+                <div className="text-white/40 text-base md:text-lg font-light leading-relaxed">
+                  {currentTranscription.roman}
+                </div>
+                <div className="text-white text-3xl md:text-4xl font-light leading-relaxed tracking-wide">
+                  {currentTranscription.input}
+                </div>
 
-          <div className="h-96 relative flex items-center justify-center">
-            <AnimatePresence mode="wait">
-              {currentTranscription && (
-                <motion.div
-                  key={currentTranscription.id}
-                  initial={{ y: 100, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -100, opacity: 0 }}
-                  transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-                  className="text-center space-y-8 w-full"
-                >
-                  <div className="text-white/30 text-sm font-mono tracking-wider">
-                    {formatTime(currentTime)}
-                  </div>
-
-                  <motion.div
-                    className="text-white text-3xl md:text-4xl font-light leading-relaxed tracking-wide"
-                    style={{
-                      y: progress * -50,
-                      opacity: 1 - progress * 0.3,
-                    }}
-                  >
-                    {currentTranscription.input}
-                  </motion.div>
-
-                  <motion.div
-                    className="text-white/50 text-lg md:text-xl font-light leading-relaxed"
-                    style={{
-                      opacity: 1 - progress * 0.5,
-                    }}
-                  >
-                    {currentTranscription.pinyin}
-                  </motion.div>
-
-                  <motion.div
-                    className="text-white/40 text-base md:text-lg font-light leading-relaxed"
-                    style={{
-                      opacity: 1 - progress * 0.7,
-                    }}
-                  >
-                    {currentTranscription.roman}
-                  </motion.div>
-
-                  <motion.div
-                    className="text-white/30 text-base md:text-lg font-light leading-relaxed mt-6"
-                    style={{
-                      opacity: 1 - progress * 0.8,
-                    }}
-                  >
-                    {currentTranscription.en}
-                  </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                <div className="text-white/30 text-base md:text-lg font-light leading-relaxed mt-6">
+                  {currentTranscription.en}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

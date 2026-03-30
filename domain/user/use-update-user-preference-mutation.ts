@@ -21,7 +21,8 @@ interface UpdatePreferenceResponse {
   sourceLanguage?: string;
   autoPlayContent?: boolean;
   contentViewType?: string;
-  autoScroll: boolean;
+  autoScroll?: boolean;
+  smartSet?: boolean;
 }
 
 type UpdateUserPreferenceResponse = GetUserPreferenceResponse & {

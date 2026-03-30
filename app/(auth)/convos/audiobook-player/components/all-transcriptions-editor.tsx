@@ -7,6 +7,7 @@ import { useUpdateContentMutation } from "@/domain/content/use-update-content-mu
 import { useState, useRef, useEffect, useMemo } from "react";
 import { formatTime } from "../../_play/utils";
 import { useAutoScroll } from "@/components/settings-dialog/use-auto-scroll";
+import { useSmartSet } from "@/components/settings-dialog/use-smart-set";
 
 type LocalTranscription = ContentTranscription & { _isNew?: boolean };
 
@@ -35,6 +36,7 @@ export const AllTranscriptionsEditor = ({
   );
   const [viewMode, setViewMode] = useState<"current" | "all">("current");
   const { autoScrollWhilePlaying, setAutoScrollWhilePlaying } = useAutoScroll();
+  const { smartSet, setSmartSet } = useSmartSet();
 
   const transcriptionRefs = useRef<{ [key: string]: HTMLDivElement | null }>(
     {}
@@ -66,9 +68,28 @@ export const AllTranscriptionsEditor = ({
   const updateLocalField = (index: number, field: string, value: any) => {
     setLocalTranscriptions((prev) => {
       const current = prev || content.transcriptions || [];
-      return current.map((item: LocalTranscription, i: number) =>
-        i === index ? { ...item, [field]: value } : item
-      );
+      const updated = current.map((item: LocalTranscription, i: number) => {
+        if (i !== index) return item;
+        return { ...item, [field]: value };
+      });
+
+      if (!smartSet) return updated;
+
+      if (field === "end") {
+        const nextIndex = index + 1;
+        if (nextIndex < updated.length && updated[nextIndex].start === 0) {
+          updated[nextIndex] = { ...updated[nextIndex], start: value };
+        }
+      }
+
+      if (field === "start") {
+        const prevIndex = index - 1;
+        if (prevIndex >= 0 && updated[prevIndex].end === 0) {
+          updated[prevIndex] = { ...updated[prevIndex], end: value };
+        }
+      }
+
+      return updated;
     });
   };
 
@@ -480,6 +501,29 @@ export const AllTranscriptionsEditor = ({
           <div className="flex-1 overflow-y-auto p-8">
             {activeTab === "settings" ? (
               <div className="flex flex-col gap-10">
+                <div className="space-y-4">
+                  <label className="text-lg font-light text-gray-800 dark:text-[rgb(230,230,230)] tracking-wide">
+                    Smart Set
+                  </label>
+                  <p className="text-sm text-gray-500 dark:text-[rgb(140,140,140)] font-light leading-relaxed">
+                    Automatically set adjacent transcriptions' start/end times
+                  </p>
+                  <button
+                    onClick={() => setSmartSet(!smartSet)}
+                    className={`relative w-16 h-8 rounded-full transition-all duration-300 ${
+                      smartSet
+                        ? "bg-blue-500"
+                        : "bg-gray-300 dark:bg-[rgb(30,31,35)]"
+                    }`}
+                  >
+                    <span
+                      className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-lg transition-all duration-300 ${
+                        smartSet ? "left-9" : "left-1"
+                      }`}
+                    />
+                  </button>
+                </div>
+
                 <div className="space-y-4">
                   <label className="text-lg font-light text-gray-800 dark:text-[rgb(230,230,230)] tracking-wide">
                     Auto Scroll

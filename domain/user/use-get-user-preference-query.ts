@@ -29,6 +29,7 @@ export interface GetUserPreferenceResponse {
   autoPlayContent?: boolean;
   contentViewType?: string;
   autoScroll: boolean;
+  smartSet: boolean;
 }
 
 const getUserPrefrence = async (opts: {

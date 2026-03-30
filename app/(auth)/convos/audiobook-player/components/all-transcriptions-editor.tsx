@@ -6,6 +6,7 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { formatTime } from "../../_play/utils";
+import { useAutoScroll } from "@/components/settings-dialog/use-auto-scroll";
 
 type LocalTranscription = ContentTranscription & { _isNew?: boolean };
 
@@ -33,7 +34,7 @@ export const AllTranscriptionsEditor = ({
     "settings"
   );
   const [viewMode, setViewMode] = useState<"current" | "all">("current");
-  const [autoScrollWhilePlaying, setAutoScrollWhilePlaying] = useState(true);
+  const { autoScrollWhilePlaying, setAutoScrollWhilePlaying } = useAutoScroll();
 
   const transcriptionRefs = useRef<{ [key: string]: HTMLDivElement | null }>(
     {}
@@ -281,7 +282,7 @@ export const AllTranscriptionsEditor = ({
 
       <div className="flex gap-6 h-full px-4">
         <div className="w-[70%] overflow-y-auto pr-4">
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 pb-20">
             {transcriptions.map((transcription, index) => {
               return (
                 <div
@@ -452,8 +453,8 @@ export const AllTranscriptionsEditor = ({
           </div>
         </div>
 
-        <div className="w-[30%] border-l border-gray-100 dark:border-[rgb(25,26,30)] flex flex-col shrink-0 bg-white dark:bg-[rgb(9,10,11)]">
-          <div className="flex gap-1 p-2 bg-gray-50 dark:bg-[rgb(12,13,15)]">
+        <div className="w-[30%] border-l border-gray-100 dark:border-[rgb(25,26,30)] flex flex-col shrink-0 bg-white dark:bg-[rgb(9,10,11)] h-full overflow-hidden">
+          <div className="flex gap-1 p-2 bg-gray-50 dark:bg-[rgb(12,13,15)] flex-shrink-0">
             <button
               className={`flex-1 py-3 px-6 text-sm font-light transition-all duration-300 rounded-xl ${
                 activeTab === "settings"
@@ -484,10 +485,13 @@ export const AllTranscriptionsEditor = ({
                     Auto Scroll
                   </label>
                   <p className="text-sm text-gray-500 dark:text-[rgb(140,140,140)] font-light leading-relaxed">
-                    Automatically scroll to the current transcription while playing
+                    Automatically scroll to the current transcription while
+                    playing
                   </p>
                   <button
-                    onClick={() => setAutoScrollWhilePlaying(!autoScrollWhilePlaying)}
+                    onClick={() =>
+                      setAutoScrollWhilePlaying(!autoScrollWhilePlaying)
+                    }
                     className={`relative w-16 h-8 rounded-full transition-all duration-300 ${
                       autoScrollWhilePlaying
                         ? "bg-blue-500"
@@ -539,7 +543,8 @@ export const AllTranscriptionsEditor = ({
                   <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 rounded-2xl p-6">
                     <p className="text-sm text-amber-800 dark:text-amber-200 font-light">
                       {problemTranscriptions.length} transcription
-                      {problemTranscriptions.length !== 1 ? "s" : ""} need attention
+                      {problemTranscriptions.length !== 1 ? "s" : ""} need
+                      attention
                     </p>
                   </div>
                 )}

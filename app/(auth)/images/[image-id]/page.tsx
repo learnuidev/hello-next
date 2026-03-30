@@ -243,48 +243,6 @@ function Explorer({
           </div>
         </div>
       </div>
-
-      <div className="flex gap-8 flex-col sm:flex-row px-6">
-        <div className="w-full py-8">
-          <div className="max-w-4xl mx-auto">
-            <Card className="shadow-xl">
-              <CardContent className="p-12">
-                <div className="text-center space-y-8">
-                  <CurrentTranscriptionView
-                    containsChinglish={false}
-                    currentTranscription={{
-                      ...current,
-                      input: current?.input || current?.hanzi,
-                      lang: "zh",
-                    }}
-                    lang={"zh"}
-                  />
-                  <div className="pt-8">
-                    <Link
-                      target="_blank"
-                      href={getNmmLink({
-                        id: current?.hanzi || current?.input,
-                        lang: "zh",
-                      })}
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary/80"
-                    >
-                      Learn more <Icons.externalLink className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {selected && (
-          <MiniDictionary
-            className="my-8 w-full sm:max-w-[600px]"
-            selected={selected}
-            lang={"zh"}
-          />
-        )}
-      </div>
     </div>
   );
 }

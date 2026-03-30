@@ -12,6 +12,7 @@ export function StandardView({
   className,
   contentId,
   lang,
+  currentTime,
 }: CurrentTranscriptionProps) {
   const defautClassName = "mb-4 gap-0 space-y-0";
 
@@ -28,6 +29,7 @@ export function StandardView({
 
       <div className={cn(defautClassName, className)}>
         <InputView
+          currentTime={currentTime}
           containsChinglish={containsChinglish}
           currentTranscription={currentTranscription}
           seekAndPlay={seekAndPlay}
@@ -38,6 +40,7 @@ export function StandardView({
 
       {showEn && (
         <EnView
+          currentTime={currentTime}
           containsChinglish={containsChinglish}
           currentTranscription={currentTranscription}
           seekAndPlay={seekAndPlay}

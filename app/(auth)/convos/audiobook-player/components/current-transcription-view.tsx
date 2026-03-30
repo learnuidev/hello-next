@@ -11,6 +11,7 @@ export function CurrentTranscriptionView({
   className,
   contentId,
   lang,
+  currentTime,
 }: CurrentTranscriptionProps) {
   const { readMode } = useReadModeState();
 
@@ -19,6 +20,7 @@ export function CurrentTranscriptionView({
       {readMode ? (
         <div className="max-w-7xl">
           <ReaderView
+            currentTime={currentTime}
             containsChinglish={containsChinglish}
             currentTranscription={currentTranscription}
             seekAndPlay={seekAndPlay}
@@ -29,6 +31,7 @@ export function CurrentTranscriptionView({
         </div>
       ) : (
         <StandardView
+          currentTime={currentTime}
           containsChinglish={containsChinglish}
           currentTranscription={currentTranscription}
           seekAndPlay={seekAndPlay}

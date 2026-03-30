@@ -59,6 +59,7 @@ export const ActiveTranscription = ({
     <MandoContextMenu lang={currentTranscription?.lang}>
       {currentTranscription ? (
         <CurrentTranscriptionView
+          currentTime={currentTime}
           containsChinglish={containsChinglish}
           seekAndPlay={seekAndPlay}
           currentTranscription={currentTranscription}

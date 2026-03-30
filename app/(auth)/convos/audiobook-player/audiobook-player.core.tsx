@@ -102,6 +102,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 />
               ) : currentTranscription ? (
                 <CurrentTranscriptionView
+                  currentTime={currentTime}
                   containsChinglish={containsChinglish}
                   seekAndPlay={seekAndPlay}
                   currentTranscription={currentTranscription}

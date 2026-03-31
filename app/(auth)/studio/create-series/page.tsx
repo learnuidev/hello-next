@@ -117,7 +117,7 @@ export default function CreateSeriesPage() {
             toast.error(error?.message || "Failed to create series");
             setIsSubmitting(false);
           },
-        },
+        }
       );
     } catch (error) {
       if (error instanceof Error) {
@@ -169,10 +169,20 @@ export default function CreateSeriesPage() {
                       "text-left transition-colors relative pb-2",
                       isActive
                         ? "text-rose-500"
-                        : "text-gray-600 hover:text-rose-500 dark:text-gray-400 dark:hover:text-rose-500",
+                        : "text-gray-600 hover:text-rose-500 dark:text-gray-400 dark:hover:text-rose-500"
                     )}
                   >
-                    <span className="font-medium text-base">{step.title}</span>
+                    <div className="flex gap-2">
+                      {isComplete ? (
+                        <Icons.checkCircleSolid className="h-4 w-4 inline-block ml-2 text-green-500" />
+                      ) : (
+                        <Icons.exlamationCircle className="h-4 w-4 inline-block ml-2 text-yellow-500" />
+                      )}
+                      <span className="font-medium text-base">
+                        {step.title}
+                      </span>
+                    </div>
+
                     {isActive && (
                       <motion.div
                         layoutId="activeStep"
@@ -184,9 +194,6 @@ export default function CreateSeriesPage() {
                           damping: 30,
                         }}
                       />
-                    )}
-                    {isComplete && (
-                      <Icons.check className="h-4 w-4 inline-block ml-2 text-green-500" />
                     )}
                   </motion.button>
                 );

@@ -25,6 +25,7 @@ import {
   faFaceSmirking as faFaceSmirkingSolid,
   faFaceSpiralEyes as faFaceSpiralEyesSolid,
   faGlassesRound as faGlassesRoundSolid,
+  faCheckCircle as faCheckCircleSolid,
   faGrinBeamSweat as faGrinBeamSweatSolid,
   // faMicrophone,
   // faSeedling,
@@ -143,6 +144,8 @@ import {
   faBackward,
   faForward,
   faChevronRight,
+  faExclamation,
+  faExclamationCircle,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -402,6 +405,8 @@ export const Icons = {
   rewind: createFAIcon(faBackward),
   forward: createFAIcon(faForward),
   fastForward: createFAIcon(faForward),
+  exlamationCircle: createFAIcon(faExclamationCircle),
+  checkCircleSolid: createFAIcon(faCheckCircleSolid),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

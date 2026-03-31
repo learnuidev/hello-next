@@ -1,29 +1,42 @@
-export interface ContentV2 {
+import { ContentFormat } from "../content-v2/content-v2.types";
+
+export enum ContentV2Type {
+  YOUTUBE = "youtube",
+  AUDIO = "audio",
+  TEXT = "text",
+  WEBSITE = "website",
+}
+
+export enum ContentStatus {
+  QUEUED = "QUEUED",
+  PROCESSING_YOUTUBE = "PROCESSING_YOUTUBE",
+  PROCESSING_TEXT = "PROCESSING_TEXT",
+  PROCESSING_WEBSITE = "PROCESSING_WEBSITE",
+  AUDIO_GENERATING = "AUDIO_GENERATING",
+  TRANSLATING = "TRANSLATING",
+  COMPLETED = "COMPLETED",
+  FAILED = "FAILED",
+  DLQ_FAILED = "DLQ_FAILED",
+}
+
+export interface ContentRecord {
   pk: string;
   sk: string;
   userId: string;
+  contentFormat: ContentFormat;
+  contentV2Type: ContentV2Type;
+  status: ContentStatus;
+  createdAt: Date;
+  updatedAt: Date;
 }
-
-export type ContentV2Type = "youtube" | "audio" | "text" | "website";
 
 export interface AddContentParams {
   audioId?: string;
   transcriptId?: string;
-  type: ContentV2Type;
+  contentV2Type: ContentV2Type;
   title?: string;
   text?: string;
 }
-
-export type ContentStatus =
-  | "QUEUED"
-  | "PROCESSING_YOUTUBE"
-  | "PROCESSING_TEXT"
-  | "PROCESSING_WEBSITE"
-  | "AUDIO_GENERATING"
-  | "TRANSLATING"
-  | "COMPLETED"
-  | "FAILED"
-  | "DLQ_FAILED";
 
 export interface ListContentsParams {
   status: ContentStatus;
@@ -31,3 +44,5 @@ export interface ListContentsParams {
   direction: "asc" | "desc";
   exclusiveStartKey?: string;
 }
+
+export type SortDirection = "asc" | "desc";

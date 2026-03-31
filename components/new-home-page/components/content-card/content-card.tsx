@@ -1,6 +1,16 @@
 import { IStats } from "@/domain/content-v2/series.types";
 import { Star, Play } from "lucide-react";
 
+function formatNumber(num: number): string {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + "M";
+  }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + "K";
+  }
+  return num.toString();
+}
+
 export interface CardProps {
   id: string;
   title: string;
@@ -30,20 +40,35 @@ export function ContentCard({
           style={{ backgroundImage: `url(${imageUrl})` }}
         />
       </div>
-      <div className="p-4 flex flex-col justify-start">
-        <h3 className="font-semibold text-lg truncate">{title}</h3>
-        {subtitle && (
-          <p className="text-sm text-gray-500 truncate">{subtitle}</p>
-        )}
-        <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
-          <span className="flex items-center gap-1">
-            <Star className="w-4 h-4" />
-            {stats.averageRating}
-          </span>
-          <span className="flex items-center gap-1">
-            <Play className="w-4 h-4" />
-            {stats.totalPlays}
-          </span>
+      <div className="p-4 flex flex-col justify-between">
+        <div>
+          <h3 className="font-semibold text-lg truncate">{title}</h3>
+          {subtitle && (
+            <p className="text-sm text-gray-500 truncate">{subtitle}</p>
+          )}
+          <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
+            <span className="flex items-center gap-1">
+              <Star className="w-4 h-4" />
+              {stats.averageRating}
+            </span>
+            <span className="flex items-center gap-1">
+              <Play className="w-4 h-4" />
+              {formatNumber(stats.totalPlays)}
+            </span>
+            <span className="flex items-center gap-1">
+              <Star className="w-4 h-4" />
+              {formatNumber(stats.totalStars)}
+            </span>
+            <span className="hidden sm:flex items-center gap-1">
+              {formatNumber(stats.totalWords)} words
+            </span>
+            <span className="hidden sm:flex items-center gap-1">
+              {formatNumber(stats.totalSentences)} sentences
+            </span>
+            <span className="hidden sm:flex items-center gap-1">
+              {formatNumber(stats.totalCharacters)} 词
+            </span>
+          </div>
         </div>
       </div>
     </div>

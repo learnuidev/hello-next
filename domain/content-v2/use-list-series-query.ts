@@ -183,6 +183,9 @@ const mockSeries: Series[] = mockSeriesData.map((data, i) => ({
     averageRating: Math.floor(Math.random() * 50) / 10 + 3,
     totalPlays: Math.floor(Math.random() * 50000) + 1000,
     totalStars: Math.floor(Math.random() * 2000) + 100,
+    totalCharacters: Math.floor(Math.random() * 10) + 500,
+    totalSentences: Math.floor(Math.random() * 2) + 5,
+    totalWords: Math.floor(Math.random() * 5) + 50,
   },
   backgroundImage: defaultPic,
 }));

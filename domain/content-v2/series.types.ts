@@ -4,6 +4,10 @@ export interface IStats {
   averageRating: number;
   totalPlays: number;
   totalStars: number;
+
+  totalCharacters: number;
+  totalSentences: number;
+  totalWords: number;
 }
 
 export type SeriesStats = IStats & {};

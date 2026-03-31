@@ -2,12 +2,13 @@
 
 import { Authenticated } from "@/components/Authenticated";
 import { FloatingNavbar } from "@/components/floating-navbar";
-import { OverviewPage } from "./overview/overview-page";
+// import { OverviewPage }  from "./overview/overview-page";
+import { NewHomePage } from "@/components/new-home-page/new-home-page";
 
 export default function Home() {
   return (
     <Authenticated>
-      <OverviewPage />
+      <NewHomePage />
       <FloatingNavbar />
     </Authenticated>
   );

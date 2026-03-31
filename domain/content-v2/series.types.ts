@@ -10,6 +10,7 @@ export type SeriesStats = IStats & {};
 
 interface Source {
   id: string;
+  username: string;
   title: string;
 }
 

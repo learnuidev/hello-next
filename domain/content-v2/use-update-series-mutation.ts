@@ -1,12 +1,16 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  type UseMutationOptions,
+} from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { Series } from "./series.types";
 import { TopicType } from "../topic/topic.types";
 
-type UpdateSeriesParams = {
+export type UpdateSeriesParams = {
   id: string;
   title?: string;
   topicType?: TopicType;
@@ -32,34 +36,28 @@ const updateSeries = async (
   return resp;
 };
 
-export function useUpdateSeriesMutation(options = {} as any) {
+export function useUpdateSeriesMutation(
+  options?: UseMutationOptions<Series, Error, UpdateSeriesParams>,
+) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<Series, Error, UpdateSeriesParams>({
     mutationFn: async (params: UpdateSeriesParams) => {
       const response = await updateSeries(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
-    ...options,
-    onSuccess: (data: Series) => {
-      if (options?.onSuccess) {
-        options.onSuccess(data);
-      }
-
+    onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: ["list-series"],
       });
       queryClient.invalidateQueries({
         queryKey: ["get-series-details", data?.id],
       });
+      options?.onSuccess?.(data, variables, context);
     },
-    cacheTime: 1000 * 60 * 30,
-    refetchOnWindowFocus: false,
-    refetchOnFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
+    ...options,
   });
 }

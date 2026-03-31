@@ -1,6 +1,10 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  type UseMutationOptions,
+} from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { AddSeriesParams, Series } from "./series.types";
@@ -22,31 +26,25 @@ const addSeries = async (
   return resp;
 };
 
-export function useAddSeriesMutation(options = {} as any) {
+export function useAddSeriesMutation(
+  options?: UseMutationOptions<Series, Error, AddSeriesParams>,
+) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<Series, Error, AddSeriesParams>({
     mutationFn: async (params: AddSeriesParams) => {
       const response = await addSeries(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
-    ...options,
-    onSuccess: (data: Series) => {
-      if (options?.onSuccess) {
-        options.onSuccess(data);
-      }
-
+    onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: ["list-series"],
       });
+      options?.onSuccess?.(data, variables, context);
     },
-    cacheTime: 1000 * 60 * 30,
-    refetchOnWindowFocus: false,
-    refetchOnFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
+    ...options,
   });
 }

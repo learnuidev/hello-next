@@ -4,15 +4,9 @@ import { useState } from "react";
 import { useListContentsQuery } from "@/domain/content-v2/use-list-contents-query";
 import { useListSeriesQuery } from "@/domain/content-v2/use-list-series-query";
 import { ContentV2, ContentFormat } from "@/domain/content-v2/content-v2.types";
-import { TopicType } from "@/domain/topic/topic.types";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { ContentListGrid } from "@/components/new-home-page/components/content-list-grid/content-list-grid";
+import { ContentCard } from "@/components/new-home-page/components/content-card/content-card";
 import {
   Dialog,
   DialogContent,
@@ -31,11 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Icons } from "@/components/ui/icons.v2";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { motion } from "framer-motion";
 import { toast } from "sonner";
 
 const CONTENT_FORMATS = [
@@ -52,140 +42,8 @@ interface AddContentFormData {
   seriesId: string;
 }
 
-interface ContentWithSeries extends ContentV2 {
-  seriesId?: string;
-  seriesTitle?: string;
-  transcriptionStatus?: "pending" | "processing" | "completed" | "failed";
-  transcriptionProgress?: number;
-}
-
-const MOCK_CONTENT: ContentWithSeries[] = [
-  {
-    id: "content-1",
-    topicType: "chinese-classics",
-    title: "中国传统文化概述",
-    format: ContentFormat.AUDIO,
-    mediaUrl: "https://example.com/audio1.mp3",
-    thumbnailUrl:
-      "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png",
-    seriesId: "series-1",
-    seriesTitle: "中文播客精选",
-    transcriptionStatus: "completed",
-    transcriptionProgress: 100,
-    createdAt: Date.now() - 86400000,
-    updatedAt: Date.now() - 86400000,
-    stats: {
-      averageRating: 4.5,
-      totalPlays: 1500,
-      totalStars: 120,
-      totalCharacters: 850,
-      totalSentences: 42,
-      totalWords: 120,
-    },
-  },
-  {
-    id: "content-2",
-    topicType: "technology",
-    title: "人工智能在医疗领域的应用",
-    format: ContentFormat.YOUTUBE,
-    mediaUrl: "https://youtube.com/watch?v=example1",
-    thumbnailUrl:
-      "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png",
-    seriesId: "series-1",
-    seriesTitle: "中文播客精选",
-    transcriptionStatus: "processing",
-    transcriptionProgress: 65,
-    createdAt: Date.now() - 172800000,
-    updatedAt: Date.now() - 172800000,
-    stats: {
-      averageRating: 4.2,
-      totalPlays: 980,
-      totalStars: 85,
-      totalCharacters: 620,
-      totalSentences: 31,
-      totalWords: 95,
-    },
-  },
-  {
-    id: "content-3",
-    topicType: "lifestyle",
-    title: "中国茶文化",
-    format: ContentFormat.YOUTUBE,
-    mediaUrl: "https://youtube.com/watch?v=example2",
-    thumbnailUrl:
-      "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png",
-    seriesId: "series-2",
-    seriesTitle: "中国古代故事",
-    transcriptionStatus: "pending",
-    transcriptionProgress: 0,
-    createdAt: Date.now() - 259200000,
-    updatedAt: Date.now() - 259200000,
-    stats: {
-      averageRating: 4.8,
-      totalPlays: 2100,
-      totalStars: 180,
-      totalCharacters: 720,
-      totalSentences: 36,
-      totalWords: 105,
-    },
-  },
-  {
-    id: "content-4",
-    topicType: "news",
-    title: "2024年经济趋势分析",
-    format: ContentFormat.AUDIO,
-    mediaUrl: "https://example.com/audio2.mp3",
-    thumbnailUrl:
-      "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png",
-    seriesId: "series-3",
-    seriesTitle: "科技新闻每日",
-    transcriptionStatus: "failed",
-    transcriptionProgress: 25,
-    createdAt: Date.now() - 345600000,
-    updatedAt: Date.now() - 345600000,
-    stats: {
-      averageRating: 4.0,
-      totalPlays: 650,
-      totalStars: 45,
-      totalCharacters: 480,
-      totalSentences: 24,
-      totalWords: 78,
-    },
-  },
-];
-
-function formatNumber(num: number): string {
-  if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
-  if (num >= 1000) return (num / 1000).toFixed(1) + "K";
-  return num.toString();
-}
-
-function getTranscriptionBadge(status: string, progress: number) {
-  switch (status) {
-    case "completed":
-      return (
-        <Badge variant="default" className="bg-green-500">
-          Completed
-        </Badge>
-      );
-    case "processing":
-      return (
-        <Badge variant="secondary" className="bg-yellow-500 text-white">
-          Processing {progress}%
-        </Badge>
-      );
-    case "pending":
-      return <Badge variant="outline">Pending</Badge>;
-    case "failed":
-      return <Badge variant="destructive">Failed</Badge>;
-    default:
-      return <Badge variant="outline">Unknown</Badge>;
-  }
-}
-
 export function ContentManagement() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("all");
   const [formData, setFormData] = useState<AddContentFormData>({
     title: "",
     format: "",
@@ -207,6 +65,8 @@ export function ContentManagement() {
     direction: "desc",
   });
 
+  const contents = contentsData?.items || [];
+
   const handleAddContent = async () => {
     if (
       !formData.title ||
@@ -223,17 +83,6 @@ export function ContentManagement() {
     setFormData({ title: "", format: "", mediaUrl: "", seriesId: "" });
   };
 
-  const filteredContent = MOCK_CONTENT.filter((item) => {
-    if (activeTab === "all") return true;
-    if (activeTab === "completed")
-      return item.transcriptionStatus === "completed";
-    if (activeTab === "processing")
-      return item.transcriptionStatus === "processing";
-    if (activeTab === "pending") return item.transcriptionStatus === "pending";
-    if (activeTab === "failed") return item.transcriptionStatus === "failed";
-    return true;
-  });
-
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -243,28 +92,24 @@ export function ContentManagement() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-2xl font-bold">Content Management</h2>
-          <p className="text-muted-foreground">
-            Manage content and transcriptions
-          </p>
+          <h2 className="text-2xl font-bold">内容</h2>
+          <p className="text-muted-foreground">管理您的内容库</p>
         </div>
 
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
             <Button className="gap-2">
               <Icons.plusIcon className="h-4 w-4" />
-              Add Content
+              添加内容
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
-              <DialogTitle>Add Content to Series</DialogTitle>
-              <DialogDescription>
-                Add new content to an existing series
-              </DialogDescription>
+              <DialogTitle>添加内容到系列</DialogTitle>
+              <DialogDescription>添加新内容到现有系列</DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
@@ -335,166 +180,42 @@ export function ContentManagement() {
                 variant="outline"
                 onClick={() => setIsAddDialogOpen(false)}
               >
-                Cancel
+                取消
               </Button>
-              <Button onClick={handleAddContent}>Add Content</Button>
+              <Button onClick={handleAddContent}>添加内容</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="pending">Pending</TabsTrigger>
-          <TabsTrigger value="processing">Processing</TabsTrigger>
-          <TabsTrigger value="completed">Completed</TabsTrigger>
-          <TabsTrigger value="failed">Failed</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value={activeTab} className="mt-6">
-          {filteredContent.length === 0 ? (
-            <Card className="p-12 text-center">
-              <div className="flex flex-col items-center gap-4">
-                <Icons.layerGroup className="h-16 w-16 text-muted-foreground opacity-50" />
-                <div>
-                  <h3 className="text-lg font-semibold">No content found</h3>
-                  <p className="text-muted-foreground">
-                    Add content to a series to get started
-                  </p>
-                </div>
-                <Button
-                  onClick={() => setIsAddDialogOpen(true)}
-                  className="gap-2"
-                >
-                  <Icons.plusIcon className="h-4 w-4" />
-                  Add Content
-                </Button>
-              </div>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {filteredContent.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <Card className="h-full hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1 min-w-0">
-                          <CardTitle className="truncate">
-                            {item.title}
-                          </CardTitle>
-                          <CardDescription className="truncate">
-                            {item.seriesTitle && `Series: ${item.seriesTitle}`}
-                          </CardDescription>
-                        </div>
-                        {getTranscriptionBadge(
-                          item.transcriptionStatus || "pending",
-                          item.transcriptionProgress || 0,
-                        )}
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          {item.format === ContentFormat.YOUTUBE && (
-                            <Icons.youtube className="h-4 w-4" />
-                          )}
-                          {item.format === ContentFormat.AUDIO && (
-                            <Icons.music className="h-4 w-4" />
-                          )}
-                          {item.format === ContentFormat.TEXT && (
-                            <Icons.typeWriter className="h-4 w-4" />
-                          )}
-                          {item.format === ContentFormat.WEBSITE && (
-                            <Icons.browser className="h-4 w-4" />
-                          )}
-                          <span className="capitalize">{item.format}</span>
-                        </div>
-
-                        {item.transcriptionStatus === "processing" &&
-                          item.transcriptionProgress !== undefined && (
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                                <span>Transcription Progress</span>
-                                <span>{item.transcriptionProgress}%</span>
-                              </div>
-                              <Progress
-                                value={item.transcriptionProgress}
-                                className="h-2"
-                              />
-                            </div>
-                          )}
-
-                        <div className="grid grid-cols-3 gap-2 text-xs text-muted-foreground">
-                          <div className="text-center">
-                            <div className="font-medium text-foreground">
-                              {formatNumber(item.stats.totalCharacters)}
-                            </div>
-                            <div>字</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="font-medium text-foreground">
-                              {formatNumber(item.stats.totalWords)}
-                            </div>
-                            <div>词</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="font-medium text-foreground">
-                              {formatNumber(item.stats.totalSentences)}
-                            </div>
-                            <div>句</div>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Icons.playCircle className="h-3 w-3" />
-                          <span>
-                            {formatNumber(item.stats.totalPlays)} plays
-                          </span>
-                          <span>•</span>
-                          <span>{item.stats.averageRating.toFixed(1)} ⭐</span>
-                        </div>
-
-                        <div className="flex gap-2 pt-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="flex-1"
-                          >
-                            <Icons.eye className="h-4 w-4 mr-2" />
-                            View
-                          </Button>
-                          {item.transcriptionStatus === "pending" && (
-                            <Button size="sm" className="flex-1">
-                              <Icons.lightning className="h-4 w-4 mr-2" />
-                              Transcribe
-                            </Button>
-                          )}
-                          {item.transcriptionStatus === "failed" && (
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              className="flex-1"
-                            >
-                              <Icons.refresh className="h-4 w-4 mr-2" />
-                              Retry
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </TabsContent>
-      </Tabs>
+      {contents.length === 0 ? (
+        <div className="flex flex-col items-center justify-center p-12 text-center">
+          <Icons.layerGroup className="h-16 w-16 text-muted-foreground opacity-50" />
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">暂无内容</h3>
+            <p className="text-muted-foreground">添加内容到系列以开始</p>
+          </div>
+          <Button
+            onClick={() => setIsAddDialogOpen(true)}
+            className="gap-2 mt-4"
+          >
+            <Icons.plusIcon className="h-4 w-4" />
+            添加内容
+          </Button>
+        </div>
+      ) : (
+        <ContentListGrid>
+          {contents.map((item: ContentV2) => (
+            <ContentCard
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              imageUrl={item.thumbnailUrl}
+              stats={item.stats}
+            />
+          ))}
+        </ContentListGrid>
+      )}
     </div>
   );
 }

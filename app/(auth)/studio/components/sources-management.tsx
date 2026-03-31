@@ -140,27 +140,25 @@ export function SourcesManagement() {
   const sources = sourcesData?.items || [];
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-2xl font-bold">Sources Management</h2>
-          <p className="text-muted-foreground">
-            Create and manage your content sources
-          </p>
+          <h2 className="text-2xl font-bold">来源</h2>
+          <p className="text-muted-foreground">创建和管理您的内容来源</p>
         </div>
 
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
             <Button className="gap-2">
               <Icons.plusIcon className="h-4 w-4" />
-              Add Source
+              添加来源
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
-              <DialogTitle>Create New Source</DialogTitle>
+              <DialogTitle>创建新来源</DialogTitle>
               <DialogDescription>
-                Create a new content source (channel, author, etc.)
+                创建新的内容来源（频道、作者等）
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
@@ -216,13 +214,13 @@ export function SourcesManagement() {
                 variant="outline"
                 onClick={() => setIsAddDialogOpen(false)}
               >
-                Cancel
+                取消
               </Button>
               <Button
                 onClick={handleAddSource}
                 disabled={addSourceMutation.isPending}
               >
-                {addSourceMutation.isPending ? "Creating..." : "Create Source"}
+                {addSourceMutation.isPending ? "创建中..." : "创建来源"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -230,21 +228,20 @@ export function SourcesManagement() {
       </div>
 
       {sources.length === 0 ? (
-        <Card className="p-12 text-center">
-          <div className="flex flex-col items-center gap-4">
-            <Icons.userSolid className="h-16 w-16 text-muted-foreground opacity-50" />
-            <div>
-              <h3 className="text-lg font-semibold">No sources yet</h3>
-              <p className="text-muted-foreground">
-                Create your first source to get started
-              </p>
-            </div>
-            <Button onClick={() => setIsAddDialogOpen(true)} className="gap-2">
-              <Icons.plusIcon className="h-4 w-4" />
-              Create Source
-            </Button>
+        <div className="flex flex-col items-center justify-center p-12 text-center">
+          <Icons.userSolid className="h-16 w-16 text-muted-foreground opacity-50" />
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">暂无来源</h3>
+            <p className="text-muted-foreground">创建您的第一个来源以开始</p>
           </div>
-        </Card>
+          <Button
+            onClick={() => setIsAddDialogOpen(true)}
+            className="gap-2 mt-4"
+          >
+            <Icons.plusIcon className="h-4 w-4" />
+            创建来源
+          </Button>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sources.map((item, index) => (
@@ -305,8 +302,8 @@ export function SourcesManagement() {
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>Edit Source</DialogTitle>
-            <DialogDescription>Update source information</DialogDescription>
+            <DialogTitle>编辑来源</DialogTitle>
+            <DialogDescription>更新来源信息</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
@@ -355,13 +352,13 @@ export function SourcesManagement() {
               variant="outline"
               onClick={() => setIsEditDialogOpen(false)}
             >
-              Cancel
+              取消
             </Button>
             <Button
               onClick={handleEditSource}
               disabled={updateSourceMutation.isPending}
             >
-              {updateSourceMutation.isPending ? "Updating..." : "Update Source"}
+              {updateSourceMutation.isPending ? "更新中..." : "更新来源"}
             </Button>
           </DialogFooter>
         </DialogContent>

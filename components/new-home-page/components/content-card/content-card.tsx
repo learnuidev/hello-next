@@ -32,7 +32,7 @@ export function ContentCard({
   return (
     <motion.div
       key={id}
-      className="dark:hover:bg-[rgb(14,15,16)] dark:bg-[rgb(11,12,13)] hover:bg-gray-50 flex flex-col sm:flex-row shadow rounded-lg overflow-hidden cursor-pointer"
+      className="dark:hover:bg-[rgb(14,15,16)] dark:bg-[rgb(11,12,13)] hover:bg-gray-100 bg-gray-50 flex flex-col sm:flex-row shadow rounded-lg overflow-hidden cursor-pointer"
       onClick={onClick}
       whileHover={{ scale: 1.02, boxShadow: "0 10px 30px rgba(0,0,0,0.15)" }}
       whileTap={{ scale: 0.98 }}

@@ -9,13 +9,8 @@ import { useListSourcesQuery } from "@/domain/content-v2/use-list-sources-query"
 import { TopicType } from "@/domain/topic/topic.types";
 import { Series } from "@/domain/content-v2/series.types";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { ContentListGrid } from "@/components/new-home-page/components/content-list-grid/content-list-grid";
+import { ContentCard } from "@/components/new-home-page/components/content-card/content-card";
 import {
   Dialog,
   DialogContent,
@@ -34,8 +29,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Icons } from "@/components/ui/icons.v2";
-import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { topicsList } from "@/domain/topic/topic.constants";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 const TOPIC_TYPES: { value: TopicType; label: string }[] = [
   { value: "recommendation", label: "推荐" },
@@ -66,12 +63,6 @@ interface FormData {
   backgroundImageAssetId: string;
 }
 
-function formatNumber(num: number): string {
-  if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
-  if (num >= 1000) return (num / 1000).toFixed(1) + "K";
-  return num.toString();
-}
-
 export function SeriesManagement() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -82,12 +73,14 @@ export function SeriesManagement() {
     sourceId: "",
     backgroundImageAssetId: "",
   });
+  const [activeTopic, setActiveTopic] = useState<TopicType | null>(null);
 
   const {
     data: seriesData,
     isLoading,
     refetch,
   } = useListSeriesQuery({
+    topicType: activeTopic || undefined,
     limit: 50,
     direction: "desc",
   });
@@ -188,43 +181,71 @@ export function SeriesManagement() {
   const series = seriesData?.items || [];
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-2xl font-bold">Series Management</h2>
-          <p className="text-muted-foreground">
-            Create and manage your content series
-          </p>
+          <h2 className="text-2xl font-bold">系列</h2>
+          <p className="text-muted-foreground">管理您的内容系列</p>
         </div>
 
         <Link href="/studio/create-series">
           <Button className="gap-2">
             <Icons.plusIcon className="h-4 w-4" />
-            Add Series
+            添加系列
           </Button>
         </Link>
       </div>
 
+      <section className="flex gap-12 overflow-x-auto flex-nowrap mb-8">
+        {topicsList.map((topic, index) => {
+          const isActive = activeTopic === topic.type;
+          return (
+            <motion.div
+              key={topic.type}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <button
+                onClick={() => {
+                  setActiveTopic(topic.type);
+                }}
+                className={cn(
+                  `pb-2 rounded-none hover:text-rose-500 whitespace-nowrap transition-all relative`,
+                  isActive ? "text-rose-500" : "text-gray-600",
+                )}
+              >
+                {topic.title}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeTopicStudio"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-rose-500"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  />
+                )}
+              </button>
+            </motion.div>
+          );
+        })}
+      </section>
+
       {series.length === 0 ? (
-        <Card className="p-12 text-center">
-          <div className="flex flex-col items-center gap-4">
-            <Icons.contentSolid className="h-16 w-16 text-muted-foreground opacity-50" />
-            <div>
-              <h3 className="text-lg font-semibold">No series yet</h3>
-              <p className="text-muted-foreground">
-                Create your first series to get started
-              </p>
-            </div>
-            <Link href="/studio/create-series">
-              <Button className="gap-2">
-                <Icons.plusIcon className="h-4 w-4" />
-                Create Series
-              </Button>
-            </Link>
+        <div className="flex flex-col items-center justify-center p-12 text-center">
+          <Icons.contentSolid className="h-16 w-16 text-muted-foreground opacity-50" />
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">暂无系列</h3>
+            <p className="text-muted-foreground">创建您的第一个系列以开始</p>
           </div>
-        </Card>
+          <Link href="/studio/create-series">
+            <Button className="gap-2 mt-4">
+              <Icons.plusIcon className="h-4 w-4" />
+              创建系列
+            </Button>
+          </Link>
+        </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <ContentListGrid>
           {series.map((item, index) => (
             <motion.div
               key={item.id}
@@ -232,72 +253,28 @@ export function SeriesManagement() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
             >
-              <Card className="h-full hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 min-w-0">
-                      <CardTitle className="truncate">{item.title}</CardTitle>
-                      <CardDescription className="truncate">
-                        {item.source.title}
-                      </CardDescription>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8"
-                      onClick={() => openEditDialog(item)}
-                    >
-                      <Icons.edit className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Icons.bookOpen className="h-4 w-4" />
-                      <span className="capitalize">
-                        {item.topicType.replace("-", " ")}
-                      </span>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2 text-xs text-muted-foreground">
-                      <div className="text-center">
-                        <div className="font-medium text-foreground">
-                          {formatNumber(item.stats.totalCharacters)}
-                        </div>
-                        <div>字</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="font-medium text-foreground">
-                          {formatNumber(item.stats.totalWords)}
-                        </div>
-                        <div>词</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="font-medium text-foreground">
-                          {formatNumber(item.stats.totalSentences)}
-                        </div>
-                        <div>句</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Icons.playCircle className="h-3 w-3" />
-                      <span>{formatNumber(item.stats.totalPlays)} plays</span>
-                      <span>•</span>
-                      <span>{item.stats.averageRating.toFixed(1)} ⭐</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <ContentCard
+                id={item.id}
+                title={item.title}
+                imageUrl={
+                  item.backgroundImage ||
+                  item.backgroundImageAssetId ||
+                  defaultPic
+                }
+                subtitle={item.source.title}
+                stats={item.stats}
+                onClick={() => openEditDialog(item)}
+              />
             </motion.div>
           ))}
-        </div>
+        </ContentListGrid>
       )}
 
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>Edit Series</DialogTitle>
-            <DialogDescription>Update series information</DialogDescription>
+            <DialogTitle>编辑系列</DialogTitle>
+            <DialogDescription>更新系列信息</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
@@ -357,13 +334,13 @@ export function SeriesManagement() {
               variant="outline"
               onClick={() => setIsEditDialogOpen(false)}
             >
-              Cancel
+              取消
             </Button>
             <Button
               onClick={handleEditSeries}
               disabled={updateSeriesMutation.isPending}
             >
-              {updateSeriesMutation.isPending ? "Updating..." : "Update Series"}
+              {updateSeriesMutation.isPending ? "更新中..." : "更新系列"}
             </Button>
           </DialogFooter>
         </DialogContent>

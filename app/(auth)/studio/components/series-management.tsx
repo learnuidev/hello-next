@@ -3,172 +3,26 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useListSeriesQuery } from "@/domain/content-v2/use-list-series-query";
-import { useAddSeriesMutation } from "@/domain/content-v2/use-add-series-mutation";
-import { useUpdateSeriesMutation } from "@/domain/content-v2/use-update-series-mutation";
-import { useListSourcesQuery } from "@/domain/content-v2/use-list-sources-query";
 import { TopicType } from "@/domain/topic/topic.types";
-import { Series } from "@/domain/content-v2/series.types";
 import { Button } from "@/components/ui/button";
 import { ContentListGrid } from "@/components/new-home-page/components/content-list-grid/content-list-grid";
 import { ContentCard } from "@/components/new-home-page/components/content-card/content-card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Icons } from "@/components/ui/icons.v2";
-import { toast } from "sonner";
 import { topicsList } from "@/domain/topic/topic.constants";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
-const TOPIC_TYPES: { value: TopicType; label: string }[] = [
-  { value: "recommendation", label: "推荐" },
-  { value: "storytelling", label: "故事" },
-  { value: "news", label: "新闻" },
-  { value: "chinese-classics", label: "经典" },
-  { value: "history", label: "历史" },
-  { value: "technology", label: "科技" },
-  { value: "science", label: "科学" },
-  { value: "lifestyle", label: "生活" },
-  { value: "travel", label: "旅行" },
-  { value: "music", label: "音乐" },
-  { value: "personal-growth", label: "成长" },
-  { value: "business", label: "商业" },
-  { value: "politics", label: "政治" },
-  { value: "innovation", label: "创新" },
-  { value: "kids", label: "儿童" },
-  { value: "sports", label: "运动" },
-];
-
 const defaultPic =
   "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png";
 
-interface FormData {
-  title: string;
-  topicType: TopicType | "";
-  sourceId: string;
-  backgroundImageAssetId: string;
-}
-
 export function SeriesManagement() {
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedSeries, setSelectedSeries] = useState<Series | null>(null);
-  const [formData, setFormData] = useState<FormData>({
-    title: "",
-    topicType: "",
-    sourceId: "",
-    backgroundImageAssetId: "",
-  });
   const [activeTopic, setActiveTopic] = useState<TopicType | null>(null);
 
-  const {
-    data: seriesData,
-    isLoading,
-    refetch,
-  } = useListSeriesQuery({
+  const { data: seriesData, isLoading } = useListSeriesQuery({
     topicType: activeTopic || undefined,
     limit: 50,
     direction: "desc",
   });
-
-  const { data: sourcesData } = useListSourcesQuery({
-    filter: "me",
-    limit: 100,
-  });
-
-  const addSeriesMutation = useAddSeriesMutation();
-
-  const updateSeriesMutation = useUpdateSeriesMutation();
-
-  const handleAddSeries = async () => {
-    if (!formData.title || !formData.topicType || !formData.sourceId) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-
-    addSeriesMutation.mutate(
-      {
-        title: formData.title,
-        topicType: formData.topicType as TopicType,
-        sourceId: formData.sourceId,
-        backgroundImageAssetId: formData.backgroundImageAssetId || "default",
-      },
-      {
-        onSuccess: () => {
-          toast.success("Series created successfully");
-          setIsAddDialogOpen(false);
-          setFormData({
-            title: "",
-            topicType: "",
-            sourceId: "",
-            backgroundImageAssetId: "",
-          });
-          refetch();
-        },
-        onError: () => {
-          toast.error("Failed to create series");
-        },
-      },
-    );
-  };
-
-  const handleEditSeries = async () => {
-    if (
-      !selectedSeries ||
-      !formData.title ||
-      !formData.topicType ||
-      !formData.sourceId
-    ) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-
-    updateSeriesMutation.mutate(
-      {
-        id: selectedSeries.id,
-        title: formData.title,
-        topicType: formData.topicType as TopicType,
-        sourceId: formData.sourceId,
-        backgroundImageAssetId: formData.backgroundImageAssetId,
-      },
-      {
-        onSuccess: () => {
-          toast.success("Series updated successfully");
-          setIsEditDialogOpen(false);
-          setSelectedSeries(null);
-          refetch();
-        },
-        onError: () => {
-          toast.error("Failed to update series");
-        },
-      },
-    );
-  };
-
-  const openEditDialog = (series: Series) => {
-    setSelectedSeries(series);
-    setFormData({
-      title: series.title,
-      topicType: series.topicType,
-      sourceId: series.sourceId,
-      backgroundImageAssetId: series.backgroundImageAssetId || "",
-    });
-    setIsEditDialogOpen(true);
-  };
 
   if (isLoading) {
     return (
@@ -270,82 +124,6 @@ export function SeriesManagement() {
           ))}
         </ContentListGrid>
       )}
-
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>编辑系列</DialogTitle>
-            <DialogDescription>更新系列信息</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="edit-title">Title *</Label>
-              <Input
-                id="edit-title"
-                placeholder="Enter series title"
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="edit-topicType">Topic Type *</Label>
-              <Select
-                value={formData.topicType}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, topicType: value as TopicType })
-                }
-              >
-                <SelectTrigger id="edit-topicType">
-                  <SelectValue placeholder="Select a topic type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {TOPIC_TYPES.map((type) => (
-                    <SelectItem key={type.value} value={type.value}>
-                      {type.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="edit-source">Source *</Label>
-              <Select
-                value={formData.sourceId}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, sourceId: value })
-                }
-              >
-                <SelectTrigger id="edit-source">
-                  <SelectValue placeholder="Select a source" />
-                </SelectTrigger>
-                <SelectContent>
-                  {sourcesData?.items.map((source) => (
-                    <SelectItem key={source.id} value={source.id}>
-                      {source.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setIsEditDialogOpen(false)}
-            >
-              取消
-            </Button>
-            <Button
-              onClick={handleEditSeries}
-              disabled={updateSeriesMutation.isPending}
-            >
-              {updateSeriesMutation.isPending ? "更新中..." : "更新系列"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

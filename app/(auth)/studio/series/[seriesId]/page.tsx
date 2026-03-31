@@ -1,13 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons.v2";
 import { useGetSeriesDetailsQuery } from "@/domain/content-v2/use-get-series-details-query";
+import { useUpdateSeriesMutation } from "@/domain/content-v2/use-update-series-mutation";
 import { ContentListGrid } from "@/components/new-home-page/components/content-list-grid/content-list-grid";
 import { ContentCard } from "@/components/new-home-page/components/content-card/content-card";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { SeriesForm } from "../../components/series-form";
 
 const defaultPic =
   "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png";
@@ -18,34 +22,114 @@ export default function SeriesDetailsPage({
   params: { seriesId: string };
 }) {
   const router = useRouter();
-  const { data, isLoading, error } = useGetSeriesDetailsQuery({
+  const { data, isLoading, error, refetch } = useGetSeriesDetailsQuery({
     seriesId: params.seriesId,
   });
+  const updateSeriesMutation = useUpdateSeriesMutation();
+  const [activeTab, setActiveTab] = useState<"info" | "episodes">("episodes");
+
+  const getErrorMessage = (error: any) => {
+    if (error?.message) {
+      if (
+        error.message.includes("404") ||
+        error.message.includes("not found")
+      ) {
+        return "未找到该系列";
+      }
+      if (
+        error.message.includes("403") ||
+        error.message.includes("Access denied")
+      ) {
+        return "无权访问该系列";
+      }
+      return error.message;
+    }
+    return "无法加载系列详情";
+  };
+
+  const handleUpdateSeries = async (data: {
+    title: string;
+    topicType: string;
+    sourceId: string;
+    backgroundImageAssetId: string;
+  }) => {
+    try {
+      await updateSeriesMutation.mutateAsync({
+        id: params.seriesId,
+        title: data.title,
+        topicType: data.topicType as any,
+        sourceId: data.sourceId,
+        backgroundImageAssetId: data.backgroundImageAssetId,
+      });
+      toast.success("系列更新成功");
+      refetch();
+    } catch (error: any) {
+      toast.error(error?.message || "更新系列失败");
+      throw error;
+    }
+  };
+
+  const handleAddEpisode = () => {
+    router.push("/studio/new-content");
+  };
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
+      <div className="flex flex-col items-center justify-center h-64">
         <Icons.spinner className="h-8 w-8 animate-spin" />
+        <p className="text-muted-foreground mt-4">加载中...</p>
       </div>
     );
   }
 
-  if (error || !data) {
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 text-center max-w-md mx-auto">
+        <Icons.exlamationCircle className="h-20 w-20 text-rose-500 opacity-70" />
+        <div className="mt-6">
+          <h3 className="text-xl font-semibold">加载失败</h3>
+          <p className="text-muted-foreground mt-2">{getErrorMessage(error)}</p>
+        </div>
+        <div className="flex gap-3 mt-6">
+          <Button onClick={() => refetch()} className="gap-2" variant="default">
+            <Icons.refresh className="h-4 w-4" />
+            重试
+          </Button>
+          <Button
+            onClick={() => router.back()}
+            className="gap-2"
+            variant="outline"
+          >
+            <Icons.back className="h-4 w-4" />
+            返回
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) {
     return (
       <div className="flex flex-col items-center justify-center p-12 text-center">
         <Icons.exlamationCircle className="h-16 w-16 text-muted-foreground opacity-50" />
         <div className="mt-4">
-          <h3 className="text-lg font-semibold">加载失败</h3>
-          <p className="text-muted-foreground">无法加载系列详情</p>
+          <h3 className="text-lg font-semibold">数据未找到</h3>
+          <p className="text-muted-foreground">无法获取系列信息</p>
         </div>
-        <Button
-          onClick={() => router.back()}
-          className="gap-2 mt-4"
-          variant="outline"
-        >
-          <Icons.back className="h-4 w-4" />
-          返回
-        </Button>
+        <div className="flex gap-3 mt-6">
+          <Button onClick={() => refetch()} className="gap-2" variant="outline">
+            <Icons.refresh className="h-4 w-4" />
+            重试
+          </Button>
+          <Button
+            onClick={() => router.back()}
+            className="gap-2"
+            variant="outline"
+          >
+            <Icons.back className="h-4 w-4" />
+            返回
+          </Button>
+        </div>
       </div>
     );
   }
@@ -70,125 +154,159 @@ export default function SeriesDetailsPage({
         </div>
       </div>
 
-      <div className="space-y-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="dark:bg-[rgb(11,12,13)] bg-gray-50 rounded-lg border border-gray-200 dark:border-gray-800 p-6 flex gap-6"
-        >
-          <div className="flex-shrink-0">
-            <div
-              className="aspect-square w-40 rounded-lg bg-cover bg-center"
-              style={{
-                backgroundImage: `url(${
-                  series.backgroundImage ||
-                  series.backgroundImageAssetId ||
-                  defaultPic
-                })`,
-              }}
-            />
-          </div>
-          <div className="flex-1 space-y-4">
-            <div>
-              <h2 className="text-2xl font-bold">{series.title}</h2>
-              <p className="text-sm text-gray-500 mt-1">
-                {series.source.title}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="dark:bg-[rgb(14,15,16)] bg-white rounded-lg p-3 border border-gray-200 dark:border-gray-800">
-                <p className="text-xs text-gray-500 uppercase font-medium">
-                  总字符数
-                </p>
-                <p className="text-lg font-semibold">
-                  {series.stats.totalCharacters.toLocaleString()}
-                </p>
-              </div>
-              <div className="dark:bg-[rgb(14,15,16)] bg-white rounded-lg p-3 border border-gray-200 dark:border-gray-800">
-                <p className="text-xs text-gray-500 uppercase font-medium">
-                  总词数
-                </p>
-                <p className="text-lg font-semibold">
-                  {series.stats.totalWords.toLocaleString()}
-                </p>
-              </div>
-              <div className="dark:bg-[rgb(14,15,16)] bg-white rounded-lg p-3 border border-gray-200 dark:border-gray-800">
-                <p className="text-xs text-gray-500 uppercase font-medium">
-                  总句数
-                </p>
-                <p className="text-lg font-semibold">
-                  {series.stats.totalSentences.toLocaleString()}
-                </p>
-              </div>
-              <div className="dark:bg-[rgb(14,15,16)] bg-white rounded-lg p-3 border border-gray-200 dark:border-gray-800">
-                <p className="text-xs text-gray-500 uppercase font-medium">
-                  平均评分
-                </p>
-                <p className="text-lg font-semibold">
-                  {series.stats.averageRating.toFixed(1)}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                className="gap-2 text-gray-600 hover:text-rose-500 hover:bg-rose-50 dark:text-gray-400 dark:hover:text-rose-500 dark:hover:bg-rose-950/20"
-                onClick={() => router.back()}
-              >
-                <Icons.back className="h-4 w-4" />
-                返回
-              </Button>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-        >
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-            <div>
-              <h2 className="text-2xl font-bold">内容</h2>
-              <p className="text-muted-foreground">
-                {episodesList.length} 个内容项
-              </p>
-            </div>
-          </div>
-
-          {episodesList.length === 0 ? (
-            <div className="flex flex-col items-center justify-center p-12 text-center dark:bg-[rgb(11,12,13)] bg-gray-50 rounded-lg border border-gray-200 dark:border-gray-800">
-              <Icons.layerGroup className="h-16 w-16 text-muted-foreground opacity-50" />
-              <div className="mt-4">
-                <h3 className="text-lg font-semibold">暂无内容</h3>
-                <p className="text-muted-foreground">
-                  此系列还没有添加任何内容
-                </p>
-              </div>
-            </div>
-          ) : (
-            <ContentListGrid>
-              {episodesList.map((item: any, index: number) => (
+      <div className="p-0">
+        <div className="flex justify-between items-center">
+          <div className="relative space-x-8">
+            <button
+              onClick={() => setActiveTab("info")}
+              className={cn(
+                "px-0 py-4 relative transition-colors",
+                activeTab === "info"
+                  ? "text-rose-500"
+                  : "text-gray-600 hover:text-rose-500 dark:text-gray-400 dark:hover:text-rose-500",
+              )}
+            >
+              信息
+              {activeTab === "info" && (
                 <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <ContentCard
-                    id={item.id}
-                    title={item.title}
-                    imageUrl={item.thumbnailUrl || defaultPic}
-                    stats={item.stats}
-                  />
-                </motion.div>
-              ))}
-            </ContentListGrid>
+                  layoutId="activeTab"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-rose-500"
+                  initial={false}
+                  transition={{
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 30,
+                  }}
+                />
+              )}
+            </button>
+            <button
+              onClick={() => setActiveTab("episodes")}
+              className={cn(
+                "px-0 py-4 relative transition-colors",
+                activeTab === "episodes"
+                  ? "text-rose-500"
+                  : "text-gray-600 hover:text-rose-500 dark:text-gray-400 dark:hover:text-rose-500",
+              )}
+            >
+              内容
+              {activeTab === "episodes" && (
+                <motion.div
+                  layoutId="activeTab"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-rose-500"
+                  initial={false}
+                  transition={{
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 30,
+                  }}
+                />
+              )}
+            </button>
+          </div>
+        </div>
+
+        <AnimatePresence mode="wait">
+          {activeTab === "info" && (
+            <motion.div
+              key="info"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="mt-8"
+            >
+              <div className="max-w-4xl">
+                <div className="mb-8">
+                  <h2 className="text-2xl font-semibold mb-2">编辑系列</h2>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    更新系列的详细信息
+                  </p>
+                </div>
+                <SeriesForm
+                  mode="edit"
+                  seriesId={series.id}
+                  initialData={{
+                    title: series.title,
+                    description: "",
+                    topicType: series.topicType,
+                    sourceId: series.sourceId,
+                    sourceName: series.source.title,
+                    photoAssetId: series.backgroundImageAssetId || "",
+                    photoUrl: series.backgroundImage || "",
+                  }}
+                  onSubmit={handleUpdateSeries}
+                  onCancel={() => router.back()}
+                  submitLabel="保存更改"
+                />
+              </div>
+            </motion.div>
           )}
-        </motion.div>
+
+          {activeTab === "episodes" && (
+            <motion.div
+              key="episodes"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+              className="mt-8"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold">内容</h2>
+                  <p className="text-muted-foreground">
+                    {episodesList.length} 个内容项
+                  </p>
+                </div>
+                <Button
+                  onClick={handleAddEpisode}
+                  className="gap-2 bg-rose-500 hover:bg-rose-600"
+                >
+                  <Icons.plusIcon className="h-4 w-4" />
+                  添加内容
+                </Button>
+              </div>
+
+              {episodesList.length === 0 ? (
+                <div className="flex flex-col items-center justify-center p-12 text-center dark:bg-[rgb(11,12,13)] bg-gray-50 rounded-lg border border-gray-200 dark:border-gray-800">
+                  <Icons.layerGroup className="h-16 w-16 text-muted-foreground opacity-50" />
+                  <div className="mt-4">
+                    <h3 className="text-lg font-semibold">暂无内容</h3>
+                    <p className="text-muted-foreground mb-4">
+                      此系列还没有添加任何内容
+                    </p>
+                    <Button
+                      onClick={handleAddEpisode}
+                      className="gap-2 bg-rose-500 hover:bg-rose-600"
+                    >
+                      <Icons.plusIcon className="h-4 w-4" />
+                      添加新内容
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <ContentListGrid>
+                  {episodesList.map((item: any, index: number) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <ContentCard
+                        id={item.id}
+                        title={item.title}
+                        imageUrl={item.thumbnailUrl || defaultPic}
+                        stats={item.stats}
+                      />
+                    </motion.div>
+                  ))}
+                </ContentListGrid>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

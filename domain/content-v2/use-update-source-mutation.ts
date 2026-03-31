@@ -1,6 +1,10 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  type UseMutationOptions,
+} from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { UpdateSourceParams, Source } from "./source.types";
@@ -22,34 +26,28 @@ const updateSource = async (
   return resp;
 };
 
-export function useUpdateSourceMutation(options = {} as any) {
+export function useUpdateSourceMutation(
+  options?: UseMutationOptions<Source, Error, UpdateSourceParams>,
+) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<Source, Error, UpdateSourceParams>({
     mutationFn: async (params: UpdateSourceParams) => {
       const response = await updateSource(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
-    ...options,
-    onSuccess: (data: Source) => {
-      if (options?.onSuccess) {
-        options.onSuccess(data);
-      }
-
+    onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: ["list-sources"],
       });
       queryClient.invalidateQueries({
         queryKey: ["get-source-details", data?.id],
       });
+      options?.onSuccess?.(data, variables, context);
     },
-    cacheTime: 1000 * 60 * 30,
-    refetchOnWindowFocus: false,
-    refetchOnFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
+    ...options,
   });
 }

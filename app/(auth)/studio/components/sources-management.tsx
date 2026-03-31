@@ -62,29 +62,9 @@ export function SourcesManagement() {
     direction: "desc",
   });
 
-  const addSourceMutation = useAddSourceMutation({
-    onSuccess: () => {
-      toast.success("Source created successfully");
-      setIsAddDialogOpen(false);
-      setFormData({ userName: "", title: "", status: "unclaimed" });
-      refetch();
-    },
-    onError: () => {
-      toast.error("Failed to create source");
-    },
-  });
+  const addSourceMutation = useAddSourceMutation();
 
-  const updateSourceMutation = useUpdateSourceMutation({
-    onSuccess: () => {
-      toast.success("Source updated successfully");
-      setIsEditDialogOpen(false);
-      setSelectedSource(null);
-      refetch();
-    },
-    onError: () => {
-      toast.error("Failed to update source");
-    },
-  });
+  const updateSourceMutation = useUpdateSourceMutation();
 
   const handleAddSource = async () => {
     if (!formData.userName) {
@@ -92,11 +72,24 @@ export function SourcesManagement() {
       return;
     }
 
-    addSourceMutation.mutate({
-      userName: formData.userName,
-      title: formData.title || formData.userName,
-      status: formData.status,
-    });
+    addSourceMutation.mutate(
+      {
+        userName: formData.userName,
+        title: formData.title || formData.userName,
+        status: formData.status,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Source created successfully");
+          setIsAddDialogOpen(false);
+          setFormData({ userName: "", title: "", status: "unclaimed" });
+          refetch();
+        },
+        onError: () => {
+          toast.error("Failed to create source");
+        },
+      },
+    );
   };
 
   const handleEditSource = async () => {
@@ -105,12 +98,25 @@ export function SourcesManagement() {
       return;
     }
 
-    updateSourceMutation.mutate({
-      id: selectedSource.id,
-      userName: formData.userName,
-      title: formData.title || formData.userName,
-      status: formData.status,
-    });
+    updateSourceMutation.mutate(
+      {
+        id: selectedSource.id,
+        userName: formData.userName,
+        title: formData.title || formData.userName,
+        status: formData.status,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Source updated successfully");
+          setIsEditDialogOpen(false);
+          setSelectedSource(null);
+          refetch();
+        },
+        onError: () => {
+          toast.error("Failed to update source");
+        },
+      },
+    );
   };
 
   const openEditDialog = (source: Source) => {

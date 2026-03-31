@@ -8,6 +8,7 @@ import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
 import { Icons } from "@/components/ui/icons.v2";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 interface SeriesListProps {
   activeTopic?: TopicType | null;
@@ -18,6 +19,8 @@ export function SeriesList({ activeTopic }: SeriesListProps) {
     topicType: activeTopic || undefined,
     limit: 10,
   });
+
+  const router = useRouter();
 
   if (isLoading) {
     return <LottieLoadingAnimation />;
@@ -42,6 +45,9 @@ export function SeriesList({ activeTopic }: SeriesListProps) {
               title={series.title}
               imageUrl={series.backgroundImage}
               subtitle={series.source.title}
+              onClick={() => {
+                router.push(`/series/${series.id}`);
+              }}
               stats={series.stats}
             />
           </motion.div>

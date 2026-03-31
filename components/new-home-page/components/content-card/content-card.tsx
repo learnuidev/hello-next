@@ -19,6 +19,7 @@ export interface CardProps {
   subtitle?: string;
   stats: IStats;
   onClick?: () => void;
+  href?: string;
 }
 
 export function ContentCard({
@@ -28,6 +29,7 @@ export function ContentCard({
   subtitle,
   stats,
   onClick,
+  href,
 }: CardProps) {
   return (
     <motion.div

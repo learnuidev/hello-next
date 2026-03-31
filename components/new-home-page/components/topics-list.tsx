@@ -15,9 +15,9 @@ export function TopicsList() {
           <Link
             href={`/?topic=${topic.type}`}
             className={cn(
-              `rounded-none hover:text-rose-500 whitespace-nowrap transition-all`,
+              `pb-2 rounded-none hover:text-rose-500 whitespace-nowrap transition-all`,
               isActive
-                ? "text-rose-500 border-rose-500 pb-2 border-b-2"
+                ? "text-rose-500 border-rose-500 border-b-2"
                 : "text-gray-600 "
             )}
             key={topic.type}

@@ -49,7 +49,7 @@ export function NewHomePage() {
                   className={cn(
                     "pb-2 font-medium transition-colors",
                     activeTab === tab.type
-                      ? "text-rose-500 border-rose-500 border-b-2"
+                      ? " border-rose-500"
                       : "text-gray-600 hover:text-rose-500"
                   )}
                 >
@@ -59,7 +59,7 @@ export function NewHomePage() {
             })}
           </div>
 
-          <div className="mt-4">
+          <div className="mt-8">
             {activeTab === "series" ? (
               <SeriesList activeTopic={activeTopic} />
             ) : (

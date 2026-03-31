@@ -1,5 +1,6 @@
 import { SearchBar } from "../search-bar";
 import { TopicsList } from "./components/topics-list";
+import { SeriesList } from "./components/series-list";
 
 export function NewHomePage() {
   return (
@@ -8,6 +9,7 @@ export function NewHomePage() {
 
       <main className="mt-2">
         <TopicsList />
+        <SeriesList />
       </main>
     </div>
   );

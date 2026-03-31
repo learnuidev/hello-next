@@ -24,14 +24,6 @@ export function SeriesManagement() {
     direction: "desc",
   });
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <Icons.spinner className="h-8 w-8 animate-spin" />
-      </div>
-    );
-  }
-
   const series = seriesData?.items || [];
 
   return (
@@ -66,7 +58,7 @@ export function SeriesManagement() {
                 }}
                 className={cn(
                   `pb-2 rounded-none hover:text-rose-500 whitespace-nowrap transition-all relative`,
-                  isActive ? "text-rose-500" : "text-gray-600",
+                  isActive ? "text-rose-500" : "text-gray-600"
                 )}
               >
                 {topic.title}
@@ -84,7 +76,11 @@ export function SeriesManagement() {
         })}
       </section>
 
-      {series.length === 0 ? (
+      {isLoading ? (
+        <div className="flex items-center justify-center h-64">
+          <Icons.spinner className="h-8 w-8 animate-spin" />
+        </div>
+      ) : series.length === 0 ? (
         <div className="flex flex-col items-center justify-center p-12 text-center">
           <Icons.contentSolid className="h-16 w-16 text-muted-foreground opacity-50" />
           <div className="mt-4">

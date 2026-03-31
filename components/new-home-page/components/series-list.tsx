@@ -24,7 +24,7 @@ export function SeriesList({ activeTopic }: SeriesListProps) {
   }
 
   if (!data || data.items.length === 0) {
-    return <Nothing message="No series found" icon={Icons.content} />;
+    return <Nothing message="暂无系列" icon={Icons.content} />;
   }
 
   return (

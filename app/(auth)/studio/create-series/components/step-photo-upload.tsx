@@ -34,7 +34,7 @@ export function StepPhotoUpload({
   const { onUploadFileChange, addUserAssetMutation } = useUploadFileV2(
     handleUploadSuccess,
     {},
-    { types: imageFormats }
+    { types: imageFormats },
   );
   const isUploading = addUserAssetMutation?.isPending ?? false;
 
@@ -47,7 +47,7 @@ export function StepPhotoUpload({
 
   function handleUploadSuccess(resp: UploadFileResponse) {
     onPhotoChange(resp.sourceUrl, resp.id);
-    toast.success("Photo uploaded successfully");
+    toast.success("照片上传成功");
   }
 
   const handleFileSelect = (files: FileList | null) => {
@@ -119,14 +119,16 @@ export function StepPhotoUpload({
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label className="text-gray-700 font-medium">
-          Cover Photo
-          <span className="text-gray-500 ml-2 font-normal">(Optional)</span>
+        <Label className="text-gray-700 font-medium dark:text-gray-300">
+          封面照片
+          <span className="text-gray-500 ml-2 font-normal dark:text-gray-400">
+            （可选）
+          </span>
         </Label>
 
         {photoUrl ? (
           <div className="relative group">
-            <div className="aspect-video w-full rounded-lg overflow-hidden border-2 border-gray-200">
+            <div className="aspect-video w-full rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-800">
               <img
                 src={photoUrl}
                 alt="Series cover"
@@ -140,7 +142,7 @@ export function StepPhotoUpload({
                 size="sm"
               >
                 <Icons.book className="h-4 w-4 mr-2" />
-                Choose Different
+                选择不同的
               </Button>
               <Button
                 variant="secondary"
@@ -148,11 +150,11 @@ export function StepPhotoUpload({
                 size="sm"
               >
                 <Icons.refresh className="h-4 w-4 mr-2" />
-                Upload New
+                上传新的
               </Button>
               <Button variant="destructive" onClick={handleRemove} size="sm">
                 <Icons.trash className="h-4 w-4 mr-2" />
-                Remove
+                删除
               </Button>
             </div>
           </div>
@@ -163,8 +165,8 @@ export function StepPhotoUpload({
             className="w-full"
           >
             <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="upload">Upload New</TabsTrigger>
-              <TabsTrigger value="select">Select from Assets</TabsTrigger>
+              <TabsTrigger value="upload">上传新的</TabsTrigger>
+              <TabsTrigger value="select">从资产中选择</TabsTrigger>
             </TabsList>
 
             <TabsContent value="upload">
@@ -176,7 +178,7 @@ export function StepPhotoUpload({
                 onClick={() => fileInputRef.current?.click()}
                 className={`
                   aspect-video w-full rounded-lg border-2 border-dashed flex flex-col items-center justify-center gap-4 cursor-pointer transition-all
-                  ${dragActive ? "border-rose-500 bg-rose-50" : "border-gray-300 hover:border-rose-500 hover:bg-rose-50/50"}
+                  ${dragActive ? "border-rose-500 bg-rose-50 dark:bg-rose-950/20" : "border-gray-300 hover:border-rose-500 hover:bg-rose-50/50 dark:border-gray-700 dark:hover:bg-rose-950/10"}
                   ${isUploading ? "opacity-50 cursor-not-allowed" : ""}
                 `}
               >
@@ -192,17 +194,15 @@ export function StepPhotoUpload({
                   <Icons.spinner className="h-12 w-12 animate-spin text-rose-500" />
                 ) : (
                   <>
-                    <div className="h-16 w-16 rounded-full bg-rose-100 flex items-center justify-center">
+                    <div className="h-16 w-16 rounded-full bg-rose-100 flex items-center justify-center dark:bg-rose-950/30">
                       <Icons.upload className="h-8 w-8 text-rose-500" />
                     </div>
                     <div className="text-center space-y-1">
-                      <p className="font-medium text-lg text-gray-900">
-                        {dragActive
-                          ? "Drop your image here"
-                          : "Click or drag to upload"}
+                      <p className="font-medium text-lg text-gray-900 dark:text-gray-100">
+                        {dragActive ? "将图片拖放到此处" : "点击或拖拽上传"}
                       </p>
-                      <p className="text-sm text-gray-600">
-                        PNG, JPG, or GIF (max 5MB)
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        PNG、JPG 或 GIF（最大 5MB）
                       </p>
                     </div>
                   </>
@@ -212,14 +212,14 @@ export function StepPhotoUpload({
 
             <TabsContent value="select">
               {imageAssets.length === 0 ? (
-                <div className="aspect-video w-full rounded-lg border-2 border-gray-200 flex flex-col items-center justify-center gap-4 bg-gray-50">
+                <div className="aspect-video w-full rounded-lg border-2 border-gray-200 flex flex-col items-center justify-center gap-4 bg-gray-50 dark:bg-[rgb(11,12,13)] dark:border-gray-800">
                   <Icons.book className="h-12 w-12 text-gray-400" />
                   <div className="text-center space-y-1">
-                    <p className="font-medium text-lg text-gray-900">
-                      No images available
+                    <p className="font-medium text-lg text-gray-900 dark:text-gray-100">
+                      没有可用图片
                     </p>
-                    <p className="text-sm text-gray-600">
-                      Upload a new image to get started
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      上传新图片以开始
                     </p>
                   </div>
                 </div>
@@ -231,7 +231,7 @@ export function StepPhotoUpload({
                       onClick={() => handleAssetSelect(asset.id)}
                       className={`
                         aspect-square rounded-lg overflow-hidden border-2 transition-all hover:border-rose-500
-                        ${photoAssetId === asset.id ? "border-rose-500 ring-2 ring-rose-200" : "border-gray-200"}
+                        ${photoAssetId === asset.id ? "border-rose-500 ring-2 ring-rose-200 dark:ring-rose-900/50" : "border-gray-200 dark:border-gray-800"}
                       `}
                     >
                       <img
@@ -255,26 +255,26 @@ export function StepPhotoUpload({
         )}
       </div>
 
-      <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-        <h3 className="font-semibold mb-3 text-gray-900">Photo Guidelines</h3>
-        <ul className="space-y-2 text-sm text-gray-600">
+      <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 dark:bg-[rgb(11,12,13)] dark:border-gray-800">
+        <h3 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">
+          照片指南
+        </h3>
+        <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
           <li className="flex items-start gap-2">
             <Icons.lightBulbSolid className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-            <span>
-              Use a high-quality image (16:9 aspect ratio recommended)
-            </span>
+            <span>使用高质量图片（建议 16:9 宽高比）</span>
           </li>
           <li className="flex items-start gap-2">
             <Icons.lightBulbSolid className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-            <span>Choose an image that represents your series content</span>
+            <span>选择代表您系列内容的图片</span>
           </li>
           <li className="flex items-start gap-2">
             <Icons.lightBulbSolid className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-            <span>Avoid text or busy backgrounds</span>
+            <span>避免文字或复杂的背景</span>
           </li>
           <li className="flex items-start gap-2">
             <Icons.lightBulbSolid className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-            <span>You can add or change this photo later</span>
+            <span>您可以稍后添加或更改此照片</span>
           </li>
         </ul>
       </div>

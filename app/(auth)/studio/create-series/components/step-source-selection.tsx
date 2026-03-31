@@ -22,6 +22,7 @@ import { Icons } from "@/components/ui/icons.v2";
 import { useListSourcesQuery } from "@/domain/content-v2/use-list-sources-query";
 import { useAddSourceMutation } from "@/domain/content-v2/use-add-source-mutation";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 interface StepSourceSelectionProps {
   sourceId: string;
@@ -76,8 +77,11 @@ export function StepSourceSelection({
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="source" className="text-gray-700 font-medium">
-          Source
+        <Label
+          htmlFor="source"
+          className="text-gray-700 font-medium dark:text-gray-300"
+        >
+          来源
           <span className="text-rose-500 ml-1">*</span>
         </Label>
         <div className="flex gap-2">
@@ -88,15 +92,18 @@ export function StepSourceSelection({
               onSourceChange(id, source?.title || "");
             }}
           >
-            <SelectTrigger id="source" className="h-12 text-base flex-1 border-gray-200 focus:border-rose-500 focus:ring-rose-500">
-              <SelectValue placeholder="Select a source" />
+            <SelectTrigger
+              id="source"
+              className="h-12 text-base flex-1 border-gray-200 focus:border-rose-500 focus:ring-rose-500 dark:bg-[rgb(11,12,13)] dark:border-gray-800"
+            >
+              <SelectValue placeholder="选择来源" />
             </SelectTrigger>
             <SelectContent>
               {sources.map((source) => (
                 <SelectItem key={source.id} value={source.id} className="py-3">
                   <div className="flex flex-col">
                     <span className="font-medium">{source.title}</span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
                       @{source.userName}
                     </span>
                   </div>
@@ -109,35 +116,38 @@ export function StepSourceSelection({
             onOpenChange={setIsCreateDialogOpen}
           >
             <DialogTrigger asChild>
-              <Button variant="outline" className="gap-2 border-gray-200 hover:border-rose-500 hover:text-rose-500 hover:bg-rose-50">
+              <Button
+                variant="outline"
+                className="gap-2 border-gray-200 hover:border-rose-500 hover:text-rose-500 hover:bg-rose-50 dark:border-gray-800 dark:hover:text-rose-500 dark:hover:bg-rose-950/20"
+              >
                 <Icons.plusIcon className="h-4 w-4" />
-                New
+                新建
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Create New Source</DialogTitle>
-                <DialogDescription>
-                  Create a new source for your series
-                </DialogDescription>
+                <DialogTitle>创建新来源</DialogTitle>
+                <DialogDescription>为您的系列创建新来源</DialogDescription>
               </DialogHeader>
               <div className="space-y-4 py-4">
                 <div className="space-y-2">
-                  <Label htmlFor="username">Username *</Label>
+                  <Label htmlFor="username">用户名 *</Label>
                   <Input
                     id="username"
-                    placeholder="e.g., @username"
+                    placeholder="例如：@username"
                     value={newSourceName}
                     onChange={(e) => setNewSourceName(e.target.value)}
+                    className="dark:bg-[rgb(11,12,13)] dark:border-gray-800"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="title">Title</Label>
+                  <Label htmlFor="title">标题</Label>
                   <Input
                     id="title"
-                    placeholder="e.g., Chinese Learning Channel"
+                    placeholder="例如：中文学习频道"
                     value={newSourceTitle}
                     onChange={(e) => setNewSourceTitle(e.target.value)}
+                    className="dark:bg-[rgb(11,12,13)] dark:border-gray-800"
                   />
                 </div>
               </div>
@@ -145,18 +155,16 @@ export function StepSourceSelection({
                 <Button
                   variant="outline"
                   onClick={() => setIsCreateDialogOpen(false)}
-                  className="border-gray-200 hover:bg-gray-100"
+                  className="border-gray-200 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-gray-800"
                 >
-                  Cancel
+                  取消
                 </Button>
                 <Button
                   onClick={handleCreateSource}
                   disabled={addSourceMutation.isPending}
                   className="bg-rose-500 hover:bg-rose-600"
                 >
-                  {addSourceMutation.isPending
-                    ? "Creating..."
-                    : "Create Source"}
+                  {addSourceMutation.isPending ? "创建中..." : "创建来源"}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -171,25 +179,31 @@ export function StepSourceSelection({
       </div>
 
       {sources.length > 0 && (
-        <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-          <h3 className="font-semibold mb-3 text-gray-900">Your Sources</h3>
+        <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 dark:bg-[rgb(11,12,13)] dark:border-gray-800">
+          <h3 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">
+            您的来源
+          </h3>
           <div className="grid gap-2">
             {sources.slice(0, 5).map((source) => (
               <div
                 key={source.id}
                 onClick={() => onSourceChange(source.id, source.title)}
-                className={`
-                  flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all
-                  ${sourceId === source.id ? "bg-rose-50 border-rose-500 text-rose-900" : "hover:bg-gray-100 border-gray-200"}
-                `}
+                className={cn(
+                  `flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all`,
+                  sourceId === source.id
+                    ? "bg-rose-50 border-rose-500 text-rose-900 dark:bg-rose-950/20 dark:text-rose-100"
+                    : "hover:bg-gray-100 border-gray-200 dark:hover:bg-gray-800 dark:border-gray-800 dark:text-gray-300",
+                )}
               >
                 <div className="flex flex-col">
                   <span className="font-medium">{source.title}</span>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
                     @{source.userName}
                   </span>
                 </div>
-                {sourceId === source.id && <Icons.check className="h-5 w-5 text-rose-500" />}
+                {sourceId === source.id && (
+                  <Icons.check className="h-5 w-5 text-rose-500" />
+                )}
               </div>
             ))}
           </div>

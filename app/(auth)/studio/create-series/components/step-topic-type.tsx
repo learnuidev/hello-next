@@ -71,13 +71,19 @@ export function StepTopicType({ value, onChange, error }: StepTopicTypeProps) {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="topicType" className="text-gray-700 font-medium">
-          Topic Type
+        <Label
+          htmlFor="topicType"
+          className="text-gray-700 font-medium dark:text-gray-300"
+        >
+          主题类型
           <span className="text-rose-500 ml-1">*</span>
         </Label>
         <Select value={value} onValueChange={onChange}>
-          <SelectTrigger id="topicType" className="h-12 text-base border-gray-200 focus:border-rose-500 focus:ring-rose-500">
-            <SelectValue placeholder="Select a topic category" />
+          <SelectTrigger
+            id="topicType"
+            className="h-12 text-base border-gray-200 focus:border-rose-500 focus:ring-rose-500 dark:bg-[rgb(11,12,13)] dark:border-gray-800"
+          >
+            <SelectValue placeholder="选择主题分类" />
           </SelectTrigger>
           <SelectContent>
             {TOPIC_TYPES.map((topic) => (
@@ -88,7 +94,7 @@ export function StepTopicType({ value, onChange, error }: StepTopicTypeProps) {
               >
                 <div className="flex flex-col">
                   <span className="font-medium">{topic.label}</span>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
                     {topic.description}
                   </span>
                 </div>
@@ -104,20 +110,22 @@ export function StepTopicType({ value, onChange, error }: StepTopicTypeProps) {
         )}
       </div>
 
-      <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-        <h3 className="font-semibold mb-3 text-gray-900">Topic Guidelines</h3>
-        <ul className="space-y-2 text-sm text-gray-600">
+      <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 dark:bg-[rgb(11,12,13)] dark:border-gray-800">
+        <h3 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">
+          主题指南
+        </h3>
+        <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
           <li className="flex items-start gap-2">
             <Icons.lightBulbSolid className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-            <span>Choose the most relevant category for your series</span>
+            <span>为您的系列选择最相关的分类</span>
           </li>
           <li className="flex items-start gap-2">
             <Icons.lightBulbSolid className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-            <span>Consider your primary content focus and audience</span>
+            <span>考虑您的主要内容重点和受众</span>
           </li>
           <li className="flex items-start gap-2">
             <Icons.lightBulbSolid className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-            <span>You can update this later if needed</span>
+            <span>需要时您可以稍后更新</span>
           </li>
         </ul>
       </div>

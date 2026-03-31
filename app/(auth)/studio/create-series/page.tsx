@@ -20,29 +20,29 @@ import { useAddSeriesMutation } from "@/domain/content-v2/use-add-series-mutatio
 const STEPS = [
   {
     id: StepsEnum.TITLE,
-    title: "Title",
-    description: "Enter series title",
+    title: "标题",
+    description: "输入系列标题",
   },
   {
     id: StepsEnum.DESCRIPTION,
-    title: "Description",
-    description: "Provide context or overview",
+    title: "描述",
+    description: "提供背景或概述",
   },
   {
     id: StepsEnum.TOPIC_TYPE,
-    title: "Topic Type",
-    description: "Select topic category",
+    title: "主题类型",
+    description: "选择主题分类",
   },
   {
     id: StepsEnum.SOURCE,
-    title: "Source",
-    description: "Choose or create source",
+    title: "来源",
+    description: "选择或创建来源",
   },
-  { id: StepsEnum.PHOTO, title: "Photo", description: "Upload cover image" },
+  { id: StepsEnum.PHOTO, title: "照片", description: "上传封面图片" },
   {
     id: StepsEnum.SUMMARY,
-    title: "Review",
-    description: "Confirm your details",
+    title: "审阅",
+    description: "确认您的详情",
   },
 ];
 
@@ -134,21 +134,19 @@ export default function CreateSeriesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-rose-50/10">
+    <div className="min-h-screen bg-background">
       <div className="mx-2 sm:mx-12 mb-32">
         <div className="flex items-center gap-4 mb-8 py-8">
           <button
             onClick={() => router.back()}
-            className="text-gray-600 hover:text-rose-500 transition-colors"
+            className="text-gray-600 hover:text-rose-500 transition-colors dark:text-gray-400 dark:hover:text-rose-500"
           >
             <Icons.back className="h-6 w-6" />
           </button>
           <div className="flex-1">
-            <h1 className="text-3xl font-bold tracking-tight">
-              Create New Series
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Step {currentStepIndex + 1} of {STEPS.length}
+            <h1 className="text-3xl font-bold tracking-tight">创建新系列</h1>
+            <p className="text-gray-600 mt-1 dark:text-gray-400">
+              第 {currentStepIndex + 1} 步，共 {STEPS.length} 步
             </p>
           </div>
         </div>
@@ -171,7 +169,7 @@ export default function CreateSeriesPage() {
                       "text-left transition-colors relative pb-2",
                       isActive
                         ? "text-rose-500"
-                        : "text-gray-600 hover:text-rose-500",
+                        : "text-gray-600 hover:text-rose-500 dark:text-gray-400 dark:hover:text-rose-500",
                     )}
                   >
                     <span className="font-medium text-base">{step.title}</span>
@@ -210,12 +208,12 @@ export default function CreateSeriesPage() {
                   <h2 className="text-2xl font-semibold mb-2">
                     {STEPS[currentStepIndex].title}
                   </h2>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-400">
                     {STEPS[currentStepIndex].description}
                   </p>
                 </div>
 
-                <div className="bg-white/50 backdrop-blur-sm rounded-lg border border-gray-200 p-8 space-y-8">
+                <div className="bg-card rounded-lg border p-8 space-y-8 dark:bg-[rgb(11,12,13)] dark:border-gray-800">
                   {currentStep === StepsEnum.TITLE && (
                     <StepTitle
                       value={seriesData.title}
@@ -280,14 +278,14 @@ export default function CreateSeriesPage() {
                     <StepSummary seriesData={seriesData} />
                   )}
 
-                  <div className="flex justify-between pt-8 border-t border-gray-200">
+                  <div className="flex justify-between pt-8 border-t border-gray-200 dark:border-gray-800">
                     <Button
                       variant="ghost"
                       onClick={handleBack}
                       disabled={currentStep === 0}
-                      className="text-gray-600 hover:text-rose-500 hover:bg-rose-50 h-11 px-6 text-base"
+                      className="text-gray-600 hover:text-rose-500 hover:bg-rose-50 h-11 px-6 text-base dark:text-gray-400 dark:hover:text-rose-500 dark:hover:bg-rose-950/20"
                     >
-                      Back
+                      返回
                     </Button>
 
                     {currentStep === STEPS.length - 1 ? (
@@ -296,14 +294,14 @@ export default function CreateSeriesPage() {
                         disabled={isSubmitting}
                         className="bg-rose-500 hover:bg-rose-600 h-11 px-8 text-base"
                       >
-                        {isSubmitting ? "Creating..." : "Create Series"}
+                        {isSubmitting ? "创建中..." : "创建系列"}
                       </Button>
                     ) : (
                       <Button
                         onClick={handleNext}
                         className="bg-rose-500 hover:bg-rose-600 h-11 px-6 text-base"
                       >
-                        Next
+                        下一步
                         <Icons.front className="ml-2 h-4 w-4" />
                       </Button>
                     )}

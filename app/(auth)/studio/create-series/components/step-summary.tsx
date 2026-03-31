@@ -35,53 +35,58 @@ interface StepSummaryProps {
 export function StepSummary({ seriesData }: StepSummaryProps) {
   return (
     <div className="space-y-6">
-      <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-        <p className="text-sm text-gray-600">
-          Please review all the information below before creating your series.
-          You can go back to edit any section if needed.
+      <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 dark:bg-[rgb(11,12,13)] dark:border-gray-800">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          在创建系列之前，请审阅以下所有信息。
+          如有需要，您可以返回编辑任何部分。
         </p>
       </div>
 
-      <div className="bg-white rounded-lg border border-gray-200 p-8 space-y-6">
+      <div className="bg-white rounded-lg border border-gray-200 p-8 space-y-6 dark:bg-[rgb(11,12,13)] dark:border-gray-800">
         <div className="space-y-6">
           <div className="flex items-start gap-4">
-            <div className="h-10 w-10 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0 mt-1">
+            <div className="h-10 w-10 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0 mt-1 dark:bg-rose-950/30">
               <Icons.book className="h-5 w-5 text-rose-500" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-sm text-gray-600 mb-1">
-                Title
+              <h3 className="font-semibold text-sm text-gray-600 mb-1 dark:text-gray-400">
+                标题
               </h3>
-              <p className="text-base font-medium text-gray-900">{seriesData.title}</p>
+              <p className="text-base font-medium text-gray-900 dark:text-gray-100">
+                {seriesData.title}
+              </p>
             </div>
           </div>
 
-          <div className="border-t border-gray-200 pt-6">
+          <div className="border-t border-gray-200 pt-6 dark:border-gray-800">
             <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0 mt-1">
+              <div className="h-10 w-10 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0 mt-1 dark:bg-rose-950/30">
                 <Icons.paragraph className="h-5 w-5 text-rose-500" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-sm text-gray-600 mb-1">
-                  Description
+                <h3 className="font-semibold text-sm text-gray-600 mb-1 dark:text-gray-400">
+                  描述
                 </h3>
-                <p className="text-base leading-relaxed text-gray-900">
+                <p className="text-base leading-relaxed text-gray-900 dark:text-gray-100">
                   {seriesData.description}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="border-t border-gray-200 pt-6">
+          <div className="border-t border-gray-200 pt-6 dark:border-gray-800">
             <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0 mt-1">
+              <div className="h-10 w-10 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0 mt-1 dark:bg-rose-950/30">
                 <Icons.mandarin className="h-5 w-5 text-rose-500" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-sm text-gray-600 mb-1">
-                  Topic Type
+                <h3 className="font-semibold text-sm text-gray-600 mb-1 dark:text-gray-400">
+                  主题类型
                 </h3>
-                <Badge variant="secondary" className="text-sm bg-rose-50 text-rose-700 hover:bg-rose-100">
+                <Badge
+                  variant="secondary"
+                  className="text-sm bg-rose-50 text-rose-700 hover:bg-rose-100 dark:bg-rose-950/30 dark:text-rose-400"
+                >
                   {TOPIC_LABELS[seriesData.topicType as TopicType] ||
                     seriesData.topicType}
                 </Badge>
@@ -89,31 +94,33 @@ export function StepSummary({ seriesData }: StepSummaryProps) {
             </div>
           </div>
 
-          <div className="border-t border-gray-200 pt-6">
+          <div className="border-t border-gray-200 pt-6 dark:border-gray-800">
             <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0 mt-1">
+              <div className="h-10 w-10 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0 mt-1 dark:bg-rose-950/30">
                 <Icons.userSolid className="h-5 w-5 text-rose-500" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-sm text-gray-600 mb-1">
-                  Source
+                <h3 className="font-semibold text-sm text-gray-600 mb-1 dark:text-gray-400">
+                  来源
                 </h3>
-                <p className="text-base font-medium text-gray-900">{seriesData.sourceName}</p>
+                <p className="text-base font-medium text-gray-900 dark:text-gray-100">
+                  {seriesData.sourceName}
+                </p>
               </div>
             </div>
           </div>
 
           {seriesData.photoUrl && (
-            <div className="border-t border-gray-200 pt-6">
+            <div className="border-t border-gray-200 pt-6 dark:border-gray-800">
               <div className="flex items-start gap-4">
-                <div className="h-10 w-10 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0 mt-1">
+                <div className="h-10 w-10 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0 mt-1 dark:bg-rose-950/30">
                   <Icons.contentSolid className="h-5 w-5 text-rose-500" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-sm text-gray-600 mb-1">
-                    Cover Photo
+                  <h3 className="font-semibold text-sm text-gray-600 mb-1 dark:text-gray-400">
+                    封面照片
                   </h3>
-                  <div className="aspect-video w-full max-w-md rounded-lg overflow-hidden border border-gray-200">
+                  <div className="aspect-video w-full max-w-md rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800">
                     <img
                       src={seriesData.photoUrl}
                       alt="Series cover"
@@ -126,15 +133,16 @@ export function StepSummary({ seriesData }: StepSummaryProps) {
           )}
         </div>
 
-        <div className="border-t border-gray-200 pt-6 mt-6">
-          <div className="bg-rose-50 rounded-lg p-4 border border-rose-200">
+        <div className="border-t border-gray-200 pt-6 mt-6 dark:border-gray-800">
+          <div className="bg-rose-50 rounded-lg p-4 border border-rose-200 dark:bg-rose-950/20 dark:border-rose-900">
             <div className="flex items-start gap-3">
               <Icons.infoCircle className="h-5 w-5 text-rose-500 flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-semibold mb-1 text-gray-900">Ready to create?</h4>
-                <p className="text-sm text-gray-600">
-                  Click &quot;Create Series&quot; below to finalize your new series. You
-                  can always edit these details later.
+                <h4 className="font-semibold mb-1 text-gray-900 dark:text-gray-100">
+                  准备创建？
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  点击下方的"创建系列"来完成您的新系列创建。您随时可以编辑这些详情。
                 </p>
               </div>
             </div>

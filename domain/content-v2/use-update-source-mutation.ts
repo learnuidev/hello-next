@@ -3,25 +3,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
-import { Series } from "./series.types";
-import { TopicType } from "../topic/topic.types";
+import { UpdateSourceParams, Source } from "./source.types";
 
-type UpdateSeriesParams = {
-  id: string;
-  title?: string;
-  topicType?: TopicType;
-  sourceId?: string;
-  backgroundImageAssetId?: string;
-  stats?: any;
-};
-
-const updateSeries = async (
-  params: UpdateSeriesParams,
+const updateSource = async (
+  params: UpdateSourceParams,
   opts: {
     Authorization: string;
   },
 ) => {
-  const res = await fetch(`${siteConfig.contentApi}/v1/update-series`, {
+  const res = await fetch(`${siteConfig.contentApi}/v1/update-source`, {
     method: "POST",
     headers: {
       Authorization: `${opts?.Authorization}`,
@@ -32,28 +22,28 @@ const updateSeries = async (
   return resp;
 };
 
-export function useUpdateSeriesMutation(options = {} as any) {
+export function useUpdateSourceMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (params: UpdateSeriesParams) => {
-      const response = await updateSeries(params, {
+    mutationFn: async (params: UpdateSourceParams) => {
+      const response = await updateSource(params, {
         Authorization: authUser?.jwt,
       });
       return response;
     },
     ...options,
-    onSuccess: (data: Series) => {
+    onSuccess: (data: Source) => {
       if (options?.onSuccess) {
         options.onSuccess(data);
       }
 
       queryClient.invalidateQueries({
-        queryKey: ["list-series"],
+        queryKey: ["list-sources"],
       });
       queryClient.invalidateQueries({
-        queryKey: ["get-series-details", data?.id],
+        queryKey: ["get-source-details", data?.id],
       });
     },
     cacheTime: 1000 * 60 * 30,

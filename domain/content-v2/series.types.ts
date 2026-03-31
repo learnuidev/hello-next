@@ -19,11 +19,17 @@ export interface AddSeriesParams {
   sourceId: string;
   backgroundImageAssetId: string;
 }
+
 export interface Series {
   id: string;
+  userId: string;
   topicType: TopicType;
   title: string;
-  backgroundImageUrl: string;
+  sourceId: string;
   source: Source;
+  backgroundImageAssetId?: string;
+  backgroundImage?: string;
   stats: SeriesStats;
+  createdAt: number;
+  updatedAt: number;
 }

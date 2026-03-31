@@ -8,6 +8,7 @@ export enum ContentV2Type {
 }
 
 export enum ContentStatus {
+  CREATED = "CREATED",
   QUEUED = "QUEUED",
   PROCESSING_YOUTUBE = "PROCESSING_YOUTUBE",
   PROCESSING_TEXT = "PROCESSING_TEXT",

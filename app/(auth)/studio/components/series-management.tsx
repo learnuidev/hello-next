@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useListSeriesQuery } from "@/domain/content-v2/use-list-series-query";
 import { useAddSeriesMutation } from "@/domain/content-v2/use-add-series-mutation";
 import { useUpdateSeriesMutation } from "@/domain/content-v2/use-update-series-mutation";
@@ -22,7 +23,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -197,89 +197,12 @@ export function SeriesManagement() {
           </p>
         </div>
 
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="gap-2">
-              <Icons.plusIcon className="h-4 w-4" />
-              Add Series
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[500px]">
-            <DialogHeader>
-              <DialogTitle>Create New Series</DialogTitle>
-              <DialogDescription>
-                Create a new content series to organize your content
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="title">Title *</Label>
-                <Input
-                  id="title"
-                  placeholder="Enter series title"
-                  value={formData.title}
-                  onChange={(e) =>
-                    setFormData({ ...formData, title: e.target.value })
-                  }
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="topicType">Topic Type *</Label>
-                <Select
-                  value={formData.topicType}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, topicType: value as TopicType })
-                  }
-                >
-                  <SelectTrigger id="topicType">
-                    <SelectValue placeholder="Select a topic type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {TOPIC_TYPES.map((type) => (
-                      <SelectItem key={type.value} value={type.value}>
-                        {type.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="source">Source *</Label>
-                <Select
-                  value={formData.sourceId}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, sourceId: value })
-                  }
-                >
-                  <SelectTrigger id="source">
-                    <SelectValue placeholder="Select a source" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {sourcesData?.items.map((source) => (
-                      <SelectItem key={source.id} value={source.id}>
-                        {source.title}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setIsAddDialogOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleAddSeries}
-                disabled={addSeriesMutation.isPending}
-              >
-                {addSeriesMutation.isPending ? "Creating..." : "Create Series"}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <Link href="/studio/create-series">
+          <Button className="gap-2">
+            <Icons.plusIcon className="h-4 w-4" />
+            Add Series
+          </Button>
+        </Link>
       </div>
 
       {series.length === 0 ? (
@@ -292,10 +215,12 @@ export function SeriesManagement() {
                 Create your first series to get started
               </p>
             </div>
-            <Button onClick={() => setIsAddDialogOpen(true)} className="gap-2">
-              <Icons.plusIcon className="h-4 w-4" />
-              Create Series
-            </Button>
+            <Link href="/studio/create-series">
+              <Button className="gap-2">
+                <Icons.plusIcon className="h-4 w-4" />
+                Create Series
+              </Button>
+            </Link>
           </div>
         </Card>
       ) : (

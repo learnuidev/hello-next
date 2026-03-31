@@ -1,13 +1,8 @@
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Icons } from "@/components/ui/icons.v2";
 import { TopicType } from "@/domain/topic/topic.types";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const TOPIC_TYPES: { value: TopicType; label: string; description: string }[] =
   [
@@ -71,37 +66,37 @@ export function StepTopicType({ value, onChange, error }: StepTopicTypeProps) {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label
-          htmlFor="topicType"
-          className="text-gray-700 font-medium dark:text-gray-300"
-        >
+        <Label className="text-gray-700 font-medium dark:text-gray-300">
           主题类型
           <span className="text-rose-500 ml-1">*</span>
         </Label>
-        <Select value={value} onValueChange={onChange}>
-          <SelectTrigger
-            id="topicType"
-            className="h-12 text-base border-gray-200 focus:border-rose-500 focus:ring-rose-500 dark:bg-[rgb(11,12,13)] dark:border-gray-800"
-          >
-            <SelectValue placeholder="选择主题分类" />
-          </SelectTrigger>
-          <SelectContent>
-            {TOPIC_TYPES.map((topic) => (
-              <SelectItem
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {TOPIC_TYPES.map((topic) => {
+            const isSelected = value === topic.value;
+            return (
+              <motion.button
                 key={topic.value}
-                value={topic.value}
-                className="py-3"
+                onClick={() => {
+                  if (isSelected) {
+                    onChange("");
+                  } else {
+                    onChange(topic.value);
+                  }
+                }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={cn(
+                  "flex flex-col items-center justify-center p-4 rounded-lg border-2 cursor-pointer transition-all",
+                  isSelected
+                    ? "border-rose-500 bg-rose-50 text-rose-700 dark:bg-rose-950/20 dark:text-rose-400"
+                    : "border-gray-200 hover:border-rose-500 hover:bg-rose-50/50 dark:border-gray-800 dark:hover:border-rose-500 dark:hover:bg-rose-950/10"
+                )}
               >
-                <div className="flex flex-col">
-                  <span className="font-medium">{topic.label}</span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {topic.description}
-                  </span>
-                </div>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+                <span className="font-semibold text-lg">{topic.label}</span>
+              </motion.button>
+            );
+          })}
+        </div>
         {error && (
           <p className="text-sm text-rose-500 flex items-center gap-1">
             <Icons.xMark className="h-4 w-4" />

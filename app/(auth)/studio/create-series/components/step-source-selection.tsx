@@ -3,13 +3,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -23,6 +16,7 @@ import { useListSourcesQuery } from "@/domain/content-v2/use-list-sources-query"
 import { useAddSourceMutation } from "@/domain/content-v2/use-add-source-mutation";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface StepSourceSelectionProps {
   sourceId: string;
@@ -49,8 +43,8 @@ export function StepSourceSelection({
   const addSourceMutation = useAddSourceMutation();
 
   const handleCreateSource = () => {
-    if (!newSourceName.trim()) {
-      toast.error("Please enter a source username");
+    if (!newSourceName) {
+      toast.error("请输入用户名");
       return;
     }
 
@@ -58,17 +52,20 @@ export function StepSourceSelection({
       {
         userName: newSourceName,
         title: newSourceTitle || newSourceName,
+        status: "unclaimed",
       },
       {
-        onSuccess: (data) => {
-          toast.success("Source created successfully");
-          onSourceChange(data.id, data.title);
+        onSuccess: () => {
+          toast.success("来源创建成功");
           setIsCreateDialogOpen(false);
           setNewSourceName("");
           setNewSourceTitle("");
           refetch();
         },
-      },
+        onError: () => {
+          toast.error("创建来源失败");
+        },
+      }
     );
   };
 
@@ -77,98 +74,174 @@ export function StepSourceSelection({
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label
-          htmlFor="source"
-          className="text-gray-700 font-medium dark:text-gray-300"
-        >
+        <Label className="text-gray-700 font-medium dark:text-gray-300">
           来源
           <span className="text-rose-500 ml-1">*</span>
         </Label>
-        <div className="flex gap-2">
-          <Select
-            value={sourceId}
-            onValueChange={(id) => {
-              const source = sources.find((s) => s.id === id);
-              onSourceChange(id, source?.title || "");
-            }}
-          >
-            <SelectTrigger
-              id="source"
-              className="h-12 text-base flex-1 border-gray-200 focus:border-rose-500 focus:ring-rose-500 dark:bg-[rgb(11,12,13)] dark:border-gray-800"
-            >
-              <SelectValue placeholder="选择来源" />
-            </SelectTrigger>
-            <SelectContent>
-              {sources.map((source) => (
-                <SelectItem key={source.id} value={source.id} className="py-3">
-                  <div className="flex flex-col">
-                    <span className="font-medium">{source.title}</span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      @{source.userName}
-                    </span>
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Dialog
-            open={isCreateDialogOpen}
-            onOpenChange={setIsCreateDialogOpen}
-          >
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                className="gap-2 border-gray-200 hover:border-rose-500 hover:text-rose-500 hover:bg-rose-50 dark:border-gray-800 dark:hover:text-rose-500 dark:hover:bg-rose-950/20"
+        <div className="space-y-3">
+          {sources.length === 0 ? (
+            <div className="text-center p-8 border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-800">
+              <Icons.userSolid className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+              <p className="text-gray-600 dark:text-gray-400 mb-4">暂无来源</p>
+              <Dialog
+                open={isCreateDialogOpen}
+                onOpenChange={setIsCreateDialogOpen}
               >
-                <Icons.plusIcon className="h-4 w-4" />
-                新建
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>创建新来源</DialogTitle>
-                <DialogDescription>为您的系列创建新来源</DialogDescription>
-              </DialogHeader>
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="username">用户名 *</Label>
-                  <Input
-                    id="username"
-                    placeholder="例如：@username"
-                    value={newSourceName}
-                    onChange={(e) => setNewSourceName(e.target.value)}
-                    className="dark:bg-[rgb(11,12,13)] dark:border-gray-800"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="title">标题</Label>
-                  <Input
-                    id="title"
-                    placeholder="例如：中文学习频道"
-                    value={newSourceTitle}
-                    onChange={(e) => setNewSourceTitle(e.target.value)}
-                    className="dark:bg-[rgb(11,12,13)] dark:border-gray-800"
-                  />
-                </div>
+                <DialogTrigger asChild>
+                  <Button className="gap-2">
+                    <Icons.plusIcon className="h-4 w-4" />
+                    创建新来源
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>创建新来源</DialogTitle>
+                    <DialogDescription>为您的系列创建新来源</DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="username">用户名 *</Label>
+                      <Input
+                        id="username"
+                        placeholder="例如：@username"
+                        value={newSourceName}
+                        onChange={(e) => setNewSourceName(e.target.value)}
+                        className="dark:bg-[rgb(11,12,13)] dark:border-gray-800"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="title">标题</Label>
+                      <Input
+                        id="title"
+                        placeholder="例如：中文学习频道"
+                        value={newSourceTitle}
+                        onChange={(e) => setNewSourceTitle(e.target.value)}
+                        className="dark:bg-[rgb(11,12,13)] dark:border-gray-800"
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      onClick={() => setIsCreateDialogOpen(false)}
+                      className="border-gray-200 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-gray-800"
+                    >
+                      取消
+                    </Button>
+                    <Button
+                      onClick={handleCreateSource}
+                      disabled={addSourceMutation.isPending}
+                      className="bg-rose-500 hover:bg-rose-600"
+                    >
+                      {addSourceMutation.isPending ? "创建中..." : "创建来源"}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto">
+                {sources.map((source) => {
+                  const isSelected = sourceId === source.id;
+                  return (
+                    <motion.button
+                      key={source.id}
+                      onClick={() => {
+                        if (isSelected) {
+                          onSourceChange("", "");
+                        } else {
+                          onSourceChange(source.id, source.title);
+                        }
+                      }}
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
+                      className={cn(
+                        "flex items-start gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all text-left",
+                        isSelected
+                          ? "border-rose-500 bg-rose-50 dark:bg-rose-950/20 dark:border-rose-500"
+                          : "border-gray-200 hover:border-rose-500 hover:bg-rose-50/50 dark:border-gray-800 dark:hover:border-rose-500 dark:hover:bg-rose-950/10"
+                      )}
+                    >
+                      <div className="h-12 w-12 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0 dark:bg-rose-950/30">
+                        <Icons.userSolid className="h-6 w-6 text-rose-500" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-gray-900 dark:text-gray-100 truncate">
+                          {source.title}
+                        </p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          @{source.userName}
+                        </p>
+                      </div>
+                    </motion.button>
+                  );
+                })}
               </div>
-              <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => setIsCreateDialogOpen(false)}
-                  className="border-gray-200 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-gray-800"
+              <div className="text-center pt-4">
+                <Dialog
+                  open={isCreateDialogOpen}
+                  onOpenChange={setIsCreateDialogOpen}
                 >
-                  取消
-                </Button>
-                <Button
-                  onClick={handleCreateSource}
-                  disabled={addSourceMutation.isPending}
-                  className="bg-rose-500 hover:bg-rose-600"
-                >
-                  {addSourceMutation.isPending ? "创建中..." : "创建来源"}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="gap-2 dark:border-gray-800 dark:hover:bg-gray-800"
+                    >
+                      <Icons.plusIcon className="h-4 w-4" />
+                      创建新来源
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>创建新来源</DialogTitle>
+                      <DialogDescription>
+                        为您的系列创建新来源
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="username">用户名 *</Label>
+                        <Input
+                          id="username"
+                          placeholder="例如：@username"
+                          value={newSourceName}
+                          onChange={(e) => setNewSourceName(e.target.value)}
+                          className="dark:bg-[rgb(11,12,13)] dark:border-gray-800"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="title">标题</Label>
+                        <Input
+                          id="title"
+                          placeholder="例如：中文学习频道"
+                          value={newSourceTitle}
+                          onChange={(e) => setNewSourceTitle(e.target.value)}
+                          className="dark:bg-[rgb(11,12,13)] dark:border-gray-800"
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsCreateDialogOpen(false)}
+                        className="border-gray-200 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-gray-800"
+                      >
+                        取消
+                      </Button>
+                      <Button
+                        onClick={handleCreateSource}
+                        disabled={addSourceMutation.isPending}
+                        className="bg-rose-500 hover:bg-rose-600"
+                      >
+                        {addSourceMutation.isPending ? "创建中..." : "创建来源"}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </>
+          )}
         </div>
         {error && (
           <p className="text-sm text-rose-500 flex items-center gap-1">
@@ -181,32 +254,22 @@ export function StepSourceSelection({
       {sources.length > 0 && (
         <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 dark:bg-[rgb(11,12,13)] dark:border-gray-800">
           <h3 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">
-            您的来源
+            来源指南
           </h3>
-          <div className="grid gap-2">
-            {sources.slice(0, 5).map((source) => (
-              <div
-                key={source.id}
-                onClick={() => onSourceChange(source.id, source.title)}
-                className={cn(
-                  `flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all`,
-                  sourceId === source.id
-                    ? "bg-rose-50 border-rose-500 text-rose-900 dark:bg-rose-950/20 dark:text-rose-100"
-                    : "hover:bg-gray-100 border-gray-200 dark:hover:bg-gray-800 dark:border-gray-800 dark:text-gray-300",
-                )}
-              >
-                <div className="flex flex-col">
-                  <span className="font-medium">{source.title}</span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    @{source.userName}
-                  </span>
-                </div>
-                {sourceId === source.id && (
-                  <Icons.check className="h-5 w-5 text-rose-500" />
-                )}
-              </div>
-            ))}
-          </div>
+          <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <li className="flex items-start gap-2">
+              <Icons.lightBulbSolid className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+              <span>选择与此系列内容相关的来源</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <Icons.lightBulbSolid className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+              <span>您可以随时创建新来源</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <Icons.lightBulbSolid className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+              <span>选择后您仍可以编辑来源</span>
+            </li>
+          </ul>
         </div>
       )}
     </div>

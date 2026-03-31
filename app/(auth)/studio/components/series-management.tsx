@@ -253,18 +253,19 @@ export function SeriesManagement() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
             >
-              <ContentCard
-                id={item.id}
-                title={item.title}
-                imageUrl={
-                  item.backgroundImage ||
-                  item.backgroundImageAssetId ||
-                  defaultPic
-                }
-                subtitle={item.source.title}
-                stats={item.stats}
-                onClick={() => openEditDialog(item)}
-              />
+              <Link href={`/studio/series/${item.id}`}>
+                <ContentCard
+                  id={item.id}
+                  title={item.title}
+                  imageUrl={
+                    item.backgroundImage ||
+                    item.backgroundImageAssetId ||
+                    defaultPic
+                  }
+                  subtitle={item.source.title}
+                  stats={item.stats}
+                />
+              </Link>
             </motion.div>
           ))}
         </ContentListGrid>

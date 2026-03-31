@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/select";
 import { Icons } from "@/components/ui/icons.v2";
 import { TopicType } from "@/domain/topic/topic.types";
-import { motion } from "framer-motion";
 
 const TOPIC_TYPES: { value: TopicType; label: string; description: string }[] =
   [
@@ -70,19 +69,14 @@ interface StepTopicTypeProps {
 
 export function StepTopicType({ value, onChange, error }: StepTopicTypeProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="space-y-6"
-    >
+    <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="topicType" className="text-base">
+        <Label htmlFor="topicType" className="text-gray-700 font-medium">
           Topic Type
-          <span className="text-red-500 ml-1">*</span>
+          <span className="text-rose-500 ml-1">*</span>
         </Label>
         <Select value={value} onValueChange={onChange}>
-          <SelectTrigger id="topicType" className="h-12 text-base">
+          <SelectTrigger id="topicType" className="h-12 text-base border-gray-200 focus:border-rose-500 focus:ring-rose-500">
             <SelectValue placeholder="Select a topic category" />
           </SelectTrigger>
           <SelectContent>
@@ -94,7 +88,7 @@ export function StepTopicType({ value, onChange, error }: StepTopicTypeProps) {
               >
                 <div className="flex flex-col">
                   <span className="font-medium">{topic.label}</span>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-gray-500">
                     {topic.description}
                   </span>
                 </div>
@@ -103,16 +97,16 @@ export function StepTopicType({ value, onChange, error }: StepTopicTypeProps) {
           </SelectContent>
         </Select>
         {error && (
-          <p className="text-sm text-red-500 flex items-center gap-1">
+          <p className="text-sm text-rose-500 flex items-center gap-1">
             <Icons.xMark className="h-4 w-4" />
             {error}
           </p>
         )}
       </div>
 
-      <div className="bg-muted/50 rounded-lg p-6 border border-muted">
-        <h3 className="font-semibold mb-3">Topic Guidelines</h3>
-        <ul className="space-y-2 text-sm text-muted-foreground">
+      <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+        <h3 className="font-semibold mb-3 text-gray-900">Topic Guidelines</h3>
+        <ul className="space-y-2 text-sm text-gray-600">
           <li className="flex items-start gap-2">
             <Icons.lightBulbSolid className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
             <span>Choose the most relevant category for your series</span>
@@ -127,6 +121,6 @@ export function StepTopicType({ value, onChange, error }: StepTopicTypeProps) {
           </li>
         </ul>
       </div>
-    </motion.div>
+    </div>
   );
 }

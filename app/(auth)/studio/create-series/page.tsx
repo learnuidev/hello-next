@@ -2,21 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { StepsEnum } from "./types";
 import { StepTitle } from "./components/step-title";
@@ -32,7 +20,7 @@ const STEPS = [
   {
     id: StepsEnum.TITLE,
     title: "Title",
-    description: "Enter the series title",
+    description: "Enter series title",
   },
   {
     id: StepsEnum.DESCRIPTION,
@@ -75,12 +63,6 @@ export default function CreateSeriesPage() {
 
   const currentStepIndex = STEPS.findIndex((step) => step.id === currentStep);
 
-  const getStepStatus = (stepIndex: number) => {
-    if (stepIndex < currentStepIndex) return "complete";
-    if (stepIndex === currentStepIndex) return "active";
-    return "pending";
-  };
-
   const getStepValidationStatus = (stepId: StepsEnum) => {
     const stepValidations: Record<StepsEnum, () => boolean> = {
       [StepsEnum.TITLE]: () => !!seriesData.title?.trim() && seriesData.title.length >= 3,
@@ -93,39 +75,7 @@ export default function CreateSeriesPage() {
     return stepValidations[stepId]?.() ?? false;
   };
 
-  const getStepErrorMessage = (stepId: StepsEnum) => {
-    const errorMessages: Record<StepsEnum, string> = {
-      [StepsEnum.TITLE]: seriesData.title?.trim() ? "Title must be at least 3 characters" : "Title is required",
-      [StepsEnum.DESCRIPTION]: seriesData.description?.trim() ? "Description must be at least 10 characters" : "Description is required",
-      [StepsEnum.TOPIC_TYPE]: "Topic type is required",
-      [StepsEnum.SOURCE]: "Source is required",
-      [StepsEnum.PHOTO]: "",
-      [StepsEnum.SUMMARY]: "",
-    };
-    return errorMessages[stepId] || "";
-  };
-
-  const validateCurrentStep = () => {
-    try {
-      seriesSchema.parse(seriesData);
-      setErrors({});
-      return true;
-    } catch (error) {
-      if (error instanceof Error) {
-        const zodError = error as any;
-        const fieldErrors: Record<string, string> = {};
-        zodError.errors?.forEach((err: any) => {
-          fieldErrors[err.path[0]] = err.message;
-        });
-        setErrors(fieldErrors);
-      }
-      return false;
-    }
-  };
-
   const handleNext = () => {
-    if (!validateCurrentStep()) return;
-
     if (currentStep < STEPS.length - 1) {
       setCurrentStep((prev) => prev + 1);
     }
@@ -138,144 +88,107 @@ export default function CreateSeriesPage() {
   };
 
   const handleStepClick = (stepId: StepsEnum) => {
-    const targetIndex = STEPS.findIndex((step) => step.id === stepId);
-    if (targetIndex < currentStepIndex) {
-      setCurrentStep(stepId);
-    }
+    setCurrentStep(stepId);
   };
 
   const handleSubmit = async () => {
-    if (!validateCurrentStep()) return;
-
-    setIsSubmitting(true);
     try {
+      seriesSchema.parse(seriesData);
+      setErrors({});
+      setIsSubmitting(true);
       toast.success("Series created successfully");
       router.push("/studio");
     } catch (error) {
-      toast.error("Failed to create series");
-    } finally {
+      if (error instanceof Error) {
+        const zodError = error as any;
+        const fieldErrors: Record<string, string> = {};
+        zodError.errors?.forEach((err: any) => {
+          fieldErrors[err.path[0]] = err.message;
+        });
+        setErrors(fieldErrors);
+        toast.error("Please fill in all required fields");
+      }
       setIsSubmitting(false);
     }
   };
 
   return (
-    <TooltipProvider>
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
-        <div className="mx-auto py-16 px-4 sm:px-6">
-          <div className="mb-12">
-            <div className="flex items-center gap-4 mb-8">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => router.back()}
-                className="h-11 w-11 hover:bg-muted/80 transition-colors"
-              >
-                <Icons.back className="h-5 w-5" />
-              </Button>
-              <div className="flex-1">
-                <h1 className="text-4xl font-bold tracking-tight mb-2">
-                  Create New Series
-                </h1>
-                <p className="text-muted-foreground text-lg">
-                  Step {currentStepIndex + 1} of {STEPS.length}
-                </p>
-              </div>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-rose-50/10">
+      <div className="mx-2 sm:mx-12 mb-32">
+        <div className="flex items-center gap-4 mb-8 py-8">
+          <button
+            onClick={() => router.back()}
+            className="text-gray-600 hover:text-rose-500 transition-colors"
+          >
+            <Icons.back className="h-6 w-6" />
+          </button>
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold tracking-tight">
+              Create New Series
+            </h1>
+            <p className="text-gray-600 mt-1">
+              Step {currentStepIndex + 1} of {STEPS.length}
+            </p>
           </div>
+        </div>
 
-          <div className="flex gap-8 items-start">
-            <aside className="hidden lg:block w-64 flex-shrink-0 sticky top-8">
-              <nav className="space-y-1">
-                {STEPS.map((step, index) => {
-                  const status = getStepStatus(index);
-                  const isValid = getStepValidationStatus(step.id);
-                  const errorMessage = getStepErrorMessage(step.id);
-                  const isClickable = status === "complete" || status === "active";
+        <div className="flex gap-12 items-start">
+          <aside className="hidden lg:block w-56 flex-shrink-0 sticky top-8">
+            <nav className="flex flex-col gap-6">
+              {STEPS.map((step, index) => {
+                const isValid = getStepValidationStatus(step.id);
+                const isActive = step.id === currentStep;
+                const isComplete = isValid && step.id !== currentStep;
 
-                  return (
-                    <Tooltip key={step.id}>
-                      <TooltipTrigger asChild>
-                        <button
-                          onClick={() => isClickable && handleStepClick(step.id)}
-                          disabled={!isClickable}
-                          className={cn(
-                            "w-full flex items-center gap-3 px-4 py-3.5 rounded-lg transition-all duration-200 text-left group",
-                            status === "active"
-                              ? "bg-primary text-primary-foreground shadow-md"
-                              : isClickable
-                              ? "hover:bg-muted/80 cursor-pointer"
-                              : "cursor-not-allowed"
-                          )}
-                        >
-                          <div
-                            className={cn(
-                              "flex-shrink-0 h-7 w-7 rounded-full flex items-center justify-center text-sm",
-                              status === "complete"
-                                ? "bg-green-500 text-white"
-                                : status === "active"
-                                ? "bg-white text-primary"
-                                : "bg-muted text-muted-foreground"
-                            )}
-                        >
-                          {status === "complete" ? (
-                            <Icons.check className="h-4 w-4" />
-                          ) : status === "active" ? (
-                            index + 1
-                          ) : !isValid ? (
-                            <Icons.questionMark className="h-4 w-4" />
-                          ) : (
-                            index + 1
-                          )}
-                        </div>
-                          <div className="flex-1 min-w-0">
-                            <div
-                              className={cn(
-                                "font-medium text-sm truncate",
-                                status === "active"
-                                  ? "text-primary-foreground"
-                                  : "text-foreground"
-                              )}
-                            >
-                              {step.title}
-                            </div>
-                            <div
-                              className={cn(
-                                "text-xs truncate",
-                                status === "active"
-                                  ? "text-primary-foreground/80"
-                                  : "text-muted-foreground"
-                              )}
-                            >
-                              {step.description}
-                            </div>
-                          </div>
-                          {status === "active" && (
-                            <Icons.front className="h-4 w-4 text-primary-foreground animate-pulse" />
-                          )}
-                        </button>
-                      </TooltipTrigger>
-                      {!isClickable && errorMessage && (
-                        <TooltipContent side="right" className="bg-destructive text-destructive-foreground">
-                          <p className="text-sm">{errorMessage}</p>
-                        </TooltipContent>
-                      )}
-                    </Tooltip>
-                  );
-                })}
-              </nav>
-            </aside>
+                return (
+                  <motion.button
+                    key={step.id}
+                    onClick={() => handleStepClick(step.id)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={cn(
+                      "text-left transition-colors relative pb-2",
+                      isActive ? "text-rose-500" : "text-gray-600 hover:text-rose-500"
+                    )}
+                  >
+                    <span className="font-medium text-base">{step.title}</span>
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeStep"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-rose-500"
+                        initial={false}
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      />
+                    )}
+                    {isComplete && (
+                      <Icons.check className="h-4 w-4 inline-block ml-2 text-green-500" />
+                    )}
+                  </motion.button>
+                );
+              })}
+            </nav>
+          </aside>
 
-            <div className="flex-1 max-w-2xl">
-              <Card className="border-2 shadow-lg bg-card/95 backdrop-blur">
-                <CardHeader className="space-y-2 pb-8">
-                  <CardTitle className="text-3xl font-semibold">
+          <div className="flex-1 max-w-3xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentStep}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-8"
+              >
+                <div className="mb-8">
+                  <h2 className="text-2xl font-semibold mb-2">
                     {STEPS[currentStepIndex].title}
-                  </CardTitle>
-                  <CardDescription className="text-base">
+                  </h2>
+                  <p className="text-gray-600">
                     {STEPS[currentStepIndex].description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-10 pt-6">
+                  </p>
+                </div>
+
+                <div className="bg-white/50 backdrop-blur-sm rounded-lg border border-gray-200 p-8 space-y-8">
                   {currentStep === StepsEnum.TITLE && (
                     <StepTitle
                       value={seriesData.title}
@@ -340,33 +253,40 @@ export default function CreateSeriesPage() {
                     <StepSummary seriesData={seriesData} />
                   )}
 
-                  <div className="flex justify-between pt-8 border-t">
+                  <div className="flex justify-between pt-8 border-t border-gray-200">
                     <Button
-                      variant="outline"
+                      variant="ghost"
                       onClick={handleBack}
                       disabled={currentStep === 0}
-                      className="h-11 px-6 text-base"
+                      className="text-gray-600 hover:text-rose-500 hover:bg-rose-50 h-11 px-6 text-base"
                     >
                       Back
                     </Button>
 
                     {currentStep === STEPS.length - 1 ? (
-                      <Button onClick={handleSubmit} disabled={isSubmitting} className="h-11 px-8 text-base">
+                      <Button
+                        onClick={handleSubmit}
+                        disabled={isSubmitting}
+                        className="bg-rose-500 hover:bg-rose-600 h-11 px-8 text-base"
+                      >
                         {isSubmitting ? "Creating..." : "Create Series"}
                       </Button>
                     ) : (
-                      <Button onClick={handleNext} className="h-11 px-6 text-base">
+                      <Button
+                        onClick={handleNext}
+                        className="bg-rose-500 hover:bg-rose-600 h-11 px-6 text-base"
+                      >
                         Next
                         <Icons.front className="ml-2 h-4 w-4" />
                       </Button>
                     )}
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>
-    </TooltipProvider>
+    </div>
   );
 }

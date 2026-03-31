@@ -1,10 +1,8 @@
 "use client";
-import { queryIds } from "./queryIds";
 
+import { siteConfig } from "@/lib/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
-import { AddContentParams } from "./content.types";
-import { siteConfig } from "@/lib/config";
 import {
   getContentQueryId,
   useGetListContentsQueryKey,
@@ -49,27 +47,6 @@ export function useUpdateContentMutation(options = {} as any) {
       }
 
       queryClient.refetchQueries({ queryKey: [getContentQueryId, data?.id] });
-
-      // queryClient.setQueriesData({
-      //   queryKey: [getContentQueryId, data?.id],
-
-      //   updater: (prev: any) => {
-      //     return data;
-      //   },
-      // });
-
-      // queryClient.setQueryData(listContentsQueryKey, (old: any) => {
-      //   return {
-      //     ...old,
-      //     items: old?.items?.map((item: any) => {
-      //       if (item?.id === data?.id) {
-      //         return data;
-      //       }
-
-      //       return item;
-      //     }),
-      //   };
-      // });
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

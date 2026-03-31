@@ -2,8 +2,8 @@
 
 import { useListSeriesQuery } from "@/domain/content-v2/use-list-series-query";
 import { TopicType } from "@/domain/topic/topic.types";
-import { Card } from "./card/card";
-import { Grid } from "./grid/grid";
+import { Card } from "./content-card/cardent-card";
+import { Grid } from "./content-list-grid/content-list-grid";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
 import { Icons } from "@/components/ui/icons.v2";

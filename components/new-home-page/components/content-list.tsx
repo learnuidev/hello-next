@@ -2,8 +2,8 @@
 
 import { useListContentsQuery } from "@/domain/content-v2/use-list-contents-query";
 import { TopicType } from "@/domain/topic/topic.types";
-import { Card } from "./card/card";
-import { Grid } from "./grid/grid";
+import { ContentCard } from "./content-card/content-card";
+import { ContentListGrid } from "./content-list-grid/content-list-grid";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
 import { Icons } from "@/components/ui/icons.v2";
@@ -28,9 +28,9 @@ export function ContentList({ activeTopic }: ContentListProps) {
 
   return (
     <section>
-      <Grid>
+      <ContentListGrid>
         {data.items.map((content) => (
-          <Card
+          <ContentCard
             key={content.id}
             id={content.id}
             title={content.title}
@@ -38,7 +38,7 @@ export function ContentList({ activeTopic }: ContentListProps) {
             stats={content.stats}
           />
         ))}
-      </Grid>
+      </ContentListGrid>
     </section>
   );
 }

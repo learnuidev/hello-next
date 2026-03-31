@@ -7,7 +7,7 @@ import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
-import { faBook, faSpinner } from "@fortawesome/sharp-solid-svg-icons";
+import { faBook, faSpinner, faVideo } from "@fortawesome/sharp-solid-svg-icons";
 import { faTypewriter } from "@fortawesome/sharp-solid-svg-icons";
 
 import {
@@ -210,6 +210,7 @@ const createFAIcon = (icon: FontAwesomeIconProps["icon"]) => {
 };
 
 export const Icons = {
+  studio: createFAIcon(faVideo),
   heart: createFAIcon(faHeart),
   heartSolid: createFAIcon(faHeartSolid),
   magnifyingGlass: createFAIcon(faMagnifyingGlass),

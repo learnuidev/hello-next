@@ -53,6 +53,12 @@ export default function AppsPage() {
   const reviewUrl = useGetReviewUrl();
   const apps = [
     {
+      href: "/studio",
+      title: "Studio",
+      Icon: Icons.studio,
+      hidden: !isSuperAdmin,
+    },
+    {
       href: "/pinyin",
       title: "Pinyin 2.0",
       Icon: Icons.pinyinChart,

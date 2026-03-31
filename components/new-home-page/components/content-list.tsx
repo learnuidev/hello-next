@@ -24,7 +24,7 @@ export function ContentList({ activeTopic }: ContentListProps) {
   }
 
   if (!data || data.items.length === 0) {
-    return <Nothing message="No content found" icon={Icons.content} />;
+    return <Nothing message="未找到内容" icon={Icons.cat} />;
   }
 
   return (

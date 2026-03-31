@@ -2,13 +2,15 @@
 
 import { Authenticated } from "@/components/Authenticated";
 import { FloatingNavbar } from "@/components/floating-navbar";
-// import { OverviewPage }  from "./overview/overview-page";
+import { OverviewPage } from "./overview/overview-page";
 import { NewHomePage } from "@/components/new-home-page/new-home-page";
+import { useIsHomePageEnabled } from "@/libs/posthog/hooks/is-new-home-page-enabled";
 
 export default function Home() {
+  const isEnabled = useIsHomePageEnabled();
   return (
     <Authenticated>
-      <NewHomePage />
+      {isEnabled ? <NewHomePage /> : <OverviewPage />}
       <FloatingNavbar />
     </Authenticated>
   );

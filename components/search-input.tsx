@@ -18,7 +18,7 @@ export const SearchInput = ({ autoFocus }: { autoFocus?: boolean }) => {
         "font-extralight border-none dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300 dark:bg-black/10 dark:text-gray-300 placeholder:text-gray-600 opacity-100 border-2 focus:border-none px-2 rounded-full focus:outline-none active:outline-none py-2",
         "w-full"
       )}
-      placeholder={"Search"}
+      placeholder={"搜索"}
       onChange={handleOnChange}
       value={querySync}
       onKeyDown={handleOnKeyDown}

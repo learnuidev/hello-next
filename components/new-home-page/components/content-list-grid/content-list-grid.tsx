@@ -1,7 +1,14 @@
+import { motion } from "framer-motion";
+
 export function ContentListGrid({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3  gap-8">
+    <motion.div
+      className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3  gap-8"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }

@@ -7,6 +7,7 @@ import { ContentListGrid } from "./content-list-grid/content-list-grid";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
 import { Icons } from "@/components/ui/icons.v2";
+import { motion } from "framer-motion";
 
 interface SeriesListProps {
   activeTopic?: TopicType | null;
@@ -29,15 +30,21 @@ export function SeriesList({ activeTopic }: SeriesListProps) {
   return (
     <section>
       <ContentListGrid>
-        {data.items.map((series) => (
-          <ContentCard
+        {data.items.map((series, index) => (
+          <motion.div
             key={series.id}
-            id={series.id}
-            title={series.title}
-            imageUrl={series.backgroundImage}
-            subtitle={series.source.title}
-            stats={series.stats}
-          />
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
+          >
+            <ContentCard
+              id={series.id}
+              title={series.title}
+              imageUrl={series.backgroundImage}
+              subtitle={series.source.title}
+              stats={series.stats}
+            />
+          </motion.div>
         ))}
       </ContentListGrid>
     </section>

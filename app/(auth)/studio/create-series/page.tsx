@@ -15,6 +15,7 @@ import { StepPhotoUpload } from "./components/step-photo-upload";
 import { StepSummary } from "./components/step-summary";
 import { seriesSchema } from "./validation";
 import { Icons } from "@/components/ui/icons.v2";
+import { useAddSeriesMutation } from "@/domain/content-v2/use-add-series-mutation";
 
 const STEPS = [
   {
@@ -47,6 +48,7 @@ const STEPS = [
 
 export default function CreateSeriesPage() {
   const router = useRouter();
+  const addSeriesMutation = useAddSeriesMutation();
   const [currentStep, setCurrentStep] = useState(StepsEnum.TITLE);
   const [seriesData, setSeriesData] = useState({
     title: "",
@@ -65,8 +67,10 @@ export default function CreateSeriesPage() {
 
   const getStepValidationStatus = (stepId: StepsEnum) => {
     const stepValidations: Record<StepsEnum, () => boolean> = {
-      [StepsEnum.TITLE]: () => !!seriesData.title?.trim() && seriesData.title.length >= 3,
-      [StepsEnum.DESCRIPTION]: () => !!seriesData.description?.trim() && seriesData.description.length >= 10,
+      [StepsEnum.TITLE]: () =>
+        !!seriesData.title?.trim() && seriesData.title.length >= 3,
+      [StepsEnum.DESCRIPTION]: () =>
+        !!seriesData.description?.trim() && seriesData.description.length >= 10,
       [StepsEnum.TOPIC_TYPE]: () => !!seriesData.topicType?.trim(),
       [StepsEnum.SOURCE]: () => !!seriesData.sourceId?.trim(),
       [StepsEnum.PHOTO]: () => true,
@@ -96,8 +100,25 @@ export default function CreateSeriesPage() {
       seriesSchema.parse(seriesData);
       setErrors({});
       setIsSubmitting(true);
-      toast.success("Series created successfully");
-      router.push("/studio");
+
+      addSeriesMutation.mutate(
+        {
+          title: seriesData.title,
+          topicType: seriesData.topicType as any,
+          sourceId: seriesData.sourceId,
+          backgroundImageAssetId: seriesData.photoAssetId || "",
+        },
+        {
+          onSuccess: () => {
+            toast.success("Series created successfully");
+            router.push("/studio");
+          },
+          onError: (error: any) => {
+            toast.error(error?.message || "Failed to create series");
+            setIsSubmitting(false);
+          },
+        },
+      );
     } catch (error) {
       if (error instanceof Error) {
         const zodError = error as any;
@@ -148,7 +169,9 @@ export default function CreateSeriesPage() {
                     whileTap={{ scale: 0.98 }}
                     className={cn(
                       "text-left transition-colors relative pb-2",
-                      isActive ? "text-rose-500" : "text-gray-600 hover:text-rose-500"
+                      isActive
+                        ? "text-rose-500"
+                        : "text-gray-600 hover:text-rose-500",
                     )}
                   >
                     <span className="font-medium text-base">{step.title}</span>
@@ -157,7 +180,11 @@ export default function CreateSeriesPage() {
                         layoutId="activeStep"
                         className="absolute bottom-0 left-0 right-0 h-0.5 bg-rose-500"
                         initial={false}
-                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 500,
+                          damping: 30,
+                        }}
                       />
                     )}
                     {isComplete && (

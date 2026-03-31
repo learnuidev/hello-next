@@ -33,3 +33,7 @@ export interface Series {
   createdAt: number;
   updatedAt: number;
 }
+
+export type SeriesWithBackgroundImage = Series & {
+  backgroundImage: string;
+};

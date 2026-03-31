@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
-import { Series } from "./series.types";
+import { Series, SeriesWithBackgroundImage } from "./series.types";
 import { TopicType } from "../topic/topic.types";
 
 export interface ListSeriesParams {
@@ -15,7 +15,7 @@ export interface ListSeriesParams {
 }
 
 export interface ListSeriesResponse {
-  items: Series[];
+  items: SeriesWithBackgroundImage[];
   pagination: {
     direction: "asc" | "desc";
     limit: number;

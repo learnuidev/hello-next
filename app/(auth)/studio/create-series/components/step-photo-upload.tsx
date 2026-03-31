@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -102,13 +102,19 @@ export function StepPhotoUpload({
 
   const handleAssetSelect = (assetId: string) => {
     setSelectedAssetId(assetId);
-    setUploadTab("upload");
   };
 
   const handleBackToSelect = () => {
     setUploadTab("select");
     setSelectedAssetId("");
+    onPhotoChange("", "");
   };
+
+  useEffect(() => {
+    if (selectedAsset) {
+      onPhotoChange(selectedAsset.sourceUrl, selectedAsset.id);
+    }
+  }, [selectedAsset]);
 
   return (
     <div className="space-y-4">

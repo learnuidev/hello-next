@@ -6,7 +6,7 @@ import { TopicType } from "../topic/topic.types";
 
 export interface ListSeriesParams {
   topicType?: TopicType;
-  sourceUsername?: string;
+  sourceId?: string;
   limit?: number;
   direction?: "asc" | "desc";
   exclusiveStartKey?: string;
@@ -29,151 +29,276 @@ const mockSeriesData = [
     id: "series-1",
     topicType: "recommendation" as TopicType,
     title: "中文播客精选",
-    source: { id: "source-1", username: "chinesepod", title: "ChinesePod" },
+    source: {
+      status: "unclaimed",
+      id: "source-1",
+      userName: "chinesepod",
+      title: "ChinesePod",
+    },
   },
   {
     id: "series-2",
     topicType: "storytelling" as TopicType,
     title: "中国古代故事",
-    source: { id: "source-2", username: "storycn", title: "中国故事网" },
+    source: {
+      status: "unclaimed",
+      id: "source-2",
+      userName: "storycn",
+      title: "中国故事网",
+    },
   },
   {
     id: "series-3",
     topicType: "news" as TopicType,
     title: "科技新闻每日",
-    source: { id: "source-3", username: "techtalk", title: "科技日报" },
+    source: {
+      status: "unclaimed",
+      id: "source-3",
+      userName: "techtalk",
+      title: "科技日报",
+    },
   },
   {
     id: "series-4",
     topicType: "chinese-classics" as TopicType,
     title: "成语故事",
-    source: { id: "source-4", username: "culturecn", title: "国学堂" },
+    source: {
+      status: "unclaimed",
+      id: "source-4",
+      userName: "culturecn",
+      title: "国学堂",
+    },
   },
   {
     id: "series-5",
     topicType: "history" as TopicType,
     title: "中国历史讲座",
-    source: { id: "source-5", username: "historian", title: "历史研究院" },
+    source: {
+      status: "unclaimed",
+      id: "source-5",
+      userName: "historian",
+      title: "历史研究院",
+    },
   },
   {
     id: "series-6",
     topicType: "technology" as TopicType,
     title: "人工智能前沿",
-    source: { id: "source-6", username: "aitalk", title: "AI视界" },
+    source: {
+      status: "unclaimed",
+      id: "source-6",
+      userName: "aitalk",
+      title: "AI视界",
+    },
   },
   {
     id: "series-7",
     topicType: "music" as TopicType,
     title: "传统音乐欣赏",
-    source: { id: "source-7", username: "musiccn", title: "中国音乐" },
+    source: {
+      status: "unclaimed",
+      id: "source-7",
+      userName: "musiccn",
+      title: "中国音乐",
+    },
   },
   {
     id: "series-8",
     topicType: "science" as TopicType,
     title: "科普读物",
-    source: { id: "source-8", username: "sciencecn", title: "科学探索" },
+    source: {
+      status: "unclaimed",
+      id: "source-8",
+      userName: "sciencecn",
+      title: "科学探索",
+    },
   },
   {
     id: "series-9",
     topicType: "personal-growth" as TopicType,
     title: "个人成长励志",
-    source: { id: "source-9", username: "growthcn", title: "成长之路" },
+    source: {
+      status: "unclaimed",
+      id: "source-9",
+      userName: "growthcn",
+      title: "成长之路",
+    },
   },
   {
     id: "series-10",
     topicType: "travel" as TopicType,
     title: "旅行中国",
-    source: { id: "source-10", username: "travelcn", title: "旅行家" },
+    source: {
+      status: "unclaimed",
+      id: "source-10",
+      userName: "travelcn",
+      title: "旅行家",
+    },
   },
   {
     id: "series-11",
     topicType: "economics-and-finance" as TopicType,
     title: "财经新闻解读",
-    source: { id: "source-11", username: "financecn", title: "财经观察" },
+    source: {
+      status: "unclaimed",
+      id: "source-11",
+      userName: "financecn",
+      title: "财经观察",
+    },
   },
   {
     id: "series-12",
     topicType: "lifestyle" as TopicType,
     title: "健康生活",
-    source: { id: "source-12", username: "healthcn", title: "健康生活" },
+    source: {
+      status: "unclaimed",
+      id: "source-12",
+      userName: "healthcn",
+      title: "健康生活",
+    },
   },
   {
     id: "series-13",
     topicType: "chinese-classics" as TopicType,
     title: "诗词鉴赏",
-    source: { id: "source-13", username: "poetrycn", title: "诗词大会" },
+    source: {
+      status: "unclaimed",
+      id: "source-13",
+      userName: "poetrycn",
+      title: "诗词大会",
+    },
   },
   {
     id: "series-14",
     topicType: "technology" as TopicType,
     title: "科技创新",
-    source: { id: "source-14", username: "innovatecn", title: "创新科技" },
+    source: {
+      status: "unclaimed",
+      id: "source-14",
+      userName: "innovatecn",
+      title: "创新科技",
+    },
   },
   {
     id: "series-15",
     topicType: "lifestyle" as TopicType,
     title: "生活美学",
-    source: { id: "source-15", username: "lifecn", title: "生活家" },
+    source: {
+      status: "unclaimed",
+      id: "source-15",
+      userName: "lifecn",
+      title: "生活家",
+    },
   },
   {
     id: "series-16",
     topicType: "economics-and-finance" as TopicType,
     title: "商业案例分析",
-    source: { id: "source-16", username: "businesscn", title: "商业周刊" },
+    source: {
+      status: "unclaimed",
+      id: "source-16",
+      userName: "businesscn",
+      title: "商业周刊",
+    },
   },
   {
     id: "series-17",
     topicType: "news" as TopicType,
     title: "时事评论",
-    source: { id: "source-17", username: "commentarycn", title: "评论时讯" },
+    source: {
+      status: "unclaimed",
+      id: "source-17",
+      userName: "commentarycn",
+      title: "评论时讯",
+    },
   },
   {
     id: "series-18",
     topicType: "science" as TopicType,
     title: "自然科学探索",
-    source: { id: "source-18", username: "naturecn", title: "自然科学" },
+    source: {
+      status: "unclaimed",
+      id: "source-18",
+      userName: "naturecn",
+      title: "自然科学",
+    },
   },
   {
     id: "series-19",
     topicType: "chinese-classics" as TopicType,
     title: "艺术鉴赏",
-    source: { id: "source-19", username: "artcn", title: "艺术殿堂" },
+    source: {
+      status: "unclaimed",
+      id: "source-19",
+      userName: "artcn",
+      title: "艺术殿堂",
+    },
   },
   {
     id: "series-20",
     topicType: "news" as TopicType,
     title: "社会观察",
-    source: { id: "source-20", username: "societync", title: "社会观察" },
+    source: {
+      status: "unclaimed",
+      id: "source-20",
+      userName: "societync",
+      title: "社会观察",
+    },
   },
   {
     id: "series-21",
     topicType: "recommendation" as TopicType,
     title: "语言学习",
-    source: { id: "source-21", username: "languagecn", title: "语言学堂" },
+    source: {
+      status: "unclaimed",
+      id: "source-21",
+      userName: "languagecn",
+      title: "语言学堂",
+    },
   },
   {
     id: "series-22",
     topicType: "kids" as TopicType,
     title: "儿童故事会",
-    source: { id: "source-22", username: "kidscn", title: "儿童频道" },
+    source: {
+      status: "unclaimed",
+      id: "source-22",
+      userName: "kidscn",
+      title: "儿童频道",
+    },
   },
   {
     id: "series-23",
     topicType: "history" as TopicType,
     title: "历史人物",
-    source: { id: "source-23", username: "historycn", title: "历史人物" },
+    source: {
+      status: "unclaimed",
+      id: "source-23",
+      userName: "historycn",
+      title: "历史人物",
+    },
   },
   {
     id: "series-24",
     topicType: "technology" as TopicType,
     title: "互联网趋势",
-    source: { id: "source-24", username: "internetcn", title: "互联网观察" },
+    source: {
+      status: "unclaimed",
+      id: "source-24",
+      userName: "internetcn",
+      title: "互联网观察",
+    },
   },
   {
     id: "series-25",
     topicType: "travel" as TopicType,
     title: "美食之旅",
-    source: { id: "source-25", username: "foodcn", title: "美食中国" },
+    source: {
+      status: "unclaimed",
+      id: "source-25",
+      userName: "foodcn",
+      title: "美食中国",
+    },
   },
 ];
 
@@ -187,7 +312,7 @@ const mockSeries: Series[] = mockSeriesData.map((data, i) => ({
     totalSentences: Math.floor(Math.random() * 2) + 5,
     totalWords: Math.floor(Math.random() * 5) + 50,
   },
-  backgroundImage: defaultPic,
+  backgroundImageUrl: defaultPic,
 }));
 
 const listSeriesApi = async (
@@ -195,7 +320,7 @@ const listSeriesApi = async (
 ): Promise<ListSeriesResponse> => {
   const {
     topicType,
-    sourceUsername,
+    sourceId,
     limit = 10,
     direction = "desc",
     exclusiveStartKey,
@@ -209,10 +334,8 @@ const listSeriesApi = async (
     filtered = filtered.filter((series) => series.topicType === topicType);
   }
 
-  if (sourceUsername) {
-    filtered = filtered.filter(
-      (series) => series.source.username === sourceUsername
-    );
+  if (sourceId) {
+    filtered = filtered.filter((series) => series.source.id === sourceId);
   }
 
   const startIndex = exclusiveStartKey ? parseInt(exclusiveStartKey, 10) : 0;

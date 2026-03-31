@@ -40,7 +40,7 @@ export function SeriesList({ activeTopic }: SeriesListProps) {
             <ContentCard
               id={series.id}
               title={series.title}
-              imageUrl={series.backgroundImage}
+              imageUrl={series.backgroundImageUrl}
               subtitle={series.source.title}
               stats={series.stats}
             />

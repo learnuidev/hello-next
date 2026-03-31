@@ -1,4 +1,5 @@
 import { TopicType } from "../topic/topic.types";
+import { Source } from "./source.types";
 
 export interface IStats {
   averageRating: number;
@@ -12,17 +13,17 @@ export interface IStats {
 
 export type SeriesStats = IStats & {};
 
-interface Source {
-  id: string;
-  username: string;
+export interface AddSeriesParams {
   title: string;
+  topicType: TopicType;
+  sourceId: string;
+  backgroundImageAssetId: string;
 }
-
 export interface Series {
   id: string;
   topicType: TopicType;
   title: string;
+  backgroundImageUrl: string;
   source: Source;
   stats: SeriesStats;
-  backgroundImage: string;
 }

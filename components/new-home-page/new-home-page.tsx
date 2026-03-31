@@ -18,12 +18,12 @@ interface Tab {
 
 const tabs: Tab[] = [
   {
-    title: "系列",
-    type: "series",
-  },
-  {
     title: "内容",
     type: "content",
+  },
+  {
+    title: "系列",
+    type: "series",
   },
 ];
 
@@ -40,7 +40,7 @@ export function NewHomePage() {
         <TopicsList />
 
         <div className="mt-4">
-          <div className="flex gap-8">
+          <div className="flex gap-12">
             {tabs.map((tab) => {
               return (
                 <button

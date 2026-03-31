@@ -2,6 +2,11 @@
 
 import { useListSeriesQuery } from "@/domain/content-v2/use-list-series-query";
 import { TopicType } from "@/domain/topic/topic.types";
+import { Card } from "./card/card";
+import { Grid } from "./grid/grid";
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { Nothing } from "@/app/nmm/nothing";
+import { Icons } from "@/components/ui/icons.v2";
 
 interface SeriesListProps {
   activeTopic?: TopicType | null;
@@ -14,46 +19,27 @@ export function SeriesList({ activeTopic }: SeriesListProps) {
   });
 
   if (isLoading) {
-    return (
-      <section>
-        <div className="text-center text-gray-500">Loading...</div>
-      </section>
-    );
+    return <LottieLoadingAnimation />;
   }
 
   if (!data || data.items.length === 0) {
-    return (
-      <section>
-        <div className="text-center text-gray-500">No series found</div>
-      </section>
-    );
+    return <Nothing message="No series found" icon={Icons.content} />;
   }
 
   return (
     <section>
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <Grid>
         {data.items.map((series) => (
-          <div
+          <Card
             key={series.id}
-            className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
-          >
-            <div
-              className="aspect-square bg-cover bg-center"
-              style={{ backgroundImage: `url(${series.backgroundImage})` }}
-            />
-            <div className="p-4">
-              <h3 className="font-semibold text-lg truncate">{series.title}</h3>
-              <p className="text-sm text-gray-500 truncate">
-                {series.source.title}
-              </p>
-              <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
-                <span>★ {series.stats.averageRating}</span>
-                <span>{series.stats.totalPlays} plays</span>
-              </div>
-            </div>
-          </div>
+            id={series.id}
+            title={series.title}
+            imageUrl={series.backgroundImage}
+            subtitle={series.source.title}
+            stats={series.stats}
+          />
         ))}
-      </div>
+      </Grid>
     </section>
   );
 }

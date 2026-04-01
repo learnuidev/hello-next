@@ -122,14 +122,14 @@ const FloatingNavbarComp = () => {
               target="_blank"
               onClick={() => {
                 setPreviousPath(
-                  `${pathName}?start=${searchParams.get("start") || 0}`
+                  `${pathName}?start=${searchParams.get("start") || 0}`,
                 );
               }}
               className={cn(
                 routeName?.includes("/review")
                   ? "text-gray-800 dark:text-gray-300"
                   : "text-gray-500 dark:text-gray-500",
-                "transition text-xl "
+                "transition text-xl ",
               )}
             >
               <Icons.playCircle className="hover:text-rose-400 dark:hover:text-white transition" />
@@ -170,6 +170,21 @@ const FloatingNavbarComp = () => {
               <Icons.pinyinChart className="hover:text-rose-400 dark:hover:text-white transition" />
             </Link>
           )} */}
+
+          <Link
+            href="/enrollments"
+            className={`transition ${
+              routeName === "/enrollments"
+                ? "text-gray-800 dark:text-gray-300"
+                : "text-gray-500 dark:text-gray-500"
+            } hover:text-gray-700 transition text-xl`}
+          >
+            {routeName === "/enrollments" ? (
+              <Icons.bookmarkSolid className="hover:text-rose-400 dark:hover:text-white transition" />
+            ) : (
+              <Icons.bookmark className="hover:text-rose-400 dark:hover:text-white transition" />
+            )}
+          </Link>
 
           <Link
             href="/apps"

@@ -27,7 +27,7 @@ export function StepTitle({ value, onChange, error }: StepTitleProps) {
           className="text-base h-12 dark:bg-[rgb(11,12,13)] dark:border-gray-800 focus:border-rose-500 focus:ring-rose-500"
           autoFocus
         />
-        {value.length > 0 && value.length < 3 && (
+        {value.length > 0 && value.length < 1 && (
           <p className="text-sm text-rose-500">标题至少需要 3 个字符</p>
         )}
         {error && (

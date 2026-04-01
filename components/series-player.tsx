@@ -5,6 +5,9 @@ import { Icons } from "@/components/ui/icons.v2";
 import { SeriesContentDetails } from "@/domain/content-v2/series-content-details.types";
 import { cn } from "@/lib/utils";
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useAudioBookState } from "@/app/(auth)/convos/audiobook-player/hooks/use-audiobook-state";
+import { ContentTranscription, IContent } from "@/domain/content/content.api";
+import ReactPlayer from "react-player";
 
 interface SeriesPlayerProps {
   content: SeriesContentDetails | null;
@@ -12,9 +15,8 @@ interface SeriesPlayerProps {
 }
 
 export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTranscriptionIndex, setCurrentTranscriptionIndex] = useState(0);
-  const [isLooping, setIsLooping] = useState(false);
+  const icontent: any = content;
+
   const [showTranscription, setShowTranscription] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [transcriptionPosition, setTranscriptionPosition] = useState({
@@ -26,139 +28,23 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
   );
   const isDragging = useRef(false);
   const transcriptionRef = useRef<HTMLDivElement>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const currentContentIdRef = useRef<string | null>(null);
 
-  const initializeAudio = useCallback(() => {
-    if (!content || !content.mediaUrl) return;
-
-    console.log("Initializing audio for:", content.id);
-
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-
-    const audio = new Audio(content.mediaUrl);
-    audioRef.current = audio;
-    currentContentIdRef.current = content.id;
-
-    audio.onended = () => {
-      console.log("Audio ended");
-      setIsPlaying(false);
-      if (!isLooping) {
-        const nextIndex = currentTranscriptionIndex + 1;
-        if (nextIndex < (content.transcriptions?.length || 0)) {
-          setCurrentTranscriptionIndex(nextIndex);
-        }
-      } else if (content.transcriptions?.[currentTranscriptionIndex]) {
-        const currentTrans = content.transcriptions[currentTranscriptionIndex];
-        audio.currentTime =
-          "startIndex" in currentTrans ? currentTrans.startIndex / 1000 : 0;
-        audio.play();
-      }
-    };
-
-    audio.onplay = () => {
-      console.log("Audio is playing");
-      setIsPlaying(true);
-    };
-
-    audio.onpause = () => {
-      console.log("Audio is paused");
-      setIsPlaying(false);
-    };
-
-    audio.onerror = (e) => {
-      console.error("Audio error:", e);
-    };
-
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-    };
-  }, [content, currentTranscriptionIndex, isLooping]);
-
-  useEffect(() => {
-    if (!content || !content.mediaUrl) return;
-
-    console.log("SeriesPlayer - content:", content);
-    console.log("SeriesPlayer - transcriptions:", content.transcriptions);
-    console.log(
-      "SeriesPlayer - transcriptions length:",
-      content.transcriptions?.length
-    );
-
-    const cleanup = initializeAudio();
-
-    return cleanup;
-  }, [content, initializeAudio]);
-
-  useEffect(() => {
-    if (!content || currentContentIdRef.current !== content.id) return;
-    if (audioRef.current && content) {
-      console.log("Auto-playing audio");
-      audioRef.current
-        .play()
-        .then(() => {
-          console.log("Audio started successfully");
-          setIsPlaying(true);
-        })
-        .catch((err) => {
-          console.error("Auto-play failed:", err);
-          setIsPlaying(false);
-        });
-    }
-  }, [content]);
-
-  const handlePlayPause = () => {
-    if (!audioRef.current || !content) return;
-
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current.play();
-      setIsPlaying(true);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (!content) return;
-    const newIndex = Math.max(0, currentTranscriptionIndex - 1);
-    setCurrentTranscriptionIndex(newIndex);
-
-    if (audioRef.current && content.transcriptions?.[newIndex]) {
-      const trans = content.transcriptions[newIndex] as any;
-      if ("startIndex" in trans && "hanzi" in trans) {
-        audioRef.current.currentTime = trans.startIndex / 1000;
-      } else if ("words" in trans && trans.words?.[0]) {
-        audioRef.current.currentTime = trans.words[0].start;
-      }
-    }
-  };
-
-  const handleNext = () => {
-    if (!content) return;
-    const maxIndex = (content.transcriptions?.length || 0) - 1;
-    const newIndex = Math.min(maxIndex, currentTranscriptionIndex + 1);
-    setCurrentTranscriptionIndex(newIndex);
-
-    if (audioRef.current && content.transcriptions?.[newIndex]) {
-      const trans = content.transcriptions[newIndex] as any;
-      if ("startIndex" in trans && "hanzi" in trans) {
-        audioRef.current.currentTime = trans.startIndex / 1000;
-      } else if ("words" in trans && trans.words?.[0]) {
-        audioRef.current.currentTime = trans.words[0].start;
-      }
-    }
-  };
-
-  const handleLoop = () => {
-    setIsLooping(!isLooping);
-  };
+  const {
+    seekAndPlay,
+    setLoop,
+    loop,
+    setPlaying,
+    playing,
+    currentTranscription,
+    containsChinglish,
+    playerRef,
+    seekBefore,
+    handlePlayPause,
+    seekAfter,
+    currentTime,
+    setCurrentTime,
+    onReady,
+  } = useAudioBookState(icontent || ({} as IContent));
 
   const onMouseDown = useCallback(
     (e: React.MouseEvent) => {
@@ -199,8 +85,9 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
 
   if (!content) return null;
 
-  const currentTranscription =
-    content.transcriptions?.[currentTranscriptionIndex];
+  const currentTranscriptionIndex = content.transcriptions?.findIndex(
+    (trans) => trans === currentTranscription
+  );
 
   const renderPlayerControls = () => (
     <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -208,7 +95,7 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
         onClick={handlePlayPause}
         className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-900 dark:bg-white hover:bg-gray-700 dark:hover:bg-gray-200 flex items-center justify-center transition-all"
       >
-        {isPlaying ? (
+        {playing ? (
           <Icons.pause className="h-5 w-5 text-white dark:text-gray-900" />
         ) : (
           <Icons.play className="h-5 w-5 text-white dark:text-gray-900 ml-0.5" />
@@ -230,7 +117,7 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
         <Button
           variant="ghost"
           size="sm"
-          onClick={handlePrevious}
+          onClick={seekBefore}
           disabled={currentTranscriptionIndex === 0}
           className="h-8 w-8 p-0"
         >
@@ -240,10 +127,11 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
         <Button
           variant="ghost"
           size="sm"
-          onClick={handleNext}
+          onClick={seekAfter}
           disabled={
+            currentTranscriptionIndex === undefined ||
             currentTranscriptionIndex >=
-            (content.transcriptions?.length || 0) - 1
+              (content.transcriptions?.length || 0) - 1
           }
           className="h-8 w-8 p-0"
         >
@@ -253,11 +141,8 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
         <Button
           variant="ghost"
           size="sm"
-          onClick={handleLoop}
-          className={cn(
-            "h-8 w-8 p-0",
-            isLooping && "bg-gray-200 dark:bg-gray-800"
-          )}
+          onClick={() => setLoop(loop ? null : currentTranscription)}
+          className={cn("h-8 w-8 p-0", loop && "bg-gray-200 dark:bg-gray-800")}
         >
           <Icons.loop className="h-4 w-4" />
         </Button>
@@ -292,8 +177,11 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
         <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 px-4 py-3 bg-gray-50 dark:bg-gray-800">
           <div className="flex items-center gap-2">
             <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
-              Transcription {currentTranscriptionIndex + 1} /{" "}
-              {content.transcriptions?.length || 0}
+              Transcription{" "}
+              {currentTranscriptionIndex !== undefined
+                ? currentTranscriptionIndex + 1
+                : 0}{" "}
+              / {content.transcriptions?.length || 0}
             </span>
           </div>
           <Button
@@ -330,7 +218,7 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
             ) : "words" in currentTranscription ? (
               <div className="space-y-6">
                 <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                  {currentTranscription.words?.map((word, idx) => (
+                  {currentTranscription.words?.map((word: any, idx: number) => (
                     <span key={idx}>{word.input} </span>
                   ))}
                 </p>
@@ -354,6 +242,23 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
 
   return (
     <>
+      <ReactPlayer
+        key={content?.mediaUrl}
+        url={content?.mediaUrl || ""}
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        width="0"
+        height="0"
+        onReady={onReady}
+        playing={false}
+        controls={false}
+        ref={playerRef}
+        progressInterval={100}
+        onProgress={(value) => {
+          setCurrentTime(value.playedSeconds);
+        }}
+      />
+
       <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-lg z-50">
         <div className="max-w-7xl mx-auto px-4 py-3">
           {renderPlayerControls()}
@@ -374,8 +279,11 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
           <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 px-4 py-2 bg-gray-50 dark:bg-gray-800">
             <div className="flex items-center gap-2">
               <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                Transcription {currentTranscriptionIndex + 1} /{" "}
-                {content.transcriptions?.length || 0}
+                Transcription{" "}
+                {currentTranscriptionIndex !== undefined
+                  ? currentTranscriptionIndex + 1
+                  : 0}{" "}
+                / {content.transcriptions?.length || 0}
               </span>
             </div>
             <div className="flex items-center gap-1">
@@ -419,7 +327,7 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
             ) : "words" in currentTranscription ? (
               <div className="space-y-2">
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {currentTranscription.words?.map((word, idx) => (
+                  {currentTranscription.words?.map((word: any, idx: number) => (
                     <span key={idx}>{word.input} </span>
                   ))}
                 </p>

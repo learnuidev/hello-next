@@ -1,9 +1,7 @@
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
-
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
-import { IContent } from "@/domain/content/content.api";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
@@ -11,81 +9,147 @@ import { useSearchParams } from "next/navigation";
 import { useReadModeState } from "@/components/read-mode-button";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { usePreviewMode } from "@/components/settings-dialog/use-preview-mode";
-import { isVideoUrl } from "../../utils/is-video-url";
+import { isVideoUrl } from "@/app/(auth)/convos/utils/is-video-url";
 import { useSearchOnlyPinyinState } from "@/components/search-only-pinyin-button";
-import { useRepeatHistoryStore } from "../../_play/use-repeat-history";
+import { useRepeatHistoryStore } from "@/app/(auth)/convos/_play/use-repeat-history";
+import {
+  SeriesContentDetails,
+  AudioTranscription,
+  YoutubeTranscription,
+} from "@/domain/content-v2/series-content-details.types";
+import { ContentFormat } from "@/domain/content-v2/series-content-details.types";
 
-export const useAudioBookState = (content: IContent) => {
-  console.log("CONTENT", content);
+const isAudioTranscription = (
+  transcription: any,
+): transcription is AudioTranscription => {
+  return (
+    transcription &&
+    typeof transcription === "object" &&
+    "words" in transcription
+  );
+};
+
+const isYoutubeTranscription = (
+  transcription: any,
+): transcription is YoutubeTranscription => {
+  return (
+    transcription &&
+    typeof transcription === "object" &&
+    "hanzi" in transcription
+  );
+};
+
+export interface NormalizedTranscription {
+  id: string;
+  start: number;
+  end: number;
+  input: string;
+  hanzi?: string;
+  pinyin?: string;
+  chinglish?: string;
+  en?: string;
+  roman?: string;
+  lang: string;
+}
+
+export const useContentPlayerState = (content: SeriesContentDetails) => {
   const { playbackRate } = useListenState();
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
-  const [loop, setLoop] = useState<any>(null);
+  const [loop, setLoop] = useState<NormalizedTranscription | null>(null);
   const [isReady, setIsReady] = useState(false);
   const { selected, setSelected } = useSelectedItem();
 
   const searchParams = useSearchParams();
-
-  const start: any = searchParams.get("start");
+  const start = searchParams.get("start");
 
   const { currentTime: _currentTime = 0, setCurrentTime } = useCurrentTime(
-    content.id
+    content.id,
   );
 
   const currentTime = _currentTime;
-
   const playerRef = useRef<any>(null);
 
   const seek = useCallback((time: number) => {
-    playerRef.current.seekTo(time, "seconds");
+    playerRef.current?.seekTo(time, "seconds");
   }, []);
 
   const play = useCallback(() => {
     playerRef.current?.player?.player?.play();
   }, []);
 
-  function pause() {
+  const pause = useCallback(() => {
     playerRef.current?.player?.player?.pause();
-  }
+  }, []);
 
   const seekAndPlay = useCallback(
     (time: number) => {
       seek(time);
       play();
     },
-    [seek, play]
+    [seek, play],
   );
 
-  // TODO: move this at api level
-  const transcriptions = (content?.transcriptions || [])?.map(
-    (item, idx, ctx) => {
-      if (idx === 0) {
+  const normalizeTranscriptions = useCallback(
+    (transcriptions: any[]): NormalizedTranscription[] => {
+      return transcriptions.map((trans, idx, arr) => {
+        if (isAudioTranscription(trans)) {
+          const nextTrans = arr[idx + 1] as AudioTranscription;
+          const firstWord = trans.words?.[0];
+          const lastWord = trans.words?.[trans.words.length - 1];
+          return {
+            id: trans.id,
+            start: firstWord?.start || trans.startIndex / 1000 || 0,
+            end:
+              lastWord?.end ||
+              nextTrans?.startIndex / 1000 ||
+              trans.endIndex / 1000 ||
+              0,
+            input: trans.words?.map((w: any) => w.input).join(" ") || "",
+            lang: content.lang || "en",
+          };
+        } else if (isYoutubeTranscription(trans)) {
+          const nextTrans = arr[idx + 1] as YoutubeTranscription;
+          return {
+            id: trans.id,
+            start: trans.startIndex / 1000 || 0,
+            end: nextTrans?.startIndex / 1000 || trans.endIndex / 1000 || 0,
+            input: trans.hanzi || "",
+            hanzi: trans.hanzi,
+            pinyin: trans.pinyin,
+            chinglish: trans.chinglish,
+            en: trans.en,
+            lang: content.lang || "zh",
+          };
+        }
         return {
-          ...item,
-          start: item?.start === 0 ? 0.1 : item?.start,
-          end: item?.end || ctx?.[idx + 1]?.start,
+          id: trans.id,
+          start: 0,
+          end: 0,
+          input: "",
+          lang: content.lang || "en",
         };
-      }
-
-      return item;
-    }
+      });
+    },
+    [content.lang],
   );
 
-  const finalUrl = content?.audio;
+  const transcriptions = normalizeTranscriptions(content?.transcriptions || []);
+
+  const finalUrl = content?.mediaUrl || content?.youtubeUrl || "";
 
   const onReady = useCallback(
     (data: any) => {
       if (!isReady) {
         setDuration(data.getDuration());
-        const timeToStart = 7 * 60 + 12.6;
 
         if (start) {
           if (isVideoUrl(finalUrl)) {
             if (!currentTime && `${currentTime}` !== `${start}`) {
-              seekAndPlay(start);
+              seekAndPlay(parseFloat(start));
             }
           } else {
-            seekAndPlay(start);
+            seekAndPlay(parseFloat(start));
           }
         } else {
           seekAndPlay(0);
@@ -94,56 +158,51 @@ export const useAudioBookState = (content: IContent) => {
         setIsReady(true);
       }
     },
-    [isReady, start, finalUrl, currentTime, seekAndPlay]
+    [isReady, start, finalUrl, currentTime, seekAndPlay],
   );
 
   const seekBefore = useCallback(() => {
     if (currentTranscription) {
       const currentTranscriptionIndex = Math.max(
-        transcriptions?.findIndex(
-          (trans: any) => trans?.start === currentTranscription?.start
+        transcriptions.findIndex(
+          (trans) => trans.start === currentTranscription?.start,
         ),
-        0
+        0,
       );
 
       const prevIndex = Math.max(currentTranscriptionIndex - 1, 0);
+      const prevTranscription = transcriptions[prevIndex];
 
-      const prevTranscription = transcriptions?.[prevIndex];
-
-      playerRef.current.seekTo(
+      playerRef.current?.seekTo(
         loop?.start || prevTranscription?.start,
-        "seconds"
+        "seconds",
       );
     }
   }, [currentTime, transcriptions]);
 
-  const setRepeatHistories = useRepeatHistoryStore(
-    (state: any) => state.setHistory
-  );
-
   const seekAfter = useCallback(() => {
     const currentTranscriptionIndex = Math.max(
-      transcriptions?.findIndex(
-        (trans: any) => trans?.start === currentTranscription?.start
+      transcriptions.findIndex(
+        (trans) => trans.start === currentTranscription?.start,
       ),
-      0
+      0,
     );
 
     const nextIndex = Math.min(
       currentTranscriptionIndex + 1,
-      transcriptions?.length - 1
+      transcriptions.length - 1,
     );
-    const nextTranscription = transcriptions?.[nextIndex];
+    const nextTranscription = transcriptions[nextIndex];
 
-    playerRef.current.seekTo(
+    playerRef.current?.seekTo(
       loop?.start || nextTranscription?.start,
-      "seconds"
+      "seconds",
     );
   }, [currentTime, transcriptions]);
 
   useEffect(() => {
     if (!currentTime && start && isVideoUrl(finalUrl)) {
-      playerRef.current.seekTo(start, "seconds");
+      playerRef.current?.seekTo(parseFloat(start), "seconds");
 
       try {
         playerRef.current?.player?.player?.play();
@@ -159,7 +218,7 @@ export const useAudioBookState = (content: IContent) => {
     } else {
       pause();
     }
-  }, [play, playing]);
+  }, [play, playing, pause]);
 
   const { setReadMode, readMode } = useReadModeState();
 
@@ -167,16 +226,16 @@ export const useAudioBookState = (content: IContent) => {
     seekAndPlay(event[0]);
   };
 
-  const audioUrl = content?.audio;
-
   const editMode = useContentEditStore((state) => state.editMode);
 
   const currentTranscription =
     loop ||
-    transcriptions?.find(
+    transcriptions.find(
       (transcription) =>
-        transcription?.start <= currentTime && transcription?.end >= currentTime
-    );
+        transcription?.start <= currentTime &&
+        transcription?.end >= currentTime,
+    ) ||
+    null;
 
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
@@ -186,10 +245,10 @@ export const useAudioBookState = (content: IContent) => {
   const { setShowSearchOnlyPinyin, showSearchOnlyPinyin } =
     useSearchOnlyPinyinState();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const togglePinyin = () => {
     setShowPinyin(!showPinyin);
   };
+
   const toggleSearchPinyin = useCallback(() => {
     setShowSearchOnlyPinyin(!showSearchOnlyPinyin);
   }, [setShowSearchOnlyPinyin, showSearchOnlyPinyin]);
@@ -236,18 +295,17 @@ export const useAudioBookState = (content: IContent) => {
       }
 
       if (event.code === "ArrowLeft" && !editMode) {
-        if (audioUrl) {
+        if (finalUrl) {
           seekBefore();
         }
       }
       if (event.code === "ArrowRight" && !editMode) {
-        if (audioUrl) {
+        if (finalUrl) {
           seekAfter();
         }
       }
 
       if (event.code === "Space" && !editMode) {
-        // Vishal 07-12-2024-10-20: prevents the browser from scrolling down
         event.preventDefault();
         handlePlayPause();
       }
@@ -269,30 +327,19 @@ export const useAudioBookState = (content: IContent) => {
     setNextMode,
     currentTranscription?.input,
     loop,
-    audioUrl,
+    finalUrl,
     handlePlayPause,
     toggleSearchPinyin,
   ]);
 
   const debounceSeek = useDebouncedCallback((firstStart: number) => {
-    // if (loop) {
-    //   setRepeatHistories({
-    //     contentId: content.id,
-    //     ...loop,
-    //     hanzi: loop?.input || loop?.hanzi,
-    //     input: loop?.input || loop?.hanzi,
-    //     roman: loop?.roman || loop?.pinyin,
-    //     createdAt: Date.now(),
-    //   });
-    // }
-
     seekAndPlay(firstStart);
   }, 30);
 
   useEffect(() => {
     if (loop) {
-      const selectedWords = transcriptions?.find(
-        (word) => word?.input === loop?.input
+      const selectedWords = transcriptions.find(
+        (word) => word?.input === loop?.input,
       );
 
       if (selectedWords?.start && currentTime > selectedWords?.end) {
@@ -309,6 +356,9 @@ export const useAudioBookState = (content: IContent) => {
 
   const containsChinglish = !!transcriptions?.[0]?.chinglish;
 
+  const isVideo =
+    content.format === ContentFormat.YOUTUBE || isVideoUrl(finalUrl);
+
   return {
     seekAndPlay,
     selected,
@@ -318,9 +368,7 @@ export const useAudioBookState = (content: IContent) => {
     setDuration,
     setPlaying,
     playing,
-
     currentTranscription,
-
     containsChinglish,
     playerRef,
     playbackRate,
@@ -334,5 +382,8 @@ export const useAudioBookState = (content: IContent) => {
     start,
     onReady,
     seek,
+    transcriptions,
+    isVideo,
+    finalUrl,
   };
 };

@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/ui/icons.v2";
-import { useListContentsQuery } from "@/domain/content/content.queries";
-import { usePortEpisodesMutation } from "@/domain/content-v2/use-port-episodes-mutation";
 import { ContentListGrid } from "@/components/new-home-page/components/content-list-grid/content-list-grid";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { toast } from "sonner";
+import { Icons } from "@/components/ui/icons.v2";
 import { Input } from "@/components/ui/input";
+import { usePortEpisodesMutation } from "@/domain/content-v2/use-port-episodes-mutation";
+import { useListContentsQuery } from "@/domain/content/content.queries";
+import { motion } from "framer-motion";
+import { useParams, useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
 
 const defaultPic =
   "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png";
@@ -40,7 +40,8 @@ function SelectableContentCard({
   isSelected: boolean;
   onToggleSelect: (id: string) => void;
 }) {
-  const isLongTitle = title.length > 30;
+  const isLongTitle = title.length > 20;
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
@@ -70,29 +71,32 @@ function SelectableContentCard({
             />
           </div>
           <div className="flex-1 min-w-0 overflow-hidden">
-            {isLongTitle ? (
+            {isLongTitle && isHovered ? (
               <motion.div
-                className="flex overflow-hidden"
+                className="flex whitespace-nowrap"
                 initial={{ x: 0 }}
-                animate={{ x: 0 }}
-                whileHover={{ x: "-50%" }}
-                transition={{ duration: 10, ease: "linear" }}
-                style={{
-                  width: "200%",
+                animate={{ x: "-100%" }}
+                transition={{
+                  x: {
+                    duration: 8,
+                    ease: "linear",
+                    repeat: Infinity,
+                    repeatType: "loop",
+                  },
                 }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
               >
-                <h3 className="font-semibold text-lg whitespace-nowrap w-1/2 pr-4">
-                  {title}
-                </h3>
-                <h3 className="font-semibold text-lg whitespace-nowrap w-1/2">
-                  {title}
-                </h3>
+                <h3 className="font-semibold text-lg pr-8">{title}</h3>
+                <h3 className="font-semibold text-lg pr-8">{title}</h3>
               </motion.div>
             ) : (
               <motion.h3
                 className="font-semibold text-lg truncate"
                 whileHover={{ color: "rgb(244, 63, 94)" }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
               >
                 {title}
               </motion.h3>
@@ -133,7 +137,7 @@ export default function PortDataPage() {
     }
     const query = searchQuery.toLowerCase();
     return contents.filter((item: any) =>
-      item.title?.toLowerCase().includes(query),
+      item.title?.toLowerCase().includes(query)
     );
   }, [contentsData, searchQuery]);
 
@@ -143,7 +147,7 @@ export default function PortDataPage() {
     setSelectedContentIds((prev) =>
       prev.includes(contentId)
         ? prev.filter((id) => id !== contentId)
-        : [...prev, contentId],
+        : [...prev, contentId]
     );
   };
 

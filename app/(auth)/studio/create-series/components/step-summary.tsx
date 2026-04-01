@@ -142,7 +142,7 @@ export function StepSummary({ seriesData }: StepSummaryProps) {
                   准备创建？
                 </h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  点击下方的"创建系列"来完成您的新系列创建。您随时可以编辑这些详情。
+                  点击下方的&quot;创建系列&quot;来完成您的新系列创建。您随时可以编辑这些详情。
                 </p>
               </div>
             </div>

@@ -12,6 +12,7 @@ import { SettingsDialog } from "./settings-dialog/settings-dialog";
 import { whiteListUrls } from "@/data/white-list-urls";
 import { WithOnboarding } from "./onboarding/with-onboarding";
 import { WithUserPlanOnboarding } from "@/app/(auth)/plans/components/with-user-plan-onboarding";
+import { MandarinoLoadingBanner } from "./ui/mandarino-loading-banner";
 
 export const Authenticated = (props: any) => {
   const { data: authUser, isLoading } = useCurrentAuthUser({});
@@ -41,7 +42,11 @@ export const Authenticated = (props: any) => {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <MandarinoLoadingBanner />
+      </div>
+    );
   }
 
   if (routeName === "/") {

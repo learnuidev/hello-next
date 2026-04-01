@@ -1,11 +1,13 @@
 "use client";
 
 import { useGetSeriesDetailsQuery } from "@/domain/content-v2/use-get-series-details-query";
+import { useParams } from "next/navigation";
 
-export default function SeriesDetailsPage(props: {
-  params: { seriesId: string };
-}) {
-  const seriesId = props.params.seriesId;
+export default function SeriesDetailsPage() {
+  const params = useParams<{ seriesId: string }>();
+
+  const seriesId = params.seriesId;
+
   const { data } = useGetSeriesDetailsQuery({
     seriesId,
   });

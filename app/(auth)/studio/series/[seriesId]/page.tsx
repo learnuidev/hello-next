@@ -59,20 +59,52 @@ export default function SeriesDetailsPage() {
     return "无法加载系列详情";
   };
 
-  const handleUpdateSeries = async (data: {
+  const handleUpdateSeries = async (formData: {
     title: string;
+    description?: string;
     topicType: string;
     sourceId: string;
     backgroundImageAssetId: string;
   }) => {
+    const initialData = data?.series;
+    if (!initialData) {
+      return;
+    }
+
+    const updates: any = {
+      id: params.seriesId,
+    };
+
+    if (formData.title !== initialData.title) {
+      updates.title = formData.title;
+    }
+
+    if (formData.description !== initialData.description) {
+      updates.description = formData.description;
+    }
+
+    if (formData.topicType !== initialData.topicType) {
+      updates.topicType = formData.topicType;
+    }
+
+    if (formData.sourceId !== initialData.sourceId) {
+      updates.sourceId = formData.sourceId;
+    }
+
+    if (
+      formData.backgroundImageAssetId !==
+      (initialData.backgroundImageAssetId || "")
+    ) {
+      updates.backgroundImageAssetId = formData.backgroundImageAssetId;
+    }
+
+    if (Object.keys(updates).length === 1) {
+      toast.info("没有更改需要保存");
+      return;
+    }
+
     try {
-      await updateSeriesMutation.mutateAsync({
-        id: params.seriesId,
-        title: data.title,
-        topicType: data.topicType as any,
-        sourceId: data.sourceId,
-        backgroundImageAssetId: data.backgroundImageAssetId,
-      });
+      await updateSeriesMutation.mutateAsync(updates);
       toast.success("系列更新成功");
       refetch();
     } catch (error: any) {
@@ -200,7 +232,7 @@ export default function SeriesDetailsPage() {
                   seriesId={series.id}
                   initialData={{
                     title: series.title,
-                    description: "",
+                    description: series.description || "",
                     topicType: series.topicType,
                     sourceId: series.sourceId,
                     sourceName: series.source.title,

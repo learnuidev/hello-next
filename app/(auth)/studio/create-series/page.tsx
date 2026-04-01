@@ -12,6 +12,7 @@ export default function CreateSeriesPage() {
 
   const handleSubmit = async (data: {
     title: string;
+    description?: string;
     topicType: string;
     sourceId: string;
     backgroundImageAssetId: string;
@@ -19,6 +20,7 @@ export default function CreateSeriesPage() {
     try {
       await addSeriesMutation.mutateAsync({
         title: data.title,
+        description: data.description,
         topicType: data.topicType as any,
         sourceId: data.sourceId,
         backgroundImageAssetId: data.backgroundImageAssetId,

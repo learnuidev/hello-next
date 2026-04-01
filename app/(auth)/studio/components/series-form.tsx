@@ -60,6 +60,7 @@ interface SeriesFormProps {
   seriesId?: string;
   onSubmit: (data: {
     title: string;
+    description?: string;
     topicType: string;
     sourceId: string;
     backgroundImageAssetId: string;
@@ -130,6 +131,7 @@ export function SeriesForm({
 
       await onSubmit({
         title: seriesData.title,
+        description: seriesData.description,
         topicType: seriesData.topicType as any,
         sourceId: seriesData.sourceId,
         backgroundImageAssetId: seriesData.photoAssetId || "",

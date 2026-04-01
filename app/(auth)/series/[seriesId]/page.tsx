@@ -13,6 +13,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { ContentV2 } from "@/domain/content-v2/content-v2.types";
 
 export default function SeriesDetailsPage() {
   const params = useParams<{ seriesId: string }>();
@@ -129,11 +130,47 @@ export default function SeriesDetailsPage() {
         </div>
       </header>
 
-      <main className="bg-gray-50">
+      <main className="bg-gray-50 mt-8">
         <div>
-          <code>
-            <pre>{JSON.stringify(data, null, 3)}</pre>
-          </code>
+          <h2 className="text-2xl font-bold mb-4">Episodes</h2>
+          {data.episodes.length === 0 ? (
+            <p className="text-gray-600">No episodes available yet.</p>
+          ) : (
+            <div className="space-y-3">
+              {data.episodes.map((episode: ContentV2) => (
+                <div
+                  key={episode.id}
+                  className={`bg-white p-4 rounded-lg shadow-sm border ${
+                    isEnrolled
+                      ? "cursor-pointer hover:border-blue-500 transition-colors"
+                      : "opacity-60 cursor-not-allowed"
+                  }`}
+                  onClick={() => {
+                    if (isEnrolled) {
+                      window.location.href = `/contents/${episode.id}`;
+                    }
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold">{episode.title}</h3>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Format: {episode.format}
+                      </p>
+                    </div>
+                    {isEnrolled && (
+                      <Icons.front className="h-5 w-5 text-gray-400" />
+                    )}
+                  </div>
+                  {!isEnrolled && (
+                    <p className="text-sm text-blue-600 mt-2">
+                      Enroll to access this episode
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </main>
     </PageContainer>

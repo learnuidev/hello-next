@@ -13,6 +13,7 @@ import { TopicType } from "../topic/topic.types";
 export type UpdateSeriesParams = {
   id: string;
   title?: string;
+  description?: string;
   topicType?: TopicType;
   sourceId?: string;
   backgroundImageAssetId?: string;

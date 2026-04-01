@@ -23,6 +23,7 @@ export interface CoreStats extends HskStats {
 
 export interface AddSeriesParams {
   title: string;
+  description?: string;
   topicType: TopicType;
   sourceId: string;
   backgroundImageAssetId: string;

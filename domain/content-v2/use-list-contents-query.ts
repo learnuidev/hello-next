@@ -176,21 +176,25 @@ const mockContentsData = [
   },
 ];
 
-const mockContents: ContentV2[] = mockContentsData.map((data, i) => ({
-  ...data,
-  mediaUrl: `https://example.com/media${i + 1}.mp3`,
-  thumbnailUrl: defaultThumbnail,
-  createdAt: Date.now() - i * 86400000,
-  updatedAt: Date.now() - i * 86400000,
-  stats: {
-    averageRating: Math.floor(Math.random() * 50) / 10 + 3,
-    totalPlays: Math.floor(Math.random() * 30000) + 500,
-    totalStars: Math.floor(Math.random() * 1000) + 50,
-    totalCharacters: Math.floor(Math.random() * 10) + 500,
-    totalSentences: Math.floor(Math.random() * 2) + 5,
-    totalWords: Math.floor(Math.random() * 5) + 50,
-  },
-}));
+const mockContents: ContentV2[] = mockContentsData.map(
+  (data, i) =>
+    ({
+      ...data,
+      mediaUrl: `https://example.com/media${i + 1}.mp3`,
+      thumbnailUrl: defaultThumbnail,
+      createdAt: Date.now() - i * 86400000,
+      updatedAt: Date.now() - i * 86400000,
+      status: "CREATED",
+      stats: {
+        averageRating: Math.floor(Math.random() * 50) / 10 + 3,
+        totalPlays: Math.floor(Math.random() * 30000) + 500,
+        totalStars: Math.floor(Math.random() * 1000) + 50,
+        totalCharacters: Math.floor(Math.random() * 10) + 500,
+        totalSentences: Math.floor(Math.random() * 2) + 5,
+        totalWords: Math.floor(Math.random() * 5) + 50,
+      },
+    }) as ContentV2
+);
 
 const listContentsApi = async (
   params: ListContentsParams

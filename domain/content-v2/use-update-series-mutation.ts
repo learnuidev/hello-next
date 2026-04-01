@@ -33,6 +33,14 @@ const updateSeries = async (
     },
     body: JSON.stringify(params),
   });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(
+      errorData.message || `Failed to update series: ${res.statusText}`,
+    );
+  }
+
   const resp = await res.json();
   return resp;
 };

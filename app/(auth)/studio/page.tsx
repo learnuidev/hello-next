@@ -7,6 +7,7 @@ import { SeriesManagement } from "./components/series-management";
 import { ContentManagement } from "./components/content-management";
 import { SourcesManagement } from "./components/sources-management";
 import { BaseTabs } from "@/components/ui/base-tabs";
+import { FloatingNavbar } from "@/components/floating-navbar";
 
 type TabType = "series" | "content" | "sources";
 
@@ -65,6 +66,8 @@ export default function StudioPage() {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      <FloatingNavbar />
     </div>
   );
 }

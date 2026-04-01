@@ -136,17 +136,19 @@ export function SeriesForm({
         sourceId: seriesData.sourceId,
         backgroundImageAssetId: seriesData.photoAssetId || "",
       });
+      setIsSubmitting(false);
     } catch (error) {
-      if (error instanceof Error) {
-        const zodError = error as any;
+      const zodError = error as any;
+      if (zodError?.errors && Array.isArray(zodError.errors)) {
         const fieldErrors: Record<string, string> = {};
-        zodError.errors?.forEach((err: any) => {
+        zodError.errors.forEach((err: any) => {
           fieldErrors[err.path[0]] = err.message;
         });
         setErrors(fieldErrors);
         toast.error("Please fill in all required fields");
       }
       setIsSubmitting(false);
+      throw error;
     }
   };
 

@@ -22,12 +22,64 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
     y: 80,
   });
   const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(
-    null,
+    null
   );
   const isDragging = useRef(false);
   const transcriptionRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const currentContentIdRef = useRef<string | null>(null);
+
+  const initializeAudio = useCallback(() => {
+    if (!content || !content.mediaUrl) return;
+
+    console.log("Initializing audio for:", content.id);
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+
+    const audio = new Audio(content.mediaUrl);
+    audioRef.current = audio;
+    currentContentIdRef.current = content.id;
+
+    audio.onended = () => {
+      console.log("Audio ended");
+      setIsPlaying(false);
+      if (!isLooping) {
+        const nextIndex = currentTranscriptionIndex + 1;
+        if (nextIndex < (content.transcriptions?.length || 0)) {
+          setCurrentTranscriptionIndex(nextIndex);
+        }
+      } else if (content.transcriptions?.[currentTranscriptionIndex]) {
+        const currentTrans = content.transcriptions[currentTranscriptionIndex];
+        audio.currentTime =
+          "startIndex" in currentTrans ? currentTrans.startIndex / 1000 : 0;
+        audio.play();
+      }
+    };
+
+    audio.onplay = () => {
+      console.log("Audio is playing");
+      setIsPlaying(true);
+    };
+
+    audio.onpause = () => {
+      console.log("Audio is paused");
+      setIsPlaying(false);
+    };
+
+    audio.onerror = (e) => {
+      console.error("Audio error:", e);
+    };
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, [content, currentTranscriptionIndex, isLooping]);
 
   useEffect(() => {
     if (!content || !content.mediaUrl) return;
@@ -36,49 +88,22 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
     console.log("SeriesPlayer - transcriptions:", content.transcriptions);
     console.log(
       "SeriesPlayer - transcriptions length:",
-      content.transcriptions?.length,
+      content.transcriptions?.length
     );
 
-    if (currentContentIdRef.current !== content.id) {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
+    const cleanup = initializeAudio();
 
-      const audio = new Audio(content.mediaUrl);
-      audioRef.current = audio;
-      currentContentIdRef.current = content.id;
-
-      audio.onended = () => {
-        setIsPlaying(false);
-        if (!isLooping) {
-          const nextIndex = currentTranscriptionIndex + 1;
-          if (nextIndex < (content.transcriptions?.length || 0)) {
-            setCurrentTranscriptionIndex(nextIndex);
-          }
-        } else if (content.transcriptions?.[currentTranscriptionIndex]) {
-          const currentTrans =
-            content.transcriptions[currentTranscriptionIndex];
-          audio.currentTime =
-            "startIndex" in currentTrans ? currentTrans.startIndex / 1000 : 0;
-          audio.play();
-        }
-      };
-
-      return () => {
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current = null;
-        }
-      };
-    }
-  }, [content, currentTranscriptionIndex, isLooping]);
+    return cleanup;
+  }, [content, initializeAudio]);
 
   useEffect(() => {
+    if (!content || currentContentIdRef.current !== content.id) return;
     if (audioRef.current && content) {
+      console.log("Auto-playing audio");
       audioRef.current
         .play()
         .then(() => {
+          console.log("Audio started successfully");
           setIsPlaying(true);
         })
         .catch((err) => {
@@ -145,7 +170,7 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
       });
       e.preventDefault();
     },
-    [transcriptionPosition],
+    [transcriptionPosition]
   );
 
   useEffect(() => {
@@ -209,7 +234,7 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
           disabled={currentTranscriptionIndex === 0}
           className="h-8 w-8 p-0"
         >
-          <Icons.rewind className="h-4 w-4" />
+          <Icons.rotateLeft className="h-4 w-4" />
         </Button>
 
         <Button
@@ -222,7 +247,7 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
           }
           className="h-8 w-8 p-0"
         >
-          <Icons.fastForward className="h-4 w-4" />
+          <Icons.rotateRight className="h-4 w-4" />
         </Button>
 
         <Button
@@ -231,7 +256,7 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
           onClick={handleLoop}
           className={cn(
             "h-8 w-8 p-0",
-            isLooping && "bg-gray-200 dark:bg-gray-800",
+            isLooping && "bg-gray-200 dark:bg-gray-800"
           )}
         >
           <Icons.loop className="h-4 w-4" />
@@ -243,7 +268,7 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
           onClick={() => setShowTranscription(!showTranscription)}
           className={cn(
             "h-8 w-8 p-0",
-            showTranscription && "bg-gray-200 dark:bg-gray-800",
+            showTranscription && "bg-gray-200 dark:bg-gray-800"
           )}
         >
           <Icons.list className="h-4 w-4" />

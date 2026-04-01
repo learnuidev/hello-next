@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons.v2";
@@ -27,11 +27,10 @@ const tabs = [
   },
 ];
 
-export default function SeriesDetailsPage({
-  params,
-}: {
-  params: { seriesId: string };
-}) {
+export default function SeriesDetailsPage() {
+  const params = useParams<{ seriesId: string }>();
+
+  const seriesId = params.seriesId;
   const router = useRouter();
   const { data, isLoading, error, refetch } = useGetSeriesDetailsQuery({
     seriesId: params.seriesId,

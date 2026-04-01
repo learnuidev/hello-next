@@ -9,7 +9,7 @@ const deleteEnrollment = async (
   seriesId: string,
   opts: {
     Authorization: string;
-  },
+  }
 ): Promise<DeleteEnrollmentResponse> => {
   const res = await fetch(
     `${siteConfig.contentApi}/v1/enrollments/series/${seriesId}`,
@@ -18,7 +18,7 @@ const deleteEnrollment = async (
       headers: {
         Authorization: `${opts?.Authorization}`,
       },
-    },
+    }
   );
 
   if (!res.ok) {
@@ -35,14 +35,16 @@ export function useDeleteEnrollmentMutation() {
 
   return useMutation<DeleteEnrollmentResponse, Error, string>({
     mutationFn: async (seriesId) => {
-      const response = await deleteEnrollment(seriesId, {
+      await deleteEnrollment(seriesId, {
         Authorization: authUser?.jwt,
       });
 
-      return response;
+      return {
+        seriesId,
+      };
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["list-enrollments"] });
+    onSuccess: (data) => {
+      queryClient.setQueryData(["get-enrollment", data.seriesId], () => null);
       queryClient.invalidateQueries({ queryKey: ["get-series-details"] });
     },
   });

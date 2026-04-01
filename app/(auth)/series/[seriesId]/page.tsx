@@ -25,6 +25,7 @@ export default function SeriesDetailsPage() {
 
   const { isEnrolled, isLoading: isEnrollmentLoading } =
     useIsEnrolled(seriesId);
+
   const createEnrollmentMutation = useCreateEnrollmentMutation();
   const deleteEnrollmentMutation = useDeleteEnrollmentMutation();
   const { toast } = useToast();

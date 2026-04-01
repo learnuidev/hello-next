@@ -15,7 +15,7 @@ const getEnrollment = async (
   },
 ): Promise<GetEnrollmentResponse> => {
   const res = await fetch(
-    `${siteConfig.contentApi}/v1/enrollments/${params.enrollmentId}`,
+    `${siteConfig.contentApi}/v1/enrollments/series/${params.seriesId}`,
     {
       headers: {
         Authorization: `${opts?.Authorization}`,
@@ -38,7 +38,7 @@ export function useGetEnrollmentQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<GetEnrollmentResponse>({
-    queryKey: ["get-enrollment", params.enrollmentId],
+    queryKey: ["get-enrollment", params.seriesId],
     queryFn: async () => {
       const response = await getEnrollment(params, {
         Authorization: authUser?.jwt,

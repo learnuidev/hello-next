@@ -49,9 +49,9 @@ export interface ListEnrollmentsParams {
 }
 
 export interface GetEnrollmentParams {
-  enrollmentId: string;
+  seriesId: string;
 }
 
 export interface DeleteEnrollmentResponse {
-  enrollment: Enrollment;
+  seriesId: string;
 }

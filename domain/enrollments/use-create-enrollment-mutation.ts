@@ -12,7 +12,7 @@ const createEnrollment = async (
   params: CreateEnrollmentRequest,
   opts: {
     Authorization: string;
-  },
+  }
 ): Promise<CreateEnrollmentResponse> => {
   const res = await fetch(`${siteConfig.contentApi}/v1/enrollments`, {
     method: "POST",
@@ -46,8 +46,10 @@ export function useCreateEnrollmentMutation() {
 
       return response;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["list-enrollments"] });
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["get-enrollment", data.enrollment.seriesId],
+      });
       queryClient.invalidateQueries({ queryKey: ["get-series-details"] });
     },
   });

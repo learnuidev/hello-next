@@ -9,6 +9,7 @@ import { Nothing } from "@/app/nmm/nothing";
 import { Icons } from "@/components/ui/icons.v2";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { MandarinoLoadingBanner } from "@/components/ui/mandarino-loading-banner";
 
 interface SeriesListProps {
   activeTopic?: TopicType | null;
@@ -23,7 +24,7 @@ export function SeriesList({ activeTopic }: SeriesListProps) {
   const router = useRouter();
 
   if (isLoading) {
-    return <LottieLoadingAnimation />;
+    return <MandarinoLoadingBanner />;
   }
 
   if (!data || data.items.length === 0) {

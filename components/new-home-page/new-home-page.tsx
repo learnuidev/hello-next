@@ -1,30 +1,25 @@
 "use client";
 
-import { useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { SearchBar } from "../search-bar";
-import { TopicsList } from "./components/topics-list";
-import { SeriesList } from "./components/series-list";
-import { ContentList } from "./components/content-list";
-import { cn } from "@/lib/utils";
 import { TopicType } from "@/domain/topic/topic.types";
+import { AnimatePresence, motion } from "framer-motion";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { SearchBar } from "../search-bar";
+import { BaseTopicsList } from "../ui/base-topics-list";
+import { BaseTabs } from "../ui/base-tabs";
+import { ContentList } from "./components/content-list";
+import { SeriesList } from "./components/series-list";
 
 type TabType = "series" | "content";
 
-interface Tab {
-  type: TabType;
-  title: string;
-}
-
-const tabs: Tab[] = [
+const tabs = [
   {
-    title: "内容",
-    type: "content",
+    label: "内容",
+    value: "content" as TabType,
   },
   {
-    title: "系列",
-    type: "series",
+    label: "系列",
+    value: "series" as TabType,
   },
 ];
 
@@ -34,53 +29,37 @@ export function NewHomePage() {
     "recommendation") as TopicType;
 
   const [activeTopic, setActiveTopic] = useState<TopicType>(
-    () => activeTopicSearchParams
+    () => activeTopicSearchParams,
   );
   const [activeTab, setActiveTab] = useState<TabType>("series");
+
+  const router = useRouter();
+
+  const handleTopicClick = (topicType: TopicType) => {
+    setActiveTopic(topicType);
+    router.push(`/?topic=${topicType}`);
+  };
 
   return (
     <div className="mx-2 sm:mx-12 mb-32">
       <SearchBar />
 
       <main className="mt-2">
-        <TopicsList
+        <BaseTopicsList
           activeTopic={activeTopic}
-          setActiveTopic={(topic: TopicType) => setActiveTopic(topic)}
+          onTopicClick={handleTopicClick}
+          layoutId="activeTopic"
+          variant="link"
+          animate={true}
         />
 
         <div className="mt-4">
-          <div className="flex gap-12">
-            {tabs.map((tab) => {
-              return (
-                <motion.button
-                  key={tab.type}
-                  onClick={() => setActiveTab(tab.type)}
-                  className={cn(
-                    "pb-2 font-medium transition-colors relative",
-                    activeTab === tab.type
-                      ? " border-rose-500"
-                      : "text-gray-600 hover:text-rose-500"
-                  )}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {tab.title}
-                  {activeTab === tab.type && (
-                    <motion.div
-                      layoutId="activeTab"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-rose-500"
-                      initial={false}
-                      transition={{
-                        type: "spring",
-                        stiffness: 500,
-                        damping: 30,
-                      }}
-                    />
-                  )}
-                </motion.button>
-              );
-            })}
-          </div>
+          <BaseTabs
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            layoutId="activeTab"
+          />
 
           <div className="mt-8">
             <AnimatePresence mode="wait">

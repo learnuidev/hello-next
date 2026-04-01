@@ -9,12 +9,23 @@ import { useGetSeriesDetailsQuery } from "@/domain/content-v2/use-get-series-det
 import { useUpdateSeriesMutation } from "@/domain/content-v2/use-update-series-mutation";
 import { ContentListGrid } from "@/components/new-home-page/components/content-list-grid/content-list-grid";
 import { ContentCard } from "@/components/new-home-page/components/content-card/content-card";
-import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { SeriesForm } from "../../components/series-form";
+import { BaseTabs } from "@/components/ui/base-tabs";
 
 const defaultPic =
   "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png";
+
+const tabs = [
+  {
+    label: "信息",
+    value: "info" as const,
+  },
+  {
+    label: "内容",
+    value: "episodes" as const,
+  },
+];
 
 export default function SeriesDetailsPage({
   params,
@@ -156,54 +167,12 @@ export default function SeriesDetailsPage({
 
       <div className="p-0">
         <div className="flex justify-between items-center">
-          <div className="relative space-x-8">
-            <button
-              onClick={() => setActiveTab("info")}
-              className={cn(
-                "px-0 py-4 relative transition-colors",
-                activeTab === "info"
-                  ? "text-rose-500"
-                  : "text-gray-600 hover:text-rose-500 dark:text-gray-400 dark:hover:text-rose-500",
-              )}
-            >
-              信息
-              {activeTab === "info" && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-rose-500"
-                  initial={false}
-                  transition={{
-                    type: "spring",
-                    stiffness: 500,
-                    damping: 30,
-                  }}
-                />
-              )}
-            </button>
-            <button
-              onClick={() => setActiveTab("episodes")}
-              className={cn(
-                "px-0 py-4 relative transition-colors",
-                activeTab === "episodes"
-                  ? "text-rose-500"
-                  : "text-gray-600 hover:text-rose-500 dark:text-gray-400 dark:hover:text-rose-500",
-              )}
-            >
-              内容
-              {activeTab === "episodes" && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-rose-500"
-                  initial={false}
-                  transition={{
-                    type: "spring",
-                    stiffness: 500,
-                    damping: 30,
-                  }}
-                />
-              )}
-            </button>
-          </div>
+          <BaseTabs
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            layoutId="activeTab"
+          />
         </div>
 
         <AnimatePresence mode="wait">

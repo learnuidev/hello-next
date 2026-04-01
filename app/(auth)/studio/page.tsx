@@ -2,35 +2,28 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons.v2";
 import { SeriesManagement } from "./components/series-management";
 import { ContentManagement } from "./components/content-management";
 import { SourcesManagement } from "./components/sources-management";
-import { cn } from "@/lib/utils";
+import { BaseTabs } from "@/components/ui/base-tabs";
 
 type TabType = "series" | "content" | "sources";
 
-interface Tab {
-  type: TabType;
-  title: string;
-  icon: React.ReactNode;
-}
-
-const tabs: Tab[] = [
+const tabs = [
   {
-    title: "系列",
-    type: "series",
+    label: "系列",
+    value: "series" as TabType,
     icon: <Icons.contentSolid className="h-4 w-4" />,
   },
   {
-    title: "内容",
-    type: "content",
+    label: "内容",
+    value: "content" as TabType,
     icon: <Icons.layerGroup className="h-4 w-4" />,
   },
   {
-    title: "来源",
-    type: "sources",
+    label: "来源",
+    value: "sources" as TabType,
     icon: <Icons.userSolid className="h-4 w-4" />,
   },
 ];
@@ -49,39 +42,13 @@ export default function StudioPage() {
         </div>
       </div>
 
-      <div className="flex gap-12 mb-8">
-        {tabs.map((tab) => {
-          return (
-            <motion.button
-              key={tab.type}
-              onClick={() => setActiveTab(tab.type)}
-              className={cn(
-                "pb-2 font-medium transition-colors relative flex items-center gap-2",
-                activeTab === tab.type
-                  ? " border-rose-500"
-                  : "text-gray-600 hover:text-rose-500",
-              )}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {tab.icon}
-              {tab.title}
-              {activeTab === tab.type && (
-                <motion.div
-                  layoutId="activeTabStudio"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-rose-500"
-                  initial={false}
-                  transition={{
-                    type: "spring",
-                    stiffness: 500,
-                    damping: 30,
-                  }}
-                />
-              )}
-            </motion.button>
-          );
-        })}
-      </div>
+      <BaseTabs
+        tabs={tabs}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        layoutId="activeTabStudio"
+        className="mb-8"
+      />
 
       <div className="mt-8">
         <AnimatePresence mode="wait">

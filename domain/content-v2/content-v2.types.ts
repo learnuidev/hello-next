@@ -1,6 +1,5 @@
-import { IStats } from "./series.types";
-import { TopicType } from "../topic/topic.types";
 import { ContentStatus } from "../content-service/content-v2.types";
+import { CoreStats } from "./series.types";
 
 export enum ContentFormat {
   YOUTUBE = "youtube",
@@ -14,15 +13,23 @@ export interface CreatedAndUpdatedAt {
   updatedAt: number;
 }
 
-export type ContentStats = IStats;
+export interface ContentStats extends CoreStats {}
 
-export interface ContentV2 extends CreatedAndUpdatedAt {
+export interface ContentV2Entity extends CreatedAndUpdatedAt {
   id: string;
-  topicType: TopicType;
   format: ContentFormat;
   status: ContentStatus;
   title: string;
+  lang: string;
+  sk: string;
+
+  mediaTranscriptionsId: string;
+  mediaId: string;
+
+  stats: ContentStats;
+}
+
+export interface ContentV2 extends ContentV2Entity {
   mediaUrl: string;
   thumbnailUrl: string;
-  stats: ContentStats;
 }

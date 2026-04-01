@@ -1,5 +1,4 @@
-import { IStats } from "@/domain/content-v2/series.types";
-import { Star, Play } from "lucide-react";
+import { CoreStats } from "@/domain/content-v2/series.types";
 import { motion } from "framer-motion";
 
 function formatNumber(num: number): string {
@@ -17,7 +16,7 @@ export interface CardProps {
   title: string;
   imageUrl: string;
   subtitle?: string;
-  stats: IStats;
+  stats: CoreStats;
   onClick?: () => void;
   href?: string;
 }

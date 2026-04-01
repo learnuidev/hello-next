@@ -1,17 +1,25 @@
 import { TopicType } from "../topic/topic.types";
 import { Source } from "./source.types";
 
-export interface IStats {
-  averageRating: number;
-  totalPlays: number;
-  totalStars: number;
-
+export interface HskStats {
+  hsk1Words: number;
+  hsk2Words: number;
+  hsk3Words: number;
+  hsk4Words: number;
+  hsk5Words: number;
+  hsk6Words: number;
+  hsk9Words: number;
+  nonHskWords: number;
+}
+export interface CoreStats extends HskStats {
   totalCharacters: number;
   totalSentences: number;
   totalWords: number;
-}
 
-export type SeriesStats = IStats & {};
+  averageRating: number;
+  totalPlays: number;
+  totalStars: number;
+}
 
 export interface AddSeriesParams {
   title: string;
@@ -29,7 +37,7 @@ export interface Series {
   source: Source;
   backgroundImageAssetId?: string;
   backgroundImage?: string;
-  stats: SeriesStats;
+  stats: CoreStats;
   createdAt: number;
   updatedAt: number;
 }

@@ -9,7 +9,13 @@ import { useIsEnrolled } from "@/domain/enrollments";
 import { cn } from "@/lib/utils";
 import { useRef } from "react";
 
-export function SeriesDetailsTabs({ seriesId }: { seriesId: string }) {
+export function SeriesDetailsTabs({
+  seriesId,
+  className,
+}: {
+  seriesId: string;
+  className?: string;
+}) {
   const { data } = useGetSeriesDetailsQuery({
     seriesId,
   });
@@ -70,12 +76,14 @@ export function SeriesDetailsTabs({ seriesId }: { seriesId: string }) {
 
   return (
     <main className="mt-8">
-      <div className="bg-gradient-to-b from-gray-50 to-white rounded-3xl p-8">
-        <h2 className="text-3xl font-bold mb-6 text-gray-900">集</h2>
+      <div className="bg-gradient-to-b from-gray-50 to-white dark:from-[rgb(9,10,11)] dark:to-[rgb(20,21,22)] rounded-3xl p-8">
+        <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-50">
+          集
+        </h2>
         {data.episodes.length === 0 ? (
           <div className="text-center py-12">
-            <Icons.archive className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">暂无内容</p>
+            <Icons.archive className="h-16 w-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+            <p className="text-gray-500 dark:text-gray-400">暂无内容</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -83,11 +91,11 @@ export function SeriesDetailsTabs({ seriesId }: { seriesId: string }) {
               <div
                 key={episode.id}
                 className={cn(
-                  "bg-white rounded-xl shadow-sm border border-gray-100 transition-all duration-200 hover:shadow-md",
+                  "bg-white dark:bg-[rgb(20,21,22)] rounded-xl shadow-sm border border-gray-100 dark:border-[rgb(31,33,35)] transition-all duration-200 hover:shadow-md",
                   !isEnrolled && "opacity-60"
                 )}
               >
-                <div className="p-5">
+                <div className="p-2">
                   <div className="flex items-center gap-4">
                     <button
                       onClick={() => {
@@ -97,22 +105,24 @@ export function SeriesDetailsTabs({ seriesId }: { seriesId: string }) {
                       }}
                       disabled={!isEnrolled}
                       className={cn(
-                        "flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200",
+                        "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200",
                         isEnrolled
-                          ? "bg-gray-900 hover:bg-gray-800 hover:scale-105"
-                          : "bg-gray-200 cursor-not-allowed"
+                          ? "bg-gray-900 hover:bg-gray-700 dark:bg-gray-100 dark:hover:bg-gray-200 hover:scale-105"
+                          : "bg-gray-200 dark:bg-[rgb(31,33,35)] cursor-not-allowed"
                       )}
                     >
-                      <Icons.play className="h-5 w-5 text-white ml-0.5" />
+                      <Icons.play className="h-3 w-3 text-white dark:text-gray-900 ml-0.5" />
                     </button>
 
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-base font-semibold text-gray-900 mb-1 truncate">
+                      <h3 className="text-base font-semibold text-gray-900 dark:text-gray-50 mb-1 truncate">
                         {episode.title}
                       </h3>
                       <div className="flex items-center gap-3 text-sm">
                         {getFormatIcon(episode.format)}
-                        <span className="text-gray-500">{episode.lang}</span>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          {episode.lang}
+                        </span>
                       </div>
                     </div>
 
@@ -123,13 +133,13 @@ export function SeriesDetailsTabs({ seriesId }: { seriesId: string }) {
                         onClick={() => {
                           window.location.href = `/contents/${episode.id}`;
                         }}
-                        className="flex items-center gap-1.5 text-gray-700 hover:text-gray-900 hover:bg-gray-100 h-9 px-3"
+                        className="flex items-center gap-1.5 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-50 hover:bg-gray-100 dark:hover:bg-[rgb(31,33,35)] h-9 px-3"
                       >
                         <span>查看</span>
                         <Icons.front className="h-3.5 w-3.5" />
                       </Button>
                     ) : (
-                      <div className="flex items-center gap-1.5 text-xs text-gray-600 bg-gray-100 px-3 py-2 rounded-md">
+                      <div className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-[rgb(31,33,35)] px-3 py-2 rounded-md">
                         <Icons.lock className="h-3.5 w-3.5" />
                         <span>订阅后访问</span>
                       </div>

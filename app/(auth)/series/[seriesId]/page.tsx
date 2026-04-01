@@ -135,9 +135,14 @@ export default function SeriesDetailsPage() {
           />
           <div className="flex flex-col">
             <h1 className="text-3xl font-bold">{data.series.title}</h1>
-            <p>{data.series.description}</p>
+            <p className="text-gray-500 text-sm my-4">
+              {data.series.description}
+            </p>
             <div>
-              <StatsList className="text-xl mt-4" {...data.series.stats} />
+              <StatsList
+                className="text-xl font-extralight mt-4"
+                {...data.series.stats}
+              />
             </div>
             <div className="mt-6">
               {isEnrollmentLoading ? (

@@ -2,14 +2,14 @@ import { TopicType } from "../topic/topic.types";
 import { Source } from "./source.types";
 
 export interface HskStats {
-  hsk1Words: number;
-  hsk2Words: number;
-  hsk3Words: number;
-  hsk4Words: number;
-  hsk5Words: number;
-  hsk6Words: number;
-  hsk9Words: number;
-  nonHskWords: number;
+  totalHsk1Words: number;
+  totalHsk2Words: number;
+  totalHsk3Words: number;
+  totalHsk4Words: number;
+  totalHsk5Words: number;
+  totalHsk6Words: number;
+  totalHsk9Words: number;
+  totalNonHskWords: number;
 }
 export interface CoreStats extends HskStats {
   totalCharacters: number;

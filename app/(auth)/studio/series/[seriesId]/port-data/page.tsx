@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Icons } from "@/components/ui/icons.v2";
 import { Input } from "@/components/ui/input";
 import { usePortEpisodesMutation } from "@/domain/content-v2/use-port-episodes-mutation";
+import { useUpdateSeriesStatsMutation } from "@/domain/content-v2/use-update-series-stats-mutation";
 import { useListContentsQuery } from "@/domain/content/content.queries";
 import { motion } from "framer-motion";
 import { useParams, useRouter } from "next/navigation";
@@ -126,6 +127,7 @@ export default function PortDataPage() {
 
   const { data: contentsData, isLoading, error } = useListContentsQuery();
   const portEpisodesMutation = usePortEpisodesMutation();
+  const updateSeriesStatsMutation = useUpdateSeriesStatsMutation();
   const [selectedContentIds, setSelectedContentIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(16);
@@ -137,7 +139,7 @@ export default function PortDataPage() {
     }
     const query = searchQuery.toLowerCase();
     return contents.filter((item: any) =>
-      item.title?.toLowerCase().includes(query)
+      item.title?.toLowerCase().includes(query),
     );
   }, [contentsData, searchQuery]);
 
@@ -147,7 +149,7 @@ export default function PortDataPage() {
     setSelectedContentIds((prev) =>
       prev.includes(contentId)
         ? prev.filter((id) => id !== contentId)
-        : [...prev, contentId]
+        : [...prev, contentId],
     );
   };
 
@@ -162,6 +164,11 @@ export default function PortDataPage() {
         seriesId,
         contentIds: selectedContentIds,
       });
+
+      await updateSeriesStatsMutation.mutateAsync({
+        seriesId,
+      });
+
       toast.success(`成功添加 ${selectedContentIds.length} 个内容到系列`);
       router.push(`/studio/series/${seriesId}`);
     } catch (error: any) {
@@ -222,7 +229,9 @@ export default function PortDataPage() {
         <Button
           onClick={handlePortEpisodes}
           disabled={
-            selectedContentIds.length === 0 || portEpisodesMutation.isPending
+            selectedContentIds.length === 0 ||
+            portEpisodesMutation.isPending ||
+            updateSeriesStatsMutation.isPending
           }
           className="gap-2 bg-rose-500 hover:bg-rose-600"
         >

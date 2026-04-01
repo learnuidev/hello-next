@@ -11,6 +11,8 @@ export interface YoutubeTranscription {
   id: string;
   startIndex: number;
   endIndex: number;
+  start: number;
+  end: number;
   hanzi: string;
   pinyin: string;
   chinglish: string;
@@ -29,6 +31,10 @@ export interface AudioTranscription {
   id: string;
   startIndex: number;
   endIndex: number;
+  hanzi: string;
+  pinyin: string;
+  chinglish: string;
+  en: string;
   words: AudioTranscriptWord[];
 }
 

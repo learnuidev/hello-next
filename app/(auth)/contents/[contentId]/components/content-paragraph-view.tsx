@@ -22,6 +22,8 @@ interface NormalizedTranscription {
   en?: string;
   roman?: string;
   lang: string;
+  startIndex?: number;
+  endIndex?: number;
 }
 
 export const ContentParagraphView = ({

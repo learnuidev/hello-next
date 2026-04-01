@@ -14,6 +14,7 @@ import { usePreviewMode } from "@/components/settings-dialog/use-preview-mode";
 import { isVideoUrl } from "../../utils/is-video-url";
 import { useSearchOnlyPinyinState } from "@/components/search-only-pinyin-button";
 import { useRepeatHistoryStore } from "../../_play/use-repeat-history";
+import { ContentFormat } from "@/domain/content-v2/content-v2.types";
 
 export const useAudioBookState = (content: IContent) => {
   console.log("CONTENT", content);
@@ -71,7 +72,13 @@ export const useAudioBookState = (content: IContent) => {
     }
   );
 
-  const finalUrl = content?.audio;
+  const iContent: any = content;
+
+  const finalUrl =
+    iContent?.mediaUrl || iContent?.youtubeUrl || content?.audio || "";
+
+  const isVideo =
+    iContent.format === ContentFormat.YOUTUBE || isVideoUrl(finalUrl);
 
   const onReady = useCallback(
     (data: any) => {
@@ -334,5 +341,8 @@ export const useAudioBookState = (content: IContent) => {
     start,
     onReady,
     seek,
+    finalUrl,
+    transcriptions,
+    isVideo,
   };
 };

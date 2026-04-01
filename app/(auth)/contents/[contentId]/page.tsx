@@ -45,13 +45,13 @@ export default function ContentDetailsPage() {
 
   return (
     <>
-      <header className="bg-white dark:bg-[rgb(9,10,11)]">
+      <header className="bg-white dark:bg-[rgb(9,10,11)] shadow-sm sticky top-0 z-40">
         <nav className="mt-4 px-8">
           <Link href={`/series/${content.seriesId}`}>
             <Icons.back />
           </Link>
         </nav>
-        <div className="my-8 px-8">
+        <div className="my-8 px-8 pb-4">
           <h1 className="text-3xl font-bold">{content.title}</h1>
           <p className="text-gray-600 mt-2">Format: {content.format}</p>
         </div>

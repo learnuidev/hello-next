@@ -1,15 +1,14 @@
 "use client";
 
-import { useListSeriesQuery } from "@/domain/content-v2/use-list-series-query";
-import { TopicType } from "@/domain/topic/topic.types";
-import { ContentCard } from "./content-card/content-card";
-import { ContentListGrid } from "./content-list-grid/content-list-grid";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
 import { Icons } from "@/components/ui/icons.v2";
+import { useListSeriesQuery } from "@/domain/content-v2/use-list-series-query";
+import { TopicType } from "@/domain/topic/topic.types";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { MandarinoLoadingBanner } from "@/components/ui/mandarino-loading-banner";
+import { ContentCard } from "./content-card/content-card";
+import { ContentListGrid } from "./content-list-grid/content-list-grid";
 
 interface SeriesListProps {
   activeTopic?: TopicType | null;
@@ -24,7 +23,7 @@ export function SeriesList({ activeTopic }: SeriesListProps) {
   const router = useRouter();
 
   if (isLoading) {
-    return <MandarinoLoadingBanner />;
+    return <LottieLoadingAnimation />;
   }
 
   if (!data || data.items.length === 0) {

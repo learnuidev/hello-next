@@ -227,13 +227,25 @@ export default function SeriesDetailsPage() {
                     {episodesList.length} 个内容项
                   </p>
                 </div>
-                <Button
-                  onClick={handleAddEpisode}
-                  className="gap-2 bg-rose-500 hover:bg-rose-600"
-                >
-                  <Icons.plusIcon className="h-4 w-4" />
-                  添加内容
-                </Button>
+                <div className="flex gap-3">
+                  <Button
+                    onClick={() =>
+                      router.push(`/studio/series/${seriesId}/port-data`)
+                    }
+                    className="gap-2"
+                    variant="outline"
+                  >
+                    <Icons.layerGroup className="h-4 w-4" />
+                    从已有内容添加
+                  </Button>
+                  <Button
+                    onClick={handleAddEpisode}
+                    className="gap-2 bg-rose-500 hover:bg-rose-600"
+                  >
+                    <Icons.plusIcon className="h-4 w-4" />
+                    添加内容
+                  </Button>
+                </div>
               </div>
 
               {episodesList.length === 0 ? (

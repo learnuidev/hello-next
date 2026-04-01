@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ContentV2, ContentFormat } from "./content-v2.types";
 import { TopicType } from "../topic/topic.types";
+import { ContentStatus } from "../content-service/content-v2.types";
 
 export interface ListContentsParams {
   topicType?: TopicType;
@@ -184,7 +185,13 @@ const mockContents: ContentV2[] = mockContentsData.map(
       thumbnailUrl: defaultThumbnail,
       createdAt: Date.now() - i * 86400000,
       updatedAt: Date.now() - i * 86400000,
-      status: "CREATED",
+      status: ContentStatus.CREATED,
+      sortOrder: 1,
+      lang: "zh",
+      seriesId: "abc",
+      mediaTranscriptionsId: "abc",
+      mediaId: "avc",
+      format: ContentFormat.AUDIO,
       stats: {
         averageRating: Math.floor(Math.random() * 50) / 10 + 3,
         totalPlays: Math.floor(Math.random() * 30000) + 500,
@@ -192,6 +199,14 @@ const mockContents: ContentV2[] = mockContentsData.map(
         totalCharacters: Math.floor(Math.random() * 10) + 500,
         totalSentences: Math.floor(Math.random() * 2) + 5,
         totalWords: Math.floor(Math.random() * 5) + 50,
+        totalHsk1Words: 0,
+        totalHsk2Words: 0,
+        totalHsk3Words: 0,
+        totalHsk4Words: 0,
+        totalHsk5Words: 0,
+        totalHsk6Words: 0,
+        totalHsk9Words: 0,
+        totalNonHskWords: 0,
       },
     }) as ContentV2
 );

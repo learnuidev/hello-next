@@ -1,4 +1,5 @@
 import { ContentStatus } from "../content-service/content-v2.types";
+import { TopicType } from "../topic/topic.types";
 import { CoreStats } from "./series.types";
 
 export enum ContentFormat {
@@ -17,6 +18,7 @@ export interface ContentStats extends CoreStats {}
 
 export interface ContentV2Entity extends CreatedAndUpdatedAt {
   id: string;
+  topicType: TopicType;
   format: ContentFormat;
   status: ContentStatus;
   title: string;
@@ -28,12 +30,13 @@ export interface ContentV2Entity extends CreatedAndUpdatedAt {
 
   stats: ContentStats;
 
-  youtubeUrl: string;
+  youtubeUrl?: string;
 }
 
 export interface ContentV2 extends ContentV2Entity {
   mediaUrl: string;
   thumbnailUrl: string;
+  sortOrder: number;
 }
 
 // const mockContentV2: ContentV2 = {

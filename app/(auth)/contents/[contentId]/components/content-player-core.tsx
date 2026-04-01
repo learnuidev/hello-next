@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import ReactPlayer from "react-player";
 import { ContentCharacterMenuBar } from "./content-character-menu-bar";
 import { ContentParagraphView } from "./content-paragraph-view";
+import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 
 export const ContentPlayerCore = ({
   content,
@@ -50,7 +51,7 @@ export const ContentPlayerCore = ({
     finalUrl,
   } = useAudioBookState(content as any);
 
-  console.log("CURRENT T", currentTranscription);
+  const isSmall = useIsSmall();
 
   const showEn = useBrightModeStore((state) => state.showEn);
   const editMode = useContentEditStore((state) => state.editMode);
@@ -102,11 +103,13 @@ export const ContentPlayerCore = ({
             className={cn(
               isVideo
                 ? "grid grid-cols-12 gap-4 pb-24"
-                : "flex flex-col gap-4 sm:px-8 w-full pb-24"
+                : "flex flex-col gap-4 sm:px-8 w-full pb-24",
             )}
           >
             {isVideo && (
-              <div className="col-span-12 md:col-span-7 relative bg-black rounded-lg overflow-hidden shadow-lg">
+              <div
+                className={`col-span-12 md:col-span-7 relative bg-black rounded-lg overflow-hidden shadow-lg ${isSmall ? "h-[200px]" : "h-[450px]"}`}
+              >
                 <ReactPlayer
                   key={finalUrl}
                   playbackRate={playbackRate}
@@ -117,7 +120,7 @@ export const ContentPlayerCore = ({
                   }}
                   onPause={() => setPlaying(false)}
                   width="100%"
-                  height="auto"
+                  height="100%"
                   onReady={onReady}
                   playing={playing}
                   controls={true}
@@ -132,7 +135,7 @@ export const ContentPlayerCore = ({
               className={cn(
                 isVideo
                   ? "col-span-12 md:col-span-5 h-[600px] md:h-auto overflow-y-auto"
-                  : "w-full max-w-4xl mx-auto"
+                  : "w-full max-w-4xl mx-auto",
               )}
             >
               <ContentParagraphView
@@ -151,7 +154,7 @@ export const ContentPlayerCore = ({
           <div
             className={cn(
               "transition",
-              "flex items-center w-full justify-center"
+              "flex items-center w-full justify-center",
             )}
           >
             <div className="overflow-y-auto px-8 py-2 bg-gray-50 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6 text-white inline-block">
@@ -161,7 +164,7 @@ export const ContentPlayerCore = ({
                     "text-xl",
                     loop
                       ? "dark:text-white text-black"
-                      : "dark:text-gray-500 text-gray-300"
+                      : "dark:text-gray-500 text-gray-300",
                   )}
                   onClick={() => {
                     setLoop((prevLoop: any) => {

@@ -1,15 +1,6 @@
 import { CoreStats } from "@/domain/content-v2/series.types";
 import { motion } from "framer-motion";
-
-function formatNumber(num: number): string {
-  if (num >= 1000000) {
-    return (num / 1000000).toFixed(1) + "M";
-  }
-  if (num >= 1000) {
-    return (num / 1000).toFixed(1) + "K";
-  }
-  return num.toString();
-}
+import { StatsList } from "./stats-list";
 
 export interface CardProps {
   id: string;
@@ -59,17 +50,8 @@ export function ContentCard({
           {subtitle && (
             <p className="text-sm text-gray-500 truncate">{subtitle}</p>
           )}
-          <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
-            <span className="hidden sm:flex items-center gap-1">
-              {formatNumber(stats.totalCharacters)} 字
-            </span>
-            <span className="hidden sm:flex items-center gap-1">
-              {formatNumber(stats.totalWords)} 词
-            </span>
-            <span className="hidden sm:flex items-center gap-1">
-              {formatNumber(stats.totalSentences)} 句
-            </span>
-          </div>
+
+          <StatsList {...stats} />
         </div>
       </div>
     </motion.div>

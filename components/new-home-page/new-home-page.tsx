@@ -9,6 +9,7 @@ import { BaseTopicsList } from "../ui/base-topics-list";
 import { BaseTabs } from "../ui/base-tabs";
 import { ContentList } from "./components/content-list";
 import { SeriesList } from "./components/series-list";
+import { PageContainer } from "../page-container";
 
 type TabType = "series" | "content";
 
@@ -29,7 +30,7 @@ export function NewHomePage() {
     "recommendation") as TopicType;
 
   const [activeTopic, setActiveTopic] = useState<TopicType>(
-    () => activeTopicSearchParams,
+    () => activeTopicSearchParams
   );
   const [activeTab, setActiveTab] = useState<TabType>("series");
 
@@ -41,7 +42,7 @@ export function NewHomePage() {
   };
 
   return (
-    <div className="mx-2 sm:mx-12 mb-32">
+    <PageContainer>
       <SearchBar />
 
       <main className="mt-2">
@@ -80,6 +81,6 @@ export function NewHomePage() {
           </div>
         </div>
       </main>
-    </div>
+    </PageContainer>
   );
 }

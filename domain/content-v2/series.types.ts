@@ -33,6 +33,7 @@ export interface Series {
   userId: string;
   topicType: TopicType;
   title: string;
+  description: string;
   sourceId: string;
   source: Source;
   backgroundImageAssetId?: string;

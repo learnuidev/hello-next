@@ -3,18 +3,19 @@
 import { PageContainer } from "@/components/page-container";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons.v2";
-import { ContentV2 } from "@/domain/content-v2/content-v2.types";
+import { ContentEpisode } from "@/domain/content-v2/content-v2.types";
 import { useGetSeriesDetailsQuery } from "@/domain/content-v2/use-get-series-details-query";
 import { useIsEnrolled } from "@/domain/enrollments";
 import { cn } from "@/lib/utils";
-import { useRef } from "react";
 
 export function SeriesDetailsTabs({
   seriesId,
   className,
+  onEpisodeClick,
 }: {
   seriesId: string;
   className?: string;
+  onEpisodeClick?: (episodeId: string) => void;
 }) {
   const { data } = useGetSeriesDetailsQuery({
     seriesId,
@@ -22,32 +23,6 @@ export function SeriesDetailsTabs({
 
   const { isEnrolled, isLoading: isEnrollmentLoading } =
     useIsEnrolled(seriesId);
-
-  const playingAudioRef = useRef<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  const handlePlayAudio = (episode: ContentV2) => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-
-    if (playingAudioRef.current === episode.id) {
-      playingAudioRef.current = null;
-      return;
-    }
-
-    const audio = new Audio(episode.mediaUrl);
-    audioRef.current = audio;
-    playingAudioRef.current = episode.id;
-
-    audio.play();
-
-    audio.onended = () => {
-      playingAudioRef.current = null;
-      audioRef.current = null;
-    };
-  };
 
   const getFormatIcon = (format: string) => {
     switch (format) {
@@ -87,20 +62,20 @@ export function SeriesDetailsTabs({
           </div>
         ) : (
           <div className="space-y-3">
-            {data.episodes.map((episode: ContentV2, index: number) => (
+            {data.episodes.map((episode: ContentEpisode, index: number) => (
               <div
                 key={episode.id}
                 className={cn(
                   "bg-white dark:bg-[rgb(20,21,22)] rounded-xl shadow-sm border border-gray-100 dark:border-[rgb(31,33,35)] transition-all duration-200 hover:shadow-md",
-                  !isEnrolled && "opacity-60"
+                  !isEnrolled && "opacity-60",
                 )}
               >
                 <div className="p-2">
                   <div className="flex items-center gap-4">
                     <button
                       onClick={() => {
-                        if (isEnrolled) {
-                          handlePlayAudio(episode);
+                        if (isEnrolled && onEpisodeClick) {
+                          onEpisodeClick(episode.id);
                         }
                       }}
                       disabled={!isEnrolled}
@@ -108,7 +83,7 @@ export function SeriesDetailsTabs({
                         "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200",
                         isEnrolled
                           ? "bg-gray-900 hover:bg-gray-700 dark:bg-gray-100 dark:hover:bg-gray-200 hover:scale-105"
-                          : "bg-gray-200 dark:bg-[rgb(31,33,35)] cursor-not-allowed"
+                          : "bg-gray-200 dark:bg-[rgb(31,33,35)] cursor-not-allowed",
                       )}
                     >
                       <Icons.play className="h-3 w-3 text-white dark:text-gray-900 ml-0.5" />

@@ -39,6 +39,25 @@ export interface ContentV2 extends ContentV2Entity {
   sortOrder: number;
 }
 
+export type ContentEpisode = {
+  id: string;
+  seriesId: string;
+  title: string;
+
+  topicType: TopicType;
+  format: ContentFormat;
+  status: ContentStatus;
+
+  lang: string;
+
+  sortOrder: number;
+  createdAt: number; // Unix timestamp or milliseconds since epoch
+  updatedAt: number;
+  mediaId: string;
+  mediaTranscriptionsId: string;
+  stats: ContentStats;
+};
+
 // const mockContentV2: ContentV2 = {
 //   id: "9bb15585-472f-5e6a-a308-a1fc12df82ca",
 //   format: ContentFormat.AUDIO,

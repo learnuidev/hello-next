@@ -5,22 +5,25 @@ import { PageContainer } from "@/components/page-container";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons.v2";
 import { useToast } from "@/components/ui/use-toast";
-import { ContentV2 } from "@/domain/content-v2/content-v2.types";
 import { useGetSeriesDetailsQuery } from "@/domain/content-v2/use-get-series-details-query";
+import { useGetSeriesContentDetailsQuery } from "@/domain/content-v2/use-get-series-content-details-query";
 import {
   useCreateEnrollmentMutation,
   useDeleteEnrollmentMutation,
   useIsEnrolled,
 } from "@/domain/enrollments";
+import { SeriesPlayer } from "@/components/series-player";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useRef } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { SeriesDetailsTabs } from "./components/series-details-tabs";
 
 export default function SeriesDetailsPage() {
   const params = useParams<{ seriesId: string }>();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const seriesId = params.seriesId;
+  const contentId = searchParams.get("contentId");
 
   const { data } = useGetSeriesDetailsQuery({
     seriesId,
@@ -32,6 +35,14 @@ export default function SeriesDetailsPage() {
   const createEnrollmentMutation = useCreateEnrollmentMutation();
   const deleteEnrollmentMutation = useDeleteEnrollmentMutation();
   const { toast } = useToast();
+
+  const { data: contentDetails } = useGetSeriesContentDetailsQuery(
+    { contentId: contentId || "" },
+    { enabled: !!contentId },
+  );
+
+  console.log("SeriesDetailsPage - contentId:", contentId);
+  console.log("SeriesDetailsPage - contentDetails:", contentDetails);
 
   const handleEnroll = async () => {
     try {
@@ -69,45 +80,16 @@ export default function SeriesDetailsPage() {
     }
   };
 
-  const playingAudioRef = useRef<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  const handlePlayAudio = (episode: ContentV2) => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-
-    if (playingAudioRef.current === episode.id) {
-      playingAudioRef.current = null;
-      return;
-    }
-
-    const audio = new Audio(episode.mediaUrl);
-    audioRef.current = audio;
-    playingAudioRef.current = episode.id;
-
-    audio.play();
-
-    audio.onended = () => {
-      playingAudioRef.current = null;
-      audioRef.current = null;
-    };
+  const handleEpisodeClick = (episodeId: string) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set("contentId", episodeId);
+    router.push(`/series/${seriesId}?${newParams.toString()}`);
   };
 
-  const getFormatIcon = (format: string) => {
-    switch (format) {
-      case "audio":
-        return <Icons.music className="h-4 w-4 text-purple-500" />;
-      case "video":
-        return <Icons.contentSolid className="h-4 w-4 text-blue-500" />;
-      case "text":
-        return <Icons.book className="h-4 w-4 text-green-500" />;
-      case "youtube":
-        return <Icons.youtube className="h-4 w-4 text-red-500" />;
-      default:
-        return <Icons.content className="h-4 w-4 text-gray-500" />;
-    }
+  const handleClosePlayer = () => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.delete("contentId");
+    router.push(`/series/${seriesId}?${newParams.toString()}`);
   };
 
   if (!data) {
@@ -178,7 +160,16 @@ export default function SeriesDetailsPage() {
         </div>
       </header>
 
-      <SeriesDetailsTabs seriesId={seriesId} />
+      <SeriesDetailsTabs
+        seriesId={seriesId}
+        onEpisodeClick={handleEpisodeClick}
+      />
+      {contentDetails && (
+        <SeriesPlayer
+          content={contentDetails.content}
+          onClose={handleClosePlayer}
+        />
+      )}
     </PageContainer>
   );
 }

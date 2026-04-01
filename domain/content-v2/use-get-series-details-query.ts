@@ -4,11 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { Series } from "./series.types";
-import { ContentV2 } from "./content-v2.types";
+import { ContentEpisode, ContentV2 } from "./content-v2.types";
 
 export interface GetSeriesDetailsResponse {
   series: Series;
-  episodes: ContentV2[];
+  episodes: ContentEpisode[];
 }
 
 export interface GetSeriesDetailsParams {

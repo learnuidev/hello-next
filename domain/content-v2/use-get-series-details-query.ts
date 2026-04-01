@@ -19,7 +19,7 @@ const getSeriesDetails = async (
   params: GetSeriesDetailsParams,
   opts: {
     Authorization: string;
-  },
+  }
 ): Promise<GetSeriesDetailsResponse> => {
   const res = await fetch(
     `${siteConfig.contentApi}/v1/series/${params.seriesId}`,
@@ -27,15 +27,19 @@ const getSeriesDetails = async (
       headers: {
         Authorization: `${opts?.Authorization}`,
       },
-    },
+    }
   );
+
+  if (!res.ok) {
+    throw new Error("非常抱歉。我们的软件工程师已获知此情况，会尽快解决。");
+  }
   const resp = await res.json();
   return resp;
 };
 
 export function useGetSeriesDetailsQuery(
   params: GetSeriesDetailsParams,
-  options = {} as any,
+  options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
@@ -45,6 +49,7 @@ export function useGetSeriesDetailsQuery(
       const response = await getSeriesDetails(params, {
         Authorization: authUser?.jwt,
       });
+
       return response;
     },
     ...options,

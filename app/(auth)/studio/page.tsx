@@ -34,8 +34,8 @@ export default function StudioPage() {
   return (
     <div className="mx-2 sm:mx-12 mb-32">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Studio</h1>
+        <div className="mt-12">
+          <h1 className="text-xl font-bold tracking-tight">Studio</h1>
           <p className="text-muted-foreground mt-1">
             管理您的内容系列、来源和管道
           </p>

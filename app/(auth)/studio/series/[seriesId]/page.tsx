@@ -35,6 +35,8 @@ export default function SeriesDetailsPage() {
   const { data, isLoading, error, refetch } = useGetSeriesDetailsQuery({
     seriesId: params.seriesId,
   });
+
+  console.log("ERROR", error);
   const updateSeriesMutation = useUpdateSeriesMutation();
   const [activeTab, setActiveTab] = useState<"info" | "episodes">("episodes");
 
@@ -117,6 +119,8 @@ export default function SeriesDetailsPage() {
       </div>
     );
   }
+
+  console.log("DATA", data);
 
   if (!data) {
     return (

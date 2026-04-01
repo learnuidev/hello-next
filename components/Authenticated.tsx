@@ -24,6 +24,14 @@ export const Authenticated = (props: any) => {
     return <>{props.children}</>;
   }
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center my-32">
+        <MandarinoLoadingBanner />
+      </div>
+    );
+  }
+
   if (authUser) {
     return (
       <div>
@@ -37,14 +45,6 @@ export const Authenticated = (props: any) => {
             <WithOnboarding>{props.children}</WithOnboarding>
           </WithUserPlanOnboarding>
         </div>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div>
-        <MandarinoLoadingBanner />
       </div>
     );
   }

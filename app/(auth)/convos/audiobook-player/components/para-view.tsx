@@ -1,34 +1,45 @@
-import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
-import { CharacterItem } from "@/components/_select-character/character-item";
 import { useReadModeState } from "@/components/read-mode-button";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { getActiveTranscriptions } from "@/components/youtube-page/get-active-transcriptions";
+import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 import { ContentTranscription, IContent } from "@/domain/content/content.api";
-import { cn } from "@/lib/utils";
+import { cn, groupBy } from "@/lib/utils";
 import { useMemo } from "react";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
-import { ReaderView } from "./reader-view";
-import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
-import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { ActiveButtons } from "./active-buttons";
+
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+import { faLanguage, faRepeat } from "@fortawesome/pro-thin-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
+
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { CharacterItem } from "@/components/_select-character/character-item";
+
+// import { getYablaLink } from "./utils/get-yabla-link";
+
+const MAX_LIMIT = 9000;
 
 export const ParaView = ({
   content,
   currentTranscription,
   currentTime,
-  seek,
+
   isPlaying,
+  seekAndPlay,
 }: {
   currentTranscription: ContentTranscription;
   content: IContent;
   currentTime: number;
   isPlaying: boolean;
-  seek: (time: number) => void;
+
+  seekAndPlay: (time: number) => void;
 }) => {
   const showEn = useBrightModeStore((state) => state.showEn);
-  const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   const { data: contentUnknowns } = useListContentUnknownsQuery(content.id);
 
@@ -47,7 +58,17 @@ export const ParaView = ({
     });
   }, [active, currentTime, content?.transcriptions]);
 
-  const { readMode } = useReadModeState();
+  const transcriptions = content?.transcriptions;
+  const trans = useMemo(() => {
+    return transcriptions;
+  }, [transcriptions]);
+
+  const groupedTranscriptions = groupBy(trans || []);
+
+  const paraTranscriptions =
+    active !== 9000
+      ? [Object.values(groupedTranscriptions)?.[0]]
+      : Object.values(groupedTranscriptions);
 
   return (
     <div className={cn("px-4 pb-24", "max-w-4xl")}>
@@ -72,112 +93,85 @@ export const ParaView = ({
       </div>
 
       <div className="pb-32">
-        <div>
-          <div>
-            <div className="">
-              <div className="text-sm sm:text-2xl gap-4">
-                <div className="py-4 sm:space-y-8 space-y-2">
-                  {group?.map((transcription: ContentTranscription) => {
-                    if (readMode) {
-                      return (
-                        <ReaderView
-                          key={JSON.stringify(transcription)}
-                          currentTime={currentTime}
-                          hideEnglish
-                          currentTranscription={transcription}
-                          containsChinglish={false}
-                          className={cn(
-                            isPlaying
-                              ? transcription.start < currentTime &&
-                                transcription.end > currentTime
-                                ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
-                                : "!text-gray-500 opacity-50"
-                              : "dark:text-white text-black"
-                          )}
-                          contentId={content?.id}
-                          lang={content?.lang}
-                        />
-                      );
-                    }
+        <ScrollArea
+          className={cn(
+            `space-y-4 rounded-md  p-2 dark:border-gray-900 w-full pb-8`,
+            "h-[400px] sm:h-[640px]"
+          )}
+        >
+          <div className="space-y-8">
+            {paraTranscriptions?.map((transcriptions: any) => {
+              const hanzis = transcriptions
+                ?.map((t: any) => t?.hanzi)
+                ?.join("");
 
-                    return (
-                      <div key={JSON.stringify(transcription)}>
-                        {showPinyin && (
-                          <p className="text-[16px] font-extralight text-gray-500">
-                            {transcription.pinyin || transcription?.roman}
-                          </p>
-                        )}
-                        <p
-                          onClick={() => {
-                            seek(transcription?.start);
-                          }}
-                          className={cn(
-                            isPlaying
-                              ? transcription.start < currentTime &&
-                                transcription.end > currentTime
-                                ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
-                                : "!text-gray-500 opacity-50"
-                              : "dark:text-white text-black"
-                          )}
-                        >
-                          {smartSplit({
-                            input: transcription?.input,
-                            lang: transcription?.lang,
-                          })?.map((item: any, idx: any) => {
-                            const containsInUnknown =
-                              contentUnknowns?.items?.find((val) =>
-                                val?.input?.includes(item)
+              return (
+                <div
+                  key={`${JSON.stringify(transcriptions)}-${JSON.stringify(hanzis)}`}
+                >
+                  <div className="flex flex-wrap">
+                    {(active !== MAX_LIMIT ? group : transcriptions).map(
+                      (transcription: any) => {
+                        const isActiveTranscription =
+                          transcription?.start < currentTime &&
+                          transcription?.end > currentTime;
+
+                        const transcriptionInput =
+                          transcription?.input || transcription?.hanzi;
+
+                        return (
+                          <span
+                            role="button"
+                            className={`${
+                              currentTime
+                                ? isActiveTranscription
+                                  ? "dark:text-white bg-yellow-200 dark:bg-black"
+                                  : "dark:text-gray-400"
+                                : ""
+                            } transition block py-1 px-1`}
+                            key={
+                              transcription?.id ||
+                              `${transcription?.hanzi}-${transcription?.start}`
+                            }
+                            onClick={() => {
+                              seekAndPlay(transcription?.start);
+                            }}
+                          >
+                            {smartSplit({
+                              input: transcriptionInput,
+                              lang: content?.lang,
+                            })?.map((item: string, idx: number) => {
+                              const containsInUnknown =
+                                contentUnknowns?.items?.find((val) =>
+                                  val?.input?.includes(item)
+                                );
+
+                              return (
+                                <span
+                                  className="sm:text-xl"
+                                  key={`para-mode-${item}-${idx}-${transcriptionInput}`}
+                                >
+                                  {/* <CharacterItem
+                                    character={item}
+                                    className={
+                                      containsInUnknown &&
+                                      "font-light dark:!text-pink-300 !text-pink-500 text-2xl"
+                                    }
+                                  /> */}
+                                  {item}
+                                </span>
                               );
-                            return (
-                              <span
-                                key={`${item}-pinin-view-${idx}`}
-                                className="py-2 sm:leading-relaxed leading-loose"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  const selectedText = getSelectedText();
-
-                                  const text =
-                                    selectedText && selectedText?.length < 36
-                                      ? selectedText
-                                      : item;
-
-                                  setShowMenuBar({
-                                    text,
-                                    position: {
-                                      x: e.clientX,
-                                      y: e.clientY,
-                                    },
-                                    startTime: transcription?.start ?? null,
-                                  });
-                                }}
-                              >
-                                <CharacterItem
-                                  className={cn(
-                                    "text-lg sm:text-2xl",
-                                    isPlaying
-                                      ? transcription.start < currentTime &&
-                                        transcription.end > currentTime
-                                        ? "   !dark:text-white"
-                                        : "dark:text-gray-500"
-                                      : "",
-
-                                    containsInUnknown &&
-                                      "font-light dark:!text-pink-300 !text-pink-500"
-                                  )}
-                                  character={item}
-                                />
-                              </span>
-                            );
-                          })}
-                        </p>
-                      </div>
-                    );
-                  })}
+                            })}
+                          </span>
+                        );
+                      }
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
+              );
+            })}
           </div>
-        </div>
+        </ScrollArea>
       </div>
     </div>
   );

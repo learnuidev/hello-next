@@ -18,7 +18,6 @@ import { ContentFormat } from "@/domain/content-v2/content-v2.types";
 import { isYoutube } from "../../utils/is-youtube";
 
 export const useAudioBookState = (content: IContent) => {
-  console.log("CONTENT", content);
   const { playbackRate } = useListenState();
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);

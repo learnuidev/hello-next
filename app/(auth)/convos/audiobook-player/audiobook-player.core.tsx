@@ -1,28 +1,19 @@
-import { Icons } from "@/components/ui/icons.v2";
 import { Slider } from "@/components/ui/slider";
 
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
-import { ChinglishButton } from "@/components/chinglish-button";
-import { EnButton } from "@/components/en-button";
-import { PinyinButton } from "@/components/pinyin-button";
-import { ReadModeButton } from "@/components/read-mode-button";
 
-import { PreviewButton } from "@/components/settings-dialog/preview-button";
-import { ContentEditButton } from "@/components/youtube-page/content-edit-button";
-import {
-  useContextPlayContextState,
-  usePlayHistoryStore,
-} from "@/components/youtube-page/hooks/use-play-history-state";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { useContextPlayContextState } from "@/components/youtube-page/hooks/use-play-history-state";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { IContent } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
 import ReactPlayer from "react-player";
 import { formatTime } from "../_play/utils";
 import { AllTranscriptionsEditor } from "./components/all-transcriptions-editor";
+import { AudioBookPlayerControls } from "./components/audiobook-player-controls";
 import { CharacterMenuBar } from "./components/character-menu-bar";
 import { ParagraphView } from "./components/paragraph-view";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
-import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -125,69 +116,32 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               }}
             />
 
-            <div className="flex items-center justify-center sm:gap-8 gap-4 bg-gray-50 dark:bg-black p-4 rounded-2xl shadow-sm mb-4">
-              <ContentEditButton />
-              <button
-                className={cn(
-                  "text-xl",
-                  loop
-                    ? "dark:text-white text-black font-bold"
-                    : "dark:text-gray-600 text-gray-300"
-                )}
-                onClick={() => {
-                  setLoop((loop: any) => {
-                    if (loop) {
-                      return null;
-                    }
-
-                    return currentTranscription;
-                  });
-                }}
-              >
-                <Icons.loop />
-              </button>
-              <button onClick={seekBefore} className="p-2 rounded-full ">
-                <Icons.rotateLeft className="text-xl" />
-              </button>
-
-              <button onClick={handlePlayPause} className="rounded-full">
-                {playing ? (
-                  <Icons.pause className="text-2xl" />
-                ) : (
-                  <Icons.play className="text-2xl" />
-                )}
-              </button>
-
-              <button onClick={seekAfter} className="rounded-full ">
-                <Icons.rotateRight className="text-xl" />
-              </button>
-
-              <>
-                <PinyinButton className="text-2xl" />
-
-                <EnButton className="text-2xl" />
-
-                <ReadModeButton className="text-2xl" />
-                {showEn && containsChinglish && (
-                  <ChinglishButton className="text-2xl" />
-                )}
-              </>
-
-              <PreviewButton />
-            </div>
-
-            <div className="flex items-center gap-4">
-              <span className="text-sm">{formatTime(currentTime)}</span>
-              <Slider
-                min={0}
-                max={duration}
-                step={1}
-                value={[currentTime]}
-                defaultValue={[currentTime]}
-                onValueChange={handleSeekChange}
-                className="w-full"
+            <div className="p-4 bg-gray-100 dark:bg-[rgb(15,16,17)] mb-2">
+              <AudioBookPlayerControls
+                loop={loop}
+                setLoop={setLoop}
+                currentTranscription={currentTranscription}
+                seekBefore={seekBefore}
+                seekAfter={seekAfter}
+                handlePlayPause={handlePlayPause}
+                playing={playing}
+                showEn={showEn}
+                containsChinglish={containsChinglish}
               />
-              <span className="text-sm">{formatTime(duration)}</span>
+
+              <div className="flex items-center gap-4">
+                <span className="text-sm">{formatTime(currentTime)}</span>
+                <Slider
+                  min={0}
+                  max={duration}
+                  step={1}
+                  value={[currentTime]}
+                  defaultValue={[currentTime]}
+                  onValueChange={handleSeekChange}
+                  className="w-full"
+                />
+                <span className="text-sm">{formatTime(duration)}</span>
+              </div>
             </div>
           </div>
         </div>

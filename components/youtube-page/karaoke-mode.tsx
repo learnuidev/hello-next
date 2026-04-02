@@ -83,6 +83,7 @@ function CurrentTranscriptionViewer({
             startTime={currentTranscription.start}
             endTime={currentTranscription.end}
             currentTime={currentTime}
+            words={currentTranscription.words}
           />
         </div>
 

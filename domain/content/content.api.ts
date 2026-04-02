@@ -2,6 +2,7 @@
 
 import { siteConfig } from "@/lib/config";
 import { AddContentParams } from "./content.types";
+import { TranscriptionWord } from "@/components/_select-character/selected-character/tweet-page/tweet-page";
 
 const addContentApi = `${siteConfig.apiUrl}/v1/add-content`;
 
@@ -66,7 +67,7 @@ export interface ContentTranscription {
   sentence?: string;
   en: string;
   chinglish?: string;
-  words?: { id?: string; input?: string; start?: number; end?: number }[];
+  words?: TranscriptionWord[];
 }
 
 export interface IContent {

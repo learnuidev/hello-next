@@ -477,10 +477,18 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
   const resetTimes = useContentEditStore((state) => state.resetTimes);
   const setTimes = useContentEditStore((state) => state.setTimes);
   const times = useContentEditStore((state) => state.times);
+  const activeTimeLimit = usePlayerViewModeStore(
+    (state) => state.activeTimeLimit
+  );
+  const activeLengthLimit = usePlayerViewModeStore(
+    (state) => state.activeLengthLimit
+  );
 
   const group = useMemo(() => {
     return getActiveTranscriptions({
-      limit: active,
+      groupBy: "time",
+      timeLimit: activeTimeLimit,
+      lengthLimit: activeLengthLimit,
       currentTime,
       transcriptions: transcriptions || [],
     });

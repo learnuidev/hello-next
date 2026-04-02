@@ -15,6 +15,7 @@ import { isVideoUrl } from "../../utils/is-video-url";
 import { useSearchOnlyPinyinState } from "@/components/search-only-pinyin-button";
 import { useRepeatHistoryStore } from "../../_play/use-repeat-history";
 import { ContentFormat } from "@/domain/content-v2/content-v2.types";
+import { isYoutube } from "../../utils/is-youtube";
 
 export const useAudioBookState = (content: IContent) => {
   console.log("CONTENT", content);
@@ -80,33 +81,36 @@ export const useAudioBookState = (content: IContent) => {
   const isVideo =
     iContent.format === ContentFormat.YOUTUBE || isVideoUrl(finalUrl);
 
+  const isYoutubeOrVideo =
+    isYoutube(content?.audio) || isVideoUrl(content?.audio);
+
   const onReady = useCallback(
     (data: any) => {
       const timeToStart = 7 * 60 + 12.6;
 
       setDuration(data.getDuration());
 
-      // if (isYoutubeVideo) {
-      if (start) {
-        if (isVideoUrl(finalUrl)) {
-          if (!currentTime && `${currentTime}` !== `${start}`) {
-            seekAndPlay(start);
+      if (isYoutubeOrVideo) {
+        if (start) {
+          if (isVideoUrl(finalUrl)) {
+            if (!currentTime && `${currentTime}` !== `${start}`) {
+              seekAndPlay(start);
+            }
+          } else {
+            playerRef.current.seekTo(start, "seconds");
+
+            try {
+              playerRef.current?.player?.player?.play();
+            } catch (err) {
+              console.error(err);
+            }
           }
         } else {
-          playerRef.current.seekTo(start, "seconds");
-
-          try {
-            playerRef.current?.player?.player?.play();
-          } catch (err) {
-            console.error(err);
-          }
+          seekAndPlay(0);
         }
-        // } else {
-        //   seekAndPlay(0);
-        // }
       }
     },
-    [start, finalUrl, currentTime]
+    [isYoutubeOrVideo, start, finalUrl, currentTime, seekAndPlay]
   );
 
   // const onReady = useCallback(

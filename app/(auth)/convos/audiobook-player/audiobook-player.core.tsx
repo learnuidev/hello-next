@@ -93,7 +93,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
             <div
               className={cn(
                 isVideoHidden
-                  ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
+                  ? "col-span-12"
                   : isYoutubeOrVideo
                     ? "sm:col-span-6 col-span-12"
                     : "md:col-span-8 col-span-12"
@@ -147,11 +147,11 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 </div>
               ) : (
                 <div
-                  className={
-                    isVideoHidden || !isYoutubeOrVideo
-                      ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
-                      : "col-span-12 md:col-span-5"
-                  }
+                // className={
+                //   isVideoHidden || !isYoutubeOrVideo
+                //     ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
+                //     : "col-span-12 md:col-span-5"
+                // }
                 >
                   <ParagraphView
                     content={content}
@@ -199,7 +199,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
         )}
 
         <div className="fixed bottom-2 w-full">
-          <div className="w-full max-w-3xl mx-auto p-4 py-2">
+          <div className="w-full max-w-4xl mx-auto p-4 py-2">
             {isYoutubeOrVideo ? null : (
               <ReactPlayer
                 key={content?.audio}

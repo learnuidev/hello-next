@@ -74,8 +74,8 @@ export const ParaView = ({
   const { fontSize } = useFontSizeStore();
 
   return (
-    <div className={cn("px-4 pb-24", "max-w-4xl", "dark:bg-[rgb(13,14,15)]")}>
-      <div className="sticky top-0 py-4 bg-gray-50 z-50 dark:bg-[rgb(9,10,11)]">
+    <div className={cn("px-4 pb-24", "max-w-4xl")}>
+      <div className="sticky top-0 py-4 bg-gray-50 z-50 dark:bg-[rgb(13,14,15)]">
         <ActiveButtons />
         <div className="pb-4">
           <div

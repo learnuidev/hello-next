@@ -18,6 +18,8 @@ import { useAudioBookState } from "./hooks/use-audiobook-state";
 import { isYoutube } from "../utils/is-youtube";
 import { isVideoUrl } from "../utils/is-video-url";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
+import { KaraokeMode } from "@/components/youtube-page/karaoke-mode";
+import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -47,7 +49,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const isYoutubeOrVideo =
     isYoutube(content?.audio) || isVideoUrl(content?.audio);
 
-  const viewMode = useViewModeStore((state) => state.viewMode);
+  const viewMode = usePlayerViewModeStore((state) => state.viewMode);
 
   const showEn = useBrightModeStore((state) => state.showEn);
 
@@ -56,12 +58,15 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const editMode = useContentEditStore((state) => state.editMode);
 
   const isSmall = useIsSmall();
+  const isVideoHidden = usePlayerViewModeStore((state) => state.isVideoHidden);
 
   if (!content) {
     return;
   }
 
-  console.log("VIEW MODE", viewMode);
+  const progressInterval = 100;
+
+  // console.log("VIEW MODE", viewMode);
 
   return (
     <MandoContextMenu lang={content?.lang || ""}>
@@ -87,9 +92,11 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
           >
             <div
               className={cn(
-                isYoutubeOrVideo
-                  ? "sm:col-span-6 col-span-12"
-                  : "md:col-span-8 col-span-12"
+                isVideoHidden
+                  ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
+                  : isYoutubeOrVideo
+                    ? "sm:col-span-6 col-span-12"
+                    : "md:col-span-8 col-span-12"
               )}
             >
               {editMode ? (
@@ -98,23 +105,77 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   currentTime={currentTime}
                   seekAndPlay={seekAndPlay}
                 />
+              ) : viewMode === "karaoke" ? (
+                <div
+                  className={
+                    isVideoHidden || !isYoutubeOrVideo
+                      ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
+                      : "col-span-12 md:col-span-5"
+                  }
+                >
+                  <div
+                    className={
+                      isVideoHidden || !isYoutubeOrVideo
+                        ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
+                        : "col-span-12 md:col-span-5"
+                    }
+                  >
+                    <KaraokeMode
+                      lang={content?.lang}
+                      isPlaying={playing}
+                      containsChinglish={containsChinglish}
+                      seekTo={(time: number) => {
+                        playerRef.current.seekTo(time, "seconds");
+
+                        try {
+                          playerRef.current?.player?.player?.play();
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      }}
+                      play={() => {
+                        try {
+                          playerRef.current?.player?.player?.play();
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      }}
+                      transcriptions={content.transcriptions}
+                      currentTime={currentTime}
+                    />
+                  </div>
+                </div>
               ) : (
-                <ParagraphView
-                  content={content}
-                  currentTranscription={currentTranscription}
-                  currentTime={currentTime}
-                  seek={seek}
-                  isPlaying
-                />
+                <div
+                  className={
+                    isVideoHidden || !isYoutubeOrVideo
+                      ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
+                      : "col-span-12 md:col-span-5"
+                  }
+                >
+                  <ParagraphView
+                    content={content}
+                    currentTranscription={currentTranscription}
+                    currentTime={currentTime}
+                    seek={seek}
+                    isPlaying
+                  />
+                </div>
               )}
             </div>
 
             {isYoutubeOrVideo && (
-              <div className={cn("md:col-span-6 col-span-12 sm:mt-12")}>
+              <div
+                className={cn(
+                  "md:col-span-6 col-span-12 sm:mt-12",
+
+                  `${isVideoHidden || !isYoutubeOrVideo ? "hidden" : ""}`
+                )}
+              >
                 <ReactPlayer
                   key={content?.audio}
                   playbackRate={playbackRate}
-                  progressInterval={100}
+                  progressInterval={progressInterval}
                   url={content?.audio}
                   onPlay={() => {
                     setNewContextId();
@@ -143,7 +204,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               <ReactPlayer
                 key={content?.audio}
                 playbackRate={playbackRate}
-                progressInterval={100}
+                progressInterval={progressInterval}
                 url={content?.audio}
                 onPlay={() => {
                   setNewContextId();

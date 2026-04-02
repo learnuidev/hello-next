@@ -82,27 +82,56 @@ export const useAudioBookState = (content: IContent) => {
 
   const onReady = useCallback(
     (data: any) => {
-      if (!isReady) {
-        setDuration(data.getDuration());
-        const timeToStart = 7 * 60 + 12.6;
+      const timeToStart = 7 * 60 + 12.6;
 
-        if (start) {
-          if (isVideoUrl(finalUrl)) {
-            if (!currentTime && `${currentTime}` !== `${start}`) {
-              seekAndPlay(start);
-            }
-          } else {
+      setDuration(data.getDuration());
+
+      // if (isYoutubeVideo) {
+      if (start) {
+        if (isVideoUrl(finalUrl)) {
+          if (!currentTime && `${currentTime}` !== `${start}`) {
             seekAndPlay(start);
           }
         } else {
-          seekAndPlay(0);
-        }
+          playerRef.current.seekTo(start, "seconds");
 
-        setIsReady(true);
+          try {
+            playerRef.current?.player?.player?.play();
+          } catch (err) {
+            console.error(err);
+          }
+        }
+        // } else {
+        //   seekAndPlay(0);
+        // }
       }
     },
-    [isReady, start, finalUrl, currentTime, seekAndPlay]
+    [start, finalUrl, currentTime]
   );
+
+  // const onReady = useCallback(
+  //   (data: any) => {
+  //     if (!isReady) {
+  //       setDuration(data.getDuration());
+  //       const timeToStart = 7 * 60 + 12.6;
+
+  //       if (start) {
+  //         if (isVideoUrl(finalUrl)) {
+  //           if (!currentTime && `${currentTime}` !== `${start}`) {
+  //             seekAndPlay(start);
+  //           }
+  //         } else {
+  //           seekAndPlay(start);
+  //         }
+  //       } else {
+  //         seekAndPlay(0);
+  //       }
+
+  //       setIsReady(true);
+  //     }
+  //   },
+  //   [isReady, start, finalUrl, currentTime, seekAndPlay]
+  // );
 
   const seekBefore = useCallback(() => {
     if (currentTranscription) {
@@ -121,6 +150,12 @@ export const useAudioBookState = (content: IContent) => {
         loop?.start || prevTranscription?.start,
         "seconds"
       );
+
+      try {
+        playerRef.current?.player?.player?.play();
+      } catch (err) {
+        console.error(err);
+      }
     }
   }, [currentTime, transcriptions]);
 
@@ -146,6 +181,12 @@ export const useAudioBookState = (content: IContent) => {
       loop?.start || nextTranscription?.start,
       "seconds"
     );
+
+    try {
+      playerRef.current?.player?.player?.play();
+    } catch (err) {
+      console.error(err);
+    }
   }, [currentTime, transcriptions]);
 
   useEffect(() => {

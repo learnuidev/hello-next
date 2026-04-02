@@ -47,9 +47,6 @@ export function AudioBookPlayerControls({
 
   const toggleKaraokeMode = () => {
     setViewMode((prev: any) => (prev === "karaoke" ? null : "karaoke"));
-    setIsVideoHidden((isHidden: any) =>
-      viewMode !== "karaoke" ? true : false
-    );
   };
 
   return (
@@ -102,10 +99,9 @@ export function AudioBookPlayerControls({
 
         <ReadModeButton className="text-2xl" />
 
-        <ChinglishButton
-          disabled={!(showEn && containsChinglish)}
-          className={"text-2xl"}
-        />
+        {containsChinglish && (
+          <ChinglishButton disabled={!showEn} className={"text-2xl"} />
+        )}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

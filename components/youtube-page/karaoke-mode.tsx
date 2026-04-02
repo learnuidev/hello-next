@@ -1,26 +1,24 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
-import { Icons } from "../ui/icons.v2";
-import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
-import { useMemo } from "react";
-import { smartSplit } from "./utils/smart-split";
-import { CharacterItem } from "../_select-character/character-item";
-import { useFocusIndex } from "@/app/(auth)/convos/play-v3/hooks/use-focus-index";
-import Link from "next/link";
 import { useUpsetContentAnalyticsHandler } from "@/app/(auth)/convos/[content-id]/hooks/use-upsert-content-analytics-handler";
+import { useFocusIndex } from "@/app/(auth)/convos/play-v3/hooks/use-focus-index";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
-import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
-import { useSelectedItem } from "./use-selected-item";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useMemo } from "react";
+import { isNonRomanLang } from "../_select-character/utils/is-non-roman-lang";
+import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 import { TextPercentageColorizerV2 } from "../text-percentage-colorizer-v2";
+import { Icons } from "../ui/icons.v2";
+import { useSelectedItem } from "./use-selected-item";
 
 function CurrentTranscriptionViewer({
   seekTo,
   contentId,
   currentTranscription,
-  showPinyin,
+  // showPinyin,
   romanOrPinyin,
   isNonRomanContent,
   containsChinglish,
@@ -34,11 +32,15 @@ function CurrentTranscriptionViewer({
 
   const { showChinglish, setShowChinglish } = useChinglishState();
 
+  const showEn = useBrightModeStore((state) => state.showEn);
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
+
   return (
     <MandoContextMenu lang={currentTranscription?.lang || ""}>
       <div
         key={JSON.stringify(currentTranscription)}
         className={cn(
+          "my-24",
           "text-4xl font-bold text-center text-white",
           romanOrPinyin?.length < 16 ? "text-4x" : "text-lg"
         )}
@@ -84,52 +86,17 @@ function CurrentTranscriptionViewer({
           />
         </div>
 
-        {/* <p
-          onClick={() => {
-            if (typeof currentTranscription?.start === "number") {
-              seekTo(currentTranscription?.start);
-            }
-
-            const selectedText = getSelectedText();
-
-            if (selectedText && selectedText?.length < 36) {
-              setSelected(selectedText);
-            } else {
-              setSelected(
-                currentTranscription.hanzi || currentTranscription?.input
-              );
-            }
-          }}
-          className={cn(
-            " dark:text-gray-200 text-black",
-            currentTranscription?.lang === "zh"
-              ? "text-4xl"
-              : "lg:text-2xl text-[16px]"
-          )}
-        >
-          {smartSplit({
-            input: currentTranscription?.input || currentTranscription?.hanzi,
-            lang,
-          })?.map((item: string, idx: number) => {
-            return (
-              <CharacterItem
-                disableClass
-                key={`${idx}-youtube-player-active-transcription-${item}-${idx}`}
-                character={item}
-              />
-            );
-          })}
-        </p> */}
-
-        <p
-          className={cn(
-            "text-[16px] lg:text-xl font-extralight dark:text-gray-500 text-black mt-12"
-          )}
-        >
-          {containsChinglish && showChinglish
-            ? currentTranscription?.chinglish
-            : currentTranscription?.en}
-        </p>
+        {showEn && (
+          <p
+            className={cn(
+              "text-[16px] lg:text-xl font-extralight dark:text-gray-500 text-black mt-12"
+            )}
+          >
+            {containsChinglish && showChinglish
+              ? currentTranscription?.chinglish
+              : currentTranscription?.en}
+          </p>
+        )}
       </div>
     </MandoContextMenu>
   );
@@ -147,76 +114,6 @@ function KaraokeContainer({ children }: { children: React.ReactNode }) {
 function ActiveKaraokeContainer({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex justify-center overflow-hidden my-4">{children}</div>
-  );
-}
-
-function PastLyrics({ lastThreeLyrics, seekTo }: any) {
-  return (
-    <div
-      className={cn(
-        "overflow-y-auto flex justify-center flex-col text-xs items-center",
-        "mb-24",
-        "text-center"
-      )}
-    >
-      {lastThreeLyrics.map((lyric: any, idx: any, ctx: any) => (
-        <div
-          onClick={() => {
-            seekTo(lyric?.start);
-          }}
-          key={JSON.stringify(lyric) + `${idx}`}
-          className={cn(
-            "text-gray-600 lg:text-lg text-sm cursor-pointer hover:text-pink-500 dark:hover:text-white/75 transition-colors",
-            "text-gray-700"
-          )}
-        >
-          {lyric?.input || "n/a"}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function UpcomingLyrics({
-  transcriptions,
-  currentTime,
-  isNonRomanContent,
-  showPinyin,
-  seekTo,
-}: any) {
-  return (
-    <div className="overflow-y-auto mt-32 text-center flex flex-col items-center justify-center">
-      {transcriptions
-        ?.filter((trans: any) => {
-          return trans.start > currentTime;
-        })
-        ?.slice(0, 1)
-        .map((lyric: any, idx: any) => (
-          <div
-            key={JSON.stringify(lyric)}
-            className={cn(
-              "text-white/50 text-lg cursor-pointer dark:hover:text-white/75 transition-colors flex flex-col items-center justify-center",
-              idx === 0
-                ? "text-gray-600"
-                : idx === 1
-                  ? "text-gray-700"
-                  : "text-gray-800"
-            )}
-            onClick={() => {
-              seekTo(lyric?.start);
-            }}
-          >
-            {isNonRomanContent && showPinyin && (
-              <p className="text-sm lg:text-lg font-light text-gray-400">
-                {lyric?.roman || lyric?.pinyin}
-              </p>
-            )}
-            <p className="text-sm lg:text-lg">{lyric?.input || lyric?.hanzi}</p>
-
-            <p className="lg:text-lg text-sm">{lyric?.en}</p>
-          </div>
-        ))}
-    </div>
   );
 }
 
@@ -280,7 +177,6 @@ export function KaraokeMode({
     return (
       <div className="mt-32">
         <KaraokeContainer>
-          {/* Current Lyric */}
           <ActiveKaraokeContainer>
             <CurrentTranscriptionViewer
               currentTime={currentTime}
@@ -300,8 +196,6 @@ export function KaraokeMode({
 
   return (
     <KaraokeContainer>
-      <PastLyrics lastThreeLyrics={lastThreeLyrics} seekTo={seekTo} />
-
       <ActiveKaraokeContainer>
         {!isPlaying && currentTime === 0 ? (
           <button
@@ -338,14 +232,6 @@ export function KaraokeMode({
           />
         )}
       </ActiveKaraokeContainer>
-
-      {/* <UpcomingLyrics
-        transcriptions={transcriptions}
-        currentTime={currentTime}
-        isNonRomanContent={isNonRomanContent}
-        showPinyin={showPinyin}
-        seekTo={seekTo}
-      /> */}
     </KaraokeContainer>
   );
 }

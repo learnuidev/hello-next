@@ -20,6 +20,7 @@ import { isVideoUrl } from "../utils/is-video-url";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { KaraokeMode } from "@/components/youtube-page/karaoke-mode";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
+import { ActiveButtons } from "./components/active-buttons";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -146,13 +147,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   </div>
                 </div>
               ) : (
-                <div
-                // className={
-                //   isVideoHidden || !isYoutubeOrVideo
-                //     ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
-                //     : "col-span-12 md:col-span-5"
-                // }
-                >
+                <div>
                   <ParagraphView
                     content={content}
                     currentTranscription={currentTranscription}

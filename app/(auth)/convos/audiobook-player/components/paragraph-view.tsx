@@ -11,6 +11,8 @@ import { useMemo } from "react";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { ReaderView } from "./reader-view";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
+import { ActiveButtons } from "./active-buttons";
 
 export const ParagraphView = ({
   content,
@@ -32,7 +34,8 @@ export const ParagraphView = ({
 
   const { setShowMenuBar } = useCharacterMenuBarStore();
 
-  const active = 16;
+  // const active = 16;
+  const active = usePlayerViewModeStore((state) => state.active);
 
   const { showChinglish, setShowChinglish } = useChinglishState();
 
@@ -47,12 +50,13 @@ export const ParagraphView = ({
   const { readMode } = useReadModeState();
 
   return (
-    <div className={cn("px-4 pb-24")}>
-      <div className="sticky top-0 py-4 bg-gray-50 dark:bg-[rgb(9,10,11)]">
+    <div className={cn("px-4 pb-24", "max-w-4xl")}>
+      <div className="sticky top-0 py-4 bg-gray-50 z-50 dark:bg-[rgb(9,10,11)]">
+        <ActiveButtons />
         <div className="pb-4">
           <div
             className={cn(
-              `flex justify-between items-center mt-2 w-full`,
+              `flex justify-between items-center mt-2 w-full px-2`,
               "h-32"
             )}
           >

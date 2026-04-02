@@ -60,8 +60,10 @@ export const AllTranscriptionsEditor = ({
     }
   }, [currentTime, autoScrollWhilePlaying, localTranscriptions, content]);
 
-  const transcriptions: LocalTranscription[] =
-    useMemo(() => localTranscriptions || content?.transcriptions || [], [localTranscriptions, content]);
+  const transcriptions: LocalTranscription[] = useMemo(
+    () => localTranscriptions || content?.transcriptions || [],
+    [localTranscriptions, content]
+  );
 
   const filteredTranscriptions = useMemo(() => {
     if (!searchQuery.trim()) return transcriptions;
@@ -397,7 +399,8 @@ export const AllTranscriptionsEditor = ({
             />
             {searchQuery && (
               <div className="text-xs text-gray-500 dark:text-[rgb(140,140,140)] mt-2">
-                Showing {filteredTranscriptions.length} of {transcriptions.length} transcriptions
+                Showing {filteredTranscriptions.length} of{" "}
+                {transcriptions.length} transcriptions
               </div>
             )}
           </div>
@@ -526,13 +529,16 @@ export const AllTranscriptionsEditor = ({
                       className="text-xs px-4 py-2 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-lg text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] transition-all font-light w-fit"
                       onClick={() => toggleWordsExpanded(originalIndex)}
                     >
-                      {expandedWords.has(originalIndex) ? "Hide Words" : "Show Words"} ({transcription.words?.length || 0})
+                      {expandedWords.has(originalIndex)
+                        ? "Hide Words"
+                        : "Show Words"}{" "}
+                      ({transcription.words?.length || 0})
                     </button>
                     {expandedWords.has(originalIndex) && (
                       <div className="flex flex-col gap-3 border border-gray-100 dark:border-[rgb(20,21,24)] rounded-xl p-4 bg-gray-50 dark:bg-[rgb(10,11,13)]">
                         {transcription.words?.map((word, wordIndex) => (
                           <div
-                            key={word.id || wordIndex}
+                            key={word?.id || wordIndex}
                             className="flex flex-col gap-2 p-3 bg-white dark:bg-[rgb(12,13,15)] rounded-lg border border-gray-100 dark:border-[rgb(20,21,24)]"
                           >
                             <div className="flex gap-2 items-center">
@@ -545,7 +551,12 @@ export const AllTranscriptionsEditor = ({
                                   className="w-full text-sm border border-gray-200 dark:border-[rgb(20,21,24)] rounded-lg px-3 py-1.5 dark:bg-[rgb(9,10,11)] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                                   value={word.input || ""}
                                   onChange={(e) =>
-                                    updateWordField(originalIndex, wordIndex, "input", e.target.value)
+                                    updateWordField(
+                                      originalIndex,
+                                      wordIndex,
+                                      "input",
+                                      e.target.value
+                                    )
                                   }
                                 />
                               </div>
@@ -589,7 +600,9 @@ export const AllTranscriptionsEditor = ({
                               </div>
                               <button
                                 className="text-xs px-3 py-1.5 border border-red-200 dark:border-red-900/50 rounded-lg text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all font-light mt-5"
-                                onClick={() => handleDeleteWord(originalIndex, wordIndex)}
+                                onClick={() =>
+                                  handleDeleteWord(originalIndex, wordIndex)
+                                }
                                 title="Delete word"
                               >
                                 Delete

@@ -20,6 +20,7 @@ const formatNumber = (num: number) => {
 // Reusable components extracted from TweetPage
 
 export type TranscriptionWord = {
+  id: string;
   start: number;
   end: number;
   startIndex: number;

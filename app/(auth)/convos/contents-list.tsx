@@ -188,11 +188,11 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
           onValueChange={(value: SortByType) => setSortBy(value)}
         >
           <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Sort by" />
+            <SelectValue placeholder="排序" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="newest">Newest</SelectItem>
-            <SelectItem value="oldest">Oldest</SelectItem>
+            <SelectItem value="newest">最新</SelectItem>
+            <SelectItem value="oldest">最早</SelectItem>
           </SelectContent>
         </Select>
 
@@ -201,10 +201,10 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
           onValueChange={(value: string) => setContentViewType(value)}
         >
           <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Type" />
+            <SelectValue placeholder="类型" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
+            <SelectItem value="all">所有类型</SelectItem>
             {contentTypes.map((type) => (
               <SelectItem key={type.id} value={type.id}>
                 {type.title}
@@ -216,10 +216,10 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
         {allAuthors.length > 0 && (
           <Select value={authorFilter} onValueChange={setAuthorFilter}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by author" />
+              <SelectValue placeholder="按作者筛选" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Authors</SelectItem>
+              <SelectItem value="all">所有作者</SelectItem>
               {allAuthors.map((author) => (
                 <SelectItem key={author} value={author}>
                   {author}

@@ -14,6 +14,9 @@ import { AudioBookPlayerControls } from "./components/audiobook-player-controls"
 import { CharacterMenuBar } from "./components/character-menu-bar";
 import { ParagraphView } from "./components/paragraph-view";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
+import { isYoutube } from "../utils/is-youtube";
+import { isVideoUrl } from "../utils/is-video-url";
+import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -40,11 +43,16 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
     seek,
   } = useAudioBookState(content);
 
+  const isYoutubeOrVideo =
+    isYoutube(content?.audio) || isVideoUrl(content?.audio);
+
   const showEn = useBrightModeStore((state) => state.showEn);
 
   const { contextId, setNewContextId } = useContextPlayContextState();
 
   const editMode = useContentEditStore((state) => state.editMode);
+
+  const isSmall = useIsSmall();
 
   if (!content) {
     return;
@@ -72,7 +80,13 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               "grid grid-cols-12 gap-8 sm:px-8 scroll-px-80 w-full"
             )}
           >
-            <div className={cn("md:col-span-8 col-span-12")}>
+            <div
+              className={cn(
+                isYoutubeOrVideo
+                  ? "sm:col-span-6 col-span-12"
+                  : "md:col-span-8 col-span-12"
+              )}
+            >
               {editMode ? (
                 <AllTranscriptionsEditor
                   contentId={content.id}
@@ -89,32 +103,60 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 />
               )}
             </div>
+
+            {isYoutubeOrVideo && (
+              <div className={cn("md:col-span-6 col-span-12 sm:mt-12")}>
+                <ReactPlayer
+                  key={content?.audio}
+                  playbackRate={playbackRate}
+                  progressInterval={100}
+                  url={content?.audio}
+                  onPlay={() => {
+                    setNewContextId();
+
+                    setPlaying(true);
+                  }}
+                  onPause={() => setPlaying(false)}
+                  width="100%"
+                  height={isSmall ? "200px" : "450px"}
+                  onReady={onReady}
+                  playing={false}
+                  controls={false}
+                  ref={playerRef}
+                  onProgress={(value) => {
+                    setCurrentTime(value.playedSeconds);
+                  }}
+                />
+              </div>
+            )}
           </div>
         )}
 
         <div className="fixed bottom-2 w-full">
           <div className="w-full max-w-3xl mx-auto p-4 py-2">
-            <ReactPlayer
-              key={content?.audio}
-              playbackRate={playbackRate}
-              progressInterval={100}
-              url={content?.audio}
-              onPlay={() => {
-                setNewContextId();
+            {isYoutubeOrVideo ? null : (
+              <ReactPlayer
+                key={content?.audio}
+                playbackRate={playbackRate}
+                progressInterval={100}
+                url={content?.audio}
+                onPlay={() => {
+                  setNewContextId();
 
-                setPlaying(true);
-              }}
-              onPause={() => setPlaying(false)}
-              width="100%"
-              height="50px"
-              onReady={onReady}
-              playing={false}
-              controls={false}
-              ref={playerRef}
-              onProgress={(value) => {
-                setCurrentTime(value.playedSeconds);
-              }}
-            />
+                  setPlaying(true);
+                }}
+                onPause={() => setPlaying(false)}
+                width="100%"
+                height="50px"
+                onReady={onReady}
+                playing={false}
+                controls={false}
+                ref={playerRef}
+                onProgress={(value) => {
+                  setCurrentTime(value.playedSeconds);
+                }}
+              />
+            )}
 
             <div className="p-4 bg-gray-100 dark:bg-[rgb(15,16,17)] mb-2">
               <AudioBookPlayerControls

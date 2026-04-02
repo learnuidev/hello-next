@@ -33,13 +33,11 @@ export function AudioBookPlayerControls({
         <ContentEditButton className="text-2xl w-8" />
       </div>
 
-      <div className="dark:bg-[rgb(21,22,23)] p-2 px-8 flex gap-4 rounded-full">
+      <div className="dark:bg-[rgb(21,22,23)] bg-gray-200 p-2 px-8 flex gap-4 rounded-full">
         <button
           className={cn(
             "text-xl",
-            loop
-              ? "dark:text-white text-black font-bold"
-              : "dark:text-gray-600 text-gray-300"
+            loop ? "text-rose-500 font-bold" : "text-gray-600 font-bold"
           )}
           onClick={() => {
             setLoop((loop: any) => {

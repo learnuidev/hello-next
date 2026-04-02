@@ -118,7 +118,7 @@ export const ContentParagraphView = ({
 }) => {
   const showEn = useBrightModeStore((state) => state.showEn);
   const { setShowMenuBar } = useContentCharacterMenuBarStore();
-  const active = 16;
+  const active = 8;
   const { showChinglish, setShowChinglish } = useChinglishState();
 
   const group = useMemo(() => {

@@ -31,7 +31,7 @@ export const ParagraphView = ({
 
   const { setShowMenuBar } = useCharacterMenuBarStore();
 
-  const active = 16;
+  const active = 8;
 
   const { showChinglish, setShowChinglish } = useChinglishState();
 

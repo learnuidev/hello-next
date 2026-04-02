@@ -103,7 +103,7 @@ export const ContentPlayerCore = ({
             className={cn(
               isVideo
                 ? "grid grid-cols-12 gap-4 pb-24"
-                : "flex flex-col gap-4 sm:px-8 w-full pb-24",
+                : "flex flex-col gap-4 sm:px-8 w-full pb-24"
             )}
           >
             {isVideo && (
@@ -135,7 +135,7 @@ export const ContentPlayerCore = ({
               className={cn(
                 isVideo
                   ? "col-span-12 md:col-span-5 h-[600px] md:h-auto overflow-y-auto"
-                  : "w-full max-w-4xl mx-auto",
+                  : "w-full max-w-4xl mx-auto"
               )}
             >
               <ContentParagraphView
@@ -154,7 +154,7 @@ export const ContentPlayerCore = ({
           <div
             className={cn(
               "transition",
-              "flex items-center w-full justify-center",
+              "flex items-center w-full justify-center"
             )}
           >
             <div className="overflow-y-auto px-8 py-2 bg-gray-50 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6 text-white inline-block">
@@ -164,7 +164,7 @@ export const ContentPlayerCore = ({
                     "text-xl",
                     loop
                       ? "dark:text-white text-black"
-                      : "dark:text-gray-500 text-gray-300",
+                      : "dark:text-gray-500 text-gray-300"
                   )}
                   onClick={() => {
                     setLoop((prevLoop: any) => {

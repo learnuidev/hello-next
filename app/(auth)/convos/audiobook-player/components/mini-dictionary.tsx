@@ -7,7 +7,7 @@ import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { cn } from "@/lib/utils";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useContentSearchHistory } from "../hooks/use-content-search-history";
 import { useDeleteHistoryMutation } from "@/domain/history/delete-history.mutation";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
@@ -47,6 +47,87 @@ export function MiniDictionary({
   const { hideMenuBar } = useCharacterMenuBarStore();
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
+  const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(null);
+  const isDragging = useRef(false);
+
+  const onMouseDown = useCallback(
+    (e: React.MouseEvent) => {
+      if ((e.target as HTMLElement).closest("button, a")) return;
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      isDragging.current = true;
+      setDragOffset({
+        x: e.clientX - (position?.x || rect.left),
+        y: e.clientY - (position?.y || rect.top),
+      });
+      if (!position) {
+        setPosition({ x: rect.left, y: rect.top });
+      }
+      e.preventDefault();
+    },
+    [position]
+  );
+
+  const onTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      if ((e.target as HTMLElement).closest("button, a")) return;
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      isDragging.current = true;
+      const touch = e.touches[0];
+      setDragOffset({
+        x: touch.clientX - (position?.x || rect.left),
+        y: touch.clientY - (position?.y || rect.top),
+      });
+      if (!position) {
+        setPosition({ x: rect.left, y: rect.top });
+      }
+    },
+    [position]
+  );
+
+  useEffect(() => {
+    if (!dragOffset) return;
+
+    function onMouseMove(e: MouseEvent) {
+      if (!isDragging.current || !dragOffset) return;
+      setPosition({
+        x: e.clientX - dragOffset.x,
+        y: e.clientY - dragOffset.y,
+      });
+    }
+
+    function onTouchMove(e: TouchEvent) {
+      if (!isDragging.current || !dragOffset) return;
+      const touch = e.touches[0];
+      setPosition({
+        x: touch.clientX - dragOffset.x,
+        y: touch.clientY - dragOffset.y,
+      });
+    }
+
+    function onMouseUp() {
+      isDragging.current = false;
+      setDragOffset(null);
+    }
+
+    function onTouchEnd() {
+      isDragging.current = false;
+      setDragOffset(null);
+    }
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+    document.addEventListener("touchmove", onTouchMove, { passive: false });
+    document.addEventListener("touchend", onTouchEnd);
+    return () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("touchmove", onTouchMove);
+      document.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [dragOffset]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -167,10 +248,14 @@ export function MiniDictionary({
   return (
     <div
       ref={containerRef}
+      onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
       className={cn(
-        " bg-gray-50 dark:bg-[rgb(13,14,15)] rounded p-4 sm:p-8",
-        className || "w-full sm:max-w-[600px] mt-0 sticky top-0"
+        "bg-gray-50 dark:bg-[rgb(13,14,15)] rounded p-4 sm:p-8",
+        position ? "fixed z-50" : className || "w-full sm:max-w-[600px] mt-0 sticky top-0",
+        position && (dragOffset ? "cursor-grabbing" : "cursor-grab")
       )}
+      style={position ? { left: position.x, top: position.y } : undefined}
     >
       <div className="flex justify-between items-center">
         <div className="flex gap-4">

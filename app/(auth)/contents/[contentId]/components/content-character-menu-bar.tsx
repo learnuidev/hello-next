@@ -34,6 +34,19 @@ export function ContentCharacterMenuBar({
     [position],
   );
 
+  const onTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      if ((e.target as HTMLElement).closest("button, a")) return;
+      isDragging.current = true;
+      const touch = e.touches[0];
+      setDragOffset({
+        x: touch.clientX - position.x,
+        y: touch.clientY - position.y,
+      });
+    },
+    [position],
+  );
+
   useEffect(() => {
     if (!dragOffset) return;
 
@@ -47,16 +60,36 @@ export function ContentCharacterMenuBar({
       });
     }
 
+    function onTouchMove(e: TouchEvent) {
+      if (!isDragging.current || !dragOffset) return;
+      const touch = e.touches[0];
+      useContentCharacterMenuBarStore.setState({
+        position: {
+          x: touch.clientX - dragOffset.x,
+          y: touch.clientY - dragOffset.y,
+        },
+      });
+    }
+
     function onMouseUp() {
+      isDragging.current = false;
+      setDragOffset(null);
+    }
+
+    function onTouchEnd() {
       isDragging.current = false;
       setDragOffset(null);
     }
 
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
+    document.addEventListener("touchmove", onTouchMove, { passive: false });
+    document.addEventListener("touchend", onTouchEnd);
     return () => {
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("touchmove", onTouchMove);
+      document.removeEventListener("touchend", onTouchEnd);
     };
   }, [dragOffset]);
 
@@ -66,6 +99,7 @@ export function ContentCharacterMenuBar({
     <div
       ref={menuRef}
       onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
       className={cn(
         "fixed z-50 bg-white dark:bg-gray-900 border dark:border-gray-700 border-gray-200 rounded-lg shadow-lg max-w-[500px] max-h-[80vh] overflow-y-auto",
         dragOffset ? "cursor-grabbing" : "cursor-grab",

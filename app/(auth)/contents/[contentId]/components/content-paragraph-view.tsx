@@ -84,14 +84,14 @@ function ContentReaderView({
               "inline-block cursor-pointer",
               isActive
                 ? "dark:text-white text-black"
-                : "!text-gray-500 opacity-50",
+                : "!text-gray-500 opacity-50"
             )}
           >
             <CharacterItem
               character={item.input}
               className={cn(
                 "text-lg sm:text-2xl",
-                isActive ? "!dark:text-white" : "dark:text-gray-500",
+                isActive ? "!dark:text-white" : "dark:text-gray-500"
               )}
             />
           </span>
@@ -118,7 +118,7 @@ export const ContentParagraphView = ({
 }) => {
   const showEn = useBrightModeStore((state) => state.showEn);
   const { setShowMenuBar } = useContentCharacterMenuBarStore();
-  const active = 8;
+  const active = 16;
   const { showChinglish, setShowChinglish } = useChinglishState();
 
   const group = useMemo(() => {
@@ -138,7 +138,7 @@ export const ContentParagraphView = ({
           <div
             className={cn(
               `flex justify-between items-center mt-2 w-full`,
-              "h-32",
+              "h-32"
             )}
           >
             <p className="space-x-2 font-extralight pb-[4px] overflow sm:text-xl text-sm">
@@ -185,7 +185,7 @@ export const ContentParagraphView = ({
                             transcription.end > currentTime
                             ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
                             : "!text-gray-500 opacity-50"
-                          : "dark:text-white text-black",
+                          : "dark:text-white text-black"
                       )}
                     >
                       {smartSplit({
@@ -223,7 +223,7 @@ export const ContentParagraphView = ({
                                     transcription.end > currentTime
                                     ? "   !dark:text-white"
                                     : "dark:text-gray-500"
-                                  : "",
+                                  : ""
                               )}
                               character={item}
                             />

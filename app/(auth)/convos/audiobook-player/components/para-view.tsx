@@ -14,7 +14,7 @@ import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { ActiveButtons } from "./active-buttons";
 
-export const ParagraphView = ({
+export const ParaView = ({
   content,
   currentTranscription,
   currentTime,

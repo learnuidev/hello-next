@@ -4,23 +4,22 @@ import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-contex
 
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useContextPlayContextState } from "@/components/youtube-page/hooks/use-play-history-state";
+import { KaraokeMode } from "@/components/youtube-page/karaoke-mode";
+import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
+import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { IContent } from "@/domain/content/content.api";
-import { useViewModeStore } from "@/components/convos/useViewModeStore";
 import { cn } from "@/lib/utils";
 import ReactPlayer from "react-player";
 import { formatTime } from "../_play/utils";
+import { isVideoUrl } from "../utils/is-video-url";
+import { isYoutube } from "../utils/is-youtube";
 import { AllTranscriptionsEditor } from "./components/all-transcriptions-editor";
 import { AudioBookPlayerControls } from "./components/audiobook-player-controls";
 import { CharacterMenuBar } from "./components/character-menu-bar";
-import { ParagraphView } from "./components/paragraph-view";
+import { ReaderViewParent } from "./components/reader-view-parent";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
-import { isYoutube } from "../utils/is-youtube";
-import { isVideoUrl } from "../utils/is-video-url";
-import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
-import { KaraokeMode } from "@/components/youtube-page/karaoke-mode";
-import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
-import { ActiveButtons } from "./components/active-buttons";
+import { ParaView } from "./components/para-view";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -146,9 +145,9 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                     />
                   </div>
                 </div>
-              ) : (
+              ) : viewMode === "reader" ? (
                 <div>
-                  <ParagraphView
+                  <ReaderViewParent
                     content={content}
                     currentTranscription={currentTranscription}
                     currentTime={currentTime}
@@ -156,6 +155,14 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                     isPlaying
                   />
                 </div>
+              ) : (
+                <ParaView
+                  content={content}
+                  currentTranscription={currentTranscription}
+                  currentTime={currentTime}
+                  seek={seek}
+                  isPlaying
+                />
               )}
             </div>
 

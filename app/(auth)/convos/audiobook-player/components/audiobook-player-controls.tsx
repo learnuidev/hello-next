@@ -123,6 +123,21 @@ export function AudioBookPlayerControls({
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() =>
+                setViewMode((prev: any) =>
+                  prev === "reader" ? null : "reader"
+                )
+              }
+              className={cn(
+                "cursor-pointer",
+                viewMode === "reader"
+                  ? "text-rose-500 font-bold"
+                  : "text-gray-600"
+              )}
+            >
+              Reader View
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() =>
                 setViewMode((prev: any) => (prev === "para" ? null : "para"))
               }
               className={cn(

@@ -1,14 +1,16 @@
 import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { useReadModeState } from "@/components/read-mode-button";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { getActiveTranscriptions } from "@/components/youtube-page/get-active-transcriptions";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { SeriesContentDetails } from "@/domain/content-v2/series-content-details.types";
+import { ContentTranscription } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
 import { useMemo } from "react";
 import { useContentCharacterMenuBarStore } from "../hooks/use-content-character-menu-bar";
-import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { EnglishTopView } from "./english-top-view";
 
 interface NormalizedTranscription {
   id: string;
@@ -109,7 +111,7 @@ export const ContentParagraphView = ({
   isPlaying,
   transcriptions,
 }: {
-  currentTranscription: NormalizedTranscription | null;
+  currentTranscription?: ContentTranscription;
   content: SeriesContentDetails;
   currentTime: number;
   isPlaying: boolean;
@@ -133,24 +135,7 @@ export const ContentParagraphView = ({
 
   return (
     <div className={cn("px-4 pb-24")}>
-      <div className="sticky top-0 py-4 bg-gray-50 dark:bg-[rgb(9,10,11)]">
-        <div className="pb-4">
-          <div
-            className={cn(
-              `flex justify-between items-center mt-2 w-full`,
-              "h-32"
-            )}
-          >
-            <p className="space-x-2 font-extralight pb-[4px] overflow sm:text-xl text-sm">
-              {showEn
-                ? showChinglish
-                  ? currentTranscription?.chinglish || currentTranscription?.en
-                  : currentTranscription?.en
-                : null}
-            </p>
-          </div>
-        </div>
-      </div>
+      <EnglishTopView currentTranscription={currentTranscription} />
 
       <div className="pb-32">
         <div>

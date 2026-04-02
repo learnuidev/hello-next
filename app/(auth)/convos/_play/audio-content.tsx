@@ -4,6 +4,7 @@ import { FocusIcon } from "@/components/ui/icons";
 import { useState } from "react";
 
 import Editor from "@monaco-editor/react";
+import { ContentTranscription as Transcription } from "@/domain/content/content.api";
 
 import { useMusic } from "./use-music";
 
@@ -20,7 +21,6 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useListSpeakQuery } from "@/domain/hsk/use-list-speak-query";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
-import { Transcription } from "@/domain/transcribe/transcribe.types";
 import { faGoogle, faSkyatlas } from "@fortawesome/free-brands-svg-icons";
 import { faAtom, faLanguage } from "@fortawesome/pro-thin-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -181,7 +181,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                 hanzi: transcription?.input || transcription.hanzi,
                 pinyin: transcription.pinyin,
                 en: transcription.en,
-                step: transcription.step,
+                step: 0,
                 // item
               });
             }}

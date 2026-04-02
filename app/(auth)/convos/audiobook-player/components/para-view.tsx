@@ -1,4 +1,3 @@
-import { useReadModeState } from "@/components/read-mode-button";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { getActiveTranscriptions } from "@/components/youtube-page/get-active-transcriptions";
@@ -13,12 +12,7 @@ import { ActiveButtons } from "./active-buttons";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-import { faLanguage, faRepeat } from "@fortawesome/pro-thin-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
-
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { CharacterItem } from "@/components/_select-character/character-item";
+import { EnglishTopView } from "@/app/(auth)/contents/[contentId]/components/english-top-view";
 import { useFontSizeStore } from "../hooks/use-font-size";
 
 // import { getYablaLink } from "./utils/get-yabla-link";
@@ -75,25 +69,9 @@ export const ParaView = ({
 
   return (
     <div className={cn("px-4 pb-24", "max-w-4xl")}>
-      <div className="sticky top-0 py-4 bg-gray-50 z-50 dark:bg-[rgb(13,14,15)]">
+      <EnglishTopView currentTranscription={currentTranscription}>
         <ActiveButtons />
-        <div className="pb-4">
-          <div
-            className={cn(
-              `flex justify-between items-center mt-2 w-full px-2`,
-              "h-32"
-            )}
-          >
-            <p className="space-x-2 font-extralight pb-[4px] overflow sm:text-xl text-sm">
-              {showEn
-                ? showChinglish
-                  ? currentTranscription?.chinglish || currentTranscription?.en
-                  : currentTranscription?.en
-                : null}
-            </p>
-          </div>
-        </div>
-      </div>
+      </EnglishTopView>
 
       <div className="pb-32">
         <ScrollArea

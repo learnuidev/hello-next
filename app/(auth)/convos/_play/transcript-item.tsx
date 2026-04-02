@@ -2,7 +2,8 @@
 
 import { useRepeatHistoryStore } from "./use-repeat-history";
 import React from "react";
-import { Transcription } from "@/domain/transcribe/transcribe.types";
+
+import { ContentTranscription as Transcription } from "@/domain/content/content.api";
 import { useRouter } from "next/navigation";
 
 import { Icons } from "@/components/ui/icons.v2";
@@ -101,7 +102,7 @@ export const TranscriptItem = ({
               hanzi: transcription?.input || transcription.hanzi,
               pinyin: transcription.pinyin,
               en: transcription.en,
-              step: transcription.step,
+              step: 0,
               // item
             });
           } else {

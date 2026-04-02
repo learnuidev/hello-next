@@ -1,20 +1,18 @@
-// import { useMusic } from "@/components/music";
 import { useGetContentQuery } from "@/domain/content/content.queries";
-import { useMusic } from "../_play/use-music";
-import { useMusicV2 } from "./use-music-v2";
-import { Icons } from "@/components/ui/icons.v2";
-import { formatTime } from "../_play/utils";
-import { TranscriptItem } from "../_play/transcript-item";
-import { Transcription } from "@/domain/transcribe/transcribe.types";
-import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
-import { useViewType } from "./use-view-type";
-import { cn } from "@/lib/utils";
+
 import { GrammarAnalysis } from "@/components/grammar-analysis";
-import { groupBy } from "ramda";
-import { UploadAudioButton } from "@/components/_select-character/selected-character/upload-audio-button";
-import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
-import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { Icons } from "@/components/ui/icons.v2";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
+import { ContentTranscription as Transcription } from "@/domain/content/content.api";
+import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
+import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
+import { cn } from "@/lib/utils";
+import { groupBy } from "ramda";
+import { TranscriptItem } from "../_play/transcript-item";
+import { formatTime } from "../_play/utils";
+import { useMusicV2 } from "./use-music-v2";
+import { useViewType } from "./use-view-type";
 
 export const PlayV2 = ({ contentId }: { contentId: string }) => {
   const { data: content } = useGetContentQuery({ contentId });

@@ -92,11 +92,13 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
           >
             <div
               className={cn(
-                isVideoHidden
+                !isYoutubeOrVideo
                   ? "col-span-12"
-                  : isYoutubeOrVideo
-                    ? "sm:col-span-6 col-span-12"
-                    : "md:col-span-8 col-span-12"
+                  : isVideoHidden
+                    ? "col-span-12"
+                    : isYoutubeOrVideo
+                      ? "sm:col-span-6 col-span-12"
+                      : "md:col-span-8 col-span-12"
               )}
             >
               {editMode ? (

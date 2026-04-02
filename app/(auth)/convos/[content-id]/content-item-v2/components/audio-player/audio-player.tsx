@@ -23,6 +23,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faVideoSlash } from "@fortawesome/pro-thin-svg-icons";
 import { useViewModeStore } from "@/components/convos/useViewModeStore";
+import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -382,10 +383,15 @@ export const AudioPlayer = () => {
   const ContentSettingsNavbar = () => {
     const viewMode = useViewModeStore((state) => state.viewMode);
     const setViewMode = useViewModeStore((state) => state.setViewMode);
-    const isVideoHidden = useViewModeStore((state) => state.isVideoHidden);
-    const setIsVideoHidden = useViewModeStore((state) => state.setIsVideoHidden);
+    const isVideoHidden = usePlayerViewModeStore(
+      (state) => state.isVideoHidden
+    );
+    const setIsVideoHidden = usePlayerViewModeStore(
+      (state) => state.setIsVideoHidden
+    );
 
-    const isYoutubeOrVideo = content?.audio?.includes("youtube") ||
+    const isYoutubeOrVideo =
+      content?.audio?.includes("youtube") ||
       content?.audio?.includes("youtu.be") ||
       content?.audio?.match(/\.(mp4|webm|ogg)$/i);
 
@@ -469,7 +475,11 @@ export const AudioPlayer = () => {
               Karaoke View
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => setViewMode((prev: string | null) => (prev === "para" ? null : "para"))}
+              onClick={() =>
+                setViewMode((prev: string | null) =>
+                  prev === "para" ? null : "para"
+                )
+              }
               className={cn(
                 "cursor-pointer",
                 viewMode === "para"
@@ -483,14 +493,10 @@ export const AudioPlayer = () => {
               <>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={() =>
-                    setIsVideoHidden((isHidden: any) => !isHidden)
-                  }
+                  onClick={() => setIsVideoHidden((isHidden: any) => !isHidden)}
                   className={cn(
                     "cursor-pointer",
-                    isVideoHidden
-                      ? "text-rose-500 font-bold"
-                      : "text-gray-600"
+                    isVideoHidden ? "text-rose-500 font-bold" : "text-gray-600"
                   )}
                 >
                   {isVideoHidden ? (
@@ -512,7 +518,9 @@ export const AudioPlayer = () => {
 
         <button
           onClick={() => {
-            setViewMode((viewMode: string) => (viewMode === "stats" ? "core" : "stats"));
+            setViewMode((viewMode: string) =>
+              viewMode === "stats" ? "core" : "stats"
+            );
           }}
         >
           <Icons.chartColumn

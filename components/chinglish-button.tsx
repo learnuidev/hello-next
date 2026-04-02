@@ -7,7 +7,7 @@ export const ChinglishButton = ({
   disabled,
 }: {
   className?: string;
-  disabled: boolean;
+  disabled?: boolean;
 }) => {
   const { showChinglish, setShowChinglish } = useChinglishState();
 

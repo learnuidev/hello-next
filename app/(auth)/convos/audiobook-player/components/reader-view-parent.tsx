@@ -13,6 +13,8 @@ import { ReaderView } from "./reader-view";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { ActiveButtons } from "./active-buttons";
+import { FontSizeControls } from "./font-size-controls";
+import { useFontSizeStore } from "../hooks/use-font-size";
 
 export const ReaderViewParent = ({
   content,
@@ -29,6 +31,7 @@ export const ReaderViewParent = ({
 }) => {
   const showEn = useBrightModeStore((state) => state.showEn);
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
+  const { fontSize } = useFontSizeStore();
 
   const { data: contentUnknowns } = useListContentUnknownsQuery(content.id);
 
@@ -52,7 +55,9 @@ export const ReaderViewParent = ({
   return (
     <div className={cn("px-4 pb-24", "max-w-4xl")}>
       <div className="sticky top-0 py-4 bg-gray-50 z-50 dark:bg-[rgb(9,10,11)]">
-        <ActiveButtons />
+        <div className="flex justify-between items-center px-2">
+          <ActiveButtons />
+        </div>
         <div className="pb-4">
           <div
             className={cn(
@@ -76,7 +81,7 @@ export const ReaderViewParent = ({
           <div>
             <div className="">
               <div className="text-sm sm:text-2xl gap-4">
-                <div className="py-4 sm:space-y-8 space-y-2">
+                <div className="py-4 sm:space-y-4 space-y-2">
                   {group?.map((transcription: ContentTranscription) => {
                     if (readMode) {
                       return (
@@ -103,7 +108,10 @@ export const ReaderViewParent = ({
                     return (
                       <div key={JSON.stringify(transcription)}>
                         {showPinyin && (
-                          <p className="text-[16px] font-extralight text-gray-500">
+                          <p
+                            style={{ fontSize: `${fontSize}px` }}
+                            className="font-extralight text-gray-500"
+                          >
                             {transcription.pinyin || transcription?.roman}
                           </p>
                         )}
@@ -111,6 +119,7 @@ export const ReaderViewParent = ({
                           onClick={() => {
                             seek(transcription?.start);
                           }}
+                          style={{ fontSize: `${fontSize}px` }}
                           className={cn(
                             isPlaying
                               ? transcription.start < currentTime &&
@@ -131,7 +140,6 @@ export const ReaderViewParent = ({
                             return (
                               <span
                                 key={`${item}-pinin-view-${idx}`}
-                                className="py-2 sm:leading-relaxed leading-loose"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   const selectedText = getSelectedText();
@@ -153,7 +161,6 @@ export const ReaderViewParent = ({
                               >
                                 <CharacterItem
                                   className={cn(
-                                    "text-lg sm:text-2xl",
                                     isPlaying
                                       ? transcription.start < currentTime &&
                                         transcription.end > currentTime

@@ -5,6 +5,7 @@ import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-
 import { cn } from "@/lib/utils";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
+import { useFontSizeStore } from "../hooks/use-font-size";
 
 export function InputView({
   currentTranscription,
@@ -14,14 +15,11 @@ export function InputView({
 }: CurrentTranscriptionProps) {
   const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
   const { setShowMenuBar } = useCharacterMenuBarStore();
+  const { fontSize } = useFontSizeStore();
 
   return (
     <p
-      className={cn(
-        currentTranscription?.lang === "zh"
-          ? "text-lg sm:text-3xl"
-          : "text-[16px] sm:text-xl"
-      )}
+      style={{ fontSize: `${fontSize}px` }}
     >
       {smartSplit({
         input: currentTranscription?.input,

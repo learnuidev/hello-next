@@ -156,7 +156,7 @@ export const ContentParagraphView = ({
         <div>
           <div>
             <div className="text-sm sm:text-2xl gap-4">
-              <div className="py-4 sm:space-y-8 space-y-2">
+              <div className="py-4 sm:space-y-4 space-y-2">
                 {group?.map((transcription: NormalizedTranscription) => {
                   if (readMode && currentTranscription) {
                     return (

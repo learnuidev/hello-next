@@ -1,4 +1,5 @@
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { useFontSizeStore } from "../hooks/use-font-size";
 import pinyin from "pinyin";
 
 import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
@@ -41,6 +42,7 @@ function ReaderViewChinese({
   const defautClassName = "gap-0 space-y-0";
 
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
+  const { fontSize } = useFontSizeStore();
 
   const { text: selected } = useCharacterMenuBarStore();
 
@@ -88,23 +90,14 @@ function ReaderViewChinese({
             >
               {showPinyin && (
                 <span
-                  className={cn(
-                    "text-sm ",
-
-                    "dark:text-gray-500 text-gray-800"
-                  )}
+                  style={{ fontSize: `${fontSize * 0.75}px` }}
+                  className={cn("dark:text-gray-500 text-gray-800")}
                 >
                   {formatRoman(item)}
                 </span>
               )}
 
-              <span
-                className={cn(
-                  currentTranscription?.lang === "zh"
-                    ? "text-lg sm:text-xl lg:text-2xl"
-                    : "text-[16px] sm:text-xl"
-                )}
-              >
+              <span style={{ fontSize: `${fontSize}px !important` }}>
                 {smartSplit({
                   input: item?.hanzi || item?.input,
                   lang: currentTranscription?.lang,
@@ -117,6 +110,7 @@ function ReaderViewChinese({
                     <span key={`${charItem}-pinin-view-${charIdx}`}>
                       <CharacterItem
                         character={charItem}
+                        style={{ fontSize: `${fontSize * 0.75}px` }}
                         className={cn(
                           "!text-3xl",
                           isSelected

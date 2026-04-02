@@ -19,6 +19,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faVideoSlash } from "@fortawesome/pro-thin-svg-icons";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
+import { FontSizeControls } from "./font-size-controls";
 
 // Improve player controls
 
@@ -52,6 +53,7 @@ export function AudioBookPlayerControls({
   return (
     <div className="flex items-center justify-center sm:gap-16 gap-4 bg-gray-50 dark:bg-black p-4 rounded-2xl shadow-sm mb-8">
       <div className="p-2 px-8 flex gap-8 rounded-full">
+        <FontSizeControls />
         <PreviewButton className="text-2xl w-8" />
         <ContentEditButton className="text-2xl w-8" />
       </div>

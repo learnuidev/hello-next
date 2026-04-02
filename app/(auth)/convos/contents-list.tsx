@@ -3,6 +3,7 @@
 import "@/libs/cognito/init";
 
 import { useToast } from "@/hooks/use-toast";
+import { useState, useMemo } from "react";
 
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
@@ -10,6 +11,7 @@ import { Nothing } from "@/app/nmm/nothing";
 import { useSearchQueryStore } from "@/components/search/state";
 import { Icons } from "@/components/ui/icons.v2";
 import { useListContentsQuery } from "@/domain/content/content.queries";
+import { motion } from "framer-motion";
 
 import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
@@ -23,13 +25,24 @@ import { useRecentlyWatchedContent } from "./use-recently-watched-content-store"
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useAdaptive } from "@/libs/adaptive/adaptive-provider";
 import { mandoEventIds } from "@/libs/adaptive/mando-event-ids";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type ContentType = {
   title: string;
   id: string;
   transcriptions?: any;
   type: string;
+  author?: string;
+  createdAt?: string;
 };
+
+type SortByType = "newest" | "oldest";
 
 export function ContentsList({ contentViewType }: { contentViewType: string }) {
   const { data: myContent, isLoading } = useListContentsQuery();
@@ -49,6 +62,15 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
 
   const { mode, setMode } = useLearningMode();
 
+  const { contentViewType: contentType, setContentViewType } =
+    useContentViewType();
+
+  const query = useSearchQueryStore((state) => state.query2);
+  const lang = useGetCurrentLang();
+
+  const [sortBy, setSortBy] = useState<SortByType>("newest");
+  const [authorFilter, setAuthorFilter] = useState<string>("all");
+
   const contents =
     contentViewType === "history"
       ? recentlyWatched
@@ -57,11 +79,6 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
         : contentViewType === "favourites"
           ? favouriteContents?.items
           : myContent?.items;
-
-  const { contentViewType: contentType } = useContentViewType();
-
-  const query = useSearchQueryStore((state) => state.query2);
-  const lang = useGetCurrentLang();
 
   const searchTransacription = (content: ContentType, query: string) => {
     if (!content?.transcriptions?.length) {
@@ -79,7 +96,17 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
     return item?.lang === lang;
   });
 
-  const projects = filteredByLang
+  const allAuthors = useMemo(() => {
+    const authors = new Set<string>();
+    filteredByLang?.forEach((item: any) => {
+      if (item?.author) {
+        authors.add(item.author);
+      }
+    });
+    return Array.from(authors).sort();
+  }, [filteredByLang]);
+
+  const filteredProjects = filteredByLang
     ?.filter((content: any) => {
       if (!query) {
         if (contentType) {
@@ -105,22 +132,45 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
         searchTransacription(content, query)
       );
     })
-
+    ?.filter((content: any) => {
+      if (authorFilter === "all") return true;
+      return content?.author === authorFilter;
+    })
     ?.map((content: any) => {
       return {
         id: content?.id,
         title: content?.title,
         description: content?.summary || content?.description || content?.title,
         link: `/convos/${content?.id}`,
+        author: content?.author,
+        createdAt: content?.createdAt,
         ...content,
       };
     });
+
+  const sortedProjects = useMemo(() => {
+    if (!filteredProjects) return [];
+    const sorted = [...filteredProjects];
+    if (sortBy === "newest") {
+      return sorted.sort(
+        (a, b) =>
+          new Date(b.createdAt || 0).getTime() -
+          new Date(a.createdAt || 0).getTime()
+      );
+    } else {
+      return sorted.sort(
+        (a, b) =>
+          new Date(a.createdAt || 0).getTime() -
+          new Date(b.createdAt || 0).getTime()
+      );
+    }
+  }, [filteredProjects, sortBy]);
 
   if (isLoading || isFavouriteContentLoading || isPublishedLoading) {
     return <LottieLoadingAnimation />;
   }
 
-  if (contentViewType === "favourites" && projects?.length === 0) {
+  if (contentViewType === "favourites" && sortedProjects?.length === 0) {
     return <Nothing message={`Nothing favourited`} icon={Icons.content} />;
   }
 
@@ -128,110 +178,175 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
     (content) => content.id === contentType
   );
 
-  if (!projects?.length) {
-    return (
-      <Nothing
-        message={`Nothing found for: ${query || selectedContent?.title || contentType}`}
-        icon={Icons.content}
-      />
-    );
-  }
-
   const defaultPic = `https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png`;
 
   return (
-    <div className="max-w-5xl mx-auto px-8">
-      <section className="">
-        <div className="mt-4 grid grid-cols-3 sm:grid-cols-6 gap-4 gap-y-4 lg:gap-8">
-          {projects?.map((item: any) => {
-            const isFavourited = favouriteContents?.items?.find(
-              (content: any) => content?.id === item.id
-            );
+    <div>
+      <div className="flex gap-4 mb-6 flex-wrap">
+        <Select
+          value={sortBy}
+          onValueChange={(value: SortByType) => setSortBy(value)}
+        >
+          <SelectTrigger className="w-[140px]">
+            <SelectValue placeholder="Sort by" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="newest">Newest</SelectItem>
+            <SelectItem value="oldest">Oldest</SelectItem>
+          </SelectContent>
+        </Select>
 
-            return (
-              <div
-                key={JSON.stringify(item)}
-                className="block col-span-3 lg:col-span-2"
-              >
-                <Link
-                  href={`/convos/${item?.id}`}
-                  className="block relative"
-                  onClick={(event) => {
-                    adaptive?.(mandoEventIds.contentViewed.id, {
-                      contentId: item?.id,
-                      email: authUser?.email || "",
-                    });
-                    if (!event.defaultPrevented) {
-                      setRecentlyWatched(item);
-                      setMode(item.id);
-                    }
-                  }}
+        <Select
+          value={contentType || "all"}
+          onValueChange={(value: string) => setContentViewType(value)}
+        >
+          <SelectTrigger className="w-[140px]">
+            <SelectValue placeholder="Type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Types</SelectItem>
+            {contentTypes.map((type) => (
+              <SelectItem key={type.id} value={type.id}>
+                {type.title}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {allAuthors.length > 0 && (
+          <Select value={authorFilter} onValueChange={setAuthorFilter}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Filter by author" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Authors</SelectItem>
+              {allAuthors.map((author) => (
+                <SelectItem key={author} value={author}>
+                  {author}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+      </div>
+
+      {!sortedProjects?.length ? (
+        <Nothing
+          message={`Nothing found for: ${query || selectedContent?.title || contentType}`}
+          icon={Icons.content}
+        />
+      ) : (
+        <section>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(32rem,1fr))] sm:grid-cols-[repeat(2,minmax(20rem,1fr))] gap-8">
+            {sortedProjects?.map((item: any, index: number) => {
+              const isFavourited = favouriteContents?.items?.find(
+                (content: any) => content?.id === item.id
+              );
+
+              return (
+                <motion.div
+                  key={item.id || index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="dark:hover:bg-[rgb(14,15,16)] dark:bg-[rgb(11,12,13)] hover:bg-gray-100 bg-gray-50 flex flex-col sm:flex-row shadow rounded-lg overflow-hidden"
                 >
-                  <button
-                    disabled={toggleFavouritContentMutation.isPending}
-                    className="text-xl z-50 absolute right-2 top-2"
+                  <Link
+                    href={`/convos/${item?.id}`}
+                    className="flex flex-col sm:flex-row w-full"
                     onClick={(event) => {
-                      event.preventDefault();
-                      if (isFavourited) {
-                        toggleFavouritContentMutation
-                          .mutateAsync({
-                            type: "unfavourite",
-                            contentId: item?.id,
-                          })
-                          .then(() => {
-                            toast({
-                              title: "Success",
-                              description: "Content successfully unfavourited",
-                            });
-                          });
-                      } else {
-                        toggleFavouritContentMutation
-                          .mutateAsync({
-                            type: "favourite",
-                            contentId: item?.id,
-                          })
-                          .then(() => {
-                            toast({
-                              title: "Success",
-                              description: "Content successfully favourited",
-                            });
-                          });
+                      adaptive?.(mandoEventIds.contentViewed.id, {
+                        contentId: item?.id,
+                        email: authUser?.email || "",
+                      });
+                      if (!event.defaultPrevented) {
+                        setRecentlyWatched(item);
+                        setMode(item.id);
                       }
                     }}
                   >
-                    {isFavourited ? <Icons.heartSolid /> : <Icons.heart />}
-                  </button>
-                  <img
-                    className="object-cover rounded-xl w-full aspect-video"
-                    src={
-                      item?.coverPhotoUrl ||
-                      item?.thumbnails?.standard?.url ||
-                      item?.thumbnails?.high?.url ||
-                      item?.thumbnails?.medium?.url ||
-                      item?.thumbnails?.default?.url ||
-                      item?.thumbnails?.maxres?.url ||
-                      item?.thumbnails?.[0]?.url ||
-                      defaultPic
-                    }
-                    alt={item?.title}
-                  />
-                </Link>
-
-                <div>
-                  <p className="mt-2 truncate">
-                    {" "}
-                    <span>{item?.title}</span>
-                  </p>
-                  <p className="font-light text-gray-400 text-sm capitalize">
-                    {" "}
-                    <span>{item?.lang}</span>
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+                    <div className="p-2">
+                      <div
+                        className="aspect-square sm:w-40 sm:flex-shrink-0 bg-cover bg-center"
+                        style={{
+                          backgroundImage: `url(${
+                            item?.coverPhotoUrl ||
+                            item?.thumbnails?.standard?.url ||
+                            item?.thumbnails?.high?.url ||
+                            item?.thumbnails?.medium?.url ||
+                            item?.thumbnails?.default?.url ||
+                            item?.thumbnails?.maxres?.url ||
+                            item?.thumbnails?.[0]?.url ||
+                            defaultPic
+                          })`,
+                        }}
+                      />
+                    </div>
+                    <div className="p-4 flex flex-col justify-between flex-1">
+                      <div>
+                        <h3 className="font-semibold text-lg truncate dark:text-white dark:hover:text-rose-500">
+                          {item?.title}
+                        </h3>
+                        <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
+                          <span className="capitalize">{item?.lang}</span>
+                          {item?.author && (
+                            <>
+                              <span>•</span>
+                              <span>{item.author}</span>
+                            </>
+                          )}
+                        </div>
+                        {item?.description && (
+                          <p className="text-sm text-gray-400 mt-2 line-clamp-2">
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
+                      <button
+                        disabled={toggleFavouritContentMutation.isPending}
+                        className="text-xl z-50 self-start mt-2"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          if (isFavourited) {
+                            toggleFavouritContentMutation
+                              .mutateAsync({
+                                type: "unfavourite",
+                                contentId: item?.id,
+                              })
+                              .then(() => {
+                                toast({
+                                  title: "Success",
+                                  description:
+                                    "Content successfully unfavourited",
+                                });
+                              });
+                          } else {
+                            toggleFavouritContentMutation
+                              .mutateAsync({
+                                type: "favourite",
+                                contentId: item?.id,
+                              })
+                              .then(() => {
+                                toast({
+                                  title: "Success",
+                                  description:
+                                    "Content successfully favourited",
+                                });
+                              });
+                          }
+                        }}
+                      >
+                        {isFavourited ? <Icons.heartSolid /> : <Icons.heart />}
+                      </button>
+                    </div>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

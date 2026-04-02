@@ -228,7 +228,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               />
             )}
 
-            {editMode && (
+            {!editMode && (
               <div className="p-4 bg-gray-100 dark:bg-[rgb(15,16,17)] mb-2">
                 <AudioBookPlayerControls
                   loop={loop}
@@ -244,7 +244,9 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 />
 
                 <div className="flex items-center gap-4">
-                  <span className="text-sm">{formatTime(currentTime)}</span>
+                  <span className="text-sm w-14">
+                    {formatTime(currentTime)}
+                  </span>
                   <Slider
                     min={0}
                     max={duration}

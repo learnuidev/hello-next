@@ -28,8 +28,9 @@ export function AudioBookPlayerControls({
 }: any) {
   return (
     <div className="flex items-center justify-center sm:gap-16 gap-4 bg-gray-50 dark:bg-black p-4 rounded-2xl shadow-sm mb-8">
-      <div className="dark:bg-[rgb(21,22,23)] p-2 px-8 flex gap-4 rounded-full">
-        <ContentEditButton />
+      <div className="p-2 px-8 flex gap-8 rounded-full">
+        <PreviewButton className="text-2xl w-8" />
+        <ContentEditButton className="text-2xl w-8" />
       </div>
 
       <div className="dark:bg-[rgb(21,22,23)] p-2 px-8 flex gap-4 rounded-full">
@@ -70,7 +71,7 @@ export function AudioBookPlayerControls({
         </button>
       </div>
 
-      <div className="dark:bg-[rgb(21,22,23)] p-2 px-8 flex gap-4 rounded-full">
+      <div className="p-2 px-8 flex gap-4 rounded-full">
         <PinyinButton className="text-2xl" />
 
         <EnButton className="text-2xl" />
@@ -81,8 +82,6 @@ export function AudioBookPlayerControls({
           disabled={!(showEn && containsChinglish)}
           className={"text-2xl"}
         />
-
-        <PreviewButton />
       </div>
     </div>
   );

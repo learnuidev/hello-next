@@ -1,66 +1,37 @@
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 
-const MAX_LIMIT = 9000;
-const THIRTY = 30;
-const SIXTY = 60;
-const NINTY = 90;
+const options = [
+  { limit: 30, title: "30s" },
+  { limit: 60, title: "60s" },
+  { limit: 90, title: "90s" },
+  { limit: 120, title: "120s" },
+  { limit: 9000, title: "All" },
+];
 
-export const ActiveButtons = () => {
+function ActiveButton({ limit, title }: { limit: number; title: string }) {
   const active = usePlayerViewModeStore((state) => state.active);
   const setActive = usePlayerViewModeStore((state) => state.setActive);
 
   return (
+    <button
+      className={
+        active === limit ? "dark:text-white text-black" : "text-gray-500"
+      }
+      onClick={() => {
+        setActive(limit);
+      }}
+    >
+      {title}
+    </button>
+  );
+}
+
+export const ActiveButtons = () => {
+  return (
     <div className="space-x-4 sm:text-xl flex justify-start">
-      <button
-        className={
-          active === THIRTY ? "dark:text-white text-black" : "text-gray-500"
-        }
-        onClick={() => {
-          setActive(THIRTY);
-        }}
-      >
-        30s
-      </button>
-      <button
-        className={
-          active === SIXTY ? "dark:text-white text-black" : "text-gray-500"
-        }
-        onClick={() => {
-          setActive(SIXTY);
-        }}
-      >
-        60s
-      </button>
-      <button
-        className={
-          active === NINTY ? "dark:text-white text-black" : "text-gray-500"
-        }
-        onClick={() => {
-          setActive(NINTY);
-        }}
-      >
-        90s
-      </button>
-      <button
-        className={
-          active === 120 ? "dark:text-white text-black" : "text-gray-500"
-        }
-        onClick={() => {
-          setActive(120);
-        }}
-      >
-        120s
-      </button>
-      <button
-        className={
-          active === 9000 ? "dark:text-white text-black" : "text-gray-500"
-        }
-        onClick={() => {
-          setActive(MAX_LIMIT);
-        }}
-      >
-        All
-      </button>
+      {options.map((option) => {
+        return <ActiveButton key={JSON.stringify(option)} {...option} />;
+      })}
     </div>
   );
 };

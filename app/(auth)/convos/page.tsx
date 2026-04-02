@@ -88,19 +88,19 @@ type ViewType = "history" | "me" | "public" | "favourites";
 
 const tabs = [
   {
-    label: "History",
+    label: "历史",
     value: "history" as ViewType,
   },
   {
-    label: "Me",
+    label: "我",
     value: "me" as ViewType,
   },
   {
-    label: "Public",
+    label: "公开",
     value: "public" as ViewType,
   },
   {
-    label: "Favourites",
+    label: "收藏",
     value: "favourites" as ViewType,
   },
 ];

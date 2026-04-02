@@ -52,7 +52,7 @@ export function AudioBookPlayerControls({
 
   return (
     <div className="flex items-center justify-center sm:gap-16 gap-4 bg-gray-50 dark:bg-black p-4 rounded-2xl shadow-sm mb-8">
-      <div className="p-2 px-8 flex gap-8 rounded-full">
+      <div className="p-2 px-8 flex gap-4 rounded-full">
         <FontSizeControls />
         <PreviewButton className="text-2xl w-8" />
         <ContentEditButton className="text-2xl w-8" />

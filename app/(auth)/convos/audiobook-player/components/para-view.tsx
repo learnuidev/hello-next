@@ -19,6 +19,7 @@ import Link from "next/link";
 
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { CharacterItem } from "@/components/_select-character/character-item";
+import { useFontSizeStore } from "../hooks/use-font-size";
 
 // import { getYablaLink } from "./utils/get-yabla-link";
 
@@ -70,6 +71,8 @@ export const ParaView = ({
       ? [Object.values(groupedTranscriptions)?.[0]]
       : Object.values(groupedTranscriptions);
 
+  const { fontSize } = useFontSizeStore();
+
   return (
     <div className={cn("px-4 pb-24", "max-w-4xl", "dark:bg-[rgb(13,14,15)]")}>
       <div className="sticky top-0 py-4 bg-gray-50 z-50 dark:bg-[rgb(9,10,11)]">
@@ -99,7 +102,10 @@ export const ParaView = ({
             "h-[400px] sm:h-[640px]"
           )}
         >
-          <div className="space-y-8">
+          <div
+            className="space-y-8"
+            style={{ lineHeight: `${fontSize * 2.25}px` }}
+          >
             {paraTranscriptions?.map((transcriptions: any) => {
               const hanzis = transcriptions
                 ?.map((t: any) => t?.hanzi)
@@ -125,7 +131,7 @@ export const ParaView = ({
                             className={`${
                               currentTime
                                 ? isActiveTranscription
-                                  ? "dark:text-white bg-yellow-200 dark:bg-black"
+                                  ? "dark:text-white light:bg-yellow-200"
                                   : "dark:text-gray-400"
                                 : ""
                             } transition block py-1 px-1`}
@@ -148,6 +154,7 @@ export const ParaView = ({
 
                               return (
                                 <span
+                                  style={{ fontSize: `${fontSize * 1.25}px` }}
                                   className="sm:text-xl"
                                   key={`para-mode-${item}-${idx}-${transcriptionInput}`}
                                 >

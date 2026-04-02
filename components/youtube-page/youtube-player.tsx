@@ -64,6 +64,7 @@ import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-s
 import { useSelectedItem } from "./use-selected-item";
 import { smartSplit } from "./utils/smart-split";
 import { isYoutube } from "@/app/(auth)/convos/utils/is-youtube";
+import { usePlayerViewModeStore } from "./player-view-mode-store";
 
 interface ViewModeState {
   viewMode: string;
@@ -96,82 +97,45 @@ const THIRTY = 30;
 const SIXTY = 60;
 const NINTY = 90;
 
-const useViewModeStore = create(
-  persist(
-    (set: any, get: any) => ({
-      viewMode: "para",
-      setViewMode: (viewMode: any) =>
-        typeof viewMode === "function"
-          ? set({ viewMode: viewMode(get().viewMode) })
-          : set({ viewMode }),
-
-      active: NINTY,
-      setActive: (active: any) => set({ active }),
-
-      toggleLoop: null,
-      setToggleLoop: (toggleLoop: any) => set({ toggleLoop }),
-
-      toggleLoops: [],
-      setToggleLoops: (toggleLoops: any) =>
-        typeof toggleLoops === "function"
-          ? set({ toggleLoops: toggleLoops(get().toggleLoops) })
-          : set({ toggleLoops }),
-
-      qaMode: false,
-      setQaMode: (qaMode: any) => set({ qaMode }),
-
-      isPlaying: false,
-      setIsPlaying: (isPlaying: any) => set({ isPlaying }),
-
-      isVideoHidden: false,
-      setIsVideoHidden: (isVideoHidden: any) =>
-        typeof isVideoHidden === "function"
-          ? set({ isVideoHidden: isVideoHidden(get().isVideoHidden) })
-          : set({ isVideoHidden }),
-
-      focusMode: false,
-      setFocusMode: (focusMode: any) => set({ focusMode }),
-    }),
-    {
-      name: "mandarino/youtube-view-mode",
-      storage: createJSONStorage(() => localStorage),
-    }
-  )
-);
-
 export function YouTubePlayer({ contentId }: { contentId: string }) {
-  const viewMode = useViewModeStore((state) => state.viewMode);
-  const setViewMode = useViewModeStore((state) => state.setViewMode);
+  const viewMode = usePlayerViewModeStore((state) => state.viewMode);
+  const setViewMode = usePlayerViewModeStore((state) => state.setViewMode);
 
   const { data: userPreference } = useGetUserPreferenceQuery();
 
-  const active = useViewModeStore((state) => state.active);
-  const setActive = useViewModeStore((state) => state.setActive);
+  const active = usePlayerViewModeStore((state) => state.active);
+  const setActive = usePlayerViewModeStore((state) => state.setActive);
 
-  const toggleLoop = useViewModeStore((state) => state.toggleLoop);
-  const setToggleLoop = useViewModeStore((state) => state.setToggleLoop);
+  const toggleLoop = usePlayerViewModeStore((state) => state.toggleLoop);
+  const setToggleLoop = usePlayerViewModeStore((state) => state.setToggleLoop);
 
-  const _toggleLoops: any = useViewModeStore((state) => state.toggleLoops);
+  const _toggleLoops: any = usePlayerViewModeStore(
+    (state) => state.toggleLoops
+  );
 
   const toggleLoops = useMemo(
     () => _toggleLoops?.filter((loop: any) => loop?.contentId === contentId),
     [_toggleLoops, contentId]
   );
-  const setToggleLoops = useViewModeStore((state) => state.setToggleLoops);
+  const setToggleLoops = usePlayerViewModeStore(
+    (state) => state.setToggleLoops
+  );
 
-  const qaMode = useViewModeStore((state) => state.qaMode);
-  const setQaMode = useViewModeStore((state) => state.setQaMode);
+  const qaMode = usePlayerViewModeStore((state) => state.qaMode);
+  const setQaMode = usePlayerViewModeStore((state) => state.setQaMode);
 
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
 
-  const isPlaying = useViewModeStore((state) => state.isPlaying);
-  const setIsPlaying = useViewModeStore((state) => state.setIsPlaying);
+  const isPlaying = usePlayerViewModeStore((state) => state.isPlaying);
+  const setIsPlaying = usePlayerViewModeStore((state) => state.setIsPlaying);
 
-  const isVideoHidden = useViewModeStore((state) => state.isVideoHidden);
-  const setIsVideoHidden = useViewModeStore((state) => state.setIsVideoHidden);
+  const isVideoHidden = usePlayerViewModeStore((state) => state.isVideoHidden);
+  const setIsVideoHidden = usePlayerViewModeStore(
+    (state) => state.setIsVideoHidden
+  );
 
-  const focusMode = useViewModeStore((state) => state.focusMode);
-  const setFocusMode = useViewModeStore((state) => state.setFocusMode);
+  const focusMode = usePlayerViewModeStore((state) => state.focusMode);
+  const setFocusMode = usePlayerViewModeStore((state) => state.setFocusMode);
 
   const editMode = useContentEditStore((state) => state.editMode);
 

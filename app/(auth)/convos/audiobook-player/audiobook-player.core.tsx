@@ -6,6 +6,7 @@ import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode
 import { useContextPlayContextState } from "@/components/youtube-page/hooks/use-play-history-state";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { IContent } from "@/domain/content/content.api";
+import { useViewModeStore } from "@/components/convos/useViewModeStore";
 import { cn } from "@/lib/utils";
 import ReactPlayer from "react-player";
 import { formatTime } from "../_play/utils";
@@ -46,6 +47,8 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const isYoutubeOrVideo =
     isYoutube(content?.audio) || isVideoUrl(content?.audio);
 
+  const viewMode = useViewModeStore((state) => state.viewMode);
+
   const showEn = useBrightModeStore((state) => state.showEn);
 
   const { contextId, setNewContextId } = useContextPlayContextState();
@@ -57,6 +60,8 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   if (!content) {
     return;
   }
+
+  console.log("VIEW MODE", viewMode);
 
   return (
     <MandoContextMenu lang={content?.lang || ""}>
@@ -169,6 +174,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 playing={playing}
                 showEn={showEn}
                 containsChinglish={containsChinglish}
+                isYoutubeOrVideo={isYoutubeOrVideo}
               />
 
               <div className="flex items-center gap-4">

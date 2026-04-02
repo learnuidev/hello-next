@@ -13,6 +13,16 @@ import { useUpdateContentMutation } from "@/domain/content/use-update-content-mu
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { useRouter } from "next/navigation";
 import { IContent } from "@/domain/content/content.api";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faVideo, faVideoSlash } from "@fortawesome/pro-thin-svg-icons";
+import { useViewModeStore } from "@/components/convos/useViewModeStore";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -369,95 +379,166 @@ export const AudioPlayer = () => {
     }
   }, [currentTime, activeSubtitle, loop, seek]);
 
-  const ContentSettingsNavbar = () => (
-    <div className="space-x-4 sm:space-x-8 flex items-center">
-      <UploadFileButton
-        icon={<Icons.upload className="text-2xl" />}
-        types={["mp3", "m4a", "webm"]}
-        onSuccess={(res) => {
-          return updateContentMutation.mutateAsync({
-            id: content?.id || "",
-            audio: res.sourceUrl,
-            audioUploadBucketKey: res.uploadBucketKey,
-            audioS3LinkAddedAt: Date.now(),
-            updateContent: true,
-          } as any);
-        }}
-      />
-      {/* )} */}
+  const ContentSettingsNavbar = () => {
+    const viewMode = useViewModeStore((state) => state.viewMode);
+    const setViewMode = useViewModeStore((state) => state.setViewMode);
+    const isVideoHidden = useViewModeStore((state) => state.isVideoHidden);
+    const setIsVideoHidden = useViewModeStore((state) => state.setIsVideoHidden);
 
-      {editMode && (
+    const isYoutubeOrVideo = content?.audio?.includes("youtube") ||
+      content?.audio?.includes("youtu.be") ||
+      content?.audio?.match(/\.(mp4|webm|ogg)$/i);
+
+    const toggleKaraokeMode = () => {
+      setViewMode((prev: any) => (prev === "karaoke" ? null : "karaoke"));
+      setIsVideoHidden((isHidden: any) =>
+        viewMode !== "karaoke" ? true : false
+      );
+    };
+
+    return (
+      <div className="space-x-4 sm:space-x-8 flex items-center">
+        <UploadFileButton
+          icon={<Icons.upload className="text-2xl" />}
+          types={["mp3", "m4a", "webm"]}
+          onSuccess={(res) => {
+            return updateContentMutation.mutateAsync({
+              id: content?.id || "",
+              audio: res.sourceUrl,
+              audioUploadBucketKey: res.uploadBucketKey,
+              audioS3LinkAddedAt: Date.now(),
+              updateContent: true,
+            } as any);
+          }}
+        />
+        {/* )} */}
+
+        {editMode && (
+          <button
+            onClick={() => {
+              const editedTranscriptions = {
+                id: content?.id,
+                transcriptions: content?.transcriptions?.map(
+                  (transcription: any) => {
+                    const time = times?.find(
+                      (t: any) => t?.id === transcription?.id
+                    ) as any;
+                    return {
+                      ...transcription,
+                      ...time,
+                    };
+                  }
+                ),
+              };
+
+              updateContentMutation
+                .mutateAsync({
+                  ...editedTranscriptions,
+                } as any)
+                .then((resp) => {
+                  setEditMode();
+                  // resetTimes();
+                });
+            }}
+          >
+            {updateContentMutation.isPending ? "Saving..." : "Save"}
+          </button>
+        )}
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button>
+              <Icons.gear
+                className={cn(
+                  "sm:text-2xl text-2xl",
+                  editMode ? "dark:text-white text-black" : "text-gray-400"
+                )}
+              />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuItem
+              onClick={() => toggleKaraokeMode()}
+              className={cn(
+                "cursor-pointer",
+                viewMode === "karaoke"
+                  ? "text-rose-500 font-bold"
+                  : "text-gray-600"
+              )}
+            >
+              Karaoke View
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setViewMode((prev: string | null) => (prev === "para" ? null : "para"))}
+              className={cn(
+                "cursor-pointer",
+                viewMode === "para"
+                  ? "text-rose-500 font-bold"
+                  : "text-gray-600"
+              )}
+            >
+              Paragraph View
+            </DropdownMenuItem>
+            {isYoutubeOrVideo && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() =>
+                    setIsVideoHidden((isHidden: any) => !isHidden)
+                  }
+                  className={cn(
+                    "cursor-pointer",
+                    isVideoHidden
+                      ? "text-rose-500 font-bold"
+                      : "text-gray-600"
+                  )}
+                >
+                  {isVideoHidden ? (
+                    <>
+                      <FontAwesomeIcon icon={faVideo} className="mr-2" />
+                      Show Video
+                    </>
+                  ) : (
+                    <>
+                      <FontAwesomeIcon icon={faVideoSlash} className="mr-2" />
+                      Hide Video
+                    </>
+                  )}
+                </DropdownMenuItem>
+              </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <button
           onClick={() => {
-            const editedTranscriptions = {
-              id: content?.id,
-              transcriptions: content?.transcriptions?.map(
-                (transcription: any) => {
-                  const time = times?.find(
-                    (t: any) => t?.id === transcription?.id
-                  ) as any;
-                  return {
-                    ...transcription,
-                    ...time,
-                  };
-                }
-              ),
-            };
-
-            updateContentMutation
-              .mutateAsync({
-                ...editedTranscriptions,
-              } as any)
-              .then((resp) => {
-                setEditMode();
-                // resetTimes();
-              });
+            setViewMode((viewMode: string) => (viewMode === "stats" ? "core" : "stats"));
           }}
         >
-          {updateContentMutation.isPending ? "Saving..." : "Save"}
+          <Icons.chartColumn
+            className={cn(
+              "sm:text-2xl text-2xl",
+              viewMode === "stats"
+                ? "dark:text-white text-black"
+                : "text-gray-400"
+            )}
+          />
         </button>
-      )}
-
-      <button
-        onClick={() => {
-          setEditMode();
-        }}
-      >
-        <Icons.gear
-          className={cn(
-            "sm:text-2xl text-2xl",
-            editMode ? "dark:text-white text-black" : "text-gray-400"
-          )}
-        />
-      </button>
-      <button
-        onClick={() => {
-          setViewMode((viewMode) => (viewMode === "stats" ? "core" : "stats"));
-        }}
-      >
-        <Icons.chartColumn
-          className={cn(
-            "sm:text-2xl text-2xl",
-            viewMode === "stats"
-              ? "dark:text-white text-black"
-              : "text-gray-400"
-          )}
-        />
-      </button>
-      <button
-        onClick={() => {
-          togglePinyin((pinyin) => !pinyin);
-        }}
-      >
-        <Icons.language
-          className={cn(
-            "sm:text-2xl text-2xl",
-            viewPinyin ? "dark:text-white text-black" : "text-gray-400"
-          )}
-        />
-      </button>
-    </div>
-  );
+        <button
+          onClick={() => {
+            togglePinyin((pinyin) => !pinyin);
+          }}
+        >
+          <Icons.language
+            className={cn(
+              "sm:text-2xl text-2xl",
+              viewPinyin ? "dark:text-white text-black" : "text-gray-400"
+            )}
+          />
+        </button>
+      </div>
+    );
+  };
 
   return (
     <div className="relative">

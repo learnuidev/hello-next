@@ -153,3 +153,9 @@ export function isTwitterUrl(url: string) {
     /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/[a-zA-Z0-9_]+\/status\/\d+$/;
   return twitterRegex.test(url);
 }
+
+export const splitEvery = (arr: any, size: any) => {
+  return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+    arr.slice(i * size, i * size + size)
+  );
+};

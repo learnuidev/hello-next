@@ -4,10 +4,12 @@ import { ContentTranscription, IContent } from "@/domain/content/content.api";
 import { useMemo } from "react";
 
 export const useGetGroupedTranscriptions = ({
+  groupBy = "time",
   loop,
   currentTime,
   content,
 }: {
+  groupBy?: "time" | "length";
   content: IContent;
   currentTime: number;
   loop?: ContentTranscription;
@@ -18,7 +20,9 @@ export const useGetGroupedTranscriptions = ({
 
   const group = useMemo(() => {
     return getActiveTranscriptions({
-      limit: active,
+      groupBy,
+      timeLimit: active,
+      lengthLimit: 5,
       currentTime: _currentTime,
       transcriptions: content?.transcriptions || [],
     });

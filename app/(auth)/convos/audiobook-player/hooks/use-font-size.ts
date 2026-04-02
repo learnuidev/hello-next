@@ -16,6 +16,6 @@ export const useFontSizeStore = create<FontSizeState>((set, get) => ({
     })),
   decreaseFontSize: () =>
     set((state) => ({
-      fontSize: Math.max(state.fontSize - 2, 12),
+      fontSize: Math.max(state.fontSize - 2, 20),
     })),
 }));

@@ -91,7 +91,9 @@ export const ReaderViewParent = ({
                       <div key={JSON.stringify(transcription)}>
                         {showPinyin && (
                           <p
-                            style={{ fontSize: `${fontSize}px` }}
+                            style={{
+                              fontSize: `${Math.max(Math.min(20, fontSize * 0.75), 12)}px`,
+                            }}
                             className="font-extralight text-gray-500"
                           >
                             {transcription.pinyin || transcription?.roman}
@@ -101,7 +103,6 @@ export const ReaderViewParent = ({
                           onClick={() => {
                             seek(transcription?.start);
                           }}
-                          style={{ fontSize: `${fontSize}px` }}
                           className={cn(
                             isPlaying
                               ? transcription.start < currentTime &&
@@ -142,6 +143,9 @@ export const ReaderViewParent = ({
                                 }}
                               >
                                 <CharacterItem
+                                  style={{
+                                    fontSize: `${Math.min(42, fontSize * 1.75)}px`,
+                                  }}
                                   className={cn(
                                     isPlaying
                                       ? transcription.start < currentTime &&

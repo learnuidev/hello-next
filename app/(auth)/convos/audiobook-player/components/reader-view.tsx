@@ -90,14 +90,16 @@ function ReaderViewChinese({
             >
               {showPinyin && (
                 <span
-                  style={{ fontSize: `${fontSize * 0.75}px` }}
+                  style={{
+                    fontSize: `${Math.max(Math.min(20, fontSize * 0.75), 12)}px`,
+                  }}
                   className={cn("dark:text-gray-500 text-gray-800")}
                 >
                   {formatRoman(item)}
                 </span>
               )}
 
-              <span style={{ fontSize: `${fontSize}px !important` }}>
+              <span>
                 {smartSplit({
                   input: item?.hanzi || item?.input,
                   lang: currentTranscription?.lang,
@@ -109,8 +111,10 @@ function ReaderViewChinese({
                   return (
                     <span key={`${charItem}-pinin-view-${charIdx}`}>
                       <CharacterItem
+                        style={{
+                          fontSize: `${Math.min(fontSize * 1.25, 42)}px !important`,
+                        }}
                         character={charItem}
-                        style={{ fontSize: `${fontSize * 0.75}px` }}
                         className={cn(
                           "!text-3xl",
                           isSelected

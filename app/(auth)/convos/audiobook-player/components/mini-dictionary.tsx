@@ -47,8 +47,12 @@ export function MiniDictionary({
   const { hideMenuBar } = useCharacterMenuBarStore();
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
-  const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(null);
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(
+    null
+  );
+  const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(
+    null
+  );
   const isDragging = useRef(false);
 
   const onMouseDown = useCallback(
@@ -131,7 +135,10 @@ export function MiniDictionary({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
         setSelected(null);
         hideMenuBar();
       }
@@ -251,8 +258,10 @@ export function MiniDictionary({
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
       className={cn(
-        "bg-gray-50 dark:bg-[rgb(13,14,15)] rounded p-4 sm:p-8",
-        position ? "fixed z-50" : className || "w-full sm:max-w-[600px] mt-0 sticky top-0",
+        "bg-gray-50 dark:bg-[rgb(13,14,15)] rounded p-4 sm:p-8 sm:max-w-xl",
+        position
+          ? "fixed z-50"
+          : className || "w-full sm:max-w-[600px] mt-0 sticky top-0",
         position && (dragOffset ? "cursor-grabbing" : "cursor-grab")
       )}
       style={position ? { left: position.x, top: position.y } : undefined}

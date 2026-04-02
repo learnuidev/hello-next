@@ -14,6 +14,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { EnglishTopView } from "@/app/(auth)/contents/[contentId]/components/english-top-view";
 import { useFontSizeStore } from "../hooks/use-font-size";
+import { CharacterItem } from "@/components/_select-character/character-item";
 
 // import { getYablaLink } from "./utils/get-yabla-link";
 
@@ -109,7 +110,7 @@ export const ParaView = ({
                             className={`${
                               currentTime
                                 ? isActiveTranscription
-                                  ? "dark:text-white light:bg-yellow-200"
+                                  ? "dark:text-white bg-yellow-200 dark:bg-[rgb(11,12,13)]"
                                   : "dark:text-gray-400"
                                 : ""
                             } transition block py-1 px-1`}
@@ -132,18 +133,25 @@ export const ParaView = ({
 
                               return (
                                 <span
-                                  style={{ fontSize: `${fontSize * 1.25}px` }}
                                   className="sm:text-xl"
                                   key={`para-mode-${item}-${idx}-${transcriptionInput}`}
                                 >
-                                  {/* <CharacterItem
+                                  <CharacterItem
+                                    style={{
+                                      fontSize: `${Math.min(42, fontSize * 1.25)}px`,
+                                    }}
                                     character={item}
-                                    className={
+                                    className={cn(
                                       containsInUnknown &&
-                                      "font-light dark:!text-pink-300 !text-pink-500 text-2xl"
-                                    }
-                                  /> */}
-                                  {item}
+                                        "font-light dark:!text-pink-300 !text-pink-500",
+                                      currentTime
+                                        ? isActiveTranscription
+                                          ? "dark:text-rose-400 bg-yellow-200 dark:bg-[rgb(11,12,13)]"
+                                          : ""
+                                        : ""
+                                    )}
+                                  />
+                                  {/* {item} */}
                                 </span>
                               );
                             })}

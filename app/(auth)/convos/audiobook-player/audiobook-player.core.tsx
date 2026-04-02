@@ -169,7 +169,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
             {isYoutubeOrVideo && (
               <div
                 className={cn(
-                  "md:col-span-6 col-span-12 sm:mt-12",
+                  "md:col-span-6 col-span-12",
 
                   `${isVideoHidden || !isYoutubeOrVideo ? "hidden" : ""}`
                 )}

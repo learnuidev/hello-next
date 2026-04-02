@@ -55,8 +55,6 @@ export function MiniDictionary({
 
   const frequency = getFrequency({ content: content, input: selected });
 
-  console.log("CONTENT INSIGHTS", contentInsights);
-
   const timesMentioned = contentInsights?.filteredHskWords?.find(
     (word: any) => word?.hanzi === selected
   );
@@ -258,56 +256,56 @@ export function MiniDictionary({
         <div className="mt-8">
           <Tabs defaultValue="mentions">
             <TabsList className="space-x-4 bg-white dark:bg-black">
-              <TabsTrigger value="mentions">
-                Mentions
-              </TabsTrigger>
-              <TabsTrigger value="sentences">
-                Example Sentences
-              </TabsTrigger>
+              <TabsTrigger value="mentions">Mentions</TabsTrigger>
+              <TabsTrigger value="sentences">Example Sentences</TabsTrigger>
             </TabsList>
 
             <TabsContent value="mentions" className="mt-6">
               {mentionedTranscriptions && mentionedTranscriptions.length > 0 ? (
                 <div className="space-y-4">
-                  {(seeAllMentions ? mentionedTranscriptions : mentionedTranscriptions.slice(0, 3))
-                    ?.map(
-                      (transcription: ContentTranscription, index: number) => {
-                        return (
-                          <div
-                            key={transcription.id + "-" + index}
-                            className="flex gap-3 items-center"
-                          >
-                            <div className="flex-shrink-0">
-                              {seekAndPlay && (
-                                <button
-                                  onClick={() => seekAndPlay(transcription.start)}
-                                  title="Play from this time"
-                                >
-                                  <Icons.play className="w-4 h-4" />
-                                </button>
-                              )}
-                            </div>
-                            <div className="flex-1">
-                              <p
-                                className={
-                                  lang === "zh"
-                                    ? "text-xl"
-                                    : "text-[14px] sm:text-lg"
-                                }
+                  {(seeAllMentions
+                    ? mentionedTranscriptions
+                    : mentionedTranscriptions.slice(0, 3)
+                  )?.map(
+                    (transcription: ContentTranscription, index: number) => {
+                      return (
+                        <div
+                          key={transcription.id + "-" + index}
+                          className="flex gap-3 items-center"
+                        >
+                          <div className="flex-shrink-0">
+                            {seekAndPlay && (
+                              <button
+                                onClick={() => seekAndPlay(transcription.start)}
+                                title="Play from this time"
                               >
-                                {transcription?.hanzi || transcription?.input}
-                              </p>
-                            </div>
+                                <Icons.play className="w-4 h-4" />
+                              </button>
+                            )}
                           </div>
-                        );
-                      }
-                    )}
+                          <div className="flex-1">
+                            <p
+                              className={
+                                lang === "zh"
+                                  ? "text-xl"
+                                  : "text-[14px] sm:text-lg"
+                              }
+                            >
+                              {transcription?.hanzi || transcription?.input}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    }
+                  )}
                   {mentionedTranscriptions.length > 3 && (
                     <button
                       onClick={() => setSeeAllMentions(!seeAllMentions)}
                       className="text-sm text-blue-500 hover:text-blue-600 cursor-pointer"
                     >
-                      {seeAllMentions ? "Show less" : `+${mentionedTranscriptions.length - 3} more mentions`}
+                      {seeAllMentions
+                        ? "Show less"
+                        : `+${mentionedTranscriptions.length - 3} more mentions`}
                     </button>
                   )}
                 </div>
@@ -336,7 +334,9 @@ export function MiniDictionary({
                         )}
                         <p
                           className={
-                            lang === "zh" ? "text-2xl" : "text-[16px] sm:text-xl"
+                            lang === "zh"
+                              ? "text-2xl"
+                              : "text-[16px] sm:text-xl"
                           }
                         >
                           {sentence?.hanzi || sentence?.input}

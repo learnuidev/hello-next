@@ -1,22 +1,22 @@
-import { EnglishTopView } from "@/app/(auth)/contents/[contentId]/components/english-top-view";
+import { EnglishTopView } from "@/app/(auth)/convos/audiobook-player/components/english-top-view";
 import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { useReadModeState } from "@/components/read-mode-button";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
-import { getActiveTranscriptions } from "@/components/youtube-page/get-active-transcriptions";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 import { ContentTranscription, IContent } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
-import { useMemo } from "react";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useFontSizeStore } from "../hooks/use-font-size";
+import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
 import { ActiveButtons } from "./active-buttons";
 import { ReaderView } from "./reader-view";
 
 export const ReaderViewParent = ({
+  loop,
   content,
   currentTranscription,
   currentTime,
@@ -28,6 +28,7 @@ export const ReaderViewParent = ({
   currentTime: number;
   isPlaying: boolean;
   seek: (time: number) => void;
+  loop: ContentTranscription;
 }) => {
   const showEn = useBrightModeStore((state) => state.showEn);
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
@@ -37,18 +38,18 @@ export const ReaderViewParent = ({
 
   const { setShowMenuBar } = useCharacterMenuBarStore();
 
+  const _currentTime = loop ? loop.start : currentTime;
+
   // const active = 16;
   const active = usePlayerViewModeStore((state) => state.active);
 
   const { showChinglish, setShowChinglish } = useChinglishState();
 
-  const group = useMemo(() => {
-    return getActiveTranscriptions({
-      limit: active,
-      currentTime,
-      transcriptions: content?.transcriptions || [],
-    });
-  }, [active, currentTime, content?.transcriptions]);
+  const group = useGetGroupedTranscriptions({
+    loop,
+    currentTime,
+    content,
+  });
 
   const { readMode } = useReadModeState();
 

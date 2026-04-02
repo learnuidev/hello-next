@@ -18,8 +18,8 @@ import { Speak } from "./[content-id]/speak/speak";
 import { AI } from "./ai";
 import { AudiobookPlayer } from "./audiobook-player/audiobook-player";
 import { ContentSettings } from "./content-settings";
-import { isVideoUrl } from "./utils/is-video-url";
-import { isYoutube } from "./utils/is-youtube";
+// import { isVideoUrl } from "./utils/is-video-url";
+// import { isYoutube } from "./utils/is-youtube";
 
 export const ConvoDetails = ({ contentId }: { contentId: string }) => {
   const searchParams = useSearchParams();

@@ -12,9 +12,10 @@ import { ActiveButtons } from "./active-buttons";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-import { EnglishTopView } from "@/app/(auth)/contents/[contentId]/components/english-top-view";
+import { EnglishTopView } from "@/app/(auth)/convos/audiobook-player/components/english-top-view";
 import { useFontSizeStore } from "../hooks/use-font-size";
 import { CharacterItem } from "@/components/_select-character/character-item";
+import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
 
 // import { getYablaLink } from "./utils/get-yabla-link";
 
@@ -24,10 +25,12 @@ export const ParaView = ({
   content,
   currentTranscription,
   currentTime,
+  loop,
 
   isPlaying,
   seekAndPlay,
 }: {
+  loop: ContentTranscription;
   currentTranscription: ContentTranscription;
   content: IContent;
   currentTime: number;
@@ -46,13 +49,11 @@ export const ParaView = ({
 
   const { showChinglish, setShowChinglish } = useChinglishState();
 
-  const group = useMemo(() => {
-    return getActiveTranscriptions({
-      limit: active,
-      currentTime,
-      transcriptions: content?.transcriptions || [],
-    });
-  }, [active, currentTime, content?.transcriptions]);
+  const group = useGetGroupedTranscriptions({
+    loop,
+    currentTime,
+    content,
+  });
 
   const transcriptions = content?.transcriptions;
   const trans = useMemo(() => {

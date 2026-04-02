@@ -155,10 +155,12 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                     currentTime={currentTime}
                     seek={seek}
                     isPlaying
+                    loop={loop}
                   />
                 </div>
               ) : (
                 <ParaView
+                  loop={loop}
                   content={content}
                   currentTranscription={currentTranscription}
                   currentTime={currentTime}

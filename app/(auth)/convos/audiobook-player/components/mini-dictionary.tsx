@@ -7,7 +7,7 @@ import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useContentSearchHistory } from "../hooks/use-content-search-history";
 import { useDeleteHistoryMutation } from "@/domain/history/delete-history.mutation";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
@@ -41,6 +41,26 @@ export function MiniDictionary({
   const { searchHistory, addSearchHistory } = useContentSearchHistory({
     contentId: contentId || "",
   });
+
+  const { setSelected } = useSelectedItem();
+
+  const { hideMenuBar } = useCharacterMenuBarStore();
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setSelected(null);
+        hideMenuBar();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setSelected, hideMenuBar]);
 
   const addContentUnknownMutation = useAddContentUnknownMutation();
   const removeContentUnknownMutation = useRemoveContentUnknownMutation();
@@ -84,10 +104,6 @@ export function MiniDictionary({
       component: selected,
       lang,
     });
-
-  const { setSelected } = useSelectedItem();
-
-  const { hideMenuBar } = useCharacterMenuBarStore();
 
   const { data, isLoading: isMeaningDiscoveryLoading } = useListDiscoveryQuery({
     content: selected,
@@ -150,6 +166,7 @@ export function MiniDictionary({
 
   return (
     <div
+      ref={containerRef}
       className={cn(
         " bg-gray-50 dark:bg-[rgb(13,14,15)] rounded p-4 sm:p-8",
         className || "w-full sm:max-w-[600px] mt-0 sticky top-0"

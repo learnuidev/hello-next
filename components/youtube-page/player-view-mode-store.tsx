@@ -8,6 +8,12 @@ interface ViewModeState {
   active: number;
   setActive: (active: number) => void;
 
+  activeTimeLimit: number;
+  setActiveTimeLimit: (activeTimeLimit: number) => void;
+
+  activeLengthLimit: number;
+  setActiveLengthLimit: (activeLengthLimit: number) => void;
+
   toggleLoop: any | null;
   setToggleLoop: (toggleLoop: any | null) => void;
 
@@ -43,6 +49,12 @@ export const usePlayerViewModeStore = create(
 
       active: NINTY,
       setActive: (active: any) => set({ active }),
+
+      activeTimeLimit: NINTY,
+      setActiveTimeLimit: (activeTimeLimit: any) => set({ activeTimeLimit }),
+
+      activeLengthLimit: 10,
+      setActiveLengthLimit: (activeLengthLimit: any) => set({ activeLengthLimit }),
 
       toggleLoop: null,
       setToggleLoop: (toggleLoop: any) => set({ toggleLoop }),

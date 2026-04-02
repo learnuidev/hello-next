@@ -45,7 +45,7 @@ export const ParaView = ({
   const { setShowMenuBar } = useCharacterMenuBarStore();
 
   // const active = 16;
-  const active = usePlayerViewModeStore((state) => state.active);
+  const activeTimeLimit = usePlayerViewModeStore((state) => state.activeTimeLimit);
 
   const { showChinglish, setShowChinglish } = useChinglishState();
 
@@ -63,7 +63,7 @@ export const ParaView = ({
   const groupedTranscriptions = groupBy(trans || []);
 
   const paraTranscriptions =
-    active !== 9000
+    activeTimeLimit !== 9000
       ? [Object.values(groupedTranscriptions)?.[0]]
       : Object.values(groupedTranscriptions);
 
@@ -72,7 +72,7 @@ export const ParaView = ({
   return (
     <div className={cn("px-4 pb-24", "max-w-4xl")}>
       <EnglishTopView currentTranscription={currentTranscription}>
-        <ActiveButtons />
+        <ActiveButtons isReaderView={false} />
       </EnglishTopView>
 
       <div className="pb-32">
@@ -96,7 +96,7 @@ export const ParaView = ({
                   key={`${JSON.stringify(transcriptions)}-${JSON.stringify(hanzis)}`}
                 >
                   <div className="flex flex-wrap">
-                    {(active !== MAX_LIMIT ? group : transcriptions).map(
+                    {(activeTimeLimit !== MAX_LIMIT ? group : transcriptions).map(
                       (transcription: any) => {
                         const isActiveTranscription =
                           transcription?.start < currentTime &&

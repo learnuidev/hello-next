@@ -16,17 +16,18 @@ export const useGetGroupedTranscriptions = ({
 }) => {
   const _currentTime = loop ? loop.start : currentTime;
 
-  const active = usePlayerViewModeStore((state) => state.active);
+  const activeTimeLimit = usePlayerViewModeStore((state) => state.activeTimeLimit);
+  const activeLengthLimit = usePlayerViewModeStore((state) => state.activeLengthLimit);
 
   const group = useMemo(() => {
     return getActiveTranscriptions({
       groupBy,
-      timeLimit: active,
-      lengthLimit: 5,
+      timeLimit: activeTimeLimit,
+      lengthLimit: activeLengthLimit,
       currentTime: _currentTime,
       transcriptions: content?.transcriptions || [],
     });
-  }, [active, currentTime, content?.transcriptions]);
+  }, [activeTimeLimit, activeLengthLimit, _currentTime, groupBy, content?.transcriptions]);
 
   return group;
 };

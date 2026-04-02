@@ -40,12 +40,10 @@ export const ReaderViewParent = ({
 
   const _currentTime = loop ? loop.start : currentTime;
 
-  // const active = 16;
-  const active = usePlayerViewModeStore((state) => state.active);
-
   const { showChinglish, setShowChinglish } = useChinglishState();
 
   const group = useGetGroupedTranscriptions({
+    groupBy: "length",
     loop,
     currentTime,
     content,
@@ -56,7 +54,7 @@ export const ReaderViewParent = ({
   return (
     <div className={cn("px-4 pb-24", "max-w-4xl")}>
       <EnglishTopView currentTranscription={currentTranscription}>
-        <ActiveButtons />
+        <ActiveButtons isReaderView />
       </EnglishTopView>
 
       <div className="pb-32">

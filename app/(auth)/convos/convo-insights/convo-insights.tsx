@@ -7,7 +7,7 @@ import { useSelectedCharacter } from "../use-selected-character";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useGetContentInsightsNew } from "../use-get-content-insights.new";
 import { useInsightsSettingsStore } from "../use-insights-settings-store";
 import { ConvoContextDialog } from "./convo-context-dialog";
@@ -16,9 +16,17 @@ import { ConvoInsightsFilter } from "./convo-insights-filter";
 import { ConvoInsightsHeader } from "./convo-insights-header";
 import { ConvoInsightsNoNChinese } from "./convo-insights-non-chinese";
 import { TotalPlaysChart } from "./total-plays-chart";
+import { ConvoInsightsTabs } from "./convo-insights-tabs";
+import { ConvoInsightsSearch } from "./convo-insights-search";
+import { ConvoInsightsTable } from "./convo-insights-table";
+import { ConvoInsightsLearnStatusFilter } from "./convo-insights-learn-status-filter";
+import { ConvoInsightsCharacterStatsCard } from "./convo-insights-character-stats-card";
+import { AnimatePresence, motion } from "framer-motion";
 
 export function ConvoInsights({ contentId }: { contentId: string }) {
   const viewType = useInsightsSettingsStore((state) => state.type);
+  const searchQuery = useInsightsSettingsStore((state) => state.searchQuery);
+  const learnStatus = useInsightsSettingsStore((state) => state.learnStatus);
   const [selected, setSelected] = useState(null);
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
@@ -31,6 +39,68 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
 
   const { data } = useGetContentInsightsNew({ contentId });
 
+  const characterStats = useMemo(() => {
+    if (!data?.uniqueCharactersMemo) {
+      return { totalNew: 0, totalLearned: 0, totalMastered: 0 };
+    }
+
+    const totalLearned = data.uniqueCharactersMemo.filter(
+      (char: any) => char?.isLearned
+    ).length;
+    const totalMastered = data.uniqueCharactersMemo.filter(
+      (char: any) => char?.status === "forgotten"
+    ).length;
+    const totalNew = data.uniqueCharacters.length - totalLearned;
+
+    return { totalNew, totalLearned, totalMastered };
+  }, [data?.uniqueCharactersMemo, data?.uniqueCharacters]);
+
+  const filteredCharacters = useMemo(() => {
+    if (!data?.uniqueCharactersMemo) return [];
+    let filtered = data.uniqueCharactersMemo;
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter((char: any) => {
+        return (
+          (char?.hanzi || char?.input)?.toLowerCase().includes(query) ||
+          char?.pinyin?.toLowerCase().includes(query) ||
+          char?.en?.toLowerCase().includes(query)
+        );
+      });
+    }
+
+    if (learnStatus !== "all") {
+      filtered = filtered.filter((char: any) => {
+        if (learnStatus === "learned") {
+          return char?.status === "learned";
+        }
+
+        console.log("CHARRR", char);
+
+        if (learnStatus === "forgotten") {
+          return char?.status === "forgotten";
+        }
+        return !char?.isLearned;
+      });
+    }
+
+    return filtered;
+  }, [data?.uniqueCharactersMemo, searchQuery, learnStatus]);
+
+  const filteredWords = useMemo(() => {
+    if (!data?.filteredHskWords) return [];
+    if (!searchQuery) return data.filteredHskWords;
+    const query = searchQuery.toLowerCase();
+    return data.filteredHskWords.filter((word: any) => {
+      return (
+        (word?.hanzi || word?.input)?.toLowerCase().includes(query) ||
+        word?.pinyin?.toLowerCase().includes(query) ||
+        word?.en?.toLowerCase().includes(query)
+      );
+    });
+  }, [data?.filteredHskWords, searchQuery]);
+
   if (isLoading || !data) {
     return <LottieLoadingAnimation />;
   }
@@ -38,7 +108,6 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
   const {
     masteryRate,
     understandingRate,
-    filteredHskWords,
     uniqueCharactersMemo,
     totalNewCharaters,
     uniqueCharacters,
@@ -47,10 +116,10 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
   return selectedChar ? (
     <SelectedCharacterContainer characterId={selectedChar} />
   ) : (
-    <div className="max-w-6xl m-auto mt-12">
-      <ConvoInsightOverview contentId={contentId} />
+    <div className="px-12 mt-12">
+      {/* <ConvoInsightOverview contentId={contentId} /> */}
 
-      <TotalPlaysChart contentId={contentId} />
+      {/* <TotalPlaysChart contentId={contentId} /> */}
 
       <ConvoInsightsNoNChinese contentId={contentId}>
         <div className="w-full px-4 my-4 md:my-8">
@@ -65,76 +134,68 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
             />
           )}
           <div>
-            <ConvoInsightsHeader
-              totalCharacters={uniqueCharacters?.length}
-              newCharacters={uniqueCharacters?.length - totalNewCharaters}
-              masteryRate={masteryRate}
-              understandingRate={understandingRate}
-            />
+            <div className="mb-8">
+              <ConvoInsightsTabs />
+            </div>
 
-            <ConvoInsightsFilter />
-
-            {viewType === "character" && (
-              <div className="my-8">
-                <NmmListContainerAll>
-                  {uniqueCharactersMemo.map((char: any, idx: number) => {
-                    if (char.isLearned) {
-                      return (
-                        <HanziLink
-                          onClick={() => {
-                            setSelected(char);
-                          }}
-                          frequency={char?.frequency}
-                          character={{
-                            ...char,
-                            input: char?.hanzi || char?.input,
-                            hanzi: char?.hanzi || char?.input,
-                          }}
-                          key={`${char?.hanzi}-chars-${idx}`}
-                          lang={lang}
-                        />
-                      );
-                    } else {
-                      const newChar: any = {
-                        input: char?.hanzi || char?.input,
-                        hanzi: char?.hanzi || char?.input,
-                        hskLevel: 9,
-                        pinyin: "",
-                        en: "",
-                      };
-                      return (
-                        <HanziLink
-                          onClick={() => {
-                            setSelected(newChar);
-                          }}
-                          lang={lang}
-                          frequency={char?.frequency}
-                          character={newChar}
-                          key={`${char?.input}-chars-${idx}`}
-                        />
-                      );
-                    }
-                  })}
-                </NmmListContainerAll>
-              </div>
-            )}
-
-            {viewType === "word" && (
-              <div className="my-8">
-                <NmmListContainerAll className="gap-4">
-                  {filteredHskWords?.map((char: any, idx: number) => {
-                    return (
-                      <HanziLink
-                        lang={lang}
-                        frequency={char?.frequency}
-                        character={char}
-                        key={`${char?.hanzi}-chars-${idx}`}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={viewType}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                {viewType === "character" && (
+                  <div className="my-8">
+                    <div className="my-8 mb-12">
+                      <ConvoInsightsCharacterStatsCard
+                        totalNew={characterStats.totalNew}
+                        totalLearned={characterStats.totalLearned}
+                        totalMastered={characterStats.totalMastered}
+                        total={data.uniqueCharacters.length}
                       />
-                    );
-                  })}
-                </NmmListContainerAll>
-              </div>
-            )}
+                    </div>
+
+                    <div className="mb-4 flex justify-between">
+                      <ConvoInsightsSearch />
+                      <ConvoInsightsLearnStatusFilter />
+                    </div>
+
+                    <div className="my-8">
+                      <ConvoInsightsTable
+                        characters={filteredCharacters}
+                        lang={lang}
+                        onCharacterClick={(char) => setSelected(char)}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {viewType === "word" && (
+                  <div className="my-8">
+                    <NmmListContainerAll className="gap-4">
+                      {filteredWords?.map((char: any, idx: number) => {
+                        return (
+                          <HanziLink
+                            lang={lang}
+                            frequency={char?.frequency}
+                            character={char}
+                            key={`${char?.hanzi}-words-${idx}`}
+                          />
+                        );
+                      })}
+                    </NmmListContainerAll>
+                  </div>
+                )}
+
+                {viewType === "sentence" && (
+                  <div className="my-8 text-center text-gray-500 dark:text-gray-400">
+                    <p>句子功能即将推出...</p>
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </ConvoInsightsNoNChinese>

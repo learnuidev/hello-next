@@ -14,6 +14,8 @@ import { useFontSizeStore } from "../hooks/use-font-size";
 import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
 import { ActiveButtons } from "./active-buttons";
 import { ReaderView } from "./reader-view";
+import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
+import { ActiveTranscription } from "@/components/youtube-page/active-transcription";
 
 export const ReaderViewParent = ({
   loop,
@@ -50,6 +52,24 @@ export const ReaderViewParent = ({
   });
 
   const { readMode } = useReadModeState();
+
+  const isSmall = useIsSmall();
+
+  const containsChinglish = !!content.transcriptions?.[0]?.chinglish;
+
+  if (isSmall) {
+    return (
+      <div className="mt-4">
+        <ActiveTranscription
+          containsChinglish={containsChinglish}
+          // seekAndPlay={seekAndPlay}
+          currentTime={currentTime}
+          transcriptions={content.transcriptions}
+          contentId={content.id}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={cn("px-4 pb-24", "max-w-4xl")}>

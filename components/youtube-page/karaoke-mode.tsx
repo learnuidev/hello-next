@@ -174,6 +174,10 @@ export function KaraokeMode({
     return isNonRomanLang(lang);
   }, [lang]);
 
+  if (!currentTranscription) {
+    return null;
+  }
+
   if (isFocusKaraokeMode && !audioUrl) {
     return (
       <div className="mt-32">

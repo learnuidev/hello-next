@@ -90,6 +90,37 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               "grid grid-cols-12 gap-8 sm:px-8 scroll-px-80 w-full"
             )}
           >
+            {isYoutubeOrVideo && (
+              <div
+                className={cn(
+                  "md:col-span-6 col-span-12",
+
+                  `${isVideoHidden || !isYoutubeOrVideo ? "hidden" : ""}`
+                )}
+              >
+                <ReactPlayer
+                  key={content?.audio}
+                  playbackRate={playbackRate}
+                  progressInterval={progressInterval}
+                  url={content?.audio}
+                  onPlay={() => {
+                    setNewContextId();
+
+                    setPlaying(true);
+                  }}
+                  onPause={() => setPlaying(false)}
+                  width="100%"
+                  height={isSmall ? "200px" : "450px"}
+                  onReady={onReady}
+                  playing={false}
+                  controls={false}
+                  ref={playerRef}
+                  onProgress={(value) => {
+                    setCurrentTime(value.playedSeconds);
+                  }}
+                />
+              </div>
+            )}
             <div
               className={cn(
                 !isYoutubeOrVideo
@@ -169,38 +200,6 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 />
               )}
             </div>
-
-            {isYoutubeOrVideo && (
-              <div
-                className={cn(
-                  "md:col-span-6 col-span-12",
-
-                  `${isVideoHidden || !isYoutubeOrVideo ? "hidden" : ""}`
-                )}
-              >
-                <ReactPlayer
-                  key={content?.audio}
-                  playbackRate={playbackRate}
-                  progressInterval={progressInterval}
-                  url={content?.audio}
-                  onPlay={() => {
-                    setNewContextId();
-
-                    setPlaying(true);
-                  }}
-                  onPause={() => setPlaying(false)}
-                  width="100%"
-                  height={isSmall ? "200px" : "450px"}
-                  onReady={onReady}
-                  playing={false}
-                  controls={false}
-                  ref={playerRef}
-                  onProgress={(value) => {
-                    setCurrentTime(value.playedSeconds);
-                  }}
-                />
-              </div>
-            )}
           </div>
         )}
 

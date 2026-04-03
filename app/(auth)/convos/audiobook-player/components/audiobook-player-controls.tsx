@@ -58,7 +58,7 @@ export function AudioBookPlayerControls({
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-black p-3 sm:p-4 rounded-2xl shadow-sm mb-8">
+    <div className="bg-gray-50 dark:bg-[rgb(11,12,13)] sm:dark:bg-black p-0 pb-2 sm:p-4 rounded-2xl shadow-sm mb-2 sm:mb-8">
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-16">
         <div className="hidden sm:flex p-2 px-8 gap-4 rounded-full">
           <FontSizeControls />
@@ -103,7 +103,10 @@ export function AudioBookPlayerControls({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <button onClick={handlePlayPause} className="rounded-full w-10 sm:w-8">
+          <button
+            onClick={handlePlayPause}
+            className="rounded-full w-10 sm:w-8"
+          >
             {playing ? (
               <Icons.pause className="text-2xl" />
             ) : (
@@ -155,7 +158,9 @@ export function AudioBookPlayerControls({
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() =>
-                    setViewMode((prev: any) => (prev === "para" ? null : "para"))
+                    setViewMode((prev: any) =>
+                      prev === "para" ? null : "para"
+                    )
                   }
                   className={cn(
                     "cursor-pointer",
@@ -170,10 +175,14 @@ export function AudioBookPlayerControls({
                   <>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
-                      onClick={() => setIsVideoHidden((isHidden: any) => !isHidden)}
+                      onClick={() =>
+                        setIsVideoHidden((isHidden: any) => !isHidden)
+                      }
                       className={cn(
                         "cursor-pointer",
-                        isVideoHidden ? "text-rose-500 font-bold" : "text-gray-600"
+                        isVideoHidden
+                          ? "text-rose-500 font-bold"
+                          : "text-gray-600"
                       )}
                     >
                       {isVideoHidden ? (
@@ -183,7 +192,10 @@ export function AudioBookPlayerControls({
                         </>
                       ) : (
                         <>
-                          <FontAwesomeIcon icon={faVideoSlash} className="mr-2" />
+                          <FontAwesomeIcon
+                            icon={faVideoSlash}
+                            className="mr-2"
+                          />
                           Hide Video
                         </>
                       )}
@@ -196,7 +208,10 @@ export function AudioBookPlayerControls({
 
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="ghost" className="sm:hidden p-2 h-10 w-10 hover:bg-transparent">
+              <Button
+                variant="ghost"
+                className="sm:hidden p-2 h-10 w-10 hover:bg-transparent"
+              >
                 <Icons.gear className="text-xl" />
               </Button>
             </PopoverTrigger>
@@ -220,7 +235,10 @@ export function AudioBookPlayerControls({
                     </div>
                     {containsChinglish && (
                       <div className="mt-2">
-                        <ChinglishButton disabled={!showEn} className={"text-xl"} />
+                        <ChinglishButton
+                          disabled={!showEn}
+                          className={"text-xl"}
+                        />
                       </div>
                     )}
                   </div>
@@ -264,7 +282,9 @@ export function AudioBookPlayerControls({
                             : "text-gray-600"
                         )}
                         onClick={() =>
-                          setViewMode((prev: any) => (prev === "para" ? null : "para"))
+                          setViewMode((prev: any) =>
+                            prev === "para" ? null : "para"
+                          )
                         }
                       >
                         Paragraph View
@@ -277,9 +297,13 @@ export function AudioBookPlayerControls({
                         variant="ghost"
                         className={cn(
                           "w-full justify-start",
-                          isVideoHidden ? "text-rose-500 font-bold" : "text-gray-600"
+                          isVideoHidden
+                            ? "text-rose-500 font-bold"
+                            : "text-gray-600"
                         )}
-                        onClick={() => setIsVideoHidden((isHidden: any) => !isHidden)}
+                        onClick={() =>
+                          setIsVideoHidden((isHidden: any) => !isHidden)
+                        }
                       >
                         {isVideoHidden ? (
                           <>
@@ -288,7 +312,10 @@ export function AudioBookPlayerControls({
                           </>
                         ) : (
                           <>
-                            <FontAwesomeIcon icon={faVideoSlash} className="mr-2" />
+                            <FontAwesomeIcon
+                              icon={faVideoSlash}
+                              className="mr-2"
+                            />
                             Hide Video
                           </>
                         )}

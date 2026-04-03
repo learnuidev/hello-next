@@ -87,7 +87,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
         ) : (
           <div
             className={cn(
-              "grid grid-cols-12 gap-8 sm:px-8 scroll-px-80 w-full"
+              "grid grid-cols-12 gap-4 sm:gap-8 sm:px-8 scroll-px-80 w-full"
             )}
           >
             {isYoutubeOrVideo && (
@@ -204,7 +204,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
         )}
 
         <div className="fixed bottom-2 w-full">
-          <div className="w-full max-w-4xl mx-auto p-4 py-2">
+          <div className="w-full max-w-4xl mx-auto sm:p-4 sm:py-2 p-2">
             {isYoutubeOrVideo ? null : (
               <ReactPlayer
                 key={content?.audio}
@@ -230,7 +230,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
             )}
 
             {!editMode && (
-              <div className="p-4 bg-gray-100 dark:bg-[rgb(15,16,17)] mb-2">
+              <div className="p-0 sm:p-4 bg-gray-100 dark:bg-[rgb(15,16,17)] mb-2">
                 <AudioBookPlayerControls
                   loop={loop}
                   setLoop={setLoop}

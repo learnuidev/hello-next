@@ -40,8 +40,8 @@ function CurrentTranscriptionViewer({
       <div
         key={JSON.stringify(currentTranscription)}
         className={cn(
-          "my-24",
-          "text-4xl font-bold text-center text-white",
+          "my-0 sm:my-24",
+          "font-bold text-center text-white",
           romanOrPinyin?.length < 16 ? "text-4x" : "text-lg"
         )}
       >
@@ -53,7 +53,7 @@ function CurrentTranscriptionViewer({
             }}
             href={`/nmm/${currentTranscription?.input || currentTranscription?.hanzi}?lang=${lang}`}
             className={cn(
-              "text-[16px] font-light dark:text-gray-500 mb-4 block"
+              "text-[16px] font-light dark:text-gray-500 mb-0 sm:mb-4 block"
             )}
           >
             {currentTranscription?.pinyin || currentTranscription?.roman}
@@ -78,7 +78,7 @@ function CurrentTranscriptionViewer({
           }}
         >
           <TextPercentageColorizerV2
-            className={"text-4xl"}
+            className={"text-xl sm:text-4xl"}
             text={currentTranscription.input}
             startTime={currentTranscription.start}
             endTime={currentTranscription.end}
@@ -90,7 +90,7 @@ function CurrentTranscriptionViewer({
         {showEn && (
           <p
             className={cn(
-              "text-[16px] lg:text-xl font-extralight dark:text-gray-500 text-black mt-12"
+              "text-[16px] lg:text-xl font-extralight dark:text-gray-500 text-black mt-0 sm:mt-12"
             )}
           >
             {containsChinglish && showChinglish
@@ -105,16 +105,29 @@ function CurrentTranscriptionViewer({
 
 function KaraokeContainer({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mt-4 flex flex-col justify-center items-center">
+    <div className="mt-0 sm:mt-4 flex flex-col justify-center items-center">
       <div className="w-full max-w-6xl  backdrop-blur-md rounded-xl">
         {children}
       </div>
     </div>
   );
 }
-function ActiveKaraokeContainer({ children }: { children: React.ReactNode }) {
+function ActiveKaraokeContainer({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="flex justify-center overflow-hidden my-4">{children}</div>
+    <div
+      className={cn(
+        "flex justify-center overflow-hidden sm:my-4 my-0",
+        className
+      )}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -201,7 +214,7 @@ export function KaraokeMode({
 
   return (
     <KaraokeContainer>
-      <ActiveKaraokeContainer>
+      <ActiveKaraokeContainer className="mt-12 sm:mt-0">
         {!isPlaying && currentTime === 0 ? (
           <button
             className="text-4xl mt-[-100px]"
@@ -213,14 +226,14 @@ export function KaraokeMode({
           </button>
         ) : isIntro ? (
           <button
-            className="text-4xl"
+            className="text-xl sm:text-4xl"
             onClick={() => {
               play();
             }}
           >
             <Icons.music />
 
-            <p className="mt-4 text-gray-400 text-2xl font-extralight">
+            <p className="mt-0 sm:mt-4 text-gray-400 text-lg sm:text-2xl font-extralight">
               Starting in {parseInt(`${startingTime || 0}`)}
             </p>
           </button>

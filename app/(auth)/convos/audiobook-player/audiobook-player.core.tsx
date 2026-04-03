@@ -142,14 +142,14 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 <div
                   className={
                     isVideoHidden || !isYoutubeOrVideo
-                      ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
+                      ? "col-span-12 mx-auto max-w-4xl"
                       : "col-span-12 md:col-span-5"
                   }
                 >
                   <div
                     className={
                       isVideoHidden || !isYoutubeOrVideo
-                        ? "col-span-12 mx-2 sm:mx-12 md:mx-32"
+                        ? "col-span-12"
                         : "col-span-12 md:col-span-5"
                     }
                   >
@@ -179,7 +179,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   </div>
                 </div>
               ) : viewMode === "reader" ? (
-                <div>
+                <div className={isVideoHidden ? "mx-auto max-w-4xl" : ""}>
                   <ReaderViewParent
                     content={content}
                     currentTranscription={currentTranscription}
@@ -190,14 +190,16 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   />
                 </div>
               ) : (
-                <ParaView
-                  loop={loop}
-                  content={content}
-                  currentTranscription={currentTranscription}
-                  currentTime={currentTime}
-                  seekAndPlay={seekAndPlay}
-                  isPlaying
-                />
+                <div className={isVideoHidden ? "mx-auto max-w-4xl" : ""}>
+                  <ParaView
+                    loop={loop}
+                    content={content}
+                    currentTranscription={currentTranscription}
+                    currentTime={currentTime}
+                    seekAndPlay={seekAndPlay}
+                    isPlaying
+                  />
+                </div>
               )}
             </div>
           </div>

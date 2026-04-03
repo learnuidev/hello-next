@@ -14,10 +14,14 @@ export const useGetGroupedTranscriptions = ({
   currentTime: number;
   loop?: ContentTranscription;
 }) => {
-  const _currentTime = loop ? loop.start : currentTime;
+  const _currentTime = currentTime;
 
-  const activeTimeLimit = usePlayerViewModeStore((state) => state.activeTimeLimit);
-  const activeLengthLimit = usePlayerViewModeStore((state) => state.activeLengthLimit);
+  const activeTimeLimit = usePlayerViewModeStore(
+    (state) => state.activeTimeLimit
+  );
+  const activeLengthLimit = usePlayerViewModeStore(
+    (state) => state.activeLengthLimit
+  );
 
   const group = useMemo(() => {
     return getActiveTranscriptions({
@@ -27,7 +31,13 @@ export const useGetGroupedTranscriptions = ({
       currentTime: _currentTime,
       transcriptions: content?.transcriptions || [],
     });
-  }, [activeTimeLimit, activeLengthLimit, _currentTime, groupBy, content?.transcriptions]);
+  }, [
+    activeTimeLimit,
+    activeLengthLimit,
+    _currentTime,
+    groupBy,
+    content?.transcriptions,
+  ]);
 
   return group;
 };

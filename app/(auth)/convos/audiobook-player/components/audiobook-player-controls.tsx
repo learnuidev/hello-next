@@ -67,41 +67,27 @@ export function AudioBookPlayerControls({
         </div>
 
         <div className="dark:bg-[rgb(21,22,23)] bg-gray-200 p-2 px-6 sm:px-8 flex items-center gap-4 rounded-full">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="text-xl font-bold p-2">
-                {loop ? (
-                  <Icons.loop className="text-rose-500" />
-                ) : (
-                  <Icons.loop className="text-gray-600" />
-                )}
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48">
-              <DropdownMenuItem
-                onClick={() => {
-                  setLoop((loop: any) => {
-                    if (loop) {
-                      return null;
-                    }
-                    return currentTranscription;
-                  });
-                }}
-                className={cn(
-                  "cursor-pointer",
-                  loop ? "text-rose-500 font-bold" : "text-gray-600"
-                )}
-              >
-                Loop Current
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => setLoop(null)}
-                className="cursor-pointer text-gray-600"
-              >
-                Clear Loop
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <button
+            onClick={() => {
+              setLoop((loop: any) => {
+                if (loop) {
+                  return null;
+                }
+                return currentTranscription;
+              });
+            }}
+            className={cn(
+              "text-xl font-bold p-2",
+              "cursor-pointer",
+              loop ? "text-rose-500 font-bold" : "text-gray-600"
+            )}
+          >
+            {loop ? (
+              <Icons.loop className="text-rose-500" />
+            ) : (
+              <Icons.loop className="text-gray-600" />
+            )}
+          </button>
 
           <button
             onClick={handlePlayPause}

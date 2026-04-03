@@ -13,7 +13,10 @@ import { reviewCounterStore } from "./review-counter-store";
 import { useGetReviewParams } from "./use-get-review-params";
 
 import { SpeakComponent } from "@/components/_select-character/speak-component";
-import { getReviewSearchParams } from "@/components/settings-dialog/use-get-review-url";
+import {
+  getReviewSearchParams,
+  useGetReviewUrl,
+} from "@/components/settings-dialog/use-get-review-url";
 import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
 import { useReviewModeView } from "./use-review-mode";
 import { useClozeReviewTimer } from "./cloze-review-timer-store";
@@ -48,6 +51,8 @@ export function ReviewModeClassic(props: any) {
     null | string
   >(null);
 
+  const { reviewUrl, reviewContentId } = useGetReviewUrl();
+
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
 
   const { setReviewMode } = useReviewModeView();
@@ -56,7 +61,7 @@ export function ReviewModeClassic(props: any) {
     data: learnedCharacters,
     isLoading,
     isRefetching,
-  } = useListCharacterReviewList();
+  } = useListCharacterReviewList(reviewContentId);
 
   const router = useRouter();
 

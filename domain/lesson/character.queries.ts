@@ -34,7 +34,7 @@ const listCharacters = async (
 
 export const listCharactersQueryId = "list-characters";
 export function useListCharactersQuery(
-  params = {} as { journeyId?: string; hanzis?: string[] },
+  params = {} as { journeyId?: string; hanzis?: string[]; from?: string },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
@@ -42,10 +42,14 @@ export function useListCharactersQuery(
   return useQuery<ICharacter[], Error>({
     queryKey: [listCharactersQueryId, params?.hanzis],
     queryFn: async () => {
+      console.log("FROM", params.from);
       // if (options.query) {
       const response = await listCharacters(params, {
         Authorization: authUser?.jwt,
       });
+
+      console.log(`RESP: ${params.from}`, response);
+
       return (
         response?.sort((a: any, b: any) => a?.createdAt - b?.createdAt) || []
       );
@@ -53,7 +57,9 @@ export function useListCharactersQuery(
     },
 
     ...options,
-    enabled: Boolean(authUser?.jwt),
+    enabled:
+      Boolean(authUser?.jwt) &&
+      !!(params?.hanzis ? params?.hanzis?.length > 0 : true),
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
     refetchOnFocus: false,

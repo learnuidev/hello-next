@@ -1,5 +1,6 @@
 "use client";
 
+import { useListUniqueCharatersByContentId } from "@/app/(auth)/convos/use-get-unique-characters-by-content-id";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { isBefore } from "date-fns";
 
@@ -13,8 +14,14 @@ export const getReviewCharacters = (learnedCharacters: any) =>
       : true;
   });
 
-export const useListCharacterReviewList = () => {
-  const { data: learnedCharacters, ...rest } = useListCharactersQuery();
+export const useListCharacterReviewList = (contentId?: string) => {
+  const uniqueCharacters: string[] = useListUniqueCharatersByContentId({
+    contentId: contentId || "",
+  });
+
+  const { data: learnedCharacters, ...rest } = useListCharactersQuery({
+    hanzis: contentId ? uniqueCharacters || [] : undefined,
+  });
 
   const reviewCharacters = getReviewCharacters(learnedCharacters);
 

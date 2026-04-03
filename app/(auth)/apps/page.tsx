@@ -51,7 +51,7 @@ export default function AppsPage() {
   const isSuperAdmin = useIsSuperAdmin();
 
   const reviewUrl = useGetReviewUrl();
-  const apps = [
+  const apps: any = [
     {
       href: "/studio",
       title: "Studio",
@@ -119,7 +119,7 @@ export default function AppsPage() {
       </h1>
 
       <section className="flex items-center justify-center flex-wrap gap-16">
-        {apps.map((props) => {
+        {apps.map((props: any) => {
           const { href, title, onClick, Icon, hidden } = props;
 
           if (hidden) {

@@ -53,7 +53,10 @@ export const useGetReviewUrl = ({ reviewMode } = {} as any) => {
     reviewMode,
   };
 
-  return `/review?${getReviewSearchParams(inputParams)}`;
+  return {
+    reviewUrl: `/review?${getReviewSearchParams(inputParams)}`,
+    reviewContentId: mode,
+  };
 };
 export const useGetReviewUrlFn = () => {
   const { mode } = useLearningMode();

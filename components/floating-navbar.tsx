@@ -22,7 +22,7 @@ import { usePreviousPathnameStore } from "./language-selector/use-previous-path-
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
-  const reviewUrl = useGetReviewUrl();
+  const { reviewUrl, reviewContentId } = useGetReviewUrl();
 
   const { reviewMode: _reviewMode } = useReviewModeView();
 
@@ -34,7 +34,7 @@ const FloatingNavbarComp = () => {
   const isDuExact = useIsDu(true);
   const isDu = useIsDu(false);
 
-  const { data: reviewList } = useListCharacterReviewList();
+  const { data: reviewList } = useListCharacterReviewList(reviewContentId);
 
   const lang = useGetCurrentLang();
 

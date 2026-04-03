@@ -2,28 +2,23 @@
 
 import "@/libs/cognito/init";
 
-import { useState } from "react";
-
-import { NavBar } from "@/components/navbar";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useConvosStore } from "@/stores/convos-store";
 import { ConvoDetails } from "./convo-details";
-import { ConvosNavBar } from "./convos-nav-bar";
 import { useSelectedCharacter } from "./use-selected-character";
 
 import { PlusIcon } from "@/components/ui/icons";
 
 import { FloatingNavbar } from "@/components/floating-navbar";
+import { PageContainer } from "@/components/page-container";
+import { SearchBar } from "@/components/search-bar";
+import { BaseTabs } from "@/components/ui/base-tabs";
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 import { useIsProMember } from "../plans/hooks/use-is-pro-member";
 import { ContentsList } from "./contents-list";
 import { NewBook } from "./new-book/new-book";
 import { NewContentV2 } from "./new-content-v2/new-content-v2";
-import { SearchBar } from "@/components/search-bar";
-import { BaseTabs } from "@/components/ui/base-tabs";
-import { PageContainer } from "@/components/page-container";
-import { Icons } from "@/components/ui/icons.v2";
 
 const useViewTypeStore = createIndexDBStore({
   name: "view-type",

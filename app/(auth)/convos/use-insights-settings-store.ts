@@ -4,6 +4,7 @@ import { create } from "zustand";
 
 export type ConvoInsightsTab = "character" | "word" | "sentence";
 export type LearnStatusFilter = "all" | "learned" | "unlearned" | "forgotten";
+export type HskLevelFilter = "all" | 1 | 2 | 3 | 4 | 5 | 6 | "na";
 
 export const useInsightsSettingsStore = create((set: any, get: any) => ({
   sortType: "timeline",
@@ -24,4 +25,9 @@ export const useInsightsSettingsStore = create((set: any, get: any) => ({
     typeof f === "function"
       ? set({ learnStatus: f(get().learnStatus) })
       : set({ learnStatus: f }),
+  hskLevel: "all" as HskLevelFilter,
+  setHskLevel: (f: any) =>
+    typeof f === "function"
+      ? set({ hskLevel: f(get().hskLevel) })
+      : set({ hskLevel: f }),
 }));

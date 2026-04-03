@@ -14,15 +14,19 @@ import { useInsightsSettingsStore } from "../use-insights-settings-store";
 import { ConvoContextDialog } from "./convo-context-dialog";
 import { ConvoInsightsCharacterStatsCard } from "./convo-insights-character-stats-card";
 import { ConvoInsightsLearnStatusFilter } from "./convo-insights-learn-status-filter";
+import { ConvoInsightsHskLevelFilter } from "./convo-insights-hsk-level-filter";
 import { ConvoInsightsNoNChinese } from "./convo-insights-non-chinese";
 import { ConvoInsightsSearch } from "./convo-insights-search";
 import { ConvoInsightsTable } from "./convo-insights-table";
+import { ConvoInsightsWordTable } from "./convo-insights-word-table";
 import { ConvoInsightsTabs } from "./convo-insights-tabs";
+import { TotalPlaysChart } from "./total-plays-chart";
 
 export function ConvoInsights({ contentId }: { contentId: string }) {
   const viewType = useInsightsSettingsStore((state) => state.type);
   const searchQuery = useInsightsSettingsStore((state) => state.searchQuery);
   const learnStatus = useInsightsSettingsStore((state) => state.learnStatus);
+  const hskLevel = useInsightsSettingsStore((state) => state.hskLevel);
   const [selected, setSelected] = useState(null);
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
@@ -84,16 +88,30 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
 
   const filteredWords = useMemo(() => {
     if (!data?.filteredHskWords) return [];
-    if (!searchQuery) return data.filteredHskWords;
-    const query = searchQuery.toLowerCase();
-    return data.filteredHskWords.filter((word: any) => {
-      return (
-        (word?.hanzi || word?.input)?.toLowerCase().includes(query) ||
-        word?.pinyin?.toLowerCase().includes(query) ||
-        word?.en?.toLowerCase().includes(query)
-      );
-    });
-  }, [data?.filteredHskWords, searchQuery]);
+    let filtered = data.filteredHskWords;
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter((word: any) => {
+        return (
+          (word?.hanzi || word?.input)?.toLowerCase().includes(query) ||
+          word?.pinyin?.toLowerCase().includes(query) ||
+          word?.en?.toLowerCase().includes(query)
+        );
+      });
+    }
+
+    if (hskLevel !== "all") {
+      filtered = filtered.filter((word: any) => {
+        if (hskLevel === "na") {
+          return !word?.hskLevel;
+        }
+        return word?.hskLevel === hskLevel;
+      });
+    }
+
+    return filtered;
+  }, [data?.filteredHskWords, searchQuery, hskLevel]);
 
   const setSearchQuery = useInsightsSettingsStore(
     (state) => state.setSearchQuery
@@ -116,8 +134,6 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
   ) : (
     <div className="px-2 sm:px-12 mt-12">
       {/* <ConvoInsightOverview contentId={contentId} /> */}
-
-      {/* <TotalPlaysChart contentId={contentId} /> */}
 
       <ConvoInsightsNoNChinese contentId={contentId}>
         <div className="w-full px-4 my-4 md:my-8">
@@ -157,7 +173,9 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
 
                     <div className="sm:mb-4 flex sm:flex-row sm:justify-between flex-col gap-2">
                       <ConvoInsightsSearch />
-                      <ConvoInsightsLearnStatusFilter />
+                      <div className="flex gap-2">
+                        <ConvoInsightsLearnStatusFilter />
+                      </div>
                     </div>
 
                     <div className="sm:my-8 my-4">
@@ -171,25 +189,29 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
                 )}
 
                 {viewType === "word" && (
-                  <div className="my-8">
-                    <NmmListContainerAll className="gap-4">
-                      {filteredWords?.map((char: any, idx: number) => {
-                        return (
-                          <HanziLink
-                            lang={lang}
-                            frequency={char?.frequency}
-                            character={char}
-                            key={`${char?.hanzi}-words-${idx}`}
-                          />
-                        );
-                      })}
-                    </NmmListContainerAll>
+                  <div className="my-0 sm:my-8">
+                    <div className="sm:mb-4 flex sm:flex-row sm:justify-between flex-col gap-2">
+                      <ConvoInsightsSearch />
+                      <div className="flex gap-2">
+                        <ConvoInsightsLearnStatusFilter />
+                        <ConvoInsightsHskLevelFilter />
+                      </div>
+                    </div>
+
+                    <div className="sm:my-8 my-4">
+                      <ConvoInsightsWordTable
+                        words={filteredWords}
+                        lang={lang}
+                      />
+                    </div>
                   </div>
                 )}
 
                 {viewType === "sentence" && (
                   <div className="my-8 text-center text-gray-500 dark:text-gray-400">
                     <p>句子功能即将推出...</p>
+
+                    <TotalPlaysChart contentId={contentId} />
                   </div>
                 )}
               </motion.div>

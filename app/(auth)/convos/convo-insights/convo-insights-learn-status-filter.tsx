@@ -4,43 +4,29 @@ import {
   useInsightsSettingsStore,
   LearnStatusFilter,
 } from "../use-insights-settings-store";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function ConvoInsightsLearnStatusFilter() {
   const learnStatus = useInsightsSettingsStore((state) => state.learnStatus);
-  const setLearnStatus = useInsightsSettingsStore(
-    (state) => state.setLearnStatus
-  );
-
-  const filters = [
-    { label: "全部", value: "all" as LearnStatusFilter },
-    { label: "未学", value: "unlearned" as LearnStatusFilter },
-    { label: "已学", value: "learned" as LearnStatusFilter },
-    { label: "掌握", value: "forgotten" as LearnStatusFilter },
-  ];
+  const setLearnStatus = useInsightsSettingsStore((state) => state.setLearnStatus);
 
   return (
-    <div className="flex gap-2">
-      {filters.map((filter) => {
-        const isActive = learnStatus === filter.value;
-        return (
-          <motion.button
-            key={filter.value}
-            onClick={() => setLearnStatus(filter.value)}
-            className={cn(
-              "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
-              isActive
-                ? "bg-rose-500 text-white"
-                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-            )}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {filter.label}
-          </motion.button>
-        );
-      })}
-    </div>
+    <Select value={learnStatus} onValueChange={(value) => setLearnStatus(value as LearnStatusFilter)}>
+      <SelectTrigger className="w-[140px]">
+        <SelectValue placeholder="学习状态" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="all">全部</SelectItem>
+        <SelectItem value="unlearned">未学</SelectItem>
+        <SelectItem value="learned">已学</SelectItem>
+        <SelectItem value="forgotten">掌握</SelectItem>
+      </SelectContent>
+    </Select>
   );
 }

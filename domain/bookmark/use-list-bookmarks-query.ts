@@ -34,6 +34,7 @@ export const useListBookmarksQuery = () => {
 
   return useQuery({
     queryKey: [listBookmarksQueryKey, authUser?.jwt],
+    enabled: !!authUser?.jwt,
     queryFn: async () => {
       const resp = await listBookmarks({
         Authorization: authUser?.jwt,

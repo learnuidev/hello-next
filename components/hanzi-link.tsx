@@ -56,7 +56,9 @@ export function HanziLink({
   });
 
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
-    useListCharactersMapQuery();
+    useListCharactersMapQuery({
+      from: "hanzi-link",
+    });
 
   const learnedChar =
     learnedCharacters2?.[character?.input || character?.hanzi];

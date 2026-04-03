@@ -64,14 +64,16 @@ export function useListCharactersQuery(
 
 export const listCharactersQueryMapId = "list-characters-map";
 export function useListCharactersMapQuery(
-  params = {} as { journeyId?: string; hanzis?: string[] },
+  params = {} as { journeyId?: string; hanzis?: string[]; from?: string },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<any>({
-    queryKey: [listCharactersQueryMapId, params?.hanzis],
+    queryKey: [listCharactersQueryMapId, JSON.stringify(params?.hanzis)],
+
     queryFn: async () => {
+      console.log("FROM", params.from);
       // if (options.query) {
       const response = await listCharacters(
         { ...params, format: "map" },
@@ -80,11 +82,15 @@ export function useListCharactersMapQuery(
         }
       );
 
+      console.log(`RESP: ${params.from}`, response);
+
       return response;
     },
 
     ...options,
-    enabled: Boolean(authUser?.jwt),
+    enabled:
+      Boolean(authUser?.jwt) &&
+      !!(params?.hanzis ? params?.hanzis?.length > 0 : true),
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
     refetchOnFocus: false,

@@ -13,9 +13,7 @@ export function useGetCharacterAnalytics({
   characterId: string;
   lang: string;
 }) {
-  const { data: learnedCharacters } = useListCharactersMapQuery();
-
-  const uniqueWords = useMemo(
+  const uniqueCharacters = useMemo(
     () =>
       lang === "zh"
         ? [
@@ -36,36 +34,41 @@ export function useGetCharacterAnalytics({
     [characterId, lang]
   );
 
+  const { data: learnedCharacters } = useListCharactersMapQuery({
+    from: "use-get-character-analytics",
+    hanzis: uniqueCharacters,
+  });
+
   const totalLearnedCharaters = useMemo(
     () =>
-      uniqueWords?.filter((char) => {
+      uniqueCharacters?.filter((char) => {
         const isLearned = learnedCharacters?.[char];
 
         return !!isLearned;
       })?.length,
-    [learnedCharacters, uniqueWords]
+    [learnedCharacters, uniqueCharacters]
   );
 
   const newCharaters = useMemo(
     () =>
-      uniqueWords?.filter((char) => {
+      uniqueCharacters?.filter((char) => {
         const isLearned = learnedCharacters?.[char];
 
         return !isLearned;
       }),
-    [learnedCharacters, uniqueWords]
+    [learnedCharacters, uniqueCharacters]
   );
 
   const totalLearnedCharacters = useMemo(
     () =>
-      uniqueWords
+      uniqueCharacters
         ?.map((char) => {
           const isLearned = learnedCharacters?.[char];
 
           return isLearned;
         })
         ?.filter(Boolean),
-    [learnedCharacters, uniqueWords]
+    [learnedCharacters, uniqueCharacters]
   );
 
   const totalMasteredCharacters = useMemo(
@@ -80,13 +83,13 @@ export function useGetCharacterAnalytics({
     style: "percent",
     minimumFractionDigits: 1,
     maximumFractionDigits: 1,
-  }).format(totalLearnedCharaters / uniqueWords?.length);
+  }).format(totalLearnedCharaters / uniqueCharacters?.length);
 
   const masteryRate = Intl.NumberFormat("en-GB", {
     style: "percent",
     minimumFractionDigits: 1,
     maximumFractionDigits: 1,
-  }).format(totalMasteredCharacters?.length / uniqueWords?.length);
+  }).format(totalMasteredCharacters?.length / uniqueCharacters?.length);
 
   const totalReviewedCharacters = totalLearnedCharacters?.filter(
     (character: any) => character?.reviewHistory?.length > 0
@@ -117,7 +120,7 @@ export function useGetCharacterAnalytics({
 
   const uniqueComponentWords = useMemo(
     () =>
-      uniqueWords
+      uniqueCharacters
         ?.map((word) => {
           const comp = learnedCharacters?.[word];
 
@@ -130,17 +133,18 @@ export function useGetCharacterAnalytics({
         ?.filter(Boolean)
         // @ts-ignore
         ?.sort((a, b) => b?.next_review_date - a?.next_review_date),
-    [learnedCharacters, uniqueWords]
+    [learnedCharacters, uniqueCharacters]
   );
 
   return {
-    uniqueWords,
+    uniqueWords: uniqueCharacters,
+    uniqueCharacters,
     uniqueComponentWords,
     understandingRate,
     masteryRate,
     precisionRate,
-    totalCharacters: uniqueWords?.length,
+    totalCharacters: uniqueCharacters?.length,
     newCharaters,
-    totalNewCharaters: uniqueWords?.length - totalLearnedCharaters,
+    totalNewCharaters: uniqueCharacters?.length - totalLearnedCharaters,
   };
 }

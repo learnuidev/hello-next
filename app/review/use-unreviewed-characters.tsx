@@ -10,15 +10,14 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import { isBefore } from "date-fns";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 import { useGetContentInsights } from "../(auth)/convos/use-get-content-insights";
+import { useGetDiaryInsights } from "../(auth)/convos/use-get-diary-insights";
 import { useGetHskCharacters } from "../nmm/hsk/use-get-hsk-characters";
-import { belts } from "../nmm/utils";
 import { reviewCounterStore } from "./review-counter-store";
 import { useGetReviewParams } from "./use-get-review-params";
 import { useIsContent } from "./use-is-content";
 import { useIsEntry } from "./use-is-entry";
-import { useGetDiaryInsights } from "../(auth)/convos/use-get-diary-insights";
-import { useMemo } from "react";
 
 export function useUnreviwedCharacters() {
   const {
@@ -74,15 +73,7 @@ export function useUnreviwedCharacters() {
       return true;
     });
 
-  const {
-    understandingRate,
-    precisionRate,
-    totalCharacters,
-    totalNewCharaters,
-    uniqueComponentWords,
-    uniqueWords,
-    masteryRate,
-  } = useGetCharacterAnalytics({
+  const { uniqueComponentWords } = useGetCharacterAnalytics({
     characterId: input,
     lang: "zh",
   });

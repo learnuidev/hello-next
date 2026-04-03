@@ -37,7 +37,9 @@ export function CharacterAnalytics({
 
   const { data: hskWords } = useListHSKWordsQuery();
 
-  const { data: learnedCharacters } = useListCharactersMapQuery();
+  const { data: learnedCharacters } = useListCharactersMapQuery({
+    from: "character-analytics",
+  });
 
   const filteredHskWords = useMemo(
     () =>
@@ -60,11 +62,10 @@ export function CharacterAnalytics({
   );
 
   const {
-    understandingRate,
     precisionRate,
     totalCharacters,
     totalNewCharaters,
-    uniqueWords,
+    uniqueCharacters,
     masteryRate,
   } = useGetCharacterAnalytics({
     characterId,
@@ -168,7 +169,7 @@ export function CharacterAnalytics({
         {viewType === "character" && (
           <div className="my-8">
             <NmmListContainerAll>
-              {uniqueWords?.map((char: any, idx: number) => {
+              {uniqueCharacters?.map((char: any, idx: number) => {
                 if (!char) {
                   return null;
                 }

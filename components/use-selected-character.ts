@@ -17,8 +17,6 @@ import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
 
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 
-// import { useDeleteCharacterMutation } from "@/domain/lesson/component.mutations";
-
 import { SelectedCharacterProps } from "./_select-character/select-character.types";
 
 import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
@@ -122,7 +120,9 @@ export function useSelectedCharacterData({
   );
 
   const { data: characters } = useListCharactersMapQuery(
-    {},
+    {
+      from: "use-selected-character",
+    },
     {
       refetchOnWindowFocus: false,
       refetchOnFocus: false,

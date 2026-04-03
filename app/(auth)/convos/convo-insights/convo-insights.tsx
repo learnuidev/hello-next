@@ -99,7 +99,7 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
     (state) => state.setSearchQuery
   );
 
-  if (isLoading || !data) {
+  if (isLoading) {
     return <LottieLoadingAnimation />;
   }
 

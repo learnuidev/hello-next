@@ -42,7 +42,9 @@ export const CharacterItem = ({
   style,
 }: ICharacterItem) => {
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
-    useListCharactersMapQuery();
+    useListCharactersMapQuery({
+      from: "character-item",
+    });
 
   const { data: components, isLoading: isComponentsLoading } =
     useListComponentsMapQuery();

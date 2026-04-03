@@ -1,6 +1,5 @@
 "use client";
 
-import { useGetCharacterAnalytics } from "@/components/_select-character/use-get-character-analytics";
 import { Badge } from "@/components/ui/badge";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
@@ -28,14 +27,6 @@ function JournalDetailsBody({ entryId }: { entryId: string }) {
     useSpeak();
 
   const { data: journalEntry } = useGetJournalEntryQuery(entryId);
-
-  const hanzis =
-    journalDetails?.translations?.map((item) => item?.hanzi).join(" ") || "";
-
-  const characterAnalytics = useGetCharacterAnalytics({
-    characterId: hanzis,
-    lang: "zh",
-  });
 
   if (!journalDetails) {
     return <div className="text-lg">{journalEntry?.text}</div>;

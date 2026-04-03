@@ -23,6 +23,7 @@ import {
   ContentRepeatPerTranscription,
   GetContentAnalyticsRespose,
 } from "./convo-insights.types";
+import { useListUniqueCharatersByContentId } from "../../use-get-unique-characters-by-content-id";
 
 export const useGetContentInsightsRaw = ({
   contentId,

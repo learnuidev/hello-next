@@ -4,7 +4,6 @@ import { Icons } from "./ui/icons.v2";
 import Link from "next/link";
 
 import { useParams, usePathname, useSearchParams } from "next/navigation";
-import { NomadIcon } from "./ui/icons";
 
 import { TheDock } from "@/components/the-dock";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
@@ -15,17 +14,11 @@ import { useReviewModeView } from "@/app/review/use-review-mode";
 import { useIsDu } from "@/hooks/use-is-du";
 import { useIsDuLessons } from "@/hooks/use-is-du-lessons";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
-import { BrightModeButton } from "./bright-mode-button";
-import { PinyinButton } from "./pinyin-button";
 import { useGetReviewUrl } from "./settings-dialog/use-get-review-url";
 
 import { ReviewNavbar } from "@/app/review/review-navbar";
 import { useGetContentQuery } from "@/domain/content/content.queries";
-import { isNonRomanLang } from "./_select-character/utils/is-non-roman-lang";
-import { CommonCharacterButton } from "./common-character-button";
 import { usePreviousPathnameStore } from "./language-selector/use-previous-path-name-store";
-import { PreviewButton } from "./settings-dialog/preview-button";
-import { ReadModeButton } from "./read-mode-button";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
@@ -75,18 +68,6 @@ const FloatingNavbarComp = () => {
     >
       <div className="overflow-y-auto px-8 py-2 bg-gray-50 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
         <div className="space-x-6 md:space-x-8 flex justify-center items-center w-full ">
-          {!["/", "/apps", "/convos"]?.includes(routeName) && isChineseLang && (
-            <>
-              {content?.lang === "zh" && <CommonCharacterButton />}
-              {content?.lang === "zh" && <BrightModeButton />}
-            </>
-          )}
-
-          {/* <PreviewButton /> */}
-
-          {isNonRomanLang(content?.lang) && <ReadModeButton />}
-          {isNonRomanLang(content?.lang) && <PinyinButton />}
-
           <Link
             href="/"
             className={`transition ${
@@ -122,14 +103,14 @@ const FloatingNavbarComp = () => {
               target="_blank"
               onClick={() => {
                 setPreviousPath(
-                  `${pathName}?start=${searchParams.get("start") || 0}`,
+                  `${pathName}?start=${searchParams.get("start") || 0}`
                 );
               }}
               className={cn(
                 routeName?.includes("/review")
                   ? "text-gray-800 dark:text-gray-300"
                   : "text-gray-500 dark:text-gray-500",
-                "transition text-xl ",
+                "transition text-xl "
               )}
             >
               <Icons.playCircle className="hover:text-rose-400 dark:hover:text-white transition" />
@@ -145,45 +126,6 @@ const FloatingNavbarComp = () => {
             } hover:text-gray-700 transition text-xl`}
           >
             <Icons.verticalStack className="hover:text-rose-400 dark:hover:text-white transition" />
-          </Link>
-
-          {/* <Link
-            href="/insights"
-            className={`transition ${
-              routeName === "/insights"
-                ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-500 dark:text-gray-500"
-            } hover:text-gray-700 transition text-xl`}
-          >
-            <Icons.chartColumn className="hover:text-rose-400 dark:hover:text-white transition" />
-          </Link> */}
-
-          {/* {(!lang || isChineseLang) && (
-            <Link
-              href="/pinyin"
-              className={`transition ${
-                routeName === "/pinyin"
-                  ? "text-gray-800 dark:text-gray-300"
-                  : "text-gray-500 dark:text-gray-500"
-              } hover:text-gray-700 transition text-xl`}
-            >
-              <Icons.pinyinChart className="hover:text-rose-400 dark:hover:text-white transition" />
-            </Link>
-          )} */}
-
-          <Link
-            href="/enrollments"
-            className={`transition ${
-              routeName === "/enrollments"
-                ? "text-gray-800 dark:text-gray-300"
-                : "text-gray-500 dark:text-gray-500"
-            } hover:text-gray-700 transition text-xl`}
-          >
-            {routeName === "/enrollments" ? (
-              <Icons.bookmarkSolid className="hover:text-rose-400 dark:hover:text-white transition" />
-            ) : (
-              <Icons.bookmark className="hover:text-rose-400 dark:hover:text-white transition" />
-            )}
           </Link>
 
           <Link

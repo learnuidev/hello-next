@@ -86,15 +86,7 @@ export const useGetCurrentReviewCharacter = () => {
   const { data: components, isLoading: isComponentsLoading } =
     useListComponents();
 
-  const {
-    understandingRate,
-    precisionRate,
-    totalCharacters,
-    uniqueComponentWords,
-    totalNewCharaters,
-    uniqueWords,
-    masteryRate,
-  } = useGetCharacterAnalytics({
+  const { uniqueComponentWords } = useGetCharacterAnalytics({
     characterId: input,
     lang: "zh",
   });

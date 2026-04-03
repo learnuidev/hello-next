@@ -28,10 +28,10 @@ export const EnglishTopView = ({
         <div
           className={cn(
             `flex justify-between items-center mt-2 w-full px-2`,
-            "h-32"
+            "sm:h-32 h-20"
           )}
         >
-          <p className="space-x-2 font-extralight pb-[4px] overflow sm:text-xl text-sm">
+          <p className="space-x-2 font-extralight pb-[4px] overflow sm:text-xl text-md">
             {showEn
               ? showChinglish
                 ? currentTranscription?.chinglish || currentTranscription?.en

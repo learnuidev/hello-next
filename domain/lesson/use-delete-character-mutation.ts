@@ -1,19 +1,22 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { queryIds } from "../lesson/queryIds";
+import { queryIds } from "./queryIds";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
-import { listCharactersQueryId } from "./character.queries";
+import {
+  listCharactersQueryId,
+  listCharactersQueryMapId,
+} from "./character.queries";
 
-const deleteComponent = async (
+const deleteCharacter = async (
   props: { id: string },
   opts: {
     Authorization: string;
   }
 ) => {
-  const res = await fetch(`${siteConfig.apiUrl}/v1/delete-component`, {
+  const res = await fetch(`${siteConfig.apiUrl}/v1/delete-character`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,
@@ -28,14 +31,14 @@ const deleteComponent = async (
   return resp;
 };
 
-export function useDeleteComponentMutation(options = {} as any) {
+export function useDeleteCharacterMutation(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (params: { hanzi: string; id: string }) => {
       // if (options.query) {
-      const deletedComponent = await deleteComponent(params, {
+      const deletedComponent = await deleteCharacter(params, {
         Authorization: authUser?.jwt,
       });
 
@@ -49,6 +52,7 @@ export function useDeleteComponentMutation(options = {} as any) {
 
       // @ts-ignore
       queryClient.invalidateQueries({ queryKey: [listCharactersQueryId] });
+      queryClient.invalidateQueries({ queryKey: [listCharactersQueryMapId] });
     },
 
     ...options,

@@ -17,7 +17,6 @@ export interface SelectedCharacterProps {
   setView: any;
   firstLesson: any;
   discoverMutation: any;
-  deleteComponentMutation: any;
   color: any;
   //   currentPhrase: any;
   addHistoryMutation: any;

@@ -7,15 +7,19 @@ import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
-import { faBook, faSpinner, faVideo } from "@fortawesome/sharp-solid-svg-icons";
-import { faTypewriter } from "@fortawesome/sharp-solid-svg-icons";
+import {
+  faBook,
+  faSpinner,
+  faTypewriter,
+  faVideo,
+} from "@fortawesome/sharp-solid-svg-icons";
 
 import {
   faArrowUpRightFromSquare,
   faBoltLightning as faBoltLightningSolid,
   faBookmark as faBookmarkSolid,
-  faHeart as faHeartSolid,
   faBrainCircuit,
+  faCheckCircle as faCheckCircleSolid,
   faCircleInfo,
   faFaceAngry as faFaceAngrySolid,
   faFaceGrin as faFaceGrinSolid,
@@ -25,8 +29,8 @@ import {
   faFaceSmirking as faFaceSmirkingSolid,
   faFaceSpiralEyes as faFaceSpiralEyesSolid,
   faGlassesRound as faGlassesRoundSolid,
-  faCheckCircle as faCheckCircleSolid,
   faGrinBeamSweat as faGrinBeamSweatSolid,
+  faHeart as faHeartSolid,
   // faMicrophone,
   // faSeedling,
   // faPlay,
@@ -46,6 +50,7 @@ import {
   faArrowRight,
   faArrowsRotate,
   faArrowUp,
+  faBackward,
   faBadgeCheck,
   faBars,
   faBold,
@@ -59,6 +64,7 @@ import {
   faCatSpace,
   faChartColumn,
   faCheckCircle,
+  faChevronRight,
   faCircleArrowDown,
   faCircleArrowUp,
   faCircleBolt,
@@ -69,6 +75,7 @@ import {
   faComputerMouse,
   faConstruction,
   faDatabase,
+  faExclamationCircle,
   faEye,
   faFaceAngry,
   faFaceGrin,
@@ -78,6 +85,8 @@ import {
   faFaceSmirking,
   faFaceSpiralEyes,
   faFire,
+  faForward,
+  faGear as faGearLight,
   faGlobeAsia,
   faGraduationCap,
   faGrid2,
@@ -118,8 +127,10 @@ import {
   faRadar,
   faRefresh,
   faRepeat,
+  faRobot,
   faRobotAstromech,
-  faRollerCoaster,
+  faRotateLeft,
+  faRotateRight,
   faSeedling,
   faShuffle,
   faSignalSlash,
@@ -131,21 +142,12 @@ import {
   faTrash,
   faTree,
   faUser,
+  faUserAstronaut,
   faVirus,
   faVolume,
   faWandMagic,
   faWaveformLines,
   faXmark,
-  faGear as faGearLight,
-  faRobot,
-  faUserAstronaut,
-  faRotateLeft,
-  faRotateRight,
-  faBackward,
-  faForward,
-  faChevronRight,
-  faExclamation,
-  faExclamationCircle,
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
@@ -173,7 +175,7 @@ import { faSeedling as faSeedlingSolid } from "@fortawesome/sharp-solid-svg-icon
 import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
 import { faTree as faTreeSolid } from "@fortawesome/sharp-solid-svg-icons/faTree";
 import { faTrees } from "@fortawesome/sharp-solid-svg-icons/faTrees";
-// import { faMusic } from "@fortawesome/sharp-solid-svg-icons/faMusic";
+
 import { faGear } from "@fortawesome/sharp-solid-svg-icons/faGear";
 
 import { cn } from "@/lib/utils";
@@ -181,7 +183,6 @@ import { faConnectdevelop } from "@fortawesome/free-brands-svg-icons";
 import {
   faBlockBrick,
   faCalculatorSimple,
-  // faTableTree,
   faCheck as faCheckThin,
   faChevronLeft,
   faCompass,
@@ -189,22 +190,16 @@ import {
   faEarthAsia,
   faFingerprint,
   faGlassesRound,
-  // faGear,
   faHome,
   faMagnifyingGlass,
-  // faPlus,
   faMinus,
   faMountainSun,
   faMusicNote,
   faPowerOff,
-  // faLightbulb,
   faRectangleHistory,
   faRectangleVerticalHistory,
-  // faSeedling,
   faStairs,
 } from "@fortawesome/pro-thin-svg-icons";
-// import { faCitrus } from "@fortawesome/sharp-solid-svg-icons";
-// import { faLightbulb } from "@fortawesome/pro-thin-svg-icons";
 
 const createFAIcon = (icon: FontAwesomeIconProps["icon"]) => {
   return function FAIcon(props: any) {

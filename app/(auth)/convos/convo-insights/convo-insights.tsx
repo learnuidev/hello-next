@@ -21,7 +21,6 @@ import { ConvoInsightsSearch } from "./convo-insights-search";
 import { ConvoInsightsTable } from "./convo-insights-table";
 import { ConvoInsightsLearnStatusFilter } from "./convo-insights-learn-status-filter";
 import { ConvoInsightsCharacterStatsCard } from "./convo-insights-character-stats-card";
-import { useCharacterActions } from "./use-character-actions";
 import { AnimatePresence, motion } from "framer-motion";
 
 export function ConvoInsights({ contentId }: { contentId: string }) {
@@ -39,15 +38,6 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
   const lang = lesson?.lang || lesson?.transcriptions?.[0]?.lang;
 
   const { data } = useGetContentInsightsNew({ contentId });
-
-  const {
-    learnCharacter,
-    masterCharacter,
-    unmasterCharacter,
-    bookmarkCharacter,
-    isLearning,
-    isUpdating,
-  } = useCharacterActions(lang);
 
   const characterStats = useMemo(() => {
     if (!data?.uniqueCharactersMemo) {
@@ -174,15 +164,11 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
                       <ConvoInsightsLearnStatusFilter />
                     </div>
 
-                    <div className="my-8">
+                     <div className="my-8">
                       <ConvoInsightsTable
                         characters={filteredCharacters}
                         lang={lang}
                         onCharacterClick={(char) => setSelected(char)}
-                        onBookmark={bookmarkCharacter}
-                        onLearn={learnCharacter}
-                        onMaster={masterCharacter}
-                        onUnmaster={unmasterCharacter}
                       />
                     </div>
                   </div>

@@ -17,7 +17,7 @@ import { useAddCharacterMutation } from "@/domain/lesson/character.mutations";
 
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 
-import { useDeleteComponentMutation } from "@/domain/lesson/component.mutations";
+// import { useDeleteCharacterMutation } from "@/domain/lesson/component.mutations";
 
 import { SelectedCharacterProps } from "./_select-character/select-character.types";
 
@@ -27,6 +27,7 @@ import { useGetLangParams } from "@/hooks/use-get-lang-params";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { useDeleteCharacterMutation } from "@/domain/lesson/use-delete-character-mutation";
 
 export const useViewTypeStore = create(
   persist(
@@ -158,7 +159,6 @@ export function useSelectedCharacterData({
   );
 
   const discoverMutation = useDiscoverMutation();
-  const deleteComponentMutation = useDeleteComponentMutation();
 
   const firstLesson = selectedComp2;
 
@@ -193,7 +193,6 @@ export function useSelectedCharacterData({
     setView,
     firstLesson,
     discoverMutation,
-    deleteComponentMutation,
     color,
     addHistoryMutation,
     view,

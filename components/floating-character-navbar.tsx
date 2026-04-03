@@ -18,6 +18,7 @@ import { ReadModeButton } from "./read-mode-button";
 import { PreviewButton } from "./settings-dialog/preview-button";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
+import { useDeleteCharacterMutation } from "@/domain/lesson/use-delete-character-mutation";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -80,10 +81,11 @@ export const FloatingCharacterNavbar = ({
     lang,
     selectedChar,
     firstLesson,
-    deleteComponentMutation,
   } = characterData;
 
   const addCharacterMutation = useAddCharacterMutation();
+
+  const deleteCharacterMutation = useDeleteCharacterMutation();
 
   const searchParams = useSearchParams();
 
@@ -189,9 +191,9 @@ export const FloatingCharacterNavbar = ({
             {isAlreadyLearned && (
               <button
                 className="text-xl text-black dark:text-white"
-                disabled={deleteComponentMutation.isPending}
+                disabled={deleteCharacterMutation.isPending}
                 onDoubleClick={() => {
-                  deleteComponentMutation
+                  deleteCharacterMutation
                     .mutateAsync({
                       hanzi: currentCharacter?.hanzi,
                       id: currentCharacter?.id,
@@ -203,7 +205,7 @@ export const FloatingCharacterNavbar = ({
                     });
                 }}
               >
-                {deleteComponentMutation.isPending ? (
+                {deleteCharacterMutation.isPending ? (
                   <Icons.spinner spinPulse />
                 ) : (
                   <Icons.trash />

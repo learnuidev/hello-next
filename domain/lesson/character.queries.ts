@@ -53,18 +53,16 @@ const listCharacters = async (
     Authorization: string;
   }
 ): Promise<ICharacter[]> => {
-  const res = await fetch(
-    `${siteConfig.apiUrl}/v1/list-characters?format=${format}`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${opts?.Authorization}`,
-      },
-      body: JSON.stringify({
-        journeyId: journeyId,
-      }),
-    }
-  );
+  const res = await fetch(`${siteConfig.apiUrl}/v1/list-characters`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${opts?.Authorization}`,
+    },
+    body: JSON.stringify({
+      journeyId: journeyId,
+      format,
+    }),
+  });
   const resp = (await res.json()) as any;
 
   return resp as ICharacter[];

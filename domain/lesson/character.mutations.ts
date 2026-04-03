@@ -1,9 +1,8 @@
 "use client";
-import { queryIds } from "./queryIds";
 
+import { siteConfig } from "@/lib/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
-import { siteConfig } from "@/lib/config";
 import {
   listCharactersQueryId,
   listCharactersQueryMapId,
@@ -51,6 +50,22 @@ export function useAddCharacterMutation(options = {} as any) {
       const response = await addCharacter(params, {
         Authorization: authUser?.jwt,
       });
+
+      queryClient.setQueryData([listCharactersQueryId], (data: any) => {
+        return data.map((item: any) => {
+          if (item.id === response.id) {
+            return response;
+          }
+          return item;
+        });
+      });
+      queryClient.setQueryData([listCharactersQueryMapId], (data: any) => {
+        return {
+          ...data,
+          [response.hanzi]: response,
+        };
+      });
+
       return response;
     },
     ...options,
@@ -58,9 +73,6 @@ export function useAddCharacterMutation(options = {} as any) {
       if (options?.onSucess) {
         options?.onSuccess(data);
       }
-
-      queryClient.invalidateQueries({ queryKey: [listCharactersQueryId] });
-      queryClient.invalidateQueries({ queryKey: [listCharactersQueryMapId] });
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
@@ -106,6 +118,22 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
       const response = await updateChracterStatus(params, {
         Authorization: authUser?.jwt,
       });
+
+      queryClient.setQueryData([listCharactersQueryId], (data: any) => {
+        return data.map((item: any) => {
+          if (item.id === response.id) {
+            return response;
+          }
+          return item;
+        });
+      });
+      queryClient.setQueryData([listCharactersQueryMapId], (data: any) => {
+        return {
+          ...data,
+          [response.hanzi]: response,
+        };
+      });
+
       return response;
     },
     ...options,
@@ -113,21 +141,6 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
       if (options?.onSucess) {
         options?.onSuccess(data);
       }
-
-      queryClient.setQueryData([listCharactersQueryMapId], (old: any) => {
-        return {
-          ...old,
-          [data?.hanzi]: data,
-        };
-      });
-      queryClient.setQueryData([listCharactersQueryId], (old: any) => {
-        return old.map((char: any) => {
-          if (char?.hanzi === data?.hanzi) {
-            return data;
-          }
-          return char;
-        });
-      });
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,
@@ -168,6 +181,22 @@ export function useUpdateCharacterStoryMutation(options = {} as any) {
       const response = await updateChracterStory(params, {
         Authorization: authUser?.jwt,
       });
+
+      queryClient.setQueryData([listCharactersQueryId], (data: any) => {
+        return data.map((item: any) => {
+          if (item.id === response.id) {
+            return response;
+          }
+          return item;
+        });
+      });
+      queryClient.setQueryData([listCharactersQueryMapId], (data: any) => {
+        return {
+          ...data,
+          [response.hanzi]: response,
+        };
+      });
+
       return response;
     },
     ...options,
@@ -175,8 +204,6 @@ export function useUpdateCharacterStoryMutation(options = {} as any) {
       if (options?.onSucess) {
         options?.onSuccess(data);
       }
-
-      queryClient.invalidateQueries({ queryKey: [listCharactersQueryId] });
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

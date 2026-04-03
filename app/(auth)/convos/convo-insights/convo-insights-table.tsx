@@ -337,50 +337,8 @@ export function ConvoInsightsTable({
   lang,
   onCharacterClick,
 }: ConvoInsightsTableProps) {
-  const addCharacterMutation = useAddCharacterMutation();
-  const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
-  const addBookmarkMutation = useAddBookmarkMutation();
-  const deleteBookmarkMutation = useDeleteBookmarkMutation();
-  const { data: bookmarks } = useListBookmarksQuery();
   const [sortColumn, setSortColumn] = useState<SortColumn>("createdAt");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
-  const [loadingCharacter, setLoadingCharacter] = useState<string | null>(null);
-
-  const getStatusBadge = (status: string) => {
-    const statusMap: Record<string, { label: string; className: string }> = {
-      DISCOVERED: {
-        label: "已学",
-        className:
-          "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-      },
-      learned: {
-        label: "已学",
-        className:
-          "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-      },
-      forgotten: {
-        label: "掌握",
-        className:
-          "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
-      },
-    };
-    return (
-      statusMap[status] || {
-        label: "未学",
-        className:
-          "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300",
-      }
-    );
-  };
-
-  const formatDate = (timestamp: number) => {
-    if (!timestamp) return "-";
-    return new Date(timestamp).toLocaleDateString("zh-CN");
-  };
-
-  const color = calculateColor({});
-
-  const deleteCharacterMutation = useDeleteCharacterMutation();
 
   const sortedCharacters = useMemo(() => {
     const sorted = [...characters];

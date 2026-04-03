@@ -1,5 +1,4 @@
 "use client";
-import { queryIds } from "./queryIds";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -46,20 +45,26 @@ export interface ICharacter {
 }
 
 const listCharacters = async (
-  options: { journeyId?: string },
+  {
+    journeyId,
+    format = "list",
+  }: { journeyId?: string; format?: "list" | "map" },
   opts: {
     Authorization: string;
   }
 ): Promise<ICharacter[]> => {
-  const res = await fetch(`${siteConfig.apiUrl}/v1/list-characters`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${opts?.Authorization}`,
-    },
-    body: JSON.stringify({
-      journeyId: options?.journeyId,
-    }),
-  });
+  const res = await fetch(
+    `${siteConfig.apiUrl}/v1/list-characters?format=${format}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${opts?.Authorization}`,
+      },
+      body: JSON.stringify({
+        journeyId: journeyId,
+      }),
+    }
+  );
   const resp = (await res.json()) as any;
 
   return resp as ICharacter[];
@@ -106,17 +111,14 @@ export function useListCharactersMapQuery(
     queryKey: [listCharactersQueryMapId],
     queryFn: async () => {
       // if (options.query) {
-      const response = await listCharacters(params, {
-        Authorization: authUser?.jwt,
-      });
+      const response = await listCharacters(
+        { ...params, format: "map" },
+        {
+          Authorization: authUser?.jwt,
+        }
+      );
 
-      return response?.reduce((acc, curr) => {
-        return {
-          ...acc,
-          [curr?.hanzi]: curr,
-        };
-      }, {}) as any;
-      // }
+      return response;
     },
 
     ...options,

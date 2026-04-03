@@ -1,10 +1,9 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { queryIds } from "./queryIds";
 
-import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
+import { useCurrentAuthUser } from "../auth/auth.queries";
 import {
   listCharactersQueryId,
   listCharactersQueryMapId,
@@ -38,11 +37,26 @@ export function useDeleteCharacterMutation(options = {} as any) {
   return useMutation({
     mutationFn: async (params: { hanzi: string; id: string }) => {
       // if (options.query) {
-      const deletedComponent = await deleteCharacter(params, {
+      const response = await deleteCharacter(params, {
         Authorization: authUser?.jwt,
       });
 
-      return deletedComponent;
+      queryClient.setQueryData([listCharactersQueryId], (data: any) => {
+        return data.map((item: any) => {
+          if (item.id === response.id) {
+            return response;
+          }
+          return item;
+        });
+      });
+      queryClient.setQueryData([listCharactersQueryMapId], (data: any) => {
+        return {
+          ...data,
+          [response.hanzi]: response,
+        };
+      });
+
+      return response;
     },
 
     onSuccess: (data: any) => {
@@ -51,8 +65,7 @@ export function useDeleteCharacterMutation(options = {} as any) {
       }
 
       // @ts-ignore
-      queryClient.invalidateQueries({ queryKey: [listCharactersQueryId] });
-      queryClient.invalidateQueries({ queryKey: [listCharactersQueryMapId] });
+      // queryClient.invalidateQueries({ queryKey: [listCharactersQueryMapId] });
     },
 
     ...options,

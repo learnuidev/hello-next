@@ -1,6 +1,6 @@
+import { siteConfig } from "@/lib/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
-import { siteConfig } from "@/lib/config";
 import { listBookmarksQueryKey } from "./use-list-bookmarks-query";
 
 const addBookmark = async (

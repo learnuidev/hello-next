@@ -7,21 +7,17 @@ import { useSelectedCharacter } from "../use-selected-character";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
-import { useState, useMemo } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useMemo, useState } from "react";
 import { useGetContentInsightsNew } from "../use-get-content-insights.new";
 import { useInsightsSettingsStore } from "../use-insights-settings-store";
 import { ConvoContextDialog } from "./convo-context-dialog";
-import { ConvoInsightOverview } from "./convo-insight-overview";
-import { ConvoInsightsFilter } from "./convo-insights-filter";
-import { ConvoInsightsHeader } from "./convo-insights-header";
+import { ConvoInsightsCharacterStatsCard } from "./convo-insights-character-stats-card";
+import { ConvoInsightsLearnStatusFilter } from "./convo-insights-learn-status-filter";
 import { ConvoInsightsNoNChinese } from "./convo-insights-non-chinese";
-import { TotalPlaysChart } from "./total-plays-chart";
-import { ConvoInsightsTabs } from "./convo-insights-tabs";
 import { ConvoInsightsSearch } from "./convo-insights-search";
 import { ConvoInsightsTable } from "./convo-insights-table";
-import { ConvoInsightsLearnStatusFilter } from "./convo-insights-learn-status-filter";
-import { ConvoInsightsCharacterStatsCard } from "./convo-insights-character-stats-card";
-import { AnimatePresence, motion } from "framer-motion";
+import { ConvoInsightsTabs } from "./convo-insights-tabs";
 
 export function ConvoInsights({ contentId }: { contentId: string }) {
   const viewType = useInsightsSettingsStore((state) => state.type);
@@ -164,7 +160,7 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
                       <ConvoInsightsLearnStatusFilter />
                     </div>
 
-                     <div className="my-8">
+                    <div className="my-8">
                       <ConvoInsightsTable
                         characters={filteredCharacters}
                         lang={lang}

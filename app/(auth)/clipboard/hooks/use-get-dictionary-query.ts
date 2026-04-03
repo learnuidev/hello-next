@@ -27,6 +27,8 @@ export const useGetDictionaryQuery = (lang: string, word: string) => {
           return item?.[0];
         }
 
+        return;
+
         const res = await fetch(
           `${siteConfig.apiUrlV2}/v1/dictionary/add-to-dictionary`,
           {

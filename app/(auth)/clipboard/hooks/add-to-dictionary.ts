@@ -11,6 +11,7 @@ export const addToDictionary = async ({
   token: string;
   context?: any;
 }) => {
+  return;
   const res = await fetch(
     `${siteConfig.apiUrlV2}/v1/dictionary/add-to-dictionary`,
     {

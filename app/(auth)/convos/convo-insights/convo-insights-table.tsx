@@ -23,7 +23,7 @@ import {
   useAddCharacterMutation,
   useUpdateCharacterStatusMutation,
 } from "@/domain/lesson/character.mutations";
-import { ICharacter } from "@/domain/lesson/character.queries";
+import { ICharacter } from "@/domain/character/character.types";
 import { useDeleteCharacterMutation } from "@/domain/lesson/use-delete-character-mutation";
 import { cn } from "@/lib/utils";
 import { useMemo, useState } from "react";

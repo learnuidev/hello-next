@@ -116,12 +116,6 @@ export const PageView = ({
                     {currentPhrase?.hanzi
                       ?.split("")
                       ?.map((val: string, idy: number) => {
-                        // const toneLevel = getCharacterToneLevel(
-                        //   currentPhrase as ICharacter
-                        // );
-
-                        // const color = calculateColor({ tone: toneLevel });
-
                         const color = calculateColor({
                           tone: selectedComp?.tone_level,
                         });

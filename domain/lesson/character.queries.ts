@@ -2,53 +2,16 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
-
-export interface ICharacter {
-  reviewHistory: {
-    createdAt: number;
-    timeTaken: number;
-    ponderTime?: number;
-    startTime: number;
-    endTime: number;
-    reviewDate: string;
-    outcome: string;
-  }[];
-  location: string;
-  component: string;
-  sub_components: { hanzi: string; en: string }[];
-  status: string;
-  createdAt: number;
-  en: string;
-  pinyin: string;
-  story: string;
-  group?: string;
-  tone_level?: number;
-  data_version: string;
-  level: number;
-  rightCount: number;
-  userId: string;
-  nomad: string;
-  destination: string;
-  journeyId: string;
-  next_review_date: number;
-  id: string;
-  rightAt: number;
-  forgottenAt: number;
-  hanzi: string;
-  input?: string;
-  lang?: string;
-  steps?: any;
-  roman?: string;
-  track?: boolean;
-}
+import { useCurrentAuthUser } from "../auth/auth.queries";
+import { ICharacter } from "../character/character.types";
 
 const listCharacters = async (
   {
     journeyId,
     format = "list",
-  }: { journeyId?: string; format?: "list" | "map" },
+    hanzis,
+  }: { journeyId?: string; format?: "list" | "map"; hanzis?: string[] },
   opts: {
     Authorization: string;
   }
@@ -61,6 +24,7 @@ const listCharacters = async (
     body: JSON.stringify({
       journeyId: journeyId,
       format,
+      hanzis,
     }),
   });
   const resp = (await res.json()) as any;
@@ -70,13 +34,13 @@ const listCharacters = async (
 
 export const listCharactersQueryId = "list-characters";
 export function useListCharactersQuery(
-  params = {} as { journeyId?: string },
+  params = {} as { journeyId?: string; hanzis?: string[] },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ICharacter[], Error>({
-    queryKey: [listCharactersQueryId],
+    queryKey: [listCharactersQueryId, params?.hanzis],
     queryFn: async () => {
       // if (options.query) {
       const response = await listCharacters(params, {
@@ -100,13 +64,13 @@ export function useListCharactersQuery(
 
 export const listCharactersQueryMapId = "list-characters-map";
 export function useListCharactersMapQuery(
-  params = {} as { journeyId?: string },
+  params = {} as { journeyId?: string; hanzis?: string[] },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<any>({
-    queryKey: [listCharactersQueryMapId],
+    queryKey: [listCharactersQueryMapId, params?.hanzis],
     queryFn: async () => {
       // if (options.query) {
       const response = await listCharacters(

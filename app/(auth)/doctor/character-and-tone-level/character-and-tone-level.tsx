@@ -1,14 +1,9 @@
 "use client";
 
-import {
-  useCurrentAuthUser,
-  useIsSuperAdmin,
-} from "@/domain/auth/auth.queries";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
-import {
-  ICharacter,
-  useListCharactersQuery,
-} from "@/domain/lesson/character.queries";
+import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+
 import { useListComponents } from "@/domain/lesson/component.queries";
 
 export function CharacterAndToneLevel() {

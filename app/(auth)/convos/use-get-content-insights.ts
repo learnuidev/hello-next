@@ -1,13 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { useGetContentQuery } from "@/domain/content/content.queries";
-import {
-  useListCharactersMapQuery,
-  useListCharactersQuery,
-} from "@/domain/lesson/character.queries";
-import { useSelectedCharacter } from "./use-selected-character";
+import { useListCharactersMapQuery } from "@/domain/lesson/character.queries";
 
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 

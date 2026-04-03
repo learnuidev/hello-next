@@ -1,13 +1,6 @@
 "use client";
 
-import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-
-import {
-  useListCharactersMapQuery,
-  useListCharactersQuery,
-} from "@/domain/lesson/character.queries";
-
-import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
+import { useListCharactersMapQuery } from "@/domain/lesson/character.queries";
 
 import { filterNonEnglishAlphabets } from "@/app/nmm/nmm-utils/filter-non-english-alphabets";
 import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";

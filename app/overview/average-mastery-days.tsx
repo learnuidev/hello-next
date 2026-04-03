@@ -1,7 +1,7 @@
 "use client";
 
 import { Icons } from "@/components/ui/icons.v2";
-import { ICharacter } from "@/domain/lesson/character.queries";
+import { ICharacter } from "@/domain/character/character.types";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import Link from "next/link";
 import { useMemo } from "react";

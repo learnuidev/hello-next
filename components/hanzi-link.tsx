@@ -1,25 +1,19 @@
 "use client";
-import React, { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
-import {
-  useListComponents,
-  useListComponentsMapQuery,
-} from "@/domain/lesson/component.queries";
-import {
-  useListCharactersMapQuery,
-  useListCharactersQuery,
-} from "@/domain/lesson/character.queries";
+import { useListCharactersMapQuery } from "@/domain/lesson/character.queries";
+import { useListComponentsMapQuery } from "@/domain/lesson/component.queries";
 
 import Link from "next/link";
 
-import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
-import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
-import { cn } from "@/lib/utils";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
-import { useCanTrackFunction } from "./use-can-track-function";
-import { CharacterItem } from "./_select-character/character-item";
-import { smartSplit } from "./youtube-page/utils/smart-split";
+import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
+import { cn } from "@/lib/utils";
 import { europeanLangs } from "@/libs/constants/european-langs";
+import { CharacterItem } from "./_select-character/character-item";
+import { useBrightModeStore } from "./settings-dialog/use-bright-mode-store";
+import { useCanTrackFunction } from "./use-can-track-function";
+import { smartSplit } from "./youtube-page/utils/smart-split";
 
 interface HSKCharacter {
   input?: string;

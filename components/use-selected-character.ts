@@ -27,7 +27,6 @@ import { useGetLangParams } from "@/hooks/use-get-lang-params";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { useDeleteCharacterMutation } from "@/domain/lesson/use-delete-character-mutation";
 
 export const useViewTypeStore = create(
   persist(

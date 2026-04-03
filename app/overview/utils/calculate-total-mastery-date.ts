@@ -1,15 +1,14 @@
 import { differenceInDays } from "date-fns";
 
-import { ICharacter } from "@/domain/lesson/character.queries";
+import { ICharacter } from "@/domain/character/character.types";
 
 export function calculateTotalMasteryDate(character: ICharacter) {
   const createdAt = character?.createdAt;
-  // const updatedAt = character?.updatedAt;
+
   const reviewHistory =
     character?.reviewHistory?.map((item) => item?.createdAt) || [];
 
   const startDate = new Date(createdAt);
-  // const startDate = new Date(Math.min(...reviewHistory));
 
   const today = new Date(Date.now());
   const endDate =

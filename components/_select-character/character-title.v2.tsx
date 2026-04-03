@@ -128,7 +128,7 @@ export const CharacterTitleV2 = (props: any) => {
 
   const router = useRouter();
 
-  const segmentedData = _data || _segmentedData;
+  const segmentedData = _segmentedData;
 
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
@@ -143,7 +143,7 @@ export const CharacterTitleV2 = (props: any) => {
       ) : readMode ? (
         <div className="flex justify-between items-center w-full">
           <div>
-            {_data
+            {/* {_data
               ? null
               : showPinyin &&
                 isNonRomanLang(lang) &&
@@ -151,7 +151,7 @@ export const CharacterTitleV2 = (props: any) => {
                   <p className="text-gray-900 dark:text-gray-400  font-light focus-visible:ring-0 focus-visible:ring-transparent w-full">
                     {meaningDiscovery?.pinyin || meaningDiscovery?.roman}{" "}
                   </p>
-                )}
+                )} */}
             {segmentedData ? (
               segmentedData.map((item, idx) => {
                 return (
@@ -170,7 +170,7 @@ export const CharacterTitleV2 = (props: any) => {
                     )}
                     key={`${JSON.stringify(item)}-${idx}-${idx}`}
                   >
-                    {item?.pinyin || item?.roman
+                    {item?.pinyin
                       ? isNonRomanLang(lang) &&
                         showPinyin && (
                           <span className="text-sm dark:text-gray-400 text-gray-800 lowercase">
@@ -189,7 +189,7 @@ export const CharacterTitleV2 = (props: any) => {
                         } else {
                           router.push(
                             getNmmLink({
-                              id: item?.hanzi || item?.input,
+                              id: item?.input,
                               lang,
                             })
                           );
@@ -198,7 +198,7 @@ export const CharacterTitleV2 = (props: any) => {
                       }}
                     >
                       {smartSplit({
-                        input: item?.hanzi || item?.input,
+                        input: item?.input,
                         lang: lang,
                       })?.map((item: any, idx: any) => {
                         return (

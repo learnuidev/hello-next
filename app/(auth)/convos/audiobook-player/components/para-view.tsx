@@ -45,7 +45,9 @@ export const ParaView = ({
   const { setShowMenuBar } = useCharacterMenuBarStore();
 
   // const active = 16;
-  const activeTimeLimit = usePlayerViewModeStore((state) => state.activeTimeLimit);
+  const activeTimeLimit = usePlayerViewModeStore(
+    (state) => state.activeTimeLimit
+  );
 
   const { showChinglish, setShowChinglish } = useChinglishState();
 
@@ -96,70 +98,71 @@ export const ParaView = ({
                   key={`${JSON.stringify(transcriptions)}-${JSON.stringify(hanzis)}`}
                 >
                   <div className="flex flex-wrap">
-                    {(activeTimeLimit !== MAX_LIMIT ? group : transcriptions).map(
-                      (transcription: any) => {
-                        const isActiveTranscription =
-                          transcription?.start < currentTime &&
-                          transcription?.end > currentTime;
+                    {(activeTimeLimit !== MAX_LIMIT
+                      ? group
+                      : transcriptions
+                    ).map((transcription: any) => {
+                      const isActiveTranscription =
+                        transcription?.start < currentTime &&
+                        transcription?.end > currentTime;
 
-                        const transcriptionInput =
-                          transcription?.input || transcription?.hanzi;
+                      const transcriptionInput =
+                        transcription?.input || transcription?.hanzi;
 
-                        return (
-                          <span
-                            role="button"
-                            className={`${
-                              currentTime
-                                ? isActiveTranscription
-                                  ? "dark:text-white bg-yellow-200 dark:bg-[rgb(11,12,13)]"
-                                  : "dark:text-gray-400"
-                                : ""
-                            } transition block py-1 px-1`}
-                            key={
-                              transcription?.id ||
-                              `${transcription?.hanzi}-${transcription?.start}`
-                            }
-                            onClick={() => {
-                              seekAndPlay(transcription?.start);
-                            }}
-                          >
-                            {smartSplit({
-                              input: transcriptionInput,
-                              lang: content?.lang,
-                            })?.map((item: string, idx: number) => {
-                              const containsInUnknown =
-                                contentUnknowns?.items?.find((val) =>
-                                  val?.input?.includes(item)
-                                );
-
-                              return (
-                                <span
-                                  className="sm:text-xl"
-                                  key={`para-mode-${item}-${idx}-${transcriptionInput}`}
-                                >
-                                  <CharacterItem
-                                    style={{
-                                      fontSize: `${Math.min(42, fontSize * 1.25)}px`,
-                                    }}
-                                    character={item}
-                                    className={cn(
-                                      containsInUnknown &&
-                                        "font-light dark:!text-pink-300 !text-pink-500",
-                                      currentTime
-                                        ? isActiveTranscription
-                                          ? "dark:text-rose-400 bg-yellow-200 dark:bg-[rgb(11,12,13)]"
-                                          : ""
-                                        : ""
-                                    )}
-                                  />
-                                  {/* {item} */}
-                                </span>
+                      return (
+                        <span
+                          role="button"
+                          className={`${
+                            currentTime
+                              ? isActiveTranscription
+                                ? "dark:text-white bg-yellow-200 dark:bg-[rgb(11,12,13)]"
+                                : "dark:text-gray-400"
+                              : ""
+                          } transition block py-1 px-1`}
+                          key={
+                            transcription?.id ||
+                            `${transcription?.hanzi}-${transcription?.start}`
+                          }
+                          onClick={() => {
+                            seekAndPlay(transcription?.start);
+                          }}
+                        >
+                          {smartSplit({
+                            input: transcriptionInput,
+                            lang: content?.lang,
+                          })?.map((item: string, idx: number) => {
+                            const containsInUnknown =
+                              contentUnknowns?.items?.find((val) =>
+                                val?.input?.includes(item)
                               );
-                            })}
-                          </span>
-                        );
-                      }
-                    )}
+
+                            return (
+                              <span
+                                className="sm:text-xl"
+                                key={`para-mode-${item}-${idx}-${transcriptionInput}`}
+                              >
+                                <CharacterItem
+                                  style={{
+                                    fontSize: `${Math.min(42, fontSize * 1)}px`,
+                                  }}
+                                  character={item}
+                                  className={cn(
+                                    containsInUnknown &&
+                                      "font-light dark:!text-pink-300 !text-pink-500",
+                                    currentTime
+                                      ? isActiveTranscription
+                                        ? "dark:text-rose-400 bg-yellow-200 dark:bg-[rgb(11,12,13)]"
+                                        : ""
+                                      : ""
+                                  )}
+                                />
+                                {/* {item} */}
+                              </span>
+                            );
+                          })}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
               );

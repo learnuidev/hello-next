@@ -147,6 +147,7 @@ function WordTableItem({
 export function ConvoInsightsWordTable({
   words,
   lang,
+  onWordClick,
 }: ConvoInsightsWordTableProps) {
   const [sortColumn, setSortColumn] = useState<SortColumn>("frequency");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
@@ -248,6 +249,7 @@ export function ConvoInsightsWordTable({
                 word={word}
                 key={`${word?.hanzi || word?.input}-word-table-${idx}`}
                 lang={lang}
+                onWordClick={onWordClick}
               />
             );
           })}

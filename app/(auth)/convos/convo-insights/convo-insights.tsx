@@ -202,6 +202,7 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
                       <ConvoInsightsWordTable
                         words={filteredWords}
                         lang={lang}
+                        onWordClick={(word) => setSelected(word)}
                       />
                     </div>
                   </div>

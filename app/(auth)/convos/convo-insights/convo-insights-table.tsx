@@ -1,10 +1,24 @@
 "use client";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Icons } from "@/components/ui/icons.v2";
 import { ICharacter } from "@/domain/lesson/character.queries";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { cn } from "@/lib/utils";
 import { useState, useMemo } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface CharacterTableData extends ICharacter {
   input: string;
@@ -12,25 +26,64 @@ interface CharacterTableData extends ICharacter {
   frequency: number;
 }
 
-type SortColumn = "hanzi" | "pinyin" | "en" | "createdAt" | "rightCount" | "frequency" | "status";
+type SortColumn =
+  | "hanzi"
+  | "pinyin"
+  | "en"
+  | "createdAt"
+  | "rightCount"
+  | "frequency"
+  | "status"
+  | "actions";
 type SortDirection = "asc" | "desc";
 
 interface ConvoInsightsTableProps {
   characters: CharacterTableData[];
   lang: string;
   onCharacterClick: (char: any) => void;
+  onBookmark?: (char: any) => void;
+  onLearn?: (char: any) => void;
+  onMaster?: (char: any) => void;
+  onUnmaster?: (char: any) => void;
 }
 
-export function ConvoInsightsTable({ characters, lang, onCharacterClick }: ConvoInsightsTableProps) {
+export function ConvoInsightsTable({
+  characters,
+  lang,
+  onCharacterClick,
+  onBookmark,
+  onLearn,
+  onMaster,
+  onUnmaster,
+}: ConvoInsightsTableProps) {
   const [sortColumn, setSortColumn] = useState<SortColumn>("createdAt");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   const getStatusBadge = (status: string) => {
     const statusMap: Record<string, { label: string; className: string }> = {
-      learned: { label: "已学", className: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" },
-      forgotten: { label: "掌握", className: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200" },
+      DISCOVERED: {
+        label: "已学",
+        className:
+          "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+      },
+      learned: {
+        label: "已学",
+        className:
+          "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+      },
+      forgotten: {
+        label: "掌握",
+        className:
+          "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
+      },
     };
-    return statusMap[status] || { label: "未学", className: "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300" };
+    return (
+      statusMap[status] || {
+        label: "未学",
+        className:
+          "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300",
+      }
+    );
   };
 
   const formatDate = (timestamp: number) => {
@@ -101,7 +154,11 @@ export function ConvoInsightsTable({ characters, lang, onCharacterClick }: Convo
     if (sortColumn !== column) {
       return <span className="ml-2 text-gray-400">⇅</span>;
     }
-    return <span className="ml-2 text-gray-700 dark:text-gray-300">{sortDirection === "asc" ? "↑" : "↓"}</span>;
+    return (
+      <span className="ml-2 text-gray-700 dark:text-gray-300">
+        {sortDirection === "asc" ? "↑" : "↓"}
+      </span>
+    );
   };
 
   const columns = [
@@ -112,6 +169,7 @@ export function ConvoInsightsTable({ characters, lang, onCharacterClick }: Convo
     { key: "rightCount" as SortColumn, label: "练习次数", width: "" },
     { key: "frequency" as SortColumn, label: "频率", width: "" },
     { key: "status" as SortColumn, label: "状态", width: "" },
+    { key: "actions" as SortColumn, label: "操作", width: "" },
   ];
 
   return (
@@ -122,12 +180,19 @@ export function ConvoInsightsTable({ characters, lang, onCharacterClick }: Convo
             {columns.map((col) => (
               <TableHead
                 key={col.key}
-                className={cn("cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors", col.width)}
-                onClick={() => handleSort(col.key)}
+                className={cn(
+                  col.key !== "actions"
+                    ? "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    : "",
+                  col.width
+                )}
+                onClick={
+                  col.key !== "actions" ? () => handleSort(col.key) : undefined
+                }
               >
                 <div className="flex items-center">
                   {col.label}
-                  {renderSortIcon(col.key)}
+                  {col.key !== "actions" && renderSortIcon(col.key)}
                 </div>
               </TableHead>
             ))}
@@ -136,6 +201,9 @@ export function ConvoInsightsTable({ characters, lang, onCharacterClick }: Convo
         <TableBody>
           {sortedCharacters.map((char, idx) => {
             const statusBadge = getStatusBadge(char.status);
+            const isMastered = char.status === "forgotten";
+            const isLearned = char.isLearned || isMastered;
+
             return (
               <TableRow
                 key={`${char?.hanzi || char?.input}-table-${idx}`}
@@ -153,9 +221,81 @@ export function ConvoInsightsTable({ characters, lang, onCharacterClick }: Convo
                 <TableCell>{char?.rightCount || 0}</TableCell>
                 <TableCell>{char?.frequency || 0}</TableCell>
                 <TableCell>
-                  <span className={cn("px-2 py-1 rounded-full text-xs font-medium", statusBadge.className)}>
+                  <span
+                    className={cn(
+                      "px-2 py-1 rounded-full text-xs font-medium",
+                      statusBadge.className
+                    )}
+                  >
                     {statusBadge.label}
                   </span>
+                </TableCell>
+                <TableCell onClick={(e) => e.stopPropagation()}>
+                  <div className="flex items-center gap-2">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            onClick={() => onBookmark && onBookmark(char)}
+                            className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400"
+                          >
+                            <Icons.bookmark className="w-4 h-4" />
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>收藏</p>
+                        </TooltipContent>
+                      </Tooltip>
+
+                      {!isLearned && onLearn && (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
+                              onClick={() => onLearn(char)}
+                              className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400"
+                            >
+                              <Icons.book className="w-4 h-4" />
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>学习</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      )}
+
+                      {onMaster && (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
+                              onClick={() => onMaster(char)}
+                              className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400"
+                            >
+                              <Icons.lightBulb className="w-4 h-4" />
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{isMastered ? "已掌握" : "掌握"}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      )}
+
+                      {isMastered && onUnmaster && (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
+                              onClick={() => onUnmaster(char)}
+                              className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400"
+                            >
+                              <Icons.book className="w-4 h-4" />
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>取消掌握</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      )}
+                    </TooltipProvider>
+                  </div>
                 </TableCell>
               </TableRow>
             );

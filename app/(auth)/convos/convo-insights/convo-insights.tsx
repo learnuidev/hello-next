@@ -21,6 +21,7 @@ import { ConvoInsightsSearch } from "./convo-insights-search";
 import { ConvoInsightsTable } from "./convo-insights-table";
 import { ConvoInsightsLearnStatusFilter } from "./convo-insights-learn-status-filter";
 import { ConvoInsightsCharacterStatsCard } from "./convo-insights-character-stats-card";
+import { useCharacterActions } from "./use-character-actions";
 import { AnimatePresence, motion } from "framer-motion";
 
 export function ConvoInsights({ contentId }: { contentId: string }) {
@@ -38,6 +39,15 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
   const lang = lesson?.lang || lesson?.transcriptions?.[0]?.lang;
 
   const { data } = useGetContentInsightsNew({ contentId });
+
+  const {
+    learnCharacter,
+    masterCharacter,
+    unmasterCharacter,
+    bookmarkCharacter,
+    isLearning,
+    isUpdating,
+  } = useCharacterActions(lang);
 
   const characterStats = useMemo(() => {
     if (!data?.uniqueCharactersMemo) {
@@ -73,10 +83,8 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
     if (learnStatus !== "all") {
       filtered = filtered.filter((char: any) => {
         if (learnStatus === "learned") {
-          return char?.status === "learned";
+          return char?.status === "learned" || char?.status === "DISCOVERED";
         }
-
-        console.log("CHARRR", char);
 
         if (learnStatus === "forgotten") {
           return char?.status === "forgotten";
@@ -100,6 +108,10 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
       );
     });
   }, [data?.filteredHskWords, searchQuery]);
+
+  const setSearchQuery = useInsightsSettingsStore(
+    (state) => state.setSearchQuery
+  );
 
   if (isLoading || !data) {
     return <LottieLoadingAnimation />;
@@ -167,6 +179,10 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
                         characters={filteredCharacters}
                         lang={lang}
                         onCharacterClick={(char) => setSelected(char)}
+                        onBookmark={bookmarkCharacter}
+                        onLearn={learnCharacter}
+                        onMaster={masterCharacter}
+                        onUnmaster={unmasterCharacter}
                       />
                     </div>
                   </div>

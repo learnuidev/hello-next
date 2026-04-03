@@ -209,11 +209,11 @@ export function ConvoInsightsWordTable({
 
   const columns = [
     { key: "hanzi" as SortColumn, label: "词语", width: "w-32" },
-    { key: "pinyin" as SortColumn, label: "拼音", width: "" },
-    { key: "en" as SortColumn, label: "英文", width: "" },
-    { key: "hskLevel" as SortColumn, label: "HSK等级", width: "" },
-    { key: "frequency" as SortColumn, label: "频率", width: "" },
-    { key: "actions" as SortColumn, label: "操作", width: "" },
+    { key: "pinyin" as SortColumn, label: "拼音", width: "w-32" },
+    { key: "en" as SortColumn, label: "英文", width: "w-40" },
+    { key: "hskLevel" as SortColumn, label: "HSK等级", width: "w-24" },
+    { key: "frequency" as SortColumn, label: "频率", width: "w-20" },
+    { key: "actions" as SortColumn, label: "操作", width: "w-24" },
   ];
 
   return (

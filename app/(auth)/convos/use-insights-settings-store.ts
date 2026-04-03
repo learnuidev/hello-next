@@ -4,7 +4,7 @@ import { create } from "zustand";
 
 export type ConvoInsightsTab = "character" | "word" | "sentence";
 export type LearnStatusFilter = "all" | "learned" | "unlearned" | "forgotten";
-export type HskLevelFilter = "all" | 1 | 2 | 3 | 4 | 5 | 6 | "na";
+export type HskLevelFilter = "all" | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | "na";
 
 export const useInsightsSettingsStore = create((set: any, get: any) => ({
   sortType: "timeline",

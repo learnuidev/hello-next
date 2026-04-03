@@ -33,6 +33,7 @@ interface CharacterTableData extends ICharacter {
   input: string;
   isLearned: boolean;
   frequency: number;
+  mandarinoIndex?: number;
 }
 
 type SortColumn =
@@ -42,6 +43,7 @@ type SortColumn =
   | "createdAt"
   | "rightCount"
   | "frequency"
+  | "mandarinoIndex"
   | "status"
   | "actions";
 type SortDirection = "asc" | "desc";
@@ -129,6 +131,7 @@ function TableItem({
       <TableCell>{formatDate(char?.createdAt)}</TableCell>
       <TableCell>{char?.rightCount || 0}</TableCell>
       <TableCell>{char?.frequency || 0}</TableCell>
+      <TableCell>{char?.mandarinoIndex || 0}</TableCell>
       <TableCell>
         <span
           className={cn(
@@ -376,6 +379,10 @@ export function ConvoInsightsTable({
           aVal = a?.frequency || 0;
           bVal = b?.frequency || 0;
           return sortDirection === "asc" ? aVal - bVal : bVal - aVal;
+        case "mandarinoIndex":
+          aVal = a?.mandarinoIndex || 0;
+          bVal = b?.mandarinoIndex || 0;
+          return sortDirection === "asc" ? aVal - bVal : bVal - aVal;
         case "status":
           const statusOrder = { learned: 1, forgotten: 2 };
           aVal = statusOrder[a?.status as keyof typeof statusOrder] || 3;
@@ -409,14 +416,19 @@ export function ConvoInsightsTable({
   };
 
   const columns = [
-    { key: "hanzi" as SortColumn, label: "汉字", width: "w-24" },
-    { key: "pinyin" as SortColumn, label: "拼音", width: "" },
-    { key: "en" as SortColumn, label: "英文", width: "" },
-    { key: "createdAt" as SortColumn, label: "学习日期", width: "" },
-    { key: "rightCount" as SortColumn, label: "练习次数", width: "" },
-    { key: "frequency" as SortColumn, label: "频率", width: "" },
-    { key: "status" as SortColumn, label: "状态", width: "" },
-    { key: "actions" as SortColumn, label: "操作", width: "" },
+    { key: "hanzi" as SortColumn, label: "汉字", width: "w-20" },
+    { key: "pinyin" as SortColumn, label: "拼音", width: "w-28" },
+    { key: "en" as SortColumn, label: "英文", width: "w-32" },
+    { key: "createdAt" as SortColumn, label: "学习日期", width: "w-28" },
+    { key: "rightCount" as SortColumn, label: "练习次数", width: "w-20" },
+    { key: "frequency" as SortColumn, label: "频率", width: "w-20" },
+    {
+      key: "mandarinoIndex" as SortColumn,
+      label: "橙子指数",
+      width: "w-24 text-orange-500",
+    },
+    { key: "status" as SortColumn, label: "状态", width: "w-24" },
+    { key: "actions" as SortColumn, label: "操作", width: "w-24" },
   ];
 
   return (

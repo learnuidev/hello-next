@@ -86,6 +86,8 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
     return filtered;
   }, [data?.uniqueCharactersMemo, searchQuery, learnStatus]);
 
+  console.log("chars", filteredCharacters);
+
   const filteredWords = useMemo(() => {
     if (!data?.filteredHskWords) return [];
     let filtered = data.filteredHskWords;
@@ -121,20 +123,10 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
     return <LottieLoadingAnimation />;
   }
 
-  const {
-    masteryRate,
-    understandingRate,
-    uniqueCharactersMemo,
-    totalNewCharaters,
-    uniqueCharacters,
-  } = data;
-
   return selectedChar ? (
     <SelectedCharacterContainer characterId={selectedChar} />
   ) : (
     <div className="px-2 sm:px-12 mt-12">
-      {/* <ConvoInsightOverview contentId={contentId} /> */}
-
       <ConvoInsightsNoNChinese contentId={contentId}>
         <div className="w-full px-4 my-4 md:my-8">
           {selected && (

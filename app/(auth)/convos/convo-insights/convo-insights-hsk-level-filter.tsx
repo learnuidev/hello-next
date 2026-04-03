@@ -17,7 +17,14 @@ export function ConvoInsightsHskLevelFilter() {
   const setHskLevel = useInsightsSettingsStore((state) => state.setHskLevel);
 
   return (
-    <Select value={String(hskLevel)} onValueChange={(value) => setHskLevel(value === "na" ? "na" : parseInt(value, 10) as HskLevelFilter)}>
+    <Select
+      value={String(hskLevel)}
+      onValueChange={(value) =>
+        setHskLevel(
+          value === "na" ? "na" : (parseInt(value, 10) as HskLevelFilter)
+        )
+      }
+    >
       <SelectTrigger className="w-[140px]">
         <SelectValue placeholder="HSK等级" />
       </SelectTrigger>
@@ -29,6 +36,7 @@ export function ConvoInsightsHskLevelFilter() {
         <SelectItem value="4">HSK 4</SelectItem>
         <SelectItem value="5">HSK 5</SelectItem>
         <SelectItem value="6">HSK 6</SelectItem>
+        <SelectItem value="9">HSK 9</SelectItem>
         <SelectItem value="na">N/A</SelectItem>
       </SelectContent>
     </Select>

@@ -114,7 +114,7 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
   return selectedChar ? (
     <SelectedCharacterContainer characterId={selectedChar} />
   ) : (
-    <div className="px-12 mt-12">
+    <div className="px-2 sm:px-12 mt-12">
       {/* <ConvoInsightOverview contentId={contentId} /> */}
 
       {/* <TotalPlaysChart contentId={contentId} /> */}
@@ -132,7 +132,7 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
             />
           )}
           <div>
-            <div className="mb-8">
+            <div className="mb-0 sm:mb-8">
               <ConvoInsightsTabs />
             </div>
 
@@ -145,8 +145,8 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
                 transition={{ duration: 0.3 }}
               >
                 {viewType === "character" && (
-                  <div className="my-8">
-                    <div className="my-8 mb-12">
+                  <div className="my-0 sm:my-8">
+                    <div className="my-4 sm:my-8 mb-4 sm:mb-12">
                       <ConvoInsightsCharacterStatsCard
                         totalNew={characterStats.totalNew}
                         totalLearned={characterStats.totalLearned}
@@ -155,12 +155,12 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
                       />
                     </div>
 
-                    <div className="mb-4 flex justify-between">
+                    <div className="sm:mb-4 flex sm:flex-row sm:justify-between flex-col gap-2">
                       <ConvoInsightsSearch />
                       <ConvoInsightsLearnStatusFilter />
                     </div>
 
-                    <div className="my-8">
+                    <div className="sm:my-8 my-4">
                       <ConvoInsightsTable
                         characters={filteredCharacters}
                         lang={lang}

@@ -34,9 +34,7 @@ export const NormalView = (props: SelectedCharacterProps) => {
           );
 
           return (
-            <div
-              key={`${idx}-${char?.hanzi || char?.input}-${idx}-${Math.random()}`}
-            >
+            <div key={`${idx}-${char?.hanzi || char?.input}-${idx}`}>
               <div role="button" className="pb-8 flex flex-col">
                 {" "}
                 <Link target="_blank" href={getYablaLink(char?.hanzi)}>

@@ -361,7 +361,7 @@ export const TranscriptItem = ({
 
               return (
                 <span
-                  key={`${JSON.stringify(item)}-${idx}-${Math.random()}-todo`}
+                  key={`${JSON.stringify(item)}-${idx}-todo`}
                   className={cn("transition text-md", {
                     "text-rose-400": isInTimeRange,
                     "dark:text-gray-200": !isInTimeRange && isLearned,

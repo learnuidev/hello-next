@@ -25,6 +25,7 @@ import { useGetLangParams } from "@/hooks/use-get-lang-params";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { listUniqueCharaters } from "@/app/(auth)/convos/use-get-unique-characters-by-content-id";
 
 export const useViewTypeStore = create(
   persist(
@@ -119,9 +120,17 @@ export function useSelectedCharacterData({
     [relevantAnswers]
   );
 
+  const langParam = useGetLangParams();
+
+  const hanzis = listUniqueCharaters({
+    text: characterId,
+    lang: langParam || data?.lang,
+  });
+
   const { data: characters } = useListCharactersMapQuery(
     {
       from: "use-selected-character",
+      hanzis,
     },
     {
       refetchOnWindowFocus: false,

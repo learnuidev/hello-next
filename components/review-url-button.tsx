@@ -32,7 +32,7 @@ export const ReviewUrlButton = ({
 
   return (
     <Link
-      href={reviewUrl}
+      href={reviewUrl.reviewUrl}
       target="_blank"
       onClick={() => {
         setPreviousPath(`${pathName}?start=${searchParams.get("start") || 0}`);

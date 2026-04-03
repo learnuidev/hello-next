@@ -16,6 +16,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useAddBookmarkMutation } from "@/domain/bookmark/use-add-bookmark-mutation";
+import { useDeleteBookmarkMutation } from "@/domain/bookmark/use-delete-bookmark-mutation";
+import { useListBookmarksQuery } from "@/domain/bookmark/use-list-bookmarks-query";
 import {
   useAddCharacterMutation,
   useUpdateCharacterStatusMutation,
@@ -49,6 +52,286 @@ interface ConvoInsightsTableProps {
   onCharacterClick: (char: any) => void;
 }
 
+const formatDate = (timestamp: number) => {
+  if (!timestamp) return "-";
+  return new Date(timestamp).toLocaleDateString("zh-CN");
+};
+
+function TableItem({
+  char,
+  onCharacterClick,
+  lang,
+}: {
+  lang: string;
+  char: CharacterTableData;
+  onCharacterClick: (char: any) => void;
+}) {
+  const addCharacterMutation = useAddCharacterMutation();
+  const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
+  const addBookmarkMutation = useAddBookmarkMutation();
+  const deleteBookmarkMutation = useDeleteBookmarkMutation();
+  const { data: bookmarks } = useListBookmarksQuery();
+
+  const [loadingCharacter, setLoadingCharacter] = useState<string | null>(null);
+
+  const color = calculateColor({});
+
+  const deleteCharacterMutation = useDeleteCharacterMutation();
+
+  const getStatusBadge = (status: string) => {
+    const statusMap: Record<string, { label: string; className: string }> = {
+      DISCOVERED: {
+        label: "已学",
+        className:
+          "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+      },
+      learned: {
+        label: "已学",
+        className:
+          "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+      },
+      forgotten: {
+        label: "掌握",
+        className:
+          "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
+      },
+    };
+    return (
+      statusMap[status] || {
+        label: "未学",
+        className:
+          "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300",
+      }
+    );
+  };
+
+  const statusBadge = getStatusBadge(char.status);
+  const isMastered = char.status === "forgotten";
+  const isLearned = char.isLearned || isMastered;
+  const charHanzi = char?.hanzi || char?.input || "";
+  const bookmarked = bookmarks?.filter(
+    (item: any) => item?.hanzi === charHanzi
+  )?.[0];
+
+  return (
+    <TableRow
+      key={`${char?.hanzi || char?.input}-table-${JSON.stringify(char)}`}
+      onClick={() => onCharacterClick(char)}
+      className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
+    >
+      <TableCell className="font-medium">
+        <span className={cn("text-xl", color)}>
+          {char?.hanzi || char?.input}
+        </span>
+      </TableCell>
+      <TableCell>{char?.pinyin || "-"}</TableCell>
+      <TableCell>{char?.en || "-"}</TableCell>
+      <TableCell>{formatDate(char?.createdAt)}</TableCell>
+      <TableCell>{char?.rightCount || 0}</TableCell>
+      <TableCell>{char?.frequency || 0}</TableCell>
+      <TableCell>
+        <span
+          className={cn(
+            "px-2 py-1 rounded-full text-xs font-medium",
+            statusBadge.className
+          )}
+        >
+          {statusBadge.label}
+        </span>
+      </TableCell>
+      <TableCell onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center gap-2">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => {
+                    const hanzi = char?.hanzi || char?.input || "";
+                    setLoadingCharacter(hanzi);
+                    if (bookmarked) {
+                      deleteBookmarkMutation.mutateAsync({
+                        hanzi,
+                      });
+                      toast.success(`已取消收藏: ${hanzi}`);
+                    } else {
+                      addBookmarkMutation.mutateAsync({
+                        hanzi,
+                        en: char?.en,
+                        pinyin: char?.pinyin,
+                        lang,
+                      });
+                      toast.success(`已收藏: ${hanzi}`);
+                    }
+                    setTimeout(() => setLoadingCharacter(null), 300);
+                  }}
+                  disabled={
+                    loadingCharacter === charHanzi ||
+                    addBookmarkMutation.isPending ||
+                    deleteBookmarkMutation.isPending
+                  }
+                  className={cn(
+                    "p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors",
+                    loadingCharacter === charHanzi
+                      ? "opacity-50 cursor-not-allowed"
+                      : bookmarked
+                        ? "text-rose-500 dark:text-rose-400"
+                        : "text-gray-600 dark:text-gray-400"
+                  )}
+                >
+                  {addBookmarkMutation.isPending ||
+                  deleteBookmarkMutation.isPending ? (
+                    <Icons.loadingSpinner className="w-4 h-4" />
+                  ) : bookmarked ? (
+                    <Icons.bookmarkSolid className="w-4 h-4" />
+                  ) : (
+                    <Icons.bookmark className="w-4 h-4" />
+                  )}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{bookmarked ? "取消收藏" : "收藏"}</p>
+              </TooltipContent>
+            </Tooltip>
+
+            {!isLearned && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={() => {
+                      const hanzi = char?.hanzi || char?.input || "";
+                      setLoadingCharacter(hanzi);
+                      (addCharacterMutation as any).mutate({
+                        hanzi: hanzi,
+                        journeyId: "",
+                        status: "learned",
+                        pinyin: char?.pinyin,
+                        en: char?.en,
+                        story: char?.story,
+                        lang: lang,
+                      });
+                      toast.success(`已学习: ${hanzi}`);
+                      setTimeout(() => setLoadingCharacter(null), 500);
+                    }}
+                    disabled={loadingCharacter === charHanzi}
+                    className={cn(
+                      "p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors",
+                      loadingCharacter === charHanzi
+                        ? "opacity-50 cursor-not-allowed"
+                        : "text-gray-600 dark:text-gray-400"
+                    )}
+                  >
+                    {addCharacterMutation.isPending ? (
+                      <Icons.loadingSpinner className="w-4 h-4" />
+                    ) : (
+                      <Icons.lightBulb className="w-4 h-4" />
+                    )}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>学习</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={async () => {
+                    const hanzi = char?.hanzi || char?.input || "";
+                    setLoadingCharacter(hanzi);
+
+                    try {
+                      if (!isLearned) {
+                        await (addCharacterMutation as any).mutateAsync({
+                          hanzi: hanzi,
+                          journeyId: "",
+                          status: "learned",
+                          pinyin: char?.pinyin,
+                          en: char?.en,
+                          story: char?.story,
+                          lang: lang,
+                        });
+                      }
+
+                      await (updateCharacterStatusMutation as any).mutateAsync({
+                        characterId: char?.id || hanzi,
+                        status: "forgotten",
+                      });
+
+                      toast.success(`已掌握: ${hanzi}`);
+                    } catch (error) {
+                      toast.error(`掌握失败: ${hanzi}`);
+                    } finally {
+                      setTimeout(() => setLoadingCharacter(null), 500);
+                    }
+                  }}
+                  disabled={loadingCharacter === charHanzi}
+                  className={cn(
+                    "p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors",
+                    loadingCharacter === charHanzi
+                      ? "opacity-50 cursor-not-allowed"
+                      : "text-gray-600 dark:text-gray-400"
+                  )}
+                >
+                  {updateCharacterStatusMutation.isPending ? (
+                    <Icons.loadingSpinner className="w-4 h-4" />
+                  ) : (
+                    <Icons.fire className="w-4 h-4" />
+                  )}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{isMastered ? "已掌握" : "掌握"}</p>
+              </TooltipContent>
+            </Tooltip>
+
+            {char?.id && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onDoubleClick={async () => {
+                      const hanzi = char?.hanzi || char?.input || "";
+                      setLoadingCharacter(hanzi);
+
+                      try {
+                        deleteCharacterMutation.mutateAsync({
+                          id: char?.id || hanzi,
+                        } as any);
+
+                        toast.success(`已取消掌握: ${hanzi}`);
+                      } catch (error) {
+                        toast.error(`取消掌握失败: ${hanzi}`);
+                      } finally {
+                        setTimeout(() => setLoadingCharacter(null), 500);
+                      }
+                    }}
+                    disabled={deleteCharacterMutation.isPending}
+                    className={cn(
+                      "p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors",
+                      loadingCharacter === charHanzi
+                        ? "opacity-50 cursor-not-allowed"
+                        : "text-gray-600 dark:text-gray-400"
+                    )}
+                  >
+                    {deleteCharacterMutation.isPending ? (
+                      <Icons.loadingSpinner className="w-4 h-4" />
+                    ) : (
+                      <Icons.trash className="w-4 h-4" />
+                    )}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>取消掌握</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </TooltipProvider>
+        </div>
+      </TableCell>
+    </TableRow>
+  );
+}
+
 export function ConvoInsightsTable({
   characters,
   lang,
@@ -56,6 +339,9 @@ export function ConvoInsightsTable({
 }: ConvoInsightsTableProps) {
   const addCharacterMutation = useAddCharacterMutation();
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
+  const addBookmarkMutation = useAddBookmarkMutation();
+  const deleteBookmarkMutation = useDeleteBookmarkMutation();
+  const { data: bookmarks } = useListBookmarksQuery();
   const [sortColumn, setSortColumn] = useState<SortColumn>("createdAt");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [loadingCharacter, setLoadingCharacter] = useState<string | null>(null);
@@ -203,202 +489,13 @@ export function ConvoInsightsTable({
         </TableHeader>
         <TableBody>
           {sortedCharacters.map((char, idx) => {
-            const statusBadge = getStatusBadge(char.status);
-            const isMastered = char.status === "forgotten";
-            const isLearned = char.isLearned || isMastered;
-            const charHanzi = char?.hanzi || char?.input || "";
-
             return (
-              <TableRow
+              <TableItem
+                char={char}
                 key={`${char?.hanzi || char?.input}-table-${idx}`}
-                onClick={() => onCharacterClick(char)}
-                className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
-              >
-                <TableCell className="font-medium">
-                  <span className={cn("text-xl", color)}>
-                    {char?.hanzi || char?.input}
-                  </span>
-                </TableCell>
-                <TableCell>{char?.pinyin || "-"}</TableCell>
-                <TableCell>{char?.en || "-"}</TableCell>
-                <TableCell>{formatDate(char?.createdAt)}</TableCell>
-                <TableCell>{char?.rightCount || 0}</TableCell>
-                <TableCell>{char?.frequency || 0}</TableCell>
-                <TableCell>
-                  <span
-                    className={cn(
-                      "px-2 py-1 rounded-full text-xs font-medium",
-                      statusBadge.className
-                    )}
-                  >
-                    {statusBadge.label}
-                  </span>
-                </TableCell>
-                <TableCell onClick={(e) => e.stopPropagation()}>
-                  <div className="flex items-center gap-2">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button
-                            onClick={() => {
-                              const hanzi = char?.hanzi || char?.input || "";
-                              setLoadingCharacter(hanzi);
-                              toast.success(`已收藏: ${hanzi}`);
-                              setTimeout(() => setLoadingCharacter(null), 300);
-                            }}
-                            disabled={loadingCharacter === charHanzi}
-                            className={cn(
-                              "p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors",
-                              loadingCharacter === charHanzi
-                                ? "opacity-50 cursor-not-allowed"
-                                : "text-gray-600 dark:text-gray-400"
-                            )}
-                          >
-                            <Icons.bookmark className="w-4 h-4" />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>收藏</p>
-                        </TooltipContent>
-                      </Tooltip>
-
-                      {!isLearned && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <button
-                              onClick={() => {
-                                const hanzi = char?.hanzi || char?.input || "";
-                                setLoadingCharacter(hanzi);
-                                (addCharacterMutation as any).mutate({
-                                  hanzi: hanzi,
-                                  journeyId: "",
-                                  status: "learned",
-                                  pinyin: char?.pinyin,
-                                  en: char?.en,
-                                  story: char?.story,
-                                  lang: lang,
-                                });
-                                toast.success(`已学习: ${hanzi}`);
-                                setTimeout(
-                                  () => setLoadingCharacter(null),
-                                  500
-                                );
-                              }}
-                              disabled={loadingCharacter === charHanzi}
-                              className={cn(
-                                "p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors",
-                                loadingCharacter === charHanzi
-                                  ? "opacity-50 cursor-not-allowed"
-                                  : "text-gray-600 dark:text-gray-400"
-                              )}
-                            >
-                              <Icons.lightBulb className="w-4 h-4" />
-                            </button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>学习</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      )}
-
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button
-                            onClick={async () => {
-                              const hanzi = char?.hanzi || char?.input || "";
-                              setLoadingCharacter(hanzi);
-
-                              try {
-                                if (!isLearned) {
-                                  await (
-                                    addCharacterMutation as any
-                                  ).mutateAsync({
-                                    hanzi: hanzi,
-                                    journeyId: "",
-                                    status: "learned",
-                                    pinyin: char?.pinyin,
-                                    en: char?.en,
-                                    story: char?.story,
-                                    lang: lang,
-                                  });
-                                }
-
-                                await (
-                                  updateCharacterStatusMutation as any
-                                ).mutateAsync({
-                                  characterId: char?.id || hanzi,
-                                  status: "forgotten",
-                                });
-
-                                toast.success(`已掌握: ${hanzi}`);
-                              } catch (error) {
-                                toast.error(`掌握失败: ${hanzi}`);
-                              } finally {
-                                setTimeout(
-                                  () => setLoadingCharacter(null),
-                                  500
-                                );
-                              }
-                            }}
-                            disabled={loadingCharacter === charHanzi}
-                            className={cn(
-                              "p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors",
-                              loadingCharacter === charHanzi
-                                ? "opacity-50 cursor-not-allowed"
-                                : "text-gray-600 dark:text-gray-400"
-                            )}
-                          >
-                            <Icons.fire className="w-4 h-4" />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{isMastered ? "已掌握" : "掌握"}</p>
-                        </TooltipContent>
-                      </Tooltip>
-
-                      {char?.id && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <button
-                              onDoubleClick={async () => {
-                                const hanzi = char?.hanzi || char?.input || "";
-                                setLoadingCharacter(hanzi);
-
-                                try {
-                                  deleteCharacterMutation.mutateAsync({
-                                    id: char?.id || hanzi,
-                                  } as any);
-
-                                  toast.success(`已取消掌握: ${hanzi}`);
-                                } catch (error) {
-                                  toast.error(`取消掌握失败: ${hanzi}`);
-                                } finally {
-                                  setTimeout(
-                                    () => setLoadingCharacter(null),
-                                    500
-                                  );
-                                }
-                              }}
-                              disabled={deleteCharacterMutation.isPending}
-                              className={cn(
-                                "p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors",
-                                loadingCharacter === charHanzi
-                                  ? "opacity-50 cursor-not-allowed"
-                                  : "text-gray-600 dark:text-gray-400"
-                              )}
-                            >
-                              <Icons.trash className="w-4 h-4" />
-                            </button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>取消掌握</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      )}
-                    </TooltipProvider>
-                  </div>
-                </TableCell>
-              </TableRow>
+                lang={lang}
+                onCharacterClick={onCharacterClick}
+              />
             );
           })}
         </TableBody>

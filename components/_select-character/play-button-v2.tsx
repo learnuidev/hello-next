@@ -142,9 +142,9 @@ function PlayBtnInner({
         onClick={() => {
           togglePlay();
         }}
-        className={className}
+        className={cn(className, "w-4")}
       >
-        {isPlaying ? <Icons.pause /> : <Icons.play className="ml-1" />}
+        {isPlaying ? <Icons.microphoneSolid /> : <Icons.microphone />}
       </button>
       <div className="hidden">
         <ReactPlayer {...playerProps} />
@@ -202,12 +202,12 @@ export function PlayButtonV2({
             setAudioUrl(resp.audioUrl);
           });
       }}
-      className={cn(className)}
+      className={cn(className, "w-4")}
     >
       {getAudioMutation?.isPending ? (
         <Icons.spinner spinPulse />
       ) : (
-        <Icons.play className="ml-1" />
+        <Icons.microphone />
       )}
     </button>
   );

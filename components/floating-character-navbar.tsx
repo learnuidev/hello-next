@@ -1,24 +1,23 @@
 import { Icons } from "./ui/icons.v2";
 
 import { useCharacterContextStore } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
+import { BookmarkButton } from "@/app/nmm/bookmark-button";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import {
   useAddCharacterMutation,
   useUpdateCharacterStatusMutation,
 } from "@/domain/lesson/character.mutations";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
+import { useDeleteCharacterMutation } from "@/domain/lesson/use-delete-character-mutation";
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { isNonRomanLang } from "./_select-character/utils/is-non-roman-lang";
-import { PinyinButton } from "./pinyin-button";
-import { ReadModeButton } from "./read-mode-button";
+import { useCharacterEditStore } from "./_select-character/use-character-edit-store";
 import { PreviewButton } from "./settings-dialog/preview-button";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
-import { useDeleteCharacterMutation } from "@/domain/lesson/use-delete-character-mutation";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -83,6 +82,8 @@ export const FloatingCharacterNavbar = ({
     firstLesson,
   } = characterData;
 
+  const edit = useCharacterEditStore((state) => state.edit);
+
   const addCharacterMutation = useAddCharacterMutation();
 
   const deleteCharacterMutation = useDeleteCharacterMutation();
@@ -92,6 +93,8 @@ export const FloatingCharacterNavbar = ({
   const context = searchParams?.get("context");
 
   const currentCharacter = selectedComp;
+
+  console.log("CURRENT CHAR", currentCharacter);
 
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
 
@@ -117,10 +120,9 @@ export const FloatingCharacterNavbar = ({
       <div className="flex items-center w-full justify-center">
         <div className="px-8  py-2 bg-gray-100 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
           <div className="space-x-8 flex justify-center items-center w-full">
-            <ReadModeButton />
-            <PreviewButton />
+            {!edit && <BookmarkButton hanzi={characterId} lang={lang} />}
 
-            {isNonRomanLang(lang) && <PinyinButton />}
+            <PreviewButton />
 
             <button
               className="text-xl text-black dark:text-white"

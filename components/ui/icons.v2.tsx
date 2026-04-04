@@ -31,7 +31,7 @@ import {
   faGlassesRound as faGlassesRoundSolid,
   faGrinBeamSweat as faGrinBeamSweatSolid,
   faHeart as faHeartSolid,
-  // faMicrophone,
+  // faMicrophone as faMicrophoneSolid,
   // faSeedling,
   // faPlay,
   // faTypewriter,
@@ -163,6 +163,7 @@ import {
   faMessageQuote,
   faSeedling as faSeedlingDuotone,
   faTree as faTreeDuotone,
+  faMicrophone as faMicrophoneSolid,
 } from "@fortawesome/pro-duotone-svg-icons";
 
 import { faCitrus as faCitrusSolid } from "@fortawesome/sharp-solid-svg-icons/faCitrus";
@@ -352,6 +353,7 @@ export const Icons = {
   bullsEyeArrow: createFAIcon(faBullseyeArrow),
   bullsEye: createFAIcon(faBullseye),
   microphone: createFAIcon(faMicrophone),
+  microphoneSolid: createFAIcon(faMicrophoneSolid),
   refresh: createFAIcon(faArrowsRotate),
   diary: createFAIcon(faNotebook),
   bookmark: createFAIcon(faBookmark),

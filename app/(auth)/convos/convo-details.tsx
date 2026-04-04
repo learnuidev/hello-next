@@ -18,6 +18,8 @@ import { Speak } from "./[content-id]/speak/speak";
 import { AI } from "./ai";
 import { AudiobookPlayer } from "./audiobook-player/audiobook-player";
 import { ContentSettings } from "./content-settings";
+import { WithContentLoading } from "./[content-id]/with-content-loading";
+
 // import { isVideoUrl } from "./utils/is-video-url";
 // import { isYoutube } from "./utils/is-youtube";
 
@@ -61,70 +63,62 @@ export const ConvoDetails = ({ contentId }: { contentId: string }) => {
 
   if (viewType === "listen" && content?.type === "tweet") {
     return (
-      <div>
-        <TweetPage contentId={contentId} />
+      <WithContentLoading>
+        <div>
+          <TweetPage contentId={contentId} />
 
-        <FloatingNavbar />
-      </div>
+          <FloatingNavbar />
+        </div>
+      </WithContentLoading>
     );
   }
-  // if (viewType === "clipboard" && content.lang !== "zh") {
-  // if (viewType === "clipboard") {
-  //   if (content && content?.transcriptions?.length > 0) {
-  //     const transcriptionStr = Object.entries(
-  //       groupBySectionId(content?.transcriptions || [])
-  //     )
-  //       .map((item: any) =>
-  //         item?.[1].map((v: any) => v?.input || v?.hanzi)?.join(".")
-  //       )
-  //       .join("\n\n");
 
-  //     return <Clipboard lang={content.lang} content={transcriptionStr} />;
-  //   } else {
-  //     return (
-  //       <Nothing message="Please add some content before viewing this page" />
-  //     );
-  //   }
-  // }
-
-  // If the link contains yotube - then show youtube page
-
-  // if (
-  //   viewType === "listen" &&
-  //   (isYoutube(content?.audio) || isVideoUrl(content?.audio))
-  // ) {
-  //   return (
-  //     <div>
-  //       <YouTubePlayer contentId={contentId} />
-  //     </div>
-  //   );
-  // }
   if (viewType === "ai") {
-    return <AI contentId={contentId} />;
+    return (
+      <WithContentLoading>
+        <AI contentId={contentId} />
+      </WithContentLoading>
+    );
   }
 
   if (viewType === "listen") {
-    return <AudiobookPlayer contentId={contentId} />;
+    return (
+      <WithContentLoading>
+        <AudiobookPlayer contentId={contentId} />
+      </WithContentLoading>
+    );
   }
 
   if (viewType === "write") {
     if (content?.lang !== "zh") {
-      return <Nothing message="Wordle is enabled only for Chinese" />;
+      return (
+        <WithContentLoading>
+          <Nothing message="Wordle is enabled only for Chinese" />
+        </WithContentLoading>
+      );
     }
     return (
-      <div>
+      <WithContentLoading>
         {/* Write */}
         <Wordle contentId={contentId} />
-      </div>
+      </WithContentLoading>
     );
   }
 
   if (viewType === "dynacloze") {
-    return <DynaSelector contentId={contentId} />;
+    return (
+      <WithContentLoading>
+        <DynaSelector contentId={contentId} />
+      </WithContentLoading>
+    );
   }
 
   if (viewType === "speak") {
-    return <Speak contentId={contentId} />;
+    return (
+      <WithContentLoading>
+        <Speak contentId={contentId} />
+      </WithContentLoading>
+    );
   }
   if (viewType === "learn") {
     return (
@@ -141,17 +135,19 @@ export const ConvoDetails = ({ contentId }: { contentId: string }) => {
 
     return (
       <>
-        <ConvoInsights contentId={contentId} />
-        <FloatingNavbar />
+        <WithContentLoading>
+          <ConvoInsights contentId={contentId} />
+          <FloatingNavbar />
+        </WithContentLoading>
       </>
     );
   }
 
   return (
-    <div>
+    <WithContentLoading>
       <YouTubePlayer contentId={contentId} />
 
       {/* <FloatingNavbar /> */}
-    </div>
+    </WithContentLoading>
   );
 };

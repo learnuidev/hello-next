@@ -89,60 +89,65 @@ export const useHandleSearch = () => {
 
       const _isTweet = isTwitterUrl(querySync);
 
-      if (_isTweet) {
-        const newContent: any = {
-          type: "tweet",
-          contentType: "news",
-          websiteUrl: querySync,
-          lang: langItem,
-        };
-        console.log("add new content", newContent);
-
-        addContentMutation.mutateAsync(newContent).then((resp) => {
-          return router.push(`/convos/${resp?.id}`);
-        });
-        return null;
+      if (_isWebsite || _isTweet) {
+        alert("Not supported");
+        return;
       }
 
-      console.log("is website", _isWebsite);
-      console.log("LANG SELECTED", langItem);
+      // if (_isTweet) {
+      //   const newContent: any = {
+      //     type: "tweet",
+      //     contentType: "news",
+      //     websiteUrl: querySync,
+      //     lang: langItem,
+      //   };
+      //   console.log("add new content", newContent);
+
+      //   addContentMutation.mutateAsync(newContent).then((resp) => {
+      //     return router.push(`/convos/${resp?.id}`);
+      //   });
+      //   return null;
+      // }
+
+      // console.log("is website", _isWebsite);
+      // console.log("LANG SELECTED", langItem);
 
       // return;
 
-      if (_isWebsite && langItem) {
-        const newContent: any = {
-          type: "website",
-          contentType: "news",
-          websiteUrl: querySync,
-          lang: langItem,
-        };
-        console.log("add new content", newContent);
+      // if (_isWebsite && langItem) {
+      //   const newContent: any = {
+      //     type: "website",
+      //     contentType: "news",
+      //     websiteUrl: querySync,
+      //     lang: langItem,
+      //   };
+      //   console.log("add new content", newContent);
 
-        addContentMutation.mutateAsync(newContent).then((resp) => {
-          return router.push(`/convos/${resp?.id}`);
-        });
-        return null;
-      }
+      //   addContentMutation.mutateAsync(newContent).then((resp) => {
+      //     return router.push(`/convos/${resp?.id}`);
+      //   });
+      //   return null;
+      // }
 
-      const _isLongText = isLongText(querySync);
+      // const _isLongText = isLongText(querySync);
 
-      if (_isLongText && langItem) {
-        console.log("IS WEBSITE", _isWebsite);
-        console.log("IS LONG TEXT", _isLongText);
-        const newContent: any = {
-          type: "text",
-          contentType: "news",
-          input: querySync,
-          title: querySync?.split(`\n`)?.[0]?.slice(0, 42) || "todo",
-          lang: langItem,
-        };
-        console.log("add new content", newContent);
+      // if (_isLongText && langItem) {
+      //   console.log("IS WEBSITE", _isWebsite);
+      //   console.log("IS LONG TEXT", _isLongText);
+      //   const newContent: any = {
+      //     type: "text",
+      //     contentType: "news",
+      //     input: querySync,
+      //     title: querySync?.split(`\n`)?.[0]?.slice(0, 42) || "todo",
+      //     lang: langItem,
+      //   };
+      //   console.log("add new content", newContent);
 
-        addContentMutation.mutateAsync(newContent).then((resp) => {
-          return router.push(`/convos/${resp?.id}`);
-        });
-        return null;
-      }
+      //   addContentMutation.mutateAsync(newContent).then((resp) => {
+      //     return router.push(`/convos/${resp?.id}`);
+      //   });
+      //   return null;
+      // }
 
       if (langSelected) {
         setQuery("");

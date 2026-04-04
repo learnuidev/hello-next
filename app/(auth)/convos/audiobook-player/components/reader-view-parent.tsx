@@ -84,7 +84,10 @@ export const ReaderViewParent = ({
                                 ? transcription.start < currentTime &&
                                   transcription.end > currentTime
                                   ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
-                                  : "!text-gray-500 opacity-50"
+                                  : cn(
+                                      `!text-gray-500`,
+                                      isPlaying ? `opacity-50` : ""
+                                    )
                                 : "dark:text-white text-black"
                             )}
                             contentId={content?.id}
@@ -114,7 +117,10 @@ export const ReaderViewParent = ({
                                 ? transcription.start < currentTime &&
                                   transcription.end > currentTime
                                   ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
-                                  : "!text-gray-500 opacity-50"
+                                  : cn(
+                                      `!text-gray-500`,
+                                      isPlaying ? `opacity-50` : ""
+                                    )
                                 : "dark:text-white text-black"
                             )}
                           >

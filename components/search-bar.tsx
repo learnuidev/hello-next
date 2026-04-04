@@ -2,7 +2,7 @@
 
 import { Icons } from "./ui/icons.v2";
 import { SearchInput } from "./search-input";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export const SearchBar = ({ autoFocus }: { autoFocus?: boolean }) => {
   return (

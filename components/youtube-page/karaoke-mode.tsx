@@ -41,7 +41,7 @@ function CurrentTranscriptionViewer({
         key={JSON.stringify(currentTranscription)}
         className={cn(
           "my-0 sm:my-24",
-          "font-bold text-center text-white",
+          "font-bold text-center",
           romanOrPinyin?.length < 16 ? "text-4x" : "text-lg"
         )}
       >

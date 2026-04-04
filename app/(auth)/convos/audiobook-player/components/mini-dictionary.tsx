@@ -133,22 +133,7 @@ export function MiniDictionary({
     };
   }, [dragOffset]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setSelected(null);
-        hideMenuBar();
-      }
-    };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [setSelected, hideMenuBar]);
 
   const addContentUnknownMutation = useAddContentUnknownMutation();
   const removeContentUnknownMutation = useRemoveContentUnknownMutation();
@@ -260,7 +245,7 @@ export function MiniDictionary({
       className={cn(
         "bg-gray-50 dark:bg-[rgb(13,14,15)] rounded p-4 sm:p-8 sm:max-w-xl",
         position
-          ? "fixed z-50"
+          ? "fixed z-50 w-[600px]"
           : className || "w-full sm:max-w-[600px] mt-0 sticky top-0",
         position && (dragOffset ? "cursor-grabbing" : "cursor-grab")
       )}

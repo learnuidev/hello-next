@@ -4,6 +4,7 @@ import { useGetVideoByIdQuery } from "@/domain/youtube/get-video-by-id";
 import { LangAndContentTypeSelector } from "../components/lang-content-type-selector";
 import { YoutubeInput } from "./components/youtube-input";
 import { TranscriptionsInput } from "../components/transcriptions-input";
+import { UserAssetSelector } from "../components/user-asset-selector";
 
 import { ContentTitleInput } from "../components/content-title-input";
 import { useListYoutubeTranscriptionsQuery } from "@/domain/youtube/list-youtube-transcriptions";
@@ -29,6 +30,8 @@ export const YoutubeFlow = () => {
           <LangAndContentTypeSelector />
 
           <YoutubeInput />
+
+          <UserAssetSelector assetType="youtube" />
         </div>
 
         {/* <div className="w-full">

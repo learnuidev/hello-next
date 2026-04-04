@@ -6,6 +6,7 @@ import { LangAndContentTypeSelector } from "../components/lang-content-type-sele
 import { ContentTitleInput } from "../components/content-title-input";
 import { AudioPreview } from "./components/audio-preview";
 import { TranscriptionsInput } from "../components/transcriptions-input";
+import { UserAssetSelector } from "../components/user-asset-selector";
 
 export const AudioFlow = () => {
   const setConvo = useNewConvoStore((state) => state.setConvo);
@@ -17,6 +18,8 @@ export const AudioFlow = () => {
       <div className="w-full">
         <LangAndContentTypeSelector />
       </div>
+
+      <UserAssetSelector assetType="audio" />
 
       <UploadFileButton
         className="mt-12"

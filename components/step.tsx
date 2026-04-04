@@ -33,6 +33,7 @@ const initConvo = {
 
   safeLang: "en",
   targetLang: "zh",
+  lang: "zh",
 };
 
 export const useNewConvoStore = create(
@@ -56,7 +57,7 @@ export const useNewConvoStore = create(
         set({ convo: { ...get().convo, [key]: value } }),
     }),
     {
-      name: "mandarino/step-store-v2", // name of the item in the storage (must be unique)
+      name: "mandarino/step-store-v3", // name of the item in the storage (must be unique)
       storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
     }
   )

@@ -2,17 +2,14 @@
 
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
-import { useNewBookState } from "../../listen/hooks/use-new-book-state";
 import { useAddBookMutation } from "../../listen/[media-id]/hooks/use-add-book-mutation";
-import { LanguageSelector } from "../new-content-v2/components/language-selector";
-import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
+import { useNewBookState } from "../../listen/hooks/use-new-book-state";
+
 import { imageFormats } from "@/components/_select-character/selected-character/character-content/image-formats";
-import { ImagePreview } from "../new-content-v2/audio-flow/components/image-preview";
+import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-// import { useAddBookMutation } from "../[media-id]/hooks/use-add-book-mutation";
-// import { useListenState } from "../hooks/use-listen-state";
-// import { useNewBookState } from "../hooks/use-new-book-state";
+import { ImagePreview } from "../new-content-v2/audio-flow/components/image-preview";
 
 export function NewBook() {
   const {
@@ -100,13 +97,6 @@ export function NewBook() {
               "w-full text-xl px-4 bg-gray-100 dark:bg-[rgb(31,32,33)]"
             )}
           />
-
-          <LanguageSelector
-            value={lang}
-            setValue={(lang) => {
-              setLang(lang);
-            }}
-          />
         </div>
       </section>
 
@@ -182,13 +172,6 @@ export function NewBook() {
           "mt-4 border-none dark:placeholder:text-gray-500 border-gray-100 focus:border-gray-300  dark:text-gray-300 placeholder:text-gray-600 border-2 focus:border-none px-2 focus:outline-none active:outline-none py-2",
           "w-full text-xl px-4 bg-gray-100 dark:bg-[rgb(31,32,33)]"
         )}
-      />
-
-      <LanguageSelector
-        value={lang}
-        setValue={(lang) => {
-          setLang(lang);
-        }}
       />
 
       {/* <input

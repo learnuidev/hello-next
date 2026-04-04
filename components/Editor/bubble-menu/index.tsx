@@ -11,6 +11,7 @@ import { ColorSelector } from "./color-selector";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useIsSearchTrackingEnabled } from "@/hooks/use-is-search-tracking-enabled";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
+import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 
 export interface BubbleMenuItem {
   name: string;
@@ -26,6 +27,8 @@ type EditorBubbleMenuProps = Omit<BubbleMenuProps, "children">;
 export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
   const addSentenceMutation = useAddSentenceMutation();
   const lang = useGetCurrentLang();
+
+  const contextId = useGetComponentId();
 
   const router = useRouter();
 
@@ -48,12 +51,6 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
       isActive: () => props.editor.isActive("bold"),
       Icon: Icons.playCircle,
       command: () => {
-        // const { selection, state } = props.editor;
-        // const { from, to } = selection;
-
-        // const text = state.doc.textBetween(from, to, " ");
-        // return props.editor.chain().focus().toggleBold().run();
-
         const { view, state } = props.editor;
         const { from, to } = view.state.selection;
         const text = state.doc.textBetween(from, to, "");
@@ -66,12 +63,6 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
       isActive: () => props.editor.isActive("bold"),
       Icon: Icons.magnifyingGlass,
       command: () => {
-        // const { selection, state } = props.editor;
-        // const { from, to } = selection;
-
-        // const text = state.doc.textBetween(from, to, " ");
-        // return props.editor.chain().focus().toggleBold().run();
-
         const { view, state } = props.editor;
         const { from, to } = view.state.selection;
         const text = state.doc.textBetween(from, to, "");
@@ -81,6 +72,7 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
             input: text,
             lang,
             eventType: "SEARCH",
+            searchContextText: contextId,
           } as any);
         }
 
@@ -101,42 +93,6 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
       command: () => props.editor.chain().focus().toggleItalic().run(),
       Icon: Icons.italic,
     },
-    // {
-    //   name: "underline",
-    //   isActive: () => props.editor.isActive("underline"),
-    //   command: () => props.editor.chain().focus().toggleUnderline().run(),
-    //   icon: UnderlineIcon,
-    // },
-    // {
-    //   name: "strike",
-    //   isActive: () => props.editor.isActive("strike"),
-    //   command: () => props.editor.chain().focus().toggleStrike().run(),
-    //   icon: StrikethroughIcon,
-    // },
-    // {
-    //   name: "align-left",
-    //   isActive: () => props.editor.isActive({ textAlign: "left" }),
-    //   command: () => props.editor.chain().focus().setTextAlign("left").run(),
-    //   icon: AlignLeft,
-    // },
-    // {
-    //   name: "align-center",
-    //   isActive: () => props.editor.isActive({ textAlign: "center" }),
-    //   command: () => props.editor.chain().focus().setTextAlign("center").run(),
-    //   icon: AlignCenter,
-    // },
-    // {
-    //   name: "align-right",
-    //   isActive: () => props.editor.isActive({ textAlign: "right" }),
-    //   command: () => props.editor.chain().focus().setTextAlign("right").run(),
-    //   icon: AlignRight,
-    // },
-    // {
-    //   name: "code",
-    //   isActive: () => props.editor.isActive("code"),
-    //   command: () => props.editor.chain().focus().toggleCode().run(),
-    //   icon: CodeIcon,
-    // },
   ];
 
   if (isSuperAdmin) {
@@ -207,15 +163,6 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props: any) => {
       {...bubbleMenuProps}
       className="flex w-fit divide-x divide-stone-200 rounded border border-stone-200 bg-white shadow-xl"
     >
-      {/* <LinkSelector
-        editor={props.editor}
-        isOpen={isLinkSelectorOpen}
-        setIsOpen={() => {
-          setIsLinkSelectorOpen(!isLinkSelectorOpen);
-          setIsColorSelectorOpen(false);
-          setIsNodeSelectorOpen(false);
-        }}
-      /> */}
       <div className="flex">
         {items.map((item, index) => (
           <button

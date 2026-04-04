@@ -149,7 +149,7 @@ export default function Convos() {
             <button
               className="text-xl dark:hover:text-white px-3 py-1 dark:text-slate-600 shadow-md rounded-full"
               onClick={() => {
-                router.push(`/convos?type=add`);
+                router.push(`/convos?type=add&variant=content`);
               }}
             >
               <PlusIcon />

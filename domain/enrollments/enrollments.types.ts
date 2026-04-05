@@ -5,10 +5,10 @@ export interface Enrollment {
   enrolledAt: string;
   updatedAt: string;
   status: "active" | "inactive";
-  series?: Series;
+  series?: EnrollmentSeries;
 }
 
-export interface Series {
+interface EnrollmentSeries {
   id: string;
   title: string;
   description: string;

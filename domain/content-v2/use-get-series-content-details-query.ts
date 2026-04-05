@@ -4,9 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 import { SeriesContentDetails } from "./series-content-details.types";
+import { Series } from "./series.types";
 
 export interface GetSeriesContentDetailsResponse {
   content: SeriesContentDetails;
+  series: Series;
 }
 
 export interface GetSeriesContentDetailsParams {
@@ -17,7 +19,7 @@ const getSeriesContentDetails = async (
   params: GetSeriesContentDetailsParams,
   opts: {
     Authorization: string;
-  },
+  }
 ): Promise<GetSeriesContentDetailsResponse> => {
   const res = await fetch(
     `${siteConfig.contentApi}/v1/contents/${params.contentId}`,
@@ -25,7 +27,7 @@ const getSeriesContentDetails = async (
       headers: {
         Authorization: `${opts?.Authorization}`,
       },
-    },
+    }
   );
 
   if (!res.ok) {
@@ -37,7 +39,7 @@ const getSeriesContentDetails = async (
 
 export function useGetSeriesContentDetailsQuery(
   params: GetSeriesContentDetailsParams,
-  options = {} as any,
+  options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 

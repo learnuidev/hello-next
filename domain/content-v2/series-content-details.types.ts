@@ -13,10 +13,10 @@ export interface YoutubeTranscription {
   endIndex: number;
   start: number;
   end: number;
-  hanzi: string;
   pinyin: string;
   chinglish: string;
   en: string;
+  input: string;
 }
 
 export interface AudioTranscriptWord {
@@ -31,11 +31,13 @@ export interface AudioTranscription {
   id: string;
   startIndex: number;
   endIndex: number;
-  hanzi: string;
   pinyin: string;
   chinglish: string;
   en: string;
   words: AudioTranscriptWord[];
+  input: string;
+  start: number;
+  end: number;
 }
 
 export type TranscriptionV2 = YoutubeTranscription | AudioTranscription;
@@ -54,4 +56,5 @@ export interface SeriesContentDetails extends CreatedAndUpdatedAt {
   mediaUrl?: string;
   transcriptions?: TranscriptionV2[];
   sortOrder: number;
+  backgroundImage: string;
 }

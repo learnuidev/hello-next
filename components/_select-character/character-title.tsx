@@ -38,6 +38,8 @@ import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
 import { PinyinButton } from "../pinyin-button";
 import { EnButton } from "../en-button";
+import { ChinglishButton } from "../chinglish-button";
+import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -70,6 +72,8 @@ export const CharacterTitle = (props: any) => {
   const searchParams = useSearchParams();
 
   const context = searchParams?.get("context");
+
+  const { showChinglish, setShowChinglish } = useChinglishState();
 
   const { data: selectedComp } = useGetComponentQuery({
     hanzi: componentId,
@@ -436,7 +440,9 @@ export const CharacterTitle = (props: any) => {
           />
         ) : (
           <h2 className="dark:text-gray-500 text-gray-900 font-light">
-            {finalEnVal?.split("/")?.slice(0, 4)?.join("/")}
+            {showChinglish && meaningDiscovery?.chinglish
+              ? meaningDiscovery?.chinglish
+              : finalEnVal?.split("/")?.slice(0, 4)?.join("/")}
           </h2>
         )
       ) : null}
@@ -511,6 +517,7 @@ export const CharacterTitle = (props: any) => {
           <EnButton />
 
           <ReadModeButton />
+          {meaningDiscovery?.chinglish && <ChinglishButton />}
         </div>
       </div>
     </div>

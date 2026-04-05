@@ -20,6 +20,7 @@ export interface ListDiscoveryResponse {
   en: string;
   roman: string;
   explanation?: string;
+  chinglish?: string;
 }
 
 const listDiscovery = async (

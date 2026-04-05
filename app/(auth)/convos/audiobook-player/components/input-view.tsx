@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useFontSizeStore } from "../hooks/use-font-size";
+import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 
 export function InputView({
   currentTranscription,
@@ -18,16 +19,19 @@ export function InputView({
   const { fontSize } = useFontSizeStore();
 
   return (
-    <p
-      style={{ fontSize: `${fontSize}px` }}
-    >
+    <p style={{ fontSize: `${fontSize}px` }}>
       {smartSplit({
         input: currentTranscription?.input,
         lang: currentTranscription?.lang,
       })?.map((item: any, idx: any) => {
-        const containsInUnknown = contentUnknowns?.items?.find((val) =>
-          val?.input?.includes(item)
-        );
+        const containsInUnknown = contentUnknowns?.items?.find((val) => {
+          return isCharacterPartOfWordMatch(
+            currentTranscription?.input,
+            val?.input,
+            item,
+            idx
+          );
+        });
 
         return (
           <span

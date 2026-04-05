@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useContentSearchHistory } from "../hooks/use-content-search-history";
+import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 
 export function ReaderViewChinese({
   currentTranscription,
@@ -97,7 +98,14 @@ export function ReaderViewChinese({
                   lang: currentTranscription?.lang,
                 })?.map((charItem: any, charIdx: any) => {
                   const containsInUnknown = contentUnknowns?.items?.find(
-                    (val) => val?.input?.includes(charItem)
+                    (val) => {
+                      return isCharacterPartOfWordMatch(
+                        item?.hanzi || item?.input,
+                        val?.input,
+                        charItem,
+                        charIdx
+                      );
+                    }
                   );
 
                   return (

@@ -14,6 +14,7 @@ import { useFontSizeStore } from "../hooks/use-font-size";
 import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
 import { ActiveButtons } from "./active-buttons";
 import { ReaderView } from "./reader-view";
+import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 
 export const ReaderViewParent = ({
   loop,
@@ -129,9 +130,14 @@ export const ReaderViewParent = ({
                               lang: transcription?.lang,
                             })?.map((item: any, idx: any) => {
                               const containsInUnknown =
-                                contentUnknowns?.items?.find((val) =>
-                                  val?.input?.includes(item)
-                                );
+                                contentUnknowns?.items?.find((val) => {
+                                  return isCharacterPartOfWordMatch(
+                                    transcription?.input,
+                                    val?.input,
+                                    item,
+                                    idx
+                                  );
+                                });
                               return (
                                 <span
                                   key={`${item}-pinin-view-${idx}`}

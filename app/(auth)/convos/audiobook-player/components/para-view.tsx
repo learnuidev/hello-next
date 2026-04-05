@@ -16,6 +16,7 @@ import { EnglishTopView } from "@/app/(auth)/convos/audiobook-player/components/
 import { useFontSizeStore } from "../hooks/use-font-size";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
+import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 
 // import { getYablaLink } from "./utils/get-yabla-link";
 
@@ -132,9 +133,14 @@ export const ParaView = ({
                             lang: content?.lang,
                           })?.map((item: string, idx: number) => {
                             const containsInUnknown =
-                              contentUnknowns?.items?.find((val) =>
-                                val?.input?.includes(item)
-                              );
+                              contentUnknowns?.items?.find((val) => {
+                                return isCharacterPartOfWordMatch(
+                                  transcriptionInput,
+                                  val?.input,
+                                  item,
+                                  idx
+                                );
+                              });
 
                             return (
                               <span

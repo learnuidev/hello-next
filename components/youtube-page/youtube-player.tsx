@@ -818,6 +818,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                 }
               >
                 <KaraokeMode
+                  currentTranscription={currentTranscription}
                   lang={content?.lang}
                   isPlaying={isPlaying}
                   containsChinglish={containsChinglish}

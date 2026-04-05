@@ -23,16 +23,23 @@ export const getActiveTranscriptions = ({
   );
 
   if (_groupBy === "length") {
-    const grouped = splitEvery(transcriptions, lengthLimit);
+    const grouped = splitEvery(
+      transcriptions?.sort((a: any, b: any) => a?.start - b?.start),
+      lengthLimit
+    );
 
-    return grouped.find((group) => {
+    const groupByLength = grouped.filter((group) => {
       const minStartTime = Math.min(...group?.map((item: any) => item.start));
 
       const maxEndTime = Math.max(...group?.map((item: any) => item?.end));
 
-      // return minStartTime <= currentTime && maxEndTime >= currentTime;
-      return maxEndTime >= currentTime;
-    });
+      return minStartTime < currentTime && maxEndTime > currentTime;
+      // return maxEndTime >= currentTime;
+    })?.[0];
+
+    console.log("GROUP BY LEN", groupByLength);
+
+    return groupByLength;
   }
 
   const groupTranscriptions = groupByMinute(transcriptions);

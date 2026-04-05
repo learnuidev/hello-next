@@ -154,6 +154,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                     }
                   >
                     <KaraokeMode
+                      currentTranscription={currentTranscription}
                       seekAndPlay={seekAndPlay}
                       lang={content?.lang}
                       isPlaying={playing}

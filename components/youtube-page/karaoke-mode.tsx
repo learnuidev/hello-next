@@ -147,6 +147,7 @@ export function KaraokeMode({
   lang,
   audio,
   containsChinglish,
+  currentTranscription,
   className,
 }: {
   play: any;
@@ -163,14 +164,9 @@ export function KaraokeMode({
   audioUrl?: string;
   containsChinglish?: boolean;
   className?: string;
+  currentTranscription: any;
 }) {
   const { focusIndex, setFocusIndex } = useFocusIndex(contentId || "");
-
-  const currentTranscription =
-    isFocusKaraokeMode && !audioUrl
-      ? transcriptions?.[focusIndex]
-      : transcriptions?.filter((trans: any) => trans?.end > currentTime)?.[0] ||
-        transcriptions?.[0];
 
   const isIntro = transcriptions?.[0]?.start > currentTime + 1;
 

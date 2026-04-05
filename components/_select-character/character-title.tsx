@@ -517,7 +517,9 @@ export const CharacterTitle = (props: any) => {
           <EnButton />
 
           <ReadModeButton />
-          {meaningDiscovery?.chinglish && <ChinglishButton />}
+          {showEn && meaningDiscovery?.chinglish && (
+            <ChinglishButton disabled={!showEn} />
+          )}
         </div>
       </div>
     </div>

@@ -37,8 +37,6 @@ export const getActiveTranscriptions = ({
       // return maxEndTime >= currentTime;
     })?.[0];
 
-    console.log("GROUP BY LEN", groupByLength);
-
     return groupByLength;
   }
 

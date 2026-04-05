@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 
-export type ConvoInsightsTab = "character" | "word" | "sentence";
+export type ConvoInsightsTab = "character" | "word" | "sentence" | "unknown";
 export type LearnStatusFilter = "all" | "learned" | "unlearned" | "forgotten";
 export type HskLevelFilter = "all" | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | "na";
 

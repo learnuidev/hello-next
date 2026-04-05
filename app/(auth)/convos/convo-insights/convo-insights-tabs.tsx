@@ -7,6 +7,7 @@ const tabs = [
   { label: "字", value: "character" as ConvoInsightsTab },
   { label: "词", value: "word" as ConvoInsightsTab },
   { label: "句子", value: "sentence" as ConvoInsightsTab },
+  { label: "未知", value: "unknown" as ConvoInsightsTab },
 ];
 
 export function ConvoInsightsTabs() {

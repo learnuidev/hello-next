@@ -2,6 +2,8 @@
 
 import { SelectedCharacterContainer } from "@/components/selected-character-container";
 import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
+import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useSelectedCharacter } from "../use-selected-character";
 
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
@@ -18,6 +20,7 @@ import { ConvoInsightsHskLevelFilter } from "./convo-insights-hsk-level-filter";
 import { ConvoInsightsNoNChinese } from "./convo-insights-non-chinese";
 import { ConvoInsightsSearch } from "./convo-insights-search";
 import { ConvoInsightsTable } from "./convo-insights-table";
+import { ConvoInsightsUnknownTable } from "./convo-insights-unknown-table";
 import { ConvoInsightsWordTable } from "./convo-insights-word-table";
 import { ConvoInsightsTabs } from "./convo-insights-tabs";
 import { TotalPlaysChart } from "./total-plays-chart";
@@ -38,6 +41,8 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
   const lang = lesson?.lang || lesson?.transcriptions?.[0]?.lang;
 
   const { data } = useGetContentInsightsNew({ contentId });
+  const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
+  const { data: hskWords } = useListHSKWordsQuery();
 
   const characterStats = useMemo(() => {
     if (!data?.uniqueCharactersMemo) {
@@ -114,6 +119,55 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
 
     return filtered;
   }, [data?.filteredHskWords, searchQuery, hskLevel]);
+
+  const filteredUnknowns = useMemo(() => {
+    if (!contentUnknowns?.items) return [];
+    let filtered = contentUnknowns.items;
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter((item: any) => {
+        return item?.input?.toLowerCase().includes(query);
+      });
+    }
+
+    const enrichedUnknowns = filtered.map((item: any) => {
+      const hskWord = hskWords?.find((word: any) => word?.hanzi === item?.input);
+      const hskLevel = hskWord?.hskLevel;
+      const isCharacter = item?.input?.length === 1;
+
+      const transcriptions = lesson?.transcriptions?.filter(
+        (transcription: any) => {
+          return (transcription?.hanzi || transcription?.input)?.includes(
+            item?.input
+          );
+        }
+      );
+
+      const frequency = transcriptions?.length || 0;
+
+      return {
+        ...item,
+        hskLevel: hskLevel || null,
+        isCharacter: isCharacter,
+        isHsk: !!hskLevel,
+        pinyin: hskWord?.pinyin || "-",
+        en: hskWord?.en || "-",
+        frequency: frequency,
+      };
+    });
+
+    if (hskLevel !== "all") {
+      return enrichedUnknowns.filter((item: any) => {
+        if (hskLevel === "na") {
+          return !item?.hskLevel;
+        }
+        return item?.hskLevel === hskLevel;
+      });
+    }
+
+    return enrichedUnknowns;
+  }, [contentUnknowns?.items, searchQuery, hskLevel, hskWords, lesson]);
 
   const setSearchQuery = useInsightsSettingsStore(
     (state) => state.setSearchQuery
@@ -205,6 +259,25 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
                     <p>句子功能即将推出...</p>
 
                     <TotalPlaysChart contentId={contentId} />
+                  </div>
+                )}
+
+                {viewType === "unknown" && (
+                  <div className="my-0 sm:my-8">
+                    <div className="sm:mb-4 flex sm:flex-row sm:justify-between flex-col gap-2">
+                      <ConvoInsightsSearch />
+                      <div className="flex gap-2">
+                        <ConvoInsightsHskLevelFilter />
+                      </div>
+                    </div>
+
+                    <div className="sm:my-8 my-4">
+                      <ConvoInsightsUnknownTable
+                        unknowns={filteredUnknowns}
+                        lang={lang}
+                        onCharacterClick={(char) => setSelected(char)}
+                      />
+                    </div>
                   </div>
                 )}
               </motion.div>

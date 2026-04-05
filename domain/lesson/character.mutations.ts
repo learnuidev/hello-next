@@ -119,6 +119,13 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
         Authorization: authUser?.jwt,
       });
 
+      // queryClient.invalidateQueries({ queryKey: [listCharactersQueryId] });
+      // queryClient.invalidateQueries({ queryKey: [listCharactersQueryMapId] });
+
+      // if (options?.onSucess) {
+      //   options?.onSuccess(response);
+      // }
+
       queryClient.setQueryData([listCharactersQueryId], (data: any) => {
         return data.map((item: any) => {
           if (item.id === response.id) {
@@ -141,6 +148,9 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
       if (options?.onSucess) {
         options?.onSuccess(data);
       }
+
+      queryClient.invalidateQueries({ queryKey: [listCharactersQueryId] });
+      queryClient.invalidateQueries({ queryKey: [listCharactersQueryMapId] });
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

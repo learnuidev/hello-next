@@ -34,13 +34,25 @@ const listCharacters = async (
 
 export const listCharactersQueryId = "list-characters";
 export function useListCharactersQuery(
-  params = {} as { journeyId?: string; hanzis?: string[]; from?: string },
+  params = {} as {
+    journeyId?: string;
+    hanzis?: string[];
+    from?: string;
+    contentId?: string;
+  },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ICharacter[], Error>({
-    queryKey: [listCharactersQueryId, params?.hanzis],
+    queryKey: [
+      listCharactersQueryId,
+      params?.contentId
+        ? params?.contentId
+        : params?.hanzis
+          ? JSON.stringify(params?.hanzis)
+          : null,
+    ].filter(Boolean),
     queryFn: async () => {
       console.log("FROM", params.from);
       // if (options.query) {

@@ -22,6 +22,12 @@ import { useReviewModeView } from "./use-review-mode";
 import { useClozeReviewTimer } from "./cloze-review-timer-store";
 import { usePreviousPathnameStore } from "@/components/language-selector/use-previous-path-name-store";
 import { BackButton } from "./back-button";
+import { useListUniqueCharatersByContentId } from "../(auth)/convos/use-get-unique-characters-by-content-id";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  listCharactersQueryId,
+  listCharactersQueryMapId,
+} from "@/domain/lesson/character.queries";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -51,9 +57,24 @@ export function ReviewModeClassic(props: any) {
     null | string
   >(null);
 
+  const queryClient = useQueryClient();
+
   const { reviewUrl, reviewContentId } = useGetReviewUrl();
 
-  const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
+  const uniqueCharacters: string[] = useListUniqueCharatersByContentId({
+    contentId: reviewContentId || "",
+  });
+
+  const updateCharacterStatusMutation = useUpdateCharacterStatusMutation({
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: [listCharactersQueryId, reviewContentId],
+      });
+      queryClient.refetchQueries({
+        queryKey: [listCharactersQueryMapId],
+      });
+    },
+  });
 
   const { setReviewMode } = useReviewModeView();
 

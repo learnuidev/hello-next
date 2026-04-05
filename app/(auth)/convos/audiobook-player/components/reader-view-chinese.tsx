@@ -1,0 +1,135 @@
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { useFontSizeStore } from "../hooks/use-font-size";
+
+import { nonHanYuChars } from "@/app/nmm/nmm-utils/filter-non-hanyu";
+import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
+import { CharacterItem } from "@/components/_select-character/character-item";
+import { useSearchOnlyPinyinState } from "@/components/search-only-pinyin-button";
+import { smartSplit } from "@/components/youtube-page/utils/smart-split";
+import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
+import { formatRoman } from "@/lib/format-roman";
+import { cn } from "@/lib/utils";
+import { CurrentTranscriptionProps } from "../audiobook-player.types";
+import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
+import { useContentSearchHistory } from "../hooks/use-content-search-history";
+
+export function ReaderViewChinese({
+  currentTranscription,
+  className,
+  currentTime,
+  seekAndPlay,
+  data,
+  contentId,
+}: CurrentTranscriptionProps & {
+  data: {
+    input: string;
+    hanzi: string;
+    pinyin?: string;
+    roman?: string;
+    start: number;
+    end: number;
+  }[];
+}) {
+  const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
+  const defautClassName = "gap-0 space-y-0";
+
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
+  const { fontSize } = useFontSizeStore();
+
+  const { text: selected } = useCharacterMenuBarStore();
+
+  const { setShowMenuBar } = useCharacterMenuBarStore();
+
+  const { setShowSearchOnlyPinyin, showSearchOnlyPinyin } =
+    useSearchOnlyPinyinState();
+
+  const { searchHistory, addSearchHistory } = useContentSearchHistory({
+    contentId: contentId || "",
+  });
+
+  return (
+    <div className={cn(defautClassName, className)}>
+      <div className={cn(defautClassName, className)}>
+        {data?.map((item, idx) => {
+          const isSelected =
+            selected && selected === (item?.hanzi || item?.input);
+
+          return (
+            <span
+              onClick={(e) => {
+                const selectedText = getSelectedText();
+
+                const text =
+                  selectedText && selectedText?.length < 36
+                    ? selectedText
+                    : item.hanzi || item?.input;
+
+                setShowMenuBar({
+                  text,
+                  position: { x: e.clientX, y: e.clientY },
+                  startTime: item?.start ?? null,
+                });
+              }}
+              className={cn(
+                "inline-flex flex-col items-center justify-center",
+
+                ["，", "。"]?.includes(item?.input)
+                  ? ""
+                  : "px-[2px] py-[0px] sm:px-[4px]",
+                "leading-none"
+              )}
+              key={`${JSON.stringify(item)}-${idx}-${idx}`}
+            >
+              {showPinyin && (
+                <span
+                  style={{
+                    fontSize: `${Math.max(Math.min(20, fontSize * 0.75), 12)}px`,
+                  }}
+                  className={cn("dark:text-gray-500 text-gray-800")}
+                >
+                  {formatRoman(item)}
+                </span>
+              )}
+
+              <span>
+                {smartSplit({
+                  input: item?.hanzi || item?.input,
+                  lang: currentTranscription?.lang,
+                })?.map((charItem: any, charIdx: any) => {
+                  const containsInUnknown = contentUnknowns?.items?.find(
+                    (val) => val?.input?.includes(charItem)
+                  );
+
+                  return (
+                    <span key={`${charItem}-pinin-view-${charIdx}`}>
+                      <CharacterItem
+                        style={{
+                          fontSize: `${Math.min(fontSize * 1.25, 42)}px !important`,
+                        }}
+                        character={charItem}
+                        className={cn(
+                          "!text-3xl",
+                          isSelected
+                            ? "dark:bg-emerald-600 bg-emerald-300"
+                            : "",
+                          !isSelected &&
+                            containsInUnknown &&
+                            "font-light dark:!text-pink-300 !text-pink-500",
+
+                          currentTime > item?.start &&
+                            currentTime < item?.end &&
+                            !nonHanYuChars.includes(charItem) &&
+                            "underline underline-offset-8"
+                        )}
+                      />
+                    </span>
+                  );
+                })}
+              </span>
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

@@ -839,6 +839,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                   }}
                   transcriptions={transcriptions}
                   currentTime={currentTime}
+                  seekAndPlay={seekAndPlay}
                 />
               </div>
             ) : viewMode === "para" ? (

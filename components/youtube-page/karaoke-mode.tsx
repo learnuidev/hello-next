@@ -13,6 +13,8 @@ import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 import { TextPercentageColorizerV2 } from "../text-percentage-colorizer-v2";
 import { Icons } from "../ui/icons.v2";
 import { useSelectedItem } from "./use-selected-item";
+import { useReadModeState } from "../read-mode-button";
+import { ReaderView } from "@/app/(auth)/convos/audiobook-player/components/reader-view";
 
 function CurrentTranscriptionViewer({
   seekTo,
@@ -140,13 +142,16 @@ export function KaraokeMode({
   transcriptions,
   currentTime,
   isFocusKaraokeMode,
+  seekAndPlay,
   contentId,
   lang,
   audio,
   containsChinglish,
+  className,
 }: {
   play: any;
   seekTo: any;
+  seekAndPlay: any;
   transcriptions: any;
   isPlaying: any;
   currentTime: number;
@@ -157,6 +162,7 @@ export function KaraokeMode({
   isFocusKaraokeMode?: boolean;
   audioUrl?: string;
   containsChinglish?: boolean;
+  className?: string;
 }) {
   const { focusIndex, setFocusIndex } = useFocusIndex(contentId || "");
 
@@ -167,6 +173,8 @@ export function KaraokeMode({
         transcriptions?.[0];
 
   const isIntro = transcriptions?.[0]?.start > currentTime + 1;
+
+  const { readMode } = useReadModeState();
 
   const startingTime = transcriptions?.[0]?.start - currentTime || 0;
 
@@ -189,6 +197,22 @@ export function KaraokeMode({
 
   if (!currentTranscription) {
     return null;
+  }
+
+  if (readMode) {
+    return (
+      <div className="max-w-7xl">
+        <ReaderView
+          currentTime={currentTime}
+          containsChinglish={!!containsChinglish}
+          currentTranscription={currentTranscription}
+          seekAndPlay={seekAndPlay}
+          className={className}
+          contentId={contentId}
+          lang={lang}
+        />
+      </div>
+    );
   }
 
   if (isFocusKaraokeMode && !audioUrl) {

@@ -23,7 +23,10 @@ export const getActiveTranscriptions = ({
   );
 
   if (_groupBy === "length") {
-    const grouped = splitEvery(transcriptions, lengthLimit);
+    const grouped = splitEvery(
+      transcriptions?.sort((a: any, b: any) => a?.start - b?.start),
+      lengthLimit
+    );
 
     const groupByLength = grouped.filter((group) => {
       const minStartTime = Math.min(...group?.map((item: any) => item.start));

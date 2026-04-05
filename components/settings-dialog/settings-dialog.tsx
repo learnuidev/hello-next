@@ -16,15 +16,11 @@ import {
 import { useShortCuts } from "./use-short-cuts";
 
 import { useUpdateUserPrefenceMutation } from "@/domain/user/use-update-user-preference-mutation";
-import { ApiKeysTab } from "./components/api-keys-tab/api-keys-tab";
-import { LearnTab } from "./components/learn-tab/learn-tab";
+import { ListenTab } from "./components/listen-tab/listen-tab";
 import { LoginAndSecurityTab } from "./components/login-and-security-tab/login-and-security-tab";
 import { ProfileTab } from "./components/profile-tab/profile-tab";
 import { TrackingTab } from "./components/tracking-tab/tracking-tab";
 import { UiTab } from "./components/ui-tab/ui-tab";
-import { isSuperAdmin } from "@/libs/constants/super-admin-emails";
-import { ListenTab } from "./components/listen-tab/listen-tab";
-import { ScrollArea } from "../ui/scroll-area";
 
 export function SettingsDialogInner({
   isOpen,
@@ -89,17 +85,6 @@ export function SettingsDialogInner({
               <TabsTrigger
                 className={cn(
                   "px-0 mx-0 space-x-2",
-                  tab === "learn" ? "text-white" : "text-gray-500",
-                  "transition"
-                )}
-                value="learn"
-              >
-                {tab === "learn" ? <Icons.brain /> : <Icons.glassesRound />}
-                <span>Learn</span>
-              </TabsTrigger>
-              <TabsTrigger
-                className={cn(
-                  "px-0 mx-0 space-x-2",
                   tab === "listen" ? "text-white" : "text-gray-500",
                   "transition"
                 )}
@@ -112,19 +97,6 @@ export function SettingsDialogInner({
                 )}
                 <span>Content</span>
               </TabsTrigger>
-              {/* {isSuperAdmin && (
-                <TabsTrigger
-                  className={cn(
-                    "px-0 mx-0 space-x-2",
-                    tab === "api-keys" ? "text-white" : "text-gray-500",
-                    "transition"
-                  )}
-                  value="api-keys"
-                >
-                  {tab === "api-keys" ? <Icons.lockSolid /> : <Icons.lock />}
-                  <span>API Keys</span>
-                </TabsTrigger>
-              )} */}
             </TabsList>
             <TabsContent value="profile" className="mt-8">
               <ProfileTab />
@@ -135,15 +107,11 @@ export function SettingsDialogInner({
             <TabsContent value="tracking" className="mt-8">
               <TrackingTab />
             </TabsContent>
-            <TabsContent value="learn" className="mt-8">
-              <LearnTab />
-            </TabsContent>
+
             <TabsContent value="listen" className="mt-8">
               <ListenTab />
             </TabsContent>
-            {/* <TabsContent value="api-keys" className="mt-8">
-              <ApiKeysTab />
-            </TabsContent> */}
+
             <TabsContent value="app" className="mt-8">
               <UiTab />
             </TabsContent>

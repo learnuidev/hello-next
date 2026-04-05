@@ -1,6 +1,6 @@
 import { Label } from "@/components/ui/label";
 
-import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
+import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
 import {
   Card,
   CardContent,
@@ -9,15 +9,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useSettingsDialogState } from "../../settings-dialog.state";
-import {
-  officialAudioProviders,
-  useAudioProviderState,
-} from "../../hooks/use-audio-provider-state";
 import { Slider } from "@/components/ui/slider";
-import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
+import { useTheme } from "next-themes";
+import { useAudioProviderState } from "../../hooks/use-audio-provider-state";
+import { useSettingsDialogState } from "../../settings-dialog.state";
 
 export function ListenTab() {
   const { theme, setTheme } = useTheme();
@@ -51,8 +46,6 @@ export function ListenTab() {
                     ? true
                     : false,
                 });
-                // setUserPreferenceState
-                // setProvider(providerItem.id);
               }}
             />
             <Label htmlFor="airplane-mode">
@@ -61,29 +54,7 @@ export function ListenTab() {
           </div>
         </CardContent>
       </Card>
-      <Card className="rounded border-gray-100 dark:border-black dark:bg-[#0b0b0f] shadow-sm  transition ">
-        <CardHeader>
-          <CardTitle>Audio Provider</CardTitle>
-          <CardDescription className="text-gray-500 font-extralight">
-            Set your AI audio provider
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
-          {officialAudioProviders.map((providerItem) => (
-            <div key={providerItem.id}>
-              <div className="flex z-50 items-center space-x-2">
-                <Checkbox
-                  checked={provider === providerItem.id}
-                  onCheckedChange={(event) => {
-                    setProvider(providerItem.id);
-                  }}
-                />
-                <Label htmlFor="airplane-mode">{providerItem.title}</Label>
-              </div>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+
       <Card className="rounded border-gray-100 dark:border-black dark:bg-[#0b0b0f] shadow-sm  transition ">
         <CardHeader>
           <CardTitle>Playback Speed</CardTitle>
@@ -92,17 +63,6 @@ export function ListenTab() {
           </CardDescription>
         </CardHeader>
         <CardContent className="gap-4 grid grid-cols-1 md:grid-cols-2">
-          {/* <Slider
-            className="mt-4"
-            min={0.5}
-            max={2.5}
-            value={[playbackRate]}
-            step={0.1}
-            onValueChange={(value) => {
-              setPlaybackRate(value[0]);
-            }}
-          /> */}
-
           <Slider
             className="mt-4"
             min={0.5}

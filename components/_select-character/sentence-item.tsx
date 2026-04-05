@@ -24,12 +24,16 @@ import { GoogleTranslateLink } from "./selected-character/google-translate-link"
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { isRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
+import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
 
   const resolvedLang =
     currentPhrase?.lang || lang || selectedComp?.lang || currentPhrase?.lang;
+
+  const showEn = useBrightModeStore((state) => state.showEn);
+  const { showChinglish, setShowChinglish } = useChinglishState();
 
   const componentId = useGetComponentId();
 
@@ -86,6 +90,7 @@ export const SentenceItem = (props: any) => {
         <div className="flex gap-2 justify-end items-end w-full pr-2 mt-2 sm:mt-0">
           {currentPhrase?.contentId && currentPhrase?.id ? (
             <YoutubeButton
+              disableHistory={!!props?.disableHistory}
               className="h-6 w-6 text-xs"
               contentId={currentPhrase?.contentId}
               transcriptId={currentPhrase?.id}
@@ -212,25 +217,31 @@ export const SentenceItem = (props: any) => {
             })}
           </span>
         </WithInteractiveTitle>
-        {currentPhrase?.lang === "en"
-          ? null
-          : lang !== "en" &&
-            (currentPhrase?.contentId ? (
-              <Link
-                onClick={() => {
-                  setRecentlyWatched({ id: currentPhrase?.contentId });
-                }}
-                target="_blank"
-                className="text-[16px] dark:text-gray-500 text-gray-600"
-                href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start ? `?start=${currentPhrase?.start}` : ""}`}
-              >
-                {currentPhrase?.en || currentPhrase?.title}
-              </Link>
-            ) : (
-              <span className="text-[16px] dark:text-gray-500 text-gray-600">
-                {currentPhrase?.en || currentPhrase?.title}
-              </span>
-            ))}
+        {showEn
+          ? currentPhrase?.lang === "en"
+            ? null
+            : lang !== "en" &&
+              (currentPhrase?.contentId ? (
+                <Link
+                  onClick={() => {
+                    setRecentlyWatched({ id: currentPhrase?.contentId });
+                  }}
+                  target="_blank"
+                  className="text-[16px] dark:text-gray-500 text-gray-600"
+                  href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start ? `?start=${currentPhrase?.start}` : ""}`}
+                >
+                  {showChinglish && currentPhrase?.chinglish
+                    ? currentPhrase?.chinglish
+                    : currentPhrase?.en || currentPhrase?.title}
+                </Link>
+              ) : (
+                <span className="text-[16px] dark:text-gray-500 text-gray-600">
+                  {showChinglish && currentPhrase?.chinglish
+                    ? currentPhrase?.chinglish
+                    : currentPhrase?.en || currentPhrase?.title}
+                </span>
+              ))
+          : null}
       </div>
 
       <Links customRef={customRef} />

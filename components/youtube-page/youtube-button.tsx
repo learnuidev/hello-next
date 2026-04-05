@@ -50,15 +50,18 @@ export function YoutubeButton({
   transcriptId,
   sentenceInput,
   className,
+  disableHistory = false,
 }: {
   contentId: string;
   transcriptId: string;
   sentenceInput: string;
   className?: string;
   currentPhraseStr?: string;
+  disableHistory?: boolean;
 }) {
   const setHistory = usePlayHistoryStore((state) => state.setHistory);
-  const { history } = usePlayHistoryState({ contentId });
+  // const { history } = usePlayHistoryState({ contentId });
+  // const [currentTime, setTime] = useState(0);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const { contextId, setNewContextId } = useContextPlayContextState();
@@ -155,22 +158,26 @@ export function YoutubeButton({
           onPlay={() => {
             const contextId = setNewContextId();
 
-            setHistory({
-              transcriptionId: currentTranscription?.id,
-              contextId,
-              contentId,
-              createdAt: Date.now(),
-              progressTime: currentTranscription?.start,
-            });
+            if (!disableHistory) {
+              setHistory({
+                transcriptionId: currentTranscription?.id,
+                contextId,
+                contentId,
+                createdAt: Date.now(),
+                progressTime: currentTranscription?.start,
+              });
+            }
           }}
           onPause={() => {
-            setHistory({
-              transcriptionId: currentTranscription?.id,
-              contextId,
-              contentId,
-              createdAt: Date.now(),
-              progressTime: currentTranscription?.end,
-            });
+            if (!disableHistory) {
+              setHistory({
+                transcriptionId: currentTranscription?.id,
+                contextId,
+                contentId,
+                createdAt: Date.now(),
+                progressTime: currentTranscription?.end,
+              });
+            }
           }}
           ref={playerRef}
           url={finalUrl}

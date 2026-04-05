@@ -14,9 +14,6 @@ import { ConvosNavBar } from "../convos-nav-bar";
 import { useRecentlyWatchedContent } from "../use-recently-watched-content-store";
 import { useGetContentId } from "./hooks/use-get-content-id";
 import { useGo } from "./hooks/use-go";
-import { AnimatedLoadingText } from "@/components/animated-loading-text";
-import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
-import { WithConvoStatusLoading } from "./with-convo-status-loading";
 
 const statusMessages = {
   GENERATING_SENTENCES: "Generating Sentences",

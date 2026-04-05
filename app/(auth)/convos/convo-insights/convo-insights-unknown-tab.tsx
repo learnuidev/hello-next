@@ -25,6 +25,28 @@ export function ConvoInsightsUnknownTab({
   const { data: hskWords } = useListHSKWordsQuery();
   const { data: lesson } = useGetContentQuery({ contentId });
 
+  const availableHskLevels = useMemo(() => {
+    if (!contentUnknowns?.items) return [];
+    const levels = new Set<number>();
+
+    contentUnknowns.items.forEach((item: any) => {
+      const hskWord = hskWords?.find((word: any) => word?.hanzi === item?.input);
+      if (hskWord?.hskLevel) {
+        levels.add(hskWord.hskLevel);
+      }
+    });
+
+    return Array.from(levels).sort((a, b) => a - b);
+  }, [contentUnknowns?.items, hskWords]);
+
+  const hasNaItems = useMemo(() => {
+    if (!contentUnknowns?.items) return false;
+    return contentUnknowns.items.some((item: any) => {
+      const hskWord = hskWords?.find((word: any) => word?.hanzi === item?.input);
+      return !hskWord?.hskLevel;
+    });
+  }, [contentUnknowns?.items, hskWords]);
+
   const filteredUnknowns = useMemo(() => {
     if (!contentUnknowns?.items) return [];
     let filtered = contentUnknowns.items;
@@ -79,7 +101,10 @@ export function ConvoInsightsUnknownTab({
       <div className="sm:mb-4 flex sm:flex-row sm:justify-between flex-col gap-2">
         <ConvoInsightsSearch />
         <div className="flex gap-2">
-          <ConvoInsightsHskLevelFilter />
+          <ConvoInsightsHskLevelFilter
+            availableHskLevels={availableHskLevels}
+            showNa={hasNaItems}
+          />
         </div>
       </div>
 

@@ -22,6 +22,24 @@ export function ConvoInsightsWordTab({
 
   const { data } = useGetContentInsightsNew({ contentId });
 
+  const availableHskLevels = useMemo(() => {
+    if (!data?.filteredHskWords) return [];
+    const levels = new Set<number>();
+
+    data.filteredHskWords.forEach((word: any) => {
+      if (word?.hskLevel) {
+        levels.add(word.hskLevel);
+      }
+    });
+
+    return Array.from(levels).sort((a, b) => a - b);
+  }, [data?.filteredHskWords]);
+
+  const hasNaItems = useMemo(() => {
+    if (!data?.filteredHskWords) return false;
+    return data.filteredHskWords.some((word: any) => !word?.hskLevel);
+  }, [data?.filteredHskWords]);
+
   const filteredWords = useMemo(() => {
     if (!data?.filteredHskWords) return [];
     let filtered = data.filteredHskWords;
@@ -55,7 +73,10 @@ export function ConvoInsightsWordTab({
         <ConvoInsightsSearch />
         <div className="flex gap-2">
           <ConvoInsightsLearnStatusFilter />
-          <ConvoInsightsHskLevelFilter />
+          <ConvoInsightsHskLevelFilter
+            availableHskLevels={availableHskLevels}
+            showNa={hasNaItems}
+          />
         </div>
       </div>
 

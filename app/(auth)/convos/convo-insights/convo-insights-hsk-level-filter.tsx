@@ -12,16 +12,34 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export function ConvoInsightsHskLevelFilter() {
+interface ConvoInsightsHskLevelFilterProps {
+  availableHskLevels?: number[];
+  showNa?: boolean;
+}
+
+const allHskLevels = [1, 2, 3, 4, 5, 6, 9] as const;
+
+export function ConvoInsightsHskLevelFilter({
+  availableHskLevels,
+  showNa = true,
+}: ConvoInsightsHskLevelFilterProps = {}) {
   const hskLevel = useInsightsSettingsStore((state) => state.hskLevel);
   const setHskLevel = useInsightsSettingsStore((state) => state.setHskLevel);
+
+  const hskLevelsToShow = availableHskLevels?.length
+    ? allHskLevels.filter((level) => availableHskLevels.includes(level))
+    : allHskLevels;
 
   return (
     <Select
       value={String(hskLevel)}
       onValueChange={(value) =>
         setHskLevel(
-          value === "na" ? "na" : (parseInt(value, 10) as HskLevelFilter)
+          value === "all"
+            ? "all"
+            : value === "na"
+              ? "na"
+              : (parseInt(value, 10) as HskLevelFilter)
         )
       }
     >
@@ -30,14 +48,12 @@ export function ConvoInsightsHskLevelFilter() {
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="all">全部</SelectItem>
-        <SelectItem value="1">HSK 1</SelectItem>
-        <SelectItem value="2">HSK 2</SelectItem>
-        <SelectItem value="3">HSK 3</SelectItem>
-        <SelectItem value="4">HSK 4</SelectItem>
-        <SelectItem value="5">HSK 5</SelectItem>
-        <SelectItem value="6">HSK 6</SelectItem>
-        <SelectItem value="9">HSK 9</SelectItem>
-        <SelectItem value="na">N/A</SelectItem>
+        {hskLevelsToShow.map((level) => (
+          <SelectItem key={level} value={String(level)}>
+            HSK {level}
+          </SelectItem>
+        ))}
+        {showNa && <SelectItem value="na">N/A</SelectItem>}
       </SelectContent>
     </Select>
   );

@@ -2,34 +2,24 @@
 
 import { SelectedCharacterContainer } from "@/components/selected-character-container";
 import { useGetContentQuery } from "@/domain/content/content.queries";
-import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
-import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useSelectedCharacter } from "../use-selected-character";
 
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useState } from "react";
-import { useGetContentInsightsNew } from "../use-get-content-insights.new";
+import { useState } from "react";
 import { useInsightsSettingsStore } from "../use-insights-settings-store";
 import { ConvoContextDialog } from "./convo-context-dialog";
-import { ConvoInsightsCharacterStatsCard } from "./convo-insights-character-stats-card";
-import { ConvoInsightsLearnStatusFilter } from "./convo-insights-learn-status-filter";
-import { ConvoInsightsHskLevelFilter } from "./convo-insights-hsk-level-filter";
 import { ConvoInsightsNoNChinese } from "./convo-insights-non-chinese";
-import { ConvoInsightsSearch } from "./convo-insights-search";
-import { ConvoInsightsTable } from "./convo-insights-table";
-import { ConvoInsightsUnknownTable } from "./convo-insights-unknown-table";
-import { ConvoInsightsWordTable } from "./convo-insights-word-table";
 import { ConvoInsightsTabs } from "./convo-insights-tabs";
+import { ConvoInsightsCharacterTab } from "./convo-insights-character-tab";
+import { ConvoInsightsWordTab } from "./convo-insights-word-tab";
+import { ConvoInsightsUnknownTab } from "./convo-insights-unknown-tab";
 import { TotalPlaysChart } from "./total-plays-chart";
 
 export function ConvoInsights({ contentId }: { contentId: string }) {
   const viewType = useInsightsSettingsStore((state) => state.type);
-  const searchQuery = useInsightsSettingsStore((state) => state.searchQuery);
-  const learnStatus = useInsightsSettingsStore((state) => state.learnStatus);
-  const hskLevel = useInsightsSettingsStore((state) => state.hskLevel);
   const [selected, setSelected] = useState(null);
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
@@ -39,139 +29,6 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
   }) as any;
 
   const lang = lesson?.lang || lesson?.transcriptions?.[0]?.lang;
-
-  const { data } = useGetContentInsightsNew({ contentId });
-  const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
-  const { data: hskWords } = useListHSKWordsQuery();
-
-  const characterStats = useMemo(() => {
-    if (!data?.uniqueCharactersMemo) {
-      return { totalNew: 0, totalLearned: 0, totalMastered: 0 };
-    }
-
-    const totalLearned = data.uniqueCharactersMemo.filter(
-      (char: any) => char?.isLearned
-    ).length;
-    const totalMastered = data.uniqueCharactersMemo.filter(
-      (char: any) => char?.status === "forgotten"
-    ).length;
-    const totalNew = data.uniqueCharacters.length - totalLearned;
-
-    return { totalNew, totalLearned, totalMastered };
-  }, [data?.uniqueCharactersMemo, data?.uniqueCharacters]);
-
-  const filteredCharacters = useMemo(() => {
-    if (!data?.uniqueCharactersMemo) return [];
-    let filtered = data.uniqueCharactersMemo;
-
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter((char: any) => {
-        return (
-          (char?.hanzi || char?.input)?.toLowerCase().includes(query) ||
-          char?.pinyin?.toLowerCase().includes(query) ||
-          char?.en?.toLowerCase().includes(query)
-        );
-      });
-    }
-
-    if (learnStatus !== "all") {
-      filtered = filtered.filter((char: any) => {
-        if (learnStatus === "learned") {
-          return char?.status === "learned" || char?.status === "DISCOVERED";
-        }
-
-        if (learnStatus === "forgotten") {
-          return char?.status === "forgotten";
-        }
-        return !char?.isLearned;
-      });
-    }
-
-    return filtered;
-  }, [data?.uniqueCharactersMemo, searchQuery, learnStatus]);
-
-  console.log("chars", filteredCharacters);
-
-  const filteredWords = useMemo(() => {
-    if (!data?.filteredHskWords) return [];
-    let filtered = data.filteredHskWords;
-
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter((word: any) => {
-        return (
-          (word?.hanzi || word?.input)?.toLowerCase().includes(query) ||
-          word?.pinyin?.toLowerCase().includes(query) ||
-          word?.en?.toLowerCase().includes(query)
-        );
-      });
-    }
-
-    if (hskLevel !== "all") {
-      filtered = filtered.filter((word: any) => {
-        if (hskLevel === "na") {
-          return !word?.hskLevel;
-        }
-        return word?.hskLevel === hskLevel;
-      });
-    }
-
-    return filtered;
-  }, [data?.filteredHskWords, searchQuery, hskLevel]);
-
-  const filteredUnknowns = useMemo(() => {
-    if (!contentUnknowns?.items) return [];
-    let filtered = contentUnknowns.items;
-
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter((item: any) => {
-        return item?.input?.toLowerCase().includes(query);
-      });
-    }
-
-    const enrichedUnknowns = filtered.map((item: any) => {
-      const hskWord = hskWords?.find((word: any) => word?.hanzi === item?.input);
-      const hskLevel = hskWord?.hskLevel;
-      const isCharacter = item?.input?.length === 1;
-
-      const transcriptions = lesson?.transcriptions?.filter(
-        (transcription: any) => {
-          return (transcription?.hanzi || transcription?.input)?.includes(
-            item?.input
-          );
-        }
-      );
-
-      const frequency = transcriptions?.length || 0;
-
-      return {
-        ...item,
-        hskLevel: hskLevel || null,
-        isCharacter: isCharacter,
-        isHsk: !!hskLevel,
-        pinyin: hskWord?.pinyin || "-",
-        en: hskWord?.en || "-",
-        frequency: frequency,
-      };
-    });
-
-    if (hskLevel !== "all") {
-      return enrichedUnknowns.filter((item: any) => {
-        if (hskLevel === "na") {
-          return !item?.hskLevel;
-        }
-        return item?.hskLevel === hskLevel;
-      });
-    }
-
-    return enrichedUnknowns;
-  }, [contentUnknowns?.items, searchQuery, hskLevel, hskWords, lesson]);
-
-  const setSearchQuery = useInsightsSettingsStore(
-    (state) => state.setSearchQuery
-  );
 
   if (isLoading) {
     return <LottieLoadingAnimation />;
@@ -207,51 +64,19 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
                 transition={{ duration: 0.3 }}
               >
                 {viewType === "character" && (
-                  <div className="my-0 sm:my-8">
-                    <div className="my-4 sm:my-8 mb-4 sm:mb-12">
-                      <ConvoInsightsCharacterStatsCard
-                        totalNew={characterStats.totalNew}
-                        totalLearned={characterStats.totalLearned}
-                        totalMastered={characterStats.totalMastered}
-                        total={data.uniqueCharacters.length}
-                      />
-                    </div>
-
-                    <div className="sm:mb-4 flex sm:flex-row sm:justify-between flex-col gap-2">
-                      <ConvoInsightsSearch />
-                      <div className="flex gap-2">
-                        <ConvoInsightsLearnStatusFilter />
-                      </div>
-                    </div>
-
-                    <div className="sm:my-8 my-4">
-                      <ConvoInsightsTable
-                        characters={filteredCharacters}
-                        lang={lang}
-                        onCharacterClick={(char) => setSelected(char)}
-                      />
-                    </div>
-                  </div>
+                  <ConvoInsightsCharacterTab
+                    contentId={contentId}
+                    lang={lang}
+                    onCharacterClick={(char: any) => setSelected(char)}
+                  />
                 )}
 
                 {viewType === "word" && (
-                  <div className="my-0 sm:my-8">
-                    <div className="sm:mb-4 flex sm:flex-row sm:justify-between flex-col gap-2">
-                      <ConvoInsightsSearch />
-                      <div className="flex gap-2">
-                        <ConvoInsightsLearnStatusFilter />
-                        <ConvoInsightsHskLevelFilter />
-                      </div>
-                    </div>
-
-                    <div className="sm:my-8 my-4">
-                      <ConvoInsightsWordTable
-                        words={filteredWords}
-                        lang={lang}
-                        onWordClick={(word) => setSelected(word)}
-                      />
-                    </div>
-                  </div>
+                  <ConvoInsightsWordTab
+                    contentId={contentId}
+                    lang={lang}
+                    onWordClick={(word: any) => setSelected(word)}
+                  />
                 )}
 
                 {viewType === "sentence" && (
@@ -263,22 +88,11 @@ export function ConvoInsights({ contentId }: { contentId: string }) {
                 )}
 
                 {viewType === "unknown" && (
-                  <div className="my-0 sm:my-8">
-                    <div className="sm:mb-4 flex sm:flex-row sm:justify-between flex-col gap-2">
-                      <ConvoInsightsSearch />
-                      <div className="flex gap-2">
-                        <ConvoInsightsHskLevelFilter />
-                      </div>
-                    </div>
-
-                    <div className="sm:my-8 my-4">
-                      <ConvoInsightsUnknownTable
-                        unknowns={filteredUnknowns}
-                        lang={lang}
-                        onCharacterClick={(char) => setSelected(char)}
-                      />
-                    </div>
-                  </div>
+                  <ConvoInsightsUnknownTab
+                    contentId={contentId}
+                    lang={lang}
+                    onCharacterClick={(char: any) => setSelected(char)}
+                  />
                 )}
               </motion.div>
             </AnimatePresence>

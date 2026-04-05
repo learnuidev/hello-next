@@ -88,28 +88,16 @@ export const useCorrections = (editor: Editor | null) => {
 
     // Set new timer to check for corrections after user stops typing
     debounceTimerRef.current = setTimeout(() => {
-      console.log(
-        "Debounced update triggered, content length:",
-        content.length
-      );
       if (shouldAnalyzeContent(content)) {
-        console.log("Content passed analysis check");
-        // Check cache first
         const cachedResponse = getCachedCorrection(content, contentCache);
         if (cachedResponse) {
-          console.log("Using cached response");
           // Use cached response
           handleCorrectionResponse(cachedResponse, content, true);
         } else {
-          console.log(
-            "Making API call for content:",
-            content.substring(0, 50) + "..."
-          );
           // Make API call
           correctionsMutation.mutate({ content });
         }
       } else {
-        console.log("Content too short to analyze");
       }
     }, 1000);
   }, [editor, contentCache, handleCorrectionResponse, correctionsMutation]);
@@ -118,25 +106,18 @@ export const useCorrections = (editor: Editor | null) => {
     if (!editor) return;
 
     const content = editor.getText();
-    console.log("Enter key pressed, content length:", content.length);
+
     if (shouldAnalyzeContent(content)) {
-      console.log("Content passed analysis check on Enter");
       // Check cache first
       const cachedResponse = getCachedCorrection(content, contentCache);
       if (cachedResponse) {
-        console.log("Using cached response on Enter");
         // Use cached response
         handleCorrectionResponse(cachedResponse, content, true);
       } else {
-        console.log(
-          "Making API call on Enter for content:",
-          content.substring(0, 50) + "..."
-        );
         // Make API call
         correctionsMutation.mutate({ content });
       }
     } else {
-      console.log("Content too short to analyze on Enter");
     }
   }, [editor, contentCache, handleCorrectionResponse, correctionsMutation]);
 

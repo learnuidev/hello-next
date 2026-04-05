@@ -38,11 +38,8 @@ export default function SeriesDetailsPage() {
 
   const { data: contentDetails } = useGetSeriesContentDetailsQuery(
     { contentId: contentId || "" },
-    { enabled: !!contentId },
+    { enabled: !!contentId }
   );
-
-  console.log("SeriesDetailsPage - contentId:", contentId);
-  console.log("SeriesDetailsPage - contentDetails:", contentDetails);
 
   const handleEnroll = async () => {
     try {

@@ -54,13 +54,10 @@ export function useListCharactersQuery(
           : null,
     ].filter(Boolean),
     queryFn: async () => {
-      console.log("FROM", params.from);
       // if (options.query) {
       const response = await listCharacters(params, {
         Authorization: authUser?.jwt,
       });
-
-      console.log(`RESP: ${params.from}`, response);
 
       return (
         response?.sort((a: any, b: any) => a?.createdAt - b?.createdAt) || []
@@ -91,7 +88,6 @@ export function useListCharactersMapQuery(
     queryKey: [listCharactersQueryMapId, JSON.stringify(params?.hanzis)],
 
     queryFn: async () => {
-      console.log("FROM", params.from);
       // if (options.query) {
       const response = await listCharacters(
         { ...params, format: "map" },
@@ -99,8 +95,6 @@ export function useListCharactersMapQuery(
           Authorization: authUser?.jwt,
         }
       );
-
-      console.log(`RESP: ${params.from}`, response);
 
       return response;
     },

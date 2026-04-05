@@ -107,7 +107,6 @@ export function useListHistoryQuery() {
         Items: resp?.Items?.sort((a: any, b: any) => b?.lastSeen - a?.lastSeen),
       };
 
-      console.log("sorted", sorted);
       return sorted;
     },
     enabled: Boolean(authUser?.jwt),

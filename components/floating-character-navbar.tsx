@@ -94,8 +94,6 @@ export const FloatingCharacterNavbar = ({
 
   const currentCharacter = selectedComp;
 
-  console.log("CURRENT CHAR", currentCharacter);
-
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
 
   const { data } = useListCharactersQuery();

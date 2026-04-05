@@ -66,8 +66,6 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
 
   const progressInterval = 100;
 
-  // console.log("VIEW MODE", viewMode);
-
   return (
     <MandoContextMenu lang={content?.lang || ""}>
       <CharacterMenuBar

@@ -201,16 +201,22 @@ export function KaraokeMode({
 
   if (readMode) {
     return (
-      <div className="max-w-7xl">
-        <ReaderView
-          currentTime={currentTime}
-          containsChinglish={!!containsChinglish}
-          currentTranscription={currentTranscription}
-          seekAndPlay={seekAndPlay}
-          className={className}
-          contentId={contentId}
-          lang={lang}
-        />
+      <div className="mt-32">
+        <KaraokeContainer>
+          <ActiveKaraokeContainer>
+            <div className="max-w-7xl">
+              <ReaderView
+                currentTime={currentTime}
+                containsChinglish={!!containsChinglish}
+                currentTranscription={currentTranscription}
+                seekAndPlay={seekAndPlay}
+                className={className}
+                contentId={contentId}
+                lang={lang}
+              />
+            </div>
+          </ActiveKaraokeContainer>
+        </KaraokeContainer>
       </div>
     );
   }

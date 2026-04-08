@@ -25,7 +25,9 @@ import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-co
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { getMulti } from "../dyna-cloze-sentence/utils/get-multi";
 import { AnimatedLoadingText } from "@/components/animated-loading-text";
-import { DynaClozeLoader } from "./dynacloze-loader";
+
+import { DynoClozeHeaderContainer } from "@/components/dyno-cloze-core/dyno-cloze-header-container";
+import { DynoClozeLoader } from "@/components/dyno-cloze-core/dyno-cloze-loader";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -65,10 +67,10 @@ function DynoSentenceInner({
   }, [meanings, sentence]);
 
   if (isLoadingDiscovery) {
-    return <DynaClozeLoader message="Discoverying..." />;
+    return <DynoClozeLoader message="Discoverying..." />;
   }
   if (isLoadingGrammar) {
-    return <DynaClozeLoader message="Loading grammars..." />;
+    return <DynoClozeLoader message="Loading grammars..." />;
   }
   return (
     <DynaSentence
@@ -253,23 +255,19 @@ const DynaSentence = ({
   };
 
   if (isGrammarLoading) {
-    return <DynaClozeLoader message="Loading grammars..." />;
+    return <DynoClozeLoader message="Loading grammars..." />;
   }
 
   return (
     <div>
-      <div className="text-center mt-12 lg:mt-24 max-w-3xl m-auto">
-        {response && isNonRomanLang(lang) ? (
-          <Link
-            target="_blank"
-            href={`/nmm/${sentenceHanzi}?lang=${sentence?.lang}`}
-            className={"block lg:text-xl text-md mb-2"}
-          >
-            {sentence?.roman || sentence?.pinyin}
-          </Link>
-        ) : (
-          <p className="mb-2 dark:text-black text-white text-lg"> ...</p>
-        )}
+      <DynoClozeHeaderContainer>
+        <Link
+          target="_blank"
+          href={`/nmm/${sentenceHanzi}?lang=${sentence?.lang}`}
+          className={"block lg:text-xl text-md mb-2"}
+        >
+          {sentence?.roman || sentence?.pinyin}
+        </Link>
 
         <ReviewItemHanzi
           input={response ? sentenceHanzi : sentenceHanziHidden}
@@ -283,7 +281,7 @@ const DynaSentence = ({
         >
           <p className="mt-2 lg:text-xl text-md">{sentence?.en}</p>
         </Link>
-      </div>
+      </DynoClozeHeaderContainer>
 
       <DynoOptionsContainer>
         {shuffledOptions?.map((option: any, idx: number) => {

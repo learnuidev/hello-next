@@ -1,7 +1,6 @@
 import { ReviewItemHanzi } from "@/app/review/review-cloze-content/review-item-hanzi";
 import { getRandomWords } from "@/app/review/review-cloze/utils/get-random-words";
 import { shuffleArray } from "@/app/review/review-cloze/utils/shuffle-array";
-import { useReviewModeView } from "@/app/review/use-review-mode";
 import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
 import { TheDock } from "@/components/the-dock";
@@ -22,13 +21,17 @@ import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { DynaClozeLoader } from "../dyna-cloze/dynacloze-loader";
+
 import { SpeakSentence } from "../speak/speak-sentence";
 import {
   useDyanStoreRuntime,
   useDynaClozeSentence,
 } from "./use-dyna-cloze-sentence";
-import { getMulti, isMulti } from "./utils/get-multi";
+import { getMulti } from "./utils/get-multi";
+import { DynoClozeHeaderContainer } from "@/components/dyno-cloze-core/dyno-cloze-header-container";
+import { DynoClozeLoader } from "@/components/dyno-cloze-core/dyno-cloze-loader";
+import { DynaClozeNavbar } from "@/components/dyno-cloze-core/dyno-cloze-navbar";
+import { PreviewButton } from "@/components/settings-dialog/preview-button";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -66,7 +69,7 @@ function DynoSentenceInner({
   if (isLoading) {
     return (
       <div>
-        <DynaClozeLoader message="Loading meanings..." />
+        <DynoClozeLoader message="Loading meanings..." />
       </div>
     );
   }
@@ -139,7 +142,6 @@ const DynaSentence = ({
   sentenceIndex,
   parentSentence,
 }: IDynoParams) => {
-  console.log("SENTENCE", sentence);
   const {
     setResponse,
     response,
@@ -245,28 +247,24 @@ const DynaSentence = ({
   if (isLoading) {
     return (
       <div>
-        <DynaClozeLoader message="Loading grammar.." />
+        <DynoClozeLoader message="Loading grammar.." />
       </div>
     );
   }
 
   return (
     <div className="mt-32">
-      <div className="text-center mt-12 lg:mt-24 max-w-3xl m-auto">
-        {response ? (
-          <Link
-            target="_blank"
-            href={`/nmm/${sentenceHanzi}?lang=${sentence?.lang}`}
-            className={"block lg:text-xl text-md mb-2"}
-          >
-            {sentence?.pinyin ||
-              sentence?.roman ||
-              meaning?.pinyin ||
-              meaning?.roman}
-          </Link>
-        ) : (
-          <p className="mb-2 dark:text-black text-white text-lg"> ...</p>
-        )}
+      <DynoClozeHeaderContainer>
+        <Link
+          target="_blank"
+          href={`/nmm/${sentenceHanzi}?lang=${sentence?.lang}`}
+          className={"block lg:text-xl text-md mb-2"}
+        >
+          {sentence?.pinyin ||
+            sentence?.roman ||
+            meaning?.pinyin ||
+            meaning?.roman}
+        </Link>
 
         <ReviewItemHanzi
           input={response ? sentenceHanzi : sentenceHanziHidden}
@@ -274,7 +272,7 @@ const DynaSentence = ({
         />
 
         <p className="mt-2 lg:text-xl text-md">{sentence?.en || meaning?.en}</p>
-      </div>
+      </DynoClozeHeaderContainer>
 
       <DynoOptionsContainer>
         {shuffledOptions?.map((option: any, idx: number) => {
@@ -283,7 +281,6 @@ const DynaSentence = ({
               <Link
                 target="_blank"
                 href={`/nmm/${option?.hanzi || option?.input}?lang=${sentence?.lang}`}
-                // disabled={response?.type}
                 className={cn(
                   "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",
                   response
@@ -503,46 +500,13 @@ export const DynaClozeSentence = ({
     return setViews(_sentence?.input || _sentence?.hanzi || "", "");
   };
 
-  const { setReviewMode } = useReviewModeView();
-
   const isAutomatic = useShowAutomaticallyTheDock();
-
-  // const { data, isLoading: isLoadingDiscovery } = useListDiscoveryQuery({
-  //   content: sentence?.input || sentence?.hanzi || "",
-  //   lang: sentence?.lang,
-  // });
-
-  // const finalSentence = useMemo(() => {
-  //   return { ...(data || {}), ...sentence };
-  // }, [data, sentence]);
 
   const maxIndex = sentencesShuffled?.length - 1;
 
-  const { learnMode } = useDynaClozeSentence();
-
-  const isMultiSent = isMulti(sentence?.input || sentence?.hanzi);
-
-  // if (isLoadingDiscovery) {
-  //   return <DynaClozeLoader message="Discoverying..." />;
-  // }
-
   return (
     <div className="mb-32">
-      <nav className="flex w-screen fixed top-4 left-0 items-center">
-        <div className="flex-1 flex justify-start px-4 lg:px-12">
-          <button
-            onClick={() => {
-              setView();
-            }}
-          >
-            <Icons.xMark className="text-2xl" />
-          </button>
-        </div>
-        <div className="flex-1 flex justify-center px-4">
-          <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "}
-        </div>
-        <div className="flex-1 flex justify-end px-4"></div>
-      </nav>
+      <DynaClozeNavbar onClose={setView} />
 
       {viewMode === "dynocloze" ? (
         <WithMultiSentence sentence={sentence}>
@@ -565,6 +529,7 @@ export const DynaClozeSentence = ({
         <div className="flex items-center w-full justify-center">
           <div className="px-8  py-2 bg-gray-100 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
             <div className="space-x-8 flex justify-center items-center w-full">
+              <PreviewButton />
               <button
                 className={
                   viewMode === "dynocloze"

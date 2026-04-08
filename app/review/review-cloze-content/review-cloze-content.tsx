@@ -1,11 +1,13 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {
   getMulti,
   isMulti,
 } from "@/app/(auth)/convos/[content-id]/dyna-cloze-sentence/utils/get-multi";
+
 import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 import { useGetCharacterLearningContext } from "@/components/_select-character/selected-character/use-get-character-learning-context";
 import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
+import { DynoClozeLoader } from "@/components/dyno-cloze-core/dyno-cloze-loader";
+import { DynaClozeNavbar } from "@/components/dyno-cloze-core/dyno-cloze-navbar";
 import { Icons } from "@/components/ui/icons.v2";
 import { YoutubeButton } from "@/components/youtube-page/youtube-button";
 import { useGetContentQuery } from "@/domain/content/content.queries";
@@ -16,23 +18,15 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
-import {
-  ContentClozeModeButton,
-  useClozeContentMode,
-} from "../content-cloze-mode-button";
+import { useClozeContentMode } from "../content-cloze-mode-button";
 import { useIsContent } from "../use-is-content";
 import { useReviewModeView } from "../use-review-mode";
 import { ReviewItemHanzi } from "./review-item-hanzi";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
-import { AnimatedLoadingText } from "@/components/animated-loading-text";
-import { DynaClozeLoader } from "@/app/(auth)/convos/[content-id]/dyna-cloze/dynacloze-loader";
 
 const ClozeNavbar = ({
   onClose,
-  currentCharacter,
-  totalSentences,
-  contentSentences,
 }: {
   onClose?: () => void;
   currentCharacter: string;
@@ -40,29 +34,17 @@ const ClozeNavbar = ({
   totalSentences: number;
 }) => {
   const { setReviewMode } = useReviewModeView();
+
   return (
-    <nav className="flex w-screen fixed top-4 left-0 items-center">
-      <div className="flex-1 flex justify-start px-4">
-        <button
-          onClick={() => {
-            if (onClose) {
-              onClose();
-            } else {
-              setReviewMode(null);
-            }
-          }}
-        >
-          <Icons.xMark className="text-2xl" />
-        </button>
-      </div>
-      <div className="flex-1 flex justify-center px-4">
-        <h1 className="text-center font-bold text-2xl">dynacloze</h1>
-      </div>
-      <div className="flex-1 flex justify-end px-4">
-        <ContentClozeModeButton />
-        {/* <HskLevelSelector currentCharacter={currentCharacter} /> */}
-      </div>
-    </nav>
+    <DynaClozeNavbar
+      onClose={() => {
+        if (onClose) {
+          onClose();
+        } else {
+          setReviewMode(null);
+        }
+      }}
+    />
   );
 };
 
@@ -264,14 +246,14 @@ export function ReviewClozeContent({
   };
 
   if (isSentenceLoading) {
-    return <DynaClozeLoader message="Loading sentences..." />;
+    return <DynoClozeLoader message="Loading sentences..." />;
   }
 
   if (isLoading) {
-    return <DynaClozeLoader message="Loading..." />;
+    return <DynoClozeLoader message="Loading..." />;
   }
   if (isGrammarLoading) {
-    return <DynaClozeLoader message="Loading grammars..." />;
+    return <DynoClozeLoader message="Loading grammars..." />;
   }
 
   if (sentences?.length === 0) {

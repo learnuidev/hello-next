@@ -231,38 +231,36 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               />
             )}
 
-            {!editMode && (
-              <div className="p-0 sm:p-4 bg-gray-100 dark:bg-[rgb(15,16,17)] mb-2">
-                <AudioBookPlayerControls
-                  loop={loop}
-                  setLoop={setLoop}
-                  currentTranscription={currentTranscription}
-                  seekBefore={seekBefore}
-                  seekAfter={seekAfter}
-                  handlePlayPause={handlePlayPause}
-                  playing={playing}
-                  showEn={showEn}
-                  containsChinglish={containsChinglish}
-                  isYoutubeOrVideo={isYoutubeOrVideo}
-                />
+            {/* {!editMode && ( */}
+            <div className="p-0 sm:p-4 bg-gray-100 dark:bg-[rgb(15,16,17)] mb-2">
+              <AudioBookPlayerControls
+                loop={loop}
+                setLoop={setLoop}
+                currentTranscription={currentTranscription}
+                seekBefore={seekBefore}
+                seekAfter={seekAfter}
+                handlePlayPause={handlePlayPause}
+                playing={playing}
+                showEn={showEn}
+                containsChinglish={containsChinglish}
+                isYoutubeOrVideo={isYoutubeOrVideo}
+              />
 
-                <div className="flex items-center gap-4">
-                  <span className="text-sm w-14">
-                    {formatTime(currentTime)}
-                  </span>
-                  <Slider
-                    min={0}
-                    max={duration}
-                    step={1}
-                    value={[currentTime]}
-                    defaultValue={[currentTime]}
-                    onValueChange={handleSeekChange}
-                    className="w-full"
-                  />
-                  <span className="text-sm">{formatTime(duration)}</span>
-                </div>
+              <div className="flex items-center gap-4">
+                <span className="text-sm w-14">{formatTime(currentTime)}</span>
+                <Slider
+                  min={0}
+                  max={duration}
+                  step={1}
+                  value={[currentTime]}
+                  defaultValue={[currentTime]}
+                  onValueChange={handleSeekChange}
+                  className="w-full"
+                />
+                <span className="text-sm">{formatTime(duration)}</span>
               </div>
-            )}
+            </div>
+            {/* )} */}
           </div>
         </div>
       </div>

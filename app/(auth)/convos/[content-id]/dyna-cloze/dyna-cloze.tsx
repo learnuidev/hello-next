@@ -1,4 +1,3 @@
-import { ReviewItemHanzi } from "@/app/review/review-cloze-content/review-item-hanzi";
 import { getRandomWords } from "@/app/review/review-cloze/utils/get-random-words";
 import { shuffleArray } from "@/app/review/review-cloze/utils/shuffle-array";
 import { Icons } from "@/components/ui/icons.v2";
@@ -12,21 +11,18 @@ import { useCurrentTime } from "@/components/youtube-page/use-current-time-store
 import { YoutubeButton } from "@/components/youtube-page/youtube-button";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
-import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDyanStoreRuntime, useDynaCloze } from "./use-dyna-cloze";
 
-import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
 import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { getMulti } from "../dyna-cloze-sentence/utils/get-multi";
-import { AnimatedLoadingText } from "@/components/animated-loading-text";
 
-import { DynoClozeHeaderContainer } from "@/components/dyno-cloze-core/dyno-cloze-header-container";
+import { DynaClozeHeader } from "@/components/dyno-cloze-core/dyna-cloze-header";
 import { DynoClozeLoader } from "@/components/dyno-cloze-core/dyno-cloze-loader";
 
 interface IDynoParams {
@@ -260,28 +256,16 @@ const DynaSentence = ({
 
   return (
     <div>
-      <DynoClozeHeaderContainer>
-        <Link
-          target="_blank"
-          href={`/nmm/${sentenceHanzi}?lang=${sentence?.lang}`}
-          className={"block lg:text-xl text-md mb-2"}
-        >
-          {sentence?.roman || sentence?.pinyin}
-        </Link>
-
-        <ReviewItemHanzi
-          input={response ? sentenceHanzi : sentenceHanziHidden}
-          lang={sentence?.lang}
-        />
-
-        <Link
-          target="_blank"
-          href={`/nmm/${sentenceHanzi}?lang=${sentence?.lang}`}
-          className={"block"}
-        >
-          <p className="mt-2 lg:text-xl text-md">{sentence?.en}</p>
-        </Link>
-      </DynoClozeHeaderContainer>
+      <DynaClozeHeader
+        sentence={{
+          hanzi: sentenceHanzi,
+          hanziHidden: sentenceHanziHidden,
+          pinyin: sentence?.roman || sentence?.pinyin,
+          lang: sentence?.lang,
+          en: sentence?.en,
+        }}
+        response={response}
+      />
 
       <DynoOptionsContainer>
         {shuffledOptions?.map((option: any, idx: number) => {

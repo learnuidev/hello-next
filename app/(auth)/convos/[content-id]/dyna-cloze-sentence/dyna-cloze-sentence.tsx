@@ -1,4 +1,3 @@
-import { ReviewItemHanzi } from "@/app/review/review-cloze-content/review-item-hanzi";
 import { getRandomWords } from "@/app/review/review-cloze/utils/get-random-words";
 import { shuffleArray } from "@/app/review/review-cloze/utils/shuffle-array";
 import { PlayButtonV2 } from "@/components/_select-character/play-button-v2";
@@ -22,16 +21,19 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import { DynaClozeHeader } from "@/components/dyno-cloze-core/dyna-cloze-header";
+import { DynoClozeLoader } from "@/components/dyno-cloze-core/dyno-cloze-loader";
+import { DynaClozeNavbar } from "@/components/dyno-cloze-core/dyno-cloze-navbar";
+import { EnButton } from "@/components/en-button";
+import { PinyinButton } from "@/components/pinyin-button";
+import { PreviewButton } from "@/components/settings-dialog/preview-button";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { SpeakSentence } from "../speak/speak-sentence";
 import {
   useDyanStoreRuntime,
   useDynaClozeSentence,
 } from "./use-dyna-cloze-sentence";
 import { getMulti } from "./utils/get-multi";
-import { DynoClozeHeaderContainer } from "@/components/dyno-cloze-core/dyno-cloze-header-container";
-import { DynoClozeLoader } from "@/components/dyno-cloze-core/dyno-cloze-loader";
-import { DynaClozeNavbar } from "@/components/dyno-cloze-core/dyno-cloze-navbar";
-import { PreviewButton } from "@/components/settings-dialog/preview-button";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -142,6 +144,9 @@ const DynaSentence = ({
   sentenceIndex,
   parentSentence,
 }: IDynoParams) => {
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
+  const showEnPreview = useBrightModeStore((state) => state.showEn);
+
   const {
     setResponse,
     response,
@@ -254,25 +259,16 @@ const DynaSentence = ({
 
   return (
     <div className="mt-32">
-      <DynoClozeHeaderContainer>
-        <Link
-          target="_blank"
-          href={`/nmm/${sentenceHanzi}?lang=${sentence?.lang}`}
-          className={"block lg:text-xl text-md mb-2"}
-        >
-          {sentence?.pinyin ||
-            sentence?.roman ||
-            meaning?.pinyin ||
-            meaning?.roman}
-        </Link>
-
-        <ReviewItemHanzi
-          input={response ? sentenceHanzi : sentenceHanziHidden}
-          lang={sentence?.lang}
-        />
-
-        <p className="mt-2 lg:text-xl text-md">{sentence?.en || meaning?.en}</p>
-      </DynoClozeHeaderContainer>
+      <DynaClozeHeader
+        sentence={{
+          hanzi: sentenceHanzi,
+          hanziHidden: sentenceHanziHidden,
+          pinyin: meaning?.pinyin,
+          lang: sentence?.lang,
+          en: meaning?.en,
+        }}
+        response={response}
+      />
 
       <DynoOptionsContainer>
         {shuffledOptions?.map((option: any, idx: number) => {
@@ -529,6 +525,8 @@ export const DynaClozeSentence = ({
         <div className="flex items-center w-full justify-center">
           <div className="px-8  py-2 bg-gray-100 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
             <div className="space-x-8 flex justify-center items-center w-full">
+              <PinyinButton />
+              <EnButton />
               <PreviewButton />
               <button
                 className={

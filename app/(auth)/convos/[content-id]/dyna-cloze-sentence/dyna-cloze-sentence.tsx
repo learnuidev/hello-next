@@ -139,6 +139,7 @@ const DynaSentence = ({
   sentenceIndex,
   parentSentence,
 }: IDynoParams) => {
+  console.log("SENTENCE", sentence);
   const {
     setResponse,
     response,
@@ -160,6 +161,11 @@ const DynaSentence = ({
   const lang = useGetCurrentLang();
 
   const { learnMode, setLearnMode } = useDynaClozeSentence();
+
+  const { data: meaning } = useListDiscoveryQuery({
+    content: sentence?.input || sentence?.hanzi,
+    lang: sentence?.lang,
+  });
 
   const { data: grammar, isLoading } = useListGrammarsQuery({
     sentenceId: sentence?.input || sentence?.hanzi,
@@ -253,7 +259,10 @@ const DynaSentence = ({
             href={`/nmm/${sentenceHanzi}?lang=${sentence?.lang}`}
             className={"block lg:text-xl text-md mb-2"}
           >
-            {sentence?.pinyin || sentence?.roman}
+            {sentence?.pinyin ||
+              sentence?.roman ||
+              meaning?.pinyin ||
+              meaning?.roman}
           </Link>
         ) : (
           <p className="mb-2 dark:text-black text-white text-lg"> ...</p>
@@ -264,7 +273,7 @@ const DynaSentence = ({
           lang={sentence?.lang}
         />
 
-        <p className="mt-2 lg:text-xl text-md">{sentence?.en}</p>
+        <p className="mt-2 lg:text-xl text-md">{sentence?.en || meaning?.en}</p>
       </div>
 
       <DynoOptionsContainer>

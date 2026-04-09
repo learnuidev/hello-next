@@ -7,6 +7,10 @@ import { ConvoInsightsWordTable } from "./convo-insights-word-table";
 import { useGetContentInsightsNew } from "../use-get-content-insights.new";
 import { useMemo } from "react";
 import { useInsightsSettingsStore } from "../use-insights-settings-store";
+import { HanziLink } from "@/components/hanzi-link";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
+import { WordSearchResult } from "@/app/(auth)/insights/insights-v2/precision-insight-view/word-search-result";
+import { ConvoInsightsViewToggle } from "./convo-insights-view-toggle";
 
 export function ConvoInsightsWordTab({
   contentId,
@@ -19,6 +23,7 @@ export function ConvoInsightsWordTab({
 }) {
   const searchQuery = useInsightsSettingsStore((state) => state.searchQuery);
   const hskLevel = useInsightsSettingsStore((state) => state.hskLevel);
+  const displayMode = useInsightsSettingsStore((state) => state.displayMode);
 
   const { data } = useGetContentInsightsNew({ contentId });
 
@@ -77,15 +82,31 @@ export function ConvoInsightsWordTab({
             availableHskLevels={availableHskLevels}
             showNa={hasNaItems}
           />
+          <ConvoInsightsViewToggle />
         </div>
       </div>
 
       <div className="sm:my-8 my-4">
-        <ConvoInsightsWordTable
-          words={filteredWords}
-          lang={lang}
-          onWordClick={onWordClick}
-        />
+        {displayMode === "list" ? (
+          <ConvoInsightsWordTable
+            words={filteredWords}
+            lang={lang}
+            onWordClick={onWordClick}
+          />
+        ) : (
+          <NmmListContainerAll className="md:mx-0">
+            {filteredWords.map((word: any, idx: number) => {
+              return (
+                <HanziLink
+                  character={word}
+                  key={`${word?.hanzi || word?.input}-grid-${idx}`}
+                  lang={lang}
+                  onClick={() => onWordClick(word)}
+                />
+              );
+            })}
+          </NmmListContainerAll>
+        )}
       </div>
     </div>
   );

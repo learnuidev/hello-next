@@ -7,6 +7,10 @@ import { ConvoInsightsTable } from "./convo-insights-table";
 import { useGetContentInsightsNew } from "../use-get-content-insights.new";
 import { useMemo } from "react";
 import { useInsightsSettingsStore } from "../use-insights-settings-store";
+import { HanziLink } from "@/components/hanzi-link";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
+import { CharacterSearchResult } from "@/app/(auth)/insights/insights-v2/precision-insight-view/character-search-result";
+import { ConvoInsightsViewToggle } from "./convo-insights-view-toggle";
 
 export function ConvoInsightsCharacterTab({
   contentId,
@@ -19,6 +23,7 @@ export function ConvoInsightsCharacterTab({
 }) {
   const searchQuery = useInsightsSettingsStore((state) => state.searchQuery);
   const learnStatus = useInsightsSettingsStore((state) => state.learnStatus);
+  const displayMode = useInsightsSettingsStore((state) => state.displayMode);
 
   const { data } = useGetContentInsightsNew({ contentId });
 
@@ -84,15 +89,31 @@ export function ConvoInsightsCharacterTab({
         <ConvoInsightsSearch />
         <div className="flex gap-2">
           <ConvoInsightsLearnStatusFilter />
+          <ConvoInsightsViewToggle />
         </div>
       </div>
 
       <div className="sm:my-8 my-4">
-        <ConvoInsightsTable
-          characters={filteredCharacters}
-          lang={lang}
-          onCharacterClick={onCharacterClick}
-        />
+        {displayMode === "list" ? (
+          <ConvoInsightsTable
+            characters={filteredCharacters}
+            lang={lang}
+            onCharacterClick={onCharacterClick}
+          />
+        ) : (
+          <NmmListContainerAll>
+            {filteredCharacters.map((char: any, idx: number) => {
+              return (
+                <HanziLink
+                  character={char}
+                  key={`${char?.hanzi || char?.input}-grid-${idx}`}
+                  lang={lang}
+                  onClick={() => onCharacterClick(char)}
+                />
+              );
+            })}
+          </NmmListContainerAll>
+        )}
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ export const NmmListContainerAll = ({
     <>
       <div
         className={cn(
-          "my-4 mx-2 md:mx-8 text-black dark:text-white flex flex-wrap items-center justify-start",
+          "my-4 text-black dark:text-white flex flex-wrap pt-12",
           className
         )}
       >

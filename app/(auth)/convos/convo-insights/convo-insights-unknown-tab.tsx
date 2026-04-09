@@ -8,6 +8,9 @@ import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useMemo } from "react";
 import { useInsightsSettingsStore } from "../use-insights-settings-store";
+import { HanziLink } from "@/components/hanzi-link";
+import { NmmListContainerAll } from "@/components/nmm-list-container-all";
+import { ConvoInsightsViewToggle } from "./convo-insights-view-toggle";
 
 export function ConvoInsightsUnknownTab({
   contentId,
@@ -20,6 +23,7 @@ export function ConvoInsightsUnknownTab({
 }) {
   const searchQuery = useInsightsSettingsStore((state) => state.searchQuery);
   const hskLevel = useInsightsSettingsStore((state) => state.hskLevel);
+  const displayMode = useInsightsSettingsStore((state) => state.displayMode);
 
   const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
   const { data: hskWords } = useListHSKWordsQuery();
@@ -30,7 +34,9 @@ export function ConvoInsightsUnknownTab({
     const levels = new Set<number>();
 
     contentUnknowns.items.forEach((item: any) => {
-      const hskWord = hskWords?.find((word: any) => word?.hanzi === item?.input);
+      const hskWord = hskWords?.find(
+        (word: any) => word?.hanzi === item?.input
+      );
       if (hskWord?.hskLevel) {
         levels.add(hskWord.hskLevel);
       }
@@ -42,7 +48,9 @@ export function ConvoInsightsUnknownTab({
   const hasNaItems = useMemo(() => {
     if (!contentUnknowns?.items) return false;
     return contentUnknowns.items.some((item: any) => {
-      const hskWord = hskWords?.find((word: any) => word?.hanzi === item?.input);
+      const hskWord = hskWords?.find(
+        (word: any) => word?.hanzi === item?.input
+      );
       return !hskWord?.hskLevel;
     });
   }, [contentUnknowns?.items, hskWords]);
@@ -59,7 +67,9 @@ export function ConvoInsightsUnknownTab({
     }
 
     const enrichedUnknowns = filtered.map((item: any) => {
-      const hskWord = hskWords?.find((word: any) => word?.hanzi === item?.input);
+      const hskWord = hskWords?.find(
+        (word: any) => word?.hanzi === item?.input
+      );
       const itemHskLevel = hskWord?.hskLevel;
       const isCharacter = item?.input?.length === 1;
 
@@ -105,15 +115,31 @@ export function ConvoInsightsUnknownTab({
             availableHskLevels={availableHskLevels}
             showNa={hasNaItems}
           />
+          <ConvoInsightsViewToggle />
         </div>
       </div>
 
       <div className="sm:my-8 my-4">
-        <ConvoInsightsUnknownTable
-          unknowns={filteredUnknowns}
-          lang={lang}
-          onCharacterClick={onCharacterClick}
-        />
+        {displayMode === "list" ? (
+          <ConvoInsightsUnknownTable
+            unknowns={filteredUnknowns}
+            lang={lang}
+            onCharacterClick={onCharacterClick}
+          />
+        ) : (
+          <NmmListContainerAll>
+            {filteredUnknowns.map((item: any, idx: number) => {
+              return (
+                <HanziLink
+                  character={item}
+                  key={`${item?.input}-grid-${idx}`}
+                  lang={lang}
+                  onClick={() => onCharacterClick(item)}
+                />
+              );
+            })}
+          </NmmListContainerAll>
+        )}
       </div>
     </div>
   );

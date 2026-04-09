@@ -102,10 +102,15 @@ export function WordSearchResult({
               <TooltipProvider delayDuration={100}>
                 <Tooltip>
                   <TooltipTrigger className="p-1 px-0 hover:scale-110 transition">
-                    <span className="text-lg sm:text-2xl font-light text-gray-400">
-                      {" "}
-                      汉语水平 {comp?.hskLevel}
-                    </span>
+                    {comp?.hskLevel === "N/A" ? (
+                      <span className="text-lg sm:text-2xl font-light text-gray-400">
+                        非汉语水平
+                      </span>
+                    ) : (
+                      <span className="text-lg sm:text-2xl font-light text-gray-400">
+                        汉语水平 {comp?.hskLevel}
+                      </span>
+                    )}
                     {/* <StatusIcon.Icon className="text-lg sm:text-2xl" /> */}
                   </TooltipTrigger>
                   <TooltipContent className="bg-black border-gray-800 rounded-full">

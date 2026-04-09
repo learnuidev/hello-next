@@ -53,7 +53,7 @@ export function ConvoInsightsHskLevelFilter({
             汉语水平 {level}
           </SelectItem>
         ))}
-        {showNa && <SelectItem value="na">N/A</SelectItem>}
+        {showNa && <SelectItem value="na">非汉语水平</SelectItem>}
       </SelectContent>
     </Select>
   );

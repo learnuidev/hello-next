@@ -23,8 +23,6 @@ export async function segmentText({
     segmentArray.push(segmentItem);
   }
 
-  console.log("SEGMENTS", Object.entries(segments));
-
   let res = [];
 
   if (filterOptions && filterOptions?.includes("unique")) {

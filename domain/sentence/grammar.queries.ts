@@ -89,14 +89,25 @@ const listGrammars = async (
   return newResp as ListGrammarsResponse;
 };
 
+type FilterOption = "unique";
+
 export function useListGrammarsQuery(
-  params = {} as { sentenceId?: string; content: string; lang?: string },
+  params = {} as {
+    sentenceId?: string;
+    content: string;
+    lang?: string;
+    filterOptions?: FilterOption[];
+  },
   options = {} as any
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ListGrammarsResponse, Error>({
-    queryKey: [queryIds.listGrammars, params?.content],
+    queryKey: [
+      queryIds.listGrammars,
+      params?.content,
+      JSON.stringify(params?.filterOptions),
+    ],
     queryFn: async () => {
       if (Object.keys(params)?.length && params?.lang) {
         const content = params?.content || params?.sentenceId || "";
@@ -112,13 +123,41 @@ export function useListGrammarsQuery(
         //   }
         // }
 
-        const response = await listGrammars(
+        const response = (await listGrammars(
           { ...params, grammarCache },
           {
             Authorization: authUser?.jwt,
           }
-        );
-        return response as ListGrammarsResponse;
+        )) as ListGrammarsResponse;
+
+        if (params?.filterOptions?.includes("unique")) {
+          let res = [];
+
+          const uniqueGrammarHanzis = [
+            ...new Set(
+              response?.grammarAnalysis?.map((ga) => ga?.hanzi || ga?.input)
+            ),
+          ];
+
+          for (const uniqueGrammar of uniqueGrammarHanzis) {
+            const matchedGrammars = response?.grammarAnalysis.filter(
+              (ga: any) => (ga?.hanzi || ga?.input) === uniqueGrammar
+            );
+            const matchedSegment = matchedGrammars?.[0];
+
+            res.push({
+              ...matchedSegment,
+              totalFrequency: matchedGrammars?.length,
+            });
+          }
+
+          return {
+            ...response,
+            grammarAnalysis: res,
+          };
+        }
+
+        return response;
       }
     },
 

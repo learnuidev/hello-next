@@ -17,10 +17,28 @@ import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { ConvoInsightOverview } from "@/app/(auth)/convos/convo-insights/convo-insight-overview";
 import { useGetContentInsights } from "@/app/(auth)/convos/convo-insights/hooks/use-content-insights";
 import { useInsightsSettingsStore } from "@/app/(auth)/convos/use-insights-settings-store";
+import { ConvoInsightsLearnStatusFilter } from "@/app/(auth)/convos/convo-insights/convo-insights-learn-status-filter";
+import { ConvoInsightsHskLevelFilter } from "@/app/(auth)/convos/convo-insights/convo-insights-hsk-level-filter";
+import { ConvoInsightsFrequencyFilter } from "@/app/(auth)/convos/convo-insights/convo-insights-frequency-filter";
 import { CharacterSearchResult } from "@/app/(auth)/insights/insights-v2/precision-insight-view/character-search-result";
 import { WordSearchResult } from "@/app/(auth)/insights/insights-v2/precision-insight-view/word-search-result";
 import { useMemo } from "react";
 import { useSegmentTextQuery } from "@/libs/utils/segment-text";
+import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
+
+function getTotalFrequency(text: string, word: string): number {
+  if (!text || !word) return 0;
+
+  // Create a regular expression to match the word as a whole word (case-insensitive)
+  // Using word boundaries (\b) to match whole words only
+  const regex = new RegExp(
+    `\\b${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`,
+    "gi"
+  );
+
+  const matches = text.match(regex);
+  return matches ? matches.length : 0;
+}
 
 export function CharacterAnalytics({
   characterId,
@@ -39,6 +57,13 @@ export function CharacterAnalytics({
   const setDisplayMode = useInsightsSettingsStore(
     (state) => state.setDisplayMode
   );
+  const sortType = useInsightsSettingsStore((state) => state.sortType);
+  const setSortType = useInsightsSettingsStore((state) => state.setSortType);
+  const learnStatus = useInsightsSettingsStore((state) => state.learnStatus);
+  const hskLevel = useInsightsSettingsStore((state) => state.hskLevel);
+  const frequencyFilter = useInsightsSettingsStore(
+    (state) => state.frequencyFilter
+  );
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
 
@@ -54,24 +79,34 @@ export function CharacterAnalytics({
     filterOptions: ["unique"],
   });
 
+  const { data: grammar } = useListGrammarsQuery({
+    sentenceId: characterId,
+    content: characterId,
+    lang: lang,
+    filterOptions: ["unique"],
+  });
+
   const filteredHskWords = useMemo(() => {
-    return segmentedText?.map((item) => {
-      const hskWord = hskWords?.find((word: any) => word.hanzi === item.input);
+    return (grammar?.grammarAnalysis || segmentedText)?.map((item) => {
+      const hanzi = item?.input || item?.hanzi || "";
+      const hskWord = hskWords?.find((word: any) => word.hanzi === hanzi);
+
+      const totalFrequency = getTotalFrequency(characterId, hanzi);
 
       if (hskWord) {
         return {
           ...hskWord,
-          totalFrequency: item?.totalFrequency,
+          totalFrequency: totalFrequency,
         };
       } else {
         return {
           ...item,
-          totalFrequency: item?.totalFrequency,
+          totalFrequency: totalFrequency,
           hskLevel: "N/A",
         };
       }
     });
-  }, [segmentedText, hskWords]);
+  }, [segmentedText, hskWords, grammar]);
 
   const characterAnalytics = useGetCharacterAnalytics({
     characterId,
@@ -99,7 +134,7 @@ export function CharacterAnalytics({
   // }
 
   const characterStats = useMemo(() => {
-    return uniqueCharacters?.map((char: any, idx: number) => {
+    const stats = uniqueCharacters?.map((char: any, idx: number) => {
       if (!char) return null;
       const isLearned = learnedCharacters?.[char];
 
@@ -135,7 +170,103 @@ export function CharacterAnalytics({
 
       return item;
     });
-  }, [uniqueCharacters, learnedCharacters]);
+
+    if (sortType === "popular") {
+      return stats?.sort(
+        (a: any, b: any) => b?.totalFrequency - a?.totalFrequency
+      );
+    }
+    return stats;
+  }, [uniqueCharacters, learnedCharacters, sortType]);
+
+  const availableHskLevels = useMemo(() => {
+    if (!filteredHskWords) return [];
+    const levels = new Set<number>();
+
+    filteredHskWords.forEach((word: any) => {
+      if (word?.hskLevel && word.hskLevel !== "N/A") {
+        levels.add(parseInt(word.hskLevel, 10));
+      }
+    });
+
+    return Array.from(levels).sort((a, b) => a - b);
+  }, [filteredHskWords]);
+
+  const hasNaItems = useMemo(() => {
+    if (!filteredHskWords) return false;
+    return filteredHskWords.some((word: any) => word?.hskLevel === "N/A");
+  }, [filteredHskWords]);
+
+  const filteredCharacterStats = useMemo(() => {
+    let filtered = characterStats;
+
+    if (learnStatus !== "all") {
+      filtered = filtered?.filter((char: any) => {
+        if (learnStatus === "learned") {
+          return char?.status === "learned" || char?.status === "DISCOVERED";
+        }
+
+        if (learnStatus === "forgotten") {
+          return char?.status === "forgotten";
+        }
+        return !char?.status;
+      });
+    }
+
+    if (frequencyFilter !== "all") {
+      filtered = filtered?.filter((char: any) => {
+        const freq = char?.totalFrequency || 0;
+        if (frequencyFilter === "high") {
+          return freq >= 3;
+        }
+        if (frequencyFilter === "medium") {
+          return freq >= 2 && freq < 3;
+        }
+        if (frequencyFilter === "low") {
+          return freq === 1;
+        }
+        return true;
+      });
+    }
+
+    return filtered;
+  }, [characterStats, learnStatus, frequencyFilter]);
+
+  const filteredWords = useMemo(() => {
+    let filtered = filteredHskWords;
+
+    if (hskLevel !== "all") {
+      filtered = filtered?.filter((word: any) => {
+        if (hskLevel === "na") {
+          return !word?.hskLevel || word?.hskLevel === "N/A";
+        }
+        return parseInt(word?.hskLevel, 10) === hskLevel;
+      });
+    }
+
+    if (frequencyFilter !== "all") {
+      filtered = filtered?.filter((word: any) => {
+        const freq = word?.totalFrequency || 0;
+        if (frequencyFilter === "high") {
+          return freq >= 3;
+        }
+        if (frequencyFilter === "medium") {
+          return freq >= 2 && freq < 3;
+        }
+        if (frequencyFilter === "low") {
+          return freq === 1;
+        }
+        return true;
+      });
+    }
+
+    if (sortType === "popular") {
+      return filtered?.sort(
+        (a: any, b: any) => b?.totalFrequency - a?.totalFrequency
+      );
+    }
+    return filtered;
+  }, [filteredHskWords, hskLevel, frequencyFilter, sortType]);
 
   return selectedChar ? (
     <SelectedCharacterContainer characterId={selectedChar} />
@@ -178,7 +309,7 @@ export function CharacterAnalytics({
           </div>
         </div>
 
-        <div className="flex justify-between items-center my-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center my-8 gap-4">
           <div className="flex space-x-8">
             <button
               onClick={() => {
@@ -204,29 +335,49 @@ export function CharacterAnalytics({
             </button>
           </div>
 
-          <div className="flex space-x-4">
-            <button
-              onClick={() => {
-                setDisplayMode("grid");
-              }}
-              className={cn(
-                displayMode === "grid" ? "dark:text-white" : "text-gray-500",
-                "px-0"
+          <div className="flex gap-8 flex-wrap">
+            <div className="flex flex-row gap-4">
+              {viewType === "character" && (
+                <>
+                  <ConvoInsightsLearnStatusFilter />
+                  <ConvoInsightsFrequencyFilter />
+                </>
               )}
-            >
-              <Icons.apps className="text-xl md:text-2xl" />
-            </button>
-            <button
-              onClick={() => {
-                setDisplayMode("list");
-              }}
-              className={cn(
-                displayMode === "list" ? "dark:text-white" : "text-gray-500",
-                "px-0"
+              {viewType === "word" && (
+                <>
+                  <ConvoInsightsHskLevelFilter
+                    availableHskLevels={availableHskLevels}
+                    showNa={hasNaItems}
+                  />
+                  <ConvoInsightsFrequencyFilter />
+                </>
               )}
-            >
-              <Icons.list className="text-xl md:text-2xl" />
-            </button>
+            </div>
+
+            <div className="flex flex-row gap-4">
+              <button
+                onClick={() => {
+                  setDisplayMode("grid");
+                }}
+                className={cn(
+                  displayMode === "grid" ? "dark:text-white" : "text-gray-500",
+                  "px-0"
+                )}
+              >
+                <Icons.apps className="text-xl md:text-2xl" />
+              </button>
+              <button
+                onClick={() => {
+                  setDisplayMode("list");
+                }}
+                className={cn(
+                  displayMode === "list" ? "dark:text-white" : "text-gray-500",
+                  "px-0"
+                )}
+              >
+                <Icons.list className="text-xl md:text-2xl" />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -234,7 +385,7 @@ export function CharacterAnalytics({
           <div className="my-8">
             {displayMode === "grid" ? (
               <NmmListContainerAll>
-                {characterStats?.map((char: any, idx: number) => {
+                {filteredCharacterStats?.map((char: any, idx: number) => {
                   return (
                     <HanziLink
                       character={char}
@@ -244,7 +395,7 @@ export function CharacterAnalytics({
                 })}
               </NmmListContainerAll>
             ) : (
-              <CharacterSearchResult searchResults={characterStats} />
+              <CharacterSearchResult searchResults={filteredCharacterStats} />
             )}
           </div>
         )}
@@ -253,7 +404,7 @@ export function CharacterAnalytics({
           <div className="my-8">
             {displayMode === "grid" ? (
               <NmmListContainerAll className="md:mx-0">
-                {filteredHskWords?.map((char: any, idx: number) => {
+                {filteredWords?.map((char: any, idx: number) => {
                   return (
                     <HanziLink
                       character={char}
@@ -263,7 +414,7 @@ export function CharacterAnalytics({
                 })}
               </NmmListContainerAll>
             ) : (
-              <WordSearchResult words={filteredHskWords} />
+              <WordSearchResult words={filteredWords} />
             )}
           </div>
         )}

@@ -16,6 +16,10 @@ export const EnglishTopView = ({
 
   const { showChinglish, setShowChinglish } = useChinglishState();
 
+  if (!showEn) {
+    return null;
+  }
+
   return (
     <div
       className={cn(

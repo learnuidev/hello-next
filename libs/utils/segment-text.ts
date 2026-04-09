@@ -1,45 +1,91 @@
+import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
 import { useQuery } from "@tanstack/react-query";
 import pinyin from "pinyin";
+
+type FilterTypes = "unique";
 
 interface SegmentTextInput {
   text: string;
   lang: string;
+  filterOptions?: FilterTypes[];
 }
-export async function segmentText({ text, lang }: SegmentTextInput) {
+export async function segmentText({
+  text,
+  lang,
+  filterOptions,
+}: SegmentTextInput) {
   const segmenter = new Intl.Segmenter(lang, { granularity: "word" });
 
   const segments = segmenter.segment(text);
+  const segmentArray = [];
+
+  for (const segmentItem of segments) {
+    segmentArray.push(segmentItem);
+  }
+
+  console.log("SEGMENTS", Object.entries(segments));
 
   let res = [];
 
-  for (const segment of segments) {
-    res.push({
-      ...{
-        input: segment.segment,
-        startIndex: segment.index,
-        endIndex: segment.index + segment.segment.length,
+  if (filterOptions && filterOptions?.includes("unique")) {
+    const uniqueSegments = [
+      ...new Set(segmentArray.map((segment: any) => segment.segment)),
+    ].filter(filterNonHanYu);
 
-        lang,
+    for (const _uniqueSegment of uniqueSegments) {
+      const uniqueSegment: any = _uniqueSegment;
+
+      const matchedSegments = segmentArray.filter(
+        (segment: any) => segment.segment === uniqueSegment
+      );
+      const matchedSegment = matchedSegments?.[0];
+
+      res.push({
+        input: uniqueSegment,
+        startIndex: matchedSegment.index,
+        endIndex: matchedSegment.index + uniqueSegment?.length,
         id: crypto.randomUUID(),
-      },
-      ...(lang === "zh"
-        ? {
-            pinyin: pinyin(segment.segment)
-              .map((item) => item[0])
-              .join(""),
-          }
-        : {}),
-    });
+        totalFrequency: matchedSegments?.length,
+        lang,
+        pinyin: pinyin(uniqueSegment)
+          .map((item) => item[0])
+          .join(""),
+      });
+    }
+  } else {
+    for (const segment of segments) {
+      res.push({
+        ...{
+          input: segment.segment,
+          startIndex: segment.index,
+          endIndex: segment.index + segment.segment.length,
+
+          lang,
+          id: crypto.randomUUID(),
+        },
+        ...(lang === "zh"
+          ? {
+              pinyin: pinyin(segment.segment)
+                .map((item) => item[0])
+                .join(""),
+            }
+          : {}),
+      });
+    }
   }
 
   return res;
 }
 
-export const useSegmentTextQuery = ({ text, lang }: SegmentTextInput) => {
+export const useSegmentTextQuery = ({
+  text,
+  lang,
+  filterOptions,
+}: SegmentTextInput) => {
   return useQuery({
-    queryKey: ["segment-text", text, lang],
+    queryKey: ["segment-text", text, lang, JSON.stringify(filterOptions)],
     queryFn: async () => {
-      return await segmentText({ text, lang });
+      return await segmentText({ text, lang, filterOptions });
     },
   });
 };

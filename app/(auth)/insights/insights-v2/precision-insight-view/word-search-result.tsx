@@ -15,29 +15,37 @@ import { cn } from "@/lib/utils";
 import { getStatusIcon } from "./status-icons";
 import { NoResultView } from "./no-result-view";
 
-export function WordSearchResult() {
+export function WordSearchResult({
+  words,
+  className,
+}: {
+  words?: any;
+  className?: string;
+}) {
   const querySync = useSearchQueryStore((state) => state.query2);
   const querySyncLowerCased = querySync?.toLowerCase();
 
   const { data: hskWords } = useListHSKWordsQuery();
 
-  const filteredHsk = hskWords?.filter((item: any) => {
-    const isHanzi = item?.hanzi?.includes(querySync);
+  const filteredHsk = words
+    ? words
+    : hskWords?.filter((item: any) => {
+        const isHanzi = item?.hanzi?.includes(querySync);
 
-    if (isHanzi) {
-      return true;
-    }
+        if (isHanzi) {
+          return true;
+        }
 
-    const humanPinyin = getHumanPinyin(item);
+        const humanPinyin = getHumanPinyin(item);
 
-    const isSearchByPinyin = humanPinyin?.includes(querySyncLowerCased);
+        const isSearchByPinyin = humanPinyin?.includes(querySyncLowerCased);
 
-    if (isSearchByPinyin) {
-      return true;
-    }
+        if (isSearchByPinyin) {
+          return true;
+        }
 
-    return item?.en?.toLowerCase()?.includes(querySyncLowerCased);
-  });
+        return item?.en?.toLowerCase()?.includes(querySyncLowerCased);
+      });
 
   if (!filteredHsk?.length) {
     return <NoResultView />;
@@ -46,7 +54,7 @@ export function WordSearchResult() {
   const displayablefilteredHsk = filteredHsk?.slice(0, 100);
 
   return (
-    <section className="space-y-12 mt-12 pb-32">
+    <section className={cn("space-y-12 mt-12 pb-32", className)}>
       {displayablefilteredHsk?.map((val: any, idx: any) => {
         const comp = val;
 
@@ -113,27 +121,14 @@ export function WordSearchResult() {
               <p className="text-lg font-light truncate text-gray-500">
                 {comp?.en?.split("/")?.slice(0, 2)?.join("; ")}
               </p>
-              {comp?.status === "not_started" ? null : (
-                <div className="flex justify-start text-gray-500 font-light space-x-2">
-                  {!comp?.totalAttempts ? null : (
-                    <div>
-                      <span>{comp?.totalAttempts}</span>{" "}
-                      {comp?.totalAttempts > 1 ? "attempts" : "attempt"}
-                    </div>
-                  )}
-                  {comp?.totalIncorrect > 0 ? (
-                    <div>
-                      <span>{comp?.totalIncorrect}</span> incorrect
-                    </div>
-                  ) : (
-                    comp?.totalCorrect > 0 && (
-                      <div>
-                        <span>{comp?.totalCorrect}</span> correct
-                      </div>
-                    )
-                  )}
-                </div>
-              )}
+              <div className="flex justify-start text-gray-500 font-light space-x-2">
+                {!comp?.totalFrequency ? null : (
+                  <div>
+                    <span>{comp?.totalFrequency}</span>{" "}
+                    {comp?.totalFrequency > 1 ? "frequencies" : "frequency"}
+                  </div>
+                )}
+              </div>
             </div>
           </Link>
         );

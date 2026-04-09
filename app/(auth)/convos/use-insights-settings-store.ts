@@ -5,6 +5,7 @@ import { create } from "zustand";
 export type ConvoInsightsTab = "character" | "word" | "sentence" | "unknown";
 export type LearnStatusFilter = "all" | "learned" | "unlearned" | "forgotten";
 export type HskLevelFilter = "all" | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | "na";
+export type DisplayMode = "grid" | "list";
 
 export const useInsightsSettingsStore = create((set: any, get: any) => ({
   sortType: "timeline",
@@ -15,6 +16,11 @@ export const useInsightsSettingsStore = create((set: any, get: any) => ({
   type: "character" as ConvoInsightsTab,
   setType: (f: any) =>
     typeof f === "function" ? set({ type: f(get().type) }) : set({ type: f }),
+  displayMode: "grid" as DisplayMode,
+  setDisplayMode: (f: any) =>
+    typeof f === "function"
+      ? set({ displayMode: f(get().displayMode) })
+      : set({ displayMode: f }),
   searchQuery: "",
   setSearchQuery: (f: any) =>
     typeof f === "function"

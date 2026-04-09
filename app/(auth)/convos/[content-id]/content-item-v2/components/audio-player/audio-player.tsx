@@ -585,7 +585,7 @@ export const AudioPlayer = () => {
 
                       {selected?.hskLevel && (
                         <p className="text-gray-600 dark:text-gray-400">
-                          HSK {selected?.hskLevel}
+                          汉语水平 {selected?.hskLevel}
                         </p>
                       )}
                     </div>

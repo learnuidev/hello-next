@@ -6,7 +6,7 @@ export type ConvoInsightsTab = "character" | "word" | "sentence" | "unknown";
 export type LearnStatusFilter = "all" | "learned" | "unlearned" | "forgotten";
 export type HskLevelFilter = "all" | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | "na";
 export type DisplayMode = "grid" | "list";
-export type FrequencyFilter = "all" | "high" | "medium" | "low";
+export type FrequencySort = "most" | "least" | "none";
 
 export const useInsightsSettingsStore = create((set: any, get: any) => ({
   sortType: "timeline",
@@ -37,9 +37,9 @@ export const useInsightsSettingsStore = create((set: any, get: any) => ({
     typeof f === "function"
       ? set({ hskLevel: f(get().hskLevel) })
       : set({ hskLevel: f }),
-  frequencyFilter: "all" as FrequencyFilter,
-  setFrequencyFilter: (f: any) =>
+  frequencySort: "none" as FrequencySort,
+  setFrequencySort: (f: any) =>
     typeof f === "function"
-      ? set({ frequencyFilter: f(get().frequencyFilter) })
-      : set({ frequencyFilter: f }),
+      ? set({ frequencySort: f(get().frequencySort) })
+      : set({ frequencySort: f }),
 }));

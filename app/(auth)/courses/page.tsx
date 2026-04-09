@@ -65,7 +65,7 @@ export default function Courses() {
                       : "dark:text-gray-600 dark:border-gray-600 text-gray-300 border-gray-300"
                   )}
                 >
-                  HSK {belt.hskLevel}
+                  汉语水平 {belt.hskLevel}
                 </button>
               );
             })}

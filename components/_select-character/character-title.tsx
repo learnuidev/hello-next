@@ -310,7 +310,7 @@ export const CharacterTitle = (props: any) => {
 
                 <div className="text-2xl">
                   {isHsk && typeof isHsk?.hskLevel === "number" ? (
-                    <p>HSK {isHsk?.hskLevel} </p>
+                    <p>汉语水平 {isHsk?.hskLevel} </p>
                   ) : (
                     selectedCompInput?.length < 4 && <StatusIcon.Icon />
                   )}
@@ -321,7 +321,7 @@ export const CharacterTitle = (props: any) => {
 
           <div className="text-2xl">
             {isHsk && typeof isHsk?.hskLevel === "number" ? (
-              <p>HSK {isHsk?.hskLevel} </p>
+              <p>汉语水平 {isHsk?.hskLevel} </p>
             ) : (
               selectedCompInput?.length < 4 && <StatusIcon.Icon />
             )}
@@ -420,7 +420,7 @@ export const CharacterTitle = (props: any) => {
 
             <div className="text-2xl">
               {isHsk && typeof isHsk?.hskLevel === "number" ? (
-                <p>HSK {isHsk?.hskLevel} </p>
+                <p>汉语水平 {isHsk?.hskLevel} </p>
               ) : (
                 selectedCompInput?.length < 4 && <StatusIcon.Icon />
               )}

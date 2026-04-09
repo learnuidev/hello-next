@@ -275,7 +275,7 @@ export const HtmlArticleView = () => {
 
                   {selected?.hsk ||
                     (selected?.hskLevel && (
-                      <p>HSK {selected?.hsk || selected?.hskLevel}</p>
+                      <p>汉语水平 {selected?.hsk || selected?.hskLevel}</p>
                     ))}
                 </div>
 

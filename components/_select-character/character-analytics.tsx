@@ -61,8 +61,8 @@ export function CharacterAnalytics({
   const setSortType = useInsightsSettingsStore((state) => state.setSortType);
   const learnStatus = useInsightsSettingsStore((state) => state.learnStatus);
   const hskLevel = useInsightsSettingsStore((state) => state.hskLevel);
-  const frequencyFilter = useInsightsSettingsStore(
-    (state) => state.frequencyFilter
+  const frequencySort = useInsightsSettingsStore(
+    (state) => state.frequencySort
   );
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
@@ -213,24 +213,18 @@ export function CharacterAnalytics({
       });
     }
 
-    if (frequencyFilter !== "all") {
-      filtered = filtered?.filter((char: any) => {
-        const freq = char?.totalFrequency || 0;
-        if (frequencyFilter === "high") {
-          return freq >= 3;
-        }
-        if (frequencyFilter === "medium") {
-          return freq >= 2 && freq < 3;
-        }
-        if (frequencyFilter === "low") {
-          return freq === 1;
-        }
-        return true;
-      });
+    if (frequencySort === "most") {
+      filtered = [...filtered].sort(
+        (a: any, b: any) => (b?.totalFrequency || 0) - (a?.totalFrequency || 0)
+      );
+    } else if (frequencySort === "least") {
+      filtered = [...filtered].sort(
+        (a: any, b: any) => (a?.totalFrequency || 0) - (b?.totalFrequency || 0)
+      );
     }
 
     return filtered;
-  }, [characterStats, learnStatus, frequencyFilter]);
+  }, [characterStats, learnStatus, frequencySort]);
 
   const filteredWords = useMemo(() => {
     let filtered = filteredHskWords;
@@ -244,29 +238,22 @@ export function CharacterAnalytics({
       });
     }
 
-    if (frequencyFilter !== "all") {
-      filtered = filtered?.filter((word: any) => {
-        const freq = word?.totalFrequency || 0;
-        if (frequencyFilter === "high") {
-          return freq >= 3;
-        }
-        if (frequencyFilter === "medium") {
-          return freq >= 2 && freq < 3;
-        }
-        if (frequencyFilter === "low") {
-          return freq === 1;
-        }
-        return true;
-      });
-    }
-
-    if (sortType === "popular") {
-      return filtered?.sort(
-        (a: any, b: any) => b?.totalFrequency - a?.totalFrequency
+    if (frequencySort === "most") {
+      filtered = [...filtered].sort(
+        (a: any, b: any) => (b?.totalFrequency || 0) - (a?.totalFrequency || 0)
+      );
+    } else if (frequencySort === "least") {
+      filtered = [...filtered].sort(
+        (a: any, b: any) => (a?.totalFrequency || 0) - (b?.totalFrequency || 0)
+      );
+    } else if (sortType === "popular") {
+      filtered = [...filtered].sort(
+        (a: any, b: any) => (b?.totalFrequency || 0) - (a?.totalFrequency || 0)
       );
     }
+
     return filtered;
-  }, [filteredHskWords, hskLevel, frequencyFilter, sortType]);
+  }, [filteredHskWords, hskLevel, frequencySort, sortType]);
 
   return selectedChar ? (
     <SelectedCharacterContainer characterId={selectedChar} />

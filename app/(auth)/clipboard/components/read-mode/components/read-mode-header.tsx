@@ -47,7 +47,7 @@ export function ReadModeHeader() {
                   </span>
                 </p>
 
-                {selected?.level && <p>HSK {selected?.level}</p>}
+                {selected?.level && <p>汉语水平 {selected?.level}</p>}
               </div>
 
               <p className="">

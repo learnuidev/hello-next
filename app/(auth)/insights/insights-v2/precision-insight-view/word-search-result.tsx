@@ -101,10 +101,10 @@ export function WordSearchResult({
 
               <TooltipProvider delayDuration={100}>
                 <Tooltip>
-                  <TooltipTrigger className="p-3 px-0 hover:scale-110 transition">
+                  <TooltipTrigger className="p-1 px-0 hover:scale-110 transition">
                     <span className="text-lg sm:text-2xl font-light text-gray-400">
                       {" "}
-                      HSK {comp?.hskLevel}
+                      汉语水平 {comp?.hskLevel}
                     </span>
                     {/* <StatusIcon.Icon className="text-lg sm:text-2xl" /> */}
                   </TooltipTrigger>

@@ -50,7 +50,7 @@ export function ConvoInsightsHskLevelFilter({
         <SelectItem value="all">全部</SelectItem>
         {hskLevelsToShow.map((level) => (
           <SelectItem key={level} value={String(level)}>
-            HSK {level}
+            汉语水平 {level}
           </SelectItem>
         ))}
         {showNa && <SelectItem value="na">N/A</SelectItem>}

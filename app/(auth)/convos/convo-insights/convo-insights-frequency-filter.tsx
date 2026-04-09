@@ -1,6 +1,6 @@
 "use client";
 
-import { useInsightsSettingsStore, FrequencyFilter } from "../use-insights-settings-store";
+import { useInsightsSettingsStore, FrequencySort } from "../use-insights-settings-store";
 import {
   Select,
   SelectContent,
@@ -10,19 +10,18 @@ import {
 } from "@/components/ui/select";
 
 export function ConvoInsightsFrequencyFilter() {
-  const frequencyFilter = useInsightsSettingsStore((state) => state.frequencyFilter);
-  const setFrequencyFilter = useInsightsSettingsStore((state) => state.setFrequencyFilter);
+  const frequencySort = useInsightsSettingsStore((state) => state.frequencySort);
+  const setFrequencySort = useInsightsSettingsStore((state) => state.setFrequencySort);
 
   return (
-    <Select value={frequencyFilter} onValueChange={(value) => setFrequencyFilter(value as FrequencyFilter)}>
+    <Select value={frequencySort} onValueChange={(value) => setFrequencySort(value as FrequencySort)}>
       <SelectTrigger className="w-[140px]">
-        <SelectValue placeholder="频率" />
+        <SelectValue placeholder="频率排序" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="all">全部</SelectItem>
-        <SelectItem value="high">高频</SelectItem>
-        <SelectItem value="medium">中频</SelectItem>
-        <SelectItem value="low">低频</SelectItem>
+        <SelectItem value="none">默认</SelectItem>
+        <SelectItem value="most">从高到低</SelectItem>
+        <SelectItem value="least">从低到高</SelectItem>
       </SelectContent>
     </Select>
   );

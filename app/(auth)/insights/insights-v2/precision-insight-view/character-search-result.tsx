@@ -73,7 +73,7 @@ export function CharacterSearchResult({
 
               <TooltipProvider delayDuration={100}>
                 <Tooltip>
-                  <TooltipTrigger className="p-3 px-0 hover:scale-110 transition">
+                  <TooltipTrigger className="p-1 px-0 hover:scale-110 transition">
                     <StatusIcon.Icon className="text-lg sm:text-2xl" />
                   </TooltipTrigger>
                   <TooltipContent className="bg-black border-gray-800 rounded-full">

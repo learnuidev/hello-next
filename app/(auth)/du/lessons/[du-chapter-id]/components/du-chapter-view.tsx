@@ -491,7 +491,7 @@ export const DuLessonView = () => {
                         <span className="text-red-400">{selected?.pinyin}</span>
                       </p>
 
-                      {selected?.hsk && <p>HSK {selected?.hsk}</p>}
+                      {selected?.hsk && <p>汉语水平 {selected?.hsk}</p>}
                     </div>
 
                     <p className="font-extralight">

@@ -54,8 +54,6 @@ export function CharacterAnalytics({
     filterOptions: ["unique"],
   });
 
-  console.log("SEGMENTED TEXT", segmentedText);
-
   const filteredHskWords = useMemo(() => {
     return segmentedText?.map((item) => {
       const hskWord = hskWords?.find((word: any) => word.hanzi === item.input);
@@ -75,25 +73,10 @@ export function CharacterAnalytics({
     });
   }, [segmentedText, hskWords]);
 
-  const _filteredHskWords = useMemo(
-    () =>
-      hskWords
-        ?.filter((word: any) => {
-          return characterId?.includes(word?.hanzi);
-        })
-        .map((item: any) => {
-          const wordIndex = characterId?.indexOf(item?.hanzi || item?.input);
-
-          return {
-            ...item,
-            wordIndex: wordIndex || 0,
-          };
-        })
-        ?.sort(
-          (first: any, second: any) => first?.wordIndex - second?.wordIndex
-        ),
-    [characterId, hskWords]
-  );
+  const characterAnalytics = useGetCharacterAnalytics({
+    characterId,
+    lang,
+  });
 
   const {
     precisionRate,
@@ -101,10 +84,9 @@ export function CharacterAnalytics({
     totalNewCharaters,
     uniqueCharacters,
     masteryRate,
-  } = useGetCharacterAnalytics({
-    characterId,
-    lang,
-  });
+  } = characterAnalytics;
+
+  console.log("CHAR ANALYTICS", characterAnalytics);
 
   // if (isLoading) {
   //   return (
@@ -121,6 +103,9 @@ export function CharacterAnalytics({
       if (!char) return null;
       const isLearned = learnedCharacters?.[char];
 
+      const totalFrequency = characterId
+        ?.split("")
+        .filter((item) => item === char);
       if (isLearned) {
         const reviewedHistory = isLearned?.reviewHistory || [];
         const corrects = reviewedHistory?.map(
@@ -134,6 +119,7 @@ export function CharacterAnalytics({
           totalAttempts: reviewedHistory?.length,
           totalCorecct: corrects?.length,
           totalIncorrect: incorrects?.length,
+          totalFrequency: totalFrequency?.length,
         };
       }
 
@@ -144,6 +130,7 @@ export function CharacterAnalytics({
         totalAttempts: 0,
         totalCorecct: 0,
         totalIncorrect: 0,
+        totalFrequency: totalFrequency?.length,
       };
 
       return item;

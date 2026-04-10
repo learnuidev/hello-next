@@ -11,13 +11,15 @@ const formatISODate = (isoDate: string) => {
 export const ProfileBanner = ({ className }: { className?: string }) => {
   const { data: profile } = useGetAuthUserProfileQuery();
 
+  console.log("PROFILE", profile);
+
   const { data: memberPlanType } = useGetActiveUserPlan();
 
   return (
     <section
       className={cn(
         "flex justify-center flex-col items-center mt-12 md:mt-32",
-        className
+        className,
       )}
     >
       <h1 className="text-2xl font-bold "> Me </h1>
@@ -26,7 +28,7 @@ export const ProfileBanner = ({ className }: { className?: string }) => {
         {memberPlanType?.userStatus}
       </p>
       <p className=" text-gray-500 text-xs md:text-md font-light">
-        Joined {formatISODate(profile?.createdAt || new Date().toISOString())}
+        Joined {formatISODate(new Date(profile?.createdAt).toISOString())}
       </p>
     </section>
   );

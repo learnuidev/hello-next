@@ -225,7 +225,6 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                     content={content}
                     currentTranscription={currentTranscription}
                     currentTime={currentTime}
-                    seek={seek}
                     isPlaying={playing}
                     loop={loop}
                   />

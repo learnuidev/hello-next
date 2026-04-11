@@ -21,14 +21,13 @@ export const ReaderViewParent = ({
   content,
   currentTranscription,
   currentTime,
-  seek,
+
   isPlaying,
 }: {
   currentTranscription: ContentTranscription;
   content: IContent;
   currentTime: number;
   isPlaying: boolean;
-  seek: (time: number) => void;
   loop: ContentTranscription;
 }) => {
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
@@ -87,9 +86,9 @@ export const ReaderViewParent = ({
                                   ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
                                   : cn(
                                       `!text-gray-500`,
-                                      isPlaying ? `opacity-50` : ""
+                                      isPlaying ? `opacity-50` : "",
                                     )
-                                : "dark:text-white text-black"
+                                : "dark:text-white text-black",
                             )}
                             contentId={content?.id}
                             lang={content?.lang}
@@ -110,9 +109,6 @@ export const ReaderViewParent = ({
                             </p>
                           )}
                           <p
-                            onClick={() => {
-                              seek(transcription?.start);
-                            }}
                             className={cn(
                               isPlaying
                                 ? transcription.start < currentTime &&
@@ -120,9 +116,9 @@ export const ReaderViewParent = ({
                                   ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
                                   : cn(
                                       `!text-gray-500`,
-                                      isPlaying ? `opacity-50` : ""
+                                      isPlaying ? `opacity-50` : "",
                                     )
-                                : "dark:text-white text-black"
+                                : "dark:text-white text-black",
                             )}
                           >
                             {smartSplit({
@@ -135,7 +131,7 @@ export const ReaderViewParent = ({
                                     transcription?.input,
                                     val?.input,
                                     item,
-                                    idx
+                                    idx,
                                   );
                                 });
                               return (
@@ -173,7 +169,7 @@ export const ReaderViewParent = ({
                                         : "",
 
                                       containsInUnknown &&
-                                        "font-light dark:!text-pink-300 !text-pink-500"
+                                        "font-light dark:!text-pink-300 !text-pink-500",
                                     )}
                                     character={item}
                                   />

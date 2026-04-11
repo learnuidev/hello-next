@@ -31,18 +31,33 @@ export function MandarinoLoadingBanner({
         className="fixed inset-0 flex flex-col items-center justify-center  z-50"
       >
         <motion.h1
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          initial={{
+            opacity: 0,
+            scale: 0.5,
+            y: 20,
+            filter: "blur(8px)", // Start with blur
+          }}
           animate={
             fadeOut
-              ? { opacity: 0, scale: 1, y: 0 }
-              : { opacity: 1, scale: 1, y: 0 }
+              ? {
+                  opacity: 0,
+                  scale: 1,
+                  y: 0,
+                  filter: "blur(0px)", // Clear blur during fade out
+                }
+              : {
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                  filter: "blur(0px)", // Clear blur after initial animation
+                }
           }
           transition={
             fadeOut
               ? { duration: 0.2, ease: "easeOut" }
-              : { duration: 0.6, ease: "easeOut" }
+              : { duration: 0.8, ease: "easeOut" }
           }
-          className="text-2xl sm:text-6xl font-bold "
+          className="text-2xl sm:text-5xl font-bold "
         >
           <Icons.mandarinSolid />
           <span> {message}</span>

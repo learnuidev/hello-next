@@ -1,15 +1,49 @@
 "use client";
 
+import React from "react";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { ContentTranscription } from "@/domain/content/content.api";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useRef, useEffect, useMemo } from "react";
 import { formatTime } from "../../_play/utils";
 import { useAutoScroll } from "@/components/settings-dialog/use-auto-scroll";
 import { useSmartSet } from "@/components/settings-dialog/use-smart-set";
+import { useTranscriptionEditorStore } from "../stores/use-transcription-editor-store";
 
 type LocalTranscription = ContentTranscription & { _isNew?: boolean };
+
+const TextField = React.memo(
+  ({
+    label,
+    field,
+    value,
+    index,
+    onChange,
+  }: {
+    label: string;
+    field: string;
+    value: string | undefined;
+    index: number;
+    onChange: (field: string, value: string) => void;
+  }) => {
+    return (
+      <div className="flex items-start gap-4">
+        <label className="text-xs font-medium text-gray-400 dark:text-[rgb(120,120,120)] w-20 shrink-0 pt-2.5">
+          {label}
+        </label>
+        <textarea
+          className="flex-1 text-lg border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl px-4 py-2.5 dark:bg-[rgb(9,10,11)] resize-y min-h-[2.5rem] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all leading-relaxed"
+          value={value || ""}
+          onChange={(e) => onChange(field, e.target.value)}
+          placeholder={label}
+        />
+      </div>
+    );
+  },
+);
+
+TextField.displayName = "TextField";
 
 export const AllTranscriptionsEditor = ({
   contentId,
@@ -27,42 +61,35 @@ export const AllTranscriptionsEditor = ({
 
   const updateContentMutation = useUpdateContentMutation();
 
-  const [localTranscriptions, setLocalTranscriptions] = useState<
-    LocalTranscription[] | null
-  >(null);
+  const { localTranscriptions, setLocalTranscriptions, reset } =
+    useTranscriptionEditorStore();
 
-  const [activeTab, setActiveTab] = useState<"settings" | "suggestions">(
-    "settings"
+  const [activeTab, setActiveTab] = React.useState<"settings" | "suggestions">(
+    "settings",
   );
-  const [viewMode, setViewMode] = useState<"current" | "all">("current");
+  const [viewMode, setViewMode] = React.useState<"current" | "all">("current");
   const { autoScrollWhilePlaying, setAutoScrollWhilePlaying } = useAutoScroll();
   const { smartSet, setSmartSet } = useSmartSet();
-  const [expandedWords, setExpandedWords] = useState<Set<number>>(new Set());
-  const [searchQuery, setSearchQuery] = useState("");
+  const [expandedWords, setExpandedWords] = React.useState<Set<number>>(
+    new Set(),
+  );
+  const [searchQuery, setSearchQuery] = React.useState("");
 
   const transcriptionRefs = useRef<{ [key: string]: HTMLDivElement | null }>(
-    {}
+    {},
   );
 
-  useEffect(() => {
-    if (!autoScrollWhilePlaying || !content) return;
+  const currentTranscriptionIndexRef = useRef<number>(-1);
 
-    const transcriptions = localTranscriptions || content.transcriptions || [];
-    const currentIndex = transcriptions.findIndex(
-      (t: LocalTranscription) => currentTime >= t.start && currentTime < t.end
-    );
-
-    if (currentIndex !== -1) {
-      const ref = transcriptionRefs.current[`trans-${currentIndex}`];
-      if (ref) {
-        ref.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
+  React.useEffect(() => {
+    if (content && !localTranscriptions) {
+      setLocalTranscriptions(content.transcriptions || []);
     }
-  }, [currentTime, autoScrollWhilePlaying, localTranscriptions, content]);
+  }, [content, localTranscriptions, setLocalTranscriptions]);
 
   const transcriptions: LocalTranscription[] = useMemo(
     () => localTranscriptions || content?.transcriptions || [],
-    [localTranscriptions, content]
+    [localTranscriptions, content],
   );
 
   const filteredTranscriptions = useMemo(() => {
@@ -81,42 +108,75 @@ export const AllTranscriptionsEditor = ({
       ].filter(Boolean);
 
       return searchableFields.some((field) =>
-        field?.toLowerCase().includes(query)
+        field?.toLowerCase().includes(query),
       );
     });
   }, [transcriptions, searchQuery]);
 
+  React.useEffect(() => {
+    if (!autoScrollWhilePlaying || !content) return;
+
+    const currentIndex = transcriptions.findIndex(
+      (t: LocalTranscription) => currentTime >= t.start && currentTime < t.end,
+    );
+
+    if (currentIndex !== -1) {
+      const currentTranscription = transcriptions[currentIndex];
+      const filteredIndex = filteredTranscriptions.findIndex(
+        (t) => t.id === currentTranscription.id,
+      );
+      if (filteredIndex !== -1) {
+        requestAnimationFrame(() => {
+          const ref = transcriptionRefs.current[currentTranscription.id];
+          if (ref) {
+            ref.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        });
+      }
+    }
+  }, [
+    currentTime,
+    autoScrollWhilePlaying,
+    transcriptions,
+    filteredTranscriptions,
+    content,
+  ]);
+
+  const updateLocalField = React.useCallback(
+    (index: number, field: string, value: any) => {
+      const current = localTranscriptions || content.transcriptions || [];
+      const updated = [...current];
+      updated[index] = { ...updated[index], [field]: value };
+
+      if (smartSet) {
+        if (field === "end") {
+          const nextIndex = index + 1;
+          if (nextIndex < updated.length && updated[nextIndex].start === 0) {
+            updated[nextIndex] = { ...updated[nextIndex], start: value };
+          }
+        }
+
+        if (field === "start") {
+          const prevIndex = index - 1;
+          if (prevIndex >= 0 && updated[prevIndex].end === 0) {
+            updated[prevIndex] = { ...updated[prevIndex], end: value };
+          }
+        }
+      }
+
+      setLocalTranscriptions(updated);
+    },
+    [
+      smartSet,
+      content?.transcriptions,
+      localTranscriptions,
+      setLocalTranscriptions,
+    ],
+  );
+
   if (!content || !editMode) {
     return null;
   }
-
-  const updateLocalField = (index: number, field: string, value: any) => {
-    setLocalTranscriptions((prev) => {
-      const current = prev || content.transcriptions || [];
-      const updated = current.map((item: LocalTranscription, i: number) => {
-        if (i !== index) return item;
-        return { ...item, [field]: value };
-      });
-
-      if (!smartSet) return updated;
-
-      if (field === "end") {
-        const nextIndex = index + 1;
-        if (nextIndex < updated.length && updated[nextIndex].start === 0) {
-          updated[nextIndex] = { ...updated[nextIndex], start: value };
-        }
-      }
-
-      if (field === "start") {
-        const prevIndex = index - 1;
-        if (prevIndex >= 0 && updated[prevIndex].end === 0) {
-          updated[prevIndex] = { ...updated[prevIndex], end: value };
-        }
-      }
-
-      return updated;
-    });
-  };
 
   const handleSplit = (index: number) => {
     const trans = transcriptions[index];
@@ -140,45 +200,43 @@ export const AllTranscriptionsEditor = ({
       chinglish: "",
     };
 
-    setLocalTranscriptions((prev) => {
-      const current = prev || content.transcriptions || [];
-      return [
-        ...current.slice(0, index),
-        firstHalf,
-        secondHalf,
-        ...current.slice(index + 1),
-      ];
-    });
+    const current = localTranscriptions || content.transcriptions || [];
+    const updated = [
+      ...current.slice(0, index),
+      firstHalf,
+      secondHalf,
+      ...current.slice(index + 1),
+    ];
+    setLocalTranscriptions(updated);
   };
 
   const handleMerge = (index: number, direction: "up" | "down") => {
     const targetIndex = direction === "up" ? index - 1 : index;
     if (targetIndex < 0 || targetIndex + 1 >= transcriptions.length) return;
 
-    setLocalTranscriptions((prev) => {
-      const current = prev || content.transcriptions || [];
-      const first = current[targetIndex];
-      const second = current[targetIndex + 1];
+    const current = localTranscriptions || content.transcriptions || [];
+    const first = current[targetIndex];
+    const second = current[targetIndex + 1];
 
-      const merged: LocalTranscription = {
-        ...first,
-        end: second.end,
-        input: [first.input, second.input].filter(Boolean).join(" "),
-        en: [first.en, second.en].filter(Boolean).join(" "),
-        pinyin: [first.pinyin, second.pinyin].filter(Boolean).join(" "),
-        roman: [first.roman, second.roman].filter(Boolean).join(" "),
-        hanzi: [first.hanzi, second.hanzi].filter(Boolean).join(""),
-        chinglish:
-          [first.chinglish, second.chinglish].filter(Boolean).join(" ") ||
-          undefined,
-      };
+    const merged: LocalTranscription = {
+      ...first,
+      end: second.end,
+      input: [first.input, second.input].filter(Boolean).join(" "),
+      en: [first.en, second.en].filter(Boolean).join(" "),
+      pinyin: [first.pinyin, second.pinyin].filter(Boolean).join(" "),
+      roman: [first.roman, second.roman].filter(Boolean).join(" "),
+      hanzi: [first.hanzi, second.hanzi].filter(Boolean).join(""),
+      chinglish:
+        [first.chinglish, second.chinglish].filter(Boolean).join(" ") ||
+        undefined,
+    };
 
-      return [
-        ...current.slice(0, targetIndex),
-        merged,
-        ...current.slice(targetIndex + 2),
-      ];
-    });
+    const updated = [
+      ...current.slice(0, targetIndex),
+      merged,
+      ...current.slice(targetIndex + 2),
+    ];
+    setLocalTranscriptions(updated);
   };
 
   const handleAddBefore = (index: number) => {
@@ -200,10 +258,13 @@ export const AllTranscriptionsEditor = ({
       _isNew: true,
     };
 
-    setLocalTranscriptions((prev) => {
-      const current = prev || content.transcriptions || [];
-      return [...current.slice(0, index), newTrans, ...current.slice(index)];
-    });
+    const current = localTranscriptions || content.transcriptions || [];
+    const updated = [
+      ...current.slice(0, index),
+      newTrans,
+      ...current.slice(index),
+    ];
+    setLocalTranscriptions(updated);
   };
 
   const handleAddAfter = (index: number) => {
@@ -228,21 +289,21 @@ export const AllTranscriptionsEditor = ({
       _isNew: true,
     };
 
-    setLocalTranscriptions((prev) => {
-      const current = prev || content.transcriptions || [];
-      return [
-        ...current.slice(0, index + 1),
-        newTrans,
-        ...current.slice(index + 1),
-      ];
-    });
+    const current = localTranscriptions || content.transcriptions || [];
+    const updated = [
+      ...current.slice(0, index + 1),
+      newTrans,
+      ...current.slice(index + 1),
+    ];
+    setLocalTranscriptions(updated);
   };
 
   const handleDelete = (index: number) => {
-    setLocalTranscriptions((prev) => {
-      const current = prev || content.transcriptions || [];
-      return current.filter((_: LocalTranscription, i: number) => i !== index);
-    });
+    const current = localTranscriptions || content.transcriptions || [];
+    const updated = current.filter(
+      (_: LocalTranscription, i: number) => i !== index,
+    );
+    setLocalTranscriptions(updated);
   };
 
   const handleSave = () => {
@@ -262,95 +323,65 @@ export const AllTranscriptionsEditor = ({
       .then(() => {
         setLocalTranscriptions(null);
         setEditMode();
+        reset();
       });
   };
 
   const handleCancel = () => {
     setLocalTranscriptions(null);
     setEditMode(false);
+    reset();
   };
 
   const scrollToTranscription = (index: number) => {
-    const ref = transcriptionRefs.current[`trans-${index}`];
+    const currentTranscription = transcriptions[index];
+    const ref = transcriptionRefs.current[currentTranscription.id];
     if (ref) {
       ref.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-  };
-
-  const TextField = ({
-    label,
-    field,
-    value,
-    index,
-  }: {
-    label: string;
-    field: string;
-    value: string | undefined;
-    index: number;
-  }) => {
-    if (!value && !transcriptions[index]?._isNew) return null;
-    return (
-      <div className="flex items-start gap-4">
-        <label className="text-xs font-medium text-gray-400 dark:text-[rgb(120,120,120)] w-20 shrink-0 pt-2.5">
-          {label}
-        </label>
-        <textarea
-          className="flex-1 text-lg border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl px-4 py-2.5 dark:bg-[rgb(9,10,11)] resize-y min-h-[2.5rem] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all leading-relaxed"
-          value={value || ""}
-          onChange={(e) => updateLocalField(index, field, e.target.value)}
-          placeholder={label}
-        />
-      </div>
-    );
   };
 
   const updateWordField = (
     transcriptionIndex: number,
     wordIndex: number,
     field: string,
-    value: any
+    value: any,
   ) => {
-    setLocalTranscriptions((prev) => {
-      const current = prev || content.transcriptions || [];
-      const updated = [...current];
-      const transcription = { ...updated[transcriptionIndex] };
-      const words = transcription.words ? [...transcription.words] : [];
-      words[wordIndex] = { ...words[wordIndex], [field]: value };
-      transcription.words = words;
-      updated[transcriptionIndex] = transcription;
-      return updated;
-    });
+    const current = localTranscriptions || content.transcriptions || [];
+    const updated = [...current];
+    const transcription = { ...updated[transcriptionIndex] };
+    const words = transcription.words ? [...transcription.words] : [];
+    words[wordIndex] = { ...words[wordIndex], [field]: value };
+    transcription.words = words;
+    updated[transcriptionIndex] = transcription;
+    setLocalTranscriptions(updated);
   };
 
   const handleAddWord = (transcriptionIndex: number) => {
-    setLocalTranscriptions((prev) => {
-      const current = prev || content.transcriptions || [];
-      const updated = [...current];
-      const transcription = { ...updated[transcriptionIndex] };
-      const words = transcription.words ? [...transcription.words] : [];
-      words.push({
-        id: `word-${Date.now()}`,
-        input: "",
-        start: 0,
-        end: 0,
-      });
-      transcription.words = words;
-      updated[transcriptionIndex] = transcription;
-      return updated;
+    const current = localTranscriptions || content.transcriptions || [];
+    const updated = [...current];
+    const transcription = { ...updated[transcriptionIndex] };
+    const words = transcription.words ? [...transcription.words] : [];
+    words.push({
+      id: `word-${Date.now()}`,
+      input: "",
+      start: 0,
+      end: 0,
     });
+    transcription.words = words;
+    updated[transcriptionIndex] = transcription;
+    setLocalTranscriptions(updated);
   };
 
   const handleDeleteWord = (transcriptionIndex: number, wordIndex: number) => {
-    setLocalTranscriptions((prev) => {
-      const current = prev || content.transcriptions || [];
-      const updated = [...current];
-      const transcription = { ...updated[transcriptionIndex] };
-      const words = transcription.words ? [...transcription.words] : [];
-      words.splice(wordIndex, 1);
-      transcription.words = words;
-      updated[transcriptionIndex] = transcription;
-      return updated;
-    });
+    const current = localTranscriptions || content.transcriptions || [];
+    const updated = [...current];
+    const transcription = { ...updated[transcriptionIndex] };
+    const words = transcription.words ? [...transcription.words] : [];
+    words.splice(wordIndex, 1);
+    transcription.words = words;
+    updated[transcriptionIndex] = transcription;
+    setLocalTranscriptions(updated);
   };
 
   const toggleWordsExpanded = (index: number) => {
@@ -366,7 +397,7 @@ export const AllTranscriptionsEditor = ({
   };
 
   const problemTranscriptions = transcriptions.filter(
-    (transcription) => transcription.start === 0 || transcription.end === 0
+    (transcription) => transcription.start === 0 || transcription.end === 0,
   );
 
   return (
@@ -405,15 +436,16 @@ export const AllTranscriptionsEditor = ({
             )}
           </div>
           <div className="flex flex-col gap-6 pb-20">
-            {filteredTranscriptions.map((transcription) => {
-              const originalIndex = transcriptions.findIndex(
-                (t) => t.id === transcription.id
+            {filteredTranscriptions.map((transcription, filteredIndex) => {
+              const index = transcriptions.findIndex(
+                (t) => t.id === transcription.id,
               );
+
               return (
                 <div
-                  key={transcription.id + "-" + originalIndex}
+                  key={transcription.id}
                   ref={(el) => {
-                    transcriptionRefs.current[`trans-${originalIndex}`] = el;
+                    transcriptionRefs.current[transcription.id] = el;
                   }}
                   className="flex flex-col gap-4 border border-gray-100 dark:border-[rgb(20,21,24)] rounded-2xl p-7 bg-white dark:bg-[rgb(12,13,15)]/50 hover:shadow-lg hover:border-gray-200 dark:hover:border-[rgb(25,26,30)] transition-all duration-300"
                 >
@@ -429,16 +461,16 @@ export const AllTranscriptionsEditor = ({
                         value={transcription.start}
                         onChange={(e) =>
                           updateLocalField(
-                            originalIndex,
+                            index,
                             "start",
-                            parseFloat(e.target.value) || 0
+                            parseFloat(e.target.value) || 0,
                           )
                         }
                       />
                       <button
                         className="text-xs px-4 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all"
                         onClick={() =>
-                          updateLocalField(originalIndex, "start", currentTime)
+                          updateLocalField(index, "start", currentTime)
                         }
                         title="Set to current time"
                       >
@@ -456,16 +488,16 @@ export const AllTranscriptionsEditor = ({
                         value={transcription.end}
                         onChange={(e) =>
                           updateLocalField(
-                            originalIndex,
+                            index,
                             "end",
-                            parseFloat(e.target.value) || 0
+                            parseFloat(e.target.value) || 0,
                           )
                         }
                       />
                       <button
                         className="text-xs px-4 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all"
                         onClick={() =>
-                          updateLocalField(originalIndex, "end", currentTime)
+                          updateLocalField(index, "end", currentTime)
                         }
                         title="Set to current time"
                       >
@@ -490,51 +522,67 @@ export const AllTranscriptionsEditor = ({
                       label="Input"
                       field="input"
                       value={transcription.input}
-                      index={originalIndex}
+                      index={index}
+                      onChange={(field, value) =>
+                        updateLocalField(index, field, value)
+                      }
                     />
                     <TextField
                       label="English"
                       field="en"
                       value={transcription.en}
-                      index={originalIndex}
+                      index={index}
+                      onChange={(field, value) =>
+                        updateLocalField(index, field, value)
+                      }
                     />
                     <TextField
                       label="Pinyin"
                       field="pinyin"
                       value={transcription.pinyin}
-                      index={originalIndex}
+                      index={index}
+                      onChange={(field, value) =>
+                        updateLocalField(index, field, value)
+                      }
                     />
                     <TextField
                       label="Roman"
                       field="roman"
                       value={transcription.roman}
-                      index={originalIndex}
+                      index={index}
+                      onChange={(field, value) =>
+                        updateLocalField(index, field, value)
+                      }
                     />
                     <TextField
                       label="Hanzi"
                       field="hanzi"
                       value={transcription.hanzi}
-                      index={originalIndex}
+                      index={index}
+                      onChange={(field, value) =>
+                        updateLocalField(index, field, value)
+                      }
                     />
                     <TextField
                       label="Chinglish"
                       field="chinglish"
                       value={transcription.chinglish}
-                      index={originalIndex}
+                      index={index}
+                      onChange={(field, value) =>
+                        updateLocalField(index, field, value)
+                      }
                     />
                   </div>
 
                   <div className="flex flex-col gap-3">
                     <button
                       className="text-xs px-4 py-2 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-lg text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] transition-all font-light w-fit"
-                      onClick={() => toggleWordsExpanded(originalIndex)}
+                      onClick={() => toggleWordsExpanded(index)}
                     >
-                      {expandedWords.has(originalIndex)
-                        ? "Hide Words"
-                        : "Show Words"}{" "}
-                      ({transcription.words?.length || 0})
+                      {expandedWords.has(index) ? "Hide Words" : "Show Words"} (
+                      {transcription.words?.length || 0})
                     </button>
-                    {expandedWords.has(originalIndex) && (
+                    {expandedWords.has(index) && (
                       <div className="flex flex-col gap-3 border border-gray-100 dark:border-[rgb(20,21,24)] rounded-xl p-4 bg-gray-50 dark:bg-[rgb(10,11,13)]">
                         {transcription.words?.map((word, wordIndex) => (
                           <div
@@ -552,10 +600,10 @@ export const AllTranscriptionsEditor = ({
                                   value={word.input || ""}
                                   onChange={(e) =>
                                     updateWordField(
-                                      originalIndex,
+                                      index,
                                       wordIndex,
                                       "input",
-                                      e.target.value
+                                      e.target.value,
                                     )
                                   }
                                 />
@@ -571,10 +619,10 @@ export const AllTranscriptionsEditor = ({
                                   value={word.start || 0}
                                   onChange={(e) =>
                                     updateWordField(
-                                      originalIndex,
+                                      index,
                                       wordIndex,
                                       "start",
-                                      parseFloat(e.target.value) || 0
+                                      parseFloat(e.target.value) || 0,
                                     )
                                   }
                                 />
@@ -590,10 +638,10 @@ export const AllTranscriptionsEditor = ({
                                   value={word.end || 0}
                                   onChange={(e) =>
                                     updateWordField(
-                                      originalIndex,
+                                      index,
                                       wordIndex,
                                       "end",
-                                      parseFloat(e.target.value) || 0
+                                      parseFloat(e.target.value) || 0,
                                     )
                                   }
                                 />
@@ -601,7 +649,7 @@ export const AllTranscriptionsEditor = ({
                               <button
                                 className="text-xs px-3 py-1.5 border border-red-200 dark:border-red-900/50 rounded-lg text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all font-light mt-5"
                                 onClick={() =>
-                                  handleDeleteWord(originalIndex, wordIndex)
+                                  handleDeleteWord(index, wordIndex)
                                 }
                                 title="Delete word"
                               >
@@ -612,7 +660,7 @@ export const AllTranscriptionsEditor = ({
                         ))}
                         <button
                           className="text-xs px-4 py-2 border border-dashed border-gray-300 dark:border-[rgb(30,31,35)] rounded-lg text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-400 dark:hover:border-[rgb(40,41,45)] transition-all font-light"
-                          onClick={() => handleAddWord(originalIndex)}
+                          onClick={() => handleAddWord(index)}
                         >
                           + Add Word
                         </button>
@@ -623,38 +671,38 @@ export const AllTranscriptionsEditor = ({
                   <div className="flex items-center gap-3 flex-wrap pt-4 border-t border-gray-100 dark:border-[rgb(20,21,24)]">
                     <button
                       className="text-xs px-5 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all font-light"
-                      onClick={() => handleAddBefore(originalIndex)}
+                      onClick={() => handleAddBefore(index)}
                       title="Add new transcription before"
                     >
                       + Before
                     </button>
                     <button
                       className="text-xs px-5 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all font-light"
-                      onClick={() => handleAddAfter(originalIndex)}
+                      onClick={() => handleAddAfter(index)}
                       title="Add new transcription after"
                     >
                       + After
                     </button>
                     <button
                       className="text-xs px-5 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all font-light"
-                      onClick={() => handleSplit(originalIndex)}
+                      onClick={() => handleSplit(index)}
                       title="Split at midpoint"
                     >
                       Split
                     </button>
-                    {originalIndex > 0 && (
+                    {index > 0 && (
                       <button
                         className="text-xs px-5 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all font-light"
-                        onClick={() => handleMerge(originalIndex, "up")}
+                        onClick={() => handleMerge(index, "up")}
                         title="Merge with transcription above"
                       >
                         Merge Up
                       </button>
                     )}
-                    {originalIndex < transcriptions.length - 1 && (
+                    {index < transcriptions.length - 1 && (
                       <button
                         className="text-xs px-5 py-2.5 border border-gray-200 dark:border-[rgb(20,21,24)] rounded-xl text-gray-500 dark:text-[rgb(140,140,140)] hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] hover:border-gray-300 dark:hover:border-[rgb(25,26,30)] transition-all font-light"
-                        onClick={() => handleMerge(originalIndex, "down")}
+                        onClick={() => handleMerge(index, "down")}
                         title="Merge with transcription below"
                       >
                         Merge Down
@@ -662,7 +710,7 @@ export const AllTranscriptionsEditor = ({
                     )}
                     <button
                       className="text-xs px-5 py-2.5 border border-red-200 dark:border-red-900/50 rounded-xl text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 hover:border-red-300 dark:hover:border-red-800/50 transition-all font-light ml-auto"
-                      onClick={() => handleDelete(originalIndex)}
+                      onClick={() => handleDelete(index)}
                       title="Delete this transcription"
                     >
                       Delete
@@ -795,7 +843,7 @@ export const AllTranscriptionsEditor = ({
                 <div className="flex flex-col gap-3">
                   {problemTranscriptions.map((transcription, index) => {
                     const originalIndex = transcriptions.findIndex(
-                      (t) => t.id === transcription.id
+                      (t) => t.id === transcription.id,
                     );
                     const issueType =
                       transcription.start === 0 && transcription.end === 0

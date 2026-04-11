@@ -20,11 +20,16 @@ export const EnglishTopView = ({
     return null;
   }
 
+  const view =
+    (showChinglish
+      ? currentTranscription?.chinglish || currentTranscription?.en
+      : currentTranscription?.en) || "";
+
   return (
     <div
       className={cn(
         "sticky top-0 py-4 bg-gray-50 z-30 dark:bg-[rgb(13,14,15)]",
-        className
+        className,
       )}
     >
       <div className="mb-8">{children}</div>
@@ -32,7 +37,7 @@ export const EnglishTopView = ({
         <div
           className={cn(
             `flex justify-between items-center mt-2 w-full px-2`,
-            "sm:h-36 h-24"
+            view.length > 400 ? "h-36" : view.length > 200 ? "h-24" : "h-16",
           )}
         >
           <p className="space-x-2 font-extralight pb-[4px] overflow sm:text-lg text-md">

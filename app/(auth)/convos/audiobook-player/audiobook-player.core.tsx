@@ -75,17 +75,9 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
       />
       <div className="relative">
         {editMode ? (
-          <div className={cn("sm:px-8  w-full")}>
-            <AllTranscriptionsEditor
-              contentId={content.id}
-              currentTime={currentTime}
-              seekAndPlay={seekAndPlay}
-            />
-          </div>
-        ) : (
           <div
             className={cn(
-              "grid grid-cols-12 gap-4 sm:gap-8 sm:px-8 scroll-px-80 w-full"
+              "grid grid-cols-12 gap-4 sm:gap-8 sm:px-8 scroll-px-80 w-full",
             )}
           >
             {isYoutubeOrVideo && (
@@ -93,7 +85,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 className={cn(
                   "md:col-span-6 col-span-12",
 
-                  `${isVideoHidden || !isYoutubeOrVideo ? "hidden" : ""}`
+                  `${isVideoHidden || !isYoutubeOrVideo ? "hidden" : ""}`,
                 )}
               >
                 <ReactPlayer
@@ -127,16 +119,65 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                     ? "col-span-12"
                     : isYoutubeOrVideo
                       ? "sm:col-span-6 col-span-12"
-                      : "md:col-span-8 col-span-12"
+                      : "md:col-span-8 col-span-12",
               )}
             >
-              {editMode ? (
-                <AllTranscriptionsEditor
-                  contentId={content.id}
-                  currentTime={currentTime}
-                  seekAndPlay={seekAndPlay}
+              <AllTranscriptionsEditor
+                contentId={content.id}
+                currentTime={currentTime}
+                seekAndPlay={seekAndPlay}
+              />
+            </div>
+          </div>
+        ) : (
+          <div
+            className={cn(
+              "grid grid-cols-12 gap-4 sm:gap-8 sm:px-8 scroll-px-80 w-full",
+            )}
+          >
+            {isYoutubeOrVideo && (
+              <div
+                className={cn(
+                  "md:col-span-6 col-span-12",
+
+                  `${isVideoHidden || !isYoutubeOrVideo ? "hidden" : ""}`,
+                )}
+              >
+                <ReactPlayer
+                  key={content?.audio}
+                  playbackRate={playbackRate}
+                  progressInterval={progressInterval}
+                  url={content?.audio}
+                  onPlay={() => {
+                    setNewContextId();
+
+                    setPlaying(true);
+                  }}
+                  onPause={() => setPlaying(false)}
+                  width="100%"
+                  height={isSmall ? "200px" : "450px"}
+                  onReady={onReady}
+                  playing={false}
+                  controls={false}
+                  ref={playerRef}
+                  onProgress={(value) => {
+                    setCurrentTime(value.playedSeconds);
+                  }}
                 />
-              ) : viewMode === "karaoke" ? (
+              </div>
+            )}
+            <div
+              className={cn(
+                !isYoutubeOrVideo
+                  ? "col-span-12"
+                  : isVideoHidden
+                    ? "col-span-12"
+                    : isYoutubeOrVideo
+                      ? "sm:col-span-6 col-span-12"
+                      : "md:col-span-8 col-span-12",
+              )}
+            >
+              {viewMode === "karaoke" ? (
                 <div
                   className={
                     isVideoHidden || !isYoutubeOrVideo

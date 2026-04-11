@@ -1,7 +1,6 @@
 "use client";
 import { Toaster } from "@/components/ui/toaster";
 import { InitialLoadingBanner } from "@/components/ui/initial-loading-banner";
-import Script from "next/script";
 
 import "core-js/stable";
 import "regenerator-runtime/runtime";
@@ -22,7 +21,6 @@ import { LanguageSelector } from "@/components/language-selector/language-select
 import { SearchDialog } from "@/components/search-dialog/search-dialog";
 import { SettingsDialog } from "@/components/settings-dialog/settings-dialog";
 import { ThemeProvider } from "@/components/theme-provider";
-// import { MandoDatafastProvider } from "@/libs/datafa.st/mando-datafast-provider";
 import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
 import { PostHogProvider } from "@/libs/posthog/posthog.provider";
 import { Suspense } from "react";

@@ -152,7 +152,7 @@ export const ConvosNavBar = () => {
               : "text-gray-200 dark:text-gray-600"
           } hover:text-black dark:hover:text-white transition text-xl`}
         >
-          <Icons.play />
+          <Icons.graduationCap />
         </Link>
 
         <Link

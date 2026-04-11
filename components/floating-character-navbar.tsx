@@ -105,9 +105,9 @@ export const FloatingCharacterNavbar = ({
     ...new Set(
       characterContext
         ?.filter((item) =>
-          JSON.stringify(item)?.includes(firstLesson?.hanzi || selectedChar)
+          JSON.stringify(item)?.includes(firstLesson?.hanzi || selectedChar),
         )
-        .map((item) => JSON.stringify(item))
+        .map((item) => JSON.stringify(item)),
     ),
   ]?.map((item) => JSON.parse(item));
 
@@ -128,7 +128,7 @@ export const FloatingCharacterNavbar = ({
                 setView("review");
               }}
             >
-              <Icons.play className="text-2xl" />
+              <Icons.graduationCap className="text-2xl" />
             </button>
 
             {isAlreadyLearned ? null : (

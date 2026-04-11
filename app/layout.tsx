@@ -1,5 +1,6 @@
 "use client";
 import { Toaster } from "@/components/ui/toaster";
+import { InitialLoadingBanner } from "@/components/ui/initial-loading-banner";
 import Script from "next/script";
 
 import "core-js/stable";
@@ -61,31 +62,35 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <div
-                className={`${inter.className} bg-bkg text-content flex h-screen relative flex-col`}
-              >
-                <div className="flex-1">
-                  <QueryClientProvider>
-                    <Authenticated>
-                      <MandoAdaptiveProvider>{children}</MandoAdaptiveProvider>
-                    </Authenticated>
-                    <SettingsDialog />
-                    <SearchDialog />
-                  </QueryClientProvider>
-                </div>
-
-                <LanguageSelector />
-
-                <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300 dark:text-gray-700">
-                  {/* <FontAwesomeIcon icon={faScrewdriverWrench} />
-                <Link
-                  target="_blank"
-                  href="https://www.linkedin.com/in/vishalgautamm/"
+              <InitialLoadingBanner>
+                <div
+                  className={`${inter.className} bg-bkg text-content flex h-screen relative flex-col`}
                 >
-                  Vishal Gautam
-                </Link> */}
-                </footer>
-              </div>
+                  <div className="flex-1">
+                    <QueryClientProvider>
+                      <Authenticated>
+                        <MandoAdaptiveProvider>
+                          {children}
+                        </MandoAdaptiveProvider>
+                      </Authenticated>
+                      <SettingsDialog />
+                      <SearchDialog />
+                    </QueryClientProvider>
+                  </div>
+
+                  <LanguageSelector />
+
+                  <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300 dark:text-gray-700">
+                    {/* <FontAwesomeIcon icon={faScrewdriverWrench} />
+                  <Link
+                    target="_blank"
+                    href="https://www.linkedin.com/in/vishalgautamm/"
+                  >
+                    Vishal Gautam
+                  </Link> */}
+                  </footer>
+                </div>
+              </InitialLoadingBanner>
             </ThemeProvider>
           </PostHogProvider>
 

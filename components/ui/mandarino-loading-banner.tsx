@@ -1,40 +1,52 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { AnimatedLoadingText } from "@/components/animated-loading-text";
+import { useState, useEffect } from "react";
+import { Icons } from "./icons.v2";
+
+const H1_OUT_DELAY = 2000;
 
 export function MandarinoLoadingBanner({
   message = "Mandarino",
 }: {
   message?: string;
 }) {
+  const [fadeOut, setFadeOut] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setFadeOut(true);
+    }, H1_OUT_DELAY);
+
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        variants={{
-          hidden: { opacity: 0 },
-          visible: { opacity: 1 },
-          exit: { opacity: 0 },
-        }}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        transition={{ duration: 0.3 }}
-        className="flex flex-col items-center justify-center py-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.6 }}
+        className="fixed inset-0 flex flex-col items-center justify-center  z-50"
       >
-        <motion.div
-          variants={{
-            hidden: { opacity: 0, y: 5 },
-            visible: { opacity: 1, y: 0, scale: 1.5, fontWeight: 800 },
-            exit: { opacity: 0, y: 5 },
-          }}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          transition={{ duration: 0.3, delay: 0.1 }}
+        <motion.h1
+          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          animate={
+            fadeOut
+              ? { opacity: 0, scale: 1, y: 0 }
+              : { opacity: 1, scale: 1, y: 0 }
+          }
+          transition={
+            fadeOut
+              ? { duration: 0.2, ease: "easeOut" }
+              : { duration: 0.6, ease: "easeOut" }
+          }
+          className="text-2xl sm:text-6xl font-bold "
         >
-          <motion.p>{message}</motion.p>
-        </motion.div>
+          <Icons.mandarinSolid />
+          <span> {message}</span>
+        </motion.h1>
       </motion.div>
     </AnimatePresence>
   );

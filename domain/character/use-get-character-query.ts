@@ -10,7 +10,7 @@ const getCharacter = async (
   params: { hanzi: string },
   opts: {
     Authorization: string;
-  }
+  },
 ): Promise<ICharacter> => {
   const res = await fetch(`${siteConfig.apiUrl}/v1/get-character`, {
     method: "POST",
@@ -19,6 +19,12 @@ const getCharacter = async (
     },
     body: JSON.stringify(params),
   });
+
+  if (!res.ok) {
+    const resp = (await res.json()) as any;
+
+    throw new Error(resp.message);
+  }
   const resp = (await res.json()) as any;
   return resp as ICharacter;
 };
@@ -26,7 +32,7 @@ const getCharacter = async (
 export const getCharacterQueryId = "get-character";
 export function useGetCharacterQuery(
   params: { hanzi: string },
-  options = {} as any
+  options = {} as any,
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 

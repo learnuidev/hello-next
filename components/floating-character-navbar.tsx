@@ -18,6 +18,7 @@ import { useCharacterEditStore } from "./_select-character/use-character-edit-st
 import { PreviewButton } from "./settings-dialog/preview-button";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
+import { useGetCharacterQuery } from "@/domain/character/use-get-character-query";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -73,7 +74,7 @@ export const FloatingCharacterNavbar = ({
     selectedComp,
     setReadMode,
     readMode,
-    isAlreadyLearned,
+    // isAlreadyLearned,
     setView,
     view,
     selectedComp2,
@@ -81,6 +82,10 @@ export const FloatingCharacterNavbar = ({
     selectedChar,
     firstLesson,
   } = characterData;
+
+  const { data: learnedChar } = useGetCharacterQuery({ hanzi: characterId });
+
+  const isAlreadyLearned = !!learnedChar;
 
   const edit = useCharacterEditStore((state) => state.edit);
 

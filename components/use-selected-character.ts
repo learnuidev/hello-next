@@ -20,12 +20,12 @@ import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { SelectedCharacterProps } from "./_select-character/select-character.types";
 
 import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
+import { listUniqueCharaters } from "@/app/(auth)/convos/use-get-unique-characters-by-content-id";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { useGetLangParams } from "@/hooks/use-get-lang-params";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { listUniqueCharaters } from "@/app/(auth)/convos/use-get-unique-characters-by-content-id";
 
 export const useViewTypeStore = create(
   persist(
@@ -39,8 +39,8 @@ export const useViewTypeStore = create(
     {
       name: "component-tabs-store", // name of the item in the storage (must be unique)
       storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
-    }
-  )
+    },
+  ),
 );
 
 export function useSelectedCharacterData({
@@ -73,7 +73,7 @@ export function useSelectedCharacterData({
       refetchOnFocus: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
-    }
+    },
   );
 
   const { data: contentItems } = useListPublishedContentsQuery({});
@@ -83,7 +83,7 @@ export function useSelectedCharacterData({
 
   const allContents = useMemo(
     () => contents?.map((content: any) => content?.transcriptions)?.flat(),
-    [contents]
+    [contents],
   );
 
   const selectedChar = characterId;
@@ -95,12 +95,12 @@ export function useSelectedCharacterData({
           return answer?.phraseId?.includes(selectedChar);
         }
       }),
-    [allAnswers, selectedChar]
+    [allAnswers, selectedChar],
   );
 
   const answerMap = useMemo(
     () => R.indexBy(R.prop("hanzi"), relevantAnswers),
-    [relevantAnswers]
+    [relevantAnswers],
   ) as Record<
     string,
     {
@@ -117,7 +117,7 @@ export function useSelectedCharacterData({
       // @ts-ignore
       ...new Set(relevantAnswers?.map((answer: any) => answer?.hanzi)),
     ],
-    [relevantAnswers]
+    [relevantAnswers],
   );
 
   const langParam = useGetLangParams();
@@ -137,7 +137,7 @@ export function useSelectedCharacterData({
       refetchOnFocus: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
-    }
+    },
   );
 
   // const { data: components } = useListComponents({
@@ -146,7 +146,7 @@ export function useSelectedCharacterData({
 
   const selectedComp = useMemo(
     () => characters?.[selectedChar],
-    [characters, selectedChar]
+    [characters, selectedChar],
   );
 
   const { data: selectedComp2 } = useGetComponentQuery({
@@ -163,7 +163,7 @@ export function useSelectedCharacterData({
 
   const isAlreadyLearned = useMemo(
     () => characters?.[selectedChar],
-    [characters, selectedChar]
+    [characters, selectedChar],
   );
 
   const discoverMutation = useDiscoverMutation();

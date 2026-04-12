@@ -3,6 +3,7 @@
 import { siteConfig } from "@/lib/config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
+import { getCharacterQueryId } from "../character/use-get-character-query";
 import {
   listCharactersQueryId,
   listCharactersQueryMapId,
@@ -10,18 +11,9 @@ import {
 
 export type AddCharacterParams = {
   hanzi: string;
-  // pinyin: string;
-  // level?: number;
-  // en: string;
-  // nomad: string;
-  // destination: string;
-  // location: string;
   journeyId: string;
-  // // todo | completed
   status: string;
   story?: string;
-  // component: string;
-  // sub_components: string[];
   lang?: string;
 };
 
@@ -29,7 +21,7 @@ const addCharacter = async (
   options: AddCharacterParams,
   opts: {
     Authorization: string;
-  }
+  },
 ) => {
   const res = await fetch(`${siteConfig.apiUrl}/v1/add-character`, {
     method: "POST",
@@ -51,19 +43,8 @@ export function useAddCharacterMutation(options = {} as any) {
         Authorization: authUser?.jwt,
       });
 
-      queryClient.setQueryData([listCharactersQueryId], (data: any) => {
-        return data.map((item: any) => {
-          if (item.id === response.id) {
-            return response;
-          }
-          return item;
-        });
-      });
-      queryClient.setQueryData([listCharactersQueryMapId], (data: any) => {
-        return {
-          ...data,
-          [response.hanzi]: response,
-        };
+      queryClient.refetchQueries({
+        queryKey: [getCharacterQueryId, params.hanzi],
       });
 
       return response;
@@ -93,7 +74,7 @@ const updateChracterStatus = async (
   options: UpdateCharacterStatusParams,
   opts: {
     Authorization: string;
-  }
+  },
 ) => {
   const res = await fetch(`${siteConfig.apiUrl}/v1/update-character-status`, {
     method: "POST",
@@ -170,7 +151,7 @@ const updateChracterStory = async (
   options: UpdateCharacterStoryParams,
   opts: {
     Authorization: string;
-  }
+  },
 ) => {
   const res = await fetch(`${siteConfig.apiUrl}/v1/update-story`, {
     method: "POST",

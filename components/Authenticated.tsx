@@ -1,18 +1,16 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useSearchState } from "@/components/use-search-state";
+import { usePathname } from "next/navigation";
 
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { Authenticate } from "./Authenticate";
 
+import { WithUserPlanOnboarding } from "@/app/(auth)/plans/components/with-user-plan-onboarding";
+import { whiteListUrls } from "@/data/white-list-urls";
 import { cn } from "@/lib/utils";
 import { LandingPage } from "./landing-page/landing-page";
-import { SettingsDialog } from "./settings-dialog/settings-dialog";
-import { whiteListUrls } from "@/data/white-list-urls";
 import { WithOnboarding } from "./onboarding/with-onboarding";
-import { WithUserPlanOnboarding } from "@/app/(auth)/plans/components/with-user-plan-onboarding";
-import { MandarinoLoadingBanner } from "./ui/mandarino-loading-banner";
 
 export const Authenticated = (props: any) => {
   const { data: authUser, isLoading } = useCurrentAuthUser({});
@@ -25,11 +23,7 @@ export const Authenticated = (props: any) => {
   }
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center my-32">
-        <MandarinoLoadingBanner />
-      </div>
-    );
+    return null;
   }
 
   if (authUser) {
@@ -38,7 +32,7 @@ export const Authenticated = (props: any) => {
         <div
           className={cn(
             isSearchBarOpen ? "blur-[50px] pointer-events-none" : "",
-            "transition-all"
+            "transition-all",
           )}
         >
           <WithUserPlanOnboarding>

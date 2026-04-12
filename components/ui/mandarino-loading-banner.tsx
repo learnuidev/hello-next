@@ -37,13 +37,14 @@ export function MandarinoLoadingBanner({
             y: 20,
             filter: "blur(8px)", // Start with blur
           }}
+          exit={{ scale: 0.8, filter: "blur(8px)" }}
           animate={
             fadeOut
               ? {
                   opacity: 0,
-                  scale: 1,
+                  scale: 0.8,
                   y: 0,
-                  filter: "blur(0px)", // Clear blur during fade out
+                  filter: "blur(8px)", // Clear blur during fade out
                 }
               : {
                   opacity: 1,
@@ -54,7 +55,7 @@ export function MandarinoLoadingBanner({
           }
           transition={
             fadeOut
-              ? { duration: 0.2, ease: "easeOut" }
+              ? { duration: 0.6, ease: "easeOut" }
               : { duration: 0.8, ease: "easeOut" }
           }
           className="text-2xl sm:text-5xl font-bold "

@@ -6,7 +6,7 @@ type FilterTypes = "unique";
 
 const pinyinverrides: any = {
   模样: {
-    pinyin: "mú yàng",
+    pinyin: "múyàng",
   },
 };
 
@@ -78,9 +78,7 @@ export async function segmentText({
         },
         ...(lang === "zh"
           ? {
-              pinyin: pinyin(segment.segment)
-                .map((item) => item[0])
-                .join(""),
+              pinyin: getPinyin(segment.segment),
             }
           : {}),
       });

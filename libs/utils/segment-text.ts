@@ -4,6 +4,12 @@ import pinyin from "pinyin";
 
 type FilterTypes = "unique";
 
+const pinyinverrides: any = {
+  模样: {
+    pinyin: "mú yàng",
+  },
+};
+
 interface SegmentTextInput {
   text: string;
   lang: string;
@@ -34,9 +40,15 @@ export async function segmentText({
       const uniqueSegment: any = _uniqueSegment;
 
       const matchedSegments = segmentArray.filter(
-        (segment: any) => segment.segment === uniqueSegment
+        (segment: any) => segment.segment === uniqueSegment,
       );
       const matchedSegment = matchedSegments?.[0];
+
+      const _pinyin =
+        pinyinverrides?.[uniqueSegment]?.pinyin ||
+        pinyin(uniqueSegment)
+          .map((item) => item[0])
+          .join("");
 
       res.push({
         input: uniqueSegment,
@@ -45,9 +57,7 @@ export async function segmentText({
         id: crypto.randomUUID(),
         totalFrequency: matchedSegments?.length,
         lang,
-        pinyin: pinyin(uniqueSegment)
-          .map((item) => item[0])
-          .join(""),
+        pinyin: _pinyin,
       });
     }
   } else {

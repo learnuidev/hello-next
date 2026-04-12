@@ -3,7 +3,7 @@ import pinyin from "pinyin";
 
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 import { cn } from "@/lib/utils";
-import { useSegmentTextQuery } from "@/libs/utils/segment-text";
+import { getPinyin, useSegmentTextQuery } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { EnView } from "./en-view";
 import { InputView } from "./input-view";
@@ -26,9 +26,8 @@ export function ReaderView({
 
   const data: any =
     currentTranscription?.words?.map((word) => {
-      const pinyinItem = pinyin(word?.input || "")
-        .map((item) => item[0])
-        .join("");
+      const pinyinItem = getPinyin(word?.input || "");
+
       return {
         ...word,
         pinyin: pinyinItem,

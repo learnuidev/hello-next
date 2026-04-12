@@ -10,6 +10,15 @@ const pinyinverrides: any = {
   },
 };
 
+export function getPinyin(input: string) {
+  return (
+    pinyinverrides?.[input]?.pinyin ||
+    pinyin(input)
+      .map((item) => item[0])
+      .join("")
+  );
+}
+
 interface SegmentTextInput {
   text: string;
   lang: string;
@@ -44,11 +53,7 @@ export async function segmentText({
       );
       const matchedSegment = matchedSegments?.[0];
 
-      const _pinyin =
-        pinyinverrides?.[uniqueSegment]?.pinyin ||
-        pinyin(uniqueSegment)
-          .map((item) => item[0])
-          .join("");
+      const _pinyin = getPinyin(uniqueSegment);
 
       res.push({
         input: uniqueSegment,

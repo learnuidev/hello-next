@@ -14,7 +14,7 @@ const listCharacters = async (
   }: { journeyId?: string; format?: "list" | "map"; hanzis?: string[] },
   opts: {
     Authorization: string;
-  }
+  },
 ): Promise<ICharacter[]> => {
   const res = await fetch(`${siteConfig.apiUrl}/v1/list-characters`, {
     method: "POST",
@@ -40,7 +40,7 @@ export function useListCharactersQuery(
     from?: string;
     contentId?: string;
   },
-  options = {} as any
+  options = {} as any,
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
@@ -80,7 +80,7 @@ export function useListCharactersQuery(
 export const listCharactersQueryMapId = "list-characters-map";
 export function useListCharactersMapQuery(
   params = {} as { journeyId?: string; hanzis?: string[]; from?: string },
-  options = {} as any
+  options = {} as any,
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
@@ -89,11 +89,15 @@ export function useListCharactersMapQuery(
 
     queryFn: async () => {
       // if (options.query) {
+
+      if (params?.from) {
+        console.log(listCharactersQueryMapId, params);
+      }
       const response = await listCharacters(
         { ...params, format: "map" },
         {
           Authorization: authUser?.jwt,
-        }
+        },
       );
 
       return response;

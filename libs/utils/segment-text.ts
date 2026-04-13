@@ -8,6 +8,9 @@ const pinyinverrides: any = {
   模样: {
     pinyin: "múyàng",
   },
+  囤积: {
+    pinyin: "túnjī",
+  },
 };
 
 export function getPinyin(input: string) {

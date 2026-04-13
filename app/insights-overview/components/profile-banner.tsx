@@ -5,7 +5,14 @@ import { format, parseISO } from "date-fns";
 
 const formatISODate = (isoDate: string) => {
   if (!isoDate) return null;
-  return format(parseISO(isoDate), "MMM dd, yyyy");
+
+  try {
+    const date = new Date(isoDate).toISOString();
+
+    return format(parseISO(date), "MMM dd, yyyy");
+  } catch (err) {
+    return isoDate;
+  }
 };
 
 export const ProfileBanner = ({ className }: { className?: string }) => {
@@ -28,7 +35,7 @@ export const ProfileBanner = ({ className }: { className?: string }) => {
         {memberPlanType?.userStatus}
       </p>
       <p className=" text-gray-500 text-xs md:text-md font-light">
-        Joined {formatISODate(new Date(profile?.createdAt).toISOString())}
+        Joined {formatISODate(profile?.createdAt)}
       </p>
     </section>
   );

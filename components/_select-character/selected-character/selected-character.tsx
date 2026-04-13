@@ -17,13 +17,13 @@ import { HskSentenceView } from "./hsk-sentences-view";
 import { HskSuperComponentsWordView } from "./hsk-super-components-view";
 import { PinyinView } from "./pinyin-view";
 import { SimilarCharactersView } from "./similar-characters-view";
-import { StoryView } from "./story-view";
-import { ReviewCloze } from "@/app/review/review-cloze/review-cloze";
+
 import { DynaClozeSentence } from "@/app/(auth)/convos/[content-id]/dyna-cloze-sentence/dyna-cloze-sentence";
-import { CharacterSearch } from "./character-search";
 import { useClozeContentMode } from "@/app/review/content-cloze-mode-button";
 import { ReviewClozeContent } from "@/app/review/review-cloze-content/review-cloze-content";
+import { ReviewCloze } from "@/app/review/review-cloze/review-cloze";
 import { CharacterBookmark } from "./character-bookmark";
+import { CharacterSearch } from "./character-search";
 
 export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
   const { data: characters } = useListCharactersQuery(
@@ -33,7 +33,7 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
       refetchOnFocus: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
-    }
+    },
   );
 
   const selectedComp = useMemo(
@@ -41,9 +41,9 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
       characters?.find(
         (component: any) =>
           (component?.hanzi || component?.item || component?.input) ===
-          characterId
+          characterId,
       ),
-    [characters, characterId]
+    [characters, characterId],
   );
 
   const lang = useGetCurrentLang();
@@ -60,7 +60,7 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
   const { clozeContentMode } = useClozeContentMode();
 
   const offlineCharacter = chineseCharacters?.find(
-    (char: any) => char?.hanzi === characterId || char?.input === characterId
+    (char: any) => char?.hanzi === characterId || char?.input === characterId,
   );
 
   const setView = (view: any) => {
@@ -148,8 +148,6 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
 
       return <RelatedWords lang={lang} characterId={characterId} />;
     }
-    case "story":
-      return <StoryView characterId={characterId} />;
 
     case "similar-looking-characters":
       return <SimilarCharactersView componentId={characterId} />;

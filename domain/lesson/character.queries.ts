@@ -55,6 +55,11 @@ export function useListCharactersQuery(
     ].filter(Boolean),
     queryFn: async () => {
       // if (options.query) {
+
+      if (params?.from) {
+        console.log(listCharactersQueryMapId, params);
+      }
+
       const response = await listCharacters(params, {
         Authorization: authUser?.jwt,
       });

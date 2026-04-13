@@ -30,7 +30,7 @@ export function NewHomePage() {
     "recommendation") as TopicType;
 
   const [activeTopic, setActiveTopic] = useState<TopicType>(
-    () => activeTopicSearchParams
+    () => activeTopicSearchParams,
   );
   const [activeTab, setActiveTab] = useState<TabType>("series");
 

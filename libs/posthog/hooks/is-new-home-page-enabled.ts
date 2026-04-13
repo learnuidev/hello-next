@@ -3,8 +3,8 @@ import { posthogFeatureFlags } from "../posthog-feature-flags";
 
 export const useIsHomePageEnabled = () => {
   const isNewContentEnabled = useFeatureFlagEnabled(
-    posthogFeatureFlags.newHomePage
+    posthogFeatureFlags.newHomePage,
   );
 
-  return !!isNewContentEnabled;
+  return isNewContentEnabled;
 };

@@ -22,6 +22,7 @@ export const useListCharacterReviewList = (contentId?: string) => {
   const { data: learnedCharacters, ...rest } = useListCharactersQuery({
     hanzis: contentId ? uniqueCharacters || [] : undefined,
     contentId,
+    from: "useListCharacterReviewList",
   });
 
   const reviewCharacters = getReviewCharacters(learnedCharacters);

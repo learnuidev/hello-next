@@ -8,6 +8,13 @@ import { useIsHomePageEnabled } from "@/libs/posthog/hooks/is-new-home-page-enab
 
 export default function Home() {
   const isEnabled = useIsHomePageEnabled();
+
+  console.log("IS ENABLED", isEnabled);
+
+  if (isEnabled === undefined) {
+    return;
+  }
+
   return (
     <Authenticated>
       {isEnabled ? <NewHomePage /> : <OverviewPage />}

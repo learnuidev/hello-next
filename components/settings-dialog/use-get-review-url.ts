@@ -40,15 +40,13 @@ export const useGetReviewUrl = ({ reviewMode } = {} as any) => {
 
   const { level, reviewSpeed } = useGetReviewParams();
 
-  const { data: unReviewedCharacters } = useUnreviwedCharacters();
-
   const { recentlyWatched } = useRecentlyWatchedContent();
 
   const inputParams = {
     mode: recentlyWatched?.[0]?.id || contentId || mode,
     entryId,
     level,
-    character: unReviewedCharacters?.[0]?.hanzi,
+
     reviewSpeed,
     reviewMode,
   };

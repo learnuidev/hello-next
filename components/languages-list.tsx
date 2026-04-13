@@ -1,8 +1,6 @@
+import { allLangs } from "@/data/agenda";
 import Link from "next/link";
 import { languages } from "./languages";
-import { useListComponents } from "@/domain/lesson/component.queries";
-import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { allLangs } from "@/data/agenda";
 
 export const listLanguagesShortCuts = [
   "list langauges",
@@ -13,14 +11,7 @@ export const listLanguagesShortCuts = [
 ];
 
 export const useListLanguages = () => {
-  const { data: components } = useListComponents();
-  const { data: characters } = useListCharactersQuery();
-
-  const langs = [
-    ...(new Set(
-      [...(characters || []), ...(components || [])]?.map((x) => x?.lang)
-    ) as any),
-  ]
+  const langs = [...(new Set() as any)]
     ?.filter(Boolean)
     .map((lang: string) => {
       return {

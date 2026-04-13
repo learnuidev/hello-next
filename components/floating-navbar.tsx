@@ -3,10 +3,9 @@ import { Icons } from "./ui/icons.v2";
 
 import Link from "next/link";
 
-import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 import { TheDock } from "@/components/the-dock";
-import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 import { FloatingDuNavbar } from "@/app/(auth)/du/components/floating-du-navbar";
@@ -14,15 +13,13 @@ import { useReviewModeView } from "@/app/review/use-review-mode";
 import { useIsDu } from "@/hooks/use-is-du";
 import { useIsDuLessons } from "@/hooks/use-is-du-lessons";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
-import { useGetReviewUrl } from "./settings-dialog/use-get-review-url";
 
 import { ReviewNavbar } from "@/app/review/review-navbar";
 import { useGetContentQuery } from "@/domain/content/content.queries";
-import { usePreviousPathnameStore } from "./language-selector/use-previous-path-name-store";
+import { ContentReviewButton } from "./content-review-button/content-review-button";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
-  const { reviewUrl, reviewContentId } = useGetReviewUrl();
 
   const { reviewMode: _reviewMode } = useReviewModeView();
 
@@ -34,17 +31,9 @@ const FloatingNavbarComp = () => {
   const isDuExact = useIsDu(true);
   const isDu = useIsDu(false);
 
-  const { data: reviewList } = useListCharacterReviewList(reviewContentId);
-
   const lang = useGetCurrentLang();
 
   const isDuLessons = useIsDuLessons();
-
-  const pathName = usePathname();
-
-  const { setPreviousPath, previousPath } = usePreviousPathnameStore();
-
-  const searchParams = useSearchParams();
 
   if (isDu) {
     if (isDuExact) {
@@ -97,25 +86,7 @@ const FloatingNavbarComp = () => {
             )}
           </Link>
 
-          {reviewList?.length > 1 ? (
-            <Link
-              href={reviewUrl}
-              target="_blank"
-              onClick={() => {
-                setPreviousPath(
-                  `${pathName}?start=${searchParams.get("start") || 0}`
-                );
-              }}
-              className={cn(
-                routeName?.includes("/review")
-                  ? "text-gray-800 dark:text-gray-300"
-                  : "text-gray-500 dark:text-gray-500",
-                "transition text-xl "
-              )}
-            >
-              <Icons.playCircle className="hover:text-rose-400 dark:hover:text-white transition" />
-            </Link>
-          ) : null}
+          <ContentReviewButton />
 
           <Link
             href="/timeline"

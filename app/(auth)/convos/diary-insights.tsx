@@ -20,7 +20,7 @@ const getFrequency = ({ lesson, input }: any) => {
   const transcriptions = lesson?.transcriptions?.filter(
     (transcription: any) => {
       return (transcription?.hanzi || transcription?.input)?.includes(input);
-    }
+    },
   );
 
   return transcriptions?.length;
@@ -38,7 +38,9 @@ export function DiaryInsights({ entryId }: { entryId: string }) {
 
   const lang = "zh";
 
-  const { data: learnedCharacters } = useListCharactersQuery();
+  const { data: learnedCharacters } = useListCharactersQuery({
+    from: "diary-insight",
+  });
 
   const { data: allAnswers, isLoading } = useListAnswersQuery(
     {},
@@ -47,7 +49,7 @@ export function DiaryInsights({ entryId }: { entryId: string }) {
       refetchOnFocus: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
-    }
+    },
   );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,7 +112,7 @@ export function DiaryInsights({ entryId }: { entryId: string }) {
               }}
               className={cn(
                 viewType === "character" ? "dark:text-white" : " text-gray-500",
-                "px-0 "
+                "px-0 ",
               )}
             >
               <Icons.seedling className="text-xl md:text-2xl" />
@@ -121,7 +123,7 @@ export function DiaryInsights({ entryId }: { entryId: string }) {
               }}
               className={cn(
                 viewType === "word" ? "dark:text-white" : " text-gray-500",
-                "px-0"
+                "px-0",
               )}
             >
               <Icons.tree className="text-xl md:text-2xl" />
@@ -134,7 +136,7 @@ export function DiaryInsights({ entryId }: { entryId: string }) {
               }}
               className={cn(
                 sortType === "popular" ? "dark:text-white" : " text-gray-500",
-                "px-0 "
+                "px-0 ",
               )}
             >
               <Icons.fire className="text-xl md:text-2xl" />
@@ -145,7 +147,7 @@ export function DiaryInsights({ entryId }: { entryId: string }) {
               }}
               className={cn(
                 sortType === "timeline" ? "dark:text-white" : " text-gray-500",
-                "px-0 "
+                "px-0 ",
               )}
             >
               <Icons.timeline className="text-xl md:text-2xl" />

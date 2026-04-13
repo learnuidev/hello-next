@@ -4,6 +4,8 @@ import { useListAntonymsQuery } from "@/domain/antonyms/antonyms.queries";
 import { Card } from "@/components/ui/card";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 interface Antonym {
   hanzi: string;
@@ -12,6 +14,8 @@ interface Antonym {
 }
 
 export const AntonymsView = ({ characterId }: { characterId: string }) => {
+  const router = useRouter();
+  const lang = useGetCurrentLang();
   const { data: authUser } = useCurrentAuthUser({});
   const {
     data: antonyms,
@@ -54,7 +58,11 @@ export const AntonymsView = ({ characterId }: { characterId: string }) => {
       <h3 className="text-lg font-semibold mb-4">Antonyms for {characterId}</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {(antonyms as Antonym[]).map((antonym, index) => (
-          <Card key={`${antonym.hanzi}-${index}`} className="p-4">
+          <Card
+            key={`${antonym.hanzi}-${index}`}
+            className="p-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            onClick={() => router.push(`/nmm/${antonym.hanzi}?lang=${lang}`)}
+          >
             <div className="space-y-2">
               <div className="text-2xl font-bold dark:text-white text-black">
                 {antonym.hanzi}

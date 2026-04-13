@@ -4,6 +4,8 @@ import { useListSynonymsQuery } from "@/domain/synonyms/synonyms.queries";
 import { Card } from "@/components/ui/card";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
 interface Synonym {
   hanzi: string;
@@ -12,7 +14,9 @@ interface Synonym {
 }
 
 export const SynonymsView = ({ characterId }: { characterId: string }) => {
+  const router = useRouter();
   const { data: authUser } = useCurrentAuthUser({});
+  const lang = useGetCurrentLang();
   const {
     data: synonyms,
     isLoading,
@@ -54,7 +58,11 @@ export const SynonymsView = ({ characterId }: { characterId: string }) => {
       <h3 className="text-lg font-semibold mb-4">Synonyms for {characterId}</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {(synonyms as Synonym[]).map((synonym, index) => (
-          <Card key={`${synonym.hanzi}-${index}`} className="p-4">
+          <Card
+            key={`${synonym.hanzi}-${index}`}
+            className="p-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            onClick={() => router.push(`/nmm/${synonym.hanzi}?lang=${lang}`)}
+          >
             <div className="space-y-2">
               <div className="text-2xl font-bold dark:text-white text-black">
                 {synonym.hanzi}

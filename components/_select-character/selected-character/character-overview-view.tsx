@@ -20,6 +20,8 @@ import { StoryView } from "./story-view";
 import { AdvancedSearchView } from "./advanced-search-view/advanced-search-view";
 import { CharacterSentenceTransformations } from "../character-sentence-transformations";
 import { isSentence } from "@/libs/utils/is-sentence";
+import { SynonymsView } from "./synonyms-view";
+import { AntonymsView } from "./antonyms-view";
 
 export const CharacterOverviewView = ({
   characterId,
@@ -72,6 +74,19 @@ export const CharacterOverviewView = ({
                           className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
                         >
                           Grammar
+                        </TabsTrigger>
+
+                        <TabsTrigger
+                          value="synonyms"
+                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
+                        >
+                          Synonyms
+                        </TabsTrigger>
+                        <TabsTrigger
+                          value="antonyms"
+                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
+                        >
+                          Antonyms
                         </TabsTrigger>
                         <TabsTrigger
                           value="sentences"
@@ -160,6 +175,14 @@ export const CharacterOverviewView = ({
 
                   <TabsContent value="search">
                     <AdvancedSearchView characterId={characterId} lang={lang} />
+                  </TabsContent>
+
+                  <TabsContent value="synonyms">
+                    <SynonymsView characterId={characterId} />
+                  </TabsContent>
+
+                  <TabsContent value="antonyms">
+                    <AntonymsView characterId={characterId} />
                   </TabsContent>
                 </Tabs>
               </div>

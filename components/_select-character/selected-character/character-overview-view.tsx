@@ -13,10 +13,9 @@ import { CharacterLearningContext } from "./character-learning-context";
 import { CharacterOverviewViewSidebar } from "./character-overview-sidebar";
 import { CharacterVariantSummary } from "./character-variant-summary";
 import { SelectedCharacterHeader } from "./selected-character-header";
-import { StoryEditor } from "./story-editor";
-import { useStoryStore } from "./story-store";
+
 import { useGetSelectedCharacterParams } from "./use-get-selected-character-params";
-import { StoryView } from "./story-view";
+
 import { AdvancedSearchView } from "./advanced-search-view/advanced-search-view";
 import { CharacterSentenceTransformations } from "../character-sentence-transformations";
 import { isSentence } from "@/libs/utils/is-sentence";
@@ -76,18 +75,24 @@ export const CharacterOverviewView = ({
                           Grammar
                         </TabsTrigger>
 
-                        <TabsTrigger
-                          value="synonyms"
-                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
-                        >
-                          Synonyms
-                        </TabsTrigger>
-                        <TabsTrigger
-                          value="antonyms"
-                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
-                        >
-                          Antonyms
-                        </TabsTrigger>
+                        {characterId?.length <= 4 && (
+                          <TabsTrigger
+                            value="synonyms"
+                            className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
+                          >
+                            Synonyms
+                          </TabsTrigger>
+                        )}
+
+                        {characterId?.length <= 4 && (
+                          <TabsTrigger
+                            value="antonyms"
+                            className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
+                          >
+                            Antonyms
+                          </TabsTrigger>
+                        )}
+
                         <TabsTrigger
                           value="sentences"
                           className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold block sm:hidden"
@@ -100,14 +105,6 @@ export const CharacterOverviewView = ({
                             className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold block sm:hidden"
                           >
                             句子变换
-                          </TabsTrigger>
-                        )}
-                        {selectedComp?.story && (
-                          <TabsTrigger
-                            value="story"
-                            className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
-                          >
-                            Story
                           </TabsTrigger>
                         )}
 
@@ -162,28 +159,22 @@ export const CharacterOverviewView = ({
                       />
                     </TabsContent>
                   )}
-                  {selectedComp?.story && (
-                    <TabsContent value="story">
-                      <StoryView characterId={characterId} />
-                      {/* <StoryEditor
-                        story={selectedComp?.story}
-                        key={selectedComp?.story}
-                        selectedChar={selectedComp}
-                      /> */}
-                    </TabsContent>
-                  )}
 
                   <TabsContent value="search">
                     <AdvancedSearchView characterId={characterId} lang={lang} />
                   </TabsContent>
 
-                  <TabsContent value="synonyms">
-                    <SynonymsView characterId={characterId} />
-                  </TabsContent>
+                  {characterId?.length <= 4 && (
+                    <TabsContent value="synonyms">
+                      <SynonymsView characterId={characterId} />
+                    </TabsContent>
+                  )}
 
-                  <TabsContent value="antonyms">
-                    <AntonymsView characterId={characterId} />
-                  </TabsContent>
+                  {characterId?.length <= 4 && (
+                    <TabsContent value="antonyms">
+                      <AntonymsView characterId={characterId} />
+                    </TabsContent>
+                  )}
                 </Tabs>
               </div>
             </div>

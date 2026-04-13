@@ -3,15 +3,12 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CharacterSentences } from "../character-sentences";
 
-import { useEffect } from "react";
-import { useStoryStore } from "./story-store";
-
-import { useSelectedCharacterData } from "@/components/use-selected-character";
-import { create } from "zustand";
-import { cn } from "@/lib/utils";
-import { CharacterSentenceTransformations } from "../character-sentence-transformations";
-import { isSentence } from "@/libs/utils/is-sentence";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
+import { useSelectedCharacterData } from "@/components/use-selected-character";
+import { cn } from "@/lib/utils";
+import { isSentence } from "@/libs/utils/is-sentence";
+import { create } from "zustand";
+import { CharacterSentenceTransformations } from "../character-sentence-transformations";
 
 const useSideBarViewType = create((set: any, get: any) => ({
   sideBarView: "sentences",
@@ -42,7 +39,7 @@ export const CharacterOverviewViewSidebar = ({
                 "text-sm transition",
                 sideBarView === "sentences"
                   ? "dark:text-white text-black"
-                  : "text-gray-500"
+                  : "text-gray-500",
               )}
               onClick={() => {
                 setSideBarView("sentences");
@@ -55,7 +52,7 @@ export const CharacterOverviewViewSidebar = ({
                 "text-sm transition",
                 sideBarView === "sentence-transformations"
                   ? "dark:text-white text-black"
-                  : "text-gray-500"
+                  : "text-gray-500",
               )}
               onClick={() => {
                 setSideBarView("sentence-transformations");

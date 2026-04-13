@@ -1,11 +1,10 @@
 "use client";
 
-import { useListSynonymsQuery } from "@/domain/synonyms/synonyms.queries";
 import { Card } from "@/components/ui/card";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
-import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useListSynonymsQuery } from "@/domain/synonyms/synonyms.queries";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useRouter } from "next/navigation";
 
 interface Synonym {
   hanzi: string;

@@ -24,7 +24,7 @@ const listCharacters = async (
     body: JSON.stringify({
       journeyId: journeyId,
       format,
-      hanzis,
+      // hanzis,
     }),
   });
   const resp = (await res.json()) as any;
@@ -45,14 +45,7 @@ export function useListCharactersQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ICharacter[], Error>({
-    queryKey: [
-      listCharactersQueryId,
-      params?.contentId
-        ? params?.contentId
-        : params?.hanzis
-          ? JSON.stringify(params?.hanzis)
-          : null,
-    ].filter(Boolean),
+    queryKey: [listCharactersQueryId],
     queryFn: async () => {
       // if (options.query) {
 
@@ -90,7 +83,7 @@ export function useListCharactersMapQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<any>({
-    queryKey: [listCharactersQueryMapId, JSON.stringify(params?.hanzis)],
+    queryKey: [listCharactersQueryMapId],
 
     queryFn: async () => {
       // if (options.query) {

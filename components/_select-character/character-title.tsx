@@ -125,7 +125,7 @@ export const CharacterTitle = (props: any) => {
 
   const { data: _data } = useListDictionaryMeaningsQuery(
     selectedCompInput,
-    lang
+    lang,
   );
 
   const { data: _segmentedData } = useSegmentTextQuery({
@@ -164,7 +164,7 @@ export const CharacterTitle = (props: any) => {
                           : "px-[2px] py-[0px] sm:px-[4px]",
 
                       "leading-none",
-                      "py-[0px]"
+                      "py-[0px]",
                     )}
                     key={`${JSON.stringify(item)}-${idx}-${idx}`}
                   >
@@ -189,7 +189,7 @@ export const CharacterTitle = (props: any) => {
                             getNmmLink({
                               id: item?.input,
                               lang,
-                            })
+                            }),
                           );
                           // setSelected(item);
                         }
@@ -198,16 +198,20 @@ export const CharacterTitle = (props: any) => {
                       {smartSplit({
                         input: item?.input,
                         lang: lang,
-                      })?.map((item: any, idx: any) => {
+                      })?.map((character: any, idx: any) => {
                         return (
-                          <span key={`${item}-pinin-view-${idx}`}>
+                          <span key={`${character}-pinin-view-${idx}`}>
                             <CharacterItem
+                              hanzis={smartSplit({
+                                input: item?.input,
+                                lang: lang,
+                              })}
                               className={
                                 selectedCompInput?.length < 8
                                   ? "lg:text-4xl text-4xl"
                                   : "text-2xl"
                               }
-                              character={item}
+                              character={character}
                               onClick={() => {}}
                             />
                           </span>
@@ -250,6 +254,10 @@ export const CharacterTitle = (props: any) => {
                               key={`character-title-${item}-${idx}-${idx}`}
                             >
                               <CharacterItem
+                                hanzis={smartSplit({
+                                  input: selectedCompInput,
+                                  lang,
+                                })}
                                 className={cn(
                                   selectedCompInput?.length < 8
                                     ? "lg:text-4xl text-4xl"
@@ -258,7 +266,7 @@ export const CharacterTitle = (props: any) => {
                                   currentTime >= startTime &&
                                     currentTime <= endTime
                                     ? "dark:text-white text-black"
-                                    : "text-gray-500"
+                                    : "text-gray-500",
                                 )}
                                 onClick={() => {
                                   if (duration) {
@@ -289,6 +297,10 @@ export const CharacterTitle = (props: any) => {
                             href={`/nmm/${item}?lang=${lang || "zh"}${context ? `&context=${context}` : ""}`}
                           >
                             <CharacterItem
+                              hanzis={smartSplit({
+                                input: selectedCompInput,
+                                lang,
+                              })}
                               className={
                                 selectedCompInput?.length < 8
                                   ? "lg:text-4xl text-4xl"
@@ -303,7 +315,7 @@ export const CharacterTitle = (props: any) => {
                             />
                           </Link>
                         );
-                      }
+                      },
                     )}
                   </div>
                 </WithInteractiveTitle>
@@ -368,6 +380,10 @@ export const CharacterTitle = (props: any) => {
                           key={`character-title-${item}-${idx}-${idx}`}
                         >
                           <CharacterItem
+                            hanzis={smartSplit({
+                              input: selectedCompInput,
+                              lang,
+                            })}
                             className={cn(
                               selectedCompInput?.length < 8
                                 ? "lg:text-4xl text-4xl"
@@ -375,7 +391,7 @@ export const CharacterTitle = (props: any) => {
 
                               currentTime >= startTime && currentTime <= endTime
                                 ? "dark:text-white text-black"
-                                : "text-gray-500"
+                                : "text-gray-500",
                             )}
                             onClick={() => {
                               if (duration) {
@@ -399,6 +415,10 @@ export const CharacterTitle = (props: any) => {
                         href={`/nmm/${item}?lang=${lang || "zh"}${context ? `&context=${context}` : ""}`}
                       >
                         <CharacterItem
+                          hanzis={smartSplit({
+                            input: selectedCompInput,
+                            lang,
+                          })}
                           className={
                             selectedCompInput?.length < 8
                               ? "lg:text-4xl text-4xl"
@@ -413,7 +433,7 @@ export const CharacterTitle = (props: any) => {
                         />
                       </Link>
                     );
-                  }
+                  },
                 )}
               </div>
             </WithInteractiveTitle>

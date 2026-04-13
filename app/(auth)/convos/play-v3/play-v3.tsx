@@ -116,12 +116,12 @@ function FocusMode(props: {
             {smartSplit({
               input: currentTranscription?.input || currentTranscription?.hanzi,
               lang,
-            })?.map((item: string, idx: number) => {
+            })?.map((character: string, idx: number) => {
               return (
                 <CharacterItem
                   className={cn(textSize)}
-                  key={`${idx}-youtube-player-active-transcription-${item}-${idx}`}
-                  character={item}
+                  key={`${idx}-youtube-player-active-transcription-${character}-${idx}`}
+                  character={character}
                 />
               );
             })}
@@ -187,7 +187,7 @@ function ActiveSubtitleDisplay({
           <div
             className={cn(
               `${viewPinyin ? `h-60 sm:h-40` : `h-32 sm:h-16`} flex justify-between items-center mt-2 w-full rounded-full`,
-              `text-[14px] sm:text-[16px] `
+              `text-[14px] sm:text-[16px] `,
             )}
           >
             <div>
@@ -200,7 +200,7 @@ function ActiveSubtitleDisplay({
               )}
               <p
                 className={cn(
-                  "space-x-2 text-black dark:text-gray-300 font-light pb-[4px]"
+                  "space-x-2 text-black dark:text-gray-300 font-light pb-[4px]",
                 )}
               >
                 {subtitleValue}
@@ -268,7 +268,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
   const activeSubtitle = content?.transcriptions?.find(
     (subtitle: any) =>
-      currentTime > subtitle?.start && currentTime < subtitle.end
+      currentTime > subtitle?.start && currentTime < subtitle.end,
   );
 
   const textSize = sizes?.[textSizeIndex] || sizes?.[1];
@@ -282,7 +282,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const setTimer = (
     type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
     example: any,
-    newValue?: string
+    newValue?: string,
   ) => {
     const offset = newValue || currentTime - 0.2;
 
@@ -299,7 +299,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         const nextIndex = currIndex + 1;
         const nextExample = content?.transcriptions?.[nextIndex];
         const nextExists = prev?.find(
-          (item: any) => item?.id === nextExample?.id
+          (item: any) => item?.id === nextExample?.id,
         );
 
         if (nextExists) {
@@ -346,7 +346,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
   const setTimer2 = (
     type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
     section: any,
-    newValue?: string
+    newValue?: string,
   ) => {
     const offset = newValue || currentTime - 0.2;
     setTimes((prev: any) => {
@@ -376,15 +376,15 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
   const seekBefore = useCallback(() => {
     const currentTranscription = transcriptions?.find(
-      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime,
     );
 
     if (currentTranscription) {
       const currentTranscriptionIndex = Math.max(
         transcriptions?.findIndex(
-          (trans: any) => trans?.start === currentTranscription?.start
+          (trans: any) => trans?.start === currentTranscription?.start,
         ),
-        0
+        0,
       );
 
       const prevIndex = Math.max(currentTranscriptionIndex - 1, 0);
@@ -405,19 +405,19 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
   const seekAfter = useCallback(() => {
     const currentTranscription = transcriptions?.find(
-      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime,
     );
 
     const currentTranscriptionIndex = Math.max(
       transcriptions?.findIndex(
-        (trans: any) => trans?.start === currentTranscription?.start
+        (trans: any) => trans?.start === currentTranscription?.start,
       ),
-      0
+      0,
     );
 
     const nextIndex = Math.min(
       currentTranscriptionIndex + 1,
-      transcriptions?.length - 1
+      transcriptions?.length - 1,
     );
     const nextTranscription = transcriptions?.[nextIndex];
 
@@ -478,7 +478,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
         if (karaokeMode && !audioUrl) {
           const newFocusIndex = Math.min(
             content?.transcriptions?.length - 1,
-            focusIndex + 1
+            focusIndex + 1,
           );
           setFocusIndex(newFocusIndex);
 
@@ -562,7 +562,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
 
   const currentTransription =
     content?.transcriptions?.filter(
-      (item: any) => item?.start < currentTime
+      (item: any) => item?.start < currentTime,
     )?.[0] || content?.transcriptions?.[0];
 
   return (

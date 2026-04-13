@@ -104,7 +104,7 @@ export const SentenceItem = (props: any) => {
               className={cn(
                 `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${"ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"} shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
                 "h-6 w-6 text-xs",
-                "ml-1"
+                "ml-1",
               )}
             />
           )}
@@ -181,7 +181,7 @@ export const SentenceItem = (props: any) => {
           <span>
             {smartSplit({
               input: chineseConverter(
-                currentPhrase?.input || currentPhrase?.hanzi
+                currentPhrase?.input || currentPhrase?.hanzi,
               ),
               lang: currentPhrase?.lang,
             })?.map((val: string, idy: number) => {
@@ -193,7 +193,7 @@ export const SentenceItem = (props: any) => {
                       val
                         .replaceAll("!", "")
                         ?.replaceAll(".", "")
-                        ?.replaceAll(",", "")
+                        ?.replaceAll(",", ""),
                     );
 
                     trackNavigationFunction({
@@ -207,11 +207,19 @@ export const SentenceItem = (props: any) => {
                     router.push(
                       resolvedLang
                         ? `/nmm/${cleanedVal}?lang=${resolvedLang}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
-                        : `/nmm/${cleanedVal}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
+                        : `/nmm/${cleanedVal}&context=${currentPhrase?.hanzi || currentPhrase?.input}`,
                     );
                   }}
                 >
-                  <CharacterItem character={val} />
+                  <CharacterItem
+                    character={val}
+                    hanzis={smartSplit({
+                      input: chineseConverter(
+                        currentPhrase?.input || currentPhrase?.hanzi,
+                      ),
+                      lang: currentPhrase?.lang,
+                    })}
+                  />
                 </span>
               );
             })}

@@ -77,14 +77,15 @@ export const WithInteractiveTitle = ({
             }}
           >
             {smartSplit({ input: item?.value, lang })?.map(
-              (item: string, idx: number) => {
+              (character: string, idx: number) => {
                 return (
                   <span
                     className={cn(text?.length < 4 ? "text-5xl" : "text-2xl")}
-                    key={`smart-character-${JSON.stringify(item)}-${idx}-${idx}`}
+                    key={`smart-character-${JSON.stringify(character)}-${idx}-${idx}`}
                     // href={`/nmm/${item}?lang=${lang}`}
                   >
                     <CharacterItem
+                      hanzis={smartSplit({ input: item?.value, lang })}
                       className={cn(
                         "transition-all",
                         // text?.length < 8 ? "lg:text-4xl text-4xl" : "text-2xl",
@@ -95,14 +96,14 @@ export const WithInteractiveTitle = ({
                           : "",
 
                         "dark:hover:text-white hover:text-black",
-                        className
+                        className,
                       )}
                       // disableForgotten
-                      character={item}
+                      character={character}
                     />
                   </span>
                 );
-              }
+              },
             )}{" "}
           </span>
         );

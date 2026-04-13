@@ -18,7 +18,7 @@ export const SelectedCharacterTitle = ({
   const { data: chineseCharacters } = useListChineseCharactersQuery();
 
   const offlineCharacter = chineseCharacters?.find(
-    (char: any) => char?.hanzi === characterId || char?.input === characterId
+    (char: any) => char?.hanzi === characterId || char?.input === characterId,
   );
 
   const pinyinOrRoman =

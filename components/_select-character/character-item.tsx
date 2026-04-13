@@ -13,6 +13,7 @@ interface ICharacterItem {
   disableClass?: boolean;
   disableForgotten?: boolean;
   onClick?: () => void;
+  hanzis?: string[];
   style?: any;
 }
 
@@ -39,11 +40,13 @@ export const CharacterItem = ({
   className,
   disableClass,
   disableForgotten,
+  hanzis,
   style,
 }: ICharacterItem) => {
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersMapQuery({
       from: "character-item",
+      hanzis: hanzis,
     });
 
   const { data: components, isLoading: isComponentsLoading } =
@@ -97,7 +100,7 @@ export const CharacterItem = ({
         currentMode.current === "normal" &&
           `dark:text-white text-black ${hoverColor}`,
 
-        className
+        className,
       )}
       style={style}
     >

@@ -136,7 +136,7 @@ export const FloatingCharacterNavbar = ({
               <Icons.graduationCap className="text-2xl" />
             </button>
 
-            {isAlreadyLearned ? null : (
+            {firstLesson?.hanzi?.length !== 1 || isAlreadyLearned ? null : (
               <button
                 className="text-xl text-black dark:text-white"
                 disabled={addCharacterMutation.isPending}

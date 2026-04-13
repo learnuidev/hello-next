@@ -30,7 +30,7 @@ export function useShortCuts() {
   const routeName = usePathname();
 
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
-  const { data: unReviewedCharacters } = useUnreviwedCharacters();
+  // const { data: unReviewedCharacters } = useUnreviwedCharacters();
 
   const { setReadMode: setReadModeV2, readMode: readModeV2 } =
     useReadModeState();
@@ -40,19 +40,6 @@ export function useShortCuts() {
   const setQuery2 = useSearchQueryStore((state) => state.setQuery2);
 
   const { setNextMode } = usePreviewMode();
-
-  const reviewUrl = useGetReviewUrl();
-  const reviewUrlFn = useGetReviewUrlFn();
-  const {
-    level,
-    mode: viewMode,
-    entryId,
-    reviewMode,
-    studyMode,
-    view,
-  } = useGetReviewParams();
-
-  const isContent = useIsContent(viewMode);
 
   const router = useRouter();
 
@@ -132,117 +119,6 @@ export function useShortCuts() {
         event.preventDefault();
         setNextMode();
       }
-
-      if (["1"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        const reviewUrl = getReviewUrl({
-          mode: viewMode,
-          level: 1,
-          entryId,
-          studyMode,
-          reviewMode,
-        });
-
-        if (routeName?.includes("/review")) {
-          router.push(`/review?${reviewUrl}`);
-        }
-
-        return;
-      }
-      if (["2"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        const reviewUrl = getReviewUrl({
-          mode: viewMode,
-          level: 2,
-          entryId,
-          studyMode,
-          reviewMode,
-        });
-
-        if (routeName?.includes("/review")) {
-          router.push(`/review?${reviewUrl}`);
-        }
-
-        return;
-      }
-      if (["3"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        const reviewUrl = getReviewUrl({
-          mode: viewMode,
-          level: 3,
-          entryId,
-          studyMode,
-          reviewMode,
-        });
-
-        if (routeName?.includes("/review")) {
-          router.push(`/review?${reviewUrl}`);
-        }
-
-        return;
-      }
-      if (["4"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        const reviewUrl = getReviewUrl({
-          mode: viewMode,
-          level: 4,
-          entryId,
-          studyMode,
-          reviewMode,
-        });
-
-        if (routeName?.includes("/review")) {
-          router.push(`/review?${reviewUrl}`);
-        }
-
-        return;
-      }
-      if (["5"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        const reviewUrl = getReviewUrl({
-          mode: viewMode,
-          level: 5,
-          entryId,
-          studyMode,
-          reviewMode,
-        });
-
-        if (routeName?.includes("/review")) {
-          router.push(`/review?${reviewUrl}`);
-        }
-
-        return;
-      }
-      if (["6"]?.includes(event.key) && (event.metaKey || event.ctrlKey)) {
-        const reviewUrl = getReviewUrl({
-          mode: viewMode,
-          level: 6,
-          entryId,
-          studyMode,
-          reviewMode,
-        });
-
-        if (routeName?.includes("/review")) {
-          router.push(`/review?${reviewUrl}`);
-        }
-
-        return;
-      }
-      if (
-        (["7"]?.includes(event.key) ||
-          ["8"]?.includes(event.key) ||
-          ["9"]?.includes(event.key)) &&
-        (event.metaKey || event.ctrlKey)
-      ) {
-        const reviewUrl = getReviewUrl({
-          mode: viewMode,
-          level: 9,
-          entryId,
-          studyMode,
-          reviewMode,
-        });
-
-        if (routeName?.includes("/review")) {
-          router.push(`/review?${reviewUrl}`);
-        }
-
-        return;
-      }
     }
 
     window.addEventListener("keydown", onKeyDown);
@@ -265,20 +141,15 @@ export function useShortCuts() {
     mode,
     setMode,
     router,
-    unReviewedCharacters,
+    // unReviewedCharacters,
     setFocus,
     setReadMode,
     readMode,
-    reviewUrl,
-    viewMode,
-    studyMode,
+
     routeName,
-    level,
-    view,
-    reviewMode,
-    entryId,
-    isContent,
-    reviewUrlFn,
+
+    // isContent,
+
     setQuerySync,
     setQuery,
     setQuery2,

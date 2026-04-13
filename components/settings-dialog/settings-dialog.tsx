@@ -8,10 +8,7 @@ import { cn } from "@/lib/utils";
 import { Icons } from "../ui/icons.v2";
 import { useSettingsDialogState } from "./settings-dialog.state";
 
-import {
-  useCurrentAuthUser,
-  useIsSuperAdmin,
-} from "@/domain/auth/auth.queries";
+import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 
 import { useShortCuts } from "./use-short-cuts";
 
@@ -33,13 +30,8 @@ export function SettingsDialogInner({
   const tab = useSettingsDialogState((state) => state.tab);
   const setCurrentTab = useSettingsDialogState((state) => state.setCurrentTab);
   const userPreferenceState = useSettingsDialogState(
-    (state) => state.userPreferenceState
+    (state) => state.userPreferenceState,
   ) as any;
-  const setUserPreferenceState = useSettingsDialogState(
-    (state) => state.setUserPreferenceState
-  );
-
-  const isSuperAdmin = useIsSuperAdmin();
 
   const updateUserPreferenceMutation = useUpdateUserPrefenceMutation();
 
@@ -49,7 +41,6 @@ export function SettingsDialogInner({
         onClick={() => {
           closeSettings();
         }}
-        // className="fixed inset-0 h-screen w-screen max-w-none rounded-none"
         className="min-w-2xl sm:max-w-2xl border-gray-900 bg-gray-50 dark:bg-black mt-0 sm:mt-[-100px]"
       >
         <div>
@@ -65,7 +56,7 @@ export function SettingsDialogInner({
                 className={cn(
                   "px-0 mx-0 space-x-2",
                   tab === "app" ? "text-white" : "text-gray-500",
-                  "transition"
+                  "transition",
                 )}
                 value="app"
               >
@@ -75,7 +66,7 @@ export function SettingsDialogInner({
                 className={cn(
                   "px-0 mx-0 space-x-2",
                   tab === "tracking" ? "text-white" : "text-gray-500",
-                  "transition"
+                  "transition",
                 )}
                 value="tracking"
               >
@@ -86,7 +77,7 @@ export function SettingsDialogInner({
                 className={cn(
                   "px-0 mx-0 space-x-2",
                   tab === "listen" ? "text-white" : "text-gray-500",
-                  "transition"
+                  "transition",
                 )}
                 value="listen"
               >

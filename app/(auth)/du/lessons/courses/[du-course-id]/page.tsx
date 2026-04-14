@@ -1,5 +1,5 @@
 "use client";
-import { NoPermissionView } from "@/app/(auth)/doctor/no-permission-view";
+import { NoPermissionView } from "@/components/no-permission-view";
 import { FloatingNavbar } from "@/components/floating-navbar";
 import { NavBar } from "@/components/navbar";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";

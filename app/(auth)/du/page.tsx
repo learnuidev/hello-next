@@ -2,16 +2,16 @@
 import { FloatingNavbar } from "@/components/floating-navbar";
 import { NavBar } from "@/components/navbar";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
-import { NoPermissionView } from "../doctor/no-permission-view";
+import { NoPermissionView } from "../../../components/no-permission-view";
 
-import { DuCourses } from "./components/du-courses/du-courses";
-import { DuLevelSelector } from "./components/du-level-selector/du-level-selector";
-import { WithVerifiedDuUser } from "./components/with-verified-du-user";
 import { useSearchQueryStore } from "@/components/search/state";
-import { DuSearchResults } from "./components/du-search-results/du-search-results";
-import { useGetDuParams } from "./hooks/use-get-du-params";
 import { DuCategoryList } from "./components/du-category-list/du-category-list";
+import { DuCourses } from "./components/du-courses/du-courses";
 import { DuFavouriteList } from "./components/du-favourite-list/du-favourite-list";
+import { DuLevelSelector } from "./components/du-level-selector/du-level-selector";
+import { DuSearchResults } from "./components/du-search-results/du-search-results";
+import { WithVerifiedDuUser } from "./components/with-verified-du-user";
+import { useGetDuParams } from "./hooks/use-get-du-params";
 
 function DuView() {
   const { view, category } = useGetDuParams();

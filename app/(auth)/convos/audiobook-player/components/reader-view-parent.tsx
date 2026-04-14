@@ -80,15 +80,11 @@ export const ReaderViewParent = ({
                             currentTranscription={transcription}
                             containsChinglish={false}
                             className={cn(
-                              isPlaying
-                                ? transcription.start < currentTime &&
-                                  transcription.end > currentTime
-                                  ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
-                                  : cn(
-                                      `!text-gray-500`,
-                                      isPlaying ? `opacity-50` : "",
-                                    )
-                                : "dark:text-white text-black",
+                              transcription.start < currentTime &&
+                                transcription.end > currentTime
+                                ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
+                                : cn(`opacity-50`),
+                              // : "dark:text-white text-black",
                             )}
                             contentId={content?.id}
                             lang={content?.lang}
@@ -110,15 +106,10 @@ export const ReaderViewParent = ({
                           )}
                           <p
                             className={cn(
-                              isPlaying
-                                ? transcription.start < currentTime &&
-                                  transcription.end > currentTime
-                                  ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
-                                  : cn(
-                                      `!text-gray-500`,
-                                      isPlaying ? `opacity-50` : "",
-                                    )
-                                : "dark:text-white text-black",
+                              transcription.start < currentTime &&
+                                transcription.end > currentTime
+                                ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
+                                : cn(`opacity-50`),
                             )}
                           >
                             {smartSplit({
@@ -161,13 +152,10 @@ export const ReaderViewParent = ({
                                       fontSize: `${Math.min(42, fontSize * 1.75)}px`,
                                     }}
                                     className={cn(
-                                      isPlaying
-                                        ? transcription.start < currentTime &&
-                                          transcription.end > currentTime
-                                          ? "   !dark:text-white"
-                                          : "dark:text-gray-500"
-                                        : "",
-
+                                      transcription.start < currentTime &&
+                                        transcription.end > currentTime
+                                        ? "   !dark:text-white"
+                                        : "dark:text-gray-500",
                                       containsInUnknown &&
                                         "font-light dark:!text-pink-300 !text-pink-500",
                                     )}

@@ -47,7 +47,7 @@ export const ParaView = ({
 
   // const active = 16;
   const activeTimeLimit = usePlayerViewModeStore(
-    (state) => state.activeTimeLimit
+    (state) => state.activeTimeLimit,
   );
 
   const { showChinglish, setShowChinglish } = useChinglishState();
@@ -82,7 +82,7 @@ export const ParaView = ({
         <ScrollArea
           className={cn(
             `space-y-4 rounded-md  p-2 dark:border-gray-900 w-full pb-8`,
-            "h-[400px] sm:h-[640px]"
+            "h-[400px] sm:h-[640px]",
           )}
         >
           <div
@@ -116,8 +116,8 @@ export const ParaView = ({
                           className={`${
                             currentTime
                               ? isActiveTranscription
-                                ? "dark:text-white bg-yellow-200 dark:bg-[rgb(11,12,13)]"
-                                : "dark:text-gray-400"
+                                ? "dark:text-white text-black dark:bg-[rgb(11,12,13)]"
+                                : "opacity-50"
                               : ""
                           } transition block py-1 px-1`}
                           key={
@@ -138,7 +138,7 @@ export const ParaView = ({
                                   transcriptionInput,
                                   val?.input,
                                   item,
-                                  idx
+                                  idx,
                                 );
                               });
 
@@ -157,9 +157,9 @@ export const ParaView = ({
                                       "font-light dark:!text-pink-300 !text-pink-500",
                                     currentTime
                                       ? isActiveTranscription
-                                        ? "dark:text-rose-400 bg-yellow-200 dark:bg-[rgb(11,12,13)]"
-                                        : ""
-                                      : ""
+                                        ? "dark:text-white text-black dark:bg-[rgb(11,12,13)]"
+                                        : "opacity-50"
+                                      : "",
                                   )}
                                 />
                                 {/* {item} */}

@@ -61,6 +61,8 @@ export function AudioBookSettingsPopover({
   const setIsVideoHidden = usePlayerViewModeStore(
     (state) => state.setIsVideoHidden,
   );
+  const isFSM = usePlayerViewModeStore((state) => state.isFSM);
+  const setIsFSM = usePlayerViewModeStore((state) => state.setIsFSM);
 
   return (
     <Popover>
@@ -138,6 +140,16 @@ export function AudioBookSettingsPopover({
                 />
               </div>
             )}
+
+            <div className="flex items-center space-x-2 justify-between">
+              <Label htmlFor="video-visible">FSM</Label>
+              <Switch
+                checked={isFSM}
+                onCheckedChange={() => {
+                  setIsFSM((isHidden: any) => !isHidden);
+                }}
+              />
+            </div>
 
             <div className="flex items-center space-x-2 justify-between">
               <Label htmlFor="meta-view">Meta View</Label>

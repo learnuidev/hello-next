@@ -14,6 +14,7 @@ import { ConvosNavBar } from "../convos-nav-bar";
 import { useRecentlyWatchedContent } from "../use-recently-watched-content-store";
 import { useGetContentId } from "./hooks/use-get-content-id";
 import { useGo } from "./hooks/use-go";
+import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 
 const statusMessages = {
   GENERATING_SENTENCES: "Generating Sentences",
@@ -30,7 +31,7 @@ function RemoveIfExistsButton({ contentId }: { contentId: string }) {
     useRecentlyWatchedContent();
 
   const containsRecentlyWatched = recentlyWatched?.find(
-    (item: any) => item?.id === contentId
+    (item: any) => item?.id === contentId,
   );
 
   if (containsRecentlyWatched) {
@@ -48,6 +49,7 @@ function RemoveIfExistsButton({ contentId }: { contentId: string }) {
 
 function WithContentItem({ children }: { children: React.ReactNode }) {
   const contentId = useGetContentId();
+  const isFSM = usePlayerViewModeStore((state) => state.isFSM);
 
   const resp = useGetContentQuery({ contentId });
   const { data, isError, isLoading } = resp;
@@ -80,6 +82,7 @@ function WithContentItem({ children }: { children: React.ReactNode }) {
 
 export default function ContentItem() {
   const contentId = useGetContentId();
+  const isFSM = usePlayerViewModeStore((state) => state.isFSM);
 
   const { data: content, isLoading } = useGetContentQuery({
     contentId: contentId,
@@ -111,9 +114,11 @@ export default function ContentItem() {
     <WithContentItem>
       <main>
         <div>
-          <div className="px-4 md:px-12">
-            <ConvosNavBar />
-          </div>
+          {isFSM ? null : (
+            <div className="px-4 md:px-12">
+              <ConvosNavBar />
+            </div>
+          )}
 
           <div className="mb-24">
             <ConvoDetails contentId={contentId} />

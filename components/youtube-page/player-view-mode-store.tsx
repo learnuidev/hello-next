@@ -54,7 +54,8 @@ export const usePlayerViewModeStore = create(
       setActiveTimeLimit: (activeTimeLimit: any) => set({ activeTimeLimit }),
 
       activeLengthLimit: 10,
-      setActiveLengthLimit: (activeLengthLimit: any) => set({ activeLengthLimit }),
+      setActiveLengthLimit: (activeLengthLimit: any) =>
+        set({ activeLengthLimit }),
 
       toggleLoop: null,
       setToggleLoop: (toggleLoop: any) => set({ toggleLoop }),
@@ -76,6 +77,11 @@ export const usePlayerViewModeStore = create(
         typeof isVideoHidden === "function"
           ? set({ isVideoHidden: isVideoHidden(get().isVideoHidden) })
           : set({ isVideoHidden }),
+      isFSM: false,
+      setIsFSM: (isFSM: any) =>
+        typeof isFSM === "function"
+          ? set({ isFSM: isFSM(get().isFSM) })
+          : set({ isFSM }),
 
       focusMode: false,
       setFocusMode: (focusMode: any) => set({ focusMode }),
@@ -83,6 +89,6 @@ export const usePlayerViewModeStore = create(
     {
       name: "mandarino/youtube-view-mode",
       storage: createJSONStorage(() => localStorage),
-    }
-  )
+    },
+  ),
 );

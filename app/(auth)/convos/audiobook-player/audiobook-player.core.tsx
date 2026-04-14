@@ -49,6 +49,8 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const isYoutubeOrVideo =
     isYoutube(content?.audio) || isVideoUrl(content?.audio);
 
+  const isFSM = usePlayerViewModeStore((state) => state.isFSM);
+
   const viewMode = usePlayerViewModeStore((state) => state.viewMode);
 
   const showEn = useBrightModeStore((state) => state.showEn);
@@ -77,7 +79,9 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
         {editMode ? (
           <div
             className={cn(
-              "grid grid-cols-12 gap-4 sm:gap-8 sm:px-8 scroll-px-80 w-full",
+              "grid grid-cols-12 gap-4 w-full",
+
+              isFSM ? "px-0" : "sm:gap-8 sm:px-8 scroll-px-80",
             )}
           >
             {isYoutubeOrVideo && (
@@ -132,13 +136,16 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
         ) : (
           <div
             className={cn(
-              "grid grid-cols-12 gap-4 sm:gap-8 sm:px-8 scroll-px-80 w-full",
+              "grid grid-cols-12 gap-4 w-full",
+              isFSM ? "px-0" : "sm:gap-8 sm:px-8 scroll-px-80",
             )}
           >
             {isYoutubeOrVideo && (
               <div
                 className={cn(
-                  "md:col-span-6 col-span-12",
+                  isFSM
+                    ? "md:col-span-8 col-span-12"
+                    : "md:col-span-6 col-span-12",
 
                   `${isVideoHidden || !isYoutubeOrVideo ? "hidden" : ""}`,
                 )}
@@ -155,7 +162,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   }}
                   onPause={() => setPlaying(false)}
                   width="100%"
-                  height={isSmall ? "200px" : "450px"}
+                  height={isSmall ? "200px" : isFSM ? "600px" : "450px"}
                   onReady={onReady}
                   playing={false}
                   controls={false}
@@ -173,7 +180,9 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   : isVideoHidden
                     ? "col-span-12"
                     : isYoutubeOrVideo
-                      ? "sm:col-span-6 col-span-12"
+                      ? isFSM
+                        ? "md:col-span-4 col-span-12"
+                        : "md:col-span-6 col-span-12"
                       : "md:col-span-8 col-span-12",
               )}
             >

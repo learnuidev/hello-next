@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
+import { ActiveButtons } from "./active-buttons";
 
 function ViewTypeButton({
   icon: Icon,
@@ -40,10 +41,12 @@ export function AudioBookSettingsPopover({
   isYoutubeOrVideo,
   containsChinglish,
   showEn,
+  isReaderView,
 }: {
   isYoutubeOrVideo: boolean;
   showEn: boolean;
   containsChinglish: boolean;
+  isReaderView: boolean;
 }) {
   const viewMode = usePlayerViewModeStore((state) => state.viewMode);
   const setViewMode = usePlayerViewModeStore((state) => state.setViewMode);
@@ -64,7 +67,12 @@ export function AudioBookSettingsPopover({
           <div className="space-y-2">
             <h4 className="font-bold leading-none">Player Settings</h4>
           </div>
-          <div className="mt-4 space-y-4">
+          <div className="mt-4 space-y-8 pb-4">
+            <div className="flex items-center space-x-2 justify-between">
+              <Label htmlFor="video-visible">T. Size</Label>
+              <ActiveButtons isReaderView={isReaderView} />
+            </div>
+
             <div className="flex items-center gap-2 justify-between mb-4">
               <Label>View Type</Label>
               <div className="flex gap-6">

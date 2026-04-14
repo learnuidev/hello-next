@@ -284,6 +284,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 showEn={showEn}
                 containsChinglish={containsChinglish}
                 isYoutubeOrVideo={isYoutubeOrVideo}
+                isReaderView={viewMode === "reader"}
               />
 
               <div className="flex items-center gap-4">

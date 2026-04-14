@@ -1,6 +1,5 @@
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
-import { getActiveTranscriptions } from "@/components/youtube-page/get-active-transcriptions";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
@@ -8,15 +7,14 @@ import { ContentTranscription, IContent } from "@/domain/content/content.api";
 import { cn, groupBy } from "@/lib/utils";
 import { useMemo } from "react";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
-import { ActiveButtons } from "./active-buttons";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { EnglishTopView } from "@/app/(auth)/convos/audiobook-player/components/english-top-view";
-import { useFontSizeStore } from "../hooks/use-font-size";
 import { CharacterItem } from "@/components/_select-character/character-item";
-import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
 import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
+import { useFontSizeStore } from "../hooks/use-font-size";
+import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
 
 // import { getYablaLink } from "./utils/get-yabla-link";
 
@@ -74,9 +72,7 @@ export const ParaView = ({
 
   return (
     <div className={cn("px-4 pb-24", "max-w-4xl")}>
-      <EnglishTopView currentTranscription={currentTranscription}>
-        <ActiveButtons isReaderView={false} />
-      </EnglishTopView>
+      <EnglishTopView currentTranscription={currentTranscription} />
 
       <div className="pb-32">
         <ScrollArea

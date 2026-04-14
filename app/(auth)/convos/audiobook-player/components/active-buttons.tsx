@@ -26,16 +26,16 @@ function ActiveButton({
   const active = usePlayerViewModeStore((state) => state.active);
   const setActive = usePlayerViewModeStore((state) => state.setActive);
   const activeTimeLimit = usePlayerViewModeStore(
-    (state) => state.activeTimeLimit
+    (state) => state.activeTimeLimit,
   );
   const setActiveTimeLimit = usePlayerViewModeStore(
-    (state) => state.setActiveTimeLimit
+    (state) => state.setActiveTimeLimit,
   );
   const activeLengthLimit = usePlayerViewModeStore(
-    (state) => state.activeLengthLimit
+    (state) => state.activeLengthLimit,
   );
   const setActiveLengthLimit = usePlayerViewModeStore(
-    (state) => state.setActiveLengthLimit
+    (state) => state.setActiveLengthLimit,
   );
 
   const activeValue = isReaderView ? activeLengthLimit : activeTimeLimit;
@@ -61,7 +61,7 @@ export const ActiveButtons = ({ isReaderView }: { isReaderView?: boolean }) => {
   const options = isReaderView ? readerViewOptions : defaultOptions;
 
   return (
-    <div className="space-x-4 sm:text-xl flex justify-start">
+    <div className="space-x-2 flex justify-start">
       {options.map((option) => {
         return (
           <ActiveButton

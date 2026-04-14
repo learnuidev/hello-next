@@ -28,6 +28,7 @@ export function AudioBookPlayerControls({
   showEn,
   containsChinglish,
   isYoutubeOrVideo,
+  isReaderView,
 }: any) {
   return (
     <div className="bg-gray-50 dark:bg-[rgb(11,12,13)] sm:dark:bg-black p-0 pb-2 sm:p-4 rounded-2xl shadow-sm mb-2 sm:mb-8">
@@ -51,7 +52,7 @@ export function AudioBookPlayerControls({
             className={cn(
               "text-xl font-bold p-2",
               "cursor-pointer",
-              loop ? "text-rose-500 font-bold" : "text-gray-600"
+              loop ? "text-rose-500 font-bold" : "text-gray-600",
             )}
           >
             {loop ? (
@@ -81,6 +82,7 @@ export function AudioBookPlayerControls({
           </button>
 
           <AudioBookSettingsPopover
+            isReaderView={isReaderView}
             containsChinglish={containsChinglish}
             showEn={showEn}
             isYoutubeOrVideo={isYoutubeOrVideo}

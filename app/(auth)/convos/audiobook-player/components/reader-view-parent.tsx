@@ -3,18 +3,16 @@ import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-sel
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { useReadModeState } from "@/components/read-mode-button";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
-import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 import { ContentTranscription, IContent } from "@/domain/content/content.api";
+import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 import { cn } from "@/lib/utils";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useFontSizeStore } from "../hooks/use-font-size";
 import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
-import { ActiveButtons } from "./active-buttons";
 import { ReaderView } from "./reader-view";
-import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 
 export const ReaderViewParent = ({
   loop,
@@ -52,9 +50,7 @@ export const ReaderViewParent = ({
 
   return (
     <div className={cn("px-4 pb-24", "max-w-4xl")}>
-      <EnglishTopView currentTranscription={currentTranscription}>
-        <ActiveButtons isReaderView />
-      </EnglishTopView>
+      <EnglishTopView currentTranscription={currentTranscription} />
 
       <div className="pb-32">
         <div>

@@ -26,7 +26,7 @@ export const ReaderViewParent = ({
   content: IContent;
   currentTime: number;
   isPlaying: boolean;
-  loop: ContentTranscription;
+  loop?: ContentTranscription;
 }) => {
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
   const { fontSize } = useFontSizeStore();

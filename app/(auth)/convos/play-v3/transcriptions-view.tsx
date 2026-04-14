@@ -41,7 +41,7 @@ export const TranscriptionsView = ({
         <div key={JSON.stringify(sectionAndTranscriptions)}>
           {transcriptions?.map((subtitle: any) => {
             const timeStamp = times?.find(
-              (time: any) => time?.id === subtitle?.id
+              (time: any) => time?.id === subtitle?.id,
             ) as any;
 
             return (
@@ -56,13 +56,13 @@ export const TranscriptionsView = ({
                   key={JSON.stringify(subtitle)}
                   className={cn(
                     "inline-flex flex-col mt-2 items-start px-[2px]",
-                    textSize?.[3]
+                    textSize?.[3],
                   )}
                 >
                   <span
                     onClick={() => {
                       if (loop) {
-                        setLoop(subtitle.input);
+                        setLoop(subtitle.id);
                       }
                       seek(timeStamp?.start || subtitle?.start);
                     }}
@@ -71,7 +71,7 @@ export const TranscriptionsView = ({
                       currentTime > subtitle?.start &&
                         currentTime < subtitle.end
                         ? "text-red-400 dark:text-white"
-                        : "text-gray-500"
+                        : "text-gray-500",
                     )}
                   >
                     {smartSplit({
@@ -85,7 +85,7 @@ export const TranscriptionsView = ({
                             currentTime > subtitle?.start &&
                               currentTime < subtitle.end
                               ? "text-red-400 dark:text-white"
-                              : ""
+                              : "",
                           )}
                           character={character}
                           key={`timeline-tab-${idx}-${character}-transcriptions-view`}
@@ -102,7 +102,7 @@ export const TranscriptionsView = ({
                         "sm:text-2xl text-[16px]",
                         loop === subtitle?.input
                           ? "text-white"
-                          : "text-gray-600"
+                          : "text-gray-600",
                       )}
                       onClick={() => {
                         setLoop((loop: any) => {
@@ -120,7 +120,7 @@ export const TranscriptionsView = ({
                       href={`/nmm/${encodeURIComponent(subtitle?.input || subtitle.hanzi)}?lang=${subtitle?.lang || "zh"}`}
                       target="_blank"
                       className={cn(
-                        "sm:text-2xl text-[16px] dark:hover:text-white hover:text-black text-gray-600"
+                        "sm:text-2xl text-[16px] dark:hover:text-white hover:text-black text-gray-600",
                       )}
                     >
                       <Icons.magnifyingGlass />
@@ -233,6 +233,6 @@ export const TranscriptionsView = ({
           })}
         </div>
       );
-    }
+    },
   );
 };

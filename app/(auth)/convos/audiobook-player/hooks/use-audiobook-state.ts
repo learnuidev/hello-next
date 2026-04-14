@@ -21,7 +21,7 @@ export const useAudioBookState = (content: IContent) => {
   const { playbackRate } = useListenState();
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
-  const [loop, setLoop] = useState<any>(null);
+  const [_loop, setLoop] = useState<any>(null);
   const [isReady, setIsReady] = useState(false);
   const { selected, setSelected } = useSelectedItem();
 
@@ -30,7 +30,7 @@ export const useAudioBookState = (content: IContent) => {
   const start: any = searchParams.get("start");
 
   const { currentTime: _currentTime = 0, setCurrentTime } = useCurrentTime(
-    content.id
+    content.id,
   );
 
   const currentTime = _currentTime;
@@ -54,7 +54,7 @@ export const useAudioBookState = (content: IContent) => {
       seek(time);
       play();
     },
-    [seek, play]
+    [seek, play],
   );
 
   // TODO: move this at api level
@@ -69,7 +69,7 @@ export const useAudioBookState = (content: IContent) => {
       }
 
       return item;
-    }
+    },
   );
 
   const iContent: any = content;
@@ -109,40 +109,18 @@ export const useAudioBookState = (content: IContent) => {
         }
       }
     },
-    [isYoutubeOrVideo, start, finalUrl, currentTime, seekAndPlay]
+    [isYoutubeOrVideo, start, finalUrl, currentTime, seekAndPlay],
   );
 
-  // const onReady = useCallback(
-  //   (data: any) => {
-  //     if (!isReady) {
-  //       setDuration(data.getDuration());
-  //       const timeToStart = 7 * 60 + 12.6;
-
-  //       if (start) {
-  //         if (isVideoUrl(finalUrl)) {
-  //           if (!currentTime && `${currentTime}` !== `${start}`) {
-  //             seekAndPlay(start);
-  //           }
-  //         } else {
-  //           seekAndPlay(start);
-  //         }
-  //       } else {
-  //         seekAndPlay(0);
-  //       }
-
-  //       setIsReady(true);
-  //     }
-  //   },
-  //   [isReady, start, finalUrl, currentTime, seekAndPlay]
-  // );
+  const loop = transcriptions?.find((t) => t.id === _loop);
 
   const seekBefore = useCallback(() => {
     if (currentTranscription) {
       const currentTranscriptionIndex = Math.max(
         transcriptions?.findIndex(
-          (trans: any) => trans?.start === currentTranscription?.start
+          (trans: any) => trans?.start === currentTranscription?.start,
         ),
-        0
+        0,
       );
 
       const prevIndex = Math.max(currentTranscriptionIndex - 1, 0);
@@ -151,7 +129,7 @@ export const useAudioBookState = (content: IContent) => {
 
       playerRef.current.seekTo(
         loop?.start || prevTranscription?.start,
-        "seconds"
+        "seconds",
       );
 
       try {
@@ -163,26 +141,26 @@ export const useAudioBookState = (content: IContent) => {
   }, [currentTime, transcriptions]);
 
   const setRepeatHistories = useRepeatHistoryStore(
-    (state: any) => state.setHistory
+    (state: any) => state.setHistory,
   );
 
   const seekAfter = useCallback(() => {
     const currentTranscriptionIndex = Math.max(
       transcriptions?.findIndex(
-        (trans: any) => trans?.start === currentTranscription?.start
+        (trans: any) => trans?.start === currentTranscription?.start,
       ),
-      0
+      0,
     );
 
     const nextIndex = Math.min(
       currentTranscriptionIndex + 1,
-      transcriptions?.length - 1
+      transcriptions?.length - 1,
     );
     const nextTranscription = transcriptions?.[nextIndex];
 
     playerRef.current.seekTo(
       loop?.start || nextTranscription?.start,
-      "seconds"
+      "seconds",
     );
 
     try {
@@ -222,11 +200,12 @@ export const useAudioBookState = (content: IContent) => {
 
   const editMode = useContentEditStore((state) => state.editMode);
 
-  const currentTranscription =
+  const currentTranscription: any =
     loop ||
     transcriptions?.find(
       (transcription) =>
-        transcription?.start <= currentTime && transcription?.end >= currentTime
+        transcription?.start <= currentTime &&
+        transcription?.end >= currentTime,
     );
 
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
@@ -281,7 +260,7 @@ export const useAudioBookState = (content: IContent) => {
           if (loop) {
             setLoop(null);
           } else {
-            setLoop(currentTranscription);
+            setLoop(currentTranscription.id);
           }
         }
       }
@@ -343,7 +322,7 @@ export const useAudioBookState = (content: IContent) => {
   useEffect(() => {
     if (loop) {
       const selectedWords = transcriptions?.find(
-        (word) => word?.input === loop?.input
+        (word) => word?.id === loop?.id,
       );
 
       if (selectedWords?.start && currentTime > selectedWords?.end) {

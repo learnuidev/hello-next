@@ -457,7 +457,7 @@ export const PlayV3 = ({ contentId }: { contentId: string }) => {
           if (loop) {
             setLoop(null);
           } else {
-            setLoop(activeSubtitle?.input);
+            setLoop(activeSubtitle?.id);
           }
         }
       }

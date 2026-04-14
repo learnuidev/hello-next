@@ -41,7 +41,7 @@ export function AudioBookPlayerControls({
                 if (loop) {
                   return null;
                 }
-                return currentTranscription;
+                return currentTranscription.id;
               });
             }}
             className={cn(

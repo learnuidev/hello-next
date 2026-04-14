@@ -24,7 +24,7 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
     y: 80,
   });
   const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(
-    null
+    null,
   );
   const isDragging = useRef(false);
   const transcriptionRef = useRef<HTMLDivElement>(null);
@@ -56,7 +56,7 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
       });
       e.preventDefault();
     },
-    [transcriptionPosition]
+    [transcriptionPosition],
   );
 
   useEffect(() => {
@@ -86,7 +86,7 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
   if (!content) return null;
 
   const currentTranscriptionIndex = content.transcriptions?.findIndex(
-    (trans) => trans === currentTranscription
+    (trans) => trans === currentTranscription,
   );
 
   const renderPlayerControls = () => (
@@ -153,7 +153,7 @@ export function SeriesPlayer({ content, onClose }: SeriesPlayerProps) {
           onClick={() => setShowTranscription(!showTranscription)}
           className={cn(
             "h-8 w-8 p-0",
-            showTranscription && "bg-gray-200 dark:bg-gray-800"
+            showTranscription && "bg-gray-200 dark:bg-gray-800",
           )}
         >
           <Icons.list className="h-4 w-4" />

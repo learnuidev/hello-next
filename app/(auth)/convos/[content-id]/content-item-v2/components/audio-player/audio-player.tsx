@@ -318,11 +318,11 @@ export const AudioPlayer = () => {
         event.preventDefault();
         // togglePinyin((pinyin) => !pinyin);
 
-        if (activeSubtitle?.sentence) {
+        if (activeSubtitle?.id) {
           if (loop) {
             setLoop(null);
           } else {
-            setLoop(activeSubtitle?.sentence);
+            setLoop(activeSubtitle?.id);
           }
         }
       }

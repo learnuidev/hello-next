@@ -29,7 +29,7 @@ export const ParaView = ({
   isPlaying,
   seekAndPlay,
 }: {
-  loop: ContentTranscription;
+  loop?: ContentTranscription;
   currentTranscription: ContentTranscription;
   content: IContent;
   currentTime: number;

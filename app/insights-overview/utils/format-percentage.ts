@@ -1,7 +1,7 @@
-export function formatPercentage(number: number) {
+export function formatPercentage(number: number, maxMinDigits = 1) {
   return Intl.NumberFormat("en-GB", {
     style: "percent",
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
+    minimumFractionDigits: maxMinDigits,
+    maximumFractionDigits: maxMinDigits,
   }).format(number);
 }

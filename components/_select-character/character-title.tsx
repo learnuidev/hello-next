@@ -38,6 +38,7 @@ import { useCharacterEditStore } from "./use-character-edit-store";
 import { useYoutubeRefState } from "./use-youtube-ref-state";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
+import { AddToCollectionDialog } from "./add-to-collection-dialog";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -51,6 +52,7 @@ export const CharacterTitle = (props: any) => {
 
   const [newPinyin, setNewPinyin] = useState("");
   const [newEn, setNewEn] = useState("");
+  const [collectionDialogOpen, setCollectionDialogOpen] = useState(false);
 
   const pinyinInput = characterStore((state) => state.pinyin);
 
@@ -472,6 +474,19 @@ export const CharacterTitle = (props: any) => {
           )}
 
           {!edit && <CharacterTrackButton />}
+
+          {!edit && (
+            <button onClick={() => setCollectionDialogOpen(true)}>
+              <Icons.plusIcon className="text-xl" />
+            </button>
+          )}
+
+          <AddToCollectionDialog
+            open={collectionDialogOpen}
+            onOpenChange={setCollectionDialogOpen}
+            characterId={characterId}
+            lang={lang}
+          />
 
           {edit && meaningDiscovery?.id && isSuperAdmin ? (
             <div className="space-x-4">

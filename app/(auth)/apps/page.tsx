@@ -97,6 +97,11 @@ export default function AppsPage() {
       title: "Translator",
       Icon: Icons.microphone,
     },
+    {
+      href: "/collections",
+      title: "Collections",
+      Icon: Icons.archive,
+    },
   ];
   return (
     <div className="mx-4 mt-16">

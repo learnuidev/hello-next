@@ -4,7 +4,7 @@ import { useCurrentTime } from "@/components/youtube-page/use-current-time-store
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { useSelectedItem } from "@/components/youtube-page/use-selected-item";
 import { IContent } from "@/domain/content/content.api";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
 import { useSearchParams } from "next/navigation";
@@ -58,18 +58,9 @@ export const useAudioBookState = (content: IContent) => {
   );
 
   // TODO: move this at api level
-  const transcriptions = (content?.transcriptions || [])?.map(
-    (item, idx, ctx) => {
-      if (idx === 0) {
-        return {
-          ...item,
-          start: item?.start === 0 ? 0.1 : item?.start,
-          end: item?.end || ctx?.[idx + 1]?.start,
-        };
-      }
-
-      return item;
-    },
+  const transcriptions = useMemo(
+    () => content?.transcriptions || [],
+    [content?.transcriptions],
   );
 
   const iContent: any = content;
@@ -114,6 +105,14 @@ export const useAudioBookState = (content: IContent) => {
 
   const loop = transcriptions?.find((t) => t.id === _loop);
 
+  const currentTranscription: any =
+    loop ||
+    transcriptions?.find(
+      (transcription) =>
+        transcription?.start <= currentTime &&
+        transcription?.end >= currentTime,
+    );
+
   const seekBefore = useCallback(() => {
     if (currentTranscription) {
       const currentTranscriptionIndex = Math.max(
@@ -138,7 +137,7 @@ export const useAudioBookState = (content: IContent) => {
         console.error(err);
       }
     }
-  }, [currentTime, transcriptions]);
+  }, [currentTranscription, loop?.start, transcriptions]);
 
   const setRepeatHistories = useRepeatHistoryStore(
     (state: any) => state.setHistory,
@@ -168,7 +167,7 @@ export const useAudioBookState = (content: IContent) => {
     } catch (err) {
       console.error(err);
     }
-  }, [currentTime, transcriptions]);
+  }, [currentTranscription?.start, loop?.start, transcriptions]);
 
   useEffect(() => {
     if (!currentTime && start && isVideoUrl(finalUrl)) {
@@ -199,14 +198,6 @@ export const useAudioBookState = (content: IContent) => {
   const audioUrl = content?.audio;
 
   const editMode = useContentEditStore((state) => state.editMode);
-
-  const currentTranscription: any =
-    loop ||
-    transcriptions?.find(
-      (transcription) =>
-        transcription?.start <= currentTime &&
-        transcription?.end >= currentTime,
-    );
 
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
   const showPinyin = useBrightModeStore((state) => state.showPinyin);

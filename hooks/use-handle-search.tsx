@@ -9,15 +9,15 @@ import { useDebouncedCallback } from "use-debounce";
 import { getNavigationUrl } from "@/components/_search/get-navigation-url";
 import { useListLanguages } from "@/components/languages-list";
 import { useSearchQueryStore } from "@/components/search/state";
-import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useAddContentMutation } from "@/domain/content/content.mutations";
+import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useListHistoryQuery } from "@/domain/history/history.queries";
-import { isLongText, isTwitterUrl, isWebsite } from "@/lib/utils";
+import { isTwitterUrl, isWebsite } from "@/lib/utils";
 import { signOut } from "@/libs/cognito/auth";
 import { isToday } from "./is-today";
 import { useGetCurrentLang } from "./use-get-current-lang";
 import { useGetLangParams } from "./use-get-lang-params";
-import { useIsDu } from "./use-is-du";
+
 import { useIsSearchTrackingEnabled } from "./use-is-search-tracking-enabled";
 
 export const useHandleSearch = () => {
@@ -38,8 +38,6 @@ export const useHandleSearch = () => {
   const handleChange = (value: any) => {
     setQuery2(() => value);
   };
-
-  const isDu = useIsDu();
 
   const handleChangeDebounced = useDebouncedCallback(handleChange, 300);
 
@@ -66,7 +64,7 @@ export const useHandleSearch = () => {
   const addContentMutation = useAddContentMutation();
 
   const alreadySearchedToday = history?.Items?.filter(
-    (item: any) => item?.input === querySync && isToday(history?.createdAt)
+    (item: any) => item?.input === querySync && isToday(history?.createdAt),
   );
 
   // TODO: Fix this
@@ -82,7 +80,7 @@ export const useHandleSearch = () => {
     if (event?.keyCode === 13) {
       // 2. If the user selects a lang
       const langSelected = langs?.find(
-        (lang) => lang?.id === querySync?.toLowerCase()
+        (lang) => lang?.id === querySync?.toLowerCase(),
       );
 
       const _isWebsite = isWebsite(querySync);
@@ -193,7 +191,7 @@ export const useHandleSearch = () => {
           router.push(`/nmm/${encodeURIComponent(querySync)}?lang=${lang}`);
         } else {
           router.push(
-            `/nmm/${encodeURIComponent(selectedChar)}?lang=${lang}&trad=${querySync}`
+            `/nmm/${encodeURIComponent(selectedChar)}?lang=${lang}&trad=${querySync}`,
           );
         }
       }

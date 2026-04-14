@@ -43,19 +43,15 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
 
   const lessonsArr = data?.lessons;
 
-  // const results = useResults(store => store.results)
-
-  // const characterDictionary = dictionary?.[selectedChar];
-
   const setRepeatHistories = useRepeatHistoryStore(
-    (state: any) => state.setHistory
+    (state: any) => state.setHistory,
   );
 
   const setViewMode = useViewModeStore((state: any) => state.setViewMode);
 
   const pinyinMode = usePinyinModeStore((state: any) => state?.pinyinMode);
   const setPinyinMode = usePinyinModeStore(
-    (state: any) => state?.setPinyinMode
+    (state: any) => state?.setPinyinMode,
   );
 
   const mode = useModeStore((state: any) => state.mode);
@@ -106,7 +102,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
         ["", ""],
         ["", en],
       ];
-    }
+    },
   );
 
   const LessonNavBar = () => {
@@ -221,7 +217,7 @@ export const Play = ({ lessonId }: { lessonId: string }) => {
                 <Link
                   target="_blank"
                   href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                    transcription?.hanzi
+                    transcription?.hanzi,
                   )}&op=translate`}
                 >
                   <FontAwesomeIcon icon={faGoogle} />

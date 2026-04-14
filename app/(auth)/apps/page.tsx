@@ -4,13 +4,13 @@ import { FloatingNavbar } from "@/components/floating-navbar";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { DuChineseIcon } from "../du/components/duchinese-icon";
+
 import { useSettingsDialogState } from "@/components/settings-dialog/settings-dialog.state";
 import { useGetReviewUrl } from "@/components/settings-dialog/use-get-review-url";
-import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
-import { useClipboardViewMode } from "../clipboard/hooks/use-clipboard-view-mode";
-import { useClipboardState } from "../clipboard/hooks/use-clipboard-state";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
+import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
+import { useClipboardState } from "../clipboard/hooks/use-clipboard-state";
+import { useClipboardViewMode } from "../clipboard/hooks/use-clipboard-view-mode";
 
 function AppLinkItem({
   href,
@@ -32,7 +32,7 @@ function AppLinkItem({
       className={cn(
         `dark:text-gray-500 dark:hover:text-white transition text-3xl`,
         `flex flex-col items-center`,
-        className
+        className,
       )}
     >
       {children}

@@ -8,10 +8,7 @@ import { useParams, usePathname } from "next/navigation";
 import { TheDock } from "@/components/the-dock";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 
-import { FloatingDuNavbar } from "@/app/(auth)/du/components/floating-du-navbar";
 import { useReviewModeView } from "@/app/review/use-review-mode";
-import { useIsDu } from "@/hooks/use-is-du";
-import { useIsDuLessons } from "@/hooks/use-is-du-lessons";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 
 import { ReviewNavbar } from "@/app/review/review-navbar";
@@ -28,24 +25,7 @@ const FloatingNavbarComp = () => {
 
   const { data: content } = useGetContentQuery({ contentId: contentId || "" });
 
-  const isDuExact = useIsDu(true);
-  const isDu = useIsDu(false);
-
   const lang = useGetCurrentLang();
-
-  const isDuLessons = useIsDuLessons();
-
-  if (isDu) {
-    if (isDuExact) {
-      return <FloatingDuNavbar />;
-    }
-  }
-
-  if (isDuLessons) {
-    return null;
-  }
-
-  const isChineseLang = lang === "zh";
 
   if (routeName?.includes("/review")) {
     return <ReviewNavbar />;

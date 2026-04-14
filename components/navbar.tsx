@@ -1,6 +1,5 @@
 "use client";
 
-import { DuNavbar } from "@/app/(auth)/du/components/du-navbar";
 import { useReviewStore } from "@/app/review/review-store";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -135,8 +134,6 @@ export const NavBar = ({ autoFocus }: { autoFocus?: boolean }) => {
           </Link>
         )}
         {routeName?.includes("/convos") && <AnimatedContentsFilter />}
-
-        {routeName === "/du" && <DuNavbar />}
       </div>
 
       {routeName?.includes("learn") || routeName?.includes("diary") ? null : (

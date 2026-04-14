@@ -4,15 +4,13 @@ import { useFontSizeStore } from "../hooks/use-font-size";
 import { nonHanYuChars } from "@/app/nmm/nmm-utils/filter-non-hanyu";
 import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { CharacterItem } from "@/components/_select-character/character-item";
-import { useSearchOnlyPinyinState } from "@/components/search-only-pinyin-button";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
+import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 import { formatRoman } from "@/lib/format-roman";
 import { cn } from "@/lib/utils";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
-import { useContentSearchHistory } from "../hooks/use-content-search-history";
-import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 
 export function ReaderViewChinese({
   currentTranscription,
@@ -40,13 +38,6 @@ export function ReaderViewChinese({
   const { text: selected } = useCharacterMenuBarStore();
 
   const { setShowMenuBar } = useCharacterMenuBarStore();
-
-  const { setShowSearchOnlyPinyin, showSearchOnlyPinyin } =
-    useSearchOnlyPinyinState();
-
-  const { searchHistory, addSearchHistory } = useContentSearchHistory({
-    contentId: contentId || "",
-  });
 
   return (
     <div className={cn(defautClassName, className)}>
@@ -77,7 +68,7 @@ export function ReaderViewChinese({
                 ["，", "。"]?.includes(item?.input)
                   ? ""
                   : "px-[2px] py-[0px] sm:px-[4px]",
-                "leading-none"
+                "leading-none",
               )}
               key={`${JSON.stringify(item)}-${idx}-${idx}`}
             >
@@ -103,9 +94,9 @@ export function ReaderViewChinese({
                         item?.hanzi || item?.input,
                         val?.input,
                         charItem,
-                        charIdx
+                        charIdx,
                       );
-                    }
+                    },
                   );
 
                   return (
@@ -127,7 +118,7 @@ export function ReaderViewChinese({
                           currentTime > item?.start &&
                             currentTime < item?.end &&
                             !nonHanYuChars.includes(charItem) &&
-                            "underline underline-offset-8"
+                            "underline underline-offset-8",
                         )}
                       />
                     </span>

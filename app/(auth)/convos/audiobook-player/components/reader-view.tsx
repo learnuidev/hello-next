@@ -1,9 +1,8 @@
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
-import pinyin from "pinyin";
 
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 import { cn } from "@/lib/utils";
-import { getPinyin, useSegmentTextQuery } from "@/libs/utils/segment-text";
+import { getPinyin } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { EnView } from "./en-view";
 import { InputView } from "./input-view";
@@ -19,32 +18,17 @@ export function ReaderView({
   contentId,
   lang,
 }: CurrentTranscriptionProps) {
-  const { data: _segmentedData } = useSegmentTextQuery({
-    text: currentTranscription?.input,
-    lang: currentTranscription?.lang,
-  });
-
-  const data: any =
-    currentTranscription?.words?.map((word) => {
-      const pinyinItem = getPinyin(word?.input || "");
-
-      return {
-        ...word,
-        pinyin: pinyinItem,
-      };
-    }) || _segmentedData;
-
   const showEn = useBrightModeStore((state) => state.showEn);
 
   const defautClassName = "mb-4  gap-0 space-y-0";
 
   return (
     <div>
-      {currentTranscription?.lang === "zh" && data ? (
+      {currentTranscription?.lang === "zh" && currentTranscription?.words ? (
         <ReaderViewChinese
           currentTime={currentTime}
           className={className}
-          data={data}
+          data={currentTranscription?.words || []}
           containsChinglish={containsChinglish}
           currentTranscription={currentTranscription}
           seekAndPlay={seekAndPlay}

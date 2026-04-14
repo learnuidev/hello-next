@@ -26,6 +26,7 @@ export type TranscriptionWord = {
   startIndex: number;
   endIndex: number;
   input: string;
+  hanzi: string;
 };
 
 type TweetAuthor = {
@@ -115,7 +116,7 @@ const AudioPlayer = ({
 // Text with highlights utility
 const renderTextWithHighlights = (
   text: string,
-  highlights: { start: number; end: number }[]
+  highlights: { start: number; end: number }[],
 ) => {
   if (!highlights.length) return text;
   const ranges = highlights.sort((a, b) => a.start - b.start);
@@ -130,7 +131,7 @@ const renderTextWithHighlights = (
         className="bg-yellow-300 dark:bg-yellow-500 text-black rounded px-0.5"
       >
         {text.slice(start, end)}
-      </span>
+      </span>,
     );
     last = end;
   });
@@ -266,7 +267,7 @@ const TranscriptionText = ({
         <span
           key={t.id}
           className={cn(
-            currentId === t.id ? "dark:text-white text-black" : "text-gray-500"
+            currentId === t.id ? "dark:text-white text-black" : "text-gray-500",
           )}
         >
           {t.input ?? t.en}{" "}
@@ -290,7 +291,7 @@ export function TweetPage({ contentId }: { contentId: string }) {
   };
 
   const currentTranscription = data?.transcriptions?.find(
-    (t: any) => t.start <= playedSeconds && t.end >= playedSeconds
+    (t: any) => t.start <= playedSeconds && t.end >= playedSeconds,
   );
 
   return (

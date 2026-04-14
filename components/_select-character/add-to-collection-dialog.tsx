@@ -21,11 +21,13 @@ export const AddToCollectionDialog = ({
   onOpenChange,
   characterId,
   lang,
+  onAdded,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   characterId: string;
   lang?: string;
+  onAdded?: (collectionId: string) => void;
 }) => {
   const [newTitle, setNewTitle] = useState("");
   const [isCreating, setIsCreating] = useState(false);
@@ -43,6 +45,7 @@ export const AddToCollectionDialog = ({
         items: [{ characterId, lang }],
       });
       toast.success("Added to collection");
+      onAdded?.(collectionId);
       onOpenChange(false);
     } catch (err: any) {
       toast.error(err?.message || "Failed to add to collection");
@@ -65,6 +68,7 @@ export const AddToCollectionDialog = ({
 
       setNewTitle("");
       toast.success("Collection created and item added");
+      onAdded?.(collection.id);
       onOpenChange(false);
     } catch (err: any) {
       toast.error(err?.message || "Failed to create collection");

@@ -19,6 +19,10 @@ import { PreviewButton } from "./settings-dialog/preview-button";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
 import { useGetCharacterQuery } from "@/domain/character/use-get-character-query";
+import { useState } from "react";
+import { AddToCollectionDialog } from "./_select-character/add-to-collection-dialog";
+import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
+import { useUpdateComponentSummaryMutation } from "@/domain/component-summary/update-component-summary";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -118,12 +122,45 @@ export const FloatingCharacterNavbar = ({
 
   const isSuperAdmin = useIsSuperAdmin();
 
+  const [collectionDialogOpen, setCollectionDialogOpen] = useState(false);
+
+  const { data: meaning } = useListMeaningsQuery({
+    content: characterId,
+    lang,
+  });
+
+  const updateComponentSummaryMutation = useUpdateComponentSummaryMutation();
+
+  const handleCollectionAdded = (collectionId: string) => {
+    if (meaning?.id) {
+      updateComponentSummaryMutation.mutateAsync({
+        id: meaning.id,
+        collectionId,
+      } as any);
+    }
+  };
+
   return (
     <TheDock isAutomatic={isAutomatic} className="bottom-4">
       <div className="flex items-center w-full justify-center">
         <div className="px-8  py-2 bg-gray-100 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  dark:text-white inline-block">
           <div className="space-x-8 flex justify-center items-center w-full">
             {!edit && <BookmarkButton hanzi={characterId} lang={lang} />}
+
+            <button
+              className="text-xl text-black dark:text-white"
+              onClick={() => setCollectionDialogOpen(true)}
+            >
+              <Icons.archive className="text-2xl" />
+            </button>
+
+            <AddToCollectionDialog
+              open={collectionDialogOpen}
+              onOpenChange={setCollectionDialogOpen}
+              characterId={characterId}
+              lang={lang}
+              onAdded={handleCollectionAdded}
+            />
 
             <PreviewButton />
 

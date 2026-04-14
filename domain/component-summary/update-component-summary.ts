@@ -7,15 +7,16 @@ import { listMeaningQueryKey } from "../sentence/meaning.queries";
 
 export type UpdateComponentSummaryParams = {
   id: string;
-  summary: string;
+  summary?: string;
   youtubeUrl?: string;
+  collectionId?: string;
 };
 
 const updateComponentSummary = async (
   options: UpdateComponentSummaryParams,
   opts: {
     Authorization: string;
-  }
+  },
 ) => {
   const res = await fetch(`${siteConfig.apiUrl}/v1/update-summary`, {
     method: "POST",

@@ -159,7 +159,6 @@ export const FloatingCharacterNavbar = ({
               onOpenChange={setCollectionDialogOpen}
               characterId={characterId}
               lang={lang}
-              onAdded={handleCollectionAdded}
             />
 
             <PreviewButton />

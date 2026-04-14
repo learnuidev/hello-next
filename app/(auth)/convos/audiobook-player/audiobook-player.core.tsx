@@ -298,9 +298,9 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   className="w-full"
                   hidden
                 />
-                {/* <span className="text-sm sm:text-lg sm:w-24 w-14 font-extralight">
+                <span className="text-sm sm:text-lg sm:w-24 w-14 font-extralight">
                   {formatTime(currentTime)}
-                </span> */}
+                </span>
               </div>
             </div>
             {/* )} */}

@@ -9,7 +9,6 @@ import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useMemo } from "react";
 import { CharacterContent } from "./character-content/character-content";
 import { CharacterOverviewView } from "./character-overview-view";
-import { HskSentenceView } from "./hsk-sentences-view";
 import { HskSuperComponentsWordView } from "./hsk-super-components-view";
 import { PinyinView } from "./pinyin-view";
 import { SimilarCharactersView } from "./similar-characters-view";
@@ -130,9 +129,6 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
       return <CharacterSearch characterId={characterId} lang={lang} />;
     case "bookmark":
       return <CharacterBookmark characterId={characterId} lang={lang} />;
-    case "sentences": {
-      return <HskSentenceView characterId={characterId} />;
-    }
 
     case "similar-looking-characters":
       return <SimilarCharactersView componentId={characterId} />;

@@ -1,7 +1,5 @@
 "use client";
 
-import { SelectedCharacterProps } from "./select-character.types";
-
 import { useRouter } from "next/navigation";
 
 import { Icons } from "../ui/icons.v2";
@@ -10,12 +8,10 @@ import { useListSuperComponentsQuery } from "@/domain/component/super-component.
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { cn } from "@/lib/utils";
 import { useGetSimilarLookingCharacters } from "./selected-character/use-get-similar-looking-characters";
-import { SelectedCharacterStoryButton } from "./selected-character-story-button";
 import { useRelatedHskWordsByCharacter } from "./use-filter-related-hsk-words-by-character";
-import { useSlicedRelatedSentencesByCharacter } from "./use-sliced-related-sentences-by-character";
-import { useSelectedCharacterData } from "../use-selected-character";
+
 import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
-import { useListBookmarksQuery } from "@/domain/bookmark/use-list-bookmarks-query";
+import { useSelectedCharacterData } from "../use-selected-character";
 import { useListBookmarks } from "./hooks/use-list-bookmarks";
 import { SelectedCharacterContentsButton } from "./selected-character-contents-button";
 
@@ -34,8 +30,6 @@ export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
 
   const similarLookingCharacters = useGetSimilarLookingCharacters(characterId);
 
-  const relatedSentences = useSlicedRelatedSentencesByCharacter(characterId);
-
   const superComponents = superComponents_ as any;
 
   const { data } = useListCharactersQuery();
@@ -50,7 +44,7 @@ export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
   const filteredBookMarks = useListBookmarks(characterId);
 
   const learnedChar = data?.filter(
-    (item: any) => (item?.input || item?.hanzi) === characterId
+    (item: any) => (item?.input || item?.hanzi) === characterId,
   )?.[0];
 
   const styleFn = (currentView: string) => {
@@ -88,16 +82,6 @@ export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
               }}
             >
               {view === "words" ? <Icons.seedlingSolid /> : <Icons.seedling />}
-            </button>
-          )}
-          {relatedSentences?.length > 0 && (
-            <button
-              className={cn("text-xl transition", styleFn("sentences"))}
-              onClick={() => {
-                setView("sentences");
-              }}
-            >
-              {view === "sentences" ? <Icons.treeSolid /> : <Icons.tree />}
             </button>
           )}
 
@@ -165,7 +149,7 @@ export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
               className={cn(
                 "text-xl transition",
 
-                styleFn("similar-looking-characters")
+                styleFn("similar-looking-characters"),
               )}
               onClick={() => {
                 setView("similar-looking-characters");

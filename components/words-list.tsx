@@ -8,7 +8,7 @@ export const WordsList = ({ words, lang, showWords }: any) => {
 
   const filteredWords = useMemo(
     () => words?.filter((word: any) => JSON.stringify(word)?.includes(query)),
-    [query, words]
+    [query, words],
   );
   if (showWords) {
     return <WordsListRemote lang={lang} words={filteredWords} />;

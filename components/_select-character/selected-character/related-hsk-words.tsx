@@ -3,7 +3,6 @@
 import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/hooks/use-list-published-contents-query";
 import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
-import { RelatedWords } from "../related-words";
 import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
 
 export const RelatedHskWords = ({
@@ -19,17 +18,13 @@ export const RelatedHskWords = ({
 
   const { data: contentItems } = useListPublishedContentsQuery({});
 
-  if (!filteredRelatedHskWords?.length) {
-    return <RelatedWords lang={lang} characterId={characterId} />;
-  }
-
   return (
     <NmmListContainerAll className="px-0">
       {filteredRelatedHskWords?.map((prop: any, idx: any) => {
         const contentItem = (contentItems?.items || [])?.filter((item: any) =>
           JSON.stringify(item?.hanzi || item?.input)?.includes(
-            prop?.hanzi || prop?.input
-          )
+            prop?.hanzi || prop?.input,
+          ),
         );
         return (
           <HanziLink

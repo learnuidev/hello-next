@@ -1,5 +1,5 @@
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { wordsDict } from "@/langs/words-dict";
+
 import { useQuery } from "@tanstack/react-query";
 
 const lettersDict = {
@@ -24,7 +24,6 @@ export const useListFilteredWords = ({
   lang: string;
   query: string;
 }) => {
-  const words = wordsDict[lang];
   const { data: characters } = useListCharactersQuery();
 
   const filterWord = (prop: any) => {
@@ -53,15 +52,15 @@ export const useListFilteredWords = ({
     queryFn: async () => {
       if (query) {
         return Promise.resolve(
-          [...((characters as any) || []), ...words]
+          [...((characters as any) || [])]
             ?.filter(filterWord)
-            ?.sort((a: any, b: any) => a?.input?.length - b?.input?.length)
+            ?.sort((a: any, b: any) => a?.input?.length - b?.input?.length),
         );
       } else {
         return Promise.resolve(
-          [...words]
+          []
             ?.filter(filterWord)
-            ?.sort((a: any, b: any) => a?.input?.length - b?.input?.length)
+            ?.sort((a: any, b: any) => a?.input?.length - b?.input?.length),
         );
       }
     },

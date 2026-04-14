@@ -1,11 +1,7 @@
 "use client";
 
-import { Icons } from "@/components/ui/icons.v2";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { mandarinoFeatures } from "./mandarino-features";
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
 
 import { FadeInDiv } from "@/components/fadein-div";
 import { Button } from "@/components/ui/button";

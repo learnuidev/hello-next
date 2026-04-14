@@ -1,6 +1,6 @@
 "use client";
 
-import { useScroll, motion } from "framer-motion";
+import { motion, useScroll } from "framer-motion";
 import { useRef } from "react";
 
 export function FadeInDiv({ children }: { children: React.ReactNode }) {
@@ -8,7 +8,6 @@ export function FadeInDiv({ children }: { children: React.ReactNode }) {
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    // offset: ["start center", "end center"],
     offset: ["start center", "end end"],
   });
 

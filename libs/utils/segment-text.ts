@@ -5,6 +5,9 @@ import pinyin from "pinyin";
 type FilterTypes = "unique";
 
 const pinyinverrides: any = {
+  出差: {
+    pinyin: "chūchāi",
+  },
   模样: {
     pinyin: "múyàng",
   },

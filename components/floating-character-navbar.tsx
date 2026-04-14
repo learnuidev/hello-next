@@ -3,6 +3,7 @@ import { Icons } from "./ui/icons.v2";
 import { useCharacterContextStore } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { BookmarkButton } from "@/app/nmm/bookmark-button";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
+import { useGetCharacterQuery } from "@/domain/character/use-get-character-query";
 import {
   useAddCharacterMutation,
   useUpdateCharacterStatusMutation,
@@ -13,16 +14,13 @@ import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
+import { AddToCollectionDialog } from "./_select-character/add-to-collection-dialog";
 import { useCharacterEditStore } from "./_select-character/use-character-edit-store";
 import { PreviewButton } from "./settings-dialog/preview-button";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
-import { useGetCharacterQuery } from "@/domain/character/use-get-character-query";
-import { useState } from "react";
-import { AddToCollectionDialog } from "./_select-character/add-to-collection-dialog";
-import { useListMeaningsQuery } from "@/domain/sentence/meaning.queries";
-import { useUpdateComponentSummaryMutation } from "@/domain/component-summary/update-component-summary";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -123,22 +121,6 @@ export const FloatingCharacterNavbar = ({
   const isSuperAdmin = useIsSuperAdmin();
 
   const [collectionDialogOpen, setCollectionDialogOpen] = useState(false);
-
-  const { data: meaning } = useListMeaningsQuery({
-    content: characterId,
-    lang,
-  });
-
-  const updateComponentSummaryMutation = useUpdateComponentSummaryMutation();
-
-  const handleCollectionAdded = (collectionId: string) => {
-    if (meaning?.id) {
-      updateComponentSummaryMutation.mutateAsync({
-        id: meaning.id,
-        collectionId,
-      } as any);
-    }
-  };
 
   return (
     <TheDock isAutomatic={isAutomatic} className="bottom-4">

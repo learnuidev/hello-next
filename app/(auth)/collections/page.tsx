@@ -13,10 +13,10 @@ import {
 } from "@/domain/collections/use-list-collections-query";
 import { useAddCollectionMutation } from "@/domain/collections/use-add-collection-mutation";
 import { useGetCollectionQuery } from "@/domain/collections/use-get-collection-query";
+import { useRemoveCollectionItemsMutation } from "@/domain/collections/use-remove-collection-items-mutation";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const springTransition = {
@@ -82,6 +82,8 @@ function CollectionDetail({
     collectionId,
   });
 
+  const removeItemsMutation = useRemoveCollectionItemsMutation();
+
   const collection = _collectionData as any;
 
   if (isLoading) {
@@ -93,6 +95,20 @@ function CollectionDetail({
   }
 
   const items: any[] = collection.items || [];
+
+  const handleRemoveItem = (itemId: string) => {
+    removeItemsMutation.mutate(
+      { collectionId, itemIds: [itemId] },
+      {
+        onSuccess: () => {
+          toast.success("Item removed");
+        },
+        onError: (err: any) => {
+          toast.error(err?.message || "Failed to remove item");
+        },
+      },
+    );
+  };
 
   return (
     <motion.div
@@ -133,44 +149,49 @@ function CollectionDetail({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <Link
-                  href={`/nmm/${item.characterId}${item.lang ? `?lang=${item.lang}` : ""}`}
+                <motion.div
+                  className="dark:hover:bg-[rgb(14,15,16)] dark:bg-[rgb(11,12,13)] hover:bg-gray-100 bg-gray-50 shadow rounded-lg overflow-hidden cursor-pointer px-5 py-4 group relative"
+                  whileHover={{
+                    scale: 1.02,
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={springTransition}
                 >
-                  <motion.div
-                    className="dark:hover:bg-[rgb(14,15,16)] dark:bg-[rgb(11,12,13)] hover:bg-gray-100 bg-gray-50 shadow rounded-lg overflow-hidden cursor-pointer px-5 py-4"
-                    whileHover={{
-                      scale: 1.02,
-                      boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-                    }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={springTransition}
+                  <Link
+                    href={`/nmm/${item.characterId}${item.lang ? `?lang=${item.lang}` : ""}`}
+                    className="flex items-center gap-3"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 flex-shrink-0">
-                        <span className="text-lg">
-                          {item.characterId?.charAt(0) || "?"}
-                        </span>
-                      </div>
-                      <div className="min-w-0">
-                        <motion.h4
-                          className="font-medium text-base truncate"
-                          whileHover={{ color: "rgb(244, 63, 94)" }}
-                          transition={springTransition}
-                        >
-                          {item.characterId ||
-                            item.input ||
-                            item.title ||
-                            item.id}
-                        </motion.h4>
-                        {item.lang && (
-                          <p className="text-xs text-gray-500 mt-0.5">
-                            {item.lang}
-                          </p>
-                        )}
-                      </div>
+                    <div className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 flex-shrink-0">
+                      <span className="text-lg">
+                        {item.characterId?.charAt(0) || "?"}
+                      </span>
                     </div>
-                  </motion.div>
-                </Link>
+                    <div className="min-w-0">
+                      <h4 className="font-medium text-base truncate">
+                        {item.characterId ||
+                          item.input ||
+                          item.title ||
+                          item.id}
+                      </h4>
+                      {item.lang && (
+                        <p className="text-xs text-gray-500 mt-0.5">
+                          {item.lang}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                  <button
+                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition p-1 text-gray-400 hover:text-red-400"
+                    disabled={removeItemsMutation.isPending}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveItem(item.id);
+                    }}
+                  >
+                    <Icons.xMark className="text-sm" />
+                  </button>
+                </motion.div>
               </motion.div>
             ))}
           </div>

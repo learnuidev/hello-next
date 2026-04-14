@@ -14,6 +14,7 @@ import { Icons } from "@/components/ui/icons.v2";
 import { useListCollectionsQuery } from "@/domain/collections/use-list-collections-query";
 import { useAddCollectionMutation } from "@/domain/collections/use-add-collection-mutation";
 import { useAddCollectionItemsMutation } from "@/domain/collections/use-add-collection-items-mutation";
+import { useListCollectionsByCharacterQuery } from "@/domain/collections/use-list-collections-by-character-query";
 import { toast } from "sonner";
 
 export const AddToCollectionDialog = ({
@@ -33,10 +34,17 @@ export const AddToCollectionDialog = ({
   const [isCreating, setIsCreating] = useState(false);
 
   const { data: collectionsData, isLoading } = useListCollectionsQuery();
+  const { data: byCharacterData } = useListCollectionsByCharacterQuery(
+    { characterId },
+    { enabled: open },
+  );
   const addCollectionMutation = useAddCollectionMutation();
   const addCollectionItemsMutation = useAddCollectionItemsMutation();
 
   const collections: any[] = (collectionsData as any)?.items || [];
+  const existingCollectionIds = new Set(
+    (byCharacterData as any)?.collectionIds || [],
+  );
 
   const handleAddToCollection = async (collectionId: string) => {
     try {
@@ -95,19 +103,30 @@ export const AddToCollectionDialog = ({
           ) : collections.length === 0 ? (
             <p className="text-sm text-gray-500 py-2">No collections yet.</p>
           ) : (
-            collections.map((collection) => (
-              <button
-                key={collection.id}
-                className="w-full flex items-center justify-between px-4 py-3 rounded-md border border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 transition"
-                disabled={addCollectionItemsMutation.isPending}
-                onClick={() => handleAddToCollection(collection.id)}
-              >
-                <span className="text-sm font-medium">{collection.title}</span>
-                <span className="text-xs text-gray-500">
-                  {collection.totalItems} items
-                </span>
-              </button>
-            ))
+            collections.map((collection) => {
+              const isAlreadyAdded = existingCollectionIds.has(collection.id);
+
+              return (
+                <button
+                  key={collection.id}
+                  className="w-full flex items-center justify-between px-4 py-3 rounded-md border border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 transition disabled:opacity-60"
+                  disabled={
+                    addCollectionItemsMutation.isPending || isAlreadyAdded
+                  }
+                  onClick={() => handleAddToCollection(collection.id)}
+                >
+                  <span className="text-sm font-medium">
+                    {collection.title}
+                  </span>
+                  <span className="flex items-center gap-2 text-xs text-gray-500">
+                    {collection.totalItems} items
+                    {isAlreadyAdded && (
+                      <Icons.checkCircle className="text-emerald-500 text-sm" />
+                    )}
+                  </span>
+                </button>
+              );
+            })
           )}
         </div>
 

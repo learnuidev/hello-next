@@ -12,6 +12,7 @@ import {
 import { cn } from "@/lib/utils";
 import { getStatusIcon } from "./status-icons";
 import { NoResultView } from "./no-result-view";
+import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
 
 export function CharacterSearchResult({
   searchResults,
@@ -57,7 +58,7 @@ export function CharacterSearchResult({
                       "truncate",
                       comp?.hanzi?.length > 8
                         ? "text-lg"
-                        : "text-2xl sm:text-4xl"
+                        : "text-2xl sm:text-4xl",
                     )}
                   >
                     {comp?.hanzi}{" "}
@@ -92,19 +93,11 @@ export function CharacterSearchResult({
               {comp?.status === "not_started" ? null : (
                 <div className="flex justify-start text-gray-500 font-light space-x-2">
                   <div>
-                    <span>{comp?.totalAttempts}</span>{" "}
-                    {comp?.totalAttempts > 1 ? "attempts" : "attempt"}
+                    <span>{comp?.totalAttempts}</span> 尝试
                   </div>
-                  {comp?.totalIncorrect > 0 ? (
-                    <div>
-                      <span>{comp?.totalIncorrect}</span> incorrect
-                    </div>
-                  ) : (
-                    comp?.totalCorrect > 0 && (
-                      <div>
-                        <span>{comp?.totalCorrect}</span> correct
-                      </div>
-                    )
+
+                  {Number.isFinite(comp?.accuracy) && (
+                    <span>{formatPercentage(comp?.accuracy || 0)}</span>
                   )}
                 </div>
               )}

@@ -1,14 +1,10 @@
 "use client";
 
-import { RelatedWords } from "../related-words";
-
 import { RelatedHskWords } from "./related-hsk-words";
 
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
 import { useViewTypeStore } from "@/components/use-selected-character";
-import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
-import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useMemo } from "react";
 import { CharacterContent } from "./character-content/character-content";
@@ -51,17 +47,8 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
   const views = useViewTypeStore((state: any) => state.views) as any;
   const view = views?.[characterId] || "home";
 
-  const { data: selectedComp2 } = useGetComponentQuery({
-    hanzi: characterId || "",
-  });
-
-  const { data: chineseCharacters } = useListChineseCharactersQuery();
   const setViews = useViewTypeStore((state) => state.setViews);
   const { clozeContentMode } = useClozeContentMode();
-
-  const offlineCharacter = chineseCharacters?.find(
-    (char: any) => char?.hanzi === characterId || char?.input === characterId,
-  );
 
   const setView = (view: any) => {
     return setViews(characterId, view);
@@ -145,8 +132,6 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
       return <CharacterBookmark characterId={characterId} lang={lang} />;
     case "sentences": {
       return <HskSentenceView characterId={characterId} />;
-
-      return <RelatedWords lang={lang} characterId={characterId} />;
     }
 
     case "similar-looking-characters":

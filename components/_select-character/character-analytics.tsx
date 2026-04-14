@@ -33,7 +33,7 @@ function getTotalFrequency(text: string, word: string): number {
   // Using word boundaries (\b) to match whole words only
   const regex = new RegExp(
     `\\b${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`,
-    "gi"
+    "gi",
   );
 
   const matches = text.match(regex);
@@ -55,14 +55,14 @@ export function CharacterAnalytics({
   const setViewType = useInsightsSettingsStore((state) => state.setType);
   const displayMode = useInsightsSettingsStore((state) => state.displayMode);
   const setDisplayMode = useInsightsSettingsStore(
-    (state) => state.setDisplayMode
+    (state) => state.setDisplayMode,
   );
   const sortType = useInsightsSettingsStore((state) => state.sortType);
   const setSortType = useInsightsSettingsStore((state) => state.setSortType);
   const learnStatus = useInsightsSettingsStore((state) => state.learnStatus);
   const hskLevel = useInsightsSettingsStore((state) => state.hskLevel);
   const frequencySort = useInsightsSettingsStore(
-    (state) => state.frequencySort
+    (state) => state.frequencySort,
   );
 
   const selectedChar = useSelectedCharacter((state: any) => state?.character);
@@ -138,23 +138,28 @@ export function CharacterAnalytics({
       if (!char) return null;
       const isLearned = learnedCharacters?.[char];
 
+      console.log("IS LEARNED", isLearned);
+
       const totalFrequency = characterId
         ?.split("")
         .filter((item) => item === char);
       if (isLearned) {
         const reviewedHistory = isLearned?.reviewHistory || [];
-        const corrects = reviewedHistory?.map(
-          (item: any) => item?.outcome === "correct"
+        const corrects = reviewedHistory?.filter(
+          (history: any) => history?.outcome === "correct",
         );
-        const incorrects = reviewedHistory?.map(
-          (item: any) => item?.outcome === "incorrect"
+
+        const incorrects = reviewedHistory?.filter(
+          (history: any) => history?.outcome === "incorrect",
         );
+
         return {
           ...isLearned,
           totalAttempts: reviewedHistory?.length,
           totalCorecct: corrects?.length,
           totalIncorrect: incorrects?.length,
           totalFrequency: totalFrequency?.length,
+          accuracy: corrects?.length / reviewedHistory?.length,
         };
       }
 
@@ -166,6 +171,7 @@ export function CharacterAnalytics({
         totalCorecct: 0,
         totalIncorrect: 0,
         totalFrequency: totalFrequency?.length,
+        accuracy: 0,
       };
 
       return item;
@@ -173,7 +179,7 @@ export function CharacterAnalytics({
 
     if (sortType === "popular") {
       return stats?.sort(
-        (a: any, b: any) => b?.totalFrequency - a?.totalFrequency
+        (a: any, b: any) => b?.totalFrequency - a?.totalFrequency,
       );
     }
     return stats;
@@ -215,11 +221,11 @@ export function CharacterAnalytics({
 
     if (frequencySort === "most") {
       filtered = [...filtered].sort(
-        (a: any, b: any) => (b?.totalFrequency || 0) - (a?.totalFrequency || 0)
+        (a: any, b: any) => (b?.totalFrequency || 0) - (a?.totalFrequency || 0),
       );
     } else if (frequencySort === "least") {
       filtered = [...filtered].sort(
-        (a: any, b: any) => (a?.totalFrequency || 0) - (b?.totalFrequency || 0)
+        (a: any, b: any) => (a?.totalFrequency || 0) - (b?.totalFrequency || 0),
       );
     }
 
@@ -240,15 +246,15 @@ export function CharacterAnalytics({
 
     if (frequencySort === "most") {
       filtered = [...filtered].sort(
-        (a: any, b: any) => (b?.totalFrequency || 0) - (a?.totalFrequency || 0)
+        (a: any, b: any) => (b?.totalFrequency || 0) - (a?.totalFrequency || 0),
       );
     } else if (frequencySort === "least") {
       filtered = [...filtered].sort(
-        (a: any, b: any) => (a?.totalFrequency || 0) - (b?.totalFrequency || 0)
+        (a: any, b: any) => (a?.totalFrequency || 0) - (b?.totalFrequency || 0),
       );
     } else if (sortType === "popular") {
       filtered = [...filtered].sort(
-        (a: any, b: any) => (b?.totalFrequency || 0) - (a?.totalFrequency || 0)
+        (a: any, b: any) => (b?.totalFrequency || 0) - (a?.totalFrequency || 0),
       );
     }
 
@@ -304,7 +310,7 @@ export function CharacterAnalytics({
               }}
               className={cn(
                 viewType === "character" ? "dark:text-white" : " text-gray-500",
-                "px-0 "
+                "px-0 ",
               )}
             >
               <Icons.seedling className="text-xl md:text-2xl" />
@@ -315,7 +321,7 @@ export function CharacterAnalytics({
               }}
               className={cn(
                 viewType === "word" ? "dark:text-white" : " text-gray-500",
-                "px-0"
+                "px-0",
               )}
             >
               <Icons.tree className="text-xl md:text-2xl" />
@@ -348,7 +354,7 @@ export function CharacterAnalytics({
                 }}
                 className={cn(
                   displayMode === "grid" ? "dark:text-white" : "text-gray-500",
-                  "px-0"
+                  "px-0",
                 )}
               >
                 <Icons.apps className="text-xl md:text-2xl" />
@@ -359,7 +365,7 @@ export function CharacterAnalytics({
                 }}
                 className={cn(
                   displayMode === "list" ? "dark:text-white" : "text-gray-500",
-                  "px-0"
+                  "px-0",
                 )}
               >
                 <Icons.list className="text-xl md:text-2xl" />
